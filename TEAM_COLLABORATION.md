@@ -49,3 +49,17 @@ Escalation format:
 3. Full context in delegation/handoffs.
 4. No silent stalls; raise blockers early.
 5. Decisions that matter are written to files.
+
+## 7) Recurring retrospectives (mandatory)
+Cadence: **every Monday and Thursday**.
+
+Retro agenda:
+1. Review all activities completed since the previous retrospective.
+2. Review a rolling summary of the **last 30 days** (patterns, recurring blockers, wins).
+3. Evaluate collaboration quality and output quality (what worked, what failed, where quality slipped).
+4. Agree concrete improvements and apply them to process/docs immediately (no Henrik approval required for internal workflow changes).
+
+Execution rules:
+- Record each retro outcome in `memory/YYYY-MM-DD.md`.
+- If process changes are agreed, update `TEAM_COLLABORATION.md`/`AGENTS.md` in the same cycle.
+- Changes become active immediately after update and commit.
