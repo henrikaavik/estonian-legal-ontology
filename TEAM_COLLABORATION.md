@@ -1,0 +1,51 @@
+# Team Collaboration Protocol v1 (Accepted)
+
+Status: **Accepted and active**
+
+## 1) Roles per project
+- **Owner (single):** accountable for final outcome and deadline.
+- **Driver (current executor):** does the active implementation work.
+- **Reviewer (mandatory second pair of eyes):** validates and improves before done.
+
+Rule: **Owner cannot be the final Reviewer**.
+
+## 2) Decision flow (who executes)
+1. Quick kickoff: objective, constraints, done-criteria.
+2. Choose Driver by best-fit skill for this work slice.
+3. If disagreement >10 min or no consensus, **Owner decides**.
+4. If high-risk/ambiguous requirement, escalate to Henrik with options.
+
+## 3) Mandatory review gate
+No output is sent as final without independent review.
+Reviewer must:
+- check correctness vs request,
+- improve weak spots directly (not only comments),
+- confirm ship/no-ship.
+
+## 4) Escalation
+Escalate when:
+- blocked after 2 focused attempts,
+- requirements conflict,
+- potential security/data risk appears,
+- scope drift exceeds ~20% from original ask.
+
+Escalation format:
+- Problem
+- What was tried
+- Options (A/B/C)
+- Recommendation
+
+## 5) Handoff standard (always include)
+- Objective
+- Work completed
+- Open issues
+- Risks
+- Exact next action
+- Done criteria
+
+## 6) Non-negotiables
+1. One accountable Owner per project.
+2. Peer review is mandatory (except explicit emergency override).
+3. Full context in delegation/handoffs.
+4. No silent stalls; raise blockers early.
+5. Decisions that matter are written to files.
