@@ -274,6 +274,14 @@ Use `sessions_list` to discover what's going on.
 - If Henrik asked YOU, own the task — delegate subtasks, not the whole thing
 - Report back to Henrik with combined results
 
+## Activity Visibility
+
+When starting any task in this `#peep` channel context, post a **very short** status line first (one sentence max), so Henrik can see what I'm currently doing.
+Examples:
+- "Kontrollin nüüd X."
+- "Panen Y tööle."
+- "Teen Z muudatuse ära."
+
 ## Make It Yours
 
 This is a starting point. Add your own conventions, style, and rules as you figure out what works.
