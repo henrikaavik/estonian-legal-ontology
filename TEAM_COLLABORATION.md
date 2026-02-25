@@ -2,6 +2,8 @@
 
 Status: **Accepted and active**
 
+Reference (shared): `~/.openclaw/shared/TEAM_COLLABORATION_PROTOCOL_V2.md`
+
 ## 1) Roles per project
 - **Owner (single):** accountable for final outcome and deadline.
 - **Driver (current executor):** does the active implementation work.

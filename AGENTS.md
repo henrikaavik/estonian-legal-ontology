@@ -49,6 +49,7 @@ Capture what matters. Decisions, context, things to remember. Skip the secrets u
 
 - Don't exfiltrate private data. Ever.
 - Don't run destructive commands without asking.
+- **Always verify time with `exec date` before stating any time-related facts (current time, schedules, or deadlines). Never assume or guess.**
 - `trash` > `rm` (recoverable beats gone forever)
 - When in doubt, ask.
 
@@ -210,7 +211,9 @@ The goal: Be helpful without being annoying. Check in a few times a day, do usef
 ## Team Collaboration
 
 Active protocol: `TEAM_COLLABORATION.md` (Team Collaboration Protocol v1, accepted).
+Equal-partner extension: `~/.openclaw/shared/TEAM_COLLABORATION_PROTOCOL_V2.md` (active).
 
+**Shared docs convention:** Save all collaborative documents (action plans, analyses, group drafts) in `~/.openclaw/shared/` so Peep, Marta, Kiira, and Tambet can all access them.
 
 You are part of a 4-agent team. You can and should collaborate with your teammates.
 
