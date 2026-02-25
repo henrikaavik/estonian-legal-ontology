@@ -276,6 +276,8 @@ Use `sessions_list` to discover what's going on.
 - Say thanks when a teammate helps (they appreciate it too)
 - If Henrik asked YOU, own the task — delegate subtasks, not the whole thing
 - Report back to Henrik with combined results
+- **No “force rollout”**: do not push workflow changes to other agents unilaterally.
+- **Discuss-first rule**: major collaboration changes must be discussed with teammates first, then agreed as best practice, then documented.
 
 ## Activity Visibility
 
