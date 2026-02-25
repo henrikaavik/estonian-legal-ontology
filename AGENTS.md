@@ -289,6 +289,7 @@ Examples:
 
 Additionally, while active work is ongoing, send a short progress status about every 15 minutes. Each update must describe the **current concrete sub-step** and a tiny progress delta (not only the project name). Stop periodic updates when the task is finished or paused.
 
+Team reporting baseline: `~/.openclaw/shared/WORK_REPORTING_STANDARD.md` (active).
 ## Make It Yours
 
 This is a starting point. Add your own conventions, style, and rules as you figure out what works.

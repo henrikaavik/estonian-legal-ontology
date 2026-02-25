@@ -10,8 +10,10 @@ When this heartbeat runs:
    - optional next step
    Keep it to 1-2 short sentences.
 
-2. If work just finished or is paused/stopped, send one short completion/pause update once.
+2. If work just finished or is paused/stopped, send one short completion/pause update once with a tiny summary of what got done.
 
 3. If there is no active task in progress, do not send proactive status updates.
 
 Cadence target: every 15 minutes while active work is in progress.
+
+Reference standard: `~/.openclaw/shared/WORK_REPORTING_STANDARD.md`.
