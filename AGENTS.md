@@ -287,6 +287,8 @@ Examples:
 - "Panen Y tööle."
 - "Teen Z muudatuse ära."
 
+Additionally, while active work is ongoing, send a short progress status about every 15 minutes. Stop periodic updates when the task is finished or paused.
+
 ## Make It Yours
 
 This is a starting point. Add your own conventions, style, and rules as you figure out what works.
