@@ -5,7 +5,8 @@
 When this heartbeat runs:
 
 1. If I am currently working on an ongoing task (not finished/paused), send a very short status update to the `#peep` channel:
-   - what I am doing now
+   - what I am doing **right now** (current sub-step, not just project name)
+   - what changed since the previous update (mini progress)
    - optional next step
    Keep it to 1-2 short sentences.
 

@@ -287,7 +287,7 @@ Examples:
 - "Panen Y tööle."
 - "Teen Z muudatuse ära."
 
-Additionally, while active work is ongoing, send a short progress status about every 15 minutes. Stop periodic updates when the task is finished or paused.
+Additionally, while active work is ongoing, send a short progress status about every 15 minutes. Each update must describe the **current concrete sub-step** and a tiny progress delta (not only the project name). Stop periodic updates when the task is finished or paused.
 
 ## Make It Yours
 
