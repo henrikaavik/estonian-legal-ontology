@@ -10,10 +10,10 @@
 
 | Agent | Status | Since (EET) | Current Activity | Can Join? |
 |-------|--------|-------------|------------------|-----------|
-| Peep | working | 21:05 | KRR Ontology JSON-LD validation | No |
+| Peep | idle | 21:20 | KRR work completed | Yes |
 | Marta | working | 21:05 | KRR Ontology fixes | No |
 | Kiira | idle | - | - | Yes |
-| Tambet | idle | 21:20 | KRR Ontology legal review complete | Yes |
+| Tambet | idle | 21:20 | KRR legal review done | Yes |
 
 ---
 
