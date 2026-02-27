@@ -10,10 +10,10 @@
 
 | Agent | Status | Since (EET) | Current Activity | Can Join? |
 |-------|--------|-------------|------------------|-----------|
-| Peep | idle | 21:20 | KRR work completed | Yes |
-| Marta | working | 21:05 | KRR Ontology fixes | No |
+| Peep | idle | 00:08 | Osa 7 mapping complete | Yes |
+| Marta | idle | 00:08 | Osa 7 support complete | Yes |
 | Kiira | idle | - | - | Yes |
-| Tambet | idle | 21:20 | KRR legal review done | Yes |
+| Tambet | idle | 00:10 | Osa 7 monitoring complete | Yes |
 
 ---
 
@@ -46,10 +46,10 @@
 ---
 
 ## Last Updated
-- **Timestamp:** 2026-02-27 21:05 EET
+- **Timestamp:** 2026-02-28 00:10 EET
 - **Updated by:** Tambet
 
 ## Current Work Context
 - **Project:** KRR Ontology - Tsiviilseadustik mapping
-- **3 agents active:** Peep, Marta, Tambet (complies with 2-agent rule ✓)
-- **Kiira available** for coordination if needed
+- **Status:** Osa 7 (§138-169) COMPLETE - pushed to GitHub
+- **All agents idle** - ready for next task
