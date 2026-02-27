@@ -17,3 +17,5 @@ When this heartbeat runs:
 Cadence target: every 15 minutes while active work is in progress.
 
 Reference standard: `~/.openclaw/shared/WORK_REPORTING_STANDARD.md`.
+
+Format: "Working on: [specific action] - [progress update]".

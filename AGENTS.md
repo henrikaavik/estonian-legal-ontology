@@ -289,6 +289,14 @@ Examples:
 
 Additionally, while active work is ongoing, send a short progress status about every 15 minutes. Each update must describe the **current concrete sub-step** and a tiny progress delta (not only the project name). Stop periodic updates when the task is finished or paused.
 
+I report my own progress every 15 minutes in #my-channel (not wait for coordinator).
+Use this format: "Working on: [specific action] - [progress update]".
+Report at: start work, every 15 minutes while active, and finish/blocked.
+
+I report my own progress every 15 minutes in #my-channel (not wait for coordinator).
+Use this format: "Working on: [specific action] - [progress update]".
+Report at: start work, every 15 minutes while active, and finish/blocked.
+
 Team reporting baseline: `~/.openclaw/shared/WORK_REPORTING_STANDARD.md` (active).
 ## Make It Yours
 
