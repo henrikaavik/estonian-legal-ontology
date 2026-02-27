@@ -1,0 +1,155 @@
+{
+  "@context": {
+    "estleg": "http://example.org/estonian-legal#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "Class": "owl:Class",
+    "Ontology": "owl:Ontology",
+    "label": "rdfs:label",
+    "comment": "rdfs:comment"
+  },
+  "@id": "http://example.org/estonian-legal",
+  "@type": "owl:Ontology",
+  "label": "Estonian Civil Code Ontology",
+  "@graph": [
+    {
+      "@id": "estleg:Concept_4e8f4be6",
+      "@type": "owl:Class",
+      "label": "Concept",
+      "original_data": {
+        "source": "TsÜS",
+        "draftVersion": "peep-v1",
+        "scope": "Osa 5: tähtajad, tähtpäevad, aegumine (fookus §163-169)",
+        "sections": [
+          {
+            "section": "Tähtaeg ja tähtpäev",
+            "concepts": [
+              {
+                "Concept": "Tähtaeg",
+                "IRI": "TimeLimit",
+                "Definition": "Kindlaksmääratud ajavahemik, millega seotakse õiguslik tagajärg.",
+                "Rule": [
+                  "Tähtaeg võib olla määratud aastates, kuudes, nädalates, päevades, tundides või kindla sündmuse saabumisega.",
+                  "Tähtaja kulgemine algab üldjuhul algussündmusele järgneval päeval (kui seadus või kokkulepe ei sätesta teisiti)."
+                ],
+                "Categories": [
+                  "CalendarBasedTerm",
+                  "EventBasedTerm"
+                ]
+              },
+              {
+                "Concept": "Tähtpäev",
+                "IRI": "DueDate",
+                "Definition": "Ajahetk, mil tähtaeg saabub või möödub.",
+                "Rule": [
+                  "Aastates/kuudes määratud tähtaja tähtpäev saabub vastava kuupäeva saabumisel viimases perioodis.",
+                  "Kui vastav kuupäev puudub, loetakse tähtpäevaks kuu viimane päev.",
+                  "Kui tähtpäev langeb puhkepäevale või riigipühale, nihkub tähtpäev järgmisele tööpäevale.",
+                  "Päevades või suuremates ühikutes arvestatav tähtaeg möödub tähtpäeval kell 24:00."
+                ],
+                "Categories": [
+                  "AdjustedDueDate",
+                  "UnadjustedDueDate"
+                ]
+              }
+            ],
+            "coreRelations": [
+              "LegalAct --sets--> TimeLimit",
+              "TimeLimit --endsAt--> DueDate",
+              "DueDate --adjustedBy--> HolidayAdjustmentRule"
+            ]
+          },
+          {
+            "section": "Aegumine",
+            "concepts": [
+              {
+                "Concept": "Aegumine",
+                "IRI": "Limitation",
+                "Definition": "Instituut, mille kohaselt nõude maksmapanek ajaliselt piiratakse.",
+                "Rule": [
+                  "Nõude aegumisel võib kohustatud isik keelduda täitmisest (aegumise vastuväide).",
+                  "Kohus arvestab aegumist üldjuhul kohustatud isiku taotluse alusel."
+                ],
+                "Categories": [
+                  "GeneralLimitation",
+                  "SpecialLimitation"
+                ]
+              },
+              {
+                "Concept": "Aegumistähtaeg",
+                "IRI": "LimitationTerm",
+                "Definition": "Periood nõude tekkimisest/sissenõutavusest kuni aegumise saabumiseni.",
+                "Rule": [
+                  "Algab nõude sissenõutavaks muutumisest või hoidumiskohustuse rikkumisest.",
+                  "Katkemisel hakkab tähtaeg uuesti kulgema.",
+                  "Peatumisel peatumise aega tähtaja hulka ei arvestata."
+                ],
+                "Categories": [
+                  "Running",
+                  "Interrupted",
+                  "Suspended",
+                  "Expired"
+                ]
+              },
+              {
+                "Concept": "Aegumise katkemine",
+                "IRI": "InterruptionOfLimitation",
+                "Definition": "Õiguslikult relevantne sündmus, mis nullib senise kulgemise ning alustab uue tähtaja.",
+                "Rule": [
+                  "Katkemise aluseks võib olla eelkõige nõude tunnustamine või täitmisele suunatud menetlustoiming.",
+                  "Katkemise järel algab uus tähtaeg täies ulatuses."
+                ],
+                "Categories": [
+                  "AcknowledgementBasedInterruption",
+                  "EnforcementBasedInterruption"
+                ]
+              },
+              {
+                "Concept": "Aegumise peatumine",
+                "IRI": "SuspensionOfLimitation",
+                "Definition": "Ajavahemik, mille vältel aegumise kulgemine ajutiselt seiskub.",
+                "Rule": [
+                  "Peatumise aluste olemasolul aegumise kulg peatub ning peatumise aeg ei loe tähtaja hulka.",
+                  "Peatumise lõppemisel jätkub tähtaeg sealt, kus see peatus.",
+                  "Nõue ei aegu vahetult peatumise aluse äralangemisel; peab jääma mõistlik minimaalne ajavahemik õiguse teostamiseks."
+                ],
+                "Categories": [
+                  "ProceedingsSuspension",
+                  "ForceMajeureSuspension",
+                  "RelationshipBasedSuspension",
+                  "CapacityBasedSuspension",
+                  "SuccessionBasedSuspension",
+                  "NegotiationBasedSuspension"
+                ]
+              }
+            ],
+            "focus_163_169": {
+              "Definition": "§163–169 käsitletakse peamiselt aegumise peatumise aluseid, peatumise lõppemise mõju ja mitme aluse koosmõju.",
+              "Rule": [
+                "Kui esineb peatumise alus (nt menetluslik takistus, vääramatu jõud, perekonna- või esindussuhetest tulenev takistus), siis aegumise kulg peatub.",
+                "Kui peatumise alus lõpeb, jätkub aegumistähtaja kulg edasi, arvestamata peatumise perioodi.",
+                "Kui korraga esineb mitu peatumise alust, loetakse peatumine kestvaks kuni viimase aluse äralangemiseni.",
+                "Peatumise regulatsiooni eesmärk on tagada, et nõudeõiguse kandja ei kaotaks õigust objektiivse takistuse tõttu."
+              ],
+              "Categories": [
+                "SingleGroundSuspension",
+                "MultipleGroundsSuspension",
+                "PostSuspensionContinuation"
+              ]
+            },
+            "coreRelations": [
+              "Claim --hasLimitationTerm--> LimitationTerm",
+              "LimitationTerm --mayBeInterruptedBy--> InterruptionTrigger",
+              "LimitationTerm --mayBeSuspendedBy--> SuspensionTrigger",
+              "InterruptionTrigger --resets--> LimitationTerm",
+              "SuspensionTrigger --extends--> LimitationTerm",
+              "Debtor --mayInvoke--> LimitationDefense"
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

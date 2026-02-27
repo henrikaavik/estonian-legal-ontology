@@ -1,0 +1,43 @@
+@prefix cl: <https://example.org/civillaw#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+### Ontology declaration
+cl: a owl:Ontology ;
+    rdfs:label "Civil Law Ontology Skeleton"@en ;
+    rdfs:comment "Skeleton ontology for Estonian civil law domain. Provides foundational classes for legal documents, sections, articles, norms, and related entities."@en .
+
+### Classes
+cl:LegalDocument a owl:Class .
+cl:Section a owl:Class .
+cl:Article a owl:Class .
+cl:Norm a owl:Class .
+cl:Subject a owl:Class .
+cl:LegalAction a owl:Class .
+cl:Condition a owl:Class .
+cl:Exception a owl:Class .
+cl:Sanction a owl:Class .
+cl:Reference a owl:Class .
+
+### Structural properties
+cl:hasSection a rdf:Property ; rdfs:domain cl:LegalDocument ; rdfs:range cl:Section .
+cl:hasArticle a rdf:Property ; rdfs:domain cl:Section ; rdfs:range cl:Article .
+cl:containsNorm a rdf:Property ; rdfs:domain cl:Article ; rdfs:range cl:Norm .
+
+### Norm semantics
+cl:appliesToSubject a rdf:Property ; rdfs:domain cl:Norm ; rdfs:range cl:Subject .
+cl:requiresAction a rdf:Property ; rdfs:domain cl:Norm ; rdfs:range cl:LegalAction .
+cl:grantsRight a rdf:Property ; rdfs:domain cl:Norm ; rdfs:range cl:LegalAction .
+cl:prohibitsAction a rdf:Property ; rdfs:domain cl:Norm ; rdfs:range cl:LegalAction .
+cl:hasCondition a rdf:Property ; rdfs:domain cl:Norm ; rdfs:range cl:Condition .
+cl:hasException a rdf:Property ; rdfs:domain cl:Norm ; rdfs:range cl:Exception .
+cl:hasSanction a rdf:Property ; rdfs:domain cl:Norm ; rdfs:range cl:Sanction .
+cl:referencesProvision a rdf:Property ; rdfs:domain cl:Norm ; rdfs:range cl:Reference .
+
+### Metadata
+cl:sourceText a rdf:Property ; rdfs:range xsd:string .
+cl:effectiveFrom a rdf:Property ; rdfs:range xsd:date .
+cl:effectiveUntil a rdf:Property ; rdfs:range xsd:date .
+cl:articleNumber a rdf:Property ; rdfs:range xsd:string .

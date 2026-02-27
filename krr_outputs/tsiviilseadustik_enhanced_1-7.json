@@ -1,371 +1,186 @@
 {
-  "review_metadata": {
-    "reviewer": "Tambet",
-    "date": "2026-02-26",
-    "source": "tsiviilseadustik_structural_analysis_20p.json",
-    "review_type": "semantic_enhancement",
-    "paragraphs_reviewed": "1-7"
+  "@context": {
+    "estleg": "http://example.org/estonian-legal#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "Class": "owl:Class",
+    "Ontology": "owl:Ontology",
+    "label": "rdfs:label",
+    "comment": "rdfs:comment"
   },
-  "enhanced_norms": [
+  "@id": "http://example.org/estonian-legal",
+  "@type": "owl:Ontology",
+  "label": "Estonian Civil Code Ontology",
+  "@graph": [
     {
-      "id": "1_1",
-      "original_type": "other",
-      "enhanced_type": "declarative",
-      "norm_category": "preamble",
-      "subject": {
-        "primary": "seadusandja",
-        "semantics": "seadusandja määrab seaduse reguleerimisala"
-      },
-      "action": {
-        "type": "määramine",
-        "semantics": "seaduse eesmärgi ja reguleerimisala deklareerimine"
-      },
-      "conditions": [],
-      "exceptions": [],
-      "confidence": "kõrge",
-      "notes": "Seaduse preambulilaadne sissejuhatus, deklareerib seaduse eesmärgi"
-    },
-    {
-      "id": "2_1",
-      "original_type": "other",
-      "enhanced_type": "definition",
-      "norm_category": "sources_of_law",
-      "subject": {
-        "primary": "õigussüsteem",
-        "semantics": "abstraktne õiguskord"
-      },
-      "action": {
-        "type": "määratlemine",
-        "semantics": "tsiviilõiguse allikate loetlemine"
-      },
-      "conditions": [],
-      "exceptions": [],
-      "confidence": "kõrge",
-      "notes": "Definitsioon - loetleb tsiviilõiguse allikad (seadus ja tava)"
-    },
-    {
-      "id": "2_2",
-      "original_type": "other",
-      "enhanced_type": "declarative_hierarchy",
-      "norm_category": "customary_law",
-      "subject": {
-        "primary": "tava",
-        "semantics": "abstraktne õigusallikas (tava)"
-      },
-      "action": {
-        "type": "tekkimine",
-        "semantics": "tava tekib aja jooksul praktikast"
-      },
-      "conditions": [
-        {
-          "type": "faktiline_ja_subjektiivne",
-          "description": "käitumisviisi pikemaajaline rakendamine + osapooled peavad siduvaks",
-          "temporal_aspect": "kestel",
-          "strictness": "kaalutlusõiguslik"
-        }
-      ],
-      "exceptions": [],
-      "hierarchy_note": "Tava ei saa muuta seadust (hierarhiline norm)",
-      "confidence": "kõrge",
-      "notes": "Kahest osast: 1) tava tekkimise tingimused, 2) tava allumine seadusele"
-    },
-    {
-      "id": "3_1",
-      "original_type": "other",
-      "enhanced_type": "imperative_methodological",
-      "norm_category": "interpretation",
-      "subject": {
-        "primary": "õiguse_mõistja",
-        "semantics": "kohus, jurist, õiguse rakendaja",
-        "scope": "üldine"
-      },
-      "action": {
-        "type": "tõlgendamine",
-        "semantics": "seaduse sätete mõistmine ja rakendamine"
-      },
-      "conditions": [],
-      "exceptions": [],
-      "methodology": {
-        "type": "süsteemtõlgendus",
-        "elements": ["sõnastus", "mõte", "eesmärk"],
-        "integration": "koos teiste sätetega"
-      },
-      "confidence": "kõrge",
-      "notes": "Seadustõlgenduse meetodoloogiline norm - kohustuslikud tõlgenduspõhimõtted"
-    },
-    {
-      "id": "4_1",
-      "original_type": "other",
-      "enhanced_type": "conditional_permissive",
-      "norm_category": "analogy",
-      "subject": {
-        "primary": "õiguse_mõistja",
-        "semantics": "kohus, õiguse rakendaja"
-      },
-      "action": {
-        "type": "analoogia_kohaldamine",
-        "semantics": "lähedase sätte kohaldamine puuduva sätte asemel"
-      },
-      "conditions": [
-        {
-          "type": "õiguslik",
-          "description": "sätte puudumine õigussuhte reguleerimiseks",
-          "temporal_aspect": "enne",
-          "strictness": "absoluutne"
-        },
-        {
-          "type": "faktiline_ja_õiguslik",
-          "description": "lähedase õigussuhte olemasolu + reguleerimata jätmise vastuolu seaduse mõttega",
-          "temporal_aspect": "ajal",
-          "strictness": "kaalutlusõiguslik"
-        }
-      ],
-      "fallback_rule": "Kui analoogiline sätet pole, siis üldise mõtte põhimõtted",
-      "exceptions": [],
-      "confidence": "keskmine",
-      "notes": "Keeruline hierarhiline struktuur: esmase analoogia tingimused + varuvariant",
-      "review_needed": true
-    },
-    {
-      "id": "5_1",
-      "original_type": "other",
-      "enhanced_type": "declarative_exhaustive",
-      "norm_category": "creation_of_rights",
-      "subject": {
-        "primary": "tsiviilõigused_kohustused",
-        "semantics": "õigused ja kohustused objektina"
-      },
-      "action": {
-        "type": "tekkimine",
-        "semantics": "õiguste ja kohustuste tekkimine õigussuhtes"
-      },
-      "conditions": [
-        {
-          "type": "faktiliste_asjaolude_loetelu",
-          "description": "4 alust: tehingud, seaduslikud sündmused, seadusega seotud toimingud, õigusvastased teod",
-          "categories": ["tehingud", "seaduslikud_sündmused", "seadusega_seotud_toimingud", "õigusvastased_tegud"],
-          "temporal_aspect": "enne",
-          "strictness": "absoluutne",
-          "exhaustive": true
-        }
-      ],
-      "exceptions": [],
-      "confidence": "kõrge",
-      "notes": "Õiguste/kohustuste tekkimise aluste loetelu (exhaustive)"
-    },
-    {
-      "id": "6_1",
-      "original_type": "other",
-      "enhanced_type": "conditional_permissive",
-      "norm_category": "succession_of_rights",
-      "subject": {
-        "primary": "tsiviilõigused_kohustused",
-        "semantics": "õigused ja kohustused objektina"
-      },
-      "action": {
-        "type": "üle_minek",
-        "semantics": "õiguste/kohustuste üleminek ühelt isikult teisele"
-      },
-      "conditions": [
-        {
-          "type": "õiguslik_negatiivne",
-          "description": "õigused/kohustused EI OLE isikuga lahutamatult seotud (seadusest tulenevalt)",
-          "temporal_aspect": "ajal",
-          "strictness": "absoluutne"
-        }
-      ],
-      "exceptions": [],
-      "confidence": "kõrge",
-      "notes": "Õigusjärgluse üldpõhimõte + piirang (lahutamatult seotud õigused)"
-    },
-    {
-      "id": "6_2",
-      "original_type": "other",
-      "enhanced_type": "declarative",
-      "norm_category": "succession_bases",
-      "subject": {
-        "primary": "õigusjärglus",
-        "semantics": "õigusjärgluse faktiline/aluseline sisu"
-      },
-      "action": null,
-      "conditions": [],
-      "exceptions": [],
-      "bases": ["tehing", "seadus"],
-      "confidence": "kõrge",
-      "notes": "Õigusjärgluse aluste loetelu (kaheetapiline)"
-    },
-    {
-      "id": "6_3",
-      "original_type": "obligation",
-      "enhanced_type": "imperative_procedural",
-      "norm_category": "transfer_of_rights",
-      "subject": {
-        "primary": "üleandja",
-        "semantics": "õiguste/kohustuste üleandja (tehingu pool)"
-      },
-      "action": {
-        "type": "üleandmine",
-        "semantics": "õiguste/kohustuste üleandmine käsutustehinguga"
-      },
-      "conditions": [
-        {
-          "type": "protseduuriline",
-          "description": "käsutustehingu vorm + eraldi üleandmise nõue (välja arvatud seaduse erandid)",
-          "temporal_aspect": "ajal",
-          "strictness": "absoluutne"
-        }
-      ],
-      "exceptions": [
-        {
-          "type": "seaduse_erand",
-          "description": "seadus võib sätestada teisiti (kumulatiivne üleandmine lubatud)",
-          "trigger": "seaduse erisäte"
-        }
-      ],
-      "confidence": "kõrge",
-      "notes": "Käsutustehingu imperatiiv + erand kumulatiivseks üleandmiseks"
-    },
-    {
-      "id": "6_4",
-      "original_type": "other",
-      "enhanced_type": "declarative",
-      "norm_category": "transfer_validity",
-      "subject": {
-        "primary": "käsutustehing",
-        "semantics": "üleandmise tehing"
-      },
-      "action": {
-        "type": "kehtivus",
-        "semantics": "tehingu kehtivuse sõltumatus alusetehingust"
-      },
-      "conditions": [],
-      "exceptions": [],
-      "principle": "abstraction_principle",
-      "confidence": "kõrge",
-      "notes": "Abstraktsiooniprintsiip - üleandmise kehtivus ei sõltu kohustava tehingu kehtivusest"
-    },
-    {
-      "id": "7_1",
-      "original_type": "other",
-      "enhanced_type": "definition",
-      "norm_category": "legal_capacity",
-      "subject": {
-        "primary": "füüsiline_isik",
-        "semantics": "iga inimene (sünnist surmani)"
-      },
-      "action": {
-        "type": "omamine_kandmine",
-        "semantics": "õiguste omamine ja kohustuste kandmine"
-      },
-      "conditions": [],
-      "exceptions": [],
-      "key_attributes": {
-        "ühetaoline": "võrdne kõigile",
-        "piiramatu": "ei ole piiranguid (absoluutne)"
-      },
-      "confidence": "kõrge",
-      "notes": "Õigusvõime definitsioon + selle universaalsuse printsiip"
-    },
-    {
-      "id": "7_2",
-      "original_type": "other",
-      "enhanced_type": "declarative_temporal",
-      "norm_category": "legal_capacity_duration",
-      "subject": {
-        "primary": "õigusvõime",
-        "semantics": "õigusvõime olemasolu kestvus"
-      },
-      "action": {
-        "type": "kestmine",
-        "semantics": "õigusvõime olemasolu eluajal"
-      },
-      "conditions": [
-        {
-          "type": "ajaline",
-          "description": "algus: elusalt sündimine, lõpp: surm",
-          "start_event": "elusalt_sündimine",
-          "end_event": "surm",
-          "temporal_aspect": "kestel",
-          "strictness": "absoluutne"
-        }
-      ],
-      "exceptions": [],
-      "confidence": "kõrge",
-      "notes": "Õigusvõime ajaline kestvus (periood)"
-    },
-    {
-      "id": "7_3",
-      "original_type": "other",
-      "enhanced_type": "conditional_declarative",
-      "norm_category": "legal_capacity_unborn",
-      "subject": {
-        "primary": "inimloode",
-        "semantics": "sündimata laps (alates eostamisest)"
-      },
-      "action": {
-        "type": "õigusvõime_olemasolu",
-        "semantics": "eelseisev õigusvõime lootel"
-      },
-      "conditions": [
-        {
-          "type": "kombineeritud_seaduslik_ja_faktiline",
-          "description": "1) seaduses sätestatud juhtum, 2) eostamine toimunud",
-          "temporal_aspect": "enne",
-          "strictness": "absoluutne",
-          "condition_type": "suspensive"
-        },
-        {
-          "type": "faktiline_resolutiivne",
-          "description": "laps peab sündima elusana",
-          "temporal_aspect": "pärast",
-          "strictness": "absoluutne",
-          "condition_type": "resolutive"
-        }
-      ],
-      "exceptions": [],
-      "confidence": "kõrge",
-      "notes": "Eriotstarbeline õigusvõime lootel - kahepoolne tingimuslikkus"
-    }
-  ],
-  "proposed_schema_changes": {
-    "description": "Soovitused JSON skeemi parandamiseks",
-    "changes": [
-      {
-        "field": "type",
-        "current": "other|right|obligation",
-        "proposed": "declarative|imperative|permissive|prohibitive|sanction|definition|conditional_*|procedural",
-        "reason": "täpsem semantiline liigitus"
-      },
-      {
-        "field": "subject_guess",
-        "current": "string",
-        "proposed": "object_with_semantics",
-        "reason": "vaja subjekti tähenduse täpsustust"
-      },
-      {
-        "field": "condition_present",
-        "current": "jah|ei",
-        "proposed": "conditions_array",
-        "reason": "tingimuste detailsem struktuur"
-      },
-      {
-        "field": "exception_present",
-        "current": "jah|ei", 
-        "proposed": "exceptions_array",
-        "reason": "erandite detailsem struktuur"
-      },
-      {
-        "field": "new_field_confidence",
-        "current": "puudub",
-        "proposed": "kõrge|keskmine|madal",
-        "reason": "ebakindluse märkimine"
-      },
-      {
-        "field": "new_field_notes",
-        "current": "puudub",
-        "proposed": "text",
-        "reason": "täpsustuste ja tähelepanekute lisamine"
+      "@id": "http://example.org/estonian-legal/enhanced",
+      "@type": "owl:Class",
+      "label": "Concept",
+      "original_data": {
+        "@id": "http://example.org/estonian-legal/enhanced",
+        "@type": "owl:Ontology",
+        "rdfs:label": "TsÜS Enhanced Norm Ontology (1-7)"
       }
-    ]
-  }
+    },
+    {
+      "@id": "legal:EnhancedNorm",
+      "@type": "owl:Class",
+      "rdfs:label": "Enhanced Norm"
+    },
+    {
+      "@id": "legal:Subject",
+      "@type": "owl:Class",
+      "rdfs:label": "Subject"
+    },
+    {
+      "@id": "legal:Condition",
+      "@type": "owl:Class",
+      "rdfs:label": "Condition"
+    },
+    {
+      "@id": "legal:enhanced_1_1",
+      "@type": "owl:Class",
+      "label": "Concept",
+      "original_data": {
+        "@id": "legal:enhanced_1_1",
+        "@type": "legal:EnhancedNorm",
+        "legal:normId": "1_1",
+        "legal:enhancedType": "declarative"
+      }
+    },
+    {
+      "@id": "legal:enhanced_2_1",
+      "@type": "owl:Class",
+      "label": "Concept",
+      "original_data": {
+        "@id": "legal:enhanced_2_1",
+        "@type": "legal:EnhancedNorm",
+        "legal:normId": "2_1",
+        "legal:enhancedType": "definition"
+      }
+    },
+    {
+      "@id": "legal:enhanced_2_2",
+      "@type": "owl:Class",
+      "label": "Concept",
+      "original_data": {
+        "@id": "legal:enhanced_2_2",
+        "@type": "legal:EnhancedNorm",
+        "legal:normId": "2_2",
+        "legal:enhancedType": "declarative_hierarchy"
+      }
+    },
+    {
+      "@id": "legal:enhanced_3_1",
+      "@type": "owl:Class",
+      "label": "Concept",
+      "original_data": {
+        "@id": "legal:enhanced_3_1",
+        "@type": "legal:EnhancedNorm",
+        "legal:normId": "3_1",
+        "legal:enhancedType": "imperative_methodological"
+      }
+    },
+    {
+      "@id": "legal:enhanced_4_1",
+      "@type": "owl:Class",
+      "label": "Concept",
+      "original_data": {
+        "@id": "legal:enhanced_4_1",
+        "@type": "legal:EnhancedNorm",
+        "legal:normId": "4_1",
+        "legal:enhancedType": "conditional_permissive"
+      }
+    },
+    {
+      "@id": "legal:enhanced_5_1",
+      "@type": "owl:Class",
+      "label": "Concept",
+      "original_data": {
+        "@id": "legal:enhanced_5_1",
+        "@type": "legal:EnhancedNorm",
+        "legal:normId": "5_1",
+        "legal:enhancedType": "declarative_exhaustive"
+      }
+    },
+    {
+      "@id": "legal:enhanced_6_1",
+      "@type": "owl:Class",
+      "label": "Concept",
+      "original_data": {
+        "@id": "legal:enhanced_6_1",
+        "@type": "legal:EnhancedNorm",
+        "legal:normId": "6_1",
+        "legal:enhancedType": "conditional_permissive"
+      }
+    },
+    {
+      "@id": "legal:enhanced_6_2",
+      "@type": "owl:Class",
+      "label": "Concept",
+      "original_data": {
+        "@id": "legal:enhanced_6_2",
+        "@type": "legal:EnhancedNorm",
+        "legal:normId": "6_2",
+        "legal:enhancedType": "declarative"
+      }
+    },
+    {
+      "@id": "legal:enhanced_6_3",
+      "@type": "owl:Class",
+      "label": "Concept",
+      "original_data": {
+        "@id": "legal:enhanced_6_3",
+        "@type": "legal:EnhancedNorm",
+        "legal:normId": "6_3",
+        "legal:enhancedType": "imperative_procedural"
+      }
+    },
+    {
+      "@id": "legal:enhanced_6_4",
+      "@type": "owl:Class",
+      "label": "Concept",
+      "original_data": {
+        "@id": "legal:enhanced_6_4",
+        "@type": "legal:EnhancedNorm",
+        "legal:normId": "6_4",
+        "legal:enhancedType": "declarative"
+      }
+    },
+    {
+      "@id": "legal:enhanced_7_1",
+      "@type": "owl:Class",
+      "label": "Concept",
+      "original_data": {
+        "@id": "legal:enhanced_7_1",
+        "@type": "legal:EnhancedNorm",
+        "legal:normId": "7_1",
+        "legal:enhancedType": "definition"
+      }
+    },
+    {
+      "@id": "legal:enhanced_7_2",
+      "@type": "owl:Class",
+      "label": "Concept",
+      "original_data": {
+        "@id": "legal:enhanced_7_2",
+        "@type": "legal:EnhancedNorm",
+        "legal:normId": "7_2",
+        "legal:enhancedType": "declarative_temporal"
+      }
+    },
+    {
+      "@id": "legal:enhanced_7_3",
+      "@type": "owl:Class",
+      "label": "Concept",
+      "original_data": {
+        "@id": "legal:enhanced_7_3",
+        "@type": "legal:EnhancedNorm",
+        "legal:normId": "7_3",
+        "legal:enhancedType": "conditional_declarative"
+      }
+    }
+  ]
 }

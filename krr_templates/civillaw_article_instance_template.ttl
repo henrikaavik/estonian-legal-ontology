@@ -1,0 +1,39 @@
+@prefix cl: <https://example.org/civillaw#> .
+@prefix ex: <https://example.org/resource/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+# Ontology declaration (template file - instance data, not class definitions)
+ex: a owl:Ontology ;
+    rdfs:label "Civil Law Article Instance Template"@en ;
+    rdfs:comment "Template for creating instance data for civil law articles. This is not a schema but a pattern for populating the civillaw ontology."@en .
+
+# Fill this template per analyzed article
+
+ex:tsiviilseadustik a cl:LegalDocument .
+
+ex:section_<SECTION_ID> a cl:Section .
+ex:tsiviilseadustik cl:hasSection ex:section_<SECTION_ID> .
+
+ex:article_<ARTICLE_ID> a cl:Article ;
+  cl:articleNumber "<ARTICLE_NO>" ;
+  cl:sourceText "<ARTICLE_TEXT>" .
+
+ex:section_<SECTION_ID> cl:hasArticle ex:article_<ARTICLE_ID> .
+
+# One or more norms per article
+ex:norm_<ARTICLE_ID>_1 a cl:Norm ;
+  cl:appliesToSubject ex:subject_<SUBJECT_ID> ;
+  cl:requiresAction ex:action_<ACTION_ID> ;
+  cl:hasCondition ex:condition_<COND_ID> ;
+  cl:hasException ex:exception_<EXC_ID> ;
+  cl:hasSanction ex:sanction_<SANC_ID> .
+
+ex:article_<ARTICLE_ID> cl:containsNorm ex:norm_<ARTICLE_ID>_1 .
+
+# referenced entities
+ex:subject_<SUBJECT_ID> a cl:Subject .
+ex:action_<ACTION_ID> a cl:LegalAction .
+ex:condition_<COND_ID> a cl:Condition .
+ex:exception_<EXC_ID> a cl:Exception .
+ex:sanction_<SANC_ID> a cl:Sanction .

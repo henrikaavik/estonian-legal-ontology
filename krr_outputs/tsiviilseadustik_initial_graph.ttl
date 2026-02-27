@@ -1,36 +1,80 @@
-@prefix cl: <https://example.org/civillaw#> .
-@prefix ex: <https://example.org/resource/> .
+@prefix legal: <http://example.org/estonian-legal#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-ex:tsiviilseadustik a cl:LegalDocument .
+<http://example.org/estonian-legal> a owl:Ontology ;
+  rdfs:label "Estonian Civil Code General Part Ontology"@en ;
+  rdfs:comment "Core ontology for Tsiviilseadustiku üldosa sample graph."@en .
 
-ex:article_1 a cl:Article ;
-  cl:articleNumber "1" ;
-  cl:sourceText "Seaduse ülesanne" .
-ex:norm_1_1 a cl:Norm ; cl:sourceText "Käesolevas seaduses sätestatakse tsiviilõiguse üldpõhimõtted." .
-ex:article_1 cl:containsNorm ex:norm_1_1 .
+legal:LegalDocument a owl:Class ;
+  rdfs:label "Legal Document"@en .
 
-ex:article_2 a cl:Article ;
-  cl:articleNumber "2" ;
-  cl:sourceText "Tsiviilõiguse allikad" .
-ex:norm_2_1 a cl:Norm ; cl:sourceText "(1) Tsiviilõiguse allikad on seadus ja tava." .
-ex:article_2 cl:containsNorm ex:norm_2_1 .
-ex:norm_2_2 a cl:Norm ; cl:sourceText "(2) Tava tekib käitumisviisi pikemaajalisest rakendamisest, kui käibes osalevad isikud peavad seda õiguslikult siduvaks. Tava ei saa muuta seadust." .
-ex:article_2 cl:containsNorm ex:norm_2_2 .
+legal:Article a owl:Class ;
+  rdfs:subClassOf legal:LegalDocument ;
+  rdfs:label "Article"@en .
 
-ex:article_3 a cl:Article ;
-  cl:articleNumber "3" ;
-  cl:sourceText "Seaduse tõlgendamine" .
-ex:norm_3_1 a cl:Norm ; cl:sourceText "Seaduse sätet tõlgendatakse koos seaduse teiste sätetega, lähtudes seaduse sõnastusest, mõttest ja eesmärgist." .
-ex:article_3 cl:containsNorm ex:norm_3_1 .
+legal:Norm a owl:Class ;
+  rdfs:label "Norm"@en .
 
-ex:article_4 a cl:Article ;
-  cl:articleNumber "4" ;
-  cl:sourceText "Analoogia" .
-ex:norm_4_1 a cl:Norm ; cl:sourceText "Õigussuhet reguleeriva sätte puudumisel kohaldatakse sätet, mis reguleerib reguleerimata õigussuhtele lähedast õigussuhet, kui õigussuhte reguleerimata jätmine ei vasta seaduse mõttele ega eesmärgile. Sellise sätte puudumisel lähtutakse seaduse või õiguse üldisest mõttest." .
-ex:article_4 cl:containsNorm ex:norm_4_1 .
+legal:containsNorm a owl:ObjectProperty ;
+  rdfs:domain legal:Article ;
+  rdfs:range legal:Norm ;
+  rdfs:label "contains norm"@en .
 
-ex:article_5 a cl:Article ;
-  cl:articleNumber "5" ;
-  cl:sourceText "Tsiviilõiguste ja -kohustuste tekkimise alused" .
-ex:norm_5_1 a cl:Norm ; cl:sourceText "Tsiviilõigused ja -kohustused tekivad tehingutest, seaduses sätestatud sündmustest ja muudest toimingutest, millega seadus seob tsiviilõiguste ja -kohustuste tekkimise, samuti õigusvastastest tegudest." .
-ex:article_5 cl:containsNorm ex:norm_5_1 .
+legal:articleNumber a owl:DatatypeProperty ;
+  rdfs:domain legal:Article ;
+  rdfs:range xsd:string ;
+  rdfs:label "article number"@en .
+
+legal:sourceText a owl:DatatypeProperty ;
+  rdfs:domain legal:Norm ;
+  rdfs:range xsd:string ;
+  rdfs:label "source text"@en .
+
+legal:Tsiviilseadustik a legal:LegalDocument ;
+  rdfs:label "Tsiviilseadustiku üldosa seadus"@et .
+
+legal:Article_1 a legal:Article ;
+  legal:articleNumber "1" ;
+  rdfs:label "Seaduse ülesanne"@et ;
+  legal:containsNorm legal:Norm_1_1 .
+
+legal:Norm_1_1 a legal:Norm ;
+  legal:sourceText "Käesolevas seaduses sätestatakse tsiviilõiguse üldpõhimõtted."@et .
+
+legal:Article_2 a legal:Article ;
+  legal:articleNumber "2" ;
+  rdfs:label "Tsiviilõiguse allikad"@et ;
+  legal:containsNorm legal:Norm_2_1, legal:Norm_2_2 .
+
+legal:Norm_2_1 a legal:Norm ;
+  legal:sourceText "(1) Tsiviilõiguse allikad on seadus ja tava."@et .
+
+legal:Norm_2_2 a legal:Norm ;
+  legal:sourceText "(2) Tava tekib käitumisviisi pikemaajalisest rakendamisest, kui käibes osalevad isikud peavad seda õiguslikult siduvaks. Tava ei saa muuta seadust."@et .
+
+legal:Article_3 a legal:Article ;
+  legal:articleNumber "3" ;
+  rdfs:label "Seaduse tõlgendamine"@et ;
+  legal:containsNorm legal:Norm_3_1 .
+
+legal:Norm_3_1 a legal:Norm ;
+  legal:sourceText "Seaduse sätet tõlgendatakse koos seaduse teiste sätetega, lähtudes seaduse sõnastusest, mõttest ja eesmärgist."@et .
+
+legal:Article_4 a legal:Article ;
+  legal:articleNumber "4" ;
+  rdfs:label "Analoogia"@et ;
+  legal:containsNorm legal:Norm_4_1 .
+
+legal:Norm_4_1 a legal:Norm ;
+  legal:sourceText "Õigussuhet reguleeriva sätte puudumisel kohaldatakse sätet, mis reguleerib reguleerimata õigussuhtele lähedast õigussuhet, kui õigussuhte reguleerimata jätmine ei vasta seaduse mõttele ega eesmärgile. Sellise sätte puudumisel lähtutakse seaduse või õiguse üldisest mõttest."@et .
+
+legal:Article_5 a legal:Article ;
+  legal:articleNumber "5" ;
+  rdfs:label "Tsiviilõiguste ja -kohustuste tekkimise alused"@et ;
+  legal:containsNorm legal:Norm_5_1 .
+
+legal:Norm_5_1 a legal:Norm ;
+  legal:sourceText "Tsiviilõigused ja -kohustused tekivad tehingutest, seaduses sätestatud sündmustest ja muudest toimingutest, millega seadus seob tsiviilõiguste ja -kohustuste tekkimise, samuti õigusvastastest tegudest."@et .
