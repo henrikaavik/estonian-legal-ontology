@@ -1,0 +1,127 @@
+{
+  "@context": {
+    "estleg": "http://example.org/estonian-legal#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "Class": "owl:Class",
+    "Ontology": "owl:Ontology",
+    "label": "rdfs:label",
+    "comment": "rdfs:comment"
+  },
+  "@id": "http://example.org/estonian-legal",
+  "@type": "owl:Ontology",
+  "label": "Estonian Civil Code Ontology",
+  "@graph": [
+    {
+      "@id": "estleg:Concept_osa6_time",
+      "@type": "owl:Class",
+      "label": "Concept",
+      "original_data": {
+        "source": "TsÜS",
+        "draftVersion": "peep-v1",
+        "scope": "Osa 6: Tähtaeg ja tähtpäev (§134–137)",
+        "sections": [
+          {
+            "section": "Tähtaja mõiste ja liigid",
+            "paragraphs": [
+              "§134"
+            ],
+            "concepts": [
+              {
+                "Concept": "Tähtaeg",
+                "IRI": "TimeLimit",
+                "Definition": "Kindlaksmääratud ajavahemik, millega on seotud õiguslikud tagajärjed.",
+                "Rule": [
+                  "Tähtaeg võib olla määratud aastate, kuude, nädalate, päevade, tundide või väiksemate ajaühikutega.",
+                  "Tähtaeg võib olla määratud ka kindlalt saabuva sündmusega."
+                ],
+                "Categories": [
+                  "CalendarBasedTerm",
+                  "EventBasedTerm"
+                ]
+              }
+            ],
+            "coreRelations": [
+              "LegalConsequence --isBoundTo--> TimeLimit",
+              "TimeLimit --isSpecifiedBy--> TimeUnit",
+              "TimeLimit --isSpecifiedBy--> CertainEvent"
+            ]
+          },
+          {
+            "section": "Tähtaja kulgemine ja tähtpäeva saabumine",
+            "paragraphs": [
+              "§135",
+              "§136"
+            ],
+            "concepts": [
+              {
+                "Concept": "Tähtaja algus",
+                "IRI": "StartOfTimeLimit",
+                "Definition": "Tähtaja kulgemise algusmoment.",
+                "Rule": [
+                  "Tähtaeg algab üldjuhul algussündmusele või kalendripäevale järgneval päeval.",
+                  "Seadus või leping võib ette näha teistsuguse algusreegli."
+                ],
+                "Categories": [
+                  "DefaultStartRule",
+                  "DerogatedStartRule"
+                ]
+              },
+              {
+                "Concept": "Tähtpäev",
+                "IRI": "DueDate",
+                "Definition": "Ajahetk, millal tähtaeg saabub.",
+                "Rule": [
+                  "Aastates või kuudes arvutatava tähtaja tähtpäev saabub viimase perioodi vastaval kuupäeval.",
+                  "Kui vastav kuupäev puudub, loetakse tähtpäevaks kuu viimane päev.",
+                  "Nädalates arvutatava tähtaja tähtpäev saabub viimase nädala vastaval päeval.",
+                  "Päevades arvutatava tähtaja tähtpäev saabub viimase päeva saabumisel.",
+                  "Kui tähtpäev satub riigipühale või puhkepäevale, nihkub see järgmisele tööpäevale.",
+                  "Päev on ajavahemik keskööst keskööni.",
+                  "Päevast väiksemate ajaühikutega määratud tähtaja tähtpäev saabub vastava ajaühiku saabumisel."
+                ],
+                "Categories": [
+                  "UnadjustedDueDate",
+                  "AdjustedDueDate",
+                  "SubDayDueDate"
+                ]
+              }
+            ],
+            "coreRelations": [
+              "TimeLimit --startsFrom--> StartOfTimeLimit",
+              "TimeLimit --endsAt--> DueDate",
+              "DueDate --mayBeAdjustedBy--> NonWorkingDayRule"
+            ]
+          },
+          {
+            "section": "Tähtaja möödumine",
+            "paragraphs": [
+              "§137"
+            ],
+            "concepts": [
+              {
+                "Concept": "Tähtaja möödumine",
+                "IRI": "ExpiryOfTimeLimit",
+                "Definition": "Õiguslik hetk, mil tähtaja kulg lõpeb ja tähtaja mõjud realiseeruvad.",
+                "Rule": [
+                  "Päevades või suuremates ühikutes arvutatav tähtaeg möödub tähtpäeval kell 24:00, kui seadus ei sätesta teisiti.",
+                  "Majandus- või kutsetegevuses tegutsevale isikule suunatud tahteavaldus tuleb tähtaja jooksul teha hiljemalt tähtpäeva tavapärase tööaja lõpuks."
+                ],
+                "Categories": [
+                  "MidnightExpiryRule",
+                  "BusinessHoursExpiryRule"
+                ]
+              }
+            ],
+            "coreRelations": [
+              "TimeLimit --expiresAs--> ExpiryOfTimeLimit",
+              "DeclarationOfIntent --mustBeDeliveredBefore--> ExpiryOfTimeLimit"
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

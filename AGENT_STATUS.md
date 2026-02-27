@@ -10,10 +10,10 @@
 
 | Agent | Status | Since (EET) | Current Activity | Can Join? |
 |-------|--------|-------------|------------------|-----------|
-| Peep | idle | - | - | Yes |
-| Marta | idle | - | - | Yes |
+| Peep | working | 21:05 | KRR Ontology JSON-LD review | No |
+| Marta | working | 21:05 | KRR Ontology validation | No |
 | Kiira | idle | - | - | Yes |
-| Tambet | idle | - | - | Yes |
+| Tambet | working | 21:05 | KRR Ontology legal accuracy review | No |
 
 ---
 
@@ -46,5 +46,10 @@
 ---
 
 ## Last Updated
-- **Timestamp:** 2026-02-26 23:15 EET
+- **Timestamp:** 2026-02-27 21:05 EET
 - **Updated by:** Tambet
+
+## Current Work Context
+- **Project:** KRR Ontology - Tsiviilseadustik mapping
+- **3 agents active:** Peep, Marta, Tambet (complies with 2-agent rule ✓)
+- **Kiira available** for coordination if needed
