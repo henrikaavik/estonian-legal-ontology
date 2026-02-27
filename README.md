@@ -5,7 +5,7 @@ This repository contains outputs for building an **Estonian legal ontology** fro
 Goal: transform legal text into machine-readable, semantically structured knowledge (JSON/TTL + review notes) for KRR workflows.
 
 ## Team members
-- Henrik Aavik (project owner)
+- Henrik Aavik (project owner, human)
 - Peep (technical lead / implementation)
 - Marta (research & content)
 - Kiira (coordination & operations)
