@@ -1,0 +1,190 @@
+{
+  "@context": {
+    "estleg": "https://example.org/estonian-legal#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
+  },
+  "@graph": [
+    {
+      "@id": "estleg:SANS_Map_2026",
+      "@type": "owl:Ontology",
+      "rdfs:label": "Saneerimisseaduse teemakaardistus (SanS)",
+      "dc:source": "Saneerimisseadus"
+    },
+    {
+      "@id": "estleg:LegalProvision",
+      "@type": "owl:Class",
+      "rdfs:label": "Õigusnorm (paragrahv või normiblokk)"
+    },
+    {
+      "@id": "estleg:TopicCluster",
+      "@type": "owl:Class",
+      "rdfs:label": "Temaatiline klaster"
+    },
+    {
+      "@id": "estleg:LegalConcept",
+      "@type": "owl:Class",
+      "rdfs:label": "Õigusmõiste"
+    },
+
+    {
+      "@id": "estleg:Cluster_ReorganisationProceedings",
+      "@type": ["owl:NamedIndividual", "estleg:TopicCluster"],
+      "rdfs:label": "Saneerimismenetlus"
+    },
+    {
+      "@id": "estleg:Cluster_RestructuringPlan",
+      "@type": ["owl:NamedIndividual", "estleg:TopicCluster"],
+      "rdfs:label": "Restruktureerimiskava"
+    },
+    {
+      "@id": "estleg:Cluster_DebtRestructuring",
+      "@type": ["owl:NamedIndividual", "estleg:TopicCluster"],
+      "rdfs:label": "Võlgade ümberkujundamine"
+    },
+
+    {
+      "@id": "estleg:SANS_Norm_001",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "SanS üldsätted",
+      "rdfs:label": "Saneerimise eesmärk ja kohaldamisala",
+      "estleg:requestedCluster": "saneerimismenetlus",
+      "estleg:summary": "Määrab saneerimismenetluse eesmärgi: aidata ajutistes makseraskustes ettevõtjal taastada maksevõime ja vältida pankrotti, säilitades võimalusel ettevõtte majandustegevuse.",
+      "estleg:sourceAct": "Saneerimisseadus"
+    },
+    {
+      "@id": "estleg:SANS_Norm_002",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "Saneerimisavalduse esitamine",
+      "rdfs:label": "Avalduse eeldused ja lisadokumentatsioon",
+      "estleg:requestedCluster": "saneerimismenetlus",
+      "estleg:summary": "Võlgnik esitab kohtule saneerimisavalduse koos finantsandmete, makseraskuste kirjelduse ja esialgse saneerimisvisiooniga, et kohus saaks hinnata menetluse perspektiivikust.",
+      "estleg:sourceAct": "Saneerimisseadus"
+    },
+    {
+      "@id": "estleg:SANS_Norm_003",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "Menetluse algatamine ja esialgne õiguskaitse",
+      "rdfs:label": "Kohtu algatusmäärus, täitemenetluse piirangud ja kaitsemeetmed",
+      "estleg:requestedCluster": "saneerimismenetlus",
+      "estleg:summary": "Kohtul on õigus saneerimismenetluse avamisel piirata võlausaldajate individuaalseid täitetoiminguid, et luua ettevõtjale ajutine stabiilsus kava koostamiseks.",
+      "estleg:sourceAct": "Saneerimisseadus"
+    },
+    {
+      "@id": "estleg:SANS_Norm_004",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "Saneerimisnõustaja määramine",
+      "rdfs:label": "Nõustaja roll, sõltumatus ja ülesanded",
+      "estleg:requestedCluster": "saneerimismenetlus",
+      "estleg:summary": "Saneerimisnõustaja analüüsib ettevõtja olukorda, toetab kava koostamist ning aitab tagada, et kavas pakutud meetmed oleksid teostatavad ja võlausaldajate suhtes põhjendatud.",
+      "estleg:sourceAct": "Saneerimisseadus"
+    },
+
+    {
+      "@id": "estleg:SANS_Norm_010",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "Restruktureerimiskava sisu",
+      "rdfs:label": "Kava kohustuslikud osad ja majanduslik põhjendus",
+      "estleg:requestedCluster": "restruktureerimiskava",
+      "estleg:summary": "Kava peab kirjeldama ettevõtte finantsseisu, kriisi põhjuseid, saneerimismeetmeid, rahavoogude prognoosi ning mõju eri võlausaldajate gruppidele.",
+      "estleg:sourceAct": "Saneerimisseadus"
+    },
+    {
+      "@id": "estleg:SANS_Norm_011",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "Võlausaldajate rühmad ja hääletus",
+      "rdfs:label": "Rühmitamise põhimõtted ja kava vastuvõtmise häälteenamus",
+      "estleg:requestedCluster": "restruktureerimiskava",
+      "estleg:summary": "Võlausaldajad jaotatakse õigussuhte iseloomu järgi rühmadesse ning kava vastuvõtt sõltub seaduses sätestatud häälteenamustest, et tagada rühmade tasakaalustatud kohtlemine.",
+      "estleg:sourceAct": "Saneerimisseadus"
+    },
+    {
+      "@id": "estleg:SANS_Norm_012",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "Kohtulik kinnitamine",
+      "rdfs:label": "Kava kinnitamise eeldused ja keeldumise alused",
+      "estleg:requestedCluster": "restruktureerimiskava",
+      "estleg:summary": "Kohus kinnitab restruktureerimiskava, kui menetluslikud nõuded on täidetud ja kava ei kahjusta ebaproportsionaalselt ühegi rühma õigusi; rikkumiste korral võib kohus kinnitamisest keelduda.",
+      "estleg:sourceAct": "Saneerimisseadus"
+    },
+    {
+      "@id": "estleg:SANS_Norm_013",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "Kava täitmine ja järelevalve",
+      "rdfs:label": "Täidetavus, muudatused ja menetluse lõpetamine",
+      "estleg:requestedCluster": "restruktureerimiskava",
+      "estleg:summary": "Pärast kinnitamist muutub kava osalistele siduvaks; täitmise ajal jälgitakse meetmete rakendamist ning oluliste asjaolude muutumisel saab kava seaduses ettenähtud korras muuta või menetluse lõpetada.",
+      "estleg:sourceAct": "Saneerimisseadus"
+    },
+
+    {
+      "@id": "estleg:SANS_Norm_020",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "Nõuete ümberkujundamise viisid",
+      "rdfs:label": "Tähtaja pikendamine, osaline vähendamine ja maksegraafiku muutmine",
+      "estleg:requestedCluster": "volgade_umberkujundamine",
+      "estleg:summary": "Saneerimiskavas võib nõudeid ümber kujundada muu hulgas tähtaja pikendamise, osalise vähendamise või maksete ajastuse muutmise teel, arvestades seadusest tulenevaid piiranguid.",
+      "estleg:sourceAct": "Saneerimisseadus"
+    },
+    {
+      "@id": "estleg:SANS_Norm_021",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "Mitteümberkujundatavad nõuded",
+      "rdfs:label": "Nõuded, millele ümberkujundamine ei laiene või laieneb piiratud ulatuses",
+      "estleg:requestedCluster": "volgade_umberkujundamine",
+      "estleg:summary": "Seadus eristab nõudeid, mida ei saa saneerimiskavas ümber kujundada või mida saab muuta üksnes eritingimustel, kaitstes avalik-õiguslikke ja eriti kaitstud huve.",
+      "estleg:sourceAct": "Saneerimisseadus"
+    },
+    {
+      "@id": "estleg:SANS_Norm_022",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "Tagatised ja pandiõiguslikud positsioonid",
+      "rdfs:label": "Tagatud nõuete kohtlemine restruktureerimisel",
+      "estleg:requestedCluster": "volgade_umberkujundamine",
+      "estleg:summary": "Tagatud nõuete ümberkujundamisel tuleb arvestada tagatisõiguste ulatust ja võlausaldaja eelispositsiooni; kava peab põhjendama, kuidas tagatud huvid jäävad õiguslikult kaitstuks.",
+      "estleg:sourceAct": "Saneerimisseadus"
+    },
+    {
+      "@id": "estleg:SANS_Norm_023",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "Saneerimise ebaõnnestumine",
+      "rdfs:label": "Kava mittetäitmise tagajärjed ja seos pankrotimenetlusega",
+      "estleg:requestedCluster": "volgade_umberkujundamine",
+      "estleg:summary": "Kui ümberkujundatud kohustusi ei täideta või saneerimine ebaõnnestub, võib see viia kaitsemeetmete lõppemiseni ja suurendada pankrotimenetluse algatamise riski.",
+      "estleg:sourceAct": "Saneerimisseadus"
+    },
+
+    {
+      "@id": "estleg:Concept_SaneerimismenetluseEesmargipohisus",
+      "@type": ["owl:NamedIndividual", "estleg:LegalConcept"],
+      "rdfs:label": "Saneerimismenetluse eesmärgipõhisus",
+      "skos:definition": "Saneerimismenetlus on suunatud elujõulise ettevõtte maksevõime taastamisele, vältides võimalusel pankrotti ning säilitades majandustegevuse väärtuse.",
+      "estleg:belongsToCluster": "saneerimismenetlus"
+    },
+    {
+      "@id": "estleg:Concept_RestructuringPlanBindingEffect",
+      "@type": ["owl:NamedIndividual", "estleg:LegalConcept"],
+      "rdfs:label": "Kinnitatud restruktureerimiskava siduvus",
+      "skos:definition": "Kohtu kinnitatud restruktureerimiskava on osalistele siduv ja kujundab ümber varasemad nõudesuhted seaduses sätestatud ulatuses.",
+      "estleg:belongsToCluster": "restruktureerimiskava"
+    },
+    {
+      "@id": "estleg:Concept_NoueteProportsionaalneUmberkujundamine",
+      "@type": ["owl:NamedIndividual", "estleg:LegalConcept"],
+      "rdfs:label": "Nõuete proportsionaalne ümberkujundamine",
+      "skos:definition": "Võlgade ümberkujundamine peab tagama erinevate võlausaldajate rühmade põhjendatud ja õiguspärase kohtlemise, vältides põhjendamatut diskrimineerimist.",
+      "estleg:belongsToCluster": "volgade_umberkujundamine"
+    },
+
+    {
+      "@id": "estleg:SANS_NOTE_001",
+      "@type": ["owl:NamedIndividual"],
+      "rdfs:label": "Märkus kaardistuse ulatuse kohta",
+      "estleg:note": "Tegu on ühtses JSON-LD skeemis esmaste normiplokkide teemakaardistusega. Järgmises iteratsioonis lisatakse paragrahvipõhised täppisviited (RT redaktsioonid) ning ristseosed pankroti- ja täitemenetluse normidega."
+    }
+  ]
+}
