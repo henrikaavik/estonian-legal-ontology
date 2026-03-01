@@ -19,32 +19,32 @@ LEGAL_DEFINITIONS = [
     {
         "id": "Syytegu",
         "label": "Süütegu",
-        "definition": "Karistusseadustikus sätestatud tegu, mis on õigusvastane ja süüline.",
-        "crossReference": "KarS § 2 lg 1",
+        "definition": "Karistusseadustikus või muus seaduses sätestatud karistatav tegu.",
+        "crossReference": "KarS § 3 lg 1",
     },
     {
         "id": "Kuritegu",
         "label": "Kuritegu",
-        "definition": "Süütegu, mille eest on füüsilisele isikule põhikaristusena ette nähtud rahaline karistus või vangistus ja juriidilisele isikule rahaline karistus.",
+        "definition": "Karistusseadustikus sätestatud süütegu, mille eest on füüsilisele isikule põhikaristusena ette nähtud rahaline karistus või vangistus ja juriidilisele isikule rahaline karistus või sundlõpetamine.",
         "crossReference": "KarS § 3 lg 3",
     },
     {
         "id": "Vaartegu",
         "label": "Väärtegu",
-        "definition": "Süütegu, mille eest on põhikaristusena ette nähtud rahatrahv, arest või sõiduki juhtimise õiguse äravõtmine.",
+        "definition": "Karistusseadustikus või muus seaduses sätestatud süütegu, mille eest on põhikaristusena ette nähtud rahatrahv või arest.",
         "crossReference": "KarS § 3 lg 4",
     },
     {
         "id": "Tahtlus",
         "label": "Tahtlus",
-        "definition": "Kavatsus, otsene tahtlus või kaudne tahtlus. Isik saab aru teo keelatusest ja tahab seda toime panna.",
-        "crossReference": "KarS § 15",
+        "definition": "Tahtlus on kavatsetus, otsene tahtlus või kaudne tahtlus.",
+        "crossReference": "KarS § 16",
     },
     {
         "id": "Ettevaatamatus",
         "label": "Ettevaatamatus",
-        "definition": "Kergemeelsus või hooletus. Isik ei näe ette tagajärge, kuigi peaks, või loodab kergemeelselt selle vältimisele.",
-        "crossReference": "KarS § 18",
+        "definition": "Ettevaatamatus on kergemeelsus ja hooletus.",
+        "crossReference": "KarS § 18 lg 1",
     },
 ]
 
