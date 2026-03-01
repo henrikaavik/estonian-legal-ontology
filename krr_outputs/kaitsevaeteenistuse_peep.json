@@ -1,0 +1,170 @@
+{
+  "@context": {
+    "estleg": "https://example.org/estonian-legal#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
+  },
+  "@graph": [
+    {
+      "@id": "estleg:KVTS_Map_2026",
+      "@type": "owl:Ontology",
+      "rdfs:label": "Kaitseväeteenistuse seaduse teemakaardistus (KVTS)",
+      "dc:description": "KVTS kaardistus kolmes fookusklastris: kaitseväeteenistus, reservteenistus ja asendusteenistus.",
+      "dc:source": "Kaitseväeteenistuse seadus"
+    },
+    {
+      "@id": "estleg:LegalProvision",
+      "@type": "owl:Class",
+      "rdfs:label": "Õigusnorm (paragrahv või normiplokk)"
+    },
+    {
+      "@id": "estleg:TopicCluster",
+      "@type": "owl:Class",
+      "rdfs:label": "Temaatiline klaster"
+    },
+
+    {
+      "@id": "estleg:Cluster_MilitaryService",
+      "@type": ["owl:NamedIndividual", "estleg:TopicCluster"],
+      "rdfs:label": "Kaitseväeteenistus"
+    },
+    {
+      "@id": "estleg:Cluster_ReserveService",
+      "@type": ["owl:NamedIndividual", "estleg:TopicCluster"],
+      "rdfs:label": "Reservteenistus"
+    },
+    {
+      "@id": "estleg:Cluster_AlternativeService",
+      "@type": ["owl:NamedIndividual", "estleg:TopicCluster"],
+      "rdfs:label": "Asendusteenistus"
+    },
+
+    {
+      "@id": "estleg:KVTS_MS_1",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "Kaitseväeteenistuse liigid ja üldpõhimõtted",
+      "rdfs:label": "Kaitseväeteenistuse mõiste, liigid ja eesmärk",
+      "estleg:requestedCluster": "military_service",
+      "estleg:summary": "Sätestab kaitseväeteenistuse õigusliku raami, teenistusliikide süsteemi ning seose riigikaitse eesmärkidega.",
+      "estleg:sourceAct": "Kaitseväeteenistuse seadus"
+    },
+    {
+      "@id": "estleg:KVTS_MS_2",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "Ajateenistusse kutsumine",
+      "rdfs:label": "Ajateenistusse võtmise alused ja kord",
+      "estleg:requestedCluster": "military_service",
+      "estleg:summary": "Reguleerib kutsealuste valikut, kutse otsust ning ajateenistusse asumise menetluslikke samme.",
+      "estleg:sourceAct": "Kaitseväeteenistuse seadus"
+    },
+    {
+      "@id": "estleg:KVTS_MS_3",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "Ajateenistuse kestus ja korraldus",
+      "rdfs:label": "Teenistusaja kestus, väljaõpe ja teenistusrežiim",
+      "estleg:requestedCluster": "military_service",
+      "estleg:summary": "Määrab ajateenistuse kestuse põhimõtted ning teenistuse sisulise korralduse (väljaõpe, alluvus, teenistusülesanded).",
+      "estleg:sourceAct": "Kaitseväeteenistuse seadus"
+    },
+    {
+      "@id": "estleg:KVTS_MS_4",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "Teenistuskohustused ja distsipliin",
+      "rdfs:label": "Kaitseväeteenistuses oleva isiku põhiõigused ja kohustused",
+      "estleg:requestedCluster": "military_service",
+      "estleg:summary": "Kirjeldab teenistuskohustusi, käsuahela järgimist, distsiplinaarvastutuse eeldusi ning teenistusest vabastamise peamisi aluseid.",
+      "estleg:sourceAct": "Kaitseväeteenistuse seadus"
+    },
+
+    {
+      "@id": "estleg:KVTS_RS_1",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "Reservteenistuse mõiste",
+      "rdfs:label": "Reservteenistuse staatus ja seos sõjaaja koosseisuga",
+      "estleg:requestedCluster": "reserve_service",
+      "estleg:summary": "Määratleb reservteenistuse rolli kaitseväekohustuse jätkuna ning reservis oleva isiku põhilise õigusliku staatuse.",
+      "estleg:sourceAct": "Kaitseväeteenistuse seadus"
+    },
+    {
+      "@id": "estleg:KVTS_RS_2",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "Õppekogunemisele kutsumine",
+      "rdfs:label": "Õppekogunemistele kutsumise kord ja kohustused",
+      "estleg:requestedCluster": "reserve_service",
+      "estleg:summary": "Sätestab reservväelasele kutse tegemise, ilmumiskohustuse ning mõjuvate põhjuste alusel vabastamise või edasilükkamise raamid.",
+      "estleg:sourceAct": "Kaitseväeteenistuse seadus"
+    },
+    {
+      "@id": "estleg:KVTS_RS_3",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "Reservteenistuse läbimine",
+      "rdfs:label": "Reservteenistuses osalemise tingimused, hüvitised ja tagatised",
+      "estleg:requestedCluster": "reserve_service",
+      "estleg:summary": "Reguleerib teenistusülesannete täitmist reservteenistuses ning reservis osalemisega seotud sotsiaalseid ja varalisi tagatisi.",
+      "estleg:sourceAct": "Kaitseväeteenistuse seadus"
+    },
+    {
+      "@id": "estleg:KVTS_RS_4",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "Reservist vabastamine ja vanusepiir",
+      "rdfs:label": "Reservkohustuse lõppemine",
+      "estleg:requestedCluster": "reserve_service",
+      "estleg:summary": "Sätestab reservkohustuse lõppemise alused, sealhulgas vanusepiirid, terviseseisund ja muud seaduses nimetatud asjaolud.",
+      "estleg:sourceAct": "Kaitseväeteenistuse seadus"
+    },
+
+    {
+      "@id": "estleg:KVTS_AS_1",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "Asendusteenistuse õiguslik alus",
+      "rdfs:label": "Asendusteenistuse eesmärk ja kohaldamisala",
+      "estleg:requestedCluster": "alternative_service",
+      "estleg:summary": "Määrab, millistel usulistel või kõlbelistel põhjustel võib ajateenistuse kohustuse täita asendusteenistusega.",
+      "estleg:sourceAct": "Kaitseväeteenistuse seadus"
+    },
+    {
+      "@id": "estleg:KVTS_AS_2",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "Asendusteenistuse taotlemine",
+      "rdfs:label": "Taotluse esitamine, hindamine ja otsustamine",
+      "estleg:requestedCluster": "alternative_service",
+      "estleg:summary": "Reguleerib asendusteenistuse taotluse menetlust, pädevaid organeid ning otsuse tegemise põhimõtteid.",
+      "estleg:sourceAct": "Kaitseväeteenistuse seadus"
+    },
+    {
+      "@id": "estleg:KVTS_AS_3",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "Asendusteenistuse korraldus",
+      "rdfs:label": "Teenistuskoht, kestus ja teenistusülesanded",
+      "estleg:requestedCluster": "alternative_service",
+      "estleg:summary": "Sätestab asendusteenistuse korraldusliku mudeli, teenistuskoha määramise ning kestuse põhimõtted võrreldes ajateenistusega.",
+      "estleg:sourceAct": "Kaitseväeteenistuse seadus"
+    },
+    {
+      "@id": "estleg:KVTS_AS_4",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "Asendusteenistuse kohustused ja lõpetamine",
+      "rdfs:label": "Asendusteenistuja kohustused, järelevalve ja teenistuse lõppemine",
+      "estleg:requestedCluster": "alternative_service",
+      "estleg:summary": "Kirjeldab asendusteenistuja käitumis- ja tööalaseid kohustusi, järelevalvemehhanisme ning teenistuse lõppemise aluseid.",
+      "estleg:sourceAct": "Kaitseväeteenistuse seadus"
+    },
+
+    {
+      "@id": "estleg:KVTS_NOTE_001",
+      "@type": ["owl:NamedIndividual"],
+      "rdfs:label": "Märkus andmekvaliteedi kohta",
+      "estleg:note": "Kaardistus on tehtud ühtses JSON-LD skeemis teemakaardina. Järgmises iteratsioonis täpsustada iga normiploki juurde konkreetsed kehtiva redaktsiooni paragrahvinumbrid Riigi Teataja allikast."
+    },
+    {
+      "@id": "estleg:KVTS_NOTE_002",
+      "@type": ["owl:NamedIndividual"],
+      "rdfs:label": "Koostöömärge",
+      "estleg:note": "Marta õigusliku kvaliteedikontrolli jaoks: kinnitada klastrite piirid, terminoloogia ühtlus (kaitseväeteenistus/ajateenistus) ja paragrahvide täpne viitamine."
+    }
+  ]
+}
