@@ -1,0 +1,158 @@
+{
+  "@context": {
+    "@vocab": "https://example.org/estonian-law/procedure#",
+    "dct": "http://purl.org/dc/terms/",
+    "schema": "https://schema.org/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
+  },
+  "@type": "LegalProcedureMap",
+  "id": "krms-procedure-map-v1",
+  "title": "Kriminaalmenetluse seadustik (KrMS) – menetluse etappide kaart",
+  "jurisdiction": "EE",
+  "source": {
+    "@type": "Legislation",
+    "name": "Kriminaalmenetluse seadustik",
+    "abbreviation": "KrMS",
+    "url": "https://www.riigiteataja.ee/akt/KrMS"
+  },
+  "schemaVersion": "1.0",
+  "generatedBy": "peep",
+  "dct:created": "2026-03-01",
+  "procedureStages": [
+    {
+      "@id": "stage-criminal-investigation",
+      "@type": "ProcedureStage",
+      "skos:prefLabel": "Criminal investigation (kriminaalmenetlus)",
+      "estonianLabel": "Kriminaalmenetlus (üldraamistik)",
+      "description": "Kriminaalmenetluse üldpõhimõtted, subjektid, tõendamine ja menetluse tagamise vahendid, mis raamivad kogu menetlust alates teate menetlemisest kuni kohtueelse ja kohtumenetluse toiminguteni.",
+      "covers": [
+        {
+          "title": "Üldsätted",
+          "chapter": "1",
+          "sections": "§ 1–§ 15²"
+        },
+        {
+          "title": "Kriminaalmenetluse subjektid",
+          "chapter": "2",
+          "sections": "§ 16–§ 59"
+        },
+        {
+          "title": "Tõendamine",
+          "chapter": "3",
+          "sections": "§ 60–§ 126"
+        },
+        {
+          "title": "Jälitustoimingud",
+          "chapter": "3¹",
+          "sections": "§ 126¹–§ 126¹⁷"
+        },
+        {
+          "title": "Kriminaalmenetluse tagamine",
+          "chapter": "4",
+          "sections": "§ 127–§ 143¹"
+        },
+        {
+          "title": "Menetlusdokumendid, tõlkimine ja isiku väljakutsumine",
+          "chapter": "5",
+          "sections": "§ 144– edasi (asjakohases ulatuses)"
+        }
+      ],
+      "keyActors": [
+        "kohus",
+        "prokuratuur",
+        "uurimisasutus",
+        "kahtlustatav/süüdistatav",
+        "kaitsja",
+        "kannatanu"
+      ],
+      "outputs": [
+        "uurimis- ja menetlusprotokollid",
+        "tõendid",
+        "süüdistusakt või menetluse lõpetamise otsustus"
+      ]
+    },
+    {
+      "@id": "stage-pretrial-procedure",
+      "@type": "ProcedureStage",
+      "skos:prefLabel": "Pre-trial procedure (uurimine)",
+      "estonianLabel": "Kohtueelne menetlus (uurimine)",
+      "description": "Kuriteoteate kontroll, kriminaalmenetluse alustamine, tõendite kogumine, kahtlustuse formuleerimine, tõkendite kohaldamine, toimikuga tutvumine ning süüdistusakti koostamine ja kohtusse saatmine.",
+      "subStages": [
+        "menetluse alustamine",
+        "eeluurimine ja tõendite kogumine",
+        "isiku menetlusse kaasamine (kahtlustatav/süüdistatav)",
+        "tagamisabinõud (nt vahistamine, vara arest)",
+        "uurimise lõpetamine ja kohtueelse menetluse kokkuvõte",
+        "süüdistusakti koostamine"
+      ],
+      "legalAnchors": [
+        {
+          "title": "Tõendamise toimingud",
+          "sections": "§ 60–§ 126"
+        },
+        {
+          "title": "Jälitustoimingud",
+          "sections": "§ 126¹–§ 126¹⁷"
+        },
+        {
+          "title": "Tagamisabinõud",
+          "sections": "§ 127–§ 143¹"
+        },
+        {
+          "title": "Kohtueelse menetluse kokkuvõte ja süüdistusakt",
+          "sections": "§ 153–§ 154"
+        }
+      ],
+      "stageTransition": {
+        "to": "stage-court-proceedings",
+        "condition": "Süüdistusakt esitatakse kohtule või rakendatakse muud lõpetamis-/alternatiivmenetluse lahendit"
+      }
+    },
+    {
+      "@id": "stage-court-proceedings",
+      "@type": "ProcedureStage",
+      "skos:prefLabel": "Court proceedings (kohtumenetlus)",
+      "estonianLabel": "Kohtumenetlus",
+      "description": "Kohtualluvuse kontroll, asja arutamine võistlevas kohtumenetluses, tõendite vahetu uurimine, kohtuotsuse tegemine ning edasikaebe- ja täitemenetlusega seotud lahendid.",
+      "subStages": [
+        "kriminaalasja kohtusse saabumine ja ettevalmistavad otsustused",
+        "kohtuistung ja tõendite uurimine",
+        "poolte vaidlus, viimane sõna, otsus",
+        "apellatsiooni- ja kassatsioonimenetlus",
+        "lahendi jõustumine ja täitmisega seotud kohtulikud otsustused"
+      ],
+      "legalAnchors": [
+        {
+          "title": "Kohtumenetluse põhimõtted",
+          "sections": "§ 11–§ 15¹"
+        },
+        {
+          "title": "Koosseisud, kohtualluvus, menetlusosalised",
+          "sections": "§ 18–§ 29 ja seotud sätted"
+        },
+        {
+          "title": "Kohtuistungi protokoll ja kohtuotsus",
+          "sections": "§ 155–§ 159"
+        }
+      ],
+      "mainOutcomes": [
+        "süüdimõistev või õigeksmõistev kohtuotsus",
+        "menetluse lõpetamine kohtus",
+        "lahend kaebemenetluses"
+      ]
+    }
+  ],
+  "integrationNotes": {
+    "unifiedSchema": "Ühine skeem kasutab kolme peamist etappi (kriminaalmenetlus, kohtueelne menetlus, kohtumenetlus), millesse paigutatakse KrMS sisukorra plokid.",
+    "normalizationRules": [
+      "Stage IDs in kebab-case",
+      "Eesti+English labels parallel fields",
+      "Legal anchors viitavad peatüki/paragrahvi vahemikele"
+    ],
+    "qualityStatus": "draft-structured"
+  },
+  "collaboration": {
+    "requestedWith": "marta",
+    "status": "peer-review-pending"
+  }
+}
