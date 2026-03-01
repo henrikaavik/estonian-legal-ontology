@@ -1,0 +1,191 @@
+{
+  "@context": {
+    "estleg": "https://example.org/estonian-legal#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
+  },
+  "@graph": [
+    {
+      "@id": "estleg:AdvS_Map_2026",
+      "@type": "owl:Ontology",
+      "rdfs:label": "Advokatuuriseaduse teemakaardistus (AdvS)",
+      "dc:source": "Advokatuuriseadus (Riigi Teataja, kehtiv terviktekst)",
+      "estleg:scope": "Attorney functions, legal representation, and attorney-client privilege under Estonian Bar Association Act"
+    },
+    {
+      "@id": "estleg:LegalProvision",
+      "@type": "owl:Class",
+      "rdfs:label": "Õigusnorm (paragrahv või normiplokk)"
+    },
+    {
+      "@id": "estleg:TopicCluster",
+      "@type": "owl:Class",
+      "rdfs:label": "Temaatiline klaster"
+    },
+    {
+      "@id": "estleg:LegalConcept",
+      "@type": "owl:Class",
+      "rdfs:label": "Õigusmõiste"
+    },
+
+    {
+      "@id": "estleg:Cluster_AttorneyFunctions",
+      "@type": ["owl:NamedIndividual", "estleg:TopicCluster"],
+      "rdfs:label": "Advokaadi ülesanded ja kutsetegevuse raam"
+    },
+    {
+      "@id": "estleg:Cluster_LegalRepresentation",
+      "@type": ["owl:NamedIndividual", "estleg:TopicCluster"],
+      "rdfs:label": "Juriidiline esindamine"
+    },
+    {
+      "@id": "estleg:Cluster_AttorneyClientPrivilege",
+      "@type": ["owl:NamedIndividual", "estleg:TopicCluster"],
+      "rdfs:label": "Advokaadi kutsesaladus"
+    },
+
+    {
+      "@id": "estleg:AdvS_Norm_001",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "AdvS § 1",
+      "rdfs:label": "Reguleerimisala: advokaadi tegevuse õiguslikud alused",
+      "estleg:requestedCluster": "advokaadi_ulesanded",
+      "estleg:summary": "Seadus määrab advokatuuri korralduse ning advokaadi ja välisriigi advokaadi tegevuse õigusliku raami, mis on aluseks kutseülesannete määratlemisele.",
+      "estleg:sourceAct": "Advokatuuriseadus"
+    },
+    {
+      "@id": "estleg:AdvS_Norm_002",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "AdvS § 40 lg 1-2",
+      "rdfs:label": "Õigusteenuse sisu ja kvaliteedistandard",
+      "estleg:requestedCluster": "advokaadi_ulesanded",
+      "estleg:summary": "Õigusteenus hõlmab nõustamist, esindamist/kaitsmist, dokumentide koostamist ja muid õigustoiminguid; teenus peab olema õigeaegne, asjatundlik ja põhinema põhjalikul fakti- ning õigusanalüüsil.",
+      "estleg:sourceAct": "Advokatuuriseadus"
+    },
+    {
+      "@id": "estleg:AdvS_Norm_003",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "AdvS § 41 lg 1",
+      "rdfs:label": "Vandeadvokaadi pädevused kui kutseülesanded",
+      "estleg:requestedCluster": "advokaadi_ulesanded",
+      "estleg:summary": "Vandeadvokaat on pädev esindama ja kaitsma klienti, koguma tõendeid, kasutama seaduslikke õiguskaitsevahendeid, saama õigusteenuseks vajalikke andmeid ning tegema seaduses ette nähtud kinnitamis- ja muid professionaalseid toiminguid.",
+      "estleg:sourceAct": "Advokatuuriseadus"
+    },
+    {
+      "@id": "estleg:AdvS_Norm_004",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "AdvS § 44",
+      "rdfs:label": "Advokaadi kohustused kliendi huvides tegutsemisel",
+      "estleg:requestedCluster": "advokaadi_ulesanded",
+      "estleg:summary": "Advokaat peab kasutama kliendi huvides kõiki seaduslikke vahendeid, teavitama klienti, pidama asjaajamist nõuetekohaselt ning vältima huvide konflikti.",
+      "estleg:sourceAct": "Advokatuuriseadus"
+    },
+
+    {
+      "@id": "estleg:AdvS_Norm_010",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "AdvS § 40 lg 1",
+      "rdfs:label": "Esindamine ja kaitsmine õigusteenuse tuumikuna",
+      "estleg:requestedCluster": "juriidiline_esindamine",
+      "estleg:summary": "Seadus paigutab isiku esindamise ja kaitsmise kohtus, kohtueelses menetluses ja mujal õigusteenuse keskmesse, kinnitades advokaadi esindusfunktsiooni üldpõhimõtte.",
+      "estleg:sourceAct": "Advokatuuriseadus"
+    },
+    {
+      "@id": "estleg:AdvS_Norm_011",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "AdvS § 41 lg 1 p 1",
+      "rdfs:label": "Esindus- ja kaitsepädevus Eestis ja välisriigis",
+      "estleg:requestedCluster": "juriidiline_esindamine",
+      "estleg:summary": "Vandeadvokaadil on otsene seaduslik pädevus esindada ja kaitsta klienti nii Eesti-siseselt kui ka välisriigis, mis loob professionaalse esindamise territoriaalselt laia aluse.",
+      "estleg:sourceAct": "Advokatuuriseadus"
+    },
+    {
+      "@id": "estleg:AdvS_Norm_012",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "AdvS § 42 lg 2-4",
+      "rdfs:label": "Vandeadvokaadi abi esinduspädevuse piirid",
+      "estleg:requestedCluster": "juriidiline_esindamine",
+      "estleg:summary": "Vandeadvokaadi abi esindusõigus on seadusega piiratud: ta ei esinda üldjuhul Riigikohtus ning tegutseb patrooni juhendamisel; see diferentseerib esindusõiguse kutsetaseme järgi.",
+      "estleg:sourceAct": "Advokatuuriseadus"
+    },
+    {
+      "@id": "estleg:AdvS_Norm_013",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "AdvS § 40 lg 5",
+      "rdfs:label": "Advokatuuri roll esindaja leidmisel",
+      "estleg:requestedCluster": "juriidiline_esindamine",
+      "estleg:summary": "Kui õigusteenust võib osutada ainult advokaat või isik ei leia endale esindajat, tagab advokatuur taotluse alusel advokaadi leidmise, toetades esindusõiguse tegelikku kättesaadavust.",
+      "estleg:sourceAct": "Advokatuuriseadus"
+    },
+
+    {
+      "@id": "estleg:AdvS_Norm_020",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "AdvS § 45 lg 1",
+      "rdfs:label": "Kutsesaladuse ulatus ja kestus",
+      "estleg:requestedCluster": "advokaadi_kutsesaladus",
+      "estleg:summary": "Advokaat peab saladuses hoidma õigusteenuse käigus teatavaks saanud andmed, teenuse taotlemise fakti ja tasu; kohustus on tähtajatu ning kehtib ka pärast kutsetegevuse lõppu.",
+      "estleg:sourceAct": "Advokatuuriseadus"
+    },
+    {
+      "@id": "estleg:AdvS_Norm_021",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "AdvS § 43 lg 2-3",
+      "rdfs:label": "Konfidentsiaalsuse menetluslikud tagatised",
+      "estleg:requestedCluster": "advokaadi_kutsesaladus",
+      "estleg:summary": "Advokaadile usaldatud andmed on konfidentsiaalsed, advokaadilt ja büroo töötajatelt ei või õigusteenusega seotud asjaolude kohta tunnistajana selgitusi nõuda ning õigusteenusega seotud teabekandjad on puutumatud.",
+      "estleg:sourceAct": "Advokatuuriseadus"
+    },
+    {
+      "@id": "estleg:AdvS_Norm_022",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "AdvS § 45 lg 2-5",
+      "rdfs:label": "Kutsesaladuse erandid ja vabastamise kord",
+      "estleg:requestedCluster": "advokaadi_kutsesaladus",
+      "estleg:summary": "Kutsesaladusest võib vabastada klient kirjalikult; erandina pole rikkumine andmete avaldamine seaduses nimetatud järelevalve- ja distsiplinaarmenetluses ning esimese astme kuriteo ärahoidmiseks on võimalik taotleda kohtu luba saladuse avaldamiseks.",
+      "estleg:sourceAct": "Advokatuuriseadus"
+    },
+    {
+      "@id": "estleg:AdvS_Norm_023",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "AdvS § 4 lg 6",
+      "rdfs:label": "Kutsesaladuse kaitse institutsionaalses järelevalves",
+      "estleg:requestedCluster": "advokaadi_kutsesaladus",
+      "estleg:summary": "Advokatuuri dokumentide riiklikul järelevalvel tuleb kutsesaladust puudutavad andmed välja jätta ulatuses, mis on mõistlikult vajalik saladuse kaitseks.",
+      "estleg:sourceAct": "Advokatuuriseadus"
+    },
+
+    {
+      "@id": "estleg:Concept_AttorneyProfessionalFunction",
+      "@type": ["owl:NamedIndividual", "estleg:LegalConcept"],
+      "rdfs:label": "Advokaat kui sõltumatu õigusteenuse osutaja",
+      "skos:definition": "Advokaadi kutsefunktsioon ühendab nõustamise, esindamise, kaitsmise, tõendikogumise ja kliendi huvides seaduslike õiguskaitsevahendite kasutamise.",
+      "estleg:belongsToCluster": "advokaadi_ulesanded"
+    },
+    {
+      "@id": "estleg:Concept_ProceduralRepresentationByAdvocate",
+      "@type": ["owl:NamedIndividual", "estleg:LegalConcept"],
+      "rdfs:label": "Professionaalne juriidiline esindamine",
+      "skos:definition": "Esindamine ja kaitsmine kohtus ning kohtueelses menetluses on AdvS-s keskne õigusteenuse liik, mille ulatus sõltub advokaadi kutsetasemest.",
+      "estleg:belongsToCluster": "juriidiline_esindamine"
+    },
+    {
+      "@id": "estleg:Concept_AttorneyClientPrivilegeProtection",
+      "@type": ["owl:NamedIndividual", "estleg:LegalConcept"],
+      "rdfs:label": "Advokaadi kutsesaladus kui õigusemõistmise usaldusgarantii",
+      "skos:definition": "Kutsesaladus kaitseb kliendi ja advokaadi suhtlust ning sellega seotud andmekandjaid; erandid on kitsad ja seaduses selgelt määratletud.",
+      "estleg:belongsToCluster": "advokaadi_kutsesaladus"
+    },
+
+    {
+      "@id": "estleg:AdvS_NOTE_001",
+      "@type": ["owl:NamedIndividual"],
+      "rdfs:label": "Märkus Marta koostööks",
+      "estleg:note": "Koostasin kaardistuse ühtses JSON-LD skeemis. Järgmises iteratsioonis võiks Marta ristkontrollida praktikapõhise täpsustusega seoseid TsMS/KrMS esindusnormidega ja kutsesaladuse tõendamispiirangute kohtupraktikaga."
+    }
+  ]
+}
