@@ -1,0 +1,163 @@
+{
+  "@context": {
+    "estleg": "https://example.org/estonian-legal#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
+  },
+  "@graph": [
+    {
+      "@id": "estleg:IKS_Map_2026",
+      "@type": "owl:Ontology",
+      "rdfs:label": "Isikuandmete kaitse seaduse teemakaardistus",
+      "dc:source": "Isikuandmete kaitse seadus (RT I, 12.07.2025, 14; redaktsioon jõustus 01.10.2025)"
+    },
+    {
+      "@id": "estleg:LegalProvision",
+      "@type": "owl:Class",
+      "rdfs:label": "Õigusnorm (paragrahv)"
+    },
+    {
+      "@id": "estleg:Cluster_DataSubjectRights",
+      "@type": ["owl:NamedIndividual", "estleg:TopicCluster"],
+      "rdfs:label": "Andmesubjekti õigused"
+    },
+    {
+      "@id": "estleg:Cluster_DataProcessing",
+      "@type": ["owl:NamedIndividual", "estleg:TopicCluster"],
+      "rdfs:label": "Andmetöötlus"
+    },
+    {
+      "@id": "estleg:Cluster_DPA",
+      "@type": ["owl:NamedIndividual", "estleg:TopicCluster"],
+      "rdfs:label": "Andmekaitse Inspektsioon"
+    },
+
+    {
+      "@id": "estleg:IKS_Par_AndmesubjektiTeaveJaLabiipaistvus",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "IKS § 22–§ 24",
+      "rdfs:label": "Andmesubjekti teavitamine ja juurdepääsuõigus",
+      "estleg:requestedCluster": "andmesubjekti_oigused",
+      "estleg:summary": "Sätestab andmesubjektile avaldatava kohustusliku teabe, teavitamiskohustuse sisu ning õiguse saada kinnitust ja juurdepääsu enda kohta töödeldavatele andmetele.",
+      "estleg:sourceAct": "Isikuandmete kaitse seadus"
+    },
+    {
+      "@id": "estleg:IKS_Par_ParandamineKustutaminePiiramine",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "IKS § 25–§ 27",
+      "rdfs:label": "Parandamis-, kustutamis- ja piiramisõigus ning õiguste teostamise kord",
+      "estleg:requestedCluster": "andmesubjekti_oigused",
+      "estleg:summary": "Reguleerib andmesubjekti õigust nõuda ebaõigete andmete parandamist, andmete kustutamist või töötlemise piiramist ning määrab vastutava töötleja vastamise tähtajad ja menetlusreeglid.",
+      "estleg:sourceAct": "Isikuandmete kaitse seadus"
+    },
+    {
+      "@id": "estleg:IKS_Par_Kaebusoigus",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "IKS § 28",
+      "rdfs:label": "Andmesubjekti kaebeõigus Andmekaitse Inspektsioonile",
+      "estleg:requestedCluster": "andmesubjekti_oigused",
+      "estleg:summary": "Annab andmesubjektile õiguse pöörduda kaebusega Andmekaitse Inspektsiooni poole ning saada teavet kaebuse lahendi ja kohtusse pöördumise võimaluse kohta.",
+      "estleg:sourceAct": "Isikuandmete kaitse seadus"
+    },
+
+    {
+      "@id": "estleg:IKS_Par_ErialusedGDPRRaamistikus",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "IKS § 4–§ 11",
+      "rdfs:label": "Andmetöötluse erialused (ajakirjandus, teadus, arhiveerimine, erijuhud)",
+      "estleg:requestedCluster": "andmetootlus",
+      "estleg:summary": "Täpsustab GDPR-i kõrval Eesti õiguses lubatud erialuseid: ajakirjanduslik, akadeemiline ja kunstiline eneseväljendus, teadus- ja ajaloouuringud, statistika, alaealiste andmed, surmajärgne töötlemine, võlasuhete rikkumise andmed ning avalikus kohas jäädvustamine.",
+      "estleg:sourceAct": "Isikuandmete kaitse seadus"
+    },
+    {
+      "@id": "estleg:IKS_Par_OiguskaitseasutusteAndmetootlusPohimotted",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "IKS § 12–§ 21",
+      "rdfs:label": "Õiguskaitseasutuste andmetöötluse kohaldamisala ja põhimõtted",
+      "estleg:requestedCluster": "andmetootlus",
+      "estleg:summary": "Määrab õiguskaitseasutuste andmetöötluse eesmärgid, seaduslikkuse, säilitamise, eriliiki andmete töötlemise tingimused ning automatiseeritud otsuste piirangud süüteomenetluse kontekstis.",
+      "estleg:sourceAct": "Isikuandmete kaitse seadus"
+    },
+    {
+      "@id": "estleg:IKS_Par_VastutavJaVolitatudTootlejaKohustused",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "IKS § 29–§ 39",
+      "rdfs:label": "Vastutava ja volitatud töötleja kohustused",
+      "estleg:requestedCluster": "andmetootlus",
+      "estleg:summary": "Sätestab tehnilised ja korralduslikud meetmed, andmetöötluse dokumenteerimise/logimise, andmekaitsealase mõjuhinnangu, varasema konsulteerimise ning andmetöötluse vastutussuhte reeglid.",
+      "estleg:sourceAct": "Isikuandmete kaitse seadus"
+    },
+    {
+      "@id": "estleg:IKS_Par_TurvameetmedRikkumisedJaEdastamine",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "IKS § 43–§ 50",
+      "rdfs:label": "Turvameetmed, rikkumiste teavitamine ja kolmandale riigile edastamine",
+      "estleg:requestedCluster": "andmetootlus",
+      "estleg:summary": "Reguleerib andmeturbe kohustusi, isikuandmetega seotud rikkumiste teavitamist (sh 72 tunni reegel), andmesubjekti teavitamist ning andmete kolmandatesse riikidesse ja rahvusvahelistesse organisatsioonidesse edastamise tingimusi.",
+      "estleg:sourceAct": "Isikuandmete kaitse seadus"
+    },
+
+    {
+      "@id": "estleg:IKS_Par_AKIPaadevYksusJaKohtuesindus",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "IKS § 2¹",
+      "rdfs:label": "Andmekaitse Inspektsioon kollektiivse esindushagi pädeva üksusena",
+      "estleg:requestedCluster": "andmekaitse_inspektsioon",
+      "estleg:summary": "Määrab Andmekaitse Inspektsiooni pädevaks üksuseks andmesubjektide kollektiivsete huvide kaitsel, sh kollektiivse esindushagi esitamisel riigisiseselt ja piiriüleselt.",
+      "estleg:sourceAct": "Isikuandmete kaitse seadus"
+    },
+    {
+      "@id": "estleg:IKS_Par_AKIAsutuslikRollJaJuhtimine",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "IKS § 51–§ 55",
+      "rdfs:label": "Andmekaitse Inspektsiooni institutsionaalne raamistik",
+      "estleg:requestedCluster": "andmekaitse_inspektsioon",
+      "estleg:summary": "Kehtestab sõltumatu järelevalveasutuse moodustamise, juhi kvalifikatsiooni, julgeolekukontrolli, ametisse nimetamise/ametist vabastamise ning pädevuse sertifitseerimisasutuse akrediteerimisel.",
+      "estleg:sourceAct": "Isikuandmete kaitse seadus"
+    },
+    {
+      "@id": "estleg:IKS_Par_AKIJarelevalveVolitused",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "IKS § 56–§ 61",
+      "rdfs:label": "Andmekaitse Inspektsiooni riikliku ja haldusjärelevalve volitused",
+      "estleg:requestedCluster": "andmekaitse_inspektsioon",
+      "estleg:summary": "Sätestab Andmekaitse Inspektsiooni pädevuse järelevalve teostamisel, erimeetmed, menetluslikud erisused, sunniraha määra ning kaebuste läbivaatamise tähtaja.",
+      "estleg:sourceAct": "Isikuandmete kaitse seadus"
+    },
+    {
+      "@id": "estleg:IKS_Par_AKIKorraldusteTagamineJaSanktsioonid",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "IKS § 69–§ 70",
+      "rdfs:label": "Andmekaitse Inspektsiooni korralduste täitmine ja juurdepääsu tagamine",
+      "estleg:requestedCluster": "andmekaitse_inspektsioon",
+      "estleg:summary": "Kirjeldab vastutust Andmekaitse Inspektsiooni korralduse täitmata jätmise ja järelevalvelise juurdepääsu takistamise eest.",
+      "estleg:sourceAct": "Isikuandmete kaitse seadus"
+    },
+
+    {
+      "@id": "estleg:Concept_AndmesubjektiOigusteTeostamine",
+      "@type": ["owl:NamedIndividual", "estleg:LegalConcept"],
+      "rdfs:label": "Andmesubjekti õiguste teostamine",
+      "skos:definition": "Andmesubjekti õigus saada teavet, pääseda ligi enda andmetele, nõuda parandamist/kustutamist/piiramist ning pöörduda järelevalveasutuse poole.",
+      "estleg:belongsToCluster": "andmesubjekti_oigused"
+    },
+    {
+      "@id": "estleg:Concept_EesmargipiirangJaAndmetootluseSeaduslikkus",
+      "@type": ["owl:NamedIndividual", "estleg:LegalConcept"],
+      "rdfs:label": "Andmetöötluse seaduslikkus ja eesmärgikohasus",
+      "skos:definition": "Andmetöötlus peab põhinema seaduslikul alusel, olema eesmärgipärane, proportsionaalne ja andmesubjekti õigusi arvestav, sh erireeglitega teadusuuringutes ja õiguskaitse valdkonnas.",
+      "estleg:belongsToCluster": "andmetootlus"
+    },
+    {
+      "@id": "estleg:Concept_JarelevalveSoltumatus",
+      "@type": ["owl:NamedIndividual", "estleg:LegalConcept"],
+      "rdfs:label": "Sõltumatu andmekaitsejärelevalve",
+      "skos:definition": "Andmekaitse Inspektsioon tegutseb sõltumatu järelevalveasutusena, omades menetlus- ja sunnivolitusi andmekaitsenõuete täitmise tagamiseks.",
+      "estleg:belongsToCluster": "andmekaitse_inspektsioon"
+    }
+  ]
+}
