@@ -1,0 +1,137 @@
+{
+  "@context": {
+    "estleg": "https://example.org/estonian-legal#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
+  },
+  "@graph": [
+    {
+      "@id": "estleg:RVastS_Map_2026",
+      "@type": "owl:Ontology",
+      "rdfs:label": "Riigivastutuse seaduse teemakaardistus",
+      "dc:source": "Riigivastutuse seadus (RT I, 13.12.2014, 40; kehtiv redaktsioon, URL: https://www.riigiteataja.ee/akt/113122014040)"
+    },
+    {
+      "@id": "estleg:LegalProvision",
+      "@type": "owl:Class",
+      "rdfs:label": "Õigusnorm (paragrahv)"
+    },
+
+    {
+      "@id": "estleg:Cluster_StateLiability",
+      "@type": ["owl:NamedIndividual", "estleg:TopicCluster"],
+      "rdfs:label": "Riigivastutus"
+    },
+    {
+      "@id": "estleg:Cluster_DamageCompensation",
+      "@type": ["owl:NamedIndividual", "estleg:TopicCluster"],
+      "rdfs:label": "Kahju hüvitamine"
+    },
+    {
+      "@id": "estleg:Cluster_UnlawfulActs",
+      "@type": ["owl:NamedIndividual", "estleg:TopicCluster"],
+      "rdfs:label": "Õigusvastased toimingud ja haldusaktid"
+    },
+
+    {
+      "@id": "estleg:RVastS_Par_ReguleerimisalaJaNouded",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "RVastS § 1–§ 2",
+      "rdfs:label": "Reguleerimisala ning kaitse- ja hüvitisnõuete süsteem",
+      "estleg:requestedCluster": "riigivastutus",
+      "estleg:summary": "Määratleb riigivastutuse seaduse kohaldamisala avalik-õiguslikes suhetes ning koondab peamised õiguskaitsevahendid: õiguste kaitse/taastamise nõuded ja kahju hüvitamise nõude.",
+      "estleg:sourceAct": "Riigivastutuse seadus"
+    },
+    {
+      "@id": "estleg:RVastS_Par_VastutuseYldalusedJaPiirid",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "RVastS § 7, § 12–§ 13",
+      "rdfs:label": "Vastutuse alused, kohustatud isik ja vastutuse piiramine",
+      "estleg:requestedCluster": "riigivastutus",
+      "estleg:summary": "Sätestab riigi, kohaliku omavalitsuse ja muu avaliku võimu kandja vastutuse üldised eeldused, määrab hüvitamiskohustuse kandja ning vastutuse piiramise juhtumid.",
+      "estleg:sourceAct": "Riigivastutuse seadus"
+    },
+    {
+      "@id": "estleg:RVastS_Par_VastutuseErijuhud",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "RVastS § 14–§ 16",
+      "rdfs:label": "Vastutuse erijuhud",
+      "estleg:requestedCluster": "riigivastutus",
+      "estleg:summary": "Reguleerib eraldi õigustloova aktiga tekitatud kahju, õigusemõistmisel tekitatud kahju ning õiguspärase haldusakti või toiminguga põhjustatud kahju hüvitamise tingimusi.",
+      "estleg:sourceAct": "Riigivastutuse seadus"
+    },
+
+    {
+      "@id": "estleg:RVastS_Par_VaralineJaMittevaralineKahju",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "RVastS § 8–§ 9",
+      "rdfs:label": "Varalise ja mittevaralise kahju hüvitamine",
+      "estleg:requestedCluster": "kahju_huvitamine",
+      "estleg:summary": "Täpsustab varalise kahju hüvitamise ulatust ning mittevaralise kahju hüvitamise aluseid avalik-õigusliku vastutuse raames.",
+      "estleg:sourceAct": "Riigivastutuse seadus"
+    },
+    {
+      "@id": "estleg:RVastS_Par_KolmandadIsikudJaTagajargedeKorvaldamine",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "RVastS § 10–§ 11",
+      "rdfs:label": "Kolmandatele isikutele tekitatud kahju ja tagajärgede kõrvaldamine",
+      "estleg:requestedCluster": "kahju_huvitamine",
+      "estleg:summary": "Laiendab hüvitamisraami kolmandatele isikutele tekitatud kahjule ning käsitleb kahjuliku tagajärje kõrvaldamist kui eraldiseisvat heastamisviisi.",
+      "estleg:sourceAct": "Riigivastutuse seadus"
+    },
+    {
+      "@id": "estleg:RVastS_Par_HuvitamiseMenetlus",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "RVastS § 17–§ 18",
+      "rdfs:label": "Kahju hüvitamise taotluse või kaebuse esitamine ja läbivaatamine",
+      "estleg:requestedCluster": "kahju_huvitamine",
+      "estleg:summary": "Sätestab hüvitisnõude esitamise protseduurilised reeglid, sealhulgas taotluse/kaebuse esitamise korra ja haldusorgani läbivaatamiskohustuse.",
+      "estleg:sourceAct": "Riigivastutuse seadus"
+    },
+
+    {
+      "@id": "estleg:RVastS_Par_NoudedHaldusaktiVoiToiminguSuhtes",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "RVastS § 3–§ 6",
+      "rdfs:label": "Õiguste kaitse nõuded haldusakti või toimingu vastu",
+      "estleg:requestedCluster": "oigusvastased_toimingud",
+      "estleg:summary": "Annab õiguskaitsevahendid õigusvastase haldusakti või toimingu korral: kehtetuks tunnistamise, lõpetamise, hoidumise ning haldusakti andmise või toimingu sooritamise nõuded.",
+      "estleg:sourceAct": "Riigivastutuse seadus"
+    },
+    {
+      "@id": "estleg:RVastS_Par_OigusvastasusJaPohjuslikkus",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "RVastS § 7–§ 8",
+      "rdfs:label": "Õigusvastasuse ja kahju põhjusliku seose roll vastutuses",
+      "estleg:requestedCluster": "oigusvastased_toimingud",
+      "estleg:summary": "Seob õigusvastase haldusakti või toimingu riigivastutusega, rõhutades vastutuse tekkeks õigusvastasuse, kahju ning põhjusliku seose hindamist.",
+      "estleg:sourceAct": "Riigivastutuse seadus"
+    },
+
+    {
+      "@id": "estleg:Concept_PublicAuthorityLiability",
+      "@type": ["owl:NamedIndividual", "estleg:LegalConcept"],
+      "rdfs:label": "Avaliku võimu kandja vastutus",
+      "skos:definition": "Riik, kohaliku omavalitsuse üksus või muu avaliku võimu kandja vastutab avalik-õiguslikus suhtes tekitatud kahju ja õiguste rikkumise eest RVastS-is sätestatud tingimustel.",
+      "estleg:belongsToCluster": "riigivastutus"
+    },
+    {
+      "@id": "estleg:Concept_CompensationAndRestitution",
+      "@type": ["owl:NamedIndividual", "estleg:LegalConcept"],
+      "rdfs:label": "Kahju hüvitamine ja tagajärgede kõrvaldamine",
+      "skos:definition": "Heastamisraam hõlmab varalise ja mittevaralise kahju rahalist hüvitamist ning võimalusel õigusvastase olukorra või selle tagajärje kõrvaldamist.",
+      "estleg:belongsToCluster": "kahju_huvitamine"
+    },
+    {
+      "@id": "estleg:Concept_ClaimsAgainstUnlawfulAdministrativeAction",
+      "@type": ["owl:NamedIndividual", "estleg:LegalConcept"],
+      "rdfs:label": "Nõuded õigusvastase haldusakti või toimingu vastu",
+      "skos:definition": "Isik võib nõuda õigusvastase haldusakti kehtetuks tunnistamist, toimingu lõpetamist või sellest hoidumist, samuti õiguspärase haldusakti andmist või toimingu sooritamist.",
+      "estleg:belongsToCluster": "oigusvastased_toimingud"
+    }
+  ]
+}
