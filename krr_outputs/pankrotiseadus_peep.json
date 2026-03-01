@@ -1,0 +1,195 @@
+{
+  "@context": {
+    "estleg": "https://example.org/estonian-legal#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
+  },
+  "@graph": [
+    {
+      "@id": "estleg:PANKR_Map_2026",
+      "@type": "owl:Ontology",
+      "rdfs:label": "Pankrotiseaduse teemakaardistus (PankrS)"
+    },
+    {
+      "@id": "estleg:LegalProvision",
+      "@type": "owl:Class",
+      "rdfs:label": "Õigusnorm (paragrahv või normiblokk)"
+    },
+    {
+      "@id": "estleg:TopicCluster",
+      "@type": "owl:Class",
+      "rdfs:label": "Temaatiline klaster"
+    },
+
+    {
+      "@id": "estleg:Cluster_BankruptcyProceedings",
+      "@type": ["owl:NamedIndividual", "estleg:TopicCluster"],
+      "rdfs:label": "Pankrotimenetlus"
+    },
+    {
+      "@id": "estleg:Cluster_DebtRestructuring",
+      "@type": ["owl:NamedIndividual", "estleg:TopicCluster"],
+      "rdfs:label": "Võlgade ümberstruktureerimine"
+    },
+    {
+      "@id": "estleg:Cluster_Liquidation",
+      "@type": ["owl:NamedIndividual", "estleg:TopicCluster"],
+      "rdfs:label": "Likvideerimine ja vara realiseerimine"
+    },
+    {
+      "@id": "estleg:Cluster_CreditorRights",
+      "@type": ["owl:NamedIndividual", "estleg:TopicCluster"],
+      "rdfs:label": "Võlausaldajate õigused"
+    },
+
+    {
+      "@id": "estleg:PANKRS_Norm_001",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "Pankrotimenetluse üldsätted",
+      "rdfs:label": "Maksejõuetuse mõiste ja pankroti eesmärk",
+      "estleg:requestedCluster": "bankruptcy_proceedings",
+      "estleg:summary": "Kirjeldab maksejõuetuse tuvastamise alust ning pankrotimenetluse eesmärki: võlausaldajate nõuete rahuldamine võlgniku vara arvel õiguspärases ja läbipaistvas menetluses.",
+      "estleg:sourceAct": "Pankrotiseadus"
+    },
+    {
+      "@id": "estleg:PANKRS_Norm_002",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "Pankrotiavalduse esitamine",
+      "rdfs:label": "Võlgniku ja võlausaldaja avaldusõigus",
+      "estleg:requestedCluster": "bankruptcy_proceedings",
+      "estleg:summary": "Sätestab, kes võib pankrotiavalduse esitada ning millised eeldused peavad olema täidetud, et kohus menetluse avaks.",
+      "estleg:sourceAct": "Pankrotiseadus"
+    },
+    {
+      "@id": "estleg:PANKRS_Norm_003",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "Pankrotimenetluse algatamine",
+      "rdfs:label": "Ajutise halduri nimetamine ja esmane kontroll",
+      "estleg:requestedCluster": "bankruptcy_proceedings",
+      "estleg:summary": "Kohtul on õigus määrata ajutine haldur, kes hindab võlgniku majanduslikku olukorda ja annab kohtule lähteinfo pankroti väljakuulutamise otsustamiseks.",
+      "estleg:sourceAct": "Pankrotiseadus"
+    },
+    {
+      "@id": "estleg:PANKRS_Norm_004",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "Pankroti väljakuulutamine",
+      "rdfs:label": "Pankroti tagajärjed võlgniku varale ja juhtimisele",
+      "estleg:requestedCluster": "bankruptcy_proceedings",
+      "estleg:summary": "Pankroti väljakuulutamisel moodustub pankrotivara ning võlgniku vara käsutamise õigus läheb üldjuhul haldurile seaduses ettenähtud ulatuses.",
+      "estleg:sourceAct": "Pankrotiseadus"
+    },
+
+    {
+      "@id": "estleg:PANKRS_Norm_010",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "Maksejõuetuse ületamise alternatiivid",
+      "rdfs:label": "Sanatsiooni ja võlgade ümberkujundamise seos pankrotimenetlusega",
+      "estleg:requestedCluster": "debt_restructuring",
+      "estleg:summary": "Kaardistab pankrotimenetluse suhte restruktureerimismehhanismidega: ettevõtja puhul saneerimismenetlus ning füüsilise isiku puhul võlgade ümberkujundamine võivad toimida pankrotile alternatiivina või eelfaasina.",
+      "estleg:sourceAct": "Pankrotiseadus"
+    },
+    {
+      "@id": "estleg:PANKRS_Norm_011",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "Võlgade ümberkujundamise välisviide",
+      "rdfs:label": "Põhiregulatsioon asub eriseaduses",
+      "estleg:requestedCluster": "debt_restructuring",
+      "estleg:summary": "Võlgade ümberkujundamise detailne menetlus on peamiselt reguleeritud võlgade ümberkujundamise ja võlakaitse eriregulatsioonis; Pankrotiseadus käsitleb seda funktsionaalselt pankroti kõrval või järel.",
+      "estleg:sourceAct": "Pankrotiseadus"
+    },
+    {
+      "@id": "estleg:PANKRS_Norm_012",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "Nõuete ümberkujundamise põhimõtted",
+      "rdfs:label": "Maksegraafikud, vähendamine, tähtaegade pikendamine",
+      "estleg:requestedCluster": "debt_restructuring",
+      "estleg:summary": "Restruktureerimisplaanides kasutatakse tüüpiliselt nõuete tähtaja pikendamist, osalist vähendamist või täitmisgraafiku muutmist, eeldusel et kohus kinnitab plaani seaduses ette nähtud tingimustel.",
+      "estleg:sourceAct": "Pankrotiseadus"
+    },
+
+    {
+      "@id": "estleg:PANKRS_Norm_020",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "Pankrotivara moodustamine",
+      "rdfs:label": "Pankrotivara koosseis ja kaitse",
+      "estleg:requestedCluster": "liquidation",
+      "estleg:summary": "Määratleb, milline vara kuulub pankrotivarasse ning kuidas tagada vara säilimine, et vältida väärtuse kadu enne realiseerimist.",
+      "estleg:sourceAct": "Pankrotiseadus"
+    },
+    {
+      "@id": "estleg:PANKRS_Norm_021",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "Vara realiseerimine",
+      "rdfs:label": "Müügi kord ja läbipaistvusnõuded",
+      "estleg:requestedCluster": "liquidation",
+      "estleg:summary": "Haldur realiseerib pankrotivara viisil, mis teenib võlausaldajate huve, tagades müügimenetluse läbipaistvuse, dokumenteerituse ja mõistliku turuväärtuse saavutamise.",
+      "estleg:sourceAct": "Pankrotiseadus"
+    },
+    {
+      "@id": "estleg:PANKRS_Norm_022",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "Jaotusettepanek ja väljamaksed",
+      "rdfs:label": "Võlausaldajatele väljamaksete järjekord",
+      "estleg:requestedCluster": "liquidation",
+      "estleg:summary": "Pankrotivara jaotamisel koostatakse jaotusettepanek ning väljamaksed tehakse seadusest tuleneva prioriteedijärjekorra alusel.",
+      "estleg:sourceAct": "Pankrotiseadus"
+    },
+    {
+      "@id": "estleg:PANKRS_Norm_023",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "Menetluse lõpetamine",
+      "rdfs:label": "Pankrotimenetluse lõppemine ja registrikanded",
+      "estleg:requestedCluster": "liquidation",
+      "estleg:summary": "Pärast vara realiseerimist ja nõuete rahuldamist lõpetatakse menetlus ning tehakse vajalikud registri- ja menetlustoimingud.",
+      "estleg:sourceAct": "Pankrotiseadus"
+    },
+
+    {
+      "@id": "estleg:PANKRS_Norm_030",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "Nõuete esitamine",
+      "rdfs:label": "Võlausaldajate nõuete tähtaeg ja vorm",
+      "estleg:requestedCluster": "creditor_rights",
+      "estleg:summary": "Võlausaldaja peab esitama nõude nõutud vormis ja tähtajaks; hilinenud või puudulik nõue võib mõjutada rahuldamise ulatust.",
+      "estleg:sourceAct": "Pankrotiseadus"
+    },
+    {
+      "@id": "estleg:PANKRS_Norm_031",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "Nõuete kaitsmise koosolek",
+      "rdfs:label": "Nõuete tunnustamine ja vaidlustamine",
+      "estleg:requestedCluster": "creditor_rights",
+      "estleg:summary": "Nõuete kaitsmise menetluses otsustatakse nõuete tunnustamine, osaline tunnustamine või vaidlustamine; see määrab osalemise jaotuses ja otsustusprotsessis.",
+      "estleg:sourceAct": "Pankrotiseadus"
+    },
+    {
+      "@id": "estleg:PANKRS_Norm_032",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "Võlausaldajate koosolek",
+      "rdfs:label": "Hääleõigus, otsused ja järelevalve halduri üle",
+      "estleg:requestedCluster": "creditor_rights",
+      "estleg:summary": "Võlausaldajad teostavad menetluses kollektiivset kontrolli, sh valivad organite koosseise, annavad suuniseid haldurile ja otsustavad olulisi menetlusküsimusi.",
+      "estleg:sourceAct": "Pankrotiseadus"
+    },
+    {
+      "@id": "estleg:PANKRS_Norm_033",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "Tagasivõitmine",
+      "rdfs:label": "Võlausaldajate huve kahjustavate tehingute kehtetuks tunnistamine",
+      "estleg:requestedCluster": "creditor_rights",
+      "estleg:summary": "Võimaldab pankrotivarasse tagasi tuua tehingute kaudu välja viidud vara või väärtuse, kui tehingud kahjustasid võlausaldajate huve enne pankroti väljakuulutamist.",
+      "estleg:sourceAct": "Pankrotiseadus"
+    },
+
+    {
+      "@id": "estleg:PANKRS_NOTE_001",
+      "@type": ["owl:NamedIndividual"],
+      "rdfs:label": "Märkus kaardistuse ulatuse kohta",
+      "estleg:note": "Tegu on ühtses JSON-LD skeemis esmaste normiplokkide teemakaardistusega. Võlgade ümberstruktureerimise detailid paiknevad osaliselt eriseadustes (nt saneerimis- ja võlakaitse regulatsioon), mistõttu järgmises iteratsioonis lisatakse täpsed ristviited paragrahvidele ning redaktsioonidele."
+    }
+  ]
+}
