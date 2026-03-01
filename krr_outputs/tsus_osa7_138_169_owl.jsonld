@@ -1,0 +1,1964 @@
+{
+  "@context": {
+    "estleg": "https://example.org/estonian-legal#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
+  },
+  "@graph": [
+    {
+      "@id": "https://example.org/estonian-legal#",
+      "@type": "owl:Ontology",
+      "rdfs:label": "TsÜS Osa 7 ontoloogia",
+      "dc:title": "Tsiviilõiguste teostamine (§138-169)"
+    },
+    {
+      "@id": "https://example.org/estonian-legal#LegalPart",
+      "@type": "owl:Class",
+      "rdfs:label": "Seaduse osa"
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Chapter",
+      "@type": "owl:Class",
+      "rdfs:label": "Peatükk"
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Division",
+      "@type": "owl:Class",
+      "rdfs:label": "Jagu"
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Section",
+      "@type": "owl:Class",
+      "rdfs:label": "Paragrahv"
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Provision",
+      "@type": "owl:Class",
+      "rdfs:label": "Lõige/punkt"
+    },
+    {
+      "@id": "https://example.org/estonian-legal#LegalConcept",
+      "@type": "owl:Class",
+      "rdfs:label": "Õigusmõiste"
+    },
+    {
+      "@id": "https://example.org/estonian-legal#hasChapter",
+      "@type": "owl:ObjectProperty",
+      "rdfs:label": "sisaldab peatükki",
+      "rdfs:domain": {
+        "@id": "https://example.org/estonian-legal#LegalPart"
+      },
+      "rdfs:range": {
+        "@id": "https://example.org/estonian-legal#Chapter"
+      }
+    },
+    {
+      "@id": "https://example.org/estonian-legal#hasDivision",
+      "@type": "owl:ObjectProperty",
+      "rdfs:label": "sisaldab jagu",
+      "rdfs:domain": {
+        "@id": "https://example.org/estonian-legal#Chapter"
+      },
+      "rdfs:range": {
+        "@id": "https://example.org/estonian-legal#Division"
+      }
+    },
+    {
+      "@id": "https://example.org/estonian-legal#hasSection",
+      "@type": "owl:ObjectProperty",
+      "rdfs:label": "sisaldab paragrahvi",
+      "rdfs:domain": {
+        "@id": "https://example.org/estonian-legal#Division"
+      },
+      "rdfs:range": {
+        "@id": "https://example.org/estonian-legal#Section"
+      }
+    },
+    {
+      "@id": "https://example.org/estonian-legal#hasProvision",
+      "@type": "owl:ObjectProperty",
+      "rdfs:label": "sisaldab normiteksti",
+      "rdfs:domain": {
+        "@id": "https://example.org/estonian-legal#Section"
+      },
+      "rdfs:range": {
+        "@id": "https://example.org/estonian-legal#Provision"
+      }
+    },
+    {
+      "@id": "https://example.org/estonian-legal#coversConcept",
+      "@type": "owl:ObjectProperty",
+      "rdfs:label": "katab mõistet",
+      "rdfs:domain": {
+        "@id": "https://example.org/estonian-legal#Section"
+      },
+      "rdfs:range": {
+        "@id": "https://example.org/estonian-legal#LegalConcept"
+      }
+    },
+    {
+      "@id": "https://example.org/estonian-legal#ÕigusteKaitsmine",
+      "@type": [
+        "estleg:LegalConcept",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "Õiguste kaitsmine"
+    },
+    {
+      "@id": "https://example.org/estonian-legal#ÕigusteEnnetamine",
+      "@type": [
+        "estleg:LegalConcept",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "Õiguste ennetamine"
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Aegumine",
+      "@type": [
+        "estleg:LegalConcept",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "Aegumine"
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Part7",
+      "@type": [
+        "estleg:LegalPart",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "TsÜS 7. osa – Tsiviilõiguste teostamine",
+      "estleg:hasChapter": [
+        {
+          "@id": "https://example.org/estonian-legal#Chapter9"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Chapter10"
+        }
+      ]
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Chapter9",
+      "@type": [
+        "estleg:Chapter",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "9. peatükk – TSIVIILÕIGUSTE TEOSTAMISE VIISID",
+      "estleg:hasSection": [
+        {
+          "@id": "https://example.org/estonian-legal#Par138"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par139"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par140"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par141"
+        }
+      ]
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Chapter10",
+      "@type": [
+        "estleg:Chapter",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "10. peatükk – AEGUMINE",
+      "estleg:hasDivision": [
+        {
+          "@id": "https://example.org/estonian-legal#Division1"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Division2"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Division3"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Division4"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Division5"
+        }
+      ]
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Division1",
+      "@type": [
+        "estleg:Division",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "1. jagu – Aegumise tagajärjed",
+      "estleg:inChapter": {
+        "@id": "https://example.org/estonian-legal#Chapter10"
+      },
+      "estleg:hasSection": [
+        {
+          "@id": "https://example.org/estonian-legal#Par142"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par143"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par144"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par145"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par145_1"
+        }
+      ]
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Division2",
+      "@type": [
+        "estleg:Division",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "2. jagu – Tehingust tuleneva nõude aegumine",
+      "estleg:inChapter": {
+        "@id": "https://example.org/estonian-legal#Chapter10"
+      },
+      "estleg:hasSection": [
+        {
+          "@id": "https://example.org/estonian-legal#Par146"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par147"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par148"
+        }
+      ]
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Division3",
+      "@type": [
+        "estleg:Division",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "3. jagu – Seadusest tuleneva nõude aegumine",
+      "estleg:inChapter": {
+        "@id": "https://example.org/estonian-legal#Chapter10"
+      },
+      "estleg:hasSection": [
+        {
+          "@id": "https://example.org/estonian-legal#Par149"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par150"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par151"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par152"
+        }
+      ]
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Division4",
+      "@type": [
+        "estleg:Division",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "4. jagu – Aegumine erijuhtudel",
+      "estleg:inChapter": {
+        "@id": "https://example.org/estonian-legal#Chapter10"
+      },
+      "estleg:hasSection": [
+        {
+          "@id": "https://example.org/estonian-legal#Par153"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par154"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par155"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par156"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par157"
+        }
+      ]
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Division5",
+      "@type": [
+        "estleg:Division",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "5. jagu – Aegumise katkemine ja peatumine",
+      "estleg:inChapter": {
+        "@id": "https://example.org/estonian-legal#Chapter10"
+      },
+      "estleg:hasSection": [
+        {
+          "@id": "https://example.org/estonian-legal#Par158"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par159"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par160"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par161"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par162"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par163"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par164"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par165"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par166"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par167"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par168"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par169"
+        }
+      ]
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par138_Lg1",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§138 lg 1",
+      "estleg:legalText": "(1) Õiguste teostamisel ja kohustuste täitmisel tuleb toimida heas usus."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par138_Lg2",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§138 lg 2",
+      "estleg:legalText": "(2) Õiguse teostamine ei ole lubatud seadusvastasel viisil, samuti selliselt, et õiguse teostamise eesmärgiks on kahju tekitamine teisele isikule."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par138",
+      "@type": [
+        "estleg:Section",
+        "owl:NamedIndividual"
+      ],
+      "estleg:sectionNumber": 138,
+      "rdfs:label": "§ 138. Hea usu põhimõte",
+      "estleg:hasProvision": [
+        {
+          "@id": "https://example.org/estonian-legal#Par138_Lg1"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par138_Lg2"
+        }
+      ],
+      "estleg:inChapter": {
+        "@id": "https://example.org/estonian-legal#Chapter9"
+      },
+      "estleg:coversConcept": [
+        {
+          "@id": "https://example.org/estonian-legal#ÕigusteEnnetamine"
+        }
+      ]
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par139_Lg1",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§139 lg 1",
+      "estleg:legalText": "Kui seadus seob õiguslikud tagajärjed heausksusega, tuleb selle olemasolu eeldada, kui seadusest ei tulene teisiti."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par139",
+      "@type": [
+        "estleg:Section",
+        "owl:NamedIndividual"
+      ],
+      "estleg:sectionNumber": 139,
+      "rdfs:label": "§ 139. Heausksuse eeldus",
+      "estleg:hasProvision": [
+        {
+          "@id": "https://example.org/estonian-legal#Par139_Lg1"
+        }
+      ],
+      "estleg:inChapter": {
+        "@id": "https://example.org/estonian-legal#Chapter9"
+      },
+      "estleg:coversConcept": [
+        {
+          "@id": "https://example.org/estonian-legal#ÕigusteEnnetamine"
+        }
+      ]
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par140_Lg1",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§140 lg 1",
+      "estleg:legalText": "Hädakaitseks tehtud tegu ei ole õigusvastane, kui seejuures ei ületatud hädakaitse piire."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par140",
+      "@type": [
+        "estleg:Section",
+        "owl:NamedIndividual"
+      ],
+      "estleg:sectionNumber": 140,
+      "rdfs:label": "§ 140. Hädakaitse",
+      "estleg:hasProvision": [
+        {
+          "@id": "https://example.org/estonian-legal#Par140_Lg1"
+        }
+      ],
+      "estleg:inChapter": {
+        "@id": "https://example.org/estonian-legal#Chapter9"
+      },
+      "estleg:coversConcept": [
+        {
+          "@id": "https://example.org/estonian-legal#ÕigusteEnnetamine"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#ÕigusteKaitsmine"
+        }
+      ]
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par141_Lg1",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§141 lg 1",
+      "estleg:legalText": "(1) Isik, kes tekitab kahju ennast või teist isikut või vara ähvardava ohu tõrjumiseks, ei tegutse õigusvastaselt, kui kahju tekitamine on vajalik ohu tõrjumiseks ja kahju ei ole ähvardanud ohuga võrreldes ebamõistlikult suur."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par141_Lg2",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§141 lg 2",
+      "estleg:legalText": "(2) Kahju tekitanud isik peab hüvitama kahju, mille ta ohtu tõrjudes tekitas, kui tõrjutud oht tekkis temast tuleneva asjaolu tõttu."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par141_Lg3",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§141 lg 3",
+      "estleg:legalText": "(3) Kui see on asjaolude kohaselt mõistlik, võib hädaseisundis tekitatud kahju hüvitamist nõuda isikult, kelle huvides kahju tekitati."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par141",
+      "@type": [
+        "estleg:Section",
+        "owl:NamedIndividual"
+      ],
+      "estleg:sectionNumber": 141,
+      "rdfs:label": "§ 141. Hädaseisund",
+      "estleg:hasProvision": [
+        {
+          "@id": "https://example.org/estonian-legal#Par141_Lg1"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par141_Lg2"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par141_Lg3"
+        }
+      ],
+      "estleg:inChapter": {
+        "@id": "https://example.org/estonian-legal#Chapter9"
+      },
+      "estleg:coversConcept": [
+        {
+          "@id": "https://example.org/estonian-legal#ÕigusteEnnetamine"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#ÕigusteKaitsmine"
+        }
+      ]
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par142_Lg1",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§142 lg 1",
+      "estleg:legalText": "(1) Õigus nõuda teiselt isikult teo tegemist või sellest hoidumist (nõue) aegub seaduses sätestatud tähtaja (aegumistähtaeg) jooksul. Pärast nõude aegumist võib kohustatud isik keelduda oma kohustuse täitmisest."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par142_Lg2",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§142 lg 2",
+      "estleg:legalText": "(2) Seaduses sätestatud juhtudel nõudeõigus ei aegu."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par142",
+      "@type": [
+        "estleg:Section",
+        "owl:NamedIndividual"
+      ],
+      "estleg:sectionNumber": 142,
+      "rdfs:label": "§ 142. Aegumise mõiste",
+      "estleg:hasProvision": [
+        {
+          "@id": "https://example.org/estonian-legal#Par142_Lg1"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par142_Lg2"
+        }
+      ],
+      "estleg:inDivision": {
+        "@id": "https://example.org/estonian-legal#Division1"
+      },
+      "estleg:coversConcept": [
+        {
+          "@id": "https://example.org/estonian-legal#Aegumine"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#AegumiseTagajärjed"
+        }
+      ]
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par143_Lg1",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§143 lg 1",
+      "estleg:legalText": "Kohus või muu vaidlust lahendav organ võtab nõude aegumist arvesse ainult kohustatud isiku taotlusel."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par143",
+      "@type": [
+        "estleg:Section",
+        "owl:NamedIndividual"
+      ],
+      "estleg:sectionNumber": 143,
+      "rdfs:label": "§ 143. Aegumise arvestamine kohtu poolt",
+      "estleg:hasProvision": [
+        {
+          "@id": "https://example.org/estonian-legal#Par143_Lg1"
+        }
+      ],
+      "estleg:inDivision": {
+        "@id": "https://example.org/estonian-legal#Division1"
+      },
+      "estleg:coversConcept": [
+        {
+          "@id": "https://example.org/estonian-legal#Aegumine"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#AegumiseTagajärjed"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#ÕigusteKaitsmine"
+        }
+      ]
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par144_Lg1",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§144 lg 1",
+      "estleg:legalText": "Koos põhikohustusest tuleneva nõudega aegub ka kõrvalkohustusest tulenev nõue, kuigi see ei oleks eraldi veel aegunud."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par144",
+      "@type": [
+        "estleg:Section",
+        "owl:NamedIndividual"
+      ],
+      "estleg:sectionNumber": 144,
+      "rdfs:label": "§ 144. Kõrvalkohustusest tuleneva nõude aegumine",
+      "estleg:hasProvision": [
+        {
+          "@id": "https://example.org/estonian-legal#Par144_Lg1"
+        }
+      ],
+      "estleg:inDivision": {
+        "@id": "https://example.org/estonian-legal#Division1"
+      },
+      "estleg:coversConcept": [
+        {
+          "@id": "https://example.org/estonian-legal#Aegumine"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#AegumiseTagajärjed"
+        }
+      ]
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par145_Lg1",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§145 lg 1",
+      "estleg:legalText": "(1) Tehinguga võib nõude aegumise tingimusi kergendada, eelkõige aegumistähtaega lühendada. Aegumise kergendatud tingimusi ei kohaldata, kui kohustatud isik rikkus oma kohustusi tahtlikult."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par145_Lg2",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§145 lg 2",
+      "estleg:legalText": "(2) Poolte kokkuleppel võib aegumistähtaega, mis on lühem kui kümme aastat, pikendada, kuid mitte enam kui kümne aastani."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par145_Lg3",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§145 lg 3",
+      "estleg:legalText": "(3) Loobumine õigusest nõuda aegumise kohaldamist on tühine."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par145",
+      "@type": [
+        "estleg:Section",
+        "owl:NamedIndividual"
+      ],
+      "estleg:sectionNumber": 145,
+      "rdfs:label": "§ 145. Kokkulepe aegumise kohta",
+      "estleg:hasProvision": [
+        {
+          "@id": "https://example.org/estonian-legal#Par145_Lg1"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par145_Lg2"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par145_Lg3"
+        }
+      ],
+      "estleg:inDivision": {
+        "@id": "https://example.org/estonian-legal#Division1"
+      },
+      "estleg:coversConcept": [
+        {
+          "@id": "https://example.org/estonian-legal#Aegumine"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#AegumiseTagajärjed"
+        }
+      ]
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par145_1_Lg1",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§145^1 lg 1",
+      "estleg:legalText": "(1) Pandiga tagatud nõude aegumine ei võta pandipidajalt õigust põhivõla nõude rahuldamisele panditud eseme arvel."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par145_1_Lg2",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§145^1 lg 2",
+      "estleg:legalText": "(2) Omandireservatsiooni korral võib omanik nõuda asja väljaandmist ka juhul, kui omandireservatsiooniga tagatud nõue on aegunud."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par145_1",
+      "@type": [
+        "estleg:Section",
+        "owl:NamedIndividual"
+      ],
+      "estleg:sectionNumber": 145.1,
+      "rdfs:label": "§ 145^1. § 145 1 . Aegumise tagajärjed tagatisele",
+      "estleg:hasProvision": [
+        {
+          "@id": "https://example.org/estonian-legal#Par145_1_Lg1"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par145_1_Lg2"
+        }
+      ],
+      "estleg:inDivision": {
+        "@id": "https://example.org/estonian-legal#Division1"
+      },
+      "estleg:coversConcept": [
+        {
+          "@id": "https://example.org/estonian-legal#Aegumine"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#AegumiseTagajärjed"
+        }
+      ]
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par146_Lg1",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§146 lg 1",
+      "estleg:legalText": "(1) Tehingust tuleneva nõude aegumistähtaeg on kolm aastat."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par146_Lg2",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§146 lg 2",
+      "estleg:legalText": "(2) Ehitise puuduse tõttu töövõtulepingust tuleneva nõude aegumistähtaeg on viis aastat. Ehitise puuduse tõttu müügilepingust tulenev nõue ei aegu enne viie aasta möödumist ehitise valmimisest."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par146_Lg3",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§146 lg 3",
+      "estleg:legalText": "(3) Kui ehitise puuduse on põhjustanud eesmärgipäraselt ehitise valmistamiseks kasutatud toorme või materjali puudused, on selle toorme või materjali puudustest tuleneva nõude aegumistähtaeg viis aastat."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par146_Lg4",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§146 lg 4",
+      "estleg:legalText": "(4) Käesoleva paragrahvi lõigetes 1–3 nimetatud nõuete aegumistähtaeg on kümme aastat, kui kohustatud isik rikkus oma kohustusi tahtlikult."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par146_Lg5",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§146 lg 5",
+      "estleg:legalText": "(5) Kinnisomandi üleandmise nõude, kinnisasja asjaõigusega koormamise, asjaõiguse üleandmise või lõpetamise või asjaõiguse sisu muutmise nõude aegumistähtaeg on kümme aastat."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par146",
+      "@type": [
+        "estleg:Section",
+        "owl:NamedIndividual"
+      ],
+      "estleg:sectionNumber": 146,
+      "rdfs:label": "§ 146. Tehingust tuleneva nõude aegumistähtaeg",
+      "estleg:hasProvision": [
+        {
+          "@id": "https://example.org/estonian-legal#Par146_Lg1"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par146_Lg2"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par146_Lg3"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par146_Lg4"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par146_Lg5"
+        }
+      ],
+      "estleg:inDivision": {
+        "@id": "https://example.org/estonian-legal#Division2"
+      },
+      "estleg:coversConcept": [
+        {
+          "@id": "https://example.org/estonian-legal#Aegumine"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#TehingustTulenevaNoudeAegumine"
+        }
+      ]
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par147_Lg1",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§147 lg 1",
+      "estleg:legalText": "(1) Aegumistähtaeg algab nõude sissenõutavaks muutumisega, kui seaduses ei ole sätestatud teisiti. Kui õigustatud isik võib nõuda teiselt isikult teatud teost hoidumist, algab teost hoidumise nõude aegumistähtaeg kohustuse rikkumisest."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par147_Lg2",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§147 lg 2",
+      "estleg:legalText": "(2) Nõue muutub sissenõutavaks alates ajahetkest, mil õigustatud isikul on õigus nõuda nõudele vastava kohustuse täitmist."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par147_Lg3",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§147 lg 3",
+      "estleg:legalText": "(3) Kokkulepitud tasu maksmise nõude aegumistähtaeg algab selle aasta lõppemisest, mil nõue muutub sissenõutavaks. Kui nõue muutub sissenõutavaks arve esitamisega, algab nõude aegumistähtaeg selle kalendriaasta lõppemisest, mil õigustatud isik võib arve esitada."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par147_Lg4",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§147 lg 4",
+      "estleg:legalText": "(4)"
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par147",
+      "@type": [
+        "estleg:Section",
+        "owl:NamedIndividual"
+      ],
+      "estleg:sectionNumber": 147,
+      "rdfs:label": "§ 147. Aegumistähtaja algus",
+      "estleg:hasProvision": [
+        {
+          "@id": "https://example.org/estonian-legal#Par147_Lg1"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par147_Lg2"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par147_Lg3"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par147_Lg4"
+        }
+      ],
+      "estleg:inDivision": {
+        "@id": "https://example.org/estonian-legal#Division2"
+      },
+      "estleg:coversConcept": [
+        {
+          "@id": "https://example.org/estonian-legal#Aegumine"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#TehingustTulenevaNoudeAegumine"
+        }
+      ]
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par148_Lg1",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§148 lg 1",
+      "estleg:legalText": "Käesolevas jaos sätestatut kohaldatakse ka lepingueelsetest läbirääkimistest tuleneva kohustuse rikkumisest tuleneva nõude aegumisele."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par148",
+      "@type": [
+        "estleg:Section",
+        "owl:NamedIndividual"
+      ],
+      "estleg:sectionNumber": 148,
+      "rdfs:label": "§ 148. Lepingueelsetest läbirääkimistest tuleneva nõude aegumine",
+      "estleg:hasProvision": [
+        {
+          "@id": "https://example.org/estonian-legal#Par148_Lg1"
+        }
+      ],
+      "estleg:inDivision": {
+        "@id": "https://example.org/estonian-legal#Division2"
+      },
+      "estleg:coversConcept": [
+        {
+          "@id": "https://example.org/estonian-legal#Aegumine"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#ÕigusteEnnetamine"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#TehingustTulenevaNoudeAegumine"
+        }
+      ]
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par149_Lg1",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§149 lg 1",
+      "estleg:legalText": "Seadusest tuleneva nõude aegumistähtaeg on kümme aastat selle nõude sissenõutavaks muutumisest, kui seaduses ei ole sätestatud teisiti. Teost hoidumisele suunatud nõude aegumistähtaeg algab hoidumiskohustuse rikkumisest."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par149",
+      "@type": [
+        "estleg:Section",
+        "owl:NamedIndividual"
+      ],
+      "estleg:sectionNumber": 149,
+      "rdfs:label": "§ 149. Seadusest tuleneva nõude aegumistähtaeg",
+      "estleg:hasProvision": [
+        {
+          "@id": "https://example.org/estonian-legal#Par149_Lg1"
+        }
+      ],
+      "estleg:inDivision": {
+        "@id": "https://example.org/estonian-legal#Division3"
+      },
+      "estleg:coversConcept": [
+        {
+          "@id": "https://example.org/estonian-legal#Aegumine"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#SeadusestTulenevaNoudeAegumine"
+        }
+      ]
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par150_Lg1",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§150 lg 1",
+      "estleg:legalText": "(1) Kahju õigusvastasest tekitamisest tuleneva nõude aegumistähtaeg on kolm aastat ajast, mil õigustatud isik kahjust ja kahju hüvitama kohustatud isikust teada sai või pidi teada saama."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par150_Lg2",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§150 lg 2",
+      "estleg:legalText": "(2) Kui kahju hüvitama kohustatud isik on õigustatud isiku kulul seoses kahju tekitamisega rikastunud, on ta ka pärast käesoleva paragrahvi lõikes 1 sätestatud aegumistähtaja möödumist kohustatud andma saadu välja alusetu rikastumise sätete järgi."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par150_Lg3",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§150 lg 3",
+      "estleg:legalText": "(3) Kahju õigusvastasest tekitamisest tulenev nõue aegub, sõltumata käesoleva paragrahvi lõigetes 1 ja 2 sätestatust, hiljemalt kümne aasta möödumisel kahju põhjustanud teo tegemisest või sündmuse toimumisest."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par150",
+      "@type": [
+        "estleg:Section",
+        "owl:NamedIndividual"
+      ],
+      "estleg:sectionNumber": 150,
+      "rdfs:label": "§ 150. Kahju õigusvastasest tekitamisest tuleneva nõude aegumistähtaeg",
+      "estleg:hasProvision": [
+        {
+          "@id": "https://example.org/estonian-legal#Par150_Lg1"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par150_Lg2"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par150_Lg3"
+        }
+      ],
+      "estleg:inDivision": {
+        "@id": "https://example.org/estonian-legal#Division3"
+      },
+      "estleg:coversConcept": [
+        {
+          "@id": "https://example.org/estonian-legal#Aegumine"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#SeadusestTulenevaNoudeAegumine"
+        }
+      ]
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par151_Lg1",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§151 lg 1",
+      "estleg:legalText": "(1) Alusetust rikastumisest tuleneva nõude aegumistähtaeg on kolm aastat ajast, mil õigustatud isik teada sai või pidi teada saama, et tal on alusetust rikastumisest tulenev nõue. Õiguse rikkumise korral algab rikkumise teel saadu väärtuse hüvitamisele suunatud alusetu rikastumise nõude aegumistähtaeg ajast, mil õigustatud isik rikkumisest ja kohustatud isikust teada sai või pidi teada saama."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par151_Lg2",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§151 lg 2",
+      "estleg:legalText": "(2) Alusetust rikastumisest tulenev nõue aegub, sõltumata käesoleva paragrahvi lõikes 1 sätestatust, hiljemalt kümne aasta möödumisel alusetu rikastumise toimumisest."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par151",
+      "@type": [
+        "estleg:Section",
+        "owl:NamedIndividual"
+      ],
+      "estleg:sectionNumber": 151,
+      "rdfs:label": "§ 151. Alusetust rikastumisest tuleneva nõude aegumistähtaeg",
+      "estleg:hasProvision": [
+        {
+          "@id": "https://example.org/estonian-legal#Par151_Lg1"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par151_Lg2"
+        }
+      ],
+      "estleg:inDivision": {
+        "@id": "https://example.org/estonian-legal#Division3"
+      },
+      "estleg:coversConcept": [
+        {
+          "@id": "https://example.org/estonian-legal#Aegumine"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#SeadusestTulenevaNoudeAegumine"
+        }
+      ]
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par152_Lg1",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§152 lg 1",
+      "estleg:legalText": "(1) Kui samasisulise nõude võib esitada nii seadusest kui tehingust tuleneval alusel, kohaldatakse nõude aegumisele käesoleva peatüki 2. jaos sätestatut."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par152_Lg2",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§152 lg 2",
+      "estleg:legalText": "(2) Käesoleva paragrahvi lõikes 1 sätestatut ei kohaldata käesoleva peatüki 4. jaos nimetatud nõuete aegumisele."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par152",
+      "@type": [
+        "estleg:Section",
+        "owl:NamedIndividual"
+      ],
+      "estleg:sectionNumber": 152,
+      "rdfs:label": "§ 152. Aegumine nõuete konkurentsi korral",
+      "estleg:hasProvision": [
+        {
+          "@id": "https://example.org/estonian-legal#Par152_Lg1"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par152_Lg2"
+        }
+      ],
+      "estleg:inDivision": {
+        "@id": "https://example.org/estonian-legal#Division3"
+      },
+      "estleg:coversConcept": [
+        {
+          "@id": "https://example.org/estonian-legal#Aegumine"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#SeadusestTulenevaNoudeAegumine"
+        }
+      ]
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par153_Lg1",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§153 lg 1",
+      "estleg:legalText": "(1) Surma põhjustamisest, kehavigastuse tekitamisest, tervise kahjustamisest või vabaduse võtmisest tuleneva nõude aegumistähtaeg, olenemata sellest, milline on nõude õiguslik alus, on kolm aastat ajast, mil õigustatud isik kahjust ja kahju hüvitamiseks kohustatud isikust teada sai või pidi teada saama."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par153_Lg2",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§153 lg 2",
+      "estleg:legalText": "(2) Käesoleva paragrahvi lõikes 1 nimetatud nõuded aeguvad hiljemalt 30 aasta jooksul, arvates kahju põhjustanud teo tegemisest või sündmuse toimumisest."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par153",
+      "@type": [
+        "estleg:Section",
+        "owl:NamedIndividual"
+      ],
+      "estleg:sectionNumber": 153,
+      "rdfs:label": "§ 153. Surma põhjustamisest, kehavigastuse tekitamisest, tervise kahjustamisest või vabaduse võtmisest tuleneva nõude aegumine",
+      "estleg:hasProvision": [
+        {
+          "@id": "https://example.org/estonian-legal#Par153_Lg1"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par153_Lg2"
+        }
+      ],
+      "estleg:inDivision": {
+        "@id": "https://example.org/estonian-legal#Division4"
+      },
+      "estleg:coversConcept": [
+        {
+          "@id": "https://example.org/estonian-legal#Aegumine"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#AegumineErijuhtudel"
+        }
+      ]
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par154_Lg1",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§154 lg 1",
+      "estleg:legalText": "Korduvate kohustuste või ülalpidamiskohustuse täitmise nõude aegumistähtaeg, olenemata sellest, milline on nõude õiguslik alus, on kolm aastat iga üksiku kohustuse jaoks. Aegumistähtaeg algab selle kalendriaasta lõppemisest, mil kohustusele vastav nõue muutub sissenõutavaks."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par154",
+      "@type": [
+        "estleg:Section",
+        "owl:NamedIndividual"
+      ],
+      "estleg:sectionNumber": 154,
+      "rdfs:label": "§ 154. Korduvate kohustuste täitmisele suunatud nõude aegumine",
+      "estleg:hasProvision": [
+        {
+          "@id": "https://example.org/estonian-legal#Par154_Lg1"
+        }
+      ],
+      "estleg:inDivision": {
+        "@id": "https://example.org/estonian-legal#Division4"
+      },
+      "estleg:coversConcept": [
+        {
+          "@id": "https://example.org/estonian-legal#Aegumine"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#AegumineErijuhtudel"
+        }
+      ]
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par155_Lg1",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§155 lg 1",
+      "estleg:legalText": "(1) Omandiõigusest tuleneva väljaandmisnõude ning perekonna- ja pärimisõigusest tuleneva nõude aegumistähtaeg on 30 aastat nõude sissenõutavaks muutumisest, kui seaduses ei ole sätestatud teisiti."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par155_Lg2",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§155 lg 2",
+      "estleg:legalText": "(2) Omandiõigusest tulenev väljaandmisnõue omavolilise valdaja vastu ei aegu."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par155",
+      "@type": [
+        "estleg:Section",
+        "owl:NamedIndividual"
+      ],
+      "estleg:sectionNumber": 155,
+      "rdfs:label": "§ 155. Omandiõigusest tuleneva väljaandmisnõude ning perekonna- ja pärimisõigusest tuleneva nõude aegumine",
+      "estleg:hasProvision": [
+        {
+          "@id": "https://example.org/estonian-legal#Par155_Lg1"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par155_Lg2"
+        }
+      ],
+      "estleg:inDivision": {
+        "@id": "https://example.org/estonian-legal#Division4"
+      },
+      "estleg:coversConcept": [
+        {
+          "@id": "https://example.org/estonian-legal#Aegumine"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#AegumineErijuhtudel"
+        }
+      ]
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par156_Lg1",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§156 lg 1",
+      "estleg:legalText": "Omandiõigusest tuleneva väljaandmisnõude või valduse kaitse nõude aegumist ei mõjuta asja valduse muutumine, kui asi on õigusjärgluse tõttu sattunud teise isiku valdusse."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par156",
+      "@type": [
+        "estleg:Section",
+        "owl:NamedIndividual"
+      ],
+      "estleg:sectionNumber": 156,
+      "rdfs:label": "§ 156. Aegumine õigusjärgluse korral",
+      "estleg:hasProvision": [
+        {
+          "@id": "https://example.org/estonian-legal#Par156_Lg1"
+        }
+      ],
+      "estleg:inDivision": {
+        "@id": "https://example.org/estonian-legal#Division4"
+      },
+      "estleg:coversConcept": [
+        {
+          "@id": "https://example.org/estonian-legal#Aegumine"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#AegumineErijuhtudel"
+        }
+      ]
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par157_Lg1",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§157 lg 1",
+      "estleg:legalText": "(1) Jõustunud kohtuotsusega tunnustatud nõude, samuti kohtulikust kokkuleppest või muust täitedokumendist tuleneva nõude aegumistähtaeg on 10 aastat."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par157_Lg2",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§157 lg 2",
+      "estleg:legalText": "(2) Käesoleva paragrahvi lõikes 1 nimetatud nõude aegumistähtaeg algab kohtuotsuse jõustumisest või muu täitedokumendi väljaandmisest, kuid mitte enne nõude sissenõutavaks muutumist."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par157_Lg3",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§157 lg 3",
+      "estleg:legalText": "(3) Pankrotimenetluses tunnustatud nõude aegumistähtaeg on kümme aastat pankrotimenetluse lõppemisest."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par157_Lg4",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§157 lg 4",
+      "estleg:legalText": "(4) Korduvate kohustuste või ülalpidamiskohustuse täitmisest tuleneva tulevikus sissenõutavaks muutuva tunnustatud nõude aegumisele kohaldatakse käesoleva seaduse §-s 154 sätestatut."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par157",
+      "@type": [
+        "estleg:Section",
+        "owl:NamedIndividual"
+      ],
+      "estleg:sectionNumber": 157,
+      "rdfs:label": "§ 157. Jõustunud kohtuotsusega tunnustatud nõude aegumine",
+      "estleg:hasProvision": [
+        {
+          "@id": "https://example.org/estonian-legal#Par157_Lg1"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par157_Lg2"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par157_Lg3"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par157_Lg4"
+        }
+      ],
+      "estleg:inDivision": {
+        "@id": "https://example.org/estonian-legal#Division4"
+      },
+      "estleg:coversConcept": [
+        {
+          "@id": "https://example.org/estonian-legal#Aegumine"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#AegumineErijuhtudel"
+        }
+      ]
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par158_Lg1",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§158 lg 1",
+      "estleg:legalText": "(1) Aegumine katkeb ja algab uuesti kohustatud isiku poolt nõude tunnustamisega."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par158_Lg2",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§158 lg 2",
+      "estleg:legalText": "(2) Nõude tunnustamine võib seisneda õigustatud isikule võlgnetava osalises tasumises, intresside maksmises, tagatise andmises või muus teos."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par158",
+      "@type": [
+        "estleg:Section",
+        "owl:NamedIndividual"
+      ],
+      "estleg:sectionNumber": 158,
+      "rdfs:label": "§ 158. Aegumise katkemine nõude tunnustamisega",
+      "estleg:hasProvision": [
+        {
+          "@id": "https://example.org/estonian-legal#Par158_Lg1"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par158_Lg2"
+        }
+      ],
+      "estleg:inDivision": {
+        "@id": "https://example.org/estonian-legal#Division5"
+      },
+      "estleg:coversConcept": [
+        {
+          "@id": "https://example.org/estonian-legal#Aegumine"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#AegumiseKatkemineJaPeatumine"
+        }
+      ]
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par159_Lg1",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§159 lg 1",
+      "estleg:legalText": "(1) Aegumine katkeb ja algab uuesti täitedokumendi täitmiseks esitamisega."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par159_Lg2",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§159 lg 2",
+      "estleg:legalText": "(2) Aegumist ei loeta katkenuks, kui täitedokumenti ei võeta täitmiseks või kui täitedokument võetakse enne täitetoimingut tagasi või kui tehtud täitetoiming tühistatakse."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par159",
+      "@type": [
+        "estleg:Section",
+        "owl:NamedIndividual"
+      ],
+      "estleg:sectionNumber": 159,
+      "rdfs:label": "§ 159. Aegumise katkemine täitetoimingu puhul",
+      "estleg:hasProvision": [
+        {
+          "@id": "https://example.org/estonian-legal#Par159_Lg1"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par159_Lg2"
+        }
+      ],
+      "estleg:inDivision": {
+        "@id": "https://example.org/estonian-legal#Division5"
+      },
+      "estleg:coversConcept": [
+        {
+          "@id": "https://example.org/estonian-legal#Aegumine"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#AegumiseKatkemineJaPeatumine"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#ÕigusteKaitsmine"
+        }
+      ]
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par160_Lg1",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§160 lg 1",
+      "estleg:legalText": "(1) Aegumine peatub õigustatud isiku poolt hagi esitamisega nõude rahuldamiseks või tunnustamiseks."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par160_Lg2",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§160 lg 2",
+      "estleg:legalText": "(2) Hagi esitamisega on võrdsustatud: 1) nõude esitamine pankrotimenetluses; 2) avalduse esitamine hagi tagamiseks enne hagi esitamist, kui see avaldus rahuldatakse; 3) avalduse esitamine maksekäsu kiirmenetluses või muus hagita menetluses; 3 1 ) võlgniku saneerimisavalduse või võlgade ümberkujundamise avalduse esitamine; 4) avalduse esitamine seaduses sätestatud kohtueelses menetluses, sõltumata sellest, kas menetluses tehakse täitedokumendiks olev otsus; 5) nõude tasaarvestamine kohtumenetluses nõudega, mille täitmist hagiga taotletakse; 6) kolmanda isiku kaasamine menetlusse kolmanda isiku vastu suunatud nõude suhtes; 7) avalduse esitamine eeltõendamismenetluses; 8) samas asjas esmakordse avalduse esitamine menetluseks menetlusabi saamiseks enne kohtumenetluse alustamist."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par160_Lg3",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§160 lg 3",
+      "estleg:legalText": "(3) Nõude aegumise peatumine lõpeb peatumise aluseks oleva menetluse jõustunud lahendiga lõppemisega."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par160_Lg4",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§160 lg 4",
+      "estleg:legalText": "(4) Kohtumenetluse peatamise korral lõpeb nõude aegumise peatumine kolme aasta möödumisel poolte või kohtu poolt viimase protsessitoimingu tegemisest. Menetluse jätkamisel peatub aegumine uuesti."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par160",
+      "@type": [
+        "estleg:Section",
+        "owl:NamedIndividual"
+      ],
+      "estleg:sectionNumber": 160,
+      "rdfs:label": "§ 160. Aegumise peatumine hagi esitamisega",
+      "estleg:hasProvision": [
+        {
+          "@id": "https://example.org/estonian-legal#Par160_Lg1"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par160_Lg2"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par160_Lg3"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par160_Lg4"
+        }
+      ],
+      "estleg:inDivision": {
+        "@id": "https://example.org/estonian-legal#Division5"
+      },
+      "estleg:coversConcept": [
+        {
+          "@id": "https://example.org/estonian-legal#Aegumine"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#ÕigusteKaitsmine"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#AegumiseKatkemineJaPeatumine"
+        }
+      ]
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par161_Lg1",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§161 lg 1",
+      "estleg:legalText": "(1) Käesoleva seaduse §-s 160 sätestatut kohaldatakse ka nõude esitamisel vahekohtusse vastavalt vahekohtu kokkuleppele."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par161_Lg2",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§161 lg 2",
+      "estleg:legalText": "(2) Kui vahekohtu kokkuleppes ei ole vahekohtunikke nimetatud või kui vahekohtuniku nimetamine on vajalik muul põhjusel või kui vahekohtu poole võib pöörduda alles pärast muude kokkulepitud eelduste täitmist, peatub aegumine juba siis, kui õigustatud isik teeb vajalikud toimingud vahekohtuniku määramiseks või muude vahekohtusse pöördumise eelduste täitmiseks."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par161",
+      "@type": [
+        "estleg:Section",
+        "owl:NamedIndividual"
+      ],
+      "estleg:sectionNumber": 161,
+      "rdfs:label": "§ 161. Aegumise peatumine vahekohtumenetluse korral",
+      "estleg:hasProvision": [
+        {
+          "@id": "https://example.org/estonian-legal#Par161_Lg1"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par161_Lg2"
+        }
+      ],
+      "estleg:inDivision": {
+        "@id": "https://example.org/estonian-legal#Division5"
+      },
+      "estleg:coversConcept": [
+        {
+          "@id": "https://example.org/estonian-legal#Aegumine"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#ÕigusteKaitsmine"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#AegumiseKatkemineJaPeatumine"
+        }
+      ]
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par162_Lg1",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§162 lg 1",
+      "estleg:legalText": "Aegumine peatub ajaks, mil kohustatud isikul on kokkuleppel õigustatud isikuga ajutiselt õigus keelduda kohustuse täitmisest, eelkõige, kui talle on antud täiendav tähtaeg täitmiseks."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par162",
+      "@type": [
+        "estleg:Section",
+        "owl:NamedIndividual"
+      ],
+      "estleg:sectionNumber": 162,
+      "rdfs:label": "§ 162. Aegumise peatumine kohustuse täitmisest keeldumise õiguse puhul",
+      "estleg:hasProvision": [
+        {
+          "@id": "https://example.org/estonian-legal#Par162_Lg1"
+        }
+      ],
+      "estleg:inDivision": {
+        "@id": "https://example.org/estonian-legal#Division5"
+      },
+      "estleg:coversConcept": [
+        {
+          "@id": "https://example.org/estonian-legal#Aegumine"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#AegumiseKatkemineJaPeatumine"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#ÕigusteEnnetamine"
+        }
+      ]
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par163_Lg1",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§163 lg 1",
+      "estleg:legalText": "Aegumine peatub, kui õigustatud isik ei saa aegumistähtaja viimase kuue kuu jooksul vääramatu jõu tõttu oma õigusi kohtus või muul seaduses sätestatud viisil kaitsta. Aegumise peatumine lõpeb, kui lõpeb vääramatu jõu mõju."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par163",
+      "@type": [
+        "estleg:Section",
+        "owl:NamedIndividual"
+      ],
+      "estleg:sectionNumber": 163,
+      "rdfs:label": "§ 163. Aegumise peatumine vääramatu jõu tõttu",
+      "estleg:hasProvision": [
+        {
+          "@id": "https://example.org/estonian-legal#Par163_Lg1"
+        }
+      ],
+      "estleg:inDivision": {
+        "@id": "https://example.org/estonian-legal#Division5"
+      },
+      "estleg:coversConcept": [
+        {
+          "@id": "https://example.org/estonian-legal#Aegumine"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#AegumiseKatkemineJaPeatumine"
+        }
+      ]
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par164_Lg1",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§164 lg 1",
+      "estleg:legalText": "(1) Abikaasadevaheliste nõuete aegumine on abielu kestel peatunud."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par164_Lg2",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§164 lg 2",
+      "estleg:legalText": "(2) Vanemate ja laste vaheliste nõuete aegumine on peatunud kuni lapse täisealiseks saamiseni."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par164_Lg3",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§164 lg 3",
+      "estleg:legalText": "(3) Eestkostja ja eestkostetava vaheliste nõuete aegumine on peatunud eestkoste aja jooksul."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par164_Lg4",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§164 lg 4",
+      "estleg:legalText": "(4) Vara hooldaja ja hooldatava vaheliste nõuete aegumine on peatunud hoolduse aja jooksul."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par164",
+      "@type": [
+        "estleg:Section",
+        "owl:NamedIndividual"
+      ],
+      "estleg:sectionNumber": 164,
+      "rdfs:label": "§ 164. Aegumise peatumine perekondlikul põhjusel või eestkoste ajal",
+      "estleg:hasProvision": [
+        {
+          "@id": "https://example.org/estonian-legal#Par164_Lg1"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par164_Lg2"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par164_Lg3"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par164_Lg4"
+        }
+      ],
+      "estleg:inDivision": {
+        "@id": "https://example.org/estonian-legal#Division5"
+      },
+      "estleg:coversConcept": [
+        {
+          "@id": "https://example.org/estonian-legal#Aegumine"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#AegumiseKatkemineJaPeatumine"
+        }
+      ]
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par165_Lg1",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§165 lg 1",
+      "estleg:legalText": "(1) Kui piiratud teovõimega isikul ei ole seaduslikku esindajat, peatub tema nõuete ja tema vastu suunatud nõuete aegumine kuni isiku teovõimeliseks saamiseni või talle seadusliku esindaja määramiseni."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par165_Lg2",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§165 lg 2",
+      "estleg:legalText": "(2) Käesoleva paragrahvi lõikes 1 nimetatud nõuded ei aegu enne kuue kuu möödumist ajast, mil isik saab teovõimeliseks või talle määratakse seaduslik esindaja."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par165",
+      "@type": [
+        "estleg:Section",
+        "owl:NamedIndividual"
+      ],
+      "estleg:sectionNumber": 165,
+      "rdfs:label": "§ 165. Aegumise peatumine piiratud teovõimega isiku puhul",
+      "estleg:hasProvision": [
+        {
+          "@id": "https://example.org/estonian-legal#Par165_Lg1"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par165_Lg2"
+        }
+      ],
+      "estleg:inDivision": {
+        "@id": "https://example.org/estonian-legal#Division5"
+      },
+      "estleg:coversConcept": [
+        {
+          "@id": "https://example.org/estonian-legal#Aegumine"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#AegumiseKatkemineJaPeatumine"
+        }
+      ]
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par166_Lg1",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§166 lg 1",
+      "estleg:legalText": "(1) Pärandvarasse kuuluva või pärandvara vastu suunatud nõude aegumine peatub ajani, mil pärija võtab pärandvara vastu või pärandvara suhtes kuulutatakse välja pankrot või pärandvarale määratakse hooldaja."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par166_Lg2",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§166 lg 2",
+      "estleg:legalText": "(2) Käesoleva paragrahvi lõikes 1 nimetatud nõuded ei aegu enne kuue kuu möödumist ajast, mil pärija pärandvara vastu võttis, pärandvara suhtes pankrot välja kuulutati või pärandvarale hooldaja määrati."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par166",
+      "@type": [
+        "estleg:Section",
+        "owl:NamedIndividual"
+      ],
+      "estleg:sectionNumber": 166,
+      "rdfs:label": "§ 166. Aegumise peatumine pärimise korral",
+      "estleg:hasProvision": [
+        {
+          "@id": "https://example.org/estonian-legal#Par166_Lg1"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par166_Lg2"
+        }
+      ],
+      "estleg:inDivision": {
+        "@id": "https://example.org/estonian-legal#Division5"
+      },
+      "estleg:coversConcept": [
+        {
+          "@id": "https://example.org/estonian-legal#Aegumine"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#AegumiseKatkemineJaPeatumine"
+        }
+      ]
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par167_Lg1",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§167 lg 1",
+      "estleg:legalText": "(1) Nõude aegumine peatub õigustatud ja kohustatud isiku vahel peetavate läbirääkimiste toimumise ajaks, kui läbirääkimisi peetakse nõude või asjaolu üle, millest nõue võib tuleneda. Eeldatakse, et läbirääkimised on lõppenud, kui isik läbirääkimiste jätkamisest keeldub."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par167_Lg2",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§167 lg 2",
+      "estleg:legalText": "(2) Õigustatud isiku poolt kohustatud isikule kohustuse täitmiseks täiendava tähtaja määramise korral on aegumine peatunud kuni täiendava tähtaja möödumiseni või kohustatud isiku poolt oma kohustuse täitmisest lõpliku keeldumiseni."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par167_Lg3",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§167 lg 3",
+      "estleg:legalText": "(3) Aegumine peatub poolte poolt kokkulepitud ekspertiisi tegemiseni või kokkulepitud lepitusmenetluse lõpuni."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par167",
+      "@type": [
+        "estleg:Section",
+        "owl:NamedIndividual"
+      ],
+      "estleg:sectionNumber": 167,
+      "rdfs:label": "§ 167. Aegumise peatumine läbirääkimiste korral",
+      "estleg:hasProvision": [
+        {
+          "@id": "https://example.org/estonian-legal#Par167_Lg1"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par167_Lg2"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par167_Lg3"
+        }
+      ],
+      "estleg:inDivision": {
+        "@id": "https://example.org/estonian-legal#Division5"
+      },
+      "estleg:coversConcept": [
+        {
+          "@id": "https://example.org/estonian-legal#Aegumine"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#ÕigusteEnnetamine"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#AegumiseKatkemineJaPeatumine"
+        }
+      ]
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par168_Lg1",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§168 lg 1",
+      "estleg:legalText": "(1) Aega, mille kestel aegumine oli peatunud, ei arvestata aegumistähtaja hulka."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par168_Lg2",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§168 lg 2",
+      "estleg:legalText": "(2) Nõue ei aegu enne kahe kuu möödumist aegumise peatumise lõppemisest, kui seaduses ei ole ette nähtud, et nõue ei aegu pikema aja jooksul."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par168",
+      "@type": [
+        "estleg:Section",
+        "owl:NamedIndividual"
+      ],
+      "estleg:sectionNumber": 168,
+      "rdfs:label": "§ 168. Peatumise toime",
+      "estleg:hasProvision": [
+        {
+          "@id": "https://example.org/estonian-legal#Par168_Lg1"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Par168_Lg2"
+        }
+      ],
+      "estleg:inDivision": {
+        "@id": "https://example.org/estonian-legal#Division5"
+      },
+      "estleg:coversConcept": [
+        {
+          "@id": "https://example.org/estonian-legal#AegumiseKatkemineJaPeatumine"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#Aegumine"
+        }
+      ]
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par169_Lg1",
+      "@type": [
+        "estleg:LegalProvision",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "§169 lg 1",
+      "estleg:legalText": "Kui samasisulise nõude võib esitada nii seadusest kui tehingust tuleneval alusel ja seadusest või tehingust tuleneva nõude aegumine on peatunud või katkenud, siis on peatunud või katkenud nii seadusest kui tehingust tuleneva nõude aegumine."
+    },
+    {
+      "@id": "https://example.org/estonian-legal#Par169",
+      "@type": [
+        "estleg:Section",
+        "owl:NamedIndividual"
+      ],
+      "estleg:sectionNumber": 169,
+      "rdfs:label": "§ 169. Aegumise peatumine nõuete konkurentsi korral",
+      "estleg:hasProvision": [
+        {
+          "@id": "https://example.org/estonian-legal#Par169_Lg1"
+        }
+      ],
+      "estleg:inDivision": {
+        "@id": "https://example.org/estonian-legal#Division5"
+      },
+      "estleg:coversConcept": [
+        {
+          "@id": "https://example.org/estonian-legal#Aegumine"
+        },
+        {
+          "@id": "https://example.org/estonian-legal#AegumiseKatkemineJaPeatumine"
+        }
+      ]
+    },
+    {
+      "@id": "https://example.org/estonian-legal#AegumiseTagajärjed",
+      "@type": [
+        "estleg:LegalConcept",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "Aegumise tagajärjed"
+    },
+    {
+      "@id": "https://example.org/estonian-legal#TehingustTulenevaNoudeAegumine",
+      "@type": [
+        "estleg:LegalConcept",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "Tehingust tuleneva nõude aegumine"
+    },
+    {
+      "@id": "https://example.org/estonian-legal#SeadusestTulenevaNoudeAegumine",
+      "@type": [
+        "estleg:LegalConcept",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "Seadusest tuleneva nõude aegumine"
+    },
+    {
+      "@id": "https://example.org/estonian-legal#AegumineErijuhtudel",
+      "@type": [
+        "estleg:LegalConcept",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "Aegumine erijuhtudel"
+    },
+    {
+      "@id": "https://example.org/estonian-legal#AegumiseKatkemineJaPeatumine",
+      "@type": [
+        "estleg:LegalConcept",
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "Aegumise katkemine ja peatumine"
+    }
+  ]
+}

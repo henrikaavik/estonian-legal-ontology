@@ -1,0 +1,98 @@
+{
+  "@context": {
+    "estleg": "https://example.org/estonian-legal#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
+  },
+  "@graph": [
+    {
+      "@id": "https://example.org/estonian-legal#",
+      "@type": "owl:Ontology",
+      "rdfs:label": "TsÜS Osa 8 ontoloogia",
+      "dc:title": "Seaduse rakendamine (§170)"
+    },
+    {
+      "@id": "estleg:LegalPart",
+      "@type": "owl:Class",
+      "rdfs:label": "Seaduse osa"
+    },
+    {
+      "@id": "estleg:Section",
+      "@type": "owl:Class",
+      "rdfs:label": "Paragrahv"
+    },
+    {
+      "@id": "estleg:Provision",
+      "@type": "owl:Class",
+      "rdfs:label": "Lõige"
+    },
+    {
+      "@id": "estleg:LegalConcept",
+      "@type": "owl:Class",
+      "rdfs:label": "Õigusmõiste"
+    },
+    {
+      "@id": "estleg:ApplicationProvision",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalConcept"
+      ],
+      "rdfs:label": "Rakendussäte"
+    },
+    {
+      "@id": "estleg:EntryIntoForce",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalConcept"
+      ],
+      "rdfs:label": "Seaduse jõustumine"
+    },
+    {
+      "@id": "estleg:Part8",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalPart"
+      ],
+      "rdfs:label": "TsÜS 8. osa – Seaduse rakendamine",
+      "estleg:hasSection": {
+        "@id": "estleg:Par170"
+      }
+    },
+    {
+      "@id": "estleg:Par170_Lg1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision"
+      ],
+      "rdfs:label": "§170 lg 1",
+      "estleg:legalText": "Käesolev seadus jõustub selle rakendamise seaduses sätestatud ajast."
+    },
+    {
+      "@id": "estleg:Par170",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Section"
+      ],
+      "estleg:sectionNumber": 170,
+      "rdfs:label": "§ 170. Seaduse jõustumine",
+      "estleg:hasProvision": {
+        "@id": "estleg:Par170_Lg1"
+      },
+      "estleg:inPart": {
+        "@id": "estleg:Part8"
+      },
+      "estleg:coversConcept": [
+        {
+          "@id": "estleg:ApplicationProvision"
+        },
+        {
+          "@id": "estleg:EntryIntoForce"
+        }
+      ]
+    }
+  ]
+}
