@@ -1,0 +1,173 @@
+{
+  "@context": {
+    "estleg": "https://example.org/estonian-legal#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
+  },
+  "@graph": [
+    {
+      "@id": "estleg:RavS_Map_2026",
+      "@type": "owl:Ontology",
+      "rdfs:label": "Ravimiseaduse teemakaardistus",
+      "dc:source": "Ravimiseadus (RT I, 12.07.2025, 1; kehtiv redaktsioon, URL: https://www.riigiteataja.ee/akt/112072025024)"
+    },
+    {
+      "@id": "estleg:LegalProvision",
+      "@type": "owl:Class",
+      "rdfs:label": "Õigusnorm (paragrahv)"
+    },
+
+    {
+      "@id": "estleg:Cluster_MedicineApproval",
+      "@type": ["owl:NamedIndividual", "estleg:TopicCluster"],
+      "rdfs:label": "Ravimi müügiluba"
+    },
+    {
+      "@id": "estleg:Cluster_PharmacyOperations",
+      "@type": ["owl:NamedIndividual", "estleg:TopicCluster"],
+      "rdfs:label": "Apteegiteenus"
+    },
+    {
+      "@id": "estleg:Cluster_PrescriptionDrugs",
+      "@type": ["owl:NamedIndividual", "estleg:TopicCluster"],
+      "rdfs:label": "Retseptiravimid"
+    },
+
+    {
+      "@id": "estleg:RavS_Par_MuugiloaKohustus",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "RavS § 13, § 63–§ 64",
+      "rdfs:label": "Müügiluba kui ravimi turustamise eeltingimus",
+      "estleg:requestedCluster": "ravimi müügiluba",
+      "estleg:summary": "Sätestab põhimõtte, et Eestis tohib turustada üldjuhul üksnes Ravimiameti või Euroopa Komisjoni müügiloaga ravimeid, määratledes müügiloa kohustuse ning müügiloa hoidja rolli ja vastutuse.",
+      "estleg:sourceAct": "Ravimiseadus"
+    },
+    {
+      "@id": "estleg:RavS_Par_MuugiloaTaotlusJaMenetlus",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "RavS § 65–§ 69",
+      "rdfs:label": "Müügiloa taotlemine ja taotluse menetlemine",
+      "estleg:requestedCluster": "ravimi müügiluba",
+      "estleg:summary": "Reguleerib müügiloa taotluse esitamist, teisese müügiloa võimalust, erialase hindamise tasu ning Ravimiameti menetluskorra ja komisjonide kaasamise aluseid.",
+      "estleg:sourceAct": "Ravimiseadus"
+    },
+    {
+      "@id": "estleg:RavS_Par_MuugiloaValjaandmineKehtivusJaAndmed",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "RavS § 70–§ 73",
+      "rdfs:label": "Müügiloa väljaandmine, kehtivus ja loale kantavad andmed",
+      "estleg:requestedCluster": "ravimi müügiluba",
+      "estleg:summary": "Määrab müügiloa väljaandmise eeldused, loa kehtivuse ja uuendamise ning andmekoosseisu, mis peab müügiloal sisalduma, sh ravimi klassifitseerimise seosed väljastustingimustega.",
+      "estleg:sourceAct": "Ravimiseadus"
+    },
+    {
+      "@id": "estleg:RavS_Par_MuugiloastKeeldumineJaMuutmine",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "RavS § 74–§ 76",
+      "rdfs:label": "Müügiloa andmisest keeldumine, muutmine, peatamine ja kehtetuks tunnistamine",
+      "estleg:requestedCluster": "ravimi müügiluba",
+      "estleg:summary": "Sätestab alused, millal müügiloa andmisest või uuendamisest keeldutakse, ning korrad, mille alusel juba antud müügiluba muudetakse, peatatakse või tunnistatakse kehtetuks ravimiohutuse ja õiguspärasuse tagamiseks.",
+      "estleg:sourceAct": "Ravimiseadus"
+    },
+
+    {
+      "@id": "estleg:RavS_Par_ApteegiteenuseMoisteJaLiigid",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "RavS § 29–§ 30",
+      "rdfs:label": "Apteegiteenus ja apteekide liigid",
+      "estleg:requestedCluster": "apteegiteenus",
+      "estleg:summary": "Määratleb apteegiteenuse sisu ning apteekide liigid (üldapteek, veterinaarapteek, haiglaapteek) koos nende struktuurse korralduse põhiraamiga.",
+      "estleg:sourceAct": "Ravimiseadus"
+    },
+    {
+      "@id": "estleg:RavS_Par_ApteekideTegevusNouded",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "RavS § 31–§ 31¹",
+      "rdfs:label": "Üldnõuded apteekide tegevusele ja teenuse osutamise kohustus",
+      "estleg:requestedCluster": "apteegiteenus",
+      "estleg:summary": "Kehtestab apteegi tegevuse kvaliteedi- ja kättesaadavusnõuded ning juhtumid, kus apteegiteenuse osutamine on kohustuslik avaliku ravimivarustuse tagamiseks.",
+      "estleg:sourceAct": "Ravimiseadus"
+    },
+    {
+      "@id": "estleg:RavS_Par_ApteegisValmistamineJaValjastamine",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "RavS § 32–§ 33",
+      "rdfs:label": "Ravimite valmistamine apteegis ning väljakirjutamine ja väljastamine",
+      "estleg:requestedCluster": "apteegiteenus",
+      "estleg:summary": "Reguleerib apteegis ravimite ekstemporaalset ja seeriaviisilist valmistamist ning ravimite väljakirjutamise ja apteegist väljastamise põhireegleid, sealhulgas professionaalse järelevalve nõuet.",
+      "estleg:sourceAct": "Ravimiseadus"
+    },
+    {
+      "@id": "estleg:RavS_Par_ApteegiTegevuslubaJaPiirangud",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "RavS § 38–§ 45 (sh § 42¹)",
+      "rdfs:label": "Apteegiteenuse tegevusload ja omandipiirangud",
+      "estleg:requestedCluster": "apteegiteenus",
+      "estleg:summary": "Sätestab apteegiteenuse osutamise tegevusloa kohustuse, loa ulatuse, tegevusloa omaja staatuse, omandi- ja tegevuspiirangud ning apteegi juhataja ja tegevusloa omaja põhilised kohustused.",
+      "estleg:sourceAct": "Ravimiseadus"
+    },
+
+    {
+      "@id": "estleg:RavS_Par_RetseptiNoueJaValjastamine",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "RavS § 33",
+      "rdfs:label": "Retsepti alusel ravimite väljakirjutamine ja väljastamine",
+      "estleg:requestedCluster": "retseptiravimid",
+      "estleg:summary": "Määrab retsepti alusel väljastatavate ravimite väljakirjutamise ja apteegist väljastamise põhinõuded, rõhutades patsiendiohutust, kutsealast pädevust ja dokumenteeritust.",
+      "estleg:sourceAct": "Ravimiseadus"
+    },
+    {
+      "@id": "estleg:RavS_Par_RavimiteKlassifitseerimine",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "RavS § 72",
+      "rdfs:label": "Ravimite klassifitseerimine retsepti- ja käsimüügiravimiteks",
+      "estleg:requestedCluster": "retseptiravimid",
+      "estleg:summary": "Sätestab ravimite klassifitseerimise põhimõtted, mille alusel määratakse, kas ravim kuulub retsepti alusel või ilma retseptita väljastamisele.",
+      "estleg:sourceAct": "Ravimiseadus"
+    },
+    {
+      "@id": "estleg:RavS_Par_Retseptikeskus",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "RavS § 81",
+      "rdfs:label": "Retseptikeskus ja retseptiandmete haldus",
+      "estleg:requestedCluster": "retseptiravimid",
+      "estleg:summary": "Reguleerib retseptikeskuse kui retseptiinfot koondava infosüsteemi toimimist, andmekasutust ja retseptiprotsessi tehnilist tuge ravimite väljastamise kontrollitavuse tagamiseks.",
+      "estleg:sourceAct": "Ravimiseadus"
+    },
+    {
+      "@id": "estleg:RavS_Par_RetseptiravimiteTurvaelemendid",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "RavS § 102",
+      "rdfs:label": "Retseptiravimite turvaelemendid ja ehtsuse kontroll",
+      "estleg:requestedCluster": "retseptiravimid",
+      "estleg:summary": "Kehtestab ravimipakendite turvaelementide, ehtsuse kontrolli ja riigisisese andmekogu kasutamise korra, mis on oluline retseptiravimite võltsimisvastaseks kaitseks ja jälgitavuseks.",
+      "estleg:sourceAct": "Ravimiseadus"
+    },
+
+    {
+      "@id": "estleg:Concept_MuugilubaKuiTurulepaasuFilter",
+      "@type": ["owl:NamedIndividual", "estleg:LegalConcept"],
+      "rdfs:label": "Müügiluba kui turulepääsu filter",
+      "skos:definition": "Ravimi müügiluba toimib keskse eelkontrollina, mis võimaldab ravimi turustamist üksnes siis, kui kvaliteedi, ohutuse ja efektiivsuse kriteeriumid on täidetud ja pidev järelevalve on tagatud.",
+      "estleg:belongsToCluster": "ravimi müügiluba"
+    },
+    {
+      "@id": "estleg:Concept_ApteegiteenusKuiAvalikTervishoiuteenus",
+      "@type": ["owl:NamedIndividual", "estleg:LegalConcept"],
+      "rdfs:label": "Apteegiteenus kui reguleeritud tervishoiuteenus",
+      "skos:definition": "Apteegiteenus on litsentseeritud ja professionaalselt juhitud tervishoiuteenus, mille kaudu tagatakse ravimite kättesaadavus, nõuetekohane valmistamine ja patsiendi turvaline nõustamine.",
+      "estleg:belongsToCluster": "apteegiteenus"
+    },
+    {
+      "@id": "estleg:Concept_RetseptisusteemJaRavimiohutus",
+      "@type": ["owl:NamedIndividual", "estleg:LegalConcept"],
+      "rdfs:label": "Retseptisüsteem ja ravimiohutus",
+      "skos:definition": "Retseptiregulatsioon seob ravimi väljakirjutamise, väljastamise ja andmehalduse ühtseks kontrollisüsteemiks, et vähendada väärkasutust, parandada jälgitavust ja kaitsta patsienti.",
+      "estleg:belongsToCluster": "retseptiravimid"
+    }
+  ]
+}
