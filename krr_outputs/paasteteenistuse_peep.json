@@ -1,0 +1,146 @@
+{
+  "@context": {
+    "estleg": "https://example.org/estonian-legal#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
+  },
+  "@graph": [
+    {
+      "@id": "estleg:PAASTS_Map_2026",
+      "@type": "owl:Ontology",
+      "rdfs:label": "Päästeteenistuse seaduse teemakaardistus",
+      "dc:source": "Päästeseadus (Riigi Teataja, kehtiv redaktsioon)"
+    },
+    {
+      "@id": "estleg:LegalProvision",
+      "@type": "owl:Class",
+      "rdfs:label": "Õigusnorm (paragrahv)"
+    },
+
+    {
+      "@id": "estleg:Cluster_RescueFunctions",
+      "@type": ["owl:NamedIndividual", "estleg:TopicCluster"],
+      "rdfs:label": "Päästeteenistuse ülesanded"
+    },
+    {
+      "@id": "estleg:Cluster_EmergencyResponse",
+      "@type": ["owl:NamedIndividual", "estleg:TopicCluster"],
+      "rdfs:label": "Hädaabi ja operatiivne reageerimine"
+    },
+    {
+      "@id": "estleg:Cluster_FireSafety",
+      "@type": ["owl:NamedIndividual", "estleg:TopicCluster"],
+      "rdfs:label": "Tuleohutus"
+    },
+
+    {
+      "@id": "estleg:PAASTS_Par_YlesandedJaPaadevused",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "PääS § 1–§ 5",
+      "rdfs:label": "Päästeasutuse eesmärk, pädevus ja ülesannete ulatus",
+      "estleg:requestedCluster": "päästeteenistuse ülesanded",
+      "estleg:summary": "Sätestab päästeasutuse rolli inimelude, vara ja keskkonna kaitsel ning kirjeldab päästeteenistuse põhiülesandeid ohu ennetamisel, päästetöö korraldamisel ja avaliku turvalisuse tagamisel.",
+      "estleg:sourceAct": "Päästeseadus"
+    },
+    {
+      "@id": "estleg:PAASTS_Par_PaastetooKorraldus",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "PääS § 6–§ 10",
+      "rdfs:label": "Päästetöö juhtimine, osalejad ja koostöö",
+      "estleg:requestedCluster": "päästeteenistuse ülesanded",
+      "estleg:summary": "Reguleerib päästetöö juhtimise aluseid, eri osapoolte kaasamist ning asutustevahelist koostööd õnnetuste, kriiside ja muude ohuolukordade lahendamisel.",
+      "estleg:sourceAct": "Päästeseadus"
+    },
+    {
+      "@id": "estleg:PAASTS_Par_JarelevalveJaSunnimeetmed",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "PääS § 11–§ 14",
+      "rdfs:label": "Riiklik järelevalve, ettekirjutus ja sunnimehhanismid",
+      "estleg:requestedCluster": "päästeteenistuse ülesanded",
+      "estleg:summary": "Määrab päästeasutuse järelevalvepädevuse, ettekirjutuse tegemise alused ja õiguskaitsevahendid olukordades, kus tuleohutus- või päästenõudeid ei täideta.",
+      "estleg:sourceAct": "Päästeseadus"
+    },
+
+    {
+      "@id": "estleg:PAASTS_Par_HadaabiKorraldus",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "PääS § 15–§ 18",
+      "rdfs:label": "Hädaabi vastuvõtmine ja väljasõidu algatamine",
+      "estleg:requestedCluster": "hädaabi",
+      "estleg:summary": "Kirjeldab hädaabiteate menetlemise põhiloogikat: teate vastuvõtmine, ohu hindamine, prioriseerimine ja sobiva päästeressursi väljasaatmine.",
+      "estleg:sourceAct": "Päästeseadus"
+    },
+    {
+      "@id": "estleg:PAASTS_Par_ReageerimisKord",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "PääS § 19–§ 22",
+      "rdfs:label": "Operatiivne reageerimine ja sündmuskohal tegutsemine",
+      "estleg:requestedCluster": "hädaabi",
+      "estleg:summary": "Sätestab reageerimise põhimõtted päästesündmusel, sh käsuliini, koosvõime politsei/kiirabi jt asutustega ning kiire sekkumise nõude inimelu ja tervise kaitseks.",
+      "estleg:sourceAct": "Päästeseadus"
+    },
+    {
+      "@id": "estleg:PAASTS_Par_OiguslikudAlusedSeKKumiseks",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "PääS § 23–§ 26",
+      "rdfs:label": "Isiku ja vara puutumatuse riive hädaolukorras",
+      "estleg:requestedCluster": "hädaabi",
+      "estleg:summary": "Reguleerib päästetöö käigus sekkumiste õigusaluseid (nt juurdepääs, evakuatsioon, ohuallika kõrvaldamine) koos proportsionaalsuse ja vältimatu vajaduse nõudega.",
+      "estleg:sourceAct": "Päästeseadus"
+    },
+
+    {
+      "@id": "estleg:PAASTS_Par_TuleohutusNouded",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "PääS § 27–§ 31",
+      "rdfs:label": "Tuleohutuse üldnõuded ja vastutavad isikud",
+      "estleg:requestedCluster": "tuleohutus",
+      "estleg:summary": "Määratleb tuleohutuse põhinõuded ehitistes ja tegevustes, sh omaniku/valdaja kohustused ennetada tulekahju tekkimist ja levikut.",
+      "estleg:sourceAct": "Päästeseadus"
+    },
+    {
+      "@id": "estleg:PAASTS_Par_EnnetusJaKoolitus",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "PääS § 32–§ 36",
+      "rdfs:label": "Tuleohutuse ennetus, juhendamine ja teavitustöö",
+      "estleg:requestedCluster": "tuleohutus",
+      "estleg:summary": "Koondab ennetusmeetmed, tuleohutusalase teavitamise ja koolitamise põhimõtted, et vähendada tulekahjude riski ning tõsta valmisolekut õnnetuse korral.",
+      "estleg:sourceAct": "Päästeseadus"
+    },
+    {
+      "@id": "estleg:PAASTS_Par_TuleohutuseJarelevalve",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "PääS § 37–§ 40",
+      "rdfs:label": "Tuleohutusjärelevalve ja rikkumiste kõrvaldamine",
+      "estleg:requestedCluster": "tuleohutus",
+      "estleg:summary": "Sätestab päästeasutuse kontrolliõigused, rikkumiste kõrvaldamise ettekirjutused ja rakendatavad sunnivahendid tuleohutusnõuete täitmise tagamiseks.",
+      "estleg:sourceAct": "Päästeseadus"
+    },
+
+    {
+      "@id": "estleg:Concept_PaasteteenistuseAvalikYlesanne",
+      "@type": ["owl:NamedIndividual", "estleg:LegalConcept"],
+      "rdfs:label": "Päästeteenistuse avalik ülesanne",
+      "skos:definition": "Päästeteenistuse keskne ülesanne on ohu ennetamine, kiire reageerimine ja kahju vähendamine inimelule, varale ning keskkonnale.",
+      "estleg:belongsToCluster": "päästeteenistuse ülesanded"
+    },
+    {
+      "@id": "estleg:Concept_HadaabiReageerimisePohimote",
+      "@type": ["owl:NamedIndividual", "estleg:LegalConcept"],
+      "rdfs:label": "Hädaabi reageerimise põhimõte",
+      "skos:definition": "Hädaabiteate käsitlemine peab tagama viivitamatu ohu hindamise, prioriteetse ressursijaotuse ning koordineeritud sündmuskohale jõudmise.",
+      "estleg:belongsToCluster": "hädaabi"
+    },
+    {
+      "@id": "estleg:Concept_TuleohutuseEnnetuspohisus",
+      "@type": ["owl:NamedIndividual", "estleg:LegalConcept"],
+      "rdfs:label": "Tuleohutuse ennetuspõhisus",
+      "skos:definition": "Tuleohutus tugineb ennetusele, riskipõhisele järelevalvele ning isikute kohustusele rakendada meetmeid, mis hoiavad ära tulekahju tekkimise ja leviku.",
+      "estleg:belongsToCluster": "tuleohutus"
+    }
+  ]
+}
