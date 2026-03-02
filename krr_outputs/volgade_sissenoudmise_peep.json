@@ -1,0 +1,164 @@
+{
+  "@context": {
+    "estleg": "https://example.org/estonian-legal#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
+  },
+  "@graph": [
+    {
+      "@id": "estleg:VSS_Map_2026",
+      "@type": "owl:Ontology",
+      "rdfs:label": "Võlgade sissenõudmise seaduse teemakaardistus (VSS)",
+      "dc:source": "Võlgade sissenõudmise seadus (Riigi Teataja, kehtiv terviktekst)",
+      "estleg:scope": "Debt collection practices, collector obligations, and consumer protection safeguards in debt recovery context"
+    },
+    {
+      "@id": "estleg:LegalProvision",
+      "@type": "owl:Class",
+      "rdfs:label": "Õigusnorm (paragrahv või normiplokk)"
+    },
+    {
+      "@id": "estleg:TopicCluster",
+      "@type": "owl:Class",
+      "rdfs:label": "Temaatiline klaster"
+    },
+    {
+      "@id": "estleg:LegalConcept",
+      "@type": "owl:Class",
+      "rdfs:label": "Õigusmõiste"
+    },
+
+    {
+      "@id": "estleg:Cluster_DebtCollectionPractices",
+      "@type": ["owl:NamedIndividual", "estleg:TopicCluster"],
+      "rdfs:label": "Võlgade sissenõudmise praktikad"
+    },
+    {
+      "@id": "estleg:Cluster_CollectorObligations",
+      "@type": ["owl:NamedIndividual", "estleg:TopicCluster"],
+      "rdfs:label": "Voliniku kohustused"
+    },
+    {
+      "@id": "estleg:Cluster_ConsumerProtection",
+      "@type": ["owl:NamedIndividual", "estleg:TopicCluster"],
+      "rdfs:label": "Tarbijakaitse sissenõudmises"
+    },
+
+    {
+      "@id": "estleg:VSS_Norm_001",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "VSS üldsätted (reguleerimisala ja mõisted)",
+      "rdfs:label": "Võlgade sissenõudmise tegevuse üldraamistik",
+      "estleg:requestedCluster": "volgade_sissenoudmise_praktikad",
+      "estleg:summary": "Seadus määratleb võlgade sissenõudmise kui reguleeritud tegevuse, seades nõuete esitamise ja täitmisele suunamise protsessile läbipaistvuse, õiguspärasuse ning proportsionaalsuse nõuded.",
+      "estleg:sourceAct": "Võlgade sissenõudmise seadus"
+    },
+    {
+      "@id": "estleg:VSS_Norm_002",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "VSS kohtueelse sissenõudmise korra sätted",
+      "rdfs:label": "Kohtueelse sissenõudmise sammud ja teavitamine",
+      "estleg:requestedCluster": "volgade_sissenoudmise_praktikad",
+      "estleg:summary": "Kohtueelses menetluses peab nõude esitajal või volinikul olema dokumenteeritud alus nõude olemasoluks, võlgnikule tuleb esitada arusaadav teave nõude suuruse, aluse ja vaidlustamise võimaluste kohta.",
+      "estleg:sourceAct": "Võlgade sissenõudmise seadus"
+    },
+    {
+      "@id": "estleg:VSS_Norm_003",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "VSS sissenõudmismeetodite piirangu sätted",
+      "rdfs:label": "Lubatud ja keelatud sissenõudmismeetodid",
+      "estleg:requestedCluster": "volgade_sissenoudmise_praktikad",
+      "estleg:summary": "Sissenõudmine peab toimuma viisil, mis ei alanda võlgnikku ega kasuta eksitavaid või agressiivseid võtteid; lubatud on üksnes seadusega kooskõlas olevad suhtlus- ja menetlusmeetodid.",
+      "estleg:sourceAct": "Võlgade sissenõudmise seadus"
+    },
+
+    {
+      "@id": "estleg:VSS_Norm_010",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "VSS voliniku usaldusväärsuse ja pädevuse nõuded",
+      "rdfs:label": "Voliniku tegevusloa- ja sobivusnõuded",
+      "estleg:requestedCluster": "voliniku_kohustused",
+      "estleg:summary": "Võlgade sissenõudmise volinik peab vastama seaduses sätestatud usaldusväärsuse, pädevuse ja organisatsioonilise vastavuse nõuetele enne tegevuse alustamist ja selle käigus.",
+      "estleg:sourceAct": "Võlgade sissenõudmise seadus"
+    },
+    {
+      "@id": "estleg:VSS_Norm_011",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "VSS teavitamis-, dokumenteerimis- ja tõendamiskohustus",
+      "rdfs:label": "Voliniku kohustus tagada jälgitav menetlus",
+      "estleg:requestedCluster": "voliniku_kohustused",
+      "estleg:summary": "Volinik peab säilitama nõude alusdokumendid, suhtluslogid ja menetlustoimingud nii, et hilisem järelevalve ja võlgniku õiguskaitse oleksid tõhusalt teostatavad.",
+      "estleg:sourceAct": "Võlgade sissenõudmise seadus"
+    },
+    {
+      "@id": "estleg:VSS_Norm_012",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "VSS huvide konflikti ja tasustamise läbipaistvuse sätted",
+      "rdfs:label": "Voliniku lojaalsus- ja läbipaistvuskohustus",
+      "estleg:requestedCluster": "voliniku_kohustused",
+      "estleg:summary": "Volinik peab vältima huvide konflikte, esitama tasud ja kulud arusaadavalt ning tegutsema viisil, mis ei moonuta nõude tegelikku ulatust ega võlgniku valikuvõimalusi.",
+      "estleg:sourceAct": "Võlgade sissenõudmise seadus"
+    },
+
+    {
+      "@id": "estleg:VSS_Norm_020",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "VSS tarbijale antava info miinimumnõuded",
+      "rdfs:label": "Tarbija õigus selgele nõudeteabele",
+      "estleg:requestedCluster": "tarbijakaitse",
+      "estleg:summary": "Tarbijale tuleb anda selges vormis teave nõude aluse, võlasumma osade, kõrvalnõuete, maksetähtaegade ja kaebe- või vaidlustamisvõimaluste kohta enne intensiivsemate sissenõudmistoimingute kasutamist.",
+      "estleg:sourceAct": "Võlgade sissenõudmise seadus"
+    },
+    {
+      "@id": "estleg:VSS_Norm_021",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "VSS ebaproportsionaalsete kulude ja kõrvalnõuete piirang",
+      "rdfs:label": "Tarbija kaitse ülemäärase kulukoormuse eest",
+      "estleg:requestedCluster": "tarbijakaitse",
+      "estleg:summary": "Tarbijalt nõutavad sissenõudmiskulud peavad olema põhjendatud, mõõdukad ja õiguslikult lubatud; ebamõistlikud või topeltarvestatud kulud ei tohi koormata tarbijat.",
+      "estleg:sourceAct": "Võlgade sissenõudmise seadus"
+    },
+    {
+      "@id": "estleg:VSS_Norm_022",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "VSS kaebuste lahendamise ja järelevalve sätted",
+      "rdfs:label": "Tarbija õiguskaitse ja järelevalve mehhanism",
+      "estleg:requestedCluster": "tarbijakaitse",
+      "estleg:summary": "Seadus näeb ette kaebuste menetlemise korra ja järelevalvepädevuse, et tarbija saaks ebaõigete sissenõudmisvõtete korral kasutada tõhusat õiguskaitset.",
+      "estleg:sourceAct": "Võlgade sissenõudmise seadus"
+    },
+
+    {
+      "@id": "estleg:Concept_DebtCollectionCompliance",
+      "@type": ["owl:NamedIndividual", "estleg:LegalConcept"],
+      "rdfs:label": "Õiguspärane võlgade sissenõudmine",
+      "skos:definition": "Õiguspärane võlgade sissenõudmine ühendab nõude realiseerimise eesmärgi menetlusliku õigluse, proportsionaalsuse ja dokumenteerituse nõuetega.",
+      "estleg:belongsToCluster": "volgade_sissenoudmise_praktikad"
+    },
+    {
+      "@id": "estleg:Concept_CollectorDutyOfCare",
+      "@type": ["owl:NamedIndividual", "estleg:LegalConcept"],
+      "rdfs:label": "Voliniku hoolsus- ja läbipaistvuskohustus",
+      "skos:definition": "Volinik peab tegutsema professionaalselt, tõendatavalt ja huvide konflikti vältides, et võla sissenõudmine ei kahjustaks menetlusosaliste põhiõigusi.",
+      "estleg:belongsToCluster": "voliniku_kohustused"
+    },
+    {
+      "@id": "estleg:Concept_ConsumerFairTreatmentInRecovery",
+      "@type": ["owl:NamedIndividual", "estleg:LegalConcept"],
+      "rdfs:label": "Tarbija õiglane kohtlemine sissenõudmises",
+      "skos:definition": "Tarbija õiglane kohtlemine tähendab, et nõude sissenõudmisel ei kasutata eksitavaid, alandavaid ega ebaproportsionaalseid võtteid ning tarbijal säilib reaalne võimalus nõuet kontrollida ja vaidlustada.",
+      "estleg:belongsToCluster": "tarbijakaitse"
+    },
+
+    {
+      "@id": "estleg:VSS_NOTE_001",
+      "@type": ["owl:NamedIndividual"],
+      "rdfs:label": "Märkus koostööks Martaga",
+      "estleg:note": "Kaardistus on tehtud ühtses JSON-LD skeemis semantiliste normiplokkidena. Palun Marta-l teha järelkontroll ja lisada täpsed paragrahvinumbrid kehtivast Riigi Teataja redaktsioonist (eriti kulupiirangute ja järelevalve sätetes)."
+    }
+  ]
+}
