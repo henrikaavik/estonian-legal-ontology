@@ -1,27 +1,35 @@
 {
   "@context": {
-    "@vocab": "https://example.org/estonian-law/procedure#",
-    "dct": "http://purl.org/dc/terms/",
-    "schema": "https://schema.org/",
+    "estleg": "https://example.org/estonian-legal#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dc": "http://purl.org/dc/elements/1.1/",
     "skos": "http://www.w3.org/2004/02/skos/core#"
   },
-  "@type": "LegalProcedureMap",
-  "id": "krms-procedure-map-v1",
-  "title": "Kriminaalmenetluse seadustik (KrMS) – menetluse etappide kaart",
-  "jurisdiction": "EE",
-  "source": {
-    "@type": "Legislation",
-    "name": "Kriminaalmenetluse seadustik",
-    "abbreviation": "KrMS",
-    "url": "https://www.riigiteataja.ee/akt/KrMS"
-  },
-  "schemaVersion": "1.0",
-  "generatedBy": "peep",
-  "dct:created": "2026-03-01",
-  "procedureStages": [
+  "@graph": [
     {
-      "@id": "stage-criminal-investigation",
-      "@type": "ProcedureStage",
+      "@id": "estleg:KrMS_ProcedureMap_2026",
+      "@type": "owl:Ontology",
+      "rdfs:label": "Kriminaalmenetluse seadustik (KrMS) – menetluse etappide kaart",
+      "dc:description": "Kriminaalmenetluse etappide struktuur ja üleminekud.",
+      "dc:source": "Kriminaalmenetluse seadustik",
+      "estleg:jurisdiction": "EE",
+      "estleg:schemaVersion": "1.0",
+      "dc:created": "2026-03-01"
+    },
+    {
+      "@id": "estleg:ProcedureStage",
+      "@type": "owl:Class",
+      "rdfs:label": "Menetlusetapp"
+    },
+    {
+      "@id": "estleg:KrMS_stage_criminal_investigation",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:ProcedureStage"
+      ],
       "skos:prefLabel": "Criminal investigation (kriminaalmenetlus)",
       "estonianLabel": "Kriminaalmenetlus (üldraamistik)",
       "description": "Kriminaalmenetluse üldpõhimõtted, subjektid, tõendamine ja menetluse tagamise vahendid, mis raamivad kogu menetlust alates teate menetlemisest kuni kohtueelse ja kohtumenetluse toiminguteni.",
@@ -72,8 +80,11 @@
       ]
     },
     {
-      "@id": "stage-pretrial-procedure",
-      "@type": "ProcedureStage",
+      "@id": "estleg:KrMS_stage_pretrial_procedure",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:ProcedureStage"
+      ],
       "skos:prefLabel": "Pre-trial procedure (uurimine)",
       "estonianLabel": "Kohtueelne menetlus (uurimine)",
       "description": "Kuriteoteate kontroll, kriminaalmenetluse alustamine, tõendite kogumine, kahtlustuse formuleerimine, tõkendite kohaldamine, toimikuga tutvumine ning süüdistusakti koostamine ja kohtusse saatmine.",
@@ -104,13 +115,16 @@
         }
       ],
       "stageTransition": {
-        "to": "stage-court-proceedings",
+        "to": "estleg:KrMS_stage_court_proceedings",
         "condition": "Süüdistusakt esitatakse kohtule või rakendatakse muud lõpetamis-/alternatiivmenetluse lahendit"
       }
     },
     {
-      "@id": "stage-court-proceedings",
-      "@type": "ProcedureStage",
+      "@id": "estleg:KrMS_stage_court_proceedings",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:ProcedureStage"
+      ],
       "skos:prefLabel": "Court proceedings (kohtumenetlus)",
       "estonianLabel": "Kohtumenetlus",
       "description": "Kohtualluvuse kontroll, asja arutamine võistlevas kohtumenetluses, tõendite vahetu uurimine, kohtuotsuse tegemine ning edasikaebe- ja täitemenetlusega seotud lahendid.",
@@ -141,18 +155,5 @@
         "lahend kaebemenetluses"
       ]
     }
-  ],
-  "integrationNotes": {
-    "unifiedSchema": "Ühine skeem kasutab kolme peamist etappi (kriminaalmenetlus, kohtueelne menetlus, kohtumenetlus), millesse paigutatakse KrMS sisukorra plokid.",
-    "normalizationRules": [
-      "Stage IDs in kebab-case",
-      "Eesti+English labels parallel fields",
-      "Legal anchors viitavad peatüki/paragrahvi vahemikele"
-    ],
-    "qualityStatus": "draft-structured"
-  },
-  "collaboration": {
-    "requestedWith": "marta",
-    "status": "peer-review-pending"
-  }
+  ]
 }
