@@ -1,0 +1,205 @@
+{
+  "@context": {
+    "estleg": "https://example.org/estonian-legal#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
+  },
+  "@graph": [
+    {
+      "@id": "estleg:SAAS_Map_2026",
+      "@type": "owl:Ontology",
+      "rdfs:label": "Sihtasutuste seaduse teemakaardistus (sihtasutusõigus)",
+      "dc:description": "Sihtasutuste seaduse põhisambad: asutamine, vara ja eesmärk.",
+      "dc:source": "Sihtasutuste seadus (Riigi Teataja, kehtiv redaktsioon; §-taseme viited vajavad lõppverifitseerimist)"
+    },
+    {
+      "@id": "estleg:LegalProvision_sihtasutused",
+      "@type": "owl:Class",
+      "rdfs:label": "Õigusnorm (paragrahv)"
+    },
+    {
+      "@id": "estleg:TopicCluster_sihtasutused",
+      "@type": "owl:Class",
+      "rdfs:label": "Teemaklaster"
+    },
+    {
+      "@id": "estleg:LegalConcept_sihtasutused",
+      "@type": "owl:Class",
+      "rdfs:label": "Õigusmõiste"
+    },
+    {
+      "@id": "estleg:Cluster_Asutamine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster_sihtasutused"
+      ],
+      "rdfs:label": "Asutamine"
+    },
+    {
+      "@id": "estleg:Cluster_Vara",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster_sihtasutused"
+      ],
+      "rdfs:label": "Vara"
+    },
+    {
+      "@id": "estleg:Cluster_Eesmark",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster_sihtasutused"
+      ],
+      "rdfs:label": "Eesmärk"
+    },
+    {
+      "@id": "estleg:SAAS_Par_Asutamisotsus",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_sihtasutused"
+      ],
+      "estleg:paragrahv": "SAS (asutamisotsuse ja asutamisdokumentide normid)",
+      "rdfs:label": "Sihtasutuse asutamisotsus ja põhikirja kujundamine",
+      "estleg:requestedCluster": "asutamine",
+      "estleg:summary": "Määrab, et sihtasutus tekib asutaja tahteavalduse alusel ning selle alusdokumendid peavad kirjeldama juhtimist, eesmärki ja vara kasutamise raamistikku.",
+      "estleg:sourceAct": "Sihtasutuste seadus"
+    },
+    {
+      "@id": "estleg:SAAS_Par_AsutajaStaatusJaTahteavaldus",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_sihtasutused"
+      ],
+      "estleg:paragrahv": "SAS (asutaja staatuse, asutamislepingu ja tahteavalduse normid)",
+      "rdfs:label": "Asutaja(te) pädevus ja asutamise vorm",
+      "estleg:requestedCluster": "asutamine",
+      "estleg:summary": "Reguleerib, millistel tingimustel füüsiline või juriidiline isik võib sihtasutuse asutada ning kuidas asutamise õiguslik vorm tagab asutamisotsuse kehtivuse.",
+      "estleg:sourceAct": "Sihtasutuste seadus"
+    },
+    {
+      "@id": "estleg:SAAS_Par_Registreerimine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_sihtasutused"
+      ],
+      "estleg:paragrahv": "SAS (registrisse kandmise normid)",
+      "rdfs:label": "Registrimenetlus ja õigusvõime tekkimine",
+      "estleg:requestedCluster": "asutamine",
+      "estleg:summary": "Sätestab registrisse kandmise nõuded ja tagajärje, et sihtasutuse iseseisev õigusvõime tekib registrikande tegemisega.",
+      "estleg:sourceAct": "Sihtasutuste seadus"
+    },
+    {
+      "@id": "estleg:SAAS_Par_Algvara",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_sihtasutused"
+      ],
+      "estleg:paragrahv": "SAS (sihtasutuse algvara eraldamise normid)",
+      "rdfs:label": "Algvara moodustamine ja eraldamine",
+      "estleg:requestedCluster": "vara",
+      "estleg:summary": "Määrab, et sihtasutuse toimimiseks tuleb eraldada eesmärgi täitmiseks piisav vara ning vara üleminek peab olema õiguslikult selge ja tõendatav.",
+      "estleg:sourceAct": "Sihtasutuste seadus"
+    },
+    {
+      "@id": "estleg:SAAS_Par_VaraValitsemine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_sihtasutused"
+      ],
+      "estleg:paragrahv": "SAS (vara valitsemise ja säilitamise normid)",
+      "rdfs:label": "Vara valitsemine, säilitamine ja hoolsuskohustus",
+      "estleg:requestedCluster": "vara",
+      "estleg:summary": "Nõuab, et juhatus käsutaks sihtasutuse vara heaperemehelikult, vältides põhjendamatuid riske ning tagades vara kasutamise kooskõla asutuse eesmärgiga.",
+      "estleg:sourceAct": "Sihtasutuste seadus"
+    },
+    {
+      "@id": "estleg:SAAS_Par_VaraKasutamisePiirangud",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_sihtasutused"
+      ],
+      "estleg:paragrahv": "SAS (vara kasutamise piirangute ja tehingukontrolli normid)",
+      "rdfs:label": "Vara kasutamise piirangud ja huvide konflikti vältimine",
+      "estleg:requestedCluster": "vara",
+      "estleg:summary": "Piirab vara kasutamist tehingutes, mis võivad kahjustada sihtasutuse huve, ning seob juhtorganeid läbipaistvuse ja huvide konflikti vältimise kohustusega.",
+      "estleg:sourceAct": "Sihtasutuste seadus"
+    },
+    {
+      "@id": "estleg:SAAS_Par_EesmarkJaKasulikkus",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_sihtasutused"
+      ],
+      "estleg:paragrahv": "SAS (eesmärgi määratlemise normid)",
+      "rdfs:label": "Sihtasutuse eesmärgi määratlemine",
+      "estleg:requestedCluster": "eesmärk",
+      "estleg:summary": "Nõuab, et sihtasutuse eesmärk oleks põhikirjas selgelt määratletud, õiguspärane ja sisuliselt teostatav.",
+      "estleg:sourceAct": "Sihtasutuste seadus"
+    },
+    {
+      "@id": "estleg:SAAS_Par_EesmargiJargneTegevus",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_sihtasutused"
+      ],
+      "estleg:paragrahv": "SAS (eesmärgipärase tegevuse normid)",
+      "rdfs:label": "Eesmärgipärase tegevuse kohustus",
+      "estleg:requestedCluster": "eesmärk",
+      "estleg:summary": "Seob juhtorganite otsustusruumi kohustusega kasutada ressursse sihtasutuse põhikirjalise eesmärgi saavutamiseks ja vältida kõrvalekaldeid erahuvidesse.",
+      "estleg:sourceAct": "Sihtasutuste seadus"
+    },
+    {
+      "@id": "estleg:SAAS_Par_EesmargiMuutmineJaLopetamine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_sihtasutused"
+      ],
+      "estleg:paragrahv": "SAS (eesmärgi muutmise ning lõpetamise eelduste normid)",
+      "rdfs:label": "Eesmärgi muutmine, võimatus ja lõpetamise tagajärjed",
+      "estleg:requestedCluster": "eesmärk",
+      "estleg:summary": "Kirjeldab, millal ja kuidas eesmärki saab muuta või kuidas toimida olukorras, kus eesmärgi täitmine osutub püsivalt võimatuks.",
+      "estleg:sourceAct": "Sihtasutuste seadus"
+    },
+    {
+      "@id": "estleg:Concept_AsutamistehinguSelgus",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalConcept_sihtasutused"
+      ],
+      "rdfs:label": "Asutamistehingu selgus ja registrikande konstitutiivne tähendus",
+      "skos:definition": "Sihtasutuse õiguslik identiteet tekib asutamisdokumentide korrektsuse ja registrikande kaudu, mis annab organisatsioonile iseseisva õigusvõime.",
+      "estleg:belongsToCluster": "asutamine"
+    },
+    {
+      "@id": "estleg:Concept_SihtotstarbelineVarareziim",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalConcept_sihtasutused"
+      ],
+      "rdfs:label": "Sihtotstarbeline vararežiim",
+      "skos:definition": "Sihtasutuse vara moodustab eesmärgipärase varakogumi, mida tuleb valitseda hoolsalt ning kasutada üksnes põhikirjaliste eesmärkide teenimiseks.",
+      "estleg:belongsToCluster": "vara"
+    },
+    {
+      "@id": "estleg:Concept_EesmarkKeskneJuhtimine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalConcept_sihtasutused"
+      ],
+      "rdfs:label": "Eesmärgikeskne juhtimine",
+      "skos:definition": "Sihtasutuse juhtimise õiguspärasus eeldab, et kõik strateegilised ja varalised otsused jäävad kooskõlla asutatud eesmärgiga ning avaliku või heategevusliku kasuga.",
+      "estleg:belongsToCluster": "eesmärk"
+    },
+    {
+      "@id": "estleg:SAAS_NOTE_001",
+      "@type": [
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "Märkus kaardistuse kohta",
+      "estleg:note": "Kaardistus järgib meeskonna ühtset JSON-LD skeemi. Töös kasutati semantilist struktuurikaardistust; järgmises iteratsioonis tuleb siduda iga kirje konkreetsete §-numbritega kehtivas Riigi Teataja redaktsioonis."
+    }
+  ]
+}
