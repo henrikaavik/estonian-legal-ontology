@@ -1,0 +1,166 @@
+{
+  "@context": {
+    "estleg": "https://example.org/estonian-legal#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
+  },
+  "@graph": [
+    {
+      "@id": "estleg:VOS_Osa7_Map_2026",
+      "@type": "owl:Ontology",
+      "rdfs:label": "VÕS Osa 7 teemakaardistus (tarbijalepingud)",
+      "dc:title": "Contract law: Contracts with consumers",
+      "dc:description": "VÕS Osa 7 semantiline kaardistus: tarbijalepingud, kauglepingud ja väljaspool äriruume sõlmitud lepingud (koju müümine).",
+      "dc:source": "Võlaõigusseadus (Riigi Teataja, kehtiv redaktsioon; §-taseme täppisviited vajavad eraldi lõppverifitseerimist)."
+    },
+
+    {
+      "@id": "estleg:LegalProvision_vos_osa7",
+      "@type": "owl:Class",
+      "rdfs:label": "Õigusnorm (VÕS Osa 7)"
+    },
+    {
+      "@id": "estleg:TopicCluster_vos_osa7",
+      "@type": "owl:Class",
+      "rdfs:label": "Teemaklaster (VÕS Osa 7)"
+    },
+    {
+      "@id": "estleg:LegalConcept_vos_osa7",
+      "@type": "owl:Class",
+      "rdfs:label": "Õigusmõiste (VÕS Osa 7)"
+    },
+
+    {
+      "@id": "estleg:Cluster_Tarbijalepingud",
+      "@type": ["owl:NamedIndividual", "estleg:TopicCluster_vos_osa7"],
+      "rdfs:label": "Tarbijalepingud"
+    },
+    {
+      "@id": "estleg:Cluster_Kauglepingud",
+      "@type": ["owl:NamedIndividual", "estleg:TopicCluster_vos_osa7"],
+      "rdfs:label": "Kauglepingud"
+    },
+    {
+      "@id": "estleg:Cluster_VaeljaspoolAriruume",
+      "@type": ["owl:NamedIndividual", "estleg:TopicCluster_vos_osa7"],
+      "rdfs:label": "Väljaspool äriruume sõlmitud lepingud (koju müümine)"
+    },
+
+    {
+      "@id": "estleg:VOS7_Par_TarbijaKauplejaMisted",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision_vos_osa7"],
+      "estleg:paragrahv": "VÕS (tarbijalepingu, tarbija ja kaupleja mõistete normid)",
+      "rdfs:label": "Tarbijalepingu subjektid ja kohaldamisala",
+      "estleg:requestedCluster": "tarbijalepingud",
+      "estleg:summary": "Määratleb tarbija ja kaupleja rollid ning piiritleb, millal lepingule kohaldub tarbijakaitseline erirežiim.",
+      "estleg:sourceAct": "Võlaõigusseadus"
+    },
+    {
+      "@id": "estleg:VOS7_Par_EelteaveJaLabipaistvus",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision_vos_osa7"],
+      "estleg:paragrahv": "VÕS (lepinguelse teavitamise ja läbipaistvuse normid)",
+      "rdfs:label": "Lepinguelse info andmise kohustus",
+      "estleg:requestedCluster": "tarbijalepingud",
+      "estleg:summary": "Kaupleja peab enne lepingu sõlmimist esitama tarbijale selge teabe hinna, põhiomaduste, kestuse, taganemisõiguse ja täitmise tingimuste kohta.",
+      "estleg:sourceAct": "Võlaõigusseadus"
+    },
+    {
+      "@id": "estleg:VOS7_Par_EbaausadTingimused",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision_vos_osa7"],
+      "estleg:paragrahv": "VÕS (tarbijat põhjendamatult kahjustavate tüüptingimuste normid)",
+      "rdfs:label": "Tarbijat kahjustavate lepingutingimuste keeld",
+      "estleg:requestedCluster": "tarbijalepingud",
+      "estleg:summary": "Ebaõiglased tüüptingimused ei seo tarbijat; kontroll hõlmab nii tingimuse sisu kui ka teabe esitamise viisi.",
+      "estleg:sourceAct": "Võlaõigusseadus"
+    },
+
+    {
+      "@id": "estleg:VOS7_Par_KauglepinguMisteJaKanalid",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision_vos_osa7"],
+      "estleg:paragrahv": "VÕS (kauglepingu mõiste ja sidevahendi kasutuse normid)",
+      "rdfs:label": "Kauglepingu tunnused ja sõlmimise viisid",
+      "estleg:requestedCluster": "kauglepingud",
+      "estleg:summary": "Kaugleping on leping, mis sõlmitakse poolte samaaegse füüsilise kohalolekuta, kasutades kaugsidevahendit organiseeritud müügisüsteemis.",
+      "estleg:sourceAct": "Võlaõigusseadus"
+    },
+    {
+      "@id": "estleg:VOS7_Par_KauglepinguInfonouded",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision_vos_osa7"],
+      "estleg:paragrahv": "VÕS (kauglepingu eel- ja järelteavitamise normid)",
+      "rdfs:label": "Kauglepingu teabe esitamine püsival andmekandjal",
+      "estleg:requestedCluster": "kauglepingud",
+      "estleg:summary": "Oluline lepinguteave tuleb teha tarbijale kättesaadavaks enne tellimust ning kinnitada püsival andmekandjal pärast lepingu sõlmimist.",
+      "estleg:sourceAct": "Võlaõigusseadus"
+    },
+    {
+      "@id": "estleg:VOS7_Par_Taganemisoigus",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision_vos_osa7"],
+      "estleg:paragrahv": "VÕS (14-päevase taganemisõiguse normid ja erandid)",
+      "rdfs:label": "Taganemisõigus kauglepingust",
+      "estleg:requestedCluster": "kauglepingud",
+      "estleg:summary": "Tarbijal on üldjuhul õigus lepingust põhjendusi esitamata taganeda seaduses sätestatud tähtaja jooksul; seadus määrab ka taganemisõiguse erandid.",
+      "estleg:sourceAct": "Võlaõigusseadus"
+    },
+
+    {
+      "@id": "estleg:VOS7_Par_VaeljaspoolAriruumeMiste",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision_vos_osa7"],
+      "estleg:paragrahv": "VÕS (väljaspool äriruume sõlmitud lepingu mõiste normid)",
+      "rdfs:label": "Väljaspool äriruume sõlmitud lepingu tunnused",
+      "estleg:requestedCluster": "valjaspool_ariruume",
+      "estleg:summary": "Hõlmab lepingu sõlmimist tarbija kodus, töökohas või muus kohas, mis ei ole kaupleja püsiv müügikoht, sh koju müümise olukorrad.",
+      "estleg:sourceAct": "Võlaõigusseadus"
+    },
+    {
+      "@id": "estleg:VOS7_Par_KojuMuumineInfoJaNoustumus",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision_vos_osa7"],
+      "estleg:paragrahv": "VÕS (koju müümise eriteavituse ja nõustumise normid)",
+      "rdfs:label": "Koju müümisel tarbija kaitsemehhanismid",
+      "estleg:requestedCluster": "valjaspool_ariruume",
+      "estleg:summary": "Kaupleja peab andma tarbijale selged andmed oma identiteedi, lepingu tingimuste, hinna ja taganemisõiguse kohta; agressiivne mõjutamine on keelatud.",
+      "estleg:sourceAct": "Võlaõigusseadus"
+    },
+    {
+      "@id": "estleg:VOS7_Par_TaganemiseTagajarjed",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision_vos_osa7"],
+      "estleg:paragrahv": "VÕS (taganemise õiguslikud tagajärjed ja tagastuskohustused)",
+      "rdfs:label": "Taganemise järgsed tagastused ja kulude jaotus",
+      "estleg:requestedCluster": "valjaspool_ariruume",
+      "estleg:summary": "Reguleerib, kuidas pooled peavad taganemisel tagastama saadud sooritused, millised kulud kannab tarbija ning millal kaupleja peab raha tagastama.",
+      "estleg:sourceAct": "Võlaõigusseadus"
+    },
+
+    {
+      "@id": "estleg:Concept_TarbijaNorgemPool",
+      "@type": ["owl:NamedIndividual", "estleg:LegalConcept_vos_osa7"],
+      "rdfs:label": "Tarbija kui nõrgem lepingupool",
+      "skos:definition": "Tarbijalepingute normid tasakaalustavad informatsioonilist ja läbirääkimisvõime ebavõrdsust tarbija ning kaupleja vahel.",
+      "estleg:belongsToCluster": "tarbijalepingud"
+    },
+    {
+      "@id": "estleg:Concept_KauglepinguAsummeetria",
+      "@type": ["owl:NamedIndividual", "estleg:LegalConcept_vos_osa7"],
+      "rdfs:label": "Kauglepingu infoasümmeetria",
+      "skos:definition": "Kauglepingu puhul asendavad füüsilise kontakti puudumist rangemad teavitamisnõuded ning taganemisõigus.",
+      "estleg:belongsToCluster": "kauglepingud"
+    },
+    {
+      "@id": "estleg:Concept_KojuMuugiSuurendatudKaitse",
+      "@type": ["owl:NamedIndividual", "estleg:LegalConcept_vos_osa7"],
+      "rdfs:label": "Koju müümise kõrgendatud kaitse",
+      "skos:definition": "Väljaspool äriruume sõlmitud lepingutes on tarbija kaitse tugevam, sest otsus tehakse sageli ootamatus olukorras ja suurema surve all.",
+      "estleg:belongsToCluster": "valjaspool_ariruume"
+    },
+
+    {
+      "@id": "estleg:VOS7_NOTE_001",
+      "@type": ["owl:NamedIndividual"],
+      "rdfs:label": "Märkus kaardistuse kohta",
+      "estleg:note": "Kaardistus järgib ühtset meeskonna JSON-LD skeemi. Riigi Teataja päringupiirangute tõttu on §-viited käesolevas versioonis semantiliste plokkidena; järgmises iteratsioonis siduda iga kirje konkreetsete §-numbritega kehtivas redaktsioonis."
+    }
+  ]
+}
