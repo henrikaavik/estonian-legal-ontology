@@ -1,0 +1,137 @@
+{
+  "@context": {
+    "estleg": "https://example.org/estonian-legal#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
+  },
+  "@graph": [
+    {
+      "@id": "estleg:POLL_Map_2026",
+      "@type": "owl:Ontology",
+      "rdfs:label": "Põllumajandusseaduse teemakaardistus (Põllumajandusõigus)",
+      "dc:description": "Põllumajandusseaduse põhisambad: põllumajandusmaa, põllumajandustegevus ja riiklikud toetused.",
+      "dc:source": "Põllumajandusseadus (kehtiv terviktekst; vajab §-tasemel lõppverifitseerimist)"
+    },
+    {
+      "@id": "estleg:LegalProvision",
+      "@type": "owl:Class",
+      "rdfs:label": "Õigusnorm (paragrahv)"
+    },
+    {
+      "@id": "estleg:TopicCluster",
+      "@type": "owl:Class",
+      "rdfs:label": "Teemaklaster"
+    },
+
+    {
+      "@id": "estleg:Cluster_Pollumajandusmaa",
+      "@type": ["owl:NamedIndividual", "estleg:TopicCluster"],
+      "rdfs:label": "Põllumajandusmaa"
+    },
+    {
+      "@id": "estleg:Cluster_Pollumajandustegevus",
+      "@type": ["owl:NamedIndividual", "estleg:TopicCluster"],
+      "rdfs:label": "Põllumajandustegevus"
+    },
+    {
+      "@id": "estleg:Cluster_RiiklikudToetused",
+      "@type": ["owl:NamedIndividual", "estleg:TopicCluster"],
+      "rdfs:label": "Riiklikud toetused"
+    },
+
+    {
+      "@id": "estleg:POLL_Par_Def_maa",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "§ (määratlusnorm)",
+      "rdfs:label": "Põllumajandusmaa mõiste ja ulatus",
+      "estleg:requestedCluster": "põllumajandusmaa",
+      "estleg:summary": "Määratleb põllumajandusmaa kui maa, mida kasutatakse või mida saab kasutada põllumajanduslikuks tootmiseks, sidudes maa kasutusotstarbe õigusliku raamiga.",
+      "estleg:sourceAct": "Põllumajandusseadus"
+    },
+    {
+      "@id": "estleg:POLL_Par_Maa_kasutus",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "§ (maa kasutuse norm)",
+      "rdfs:label": "Põllumajandusmaa kasutamise nõuded",
+      "estleg:requestedCluster": "põllumajandusmaa",
+      "estleg:summary": "Kehtestab põllumajandusmaa sihipärase kasutamise, hooldamise ning tootmisvõime säilitamise kohustused, et vältida maa degradeerumist.",
+      "estleg:sourceAct": "Põllumajandusseadus"
+    },
+    {
+      "@id": "estleg:POLL_Par_Maa_kaitse",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "§ (maa kaitse norm)",
+      "rdfs:label": "Põllumajandusmaa kaitse ja piirangud",
+      "estleg:requestedCluster": "põllumajandusmaa",
+      "estleg:summary": "Sätestab piirangud tegevustele, mis võivad kahjustada põllumajandusmaa viljakust, ning loob alused järelevalveks ja korrastamiskohustuseks.",
+      "estleg:sourceAct": "Põllumajandusseadus"
+    },
+
+    {
+      "@id": "estleg:POLL_Par_Def_tegevus",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "§ (määratlusnorm)",
+      "rdfs:label": "Põllumajandustegevuse mõiste",
+      "estleg:requestedCluster": "põllumajandustegevus",
+      "estleg:summary": "Defineerib põllumajandustegevuse kui taime- ja loomakasvatusega ning nendega seotud tootmistoimingutega seotud majandustegevuse.",
+      "estleg:sourceAct": "Põllumajandusseadus"
+    },
+    {
+      "@id": "estleg:POLL_Par_Tegevus_nouded",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "§ (tegevusnõuete norm)",
+      "rdfs:label": "Põllumajandustegevuse üldnõuded",
+      "estleg:requestedCluster": "põllumajandustegevus",
+      "estleg:summary": "Kehtestab tootmise korralduse, loomade pidamise, taimekaitse ja keskkonnahoiu miinimumnõuded, mille täitmine on eelduseks õiguspärasele tegevusele.",
+      "estleg:sourceAct": "Põllumajandusseadus"
+    },
+    {
+      "@id": "estleg:POLL_Par_Jarelevalve",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "§ (järelevalvenorm)",
+      "rdfs:label": "Järelevalve põllumajandustegevuse üle",
+      "estleg:requestedCluster": "põllumajandustegevus",
+      "estleg:summary": "Annab pädevatele asutustele õiguse kontrollida nõuete täitmist, teha ettekirjutusi ning kohaldada rikkumise korral sanktsioone.",
+      "estleg:sourceAct": "Põllumajandusseadus"
+    },
+
+    {
+      "@id": "estleg:POLL_Par_Toetuste_alused",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "§ (toetuste aluste norm)",
+      "rdfs:label": "Riiklike toetuste eesmärk ja liigid",
+      "estleg:requestedCluster": "riiklikud_toetused",
+      "estleg:summary": "Sätestab riiklike põllumajandustoetuste eesmärgid, peamised toetusliigid ja poliitikasuuna, et toetada sektori konkurentsivõimet ja kestlikkust.",
+      "estleg:sourceAct": "Põllumajandusseadus"
+    },
+    {
+      "@id": "estleg:POLL_Par_Toetuste_tingimused",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "§ (toetuse tingimuste norm)",
+      "rdfs:label": "Toetuse saamise tingimused ja taotlemine",
+      "estleg:requestedCluster": "riiklikud_toetused",
+      "estleg:summary": "Määrab toetuse taotleja nõuded, taotluse esitamise korra, abikõlblikkuse kriteeriumid ja otsustusprotsessi.",
+      "estleg:sourceAct": "Põllumajandusseadus"
+    },
+    {
+      "@id": "estleg:POLL_Par_Toetuste_tagasinoue",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "§ (tagasinõude norm)",
+      "rdfs:label": "Toetuste kontroll ja tagasinõue",
+      "estleg:requestedCluster": "riiklikud_toetused",
+      "estleg:summary": "Reguleerib toetuste kasutamise kontrolli, rikkumise tuvastamisel toetuse vähendamist või tagasinõuet ning vaide esitamise võimalusi.",
+      "estleg:sourceAct": "Põllumajandusseadus"
+    },
+
+    {
+      "@id": "estleg:POLL_NOTE_001",
+      "@type": ["owl:NamedIndividual"],
+      "rdfs:label": "Märkus kaardistuse kohta",
+      "estleg:note": "Kaardistus järgib meeskonna ühtset JSON-LD skeemi. Riigi Teataja automaatpäring ei olnud selles töövoos kättesaadav; seetõttu on see versioon semantiline eelkaardistus ja vajab järgmises iteratsioonis paragrahvinumbrite ning pealkirjade punktset verifitseerimist kehtiva redaktsiooni vastu."
+    }
+  ]
+}
