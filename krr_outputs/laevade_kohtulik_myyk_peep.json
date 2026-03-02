@@ -1,0 +1,211 @@
+{
+  "@context": {
+    "estleg": "https://example.org/estonian-legal#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
+  },
+  "@graph": [
+    {
+      "@id": "estleg:LAEV_ENF_Map_2026",
+      "@type": "owl:Ontology",
+      "rdfs:label": "Laevade kohtuliku müügi ja arestimise teemakaardistus",
+      "dc:source": "Eesti mereõiguse ja täitemenetluse normistik (meresõiduõigus, tsiviilkohtumenetlus, täitemenetlus; vajab §-tasemel lõppverifitseerimist)",
+      "estleg:scope": "Ship arrest, judicial sale and maritime liens in maritime procedure law"
+    },
+    {
+      "@id": "estleg:LegalProvision_laevade_kohtulik_myyk",
+      "@type": "owl:Class",
+      "rdfs:label": "Õigusnorm (paragrahv või normiplokk)"
+    },
+    {
+      "@id": "estleg:TopicCluster_laevade_kohtulik_myyk",
+      "@type": "owl:Class",
+      "rdfs:label": "Temaatiline klaster"
+    },
+    {
+      "@id": "estleg:LegalConcept_laevade_kohtulik_myyk",
+      "@type": "owl:Class",
+      "rdfs:label": "Õigusmõiste"
+    },
+
+    {
+      "@id": "estleg:Cluster_ShipArrest",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster_laevade_kohtulik_myyk"
+      ],
+      "rdfs:label": "Laeva arestimine"
+    },
+    {
+      "@id": "estleg:Cluster_JudicialSale",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster_laevade_kohtulik_myyk"
+      ],
+      "rdfs:label": "Laeva kohtulik müük"
+    },
+    {
+      "@id": "estleg:Cluster_MaritimeLiens",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster_laevade_kohtulik_myyk"
+      ],
+      "rdfs:label": "Laeva tagatised (merendusnõuded ja privileegid)"
+    },
+
+    {
+      "@id": "estleg:LAEV_ENF_Norm_001",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_laevade_kohtulik_myyk"
+      ],
+      "estleg:paragrahv": "Laeva arestimise eelduste normiplokk (hagi tagamine ja merendusnõue)",
+      "rdfs:label": "Aresti kohaldamise materiaalsed ja menetluslikud eeldused",
+      "estleg:requestedCluster": "laeva arestimine",
+      "estleg:summary": "Määrab tingimused, mille täitmisel kohus võib laeva arestida merendusnõude tagamiseks, sh nõude prima facie põhjendatuse, ohu täitmisele ja proportsionaalsuse hindamise.",
+      "estleg:sourceAct": "Mereõiguse ja tsiviilkohtumenetluse normid"
+    },
+    {
+      "@id": "estleg:LAEV_ENF_Norm_002",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_laevade_kohtulik_myyk"
+      ],
+      "estleg:paragrahv": "Arestimääruse täitmise ja registrimärkuste normiplokk",
+      "rdfs:label": "Arestimääruse täitmine, laeva käsutamise piirang ja teavitamine",
+      "estleg:requestedCluster": "laeva arestimine",
+      "estleg:summary": "Reguleerib arestimääruse täitmist sadamas/registris, käsutuskeelu toimet ning puudutatud isikute teavitamist, et vältida laeva võõrandamist või lahkumist jurisdiktsioonist.",
+      "estleg:sourceAct": "Tsiviilkohtumenetluse ja täitemenetluse normid"
+    },
+    {
+      "@id": "estleg:LAEV_ENF_Norm_003",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_laevade_kohtulik_myyk"
+      ],
+      "estleg:paragrahv": "Aresti asendamise ja vabastamise normiplokk",
+      "rdfs:label": "Tagatise andmine aresti asendamiseks ning aresti lõpetamine",
+      "estleg:requestedCluster": "laeva arestimine",
+      "estleg:summary": "Sätestab, kuidas aresti saab asendada rahalise või muu piisava tagatisega, millal arest tühistatakse ning kuidas tasakaalustatakse võlausaldaja kaitse ja laeva kasutamise jätkusuutlikkus.",
+      "estleg:sourceAct": "Tsiviilkohtumenetluse normid"
+    },
+
+    {
+      "@id": "estleg:LAEV_ENF_Norm_010",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_laevade_kohtulik_myyk"
+      ],
+      "estleg:paragrahv": "Kohtuliku müügi alustamise normiplokk",
+      "rdfs:label": "Laeva sundmüügi algatamine ja müügimenetluse raam",
+      "estleg:requestedCluster": "laeva kohtulik müük",
+      "estleg:summary": "Kirjeldab tingimused, millal arestitud laev suunatakse kohtulikule müügile, kes menetlust juhib ning milline on seos täiteasja eesmärgi ja nõude rahuldamisega.",
+      "estleg:sourceAct": "Täitemenetluse ja merendusmenetluse normid"
+    },
+    {
+      "@id": "estleg:LAEV_ENF_Norm_011",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_laevade_kohtulik_myyk"
+      ],
+      "estleg:paragrahv": "Enampakkumise läbiviimise normiplokk",
+      "rdfs:label": "Kohtuliku enampakkumise teade, läbiviimine ja ostja õiguskindlus",
+      "estleg:requestedCluster": "laeva kohtulik müük",
+      "estleg:summary": "Sätestab müügiteate avaldamise, pakkumiste tegemise korra, ostja valiku ning müügitulemuse kinnitamise, tagades menetluse läbipaistvuse ja ostja õiguste kaitse.",
+      "estleg:sourceAct": "Täitemenetluse normid"
+    },
+    {
+      "@id": "estleg:LAEV_ENF_Norm_012",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_laevade_kohtulik_myyk"
+      ],
+      "estleg:paragrahv": "Müügitulu jaotamise normiplokk",
+      "rdfs:label": "Müügitulu jaotamine nõuete järjekorra alusel",
+      "estleg:requestedCluster": "laeva kohtulik müük",
+      "estleg:summary": "Reguleerib müügitulu jaotamist vastavalt nõuete prioriteedile, sh menetluskulud, tagatud nõuded, merendusnõuded ja muud nõuded, ning vaidluste lahendamist jaotuskava üle.",
+      "estleg:sourceAct": "Täitemenetluse ning mereõiguse prioriteedireeglid"
+    },
+
+    {
+      "@id": "estleg:LAEV_ENF_Norm_020",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_laevade_kohtulik_myyk"
+      ],
+      "estleg:paragrahv": "Merendusnõuete liigituse normiplokk",
+      "rdfs:label": "Merendusnõuete ja laeva tagatiste liigid",
+      "estleg:requestedCluster": "laeva tagatised",
+      "estleg:summary": "Määratleb nõuded, mida käsitatakse laeva vastu suunatud merendusnõuetena (nt meeskonnanõuded, sadamatasud, kokkupõrke- ja päästenõuded), ning nende mõju arestile ja täitmisele.",
+      "estleg:sourceAct": "Mereõiguse normid ja rahvusvahelised merendusstandardid"
+    },
+    {
+      "@id": "estleg:LAEV_ENF_Norm_021",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_laevade_kohtulik_myyk"
+      ],
+      "estleg:paragrahv": "Maritime lien'i tekkimise ja püsimise normiplokk",
+      "rdfs:label": "Laevapõhise privileegi (maritime lien) teke, järjekord ja lõppemine",
+      "estleg:requestedCluster": "laeva tagatised",
+      "estleg:summary": "Kirjeldab, millal tekib laeva suhtes privileeg, kuidas määratakse prioriteet teiste tagatistega võrreldes ning millistel alustel privileeg lõpeb (nt müük, aegumine, nõude rahuldamine).",
+      "estleg:sourceAct": "Mereõiguse ja asjaõiguse koostoime"
+    },
+    {
+      "@id": "estleg:LAEV_ENF_Norm_022",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_laevade_kohtulik_myyk"
+      ],
+      "estleg:paragrahv": "Piiriülese täitmise ja tunnustamise normiplokk",
+      "rdfs:label": "Välisriigi aresti/müügi otsuste tunnustamine ja koordineerimine",
+      "estleg:requestedCluster": "laeva tagatised",
+      "estleg:summary": "Sätestab põhimõtted, kuidas koordineerida samale laevale suunatud nõudeid eri jurisdiktsioonides, sh välisriigi otsuste tunnustamist, topeltmenetluse vältimist ja müügi lõplikkuse kaitset.",
+      "estleg:sourceAct": "Rahvusvaheline eraõigus ja menetlusnormid"
+    },
+
+    {
+      "@id": "estleg:Concept_ShipArrest",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalConcept_laevade_kohtulik_myyk"
+      ],
+      "rdfs:label": "Laeva arest",
+      "skos:definition": "Menetluslik tagamisabinõu, millega piiratakse laeva käsutamist ja/või väljumist, et kindlustada merendusnõude hilisem täitmine.",
+      "estleg:belongsToCluster": "laeva arestimine"
+    },
+    {
+      "@id": "estleg:Concept_JudicialSaleShip",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalConcept_laevade_kohtulik_myyk"
+      ],
+      "rdfs:label": "Laeva kohtulik müük",
+      "skos:definition": "Sundtäitmise toiming, mille käigus arestitud laev müüakse kohtulikus korras ning müügitulu kasutatakse nõuete rahuldamiseks seaduses sätestatud järjekorras.",
+      "estleg:belongsToCluster": "laeva kohtulik müük"
+    },
+    {
+      "@id": "estleg:Concept_MaritimeLien",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalConcept_laevade_kohtulik_myyk"
+      ],
+      "rdfs:label": "Maritime lien / laevaprivileeg",
+      "skos:definition": "Seadusest tulenev laevaga seotud eelisnõue, mis võib olla teatud tingimustel kõrgema prioriteediga kui muud tagatised ning realiseerub sageli laeva kohtuliku müügi kaudu.",
+      "estleg:belongsToCluster": "laeva tagatised"
+    },
+
+    {
+      "@id": "estleg:LAEV_ENF_NOTE_001",
+      "@type": [
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "Märkus kaardistuse kohta",
+      "estleg:note": "Kaardistus järgib meeskonna ühtset JSON-LD skeemi. Tegemist on semantilise eelkaardistusega; järgmises iteratsioonis lisada täpsed Eesti õigusaktide §-viited ning ristviited 1999. a Arrest Convention / 1993. a Maritime Liens and Mortgages Convention kohaldatavuse kontrolliga."
+    }
+  ]
+}
