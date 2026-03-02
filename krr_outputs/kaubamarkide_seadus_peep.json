@@ -1,0 +1,209 @@
+{
+  "@context": {
+    "estleg": "https://example.org/estonian-legal#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
+  },
+  "@graph": [
+    {
+      "@id": "estleg:KMS_Map_2026",
+      "@type": "owl:Ontology",
+      "rdfs:label": "Kaubamärgiseaduse teemakaardistus (intellektuaalomandi õigus)",
+      "dc:description": "Kaubamärgiseaduse põhisambad: kaubamärgi registreerimine, kaubamärgi kaitse ja õiguste rikkumine.",
+      "dc:source": "Kaubamärgiseadus (Riigi Teataja, kehtiv redaktsioon; §-taseme viited vajavad lõppverifitseerimist)"
+    },
+    {
+      "@id": "estleg:LegalProvision_kaubamargiseadus",
+      "@type": "owl:Class",
+      "rdfs:label": "Õigusnorm (paragrahv)"
+    },
+    {
+      "@id": "estleg:TopicCluster_kaubamargiseadus",
+      "@type": "owl:Class",
+      "rdfs:label": "Teemaklaster"
+    },
+    {
+      "@id": "estleg:LegalConcept_kaubamargiseadus",
+      "@type": "owl:Class",
+      "rdfs:label": "Õigusmõiste"
+    },
+    {
+      "@id": "estleg:Cluster_KaubamargiRegistreerimine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster_kaubamargiseadus"
+      ],
+      "rdfs:label": "Kaubamärgi registreerimine"
+    },
+    {
+      "@id": "estleg:Cluster_KaubamargiKaitse",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster_kaubamargiseadus"
+      ],
+      "rdfs:label": "Kaubamärgi kaitse"
+    },
+    {
+      "@id": "estleg:Cluster_KaubamargiRikkumine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster_kaubamargiseadus"
+      ],
+      "rdfs:label": "Kaubamärgi rikkumine"
+    },
+
+    {
+      "@id": "estleg:KMS_Par_MargiKaitsevoimeJaRegistreeritavus",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_kaubamargiseadus"
+      ],
+      "estleg:paragrahv": "KaMS (kaitsevõime ja registreeritavuse alused)",
+      "rdfs:label": "Kaubamärgi kaitsevõime ja registreeritavuse eeldused",
+      "estleg:requestedCluster": "kaubamärgi_registreerimine",
+      "estleg:summary": "Määratleb, milline tähis võib olla kaubamärk, ning seab registreerimise esmased tingimused, sh eristusvõime ja selge esitatavus registris.",
+      "estleg:sourceAct": "Kaubamärgiseadus"
+    },
+    {
+      "@id": "estleg:KMS_Par_AbsoluutsedJaSuhtelisedTakistused",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_kaubamargiseadus"
+      ],
+      "estleg:paragrahv": "KaMS (registreerimist välistavad asjaolud)",
+      "rdfs:label": "Absoluutsed ja suhtelised õiguskaitse andmist välistavad asjaolud",
+      "estleg:requestedCluster": "kaubamärgi_registreerimine",
+      "estleg:summary": "Sätestab juhtumid, mil kaubamärki ei registreerita, näiteks avaliku korra vastasus, kirjeldavus, varasema õigusega konflikt või äravahetamise tõenäosus.",
+      "estleg:sourceAct": "Kaubamärgiseadus"
+    },
+    {
+      "@id": "estleg:KMS_Par_TaotlusJaMenetlus",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_kaubamargiseadus"
+      ],
+      "estleg:paragrahv": "KaMS (taotluse esitamise ja menetlemise kord)",
+      "rdfs:label": "Kaubamärgitaotlus, ekspertiis ja registreerimisotsus",
+      "estleg:requestedCluster": "kaubamärgi_registreerimine",
+      "estleg:summary": "Reguleerib taotluse vorminõudeid, klassifikatsiooni, Patendiameti menetlust, puuduste kõrvaldamist ning registreeringu andmise või sellest keeldumise otsustamist.",
+      "estleg:sourceAct": "Kaubamärgiseadus"
+    },
+
+    {
+      "@id": "estleg:KMS_Par_AinuoigusJaKaitseUlatus",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_kaubamargiseadus"
+      ],
+      "estleg:paragrahv": "KaMS (omaniku ainuõigus ja kaitse ulatus)",
+      "rdfs:label": "Kaubamärgiomaniku ainuõigus ja kasutamise kontroll",
+      "estleg:requestedCluster": "kaubamärgi_kaitse",
+      "estleg:summary": "Annab kaubamärgiomanikule õiguse keelata identse või sarnase tähise kasutamine kaupade ja teenuste puhul, kui tekib segiajamise oht või kahjustatakse kaubamärgi eristusvõimet.",
+      "estleg:sourceAct": "Kaubamärgiseadus"
+    },
+    {
+      "@id": "estleg:KMS_Par_OiguseKehtivusJaPikendamine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_kaubamargiseadus"
+      ],
+      "estleg:paragrahv": "KaMS (õiguskaitse kestus, pikendamine ja registrimuudatused)",
+      "rdfs:label": "Kaubamärgi kehtivus, pikendamine ja registriandmete ajakohastamine",
+      "estleg:requestedCluster": "kaubamärgi_kaitse",
+      "estleg:summary": "Sätestab registreeringu kehtivusaja, pikendamise korra ja omaniku kohustuse hoida registriandmed ajakohased, et õiguskaitse oleks järjepidev.",
+      "estleg:sourceAct": "Kaubamärgiseadus"
+    },
+    {
+      "@id": "estleg:KMS_Par_OigusteYleminekJaLitsents",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_kaubamargiseadus"
+      ],
+      "estleg:paragrahv": "KaMS (õiguste üleandmine, litsents ja pandiõigus)",
+      "rdfs:label": "Kaubamärgiõiguse käsutamine: üleminek, litsents ja koormamine",
+      "estleg:requestedCluster": "kaubamärgi_kaitse",
+      "estleg:summary": "Reguleerib kaubamärgi õiguste üleandmist, litsentsimist ja registrikande olulisust kolmandate isikute suhtes ning tagab õiguste tehingulise selguse.",
+      "estleg:sourceAct": "Kaubamärgiseadus"
+    },
+
+    {
+      "@id": "estleg:KMS_Par_RikkumiseMoisdeJaKeelunoue",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_kaubamargiseadus"
+      ],
+      "estleg:paragrahv": "KaMS (rikkumise kvalifikatsioon ja nõuded rikkuja vastu)",
+      "rdfs:label": "Kaubamärgi rikkumise mõiste ja keelunõue",
+      "estleg:requestedCluster": "kaubamärgi_rikkumine",
+      "estleg:summary": "Määratleb rikkumise kui kaubamärgiomaniku nõusolekuta kasutuse õiguslikus käibes ning võimaldab nõuda rikkumise lõpetamist, ohu kõrvaldamist ja õiguste taastamist.",
+      "estleg:sourceAct": "Kaubamärgiseadus"
+    },
+    {
+      "@id": "estleg:KMS_Par_KahjuHuvitisJaEbaausTulu",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_kaubamargiseadus"
+      ],
+      "estleg:paragrahv": "KaMS (varalised õiguskaitsevahendid rikkumise korral)",
+      "rdfs:label": "Kahju hüvitamine, rikkuja tulu väljaandmine ja hävitamisnõuded",
+      "estleg:requestedCluster": "kaubamärgi_rikkumine",
+      "estleg:summary": "Võimaldab nõuda varalise kahju hüvitamist, ebaõiglaselt saadud tulu väljaandmist ja vajadusel rikkumist sisaldavate tähiste või kaupade kõrvaldamist käibest.",
+      "estleg:sourceAct": "Kaubamärgiseadus"
+    },
+    {
+      "@id": "estleg:KMS_Par_VaidlustamineJaMenetlused",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_kaubamargiseadus"
+      ],
+      "estleg:paragrahv": "KaMS (vaidlustamine, apellatsioon ja kohtulik kaitse)",
+      "rdfs:label": "Vaidlustamismenetlused ja kohtulik õiguskaitse",
+      "estleg:requestedCluster": "kaubamärgi_rikkumine",
+      "estleg:summary": "Sätestab menetluslikud võimalused vaidlustada Patendiameti otsuseid, esitada nõudeid tööstusomandi vaidlusorganis või kohtus ning taotleda esialgset õiguskaitset.",
+      "estleg:sourceAct": "Kaubamärgiseadus"
+    },
+
+    {
+      "@id": "estleg:Concept_RegistreeritavuseFilter",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalConcept_kaubamargiseadus"
+      ],
+      "rdfs:label": "Registreeritavuse filter",
+      "skos:definition": "Kaubamärgi registreerimine eeldab, et tähis läbib nii absoluutsed kui suhtelised takistused ning võimaldab turul usaldusväärselt eristada kaupade või teenuste päritolu.",
+      "estleg:belongsToCluster": "kaubamärgi_registreerimine"
+    },
+    {
+      "@id": "estleg:Concept_AinuoigusKaibes",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalConcept_kaubamargiseadus"
+      ],
+      "rdfs:label": "Ainuõigus kaubanduslikus käibes",
+      "skos:definition": "Kaubamärgi kaitse tuum on omaniku kontroll tähise kasutuse üle turul, sealhulgas õigus keelata segiajamist tekitav kasutus ja säilitada märgi eristusvõime.",
+      "estleg:belongsToCluster": "kaubamärgi_kaitse"
+    },
+    {
+      "@id": "estleg:Concept_TsiviilneJouustamine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalConcept_kaubamargiseadus"
+      ],
+      "rdfs:label": "Tsiviilne jõustamine rikkumise vastu",
+      "skos:definition": "Kaubamärgi rikkumise korral keskendub õiguskaitse rikkumise lõpetamisele, majandusliku kahju heastamisele ja õigusrikkumisest saadud eelise neutraliseerimisele.",
+      "estleg:belongsToCluster": "kaubamärgi_rikkumine"
+    },
+    {
+      "@id": "estleg:KMS_NOTE_001",
+      "@type": [
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "Märkus kaardistuse kohta",
+      "estleg:note": "Kaardistus järgib meeskonna ühtset JSON-LD skeemi. Töös kasutati semantilist struktuurikaardistust; järgmises iteratsioonis tuleb siduda iga kirje konkreetsete §-numbritega kehtivas Riigi Teataja redaktsioonis."
+    }
+  ]
+}
