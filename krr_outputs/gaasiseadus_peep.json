@@ -1,0 +1,164 @@
+{
+  "@context": {
+    "estleg": "https://example.org/estonian-legal#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
+  },
+  "@graph": [
+    {
+      "@id": "estleg:GAAS_Map_2026",
+      "@type": "owl:Ontology",
+      "rdfs:label": "Gaasiseaduse teemakaardistus (energiõigus)",
+      "dc:description": "Gaasiseaduse põhisambad: gaasiturg, gaasi transport ja ohutusnõuded.",
+      "dc:source": "Gaasiseadus (Riigi Teataja, kehtiv redaktsioon; §-taseme viited vajavad lõppverifitseerimist)"
+    },
+    {
+      "@id": "estleg:LegalProvision",
+      "@type": "owl:Class",
+      "rdfs:label": "Õigusnorm (paragrahv)"
+    },
+    {
+      "@id": "estleg:TopicCluster",
+      "@type": "owl:Class",
+      "rdfs:label": "Teemaklaster"
+    },
+    {
+      "@id": "estleg:LegalConcept",
+      "@type": "owl:Class",
+      "rdfs:label": "Õigusmõiste"
+    },
+
+    {
+      "@id": "estleg:Cluster_Gaasiturg",
+      "@type": ["owl:NamedIndividual", "estleg:TopicCluster"],
+      "rdfs:label": "Gaasiturg"
+    },
+    {
+      "@id": "estleg:Cluster_GaasiTransport",
+      "@type": ["owl:NamedIndividual", "estleg:TopicCluster"],
+      "rdfs:label": "Gaasi transport"
+    },
+    {
+      "@id": "estleg:Cluster_OhutusNouded",
+      "@type": ["owl:NamedIndividual", "estleg:TopicCluster"],
+      "rdfs:label": "Ohutusnõuded"
+    },
+
+    {
+      "@id": "estleg:GAAS_Par_TuruKorraldus",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "GaasS (gaasituru korralduse üldnormid)",
+      "rdfs:label": "Maagaasituru toimimise üldpõhimõtted",
+      "estleg:requestedCluster": "gaasiturg",
+      "estleg:summary": "Sätestab gaasituru korralduse aluspõhimõtted, sh turu avatuse, võrdse kohtlemise ja läbipaistvuse nõuded gaasiettevõtjatele ning turuosalistele.",
+      "estleg:sourceAct": "Gaasiseadus"
+    },
+    {
+      "@id": "estleg:GAAS_Par_TurulePaasJaLiitumine",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "GaasS (võrgule juurdepääsu ja liitumise normid)",
+      "rdfs:label": "Võrgule juurdepääs, liitumine ja kasutustingimused",
+      "estleg:requestedCluster": "gaasiturg",
+      "estleg:summary": "Reguleerib tingimused, mille alusel turuosaline saab gaasivõrguga liituda ja võrku kasutada, ning nõuab, et tingimused oleksid objektiivsed, mittediskrimineerivad ja põhjendatud.",
+      "estleg:sourceAct": "Gaasiseadus"
+    },
+    {
+      "@id": "estleg:GAAS_Par_TuruJarelevalve",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "GaasS (turujärelevalve ja vaidluste lahendamise normid)",
+      "rdfs:label": "Regulatiivne järelevalve gaasiturul",
+      "estleg:requestedCluster": "gaasiturg",
+      "estleg:summary": "Määrab regulaatori järelevalvepädevuse gaasituru reeglite täitmise üle, sealhulgas õiguse teha ettekirjutusi ja lahendada võrgu kasutamisega seotud vaidlusi.",
+      "estleg:sourceAct": "Gaasiseadus"
+    },
+
+    {
+      "@id": "estleg:GAAS_Par_TransportVorguYlesanded",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "GaasS (ülekandevõrgu haldaja kohustuste normid)",
+      "rdfs:label": "Ülekandevõrgu haldaja ülesanded ja vastutus",
+      "estleg:requestedCluster": "gaasi_transport",
+      "estleg:summary": "Kirjeldab gaasi ülekandevõrgu haldaja kohustusi võrgu töökindluse, võimsuse planeerimise, tasakaalustamise ja varustuskindluse tagamisel.",
+      "estleg:sourceAct": "Gaasiseadus"
+    },
+    {
+      "@id": "estleg:GAAS_Par_TransportTeenuseTingimused",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "GaasS (transportteenuse osutamise normid)",
+      "rdfs:label": "Gaasi transportteenuse osutamine ja võimsuse jaotus",
+      "estleg:requestedCluster": "gaasi_transport",
+      "estleg:summary": "Sätestab gaasi transportteenuse osutamise alused, sh võimsuse reserveerimise, mõõtmise, bilansihalduse ja teenuselepingu põhinõuded.",
+      "estleg:sourceAct": "Gaasiseadus"
+    },
+    {
+      "@id": "estleg:GAAS_Par_PiiriuleneKoostoime",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "GaasS (piiriüleste ühenduste ja koostöö normid)",
+      "rdfs:label": "Piiriülene gaasitransport ja süsteemihaldurite koostöö",
+      "estleg:requestedCluster": "gaasi_transport",
+      "estleg:summary": "Reguleerib piiriüleste gaasiühenduste kasutamist ning kohustab süsteemihaldureid tegema tehnilist ja turukorralduslikku koostööd regionaalse varustuskindluse eesmärgil.",
+      "estleg:sourceAct": "Gaasiseadus"
+    },
+
+    {
+      "@id": "estleg:GAAS_Par_OhutuseYldnouded",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "GaasS (gaasipaigaldiste ja tegevuse ohutusnormid)",
+      "rdfs:label": "Gaasisüsteemide ohutuse üldnõuded",
+      "estleg:requestedCluster": "ohutusnõuded",
+      "estleg:summary": "Kehtestab gaasipaigaldiste projekteerimise, ehitamise, kasutamise ja hooldamise ohutusraami, eesmärgiga ennetada avariisid ning kaitsta elu, tervist ja vara.",
+      "estleg:sourceAct": "Gaasiseadus"
+    },
+    {
+      "@id": "estleg:GAAS_Par_OhutusKontrollJaNoustamine",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "GaasS (tehnilise kontrolli ja auditeerimise normid)",
+      "rdfs:label": "Tehniline kontroll, audit ja nõuetele vastavus",
+      "estleg:requestedCluster": "ohutusnõuded",
+      "estleg:summary": "Nõuab gaasipaigaldiste regulaarset kontrolli, pädevaid auditeid ja dokumenteeritud vastavushindamist, et avastada riskid enne ohu realiseerumist.",
+      "estleg:sourceAct": "Gaasiseadus"
+    },
+    {
+      "@id": "estleg:GAAS_Par_OnnetusteEnnetusJaReageerimine",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "GaasS (õnnetusjuhtumite ennetuse ja sekkumise normid)",
+      "rdfs:label": "Avariiolukordade ennetus, teavitamine ja sekkumine",
+      "estleg:requestedCluster": "ohutusnõuded",
+      "estleg:summary": "Sätestab kohustused avarii- ja lekkeolukordade ennetamiseks, intsidentidest teavitamiseks ning kiireks sekkumiseks koostöös pädevate järelevalve- ja päästeasutustega.",
+      "estleg:sourceAct": "Gaasiseadus"
+    },
+
+    {
+      "@id": "estleg:Concept_GaasituruMittediskrimineerivLigipaas",
+      "@type": ["owl:NamedIndividual", "estleg:LegalConcept"],
+      "rdfs:label": "Mittediskrimineeriv ligipääs gaasiturule",
+      "skos:definition": "Gaasituru toimimine eeldab, et võrgu kasutamise ja teenuse osutamise tingimused on läbipaistvad, võrdsed ning põhjendatud kõigile turuosalistele.",
+      "estleg:belongsToCluster": "gaasiturg"
+    },
+    {
+      "@id": "estleg:Concept_TransportVorguTooKindlus",
+      "@type": ["owl:NamedIndividual", "estleg:LegalConcept"],
+      "rdfs:label": "Ülekandevõrgu töökindlus ja bilansihaldus",
+      "skos:definition": "Gaasi transpordiregulatsioon seob võimsuste jaotuse, süsteemi tasakaalustamise ja piiriülese koostöö varustuskindluse ning tõhusa turutoimimisega.",
+      "estleg:belongsToCluster": "gaasi_transport"
+    },
+    {
+      "@id": "estleg:Concept_GaasiohutuseRiskiennetus",
+      "@type": ["owl:NamedIndividual", "estleg:LegalConcept"],
+      "rdfs:label": "Gaasiohutuse riskiennetus",
+      "skos:definition": "Gaasiohutuse keskmes on riskide ennetamine tehniliste nõuete, perioodilise kontrolli, pädevusnõuete ja avariireageerimise kaudu.",
+      "estleg:belongsToCluster": "ohutusnõuded"
+    },
+
+    {
+      "@id": "estleg:GAAS_NOTE_001",
+      "@type": ["owl:NamedIndividual"],
+      "rdfs:label": "Märkus kaardistuse kohta",
+      "estleg:note": "Kaardistus järgib meeskonna ühtset JSON-LD skeemi. Töös kasutati semantilist struktuurikaardistust; järgmises iteratsioonis tuleb siduda iga kirje konkreetsete §-numbritega kehtivas Riigi Teataja redaktsioonis."
+    }
+  ]
+}
