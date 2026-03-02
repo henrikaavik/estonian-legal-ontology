@@ -1,0 +1,241 @@
+{
+  "@context": {
+    "estleg": "https://example.org/estonian-legal#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
+  },
+  "@graph": [
+    {
+      "@id": "estleg:TOLLIS_Map_2026",
+      "@type": "owl:Ontology",
+      "rdfs:label": "Tolliseaduse teemakaardistus (tolliõigus)",
+      "dc:description": "Tolliseaduse põhiklastrid: tolliprotseduurid, impordimaksud ja tollikontroll (import/eksport kontekstis).",
+      "dc:source": "Tolliseadus (Riigi Teataja, kehtiv redaktsioon; semantilised viited vajavad §-taseme lõppverifitseerimist)"
+    },
+    {
+      "@id": "estleg:LegalProvision_tolliseadus",
+      "@type": "owl:Class",
+      "rdfs:label": "Õigusnorm (paragrahv)"
+    },
+    {
+      "@id": "estleg:TopicCluster_tolliseadus",
+      "@type": "owl:Class",
+      "rdfs:label": "Teemaklaster"
+    },
+    {
+      "@id": "estleg:LegalConcept_tolliseadus",
+      "@type": "owl:Class",
+      "rdfs:label": "Õigusmõiste"
+    },
+    {
+      "@id": "estleg:Cluster_Tolliprotseduurid",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster_tolliseadus"
+      ],
+      "rdfs:label": "Tolliprotseduurid"
+    },
+    {
+      "@id": "estleg:Cluster_Impordimaksud",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster_tolliseadus"
+      ],
+      "rdfs:label": "Impordimaksud"
+    },
+    {
+      "@id": "estleg:Cluster_Tollikontroll",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster_tolliseadus"
+      ],
+      "rdfs:label": "Tollikontroll"
+    },
+    {
+      "@id": "estleg:TOLLIS_Par_ProtseduurideAlgatamine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_tolliseadus"
+      ],
+      "estleg:paragrahv": "TollS (tolliprotseduuri kohaldamise üldnormid)",
+      "rdfs:label": "Tolliprotseduuri valik ja kohaldamise eeldused",
+      "estleg:requestedCluster": "tolliprotseduurid",
+      "estleg:summary": "Määrab, millise tolliprotseduuri alla kaup suunatakse ning millised tingimused peavad olema täidetud import- või ekspordimenetluse algatamisel.",
+      "estleg:sourceAct": "Tolliseadus"
+    },
+    {
+      "@id": "estleg:TOLLIS_Par_ImportDeklaratsioon",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_tolliseadus"
+      ],
+      "estleg:paragrahv": "TollS (impordi tollideklaratsiooni esitamise normid)",
+      "rdfs:label": "Impordi tollideklaratsioon ja andmete esitamine",
+      "estleg:requestedCluster": "tolliprotseduurid",
+      "estleg:summary": "Sätestab deklaratsiooni esitamise viisi, nõutavad andmed ja dokumendid ning deklarandi vastutuse andmete õigsuse eest.",
+      "estleg:sourceAct": "Tolliseadus"
+    },
+    {
+      "@id": "estleg:TOLLIS_Par_EkspordiProtseduur",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_tolliseadus"
+      ],
+      "estleg:paragrahv": "TollS (ekspordiprotseduuri ja väljaveo tolliformaalsuste normid)",
+      "rdfs:label": "Ekspordi tolliprotseduur ja väljavedu",
+      "estleg:requestedCluster": "tolliprotseduurid",
+      "estleg:summary": "Reguleerib kauba väljaveo formaalsusi, ekspordideklaratsiooni ning tollijärelevalve all oleva kauba territooriumilt väljaviimise tingimusi.",
+      "estleg:sourceAct": "Tolliseadus"
+    },
+    {
+      "@id": "estleg:TOLLIS_Par_Eriprotseduurid",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_tolliseadus"
+      ],
+      "estleg:paragrahv": "TollS (eriprotseduuride normid: transiit, ladustamine, ajutine import jm)",
+      "rdfs:label": "Eriprotseduurid: transiit, tolliladustamine ja ajutine import",
+      "estleg:requestedCluster": "tolliprotseduurid",
+      "estleg:summary": "Kirjeldab eriprotseduuride kasutamise aluseid, garantiisid ja tingimusi, mille alusel kaup võib olla tollijärelevalve all ilma tavapärase vabasse ringlusse lubamiseta.",
+      "estleg:sourceAct": "Tolliseadus"
+    },
+    {
+      "@id": "estleg:TOLLIS_Par_ImpordimaksuTekkimine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_tolliseadus"
+      ],
+      "estleg:paragrahv": "TollS (imporditollimaksu tekkimise ja tasumise kohustuse normid)",
+      "rdfs:label": "Imporditollimaksu tekkimine",
+      "estleg:requestedCluster": "impordimaksud",
+      "estleg:summary": "Määrab, millal tekib tollivõlg importimisel ning kes on imporditollimaksu tasumise eest vastutav isik.",
+      "estleg:sourceAct": "Tolliseadus"
+    },
+    {
+      "@id": "estleg:TOLLIS_Par_TollivaartusJaArvestus",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_tolliseadus"
+      ],
+      "estleg:paragrahv": "TollS (tolliväärtuse määramise ja impordimaksu arvestamise normid)",
+      "rdfs:label": "Tolliväärtus, tariif ja impordimaksu arvestus",
+      "estleg:requestedCluster": "impordimaksud",
+      "estleg:summary": "Reguleerib tolliväärtuse määramist, tariifse klassifitseerimise mõju ning impordimaksu summa arvutamise metoodikat.",
+      "estleg:sourceAct": "Tolliseadus"
+    },
+    {
+      "@id": "estleg:TOLLIS_Par_MaksetahtaegJaTagatis",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_tolliseadus"
+      ],
+      "estleg:paragrahv": "TollS (maksetähtaja, tagatise ja maksu tasumise normid)",
+      "rdfs:label": "Impordimaksu tasumine, maksetähtaeg ja tagatis",
+      "estleg:requestedCluster": "impordimaksud",
+      "estleg:summary": "Sätestab impordimaksu tasumise tähtajad, tagatise kasutamise juhud ning viivituse korral kohaldatavad finantstagajärjed.",
+      "estleg:sourceAct": "Tolliseadus"
+    },
+    {
+      "@id": "estleg:TOLLIS_Par_TagasimakseJaVabastus",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_tolliseadus"
+      ],
+      "estleg:paragrahv": "TollS (impordimaksu tagasimakse ja maksuvabastuse normid)",
+      "rdfs:label": "Impordimaksu tagasimakse, vähendamine ja vabastus",
+      "estleg:requestedCluster": "impordimaksud",
+      "estleg:summary": "Reguleerib olukordi, kus impordimaksu saab tagasi taotleda, vähendada või rakendada seadusest tulenevaid maksuvabastusi.",
+      "estleg:sourceAct": "Tolliseadus"
+    },
+    {
+      "@id": "estleg:TOLLIS_Par_Kontrollimeetmed",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_tolliseadus"
+      ],
+      "estleg:paragrahv": "TollS (tollikontrolli vormide ja meetmete normid)",
+      "rdfs:label": "Tollikontrolli meetmed ja riskipõhine valik",
+      "estleg:requestedCluster": "tollikontroll",
+      "estleg:summary": "Annab tolliasutusele õiguse teha dokumentide kontrolli, füüsilist läbivaatust ja muid järelevalvetoiminguid riskihindamise alusel.",
+      "estleg:sourceAct": "Tolliseadus"
+    },
+    {
+      "@id": "estleg:TOLLIS_Par_PeatamineJaKinniPidamine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_tolliseadus"
+      ],
+      "estleg:paragrahv": "TollS (kauba peatamise, kinnipidamise ja läbivaatuse normid)",
+      "rdfs:label": "Kauba peatamine, kinnipidamine ja läbivaatus",
+      "estleg:requestedCluster": "tollikontroll",
+      "estleg:summary": "Sätestab alused kauba või transpordivahendi kinnipidamiseks ning menetlusnõuded, kui esineb kahtlus tollieeskirjade rikkumises.",
+      "estleg:sourceAct": "Tolliseadus"
+    },
+    {
+      "@id": "estleg:TOLLIS_Par_TollijarelevalveAllKaup",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_tolliseadus"
+      ],
+      "estleg:paragrahv": "TollS (tollijärelevalve all oleva kauba käsutamise normid)",
+      "rdfs:label": "Tollijärelevalve all oleva kauba käitlemine",
+      "estleg:requestedCluster": "tollikontroll",
+      "estleg:summary": "Reguleerib tollijärelevalve all oleva kauba liikumist, töötlemist ja käsutamist kuni tolliprotseduuri lõpetamiseni.",
+      "estleg:sourceAct": "Tolliseadus"
+    },
+    {
+      "@id": "estleg:TOLLIS_Par_JarelevalveToiminguteVaidlustamine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_tolliseadus"
+      ],
+      "estleg:paragrahv": "TollS (tollikontrolli toimingute vaidlustamise normid)",
+      "rdfs:label": "Tollikontrolli toimingute vaidlustamine",
+      "estleg:requestedCluster": "tollikontroll",
+      "estleg:summary": "Kirjeldab, kuidas vaidlustada tolli tehtud kontrollitoiminguid ja haldusakte ning milline on kaitseõiguse realiseerimise kord.",
+      "estleg:sourceAct": "Tolliseadus"
+    },
+    {
+      "@id": "estleg:Concept_TolliprotseduuriValik",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalConcept_tolliseadus"
+      ],
+      "rdfs:label": "Tolliprotseduuri valiku põhimõte",
+      "skos:definition": "Import- ja eksporditehingutes määrab õigesti valitud tolliprotseduur kauba lubatud kasutusviisi, kontrollitaseme ja maksukohustuse ulatuse.",
+      "estleg:belongsToCluster": "tolliprotseduurid"
+    },
+    {
+      "@id": "estleg:Concept_ImpordimaksuFiskaalneNeutraalsus",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalConcept_tolliseadus"
+      ],
+      "rdfs:label": "Impordimaksu fiskaalne ja kaitsefunktsioon",
+      "skos:definition": "Impordimaksud täidavad nii eelarvelist eesmärki kui ka kaubanduspoliitilist funktsiooni, sidudes tollivõla tekkimise kauba õigusliku staatusega.",
+      "estleg:belongsToCluster": "impordimaksud"
+    },
+    {
+      "@id": "estleg:Concept_TollikontrolliRiskipohisus",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalConcept_tolliseadus"
+      ],
+      "rdfs:label": "Tollikontrolli riskipõhisus",
+      "skos:definition": "Tollikontroll põhineb riskianalüüsil, ühendades kaubavoogude lihtsustamise ja eeskirjade järgimise tagamise.",
+      "estleg:belongsToCluster": "tollikontroll"
+    },
+    {
+      "@id": "estleg:TOLLIS_NOTE_001",
+      "@type": [
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "Märkus kaardistuse kohta",
+      "estleg:note": "Kaardistus järgib ühtset JSON-LD skeemi. Keskkonnas puudus stabiilne masinloetav juurdepääs Riigi Teataja detailvaatele, seega on kirjed antud semantiliste ankrutena; järgmises iteratsioonis tuleb siduda need konkreetsete Tolliseaduse §-numbritega kehtivas redaktsioonis."
+    }
+  ]
+}
