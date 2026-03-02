@@ -2,7 +2,7 @@
 
 Hi Marta,
 
-I prepared initial JSON-LD mapping here:
+I prepared updated JSON-LD mapping here:
 - `krr_outputs/kaitsevaeteenistuse_peep.json`
 
 Scope mapped:

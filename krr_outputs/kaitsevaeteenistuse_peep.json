@@ -14,7 +14,7 @@
       "@type": "owl:Ontology",
       "rdfs:label": "Kaitseväeteenistuse seaduse teemakaardistus (KVTS)",
       "dc:description": "KVTS kaardistus kolmes fookusklastris: kaitseväeteenistus, reservteenistus ja asendusteenistus.",
-      "dc:source": "Kaitseväeteenistuse seadus"
+      "dc:source": "Kaitseväeteenistuse seadus (kehtiv redaktsioon; §-taseme täppisviited vajavad eraldi allikaverifitseerimist)"
     },
     {
       "@id": "estleg:LegalProvision",
@@ -25,6 +25,11 @@
       "@id": "estleg:TopicCluster",
       "@type": "owl:Class",
       "rdfs:label": "Temaatiline klaster"
+    },
+    {
+      "@id": "estleg:LegalConcept",
+      "@type": "owl:Class",
+      "rdfs:label": "Õigusmõiste"
     },
 
     {
@@ -155,10 +160,32 @@
     },
 
     {
+      "@id": "estleg:Concept_KaitsevVõimeTagamine",
+      "@type": ["owl:NamedIndividual", "estleg:LegalConcept"],
+      "rdfs:label": "Kaitsevõime tagamine teenistusliikide koosmõjus",
+      "skos:definition": "Kaitseväeteenistuse regulatsioon seob ajateenistuse, reservteenistuse ja asendusteenistuse ühtseks riigikaitseliseks kohustussüsteemiks.",
+      "estleg:belongsToCluster": "military_service"
+    },
+    {
+      "@id": "estleg:Concept_ReservValmidus",
+      "@type": ["owl:NamedIndividual", "estleg:LegalConcept"],
+      "rdfs:label": "Reservvalmidus ja õppekogunemine",
+      "skos:definition": "Reservteenistus tagab väljaõppe järjepidevuse ja üksuste valmisoleku, kasutades perioodilisi õppekogunemisi ning ilmumiskohustust.",
+      "estleg:belongsToCluster": "reserve_service"
+    },
+    {
+      "@id": "estleg:Concept_SydametunnistuseVabadus",
+      "@type": ["owl:NamedIndividual", "estleg:LegalConcept"],
+      "rdfs:label": "Südametunnistusvabaduse tagamine asendusteenistusega",
+      "skos:definition": "Asendusteenistus võimaldab täita kaitsekohustust viisil, mis arvestab isiku usulisi või kõlbelisi veendumusi.",
+      "estleg:belongsToCluster": "alternative_service"
+    },
+
+    {
       "@id": "estleg:KVTS_NOTE_001",
       "@type": ["owl:NamedIndividual"],
       "rdfs:label": "Märkus andmekvaliteedi kohta",
-      "estleg:note": "Kaardistus on tehtud ühtses JSON-LD skeemis teemakaardina. Järgmises iteratsioonis täpsustada iga normiploki juurde konkreetsed kehtiva redaktsiooni paragrahvinumbrid Riigi Teataja allikast."
+      "estleg:note": "Kaardistus on tehtud ühtses JSON-LD skeemis teemakaardina. Järgmises iteratsioonis täpsustada iga normiploki juurde kehtiva redaktsiooni konkreetsed paragrahvinumbrid Riigi Teataja allikast."
     },
     {
       "@id": "estleg:KVTS_NOTE_002",
