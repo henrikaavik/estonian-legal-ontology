@@ -1,0 +1,205 @@
+{
+  "@context": {
+    "estleg": "https://example.org/estonian-legal#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
+  },
+  "@graph": [
+    {
+      "@id": "estleg:REELS_Map_2026",
+      "@type": "owl:Ontology",
+      "rdfs:label": "Riigieelarve seaduse teemakaardistus (avalik rahandus)",
+      "dc:description": "Riigieelarve seaduse põhisambad: riigieelarve, eelarvemenetlus ja riigiraha kasutamine.",
+      "dc:source": "Riigieelarve seadus (Riigi Teataja, kehtiv redaktsioon; §-taseme viited vajavad lõppverifitseerimist)"
+    },
+    {
+      "@id": "estleg:LegalProvision_riigieelarve_seadus",
+      "@type": "owl:Class",
+      "rdfs:label": "Õigusnorm (paragrahv)"
+    },
+    {
+      "@id": "estleg:TopicCluster_riigieelarve_seadus",
+      "@type": "owl:Class",
+      "rdfs:label": "Teemaklaster"
+    },
+    {
+      "@id": "estleg:LegalConcept_riigieelarve_seadus",
+      "@type": "owl:Class",
+      "rdfs:label": "Õigusmõiste"
+    },
+    {
+      "@id": "estleg:Cluster_Riigieelarve",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster_riigieelarve_seadus"
+      ],
+      "rdfs:label": "Riigieelarve"
+    },
+    {
+      "@id": "estleg:Cluster_Eelarvemenetlus",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster_riigieelarve_seadus"
+      ],
+      "rdfs:label": "Eelarvemenetlus"
+    },
+    {
+      "@id": "estleg:Cluster_RiigirahaKasutamine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster_riigieelarve_seadus"
+      ],
+      "rdfs:label": "Riigiraha kasutamine"
+    },
+    {
+      "@id": "estleg:REELS_Par_EelarveMisteJaEesmargid",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_riigieelarve_seadus"
+      ],
+      "estleg:paragrahv": "RELS (riigieelarve mõiste ja eesmärkide üldnormid)",
+      "rdfs:label": "Riigieelarve olemus, ulatus ja põhimõtted",
+      "estleg:requestedCluster": "riigieelarve",
+      "estleg:summary": "Määratleb riigieelarve kui riigi finantsplaani ning seab eelarvestamise aluspõhimõtted, sh terviklikkuse, läbipaistvuse, tasakaalu taotlemise ja vastutuse.",
+      "estleg:sourceAct": "Riigieelarve seadus"
+    },
+    {
+      "@id": "estleg:REELS_Par_TuludKuludJaRahastamine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_riigieelarve_seadus"
+      ],
+      "estleg:paragrahv": "RELS (eelarve tulude, kulude ja finantseerimise struktuuri normid)",
+      "rdfs:label": "Riigieelarve tulude, kulude ja rahastamistehingute struktuur",
+      "estleg:requestedCluster": "riigieelarve",
+      "estleg:summary": "Kirjeldab, kuidas riigieelarves eristatakse tulusid, kulusid, investeeringuid ja finantseerimistehinguid ning millisel detailsusastmel need planeeritakse.",
+      "estleg:sourceAct": "Riigieelarve seadus"
+    },
+    {
+      "@id": "estleg:REELS_Par_LisaeelarveJaMuudatused",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_riigieelarve_seadus"
+      ],
+      "estleg:paragrahv": "RELS (lisaeelarve ja eelarve muutmise normid)",
+      "rdfs:label": "Lisaeelarve ning eelarveaasta sees tehtavad muudatused",
+      "estleg:requestedCluster": "riigieelarve",
+      "estleg:summary": "Sätestab tingimused, mille korral riigieelarvet saab eelarveaasta jooksul muuta, sh lisaeelarve esitamise ja menetlemise põhimõtted.",
+      "estleg:sourceAct": "Riigieelarve seadus"
+    },
+    {
+      "@id": "estleg:REELS_Par_StrateegilinePlaneerimine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_riigieelarve_seadus"
+      ],
+      "estleg:paragrahv": "RELS (eelarvestrateegia ja keskpika planeerimise normid)",
+      "rdfs:label": "Eelarvestrateegia ja keskpikk finantsplaneerimine",
+      "estleg:requestedCluster": "eelarvemenetlus",
+      "estleg:summary": "Seob riigieelarve koostamise keskpika eelarvestrateegiaga, määrates prioriteetide seadmise, kululimiitide planeerimise ja fiskaalraami kujundamise korra.",
+      "estleg:sourceAct": "Riigieelarve seadus"
+    },
+    {
+      "@id": "estleg:REELS_Par_KoostamineJaEsitamine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_riigieelarve_seadus"
+      ],
+      "estleg:paragrahv": "RELS (riigieelarve koostamise ja Riigikogule esitamise normid)",
+      "rdfs:label": "Riigieelarve eelnõu koostamine ja esitamine",
+      "estleg:requestedCluster": "eelarvemenetlus",
+      "estleg:summary": "Reguleerib, kuidas ministeeriumid ja valitsus koostavad riigieelarve eelnõu, millised lisad peavad kaasnema ning millal eelnõu Riigikogule esitatakse.",
+      "estleg:sourceAct": "Riigieelarve seadus"
+    },
+    {
+      "@id": "estleg:REELS_Par_MenetlusRiigikogus",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_riigieelarve_seadus"
+      ],
+      "estleg:paragrahv": "RELS (riigieelarve menetlemise normid Riigikogus)",
+      "rdfs:label": "Riigikogu eelarvemenetlus ja muudatusettepanekud",
+      "estleg:requestedCluster": "eelarvemenetlus",
+      "estleg:summary": "Sätestab eelarve eelnõu lugemiste, komisjonimenetluse ja muudatusettepanekute esitamise põhireeglid ning menetlusliku ajaraami eelarve vastuvõtmiseks.",
+      "estleg:sourceAct": "Riigieelarve seadus"
+    },
+    {
+      "@id": "estleg:REELS_Par_KassalineJuhtimine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_riigieelarve_seadus"
+      ],
+      "estleg:paragrahv": "RELS (eelarve täitmise ja kassalise juhtimise normid)",
+      "rdfs:label": "Eelarve täitmine, kassaline juhtimine ja maksete korraldus",
+      "estleg:requestedCluster": "riigiraha_kasutamine",
+      "estleg:summary": "Reguleerib eelarve vahendite kasutamist eelarveaasta jooksul, sh maksete tegemist, likviidsuse juhtimist ja volituste piires kulude kandmist.",
+      "estleg:sourceAct": "Riigieelarve seadus"
+    },
+    {
+      "@id": "estleg:REELS_Par_SihiparaneKasutusJaKontroll",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_riigieelarve_seadus"
+      ],
+      "estleg:paragrahv": "RELS (riigieelarveliste vahendite sihipärase kasutamise ja kontrolli normid)",
+      "rdfs:label": "Riigiraha sihipärane kasutamine ja sisekontroll",
+      "estleg:requestedCluster": "riigiraha_kasutamine",
+      "estleg:summary": "Kehtestab nõuded, et avalikke vahendeid kasutatakse õiguspäraselt, säästlikult ja eesmärgipäraselt, ning näeb ette sisekontrolli ja aruandluse mehhanismid.",
+      "estleg:sourceAct": "Riigieelarve seadus"
+    },
+    {
+      "@id": "estleg:REELS_Par_SeireAruandlusJaAudit",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_riigieelarve_seadus"
+      ],
+      "estleg:paragrahv": "RELS (eelarve täitmise seire, aruandluse ja auditi normid)",
+      "rdfs:label": "Eelarve täitmise seire, aruandlus ja järelaudit",
+      "estleg:requestedCluster": "riigiraha_kasutamine",
+      "estleg:summary": "Sätestab eelarve täitmise jälgimise, regulaarse finantsaruandluse ja sõltumatu kontrolli alused, et tagada avaliku raha kasutuse vastavus ja usaldusväärsus.",
+      "estleg:sourceAct": "Riigieelarve seadus"
+    },
+    {
+      "@id": "estleg:Concept_RiigieelarveYhtsusJaLabiPaistvus",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalConcept_riigieelarve_seadus"
+      ],
+      "rdfs:label": "Riigieelarve ühtsus ja läbipaistvus",
+      "skos:definition": "Riigieelarve peab hõlmama tervikpilti riigi finantskohustustest ja vahendite kasutusest nii, et otsused ja tulemused oleksid avalikkusele arusaadavad.",
+      "estleg:belongsToCluster": "riigieelarve"
+    },
+    {
+      "@id": "estleg:Concept_FiskaalnePlaneerimistsukkel",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalConcept_riigieelarve_seadus"
+      ],
+      "rdfs:label": "Fiskaalne planeerimistsükkel",
+      "skos:definition": "Eelarvemenetlus ühendab strateegilise planeerimise, valitsuse ettevalmistuse ja Riigikogu menetluse ühtseks ajastatud protsessiks, mis võimaldab poliitiliste prioriteetide finantskatte.",
+      "estleg:belongsToCluster": "eelarvemenetlus"
+    },
+    {
+      "@id": "estleg:Concept_AvalikuRahaVastutavKasutus",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalConcept_riigieelarve_seadus"
+      ],
+      "rdfs:label": "Avaliku raha vastutav kasutus",
+      "skos:definition": "Riigiraha kasutamine peab olema eesmärgipärane, kontrollitav ja aruandekohustuslik, et minimeerida raiskamist ja tagada avalike teenuste toimimine.",
+      "estleg:belongsToCluster": "riigiraha_kasutamine"
+    },
+    {
+      "@id": "estleg:REELS_NOTE_001",
+      "@type": [
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "Märkus kaardistuse kohta",
+      "estleg:note": "Kaardistus järgib meeskonna ühtset JSON-LD skeemi. Töös kasutati semantilist struktuurikaardistust; järgmises iteratsioonis tuleb siduda iga kirje konkreetsete §-numbritega kehtivas Riigi Teataja redaktsioonis."
+    }
+  ]
+}
