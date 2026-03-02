@@ -1,0 +1,115 @@
+{
+  "@context": {
+    "estleg": "https://example.org/estonian-legal#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
+  },
+  "@graph": [
+    {
+      "@id": "estleg:Concept_tsus_osa7_final_provisions",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalConcept"
+      ],
+      "rdfs:label": "Concept",
+      "original_data": {
+        "source": "Tsiviilseadustiku üldosa seadus (TsÜS)",
+        "sourceActId": "RT I, 13.03.2014, 104 (redaktsioon jõust. 01.01.2018)",
+        "draftVersion": "peep-v1",
+        "scope": "TsÜS Osa 7/Final provisions mapping (lõppsätted): jõustumine ja kehtetuks tunnistamise käsitlus",
+        "sections": [
+          {
+            "section": "Final provisions (lõppsätted)",
+            "paragraphs": [
+              "Osa 8 pealkiri: Seaduse rakendamine",
+              "§170"
+            ],
+            "concepts": [
+              {
+                "Concept": "FinalProvisionsBlock",
+                "IRI": "FinalProvisionsBlock",
+                "Definition": "TsÜS lõppsätete plokk kehtivas terviktekstis, mis koondub seaduse rakendamise ja jõustumise reeglile.",
+                "Rule": [
+                  "Kehtivas TsÜS terviktekstis on lõppsätete sisuline norm §170 (Seaduse jõustumine).",
+                  "Lõppsätete funktsioon on siduda TsÜS jõustumine eraldi rakendusseadusega.",
+                  "TsÜS normatiivne lõppstruktuur ei sisalda kehtivas redaktsioonis eraldi sisemist repeali-paragrahvi."
+                ],
+                "Categories": [
+                  "FinalProvisions",
+                  "ApplicationLink",
+                  "CodificationClosure"
+                ]
+              }
+            ],
+            "coreRelations": [
+              "TsUS_FinalPart --contains--> Par170",
+              "FinalProvisionsBlock --centersOn--> EntryIntoForceRule",
+              "TsUS --isAppliedThrough--> ImplementationAct"
+            ]
+          },
+          {
+            "section": "Entry into force (jõustumine)",
+            "paragraphs": [
+              "§170 lg 1"
+            ],
+            "concepts": [
+              {
+                "Concept": "EntryIntoForceByImplementationAct",
+                "IRI": "EntryIntoForceByImplementationAct",
+                "Definition": "TsÜS jõustumise aja määrab rakendamise seadus, mitte TsÜS-s fikseeritud kalendrikuupäev.",
+                "Rule": [
+                  "§170 lg 1: 'Käesolev seadus jõustub selle rakendamise seaduses sätestatud ajast.'",
+                  "Jõustumisreegel on viitenorm, mis delegeerib jõustumise ajamääratluse rakendamisseadusele.",
+                  "Intertemporaalne tõlgendus tuleb teha koos TsÜS rakendamisseadusega (VÕSRS)."
+                ],
+                "Categories": [
+                  "EntryIntoForceRule",
+                  "ReferenceNorm",
+                  "IntertemporalLink"
+                ]
+              }
+            ],
+            "coreRelations": [
+              "Par170_1 --defines--> EntryIntoForceByImplementationAct",
+              "EntryIntoForceByImplementationAct --references--> VOSRS",
+              "TsUS --entryIntoForceDeterminedBy--> ImplementationLaw"
+            ]
+          },
+          {
+            "section": "Repealed provisions (kehtetuks tunnistamine)",
+            "paragraphs": [
+              "TsÜS kehtiv terviktekst: explicit repeal norm not present in final part",
+              "Repeal architecture handled through implementation/reform legislation"
+            ],
+            "concepts": [
+              {
+                "Concept": "ExternalRepealArchitecture",
+                "IRI": "ExternalRepealArchitecture",
+                "Definition": "TsÜS enda lõpposas puudub kehtivas redaktsioonis autonoomne kehtetuks tunnistamise norm; repeali mõju realiseerub reformipaketi ja rakendusseaduste kaudu.",
+                "Rule": [
+                  "Kehtiv TsÜS tekst ei sisalda lõpposas eraldi kehtetuks tunnistamise paragrahvi.",
+                  "Õigusajalooline repeali ulatus tuleb tuletada seotud reformiaktidest ja ajaloolistest redaktsioonidest.",
+                  "Süsteemse analüüsi korral tuleb TsÜS repeali käsitleda koos rakendamise seadusmaterjaliga."
+                ],
+                "Categories": [
+                  "RepealHandling",
+                  "HistoricalRedactionDependency",
+                  "ImplementationFramework"
+                ]
+              }
+            ],
+            "coreRelations": [
+              "TsUS_CurrentText --doesNotContain--> InternalRepealParagraph",
+              "RepealEffects --areTracedVia--> HistoricalAndImplementationActs",
+              "ExternalRepealArchitecture --requires--> RedactionChronologyAnalysis"
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
