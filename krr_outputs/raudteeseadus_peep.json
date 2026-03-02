@@ -1,0 +1,137 @@
+{
+  "@context": {
+    "estleg": "https://example.org/estonian-legal#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
+  },
+  "@graph": [
+    {
+      "@id": "estleg:RAUDTEE_Map_2026",
+      "@type": "owl:Ontology",
+      "rdfs:label": "Raudteeseaduse teemakaardistus (Rail transport)",
+      "dc:description": "Raudteeseaduse põhisambad: raudteetaristu, raudteeohutus ja reisijate õigused.",
+      "dc:source": "Raudteeseadus (kehtiv terviktekst; vajab §-tasemel lõppverifitseerimist)"
+    },
+    {
+      "@id": "estleg:LegalProvision",
+      "@type": "owl:Class",
+      "rdfs:label": "Õigusnorm (paragrahv)"
+    },
+    {
+      "@id": "estleg:TopicCluster",
+      "@type": "owl:Class",
+      "rdfs:label": "Teemaklaster"
+    },
+
+    {
+      "@id": "estleg:Cluster_Raudteetaristu",
+      "@type": ["owl:NamedIndividual", "estleg:TopicCluster"],
+      "rdfs:label": "Raudteetaristu"
+    },
+    {
+      "@id": "estleg:Cluster_Raudteeohutus",
+      "@type": ["owl:NamedIndividual", "estleg:TopicCluster"],
+      "rdfs:label": "Raudteeohutus"
+    },
+    {
+      "@id": "estleg:Cluster_ReisijateOigused",
+      "@type": ["owl:NamedIndividual", "estleg:TopicCluster"],
+      "rdfs:label": "Reisijate õigused"
+    },
+
+    {
+      "@id": "estleg:RAUDTEE_Par_Taristu_moisted",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "§ (taristu mõistenorm)",
+      "rdfs:label": "Raudteetaristu ja selle osade määratlus",
+      "estleg:requestedCluster": "raudteetaristu",
+      "estleg:summary": "Määratleb raudteetaristu koosseisu (teed, seadmed, rajatised) ning taristu kasutamise õigusliku raami raudteeveo korraldamisel.",
+      "estleg:sourceAct": "Raudteeseadus"
+    },
+    {
+      "@id": "estleg:RAUDTEE_Par_Taristu_haldus",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "§ (taristu haldamise norm)",
+      "rdfs:label": "Raudteetaristu valdajate ja haldajate kohustused",
+      "estleg:requestedCluster": "raudteetaristu",
+      "estleg:summary": "Sätestab taristuomaniku ja -halduri kohustused taristu korrashoiul, arendamisel ning juurdepääsu võimaldamisel vedajatele võrdsetel tingimustel.",
+      "estleg:sourceAct": "Raudteeseadus"
+    },
+    {
+      "@id": "estleg:RAUDTEE_Par_Taristu_juurdepaas",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "§ (taristule juurdepääsu norm)",
+      "rdfs:label": "Raudteetaristule juurdepääsu ja tasustamise põhimõtted",
+      "estleg:requestedCluster": "raudteetaristu",
+      "estleg:summary": "Reguleerib taristu kasutamise tingimusi, võimsuse jaotamist ning taristutasu aluseid, et tagada läbipaistev ja mittediskrimineeriv ligipääs.",
+      "estleg:sourceAct": "Raudteeseadus"
+    },
+
+    {
+      "@id": "estleg:RAUDTEE_Par_Ohutus_juhtimine",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "§ (ohutusjuhtimise norm)",
+      "rdfs:label": "Raudteeohutuse juhtimissüsteem",
+      "estleg:requestedCluster": "raudteeohutus",
+      "estleg:summary": "Kehtestab nõuded ohutusjuhtimissüsteemile, millega raudtee-ettevõtjad ja taristuvaldajad ennetavad riske ning tagavad ohutu liikluse.",
+      "estleg:sourceAct": "Raudteeseadus"
+    },
+    {
+      "@id": "estleg:RAUDTEE_Par_Ohutus_sertifikaadid",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "§ (ohutussertifikaadi norm)",
+      "rdfs:label": "Ohutustunnistus ja ohutusluba",
+      "estleg:requestedCluster": "raudteeohutus",
+      "estleg:summary": "Määrab tingimused, mille alusel antakse raudtee-ettevõtjale ohutustunnistus ja taristuvaldajale ohutusluba ning kuidas nende kehtivust kontrollitakse.",
+      "estleg:sourceAct": "Raudteeseadus"
+    },
+    {
+      "@id": "estleg:RAUDTEE_Par_Ohutus_jarelevalve",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "§ (ohutusjärelevalve norm)",
+      "rdfs:label": "Riiklik järelevalve raudteeohutuse üle",
+      "estleg:requestedCluster": "raudteeohutus",
+      "estleg:summary": "Annab pädevale asutusele õiguse teha kontrolli, rakendada ettekirjutusi ja piiranguid ning reageerida ohutusnõuete rikkumisele.",
+      "estleg:sourceAct": "Raudteeseadus"
+    },
+
+    {
+      "@id": "estleg:RAUDTEE_Par_Reisija_info",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "§ (reisija teavitamise norm)",
+      "rdfs:label": "Reisijate teavitamine ja teenusetingimused",
+      "estleg:requestedCluster": "reisijate_oigused",
+      "estleg:summary": "Sõnastab vedaja kohustuse anda reisijale selget teavet sõidu, hilinemiste, tühistamiste ja teenuse kasutamise tingimuste kohta.",
+      "estleg:sourceAct": "Raudteeseadus"
+    },
+    {
+      "@id": "estleg:RAUDTEE_Par_Reisija_huvitis",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "§ (reisija hüvitise norm)",
+      "rdfs:label": "Hüvitised ja tagasimaksed raudteeveol",
+      "estleg:requestedCluster": "reisijate_oigused",
+      "estleg:summary": "Reguleerib reisija õigusi piletihinna tagastusele või hüvitisele, kui sõit jääb ära, oluliselt hilineb või teenus ei vasta nõuetele.",
+      "estleg:sourceAct": "Raudteeseadus"
+    },
+    {
+      "@id": "estleg:RAUDTEE_Par_Reisija_liikumispuue",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "§ (ligipääsetavuse norm)",
+      "rdfs:label": "Liikumispuudega ja piiratud liikumisvõimega reisijate õigused",
+      "estleg:requestedCluster": "reisijate_oigused",
+      "estleg:summary": "Kehtestab erivajadusega reisijate abistamise, juurdepääsu ja mittediskrimineeriva kohtlemise põhimõtted raudteeteenuse kasutamisel.",
+      "estleg:sourceAct": "Raudteeseadus"
+    },
+
+    {
+      "@id": "estleg:RAUDTEE_NOTE_001",
+      "@type": ["owl:NamedIndividual"],
+      "rdfs:label": "Märkus kaardistuse kohta",
+      "estleg:note": "Kaardistus järgib meeskonna ühtset JSON-LD skeemi. Riigi Teataja otsepäring ei olnud selles töövoos kättesaadav; seetõttu on tegu semantilise eelkaardistusega ning järgmises iteratsioonis tuleb §-numbrid ja pealkirjad punktipõhiselt verifitseerida kehtiva redaktsiooni vastu. Reisijate õiguste plokk tuleb lõppverifitseerimisel siduda kohaldatavate EL raudtee reisijate õiguste normidega."
+    }
+  ]
+}
