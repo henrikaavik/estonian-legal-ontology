@@ -1,0 +1,163 @@
+{
+  "@context": {
+    "estleg": "https://example.org/estonian-legal#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
+  },
+  "@graph": [
+    {
+      "@id": "estleg:STS_Map_2026",
+      "@type": "owl:Ontology",
+      "rdfs:label": "Sotsiaalse turvalisuse seadusandluse teemakaardistus (STS)",
+      "dc:description": "Sotsiaalse turvalisuse normid koondvaates: sotsiaaltoetused, pensionisüsteem ja riiklik sotsiaalabi.",
+      "dc:source": [
+        "Sotsiaalseadustiku üldosa seadus",
+        "Riikliku pensionikindlustuse seadus",
+        "Sotsiaalhoolekande seadus",
+        "Riiklike peretoetuste seadus",
+        "Töövõimetoetuse seadus"
+      ]
+    },
+    {
+      "@id": "estleg:LegalProvision",
+      "@type": "owl:Class",
+      "rdfs:label": "Õigusnorm (paragrahv)"
+    },
+    {
+      "@id": "estleg:TopicCluster",
+      "@type": "owl:Class",
+      "rdfs:label": "Teemaklaster"
+    },
+
+    {
+      "@id": "estleg:Cluster_Sotsiaaltoetused",
+      "@type": ["owl:NamedIndividual", "estleg:TopicCluster"],
+      "rdfs:label": "Sotsiaaltoetused"
+    },
+    {
+      "@id": "estleg:Cluster_Pensionisusteem",
+      "@type": ["owl:NamedIndividual", "estleg:TopicCluster"],
+      "rdfs:label": "Pensionisüsteem"
+    },
+    {
+      "@id": "estleg:Cluster_RiiklikSotsiaalabi",
+      "@type": ["owl:NamedIndividual", "estleg:TopicCluster"],
+      "rdfs:label": "Riiklik sotsiaalabi"
+    },
+
+    {
+      "@id": "estleg:STS_Par_Stoetus_1",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "§ 1",
+      "rdfs:label": "§ 1. Riiklike peretoetuste eesmärk",
+      "estleg:requestedCluster": "sotsiaaltoetused",
+      "estleg:summary": "Määrab peretoetuste eesmärgi: laste kasvatamisega seotud kulude osaline katmine ja laste heaolu toetamine.",
+      "estleg:sourceAct": "Riiklike peretoetuste seadus"
+    },
+    {
+      "@id": "estleg:STS_Par_Stoetus_2",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "§ 4",
+      "rdfs:label": "§ 4. Lapsetoetus",
+      "estleg:requestedCluster": "sotsiaaltoetused",
+      "estleg:summary": "Kehtestab lapsetoetuse kui regulaarse rahalise toetuse lapse ülalpidamise toetamiseks.",
+      "estleg:sourceAct": "Riiklike peretoetuste seadus"
+    },
+    {
+      "@id": "estleg:STS_Par_Stoetus_3",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "§ 17",
+      "rdfs:label": "§ 17. Lasterikka pere toetus",
+      "estleg:requestedCluster": "sotsiaaltoetused",
+      "estleg:summary": "Sätestab täiendava toetuse paljulapselistele peredele, et vähendada vaesusriski ja toetada toimetulekut.",
+      "estleg:sourceAct": "Riiklike peretoetuste seadus"
+    },
+    {
+      "@id": "estleg:STS_Par_Stoetus_4",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "§ 3",
+      "rdfs:label": "§ 3. Töövõimetoetuse eesmärk",
+      "estleg:requestedCluster": "sotsiaaltoetused",
+      "estleg:summary": "Reguleerib töövõime vähenemise korral makstava toetuse eesmärki ja seotust tööturul osalemisega.",
+      "estleg:sourceAct": "Töövõimetoetuse seadus"
+    },
+
+    {
+      "@id": "estleg:STS_Par_Pens_1",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "§ 2",
+      "rdfs:label": "§ 2. Riikliku pensionikindlustuse liigid",
+      "estleg:requestedCluster": "pensionisusteem",
+      "estleg:summary": "Määratleb pensioniliigid, sh vanaduspensioni, töövõimetuspensioni (ajalooliselt) ja toitjakaotuspensioni.",
+      "estleg:sourceAct": "Riikliku pensionikindlustuse seadus"
+    },
+    {
+      "@id": "estleg:STS_Par_Pens_2",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "§ 7",
+      "rdfs:label": "§ 7. Vanaduspensioni õigus",
+      "estleg:requestedCluster": "pensionisusteem",
+      "estleg:summary": "Sätestab vanaduspensioni saamise üldtingimused, eeskätt pensioniea ja kindlustusstaaži nõuded.",
+      "estleg:sourceAct": "Riikliku pensionikindlustuse seadus"
+    },
+    {
+      "@id": "estleg:STS_Par_Pens_3",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "§ 20",
+      "rdfs:label": "§ 20. Pensioni arvutamise alused",
+      "estleg:requestedCluster": "pensionisusteem",
+      "estleg:summary": "Kirjeldab pensioni suuruse kujunemist kindlustusosaku, staažiosaku ja võimalike täiendavate komponentide kaudu.",
+      "estleg:sourceAct": "Riikliku pensionikindlustuse seadus"
+    },
+    {
+      "@id": "estleg:STS_Par_Pens_4",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "§ 24",
+      "rdfs:label": "§ 24. Pensioni indekseerimine",
+      "estleg:requestedCluster": "pensionisusteem",
+      "estleg:summary": "Tagab pensionide perioodilise ümberarvutamise vastavalt indekseerimise korrale, et säilitada pensioni ostujõud.",
+      "estleg:sourceAct": "Riikliku pensionikindlustuse seadus"
+    },
+
+    {
+      "@id": "estleg:STS_Par_Abi_1",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "§ 3",
+      "rdfs:label": "§ 3. Sotsiaalhoolekande põhimõtted",
+      "estleg:requestedCluster": "riiklik_sotsiaalabi",
+      "estleg:summary": "Sätestab isiku vajadustest lähtuva abi, ennetuse ja inimväärikuse kaitse kui sotsiaalabi aluspõhimõtted.",
+      "estleg:sourceAct": "Sotsiaalhoolekande seadus"
+    },
+    {
+      "@id": "estleg:STS_Par_Abi_2",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "§ 22",
+      "rdfs:label": "§ 22. Toimetulekutoetus",
+      "estleg:requestedCluster": "riiklik_sotsiaalabi",
+      "estleg:summary": "Reguleerib toimetulekutoetust viimase abinõuna, kui leibkonna sissetulek jääb alla toimetulekupiiri.",
+      "estleg:sourceAct": "Sotsiaalhoolekande seadus"
+    },
+    {
+      "@id": "estleg:STS_Par_Abi_3",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "§ 131",
+      "rdfs:label": "§ 131. Väljaspool kodu osutatav üldhooldusteenus",
+      "estleg:requestedCluster": "riiklik_sotsiaalabi",
+      "estleg:summary": "Sätestab hooldusvajadusega täisealistele osutatava üldhooldusteenuse korralduse ja rahastuse põhiraami.",
+      "estleg:sourceAct": "Sotsiaalhoolekande seadus"
+    },
+    {
+      "@id": "estleg:STS_Par_Abi_4",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "§ 5",
+      "rdfs:label": "§ 5. Sotsiaalseadustiku üldpõhimõtted",
+      "estleg:requestedCluster": "riiklik_sotsiaalabi",
+      "estleg:summary": "Määratleb sotsiaalkaitse üldmõisted, riskide käsitluse ja õiguste realiseerimise raamtingimused avalikus sotsiaalkindlustuses.",
+      "estleg:sourceAct": "Sotsiaalseadustiku üldosa seadus"
+    }
+  ]
+}
