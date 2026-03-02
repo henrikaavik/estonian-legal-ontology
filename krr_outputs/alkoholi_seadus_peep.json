@@ -1,0 +1,205 @@
+{
+  "@context": {
+    "estleg": "https://example.org/estonian-legal#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
+  },
+  "@graph": [
+    {
+      "@id": "estleg:ALKS_Map_2026",
+      "@type": "owl:Ontology",
+      "rdfs:label": "Alkoholiseaduse teemakaardistus (alkoholiõigus)",
+      "dc:description": "Alkoholiseaduse põhisambad: alkoholiload, müügipiirangud ja reklaamipiirangud (koostoimes alkoholi reguleerivate alamaktidega).",
+      "dc:source": "Alkoholiseadus (Riigi Teataja, kehtiv redaktsioon; §-taseme viited vajavad lõppverifitseerimist)"
+    },
+    {
+      "@id": "estleg:LegalProvision_alkoholiseadus",
+      "@type": "owl:Class",
+      "rdfs:label": "Õigusnorm (paragrahv)"
+    },
+    {
+      "@id": "estleg:TopicCluster_alkoholiseadus",
+      "@type": "owl:Class",
+      "rdfs:label": "Teemaklaster"
+    },
+    {
+      "@id": "estleg:LegalConcept_alkoholiseadus",
+      "@type": "owl:Class",
+      "rdfs:label": "Õigusmõiste"
+    },
+    {
+      "@id": "estleg:Cluster_Alkoholiload",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster_alkoholiseadus"
+      ],
+      "rdfs:label": "Alkoholiload"
+    },
+    {
+      "@id": "estleg:Cluster_Muugipiirangud",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster_alkoholiseadus"
+      ],
+      "rdfs:label": "Müügipiirangud"
+    },
+    {
+      "@id": "estleg:Cluster_Reklaamipiirangud",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster_alkoholiseadus"
+      ],
+      "rdfs:label": "Reklaamipiirangud"
+    },
+    {
+      "@id": "estleg:ALKS_Par_KaitlemisOiguslikAlus",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_alkoholiseadus"
+      ],
+      "estleg:paragrahv": "AlkS (alkoholi käitlemise õigusliku aluse normid)",
+      "rdfs:label": "Alkoholi käitlemise õiguslik alus ja tegevusloa vajadus",
+      "estleg:requestedCluster": "alkoholiload",
+      "estleg:summary": "Määrab, millistel juhtudel on alkoholi tootmiseks, töötlemiseks, hulgimüügiks või muuks käitlemiseks vajalik tegevusluba ning milline on loakohustuse ulatus.",
+      "estleg:sourceAct": "Alkoholiseadus"
+    },
+    {
+      "@id": "estleg:ALKS_Par_LoaAndmineJaKehtivus",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_alkoholiseadus"
+      ],
+      "estleg:paragrahv": "AlkS (loa andmise, muutmise ja kehtivuse normid)",
+      "rdfs:label": "Alkoholiloa andmine, muutmine, peatamine ja kehtetuks tunnistamine",
+      "estleg:requestedCluster": "alkoholiload",
+      "estleg:summary": "Reguleerib loa andmise eeldusi, loa tingimuste muutmist ning aluseid, mille esinemisel võib järelevalveasutus loa peatada või kehtetuks tunnistada.",
+      "estleg:sourceAct": "Alkoholiseadus"
+    },
+    {
+      "@id": "estleg:ALKS_Par_JarelevalveJaVastutus",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_alkoholiseadus"
+      ],
+      "estleg:paragrahv": "AlkS (järelevalve ja vastutuse normid käitlemislubade üle)",
+      "rdfs:label": "Loaomanike üle järelevalve ja rikkumiste tagajärjed",
+      "estleg:requestedCluster": "alkoholiload",
+      "estleg:summary": "Sätestab loaomaniku kohustused dokumenteerimisel ja kontrolli talumisel ning kirjeldab rikkumiste korral rakendatavaid ettekirjutusi, sunnimeetmeid ja vastutust.",
+      "estleg:sourceAct": "Alkoholiseadus"
+    },
+    {
+      "@id": "estleg:ALKS_Par_MuugiVanusepiir",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_alkoholiseadus"
+      ],
+      "estleg:paragrahv": "AlkS (vanusepiirangu ja ostja kontrolli normid)",
+      "rdfs:label": "Alkoholi müük alaealisele keelatud ja vanuse kontroll",
+      "estleg:requestedCluster": "müük",
+      "estleg:summary": "Keelab alkoholi müügi alla 18-aastasele isikule ning paneb müüjale kohustuse vanuse kahtluse korral ostja vanust usaldusväärselt kontrollida.",
+      "estleg:sourceAct": "Alkoholiseadus"
+    },
+    {
+      "@id": "estleg:ALKS_Par_MuugiAegJaKoht",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_alkoholiseadus"
+      ],
+      "estleg:paragrahv": "AlkS (müügiaja, müügikoha ja erandite normid)",
+      "rdfs:label": "Alkoholi jaemüügi aja- ja kohapiirangud",
+      "estleg:requestedCluster": "müük",
+      "estleg:summary": "Kehtestab kellaajalised ja asukohapõhised piirangud alkoholi jaemüügile ning sätestab juhtumid, kus piiranguid kohaldatakse erisustega.",
+      "estleg:sourceAct": "Alkoholiseadus"
+    },
+    {
+      "@id": "estleg:ALKS_Par_KaugmuukJaUleandmine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_alkoholiseadus"
+      ],
+      "estleg:paragrahv": "AlkS (kaugmüügi, üleandmise ja tarbijakaitse normid)",
+      "rdfs:label": "Alkoholi kaugmüük, kättetoimetamine ja üleandmise kontroll",
+      "estleg:requestedCluster": "müük",
+      "estleg:summary": "Reguleerib alkoholi kaugmüügi tingimusi, üleandmise hetkel isikusamasuse ja vanuse kontrolli ning keelatud müügiviiside vältimist.",
+      "estleg:sourceAct": "Alkoholiseadus"
+    },
+    {
+      "@id": "estleg:ALKS_Par_ReklaamiYldkeeld",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_alkoholiseadus"
+      ],
+      "estleg:paragrahv": "AlkS (alkoholi reklaami üldkeelu ja lubatud info normid)",
+      "rdfs:label": "Alkoholi reklaami üldpiirangud ja lubatud teave",
+      "estleg:requestedCluster": "reklaam",
+      "estleg:summary": "Määrab alkoholi reklaami lubatavuse piirid, eristades müügikoha teavet reklaamist ning piirates reklaami sisu, mis võib soodustada tarbimist või idealiseerida alkoholi.",
+      "estleg:sourceAct": "Alkoholiseadus"
+    },
+    {
+      "@id": "estleg:ALKS_Par_ReklaamiSisuPiirangud",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_alkoholiseadus"
+      ],
+      "estleg:paragrahv": "AlkS (reklaami sisu- ja sihtrühma kaitse normid)",
+      "rdfs:label": "Alaealiste kaitse ja keelatud reklaamivõtted",
+      "estleg:requestedCluster": "reklaam",
+      "estleg:summary": "Keelab reklaamivõtted, mis suunavad alkoholi alaealistele või seovad alkoholitarbimise edu, sotsiaalse staatuse, tervise või parema sooritusvõimega.",
+      "estleg:sourceAct": "Alkoholiseadus"
+    },
+    {
+      "@id": "estleg:ALKS_Par_ReklaamiJarelevalve",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_alkoholiseadus"
+      ],
+      "estleg:paragrahv": "AlkS (reklaami järelevalve, ettekirjutuste ja vastutuse normid)",
+      "rdfs:label": "Reklaamireeglite järelevalve ja rikkumiste sanktsioonid",
+      "estleg:requestedCluster": "reklaam",
+      "estleg:summary": "Annab järelevalveasutusele pädevuse nõuda õigusvastase reklaami lõpetamist, teha ettekirjutusi ning rakendada väärteomenetlust või muid seadusest tulenevaid meetmeid.",
+      "estleg:sourceAct": "Alkoholiseadus"
+    },
+    {
+      "@id": "estleg:Concept_AlkoholiloaRegulatiivneKontroll",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalConcept_alkoholiseadus"
+      ],
+      "rdfs:label": "Alkoholiloa regulatiivne kontroll",
+      "skos:definition": "Alkoholi käitlemine on loapõhine riskitegevus, kus loa andmine ja järelevalve seotakse avaliku korra, tarbijakaitse ja maksukorralduse eesmärkidega.",
+      "estleg:belongsToCluster": "alkoholiload"
+    },
+    {
+      "@id": "estleg:Concept_AlkoholiMuugiKaitsepiirangud",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalConcept_alkoholiseadus"
+      ],
+      "rdfs:label": "Alkoholi müügi kaitsepiirangud",
+      "skos:definition": "Müügireeglid ühendavad vanusekontrolli, aja- ja kohapiirangud ning kontrollitud üleandmise, et vähendada alaealiste kättesaadavust ja riskitarvitamist.",
+      "estleg:belongsToCluster": "müük"
+    },
+    {
+      "@id": "estleg:Concept_AlkoholireklaamiKahjudeEnnetus",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalConcept_alkoholiseadus"
+      ],
+      "rdfs:label": "Alkoholireklaami kahjude ennetus",
+      "skos:definition": "Reklaamiregulatsioon piirab alkoholi normaliseerivat ja tarbimist ergutavat kommunikatsiooni, kaitstes eeskätt alaealisi ja haavatavaid sihtrühmi.",
+      "estleg:belongsToCluster": "reklaam"
+    },
+    {
+      "@id": "estleg:ALKS_NOTE_001",
+      "@type": [
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "Märkus kaardistuse kohta",
+      "estleg:note": "Kaardistus järgib meeskonna ühtset JSON-LD skeemi. Kuna online-allika automaatpäring ei olnud keskkonnas saadaval, on §-viited antud semantiliste ankrutena; järgmises iteratsioonis tuleb siduda kirjed konkreetsete Alkoholiseaduse §-numbritega kehtivas redaktsioonis."
+    }
+  ]
+}
