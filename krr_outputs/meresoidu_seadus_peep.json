@@ -1,0 +1,137 @@
+{
+  "@context": {
+    "estleg": "https://example.org/estonian-legal#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
+  },
+  "@graph": [
+    {
+      "@id": "estleg:MERESOIT_Map_2026",
+      "@type": "owl:Ontology",
+      "rdfs:label": "Meresõidu seaduse teemakaardistus (Mereõigus)",
+      "dc:description": "Meresõidu seaduse põhisambad: laevade registreerimine, mereohutus ja sadamate tegevus.",
+      "dc:source": "Meresõidu seadus (kehtiv terviktekst; vajab §-tasemel lõppverifitseerimist)"
+    },
+    {
+      "@id": "estleg:LegalProvision",
+      "@type": "owl:Class",
+      "rdfs:label": "Õigusnorm (paragrahv)"
+    },
+    {
+      "@id": "estleg:TopicCluster",
+      "@type": "owl:Class",
+      "rdfs:label": "Teemaklaster"
+    },
+
+    {
+      "@id": "estleg:Cluster_LaevadeRegistreerimine",
+      "@type": ["owl:NamedIndividual", "estleg:TopicCluster"],
+      "rdfs:label": "Laevade registreerimine"
+    },
+    {
+      "@id": "estleg:Cluster_Mereohutus",
+      "@type": ["owl:NamedIndividual", "estleg:TopicCluster"],
+      "rdfs:label": "Mereohutus"
+    },
+    {
+      "@id": "estleg:Cluster_SadamateTegevus",
+      "@type": ["owl:NamedIndividual", "estleg:TopicCluster"],
+      "rdfs:label": "Sadamate tegevus"
+    },
+
+    {
+      "@id": "estleg:MERESOIT_Par_Register_objekt",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "§ (registreerimise objektinorm)",
+      "rdfs:label": "Laeva registrisse kandmise alused",
+      "estleg:requestedCluster": "laevade_registreerimine",
+      "estleg:summary": "Sätestab tingimused, mille alusel laev kantakse Eesti laevaregistrisse, ning määrab registrikande eelduseks olevad põhiandmed.",
+      "estleg:sourceAct": "Meresõidu seadus"
+    },
+    {
+      "@id": "estleg:MERESOIT_Par_Register_menetlus",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "§ (registreerimismenetluse norm)",
+      "rdfs:label": "Laeva registreerimise ja registrikande muutmise menetlus",
+      "estleg:requestedCluster": "laevade_registreerimine",
+      "estleg:summary": "Reguleerib taotluse esitamise, dokumentide kontrolli, registrikande tegemise ning registrikande muutmise või kustutamise menetluslikud alused.",
+      "estleg:sourceAct": "Meresõidu seadus"
+    },
+    {
+      "@id": "estleg:MERESOIT_Par_Register_toime",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "§ (registriandmete õigusliku toime norm)",
+      "rdfs:label": "Laevaregistri andmete õiguslik tähendus ja avalikkus",
+      "estleg:requestedCluster": "laevade_registreerimine",
+      "estleg:summary": "Määratleb registriandmete usaldatavuse, avalikkuse ulatuse ja registrikande õigusliku toime omandi- ning kasutusõiguste tõendamisel.",
+      "estleg:sourceAct": "Meresõidu seadus"
+    },
+
+    {
+      "@id": "estleg:MERESOIT_Par_Ohutus_nouded",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "§ (ohutusnõuete norm)",
+      "rdfs:label": "Laeva tehnilised ja meresõiduohutuse nõuded",
+      "estleg:requestedCluster": "mereohutus",
+      "estleg:summary": "Kehtestab laevade tehnilise seisukorra, varustuse ja mehitamise põhinõuded, mis peavad olema täidetud laeva ohutuks käitamiseks merel.",
+      "estleg:sourceAct": "Meresõidu seadus"
+    },
+    {
+      "@id": "estleg:MERESOIT_Par_Ohutus_sertif",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "§ (sertifitseerimise ja kontrolli norm)",
+      "rdfs:label": "Mereohutusalane kontroll, tunnistused ja järelevalve",
+      "estleg:requestedCluster": "mereohutus",
+      "estleg:summary": "Sätestab laeva ohutusalaste tunnistuste andmise, kehtivuse kontrolli ja pädeva asutuse järelevalvepädevuse rikkumiste ennetamiseks.",
+      "estleg:sourceAct": "Meresõidu seadus"
+    },
+    {
+      "@id": "estleg:MERESOIT_Par_Ohutus_kapten",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "§ (kapteni ja reederi kohustuste norm)",
+      "rdfs:label": "Kapteni ja reederi kohustused meresõiduohutuse tagamisel",
+      "estleg:requestedCluster": "mereohutus",
+      "estleg:summary": "Sõnastab kapteni ja reederi vastutuse ohutu meresõidu, meeskonna väljaõppe ning ohuolukordadest teavitamise korraldamisel.",
+      "estleg:sourceAct": "Meresõidu seadus"
+    },
+
+    {
+      "@id": "estleg:MERESOIT_Par_Sadam_toimimine",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "§ (sadama toimimise norm)",
+      "rdfs:label": "Sadama töökorraldus ja laevaliikluse teenindamine",
+      "estleg:requestedCluster": "sadamate_tegevus",
+      "estleg:summary": "Reguleerib sadama pidaja kohustusi sadama toimimise, laevade vastuvõtu ning teenuste kättesaadavuse korraldamisel.",
+      "estleg:sourceAct": "Meresõidu seadus"
+    },
+    {
+      "@id": "estleg:MERESOIT_Par_Sadam_ohutus",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "§ (sadama ohutus- ja korranorm)",
+      "rdfs:label": "Sadama ohutusnõuded ja laevaliikluse kord",
+      "estleg:requestedCluster": "sadamate_tegevus",
+      "estleg:summary": "Kehtestab sadama territooriumil ja akvatooriumis kohaldatavad ohutusnõuded, liikluskorralduse reeglid ning ohtlike olukordade ennetamise meetmed.",
+      "estleg:sourceAct": "Meresõidu seadus"
+    },
+    {
+      "@id": "estleg:MERESOIT_Par_Sadam_jarelevalve",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "§ (järelevalve norm)",
+      "rdfs:label": "Järelevalve sadama nõuete täitmise üle",
+      "estleg:requestedCluster": "sadamate_tegevus",
+      "estleg:summary": "Annab pädevale asutusele õiguse kontrollida sadama tegevuse vastavust nõuetele, teha ettekirjutusi ning rakendada haldusmeetmeid rikkumiste kõrvaldamiseks.",
+      "estleg:sourceAct": "Meresõidu seadus"
+    },
+
+    {
+      "@id": "estleg:MERESOIT_NOTE_001",
+      "@type": ["owl:NamedIndividual"],
+      "rdfs:label": "Märkus kaardistuse kohta",
+      "estleg:note": "Kaardistus järgib meeskonna ühtset JSON-LD skeemi. Tegemist on semantilise eelkaardistusega; järgmises iteratsioonis tuleb §-numbrid, pealkirjad ja sõnastused verifitseerida kehtiva redaktsiooni vastu."
+    }
+  ]
+}
