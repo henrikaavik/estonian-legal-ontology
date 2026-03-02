@@ -1,0 +1,205 @@
+{
+  "@context": {
+    "estleg": "https://example.org/estonian-legal#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
+  },
+  "@graph": [
+    {
+      "@id": "estleg:OJS_Map_2026",
+      "@type": "owl:Ontology",
+      "rdfs:label": "Ohutusjärelevalve seaduse teemakaardistus (tehniline ohutus)",
+      "dc:description": "Ohutusjärelevalve seaduse põhisambad: tehnilised seadmed, ohutuskontroll ja õnnetuste ärahoidmine.",
+      "dc:source": "Ohutusjärelevalve seadus (Riigi Teataja, kehtiv redaktsioon; §-taseme viited täpsustada lõppverifitseerimisel)"
+    },
+    {
+      "@id": "estleg:LegalProvision_ohutusjarelevalve",
+      "@type": "owl:Class",
+      "rdfs:label": "Õigusnorm (paragrahv)"
+    },
+    {
+      "@id": "estleg:TopicCluster_ohutusjarelevalve",
+      "@type": "owl:Class",
+      "rdfs:label": "Teemaklaster"
+    },
+    {
+      "@id": "estleg:LegalConcept_ohutusjarelevalve",
+      "@type": "owl:Class",
+      "rdfs:label": "Õigusmõiste"
+    },
+    {
+      "@id": "estleg:Cluster_TehnilisedSeadmed",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster_ohutusjarelevalve"
+      ],
+      "rdfs:label": "Tehnilised seadmed"
+    },
+    {
+      "@id": "estleg:Cluster_Ohutuskontroll",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster_ohutusjarelevalve"
+      ],
+      "rdfs:label": "Ohutuskontroll"
+    },
+    {
+      "@id": "estleg:Cluster_OnnetusteArahhoidmine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster_ohutusjarelevalve"
+      ],
+      "rdfs:label": "Õnnetuste ärahoidmine"
+    },
+    {
+      "@id": "estleg:OJS_Par_SeadmeKaitluseYldnouded",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_ohutusjarelevalve"
+      ],
+      "estleg:paragrahv": "OhJS (tehnilise seadme käitlemise üldnõuded)",
+      "rdfs:label": "Tehnilise seadme projekteerimise, paigaldamise ja kasutamise ohutusraam",
+      "estleg:requestedCluster": "tehnilised_seadmed",
+      "estleg:summary": "Kehtestab tehniliste seadmete elutsükliülesed ohutusnõuded, et seadme kasutamine ei ohustaks elu, tervist, vara ega keskkonda.",
+      "estleg:sourceAct": "Ohutusjärelevalve seadus"
+    },
+    {
+      "@id": "estleg:OJS_Par_PadevuseJaDokumentatsiooniNouded",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_ohutusjarelevalve"
+      ],
+      "estleg:paragrahv": "OhJS (pädevus- ja dokumenteerimiskohustused)",
+      "rdfs:label": "Seadme käitleja pädevus ja tehniline dokumentatsioon",
+      "estleg:requestedCluster": "tehnilised_seadmed",
+      "estleg:summary": "Nõuab, et tehnilise seadme käitlemine toimuks pädeva isiku või ettevõtja poolt ning et seadmega seotud dokumentatsioon oleks jälgitav ja ajakohane.",
+      "estleg:sourceAct": "Ohutusjärelevalve seadus"
+    },
+    {
+      "@id": "estleg:OJS_Par_VastavuseTagamineTuruleLaskmisel",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_ohutusjarelevalve"
+      ],
+      "estleg:paragrahv": "OhJS (nõuetele vastavus turule laskmisel ja kasutuselevõtul)",
+      "rdfs:label": "Nõuetele vastavuse hindamine enne kasutuselevõttu",
+      "estleg:requestedCluster": "tehnilised_seadmed",
+      "estleg:summary": "Reguleerib, et tehniline seade tohib turule tulla ja kasutusse minna üksnes juhul, kui ohutusnõuete täitmine on hinnatud ning tõendatud.",
+      "estleg:sourceAct": "Ohutusjärelevalve seadus"
+    },
+    {
+      "@id": "estleg:OJS_Par_OhutusKontrolliKohustus",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_ohutusjarelevalve"
+      ],
+      "estleg:paragrahv": "OhJS (kohustuslik ohutuskontroll)",
+      "rdfs:label": "Kohustuslik perioodiline ohutuskontroll",
+      "estleg:requestedCluster": "ohutuskontroll",
+      "estleg:summary": "Sätestab, millised seadmed peavad läbima kohustusliku perioodilise ohutuskontrolli ning milliste intervallide ja tingimuste alusel kontroll teostatakse.",
+      "estleg:sourceAct": "Ohutusjärelevalve seadus"
+    },
+    {
+      "@id": "estleg:OJS_Par_KontrolliTegijaPadevuseNouded",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_ohutusjarelevalve"
+      ],
+      "estleg:paragrahv": "OhJS (ohutuskontrolli tegija sõltumatus ja pädevus)",
+      "rdfs:label": "Ohutuskontrolli tegija pädevus, sõltumatus ja vastutus",
+      "estleg:requestedCluster": "ohutuskontroll",
+      "estleg:summary": "Määrab ohutuskontrolli teostajale sõltumatuse, kutsealase pädevuse ja menetlusnõuete standardi, et tagada kontrolli usaldusväärsus.",
+      "estleg:sourceAct": "Ohutusjärelevalve seadus"
+    },
+    {
+      "@id": "estleg:OJS_Par_JarelevalveEttekirjutusJaPiirang",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_ohutusjarelevalve"
+      ],
+      "estleg:paragrahv": "OhJS (järelevalvemeetmed ja ettekirjutused)",
+      "rdfs:label": "Järelevalveasutuse ettekirjutused ja kasutuspiirangud",
+      "estleg:requestedCluster": "ohutuskontroll",
+      "estleg:summary": "Annab järelevalveasutusele volituse nõuda puuduste kõrvaldamist, piirata ohtliku seadme kasutust või keelata selle käitamine kuni nõuete täitmiseni.",
+      "estleg:sourceAct": "Ohutusjärelevalve seadus"
+    },
+    {
+      "@id": "estleg:OJS_Par_RiskianaluusJaEnnetusmeetmed",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_ohutusjarelevalve"
+      ],
+      "estleg:paragrahv": "OhJS (riskianalüüs ja ennetusmeetmed)",
+      "rdfs:label": "Riskide hindamine ja ennetusmeetmete rakendamine",
+      "estleg:requestedCluster": "onnetuste_arahoidmine",
+      "estleg:summary": "Kohustab käitlejat tuvastama tehnilisest seadmest lähtuvaid ohte, hindama riske ning rakendama ennetavaid tehnilisi ja korralduslikke meetmeid.",
+      "estleg:sourceAct": "Ohutusjärelevalve seadus"
+    },
+    {
+      "@id": "estleg:OJS_Par_IntsidendiTeavitamine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_ohutusjarelevalve"
+      ],
+      "estleg:paragrahv": "OhJS (õnnetusest ja ohujuhtumist teavitamine)",
+      "rdfs:label": "Õnnetusjuhtumitest ja ohuolukordadest teavitamine",
+      "estleg:requestedCluster": "onnetuste_arahoidmine",
+      "estleg:summary": "Nõuab õnnetuste, rikkejuhtumite ja vahetu ohu juhtumite viivitamatut teavitamist pädevale asutusele, et vältida kahju laienemist.",
+      "estleg:sourceAct": "Ohutusjärelevalve seadus"
+    },
+    {
+      "@id": "estleg:OJS_Par_ReageerimineJaTaastamine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_ohutusjarelevalve"
+      ],
+      "estleg:paragrahv": "OhJS (reageerimis- ja taastamiskohustused)",
+      "rdfs:label": "Õnnetusjärgne reageerimine, kahju piiramine ja kordumise vältimine",
+      "estleg:requestedCluster": "onnetuste_arahoidmine",
+      "estleg:summary": "Sätestab kohustuse võtta õnnetusjärgsed tõrje- ja taastamismeetmed ning analüüsida juhtumi põhjuseid, et ennetada samalaadseid juhtumeid tulevikus.",
+      "estleg:sourceAct": "Ohutusjärelevalve seadus"
+    },
+    {
+      "@id": "estleg:Concept_TehniliseSeadmeElutsukliOhutus",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalConcept_ohutusjarelevalve"
+      ],
+      "rdfs:label": "Tehnilise seadme elutsükli ohutus",
+      "skos:definition": "Tehnilise seadme ohutus peab olema tagatud projekteerimisest kuni käitamise lõpetamiseni läbi nõuetele vastavuse, pädevuse ja dokumenteerituse.",
+      "estleg:belongsToCluster": "tehnilised_seadmed"
+    },
+    {
+      "@id": "estleg:Concept_RiskipohineOhutuskontroll",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalConcept_ohutusjarelevalve"
+      ],
+      "rdfs:label": "Riskipõhine ohutuskontroll",
+      "skos:definition": "Ohutuskontrolli sagedus ja ulatus peavad lähtuma seadme riskiprofiilist, kasutusotstarbest ja võimalikest tagajärgedest.",
+      "estleg:belongsToCluster": "ohutuskontroll"
+    },
+    {
+      "@id": "estleg:Concept_OnnetusteArahhoidmiseSusteem",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalConcept_ohutusjarelevalve"
+      ],
+      "rdfs:label": "Õnnetuste ärahoidmise süsteem",
+      "skos:definition": "Õnnetuste ennetus ühendab riskianalüüsi, kohustusliku teavituse, operatiivse reageerimise ja õppetundide rakendamise üheks järelevalve- ja ohutustsükliks.",
+      "estleg:belongsToCluster": "onnetuste_arahoidmine"
+    },
+    {
+      "@id": "estleg:OJS_NOTE_001",
+      "@type": [
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "Märkus kaardistuse kohta",
+      "estleg:note": "Kaardistus järgib meeskonna ühtset JSON-LD skeemi. Käesolev versioon on semantiline teemamudel; järgmises iteratsioonis lisada iga kirje juurde täpne §-viide kehtivast Riigi Teataja redaktsioonist."
+    }
+  ]
+}
