@@ -1,0 +1,205 @@
+{
+  "@context": {
+    "estleg": "https://example.org/estonian-legal#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
+  },
+  "@graph": [
+    {
+      "@id": "estleg:KIHLV_Map_2026",
+      "@type": "owl:Ontology",
+      "rdfs:label": "Kihlveoseaduse teemakaardistus (spordikihlvedu)",
+      "dc:description": "Kihlveoseaduse põhisambad: kihlveokorraldajad, kihlveoausus ja mängija piirangud.",
+      "dc:source": "Kihlveoseadus (Riigi Teataja, kehtiv redaktsioon; §-taseme viited vajavad lõppverifitseerimist)"
+    },
+    {
+      "@id": "estleg:LegalProvision_kihlveoseadus",
+      "@type": "owl:Class",
+      "rdfs:label": "Õigusnorm (paragrahv)"
+    },
+    {
+      "@id": "estleg:TopicCluster_kihlveoseadus",
+      "@type": "owl:Class",
+      "rdfs:label": "Teemaklaster"
+    },
+    {
+      "@id": "estleg:LegalConcept_kihlveoseadus",
+      "@type": "owl:Class",
+      "rdfs:label": "Õigusmõiste"
+    },
+    {
+      "@id": "estleg:Cluster_Kihlveokorraldajad",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster_kihlveoseadus"
+      ],
+      "rdfs:label": "Kihlveokorraldajad"
+    },
+    {
+      "@id": "estleg:Cluster_KihlveoAusus",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster_kihlveoseadus"
+      ],
+      "rdfs:label": "Kihlveoausus"
+    },
+    {
+      "@id": "estleg:Cluster_MangijaPiirangud",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster_kihlveoseadus"
+      ],
+      "rdfs:label": "Mängija piirangud"
+    },
+    {
+      "@id": "estleg:KIHLV_Par_LitsentsJaTegevusluba",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_kihlveoseadus"
+      ],
+      "estleg:paragrahv": "KihlvS (tegevusloa ja litsentsi normid)",
+      "rdfs:label": "Kihlveokorraldaja tegevusloa ja usaldusväärsuse nõuded",
+      "estleg:requestedCluster": "kihlveokorraldajad",
+      "estleg:summary": "Sätestab, et kihlvedu tohib korraldada üksnes pädeva loa alusel ning korraldaja peab täitma usaldusväärsuse, kapitali ja sisekontrolli miinimumnõuded.",
+      "estleg:sourceAct": "Kihlveoseadus"
+    },
+    {
+      "@id": "estleg:KIHLV_Par_SpordikihlveoPakkumiseReeglid",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_kihlveoseadus"
+      ],
+      "estleg:paragrahv": "KihlvS (spordikihlveo toote- ja pakkumisreeglid)",
+      "rdfs:label": "Spordikihlveo panustetüüpide ja tingimuste läbipaistvus",
+      "estleg:requestedCluster": "kihlveokorraldajad",
+      "estleg:summary": "Reguleerib spordikihlveo toodete kirjeldamist, koefitsientide avalikustamist, võiduarvestuse loogikat ja reegleid, et mängijale oleks teenuse sisu arusaadav ning kontrollitav.",
+      "estleg:sourceAct": "Kihlveoseadus"
+    },
+    {
+      "@id": "estleg:KIHLV_Par_MaksedJaVahenditeKaitse",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_kihlveoseadus"
+      ],
+      "estleg:paragrahv": "KihlvS (kliendivahendite hoidmise ja väljamaksete normid)",
+      "rdfs:label": "Mängijavahendite eristamine ja väljamaksete tähtaegsus",
+      "estleg:requestedCluster": "kihlveokorraldajad",
+      "estleg:summary": "Nõuab, et korraldaja eristaks mängijate raha enda vahenditest ning tagaks võitude väljamaksmise selgete tähtaegade ja dokumenteeritud protseduuride alusel.",
+      "estleg:sourceAct": "Kihlveoseadus"
+    },
+    {
+      "@id": "estleg:KIHLV_Par_VoistlusteManipuleerimiseEnnetus",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_kihlveoseadus"
+      ],
+      "estleg:paragrahv": "KihlvS (võistluste manipuleerimise ennetuse normid)",
+      "rdfs:label": "Kokkuleppemängude ja manipuleerimisriskide ennetamine",
+      "estleg:requestedCluster": "kihlveoausus",
+      "estleg:summary": "Kehtestab kohustuse hinnata spordisündmuste manipuleerimisriske, piirata kõrge riskiga panustamisvõimalusi ning rakendada ennetusmeetmeid ausa võistluskeskkonna kaitseks.",
+      "estleg:sourceAct": "Kihlveoseadus"
+    },
+    {
+      "@id": "estleg:KIHLV_Par_AndmevahetusJaTeavitamine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_kihlveoseadus"
+      ],
+      "estleg:paragrahv": "KihlvS (kahtlaste panuste seire ja teavitamise normid)",
+      "rdfs:label": "Kahtlaste panuste tuvastamine, seire ja teabevahetus",
+      "estleg:requestedCluster": "kihlveoausus",
+      "estleg:summary": "Sätestab korra, mille järgi kihlveokorraldaja peab tuvastama ebatavalised panustamismustrid ning jagama asjakohast infot järelevalve, spordialaliitude ja õiguskaitsega.",
+      "estleg:sourceAct": "Kihlveoseadus"
+    },
+    {
+      "@id": "estleg:KIHLV_Par_JarelevalveJaSanktsioonid",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_kihlveoseadus"
+      ],
+      "estleg:paragrahv": "KihlvS (aususnõuete täitmise järelevalve normid)",
+      "rdfs:label": "Aususnõuete järelevalve, ettekirjutused ja sanktsioonid",
+      "estleg:requestedCluster": "kihlveoausus",
+      "estleg:summary": "Määrab järelevalveasutuse õigused kontrollida aususnõuete täitmist, teha ettekirjutusi ja kohaldada meetmeid, kui korraldaja ei taga panustamiskeskkonna usaldusväärsust.",
+      "estleg:sourceAct": "Kihlveoseadus"
+    },
+    {
+      "@id": "estleg:KIHLV_Par_VanusJaLigipaasupiirangud",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_kihlveoseadus"
+      ],
+      "estleg:paragrahv": "KihlvS (vanuse- ja ligipääsupiirangute normid)",
+      "rdfs:label": "Alaealiste kaitse ja vanusekontroll",
+      "estleg:requestedCluster": "mängija_piirangud",
+      "estleg:summary": "Kehtestab vanusepiirangud spordikihlveos osalemisele ning kohustab korraldajat rakendama tõhusaid isikusamasuse ja vanuse tuvastamise protseduure.",
+      "estleg:sourceAct": "Kihlveoseadus"
+    },
+    {
+      "@id": "estleg:KIHLV_Par_EnesePiiramineJaVastutustundlikMang",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_kihlveoseadus"
+      ],
+      "estleg:paragrahv": "KihlvS (enesevälistuse ja vastutustundliku mängu normid)",
+      "rdfs:label": "Enesevälistus, panustamislimiidid ja vastutustundlik mäng",
+      "estleg:requestedCluster": "mängija_piirangud",
+      "estleg:summary": "Nõuab, et mängijal oleks võimalus seada endale panustamis- ja kaotuslimiite, kasutada enesevälistust ning saada infot hasartkäitumise riskide kohta.",
+      "estleg:sourceAct": "Kihlveoseadus"
+    },
+    {
+      "@id": "estleg:KIHLV_Par_ReklaamJaMangukaitse",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_kihlveoseadus"
+      ],
+      "estleg:paragrahv": "KihlvS (reklaami ja tarbijakaitseliste piirangute normid)",
+      "rdfs:label": "Reklaamipiirangud ja mängijakaitse kommunikatsioonis",
+      "estleg:requestedCluster": "mängija_piirangud",
+      "estleg:summary": "Piirab spordikihlveo agressiivset või eksitavat reklaami ning kohustab esitama hoiatavat ja tasakaalustatud infot, mis ei suuna haavatavaid isikuid ülemäärasele panustamisele.",
+      "estleg:sourceAct": "Kihlveoseadus"
+    },
+    {
+      "@id": "estleg:Concept_LitsentseeritudSpordikihlvedu",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalConcept_kihlveoseadus"
+      ],
+      "rdfs:label": "Litsentseeritud spordikihlveo korraldamine",
+      "skos:definition": "Spordikihlvedu on lubatud üksnes loa alusel tegutsevale korraldajale, kes suudab tagada finantsilise võimekuse, läbipaistvad reeglid ja tarbijakaitse.",
+      "estleg:belongsToCluster": "kihlveokorraldajad"
+    },
+    {
+      "@id": "estleg:Concept_PanustamisturuAusus",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalConcept_kihlveoseadus"
+      ],
+      "rdfs:label": "Panustamisturu ausus",
+      "skos:definition": "Kihlveoausus tähendab, et kahtlased panused tuvastatakse, manipuleerimisriskid maandatakse ning info liigub operatiivselt korraldajate, spordiorganisatsioonide ja järelevalve vahel.",
+      "estleg:belongsToCluster": "kihlveoausus"
+    },
+    {
+      "@id": "estleg:Concept_MangijaKaitsePiirangud",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalConcept_kihlveoseadus"
+      ],
+      "rdfs:label": "Mängija kaitse piirangute kaudu",
+      "skos:definition": "Mängijakaitse raamistik ühendab vanusepiirangud, enesevälistuse, limiidid ja reklaamireeglid, et vähendada probleemset panustamist ning kaitsta haavatavaid sihtrühmi.",
+      "estleg:belongsToCluster": "mängija_piirangud"
+    },
+    {
+      "@id": "estleg:KIHLV_NOTE_001",
+      "@type": [
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "Märkus kaardistuse kohta",
+      "estleg:note": "Kaardistus järgib meeskonna ühtset JSON-LD skeemi. Töös kasutati semantilist struktuurikaardistust; järgmises iteratsioonis tuleb siduda iga kirje konkreetsete §-numbritega kehtivas Riigi Teataja redaktsioonis."
+    }
+  ]
+}
