@@ -1,0 +1,102 @@
+{
+  "@context": {
+    "estleg": "https://example.org/estonian-legal#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
+  },
+  "@graph": [
+    {
+      "@id": "https://example.org/estonian-legal#",
+      "@type": "owl:Ontology",
+      "rdfs:label": "VÕS Osa 5 ontoloogia",
+      "dc:title": "Lepingud ja kohustused: kohustuste üleminek (§164–185)"
+    },
+    {
+      "@id": "estleg:LegalPart",
+      "@type": "owl:Class",
+      "rdfs:label": "Seaduse osa"
+    },
+    {
+      "@id": "estleg:Section",
+      "@type": "owl:Class",
+      "rdfs:label": "Paragrahv"
+    },
+    {
+      "@id": "estleg:Provision",
+      "@type": "owl:Class",
+      "rdfs:label": "Lõige"
+    },
+    {
+      "@id": "estleg:LegalConcept_volaigusseadus_osa5",
+      "@type": "owl:Class",
+      "rdfs:label": "Õigusmõiste (VÕS Osa 5)"
+    },
+
+    {
+      "@id": "estleg:ClaimAssignment",
+      "@type": ["owl:NamedIndividual", "estleg:LegalConcept_volaigusseadus_osa5"],
+      "rdfs:label": "Nõude üleandmine"
+    },
+    {
+      "@id": "estleg:DebtAssumption",
+      "@type": ["owl:NamedIndividual", "estleg:LegalConcept_volaigusseadus_osa5"],
+      "rdfs:label": "Võla ülevõtmine"
+    },
+    {
+      "@id": "estleg:ContractTransfer",
+      "@type": ["owl:NamedIndividual", "estleg:LegalConcept_volaigusseadus_osa5"],
+      "rdfs:label": "Lepingu üleandmine"
+    },
+    {
+      "@id": "estleg:EnterpriseTransfer",
+      "@type": ["owl:NamedIndividual", "estleg:LegalConcept_volaigusseadus_osa5"],
+      "rdfs:label": "Ettevõtte üleminek"
+    },
+
+    {
+      "@id": "estleg:VOS_Part5",
+      "@type": ["owl:NamedIndividual", "estleg:LegalPart"],
+      "rdfs:label": "VÕS Osa 5 – Kohustuste üleminek",
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:hasSection": [
+        {"@id": "estleg:VOS_Par164"}, {"@id": "estleg:VOS_Par165"}, {"@id": "estleg:VOS_Par166"},
+        {"@id": "estleg:VOS_Par167"}, {"@id": "estleg:VOS_Par168"}, {"@id": "estleg:VOS_Par169"},
+        {"@id": "estleg:VOS_Par170"}, {"@id": "estleg:VOS_Par171"}, {"@id": "estleg:VOS_Par172"},
+        {"@id": "estleg:VOS_Par173"}, {"@id": "estleg:VOS_Par174"}, {"@id": "estleg:VOS_Par175"},
+        {"@id": "estleg:VOS_Par176"}, {"@id": "estleg:VOS_Par177"}, {"@id": "estleg:VOS_Par178"},
+        {"@id": "estleg:VOS_Par179"}, {"@id": "estleg:VOS_Par180"}, {"@id": "estleg:VOS_Par181"},
+        {"@id": "estleg:VOS_Par182"}, {"@id": "estleg:VOS_Par183"}, {"@id": "estleg:VOS_Par184"},
+        {"@id": "estleg:VOS_Par185"}
+      ]
+    },
+
+    {"@id":"estleg:VOS_Par164","@type":["owl:NamedIndividual","estleg:Section"],"estleg:sectionNumber":164,"rdfs:label":"§ 164. Nõude loovutamine","estleg:inPart":{"@id":"estleg:VOS_Part5"},"estleg:coversConcept":{"@id":"estleg:ClaimAssignment"},"estleg:summary":"Võlausaldaja võib nõude üldjuhul võlgniku nõusolekuta loovutada, kui seadus või kohustuse iseloom seda ei välista."},
+    {"@id":"estleg:VOS_Par165","@type":["owl:NamedIndividual","estleg:Section"],"estleg:sectionNumber":165,"rdfs:label":"§ 165. Tingimuslike ja tulevikus tekkivate nõuete loovutamine","estleg:inPart":{"@id":"estleg:VOS_Part5"},"estleg:coversConcept":{"@id":"estleg:ClaimAssignment"},"estleg:summary":"Loovutada võib ka tulevasi või tingimuslikke nõudeid, kui need on piisavalt määratletavad."},
+    {"@id":"estleg:VOS_Par166","@type":["owl:NamedIndividual","estleg:Section"],"estleg:sectionNumber":166,"rdfs:label":"§ 166. Loovutamise piirangud","estleg:inPart":{"@id":"estleg:VOS_Part5"},"estleg:coversConcept":{"@id":"estleg:ClaimAssignment"},"estleg:summary":"Teatud isikuga lahutamatult seotud nõudeid (nt ülalpidamine, isikukahju) ei saa loovutada, v.a seaduses ettenähtud erandid."},
+    {"@id":"estleg:VOS_Par167","@type":["owl:NamedIndividual","estleg:Section"],"estleg:sectionNumber":167,"rdfs:label":"§ 167. Tagatiste ja muude õiguste üleminek","estleg:inPart":{"@id":"estleg:VOS_Part5"},"estleg:coversConcept":{"@id":"estleg:ClaimAssignment"},"estleg:summary":"Koos loovutatud nõudega lähevad üldjuhul üle ka nõudega seotud tagatised ja kõrvalõigused."},
+    {"@id":"estleg:VOS_Par168","@type":["owl:NamedIndividual","estleg:Section"],"estleg:sectionNumber":168,"rdfs:label":"§ 168. Nõude loovutamise tõendid","estleg:inPart":{"@id":"estleg:VOS_Part5"},"estleg:coversConcept":{"@id":"estleg:ClaimAssignment"},"estleg:summary":"Senine võlausaldaja peab andma uuele võlausaldajale dokumendid ja teabe, mis on nõude maksmapanekuks vajalikud."},
+    {"@id":"estleg:VOS_Par169","@type":["owl:NamedIndividual","estleg:Section"],"estleg:sectionNumber":169,"rdfs:label":"§ 169. Kohustuse täitmine senisele võlausaldajale","estleg:inPart":{"@id":"estleg:VOS_Part5"},"estleg:coversConcept":{"@id":"estleg:ClaimAssignment"},"estleg:summary":"Kui võlgnik ei teadnud ega pidanud teadma loovutamisest, loetakse täitmine senisele võlausaldajale kehtivaks."},
+    {"@id":"estleg:VOS_Par170","@type":["owl:NamedIndividual","estleg:Section"],"estleg:sectionNumber":170,"rdfs:label":"§ 170. Loovutamisest teatamine","estleg:inPart":{"@id":"estleg:VOS_Part5"},"estleg:coversConcept":{"@id":"estleg:ClaimAssignment"},"estleg:summary":"Loovutamisest teatamine määrab võlgniku kaitse ja riski jaotuse loovutaja, loovutuse saaja ning võlgniku vahel."},
+    {"@id":"estleg:VOS_Par171","@type":["owl:NamedIndividual","estleg:Section"],"estleg:sectionNumber":171,"rdfs:label":"§ 171. Võlgniku vastuväited uue võlausaldaja nõudele ja tasaarvestus loovutatud nõudega","estleg:inPart":{"@id":"estleg:VOS_Part5"},"estleg:coversConcept":{"@id":"estleg:ClaimAssignment"},"estleg:summary":"Võlgnik saab uuele võlausaldajale esitada samad vastuväited, mis tal olid senise võlausaldaja vastu loovutamise ajal."},
+    {"@id":"estleg:VOS_Par172","@type":["owl:NamedIndividual","estleg:Section"],"estleg:sectionNumber":172,"rdfs:label":"§ 172. Loovutamisdokument","estleg:inPart":{"@id":"estleg:VOS_Part5"},"estleg:coversConcept":{"@id":"estleg:ClaimAssignment"},"estleg:summary":"Võlgnik võib nõuda loovutamise tõendamist ning keelduda täitmisest, kui tõendit ei esitata."},
+    {"@id":"estleg:VOS_Par173","@type":["owl:NamedIndividual","estleg:Section"],"estleg:sectionNumber":173,"rdfs:label":"§ 173. Nõude üleminek seaduse alusel","estleg:inPart":{"@id":"estleg:VOS_Part5"},"estleg:coversConcept":{"@id":"estleg:ClaimAssignment"},"estleg:summary":"Nõue võib üle minna ka otse seaduse alusel ilma loovutamislepinguta."},
+    {"@id":"estleg:VOS_Par174","@type":["owl:NamedIndividual","estleg:Section"],"estleg:sectionNumber":174,"rdfs:label":"§ 174. Muude õiguste üleminek","estleg:inPart":{"@id":"estleg:VOS_Part5"},"estleg:coversConcept":{"@id":"estleg:ClaimAssignment"},"estleg:summary":"Nõuete ülemineku reegleid kohaldatakse analoogia korras ka muude õiguste üleminekule."},
+
+    {"@id":"estleg:VOS_Par175","@type":["owl:NamedIndividual","estleg:Section"],"estleg:sectionNumber":175,"rdfs:label":"§ 175. Kohustuse ülevõtmine","estleg:inPart":{"@id":"estleg:VOS_Part5"},"estleg:coversConcept":{"@id":"estleg:DebtAssumption"},"estleg:summary":"Kolmas isik võib kokkuleppel astuda senise võlgniku asemele ja võtta kohustuse üle."},
+    {"@id":"estleg:VOS_Par176","@type":["owl:NamedIndividual","estleg:Section"],"estleg:sectionNumber":176,"rdfs:label":"§ 176. Kohustuse ülevõtja vastuväited","estleg:inPart":{"@id":"estleg:VOS_Part5"},"estleg:coversConcept":{"@id":"estleg:DebtAssumption"},"estleg:summary":"Uus võlgnik võib kasutada senisest võlasuhtest tulenevaid vastuväiteid, välja arvatud rangelt isiklikud vastuväited."},
+    {"@id":"estleg:VOS_Par177","@type":["owl:NamedIndividual","estleg:Section"],"estleg:sectionNumber":177,"rdfs:label":"§ 177. Kõrvalkohustused ja tagatised kohustuse ülevõtmisel","estleg:inPart":{"@id":"estleg:VOS_Part5"},"estleg:coversConcept":{"@id":"estleg:DebtAssumption"},"estleg:summary":"Kohustuse ülevõtmisega määratakse, millised kõrvalkohustused ja tagatised lähevad üle ning millised lõpevad."},
+    {"@id":"estleg:VOS_Par178","@type":["owl:NamedIndividual","estleg:Section"],"estleg:sectionNumber":178,"rdfs:label":"§ 178. Kohustusega ühinemine","estleg:inPart":{"@id":"estleg:VOS_Part5"},"estleg:coversConcept":{"@id":"estleg:DebtAssumption"},"estleg:summary":"Kolmas isik võib astuda senise võlgniku kõrvale, mille tulemusel tekib mitme võlgnikuga suhe."},
+
+    {"@id":"estleg:VOS_Par179","@type":["owl:NamedIndividual","estleg:Section"],"estleg:sectionNumber":179,"rdfs:label":"§ 179. Lepingu ülevõtmise mõiste","estleg:inPart":{"@id":"estleg:VOS_Part5"},"estleg:coversConcept":{"@id":"estleg:ContractTransfer"},"estleg:summary":"Lepingupool saab teise poole nõusolekul anda oma lepingulise positsiooni (õigused ja kohustused) üle kolmandale isikule."},
+    {"@id":"estleg:VOS_Par180","@type":["owl:NamedIndividual","estleg:Section"],"estleg:sectionNumber":180,"rdfs:label":"§ 180. Ettevõtte üleminek","estleg:inPart":{"@id":"estleg:VOS_Part5"},"estleg:coversConcept":[{"@id":"estleg:ContractTransfer"},{"@id":"estleg:EnterpriseTransfer"}],"estleg:summary":"Ettevõtte üleminekul võivad ettevõttesse kuuluvad õigused, kohustused ja lepingud üle minna lepingulisel või seaduslikul alusel."},
+    {"@id":"estleg:VOS_Par181","@type":["owl:NamedIndividual","estleg:Section"],"estleg:sectionNumber":181,"rdfs:label":"§ 181. Kohaldamise piirangud","estleg:inPart":{"@id":"estleg:VOS_Part5"},"estleg:coversConcept":{"@id":"estleg:EnterpriseTransfer"},"estleg:summary":"Säte piirab ettevõtte ülemineku normide kohaldamist teatud ümberkorraldus- ja menetlusjuhtudel."},
+    {"@id":"estleg:VOS_Par182","@type":["owl:NamedIndividual","estleg:Section"],"estleg:sectionNumber":182,"rdfs:label":"§ 182. Ettevõtte üleandmine","estleg:inPart":{"@id":"estleg:VOS_Part5"},"estleg:coversConcept":{"@id":"estleg:EnterpriseTransfer"},"estleg:summary":"Reguleerib, kuidas ettevõtte koosseisu kuuluvad asjad, õigused ja lepingud tehniliselt omandajale üle antakse."},
+    {"@id":"estleg:VOS_Par183","@type":["owl:NamedIndividual","estleg:Section"],"estleg:sectionNumber":183,"rdfs:label":"§ 183. Ettevõtte üleandja vastutus","estleg:inPart":{"@id":"estleg:VOS_Part5"},"estleg:coversConcept":{"@id":"estleg:EnterpriseTransfer"},"estleg:summary":"Üleandja vastutab teatud varasemate kohustuste eest koos omandajaga solidaarselt seaduses sätestatud ulatuses."},
+    {"@id":"estleg:VOS_Par184","@type":["owl:NamedIndividual","estleg:Section"],"estleg:sectionNumber":184,"rdfs:label":"§ 184. Õigus ärinimele","estleg:inPart":{"@id":"estleg:VOS_Part5"},"estleg:coversConcept":{"@id":"estleg:EnterpriseTransfer"},"estleg:summary":"Määrab tingimused, millal ettevõtte ärinime kasutamise õigus läheb ettevõtte üleminekul omandajale."},
+    {"@id":"estleg:VOS_Par185","@type":["owl:NamedIndividual","estleg:Section"],"estleg:sectionNumber":185,"rdfs:label":"§ 185. Ettevõtte osa üleminek","estleg:inPart":{"@id":"estleg:VOS_Part5"},"estleg:coversConcept":{"@id":"estleg:EnterpriseTransfer"},"estleg:summary":"Ettevõtte ülemineku reegleid kohaldatakse ka organisatsiooniliselt tervikliku ettevõtte osa (käitise) üleandmisele."}
+  ]
+}
