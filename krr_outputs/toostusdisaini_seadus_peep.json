@@ -1,0 +1,210 @@
+{
+  "@context": {
+    "estleg": "https://example.org/estonian-legal#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
+  },
+  "@graph": [
+    {
+      "@id": "estleg:TDS_Map_2026",
+      "@type": "owl:Ontology",
+      "rdfs:label": "Tööstusdisainilahenduse seaduse teemakaardistus (intellektuaalomandi õigus)",
+      "dc:description": "Tööstusdisainilahenduse seaduse põhisambad: disaini registreerimine, disaini kaitse ja disainiõigused.",
+      "dc:source": "Tööstusdisainilahenduse seadus (Riigi Teataja, kehtiv redaktsioon; §-taseme viited vajavad lõppverifitseerimist)"
+    },
+    {
+      "@id": "estleg:LegalProvision_toostusdisain",
+      "@type": "owl:Class",
+      "rdfs:label": "Õigusnorm (paragrahv)"
+    },
+    {
+      "@id": "estleg:TopicCluster_toostusdisain",
+      "@type": "owl:Class",
+      "rdfs:label": "Teemaklaster"
+    },
+    {
+      "@id": "estleg:LegalConcept_toostusdisain",
+      "@type": "owl:Class",
+      "rdfs:label": "Õigusmõiste"
+    },
+
+    {
+      "@id": "estleg:Cluster_DisainiRegistreerimine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster_toostusdisain"
+      ],
+      "rdfs:label": "Disaini registreerimine"
+    },
+    {
+      "@id": "estleg:Cluster_DisainiKaitse",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster_toostusdisain"
+      ],
+      "rdfs:label": "Disaini kaitse"
+    },
+    {
+      "@id": "estleg:Cluster_Disainioigused",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster_toostusdisain"
+      ],
+      "rdfs:label": "Disainiõigused"
+    },
+
+    {
+      "@id": "estleg:TDS_Par_KaitstavDisainJaUudsus",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_toostusdisain"
+      ],
+      "estleg:paragrahv": "Tööstusdisainilahenduse seadus (kaitstava disaini eeldused)",
+      "rdfs:label": "Kaitstav tööstusdisainilahendus, uudsus ja eristatavus",
+      "estleg:requestedCluster": "disaini_registreerimine",
+      "estleg:summary": "Määratleb, milline väliskujundus on kaitstav tööstusdisainilahendus, ning seob registreeritavuse eeldused uudsuse ja individuaalse iseloomuga.",
+      "estleg:sourceAct": "Tööstusdisainilahenduse seadus"
+    },
+    {
+      "@id": "estleg:TDS_Par_TaotlusJaEkspertiis",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_toostusdisain"
+      ],
+      "estleg:paragrahv": "Tööstusdisainilahenduse seadus (taotluse esitamine ja menetlus)",
+      "rdfs:label": "Disainitaotlus, vorminõuded ja Patendiameti ekspertiis",
+      "estleg:requestedCluster": "disaini_registreerimine",
+      "estleg:summary": "Reguleerib taotluse sisu, kujutiste esitamise, prioriteedi ning puuduste kõrvaldamise korra enne registreerimisotsust.",
+      "estleg:sourceAct": "Tööstusdisainilahenduse seadus"
+    },
+    {
+      "@id": "estleg:TDS_Par_RegistreeringuAndmineJaKanne",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_toostusdisain"
+      ],
+      "estleg:paragrahv": "Tööstusdisainilahenduse seadus (registreeringu andmine ja registrikanne)",
+      "rdfs:label": "Registreeringu andmine, avaldamine ja registri õiguslik tähendus",
+      "estleg:requestedCluster": "disaini_registreerimine",
+      "estleg:summary": "Sätestab registreeringu andmise alused, kande avaldamise ning registriandmete õigusliku usaldatavuse kolmandate isikute suhtes.",
+      "estleg:sourceAct": "Tööstusdisainilahenduse seadus"
+    },
+
+    {
+      "@id": "estleg:TDS_Par_KaitseUlatusJaVordlus",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_toostusdisain"
+      ],
+      "estleg:paragrahv": "Tööstusdisainilahenduse seadus (kaitse ulatus ja üldmulje test)",
+      "rdfs:label": "Disainikaitse ulatus: teadliku kasutaja üldmulje võrdlus",
+      "estleg:requestedCluster": "disaini_kaitse",
+      "estleg:summary": "Kaitse ulatus määratakse registreeritud disaini oluliste tunnuste järgi ning rikkumise hindamisel võrreldakse, kas vaidlusalune kujundus jätab teadlikule kasutajale sama üldmulje.",
+      "estleg:sourceAct": "Tööstusdisainilahenduse seadus"
+    },
+    {
+      "@id": "estleg:TDS_Par_KaitseKehtivusJaPikendamine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_toostusdisain"
+      ],
+      "estleg:paragrahv": "Tööstusdisainilahenduse seadus (kaitse kestus ja pikendamine)",
+      "rdfs:label": "Kaitse kehtivusaeg, perioodiline pikendamine ja lõppemine",
+      "estleg:requestedCluster": "disaini_kaitse",
+      "estleg:summary": "Määrab registreeritud disaini õiguskaitse kestuse, pikendamise perioodid ja tingimused, mille täitmata jätmisel kaitse lõpeb.",
+      "estleg:sourceAct": "Tööstusdisainilahenduse seadus"
+    },
+    {
+      "@id": "estleg:TDS_Par_KehtetuksTunnistamine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_toostusdisain"
+      ],
+      "estleg:paragrahv": "Tööstusdisainilahenduse seadus (kehtetuks tunnistamine ja vaidlustamine)",
+      "rdfs:label": "Disainiregistreeringu kehtetuks tunnistamise alused",
+      "estleg:requestedCluster": "disaini_kaitse",
+      "estleg:summary": "Annab alused registreeringu vaidlustamiseks, kui puuduvad kaitstavuse eeldused või registreering rikub varasema õiguse kandja huve.",
+      "estleg:sourceAct": "Tööstusdisainilahenduse seadus"
+    },
+
+    {
+      "@id": "estleg:TDS_Par_OiguseSisuJaKeeluoigus",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_toostusdisain"
+      ],
+      "estleg:paragrahv": "Tööstusdisainilahenduse seadus (omaniku ainuõiguse sisu)",
+      "rdfs:label": "Registreeritud disaini omaniku ainuõigus ja keelunõue",
+      "estleg:requestedCluster": "disainioigused",
+      "estleg:summary": "Annab disainiomanikule õiguse keelata kaitstud disaini kopeerimine, valmistamine, turustamine, import ja muu äriline kasutamine ilma loata.",
+      "estleg:sourceAct": "Tööstusdisainilahenduse seadus"
+    },
+    {
+      "@id": "estleg:TDS_Par_OigusteUleminekJaLitsents",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_toostusdisain"
+      ],
+      "estleg:paragrahv": "Tööstusdisainilahenduse seadus (õiguste käsutamine)",
+      "rdfs:label": "Õiguste üleminek, litsents ja registrikande mõju",
+      "estleg:requestedCluster": "disainioigused",
+      "estleg:summary": "Reguleerib disainiõiguse võõrandamist, litsentsilepinguid ja nende avalikustamise tähtsust registris kolmandate isikute õiguskindluse jaoks.",
+      "estleg:sourceAct": "Tööstusdisainilahenduse seadus"
+    },
+    {
+      "@id": "estleg:TDS_Par_Oiguskaitsevahendid",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_toostusdisain"
+      ],
+      "estleg:paragrahv": "Tööstusdisainilahenduse seadus (õiguste jõustamine)",
+      "rdfs:label": "Tsiviilõiguslikud õiguskaitsevahendid disainiõiguse rikkumise korral",
+      "estleg:requestedCluster": "disainioigused",
+      "estleg:summary": "Võimaldab nõuda rikkumise lõpetamist, kahju hüvitamist ja muude meetmete rakendamist disainiõiguse tõhusaks kaitseks.",
+      "estleg:sourceAct": "Tööstusdisainilahenduse seadus"
+    },
+
+    {
+      "@id": "estleg:Concept_UudsusIndividuaalsus",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalConcept_toostusdisain"
+      ],
+      "rdfs:label": "Uudsuse ja individuaalse iseloomu lävend",
+      "skos:definition": "Disaini registreeritavus eeldab, et disain erineb varasemast disainikorpusest ning loob teadliku kasutaja jaoks eristatava üldmulje.",
+      "estleg:belongsToCluster": "disaini_registreerimine"
+    },
+    {
+      "@id": "estleg:Concept_UldmuljeKaitseTest",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalConcept_toostusdisain"
+      ],
+      "rdfs:label": "Üldmulje-põhine kaitsetest",
+      "skos:definition": "Disainikaitse ulatus ei piirdu üksikdetailidega, vaid põhineb tervikmuljel, mida võrreldavad kujundused jätavad teadlikule kasutajale.",
+      "estleg:belongsToCluster": "disaini_kaitse"
+    },
+    {
+      "@id": "estleg:Concept_AinuoigusJaKasutuskanalid",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalConcept_toostusdisain"
+      ],
+      "rdfs:label": "Ainuõigus kasutuskanalite üle",
+      "skos:definition": "Disainiõigus katab toote valmistamise, pakkumise, turustamise, impordi ja muu ärilise ringluse, andes omanikule ulatusliku kontrolli disaini kasutamise üle.",
+      "estleg:belongsToCluster": "disainioigused"
+    },
+    {
+      "@id": "estleg:TDS_NOTE_001",
+      "@type": [
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "Märkus kaardistuse kohta",
+      "estleg:note": "Kaardistus järgib meeskonna ühtset JSON-LD skeemi. Järgmises iteratsioonis tuleb iga kirje siduda täpsete §-numbritega kehtivas Riigi Teataja redaktsioonis."
+    }
+  ]
+}
