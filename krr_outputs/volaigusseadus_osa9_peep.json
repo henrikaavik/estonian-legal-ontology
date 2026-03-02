@@ -1,0 +1,91 @@
+{
+  "@context": {
+    "estleg": "https://example.org/estonian-legal#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
+  },
+  "@graph": [
+    {
+      "@id": "https://example.org/estonian-legal#",
+      "@type": "owl:Ontology",
+      "rdfs:label": "VÕS Osa 9 ontoloogia",
+      "dc:title": "Teenuste osutamise lepingud: töövõtuleping (§635–657)"
+    },
+    {
+      "@id": "estleg:LegalPart",
+      "@type": "owl:Class",
+      "rdfs:label": "Seaduse osa"
+    },
+    {
+      "@id": "estleg:Section",
+      "@type": "owl:Class",
+      "rdfs:label": "Paragrahv"
+    },
+    {
+      "@id": "estleg:LegalConcept_volaigusseadus_osa9",
+      "@type": "owl:Class",
+      "rdfs:label": "Õigusmõiste (VÕS Osa 9)"
+    },
+
+    {
+      "@id": "estleg:ContractForWork",
+      "@type": ["owl:NamedIndividual", "estleg:LegalConcept_volaigusseadus_osa9"],
+      "rdfs:label": "Töövõtuleping"
+    },
+    {
+      "@id": "estleg:BuildingContract",
+      "@type": ["owl:NamedIndividual", "estleg:LegalConcept_volaigusseadus_osa9"],
+      "rdfs:label": "Ehitusvõtuleping"
+    },
+    {
+      "@id": "estleg:RepairContract",
+      "@type": ["owl:NamedIndividual", "estleg:LegalConcept_volaigusseadus_osa9"],
+      "rdfs:label": "Remont (parandus-/hooldustöö töövõtuna)"
+    },
+
+    {
+      "@id": "estleg:VOS_Part9",
+      "@type": ["owl:NamedIndividual", "estleg:LegalPart"],
+      "rdfs:label": "VÕS Osa 9 – Töövõtuleping",
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:hasSection": [
+        {"@id": "estleg:VOS_Par635"}, {"@id": "estleg:VOS_Par636"}, {"@id": "estleg:VOS_Par637"},
+        {"@id": "estleg:VOS_Par638"}, {"@id": "estleg:VOS_Par639"}, {"@id": "estleg:VOS_Par640"},
+        {"@id": "estleg:VOS_Par641"}, {"@id": "estleg:VOS_Par642"}, {"@id": "estleg:VOS_Par643"},
+        {"@id": "estleg:VOS_Par644"}, {"@id": "estleg:VOS_Par645"}, {"@id": "estleg:VOS_Par646"},
+        {"@id": "estleg:VOS_Par647"}, {"@id": "estleg:VOS_Par648"}, {"@id": "estleg:VOS_Par649"},
+        {"@id": "estleg:VOS_Par650"}, {"@id": "estleg:VOS_Par651"}, {"@id": "estleg:VOS_Par652"},
+        {"@id": "estleg:VOS_Par653"}, {"@id": "estleg:VOS_Par654"}, {"@id": "estleg:VOS_Par655"},
+        {"@id": "estleg:VOS_Par656"}, {"@id": "estleg:VOS_Par657"}
+      ]
+    },
+
+    {"@id":"estleg:VOS_Par635","@type":["owl:NamedIndividual","estleg:Section"],"estleg:sectionNumber":635,"rdfs:label":"§ 635. Töövõtulepingu mõiste","estleg:inPart":{"@id":"estleg:VOS_Part9"},"estleg:coversConcept":[{"@id":"estleg:ContractForWork"},{"@id":"estleg:RepairContract"}],"estleg:summary":"Määratleb töövõtulepingu: töövõtja kohustub tegema töö ning tellija kohustub tasuma tasu."},
+    {"@id":"estleg:VOS_Par636","@type":["owl:NamedIndividual","estleg:Section"],"estleg:sectionNumber":636,"rdfs:label":"§ 636. Asja üleandmise kohustus","estleg:inPart":{"@id":"estleg:VOS_Part9"},"estleg:coversConcept":{"@id":"estleg:ContractForWork"},"estleg:summary":"Reguleerib, millal ja kuidas peab töövõtja tellijale töö tulemuse üle andma."},
+    {"@id":"estleg:VOS_Par637","@type":["owl:NamedIndividual","estleg:Section"],"estleg:sectionNumber":637,"rdfs:label":"§ 637. Tasu maksmise kohustus","estleg:inPart":{"@id":"estleg:VOS_Part9"},"estleg:coversConcept":{"@id":"estleg:ContractForWork"},"estleg:summary":"Sätestab tellija tasukohustuse alused ja tasu maksmise põhireeglid."},
+    {"@id":"estleg:VOS_Par638","@type":["owl:NamedIndividual","estleg:Section"],"estleg:sectionNumber":638,"rdfs:label":"§ 638. Töö vastuvõtmise kohustus","estleg:inPart":{"@id":"estleg:VOS_Part9"},"estleg:coversConcept":{"@id":"estleg:ContractForWork"},"estleg:summary":"Tellija peab töö vastu võtma, kui töö vastab lepingule; vastuvõtt mõjutab riski ja õiguskaitsevahendeid."},
+    {"@id":"estleg:VOS_Par639","@type":["owl:NamedIndividual","estleg:Section"],"estleg:sectionNumber":639,"rdfs:label":"§ 639. Eelarve ületamine","estleg:inPart":{"@id":"estleg:VOS_Part9"},"estleg:coversConcept":[{"@id":"estleg:ContractForWork"},{"@id":"estleg:RepairContract"}],"estleg:summary":"Käsitleb olukorda, kus töö maksumus ületab eelarvet, ning poolte teavitamis- ja reaktsioonikohustusi."},
+    {"@id":"estleg:VOS_Par640","@type":["owl:NamedIndividual","estleg:Section"],"estleg:sectionNumber":640,"rdfs:label":"§ 640. Juhusliku hävimise ja kahjustumise riisiko üleminek","estleg:inPart":{"@id":"estleg:VOS_Part9"},"estleg:coversConcept":{"@id":"estleg:ContractForWork"},"estleg:summary":"Määrab, millal juhusliku hävimise või kahjustumise risk läheb töövõtjalt tellijale üle."},
+    {"@id":"estleg:VOS_Par641","@type":["owl:NamedIndividual","estleg:Section"],"estleg:sectionNumber":641,"rdfs:label":"§ 641. Töö vastavus lepingutingimustele","estleg:inPart":{"@id":"estleg:VOS_Part9"},"estleg:coversConcept":[{"@id":"estleg:ContractForWork"},{"@id":"estleg:BuildingContract"},{"@id":"estleg:RepairContract"}],"estleg:summary":"Sätestab, millal töö loetakse lepingutingimustele vastavaks, sh kvaliteedi ja kokkulepitud omaduste osas."},
+    {"@id":"estleg:VOS_Par642","@type":["owl:NamedIndividual","estleg:Section"],"estleg:sectionNumber":642,"rdfs:label":"§ 642. Töövõtja vastutus töö lepingutingimustele mittevastavuse puhul","estleg:inPart":{"@id":"estleg:VOS_Part9"},"estleg:coversConcept":[{"@id":"estleg:ContractForWork"},{"@id":"estleg:BuildingContract"},{"@id":"estleg:RepairContract"}],"estleg:summary":"Reguleerib töövõtja vastutust puuduste eest ning tellija õiguskaitsevahendite kasutamist."},
+    {"@id":"estleg:VOS_Par643","@type":["owl:NamedIndividual","estleg:Section"],"estleg:sectionNumber":643,"rdfs:label":"§ 643. Töö ülevaatamise kohustus","estleg:inPart":{"@id":"estleg:VOS_Part9"},"estleg:coversConcept":{"@id":"estleg:ContractForWork"},"estleg:summary":"Tellijal on kohustus töö üle vaadata ning puudused mõistliku aja jooksul tuvastada."},
+    {"@id":"estleg:VOS_Par644","@type":["owl:NamedIndividual","estleg:Section"],"estleg:sectionNumber":644,"rdfs:label":"§ 644. Töö lepingutingimustele mittevastavusest teatamine","estleg:inPart":{"@id":"estleg:VOS_Part9"},"estleg:coversConcept":{"@id":"estleg:ContractForWork"},"estleg:summary":"Kehtestab puudustest teatamise korra ja tähtsuse õiguste säilitamisel."},
+    {"@id":"estleg:VOS_Par645","@type":["owl:NamedIndividual","estleg:Section"],"estleg:sectionNumber":645,"rdfs:label":"§ 645. Töö lepingutingimustele mittevastavusele tuginemise erisused","estleg:inPart":{"@id":"estleg:VOS_Part9"},"estleg:coversConcept":{"@id":"estleg:ContractForWork"},"estleg:summary":"Täpsustab juhtumid, mil tellija võib või ei või puudustele tugineda."},
+    {"@id":"estleg:VOS_Par646","@type":["owl:NamedIndividual","estleg:Section"],"estleg:sectionNumber":646,"rdfs:label":"§ 646. Lepingu täitmise nõue õiguskaitsevahendina","estleg:inPart":{"@id":"estleg:VOS_Part9"},"estleg:coversConcept":{"@id":"estleg:ContractForWork"},"estleg:summary":"Kirjeldab, millal tellija saab nõuda töövõtjalt kohustuse nõuetekohast täitmist."},
+    {"@id":"estleg:VOS_Par647","@type":["owl:NamedIndividual","estleg:Section"],"estleg:sectionNumber":647,"rdfs:label":"§ 647. Töövõtulepingu oluline rikkumine töövõtja poolt","estleg:inPart":{"@id":"estleg:VOS_Part9"},"estleg:coversConcept":{"@id":"estleg:ContractForWork"},"estleg:summary":"Määratleb töövõtja olulise rikkumise juhtumid, mis avavad ulatuslikumad õiguskaitsevahendid."},
+    {"@id":"estleg:VOS_Par648","@type":["owl:NamedIndividual","estleg:Section"],"estleg:sectionNumber":648,"rdfs:label":"§ 648. Tasu vähendamise piirangud","estleg:inPart":{"@id":"estleg:VOS_Part9"},"estleg:coversConcept":{"@id":"estleg:ContractForWork"},"estleg:summary":"Piiritleb olukorrad, kus tellija võib tasu vähendada, ja selle õiguse ulatuse."},
+    {"@id":"estleg:VOS_Par649","@type":["owl:NamedIndividual","estleg:Section"],"estleg:sectionNumber":649,"rdfs:label":"§ 649. Kahju hüvitamise erisused","estleg:inPart":{"@id":"estleg:VOS_Part9"},"estleg:coversConcept":{"@id":"estleg:ContractForWork"},"estleg:summary":"Sätestab töövõtulepingu rikkumise korral kahju hüvitamise erireeglid."},
+    {"@id":"estleg:VOS_Par650","@type":["owl:NamedIndividual","estleg:Section"],"estleg:sectionNumber":650,"rdfs:label":"§ 650. Töövõtugarantii ja teenindusest teatamise kohustus","estleg:inPart":{"@id":"estleg:VOS_Part9"},"estleg:coversConcept":[{"@id":"estleg:ContractForWork"},{"@id":"estleg:RepairContract"}],"estleg:summary":"Reguleerib töövõtugarantiid ja töövõtja teavitamiskohustust teeninduse/garantiitingimuste kohta."},
+    {"@id":"estleg:VOS_Par651","@type":["owl:NamedIndividual","estleg:Section"],"estleg:sectionNumber":651,"rdfs:label":"§ 651. Töö lepingutingimustele mittevastavusest tulenevate nõuete aegumistähtaja algus","estleg:inPart":{"@id":"estleg:VOS_Part9"},"estleg:coversConcept":[{"@id":"estleg:ContractForWork"},{"@id":"estleg:BuildingContract"},{"@id":"estleg:RepairContract"}],"estleg:summary":"Määrab puudustest tulenevate nõuete aegumise alguse; ehitise puuduste puhul kehtib pikem (viieaastane) tähtaeg."},
+    {"@id":"estleg:VOS_Par652","@type":["owl:NamedIndividual","estleg:Section"],"estleg:sectionNumber":652,"rdfs:label":"§ 652. Tellija viivitus","estleg:inPart":{"@id":"estleg:VOS_Part9"},"estleg:coversConcept":{"@id":"estleg:ContractForWork"},"estleg:summary":"Käsitleb tellija viivituse tagajärgi töö vastuvõtmisel või koostöökohustuse täitmisel."},
+    {"@id":"estleg:VOS_Par653","@type":["owl:NamedIndividual","estleg:Section"],"estleg:sectionNumber":653,"rdfs:label":"§ 653. Töö hävimine, halvenemine või teostamatuks muutumine tellijast tulenevatel põhjustel","estleg:inPart":{"@id":"estleg:VOS_Part9"},"estleg:coversConcept":{"@id":"estleg:ContractForWork"},"estleg:summary":"Jaotab riski ja vastutuse juhtudel, kus töö kahjustub või muutub võimatuks tellija põhjustel."},
+    {"@id":"estleg:VOS_Par654","@type":["owl:NamedIndividual","estleg:Section"],"estleg:sectionNumber":654,"rdfs:label":"§ 654. Pandiõigus","estleg:inPart":{"@id":"estleg:VOS_Part9"},"estleg:coversConcept":{"@id":"estleg:ContractForWork"},"estleg:summary":"Annab töövõtjale pandiõiguse tööga seotud esemele oma nõuete tagamiseks seaduses sätestatud ulatuses."},
+    {"@id":"estleg:VOS_Par655","@type":["owl:NamedIndividual","estleg:Section"],"estleg:sectionNumber":655,"rdfs:label":"§ 655. Tellija ülesütlemisõigus","estleg:inPart":{"@id":"estleg:VOS_Part9"},"estleg:coversConcept":{"@id":"estleg:ContractForWork"},"estleg:summary":"Sätestab tingimused, mille alusel tellija võib töövõtulepingu üles öelda enne töö valmimist."},
+    {"@id":"estleg:VOS_Par656","@type":["owl:NamedIndividual","estleg:Section"],"estleg:sectionNumber":656,"rdfs:label":"§ 656. Sätete rikkumise keelamine","estleg:inPart":{"@id":"estleg:VOS_Part9"},"estleg:coversConcept":{"@id":"estleg:ContractForWork"},"estleg:summary":"Keelab kokkulepped, mis kahjustavad teatud kaitsenormide eesmärki töövõtusuhtes."},
+    {"@id":"estleg:VOS_Par657","@type":["owl:NamedIndividual","estleg:Section"],"estleg:sectionNumber":657,"rdfs:label":"§ 657. Sätete kohustuslikkus tarbijatöövõtu puhul","estleg:inPart":{"@id":"estleg:VOS_Part9"},"estleg:coversConcept":{"@id":"estleg:RepairContract"},"estleg:summary":"Tarbijatöövõtu korral on mitmed töövõtulepingu normid imperatiivsed ega võimalda tarbijat kahjustavat kõrvalekallet."}
+  ]
+}
