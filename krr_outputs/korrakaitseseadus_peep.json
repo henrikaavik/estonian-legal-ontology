@@ -1,0 +1,186 @@
+{
+  "@context": {
+    "estleg": "https://example.org/estonian-legal#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
+  },
+  "@graph": [
+    {
+      "@id": "estleg:KORS_Map_2026",
+      "@type": "owl:Ontology",
+      "rdfs:label": "Korrakaitseseaduse teemakaardistus",
+      "dc:source": "Korrakaitseseadus (RT I, kehtiv redaktsioon; Riigi Teataja)"
+    },
+    {
+      "@id": "estleg:LegalProvision",
+      "@type": "owl:Class",
+      "rdfs:label": "Õigusnorm (paragrahv)"
+    },
+
+    {
+      "@id": "estleg:Cluster_PublicOrderProtection",
+      "@type": ["owl:NamedIndividual", "estleg:TopicCluster"],
+      "rdfs:label": "Avaliku korra kaitse"
+    },
+    {
+      "@id": "estleg:Cluster_PoliceMeasures",
+      "@type": ["owl:NamedIndividual", "estleg:TopicCluster"],
+      "rdfs:label": "Politsei meetmed"
+    },
+    {
+      "@id": "estleg:Cluster_AdministrativeDetention",
+      "@type": ["owl:NamedIndividual", "estleg:TopicCluster"],
+      "rdfs:label": "Halduskaudne kinnipidamine"
+    },
+    {
+      "@id": "estleg:Cluster_LawEnforcement",
+      "@type": ["owl:NamedIndividual", "estleg:TopicCluster"],
+      "rdfs:label": "Law enforcement"
+    },
+
+    {
+      "@id": "estleg:KORS_Par_AvalikuKorraMoisteJaKaitseEesmArk",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "KorS § 4–§ 6",
+      "rdfs:label": "Avaliku korra mõiste, ohu mõiste ja kaitse eesmärk",
+      "estleg:requestedCluster": "avaliku korra kaitse",
+      "estleg:summary": "Sätestab avaliku korra ja ohu aluskontseptsioonid ning korrakaitse üldise eesmärgi ennetada ja tõrjuda õigushüvesid kahjustavaid olukordi.",
+      "estleg:sourceAct": "Korrakaitseseadus"
+    },
+    {
+      "@id": "estleg:KORS_Par_KorrakaitseYlesandedJaSubsidaarsus",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "KorS § 2–§ 3, § 8",
+      "rdfs:label": "Korrakaitse ülesanded, pädevusjaotus ja subsidiaarsus",
+      "estleg:requestedCluster": "avaliku korra kaitse",
+      "estleg:summary": "Määratleb korrakaitseorganite ülesanded ning rõhutab, et sekkumine peab tuginema pädevusele ja toimuma võimalikult vähese riivega.",
+      "estleg:sourceAct": "Korrakaitseseadus"
+    },
+    {
+      "@id": "estleg:KORS_Par_AvalikusKohasKaitstavadHuved",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "KorS § 54–§ 57",
+      "rdfs:label": "Avalikus kohas kaitstavad hüved ja korranõuded",
+      "estleg:requestedCluster": "avaliku korra kaitse",
+      "estleg:summary": "Kirjeldab avalikus ruumis kehtivaid korra tagamise nõudeid ning aluseid, mille rikkumisel võib korrakaitseorgan sekkuda.",
+      "estleg:sourceAct": "Korrakaitseseadus"
+    },
+
+    {
+      "@id": "estleg:KORS_Par_Yldmeetmed",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "KorS § 23–§ 31",
+      "rdfs:label": "Korrakaitseorgani üldmeetmed",
+      "estleg:requestedCluster": "politsei meetmed",
+      "estleg:summary": "Reguleerib üldisi sekkumisvahendeid nagu korralduse andmine, andmete küsimine, dokumentide kontroll ja muud esmaste ohtude tõrjeks vajalikud toimingud.",
+      "estleg:sourceAct": "Korrakaitseseadus"
+    },
+    {
+      "@id": "estleg:KORS_Par_IsikuJaValduseSuhtesMeetmed",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "KorS § 32–§ 49",
+      "rdfs:label": "Isiku, asja ja valduse suhtes kohaldatavad meetmed",
+      "estleg:requestedCluster": "politsei meetmed",
+      "estleg:summary": "Sätestab peatamise, läbivaatuse, valdusesse sisenemise, asja äravõtmise ja muud meetmed koos nende rakendamise tingimuste ja piiridega.",
+      "estleg:sourceAct": "Korrakaitseseadus"
+    },
+    {
+      "@id": "estleg:KORS_Par_VahetuSundJaErivahendid",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "KorS § 75–§ 84",
+      "rdfs:label": "Vahetu sund, erivahendid ja relva kasutamine",
+      "estleg:requestedCluster": "politsei meetmed",
+      "estleg:summary": "Määrab vahetu sunni ja erivahendite kasutamise alused, proportsionaalsusnõude, hoiatamise kohustuse ning järelkontrolli.",
+      "estleg:sourceAct": "Korrakaitseseadus"
+    },
+
+    {
+      "@id": "estleg:KORS_Par_HalduskaudseKinnipidamiseAlused",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "KorS § 46",
+      "rdfs:label": "Halduskaudse kinnipidamise alused",
+      "estleg:requestedCluster": "halduskaudne kinnipidamine",
+      "estleg:summary": "Lubab isiku lühiajalist kinnipidamist vältimatu ohu tõrjumiseks või avaliku korra raske rikkumise lõpetamiseks, kui leebemad meetmed ei ole piisavad.",
+      "estleg:sourceAct": "Korrakaitseseadus"
+    },
+    {
+      "@id": "estleg:KORS_Par_KinnipidamiseKordJaTagatised",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "KorS § 46, § 42, § 43",
+      "rdfs:label": "Kinnipidamise kord, dokumenteerimine ja isikuõiguste tagatised",
+      "estleg:requestedCluster": "halduskaudne kinnipidamine",
+      "estleg:summary": "Nõuab kinnipidamise dokumenteerimist, eesmärgipõhist kestust ning isiku põhiõiguste kaitset (teavitamine, väärikuse ja tervise kaitse).",
+      "estleg:sourceAct": "Korrakaitseseadus"
+    },
+    {
+      "@id": "estleg:KORS_Par_KinnipidamiseLopetamineJaUleandmine",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "KorS § 46, § 47",
+      "rdfs:label": "Kinnipidamise lõpetamine ja pädevale organile üleandmine",
+      "estleg:requestedCluster": "halduskaudne kinnipidamine",
+      "estleg:summary": "Sätestab, et kinnipidamine tuleb lõpetada niipea, kui oht on kõrvaldatud, või anda isik viivitamata üle pädevale menetlusasutusele.",
+      "estleg:sourceAct": "Korrakaitseseadus"
+    },
+
+    {
+      "@id": "estleg:KORS_Par_MeetmeValikuYldpohimotted",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "KorS § 7–§ 10",
+      "rdfs:label": "Meetme valiku üldpõhimõtted law enforcement kontekstis",
+      "estleg:requestedCluster": "law enforcement",
+      "estleg:summary": "Kinnistab õiguspärasuse, eesmärgipärasuse, vajalikkuse ja proportsionaalsuse standardi kõikide korrakaitsemeetmete kohaldamisel.",
+      "estleg:sourceAct": "Korrakaitseseadus"
+    },
+    {
+      "@id": "estleg:KORS_Par_KorrakaitsemenetluseToimingud",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "KorS § 11–§ 22",
+      "rdfs:label": "Korrakaitsemenetluse toimingud ja menetlusgarantiid",
+      "estleg:requestedCluster": "law enforcement",
+      "estleg:summary": "Reguleerib menetlustoimingute algatamist, isiku ärakuulamist, teavitamist, koostööd ja toimingute kontrollitavust õiguspärase korrakaitse tagamiseks.",
+      "estleg:sourceAct": "Korrakaitseseadus"
+    },
+    {
+      "@id": "estleg:KORS_Par_RiiveKontrollJaVastutus",
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+      "estleg:paragrahv": "KorS § 73–§ 74, § 76",
+      "rdfs:label": "Meetme järelkontroll, vastutus ja õiguskaitse",
+      "estleg:requestedCluster": "law enforcement",
+      "estleg:summary": "Kirjeldab riive järelkontrolli ja vastutuse põhimõtteid, mille eesmärk on tagada law enforcement tegevuse õiguspärasus ja vaidlustatavus.",
+      "estleg:sourceAct": "Korrakaitseseadus"
+    },
+
+    {
+      "@id": "estleg:Concept_AvalikKordJaOht",
+      "@type": ["owl:NamedIndividual", "estleg:LegalConcept"],
+      "rdfs:label": "Avalik kord ja ohu mõiste",
+      "skos:definition": "Avaliku korra kaitse keskmes on ohu varajane tuvastamine ning õigushüvede kaitse enne rikkumise realiseerumist.",
+      "estleg:belongsToCluster": "avaliku korra kaitse"
+    },
+    {
+      "@id": "estleg:Concept_PolitseiMeetmeVolitusnorm",
+      "@type": ["owl:NamedIndividual", "estleg:LegalConcept"],
+      "rdfs:label": "Politsei meetme volitusnorm",
+      "skos:definition": "Politsei võib põhiõigusi riivavat meedet rakendada üksnes selgel seaduslikul alusel, eesmärgipäraselt ja proportsionaalselt.",
+      "estleg:belongsToCluster": "politsei meetmed"
+    },
+    {
+      "@id": "estleg:Concept_HalduskaudseKinnipidamiseViimaneAbinou",
+      "@type": ["owl:NamedIndividual", "estleg:LegalConcept"],
+      "rdfs:label": "Halduskaudne kinnipidamine kui viimane abinõu",
+      "skos:definition": "Halduskaudne kinnipidamine on erandlik meede, mida võib kasutada vaid vältimatu ohu korral, kui leebemad meetmed ei toimi.",
+      "estleg:belongsToCluster": "halduskaudne kinnipidamine"
+    },
+    {
+      "@id": "estleg:Concept_LawEnforcementProportsionaalsus",
+      "@type": ["owl:NamedIndividual", "estleg:LegalConcept"],
+      "rdfs:label": "Law enforcement proportsionaalsus",
+      "skos:definition": "Law enforcement tegevus peab valima eesmärgi saavutamiseks sobivaima ja isikut kõige vähem koormava meetme ning lõpetama riive aluse äralangemisel.",
+      "estleg:belongsToCluster": "law enforcement"
+    }
+  ]
+}
