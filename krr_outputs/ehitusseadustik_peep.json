@@ -1,0 +1,205 @@
+{
+  "@context": {
+    "estleg": "https://example.org/estonian-legal#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
+  },
+  "@graph": [
+    {
+      "@id": "estleg:EHS_Map_2026",
+      "@type": "owl:Ontology",
+      "rdfs:label": "Ehitusseadustiku teemakaardistus (ehitusõigus)",
+      "dc:description": "Ehitusseadustiku põhisambad: ehitusload, ehitusnõuded ja ehitusohutus.",
+      "dc:source": "Ehitusseadustik (Riigi Teataja, kehtiv redaktsioon; §-taseme viited vajavad lõppverifitseerimist)"
+    },
+    {
+      "@id": "estleg:LegalProvision_ehitusseadustik",
+      "@type": "owl:Class",
+      "rdfs:label": "Õigusnorm (paragrahv)"
+    },
+    {
+      "@id": "estleg:TopicCluster_ehitusseadustik",
+      "@type": "owl:Class",
+      "rdfs:label": "Teemaklaster"
+    },
+    {
+      "@id": "estleg:LegalConcept_ehitusseadustik",
+      "@type": "owl:Class",
+      "rdfs:label": "Õigusmõiste"
+    },
+    {
+      "@id": "estleg:Cluster_Ehitusload",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster_ehitusseadustik"
+      ],
+      "rdfs:label": "Ehitusload"
+    },
+    {
+      "@id": "estleg:Cluster_EhitusNouded",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster_ehitusseadustik"
+      ],
+      "rdfs:label": "Ehitusnõuded"
+    },
+    {
+      "@id": "estleg:Cluster_EhitusOhutus",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster_ehitusseadustik"
+      ],
+      "rdfs:label": "Ehitusohutus"
+    },
+    {
+      "@id": "estleg:EHS_Par_LoaKohustusJaPiiritlus",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_ehitusseadustik"
+      ],
+      "estleg:paragrahv": "EhS (ehitusloa ja ehitusteatise kohustuse üldnormid)",
+      "rdfs:label": "Millal on nõutav ehitusluba ja millal piisab ehitusteatisest",
+      "estleg:requestedCluster": "ehitusload",
+      "estleg:summary": "Määratleb ehitustegevused, mille puhul tuleb enne tööde alustamist taotleda ehitusluba, ning tegevused, mille puhul piisab ehitusteatisest koos menetlusnõuete täitmisega.",
+      "estleg:sourceAct": "Ehitusseadustik"
+    },
+    {
+      "@id": "estleg:EHS_Par_LoaMenetlusJaOtsustamine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_ehitusseadustik"
+      ],
+      "estleg:paragrahv": "EhS (ehitusloa menetluse, kooskõlastuste ja otsustamise normid)",
+      "rdfs:label": "Ehitusloa menetlus, kooskõlastused ja haldusotsus",
+      "estleg:requestedCluster": "ehitusload",
+      "estleg:summary": "Reguleerib ehitusloa taotluse läbivaatamist, nõutavaid dokumente, pädevate asutuste kaasamist, kooskõlastusi ning ehitusloa andmise või andmisest keeldumise aluseid.",
+      "estleg:sourceAct": "Ehitusseadustik"
+    },
+    {
+      "@id": "estleg:EHS_Par_LoaKehtivusJaKasutusluba",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_ehitusseadustik"
+      ],
+      "estleg:paragrahv": "EhS (ehitusloa kehtivuse ja kasutusloa/kasutusteatise normid)",
+      "rdfs:label": "Ehitusloa kehtivus, valminud ehitise kasutusloa kord",
+      "estleg:requestedCluster": "ehitusload",
+      "estleg:summary": "Sätestab ehitusloa kehtivusaja ja tingimused ning nõuded, mille alusel valminud ehitisele antakse kasutusluba või esitatakse kasutusteatis enne kasutuselevõttu.",
+      "estleg:sourceAct": "Ehitusseadustik"
+    },
+    {
+      "@id": "estleg:EHS_Par_OlulisedNoudedEhitisele",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_ehitusseadustik"
+      ],
+      "estleg:paragrahv": "EhS (ehitisele esitatavate oluliste nõuete üldnormid)",
+      "rdfs:label": "Ehitisele esitatavad olulised tehnilised ja funktsionaalsed nõuded",
+      "estleg:requestedCluster": "ehitusnõuded",
+      "estleg:summary": "Kehtestab ehitise kavandamise, ehitamise ja kasutamise põhikriteeriumid, sh mehaaniline vastupidavus, energiatõhusus, ligipääsetavus, kasutusotstarbele vastavus ning keskkonnahoid.",
+      "estleg:sourceAct": "Ehitusseadustik"
+    },
+    {
+      "@id": "estleg:EHS_Par_ProjekteerimineJaDokumenteerimine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_ehitusseadustik"
+      ],
+      "estleg:paragrahv": "EhS (projekteerimisnõuete ja ehitusdokumentatsiooni normid)",
+      "rdfs:label": "Projekteerimise kvaliteet, pädevusnõuded ja dokumentatsioon",
+      "estleg:requestedCluster": "ehitusnõuded",
+      "estleg:summary": "Kirjeldab projekteerimisprotsessi nõudeid, pädevate spetsialistide rolli ja ehitusdokumentatsiooni koosseisu, et tagada ehitise vastavus õigusele ja tehnilistele normidele.",
+      "estleg:sourceAct": "Ehitusseadustik"
+    },
+    {
+      "@id": "estleg:EHS_Par_EhitamineJaEhituspaevik",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_ehitusseadustik"
+      ],
+      "estleg:paragrahv": "EhS (ehitamise korralduse, omanikujärelevalve ja ehituspäeviku normid)",
+      "rdfs:label": "Ehitamise korraldus, omanikujärelevalve ja tõendatavus",
+      "estleg:requestedCluster": "ehitusnõuded",
+      "estleg:summary": "Reguleerib ehitustööde läbiviimist, omanikujärelevalve kohustusi, ehituspäeviku pidamist ja muud dokumenteerimist, et ehituse kvaliteet oleks kontrollitav ja jälgitav.",
+      "estleg:sourceAct": "Ehitusseadustik"
+    },
+    {
+      "@id": "estleg:EHS_Par_EhitusohutuseYldraam",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_ehitusseadustik"
+      ],
+      "estleg:paragrahv": "EhS (ehitusohutuse üldnõuete normid)",
+      "rdfs:label": "Ehitusohutuse üldkohustused ehitamisel ja kasutamisel",
+      "estleg:requestedCluster": "ehitusohutus",
+      "estleg:summary": "Sätestab kohustused vältida ohtu inimese elule, tervisele, varale ja keskkonnale nii ehitustööde ajal kui ka ehitise kasutusperioodil.",
+      "estleg:sourceAct": "Ehitusseadustik"
+    },
+    {
+      "@id": "estleg:EHS_Par_EhitiseTehnilineSeisundJaHooldus",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_ehitusseadustik"
+      ],
+      "estleg:paragrahv": "EhS (ehitise korrashoiu, kontrolli ja tehnilise seisundi tagamise normid)",
+      "rdfs:label": "Ehitise korrashoid, perioodiline kontroll ja riskide ennetus",
+      "estleg:requestedCluster": "ehitusohutus",
+      "estleg:summary": "Nõuab ehitise omanikult ehitise ohutu kasutamise tagamist, regulaarset kontrolli, hooldusmeetmete rakendamist ning puuduste kõrvaldamist enne ohu realiseerumist.",
+      "estleg:sourceAct": "Ehitusseadustik"
+    },
+    {
+      "@id": "estleg:EHS_Par_RiiklikJarelevalveJaSund",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_ehitusseadustik"
+      ],
+      "estleg:paragrahv": "EhS (riikliku järelevalve, ettekirjutuste ja sunnimeetmete normid)",
+      "rdfs:label": "Riiklik järelevalve ehitusnõuete ja ohutuse täitmise üle",
+      "estleg:requestedCluster": "ehitusohutus",
+      "estleg:summary": "Määrab järelevalveasutuste pädevuse kontrollida ehitusnõuete täitmist, teha ettekirjutusi, rakendada sunniraha ning piirata ohtliku ehitise kasutamist.",
+      "estleg:sourceAct": "Ehitusseadustik"
+    },
+    {
+      "@id": "estleg:Concept_LubadegaRiskijuhtimine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalConcept_ehitusseadustik"
+      ],
+      "rdfs:label": "Lubade kaudu riskijuhtimine",
+      "skos:definition": "Ehitusloa ja kasutusloa süsteem toimib ennetava kontrollimehhanismina, mis seob ehitamise alguse ja ehitise kasutuselevõtu õigusliku vastavuse ning avaliku huvi kaitsega.",
+      "estleg:belongsToCluster": "ehitusload"
+    },
+    {
+      "@id": "estleg:Concept_EhitiseNoudeteleVastavusElutsuklis",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalConcept_ehitusseadustik"
+      ],
+      "rdfs:label": "Nõuetele vastavus ehitise elutsüklis",
+      "skos:definition": "Ehitusnõuded katavad ehitise kogu elutsükli alates projekteerimisest kuni kasutamiseni, ühendades tehnilised standardid, dokumenteerimise ja vastutusahelad.",
+      "estleg:belongsToCluster": "ehitusnõuded"
+    },
+    {
+      "@id": "estleg:Concept_OhutusePidevTagamine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalConcept_ehitusseadustik"
+      ],
+      "rdfs:label": "Ehitusohutuse pidev tagamine",
+      "skos:definition": "Ehitusohutus ei piirdu ehitusetapiga, vaid eeldab järjepidevat järelevalvet, korrashoidu ja sekkumisvõimalusi kogu ehitise kasutusea vältel.",
+      "estleg:belongsToCluster": "ehitusohutus"
+    },
+    {
+      "@id": "estleg:EHS_NOTE_001",
+      "@type": [
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "Märkus kaardistuse kohta",
+      "estleg:note": "Kaardistus järgib meeskonna ühtset JSON-LD skeemi. Töös kasutati semantilist struktuurikaardistust; järgmises iteratsioonis tuleb siduda iga kirje konkreetsete §-numbritega kehtivas Riigi Teataja redaktsioonis."
+    }
+  ]
+}
