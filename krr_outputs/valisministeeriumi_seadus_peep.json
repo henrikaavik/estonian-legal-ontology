@@ -1,0 +1,175 @@
+{
+  "@context": {
+    "estleg": "https://example.org/estonian-legal#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
+  },
+  "@graph": [
+    {
+      "@id": "estleg:VALISMIN_Map_2026",
+      "@type": "owl:Ontology",
+      "rdfs:label": "Välisministeeriumi seaduse teemakaardistus (diplomaatia)",
+      "dc:description": "Välisministeeriumi seaduse põhisambad: välisteenistus, diplomaatilised suhted ja konsulaarvaldkond.",
+      "dc:source": "Välisministeeriumi seadus (kehtiv terviktekst; vajab §-tasemel lõppverifitseerimist)"
+    },
+    {
+      "@id": "estleg:LegalProvision_valisministeeriumi_seadus",
+      "@type": "owl:Class",
+      "rdfs:label": "Õigusnorm (paragrahv)"
+    },
+    {
+      "@id": "estleg:TopicCluster_valisministeeriumi_seadus",
+      "@type": "owl:Class",
+      "rdfs:label": "Teemaklaster"
+    },
+
+    {
+      "@id": "estleg:Cluster_Valisteenistus",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster_valisministeeriumi_seadus"
+      ],
+      "rdfs:label": "Välisteenistus"
+    },
+    {
+      "@id": "estleg:Cluster_DiplomaatilisedSuhted",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster_valisministeeriumi_seadus"
+      ],
+      "rdfs:label": "Diplomaatilised suhted"
+    },
+    {
+      "@id": "estleg:Cluster_Konsulaarvaldkond",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster_valisministeeriumi_seadus"
+      ],
+      "rdfs:label": "Konsulaarvaldkond"
+    },
+
+    {
+      "@id": "estleg:VALISMIN_Par_Valisteenistus_staatus",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_valisministeeriumi_seadus"
+      ],
+      "estleg:paragrahv": "§ (välisteenistuse aluste norm)",
+      "rdfs:label": "Välisteenistuse eesmärk, koosseis ja toimimise põhimõtted",
+      "estleg:requestedCluster": "valisteenistus",
+      "estleg:summary": "Määratleb välisteenistuse ülesanded, teenistuse kandjad ning põhimõtted, mille alusel Eesti välisesindused ja ministeeriumi struktuuriüksused tegutsevad.",
+      "estleg:sourceAct": "Välisministeeriumi seadus"
+    },
+    {
+      "@id": "estleg:VALISMIN_Par_Valisteenistus_teenistussuhe",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_valisministeeriumi_seadus"
+      ],
+      "estleg:paragrahv": "§ (teenistussuhte norm)",
+      "rdfs:label": "Välisteenistujate õigused, kohustused ja rotatsioon",
+      "estleg:requestedCluster": "valisteenistus",
+      "estleg:summary": "Reguleerib välisteenistujate ametialaseid kohustusi, teenistuslikke garantiisid, rotatsiooni ning lähetuse korraldust välisesindustes.",
+      "estleg:sourceAct": "Välisministeeriumi seadus"
+    },
+    {
+      "@id": "estleg:VALISMIN_Par_Valisteenistus_juhtimine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_valisministeeriumi_seadus"
+      ],
+      "estleg:paragrahv": "§ (juhtimis- ja pädevusnorm)",
+      "rdfs:label": "Välisteenistuse juhtimine ja halduskorraldus",
+      "estleg:requestedCluster": "valisteenistus",
+      "estleg:summary": "Sätestab välisministri, kantsleri ja välisesinduste juhtide pädevuse ning vastutuse välisteenistuse töö korraldamisel.",
+      "estleg:sourceAct": "Välisministeeriumi seadus"
+    },
+
+    {
+      "@id": "estleg:VALISMIN_Par_Diplomaatia_esindamine",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_valisministeeriumi_seadus"
+      ],
+      "estleg:paragrahv": "§ (riigi esindamise norm)",
+      "rdfs:label": "Eesti Vabariigi esindamine välissuhtluses",
+      "estleg:requestedCluster": "diplomaatilised_suhted",
+      "estleg:summary": "Määrab kindlaks, kuidas ja milliste volituste alusel esindatakse Eesti Vabariiki rahvusvahelistes suhetes ning diplomaatilistes kontaktides.",
+      "estleg:sourceAct": "Välisministeeriumi seadus"
+    },
+    {
+      "@id": "estleg:VALISMIN_Par_Diplomaatia_missioonid",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_valisministeeriumi_seadus"
+      ],
+      "estleg:paragrahv": "§ (välisesinduste norm)",
+      "rdfs:label": "Diplomaatiliste esinduste avamine, tegevus ja lõpetamine",
+      "estleg:requestedCluster": "diplomaatilised_suhted",
+      "estleg:summary": "Reguleerib diplomaatiliste esinduste moodustamise, tegevusulatuse, staatuse muutmise ja tegevuse lõpetamise õiguslikud alused.",
+      "estleg:sourceAct": "Välisministeeriumi seadus"
+    },
+    {
+      "@id": "estleg:VALISMIN_Par_Diplomaatia_lepingud",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_valisministeeriumi_seadus"
+      ],
+      "estleg:paragrahv": "§ (rahvusvahelise suhtluse koordineerimise norm)",
+      "rdfs:label": "Diplomaatiliste suhete ja rahvusvahelise koostöö koordineerimine",
+      "estleg:requestedCluster": "diplomaatilised_suhted",
+      "estleg:summary": "Sõnastab välisministeeriumi rolli rahvusvaheliste läbirääkimiste, suhtluskanalite ja riikidevahelise koostöö diplomaatilisel koordineerimisel.",
+      "estleg:sourceAct": "Välisministeeriumi seadus"
+    },
+
+    {
+      "@id": "estleg:VALISMIN_Par_Konsulaar_kaitse",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_valisministeeriumi_seadus"
+      ],
+      "estleg:paragrahv": "§ (konsulaarkaitse norm)",
+      "rdfs:label": "Konsulaarkaitse osutamine Eesti kodanikele välisriigis",
+      "estleg:requestedCluster": "konsulaarvaldkond",
+      "estleg:summary": "Kehtestab konsulaarkaitse osutamise alused Eesti kodanikele ja vajadusel teistele õigustatud isikutele välisriigis viibimisel.",
+      "estleg:sourceAct": "Välisministeeriumi seadus"
+    },
+    {
+      "@id": "estleg:VALISMIN_Par_Konsulaar_toimingud",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_valisministeeriumi_seadus"
+      ],
+      "estleg:paragrahv": "§ (konsulaartoimingute norm)",
+      "rdfs:label": "Konsulaartoimingud, dokumenteerimine ja teenused",
+      "estleg:requestedCluster": "konsulaarvaldkond",
+      "estleg:summary": "Reguleerib konsulaarasutuste toiminguid, sealhulgas dokumentide väljastamist, tõestamistoiminguid ja muid konsulaarteenuseid.",
+      "estleg:sourceAct": "Välisministeeriumi seadus"
+    },
+    {
+      "@id": "estleg:VALISMIN_Par_Konsulaar_hadabi",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_valisministeeriumi_seadus"
+      ],
+      "estleg:paragrahv": "§ (hädaolukorra abi norm)",
+      "rdfs:label": "Abi osutamine hädaolukordades ja kriisides välismaal",
+      "estleg:requestedCluster": "konsulaarvaldkond",
+      "estleg:summary": "Sätestab konsulaarvaldkonna kriisireageerimise alused ning välisriigis hätta sattunud isikute abistamise korra.",
+      "estleg:sourceAct": "Välisministeeriumi seadus"
+    },
+
+    {
+      "@id": "estleg:VALISMIN_NOTE_001",
+      "@type": [
+        "owl:NamedIndividual"
+      ],
+      "rdfs:label": "Märkus kaardistuse kohta",
+      "estleg:note": "Kaardistus järgib meeskonna ühtset JSON-LD skeemi. Tegemist on semantilise eelkaardistusega; järgmises iteratsioonis tuleb §-numbrid, pealkirjad ja sõnastused verifitseerida kehtiva redaktsiooni vastu."
+    }
+  ]
+}
