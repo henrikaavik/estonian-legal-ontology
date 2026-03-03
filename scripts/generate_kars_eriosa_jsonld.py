@@ -126,7 +126,7 @@ def main() -> None:
     if osa2 is None:
         raise RuntimeError("Could not find Eriosa (osaNr=2)")
 
-    base = "https://example.org/estonian-legal#"
+    base = "https://data.riik.ee/ontology/estleg#"
 
     graph: list[dict] = [
         {

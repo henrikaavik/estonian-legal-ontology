@@ -1,6 +1,6 @@
 {
   "@context": {
-    "estleg": "https://example.org/estonian-legal#",
+    "estleg": "https://data.riik.ee/ontology/estleg#",
     "owl": "http://www.w3.org/2002/07/owl#",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
@@ -10,107 +10,179 @@
   },
   "@graph": [
     {
-      "@id": "https://example.org/estonian-legal#",
-      "@type": "owl:Ontology",
+      "@id": "https://data.riik.ee/ontology/estleg#",
+      "@type": [
+        "owl:Ontology"
+      ],
       "rdfs:label": "VÕS Osa 12 ontoloogia",
       "dc:title": "Laenuleping: laenuleping, intress, tagasimaksmine (§ 396–400)",
       "dc:source": "https://www.riigiteataja.ee/akt/121122010035.xml"
     },
     {
       "@id": "estleg:LegalPart",
-      "@type": "owl:Class",
+      "@type": [
+        "owl:Class"
+      ],
       "rdfs:label": "Seaduse osa"
     },
     {
       "@id": "estleg:Section",
-      "@type": "owl:Class",
+      "@type": [
+        "owl:Class"
+      ],
       "rdfs:label": "Paragrahv"
     },
     {
       "@id": "estleg:LegalConcept_volaigusseadus_osa12",
-      "@type": "owl:Class",
+      "@type": [
+        "owl:Class"
+      ],
       "rdfs:label": "Õigusmõiste (VÕS Osa 12)"
     },
-
     {
       "@id": "estleg:LoanAgreement",
-      "@type": ["owl:NamedIndividual", "estleg:LegalConcept_volaigusseadus_osa12"],
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalConcept_volaigusseadus_osa12"
+      ],
       "rdfs:label": "Laenuleping"
     },
     {
       "@id": "estleg:LoanInterest",
-      "@type": ["owl:NamedIndividual", "estleg:LegalConcept_volaigusseadus_osa12"],
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalConcept_volaigusseadus_osa12"
+      ],
       "rdfs:label": "Laenuintress"
     },
     {
       "@id": "estleg:LoanRepayment",
-      "@type": ["owl:NamedIndividual", "estleg:LegalConcept_volaigusseadus_osa12"],
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalConcept_volaigusseadus_osa12"
+      ],
       "rdfs:label": "Laenu tagasimaksmine"
     },
-
     {
       "@id": "estleg:VOS_Part12",
-      "@type": ["owl:NamedIndividual", "estleg:LegalPart"],
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalPart"
+      ],
       "rdfs:label": "VÕS Osa 12 – Laenuleping (töövoo tähistus)",
       "estleg:sourceAct": "Võlaõigusseadus",
       "estleg:sourceStructure": "VÕS 3. osa, 22. peatükk, 1. jagu (Üldsätted)",
       "estleg:hasSection": [
-        {"@id": "estleg:VOS_Par396"},
-        {"@id": "estleg:VOS_Par397"},
-        {"@id": "estleg:VOS_Par398"},
-        {"@id": "estleg:VOS_Par399"},
-        {"@id": "estleg:VOS_Par400"}
+        {
+          "@id": "estleg:VOS_Par396"
+        },
+        {
+          "@id": "estleg:VOS_Par397"
+        },
+        {
+          "@id": "estleg:VOS_Par398"
+        },
+        {
+          "@id": "estleg:VOS_Par399"
+        },
+        {
+          "@id": "estleg:VOS_Par400"
+        }
       ]
     },
-
     {
       "@id": "estleg:VOS_Par396",
-      "@type": ["owl:NamedIndividual", "estleg:Section"],
-      "estleg:sectionNumber": 396,
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Section"
+      ],
+      "estleg:sectionNumber": "396",
       "rdfs:label": "§ 396. Laenulepingu mõiste",
-      "estleg:inPart": {"@id": "estleg:VOS_Part12"},
-      "estleg:coversConcept": {"@id": "estleg:LoanAgreement"},
+      "estleg:inPart": {
+        "@id": "estleg:VOS_Part12"
+      },
+      "estleg:coversConcept": [
+        {
+          "@id": "estleg:LoanAgreement"
+        }
+      ],
       "estleg:summary": "Määratleb laenulepingu: laenuandja annab rahasumma või asendatava asja, laenusaaja kohustub tagastama sama rahasumma või sama liiki ja kvaliteediga asja. Sätet kohaldatakse ka liigitunnustega esemetele (nt väärtpaberid), kui pooled ei lepi teisiti."
     },
     {
       "@id": "estleg:VOS_Par397",
-      "@type": ["owl:NamedIndividual", "estleg:Section"],
-      "estleg:sectionNumber": 397,
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Section"
+      ],
+      "estleg:sectionNumber": "397",
       "rdfs:label": "§ 397. Laenuintress",
-      "estleg:inPart": {"@id": "estleg:VOS_Part12"},
+      "estleg:inPart": {
+        "@id": "estleg:VOS_Part12"
+      },
       "estleg:coversConcept": [
-        {"@id": "estleg:LoanInterest"},
-        {"@id": "estleg:LoanRepayment"}
+        {
+          "@id": "estleg:LoanInterest"
+        },
+        {
+          "@id": "estleg:LoanRepayment"
+        }
       ],
       "estleg:summary": "Majandus- või kutsetegevuses antud laen on intressikohustuslik; muul juhul üksnes kokkuleppel. Kui intressimäär puudub, eeldatakse harilikku määra, selle puudumisel VÕS § 94 määra. Intress tasutakse kalendriaasta lõpus või laenu tagasimaksmisel, kui tagasimakse toimub varem."
     },
     {
       "@id": "estleg:VOS_Par398",
-      "@type": ["owl:NamedIndividual", "estleg:Section"],
-      "estleg:sectionNumber": 398,
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Section"
+      ],
+      "estleg:sectionNumber": "398",
       "rdfs:label": "§ 398. Tähtajatu laenulepingu korraline ülesütlemine",
-      "estleg:inPart": {"@id": "estleg:VOS_Part12"},
-      "estleg:coversConcept": {"@id": "estleg:LoanRepayment"},
+      "estleg:inPart": {
+        "@id": "estleg:VOS_Part12"
+      },
+      "estleg:coversConcept": [
+        {
+          "@id": "estleg:LoanRepayment"
+        }
+      ],
       "estleg:summary": "Kui tagastamise tähtaega pole kokku lepitud, saab laenuandja nõuda tagastamist pärast ülesütlemist. Tähtajatu laenulepingu võivad üles öelda nii laenuandja kui laenusaaja, etteteatamisega vähemalt kaks kuud; intressita laenu võib laenusaaja tagastada ette teatamata."
     },
     {
       "@id": "estleg:VOS_Par399",
-      "@type": ["owl:NamedIndividual", "estleg:Section"],
-      "estleg:sectionNumber": 399,
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Section"
+      ],
+      "estleg:sectionNumber": "399",
       "rdfs:label": "§ 399. Laenulepingu erakorraline ülesütlemine laenuandja poolt",
-      "estleg:inPart": {"@id": "estleg:VOS_Part12"},
-      "estleg:coversConcept": {"@id": "estleg:LoanRepayment"},
+      "estleg:inPart": {
+        "@id": "estleg:VOS_Part12"
+      },
+      "estleg:coversConcept": [
+        {
+          "@id": "estleg:LoanRepayment"
+        }
+      ],
       "estleg:summary": "Laenuandja võib lepingu erakorraliselt üles öelda ja nõuda kohest tagastamist, kui laenusaaja rikub osamakseid, intressi maksmist või sihtotstarbelise kasutuse kohustust. Samuti võib laenuandja enne üleandmist lepingust taganeda/keelduda üleandmisest laenusaaja maksevõime olulise halvenemise või pettuslike andmete korral."
     },
     {
       "@id": "estleg:VOS_Par400",
-      "@type": ["owl:NamedIndividual", "estleg:Section"],
-      "estleg:sectionNumber": 400,
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Section"
+      ],
+      "estleg:sectionNumber": "400",
       "rdfs:label": "§ 400. Muutuva intressimääraga laenulepingu erakorraline ülesütlemine laenusaaja poolt",
-      "estleg:inPart": {"@id": "estleg:VOS_Part12"},
+      "estleg:inPart": {
+        "@id": "estleg:VOS_Part12"
+      },
       "estleg:coversConcept": [
-        {"@id": "estleg:LoanInterest"},
-        {"@id": "estleg:LoanRepayment"}
+        {
+          "@id": "estleg:LoanInterest"
+        },
+        {
+          "@id": "estleg:LoanRepayment"
+        }
       ],
       "estleg:summary": "Muutuva intressimääraga laenu võib laenusaaja igal ajal üles öelda, teatades ette vähemalt kolm kuud. Ülesütlemine eeldab laenu tagastamist kahe nädala jooksul pärast ülesütlemise jõustumist; vastupidine kokkulepe, mis piirab laenusaaja õigust, on tühine."
     }

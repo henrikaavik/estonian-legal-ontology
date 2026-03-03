@@ -73,7 +73,7 @@ This project provides a comprehensive, machine-readable ontology of Estonian leg
 41-44. Asjaõigusseadus osad 1-5 (separate files)
 
 ## Schema Explanation
-The ontology uses a custom `estleg` namespace (`https://example.org/estonian-legal#`) and is structured using JSON-LD:
+The ontology uses a custom `estleg` namespace (`https://data.riik.ee/ontology/estleg#`) and is structured using JSON-LD:
 - `@context`: Defines the vocabulary and namespaces (estleg, owl, rdf, rdfs, xsd, dc, skos)
 - `@graph`: Contains the actual data nodes (Legal Provisions, Topic Clusters, Legal Concepts)
 - `estleg`: The custom namespace for Estonian legal specific terms
@@ -99,8 +99,14 @@ See `API_GUIDE.md` for SPARQL examples and REST API design patterns.
 │   ├── API_GUIDE.md        # API usage guide
 │   ├── SCHEMA_REFERENCE.md # Complete schema docs
 │   └── VALIDATION_REPORT.md # Quality report
-├── krr_outputs/            # JSON-LD ontology files (44 files)
+├── krr_outputs/            # JSON-LD ontology files (97+ files)
+│   ├── *_peep.json         # Individual law mappings
+│   ├── combined_ontology.jsonld  # All laws combined
+│   └── INDEX.json          # Master registry
 ├── shacl/                  # SHACL validation shapes
+├── scripts/                # Generation and validation scripts
+├── reviews/                # Law review request files
+├── .github/workflows/      # CI pipeline
 └── README.md               # Main project readme
 ```
 
@@ -118,4 +124,4 @@ Please submit pull requests with improvements. Ensure all JSON-LD files pass val
 MIT License - See LICENSE file for details
 
 ---
-*Last updated: March 1, 2026 (44 laws)*
+*Last updated: March 2, 2026 (44 laws, 97+ files)*

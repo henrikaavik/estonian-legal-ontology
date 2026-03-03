@@ -31,7 +31,7 @@
   "@graph": [
     {
       "@id": "https://data.riik.ee/legislation/TsUS/art1",
-      "@type": "estleg:LegalProvision",
+      "@type": ["estleg:LegalProvision"],
       "estleg:identifier": "TsÜS § 1",
       "schema:name": "Seaduse eesmärk",
       "schema:text": "Käesolev seadus sätestab tsiviilõiguse üldpõhimõtted.",

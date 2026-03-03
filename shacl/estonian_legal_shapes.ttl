@@ -1,0 +1,88 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix estleg: <https://data.riik.ee/ontology/estleg#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema: <http://schema.org/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# Shape for LegalProvision instances
+estleg:LegalProvisionShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:LegalProvision ;
+    sh:property [
+        sh:path estleg:identifier ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "identifier" ;
+        sh:description "Every LegalProvision must have an identifier (e.g., 'TsÜS § 1')" ;
+    ] ;
+    sh:property [
+        sh:path schema:text ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "text" ;
+        sh:description "Every LegalProvision must have the legal text" ;
+    ] ;
+    sh:property [
+        sh:path estleg:topicCluster ;
+        sh:nodeKind sh:IRI ;
+        sh:name "topicCluster" ;
+        sh:description "Topic cluster reference must be an IRI" ;
+    ] ;
+    sh:property [
+        sh:path estleg:references ;
+        sh:nodeKind sh:IRI ;
+        sh:name "references" ;
+        sh:description "Cross-references must point to valid IRIs" ;
+    ] .
+
+# Shape for TopicCluster instances
+estleg:TopicClusterShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:TopicCluster ;
+    sh:property [
+        sh:path skos:prefLabel ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "prefLabel" ;
+        sh:description "Every TopicCluster must have a preferred label" ;
+    ] ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:name "label" ;
+        sh:description "Every TopicCluster must have a label" ;
+    ] .
+
+# Shape for LegalConcept instances
+estleg:LegalConceptShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:LegalConcept ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:name "label" ;
+        sh:description "Every LegalConcept must have a label" ;
+    ] .
+
+# Shape enforcing @type is always a list (validated programmatically)
+# Note: JSON-LD @type arrays cannot be validated via SHACL directly;
+# use scripts/validate_all.py for this check.
+
+# Shape for Section instances (from KarS generator)
+estleg:SectionShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:Section ;
+    sh:property [
+        sh:path estleg:sectionNumber ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "sectionNumber" ;
+        sh:description "Section number must be a string" ;
+    ] ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:name "label" ;
+    ] .
