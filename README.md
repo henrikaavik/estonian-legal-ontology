@@ -1,8 +1,8 @@
 # Estonian Legal Ontology
 
-A comprehensive, machine-readable ontology of Estonian and EU legislation in JSON-LD format. Maps **enacted laws**, **draft legislation**, **Supreme Court decisions**, and **EU legal acts** into a semantic knowledge graph suitable for advanced search, cross-referencing, and automated legal analysis.
+A comprehensive, machine-readable ontology of Estonian and EU legislation in JSON-LD format. Maps **enacted laws**, **draft legislation**, **Supreme Court decisions**, **EU legal acts**, and **EU court decisions** into a semantic knowledge graph suitable for advanced search, cross-referencing, and automated legal analysis.
 
-**Status: 615 enacted laws + 22,800+ drafts + 12,100+ court decisions + 33,200+ EU legal acts** | **700+ JSON-LD files** | **98,000+ semantic nodes**
+**Status: 615 enacted laws + 22,800+ drafts + 12,100+ court decisions + 33,200+ EU acts + 22,200+ EU court decisions** | **700+ JSON-LD files** | **120,000+ semantic nodes**
 
 ## Quick Start
 
@@ -49,6 +49,16 @@ g.parse("krr_outputs/eurlex/eurlex_combined.jsonld", format="json-ld")
 print(f"EU legislation triples: {len(g)}")
 ```
 
+### Load EU court decisions
+
+```python
+from rdflib import Graph
+
+g = Graph()
+g.parse("krr_outputs/curia/curia_combined.jsonld", format="json-ld")
+print(f"EU court decision triples: {len(g)}")
+```
+
 ### SPARQL query examples
 
 ```sparql
@@ -91,6 +101,20 @@ SELECT ?act ?title ?date WHERE {
        estleg:euDocumentType estleg:EUDocType_Directive ;
        estleg:inForce "true"^^xsd:boolean ;
        estleg:documentDate ?date .
+} ORDER BY DESC(?date) LIMIT 20
+```
+
+```sparql
+-- Find EU Court of Justice judgments
+PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?decision ?title ?ecli ?date WHERE {
+  ?decision a estleg:EUCourtDecision ;
+            rdfs:label ?title ;
+            estleg:euCourtDecisionType estleg:EUDecType_Judgment ;
+            estleg:ecliIdentifier ?ecli ;
+            estleg:documentDate ?date .
 } ORDER BY DESC(?date) LIMIT 20
 ```
 
@@ -140,6 +164,23 @@ Years covered: 1993-2026 (12,137 decisions total)
 
 Source: EUR-Lex SPARQL endpoint (33,242 acts with Estonian translations)
 
+### EU Court Decisions (CURIA)
+
+| Type | Estonian | Count |
+|------|----------|-------|
+| AG Opinion | Kohtujuristi ettepanek | 9,952 |
+| Order | Kohtumaarus | 6,619 |
+| Judgment | Kohtuotsus | 5,641 |
+| Court Opinion | Kohtu arvamus | 17 |
+
+| Court | Estonian | Count |
+|-------|----------|-------|
+| Court of Justice | Euroopa Kohus | 17,720 |
+| General Court | Uldkohus | 4,036 |
+| Civil Service Tribunal | Avaliku Teenistuse Kohus | 534 |
+
+Source: EUR-Lex SPARQL endpoint (22,290 decisions with Estonian translations)
+
 ## Data Sources
 
 | Source | URL | Data | Script |
@@ -148,6 +189,7 @@ Source: EUR-Lex SPARQL endpoint (33,242 acts with Estonian translations)
 | **EIS** | https://eelnoud.valitsus.ee | Draft legislation (RSS feeds) | `scripts/generate_draft_legislation.py` |
 | **RIK / Riigikohus** | https://rikos.rik.ee | Supreme Court decisions (HTML search) | `scripts/generate_court_decisions.py` |
 | **EUR-Lex** | https://eur-lex.europa.eu | EU legislation (SPARQL) | `scripts/generate_eu_legislation.py` |
+| **EUR-Lex / CURIA** | https://eur-lex.europa.eu | EU court decisions (SPARQL) | `scripts/generate_eu_court_decisions.py` |
 
 ### API Details
 
@@ -187,13 +229,20 @@ Source: EUR-Lex SPARQL endpoint (33,242 acts with Estonian translations)
 │   │   ├── riigikohus_schema.json        # Schema definitions
 │   │   ├── riigikohus_YYYY_peep.json     # Per-year decisions (1993-2026)
 │   │   └── RIIGIKOHUS_INDEX.json         # Court decision registry
-│   └── eurlex/               # EU legislation
-│       ├── eurlex_schema.json            # Schema definitions
-│       ├── eurlex_regulations_peep.json  # EU regulations
-│       ├── eurlex_directives_peep.json   # EU directives
-│       ├── eurlex_decisions_peep.json    # EU decisions
-│       ├── eurlex_combined.jsonld        # All EU acts combined
-│       └── EURLEX_INDEX.json             # EU legislation registry
+│   ├── eurlex/               # EU legislation
+│   │   ├── eurlex_schema.json            # Schema definitions
+│   │   ├── eurlex_regulations_peep.json  # EU regulations
+│   │   ├── eurlex_directives_peep.json   # EU directives
+│   │   ├── eurlex_decisions_peep.json    # EU decisions
+│   │   ├── eurlex_combined.jsonld        # All EU acts combined
+│   │   └── EURLEX_INDEX.json             # EU legislation registry
+│   └── curia/                # EU court decisions
+│       ├── curia_schema.json             # Schema definitions
+│       ├── curia_judgments_peep.json      # CJEU judgments
+│       ├── curia_orders_peep.json        # Court orders
+│       ├── curia_ag_opinions_peep.json   # AG opinions
+│       ├── curia_combined.jsonld         # All EU decisions combined
+│       └── CURIA_INDEX.json              # EU court decision registry
 ├── docs/                     # Documentation
 │   ├── README.md             # Full project documentation
 │   ├── API_GUIDE.md          # SPARQL and API usage guide
@@ -206,6 +255,7 @@ Source: EUR-Lex SPARQL endpoint (33,242 acts with Estonian translations)
 │   ├── generate_draft_legislation.py  # Draft legislation generator
 │   ├── generate_court_decisions.py    # Court decisions generator
 │   ├── generate_eu_legislation.py    # EU legislation generator
+│   ├── generate_eu_court_decisions.py # EU court decisions generator
 │   └── generate_kars_eriosa_jsonld.py # KarS special parts
 ├── reviews/                  # Law review request files
 ├── .github/workflows/        # CI pipeline
@@ -215,7 +265,7 @@ Source: EUR-Lex SPARQL endpoint (33,242 acts with Estonian translations)
 
 ## Schema
 
-The ontology uses the `estleg` namespace (`https://data.riik.ee/ontology/estleg#`) with twelve core classes:
+The ontology uses the `estleg` namespace (`https://data.riik.ee/ontology/estleg#`) with fifteen core classes:
 
 **Enacted Law:**
 - **`estleg:LegalProvision`** -- Individual legal provisions (paragraphs, sections)
@@ -236,6 +286,11 @@ The ontology uses the `estleg` namespace (`https://data.riik.ee/ontology/estleg#
 - **`estleg:EULegislation`** -- EU legal acts (regulations, directives, decisions)
 - **`estleg:EUDocumentType`** -- Regulation, Directive, Decision
 - **`estleg:EUInstitution`** -- European Commission, Council, Parliament, etc.
+
+**EU Court Decisions:**
+- **`estleg:EUCourtDecision`** -- CJEU decisions (judgments, orders, AG opinions)
+- **`estleg:EUCourtDecisionType`** -- Judgment, Order, AG Opinion, Court Opinion
+- **`estleg:EUCourt`** -- Court of Justice, General Court, Civil Service Tribunal
 
 See [docs/SCHEMA_REFERENCE.md](docs/SCHEMA_REFERENCE.md) for full schema documentation.
 
@@ -261,6 +316,9 @@ python3 scripts/generate_court_decisions.py
 
 # Re-fetch EU legislation from EUR-Lex
 python3 scripts/generate_eu_legislation.py
+
+# Re-fetch EU court decisions from EUR-Lex
+python3 scripts/generate_eu_court_decisions.py
 ```
 
 ## Contributing

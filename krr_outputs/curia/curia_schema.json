@@ -1,0 +1,174 @@
+{
+  "@context": {
+    "estleg": "https://data.riik.ee/ontology/estleg#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
+  },
+  "@graph": [
+    {
+      "@id": "estleg:EUCourtDecision",
+      "@type": [
+        "owl:Class"
+      ],
+      "rdfs:label": "EL kohtulahend (EU Court Decision)",
+      "rdfs:comment": "Euroopa Liidu kohtu lahend — kohtuotsus, kohtumäärus, kohtujuristi ettepanek või kohtu arvamus.",
+      "dc:description": "A Court of Justice of the European Union decision, including judgments, orders, AG opinions, and court opinions."
+    },
+    {
+      "@id": "estleg:EUCourtDecisionType",
+      "@type": [
+        "owl:Class"
+      ],
+      "rdfs:label": "EL kohtulahendi liik (EU Court Decision Type)",
+      "rdfs:comment": "Euroopa Liidu kohtulahendi klassifikatsioon."
+    },
+    {
+      "@id": "estleg:EUCourt",
+      "@type": [
+        "owl:Class"
+      ],
+      "rdfs:label": "EL kohus (EU Court)",
+      "rdfs:comment": "Euroopa Liidu kohtuinstants."
+    },
+    {
+      "@id": "estleg:EUDecType_Judgment",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:EUCourtDecisionType"
+      ],
+      "rdfs:label": "Kohtuotsus",
+      "skos:prefLabel": "Judgment"
+    },
+    {
+      "@id": "estleg:EUDecType_Order",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:EUCourtDecisionType"
+      ],
+      "rdfs:label": "Kohtumäärus",
+      "skos:prefLabel": "Order"
+    },
+    {
+      "@id": "estleg:EUDecType_AGOpinion",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:EUCourtDecisionType"
+      ],
+      "rdfs:label": "Kohtujuristi ettepanek",
+      "skos:prefLabel": "Advocate General Opinion"
+    },
+    {
+      "@id": "estleg:EUDecType_CourtOpinion",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:EUCourtDecisionType"
+      ],
+      "rdfs:label": "Kohtu arvamus",
+      "skos:prefLabel": "Court Opinion"
+    },
+    {
+      "@id": "estleg:EUCourt_CourtOfJustice",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:EUCourt"
+      ],
+      "rdfs:label": "Euroopa Kohus",
+      "skos:prefLabel": "Court of Justice",
+      "estleg:euCourtCode": "CJ"
+    },
+    {
+      "@id": "estleg:EUCourt_GeneralCourt",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:EUCourt"
+      ],
+      "rdfs:label": "Üldkohus",
+      "skos:prefLabel": "General Court",
+      "estleg:euCourtCode": "GCEU"
+    },
+    {
+      "@id": "estleg:EUCourt_CivilServiceTribunal",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:EUCourt"
+      ],
+      "rdfs:label": "Avaliku Teenistuse Kohus",
+      "skos:prefLabel": "Civil Service Tribunal",
+      "estleg:euCourtCode": "CST"
+    },
+    {
+      "@id": "estleg:euCourtDecisionType",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:label": "EL lahendi liik",
+      "rdfs:domain": {
+        "@id": "estleg:EUCourtDecision"
+      },
+      "rdfs:range": {
+        "@id": "estleg:EUCourtDecisionType"
+      }
+    },
+    {
+      "@id": "estleg:euCourt",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:label": "EL kohus",
+      "rdfs:domain": {
+        "@id": "estleg:EUCourtDecision"
+      },
+      "rdfs:range": {
+        "@id": "estleg:EUCourt"
+      },
+      "rdfs:comment": "The EU court that delivered the decision."
+    },
+    {
+      "@id": "estleg:ecliIdentifier",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": "ECLI identifikaator",
+      "rdfs:domain": {
+        "@id": "estleg:EUCourtDecision"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      },
+      "rdfs:comment": "European Case Law Identifier (e.g., ECLI:EU:C:2016:758)."
+    },
+    {
+      "@id": "estleg:euCaseNumber",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": "kohtuasja number",
+      "rdfs:domain": {
+        "@id": "estleg:EUCourtDecision"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      },
+      "rdfs:comment": "Case number (e.g., C-438/14)."
+    },
+    {
+      "@id": "estleg:curiaLink",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": "CURIA link",
+      "rdfs:domain": {
+        "@id": "estleg:EUCourtDecision"
+      },
+      "rdfs:range": {
+        "@id": "xsd:anyURI"
+      },
+      "rdfs:comment": "Link to the decision in EUR-Lex (Estonian version)."
+    }
+  ]
+}

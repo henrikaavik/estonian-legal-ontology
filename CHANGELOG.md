@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.8.0] - 2026-03-03
+
+### Added
+- **EU Court Decisions (CURIA)** — new ontology class `estleg:EUCourtDecision`
+- New classes: `estleg:EUCourtDecisionType`, `estleg:EUCourt`
+- Decision types: Judgment, Order, AGOpinion, CourtOpinion
+- EU courts: Court of Justice, General Court, Civil Service Tribunal
+- Properties: `ecliIdentifier`, `euCaseNumber`, `euCourtDecisionType`, `euCourt`, `curiaLink`, `documentDate`
+- `scripts/generate_eu_court_decisions.py` — fetches all CJEU decisions from EUR-Lex SPARQL
+- `krr_outputs/curia/` directory with schema, per-type files, combined file, and index
+- 22,290 EU court decisions in Estonian (5,641 judgments, 6,619 orders, 9,952 AG opinions)
+- SHACL shapes for EUCourtDecision, EUCourtDecisionType, EUCourt
+
+### Changed
+- Updated all documentation with EU court decisions coverage and data sources
+
 ## [0.7.0] - 2026-03-03
 
 ### Added

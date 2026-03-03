@@ -307,3 +307,77 @@ estleg:EUInstitutionShape
         sh:minCount 1 ;
         sh:name "label" ;
     ] .
+
+# Shape for EUCourtDecision instances
+estleg:EUCourtDecisionShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:EUCourtDecision ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:name "label" ;
+        sh:description "Every EUCourtDecision must have a label (Estonian title)" ;
+    ] ;
+    sh:property [
+        sh:path estleg:celexNumber ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "celexNumber" ;
+        sh:description "CELEX identifier for the court decision" ;
+    ] ;
+    sh:property [
+        sh:path estleg:euCourtDecisionType ;
+        sh:minCount 1 ;
+        sh:nodeKind sh:IRI ;
+        sh:name "euCourtDecisionType" ;
+        sh:description "Type of court decision (Judgment, Order, AG Opinion, Court Opinion)" ;
+    ] ;
+    sh:property [
+        sh:path estleg:euCourt ;
+        sh:minCount 1 ;
+        sh:nodeKind sh:IRI ;
+        sh:name "euCourt" ;
+        sh:description "EU court that delivered the decision" ;
+    ] ;
+    sh:property [
+        sh:path estleg:ecliIdentifier ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "ecliIdentifier" ;
+        sh:description "ECLI identifier (e.g., ECLI:EU:C:2016:758)" ;
+    ] ;
+    sh:property [
+        sh:path estleg:curiaLink ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:anyURI ;
+        sh:name "curiaLink" ;
+        sh:description "Link to the decision in EUR-Lex" ;
+    ] ;
+    sh:property [
+        sh:path estleg:documentDate ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:date ;
+        sh:name "documentDate" ;
+        sh:description "Date of the court decision" ;
+    ] .
+
+# Shape for EUCourtDecisionType instances
+estleg:EUCourtDecisionTypeShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:EUCourtDecisionType ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:name "label" ;
+    ] .
+
+# Shape for EUCourt instances
+estleg:EUCourtShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:EUCourt ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:name "label" ;
+    ] .

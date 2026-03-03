@@ -298,6 +298,70 @@ SELECT ?act ?title ?date WHERE {
 } ORDER BY DESC(?date) LIMIT 20
 ```
 
+## EU Court Decision Classes
+
+### EUCourtDecision (`estleg:EUCourtDecision`)
+Represents a CJEU decision available in Estonian. Source: [EUR-Lex](https://eur-lex.europa.eu) / [CURIA](https://curia.europa.eu)
+
+### EUCourtDecisionType (`estleg:EUCourtDecisionType`)
+
+| Type | Estonian | English |
+|------|----------|---------|
+| `EUDecType_Judgment` | Kohtuotsus | Judgment |
+| `EUDecType_Order` | Kohtumaarus | Order |
+| `EUDecType_AGOpinion` | Kohtujuristi ettepanek | Advocate General Opinion |
+| `EUDecType_CourtOpinion` | Kohtu arvamus | Court Opinion |
+
+### EUCourt (`estleg:EUCourt`)
+
+| Court | Estonian | Code |
+|-------|----------|------|
+| `EUCourt_CourtOfJustice` | Euroopa Kohus | CJ |
+| `EUCourt_GeneralCourt` | Uldkohus | GCEU |
+| `EUCourt_CivilServiceTribunal` | Avaliku Teenistuse Kohus | CST |
+
+### EU Court Decision Properties
+
+* `estleg:celexNumber`: CELEX identifier (e.g., "62014CJ0438") -- `xsd:string`
+* `estleg:euCourtDecisionType`: Links to EUCourtDecisionType -- `owl:ObjectProperty`
+* `estleg:euCourt`: Links to EUCourt -- `owl:ObjectProperty`
+* `estleg:ecliIdentifier`: ECLI identifier (e.g., "ECLI:EU:C:2016:758") -- `xsd:string`
+* `estleg:euCaseNumber`: Case number (e.g., "C-438/14") -- `xsd:string`
+* `estleg:curiaLink`: URL to Estonian version in EUR-Lex -- `xsd:anyURI`
+* `estleg:documentDate`: Date of the decision -- `xsd:date`
+
+### EU Court Decision Example
+
+```json
+{
+  "@id": "estleg:EUCJ_62014CJ0438",
+  "@type": ["owl:NamedIndividual", "estleg:EUCourtDecision"],
+  "rdfs:label": "Euroopa Kohtu otsus — Bogendorff von Wolffersdorff — Kohtuasi C-438/14",
+  "estleg:celexNumber": "62014CJ0438",
+  "estleg:euCourtDecisionType": {"@id": "estleg:EUDecType_Judgment"},
+  "estleg:euCourt": {"@id": "estleg:EUCourt_CourtOfJustice"},
+  "estleg:ecliIdentifier": "ECLI:EU:C:2016:758",
+  "estleg:euCaseNumber": "C-438/14",
+  "estleg:curiaLink": {"@value": "https://eur-lex.europa.eu/legal-content/ET/TXT/?uri=CELEX:62014CJ0438", "@type": "xsd:anyURI"},
+  "estleg:documentDate": {"@value": "2016-10-06", "@type": "xsd:date"}
+}
+```
+
+### SPARQL: Find EU court judgments by date
+
+```sparql
+PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?decision ?title ?ecli ?date WHERE {
+  ?decision a estleg:EUCourtDecision ;
+            rdfs:label ?title ;
+            estleg:euCourtDecisionType estleg:EUDecType_Judgment ;
+            estleg:ecliIdentifier ?ecli ;
+            estleg:documentDate ?date .
+} ORDER BY DESC(?date) LIMIT 20
+```
+
 ## Data Sources
 
 | Source | URL | Format | Script |
@@ -306,3 +370,4 @@ SELECT ?act ?title ?date WHERE {
 | EIS | https://eelnoud.valitsus.ee | RSS 2.0 | `generate_draft_legislation.py` |
 | RIK | https://rikos.rik.ee | HTML scrape | `generate_court_decisions.py` |
 | EUR-Lex | https://eur-lex.europa.eu | SPARQL | `generate_eu_legislation.py` |
+| EUR-Lex / CURIA | https://eur-lex.europa.eu | SPARQL | `generate_eu_court_decisions.py` |

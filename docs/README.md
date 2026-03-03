@@ -3,7 +3,7 @@
 ## Project Overview and Purpose
 This project provides a comprehensive, machine-readable ontology of Estonian and EU legislation using JSON-LD. It creates a semantic graph of **enacted laws** (from Riigi Teataja), **draft legislation** (from EIS), **Supreme Court decisions** (from RIK), and **EU legal acts** (from EUR-Lex), enabling advanced search, cross-referencing, and automated legal analysis.
 
-**Status: 615 enacted laws + 22,800+ drafts + 12,100+ court decisions + 33,200+ EU legal acts** (as of March 3, 2026)
+**Status: 615 enacted laws + 22,800+ drafts + 12,100+ court decisions + 33,200+ EU acts + 22,200+ EU court decisions** (as of March 3, 2026)
 
 ## Enacted Laws (615 total)
 
@@ -88,6 +88,9 @@ The ontology uses the `estleg` namespace (`https://data.riik.ee/ontology/estleg#
 - `estleg:EULegislation` — EU legal acts (regulations, directives, decisions)
 - `estleg:EUDocumentType` — EU document type classification
 - `estleg:EUInstitution` — EU institution classification
+- `estleg:EUCourtDecision` — EU court decisions (CJEU)
+- `estleg:EUCourtDecisionType` — EU court decision type classification
+- `estleg:EUCourt` — EU court classification
 
 See [SCHEMA_REFERENCE.md](SCHEMA_REFERENCE.md) for complete documentation.
 
@@ -116,6 +119,19 @@ See [SCHEMA_REFERENCE.md](SCHEMA_REFERENCE.md) for complete documentation.
 
 Each act includes CELEX number, Estonian title, document date, in-force status, ELI identifier, and EUR-Lex link.
 
+## EU Court Decisions (CURIA)
+
+22,290 CJEU decisions available in Estonian, sourced from [EUR-Lex](https://eur-lex.europa.eu) via SPARQL.
+
+| Type | Estonian | Count |
+|------|----------|-------|
+| AG Opinion | Kohtujuristi ettepanek | 9,952 |
+| Order | Kohtumaarus | 6,619 |
+| Judgment | Kohtuotsus | 5,641 |
+| Court Opinion | Kohtu arvamus | 17 |
+
+Courts: Court of Justice (17,720), General Court (4,036), Civil Service Tribunal (534).
+
 ## How to Use
 
 1. Download JSON-LD files from `krr_outputs/` (enacted), `krr_outputs/eelnoud/` (drafts), `krr_outputs/riigikohus/` (court), `krr_outputs/eurlex/` (EU)
@@ -138,13 +154,16 @@ Each act includes CELEX number, Estonian title, document date, in-force status, 
 │   │   ├── riigikohus_schema.json        # Schema definitions
 │   │   ├── riigikohus_YYYY_peep.json     # Per-year files (1993-2026)
 │   │   └── RIIGIKOHUS_INDEX.json         # Decision registry
-│   └── eurlex/             # EU legislation
-│       ├── eurlex_schema.json            # Schema definitions
-│       ├── eurlex_regulations_peep.json  # EU regulations
-│       ├── eurlex_directives_peep.json   # EU directives
-│       ├── eurlex_decisions_peep.json    # EU decisions
-│       ├── eurlex_combined.jsonld        # All EU acts combined
-│       └── EURLEX_INDEX.json             # EU legislation registry
+│   ├── eurlex/             # EU legislation
+│   │   ├── eurlex_schema.json            # Schema definitions
+│   │   ├── eurlex_*_peep.json            # Per-type EU acts
+│   │   ├── eurlex_combined.jsonld        # All EU acts combined
+│   │   └── EURLEX_INDEX.json             # EU legislation registry
+│   └── curia/              # EU court decisions
+│       ├── curia_schema.json             # Schema definitions
+│       ├── curia_*_peep.json             # Per-type decisions
+│       ├── curia_combined.jsonld         # All EU decisions combined
+│       └── CURIA_INDEX.json              # EU court decision registry
 ├── docs/                   # Documentation
 ├── shacl/                  # SHACL validation shapes
 ├── scripts/                # Generation and validation scripts
@@ -174,6 +193,7 @@ MIT License - See LICENSE file for details
 | EIS | https://eelnoud.valitsus.ee | Draft legislation | RSS 2.0 |
 | RIK / Riigikohus | https://rikos.rik.ee | Supreme Court decisions | HTML search |
 | EUR-Lex | https://eur-lex.europa.eu | EU legislation | SPARQL |
+| EUR-Lex / CURIA | https://eur-lex.europa.eu | EU court decisions | SPARQL |
 
 ---
-*Last updated: March 3, 2026 (615 laws + 22,800 drafts + 12,100 court decisions + 33,200 EU acts)*
+*Last updated: March 3, 2026 (615 laws + 22,800 drafts + 12,100 court decisions + 33,200 EU acts + 22,200 EU court decisions)*
