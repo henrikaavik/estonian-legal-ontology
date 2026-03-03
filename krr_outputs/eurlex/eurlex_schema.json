@@ -1,0 +1,276 @@
+{
+  "@context": {
+    "estleg": "https://data.riik.ee/ontology/estleg#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
+  },
+  "@graph": [
+    {
+      "@id": "estleg:EULegislation",
+      "@type": [
+        "owl:Class"
+      ],
+      "rdfs:label": "EL õigusakt (EU Legislation)",
+      "rdfs:comment": "Euroopa Liidu õigusakt — määrus, direktiiv või otsus.",
+      "dc:description": "A European Union legal act — regulation, directive, or decision."
+    },
+    {
+      "@id": "estleg:EUDocumentType",
+      "@type": [
+        "owl:Class"
+      ],
+      "rdfs:label": "EL õigusakti liik (EU Document Type)",
+      "rdfs:comment": "Euroopa Liidu õigusakti klassifikatsioon."
+    },
+    {
+      "@id": "estleg:EUInstitution",
+      "@type": [
+        "owl:Class"
+      ],
+      "rdfs:label": "EL institutsioon (EU Institution)",
+      "rdfs:comment": "Euroopa Liidu institutsioon või organ, mis on õigusakti autor."
+    },
+    {
+      "@id": "estleg:EUDocType_Regulation",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:EUDocumentType"
+      ],
+      "rdfs:label": "EL määrus",
+      "skos:prefLabel": "EU Regulation",
+      "rdfs:comment": "Euroopa Liidu määrus – otsekohaldatav õigusakt kõigis liikmesriikides."
+    },
+    {
+      "@id": "estleg:EUDocType_Directive",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:EUDocumentType"
+      ],
+      "rdfs:label": "EL direktiiv",
+      "skos:prefLabel": "EU Directive",
+      "rdfs:comment": "Euroopa Liidu direktiiv – liikmesriikide poolt ülevõetav õigusakt."
+    },
+    {
+      "@id": "estleg:EUDocType_Decision",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:EUDocumentType"
+      ],
+      "rdfs:label": "EL otsus",
+      "skos:prefLabel": "EU Decision",
+      "rdfs:comment": "Euroopa Liidu otsus – konkreetsele adressaadile suunatud siduv akt."
+    },
+    {
+      "@id": "estleg:EUInst_EuropeanCommission",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:EUInstitution"
+      ],
+      "rdfs:label": "Euroopa Komisjon",
+      "skos:prefLabel": "European Commission",
+      "estleg:euInstitutionCode": "COM"
+    },
+    {
+      "@id": "estleg:EUInst_CouncilOfEU",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:EUInstitution"
+      ],
+      "rdfs:label": "Euroopa Liidu Nõukogu",
+      "skos:prefLabel": "Council of the European Union",
+      "estleg:euInstitutionCode": "CONSIL"
+    },
+    {
+      "@id": "estleg:EUInst_EuropeanParliament",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:EUInstitution"
+      ],
+      "rdfs:label": "Euroopa Parlament",
+      "skos:prefLabel": "European Parliament",
+      "estleg:euInstitutionCode": "EP"
+    },
+    {
+      "@id": "estleg:EUInst_EuropeanCentralBank",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:EUInstitution"
+      ],
+      "rdfs:label": "Euroopa Keskpank",
+      "skos:prefLabel": "European Central Bank",
+      "estleg:euInstitutionCode": "ECB"
+    },
+    {
+      "@id": "estleg:EUInst_DG_SANTE",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:EUInstitution"
+      ],
+      "rdfs:label": "Tervise ja toiduohutuse peadirektoraat",
+      "skos:prefLabel": "DG Health and Food Safety",
+      "estleg:euInstitutionCode": "SANTE"
+    },
+    {
+      "@id": "estleg:EUInst_DG_MARE",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:EUInstitution"
+      ],
+      "rdfs:label": "Merenduse ja kalanduse peadirektoraat",
+      "skos:prefLabel": "DG Maritime Affairs and Fisheries",
+      "estleg:euInstitutionCode": "MARE"
+    },
+    {
+      "@id": "estleg:EUInst_DG_GROW",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:EUInstitution"
+      ],
+      "rdfs:label": "Siseturu peadirektoraat",
+      "skos:prefLabel": "DG Internal Market",
+      "estleg:euInstitutionCode": "GROW"
+    },
+    {
+      "@id": "estleg:EUInst_DG_COMP",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:EUInstitution"
+      ],
+      "rdfs:label": "Konkurentsi peadirektoraat",
+      "skos:prefLabel": "DG Competition",
+      "estleg:euInstitutionCode": "COMP"
+    },
+    {
+      "@id": "estleg:EUInst_DG_AGRI",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:EUInstitution"
+      ],
+      "rdfs:label": "Põllumajanduse peadirektoraat",
+      "skos:prefLabel": "DG Agriculture",
+      "estleg:euInstitutionCode": "AGRI"
+    },
+    {
+      "@id": "estleg:EUInst_DG_ENV",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:EUInstitution"
+      ],
+      "rdfs:label": "Keskkonna peadirektoraat",
+      "skos:prefLabel": "DG Environment",
+      "estleg:euInstitutionCode": "ENV"
+    },
+    {
+      "@id": "estleg:EUInst_DG_ENER",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:EUInstitution"
+      ],
+      "rdfs:label": "Energia peadirektoraat",
+      "skos:prefLabel": "DG Energy",
+      "estleg:euInstitutionCode": "ENER"
+    },
+    {
+      "@id": "estleg:euDocumentType",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:label": "EL õigusakti liik",
+      "rdfs:domain": {
+        "@id": "estleg:EULegislation"
+      },
+      "rdfs:range": {
+        "@id": "estleg:EUDocumentType"
+      }
+    },
+    {
+      "@id": "estleg:euInstitution",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:label": "EL institutsioon",
+      "rdfs:domain": {
+        "@id": "estleg:EULegislation"
+      },
+      "rdfs:range": {
+        "@id": "estleg:EUInstitution"
+      },
+      "rdfs:comment": "The EU institution that authored or adopted the legal act."
+    },
+    {
+      "@id": "estleg:celexNumber",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": "CELEX number",
+      "rdfs:domain": {
+        "@id": "estleg:EULegislation"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      },
+      "rdfs:comment": "CELEX identifier for the EU legal act (e.g., 32016R0679)."
+    },
+    {
+      "@id": "estleg:eliIdentifier",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": "ELI identifikaator",
+      "rdfs:domain": {
+        "@id": "estleg:EULegislation"
+      },
+      "rdfs:range": {
+        "@id": "xsd:anyURI"
+      },
+      "rdfs:comment": "European Legislation Identifier (ELI) URI."
+    },
+    {
+      "@id": "estleg:eurLexLink",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": "EUR-Lex link",
+      "rdfs:domain": {
+        "@id": "estleg:EULegislation"
+      },
+      "rdfs:range": {
+        "@id": "xsd:anyURI"
+      },
+      "rdfs:comment": "Link to the legal act in EUR-Lex (Estonian version)."
+    },
+    {
+      "@id": "estleg:documentDate",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": "dokumendi kuupäev",
+      "rdfs:domain": {
+        "@id": "estleg:EULegislation"
+      },
+      "rdfs:range": {
+        "@id": "xsd:date"
+      },
+      "rdfs:comment": "Date of the legal act."
+    },
+    {
+      "@id": "estleg:inForce",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": "jõus",
+      "rdfs:domain": {
+        "@id": "estleg:EULegislation"
+      },
+      "rdfs:range": {
+        "@id": "xsd:boolean"
+      },
+      "rdfs:comment": "Whether the legal act is currently in force."
+    }
+  ]
+}

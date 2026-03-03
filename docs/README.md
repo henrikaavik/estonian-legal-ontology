@@ -1,11 +1,13 @@
 # Estonian Legal Ontology Project
 
 ## Project Overview and Purpose
-This project provides a comprehensive, machine-readable ontology of Estonian legislation using JSON-LD. It aims to create a semantic graph of legal provisions, topic clusters, and legal concepts, enabling advanced search, cross-referencing, and automated legal analysis.
+This project provides a comprehensive, machine-readable ontology of Estonian and EU legislation using JSON-LD. It creates a semantic graph of **enacted laws** (from Riigi Teataja), **draft legislation** (from EIS), **Supreme Court decisions** (from RIK), and **EU legal acts** (from EUR-Lex), enabling advanced search, cross-referencing, and automated legal analysis.
 
-**Status: 44 laws mapped** (as of March 1, 2026)
+**Status: 615 enacted laws + 22,800+ drafts + 12,100+ court decisions + 33,200+ EU legal acts** (as of March 3, 2026)
 
-## Mapped Laws (44 total)
+## Enacted Laws (615 total)
+
+All laws from [Riigi Teataja](https://www.riigiteataja.ee) have been mapped, including:
 
 ### Civil Law (7)
 1. Tsiviilseadustiku üldosa seadus (TsÜS) - General Part of Civil Code
@@ -33,76 +35,117 @@ This project provides a comprehensive, machine-readable ontology of Estonian leg
 17. Karistusseadustik (KarS) - Penal Code
 18. Kriminaalmenetluse seadustik (KrMS) - Code of Criminal Procedure
 
-### Administrative Law (8)
-19. Haldusmenetluse seadustik (HMS) - Administrative Procedure Act
-20. Halduskohtumenetluse seadustik (HKMS) - Administrative Court Procedure Act
-21. Kohaliku omavalitsuse korralduse seadus (KOKS) - Local Government Organisation Act
-22. Riigikogu kodu- ja töökorra seadus (RKKS) - Riigikogu Rules of Procedure
-23. E-riigi seadus - Digital State Act
-24. Isikuandmete kaitse seadus (IKS) - Personal Data Protection Act
+### + 577 more laws
+See `krr_outputs/INDEX.json` for the complete list.
 
-### Procedural Law (3)
-25. Tsiviilkohtumenetluse seadustik (TsMS) - Code of Civil Procedure
-26. Täitemenetluse seadustik (TMS) - Enforcement Procedure Act
-27. Kohtutäituri seadus (KTS) - Bailiffs Act
+## Draft Legislation (EIS)
 
-### Constitutional & State Structure (4)
-28. Eesti Vabariigi põhiseadus (PS) - Constitution of Estonia
-29. Riigivastutuse seadus (RVastS) - State Liability Act
-30. Kaitseväeteenistuse seadus (KVTS) - Military Service Act
-31. Advokatuuriseadus - Bar Association Act
+Draft legislation is sourced from [EIS – Eelnõude infosüsteem](https://eelnoud.valitsus.ee), Estonia's official legislative drafting system.
 
-### Environmental Law (4)
-32. Keskkonnaseadustiku üldosa seadus (KeÜS) - Environmental Code
-33. Päästeteenistuse seadus - Rescue Service Act
-34. Jäätmeseadus - Waste Act
-35. Veeseadus - Water Act
+### Coverage
 
-### Education Law (2)
-36. Põhikooli- ja gümnaasiumiseadus (PGS) - Basic and Upper Secondary Schools Act
-37. Ülikooliseadus (UKS) - Universities Act
+| Phase | Estonian | English | Count |
+|-------|----------|---------|-------|
+| Public Consultation | Avalik konsultatsioon | Open for public comment | 122 |
+| Review | Kooskõlastamine | Inter-ministerial coordination | 13,652 |
+| Submission | Esitatud VV-le | Submitted to Government | 9,036 |
 
-### Police & Public Order (1)
-38. Politsei- ja piirivalve seadus (PPVS) - Police and Border Guard Act
+### Draft Types
 
-### Healthcare Law (2)
-39. Tervishoiuteenuste korraldamise seadus (TTKS) - Health Services Organisation Act
-40. Ravimiseadus - Medicinal Products Act
+| Type | Estonian | Description |
+|------|----------|-------------|
+| Bill | Seaduseelnõu | New law proposal |
+| AmendmentBill | Seaduse muutmise eelnõu | Proposal to amend existing law |
+| GovernmentRegulation | VV määruse eelnõu | Government regulation draft |
+| MinisterialRegulation | Ministri määruse eelnõu | Minister's regulation draft |
+| GovernmentOrder | Korralduse eelnõu | Government order draft |
+| EUPosition | EL seisukoha eelnõu | Estonian position on EU matters |
+| DraftIntent | Väljatöötamiskavatsus | Pre-draft intent document |
+| ActionPlan | Tegevuskava | Action plan / strategy |
 
-### Additional Files (4)
-41-44. Asjaõigusseadus osad 1-5 (separate files)
+### Integration with Enacted Laws
 
-## Schema Explanation
-The ontology uses a custom `estleg` namespace (`https://data.riik.ee/ontology/estleg#`) and is structured using JSON-LD:
-- `@context`: Defines the vocabulary and namespaces (estleg, owl, rdf, rdfs, xsd, dc, skos)
-- `@graph`: Contains the actual data nodes (Legal Provisions, Topic Clusters, Legal Concepts)
-- `estleg`: The custom namespace for Estonian legal specific terms
+Drafts link to existing laws via `estleg:affectedLawName`, enabling queries like:
+- "Which drafts propose changes to Karistusseadustik?"
+- "What new laws are in public consultation?"
+- "Which ministry has the most active drafts?"
+
+## Schema
+
+The ontology uses the `estleg` namespace (`https://data.riik.ee/ontology/estleg#`):
 
 ### Core Classes
-- `estleg:LegalProvision` - Individual legal provisions (paragraphs, sections)
-- `estleg:TopicCluster` - Thematic groupings of provisions
-- `estleg:LegalConcept` - Legal concepts and definitions
+- `estleg:LegalProvision` — Enacted legal provisions (paragraphs, sections)
+- `estleg:TopicCluster` — Thematic groupings of provisions
+- `estleg:LegalConcept` — Legal concepts and definitions
+- `estleg:DraftLegislation` — Legislative drafts (eelnõud)
+- `estleg:LegislativePhase` — Draft processing stages
+- `estleg:DraftType` — Draft classification
 
-## How to Use the JSON-LD Files
-1. Download the JSON-LD files from the `krr_outputs/` directory
-2. Load them into a graph database (e.g., GraphDB, Neo4j with RDF plugin)
-3. Parse them using RDF/JSON-LD libraries (Python: rdflib, JavaScript: jsonld.js)
+- `estleg:CourtDecision` — Supreme Court decisions (Riigikohtu lahendid)
+- `estleg:CaseType` — Case type classification
+- `estleg:DecisionType` — Decision type classification
+- `estleg:EULegislation` — EU legal acts (regulations, directives, decisions)
+- `estleg:EUDocumentType` — EU document type classification
+- `estleg:EUInstitution` — EU institution classification
 
-## Example Queries/Usage
-See `API_GUIDE.md` for SPARQL examples and REST API design patterns.
+See [SCHEMA_REFERENCE.md](SCHEMA_REFERENCE.md) for complete documentation.
 
-## GitHub Repo Structure
+## Supreme Court Decisions (Riigikohus)
+
+12,137 decisions from 1993-2026, sourced from [rikos.rik.ee](https://rikos.rik.ee).
+
+| Case Type | Count |
+|-----------|-------|
+| Administrative (Haldusasi) | 9,561 |
+| Civil (Tsiviilasi) | 970 |
+| Criminal (Kriminaalasi) | 484 |
+| Constitutional Review | 336 |
+| Misdemeanor (Vaarteoasi) | 107 |
+| Other | 679 |
+
+## EU Legislation (EUR-Lex)
+
+33,242 EU legal acts available in Estonian, sourced from [EUR-Lex](https://eur-lex.europa.eu) via SPARQL.
+
+| Type | Estonian | Total | In Force |
+|------|----------|-------|----------|
+| Regulation | EL maarus | 18,784 | 5,095 |
+| Directive | EL direktiiv | 3,114 | 939 |
+| Decision | EL otsus | 11,344 | 6,097 |
+
+Each act includes CELEX number, Estonian title, document date, in-force status, ELI identifier, and EUR-Lex link.
+
+## How to Use
+
+1. Download JSON-LD files from `krr_outputs/` (enacted), `krr_outputs/eelnoud/` (drafts), `krr_outputs/riigikohus/` (court), `krr_outputs/eurlex/` (EU)
+2. Load into a graph database (GraphDB, Neo4j with RDF plugin, Apache Jena)
+3. Parse with RDF/JSON-LD libraries (Python: rdflib, JavaScript: jsonld.js)
+
+## Repository Structure
 ```
 .
-├── docs/                    # Documentation
-│   ├── README.md           # This file
-│   ├── API_GUIDE.md        # API usage guide
-│   ├── SCHEMA_REFERENCE.md # Complete schema docs
-│   └── VALIDATION_REPORT.md # Quality report
-├── krr_outputs/            # JSON-LD ontology files (97+ files)
-│   ├── *_peep.json         # Individual law mappings
-│   ├── combined_ontology.jsonld  # All laws combined
-│   └── INDEX.json          # Master registry
+├── krr_outputs/            # JSON-LD ontology files (700+ files)
+│   ├── *_peep.json         # Individual enacted law mappings
+│   ├── combined_ontology.jsonld  # All enacted laws combined
+│   ├── INDEX.json          # Enacted law registry
+│   ├── eelnoud/            # Draft legislation
+│   │   ├── eelnoud_schema.json           # Schema definitions
+│   │   ├── eelnoud_*_peep.json           # Phase-grouped drafts
+│   │   ├── eelnoud_combined.jsonld       # All drafts combined
+│   │   └── EELNOUD_INDEX.json            # Draft registry
+│   ├── riigikohus/         # Supreme Court decisions
+│   │   ├── riigikohus_schema.json        # Schema definitions
+│   │   ├── riigikohus_YYYY_peep.json     # Per-year files (1993-2026)
+│   │   └── RIIGIKOHUS_INDEX.json         # Decision registry
+│   └── eurlex/             # EU legislation
+│       ├── eurlex_schema.json            # Schema definitions
+│       ├── eurlex_regulations_peep.json  # EU regulations
+│       ├── eurlex_directives_peep.json   # EU directives
+│       ├── eurlex_decisions_peep.json    # EU decisions
+│       ├── eurlex_combined.jsonld        # All EU acts combined
+│       └── EURLEX_INDEX.json             # EU legislation registry
+├── docs/                   # Documentation
 ├── shacl/                  # SHACL validation shapes
 ├── scripts/                # Generation and validation scripts
 ├── reviews/                # Law review request files
@@ -117,11 +160,20 @@ https://github.com/henrikaavik/estonian-legal-ontology
 Please submit pull requests with improvements. Ensure all JSON-LD files pass validation:
 - Valid JSON syntax
 - Consistent @context
-- No duplicate @id values
+- No duplicate @id values within files
 - Proper estleg: namespace usage
 
 ## License
 MIT License - See LICENSE file for details
 
+## Data Sources
+
+| Source | URL | Data | Format |
+|--------|-----|------|--------|
+| Riigi Teataja | https://www.riigiteataja.ee | Enacted laws | XML API |
+| EIS | https://eelnoud.valitsus.ee | Draft legislation | RSS 2.0 |
+| RIK / Riigikohus | https://rikos.rik.ee | Supreme Court decisions | HTML search |
+| EUR-Lex | https://eur-lex.europa.eu | EU legislation | SPARQL |
+
 ---
-*Last updated: March 2, 2026 (44 laws, 97+ files)*
+*Last updated: March 3, 2026 (615 laws + 22,800 drafts + 12,100 court decisions + 33,200 EU acts)*

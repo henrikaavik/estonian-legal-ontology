@@ -1,0 +1,231 @@
+{
+  "@context": {
+    "estleg": "https://data.riik.ee/ontology/estleg#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
+  },
+  "@graph": [
+    {
+      "@id": "estleg:CourtDecision",
+      "@type": [
+        "owl:Class"
+      ],
+      "rdfs:label": "Kohtulahend (Court Decision)",
+      "rdfs:comment": "Riigikohtu lahend – kohtuotsus, kohtumäärus või resolutsioon.",
+      "dc:description": "A Supreme Court (Riigikohus) decision, including judgments, rulings, and resolutions."
+    },
+    {
+      "@id": "estleg:CaseType",
+      "@type": [
+        "owl:Class"
+      ],
+      "rdfs:label": "Kohtuasja liik (Case Type)",
+      "rdfs:comment": "Kohtuasja klassifikatsioon: kriminaalasi, tsiviilasi, haldusasi, väärteoasi, põhiseaduslikkuse järelevalve."
+    },
+    {
+      "@id": "estleg:DecisionType",
+      "@type": [
+        "owl:Class"
+      ],
+      "rdfs:label": "Lahendi liik (Decision Type)",
+      "rdfs:comment": "Lahendi tüüp: kohtuotsus, kohtumäärus, resolutsioon."
+    },
+    {
+      "@id": "estleg:CaseType_Criminal",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:CaseType"
+      ],
+      "rdfs:label": "Kriminaalasi",
+      "skos:prefLabel": "Criminal Case",
+      "estleg:caseTypeCode": "1"
+    },
+    {
+      "@id": "estleg:CaseType_Civil",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:CaseType"
+      ],
+      "rdfs:label": "Tsiviilasi",
+      "skos:prefLabel": "Civil Case",
+      "estleg:caseTypeCode": "2"
+    },
+    {
+      "@id": "estleg:CaseType_Administrative",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:CaseType"
+      ],
+      "rdfs:label": "Haldusasi",
+      "skos:prefLabel": "Administrative Case",
+      "estleg:caseTypeCode": "3"
+    },
+    {
+      "@id": "estleg:CaseType_Misdemeanor",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:CaseType"
+      ],
+      "rdfs:label": "Väärteoasi",
+      "skos:prefLabel": "Misdemeanor Case",
+      "estleg:caseTypeCode": "4"
+    },
+    {
+      "@id": "estleg:CaseType_ConstitutionalReview",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:CaseType"
+      ],
+      "rdfs:label": "Põhiseaduslikkuse järelevalve",
+      "skos:prefLabel": "Constitutional Review",
+      "estleg:caseTypeCode": "5"
+    },
+    {
+      "@id": "estleg:DecisionType_Judgment",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:DecisionType"
+      ],
+      "rdfs:label": "Kohtuotsus",
+      "skos:prefLabel": "Judgment"
+    },
+    {
+      "@id": "estleg:DecisionType_Ruling",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:DecisionType"
+      ],
+      "rdfs:label": "Kohtumäärus",
+      "skos:prefLabel": "Ruling"
+    },
+    {
+      "@id": "estleg:DecisionType_Resolution",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:DecisionType"
+      ],
+      "rdfs:label": "Kohtu resolutsioon",
+      "skos:prefLabel": "Resolution"
+    },
+    {
+      "@id": "estleg:DecisionType_OrderRuling",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:DecisionType"
+      ],
+      "rdfs:label": "Määrus",
+      "skos:prefLabel": "OrderRuling"
+    },
+    {
+      "@id": "estleg:caseType",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:label": "kohtuasja liik",
+      "rdfs:domain": {
+        "@id": "estleg:CourtDecision"
+      },
+      "rdfs:range": {
+        "@id": "estleg:CaseType"
+      }
+    },
+    {
+      "@id": "estleg:decisionType",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:label": "lahendi liik",
+      "rdfs:domain": {
+        "@id": "estleg:CourtDecision"
+      },
+      "rdfs:range": {
+        "@id": "estleg:DecisionType"
+      }
+    },
+    {
+      "@id": "estleg:interpretsLaw",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:label": "tõlgendab seadust",
+      "rdfs:domain": {
+        "@id": "estleg:CourtDecision"
+      },
+      "rdfs:range": {
+        "@id": "estleg:LegalProvision"
+      },
+      "rdfs:comment": "Links a court decision to the legal provision it interprets or applies."
+    },
+    {
+      "@id": "estleg:caseNumber",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": "kohtuasja number",
+      "rdfs:domain": {
+        "@id": "estleg:CourtDecision"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "estleg:decisionDate",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": "lahendi kuupäev",
+      "rdfs:domain": {
+        "@id": "estleg:CourtDecision"
+      },
+      "rdfs:range": {
+        "@id": "xsd:date"
+      }
+    },
+    {
+      "@id": "estleg:rikObjectId",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": "RIK objekti ID",
+      "rdfs:domain": {
+        "@id": "estleg:CourtDecision"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "estleg:decisionLink",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": "lahendi link",
+      "rdfs:domain": {
+        "@id": "estleg:CourtDecision"
+      },
+      "rdfs:range": {
+        "@id": "xsd:anyURI"
+      }
+    },
+    {
+      "@id": "estleg:referencedLaw",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": "viidatud seadus",
+      "rdfs:domain": {
+        "@id": "estleg:CourtDecision"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      },
+      "rdfs:comment": "Name or abbreviation of law referenced in the decision."
+    }
+  ]
+}

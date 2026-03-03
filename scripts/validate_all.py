@@ -117,9 +117,13 @@ def main():
     print("Estonian Legal Ontology - Validation")
     print("=" * 60)
 
-    files = sorted(list(KRR_DIR.glob("*.json")) + list(KRR_DIR.glob("*.jsonld")))
+    files = sorted(list(KRR_DIR.glob("*.json")) + list(KRR_DIR.glob("*.jsonld"))
+                   + list(KRR_DIR.glob("**/*.json")) + list(KRR_DIR.glob("**/*.jsonld")))
+    # Deduplicate (glob ** also matches top-level)
+    files = sorted(set(files))
     # Exclude index and summary files
-    files = [f for f in files if not f.name.startswith("INDEX") and not f.name.startswith("combined_")]
+    exclude_prefixes = ("INDEX", "combined_", "EELNOUD_INDEX", "eelnoud_combined", "RIIGIKOHUS_INDEX", "EURLEX_INDEX", "eurlex_combined")
+    files = [f for f in files if not any(f.name.startswith(p) for p in exclude_prefixes)]
 
     print(f"\nValidating {len(files)} files...\n")
 

@@ -86,3 +86,224 @@ estleg:SectionShape
         sh:minCount 1 ;
         sh:name "label" ;
     ] .
+
+# Shape for DraftLegislation instances
+estleg:DraftLegislationShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:DraftLegislation ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:name "label" ;
+        sh:description "Every DraftLegislation must have a label (draft title)" ;
+    ] ;
+    sh:property [
+        sh:path estleg:legislativePhase ;
+        sh:minCount 1 ;
+        sh:nodeKind sh:IRI ;
+        sh:name "legislativePhase" ;
+        sh:description "Every draft must have a legislative phase" ;
+    ] ;
+    sh:property [
+        sh:path estleg:draftType ;
+        sh:minCount 1 ;
+        sh:nodeKind sh:IRI ;
+        sh:name "draftType" ;
+        sh:description "Every draft must have a type classification" ;
+    ] ;
+    sh:property [
+        sh:path estleg:eisNumber ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "eisNumber" ;
+        sh:description "EIS reference number (e.g., JDM/26-0268)" ;
+    ] ;
+    sh:property [
+        sh:path estleg:eisLink ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:anyURI ;
+        sh:name "eisLink" ;
+        sh:description "Direct link to the draft in EIS" ;
+    ] ;
+    sh:property [
+        sh:path estleg:initiator ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "initiator" ;
+        sh:description "Ministry or institution that initiated the draft" ;
+    ] ;
+    sh:property [
+        sh:path estleg:publicationDate ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:date ;
+        sh:name "publicationDate" ;
+        sh:description "Date when the draft was published in EIS" ;
+    ] ;
+    sh:property [
+        sh:path estleg:amendsLaw ;
+        sh:nodeKind sh:IRI ;
+        sh:name "amendsLaw" ;
+        sh:description "Reference to existing law being amended" ;
+    ] .
+
+# Shape for LegislativePhase instances
+estleg:LegislativePhaseShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:LegislativePhase ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:name "label" ;
+        sh:description "Every LegislativePhase must have a label" ;
+    ] .
+
+# Shape for DraftType instances
+estleg:DraftTypeShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:DraftType ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:name "label" ;
+        sh:description "Every DraftType must have a label" ;
+    ] .
+
+# Shape for CourtDecision instances
+estleg:CourtDecisionShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:CourtDecision ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:name "label" ;
+        sh:description "Every CourtDecision must have a label" ;
+    ] ;
+    sh:property [
+        sh:path estleg:caseNumber ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "caseNumber" ;
+        sh:description "Court case number (e.g., 3-21-2176/52)" ;
+    ] ;
+    sh:property [
+        sh:path estleg:caseType ;
+        sh:minCount 1 ;
+        sh:nodeKind sh:IRI ;
+        sh:name "caseType" ;
+        sh:description "Type of court case (criminal, civil, administrative, etc.)" ;
+    ] ;
+    sh:property [
+        sh:path estleg:decisionDate ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:date ;
+        sh:name "decisionDate" ;
+        sh:description "Date of the court decision" ;
+    ] ;
+    sh:property [
+        sh:path estleg:decisionLink ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:anyURI ;
+        sh:name "decisionLink" ;
+        sh:description "Link to the full decision on riigikohus.ee" ;
+    ] .
+
+# Shape for CaseType instances
+estleg:CaseTypeShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:CaseType ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:name "label" ;
+    ] .
+
+# Shape for DecisionType instances
+estleg:DecisionTypeShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:DecisionType ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:name "label" ;
+    ] .
+
+# Shape for EULegislation instances
+estleg:EULegislationShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:EULegislation ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:name "label" ;
+        sh:description "Every EULegislation must have a label (Estonian title)" ;
+    ] ;
+    sh:property [
+        sh:path estleg:celexNumber ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "celexNumber" ;
+        sh:description "CELEX identifier (e.g., 32016R0679)" ;
+    ] ;
+    sh:property [
+        sh:path estleg:euDocumentType ;
+        sh:minCount 1 ;
+        sh:nodeKind sh:IRI ;
+        sh:name "euDocumentType" ;
+        sh:description "Type of EU legal act (Regulation, Directive, Decision)" ;
+    ] ;
+    sh:property [
+        sh:path estleg:eurLexLink ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:anyURI ;
+        sh:name "eurLexLink" ;
+        sh:description "Link to the act in EUR-Lex" ;
+    ] ;
+    sh:property [
+        sh:path estleg:eliIdentifier ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:anyURI ;
+        sh:name "eliIdentifier" ;
+        sh:description "European Legislation Identifier (ELI) URI" ;
+    ] ;
+    sh:property [
+        sh:path estleg:documentDate ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:date ;
+        sh:name "documentDate" ;
+        sh:description "Date of the legal act" ;
+    ] ;
+    sh:property [
+        sh:path estleg:inForce ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:boolean ;
+        sh:name "inForce" ;
+        sh:description "Whether the act is currently in force" ;
+    ] ;
+    sh:property [
+        sh:path estleg:euInstitution ;
+        sh:nodeKind sh:IRI ;
+        sh:name "euInstitution" ;
+        sh:description "EU institution that authored the act" ;
+    ] .
+
+# Shape for EUDocumentType instances
+estleg:EUDocumentTypeShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:EUDocumentType ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:name "label" ;
+    ] .
+
+# Shape for EUInstitution instances
+estleg:EUInstitutionShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:EUInstitution ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:name "label" ;
+    ] .
