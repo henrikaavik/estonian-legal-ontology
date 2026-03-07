@@ -2,7 +2,7 @@
 
 A comprehensive, machine-readable ontology of Estonian and EU legislation in JSON-LD format. Maps **enacted laws**, **draft legislation**, **Supreme Court decisions**, **EU legal acts**, and **EU court decisions** into a semantic knowledge graph suitable for advanced search, cross-referencing, and automated legal analysis.
 
-**Status: 615 enacted laws + 22,800+ drafts + 12,100+ court decisions + 33,200+ EU acts + 22,200+ EU court decisions** | **700+ JSON-LD files** | **120,000+ semantic nodes**
+**Status: 615 enacted laws + 22,832 drafts + 12,137 court decisions + 33,242 EU acts + 22,290 EU court decisions** | **700+ JSON-LD files** | **120,000+ semantic nodes**
 
 ## Quick Start
 
@@ -138,8 +138,8 @@ SELECT ?decision ?title ?ecli ?date WHERE {
 | Phase | Estonian | Count |
 |-------|----------|-------|
 | Public Consultation | Avalik konsultatsioon | 122 |
-| Inter-ministerial Review | Kooskolastamine | 13,652 |
-| Submitted to Government | Esitatud VV-le | 9,036 |
+| Inter-ministerial Review | Kooskolastamine | 13,670 |
+| Submitted to Government | Esitatud VV-le | 9,040 |
 
 ### Supreme Court Decisions (Riigikohus)
 

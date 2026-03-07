@@ -3,7 +3,7 @@
 ## Project Overview and Purpose
 This project provides a comprehensive, machine-readable ontology of Estonian and EU legislation using JSON-LD. It creates a semantic graph of **enacted laws** (from Riigi Teataja), **draft legislation** (from EIS), **Supreme Court decisions** (from RIK), and **EU legal acts** (from EUR-Lex), enabling advanced search, cross-referencing, and automated legal analysis.
 
-**Status: 615 enacted laws + 22,800+ drafts + 12,100+ court decisions + 33,200+ EU acts + 22,200+ EU court decisions** (as of March 3, 2026)
+**Status: 615 enacted laws + 22,832 drafts + 12,137 court decisions + 33,242 EU acts + 22,290 EU court decisions** (as of March 7, 2026)
 
 ## Enacted Laws (615 total)
 
@@ -47,8 +47,8 @@ Draft legislation is sourced from [EIS – Eelnõude infosüsteem](https://eelno
 | Phase | Estonian | English | Count |
 |-------|----------|---------|-------|
 | Public Consultation | Avalik konsultatsioon | Open for public comment | 122 |
-| Review | Kooskõlastamine | Inter-ministerial coordination | 13,652 |
-| Submission | Esitatud VV-le | Submitted to Government | 9,036 |
+| Review | Kooskõlastamine | Inter-ministerial coordination | 13,670 |
+| Submission | Esitatud VV-le | Submitted to Government | 9,040 |
 
 ### Draft Types
 
@@ -196,4 +196,4 @@ MIT License - See LICENSE file for details
 | EUR-Lex / CURIA | https://eur-lex.europa.eu | EU court decisions | SPARQL |
 
 ---
-*Last updated: March 3, 2026 (615 laws + 22,800 drafts + 12,100 court decisions + 33,200 EU acts + 22,200 EU court decisions)*
+*Last updated: March 7, 2026 (615 laws + 22,832 drafts + 12,137 court decisions + 33,242 EU acts + 22,290 EU court decisions)*
