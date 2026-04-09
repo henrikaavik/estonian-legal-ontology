@@ -6,23 +6,53 @@
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-# Shape for LegalProvision instances
+# Shape for LegalProvision instances.
+#
+# The generators in scripts/ emit LegalProvision instances using Estonian-
+# native vocabulary that mirrors how Estonian legal documents themselves
+# refer to sections: `estleg:paragrahv` is the Estonian word for the
+# section reference ("AdvS § 1", "TsÜS § 40 lg 1-2") and `estleg:summary`
+# holds the LLM-generated topic-aware summary of what the provision does.
+# Full legal text is optional via `estleg:legalText` (populated for a
+# small subset — most provisions only need the summary for the topic map).
+#
+# This shape uses `sh:targetSubjectsOf estleg:paragrahv` instead of
+# `sh:targetClass estleg:LegalProvision`. That is deliberate: the
+# combined_ontology.jsonld graph contains ~50k per-law-typed instances
+# like `estleg:LegalProvision_karistusseadustik` whose classes are NOT
+# declared as `rdfs:subClassOf estleg:LegalProvision`, so targeting the
+# base class would miss them entirely. Targeting "every node that has
+# `estleg:paragrahv`" catches all provision-like nodes regardless of
+# whether a new per-law type is added later, and is self-consistent
+# with how consumers actually query the data.
 estleg:LegalProvisionShape
     a sh:NodeShape ;
-    sh:targetClass estleg:LegalProvision ;
+    sh:targetSubjectsOf estleg:paragrahv ;
     sh:property [
-        sh:path estleg:identifier ;
+        sh:path estleg:paragrahv ;
         sh:minCount 1 ;
         sh:datatype xsd:string ;
-        sh:name "identifier" ;
-        sh:description "Every LegalProvision must have an identifier (e.g., 'TsÜS § 1')" ;
+        sh:name "paragrahv" ;
+        sh:description "Every LegalProvision must have a section reference (e.g., 'AdvS § 1', 'TsÜS § 40 lg 1-2')" ;
     ] ;
     sh:property [
-        sh:path schema:text ;
+        sh:path estleg:summary ;
         sh:minCount 1 ;
         sh:datatype xsd:string ;
-        sh:name "text" ;
-        sh:description "Every LegalProvision must have the legal text" ;
+        sh:name "summary" ;
+        sh:description "Every LegalProvision must have a topic-aware summary. Full legal text is optional via estleg:legalText." ;
+    ] ;
+    sh:property [
+        sh:path estleg:legalText ;
+        sh:datatype xsd:string ;
+        sh:name "legalText" ;
+        sh:description "Optional full legal text. Populated for provisions where the full paragraph was sourced verbatim; most provisions only carry the summary." ;
+    ] ;
+    sh:property [
+        sh:path estleg:sourceAct ;
+        sh:datatype xsd:string ;
+        sh:name "sourceAct" ;
+        sh:description "Human-readable name of the law this provision belongs to" ;
     ] ;
     sh:property [
         sh:path estleg:topicCluster ;
@@ -37,22 +67,26 @@ estleg:LegalProvisionShape
         sh:description "Cross-references must point to valid IRIs" ;
     ] .
 
-# Shape for TopicCluster instances
+# Shape for TopicCluster instances.
+#
+# The generators use `rdfs:label` as the display label for topic clusters
+# (e.g., "§1–9 ÜLDSÄTTED"). The earlier shape additionally required
+# `skos:prefLabel`, but no generator ever emits one, and the explorer
+# reads cluster labels from `rdfs:label` anyway. If we ever want to layer
+# SKOS labels on top, the shape can be tightened to require them again.
 estleg:TopicClusterShape
     a sh:NodeShape ;
     sh:targetClass estleg:TopicCluster ;
     sh:property [
-        sh:path skos:prefLabel ;
-        sh:minCount 1 ;
-        sh:datatype xsd:string ;
-        sh:name "prefLabel" ;
-        sh:description "Every TopicCluster must have a preferred label" ;
-    ] ;
-    sh:property [
         sh:path rdfs:label ;
         sh:minCount 1 ;
         sh:name "label" ;
-        sh:description "Every TopicCluster must have a label" ;
+        sh:description "Every TopicCluster must have an rdfs:label used as its display name" ;
+    ] ;
+    sh:property [
+        sh:path skos:prefLabel ;
+        sh:name "prefLabel" ;
+        sh:description "Optional SKOS preferred label (currently unused by the generators)" ;
     ] .
 
 # Shape for LegalConcept instances
