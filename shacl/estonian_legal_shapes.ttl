@@ -20,12 +20,14 @@
 # This shape uses `sh:targetSubjectsOf estleg:paragrahv` instead of
 # `sh:targetClass estleg:LegalProvision`. That is deliberate: the
 # combined_ontology.jsonld graph contains ~50k per-law-typed instances
-# like `estleg:LegalProvision_karistusseadustik` whose classes are NOT
-# declared as `rdfs:subClassOf estleg:LegalProvision`, so targeting the
-# base class would miss them entirely. Targeting "every node that has
-# `estleg:paragrahv`" catches all provision-like nodes regardless of
-# whether a new per-law type is added later, and is self-consistent
-# with how consumers actually query the data.
+# like `estleg:LegalProvision_karistusseadustik` whose classes are
+# declared as `rdfs:subClassOf estleg:LegalProvision` (added in issue
+# #67), but many SHACL engines do not perform subclass inference by
+# default, so targeting the base class would still miss them.
+# Targeting "every node that has `estleg:paragrahv`" catches all
+# provision-like nodes regardless of engine capabilities or whether a
+# new per-law type is added later, and is self-consistent with how
+# consumers actually query the data.
 estleg:LegalProvisionShape
     a sh:NodeShape ;
     sh:targetSubjectsOf estleg:paragrahv ;
@@ -155,12 +157,6 @@ estleg:LegalProvisionShape
         sh:description "Legal concept defined by this provision" ;
     ] ;
     sh:property [
-        sh:path estleg:sourceAct ;
-        sh:datatype xsd:string ;
-        sh:name "sourceAct" ;
-        sh:description "Name of the law this provision belongs to" ;
-    ] ;
-    sh:property [
         sh:path estleg:requestedCluster ;
         sh:nodeKind sh:IRI ;
         sh:name "requestedCluster" ;
@@ -214,11 +210,6 @@ estleg:TopicClusterShape
         sh:minCount 1 ;
         sh:name "label" ;
         sh:description "Every TopicCluster must have an rdfs:label used as its display name" ;
-    ] ;
-    sh:property [
-        sh:path skos:prefLabel ;
-        sh:name "prefLabel" ;
-        sh:description "Optional SKOS preferred label (currently unused by the generators)" ;
     ] .
 
 # Shape for LegalConcept instances
