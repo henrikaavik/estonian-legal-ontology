@@ -45,6 +45,7 @@ CONTEXT = {
     "dc": "http://purl.org/dc/elements/1.1/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
     "dcterms": "http://purl.org/dc/terms/",
+    "eli": "http://data.europa.eu/eli/ontology#",
 }
 
 # EU document types to query
@@ -312,6 +313,12 @@ def legislation_to_node(item: dict, type_id: str) -> dict:
 
     # Canonical source URI (CELEX-based)
     node["dcterms:source"] = {"@id": f"http://publications.europa.eu/resource/celex/{item['celex']}"}
+
+    # owl:sameAs link to EUR-Lex resource URI
+    node["owl:sameAs"] = {"@id": f"http://publications.europa.eu/resource/celex/{item['celex']}"}
+
+    # ELI local identifier (CELEX number)
+    node["eli:id_local"] = item["celex"]
 
     # ELI
     if item.get("eli"):

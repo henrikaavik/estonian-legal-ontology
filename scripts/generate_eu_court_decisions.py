@@ -374,6 +374,9 @@ def decision_to_node(item: dict) -> dict:
     # Canonical source URI (CELEX-based)
     node["dcterms:source"] = {"@id": f"http://publications.europa.eu/resource/celex/{item['celex']}"}
 
+    # owl:sameAs link to EUR-Lex resource URI
+    node["owl:sameAs"] = {"@id": f"http://publications.europa.eu/resource/celex/{item['celex']}"}
+
     # ECLI
     if item.get("ecli"):
         node["estleg:ecliIdentifier"] = item["ecli"]

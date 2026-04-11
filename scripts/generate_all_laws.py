@@ -102,6 +102,19 @@ def collect_text(el: ET.Element, max_len: int = 500) -> str:
     return joined[:max_len] if joined else ""
 
 
+def collect_full_text(el: ET.Element) -> str:
+    """Return the complete text of a provision without any truncation."""
+    parts: list[str] = []
+    for child in el.iter():
+        tag = ln(child.tag)
+        if tag in ("loige", "lauseOsa", "lause", "tavatekst"):
+            txt = "".join(child.itertext()).strip()
+            txt = re.sub(r"\s+", " ", txt)
+            if txt and len(txt) > 3:
+                parts.append(txt)
+    return " ".join(parts)
+
+
 def get_all_laws() -> dict[str, dict]:
     """Fetch all law entries from Riigi Teataja API, keeping latest version of each."""
     all_laws = {}
@@ -263,6 +276,7 @@ def generate_law_jsonld(title: str, slug: str, root: ET.Element, abbreviation: s
     }
     if rt_source_url:
         ontology_node["dcterms:source"] = {"@id": rt_source_url}
+        ontology_node["owl:sameAs"] = {"@id": rt_source_url}
 
     graph: list[dict] = [
         ontology_node,
@@ -274,7 +288,9 @@ def generate_law_jsonld(title: str, slug: str, root: ET.Element, abbreviation: s
         },
     ]
 
-    # Add topic clusters from chapters (peatükk)
+    # Issue #89: Build hierarchy — Chapter and Division nodes
+    # Maps paragrahv number -> containing chapter/division IRI for isPartOf links
+    par_to_container: dict[int, str] = {}
     clusters = []
     for ch in root.iter():
         if ln(ch.tag) == "peatykk":
@@ -292,6 +308,7 @@ def generate_law_jsonld(title: str, slug: str, root: ET.Element, abbreviation: s
                             pass
 
                 cluster_id = f"estleg:Cluster_{prefix}_{sanitize_id(ch_nr or ch_title[:20])}"
+                chapter_id = f"estleg:Chapter_{prefix}_{sanitize_id(ch_nr or ch_title[:20])}"
                 par_range = f"§{min(ch_par_nrs)}–{max(ch_par_nrs)}" if ch_par_nrs else ""
                 clusters.append({
                     "id": cluster_id,
@@ -299,12 +316,100 @@ def generate_law_jsonld(title: str, slug: str, root: ET.Element, abbreviation: s
                     "par_nrs": set(ch_par_nrs),
                 })
 
+                # Existing TopicCluster node (kept for backward compatibility)
                 graph.append({
                     "@id": cluster_id,
-                    "@type": ["owl:NamedIndividual", "estleg:TopicCluster"],
+                    "@type": ["owl:NamedIndividual", "estleg:TopicCluster", "skos:Concept"],
                     "rdfs:label": {"@value": f"{par_range} {ch_title}".strip(), "@language": "et"},
                     "skos:prefLabel": {"@value": f"{par_range} {ch_title}".strip(), "@language": "et"},
+                    "skos:inScheme": {"@id": f"estleg:{prefix}_TopicScheme"},
                 })
+
+                # Issue #89: Chapter hierarchy node
+                chapter_node: dict = {
+                    "@id": chapter_id,
+                    "@type": ["owl:NamedIndividual", "estleg:Chapter"],
+                    "rdfs:label": {"@value": f"{ch_nr}. peatükk – {ch_title}".strip(" –"), "@language": "et"},
+                    "estleg:chapterNumber": ch_nr,
+                    "owl:sameAs": {"@id": cluster_id},
+                }
+
+                # Issue #89: Division nodes inside this chapter
+                division_ids = []
+                jagu_els = [c for c in ch if ln(c.tag) == "jagu"]
+                for jagu_el in jagu_els:
+                    j_nr = ct(jagu_el, "jaguNr") or ""
+                    j_title = ct(jagu_el, "jaguPealkiri") or ""
+                    if j_title or j_nr:
+                        div_id = f"estleg:Division_{prefix}_{sanitize_id(ch_nr)}_{sanitize_id(j_nr or j_title[:20])}"
+                        division_ids.append(div_id)
+                        graph.append({
+                            "@id": div_id,
+                            "@type": ["owl:NamedIndividual", "estleg:Division"],
+                            "rdfs:label": {"@value": f"{j_nr}. jagu – {j_title}".strip(" –"), "@language": "et"},
+                            "estleg:isPartOf": {"@id": chapter_id},
+                        })
+                        # Map paragrahvs inside this jagu to the division
+                        for jp in jagu_el.iter():
+                            if ln(jp.tag) == "paragrahv":
+                                jp_nr = ct(jp, "paragrahvNr")
+                                if jp_nr:
+                                    try:
+                                        par_to_container[int(re.sub(r"[^\d]", "", jp_nr))] = div_id
+                                    except ValueError:
+                                        pass
+
+                if division_ids:
+                    chapter_node["estleg:hasPart"] = [{"@id": d} for d in division_ids]
+
+                graph.append(chapter_node)
+
+                # Map paragrahvs directly under chapter (not in any jagu) to the chapter
+                for p_num in ch_par_nrs:
+                    if p_num not in par_to_container:
+                        par_to_container[p_num] = chapter_id
+
+    # Issue #87: Create fallback cluster for laws without any peatükk chapters
+    if not clusters and paragrahvid:
+        _treaty_patterns = ("konventsiooni", "lepingu", "protokolli")
+        slug_lower = slug.lower()
+        if any(pat in slug_lower for pat in _treaty_patterns):
+            fallback_label = "Lepingu sätted"
+        else:
+            fallback_label = title
+        fallback_cluster_id = f"estleg:Cluster_{prefix}_default"
+        all_par_nrs = set(par_numbers)
+        par_range = f"§{par_min}–{par_max}" if par_numbers else ""
+        clusters.append({
+            "id": fallback_cluster_id,
+            "label": f"{par_range} {fallback_label}".strip(),
+            "par_nrs": all_par_nrs,
+        })
+        graph.append({
+            "@id": fallback_cluster_id,
+            "@type": ["owl:NamedIndividual", "estleg:TopicCluster", "skos:Concept"],
+            "rdfs:label": {"@value": f"{par_range} {fallback_label}".strip(), "@language": "et"},
+            "skos:prefLabel": {"@value": f"{par_range} {fallback_label}".strip(), "@language": "et"},
+            "skos:inScheme": {"@id": f"estleg:{prefix}_TopicScheme"},
+        })
+
+    # Add provision counts to each cluster
+    for cl in clusters:
+        count = len(cl["par_nrs"])
+        for node in graph:
+            if node.get("@id") == cl["id"]:
+                node["estleg:provisionCount"] = count
+                break
+
+    # Add per-law ConceptScheme node with hasTopConcept references
+    if clusters:
+        scheme_node = {
+            "@id": f"estleg:{prefix}_TopicScheme",
+            "@type": ["skos:ConceptScheme"],
+            "rdfs:label": {"@value": f"{title} teemaskeem", "@language": "et"},
+            "skos:hasTopConcept": [{"@id": cl["id"]} for cl in clusters],
+        }
+        graph.insert(2, scheme_node)
 
     # Add paragraph nodes
     seen_ids = set()
@@ -313,6 +418,7 @@ def generate_law_jsonld(title: str, slug: str, root: ET.Element, abbreviation: s
         p_title = ct(p, "paragrahvPealkiri") or ""
         p_display = ct(p, "kuvatavNr") or f"§ {p_nr}"
         text = collect_text(p)
+        full_text = collect_full_text(p)
 
         p_id = f"estleg:{prefix}_Par_{sanitize_id(p_nr)}"
 
@@ -333,19 +439,39 @@ def generate_law_jsonld(title: str, slug: str, root: ET.Element, abbreviation: s
                 cluster_ref = cl["id"]
                 break
 
+        # Issue #92: Build label — prefer title, fall back to text excerpt
+        if p_title:
+            label = f"{p_display} {p_title}"
+        elif text:
+            excerpt = text[:80].rstrip()
+            if len(text) > 80:
+                excerpt = excerpt + "..."
+            label = f"{p_display} [{excerpt}]"
+        else:
+            label = p_display
+
         node: dict = {
             "@id": p_id,
             "@type": ["owl:NamedIndividual", class_id],
             "estleg:paragrahv": p_display,
-            "rdfs:label": {"@value": f"{p_display} {p_title}".strip() if p_title else p_display, "@language": "et"},
+            "rdfs:label": {"@value": label, "@language": "et"},
             "estleg:sourceAct": {"@value": title, "@language": "et"},
         }
 
         if text:
             node["estleg:summary"] = {"@value": text, "@language": "et"}
 
+        # Issue #88: Add full legal text without truncation
+        if full_text:
+            node["estleg:legalText"] = {"@value": full_text, "@language": "et"}
+
         if cluster_ref:
             node["estleg:requestedCluster"] = cluster_ref
+
+        # Issue #89: Link provision to containing chapter or division
+        container_ref = par_to_container.get(p_num)
+        if container_ref:
+            node["estleg:isPartOf"] = {"@id": container_ref}
 
         graph.append(node)
 
@@ -390,14 +516,16 @@ def generate_multipart_law(title: str, slug: str, root: ET.Element, abbreviation
         ontology_id = f"estleg:{prefix}_Osa{osa_nr}_{par_min}_{par_max}"
         class_id = f"estleg:LegalProvision_{slug}_osa{osa_nr}"
 
+        # Issue #89: Mark file-level ontology node with estleg:Part type
         osa_ontology_node: dict = {
             "@id": ontology_id,
-            "@type": ["owl:Ontology"],
+            "@type": ["owl:Ontology", "estleg:Part"],
             "rdfs:label": {"@value": f"{title} Osa {osa_nr} ({osa_title}) §{par_min}–{par_max} kaardistus", "@language": "et"},
             "dc:source": {"@value": title, "@language": "et"},
         }
         if rt_source_url:
             osa_ontology_node["dcterms:source"] = {"@id": rt_source_url}
+            osa_ontology_node["owl:sameAs"] = {"@id": rt_source_url}
 
         graph: list[dict] = [
             osa_ontology_node,
@@ -409,8 +537,11 @@ def generate_multipart_law(title: str, slug: str, root: ET.Element, abbreviation
             },
         ]
 
-        # Clusters from peatükk within this osa
+        # Issue #89: Build hierarchy — Chapter and Division nodes within this osa
+        par_to_container: dict[int, str] = {}
         clusters = []
+        part_concept_id = f"estleg:Cluster_{prefix}_{osa_nr}_Part"
+        scheme_id = f"estleg:{prefix}_Osa{osa_nr}_TopicScheme"
         for ch in osa_el:
             if ln(ch.tag) == "peatykk":
                 ch_nr = ct(ch, "peatykkNr") or ""
@@ -426,14 +557,129 @@ def generate_multipart_law(title: str, slug: str, root: ET.Element, abbreviation
                             except ValueError:
                                 pass
                     cluster_id = f"estleg:Cluster_{prefix}_{osa_nr}_{sanitize_id(ch_nr or ch_title[:20])}"
+                    chapter_id = f"estleg:Chapter_{prefix}_{osa_nr}_{sanitize_id(ch_nr or ch_title[:20])}"
                     par_range = f"§{min(ch_par_nrs)}–{max(ch_par_nrs)}" if ch_par_nrs else ""
                     clusters.append({"id": cluster_id, "label": f"{par_range} {ch_title}".strip(), "par_nrs": ch_par_nrs})
+
+                    # Existing TopicCluster node (kept for backward compatibility)
                     graph.append({
                         "@id": cluster_id,
-                        "@type": ["owl:NamedIndividual", "estleg:TopicCluster"],
+                        "@type": ["owl:NamedIndividual", "estleg:TopicCluster", "skos:Concept"],
                         "rdfs:label": {"@value": f"{par_range} {ch_title}".strip(), "@language": "et"},
                         "skos:prefLabel": {"@value": f"{par_range} {ch_title}".strip(), "@language": "et"},
+                        "skos:inScheme": {"@id": scheme_id},
+                        "skos:broader": {"@id": part_concept_id},
                     })
+
+                    # Issue #89: Chapter hierarchy node
+                    chapter_node: dict = {
+                        "@id": chapter_id,
+                        "@type": ["owl:NamedIndividual", "estleg:Chapter"],
+                        "rdfs:label": {"@value": f"{ch_nr}. peatükk – {ch_title}".strip(" –"), "@language": "et"},
+                        "estleg:chapterNumber": ch_nr,
+                        "owl:sameAs": {"@id": cluster_id},
+                    }
+
+                    # Issue #89: Division nodes inside this chapter
+                    division_ids = []
+                    jagu_els = [c for c in ch if ln(c.tag) == "jagu"]
+                    for jagu_el in jagu_els:
+                        j_nr = ct(jagu_el, "jaguNr") or ""
+                        j_title = ct(jagu_el, "jaguPealkiri") or ""
+                        if j_title or j_nr:
+                            div_id = f"estleg:Division_{prefix}_{osa_nr}_{sanitize_id(ch_nr)}_{sanitize_id(j_nr or j_title[:20])}"
+                            division_ids.append(div_id)
+                            graph.append({
+                                "@id": div_id,
+                                "@type": ["owl:NamedIndividual", "estleg:Division"],
+                                "rdfs:label": {"@value": f"{j_nr}. jagu – {j_title}".strip(" –"), "@language": "et"},
+                                "estleg:isPartOf": {"@id": chapter_id},
+                            })
+                            # Map paragrahvs inside this jagu to the division
+                            for jp in jagu_el.iter():
+                                if ln(jp.tag) == "paragrahv":
+                                    jp_nr = ct(jp, "paragrahvNr")
+                                    if jp_nr:
+                                        try:
+                                            par_to_container[int(re.sub(r"[^\d]", "", jp_nr))] = div_id
+                                        except ValueError:
+                                            pass
+
+                    if division_ids:
+                        chapter_node["estleg:hasPart"] = [{"@id": d} for d in division_ids]
+
+                    graph.append(chapter_node)
+
+                    # Map paragrahvs directly under chapter (not in any jagu) to the chapter
+                    for p_num in ch_par_nrs:
+                        if p_num not in par_to_container:
+                            par_to_container[p_num] = chapter_id
+
+        # Issue #87: Fallback cluster for osa without peatükk chapters
+        if not clusters and paragrahvid:
+            fallback_label = f"{title} Osa {osa_nr}"
+            if osa_title:
+                fallback_label = f"{title} Osa {osa_nr} ({osa_title})"
+            fallback_cluster_id = f"estleg:Cluster_{prefix}_{osa_nr}_default"
+            all_par_nrs = set(par_numbers)
+            osa_par_range = f"§{par_min}–{par_max}" if par_numbers else ""
+            clusters.append({
+                "id": fallback_cluster_id,
+                "label": f"{osa_par_range} {fallback_label}".strip(),
+                "par_nrs": all_par_nrs,
+            })
+            graph.append({
+                "@id": fallback_cluster_id,
+                "@type": ["owl:NamedIndividual", "estleg:TopicCluster", "skos:Concept"],
+                "rdfs:label": {"@value": f"{osa_par_range} {fallback_label}".strip(), "@language": "et"},
+                "skos:prefLabel": {"@value": f"{osa_par_range} {fallback_label}".strip(), "@language": "et"},
+                "skos:inScheme": {"@id": scheme_id},
+            })
+
+        # Add provision counts to each cluster
+        for cl in clusters:
+            count = len(cl["par_nrs"])
+            for node in graph:
+                if node.get("@id") == cl["id"]:
+                    node["estleg:provisionCount"] = count
+                    break
+
+        # Add per-osa ConceptScheme and part-level concept nodes
+        if clusters:
+            part_label = f"Osa {osa_nr}"
+            if osa_title:
+                part_label = f"Osa {osa_nr} ({osa_title})"
+
+            # Determine top concepts: part-level concept if we have chapter clusters,
+            # otherwise the fallback cluster is the direct top concept
+            has_chapter_clusters = any(
+                node.get("skos:broader") for node in graph
+                if isinstance(node.get("skos:broader"), dict)
+            )
+
+            if has_chapter_clusters:
+                # Insert part-level grouping concept
+                part_concept_node = {
+                    "@id": part_concept_id,
+                    "@type": ["owl:NamedIndividual", "skos:Concept"],
+                    "rdfs:label": {"@value": part_label, "@language": "et"},
+                    "skos:prefLabel": {"@value": part_label, "@language": "et"},
+                    "skos:inScheme": {"@id": scheme_id},
+                    "skos:narrower": [{"@id": cl["id"]} for cl in clusters],
+                }
+                graph.insert(2, part_concept_node)
+                top_concepts = [{"@id": part_concept_id}]
+            else:
+                # Fallback cluster is the direct top concept (no part-level needed)
+                top_concepts = [{"@id": cl["id"]} for cl in clusters]
+
+            scheme_node = {
+                "@id": scheme_id,
+                "@type": ["skos:ConceptScheme"],
+                "rdfs:label": {"@value": f"{title} {part_label} teemaskeem", "@language": "et"},
+                "skos:hasTopConcept": top_concepts,
+            }
+            graph.insert(2, scheme_node)
 
         seen_ids = set()
         for p in paragrahvid:
@@ -441,6 +687,7 @@ def generate_multipart_law(title: str, slug: str, root: ET.Element, abbreviation
             p_title = ct(p, "paragrahvPealkiri") or ""
             p_display = ct(p, "kuvatavNr") or f"§ {p_nr}"
             text = collect_text(p)
+            full_text = collect_full_text(p)
             p_id = f"estleg:{prefix}_Osa{osa_nr}_Par_{sanitize_id(p_nr)}"
             if p_id in seen_ids:
                 p_id = f"{p_id}_{len(seen_ids)}"
@@ -457,17 +704,35 @@ def generate_multipart_law(title: str, slug: str, root: ET.Element, abbreviation
                     cluster_ref = cl["id"]
                     break
 
+            # Issue #92: Build label — prefer title, fall back to text excerpt
+            if p_title:
+                label = f"{p_display} {p_title}"
+            elif text:
+                excerpt = text[:80].rstrip()
+                if len(text) > 80:
+                    excerpt = excerpt + "..."
+                label = f"{p_display} [{excerpt}]"
+            else:
+                label = p_display
+
             node: dict = {
                 "@id": p_id,
                 "@type": ["owl:NamedIndividual", class_id],
                 "estleg:paragrahv": p_display,
-                "rdfs:label": {"@value": f"{p_display} {p_title}".strip() if p_title else p_display, "@language": "et"},
+                "rdfs:label": {"@value": label, "@language": "et"},
                 "estleg:sourceAct": {"@value": title, "@language": "et"},
             }
             if text:
                 node["estleg:summary"] = {"@value": text, "@language": "et"}
+            # Issue #88: Add full legal text without truncation
+            if full_text:
+                node["estleg:legalText"] = {"@value": full_text, "@language": "et"}
             if cluster_ref:
                 node["estleg:requestedCluster"] = cluster_ref
+            # Issue #89: Link provision to containing chapter or division
+            container_ref = par_to_container.get(p_num)
+            if container_ref:
+                node["estleg:isPartOf"] = {"@id": container_ref}
             graph.append(node)
 
         filename = f"{slug}_osa{osa_nr}_peep.json"
