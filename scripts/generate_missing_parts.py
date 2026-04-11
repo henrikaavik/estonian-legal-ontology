@@ -180,7 +180,7 @@ def generate_vos_part(root: ET.Element, xml_url: str, osa_nr: str) -> dict | Non
             "dc:source": "Võlaõigusseadus",
         },
         {
-            "@id": f"estleg:LegalProvision_volaigusseadus_osa{osa_nr}",
+            "@id": f"estleg:LegalProvision_VOS_Osa7_osa{osa_nr}",
             "@type": ["owl:Class"],
             "rdfs:label": "Õigusnorm (paragrahv)",
         },
@@ -266,7 +266,7 @@ def generate_vos_part(root: ET.Element, xml_url: str, osa_nr: str) -> dict | Non
             "@id": p_id,
             "@type": [
                 "owl:NamedIndividual",
-                f"estleg:LegalProvision_volaigusseadus_osa{osa_nr}",
+                f"estleg:LegalProvision_VOS_Osa7_osa{osa_nr}",
             ],
             "estleg:paragrahv": p_display,
             "rdfs:label": f"{p_display} {p_title}".strip() if p_title else p_display,
@@ -332,7 +332,7 @@ def generate_tsus_part1(root: ET.Element, xml_url: str) -> dict | None:
             "dc:source": "Tsiviilseadustiku üldosa seadus",
         },
         {
-            "@id": "estleg:LegalProvision_tsiviilseadustik_osa1",
+            "@id": "estleg:LegalProvision_TsUS_osa1",
             "@type": ["owl:Class"],
             "rdfs:label": "Õigusnorm (paragrahv)",
         },
@@ -355,7 +355,7 @@ def generate_tsus_part1(root: ET.Element, xml_url: str) -> dict | None:
             "@id": p_id,
             "@type": [
                 "owl:NamedIndividual",
-                "estleg:LegalProvision_tsiviilseadustik_osa1",
+                "estleg:LegalProvision_TsUS_osa1",
             ],
             "estleg:paragrahv": p_display,
             "rdfs:label": f"{p_display} {p_title}".strip() if p_title else p_display,

@@ -53,7 +53,7 @@ def ln(tag: str) -> str:
 def build_provision_index() -> tuple[dict[str, dict[str, str]], dict[str, str], dict[str, Path]]:
     """
     Scan all *_peep.json files to build:
-    1. prefix_to_provisions: {prefix: {par_number: full_iri}} e.g. {"Karistusseadustik": {"121": "estleg:Karistusseadustik_Par_121"}}
+    1. prefix_to_provisions: {prefix: {par_number: full_iri}} e.g. {"Karistusseadustik": {"121": "estleg:KARIST_2_Par_121"}}
     2. source_act_to_prefix: {source_act_name: prefix} e.g. {"Karistusseadustik": "Karistusseadustik"}
     3. iri_to_file: {iri: filepath} mapping each provision IRI to its containing file
     """
@@ -81,7 +81,7 @@ def build_provision_index() -> tuple[dict[str, dict[str, str]], dict[str, str], 
         for node in graph:
             node_id = node.get("@id", "")
             if "_Par_" in node_id and node_id.startswith("estleg:"):
-                # Extract prefix: "estleg:Karistusseadustik_Par_121" -> "Karistusseadustik"
+                # Extract prefix: "estleg:KARIST_2_Par_121" -> "Karistusseadustik"
                 local = node_id[len("estleg:"):]
                 prefix_part = local.split("_Par_")[0]
                 if file_prefix is None:
@@ -232,7 +232,7 @@ def resolve_citation(
     """
     Resolve a citation dict to a list of existing provision IRIs.
 
-    Returns list of IRI strings (e.g. ["estleg:Karistusseadustik_Par_121"]).
+    Returns list of IRI strings (e.g. ["estleg:KARIST_2_Par_121"]).
     """
     resolved: list[str] = []
 

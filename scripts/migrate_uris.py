@@ -11,6 +11,8 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import sys
+from datetime import datetime
 from pathlib import Path
 
 # ── Paths ──────────────────────────────────────────────────────────────────────
@@ -210,36 +212,273 @@ def build_registry_cmd() -> None:
 
 def get_all_scannable_files() -> list[Path]:
     """Return all files that should be scanned for URI references."""
-    raise NotImplementedError("get_all_scannable_files will be implemented in a later task")
+    files: list[Path] = []
+    files.extend(KRR_DIR.rglob("*.json"))
+    files.extend(KRR_DIR.rglob("*.jsonld"))
+    files.extend(SCRIPTS_DIR.glob("*.py"))
+    shacl_dir = PROJECT_ROOT / "shacl"
+    if shacl_dir.exists():
+        files.extend(shacl_dir.glob("*.ttl"))
+    docs_dir = PROJECT_ROOT / "docs"
+    if docs_dir.exists():
+        files.extend(docs_dir.rglob("*.md"))
+    return sorted(set(files))
 
 
 def build_rename_map(
     registry: dict, scan_paths: list[Path] | None = None
 ) -> dict[str, str]:
     """Build old-URI -> new-URI rename mapping from the registry."""
-    raise NotImplementedError("build_rename_map will be implemented in a later task")
+    # Build lookup maps
+    prefix_remap: dict[str, str] = {}   # old_prefix -> new_abbrev
+    slug_to_abbrev: dict[str, str] = {} # slug -> new_abbrev
+
+    for slug, entry in registry.items():
+        abbrev = entry["abbrev"]
+        old_prefix = entry.get("old_prefix", "")
+        slug_to_abbrev[slug] = abbrev
+        if old_prefix and old_prefix != abbrev:
+            prefix_remap[old_prefix] = abbrev
+
+    sorted_prefixes = sorted(prefix_remap.keys(), key=len, reverse=True)
+    sorted_slugs = sorted(slug_to_abbrev.keys(), key=len, reverse=True)
+
+    # Scan files for all unique estleg: IRIs
+    files = scan_paths if scan_paths is not None else get_all_scannable_files()
+    all_iris: set[str] = set()
+    for fp in files:
+        try:
+            content = fp.read_text(encoding="utf-8")
+            all_iris.update(ESTLEG_RE.findall(content))
+        except (OSError, UnicodeDecodeError):
+            continue
+
+    print(f"  Scanned {len(files)} files, found {len(all_iris)} unique IRIs")
+
+    rename_map: dict[str, str] = {}
+
+    for iri in sorted(all_iris):
+        local = iri[7:]  # strip "estleg:"
+        new_iri = None
+
+        # 1. LegalConcept_{X} -> Concept_{X}
+        if local.startswith("LegalConcept_"):
+            new_iri = "estleg:Concept_" + local[13:]
+
+        # 2. LegalProvision_{slug}[_osa{N}] -> LegalProvision_{abbrev}[_osa{N}]
+        elif local.startswith("LegalProvision_"):
+            rest = local[15:]
+            for slug in sorted_slugs:
+                if rest == slug or rest.startswith(slug + "_osa"):
+                    new_rest = rest.replace(slug, slug_to_abbrev[slug], 1)
+                    new_iri = "estleg:LegalProvision_" + new_rest
+                    break
+
+        # 3. Cluster_{prefix}_{label} -> Cluster_{new}_{label}
+        elif local.startswith("Cluster_"):
+            rest = local[8:]
+            for old_prefix in sorted_prefixes:
+                if rest.startswith(old_prefix + "_"):
+                    new_rest = prefix_remap[old_prefix] + rest[len(old_prefix):]
+                    new_iri = "estleg:Cluster_" + new_rest
+                    break
+
+        # 4. {prefix}_* patterns (Map, Par, Chapter, Division, TopicScheme, Osa)
+        else:
+            for old_prefix in sorted_prefixes:
+                if local.startswith(old_prefix + "_"):
+                    suffix = local[len(old_prefix):]
+                    new_iri = "estleg:" + prefix_remap[old_prefix] + suffix
+                    break
+
+        # 5. Fix VOS-style missing underscore: _Par{N} -> _Par_{N}
+        if new_iri:
+            new_iri = PAR_NO_UNDERSCORE_RE.sub(r"_Par_\1", new_iri)
+        elif PAR_NO_UNDERSCORE_RE.search(iri):
+            new_iri = PAR_NO_UNDERSCORE_RE.sub(r"_Par_\1", iri)
+
+        if new_iri and new_iri != iri:
+            rename_map[iri] = new_iri
+
+    return rename_map
 
 
 def dry_run_cmd() -> None:
     """Preview what the migration would change without modifying files."""
-    raise NotImplementedError("dry_run_cmd will be implemented in a later task")
+    print("=" * 70)
+    print("Phase 2: Dry run")
+    print("=" * 70)
+
+    if not REGISTRY_PATH.exists():
+        print("ERROR: Registry not found. Run 'build-registry' first.")
+        sys.exit(1)
+
+    with open(REGISTRY_PATH, encoding="utf-8") as f:
+        registry = json.load(f)
+
+    rename_map = build_rename_map(registry)
+
+    # Check for collisions
+    new_iris = list(rename_map.values())
+    collision_set: set[str] = set()
+    seen: set[str] = set()
+    for v in new_iris:
+        if v in seen:
+            collision_set.add(v)
+        seen.add(v)
+    collisions = sorted(collision_set)
+
+    # Count per-file impact
+    files = get_all_scannable_files()
+    files_affected: dict[str, int] = {}
+    py_hardcoded: dict[str, list[str]] = {}
+
+    for fp in files:
+        try:
+            content = fp.read_text(encoding="utf-8")
+        except (OSError, UnicodeDecodeError):
+            continue
+        count = sum(content.count(old) for old in rename_map)
+        if count > 0:
+            rel = str(fp.relative_to(PROJECT_ROOT))
+            files_affected[rel] = count
+            if fp.suffix == ".py":
+                py_iris = [old for old in rename_map if old in content]
+                if py_iris:
+                    py_hardcoded[rel] = py_iris
+
+    report = {
+        "generated": datetime.now().isoformat(),
+        "total_renames": len(rename_map),
+        "collisions": collisions,
+        "files_affected_count": len(files_affected),
+        "total_replacements": sum(files_affected.values()),
+        "renames": rename_map,
+        "files_affected": files_affected,
+        "py_hardcoded_iris": py_hardcoded,
+    }
+
+    with open(REPORT_PATH, "w", encoding="utf-8") as f:
+        json.dump(report, f, indent=2, ensure_ascii=False)
+
+    print(f"\nRename map: {len(rename_map)} unique IRIs to change")
+    print(f"Total replacements: {sum(files_affected.values())}")
+    print(f"Files affected: {len(files_affected)}")
+    print(f"Collisions: {len(collisions)}")
+    if collisions:
+        print("  COLLISION DETAILS (must be resolved before apply):")
+        for c in collisions[:10]:
+            sources = [k for k, v in rename_map.items() if v == c]
+            print(f"    {c} <- {sources}")
+    if py_hardcoded:
+        print(f"Python files with hardcoded IRIs: {len(py_hardcoded)}")
+        for fp, iris in py_hardcoded.items():
+            print(f"  {fp}: {len(iris)} IRIs")
+    print(f"\nReport written to {REPORT_PATH}")
+    print("Zero files modified.")
 
 
 def apply_renames_to_file(
     filepath: Path, sorted_renames: list[tuple[str, str]]
 ) -> int:
     """Apply URI renames to a single file. Returns count of replacements made."""
-    raise NotImplementedError("apply_renames_to_file will be implemented in a later task")
+    try:
+        content = filepath.read_text(encoding="utf-8")
+    except (OSError, UnicodeDecodeError):
+        return 0
+
+    original = content
+    found_iris = set(ESTLEG_RE.findall(content))
+    relevant = [(old, new) for old, new in sorted_renames if old in found_iris]
+
+    for old_iri, new_iri in relevant:
+        content = content.replace(old_iri, new_iri)
+
+    if content != original:
+        filepath.write_text(content, encoding="utf-8")
+        return len(relevant)
+    return 0
 
 
 def verify_migration(rename_map: dict[str, str]) -> tuple[bool, list[str]]:
     """Verify that migration was applied correctly. Returns (ok, list_of_issues)."""
-    raise NotImplementedError("verify_migration will be implemented in a later task")
+    issues: list[str] = []
+    files = get_all_scannable_files()
+    old_iris = set(rename_map.keys())
+    remaining: dict[str, list[str]] = {}
+
+    for fp in files:
+        try:
+            content = fp.read_text(encoding="utf-8")
+        except (OSError, UnicodeDecodeError):
+            continue
+        found = old_iris & set(ESTLEG_RE.findall(content))
+        if found:
+            rel = str(fp.relative_to(PROJECT_ROOT))
+            for iri in found:
+                remaining.setdefault(iri, []).append(rel)
+
+    if remaining:
+        issues.append(f"FAIL: {len(remaining)} old IRIs still present in files")
+        for iri, fps in sorted(remaining.items())[:20]:
+            issues.append(f"  {iri} in {fps[0]} (+{len(fps)-1} more)")
+
+    return len(issues) == 0, issues
 
 
 def apply_cmd() -> None:
     """Apply the URI migration to all files."""
-    raise NotImplementedError("apply_cmd will be implemented in a later task")
+    print("=" * 70)
+    print("Phase 3: Applying migration")
+    print("=" * 70)
+
+    if not REPORT_PATH.exists():
+        print("ERROR: Dry-run report not found. Run 'dry-run' first.")
+        sys.exit(1)
+
+    with open(REPORT_PATH, encoding="utf-8") as f:
+        report = json.load(f)
+
+    if report.get("collisions"):
+        print("ERROR: Dry-run detected collisions. Fix registry and re-run dry-run.")
+        for c in report["collisions"]:
+            print(f"  {c}")
+        sys.exit(1)
+
+    rename_map: dict[str, str] = report["renames"]
+    if not rename_map:
+        print("Nothing to rename.")
+        return
+
+    sorted_renames = sorted(
+        rename_map.items(), key=lambda x: len(x[0]), reverse=True
+    )
+
+    files = get_all_scannable_files()
+    total_files_changed = 0
+    total_renames_applied = 0
+
+    for fp in files:
+        count = apply_renames_to_file(fp, sorted_renames)
+        if count > 0:
+            total_files_changed += 1
+            total_renames_applied += count
+            rel = fp.relative_to(PROJECT_ROOT)
+            print(f"  {rel}: {count} IRIs renamed")
+
+    print(f"\nApplied renames to {total_files_changed} files")
+    print(f"Total IRI types renamed: {total_renames_applied}")
+
+    print("\nRunning post-migration verification...")
+    passed, issues = verify_migration(rename_map)
+
+    if passed:
+        print("VERIFICATION PASSED: All old IRIs replaced successfully.")
+    else:
+        print("VERIFICATION FAILED:")
+        for issue in issues:
+            print(f"  {issue}")
+        sys.exit(1)
 
 
 # ── CLI ────────────────────────────────────────────────────────────────────────

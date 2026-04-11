@@ -200,7 +200,7 @@ def build_remap_table(dupes: dict[str, list[str]]) -> dict[str, dict[str, str]]:
                             remap[fname][dupe_id] = new_id
 
                     elif dupe_id.startswith("estleg:LegalProvision_"):
-                        # estleg:LegalProvision_alkoholiseadus -> estleg:LegalProvision_{slug}
+                        # estleg:LegalProvision_AS -> estleg:LegalProvision_{slug}
                         new_id = f"estleg:LegalProvision_{new_prefix}"
                         if new_id != dupe_id:
                             remap[fname][dupe_id] = new_id

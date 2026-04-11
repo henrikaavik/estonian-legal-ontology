@@ -547,7 +547,7 @@ def main() -> None:
             provision_ref = _provision_ref(node)
 
             # Deterministic provision ID for IRI: derived from the provision's @id
-            # e.g. "estleg:Karistusseadustik_Par_113" -> "Karistusseadustik_Par_113"
+            # e.g. "estleg:KARIST_2_Par_113" -> "Karistusseadustik_Par_113"
             provision_par = provision_iri.replace("estleg:", "") if provision_iri else sanitize_id(
                 node.get("estleg:paragrahv", "unknown")
             )

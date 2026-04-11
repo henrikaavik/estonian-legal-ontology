@@ -81,7 +81,7 @@
   "@graph": [
     {
       "@id": "estleg:PS_Par_8",
-      "@type": ["owl:NamedIndividual", "estleg:LegalProvision_pohiseadus"],
+      "@type": ["owl:NamedIndividual", "estleg:LegalProvision_PS"],
       "estleg:paragrahv": "§ 8",
       "rdfs:label": "§ 8 Kodakondsus",
       "estleg:sourceAct": "Eesti Vabariigi põhiseadus"

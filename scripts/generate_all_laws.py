@@ -193,16 +193,39 @@ def fetch_xml(url: str, cache_name: str) -> ET.Element | None:
 
 
 _used_prefixes: dict[str, str] = {}  # prefix -> title that claimed it
+_registry_cache: dict | None = None
+
+
+def _load_registry() -> dict:
+    """Lazily load the abbreviation registry if it exists."""
+    global _registry_cache
+    if _registry_cache is None:
+        registry_path = REPO_ROOT / "data" / "law_abbreviations.json"
+        if registry_path.exists():
+            with open(registry_path, encoding="utf-8") as f:
+                _registry_cache = json.load(f)
+        else:
+            _registry_cache = {}
+    return _registry_cache
 
 
 def _unique_prefix(abbreviation: str, slug: str, title: str) -> str:
     """Return a collision-free prefix for IRI generation.
 
     Strategy:
+    0. Check the abbreviation registry first (if present).
     1. Try the abbreviation if it is long enough (>3 chars) and unique.
     2. Otherwise, try progressively longer slug prefixes (40, 50, 60, 70, 80, full).
     3. If all slug lengths still collide, append a numeric suffix.
     """
+    # Check registry first
+    registry = _load_registry()
+    base_slug = re.sub(r"_osa\d+$", "", slug)
+    if base_slug in registry:
+        candidate = registry[base_slug]["abbrev"]
+        _used_prefixes[candidate] = title
+        return candidate
+
     candidate = sanitize_id(abbreviation) if abbreviation else None
 
     # Use slug-based prefix when abbreviation is too short or absent

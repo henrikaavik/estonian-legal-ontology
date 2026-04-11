@@ -1,6 +1,6 @@
 """Tests for migrate_uris.py — Tasks 1-4."""
 import pytest
-from migrate_uris import auto_derive_abbreviation, PAR_NO_UNDERSCORE_RE
+from migrate_uris import auto_derive_abbreviation, build_rename_map, PAR_NO_UNDERSCORE_RE
 
 
 class TestAutoDerive:
@@ -56,3 +56,74 @@ class TestUnderscoreFix:
         result = PAR_NO_UNDERSCORE_RE.sub(r"_Par_\1", "VOS_Par1 VOS_Par2")
         assert "Par_1" in result
         assert "Par_2" in result
+
+
+class TestBuildRenameMap:
+    @pytest.fixture
+    def sample_registry(self):
+        return {
+            "perekonnaseadus": {
+                "abbrev": "PKS",
+                "source": "rt_api",
+                "title": "Perekonnaseadus",
+                "old_prefix": "PKS",
+            },
+            "alkoholi_tubaka_kutuse_ja_elektriaktsiisi_seadus": {
+                "abbrev": "ATKE",
+                "source": "auto",
+                "title": "Alkoholi-, tubaka-, kütuse- ja elektriaktsiisi seadus",
+                "old_prefix": "Alkoholi_tubaka_ktuse_ja",
+            },
+            "volaigusseadus": {
+                "abbrev": "VOS",
+                "source": "rt_api",
+                "title": "Võlaõigusseadus",
+                "old_prefix": "VOS",
+            },
+        }
+
+    def test_unchanged_prefix_not_in_map(self, sample_registry, tmp_path):
+        f = tmp_path / "test.json"
+        f.write_text('{"@id": "estleg:PKS_Par_1"}')
+        rename_map = build_rename_map(sample_registry, scan_paths=[f])
+        assert "estleg:PKS_Par_1" not in rename_map
+
+    def test_long_prefix_renamed(self, sample_registry, tmp_path):
+        f = tmp_path / "test.json"
+        f.write_text('{"@id": "estleg:Alkoholi_tubaka_ktuse_ja_Map_2026"}')
+        rename_map = build_rename_map(sample_registry, scan_paths=[f])
+        assert rename_map["estleg:Alkoholi_tubaka_ktuse_ja_Map_2026"] == "estleg:ATKE_Map_2026"
+
+    def test_cluster_prefix_renamed(self, sample_registry, tmp_path):
+        f = tmp_path / "test.json"
+        f.write_text('{"@id": "estleg:Cluster_Alkoholi_tubaka_ktuse_ja_Aktsiis"}')
+        rename_map = build_rename_map(sample_registry, scan_paths=[f])
+        assert rename_map["estleg:Cluster_Alkoholi_tubaka_ktuse_ja_Aktsiis"] == "estleg:Cluster_ATKE_Aktsiis"
+
+    def test_legal_provision_slug_renamed(self, sample_registry, tmp_path):
+        f = tmp_path / "test.json"
+        f.write_text('{"@id": "estleg:LegalProvision_alkoholi_tubaka_kutuse_ja_elektriaktsiisi_seadus"}')
+        rename_map = build_rename_map(sample_registry, scan_paths=[f])
+        assert rename_map[
+            "estleg:LegalProvision_alkoholi_tubaka_kutuse_ja_elektriaktsiisi_seadus"
+        ] == "estleg:LegalProvision_ATKE"
+
+    def test_legal_provision_osa_renamed(self, sample_registry, tmp_path):
+        f = tmp_path / "test.json"
+        f.write_text('{"@id": "estleg:LegalProvision_volaigusseadus_osa11"}')
+        rename_map = build_rename_map(sample_registry, scan_paths=[f])
+        assert rename_map[
+            "estleg:LegalProvision_volaigusseadus_osa11"
+        ] == "estleg:LegalProvision_VOS_osa11"
+
+    def test_legal_concept_renamed(self, sample_registry, tmp_path):
+        f = tmp_path / "test.json"
+        f.write_text('{"@id": "estleg:LegalConcept_alkoholiseadus"}')
+        rename_map = build_rename_map(sample_registry, scan_paths=[f])
+        assert rename_map["estleg:LegalConcept_alkoholiseadus"] == "estleg:Concept_alkoholiseadus"
+
+    def test_vos_underscore_fix(self, sample_registry, tmp_path):
+        f = tmp_path / "test.json"
+        f.write_text('{"@id": "estleg:VOS_Par271"}')
+        rename_map = build_rename_map(sample_registry, scan_paths=[f])
+        assert rename_map["estleg:VOS_Par271"] == "estleg:VOS_Par_271"
