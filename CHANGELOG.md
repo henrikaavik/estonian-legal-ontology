@@ -2,6 +2,41 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.9.0] - 2026-03-21
+
+### Added
+- 14 integration scripts for cross-linking and analysis
+- Cross-law reference extraction (17,505 citations resolved)
+- Bidirectional reference links (8,572 inverse links)
+- Court decision → specific provision IRI links (1,263 resolved)
+- EuroVoc subject taxonomy classification (615 laws, 44 domains)
+- Deontic classification: obligations, rights, permissions, prohibitions (8,322 provisions)
+- Institutional competence mapping (102 institutions, 4,165 provisions)
+- Penalty and sanction cross-reference index (339 sanctions)
+- Temporal validity data: entry-into-force and repeal dates (649 laws)
+- Amendment history chains (16,062 amendment references)
+- Legal concept cross-reference graph with SKOS linking
+- Draft legislation provision-level impact analysis (2,770 links)
+- Semantic similarity index (10,832 cross-law pairs)
+- EU directive transposition mapping (schema ready)
+- Cross-border harmonisation links (schema ready)
+- New SHACL shapes for Sanction, Institution, NormativeType, AmendmentEvent
+- New output directories: concepts/, institutions/, sanctions/, amendments/
+- Master orchestration script: run_all_integration.py
+- Shared utilities module: estleg_common.py
+
+### Changed
+- Updated SHACL shapes with 15+ new property shapes
+- Updated SCHEMA_REFERENCE.md with all new classes and properties
+- Updated README.md with integration features section
+- Extended validate_all.py with new multi-valued properties
+
+## [0.8.1] - 2026-03-07
+
+### Changed
+- Refreshed EIS draft legislation data with latest entries (total: 22,832 drafts)
+- Updated README and docs with corrected draft counts
+
 ## [0.8.0] - 2026-03-03
 
 ### Added
@@ -74,6 +109,13 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - Updated README.md with draft legislation section and updated stats
 - Updated SCHEMA_REFERENCE.md with complete draft legislation documentation
+
+## [0.4.0] - 2026-03-03
+
+### Added
+- **Mass law generation** — automated generation of 563 new law files from Riigi Teataja API via `scripts/generate_all_laws.py`
+- `scripts/generate_missing_parts.py` — fills in missing parts/chapters for partially mapped laws
+- Total coverage expanded from 52 manually mapped laws to 615+ enacted laws (29,800+ provision nodes)
 
 ## [0.3.0] - 2026-03-02
 

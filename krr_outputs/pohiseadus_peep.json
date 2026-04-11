@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -16,14 +17,69 @@
       ],
       "rdfs:label": "Eesti Vabariigi põhiseaduse teemakaardistus (PS)",
       "dc:description": "Põhiseaduse kaardistus kolmes põhiklastris: põhiõigused, riigikorraldus ja põhiseaduse muutmise kord.",
-      "dc:source": "Eesti Vabariigi põhiseadus"
+      "dc:source": "Eesti Vabariigi põhiseadus",
+      "estleg:temporalStatus": "inForce",
+      "estleg:amendedBy": [
+        {
+          "@id": "estleg:Draft_RIIGIKOGU15_0621"
+        },
+        {
+          "@id": "estleg:Draft_RIIGIKOGU14_0955"
+        },
+        {
+          "@id": "estleg:Draft_RIIGIKOGU13_0398"
+        },
+        {
+          "@id": "estleg:Draft_RIIGIKOGU13_0255"
+        }
+      ],
+      "estleg:affectedBy": [
+        {
+          "@id": "estleg:Draft_JDM17_0304"
+        },
+        {
+          "@id": "estleg:Draft_RIIGIKOGU18_1211"
+        },
+        {
+          "@id": "estleg:Draft_RIIGIKOGU15_0621"
+        },
+        {
+          "@id": "estleg:Draft_RIIGIKOGU14_0955"
+        },
+        {
+          "@id": "estleg:Draft_RIIGIKOGU13_0398"
+        },
+        {
+          "@id": "estleg:Draft_RIIGIKOGU13_0255"
+        }
+      ],
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/2446"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2416"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2016"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/0806"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2821"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_pohiseadus",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)"
+      "rdfs:label": "Õigusnorm (paragrahv)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:TopicCluster_pohiseadus",
@@ -78,7 +134,12 @@
       "rdfs:label": "§ 11. Põhiõiguste piiramise üldtingimused",
       "estleg:requestedCluster": "pohioigused",
       "estleg:summary": "Õigusi ja vabadusi võib piirata üksnes põhiseadusega kooskõlas, demokraatlikus ühiskonnas vajalikult ning olemust moonutamata.",
-      "estleg:sourceAct": "Eesti Vabariigi põhiseadus"
+      "estleg:sourceAct": "Eesti Vabariigi põhiseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:PS_Par_12",
@@ -150,7 +211,13 @@
       "rdfs:label": "§ 56. Rahvas kõrgeima riigivõimu teostajana",
       "estleg:requestedCluster": "riigikorraldus",
       "estleg:summary": "Määratleb, et rahvas teostab kõrgeimat riigivõimu Riigikogu valimiste ja rahvahääletuse kaudu.",
-      "estleg:sourceAct": "Eesti Vabariigi põhiseadus"
+      "estleg:sourceAct": "Eesti Vabariigi põhiseadus",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_riigikogu"
+        }
+      ],
+      "estleg:competenceType": "enforcement"
     },
     {
       "@id": "estleg:PS_Par_59",
@@ -162,7 +229,13 @@
       "rdfs:label": "§ 59. Seadusandlik võim",
       "estleg:requestedCluster": "riigikorraldus",
       "estleg:summary": "Sätestab, et seadusandlik võim kuulub Riigikogule.",
-      "estleg:sourceAct": "Eesti Vabariigi põhiseadus"
+      "estleg:sourceAct": "Eesti Vabariigi põhiseadus",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_riigikogu"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:PS_Par_65",
@@ -174,7 +247,13 @@
       "rdfs:label": "§ 65. Riigikogu pädevus",
       "estleg:requestedCluster": "riigikorraldus",
       "estleg:summary": "Loetleb Riigikogu keskse pädevuse: seadusloome, rahvahääletus, eelarve, ametissenimetamised, umbusaldus ja riiklikud eriotsused.",
-      "estleg:sourceAct": "Eesti Vabariigi põhiseadus"
+      "estleg:sourceAct": "Eesti Vabariigi põhiseadus",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_riigikogu"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:PS_Par_77",
@@ -198,7 +277,13 @@
       "rdfs:label": "§ 86. Täidesaatev riigivõim",
       "estleg:requestedCluster": "riigikorraldus",
       "estleg:summary": "Sätestab, et täidesaatev riigivõim kuulub Vabariigi Valitsusele.",
-      "estleg:sourceAct": "Eesti Vabariigi põhiseadus"
+      "estleg:sourceAct": "Eesti Vabariigi põhiseadus",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:PS_Par_102",
@@ -234,7 +319,13 @@
       "rdfs:label": "§ 146. Õigusemõistmine",
       "estleg:requestedCluster": "riigikorraldus",
       "estleg:summary": "Sätestab, et õigust mõistab ainult kohus ning kohus on oma tegevuses sõltumatu.",
-      "estleg:sourceAct": "Eesti Vabariigi põhiseadus"
+      "estleg:sourceAct": "Eesti Vabariigi põhiseadus",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohus"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:PS_Par_161",
@@ -258,7 +349,16 @@
       "rdfs:label": "§ 162. Muutmise algatamine",
       "estleg:requestedCluster": "muutmise_kord",
       "estleg:summary": "Põhiseaduse muutmist võivad algatada vähemalt viiendik Riigikogu koosseisust või Vabariigi President.",
-      "estleg:sourceAct": "Eesti Vabariigi põhiseadus"
+      "estleg:sourceAct": "Eesti Vabariigi põhiseadus",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_riigikogu"
+        },
+        {
+          "@id": "estleg:Institution_vabariigipresident"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:PS_Par_163",
@@ -282,7 +382,13 @@
       "rdfs:label": "§ 164. Muutmine rahvahääletusega",
       "estleg:requestedCluster": "muutmise_kord",
       "estleg:summary": "Lubab põhiseaduse muutmise seaduse vastuvõtmist rahvahääletusel Riigikogu kvalifitseeritud otsuse alusel.",
-      "estleg:sourceAct": "Eesti Vabariigi põhiseadus"
+      "estleg:sourceAct": "Eesti Vabariigi põhiseadus",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_riigikogu"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:PS_Par_165",
@@ -306,7 +412,13 @@
       "rdfs:label": "§ 166. Muutmine kiireloomulisena",
       "estleg:requestedCluster": "muutmise_kord",
       "estleg:summary": "Kiireloomulise menetluse otsus nõuab 4/5 poolthääli ning lõppvastuvõtmine Riigikogu 2/3 häälteenamust.",
-      "estleg:sourceAct": "Eesti Vabariigi põhiseadus"
+      "estleg:sourceAct": "Eesti Vabariigi põhiseadus",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_riigikogu"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:PS_Par_167",

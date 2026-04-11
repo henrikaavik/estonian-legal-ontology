@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -17,14 +18,67 @@
       "rdfs:label": "Looduskaitseseaduse teemakaardistus (Keskkonnaõigus)",
       "dc:description": "Looduskaitseseaduse kaardistus kolmes fookuses: kaitsealad, liikide kaitse ja looduskaitsekorraldus.",
       "dc:source": "Looduskaitseseadus (Riigi Teataja kehtiv redaktsioon)",
-      "dc:identifier": "https://www.riigiteataja.ee/akt/LKS?leiaKehtiv"
+      "dc:identifier": "https://www.riigiteataja.ee/akt/LKS?leiaKehtiv",
+      "estleg:temporalStatus": "inForce",
+      "estleg:affectedBy": [
+        {
+          "@id": "estleg:Draft_KLIM25_1175"
+        },
+        {
+          "@id": "estleg:Draft_KLIM23_1688"
+        },
+        {
+          "@id": "estleg:Draft_KLIM22_1094"
+        },
+        {
+          "@id": "estleg:Draft_KLIM18_0506"
+        },
+        {
+          "@id": "estleg:Draft_KLIM18_0341"
+        },
+        {
+          "@id": "estleg:Draft_KLIM17_0382"
+        },
+        {
+          "@id": "estleg:Draft_KLIM16_1184"
+        },
+        {
+          "@id": "estleg:Draft_KLIM15_1001"
+        },
+        {
+          "@id": "estleg:Draft_KLIM09_0648"
+        },
+        {
+          "@id": "estleg:Draft_RIIGIKOGU13_0911"
+        }
+      ],
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/5611"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/3606"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2446"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/3611"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/1221"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_looduskaitseseadus",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)"
+      "rdfs:label": "Õigusnorm (paragrahv)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:TopicCluster_looduskaitseseadus",
@@ -79,7 +133,13 @@
       "rdfs:label": "§ 10 lg 1. Ala kaitsealana või hoiualana kaitse alla võtmine",
       "estleg:requestedCluster": "kaitsealad",
       "estleg:summary": "Sätestab, et ala võtab kaitsealana või hoiualana kaitse alla Vabariigi Valitsus.",
-      "estleg:sourceAct": "Looduskaitseseadus"
+      "estleg:sourceAct": "Looduskaitseseadus",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:LOODUSK_Par_11_1",

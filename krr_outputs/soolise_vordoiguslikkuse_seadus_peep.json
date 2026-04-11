@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -15,14 +16,68 @@
         "owl:Ontology"
       ],
       "rdfs:label": "Soolise võrdõiguslikkuse seadus teemakaardistus",
-      "dc:source": "Soolise võrdõiguslikkuse seadus"
+      "dc:source": "Soolise võrdõiguslikkuse seadus",
+      "estleg:entryIntoForce": {
+        "@value": "2004-05-01",
+        "@type": "xsd:date"
+      },
+      "estleg:repealDate": {
+        "@value": "2008-12-31",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "repealed",
+      "estleg:amendedBy": [
+        {
+          "@id": "estleg:Draft_SOM18_0318"
+        },
+        {
+          "@id": "estleg:Draft_RIIGIKOGU26_0103"
+        },
+        {
+          "@id": "estleg:Draft_RIIGIKOGU13_0664"
+        },
+        {
+          "@id": "estleg:Draft_RIIGIKOGU13_0664"
+        }
+      ],
+      "estleg:affectedBy": [
+        {
+          "@id": "estleg:Draft_SOM18_0318"
+        },
+        {
+          "@id": "estleg:Draft_RIIGIKOGU26_0103"
+        },
+        {
+          "@id": "estleg:Draft_RIIGIKOGU13_0664"
+        }
+      ],
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/2416"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/3606"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/1221"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2446"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2431"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_soolise_vordoiguslikkuse_seadus",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)"
+      "rdfs:label": "Õigusnorm (paragrahv)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:Cluster_SoVS_1",
@@ -134,7 +189,17 @@
       "rdfs:label": "§ 4. Tõendamiskohustus",
       "estleg:sourceAct": "Soolise võrdõiguslikkuse seadus",
       "estleg:summary": "1 (1) Kui isik leiab, et teda on käesoleva seaduse §-s 6 või 8 nimetatud alusel diskrimineeritud ja esitab pädevale organile diskrimineerimise faktilisi asjaolusid sisaldava avalduse, mille alusel võib eeldada, et toimunud on otsene või kaudne sooline diskrimineerimine, siis isik, kelle vastu on avaldus esitatud, peab pädeva organi nõudel selgitama oma käitumise või langetatud otsuse põhjusi ja motiive. Kui ta seda ei tee või keeldub selgitusest, võrdsustatakse see käitumine isiku diskrimineerim",
-      "estleg:requestedCluster": "estleg:Cluster_SoVS_1"
+      "estleg:requestedCluster": "estleg:Cluster_SoVS_1",
+      "estleg:references": [
+        {
+          "@id": "estleg:SoVS_Par_6"
+        }
+      ],
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ]
     },
     {
       "@id": "estleg:SoVS_Par_5",
@@ -146,7 +211,17 @@
       "rdfs:label": "§ 5. Sooline diskrimineerimine",
       "estleg:sourceAct": "Soolise võrdõiguslikkuse seadus",
       "estleg:summary": "1 (1) Otsene ja kaudne sooline diskrimineerimine on keelatud. Otsene ja kaudne sooline diskrimineerimine on keelatud. 2 (2) Otseseks või kaudseks sooliseks diskrimineerimiseks ei loeta: 1 1) sätteid, mis sisaldavad naiste erilist kaitset seoses raseduse ja sünnitamisega; 2 2) kohustusliku kaitseväe ajateenistuse kehtestamist ainult meestele; 3 3) ainult naiste või ainult meeste vastuvõtmist mittetulundusühingu liikmeteks, kui see tuleneb ühingu põhikirjast; 4 4) tööle saamisel või selleks vajali",
-      "estleg:requestedCluster": "estleg:Cluster_SoVS_2"
+      "estleg:requestedCluster": "estleg:Cluster_SoVS_2",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Prohibition"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:SoVS_Par_8"
+        }
+      ]
     },
     {
       "@id": "estleg:SoVS_Par_6",
@@ -158,7 +233,23 @@
       "rdfs:label": "§ 6. Diskrimineerimine tööelus",
       "estleg:sourceAct": "Soolise võrdõiguslikkuse seadus",
       "estleg:summary": "1 (1) Diskrimineerivateks loetakse tööelus juhtumeid, kui tööandja valib tööle või ametikohale, võtab tööle või tööpraktikale, edutab, valib väljaõppele või ülesande täitmiseks või saadab koolitusele ühest soost isiku, jättes kõrvale kõrgema kvalifikatsiooniga vastassoost isiku, välja arvatud juhul, kui tema tegevusel on kaalukad põhjused või see tuleneb sooga mitteseotud asjaoludest. Diskrimineerivateks loetakse tööelus juhtumeid, kui tööandja valib tööle või ametikohale, võtab tööle või tööpra",
-      "estleg:requestedCluster": "estleg:Cluster_SoVS_2"
+      "estleg:requestedCluster": "estleg:Cluster_SoVS_2",
+      "estleg:references": [
+        {
+          "@id": "estleg:SoVS_Par_11"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:SoVS_Par_4"
+        },
+        {
+          "@id": "estleg:SoVS_Par_7"
+        },
+        {
+          "@id": "estleg:SoVS_Par_13"
+        }
+      ]
     },
     {
       "@id": "estleg:SoVS_Par_7",
@@ -170,7 +261,18 @@
       "rdfs:label": "§ 7. Tööandja kohustus anda seletusi",
       "estleg:sourceAct": "Soolise võrdõiguslikkuse seadus",
       "estleg:summary": "1 (1) Tööandja on kohustatud andma kirjaliku seletuse isikule, kes taotleb seda käesoleva seaduse § 6 lõikes 1 nimetatud tema suhtes diskrimineeriva käitumise kahtlustamise korral, alates kirjaliku taotluse esitamisest kümne tööpäeva jooksul. Seletuses peab tööandja oma valiku põhjendamiseks esitama isiku kohta, kelle kasuks valik tehti, järgmised andmed: 1 1) tööstaaž; 2 2) haridus; 3 3) töökogemus ja muud tööks vajalikud oskused; 4 4) muud selgeid eeliseid andvad oskused või põhjendused. Tööan",
-      "estleg:requestedCluster": "estleg:Cluster_SoVS_2"
+      "estleg:requestedCluster": "estleg:Cluster_SoVS_2",
+      "estleg:references": [
+        {
+          "@id": "estleg:SoVS_Par_6"
+        }
+      ],
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Tööandja"
     },
     {
       "@id": "estleg:SoVS_Par_8",
@@ -182,7 +284,12 @@
       "rdfs:label": "§ 8. Diskrimineeriv töö- ja koolituspakkumine",
       "estleg:sourceAct": "Soolise võrdõiguslikkuse seadus",
       "estleg:summary": "Keelatud on töö- ja koolituspakkumised, mis on suunatud üksnes ühest soost isikutele, kui selleks ei ole käesoleva seaduse § 5 lõike 2 punktides 4 ja 5 nimetatud põhjusi. Keelatud on töö- ja koolituspakkumised, mis on suunatud üksnes ühest soost isikutele, kui selleks ei ole käesoleva seaduse § 5 lõike 2 punktides 4 ja 5 nimetatud põhjusi.",
-      "estleg:requestedCluster": "estleg:Cluster_SoVS_2"
+      "estleg:requestedCluster": "estleg:Cluster_SoVS_2",
+      "estleg:references": [
+        {
+          "@id": "estleg:SoVS_Par_5"
+        }
+      ]
     },
     {
       "@id": "estleg:SoVS_Par_9",
@@ -194,7 +301,17 @@
       "rdfs:label": "§ 9. Riigi- ja kohalike omavalitsusüksuste asutused soolise võrdõiguslikkuse edendajatena",
       "estleg:sourceAct": "Soolise võrdõiguslikkuse seadus",
       "estleg:summary": "1 (1) Riigi- ja kohalike omavalitsusüksuste asutused on kohustatud soolist võrdõiguslikkust süstemaatiliselt ja eesmärgistatult edendama. Nende ülesanne on muuta tingimusi ja asjaolusid, mis takistavad soolise võrdõiguslikkuse saavutamist. Riigi- ja kohalike omavalitsusüksuste asutused on kohustatud soolist võrdõiguslikkust süstemaatiliselt ja eesmärgistatult edendama. Nende ülesanne on muuta tingimusi ja asjaolusid, mis takistavad soolise võrdõiguslikkuse saavutamist. 2 (2) Riiklikke, piirkondl",
-      "estleg:requestedCluster": "estleg:Cluster_SoVS_3"
+      "estleg:requestedCluster": "estleg:Cluster_SoVS_3",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:SoVS_Par_24"
+        }
+      ]
     },
     {
       "@id": "estleg:SoVS_Par_10",
@@ -218,7 +335,18 @@
       "rdfs:label": "§ 11. Tööandjad soolise võrdõiguslikkuse edendajatena",
       "estleg:sourceAct": "Soolise võrdõiguslikkuse seadus",
       "estleg:summary": "1 (1) Tööandja peab naiste ja meeste võrdõiguslikkust edendades: 1 1) tegutsema nii, et vabadele töökohtadele võetakse tööle mõlemast soost isikuid; 2 2) võtma erinevatele ametikohtadele võimalikult võrdsel määral naisi ja mehi ning tagama neile edutamisel võrdse kohtlemise; 3 3) kujundama töötingimused sobivaks nii naistele kui ka meestele ning tõhustama töö- ja pereelu ühitamist, arvestades sealjuures töötajate vajadusi; 4 4) hoolitsema, et töötaja on töökeskkonnas kaitstud seksuaalse ahistami",
-      "estleg:requestedCluster": "estleg:Cluster_SoVS_3"
+      "estleg:requestedCluster": "estleg:Cluster_SoVS_3",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Tööandja",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:SoVS_Par_6"
+        }
+      ]
     },
     {
       "@id": "estleg:SoVS_Par_12",
@@ -242,7 +370,22 @@
       "rdfs:label": "§ 13. Kahju hüvitamine",
       "estleg:sourceAct": "Soolise võrdõiguslikkuse seadus",
       "estleg:summary": "1 (1) Käesoleva seaduse §-des 6 ja 8 sätestatud diskrimineerimiskeelu rikkumise korral võib kannatanud isik nõuda kahju hüvitamist ning kahju tekitava käitumise lõpetamist. Käesoleva seaduse §-des 6 ja 8 sätestatud diskrimineerimiskeelu rikkumise korral võib kannatanud isik nõuda kahju hüvitamist ning kahju tekitava käitumise lõpetamist. 2 (2) Kannatanu võib nõuda, et lisaks käesoleva paragrahvi lõikes 1 sätestatule makstaks talle rikkumisega tekitatud mittevaralise kahju hüvitisena mõistlik rah",
-      "estleg:requestedCluster": "estleg:Cluster_SoVS_4"
+      "estleg:requestedCluster": "estleg:Cluster_SoVS_4",
+      "estleg:references": [
+        {
+          "@id": "estleg:SoVS_Par_6"
+        }
+      ],
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:SoVS_Par_14"
+        }
+      ]
     },
     {
       "@id": "estleg:SoVS_Par_14",
@@ -254,7 +397,17 @@
       "rdfs:label": "§ 14. Kahju hüvitamise nõude aegumine",
       "estleg:sourceAct": "Soolise võrdõiguslikkuse seadus",
       "estleg:summary": "Käesoleva seaduse §-s 13 sätestatud nõue aegub ühe aasta jooksul, arvates päevast, millal kannatanud isik kahju tekkimisest teada sai või pidi teada saama. Käesoleva seaduse §-s 13 sätestatud nõue aegub ühe aasta jooksul, arvates päevast, millal kannatanud isik kahju tekkimisest teada sai või pidi teada saama.",
-      "estleg:requestedCluster": "estleg:Cluster_SoVS_4"
+      "estleg:requestedCluster": "estleg:Cluster_SoVS_4",
+      "estleg:references": [
+        {
+          "@id": "estleg:SoVS_Par_13"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:VrdKS_Par_25"
+        }
+      ]
     },
     {
       "@id": "estleg:SoVS_Par_15",
@@ -266,7 +419,17 @@
       "rdfs:label": "§ 15. Soolise võrdõiguslikkuse volinik",
       "estleg:sourceAct": "Soolise võrdõiguslikkuse seadus",
       "estleg:summary": "1 (1) Soolise võrdõiguslikkuse volinik (edaspidi volinik ) on iseseisvalt tegutsev käesoleva seaduse nõuete täitmist jälgiv ja teisi käesoleva seadusega talle pandud ülesandeid täitev sõltumatu ja erapooletu asjatundja. Soolise võrdõiguslikkuse volinik (edaspidi volinik ) on iseseisvalt tegutsev käesoleva seaduse nõuete täitmist jälgiv ja teisi käesoleva seadusega talle pandud ülesandeid täitev sõltumatu ja erapooletu asjatundja. 2 (2) Voliniku töökord sätestatakse põhimääruses. Voliniku põhimää",
-      "estleg:requestedCluster": "estleg:Cluster_SoVS_5"
+      "estleg:requestedCluster": "estleg:Cluster_SoVS_5",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:VrdKS_Par_15"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:SoVS_Par_19"
+        }
+      ]
     },
     {
       "@id": "estleg:SoVS_Par_16",
@@ -278,7 +441,18 @@
       "rdfs:label": "§ 16. Voliniku pädevus",
       "estleg:sourceAct": "Soolise võrdõiguslikkuse seadus",
       "estleg:summary": "Volinik: 1 1) jälgib käesoleva seaduse nõuete täitmist; 2 2) võtab vastu isikute avaldusi ja annab arvamusi võimaliku diskrimineerimise asetleidmise kohta; 3 3) analüüsib seaduste mõju naiste ja meeste seisundile ühiskonnas; 4 4) teeb ettepanekuid Vabariigi Valitsusele ja valitsusasutustele, samuti kohalikele omavalitsustele ning nende asutustele õigusaktide muutmise ja täiendamise kohta; 5 5) nõustab ja teavitab Vabariigi Valitsust ja valitsusasutusi ning kohalike omavalitsusüksuste asutusi käe",
-      "estleg:requestedCluster": "estleg:Cluster_SoVS_5"
+      "estleg:requestedCluster": "estleg:Cluster_SoVS_5",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
+      "estleg:competenceType": "general",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:VrdKS_Par_16"
+        }
+      ]
     },
     {
       "@id": "estleg:SoVS_Par_17",
@@ -290,7 +464,17 @@
       "rdfs:label": "§ 17. Voliniku arvamus",
       "estleg:sourceAct": "Soolise võrdõiguslikkuse seadus",
       "estleg:summary": "1 (1) Volinik annab arvamuse diskrimineerimise läbi kannatanud isikule ja isikule, kellel on õigustatud huvi jälgida võrdse kohtlemise nõuete täitmist. Volinik annab arvamuse diskrimineerimise läbi kannatanud isikule ja isikule, kellel on õigustatud huvi jälgida võrdse kohtlemise nõuete täitmist. 2 (2) Käesoleva paragrahvi lõikes 1 nimetatud arvamuse eesmärk on anda hinnang, mis võimaldaks koostoimes käesoleva seaduse ning Eesti Vabariigi jaoks siduvate välislepingute ning muude õigusaktidega hi",
-      "estleg:requestedCluster": "estleg:Cluster_SoVS_5"
+      "estleg:requestedCluster": "estleg:Cluster_SoVS_5",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:VrdKS_Par_17"
+        }
+      ]
     },
     {
       "@id": "estleg:SoVS_Par_18",
@@ -302,7 +486,17 @@
       "rdfs:label": "§ 18. Voliniku arvamuse andmisest keeldumine",
       "estleg:sourceAct": "Soolise võrdõiguslikkuse seadus",
       "estleg:summary": "Volinik võib keelduda arvamuse andmisest, tagastada isiku esitatud kirjaliku avalduse või keelduda suulise avalduse vormistamisest, kui: 1 1) arvamuse andmine oleks võimatu soolisele diskrimineerimisele viitavate asjaolude puudumise tõttu; 2 2) samal alusel ja sama eseme kohta on volinik eelnevalt arvamuse andnud; 3 3) samal alusel ja sama eseme kohta on algatatud kohtumenetlus, jõustunud kohtuotsus, esitatud avaldus õiguskantslerile, pooleli õiguskantsleri lepitusmenetlus diskrimineerimisvaidlu",
-      "estleg:requestedCluster": "estleg:Cluster_SoVS_5"
+      "estleg:requestedCluster": "estleg:Cluster_SoVS_5",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:VrdKS_Par_18"
+        }
+      ]
     },
     {
       "@id": "estleg:SoVS_Par_19",
@@ -314,7 +508,17 @@
       "rdfs:label": "§ 19. Voliniku volituste lõppemine",
       "estleg:sourceAct": "Soolise võrdõiguslikkuse seadus",
       "estleg:summary": "Voliniku volitused loetakse lõppenuks: 1 1) käesoleva seaduse §-s 15 nimetatud viieaastase tähtaja möödumise päevast; 2 2) tema ametist tagasiastumise avalduse rahuldamise päevast; 3 3) tema kestva võimetuse korral üle kuue kuu järjest täita oma ametiülesandeid; 4 4) tahtlikult toimepandud kuriteo eest süüdimõistva kohtuotsuse jõustumise päevast; 5 5) ettevaatamatuse tõttu toimepandud kuriteo eest süüdimõistva kohtuotsuse jõustumise päevast, kui selle kohtuotsusega on määratud vabaduskaotuslik k",
-      "estleg:requestedCluster": "estleg:Cluster_SoVS_5"
+      "estleg:requestedCluster": "estleg:Cluster_SoVS_5",
+      "estleg:references": [
+        {
+          "@id": "estleg:SoVS_Par_15"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:VrdKS_Par_20"
+        }
+      ]
     },
     {
       "@id": "estleg:SoVS_Par_20",
@@ -326,7 +530,23 @@
       "rdfs:label": "§ 20. Voliniku tegevuse piirangud",
       "estleg:sourceAct": "Soolise võrdõiguslikkuse seadus",
       "estleg:summary": "1 (1) Volinik ei tohi ametisoleku ajal: 1 1) olla mõnes teises riigi-, kohaliku omavalitsuse või avalik-õigusliku juriidilise isiku ametis; 2 2) kuuluda äriühingu juhatusse, nõukogusse või järelevalveorganisse; 3 3) osaleda ettevõtluses, välja arvatud teha isiklikke investeeringuid ning saada neilt protsente ja dividende, samuti saada tulu talle kuuluva vara käsutamisest. Volinik ei tohi ametisoleku ajal: olla mõnes teises riigi-, kohaliku omavalitsuse või avalik-õigusliku juriidilise isiku amet",
-      "estleg:requestedCluster": "estleg:Cluster_SoVS_5"
+      "estleg:requestedCluster": "estleg:Cluster_SoVS_5",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Prohibition"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        }
+      ],
+      "estleg:competenceType": "supervision",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:VrdKS_Par_22"
+        }
+      ]
     },
     {
       "@id": "estleg:SoVS_Par_21",
@@ -338,7 +558,17 @@
       "rdfs:label": "§ 21. Avalduse uurimistulemuste avalikustamine",
       "estleg:sourceAct": "Soolise võrdõiguslikkuse seadus",
       "estleg:summary": "Volinik võib anda avalikkusele informatsiooni avaldaja nõusolekuta üksnes menetletava avalduse sisu kohta. Volinik võib anda avalikkusele informatsiooni avaldaja nõusolekuta üksnes menetletava avalduse sisu kohta.",
-      "estleg:requestedCluster": "estleg:Cluster_SoVS_5"
+      "estleg:requestedCluster": "estleg:Cluster_SoVS_5",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:VrdKS_Par_19"
+        }
+      ]
     },
     {
       "@id": "estleg:SoVS_Par_22",
@@ -350,7 +580,13 @@
       "rdfs:label": "§ 22. Sotsiaalministeeriumi ülesanded",
       "estleg:sourceAct": "Soolise võrdõiguslikkuse seadus",
       "estleg:summary": "Sotsiaalministeerium: 1 1) nõustab võrdse kohtlemise põhimõtte rakendamisega seotud küsimustes ning annab juhiseid käesoleva seaduse rakendamiseks; 2 2) analüüsib seaduste ja õigusaktide mõju naiste ja meeste seisundile ühiskonnas; 3 3) avaldab aruandeid naiste ja meeste võrdse kohtlemise põhimõtte rakendamise kohta. Sotsiaalministeerium: nõustab võrdse kohtlemise põhimõtte rakendamisega seotud küsimustes ning annab juhiseid käesoleva seaduse rakendamiseks; analüüsib seaduste ja õigusaktide mõju",
-      "estleg:requestedCluster": "estleg:Cluster_SoVS_6"
+      "estleg:requestedCluster": "estleg:Cluster_SoVS_6",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_sotsiaalministeerium"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:SoVS_Par_23",
@@ -362,7 +598,12 @@
       "rdfs:label": "§ 23. Nõustamine",
       "estleg:sourceAct": "Soolise võrdõiguslikkuse seadus",
       "estleg:summary": "1 (1) Sotsiaalministeeriumi võrdõiguslikkuse struktuuriüksuse ametnik (edaspidi nõustaja ) nõustab igaüht naiste ja meeste võrdse kohtlemise põhimõtte rakendamisega seonduvates küsimustes. Nõustamine võib toimuda suuliselt või kirjalikult. Nõustaja vastuvõtuajad tehakse teatavaks Sotsiaalministeeriumi veebilehel. Sotsiaalministeeriumi võrdõiguslikkuse struktuuriüksuse ametnik (edaspidi nõustaja ) nõustab igaüht naiste ja meeste võrdse kohtlemise põhimõtte rakendamisega seonduvates küsimustes. Nõ",
-      "estleg:requestedCluster": "estleg:Cluster_SoVS_6"
+      "estleg:requestedCluster": "estleg:Cluster_SoVS_6",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:SoVS_Par_24",
@@ -374,7 +615,23 @@
       "rdfs:label": "§ 24. Soolise võrdõiguslikkuse nõukogu",
       "estleg:sourceAct": "Soolise võrdõiguslikkuse seadus",
       "estleg:summary": "1 (1) Soolise võrdõiguslikkuse nõukogu on Sotsiaalministeeriumi juures asuv nõuandev kogu, kes: 1 1) kinnitab soolise võrdõiguslikkuse poliitika üldsuunad ning täidab käesolevas seaduses ja põhimääruses ettenähtud ülesandeid; 2 2) nõustab Vabariigi Valitsust soolise võrdõiguslikkuse edendamise strateegia küsimustes; 3 3) esitab Vabariigi Valitsusele oma seisukoha ministeeriumide esitatud riiklike programmide vastavuse kohta käesoleva seaduse §-le 9. Soolise võrdõiguslikkuse nõukogu on Sotsiaalmi",
-      "estleg:requestedCluster": "estleg:Cluster_SoVS_7"
+      "estleg:requestedCluster": "estleg:Cluster_SoVS_7",
+      "estleg:references": [
+        {
+          "@id": "estleg:SoVS_Par_9"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
+      "estleg:competenceType": "general",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:TAKS_Par_11"
+        }
+      ]
     },
     {
       "@id": "estleg:SoVS_Par_25",
@@ -386,7 +643,13 @@
       "rdfs:label": "§ 25. Seaduse jõustumine",
       "estleg:sourceAct": "Soolise võrdõiguslikkuse seadus",
       "estleg:summary": "Seadus jõustub 2004. aasta 1. mail. <table summary=\"allkiri\" width=\"100%\"> <tbody><tr valign=\"top\"> <td width=\"60%\"> </td> <td width=\"39%\"> <b><font size=\"-1\" style=\"font-size:-1px\">Riigikogu esimees Ene ERGMA</font></b> </td> </tr> </tbody></table> 1 EÜ Nõukogu direktiiv 75/117/EMÜ meeste ja naiste võrdse tasustamise põhimõtte kohaldamisega seotud seaduste ühtlustamise kohta liikmesriikides (EÜT L 45, 19.02.1975, lk 19–20); EÜ Nõukogu direktiiv 76/207/EMÜ meeste ja naiste võrdse kohtlemise põhi",
-      "estleg:requestedCluster": "estleg:Cluster_SoVS_8"
+      "estleg:requestedCluster": "estleg:Cluster_SoVS_8",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_riigikogu"
+        }
+      ],
+      "estleg:competenceType": "general"
     }
   ]
 }

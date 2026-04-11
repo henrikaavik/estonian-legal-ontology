@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -16,14 +17,35 @@
       ],
       "rdfs:label": "Tolliseaduse teemakaardistus (tolliõigus)",
       "dc:description": "Tolliseaduse põhiklastrid: tolliprotseduurid, impordimaksud ja tollikontroll (import/eksport kontekstis).",
-      "dc:source": "Tolliseadus (Riigi Teataja, kehtiv redaktsioon; semantilised viited vajavad §-taseme lõppverifitseerimist)"
+      "dc:source": "Tolliseadus (Riigi Teataja, kehtiv redaktsioon; semantilised viited vajavad §-taseme lõppverifitseerimist)",
+      "estleg:temporalStatus": "inForce",
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/5216"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5206"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2441"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2431"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2806"
+        }
+      ]
     },
     {
-      "@id": "estleg:LegalProvision_tolliseadus",
+      "@id": "estleg:LegalProvision_tolli_seadus",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)"
+      "rdfs:label": "Õigusnorm (paragrahv)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:TopicCluster_tolliseadus",
@@ -67,7 +89,7 @@
       "@id": "estleg:TOLLIS_Par_ProtseduurideAlgatamine",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "TollS (tolliprotseduuri kohaldamise üldnormid)",
       "rdfs:label": "Tolliprotseduuri valik ja kohaldamise eeldused",
@@ -79,7 +101,7 @@
       "@id": "estleg:TOLLIS_Par_ImportDeklaratsioon",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "TollS (impordi tollideklaratsiooni esitamise normid)",
       "rdfs:label": "Impordi tollideklaratsioon ja andmete esitamine",
@@ -91,7 +113,7 @@
       "@id": "estleg:TOLLIS_Par_EkspordiProtseduur",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "TollS (ekspordiprotseduuri ja väljaveo tolliformaalsuste normid)",
       "rdfs:label": "Ekspordi tolliprotseduur ja väljavedu",
@@ -103,19 +125,24 @@
       "@id": "estleg:TOLLIS_Par_Eriprotseduurid",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "TollS (eriprotseduuride normid: transiit, ladustamine, ajutine import jm)",
       "rdfs:label": "Eriprotseduurid: transiit, tolliladustamine ja ajutine import",
       "estleg:requestedCluster": "tolliprotseduurid",
       "estleg:summary": "Kirjeldab eriprotseduuride kasutamise aluseid, garantiisid ja tingimusi, mille alusel kaup võib olla tollijärelevalve all ilma tavapärase vabasse ringlusse lubamiseta.",
-      "estleg:sourceAct": "Tolliseadus"
+      "estleg:sourceAct": "Tolliseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:TOLLIS_Par_ImpordimaksuTekkimine",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "TollS (imporditollimaksu tekkimise ja tasumise kohustuse normid)",
       "rdfs:label": "Imporditollimaksu tekkimine",
@@ -127,7 +154,7 @@
       "@id": "estleg:TOLLIS_Par_TollivaartusJaArvestus",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "TollS (tolliväärtuse määramise ja impordimaksu arvestamise normid)",
       "rdfs:label": "Tolliväärtus, tariif ja impordimaksu arvestus",
@@ -139,7 +166,7 @@
       "@id": "estleg:TOLLIS_Par_MaksetahtaegJaTagatis",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "TollS (maksetähtaja, tagatise ja maksu tasumise normid)",
       "rdfs:label": "Impordimaksu tasumine, maksetähtaeg ja tagatis",
@@ -151,7 +178,7 @@
       "@id": "estleg:TOLLIS_Par_TagasimakseJaVabastus",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "TollS (impordimaksu tagasimakse ja maksuvabastuse normid)",
       "rdfs:label": "Impordimaksu tagasimakse, vähendamine ja vabastus",
@@ -163,7 +190,7 @@
       "@id": "estleg:TOLLIS_Par_Kontrollimeetmed",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "TollS (tollikontrolli vormide ja meetmete normid)",
       "rdfs:label": "Tollikontrolli meetmed ja riskipõhine valik",
@@ -175,7 +202,7 @@
       "@id": "estleg:TOLLIS_Par_PeatamineJaKinniPidamine",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "TollS (kauba peatamise, kinnipidamise ja läbivaatuse normid)",
       "rdfs:label": "Kauba peatamine, kinnipidamine ja läbivaatus",
@@ -187,7 +214,7 @@
       "@id": "estleg:TOLLIS_Par_TollijarelevalveAllKaup",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "TollS (tollijärelevalve all oleva kauba käsutamise normid)",
       "rdfs:label": "Tollijärelevalve all oleva kauba käitlemine",
@@ -199,7 +226,7 @@
       "@id": "estleg:TOLLIS_Par_JarelevalveToiminguteVaidlustamine",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "TollS (tollikontrolli toimingute vaidlustamise normid)",
       "rdfs:label": "Tollikontrolli toimingute vaidlustamine",

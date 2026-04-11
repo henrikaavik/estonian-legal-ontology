@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -14,14 +15,46 @@
       "@type": [
         "owl:Ontology"
       ],
-      "rdfs:label": "AÕS Osa 2 (Omand) kaardistus: omandi omandamine, säilimine/kadumine, vallas- ja kinnisasja omand"
+      "rdfs:label": "AÕS Osa 2 (Omand) kaardistus: omandi omandamine, säilimine/kadumine, vallas- ja kinnisasja omand",
+      "estleg:temporalStatus": "inForce",
+      "estleg:affectedBy": [
+        {
+          "@id": "estleg:Draft_JDM25_0711"
+        },
+        {
+          "@id": "estleg:Draft_KLIM22_0460"
+        },
+        {
+          "@id": "estleg:Draft_JDM18_0435"
+        },
+        {
+          "@id": "estleg:Draft_MKM13_1552"
+        }
+      ],
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/5636"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5226"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/1221"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2431"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_asjaoigusseadus_osa2",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)"
+      "rdfs:label": "Õigusnorm (paragrahv)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:Cluster_OmandiOmandamine",
@@ -60,7 +93,7 @@
       "estleg:sourceAct": "Asjaõigusseadus"
     },
     {
-      "@id": "estleg:AOS_Par_93",
+      "@id": "estleg:AOS_Osa2_Par_93",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision_asjaoigusseadus_osa2"
@@ -81,7 +114,12 @@
       "rdfs:label": "Heauskne omandamine",
       "estleg:requestedCluster": "omandi_omandamine",
       "estleg:summary": "Vallasasi võib üle minna heausksele omandajale ka mitteomanikult, kui omandaja ei teadnud ega pidanudki teadma võõrandaja käsutusõiguse puudumisest.",
-      "estleg:sourceAct": "Asjaõigusseadus"
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:AOS_Par_98_asjaoigusseadus_osa2",
@@ -93,10 +131,16 @@
       "rdfs:label": "Leiu teatamiskohustus",
       "estleg:requestedCluster": "omandi_omandamine",
       "estleg:summary": "Leitud asja valdusse võtja peab leiust teavitama omanikku, kaotajat või pädevat asutust seaduses sätestatud korras.",
-      "estleg:sourceAct": "Asjaõigusseadus"
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Leitud asja valdusse võtja"
     },
     {
-      "@id": "estleg:AOS_Par_101",
+      "@id": "estleg:AOS_Osa2_Par_101",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision_asjaoigusseadus_osa2"
@@ -105,10 +149,15 @@
       "rdfs:label": "Leitud asja omandamine",
       "estleg:requestedCluster": "omandi_omandamine",
       "estleg:summary": "Kui omanik ettenähtud tähtaja jooksul välja ei ilmu, võib leitud asi minna seaduses ette nähtud tingimustel leidja või muu õigustatud isiku omandisse.",
-      "estleg:sourceAct": "Asjaõigusseadus"
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
-      "@id": "estleg:AOS_Par_102",
+      "@id": "estleg:AOS_Osa2_Par_102",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision_asjaoigusseadus_osa2"
@@ -120,7 +169,7 @@
       "estleg:sourceAct": "Asjaõigusseadus"
     },
     {
-      "@id": "estleg:AOS_Par_104",
+      "@id": "estleg:AOS_Osa2_Par_104",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision_asjaoigusseadus_osa2"
@@ -129,7 +178,12 @@
       "rdfs:label": "Uue vallasasja valmistamine",
       "estleg:requestedCluster": "omandi_omandamine",
       "estleg:summary": "Uue asja valmistamisel võib omand tekkida valmistajale või materjali omanikule, sõltuvalt seaduses sätestatud eeldustest.",
-      "estleg:sourceAct": "Asjaõigusseadus"
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:AOS_Par_68_asjaoigusseadus_osa2",
@@ -153,7 +207,12 @@
       "rdfs:label": "Asja väljanõudmine ebaseaduslikust valdusest",
       "estleg:requestedCluster": "omandi_sailimine_ja_kadumine",
       "estleg:summary": "Omanik võib nõuda asja väljaandmist isikult, kes valdab asja õigusliku aluseta.",
-      "estleg:sourceAct": "Asjaõigusseadus"
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:AOS_Par_89_asjaoigusseadus_osa2",
@@ -165,7 +224,12 @@
       "rdfs:label": "Omandi kaitse valduse kaotuseta rikkumise korral",
       "estleg:requestedCluster": "omandi_sailimine_ja_kadumine",
       "estleg:summary": "Omanik võib nõuda omandiõiguse rikkumise kõrvaldamist ja rikkumisest hoidumist ka siis, kui asi on tema valduses.",
-      "estleg:sourceAct": "Asjaõigusseadus"
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:AOS_Par_110",
@@ -189,7 +253,12 @@
       "rdfs:label": "Omandi lõppemine hülgamisega",
       "estleg:requestedCluster": "omandi_sailimine_ja_kadumine",
       "estleg:summary": "Vallasomand võib lõppeda, kui omanik asja valdusest teadlikult loobub ja väljendab tahet omandiõigusest taganeda.",
-      "estleg:sourceAct": "Asjaõigusseadus"
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:AOS_Par_56_1_asjaoigusseadus_osa2",
@@ -240,7 +309,7 @@
       "estleg:sourceAct": "Asjaõigusseadus"
     },
     {
-      "@id": "estleg:AOS_Par_119",
+      "@id": "estleg:AOS_Osa2_Par_119",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision_asjaoigusseadus_osa2"
@@ -252,7 +321,7 @@
       "estleg:sourceAct": "Asjaõigusseadus"
     },
     {
-      "@id": "estleg:AOS_Par_123",
+      "@id": "estleg:AOS_Osa2_Par_123",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision_asjaoigusseadus_osa2"

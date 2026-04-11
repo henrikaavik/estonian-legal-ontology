@@ -6,24 +6,46 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
-      "@id": "estleg:VSS_Map_2026",
+      "@id": "estleg:VolgSS_Map_2026",
       "@type": [
         "owl:Ontology"
       ],
       "rdfs:label": "Võlgade sissenõudmise seaduse teemakaardistus (VSS)",
       "dc:source": "Võlgade sissenõudmise seadus (Riigi Teataja, kehtiv terviktekst)",
-      "estleg:scope": "Debt collection practices, collector obligations, and consumer protection safeguards in debt recovery context"
+      "estleg:scope": "Debt collection practices, collector obligations, and consumer protection safeguards in debt recovery context",
+      "estleg:temporalStatus": "inForce",
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/2431"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2806"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2441"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5226"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/3606"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_volgade_sissenoudmise",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv või normiplokk)"
+      "rdfs:label": "Õigusnorm (paragrahv või normiplokk)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:TopicCluster_volgade_sissenoudmise",
@@ -85,7 +107,13 @@
       "rdfs:label": "Kohtueelse sissenõudmise sammud ja teavitamine",
       "estleg:requestedCluster": "volgade_sissenoudmise_praktikad",
       "estleg:summary": "Kohtueelses menetluses peab nõude esitajal või volinikul olema dokumenteeritud alus nõude olemasoluks, võlgnikule tuleb esitada arusaadav teave nõude suuruse, aluse ja vaidlustamise võimaluste kohta.",
-      "estleg:sourceAct": "Võlgade sissenõudmise seadus"
+      "estleg:sourceAct": "Võlgade sissenõudmise seadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Kohtueelses menetluses"
     },
     {
       "@id": "estleg:VSS_Norm_003",
@@ -97,7 +125,13 @@
       "rdfs:label": "Lubatud ja keelatud sissenõudmismeetodid",
       "estleg:requestedCluster": "volgade_sissenoudmise_praktikad",
       "estleg:summary": "Sissenõudmine peab toimuma viisil, mis ei alanda võlgnikku ega kasuta eksitavaid või agressiivseid võtteid; lubatud on üksnes seadusega kooskõlas olevad suhtlus- ja menetlusmeetodid.",
-      "estleg:sourceAct": "Võlgade sissenõudmise seadus"
+      "estleg:sourceAct": "Võlgade sissenõudmise seadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Sissenõudmine"
     },
     {
       "@id": "estleg:VSS_Norm_010",
@@ -109,7 +143,13 @@
       "rdfs:label": "Voliniku tegevusloa- ja sobivusnõuded",
       "estleg:requestedCluster": "voliniku_kohustused",
       "estleg:summary": "Võlgade sissenõudmise volinik peab vastama seaduses sätestatud usaldusväärsuse, pädevuse ja organisatsioonilise vastavuse nõuetele enne tegevuse alustamist ja selle käigus.",
-      "estleg:sourceAct": "Võlgade sissenõudmise seadus"
+      "estleg:sourceAct": "Võlgade sissenõudmise seadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Võlgade sissenõudmise volinik"
     },
     {
       "@id": "estleg:VSS_Norm_011",
@@ -121,7 +161,13 @@
       "rdfs:label": "Voliniku kohustus tagada jälgitav menetlus",
       "estleg:requestedCluster": "voliniku_kohustused",
       "estleg:summary": "Volinik peab säilitama nõude alusdokumendid, suhtluslogid ja menetlustoimingud nii, et hilisem järelevalve ja võlgniku õiguskaitse oleksid tõhusalt teostatavad.",
-      "estleg:sourceAct": "Võlgade sissenõudmise seadus"
+      "estleg:sourceAct": "Võlgade sissenõudmise seadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Volinik"
     },
     {
       "@id": "estleg:VSS_Norm_012",
@@ -133,7 +179,13 @@
       "rdfs:label": "Voliniku lojaalsus- ja läbipaistvuskohustus",
       "estleg:requestedCluster": "voliniku_kohustused",
       "estleg:summary": "Volinik peab vältima huvide konflikte, esitama tasud ja kulud arusaadavalt ning tegutsema viisil, mis ei moonuta nõude tegelikku ulatust ega võlgniku valikuvõimalusi.",
-      "estleg:sourceAct": "Võlgade sissenõudmise seadus"
+      "estleg:sourceAct": "Võlgade sissenõudmise seadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Volinik"
     },
     {
       "@id": "estleg:VSS_Norm_020",
@@ -145,7 +197,13 @@
       "rdfs:label": "Tarbija õigus selgele nõudeteabele",
       "estleg:requestedCluster": "tarbijakaitse",
       "estleg:summary": "Tarbijale tuleb anda selges vormis teave nõude aluse, võlasumma osade, kõrvalnõuete, maksetähtaegade ja kaebe- või vaidlustamisvõimaluste kohta enne intensiivsemate sissenõudmistoimingute kasutamist.",
-      "estleg:sourceAct": "Võlgade sissenõudmise seadus"
+      "estleg:sourceAct": "Võlgade sissenõudmise seadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Tarbijale"
     },
     {
       "@id": "estleg:VSS_Norm_021",
@@ -157,7 +215,12 @@
       "rdfs:label": "Tarbija kaitse ülemäärase kulukoormuse eest",
       "estleg:requestedCluster": "tarbijakaitse",
       "estleg:summary": "Tarbijalt nõutavad sissenõudmiskulud peavad olema põhjendatud, mõõdukad ja õiguslikult lubatud; ebamõistlikud või topeltarvestatud kulud ei tohi koormata tarbijat.",
-      "estleg:sourceAct": "Võlgade sissenõudmise seadus"
+      "estleg:sourceAct": "Võlgade sissenõudmise seadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Prohibition"
+        }
+      ]
     },
     {
       "@id": "estleg:VSS_Norm_022",

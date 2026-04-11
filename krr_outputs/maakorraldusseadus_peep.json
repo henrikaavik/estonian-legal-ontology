@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -15,14 +16,85 @@
         "owl:Ontology"
       ],
       "rdfs:label": "Maakorraldusseadus teemakaardistus",
-      "dc:source": "Maakorraldusseadus"
+      "dc:source": "Maakorraldusseadus",
+      "estleg:entryIntoForce": {
+        "@value": "1995-02-20",
+        "@type": "xsd:date"
+      },
+      "estleg:repealDate": {
+        "@value": "2002-07-31",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2001-11-14",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "1995-01-01",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "repealed",
+      "estleg:amendedBy": [
+        {
+          "@id": "estleg:Amendment_maakorraldusseadus_1"
+        },
+        {
+          "@id": "estleg:Amendment_maakorraldusseadus_2"
+        },
+        {
+          "@id": "estleg:Amendment_maakorraldusseadus_3"
+        },
+        {
+          "@id": "estleg:Amendment_maakorraldusseadus_4"
+        },
+        {
+          "@id": "estleg:Amendment_maakorraldusseadus_5"
+        },
+        {
+          "@id": "estleg:Amendment_maakorraldusseadus_6"
+        },
+        {
+          "@id": "estleg:Amendment_maakorraldusseadus_7"
+        },
+        {
+          "@id": "estleg:Amendment_maakorraldusseadus_8"
+        },
+        {
+          "@id": "estleg:Draft_MKM16_0948"
+        }
+      ],
+      "estleg:affectedBy": [
+        {
+          "@id": "estleg:Draft_MKM16_0948"
+        }
+      ],
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/6016"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2446"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/1221"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5226"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/3606"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_maakorraldusseadus",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)"
+      "rdfs:label": "Õigusnorm (paragrahv)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:Cluster_MaaKS_1",
@@ -98,7 +170,13 @@
       "rdfs:label": "§ 3. Maakorralduse läbiviimine ja järelevalve",
       "estleg:sourceAct": "Maakorraldusseadus",
       "estleg:summary": "1 (1) Maakorralduse läbiviimine linna või valla territooriumil kuulub kohaliku omavalitsuse pädevusse. Maakorralduse läbiviimine linna või valla territooriumil kuulub kohaliku omavalitsuse pädevusse. 2 (2) Riiklikku järelevalvet maakorralduse seaduslikkuse üle teostab maavanem. Riiklikku järelevalvet maakorralduse seaduslikkuse üle teostab maavanem.",
-      "estleg:requestedCluster": "estleg:Cluster_MaaKS_1"
+      "estleg:requestedCluster": "estleg:Cluster_MaaKS_1",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        }
+      ],
+      "estleg:competenceType": "supervision"
     },
     {
       "@id": "estleg:MaaKS_Par_4",
@@ -110,7 +188,17 @@
       "rdfs:label": "§ 4. Maakorralduse läbiviijad ning nende õigused ja kohustused",
       "estleg:sourceAct": "Maakorraldusseadus",
       "estleg:summary": "1 (1) Maakorralduse läbiviija on vannutatud maamõõtja või vastavat litsentsi omav isik. Maakorralduse läbiviija on vannutatud maamõõtja või vastavat litsentsi omav isik. 2 (2) Maakorralduse läbiviijal on õigus: 1 1) maakorralduse läbiviimise eesmärgil viibida päikesetõusust kuni päikeseloojanguni võõral kinnisasjal; 2 2) saada maakorralduse osalistelt, riigiasutustelt ja kohalikelt omavalitsustelt maakorralduse läbiviimiseks vajalikke andmeid; 3 3) teha kinnisasjade omanikele ettepanekuid kinnis",
-      "estleg:requestedCluster": "estleg:Cluster_MaaKS_1"
+      "estleg:requestedCluster": "estleg:Cluster_MaaKS_1",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:MaaKS_Par_32"
+        }
+      ]
     },
     {
       "@id": "estleg:MaaKS_Par_5",
@@ -134,7 +222,18 @@
       "rdfs:label": "§ 6. Maakorralduse finantseerimine",
       "estleg:sourceAct": "Maakorraldusseadus",
       "estleg:summary": "1 (1) Maakorraldust finantseerib kinnisasja omanik, kui seaduse või lepinguga ei ole sätestatud teisiti. Maakorraldust finantseerib kinnisasja omanik, kui seaduse või lepinguga ei ole sätestatud teisiti. 2 (2) Maakorralduse rahastamise, riiklike toetusrahade määramise ja krediteerimise korra kehtestab Vabariigi Valitsus. Maakorralduse rahastamise, riiklike toetusrahade määramise ja krediteerimise korra kehtestab Vabariigi Valitsus. 3 (3) Kui maakorraldustoimingute läbiviimisel tehtud muudatuste ",
-      "estleg:requestedCluster": "estleg:Cluster_MaaKS_1"
+      "estleg:requestedCluster": "estleg:Cluster_MaaKS_1",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
+      "estleg:competenceType": "regulation",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Maaparandusseadus_Par_13"
+        }
+      ]
     },
     {
       "@id": "estleg:MaaKS_Par_7",
@@ -158,7 +257,12 @@
       "rdfs:label": "§ 8. Maakorralduse osaliste õigused",
       "estleg:sourceAct": "Maakorraldusseadus",
       "estleg:summary": "1 (1) Osalisel on õigus: 1 1) tutvuda maakorralduse materjalidega, saada nendest ärakirju; 2 2) saada kohalikult omavalitsuselt, riigiasutustelt ja maakorralduse läbiviijalt informatsiooni läbiviidava maakorralduse kohta; 3 3) võtta maakorraldusest osa isiklikult või esindaja kaudu; 4 4) teha ettepanekuid ebaotstarbekate või põhjendamatute kinnisomandi kitsenduste muutmiseks või tühistamiseks ning territoriaalplaneeringu muutmiseks või tühistamiseks; 5 5) nõuda kinnisasja piiri looduses kättenäi",
-      "estleg:requestedCluster": "estleg:Cluster_MaaKS_2"
+      "estleg:requestedCluster": "estleg:Cluster_MaaKS_2",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:MaaKS_Par_9",
@@ -170,7 +274,13 @@
       "rdfs:label": "§ 9. Maakorraldusühistu",
       "estleg:sourceAct": "Maakorraldusseadus",
       "estleg:summary": "1 (1) Maakorraldusühistu liikmeks võib olla kinnisasja omanik, kelle kinnisasjal viiakse läbi maakorraldustoiminguid. Maakorraldusühistu liikmeks võib olla kinnisasja omanik, kelle kinnisasjal viiakse läbi maakorraldustoiminguid. 2 (2) Maakorraldusühistu liige on kohustatud tasuma ühistule maakorralduse läbiviimisega seotud teostuskulud. Maakorraldusühistu liige on kohustatud tasuma ühistule maakorralduse läbiviimisega seotud teostuskulud.",
-      "estleg:requestedCluster": "estleg:Cluster_MaaKS_2"
+      "estleg:requestedCluster": "estleg:Cluster_MaaKS_2",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Maakorraldusühistu liige"
     },
     {
       "@id": "estleg:MaaKS_Par_10",
@@ -182,7 +292,12 @@
       "rdfs:label": "§ 10. Maakorraldustoimingute läbiviimine",
       "estleg:sourceAct": "Maakorraldusseadus",
       "estleg:summary": "1 (1) Lihtsad maakorraldustoimingud on käesoleva seaduse paragrahvides 12-15 loetletud toimingud, mis viiakse läbi korraldatavate kinnisasjade omanike taotlusel. Lihtsad maakorraldustoimingud on käesoleva seaduse paragrahvides 12-15 loetletud toimingud, mis viiakse läbi korraldatavate kinnisasjade omanike taotlusel. 2 (2) Ümberkruntimist võib algatada käesoleva seaduse paragrahv 17 2. lõikes nimetatud isikute taotlusel. Ümberkruntimist võib algatada käesoleva seaduse paragrahv 17 2. lõikes nimet",
-      "estleg:requestedCluster": "estleg:Cluster_MaaKS_3"
+      "estleg:requestedCluster": "estleg:Cluster_MaaKS_3",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:MaaKS_Par_11",
@@ -266,7 +381,12 @@
       "rdfs:label": "§ 17. Ümberkruntimise taotluse esitamine",
       "estleg:sourceAct": "Maakorraldusseadus",
       "estleg:summary": "1 (1) Taotlus ümberkruntimise algatamiseks esitatakse kinnisasja asukohajärgsele kohalikule omavalitsusele. Taotlus ümberkruntimise algatamiseks esitatakse kinnisasja asukohajärgsele kohalikule omavalitsusele. 2 (2) Ümberkruntimise taotluse võib esitada kinnisasja omanik, valitsusasutus või riigi omandis oleva kinnisasja valitseja. Maavanem võib teha ümberkruntimise algatamise ettepaneku ilma vastava taotluseta. Ümberkruntimise taotluse võib esitada kinnisasja omanik, valitsusasutus või riigi om",
-      "estleg:requestedCluster": "estleg:Cluster_MaaKS_3"
+      "estleg:requestedCluster": "estleg:Cluster_MaaKS_3",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:MaaKS_Par_18",
@@ -278,7 +398,13 @@
       "rdfs:label": "§ 18. Eeltööd",
       "estleg:sourceAct": "Maakorraldusseadus",
       "estleg:summary": "1 (1) Kohalik omavalitsus või tema volitatud isik viib läbi eeltööd ümberkruntimise otstarbekuse, vajalike maakorraldustoimingute ja maakorralduspiirkonna ulatuse määramiseks ning osaliste ja maakorralduskulude selgitamiseks. Kohalik omavalitsus või tema volitatud isik viib läbi eeltööd ümberkruntimise otstarbekuse, vajalike maakorraldustoimingute ja maakorralduspiirkonna ulatuse määramiseks ning osaliste ja maakorralduskulude selgitamiseks. 2 (2) Kohalik omavalitsus lükkab taotluse tagasi, kui:",
-      "estleg:requestedCluster": "estleg:Cluster_MaaKS_3"
+      "estleg:requestedCluster": "estleg:Cluster_MaaKS_3",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:MaaKS_Par_19",
@@ -302,7 +428,19 @@
       "rdfs:label": "§ 20. Osaliste koosoleku pidamine",
       "estleg:sourceAct": "Maakorraldusseadus",
       "estleg:summary": "1 (1) Kohalik omavalitsus või tema poolt volitatud isik korraldab pärast eeldatavate osaliste selgitamist koosoleku ümberkruntimise eesmärgi, osaliste ja maakorralduspiirkonna kindlaksmääramiseks ning ümberkruntimise algatamise otsustamiseks. Koosolekul valivad osalised maakorralduse läbiviija. Koosoleku korraldaja on kohustatud koosolekul informeerima osalisi nende õigustest ja kohustustest ümberkruntimise läbiviimisel. Kohalik omavalitsus või tema poolt volitatud isik korraldab pärast eeldatav",
-      "estleg:requestedCluster": "estleg:Cluster_MaaKS_3"
+      "estleg:requestedCluster": "estleg:Cluster_MaaKS_3",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Koosoleku korraldaja",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        }
+      ],
+      "estleg:competenceType": "enforcement"
     },
     {
       "@id": "estleg:MaaKS_Par_21",
@@ -314,7 +452,18 @@
       "rdfs:label": "§ 21. Ümberkruntimise algatamine",
       "estleg:sourceAct": "Maakorraldusseadus",
       "estleg:summary": "1 (1) Ümberkruntimise algatab kohalik omavalitsus eelkava ja käesoleva seaduse paragrahv 20 sätestatud osaliste koosoleku protokolli alusel. Kohaliku omavalitsuse volikogul on õigus enne käesoleva paragrahvi 2. lõikes sätestatud ümberkruntimise algatamist osalise põhjendatud taotlusel kinnisasi või selle osa maakorralduspiirkonnast välja arvata. Ümberkruntimise algatab kohalik omavalitsus eelkava ja käesoleva seaduse paragrahv 20 sätestatud osaliste koosoleku protokolli alusel. Kohaliku omavalit",
-      "estleg:requestedCluster": "estleg:Cluster_MaaKS_3"
+      "estleg:requestedCluster": "estleg:Cluster_MaaKS_3",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:MaaKS_Par_22",
@@ -326,7 +475,13 @@
       "rdfs:label": "§ 22. Ümberkruntimisega kaasnevad kinnisomandi kitsendused",
       "estleg:sourceAct": "Maakorraldusseadus",
       "estleg:summary": "1 (1) Osaline on kohustatud ümberkruntimise algatamise otsuse tegemise momendist kuni ümberkruntimise lõpetamiseni säilitama kinnisasja senise seisukorra ja sihtotstarbe ning mitte muutma oma tegevusega kinnisasja väärtust. Osaline on kohustatud ümberkruntimise algatamise otsuse tegemise momendist kuni ümberkruntimise lõpetamiseni säilitama kinnisasja senise seisukorra ja sihtotstarbe ning mitte muutma oma tegevusega kinnisasja väärtust. 2 (2) Kulutusi ja parendusi, mis on tehtud kinnisasja väär",
-      "estleg:requestedCluster": "estleg:Cluster_MaaKS_3"
+      "estleg:requestedCluster": "estleg:Cluster_MaaKS_3",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Osaline"
     },
     {
       "@id": "estleg:MaaKS_Par_23",
@@ -350,7 +505,12 @@
       "rdfs:label": "§ 24. Läbirääkimised",
       "estleg:sourceAct": "Maakorraldusseadus",
       "estleg:summary": "1 (1) Maakorralduse läbiviija on ümberkruntimisel kohustatud arvestama kõigi osaliste õigusi ning saavutama ümberkruntimise eesmärgi üldjuhul osaliste kokkuleppel. Kui ümberkruntimist ei ole võimalik endise kinnisasja väärtuse alusel otstarbekalt läbi viia, võib maakorralduse läbiviija teha ettepaneku osalisele, kellele ei ole võimalik moodustada samaväärset kinnisasja, hüvituse määramiseks kooskõlas paragrahv 16 3. lõikega. Maakorralduse läbiviija on ümberkruntimisel kohustatud arvestama kõigi ",
-      "estleg:requestedCluster": "estleg:Cluster_MaaKS_3"
+      "estleg:requestedCluster": "estleg:Cluster_MaaKS_3",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:MaaKS_Par_25",
@@ -374,7 +534,13 @@
       "rdfs:label": "§ 26. Kava kooskõlastamine ja kinnitamine",
       "estleg:sourceAct": "Maakorraldusseadus",
       "estleg:summary": "1 (1) Maakorralduse läbiviija kutsub kava kooskõlastamiseks kokku osaliste koosoleku või saadab kõigile osalistele sellest väljavõtte. Maakorralduse läbiviija kutsub kava kooskõlastamiseks kokku osaliste koosoleku või saadab kõigile osalistele sellest väljavõtte. 2 (2) Koosoleku kohta koostab koosoleku korraldaja protokolli, millele kirjutavad alla koosolekust osavõtjad. Protokolli kantakse koosoleku toimumise aeg ja koht, sellest osavõtjate nimed, päevakord ning tehtud otsused. Protokoll peab s",
-      "estleg:requestedCluster": "estleg:Cluster_MaaKS_3"
+      "estleg:requestedCluster": "estleg:Cluster_MaaKS_3",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Protokoll"
     },
     {
       "@id": "estleg:MaaKS_Par_27",
@@ -386,7 +552,12 @@
       "rdfs:label": "§ 27. Kava elluviimine",
       "estleg:sourceAct": "Maakorraldusseadus",
       "estleg:summary": "1 (1) Kava elluviimisel teevad osalised kavas määratud tähtaegadeks omavahelised tasaarveldused ja hüvitused ning muud kavaga seotud toimingud. Kava elluviimisel teevad osalised kavas määratud tähtaegadeks omavahelised tasaarveldused ja hüvitused ning muud kavaga seotud toimingud. 2 (2) Maakorralduse läbiviija teeb katastrimõõdistamise. Uusi kinnisasju võib kasutada, kui maakorralduse läbiviija on nende piirid osalistele looduses kätte näidanud. Maakorralduse läbiviija teeb katastrimõõdistamise.",
-      "estleg:requestedCluster": "estleg:Cluster_MaaKS_3"
+      "estleg:requestedCluster": "estleg:Cluster_MaaKS_3",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:MaaKS_Par_28",
@@ -398,7 +569,13 @@
       "rdfs:label": "§ 28. Kannete tegemine kinnistusraamatusse",
       "estleg:sourceAct": "Maakorraldusseadus",
       "estleg:summary": "1 (1) Ümberkruntimise läbiviimisel asjaõiguse kohta kinnistusraamatusse kande tegemine, muutmine või kustutamine on lõivuvaba. Ümberkruntimise läbiviimisel asjaõiguse kohta kinnistusraamatusse kande tegemine, muutmine või kustutamine on lõivuvaba. 2 (2) Pärast ümberkruntimise tulemusena toimunud muudatuste kinnistamist kustutab kinnistusamet ümberkruntimismärke. Kinnistusamet teeb kanded kinnistusregistri osadesse kinnitatud kava alusel. Pärast kannete tegemist kustutab kinnistusamet tarbetuks m",
-      "estleg:requestedCluster": "estleg:Cluster_MaaKS_3"
+      "estleg:requestedCluster": "estleg:Cluster_MaaKS_3",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kinnistusamet"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:MaaKS_Par_29",
@@ -422,7 +599,13 @@
       "rdfs:label": "§ 30. Vaidluste lahendamine",
       "estleg:sourceAct": "Maakorraldusseadus",
       "estleg:summary": "1 (1) Maakorralduse osaliste vahel maakorraldustoimingute läbiviimisel tekkinud vaidlused lahendab maakorralduse läbiviija. Maakorralduse osaliste vahel maakorraldustoimingute läbiviimisel tekkinud vaidlused lahendab maakorralduse läbiviija. 2 (2) Kaebused maakorralduse läbiviija tegevuse peale lahendab maavanem. Kaebused maakorralduse läbiviija tegevuse peale lahendab maavanem. 3 (3) Kaebused maavanema otsuse peale lahendab keskkonnaminister. Kaebused maavanema otsuse peale lahendab keskkonnami",
-      "estleg:requestedCluster": "estleg:Cluster_MaaKS_4"
+      "estleg:requestedCluster": "estleg:Cluster_MaaKS_4",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_keskkonnaminister"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:MaaKS_Par_31",
@@ -458,7 +641,12 @@
       "rdfs:label": "§ 32. Maakorralduse läbiviija valimine, maakorralduspiirkonna ja osaliste kinnitamine ning ümberkruntimise algatamine",
       "estleg:sourceAct": "Maakorraldusseadus",
       "estleg:summary": "1 (1) Kui taotletakse toetusraha, korraldab maakorralduse läbiviija leidmiseks vähempakkumise toetusraha määraja või tema poolt volitatud isik. Kui taotletakse toetusraha, korraldab maakorralduse läbiviija leidmiseks vähempakkumise toetusraha määraja või tema poolt volitatud isik. 2 (2) Kui toetusraha ei taotleta ega määrata, valib maavanem maakorralduse läbiviija vallavalitsuse poolt esitatud vähemalt kolme käesoleva seaduse §-s 4 esitatud nõuetele vastava kandidaadi hulgast. Kui toetusraha ei ",
-      "estleg:requestedCluster": "estleg:Cluster_MaaKS_5"
+      "estleg:requestedCluster": "estleg:Cluster_MaaKS_5",
+      "estleg:references": [
+        {
+          "@id": "estleg:MaaKS_Par_4"
+        }
+      ]
     },
     {
       "@id": "estleg:MaaKS_Par_33",
@@ -482,7 +670,13 @@
       "rdfs:label": "§ 34. Kava kooskõlastamine ja kinnitamine",
       "estleg:sourceAct": "Maakorraldusseadus",
       "estleg:summary": "1 (1) Kava kooskõlastatakse maavanema või tema volitatud isikuga. Kava kooskõlastatakse maavanema või tema volitatud isikuga. 2 (2) Vallavalitsus teeb otsuse ümberkruntimiskava vastuvõtmise kohta ja korraldab kava avaliku väljapaneku. Maakorralduse läbiviija teatab kava avaliku väljapaneku koha, alguse ja kestuse igale osalisele kas allkirja vastu või tähitud kirjaga hiljemalt 10 päeva enne avaliku väljapaneku algust. Teatele lisatakse väljavõte kavast. Väljavõte peab sisaldama informatsiooni: 1",
-      "estleg:requestedCluster": "estleg:Cluster_MaaKS_5"
+      "estleg:requestedCluster": "estleg:Cluster_MaaKS_5",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Väljavõte"
     },
     {
       "@id": "estleg:MaaKS_Par_34_35",

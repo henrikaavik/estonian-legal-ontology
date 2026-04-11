@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -15,14 +16,43 @@
         "owl:Ontology"
       ],
       "rdfs:label": "Isikuandmete kaitse seaduse teemakaardistus",
-      "dc:source": "Isikuandmete kaitse seadus (RT I, 12.07.2025, 14; redaktsioon jõustus 01.10.2025)"
+      "dc:source": "Isikuandmete kaitse seadus (RT I, 12.07.2025, 14; redaktsioon jõustus 01.10.2025)",
+      "estleg:temporalStatus": "inForce",
+      "estleg:affectedBy": [
+        {
+          "@id": "estleg:Draft_JDM25_0523"
+        },
+        {
+          "@id": "estleg:Draft_JDM18_0281"
+        }
+      ],
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/2826"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/3606"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2441"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5226"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2431"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_isikuandmete_kaitse",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)"
+      "rdfs:label": "Õigusnorm (paragrahv)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:Cluster_DataSubjectRights",
@@ -82,7 +112,13 @@
       "rdfs:label": "Andmesubjekti kaebeõigus Andmekaitse Inspektsioonile",
       "estleg:requestedCluster": "andmesubjekti_oigused",
       "estleg:summary": "Annab andmesubjektile õiguse pöörduda kaebusega Andmekaitse Inspektsiooni poole ning saada teavet kaebuse lahendi ja kohtusse pöördumise võimaluse kohta.",
-      "estleg:sourceAct": "Isikuandmete kaitse seadus"
+      "estleg:sourceAct": "Isikuandmete kaitse seadus",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_andmekaitseinspektsioon"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:IKS_Par_ErialusedGDPRRaamistikus",
@@ -142,7 +178,13 @@
       "rdfs:label": "Andmekaitse Inspektsioon kollektiivse esindushagi pädeva üksusena",
       "estleg:requestedCluster": "andmekaitse_inspektsioon",
       "estleg:summary": "Määrab Andmekaitse Inspektsiooni pädevaks üksuseks andmesubjektide kollektiivsete huvide kaitsel, sh kollektiivse esindushagi esitamisel riigisiseselt ja piiriüleselt.",
-      "estleg:sourceAct": "Isikuandmete kaitse seadus"
+      "estleg:sourceAct": "Isikuandmete kaitse seadus",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_andmekaitseinspektsioon"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:IKS_Par_AKIAsutuslikRollJaJuhtimine",
@@ -166,7 +208,18 @@
       "rdfs:label": "Andmekaitse Inspektsiooni riikliku ja haldusjärelevalve volitused",
       "estleg:requestedCluster": "andmekaitse_inspektsioon",
       "estleg:summary": "Sätestab Andmekaitse Inspektsiooni pädevuse järelevalve teostamisel, erimeetmed, menetluslikud erisused, sunniraha määra ning kaebuste läbivaatamise tähtaja.",
-      "estleg:sourceAct": "Isikuandmete kaitse seadus"
+      "estleg:sourceAct": "Isikuandmete kaitse seadus",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_andmekaitseinspektsioon"
+        }
+      ],
+      "estleg:competenceType": "supervision",
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_IKS_Par_AKIJarelevalveVolitused_coercive_payment"
+        }
+      ]
     },
     {
       "@id": "estleg:IKS_Par_AKIKorraldusteTagamineJaSanktsioonid",
@@ -178,7 +231,13 @@
       "rdfs:label": "Andmekaitse Inspektsiooni korralduste täitmine ja juurdepääsu tagamine",
       "estleg:requestedCluster": "andmekaitse_inspektsioon",
       "estleg:summary": "Kirjeldab vastutust Andmekaitse Inspektsiooni korralduse täitmata jätmise ja järelevalvelise juurdepääsu takistamise eest.",
-      "estleg:sourceAct": "Isikuandmete kaitse seadus"
+      "estleg:sourceAct": "Isikuandmete kaitse seadus",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_andmekaitseinspektsioon"
+        }
+      ],
+      "estleg:competenceType": "supervision"
     },
     {
       "@id": "estleg:Concept_AndmesubjektiOigusteTeostamine",

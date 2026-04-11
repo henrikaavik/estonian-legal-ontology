@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -15,14 +16,35 @@
         "owl:Ontology"
       ],
       "rdfs:label": "Saneerimisseaduse teemakaardistus (SanS)",
-      "dc:source": "Saneerimisseadus"
+      "dc:source": "Saneerimisseadus",
+      "estleg:temporalStatus": "inForce",
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/2431"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5206"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5231"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5226"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/1221"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_saneerimisseadus",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv või normiblokk)"
+      "rdfs:label": "Õigusnorm (paragrahv või normiblokk)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:TopicCluster_saneerimisseadus",
@@ -84,7 +106,13 @@
       "rdfs:label": "Avalduse eeldused ja lisadokumentatsioon",
       "estleg:requestedCluster": "saneerimismenetlus",
       "estleg:summary": "Võlgnik esitab kohtule saneerimisavalduse koos finantsandmete, makseraskuste kirjelduse ja esialgse saneerimisvisiooniga, et kohus saaks hinnata menetluse perspektiivikust.",
-      "estleg:sourceAct": "Saneerimisseadus"
+      "estleg:sourceAct": "Saneerimisseadus",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohus"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:SANS_Norm_003",
@@ -96,7 +124,12 @@
       "rdfs:label": "Kohtu algatusmäärus, täitemenetluse piirangud ja kaitsemeetmed",
       "estleg:requestedCluster": "saneerimismenetlus",
       "estleg:summary": "Kohtul on õigus saneerimismenetluse avamisel piirata võlausaldajate individuaalseid täitetoiminguid, et luua ettevõtjale ajutine stabiilsus kava koostamiseks.",
-      "estleg:sourceAct": "Saneerimisseadus"
+      "estleg:sourceAct": "Saneerimisseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:SANS_Norm_004",
@@ -120,7 +153,13 @@
       "rdfs:label": "Kava kohustuslikud osad ja majanduslik põhjendus",
       "estleg:requestedCluster": "restruktureerimiskava",
       "estleg:summary": "Kava peab kirjeldama ettevõtte finantsseisu, kriisi põhjuseid, saneerimismeetmeid, rahavoogude prognoosi ning mõju eri võlausaldajate gruppidele.",
-      "estleg:sourceAct": "Saneerimisseadus"
+      "estleg:sourceAct": "Saneerimisseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Kava"
     },
     {
       "@id": "estleg:SANS_Norm_011",
@@ -144,7 +183,18 @@
       "rdfs:label": "Kava kinnitamise eeldused ja keeldumise alused",
       "estleg:requestedCluster": "restruktureerimiskava",
       "estleg:summary": "Kohus kinnitab restruktureerimiskava, kui menetluslikud nõuded on täidetud ja kava ei kahjusta ebaproportsionaalselt ühegi rühma õigusi; rikkumiste korral võib kohus kinnitamisest keelduda.",
-      "estleg:sourceAct": "Saneerimisseadus"
+      "estleg:sourceAct": "Saneerimisseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohus"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:SANS_Norm_013",
@@ -168,7 +218,12 @@
       "rdfs:label": "Tähtaja pikendamine, osaline vähendamine ja maksegraafiku muutmine",
       "estleg:requestedCluster": "volgade_umberkujundamine",
       "estleg:summary": "Saneerimiskavas võib nõudeid ümber kujundada muu hulgas tähtaja pikendamise, osalise vähendamise või maksete ajastuse muutmise teel, arvestades seadusest tulenevaid piiranguid.",
-      "estleg:sourceAct": "Saneerimisseadus"
+      "estleg:sourceAct": "Saneerimisseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:SANS_Norm_021",
@@ -192,7 +247,13 @@
       "rdfs:label": "Tagatud nõuete kohtlemine restruktureerimisel",
       "estleg:requestedCluster": "volgade_umberkujundamine",
       "estleg:summary": "Tagatud nõuete ümberkujundamisel tuleb arvestada tagatisõiguste ulatust ja võlausaldaja eelispositsiooni; kava peab põhjendama, kuidas tagatud huvid jäävad õiguslikult kaitstuks.",
-      "estleg:sourceAct": "Saneerimisseadus"
+      "estleg:sourceAct": "Saneerimisseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Tagatud nõuete ümberkujundamisel"
     },
     {
       "@id": "estleg:SANS_Norm_023",
@@ -204,7 +265,12 @@
       "rdfs:label": "Kava mittetäitmise tagajärjed ja seos pankrotimenetlusega",
       "estleg:requestedCluster": "volgade_umberkujundamine",
       "estleg:summary": "Kui ümberkujundatud kohustusi ei täideta või saneerimine ebaõnnestub, võib see viia kaitsemeetmete lõppemiseni ja suurendada pankrotimenetluse algatamise riski.",
-      "estleg:sourceAct": "Saneerimisseadus"
+      "estleg:sourceAct": "Saneerimisseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:Concept_SaneerimismenetluseEesmargipohisus",
@@ -242,7 +308,12 @@
         "owl:NamedIndividual"
       ],
       "rdfs:label": "Märkus kaardistuse ulatuse kohta",
-      "estleg:note": "Tegu on ühtses JSON-LD skeemis esmaste normiplokkide teemakaardistusega. Järgmises iteratsioonis lisatakse paragrahvipõhised täppisviited (RT redaktsioonid) ning ristseosed pankroti- ja täitemenetluse normidega."
+      "estleg:note": "Tegu on ühtses JSON-LD skeemis esmaste normiplokkide teemakaardistusega. Järgmises iteratsioonis lisatakse paragrahvipõhised täppisviited (RT redaktsioonid) ning ristseosed pankroti- ja täitemenetluse normidega.",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:TsMS_NOTE_001"
+        }
+      ]
     }
   ]
 }

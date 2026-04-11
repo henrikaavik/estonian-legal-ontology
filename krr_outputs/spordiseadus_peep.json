@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -15,14 +16,77 @@
         "owl:Ontology"
       ],
       "rdfs:label": "Spordiseadus teemakaardistus",
-      "dc:source": "Spordiseadus"
+      "dc:source": "Spordiseadus",
+      "estleg:entryIntoForce": {
+        "@value": "2006-01-01",
+        "@type": "xsd:date"
+      },
+      "estleg:repealDate": {
+        "@value": "2006-04-05",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "repealed",
+      "estleg:amendedBy": [
+        {
+          "@id": "estleg:Draft_REM25_0754"
+        },
+        {
+          "@id": "estleg:Draft_MKM23_0781"
+        },
+        {
+          "@id": "estleg:Draft_MKM22_1628"
+        },
+        {
+          "@id": "estleg:Draft_SIM19_0966"
+        },
+        {
+          "@id": "estleg:Draft_MKM13_0512"
+        }
+      ],
+      "estleg:affectedBy": [
+        {
+          "@id": "estleg:Draft_REM25_0754"
+        },
+        {
+          "@id": "estleg:Draft_MKM23_0781"
+        },
+        {
+          "@id": "estleg:Draft_MKM22_1628"
+        },
+        {
+          "@id": "estleg:Draft_SIM19_0966"
+        },
+        {
+          "@id": "estleg:Draft_MKM13_0512"
+        }
+      ],
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/3611"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5206"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/1221"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2446"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5636"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_spordiseadus",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)"
+      "rdfs:label": "Õigusnorm (paragrahv)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:Cluster_SpS_1",
@@ -86,7 +150,13 @@
       "rdfs:label": "§ 2. Spordi korraldamise ja edendamise ülesanne",
       "estleg:sourceAct": "Spordiseadus",
       "estleg:summary": "Sporti korraldavad ja edendavad riik, kohaliku omavalitsuse üksused ja spordiorganisatsioonid kogu rahva kehalise ja vaimse vormi, sportliku eluviisi, samuti noorte sportliku eneseteostuse eesmärgil. Sporti korraldavad ja edendavad riik, kohaliku omavalitsuse üksused ja spordiorganisatsioonid kogu rahva kehalise ja vaimse vormi, sportliku eluviisi, samuti noorte sportliku eneseteostuse eesmärgil.",
-      "estleg:requestedCluster": "estleg:Cluster_SpS_1"
+      "estleg:requestedCluster": "estleg:Cluster_SpS_1",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:SpS_Par_3",
@@ -98,7 +168,12 @@
       "rdfs:label": "§ 3. Spordi korraldamine vallas ja linnas",
       "estleg:sourceAct": "Spordiseadus",
       "estleg:summary": "Vallal ja linnal on kohustus: 1 1) määrata kindlaks oma haldusterritooriumil spordiks vajalik maa-ala; 2 2) toetada oma haldusterritooriumil asuvate spordiorganisatsioonide tööd; 3 3) tagada munitsipaalkoolides tingimused kehalise kasvatuse tundide läbiviimiseks ja soodustada spordiharrastust koolides, spordikoolides ning noortelaagrites; 4 4) määrata oma haldusterritooriumil spordi korraldamisega tegelev teenistuja või määrata need ülesanded mõnele teisele valla või linna ametiasutuse teenistuj",
-      "estleg:requestedCluster": "estleg:Cluster_SpS_1"
+      "estleg:requestedCluster": "estleg:Cluster_SpS_1",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ]
     },
     {
       "@id": "estleg:SpS_Par_4",
@@ -134,7 +209,18 @@
       "rdfs:label": "§ 6. Treenerile esitatavad nõuded",
       "estleg:sourceAct": "Spordiseadus",
       "estleg:summary": "1 (1) Treener on kohustatud: 1 1) tagama sportliku treeningu aluspõhimõtete järgimise ja ohutuse; 2 2) jälgima treeningukoormuse vastavust juhendatavate tervislikule seisundile. Treener on kohustatud: tagama sportliku treeningu aluspõhimõtete järgimise ja ohutuse; jälgima treeningukoormuse vastavust juhendatavate tervislikule seisundile. 2 (2) Treener on sportlasi ja teisi spordis osalevaid isikuid juhendav spordispetsialist, kellel on treeneri kutsekvalifikatsioon kutseseaduse (RT I 2001, 3, 7;",
-      "estleg:requestedCluster": "estleg:Cluster_SpS_1"
+      "estleg:requestedCluster": "estleg:Cluster_SpS_1",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Treener",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:SpS_Par_33"
+        }
+      ]
     },
     {
       "@id": "estleg:SpS_Par_7",
@@ -146,7 +232,12 @@
       "rdfs:label": "§ 7. Spordilähetus",
       "estleg:sourceAct": "Spordiseadus",
       "estleg:summary": "Spordiorganisatsioonil on õigus lähetada oma liikmeks olevaid või oma liikmeks oleva spordiorganisatsiooni liikmeks olevaid sportlasi, samuti treenereid, kohtunikke, spordiarste ning teisi spordi korraldamisega seotud isikuid põhikirjaliste eesmärkide täitmiseks väljapoole lähetatava alalise tegevuskoha asukohta, sealhulgas välisriiki, ning maksta nendele lähetusega seotud sõidu- ja majutuskulude hüvitisi ning päevaraha. Spordiorganisatsioonil on õigus lähetada oma liikmeks olevaid või oma liikm",
-      "estleg:requestedCluster": "estleg:Cluster_SpS_1"
+      "estleg:requestedCluster": "estleg:Cluster_SpS_1",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:SpS_Par_8",
@@ -182,7 +273,13 @@
       "rdfs:label": "§ 10. Riiklikud spordistipendiumid ja -preemiad",
       "estleg:sourceAct": "Spordiseadus",
       "estleg:summary": "1 (1) Vabariigi Valitsus määrab väljapaistvate sportlike saavutuste eest ning sportlike tipptulemuste stimuleerimiseks riiklikke spordistipendiume ja -preemiaid. Vabariigi Valitsus määrab väljapaistvate sportlike saavutuste eest ning sportlike tipptulemuste stimuleerimiseks riiklikke spordistipendiume ja -preemiaid. 2 (2) Riiklike spordistipendiumide ja -preemiate määramise tingimused ja korra kehtestab Vabariigi Valitsus määrusega ./dyn=890243&id=969179 . Riiklike spordistipendiumide ja -preemi",
-      "estleg:requestedCluster": "estleg:Cluster_SpS_1"
+      "estleg:requestedCluster": "estleg:Cluster_SpS_1",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
+      "estleg:competenceType": "regulation"
     },
     {
       "@id": "estleg:SpS_Par_11",
@@ -194,7 +291,13 @@
       "rdfs:label": "§ 11. Dopinguvastaste reeglite järgimine",
       "estleg:sourceAct": "Spordiseadus",
       "estleg:summary": "1 (1) Sportlane ja treener on kohustatud tundma ja järgima dopinguvastaseid reegleid, mis on sätestatud maailma dopinguvastases koodeksis ja mis on vastu võetud vastavalt koodeksile. Sportlane ja treener on kohustatud tundma ja järgima dopinguvastaseid reegleid, mis on sätestatud maailma dopinguvastases koodeksis ja mis on vastu võetud vastavalt koodeksile. 2 (2) Sportlane, kellel on tuvastatud dopingu kasutamine või kes on dopingutestist keeldunud, kaotab talle selle eest spordialaliidu või rah",
-      "estleg:requestedCluster": "estleg:Cluster_SpS_1"
+      "estleg:requestedCluster": "estleg:Cluster_SpS_1",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Sportlane ja treener"
     },
     {
       "@id": "estleg:SpS_Par_12",
@@ -206,7 +309,21 @@
       "rdfs:label": "§ 12. Olümpiavõitja riiklikule toetusele õigust omavad isikud",
       "estleg:sourceAct": "Spordiseadus",
       "estleg:summary": "1 (1) Olümpiavõitja riiklikku toetust (edaspidi toetus ) määratakse ja makstakse käesolevas seaduses sätestatud tingimustel isikule, kes on Eesti kodanik ning on saavutanud olümpiahartas sätestatud olümpiaspordialal või paraolümpiamängude programmi kuuluval spordialal olümpiavõidu, esindades Eesti Vabariiki. Olümpiavõitja riiklikku toetust (edaspidi toetus ) määratakse ja makstakse käesolevas seaduses sätestatud tingimustel isikule, kes on Eesti kodanik ning on saavutanud olümpiahartas sätestatu",
-      "estleg:requestedCluster": "estleg:Cluster_SpS_2"
+      "estleg:requestedCluster": "estleg:Cluster_SpS_2",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:SpS_Par_14"
+        },
+        {
+          "@id": "estleg:SpS_Par_17"
+        },
+        {
+          "@id": "estleg:SpS_Par_27"
+        },
+        {
+          "@id": "estleg:SpS_Par_33"
+        }
+      ]
     },
     {
       "@id": "estleg:SpS_Par_13",
@@ -218,7 +335,15 @@
       "rdfs:label": "§ 13. Toetuse finantseerimine ja toetuse määrad",
       "estleg:sourceAct": "Spordiseadus",
       "estleg:summary": "1 (1) Toetust finantseeritakse riigieelarvest. Toetust finantseeritakse riigieelarvest. 2 (2) Toetuse arvutamise aluseks on toetuse määrad (eraldi olümpiavõitjatele ja paraolümpiamängude võitjatele), mis kehtestatakse igaks eelarveaastaks riigieelarvega. Toetuste uued määrad ei või olla väiksemad kehtivatest määradest. Toetuse arvutamise aluseks on toetuse määrad (eraldi olümpiavõitjatele ja paraolümpiamängude võitjatele), mis kehtestatakse igaks eelarveaastaks riigieelarvega. Toetuste uued määr",
-      "estleg:requestedCluster": "estleg:Cluster_SpS_2"
+      "estleg:requestedCluster": "estleg:Cluster_SpS_2",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:SpS_Par_16"
+        },
+        {
+          "@id": "estleg:SpS_Par_33"
+        }
+      ]
     },
     {
       "@id": "estleg:SpS_Par_14",
@@ -230,7 +355,17 @@
       "rdfs:label": "§ 14. Toetuse taotlemine",
       "estleg:sourceAct": "Spordiseadus",
       "estleg:summary": "1 (1) Toetuse taotlus esitatakse taotleja elukohajärgsele pensioniametile. Toetuse taotlus esitatakse taotleja elukohajärgsele pensioniametile. 2 (2) Toetuse taotlemiseks esitatakse järgmised dokumendid: 1 1) avaldus; 2 2) isikut tõendavate dokumentide seaduse (RT I 1999, 25, 365; 2000, 25, 148; 26, 150; 40, 254; 86, 550; 2001, 16, 68; 31, 173; 56, 338; 2002, 61, 375; 63, 387; 90, 516; 2003, 13, 65; 15, 87; 78, 527; 2004, 2, 4; 28, 189) § 2 lõikes 2 sätestatud dokument; 3 3) rahvusliku olümpiako",
-      "estleg:requestedCluster": "estleg:Cluster_SpS_2"
+      "estleg:requestedCluster": "estleg:Cluster_SpS_2",
+      "estleg:references": [
+        {
+          "@id": "estleg:SpS_Par_12"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:SpS_Par_33"
+        }
+      ]
     },
     {
       "@id": "estleg:SpS_Par_15",
@@ -242,7 +377,12 @@
       "rdfs:label": "§ 15. Taotluse läbivaatamine",
       "estleg:sourceAct": "Spordiseadus",
       "estleg:summary": "Taotleja elukohajärgne pensioniamet vaatab toetuste taotlemiseks esitatud dokumendid läbi esimesel võimalusel, kuid mitte hiljem kui kümne tööpäeva jooksul taotluse esitamise päevast arvates. Taotleja elukohajärgne pensioniamet vaatab toetuste taotlemiseks esitatud dokumendid läbi esimesel võimalusel, kuid mitte hiljem kui kümne tööpäeva jooksul taotluse esitamise päevast arvates.",
-      "estleg:requestedCluster": "estleg:Cluster_SpS_2"
+      "estleg:requestedCluster": "estleg:Cluster_SpS_2",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:SpS_Par_33"
+        }
+      ]
     },
     {
       "@id": "estleg:SpS_Par_16",
@@ -254,7 +394,17 @@
       "rdfs:label": "§ 16. Toetuse suuruse arvutamine",
       "estleg:sourceAct": "Spordiseadus",
       "estleg:summary": "1 (1) Vanuse alusel makstava toetuse suuruseks on käesoleva seaduse §-s 13 sätestatud toetuse määr. Vanuse alusel makstava toetuse suuruseks on käesoleva seaduse §-s 13 sätestatud toetuse määr. 2 (2) Püsiva töövõimetuse alusel makstava toetuse suuruseks on töövõime kaotusele vastav protsent käesoleva seaduse §-s 13 sätestatud toetuse määrast. Püsiva töövõimetuse alusel makstava toetuse suuruseks on töövõime kaotusele vastav protsent käesoleva seaduse §-s 13 sätestatud toetuse määrast. 3 (3) Toet",
-      "estleg:requestedCluster": "estleg:Cluster_SpS_2"
+      "estleg:requestedCluster": "estleg:Cluster_SpS_2",
+      "estleg:references": [
+        {
+          "@id": "estleg:SpS_Par_13"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:SpS_Par_33"
+        }
+      ]
     },
     {
       "@id": "estleg:SpS_Par_17",
@@ -266,7 +416,17 @@
       "rdfs:label": "§ 17. Toetuse määramise tähtaeg",
       "estleg:sourceAct": "Spordiseadus",
       "estleg:summary": "1 (1) Toetus määratakse käesolevas seaduses sätestatud toetusele õiguse tekkimise päevast, kui toetuse taotlemiseks vajalikud dokumendid on esitatud kuue kuu jooksul, arvates toetusele õiguse tekkimise päevast. Toetus määratakse käesolevas seaduses sätestatud toetusele õiguse tekkimise päevast, kui toetuse taotlemiseks vajalikud dokumendid on esitatud kuue kuu jooksul, arvates toetusele õiguse tekkimise päevast. 2 (2) Toetuse hilisemal taotlemisel määratakse toetus taotlemise päevast. Toetuse hi",
-      "estleg:requestedCluster": "estleg:Cluster_SpS_2"
+      "estleg:requestedCluster": "estleg:Cluster_SpS_2",
+      "estleg:references": [
+        {
+          "@id": "estleg:SpS_Par_12"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:SpS_Par_33"
+        }
+      ]
     },
     {
       "@id": "estleg:SpS_Par_18",
@@ -278,7 +438,12 @@
       "rdfs:label": "§ 18. Toetuse määramise otsus",
       "estleg:sourceAct": "Spordiseadus",
       "estleg:summary": "1 (1) Toetuse määramise otsustab pensioniameti direktor või tema asetäitja või pensioniameti direktori volitatud struktuuriüksuse juht. Toetuse määramise otsustab pensioniameti direktor või tema asetäitja või pensioniameti direktori volitatud struktuuriüksuse juht. 2 (2) Toetuse määramine või mittemääramine vormistatakse kirjaliku otsusena, mis koosneb: 1 1) sissejuhatusest, milles märgitakse otsuse teinud pensioniameti direktori, tema asetäitja või pensioniameti direktori volitatud struktuuriük",
-      "estleg:requestedCluster": "estleg:Cluster_SpS_2"
+      "estleg:requestedCluster": "estleg:Cluster_SpS_2",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:SpS_Par_33"
+        }
+      ]
     },
     {
       "@id": "estleg:SpS_Par_19",
@@ -290,7 +455,12 @@
       "rdfs:label": "§ 19. Toetuse maksmine",
       "estleg:sourceAct": "Spordiseadus",
       "estleg:summary": "1 (1) Toetust makstakse toetuse saaja pangakontole toetuse saaja elukohajärgse pensioniameti kaudu iga kuu jooksva kuu eest. Toetust makstakse toetuse saaja pangakontole toetuse saaja elukohajärgse pensioniameti kaudu iga kuu jooksva kuu eest. 2 (2) Toetuse kandmine Eestis asuvasse panka toimub maksja kulul. Toetuse kandmine Eestis asuvasse panka toimub maksja kulul. 3 (3) Toetuse kandmine välisriigis asuvasse panka toimub saaja kulul. Toetuse kandmine välisriigis asuvasse panka toimub saaja kul",
-      "estleg:requestedCluster": "estleg:Cluster_SpS_2"
+      "estleg:requestedCluster": "estleg:Cluster_SpS_2",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:SpS_Par_33"
+        }
+      ]
     },
     {
       "@id": "estleg:SpS_Par_20",
@@ -302,7 +472,12 @@
       "rdfs:label": "§ 20. Spordiürituse korraldamise loa taotlemine",
       "estleg:sourceAct": "Spordiseadus",
       "estleg:summary": "1 (1) Spordiürituse korraldaja (edaspidi korraldaja ) esitab vähemalt üks kuu enne spordiürituse korraldamise päeva spordiürituse korraldamise asukohajärgsele valla- või linnavalitsusele spordiürituse korraldamise loa (edaspidi luba ) saamiseks kirjaliku taotluse, milles märgitakse: 1 1) spordiürituse nimetus, selle toimumise aeg ja koht; 2 2) korraldaja nimi, elukoht või aadress, sünniaeg või registrikood; 3 3) osalevate klubide või koondiste nimed; 4 4) eeldatav pealtvaatajate arv, iga võistko",
-      "estleg:requestedCluster": "estleg:Cluster_SpS_3"
+      "estleg:requestedCluster": "estleg:Cluster_SpS_3",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:SpS_Par_24"
+        }
+      ]
     },
     {
       "@id": "estleg:SpS_Par_21",
@@ -314,7 +489,12 @@
       "rdfs:label": "§ 21. Loa andmine",
       "estleg:sourceAct": "Spordiseadus",
       "estleg:summary": "Valla- või linnavalitsus annab loa kümne tööpäeva jooksul loa taotluse esitamisest. Loas märgitakse: 1 1) spordiürituse nimetus; 2 2) korraldaja nimi, elukoht või aadress, sünniaeg või registrikood ja telefoninumber; 3 3) võistluspaiga asukoht; 4 4) spordiürituse toimumise alguse ja lõpu kuupäev ning kellaaeg; 5 5) loa taotluse kooskõlastanud ametkondade esitatud tingimused. Valla- või linnavalitsus annab loa kümne tööpäeva jooksul loa taotluse esitamisest. Loas märgitakse: spordiürituse nimetus",
-      "estleg:requestedCluster": "estleg:Cluster_SpS_3"
+      "estleg:requestedCluster": "estleg:Cluster_SpS_3",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:SpS_Par_24"
+        }
+      ]
     },
     {
       "@id": "estleg:SpS_Par_22",
@@ -326,7 +506,12 @@
       "rdfs:label": "§ 22. Loa andmisest keeldumine",
       "estleg:sourceAct": "Spordiseadus",
       "estleg:summary": "Valla- või linnavalitsus võib keelduda loa andmisest kümne tööpäeva jooksul loa taotluse esitamisest, teatades sellest korraldajale kirjalikult kolme tööpäeva jooksul. Valla- või linnavalitsus võib jätta loa andmata: 1 1) kui loa taotluses ei esitatud nõutud andmeid või esinesid muud puudused ning puudusi ei kõrvaldatud tähtaja jooksul; 2 2) kui loa taotlus ei ole esitatud õigeaegselt; 3 3) kui korraldaja ei täida loa taotluse kooskõlastanud ametkondade kooskõlastamise tingimusi, mis peavad olem",
-      "estleg:requestedCluster": "estleg:Cluster_SpS_3"
+      "estleg:requestedCluster": "estleg:Cluster_SpS_3",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:SpS_Par_23",
@@ -338,7 +523,13 @@
       "rdfs:label": "§ 23. Korraldaja kohustused",
       "estleg:sourceAct": "Spordiseadus",
       "estleg:summary": "Korraldaja on kohustatud spordiürituse planeerimisel, ettevalmistamisel ja korraldamisel: 1 1) tagama spordiüritusel osalejate turvalisuse; 2 2) tagama piletimüügi korralduse range kontrolli, et eri võistlejate toetajad oleksid üksteisest eraldatud; 3 3) korraldama sõidukite parkimise; 4 4) tagama võistluspaigas avaliku korra ja heakorra; 5 5) täitma loa taotluse kooskõlastanud ametkondade esitatud tingimusi. Korraldaja on kohustatud spordiürituse planeerimisel, ettevalmistamisel ja korraldamise",
-      "estleg:requestedCluster": "estleg:Cluster_SpS_3"
+      "estleg:requestedCluster": "estleg:Cluster_SpS_3",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Korraldaja"
     },
     {
       "@id": "estleg:SpS_Par_24",
@@ -350,7 +541,15 @@
       "rdfs:label": "§ 24. Kodumängude korraldamise loa taotlemine, loa andmine ja selle andmisest keeldumine",
       "estleg:sourceAct": "Spordiseadus",
       "estleg:summary": "1 (1) Kodumängude korraldaja esitab vähemalt üks kuu enne hooaja algust kodumängude korraldamise asukohajärgsele valla- või linnavalitsusele loa taotluse, milles märgitakse käesoleva seaduse § 20 lõikes 1 nimetatud andmed kõigi teadaolevate kodumängude kohta. Kodumängude korraldaja esitab vähemalt üks kuu enne hooaja algust kodumängude korraldamise asukohajärgsele valla- või linnavalitsusele loa taotluse, milles märgitakse käesoleva seaduse § 20 lõikes 1 nimetatud andmed kõigi teadaolevate kodum",
-      "estleg:requestedCluster": "estleg:Cluster_SpS_3"
+      "estleg:requestedCluster": "estleg:Cluster_SpS_3",
+      "estleg:references": [
+        {
+          "@id": "estleg:SpS_Par_20"
+        },
+        {
+          "@id": "estleg:SpS_Par_21"
+        }
+      ]
     },
     {
       "@id": "estleg:SpS_Par_25",
@@ -362,7 +561,34 @@
       "rdfs:label": "§ 25. Spordiürituse korraldamise nõuete rikkumine",
       "estleg:sourceAct": "Spordiseadus",
       "estleg:summary": "1 (1) Spordiürituse korraldamise eest ilma loata või korraldaja kohustuste eiramise eest – karistatakse rahatrahviga kuni 200 trahviühikut. Spordiürituse korraldamise eest ilma loata või korraldaja kohustuste eiramise eest – karistatakse rahatrahviga kuni 200 trahviühikut. 2 (2) Sama teo eest, kui selle on toime pannud juriidiline isik, – karistatakse rahatrahviga kuni 30 000 krooni. Sama teo eest, kui selle on toime pannud juriidiline isik, – karistatakse rahatrahviga kuni 30 000 krooni.",
-      "estleg:requestedCluster": "estleg:Cluster_SpS_4"
+      "estleg:requestedCluster": "estleg:Cluster_SpS_4",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:TurS_Par_31_32"
+        },
+        {
+          "@id": "estleg:TTOS_Par_27"
+        },
+        {
+          "@id": "estleg:TaimKS_Par_100"
+        },
+        {
+          "@id": "estleg:SOS_Par_47"
+        },
+        {
+          "@id": "estleg:SOS_Par_46"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:SpS_Par_26"
+        }
+      ],
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_SpS_Par_25_fine"
+        }
+      ]
     },
     {
       "@id": "estleg:SpS_Par_26",
@@ -374,7 +600,29 @@
       "rdfs:label": "§ 26. Menetlus",
       "estleg:sourceAct": "Spordiseadus",
       "estleg:summary": "1 (1) Käesoleva seaduse §-s 25 sätestatud väärteole kohaldatakse karistusseadustiku (RT I 2001, 61, 364; 2002, 86, 504; 82, 480; 105, 612; 2003, 4, 22; 83, 557; 90, 601; 2004, 7, 40; 46, 329; 54, 387; 56, 401; 88, 600) üldosa ja väärteomenetluse seadustiku (RT I 2002, 50, 313; 110, 654; 2003, 26, 156; 83, 557; 88, 590; 2004, 46, 329; 54, 387 ja 390; 56, 403; RT III 2004, 9, 96) sätteid. Käesoleva seaduse §-s 25 sätestatud väärteole kohaldatakse karistusseadustiku (RT I 2001, 61, 364; 2002, 86, 5",
-      "estleg:requestedCluster": "estleg:Cluster_SpS_4"
+      "estleg:requestedCluster": "estleg:Cluster_SpS_4",
+      "estleg:references": [
+        {
+          "@id": "estleg:SpS_Par_25"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:VKVS_Par_22"
+        },
+        {
+          "@id": "estleg:vedelkutuse_seadus_Par_35"
+        },
+        {
+          "@id": "estleg:VetS_Par_40"
+        },
+        {
+          "@id": "estleg:TeleKS_Par_102_121"
+        },
+        {
+          "@id": "estleg:LTS_Par_22"
+        }
+      ]
     },
     {
       "@id": "estleg:SpS_Par_27",
@@ -386,7 +634,18 @@
       "rdfs:label": "§ 27. Täiendav toetuse määramine",
       "estleg:sourceAct": "Spordiseadus",
       "estleg:summary": "1 (1) Õigust toetusele vanuse alusel omavad lisaks käesoleva seaduse § 12 lõikes 1 sätestatud tingimustele vastavatele isikutele ka need isikud, kes on Eesti kodanikud ja on saavutanud olümpiahartas sätestatud olümpiaspordialal olümpiavõidu enne 1988. aastat, esindades NSV Liitu. Nimetatud isikute loetelu kinnitab Eesti Olümpiakomitee ettepanekul kultuuriminister käskkirjaga. Toetuse taotlemine ja maksmine toimub käesolevas seaduses sätestatud korras. Õigust toetusele vanuse alusel omavad lisaks",
-      "estleg:requestedCluster": "estleg:Cluster_SpS_5"
+      "estleg:requestedCluster": "estleg:Cluster_SpS_5",
+      "estleg:references": [
+        {
+          "@id": "estleg:SpS_Par_12"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kultuuriminister"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:SpS_Par_28",
@@ -458,7 +717,42 @@
       "rdfs:label": "§ 33. Seaduse jõustumine",
       "estleg:sourceAct": "Spordiseadus",
       "estleg:summary": "1 (1) Käesolev seadus jõustub 2006. aasta 1. jaanuaril. Käesolev seadus jõustub 2006. aasta 1. jaanuaril. 2 (2) Käesoleva seaduse §-d 12–19 ja 27 jõustuvad üldises korras. Käesoleva seaduse §-d 12–19 ja 27 jõustuvad üldises korras. 3 (3) Käesoleva seaduse § 6 lõige 2 jõustub 2006. aasta 1. septembril. <table summary=\"allkiri\" width=\"100%\"> <tbody><tr valign=\"top\"> <td width=\"60%\"> </td> <td width=\"39%\"> <font size=\"-1\" style=\"font-size:-1px\"><b>Riigikogu esimees Ene ERGMA</b></font> </td> </tr> ",
-      "estleg:requestedCluster": "estleg:Cluster_SpS_5"
+      "estleg:requestedCluster": "estleg:Cluster_SpS_5",
+      "estleg:references": [
+        {
+          "@id": "estleg:SpS_Par_12"
+        },
+        {
+          "@id": "estleg:SpS_Par_13"
+        },
+        {
+          "@id": "estleg:SpS_Par_14"
+        },
+        {
+          "@id": "estleg:SpS_Par_15"
+        },
+        {
+          "@id": "estleg:SpS_Par_16"
+        },
+        {
+          "@id": "estleg:SpS_Par_17"
+        },
+        {
+          "@id": "estleg:SpS_Par_18"
+        },
+        {
+          "@id": "estleg:SpS_Par_19"
+        },
+        {
+          "@id": "estleg:SpS_Par_6"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_riigikogu"
+        }
+      ],
+      "estleg:competenceType": "general"
     }
   ]
 }

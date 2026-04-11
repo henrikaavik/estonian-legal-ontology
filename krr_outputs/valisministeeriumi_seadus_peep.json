@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -16,14 +17,35 @@
       ],
       "rdfs:label": "Välisministeeriumi seaduse teemakaardistus (diplomaatia)",
       "dc:description": "Välisministeeriumi seaduse põhisambad: välisteenistus, diplomaatilised suhted ja konsulaarvaldkond.",
-      "dc:source": "Välisministeeriumi seadus (kehtiv terviktekst; vajab §-tasemel lõppverifitseerimist)"
+      "dc:source": "Välisministeeriumi seadus (kehtiv terviktekst; vajab §-tasemel lõppverifitseerimist)",
+      "estleg:temporalStatus": "inForce",
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/0411"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/1221"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/3606"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5226"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5636"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_valisministeeriumi_seadus",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)"
+      "rdfs:label": "Õigusnorm (paragrahv)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:TopicCluster_valisministeeriumi_seadus",

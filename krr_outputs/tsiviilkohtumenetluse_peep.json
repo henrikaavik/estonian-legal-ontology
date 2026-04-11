@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -15,14 +16,73 @@
         "owl:Ontology"
       ],
       "rdfs:label": "Tsiviilkohtumenetluse seadustiku teemakaardistus (TsMS)",
-      "dc:source": "Tsiviilkohtumenetluse seadustik (Riigi Teataja, kehtiv redaktsioon)"
+      "dc:source": "Tsiviilkohtumenetluse seadustik (Riigi Teataja, kehtiv redaktsioon)",
+      "estleg:temporalStatus": "inForce",
+      "estleg:affectedBy": [
+        {
+          "@id": "estleg:Draft_JDM17_1062"
+        },
+        {
+          "@id": "estleg:Draft_JDM26_0001"
+        },
+        {
+          "@id": "estleg:Draft_JDM24_1175"
+        },
+        {
+          "@id": "estleg:Draft_JDM23_0993"
+        },
+        {
+          "@id": "estleg:Draft_JDM22_0267"
+        },
+        {
+          "@id": "estleg:Draft_JDM20_0278"
+        },
+        {
+          "@id": "estleg:Draft_JDM16_0782"
+        },
+        {
+          "@id": "estleg:Draft_JDM17_1477"
+        },
+        {
+          "@id": "estleg:Draft_JDM16_1423"
+        },
+        {
+          "@id": "estleg:Draft_JDM14_0863"
+        },
+        {
+          "@id": "estleg:Draft_JDM12_1639"
+        },
+        {
+          "@id": "estleg:Draft_RIIGIKOGU24_0892"
+        }
+      ],
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/2431"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/1221"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5636"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2416"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5226"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_tsiviilkohtumenetluse",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv või normiblokk)"
+      "rdfs:label": "Õigusnorm (paragrahv või normiblokk)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:TopicCluster_tsiviilkohtumenetluse",
@@ -84,7 +144,13 @@
       "rdfs:label": "Hagi esitamise pädev kohus ja menetlusse võtmise raamistik",
       "estleg:requestedCluster": "hagimenetlus",
       "estleg:summary": "Määrab, milline kohus on konkreetse vaidluse lahendamiseks pädev ning milliste alluvusreeglite järgi hagi menetlusse võetakse või teisele kohtule üle antakse.",
-      "estleg:sourceAct": "Tsiviilkohtumenetluse seadustik"
+      "estleg:sourceAct": "Tsiviilkohtumenetluse seadustik",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohus"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:TsMS_Norm_003",
@@ -108,7 +174,13 @@
       "rdfs:label": "Kohtuotsus, menetluse lõpetamise alused ja lahendi jõustumine",
       "estleg:requestedCluster": "hagimenetlus",
       "estleg:summary": "Sätestab, kuidas kohus vormistab otsuse ja määruse, millal menetlus lõpeb (nt kompromiss, läbi vaatamata jätmine) ning millal lahend muutub siduvaks ja täidetavaks.",
-      "estleg:sourceAct": "Tsiviilkohtumenetluse seadustik"
+      "estleg:sourceAct": "Tsiviilkohtumenetluse seadustik",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohus"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:TsMS_Norm_010",
@@ -120,7 +192,12 @@
       "rdfs:label": "Tõendamiskoormis ja tõendamise ese",
       "estleg:requestedCluster": "toendamine",
       "estleg:summary": "Määrab, milliseid asjaolusid tuleb kohtus tõendada ning milline menetlusosaline kannab vastava asjaolu tõendamise koormist.",
-      "estleg:sourceAct": "Tsiviilkohtumenetluse seadustik"
+      "estleg:sourceAct": "Tsiviilkohtumenetluse seadustik",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ]
     },
     {
       "@id": "estleg:TsMS_Norm_011",
@@ -144,7 +221,18 @@
       "rdfs:label": "Tõendite esitamise tähtajad ja vastuvõetavus",
       "estleg:requestedCluster": "toendamine",
       "estleg:summary": "Reguleerib, millal ja kuidas pooled peavad tõendeid esitama ning millistel tingimustel võib kohus hilinenud või ebaolulise tõendi tagasi lükata.",
-      "estleg:sourceAct": "Tsiviilkohtumenetluse seadustik"
+      "estleg:sourceAct": "Tsiviilkohtumenetluse seadustik",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohus"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:TsMS_Norm_013",
@@ -156,7 +244,18 @@
       "rdfs:label": "Vaba tõendihindamine ja põhjendamiskohustus",
       "estleg:requestedCluster": "toendamine",
       "estleg:summary": "Kohus hindab tõendeid kogumis siseveendumuse alusel ning peab otsuse põhjendustes selgitama, millistele tõenditele ta järeldused rajas.",
-      "estleg:sourceAct": "Tsiviilkohtumenetluse seadustik"
+      "estleg:sourceAct": "Tsiviilkohtumenetluse seadustik",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohus"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:TsMS_Norm_020",
@@ -168,7 +267,12 @@
       "rdfs:label": "Apellatsiooniõigus ja vaidlustatava lahendi ulatus",
       "estleg:requestedCluster": "apelatsioon",
       "estleg:summary": "Annab poolele õiguse vaidlustada maakohtu lahend ringkonnakohtus ning määrab, millises ulatuses võib apellatsioon puudutada faktilisi ja õiguslikke küsimusi.",
-      "estleg:sourceAct": "Tsiviilkohtumenetluse seadustik"
+      "estleg:sourceAct": "Tsiviilkohtumenetluse seadustik",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:TsMS_Norm_021",
@@ -192,7 +296,13 @@
       "rdfs:label": "Ringkonnakohtu eelmenetlus",
       "estleg:requestedCluster": "apelatsioon",
       "estleg:summary": "Ringkonnakohus kontrollib kaebuse lubatavust, menetluslikke eeldusi ja vajadust täiendava menetluse järele enne sisulise läbivaatamise etappi.",
-      "estleg:sourceAct": "Tsiviilkohtumenetluse seadustik"
+      "estleg:sourceAct": "Tsiviilkohtumenetluse seadustik",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_ringkonnakohus"
+        }
+      ],
+      "estleg:competenceType": "enforcement"
     },
     {
       "@id": "estleg:TsMS_Norm_023",

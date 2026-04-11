@@ -1,51 +1,46 @@
 # Validation Report
 
-*Last updated: 2026-03-02*
+**Last updated:** 2026-04-11
+**Validator:** `scripts/validate_all.py`
 
 ## Summary
 
-- **Total JSON-LD files:** 97 (`_peep.json`) + 2 (`.jsonld`)
-- **Combined nodes:** 2973 unique @id entries
-- **Validation status:** All files pass JSON syntax, namespace, and type consistency checks
+| Metric | Count |
+|--------|-------|
+| Files validated | 1,302 |
+| Errors | 0 |
+| Warnings | 1 |
+| Result | **PASSED** |
 
 ## Checks Performed
 
-| Check | Status | Details |
-|-------|--------|---------|
-| JSON syntax validity | PASS | All 99 files parse correctly |
-| Namespace consistency | PASS | All files use `https://data.riik.ee/ontology/estleg#` |
-| @type normalization | PASS | All @type values are arrays |
-| Multi-valued properties | PASS | coversConcept, hasSection, etc. always arrays |
-| dc:source type | PASS | Always string |
-| sectionNumber type | PASS | Always string |
-| Intra-file @id uniqueness | PASS | No duplicate @id within any file |
-| Cross-file @id uniqueness | WARN | 23 shared IDs (see DUPLICATE_IDS_REPORT.md) |
+1. JSON syntax validity
+2. @context namespace consistency (`estleg:` → `https://data.riik.ee/ontology/estleg#`)
+3. @type is always an array
+4. Multi-valued properties are arrays (estleg:references, estleg:referencedBy, etc.)
+5. sectionNumber is always a string
+6. dc:source is always a string
+7. @id uniqueness within files
 
-## Cross-File @id Notes
+## Warnings
 
-23 @id values appear in multiple files. Most are shared ontology class definitions (e.g., `owl:Class` nodes for `LegalProvision`, `TopicCluster`) that appear in every file by design. See `docs/DUPLICATE_IDS_REPORT.md` for the full list.
+- 495 @id values appear in multiple files (intentional: shared schema class definitions)
 
-## Schema Consistency
+## Data Coverage
 
-The overall schema (`estleg:LegalProvision`, `estleg:TopicCluster`, `estleg:LegalConcept`) is consistently applied across all mapped laws. Key properties:
-
-- `estleg:identifier` — provision identifier
-- `rdfs:label` — human-readable label
-- `schema:text` / `estleg:legalText` — legal text content
-- `estleg:topicCluster` — topic cluster reference
-- `estleg:references` — cross-references to other provisions
-
-## Automated Validation
-
-Run locally:
-```bash
-python3 scripts/validate_all.py
-```
-
-CI validates automatically on pushes to `main` via GitHub Actions.
+| Category | Files | Nodes |
+|----------|-------|-------|
+| Enacted laws | 635 | 28,598 provisions |
+| Draft legislation | 6 | 22,832 drafts |
+| Supreme Court decisions | 34 | 12,137 decisions |
+| EU legislation | 6 | 33,242 acts |
+| EU court decisions | 8 | 22,290 decisions |
+| Amendment chains | 376 | 18,068 amendment events |
+| Legal concepts | 2 | 812 concept nodes + report |
+| Institutions | 85 | 315 institutional competence nodes |
+| Sanctions | 152 | 1,340 sanction records |
+| Reports/indexes | 23 | metadata (excluded from validation) |
 
 ## Known Remaining Issues
 
-1. **Cross-file @id overlaps** — 23 shared IDs, mostly intentional class definitions
-2. **Missing law parts** — VÕS parts 2, 6, 10 and TsÜS part 1 not yet mapped
-3. **Cross-law references** — Not yet encoded in the ontology
+1. **Ontology IRI collisions** — some abbreviated law prefixes collide across files (tracked in #46)

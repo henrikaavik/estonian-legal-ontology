@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -17,14 +18,35 @@
       "rdfs:label": "Riigikogu kodu- ja töökorra seaduse teemakaardistus (RKKS)",
       "dc:description": "RKKS kesksete parlamentaarsete menetluste kaardistus: istungid, seaduseelnõude menetlus ja hääletamine.",
       "dc:source": "Riigikogu kodu- ja töökorra seadus",
-      "dc:identifier": "https://www.riigiteataja.ee/akt/106072012014"
+      "dc:identifier": "https://www.riigiteataja.ee/akt/106072012014",
+      "estleg:temporalStatus": "inForce",
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/2446"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/3606"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2016"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5226"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5636"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_riigikogu_kodu_tookorra",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)"
+      "rdfs:label": "Õigusnorm (paragrahv)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:TopicCluster_riigikogu_kodu_tookorra",
@@ -67,7 +89,13 @@
       "rdfs:label": "§ 45. Korralised istungjärgud",
       "estleg:requestedCluster": "parliamentary_sessions",
       "estleg:summary": "Sätestab Riigikogu korraliste istungjärkude toimumise üldise tsükli.",
-      "estleg:sourceAct": "Riigikogu kodu- ja töökorra seadus"
+      "estleg:sourceAct": "Riigikogu kodu- ja töökorra seadus",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_riigikogu"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:RKKS_Par_49",
@@ -127,7 +155,12 @@
       "rdfs:label": "§ 60. Kinnine istung",
       "estleg:requestedCluster": "parliamentary_sessions",
       "estleg:summary": "Sätestab tingimused, millal istung võib olla kinnine.",
-      "estleg:sourceAct": "Riigikogu kodu- ja töökorra seadus"
+      "estleg:sourceAct": "Riigikogu kodu- ja töökorra seadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:RKKS_Par_61",
@@ -199,7 +232,13 @@
       "rdfs:label": "§ 91. Eelnõu üleandmine",
       "estleg:requestedCluster": "legislative_procedure",
       "estleg:summary": "Sätestab eelnõu formaalse üleandmise korra Riigikogu menetluse alustamiseks.",
-      "estleg:sourceAct": "Riigikogu kodu- ja töökorra seadus"
+      "estleg:sourceAct": "Riigikogu kodu- ja töökorra seadus",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_riigikogu"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:RKKS_Par_92",
@@ -223,7 +262,13 @@
       "rdfs:label": "§ 93. Eelnõu Riigikogu menetlusse võtmise otsustamine",
       "estleg:requestedCluster": "legislative_procedure",
       "estleg:summary": "Reguleerib otsust, kas eelnõu võetakse Riigikogus menetlusse.",
-      "estleg:sourceAct": "Riigikogu kodu- ja töökorra seadus"
+      "estleg:sourceAct": "Riigikogu kodu- ja töökorra seadus",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_riigikogu"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:RKKS_Par_98",
@@ -331,7 +376,13 @@
       "rdfs:label": "§ 80. Hääletamise isiklikkus",
       "estleg:requestedCluster": "voting_procedures",
       "estleg:summary": "Kehtestab põhimõtte, et Riigikogu liige hääletab isiklikult.",
-      "estleg:sourceAct": "Riigikogu kodu- ja töökorra seadus"
+      "estleg:sourceAct": "Riigikogu kodu- ja töökorra seadus",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_riigikogu"
+        }
+      ],
+      "estleg:competenceType": "regulation"
     },
     {
       "@id": "estleg:RKKS_Par_81",

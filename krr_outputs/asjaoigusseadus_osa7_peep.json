@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -14,14 +15,46 @@
       "@type": [
         "owl:Ontology"
       ],
-      "rdfs:label": "AÕS Osa 7 kaardistus: servituudid, kasutusõigused, reaalservituudid"
+      "rdfs:label": "AÕS Osa 7 kaardistus: servituudid, kasutusõigused, reaalservituudid",
+      "estleg:temporalStatus": "inForce",
+      "estleg:affectedBy": [
+        {
+          "@id": "estleg:Draft_JDM25_0711"
+        },
+        {
+          "@id": "estleg:Draft_KLIM22_0460"
+        },
+        {
+          "@id": "estleg:Draft_JDM18_0435"
+        },
+        {
+          "@id": "estleg:Draft_MKM13_1552"
+        }
+      ],
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/5636"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5226"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/1221"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2431"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_asjaoigusseadus_osa7",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)"
+      "rdfs:label": "Õigusnorm (paragrahv)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:Cluster_Servituut",
@@ -81,7 +114,12 @@
       "rdfs:label": "Reaalservituudi sisu ja ulatus",
       "estleg:requestedCluster": "servituut",
       "estleg:summary": "Reaalservituudi ulatus määratakse eelkõige kande, tehingu sisu ja senise teostusviisi järgi; kahtluse korral tuleb arvestada mõistlikku koormust teenivale kinnisasjale.",
-      "estleg:sourceAct": "Asjaõigusseadus"
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ]
     },
     {
       "@id": "estleg:AOS_Par_175_osa7",
@@ -93,7 +131,13 @@
       "rdfs:label": "Reaalservituudi teostamine",
       "estleg:requestedCluster": "servituut",
       "estleg:summary": "Servituuti tuleb teostada viisil, mis võimaldab valitseva kinnisasja mõistlikku kasutamist, kahjustades teenivat kinnisasja võimalikult vähe.",
-      "estleg:sourceAct": "Asjaõigusseadus"
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Servituuti"
     },
     {
       "@id": "estleg:AOS_Par_180_osa7",
@@ -153,7 +197,12 @@
       "rdfs:label": "Isikliku kasutusõiguse mõiste",
       "estleg:requestedCluster": "kasutusoigus",
       "estleg:summary": "Isiklik kasutusõigus annab õigustatud isikule õiguse kasutada kinnisasja kokkulepitud ulatuses; õigus on seotud õigustatud isikuga.",
-      "estleg:sourceAct": "Asjaõigusseadus"
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:AOS_Par_226_osa7",

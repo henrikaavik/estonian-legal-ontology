@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -16,14 +17,35 @@
       ],
       "rdfs:label": "Sideseaduse teemakaardistus (telekommunikatsiooniõigus)",
       "dc:description": "Sideseaduse põhisambad: elektroonilised sidevõrgud, sagedushaldus ja sidevaldkonna tarbijakaitse.",
-      "dc:source": "Sideseadus (Riigi Teataja, kehtiv redaktsioon; §-taseme viited vajavad lõppverifitseerimist)"
+      "dc:source": "Sideseadus (Riigi Teataja, kehtiv redaktsioon; §-taseme viited vajavad lõppverifitseerimist)",
+      "estleg:temporalStatus": "inForce",
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/2821"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2806"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2431"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2441"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/1221"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_sideseadus",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)"
+      "rdfs:label": "Õigusnorm (paragrahv)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:TopicCluster_sideseadus",

@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -14,14 +15,46 @@
       "@type": [
         "owl:Ontology"
       ],
-      "rdfs:label": "AÕS Osa 4 (Ühisomand) kaardistus: ühisomand ja kaasomand"
+      "rdfs:label": "AÕS Osa 4 (Ühisomand) kaardistus: ühisomand ja kaasomand",
+      "estleg:temporalStatus": "inForce",
+      "estleg:affectedBy": [
+        {
+          "@id": "estleg:Draft_JDM25_0711"
+        },
+        {
+          "@id": "estleg:Draft_KLIM22_0460"
+        },
+        {
+          "@id": "estleg:Draft_JDM18_0435"
+        },
+        {
+          "@id": "estleg:Draft_MKM13_1552"
+        }
+      ],
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/5636"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5226"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/1221"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2431"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_asjaoigusseadus_osa4",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)"
+      "rdfs:label": "Õigusnorm (paragrahv)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:Cluster_Uhisomand",
@@ -32,7 +65,7 @@
       "rdfs:label": "Ühisomand"
     },
     {
-      "@id": "estleg:Cluster_Kaasomand",
+      "@id": "estleg:Cluster_Osa4_Kaasomand",
       "@type": [
         "owl:NamedIndividual",
         "estleg:TopicCluster"
@@ -97,7 +130,12 @@
       "rdfs:label": "Kaasomaniku osa käsutamine",
       "estleg:requestedCluster": "kaasomand",
       "estleg:summary": "Kaasomanik võib oma mõttelist osa võõrandada ja koormata, järgides kaasomandi erireegleid.",
-      "estleg:sourceAct": "Asjaõigusseadus"
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:AOS_Par_74_asjaoigusseadus_osa4",
@@ -157,7 +195,12 @@
       "rdfs:label": "Kaasomandi lõpetamine asja müügiga",
       "estleg:requestedCluster": "kaasomand",
       "estleg:summary": "Kui jagamine ei ole võimalik või otstarbekas, võib kaasomand lõppeda asja müügiga ning tulu jaotamisega kaasomanike vahel.",
-      "estleg:sourceAct": "Asjaõigusseadus"
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     }
   ]
 }

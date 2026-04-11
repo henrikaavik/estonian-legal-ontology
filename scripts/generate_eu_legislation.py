@@ -189,23 +189,23 @@ def generate_schema_nodes() -> list[dict]:
         {
             "@id": "estleg:EULegislation",
             "@type": ["owl:Class"],
-            "rdfs:label": "EL õigusakt (EU Legislation)",
-            "rdfs:comment": "Euroopa Liidu õigusakt — määrus, direktiiv või otsus.",
-            "dc:description": "A European Union legal act — regulation, directive, or decision.",
+            "rdfs:label": {"@value": "EL õigusakt (EU Legislation)", "@language": "et"},
+            "rdfs:comment": {"@value": "Euroopa Liidu õigusakt — määrus, direktiiv või otsus.", "@language": "et"},
+            "dc:description": {"@value": "A European Union legal act — regulation, directive, or decision.", "@language": "en"},
         },
         # EUDocumentType class
         {
             "@id": "estleg:EUDocumentType",
             "@type": ["owl:Class"],
-            "rdfs:label": "EL õigusakti liik (EU Document Type)",
-            "rdfs:comment": "Euroopa Liidu õigusakti klassifikatsioon.",
+            "rdfs:label": {"@value": "EL õigusakti liik (EU Document Type)", "@language": "et"},
+            "rdfs:comment": {"@value": "Euroopa Liidu õigusakti klassifikatsioon.", "@language": "et"},
         },
         # EUInstitution class
         {
             "@id": "estleg:EUInstitution",
             "@type": ["owl:Class"],
-            "rdfs:label": "EL institutsioon (EU Institution)",
-            "rdfs:comment": "Euroopa Liidu institutsioon või organ, mis on õigusakti autor.",
+            "rdfs:label": {"@value": "EL institutsioon (EU Institution)", "@language": "et"},
+            "rdfs:comment": {"@value": "Euroopa Liidu institutsioon või organ, mis on õigusakti autor.", "@language": "et"},
         },
     ]
 
@@ -214,9 +214,9 @@ def generate_schema_nodes() -> list[dict]:
         nodes.append({
             "@id": f"estleg:EUDocType_{doc_info['type_id']}",
             "@type": ["owl:NamedIndividual", "estleg:EUDocumentType"],
-            "rdfs:label": doc_info["label_et"],
-            "skos:prefLabel": doc_info["label_en"],
-            "rdfs:comment": doc_info["description"],
+            "rdfs:label": {"@value": doc_info["label_et"], "@language": "et"},
+            "skos:prefLabel": {"@value": doc_info["label_en"], "@language": "en"},
+            "rdfs:comment": {"@value": doc_info["description"], "@language": "et"},
         })
 
     # Institution individuals
@@ -224,8 +224,8 @@ def generate_schema_nodes() -> list[dict]:
         nodes.append({
             "@id": f"estleg:EUInst_{inst_id}",
             "@type": ["owl:NamedIndividual", "estleg:EUInstitution"],
-            "rdfs:label": label_et,
-            "skos:prefLabel": label_en,
+            "rdfs:label": {"@value": label_et, "@language": "et"},
+            "skos:prefLabel": {"@value": label_en, "@language": "en"},
             "estleg:euInstitutionCode": code,
         })
 
@@ -234,17 +234,17 @@ def generate_schema_nodes() -> list[dict]:
         {
             "@id": "estleg:euDocumentType",
             "@type": ["owl:ObjectProperty"],
-            "rdfs:label": "EL õigusakti liik",
+            "rdfs:label": {"@value": "EL õigusakti liik", "@language": "et"},
             "rdfs:domain": {"@id": "estleg:EULegislation"},
             "rdfs:range": {"@id": "estleg:EUDocumentType"},
         },
         {
             "@id": "estleg:euInstitution",
             "@type": ["owl:ObjectProperty"],
-            "rdfs:label": "EL institutsioon",
+            "rdfs:label": {"@value": "EL institutsioon", "@language": "et"},
             "rdfs:domain": {"@id": "estleg:EULegislation"},
             "rdfs:range": {"@id": "estleg:EUInstitution"},
-            "rdfs:comment": "The EU institution that authored or adopted the legal act.",
+            "rdfs:comment": {"@value": "The EU institution that authored or adopted the legal act.", "@language": "en"},
         },
     ])
 
@@ -256,15 +256,15 @@ def generate_schema_nodes() -> list[dict]:
             "rdfs:label": "CELEX number",
             "rdfs:domain": {"@id": "estleg:EULegislation"},
             "rdfs:range": {"@id": "xsd:string"},
-            "rdfs:comment": "CELEX identifier for the EU legal act (e.g., 32016R0679).",
+            "rdfs:comment": {"@value": "CELEX identifier for the EU legal act (e.g., 32016R0679).", "@language": "en"},
         },
         {
             "@id": "estleg:eliIdentifier",
             "@type": ["owl:DatatypeProperty"],
-            "rdfs:label": "ELI identifikaator",
+            "rdfs:label": {"@value": "ELI identifikaator", "@language": "et"},
             "rdfs:domain": {"@id": "estleg:EULegislation"},
             "rdfs:range": {"@id": "xsd:anyURI"},
-            "rdfs:comment": "European Legislation Identifier (ELI) URI.",
+            "rdfs:comment": {"@value": "European Legislation Identifier (ELI) URI.", "@language": "en"},
         },
         {
             "@id": "estleg:eurLexLink",
@@ -272,23 +272,23 @@ def generate_schema_nodes() -> list[dict]:
             "rdfs:label": "EUR-Lex link",
             "rdfs:domain": {"@id": "estleg:EULegislation"},
             "rdfs:range": {"@id": "xsd:anyURI"},
-            "rdfs:comment": "Link to the legal act in EUR-Lex (Estonian version).",
+            "rdfs:comment": {"@value": "Link to the legal act in EUR-Lex (Estonian version).", "@language": "en"},
         },
         {
             "@id": "estleg:documentDate",
             "@type": ["owl:DatatypeProperty"],
-            "rdfs:label": "dokumendi kuupäev",
+            "rdfs:label": {"@value": "dokumendi kuupäev", "@language": "et"},
             "rdfs:domain": {"@id": "estleg:EULegislation"},
             "rdfs:range": {"@id": "xsd:date"},
-            "rdfs:comment": "Date of the legal act.",
+            "rdfs:comment": {"@value": "Date of the legal act.", "@language": "en"},
         },
         {
             "@id": "estleg:inForce",
             "@type": ["owl:DatatypeProperty"],
-            "rdfs:label": "jõus",
+            "rdfs:label": {"@value": "jõus", "@language": "et"},
             "rdfs:domain": {"@id": "estleg:EULegislation"},
             "rdfs:range": {"@id": "xsd:boolean"},
-            "rdfs:comment": "Whether the legal act is currently in force.",
+            "rdfs:comment": {"@value": "Whether the legal act is currently in force.", "@language": "en"},
         },
     ])
 
@@ -301,7 +301,7 @@ def legislation_to_node(item: dict, type_id: str) -> dict:
     node: dict = {
         "@id": f"estleg:EU_{safe_celex}",
         "@type": ["owl:NamedIndividual", "estleg:EULegislation"],
-        "rdfs:label": item["title"][:500],
+        "rdfs:label": {"@value": item["title"][:500], "@language": "et"},
         "estleg:celexNumber": item["celex"],
         "estleg:euDocumentType": {"@id": f"estleg:EUDocType_{type_id}"},
     }
@@ -309,6 +309,9 @@ def legislation_to_node(item: dict, type_id: str) -> dict:
     # EUR-Lex link (Estonian)
     eurlex_link = f"https://eur-lex.europa.eu/legal-content/ET/TXT/?uri=CELEX:{item['celex']}"
     node["estleg:eurLexLink"] = {"@value": eurlex_link, "@type": "xsd:anyURI"}
+
+    # Canonical source URI (CELEX-based)
+    node["dcterms:source"] = {"@id": f"http://publications.europa.eu/resource/celex/{item['celex']}"}
 
     # ELI
     if item.get("eli"):
@@ -376,8 +379,8 @@ def main():
             {
                 "@id": f"estleg:EURlex_{doc_info['type_id']}s_Map_2026",
                 "@type": ["owl:Ontology"],
-                "rdfs:label": f"EL {doc_info['label_et'].lower()} – kõik ({len(items)})",
-                "dc:description": f"Euroopa Liidu {doc_info['label_et'].lower()} eesti keeles EUR-Lexist.",
+                "rdfs:label": {"@value": f"EL {doc_info['label_et'].lower()} – kõik ({len(items)})", "@language": "et"},
+                "dc:description": {"@value": f"Euroopa Liidu {doc_info['label_et'].lower()} eesti keeles EUR-Lexist.", "@language": "et"},
                 "dc:source": "EUR-Lex – eur-lex.europa.eu",
             },
         ]
@@ -398,8 +401,8 @@ def main():
         {
             "@id": "estleg:EURlex_Combined_Map_2026",
             "@type": ["owl:Ontology"],
-            "rdfs:label": "EL õigusaktid – kõik liigid (Combined)",
-            "dc:description": "Kõik Euroopa Liidu õigusaktid eesti keeles EUR-Lexist.",
+            "rdfs:label": {"@value": "EL õigusaktid – kõik liigid (Combined)", "@language": "et"},
+            "dc:description": {"@value": "Kõik Euroopa Liidu õigusaktid eesti keeles EUR-Lexist.", "@language": "et"},
             "dc:source": "EUR-Lex – eur-lex.europa.eu",
         },
     ]

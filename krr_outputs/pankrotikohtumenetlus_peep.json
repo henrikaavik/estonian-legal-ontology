@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -15,14 +16,35 @@
         "owl:Ontology"
       ],
       "rdfs:label": "Pankroti- ja saneerimiskohtumenetluse seadustiku teemakaardistus",
-      "dc:source": "Pankroti- ja saneerimiskohtumenetluse seadustik"
+      "dc:source": "Pankroti- ja saneerimiskohtumenetluse seadustik",
+      "estleg:temporalStatus": "inForce",
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/5231"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2431"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5636"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/1221"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/0411"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_pankrotikohtumenetlus",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv või normiblokk)"
+      "rdfs:label": "Õigusnorm (paragrahv või normiblokk)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:TopicCluster_pankrotikohtumenetlus",
@@ -77,7 +99,13 @@
       "rdfs:label": "Maksejõuetusasja lahendava kohtu määramine",
       "estleg:requestedCluster": "pankroti_ja_saneerimiskohtumenetlus",
       "estleg:summary": "Sätestab, milline kohus on pädev pankroti või saneerimismenetluse algatamise, jätkamise ja lõpetamise küsimusi lahendama, sh rahvusvahelise elemendiga vaidlustes.",
-      "estleg:sourceAct": "Pankroti- ja saneerimiskohtumenetluse seadustik"
+      "estleg:sourceAct": "Pankroti- ja saneerimiskohtumenetluse seadustik",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohus"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:PSKMS_Norm_003",
@@ -89,7 +117,18 @@
       "rdfs:label": "Avalduse kontroll, ajutised abinõud ja menetluse avamine",
       "estleg:requestedCluster": "pankroti_ja_saneerimiskohtumenetlus",
       "estleg:summary": "Kohus hindab avalduse lubatavust, võib rakendada esialgseid kaitsemeetmeid vara säilitamiseks ning otsustab menetluse avamise seadusest tulenevate eelduste alusel.",
-      "estleg:sourceAct": "Pankroti- ja saneerimiskohtumenetluse seadustik"
+      "estleg:sourceAct": "Pankroti- ja saneerimiskohtumenetluse seadustik",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohus"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:PSKMS_Norm_004",
@@ -113,7 +152,12 @@
       "rdfs:label": "Õigus osaleda menetluses ja esitada seisukohti",
       "estleg:requestedCluster": "volausaldajate_oigused",
       "estleg:summary": "Võlausaldajatel on õigus saada menetlusteavet, esitada vastuväiteid, taotlusi ja tõendeid ning osaleda otsustamisel küsimustes, mis mõjutavad nõuete rahuldamist.",
-      "estleg:sourceAct": "Pankroti- ja saneerimiskohtumenetluse seadustik"
+      "estleg:sourceAct": "Pankroti- ja saneerimiskohtumenetluse seadustik",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:PSKMS_Norm_011",
@@ -161,7 +205,13 @@
       "rdfs:label": "Menetluse korrektsuse ja seaduslikkuse kontroll",
       "estleg:requestedCluster": "kohtulik_jarelevalve",
       "estleg:summary": "Kohus tagab, et menetlus vastab seadusele, poolte ärakuulamisõigused on kaitstud ja otsused tehakse põhjendatult ning kontrollitavalt.",
-      "estleg:sourceAct": "Pankroti- ja saneerimiskohtumenetluse seadustik"
+      "estleg:sourceAct": "Pankroti- ja saneerimiskohtumenetluse seadustik",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohus"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:PSKMS_Norm_021",
@@ -173,7 +223,12 @@
       "rdfs:label": "Kohtu sekkumine menetlusorgani rikkumiste korral",
       "estleg:requestedCluster": "kohtulik_jarelevalve",
       "estleg:summary": "Kohtul on õigus kontrollida halduri või saneerimisnõustaja tegevuse õiguspärasust, anda siduvaid juhiseid, kohaldada sanktsioone või vabastada isik ülesannetest.",
-      "estleg:sourceAct": "Pankroti- ja saneerimiskohtumenetluse seadustik"
+      "estleg:sourceAct": "Pankroti- ja saneerimiskohtumenetluse seadustik",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:PSKMS_Norm_022",
@@ -185,7 +240,13 @@
       "rdfs:label": "Põhjendamiskohustus ja edasikaebe võimalus",
       "estleg:requestedCluster": "kohtulik_jarelevalve",
       "estleg:summary": "Kohtulahend peab sisaldama faktilisi ja õiguslikke põhjendusi, mis võimaldavad menetlusosalistel hinnata otsuse seaduslikkust ning kasutada edasikaebeõigust.",
-      "estleg:sourceAct": "Pankroti- ja saneerimiskohtumenetluse seadustik"
+      "estleg:sourceAct": "Pankroti- ja saneerimiskohtumenetluse seadustik",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Kohtulahend"
     },
     {
       "@id": "estleg:PSKMS_Norm_023",
@@ -197,7 +258,13 @@
       "rdfs:label": "Lõpparuanded, kinnitused ja menetluse lõpetamine",
       "estleg:requestedCluster": "kohtulik_jarelevalve",
       "estleg:summary": "Enne menetluse lõpetamist kontrollib kohus lõpparuannete nõuetekohasust, võlausaldajate õiguste kaitset ning seda, et lõpetamine ei kahjustaks menetluse eesmärki.",
-      "estleg:sourceAct": "Pankroti- ja saneerimiskohtumenetluse seadustik"
+      "estleg:sourceAct": "Pankroti- ja saneerimiskohtumenetluse seadustik",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohus"
+        }
+      ],
+      "estleg:competenceType": "enforcement"
     },
     {
       "@id": "estleg:PSKMS_NOTE_001",
@@ -205,7 +272,18 @@
         "owl:NamedIndividual"
       ],
       "rdfs:label": "Märkus kaardistuse ulatuse kohta",
-      "estleg:note": "Kaardistus on koostatud ühtses JSON-LD skeemis normiplokkide tasemel. Järgmises iteratsioonis lisatakse täpsed §-viited, redaktsioonikuupäevad ja detailsed ristviited PankrS, SanS ning TsMS menetlusnormidele."
+      "estleg:note": "Kaardistus on koostatud ühtses JSON-LD skeemis normiplokkide tasemel. Järgmises iteratsioonis lisatakse täpsed §-viited, redaktsioonikuupäevad ja detailsed ristviited PankrS, SanS ning TsMS menetlusnormidele.",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:TsMS_NOTE_001"
+        },
+        {
+          "@id": "estleg:SANS_NOTE_001"
+        },
+        {
+          "@id": "estleg:PANKRS_NOTE_001"
+        }
+      ]
     }
   ]
 }

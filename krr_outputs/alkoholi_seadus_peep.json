@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -16,14 +17,35 @@
       ],
       "rdfs:label": "Alkoholiseaduse teemakaardistus (alkoholiõigus)",
       "dc:description": "Alkoholiseaduse põhisambad: alkoholiload, müügipiirangud ja reklaamipiirangud (koostoimes alkoholi reguleerivate alamaktidega).",
-      "dc:source": "Alkoholiseadus (Riigi Teataja, kehtiv redaktsioon; §-taseme viited vajavad lõppverifitseerimist)"
+      "dc:source": "Alkoholiseadus (Riigi Teataja, kehtiv redaktsioon; §-taseme viited vajavad lõppverifitseerimist)",
+      "estleg:temporalStatus": "inForce",
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/2836"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2441"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5226"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2431"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2821"
+        }
+      ]
     },
     {
-      "@id": "estleg:LegalProvision_alkoholiseadus",
+      "@id": "estleg:LegalProvision_alkoholi_seadus",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)"
+      "rdfs:label": "Õigusnorm (paragrahv)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:TopicCluster_alkoholiseadus",
@@ -48,7 +70,7 @@
       "rdfs:label": "Alkoholiload"
     },
     {
-      "@id": "estleg:Cluster_Muugipiirangud",
+      "@id": "estleg:Cluster_alkoholi_seadus_Muugipiirangud",
       "@type": [
         "owl:NamedIndividual",
         "estleg:TopicCluster_alkoholiseadus"
@@ -67,7 +89,7 @@
       "@id": "estleg:ALKS_Par_KaitlemisOiguslikAlus",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_alkoholiseadus"
+        "estleg:LegalProvision_alkoholi_seadus"
       ],
       "estleg:paragrahv": "AlkS (alkoholi käitlemise õigusliku aluse normid)",
       "rdfs:label": "Alkoholi käitlemise õiguslik alus ja tegevusloa vajadus",
@@ -79,19 +101,24 @@
       "@id": "estleg:ALKS_Par_LoaAndmineJaKehtivus",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_alkoholiseadus"
+        "estleg:LegalProvision_alkoholi_seadus"
       ],
       "estleg:paragrahv": "AlkS (loa andmise, muutmise ja kehtivuse normid)",
       "rdfs:label": "Alkoholiloa andmine, muutmine, peatamine ja kehtetuks tunnistamine",
       "estleg:requestedCluster": "alkoholiload",
       "estleg:summary": "Reguleerib loa andmise eeldusi, loa tingimuste muutmist ning aluseid, mille esinemisel võib järelevalveasutus loa peatada või kehtetuks tunnistada.",
-      "estleg:sourceAct": "Alkoholiseadus"
+      "estleg:sourceAct": "Alkoholiseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:ALKS_Par_JarelevalveJaVastutus",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_alkoholiseadus"
+        "estleg:LegalProvision_alkoholi_seadus"
       ],
       "estleg:paragrahv": "AlkS (järelevalve ja vastutuse normid käitlemislubade üle)",
       "rdfs:label": "Loaomanike üle järelevalve ja rikkumiste tagajärjed",
@@ -103,7 +130,7 @@
       "@id": "estleg:ALKS_Par_MuugiVanusepiir",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_alkoholiseadus"
+        "estleg:LegalProvision_alkoholi_seadus"
       ],
       "estleg:paragrahv": "AlkS (vanusepiirangu ja ostja kontrolli normid)",
       "rdfs:label": "Alkoholi müük alaealisele keelatud ja vanuse kontroll",
@@ -115,7 +142,7 @@
       "@id": "estleg:ALKS_Par_MuugiAegJaKoht",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_alkoholiseadus"
+        "estleg:LegalProvision_alkoholi_seadus"
       ],
       "estleg:paragrahv": "AlkS (müügiaja, müügikoha ja erandite normid)",
       "rdfs:label": "Alkoholi jaemüügi aja- ja kohapiirangud",
@@ -127,7 +154,7 @@
       "@id": "estleg:ALKS_Par_KaugmuukJaUleandmine",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_alkoholiseadus"
+        "estleg:LegalProvision_alkoholi_seadus"
       ],
       "estleg:paragrahv": "AlkS (kaugmüügi, üleandmise ja tarbijakaitse normid)",
       "rdfs:label": "Alkoholi kaugmüük, kättetoimetamine ja üleandmise kontroll",
@@ -139,19 +166,24 @@
       "@id": "estleg:ALKS_Par_ReklaamiYldkeeld",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_alkoholiseadus"
+        "estleg:LegalProvision_alkoholi_seadus"
       ],
       "estleg:paragrahv": "AlkS (alkoholi reklaami üldkeelu ja lubatud info normid)",
       "rdfs:label": "Alkoholi reklaami üldpiirangud ja lubatud teave",
       "estleg:requestedCluster": "reklaam",
       "estleg:summary": "Määrab alkoholi reklaami lubatavuse piirid, eristades müügikoha teavet reklaamist ning piirates reklaami sisu, mis võib soodustada tarbimist või idealiseerida alkoholi.",
-      "estleg:sourceAct": "Alkoholiseadus"
+      "estleg:sourceAct": "Alkoholiseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:ALKS_Par_ReklaamiSisuPiirangud",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_alkoholiseadus"
+        "estleg:LegalProvision_alkoholi_seadus"
       ],
       "estleg:paragrahv": "AlkS (reklaami sisu- ja sihtrühma kaitse normid)",
       "rdfs:label": "Alaealiste kaitse ja keelatud reklaamivõtted",
@@ -163,7 +195,7 @@
       "@id": "estleg:ALKS_Par_ReklaamiJarelevalve",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_alkoholiseadus"
+        "estleg:LegalProvision_alkoholi_seadus"
       ],
       "estleg:paragrahv": "AlkS (reklaami järelevalve, ettekirjutuste ja vastutuse normid)",
       "rdfs:label": "Reklaamireeglite järelevalve ja rikkumiste sanktsioonid",

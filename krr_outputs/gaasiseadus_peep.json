@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -16,14 +17,52 @@
       ],
       "rdfs:label": "Gaasiseaduse teemakaardistus (energiõigus)",
       "dc:description": "Gaasiseaduse põhisambad: gaasiturg, gaasi transport ja ohutusnõuded.",
-      "dc:source": "Gaasiseadus (Riigi Teataja, kehtiv redaktsioon; §-taseme viited vajavad lõppverifitseerimist)"
+      "dc:source": "Gaasiseadus (Riigi Teataja, kehtiv redaktsioon; §-taseme viited vajavad lõppverifitseerimist)",
+      "estleg:temporalStatus": "inForce",
+      "estleg:affectedBy": [
+        {
+          "@id": "estleg:Draft_KLIM26_0059"
+        },
+        {
+          "@id": "estleg:Draft_MKM20_0767"
+        },
+        {
+          "@id": "estleg:Draft_MKM15_0463"
+        },
+        {
+          "@id": "estleg:Draft_MKM13_1099"
+        },
+        {
+          "@id": "estleg:Draft_MKM11_0261"
+        }
+      ],
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/5606"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2441"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/3606"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5226"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2416"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_gaasiseadus",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)"
+      "rdfs:label": "Õigusnorm (paragrahv)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:TopicCluster_gaasiseadus",

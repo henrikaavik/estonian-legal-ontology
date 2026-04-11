@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -15,14 +16,35 @@
         "owl:Ontology"
       ],
       "rdfs:label": "Politsei seaduse ja avaliku korra teemakaardistus",
-      "dc:source": "Politsei ja piirivalve seadus (Riigi Teataja) + Korrakaitseseadus (Riigi Teataja), kehtivad redaktsioonid"
+      "dc:source": "Politsei ja piirivalve seadus (Riigi Teataja) + Korrakaitseseadus (Riigi Teataja), kehtivad redaktsioonid",
+      "estleg:temporalStatus": "inForce",
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/0816"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/3606"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5226"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2441"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2446"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_politsei_seadus",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)"
+      "rdfs:label": "Õigusnorm (paragrahv)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:Cluster_PoliceFunctions",
@@ -90,7 +112,13 @@
       "rdfs:label": "Koostöö, ennetus ja teavitustegevus",
       "estleg:requestedCluster": "politsei ülesanded",
       "estleg:summary": "Reguleerib politsei koostööd kohaliku omavalitsuse, pääste- ja sotsiaalsüsteemiga ning rõhutab kogukonnapõhist ennetustööd ja ohuolukordadest teavitamist.",
-      "estleg:sourceAct": "Politsei ja piirivalve seadus"
+      "estleg:sourceAct": "Politsei ja piirivalve seadus",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:POLS_Par_PolitseiYldvolitused",
@@ -114,7 +142,12 @@
       "rdfs:label": "Isiku kontroll, läbivaatus ja sekkumine",
       "estleg:requestedCluster": "politsei õigused",
       "estleg:summary": "Reguleerib tingimusi, mille alusel politsei võib isikut peatada, kontrollida, läbi vaadata, piirata liikumist või rakendada muid vahetuid korrakaitsemeetmeid.",
-      "estleg:sourceAct": "Korrakaitseseadus"
+      "estleg:sourceAct": "Korrakaitseseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:POLS_Par_VahenditeKasutamine",
@@ -174,7 +207,12 @@
       "rdfs:label": "Korrakaitsemeetme valik, eesmärgipärasus ja proportsionaalsus",
       "estleg:requestedCluster": "law enforcement",
       "estleg:summary": "Sätestab, et korrakaitsemeetme rakendamisel tuleb valida eesmärgi saavutamiseks sobiv ja võimalikult vähekoormav sekkumine ning lõpetada meede kohe, kui alus langeb ära.",
-      "estleg:sourceAct": "Korrakaitseseadus"
+      "estleg:sourceAct": "Korrakaitseseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ]
     },
     {
       "@id": "estleg:POLS_Par_KorrakaitsemenetluseToimingud",

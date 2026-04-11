@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -15,14 +16,30 @@
         "owl:Ontology"
       ],
       "rdfs:label": "Välisriigist ülalpidamise taotlemise konventsiooniga ühinemise seadus teemakaardistus",
-      "dc:source": "Välisriigist ülalpidamise taotlemise konventsiooniga ühinemise seadus"
+      "dc:source": "Välisriigist ülalpidamise taotlemise konventsiooniga ühinemise seadus",
+      "estleg:entryIntoForce": {
+        "@value": "2002-06-01",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce",
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/0411"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2446"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_valisriigist_ulalpidamise_taotlemise_konventsiooniga_uhinemise_seadus",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)"
+      "rdfs:label": "Õigusnorm (paragrahv)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:Vlisriigist_lalpidamise_taot_Par_1",
@@ -44,7 +61,16 @@
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2.",
       "estleg:sourceAct": "Välisriigist ülalpidamise taotlemise konventsiooniga ühinemise seadus",
-      "estleg:summary": "Ühinemisel määrata konventsiooni artikli 2 lõike 1 järgi edastusasutuseks ja artikli 2 lõike 2 järgi vastuvõtuasutuseks Justiitsministeerium.<table border=\"0\" width=\"85%\"> <tbody><tr> <td width=\"50%\"> </td> <td width=\"50%\"> <div align=\"right\"> <strong>Riigikogu esimees Toomas SAVI</strong> </div> </td> </tr> </tbody></table><p> Õiend<a name=\"o\"> </a><br/>Lisatud andmed väljakuulutamise kohta. </p> Ühinemisel määrata konventsiooni artikli 2 lõike 1 järgi edastusasutuseks ja artikli 2 lõike 2 järg"
+      "estleg:summary": "Ühinemisel määrata konventsiooni artikli 2 lõike 1 järgi edastusasutuseks ja artikli 2 lõike 2 järgi vastuvõtuasutuseks Justiitsministeerium.<table border=\"0\" width=\"85%\"> <tbody><tr> <td width=\"50%\"> </td> <td width=\"50%\"> <div align=\"right\"> <strong>Riigikogu esimees Toomas SAVI</strong> </div> </td> </tr> </tbody></table><p> Õiend<a name=\"o\"> </a><br/>Lisatud andmed väljakuulutamise kohta. </p> Ühinemisel määrata konventsiooni artikli 2 lõike 1 järgi edastusasutuseks ja artikli 2 lõike 2 järg",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_riigikogu"
+        },
+        {
+          "@id": "estleg:Institution_justiitsministeerium"
+        }
+      ],
+      "estleg:competenceType": "general"
     }
   ]
 }

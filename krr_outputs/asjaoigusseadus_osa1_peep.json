@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -14,14 +15,46 @@
       "@type": [
         "owl:Ontology"
       ],
-      "rdfs:label": "AÕS Osa 1 (Üldosa) kaardistus: omand, asjaõigused, kinnisvara"
+      "rdfs:label": "AÕS Osa 1 (Üldosa) kaardistus: omand, asjaõigused, kinnisvara",
+      "estleg:temporalStatus": "inForce",
+      "estleg:affectedBy": [
+        {
+          "@id": "estleg:Draft_JDM25_0711"
+        },
+        {
+          "@id": "estleg:Draft_KLIM22_0460"
+        },
+        {
+          "@id": "estleg:Draft_JDM18_0435"
+        },
+        {
+          "@id": "estleg:Draft_MKM13_1552"
+        }
+      ],
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/5636"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5226"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/1221"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2431"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_asjaoigusseadus_osa1",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)"
+      "rdfs:label": "Õigusnorm (paragrahv)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:Cluster_Omand",
@@ -129,7 +162,12 @@
       "rdfs:label": "Omavoli ja omavoliline valdus",
       "estleg:requestedCluster": "asjaoigused",
       "estleg:summary": "Valdus on kaitstud omavoli vastu; omavoli on valduse rikkumine või äravõtmine valdaja nõusolekuta ja seadusvastaselt.",
-      "estleg:sourceAct": "Asjaõigusseadus"
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:ASRS_Par_5"
+        }
+      ]
     },
     {
       "@id": "estleg:AOS_Par_41",
@@ -141,7 +179,17 @@
       "rdfs:label": "Omaabi",
       "estleg:requestedCluster": "asjaoigused",
       "estleg:summary": "Valdaja võib valdust omavoli vastu kaitsta jõuga hädakaitse piirides ning teatud juhtudel valduse kohe taastada.",
-      "estleg:sourceAct": "Asjaõigusseadus"
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:ASRS_Par_5"
+        }
+      ]
     },
     {
       "@id": "estleg:AOS_Par_44",
@@ -153,7 +201,17 @@
       "rdfs:label": "Valduse rikkumisest tulenev nõue",
       "estleg:requestedCluster": "asjaoigused",
       "estleg:summary": "Valdajal on õigus nõuda rikkumise kõrvaldamist ja edasise rikkumise ärahoidmist.",
-      "estleg:sourceAct": "Asjaõigusseadus"
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:ASRS_Par_5"
+        }
+      ]
     },
     {
       "@id": "estleg:AOS_Par_45",
@@ -165,7 +223,17 @@
       "rdfs:label": "Valduse äravõtmisest tulenev nõue",
       "estleg:requestedCluster": "asjaoigused",
       "estleg:summary": "Valduse äravõtmisel võib valdaja nõuda valduse taastamist omavoliliselt valdajalt.",
-      "estleg:sourceAct": "Asjaõigusseadus"
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:ASRS_Par_5"
+        }
+      ]
     },
     {
       "@id": "estleg:AOS_Par_51",
@@ -177,7 +245,15 @@
       "rdfs:label": "Kinnistusraamatu mõiste",
       "estleg:requestedCluster": "kinnisvara",
       "estleg:summary": "Kinnistusraamatut peetakse kinnisasjade ja nendega seotud asjaõiguste kohta.",
-      "estleg:sourceAct": "Asjaõigusseadus"
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:ASRS_Par_11"
+        },
+        {
+          "@id": "estleg:ASRS_Par_11_14"
+        }
+      ]
     },
     {
       "@id": "estleg:AOS_Par_54",
@@ -189,7 +265,12 @@
       "rdfs:label": "Kinnisasjade ühendamine ja jagamine",
       "estleg:requestedCluster": "kinnisvara",
       "estleg:summary": "Kinnisasju saab ühendada ja jagada omaniku soovil; kinnistusraamatusse kantud õiguste kehtivus säilib seaduses ettenähtud korras.",
-      "estleg:sourceAct": "Asjaõigusseadus"
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:KOS_Par_4"
+        }
+      ]
     },
     {
       "@id": "estleg:AOS_Par_55",
@@ -216,7 +297,7 @@
       "estleg:sourceAct": "Asjaõigusseadus"
     },
     {
-      "@id": "estleg:AOS_Par_56_1",
+      "@id": "estleg:AOS_Osa1_Par_56_1",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision_asjaoigusseadus_osa1"
@@ -252,7 +333,7 @@
       "estleg:sourceAct": "Asjaõigusseadus"
     },
     {
-      "@id": "estleg:AOS_Par_64_1",
+      "@id": "estleg:AOS_Osa1_Par_64_1",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision_asjaoigusseadus_osa1"
@@ -288,7 +369,7 @@
       "estleg:sourceAct": "Asjaõigusseadus"
     },
     {
-      "@id": "estleg:AOS_Par_70",
+      "@id": "estleg:AOS_Osa1_Par_70",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision_asjaoigusseadus_osa1"
@@ -300,7 +381,7 @@
       "estleg:sourceAct": "Asjaõigusseadus"
     },
     {
-      "@id": "estleg:AOS_Par_71",
+      "@id": "estleg:AOS_Osa1_Par_71",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision_asjaoigusseadus_osa1"
@@ -312,7 +393,7 @@
       "estleg:sourceAct": "Asjaõigusseadus"
     },
     {
-      "@id": "estleg:AOS_Par_72",
+      "@id": "estleg:AOS_Osa1_Par_72",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision_asjaoigusseadus_osa1"
@@ -321,7 +402,12 @@
       "rdfs:label": "Kaasomandi valdamine ja kasutamine",
       "estleg:requestedCluster": "omand",
       "estleg:summary": "Kaasomanikud valdavad ja kasutavad asja kokkuleppel; tavakasutuse küsimusi saab lahendada häälteenamusega, järgides kõigi huve ja hea usu põhimõtet.",
-      "estleg:sourceAct": "Asjaõigusseadus"
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:hisveevrgi_ja_kanalisatsioo_Par_8"
+        }
+      ]
     },
     {
       "@id": "estleg:AOS_Par_73",
@@ -333,7 +419,17 @@
       "rdfs:label": "Kaasomandi mõttelise osa käsutamine",
       "estleg:requestedCluster": "omand",
       "estleg:summary": "Kaasomanik võib oma mõttelist osa käsutada; kinnisasja osa müügil kolmandale võivad teistel kaasomanikel tekkida ostueesõigused.",
-      "estleg:sourceAct": "Asjaõigusseadus"
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Korteriomandi_ja_korterihist_Par_11"
+        }
+      ]
     },
     {
       "@id": "estleg:AOS_Par_74",
@@ -348,7 +444,7 @@
       "estleg:sourceAct": "Asjaõigusseadus"
     },
     {
-      "@id": "estleg:AOS_Par_76",
+      "@id": "estleg:AOS_Osa1_Par_76",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision_asjaoigusseadus_osa1"
@@ -357,10 +453,15 @@
       "rdfs:label": "Kaasomandi lõpetamise nõue",
       "estleg:requestedCluster": "omand",
       "estleg:summary": "Kaasomanikul on õigus nõuda kaasomandi lõpetamist; kokkuleppel saab nõudeõigust piirata üksnes seaduses lubatud piires.",
-      "estleg:sourceAct": "Asjaõigusseadus"
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
-      "@id": "estleg:AOS_Par_77",
+      "@id": "estleg:AOS_Osa1_Par_77",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision_asjaoigusseadus_osa1"
@@ -369,7 +470,13 @@
       "rdfs:label": "Asja jagamine kaasomandi lõpetamisel",
       "estleg:requestedCluster": "omand",
       "estleg:summary": "Kokkuleppe puudumisel määrab kohus kaasomandi lõpetamise viisi (reaaljaotus, väljaost, enampakkumine, tasaarvestus, vajadusel servituudid).",
-      "estleg:sourceAct": "Asjaõigusseadus"
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohus"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:AOS_Par_80",
@@ -381,7 +488,12 @@
       "rdfs:label": "Asja väljanõudmine ebaseaduslikust valdusest",
       "estleg:requestedCluster": "omand",
       "estleg:summary": "Omanikul on vindikatsiooninõue õigusliku aluseta valdaja vastu omandi tunnustamiseks ja asja tagastamiseks.",
-      "estleg:sourceAct": "Asjaõigusseadus"
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:TMS_Par_223"
+        }
+      ]
     },
     {
       "@id": "estleg:AOS_Par_83",
@@ -393,7 +505,12 @@
       "rdfs:label": "Valdaja vastuväited",
       "estleg:requestedCluster": "omand",
       "estleg:summary": "Valdaja võib keelduda asja väljaandmisest, kui tal või teatud juhtudel kaudsel valdajal on omaniku suhtes õigus asja vallata.",
-      "estleg:sourceAct": "Asjaõigusseadus"
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:AOS_Par_84",
@@ -417,7 +534,12 @@
       "rdfs:label": "Kulutuste hüvitamine valdajale",
       "estleg:requestedCluster": "omand",
       "estleg:summary": "Valdajal on õigus nõuda vajalike kulutuste hüvitamist ning teatud tingimustel parendused asjalt eemaldada.",
-      "estleg:sourceAct": "Asjaõigusseadus"
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:AOS_Par_89",
@@ -429,7 +551,12 @@
       "rdfs:label": "Omandi kaitse valduse kaotusega mitteseotud rikkumise korral",
       "estleg:requestedCluster": "omand",
       "estleg:summary": "Omanik võib nõuda omandiõiguse rikkumise kõrvaldamist ja rikkumisest hoidumist ka siis, kui valdus ei ole kaotatud.",
-      "estleg:sourceAct": "Asjaõigusseadus"
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:AOS_Par_90",
@@ -444,7 +571,7 @@
       "estleg:sourceAct": "Asjaõigusseadus"
     },
     {
-      "@id": "estleg:AOS_Par_92",
+      "@id": "estleg:AOS_Osa1_Par_92",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision_asjaoigusseadus_osa1"
@@ -456,7 +583,7 @@
       "estleg:sourceAct": "Asjaõigusseadus"
     },
     {
-      "@id": "estleg:AOS_Par_95",
+      "@id": "estleg:AOS_Osa1_Par_95",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision_asjaoigusseadus_osa1"
@@ -468,7 +595,7 @@
       "estleg:sourceAct": "Asjaõigusseadus"
     },
     {
-      "@id": "estleg:AOS_Par_98",
+      "@id": "estleg:AOS_Osa1_Par_98",
       "@type": [
         "owl:NamedIndividual",
         "estleg:LegalProvision_asjaoigusseadus_osa1"
@@ -477,7 +604,13 @@
       "rdfs:label": "Leiu teatamiskohustus",
       "estleg:requestedCluster": "omand",
       "estleg:summary": "Leitud asja valdusse võtja peab leiust teatama omanikule/kaotajale või politseile seaduses sätestatud tingimustel.",
-      "estleg:sourceAct": "Asjaõigusseadus"
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Leitud asja valdusse võtja"
     }
   ]
 }

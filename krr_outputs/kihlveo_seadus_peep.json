@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -16,14 +17,32 @@
       ],
       "rdfs:label": "Kihlveoseaduse teemakaardistus (spordikihlvedu)",
       "dc:description": "Kihlveoseaduse põhisambad: kihlveokorraldajad, kihlveoausus ja mängija piirangud.",
-      "dc:source": "Kihlveoseadus (Riigi Teataja, kehtiv redaktsioon; §-taseme viited vajavad lõppverifitseerimist)"
+      "dc:source": "Kihlveoseadus (Riigi Teataja, kehtiv redaktsioon; §-taseme viited vajavad lõppverifitseerimist)",
+      "estleg:temporalStatus": "inForce",
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/2441"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2431"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2836"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5206"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_kihlveoseadus",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)"
+      "rdfs:label": "Õigusnorm (paragrahv)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:TopicCluster_kihlveoseadus",
@@ -73,7 +92,12 @@
       "rdfs:label": "Kihlveokorraldaja tegevusloa ja usaldusväärsuse nõuded",
       "estleg:requestedCluster": "kihlveokorraldajad",
       "estleg:summary": "Sätestab, et kihlvedu tohib korraldada üksnes pädeva loa alusel ning korraldaja peab täitma usaldusväärsuse, kapitali ja sisekontrolli miinimumnõuded.",
-      "estleg:sourceAct": "Kihlveoseadus"
+      "estleg:sourceAct": "Kihlveoseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Permission"
+        }
+      ]
     },
     {
       "@id": "estleg:KIHLV_Par_SpordikihlveoPakkumiseReeglid",
@@ -121,7 +145,12 @@
       "rdfs:label": "Kahtlaste panuste tuvastamine, seire ja teabevahetus",
       "estleg:requestedCluster": "kihlveoausus",
       "estleg:summary": "Sätestab korra, mille järgi kihlveokorraldaja peab tuvastama ebatavalised panustamismustrid ning jagama asjakohast infot järelevalve, spordialaliitude ja õiguskaitsega.",
-      "estleg:sourceAct": "Kihlveoseadus"
+      "estleg:sourceAct": "Kihlveoseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ]
     },
     {
       "@id": "estleg:KIHLV_Par_JarelevalveJaSanktsioonid",

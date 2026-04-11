@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -16,14 +17,46 @@
       ],
       "rdfs:label": "Asjaõigusseadus Osa 10 kaardistus: kaasomand, ühine omand, kaasomandi lõpetamine",
       "dc:description": "AÕS Osa 10 käsitleb ühist omandit selle eri vormides, kaasomanike õigusi ja kohustusi ning kaasomandi lõpetamise (jagamise) mehhanisme.",
-      "dc:source": "Asjaõigusseadus (Riigi Teataja, vaadatud 2026-03-02)"
+      "dc:source": "Asjaõigusseadus (Riigi Teataja, vaadatud 2026-03-02)",
+      "estleg:temporalStatus": "inForce",
+      "estleg:affectedBy": [
+        {
+          "@id": "estleg:Draft_JDM25_0711"
+        },
+        {
+          "@id": "estleg:Draft_KLIM22_0460"
+        },
+        {
+          "@id": "estleg:Draft_JDM18_0435"
+        },
+        {
+          "@id": "estleg:Draft_MKM13_1552"
+        }
+      ],
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/5636"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5226"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/1221"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2431"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_asjaoigusseadus_osa10",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)"
+      "rdfs:label": "Õigusnorm (paragrahv)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:TopicCluster_asjaoigusseadus_osa10",
@@ -40,7 +73,7 @@
       "rdfs:label": "Õigusmõiste"
     },
     {
-      "@id": "estleg:Cluster_Kaasomand",
+      "@id": "estleg:Cluster_Osa10_Kaasomand",
       "@type": [
         "owl:NamedIndividual",
         "estleg:TopicCluster_asjaoigusseadus_osa10"
@@ -109,7 +142,12 @@
       "rdfs:label": "Kaasomandi mõttelise osa käsutamine",
       "estleg:requestedCluster": "kaasomand",
       "estleg:summary": "Kaasomanik võib oma mõttelist osa võõrandada või koormata; teistel kaasomanikel võib seadusest tuleneda ostueesõigus.",
-      "estleg:sourceAct": "Asjaõigusseadus"
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:AOS_Par_74_asjaoigusseadus_osa10",
@@ -133,7 +171,12 @@
       "rdfs:label": "Kaasomandi lõpetamise nõue",
       "estleg:requestedCluster": "kaasomandi_lopetamine_ja_jagamine",
       "estleg:summary": "Igal kaasomanikul on õigus nõuda kaasomandi lõpetamist; selle õiguse piiramine on lubatud vaid seaduses ettenähtud ulatuses.",
-      "estleg:sourceAct": "Asjaõigusseadus"
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:AOS_Par_77_asjaoigusseadus_osa10",
@@ -145,7 +188,13 @@
       "rdfs:label": "Asja jagamine kaasomandi lõpetamisel",
       "estleg:requestedCluster": "kaasomandi_lopetamine_ja_jagamine",
       "estleg:summary": "Kui kokkulepet ei saavutata, otsustab kohus jagamise viisi (nt reaaljaotus, väljaost, müük enampakkumisel), eesmärgiga lõpetada kaasomand õiglaselt.",
-      "estleg:sourceAct": "Asjaõigusseadus"
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohus"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:Concept_UhineOmand",

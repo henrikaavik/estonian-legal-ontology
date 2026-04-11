@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -17,14 +18,35 @@
       "rdfs:label": "E-riigi seaduse teemakaardistus (Digital State Act)",
       "dc:description": "IT-õiguse ja digihalduse koondkaardistus kolmes klastris: digitaalne identiteet, elektroonilised teenused ja andmevahetus.",
       "dc:source": "E-riigi seadus (digiriigi koondregulatsioon)",
-      "dc:identifier": "https://www.riigiteataja.ee"
+      "dc:identifier": "https://www.riigiteataja.ee",
+      "estleg:temporalStatus": "inForce",
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/2811"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5606"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2441"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5226"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/1221"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_erigi_seadus",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)"
+      "rdfs:label": "Õigusnorm (paragrahv)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:TopicCluster_erigi_seadus",
@@ -79,7 +101,12 @@
       "rdfs:label": "§ 5. E-identimisvahendid",
       "estleg:requestedCluster": "digital_identity",
       "estleg:summary": "Sätestab, millised e-identimisvahendid on lubatud ja kuidas neid avalikes teenustes kasutatakse.",
-      "estleg:sourceAct": "E-riigi seadus"
+      "estleg:sourceAct": "E-riigi seadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Permission"
+        }
+      ]
     },
     {
       "@id": "estleg:ERIIGI_DI_Par_6",

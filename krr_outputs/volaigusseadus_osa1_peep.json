@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -14,14 +15,29 @@
       "@type": [
         "owl:Ontology"
       ],
-      "rdfs:label": "VÕS Osa 1 (Üldosa) §1–207 kaardistus"
+      "rdfs:label": "VÕS Osa 1 (Üldosa) §1–207 kaardistus",
+      "estleg:temporalStatus": "inForce",
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/2431"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5206"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5636"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_volaigusseadus_osa1",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)"
+      "rdfs:label": "Õigusnorm (paragrahv)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:Cluster_KohustusedJaVolad",
@@ -58,7 +74,12 @@
       "rdfs:label": "§ 1. Seaduse kohaldamine",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Käesoleva seaduse üldosas sätestatut kohaldatakse kõikidele käesolevas seaduses või muudes seadustes nimetatud lepingutele, muu hulgas töölepingule, ja muudele mitmepoolsetele tehingutele, samuti lepingutele, mida ei ole küll seaduses nimetatud, kuid mis ei ole seaduse sisu ja mõttega vastuolus, samuti võlasuhetele, mis ei ole tekkinud lepingust.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Krediidiandjate_ja_vahendajat_Par_2"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_2",
@@ -82,7 +103,12 @@
       "rdfs:label": "§ 3. Võlasuhte tekkimise alused",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Võlasuhe võib tekkida:",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_4",
@@ -94,7 +120,17 @@
       "rdfs:label": "§ 4. Mittetäielik kohustus",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Mittetäielik on kohustus, mille võlgnik võib täita, kuid mille täitmist ei saa võlausaldaja temalt nõuda.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Hasartmnguseadus_Par_2"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_5",
@@ -106,7 +142,12 @@
       "rdfs:label": "§ 5. Seaduse dispositiivsuse põhimõte",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Käesolevas seaduses sätestatust võib võlasuhte poolte või lepingupoolte kokkuleppel kõrvale kalduda, kui seaduses ei ole otse sätestatud või sätte olemusest ei tulene, et seadusest kõrvalekaldumine ei ole lubatud või kui kõrvalekaldumine oleks vastuolus avaliku korra või heade kommetega või rikuks isiku põhiõigusi.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Prohibition"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_6",
@@ -142,7 +183,12 @@
       "rdfs:label": "§ 8. Lepingu mõiste",
       "estleg:requestedCluster": "lepinguoigus",
       "estleg:summary": "Leping on tehing kahe või enama isiku (lepingupooled) vahel, millega lepingupool kohustub või lepingupooled kohustuvad midagi tegema või tegemata jätma.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_9",
@@ -178,7 +224,12 @@
       "rdfs:label": "§ 11. Lepingu vorm",
       "estleg:requestedCluster": "lepinguoigus",
       "estleg:summary": "Lepingu võib sõlmida suuliselt, kirjalikult või mis tahes muus vormis, kui seaduses ei ole sätestatud lepingu kohustuslikku vormi.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_11_1",
@@ -214,7 +265,12 @@
       "rdfs:label": "§ 13. Lepingu muutmine ja lõpetamine",
       "estleg:requestedCluster": "lepinguoigus",
       "estleg:summary": "Lepingut võib muuta või lepingu võib lõpetada lepingupoolte kokkuleppel või lepingus või seadusega ettenähtud muul alusel.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_14",
@@ -226,7 +282,12 @@
       "rdfs:label": "§ 14. Lepingueelsed läbirääkimised",
       "estleg:requestedCluster": "lepinguoigus",
       "estleg:summary": "Digitaalne sisu on andmed, mis on koostatud ja mis antakse üle digitaalsel kujul.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Tlepingu_seadus_Par_11"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_14_1",
@@ -262,7 +323,12 @@
       "rdfs:label": "§ 15. Lepingupoole teadmine lepingu puudustest",
       "estleg:requestedCluster": "lepinguoigus",
       "estleg:summary": "Kui üks lepingupool oli kohustunud lepingu ettevalmistamiseks või teise lepingupoole teavitamiseks lepingu ettevalmistamisega seotud asjaoludest ja leping on vorminõude järgimata jätmise tõttu tühine, tuleb teisele lepingupoolele hüvitada kahju, mis tekkis seetõttu, et teine lepingupool uskus, et leping on kehtiv.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_16",
@@ -286,7 +352,12 @@
       "rdfs:label": "§ 17. Määratud nõustumuse andmise tähtajaga pakkumus",
       "estleg:requestedCluster": "lepinguoigus",
       "estleg:summary": "Kui pakkumuses on nõustumuse andmise tähtaeg määratud, kehtib pakkumus ja sellele võib nõustumust anda selle tähtaja lõpuni. Pakkumusele ei ole õigeaegselt nõustumust antud, kui nõustumus ei jõua pakkumuse esitajani nõustumuse andmise tähtaja jooksul.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_18",
@@ -370,7 +441,12 @@
       "rdfs:label": "§ 24. Lepingupoolte kohustuste sisu",
       "estleg:requestedCluster": "lepinguoigus",
       "estleg:summary": "Lepingupool võib olla lepinguga kohustatud saavutama teatud tulemuse või tegema tulemuse saavutamiseks kõik mõistlikult võimaliku.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_25",
@@ -406,7 +482,12 @@
       "rdfs:label": "§ 27. Olulises tingimuses kokkuleppe puudumine",
       "estleg:requestedCluster": "lepinguoigus",
       "estleg:summary": "Kui lepingupooled ei ole kokku leppinud nende õiguste ja kohustuste määramiseks olulises tingimuses või üksnes arvavad, et nad on selles tingimuses kokku leppinud, on leping kehtiv, kui võib eeldada, et leping oleks sõlmitud ka selles tingimuses kokku leppimata.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_28",
@@ -418,7 +499,12 @@
       "rdfs:label": "§ 28. Hinna määramine",
       "estleg:requestedCluster": "lepinguoigus",
       "estleg:summary": "Ettevõtja võib lisaks lepingu esemeks oleva põhikohustuse täitmise eest kokkulepitud hinnale või muule tasule nõuda tarbijalt täiendava tasu maksmist kõrvalkohustuse või muu täiendava kohustuse täitmise eest üksnes juhul, kui tarbija on sellise täiendava tasu maksmise kohustust kinnitanud sõnaselgelt. Tarbija tahet ei loeta sõnaselgelt väljendatuks, kui ettevõtja kasutab tarbija nõusoleku saamiseks selliseid eeltäidetud valikuid, mille tarbija peab lisatasu maksmise vältimiseks tagasi lükkama.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_28_1",
@@ -430,7 +516,12 @@
       "rdfs:label": "§ 281. Tasu nõudmise piirangud tarbijaga sõlmitava lepingu puhul",
       "estleg:requestedCluster": "lepinguoigus",
       "estleg:summary": "Ettevõtja võib lisaks lepingu esemeks oleva põhikohustuse täitmise eest kokkulepitud hinnale või muule tasule nõuda tarbijalt täiendava tasu maksmist kõrvalkohustuse või muu täiendava kohustuse täitmise eest üksnes juhul, kui tarbija on sellise täiendava tasu maksmise kohustust kinnitanud sõnaselgelt. Tarbija tahet ei loeta sõnaselgelt väljendatuks, kui ettevõtja kasutab tarbija nõusoleku saamiseks selliseid eeltäidetud valikuid, mille tarbija peab lisatasu maksmise vältimiseks tagasi lükkama.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_29",
@@ -562,7 +653,13 @@
       "rdfs:label": "§ 39. Tüüptingimuste tõlgendamine",
       "estleg:requestedCluster": "lepinguoigus",
       "estleg:summary": "Tüüptingimust tuleb tõlgendada nii, nagu teise lepingupoolega sarnane mõistlik isik seda samadel asjaoludel mõistma pidi. Kahtluse korral tõlgendatakse tüüptingimust tingimuse kasutaja kahjuks.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Tüüptingimust"
     },
     {
       "@id": "estleg:VOS_Par_40",
@@ -598,7 +695,15 @@
       "rdfs:label": "§ 42. Tüüptingimuse tühisus",
       "estleg:requestedCluster": "lepinguoigus",
       "estleg:summary": "Tüüptingimus on tühine, kui see lepingu olemust, sisu, sõlmimise viisi, lepingupoolte huvisid ja teisi olulisi asjaolusid arvestades kahjustab teist lepingupoolt ebamõistlikult, eelkõige siis, kui tüüptingimusega on lepingust tulenevate õiguste ja kohustuste tasakaalu teise lepingupoole kahjuks oluliselt rikutud. Ebamõistlikku kahjustamist eeldatakse, kui tüüptingimusega kaldutakse kõrvale seaduse olulisest põhimõttest või kui tüüptingimus piirab teise lepingupoole lepingu olemusest tulenevaid õiguseid ja kohustusi selliselt, et lepingu eesmärgi saavutamine muutub küsitavaks. Tüüptingimuse tüh",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:VOS_Par_43"
+        },
+        {
+          "@id": "estleg:VOS_Par_44"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_43",
@@ -610,7 +715,17 @@
       "rdfs:label": "§ 43. Erisused krediidiasutuste suhtes",
       "estleg:requestedCluster": "lepinguoigus",
       "estleg:summary": "Käesoleva seaduse § 42 lõike 3 punktis 14 nimetatud tingimust ei loeta teist lepingupoolt ebamõistlikult kahjustavaks, kui krediidiasutus või muu finantsteenuste osutaja jätab endale tüüptingimusega õiguse põhjendatud juhtudel ette teatamata muuta teise lepingupoole poolt või teisele lepingupoolele makstavat intressimäära või muud tasu finantsteenuste eest tingimusel, et ta on kohustatud teist lepingupoolt või teisi lepingupooli viivitamata sellest teavitama ning teisel lepingupoolel on õigus leping kohe lõpetada.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:references": [
+        {
+          "@id": "estleg:VOS_Par_42"
+        }
+      ],
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_44",
@@ -622,7 +737,12 @@
       "rdfs:label": "§ 44. Majandus- või kutsetegevuses sõlmitud lepingud",
       "estleg:requestedCluster": "lepinguoigus",
       "estleg:summary": "Kui käesoleva seaduse § 42 lõikes 3 nimetatud tüüptingimust kasutatakse lepingus, mille teiseks pooleks on isik, kes sõlmis lepingu oma majandus- või kutsetegevuses, siis eeldatakse, et see tingimus on ebamõistlikult kahjustav.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:references": [
+        {
+          "@id": "estleg:VOS_Par_42"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_45",
@@ -634,7 +754,12 @@
       "rdfs:label": "§ 45. Ebamõistlikult kahjustavate tüüptingimuste kasutamise lõpetamise nõue",
       "estleg:requestedCluster": "lepinguoigus",
       "estleg:summary": "Seaduses sätestatud isik või asutus võib seaduses sätestatud korras tingimuse kasutajalt nõuda ebamõistlikult kahjustava tüüptingimuse kasutamise lõpetamist, tingimuse soovitajalt aga soovitamise lõpetamist ja soovituse tagasivõtmist.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_46",
@@ -658,7 +783,20 @@
       "rdfs:label": "§ 47. Sätete kohaldamine",
       "estleg:requestedCluster": "lepinguoigus",
       "estleg:summary": "Käesolevas jaos sätestatut kohaldatakse ka juhul, kui ettevõtja annab tarbijale üle digitaalse sisu või osutab tarbijale digitaalset teenust või kohustub seda tegema ning tarbija esitab ettevõtjale isikuandmeid või kohustub seda tegema. See ei kehti juhul, kui ettevõtja töötleb tarbija esitatud isikuandmeid üksnes digitaalse sisu üleandmiseks või digitaalse teenuse osutamiseks või selleks, et täita enda suhtes kohaldatavaid õigusaktidest tulenevaid nõudeid, ega töötle kõnealuseid andmeid ühelgi muul eesmärgil.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:VOS_Par_48"
+        },
+        {
+          "@id": "estleg:VOS_Par_48_1"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_48",
@@ -670,7 +808,12 @@
       "rdfs:label": "§ 48. Tarbija lepingueelne teavitamine",
       "estleg:requestedCluster": "lepinguoigus",
       "estleg:summary": "Ettevõtja annab tarbijale allkirjastatud lepingudokumendi, koopia lepingust või kinnituse lepingu sõlmimise kohta paberil, või kui tarbija on sellega nõus, siis mõnel muul püsival andmekandjal, mis sisaldab juhul, kui lepingu esemeks on digitaalne sisu, ka ettevõtja kinnitust selle kohta, et tarbija on andnud käesoleva seaduse § 47 lõike 3 punkti 13 kohaselt oma sõnaselge nõusoleku ja kinnituse digitaalse sisu edastamise alustamiseks.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:references": [
+        {
+          "@id": "estleg:VOS_Par_47"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_48_1",
@@ -682,7 +825,12 @@
       "rdfs:label": "§ 481. Teabe kinnitamine",
       "estleg:requestedCluster": "lepinguoigus",
       "estleg:summary": "Ettevõtja annab tarbijale allkirjastatud lepingudokumendi, koopia lepingust või kinnituse lepingu sõlmimise kohta paberil, või kui tarbija on sellega nõus, siis mõnel muul püsival andmekandjal, mis sisaldab juhul, kui lepingu esemeks on digitaalne sisu, ka ettevõtja kinnitust selle kohta, et tarbija on andnud käesoleva seaduse § 47 lõike 3 punkti 13 kohaselt oma sõnaselge nõusoleku ja kinnituse digitaalse sisu edastamise alustamiseks.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:references": [
+        {
+          "@id": "estleg:VOS_Par_47"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_49",
@@ -694,7 +842,24 @@
       "rdfs:label": "§ 49. Taganemisõigus",
       "estleg:requestedCluster": "lepinguoigus",
       "estleg:summary": "Kui väljaspool äriruume sõlmitav leping kujutab endast tarbijakrediidilepinguga majanduslikult seotud lepingut käesoleva seaduse § 414 tähenduses, loetakse tarbija käesoleva seaduse §-s 49 sätestatud tingimustel väljaspool äriruume sõlmitavast lepingust taganemise korral taganenuks ka tarbijakrediidilepingust ja sellega seotud kõrvallepingust käesoleva seaduse § 409 lõike 3 2 tähenduses.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:VOS_Par_49_1"
+        },
+        {
+          "@id": "estleg:VOS_Par_49_2"
+        },
+        {
+          "@id": "estleg:VOS_Par_49_3"
+        },
+        {
+          "@id": "estleg:VOS_Par_49_4"
+        },
+        {
+          "@id": "estleg:VOS_Par_49_5"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_49_1",
@@ -706,7 +871,12 @@
       "rdfs:label": "§ 491. Taganemine tarbijakrediidilepingust",
       "estleg:requestedCluster": "lepinguoigus",
       "estleg:summary": "Kui väljaspool äriruume sõlmitav leping kujutab endast tarbijakrediidilepinguga majanduslikult seotud lepingut käesoleva seaduse § 414 tähenduses, loetakse tarbija käesoleva seaduse §-s 49 sätestatud tingimustel väljaspool äriruume sõlmitavast lepingust taganemise korral taganenuks ka tarbijakrediidilepingust ja sellega seotud kõrvallepingust käesoleva seaduse § 409 lõike 3 2 tähenduses.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:references": [
+        {
+          "@id": "estleg:VOS_Par_49"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_49_2",
@@ -718,7 +888,12 @@
       "rdfs:label": "§ 492. Ettevõtja kohustused tarbijapoolsel lepingust taganemisel",
       "estleg:requestedCluster": "lepinguoigus",
       "estleg:summary": "Kui väljaspool äriruume sõlmitav leping kujutab endast tarbijakrediidilepinguga majanduslikult seotud lepingut käesoleva seaduse § 414 tähenduses, loetakse tarbija käesoleva seaduse §-s 49 sätestatud tingimustel väljaspool äriruume sõlmitavast lepingust taganemise korral taganenuks ka tarbijakrediidilepingust ja sellega seotud kõrvallepingust käesoleva seaduse § 409 lõike 3 2 tähenduses.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:references": [
+        {
+          "@id": "estleg:VOS_Par_49"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_49_3",
@@ -730,7 +905,12 @@
       "rdfs:label": "§ 493. Tarbija kohustused lepingust taganemisel",
       "estleg:requestedCluster": "lepinguoigus",
       "estleg:summary": "Kui väljaspool äriruume sõlmitav leping kujutab endast tarbijakrediidilepinguga majanduslikult seotud lepingut käesoleva seaduse § 414 tähenduses, loetakse tarbija käesoleva seaduse §-s 49 sätestatud tingimustel väljaspool äriruume sõlmitavast lepingust taganemise korral taganenuks ka tarbijakrediidilepingust ja sellega seotud kõrvallepingust käesoleva seaduse § 409 lõike 3 2 tähenduses.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:references": [
+        {
+          "@id": "estleg:VOS_Par_49"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_49_4",
@@ -742,7 +922,12 @@
       "rdfs:label": "§ 494. Taganemise mõju kõrvallepingule",
       "estleg:requestedCluster": "lepinguoigus",
       "estleg:summary": "Kui väljaspool äriruume sõlmitav leping kujutab endast tarbijakrediidilepinguga majanduslikult seotud lepingut käesoleva seaduse § 414 tähenduses, loetakse tarbija käesoleva seaduse §-s 49 sätestatud tingimustel väljaspool äriruume sõlmitavast lepingust taganemise korral taganenuks ka tarbijakrediidilepingust ja sellega seotud kõrvallepingust käesoleva seaduse § 409 lõike 3 2 tähenduses.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:references": [
+        {
+          "@id": "estleg:VOS_Par_49"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_49_5",
@@ -754,7 +939,12 @@
       "rdfs:label": "§ 495. Taganemise mõju tarbijakrediidilepingule",
       "estleg:requestedCluster": "lepinguoigus",
       "estleg:summary": "Kui väljaspool äriruume sõlmitav leping kujutab endast tarbijakrediidilepinguga majanduslikult seotud lepingut käesoleva seaduse § 414 tähenduses, loetakse tarbija käesoleva seaduse §-s 49 sätestatud tingimustel väljaspool äriruume sõlmitavast lepingust taganemise korral taganenuks ka tarbijakrediidilepingust ja sellega seotud kõrvallepingust käesoleva seaduse § 409 lõike 3 2 tähenduses.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:references": [
+        {
+          "@id": "estleg:VOS_Par_49"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_50",
@@ -766,7 +956,12 @@
       "rdfs:label": "§ 50. Sätete rikkumise keelamine",
       "estleg:requestedCluster": "lepinguoigus",
       "estleg:summary": "Seaduses sätestatud isik või asutus võib seaduses sätestatud korras nõuda ettevõtjalt, kes on rikkunud käesolevas jaos sätestatut, rikkumise lõpetamist ja rikkumisest hoidumist.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_51",
@@ -802,7 +997,12 @@
       "rdfs:label": "§ 53. Sätete kohaldamine",
       "estleg:requestedCluster": "lepinguoigus",
       "estleg:summary": "Käesolevas jaos sätestatut kohaldatakse sidevahendi abil sõlmitud lepingutele, mille puhul tarbija maksab või kohustub maksma tasu. Käesolevas jaos sätestatut kohaldatakse ka juhul, kui ettevõtja annab tarbijale üle digitaalse sisu või osutab tarbijale digitaalset teenust või kohustub seda tegema ning tarbija esitab ettevõtjale isikuandmeid või kohustub seda tegema. See ei kehti juhul, kui ettevõtja töötleb tarbija esitatud isikuandmeid üksnes digitaalse sisu üleandmiseks või digitaalse teenuse osutamiseks või selleks, et täita enda suhtes kohaldatavaid õigusaktidest tulenevaid nõudeid, ega tö",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_54",
@@ -814,7 +1014,15 @@
       "rdfs:label": "§ 54. Tarbija lepingueelne teavitamine",
       "estleg:requestedCluster": "lepinguoigus",
       "estleg:summary": "Internetipõhine kauplemiskoht on kauplemiskoht, kus tarbija saab sõlmida teise ettevõtja või tarbijaga lepinguid sidevahendi abil, kasutades selleks tarkvara, sealhulgas veebilehte, veebilehe osa või rakendust, mida käitab ettevõtja või mida käitatakse ettevõtja nimel.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:VOS_Par_55"
+        },
+        {
+          "@id": "estleg:VOS_Par_55_1"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_54_1",
@@ -862,7 +1070,12 @@
       "rdfs:label": "§ 55. Teabe kinnitamine",
       "estleg:requestedCluster": "lepinguoigus",
       "estleg:summary": "Lisaks käesoleva seaduse § 54 1 lõikes 1 sätestatule, edastab finantsteenuse osutaja tarbijale mõistliku aja jooksul enne lepingu sõlmimist või tarbija poolt pakkumuse tegemist lepingutingimused ning muu seaduses sätestatud asjakohase teabe püsival andmekandjal.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:references": [
+        {
+          "@id": "estleg:VOS_Par_54"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_55_1",
@@ -874,7 +1087,12 @@
       "rdfs:label": "§ 551. Teabe esitamise erisused finantsteenuse lepingu puhul",
       "estleg:requestedCluster": "lepinguoigus",
       "estleg:summary": "Lisaks käesoleva seaduse § 54 1 lõikes 1 sätestatule, edastab finantsteenuse osutaja tarbijale mõistliku aja jooksul enne lepingu sõlmimist või tarbija poolt pakkumuse tegemist lepingutingimused ning muu seaduses sätestatud asjakohase teabe püsival andmekandjal.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:references": [
+        {
+          "@id": "estleg:VOS_Par_54"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_56",
@@ -886,7 +1104,18 @@
       "rdfs:label": "§ 56. Õigus lepingust taganeda",
       "estleg:requestedCluster": "lepinguoigus",
       "estleg:summary": "Kui tarbija kasutab sidevahendi abil sõlmitud lepingu suhtes käesoleva seaduse §-s 56 sätestatud taganemisõigust, loetakse tarbija taganenuks ka sidevahendi abil sõlmitud lepinguga seotud kõrvallepingust, mille ta on sõlminud ettevõtja või kolmanda isikuga kolmanda isiku ja ettevõtja vahelise kokkuleppe alusel.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:VOS_Par_56_1"
+        },
+        {
+          "@id": "estleg:VOS_Par_56_2"
+        },
+        {
+          "@id": "estleg:VOS_Par_56_3"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_56_1",
@@ -898,7 +1127,12 @@
       "rdfs:label": "§ 561. Ettevõtja kohustused tarbijapoolsel lepingust taganemisel",
       "estleg:requestedCluster": "lepinguoigus",
       "estleg:summary": "Kui tarbija kasutab sidevahendi abil sõlmitud lepingu suhtes käesoleva seaduse §-s 56 sätestatud taganemisõigust, loetakse tarbija taganenuks ka sidevahendi abil sõlmitud lepinguga seotud kõrvallepingust, mille ta on sõlminud ettevõtja või kolmanda isikuga kolmanda isiku ja ettevõtja vahelise kokkuleppe alusel.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:references": [
+        {
+          "@id": "estleg:VOS_Par_56"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_56_2",
@@ -910,7 +1144,12 @@
       "rdfs:label": "§ 562. Tarbija kohustused lepingust taganemisel",
       "estleg:requestedCluster": "lepinguoigus",
       "estleg:summary": "Kui tarbija kasutab sidevahendi abil sõlmitud lepingu suhtes käesoleva seaduse §-s 56 sätestatud taganemisõigust, loetakse tarbija taganenuks ka sidevahendi abil sõlmitud lepinguga seotud kõrvallepingust, mille ta on sõlminud ettevõtja või kolmanda isikuga kolmanda isiku ja ettevõtja vahelise kokkuleppe alusel.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:references": [
+        {
+          "@id": "estleg:VOS_Par_56"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_56_3",
@@ -922,7 +1161,12 @@
       "rdfs:label": "§ 563. Taganemise mõju kõrvallepingule",
       "estleg:requestedCluster": "lepinguoigus",
       "estleg:summary": "Kui tarbija kasutab sidevahendi abil sõlmitud lepingu suhtes käesoleva seaduse §-s 56 sätestatud taganemisõigust, loetakse tarbija taganenuks ka sidevahendi abil sõlmitud lepinguga seotud kõrvallepingust, mille ta on sõlminud ettevõtja või kolmanda isikuga kolmanda isiku ja ettevõtja vahelise kokkuleppe alusel.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:references": [
+        {
+          "@id": "estleg:VOS_Par_56"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_57",
@@ -982,7 +1226,12 @@
       "rdfs:label": "§ 60. Sidevahendi kasutamise piirangud",
       "estleg:requestedCluster": "lepinguoigus",
       "estleg:summary": "Pakkumise võib tarbijale teha inimsekkumist mittevajava automatiseeritud kõnevalimissüsteemi, faksi, telefoni automaatvastaja või elektronposti abil üksnes tarbija eelneval nõusolekul. Muid individuaalset suhtlemist võimaldavaid sidevahendeid võib pakkumise edastamiseks kasutada, kui tarbija ei ole nende kasutamist sõnaselgelt keelanud. RT I 2011-02-04 1 104022011001 2011-04-05",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_61",
@@ -994,7 +1243,12 @@
       "rdfs:label": "§ 61. Sätete rikkumise keelamine",
       "estleg:requestedCluster": "lepinguoigus",
       "estleg:summary": "Seaduses sätestatud isik või asutus võib seaduses sätestatud korras nõuda ettevõtjalt, kes on rikkunud käesolevas jaos sätestatut, rikkumise lõpetamist ja rikkumisest hoidumist.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_62",
@@ -1006,7 +1260,74 @@
       "rdfs:label": "§ 62. Sätete kohustuslikkus",
       "estleg:requestedCluster": "lepinguoigus",
       "estleg:summary": "Seaduses sätestatud isik või asutus võib seaduses sätestatud korras nõuda ettevõtjalt, kes on rikkunud käesolevas jaos sätestatut, rikkumise lõpetamist ja rikkumisest hoidumist.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:InfoTS_Par_7"
+        },
+        {
+          "@id": "estleg:VOS_Par_62_1"
+        },
+        {
+          "@id": "estleg:VOS_Par_62_2"
+        },
+        {
+          "@id": "estleg:VOS_Par_62_4"
+        },
+        {
+          "@id": "estleg:VOS_Par_62_5"
+        },
+        {
+          "@id": "estleg:VOS_Par_62_6"
+        },
+        {
+          "@id": "estleg:VOS_Par_62_7"
+        },
+        {
+          "@id": "estleg:VOS_Par_62_8"
+        },
+        {
+          "@id": "estleg:VOS_Par_62_9"
+        },
+        {
+          "@id": "estleg:VOS_Par_62_11"
+        },
+        {
+          "@id": "estleg:VOS_Par_62_12"
+        },
+        {
+          "@id": "estleg:VOS_Par_62_13"
+        },
+        {
+          "@id": "estleg:VOS_Par_62_14"
+        },
+        {
+          "@id": "estleg:VOS_Par_62_15"
+        },
+        {
+          "@id": "estleg:VOS_Par_62_16"
+        },
+        {
+          "@id": "estleg:VOS_Par_62_17"
+        },
+        {
+          "@id": "estleg:VOS_Par_62_18"
+        },
+        {
+          "@id": "estleg:VOS_Par_62_19"
+        },
+        {
+          "@id": "estleg:VOS_Par_62_20"
+        },
+        {
+          "@id": "estleg:VOS_Par_62_22"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_62_1",
@@ -1018,7 +1339,12 @@
       "rdfs:label": "§ 621. Arvutivõrgu abil lepingu sõlmimine",
       "estleg:requestedCluster": "lepinguoigus",
       "estleg:summary": "Käesolevas jaos sätestatust ja käesoleva seaduse üldosas lepingu rikkumise puhul kasutatavate õiguskaitsevahendite kohta sätestatust tarbija kahjuks kõrvalekalduv kokkulepe, mis on sõlmitud enne, kui tarbija on ettevõtjale teatanud digitaalse sisu üle andmata või digitaalse teenuse osutamata jätmisest või lepingutingimustele mittevastavusest, või enne, kui ettevõtja on teatanud käesoleva seaduse § 62 19 kohasest digitaalse sisu või digitaalse teenuse muutmisest, on tühine, kui käesolevas jaos ei ole sätestatud teisiti. See kehtib ka teiste kokkulepete kohta, mis muudavad eelnimetatud sätete to",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:references": [
+        {
+          "@id": "estleg:VOS_Par_62"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_62_2",
@@ -1030,7 +1356,12 @@
       "rdfs:label": "§ 622. Täiendavad nõuded lepingu sõlmimisele tarbijaga",
       "estleg:requestedCluster": "lepinguoigus",
       "estleg:summary": "Käesolevas jaos sätestatust ja käesoleva seaduse üldosas lepingu rikkumise puhul kasutatavate õiguskaitsevahendite kohta sätestatust tarbija kahjuks kõrvalekalduv kokkulepe, mis on sõlmitud enne, kui tarbija on ettevõtjale teatanud digitaalse sisu üle andmata või digitaalse teenuse osutamata jätmisest või lepingutingimustele mittevastavusest, või enne, kui ettevõtja on teatanud käesoleva seaduse § 62 19 kohasest digitaalse sisu või digitaalse teenuse muutmisest, on tühine, kui käesolevas jaos ei ole sätestatud teisiti. See kehtib ka teiste kokkulepete kohta, mis muudavad eelnimetatud sätete to",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:references": [
+        {
+          "@id": "estleg:VOS_Par_62"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_62_3",
@@ -1042,7 +1373,12 @@
       "rdfs:label": "§ 623. Sätete kohustuslikkus",
       "estleg:requestedCluster": "lepinguoigus",
       "estleg:summary": "Seaduses sätestatud isik või asutus võib seaduses sätestatud korras nõuda ettevõtjalt, kes on rikkunud käesolevas jaos sätestatut, rikkumise lõpetamist ja rikkumisest hoidumist.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_62_4",
@@ -1054,7 +1390,12 @@
       "rdfs:label": "§ 624. Digitaalse sisu üleandmise ja digitaalse teenuse osutamise lepingu mõiste",
       "estleg:requestedCluster": "lepinguoigus",
       "estleg:summary": "Käesolevas jaos sätestatust ja käesoleva seaduse üldosas lepingu rikkumise puhul kasutatavate õiguskaitsevahendite kohta sätestatust tarbija kahjuks kõrvalekalduv kokkulepe, mis on sõlmitud enne, kui tarbija on ettevõtjale teatanud digitaalse sisu üle andmata või digitaalse teenuse osutamata jätmisest või lepingutingimustele mittevastavusest, või enne, kui ettevõtja on teatanud käesoleva seaduse § 62 19 kohasest digitaalse sisu või digitaalse teenuse muutmisest, on tühine, kui käesolevas jaos ei ole sätestatud teisiti. See kehtib ka teiste kokkulepete kohta, mis muudavad eelnimetatud sätete to",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:references": [
+        {
+          "@id": "estleg:VOS_Par_62"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_62_5",
@@ -1066,7 +1407,12 @@
       "rdfs:label": "§ 625. Sätete kohaldamine",
       "estleg:requestedCluster": "lepinguoigus",
       "estleg:summary": "Käesolevas jaos sätestatust ja käesoleva seaduse üldosas lepingu rikkumise puhul kasutatavate õiguskaitsevahendite kohta sätestatust tarbija kahjuks kõrvalekalduv kokkulepe, mis on sõlmitud enne, kui tarbija on ettevõtjale teatanud digitaalse sisu üle andmata või digitaalse teenuse osutamata jätmisest või lepingutingimustele mittevastavusest, või enne, kui ettevõtja on teatanud käesoleva seaduse § 62 19 kohasest digitaalse sisu või digitaalse teenuse muutmisest, on tühine, kui käesolevas jaos ei ole sätestatud teisiti. See kehtib ka teiste kokkulepete kohta, mis muudavad eelnimetatud sätete to",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:references": [
+        {
+          "@id": "estleg:VOS_Par_62"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_62_6",
@@ -1078,7 +1424,12 @@
       "rdfs:label": "§ 626. Digitaalse sisu üleandmine ja digitaalse teenuse osutamine",
       "estleg:requestedCluster": "lepinguoigus",
       "estleg:summary": "Käesolevas jaos sätestatust ja käesoleva seaduse üldosas lepingu rikkumise puhul kasutatavate õiguskaitsevahendite kohta sätestatust tarbija kahjuks kõrvalekalduv kokkulepe, mis on sõlmitud enne, kui tarbija on ettevõtjale teatanud digitaalse sisu üle andmata või digitaalse teenuse osutamata jätmisest või lepingutingimustele mittevastavusest, või enne, kui ettevõtja on teatanud käesoleva seaduse § 62 19 kohasest digitaalse sisu või digitaalse teenuse muutmisest, on tühine, kui käesolevas jaos ei ole sätestatud teisiti. See kehtib ka teiste kokkulepete kohta, mis muudavad eelnimetatud sätete to",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:references": [
+        {
+          "@id": "estleg:VOS_Par_62"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_62_7",
@@ -1090,7 +1441,12 @@
       "rdfs:label": "§ 627. Digitaalse sisu ja digitaalse teenuse vastavus lepingutingimustele",
       "estleg:requestedCluster": "lepinguoigus",
       "estleg:summary": "Käesolevas jaos sätestatust ja käesoleva seaduse üldosas lepingu rikkumise puhul kasutatavate õiguskaitsevahendite kohta sätestatust tarbija kahjuks kõrvalekalduv kokkulepe, mis on sõlmitud enne, kui tarbija on ettevõtjale teatanud digitaalse sisu üle andmata või digitaalse teenuse osutamata jätmisest või lepingutingimustele mittevastavusest, või enne, kui ettevõtja on teatanud käesoleva seaduse § 62 19 kohasest digitaalse sisu või digitaalse teenuse muutmisest, on tühine, kui käesolevas jaos ei ole sätestatud teisiti. See kehtib ka teiste kokkulepete kohta, mis muudavad eelnimetatud sätete to",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:references": [
+        {
+          "@id": "estleg:VOS_Par_62"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_62_8",
@@ -1102,7 +1458,12 @@
       "rdfs:label": "§ 628. Uuenduste tegemise kohustus",
       "estleg:requestedCluster": "lepinguoigus",
       "estleg:summary": "Käesolevas jaos sätestatust ja käesoleva seaduse üldosas lepingu rikkumise puhul kasutatavate õiguskaitsevahendite kohta sätestatust tarbija kahjuks kõrvalekalduv kokkulepe, mis on sõlmitud enne, kui tarbija on ettevõtjale teatanud digitaalse sisu üle andmata või digitaalse teenuse osutamata jätmisest või lepingutingimustele mittevastavusest, või enne, kui ettevõtja on teatanud käesoleva seaduse § 62 19 kohasest digitaalse sisu või digitaalse teenuse muutmisest, on tühine, kui käesolevas jaos ei ole sätestatud teisiti. See kehtib ka teiste kokkulepete kohta, mis muudavad eelnimetatud sätete to",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:references": [
+        {
+          "@id": "estleg:VOS_Par_62"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_62_9",
@@ -1114,7 +1475,12 @@
       "rdfs:label": "§ 629. Ebaõige paigaldamine",
       "estleg:requestedCluster": "lepinguoigus",
       "estleg:summary": "Käesolevas jaos sätestatust ja käesoleva seaduse üldosas lepingu rikkumise puhul kasutatavate õiguskaitsevahendite kohta sätestatust tarbija kahjuks kõrvalekalduv kokkulepe, mis on sõlmitud enne, kui tarbija on ettevõtjale teatanud digitaalse sisu üle andmata või digitaalse teenuse osutamata jätmisest või lepingutingimustele mittevastavusest, või enne, kui ettevõtja on teatanud käesoleva seaduse § 62 19 kohasest digitaalse sisu või digitaalse teenuse muutmisest, on tühine, kui käesolevas jaos ei ole sätestatud teisiti. See kehtib ka teiste kokkulepete kohta, mis muudavad eelnimetatud sätete to",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:references": [
+        {
+          "@id": "estleg:VOS_Par_62"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_62_10",
@@ -1126,7 +1492,12 @@
       "rdfs:label": "§ 6210. Kõrvalekalduvad kokkulepped",
       "estleg:requestedCluster": "lepinguoigus",
       "estleg:summary": "Seaduses sätestatud isik või asutus võib seaduses sätestatud korras nõuda ettevõtjalt, kes on rikkunud käesolevas jaos sätestatut, rikkumise lõpetamist ja rikkumisest hoidumist.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_62_11",
@@ -1138,7 +1509,12 @@
       "rdfs:label": "§ 6211. Ettevõtja vastutus digitaalse sisu või digitaalse teenuse lepingutingimustele mittevastavuse puhul",
       "estleg:requestedCluster": "lepinguoigus",
       "estleg:summary": "Käesolevas jaos sätestatust ja käesoleva seaduse üldosas lepingu rikkumise puhul kasutatavate õiguskaitsevahendite kohta sätestatust tarbija kahjuks kõrvalekalduv kokkulepe, mis on sõlmitud enne, kui tarbija on ettevõtjale teatanud digitaalse sisu üle andmata või digitaalse teenuse osutamata jätmisest või lepingutingimustele mittevastavusest, või enne, kui ettevõtja on teatanud käesoleva seaduse § 62 19 kohasest digitaalse sisu või digitaalse teenuse muutmisest, on tühine, kui käesolevas jaos ei ole sätestatud teisiti. See kehtib ka teiste kokkulepete kohta, mis muudavad eelnimetatud sätete to",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:references": [
+        {
+          "@id": "estleg:VOS_Par_62"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_62_12",
@@ -1150,7 +1526,12 @@
       "rdfs:label": "§ 6212. Tõendamiskoormis",
       "estleg:requestedCluster": "lepinguoigus",
       "estleg:summary": "Käesolevas jaos sätestatust ja käesoleva seaduse üldosas lepingu rikkumise puhul kasutatavate õiguskaitsevahendite kohta sätestatust tarbija kahjuks kõrvalekalduv kokkulepe, mis on sõlmitud enne, kui tarbija on ettevõtjale teatanud digitaalse sisu üle andmata või digitaalse teenuse osutamata jätmisest või lepingutingimustele mittevastavusest, või enne, kui ettevõtja on teatanud käesoleva seaduse § 62 19 kohasest digitaalse sisu või digitaalse teenuse muutmisest, on tühine, kui käesolevas jaos ei ole sätestatud teisiti. See kehtib ka teiste kokkulepete kohta, mis muudavad eelnimetatud sätete to",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:references": [
+        {
+          "@id": "estleg:VOS_Par_62"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_62_13",
@@ -1162,7 +1543,12 @@
       "rdfs:label": "§ 6213. Tarbija õigus leping lõpetada digitaalse sisu üle andmata jätmise või digitaalse teenuse osutamata jätmise korral",
       "estleg:requestedCluster": "lepinguoigus",
       "estleg:summary": "Käesolevas jaos sätestatust ja käesoleva seaduse üldosas lepingu rikkumise puhul kasutatavate õiguskaitsevahendite kohta sätestatust tarbija kahjuks kõrvalekalduv kokkulepe, mis on sõlmitud enne, kui tarbija on ettevõtjale teatanud digitaalse sisu üle andmata või digitaalse teenuse osutamata jätmisest või lepingutingimustele mittevastavusest, või enne, kui ettevõtja on teatanud käesoleva seaduse § 62 19 kohasest digitaalse sisu või digitaalse teenuse muutmisest, on tühine, kui käesolevas jaos ei ole sätestatud teisiti. See kehtib ka teiste kokkulepete kohta, mis muudavad eelnimetatud sätete to",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:references": [
+        {
+          "@id": "estleg:VOS_Par_62"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_62_14",
@@ -1174,7 +1560,12 @@
       "rdfs:label": "§ 6214. Tarbija õiguskaitsevahendid lepingutingimustele mittevastavuse korral",
       "estleg:requestedCluster": "lepinguoigus",
       "estleg:summary": "Käesolevas jaos sätestatust ja käesoleva seaduse üldosas lepingu rikkumise puhul kasutatavate õiguskaitsevahendite kohta sätestatust tarbija kahjuks kõrvalekalduv kokkulepe, mis on sõlmitud enne, kui tarbija on ettevõtjale teatanud digitaalse sisu üle andmata või digitaalse teenuse osutamata jätmisest või lepingutingimustele mittevastavusest, või enne, kui ettevõtja on teatanud käesoleva seaduse § 62 19 kohasest digitaalse sisu või digitaalse teenuse muutmisest, on tühine, kui käesolevas jaos ei ole sätestatud teisiti. See kehtib ka teiste kokkulepete kohta, mis muudavad eelnimetatud sätete to",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:references": [
+        {
+          "@id": "estleg:VOS_Par_62"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_62_15",
@@ -1186,7 +1577,12 @@
       "rdfs:label": "§ 6215. Ettevõtja kohustused lepingu lõpetamise korral",
       "estleg:requestedCluster": "lepinguoigus",
       "estleg:summary": "Käesolevas jaos sätestatust ja käesoleva seaduse üldosas lepingu rikkumise puhul kasutatavate õiguskaitsevahendite kohta sätestatust tarbija kahjuks kõrvalekalduv kokkulepe, mis on sõlmitud enne, kui tarbija on ettevõtjale teatanud digitaalse sisu üle andmata või digitaalse teenuse osutamata jätmisest või lepingutingimustele mittevastavusest, või enne, kui ettevõtja on teatanud käesoleva seaduse § 62 19 kohasest digitaalse sisu või digitaalse teenuse muutmisest, on tühine, kui käesolevas jaos ei ole sätestatud teisiti. See kehtib ka teiste kokkulepete kohta, mis muudavad eelnimetatud sätete to",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:references": [
+        {
+          "@id": "estleg:VOS_Par_62"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_62_16",
@@ -1198,7 +1594,12 @@
       "rdfs:label": "§ 6216. Tarbija kohustused lepingu lõpetamise korral",
       "estleg:requestedCluster": "lepinguoigus",
       "estleg:summary": "Käesolevas jaos sätestatust ja käesoleva seaduse üldosas lepingu rikkumise puhul kasutatavate õiguskaitsevahendite kohta sätestatust tarbija kahjuks kõrvalekalduv kokkulepe, mis on sõlmitud enne, kui tarbija on ettevõtjale teatanud digitaalse sisu üle andmata või digitaalse teenuse osutamata jätmisest või lepingutingimustele mittevastavusest, või enne, kui ettevõtja on teatanud käesoleva seaduse § 62 19 kohasest digitaalse sisu või digitaalse teenuse muutmisest, on tühine, kui käesolevas jaos ei ole sätestatud teisiti. See kehtib ka teiste kokkulepete kohta, mis muudavad eelnimetatud sätete to",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:references": [
+        {
+          "@id": "estleg:VOS_Par_62"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_62_17",
@@ -1210,7 +1611,12 @@
       "rdfs:label": "§ 6217. Tagasimakse tegemise tähtaeg ja viis",
       "estleg:requestedCluster": "lepinguoigus",
       "estleg:summary": "Käesolevas jaos sätestatust ja käesoleva seaduse üldosas lepingu rikkumise puhul kasutatavate õiguskaitsevahendite kohta sätestatust tarbija kahjuks kõrvalekalduv kokkulepe, mis on sõlmitud enne, kui tarbija on ettevõtjale teatanud digitaalse sisu üle andmata või digitaalse teenuse osutamata jätmisest või lepingutingimustele mittevastavusest, või enne, kui ettevõtja on teatanud käesoleva seaduse § 62 19 kohasest digitaalse sisu või digitaalse teenuse muutmisest, on tühine, kui käesolevas jaos ei ole sätestatud teisiti. See kehtib ka teiste kokkulepete kohta, mis muudavad eelnimetatud sätete to",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:references": [
+        {
+          "@id": "estleg:VOS_Par_62"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_62_18",
@@ -1222,7 +1628,12 @@
       "rdfs:label": "§ 6218. Tarbija isikuandmete töötlemise nõusoleku tagasivõtmise lepinguõiguslikud tagajärjed",
       "estleg:requestedCluster": "lepinguoigus",
       "estleg:summary": "Käesolevas jaos sätestatust ja käesoleva seaduse üldosas lepingu rikkumise puhul kasutatavate õiguskaitsevahendite kohta sätestatust tarbija kahjuks kõrvalekalduv kokkulepe, mis on sõlmitud enne, kui tarbija on ettevõtjale teatanud digitaalse sisu üle andmata või digitaalse teenuse osutamata jätmisest või lepingutingimustele mittevastavusest, või enne, kui ettevõtja on teatanud käesoleva seaduse § 62 19 kohasest digitaalse sisu või digitaalse teenuse muutmisest, on tühine, kui käesolevas jaos ei ole sätestatud teisiti. See kehtib ka teiste kokkulepete kohta, mis muudavad eelnimetatud sätete to",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:references": [
+        {
+          "@id": "estleg:VOS_Par_62"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_62_19",
@@ -1234,7 +1645,12 @@
       "rdfs:label": "§ 6219. Digitaalse sisu ja digitaalse teenuse muutmine",
       "estleg:requestedCluster": "lepinguoigus",
       "estleg:summary": "Käesolevas jaos sätestatust ja käesoleva seaduse üldosas lepingu rikkumise puhul kasutatavate õiguskaitsevahendite kohta sätestatust tarbija kahjuks kõrvalekalduv kokkulepe, mis on sõlmitud enne, kui tarbija on ettevõtjale teatanud digitaalse sisu üle andmata või digitaalse teenuse osutamata jätmisest või lepingutingimustele mittevastavusest, või enne, kui ettevõtja on teatanud käesoleva seaduse § 62 19 kohasest digitaalse sisu või digitaalse teenuse muutmisest, on tühine, kui käesolevas jaos ei ole sätestatud teisiti. See kehtib ka teiste kokkulepete kohta, mis muudavad eelnimetatud sätete to",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:references": [
+        {
+          "@id": "estleg:VOS_Par_62"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_62_20",
@@ -1246,7 +1662,12 @@
       "rdfs:label": "§ 6220. Tagasinõudeõigus",
       "estleg:requestedCluster": "lepinguoigus",
       "estleg:summary": "Käesolevas jaos sätestatust ja käesoleva seaduse üldosas lepingu rikkumise puhul kasutatavate õiguskaitsevahendite kohta sätestatust tarbija kahjuks kõrvalekalduv kokkulepe, mis on sõlmitud enne, kui tarbija on ettevõtjale teatanud digitaalse sisu üle andmata või digitaalse teenuse osutamata jätmisest või lepingutingimustele mittevastavusest, või enne, kui ettevõtja on teatanud käesoleva seaduse § 62 19 kohasest digitaalse sisu või digitaalse teenuse muutmisest, on tühine, kui käesolevas jaos ei ole sätestatud teisiti. See kehtib ka teiste kokkulepete kohta, mis muudavad eelnimetatud sätete to",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:references": [
+        {
+          "@id": "estleg:VOS_Par_62"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_62_21",
@@ -1258,7 +1679,12 @@
       "rdfs:label": "§ 6221. Sätete rikkumise keelamine",
       "estleg:requestedCluster": "lepinguoigus",
       "estleg:summary": "Seaduses sätestatud isik või asutus võib seaduses sätestatud korras nõuda ettevõtjalt, kes on rikkunud käesolevas jaos sätestatut, rikkumise lõpetamist ja rikkumisest hoidumist.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_62_22",
@@ -1270,7 +1696,12 @@
       "rdfs:label": "§ 6222. Sätete kohustuslikkus",
       "estleg:requestedCluster": "lepinguoigus",
       "estleg:summary": "Käesolevas jaos sätestatust ja käesoleva seaduse üldosas lepingu rikkumise puhul kasutatavate õiguskaitsevahendite kohta sätestatust tarbija kahjuks kõrvalekalduv kokkulepe, mis on sõlmitud enne, kui tarbija on ettevõtjale teatanud digitaalse sisu üle andmata või digitaalse teenuse osutamata jätmisest või lepingutingimustele mittevastavusest, või enne, kui ettevõtja on teatanud käesoleva seaduse § 62 19 kohasest digitaalse sisu või digitaalse teenuse muutmisest, on tühine, kui käesolevas jaos ei ole sätestatud teisiti. See kehtib ka teiste kokkulepete kohta, mis muudavad eelnimetatud sätete to",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:references": [
+        {
+          "@id": "estleg:VOS_Par_62"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_63",
@@ -1282,7 +1713,12 @@
       "rdfs:label": "§ 63. Osavõlgnikud",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Kui mitu isikut peavad täitma sama osadeks jagatava kohustuse, peavad nad seda tegema võrdsetes osades. Seaduses või tehinguga võib ette näha osavõlgnike kohustuse täitmise ebavõrdsetes osades.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_64",
@@ -1294,7 +1730,12 @@
       "rdfs:label": "§ 64. Ühisvõlgnikud",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Kui mitu isikut peavad täitma sama kohustuse, mille nad saavad täita üksnes ühiselt, võib võlausaldaja nõuda neilt kohustuse täitmist üksnes ühiselt.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_65",
@@ -1306,7 +1747,12 @@
       "rdfs:label": "§ 65. Solidaarvõlgnikud",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Kui mitu isikut peavad täitma kohustuse solidaarselt (solidaarvõlgnikud), võib võlausaldaja nõuda kohustuse täielikku või osalist täitmist kõigilt võlgnikelt ühiselt või igaühelt või mõnelt neist.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_66",
@@ -1330,7 +1776,12 @@
       "rdfs:label": "§ 67. Solidaarvõlgnike vastuväited",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Kui keegi solidaarvõlgnikest on kohustuse täielikult täitnud, ei pea ülejäänud võlgnikud kohustust täitma. Sama kehtib täitmise asendamise, hoiustamise või tasaarvestuse korral. Iga solidaarvõlgnik võib võlausaldaja nõude tasaarvestada üksnes enda nõudega.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_68",
@@ -1366,7 +1817,12 @@
       "rdfs:label": "§ 70. Solidaarvõlgniku tagasinõude aegumine",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Solidaarkohustuse täitnud solidaarvõlgniku tagasinõude aegumistähtaeg lõpeb ajal, mil aeguks võlausaldaja nõue solidaarvõlgniku suhtes, kelle vastu tagasinõue esitati.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:VOS_Par_152"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_71",
@@ -1378,7 +1834,12 @@
       "rdfs:label": "§ 71. Osavõlausaldajad",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Kui sama osadeks jagatav kohustus tuleb täita mitmele võlausaldajale, on igaühel neist õigus nõuda kohustuse täitmist endale teiste võlausaldajatega võrdses osas, kui seadusest või tehingust ei tulene, et võlausaldajad võivad nõuda kohustuse täitmist ebavõrdsetes osades või kõigile ühiselt või solidaarselt.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_72",
@@ -1402,7 +1863,13 @@
       "rdfs:label": "§ 73. Solidaarvõlausaldajad",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Kui sama kohustus tuleb seadusest, tehingust või kohustuse olemusest tulenevalt täita mitmele isikule selliselt, et igaüks neist võib nõuda kohustuse täielikku täitmist, on need isikud solidaarvõlausaldajad.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Kui sama kohustus"
     },
     {
       "@id": "estleg:VOS_Par_74",
@@ -1426,7 +1893,12 @@
       "rdfs:label": "§ 75. Solidaarvõlausaldajate omavahelised suhted",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Võlgnikult kohustuse täitmise vastu võtnud solidaarvõlausaldaja peab tasuma teistele võlausaldajatele neile kuuluvad osad. Kui seadusest, tehingust või kohustuse olemusest ei tulene teisiti, on solidaarvõlausaldajate osad võrdsed.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_76",
@@ -1438,7 +1910,13 @@
       "rdfs:label": "§ 76. Kohustuse täitmine",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Kohustus tuleb täita vastavalt lepingule või seadusele.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Kohustus"
     },
     {
       "@id": "estleg:VOS_Par_77",
@@ -1450,7 +1928,13 @@
       "rdfs:label": "§ 77. Kohustuse täitmise kvaliteet",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Võlgnik peab kohustuse täitma lepingule või seadusele vastava kvaliteediga. Kui lepingulise kohustuse täitmise kvaliteet ei tulene lepingust või seadusest, peab lepingupool kohustuse täitma asjaolusid arvestades vähemalt keskmise kvaliteediga.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Võlgnik"
     },
     {
       "@id": "estleg:VOS_Par_78",
@@ -1462,7 +1946,12 @@
       "rdfs:label": "§ 78. Kohustuse täitmine kolmanda isiku poolt",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Kui võlgnik ei pea kohustust seadusest, tehingust või kohustuse olemusest tulenevalt täitma isiklikult, võib kohustuse osaliselt või täielikult täita kolmas isik. Kui kolmas isik täidab kohustuse, vabaneb võlgnik täitmise kohustusest.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_79",
@@ -1474,7 +1963,12 @@
       "rdfs:label": "§ 79. Kohustuse täitmine õigustamata isikule",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Kui kohustus on täidetud isikule, kes ei ole võlausaldaja, või isikule, kes ei ole võlausaldaja asemel õigustatud täitmist vastu võtma, loetakse kohustus täidetuks, kui kohustus sellele isikule täideti täitmise vastuvõtmiseks õigustatud isiku nõusolekul või kui täitmise vastuvõtmiseks õigustatud isik kiitis sellele isikule täitmise hiljem heaks. Kohustus loetakse samuti täidetuks käesoleva seaduse § 169 lõikes 1 nimetatud juhul.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:references": [
+        {
+          "@id": "estleg:VOS_Par_169"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_80",
@@ -1486,7 +1980,12 @@
       "rdfs:label": "§ 80. Leping kolmanda isiku kasuks",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Lepingus võib ette näha või võlasuhte olemusest tuleneda, et kohustus tuleb võlausaldaja asemel täita kolmandale isikule (leping kolmanda isiku kasuks).",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_81",
@@ -1498,7 +1997,12 @@
       "rdfs:label": "§ 81. Kolmandat isikut kaitsev leping",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Lepinguga võib kaasneda kohustus arvestada kolmanda isiku huvide või õigustega samal määral kui võlausaldaja huvide või õigustega. Sellist kohustust eeldatakse, kui:",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_82",
@@ -1510,7 +2014,12 @@
       "rdfs:label": "§ 82. Kohustuse täitmise aeg ja sissenõutavus",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Kui võlgnik on riigihangete seaduse § 5 lõikes 2 nimetatud isik, ei tohi kokku leppida tähtajas, mille möödumisel loetakse, et võlgnik on arve kätte saanud.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Prohibition"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_82_1",
@@ -1522,7 +2031,12 @@
       "rdfs:label": "§ 821. Tasu sissenõutavaks muutumine vastastikuste lepingute puhul",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Kui võlgnik on riigihangete seaduse § 5 lõikes 2 nimetatud isik, ei tohi kokku leppida tähtajas, mille möödumisel loetakse, et võlgnik on arve kätte saanud.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Prohibition"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_83",
@@ -1534,7 +2048,13 @@
       "rdfs:label": "§ 83. Kohustuse ositi täitmine",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Kui kohustus tuleb täita ühekorraga, võib võlausaldaja keelduda kohustuse ositi täitmise vastuvõtmisest, välja arvatud juhul, kui see oleks vastuolus hea usu põhimõttega.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Kui kohustus"
     },
     {
       "@id": "estleg:VOS_Par_84",
@@ -1558,7 +2078,13 @@
       "rdfs:label": "§ 85. Kohustuse täitmise koht",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Võlgnik peab kohustuse täitma lepingu või seadusega kindlaksmääratud kohas. Kui kohustuse täitmise kohta ei ole lepingu või seadusega kindlaks määratud, tuleb kohustus täita kohas, mis tuleneb võlasuhte olemusest.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Võlgnik"
     },
     {
       "@id": "estleg:VOS_Par_86",
@@ -1570,7 +2096,13 @@
       "rdfs:label": "§ 86. Alternatiivkohustus",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Kui võlgnik peab täitma ühe mitmest kohustusest, kuulub valikuõigus võlgnikule, kui seadusest, lepingust või võlasuhte olemusest tulenevalt ei ole seda õigust võlausaldajal või kolmandal isikul.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Kui võlgnik"
     },
     {
       "@id": "estleg:VOS_Par_87",
@@ -1594,7 +2126,13 @@
       "rdfs:label": "§ 88. Täitmine erinevate kohustuste katteks",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Kui võlgnik peab võlausaldajale üle andma raha või liigitunnustega esemeid või osutama samaliigilisi teenuseid mitme erineva kohustuse täitmiseks ja üleantud rahast, esemetest või osutatud teenustest ei piisa kõigi kohustuste täitmiseks, võib võlgnik määrata, missuguse kohustuse täitmiseks on raha või esemed üle antud või teenus osutatud.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Kui võlgnik"
     },
     {
       "@id": "estleg:VOS_Par_89",
@@ -1606,7 +2144,12 @@
       "rdfs:label": "§ 89. Kohustuse täitmise asendamine",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Võlgnik võib kohustuse täitmiseks vajaliku teo asemel teha teistsuguse teo (täitmise asendamine) üksnes võlausaldaja nõusolekul, isegi kui teistsuguse teo väärtus on sama mis võlgnetaval teol või sellest suurem. Kui võlausaldaja võtab teise teo kohustuse täitmisena vastu, loetakse kohustus täidetuks.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_90",
@@ -1630,7 +2173,12 @@
       "rdfs:label": "§ 91. Rahalise kohustuse täitmise viis",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Rahalise kohustuse võib täita sularahas. Rahalise kohustuse võib täita ka muul viisil, kui see on poolte poolt kokku lepitud või kui seda kasutatakse tasumise kohas tavaliselt majandustegevuses.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_92",
@@ -1642,7 +2190,13 @@
       "rdfs:label": "§ 92. Rahasumma tasumine nimiväärtuses",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Rahaline kohustus tuleb täita raha nimiväärtuses, kui seadusest või lepingust ei tulene teisiti.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Rahaline kohustus"
     },
     {
       "@id": "estleg:VOS_Par_93",
@@ -1654,7 +2208,12 @@
       "rdfs:label": "§ 93. Rahalise kohustuse vääring",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Rahalise kohustuse täitmiseks makstav raha peab olema tasumise ajal kehtiv riigis, mille vääringus makse tehakse.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_94",
@@ -1666,7 +2225,18 @@
       "rdfs:label": "§ 94. Intress võlasuhtes",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Kui kohustuselt tuleb vastavalt seadusele või lepingule tasuda intressi, on intressimääraks poolaasta kaupa Euroopa Keskpanga põhirefinantseerimisoperatsioonidele kohaldatav viimane intressimäär enne iga aasta 1. jaanuari ja 1. juulit, kui seaduses või lepinguga ei ole ette nähtud teisiti.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Kui kohustuselt",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:TMS_Par_107"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_95",
@@ -1678,7 +2248,13 @@
       "rdfs:label": "§ 95. Täitmise kviitung",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Võlausaldaja peab kohustuse täitmise vastuvõtmisel andma võlgnikule tema nõudel kohustuse täitmise vastuvõtmise kohta kirjaliku tõendi (täitmise kviitung). Võlgnik võib nõuda kviitungi andmist muus vormis, kui tal on selleks õigustatud huvi.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Võlausaldaja"
     },
     {
       "@id": "estleg:VOS_Par_96",
@@ -1690,7 +2266,12 @@
       "rdfs:label": "§ 96. Võladokumendi tagastamine",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Kui võlgnik on kohustuse kohta välja andnud kohustuse olemasolu tõendava dokumendi (võladokument), võib ta kohustuse täitmisel lisaks kviitungile või selle asemel nõuda võladokumendi tagastamist. Kui võlausaldaja võladokumenti ei tagasta, võib võlgnik nõuda võlausaldajalt kohustuse lõppemise kohta kirjalikku tunnistust.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_97",
@@ -1702,7 +2283,12 @@
       "rdfs:label": "§ 97. Lepinguliste kohustuste vahekorra muutumine",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Kui pärast lepingu sõlmimist muutuvad lepingu sõlmimise aluseks olnud asjaolud ja sellega kaasneb lepingupoolte kohustuste vahekorra oluline muutumine, mistõttu ühe lepingupoole kohustuste täitmise kulud suurenevad oluliselt või teiselt lepingupoolelt lepinguga saadava väärtus väheneb oluliselt, võib kahjustatud lepingupool nõuda teiselt lepingupoolelt lepingu muutmist poolte kohustuste esialgse vahekorra taastamiseks.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_98",
@@ -1714,7 +2300,13 @@
       "rdfs:label": "§ 98. Tagatise andmise ja kohustuse täitmise kinnitamise kohustus",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Kui isik peab oma kohustuse täitmiseks andma tagatise, ilma et tagatis oleks täpselt määratletud, või kui tagatise andmine on õiguslike tagajärgede tekkimise tingimus, võib tagatise andja valida tagatise liigi. Tagatis peab piisavalt tagama kohustust ning vajadusel ka intressi ja kulutusi ning võlausaldajal peab olema võimalus tagatis raskusteta rahaks teha.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Kui isik"
     },
     {
       "@id": "estleg:VOS_Par_99",
@@ -1750,7 +2342,12 @@
       "rdfs:label": "§ 101. Õiguskaitsevahendid kohustuse rikkumise korral",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Kui võlgnik on kohustust rikkunud, võib võlausaldaja:",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_102",
@@ -1762,7 +2359,13 @@
       "rdfs:label": "§ 102. Teatamiskohustus",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Võlgnik peab võlausaldajale teatama kohustuse täitmist takistavast asjaolust ja selle mõjust kohustuse täitmisele viivitamata pärast seda, kui ta sai takistavast asjaolust teada.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Võlgnik"
     },
     {
       "@id": "estleg:VOS_Par_103",
@@ -1786,7 +2389,12 @@
       "rdfs:label": "§ 104. Vastutus süü puhul",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Seaduses või lepingus ettenähtud juhtudel vastutab isik oma kohustuse rikkumise eest üksnes süü olemasolu korral.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:KeVS_Par_8"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_105",
@@ -1822,7 +2430,12 @@
       "rdfs:label": "§ 107. Heastamine",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Lepingulist kohustust rikkunud lepingupool võib rikkumise oma kulul heastada, muu hulgas mittekohase täitmise parandada või asendada, kuni teine lepingupool ei ole lepingust taganenud, seda üles öelnud või nõudnud kohustuse täitmise asemel kahju hüvitamist, kui:",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_108",
@@ -1834,7 +2447,17 @@
       "rdfs:label": "§ 108. Kohustuse täitmise nõudmine",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Kui võlgnik rikub raha maksmise kohustust, võib võlausaldaja nõuda selle täitmist.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:VOS_Par_109"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_109",
@@ -1846,7 +2469,17 @@
       "rdfs:label": "§ 109. Vastastikuse lepingu täitmise nõude erisused",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Vastastikuse lepingu puhul võib oma kohustust rikkunud lepingupool nõuda teiselt lepingupoolelt tema kohustuse täitmist ka juhul, kui kohustust rikkunud lepingupoolelt endalt ei saa käesoleva seaduse § 108 lõikes 2 nimetatud põhjusel kohustuse täitmist nõuda, kui see põhjus on tekkinud teisest lepingupoolest tuleneva asjaolu tõttu või kui see põhjus tekkis ajal, mil teine lepingupool oli vastuvõtuviivituses.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:references": [
+        {
+          "@id": "estleg:VOS_Par_108"
+        }
+      ],
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_110",
@@ -1858,7 +2491,12 @@
       "rdfs:label": "§ 110. Kohustuse täitmisest keeldumine",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Võlgnik võib keelduda oma kohustuse täitmisest, kuni võlausaldaja on rahuldanud võlgniku sissenõutavaks muutunud nõude võlausaldaja vastu, kui see nõue ei ole piisavalt tagatud ning selle nõude ja võlgniku kohustuse vahel on piisav seos ning seadusest, lepingust või võlasuhte olemusest ei tulene teisiti. Eelkõige on nõude ja kohustuse vahel piisav seos juhul, kui võlgniku ja võlausaldaja kohustused tulenevad samast õigussuhtest, nendevahelisest eelnevast regulaarsest suhtest või muust piisavast majanduslikust või ajalisest seosest.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_111",
@@ -1870,7 +2508,17 @@
       "rdfs:label": "§ 111. Kohustuse täitmisest keeldumine vastastikuse lepingu puhul",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Kui lepingupooltel on lepingust tulenevad vastastikused kohustused (vastastikune leping), võib üks lepingupool oma kohustuse täitmisest keelduda, kuni teine lepingupool on oma kohustuse täitnud, täitmist pakkunud või andnud täitmiseks tagatise või on kinnitanud, et ta kohustuse täidab.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:VOS_Par_189"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_112",
@@ -1882,7 +2530,23 @@
       "rdfs:label": "§ 112. Hinna alandamine",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Kui lepingupool võtab vastu kohustuse mittekohase täitmise, võib ta alandada tema poolt selle eest tasumisele kuuluvat hinda võrdeliselt kohustuse mittekohase täitmise väärtuse suhtele kohase täitmise väärtusesse. Kohase ja mittekohase täitmise väärtused määratakse kohustuse täitmise aja seisuga. Kui kohase ja mittekohase täitmise väärtusi ei saa täpselt kindlaks teha, otsustab väärtuste suuruse asjaolusid arvestades kohus.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohus"
+        }
+      ],
+      "estleg:competenceType": "general",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Tlepingu_seadus_Par_73"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_113",
@@ -1894,7 +2558,26 @@
       "rdfs:label": "§ 113. Viivis",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Lepingu kehtivusajal võib majandus- või kutsetegevuses tegutsev võlausaldaja nõuda tarbijalt võla sissenõudmiskulude hüvitamist iga sissenõutavaks muutunud kohustuse kohta saadetava vaid ühe meeldetuletuskirja eest summas kuni 5 eurot. Eelmises lauses nimetatud sissenõudmiskulude hüvitis suureneb iga solidaarvõlgniku või tagatise andja kohta 5 euro võrra. Käesolevas lõikes nimetatud hüvitist on võlausaldajal õigus nõuda ainult juhul, kui ta on saatnud tarbijale enne vähemalt ühe tasuta meeldetuletuse.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Kohtutituri_seadus_Par_74"
+        },
+        {
+          "@id": "estleg:Korteriomandi_ja_korterihist_Par_42"
+        },
+        {
+          "@id": "estleg:Krediidiandjate_ja_vahendajat_Par_39"
+        },
+        {
+          "@id": "estleg:Maaelu_ja_pllumajandusturu_ko_Par_83"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_113_1",
@@ -1906,7 +2589,12 @@
       "rdfs:label": "§ 1131. Sissenõudmiskulude hüvitamine majandus- või kutsetegevuses tegutseva isiku poolt",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Lepingu kehtivusajal võib majandus- või kutsetegevuses tegutsev võlausaldaja nõuda tarbijalt võla sissenõudmiskulude hüvitamist iga sissenõutavaks muutunud kohustuse kohta saadetava vaid ühe meeldetuletuskirja eest summas kuni 5 eurot. Eelmises lauses nimetatud sissenõudmiskulude hüvitis suureneb iga solidaarvõlgniku või tagatise andja kohta 5 euro võrra. Käesolevas lõikes nimetatud hüvitist on võlausaldajal õigus nõuda ainult juhul, kui ta on saatnud tarbijale enne vähemalt ühe tasuta meeldetuletuse.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_113_2",
@@ -1918,7 +2606,12 @@
       "rdfs:label": "§ 1132. Sissenõudmiskulude hüvitamine tarbija poolt",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Lepingu kehtivusajal võib majandus- või kutsetegevuses tegutsev võlausaldaja nõuda tarbijalt võla sissenõudmiskulude hüvitamist iga sissenõutavaks muutunud kohustuse kohta saadetava vaid ühe meeldetuletuskirja eest summas kuni 5 eurot. Eelmises lauses nimetatud sissenõudmiskulude hüvitis suureneb iga solidaarvõlgniku või tagatise andja kohta 5 euro võrra. Käesolevas lõikes nimetatud hüvitist on võlausaldajal õigus nõuda ainult juhul, kui ta on saatnud tarbijale enne vähemalt ühe tasuta meeldetuletuse.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_114",
@@ -1930,7 +2623,12 @@
       "rdfs:label": "§ 114. Täiendav tähtaeg kohustuse täitmiseks",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Kui võlgnik rikub kohustust, võib võlausaldaja anda võlgnikule kohustuse täitmiseks täiendava mõistliku tähtaja. Kui võlausaldaja nõuab kohustuse täitmist, kuid ei määra selleks täiendavat tähtaega, eeldatakse, et täitmiseks on antud mõistlik täiendav tähtaeg. Kui võlausaldaja on täitmiseks täiendavalt andnud ebamõistliku tähtaja, pikeneb see mõistliku täiendava tähtajani.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_115",
@@ -1942,7 +2640,12 @@
       "rdfs:label": "§ 115. Kahju hüvitamine",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Kui võlgnik rikub kohustust, võib võlausaldaja koos kohustuse täitmisega või selle asemel nõuda võlgnikult kohustuse rikkumisega tekitatud kahju hüvitamist, välja arvatud juhul, kui võlgnik kohustuse rikkumise eest ei vastuta või kui kahju ei kuulu seadusest tulenevalt muul põhjusel hüvitamisele.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_116",
@@ -1954,7 +2657,12 @@
       "rdfs:label": "§ 116. Taganemine ja ülesütlemine õiguskaitsevahendina",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Lepingupool võib lepingust taganeda, kui teine lepingupool on lepingust tulenevat kohustust oluliselt rikkunud (oluline lepingurikkumine).",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_117",
@@ -1966,7 +2674,12 @@
       "rdfs:label": "§ 117. Taganemine enne kohustuse sissenõutavaks muutumist",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Kui enne ühe lepingupoole kohustuse sissenõutavaks muutumist on ilmne, et see lepingupool paneb toime olulise lepingurikkumise, eelkõige, kui ta teatab, et ei kavatse lepingut täita, võib teine lepingupool lepingust taganeda juba enne kohustuse sissenõutavaks muutumist.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_118",
@@ -2002,7 +2715,20 @@
       "rdfs:label": "§ 120. Raha, väärtpaberite, muude dokumentide ja väärtasjade hoiustamine",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Võlausaldaja vastuvõtuviivituse korral, samuti juhul, kui võlgnik ei tea ega peagi teadma, kes on võlausaldaja, võib võlgnik võlgnetava raha, väärtpaberid, muud dokumendid või väärtasjad võlausaldaja jaoks notari juures hoiustada. Hoiustamise korra kehtestab valdkonna eest vastutav minister ./dyn=111112025016&id=131122010055 .",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:VOS_Par_124"
+        },
+        {
+          "@id": "estleg:VOS_Par_125"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_121",
@@ -2014,7 +2740,12 @@
       "rdfs:label": "§ 121. Hoiustatu tagasivõtmine",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Võlgnik võib hoiustatu isikult, kelle juures hoiustamine toimub, tagasi võtta üksnes juhul, kui ta hoiustamisel teatas isikule, kelle juures hoiustamine toimub, et ta jätab endale hoiustades sellise õiguse (hoiustatu tagasivõtmise õigus).",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_122",
@@ -2038,7 +2769,12 @@
       "rdfs:label": "§ 123. Avaldus hoiustatu kättesaamiseks",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Kui võlausaldajal on hoiustatu kättesaamiseks vaja kättesaamise õigust tõendavat võlgniku avaldust, võib võlausaldaja nõuda võlgnikult avalduse andmist samadel tingimustel, nagu ta võiks nõuda kohustuse täitmist, kui hoiustamist ei oleks toimunud. Võlausaldaja hagi rahuldamisel loetakse võlgnik nõusoleku andnuks otsuse jõustumisel.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_124",
@@ -2050,7 +2786,17 @@
       "rdfs:label": "§ 124. Muude asjade hoiustamine",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Käesoleva seaduse § 120 lõikes 1 nimetatud juhul võib võlgnik muu võlgnetava vallasasja kui raha, väärtpaberid, muud dokumendid ja väärtasjad hoiustada mõistlikult valitud kolmanda isiku juures, kes võtab oma majandustegevuses hoiule seda liiki vallasasju, kui hoiustamisega ei kaasne ebamõistlikult suuri kulutusi.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:references": [
+        {
+          "@id": "estleg:VOS_Par_120"
+        }
+      ],
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_125",
@@ -2062,7 +2808,17 @@
       "rdfs:label": "§ 125. Võlgnetava vallasasja müük",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Hoiustamise asemel võib võlgnik käesoleva seaduse § 120 lõikes 1 nimetatud juhul, samuti juhul, kui vallasasja üleandmine võlausaldajale ei ole võimalik võlgnikust mitteoleneval põhjusel, võlgnetava vallasasja mõistlikul viisil müüa, kui:",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:references": [
+        {
+          "@id": "estleg:VOS_Par_120"
+        }
+      ],
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_126",
@@ -2098,7 +2854,12 @@
       "rdfs:label": "§ 128. Hüvitatava kahju liigid",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Hüvitamisele kuuluv kahju võib olla varaline või mittevaraline.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_129",
@@ -2110,7 +2871,12 @@
       "rdfs:label": "§ 129. Varalise kahju hüvitamine surma põhjustamise korral",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Isiku surma põhjustamisest tuleneva kahju hüvitamise kohustuse olemasolu korral tuleb hüvitada surma põhjustamisest tekkinud kulud, eelkõige mõistlikud matusekulud, samuti surma põhjustanud tervisekahjustuse või kehavigastuse mõistlikud ravikulud ning kahjustatud isiku vahepealsest töövõimetusest tekkinud kahju.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_130",
@@ -2122,7 +2888,12 @@
       "rdfs:label": "§ 130. Kahju hüvitamine tervise kahjustamise või kehavigastuse tekitamise korral",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Isiku tervise kahjustamisest või talle kehavigastuse tekitamisest tekkinud kahju hüvitamise kohustuse olemasolu korral tuleb kahjustatud isikule hüvitada kahjustamisest tekkinud kulud, sealhulgas vajaduste suurenemisest tekkinud kulud, ning täielikust või osalisest töövõimetusest tekkinud kahju, sealhulgas sissetulekute vähenemisest ja edasiste majanduslike võimaluste halvenemisest tekkinud kahju.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_131",
@@ -2134,7 +2905,12 @@
       "rdfs:label": "§ 131. Varalise kahju hüvitamine vabaduse võtmise või isikuõiguste rikkumise korral",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Isikult vabaduse ebaseadusliku võtmise, isiku au teotamise või muu isikuõiguse rikkumisega tekitatud kahju hüvitamise kohustuse olemasolu korral tuleb kahjustatud isikule hüvitada talle põhjustatud kulutused, samuti hüvitada tema sissetuleku vähenemisest või edasiste majanduslike võimaluste vähenemisest tekkinud kahju.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_132",
@@ -2146,7 +2922,12 @@
       "rdfs:label": "§ 132. Kahju hüvitamine asja hävimise, kaotsimineku või kahjustamise korral",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Asja hävimisest või kaotsiminekust tekkinud kahju hüvitamise kohustuse olemasolu korral tuleb maksta hüvitis, mis vastab uue samaväärse asja soetamiseks tehtavatele mõistlikele kulutustele. Kui asja väärtus oli hävimise või kaotsimineku hetkel, võrreldes uue samaväärse asja väärtusega, oluliselt vähenenud, tuleb väärtuse vähenemist kahjuhüvitise määramisel mõistlikult arvestada.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_133",
@@ -2158,7 +2939,13 @@
       "rdfs:label": "§ 133. Keskkonnaohtliku tegevusega tekitatud kahju hüvitamine",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Keskkonnaohtliku tegevusega kahju tekitamise puhul kuulub lisaks isikule või tema varale tekitatud kahjule hüvitamisele ka kahju, mis on seotud keskkonna kvaliteedi halvenemisega. Hüvitada tuleb samuti kahju suurenemise ärahoidmiseks või kahju tagajärgede leevendamiseks rakendatud mõistlike abinõudega seotud kulud ning nende abinõude rakendamisest tekkinud kahju.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Hüvitada"
     },
     {
       "@id": "estleg:VOS_Par_134",
@@ -2170,7 +2957,12 @@
       "rdfs:label": "§ 134. Mittevaralise kahju hüvitamise erisused",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Lepingust tuleneva kohustuse rikkumise eest võib mittevaralise kahju hüvitamist nõuda üksnes juhul, kui kohustus oli suunatud mittevaralise huvi järgimisele ning sõltuvalt lepingu sõlmimise või kohustuse rikkumise asjaoludest sai võlgnik aru või pidi aru saama, et kohustuse rikkumine võib põhjustada mittevaralise kahju.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_135",
@@ -2182,7 +2974,12 @@
       "rdfs:label": "§ 135. Hinnavahe hüvitamine",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Kui kahjustatud lepingupool tegi pärast lepingust taganemist mõistliku aja jooksul ja mõistlikul viisil tehingu, millega ta saavutas sama eesmärgi, mida peeti silmas lepinguga, millest taganeti (asendustehing), võib kahjustatud lepingupool kohustust rikkunud lepingupoolelt kahjuhüvitisena nõuda lepingujärgse hinna ja asendustehingust tuleneva hinna vahe tasumist.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_136",
@@ -2194,7 +2991,13 @@
       "rdfs:label": "§ 136. Kahju hüvitamise viis",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Kahju tuleb hüvitada ühekordselt makstava rahasummana, välja arvatud juhul, kui vastavalt kahju iseloomule on mõistlik kahju hüvitamine perioodiliste maksetena.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Kahju"
     },
     {
       "@id": "estleg:VOS_Par_137",
@@ -2218,7 +3021,17 @@
       "rdfs:label": "§ 138. Ühine vastutus kahju eest",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Kui tekkinud kahju eest võivad vastutada erinevad isikud ja on kindlaks tehtud, et kahju võis tekitada neist igaüks, võib kahju hüvitamist nõuda neilt kõigilt.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Tlepingu_seadus_Par_74"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_139",
@@ -2242,7 +3055,19 @@
       "rdfs:label": "§ 140. Kahju hüvitamise piiramine",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Kohus võib kahjuhüvitist vähendada, kui kahju hüvitamine täies ulatuses oleks kohustatud isiku suhtes äärmiselt ebaõiglane või muudel põhjustel mõistlikult vastuvõtmatu. Seejuures tuleb arvestada kõiki asjaolusid, eelkõige vastutuse iseloomu, isikutevahelisi suhteid ja nende majanduslikku olukorda, sealhulgas kindlustuse olemasolu.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Seejuures",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohus"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:VOS_Par_141",
@@ -2266,7 +3091,13 @@
       "rdfs:label": "§ 142. Käenduse mõiste",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Käenduslepinguga kohustub käendaja kolmanda isiku (põhivõlgnik) võlausaldaja ees vastutama põhivõlgniku kohustuse täitmise eest.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Käenduslepinguga"
     },
     {
       "@id": "estleg:VOS_Par_143",
@@ -2314,7 +3145,13 @@
       "rdfs:label": "§ 146. Võlausaldaja teatamiskohustus",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Käendaja nõudel peab võlausaldaja andma talle teavet põhivõlgniku kohustuse täitmise kohta.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Käendaja nõudel"
     },
     {
       "@id": "estleg:VOS_Par_147",
@@ -2326,7 +3163,12 @@
       "rdfs:label": "§ 147. Kohustuse täitmisest teatamine",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Kui käendaja on põhivõlgniku kohustuse täielikult või osaliselt täitnud, peab ta sellest põhivõlgnikule teatama.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_148",
@@ -2338,7 +3180,12 @@
       "rdfs:label": "§ 148. Käendaja õigus nõuda tagatist või kohustuse täitmist",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Käendaja võib põhivõlgnikult nõuda tagatist või kohustuse sissenõutavaks muutumise korral selle täitmist võlausaldajale, kui:",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_149",
@@ -2350,7 +3197,12 @@
       "rdfs:label": "§ 149. Käendaja vastuväited",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Käendaja võib esitada võlausaldaja nõudele kõiki vastuväiteid, mida oleks võinud esitada põhivõlgnik ise, välja arvatud need, mis on vahetult seotud põhivõlgniku isikuga. Käendajal on õigus esitada neid vastuväiteid ka siis, kui põhivõlgnik neist loobus.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_150",
@@ -2386,7 +3238,17 @@
       "rdfs:label": "§ 152. Käendaja tagasinõue põhivõlgniku vastu",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Põhivõlgniku kohustuse täitnud käendajale läheb rahuldatud ulatuses üle võlausaldaja nõue põhivõlgniku vastu. Põhivõlgnik võib nõudele esitada nii vastuväiteid, mis tal olid võlausaldaja vastu, kui ka vastuväiteid, mis tulenevad tema ja käendaja vahelisest õigussuhtest. Käendaja tagasinõude aegumisele kohaldatakse vastavalt käesoleva seaduse §-s 70 sätestatut.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:references": [
+        {
+          "@id": "estleg:VOS_Par_70"
+        }
+      ],
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_153",
@@ -2410,7 +3272,12 @@
       "rdfs:label": "§ 154. Tarbijakäenduslepingu lõppemise erisused",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Tulevase kohustuse tagamiseks sõlmitud tähtajatu tarbijakäenduslepingu võib käendaja igal ajal üles öelda. Kui niisugune leping on tähtajaline, võib lepingu üles öelda viie aasta möödudes lepingu sõlmimisest.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_155",
@@ -2470,7 +3337,12 @@
       "rdfs:label": "§ 159. Leppetrahv ja kohustuse täitmise nõue",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Leppetrahvi kokkuleppimisel kohustuse rikkumise puhuks võib kahjustatud lepingupool lisaks leppetrahvile nõuda ka kohustuse täitmist. Kohustuse täitmist ei või lisaks leppetrahvile nõuda, kui leppetrahv lepiti kokku mitte kohustuse täitmisele sundimiseks, vaid kohustuse täitmise asendamiseks.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_160",
@@ -2494,7 +3366,12 @@
       "rdfs:label": "§ 161. Leppetrahv ja kahju",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Lepingu rikkumise korral võib kahjustatud lepingupool nõuda leppetrahvi tegelikust kahjust sõltumata.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_162",
@@ -2506,7 +3383,18 @@
       "rdfs:label": "§ 162. Leppetrahvi vähendamine",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Kui tasumisele kuuluv leppetrahv on ebamõistlikult suur, võib kohus seda leppetrahvi maksmiseks kohustatud lepingupoole nõudmisel vähendada mõistliku suuruseni, arvestades eelkõige kohustuse täitmise ulatust tema poolt, teise lepingupoole õigustatud huvi ja lepingupoolte majanduslikku seisundit.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohus"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:VOS_Par_163",
@@ -2530,7 +3418,12 @@
       "rdfs:label": "§ 164. Nõude loovutamine",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Võlausaldaja võib oma nõude võlgniku nõusolekust sõltumata anda lepingu alusel tervikuna või osaliselt üle teisele isikule (nõude loovutamine). Nõuet ei või loovutada, kui loovutamine on seadusest tulenevalt keelatud või kui kohustust ei saa selle sisu muutmata täita kellelegi teisele kui senisele võlausaldajale.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_165",
@@ -2542,7 +3435,17 @@
       "rdfs:label": "§ 165. Tingimuslike ja tulevikus tekkivate nõuete loovutamine",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Loovutada võib ka tulevikus tekkivaid ja tingimuslikke nõudeid, kui need on loovutamise hetkel piisavalt määratletavad.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:VOS_Par165"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_166",
@@ -2554,7 +3457,12 @@
       "rdfs:label": "§ 166. Loovutamise piirangud",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Loovutada ei või ülalpidamise nõuet, kehavigastuse tekitamise, tervise kahjustamise või surma põhjustamisega tekitatud kahju hüvitamise nõudeid ega muid nõudeid, millele seadusest tulenevalt ei saa pöörata sissenõuet. Sellise nõude võib loovutada, kui loovutamisega kaasneb majanduslikult samaväärse vastusoorituse saamine.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_167",
@@ -2566,7 +3474,17 @@
       "rdfs:label": "§ 167. Tagatiste ja muude õiguste üleminek",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Nõude tagamiseks antud nõudega seotud tagatised ja kõrvalkohustustest tulenevad õigused, sealhulgas eesõigused pankroti ja sundtäitmise puhuks, mis ei ole lahutamatult seotud loovutaja isikuga ja on üleantavad, lähevad nõude loovutamisel üle uuele võlausaldajale. Eeldatakse, et nõude loovutaja on kohustatud üle andma ka nõudega mitteseotud tagatised ja kõrvalkohustustest tulenevad õigused.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:VOS_Par_168"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_168",
@@ -2578,7 +3496,18 @@
       "rdfs:label": "§ 168. Nõude loovutamise tõendid",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Nõude loovutanud võlausaldaja peab uuele võlausaldajale üle andma nõuet ja kõrvalkohustustest tulenevaid õigusi tõendavad dokumendid, muu hulgas käesoleva seaduse § 167 lõikes 4 nimetatud täitedokumendi, ja andma talle nõude esitamiseks vajalikku teavet. Kui senine võlausaldaja vajab dokumenti ka edaspidi, võib uus võlausaldaja dokumendi üleandmise asemel nõuda koopia või väljavõtte andmist või muude tegude tegemist, mis võimaldaksid tal oma õigusi teostada.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:references": [
+        {
+          "@id": "estleg:VOS_Par_167"
+        }
+      ],
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Nõude loovutanud võlausaldaja"
     },
     {
       "@id": "estleg:VOS_Par_169",
@@ -2590,7 +3519,17 @@
       "rdfs:label": "§ 169. Kohustuse täitmine senisele võlausaldajale",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Kui võlgnik täitis kohustuse nõude loovutanud võlausaldajale ja ta ei teadnud ega pidanudki kohustust täites nõude loovutamisest teadma, loetakse, et ta on kohustuse täitnud õigele isikule.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:VOS_Par169"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:VOS_Par_79"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_170",
@@ -2614,7 +3553,17 @@
       "rdfs:label": "§ 171. Võlgniku vastuväited uue võlausaldaja nõudele ja tasaarvestus loovutatud nõudega",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Võlgnik võib uue võlausaldaja nõude vastu lisaks vastuväidetele, mis tal on uue võlausaldaja vastu, esitada kõiki vastuväiteid, mis tal olid senise võlausaldaja vastu nõude loovutamise ajal.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:VOS_Par171"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_172",
@@ -2626,7 +3575,12 @@
       "rdfs:label": "§ 172. Loovutamisdokument",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Võlgnik võib keelduda kohustuse täitmisest uuele võlausaldajale, kui talle ei anta senise võlausaldaja poolt väljastatud dokumenti nõude loovutamise kohta, välja arvatud juhul, kui senine võlausaldaja on talle nõude loovutamisest kirjalikult teatanud.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_173",
@@ -2650,7 +3604,12 @@
       "rdfs:label": "§ 174. Muude õiguste üleminek",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Käesolevas jaos nõuete ülemineku kohta sätestatut kohaldatakse vastavalt muude õiguste üleminekule, kui seadusest või õiguse olemusest ei tulene teisiti.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:VOS_Par174"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_175",
@@ -2662,7 +3621,17 @@
       "rdfs:label": "§ 175. Kohustuse ülevõtmine",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Kolmas isik võib võlausaldajaga sõlmitud lepingu alusel üle võtta võlgniku kohustuse nii, et kolmas isik astub senise võlgniku asemele.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:VOS_Par175"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_176",
@@ -2674,7 +3643,12 @@
       "rdfs:label": "§ 176. Kohustuse ülevõtja vastuväited",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Kohustuse ülevõtja võib võlausaldaja nõudele lisaks enda vastuväidetele esitada vastuväiteid, mis tulenevad võlausaldaja ja senise võlgniku vahelisest õigussuhtest, välja arvatud vastuväited, mis kuulusid senisele võlgnikule võlausaldaja vastu isiklikult. Samuti ei või ta senise võlgniku nõuet võlausaldaja nõudega tasaarvestada.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_177",
@@ -2698,7 +3672,20 @@
       "rdfs:label": "§ 178. Kohustusega ühinemine",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Kohustuse võib üle võtta ka nii, et kolmas isik astub võlasuhtesse uue võlgnikuna senise võlgniku kõrvale (kohustusega ühinemine).",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:VOS_Par178"
+        },
+        {
+          "@id": "estleg:VOS_Par175"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_179",
@@ -2710,7 +3697,22 @@
       "rdfs:label": "§ 179. Lepingu ülevõtmise mõiste",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Lepingupool võib teise lepingupoole nõusolekul anda oma lepingust tulenevad õigused ja kohustused üle kolmandale isikule temaga sõlmitud lepingu alusel, kui seaduses ei ole sätestatud teisiti.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:VOS_Par179"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Kindlustustegevuse_seadus_Par_89"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_180",
@@ -2722,7 +3724,12 @@
       "rdfs:label": "§ 180. Ettevõtte üleminek",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Ettevõtte üleandja võib omandajaga sõlmitud lepinguga kohustuda andma omandajale üle ettevõtte. Ettevõte võib omandajale üle minna ka seaduse alusel.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_181",
@@ -2734,7 +3741,12 @@
       "rdfs:label": "§ 181. Kohaldamise piirangud",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Käesolevas jaos sätestatut ei kohaldata ettevõtte üleminekule juriidiliste isikute ühinemise, jagunemise või ümberkujundamise puhul, samuti kui ettevõtte üleminek toimub seaduse alusel, eelkõige sundtäitmisel või pankrotimenetluses.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Tlepingu_seadus_Par_112"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_182",
@@ -2746,7 +3758,13 @@
       "rdfs:label": "§ 182. Ettevõtte üleandmine",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Ettevõttesse kuuluvad asjad antakse omandajale üle vastavate asjade üleandmise sätete järgi ja õigused vastavate õiguste üleandmise sätete järgi, lepingud aga lepingute ülevõtmise sätete järgi. Ettevõtte üleandja on kohustatud andma omandajale üle asjade valduse, registreerimisele kuuluva vara puhul tagama ka vastavate kannete tegemise registrites.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Ettevõtte üleandja"
     },
     {
       "@id": "estleg:VOS_Par_183",
@@ -2758,7 +3776,12 @@
       "rdfs:label": "§ 183. Ettevõtte üleandja vastutus",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Enne ettevõtte üleminekut tekkinud kohustuste eest, mis on ülemineku ajaks muutunud sissenõutavaks või mis muutuvad sissenõutavaks viie aasta jooksul pärast üleminekut, vastutab üleandja võlausaldajate ees solidaarselt omandajaga. Eeldatakse, et omavahelises suhtes üleandjaga on kohustatud isikuks ettevõtte omandaja.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_184",
@@ -2830,7 +3853,18 @@
       "rdfs:label": "§ 189. Lepingu alusel üleantu väljaandmine ja hüvitamine",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Lepingust taganemise korral võib kumbki lepingupool nõuda tema poolt lepingu alusel üleantu tagastamist ning saadud viljade ja muu kasu väljaandmist, kui ta tagastab kõik üleantu. Taganemisest tulenevad kohustused peavad lepingupooled täitma üheaegselt, kusjuures vastavalt kohaldatakse käesoleva seaduse §-s 111 sätestatut. Tagastatavalt rahalt tuleb tasuda intressi raha saamisest alates.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:references": [
+        {
+          "@id": "estleg:VOS_Par_111"
+        }
+      ],
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Tagastatavalt rahalt"
     },
     {
       "@id": "estleg:VOS_Par_190",
@@ -2854,7 +3888,12 @@
       "rdfs:label": "§ 191. Kasu ja kulutused",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Kui lepingupool ei saanud vilju või muud kasu, mida tal oleks olnud võimalik korrapärase majandamise nõudeid järgides saada, peab ta taganemise korral teisele lepingupoolele hüvitama saamata jäänud viljade või muu kasu väärtuse. Seadusest tuleneva taganemisõiguse korral vastutab taganemiseks õigustatud lepingupool viljade ja kasu saamisel üksnes sellise hoole ilmutamise eest, mida ta rakendab oma asjades.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_192",
@@ -2878,7 +3917,12 @@
       "rdfs:label": "§ 193. Tasaarvestus pärast olulist lepingurikkumist",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Lepingust taganemine olulise lepingurikkumise tõttu on tühine, kui lepingupool, kelle suhtes lepingust taganeda sooviti, võib kohustuse lõpetada tasaarvestusega ja teatab tasaarvestusest viivitamata pärast teise lepingupoole poolt lepingust taganemisest teatamist.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_194",
@@ -2914,7 +3958,12 @@
       "rdfs:label": "§ 196. Lepingu erakorraline ülesütlemine",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Kestvuslepingu võib kumbki lepingupool mõjuval põhjusel etteteatamistähtaega järgimata üles öelda, eelkõige kui ülesütlevalt lepingupoolelt ei või kõiki asjaolusid ja mõlemapoolset huvi arvestades mõistlikult nõuda lepingu jätkamist kuni kokkulepitud tähtpäevani või etteteatamistähtaja lõppemiseni (erakorraline ülesütlemine).",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_197",
@@ -2926,7 +3975,12 @@
       "rdfs:label": "§ 197. Tasaarvestuse mõiste",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Kui kaks isikut (tasaarvestuse pooled) on kohustatud maksma teineteisele rahasumma või täitma muu samaliigilise kohustuse, võib kumbki pool (tasaarvestav pool) oma nõude teise poole nõudega tasaarvestada, kui tasaarvestaval poolel on õigus oma kohustus täita ja teiselt poolelt nõuda tema kohustuse täitmist.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_198",
@@ -2950,7 +4004,12 @@
       "rdfs:label": "§ 199. Tasaarvestus täitmise kohtade erinevuse korral",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Kui tasaarvestatakse erinevate täitmise kohtadega nõudeid, peab tasaarvestav pool teisele poolele hüvitama kahju, mis tekib seetõttu, et teine pool ei saa tasaarvestuse tõttu kohustuse täitmist ettenähtud kohas kätte või oma kohustust ettenähtud kohas täita.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_200",
@@ -2974,7 +4033,12 @@
       "rdfs:label": "§ 201. Tasaarvestus nõuete paljususe korral",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Kui tasaarvestuse pooltel on mitu tasaarvestuseks sobivat nõuet, võib tasaarvestav pool määrata nõuded, mis tasaarvestatakse. Kui tasaarvestuse avalduses ei ole määratud, millised nõuded tasaarvestatakse, või kui teine pool vaidleb tasaarvestuse avalduses märgitud määramisele viivitamata vastu, loetakse tasaarvestatuks:",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_202",
@@ -2986,7 +4050,12 @@
       "rdfs:label": "§ 202. Tasaarvestuse piirang kolmanda isiku kasuks sõlmitud lepingu puhul",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Kolmanda isiku kasuks sõlmitud lepingu puhul ei või lepingupool, kes peab kohustuse täitma kolmanda isiku suhtes, tasaarvestada tema vastu suunatud kohustuse täitmise nõuet.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_203",
@@ -2998,7 +4067,12 @@
       "rdfs:label": "§ 203. Jooksev arve",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Kui mõlema poole püsivas ärisuhtes sõlmitud lepingutest tulenevad rahalised nõuded ja kohustused tuleb summeerida (jooksev arve), loetakse tasaarvestus summeerimisega toimunuks. Sel juhul võlgnetakse nõuete ja kohustuste vahe (saldo).",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_204",
@@ -3022,7 +4096,12 @@
       "rdfs:label": "§ 205. Jooksva arve lepingu lõppemine",
       "estleg:requestedCluster": "kohustused_ja_volad",
       "estleg:summary": "Kui jooksva arve kohta on sõlmitud leping tähtaega määramata, võib kumbki pool selle üles öelda igaks jooksva arveldusperioodi lõpuks, teatades ülesütlemisest vähemalt 10 päeva ette.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS_Par_206",

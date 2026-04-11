@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -16,14 +17,67 @@
       ],
       "rdfs:label": "Keskkonnaseaduse teemakaardistus (Keskkonnaõigus)",
       "dc:description": "Keskkonnaõiguse põhisambad: keskkonnakaitse, saastekontroll ja looduskaitse.",
-      "dc:source": "Keskkonnaseadustiku üldosa seadus ning seotud keskkonnaõiguse raamistik"
+      "dc:source": "Keskkonnaseadustiku üldosa seadus ning seotud keskkonnaõiguse raamistik",
+      "estleg:temporalStatus": "inForce",
+      "estleg:affectedBy": [
+        {
+          "@id": "estleg:Draft_KLIM24_1200"
+        },
+        {
+          "@id": "estleg:Draft_KLIM21_0370"
+        },
+        {
+          "@id": "estleg:Draft_KLIM20_0592"
+        },
+        {
+          "@id": "estleg:Draft_KLIM19_0484"
+        },
+        {
+          "@id": "estleg:Draft_KLIM16_1431"
+        },
+        {
+          "@id": "estleg:Draft_KLIM14_1392"
+        },
+        {
+          "@id": "estleg:Draft_KLIM14_1291"
+        },
+        {
+          "@id": "estleg:Draft_KLIM13_1646"
+        },
+        {
+          "@id": "estleg:Draft_KLIM13_0996"
+        },
+        {
+          "@id": "estleg:Draft_RIIGIKOGU14_1582"
+        }
+      ],
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/5611"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2431"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5631"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2441"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5206"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_keskkonnaseadus",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)"
+      "rdfs:label": "Õigusnorm (paragrahv)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:TopicCluster_keskkonnaseadus",
@@ -78,7 +132,12 @@
       "rdfs:label": "§ 3. Keskkonna kõrgetasemelise ja tervikliku kaitse põhimõte",
       "estleg:requestedCluster": "keskkonnakaitse",
       "estleg:summary": "Sätestab, et keskkonna kaitse peab olema kõrgetasemeline ning arvestama keskkonna terviklikkust ja ökosüsteemide toimimist.",
-      "estleg:sourceAct": "Keskkonnaseadustiku üldosa seadus"
+      "estleg:sourceAct": "Keskkonnaseadustiku üldosa seadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ]
     },
     {
       "@id": "estleg:KESK_Par_8",
@@ -90,7 +149,13 @@
       "rdfs:label": "§ 8. Säästva arengu põhimõte",
       "estleg:requestedCluster": "keskkonnakaitse",
       "estleg:summary": "Keskkonda tuleb kasutada viisil, mis tagab loodusvarade säilimise ja võimalused ka tulevastele põlvkondadele.",
-      "estleg:sourceAct": "Keskkonnaseadustiku üldosa seadus"
+      "estleg:sourceAct": "Keskkonnaseadustiku üldosa seadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Keskkonda"
     },
     {
       "@id": "estleg:KESK_Par_10",
@@ -102,7 +167,13 @@
       "rdfs:label": "§ 10. Ettevaatuspõhimõte",
       "estleg:requestedCluster": "keskkonnakaitse",
       "estleg:summary": "Ebapiisava teadusliku kindluse korral tuleb võimaliku tõsise keskkonnakahju vältimiseks rakendada ennetavaid meetmeid.",
-      "estleg:sourceAct": "Keskkonnaseadustiku üldosa seadus"
+      "estleg:sourceAct": "Keskkonnaseadustiku üldosa seadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Ebapiisava teadusliku kindluse korral"
     },
     {
       "@id": "estleg:KESK_Par_11",
@@ -114,7 +185,13 @@
       "rdfs:label": "§ 11. Ennetamispõhimõte",
       "estleg:requestedCluster": "keskkonnakaitse",
       "estleg:summary": "Keskkonnahäiringuid tuleb vältida eeskätt nende tekkekohas ning prioriteedina ennetada kahju enne selle realiseerumist.",
-      "estleg:sourceAct": "Keskkonnaseadustiku üldosa seadus"
+      "estleg:sourceAct": "Keskkonnaseadustiku üldosa seadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Keskkonnahäiringuid"
     },
     {
       "@id": "estleg:KESK_Par_12",
@@ -174,7 +251,13 @@
       "rdfs:label": "§ 31. Keskkonnaloa tingimused",
       "estleg:requestedCluster": "saastekontroll",
       "estleg:summary": "Luba peab sisaldama tingimusi heite, jäätmete, müra ja muude häiringute kontrolliks ning seireks.",
-      "estleg:sourceAct": "Keskkonnaseadustiku üldosa seadus"
+      "estleg:sourceAct": "Keskkonnaseadustiku üldosa seadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Luba"
     },
     {
       "@id": "estleg:KESK_Par_4",
@@ -186,7 +269,13 @@
       "rdfs:label": "§ 4. Looduse mitmekesisuse säilitamise põhimõte",
       "estleg:requestedCluster": "looduskaitse",
       "estleg:summary": "Keskkonna kasutamisel tuleb säilitada elurikkus ning ökosüsteemide funktsioonid ja vastupanuvõime.",
-      "estleg:sourceAct": "Keskkonnaseadustiku üldosa seadus"
+      "estleg:sourceAct": "Keskkonnaseadustiku üldosa seadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Keskkonna kasutamisel"
     },
     {
       "@id": "estleg:KESK_Par_9",
@@ -198,7 +287,13 @@
       "rdfs:label": "§ 9. Loodusvarade säästliku kasutamise põhimõte",
       "estleg:requestedCluster": "looduskaitse",
       "estleg:summary": "Loodusvarasid tuleb kasutada säästlikult ja vältida nende ülemäärast või taastumatut kahjustamist.",
-      "estleg:sourceAct": "Keskkonnaseadustiku üldosa seadus"
+      "estleg:sourceAct": "Keskkonnaseadustiku üldosa seadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Loodusvarasid"
     },
     {
       "@id": "estleg:KESK_Par_23",
@@ -210,7 +305,12 @@
       "rdfs:label": "§ 23. Õigus tervise- ja heaoluvajadustele vastavale keskkonnale",
       "estleg:requestedCluster": "looduskaitse",
       "estleg:summary": "Isikul on õigus keskkonnale, mis toetab tervist ja heaolu, ning see suunab looduskaitselisi otsuseid avalikes huvides.",
-      "estleg:sourceAct": "Keskkonnaseadustiku üldosa seadus"
+      "estleg:sourceAct": "Keskkonnaseadustiku üldosa seadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:KESK_Par_24",
@@ -222,7 +322,13 @@
       "rdfs:label": "§ 24. Avalikkuse osalemine keskkonnaotsustes",
       "estleg:requestedCluster": "looduskaitse",
       "estleg:summary": "Avalikkusel peab olema võimalus osaleda keskkonda mõjutavate otsuste ettevalmistamises ja teha põhjendatud ettepanekuid.",
-      "estleg:sourceAct": "Keskkonnaseadustiku üldosa seadus"
+      "estleg:sourceAct": "Keskkonnaseadustiku üldosa seadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Avalikkusel"
     },
     {
       "@id": "estleg:KESK_Par_26",
@@ -234,7 +340,13 @@
       "rdfs:label": "§ 26. Keskkonnateabe kättesaadavus",
       "estleg:requestedCluster": "looduskaitse",
       "estleg:summary": "Keskkonnateave peab olema avalikkusele kättesaadav, et võimaldada teadlikku osalemist ja looduskaitselist järelevalvet.",
-      "estleg:sourceAct": "Keskkonnaseadustiku üldosa seadus"
+      "estleg:sourceAct": "Keskkonnaseadustiku üldosa seadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Keskkonnateave"
     },
     {
       "@id": "estleg:KESK_NOTE_001",

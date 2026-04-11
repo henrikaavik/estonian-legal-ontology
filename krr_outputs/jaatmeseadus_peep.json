@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -17,14 +18,70 @@
       "rdfs:label": "Jäätmeseaduse teemakaardistus (Keskkonnaõigus)",
       "dc:description": "Jäätmeseaduse kaardistus kolmes fookuses: jäätmehooldus, ringlussevõtt ja tootjavastutus.",
       "dc:source": "Jäätmeseadus (Riigi Teataja kehtiv redaktsioon)",
-      "dc:identifier": "https://www.riigiteataja.ee/akt/JäätS?leiaKehtiv"
+      "dc:identifier": "https://www.riigiteataja.ee/akt/JäätS?leiaKehtiv",
+      "estleg:temporalStatus": "inForce",
+      "estleg:affectedBy": [
+        {
+          "@id": "estleg:Draft_KLIM24_1102"
+        },
+        {
+          "@id": "estleg:Draft_KLIM23_1418"
+        },
+        {
+          "@id": "estleg:Draft_KLIM16_1152"
+        },
+        {
+          "@id": "estleg:Draft_KLIM16_0296"
+        },
+        {
+          "@id": "estleg:Draft_KLIM15_0576"
+        },
+        {
+          "@id": "estleg:Draft_KLIM14_1805"
+        },
+        {
+          "@id": "estleg:Draft_KLIM14_0634"
+        },
+        {
+          "@id": "estleg:Draft_KLIM13_1218"
+        },
+        {
+          "@id": "estleg:Draft_RIIGIKOGU14_0818"
+        },
+        {
+          "@id": "estleg:Draft_RIIGIKOGU13_1275"
+        },
+        {
+          "@id": "estleg:Draft_RIIGIKOGU13_0914"
+        }
+      ],
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/5611"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/3611"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/1221"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2446"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2431"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_jaatmeseadus",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)"
+      "rdfs:label": "Õigusnorm (paragrahv)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:TopicCluster_jaatmeseadus",
@@ -103,7 +160,13 @@
       "rdfs:label": "§ 66. Korraldatud jäätmevedu",
       "estleg:requestedCluster": "jäätmehooldus",
       "estleg:summary": "Annab kohaliku omavalitsuse korraldatud jäätmeveo õigusliku raamistiku, et tagada teenuse kättesaadavus ja avalik huvi.",
-      "estleg:sourceAct": "Jäätmeseadus"
+      "estleg:sourceAct": "Jäätmeseadus",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:JAATS_Par_71",

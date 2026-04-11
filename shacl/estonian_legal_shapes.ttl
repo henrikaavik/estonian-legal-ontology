@@ -5,6 +5,7 @@
 @prefix schema: <http://schema.org/> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
 
 # Shape for LegalProvision instances.
 #
@@ -65,6 +66,131 @@ estleg:LegalProvisionShape
         sh:nodeKind sh:IRI ;
         sh:name "references" ;
         sh:description "Cross-references must point to valid IRIs" ;
+    ] ;
+    sh:property [
+        sh:path estleg:referencedBy ;
+        sh:nodeKind sh:IRI ;
+        sh:name "referencedBy" ;
+        sh:description "Inverse cross-references — provisions that reference this one" ;
+    ] ;
+    sh:property [
+        sh:path estleg:interpretedBy ;
+        sh:nodeKind sh:IRI ;
+        sh:name "interpretedBy" ;
+        sh:description "Court decisions that interpret this provision" ;
+    ] ;
+    sh:property [
+        sh:path estleg:transposesDirective ;
+        sh:nodeKind sh:IRI ;
+        sh:name "transposesDirective" ;
+        sh:description "EU directive that this provision transposes" ;
+    ] ;
+    sh:property [
+        sh:path dcterms:subject ;
+        sh:nodeKind sh:IRI ;
+        sh:name "subject" ;
+        sh:description "EuroVoc subject classification URI" ;
+    ] ;
+    sh:property [
+        sh:path estleg:entryIntoForce ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:date ;
+        sh:name "entryIntoForce" ;
+        sh:description "Date when the provision entered into force" ;
+    ] ;
+    sh:property [
+        sh:path estleg:repealDate ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:date ;
+        sh:name "repealDate" ;
+        sh:description "Date when the provision was repealed" ;
+    ] ;
+    sh:property [
+        sh:path estleg:temporalStatus ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "temporalStatus" ;
+        sh:description "Temporal status: inForce, repealed, or notYetEffective" ;
+    ] ;
+    sh:property [
+        sh:path estleg:amendedBy ;
+        sh:nodeKind sh:IRI ;
+        sh:name "amendedBy" ;
+        sh:description "Amending act or draft that modified this provision" ;
+    ] ;
+    sh:property [
+        sh:path estleg:normativeType ;
+        sh:nodeKind sh:IRI ;
+        sh:name "normativeType" ;
+        sh:description "Deontic classification: obligation, right, permission, prohibition" ;
+    ] ;
+    sh:property [
+        sh:path estleg:competentAuthority ;
+        sh:nodeKind sh:IRI ;
+        sh:name "competentAuthority" ;
+        sh:description "Institution responsible for enforcing or implementing this provision" ;
+    ] ;
+    sh:property [
+        sh:path estleg:hasSanction ;
+        sh:nodeKind sh:IRI ;
+        sh:name "hasSanction" ;
+        sh:description "Sanction defined by this provision" ;
+    ] ;
+    sh:property [
+        sh:path estleg:affectedBy ;
+        sh:nodeKind sh:IRI ;
+        sh:name "affectedBy" ;
+        sh:description "Draft legislation that proposes to modify this provision" ;
+    ] ;
+    sh:property [
+        sh:path estleg:semanticallySimilarTo ;
+        sh:nodeKind sh:IRI ;
+        sh:name "semanticallySimilarTo" ;
+        sh:description "Provisions from other laws with similar content" ;
+    ] ;
+    sh:property [
+        sh:path estleg:definesTerm ;
+        sh:nodeKind sh:IRI ;
+        sh:name "definesTerm" ;
+        sh:description "Legal concept defined by this provision" ;
+    ] ;
+    sh:property [
+        sh:path estleg:sourceAct ;
+        sh:datatype xsd:string ;
+        sh:name "sourceAct" ;
+        sh:description "Name of the law this provision belongs to" ;
+    ] ;
+    sh:property [
+        sh:path estleg:requestedCluster ;
+        sh:nodeKind sh:IRI ;
+        sh:name "requestedCluster" ;
+        sh:description "Topic cluster this provision is assigned to" ;
+    ] ;
+    sh:property [
+        sh:path estleg:dutyHolder ;
+        sh:datatype xsd:string ;
+        sh:name "dutyHolder" ;
+        sh:description "Entity responsible for fulfilling the duty" ;
+    ] ;
+    sh:property [
+        sh:path estleg:lastAmendmentDate ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:date ;
+        sh:name "lastAmendmentDate" ;
+        sh:description "Date of the most recent amendment" ;
+    ] ;
+    sh:property [
+        sh:path estleg:publicationDate ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:date ;
+        sh:name "publicationDate" ;
+        sh:description "Date when the provision or ontology was published" ;
+    ] ;
+    sh:property [
+        sh:path estleg:harmonisedWith ;
+        sh:nodeKind sh:IRI ;
+        sh:name "harmonisedWith" ;
+        sh:description "EU or international legislation this provision is harmonised with" ;
     ] .
 
 # Shape for TopicCluster instances.
@@ -77,6 +203,12 @@ estleg:LegalProvisionShape
 estleg:TopicClusterShape
     a sh:NodeShape ;
     sh:targetClass estleg:TopicCluster ;
+    sh:property [
+        sh:path skos:prefLabel ;
+        sh:datatype xsd:string ;
+        sh:name "prefLabel" ;
+        sh:description "Optional preferred label for the TopicCluster" ;
+    ] ;
     sh:property [
         sh:path rdfs:label ;
         sh:minCount 1 ;
@@ -178,6 +310,18 @@ estleg:DraftLegislationShape
         sh:nodeKind sh:IRI ;
         sh:name "amendsLaw" ;
         sh:description "Reference to existing law being amended" ;
+    ] ;
+    sh:property [
+        sh:path estleg:affectedLawName ;
+        sh:datatype xsd:string ;
+        sh:name "affectedLawName" ;
+        sh:description "Name of the law affected by this draft legislation" ;
+    ] ;
+    sh:property [
+        sh:path estleg:changeType ;
+        sh:datatype xsd:string ;
+        sh:name "changeType" ;
+        sh:description "Type of change proposed by draft: amends, repeals, supplements, enacts" ;
     ] .
 
 # Shape for LegislativePhase instances
@@ -240,6 +384,30 @@ estleg:CourtDecisionShape
         sh:datatype xsd:anyURI ;
         sh:name "decisionLink" ;
         sh:description "Link to the full decision on riigikohus.ee" ;
+    ] ;
+    sh:property [
+        sh:path estleg:interpretsLaw ;
+        sh:nodeKind sh:IRI ;
+        sh:name "interpretsLaw" ;
+        sh:description "Specific legal provisions interpreted by this decision" ;
+    ] ;
+    sh:property [
+        sh:path estleg:referencedLaw ;
+        sh:datatype xsd:string ;
+        sh:name "referencedLaw" ;
+        sh:description "Name of the law referenced in this court decision" ;
+    ] ;
+    sh:property [
+        sh:path estleg:rikObjectId ;
+        sh:datatype xsd:string ;
+        sh:name "rikObjectId" ;
+        sh:description "Riigikohus object identifier" ;
+    ] ;
+    sh:property [
+        sh:path estleg:decisionType ;
+        sh:nodeKind sh:IRI ;
+        sh:name "decisionType" ;
+        sh:description "Type of court decision (e.g., judgment, ruling, order)" ;
     ] .
 
 # Shape for CaseType instances
@@ -320,6 +488,12 @@ estleg:EULegislationShape
         sh:nodeKind sh:IRI ;
         sh:name "euInstitution" ;
         sh:description "EU institution that authored the act" ;
+    ] ;
+    sh:property [
+        sh:path estleg:transposedBy ;
+        sh:nodeKind sh:IRI ;
+        sh:name "transposedBy" ;
+        sh:description "Estonian law that transposes this EU directive" ;
     ] .
 
 # Shape for EUDocumentType instances
@@ -394,6 +568,13 @@ estleg:EUCourtDecisionShape
         sh:datatype xsd:date ;
         sh:name "documentDate" ;
         sh:description "Date of the court decision" ;
+    ] ;
+    sh:property [
+        sh:path estleg:euCaseNumber ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "euCaseNumber" ;
+        sh:description "EU case number (e.g., C-438/14)" ;
     ] .
 
 # Shape for EUCourtDecisionType instances
@@ -415,3 +596,85 @@ estleg:EUCourtShape
         sh:minCount 1 ;
         sh:name "label" ;
     ] .
+
+# Shape for AmendmentEvent instances
+estleg:AmendmentEventShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:AmendmentEvent ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:name "label" ;
+    ] .
+
+# ============================================================
+# NEW INTEGRATION SHAPES (Issues #29-#43)
+# ============================================================
+
+# Shape for Sanction instances
+estleg:SanctionShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:Sanction ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:name "label" ;
+        sh:description "Every Sanction must have a label" ;
+    ] ;
+    sh:property [
+        sh:path estleg:sanctionType ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "sanctionType" ;
+        sh:description "Type of sanction: imprisonment, fine, pecuniary_punishment, arrest" ;
+    ] ;
+    sh:property [
+        sh:path estleg:maxPenalty ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "maxPenalty" ;
+        sh:description "Maximum penalty (e.g., '5 years', '300 fine units')" ;
+    ] ;
+    sh:property [
+        sh:path estleg:applicableProvision ;
+        sh:minCount 1 ;
+        sh:nodeKind sh:IRI ;
+        sh:name "applicableProvision" ;
+        sh:description "Provision that defines this sanction" ;
+    ] ;
+    sh:property [
+        sh:path estleg:minPenalty ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "minPenalty" ;
+        sh:description "Minimum penalty if specified" ;
+    ] .
+
+# Shape for Institution instances
+estleg:InstitutionShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:Institution ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:name "label" ;
+        sh:description "Every Institution must have a label" ;
+    ] ;
+    sh:property [
+        sh:path estleg:competenceType ;
+        sh:datatype xsd:string ;
+        sh:name "competenceType" ;
+        sh:description "Type of competence: supervision, licensing, enforcement, regulation" ;
+    ] .
+
+# Shape for NormativeType instances
+estleg:NormativeTypeShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:NormativeType ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:name "label" ;
+        sh:description "Normative type label (obligation, right, permission, prohibition)" ;
+    ] .
+

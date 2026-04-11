@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -15,14 +16,43 @@
         "owl:Ontology"
       ],
       "rdfs:label": "Eesti Vabariigi rahaseadus teemakaardistus",
-      "dc:source": "Eesti Vabariigi rahaseadus"
+      "dc:source": "Eesti Vabariigi rahaseadus",
+      "estleg:entryIntoForce": {
+        "@value": "2002-06-01",
+        "@type": "xsd:date"
+      },
+      "estleg:repealDate": {
+        "@value": "2002-08-31",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "repealed",
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/2446"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5231"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5206"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/1221"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2421"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_eesti_vabariigi_rahaseadus",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)"
+      "rdfs:label": "Õigusnorm (paragrahv)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:RahaS_Par_1",
@@ -66,7 +96,18 @@
       "estleg:paragrahv": "§ 4.",
       "rdfs:label": "§ 4. Eesti Vabariigi raha piiranguteta vastuvõtmise kohustus",
       "estleg:sourceAct": "Eesti Vabariigi rahaseadus",
-      "estleg:summary": "Eesti Pank, samuti kõik teised Eesti Vabariigi pangad ja muud krediidiasutused on kohustatud kehtivat Eesti Vabariigi raha vastu võtma piiranguteta. Muud juriidilised isikud on kohustatud vastu võtma kehtivaid münte korraga kuni 20 Eesti krooni ulatuses, pangatähti aga piiranguteta. Eesti Pank, samuti kõik teised Eesti Vabariigi pangad ja muud krediidiasutused on kohustatud kehtivat Eesti Vabariigi raha vastu võtma piiranguteta. Muud juriidilised isikud on kohustatud vastu võtma kehtivaid münte "
+      "estleg:summary": "Eesti Pank, samuti kõik teised Eesti Vabariigi pangad ja muud krediidiasutused on kohustatud kehtivat Eesti Vabariigi raha vastu võtma piiranguteta. Muud juriidilised isikud on kohustatud vastu võtma kehtivaid münte korraga kuni 20 Eesti krooni ulatuses, pangatähti aga piiranguteta. Eesti Pank, samuti kõik teised Eesti Vabariigi pangad ja muud krediidiasutused on kohustatud kehtivat Eesti Vabariigi raha vastu võtma piiranguteta. Muud juriidilised isikud on kohustatud vastu võtma kehtivaid münte ",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Muud juriidilised isikud",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Euro_kasutusele_vtmise_seadus_Par_2"
+        }
+      ]
     },
     {
       "@id": "estleg:RahaS_Par_5",
@@ -88,7 +129,12 @@
       "estleg:paragrahv": "§ 6.",
       "rdfs:label": "§ 6. Vigastatud ja rikutud raha",
       "estleg:sourceAct": "Eesti Vabariigi rahaseadus",
-      "estleg:summary": "Vigastatud ja rikutud Eesti Vabariigi pangatähti ja münte võtavad vastu ning asendavad uutega Eesti Pank ning tema volitatud pangad tingimusel, et pangatähest on säilinud rohkem kui pool ning on tervikuna loetav selle seeria ja number; mündil peab olema loetav vähemalt nimiväärtus ja vermimise aeg. Vigastatud ja rikutud Eesti Vabariigi pangatähti ja münte võtavad vastu ning asendavad uutega Eesti Pank ning tema volitatud pangad tingimusel, et pangatähest on säilinud rohkem kui pool ning on tervi"
+      "estleg:summary": "Vigastatud ja rikutud Eesti Vabariigi pangatähti ja münte võtavad vastu ning asendavad uutega Eesti Pank ning tema volitatud pangad tingimusel, et pangatähest on säilinud rohkem kui pool ning on tervikuna loetav selle seeria ja number; mündil peab olema loetav vähemalt nimiväärtus ja vermimise aeg. Vigastatud ja rikutud Eesti Vabariigi pangatähti ja münte võtavad vastu ning asendavad uutega Eesti Pank ning tema volitatud pangad tingimusel, et pangatähest on säilinud rohkem kui pool ning on tervi",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ]
     },
     {
       "@id": "estleg:RahaS_Par_7",

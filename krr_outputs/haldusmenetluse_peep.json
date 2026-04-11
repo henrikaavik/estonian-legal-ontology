@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -15,14 +16,43 @@
         "owl:Ontology"
       ],
       "rdfs:label": "Haldusmenetluse seadustiku teemakaardistus",
-      "dc:source": "Haldusmenetluse seadus (RT I, 06.07.2023, 31; kehtiv redaktsioon, URL: https://www.riigiteataja.ee/akt/106072023031)"
+      "dc:source": "Haldusmenetluse seadus (RT I, 06.07.2023, 31; kehtiv redaktsioon, URL: https://www.riigiteataja.ee/akt/106072023031)",
+      "estleg:temporalStatus": "inForce",
+      "estleg:affectedBy": [
+        {
+          "@id": "estleg:Draft_JDM21_1506"
+        },
+        {
+          "@id": "estleg:Draft_JDM16_1544"
+        }
+      ],
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/2441"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/6006"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/1221"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2431"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5636"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_haldusmenetluse",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)"
+      "rdfs:label": "Õigusnorm (paragrahv)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:Cluster_AdministrativeProceedings",
@@ -70,7 +100,12 @@
       "rdfs:label": "Haldusmenetluse põhimõtted",
       "estleg:requestedCluster": "haldusmenetlus",
       "estleg:summary": "Sätestab seaduslikkuse, proportsionaalsuse, uurimispõhimõtte, avalikkuse ja menetluse eesmärgipärase korraldamise nõuded, mille järgi haldusorgan peab menetlust läbi viima.",
-      "estleg:sourceAct": "Haldusmenetluse seadus"
+      "estleg:sourceAct": "Haldusmenetluse seadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ]
     },
     {
       "@id": "estleg:HMS_Par_MenetlusosalisedJaAsjaajamine",
@@ -142,7 +177,12 @@
       "rdfs:label": "Haldusakti muutmine ja kehtetuks tunnistamine",
       "estleg:requestedCluster": "haldusaktid",
       "estleg:summary": "Kehtestab tingimused, millal ja kuidas võib haldusakti tagasi võtta, muuta või kehtetuks tunnistada, arvestades adressaadi õiguspärast ootust ja avalikku huvi.",
-      "estleg:sourceAct": "Haldusmenetluse seadus"
+      "estleg:sourceAct": "Haldusmenetluse seadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:HMS_Par_VaidemenetluseYldsatted",

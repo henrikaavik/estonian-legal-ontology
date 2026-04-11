@@ -1,0 +1,59 @@
+{
+  "@context": {
+    "estleg": "https://data.riik.ee/ontology/estleg#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
+  },
+  "@graph": [
+    {
+      "@id": "estleg:transposesDirective",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:label": "võtab üle direktiivi (transposes directive)",
+      "rdfs:comment": "Links an Estonian legal provision to the EU directive it transposes.",
+      "rdfs:domain": {
+        "@id": "estleg:LegalProvision"
+      },
+      "rdfs:range": {
+        "@id": "estleg:EULegislation"
+      }
+    },
+    {
+      "@id": "estleg:transposedBy",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:label": "üle võetud (transposed by)",
+      "rdfs:comment": "Inverse of transposesDirective — links an EU directive to the national law that transposes it.",
+      "rdfs:domain": {
+        "@id": "estleg:EULegislation"
+      },
+      "rdfs:range": {
+        "@id": "estleg:LegalProvision"
+      },
+      "owl:inverseOf": {
+        "@id": "estleg:transposesDirective"
+      }
+    },
+    {
+      "@id": "estleg:transpositionStatus",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": "ülevõtmise staatus (transposition status)",
+      "rdfs:comment": "Status of directive transposition: full, partial, or unknown.",
+      "rdfs:domain": {
+        "@id": "estleg:LegalProvision"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    }
+  ]
+}

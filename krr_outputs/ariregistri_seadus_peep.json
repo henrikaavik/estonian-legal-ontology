@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -15,14 +16,48 @@
         "owl:Ontology"
       ],
       "rdfs:label": "Äriregistri seaduse teemakaardistus",
-      "dc:source": "Äriregistri seadus (Riigi Teataja, vaadatud 2026-03-02)"
+      "dc:source": "Äriregistri seadus (Riigi Teataja, vaadatud 2026-03-02)",
+      "estleg:temporalStatus": "inForce",
+      "estleg:amendedBy": [
+        {
+          "@id": "estleg:Draft_JDM23_1464"
+        }
+      ],
+      "estleg:affectedBy": [
+        {
+          "@id": "estleg:Draft_JDM23_1464"
+        },
+        {
+          "@id": "estleg:Draft_JDM21_0735"
+        }
+      ],
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/1221"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2441"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2826"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5226"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5606"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_ariregistri_seadus",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)"
+      "rdfs:label": "Õigusnorm (paragrahv)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:TopicCluster_ariregistri_seadus",
@@ -125,7 +160,12 @@
       "rdfs:label": "Registriandmete säilitamine, arhiveerimine ja piiratud juurdepääs",
       "estleg:requestedCluster": "registriandmed",
       "estleg:summary": "Sätestab registriandmete säilitamistähtajad, ajalooliste kannete kättesaadavuse ning juhtumid, mil juurdepääs konkreetsetele andmetele võib olla piiratud isikuandmete või muu kaitstava huvi tõttu.",
-      "estleg:sourceAct": "Äriregistri seadus"
+      "estleg:sourceAct": "Äriregistri seadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:ARS_Par_AvalikkusePohimote",

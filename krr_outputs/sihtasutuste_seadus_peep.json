@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -16,14 +17,32 @@
       ],
       "rdfs:label": "Sihtasutuste seaduse teemakaardistus (sihtasutusõigus)",
       "dc:description": "Sihtasutuste seaduse põhisambad: asutamine, vara ja eesmärk.",
-      "dc:source": "Sihtasutuste seadus (Riigi Teataja, kehtiv redaktsioon; §-taseme viited vajavad lõppverifitseerimist)"
+      "dc:source": "Sihtasutuste seadus (Riigi Teataja, kehtiv redaktsioon; §-taseme viited vajavad lõppverifitseerimist)",
+      "estleg:temporalStatus": "inForce",
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/1221"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2431"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5226"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5636"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_sihtasutused",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)"
+      "rdfs:label": "Õigusnorm (paragrahv)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:TopicCluster_sihtasutused",
@@ -85,7 +104,12 @@
       "rdfs:label": "Asutaja(te) pädevus ja asutamise vorm",
       "estleg:requestedCluster": "asutamine",
       "estleg:summary": "Reguleerib, millistel tingimustel füüsiline või juriidiline isik võib sihtasutuse asutada ning kuidas asutamise õiguslik vorm tagab asutamisotsuse kehtivuse.",
-      "estleg:sourceAct": "Sihtasutuste seadus"
+      "estleg:sourceAct": "Sihtasutuste seadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:SAAS_Par_Registreerimine",
@@ -109,7 +133,12 @@
       "rdfs:label": "Algvara moodustamine ja eraldamine",
       "estleg:requestedCluster": "vara",
       "estleg:summary": "Määrab, et sihtasutuse toimimiseks tuleb eraldada eesmärgi täitmiseks piisav vara ning vara üleminek peab olema õiguslikult selge ja tõendatav.",
-      "estleg:sourceAct": "Sihtasutuste seadus"
+      "estleg:sourceAct": "Sihtasutuste seadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ]
     },
     {
       "@id": "estleg:SAAS_Par_VaraValitsemine",

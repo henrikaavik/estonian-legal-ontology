@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -16,14 +17,29 @@
       ],
       "rdfs:label": "Kinnistusraamatuseaduse teemakaardistus (KRS)",
       "dc:source": "Kinnistusraamatuseadus (RT I, terviktekst 128112024005)",
-      "estleg:scope": "Kinnistusraamatu pidamine, omandi kandmine ja hüpoteegikannete register"
+      "estleg:scope": "Kinnistusraamatu pidamine, omandi kandmine ja hüpoteegikannete register",
+      "estleg:temporalStatus": "inForce",
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/6016"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/1221"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2431"
+        }
+      ]
     },
     {
-      "@id": "estleg:LegalProvision_kinnistusraamatuseadus",
+      "@id": "estleg:LegalProvision_kinnistusraamatuse_seadus",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv või normiplokk)"
+      "rdfs:label": "Õigusnorm (paragrahv või normiplokk)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:TopicCluster_kinnistusraamatuseadus",
@@ -67,7 +83,7 @@
       "@id": "estleg:KRS_Norm_001",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kinnistusraamatuseadus"
+        "estleg:LegalProvision_kinnistusraamatuse_seadus"
       ],
       "estleg:paragrahv": "KRS § 1",
       "rdfs:label": "Kinnistusraamatuseaduse ülesanded",
@@ -79,7 +95,7 @@
       "@id": "estleg:KRS_Norm_002",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kinnistusraamatuseadus"
+        "estleg:LegalProvision_kinnistusraamatuse_seadus"
       ],
       "estleg:paragrahv": "KRS § 8",
       "rdfs:label": "Kinnistusraamatusse kantavad kinnisasjad",
@@ -91,7 +107,7 @@
       "@id": "estleg:KRS_Norm_003",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kinnistusraamatuseadus"
+        "estleg:LegalProvision_kinnistusraamatuse_seadus"
       ],
       "estleg:paragrahv": "KRS § 9",
       "rdfs:label": "Kinnistusraamatusse kantavad asjaõigused",
@@ -103,7 +119,7 @@
       "@id": "estleg:KRS_Norm_004",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kinnistusraamatuseadus"
+        "estleg:LegalProvision_kinnistusraamatuse_seadus"
       ],
       "estleg:paragrahv": "KRS § 10",
       "rdfs:label": "Kinnistusraamatu koosseis",
@@ -115,7 +131,7 @@
       "@id": "estleg:KRS_Norm_005",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kinnistusraamatuseadus"
+        "estleg:LegalProvision_kinnistusraamatuse_seadus"
       ],
       "estleg:paragrahv": "KRS § 14",
       "rdfs:label": "Registriosa teine jagu (omanik)",
@@ -127,19 +143,25 @@
       "@id": "estleg:KRS_Norm_006",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kinnistusraamatuseadus"
+        "estleg:LegalProvision_kinnistusraamatuse_seadus"
       ],
       "estleg:paragrahv": "KRS § 23",
       "rdfs:label": "Kande sisu",
       "estleg:requestedCluster": "omand",
       "estleg:summary": "Kanne peab sisaldama õiguse kandmiseks vajalikke põhiandmeid; omandikande sisuline täpsus määrab õiguskindluse kolmandate isikute suhtes.",
-      "estleg:sourceAct": "Kinnistusraamatuseadus"
+      "estleg:sourceAct": "Kinnistusraamatuseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Kanne"
     },
     {
       "@id": "estleg:KRS_Norm_007",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kinnistusraamatuseadus"
+        "estleg:LegalProvision_kinnistusraamatuse_seadus"
       ],
       "estleg:paragrahv": "KRS § 33",
       "rdfs:label": "Kinnistamine",
@@ -151,7 +173,7 @@
       "@id": "estleg:KRS_Norm_008",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kinnistusraamatuseadus"
+        "estleg:LegalProvision_kinnistusraamatuse_seadus"
       ],
       "estleg:paragrahv": "KRS § 34",
       "rdfs:label": "Kinnistamisavaldus ja puudutatud isiku nõusolek",
@@ -163,7 +185,7 @@
       "@id": "estleg:KRS_Norm_009",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kinnistusraamatuseadus"
+        "estleg:LegalProvision_kinnistusraamatuse_seadus"
       ],
       "estleg:paragrahv": "KRS § 16",
       "rdfs:label": "Registriosa neljas jagu (hüpoteegid)",
@@ -175,7 +197,7 @@
       "@id": "estleg:KRS_Norm_010",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kinnistusraamatuseadus"
+        "estleg:LegalProvision_kinnistusraamatuse_seadus"
       ],
       "estleg:paragrahv": "KRS § 30",
       "rdfs:label": "Kande järjekoht ja selle tähistamine",
@@ -187,7 +209,7 @@
       "@id": "estleg:KRS_Norm_011",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kinnistusraamatuseadus"
+        "estleg:LegalProvision_kinnistusraamatuse_seadus"
       ],
       "estleg:paragrahv": "KRS § 49",
       "rdfs:label": "Kande tegemine kinnistusregistrisse",
@@ -199,13 +221,18 @@
       "@id": "estleg:KRS_Norm_012",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kinnistusraamatuseadus"
+        "estleg:LegalProvision_kinnistusraamatuse_seadus"
       ],
       "estleg:paragrahv": "KRS § 74",
       "rdfs:label": "Kinnistusraamatu avalikkus",
       "estleg:requestedCluster": "kinnistusraamat",
       "estleg:summary": "Registriosa on avalik ja igaühel on õigus sellega tutvuda; kinnistustoimikuga tutvumisel on üldjuhul vaja õigustatud huvi.",
-      "estleg:sourceAct": "Kinnistusraamatuseadus"
+      "estleg:sourceAct": "Kinnistusraamatuseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:Concept_KinnistusraamatuAvalikkus",

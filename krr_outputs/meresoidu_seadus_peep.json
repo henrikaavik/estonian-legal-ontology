@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -16,14 +17,46 @@
       ],
       "rdfs:label": "Meresõidu seaduse teemakaardistus (Mereõigus)",
       "dc:description": "Meresõidu seaduse põhisambad: laevade registreerimine, mereohutus ja sadamate tegevus.",
-      "dc:source": "Meresõidu seadus (kehtiv terviktekst; vajab §-tasemel lõppverifitseerimist)"
+      "dc:source": "Meresõidu seadus (kehtiv terviktekst; vajab §-tasemel lõppverifitseerimist)",
+      "estleg:temporalStatus": "inForce",
+      "estleg:affectedBy": [
+        {
+          "@id": "estleg:Draft_MKM22_0558"
+        },
+        {
+          "@id": "estleg:Draft_KLIM15_0229"
+        },
+        {
+          "@id": "estleg:Draft_MKM11_0117"
+        }
+      ],
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/4421"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2441"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2431"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/1221"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/3606"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_meresoidu_seadus",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)"
+      "rdfs:label": "Õigusnorm (paragrahv)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:TopicCluster_meresoidu_seadus",

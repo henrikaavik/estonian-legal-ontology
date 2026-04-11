@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -15,14 +16,43 @@
         "owl:Ontology"
       ],
       "rdfs:label": "Tunnistajakaitse seadus teemakaardistus",
-      "dc:source": "Tunnistajakaitse seadus"
+      "dc:source": "Tunnistajakaitse seadus",
+      "estleg:entryIntoForce": {
+        "@value": "2005-07-21",
+        "@type": "xsd:date"
+      },
+      "estleg:repealDate": {
+        "@value": "2006-07-15",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "repealed",
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/2431"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5226"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2421"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/0411"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5636"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_tunnistajakaitse_seadus",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)"
+      "rdfs:label": "Õigusnorm (paragrahv)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:Cluster_TuKS_I",
@@ -90,7 +120,12 @@
       "rdfs:label": "§ 3. Õigusvastaste mõjutuste mõiste",
       "estleg:sourceAct": "Tunnistajakaitse seadus",
       "estleg:summary": "Õigusvastaseks mõjutuseks käesoleva seaduse mõttes loetakse kuritegelikesse ühendustesse kuuluvate isikute või kuriteos kahtlustatavate, süüdistatavate või süüdimõistetute või nende huvides tegutsevate teiste isikute sellist tegevust, mis on suunatud kriminaalmenetluses tõendeid andva isiku psüühilisele või füüsilisele mõjutamisele eesmärgiga sundida teda loobuma tõendite andmisest või muutma varem antud ütlusi, samuti tegevust, mis ohustab käesoleva seaduse §-s 5 nimetatud isikute elu või tervi",
-      "estleg:requestedCluster": "estleg:Cluster_TuKS_I"
+      "estleg:requestedCluster": "estleg:Cluster_TuKS_I",
+      "estleg:references": [
+        {
+          "@id": "estleg:TuKS_Par_5"
+        }
+      ]
     },
     {
       "@id": "estleg:TuKS_Par_4",
@@ -102,7 +137,18 @@
       "rdfs:label": "§ 4. Tunnistajakaitset teostav asutus",
       "estleg:sourceAct": "Tunnistajakaitse seadus",
       "estleg:summary": "1 (1) Tunnistajakaitset teostab Keskkriminaalpolitsei. Teised riigi- ja kohaliku omavalitsuse organid ja asutused ning avalik-õiguslikud juriidilised isikud on kohustatud osutama tunnistajakaitse teostamisel kaasabi oma pädevuse piires. Tunnistajakaitset teostab Keskkriminaalpolitsei. Teised riigi- ja kohaliku omavalitsuse organid ja asutused ning avalik-õiguslikud juriidilised isikud on kohustatud osutama tunnistajakaitse teostamisel kaasabi oma pädevuse piires. 2 (2) Järelevalvet tunnistajakai",
-      "estleg:requestedCluster": "estleg:Cluster_TuKS_I"
+      "estleg:requestedCluster": "estleg:Cluster_TuKS_I",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        }
+      ],
+      "estleg:competenceType": "supervision"
     },
     {
       "@id": "estleg:TuKS_Par_5",
@@ -114,7 +160,21 @@
       "rdfs:label": "§ 5. Tunnistajakaitse alla võetavad isikud",
       "estleg:sourceAct": "Tunnistajakaitse seadus",
       "estleg:summary": "1 (1) Tunnistajakaitse alla võetavateks isikuteks on: 1 1) kaitstavad; 2 2) kaitstavate perekonnaliikmed ja lähedased; 3 3) isikud, kelle suhtes on Eesti Vabariigi tunnistajakaitset teostava asutuse ja välisriigi pädeva asutuse või rahvusvahelise organisatsiooni vahel sõlmitud leping tunnistajakaitse kohaldamiseks vastavalt sõlmitud välislepingutele. Tunnistajakaitse alla võetavateks isikuteks on: kaitstavad; kaitstavate perekonnaliikmed ja lähedased; isikud, kelle suhtes on Eesti Vabariigi tunn",
-      "estleg:requestedCluster": "estleg:Cluster_TuKS_I"
+      "estleg:requestedCluster": "estleg:Cluster_TuKS_I",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:TuKS_Par_3"
+        },
+        {
+          "@id": "estleg:TuKS_Par_6"
+        },
+        {
+          "@id": "estleg:TuKS_Par_7"
+        },
+        {
+          "@id": "estleg:TuKS_Par_9"
+        }
+      ]
     },
     {
       "@id": "estleg:TuKS_Par_6",
@@ -126,7 +186,15 @@
       "rdfs:label": "§ 6. Tunnistajakaitse kohaldamise tingimused",
       "estleg:sourceAct": "Tunnistajakaitse seadus",
       "estleg:summary": "1 (1) Tunnistajakaitset kohaldatakse juhul, kui: 1 1) kriminaalasjas tõendamiseseme asjaolusid teada võiva isiku suhtes on olemas reaalne õigusvastaste mõjutuste alla sattumise oht ning see isik on nõus tegema koostööd tunnistajakaitset teostava asutusega; 2 2) menetleja suhtes on olemas reaalne käesoleva seaduse § 5 lõike 2 punktis 2 kirjeldatud õigusvastaste mõjutuste alla sattumise oht ja menetleja on nõus tegema koostööd tunnistajakaitset teostava asutusega. Tunnistajakaitset kohaldatakse ju",
-      "estleg:requestedCluster": "estleg:Cluster_TuKS_II"
+      "estleg:requestedCluster": "estleg:Cluster_TuKS_II",
+      "estleg:references": [
+        {
+          "@id": "estleg:TuKS_Par_5"
+        },
+        {
+          "@id": "estleg:TuKS_Par_14"
+        }
+      ]
     },
     {
       "@id": "estleg:TuKS_Par_7",
@@ -138,7 +206,23 @@
       "rdfs:label": "§ 7. Kaitseabinõude kohaldamine edasilükkamatul juhul",
       "estleg:sourceAct": "Tunnistajakaitse seadus",
       "estleg:summary": "1 (1) Kui käesoleva seaduse §-s 5 nimetatud isiku suhtes on olemas reaalne õigusvastaste mõjutuste alla sattumise oht enne kaitselepingu sõlmimist ja tema kaitse alla võtmisega viivitamine ohustaks kriminaalmenetluses tõe väljaselgitamist, taotleb kriminaalmenetlust toimetav uurimisasutus tunnistajakaitset teostavalt asutuselt kaitstava nõusolekul viivitamatult käesoleva seaduse § 18 lõike 1 punktides 1 ja 6 sätestatud kaitseabinõude kohaldamist kaitstava elu või tervise või tema vara füüsilisek",
-      "estleg:requestedCluster": "estleg:Cluster_TuKS_II"
+      "estleg:requestedCluster": "estleg:Cluster_TuKS_II",
+      "estleg:references": [
+        {
+          "@id": "estleg:TuKS_Par_5"
+        },
+        {
+          "@id": "estleg:TuKS_Par_18"
+        },
+        {
+          "@id": "estleg:TuKS_Par_9"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:TuKS_Par_13"
+        }
+      ]
     },
     {
       "@id": "estleg:TuKS_Par_8",
@@ -162,7 +246,20 @@
       "rdfs:label": "§ 9. Isiku tunnistajakaitse menetluse alustamine",
       "estleg:sourceAct": "Tunnistajakaitse seadus",
       "estleg:summary": "1 (1) Isiku tunnistajakaitse menetlust alustatakse tunnistajakaitset teostava asutuse juhi või tema volitatud ametiisiku kirjaliku korraldusega, mille aluseks on: 1 1) asjaomast kriminaalasja menetleva ametniku kirjalik põhjendatud taotlus, millele lisatakse kaitstava kirjalik nõusolek; 2 2) menetleja või tema üle teenistuslikku järelevalvet teostava ametniku põhjendatud taotlus käesoleva seaduse § 5 lõike 2 punktis 2 sätestatud asjaolude esinemise korral. Isiku tunnistajakaitse menetlust alusta",
-      "estleg:requestedCluster": "estleg:Cluster_TuKS_III"
+      "estleg:requestedCluster": "estleg:Cluster_TuKS_III",
+      "estleg:references": [
+        {
+          "@id": "estleg:TuKS_Par_5"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:TuKS_Par_7"
+        },
+        {
+          "@id": "estleg:TuKS_Par_16"
+        }
+      ]
     },
     {
       "@id": "estleg:TuKS_Par_10",
@@ -174,7 +271,12 @@
       "rdfs:label": "§ 10. Tunnistajakaitse taotluse menetlemine",
       "estleg:sourceAct": "Tunnistajakaitse seadus",
       "estleg:summary": "1 (1) Tunnistajakaitse taotluse menetluse käigus tuvastatakse ja hinnatakse: 1 1) kas kaitstava antavad tõendid on kriminaalmenetluse seisukohast vajalikud ja kas neid ei ole võimalik asendada muude tõenditega; 2 2) kas kaitstav on andnud tõeseid ütlusi ja kas ta on valmis seda tegema kuni kriminaalmenetluse lõppemiseni; 3 3) milline on kaitstava karistatus, milliseid kriminaal- ja tsiviilõiguslikke kohustusi ning piiranguid ta kannab; 4 4) milline on kaitstava tervise seisund; 5 5) millised õig",
-      "estleg:requestedCluster": "estleg:Cluster_TuKS_III"
+      "estleg:requestedCluster": "estleg:Cluster_TuKS_III",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:TuKS_Par_12"
+        }
+      ]
     },
     {
       "@id": "estleg:TuKS_Par_11",
@@ -198,7 +300,17 @@
       "rdfs:label": "§ 12. Menetlus Riigiprokuratuuris",
       "estleg:sourceAct": "Tunnistajakaitse seadus",
       "estleg:summary": "1 (1) Kaitselepingu sõlmimiseks annab loa riigi peaprokurör või tema määratud prokurör viie päeva jooksul, arvates kaitsesobivuse kokkuvõtte ja kaitselepingu projekti esitamisest. Kaitselepingu sõlmimiseks annab loa riigi peaprokurör või tema määratud prokurör viie päeva jooksul, arvates kaitsesobivuse kokkuvõtte ja kaitselepingu projekti esitamisest. 2 (2) Kaitselepingu sõlmimiseks loa andmise üle otsustamisel on riigi peaprokuröril või tema määratud prokuröril õigus tutvuda kaitsetoimiku ja mu",
-      "estleg:requestedCluster": "estleg:Cluster_TuKS_III"
+      "estleg:requestedCluster": "estleg:Cluster_TuKS_III",
+      "estleg:references": [
+        {
+          "@id": "estleg:TuKS_Par_10"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:TuKS_Par_21"
+        }
+      ]
     },
     {
       "@id": "estleg:TuKS_Par_13",
@@ -210,7 +322,12 @@
       "rdfs:label": "§ 13. Tunnistajakaitse taotluse menetluse lõpetamine",
       "estleg:sourceAct": "Tunnistajakaitse seadus",
       "estleg:summary": "Tunnistajakaitse asutus lõpetab tunnistajakaitse taotluse menetluse: 1 1) käesoleva seaduse § 7 lõikes 2 nimetatud isiku suhtes, kui ta keeldub kaitseks nõusolekut andmast; 2 2) kui kaitstav loobub varem antud nõusolekust; 3 3) kui riigi peaprokurör või tema määratud prokurör keeldub kaitselepingu sõlmimiseks luba andmast; 4 4) kaitstavaga kaitselepingu sõlmimisel; 5 5) kaitstava surma korral. Tunnistajakaitse asutus lõpetab tunnistajakaitse taotluse menetluse: käesoleva seaduse § 7 lõikes 2 nim",
-      "estleg:requestedCluster": "estleg:Cluster_TuKS_III"
+      "estleg:requestedCluster": "estleg:Cluster_TuKS_III",
+      "estleg:references": [
+        {
+          "@id": "estleg:TuKS_Par_7"
+        }
+      ]
     },
     {
       "@id": "estleg:TuKS_Par_14",
@@ -222,7 +339,15 @@
       "rdfs:label": "§ 14. Kaitseleping",
       "estleg:sourceAct": "Tunnistajakaitse seadus",
       "estleg:summary": "1 (1) Kaitselepinguga võtab kaitstav vabatahtlikult kohustuse allutada end kaitseabinõudest tulenevatele piirangutele ning tunnistajakaitset teostav asutus kohustuse tagada kaitstava või tema perekonnaliikmete või lähedaste kaitstus õigusvastaste mõjutuste eest. Kaitselepinguga võtab kaitstav vabatahtlikult kohustuse allutada end kaitseabinõudest tulenevatele piirangutele ning tunnistajakaitset teostav asutus kohustuse tagada kaitstava või tema perekonnaliikmete või lähedaste kaitstus õigusvasta",
-      "estleg:requestedCluster": "estleg:Cluster_TuKS_III"
+      "estleg:requestedCluster": "estleg:Cluster_TuKS_III",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:TuKS_Par_6"
+        },
+        {
+          "@id": "estleg:TuKS_Par_20"
+        }
+      ]
     },
     {
       "@id": "estleg:TuKS_Par_15",
@@ -246,7 +371,12 @@
       "rdfs:label": "§ 16. Kaitselepingu lõpetamine",
       "estleg:sourceAct": "Tunnistajakaitse seadus",
       "estleg:summary": "1 (1) Kaitseleping lõpetatakse: 1 1) reaalse õigusvastaste mõjutuste ohu äralangemisel; 2 2) kaitstava vaba tahte alusel; 3 3) kaitstava seadusliku esindaja või eestkosteasutuse kirjalikul taotlusel, kui kaitseleping sõlmiti käesoleva seaduse § 9 lõikes 2 sätestatud juhtudel ja kui kaitstav on kaitselepingu lõpetamise ajal piiratud teovõimega; 4 4) kui kaitstav rikub oluliselt kaitselepinguga sätestatud kohustusi; 5 5) kaitstava surma korral. Kaitseleping lõpetatakse: reaalse õigusvastaste mõjut",
-      "estleg:requestedCluster": "estleg:Cluster_TuKS_III"
+      "estleg:requestedCluster": "estleg:Cluster_TuKS_III",
+      "estleg:references": [
+        {
+          "@id": "estleg:TuKS_Par_9"
+        }
+      ]
     },
     {
       "@id": "estleg:TuKS_Par_17",
@@ -270,7 +400,12 @@
       "rdfs:label": "§ 18. Tunnistajakaitse kaitseabinõud",
       "estleg:sourceAct": "Tunnistajakaitse seadus",
       "estleg:summary": "1 (1) Tunnistajakaitse kohaldamisel kasutatakse järgmisi kaitseabinõusid: 1 1) kaitstava isiku ja tema vara füüsiline kaitse; 2 2) kaitstavale enesekaitsevahendite võimaldamine; 3 3) kaitstavale uute sidevahendite või nende numbrite võimaldamine; 4 4) transpordivahendite uute registreerimistunnuste võimaldamine; 5 5) kaitstavale uue elu-, töö- või õpingukoha võimaldamine; 6 6) kaitstava varjatult üleviimine ohutusse paikkonda või asukohta; 7 7) isiku välimuse muutmine plastilise operatsiooni teg",
-      "estleg:requestedCluster": "estleg:Cluster_TuKS_III"
+      "estleg:requestedCluster": "estleg:Cluster_TuKS_III",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:TuKS_Par_7"
+        }
+      ]
     },
     {
       "@id": "estleg:TuKS_Par_19",
@@ -282,7 +417,13 @@
       "rdfs:label": "§ 19. Tunnistajakaitsega seotud teave",
       "estleg:sourceAct": "Tunnistajakaitse seadus",
       "estleg:summary": "Tunnistajakaitse alla võtmise otsustamiseks ja tunnistajakaitse kohaldamisel kogutud teavet ning muid tunnistajakaitse kohaldamisega seonduvaid materjale säilitatakse kaitsetoimikutes. Kaitsetoimik avatakse iga kaitstava kohta eraldi. Toimiku pidamise ja säilitamise korra kehtestab siseminister määrusega. Tunnistajakaitse alla võtmise otsustamiseks ja tunnistajakaitse kohaldamisel kogutud teavet ning muid tunnistajakaitse kohaldamisega seonduvaid materjale säilitatakse kaitsetoimikutes. Kaitseto",
-      "estleg:requestedCluster": "estleg:Cluster_TuKS_III"
+      "estleg:requestedCluster": "estleg:Cluster_TuKS_III",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_siseminister"
+        }
+      ],
+      "estleg:competenceType": "regulation"
     },
     {
       "@id": "estleg:TuKS_Par_20",
@@ -294,7 +435,12 @@
       "rdfs:label": "§ 20.",
       "estleg:sourceAct": "Tunnistajakaitse seadus",
       "estleg:summary": "Riigisaladuse seaduses (RT I 1999, 16, 271; 2004, 54, 387) tehakse järgmised muudatused: 1 1) paragrahvi 5 punkti 17 täiendatakse pärast sõna «Kaitsepolitseiameti» sõnadega «ja Keskkriminaalpolitsei tunnistajakaitse struktuuriüksuse»; 2 2) paragrahvi 6 täiendatakse punktiga 9 1 järgmises sõnastuses: « 9 1 ) Keskkriminaalpolitsei tunnistajakaitse struktuuriüksuse poolt jälitustegevuse käigus kogutud teave. Seda teavet sisaldav teabekandja salastatakse 25 aastaks;»; 3 3) paragrahvi 6 täiendatakse ",
-      "estleg:requestedCluster": "estleg:Cluster_TuKS_IV"
+      "estleg:requestedCluster": "estleg:Cluster_TuKS_IV",
+      "estleg:references": [
+        {
+          "@id": "estleg:TuKS_Par_14"
+        }
+      ]
     },
     {
       "@id": "estleg:TuKS_Par_21",
@@ -306,7 +452,12 @@
       "rdfs:label": "§ 21.",
       "estleg:sourceAct": "Tunnistajakaitse seadus",
       "estleg:summary": "Jälitustegevuse seaduses (RT I 1994, 16, 290; 2004, 87, 593) tehakse järgmised muudatused: 1 1) paragrahvi 7 senine tekst loetakse lõikeks 1 ja paragrahvi täiendatakse lõikega 2 järgmises sõnastuses: « (2) Jälitusasutuse õiguste teostamiseks vajalikud dokumendid annab välja ning vajalikud muudatused andmekogudes ja registrites teeb jälitusasutuse juhi või tema volitatud ametniku põhjendatud avalduse alusel haldusorgan või juriidiline isik, kelle pädevuses on vastavat liiki dokumendi väljaandmine",
-      "estleg:requestedCluster": "estleg:Cluster_TuKS_IV"
+      "estleg:requestedCluster": "estleg:Cluster_TuKS_IV",
+      "estleg:references": [
+        {
+          "@id": "estleg:TuKS_Par_12"
+        }
+      ]
     },
     {
       "@id": "estleg:TuKS_Par_22",
@@ -318,7 +469,12 @@
       "rdfs:label": "§ 22.",
       "estleg:sourceAct": "Tunnistajakaitse seadus",
       "estleg:summary": "Kriminaalmenetluse seadustiku (RT I 2003, 27, 166; 2004, 56, 403) § 67 täiendatakse lõikega 6 järgmises sõnastuses: Kriminaalmenetluse seadustiku (RT I 2003, 27, 166; 2004, 56, 403) § 67 täiendatakse lõikega 6 järgmises sõnastuses: « (6) Tunnistaja turvalisuse tagamiseks võib tunnistajale tema anonüümseks muutmisest sõltumata kohaldada tunnistajakaitse seaduses sätestatut.» <table summary=\"allkiri\" width=\"100%\"> <tbody><tr valign=\"top\"> <td width=\"60%\"> </td> <td width=\"39%\"> <font size=\"-1\" sty",
-      "estleg:requestedCluster": "estleg:Cluster_TuKS_IV"
+      "estleg:requestedCluster": "estleg:Cluster_TuKS_IV",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     }
   ]
 }

@@ -51,8 +51,19 @@ def child_text(el: ET.Element, name: str) -> str | None:
     return None
 
 
+_ESTONIAN_TRANSLITERATION: dict[str, str] = {
+    "ö": "o", "ä": "a", "ü": "u", "õ": "o",
+    "Ö": "O", "Ä": "A", "Ü": "U", "Õ": "O",
+    "š": "s", "ž": "z", "Š": "S", "Ž": "Z",
+}
+_TRANSLIT_TABLE = str.maketrans(_ESTONIAN_TRANSLITERATION)
+
+
 def sanitize_id(value: str) -> str:
-    s = re.sub(r"[^0-9A-Za-z_]", "", value.replace(" ", "_"))
+    s = value.replace(" ", "_")
+    # Transliterate Estonian diacritics before stripping non-ASCII
+    s = s.translate(_TRANSLIT_TABLE)
+    s = re.sub(r"[^0-9A-Za-z_]", "", s)
     return s or "Unknown"
 
 

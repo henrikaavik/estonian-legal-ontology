@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -15,14 +16,43 @@
         "owl:Ontology"
       ],
       "rdfs:label": "Majandusvööndi seadus teemakaardistus",
-      "dc:source": "Majandusvööndi seadus"
+      "dc:source": "Majandusvööndi seadus",
+      "estleg:entryIntoForce": {
+        "@value": "2002-06-01",
+        "@type": "xsd:date"
+      },
+      "estleg:repealDate": {
+        "@value": "2002-07-31",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "repealed",
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/2446"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/6006"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5611"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/0411"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2431"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_majandusvoondi_seadus",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)"
+      "rdfs:label": "Õigusnorm (paragrahv)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:Cluster_MVS_I",
@@ -114,7 +144,13 @@
       "rdfs:label": "§ 3. Majandusvööndi välispiir",
       "estleg:sourceAct": "Majandusvööndi seadus",
       "estleg:summary": "Majandusvööndi välispiir määratakse kindlaks Eesti ranniku vastas asuvate või sellega külgnevate riikide ja Eesti Vabariigi vahel sõlmitud lepingutega, mis kuuluvad ratifitseerimisele Riigikogus. Majandusvööndi välispiir määratakse kindlaks Eesti ranniku vastas asuvate või sellega külgnevate riikide ja Eesti Vabariigi vahel sõlmitud lepingutega, mis kuuluvad ratifitseerimisele Riigikogus.",
-      "estleg:requestedCluster": "estleg:Cluster_MVS_I"
+      "estleg:requestedCluster": "estleg:Cluster_MVS_I",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_riigikogu"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:MVS_Par_4",
@@ -150,7 +186,18 @@
       "rdfs:label": "§ 6. Kalapüügi korraldamine",
       "estleg:sourceAct": "Majandusvööndi seadus",
       "estleg:summary": "1 (1) Kalavarude otstarbekaks kasutamiseks ja kaitseks Eesti Vabariigi Valitsus : 1 1) kehtestab kalavarude kasutamise ja kaitse korra ning tingimused; 2 2) määrab kalaliikide iga-aastase lubatava väljapüügi mahu; 3 3) rakendab otstarbeka kalapüügi ja kalavarude kaitse tagamise abinõud, sealhulgas kalapüügilaevade ülevaatuse, kinnipidamise ja arestimise korra; 4 4) lubab välisriikide füüsilistel ja juriidilistel isikutel majandusvööndis kala püüda nende riikidega sõlmitud kokkulepetes määratud m",
-      "estleg:requestedCluster": "estleg:Cluster_MVS_II"
+      "estleg:requestedCluster": "estleg:Cluster_MVS_II",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
+      "estleg:competenceType": "regulation",
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_MVS_Par_6_arrest"
+        }
+      ]
     },
     {
       "@id": "estleg:MVS_Par_7",
@@ -162,7 +209,18 @@
       "rdfs:label": "§ 7. Uuringute eeltingimused",
       "estleg:sourceAct": "Majandusvööndi seadus",
       "estleg:summary": "1 (1) Teaduslikke mereuuringuid tehakse majandusvööndis ainult Vabariigi Valitsuse poolt pädevaks tunnistatud riigiasutuste nõusolekul. Teaduslikke mereuuringuid tehakse majandusvööndis ainult Vabariigi Valitsuse poolt pädevaks tunnistatud riigiasutuste nõusolekul. 2 (2) Teaduslikke mereuuringuid tehakse eranditult rahumeelsetel eesmärkidel. Teaduslikke mereuuringuid tehakse eranditult rahumeelsetel eesmärkidel. 3 (3) Teaduslike mereuuringutega ei tohi tekitada õigustamata takistusi riigile tema",
-      "estleg:requestedCluster": "estleg:Cluster_MVS_III"
+      "estleg:requestedCluster": "estleg:Cluster_MVS_III",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Prohibition"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:MVS_Par_8",
@@ -234,7 +292,13 @@
       "rdfs:label": "§ 13. Juriidiliste ja füüsiliste isikute kohustused",
       "estleg:sourceAct": "Majandusvööndi seadus",
       "estleg:summary": "Kõik majandusvööndis tegutsevad juriidilised ja füüsilised isikud peavad merekeskkonna reostamist vältima. Saasteilmingutest ja õnnetustest tuleb kohe teatada pädevale riigiasutusele ja lähimasse Eesti sadamasse. Kõik majandusvööndis tegutsevad juriidilised ja füüsilised isikud peavad merekeskkonna reostamist vältima. Saasteilmingutest ja õnnetustest tuleb kohe teatada pädevale riigiasutusele ja lähimasse Eesti sadamasse.",
-      "estleg:requestedCluster": "estleg:Cluster_MVS_V"
+      "estleg:requestedCluster": "estleg:Cluster_MVS_V",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Saasteilmingutest ja õnnetustest"
     },
     {
       "@id": "estleg:MVS_Par_14",
@@ -270,7 +334,13 @@
       "rdfs:label": "§ 16. Õiguserikkumiste käsitlemine",
       "estleg:sourceAct": "Majandusvööndi seadus",
       "estleg:summary": "Käesoleva seaduse rikkumisi arutavad kohus ja pädevad riigiasutused. Käesoleva seaduse rikkumisi arutavad kohus ja pädevad riigiasutused.",
-      "estleg:requestedCluster": "estleg:Cluster_MVS_VI"
+      "estleg:requestedCluster": "estleg:Cluster_MVS_VI",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohus"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:MVS_Par_17",
@@ -282,7 +352,13 @@
       "rdfs:label": "§ 17. Majandusvööndi kaitsmise korra kehtestamine",
       "estleg:sourceAct": "Majandusvööndi seadus",
       "estleg:summary": "Käesoleva seaduse sätetes nimetatud pädevad riigiasutused ja majandusvööndi kaitsmise korra määrab Vabariigi Valitsus. Käesoleva seaduse sätetes nimetatud pädevad riigiasutused ja majandusvööndi kaitsmise korra määrab Vabariigi Valitsus.",
-      "estleg:requestedCluster": "estleg:Cluster_MVS_VII"
+      "estleg:requestedCluster": "estleg:Cluster_MVS_VII",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:MVS_Par_18",
@@ -294,7 +370,16 @@
       "rdfs:label": "§ 18. Majandusvööndi sisepiir",
       "estleg:sourceAct": "Majandusvööndi seadus",
       "estleg:summary": "Majandusvööndi sisepiiri arvestamise aluse, territoriaalmere lähtejoone koordinaadid, kehtestab Vabariigi Valitsuse ettepanekul Riigikogu. Majandusvööndi sisepiiri arvestamise aluse, territoriaalmere lähtejoone koordinaadid, kehtestab Vabariigi Valitsuse ettepanekul Riigikogu. Riigikogu aseesimees E. Savisaar Riigikogu aseesimees E. Savisaar Õiend Õiend Lisatud avaldamisandmed. Lisatud avaldamisandmed.",
-      "estleg:requestedCluster": "estleg:Cluster_MVS_VII"
+      "estleg:requestedCluster": "estleg:Cluster_MVS_VII",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        },
+        {
+          "@id": "estleg:Institution_riigikogu"
+        }
+      ],
+      "estleg:competenceType": "regulation"
     }
   ]
 }

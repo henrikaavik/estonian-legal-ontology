@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -14,14 +15,76 @@
       "@type": [
         "owl:Ontology"
       ],
-      "rdfs:label": "Konkurentsiseaduse teemakaardistus (KonkS)"
+      "rdfs:label": "Konkurentsiseaduse teemakaardistus (KonkS)",
+      "estleg:temporalStatus": "inForce",
+      "estleg:affectedBy": [
+        {
+          "@id": "estleg:Draft_JDM26_0296"
+        },
+        {
+          "@id": "estleg:Draft_JDM25_0324"
+        },
+        {
+          "@id": "estleg:Draft_JDM23_0998"
+        },
+        {
+          "@id": "estleg:Draft_JDM23_0503"
+        },
+        {
+          "@id": "estleg:Draft_JDM22_1057"
+        },
+        {
+          "@id": "estleg:Draft_JDM21_1573"
+        },
+        {
+          "@id": "estleg:Draft_RAM20_0897"
+        },
+        {
+          "@id": "estleg:Draft_RAM17_0710"
+        },
+        {
+          "@id": "estleg:Draft_RAM14_0240"
+        },
+        {
+          "@id": "estleg:Draft_RAM11_1228"
+        },
+        {
+          "@id": "estleg:Draft_JDM24_0622"
+        },
+        {
+          "@id": "estleg:Draft_RAM14_1130"
+        },
+        {
+          "@id": "estleg:Draft_RAM12_0281"
+        }
+      ],
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/2841"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2431"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/1221"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2416"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2441"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_konkurentsiseadus",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)"
+      "rdfs:label": "Õigusnorm (paragrahv)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:TopicCluster_konkurentsiseadus",
@@ -148,7 +211,12 @@
       "rdfs:label": "Koondumisest teavitamise kohustus ja lävandid",
       "estleg:requestedCluster": "merger_control",
       "estleg:summary": "Sätestab, millal tuleb koondumisest Konkurentsiametit teavitada, sh käibelävendid ja menetluse alustamise eeldused.",
-      "estleg:sourceAct": "Konkurentsiseadus"
+      "estleg:sourceAct": "Konkurentsiseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ]
     },
     {
       "@id": "estleg:KONKS_MERGER_3",
@@ -172,7 +240,12 @@
       "rdfs:label": "Konkurentsi oluliselt kahjustava koondumise hindamine",
       "estleg:requestedCluster": "merger_control",
       "estleg:summary": "Koondumise lubatavust hinnatakse selle järgi, kas tehing võib oluliselt kahjustada konkurentsi, eeskätt turgu valitseva seisundi tekkimise või tugevnemise kaudu.",
-      "estleg:sourceAct": "Konkurentsiseadus"
+      "estleg:sourceAct": "Konkurentsiseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:KONKS_MERGER_5",

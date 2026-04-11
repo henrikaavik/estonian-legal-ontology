@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -17,14 +18,29 @@
       "rdfs:label": "VÕS Osa 7 teemakaardistus (tarbijalepingud)",
       "dc:title": "Contract law: Contracts with consumers",
       "dc:description": "VÕS Osa 7 semantiline kaardistus: tarbijalepingud, kauglepingud ja väljaspool äriruume sõlmitud lepingud (koju müümine).",
-      "dc:source": "Võlaõigusseadus (Riigi Teataja, kehtiv redaktsioon; §-taseme täppisviited vajavad eraldi lõppverifitseerimist)."
+      "dc:source": "Võlaõigusseadus (Riigi Teataja, kehtiv redaktsioon; §-taseme täppisviited vajavad eraldi lõppverifitseerimist).",
+      "estleg:temporalStatus": "inForce",
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/2431"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5206"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5636"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_vos_osa7",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (VÕS Osa 7)"
+      "rdfs:label": "Õigusnorm (VÕS Osa 7)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:TopicCluster_vos_osa7",
@@ -86,7 +102,13 @@
       "rdfs:label": "Lepinguelse info andmise kohustus",
       "estleg:requestedCluster": "tarbijalepingud",
       "estleg:summary": "Kaupleja peab enne lepingu sõlmimist esitama tarbijale selge teabe hinna, põhiomaduste, kestuse, taganemisõiguse ja täitmise tingimuste kohta.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Kaupleja"
     },
     {
       "@id": "estleg:VOS7_Par_EbaausadTingimused",
@@ -122,7 +144,13 @@
       "rdfs:label": "Kauglepingu teabe esitamine püsival andmekandjal",
       "estleg:requestedCluster": "kauglepingud",
       "estleg:summary": "Oluline lepinguteave tuleb teha tarbijale kättesaadavaks enne tellimust ning kinnitada püsival andmekandjal pärast lepingu sõlmimist.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Oluline lepinguteave"
     },
     {
       "@id": "estleg:VOS7_Par_Taganemisoigus",
@@ -158,7 +186,13 @@
       "rdfs:label": "Koju müümisel tarbija kaitsemehhanismid",
       "estleg:requestedCluster": "valjaspool_ariruume",
       "estleg:summary": "Kaupleja peab andma tarbijale selged andmed oma identiteedi, lepingu tingimuste, hinna ja taganemisõiguse kohta; agressiivne mõjutamine on keelatud.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Prohibition"
+        }
+      ],
+      "estleg:dutyHolder": "Kaupleja"
     },
     {
       "@id": "estleg:VOS7_Par_TaganemiseTagajarjed",
@@ -170,7 +204,12 @@
       "rdfs:label": "Taganemise järgsed tagastused ja kulude jaotus",
       "estleg:requestedCluster": "valjaspool_ariruume",
       "estleg:summary": "Reguleerib, kuidas pooled peavad taganemisel tagastama saadud sooritused, millised kulud kannab tarbija ning millal kaupleja peab raha tagastama.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ]
     },
     {
       "@id": "estleg:Concept_TarbijaNorgemPool",

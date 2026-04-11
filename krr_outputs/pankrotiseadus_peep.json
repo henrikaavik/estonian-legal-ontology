@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -14,14 +15,46 @@
       "@type": [
         "owl:Ontology"
       ],
-      "rdfs:label": "Pankrotiseaduse teemakaardistus (PankrS)"
+      "rdfs:label": "Pankrotiseaduse teemakaardistus (PankrS)",
+      "estleg:temporalStatus": "inForce",
+      "estleg:affectedBy": [
+        {
+          "@id": "estleg:Draft_JDM19_1066"
+        },
+        {
+          "@id": "estleg:Draft_JDM16_1277"
+        },
+        {
+          "@id": "estleg:Draft_JDM20_0344"
+        }
+      ],
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/5231"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2431"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5206"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/1221"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5226"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_pankrotiseadus",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv või normiblokk)"
+      "rdfs:label": "Õigusnorm (paragrahv või normiblokk)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:TopicCluster_pankrotiseadus",
@@ -84,7 +117,18 @@
       "rdfs:label": "Võlgniku ja võlausaldaja avaldusõigus",
       "estleg:requestedCluster": "bankruptcy_proceedings",
       "estleg:summary": "Sätestab, kes võib pankrotiavalduse esitada ning millised eeldused peavad olema täidetud, et kohus menetluse avaks.",
-      "estleg:sourceAct": "Pankrotiseadus"
+      "estleg:sourceAct": "Pankrotiseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohus"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:PANKRS_Norm_003",
@@ -96,7 +140,12 @@
       "rdfs:label": "Ajutise halduri nimetamine ja esmane kontroll",
       "estleg:requestedCluster": "bankruptcy_proceedings",
       "estleg:summary": "Kohtul on õigus määrata ajutine haldur, kes hindab võlgniku majanduslikku olukorda ja annab kohtule lähteinfo pankroti väljakuulutamise otsustamiseks.",
-      "estleg:sourceAct": "Pankrotiseadus"
+      "estleg:sourceAct": "Pankrotiseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:PANKRS_Norm_004",
@@ -144,7 +193,13 @@
       "rdfs:label": "Maksegraafikud, vähendamine, tähtaegade pikendamine",
       "estleg:requestedCluster": "debt_restructuring",
       "estleg:summary": "Restruktureerimisplaanides kasutatakse tüüpiliselt nõuete tähtaja pikendamist, osalist vähendamist või täitmisgraafiku muutmist, eeldusel et kohus kinnitab plaani seaduses ette nähtud tingimustel.",
-      "estleg:sourceAct": "Pankrotiseadus"
+      "estleg:sourceAct": "Pankrotiseadus",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohus"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:PANKRS_Norm_020",
@@ -204,7 +259,13 @@
       "rdfs:label": "Võlausaldajate nõuete tähtaeg ja vorm",
       "estleg:requestedCluster": "creditor_rights",
       "estleg:summary": "Võlausaldaja peab esitama nõude nõutud vormis ja tähtajaks; hilinenud või puudulik nõue võib mõjutada rahuldamise ulatust.",
-      "estleg:sourceAct": "Pankrotiseadus"
+      "estleg:sourceAct": "Pankrotiseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Võlausaldaja"
     },
     {
       "@id": "estleg:PANKRS_Norm_031",
@@ -248,7 +309,15 @@
         "owl:NamedIndividual"
       ],
       "rdfs:label": "Märkus kaardistuse ulatuse kohta",
-      "estleg:note": "Tegu on ühtses JSON-LD skeemis esmaste normiplokkide teemakaardistusega. Võlgade ümberstruktureerimise detailid paiknevad osaliselt eriseadustes (nt saneerimis- ja võlakaitse regulatsioon), mistõttu järgmises iteratsioonis lisatakse täpsed ristviited paragrahvidele ning redaktsioonidele."
+      "estleg:note": "Tegu on ühtses JSON-LD skeemis esmaste normiplokkide teemakaardistusega. Võlgade ümberstruktureerimise detailid paiknevad osaliselt eriseadustes (nt saneerimis- ja võlakaitse regulatsioon), mistõttu järgmises iteratsioonis lisatakse täpsed ristviited paragrahvidele ning redaktsioonidele.",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:TsMS_NOTE_001"
+        },
+        {
+          "@id": "estleg:SANS_NOTE_001"
+        }
+      ]
     }
   ]
 }

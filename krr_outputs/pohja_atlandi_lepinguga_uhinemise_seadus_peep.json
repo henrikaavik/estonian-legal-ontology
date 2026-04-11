@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -15,14 +16,36 @@
         "owl:Ontology"
       ],
       "rdfs:label": "Põhja-Atlandi lepinguga ühinemise seadus teemakaardistus",
-      "dc:source": "Põhja-Atlandi lepinguga ühinemise seadus"
+      "dc:source": "Põhja-Atlandi lepinguga ühinemise seadus",
+      "estleg:entryIntoForce": {
+        "@value": "2004-03-18",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce",
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/2431"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/1221"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5226"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2446"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_pohja_atlandi_lepinguga_uhinemise_seadus",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)"
+      "rdfs:label": "Õigusnorm (paragrahv)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:PhjaAtlandi_lepinguga_hinem_Par_1",
@@ -44,7 +67,13 @@
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2.",
       "estleg:sourceAct": "Põhja-Atlandi lepinguga ühinemise seadus",
-      "estleg:summary": "Seadus jõustub Riigi Teatajas avaldamisele järgneval päeval.<table summary=\"allkiri\" width=\"100%\"> <tbody><tr valign=\"top\"> <td width=\"60%\"> </td> <td width=\"39%\"> <b>Riigikogu esimees Ene ERGMA</b> </td> </tr> </tbody></table> Seadus jõustub Riigi Teatajas avaldamisele järgneval päeval."
+      "estleg:summary": "Seadus jõustub Riigi Teatajas avaldamisele järgneval päeval.<table summary=\"allkiri\" width=\"100%\"> <tbody><tr valign=\"top\"> <td width=\"60%\"> </td> <td width=\"39%\"> <b>Riigikogu esimees Ene ERGMA</b> </td> </tr> </tbody></table> Seadus jõustub Riigi Teatajas avaldamisele järgneval päeval.",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_riigikogu"
+        }
+      ],
+      "estleg:competenceType": "general"
     }
   ]
 }

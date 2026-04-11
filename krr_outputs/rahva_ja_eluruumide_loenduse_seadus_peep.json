@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -15,14 +16,59 @@
         "owl:Ontology"
       ],
       "rdfs:label": "Rahva ja eluruumide loenduse seadus teemakaardistus",
-      "dc:source": "Rahva ja eluruumide loenduse seadus"
+      "dc:source": "Rahva ja eluruumide loenduse seadus",
+      "estleg:entryIntoForce": {
+        "@value": "1998-06-21",
+        "@type": "xsd:date"
+      },
+      "estleg:repealDate": {
+        "@value": "2006-05-31",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "1999-12-15",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "1998-01-01",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "repealed",
+      "estleg:amendedBy": [
+        {
+          "@id": "estleg:Amendment_rahva_ja_eluruumide_loenduse_seadus_1"
+        },
+        {
+          "@id": "estleg:Amendment_rahva_ja_eluruumide_loenduse_seadus_2"
+        }
+      ],
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/3606"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2446"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/1221"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5226"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2441"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_rahva_ja_eluruumide_loenduse_seadus",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)"
+      "rdfs:label": "Õigusnorm (paragrahv)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:Cluster_RELS_1",
@@ -150,7 +196,18 @@
       "rdfs:label": "§ 2. Loenduse aeg ja loendusmoment",
       "estleg:sourceAct": "Rahva ja eluruumide loenduse seadus",
       "estleg:summary": "1 (1) Loenduse ajaks loetakse loenduse teostamise aega. Loenduse ajaks loetakse loenduse teostamise aega. 2 (2) Loendusandmete kontrollimiseks võib vahetult pärast loendust korraldada väljavõttelise järelküsitluse. Järelküsitluse täpsem kord määratakse Vabariigi Valitsuse määrusega kinnitatud loenduseeskirjas. Loendusandmete kontrollimiseks võib vahetult pärast loendust korraldada väljavõttelise järelküsitluse. Järelküsitluse täpsem kord määratakse Vabariigi Valitsuse määrusega kinnitatud loendu",
-      "estleg:requestedCluster": "estleg:Cluster_RELS_1"
+      "estleg:requestedCluster": "estleg:Cluster_RELS_1",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:RELS_Par_3",
@@ -162,7 +219,21 @@
       "rdfs:label": "§ 3. Loenduse korraldamine",
       "estleg:sourceAct": "Rahva ja eluruumide loenduse seadus",
       "estleg:summary": "1 (1) Vabariigi Valitsus ./dyn=22413&id=77541 võib oma määrusega volitada ministreid (edaspidi volitatud minister) andma loenduse korraldamiseks vajalikke määrusi ja käskkirju. võib oma määrusega volitada ministreid (edaspidi volitatud minister) andma loenduse korraldamiseks vajalikke määrusi ja käskkirju. 2 (2) Loenduse põhikorraldaja on Statistikaamet. Loenduse põhikorraldaja on Statistikaamet. 3 (3) Kohalikud omavalitsused täidavad loenduse korraldamisel käesoleva seadusega ja lepinguga võetu",
-      "estleg:requestedCluster": "estleg:Cluster_RELS_1"
+      "estleg:requestedCluster": "estleg:Cluster_RELS_1",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        },
+        {
+          "@id": "estleg:Institution_statistikaamet"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:RELS_Par_4",
@@ -282,7 +353,16 @@
       "rdfs:label": "§ 13. Loenduse dokumentatsiooni kehtestamine",
       "estleg:sourceAct": "Rahva ja eluruumide loenduse seadus",
       "estleg:summary": "1 (1) Loenduseeskirja ja loenduslehtede vormid kinnitab Vabariigi Valitsus ./dyn=22413&id=77372 määrusega hiljemalt üks aasta enne loendusmomenti. Loenduseeskirja ja loenduslehtede vormid määrusega hiljemalt üks aasta enne loendusmomenti. 2 (2) Loendustulemuste väljundtabelite vormid kinnitab rahandusminister ./dyn=22413&id=92601 . Käesoleva seaduse paragrahv 12 lõikes 7 nimetatud abidokumendid (välja arvatud klassifikaatorid) kinnitab Statistikaameti peadirektor. Loendustulemuste väljundtabelit",
-      "estleg:requestedCluster": "estleg:Cluster_RELS_3"
+      "estleg:requestedCluster": "estleg:Cluster_RELS_3",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        },
+        {
+          "@id": "estleg:Institution_rahandusminister"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:RELS_Par_14",
@@ -318,7 +398,13 @@
       "rdfs:label": "§ 16. Loendusringkond",
       "estleg:sourceAct": "Rahva ja eluruumide loenduse seadus",
       "estleg:summary": "1 (1) Loendusringkonnad moodustab Statistikaamet haldusterritoriaalse korralduse alusel. Loendusringkond hõlmab ühe või mitme linna, mitme valla, ühe või mitme valla ja ühe või mitme linna territooriumi. Enam kui 10 000 elanikuga linna territoorium on üks loendusringkond. Tallinnas, Tartus, Pärnus, Kohtla-Järvel ja Narvas moodustatakse mitu loendusringkonda. Loendusringkonnad moodustab Statistikaamet haldusterritoriaalse korralduse alusel. Loendusringkond hõlmab ühe või mitme linna, mitme valla,",
-      "estleg:requestedCluster": "estleg:Cluster_RELS_4"
+      "estleg:requestedCluster": "estleg:Cluster_RELS_4",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_statistikaamet"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:RELS_Par_17",
@@ -378,7 +464,13 @@
       "rdfs:label": "§ 21. Vabariigi Valitsuse rahvaloenduskomisjon",
       "estleg:sourceAct": "Rahva ja eluruumide loenduse seadus",
       "estleg:summary": "1 (1) Vabariigi Valitsuse rahvaloenduskomisjoni moodustab Vabariigi Valitsus vastavalt Vabariigi Valitsuse seadusele (RT I 1995, 94, 1628; 1996, 49, 953; 88, 1560; 1997, 29, 447; 40, 622; 52, 833; 73, 1200; 81, 1361 ja 1362; 87, 1468; 1998, 28, 356; 36/37, 552; 40, 614). Vabariigi Valitsuse rahvaloenduskomisjoni moodustab Vabariigi Valitsus vastavalt Vabariigi Valitsuse seadusele (RT I 1995, 94, 1628; 1996, 49, 953; 88, 1560; 1997, 29, 447; 40, 622; 52, 833; 73, 1200; 81, 1361 ja 1362; 87, 1468;",
-      "estleg:requestedCluster": "estleg:Cluster_RELS_5"
+      "estleg:requestedCluster": "estleg:Cluster_RELS_5",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:RELS_Par_22",
@@ -414,7 +506,13 @@
       "rdfs:label": "§ 24. Kohaliku omavalitsuse ülesanded",
       "estleg:sourceAct": "Rahva ja eluruumide loenduse seadus",
       "estleg:summary": "1 (1) Kohalik omavalitsus tagab koostöös rahvaloenduskomisjonide ja valitsusasutustega loenduse korraldamise oma haldusterritooriumil, sealhulgas: 1 1) võimaldab käesolevas seaduses sätestatud korras omavalitsusasutuste teenistujate kaasamise loenduse korraldamisse; 2 2) osaleb loenduse korraldamiseks vajaliku kaardimaterjali koostamisel ja täpsustamisel kooskõlastatult Statistikaametiga; 3 3) korrastab loenduse eel, kuid mitte hiljem kui üks aasta enne loendusmomenti, aadresskohtade nimed ning ",
-      "estleg:requestedCluster": "estleg:Cluster_RELS_6"
+      "estleg:requestedCluster": "estleg:Cluster_RELS_6",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:RELS_Par_25",
@@ -426,7 +524,16 @@
       "rdfs:label": "§ 25. Statistikaameti ülesanded",
       "estleg:sourceAct": "Rahva ja eluruumide loenduse seadus",
       "estleg:summary": "1 (1) Statistikaamet täidab loenduse korraldamisel käesoleva seadusega, Vabariigi Valitsuse ja volitatud ministri määrusega talle pandud ülesandeid. Statistikaamet täidab loenduse korraldamisel käesoleva seadusega, Vabariigi Valitsuse ja volitatud ministri määrusega talle pandud ülesandeid. 2 (2) Statistikaameti ülesanded loenduse korraldamisel on: 1 1) informeerida avalikkust loenduse eesmärgist ja teostamise korrast; 2 2) valmistada ette loenduse dokumentatsioon; 3 3) korraldada loenduse andme",
-      "estleg:requestedCluster": "estleg:Cluster_RELS_7"
+      "estleg:requestedCluster": "estleg:Cluster_RELS_7",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        },
+        {
+          "@id": "estleg:Institution_statistikaamet"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:RELS_Par_26",
@@ -450,7 +557,12 @@
       "rdfs:label": "§ 27. Loendusel kasutatav keel",
       "estleg:sourceAct": "Rahva ja eluruumide loenduse seadus",
       "estleg:summary": "1 (1) Loenduslehed on eestikeelsed ja täidetakse eesti keeles. Loenduslehed on eestikeelsed ja täidetakse eesti keeles. 2 (2) Loendataval isikul on õigus anda loendajale vastuseid eesti keeles, selle mittevaldamise korral mõnes muus keeles, mida ta valdab. Loendataval isikul on õigus anda loendajale vastuseid eesti keeles, selle mittevaldamise korral mõnes muus keeles, mida ta valdab. 3 (3) Kui loendaja ei valda loendatava isiku kasutatavat keelt, on loendajal õigus kasutada tõlgi abi. Kui loend",
-      "estleg:requestedCluster": "estleg:Cluster_RELS_8"
+      "estleg:requestedCluster": "estleg:Cluster_RELS_8",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:RELS_Par_28",
@@ -462,7 +574,13 @@
       "rdfs:label": "§ 28. Loendatava isiku õigused ja kohustused",
       "estleg:sourceAct": "Rahva ja eluruumide loenduse seadus",
       "estleg:summary": "1 (1) Loendatav isik on kohustatud andma tõeseid ja täielikke vastuseid kõigile loenduslehtede küsimustele, välja arvatud käesoleva paragrahvi lõikes 2 nimetatud juhul. Loendatav isik on kohustatud andma tõeseid ja täielikke vastuseid kõigile loenduslehtede küsimustele, välja arvatud käesoleva paragrahvi lõikes 2 nimetatud juhul. 2 (2) Loendataval isikul on õigus keelduda andmete andmisest oma religioosse kuuluvuse kohta. Loendataval isikul on õigus keelduda andmete andmisest oma religioosse kuu",
-      "estleg:requestedCluster": "estleg:Cluster_RELS_8"
+      "estleg:requestedCluster": "estleg:Cluster_RELS_8",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Loendatav isik"
     },
     {
       "@id": "estleg:RELS_Par_29",
@@ -486,7 +604,16 @@
       "rdfs:label": "§ 30. Ajateenistuses viibivate isikute loendamine",
       "estleg:sourceAct": "Rahva ja eluruumide loenduse seadus",
       "estleg:summary": "1 (1) Kaitseväe ajateenistuses viibivate isikute loendamise korraldab Kaitseministeerium kooskõlastatult Statistikaametiga kaitseministri poolt käesoleva seaduse alusel kehtestatud korras. Kaitseväe ajateenistuses viibivate isikute loendamise korraldab Kaitseministeerium kooskõlastatult Statistikaametiga kaitseministri poolt käesoleva seaduse alusel kehtestatud korras. 2 (2) Siseministeeriumi valitsemisalas ajateenistuses viibivate isikute loendamise korraldab Siseministeerium kooskõlastatult St",
-      "estleg:requestedCluster": "estleg:Cluster_RELS_8"
+      "estleg:requestedCluster": "estleg:Cluster_RELS_8",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kaitseministeerium"
+        },
+        {
+          "@id": "estleg:Institution_siseministeerium"
+        }
+      ],
+      "estleg:competenceType": "enforcement"
     },
     {
       "@id": "estleg:RELS_Par_31",
@@ -510,7 +637,13 @@
       "rdfs:label": "§ 32. Välisriikides viibivate isikute loendamine",
       "estleg:sourceAct": "Rahva ja eluruumide loenduse seadus",
       "estleg:summary": "1 (1) Eesti Vabariigi diplomaatilistes ja konsulaaresindustes töötavate isikute loendamise korraldab Välisministeerium kooskõlastatult Statistikaametiga. Eesti Vabariigi diplomaatilistes ja konsulaaresindustes töötavate isikute loendamise korraldab Välisministeerium kooskõlastatult Statistikaametiga. 2 (2) Loendusmomendi seisuga välisriikides alla ühe aasta viibinud loendatavad isikud, kes viibivad ka loenduse ajal välisriigis, loendatakse nende elukoha järgi Eestis vastavalt käesoleva seaduse p",
-      "estleg:requestedCluster": "estleg:Cluster_RELS_8"
+      "estleg:requestedCluster": "estleg:Cluster_RELS_8",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vlisministeerium"
+        }
+      ],
+      "estleg:competenceType": "enforcement"
     },
     {
       "@id": "estleg:RELS_Par_33",
@@ -522,7 +655,13 @@
       "rdfs:label": "§ 33. Loendusandmete töötlemine",
       "estleg:sourceAct": "Rahva ja eluruumide loenduse seadus",
       "estleg:summary": "1 (1) Loendusandmete töötlemine toimub anonüümse andmekogu baasil. Loendusandmete töötlemine toimub anonüümse andmekogu baasil. 2 (2) Loendusandmeid töötleb Statistikaamet, lähtudes loendustulemuste statistiliste väljundtabelite kehtestatud vormidest. Loendusandmeid töötleb Statistikaamet, lähtudes loendustulemuste statistiliste väljundtabelite kehtestatud vormidest. 3 (3) Loendusandmete töötlemise korra kinnitab volitatud minister ./dyn=22413&id=82569 . Loendusandmete töötlemise korra kinnitab ",
-      "estleg:requestedCluster": "estleg:Cluster_RELS_9"
+      "estleg:requestedCluster": "estleg:Cluster_RELS_9",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_statistikaamet"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:RELS_Par_34",
@@ -534,7 +673,13 @@
       "rdfs:label": "§ 34. Loendustulemuste avaldamine",
       "estleg:sourceAct": "Rahva ja eluruumide loenduse seadus",
       "estleg:summary": "Loendustulemused on avalikud ja kättesaadavad kõigile. Esialgsed loendustulemused kogurahvastiku kohta avaldab Statistikaamet hiljemalt 90 päeva jooksul pärast järelküsitlust. Loendustulemused statistiliste väljundtabelitena avaldab Statistikaamet kuni kahe aasta jooksul pärast loendamist. Loendustulemused on avalikud ja kättesaadavad kõigile. Esialgsed loendustulemused kogurahvastiku kohta avaldab Statistikaamet hiljemalt 90 päeva jooksul pärast järelküsitlust. Loendustulemused statistiliste vä",
-      "estleg:requestedCluster": "estleg:Cluster_RELS_9"
+      "estleg:requestedCluster": "estleg:Cluster_RELS_9",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_statistikaamet"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:RELS_Par_35",
@@ -546,7 +691,16 @@
       "rdfs:label": "§ 35. Statistikaameti aruandlus",
       "estleg:sourceAct": "Rahva ja eluruumide loenduse seadus",
       "estleg:summary": "1 (1) Statistikaamet esitab volitatud ministri kaudu Vabariigi Valitsusele lühiaruande loenduse toimumise kohta hiljemalt kuue kuu möödumisel loendusmomendist. Statistikaamet esitab volitatud ministri kaudu Vabariigi Valitsusele lühiaruande loenduse toimumise kohta hiljemalt kuue kuu möödumisel loendusmomendist. 2 (2) Statistikaamet esitab volitatud ministri kaudu Vabariigi Valitsusele põhiaruande loenduse korraldamise kohta hiljemalt kolme aasta jooksul arvates loendusmomendist. Statistikaamet ",
-      "estleg:requestedCluster": "estleg:Cluster_RELS_9"
+      "estleg:requestedCluster": "estleg:Cluster_RELS_9",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        },
+        {
+          "@id": "estleg:Institution_statistikaamet"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:RELS_Par_36",
@@ -570,7 +724,13 @@
       "rdfs:label": "§ 37. Loendusandmete säilitamine",
       "estleg:sourceAct": "Rahva ja eluruumide loenduse seadus",
       "estleg:summary": "1 (1) Loendusandmeid säilitab Statistikaamet. Loendusandmeid säilitab Statistikaamet. 2 (2) Isiku identifitseerimist võimaldavaid täidetud loenduslehti säilitatakse 100 aastat. Andmed salvestatakse masinloetaval kujul. Isiku identifitseerimist võimaldavaid täidetud loenduslehti säilitatakse 100 aastat. Andmed salvestatakse masinloetaval kujul. 3 (3) Loenduslehed ning käesoleva paragrahvi lõikes 1 sätestatud salvestatud andmed säilitatakse vastavalt andmekogude seadusele ning arhiveerimist sätest",
-      "estleg:requestedCluster": "estleg:Cluster_RELS_10"
+      "estleg:requestedCluster": "estleg:Cluster_RELS_10",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_statistikaamet"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:RELS_Par_38",

@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -17,14 +18,35 @@
       "rdfs:label": "Põhikooli- ja gümnaasiumiseaduse teemakaardistus (PGS)",
       "dc:description": "PGS kesksete haridusõiguslike suhete kaardistus: kooli juhtimine, õpilase õigused ja kooli õppekava/õppekorralduse raamistik.",
       "dc:source": "Põhikooli- ja gümnaasiumiseadus",
-      "dc:identifier": "https://www.riigiteataja.ee/akt/13332410?leiaKehtiv"
+      "dc:identifier": "https://www.riigiteataja.ee/akt/13332410?leiaKehtiv",
+      "estleg:temporalStatus": "inForce",
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/5636"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/3606"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5226"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/0411"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/6411"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_pohikooli_gymnaasiumi",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)"
+      "rdfs:label": "Õigusnorm (paragrahv)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:TopicCluster_pohikooli_gymnaasiumi",
@@ -247,7 +269,12 @@
       "rdfs:label": "§ 58. Tugi- ja mõjutusmeetmete rakendamine õpilase suhtes",
       "estleg:requestedCluster": "student_rights",
       "estleg:summary": "Sätestab tingimused, millal ja kuidas võib õpilase suhtes rakendada meetmeid, tagades proportsionaalsuse ja menetlusliku selguse.",
-      "estleg:sourceAct": "Põhikooli- ja gümnaasiumiseadus"
+      "estleg:sourceAct": "Põhikooli- ja gümnaasiumiseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:PGS_Par_59",
@@ -307,7 +334,12 @@
       "rdfs:label": "§ 16. Õpe rahvusvahelise õppekava alusel",
       "estleg:requestedCluster": "curriculum",
       "estleg:summary": "Reguleerib tingimusi, mille alusel võib kool rakendada rahvusvahelist õppekava ja selle suhet riikliku raamistikuga.",
-      "estleg:sourceAct": "Põhikooli- ja gümnaasiumiseadus"
+      "estleg:sourceAct": "Põhikooli- ja gümnaasiumiseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:PGS_Par_17",

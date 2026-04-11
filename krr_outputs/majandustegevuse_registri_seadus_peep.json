@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -15,14 +16,43 @@
         "owl:Ontology"
       ],
       "rdfs:label": "Majandustegevuse registri seadus teemakaardistus",
-      "dc:source": "Majandustegevuse registri seadus"
+      "dc:source": "Majandustegevuse registri seadus",
+      "estleg:entryIntoForce": {
+        "@value": "2004-04-15",
+        "@type": "xsd:date"
+      },
+      "estleg:repealDate": {
+        "@value": "2006-12-31",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "repealed",
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/2441"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/1221"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5226"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2431"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2446"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_majandustegevuse_registri_seadus",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)"
+      "rdfs:label": "Õigusnorm (paragrahv)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:Cluster_MTRS_1",
@@ -110,7 +140,13 @@
       "rdfs:label": "§ 4. Registripidaja",
       "estleg:sourceAct": "Majandustegevuse registri seadus",
       "estleg:summary": "1 (1) Majandus- ja Kommunikatsiooniministeerium täidab registri vastutava ja volitatud töötlejana õigusaktides sätestatud registripidaja ülesandeid. Majandus- ja Kommunikatsiooniministeerium täidab registri vastutava ja volitatud töötlejana õigusaktides sätestatud registripidaja ülesandeid. 2 (2) Registripidaja: 1 1) tagab registri pidamise vastavalt õigusaktides sätestatud nõuetele; 2 2) tagab organisatsiooniliste ja tehniliste meetmetega registriandmete terviklikkuse ja autentsuse, registriand",
-      "estleg:requestedCluster": "estleg:Cluster_MTRS_1"
+      "estleg:requestedCluster": "estleg:Cluster_MTRS_1",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_majandus__ja_kommunikatsiooniministeerium"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:MTRS_Par_5",
@@ -134,7 +170,18 @@
       "rdfs:label": "§ 6. Registri koosseis",
       "estleg:sourceAct": "Majandustegevuse registri seadus",
       "estleg:summary": "1 (1) Registri koosseisu kuuluvad: 1 1) ettevõtja ja tema erinõudega tegevusalal tegutsemise andmed; 2 2) registripäevik; 3 3) registritoimik; 4 4) arhiiv. Registri koosseisu kuuluvad: ettevõtja ja tema erinõudega tegevusalal tegutsemise andmed; registripäevik; registritoimik; arhiiv. 2 (2) Ettevõtja ja tema erinõudega tegevusalal tegutsemise andmed kantakse registri jagudesse vastavalt käesoleva seaduse §-des 7–9 sätestatule. Ettevõtja ja tema erinõudega tegevusalal tegutsemise andmed kantakse ",
-      "estleg:requestedCluster": "estleg:Cluster_MTRS_2"
+      "estleg:requestedCluster": "estleg:Cluster_MTRS_2",
+      "estleg:references": [
+        {
+          "@id": "estleg:MTRS_Par_7"
+        },
+        {
+          "@id": "estleg:MTRS_Par_8"
+        },
+        {
+          "@id": "estleg:MTRS_Par_9"
+        }
+      ]
     },
     {
       "@id": "estleg:MTRS_Par_7",
@@ -146,7 +193,23 @@
       "rdfs:label": "§ 7. Registri esimene jagu",
       "estleg:sourceAct": "Majandustegevuse registri seadus",
       "estleg:summary": "1 (1) Registri esimesse jakku kantakse järgmised ettevõtja andmed: 1 1) nimi; 2 2) äriregistri, mittetulundusühingute ja sihtasutuste registri, riigi- ja kohaliku omavalitsuse asutuste riikliku registri või maksukohustuslaste registri kood, või isikukood; 3 3) aadress; 4 4) sidevahendite andmed; 5 5) muud seadusega sätestatud andmed. Registri esimesse jakku kantakse järgmised ettevõtja andmed: nimi; äriregistri, mittetulundusühingute ja sihtasutuste registri, riigi- ja kohaliku omavalitsuse asut",
-      "estleg:requestedCluster": "estleg:Cluster_MTRS_2"
+      "estleg:requestedCluster": "estleg:Cluster_MTRS_2",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        }
+      ],
+      "estleg:competenceType": "general",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Sotsiaalhoolekande_seadus_Par_21_101"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:MTRS_Par_6"
+        }
+      ]
     },
     {
       "@id": "estleg:MTRS_Par_8",
@@ -158,7 +221,12 @@
       "rdfs:label": "§ 8. Registri teine jagu",
       "estleg:sourceAct": "Majandustegevuse registri seadus",
       "estleg:summary": "1 (1) Registri teise jakku kantakse ettevõtja tegevusala, registreeringu number ja registreerimise kuupäev ning muud andmed seadusega sätestatud ulatuses. Registri teise jakku kantakse ettevõtja tegevusala, registreeringu number ja registreerimise kuupäev ning muud andmed seadusega sätestatud ulatuses. 2 (2) Registreeringu tähtajatu peatamise korral kantakse registri teise jakku vastav märge ja registreeringu peatamise kuupäev. Registreeringu tähtajalise peatamise korral lisatakse märkele regist",
-      "estleg:requestedCluster": "estleg:Cluster_MTRS_2"
+      "estleg:requestedCluster": "estleg:Cluster_MTRS_2",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:MTRS_Par_6"
+        }
+      ]
     },
     {
       "@id": "estleg:MTRS_Par_9",
@@ -170,7 +238,12 @@
       "rdfs:label": "§ 9. Registri kolmas jagu",
       "estleg:sourceAct": "Majandustegevuse registri seadus",
       "estleg:summary": "1 (1) Registri kolmandasse jakku kantakse seadusega sätestatud juhtudel ja korras erinõudega tegevusalal tegutsemisega seonduva ettekirjutuse andmed, milleks on ettekirjutuse teinud asutuse nimi, ettekirjutuse sisu ja õiguslik alus ning ettekirjutuse tegemise aeg. Registri kolmandasse jakku kantakse seadusega sätestatud juhtudel ja korras erinõudega tegevusalal tegutsemisega seonduva ettekirjutuse andmed, milleks on ettekirjutuse teinud asutuse nimi, ettekirjutuse sisu ja õiguslik alus ning ette",
-      "estleg:requestedCluster": "estleg:Cluster_MTRS_2"
+      "estleg:requestedCluster": "estleg:Cluster_MTRS_2",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:MTRS_Par_6"
+        }
+      ]
     },
     {
       "@id": "estleg:MTRS_Par_10",
@@ -182,7 +255,13 @@
       "rdfs:label": "§ 10. Registripäevik",
       "estleg:sourceAct": "Majandustegevuse registri seadus",
       "estleg:summary": "1 (1) Registri pidamise kohta peab registripidaja digitaalset registripäevikut, millesse kantakse: 1 1) teave andmete ja dokumentide registrisse kandjale saabumise kohta; 2 2) andmete registrisse kandmise aeg ja kande tegija; 3 3) alusdokumentide andmed vastavalt käesoleva paragrahvi lõikes 2 sätestatule; 4 4) teave ebaõigete registriandmete parandamise kohta; 5 5) muu teave registreerimismenetluse kohta. Registri pidamise kohta peab registripidaja digitaalset registripäevikut, millesse kantakse",
-      "estleg:requestedCluster": "estleg:Cluster_MTRS_2"
+      "estleg:requestedCluster": "estleg:Cluster_MTRS_2",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Registri pidamise kohta"
     },
     {
       "@id": "estleg:MTRS_Par_11",
@@ -266,7 +345,12 @@
       "rdfs:label": "§ 17. Registriandmete tähendus",
       "estleg:sourceAct": "Majandustegevuse registri seadus",
       "estleg:summary": "1 (1) Registreering on eriseadustes sätestatud ulatuses õigusliku tähendusega. Registreering on eriseadustes sätestatud ulatuses õigusliku tähendusega. 2 (2) Tegevusloa kohta registrisse kantud andmed on informatiivse tähendusega. Tegevusloa kohta registrisse kantud andmed on informatiivse tähendusega. 3 (3) Registri kolmanda jao andmed on informatiivse tähendusega. Registri kolmanda jao andmed on informatiivse tähendusega. 4 (4) Isik võib tugineda toimingute teostamisel registreeringu õigsusele",
-      "estleg:requestedCluster": "estleg:Cluster_MTRS_3"
+      "estleg:requestedCluster": "estleg:Cluster_MTRS_3",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:MTRS_Par_18",
@@ -302,7 +386,12 @@
       "rdfs:label": "§ 20. Registreerimistaotlus",
       "estleg:sourceAct": "Majandustegevuse registri seadus",
       "estleg:summary": "1 (1) Ettevõtja, kes soovib tegutseda erinõudega tegevusalal (edaspidi taotleja ), esitab registreerimistaotluse haldusorganile vastavalt seadusega sätestatule. Ettevõtja, kes soovib tegutseda erinõudega tegevusalal (edaspidi taotleja ), esitab registreerimistaotluse haldusorganile vastavalt seadusega sätestatule. 2 (2) Enne käesoleva paragrahvi lõikes 1 nimetatud taotluse esitamist tuleb tasuda riigilõiv. Enne käesoleva paragrahvi lõikes 1 nimetatud taotluse esitamist tuleb tasuda riigilõiv. 3 ",
-      "estleg:requestedCluster": "estleg:Cluster_MTRS_3"
+      "estleg:requestedCluster": "estleg:Cluster_MTRS_3",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ]
     },
     {
       "@id": "estleg:MTRS_Par_21",
@@ -362,7 +451,13 @@
       "rdfs:label": "§ 25. Andmete muutumisest, tegevuse peatamisest või lõpetamisest teavitamise kohustus",
       "estleg:sourceAct": "Majandustegevuse registri seadus",
       "estleg:summary": "1 (1) Ettevõtja peab registri teise jao andmete muutumisel või registreeritud tegevusalal tegevuse lõpetamisel viivitamata, kuid mitte hiljem kui viie tööpäeva jooksul, esitama taotluse haldusorganile registreeringu muutmiseks või kustutamiseks. Ettevõtja peab registri teise jao andmete muutumisel või registreeritud tegevusalal tegevuse lõpetamisel viivitamata, kuid mitte hiljem kui viie tööpäeva jooksul, esitama taotluse haldusorganile registreeringu muutmiseks või kustutamiseks. 2 (2) Ettevõtj",
-      "estleg:requestedCluster": "estleg:Cluster_MTRS_3"
+      "estleg:requestedCluster": "estleg:Cluster_MTRS_3",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Ettevõtja"
     },
     {
       "@id": "estleg:MTRS_Par_26",
@@ -374,7 +469,18 @@
       "rdfs:label": "§ 26. Registreeringu õigsuse kinnitamise kohustus",
       "estleg:sourceAct": "Majandustegevuse registri seadus",
       "estleg:summary": "1 (1) Ettevõtja peab esitama haldusorganile, kellele esitati registreerimistaotlus, iga aasta 15. aprilliks kinnituse registreeringu õigsuse kohta juhul, kui ettevõtja registreerimisest või registreeringu muutmisest ettevõtja taotlusel on möödunud rohkem kui kolm kuud. Ettevõtja peab esitama haldusorganile, kellele esitati registreerimistaotlus, iga aasta 15. aprilliks kinnituse registreeringu õigsuse kohta juhul, kui ettevõtja registreerimisest või registreeringu muutmisest ettevõtja taotlusel ",
-      "estleg:requestedCluster": "estleg:Cluster_MTRS_3"
+      "estleg:requestedCluster": "estleg:Cluster_MTRS_3",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Ettevõtja",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:MTRS_Par_34"
+        }
+      ]
     },
     {
       "@id": "estleg:MTRS_Par_27",
@@ -386,7 +492,12 @@
       "rdfs:label": "§ 27. Registrile esitatud andmete kontroll ja juurdepääsu piiramine",
       "estleg:sourceAct": "Majandustegevuse registri seadus",
       "estleg:summary": "1 (1) Haldusorgan võib teha registrile esitatud andmete kohta järelepärimisi. Haldusorganil on õigus saada andmeid andmete esitajatelt, teistelt asutustelt ja registritest. Haldusorgan võib teha registrile esitatud andmete kohta järelepärimisi. Haldusorganil on õigus saada andmeid andmete esitajatelt, teistelt asutustelt ja registritest. 2 (2) Kui haldusorgan avastab teise registri andmetes vea, teavitab ta sellest vastava registri volitatud töötlejat või registripidajat. Kui haldusorgan avastab",
-      "estleg:requestedCluster": "estleg:Cluster_MTRS_3"
+      "estleg:requestedCluster": "estleg:Cluster_MTRS_3",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:MTRS_Par_28",
@@ -434,7 +545,34 @@
       "rdfs:label": "§ 31. Andmete muutumisest või tegevuse lõpetamisest teatamata jätmine või valeandmete esitamine",
       "estleg:sourceAct": "Majandustegevuse registri seadus",
       "estleg:summary": "1 (1) Registrile andmete muutumisest või tegevuse lõpetamisest teatamata jätmise või valeandmete esitamise eest – karistatakse rahatrahviga kuni 100 trahviühikut. Registrile andmete muutumisest või tegevuse lõpetamisest teatamata jätmise või valeandmete esitamise eest – karistatakse rahatrahviga kuni 100 trahviühikut. 2 (2) Sama teo eest, kui selle on toime pannud juriidiline isik, – karistatakse rahatrahviga kuni 20 000 krooni. Sama teo eest, kui selle on toime pannud juriidiline isik, – karist",
-      "estleg:requestedCluster": "estleg:Cluster_MTRS_4"
+      "estleg:requestedCluster": "estleg:Cluster_MTRS_4",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Sdaseadus_Par_51_50"
+        },
+        {
+          "@id": "estleg:VKVS_Par_21"
+        },
+        {
+          "@id": "estleg:TaimKS_Par_98"
+        },
+        {
+          "@id": "estleg:TPSKS_Par_126"
+        },
+        {
+          "@id": "estleg:Riigipiiri_seadus_Par_17_38"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:MTRS_Par_32"
+        }
+      ],
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_MTRS_Par_31_fine"
+        }
+      ]
     },
     {
       "@id": "estleg:MTRS_Par_32",
@@ -446,7 +584,29 @@
       "rdfs:label": "§ 32. Menetlus",
       "estleg:sourceAct": "Majandustegevuse registri seadus",
       "estleg:summary": "1 (1) Käesoleva seaduse §-s 31 sätestatud väärtegudele kohaldatakse karistusseadustiku (RT I 2001, 61, 364; 2002, 44, 284; 56, 350; 64, 390; 82, 480; 105, 612; 2003, 4, 22; 83, 557; 90, 601) üldosa ja väärteomenetluse seadustiku (RT I 2002, 50, 313; 110, 654; 2003, 26, 156; 83, 557; 88, 590) sätteid. Käesoleva seaduse §-s 31 sätestatud väärtegudele kohaldatakse karistusseadustiku (RT I 2001, 61, 364; 2002, 44, 284; 56, 350; 64, 390; 82, 480; 105, 612; 2003, 4, 22; 83, 557; 90, 601) üldosa ja vää",
-      "estleg:requestedCluster": "estleg:Cluster_MTRS_4"
+      "estleg:requestedCluster": "estleg:Cluster_MTRS_4",
+      "estleg:references": [
+        {
+          "@id": "estleg:MTRS_Par_31"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:VKVS_Par_22"
+        },
+        {
+          "@id": "estleg:vedelkutuse_seadus_Par_35"
+        },
+        {
+          "@id": "estleg:VetS_Par_40"
+        },
+        {
+          "@id": "estleg:TeleKS_Par_102_121"
+        },
+        {
+          "@id": "estleg:SETS_Par_21"
+        }
+      ]
     },
     {
       "@id": "estleg:MTRS_Par_33",
@@ -470,7 +630,18 @@
       "rdfs:label": "§ 34. Seaduse jõustumine",
       "estleg:sourceAct": "Majandustegevuse registri seadus",
       "estleg:summary": "1 (1) Käesolev seadus jõustub 2004. aasta 15. aprillil. Käesolev seadus jõustub 2004. aasta 15. aprillil. 2 (2) Käesoleva seaduse § 26 jõustub 2005. aasta 1. jaanuaril. <table summary=\"allkiri\" width=\"100%\"> <tbody><tr valign=\"top\"> <td width=\"60%\"> </td> <td width=\"39%\"> <b><font size=\"-1\" style=\"font-size:-1px\">Riigikogu esimees Ene ERGMA</font></b> </td> </tr> </tbody></table> Käesoleva seaduse § 26 jõustub 2005. aasta 1. jaanuaril.",
-      "estleg:requestedCluster": "estleg:Cluster_MTRS_5"
+      "estleg:requestedCluster": "estleg:Cluster_MTRS_5",
+      "estleg:references": [
+        {
+          "@id": "estleg:MTRS_Par_26"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_riigikogu"
+        }
+      ],
+      "estleg:competenceType": "general"
     }
   ]
 }

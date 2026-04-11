@@ -83,9 +83,20 @@ CONTEXT = {
 }
 
 
+_ESTONIAN_TRANSLITERATION: dict[str, str] = {
+    "ö": "o", "ä": "a", "ü": "u", "õ": "o",
+    "Ö": "O", "Ä": "A", "Ü": "U", "Õ": "O",
+    "š": "s", "ž": "z", "Š": "S", "Ž": "Z",
+}
+_TRANSLIT_TABLE = str.maketrans(_ESTONIAN_TRANSLITERATION)
+
+
 def sanitize_id(value: str) -> str:
     """Create a safe ID from a string."""
-    s = re.sub(r"[^0-9A-Za-z_]", "", value.replace(" ", "_").replace("-", "_"))
+    s = value.replace(" ", "_").replace("-", "_")
+    # Transliterate Estonian diacritics before stripping non-ASCII
+    s = s.translate(_TRANSLIT_TABLE)
+    s = re.sub(r"[^0-9A-Za-z_]", "", s)
     return s[:80] or "Unknown"
 
 
@@ -216,146 +227,146 @@ def generate_schema_nodes() -> list[dict]:
         {
             "@id": "estleg:DraftLegislation",
             "@type": ["owl:Class"],
-            "rdfs:label": "Eelnõu (Draft Legislation)",
-            "rdfs:comment": "Õigusakt, mis ei ole veel jõustunud, kuid on seadusandlikus menetluses.",
-            "dc:description": "A legislative draft that has not yet been enacted into law but is in the legislative process.",
+            "rdfs:label": {"@value": "Eelnõu (Draft Legislation)", "@language": "et"},
+            "rdfs:comment": {"@value": "Õigusakt, mis ei ole veel jõustunud, kuid on seadusandlikus menetluses.", "@language": "et"},
+            "dc:description": {"@value": "A legislative draft that has not yet been enacted into law but is in the legislative process.", "@language": "en"},
         },
         # LegislativePhase class
         {
             "@id": "estleg:LegislativePhase",
             "@type": ["owl:Class"],
-            "rdfs:label": "Seadusandlik etapp (Legislative Phase)",
-            "rdfs:comment": "Eelnõu menetlusetapp EIS süsteemis.",
+            "rdfs:label": {"@value": "Seadusandlik etapp (Legislative Phase)", "@language": "et"},
+            "rdfs:comment": {"@value": "Eelnõu menetlusetapp EIS süsteemis.", "@language": "et"},
         },
         # DraftType class
         {
             "@id": "estleg:DraftType",
             "@type": ["owl:Class"],
-            "rdfs:label": "Eelnõu liik (Draft Type)",
-            "rdfs:comment": "Eelnõu tüüp: seaduseelnõu, määruse eelnõu, korralduse eelnõu jne.",
+            "rdfs:label": {"@value": "Eelnõu liik (Draft Type)", "@language": "et"},
+            "rdfs:comment": {"@value": "Eelnõu tüüp: seaduseelnõu, määruse eelnõu, korralduse eelnõu jne.", "@language": "et"},
         },
         # Phase individuals
         {
             "@id": "estleg:Phase_PublicConsultation",
             "@type": ["owl:NamedIndividual", "estleg:LegislativePhase"],
-            "rdfs:label": "Avalik konsultatsioon",
-            "skos:prefLabel": "Public Consultation",
-            "rdfs:comment": "Eelnõu on avalikul konsultatsioonil – üldsus saab arvamust avaldada.",
+            "rdfs:label": {"@value": "Avalik konsultatsioon", "@language": "et"},
+            "skos:prefLabel": {"@value": "Public Consultation", "@language": "en"},
+            "rdfs:comment": {"@value": "Eelnõu on avalikul konsultatsioonil – üldsus saab arvamust avaldada.", "@language": "et"},
             "estleg:phaseOrder": {"@value": "1", "@type": "xsd:integer"},
         },
         {
             "@id": "estleg:Phase_Review",
             "@type": ["owl:NamedIndividual", "estleg:LegislativePhase"],
-            "rdfs:label": "Kooskõlastamine",
-            "skos:prefLabel": "Inter-ministerial Review",
-            "rdfs:comment": "Eelnõu on ministeeriumidevahelisel kooskõlastamisel.",
+            "rdfs:label": {"@value": "Kooskõlastamine", "@language": "et"},
+            "skos:prefLabel": {"@value": "Inter-ministerial Review", "@language": "en"},
+            "rdfs:comment": {"@value": "Eelnõu on ministeeriumidevahelisel kooskõlastamisel.", "@language": "et"},
             "estleg:phaseOrder": {"@value": "2", "@type": "xsd:integer"},
         },
         {
             "@id": "estleg:Phase_Submission",
             "@type": ["owl:NamedIndividual", "estleg:LegislativePhase"],
-            "rdfs:label": "Esitatud Vabariigi Valitsusele",
-            "skos:prefLabel": "Submitted to Government",
-            "rdfs:comment": "Eelnõu on esitatud Vabariigi Valitsusele otsustamiseks.",
+            "rdfs:label": {"@value": "Esitatud Vabariigi Valitsusele", "@language": "et"},
+            "skos:prefLabel": {"@value": "Submitted to Government", "@language": "en"},
+            "rdfs:comment": {"@value": "Eelnõu on esitatud Vabariigi Valitsusele otsustamiseks.", "@language": "et"},
             "estleg:phaseOrder": {"@value": "3", "@type": "xsd:integer"},
         },
         # Draft type individuals
         {
             "@id": "estleg:DraftType_Bill",
             "@type": ["owl:NamedIndividual", "estleg:DraftType"],
-            "rdfs:label": "Seaduseelnõu",
-            "skos:prefLabel": "Bill",
+            "rdfs:label": {"@value": "Seaduseelnõu", "@language": "et"},
+            "skos:prefLabel": {"@value": "Bill", "@language": "en"},
         },
         {
             "@id": "estleg:DraftType_AmendmentBill",
             "@type": ["owl:NamedIndividual", "estleg:DraftType"],
-            "rdfs:label": "Seaduse muutmise eelnõu",
-            "skos:prefLabel": "Amendment Bill",
+            "rdfs:label": {"@value": "Seaduse muutmise eelnõu", "@language": "et"},
+            "skos:prefLabel": {"@value": "Amendment Bill", "@language": "en"},
         },
         {
             "@id": "estleg:DraftType_GovernmentRegulation",
             "@type": ["owl:NamedIndividual", "estleg:DraftType"],
-            "rdfs:label": "VV määruse eelnõu",
-            "skos:prefLabel": "Government Regulation Draft",
+            "rdfs:label": {"@value": "VV määruse eelnõu", "@language": "et"},
+            "skos:prefLabel": {"@value": "Government Regulation Draft", "@language": "en"},
         },
         {
             "@id": "estleg:DraftType_MinisterialRegulation",
             "@type": ["owl:NamedIndividual", "estleg:DraftType"],
-            "rdfs:label": "Ministri määruse eelnõu",
-            "skos:prefLabel": "Ministerial Regulation Draft",
+            "rdfs:label": {"@value": "Ministri määruse eelnõu", "@language": "et"},
+            "skos:prefLabel": {"@value": "Ministerial Regulation Draft", "@language": "en"},
         },
         {
             "@id": "estleg:DraftType_GovernmentOrder",
             "@type": ["owl:NamedIndividual", "estleg:DraftType"],
-            "rdfs:label": "Korralduse eelnõu",
-            "skos:prefLabel": "Government Order Draft",
+            "rdfs:label": {"@value": "Korralduse eelnõu", "@language": "et"},
+            "skos:prefLabel": {"@value": "Government Order Draft", "@language": "en"},
         },
         {
             "@id": "estleg:DraftType_EUPosition",
             "@type": ["owl:NamedIndividual", "estleg:DraftType"],
-            "rdfs:label": "EL seisukoha eelnõu",
-            "skos:prefLabel": "EU Position Draft",
+            "rdfs:label": {"@value": "EL seisukoha eelnõu", "@language": "et"},
+            "skos:prefLabel": {"@value": "EU Position Draft", "@language": "en"},
         },
         {
             "@id": "estleg:DraftType_DraftIntent",
             "@type": ["owl:NamedIndividual", "estleg:DraftType"],
-            "rdfs:label": "Väljatöötamiskavatsus",
-            "skos:prefLabel": "Draft Intent / Pre-draft",
+            "rdfs:label": {"@value": "Väljatöötamiskavatsus", "@language": "et"},
+            "skos:prefLabel": {"@value": "Draft Intent / Pre-draft", "@language": "en"},
         },
         {
             "@id": "estleg:DraftType_Regulation",
             "@type": ["owl:NamedIndividual", "estleg:DraftType"],
-            "rdfs:label": "Määruse eelnõu",
-            "skos:prefLabel": "Regulation Draft",
+            "rdfs:label": {"@value": "Määruse eelnõu", "@language": "et"},
+            "skos:prefLabel": {"@value": "Regulation Draft", "@language": "en"},
         },
         {
             "@id": "estleg:DraftType_ActionPlan",
             "@type": ["owl:NamedIndividual", "estleg:DraftType"],
-            "rdfs:label": "Tegevuskava",
-            "skos:prefLabel": "Action Plan",
+            "rdfs:label": {"@value": "Tegevuskava", "@language": "et"},
+            "skos:prefLabel": {"@value": "Action Plan", "@language": "en"},
         },
         {
             "@id": "estleg:DraftType_Report",
             "@type": ["owl:NamedIndividual", "estleg:DraftType"],
-            "rdfs:label": "Ülevaade",
-            "skos:prefLabel": "Report",
+            "rdfs:label": {"@value": "Ülevaade", "@language": "et"},
+            "skos:prefLabel": {"@value": "Report", "@language": "en"},
         },
         {
             "@id": "estleg:DraftType_CitizenshipDecision",
             "@type": ["owl:NamedIndividual", "estleg:DraftType"],
-            "rdfs:label": "Kodakondsuse otsus",
-            "skos:prefLabel": "Citizenship Decision",
+            "rdfs:label": {"@value": "Kodakondsuse otsus", "@language": "et"},
+            "skos:prefLabel": {"@value": "Citizenship Decision", "@language": "en"},
         },
         {
             "@id": "estleg:DraftType_Other",
             "@type": ["owl:NamedIndividual", "estleg:DraftType"],
-            "rdfs:label": "Muu eelnõu",
-            "skos:prefLabel": "Other Draft",
+            "rdfs:label": {"@value": "Muu eelnõu", "@language": "et"},
+            "skos:prefLabel": {"@value": "Other Draft", "@language": "en"},
         },
         # Object properties
         {
             "@id": "estleg:legislativePhase",
             "@type": ["owl:ObjectProperty"],
-            "rdfs:label": "seadusandlik etapp",
+            "rdfs:label": {"@value": "seadusandlik etapp", "@language": "et"},
             "rdfs:domain": {"@id": "estleg:DraftLegislation"},
             "rdfs:range": {"@id": "estleg:LegislativePhase"},
-            "rdfs:comment": "The current legislative phase of the draft.",
+            "rdfs:comment": {"@value": "The current legislative phase of the draft.", "@language": "en"},
         },
         {
             "@id": "estleg:draftType",
             "@type": ["owl:ObjectProperty"],
-            "rdfs:label": "eelnõu liik",
+            "rdfs:label": {"@value": "eelnõu liik", "@language": "et"},
             "rdfs:domain": {"@id": "estleg:DraftLegislation"},
             "rdfs:range": {"@id": "estleg:DraftType"},
-            "rdfs:comment": "The type/category of the draft.",
+            "rdfs:comment": {"@value": "The type/category of the draft.", "@language": "en"},
         },
         {
             "@id": "estleg:amendsLaw",
             "@type": ["owl:ObjectProperty"],
-            "rdfs:label": "muudab seadust",
+            "rdfs:label": {"@value": "muudab seadust", "@language": "et"},
             "rdfs:domain": {"@id": "estleg:DraftLegislation"},
             "rdfs:range": {"@id": "estleg:LegalProvision"},
-            "rdfs:comment": "Links a draft to the existing law it proposes to amend.",
+            "rdfs:comment": {"@value": "Links a draft to the existing law it proposes to amend.", "@language": "en"},
         },
         # Datatype properties
         {
@@ -364,7 +375,7 @@ def generate_schema_nodes() -> list[dict]:
             "rdfs:label": "EIS number",
             "rdfs:domain": {"@id": "estleg:DraftLegislation"},
             "rdfs:range": {"@id": "xsd:string"},
-            "rdfs:comment": "The EIS (Eelnõude infosüsteem) reference number.",
+            "rdfs:comment": {"@value": "The EIS (Eelnõude infosüsteem) reference number.", "@language": "en"},
         },
         {
             "@id": "estleg:eisLink",
@@ -372,31 +383,31 @@ def generate_schema_nodes() -> list[dict]:
             "rdfs:label": "EIS link",
             "rdfs:domain": {"@id": "estleg:DraftLegislation"},
             "rdfs:range": {"@id": "xsd:anyURI"},
-            "rdfs:comment": "Direct link to the draft in EIS.",
+            "rdfs:comment": {"@value": "Direct link to the draft in EIS.", "@language": "en"},
         },
         {
             "@id": "estleg:initiator",
             "@type": ["owl:DatatypeProperty"],
-            "rdfs:label": "algataja",
+            "rdfs:label": {"@value": "algataja", "@language": "et"},
             "rdfs:domain": {"@id": "estleg:DraftLegislation"},
             "rdfs:range": {"@id": "xsd:string"},
-            "rdfs:comment": "The ministry or institution that initiated the draft.",
+            "rdfs:comment": {"@value": "The ministry or institution that initiated the draft.", "@language": "en"},
         },
         {
             "@id": "estleg:publicationDate",
             "@type": ["owl:DatatypeProperty"],
-            "rdfs:label": "avaldamiskuupäev",
+            "rdfs:label": {"@value": "avaldamiskuupäev", "@language": "et"},
             "rdfs:domain": {"@id": "estleg:DraftLegislation"},
             "rdfs:range": {"@id": "xsd:date"},
-            "rdfs:comment": "Date the draft was published/registered in EIS.",
+            "rdfs:comment": {"@value": "Date the draft was published/registered in EIS.", "@language": "en"},
         },
         {
             "@id": "estleg:affectedLawName",
             "@type": ["owl:DatatypeProperty"],
-            "rdfs:label": "mõjutatud seadus",
+            "rdfs:label": {"@value": "mõjutatud seadus", "@language": "et"},
             "rdfs:domain": {"@id": "estleg:DraftLegislation"},
             "rdfs:range": {"@id": "xsd:string"},
-            "rdfs:comment": "Name of existing law this draft proposes to amend.",
+            "rdfs:comment": {"@value": "Name of existing law this draft proposes to amend.", "@language": "en"},
         },
     ]
 
@@ -424,7 +435,7 @@ def generate_draft_node(
     node: dict = {
         "@id": f"estleg:Draft_{safe_id}",
         "@type": ["owl:NamedIndividual", "estleg:DraftLegislation"],
-        "rdfs:label": item["title"],
+        "rdfs:label": {"@value": item["title"], "@language": "et"},
         "estleg:legislativePhase": {"@id": f"estleg:Phase_{phase_id}"},
         "estleg:draftType": {"@id": f"estleg:DraftType_{draft_type_id}"},
     }
@@ -434,10 +445,11 @@ def generate_draft_node(
 
     if item["link"]:
         node["estleg:eisLink"] = {"@value": item["link"], "@type": "xsd:anyURI"}
+        node["dcterms:source"] = {"@id": item["link"]}
 
     ministry_name = MINISTRY_CODES.get(ministry_code, ministry_code)
     if ministry_name:
-        node["estleg:initiator"] = ministry_name
+        node["estleg:initiator"] = {"@value": ministry_name, "@language": "et"}
 
     if date_str:
         try:
@@ -450,10 +462,7 @@ def generate_draft_node(
             pass
 
     if affected_laws:
-        if len(affected_laws) == 1:
-            node["estleg:affectedLawName"] = affected_laws[0]
-        else:
-            node["estleg:affectedLawName"] = affected_laws
+        node["estleg:affectedLawName"] = [{"@value": law, "@language": "et"} for law in affected_laws]
 
     return node
 
@@ -529,8 +538,8 @@ def main():
             {
                 "@id": f"estleg:Eelnoud_{phase_id}_Map_2026",
                 "@type": ["owl:Ontology"],
-                "rdfs:label": f"EIS eelnõud – {feed_info['label_et']}",
-                "dc:description": f"Eelnõud, mis on hetkel etapis: {feed_info['label_et']}",
+                "rdfs:label": {"@value": f"EIS eelnõud – {feed_info['label_et']}", "@language": "et"},
+                "dc:description": {"@value": f"Eelnõud, mis on hetkel etapis: {feed_info['label_et']}", "@language": "et"},
                 "dc:source": "Eelnõude infosüsteem (EIS) – eelnoud.valitsus.ee",
             },
         ]
@@ -549,8 +558,8 @@ def main():
         {
             "@id": "estleg:Eelnoud_Combined_Map_2026",
             "@type": ["owl:Ontology"],
-            "rdfs:label": "EIS eelnõud – kõik etapid (Combined)",
-            "dc:description": "Kõik EIS eelnõud kõigist menetlusetappidest.",
+            "rdfs:label": {"@value": "EIS eelnõud – kõik etapid (Combined)", "@language": "et"},
+            "dc:description": {"@value": "Kõik EIS eelnõud kõigist menetlusetappidest.", "@language": "et"},
             "dc:source": "Eelnõude infosüsteem (EIS) – eelnoud.valitsus.ee",
         },
     ]

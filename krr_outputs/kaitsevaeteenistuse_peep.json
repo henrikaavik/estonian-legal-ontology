@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -16,14 +17,91 @@
       ],
       "rdfs:label": "Kaitseväeteenistuse seaduse teemakaardistus (KVTS)",
       "dc:description": "KVTS kaardistus kolmes fookusklastris: kaitseväeteenistus, reservteenistus ja asendusteenistus.",
-      "dc:source": "Kaitseväeteenistuse seadus (kehtiv redaktsioon; §-taseme täppisviited vajavad eraldi allikaverifitseerimist)"
+      "dc:source": "Kaitseväeteenistuse seadus (kehtiv redaktsioon; §-taseme täppisviited vajavad eraldi allikaverifitseerimist)",
+      "estleg:temporalStatus": "inForce",
+      "estleg:affectedBy": [
+        {
+          "@id": "estleg:Draft_RAM24_0915"
+        },
+        {
+          "@id": "estleg:Draft_KAM24_0700"
+        },
+        {
+          "@id": "estleg:Draft_KAM24_0163"
+        },
+        {
+          "@id": "estleg:Draft_KAM23_0999"
+        },
+        {
+          "@id": "estleg:Draft_KAM21_1317"
+        },
+        {
+          "@id": "estleg:Draft_RAM19_0273"
+        },
+        {
+          "@id": "estleg:Draft_KAM19_0188"
+        },
+        {
+          "@id": "estleg:Draft_KAM18_1263"
+        },
+        {
+          "@id": "estleg:Draft_KAM17_1374"
+        },
+        {
+          "@id": "estleg:Draft_KAM17_0689"
+        },
+        {
+          "@id": "estleg:Draft_KAM16_0058"
+        },
+        {
+          "@id": "estleg:Draft_KAM14_0254"
+        },
+        {
+          "@id": "estleg:Draft_KAM13_0582"
+        },
+        {
+          "@id": "estleg:Draft_KAM10_0538"
+        },
+        {
+          "@id": "estleg:Draft_RIIGIKOGU24_0773"
+        },
+        {
+          "@id": "estleg:Draft_RIIGIKOGU24_0488"
+        },
+        {
+          "@id": "estleg:Draft_RIIGIKOGU18_0637"
+        },
+        {
+          "@id": "estleg:Draft_KAM18_0609"
+        }
+      ],
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/0431"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2416"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2441"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/3606"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/3611"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_kaitsevaeteenistuse",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv või normiplokk)"
+      "rdfs:label": "Õigusnorm (paragrahv või normiplokk)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:TopicCluster_kaitsevaeteenistuse",
@@ -169,7 +247,12 @@
       "rdfs:label": "Asendusteenistuse eesmärk ja kohaldamisala",
       "estleg:requestedCluster": "alternative_service",
       "estleg:summary": "Määrab, millistel usulistel või kõlbelistel põhjustel võib ajateenistuse kohustuse täita asendusteenistusega.",
-      "estleg:sourceAct": "Kaitseväeteenistuse seadus"
+      "estleg:sourceAct": "Kaitseväeteenistuse seadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:KVTS_AS_2",

@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -17,14 +18,32 @@
       "rdfs:label": "Maapõueseaduse teemakaardistus (maavarad ja kaevandamine)",
       "dc:description": "Maapõueseaduse kaardistus kolmes fookuses: maavarad, kaevandamisluba ja keskkonnakaitse.",
       "dc:source": "Maapõueseadus (Riigi Teataja kehtiv redaktsioon)",
-      "dc:identifier": "https://www.riigiteataja.ee/akt/MPOS?leiaKehtiv"
+      "dc:identifier": "https://www.riigiteataja.ee/akt/MPOS?leiaKehtiv",
+      "estleg:temporalStatus": "inForce",
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/2431"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2441"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5611"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5226"
+        }
+      ]
     },
     {
-      "@id": "estleg:LegalProvision_maapoueseadus",
+      "@id": "estleg:LegalProvision_maapoue_seadus",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)"
+      "rdfs:label": "Õigusnorm (paragrahv)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:TopicCluster_maapoueseadus",
@@ -61,7 +80,7 @@
       "@id": "estleg:MAAPOUE_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 3",
       "rdfs:label": "§ 3. Maavara mõiste",
@@ -73,7 +92,7 @@
       "@id": "estleg:MAAPOUE_Par_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 4",
       "rdfs:label": "§ 4. Maavarade liigitus",
@@ -85,7 +104,7 @@
       "@id": "estleg:MAAPOUE_Par_7",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 7",
       "rdfs:label": "§ 7. Maardla ja maavaravaru",
@@ -97,7 +116,7 @@
       "@id": "estleg:MAAPOUE_Par_9",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 9",
       "rdfs:label": "§ 9. Maavarade registriandmed",
@@ -109,7 +128,7 @@
       "@id": "estleg:MAAPOUE_Par_10",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 10",
       "rdfs:label": "§ 10. Geoloogilise uuringu üldalused",
@@ -121,7 +140,7 @@
       "@id": "estleg:MAAPOUE_Par_32",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 32",
       "rdfs:label": "§ 32. Kaevandamisloa eesmärk ja kohaldamisala",
@@ -133,7 +152,7 @@
       "@id": "estleg:MAAPOUE_Par_33",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 33",
       "rdfs:label": "§ 33. Kaevandamisloa taotlus",
@@ -145,7 +164,7 @@
       "@id": "estleg:MAAPOUE_Par_34",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 34",
       "rdfs:label": "§ 34. Kaevandamisloa andmine",
@@ -157,7 +176,7 @@
       "@id": "estleg:MAAPOUE_Par_35",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 35",
       "rdfs:label": "§ 35. Kaevandamisloa kõrvaltingimused",
@@ -169,7 +188,7 @@
       "@id": "estleg:MAAPOUE_Par_37",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 37",
       "rdfs:label": "§ 37. Kaevandamisloa muutmine ja kehtetuks tunnistamine",
@@ -181,7 +200,7 @@
       "@id": "estleg:MAAPOUE_Par_41",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 41",
       "rdfs:label": "§ 41. Maapõue ja keskkonna kaitse üldnõuded",
@@ -193,7 +212,7 @@
       "@id": "estleg:MAAPOUE_Par_42",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 42",
       "rdfs:label": "§ 42. Kaevandatud maa korrastamine",
@@ -205,7 +224,7 @@
       "@id": "estleg:MAAPOUE_Par_43",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 43",
       "rdfs:label": "§ 43. Järelevalve ja seire",
@@ -217,7 +236,7 @@
       "@id": "estleg:MAAPOUE_Par_44",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 44",
       "rdfs:label": "§ 44. Keskkonnahäiringute vältimine",
@@ -229,7 +248,7 @@
       "@id": "estleg:MAAPOUE_Par_45",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 45",
       "rdfs:label": "§ 45. Vastutus keskkonnanõuete rikkumisel",

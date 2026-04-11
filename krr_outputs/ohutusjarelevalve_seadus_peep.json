@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -16,14 +17,35 @@
       ],
       "rdfs:label": "Ohutusjärelevalve seaduse teemakaardistus (tehniline ohutus)",
       "dc:description": "Ohutusjärelevalve seaduse põhisambad: tehnilised seadmed, ohutuskontroll ja õnnetuste ärahoidmine.",
-      "dc:source": "Ohutusjärelevalve seadus (Riigi Teataja, kehtiv redaktsioon; §-taseme viited täpsustada lõppverifitseerimisel)"
+      "dc:source": "Ohutusjärelevalve seadus (Riigi Teataja, kehtiv redaktsioon; §-taseme viited täpsustada lõppverifitseerimisel)",
+      "estleg:temporalStatus": "inForce",
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/2441"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2431"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5226"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/1221"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5611"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_ohutusjarelevalve",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)"
+      "rdfs:label": "Õigusnorm (paragrahv)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:TopicCluster_ohutusjarelevalve",
@@ -97,7 +119,12 @@
       "rdfs:label": "Nõuetele vastavuse hindamine enne kasutuselevõttu",
       "estleg:requestedCluster": "tehnilised_seadmed",
       "estleg:summary": "Reguleerib, et tehniline seade tohib turule tulla ja kasutusse minna üksnes juhul, kui ohutusnõuete täitmine on hinnatud ning tõendatud.",
-      "estleg:sourceAct": "Ohutusjärelevalve seadus"
+      "estleg:sourceAct": "Ohutusjärelevalve seadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Permission"
+        }
+      ]
     },
     {
       "@id": "estleg:OJS_Par_OhutusKontrolliKohustus",

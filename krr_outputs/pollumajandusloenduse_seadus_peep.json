@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -15,14 +16,71 @@
         "owl:Ontology"
       ],
       "rdfs:label": "Põllumajandusloenduse seadus teemakaardistus",
-      "dc:source": "Põllumajandusloenduse seadus"
+      "dc:source": "Põllumajandusloenduse seadus",
+      "estleg:entryIntoForce": {
+        "@value": "2000-05-15",
+        "@type": "xsd:date"
+      },
+      "estleg:repealDate": {
+        "@value": "2010-07-31",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2007-02-15",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2000-01-01",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "repealed",
+      "estleg:amendedBy": [
+        {
+          "@id": "estleg:Amendment_pollumajandusloenduse_seadus_1"
+        },
+        {
+          "@id": "estleg:Amendment_pollumajandusloenduse_seadus_2"
+        },
+        {
+          "@id": "estleg:Amendment_pollumajandusloenduse_seadus_3"
+        },
+        {
+          "@id": "estleg:Amendment_pollumajandusloenduse_seadus_4"
+        },
+        {
+          "@id": "estleg:Amendment_pollumajandusloenduse_seadus_5"
+        },
+        {
+          "@id": "estleg:Amendment_pollumajandusloenduse_seadus_6"
+        }
+      ],
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/5621"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/3606"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/1221"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2446"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2441"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_pollumajandusloenduse_seadus",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)"
+      "rdfs:label": "Õigusnorm (paragrahv)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:Cluster_PLS_1",
@@ -122,7 +180,16 @@
       "rdfs:label": "§ 5. Loenduse korraldamine",
       "estleg:sourceAct": "Põllumajandusloenduse seadus",
       "estleg:summary": "1 (1) Loenduse põhikorraldaja on Statistikaamet. Loenduse põhikorraldaja on Statistikaamet. 2 (2) Loenduse korraldamisel tekkivate probleemide lahendamiseks moodustatakse asjatundjate komisjonina Vabariigi Valitsuse põllumajandusloenduskomisjon. Loenduse korraldamisel tekkivate probleemide lahendamiseks moodustatakse asjatundjate komisjonina Vabariigi Valitsuse põllumajandusloenduskomisjon. 3 (3) Vähemalt üks aasta enne loendusmomenti moodustatakse käesoleva seaduse alusel maakondade ja linnade ",
-      "estleg:requestedCluster": "estleg:Cluster_PLS_1"
+      "estleg:requestedCluster": "estleg:Cluster_PLS_1",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        },
+        {
+          "@id": "estleg:Institution_statistikaamet"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:PLS_Par_6",
@@ -158,7 +225,21 @@
       "rdfs:label": "§ 8. Loenduse dokumentatsiooni kehtestamine",
       "estleg:sourceAct": "Põllumajandusloenduse seadus",
       "estleg:summary": "1 (1) Loenduseeskirja ja loenduslehe vormi kinnitab Vabariigi Valitsus ./dyn=12825178&id=72182 määrusega hiljemalt üks aasta enne loendusmomenti. Loenduseeskirja ja loenduslehe vormi määrusega hiljemalt üks aasta enne loendusmomenti. 2 (2) Loendustulemuste tabelite vormid kinnitab rahandusminister määrusega. Loendustulemuste tabelite vormid kinnitab rahandusminister määrusega. 3 (3) Loenduse abidokumentide vormid kinnitab Statistikaameti peadirektor. Loenduse abidokumentide vormid kinnitab Stati",
-      "estleg:requestedCluster": "estleg:Cluster_PLS_1"
+      "estleg:requestedCluster": "estleg:Cluster_PLS_1",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        },
+        {
+          "@id": "estleg:Institution_rahandusminister"
+        }
+      ],
+      "estleg:competenceType": "general",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:RELS_Par_13"
+        }
+      ]
     },
     {
       "@id": "estleg:PLS_Par_9",
@@ -170,7 +251,12 @@
       "rdfs:label": "§ 9. Loenduse territoriaalne korraldus",
       "estleg:sourceAct": "Põllumajandusloenduse seadus",
       "estleg:summary": "1 (1) Loenduse organisatsiooniline korraldus põhineb kehtival haldusterritoriaalsel korraldusel. Loenduse organisatsiooniline korraldus põhineb kehtival haldusterritoriaalsel korraldusel. 2 (2) Loenduse korraldamiseks moodustatakse loendustöötajatele kehtestatud koormusnormide alusel loendusringkonnad, loenduspiirkonnad ja loendusjaoskonnad. Loenduse korraldamiseks moodustatakse loendustöötajatele kehtestatud koormusnormide alusel loendusringkonnad, loenduspiirkonnad ja loendusjaoskonnad. 3 (3) ",
-      "estleg:requestedCluster": "estleg:Cluster_PLS_2"
+      "estleg:requestedCluster": "estleg:Cluster_PLS_2",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:RELS_Par_15"
+        }
+      ]
     },
     {
       "@id": "estleg:PLS_Par_10",
@@ -182,7 +268,13 @@
       "rdfs:label": "§ 10. Loendusringkond",
       "estleg:sourceAct": "Põllumajandusloenduse seadus",
       "estleg:summary": "1 (1) Loendusringkonnad moodustab Statistikaamet haldusterritoriaalse korralduse alusel. Loendusringkonnad moodustab Statistikaamet haldusterritoriaalse korralduse alusel. 2 (2) Loendusringkonna tööd juhib loendusringkonna juhataja (edaspidi ringkonnajuhataja ). Ringkonnajuhataja äraolekul asendab teda ringkonnajuhataja asetäitja. Loendusringkonna tööd juhib loendusringkonna juhataja (edaspidi ringkonnajuhataja ). Ringkonnajuhataja äraolekul asendab teda ringkonnajuhataja asetäitja. 3 (3) Ringko",
-      "estleg:requestedCluster": "estleg:Cluster_PLS_2"
+      "estleg:requestedCluster": "estleg:Cluster_PLS_2",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_statistikaamet"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:PLS_Par_11",
@@ -194,7 +286,12 @@
       "rdfs:label": "§ 11. Loenduspiirkond",
       "estleg:sourceAct": "Põllumajandusloenduse seadus",
       "estleg:summary": "1 (1) Loenduspiirkonnad moodustab Statistikaameti ettepanekul maakonna või linna põllumajandusloenduskomisjon. Loenduspiirkonnad moodustab Statistikaameti ettepanekul maakonna või linna põllumajandusloenduskomisjon. 2 (2) Loenduspiirkonnad moodustatakse loendusringkonna territooriumil. Loenduspiirkonnad moodustatakse loendusringkonna territooriumil. 3 (3) Loenduspiirkond on loendajate juhendaja tööpiirkond. Loendajate juhendaja ülesanne on loendus ette valmistada ja korraldada loendajate töö loe",
-      "estleg:requestedCluster": "estleg:Cluster_PLS_2"
+      "estleg:requestedCluster": "estleg:Cluster_PLS_2",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:RELS_Par_17"
+        }
+      ]
     },
     {
       "@id": "estleg:PLS_Par_12",
@@ -218,7 +315,12 @@
       "rdfs:label": "§ 13. Maakonna põllumajandusloenduskomisjon",
       "estleg:sourceAct": "Põllumajandusloenduse seadus",
       "estleg:summary": "1 (1) Maakonna põllumajandusloenduskomisjoni moodustab maavanem hiljemalt üks aasta enne loendusmomenti. Maakonna põllumajandusloenduskomisjoni moodustab maavanem hiljemalt üks aasta enne loendusmomenti. 2 (2) Maakonna põllumajandusloenduskomisjoni esimehe ja selle liikmed nimetab maavanem. Maakonna põllumajandusloenduskomisjoni esimehe ja selle liikmed nimetab maavanem. 3 (3) Maakonna põllumajandusloenduskomisjon kooskõlastab maakonnas loenduse korraldamise kava, koordineerib ja jälgib loenduse",
-      "estleg:requestedCluster": "estleg:Cluster_PLS_2"
+      "estleg:requestedCluster": "estleg:Cluster_PLS_2",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:RELS_Par_22"
+        }
+      ]
     },
     {
       "@id": "estleg:PLS_Par_14",
@@ -230,7 +332,12 @@
       "rdfs:label": "§ 14. Linna põllumajandusloenduskomisjon",
       "estleg:sourceAct": "Põllumajandusloenduse seadus",
       "estleg:summary": "1 (1) Linna põllumajandusloenduskomisjon moodustatakse Tallinnas, Tartus, Pärnus, Kohtla-Järvel ja Narvas. Komisjoni moodustab linnavalitsus vähemalt üks aasta enne loendusmomenti. Linna põllumajandusloenduskomisjon moodustatakse Tallinnas, Tartus, Pärnus, Kohtla-Järvel ja Narvas. Komisjoni moodustab linnavalitsus vähemalt üks aasta enne loendusmomenti. 2 (2) Linna põllumajandusloenduskomisjoni esimehe ja liikmed nimetab linnavalitsus. Linna põllumajandusloenduskomisjoni esimehe ja liikmed nimet",
-      "estleg:requestedCluster": "estleg:Cluster_PLS_2"
+      "estleg:requestedCluster": "estleg:Cluster_PLS_2",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:RELS_Par_23"
+        }
+      ]
     },
     {
       "@id": "estleg:PLS_Par_15",
@@ -254,7 +361,13 @@
       "rdfs:label": "§ 16. Kohaliku omavalitsuse ülesanded loenduse korraldamisel",
       "estleg:sourceAct": "Põllumajandusloenduse seadus",
       "estleg:summary": "Kohalik omavalitsus koostöös põllumajandusloenduskomisjonide ja valitsusasutustega tagab loenduse korraldamise oma haldusterritooriumil, sealhulgas: 1 1) võimaldades kaasata kohaliku omavalitsuse teenistujaid loenduse korraldamisse; 2 2) osaledes loenduse korraldamiseks vajalike loenduskaartide ning majapidamiste ja kodumajapidamiste nimekirjade koostamisel; 3 3) täpsustades loenduse eel hoonete numeratsiooni ning majapidamiste ja kodumajapidamiste omanike ja valdajate nimekirja; 4 4) andes Vaba",
-      "estleg:requestedCluster": "estleg:Cluster_PLS_2"
+      "estleg:requestedCluster": "estleg:Cluster_PLS_2",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:PLS_Par_17",
@@ -266,7 +379,12 @@
       "rdfs:label": "§ 17. Loendustöötajad",
       "estleg:sourceAct": "Põllumajandusloenduse seadus",
       "estleg:summary": "1 (1) Loendustöötajad on ringkonnajuhataja, tema asetäitja, loendajate juhendaja ja loendaja. Loendustöötajad on ringkonnajuhataja, tema asetäitja, loendajate juhendaja ja loendaja. 2 (2) Loendustöötaja võetakse teenistusse Statistikaameti peadirektori käskkirjaga määratud ajaks avaliku teenistuse seaduse (RT I 1995, 16, 228; 1999, 7, 112; 10, 155; 16, 271 ja 276; 2000, 25, 144 ja 145; 28, 167) § 8 alusel. Loendustöötajaid võidakse tööle võtta ka tööettevõtulepinguga. Loendustöötaja võetakse tee",
-      "estleg:requestedCluster": "estleg:Cluster_PLS_2"
+      "estleg:requestedCluster": "estleg:Cluster_PLS_2",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:RELS_Par_19"
+        }
+      ]
     },
     {
       "@id": "estleg:PLS_Par_18",
@@ -278,7 +396,12 @@
       "rdfs:label": "§ 18. Olemasolevate andmete kasutamine",
       "estleg:sourceAct": "Põllumajandusloenduse seadus",
       "estleg:summary": "Loenduse korraldamisel on riigi ja kohalike omavalitsuste andmekogude pidajad kohustatud Statistikaameti nõudmisel esitama riigi ja kohalike omavalitsuste andmekogudes olevaid loenduse korraldamiseks vajalikke andmeid kooskõlas isikuandmete kaitse seaduse, avaliku teabe seaduse ning nende alusel kehtestatud õigusaktidega. RT I 2007 24 127 12802623 2008-01-01+02:00 Loenduse korraldamisel on riigi ja kohalike omavalitsuste andmekogude pidajad kohustatud Statistikaameti nõudmisel esitama riigi ja k",
-      "estleg:requestedCluster": "estleg:Cluster_PLS_3"
+      "estleg:requestedCluster": "estleg:Cluster_PLS_3",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:RELS_Par_14"
+        }
+      ]
     },
     {
       "@id": "estleg:PLS_Par_19",
@@ -290,7 +413,17 @@
       "rdfs:label": "§ 19. Loendamise koht ja viis",
       "estleg:sourceAct": "Põllumajandusloenduse seadus",
       "estleg:summary": "1 (1) Küsitletavat isikut küsitletakse tema elukohas või majapidamise või kodumajapidamise asukohas. Küsitletavat isikut küsitletakse tema elukohas või majapidamise või kodumajapidamise asukohas. 2 (2) Loendaja esitab küsitletavale isikule oma volitusi tõendava dokumendi. Loendaja esitab küsitletavale isikule oma volitusi tõendava dokumendi. 3 (3) Loendaja küsitleb küsitletavat isikut vahetult. Loendusega kogutavad andmed kannab loendaja loenduslehtedele vastavuses loenduseeskirjaga. Loendaja kü",
-      "estleg:requestedCluster": "estleg:Cluster_PLS_3"
+      "estleg:requestedCluster": "estleg:Cluster_PLS_3",
+      "estleg:references": [
+        {
+          "@id": "estleg:PLS_Par_23"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:RELS_Par_26"
+        }
+      ]
     },
     {
       "@id": "estleg:PLS_Par_20",
@@ -302,7 +435,21 @@
       "rdfs:label": "§ 20. Küsitletava isiku õigused ja kohustused",
       "estleg:sourceAct": "Põllumajandusloenduse seadus",
       "estleg:summary": "1 (1) Küsitletav isik on kohustatud andma tõeseid ja täielikke vastuseid kõigile loenduslehtedel esitatud küsimustele. Küsitletav isik on kohustatud andma tõeseid ja täielikke vastuseid kõigile loenduslehtedel esitatud küsimustele. 2 (2) Küsitletaval isikul on õigus tutvuda tema majapidamise või kodumajapidamise kohta täidetud loenduslehtedega. Küsitletaval isikul on õigus tutvuda tema majapidamise või kodumajapidamise kohta täidetud loenduslehtedega.",
-      "estleg:requestedCluster": "estleg:Cluster_PLS_3"
+      "estleg:requestedCluster": "estleg:Cluster_PLS_3",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Küsitletav isik",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:RELS_Par_28"
+        },
+        {
+          "@id": "estleg:RStS_Par_23"
+        }
+      ]
     },
     {
       "@id": "estleg:PLS_Par_21",
@@ -314,7 +461,12 @@
       "rdfs:label": "§ 21. Loendusandmete kasutamine",
       "estleg:sourceAct": "Põllumajandusloenduse seadus",
       "estleg:summary": "Loendusandmeid kasutatakse üksnes statistilistel eesmärkidel. Loendusandmeid kasutatakse üksnes statistilistel eesmärkidel.",
-      "estleg:requestedCluster": "estleg:Cluster_PLS_4"
+      "estleg:requestedCluster": "estleg:Cluster_PLS_4",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:RELS_Par_36"
+        }
+      ]
     },
     {
       "@id": "estleg:PLS_Par_22",
@@ -326,7 +478,13 @@
       "rdfs:label": "§ 22. Loendusandmete säilitamine",
       "estleg:sourceAct": "Põllumajandusloenduse seadus",
       "estleg:summary": "1 (1) Loendusandmeid säilitab Statistikaamet. Loendusandmed salvestatakse magnetkandjatele, mida säilitatakse Statistikaameti arhiivis. Loendusandmeid säilitab Statistikaamet. Loendusandmed salvestatakse magnetkandjatele, mida säilitatakse Statistikaameti arhiivis. 2 (2) Loenduslehti säilitatakse kuni järgmise loenduse lõpuni vastavalt avaliku teabe seadusele ning arhiveerimist sätestavatele õigusaktidele. RT I 2007 12 66 12789344 2008-01-01+02:00 Loenduslehti säilitatakse kuni järgmise loenduse",
-      "estleg:requestedCluster": "estleg:Cluster_PLS_4"
+      "estleg:requestedCluster": "estleg:Cluster_PLS_4",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_statistikaamet"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:PLS_Par_23",
@@ -338,7 +496,18 @@
       "rdfs:label": "§ 23. Loendusandmete konfidentsiaalsus",
       "estleg:sourceAct": "Põllumajandusloenduse seadus",
       "estleg:summary": "1 (1) Loendusandmed on konfidentsiaalsed. Neid ei avalikustata ega anta üle kolmandatele isikutele. Loendaja on kohustatud pidama tähtajatult saladuses ka loendamisel teatavaks saanud muid andmeid. Loendusandmed on konfidentsiaalsed. Neid ei avalikustata ega anta üle kolmandatele isikutele. Loendaja on kohustatud pidama tähtajatult saladuses ka loendamisel teatavaks saanud muid andmeid. 2 (2) Loendusandmete kaitse korraldamisel juhindutakse isikuandmete kaitse seadusest, avaliku teabe seadusest ",
-      "estleg:requestedCluster": "estleg:Cluster_PLS_4"
+      "estleg:requestedCluster": "estleg:Cluster_PLS_4",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Loendaja",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:PLS_Par_19"
+        }
+      ]
     },
     {
       "@id": "estleg:PLS_Par_24",
@@ -350,7 +519,18 @@
       "rdfs:label": "§ 24. Isikuandmete kaitse järelevalve",
       "estleg:sourceAct": "Põllumajandusloenduse seadus",
       "estleg:summary": "Järelevalvet isikuandmete kaitse nõuetest kinnipidamise üle loenduse läbiviimisel korraldab Andmekaitse Inspektsioon. Järelevalvet isikuandmete kaitse nõuetest kinnipidamise üle loenduse läbiviimisel korraldab Andmekaitse Inspektsioon.",
-      "estleg:requestedCluster": "estleg:Cluster_PLS_4"
+      "estleg:requestedCluster": "estleg:Cluster_PLS_4",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_andmekaitseinspektsioon"
+        }
+      ],
+      "estleg:competenceType": "supervision",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:RELS_Par_39"
+        }
+      ]
     },
     {
       "@id": "estleg:PLS_Par_25",
@@ -362,7 +542,18 @@
       "rdfs:label": "§ 25. Loendustulemuste avaldamine",
       "estleg:sourceAct": "Põllumajandusloenduse seadus",
       "estleg:summary": "1 (1) Loendustulemused on avalikud ja kõigile kättesaadavad. Loendustulemused on avalikud ja kõigile kättesaadavad. 2 (2) Esialgsed loenduse kokkuvõtted avaldab Statistikaamet hiljemalt üheksakümnendal päeval järelküsitluse lõppemisest arvates. Loendustulemused statistiliste tabelitena avaldab Statistikaamet kahe aasta jooksul pärast loendusperioodi lõppemist. Esialgsed loenduse kokkuvõtted avaldab Statistikaamet hiljemalt üheksakümnendal päeval järelküsitluse lõppemisest arvates. Loendustulemus",
-      "estleg:requestedCluster": "estleg:Cluster_PLS_4"
+      "estleg:requestedCluster": "estleg:Cluster_PLS_4",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_statistikaamet"
+        }
+      ],
+      "estleg:competenceType": "general",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:RELS_Par_34"
+        }
+      ]
     },
     {
       "@id": "estleg:PLS_Par_26",
@@ -374,7 +565,12 @@
       "rdfs:label": "§ 26. Loendustöötaja ja loendusandmete töötleja vastutus",
       "estleg:sourceAct": "Põllumajandusloenduse seadus",
       "estleg:summary": "Loendustöötaja ja loendusandmete töötleja võetakse käesolevas seaduses, isikuandmete kaitse seaduses ja avaliku teabe seaduses sätestatud nõuete rikkumise eest haldus- või kriminaalvastutusele seadusega sätestatud alustel ja korras. RT I 2007 12 66 12789344 2008-01-01+02:00 Loendustöötaja ja loendusandmete töötleja võetakse käesolevas seaduses, isikuandmete kaitse seaduses ja avaliku teabe seaduses sätestatud nõuete rikkumise eest haldus- või kriminaalvastutusele seadusega sätestatud alustel ja ",
-      "estleg:requestedCluster": "estleg:Cluster_PLS_5"
+      "estleg:requestedCluster": "estleg:Cluster_PLS_5",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:RELS_Par_40"
+        }
+      ]
     },
     {
       "@id": "estleg:PLS_Par_27",
@@ -386,7 +582,12 @@
       "rdfs:label": "§ 27. Küsitletava isiku vastutus",
       "estleg:sourceAct": "Põllumajandusloenduse seadus",
       "estleg:summary": "Loendusega kogutavate andmete esitamise ja edastamise korra rikkumise eest kohaldatakse haldusõiguserikkumiste seadustiku (RT 1992, 29, 396; RT I 1999, 41, 496; 45, õiend; 58, 608; 60, 616; 87, 792; 92, 825; 95, 843; 2000, 10, 58; 25, 141; 28, 167; 29, 169) §-s 183 ja riikliku statistika seaduses sätestatud karistusi. Loendusega kogutavate andmete esitamise ja edastamise korra rikkumise eest kohaldatakse haldusõiguserikkumiste seadustiku (RT 1992, 29, 396; RT I 1999, 41, 496; 45, õiend; 58, 608;",
-      "estleg:requestedCluster": "estleg:Cluster_PLS_5"
+      "estleg:requestedCluster": "estleg:Cluster_PLS_5",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:RELS_Par_41"
+        }
+      ]
     }
   ]
 }

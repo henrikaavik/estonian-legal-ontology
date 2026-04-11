@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -15,14 +16,85 @@
         "owl:Ontology"
       ],
       "rdfs:label": "Konsulaarseadus teemakaardistus",
-      "dc:source": "Konsulaarseadus"
+      "dc:source": "Konsulaarseadus",
+      "estleg:entryIntoForce": {
+        "@value": "2004-01-01",
+        "@type": "xsd:date"
+      },
+      "estleg:repealDate": {
+        "@value": "2006-04-05",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2005-06-15",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2003-01-01",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "repealed",
+      "estleg:amendedBy": [
+        {
+          "@id": "estleg:Amendment_konsulaarseadus_1"
+        },
+        {
+          "@id": "estleg:Amendment_konsulaarseadus_2"
+        },
+        {
+          "@id": "estleg:Amendment_konsulaarseadus_3"
+        },
+        {
+          "@id": "estleg:Amendment_konsulaarseadus_4"
+        },
+        {
+          "@id": "estleg:Amendment_konsulaarseadus_5"
+        },
+        {
+          "@id": "estleg:Amendment_konsulaarseadus_6"
+        },
+        {
+          "@id": "estleg:Amendment_konsulaarseadus_7"
+        },
+        {
+          "@id": "estleg:Amendment_konsulaarseadus_8"
+        },
+        {
+          "@id": "estleg:Draft_VM17_1019"
+        }
+      ],
+      "estleg:affectedBy": [
+        {
+          "@id": "estleg:Draft_VM17_1019"
+        }
+      ],
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/0806"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2441"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/4421"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/0411"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2016"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_konsulaarseadus",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)"
+      "rdfs:label": "Õigusnorm (paragrahv)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:Cluster_Konsulaarseadus_1",
@@ -150,7 +222,13 @@
       "rdfs:label": "§ 6. Konsulaarasutuse juht",
       "estleg:sourceAct": "Konsulaarseadus",
       "estleg:summary": "1(1)Konsulaarasutuse juht on peakonsul, konsul, asekonsul, aupeakonsul, aukonsul või auasekonsul. Konsulaarasutuse juht on peakonsul, konsul, asekonsul, aupeakonsul, aukonsul või auasekonsul. 2(2)Konsulaarasutuse juhi nimetab ametisse ja kutsub tagasi välisminister. Konsulaarasutuse juhi nimetab ametisse ja kutsub tagasi välisminister.",
-      "estleg:requestedCluster": "estleg:Cluster_Konsulaarseadus_1"
+      "estleg:requestedCluster": "estleg:Cluster_Konsulaarseadus_1",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vlisminister"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:Konsulaarseadus_Par_7",
@@ -174,7 +252,18 @@
       "rdfs:label": "§ 8. Tegutsemisluba",
       "estleg:sourceAct": "Konsulaarseadus",
       "estleg:summary": "Välisministeerium taotleb konsulaarasutuse juhile asukohariigilt tegutsemisluba. Pärast tegutsemisloa saamist, mis on asukohariigi diplomaatiline noot või muu nõusolekut väljendav dokument ( exequatur), võib konsulaarasutus täita konsulaarfunktsioone. Välisministeerium taotleb konsulaarasutuse juhile asukohariigilt tegutsemisluba. Pärast tegutsemisloa saamist, mis on asukohariigi diplomaatiline noot või muu nõusolekut väljendav dokument ( exequatur), võib konsulaarasutus täita konsulaarfunktsioo",
-      "estleg:requestedCluster": "estleg:Cluster_Konsulaarseadus_1"
+      "estleg:requestedCluster": "estleg:Cluster_Konsulaarseadus_1",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vlisministeerium"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:Konsulaarseadus_Par_9",
@@ -186,7 +275,18 @@
       "rdfs:label": "§ 9. Konsulaarpiirkond",
       "estleg:sourceAct": "Konsulaarseadus",
       "estleg:summary": "1(1)Konsulaarpiirkond on asukohariigi territoorium või selle haldusüksus, mille asukohariigi nõusolekul kinnitab konsulaarasutusele välisminister. Konsulaarpiirkond on asukohariigi territoorium või selle haldusüksus, mille asukohariigi nõusolekul kinnitab konsulaarasutusele välisminister. 2(2)Diplomaatilise esinduse konsulaarpiirkond on asukohariigi territoorium. Diplomaatilise esinduse konsulaarpiirkond on asukohariigi territoorium. 3(3)Asjaomase riigi välisministeeriumi nõusolekul võib konsula",
-      "estleg:requestedCluster": "estleg:Cluster_Konsulaarseadus_1"
+      "estleg:requestedCluster": "estleg:Cluster_Konsulaarseadus_1",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vlisminister"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:Konsulaarseadus_Par_10",
@@ -198,7 +298,13 @@
       "rdfs:label": "§ 10. Konsulaarteenuse ja konsulaarabi registreerimine ja aruandlus",
       "estleg:sourceAct": "Konsulaarseadus",
       "estleg:summary": "1(1)Konsulaarametniku ja aukonsuli konsulaarteenuse ja konsulaarabi osutamise toimingud registreeritakse ametitoimingute raamatus. Konsulaarametniku ametitoimingute raamatut peetakse digitaalse andmekoguna. Andmekogu asutamise ja pidamise korra kehtestab välisminister määrusega../dyn=922899&id=995218 2(2)Konsulaarametnik ja aukonsul esitavad Välisministeeriumile iga kuu oma konsulaarteenuse ja konsulaarabi osutamisel tehtud toimingutest aruande. Konsulaarametnik ja aukonsul esitavad Välisministe",
-      "estleg:requestedCluster": "estleg:Cluster_Konsulaarseadus_1"
+      "estleg:requestedCluster": "estleg:Cluster_Konsulaarseadus_1",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vlisminister"
+        }
+      ],
+      "estleg:competenceType": "regulation"
     },
     {
       "@id": "estleg:Konsulaarseadus_Par_11",
@@ -210,7 +316,12 @@
       "rdfs:label": "§ 11. Riigilõiv ja teenuskulud",
       "estleg:sourceAct": "Konsulaarseadus",
       "estleg:summary": "1(1)Konsulaarteenuse eest võetakse riigilõivu riigilõivuseaduse (RT I 1997, 80, 1344; 2001, 55, 331; 53, 310; 56, 332; 64, 367; 65, 377; 85, 512; 88, 531; 91, 543; 93, 565; 2002, 1, 1; 18, 97; 23, 131; 24, 135; 27, 151 ja 153; 30, 178; 35, 214; 44, 281; 47, 297; 51, 316; 57, 358; 58, 361; 61, 375; 62, 377; 90, 519; 102, 599; 105, 610; 2003, 4, 20; 13, 68; 15, 84 ja 85; 20, 118; 21, 128; 23, 146; 25, 153 ja 154; 26, 156 ja 160; 30, õiend; 51, 352; 66, 449; 68, 461; 71, 471) kohaselt. Konsulaartee",
-      "estleg:requestedCluster": "estleg:Cluster_Konsulaarseadus_1"
+      "estleg:requestedCluster": "estleg:Cluster_Konsulaarseadus_1",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:PatVS_Par_26"
+        }
+      ]
     },
     {
       "@id": "estleg:Konsulaarseadus_Par_12",
@@ -234,7 +345,13 @@
       "rdfs:label": "§ 13. Teenistuslik järelevalve",
       "estleg:sourceAct": "Konsulaarseadus",
       "estleg:summary": "Välisminister teostab teenistuslikku järelevalvet konsulaarteenuse osutamisel antud haldusakti, konsulaartoimingu õiguspärasuse ning konsulaarasutuse asjaajamise ja raamatupidamise üle. Välisminister teostab teenistuslikku järelevalvet konsulaarteenuse osutamisel antud haldusakti, konsulaartoimingu õiguspärasuse ning konsulaarasutuse asjaajamise ja raamatupidamise üle.",
-      "estleg:requestedCluster": "estleg:Cluster_Konsulaarseadus_1"
+      "estleg:requestedCluster": "estleg:Cluster_Konsulaarseadus_1",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vlisminister"
+        }
+      ],
+      "estleg:competenceType": "supervision"
     },
     {
       "@id": "estleg:Konsulaarseadus_Par_14",
@@ -258,7 +375,18 @@
       "rdfs:label": "§ 15. Konsulaarametnikule esitatavad kutsenõuded",
       "estleg:sourceAct": "Konsulaarseadus",
       "estleg:summary": "1(1)Konsulaarametniku kutsenõuded kehtestab välisminister./dyn=922899&id=687666 määrusega. Konsulaarametniku kutsenõuded määrusega. 2(2)Konsulaarametniku erikutsenõuded käesoleva seaduse § 25 lõikes 2 sätestatud toiminguks kehtestab välisminister määrusega./dyn=922899&id=687666, mis on kooskõlastatud justiitsministriga. Konsulaarametniku erikutsenõuded käesoleva seaduse § 25 lõikes 2 sätestatud toiminguks , mis on kooskõlastatud justiitsministriga. 3(3)Konsulaarametniku kutse ja erikutse andmise",
-      "estleg:requestedCluster": "estleg:Cluster_Konsulaarseadus_2"
+      "estleg:requestedCluster": "estleg:Cluster_Konsulaarseadus_2",
+      "estleg:references": [
+        {
+          "@id": "estleg:Konsulaarseadus_Par_25"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vlisminister"
+        }
+      ],
+      "estleg:competenceType": "regulation"
     },
     {
       "@id": "estleg:Konsulaarseadus_Par_16",
@@ -270,7 +398,13 @@
       "rdfs:label": "§ 16. Aukonsul",
       "estleg:sourceAct": "Konsulaarseadus",
       "estleg:summary": "1(1)Aukonsul on välisministri määratud pädevuse piires konsulaarteenust ja konsulaarabi osutav isik, kelle välisminister nimetab tähtajaliselt või määramata ajaks. Iga aukonsuli pädevuse määrab välisminister käskkirjaga. Aukonsul on välisministri määratud pädevuse piires konsulaarteenust ja konsulaarabi osutav isik, kelle välisminister nimetab tähtajaliselt või määramata ajaks. Iga aukonsuli pädevuse määrab välisminister käskkirjaga. 2(2)Aukonsulina käsitatakse käesolevas seaduses ka aupeakonsul",
-      "estleg:requestedCluster": "estleg:Cluster_Konsulaarseadus_3"
+      "estleg:requestedCluster": "estleg:Cluster_Konsulaarseadus_3",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vlisminister"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:Konsulaarseadus_Par_17",
@@ -282,7 +416,12 @@
       "rdfs:label": "§ 17. Aukonsulikandidaadile esitatavad nõuded",
       "estleg:sourceAct": "Konsulaarseadus",
       "estleg:summary": "1(1)Aukonsulikandidaadiks (edaspidi kandidaat) võib olla asukohariigi ühiskonnaelus või majandus-, kultuuri- või muus valdkonnas tuntud ja hea mainega isik, kes on võimeline osutama konsulaarteenust ja konsulaarabi ning juhtima konsulaarasutust. Aukonsulikandidaadiks (edaspidi kandidaat) võib olla asukohariigi ühiskonnaelus või majandus-, kultuuri- või muus valdkonnas tuntud ja hea mainega isik, kes on võimeline osutama konsulaarteenust ja konsulaarabi ning juhtima konsulaarasutust. 2(2)Kandidaa",
-      "estleg:requestedCluster": "estleg:Cluster_Konsulaarseadus_3"
+      "estleg:requestedCluster": "estleg:Cluster_Konsulaarseadus_3",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:Konsulaarseadus_Par_18",
@@ -306,7 +445,18 @@
       "rdfs:label": "§ 19. Välisministeeriumi kohustused",
       "estleg:sourceAct": "Konsulaarseadus",
       "estleg:summary": "1(1)Välisministeerium korraldab konsulaarasutuse sümboolika saatmise aukonsulile ja konsulaararhiivi üleandmise Välisministeeriumi määratud isikule ning vajaduse korral kannab diplomaatilise postiga seotud kulud. Välisministeerium korraldab konsulaarasutuse sümboolika saatmise aukonsulile ja konsulaararhiivi üleandmise Välisministeeriumi määratud isikule ning vajaduse korral kannab diplomaatilise postiga seotud kulud. 2(2)Välisministeerium võib aukonsuli kasutusse anda tema juhitava konsulaarasu",
-      "estleg:requestedCluster": "estleg:Cluster_Konsulaarseadus_3"
+      "estleg:requestedCluster": "estleg:Cluster_Konsulaarseadus_3",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vlisministeerium"
+        }
+      ],
+      "estleg:competenceType": "enforcement"
     },
     {
       "@id": "estleg:Konsulaarseadus_Par_20",
@@ -330,7 +480,13 @@
       "rdfs:label": "§ 21. Aukonsuli volituste lõppemine",
       "estleg:sourceAct": "Konsulaarseadus",
       "estleg:summary": "1(1)Aukonsuli volitused lõpevad:11)konsulipatendi kehtetuks tunnistamisega;22)tegutsemisloa kehtetuks tunnistamisega;33)konsulipatendi kehtivusaja lõppemisega;44)tegutsemisloa kehtivusaja lõppemisega;55)aukonsuli surmaga. Aukonsuli volitused lõpevad: konsulipatendi kehtetuks tunnistamisega; tegutsemisloa kehtetuks tunnistamisega; konsulipatendi kehtivusaja lõppemisega; tegutsemisloa kehtivusaja lõppemisega; aukonsuli surmaga. 2(2)Välisminister tunnistab konsulipatendi kehtetuks:11)aukonsuli sell",
-      "estleg:requestedCluster": "estleg:Cluster_Konsulaarseadus_3"
+      "estleg:requestedCluster": "estleg:Cluster_Konsulaarseadus_3",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vlisminister"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:Konsulaarseadus_Par_22",
@@ -354,7 +510,12 @@
       "rdfs:label": "§ 23. Konsulaarteenus",
       "estleg:sourceAct": "Konsulaarseadus",
       "estleg:summary": "1(1)Konsulaarteenus on avalik teenus, mida konsulaarametnik ja aukonsul osutavad Eesti riigi, Eesti kodaniku ning Eesti juriidilise isiku huvide ja õiguste kaitseks. Konsulaarteenus on avalik teenus, mida konsulaarametnik ja aukonsul osutavad Eesti riigi, Eesti kodaniku ning Eesti juriidilise isiku huvide ja õiguste kaitseks. 2(2)Välismaalasele ja välisriigi kodanikule võib osutada konsulaarteenust seadusega ettenähtud juhtudel. Välismaalasele ja välisriigi kodanikule võib osutada konsulaarteenu",
-      "estleg:requestedCluster": "estleg:Cluster_Konsulaarseadus_4"
+      "estleg:requestedCluster": "estleg:Cluster_Konsulaarseadus_4",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:Konsulaarseadus_Par_24",
@@ -366,7 +527,12 @@
       "rdfs:label": "§ 24. Tõendi andmine",
       "estleg:sourceAct": "Konsulaarseadus",
       "estleg:summary": "1(1)Konsulaarametnik annab Eesti kodaniku või Eesti juriidilise isiku või konsulaarpiirkonna asutuse või kohtu taotlusel tõendi talle teada olevate asjaolude kohta. Konsulaarametnik annab Eesti kodaniku või Eesti juriidilise isiku või konsulaarpiirkonna asutuse või kohtu taotlusel tõendi talle teada olevate asjaolude kohta. 2(2)Aukonsul võib põhjendatud vajaduse korral välja anda Eesti kodaniku või Eesti juriidilise isiku taotlusel tõendi talle teada olevate asjaolude kohta, kooskõlastades tõend",
-      "estleg:requestedCluster": "estleg:Cluster_Konsulaarseadus_4"
+      "estleg:requestedCluster": "estleg:Cluster_Konsulaarseadus_4",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:Konsulaarseadus_Par_25",
@@ -378,7 +544,17 @@
       "rdfs:label": "§ 25. Tõestamistoiming",
       "estleg:sourceAct": "Konsulaarseadus",
       "estleg:summary": "1(1)Konsulaarametnik võib teha tõestamistoimingu, kui selle tegemiseks väljaspool Eestit on põhjendatud vajadus ning toiming on vahetult seotud Eesti kodaniku, Eesti juriidilise isiku või Eestis asuva varaga. Konsulaarametnik võib teha tõestamistoimingu, kui selle tegemiseks väljaspool Eestit on põhjendatud vajadus ning toiming on vahetult seotud Eesti kodaniku, Eesti juriidilise isiku või Eestis asuva varaga. 2(2)Erikutset omav konsulaarametnik on pädev tegema notariaadiseaduse (RT I 2000, 104,",
-      "estleg:requestedCluster": "estleg:Cluster_Konsulaarseadus_4"
+      "estleg:requestedCluster": "estleg:Cluster_Konsulaarseadus_4",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Konsulaarseadus_Par_15"
+        }
+      ]
     },
     {
       "@id": "estleg:Konsulaarseadus_Par_26",
@@ -390,7 +566,18 @@
       "rdfs:label": "§ 26. Tõestamistoiming Välisministeeriumi nõusolekul",
       "estleg:sourceAct": "Konsulaarseadus",
       "estleg:summary": "1(1)Erikutset mitteomav konsulaarametnik võib teha tõestamistoimingu üksnes Välisministeeriumi nõusolekul. Erikutset mitteomav konsulaarametnik võib teha tõestamistoimingu üksnes Välisministeeriumi nõusolekul. 2(2)Välisministeeriumi nõusolekul tõestamistoimingu tegemise korra kehtestab välisminister./dyn=922899&id=686521 määrusega. Välisministeeriumi nõusolekul tõestamistoimingu tegemise korra määrusega.",
-      "estleg:requestedCluster": "estleg:Cluster_Konsulaarseadus_4"
+      "estleg:requestedCluster": "estleg:Cluster_Konsulaarseadus_4",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vlisminister"
+        }
+      ],
+      "estleg:competenceType": "regulation"
     },
     {
       "@id": "estleg:Konsulaarseadus_Par_27",
@@ -402,7 +589,12 @@
       "rdfs:label": "§ 27. Ametlik kinnitamine",
       "estleg:sourceAct": "Konsulaarseadus",
       "estleg:summary": "Isiku taotlusel võib konsulaarametnik kinnitada ametlikult allkirja, ärakirja, väljatrüki või väljavõtte õigsust haldusmenetluse seaduse kohaselt. Isiku taotlusel võib konsulaarametnik kinnitada ametlikult allkirja, ärakirja, väljatrüki või väljavõtte õigsust haldusmenetluse seaduse kohaselt.",
-      "estleg:requestedCluster": "estleg:Cluster_Konsulaarseadus_4"
+      "estleg:requestedCluster": "estleg:Cluster_Konsulaarseadus_4",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:Konsulaarseadus_Par_28",
@@ -450,7 +642,12 @@
       "rdfs:label": "§ 31. Perekonnaseisutoiming",
       "estleg:sourceAct": "Konsulaarseadus",
       "estleg:summary": "1(1)Konsulaarametnik võib põhjendatud vajaduse korral koostada Eesti kodaniku taotlusel sünni- ja surmaakti perekonnaseaduse (RT I 1994, 75, 1326; 1996, 40, 773; 49, 953; 1997, 28, 422; 35, 538; 2000, 50, 317; 2001, 16, 69; RT III 2001, 15, 154; RT I 2001, 53, 307; 2002, 53, 336) kohaselt eeldusel, et sünd ja surm ei ole registreeritud asukohariigis. Konsulaarametnik võib põhjendatud vajaduse korral koostada Eesti kodaniku taotlusel sünni- ja surmaakti perekonnaseaduse (RT I 1994, 75, 1326; 1996",
-      "estleg:requestedCluster": "estleg:Cluster_Konsulaarseadus_4"
+      "estleg:requestedCluster": "estleg:Cluster_Konsulaarseadus_4",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:Konsulaarseadus_Par_32",
@@ -462,7 +659,13 @@
       "rdfs:label": "§ 32. Valimisõiguse teostamise tagamine",
       "estleg:sourceAct": "Konsulaarseadus",
       "estleg:summary": "Konsulaarametnik või aukonsul korraldab konsulaarpiirkonnas valimisi Riigikogu valimise seaduse (RT I 2002, 57, 355; 2003, 26, 156) kohaselt. Konsulaarametnik või aukonsul korraldab konsulaarpiirkonnas valimisi Riigikogu valimise seaduse (RT I 2002, 57, 355; 2003, 26, 156) kohaselt.",
-      "estleg:requestedCluster": "estleg:Cluster_Konsulaarseadus_4"
+      "estleg:requestedCluster": "estleg:Cluster_Konsulaarseadus_4",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_riigikogu"
+        }
+      ],
+      "estleg:competenceType": "enforcement"
     },
     {
       "@id": "estleg:Konsulaarseadus_Par_33",
@@ -486,7 +689,13 @@
       "rdfs:label": "§ 34. Eesti kodaniku registreerimine",
       "estleg:sourceAct": "Konsulaarseadus",
       "estleg:summary": "1(1)Konsulaarametnik või aukonsul registreerib konsulaarasutuses konsulaarpiirkonnas viibiva Eesti kodaniku tema taotlusel. Eesti kodaniku konsulaarasutuses registreerimise korra ja registreerimistaotluse vormi kehtestab välisminister./dyn=922899&id=687673 määrusega. Konsulaarametnik või aukonsul registreerib konsulaarasutuses konsulaarpiirkonnas viibiva Eesti kodaniku tema taotlusel. Eesti kodaniku konsulaarasutuses registreerimise korra ja registreerimistaotluse vormi määrusega. 2(2)Konsulaara",
-      "estleg:requestedCluster": "estleg:Cluster_Konsulaarseadus_4"
+      "estleg:requestedCluster": "estleg:Cluster_Konsulaarseadus_4",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vlisminister"
+        }
+      ],
+      "estleg:competenceType": "regulation"
     },
     {
       "@id": "estleg:Konsulaarseadus_Par_35",
@@ -534,7 +743,12 @@
       "rdfs:label": "§ 38. Tõlketeenuse osutamine",
       "estleg:sourceAct": "Konsulaarseadus",
       "estleg:summary": "1(1)Konsulaarametnik või aukonsul võib teha isiku taotlusel tõlke välisriigis või Eestis antud avalikust dokumendist juhul, kui ta valdab piisavalt mõlemat keelt. Konsulaarametnik või aukonsul võib teha isiku taotlusel tõlke välisriigis või Eestis antud avalikust dokumendist juhul, kui ta valdab piisavalt mõlemat keelt. 2(2)Konsulaarametnik vastutab tõlke õigsuse eest riigivastutuse seaduse (RT I 2001, 47, 260; 2002, 62, 377; 2003, 15, 86) kohaselt. Konsulaarametnik vastutab tõlke õigsuse eest r",
-      "estleg:requestedCluster": "estleg:Cluster_Konsulaarseadus_4"
+      "estleg:requestedCluster": "estleg:Cluster_Konsulaarseadus_4",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:Konsulaarseadus_Par_39",
@@ -546,7 +760,13 @@
       "rdfs:label": "§ 39. Dokumendi tellimine",
       "estleg:sourceAct": "Konsulaarseadus",
       "estleg:summary": "1(1)Avalik dokument tellitakse välisriigi asutuselt või Eesti haldusorganilt isiku taotlusel. Avalik dokument tellitakse välisriigi asutuselt või Eesti haldusorganilt isiku taotlusel. 2(2)Dokumendi tellimistaotluse vormi kehtestab välisminister./dyn=922899&id=686535 määrusega, kui välislepinguga ei ole ette nähtud teistsugust vormi. Dokumendi tellimistaotluse vormi määrusega, kui välislepinguga ei ole ette nähtud teistsugust vormi.",
-      "estleg:requestedCluster": "estleg:Cluster_Konsulaarseadus_4"
+      "estleg:requestedCluster": "estleg:Cluster_Konsulaarseadus_4",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vlisminister"
+        }
+      ],
+      "estleg:competenceType": "regulation"
     },
     {
       "@id": "estleg:Konsulaarseadus_Par_40",
@@ -594,7 +814,12 @@
       "rdfs:label": "§ 43. Dokumendi väljastamine ametiabi korras",
       "estleg:sourceAct": "Konsulaarseadus",
       "estleg:summary": "Konsulaarametnikul või aukonsulil on õigus väljastada ametiabi korras teisi isikut tõendavate dokumentide seaduse alusel väljaantud isikut tõendavaid dokumente ja sooritada vajalikke toiminguid. Konsulaarametnikul või aukonsulil on õigus väljastada ametiabi korras teisi isikut tõendavate dokumentide seaduse alusel väljaantud isikut tõendavaid dokumente ja sooritada vajalikke toiminguid.",
-      "estleg:requestedCluster": "estleg:Cluster_Konsulaarseadus_4"
+      "estleg:requestedCluster": "estleg:Cluster_Konsulaarseadus_4",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:Konsulaarseadus_Par_44",
@@ -642,7 +867,12 @@
       "rdfs:label": "§ 47. Konsulaarabi andmine välislepingu kohaselt",
       "estleg:sourceAct": "Konsulaarseadus",
       "estleg:summary": "Välisriigis, kus Eestil ei ole välisesindust, võib kolmanda riigi välisesindus välislepingu kohaselt anda Eesti kodanikule konsulaarabi asukohariigi nõusolekul. Eesti välisesindus võib välislepingu kohaselt anda konsulaarabi kolmanda riigi kodanikule asukohariigi nõusolekul. Välisriigis, kus Eestil ei ole välisesindust, võib kolmanda riigi välisesindus välislepingu kohaselt anda Eesti kodanikule konsulaarabi asukohariigi nõusolekul. Eesti välisesindus võib välislepingu kohaselt anda konsulaarabi",
-      "estleg:requestedCluster": "estleg:Cluster_Konsulaarseadus_5"
+      "estleg:requestedCluster": "estleg:Cluster_Konsulaarseadus_5",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:Konsulaarseadus_Par_48",
@@ -690,7 +920,13 @@
       "rdfs:label": "§ 51. Abi õnnetusjuhtumi või haiguse korral",
       "estleg:sourceAct": "Konsulaarseadus",
       "estleg:summary": "1(1)Konsulaarametnik või aukonsul teavitab Eesti kodaniku raskest vigastusest või haigusest viivitamata Välisministeeriumi, kes teatab sellest kodaniku perekonnale või teistele lähedastele. Konsulaarametnik või aukonsul teavitab Eesti kodaniku raskest vigastusest või haigusest viivitamata Välisministeeriumi, kes teatab sellest kodaniku perekonnale või teistele lähedastele. 2(2)Kui vigastatu või haige tuleb tema seisundi tõttu tuua Eestisse, nõustab ja abistab konsulaarametnik perekonda või teisi",
-      "estleg:requestedCluster": "estleg:Cluster_Konsulaarseadus_5"
+      "estleg:requestedCluster": "estleg:Cluster_Konsulaarseadus_5",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Kui vigastatu või haige"
     },
     {
       "@id": "estleg:Konsulaarseadus_Par_52",
@@ -726,7 +962,13 @@
       "rdfs:label": "§ 54. Abi andmine loodusõnnetuse, katastroofi, terroriakti, sõja ja relvastatud konflikti korral",
       "estleg:sourceAct": "Konsulaarseadus",
       "estleg:summary": "1(1)Välisriigi territooriumil Eesti kodaniku elu või julgeolekut ohustava loodusõnnetuse, katastroofi, terroriakti, sõja või relvastatud konflikti korral püüab konsulaarametnik või aukonsul hoida pidevat kontakti hädasolijaga. Välisriigi territooriumil Eesti kodaniku elu või julgeolekut ohustava loodusõnnetuse, katastroofi, terroriakti, sõja või relvastatud konflikti korral püüab konsulaarametnik või aukonsul hoida pidevat kontakti hädasolijaga. 2(2)Vajaduse korral teeb Välisministeerium Vabarii",
-      "estleg:requestedCluster": "estleg:Cluster_Konsulaarseadus_5"
+      "estleg:requestedCluster": "estleg:Cluster_Konsulaarseadus_5",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vlisministeerium"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:Konsulaarseadus_Par_55",
@@ -738,7 +980,12 @@
       "rdfs:label": "§ 55. Rahalise abi andmine",
       "estleg:sourceAct": "Konsulaarseadus",
       "estleg:summary": "1(1)Konsulaarametnik või aukonsul korraldab tagatise olemasolu korral abi andmist hädasolija kirjaliku avalduse alusel. Konsulaarametnik või aukonsul korraldab tagatise olemasolu korral abi andmist hädasolija kirjaliku avalduse alusel. 2(2)Kui tagatis puudub, võib konsulaarametnik anda rahalist abi hädasolija põhjendatud taotluse alusel. Kui tagatis puudub, võib konsulaarametnik anda rahalist abi hädasolija põhjendatud taotluse alusel. 3(3)Konsulaarabi korras hädasolijale antud rahaline abi tule",
-      "estleg:requestedCluster": "estleg:Cluster_Konsulaarseadus_5"
+      "estleg:requestedCluster": "estleg:Cluster_Konsulaarseadus_5",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:Konsulaarseadus_Par_56",
@@ -750,7 +997,12 @@
       "rdfs:label": "§ 56. Rahalise abi andmisest keeldumine",
       "estleg:sourceAct": "Konsulaarseadus",
       "estleg:summary": "Konsulaarametnik võib keelduda rahalise abi andmisest, kui:11)taotleja on teadlikult esitanud valeandmeid, moonutanud või varjanud teavet;22)taotleja on varem saanud õigustamatult rahalist abi;33)taotleja ei ole varem saadud rahalist abi kasutanud sihipäraselt;44)taotleja ei ole tagastanud varem saadud rahalist abi välisministri kehtestatud korras ja tema suhtes ei ole tehtud otsust rahalise abi tagasimaksmisest vabastamise kohta. Konsulaarametnik võib keelduda rahalise abi andmisest, kui: taotl",
-      "estleg:requestedCluster": "estleg:Cluster_Konsulaarseadus_5"
+      "estleg:requestedCluster": "estleg:Cluster_Konsulaarseadus_5",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:Konsulaarseadus_Par_57",
@@ -774,7 +1026,12 @@
       "rdfs:label": "§ 58. Konsulaarabi andmine Euroopa Liidu kodanikule",
       "estleg:sourceAct": "Konsulaarseadus",
       "estleg:summary": "1(1)Eesti Vabariigi välisesindus kaitseb asukohariigi nõusolekul Euroopa Liidu kodaniku huve, kui Euroopa Liidu liikmesriigil, kelle kodanikuks isik on, ei ole asukohariigis välisesindust. Eesti Vabariigi välisesindus kaitseb asukohariigi nõusolekul Euroopa Liidu kodaniku huve, kui Euroopa Liidu liikmesriigil, kelle kodanikuks isik on, ei ole asukohariigis välisesindust. 2(2)Asjaomase Euroopa Liidu liikmesriigi taotlusel antakse konsulaarabi, kui selle riigi kodanik on hädaolukorras, kinni peetu",
-      "estleg:requestedCluster": "estleg:Cluster_Konsulaarseadus_5"
+      "estleg:requestedCluster": "estleg:Cluster_Konsulaarseadus_5",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Konsulaarseadus_Par_68"
+        }
+      ]
     },
     {
       "@id": "estleg:Konsulaarseadus_Par_59",
@@ -809,7 +1066,12 @@
       "estleg:paragrahv": "§ 68.",
       "rdfs:label": "§ 68. Seaduse jõustumine",
       "estleg:sourceAct": "Konsulaarseadus",
-      "estleg:summary": "1(1)Käesolev seadus jõustub 2004. aasta 1. jaanuaril. Käesolev seadus jõustub 2004. aasta 1. jaanuaril. 2(2)Käesoleva seaduse § 58 jõustub Eesti liitumisel Euroopa Liiduga eraldi seadusega. Käesoleva seaduse § 58 jõustub Eesti liitumisel Euroopa Liiduga eraldi seadusega."
+      "estleg:summary": "1(1)Käesolev seadus jõustub 2004. aasta 1. jaanuaril. Käesolev seadus jõustub 2004. aasta 1. jaanuaril. 2(2)Käesoleva seaduse § 58 jõustub Eesti liitumisel Euroopa Liiduga eraldi seadusega. Käesoleva seaduse § 58 jõustub Eesti liitumisel Euroopa Liiduga eraldi seadusega.",
+      "estleg:references": [
+        {
+          "@id": "estleg:Konsulaarseadus_Par_58"
+        }
+      ]
     }
   ]
 }

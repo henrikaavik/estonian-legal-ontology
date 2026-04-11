@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -16,14 +17,67 @@
       ],
       "rdfs:label": "Lennundusseaduse teemakaardistus (Lennundusõigus)",
       "dc:description": "Lennundusseaduse põhisambad: lennuliiklus, lennukite registreerimine ja lennujaamade tegevus.",
-      "dc:source": "Lennundusseadus (kehtiv terviktekst; vajab §-tasemel lõppverifitseerimist)"
+      "dc:source": "Lennundusseadus (kehtiv terviktekst; vajab §-tasemel lõppverifitseerimist)",
+      "estleg:temporalStatus": "inForce",
+      "estleg:affectedBy": [
+        {
+          "@id": "estleg:Draft_KLIM25_0229"
+        },
+        {
+          "@id": "estleg:Draft_KLIM24_0467"
+        },
+        {
+          "@id": "estleg:Draft_KLIM23_1462"
+        },
+        {
+          "@id": "estleg:Draft_KAM21_0870"
+        },
+        {
+          "@id": "estleg:Draft_MKM20_1044"
+        },
+        {
+          "@id": "estleg:Draft_KAM20_0822"
+        },
+        {
+          "@id": "estleg:Draft_MKM17_0160"
+        },
+        {
+          "@id": "estleg:Draft_MKM15_1102"
+        },
+        {
+          "@id": "estleg:Draft_MKM15_0807"
+        },
+        {
+          "@id": "estleg:Draft_MKM14_0533"
+        }
+      ],
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/4416"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5616"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2441"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2431"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/0411"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_lennundusseadus",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)"
+      "rdfs:label": "Õigusnorm (paragrahv)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:TopicCluster_lennundusseadus",
@@ -90,7 +144,18 @@
       "rdfs:label": "Lennuliikluse üle järelevalve",
       "estleg:requestedCluster": "lennuliiklus",
       "estleg:summary": "Annab pädevale asutusele õiguse kontrollida lennuliikluse nõuete täitmist, teha ettekirjutusi ja rakendada rikkumiste korral haldusmeetmeid.",
-      "estleg:sourceAct": "Lennundusseadus"
+      "estleg:sourceAct": "Lennundusseadus",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:MERESOIT_Par_Sadam_jarelevalve"
+        },
+        {
+          "@id": "estleg:POLL_Par_Jarelevalve"
+        },
+        {
+          "@id": "estleg:RAUDTEE_Par_Ohutus_jarelevalve"
+        }
+      ]
     },
     {
       "@id": "estleg:LENN_Par_Register_objekt",
@@ -102,7 +167,12 @@
       "rdfs:label": "Õhusõiduki registrisse kandmise alused",
       "estleg:requestedCluster": "lennukite_registreerimine",
       "estleg:summary": "Sätestab, millistel tingimustel õhusõiduk registreeritakse Eesti registris ning millised andmed tuleb registrikandes esitada.",
-      "estleg:sourceAct": "Lennundusseadus"
+      "estleg:sourceAct": "Lennundusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ]
     },
     {
       "@id": "estleg:LENN_Par_Register_menetlus",
@@ -114,7 +184,12 @@
       "rdfs:label": "Õhusõiduki registreerimise menetlus",
       "estleg:requestedCluster": "lennukite_registreerimine",
       "estleg:summary": "Reguleerib taotluse esitamise, dokumentide kontrolli, registrikande tegemise ja registrikande muutmise või kustutamise menetluslikud alused.",
-      "estleg:sourceAct": "Lennundusseadus"
+      "estleg:sourceAct": "Lennundusseadus",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:MERESOIT_Par_Register_menetlus"
+        }
+      ]
     },
     {
       "@id": "estleg:LENN_Par_Register_tunnus",

@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -15,14 +16,77 @@
         "owl:Ontology"
       ],
       "rdfs:label": "Tolliseadus teemakaardistus",
-      "dc:source": "Tolliseadus"
+      "dc:source": "Tolliseadus",
+      "estleg:entryIntoForce": {
+        "@value": "2004-05-01",
+        "@type": "xsd:date"
+      },
+      "estleg:repealDate": {
+        "@value": "2007-02-17",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "repealed",
+      "estleg:amendedBy": [
+        {
+          "@id": "estleg:Draft_RAM24_0458"
+        },
+        {
+          "@id": "estleg:Draft_RAM23_1361"
+        },
+        {
+          "@id": "estleg:Draft_RAM23_1127"
+        },
+        {
+          "@id": "estleg:Draft_RAM20_1159"
+        },
+        {
+          "@id": "estleg:Draft_RAM14_1410"
+        }
+      ],
+      "estleg:affectedBy": [
+        {
+          "@id": "estleg:Draft_RAM24_0458"
+        },
+        {
+          "@id": "estleg:Draft_RAM23_1361"
+        },
+        {
+          "@id": "estleg:Draft_RAM23_1127"
+        },
+        {
+          "@id": "estleg:Draft_RAM20_1159"
+        },
+        {
+          "@id": "estleg:Draft_RAM14_1410"
+        }
+      ],
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/5216"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5206"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5226"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2431"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2441"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_tolliseadus",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)"
+      "rdfs:label": "Õigusnorm (paragrahv)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:Cluster_Tolliseadus_1",
@@ -116,7 +180,7 @@
       "@id": "estleg:Tolliseadus_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. Reguleerimisala",
@@ -128,7 +192,7 @@
       "@id": "estleg:Tolliseadus_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. Põhimõisted",
@@ -140,19 +204,25 @@
       "@id": "estleg:Tolliseadus_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 3.",
       "rdfs:label": "§ 3. Esindamine",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Isik võib kooskõlas ühenduse tolliseadustiku artikli 5 lõikega 1 määrata tolliga suhtlemiseks esindaja. Esindaja peab olema Eesti isik, välja arvatud transiidideklaratsioonide või ajutise impordi deklaratsioonide esitamisel ja isikute puhul, kes esitavad deklaratsioone juhuti, tingimusel, et toll peab seda põhjendatuks. Isik võib kooskõlas ühenduse tolliseadustiku artikli 5 lõikega 1 määrata tolliga suhtlemiseks esindaja. Esindaja peab olema Eesti isik, välja arvatud transiidideklaratsioonid",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_1"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_1",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Esindaja"
     },
     {
       "@id": "estleg:Tolliseadus_Par_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 4.",
       "rdfs:label": "§ 4. Tolliagentuur",
@@ -164,19 +234,24 @@
       "@id": "estleg:Tolliseadus_Par_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 5.",
       "rdfs:label": "§ 5. Tolliagentuuri tegevusluba",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Tolliagentuuri tegevusloa väljastab ja tunnistab kehtetuks toll. Tolliagentuuri tegevusloa väljastab ja tunnistab kehtetuks toll. 2(2)Toll keeldub tolliagentuuri loa väljastamisest, kui isik ei esita tolli rahuldavat tagatist. Toll keeldub tolliagentuuri loa väljastamisest, kui isik ei esita tolli rahuldavat tagatist. 3(3)Kui tolliagentuur ei ole 40 kalendripäeva enne kehtiva tagatise kehtivusaja lõppemist tollile esitanud uut tagatist või kui toll on teinud tagatise suurendamise otsuse, kun",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_1"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_1",
+      "estleg:references": [
+        {
+          "@id": "estleg:Tolliseadus_Par_62"
+        }
+      ]
     },
     {
       "@id": "estleg:Tolliseadus_Par_6",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 6.",
       "rdfs:label": "§ 6. Tolli otsus",
@@ -188,31 +263,41 @@
       "@id": "estleg:Tolliseadus_Par_7",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 7.",
       "rdfs:label": "§ 7. Tolli otsuste ja toimingute vaidlustamine",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "Isikul on õigus esitada tolli otsuse või tolliametniku toimingu peale vaie. Vaide esitamine ja lahendamine toimub maksukorralduse seaduses (RT I 2002, 26, 150; 57, 358; 63, 387; 99, 581; 110, 660; 111, 662; 2003, 2, 17; 48, 341; 71, 472; 82, 554; 88, 591; 2004, 2, 7) vaide kohta sätestatud korras, arvestades ühenduse õigusaktides sätestatud erisusi. Isikul on õigus esitada tolli otsuse või tolliametniku toimingu peale vaie. Vaide esitamine ja lahendamine toimub maksukorralduse seaduses (RT I 200",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_1"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_1",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:Tolliseadus_Par_8",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 8.",
       "rdfs:label": "§ 8. Tolliformaalsuste teostamise keel",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Tolliformaalsused teostatakse eesti keeles. Tolliformaalsused teostatakse eesti keeles. 2(2)Tollieeskirjades ettenähtud juhtudel võib tolliformaalsusi teostada ka mõnes muus keeles, kusjuures tollil on õigus vajaduse korral nõuda tollideklaratsiooni lisadokumentide tõlget. Põhjendatud juhtudel nõuab toll notari poolt tõestatud või vandetõlgi poolt kinnitatud tõlget. Tollieeskirjades ettenähtud juhtudel võib tolliformaalsusi teostada ka mõnes muus keeles, kusjuures tollil on õigus vajaduse ko",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_1"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_1",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:Tolliseadus_Par_9",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 9.",
       "rdfs:label": "§ 9. Tollikontrolli teostamine",
@@ -224,19 +309,24 @@
       "@id": "estleg:Tolliseadus_Par_10",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 10.",
       "rdfs:label": "§ 10. Keeldude ja piirangute riiklik järelevalve",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "Kui Euroopa Liidu liikmesriikide vahelise kaubanduse või postisaadetiste, samuti ühest liikmesriigist teise siirduvate isikutega kaasas oleva kauba suhtes on õigusaktiga kehtestatud keeld või piirang ja toll teostab sellise keelu või piirangu riiklikku järelevalvet, võib tolliametnik kasutada oma ülesannete täitmiseks kõiki neid õigusi, mis on talle ühenduse õigusaktide ja käesoleva seadusega antud tollieeskirjade rakendamisel, kui tal on riski hindamisele tuginedes alust arvata, et sellist keel",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_1"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_1",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:Tolliseadus_Par_11",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 11.",
       "rdfs:label": "§ 11. Teabe andmine ja andmete elektrooniline edastamine",
@@ -248,79 +338,117 @@
       "@id": "estleg:Tolliseadus_Par_12",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 12.",
       "rdfs:label": "§ 12. Tollikontrolli tsoon",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Tollikontrolli tsoon hõlmab rahvusvaheliseks liikluseks avatud sadama ja lennujaama territooriumi, raudteejaama ala või maanteelõigul olevat piiripunkti, mille Maksu- ja Tolliameti peadirektor on kooskõlastatult selle omaniku või seadusliku valdajaga määranud tolliformaalsuste teostamiseks. Tollikontrolli tsoon hõlmab rahvusvaheliseks liikluseks avatud sadama ja lennujaama territooriumi, raudteejaama ala või maanteelõigul olevat piiripunkti, mille Maksu- ja Tolliameti peadirektor on kooskõla",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_1"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_1",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_maksu__ja_tolliamet"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:Tolliseadus_Par_13",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 13.",
       "rdfs:label": "§ 13. Tollijärelevalve all olev kaup",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Tollijärelevalve all oleva kaubaga võib teostada vaid tolli poolt aktsepteeritud toiminguid ja tehinguid. Tollijärelevalve all oleva kaubaga võib teostada vaid tolli poolt aktsepteeritud toiminguid ja tehinguid. 2(2)Kui tollil on kahtlusi kauba tollijärelevalve alt ebaseadusliku väljaviimise suhtes, lasub võlgnikul kohustus tõendada, et kaup ei ole ebaseaduslikult tollijärelevalve alt välja viidud. Kui võlgnik ei suuda seda tõendada, loetakse kaup tollijärelevalve alt ebaseaduslikult väljavi",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_1"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_1",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:Tolliseadus_Par_14",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 14.",
       "rdfs:label": "§ 14. Maksu- ja Tolliameti ülesanded tollieeskirjade rakendamisel",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "Tollieeskirjade rakendamisel on Maksu- ja Tolliameti ülesanneteks ühiskonna ja majanduse kaitsmine maksupettuste ja salakaubaveo tõkestamisega, kauba importimisel tasumisele kuuluvate maksude kogumine ning Eesti ja ühenduseväliste riikide vahelise seadusliku kaubanduse hõlbustamine. Tollieeskirjade rakendamisel on Maksu- ja Tolliameti ülesanneteks ühiskonna ja majanduse kaitsmine maksupettuste ja salakaubaveo tõkestamisega, kauba importimisel tasumisele kuuluvate maksude kogumine ning Eesti ja ü",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_2"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_2",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_maksu__ja_tolliamet"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:Tolliseadus_Par_15",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 15.",
       "rdfs:label": "§ 15. Tollisümboolika",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Tollisümbolid on tollilipp, tollivapp ja tolliembleem. Tollisümbolid on tollilipp, tollivapp ja tolliembleem. 2(2)Tollilipu, tollivapi ja tolliembleemi kirjelduse kehtestab Vabariigi Valitsus määrusega./dyn=740392&id=942083../dyn=740392&id=743164;942083 Tollilipu, tollivapi ja tolliembleemi kirjelduse 3(3)Tollilipu, tollivapi ja tolliembleemi kasutamise korra kehtestab rahandusminister määrusega./dyn=740392&id=743164 . Tollilipu, tollivapi ja tolliembleemi kasutamise korra",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_2"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_2",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        },
+        {
+          "@id": "estleg:Institution_rahandusminister"
+        }
+      ],
+      "estleg:competenceType": "regulation"
     },
     {
       "@id": "estleg:Tolliseadus_Par_16",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 16.",
       "rdfs:label": "§ 16. Maksu- ja Tolliameti koostöö teiste täidesaatva riigivõimu asutustega",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Oma ülesannete täitmisel teeb Maksu- ja Tolliamet koostööd teiste täidesaatva riigivõimu asutustega vastavalt tollieeskirjadele ja muudele õigusaktidele. Oma ülesannete täitmisel teeb Maksu- ja Tolliamet koostööd teiste täidesaatva riigivõimu asutustega vastavalt tollieeskirjadele ja muudele õigusaktidele. 2(2)Maksu- ja Tolliamet koordineerib kauba ühendusevälisest riigist Eestisse või Eestist ühendusevälisesse riiki toimetamisega seotud teiste täidesaatva riigivõimu asutuste omavahelist koo",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_2"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_2",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_maksu__ja_tolliamet"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:Tolliseadus_Par_17",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 17.",
       "rdfs:label": "§ 17. Ametitõendi esitamine",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "Tolliametnik on kohustatud teenistuskohustuste täitmisel esitama esimesel nõudmisel ametitõendi. Tolliametnik on kohustatud teenistuskohustuste täitmisel esitama esimesel nõudmisel ametitõendi.",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_2"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_2",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Tolliametnik"
     },
     {
       "@id": "estleg:Tolliseadus_Par_18",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 18.",
       "rdfs:label": "§ 18. Tolliametniku õigused",
@@ -332,55 +460,92 @@
       "@id": "estleg:Tolliseadus_Par_19",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 19.",
       "rdfs:label": "§ 19. Erivahendid ja relvastus",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Maksu- ja Tolliameti ametnike erivahendid jagunevad passiivse ja aktiivse kaitse vahenditeks ning abivahenditeks. Tsiviilotstarbelised esemed ja vahendid on Maksu- ja Tolliameti ametnike erivahenditeks vaid juhul, kui neid kasutatakse Maksu- ja Tolliameti ülesannete täitmisel. Maksu- ja Tolliameti ametnike erivahendid jagunevad passiivse ja aktiivse kaitse vahenditeks ning abivahenditeks. Tsiviilotstarbelised esemed ja vahendid on Maksu- ja Tolliameti ametnike erivahenditeks vaid juhul, kui ",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_2"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_2",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_maksu__ja_tolliamet"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:Tolliseadus_Par_20",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 20.",
       "rdfs:label": "§ 20. Tulirelva kasutamine",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Maksu- ja Tolliameti ametnikul on õigus kanda ja kasutada tulirelva. Ta võib tulirelva kasutada ohuolukorras pärast eelnevat hoiatamist äärmise abinõuna, kui teisiti ei ole elu või tervist ohtu panemata võimalik täita temale pandud teenistuskohustusi. Maksu- ja Tolliameti ametnikul on õigus kanda ja kasutada tulirelva. Ta võib tulirelva kasutada ohuolukorras pärast eelnevat hoiatamist äärmise abinõuna, kui teisiti ei ole elu või tervist ohtu panemata võimalik täita temale pandud teenistuskoh",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_2"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_2",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_maksu__ja_tolliamet"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:Tolliseadus_Par_21",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 21.",
       "rdfs:label": "§ 21. Tolliametnike vormiriietus",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Tolliametnikud kannavad teenistuses olles ettenähtud juhtudel vormiriietust. Tolliametnikud kannavad teenistuses olles ettenähtud juhtudel vormiriietust. 2(2)Tolliametnike vormiriietuse kirjelduse ja vormiriietuse esemete kasutamise tähtajad kehtestab Vabariigi Valitsus määrusega./dyn=740392&id=921392 . Tolliametnike vormiriietuse kirjelduse ja vormiriietuse esemete kasutamise tähtajad 3(3)Tolliametnikele vormiriietuse andmise ja selle kandmise korra kehtestab rahandusminister määrusega./dyn",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_2"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_2",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        },
+        {
+          "@id": "estleg:Institution_rahandusminister"
+        }
+      ],
+      "estleg:competenceType": "regulation",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Vangistusseadus_Par_147"
+        }
+      ]
     },
     {
       "@id": "estleg:Tolliseadus_Par_22",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 22.",
       "rdfs:label": "§ 22. Tolliametnike koostöö teiste täidesaatva riigivõimu asutuste ametnikega",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Tolliametnikud on kohustatud oma pädevuse piires kaasa aitama füüsiliste isikute ebaseaduslike piiriületamiskatsete tõkestamisele ning edastama piirivalveametnikele viivitamatult neile teada oleva asjassepuutuva informatsiooni. Tolliametnikud on kohustatud oma pädevuse piires kaasa aitama füüsiliste isikute ebaseaduslike piiriületamiskatsete tõkestamisele ning edastama piirivalveametnikele viivitamatult neile teada oleva asjassepuutuva informatsiooni. 2(2)Tolliametnikud on kohustatud kauba i",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_2"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_2",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Tolliametnikud"
     },
     {
       "@id": "estleg:Tolliseadus_Par_23",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 23.",
       "rdfs:label": "§ 23. Eesti tollitariifistik",
@@ -392,19 +557,30 @@
       "@id": "estleg:Tolliseadus_Par_24",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 24.",
       "rdfs:label": "§ 24. Eesti tollitariifistiku haldamine ja muutmine",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Eesti tollitariifistikku haldab ja selle õigsuse eest vastutab Maksu- ja Tolliamet. Riiklike meetmete, sealhulgas nomenklatuuride haldamist korraldavad ja andmete õigsuse eest vastutavad ministeeriumid, kelle valitsemisalasse vastav meede kuulub. Riiklikku meedet haldaval asutusel on õigus teha Eesti tollitariifistikus õigusaktidega kooskõla säilitamiseks vajalikke muudatusi. Eesti tollitariifistikku haldab ja selle õigsuse eest vastutab Maksu- ja Tolliamet. Riiklike meetmete, sealhulgas nom",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_3"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_3",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_maksu__ja_tolliamet"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:Tolliseadus_Par_25",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 25.",
       "rdfs:label": "§ 25. Kauba tariifne klassifitseerimine",
@@ -416,7 +592,7 @@
       "@id": "estleg:Tolliseadus_Par_26",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 26.",
       "rdfs:label": "§ 26. Kauba mittesooduspäritolu sertifikaadi väljastamine",
@@ -428,7 +604,7 @@
       "@id": "estleg:Tolliseadus_Par_27",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 27.",
       "rdfs:label": "§ 27. Tolliväärtuse määramisel kasutatav valuutakurss ja otsuse tegemise tähtaeg",
@@ -440,127 +616,229 @@
       "@id": "estleg:Tolliseadus_Par_28",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 28.",
       "rdfs:label": "§ 28. Kauba ühendusevälisest riigist Eestisse toimetamine",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Kauba ühendusevälisest riigist Eestisse toimetamisel tuleb isikul, kes kauba Eestisse toimetas, või isikul, kes on võtnud vastutuse selle kauba Eestisse toimetamisele järgneva veo eest, või isikul, kelle nimel eelnimetatud isikud tegutsevad, esitada tollile kaup ja ülddeklaratsioon. Kauba ühendusevälisest riigist Eestisse toimetamisel tuleb isikul, kes kauba Eestisse toimetas, või isikul, kes on võtnud vastutuse selle kauba Eestisse toimetamisele järgneva veo eest, või isikul, kelle nimel ee",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_4"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_4",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Eestisse toimetamisel"
     },
     {
       "@id": "estleg:Tolliseadus_Par_29",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 29.",
       "rdfs:label": "§ 29. Sisenemisdeklaratsioon",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Kauba ühendusevälisest riigist Eestisse toimetamiseks maanteetranspordivahendiga ülddeklaratsiooni alusel edastatakse andmed tollile tollideklaratsiooni vormil (edaspidi sisenemisdeklaratsioon ). Kauba ühendusevälisest riigist Eestisse toimetamiseks maanteetranspordivahendiga ülddeklaratsiooni alusel edastatakse andmed tollile tollideklaratsiooni vormil (edaspidi sisenemisdeklaratsioon ). 2(2)Sisenemisdeklaratsiooni võib esitada isik, kellele toll on andnud sisenemisdeklaratsiooni esitamise ",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_4"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_4",
+      "estleg:references": [
+        {
+          "@id": "estleg:Karistusseadustik_Par_391"
+        },
+        {
+          "@id": "estleg:Karistusseadustik_Par_392"
+        },
+        {
+          "@id": "estleg:Karistusseadustik_Par_393"
+        }
+      ],
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:Tolliseadus_Par_30",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 30.",
       "rdfs:label": "§ 30. Kauba ajutise ladustamise tingimused",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Ajutiselt ladustatud kaupa võib hoida tolli poolt aktsepteeritud tolliterminalis või hoiukohas tollieeskirjades ettenähtud tingimustel. Tolliterminalis võivad kaupa ajutiselt ladustatuna hoida kõik kaupa ühendusevälisest riigist Eestisse toimetavad isikud, hoiukoht aga on ette nähtud ainult kindlaksmääratud kasutajale. Ajutiselt ladustatud kaupa võib hoida tolli poolt aktsepteeritud tolliterminalis või hoiukohas tollieeskirjades ettenähtud tingimustel. Tolliterminalis võivad kaupa ajutiselt ",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_4"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_4",
+      "estleg:references": [
+        {
+          "@id": "estleg:Karistusseadustik_Par_391"
+        },
+        {
+          "@id": "estleg:Karistusseadustik_Par_392"
+        },
+        {
+          "@id": "estleg:Karistusseadustik_Par_393"
+        }
+      ],
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:Tolliseadus_Par_31",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 31.",
       "rdfs:label": "§ 31. Kauba hoiulevõtmine",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Tollile esitatud kauba, mille kogus ega tolliväärtus ei ületa EÜ Komisjoni määruse 1917/2000/EÜ, millega kehtestatakse teatavad sätted nõukogu määruse 1172/95/EÜ rakendamiseks väliskaubandusstatistika suhtes (EÜT L 229, 09.09.2000, lk 14–26), artiklis 3 sätestatud statistilist läve, võib toll kauba valdaja taotluse alusel võtta kuni tollikäitlusviisi määramiseni hoiule ning see kaup loetakse ajutiselt ladustatuks. Tollile esitatud kauba, mille kogus ega tolliväärtus ei ületa EÜ Komisjoni mää",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_4"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_4",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Tolliseadus_Par_47"
+        }
+      ]
     },
     {
       "@id": "estleg:Tolliseadus_Par_32",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 32.",
       "rdfs:label": "§ 32. Tollikäitlusviisi määramise kord",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Ajutiselt ladustatud kaubale tuleb ettenähtud tähtpäevaks määrata tollikäitlusviis. Ajutiselt ladustatud kaubale tuleb ettenähtud tähtpäevaks määrata tollikäitlusviis. 2(2)Tollikäitlusviisi määramise eest vastutab ülddeklaratsiooni esitanud isik. Tollikäitlusviisi määramiseks teostatakse tolliformaalsusi. Tollikäitlusviisi määramise eest vastutab ülddeklaratsiooni esitanud isik. Tollikäitlusviisi määramiseks teostatakse tolliformaalsusi. 3(3)Vabariigi Valitsus./dyn=740392&id=920556;777126 võ",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_5"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_5",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Ajutiselt ladustatud kaubale",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:Tolliseadus_Par_33",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 33.",
       "rdfs:label": "§ 33. Tollikontroll tollikäitlusviisi määramisel",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Vastavat valdkonda reguleeriva seaduse alusel nõutavat dokumenti või riikliku registri kannet kontrollitakse kauba importimisel ja eksportimisel tolliformaalsuste käigus, kui õigusaktides ei ole sätestatud teisiti. Vastavat valdkonda reguleeriva seaduse alusel nõutavat dokumenti või riikliku registri kannet kontrollitakse kauba importimisel ja eksportimisel tolliformaalsuste käigus, kui õigusaktides ei ole sätestatud teisiti. 2(2)Tollil on õigus tollikontrolli teostamiseks kaasata eksperte. ",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_5"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_5",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:Tolliseadus_Par_34",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 34.",
       "rdfs:label": "§ 34. Tolli tegevuseks vajalikud ruumid",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Tollil on õigus saada tolliterminalis, tollilaos, vabatsoonis või vabalaos selle omanikult või seaduslikult valdajalt tolli tegevuseks vajalikud tööohutus- ja töötervishoiunõuete kohased ruumid, võimaluse korral sisustatud bürooruumid, ning sidevahendid tasuta kasutamiseks. Sideteenuste eest tasub toll. Tollil on õigus saada tolliterminalis, tollilaos, vabatsoonis või vabalaos selle omanikult või seaduslikult valdajalt tolli tegevuseks vajalikud tööohutus- ja töötervishoiunõuete kohased ruum",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_5"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_5",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:Tolliseadus_Par_35",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 35.",
       "rdfs:label": "§ 35. Kaubakoguste mõõtmine",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Kaubakoguste mõõtmist tollikontrolli käigus võib teostada ühenduse isik, kes on mõõteseaduse (RT I 2004, 18, 132) kohaselt tunnistatud erialaselt pädevaks asjaomases mõõtevaldkonnas. Kaubakoguste mõõtmist tollikontrolli käigus võib teostada ühenduse isik, kes on mõõteseaduse (RT I 2004, 18, 132) kohaselt tunnistatud erialaselt pädevaks asjaomases mõõtevaldkonnas. 2(2)Ülddeklaratsiooni esitaja või deklarant on kohustatud vastavalt tollieeskirjadele ja nendes nimetatud juhtudel tolliformaalsus",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_5"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_5",
+      "estleg:references": [
+        {
+          "@id": "estleg:Tolliseadus_Par_39"
+        }
+      ],
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Ülddeklaratsiooni esitaja või deklarant"
     },
     {
       "@id": "estleg:Tolliseadus_Par_36",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 36.",
       "rdfs:label": "§ 36. Tolliasutuste pädevus",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Ühenduse tolliseadustiku artiklis 60 sätestatud tolliasutuste pädevuse tolliformaalsuste teostamisel ning tolliformaalsuste teostamise aja ja koha määrab Maksu- ja Tolliameti peadirektor. Ühenduse tolliseadustiku artiklis 60 sätestatud tolliasutuste pädevuse tolliformaalsuste teostamisel ning tolliformaalsuste teostamise aja ja koha määrab Maksu- ja Tolliameti peadirektor. 2(2)Ühenduse tolliseadustiku rakendussätete artiklis 202 sätestatud tolliteenusena tolliformaalsuste teisel ajal teostam",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_5"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_5",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_maksu__ja_tolliamet"
+        }
+      ],
+      "estleg:competenceType": "general",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Tolliseadus_Par_39"
+        }
+      ]
     },
     {
       "@id": "estleg:Tolliseadus_Par_37",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 37.",
       "rdfs:label": "§ 37. Kirjaliku tollideklaratsiooni esitamine",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Kui kaubasaadetise kogus või tolliväärtus ületab ühenduse õigusaktis sätestatud statistilist läve ja kaubasaadetist ei saa vastavalt ühenduse tolliseadustiku rakendussätetele deklareerida suuliselt või muu toimingu abil, tuleb esitada kirjalik tollideklaratsioon. Kirjaliku tollideklaratsiooni võib esitada ka muudel juhtudel. Kui kaubasaadetise kogus või tolliväärtus ületab ühenduse õigusaktis sätestatud statistilist läve ja kaubasaadetist ei saa vastavalt ühenduse tolliseadustiku rakendussät",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_5"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_5",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Tolliseadus_Par_47"
+        }
+      ]
     },
     {
       "@id": "estleg:Tolliseadus_Par_38",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 38.",
       "rdfs:label": "§ 38. Vastutus tollideklaratsiooni esitamisel",
@@ -572,55 +850,84 @@
       "@id": "estleg:Tolliseadus_Par_39",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 39.",
       "rdfs:label": "§ 39. Kauba läbivaatus ning proovide ja näidiste võtmine",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Ühenduse tolliseadustiku rakendussätete artiklis 239 sätestatud tolliteenusena teises kohas ja teisel ajal kauba läbivaatuse tegemise kulud arvutatakse ja tolliteenuse eest tasutakse vastavalt käesoleva seaduse § 36 lõikes 2 ja selle alusel kehtestatud korrale. Ühenduse tolliseadustiku rakendussätete artiklis 239 sätestatud tolliteenusena teises kohas ja teisel ajal kauba läbivaatuse tegemise kulud arvutatakse ja tolliteenuse eest tasutakse vastavalt käesoleva seaduse § 36 lõikes 2 ja selle ",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_5"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_5",
+      "estleg:references": [
+        {
+          "@id": "estleg:Tolliseadus_Par_36"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Tolliseadus_Par_35"
+        },
+        {
+          "@id": "estleg:Tolliseadus_Par_106"
+        }
+      ]
     },
     {
       "@id": "estleg:Tolliseadus_Par_40",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 40.",
       "rdfs:label": "§ 40. Transpordivahendi läbivaatus",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Eestisse saabuva, Eestis viibiva ja Eestist lahkuva transpordivahendi võib toll peatada ja läbi vaadata. Eestisse saabuva, Eestis viibiva ja Eestist lahkuva transpordivahendi võib toll peatada ja läbi vaadata. 2(2)Transpordivahendi läbivaatust tehakse selle valdaja juuresolekul. Kui transpordivahendi valdajat ei ole võimalik kindlaks teha või kui ta keeldub läbivaatuse juures olemast, võib tolliametniku korraldusel ühe manuka juuresolekul transpordivahendi läbi vaadata ka selle valdaja juure",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_5"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_5",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:Tolliseadus_Par_41",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 41.",
       "rdfs:label": "§ 41. Pagasi läbivaatus",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Tolliametnikul on õigus nõuda Eesti ja ühendusevälise riigi vahelist piiri ületavalt, samuti sadama või lennujaama transiitreisijate alal viibivalt reisijalt pagasi esitamist läbivaatuseks ning see läbi vaadata. Kontrollitav isik peab tolliametnikule oma pagasi ette näitama ning tolliametniku korraldusel lahti pakkima. Tolliametnikul on õigus nõuda Eesti ja ühendusevälise riigi vahelist piiri ületavalt, samuti sadama või lennujaama transiitreisijate alal viibivalt reisijalt pagasi esitamist ",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_5"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_5",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ],
+      "estleg:dutyHolder": "Kontrollitav isik"
     },
     {
       "@id": "estleg:Tolliseadus_Par_42",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 42.",
       "rdfs:label": "§ 42. Reisija läbivaatus",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Enne reisija läbivaatust võib temaga samast soost tolliametnik väliselt kombata läbivaadatava riideid, et teha kindlaks deklareerimisele kuuluva, kuid tollile esitamata, samuti keeldude või piirangutega seotud kauba olemasolu. Enne reisija läbivaatust võib temaga samast soost tolliametnik väliselt kombata läbivaadatava riideid, et teha kindlaks deklareerimisele kuuluva, kuid tollile esitamata, samuti keeldude või piirangutega seotud kauba olemasolu. 2(2)Kui tollil on riski hindamisele tugine",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_5"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_5",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:Tolliseadus_Par_43",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 43.",
       "rdfs:label": "§ 43. Postisaadetise läbivaatus",
@@ -632,31 +939,46 @@
       "@id": "estleg:Tolliseadus_Par_44",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 44.",
       "rdfs:label": "§ 44. Tollitõkendid",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Tollitõkend on plomm või muu tõkend, mille tolliametnik on paigaldanud kaubale, transpordivahendile ja ehitisele nende puutumatuse tagamiseks. Ühele objektile võib panna mitu tollitõkendit. Tollitõkend on plomm või muu tõkend, mille tolliametnik on paigaldanud kaubale, transpordivahendile ja ehitisele nende puutumatuse tagamiseks. Ühele objektile võib panna mitu tollitõkendit. 2(2)Tollitõkendiga kaitstud transpordivahendis või ehitises asuva kauba puutumatuse ning tollitõkendi rikkumatuse ee",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_5"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_5",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:Tolliseadus_Par_45",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 45.",
       "rdfs:label": "§ 45. Hõivamisele kuuluv kaup",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Ühenduse tolliseadustiku artiklites 53, 57 ja 75 nimetatud kauba toll hõivab ja realiseerib, hävitab tollijärelevalve all või annab tasuta üle käesoleva seaduse §-des 97 ja 98 sätestatud korras. Ühenduse tolliseadustiku artiklites 53, 57 ja 75 nimetatud kauba toll hõivab ja realiseerib, hävitab tollijärelevalve all või annab tasuta üle käesoleva seaduse §-des 97 ja 98 sätestatud korras. 2(2)Toll toimetab deklarandile kätte kirjaliku teate oma kavatsuse kohta kaup hõivata ja määrab tähtaja to",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_5"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_5",
+      "estleg:references": [
+        {
+          "@id": "estleg:Tolliseadus_Par_97"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Tolliseadus_Par_97"
+        }
+      ]
     },
     {
       "@id": "estleg:Tolliseadus_Par_46",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 46.",
       "rdfs:label": "§ 46. Lihtsustatud tollideklaratsioonid",
@@ -668,19 +990,27 @@
       "@id": "estleg:Tolliseadus_Par_47",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 47.",
       "rdfs:label": "§ 47. Reisija deklaratsioon",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Reisija, kelle pagasis ühendusevälisest riigist Eestisse või Eestist ühendusevälisesse riiki siirdumisel sisaldub kaupa, mille kogus või tolliväärtus ületab ühenduse õigusaktis sätestatud statistilist läve ja seda kaupa ei saa vastavalt ühenduse tolliseadustiku rakendussätetele deklareerida suuliselt või muu toimingu abil, esitab kauba kohta kirjaliku tollideklaratsiooni. Reisija, kelle pagasis ühendusevälisest riigist Eestisse või Eestist ühendusevälisesse riiki siirdumisel sisaldub kaupa, ",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_5"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_5",
+      "estleg:references": [
+        {
+          "@id": "estleg:Tolliseadus_Par_37"
+        },
+        {
+          "@id": "estleg:Tolliseadus_Par_31"
+        }
+      ]
     },
     {
       "@id": "estleg:Tolliseadus_Par_48",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 48.",
       "rdfs:label": "§ 48. Postisaadetise deklaratsioon",
@@ -692,55 +1022,88 @@
       "@id": "estleg:Tolliseadus_Par_49",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 49.",
       "rdfs:label": "§ 49. Tollideklaratsiooni muutmine ja kehtetuks tunnistamine pärast kauba vabastamist",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Toll võib omal algatusel või deklarandi taotlusel teha tollideklaratsioonis pärast kauba vabastamist muudatusi või tunnistada tollideklaratsiooni kehtetuks. Toll võib omal algatusel või deklarandi taotlusel teha tollideklaratsioonis pärast kauba vabastamist muudatusi või tunnistada tollideklaratsiooni kehtetuks. 2(2)Pärast kauba vabastamist tollideklaratsioonis muudatuste tegemise ja tollideklaratsiooni kehtetuks tunnistamise täiendavad juhised kehtestab rahandusminister määrusega./dyn=74039",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_5"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_5",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_rahandusminister"
+        }
+      ],
+      "estleg:competenceType": "regulation"
     },
     {
       "@id": "estleg:Tolliseadus_Par_50",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 50.",
       "rdfs:label": "§ 50. Tollideklaratsiooni järelkontroll",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Tollideklaratsiooni järelkontrolli käigus võib tolliametnik ühenduse tolliseadustiku artiklis 78 sätestatud õigusi kasutada talle Maksu- ja Tolliameti peadirektori või tema volitatud isiku antud volituse alusel oma pädevuse piires. Tolliametnikul on keelatud siseneda eluruumi seal elava isiku loata. Tollideklaratsiooni järelkontrolli käigus võib tolliametnik ühenduse tolliseadustiku artiklis 78 sätestatud õigusi kasutada talle Maksu- ja Tolliameti peadirektori või tema volitatud isiku antud ",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_5"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_5",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Prohibition"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_maksu__ja_tolliamet"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:Tolliseadus_Par_51",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 51.",
       "rdfs:label": "§ 51. Vabasse ringlusse lubamine",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Vabasse ringlusse lubamine annab ühendusevälisele kaubale ühenduse kauba tollistaatuse. Vabasse ringlusse lubamine annab ühendusevälisele kaubale ühenduse kauba tollistaatuse. 2(2)Vabasse ringlusse lubamise tolliprotseduuri rakendamise täiendavad juhised kehtestab Vabariigi Valitsus määrusega../dyn=740392&id=745166 Vabasse ringlusse lubamise tolliprotseduuri rakendamise täiendavad juhised",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_6"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_6",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
+      "estleg:competenceType": "regulation"
     },
     {
       "@id": "estleg:Tolliseadus_Par_52",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 52.",
       "rdfs:label": "§ 52. Majandusliku mõjuga tolliprotseduurid ja tollilaod",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Ühenduse tolliseadustiku rakendussätete artiklis 497 nimetatud taotluse alusel väljastab toll ühenduse tolliseadustiku artiklis 86 sätestatud tingimustel loa majandusliku mõjuga tolliprotseduuri kasutamiseks või tollilao pidamiseks. Ühenduse tolliseadustiku rakendussätete artiklis 497 nimetatud taotluse alusel väljastab toll ühenduse tolliseadustiku artiklis 86 sätestatud tingimustel loa majandusliku mõjuga tolliprotseduuri kasutamiseks või tollilao pidamiseks. 2(2)Kui toll on teinud tagatis",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_6"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_6",
+      "estleg:references": [
+        {
+          "@id": "estleg:Tolliseadus_Par_62"
+        }
+      ]
     },
     {
       "@id": "estleg:Tolliseadus_Par_53",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 53.",
       "rdfs:label": "§ 53. Ekspordi tolliprotseduuri rakendamine",
@@ -752,31 +1115,67 @@
       "@id": "estleg:Tolliseadus_Par_54",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 54.",
       "rdfs:label": "§ 54. Vabatsoon ja vabaladu",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Isiku taotlusel ja vastavalt ühenduse tolliseadustiku artikli 167 lõikes 1 sätestatule luuakse vabatsoon ja asutatakse vabaladu Vabariigi Valitsuse korraldusega ettepaneku alusel, mille Maksu- ja Tolliamet on edastanud Rahandusministeeriumile. Isiku taotlusel ja vastavalt ühenduse tolliseadustiku artikli 167 lõikes 1 sätestatule luuakse vabatsoon ja asutatakse vabaladu Vabariigi Valitsuse korraldusega ettepaneku alusel, mille Maksu- ja Tolliamet on edastanud Rahandusministeeriumile. 2(2)Vaba",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_6"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_6",
+      "estleg:references": [
+        {
+          "@id": "estleg:Karistusseadustik_Par_391"
+        },
+        {
+          "@id": "estleg:Karistusseadustik_Par_392"
+        },
+        {
+          "@id": "estleg:Karistusseadustik_Par_393"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        },
+        {
+          "@id": "estleg:Institution_maksu__ja_tolliamet"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:Tolliseadus_Par_55",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 55.",
       "rdfs:label": "§ 55. Kauba riigi omandisse ülekandmine ja hävitamine",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "Ühendusevälise kauba võib tolli nõusolekul üle kanda riigi omandisse. Kauba riigi omandisse ülekandmise, samuti kauba tollijärelevalve all hävitamise korra kehtestab rahandusminister määrusega./dyn=740392&id=742988 . Ühendusevälise kauba võib tolli nõusolekul üle kanda riigi omandisse. Kauba riigi omandisse ülekandmise, samuti kauba tollijärelevalve all hävitamise korra",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_6"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_6",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_rahandusminister"
+        }
+      ],
+      "estleg:competenceType": "supervision",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Tolliseadus_Par_97"
+        }
+      ]
     },
     {
       "@id": "estleg:Tolliseadus_Par_56",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 56.",
       "rdfs:label": "§ 56. Tollisoodustusega kaup",
@@ -788,7 +1187,7 @@
       "@id": "estleg:Tolliseadus_Par_57",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 57.",
       "rdfs:label": "§ 57. Maksuvabastused",
@@ -800,7 +1199,7 @@
       "@id": "estleg:Tolliseadus_Par_58",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 58.",
       "rdfs:label": "§ 58. Relvajõudude kauba ning julgeoleku ja kaitseotstarbelise kauba tolliformaalsused",
@@ -812,55 +1211,106 @@
       "@id": "estleg:Tolliseadus_Par_59",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 59.",
       "rdfs:label": "§ 59. Välisriigi ja Eesti diplomaatiline post ning konsulaarsaadetis",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Diplomaatiline post ja konsulaarsaadetised võivad sisaldada üksnes ametialaseks kasutamiseks ettenähtud dokumente ja kaupa. Diplomaatiline post ja konsulaarsaadetised võivad sisaldada üksnes ametialaseks kasutamiseks ettenähtud dokumente ja kaupa. 2(2)Diplomaatiline post ja konsulaarsaadetised tuleb tähistada hästi nähtavate, nende sisule viitavate väliste märkidega. Diplomaatiline post ja konsulaarsaadetised tuleb tähistada hästi nähtavate, nende sisule viitavate väliste märkidega. 3(3)Impo",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_7"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_7",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Diplomaatiline post ja konsulaarsaadetised"
     },
     {
       "@id": "estleg:Tolliseadus_Par_60",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 60.",
       "rdfs:label": "§ 60. Tollivõla tagatis",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Lisaks ühenduse tolliseadustiku artiklis 193 nimetatud tagatise liikidele võib tagatise esitada ka riigi kasuks seatud registerpandi või hüpoteegina asjaõigusseaduses (RT I 1993, 39, 590; 1999, 44, 509; 2001, 34, 185; 93, 565; 2002, 47, 297; 53, 336; 99, 579; 2003, 13, 64; 17, 95; 78, 523) või kommertspandi seaduses (RT I 1996, 45, 848; 49, õiend; 1997, 48, 774; 2001, 93, 565; 2002, 53, 336) sätestatud korras. Lisaks ühenduse tolliseadustiku artiklis 193 nimetatud tagatise liikidele võib tag",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_8"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_8",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Tolliseadus_Par_61"
+        }
+      ]
     },
     {
       "@id": "estleg:Tolliseadus_Par_61",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 61.",
       "rdfs:label": "§ 61. Tagatise suurus",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Kui toll nõuab tagatist vastavalt ühenduse tolliseadustiku artikli 190 lõikele 1, määratakse tagatise suurus tolli otsusega. Toll võib määrata tagatise, mis võimaldab tollivõlast tuleneva impordi- või eksporditollimaksude summa tasumist igal ajal, või vähendatud tagatise. Kui toll nõuab tagatist vastavalt ühenduse tolliseadustiku artikli 190 lõikele 1, määratakse tagatise suurus tolli otsusega. Toll võib määrata tagatise, mis võimaldab tollivõlast tuleneva impordi- või eksporditollimaksude s",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_8"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_8",
+      "estleg:references": [
+        {
+          "@id": "estleg:Tolliseadus_Par_60"
+        },
+        {
+          "@id": "estleg:Tolliseadus_Par_62"
+        }
+      ],
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:Tolliseadus_Par_62",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 62.",
       "rdfs:label": "§ 62. Nõuded tagatise suuruse vähendamiseks",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Toll vähendab tagatise suurust kõigi järgmiste tingimuste täitmise korral:11)isiku raamatupidamine võimaldab tollil taotleja tegevust kontrollida;22)isikul on täpne arvepidamine kauba liikumise kohta;33)isikul on laitmatu ärialane reputatsioon;44)isikul ei ole kauba importimisel ja eksportimisel kogutavate maksude osas maksuvõlga;55)isiku esitatud andmed on tõesed. Toll vähendab tagatise suurust kõigi järgmiste tingimuste täitmise korral: isiku raamatupidamine võimaldab tollil taotleja tegev",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_8"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_8",
+      "estleg:references": [
+        {
+          "@id": "estleg:Karistusseadustik_Par_391"
+        },
+        {
+          "@id": "estleg:Karistusseadustik_Par_392"
+        },
+        {
+          "@id": "estleg:Karistusseadustik_Par_393"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Tolliseadus_Par_5"
+        },
+        {
+          "@id": "estleg:Tolliseadus_Par_52"
+        },
+        {
+          "@id": "estleg:Tolliseadus_Par_61"
+        }
+      ]
     },
     {
       "@id": "estleg:Tolliseadus_Par_63",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 63.",
       "rdfs:label": "§ 63. Tagatise vabastamine ja kasutamine",
@@ -872,7 +1322,7 @@
       "@id": "estleg:Tolliseadus_Par_64",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 64.",
       "rdfs:label": "§ 64. Tollivõlg ebaõige informatsiooni andmisel",
@@ -884,7 +1334,7 @@
       "@id": "estleg:Tolliseadus_Par_65",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 65.",
       "rdfs:label": "§ 65. Maksusumma arvestusse kandmine ja võlgnikule teatamine",
@@ -896,7 +1346,7 @@
       "@id": "estleg:Tolliseadus_Par_66",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 66.",
       "rdfs:label": "§ 66. Tollimaksu summa tasumise tähtajad",
@@ -908,31 +1358,42 @@
       "@id": "estleg:Tolliseadus_Par_67",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 67.",
       "rdfs:label": "§ 67. Tollimaksu summa tasumise viisid",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "Impordi- ja eksporditollimaksude summa tasutakse sularahas või sularahata arvelduse korras. Tasumine võib toimuda ka varasema enammakse arvel. Impordi- ja eksporditollimaksude summa tasutakse sularahas või sularahata arvelduse korras. Tasumine võib toimuda ka varasema enammakse arvel.",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_8"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_8",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:Tolliseadus_Par_68",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 68.",
       "rdfs:label": "§ 68. Tollimaksu summa tasumise edasilükkamine",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Ühenduse tolliseadustiku artiklis 224 sätestatud impordi- ja eksporditollimaksude summa tasumise edasilükkamise loa saamiseks esitab isik kirjaliku taotluse. Taotlus peab sisaldama tagatise suuruse määramiseks vajalikke andmeid. Tasumise edasilükkamise luba väljastatakse pärast tolli rahuldava tagatise esitamist. Ühenduse tolliseadustiku artiklis 224 sätestatud impordi- ja eksporditollimaksude summa tasumise edasilükkamise loa saamiseks esitab isik kirjaliku taotluse. Taotlus peab sisaldama ",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_8"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_8",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Taotlus"
     },
     {
       "@id": "estleg:Tolliseadus_Par_69",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 69.",
       "rdfs:label": "§ 69. Arvestuse pidamise viiside kasutamine",
@@ -944,19 +1405,24 @@
       "@id": "estleg:Tolliseadus_Par_70",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 70.",
       "rdfs:label": "§ 70. Tollimaksu summa tasumise tähtaja pikendamise arvutamine",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "Toll võib lubada, et kui kannete summeerimise või kauba vabastamise ajavahemik on kalendrinädal või -kuu, tasutakse impordi- ja eksporditollimaksude summa, mille tasumise tähtaega on pikendatud, hiljemalt:11)sellele kalendrinädalale järgneva neljanda nädala reedel, kui ajavahemik on kalendrinädal;22)sellele kalendrikuule järgneva kuu 16. kuupäeval, kui ajavahemik on kalendrikuu. Toll võib lubada, et kui kannete summeerimise või kauba vabastamise ajavahemik on kalendrinädal või -kuu, tasutakse im",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_8"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_8",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:Tolliseadus_Par_71",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 71.",
       "rdfs:label": "§ 71. Tasumata tollimaksu summa ja intressi sissenõudmine",
@@ -968,7 +1434,7 @@
       "@id": "estleg:Tolliseadus_Par_72",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 72.",
       "rdfs:label": "§ 72. Tollimaksu laekumine",
@@ -980,283 +1446,819 @@
       "@id": "estleg:Tolliseadus_Par_73",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 73.",
       "rdfs:label": "§ 73. Kauba ebaseaduslik Eestisse või Eestist välja toimetamine",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Deklareeritava kauba toimetamise eest ühendusevälisest riigist Eestisse või Eestist ühendusevälisesse riiki tollikontrollist kõrvale hoidudes, kauba deklareerimata jättes, kaupa vale tariifse klassifikatsiooniga või kirjeldusega deklareerides või muul pettuslikul viisil toimides – karistatakse rahatrahviga kuni 300 trahviühikut. Deklareeritava kauba toimetamise eest ühendusevälisest riigist Eestisse või Eestist ühendusevälisesse riiki tollikontrollist kõrvale hoidudes, kauba deklareerimata j",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_9"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_9",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Tolliseadus_Par_94"
+        }
+      ],
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_Tolliseadus_Par_73_fine"
+        }
+      ]
     },
     {
       "@id": "estleg:Tolliseadus_Par_74",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 74.",
       "rdfs:label": "§ 74. Ebaseaduslikud toimingud Eesti ja ühendusevälise riigi vahel kaubaga, mille suhtes kehtivad keelud ja piirangud",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Kohustusliku dokumendita või riikliku registri kandeta kauba, mille suhtes kehtivad piirangud, või keelatud kauba ühendusevälisest riigist Eestisse või Eestist ühendusevälisesse riiki toimetamise või tollikäitlusviisile deklareerimise eest – karistatakse rahatrahviga kuni 300 trahviühikut või arestiga. Kohustusliku dokumendita või riikliku registri kandeta kauba, mille suhtes kehtivad piirangud, või keelatud kauba ühendusevälisest riigist Eestisse või Eestist ühendusevälisesse riiki toimetam",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_9"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_9",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Tolliseadus_Par_94"
+        }
+      ],
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_Tolliseadus_Par_74_fine"
+        },
+        {
+          "@id": "estleg:Sanction_Tolliseadus_Par_74_arrest"
+        }
+      ]
     },
     {
       "@id": "estleg:Tolliseadus_Par_75",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 75.",
       "rdfs:label": "§ 75. Ebaseaduslikud toimingud liikmesriikide vahel kaubaga, mille suhtes kehtivad keelud ja piirangud",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Kohustusliku dokumendita või riikliku registri kandeta kauba, mille suhtes kehtivad piirangud, või keelatud kauba teisest Euroopa Liidu liikmesriigist Eestisse või Eestist teise Euroopa Liidu liikmesriiki toimetamise eest selliste keeldude ja piirangute korral, mille riiklikku järelevalvet teostab toll, – karistatakse rahatrahviga kuni 300 trahviühikut või arestiga. Kohustusliku dokumendita või riikliku registri kandeta kauba, mille suhtes kehtivad piirangud, või keelatud kauba teisest Euroo",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_9"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_9",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Tolliseadus_Par_94"
+        }
+      ],
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_Tolliseadus_Par_75_fine"
+        },
+        {
+          "@id": "estleg:Sanction_Tolliseadus_Par_75_arrest"
+        }
+      ]
     },
     {
       "@id": "estleg:Tolliseadus_Par_76",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 76.",
       "rdfs:label": "§ 76. Ebaseaduslikud toimingud Eestis oleva kaubaga",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Ühendusevälisest riigist Eestisse tollisoodustusega toimetatud või tollijärelevalve all oleva kaubaga tehtavate ebaseaduslike toimingute või tehingute eest – karistatakse rahatrahviga kuni 300 trahviühikut või arestiga. Ühendusevälisest riigist Eestisse tollisoodustusega toimetatud või tollijärelevalve all oleva kaubaga tehtavate ebaseaduslike toimingute või tehingute eest – karistatakse rahatrahviga kuni 300 trahviühikut või arestiga. 2(2)Sama teo eest, kui selle on toime pannud juriidiline",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_9"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_9",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Tolliseadus_Par_94"
+        }
+      ],
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_Tolliseadus_Par_76_fine"
+        },
+        {
+          "@id": "estleg:Sanction_Tolliseadus_Par_76_arrest"
+        }
+      ]
     },
     {
       "@id": "estleg:Tolliseadus_Par_77",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 77.",
       "rdfs:label": "§ 77. Kauba ebaseaduslik toimetamine ajutise ladustamise kohta, tollilattu, vabatsooni ja vabalattu",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Kauba ebaseadusliku toimetamise eest ajutise ladustamise kohta, tollilattu, vabatsooni või vabalattu või sealt ebaseadusliku väljatoimetamise eest – karistatakse rahatrahviga kuni 300 trahviühikut. Kauba ebaseadusliku toimetamise eest ajutise ladustamise kohta, tollilattu, vabatsooni või vabalattu või sealt ebaseadusliku väljatoimetamise eest – karistatakse rahatrahviga kuni 300 trahviühikut. 2(2)Sama teo eest, kui selle on toime pannud juriidiline isik, – karistatakse rahatrahviga kuni 50 0",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_9"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_9",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Vedelktuse_erimrgistamise_se_Par_6_9"
+        },
+        {
+          "@id": "estleg:vedelkutuse_seadus_Par_34"
+        },
+        {
+          "@id": "estleg:Toote_nuetele_vastavuse_seadu_Par_61"
+        },
+        {
+          "@id": "estleg:TurS_Par_31_32"
+        },
+        {
+          "@id": "estleg:Vlismaalaste_seadus_Par_306"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Tolliseadus_Par_94"
+        }
+      ],
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_Tolliseadus_Par_77_fine"
+        }
+      ]
     },
     {
       "@id": "estleg:Tolliseadus_Par_78",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 78.",
       "rdfs:label": "§ 78. Vabatsoonis ja vabalaos kehtivate nõuete rikkumine",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Vabatsoonis või vabalaos tolli loata tegutsemise või ehitise rajamise eest – karistatakse rahatrahviga kuni 300 trahviühikut. Vabatsoonis või vabalaos tolli loata tegutsemise või ehitise rajamise eest – karistatakse rahatrahviga kuni 300 trahviühikut. 2(2)Sama teo eest, kui selle on toime pannud juriidiline isik, – karistatakse rahatrahviga kuni 50 000 krooni. Sama teo eest, kui selle on toime pannud juriidiline isik, – karistatakse rahatrahviga kuni 50 000 krooni.",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_9"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_9",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:TurS_Par_31_32"
+        },
+        {
+          "@id": "estleg:TTOS_Par_27"
+        },
+        {
+          "@id": "estleg:VKVS_Par_20"
+        },
+        {
+          "@id": "estleg:VMTS_Par_47"
+        },
+        {
+          "@id": "estleg:VetS_Par_38"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Tolliseadus_Par_94"
+        }
+      ],
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_Tolliseadus_Par_78_fine"
+        }
+      ]
     },
     {
       "@id": "estleg:Tolliseadus_Par_79",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 79.",
       "rdfs:label": "§ 79. Tolliametniku takistamine",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Tolliametniku takistamise, sealhulgas läbivaatuse teostamise takistamise või tolliametniku seaduslike korralduste ja nõudmiste eiramise või kontrolliks vajalike dokumentide või andmete esitamisest keeldumise või ettenähtud tähtpäevaks esitamata jätmise või valeandmete esitamise eest või dokumentide või andmete esitamise eest sellisel kujul, mis ei võimaldanud kontrolli teostamist, – karistatakse rahatrahviga kuni 300 trahviühikut. Tolliametniku takistamise, sealhulgas läbivaatuse teostamise ",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_9"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_9",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:TurvaS_Par_60"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Tolliseadus_Par_94"
+        }
+      ],
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_Tolliseadus_Par_79_fine"
+        }
+      ]
     },
     {
       "@id": "estleg:Tolliseadus_Par_80",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 80.",
       "rdfs:label": "§ 80. Kauba ladustamise ja hoidmise nõuete rikkumine",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Ajutise ladustamise kohas, tollilaos, vabatsoonis või vabalaos kauba ladustamise või hoidmise või kauba üle arvestuse pidamise nõuete rikkumise eest – karistatakse rahatrahviga kuni 200 trahviühikut. Ajutise ladustamise kohas, tollilaos, vabatsoonis või vabalaos kauba ladustamise või hoidmise või kauba üle arvestuse pidamise nõuete rikkumise eest – karistatakse rahatrahviga kuni 200 trahviühikut. 2(2)Sama teo eest, kui selle on toime pannud juriidiline isik, – karistatakse rahatrahviga kuni ",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_9"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_9",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:TurS_Par_31_32"
+        },
+        {
+          "@id": "estleg:TTOS_Par_27"
+        },
+        {
+          "@id": "estleg:VKVS_Par_20"
+        },
+        {
+          "@id": "estleg:VMTS_Par_47"
+        },
+        {
+          "@id": "estleg:Tuleohutuse_seadus_Par_49"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Tolliseadus_Par_94"
+        }
+      ],
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_Tolliseadus_Par_80_fine"
+        }
+      ]
     },
     {
       "@id": "estleg:Tolliseadus_Par_81",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 81.",
       "rdfs:label": "§ 81. Kauba päritolu kohta valeandmeid sisaldava dokumendi esitamine",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Kauba päritolu kohta valeandmeid sisaldava dokumendi koostamise ja esitamise eest – karistatakse rahatrahviga kuni 200 trahviühikut. Kauba päritolu kohta valeandmeid sisaldava dokumendi koostamise ja esitamise eest – karistatakse rahatrahviga kuni 200 trahviühikut. 2(2)Sama teo eest, kui selle on toime pannud juriidiline isik, – karistatakse rahatrahviga kuni 40 000 krooni. Sama teo eest, kui selle on toime pannud juriidiline isik, – karistatakse rahatrahviga kuni 40 000 krooni.",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_9"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_9",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:TurS_Par_31_32"
+        },
+        {
+          "@id": "estleg:VetS_Par_39"
+        },
+        {
+          "@id": "estleg:TTOS_Par_27"
+        },
+        {
+          "@id": "estleg:VKVS_Par_20"
+        },
+        {
+          "@id": "estleg:vedelkutuse_seadus_Par_34"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Tolliseadus_Par_94"
+        }
+      ],
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_Tolliseadus_Par_81_fine"
+        }
+      ]
     },
     {
       "@id": "estleg:Tolliseadus_Par_82",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 82.",
       "rdfs:label": "§ 82. Teatud valdkonnas tegutsemise õiguseta isiku toimingud kaubaga",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Kauba ühendusevälisest riigist Eestisse või Eestist ühendusevälisesse riiki toimetamise või tollikäitlusviisile deklareerimise eest isiku poolt, kellel ei ole selles valdkonnas tegutsemise õigust tõendavat kohustuslikku dokumenti või registreeringut, – karistatakse rahatrahviga kuni 200 trahviühikut. Kauba ühendusevälisest riigist Eestisse või Eestist ühendusevälisesse riiki toimetamise või tollikäitlusviisile deklareerimise eest isiku poolt, kellel ei ole selles valdkonnas tegutsemise õigus",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_9"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_9",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Tolliseadus_Par_94"
+        }
+      ],
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_Tolliseadus_Par_82_fine"
+        }
+      ]
     },
     {
       "@id": "estleg:Tolliseadus_Par_83",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 83.",
       "rdfs:label": "§ 83. Transpordivahendiga seotud tollieeskirjade rikkumised",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Tollieeskirjades ettenähtud kohas või teenistuskohustusi täitva tolliametniku märguandel transpordivahendi peatamata jätmise või tolliformaalsuste teostamisel transpordivahendiga ilma tolli loata edasisõitmise või sihttolliasutusse või muusse tolli määratud või aktsepteeritud kohta liikumisel ettenähtud marsruudist kõrvalekaldumise eest – karistatakse rahatrahviga kuni 200 trahviühikut või arestiga. Tollieeskirjades ettenähtud kohas või teenistuskohustusi täitva tolliametniku märguandel tran",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_9"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_9",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Tolliseadus_Par_94"
+        }
+      ],
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_Tolliseadus_Par_83_fine"
+        },
+        {
+          "@id": "estleg:Sanction_Tolliseadus_Par_83_arrest"
+        }
+      ]
     },
     {
       "@id": "estleg:Tolliseadus_Par_84",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 84.",
       "rdfs:label": "§ 84. Tollitõkendi ja kauba identifitseerimisvahendi rikkumine",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Tollitõkendi või kauba identifitseerimisvahendi rikkumise, omavolilise eemaldamise või tollitõkendiga kaitstud kommertstranspordivahendisse või ehitisse tungimise eest – karistatakse rahatrahviga kuni 200 trahviühikut. Tollitõkendi või kauba identifitseerimisvahendi rikkumise, omavolilise eemaldamise või tollitõkendiga kaitstud kommertstranspordivahendisse või ehitisse tungimise eest – karistatakse rahatrahviga kuni 200 trahviühikut. 2(2)Sama teo eest, kui selle on toime pannud juriidiline i",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_9"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_9",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:TurS_Par_31_32"
+        },
+        {
+          "@id": "estleg:Tuleohutuse_seadus_Par_49"
+        },
+        {
+          "@id": "estleg:TTOS_Par_27"
+        },
+        {
+          "@id": "estleg:VKVS_Par_20"
+        },
+        {
+          "@id": "estleg:Tlepingu_seadus_Par_125"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Tolliseadus_Par_94"
+        }
+      ],
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_Tolliseadus_Par_84_fine"
+        }
+      ]
     },
     {
       "@id": "estleg:Tolliseadus_Par_85",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 85.",
       "rdfs:label": "§ 85. Tollieeskirjades sätestatud ja tolli määratud tähtaja eiramine",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Kaubale tollikäitlusviisi määramiseks või tolliprotseduuri lõpetamiseks või kauba reekspordiks ettenähtud tähtaja ületamise eest – karistatakse rahatrahviga kuni 100 trahviühikut. Kaubale tollikäitlusviisi määramiseks või tolliprotseduuri lõpetamiseks või kauba reekspordiks ettenähtud tähtaja ületamise eest – karistatakse rahatrahviga kuni 100 trahviühikut. 2(2)Sama teo eest, kui selle on toime pannud juriidiline isik, – karistatakse rahatrahviga kuni 30 000 krooni. Sama teo eest, kui selle ",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_9"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_9",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:TurS_Par_31_32"
+        },
+        {
+          "@id": "estleg:VetS_Par_39"
+        },
+        {
+          "@id": "estleg:TTOS_Par_27"
+        },
+        {
+          "@id": "estleg:VKVS_Par_20"
+        },
+        {
+          "@id": "estleg:vedelkutuse_seadus_Par_34"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Tolliseadus_Par_94"
+        }
+      ],
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_Tolliseadus_Par_85_fine"
+        }
+      ]
     },
     {
       "@id": "estleg:Tolliseadus_Par_86",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 86.",
       "rdfs:label": "§ 86. Dokumentide säilitamise tähtaja eiramine",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Ühenduse tolliseadustiku artiklis 16 ettenähtud dokumentide säilitamise tähtaja eiramise eest – karistatakse rahatrahviga kuni 100 trahviühikut. Ühenduse tolliseadustiku artiklis 16 ettenähtud dokumentide säilitamise tähtaja eiramise eest – karistatakse rahatrahviga kuni 100 trahviühikut. 2(2)Sama teo eest, kui selle on toime pannud juriidiline isik, – karistatakse rahatrahviga kuni 20 000 krooni. Sama teo eest, kui selle on toime pannud juriidiline isik, – karistatakse rahatrahviga kuni 20 ",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_9"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_9",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:TurS_Par_31_32"
+        },
+        {
+          "@id": "estleg:VetS_Par_39"
+        },
+        {
+          "@id": "estleg:TTOS_Par_27"
+        },
+        {
+          "@id": "estleg:VKVS_Par_20"
+        },
+        {
+          "@id": "estleg:vedelkutuse_seadus_Par_34"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Tolliseadus_Par_94"
+        }
+      ],
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_Tolliseadus_Par_86_fine"
+        }
+      ]
     },
     {
       "@id": "estleg:Tolliseadus_Par_87",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 87.",
       "rdfs:label": "§ 87. Ujuvvahendi ebaseaduslik sildumine",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Tolliformaalsuste käigus ujuvvahendi poorti teise ujuvvahendi sildumise võimaldamise eest ilma tolli loata – karistatakse rahatrahviga kuni 100 trahviühikut. Tolliformaalsuste käigus ujuvvahendi poorti teise ujuvvahendi sildumise võimaldamise eest ilma tolli loata – karistatakse rahatrahviga kuni 100 trahviühikut. 2(2)Sama teo eest, kui selle on toime pannud juriidiline isik, – karistatakse rahatrahviga kuni 20 000 krooni. Sama teo eest, kui selle on toime pannud juriidiline isik, – karistat",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_9"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_9",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:vedelkutuse_seadus_Par_34"
+        },
+        {
+          "@id": "estleg:TurS_Par_31_32"
+        },
+        {
+          "@id": "estleg:VetS_Par_39"
+        },
+        {
+          "@id": "estleg:TTOS_Par_27"
+        },
+        {
+          "@id": "estleg:VKVS_Par_20"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Tolliseadus_Par_94"
+        }
+      ],
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_Tolliseadus_Par_87_fine"
+        }
+      ]
     },
     {
       "@id": "estleg:Tolliseadus_Par_88",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 88.",
       "rdfs:label": "§ 88. Ettenägematu olukorraga ja vääramatu jõuga seotud toimingute tegemata jätmine",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Ettenägematu olukorraga või vääramatu jõuga seotud toimingute tegemata jätmise eest – karistatakse rahatrahviga kuni 100 trahviühikut. Ettenägematu olukorraga või vääramatu jõuga seotud toimingute tegemata jätmise eest – karistatakse rahatrahviga kuni 100 trahviühikut. 2(2)Sama teo eest, kui selle on toime pannud juriidiline isik, – karistatakse rahatrahviga kuni 20 000 krooni. Sama teo eest, kui selle on toime pannud juriidiline isik, – karistatakse rahatrahviga kuni 20 000 krooni.",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_9"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_9",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:VetS_Par_39"
+        },
+        {
+          "@id": "estleg:Vlismaalaste_seadus_Par_306"
+        },
+        {
+          "@id": "estleg:Tlepingu_seadus_Par_127"
+        },
+        {
+          "@id": "estleg:Tlepingu_seadus_Par_126"
+        },
+        {
+          "@id": "estleg:Tlepingu_seadus_Par_117"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Tolliseadus_Par_94"
+        }
+      ],
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_Tolliseadus_Par_88_fine"
+        }
+      ]
     },
     {
       "@id": "estleg:Tolliseadus_Par_89",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 89.",
       "rdfs:label": "§ 89. Tollile teatamisega viivitamine",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Tollijärelevalve all oleva kauba hävimisest või kahjustumisest tollile teatamisega viivitamise eest – karistatakse rahatrahviga kuni 100 trahviühikut. Tollijärelevalve all oleva kauba hävimisest või kahjustumisest tollile teatamisega viivitamise eest – karistatakse rahatrahviga kuni 100 trahviühikut. 2(2)Sama teo eest, kui selle on toime pannud juriidiline isik, – karistatakse rahatrahviga kuni 20 000 krooni. Sama teo eest, kui selle on toime pannud juriidiline isik, – karistatakse rahatrahv",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_9"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_9",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:TurS_Par_31_32"
+        },
+        {
+          "@id": "estleg:VetS_Par_39"
+        },
+        {
+          "@id": "estleg:TTOS_Par_27"
+        },
+        {
+          "@id": "estleg:VKVS_Par_20"
+        },
+        {
+          "@id": "estleg:vedelkutuse_seadus_Par_34"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Tolliseadus_Par_94"
+        }
+      ],
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_Tolliseadus_Par_89_fine"
+        }
+      ]
     },
     {
       "@id": "estleg:Tolliseadus_Par_90",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 90.",
       "rdfs:label": "§ 90. Transpordivahendi saabumisest ja lahkumisest tollile teatamata jätmine",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "Sadama, postiteenuse osutaja, raudtee- või lennujaama ametiisiku või laevaagendi poolt kommertstranspordivahendi saabumisest või lahkumisest tollile ette teatamata jätmise eest – karistatakse rahatrahviga kuni 100 trahviühikut. Sadama, postiteenuse osutaja, raudtee- või lennujaama ametiisiku või laevaagendi poolt kommertstranspordivahendi saabumisest või lahkumisest tollile ette teatamata jätmise eest – karistatakse rahatrahviga kuni 100 trahviühikut.",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_9"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_9",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Tolliseadus_Par_94"
+        }
+      ],
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_Tolliseadus_Par_90_fine"
+        }
+      ]
     },
     {
       "@id": "estleg:Tolliseadus_Par_91",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 91.",
       "rdfs:label": "§ 91. Ebaseaduslikud toimingud tollijärelevalve all oleva veosega",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Tollijärelevalve all oleva veose avamise, ümberpakkimise, ümber- või mahalaadimise eest tolli loata – karistatakse rahatrahviga kuni 100 trahviühikut. Tollijärelevalve all oleva veose avamise, ümberpakkimise, ümber- või mahalaadimise eest tolli loata – karistatakse rahatrahviga kuni 100 trahviühikut. 2(2)Sama teo eest, kui selle on toime pannud juriidiline isik, – karistatakse rahatrahviga kuni 20 000 krooni. Sama teo eest, kui selle on toime pannud juriidiline isik, – karistatakse rahatrahv",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_9"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_9",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:TurS_Par_31_32"
+        },
+        {
+          "@id": "estleg:VetS_Par_39"
+        },
+        {
+          "@id": "estleg:TTOS_Par_27"
+        },
+        {
+          "@id": "estleg:VKVS_Par_20"
+        },
+        {
+          "@id": "estleg:vedelkutuse_seadus_Par_34"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Tolliseadus_Par_94"
+        }
+      ],
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_Tolliseadus_Par_91_fine"
+        }
+      ]
     },
     {
       "@id": "estleg:Tolliseadus_Par_92",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 92.",
       "rdfs:label": "§ 92. Kauba deklareerimine vale tariifse klassifikatsiooniga",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Kauba deklareerimise eest vale tariifse klassifikatsiooniga, kui selle tagajärjel ei vabaneta kohustustest ega omandata õigusi, – karistatakse rahatrahviga kuni 80 trahviühikut. Kauba deklareerimise eest vale tariifse klassifikatsiooniga, kui selle tagajärjel ei vabaneta kohustustest ega omandata õigusi, – karistatakse rahatrahviga kuni 80 trahviühikut. 2(2)Sama teo eest, kui selle on toime pannud juriidiline isik, – karistatakse rahatrahviga kuni 10 000 krooni. Sama teo eest, kui selle on t",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_9"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_9",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:TurS_Par_31_32"
+        },
+        {
+          "@id": "estleg:VetS_Par_39"
+        },
+        {
+          "@id": "estleg:TTOS_Par_27"
+        },
+        {
+          "@id": "estleg:VKVS_Par_20"
+        },
+        {
+          "@id": "estleg:vedelkutuse_seadus_Par_34"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Tolliseadus_Par_94"
+        }
+      ],
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_Tolliseadus_Par_92_fine"
+        }
+      ]
     },
     {
       "@id": "estleg:Tolliseadus_Par_93",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 93.",
       "rdfs:label": "§ 93. Oluline rikkumine",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "Ühenduse õigusaktides nimetatud oluliseks või tõsiseks rikkumiseks, mille puhul toll võib keelduda isikule soodsa otsuse tegemisest või tunnistada esialgse soodsa otsuse kehtetuks, loetakse käesolevas seaduses sätestatud tollieeskirjade rikkumine, mille eest on karistusena ette nähtud füüsilisele isikule rahatrahv üle 100 trahviühiku ja juriidilisele isikule rahatrahv üle 30 000 krooni, ning karistusseadustiku §-des 391–393 sätestatud süütegu. Ühenduse õigusaktides nimetatud oluliseks või tõsise",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_9"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_9",
+      "estleg:references": [
+        {
+          "@id": "estleg:Karistusseadustik_Par_391"
+        },
+        {
+          "@id": "estleg:Karistusseadustik_Par_392"
+        },
+        {
+          "@id": "estleg:Karistusseadustik_Par_393"
+        }
+      ],
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:Tolliseadus_Par_94",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 94.",
       "rdfs:label": "§ 94. Menetlus",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Käesoleva seaduse §-des 73–92 sätestatud väärtegudele kohaldatakse karistusseadustiku üldosa ja väärteomenetluse seadustiku (RT I 2002, 50, 313; 110, 654; 2003, 26, 156; 83, 557; 88, 590) sätteid. Käesoleva seaduse §-des 73–92 sätestatud väärtegudele kohaldatakse karistusseadustiku üldosa ja väärteomenetluse seadustiku (RT I 2002, 50, 313; 110, 654; 2003, 26, 156; 83, 557; 88, 590) sätteid. 2(2)Käesoleva seaduse §-des 73–92 sätestatud väärtegude kohtuväline menetleja on Maksu- ja Tolliamet. ",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_9"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_9",
+      "estleg:references": [
+        {
+          "@id": "estleg:Tolliseadus_Par_73"
+        },
+        {
+          "@id": "estleg:Tolliseadus_Par_74"
+        },
+        {
+          "@id": "estleg:Tolliseadus_Par_75"
+        },
+        {
+          "@id": "estleg:Tolliseadus_Par_76"
+        },
+        {
+          "@id": "estleg:Tolliseadus_Par_77"
+        },
+        {
+          "@id": "estleg:Tolliseadus_Par_78"
+        },
+        {
+          "@id": "estleg:Tolliseadus_Par_79"
+        },
+        {
+          "@id": "estleg:Tolliseadus_Par_80"
+        },
+        {
+          "@id": "estleg:Tolliseadus_Par_81"
+        },
+        {
+          "@id": "estleg:Tolliseadus_Par_82"
+        },
+        {
+          "@id": "estleg:Tolliseadus_Par_83"
+        },
+        {
+          "@id": "estleg:Tolliseadus_Par_84"
+        },
+        {
+          "@id": "estleg:Tolliseadus_Par_85"
+        },
+        {
+          "@id": "estleg:Tolliseadus_Par_86"
+        },
+        {
+          "@id": "estleg:Tolliseadus_Par_87"
+        },
+        {
+          "@id": "estleg:Tolliseadus_Par_88"
+        },
+        {
+          "@id": "estleg:Tolliseadus_Par_89"
+        },
+        {
+          "@id": "estleg:Tolliseadus_Par_90"
+        },
+        {
+          "@id": "estleg:Tolliseadus_Par_91"
+        },
+        {
+          "@id": "estleg:Tolliseadus_Par_92"
+        },
+        {
+          "@id": "estleg:Karistusseadustik_Par_83"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_maksu__ja_tolliamet"
+        }
+      ],
+      "estleg:competenceType": "general",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Vedelktuse_erimrgistamise_se_Par_6_11"
+        },
+        {
+          "@id": "estleg:Vlismaalaste_seadus_Par_307"
+        },
+        {
+          "@id": "estleg:TTOS_Par_27_32"
+        },
+        {
+          "@id": "estleg:Tlepingu_seadus_Par_130"
+        },
+        {
+          "@id": "estleg:TurS_Par_31_35"
+        }
+      ]
     },
     {
       "@id": "estleg:Tolliseadus_Par_95",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 95.",
       "rdfs:label": "§ 95. Kuritegude tõkestamiseks ja avastamiseks rakendatavad abinõud",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "Organiseeritud kuritegevusega võitlemiseks on tolliasutusel Maksu- ja Tolliameti peadirektori loal õigus ebaseaduslikult Eestisse toimetatavat või toimetatud kaupa lasta tolli jälgimise all takistamatult sihtkohta (kontrollialuse saadetise meetod) toimetada, tehes vajaduse korral koostööd teiste jälitusametkondadega. Organiseeritud kuritegevusega võitlemiseks on tolliasutusel Maksu- ja Tolliameti peadirektori loal õigus ebaseaduslikult Eestisse toimetatavat või toimetatud kaupa lasta tolli jälgi",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_9"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_9",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_maksu__ja_tolliamet"
+        }
+      ],
+      "estleg:competenceType": "general",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Tolliseadus_Par_106"
+        }
+      ]
     },
     {
       "@id": "estleg:Tolliseadus_Par_96",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 96.",
       "rdfs:label": "§ 96. Politsei- või piirivalveametniku poolt kinnipeetud kauba või transpordivahendi üleandmine",
@@ -1268,43 +2270,93 @@
       "@id": "estleg:Tolliseadus_Par_97",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 97.",
       "rdfs:label": "§ 97. Konfiskeeritud, hõivatud või riigi omandisse ülekantud kauba ja transpordivahendi realiseerimine",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Tolli poolt konfiskeeritud, käesoleva seaduse § 45 alusel hõivatud või riigi omandisse ülekantud kaup või transpordivahend realiseeritakse tollioksjonil. Kiirestirikneva kauba võib realiseerida enne konfiskeerimisotsuse jõustumist. Tolli poolt konfiskeeritud, käesoleva seaduse § 45 alusel hõivatud või riigi omandisse ülekantud kaup või transpordivahend realiseeritakse tollioksjonil. Kiirestirikneva kauba võib realiseerida enne konfiskeerimisotsuse jõustumist. 2(2)Tolli poolt hõivatud peremeh",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_10"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_10",
+      "estleg:references": [
+        {
+          "@id": "estleg:Tolliseadus_Par_45"
+        },
+        {
+          "@id": "estleg:Tolliseadus_Par_55"
+        }
+      ],
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Tolliseadus_Par_45"
+        },
+        {
+          "@id": "estleg:Tolliseadus_Par_98"
+        },
+        {
+          "@id": "estleg:Tolliseadus_Par_99"
+        }
+      ]
     },
     {
       "@id": "estleg:Tolliseadus_Par_98",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 98.",
       "rdfs:label": "§ 98. Konfiskeeritud, hõivatud või riigi omandisse ülekantud kauba tasuta üleandmine",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Käesoleva seaduse § 97 lõigetes 1 ja 2 nimetatud kauba võib õigusaktidega ettenähtud juhtudel realiseerimise asemel tasuta üle anda tervishoiu- või sotsiaalhoolekandeteenuse osutajale. Käesoleva seaduse § 97 lõigetes 1 ja 2 nimetatud kauba võib õigusaktidega ettenähtud juhtudel realiseerimise asemel tasuta üle anda tervishoiu- või sotsiaalhoolekandeteenuse osutajale. 2(2)Kui käesoleva seaduse § 97 lõigetes 1 ja 2 nimetatud kaup kuulub kaitsealuste liikide hulka või loodusliku loomastiku ja t",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_10"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_10",
+      "estleg:references": [
+        {
+          "@id": "estleg:Tolliseadus_Par_97"
+        }
+      ],
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:Tolliseadus_Par_99",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 99.",
       "rdfs:label": "§ 99. Tollioksjon",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Tollioksjoni korraldaja on Eesti isik. Tollioksjoni korraldaja selgitatakse välja Maksu- ja Tolliameti korraldatava avaliku konkursiga. Tollioksjoni korraldajal on õigus tegutseda kaudse esindajana tollideklaratsiooni esitamisel ja tolliformaalsuste teostamisel. Tollioksjoni korraldaja on Eesti isik. Tollioksjoni korraldaja selgitatakse välja Maksu- ja Tolliameti korraldatava avaliku konkursiga. Tollioksjoni korraldajal on õigus tegutseda kaudse esindajana tollideklaratsiooni esitamisel ja t",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_10"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_10",
+      "estleg:references": [
+        {
+          "@id": "estleg:Tolliseadus_Par_97"
+        }
+      ],
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_maksu__ja_tolliamet"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:Tolliseadus_Par_100",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 100.",
       "rdfs:label": "§ 100. Arhiiviseaduse muutmine",
@@ -1316,7 +2368,7 @@
       "@id": "estleg:Tolliseadus_Par_101",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 101.",
       "rdfs:label": "§ 101. Maksukorralduse seaduse muutmine",
@@ -1328,7 +2380,7 @@
       "@id": "estleg:Tolliseadus_Par_102",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 102.",
       "rdfs:label": "§ 102. Muuseumiseaduse muutmine",
@@ -1340,7 +2392,7 @@
       "@id": "estleg:Tolliseadus_Par_103",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 103.",
       "rdfs:label": "§ 103. Piirivalveseaduse muutmine",
@@ -1352,19 +2404,24 @@
       "@id": "estleg:Tolliseadus_Par_104",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 104.",
       "rdfs:label": "§ 104. Politseiseaduse muutmine",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "Politseiseaduse (RT 1990, 10, 113; 1991, 10, 152; RT I 1993, 20, 355; 1994, 34, 533; 40, 654; 86/87, 1487; 1995, 62, 1056; 1996, 49, 953; 1998, 50, 753; 51, 756; 2001, 7, 17; 65, 377; 85, 511; 2002, 56, 350; 2003, 20, 116; 81, 544) § 12 lõiget 2 täiendatakse punktiga 6 järgmises sõnastuses: Politseiseaduse (RT 1990, 10, 113; 1991, 10, 152; RT I 1993, 20, 355; 1994, 34, 533; 40, 654; 86/87, 1487; 1995, 62, 1056; 1996, 49, 953; 1998, 50, 753; 51, 756; 2001, 7, 17; 65, 377; 85, 511; 2002, 56, 350; ",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_11"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_11",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Tvimetoetuse_seadus_Par_64"
+        }
+      ]
     },
     {
       "@id": "estleg:Tolliseadus_Par_105",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 105.",
       "rdfs:label": "§ 105. Sadamaseaduse muutmine",
@@ -1376,25 +2433,45 @@
       "@id": "estleg:Tolliseadus_Par_106",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 106.",
       "rdfs:label": "§ 106. Seaduse rakendussätted",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "1(1)Kuni käesoleva seaduse jõustumiseni kehtinud tolliseadustiku (RT I 2001, 88, 531; 2002, 61, 375; 63, 387; 92, 528; 2003, 2, 17; 26, 156; 73, 484; 88, 591) alusel Vabariigi Valitsuse korraldustega tähtajaliselt loodud vabatsoonid loetakse esimest tüüpi vabatsoonideks. Need vabatsoonid võivad tegutseda kuni vastavas Vabariigi Valitsuse korralduses märgitud tähtpäevani tingimusel, et vabatsoon vastab tollieeskirjades sätestatud nõuetele ja tingimustele. Kuni käesoleva seaduse jõustumiseni kehti",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_11"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_11",
+      "estleg:references": [
+        {
+          "@id": "estleg:Tolliseadus_Par_39"
+        },
+        {
+          "@id": "estleg:Tolliseadus_Par_95"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:Tolliseadus_Par_107",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_tolliseadus"
+        "estleg:LegalProvision_tolli_seadus"
       ],
       "estleg:paragrahv": "§ 107.",
       "rdfs:label": "§ 107. Seaduse jõustumine",
       "estleg:sourceAct": "Tolliseadus",
       "estleg:summary": "Käesolev seadus jõustub 2004. aasta 1. mail.<table summary=\"allkiri\" width=\"100%\"> <tbody><tr valign=\"top\"> <td width=\"60%\"> </td> <td width=\"39%\"> <b><font size=\"-1\" style=\"font-size:-1px\">Riigikogu esimees Ene ERGMA</font></b> </td> </tr> </tbody></table> Käesolev seadus jõustub 2004. aasta 1. mail.",
-      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_11"
+      "estleg:requestedCluster": "estleg:Cluster_Tolliseadus_11",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_riigikogu"
+        }
+      ],
+      "estleg:competenceType": "general"
     }
   ]
 }

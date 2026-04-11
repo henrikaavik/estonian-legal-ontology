@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -16,14 +17,88 @@
       ],
       "rdfs:label": "Ehitusseadustiku teemakaardistus (ehitusõigus)",
       "dc:description": "Ehitusseadustiku põhisambad: ehitusload, ehitusnõuded ja ehitusohutus.",
-      "dc:source": "Ehitusseadustik (Riigi Teataja, kehtiv redaktsioon; §-taseme viited vajavad lõppverifitseerimist)"
+      "dc:source": "Ehitusseadustik (Riigi Teataja, kehtiv redaktsioon; §-taseme viited vajavad lõppverifitseerimist)",
+      "estleg:temporalStatus": "inForce",
+      "estleg:affectedBy": [
+        {
+          "@id": "estleg:Draft_KAM25_1346"
+        },
+        {
+          "@id": "estleg:Draft_KLIM25_0100"
+        },
+        {
+          "@id": "estleg:Draft_MKM25_0248"
+        },
+        {
+          "@id": "estleg:Draft_MKM23_0734"
+        },
+        {
+          "@id": "estleg:Draft_SIM23_0493"
+        },
+        {
+          "@id": "estleg:Draft_MKM23_0380"
+        },
+        {
+          "@id": "estleg:Draft_JDM22_1063"
+        },
+        {
+          "@id": "estleg:Draft_MKM21_0053"
+        },
+        {
+          "@id": "estleg:Draft_MKM20_1068"
+        },
+        {
+          "@id": "estleg:Draft_MKM20_0215"
+        },
+        {
+          "@id": "estleg:Draft_HTM20_0049"
+        },
+        {
+          "@id": "estleg:Draft_MKM19_1086"
+        },
+        {
+          "@id": "estleg:Draft_MKM15_1136"
+        },
+        {
+          "@id": "estleg:Draft_RIIGIKOGU23_0491"
+        },
+        {
+          "@id": "estleg:Draft_RIIGIKOGU22_1552"
+        },
+        {
+          "@id": "estleg:Draft_RIIGIKOGU21_0458"
+        },
+        {
+          "@id": "estleg:Draft_RIIGIKOGU16_0549"
+        }
+      ],
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/6411"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2441"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2431"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/3606"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/1221"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_ehitusseadustik",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)"
+      "rdfs:label": "Õigusnorm (paragrahv)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:TopicCluster_ehitusseadustik",
@@ -73,7 +148,12 @@
       "rdfs:label": "Millal on nõutav ehitusluba ja millal piisab ehitusteatisest",
       "estleg:requestedCluster": "ehitusload",
       "estleg:summary": "Määratleb ehitustegevused, mille puhul tuleb enne tööde alustamist taotleda ehitusluba, ning tegevused, mille puhul piisab ehitusteatisest koos menetlusnõuete täitmisega.",
-      "estleg:sourceAct": "Ehitusseadustik"
+      "estleg:sourceAct": "Ehitusseadustik",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ]
     },
     {
       "@id": "estleg:EHS_Par_LoaMenetlusJaOtsustamine",
@@ -169,7 +249,12 @@
       "rdfs:label": "Riiklik järelevalve ehitusnõuete ja ohutuse täitmise üle",
       "estleg:requestedCluster": "ehitusohutus",
       "estleg:summary": "Määrab järelevalveasutuste pädevuse kontrollida ehitusnõuete täitmist, teha ettekirjutusi, rakendada sunniraha ning piirata ohtliku ehitise kasutamist.",
-      "estleg:sourceAct": "Ehitusseadustik"
+      "estleg:sourceAct": "Ehitusseadustik",
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_EHS_Par_RiiklikJarelevalveJaSund_coercive_payment"
+        }
+      ]
     },
     {
       "@id": "estleg:Concept_LubadegaRiskijuhtimine",

@@ -39,6 +39,7 @@ CONTEXT = {
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
+    "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
 }
 
@@ -70,8 +71,19 @@ def slugify(text: str) -> str:
     return text[:80]
 
 
+_ESTONIAN_TRANSLITERATION: dict[str, str] = {
+    "ö": "o", "ä": "a", "ü": "u", "õ": "o",
+    "Ö": "O", "Ä": "A", "Ü": "U", "Õ": "O",
+    "š": "s", "ž": "z", "Š": "S", "Ž": "Z",
+}
+_TRANSLIT_TABLE = str.maketrans(_ESTONIAN_TRANSLITERATION)
+
+
 def sanitize_id(value: str) -> str:
-    s = re.sub(r"[^0-9A-Za-z_]", "", value.replace(" ", "_"))
+    s = value.replace(" ", "_")
+    # Transliterate Estonian diacritics before stripping non-ASCII
+    s = s.translate(_TRANSLIT_TABLE)
+    s = re.sub(r"[^0-9A-Za-z_]", "", s)
     return s or "Unknown"
 
 
@@ -167,9 +179,48 @@ def fetch_xml(url: str, cache_name: str) -> ET.Element | None:
         return None
 
 
-def generate_law_jsonld(title: str, slug: str, root: ET.Element, abbreviation: str = "") -> dict:
+_used_prefixes: dict[str, str] = {}  # prefix -> title that claimed it
+
+
+def _unique_prefix(abbreviation: str, slug: str, title: str) -> str:
+    """Return a collision-free prefix for IRI generation.
+
+    Strategy:
+    1. Try the abbreviation if it is long enough (>3 chars) and unique.
+    2. Otherwise, try progressively longer slug prefixes (40, 50, 60, 70, 80, full).
+    3. If all slug lengths still collide, append a numeric suffix.
+    """
+    candidate = sanitize_id(abbreviation) if abbreviation else None
+
+    # Use slug-based prefix when abbreviation is too short or absent
+    if not candidate or len(candidate) <= 3:
+        candidate = sanitize_id(slug[:40])
+
+    # Check for collision with a *different* law and resolve it
+    if candidate in _used_prefixes and _used_prefixes[candidate] != title:
+        # Try progressively longer slug prefixes
+        resolved = False
+        for length in (40, 50, 60, 70, 80, len(slug)):
+            candidate = sanitize_id(slug[:length])
+            if candidate not in _used_prefixes or _used_prefixes[candidate] == title:
+                resolved = True
+                break
+        # If slug-based prefixes all collide, append a numeric suffix
+        if not resolved:
+            base = sanitize_id(slug)
+            counter = 2
+            candidate = f"{base}_{counter}"
+            while candidate in _used_prefixes and _used_prefixes[candidate] != title:
+                counter += 1
+                candidate = f"{base}_{counter}"
+
+    _used_prefixes[candidate] = title
+    return candidate
+
+
+def generate_law_jsonld(title: str, slug: str, root: ET.Element, abbreviation: str = "", rt_url: str = "") -> dict:
     """Generate JSON-LD for a single law."""
-    prefix = sanitize_id(abbreviation) if abbreviation else sanitize_id(title[:30])
+    prefix = _unique_prefix(abbreviation, slug, title)
 
     # Collect all paragrahv elements
     paragrahvid = [el for el in root.iter() if ln(el.tag) == "paragrahv"]
@@ -199,17 +250,27 @@ def generate_law_jsonld(title: str, slug: str, root: ET.Element, abbreviation: s
     ontology_id = f"estleg:{prefix}_Map_2026"
     class_id = f"estleg:LegalProvision_{slug}"
 
+    # Construct Riigi Teataja source URL
+    rt_source_url = ""
+    if rt_url:
+        rt_source_url = BASE_URL + rt_url if rt_url.startswith("/") else rt_url
+
+    ontology_node: dict = {
+        "@id": ontology_id,
+        "@type": ["owl:Ontology"],
+        "rdfs:label": {"@value": f"{title} teemakaardistus", "@language": "et"},
+        "dc:source": {"@value": title, "@language": "et"},
+    }
+    if rt_source_url:
+        ontology_node["dcterms:source"] = {"@id": rt_source_url}
+
     graph: list[dict] = [
-        {
-            "@id": ontology_id,
-            "@type": ["owl:Ontology"],
-            "rdfs:label": f"{title} teemakaardistus",
-            "dc:source": title,
-        },
+        ontology_node,
         {
             "@id": class_id,
             "@type": ["owl:Class"],
-            "rdfs:label": "Õigusnorm (paragrahv)",
+            "rdfs:label": {"@value": "Õigusnorm (paragrahv)", "@language": "et"},
+            "rdfs:subClassOf": {"@id": "estleg:LegalProvision"},
         },
     ]
 
@@ -241,7 +302,8 @@ def generate_law_jsonld(title: str, slug: str, root: ET.Element, abbreviation: s
                 graph.append({
                     "@id": cluster_id,
                     "@type": ["owl:NamedIndividual", "estleg:TopicCluster"],
-                    "rdfs:label": f"{par_range} {ch_title}".strip(),
+                    "rdfs:label": {"@value": f"{par_range} {ch_title}".strip(), "@language": "et"},
+                    "skos:prefLabel": {"@value": f"{par_range} {ch_title}".strip(), "@language": "et"},
                 })
 
     # Add paragraph nodes
@@ -275,12 +337,12 @@ def generate_law_jsonld(title: str, slug: str, root: ET.Element, abbreviation: s
             "@id": p_id,
             "@type": ["owl:NamedIndividual", class_id],
             "estleg:paragrahv": p_display,
-            "rdfs:label": f"{p_display} {p_title}".strip() if p_title else p_display,
-            "estleg:sourceAct": title,
+            "rdfs:label": {"@value": f"{p_display} {p_title}".strip() if p_title else p_display, "@language": "et"},
+            "estleg:sourceAct": {"@value": title, "@language": "et"},
         }
 
         if text:
-            node["estleg:summary"] = text
+            node["estleg:summary"] = {"@value": text, "@language": "et"}
 
         if cluster_ref:
             node["estleg:requestedCluster"] = cluster_ref
@@ -290,10 +352,15 @@ def generate_law_jsonld(title: str, slug: str, root: ET.Element, abbreviation: s
     return {"@context": CONTEXT, "@graph": graph}
 
 
-def generate_multipart_law(title: str, slug: str, root: ET.Element, abbreviation: str = "") -> list[tuple[str, dict]]:
+def generate_multipart_law(title: str, slug: str, root: ET.Element, abbreviation: str = "", rt_url: str = "") -> list[tuple[str, dict]]:
     """Generate separate JSON-LD files for each osa (part) of a multi-part law."""
-    prefix = sanitize_id(abbreviation) if abbreviation else sanitize_id(title[:30])
+    prefix = _unique_prefix(abbreviation, slug, title)
     results = []
+
+    # Construct Riigi Teataja source URL
+    rt_source_url = ""
+    if rt_url:
+        rt_source_url = BASE_URL + rt_url if rt_url.startswith("/") else rt_url
 
     for osa_el in root.iter():
         if ln(osa_el.tag) != "osa":
@@ -323,17 +390,22 @@ def generate_multipart_law(title: str, slug: str, root: ET.Element, abbreviation
         ontology_id = f"estleg:{prefix}_Osa{osa_nr}_{par_min}_{par_max}"
         class_id = f"estleg:LegalProvision_{slug}_osa{osa_nr}"
 
+        osa_ontology_node: dict = {
+            "@id": ontology_id,
+            "@type": ["owl:Ontology"],
+            "rdfs:label": {"@value": f"{title} Osa {osa_nr} ({osa_title}) §{par_min}–{par_max} kaardistus", "@language": "et"},
+            "dc:source": {"@value": title, "@language": "et"},
+        }
+        if rt_source_url:
+            osa_ontology_node["dcterms:source"] = {"@id": rt_source_url}
+
         graph: list[dict] = [
-            {
-                "@id": ontology_id,
-                "@type": ["owl:Ontology"],
-                "rdfs:label": f"{title} Osa {osa_nr} ({osa_title}) §{par_min}–{par_max} kaardistus",
-                "dc:source": title,
-            },
+            osa_ontology_node,
             {
                 "@id": class_id,
                 "@type": ["owl:Class"],
-                "rdfs:label": "Õigusnorm (paragrahv)",
+                "rdfs:label": {"@value": "Õigusnorm (paragrahv)", "@language": "et"},
+                "rdfs:subClassOf": {"@id": "estleg:LegalProvision"},
             },
         ]
 
@@ -359,7 +431,8 @@ def generate_multipart_law(title: str, slug: str, root: ET.Element, abbreviation
                     graph.append({
                         "@id": cluster_id,
                         "@type": ["owl:NamedIndividual", "estleg:TopicCluster"],
-                        "rdfs:label": f"{par_range} {ch_title}".strip(),
+                        "rdfs:label": {"@value": f"{par_range} {ch_title}".strip(), "@language": "et"},
+                        "skos:prefLabel": {"@value": f"{par_range} {ch_title}".strip(), "@language": "et"},
                     })
 
         seen_ids = set()
@@ -368,7 +441,7 @@ def generate_multipart_law(title: str, slug: str, root: ET.Element, abbreviation
             p_title = ct(p, "paragrahvPealkiri") or ""
             p_display = ct(p, "kuvatavNr") or f"§ {p_nr}"
             text = collect_text(p)
-            p_id = f"estleg:{prefix}_Par_{sanitize_id(p_nr)}"
+            p_id = f"estleg:{prefix}_Osa{osa_nr}_Par_{sanitize_id(p_nr)}"
             if p_id in seen_ids:
                 p_id = f"{p_id}_{len(seen_ids)}"
             seen_ids.add(p_id)
@@ -388,11 +461,11 @@ def generate_multipart_law(title: str, slug: str, root: ET.Element, abbreviation
                 "@id": p_id,
                 "@type": ["owl:NamedIndividual", class_id],
                 "estleg:paragrahv": p_display,
-                "rdfs:label": f"{p_display} {p_title}".strip() if p_title else p_display,
-                "estleg:sourceAct": title,
+                "rdfs:label": {"@value": f"{p_display} {p_title}".strip() if p_title else p_display, "@language": "et"},
+                "estleg:sourceAct": {"@value": title, "@language": "et"},
             }
             if text:
-                node["estleg:summary"] = text
+                node["estleg:summary"] = {"@value": text, "@language": "et"}
             if cluster_ref:
                 node["estleg:requestedCluster"] = cluster_ref
             graph.append(node)
@@ -489,7 +562,7 @@ def main():
 
         if title in MULTIPART_LAWS and osa_count > 1:
             # Generate separate files per osa
-            results = generate_multipart_law(title, slug, root, abbreviation)
+            results = generate_multipart_law(title, slug, root, abbreviation, rt_url=url)
             for filename, doc in results:
                 out_path = KRR_DIR / filename
                 if not out_path.exists():
@@ -498,7 +571,7 @@ def main():
                     generated += 1
         else:
             # Single file
-            doc = generate_law_jsonld(title, slug, root, abbreviation)
+            doc = generate_law_jsonld(title, slug, root, abbreviation, rt_url=url)
             filename = f"{slug}_peep.json"
             out_path = KRR_DIR / filename
             save_json(out_path, doc)

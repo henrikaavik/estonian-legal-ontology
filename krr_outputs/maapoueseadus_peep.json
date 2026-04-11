@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -15,14 +16,109 @@
         "owl:Ontology"
       ],
       "rdfs:label": "Maapõueseadus teemakaardistus",
-      "dc:source": "Maapõueseadus"
+      "dc:source": "Maapõueseadus",
+      "estleg:entryIntoForce": {
+        "@value": "2005-04-01",
+        "@type": "xsd:date"
+      },
+      "estleg:repealDate": {
+        "@value": "2006-03-27",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2005-12-07",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2004-01-01",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "repealed",
+      "estleg:amendedBy": [
+        {
+          "@id": "estleg:Amendment_maapoueseadus_1"
+        },
+        {
+          "@id": "estleg:Amendment_maapoueseadus_2"
+        },
+        {
+          "@id": "estleg:Amendment_maapoueseadus_3"
+        },
+        {
+          "@id": "estleg:Amendment_maapoueseadus_4"
+        },
+        {
+          "@id": "estleg:Amendment_maapoueseadus_5"
+        },
+        {
+          "@id": "estleg:Amendment_maapoueseadus_6"
+        },
+        {
+          "@id": "estleg:Amendment_maapoueseadus_7"
+        },
+        {
+          "@id": "estleg:Draft_KLIM23_1682"
+        },
+        {
+          "@id": "estleg:Draft_KLIM17_1018"
+        },
+        {
+          "@id": "estleg:Draft_KLIM17_1018"
+        },
+        {
+          "@id": "estleg:Draft_KLIM17_0897"
+        },
+        {
+          "@id": "estleg:Draft_KLIM13_0971"
+        },
+        {
+          "@id": "estleg:Draft_RIIGIKOGU15_0120"
+        }
+      ],
+      "estleg:affectedBy": [
+        {
+          "@id": "estleg:Draft_KLIM23_1682"
+        },
+        {
+          "@id": "estleg:Draft_KLIM17_1018"
+        },
+        {
+          "@id": "estleg:Draft_KLIM17_0897"
+        },
+        {
+          "@id": "estleg:Draft_KLIM13_0971"
+        },
+        {
+          "@id": "estleg:Draft_RIIGIKOGU15_0120"
+        }
+      ],
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/3606"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/6006"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2431"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5611"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/6411"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_maapoueseadus",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)"
+      "rdfs:label": "Õigusnorm (paragrahv)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:Cluster_Maapueseadus_1",
@@ -100,7 +196,7 @@
       "@id": "estleg:Maapueseadus_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. Seaduse eesmärk, reguleerimisala ja haldusmenetluse seaduse koha ldamine",
@@ -112,7 +208,7 @@
       "@id": "estleg:Maapueseadus_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. Mõisted",
@@ -124,7 +220,7 @@
       "@id": "estleg:Maapueseadus_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 3.",
       "rdfs:label": "§ 3. Maardlate jagunemine",
@@ -136,7 +232,7 @@
       "@id": "estleg:Maapueseadus_Par_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 4.",
       "rdfs:label": "§ 4. Omand maavarale",
@@ -148,7 +244,7 @@
       "@id": "estleg:Maapueseadus_Par_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 5.",
       "rdfs:label": "§ 5. Maavarade arvestus",
@@ -160,55 +256,78 @@
       "@id": "estleg:Maapueseadus_Par_6",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 6.",
       "rdfs:label": "§ 6. Eesti Maavarade Komisjon",
       "estleg:sourceAct": "Maapõueseadus",
       "estleg:summary": "1 (1) Eesti Maavarade Komisjon moodustatakse Keskkonnaministeeriumi valitsemisalas ning selle põhimääruse kinnitab keskkonnaminister ./dyn=970635&id=891006 . 2 (2) Eesti Maavarade Komisjoni põhiülesanne on Keskkonnaministeeriumi nõustamine maapõue uurimise ja kasutamise ning maavarade arvestamise, maavaravarude kinnitamise, kvalifitseerimise ja mahakandmise ning kaitse küsimustes. Eesti Maavarade Komisjoni põhiülesanne on Keskkonnaministeeriumi nõustamine maapõue uurimise ja kasutamise ning maav",
-      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_1"
+      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_1",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_keskkonnaminister"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:Maapueseadus_Par_7",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 7.",
       "rdfs:label": "§ 7. Üldgeoloogilise uurimistöö ja geoloogilise uuringu üldnõuded",
       "estleg:sourceAct": "Maapõueseadus",
       "estleg:summary": "1 (1) Üldgeoloogiline uurimistöö ja geoloogiline uuring tuleb teha selliselt, et keskkonnale ja isikutele tekitatav kahju oleks minimaalne. Üldgeoloogiline uurimistöö ja geoloogiline uuring tuleb teha selliselt, et keskkonnale ja isikutele tekitatav kahju oleks minimaalne. 2 (2) Üldgeoloogilise uurimistöö ja geoloogilise uuringu loa omanikul on õigus töö käigus maapõuest võtta ja kasutada töö tegemiseks loas märgitud kivimit, setendit, vedelikku või gaasi koguses, mis on vajalik selle omaduste, ",
-      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_2"
+      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_2",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:Maapueseadus_Par_8",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 8.",
       "rdfs:label": "§ 8. Üldgeoloogilise uurimistöö ja geoloogilise uuringu kord",
       "estleg:sourceAct": "Maapõueseadus",
       "estleg:summary": "1 (1) Üldgeoloogiline uurimistöö tehakse üldgeoloogilise uurimistöö korra kohaselt. Üldgeoloogiline uurimistöö tehakse üldgeoloogilise uurimistöö korra kohaselt. 2 (2) Üldgeoloogilise uurimistöö korra kehtestab keskkonnaminister ./dyn=970635&id=905848 . Üldgeoloogilise uurimistöö korraga kehtestatakse: 1 1) geoloogilise kaardistamise nõuded; 2 2) maavara otsingule esitatavad nõuded; 3 3) maapinna ja maapõue seisundit muutva tegevuse ulatus; 4 4) geoloogilise kaardistamise ja maavara otsingu arua",
-      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_2"
+      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_2",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_keskkonnaminister"
+        }
+      ],
+      "estleg:competenceType": "regulation"
     },
     {
       "@id": "estleg:Maapueseadus_Par_9",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 9.",
       "rdfs:label": "§ 9. Maavaradele esitatavad nõuded",
       "estleg:sourceAct": "Maapõueseadus",
       "estleg:summary": "1 (1) Nõuded dolokivi, fosforiidi, järvelubja, järvemuda, kristalliinse ehituskivi, kruusa, liiva, lubjakivi, meremuda, põlevkivi, savi ja turba omadustele ning lasundi lasumistingimustele ja omadustele maavaravaruna maardlas arvele võtmiseks kehtestab keskkonnaminister ./dyn=970635&id=891302 . 2 (2) Nõuded käesoleva paragrahvi lõikes 1 nimetamata loodusliku kivimi, setendi, vedeliku või gaasi lasundi maardlana keskkonnaregistris arvele võtmiseks esitab uuringuloa taotleja uuringuloa taotlemisel",
-      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_2"
+      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_2",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_keskkonnaminister"
+        }
+      ],
+      "estleg:competenceType": "regulation"
     },
     {
       "@id": "estleg:Maapueseadus_Par_10",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 10.",
       "rdfs:label": "§ 10. Maavaravaru kategooriad",
@@ -220,19 +339,24 @@
       "@id": "estleg:Maapueseadus_Par_11",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 11.",
       "rdfs:label": "§ 11. Üldgeoloogilise uurimistöö ja geoloogilise uuringu õigus",
       "estleg:sourceAct": "Maapõueseadus",
       "estleg:summary": "1 (1) Üldgeoloogiline uurimistöö on lubatud üldgeoloogilise uurimistöö loa alusel, välja arvatud see üldgeoloogiline uurimistöö, kus välitöid ei ole kavandatud või need piirduvad looduslike või tehispaljandite kirjeldamisega ning käsipalade või kivististe maapinnalt kogumisega. Üldgeoloogiline uurimistöö on lubatud üldgeoloogilise uurimistöö loa alusel, välja arvatud see üldgeoloogiline uurimistöö, kus välitöid ei ole kavandatud või need piirduvad looduslike või tehispaljandite kirjeldamisega ni",
-      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_2"
+      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_2",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Permission"
+        }
+      ]
     },
     {
       "@id": "estleg:Maapueseadus_Par_12",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 12.",
       "rdfs:label": "§ 12. Geoloogilise teabe esitamine, säilitamine ja avalikustamine",
@@ -244,19 +368,24 @@
       "@id": "estleg:Maapueseadus_Par_13",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 13.",
       "rdfs:label": "§ 13. Üldgeoloogilise uurimistöö loa ja uuringuloa taotlus",
       "estleg:sourceAct": "Maapõueseadus",
       "estleg:summary": "1 (1) Üldgeoloogilise uurimistöö loa ja uuringuloa taotlus sisaldab: 1 1) andmeid loa taotleja ja üldgeoloogilise uurimistöö või geoloogilise uuringu teostaja kohta; 2 2) üldgeoloogilise uurimistöö loa või uuringuloa taotleja üldgeoloogilise uurimistöö või geoloogilise uuringu lähteülesannet; 3 3) andmeid uuringuruumi ja uuringuruumi teenindusala kohta, maavara otsingu korral maavaravaru oletatava suuruse kohta; 4 4) andmeid üldgeoloogilise uurimistöö või geoloogilise uuringu iseloomu ja mahu ko",
-      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_2"
+      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_2",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Maapueseadus_Par_21"
+        }
+      ]
     },
     {
       "@id": "estleg:Maapueseadus_Par_14",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 14.",
       "rdfs:label": "§ 14. Üldgeoloogilise uurimistöö loa ja uuringuloa taotlemine ning avatud menetluse sätete kohaldamine",
@@ -268,7 +397,7 @@
       "@id": "estleg:Maapueseadus_Par_15",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 15.",
       "rdfs:label": "§ 15. Avatud menetlus ja avatud menetluse algatamisest teatamine",
@@ -280,79 +409,128 @@
       "@id": "estleg:Maapueseadus_Par_16",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 16.",
       "rdfs:label": "§ 16. Puudused üldgeoloogilise uurimistöö loa ja uuringuloa taotluses",
       "estleg:sourceAct": "Maapõueseadus",
       "estleg:summary": "Kui taotluses esinevad olulised puudused, võib loa andja tagastada üldgeoloogilise uurimistöö loa ja uuringuloa taotluse seda menetlusse võtmata. Kui taotluses esinevad olulised puudused, võib loa andja tagastada üldgeoloogilise uurimistöö loa ja uuringuloa taotluse seda menetlusse võtmata.",
-      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_2"
+      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_2",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:Maapueseadus_Par_17",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 17.",
       "rdfs:label": "§ 17. Üldgeoloogilise uurimistöö loa ja uuringuloa andmine enampakkumisel",
       "estleg:sourceAct": "Maapõueseadus",
       "estleg:summary": "1 (1) Kui samale riigi omandis olevale maapõue osale on esitanud üldgeoloogilise uurimistöö loa taotluse maavara otsingu eesmärgil või uuringuloa taotluse mitu isikut ja esitatud taotlusi ei saa üheaegselt rahuldada, müüakse üldgeoloogilise uurimistöö või geoloogilise uuringu tegemise õigus enampakkumisel Vabariigi Valitsuse kehtestatud korras ./dyn=970635&id=913054 . Kui samale riigi omandis olevale maapõue osale on esitanud üldgeoloogilise uurimistöö loa taotluse maavara otsingu eesmärgil või ",
-      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_2"
+      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_2",
+      "estleg:references": [
+        {
+          "@id": "estleg:Maapueseadus_Par_20"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
+      "estleg:competenceType": "general",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Maapueseadus_Par_20"
+        }
+      ]
     },
     {
       "@id": "estleg:Maapueseadus_Par_18",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 18.",
       "rdfs:label": "§ 18. Üldgeoloogilise uurimistöö luba ja uuringuluba",
       "estleg:sourceAct": "Maapõueseadus",
       "estleg:summary": "1 (1) Üldgeoloogilise uurimistöö loale ja uuringuloale kantakse loa omaniku ja üldgeoloogilise uurimistöö või geoloogilise uuringu teostaja nimi, registri- või isikukood ja aadress. Üldgeoloogilise uurimistöö loale ja uuringuloale kantakse loa omaniku ja üldgeoloogilise uurimistöö või geoloogilise uuringu teostaja nimi, registri- või isikukood ja aadress. 2 (2) Üldgeoloogilise uurimistöö loale ja uuringuloale märgitakse: 1 1) loa kehtimise aeg; 2 2) üldgeoloogiliseks uurimistööks või geoloogilis",
-      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_2"
+      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_2",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Maapueseadus_Par_20"
+        }
+      ]
     },
     {
       "@id": "estleg:Maapueseadus_Par_19",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 19.",
       "rdfs:label": "§ 19. Üldgeoloogilise uurimistöö loa ja uuringuloa andmise avalik teatavakstegemine ja loa andmine",
       "estleg:sourceAct": "Maapõueseadus",
       "estleg:summary": "1 (1) Üldgeoloogilise uurimistöö loa ja uuringuloa andmisest kuulutab loa andja ametlikus väljaandes Ametlikud Teadaanded. Üldgeoloogilise uurimistöö loa ja uuringuloa andmisest kuulutab loa andja ametlikus väljaandes Ametlikud Teadaanded. 2 (2) Üldgeoloogilise uurimistöö loa ja uuringuloa andmise teade peab sisaldama järgmisi andmeid: 1 1) loa saaja ärinime, registrikoodi ja asukohta või nime, isikukoodi ja aadressi; 2 2) tegevuskohta; 3 3) tegevuse lühikirjeldust; 4 4) loa kehtivuse aega. Üldg",
-      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_2"
+      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_2",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ]
     },
     {
       "@id": "estleg:Maapueseadus_Par_20",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 20.",
       "rdfs:label": "§ 20. Üldgeoloogilise uurimistöö loa ja uuringuloa andmisest keeldumine",
       "estleg:sourceAct": "Maapõueseadus",
       "estleg:summary": "1 (1) Üldgeoloogilise uurimistöö loa ja uuringuloa andmisest keeldutakse, kui: 1 1) üldgeoloogiline uurimistöö või geoloogiline uuring kahjustab kaitstavat loodusobjekti või loodusobjekti, mille kaitse alla võtmise menetluse on pädev asutus algatanud; 2 2) puudub käesoleva seaduse § 18 lõikes 3 nimetatud nõusolek; 3 3) puudub riigivara valitseja nõusolek; 4 4) luba taotletakse maapõue osale, mille kasutamiseks on juba menetlusse võetud üldgeoloogilise uurimistöö loa taotlus sama maavara otsinguk",
-      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_2"
+      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_2",
+      "estleg:references": [
+        {
+          "@id": "estleg:Maapueseadus_Par_18"
+        },
+        {
+          "@id": "estleg:Maapueseadus_Par_17"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Maapueseadus_Par_17"
+        }
+      ]
     },
     {
       "@id": "estleg:Maapueseadus_Par_21",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 21.",
       "rdfs:label": "§ 21. Üldgeoloogilise uurimistöö loa ja uuringuloa muutmine",
       "estleg:sourceAct": "Maapõueseadus",
       "estleg:summary": "1 (1) Üldgeoloogilise uurimistöö luba ja uuringuluba muudetakse, kui: 1 1) käesoleva seaduse § 13 lõike 1 punktis 1 nimetatud andmed on muutunud; 2 2) loaga määratud nõuete aluseks olnud õigusnormid on muutunud; 3 3) loaga lubatud tegevusest tulenev saastus on nii suur, et see põhjustab loaga määratletud tegevuskohas ja selle ümbruses keskkonna olulisi kahjulikke muutusi; 4 4) loa omanik on esitanud selleks põhjendatud taotluse. Üldgeoloogilise uurimistöö luba ja uuringuluba muudetakse, kui: käe",
-      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_2"
+      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_2",
+      "estleg:references": [
+        {
+          "@id": "estleg:Maapueseadus_Par_13"
+        }
+      ]
     },
     {
       "@id": "estleg:Maapueseadus_Par_22",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 22.",
       "rdfs:label": "§ 22. Üldgeoloogilise uurimistöö loa ja uuringuloa kehtetuks tunnistamine",
@@ -364,67 +542,93 @@
       "@id": "estleg:Maapueseadus_Par_23",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 23.",
       "rdfs:label": "§ 23. Üldgeoloogilise uurimistöö ja geoloogilise uuringu õiguse loovutamine ja üldgeoloogilise uurimistöö loa ning uuringuloa ümberregistreerimine",
       "estleg:sourceAct": "Maapõueseadus",
       "estleg:summary": "1 (1) Üldgeoloogilise uurimistöö loa omanikul maavara otsingu eesmärgil või uuringuloa omanikul on õigus loovutada loa kehtivuse ajal üldgeoloogilise uurimistöö või geoloogilise uuringu õigus koos üldgeoloogilise uurimistöö või geoloogilise uuringu käigus saadud geoloogilise informatsiooniga. Üldgeoloogilise uurimistöö loa omanikul maavara otsingu eesmärgil või uuringuloa omanikul on õigus loovutada loa kehtivuse ajal üldgeoloogilise uurimistöö või geoloogilise uuringu õigus koos üldgeoloogilise",
-      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_2"
+      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_2",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:Maapueseadus_Par_24",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 24.",
       "rdfs:label": "§ 24. Kaevandamise üldnõuded",
       "estleg:sourceAct": "Maapõueseadus",
       "estleg:summary": "1 (1) Kaevandamisel tuleb rakendada tehnoloogiaid, mille puhul keskkonnale ja isikutele tekitatav kahju oleks minimaalne. Kaevandamisel tuleb rakendada tehnoloogiaid, mille puhul keskkonnale ja isikutele tekitatav kahju oleks minimaalne. 2 (2) Kaevandaja on kohustatud rakendama abinõusid keskkonnakahjustuste prognoosimiseks ja ennetamiseks, tekkinud keskkonnakahjustuste likvideerimiseks või leevendamiseks ning kaevandamisjärgsete võimalike kahjustuste tekkimise jälgimiseks. Kaevandaja on kohusta",
-      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_3"
+      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_3",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Kaevandamisel"
     },
     {
       "@id": "estleg:Maapueseadus_Par_25",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 25.",
       "rdfs:label": "§ 25. Kaevandamise õigus",
       "estleg:sourceAct": "Maapõueseadus",
       "estleg:summary": "1 (1) Kaevandamise õigus tekib maavara kaevandamise loa (edaspidi kaevandamisluba ) alusel, kui käesolev seadus ei sätesta teisiti. Kaevandamise õigus tekib maavara kaevandamise loa (edaspidi kaevandamisluba ) alusel, kui käesolev seadus ei sätesta teisiti. 2 (2) Kaevandada tohib ainult keskkonnaregistris maavarana arvele võetud kivimi, setendi, vedeliku või gaasi looduslikku lasundit, kui käesolev seadus ei sätesta teisiti. Kaevandada tohib ainult keskkonnaregistris maavarana arvele võetud kivi",
-      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_3"
+      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_3",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Permission"
+        }
+      ]
     },
     {
       "@id": "estleg:Maapueseadus_Par_26",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 26.",
       "rdfs:label": "§ 26. Maavara kaevandamise aastamäär ja lubatud maksimaalne aastamäär",
       "estleg:sourceAct": "Maapõueseadus",
       "estleg:summary": "1 (1) Maavara kaevandamise aastamäär on aastas keskmiselt kaevandatav maavaravaru kogus, mille kaevandamisega tagatakse loa kehtivusaja jooksul mäeeraldise maavaravaru ammendamine. Maavara kaevandamise aastamäär on aastas keskmiselt kaevandatav maavaravaru kogus, mille kaevandamisega tagatakse loa kehtivusaja jooksul mäeeraldise maavaravaru ammendamine. 2 (2) Maavara kaevandamise aastamäär määratakse kaevandamisloa taotluse alusel, arvestades keskkonnanõudeid ja kaevandamisel kasutatavat tehnolo",
-      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_3"
+      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_3",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Maapueseadus_Par_34"
+        }
+      ]
     },
     {
       "@id": "estleg:Maapueseadus_Par_27",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 27.",
       "rdfs:label": "§ 27. Kaevandamisloa taotlus",
       "estleg:sourceAct": "Maapõueseadus",
       "estleg:summary": "1 (1) Kaevandamisloa taotlus sisaldab: 1 1) andmeid loa taotleja ja kaevandaja kohta; 2 2) andmeid mäeeraldise ja selle geoloogilise uurituse ning mäeeraldise teenindusmaa kohta; 3 3) andmeid maavara kaevandamise aastamäära ja kaevandamise kestuse kohta; 4 4) andmeid maavara kavandatava kasutusala kohta; 5 5) seletuskirja; 6 6) graafilist lisa; 7 7) eraõigusliku isiku omandis oleva maavara korral maakasutusõigust tõendavaid dokumente; 8 8) eraõigusliku isiku omandis oleva maavara korral maavara ",
-      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_3"
+      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_3",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Maapueseadus_Par_42"
+        }
+      ]
     },
     {
       "@id": "estleg:Maapueseadus_Par_28",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 28.",
       "rdfs:label": "§ 28. Kaevandamisloa taotlemine",
@@ -436,7 +640,7 @@
       "@id": "estleg:Maapueseadus_Par_29",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 29.",
       "rdfs:label": "§ 29. Avatud menetlus ja avatud menetluse algatamisest teatamine",
@@ -448,67 +652,111 @@
       "@id": "estleg:Maapueseadus_Par_30",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 30.",
       "rdfs:label": "§ 30. Mäeeraldise laiendamine",
       "estleg:sourceAct": "Maapõueseadus",
       "estleg:summary": "1 (1) Kaevandamisloa omanikul on õigus laiendada mäeeraldist külgnevale või lahusolevale mäeeraldisele sama maardla piires, kui olemasoleva loaga antud kaevandatavat maavaravaru jätkub kuni viieks aastaks. Kaevandamisloa omanikul on õigus laiendada mäeeraldist külgnevale või lahusolevale mäeeraldisele sama maardla piires, kui olemasoleva loaga antud kaevandatavat maavaravaru jätkub kuni viieks aastaks. 2 (2) Kui mäeeraldise ja mäeeraldise teenindusmaa ettevalmistamine maavara looduslikust seisun",
-      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_3"
+      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_3",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:Maapueseadus_Par_31",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 31.",
       "rdfs:label": "§ 31. Puudused kaevandamisloa taotluses",
       "estleg:sourceAct": "Maapõueseadus",
       "estleg:summary": "Kui kaevandamisloa taotluses esinevad olulised puudused, võib loa andja tagastada taotluse seda läbi vaatamata. Kui kaevandamisloa taotluses esinevad olulised puudused, võib loa andja tagastada taotluse seda läbi vaatamata.",
-      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_3"
+      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_3",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:Maapueseadus_Par_32",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 32.",
       "rdfs:label": "§ 32. Kaevandamisloa andmine enampakkumisel",
       "estleg:sourceAct": "Maapõueseadus",
       "estleg:summary": "1 (1) Kui samale riigi omandis olevale maavarale on esitanud kaevandamisloa taotluse mitu isikut ja esitatud taotlusi ei saa üheaegselt rahuldada, müüakse kaevandamisõigus enampakkumisel Vabariigi Valitsuse kehtestatud korras ./dyn=970635&id=913054 . 2 (2) Enampakkumise korraldab kaevandamisloa andja. Enampakkumine korraldatakse, kui 30 päeva jooksul kaevandamisloa andmise menetluse algatamise teate avaldamisest arvates esitatakse samale või osaliselt kattuvale maapõue osale teine kaevandamisloa",
-      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_3"
+      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_3",
+      "estleg:references": [
+        {
+          "@id": "estleg:Maapueseadus_Par_34"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
+      "estleg:competenceType": "enforcement",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Maapueseadus_Par_34"
+        }
+      ]
     },
     {
       "@id": "estleg:Maapueseadus_Par_33",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 33.",
       "rdfs:label": "§ 33. Täiendav nõusolek kaevandamisloa andmiseks",
       "estleg:sourceAct": "Maapõueseadus",
       "estleg:summary": "1 (1) Kaevandamisloa andmiseks on vaja täiendavat nõusolekut: 1 1) kaitseministrilt, kui luba taotletakse riigikaitse tähtsusega objekti piires või kui kaevandamine võib kahjustada riigikaitseobjekti või põhjustada häireid selle tegevuses; 2 2) siseministrilt, kui kaevandamine võib häirida piirirahu, takistada riigipiiri valvamist või kui maavara soovitakse kaevandada kalmistu piires; 3 3) kultuuriministrilt, kui kaevandamisluba taotletakse muinsuskaitsealale või kinnismälestisele või nende kait",
-      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_3"
+      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_3",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:Maapueseadus_Par_34",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 34.",
       "rdfs:label": "§ 34. Kaevandamisloa andmisest keeldumine",
       "estleg:sourceAct": "Maapõueseadus",
       "estleg:summary": "1 (1) Kaevandamisloa andmisest keeldutakse, kui: 1 1) loa taotlejal ei ole eraisikule kuuluva maavara kaevandamiseks maa kasutamise õigust; 2 2) loa taotleja kavatseb kasutada avakaevandamist ja kaitstava loodusobjekti kaitse-eeskiri keelab maavara kaevandamise või kaevandamine kahjustab loodusobjekti, mille kaitse alla võtmine on menetluses; 3 3) loa taotleja kavatseb kasutada allmaakaevandamist ja kaevandamine kahjustab kaitstavat loodusobjekti või loodusobjekti, mille kaitse alla võtmine on m",
-      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_3"
+      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_3",
+      "estleg:references": [
+        {
+          "@id": "estleg:Maapueseadus_Par_26"
+        },
+        {
+          "@id": "estleg:Maapueseadus_Par_32"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Maapueseadus_Par_32"
+        }
+      ]
     },
     {
       "@id": "estleg:Maapueseadus_Par_35",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 35.",
       "rdfs:label": "§ 35. Kaevandamisluba",
@@ -520,19 +768,24 @@
       "@id": "estleg:Maapueseadus_Par_36",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 36.",
       "rdfs:label": "§ 36. Kaevandamisloa andmise avalikustamine ja loa andmine",
       "estleg:sourceAct": "Maapõueseadus",
       "estleg:summary": "1 (1) Kaevandamisloa andmisest ja muutmisest kuulutab loa andja ametlikus väljaandes Ametlikud Teadaanded. Kaevandamisloa andmisest ja muutmisest kuulutab loa andja ametlikus väljaandes Ametlikud Teadaanded. 2 (2) Kaevandamisloa andmise või muutmise teade peab sisaldama järgmisi andmeid: 1 1) loa saaja ärinime, registrikoodi ja aadressi või nime, isikukoodi ja aadressi; 2 2) tegevuskoha aadressi; 3 3) tegevuse lühikirjeldust; 4 4) loa kehtivuse aega. Kaevandamisloa andmise või muutmise teade pea",
-      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_3"
+      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_3",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ]
     },
     {
       "@id": "estleg:Maapueseadus_Par_37",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 37.",
       "rdfs:label": "§ 37. Kaevandamisloa kehtivusaeg",
@@ -544,7 +797,7 @@
       "@id": "estleg:Maapueseadus_Par_38",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 38.",
       "rdfs:label": "§ 38. Kaevandamisloa kehtivusaja pikendamine",
@@ -556,7 +809,7 @@
       "@id": "estleg:Maapueseadus_Par_39",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 39.",
       "rdfs:label": "§ 39. Maavara kaevandamisõiguse tasu",
@@ -568,19 +821,31 @@
       "@id": "estleg:Maapueseadus_Par_40",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 40.",
       "rdfs:label": "§ 40. Maavaravaru kaevandamise mahu aruande esitamine",
       "estleg:sourceAct": "Maapõueseadus",
       "estleg:summary": "1 (1) Kaevandamisloa omanik on kohustatud esitama loa andjale kord kvartalis maavaravaru kaevandamise mahu aruande. Kaevandamisloa omanik on kohustatud esitama loa andjale kord kvartalis maavaravaru kaevandamise mahu aruande. 2 (2) Maavaravaru kaevandamise mahu aruande esitamise korra kehtestab keskkonnaminister. Maavaravaru kaevandamise mahu aruande esitamise korra kehtestab keskkonnaminister. 3 (3) Maavaravaru kaevandamise mahu aruande esitamise korraga määratakse maavaravaru kaevandamise mahu",
-      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_3"
+      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_3",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Kaevandamisloa omanik",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_keskkonnaminister"
+        }
+      ],
+      "estleg:competenceType": "regulation"
     },
     {
       "@id": "estleg:Maapueseadus_Par_41",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 41.",
       "rdfs:label": "§ 41.",
@@ -592,19 +857,29 @@
       "@id": "estleg:Maapueseadus_Par_42",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 42.",
       "rdfs:label": "§ 42. Kaevandamisloa muutmine",
       "estleg:sourceAct": "Maapõueseadus",
       "estleg:summary": "1 (1) Kaevandamisluba muudetakse, kui: 1 1) käesoleva seaduse § 27 lõike 1 punktis 1 nimetatud andmed on muutunud; 2 2) loaga määratud nõuete aluseks olnud õigusnormid on muutunud; 3 3) loaga lubatud tegevusest tulenev saastus on nii suur, et põhjustab loaga lubatud tegevuskohas ja selle ümbruses keskkonna olulisi kahjulikke muutusi; 4 4) õnnetuse vältimiseks tuleb kasutada kaevandamisloaga määramata meetmeid; 5 5) loa omanik taotleb mäeeraldise laiendamist või on nõuetekohaselt korrastanud osa ",
-      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_3"
+      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_3",
+      "estleg:references": [
+        {
+          "@id": "estleg:Maapueseadus_Par_27"
+        }
+      ],
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ]
     },
     {
       "@id": "estleg:Maapueseadus_Par_43",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 43.",
       "rdfs:label": "§ 43. Kaevandamisloa kehtetuks tunnistamine",
@@ -616,43 +891,65 @@
       "@id": "estleg:Maapueseadus_Par_44",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 44.",
       "rdfs:label": "§ 44. Kaevandamisõiguse loovutamine ja kaevandamisloa ümberregistreerimine",
       "estleg:sourceAct": "Maapõueseadus",
       "estleg:summary": "1 (1) Kaevandamisloa omanikul on loa kehtivuse ajal õigus loast tulenevad õigused ja kohustused loovutada isikule, kelle tegevusalaks äriregistri järgi on maavaravaru kaevandamine. Kaevandamisloa omanikul on loa kehtivuse ajal õigus loast tulenevad õigused ja kohustused loovutada isikule, kelle tegevusalaks äriregistri järgi on maavaravaru kaevandamine. 2 (2) Kaevandamisõiguse omandamiseks peab käesoleva paragrahvi lõikes 1 nimetatud isik esitama kaevandamisloa andjale taotluse loa ümberregistre",
-      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_3"
+      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_3",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Kaevandamisõiguse omandamiseks"
     },
     {
       "@id": "estleg:Maapueseadus_Par_45",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 45.",
       "rdfs:label": "§ 45. Üldgeoloogilise uurimistöö ja geoloogilise uuringuga rikutud maa korrastamine",
       "estleg:sourceAct": "Maapõueseadus",
       "estleg:summary": "1 (1) Üldgeoloogilise uurimistöö loa ja uuringuloa omanik on kohustatud korrastama uuringuruumi teenindusala. Üldgeoloogilise uurimistöö loa ja uuringuloa omanik on kohustatud korrastama uuringuruumi teenindusala. 2 (2) Üldgeoloogilise uurimistöö ja geoloogilise uuringuga rikutud maa korrastamise korra kehtestab keskkonnaminister ./dyn=970635&id=905828 . 3 (3) Kui üldgeoloogilise uurimistöö loa või uuringuloa omanik ei ole tehnoloogia seisukohalt otstarbekal ajal korrastamistöid alustanud, teeb ",
-      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_4"
+      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_4",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_keskkonnaminister"
+        }
+      ],
+      "estleg:competenceType": "regulation"
     },
     {
       "@id": "estleg:Maapueseadus_Par_46",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 46.",
       "rdfs:label": "§ 46. Korrastamiskohustuse täidetuks tunnistamine",
       "estleg:sourceAct": "Maapõueseadus",
       "estleg:summary": "1 (1) Üldgeoloogilise uurimistöö või uurimistöö uuringuruumi teenindusala korrastamise kohta koostab töö tegija akti, mis tuleb kooskõlastada kinnisasja valdajaga. Üldgeoloogilise uurimistöö või uurimistöö uuringuruumi teenindusala korrastamise kohta koostab töö tegija akti, mis tuleb kooskõlastada kinnisasja valdajaga. 2 (2) Korrastamiskohustus on täidetud, kui uuringuruumi teenindusala korrastamise akti on heaks kiitnud uuringuruumi asukoha keskkonnateenistuse juhataja või tema volitatud isik.",
-      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_4"
+      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_4",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ]
     },
     {
       "@id": "estleg:Maapueseadus_Par_47",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 47.",
       "rdfs:label": "§ 47. Ettenägematute korrastamisvigade kõrvaldamine",
@@ -664,31 +961,42 @@
       "@id": "estleg:Maapueseadus_Par_48",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 48.",
       "rdfs:label": "§ 48. Maavaravaru kaevandamisega rikutud maa korrastamine",
       "estleg:sourceAct": "Maapõueseadus",
       "estleg:summary": "1 (1) Kaevandamisloa omanik on kohustatud maavaravaru kaevandamisega rikutud maa korrastama korrastamisprojekti alusel. Kaevandamisloa omanik on kohustatud maavaravaru kaevandamisega rikutud maa korrastama korrastamisprojekti alusel. 2 (2) Korrastamisprojekti rakendamiseks annab nõusoleku maavaravaru kaevandamiskoha keskkonnateenistus, arvestades Eesti Maavarade Komisjoni arvamust. Korrastamisprojekti rakendamiseks annab nõusoleku maavaravaru kaevandamiskoha keskkonnateenistus, arvestades Eesti ",
-      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_4"
+      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_4",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Kaevandamisloa omanik"
     },
     {
       "@id": "estleg:Maapueseadus_Par_49",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 49.",
       "rdfs:label": "§ 49. Rikutud maa korrastamise tagamine",
       "estleg:sourceAct": "Maapõueseadus",
       "estleg:summary": "1 (1) Kui kaevandamisloa omanik ei ole tehnoloogia seisukohalt otstarbekal ajal rikutud maa korrastamistöid alustanud, teeb kaevandamisloa andja talle ettekirjutuse, mille täitmata jätmise korral kohaldatakse sunnivahendit asendustäitmise ja sunniraha seaduses sätestatud korras. Ettekirjutusega määratakse korrastamistöödega alustamise tähtaeg ja nende kalenderplaan. Kui kaevandamisloa omanik ei ole tehnoloogia seisukohalt otstarbekal ajal rikutud maa korrastamistöid alustanud, teeb kaevandamislo",
-      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_4"
+      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_4",
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_Maapueseadus_Par_49_coercive_payment"
+        }
+      ]
     },
     {
       "@id": "estleg:Maapueseadus_Par_50",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 50.",
       "rdfs:label": "§ 50. Rikutud maa korrastamiskohustuse täidetuks tunnistamine ja korrastamistööde vastuvõtukomisjon",
@@ -700,7 +1008,7 @@
       "@id": "estleg:Maapueseadus_Par_51",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 51.",
       "rdfs:label": "§ 51. Ettenägematute korrastamisvigade kõrvaldamine",
@@ -712,7 +1020,7 @@
       "@id": "estleg:Maapueseadus_Par_52",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 52.",
       "rdfs:label": "§ 52. Eraõiguslikule isikule kuuluva kinnisasja kasutamise õigus",
@@ -724,7 +1032,7 @@
       "@id": "estleg:Maapueseadus_Par_53",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 53.",
       "rdfs:label": "§ 53. Riigi- või munitsipaalomandisse kuuluva kinnisasja kasutamine",
@@ -736,55 +1044,79 @@
       "@id": "estleg:Maapueseadus_Par_54",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 54.",
       "rdfs:label": "§ 54. Ajutised ehitised üldgeoloogilise uurimistöö ja geoloogilise uuringu alal",
       "estleg:sourceAct": "Maapõueseadus",
       "estleg:summary": "1 (1) Üldgeoloogilise uurimistöö loa või uuringuloa omanikul on õigus loaga määratud uuringualal rajada puurauke, kaeveõõsi ja geoloogiliseks tööks vajalikke ajutisi ehitisi põhjendatud mahus, raiuda maha geoloogilist tööd takistavaid puid ning tasandada uuringuplatsi. Üldgeoloogilise uurimistöö loa või uuringuloa omanikul on õigus loaga määratud uuringualal rajada puurauke, kaeveõõsi ja geoloogiliseks tööks vajalikke ajutisi ehitisi põhjendatud mahus, raiuda maha geoloogilist tööd takistavaid p",
-      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_5"
+      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_5",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:Maapueseadus_Par_55",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 55.",
       "rdfs:label": "§ 55. Üldgeoloogilise uurimistöö ja geoloogilise uuringuga tekitatud kahju hüvitamine",
       "estleg:sourceAct": "Maapõueseadus",
       "estleg:summary": "1 (1) Üldgeoloogilise uurimistöö loa ja uuringuloa omanik hüvitavad tekitatud kahju sõltumata oma süüst. Üldgeoloogilise uurimistöö loa ja uuringuloa omanik hüvitavad tekitatud kahju sõltumata oma süüst. 2 (2) Käesoleva paragrahvi lõikes 1 nimetatud kahju hüvitamise nõue aegub ühe aasta jooksul, arvates päevast, millal kannatanu sai teada või pidi teada saama kahju tekitamisest. Käesoleva paragrahvi lõikes 1 nimetatud kahju hüvitamise nõue aegub ühe aasta jooksul, arvates päevast, millal kannata",
-      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_5"
+      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_5",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:VrdKS_Par_25"
+        },
+        {
+          "@id": "estleg:SoVS_Par_14"
+        }
+      ]
     },
     {
       "@id": "estleg:Maapueseadus_Par_56",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 56.",
       "rdfs:label": "§ 56. Maavaravaru kaevandamisega tekitatud kahju hüvitamine",
       "estleg:sourceAct": "Maapõueseadus",
       "estleg:summary": "1 (1) Kaevandamisloa omanik hüvitab maavaravaru kaevandamisega tekitatud kahju sõltumata oma süüst. Kaevandamisloa omanik hüvitab maavaravaru kaevandamisega tekitatud kahju sõltumata oma süüst. 2 (2) Käesoleva paragrahvi lõikes 1 sätestatut kohaldatakse ka isiku suhtes, kellel on õigus maavaravaru loata kaevandada. Käesoleva paragrahvi lõikes 1 sätestatut kohaldatakse ka isiku suhtes, kellel on õigus maavaravaru loata kaevandada. 3 (3) Maavaravaru kaevandamisega tekitatud kahju kannatanud isik p",
-      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_5"
+      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_5",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:Maapueseadus_Par_57",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 57.",
       "rdfs:label": "§ 57. Mäeeraldise ja mäeeraldise teenindusmaa tähistamine",
       "estleg:sourceAct": "Maapõueseadus",
       "estleg:summary": "Kaevandamisloa omanik on kohustatud mäeeraldise või mäeeraldise teenindusmaa piiri tähistama ja sellega piirneva kinnisasja omaniku nõudel tarastama, kui sellega ei kaasne ülemääraseid kulutusi. Kaevandamisloa omanik on kohustatud mäeeraldise või mäeeraldise teenindusmaa piiri tähistama ja sellega piirneva kinnisasja omaniku nõudel tarastama, kui sellega ei kaasne ülemääraseid kulutusi.",
-      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_5"
+      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_5",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Kaevandamisloa omanik"
     },
     {
       "@id": "estleg:Maapueseadus_Par_58",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 58.",
       "rdfs:label": "§ 58. Üldgeoloogilise uurimistöö loa, uuringuloa ja kaevandamisloa omaniku õigus kasutada teed",
@@ -796,31 +1128,41 @@
       "@id": "estleg:Maapueseadus_Par_59",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 59.",
       "rdfs:label": "§ 59. Maapõue kasutamine, mis ei ole seotud maavara kaevandamisega",
       "estleg:sourceAct": "Maapõueseadus",
       "estleg:summary": "1 (1) Kinnisasja omanikul või kinnisasja kasutusõigust omaval isikul on õigus maapõue kasutada üldgeoloogilise uurimistöö loata, uuringuloata või kaevandamisloata, kui seda tingib kinnisasja kasutamise vajadus ja see ei ole vastuolus seadusega. Kinnisasja omanikul või kinnisasja kasutusõigust omaval isikul on õigus maapõue kasutada üldgeoloogilise uurimistöö loata, uuringuloata või kaevandamisloata, kui seda tingib kinnisasja kasutamise vajadus ja see ei ole vastuolus seadusega. 2 (2) Füüsilises",
-      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_6"
+      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_6",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:Maapueseadus_Par_60",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 60.",
       "rdfs:label": "§ 60. Ehitiste püstitamisel, maaparandusel või põllumajandustöödel ülejääva kaevise kasutamine",
       "estleg:sourceAct": "Maapõueseadus",
       "estleg:summary": "1 (1) Kinnisasja omanikul või kinnisasja kasutusõigust omaval isikul on õigus käsutada, kaasa arvatud kaubastada ehitise püstitamise, maaparandustööde või põllumajandustööde käigus tekkivat ja ülejäävat kaevist. Kinnisasja omanikul või kinnisasja kasutusõigust omaval isikul on õigus käsutada, kaasa arvatud kaubastada ehitise püstitamise, maaparandustööde või põllumajandustööde käigus tekkivat ja ülejäävat kaevist. 2 (2) Ehitise püstitamisel maapõues tehtavate tööde, nagu kraavi, vundamendi ja al",
-      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_6"
+      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_6",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:Maapueseadus_Par_61",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 61.",
       "rdfs:label": "§ 61.",
@@ -832,151 +1174,332 @@
       "@id": "estleg:Maapueseadus_Par_62",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 62.",
       "rdfs:label": "§ 62. Maapõue kaitse põhinõuded",
       "estleg:sourceAct": "Maapõueseadus",
       "estleg:summary": "Maapõue seisundit ja kasutamist mõjutava tegevuse korraldamisel tuleb tagada: 1 1) arvelevõetud maavara kaevandamisväärsena säilimine; 2 2) arvelevõetud maavaravaru kaevandamisväärsena säilimine; 3 3) juurdepääs maavaravarule; 4 4) kasutada antud maavaravaru optimaalne kasutamine. Maapõue seisundit ja kasutamist mõjutava tegevuse korraldamisel tuleb tagada: arvelevõetud maavara kaevandamisväärsena säilimine; arvelevõetud maavaravaru kaevandamisväärsena säilimine; juurdepääs maavaravarule; kasuta",
-      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_7"
+      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_7",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ]
     },
     {
       "@id": "estleg:Maapueseadus_Par_63",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 63.",
       "rdfs:label": "§ 63. Maavaravarude kaitse",
       "estleg:sourceAct": "Maapõueseadus",
       "estleg:summary": "1 (1) Kaevandamisloa andmisel ei tohi mäeeraldisest välja jätta maardla osi, mille maavaravaru mahu või seisundi tõttu ei ole nende kasutamine enam majanduslikult põhjendatud. Kaevandamisloa andmisel ei tohi mäeeraldisest välja jätta maardla osi, mille maavaravaru mahu või seisundi tõttu ei ole nende kasutamine enam majanduslikult põhjendatud. 2 (2) Maavaravaru kaevandamisel tuleb tagada maardlasse jääva maavaravaru kasutamis- ja kaevandamisväärsena säilitamine. Maavaravaru kaevandamisel tuleb t",
-      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_7"
+      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_7",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Prohibition"
+        }
+      ],
+      "estleg:dutyHolder": "Maavaravaru kaevandamisel"
     },
     {
       "@id": "estleg:Maapueseadus_Par_64",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 64.",
       "rdfs:label": "§ 64. Turba kriitilise varu suurus ja kriitilise turbavaruga alad",
       "estleg:sourceAct": "Maapõueseadus",
       "estleg:summary": "1 (1) Turba kriitilise varu suuruse ja kasutusmäärad kehtestab Vabariigi Valitsus ./dyn=970635&id=967724 . 2 (2) Kriitiliseks varuks arvatud turbavarudega alade nimekirja kehtestab keskkonnaminister. Kriitiliseks varuks arvatud turbavarudega alade nimekirja kehtestab keskkonnaminister.",
-      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_7"
+      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_7",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        },
+        {
+          "@id": "estleg:Institution_keskkonnaminister"
+        }
+      ],
+      "estleg:competenceType": "regulation"
     },
     {
       "@id": "estleg:Maapueseadus_Par_65",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 65.",
       "rdfs:label": "§ 65. Mullakaitse nõuded",
       "estleg:sourceAct": "Maapõueseadus",
       "estleg:summary": "1 (1) Kaevandamisloa omanik on kohustatud eemaldama maavaravaru kaevandamisega seotud ehitiste piiresse jääva mulla vähemalt selle huumushorisondi ulatuses. Kaevandamisloa omanik on kohustatud eemaldama maavaravaru kaevandamisega seotud ehitiste piiresse jääva mulla vähemalt selle huumushorisondi ulatuses. 2 (2) Mullakihi tüsedus määratakse geoloogilise uuringu käigus ja mullakihi kirjeldus esitatakse geoloogilise uuringu aruandes. Mullakihi tüsedus määratakse geoloogilise uuringu käigus ja mull",
-      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_7"
+      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_7",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Kaevandamisloa omanik"
     },
     {
       "@id": "estleg:Maapueseadus_Par_66",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 66.",
       "rdfs:label": "§ 66. Kaevandamisjääkide ladestamine",
       "estleg:sourceAct": "Maapõueseadus",
       "estleg:summary": "Ohtlike ainete sisalduseta kaevandamisjääkide ladestamiskohtadele ja ladestamisele esitatavad nõuded kehtestab keskkonnaminister ./dyn=970635&id=891313 .",
-      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_7"
+      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_7",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_keskkonnaminister"
+        }
+      ],
+      "estleg:competenceType": "regulation"
     },
     {
       "@id": "estleg:Maapueseadus_Par_67",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 67.",
       "rdfs:label": "§ 67. Üldgeoloogilise uurimistöö ja geoloogilise uuringu käigus kogutud materjali esitamata jätmine",
       "estleg:sourceAct": "Maapõueseadus",
       "estleg:summary": "1 (1) Üldgeoloogilise uurimistöö või geoloogilise uuringu käigus kogutud materjali esitamata jätmise eest – karistatakse rahatrahviga kuni 150 trahviühikut. Üldgeoloogilise uurimistöö või geoloogilise uuringu käigus kogutud materjali esitamata jätmise eest – karistatakse rahatrahviga kuni 150 trahviühikut. 2 (2) Sama teo eest, kui selle on toime pannud juriidiline isik, – karistatakse rahatrahviga kuni 25 000 krooni. Sama teo eest, kui selle on toime pannud juriidiline isik, – karistatakse rahat",
-      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_8"
+      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_8",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:SETS_Par_20"
+        },
+        {
+          "@id": "estleg:TaimKS_Par_98"
+        },
+        {
+          "@id": "estleg:TPSKS_Par_126"
+        },
+        {
+          "@id": "estleg:VetS_Par_39"
+        },
+        {
+          "@id": "estleg:TPSKS_Par_127"
+        }
+      ],
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_Maapueseadus_Par_67_fine"
+        }
+      ]
     },
     {
       "@id": "estleg:Maapueseadus_Par_68",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 68.",
       "rdfs:label": "§ 68. Uuringuruumi teenindusala korrastamise kohustuse rikkumine",
       "estleg:sourceAct": "Maapõueseadus",
       "estleg:summary": "1 (1) Uuringuruumi teenindusala nõuetekohaselt korrastamata jätmise eest – karistatakse rahatrahviga kuni 300 trahviühikut. Uuringuruumi teenindusala nõuetekohaselt korrastamata jätmise eest – karistatakse rahatrahviga kuni 300 trahviühikut. 2 (2) Sama teo eest, kui selle on toime pannud juriidiline isik, – karistatakse rahatrahviga kuni 50 000 krooni. Sama teo eest, kui selle on toime pannud juriidiline isik, – karistatakse rahatrahviga kuni 50 000 krooni.",
-      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_8"
+      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_8",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Strateegilise_kauba_seadus_Par_50"
+        },
+        {
+          "@id": "estleg:PakS_Par_29"
+        },
+        {
+          "@id": "estleg:TurS_Par_31_32"
+        },
+        {
+          "@id": "estleg:TaimKS_Par_98"
+        },
+        {
+          "@id": "estleg:TPSKS_Par_126"
+        }
+      ],
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_Maapueseadus_Par_68_fine"
+        }
+      ]
     },
     {
       "@id": "estleg:Maapueseadus_Par_69",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 69.",
       "rdfs:label": "§ 69. Kaevandamisega rikutud maa korrastamise kohustuse rikkumine",
       "estleg:sourceAct": "Maapõueseadus",
       "estleg:summary": "1 (1) Kaevandamisega rikutud maa nõuetekohaselt korrastamata jätmise eest – karistatakse rahatrahviga kuni 300 trahviühikut. Kaevandamisega rikutud maa nõuetekohaselt korrastamata jätmise eest – karistatakse rahatrahviga kuni 300 trahviühikut. 2 (2) Sama teo eest, kui selle on toime pannud juriidiline isik, – karistatakse rahatrahviga kuni 50 000 krooni. Sama teo eest, kui selle on toime pannud juriidiline isik, – karistatakse rahatrahviga kuni 50 000 krooni.",
-      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_8"
+      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_8",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Strateegilise_kauba_seadus_Par_50"
+        },
+        {
+          "@id": "estleg:PakS_Par_29"
+        },
+        {
+          "@id": "estleg:TurS_Par_31_32"
+        },
+        {
+          "@id": "estleg:TaimKS_Par_98"
+        },
+        {
+          "@id": "estleg:TPSKS_Par_126"
+        }
+      ],
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_Maapueseadus_Par_69_fine"
+        }
+      ]
     },
     {
       "@id": "estleg:Maapueseadus_Par_70",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 70.",
       "rdfs:label": "§ 70. Üldgeoloogilise uurimistöö takistamine",
       "estleg:sourceAct": "Maapõueseadus",
       "estleg:summary": "1 (1) Sellise üldgeoloogilise uurimistöö, mis ei ole maavara otsing, takistamise eest – karistatakse rahatrahviga kuni 100 trahviühikut. Sellise üldgeoloogilise uurimistöö, mis ei ole maavara otsing, takistamise eest – karistatakse rahatrahviga kuni 100 trahviühikut. 2 (2) Sama teo eest, kui selle on toime pannud juriidiline isik – karistatakse rahatrahviga kuni 10 000 krooni. Sama teo eest, kui selle on toime pannud juriidiline isik – karistatakse rahatrahviga kuni 10 000 krooni.",
-      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_8"
+      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_8",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:TurS_Par_31_32"
+        },
+        {
+          "@id": "estleg:ToiduS_Par_53_58"
+        },
+        {
+          "@id": "estleg:TaimKS_Par_98"
+        },
+        {
+          "@id": "estleg:TPSKS_Par_126"
+        },
+        {
+          "@id": "estleg:Strateegilise_kauba_seadus_Par_50"
+        }
+      ],
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_Maapueseadus_Par_70_fine"
+        }
+      ]
     },
     {
       "@id": "estleg:Maapueseadus_Par_71",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 71.",
       "rdfs:label": "§ 71. Mäeeraldise ja mäeeraldise teenindusmaa tähistamise kohustuse rikkumine",
       "estleg:sourceAct": "Maapõueseadus",
       "estleg:summary": "1 (1) Mäeeraldise või mäeeraldise teenindusmaa tähistamata jätmise eest – karistatakse rahatrahviga kuni 100 trahviühikut. Mäeeraldise või mäeeraldise teenindusmaa tähistamata jätmise eest – karistatakse rahatrahviga kuni 100 trahviühikut. 2 (2) Sama teo eest, kui selle on toime pannud juriidiline isik, – karistatakse rahatrahviga kuni 10 000 krooni. Sama teo eest, kui selle on toime pannud juriidiline isik, – karistatakse rahatrahviga kuni 10 000 krooni.",
-      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_8"
+      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_8",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Strateegilise_kauba_seadus_Par_50"
+        },
+        {
+          "@id": "estleg:PakS_Par_29"
+        },
+        {
+          "@id": "estleg:TurS_Par_31_32"
+        },
+        {
+          "@id": "estleg:TaimKS_Par_98"
+        },
+        {
+          "@id": "estleg:TPSKS_Par_126"
+        }
+      ],
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_Maapueseadus_Par_71_fine"
+        }
+      ]
     },
     {
       "@id": "estleg:Maapueseadus_Par_72",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 72.",
       "rdfs:label": "§ 72. Mullakaitsenõuete rikkumine",
       "estleg:sourceAct": "Maapõueseadus",
       "estleg:summary": "1 (1) Mullakaitsenõuete rikkumise eest – karistatakse rahatrahviga kuni 300 trahviühikut. Mullakaitsenõuete rikkumise eest – karistatakse rahatrahviga kuni 300 trahviühikut. 2 (2) Sama teo eest, kui selle on toime pannud juriidiline isik, – karistatakse rahatrahviga kuni 50 000 krooni. Sama teo eest, kui selle on toime pannud juriidiline isik, – karistatakse rahatrahviga kuni 50 000 krooni.",
-      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_8"
+      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_8",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:TurS_Par_31_32"
+        },
+        {
+          "@id": "estleg:TTOS_Par_27"
+        },
+        {
+          "@id": "estleg:TaimKS_Par_100"
+        },
+        {
+          "@id": "estleg:SOS_Par_47"
+        },
+        {
+          "@id": "estleg:Mahepllumajanduse_seadus_Par_31"
+        }
+      ],
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_Maapueseadus_Par_72_fine"
+        }
+      ]
     },
     {
       "@id": "estleg:Maapueseadus_Par_73",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 73.",
       "rdfs:label": "§ 73. Menetlus",
       "estleg:sourceAct": "Maapõueseadus",
       "estleg:summary": "1 (1) Käesoleva seaduse § -des 67–72 sätestatud väärtegude menetlemisel kohaldatakse karistusseadustiku (RT I 2001, 61, 364; 2002, 86, 504; 82, 480; 105, 612; 2003, 4, 22; 83, 557; 90, 601; 2004, 7, 40, 46, 329; 54, 387; 56, 401) üldosa ja väärteomenetluse seadustiku (RT I 2002, 50, 313; 110, 654; 2003, 26, 156; 83, 557; 88, 590; 2004, 46, 329; 54, 387 ja 390; 56, 403; RT III 2004, 9, 96) sätteid. Käesoleva seaduse § -des 67–72 sätestatud väärtegude menetlemisel kohaldatakse karistusseadustiku (",
-      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_8"
+      "estleg:requestedCluster": "estleg:Cluster_Maapueseadus_8",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:PakS_Par_33"
+        },
+        {
+          "@id": "estleg:toote_ohutuse_seadus_Par_21"
+        },
+        {
+          "@id": "estleg:toote_ohutuse_seadus_Par_21"
+        },
+        {
+          "@id": "estleg:TaimKS_Par_102"
+        },
+        {
+          "@id": "estleg:VKVS_Par_22"
+        }
+      ]
     },
     {
       "@id": "estleg:Maapueseadus_Par_74",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 74.",
       "rdfs:label": "§ 74. Keskkonnakahju hüvitamine",
@@ -988,7 +1511,7 @@
       "@id": "estleg:Maapueseadus_Par_75",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 75.",
       "rdfs:label": "§ 75. Seaduse rakendamine",
@@ -1000,7 +1523,7 @@
       "@id": "estleg:Maapueseadus_Par_83",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_maapoueseadus"
+        "estleg:LegalProvision_maapoue_seadus"
       ],
       "estleg:paragrahv": "§ 83.",
       "rdfs:label": "§ 83. Seaduse jõustumine",

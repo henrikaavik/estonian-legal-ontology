@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -15,14 +16,73 @@
         "owl:Ontology"
       ],
       "rdfs:label": "Ravimiseaduse teemakaardistus",
-      "dc:source": "Ravimiseadus (RT I, 12.07.2025, 1; kehtiv redaktsioon, URL: https://www.riigiteataja.ee/akt/112072025024)"
+      "dc:source": "Ravimiseadus (RT I, 12.07.2025, 1; kehtiv redaktsioon, URL: https://www.riigiteataja.ee/akt/112072025024)",
+      "estleg:temporalStatus": "inForce",
+      "estleg:affectedBy": [
+        {
+          "@id": "estleg:Draft_SOM24_0635"
+        },
+        {
+          "@id": "estleg:Draft_SOM23_1061"
+        },
+        {
+          "@id": "estleg:Draft_SOM21_1314"
+        },
+        {
+          "@id": "estleg:Draft_SOM21_0089"
+        },
+        {
+          "@id": "estleg:Draft_SOM19_0702"
+        },
+        {
+          "@id": "estleg:Draft_SOM18_0727"
+        },
+        {
+          "@id": "estleg:Draft_SOM14_1754"
+        },
+        {
+          "@id": "estleg:Draft_SOM13_1266"
+        },
+        {
+          "@id": "estleg:Draft_SOM12_0313"
+        },
+        {
+          "@id": "estleg:Draft_SOM12_0175"
+        },
+        {
+          "@id": "estleg:Draft_RIIGIKOGU24_0623"
+        },
+        {
+          "@id": "estleg:Draft_RIIGIKOGU14_1602"
+        }
+      ],
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/5631"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2441"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2451"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2431"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2811"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_ravimiseadus",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)"
+      "rdfs:label": "Õigusnorm (paragrahv)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:Cluster_MedicineApproval",
@@ -58,7 +118,12 @@
       "rdfs:label": "Müügiluba kui ravimi turustamise eeltingimus",
       "estleg:requestedCluster": "ravimi müügiluba",
       "estleg:summary": "Sätestab põhimõtte, et Eestis tohib turustada üldjuhul üksnes Ravimiameti või Euroopa Komisjoni müügiloaga ravimeid, määratledes müügiloa kohustuse ning müügiloa hoidja rolli ja vastutuse.",
-      "estleg:sourceAct": "Ravimiseadus"
+      "estleg:sourceAct": "Ravimiseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Permission"
+        }
+      ]
     },
     {
       "@id": "estleg:RavS_Par_MuugiloaTaotlusJaMenetlus",
@@ -82,7 +147,12 @@
       "rdfs:label": "Müügiloa väljaandmine, kehtivus ja loale kantavad andmed",
       "estleg:requestedCluster": "ravimi müügiluba",
       "estleg:summary": "Määrab müügiloa väljaandmise eeldused, loa kehtivuse ja uuendamise ning andmekoosseisu, mis peab müügiloal sisalduma, sh ravimi klassifitseerimise seosed väljastustingimustega.",
-      "estleg:sourceAct": "Ravimiseadus"
+      "estleg:sourceAct": "Ravimiseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ]
     },
     {
       "@id": "estleg:RavS_Par_MuugiloastKeeldumineJaMuutmine",

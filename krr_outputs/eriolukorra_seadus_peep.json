@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -15,14 +16,74 @@
         "owl:Ontology"
       ],
       "rdfs:label": "Eriolukorra seadus teemakaardistus",
-      "dc:source": "Eriolukorra seadus"
+      "dc:source": "Eriolukorra seadus",
+      "estleg:entryIntoForce": {
+        "@value": "1996-02-16",
+        "@type": "xsd:date"
+      },
+      "estleg:repealDate": {
+        "@value": "2009-06-30",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2002-06-19",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "1996-01-01",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "repealed",
+      "estleg:amendedBy": [
+        {
+          "@id": "estleg:Amendment_eriolukorra_seadus_1"
+        },
+        {
+          "@id": "estleg:Amendment_eriolukorra_seadus_2"
+        },
+        {
+          "@id": "estleg:Amendment_eriolukorra_seadus_3"
+        },
+        {
+          "@id": "estleg:Amendment_eriolukorra_seadus_4"
+        },
+        {
+          "@id": "estleg:Amendment_eriolukorra_seadus_5"
+        },
+        {
+          "@id": "estleg:Amendment_eriolukorra_seadus_6"
+        },
+        {
+          "@id": "estleg:Amendment_eriolukorra_seadus_7"
+        }
+      ],
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/2446"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/3606"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/1221"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5631"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2441"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_eriolukorra_seadus",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)"
+      "rdfs:label": "Õigusnorm (paragrahv)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:Cluster_EOS_1",
@@ -86,7 +147,13 @@
       "rdfs:label": "§ 2. Eriolukorra väljakuulutamise alus ja tingimused",
       "estleg:sourceAct": "Eriolukorra seadus",
       "estleg:summary": "1(1)Eriolukorra riigis või selle osas kuulutab välja Vabariigi Valitsus Eesti Vabariigi põhiseaduse paragrahv 87 punkti 8 alusel loodusõnnetuse ja katastroofi korral või nakkushaiguse leviku tõkestamiseks. Eriolukorra riigis või selle osas kuulutab välja Vabariigi Valitsus Eesti Vabariigi põhiseaduse paragrahv 87 punkti 8 alusel loodusõnnetuse ja katastroofi korral või nakkushaiguse leviku tõkestamiseks. 2(2)Eriolukord kuulutatakse välja tingimusel, et loodusõnnetuse ja katastroofi korral või na",
-      "estleg:requestedCluster": "estleg:Cluster_EOS_1"
+      "estleg:requestedCluster": "estleg:Cluster_EOS_1",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:EOS_Par_3",
@@ -134,7 +201,12 @@
       "rdfs:label": "§ 6. Päästetööd",
       "estleg:sourceAct": "Eriolukorra seadus",
       "estleg:summary": "Päästetööd käesoleva seaduse mõistes on:11)avarii-, pääste- ja taastamistööd loodusõnnetuse ja katastroofi korral;22)tööd nakkushaiguste leviku tõkestamiseks;33)tööd kannatanutele abi osutamisel loodusõnnetuse ja katastroofi korral ning nakkushaiguste leviku tõkestamisel. Päästetööd käesoleva seaduse mõistes on: avarii-, pääste- ja taastamistööd loodusõnnetuse ja katastroofi korral; tööd nakkushaiguste leviku tõkestamiseks; tööd kannatanutele abi osutamisel loodusõnnetuse ja katastroofi korral n",
-      "estleg:requestedCluster": "estleg:Cluster_EOS_1"
+      "estleg:requestedCluster": "estleg:Cluster_EOS_1",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Hdaolukorra_seadus_Par_19"
+        }
+      ]
     },
     {
       "@id": "estleg:EOS_Par_7",
@@ -158,7 +230,12 @@
       "rdfs:label": "§ 8. Füüsiliste isikute õiguste ja vabaduste piiramine eriolukorra ajal",
       "estleg:sourceAct": "Eriolukorra seadus",
       "estleg:summary": "1(1)Eriolukorra ajal, mis on välja kuulutatud seoses loodusõnnetuse või katastroofiga, võib käesoleva seaduse paragrahvides 18, 19 ja 20 sätestatud korras:11)piirata füüsiliste isikute õigust vabalt liikuda eriolukorra piirkonnas;22)avaliku korra kaitseks ja liiklusohutuse tagamiseks keelata füüsilistel isikutel koguneda ja koosolekuid pidada eriolukorra piirkonnas;33)kohustada füüsilisi isikuid töötama päästetöödel. Eriolukorra ajal, mis on välja kuulutatud seoses loodusõnnetuse või katastroofi",
-      "estleg:requestedCluster": "estleg:Cluster_EOS_1"
+      "estleg:requestedCluster": "estleg:Cluster_EOS_1",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:EOS_Par_9",
@@ -182,7 +259,24 @@
       "rdfs:label": "§ 9<sup>1</sup>. Haldusmenetluse seaduse kohaldamine",
       "estleg:sourceAct": "Eriolukorra seadus",
       "estleg:summary": "Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse (RT I 2001, 58, 354) sätteid, arvestades käesoleva seaduse erisusi.RT I2002613751848112002-08-01+03:00 Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse (RT I 2001, 58, 354) sätteid, arvestades käesoleva seaduse erisusi.",
-      "estleg:requestedCluster": "estleg:Cluster_EOS_1"
+      "estleg:requestedCluster": "estleg:Cluster_EOS_1",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:TKS_Par_1_1"
+        },
+        {
+          "@id": "estleg:RStS_Par_2"
+        },
+        {
+          "@id": "estleg:RanKS_Par_1_1"
+        },
+        {
+          "@id": "estleg:punase_risti_nimetuse_ja_embleemi_seadus_Par_2"
+        },
+        {
+          "@id": "estleg:Ohvriabi_seadus_Par_2"
+        }
+      ]
     },
     {
       "@id": "estleg:EOS_Par_10",
@@ -194,7 +288,13 @@
       "rdfs:label": "§ 10. Vabariigi Valitsuse teavitamine loodusõnnetusest, katastroofist ja nakkushaiguse levikust",
       "estleg:sourceAct": "Eriolukorra seadus",
       "estleg:summary": "Vabariigi Valitsust teavitavad loodusõnnetusest, katastroofist ja nakkushaiguse levikust riigiasutused ning valla- ja linnavalitsused Vabariigi Valitsuse kehtestatud korras. Vabariigi Valitsust teavitavad loodusõnnetusest, katastroofist ja nakkushaiguse levikust riigiasutused ning valla- ja linnavalitsused Vabariigi Valitsuse kehtestatud korras.",
-      "estleg:requestedCluster": "estleg:Cluster_EOS_2"
+      "estleg:requestedCluster": "estleg:Cluster_EOS_2",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:EOS_Par_11",
@@ -206,7 +306,13 @@
       "rdfs:label": "§ 11. Vabariigi Valitsuse kriisikomisjoni ülesanded",
       "estleg:sourceAct": "Eriolukorra seadus",
       "estleg:summary": "Vabariigi Valitsuse moodustatud kriisikomisjoni ülesanded abinõude rakendamisel seoses loodusõnnetuse, katastroofi ja nakkushaiguse levikuga on:11)riikliku poliitika ja tegevuskavade väljatöötamine ohu prognoosimiseks, ennetamiseks ja kõrvaldamiseks;22)teabe analüüsimine ning analüüsitulemuste esitamine peaministrile koos ohu prognoosimise, ennetamise ja kõrvaldamise kavaga;33)arvamuse andmine Vabariigi Valitsusele ohueelse seisundi, tekkinud ohu iseloomu, ulatuse ja kõrvaldamise ning eriolukorr",
-      "estleg:requestedCluster": "estleg:Cluster_EOS_2"
+      "estleg:requestedCluster": "estleg:Cluster_EOS_2",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:EOS_Par_12",
@@ -218,7 +324,21 @@
       "rdfs:label": "§ 12. Eriolukorra väljakuulutamise kord",
       "estleg:sourceAct": "Eriolukorra seadus",
       "estleg:summary": "1(1)Eriolukorra väljakuulutamise otsustamiseks kutsub peaminister või tema äraolekul teda asendav minister viivitamatult kokku Vabariigi Valitsuse istungi, kus kuulatakse ära Vabariigi Valitsuse kriisikomisjoni arvamus eriolukorra väljakuulutamise vajaduse kohta. Eriolukorra väljakuulutamise otsustamiseks kutsub peaminister või tema äraolekul teda asendav minister viivitamatult kokku Vabariigi Valitsuse istungi, kus kuulatakse ära Vabariigi Valitsuse kriisikomisjoni arvamus eriolukorra väljakuul",
-      "estleg:requestedCluster": "estleg:Cluster_EOS_2"
+      "estleg:requestedCluster": "estleg:Cluster_EOS_2",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        },
+        {
+          "@id": "estleg:Institution_peaminister"
+        }
+      ],
+      "estleg:competenceType": "general",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Hdaolukorra_seadus_Par_14"
+        }
+      ]
     },
     {
       "@id": "estleg:EOS_Par_13",
@@ -230,7 +350,18 @@
       "rdfs:label": "§ 13. Vabariigi Valitsuse määrus eriolukorra väljakuulutamise kohta",
       "estleg:sourceAct": "Eriolukorra seadus",
       "estleg:summary": "1(1)Vabariigi Valitsuse määruses eriolukorra väljakuulutamise kohta sätestatakse:11)eriolukorra väljakuulutamine vastavalt Eesti Vabariigi põhiseaduse paragrahv 87 punktile 8;22)eriolukorra väljakuulutamise põhjus;33)eriolukorra piirkond;44)eriolukorra juhiks ministri nimetamine, kelle pädevusse kuulub põhiliste abinõude rakendamine eriolukorra väljakuulutamise põhjustanud sündmusest tuleneva ohu kõrvaldamiseks;55)valitsusasutused ning valla- ja linnavalitsused, kes on kohustatud rakendama abinõ",
-      "estleg:requestedCluster": "estleg:Cluster_EOS_2"
+      "estleg:requestedCluster": "estleg:Cluster_EOS_2",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:EOS_Par_14",
@@ -242,7 +373,13 @@
       "rdfs:label": "§ 14. Eriolukorra väljakuulutamisest teatamine",
       "estleg:sourceAct": "Eriolukorra seadus",
       "estleg:summary": "Vabariigi Valitsuse määruse eriolukorra väljakuulutamise kohta avaldavad massiteabevahendite valdajad muutmata kujul viivitamatult. Vabariigi Valitsuse määruse eriolukorra väljakuulutamise kohta avaldavad massiteabevahendite valdajad muutmata kujul viivitamatult.",
-      "estleg:requestedCluster": "estleg:Cluster_EOS_2"
+      "estleg:requestedCluster": "estleg:Cluster_EOS_2",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:EOS_Par_15",
@@ -254,7 +391,18 @@
       "rdfs:label": "§ 15. Eriolukorra piirkonna muutmine",
       "estleg:sourceAct": "Eriolukorra seadus",
       "estleg:summary": "1(1)Vabariigi Valitsus võib eriolukorra ajal muuta eriolukorra piirkonda. Eriolukorra piirkonna laiendamist ei loeta uue eriolukorra väljakuulutamiseks. Vabariigi Valitsus võib eriolukorra ajal muuta eriolukorra piirkonda. Eriolukorra piirkonna laiendamist ei loeta uue eriolukorra väljakuulutamiseks. 2(2)Eriolukorra piirkonna muutmine sätestatakse Vabariigi Valitsuse määrusega ja sellest teavitatakse elanikkonda käesoleva seaduse paragrahvis 14 sätestatud korras. Eriolukorra piirkonna muutmine s",
-      "estleg:requestedCluster": "estleg:Cluster_EOS_2"
+      "estleg:requestedCluster": "estleg:Cluster_EOS_2",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:EOS_Par_16",
@@ -266,7 +414,16 @@
       "rdfs:label": "§ 16. Kaitsejõudude kasutamine eriolukorra ajal",
       "estleg:sourceAct": "Eriolukorra seadus",
       "estleg:summary": "[Lõike 1 sõnastus kuni 14. 08. 2002] [Lõike 1 sõnastus kuni 14. 08. 2002] 1(1)Vabariigi President annab Vabariigi Valitsuse ettepanekul oma otsusega kaitseväe juhatajale korralduse kaitsejõudude kasutamiseks eriolukorra ajal eriolukorra väljakuulutamise põhjustanud sündmusest tuleneva ohu kõrvaldamiseks ja kannatanute abistamiseks. Vabariigi President annab Vabariigi Valitsuse ettepanekul oma otsusega kaitseväe juhatajale korralduse kaitsejõudude kasutamiseks eriolukorra ajal eriolukorra väljaku",
-      "estleg:requestedCluster": "estleg:Cluster_EOS_2"
+      "estleg:requestedCluster": "estleg:Cluster_EOS_2",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        },
+        {
+          "@id": "estleg:Institution_vabariigipresident"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:EOS_Par_17",
@@ -278,7 +435,18 @@
       "rdfs:label": "§ 17. Eriolukorra lõpetamise kord",
       "estleg:sourceAct": "Eriolukorra seadus",
       "estleg:summary": "1(1)Vabariigi Valitsus, ära kuulanud kriisikomisjoni arvamuse, otsustab eriolukorra lõpetamise pärast eriolukorra väljakuulutamise põhjustanud sündmusest tuleneva ohu kõrvaldamist. Vabariigi Valitsus, ära kuulanud kriisikomisjoni arvamuse, otsustab eriolukorra lõpetamise pärast eriolukorra väljakuulutamise põhjustanud sündmusest tuleneva ohu kõrvaldamist. 2(2)Eriolukorra lõpetamine sätestatakse Vabariigi Valitsuse määrusega ja sellest teavitatakse elanikkonda käesoleva seaduse paragrahvis 14 sät",
-      "estleg:requestedCluster": "estleg:Cluster_EOS_2"
+      "estleg:requestedCluster": "estleg:Cluster_EOS_2",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
+      "estleg:competenceType": "general",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Hdaolukorra_seadus_Par_17"
+        }
+      ]
     },
     {
       "@id": "estleg:EOS_Par_18",
@@ -290,7 +458,13 @@
       "rdfs:label": "§ 18. Vabariigi Valitsuse ja peaministri pädevus",
       "estleg:sourceAct": "Eriolukorra seadus",
       "estleg:summary": "1(1)Abinõude rakendamiseks eriolukorra väljakuulutamise põhjustanud sündmusest tuleneva ohu kõrvaldamiseks ja kannatanute abistamiseks Vabariigi Valitsus:11)kuulutab eriolukorra välja vastavalt Eesti Vabariigi põhiseaduse paragrahv 87 punktile 8, näidates ära eriolukorra väljakuulutamise põhjuse ja eriolukorra piirkonna;22)nimetab eriolukorra juhiks ministri, kelle pädevusse kuulub põhiliste abinõude rakendamine eriolukorra väljakuulutamise põhjustanud sündmusest tuleneva ohu kõrvaldamiseks;33)k",
-      "estleg:requestedCluster": "estleg:Cluster_EOS_3"
+      "estleg:requestedCluster": "estleg:Cluster_EOS_3",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:EOS_Par_19",
@@ -314,7 +488,13 @@
       "rdfs:label": "§ 20. Päästetööde juht",
       "estleg:sourceAct": "Eriolukorra seadus",
       "estleg:summary": "1(1)Päästetööde juht juhib päästetöid eriolukorra piirkonnas või vajadusel kriisikoldes loodusõnnetuse ja katastroofi korral ning nakkushaiguse leviku tõkestamisel. Päästetööde juht allub eriolukorra juhile. Päästetööde juht juhib päästetöid eriolukorra piirkonnas või vajadusel kriisikoldes loodusõnnetuse ja katastroofi korral ning nakkushaiguse leviku tõkestamisel. Päästetööde juht allub eriolukorra juhile. 2(2)Päästetööde juht:11)rakendab päästetöödel füüsilisi isikuid Vabariigi Valitsuse keht",
-      "estleg:requestedCluster": "estleg:Cluster_EOS_3"
+      "estleg:requestedCluster": "estleg:Cluster_EOS_3",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:EOS_Par_21",
@@ -326,7 +506,12 @@
       "rdfs:label": "§ 21. Füüsiliste isikute rakendamine päästetöödel eriolukorra ajal",
       "estleg:sourceAct": "Eriolukorra seadus",
       "estleg:summary": "1(1)Eriolukorra ajal võib päästetöödel rakendada 18-50-aastasi isikuid. Eriolukorra ajal võib päästetöödel rakendada 18-50-aastasi isikuid. 2(2)Päästetöödest eriolukorra ajal on vabastatud:11)rasedad ja kuni kolmeaastaste laste emad;22)isikud, kes kasvatavad lapsinvaliidi;33)alla 12-aastase lapse üks vanematest või hooldaja;44)invaliidid;55)vaimsete või füüsiliste puuetega isikud ja nende hooldajad. Päästetöödest eriolukorra ajal on vabastatud: rasedad ja kuni kolmeaastaste laste emad; isikud, k",
-      "estleg:requestedCluster": "estleg:Cluster_EOS_3"
+      "estleg:requestedCluster": "estleg:Cluster_EOS_3",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:EOS_Par_22",
@@ -350,7 +535,19 @@
       "rdfs:label": "§ 23. Massiteabevahendite valdajate kohustused eriolukorra ajal",
       "estleg:sourceAct": "Eriolukorra seadus",
       "estleg:summary": "Massiteabevahendite valdajad on kohustatud avaldama Vabariigi Valitsuse ja eriolukorra juhi poolt esitatud eriolukorraga seotud teated muutmata kujul ja viivitamatult või määratud tähtajal. Massiteabevahendite valdajad on kohustatud avaldama Vabariigi Valitsuse ja eriolukorra juhi poolt esitatud eriolukorraga seotud teated muutmata kujul ja viivitamatult või määratud tähtajal.",
-      "estleg:requestedCluster": "estleg:Cluster_EOS_3"
+      "estleg:requestedCluster": "estleg:Cluster_EOS_3",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Massiteabevahendite valdajad",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:EOS_Par_24",
@@ -374,7 +571,13 @@
       "rdfs:label": "§ 25. Eriolukorra ajal päästetöödel rakendatud füüsiliste isikute töö tasustamine",
       "estleg:sourceAct": "Eriolukorra seadus",
       "estleg:summary": "1(1)Päästetööde juhi poolt päästetöödel rakendatud füüsilistele isikutele makstakse palka töötatud aja eest. Päästetööde juhi poolt päästetöödel rakendatud füüsilistele isikutele makstakse palka töötatud aja eest. 2(2)Päästetööde juhi poolt päästetöödel rakendatud füüsilistele isikutele töö eest makstava palga hüvitab riik Vabariigi Valitsuse kehtestatud ulatuses ja korras./dyn=189806&id=869718 . Päästetööde juhi poolt päästetöödel rakendatud füüsilistele isikutele töö eest makstava palga hüvita",
-      "estleg:requestedCluster": "estleg:Cluster_EOS_4"
+      "estleg:requestedCluster": "estleg:Cluster_EOS_4",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:EOS_Par_26",
@@ -398,7 +601,15 @@
       "rdfs:label": "§ 27. Päästetöödel töötanud isikute sotsiaalsed tagatised",
       "estleg:sourceAct": "Eriolukorra seadus",
       "estleg:summary": "1(1)Isiku hukkumisel päästetöödel maksab riik hukkunu ülalpidamisel olnud perekonnaliikmetele ühekordset toetust 10 aasta vabariigi keskmise kuupalga ulatuses. Hukkunu matused korraldatakse riigi kulul. Isiku hukkumisel päästetöödel maksab riik hukkunu ülalpidamisel olnud perekonnaliikmetele ühekordset toetust 10 aasta vabariigi keskmise kuupalga ulatuses. Hukkunu matused korraldatakse riigi kulul. 2(2)Päästetöödel invaliidistunud isikule, kes tunnistati I või II grupi invaliidiks, maksab riik ü",
-      "estleg:requestedCluster": "estleg:Cluster_EOS_4"
+      "estleg:requestedCluster": "estleg:Cluster_EOS_4",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Psteseadus_Par_34"
+        },
+        {
+          "@id": "estleg:Vlisteenistuse_seadus_Par_30"
+        }
+      ]
     },
     {
       "@id": "estleg:EOS_Par_28",
@@ -410,7 +621,16 @@
       "rdfs:label": "§ 28. Päästetöödel isikutega toimunud õnnetusjuhtumite uurimise kord",
       "estleg:sourceAct": "Eriolukorra seadus",
       "estleg:summary": "Päästetöödel isikutega toimunud õnnetusjuhtumite uurimise korra kehtestab Vabariigi Valitsus või tema volitusel sotsiaalminister. Päästetöödel isikutega toimunud õnnetusjuhtumite uurimise korra kehtestab Vabariigi Valitsus või tema volitusel sotsiaalminister.",
-      "estleg:requestedCluster": "estleg:Cluster_EOS_4"
+      "estleg:requestedCluster": "estleg:Cluster_EOS_4",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        },
+        {
+          "@id": "estleg:Institution_sotsiaalminister"
+        }
+      ],
+      "estleg:competenceType": "regulation"
     },
     {
       "@id": "estleg:EOS_Par_28_29",
@@ -422,7 +642,29 @@
       "rdfs:label": "§ 28<sup>1</sup>. Eriolukorra ajal epideemiatõrje nõuete rikkumine",
       "estleg:sourceAct": "Eriolukorra seadus",
       "estleg:summary": "Eriolukorra ajal eriolukorra piirkonnas epideemiatõrje nõuete rikkumise eest – karistatakse rahatrahviga kuni 200 trahviühikut. Eriolukorra ajal eriolukorra piirkonnas epideemiatõrje nõuete rikkumise eest – karistatakse rahatrahviga kuni 200 trahviühikut. [Paragrahv 282jõustub 1. 09. 2002 - RT I 2002, 63, 387./212735 ] [Paragrahv 282jõustub 1. 09. 2002 -",
-      "estleg:requestedCluster": "estleg:Cluster_EOS_4"
+      "estleg:requestedCluster": "estleg:Cluster_EOS_4",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Liiklusseadus_Par_74_128"
+        },
+        {
+          "@id": "estleg:Riigipiiri_seadus_Par_17_36"
+        },
+        {
+          "@id": "estleg:MSOS_Par_81"
+        },
+        {
+          "@id": "estleg:Korruptsioonivastane_seadus_Par_26_28"
+        },
+        {
+          "@id": "estleg:Hdaolukorra_seadus_Par_55"
+        }
+      ],
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_EOS_Par_28_29_fine"
+        }
+      ]
     },
     {
       "@id": "estleg:EOS_Par_28_30",
@@ -434,7 +676,29 @@
       "rdfs:label": "§ 28<sup>2</sup>. Eriolukorras kehtestatud nõuete rikkumine",
       "estleg:sourceAct": "Eriolukorra seadus",
       "estleg:summary": "Eriolukorras kehtestatud nõuete rikkumise, samuti eriolukorra juhi või päästejuhi seadusliku korralduse eiramise eest – karistatakse rahatrahviga kuni 300 trahviühikut. Eriolukorras kehtestatud nõuete rikkumise, samuti eriolukorra juhi või päästejuhi seadusliku korralduse eiramise eest – karistatakse rahatrahviga kuni 300 trahviühikut. [Paragrahv 283jõustub 1. 09. 2002 - RT I 2002, 63, 387./212735 ] [Paragrahv 283jõustub 1. 09. 2002 -",
-      "estleg:requestedCluster": "estleg:Cluster_EOS_4"
+      "estleg:requestedCluster": "estleg:Cluster_EOS_4",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Hdaolukorra_seadus_Par_55"
+        },
+        {
+          "@id": "estleg:Liiklusseadus_Par_74_114"
+        },
+        {
+          "@id": "estleg:Liiklusseadus_Par_74_128"
+        },
+        {
+          "@id": "estleg:MSOS_Par_81"
+        },
+        {
+          "@id": "estleg:Korruptsioonivastane_seadus_Par_26_28"
+        }
+      ],
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_EOS_Par_28_30_fine"
+        }
+      ]
     },
     {
       "@id": "estleg:EOS_Par_28_31",
@@ -446,7 +710,30 @@
       "rdfs:label": "§ 28<sup>3</sup>. Menetlus",
       "estleg:sourceAct": "Eriolukorra seadus",
       "estleg:summary": "1(1)Käesoleva seaduse §-des 281 ja 282 sätestatud väärtegudele kohaldatakse karistusseadustiku (RT I 2001, 61, 364) üldosa ja väärteomenetluse seadustiku (RT I 2002, 50, 313) sätteid. Käesoleva seaduse §-des 281 ja 282 sätestatud väärtegudele kohaldatakse karistusseadustiku (RT I 2001, 61, 364) üldosa ja väärteomenetluse seadustiku (RT I 2002, 50, 313) sätteid. 2(2)Käesoleva seaduse §-s 281 sätestatud väärteo kohtuväline menetleja on Tervisekaitseinspektsioon. Käesoleva seaduse §-s 281 sätestatu",
-      "estleg:requestedCluster": "estleg:Cluster_EOS_4"
+      "estleg:requestedCluster": "estleg:Cluster_EOS_4",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_tervisekaitseinspektsioon"
+        }
+      ],
+      "estleg:competenceType": "general",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:EKSS_Par_17_41"
+        },
+        {
+          "@id": "estleg:Lhkematerjaliseadus_Par_62_64"
+        },
+        {
+          "@id": "estleg:Vlismaalaste_seadus_Par_307"
+        },
+        {
+          "@id": "estleg:TTOS_Par_27_32"
+        },
+        {
+          "@id": "estleg:Tlepingu_seadus_Par_130"
+        }
+      ]
     },
     {
       "@id": "estleg:EOS_Par_29",
@@ -490,7 +777,12 @@
       "estleg:paragrahv": "§ 32.",
       "rdfs:label": "§ 32. Haldusõiguserikkumise protokolli koostamise ja karistuse määramise õigus",
       "estleg:sourceAct": "Eriolukorra seadus",
-      "estleg:summary": "1(1)Käesoleva seaduse paragrahv 30 järgi on haldusõiguserikkumise protokolli koostamise ja kuni 100 päevapalga ulatuses rahatrahvi määramise õigus tervisekaitseametnikul. Kuni 300 päevapalga ulatuses rahatrahvi määramise õigus on halduskohtunikul. Käesoleva seaduse paragrahv 30 järgi on haldusõiguserikkumise protokolli koostamise ja kuni 100 päevapalga ulatuses rahatrahvi määramise õigus tervisekaitseametnikul. Kuni 300 päevapalga ulatuses rahatrahvi määramise õigus on halduskohtunikul. 2(2)Käes"
+      "estleg:summary": "1(1)Käesoleva seaduse paragrahv 30 järgi on haldusõiguserikkumise protokolli koostamise ja kuni 100 päevapalga ulatuses rahatrahvi määramise õigus tervisekaitseametnikul. Kuni 300 päevapalga ulatuses rahatrahvi määramise õigus on halduskohtunikul. Käesoleva seaduse paragrahv 30 järgi on haldusõiguserikkumise protokolli koostamise ja kuni 100 päevapalga ulatuses rahatrahvi määramise õigus tervisekaitseametnikul. Kuni 300 päevapalga ulatuses rahatrahvi määramise õigus on halduskohtunikul. 2(2)Käes",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:EOS_Par_33",

@@ -255,23 +255,23 @@ def generate_schema_nodes() -> list[dict]:
         {
             "@id": "estleg:EUCourtDecision",
             "@type": ["owl:Class"],
-            "rdfs:label": "EL kohtulahend (EU Court Decision)",
-            "rdfs:comment": "Euroopa Liidu kohtu lahend — kohtuotsus, kohtumäärus, kohtujuristi ettepanek või kohtu arvamus.",
-            "dc:description": "A Court of Justice of the European Union decision, including judgments, orders, AG opinions, and court opinions.",
+            "rdfs:label": {"@value": "EL kohtulahend (EU Court Decision)", "@language": "et"},
+            "rdfs:comment": {"@value": "Euroopa Liidu kohtu lahend — kohtuotsus, kohtumäärus, kohtujuristi ettepanek või kohtu arvamus.", "@language": "et"},
+            "dc:description": {"@value": "A Court of Justice of the European Union decision, including judgments, orders, AG opinions, and court opinions.", "@language": "en"},
         },
         # EUCourtDecisionType class
         {
             "@id": "estleg:EUCourtDecisionType",
             "@type": ["owl:Class"],
-            "rdfs:label": "EL kohtulahendi liik (EU Court Decision Type)",
-            "rdfs:comment": "Euroopa Liidu kohtulahendi klassifikatsioon.",
+            "rdfs:label": {"@value": "EL kohtulahendi liik (EU Court Decision Type)", "@language": "et"},
+            "rdfs:comment": {"@value": "Euroopa Liidu kohtulahendi klassifikatsioon.", "@language": "et"},
         },
         # EUCourt class
         {
             "@id": "estleg:EUCourt",
             "@type": ["owl:Class"],
-            "rdfs:label": "EL kohus (EU Court)",
-            "rdfs:comment": "Euroopa Liidu kohtuinstants.",
+            "rdfs:label": {"@value": "EL kohus (EU Court)", "@language": "et"},
+            "rdfs:comment": {"@value": "Euroopa Liidu kohtuinstants.", "@language": "et"},
         },
     ]
 
@@ -286,8 +286,8 @@ def generate_schema_nodes() -> list[dict]:
         nodes.append({
             "@id": f"estleg:EUDecType_{type_id}",
             "@type": ["owl:NamedIndividual", "estleg:EUCourtDecisionType"],
-            "rdfs:label": label_et,
-            "skos:prefLabel": label_en,
+            "rdfs:label": {"@value": label_et, "@language": "et"},
+            "skos:prefLabel": {"@value": label_en, "@language": "en"},
         })
 
     # Court individuals
@@ -295,8 +295,8 @@ def generate_schema_nodes() -> list[dict]:
         nodes.append({
             "@id": f"estleg:EUCourt_{court_id}",
             "@type": ["owl:NamedIndividual", "estleg:EUCourt"],
-            "rdfs:label": label_et,
-            "skos:prefLabel": label_en,
+            "rdfs:label": {"@value": label_et, "@language": "et"},
+            "skos:prefLabel": {"@value": label_en, "@language": "en"},
             "estleg:euCourtCode": code,
         })
 
@@ -305,17 +305,17 @@ def generate_schema_nodes() -> list[dict]:
         {
             "@id": "estleg:euCourtDecisionType",
             "@type": ["owl:ObjectProperty"],
-            "rdfs:label": "EL lahendi liik",
+            "rdfs:label": {"@value": "EL lahendi liik", "@language": "et"},
             "rdfs:domain": {"@id": "estleg:EUCourtDecision"},
             "rdfs:range": {"@id": "estleg:EUCourtDecisionType"},
         },
         {
             "@id": "estleg:euCourt",
             "@type": ["owl:ObjectProperty"],
-            "rdfs:label": "EL kohus",
+            "rdfs:label": {"@value": "EL kohus", "@language": "et"},
             "rdfs:domain": {"@id": "estleg:EUCourtDecision"},
             "rdfs:range": {"@id": "estleg:EUCourt"},
-            "rdfs:comment": "The EU court that delivered the decision.",
+            "rdfs:comment": {"@value": "The EU court that delivered the decision.", "@language": "en"},
         },
     ])
 
@@ -324,18 +324,18 @@ def generate_schema_nodes() -> list[dict]:
         {
             "@id": "estleg:ecliIdentifier",
             "@type": ["owl:DatatypeProperty"],
-            "rdfs:label": "ECLI identifikaator",
+            "rdfs:label": {"@value": "ECLI identifikaator", "@language": "et"},
             "rdfs:domain": {"@id": "estleg:EUCourtDecision"},
             "rdfs:range": {"@id": "xsd:string"},
-            "rdfs:comment": "European Case Law Identifier (e.g., ECLI:EU:C:2016:758).",
+            "rdfs:comment": {"@value": "European Case Law Identifier (e.g., ECLI:EU:C:2016:758).", "@language": "en"},
         },
         {
             "@id": "estleg:euCaseNumber",
             "@type": ["owl:DatatypeProperty"],
-            "rdfs:label": "kohtuasja number",
+            "rdfs:label": {"@value": "kohtuasja number", "@language": "et"},
             "rdfs:domain": {"@id": "estleg:EUCourtDecision"},
             "rdfs:range": {"@id": "xsd:string"},
-            "rdfs:comment": "Case number (e.g., C-438/14).",
+            "rdfs:comment": {"@value": "Case number (e.g., C-438/14).", "@language": "en"},
         },
         {
             "@id": "estleg:curiaLink",
@@ -343,7 +343,7 @@ def generate_schema_nodes() -> list[dict]:
             "rdfs:label": "CURIA link",
             "rdfs:domain": {"@id": "estleg:EUCourtDecision"},
             "rdfs:range": {"@id": "xsd:anyURI"},
-            "rdfs:comment": "Link to the decision in EUR-Lex (Estonian version).",
+            "rdfs:comment": {"@value": "Link to the decision in EUR-Lex (Estonian version).", "@language": "en"},
         },
     ])
 
@@ -361,7 +361,7 @@ def decision_to_node(item: dict) -> dict:
     node: dict = {
         "@id": f"estleg:EUCJ_{safe_celex}",
         "@type": ["owl:NamedIndividual", "estleg:EUCourtDecision"],
-        "rdfs:label": cleaned_title[:500],
+        "rdfs:label": {"@value": cleaned_title[:500], "@language": "et"},
         "estleg:celexNumber": item["celex"],
         "estleg:euCourtDecisionType": {"@id": f"estleg:EUDecType_{type_id}"},
         "estleg:euCourt": {"@id": f"estleg:EUCourt_{court_id}"},
@@ -370,6 +370,9 @@ def decision_to_node(item: dict) -> dict:
     # EUR-Lex link (Estonian)
     eurlex_link = f"https://eur-lex.europa.eu/legal-content/ET/TXT/?uri=CELEX:{item['celex']}"
     node["estleg:curiaLink"] = {"@value": eurlex_link, "@type": "xsd:anyURI"}
+
+    # Canonical source URI (CELEX-based)
+    node["dcterms:source"] = {"@id": f"http://publications.europa.eu/resource/celex/{item['celex']}"}
 
     # ECLI
     if item.get("ecli"):
@@ -443,8 +446,8 @@ def main():
             {
                 "@id": f"estleg:CURIA_{cat_key.title()}_Map_2026",
                 "@type": ["owl:Ontology"],
-                "rdfs:label": f"EL kohtulahendid – {label_et} ({len(items)})",
-                "dc:description": f"Euroopa Liidu kohtulahendid – {label_et.lower()} eesti keeles.",
+                "rdfs:label": {"@value": f"EL kohtulahendid – {label_et} ({len(items)})", "@language": "et"},
+                "dc:description": {"@value": f"Euroopa Liidu kohtulahendid – {label_et.lower()} eesti keeles.", "@language": "et"},
                 "dc:source": "EUR-Lex / CURIA – eur-lex.europa.eu",
             },
         ]
@@ -463,8 +466,8 @@ def main():
         {
             "@id": "estleg:CURIA_Combined_Map_2026",
             "@type": ["owl:Ontology"],
-            "rdfs:label": "EL kohtulahendid – kõik (Combined)",
-            "dc:description": "Kõik Euroopa Liidu kohtulahendid eesti keeles EUR-Lexist.",
+            "rdfs:label": {"@value": "EL kohtulahendid – kõik (Combined)", "@language": "et"},
+            "dc:description": {"@value": "Kõik Euroopa Liidu kohtulahendid eesti keeles EUR-Lexist.", "@language": "et"},
             "dc:source": "EUR-Lex / CURIA – eur-lex.europa.eu",
         },
     ]

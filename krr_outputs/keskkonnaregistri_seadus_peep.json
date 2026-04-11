@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -15,14 +16,65 @@
         "owl:Ontology"
       ],
       "rdfs:label": "Keskkonnaregistri seadus teemakaardistus",
-      "dc:source": "Keskkonnaregistri seadus"
+      "dc:source": "Keskkonnaregistri seadus",
+      "estleg:entryIntoForce": {
+        "@value": "2003-01-01",
+        "@type": "xsd:date"
+      },
+      "estleg:repealDate": {
+        "@value": "2006-12-31",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2004-11-23",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2002-01-01",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "repealed",
+      "estleg:amendedBy": [
+        {
+          "@id": "estleg:Amendment_keskkonnaregistri_seadus_1"
+        },
+        {
+          "@id": "estleg:Amendment_keskkonnaregistri_seadus_2"
+        },
+        {
+          "@id": "estleg:Amendment_keskkonnaregistri_seadus_3"
+        },
+        {
+          "@id": "estleg:Amendment_keskkonnaregistri_seadus_4"
+        }
+      ],
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/5611"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/3606"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2431"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2821"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5621"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_keskkonnaregistri_seadus",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)"
+      "rdfs:label": "Õigusnorm (paragrahv)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:Cluster_KeRS_1",
@@ -110,7 +162,16 @@
       "rdfs:label": "§ 4. Keskkonnaregistri vastutav töötleja ja keskkonnaregistri volitatud töötleja",
       "estleg:sourceAct": "Keskkonnaregistri seadus",
       "estleg:summary": "1(1)Keskkonnaregistri vastutav töötleja on Keskkonnaministeerium. Keskkonnaregistri vastutav töötleja on Keskkonnaministeerium. 2(2)Keskkonnaministri ettepanekul määrab Vabariigi Valitsus oma korraldusega keskkonnaregistri volitatud töötlejaks (edaspidi volitatud töötleja) käesoleva paragrahvi nõuete kohase riigiasutuse. Keskkonnaministri ettepanekul määrab Vabariigi Valitsus oma korraldusega keskkonnaregistri volitatud töötlejaks (edaspidi volitatud töötleja) käesoleva paragrahvi nõuete kohase ",
-      "estleg:requestedCluster": "estleg:Cluster_KeRS_1"
+      "estleg:requestedCluster": "estleg:Cluster_KeRS_1",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        },
+        {
+          "@id": "estleg:Institution_keskkonnaministeerium"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:KeRS_Par_5",
@@ -134,7 +195,12 @@
       "rdfs:label": "§ 6. Andmete keskkonnaregistrisse kandmise õiguslik tagajärg",
       "estleg:sourceAct": "Keskkonnaregistri seadus",
       "estleg:summary": "1(1)Keskkonnaregistrisse kandmata keskkonnaandmeid ei tohi kasutada keskkonnalubade ja keskkonnakasutuse registreerimise taotluste menetlemisel ning planeeringute ja arengukavade koostamisel, kui seaduses ei ole sätestatud teisiti. Keskkonnaregistrisse kandmata keskkonnaandmeid ei tohi kasutada keskkonnalubade ja keskkonnakasutuse registreerimise taotluste menetlemisel ning planeeringute ja arengukavade koostamisel, kui seaduses ei ole sätestatud teisiti. 2(2)Riikidevahelises keskkonnateabevahet",
-      "estleg:requestedCluster": "estleg:Cluster_KeRS_1"
+      "estleg:requestedCluster": "estleg:Cluster_KeRS_1",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Prohibition"
+        }
+      ]
     },
     {
       "@id": "estleg:KeRS_Par_7",
@@ -170,7 +236,15 @@
       "rdfs:label": "§ 9. Maardlate nimistu",
       "estleg:sourceAct": "Keskkonnaregistri seadus",
       "estleg:summary": "1(1)Maardlate nimistu registrikaardile kantakse maardla või selle osa kohta järgmised andmed:11)nimetus;22)registrikaardi number;33)registrikood;44)asukoht;55)pindala;66)registrisse esmase kandmise otsuse number ja kuupäev;77)viide registrisse esmase kandmise otsuse alus dokumentidele;88)viide maardlas kavandatava või maardla seisundit mõjutada võiva tegevuse keskkonnamõju hindamise aruandele;99)maardla või selle osaga seotud keskkonnalubade taotlused ning lubade andmise või lubade andmisest kee",
-      "estleg:requestedCluster": "estleg:Cluster_KeRS_2"
+      "estleg:requestedCluster": "estleg:Cluster_KeRS_2",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:KeRS_Par_39"
+        },
+        {
+          "@id": "estleg:KeRS_Par_61"
+        }
+      ]
     },
     {
       "@id": "estleg:KeRS_Par_10",
@@ -182,7 +256,15 @@
       "rdfs:label": "§ 10. Metsamajandamisüksuste nimistu",
       "estleg:sourceAct": "Keskkonnaregistri seadus",
       "estleg:summary": "1(1)Metsamajandamisüksuste nimistu registrikaardile kantakse metsamajandamisüksuse kohta järgmised andmed:11)nimetus;22)registrikaardi number;33)registrikood;44)asukoht;55)pindala;66)registrisse esmase kandmise otsuse number ja kuupäev;77)viide registrisse esmase kandmise otsuse alusdokumentidele;88)viide metsamajandamisega seotud või metsa seisundit mõjutada võiva tegevuse keskkonnamõju hindamise aruandele;99)metsamajandamisüksusega seotud keskkonnalubade taotlused ning lubade andmise või lubad",
-      "estleg:requestedCluster": "estleg:Cluster_KeRS_2"
+      "estleg:requestedCluster": "estleg:Cluster_KeRS_2",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:KeRS_Par_39"
+        },
+        {
+          "@id": "estleg:KeRS_Par_61"
+        }
+      ]
     },
     {
       "@id": "estleg:KeRS_Par_11",
@@ -194,7 +276,15 @@
       "rdfs:label": "§ 11. Põhjaveehaarete nimistu",
       "estleg:sourceAct": "Keskkonnaregistri seadus",
       "estleg:summary": "1(1)Põhjaveehaarete nimistu registrikaardile kantakse põhjaveehaarde kohta järgmised andmed:11)nimetus;22)registrikaardi number;33)registrikood;44)asukoht;55)pindala;66)registrisse esmase kandmise otsuse number ja kuupäev;77)viide registrisse esmase kandmise otsuse alusdokumentidele;88)viide põhjaveehaarde seisundit mõjutada võiva tegevuse keskkonnamõju hindamise aruandele;99)põhjaveehaardega seotud keskkonnalubade taotlused ning lubade andmise või lubade andmisest keeldumise otsuse number ja ku",
-      "estleg:requestedCluster": "estleg:Cluster_KeRS_2"
+      "estleg:requestedCluster": "estleg:Cluster_KeRS_2",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:KeRS_Par_39"
+        },
+        {
+          "@id": "estleg:KeRS_Par_61"
+        }
+      ]
     },
     {
       "@id": "estleg:KeRS_Par_12",
@@ -206,7 +296,12 @@
       "rdfs:label": "§ 12. Veekogude nimistu",
       "estleg:sourceAct": "Keskkonnaregistri seadus",
       "estleg:summary": "1(1)Veekogude nimistu registrikaardile kantakse järve ja paisjärve kohta järgmised andmed:11)nimetus;22)registrikaardi number;33)registrikood;44)asukoht;55)pindala;66)registrisse esmase kandmise otsuse number ja kuupäev;77)viide registrisse esmase kandmise otsuse alusdokumentidele;88)viide järve või paisjärve seisundit mõjutada võiva tegevuse keskkonnamõju hindamise aruandele;99)veekoguga seotud keskkonnalubade taotlused ning lubade andmise või lubade andmisest keeldumise otsuse number ja kuupäe",
-      "estleg:requestedCluster": "estleg:Cluster_KeRS_2"
+      "estleg:requestedCluster": "estleg:Cluster_KeRS_2",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:KeRS_Par_39"
+        }
+      ]
     },
     {
       "@id": "estleg:KeRS_Par_13",
@@ -218,7 +313,12 @@
       "rdfs:label": "§ 13. Pinnaveehaarete nimistu",
       "estleg:sourceAct": "Keskkonnaregistri seadus",
       "estleg:summary": "1(1)Pinnaveehaarete nimistu registrikaardile kantakse pinnaveehaarde kohta järgmised andmed:11)nimetus;22)registrikaardi number;33)registrikood;44)asukoht;55)pindala;66)registrisse esmase kandmise otsuse number ja kuupäev;77)viide registrisse esmase kandmise otsuse alusdokumentidele;88)viide pinnaveehaardega seotud veekogude seisundit mõjutada võiva tegevuse keskkonnamõju hindamise aruandele;99)pinnaveehaardega seotud keskkonnalubade taotlused ning lubade andmise või lubade andmisest keeldumise ",
-      "estleg:requestedCluster": "estleg:Cluster_KeRS_2"
+      "estleg:requestedCluster": "estleg:Cluster_KeRS_2",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:KeRS_Par_39"
+        }
+      ]
     },
     {
       "@id": "estleg:KeRS_Par_14",
@@ -230,7 +330,15 @@
       "rdfs:label": "§ 14. Kalavaru andmestik",
       "estleg:sourceAct": "Keskkonnaregistri seadus",
       "estleg:summary": "1(1)Kalavaru arvestust peetakse kalapüügipiirkondade andmestikuna ning siseveekogude ja piiriveekogude püügi- ja asustamisandmestikuna. Kalavaru arvestust peetakse kalapüügipiirkondade andmestikuna ning siseveekogude ja piiriveekogude püügi- ja asustamisandmestikuna. 2(2)Merest kalapüügi kohta peetakse arvestust kalapüügipiirkondade kaupa ning siseveekogust või piiriveekogust kalapüügi kohta nende veekogude kaupa. Merest kalapüügi kohta peetakse arvestust kalapüügipiirkondade kaupa ning siseveek",
-      "estleg:requestedCluster": "estleg:Cluster_KeRS_2"
+      "estleg:requestedCluster": "estleg:Cluster_KeRS_2",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:KeRS_Par_39"
+        },
+        {
+          "@id": "estleg:KeRS_Par_61"
+        }
+      ]
     },
     {
       "@id": "estleg:KeRS_Par_15",
@@ -242,7 +350,15 @@
       "rdfs:label": "§ 15. Jahipiirkondade nimistu",
       "estleg:sourceAct": "Keskkonnaregistri seadus",
       "estleg:summary": "1(1)Jahipiirkonna registrikaardile kantakse jahipiirkonna kohta järgmised andmed:11)nimetus;22)registrikaardi number;33)registrikood;44)asukoht;55)pindala;66)registrisse esmase kandmise otsuse number ja kuupäev;77)viide registrisse esmase kandmise otsuse alusdokumentidele;88)viide jahipiirkonna seisundit mõjutada võiva tegevuse keskkonnamõju hindamise aruandele;99)jahipiirkonnaga seotud keskkonnalubade taotlused ning lubade andmise või lubade andmisest keeldumise otsuse number ja kuupäev;1010)ja",
-      "estleg:requestedCluster": "estleg:Cluster_KeRS_2"
+      "estleg:requestedCluster": "estleg:Cluster_KeRS_2",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:KeRS_Par_39"
+        },
+        {
+          "@id": "estleg:KeRS_Par_61"
+        }
+      ]
     },
     {
       "@id": "estleg:KeRS_Par_16",
@@ -326,7 +442,17 @@
       "rdfs:label": "§ 22. Bioloogiliste keskkonnategurite arvestus",
       "estleg:sourceAct": "Keskkonnaregistri seadus",
       "estleg:summary": "1(1)Bioloogiline keskkonnategur käesoleva seaduse tähenduses on loom, taim või seen, mida tohib riiki tuua, riigist välja või riigist läbi viia, keskkonda viia või kollektsioneerida üksnes loa alusel. Bioloogiline keskkonnategur käesoleva seaduse tähenduses on loom, taim või seen, mida tohib riiki tuua, riigist välja või riigist läbi viia, keskkonda viia või kollektsioneerida üksnes loa alusel. 2(2)Bioloogiliste keskkonnategurite arvestust peetakse:11)geneetiliselt muundatud organismide nimistun",
-      "estleg:requestedCluster": "estleg:Cluster_KeRS_2"
+      "estleg:requestedCluster": "estleg:Cluster_KeRS_2",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Permission"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:KeRS_Par_25"
+        }
+      ]
     },
     {
       "@id": "estleg:KeRS_Par_23",
@@ -362,7 +488,12 @@
       "rdfs:label": "§ 25. Kaitstavate liikide isendeid, medaliväärseid jahitrofeesid ja Eestisse loa alusel toodud isendeid sisaldav loomakogude nimistu",
       "estleg:sourceAct": "Keskkonnaregistri seadus",
       "estleg:summary": "1(1)Kaitstavate liikide isendeid, medaliväärseid jahitrofeesid või Eestisse loa alusel toodud isendeid sisaldava, käesoleva seaduse §-s 22 nimetatud loomakogude nimistu registrikaardile kantakse loomakogu kohta järgmised andmed:11)nimetus;22)registrikaardi number;33)registrikood;44)asukoht;55)registrisse esmase kandmise otsuse number ja kuupäev;66)viide registrisse esmase kandmise otsuse alusdokumentidele;77)viide loomakogu seisundit mõjutada võiva tegevuse keskkonnamõju hindamise aruandele;88)l",
-      "estleg:requestedCluster": "estleg:Cluster_KeRS_2"
+      "estleg:requestedCluster": "estleg:Cluster_KeRS_2",
+      "estleg:references": [
+        {
+          "@id": "estleg:KeRS_Par_22"
+        }
+      ]
     },
     {
       "@id": "estleg:KeRS_Par_26",
@@ -530,7 +661,30 @@
       "rdfs:label": "§ 39. Keskkonnaregistrisse andmete esitamine",
       "estleg:sourceAct": "Keskkonnaregistri seadus",
       "estleg:summary": "1(1)Andmeandja esitab keskkonnaregistrile andmed elektroonilisel andmekandjal avalikult kasutatava andmesidevõrgu või posti kaudu:11)õigusakti alusel selle vastuvõtmisest arvates viie tööpäeva jooksul;22)keskkonnaloa või registreerimise otsusega määratud kasutusmahtude ja piirmäärade kohta loa andmisest või registreerimisotsuse tegemisest arvates 30 päeva jooksul;33)keskkonnaloa või registreerimise otsuse alusel loodusressursside kasutamise ning saasteainete, jäätmete või geneetiliselt muundatud",
-      "estleg:requestedCluster": "estleg:Cluster_KeRS_3"
+      "estleg:requestedCluster": "estleg:Cluster_KeRS_3",
+      "estleg:references": [
+        {
+          "@id": "estleg:KeRS_Par_9"
+        },
+        {
+          "@id": "estleg:KeRS_Par_10"
+        },
+        {
+          "@id": "estleg:KeRS_Par_11"
+        },
+        {
+          "@id": "estleg:KeRS_Par_12"
+        },
+        {
+          "@id": "estleg:KeRS_Par_13"
+        },
+        {
+          "@id": "estleg:KeRS_Par_14"
+        },
+        {
+          "@id": "estleg:KeRS_Par_15"
+        }
+      ]
     },
     {
       "@id": "estleg:KeRS_Par_40",
@@ -566,7 +720,12 @@
       "rdfs:label": "§ 42. Juurdepääs keskkonnaregistri andmetele",
       "estleg:sourceAct": "Keskkonnaregistri seadus",
       "estleg:summary": "1(1)Keskkonnaregistri andmed on avalikud, välja arvatud käesoleva paragrahvi lõikes 2 sätestatud juhtudel. Keskkonnaregistri andmed on avalikud, välja arvatud käesoleva paragrahvi lõikes 2 sätestatud juhtudel. 2(2)Avalikkuse juurdepääs keskkonnaandmetele on suletud, kui:11)avalikustamisega võib kaasneda oht ühiskonna turvalisusele, keskkonnakahjustus või kaitsealuste liikide isendite lubamatu häirimine nende püsielupaikades;22)need on tootmisjärgus ega võimalda olukorda tõeselt hinnata;33)need s",
-      "estleg:requestedCluster": "estleg:Cluster_KeRS_3"
+      "estleg:requestedCluster": "estleg:Cluster_KeRS_3",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:KeRS_Par_43",
@@ -578,7 +737,18 @@
       "rdfs:label": "§ 43. Andmete väljastamine",
       "estleg:sourceAct": "Keskkonnaregistri seadus",
       "estleg:summary": "1(1)Igaühel on õigus keskkonnaregistri avalike andmetega tasuta tutvuda ja teha neist väljavõtteid. Igaühel on õigus keskkonnaregistri avalike andmetega tasuta tutvuda ja teha neist väljavõtteid. 2(2)Keskkonnaregistrist väljastatakse volitatud töötleja allkirjaga tõendatud andmed kirjaliku taotluse alusel, mille vormi kinnitab keskkonnaminister../dyn=828918&id=609868 Keskkonnaregistrist väljastatakse volitatud töötleja allkirjaga tõendatud andmed kirjaliku taotluse alusel, mille vormi 3(3)Riigil",
-      "estleg:requestedCluster": "estleg:Cluster_KeRS_3"
+      "estleg:requestedCluster": "estleg:Cluster_KeRS_3",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_keskkonnaminister"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:KeRS_Par_44",
@@ -614,7 +784,12 @@
       "rdfs:label": "§ 46. Keskkonnaregistri arhiiv",
       "estleg:sourceAct": "Keskkonnaregistri seadus",
       "estleg:summary": "1(1)Registrikaardilt kustutatud andmete, nende tootmiseks kasutatud andmete, registrikannete alusdokumentide, maavaranäidiste ning registriobjektide ülevaate- ja asukohakaartide säilitamiseks ja kasutamiseks peab keskkonnaregistri volitatud töötleja keskkonnaregistri arhiivi. Registrikaardilt kustutatud andmete, nende tootmiseks kasutatud andmete, registrikannete alusdokumentide, maavaranäidiste ning registriobjektide ülevaate- ja asukohakaartide säilitamiseks ja kasutamiseks peab keskkonnaregis",
-      "estleg:requestedCluster": "estleg:Cluster_KeRS_3"
+      "estleg:requestedCluster": "estleg:Cluster_KeRS_3",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ]
     },
     {
       "@id": "estleg:KeRS_Par_47",
@@ -722,7 +897,13 @@
       "rdfs:label": "§ 55. Andmete ristkasutus",
       "estleg:sourceAct": "Keskkonnaregistri seadus",
       "estleg:summary": "1(1)Keskkonnaregistri andmeid tohib neid muutmata teistesse andmekogudesse üle kanda, arvestades käesolevas seaduses sätestatud andmete avalikustamise piiranguid. Keskkonnaregistri andmeid tohib neid muutmata teistesse andmekogudesse üle kanda, arvestades käesolevas seaduses sätestatud andmete avalikustamise piiranguid. 2(2)Keskkonnaregistri volitatud töötleja on kohustatud omandiõiguse kitsendamise andmed esitama maakatastri volitatud töötlejale. Keskkonnaregistri volitatud töötleja on kohustat",
-      "estleg:requestedCluster": "estleg:Cluster_KeRS_3"
+      "estleg:requestedCluster": "estleg:Cluster_KeRS_3",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Keskkonnaregistri volitatud töötleja"
     },
     {
       "@id": "estleg:KeRS_Par_56",
@@ -794,7 +975,24 @@
       "rdfs:label": "§ 61. Seaduse jõustumine",
       "estleg:sourceAct": "Keskkonnaregistri seadus",
       "estleg:summary": "1(1)Käesolev seadus jõustub 2003. aasta 1. jaanuaril. Keskkonnaandmed kantakse keskkonnaregistrisse käesoleva paragrahvi lõigetes 2–6 nimetatud tähtaegadeks. Käesolev seadus jõustub 2003. aasta 1. jaanuaril. Keskkonnaandmed kantakse keskkonnaregistrisse käesoleva paragrahvi lõigetes 2–6 nimetatud tähtaegadeks. 2(2)2003. aasta 1. juuliks lülitatakse keskkonnaregistri koosseisu käesoleva seaduse §-des 11, 13 ja 26 nimetatud andmed. 2003. aasta 1. juuliks lülitatakse keskkonnaregistri koosseisu käe",
-      "estleg:requestedCluster": "estleg:Cluster_KeRS_5"
+      "estleg:requestedCluster": "estleg:Cluster_KeRS_5",
+      "estleg:references": [
+        {
+          "@id": "estleg:KeRS_Par_11"
+        },
+        {
+          "@id": "estleg:KeRS_Par_15"
+        },
+        {
+          "@id": "estleg:KeRS_Par_9"
+        },
+        {
+          "@id": "estleg:KeRS_Par_14"
+        },
+        {
+          "@id": "estleg:KeRS_Par_10"
+        }
+      ]
     }
   ]
 }

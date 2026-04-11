@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -14,14 +15,34 @@
       "@type": [
         "owl:Ontology"
       ],
-      "rdfs:label": "TsÜS Osa 4 (aegumine) §142–169 kaardistus"
+      "rdfs:label": "TsÜS Osa 4 (aegumine) §142–169 kaardistus",
+      "estleg:temporalStatus": "inForce",
+      "estleg:affectedBy": [
+        {
+          "@id": "estleg:Draft_JDM20_0408"
+        },
+        {
+          "@id": "estleg:Draft_JDM14_0394"
+        },
+        {
+          "@id": "estleg:Draft_RIIGIKOGU13_0859"
+        }
+      ],
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/2431"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_tsiviilseadustik_osa4",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)"
+      "rdfs:label": "Õigusnorm (paragrahv)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:Cluster_LimitationPeriods_142_157",
@@ -106,7 +127,12 @@
       "estleg:requestedCluster": "limitation_periods_142_157",
       "estleg:summary": "Määratleb nõude aegumise, aegumistähtaja ja tagajärje: kohustatud isik võib pärast aegumist täitmisest keelduda; erandina võivad mõned nõuded mitte aeguda.",
       "estleg:relatesToConcept": "estleg:Concept_LimitationPeriodCore",
-      "estleg:sourceAct": "Tsiviilseadustiku üldosa seadus"
+      "estleg:sourceAct": "Tsiviilseadustiku üldosa seadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:TsUS_Par_143",
@@ -119,7 +145,13 @@
       "estleg:requestedCluster": "limitation_periods_142_157",
       "estleg:summary": "Kohus arvestab aegumist üksnes kohustatud isiku vastava taotluse alusel.",
       "estleg:relatesToConcept": "estleg:Concept_LimitationPeriodCore",
-      "estleg:sourceAct": "Tsiviilseadustiku üldosa seadus"
+      "estleg:sourceAct": "Tsiviilseadustiku üldosa seadus",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohus"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:TsUS_Par_144",

@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -15,14 +16,40 @@
         "owl:Ontology"
       ],
       "rdfs:label": "Füüsilise isiku maksejõuetuse seaduse teemakaardistus (FIMS)",
-      "dc:source": "Füüsilise isiku maksejõuetuse seadus"
+      "dc:source": "Füüsilise isiku maksejõuetuse seadus",
+      "estleg:temporalStatus": "inForce",
+      "estleg:affectedBy": [
+        {
+          "@id": "estleg:Draft_JDM21_0285"
+        }
+      ],
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/5206"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2431"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/1221"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2806"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/3606"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_fuusilise_isiku_maksejouetuse",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv või normiblokk)"
+      "rdfs:label": "Õigusnorm (paragrahv või normiblokk)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:TopicCluster_fuusilise_isiku_maksejouetuse",
@@ -72,7 +99,12 @@
       "rdfs:label": "Ümberkujundamise eesmärk ja kohaldamisala",
       "estleg:requestedCluster": "volgade_umberkujundamine",
       "estleg:summary": "Sätestab, et makseraskustes füüsiline isik võib taotleda kohustuste ümberkujundamist eesmärgiga saavutada jõukohane maksegraafik ja vältida täielikku maksejõuetuse süvenemist.",
-      "estleg:sourceAct": "Füüsilise isiku maksejõuetuse seadus"
+      "estleg:sourceAct": "Füüsilise isiku maksejõuetuse seadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:FIMS_Norm_002",
@@ -84,7 +116,19 @@
       "rdfs:label": "Avalduse nõuded ja lisad",
       "estleg:requestedCluster": "volgade_umberkujundamine",
       "estleg:summary": "Võlgnik peab esitama kohtule andmed varalise seisu, sissetuleku, kohustuste ja põhjendatud ümberkujundamiskava kohta, et kohus saaks hinnata menetluse perspektiivikust.",
-      "estleg:sourceAct": "Füüsilise isiku maksejõuetuse seadus"
+      "estleg:sourceAct": "Füüsilise isiku maksejõuetuse seadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Võlgnik",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohus"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:FIMS_Norm_003",
@@ -96,7 +140,12 @@
       "rdfs:label": "Maksetähtaja pikendamine, osaline vähendamine ja maksegraafik",
       "estleg:requestedCluster": "volgade_umberkujundamine",
       "estleg:summary": "Kohtu kinnitatavas kavas võib nõudeid ümber kujundada, sh muuta maksetähtaegu, kohustuste täitmise järjekorda või nõude mahtu seaduses lubatud ulatuses.",
-      "estleg:sourceAct": "Füüsilise isiku maksejõuetuse seadus"
+      "estleg:sourceAct": "Füüsilise isiku maksejõuetuse seadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:FIMS_Norm_004",
@@ -108,7 +157,13 @@
       "rdfs:label": "Kava kinnitamine ning siduv mõju osalistele",
       "estleg:requestedCluster": "volgade_umberkujundamine",
       "estleg:summary": "Kui menetluslikud ja sisulised eeldused on täidetud, kinnitab kohus kava ning see muutub võlgnikule ja hõlmatud võlausaldajatele siduvaks.",
-      "estleg:sourceAct": "Füüsilise isiku maksejõuetuse seadus"
+      "estleg:sourceAct": "Füüsilise isiku maksejõuetuse seadus",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohus"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:FIMS_Norm_010",
@@ -132,7 +187,13 @@
       "rdfs:label": "Heausksus, koostöökohustus ja menetluse tingimused",
       "estleg:requestedCluster": "kohustustest_vabastamine",
       "estleg:summary": "Võlgnik peab tegutsema heauskselt, avaldama täielikud andmed oma vara ja tulude kohta ning täitma menetlusest tulenevaid kohustusi; rikkumised võivad viia vabastamisest keeldumiseni.",
-      "estleg:sourceAct": "Füüsilise isiku maksejõuetuse seadus"
+      "estleg:sourceAct": "Füüsilise isiku maksejõuetuse seadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Võlgnik"
     },
     {
       "@id": "estleg:FIMS_Norm_012",
@@ -168,7 +229,13 @@
       "rdfs:label": "Võlgnikule peab jääma miinimum toimetulekuks",
       "estleg:requestedCluster": "kaitstav_sissetulek",
       "estleg:summary": "Maksejõuetusmenetluses tuleb tagada, et võlgnikule ja tema ülalpeetavatele jääks seaduses ette nähtud ulatuses sissetulek igapäevaseks toimetulekuks.",
-      "estleg:sourceAct": "Füüsilise isiku maksejõuetuse seadus"
+      "estleg:sourceAct": "Füüsilise isiku maksejõuetuse seadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Maksejõuetusmenetluses"
     },
     {
       "@id": "estleg:FIMS_Norm_021",
@@ -180,7 +247,12 @@
       "rdfs:label": "Kuidas määratakse võlausaldajatele suunatav osa",
       "estleg:requestedCluster": "kaitstav_sissetulek",
       "estleg:summary": "Võlgniku sissetulekust arvestatakse esmalt kaitstav osa; ülejäänud osa võib kasutada kohustuste täitmiseks vastavalt kohtu kinnitatud kava või menetlusreeglitele.",
-      "estleg:sourceAct": "Füüsilise isiku maksejõuetuse seadus"
+      "estleg:sourceAct": "Füüsilise isiku maksejõuetuse seadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:FIMS_Norm_022",
@@ -242,7 +314,21 @@
         "owl:NamedIndividual"
       ],
       "rdfs:label": "Märkus kaardistuse ulatuse kohta",
-      "estleg:note": "Kaardistus järgib ühtset JSON-LD skeemi ja koondab FIMS-i keskseid normiplokke kolme nõutud teemaklastrisse. Järgmises iteratsioonis lisatakse paragrahvipõhised täppisviited kehtivale RT redaktsioonile ning detailsemad ristviited täitemenetluse ja pankrotimenetluse normidele."
+      "estleg:note": "Kaardistus järgib ühtset JSON-LD skeemi ja koondab FIMS-i keskseid normiplokke kolme nõutud teemaklastrisse. Järgmises iteratsioonis lisatakse paragrahvipõhised täppisviited kehtivale RT redaktsioonile ning detailsemad ristviited täitemenetluse ja pankrotimenetluse normidele.",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:TsMS_NOTE_001"
+        },
+        {
+          "@id": "estleg:SANS_NOTE_001"
+        },
+        {
+          "@id": "estleg:PANKRS_NOTE_001"
+        },
+        {
+          "@id": "estleg:PSKMS_NOTE_001"
+        }
+      ]
     }
   ]
 }

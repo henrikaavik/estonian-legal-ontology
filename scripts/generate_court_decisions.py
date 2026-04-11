@@ -64,9 +64,20 @@ DECISION_TYPES = {
 }
 
 
+_ESTONIAN_TRANSLITERATION: dict[str, str] = {
+    "ö": "o", "ä": "a", "ü": "u", "õ": "o",
+    "Ö": "O", "Ä": "A", "Ü": "U", "Õ": "O",
+    "š": "s", "ž": "z", "Š": "S", "Ž": "Z",
+}
+_TRANSLIT_TABLE = str.maketrans(_ESTONIAN_TRANSLITERATION)
+
+
 def sanitize_id(value: str) -> str:
     """Create a safe ID from a string."""
-    s = re.sub(r"[^0-9A-Za-z_]", "_", value.replace("/", "_").replace("-", "_"))
+    s = value.replace("/", "_").replace("-", "_")
+    # Transliterate Estonian diacritics before stripping non-ASCII
+    s = s.translate(_TRANSLIT_TABLE)
+    s = re.sub(r"[^0-9A-Za-z_]", "_", s)
     return s[:80] or "Unknown"
 
 
@@ -177,23 +188,23 @@ def generate_schema_nodes() -> list[dict]:
         {
             "@id": "estleg:CourtDecision",
             "@type": ["owl:Class"],
-            "rdfs:label": "Kohtulahend (Court Decision)",
-            "rdfs:comment": "Riigikohtu lahend – kohtuotsus, kohtumäärus või resolutsioon.",
-            "dc:description": "A Supreme Court (Riigikohus) decision, including judgments, rulings, and resolutions.",
+            "rdfs:label": {"@value": "Kohtulahend (Court Decision)", "@language": "et"},
+            "rdfs:comment": {"@value": "Riigikohtu lahend – kohtuotsus, kohtumäärus või resolutsioon.", "@language": "et"},
+            "dc:description": {"@value": "A Supreme Court (Riigikohus) decision, including judgments, rulings, and resolutions.", "@language": "en"},
         },
         # CaseType class
         {
             "@id": "estleg:CaseType",
             "@type": ["owl:Class"],
-            "rdfs:label": "Kohtuasja liik (Case Type)",
-            "rdfs:comment": "Kohtuasja klassifikatsioon: kriminaalasi, tsiviilasi, haldusasi, väärteoasi, põhiseaduslikkuse järelevalve.",
+            "rdfs:label": {"@value": "Kohtuasja liik (Case Type)", "@language": "et"},
+            "rdfs:comment": {"@value": "Kohtuasja klassifikatsioon: kriminaalasi, tsiviilasi, haldusasi, väärteoasi, põhiseaduslikkuse järelevalve.", "@language": "et"},
         },
         # DecisionType class
         {
             "@id": "estleg:DecisionType",
             "@type": ["owl:Class"],
-            "rdfs:label": "Lahendi liik (Decision Type)",
-            "rdfs:comment": "Lahendi tüüp: kohtuotsus, kohtumäärus, resolutsioon.",
+            "rdfs:label": {"@value": "Lahendi liik (Decision Type)", "@language": "et"},
+            "rdfs:comment": {"@value": "Lahendi tüüp: kohtuotsus, kohtumäärus, resolutsioon.", "@language": "et"},
         },
     ]
 
@@ -202,8 +213,8 @@ def generate_schema_nodes() -> list[dict]:
         nodes.append({
             "@id": f"estleg:CaseType_{type_id}",
             "@type": ["owl:NamedIndividual", "estleg:CaseType"],
-            "rdfs:label": label_et,
-            "skos:prefLabel": label_en,
+            "rdfs:label": {"@value": label_et, "@language": "et"},
+            "skos:prefLabel": {"@value": label_en, "@language": "en"},
             "estleg:caseTypeCode": code,
         })
 
@@ -212,8 +223,8 @@ def generate_schema_nodes() -> list[dict]:
         nodes.append({
             "@id": f"estleg:DecisionType_{type_id}",
             "@type": ["owl:NamedIndividual", "estleg:DecisionType"],
-            "rdfs:label": label_et,
-            "skos:prefLabel": type_id,
+            "rdfs:label": {"@value": label_et, "@language": "et"},
+            "skos:prefLabel": {"@value": type_id, "@language": "en"},
         })
 
     # Object properties
@@ -221,24 +232,24 @@ def generate_schema_nodes() -> list[dict]:
         {
             "@id": "estleg:caseType",
             "@type": ["owl:ObjectProperty"],
-            "rdfs:label": "kohtuasja liik",
+            "rdfs:label": {"@value": "kohtuasja liik", "@language": "et"},
             "rdfs:domain": {"@id": "estleg:CourtDecision"},
             "rdfs:range": {"@id": "estleg:CaseType"},
         },
         {
             "@id": "estleg:decisionType",
             "@type": ["owl:ObjectProperty"],
-            "rdfs:label": "lahendi liik",
+            "rdfs:label": {"@value": "lahendi liik", "@language": "et"},
             "rdfs:domain": {"@id": "estleg:CourtDecision"},
             "rdfs:range": {"@id": "estleg:DecisionType"},
         },
         {
             "@id": "estleg:interpretsLaw",
             "@type": ["owl:ObjectProperty"],
-            "rdfs:label": "tõlgendab seadust",
+            "rdfs:label": {"@value": "tõlgendab seadust", "@language": "et"},
             "rdfs:domain": {"@id": "estleg:CourtDecision"},
             "rdfs:range": {"@id": "estleg:LegalProvision"},
-            "rdfs:comment": "Links a court decision to the legal provision it interprets or applies.",
+            "rdfs:comment": {"@value": "Links a court decision to the legal provision it interprets or applies.", "@language": "en"},
         },
     ])
 
@@ -247,14 +258,14 @@ def generate_schema_nodes() -> list[dict]:
         {
             "@id": "estleg:caseNumber",
             "@type": ["owl:DatatypeProperty"],
-            "rdfs:label": "kohtuasja number",
+            "rdfs:label": {"@value": "kohtuasja number", "@language": "et"},
             "rdfs:domain": {"@id": "estleg:CourtDecision"},
             "rdfs:range": {"@id": "xsd:string"},
         },
         {
             "@id": "estleg:decisionDate",
             "@type": ["owl:DatatypeProperty"],
-            "rdfs:label": "lahendi kuupäev",
+            "rdfs:label": {"@value": "lahendi kuupäev", "@language": "et"},
             "rdfs:domain": {"@id": "estleg:CourtDecision"},
             "rdfs:range": {"@id": "xsd:date"},
         },
@@ -268,17 +279,17 @@ def generate_schema_nodes() -> list[dict]:
         {
             "@id": "estleg:decisionLink",
             "@type": ["owl:DatatypeProperty"],
-            "rdfs:label": "lahendi link",
+            "rdfs:label": {"@value": "lahendi link", "@language": "et"},
             "rdfs:domain": {"@id": "estleg:CourtDecision"},
             "rdfs:range": {"@id": "xsd:anyURI"},
         },
         {
             "@id": "estleg:referencedLaw",
             "@type": ["owl:DatatypeProperty"],
-            "rdfs:label": "viidatud seadus",
+            "rdfs:label": {"@value": "viidatud seadus", "@language": "et"},
             "rdfs:domain": {"@id": "estleg:CourtDecision"},
             "rdfs:range": {"@id": "xsd:string"},
-            "rdfs:comment": "Name or abbreviation of law referenced in the decision.",
+            "rdfs:comment": {"@value": "Name or abbreviation of law referenced in the decision.", "@language": "en"},
         },
     ])
 
@@ -299,7 +310,7 @@ def decision_to_node(dec: dict, year: int, seen_ids: set[str]) -> dict:
     node: dict = {
         "@id": node_id,
         "@type": ["owl:NamedIndividual", "estleg:CourtDecision"],
-        "rdfs:label": f"RK {dec['case_nr']}",
+        "rdfs:label": {"@value": f"RK {dec['case_nr']}", "@language": "et"},
         "estleg:caseNumber": dec["case_nr"],
         "estleg:caseType": {"@id": f"estleg:CaseType_{type_id}"},
     }
@@ -323,12 +334,13 @@ def decision_to_node(dec: dict, year: int, seen_ids: set[str]) -> dict:
 
     # Summary
     if dec["summary"]:
-        node["estleg:summary"] = dec["summary"][:800]
+        node["estleg:summary"] = {"@value": dec["summary"][:800], "@language": "et"}
 
     # Link
     if dec["link"]:
         riigikohus_link = f"https://www.riigikohus.ee/et/lahendid/?asjaNr={dec['case_nr']}"
         node["estleg:decisionLink"] = {"@value": riigikohus_link, "@type": "xsd:anyURI"}
+        node["dcterms:source"] = {"@id": dec["link"]}
 
     # RIK object ID
     if dec["object_id"]:
@@ -337,10 +349,7 @@ def decision_to_node(dec: dict, year: int, seen_ids: set[str]) -> dict:
     # Referenced laws
     refs = detect_referenced_laws(dec["summary"])
     if refs:
-        if len(refs) == 1:
-            node["estleg:referencedLaw"] = refs[0]
-        else:
-            node["estleg:referencedLaw"] = refs
+        node["estleg:referencedLaw"] = refs
 
     return node
 
@@ -389,8 +398,8 @@ def main():
             {
                 "@id": f"estleg:Riigikohus_{year}_Map",
                 "@type": ["owl:Ontology"],
-                "rdfs:label": f"Riigikohtu lahendid {year}",
-                "dc:description": f"Riigikohtu lahendid aastast {year} ({len(decisions)} lahendit)",
+                "rdfs:label": {"@value": f"Riigikohtu lahendid {year}", "@language": "et"},
+                "dc:description": {"@value": f"Riigikohtu lahendid aastast {year} ({len(decisions)} lahendit)", "@language": "et"},
                 "dc:source": "Riigikohus – rikos.rik.ee",
             },
         ]

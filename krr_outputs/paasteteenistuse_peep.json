@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -15,14 +16,49 @@
         "owl:Ontology"
       ],
       "rdfs:label": "Päästeteenistuse seaduse teemakaardistus",
-      "dc:source": "Päästeseadus (Riigi Teataja, kehtiv redaktsioon)"
+      "dc:source": "Päästeseadus (Riigi Teataja, kehtiv redaktsioon)",
+      "estleg:temporalStatus": "inForce",
+      "estleg:affectedBy": [
+        {
+          "@id": "estleg:Draft_SIM18_0941"
+        },
+        {
+          "@id": "estleg:Draft_SIM15_1414"
+        },
+        {
+          "@id": "estleg:Draft_SIM14_0931"
+        },
+        {
+          "@id": "estleg:Draft_SIM11_0479"
+        }
+      ],
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/3606"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2441"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/1221"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2431"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/0816"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_paasteteenistuse",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)"
+      "rdfs:label": "Õigusnorm (paragrahv)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:Cluster_RescueFunctions",

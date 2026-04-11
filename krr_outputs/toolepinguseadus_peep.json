@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -14,14 +15,40 @@
       "@type": [
         "owl:Ontology"
       ],
-      "rdfs:label": "Töölepingu seaduse teemakaardistus (TLS)"
+      "rdfs:label": "Töölepingu seaduse teemakaardistus (TLS)",
+      "estleg:temporalStatus": "inForce",
+      "estleg:affectedBy": [
+        {
+          "@id": "estleg:Draft_RIIGIKOGU12_1136"
+        }
+      ],
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/3606"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2431"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5206"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5631"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/3611"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_toolepinguseadus",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)"
+      "rdfs:label": "Õigusnorm (paragrahv)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:Cluster_Toolepingud",
@@ -101,7 +128,23 @@
       "rdfs:label": "§ 5. Töötaja teavitamine töötingimustest",
       "estleg:requestedCluster": "toolepingud",
       "estleg:summary": "Loetleb kohustuslikud töötingimuste andmed, mida tööandja peab töötajale kirjalikult esitama.",
-      "estleg:sourceAct": "Töölepingu seadus"
+      "estleg:sourceAct": "Töölepingu seadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Meret_seadus_Par_9"
+        },
+        {
+          "@id": "estleg:Meret_seadus_Par_10"
+        },
+        {
+          "@id": "estleg:Meret_seadus_Par_11"
+        }
+      ]
     },
     {
       "@id": "estleg:TLS_Par_6",
@@ -113,7 +156,12 @@
       "rdfs:label": "§ 6. Töötaja teavitamine töötingimustest erijuhtudel",
       "estleg:requestedCluster": "toolepingud",
       "estleg:summary": "Täiendavad teavituskohustused tähtajalise lepingu, renditöö, kaugtöö, summeeritud tööaja ja välislähetuse puhul.",
-      "estleg:sourceAct": "Töölepingu seadus"
+      "estleg:sourceAct": "Töölepingu seadus",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Kaitseve_korralduse_seadus_Par_57"
+        }
+      ]
     },
     {
       "@id": "estleg:TLS_Par_9",
@@ -137,7 +185,12 @@
       "rdfs:label": "§ 10. Tähtajalise töölepingu sõlmimine",
       "estleg:requestedCluster": "toolepingud",
       "estleg:summary": "Tähtajaline tööleping on lubatud üksnes mõjuval põhjusel, mis tuleneb töö ajutisest iseloomust.",
-      "estleg:sourceAct": "Töölepingu seadus"
+      "estleg:sourceAct": "Töölepingu seadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Permission"
+        }
+      ]
     },
     {
       "@id": "estleg:TLS_Par_11",
@@ -185,7 +238,12 @@
       "rdfs:label": "§ 46. Tööaja korraldus",
       "estleg:requestedCluster": "tooaeg_ja_puhkused",
       "estleg:summary": "Tööandja korraldab tööaega, arvestades seadust, kokkuleppeid ja töötaja teavitamiskohustust.",
-      "estleg:sourceAct": "Töölepingu seadus"
+      "estleg:sourceAct": "Töölepingu seadus",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Meret_seadus_Par_40"
+        }
+      ]
     },
     {
       "@id": "estleg:TLS_Par_47",
@@ -233,7 +291,15 @@
       "rdfs:label": "§ 55. Põhipuhkus",
       "estleg:requestedCluster": "tooaeg_ja_puhkused",
       "estleg:summary": "Sätestab põhipuhkuse õiguse ja minimaalse kestuse.",
-      "estleg:sourceAct": "Töölepingu seadus"
+      "estleg:sourceAct": "Töölepingu seadus",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:TDVS_Par_6"
+        },
+        {
+          "@id": "estleg:TDVS_Par_19"
+        }
+      ]
     },
     {
       "@id": "estleg:TLS_Par_68",
@@ -257,7 +323,21 @@
       "rdfs:label": "§ 28. Tööandja kohustused",
       "estleg:requestedCluster": "palgad_ja_huvitised",
       "estleg:summary": "Tööandja peab maksma töötasu kokkulepitud tingimustel ning tagama töötaja õigused töösuhtes.",
-      "estleg:sourceAct": "Töölepingu seadus"
+      "estleg:sourceAct": "Töölepingu seadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Tööandja",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Meret_seadus_Par_22"
+        },
+        {
+          "@id": "estleg:Tiskasvanute_koolituse_seadus_Par_13"
+        }
+      ]
     },
     {
       "@id": "estleg:TLS_Par_29",
@@ -269,7 +349,30 @@
       "rdfs:label": "§ 29. Töötasu",
       "estleg:requestedCluster": "palgad_ja_huvitised",
       "estleg:summary": "Reguleerib töötasu kokkuleppimist, alammäära järgimist ja tasu maksmise üldpõhimõtteid.",
-      "estleg:sourceAct": "Töölepingu seadus"
+      "estleg:sourceAct": "Töölepingu seadus",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:ELTTS_Par_5"
+        },
+        {
+          "@id": "estleg:Kaitseveteenistuse_seaduse_ra_Par_19"
+        },
+        {
+          "@id": "estleg:Meret_seadus_Par_34"
+        },
+        {
+          "@id": "estleg:RKSKS_Par_26"
+        },
+        {
+          "@id": "estleg:RKSKS_Par_37"
+        },
+        {
+          "@id": "estleg:Tiskasvanute_koolituse_seadus_Par_13"
+        },
+        {
+          "@id": "estleg:Vangistusseadus_Par_43"
+        }
+      ]
     },
     {
       "@id": "estleg:TLS_Par_33",
@@ -317,7 +420,12 @@
       "rdfs:label": "§ 57. Puhkusetasu",
       "estleg:requestedCluster": "palgad_ja_huvitised",
       "estleg:summary": "Puhkuse ajaks makstakse puhkusetasu seaduses sätestatud korras ja tähtajal.",
-      "estleg:sourceAct": "Töölepingu seadus"
+      "estleg:sourceAct": "Töölepingu seadus",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Tvimetoetuse_seadus_Par_22"
+        }
+      ]
     },
     {
       "@id": "estleg:TLS_Par_100",
@@ -341,7 +449,12 @@
       "rdfs:label": "§ 109. Hüvitis töölepingu ülesütlemisel",
       "estleg:requestedCluster": "palgad_ja_huvitised",
       "estleg:summary": "Sätestab hüvitise alused, kui tööandja ütleb lepingu üles või rikub ülesütlemise nõudeid.",
-      "estleg:sourceAct": "Töölepingu seadus"
+      "estleg:sourceAct": "Töölepingu seadus",
+      "estleg:interpretedBy": [
+        {
+          "@id": "estleg:RK_2_20_16369_44"
+        }
+      ]
     },
     {
       "@id": "estleg:TLS_Par_12",
@@ -353,7 +466,13 @@
       "rdfs:label": "§ 12. Töötaja kohustused",
       "estleg:requestedCluster": "tooohutus",
       "estleg:summary": "Töötaja peab täitma töökohustusi hoolsalt ning järgima tööohutuse ja töötervishoiu nõudeid.",
-      "estleg:sourceAct": "Töölepingu seadus"
+      "estleg:sourceAct": "Töölepingu seadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Töötaja"
     },
     {
       "@id": "estleg:TLS_Par_13",
@@ -365,7 +484,13 @@
       "rdfs:label": "§ 13. Töötaja lojaalsuskohustus",
       "estleg:requestedCluster": "tooohutus",
       "estleg:summary": "Töötaja peab hoiduma tööandja huve kahjustavast tegevusest, sh töökeskkonna ohtude eiramisest.",
-      "estleg:sourceAct": "Töölepingu seadus"
+      "estleg:sourceAct": "Töölepingu seadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Töötaja"
     },
     {
       "@id": "estleg:TLS_Par_15",
@@ -377,7 +502,18 @@
       "rdfs:label": "§ 15. Töötaja järgitavad tööandja korraldused",
       "estleg:requestedCluster": "tooohutus",
       "estleg:summary": "Töötaja peab täitma seaduslikke töökorraldusi, sealhulgas ohutust tagavaid juhiseid.",
-      "estleg:sourceAct": "Töölepingu seadus"
+      "estleg:sourceAct": "Töölepingu seadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Töötaja",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Meret_seadus_Par_14"
+        }
+      ]
     },
     {
       "@id": "estleg:TLS_Par_28_2",
@@ -389,7 +525,13 @@
       "rdfs:label": "§ 28. Tööandja kohustus tagada ohutu töökeskkond",
       "estleg:requestedCluster": "tooohutus",
       "estleg:summary": "Tööandja peab tagama töötervishoiu ja tööohutuse nõuetele vastavad töötingimused.",
-      "estleg:sourceAct": "Töölepingu seadus"
+      "estleg:sourceAct": "Töölepingu seadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Tööandja"
     },
     {
       "@id": "estleg:TLS_Par_47_2",
@@ -401,7 +543,12 @@
       "rdfs:label": "§ 47. Valveaeg ja puhkeaja kaitse",
       "estleg:requestedCluster": "tooohutus",
       "estleg:summary": "Valveaja korraldus ei tohi rikkuda töötaja tervisekaitset ega kohustuslikku puhkeaega.",
-      "estleg:sourceAct": "Töölepingu seadus"
+      "estleg:sourceAct": "Töölepingu seadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Prohibition"
+        }
+      ]
     },
     {
       "@id": "estleg:TLS_Par_88",
@@ -413,7 +560,12 @@
       "rdfs:label": "§ 88. Töölepingu erakorraline ülesütlemine tööandja poolt",
       "estleg:requestedCluster": "tooohutus",
       "estleg:summary": "Võimaldab lepingu erakorralist ülesütlemist mh töötaja terviseseisundi või ohutuse tagamisega seotud takistuste korral seaduses sätestatud tingimustel.",
-      "estleg:sourceAct": "Töölepingu seadus"
+      "estleg:sourceAct": "Töölepingu seadus",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Meret_seadus_Par_65"
+        }
+      ]
     }
   ]
 }

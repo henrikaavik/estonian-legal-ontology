@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -15,14 +16,49 @@
         "owl:Ontology"
       ],
       "rdfs:label": "Korrakaitseseaduse teemakaardistus",
-      "dc:source": "Korrakaitseseadus (RT I, kehtiv redaktsioon; Riigi Teataja)"
+      "dc:source": "Korrakaitseseadus (RT I, kehtiv redaktsioon; Riigi Teataja)",
+      "estleg:temporalStatus": "inForce",
+      "estleg:affectedBy": [
+        {
+          "@id": "estleg:Draft_SIM25_1085"
+        },
+        {
+          "@id": "estleg:Draft_SIM23_1511"
+        },
+        {
+          "@id": "estleg:Draft_SIM18_0718"
+        },
+        {
+          "@id": "estleg:Draft_RIIGIKOGU14_1244"
+        }
+      ],
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/0816"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/1221"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2441"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5636"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2416"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_korrakaitseseadus",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)"
+      "rdfs:label": "Õigusnorm (paragrahv)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:Cluster_PublicOrderProtection",
@@ -78,7 +114,12 @@
       "rdfs:label": "Korrakaitse ülesanded, pädevusjaotus ja subsidiaarsus",
       "estleg:requestedCluster": "avaliku korra kaitse",
       "estleg:summary": "Määratleb korrakaitseorganite ülesanded ning rõhutab, et sekkumine peab tuginema pädevusele ja toimuma võimalikult vähese riivega.",
-      "estleg:sourceAct": "Korrakaitseseadus"
+      "estleg:sourceAct": "Korrakaitseseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ]
     },
     {
       "@id": "estleg:KORS_Par_AvalikusKohasKaitstavadHuved",
@@ -90,7 +131,12 @@
       "rdfs:label": "Avalikus kohas kaitstavad hüved ja korranõuded",
       "estleg:requestedCluster": "avaliku korra kaitse",
       "estleg:summary": "Kirjeldab avalikus ruumis kehtivaid korra tagamise nõudeid ning aluseid, mille rikkumisel võib korrakaitseorgan sekkuda.",
-      "estleg:sourceAct": "Korrakaitseseadus"
+      "estleg:sourceAct": "Korrakaitseseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:KORS_Par_Yldmeetmed",
@@ -162,7 +208,12 @@
       "rdfs:label": "Kinnipidamise lõpetamine ja pädevale organile üleandmine",
       "estleg:requestedCluster": "halduskaudne kinnipidamine",
       "estleg:summary": "Sätestab, et kinnipidamine tuleb lõpetada niipea, kui oht on kõrvaldatud, või anda isik viivitamata üle pädevale menetlusasutusele.",
-      "estleg:sourceAct": "Korrakaitseseadus"
+      "estleg:sourceAct": "Korrakaitseseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ]
     },
     {
       "@id": "estleg:KORS_Par_MeetmeValikuYldpohimotted",

@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -16,14 +17,79 @@
       ],
       "rdfs:label": "Elektrituruseaduse teemakaardistus (ELTS)",
       "dc:source": "https://www.riigiteataja.ee/akt/108072025041",
-      "dc:language": "et"
+      "dc:language": "et",
+      "estleg:temporalStatus": "inForce",
+      "estleg:affectedBy": [
+        {
+          "@id": "estleg:Draft_KLIM25_0176"
+        },
+        {
+          "@id": "estleg:Draft_KLIM24_0874"
+        },
+        {
+          "@id": "estleg:Draft_KLIM24_0578"
+        },
+        {
+          "@id": "estleg:Draft_KLIM23_0942"
+        },
+        {
+          "@id": "estleg:Draft_MKM23_0752"
+        },
+        {
+          "@id": "estleg:Draft_MKM23_0270"
+        },
+        {
+          "@id": "estleg:Draft_MKM20_1438"
+        },
+        {
+          "@id": "estleg:Draft_MKM15_1312"
+        },
+        {
+          "@id": "estleg:Draft_MKM14_1108"
+        },
+        {
+          "@id": "estleg:Draft_MKM13_1241"
+        },
+        {
+          "@id": "estleg:Draft_MKM22_0941"
+        },
+        {
+          "@id": "estleg:Draft_RIIGIKOGU15_0042"
+        },
+        {
+          "@id": "estleg:Draft_RIIGIKOGU14_0801"
+        },
+        {
+          "@id": "estleg:Draft_RIIGIKOGU13_0282"
+        }
+      ],
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/5606"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2806"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2431"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5226"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2841"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_elektrituruseadus",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)"
+      "rdfs:label": "Õigusnorm (paragrahv)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:TopicCluster_elektrituruseadus",
@@ -102,7 +168,13 @@
       "rdfs:label": "§ 11¹. Elektribörsi korraldaja",
       "estleg:requestedCluster": "electricity_market",
       "estleg:summary": "Sätestab, et elektribörsi korraldaja on nimetatud elektrituru korraldaja, kelle määrab Konkurentsiamet EL õiguse alusel.",
-      "estleg:sourceAct": "Elektrituruseadus"
+      "estleg:sourceAct": "Elektrituruseadus",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_konkurentsiamet"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:ELTS_Par_11_2",
@@ -174,7 +246,12 @@
       "rdfs:label": "§ 1 lg 1 ja 3. Tarbija vajadused ja energiasäästu soodustamine",
       "estleg:requestedCluster": "consumer_protection",
       "estleg:summary": "Seaduse eesmärgiks on tarbija vajadustele vastav mõistliku hinnaga elektrivarustus; elektriettevõtja peab soodustama tarbija elektrisäästlikku käitumist.",
-      "estleg:sourceAct": "Elektrituruseadus"
+      "estleg:sourceAct": "Elektrituruseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ]
     },
     {
       "@id": "estleg:ELTS_Par_12",

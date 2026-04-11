@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -16,14 +17,35 @@
       ],
       "rdfs:label": "Tubakaseaduse teemakaardistus",
       "dc:description": "Tubakaseaduse kaardistus klastrites: tubakatooted, müügipiirangud ja pakendinõuded.",
-      "dc:source": "Tubakaseadus (kehtiv redaktsioon; https://www.riigiteataja.ee/akt/TubS)"
+      "dc:source": "Tubakaseadus (kehtiv redaktsioon; https://www.riigiteataja.ee/akt/TubS)",
+      "estleg:temporalStatus": "inForce",
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/5226"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5631"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5606"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2821"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2836"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_tubakaseadus",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)"
+      "rdfs:label": "Õigusnorm (paragrahv)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:Cluster_Tubakatooted",
@@ -34,7 +56,7 @@
       "rdfs:label": "Tubakatooted"
     },
     {
-      "@id": "estleg:Cluster_Muugipiirangud",
+      "@id": "estleg:Cluster_tubaka_seadus_Muugipiirangud",
       "@type": [
         "owl:NamedIndividual",
         "estleg:TopicCluster"
@@ -83,7 +105,13 @@
       "rdfs:label": "Tooteandmete esitamine enne turuleviimist",
       "estleg:requestedCluster": "tubakatooted",
       "estleg:summary": "Paneb tootjale/importijale kohustuse esitada Terviseametile koosseisu-, eraldiste, toksikoloogia- ja turuandmed enne toote turuleviimist ning oluliste muudatuste korral; hõlmab uudseid tooteid ja e-sigarette.",
-      "estleg:sourceAct": "Tubakaseadus"
+      "estleg:sourceAct": "Tubakaseadus",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_terviseamet"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:TubS_Par_TeatamiskohustusKaubanduses",

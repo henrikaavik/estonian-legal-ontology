@@ -30,6 +30,29 @@ MULTI_VALUED_PROPS = {
     "estleg:hasSubdivision", "hasSubdivision",
     "estleg:hasChapter", "hasChapter",
     "estleg:references", "references",
+    "estleg:referencedBy",
+    "estleg:interpretsLaw",
+    "estleg:interpretedBy",
+    "estleg:transposesDirective",
+    "estleg:transposedBy",
+    "estleg:amendedBy",
+    "estleg:hasSanction",
+    "estleg:competentAuthority",
+    "estleg:affectedBy",
+    "estleg:harmonisedWith",
+    "estleg:semanticallySimilarTo",
+    "estleg:definesTerm",
+    "estleg:definedIn",
+    "dcterms:subject",
+    "estleg:affectedLawName",
+    "estleg:referencedLaw",
+    "skos:exactMatch",
+    "skos:closeMatch",
+}
+
+# Properties that are semantically single-valued (dict OK, not required to be list)
+SINGLE_VALUED_PROPS = {
+    "estleg:normativeType",
 }
 
 errors = []
@@ -105,9 +128,27 @@ def validate_dc_source(filepath: Path, doc: dict):
 
 def validate_id_uniqueness(all_ids: dict[str, list[str]]):
     print("\n--- @id Uniqueness ---")
-    dupes = {k: v for k, v in all_ids.items() if len(v) > 1}
+    # Shared ontology class definitions are expected to appear in multiple files
+    shared_class_ids = {
+        "estleg:LegalPart", "estleg:Provision", "estleg:Section",
+        "estleg:LegalConcept",
+        "https://data.riik.ee/ontology/estleg#",
+        "https://data.riik.ee/ontology/estleg#LegalPart",
+        "https://data.riik.ee/ontology/estleg#Chapter",
+        "https://data.riik.ee/ontology/estleg#Division",
+        "https://data.riik.ee/ontology/estleg#Section",
+        "https://data.riik.ee/ontology/estleg#LegalConcept",
+    }
+    dupes = {k: v for k, v in all_ids.items() if len(v) > 1 and k not in shared_class_ids}
+    shared_dupes = {k: v for k, v in all_ids.items() if len(v) > 1 and k in shared_class_ids}
+    if shared_dupes:
+        print(f"  OK: {len(shared_dupes)} shared ontology class @id values (expected)")
     if dupes:
-        warn(f"{len(dupes)} @id values appear in multiple files (see docs/DUPLICATE_IDS_REPORT.md)")
+        error(f"{len(dupes)} @id values are duplicated across files (semantic collisions)")
+        for dupe_id, files in sorted(dupes.items())[:20]:
+            print(f"    {dupe_id}: {files}")
+        if len(dupes) > 20:
+            print(f"    ... and {len(dupes) - 20} more")
     else:
         print("  OK: All @id values are unique across files")
 
@@ -123,7 +164,10 @@ def main():
     files = sorted(set(files))
     # Exclude index and summary files
     exclude_prefixes = ("INDEX", "combined_", "EELNOUD_INDEX", "eelnoud_combined", "RIIGIKOHUS_INDEX", "EURLEX_INDEX", "eurlex_combined", "CURIA_INDEX", "curia_combined")
+    # Exclude report/metadata files (not JSON-LD)
+    exclude_suffixes = ("_report.json", "_mapping.json", "_index.json", "_classification.json")
     files = [f for f in files if not any(f.name.startswith(p) for p in exclude_prefixes)]
+    files = [f for f in files if not any(f.name.endswith(s) for s in exclude_suffixes)]
 
     print(f"\nValidating {len(files)} files...\n")
 

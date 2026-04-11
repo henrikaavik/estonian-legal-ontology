@@ -92,6 +92,13 @@ The ontology uses the `estleg` namespace (`https://data.riik.ee/ontology/estleg#
 - `estleg:EUCourtDecisionType` — EU court decision type classification
 - `estleg:EUCourt` — EU court classification
 
+**Integration & Analysis:**
+- `estleg:Sanction` — Penalties and sanctions extracted from law text
+- `estleg:Institution` — State institutions with legal competences
+- `estleg:NormativeType` — Deontic classification (Obligation, Right, Permission, Prohibition)
+- `estleg:Section` — Section structure in KarS special parts
+- `estleg:AmendmentEvent` — Amendment events linking provisions to amending acts
+
 See [SCHEMA_REFERENCE.md](SCHEMA_REFERENCE.md) for complete documentation.
 
 ## Supreme Court Decisions (Riigikohus)
@@ -159,11 +166,15 @@ Courts: Court of Justice (17,720), General Court (4,036), Civil Service Tribunal
 │   │   ├── eurlex_*_peep.json            # Per-type EU acts
 │   │   ├── eurlex_combined.jsonld        # All EU acts combined
 │   │   └── EURLEX_INDEX.json             # EU legislation registry
-│   └── curia/              # EU court decisions
-│       ├── curia_schema.json             # Schema definitions
-│       ├── curia_*_peep.json             # Per-type decisions
-│       ├── curia_combined.jsonld         # All EU decisions combined
-│       └── CURIA_INDEX.json              # EU court decision registry
+│   ├── curia/              # EU court decisions
+│   │   ├── curia_schema.json             # Schema definitions
+│   │   ├── curia_*_peep.json             # Per-type decisions
+│   │   ├── curia_combined.jsonld         # All EU decisions combined
+│   │   └── CURIA_INDEX.json              # EU court decision registry
+│   ├── concepts/           # Legal concept cross-reference graph
+│   ├── institutions/       # Institutional competence mappings
+│   ├── sanctions/          # Penalty and sanction index
+│   └── amendments/         # Amendment chain data
 ├── docs/                   # Documentation
 ├── shacl/                  # SHACL validation shapes
 ├── scripts/                # Generation and validation scripts

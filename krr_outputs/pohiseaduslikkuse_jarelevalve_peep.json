@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -16,14 +17,35 @@
       ],
       "rdfs:label": "Põhiseaduslikkuse järelevalve kohtumenetluse seadustiku teemakaardistus (PSJKS)",
       "dc:source": "Põhiseaduslikkuse järelevalve kohtumenetluse seadustik (Riigi Teataja, kehtiv redaktsioon)",
-      "estleg:scope": "Constitutional review procedures before the Supreme Court, including individual constitutional complaints and abstract review"
+      "estleg:scope": "Constitutional review procedures before the Supreme Court, including individual constitutional complaints and abstract review",
+      "estleg:temporalStatus": "inForce",
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/2446"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2441"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2416"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2821"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5226"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_pohiseaduslikkuse_jarelevalve",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv või normiplokk)"
+      "rdfs:label": "Õigusnorm (paragrahv või normiplokk)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:TopicCluster_pohiseaduslikkuse_jarelevalve",
@@ -85,7 +107,13 @@
       "rdfs:label": "Põhiseaduslikkuse järelevalve asja läbivaatamine Riigikohtus",
       "estleg:requestedCluster": "pohiseaduslikkuse_jarelevalve",
       "estleg:summary": "Sätestab, millises koosseisus ja milliste menetlusosaliste osavõtul Riigikohus põhiseaduslikkuse järelevalve asju lahendab ning kuidas tagatakse poolte ärakuulamine.",
-      "estleg:sourceAct": "Põhiseaduslikkuse järelevalve kohtumenetluse seadustik"
+      "estleg:sourceAct": "Põhiseaduslikkuse järelevalve kohtumenetluse seadustik",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_riigikohus"
+        }
+      ],
+      "estleg:competenceType": "supervision"
     },
     {
       "@id": "estleg:PSJKS_Norm_003",
@@ -97,7 +125,18 @@
       "rdfs:label": "Asjassepuutuv norm ja konkreetse normikontrolli raamid",
       "estleg:requestedCluster": "pohiseaduslikkuse_jarelevalve",
       "estleg:summary": "Kirjeldab, millal loetakse vaidlustatud norm kohtuasja lahendamisel määravaks ning millistel eeldustel võib Riigikohus normi põhiseaduspärasust hinnata.",
-      "estleg:sourceAct": "Põhiseaduslikkuse järelevalve kohtumenetluse seadustik"
+      "estleg:sourceAct": "Põhiseaduslikkuse järelevalve kohtumenetluse seadustik",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_riigikohus"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:PSJKS_Norm_004",
@@ -157,7 +196,13 @@
       "rdfs:label": "Kaebuse rahuldamine, rahuldamata jätmine ja õiguskaitse ulatus",
       "estleg:requestedCluster": "pohiseaduslik_kaebus",
       "estleg:summary": "Sätestab, millistel juhtudel Riigikohus tunnistab normi põhiseadusvastaseks kaebaja õiguste kaitseks ning kuidas kujuneb lahendi mõju kaebaja ja laiemalt õiguskorra suhtes.",
-      "estleg:sourceAct": "Põhiseaduslikkuse järelevalve kohtumenetluse seadustik"
+      "estleg:sourceAct": "Põhiseaduslikkuse järelevalve kohtumenetluse seadustik",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_riigikohus"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:PSJKS_Norm_020",
@@ -169,7 +214,12 @@
       "rdfs:label": "Abstraktse järelevalve algatamise subjektid ja pädevus",
       "estleg:requestedCluster": "abstraktne_jarelevalve",
       "estleg:summary": "Määratleb põhiseaduses ja PSJKS-is nimetatud institutsioonid, kellel on õigus taotleda õigustloova akti abstraktset põhiseaduslikkuse kontrolli väljaspool konkreetset kohtuasja.",
-      "estleg:sourceAct": "Põhiseaduslikkuse järelevalve kohtumenetluse seadustik"
+      "estleg:sourceAct": "Põhiseaduslikkuse järelevalve kohtumenetluse seadustik",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:PSJKS_Norm_021",
@@ -181,7 +231,13 @@
       "rdfs:label": "Väljakuulutamata seaduse põhiseaduspärasuse kontroll",
       "estleg:requestedCluster": "abstraktne_jarelevalve",
       "estleg:summary": "Reguleerib menetlust, kus Vabariigi President jätab seaduse välja kuulutamata ja taotleb Riigikohtult eelkontrolli seaduse kooskõla üle põhiseadusega.",
-      "estleg:sourceAct": "Põhiseaduslikkuse järelevalve kohtumenetluse seadustik"
+      "estleg:sourceAct": "Põhiseaduslikkuse järelevalve kohtumenetluse seadustik",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigipresident"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:PSJKS_Norm_022",
@@ -205,7 +261,13 @@
       "rdfs:label": "KOV üksuse põhiseaduslike tagatiste abstraktne kaitse",
       "estleg:requestedCluster": "abstraktne_jarelevalve",
       "estleg:summary": "Võimaldab kohaliku omavalitsuse üksusel vaidlustada õigusakti, mis riivab omavalitsuslikke põhiseaduslikke tagatisi, andes institutsionaalse kaebeõiguse.",
-      "estleg:sourceAct": "Põhiseaduslikkuse järelevalve kohtumenetluse seadustik"
+      "estleg:sourceAct": "Põhiseaduslikkuse järelevalve kohtumenetluse seadustik",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:Concept_ConstitutionalityReview",

@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -15,14 +16,62 @@
         "owl:Ontology"
       ],
       "rdfs:label": "Vabariigi Presidendi valimise seadus teemakaardistus",
-      "dc:source": "Vabariigi Presidendi valimise seadus"
+      "dc:source": "Vabariigi Presidendi valimise seadus",
+      "estleg:entryIntoForce": {
+        "@value": "2002-06-01",
+        "@type": "xsd:date"
+      },
+      "estleg:repealDate": {
+        "@value": "2007-07-13",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "repealed",
+      "estleg:amendedBy": [
+        {
+          "@id": "estleg:Draft_RIIGIKOGU21_0226"
+        },
+        {
+          "@id": "estleg:Draft_RIIGIKOGU16_1090"
+        }
+      ],
+      "estleg:affectedBy": [
+        {
+          "@id": "estleg:Draft_RIIGIKOGU25_0686"
+        },
+        {
+          "@id": "estleg:Draft_RIIGIKOGU21_0226"
+        },
+        {
+          "@id": "estleg:Draft_RIIGIKOGU16_1090"
+        }
+      ],
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/2016"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2446"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2821"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/1221"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5211"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_vabariigi_presidendi_valimise_seadus",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)"
+      "rdfs:label": "Õigusnorm (paragrahv)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:Cluster_VPVS_1",
@@ -82,7 +131,16 @@
       "rdfs:label": "§ 1. Valimissüsteemi alused",
       "estleg:sourceAct": "Vabariigi Presidendi valimise seadus",
       "estleg:summary": "1 (1) Vabariigi Presidendi valib Riigikogu. Kui Vabariigi President jääb Riigikogus valimata, valib presidendi valimiskogu. Vabariigi Presidendi valib Riigikogu. Kui Vabariigi President jääb Riigikogus valimata, valib presidendi valimiskogu. 2 (2) Riigikogu või valimiskogu liikmel on igas hääletusvoorus üks hääl. Riigikogu või valimiskogu liikmel on igas hääletusvoorus üks hääl. 3 (3) Vabariigi President valitakse salajasel hääletusel. Vabariigi President valitakse salajasel hääletusel.",
-      "estleg:requestedCluster": "estleg:Cluster_VPVS_1"
+      "estleg:requestedCluster": "estleg:Cluster_VPVS_1",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_riigikogu"
+        },
+        {
+          "@id": "estleg:Institution_vabariigipresident"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:VPVS_Par_2",
@@ -94,7 +152,23 @@
       "rdfs:label": "§ 2. Vabariigi Presidendi kandidaat",
       "estleg:sourceAct": "Vabariigi Presidendi valimise seadus",
       "estleg:summary": "1 (1) Vabariigi Presidendi kandidaadiks võib üles seada sünnilt Eesti kodaniku, kes on vähemalt 40 aastat vana. Vabariigi Presidendi kandidaadiks võib üles seada sünnilt Eesti kodaniku, kes on vähemalt 40 aastat vana. 2 (2) Vabariigi Presidendi kandidaadiks ei või üles seada isikut, kes on Vabariigi President teist ametiaega järjest. Vabariigi Presidendi kandidaadiks ei või üles seada isikut, kes on Vabariigi President teist ametiaega järjest.",
-      "estleg:requestedCluster": "estleg:Cluster_VPVS_1"
+      "estleg:requestedCluster": "estleg:Cluster_VPVS_1",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigipresident"
+        }
+      ],
+      "estleg:competenceType": "general",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:VPVS_Par_15"
+        }
+      ]
     },
     {
       "@id": "estleg:VPVS_Par_3",
@@ -106,7 +180,21 @@
       "rdfs:label": "§ 3. Valimise aeg",
       "estleg:sourceAct": "Vabariigi Presidendi valimise seadus",
       "estleg:summary": "1 (1) Vabariigi Presidendi korraline valimine toimub varemalt 60 ja hiljemalt 10 päeva enne Vabariigi Presidendi ametiaja lõppemist. Vabariigi Presidendi korraline valimine toimub varemalt 60 ja hiljemalt 10 päeva enne Vabariigi Presidendi ametiaja lõppemist. 2 (2) Vabariigi Presidendi erakorraline valimine Riigikogus toimub 14 päeva jooksul, arvates: 1 1) Vabariigi Presidendi volituste ennetähtaegse lõppemise päevast või 2 2) päevast, mil Riigikohus tunnistas Vabariigi Presidendi kestvalt võime",
-      "estleg:requestedCluster": "estleg:Cluster_VPVS_1"
+      "estleg:requestedCluster": "estleg:Cluster_VPVS_1",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_riigikogu"
+        },
+        {
+          "@id": "estleg:Institution_riigikohus"
+        }
+      ],
+      "estleg:competenceType": "general",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:VPVS_Par_26"
+        }
+      ]
     },
     {
       "@id": "estleg:VPVS_Par_4",
@@ -142,7 +230,13 @@
       "rdfs:label": "§ 6. Riigikogu ja valimiskogu istungi juhatamine",
       "estleg:sourceAct": "Vabariigi Presidendi valimise seadus",
       "estleg:summary": "1 (1) Riigikogu ja valimiskogu istungit Vabariigi Presidendi valimisel juhatab Riigikogu esimees või aseesimees. Riigikogu ja valimiskogu istungit Vabariigi Presidendi valimisel juhatab Riigikogu esimees või aseesimees. 2 (2) Riigikogu ja valimiskogu istungit ei või juhatada Vabariigi Presidendi kandidaat ega Riigikogu esimees või aseesimees, kui ta täidab ajutiselt Vabariigi Presidendi ülesandeid. Kui Riigikogu esimees ja aseesimehed on Vabariigi Presidendi kandidaadid, juhatab Riigikogu või va",
-      "estleg:requestedCluster": "estleg:Cluster_VPVS_2"
+      "estleg:requestedCluster": "estleg:Cluster_VPVS_2",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_riigikogu"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:VPVS_Par_7",
@@ -154,7 +248,18 @@
       "rdfs:label": "§ 7. Hääletamise ettevalmistamine",
       "estleg:sourceAct": "Vabariigi Presidendi valimise seadus",
       "estleg:summary": "1 (1) Enne hääletamise väljakuulutamist tutvustab valimiskomisjoni esimees Riigikogu või valimiskogu liikmetele hääletamise ning hääletamis- ja valimistulemuste kindlakstegemise korda. Enne hääletamise väljakuulutamist tutvustab valimiskomisjoni esimees Riigikogu või valimiskogu liikmetele hääletamise ning hääletamis- ja valimistulemuste kindlakstegemise korda. 2 (2) Riigikogu või valimiskogu liikmel on õigus esitada valimiskomisjoni esimehele küsimusi hääletamise ning hääletamis- ja valimistule",
-      "estleg:requestedCluster": "estleg:Cluster_VPVS_2"
+      "estleg:requestedCluster": "estleg:Cluster_VPVS_2",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_riigikogu"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:VPVS_Par_8",
@@ -178,7 +283,13 @@
       "rdfs:label": "§ 9. Hääletamise kord",
       "estleg:sourceAct": "Vabariigi Presidendi valimise seadus",
       "estleg:summary": "1 (1) Valimiskomisjon annab Riigikogu või valimiskogu liikmele valimiskomisjoni pitsati jäljendiga hääletamissedeli ja ümbriku. Sedel antakse nimekirja alusel isikut tõendava dokumendi esitamisel. Sedeli saamise kohta annab Riigikogu või valimiskogu liige allkirja. Valimiskomisjon annab Riigikogu või valimiskogu liikmele valimiskomisjoni pitsati jäljendiga hääletamissedeli ja ümbriku. Sedel antakse nimekirja alusel isikut tõendava dokumendi esitamisel. Sedeli saamise kohta annab Riigikogu või va",
-      "estleg:requestedCluster": "estleg:Cluster_VPVS_2"
+      "estleg:requestedCluster": "estleg:Cluster_VPVS_2",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_riigikogu"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:VPVS_Par_10",
@@ -190,7 +301,13 @@
       "rdfs:label": "§ 10. Protestid hääletamise korra rikkumise kohta",
       "estleg:sourceAct": "Vabariigi Presidendi valimise seadus",
       "estleg:summary": "1 (1) Enne häälte lugemist on Riigikogu või valimiskogu liikmel õigus esitada valimiskomisjonile kirjalik protest hääletamise korra rikkumise kohta. Enne häälte lugemist on Riigikogu või valimiskogu liikmel õigus esitada valimiskomisjonile kirjalik protest hääletamise korra rikkumise kohta. 2 (2) Valimiskomisjon vaatab protesti pärast hääletamise lõppemist läbi, võtab vastu motiveeritud otsuse ja teeb selle teatavaks. Kui hääletamise korda on rikutud oluliselt, korraldab valimiskomisjon kordushä",
-      "estleg:requestedCluster": "estleg:Cluster_VPVS_2"
+      "estleg:requestedCluster": "estleg:Cluster_VPVS_2",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_riigikogu"
+        }
+      ],
+      "estleg:competenceType": "enforcement"
     },
     {
       "@id": "estleg:VPVS_Par_11",
@@ -202,7 +319,13 @@
       "rdfs:label": "§ 11. Hääletamistulemuse kindlakstegemine",
       "estleg:sourceAct": "Vabariigi Presidendi valimise seadus",
       "estleg:summary": "1 (1) Valimiskomisjon loeb hääled avalikult kohe pärast hääletamise lõppemist ja protestide lahendamist. Valimiskomisjon loeb hääled avalikult kohe pärast hääletamise lõppemist ja protestide lahendamist. 2 (2) Valimiskomisjon teeb kindlaks: 1 1) Riigikogu liikmete või valimiskogu liikmete nimekirja järgi valijate arvu ja neist hääletamissedeli saanute arvu; 2 2) valimiskastis olevate sedelite alusel hääletamisest osavõtnud valijate arvu; 3 3) kehtetute hääletamissedelite arvu; 4 4) nende hääleta",
-      "estleg:requestedCluster": "estleg:Cluster_VPVS_3"
+      "estleg:requestedCluster": "estleg:Cluster_VPVS_3",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_riigikogu"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:VPVS_Par_12",
@@ -214,7 +337,13 @@
       "rdfs:label": "§ 12. Protestid hääletamistulemuse kindlakstegemise korra rikkumise kohta",
       "estleg:sourceAct": "Vabariigi Presidendi valimise seadus",
       "estleg:summary": "1 (1) Enne valimistulemuse kindlakstegemist on Riigikogu või valimiskogu liikmel õigus esitada kirjalik protest hääletamistulemuse kindlakstegemise korra rikkumise kohta. Enne valimistulemuse kindlakstegemist on Riigikogu või valimiskogu liikmel õigus esitada kirjalik protest hääletamistulemuse kindlakstegemise korra rikkumise kohta. 2 (2) Valimiskomisjon vaatab protesti pärast häälte lugemist läbi, võtab vastu motiveeritud otsuse ja teeb selle teatavaks. Kui hääletamistulemuse kindlakstegemise ",
-      "estleg:requestedCluster": "estleg:Cluster_VPVS_3"
+      "estleg:requestedCluster": "estleg:Cluster_VPVS_3",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_riigikogu"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:VPVS_Par_13",
@@ -238,7 +367,16 @@
       "rdfs:label": "§ 14. Riigikogu kokkukutsumine",
       "estleg:sourceAct": "Vabariigi Presidendi valimise seadus",
       "estleg:summary": "Vabariigi Presidendi valimiseks kutsub Riigikogu esimees Vabariigi Presidendi, Vabariigi Valitsuse või vähemalt viiendiku Riigikogu koosseisu ettepanekul kokku Riigikogu erakorralise istungjärgu või Riigikogu täiendava istungi. Enne Riigikogu kokkukutsumist kuulab Riigikogu esimees ära valimiskomisjoni arvamuse. Vabariigi Presidendi valimiseks kutsub Riigikogu esimees Vabariigi Presidendi, Vabariigi Valitsuse või vähemalt viiendiku Riigikogu koosseisu ettepanekul kokku Riigikogu erakorralise ist",
-      "estleg:requestedCluster": "estleg:Cluster_VPVS_4"
+      "estleg:requestedCluster": "estleg:Cluster_VPVS_4",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        },
+        {
+          "@id": "estleg:Institution_riigikogu"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:VPVS_Par_15",
@@ -250,7 +388,31 @@
       "rdfs:label": "§ 15. Kandidaatide ülesseadmine, registreerimiseks esitamine ja registreerimine esimeseks hääletusvooruks",
       "estleg:sourceAct": "Vabariigi Presidendi valimise seadus",
       "estleg:summary": "1 (1) Kandidaadi ülesseadmise õigus on vähemalt viiendikul Riigikogu koosseisust. Kandidaadi ülesseadmise õigus on vähemalt viiendikul Riigikogu koosseisust. 2 (2) Riigikogu liige võib olla ainult ühe kandidaadi ülesseadjaks. Riigikogu liige võib olla ainult ühe kandidaadi ülesseadjaks. 3 (3) Kandidaatide registreerimiseks esitamine algab neljandal päeval kell 9.00 ja lõpeb teisel päeval kell 18.00 enne esimese hääletusvooru päeva. Kandidaatide registreerimiseks esitamine algab neljandal päeval ",
-      "estleg:requestedCluster": "estleg:Cluster_VPVS_4"
+      "estleg:requestedCluster": "estleg:Cluster_VPVS_4",
+      "estleg:references": [
+        {
+          "@id": "estleg:VPVS_Par_2"
+        }
+      ],
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_riigikogu"
+        }
+      ],
+      "estleg:competenceType": "general",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:VPVS_Par_17"
+        },
+        {
+          "@id": "estleg:VPVS_Par_23"
+        }
+      ]
     },
     {
       "@id": "estleg:VPVS_Par_16",
@@ -262,7 +424,13 @@
       "rdfs:label": "§ 16. Esimene hääletusvoor",
       "estleg:sourceAct": "Vabariigi Presidendi valimise seadus",
       "estleg:summary": "1 (1) Esimeseks hääletusvooruks kantakse hääletamissedelile selleks vooruks registreeritud kandidaatide nimed. Esimeseks hääletusvooruks kantakse hääletamissedelile selleks vooruks registreeritud kandidaatide nimed. 2 (2) Valituks tunnistatakse kandidaat, kelle poolt hääletab Riigikogu koosseisu kahekolmandikuline enamus. Valituks tunnistatakse kandidaat, kelle poolt hääletab Riigikogu koosseisu kahekolmandikuline enamus. 3 (3) Kui ükski kandidaat ei saa nõutavat häälteenamust, korraldatakse jär",
-      "estleg:requestedCluster": "estleg:Cluster_VPVS_4"
+      "estleg:requestedCluster": "estleg:Cluster_VPVS_4",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_riigikogu"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:VPVS_Par_17",
@@ -274,7 +442,12 @@
       "rdfs:label": "§ 17. Kandidaatide ülesseadmine, registreerimiseks esitamine ja registreerimine teiseks hääletusvooruks",
       "estleg:sourceAct": "Vabariigi Presidendi valimise seadus",
       "estleg:summary": "1 (1) Teiseks hääletusvooruks toimub kandidaatide uus ülesseadmine, registreerimiseks esitamine ja registreerimine vastavalt käesoleva seaduse § 15 lõigetele 1, 2, 4–7, 9 ja 10. Esimeseks vooruks registreeritud kandidaadi registreerimiseks esitamise korral ei ole vaja esildisele lisada käesoleva seaduse § 15 lõike 5 punktides 2 ja 3 nimetatud dokumente. Teiseks hääletusvooruks toimub kandidaatide uus ülesseadmine, registreerimiseks esitamine ja registreerimine vastavalt käesoleva seaduse § 15 lõ",
-      "estleg:requestedCluster": "estleg:Cluster_VPVS_4"
+      "estleg:requestedCluster": "estleg:Cluster_VPVS_4",
+      "estleg:references": [
+        {
+          "@id": "estleg:VPVS_Par_15"
+        }
+      ]
     },
     {
       "@id": "estleg:VPVS_Par_18",
@@ -286,7 +459,13 @@
       "rdfs:label": "§ 18. Teine hääletusvoor",
       "estleg:sourceAct": "Vabariigi Presidendi valimise seadus",
       "estleg:summary": "1 (1) Teiseks hääletusvooruks kantakse hääletamissedelile selleks hääletusvooruks registreeritud kandidaatide nimed. Teiseks hääletusvooruks kantakse hääletamissedelile selleks hääletusvooruks registreeritud kandidaatide nimed. 2 (2) Valituks tunnistatakse kandidaat, kelle poolt hääletab Riigikogu koosseisu kahekolmandikuline enamus. Valituks tunnistatakse kandidaat, kelle poolt hääletab Riigikogu koosseisu kahekolmandikuline enamus. 3 (3) Kui ükski kandidaat ei saa nõutavat häälteenamust, korra",
-      "estleg:requestedCluster": "estleg:Cluster_VPVS_4"
+      "estleg:requestedCluster": "estleg:Cluster_VPVS_4",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_riigikogu"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:VPVS_Par_19",
@@ -310,7 +489,13 @@
       "rdfs:label": "§ 20. Valimiskogu kokkukutsumine",
       "estleg:sourceAct": "Vabariigi Presidendi valimise seadus",
       "estleg:summary": "Vabariigi Presidendi valimiskogu kutsub kokku Riigikogu esimees hiljemalt järgmisel päeval pärast kolmandat hääletusvooru Riigikogus, tehes teatavaks valimiskogu istungi aja ja koha. Enne valimiskogu kokkukutsumist kuulab Riigikogu esimees ära valimiskomisjoni arvamuse. Vabariigi Presidendi valimiskogu kutsub kokku Riigikogu esimees hiljemalt järgmisel päeval pärast kolmandat hääletusvooru Riigikogus, tehes teatavaks valimiskogu istungi aja ja koha. Enne valimiskogu kokkukutsumist kuulab Riigiko",
-      "estleg:requestedCluster": "estleg:Cluster_VPVS_5"
+      "estleg:requestedCluster": "estleg:Cluster_VPVS_5",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_riigikogu"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:VPVS_Par_21",
@@ -322,7 +507,16 @@
       "rdfs:label": "§ 21. Valimiskogu",
       "estleg:sourceAct": "Vabariigi Presidendi valimise seadus",
       "estleg:summary": "1 (1) Valimiskogu koosneb Riigikogu liikmetest ja kohaliku omavalitsuse volikogude esindajatest. Valimiskogu koosneb Riigikogu liikmetest ja kohaliku omavalitsuse volikogude esindajatest. 2 (2) Valimiskogu liikmed on otsuse langetamisel vabad. Valimiskogu liikmed on otsuse langetamisel vabad.",
-      "estleg:requestedCluster": "estleg:Cluster_VPVS_5"
+      "estleg:requestedCluster": "estleg:Cluster_VPVS_5",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_riigikogu"
+        },
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:VPVS_Par_22",
@@ -334,7 +528,16 @@
       "rdfs:label": "§ 22. Kohaliku omavalitsuse volikogu esindajate valimine",
       "estleg:sourceAct": "Vabariigi Presidendi valimise seadus",
       "estleg:summary": "1 (1) Järgmisel päeval pärast kolmandat hääletusvooru Riigikogus saadab valimiskomisjon igale kohaliku omavalitsuse volikogule teatise tema esindajate arvu kohta valimiskogus. Järgmisel päeval pärast kolmandat hääletusvooru Riigikogus saadab valimiskomisjon igale kohaliku omavalitsuse volikogule teatise tema esindajate arvu kohta valimiskogus. 2 (2) Lähtudes Eesti hääleõiguslike kodanike riiklikku registrisse kantud kodanike arvust kohaliku omavalitsusüksuse haldusterritooriumil Vabariigi Presid",
-      "estleg:requestedCluster": "estleg:Cluster_VPVS_5"
+      "estleg:requestedCluster": "estleg:Cluster_VPVS_5",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_riigikogu"
+        },
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:VPVS_Par_23",
@@ -346,7 +549,23 @@
       "rdfs:label": "§ 23. Kandidaatide ülesseadmine, registreerimiseks esitamine ja registreerimine esimeseks hääletusvooruks",
       "estleg:sourceAct": "Vabariigi Presidendi valimise seadus",
       "estleg:summary": "1 (1) Kandidaadi ülesseadmise õigus on vähemalt 21 valimiskogu liikmel. Kandidaadi ülesseadmise õigus on vähemalt 21 valimiskogu liikmel. 2 (2) Valimiskogu liige võib olla ainult ühe kandidaadi ülesseadjaks. Valimiskogu liige võib olla ainult ühe kandidaadi ülesseadjaks. 3 (3) Kandidaatide registreerimiseks esitamine ja registreerimine toimub vastavalt käesoleva seaduse § 15 lõigetele 3–10. Riigikogu esimeseks või teiseks vooruks registreeritud kandidaadi registreerimiseks esitamise korral ei ol",
-      "estleg:requestedCluster": "estleg:Cluster_VPVS_5"
+      "estleg:requestedCluster": "estleg:Cluster_VPVS_5",
+      "estleg:references": [
+        {
+          "@id": "estleg:VPVS_Par_15"
+        }
+      ],
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_riigikogu"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:VPVS_Par_24",
@@ -370,7 +589,13 @@
       "rdfs:label": "§ 25. Esimene hääletusvoor",
       "estleg:sourceAct": "Vabariigi Presidendi valimise seadus",
       "estleg:summary": "1 (1) Esimeseks hääletusvooruks kantakse hääletamissedelile Riigikogu kolmandas hääletusvoorus osalenud kandidaatide ja valimiskogu esimeseks hääletusvooruks registreeritud kandidaatide nimed. Esimeseks hääletusvooruks kantakse hääletamissedelile Riigikogu kolmandas hääletusvoorus osalenud kandidaatide ja valimiskogu esimeseks hääletusvooruks registreeritud kandidaatide nimed. 2 (2) Valituks tunnistatakse kandidaat, kelle poolt hääletab hääletamisest osavõtnud valimiskogu liikmete enamus. Valitu",
-      "estleg:requestedCluster": "estleg:Cluster_VPVS_5"
+      "estleg:requestedCluster": "estleg:Cluster_VPVS_5",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_riigikogu"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:VPVS_Par_26",
@@ -382,7 +607,12 @@
       "rdfs:label": "§ 26. Teine hääletusvoor",
       "estleg:sourceAct": "Vabariigi Presidendi valimise seadus",
       "estleg:summary": "1 (1) Teiseks hääletusvooruks kantakse hääletamissedelile kahe esimeses voorus enim hääli saanud kandidaadi nimed. Kui esimeses hääletusvoorus saab vähemalt kaks kandidaati võrdse arvu hääli, kantakse hääletamissedelile vanema kandidaadi või vanemate kandidaatide nimed. Kui esimeses hääletusvoorus kandideerib ainult üks kandidaat ja ta ei saa nõutavat häälteenamust, kantakse hääletamissedelile ainult tema nimi. Teiseks hääletusvooruks kantakse hääletamissedelile kahe esimeses voorus enim hääli s",
-      "estleg:requestedCluster": "estleg:Cluster_VPVS_5"
+      "estleg:requestedCluster": "estleg:Cluster_VPVS_5",
+      "estleg:references": [
+        {
+          "@id": "estleg:VPVS_Par_3"
+        }
+      ]
     },
     {
       "@id": "estleg:VPVS_Par_27",
@@ -394,7 +624,16 @@
       "rdfs:label": "§ 27. Vabariigi Presidendi ametisseastumine",
       "estleg:sourceAct": "Vabariigi Presidendi valimise seadus",
       "estleg:summary": "1 (1) Korraliselt valitud uus Vabariigi President astub ametisse ametivande andmisega esimesel Riigikogu istungil, mis järgneb Vabariigi Presidendi ametiaja lõppemise päevale. Korraliselt valitud uus Vabariigi President astub ametisse ametivande andmisega esimesel Riigikogu istungil, mis järgneb Vabariigi Presidendi ametiaja lõppemise päevale. 2 (2) Erakorraliselt valitud uus Vabariigi President astub ametisse ametivande andmisega esimesel Riigikogu istungil, mis järgneb Vabariigi Presidendi val",
-      "estleg:requestedCluster": "estleg:Cluster_VPVS_6"
+      "estleg:requestedCluster": "estleg:Cluster_VPVS_6",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_riigikogu"
+        },
+        {
+          "@id": "estleg:Institution_vabariigipresident"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:VPVS_Par_28",
@@ -406,7 +645,16 @@
       "rdfs:label": "§ 28. Riigikogu kodukorra seaduse § 42 muutmine",
       "estleg:sourceAct": "Vabariigi Presidendi valimise seadus",
       "estleg:summary": "Riigikogu kodukorra seaduse (RT I 1994, 90, 1517; 1995, 11, 115; 20, 295; 74, 1285; 83, 1440 ja 1444) § 42 lõike 2 punkt 1 muudetakse ja sõnastatakse järgmiselt: Riigikogu kodukorra seaduse (RT I 1994, 90, 1517; 1995, 11, 115; 20, 295; 74, 1285; 83, 1440 ja 1444) § 42 lõike 2 punkt 1 muudetakse ja sõnastatakse järgmiselt: «1) Vabariigi Presidendi valimiseks – Vabariigi Presidendi, Vabariigi Valitsuse või vähemalt viiendiku Riigikogu koosseisu ettepanekul;». «1) Vabariigi Presidendi valimiseks – ",
-      "estleg:requestedCluster": "estleg:Cluster_VPVS_6"
+      "estleg:requestedCluster": "estleg:Cluster_VPVS_6",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_vabariigivalitsus"
+        },
+        {
+          "@id": "estleg:Institution_riigikogu"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:VPVS_Par_29",
@@ -418,7 +666,13 @@
       "rdfs:label": "§ 29. Seaduse kehtetuks tunnistamine",
       "estleg:sourceAct": "Vabariigi Presidendi valimise seadus",
       "estleg:summary": "Vabariigi Presidendi valimise seadus (RT 1992, 31, 413) tunnistatakse kehtetuks. <table width=\"99%\"> <tbody><tr> <td width=\"60%\"> </td> <td> <strong>Riigikogu esimees Toomas SAVI</strong> </td> </tr> </tbody></table> Vabariigi Presidendi valimise seadus (RT 1992, 31, 413) tunnistatakse kehtetuks.",
-      "estleg:requestedCluster": "estleg:Cluster_VPVS_6"
+      "estleg:requestedCluster": "estleg:Cluster_VPVS_6",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_riigikogu"
+        }
+      ],
+      "estleg:competenceType": "general"
     }
   ]
 }

@@ -6,23 +6,62 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
-      "@id": "estleg:TKS_Map_2026",
+      "@id": "estleg:TarbKS_Map_2026",
       "@type": [
         "owl:Ontology"
       ],
       "rdfs:label": "Tarbijakaitseseaduse teemakaardistus",
-      "dc:source": "Tarbijakaitseseadus (Riigi Teataja, kehtiv terviktekst)"
+      "dc:source": "Tarbijakaitseseadus (Riigi Teataja, kehtiv terviktekst)",
+      "estleg:temporalStatus": "inForce",
+      "estleg:affectedBy": [
+        {
+          "@id": "estleg:Draft_JDM25_1112"
+        },
+        {
+          "@id": "estleg:Draft_MKM24_0797"
+        },
+        {
+          "@id": "estleg:Draft_MKM24_0942"
+        },
+        {
+          "@id": "estleg:Draft_JDM21_0443"
+        },
+        {
+          "@id": "estleg:Draft_MKM19_0404"
+        }
+      ],
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/2806"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2431"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2441"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/1221"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2416"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_tarbijakaitseseadus",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)"
+      "rdfs:label": "Õigusnorm (paragrahv)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:Cluster_ConsumerRights",
@@ -70,7 +109,12 @@
       "rdfs:label": "Kaebuste esitamine ja vaidluste lahendamise mehhanismid",
       "estleg:requestedCluster": "tarbija_oigused",
       "estleg:summary": "Tarbijal on õigus esitada pretensioon ja pöörduda vaidluste lahendamise kanalitesse (sh kohtuväline menetlus), kus hinnatakse kaupleja käitumise vastavust tarbijakaitse normidele.",
-      "estleg:sourceAct": "Tarbijakaitseseadus"
+      "estleg:sourceAct": "Tarbijakaitseseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:TKS_Par_ConsumerInformationInDistanceAndOffPremisesContexts",
@@ -82,7 +126,13 @@
       "rdfs:label": "Tarbija teavitamine distants- ja väljaspool äriruume sõlmitud lepingutes",
       "estleg:requestedCluster": "tarbija_oigused",
       "estleg:summary": "Tarbijal peab enne lepingu sõlmimist olema kättesaadav lepingutingimuste, hinna, taganemisõiguse, pretensioonide esitamise ja müügijärgse toe teave; teabenõuete rikkumine võib tuua kaasa tarbijakaitselised meetmed.",
-      "estleg:sourceAct": "Tarbijakaitseseadus"
+      "estleg:sourceAct": "Tarbijakaitseseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Tarbijal"
     },
     {
       "@id": "estleg:TKS_Par_UnfairCommercialPracticesAndConsumerDetriment",
@@ -94,7 +144,12 @@
       "rdfs:label": "Ebaausad kauplemisvõtted kui ebaõiglaste tingimuste kontekst",
       "estleg:requestedCluster": "ebaoiglased_tingimused",
       "estleg:summary": "Tarbijat eksitav või agressiivne müügikäitumine moonutab tarbija otsustusvabadust; järelevalveasutus võib kohaldada ettekirjutusi, keelata jätkuva rikkumise ja rakendada sanktsioone.",
-      "estleg:sourceAct": "Tarbijakaitseseadus"
+      "estleg:sourceAct": "Tarbijakaitseseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:TKS_Par_UnfairContractTermsReference",
@@ -142,7 +197,12 @@
       "rdfs:label": "Järelevalve ja sekkumine tooteohutuse rikkumisel",
       "estleg:requestedCluster": "toote_ohutus",
       "estleg:summary": "Järelevalveasutus võib ohtliku kauba puhul nõuda puuduste kõrvaldamist, piirata müüki, nõuda teavitamist või rakendada muid meetmeid, et vähendada tarbijariske.",
-      "estleg:sourceAct": "Tarbijakaitseseadus"
+      "estleg:sourceAct": "Tarbijakaitseseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:TKS_Par_ProductSafetyCrossActFramework",

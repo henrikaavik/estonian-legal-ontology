@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -16,14 +17,40 @@
       ],
       "rdfs:label": "Notariaadiseaduse teemakaardistus (NotS)",
       "dc:source": "Notariaadiseadus (Riigi Teataja, kehtiv terviktekst)",
-      "estleg:scope": "Notary profession framework, notarial official acts, and links to notarial authentication regime"
+      "estleg:scope": "Notary profession framework, notarial official acts, and links to notarial authentication regime",
+      "estleg:temporalStatus": "inForce",
+      "estleg:affectedBy": [
+        {
+          "@id": "estleg:Draft_JDM19_0461"
+        }
+      ],
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/2441"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2431"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/1221"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5241"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2806"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_notari_seadus",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv või normiplokk)"
+      "rdfs:label": "Õigusnorm (paragrahv või normiplokk)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:TopicCluster_notari_seadus",
@@ -97,7 +124,18 @@
       "rdfs:label": "Saladuse hoidmine ja andmete avaldamise piirid",
       "estleg:requestedCluster": "notari_ulesanded",
       "estleg:summary": "Notari kutsefunktsioon on seotud rangete konfidentsiaalsusnõuetega; andmete avaldamine on lubatud vaid seaduses sätestatud juhtudel (nt menetlusosalised, kohus, uurimisorgan, erijuhud).",
-      "estleg:sourceAct": "Notariaadiseadus"
+      "estleg:sourceAct": "Notariaadiseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Permission"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohus"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:NotS_Norm_004",
@@ -109,7 +147,13 @@
       "rdfs:label": "Haldusjärelevalve notari ametipidamise üle",
       "estleg:requestedCluster": "notari_ulesanded",
       "estleg:summary": "Notari kutsetegevus allub haldusjärelevalvele (Justiits- ja Digiministeerium, Notarite Koda) eesmärgiga kontrollida nõuetekohast ametipidamist, kuid mitte sekkuda ametitoimingute sisusse.",
-      "estleg:sourceAct": "Notariaadiseadus"
+      "estleg:sourceAct": "Notariaadiseadus",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_justiits__ja_digiministeerium"
+        }
+      ],
+      "estleg:competenceType": "supervision"
     },
     {
       "@id": "estleg:NotS_Norm_010",
@@ -205,7 +249,12 @@
       "rdfs:label": "Notariaalne tõestamine eraõiguse vorminõuete täitmisel",
       "estleg:requestedCluster": "notariaalne_toestamine",
       "estleg:summary": "NotS annab notari institutsionaalse staatuse ning TsÜS ja eriseadused määravad juhtumid, kus tehing peab olema notariaalselt tõestatud; normid toimivad koos ühe õiguskindluse mehhanismina.",
-      "estleg:sourceAct": "Notariaadiseadus (koostoimes TsÜS ja tõestamisseadusega)"
+      "estleg:sourceAct": "Notariaadiseadus (koostoimes TsÜS ja tõestamisseadusega)",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ]
     },
     {
       "@id": "estleg:Concept_NotaryAsPublicOfficeHolder",

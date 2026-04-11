@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -14,14 +15,73 @@
       "@type": [
         "owl:Ontology"
       ],
-      "rdfs:label": "Äriseadustik (ÄS) esmane kaardistus v1"
+      "rdfs:label": "Äriseadustik (ÄS) esmane kaardistus v1",
+      "estleg:temporalStatus": "inForce",
+      "estleg:affectedBy": [
+        {
+          "@id": "estleg:Draft_JDM18_1170"
+        },
+        {
+          "@id": "estleg:Draft_JDM25_1251"
+        },
+        {
+          "@id": "estleg:Draft_JDM22_0630"
+        },
+        {
+          "@id": "estleg:Draft_JDM21_0369"
+        },
+        {
+          "@id": "estleg:Draft_JDM19_1223"
+        },
+        {
+          "@id": "estleg:Draft_JDM18_0525"
+        },
+        {
+          "@id": "estleg:Draft_JDM16_0445"
+        },
+        {
+          "@id": "estleg:Draft_JDM15_1478"
+        },
+        {
+          "@id": "estleg:Draft_JDM14_1288"
+        },
+        {
+          "@id": "estleg:Draft_JDM10_0631"
+        },
+        {
+          "@id": "estleg:Draft_JDM18_0920"
+        },
+        {
+          "@id": "estleg:Draft_RAM11_1241"
+        }
+      ],
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/5636"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5206"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2441"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5226"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/1221"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_ariseadustik",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv või normiblokk)"
+      "rdfs:label": "Õigusnorm (paragrahv või normiblokk)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:TopicCluster_ariseadustik",
@@ -128,7 +188,12 @@
       "rdfs:label": "Äriregistri avalikkus ja usaldatavus",
       "estleg:requestedCluster": "ettevotja_ja_ariregister",
       "estleg:summary": "Registriandmete avalikkus võimaldab kolmandatel isikutel tugineda registrikannetele; kandmata või avaldamata andmetele tuginemine võib olla piiratud.",
-      "estleg:sourceAct": "Äriseadustik"
+      "estleg:sourceAct": "Äriseadustik",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:ARIS_Norm_004",
@@ -140,7 +205,13 @@
       "rdfs:label": "Ärinime nõuded",
       "estleg:requestedCluster": "arinimi_ja_esindus",
       "estleg:summary": "Ärinimi peab vastama seaduse nõuetele, olema eristatav ja mitte eksitav; teatud tähiste kasutamine võib olla piiratud.",
-      "estleg:sourceAct": "Äriseadustik"
+      "estleg:sourceAct": "Äriseadustik",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Ärinimi"
     },
     {
       "@id": "estleg:ARIS_Norm_005",
@@ -152,7 +223,13 @@
       "rdfs:label": "Ettevõtja asukoht ja aadress",
       "estleg:requestedCluster": "arinimi_ja_esindus",
       "estleg:summary": "Ettevõtjal peab olema registris kajastatud asukoht ja kontaktandmed, mis tagavad õigusliku suhtluse kättesaadavuse.",
-      "estleg:sourceAct": "Äriseadustik"
+      "estleg:sourceAct": "Äriseadustik",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Ettevõtjal"
     },
     {
       "@id": "estleg:ARIS_Norm_006",
@@ -176,7 +253,13 @@
       "rdfs:label": "Välisühingu filiaali registreerimine",
       "estleg:requestedCluster": "valis_uhing",
       "estleg:summary": "Välisriigi äriühingu filiaal Eestis peab olema registrisse kantud ning avaldama andmed emaühingu, esindajate ja tegevuskoha kohta.",
-      "estleg:sourceAct": "Äriseadustik"
+      "estleg:sourceAct": "Äriseadustik",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Eestis"
     },
     {
       "@id": "estleg:ARIS_Norm_011",
@@ -188,7 +271,12 @@
       "rdfs:label": "Filiaali vastutus ja teabeandmine",
       "estleg:requestedCluster": "valis_uhing",
       "estleg:summary": "Filiaal tegutseb emaühingu nimel; avalikkusele tuleb anda selge teave filiaali staatusest ning välisühingu vastutusest.",
-      "estleg:sourceAct": "Äriseadustik"
+      "estleg:sourceAct": "Äriseadustik",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ]
     },
     {
       "@id": "estleg:ARIS_Norm_020",
@@ -236,7 +324,12 @@
       "rdfs:label": "Usaldusosaniku vastutuse piirid",
       "estleg:requestedCluster": "usaldus_uhing",
       "estleg:summary": "Usaldusosaniku vastutus on seotud sissemakse ulatusega, kuid teatud juhtudel võib vastutus laieneda, kui usaldusosanik tegutseb täisosaniku rollis.",
-      "estleg:sourceAct": "Äriseadustik"
+      "estleg:sourceAct": "Äriseadustik",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:ARIS_Norm_040",
@@ -296,7 +389,13 @@
       "rdfs:label": "Juhatuse liikme kohustused ja vastutus",
       "estleg:requestedCluster": "osa_uhing",
       "estleg:summary": "Juhatus peab tegutsema korraliku ettevõtja hoolsusega; kohustuste rikkumisel võib järgneda isiklik vastutus ühingu ees.",
-      "estleg:sourceAct": "Äriseadustik"
+      "estleg:sourceAct": "Äriseadustik",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Juhatus"
     },
     {
       "@id": "estleg:ARIS_Norm_045",
@@ -356,7 +455,12 @@
       "rdfs:label": "Juhatuse pädevus ja vastutus aktsiaseltsis",
       "estleg:requestedCluster": "aktsia_selts",
       "estleg:summary": "Juhatus juhib igapäevast tegevust, esindab seltsi ja vastutab kohustuste rikkumisel hoolsusstandardi järgi.",
-      "estleg:sourceAct": "Äriseadustik"
+      "estleg:sourceAct": "Äriseadustik",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:MTUS_Norm_022"
+        }
+      ]
     },
     {
       "@id": "estleg:ARIS_Norm_054",
@@ -380,7 +484,13 @@
       "rdfs:label": "Majandusaasta aruanne",
       "estleg:requestedCluster": "umberkujundamine_ja_lopetamine",
       "estleg:summary": "Ettevõtja peab koostama ja esitama majandusaasta aruande õigeaegselt; aruandlus toetab läbipaistvust ja järelevalvet.",
-      "estleg:sourceAct": "Äriseadustik"
+      "estleg:sourceAct": "Äriseadustik",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Ettevõtja"
     },
     {
       "@id": "estleg:ARIS_Norm_061",
@@ -428,7 +538,13 @@
       "rdfs:label": "Likvideerija kohustused",
       "estleg:requestedCluster": "umberkujundamine_ja_lopetamine",
       "estleg:summary": "Likvideerija peab realiseerima vara, rahuldama nõuded ja jaotama jääkvara vastavalt seadusele ning dokumenteerima menetluse.",
-      "estleg:sourceAct": "Äriseadustik"
+      "estleg:sourceAct": "Äriseadustik",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Likvideerija"
     },
     {
       "@id": "estleg:ARIS_Norm_065",
@@ -440,7 +556,18 @@
       "rdfs:label": "Kohtulik sundlõpetamine",
       "estleg:requestedCluster": "umberkujundamine_ja_lopetamine",
       "estleg:summary": "Oluliste seaduserikkumiste või püsivate puuduste korral võib kohus otsustada ühingu sundlõpetamise.",
-      "estleg:sourceAct": "Äriseadustik"
+      "estleg:sourceAct": "Äriseadustik",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohus"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:ARIS_NOTE_001",

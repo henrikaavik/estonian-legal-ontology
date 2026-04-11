@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -16,14 +17,35 @@
       ],
       "rdfs:label": "Riigikontrolli seaduse teemakaardistus (riiklik audit)",
       "dc:description": "Riigikontrolli seaduse põhisambad: riigikontrolli ülesanded, finantskontroll ja tulemuslikkuse kontroll.",
-      "dc:source": "Riigikontrolli seadus (Riigi Teataja, kehtiv redaktsioon; §-taseme viited vajavad lõppverifitseerimist)"
+      "dc:source": "Riigikontrolli seadus (Riigi Teataja, kehtiv redaktsioon; §-taseme viited vajavad lõppverifitseerimist)",
+      "estleg:temporalStatus": "inForce",
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/5231"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/1236"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2446"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/3606"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5246"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_riigikontrolli_seadus",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)"
+      "rdfs:label": "Õigusnorm (paragrahv)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:TopicCluster_riigikontrolli_seadus",
@@ -85,7 +107,18 @@
       "rdfs:label": "Auditi objektid ja kontrolli ulatus",
       "estleg:requestedCluster": "riigikontrolli_ulesanded",
       "estleg:summary": "Määrab, milliseid riigi, kohaliku omavalitsuse ning avaliku sektori vahendite kasutamisega seotud üksusi võib Riigikontroll auditeerida ja millises ulatuses.",
-      "estleg:sourceAct": "Riigikontrolli seadus"
+      "estleg:sourceAct": "Riigikontrolli seadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:RKS_Par_PaasedepaasJaKoostookohustus",
@@ -169,7 +202,13 @@
       "rdfs:label": "Aruandlus Riigikogule ja järeltegevuste seire",
       "estleg:requestedCluster": "tulemuslikkuse_kontroll",
       "estleg:summary": "Reguleerib, kuidas tulemuslikkuse kontrolli tulemused esitatakse Riigikogule ning kuidas jälgitakse auditi soovituste rakendamist ja avalikku mõju.",
-      "estleg:sourceAct": "Riigikontrolli seadus"
+      "estleg:sourceAct": "Riigikontrolli seadus",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_riigikogu"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:Concept_SoltumatuRiiklikAudit",

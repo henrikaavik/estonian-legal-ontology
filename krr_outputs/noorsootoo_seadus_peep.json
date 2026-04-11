@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -15,14 +16,93 @@
         "owl:Ontology"
       ],
       "rdfs:label": "Noorsootöö seadus teemakaardistus",
-      "dc:source": "Noorsootöö seadus"
+      "dc:source": "Noorsootöö seadus",
+      "estleg:entryIntoForce": {
+        "@value": "2010-09-01",
+        "@type": "xsd:date"
+      },
+      "estleg:lastAmendmentDate": {
+        "@value": "2011-02-23",
+        "@type": "xsd:date"
+      },
+      "estleg:publicationDate": {
+        "@value": "2010-01-01",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "inForce",
+      "estleg:amendedBy": [
+        {
+          "@id": "estleg:Amendment_noorsootoo_seadus_1"
+        },
+        {
+          "@id": "estleg:Amendment_noorsootoo_seadus_2"
+        },
+        {
+          "@id": "estleg:Amendment_noorsootoo_seadus_3"
+        },
+        {
+          "@id": "estleg:Amendment_noorsootoo_seadus_4"
+        },
+        {
+          "@id": "estleg:Amendment_noorsootoo_seadus_5"
+        },
+        {
+          "@id": "estleg:Amendment_noorsootoo_seadus_6"
+        },
+        {
+          "@id": "estleg:Amendment_noorsootoo_seadus_7"
+        },
+        {
+          "@id": "estleg:Amendment_noorsootoo_seadus_8"
+        },
+        {
+          "@id": "estleg:Amendment_noorsootoo_seadus_9"
+        },
+        {
+          "@id": "estleg:Amendment_noorsootoo_seadus_10"
+        },
+        {
+          "@id": "estleg:Draft_HTM16_0598"
+        },
+        {
+          "@id": "estleg:Draft_RIIGIKOGU21_0770"
+        }
+      ],
+      "estleg:affectedBy": [
+        {
+          "@id": "estleg:Draft_HTM16_0598"
+        },
+        {
+          "@id": "estleg:Draft_RIIGIKOGU21_0770"
+        }
+      ],
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/3606"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/1221"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2441"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5636"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/6006"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_noorsootoo_seadus",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)"
+      "rdfs:label": "Õigusnorm (paragrahv)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:Cluster_Noorsoot_seadus_1",
@@ -74,7 +154,12 @@
       "rdfs:label": "§ 1. Seaduse reguleerimisala",
       "estleg:sourceAct": "Noorsootöö seadus",
       "estleg:summary": "Käesolev seadus sätestab noorsootöö korraldamise õiguslikud alused. Käesolev seadus sätestab noorsootöö korraldamise õiguslikud alused.",
-      "estleg:requestedCluster": "estleg:Cluster_Noorsoot_seadus_1"
+      "estleg:requestedCluster": "estleg:Cluster_Noorsoot_seadus_1",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:PatVS_Par_1"
+        }
+      ]
     },
     {
       "@id": "estleg:Noorsoot_seadus_Par_2",
@@ -86,7 +171,24 @@
       "rdfs:label": "§ 2. Haldusmenetluse seaduse kohaldamine",
       "estleg:sourceAct": "Noorsootöö seadus",
       "estleg:summary": "Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse sätteid, arvestades käesoleva seaduse erisusi. Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse sätteid, arvestades käesoleva seaduse erisusi.",
-      "estleg:requestedCluster": "estleg:Cluster_Noorsoot_seadus_1"
+      "estleg:requestedCluster": "estleg:Cluster_Noorsoot_seadus_1",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:TKS_Par_1_1"
+        },
+        {
+          "@id": "estleg:RStS_Par_2"
+        },
+        {
+          "@id": "estleg:RanKS_Par_1_1"
+        },
+        {
+          "@id": "estleg:punase_risti_nimetuse_ja_embleemi_seadus_Par_2"
+        },
+        {
+          "@id": "estleg:Ohvriabi_seadus_Par_2"
+        }
+      ]
     },
     {
       "@id": "estleg:Noorsoot_seadus_Par_3",
@@ -122,7 +224,33 @@
       "rdfs:label": "§ 5. Piirang noortega töötamiseks",
       "estleg:sourceAct": "Noorsootöö seadus",
       "estleg:summary": "Noorsootööasutuse, noorteprogrammi, noorteprojekti, noorteühingu ja noorteühingute liidu töötaja ja noortelaagri ning projektlaagri juhataja ega kasvataja ei tohi olla isik, keda on karistatud või kellele on kohaldatud sundravi karistusseadustiku § 133 lõike 2 punktis 2, § 141 lõike 2 punktis 1, § 142 lõike 2 punktis 1, § 143 lõike 2 punktis 1, § 1431 lõike 2 punktis 1, §-des 144–146 või §-des 175–178 sätestatud kuriteo eest, mille karistusandmed ei ole karistusregistrist karistusregistri seadus",
-      "estleg:requestedCluster": "estleg:Cluster_Noorsoot_seadus_1"
+      "estleg:requestedCluster": "estleg:Cluster_Noorsoot_seadus_1",
+      "estleg:references": [
+        {
+          "@id": "estleg:Karistusseadustik_Par_133"
+        }
+      ],
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Prohibition"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Sotsiaalhoolekande_seadus_Par_10_10"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Noorsoot_seadus_Par_10"
+        },
+        {
+          "@id": "estleg:Noorsoot_seadus_Par_10_12"
+        },
+        {
+          "@id": "estleg:Noorsoot_seadus_Par_16"
+        }
+      ]
     },
     {
       "@id": "estleg:Noorsoot_seadus_Par_6",
@@ -134,7 +262,13 @@
       "rdfs:label": "§ 6. Haridus- ja Teadusministeeriumi ülesanded",
       "estleg:sourceAct": "Noorsootöö seadus",
       "estleg:summary": "Haridus- ja Teadusministeerium: 1 1) töötab välja noorsootöö riiklikud programmid; 2 2) toetab noorteühingute tegevust ja eraldab neile aastatoetusi; 3 3) teostab riiklikku järelevalvet noorsootöö valdkonnas õigusaktides sätestatud pädevuse piires ja kontrollib riigieelarvest eraldatud vahendite sihipärast kasutamist; 4 4) täidab teisi õigusaktides sätestatud ülesandeid. Haridus- ja Teadusministeerium: töötab välja noorsootöö riiklikud programmid; toetab noorteühingute tegevust ja eraldab neile ",
-      "estleg:requestedCluster": "estleg:Cluster_Noorsoot_seadus_2"
+      "estleg:requestedCluster": "estleg:Cluster_Noorsoot_seadus_2",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_haridus__ja_teadusministeerium"
+        }
+      ],
+      "estleg:competenceType": "supervision"
     },
     {
       "@id": "estleg:Noorsoot_seadus_Par_7",
@@ -170,7 +304,12 @@
       "rdfs:label": "§ 9. Noortevolikogu",
       "estleg:sourceAct": "Noorsootöö seadus",
       "estleg:summary": "1 (1) Valla- või linnavolikogu juurde võib moodustada noortevolikogu. Noortevolikogu eesmärgiks on arutada valla või linna pädevusse kuuluvaid noori puudutavaid küsimusi ning teha nende kohta ettepanekuid valla- või linnavolikogule ja valla- või linnavalitsusele, lähtudes noorte vajadustest ja huvidest. Valla- või linnavolikogu juurde võib moodustada noortevolikogu. Noortevolikogu eesmärgiks on arutada valla või linna pädevusse kuuluvaid noori puudutavaid küsimusi ning teha nende kohta ettepanek",
-      "estleg:requestedCluster": "estleg:Cluster_Noorsoot_seadus_2"
+      "estleg:requestedCluster": "estleg:Cluster_Noorsoot_seadus_2",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:Noorsoot_seadus_Par_10",
@@ -182,7 +321,17 @@
       "rdfs:label": "§ 10. Loakohustus",
       "estleg:sourceAct": "Noorsootöö seadus",
       "estleg:summary": "Noorte- ja projektlaagri korraldamiseks peab olema tegevusluba. RT I 2011-03-25 1 125032011001 2014-01-01 Noorte- ja projektlaagri korraldamiseks peab olema tegevusluba.",
-      "estleg:requestedCluster": "estleg:Cluster_Noorsoot_seadus_2"
+      "estleg:requestedCluster": "estleg:Cluster_Noorsoot_seadus_2",
+      "estleg:references": [
+        {
+          "@id": "estleg:Noorsoot_seadus_Par_5"
+        }
+      ],
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ]
     },
     {
       "@id": "estleg:Noorsoot_seadus_Par_10_10",
@@ -194,7 +343,13 @@
       "rdfs:label": "§ 10<sup>1</sup>. Nõuded noorte- ja projektlaagri pidajale",
       "estleg:sourceAct": "Noorsootöö seadus",
       "estleg:summary": "1 (1) Noortelaagri pidaja osutab noortele järjepidevalt mitmekesist tervistava ja arendava puhkuse teenust. Noortelaagri pidaja osutab noortele järjepidevalt mitmekesist tervistava ja arendava puhkuse teenust. 2 (2) Projektlaagri pidaja osutab noortele peamiselt ühes noorsootöö valdkonnas tervistava ja arendava puhkuse teenust. Projektlaagri pidaja osutab noortele peamiselt ühes noorsootöö valdkonnas tervistava ja arendava puhkuse teenust. 3 (3) Noortelaager peab vastama rahvatervise seaduse alu",
-      "estleg:requestedCluster": "estleg:Cluster_Noorsoot_seadus_2"
+      "estleg:requestedCluster": "estleg:Cluster_Noorsoot_seadus_2",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Noortelaager"
     },
     {
       "@id": "estleg:Noorsoot_seadus_Par_10_11",
@@ -206,7 +361,13 @@
       "rdfs:label": "§ 10<sup>2</sup>. Tegevusloa taotlemine",
       "estleg:sourceAct": "Noorsootöö seadus",
       "estleg:summary": "1 (1) Noortelaagri tegevusloa taotluse lahendab Haridus- ja Teadusministeerium või haridus- ja teadusministri volitatud asutus. Tegevusloa taotlus esitatakse vähemalt kolm kuud enne noortelaagri tegevuse alustamist. Noortelaagri tegevusloa taotluse lahendab Haridus- ja Teadusministeerium või haridus- ja teadusministri volitatud asutus. Tegevusloa taotlus esitatakse vähemalt kolm kuud enne noortelaagri tegevuse alustamist. 2 (2) Projektlaagri tegevusloa taotluse lahendab valla- või linnavalitsus,",
-      "estleg:requestedCluster": "estleg:Cluster_Noorsoot_seadus_2"
+      "estleg:requestedCluster": "estleg:Cluster_Noorsoot_seadus_2",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_haridus__ja_teadusministeerium"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
       "@id": "estleg:Noorsoot_seadus_Par_10_12",
@@ -218,7 +379,12 @@
       "rdfs:label": "§ 10<sup>3</sup>. Tegevusloa kontrolliese",
       "estleg:sourceAct": "Noorsootöö seadus",
       "estleg:summary": "Tegevusluba antakse, kui: 1 1) noorte- ja projektlaagri juhataja ning kasvatajad vastavad kvalifikatsiooni- ja käesoleva seaduse §-s 5 sätestatud nõuetele; 2 2) noortelaagri põhimäärus vastab käesolevas seaduses sätestatud nõuetele; 3 3) noorte- ja projektlaagril on olemas tegevuseks vajalikud ruumid (hooned), sisustus ja maa-ala, mis vastavad tervisekaitse-, tuleohutus- ja päästenõuetele; 4 4) noorte- ja projektlaager vastab käesolevas seaduses noorte- ja projektlaagri pidamisele kehtestatud nõ",
-      "estleg:requestedCluster": "estleg:Cluster_Noorsoot_seadus_2"
+      "estleg:requestedCluster": "estleg:Cluster_Noorsoot_seadus_2",
+      "estleg:references": [
+        {
+          "@id": "estleg:Noorsoot_seadus_Par_5"
+        }
+      ]
     },
     {
       "@id": "estleg:Noorsoot_seadus_Par_11",
@@ -242,7 +408,18 @@
       "rdfs:label": "§ 12. Riiklik järelevalve noortelaagri üle",
       "estleg:sourceAct": "Noorsootöö seadus",
       "estleg:summary": "1 (1) Noortelaagri õppe- ja kasvatustegevuse üle teostab riiklikku järelevalvet Haridus- ja Teadusministeerium või haridus- ja teadusministri ülesandel noortelaagri asukohajärgne maavanem, määrates selleks riiklikku järelevalvet teostavad ametnikud. Noortelaagri õppe- ja kasvatustegevuse üle teostab riiklikku järelevalvet Haridus- ja Teadusministeerium või haridus- ja teadusministri ülesandel noortelaagri asukohajärgne maavanem, määrates selleks riiklikku järelevalvet teostavad ametnikud. 2 (2) ",
-      "estleg:requestedCluster": "estleg:Cluster_Noorsoot_seadus_2"
+      "estleg:requestedCluster": "estleg:Cluster_Noorsoot_seadus_2",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_haridus__ja_teadusministeerium"
+        }
+      ],
+      "estleg:competenceType": "supervision",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Phikooli_ja_gmnaasiumiseadu_Par_48"
+        }
+      ]
     },
     {
       "@id": "estleg:Noorsoot_seadus_Par_13",
@@ -278,7 +455,12 @@
       "rdfs:label": "§ 15. Noorteühingu aastatoetus",
       "estleg:sourceAct": "Noorsootöö seadus",
       "estleg:summary": "1 (1) Noorteühingu aastatoetuse eesmärgiks on noorteühingute võimekuse tõstmine ja noorsootöö ning noortepoliitika riiklike eesmärkide saavutamine. Noorteühingu aastatoetuse eesmärgiks on noorteühingute võimekuse tõstmine ja noorsootöö ning noortepoliitika riiklike eesmärkide saavutamine. 2 (2) Noorteühingu aastatoetuse taotlemise õigus on: 1 1) noorteühingul, kui sellel on vähemalt 500 liiget ja kui selle kohalikud üksused tegutsevad vähemalt 1/3 maakondade territooriumil; 2 2) noorteühingute l",
-      "estleg:requestedCluster": "estleg:Cluster_Noorsoot_seadus_3"
+      "estleg:requestedCluster": "estleg:Cluster_Noorsoot_seadus_3",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:Noorsoot_seadus_Par_16",
@@ -290,7 +472,42 @@
       "rdfs:label": "§ 16. Noortega töötamise piirangu rikkumine",
       "estleg:sourceAct": "Noorsootöö seadus",
       "estleg:summary": "1 (1) Noortelaagri ja projektlaagri pidaja poolt käesoleva seaduse §-s 5 sätestatud noortega töötamise piirangu rikkumise eest –karistatakse rahatrahviga kuni 100 trahviühikut. Noortelaagri ja projektlaagri pidaja poolt käesoleva seaduse §-s 5 sätestatud noortega töötamise piirangu rikkumise eest –karistatakse rahatrahviga kuni 100 trahviühikut. 2 (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 1300 eurot. RT I 2010 44 262 13335738 2011-01-01 Sama t",
-      "estleg:requestedCluster": "estleg:Cluster_Noorsoot_seadus_4"
+      "estleg:requestedCluster": "estleg:Cluster_Noorsoot_seadus_4",
+      "estleg:references": [
+        {
+          "@id": "estleg:Noorsoot_seadus_Par_5"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Tlepingu_seadus_Par_125"
+        },
+        {
+          "@id": "estleg:Tuleohutuse_seadus_Par_49"
+        },
+        {
+          "@id": "estleg:Sadamaseadus_Par_56"
+        },
+        {
+          "@id": "estleg:Sadamaseadus_Par_55"
+        },
+        {
+          "@id": "estleg:Sadamaseadus_Par_48"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Noorsoot_seadus_Par_17"
+        }
+      ],
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_Noorsoot_seadus_Par_16_fine"
+        },
+        {
+          "@id": "estleg:Sanction_Noorsoot_seadus_Par_16_fine_2"
+        }
+      ]
     },
     {
       "@id": "estleg:Noorsoot_seadus_Par_17",
@@ -302,7 +519,35 @@
       "rdfs:label": "§ 17. Menetlus",
       "estleg:sourceAct": "Noorsootöö seadus",
       "estleg:summary": "1 (1) Käesoleva seaduse §-s 16 sätestatud väärtegudele kohaldatakse karistusseadustiku üldosa ja väärteomenetluse seadustiku sätteid. Käesoleva seaduse §-s 16 sätestatud väärtegudele kohaldatakse karistusseadustiku üldosa ja väärteomenetluse seadustiku sätteid. 2 (2) Käesoleva seaduse §-s 16 sätestatud väärtegude kohtuväline menetleja on vastavalt oma pädevusele Haridus- ja Teadusministeerium ning valla- või linnavalitsus. Käesoleva seaduse §-s 16 sätestatud väärtegude kohtuväline menetleja on v",
-      "estleg:requestedCluster": "estleg:Cluster_Noorsoot_seadus_4"
+      "estleg:requestedCluster": "estleg:Cluster_Noorsoot_seadus_4",
+      "estleg:references": [
+        {
+          "@id": "estleg:Noorsoot_seadus_Par_16"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_haridus__ja_teadusministeerium"
+        }
+      ],
+      "estleg:competenceType": "general",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Vlismaalaste_seadus_Par_307"
+        },
+        {
+          "@id": "estleg:TTOS_Par_27_32"
+        },
+        {
+          "@id": "estleg:Tlepingu_seadus_Par_130"
+        },
+        {
+          "@id": "estleg:TeenMS_Par_70"
+        },
+        {
+          "@id": "estleg:SVKS_Par_38"
+        }
+      ]
     },
     {
       "@id": "estleg:Noorsoot_seadus_Par_18",

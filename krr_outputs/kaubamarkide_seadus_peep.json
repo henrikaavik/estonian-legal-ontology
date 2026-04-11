@@ -6,24 +6,46 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
-      "@id": "estleg:KMS_Map_2026",
+      "@id": "estleg:KbMS_Map_2026",
       "@type": [
         "owl:Ontology"
       ],
       "rdfs:label": "Kaubamärgiseaduse teemakaardistus (intellektuaalomandi õigus)",
       "dc:description": "Kaubamärgiseaduse põhisambad: kaubamärgi registreerimine, kaubamärgi kaitse ja õiguste rikkumine.",
-      "dc:source": "Kaubamärgiseadus (Riigi Teataja, kehtiv redaktsioon; §-taseme viited vajavad lõppverifitseerimist)"
+      "dc:source": "Kaubamärgiseadus (Riigi Teataja, kehtiv redaktsioon; §-taseme viited vajavad lõppverifitseerimist)",
+      "estleg:temporalStatus": "inForce",
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/2431"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/1221"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/3216"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2451"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/3606"
+        }
+      ]
     },
     {
-      "@id": "estleg:LegalProvision_kaubamargiseadus",
+      "@id": "estleg:LegalProvision_kaubamarkide_seadus",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)"
+      "rdfs:label": "Õigusnorm (paragrahv)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:TopicCluster_kaubamargiseadus",
@@ -67,19 +89,24 @@
       "@id": "estleg:KMS_Par_MargiKaitsevoimeJaRegistreeritavus",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kaubamargiseadus"
+        "estleg:LegalProvision_kaubamarkide_seadus"
       ],
       "estleg:paragrahv": "KaMS (kaitsevõime ja registreeritavuse alused)",
       "rdfs:label": "Kaubamärgi kaitsevõime ja registreeritavuse eeldused",
       "estleg:requestedCluster": "kaubamärgi_registreerimine",
       "estleg:summary": "Määratleb, milline tähis võib olla kaubamärk, ning seab registreerimise esmased tingimused, sh eristusvõime ja selge esitatavus registris.",
-      "estleg:sourceAct": "Kaubamärgiseadus"
+      "estleg:sourceAct": "Kaubamärgiseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:KMS_Par_AbsoluutsedJaSuhtelisedTakistused",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kaubamargiseadus"
+        "estleg:LegalProvision_kaubamarkide_seadus"
       ],
       "estleg:paragrahv": "KaMS (registreerimist välistavad asjaolud)",
       "rdfs:label": "Absoluutsed ja suhtelised õiguskaitse andmist välistavad asjaolud",
@@ -91,7 +118,7 @@
       "@id": "estleg:KMS_Par_TaotlusJaMenetlus",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kaubamargiseadus"
+        "estleg:LegalProvision_kaubamarkide_seadus"
       ],
       "estleg:paragrahv": "KaMS (taotluse esitamise ja menetlemise kord)",
       "rdfs:label": "Kaubamärgitaotlus, ekspertiis ja registreerimisotsus",
@@ -103,7 +130,7 @@
       "@id": "estleg:KMS_Par_AinuoigusJaKaitseUlatus",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kaubamargiseadus"
+        "estleg:LegalProvision_kaubamarkide_seadus"
       ],
       "estleg:paragrahv": "KaMS (omaniku ainuõigus ja kaitse ulatus)",
       "rdfs:label": "Kaubamärgiomaniku ainuõigus ja kasutamise kontroll",
@@ -115,7 +142,7 @@
       "@id": "estleg:KMS_Par_OiguseKehtivusJaPikendamine",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kaubamargiseadus"
+        "estleg:LegalProvision_kaubamarkide_seadus"
       ],
       "estleg:paragrahv": "KaMS (õiguskaitse kestus, pikendamine ja registrimuudatused)",
       "rdfs:label": "Kaubamärgi kehtivus, pikendamine ja registriandmete ajakohastamine",
@@ -127,7 +154,7 @@
       "@id": "estleg:KMS_Par_OigusteYleminekJaLitsents",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kaubamargiseadus"
+        "estleg:LegalProvision_kaubamarkide_seadus"
       ],
       "estleg:paragrahv": "KaMS (õiguste üleandmine, litsents ja pandiõigus)",
       "rdfs:label": "Kaubamärgiõiguse käsutamine: üleminek, litsents ja koormamine",
@@ -139,7 +166,7 @@
       "@id": "estleg:KMS_Par_RikkumiseMoisdeJaKeelunoue",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kaubamargiseadus"
+        "estleg:LegalProvision_kaubamarkide_seadus"
       ],
       "estleg:paragrahv": "KaMS (rikkumise kvalifikatsioon ja nõuded rikkuja vastu)",
       "rdfs:label": "Kaubamärgi rikkumise mõiste ja keelunõue",
@@ -151,7 +178,7 @@
       "@id": "estleg:KMS_Par_KahjuHuvitisJaEbaausTulu",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kaubamargiseadus"
+        "estleg:LegalProvision_kaubamarkide_seadus"
       ],
       "estleg:paragrahv": "KaMS (varalised õiguskaitsevahendid rikkumise korral)",
       "rdfs:label": "Kahju hüvitamine, rikkuja tulu väljaandmine ja hävitamisnõuded",
@@ -163,7 +190,7 @@
       "@id": "estleg:KMS_Par_VaidlustamineJaMenetlused",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_kaubamargiseadus"
+        "estleg:LegalProvision_kaubamarkide_seadus"
       ],
       "estleg:paragrahv": "KaMS (vaidlustamine, apellatsioon ja kohtulik kaitse)",
       "rdfs:label": "Vaidlustamismenetlused ja kohtulik õiguskaitse",

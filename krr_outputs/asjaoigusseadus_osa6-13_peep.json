@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -14,14 +15,45 @@
       "@type": [
         "owl:Ontology"
       ],
-      "rdfs:label": "AÕS Osa 6–13 kaardistus: kitsendused, servituudid, reaalkoormatised, kasutusõigus, hoonestusõiguse lõpp, õiguste üleminek, kaitse, rakendamine"
+      "rdfs:label": "AÕS Osa 6–13 kaardistus: kitsendused, servituudid, reaalkoormatised, kasutusõigus, hoonestusõiguse lõpp, õiguste üleminek, kaitse, rakendamine",
+      "estleg:affectedBy": [
+        {
+          "@id": "estleg:Draft_JDM25_0711"
+        },
+        {
+          "@id": "estleg:Draft_KLIM22_0460"
+        },
+        {
+          "@id": "estleg:Draft_JDM18_0435"
+        },
+        {
+          "@id": "estleg:Draft_MKM13_1552"
+        }
+      ],
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/5636"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5226"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/1221"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2431"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_asjaoigusseadus_osa6_13",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)"
+      "rdfs:label": "Õigusnorm (paragrahv)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:Cluster_Osa6_AsjaoigusteVahendamine",
@@ -97,7 +129,13 @@
       "rdfs:label": "Kitsenduste kehtivus",
       "estleg:requestedCluster": "osa6_asjaoiguste_vahendamine",
       "estleg:summary": "Kinnisasja kasutamisel tuleb arvestada seadusest ja eraõigussuhetest tulenevate kitsendustega; kitsendused kehtivad õigusjärglaste suhtes.",
-      "estleg:sourceAct": "Asjaõigusseadus"
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Kinnisasja kasutamisel"
     },
     {
       "@id": "estleg:AOS_Par_143",
@@ -109,7 +147,21 @@
       "rdfs:label": "Kahjulikud mõjutused",
       "estleg:requestedCluster": "osa6_asjaoiguste_vahendamine",
       "estleg:summary": "Naaberkinnisasja omanik peab hoiduma sellistest mõjutustest, mis ületavad tavapärase talumiskohustuse; rikkumise korral saab nõuda mõjutuse lõpetamist.",
-      "estleg:sourceAct": "Asjaõigusseadus"
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Naaberkinnisasja omanik",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:Korteriomandi_ja_korterihist_Par_31"
+        },
+        {
+          "@id": "estleg:TeeS_Par_21"
+        }
+      ]
     },
     {
       "@id": "estleg:AOS_Par_145",
@@ -121,7 +173,17 @@
       "rdfs:label": "Varisemisohtlik ehitis",
       "estleg:requestedCluster": "osa6_asjaoiguste_vahendamine",
       "estleg:summary": "Kui ehitis või rajatis ohustab naaberkinnisasja, võib naaber nõuda ohu kõrvaldamist ja vajalikke kaitsemeetmeid.",
-      "estleg:sourceAct": "Asjaõigusseadus"
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:TeeS_Par_21"
+        }
+      ]
     },
     {
       "@id": "estleg:AOS_Par_172",
@@ -193,7 +255,12 @@
       "rdfs:label": "Reaalkoormatise lõpetamine õigustatud isiku nõudel",
       "estleg:requestedCluster": "osa8_reaalservituut",
       "estleg:summary": "Õigustatud isik võib teatud tingimustel nõuda reaalkoormatise lõpetamist ning vastava kande kustutamist.",
-      "estleg:sourceAct": "Asjaõigusseadus"
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:AOS_Par_225",
@@ -313,7 +380,12 @@
       "rdfs:label": "Asja väljanõudmine ebaseaduslikust valdusest",
       "estleg:requestedCluster": "osa12_asjaoiguste_kaitse",
       "estleg:summary": "Omanikul on õigus nõuda asja tagastamist isikult, kes valdab seda õigusliku aluseta.",
-      "estleg:sourceAct": "Asjaõigusseadus"
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:AOS_Par_89_asjaoigusseadus_osa6_13",
@@ -325,7 +397,12 @@
       "rdfs:label": "Omandi kaitse valduse kaotusega mitteseotud rikkumise korral",
       "estleg:requestedCluster": "osa12_asjaoiguste_kaitse",
       "estleg:summary": "Omanik võib nõuda rikkumise lõpetamist ja edasise rikkumise vältimist ka siis, kui valdus ei ole ära võetud.",
-      "estleg:sourceAct": "Asjaõigusseadus"
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:AOS_Par_90_asjaoigusseadus_osa6_13",
@@ -373,7 +450,12 @@
       "rdfs:label": "Ostueesõiguse seadmine ja tähendus",
       "estleg:requestedCluster": "osa13_rakendamine",
       "estleg:summary": "Ostueesõiguse tekkimine eeldab vastavat seadmist ning annab õigustatud isikule prioriteedi asja omandamisel.",
-      "estleg:sourceAct": "Asjaõigusseadus"
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:interpretedBy": [
+        {
+          "@id": "estleg:RK_3_4_1_1_06"
+        }
+      ]
     },
     {
       "@id": "estleg:AOS_Par_260_dup2",

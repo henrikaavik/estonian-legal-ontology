@@ -6,7 +6,8 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
   },
   "@graph": [
     {
@@ -14,14 +15,29 @@
       "@type": [
         "owl:Ontology"
       ],
-      "rdfs:label": "VÕS Osa 3 (Lepinguõigus – kohustused ja vastutus) kaardistus"
+      "rdfs:label": "VÕS Osa 3 (Lepinguõigus – kohustused ja vastutus) kaardistus",
+      "estleg:temporalStatus": "inForce",
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/2431"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5206"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5636"
+        }
+      ]
     },
     {
       "@id": "estleg:LegalProvision_volaigusseadus_osa3",
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Õigusnorm (paragrahv)"
+      "rdfs:label": "Õigusnorm (paragrahv)",
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:Cluster_PerformanceOfObligations",
@@ -60,7 +76,13 @@
       "rdfs:label": "§ 76. Kohustuse täitmine",
       "estleg:requestedCluster": "kohustuste_taitmine",
       "estleg:summary": "Kohustus tuleb täita vastavalt lepingule või seadusele.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Kohustus"
     },
     {
       "@id": "estleg:VOS3_Par_77",
@@ -72,7 +94,13 @@
       "rdfs:label": "§ 77. Kohustuse täitmise kvaliteet",
       "estleg:requestedCluster": "kohustuste_taitmine",
       "estleg:summary": "Võlgnik peab täitma kohustuse lepingule või seadusele vastava kvaliteediga; kokkuleppe puudumisel vähemalt keskmise kvaliteediga.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Võlgnik"
     },
     {
       "@id": "estleg:VOS3_Par_78",
@@ -84,7 +112,12 @@
       "rdfs:label": "§ 78. Kohustuse täitmine kolmanda isiku poolt",
       "estleg:requestedCluster": "kohustuste_taitmine",
       "estleg:summary": "Kui isiklik täitmine pole nõutav, võib kohustuse täita ka kolmas isik; sellega vabaneb võlgnik täitmiskohustusest.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS3_Par_82",
@@ -108,7 +141,12 @@
       "rdfs:label": "§ 83. Kohustuse ositi täitmine",
       "estleg:requestedCluster": "kohustuste_taitmine",
       "estleg:summary": "Kui kohustus on ühekordne, võib võlausaldaja üldjuhul ositi täitmisest keelduda.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS3_Par_84",
@@ -120,7 +158,12 @@
       "rdfs:label": "§ 84. Kohustuse ennetähtaegne täitmine",
       "estleg:requestedCluster": "kohustuste_taitmine",
       "estleg:summary": "Võlausaldaja ei või nõuda ennetähtaegset täitmist, kuid peab selle vastu võtma, kui puudub õigustatud huvi keeldumiseks.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS3_Par_85",
@@ -168,7 +211,13 @@
       "rdfs:label": "§ 102. Teatamiskohustus",
       "estleg:requestedCluster": "viivitus_ja_rikkumine",
       "estleg:summary": "Võlgnik peab viivitamata teatama täitmist takistavast asjaolust ja selle mõjust.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Obligation"
+        }
+      ],
+      "estleg:dutyHolder": "Võlgnik"
     },
     {
       "@id": "estleg:VOS3_Par_103",
@@ -192,7 +241,12 @@
       "rdfs:label": "§ 113. Viivis",
       "estleg:requestedCluster": "viivitus_ja_rikkumine",
       "estleg:summary": "Rahalise kohustuse täitmisega viivitamisel võib võlausaldaja nõuda viivist.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS3_Par_114",
@@ -204,7 +258,12 @@
       "rdfs:label": "§ 114. Täiendav tähtaeg kohustuse täitmiseks",
       "estleg:requestedCluster": "viivitus_ja_rikkumine",
       "estleg:summary": "Võlausaldaja võib anda rikkumise korral täitmiseks täiendava mõistliku tähtaja.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS3_Par_119",
@@ -264,7 +323,12 @@
       "rdfs:label": "§ 115. Kahju hüvitamine",
       "estleg:requestedCluster": "vastutus",
       "estleg:summary": "Rikkumise korral võib nõuda kahju hüvitamist koos täitmisega või selle asemel.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS3_Par_127",
@@ -288,7 +352,12 @@
       "rdfs:label": "§ 128. Hüvitatava kahju liigid",
       "estleg:requestedCluster": "vastutus",
       "estleg:summary": "Hüvitatav kahju võib olla varaline või mittevaraline.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS3_Par_134",
@@ -300,7 +369,12 @@
       "rdfs:label": "§ 134. Mittevaralise kahju hüvitamise erisused",
       "estleg:requestedCluster": "vastutus",
       "estleg:summary": "Mittevaralise kahju hüvitamine lepingulise rikkumise korral on piiratud eritingimustega.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:VOS_Par649"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS3_Par_136",
@@ -324,7 +398,12 @@
       "rdfs:label": "§ 139. Kahjustatud isiku osa kahju tekkimisel",
       "estleg:requestedCluster": "vastutus",
       "estleg:summary": "Kui kahjustatud isik ise soodustas kahju tekkimist, võib hüvitist vähendada.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ]
     },
     {
       "@id": "estleg:VOS3_Par_140",
@@ -336,7 +415,18 @@
       "rdfs:label": "§ 140. Kahju hüvitamise piiramine",
       "estleg:requestedCluster": "vastutus",
       "estleg:summary": "Kohus võib hüvitist vähendada, kui täies ulatuses hüvitamine oleks äärmiselt ebaõiglane.",
-      "estleg:sourceAct": "Võlaõigusseadus"
+      "estleg:sourceAct": "Võlaõigusseadus",
+      "estleg:normativeType": [
+        {
+          "@id": "estleg:NormType_Right"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohus"
+        }
+      ],
+      "estleg:competenceType": "general"
     }
   ]
 }
