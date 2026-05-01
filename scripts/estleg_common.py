@@ -113,6 +113,13 @@ PAR_SUFFIX = r"§(?:§|[\-\u2011](?:de(?:s)?|d|s|st|le|i|ga))?"
 
 
 # ---------------------------------------------------------------------------
+# Output paths
+# ---------------------------------------------------------------------------
+REPO_ROOT = Path(__file__).resolve().parents[1]
+KRR_DIR = REPO_ROOT / "krr_outputs"
+
+
+# ---------------------------------------------------------------------------
 # Helper functions
 # ---------------------------------------------------------------------------
 
@@ -121,6 +128,34 @@ def save_json(filepath: Path, doc: dict) -> None:
     with open(filepath, "w", encoding="utf-8") as f:
         json.dump(doc, f, ensure_ascii=False, indent=2)
         f.write("\n")
+
+
+def iter_peep_files(
+    *,
+    include_laws: bool = True,
+    include_regulations: bool = True,
+    include_kov: bool = False,
+) -> list[Path]:
+    """Return every ``*_peep.json`` ontology file managed by the pipeline.
+
+    Pipeline-wide file iterator that includes both top-level laws and the
+    state-level regulations under ``regulations/riik/``. KOV regulations
+    (``regulations/kov/``) are opt-in to keep ~11k near-duplicate municipal
+    acts out of routine cross-reference / similarity passes until KOV
+    integration is explicitly ramped in.
+    """
+    files: list[Path] = []
+    if include_laws:
+        files.extend(KRR_DIR.glob("*_peep.json"))
+    if include_regulations:
+        riik_dir = KRR_DIR / "regulations" / "riik"
+        if riik_dir.exists():
+            files.extend(riik_dir.glob("*_peep.json"))
+        if include_kov:
+            kov_dir = KRR_DIR / "regulations" / "kov"
+            if kov_dir.exists():
+                files.extend(kov_dir.glob("**/*_peep.json"))
+    return sorted(files)
 
 
 _ESTONIAN_TRANSLITERATION: dict[str, str] = {

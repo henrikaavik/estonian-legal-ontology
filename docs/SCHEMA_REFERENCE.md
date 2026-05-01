@@ -2,6 +2,8 @@
 
 ## Complete Schema Documentation
 
+> **Note on terminology.** "Regulation" is overloaded across legal systems. In this ontology **domestic regulations** (Estonian *määrused*, modelled as `estleg:NationalRegulation` and its subclasses) are kept strictly separate from **EU regulations** (modelled as `estleg:EULegislation` with `estleg:euDocumentType estleg:EUDocType_Regulation`). Domestic regulations are issued under an enabling Estonian law by Vabariigi Valitsus, a minister, or a municipal council; EU regulations are EU-level legal acts. Use the dedicated classes for each — see "Domestic Regulation Classes" and "EU Legislation Classes" below.
+
 ### Classes
 
 #### Enacted Law Classes
@@ -213,6 +215,127 @@ SELECT ?decision ?label ?date WHERE {
             estleg:decisionDate ?date .
   FILTER(?date >= "2025-01-01"^^xsd:date)
 } ORDER BY DESC(?date)
+```
+
+## Domestic Regulation Classes
+
+Estonian domestic regulations (*määrused*) are subordinate legal acts issued under an enabling law. They are produced by `scripts/generate_regulations.py` from Riigi Teataja and stored under `krr_outputs/regulations/riik/` (state-level) and, in Phase 2, `krr_outputs/regulations/kov/` (municipal). Provisions of regulations are subclasses of `estleg:LegalProvision` and therefore reuse the existing provision-level shapes, queries, and integrations.
+
+### NationalRegulation (`estleg:NationalRegulation`)
+Base class for any Estonian domestic regulation. Every concrete regulation instance carries this type plus exactly one of the more specific subclasses below.
+
+### GovernmentRegulation (`estleg:GovernmentRegulation`)
+Regulation issued by Vabariigi Valitsus (the Government of the Republic). Subclass of `NationalRegulation`.
+
+### MinisterialRegulation (`estleg:MinisterialRegulation`)
+Regulation issued by an individual minister (e.g. *Sotsiaalminister*, *Justiitsminister*). Subclass of `NationalRegulation`.
+
+### MunicipalRegulation (`estleg:MunicipalRegulation`)
+Regulation issued by a local government council (KOV). Subclass of `NationalRegulation`. Phase 2 of the regulations integration plan; the class exists in the ontology now so consumers can target it as soon as KOV regulations are imported.
+
+### Annex (`estleg:Annex`)
+Represents an annex (*lisa*) attached to a regulation. Annexes are emitted as separate named individuals and linked from the regulation via `estleg:hasAnnex`. Annex tables are not normalised in the first pass — the node carries the title, number, and a link to the original document on riigiteataja.ee.
+
+### Per-Regulation Provision Classes (`estleg:Regulation_<terviktekstId>`)
+For each regulation, the generator emits one provision class named `estleg:Regulation_<terviktekstId>` (e.g. `estleg:Regulation_160748`) that is declared as `rdfs:subClassOf estleg:LegalProvision`. Provision instances of that regulation carry both the per-regulation class and `estleg:paragrahv`, so they are validated by the existing `LegalProvisionShape`.
+
+### Domestic Regulation Properties
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `estleg:documentType` | `xsd:string` | Document type label, typically `"määrus"` |
+| `estleg:issuer` | `xsd:string` | Issuing authority (e.g. `"Vabariigi Valitsus"`, `"Sotsiaalminister"`, KOV name) |
+| `estleg:actNumber` | `xsd:string` | Act number assigned by the issuer (e.g. `"104"`, `"199"`) |
+| `estleg:globalId` | `xsd:string` | Riigi Teataja `globaalID` for the concrete text/redaction (e.g. `"610920"`) |
+| `estleg:terviktekstId` | `xsd:string` | Riigi Teataja `terviktekstID` — stable consolidated-text group id (e.g. `"160748"`) |
+| `estleg:isKov` | `xsd:boolean` | `true` for municipal (KOV) regulations, `false` for state-level |
+| `estleg:preambleText` | `xsd:string` (with `@language`) | Preamble text citing the enabling law/provision |
+| `estleg:hasAnnex` | `owl:ObjectProperty` (multi-valued) | IRIs of attached `estleg:Annex` nodes |
+| `estleg:entryIntoForce` | `xsd:date` | Date when the regulation entered into force |
+| `estleg:repealDate` | `xsd:date` | Date when the regulation was repealed |
+| `estleg:lastAmendmentDate` | `xsd:date` | Date of the most recent amendment |
+| `estleg:annexNumber` | `xsd:string` | Annex number as printed in the regulation (`Annex` only) |
+| `dcterms:source` | IRI | Link to the original act XML on riigiteataja.ee |
+
+### Domestic Regulation Example
+
+```json
+{
+  "@context": {
+    "estleg": "https://data.riik.ee/ontology/estleg#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/"
+  },
+  "@graph": [
+    {
+      "@id": "estleg:Reg_160748_Map_2026",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:NationalRegulation",
+        "estleg:GovernmentRegulation"
+      ],
+      "rdfs:label": {"@value": "Volitatud asutuste määramine (määrus)", "@language": "et"},
+      "estleg:documentType": "määrus",
+      "estleg:issuer": {"@value": "Vabariigi Valitsus", "@language": "et"},
+      "estleg:actNumber": "199",
+      "estleg:globalId": "610920",
+      "estleg:terviktekstId": "160748",
+      "estleg:isKov": {"@value": "false", "@type": "xsd:boolean"},
+      "estleg:entryIntoForce": {"@value": "2003-07-19", "@type": "xsd:date"},
+      "estleg:lastAmendmentDate": {"@value": "2003-07-08", "@type": "xsd:date"},
+      "estleg:preambleText": {
+        "@value": "Määrus kehtestatakse ... seaduse § 12 alusel.",
+        "@language": "et"
+      },
+      "dcterms:source": {"@id": "https://www.riigiteataja.ee/akt/610920.xml"}
+    },
+    {
+      "@id": "estleg:Regulation_160748",
+      "@type": ["owl:Class"],
+      "rdfs:label": {"@value": "Õigusnorm (paragrahv)", "@language": "et"},
+      "rdfs:subClassOf": {"@id": "estleg:LegalProvision"}
+    },
+    {
+      "@id": "estleg:Reg_160748_Par_1",
+      "@type": ["owl:NamedIndividual", "estleg:Regulation_160748"],
+      "estleg:paragrahv": "§ 1.",
+      "rdfs:label": {"@value": "§ 1. [Käesoleva määrusega kehtestatakse ...]", "@language": "et"},
+      "estleg:sourceAct": {"@value": "Volitatud asutuste määramine", "@language": "et"},
+      "estleg:summary": {"@value": "Käesoleva määrusega kehtestatakse ...", "@language": "et"}
+    }
+  ]
+}
+```
+
+### SPARQL: Find all regulations issued by Vabariigi Valitsus
+
+```sparql
+PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?reg ?title ?actNumber ?date WHERE {
+  ?reg a estleg:GovernmentRegulation ;
+       rdfs:label ?title ;
+       estleg:issuer "Vabariigi Valitsus"@et ;
+       estleg:actNumber ?actNumber ;
+       estleg:entryIntoForce ?date .
+} ORDER BY DESC(?date)
+```
+
+### SPARQL: Find regulations whose preamble cites a specific law
+
+```sparql
+PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?reg ?title ?preamble WHERE {
+  ?reg a estleg:NationalRegulation ;
+       rdfs:label ?title ;
+       estleg:preambleText ?preamble .
+  FILTER(CONTAINS(LCASE(STR(?preamble)), "töölepingu seaduse"))
+}
 ```
 
 ## EU Legislation Classes
@@ -563,6 +686,7 @@ SELECT ?provision ?label ?type ?maxPenalty WHERE {
 | Source | URL | Format | Script |
 |--------|-----|--------|--------|
 | Riigi Teataja | https://www.riigiteataja.ee | XML API | `generate_all_laws.py` |
+| Riigi Teataja (määrused) | https://www.riigiteataja.ee | XML API | `generate_regulations.py` |
 | EIS | https://eelnoud.valitsus.ee | RSS 2.0 | `generate_draft_legislation.py` |
 | RIK | https://rikos.rik.ee | HTML scrape | `generate_court_decisions.py` |
 | EUR-Lex | https://eur-lex.europa.eu | SPARQL | `generate_eu_legislation.py` |

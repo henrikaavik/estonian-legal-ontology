@@ -24,6 +24,8 @@ from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
 
+from estleg_common import iter_peep_files
+
 REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
 
@@ -128,7 +130,7 @@ def collect_all_references() -> tuple[
     iri_to_file: dict[str, Path] = {}
 
     # Collect from main krr_outputs directory
-    all_files = sorted(KRR_DIR.glob("*_peep.json"))
+    all_files = iter_peep_files()
     # Also include riigikohus files (though they typically don't have references)
     rk_dir = KRR_DIR / "riigikohus"
     if rk_dir.exists():
@@ -271,7 +273,7 @@ def clear_existing_inverse_refs() -> int:
     Returns count of files cleaned.
     """
     cleaned = 0
-    all_files = sorted(KRR_DIR.glob("*_peep.json"))
+    all_files = iter_peep_files()
     rk_dir = KRR_DIR / "riigikohus"
     if rk_dir.exists():
         all_files.extend(sorted(rk_dir.glob("*_peep.json")))
@@ -307,7 +309,7 @@ def verify_symmetry() -> list[dict]:
     # Pass 1 – collect all referencedBy for quick lookup
     referenced_by: dict[str, set[str]] = defaultdict(set)
 
-    all_files = sorted(KRR_DIR.glob("*_peep.json"))
+    all_files = iter_peep_files()
     rk_dir = KRR_DIR / "riigikohus"
     if rk_dir.exists():
         all_files.extend(sorted(rk_dir.glob("*_peep.json")))

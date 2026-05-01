@@ -19,6 +19,8 @@ import xml.etree.ElementTree as ET
 from datetime import date
 from pathlib import Path
 
+from estleg_common import iter_peep_files
+
 REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
 DATA_DIR = REPO_ROOT / "data" / "riigiteataja"
@@ -118,7 +120,7 @@ def load_law_files() -> dict[str, dict]:
     Returns dict keyed by slug (stem without _peep).
     """
     laws = {}
-    for f in sorted(KRR_DIR.glob("*_peep.json")):
+    for f in iter_peep_files():
         if f.parent != KRR_DIR:
             continue
         slug = f.stem.replace("_peep", "")
@@ -371,7 +373,7 @@ def main():
     # Step 0: Clear existing amendedBy references
     print("\n[0/5] Clearing existing estleg:amendedBy from all law files...")
     cleared_count = 0
-    for peep_file in sorted(KRR_DIR.glob("*_peep.json")):
+    for peep_file in iter_peep_files():
         if peep_file.parent != KRR_DIR:
             continue
         if clear_amended_by_from_file(peep_file):

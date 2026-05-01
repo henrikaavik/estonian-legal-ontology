@@ -20,6 +20,8 @@ from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
 
+from estleg_common import iter_peep_files
+
 REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
 EELNOUD_DIR = KRR_DIR / "eelnoud"
@@ -142,7 +144,7 @@ def _read_ontology_iri(filepath: Path) -> str | None:
 def build_ontology_iri_map() -> dict[str, str]:
     """Scan all krr_outputs/*_peep.json files and build filename → ontology IRI map."""
     iri_map: dict[str, str] = {}
-    for fpath in sorted(KRR_DIR.glob("*_peep.json")):
+    for fpath in iter_peep_files():
         iri = _read_ontology_iri(fpath)
         if iri:
             iri_map[fpath.name] = iri
@@ -256,7 +258,7 @@ def main() -> None:
                 del node[key]
 
     # Clear estleg:affectedBy from all law peep files
-    for fpath in sorted(KRR_DIR.glob("*_peep.json")):
+    for fpath in iter_peep_files():
         try:
             with open(fpath, "r", encoding="utf-8") as f:
                 doc = json.load(f)

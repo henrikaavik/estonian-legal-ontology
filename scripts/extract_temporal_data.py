@@ -19,6 +19,8 @@ import xml.etree.ElementTree as ET
 from datetime import date, datetime
 from pathlib import Path
 
+from estleg_common import iter_peep_files
+
 REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
 DATA_DIR = REPO_ROOT / "data" / "riigiteataja"
@@ -305,7 +307,7 @@ def main():
 
     # Step 4: Enrich law JSON-LD files
     print("\n[4/4] Enriching law JSON-LD files with temporal properties...")
-    law_files = sorted(KRR_DIR.glob("*_peep.json"))
+    law_files = iter_peep_files()
     # Exclude files in subdirectories
     law_files = [f for f in law_files if f.parent == KRR_DIR]
     print(f"  Found {len(law_files)} law JSON-LD files")

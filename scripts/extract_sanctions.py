@@ -19,6 +19,8 @@ from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
 
+from estleg_common import iter_peep_files
+
 REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
 SANCTION_DIR = KRR_DIR / "sanctions"
@@ -505,7 +507,7 @@ def main() -> None:
     print("Estonian Legal Ontology - Sanctions Extraction")
     print("=" * 70)
 
-    law_files = sorted(KRR_DIR.glob("*_peep.json"))
+    law_files = iter_peep_files()
     print(f"\n[0/4] Clearing existing sanctions for idempotency...")
 
     # --- Fix 1: clearing pass for idempotency ---

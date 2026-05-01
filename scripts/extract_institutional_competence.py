@@ -19,6 +19,8 @@ from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
 
+from estleg_common import iter_peep_files
+
 REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
 INST_DIR = KRR_DIR / "institutions"
@@ -234,7 +236,7 @@ def main() -> None:
     print("Estonian Legal Ontology - Institutional Competence Extraction")
     print("=" * 70)
 
-    law_files = sorted(KRR_DIR.glob("*_peep.json"))
+    law_files = iter_peep_files()
     print(f"\n[1/4] Found {len(law_files)} law files to process")
 
     # --- Clearing pass: remove old competence data from all files ---

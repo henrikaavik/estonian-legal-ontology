@@ -26,6 +26,8 @@ from pathlib import Path
 
 import requests
 
+from estleg_common import iter_peep_files
+
 REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
 HARMONISATION_DIR = KRR_DIR / "harmonisation"
@@ -303,7 +305,7 @@ def main():
     # --- Step 0: Clear existing harmonisation data ---
     print("\n--- Clearing existing harmonisation data ---")
     cleared = 0
-    for peep_file in sorted(KRR_DIR.glob("*_peep.json")):
+    for peep_file in iter_peep_files():
         try:
             with open(peep_file, "r", encoding="utf-8") as f:
                 doc = json.load(f)

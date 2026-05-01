@@ -19,6 +19,8 @@ import xml.etree.ElementTree as ET
 from datetime import date
 from pathlib import Path
 
+from estleg_common import iter_peep_files
+
 REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
 DATA_DIR = REPO_ROOT / "data" / "riigiteataja"
@@ -248,7 +250,7 @@ def extract_concepts_from_xml(xml_path: Path, law_title: str, law_slug: str) -> 
 def load_law_files() -> list[dict]:
     """Load all law JSON-LD files (top-level only) and return their metadata."""
     laws = []
-    for f in sorted(KRR_DIR.glob("*_peep.json")):
+    for f in iter_peep_files():
         if f.parent != KRR_DIR:
             continue
         slug = f.stem.replace("_peep", "")

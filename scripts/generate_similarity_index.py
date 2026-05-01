@@ -19,6 +19,8 @@ from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
 
+from estleg_common import iter_peep_files
+
 REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
 
@@ -132,7 +134,7 @@ def main():
     print("\n[1/4] Loading provisions and extracting keywords...")
     provisions: list[dict] = []  # {id, label, source_act, keywords, file}
 
-    jsonld_files = sorted(KRR_DIR.glob("*_peep.json"))
+    jsonld_files = iter_peep_files()
     for fpath in jsonld_files:
         # Skip non-law files
         if fpath.parent != KRR_DIR:
@@ -259,7 +261,7 @@ def main():
     print(f"  Saved: {index_path.name} ({len(similarity_pairs)} pairs)")
 
     # Clearing pass: remove stale estleg:semanticallySimilarTo from all peep files
-    for fpath in sorted(KRR_DIR.glob("*_peep.json")):
+    for fpath in iter_peep_files():
         try:
             with open(fpath, "r", encoding="utf-8") as f:
                 doc = json.load(f)

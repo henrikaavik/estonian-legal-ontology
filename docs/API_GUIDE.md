@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Estonian Legal Ontology encodes 635 enacted laws, 22,832 draft legislation entries, 12,137 Supreme Court decisions, 33,242 EU legal acts, and 22,290 EU court decisions as JSON-LD. All files live under `krr_outputs/`.
+The Estonian Legal Ontology encodes 635 enacted laws, 22,832 draft legislation entries, ~3,820 domestic regulations, 12,137 Supreme Court decisions, 33,242 EU legal acts, and 22,290 EU court decisions as JSON-LD. All files live under `krr_outputs/`.
 
 ## Directory Structure
 
@@ -15,6 +15,14 @@ krr_outputs/
   eelnoud/            # Draft legislation (EIS)
   eurlex/             # EU legislation (EUR-Lex)
   institutions/       # 85 institutional competence files
+  regulations/        # Domestic regulations (maarused)
+    riik/                              # State-level (~3,820 files)
+      *_peep.json                      # One file per regulation
+      REGULATIONS_RIIK_INDEX.json      # State regulation registry (byIssuer counts)
+    kov/                               # KOV/municipal (opt-in via --kov)
+      <issuer_slug>/
+        *_peep.json
+      REGULATIONS_KOV_INDEX.json
   riigikohus/         # Supreme Court decisions (1993-2026)
   sanctions/          # 152 sanction cross-reference files
   INDEX.json          # Master registry of all enacted laws
@@ -50,6 +58,70 @@ for entry in index:
         with open(f"krr_outputs/{entry['file']}") as f:
             law = json.load(f)
         print(f"Nodes: {len(law.get('@graph', []))}")
+```
+
+### Domestic Regulations
+
+Domestic regulations (`maarused`) are state-level acts issued by Vabariigi Valitsus or by individual ministers. Each regulation file follows the same `@context` + `@graph` shape as a law file. The act-level node is typed `["owl:Ontology", "estleg:NationalRegulation", "estleg:GovernmentRegulation" | "estleg:MinisterialRegulation"]` and carries metadata such as `estleg:documentType` (`"maarus"`), `estleg:issuer`, `estleg:actNumber`, `estleg:globalId`, `estleg:terviktekstId`, `estleg:isKov`, `estleg:preambleText`, and `estleg:hasAnnex`.
+
+```python
+import json
+from pathlib import Path
+
+# Load all state-level regulations
+regulations_dir = Path("krr_outputs/regulations/riik")
+total = 0
+for path in sorted(regulations_dir.glob("*_peep.json")):
+    with open(path) as fh:
+        data = json.load(fh)
+    total += len(data.get("@graph", []))
+print(f"Total state-regulation nodes: {total}")
+```
+
+```python
+import json
+
+# Load the state-regulation index for byIssuer counts
+with open("krr_outputs/regulations/riik/REGULATIONS_RIIK_INDEX.json") as f:
+    index = json.load(f)
+
+print(f"Total state regulations: {index.get('total')}")
+for issuer, count in index.get("byIssuer", {}).items():
+    print(f"  {issuer}: {count}")
+```
+
+```python
+import json
+from pathlib import Path
+
+# Find every regulation issued by a specific ministry/authority
+target_issuer = "Sotsiaalminister"
+matches = []
+for path in sorted(Path("krr_outputs/regulations/riik").glob("*_peep.json")):
+    with open(path) as fh:
+        data = json.load(fh)
+    for node in data.get("@graph", []):
+        if "estleg:NationalRegulation" in (node.get("@type") or []):
+            if node.get("estleg:issuer") == target_issuer:
+                matches.append(path.name)
+            break
+print(f"{target_issuer}: {len(matches)} regulations")
+```
+
+```python
+import json
+from pathlib import Path
+
+# Read a regulation's enabling-law preamble (legal basis)
+sample = next(Path("krr_outputs/regulations/riik").glob("*_peep.json"))
+with open(sample) as fh:
+    data = json.load(fh)
+for node in data.get("@graph", []):
+    if "estleg:NationalRegulation" in (node.get("@type") or []):
+        print("Issuer:", node.get("estleg:issuer"))
+        print("Act number:", node.get("estleg:actNumber"))
+        print("Preamble:", node.get("estleg:preambleText"))
+        break
 ```
 
 ### Draft Legislation
@@ -196,6 +268,21 @@ SELECT ?decision ?provision WHERE {
   ?decision a estleg:CourtDecision ;
             estleg:interpretsLaw ?provision .
 }
+```
+
+### Government Regulations Currently in Force
+```sparql
+PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?regulation ?label ?actNumber ?entry WHERE {
+  ?regulation a estleg:GovernmentRegulation ;
+              rdfs:label ?label ;
+              estleg:issuer "Vabariigi Valitsus" ;
+              estleg:actNumber ?actNumber ;
+              estleg:entryIntoForce ?entry .
+  FILTER NOT EXISTS { ?regulation estleg:repealDate ?repeal . }
+} ORDER BY DESC(?entry)
 ```
 
 ### Draft Legislation Impacting a Specific Law

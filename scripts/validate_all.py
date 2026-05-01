@@ -48,6 +48,7 @@ MULTI_VALUED_PROPS = {
     "estleg:referencedLaw",
     "skos:exactMatch",
     "skos:closeMatch",
+    "estleg:hasAnnex",
 }
 
 # Properties that are semantically single-valued (dict OK, not required to be list)
@@ -163,7 +164,7 @@ def main():
     # Deduplicate (glob ** also matches top-level)
     files = sorted(set(files))
     # Exclude index and summary files
-    exclude_prefixes = ("INDEX", "combined_", "EELNOUD_INDEX", "eelnoud_combined", "RIIGIKOHUS_INDEX", "EURLEX_INDEX", "eurlex_combined", "CURIA_INDEX", "curia_combined")
+    exclude_prefixes = ("INDEX", "combined_", "EELNOUD_INDEX", "eelnoud_combined", "RIIGIKOHUS_INDEX", "EURLEX_INDEX", "eurlex_combined", "CURIA_INDEX", "curia_combined", "REGULATIONS_")
     # Exclude report/metadata files (not JSON-LD)
     exclude_suffixes = ("_report.json", "_mapping.json", "_index.json", "_classification.json")
     files = [f for f in files if not any(f.name.startswith(p) for p in exclude_prefixes)]

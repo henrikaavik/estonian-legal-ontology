@@ -27,7 +27,10 @@
 # Targeting "every node that has `estleg:paragrahv`" catches all
 # provision-like nodes regardless of engine capabilities or whether a
 # new per-law type is added later, and is self-consistent with how
-# consumers actually query the data.
+# consumers actually query the data. This also catches provisions of
+# domestic regulations (määrused) emitted by `generate_regulations.py`
+# under per-regulation classes like `estleg:Regulation_<terviktekstId>`,
+# which are also declared as `rdfs:subClassOf estleg:LegalProvision`.
 estleg:LegalProvisionShape
     a sh:NodeShape ;
     sh:targetSubjectsOf estleg:paragrahv ;
@@ -667,5 +670,181 @@ estleg:NormativeTypeShape
         sh:minCount 1 ;
         sh:name "label" ;
         sh:description "Normative type label (obligation, right, permission, prohibition)" ;
+    ] .
+
+# ============================================================
+# DOMESTIC REGULATION SHAPES
+# ============================================================
+#
+# These shapes cover Estonian domestic regulations (määrused)
+# emitted by `scripts/generate_regulations.py`. They are deliberately
+# distinct from `EULegislationShape`, which targets EU acts (regulations,
+# directives, decisions). Domestic regulations are issued under an
+# enabling Estonian law (typically by Vabariigi Valitsus, a minister, or
+# a municipal council) and are modelled with `estleg:NationalRegulation`
+# plus a more specific subclass (`GovernmentRegulation`,
+# `MinisterialRegulation`, or `MunicipalRegulation`).
+#
+# Provisions of regulations are validated by the LegalProvisionShape
+# above — they carry `estleg:paragrahv` and per-regulation classes like
+# `estleg:Regulation_<terviktekstId>` that are declared as
+# `rdfs:subClassOf estleg:LegalProvision`.
+
+# Shape for NationalRegulation instances (and its subclasses).
+#
+# Targets the `estleg:NationalRegulation` class. Concrete regulation
+# instances additionally declare one of `estleg:GovernmentRegulation`,
+# `estleg:MinisterialRegulation`, or `estleg:MunicipalRegulation`; this
+# shape applies to all of them via the shared base class.
+estleg:NationalRegulationShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:NationalRegulation ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:name "label" ;
+        sh:description "Every NationalRegulation must have a label (regulation title)" ;
+    ] ;
+    sh:property [
+        sh:path estleg:documentType ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "documentType" ;
+        sh:description "Document type label, e.g. 'määrus'" ;
+    ] ;
+    sh:property [
+        sh:path estleg:terviktekstId ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "terviktekstId" ;
+        sh:description "Riigi Teataja consolidated-text group identifier (stable per regulation)" ;
+    ] ;
+    sh:property [
+        sh:path estleg:globalId ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "globalId" ;
+        sh:description "Riigi Teataja globalID for the concrete text/redaction" ;
+    ] ;
+    sh:property [
+        sh:path estleg:isKov ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:boolean ;
+        sh:name "isKov" ;
+        sh:description "True when the issuer is a municipality (KOV); false for state-level regulations" ;
+    ] ;
+    sh:property [
+        sh:path estleg:issuer ;
+        sh:datatype xsd:string ;
+        sh:name "issuer" ;
+        sh:description "Issuing authority (e.g. 'Vabariigi Valitsus', 'Sotsiaalminister', a KOV name)" ;
+    ] ;
+    sh:property [
+        sh:path estleg:actNumber ;
+        sh:datatype xsd:string ;
+        sh:name "actNumber" ;
+        sh:description "Act number assigned by the issuer (e.g. '104', '199')" ;
+    ] ;
+    sh:property [
+        sh:path estleg:preambleText ;
+        sh:datatype xsd:string ;
+        sh:name "preambleText" ;
+        sh:description "Preamble text citing the enabling law/provision" ;
+    ] ;
+    sh:property [
+        sh:path estleg:hasAnnex ;
+        sh:nodeKind sh:IRI ;
+        sh:name "hasAnnex" ;
+        sh:description "Annex nodes attached to this regulation" ;
+    ] ;
+    sh:property [
+        sh:path estleg:entryIntoForce ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:date ;
+        sh:name "entryIntoForce" ;
+        sh:description "Date when the regulation entered into force" ;
+    ] ;
+    sh:property [
+        sh:path estleg:repealDate ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:date ;
+        sh:name "repealDate" ;
+        sh:description "Date when the regulation was repealed" ;
+    ] ;
+    sh:property [
+        sh:path estleg:lastAmendmentDate ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:date ;
+        sh:name "lastAmendmentDate" ;
+        sh:description "Date of the most recent amendment" ;
+    ] .
+
+# Shape for GovernmentRegulation instances (Vabariigi Valitsus määrus).
+# Concrete instances also carry estleg:NationalRegulation, so the
+# constraints in NationalRegulationShape apply transitively. This shape
+# exists so SHACL engines without subclass inference still pick the
+# subclass up by class targeting.
+estleg:GovernmentRegulationShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:GovernmentRegulation ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:name "label" ;
+        sh:description "Every GovernmentRegulation must have a label" ;
+    ] .
+
+# Shape for MinisterialRegulation instances (ministri määrus).
+estleg:MinisterialRegulationShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:MinisterialRegulation ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:name "label" ;
+        sh:description "Every MinisterialRegulation must have a label" ;
+    ] .
+
+# Shape for MunicipalRegulation instances (KOV määrus).
+# Phase 2 of the regulations integration plan; the class is declared now
+# so MULTI_VALUED_PROPS and validators recognise it from the start.
+estleg:MunicipalRegulationShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:MunicipalRegulation ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:name "label" ;
+        sh:description "Every MunicipalRegulation must have a label" ;
+    ] .
+
+# Shape for Annex instances (regulation lisa).
+#
+# Annex nodes are emitted by the regulation generator as separate
+# named individuals and linked from the regulation via
+# `estleg:hasAnnex`. They preserve a pointer to the original
+# annex document on riigiteataja.ee in `dcterms:source`.
+estleg:AnnexShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:Annex ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:name "label" ;
+        sh:description "Every Annex must have a label (annex title)" ;
+    ] ;
+    sh:property [
+        sh:path estleg:annexNumber ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "annexNumber" ;
+        sh:description "Annex number as printed in the regulation (e.g. 'Lisa 1', '2')" ;
+    ] ;
+    sh:property [
+        sh:path dcterms:source ;
+        sh:nodeKind sh:IRI ;
+        sh:name "source" ;
+        sh:description "Optional IRI to the original annex document on riigiteataja.ee" ;
     ] .
 

@@ -19,6 +19,8 @@ import unicodedata
 from datetime import datetime
 from pathlib import Path
 
+from estleg_common import iter_peep_files
+
 REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
 
@@ -427,7 +429,7 @@ def main():
     # --- Step 0: Clear existing EuroVoc subjects ---
     print("\n--- Clearing existing EuroVoc subjects ---")
     cleared_count = 0
-    for peep_file in sorted(KRR_DIR.glob("*_peep.json")):
+    for peep_file in iter_peep_files():
         if peep_file.parent != KRR_DIR:
             continue
         if clear_eurovoc_subjects_from_file(peep_file):
