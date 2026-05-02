@@ -73,8 +73,15 @@ Layer 3 — KOV-aware similarity
 - `estleg_common.iter_peep_files(include_kov=...)` — flips default from
   `False` to `True` after Layer 2 validates clean **and the per-script
   audit below passes for every consumer**.
-- New flag `include_kov_similarity` (default `False` until Layer 3 ships)
-  on `generate_similarity_index`.
+- **`generate_similarity_index` must pin `include_kov=False` at the
+  call site as part of the Gate B PR**, before the iterator default
+  flips. Reason: similarity stays provision-level until Layer 3 ships,
+  so it cannot accept KOV input from the new default. Without this
+  pin, `run_all_integration` would either run old provision-level
+  similarity over 116k KOV provisions (wrong) or fail. Layer 3
+  unpins it (replacing the call with the new act-level KOV similarity
+  generator) and adds a separate `include_kov_similarity` flag for
+  callers that want to skip the KOV-specific output.
 - Add `--no-kov` opt-out flag for callers that want the historical
   laws-and-state-regulations-only behavior.
 
@@ -126,10 +133,28 @@ laws-and-state-only (the three EU-specific ones) pin
 
 Build the issuer→current-municipality map semi-automatically:
 
-1. **Auto-match** — for every issuer whose name root matches a current
-   municipality (`tallinna_*`, `tartu_*`, `mulgi_*`, etc.), map to that
-   EHAK code. Each auto-matched row records `mappingSource: "auto-match"`.
-   Expected coverage ~50–60%.
+1. **Auto-match** — for every issuer, derive the candidate municipality
+   from **both** the name root **and** the body suffix:
+   - `*_linnavolikogu` / `*_linnavalitsus` → root must match a
+     municipality of type `linn`.
+   - `*_vallavolikogu` / `*_vallavalitsus` → root must match a
+     municipality of type `vald`.
+
+   This disambiguates duplicate roots — *Tartu Linnavolikogu* (the
+   city) vs *Tartu Vallavolikogu* (the rural municipality), and
+   similarly Rakvere, Viljandi, Võru. Auto-match **fails (does not
+   guess)** if:
+   - The root + body-type combination matches more than one current
+     municipality, or
+   - The root has no matching municipality of the required type
+     (e.g. a `vallavolikogu` whose root only exists as a `linn`).
+
+   Failed auto-matches fall through to the curated CSV. Each
+   successfully auto-matched row records
+   `mappingSource: "auto-match"`. Expected coverage ~50–60% with the
+   stricter rule (slightly lower than naive root-only matching, but
+   the failures it surfaces are exactly the ambiguous cases that need
+   human review).
 2. **Curated map** — for the rest, hand-curate
    `data/ehak/issuer_successor_map.csv`, sourced from the official 2017
    haldusreform act lists. One row per legacy issuer with columns:
@@ -149,10 +174,34 @@ Build the issuer→current-municipality map semi-automatically:
 
 ### Ontology additions
 
+The current schema has no parent class for "act" or "law" — acts are
+typed as `owl:Ontology` plus their specific subtype (`MunicipalRegulation`,
+`NationalRegulation`, etc.). There is also no `estleg:Law` or
+`estleg:LegalEntity` class. Layer 1 introduces the missing parent
+hierarchy so `issuedUnder` and `implementedBy` can have a clean class
+range:
+
 ```turtle
+# New parent class for "any enacted Estonian legal act"
+estleg:Act a owl:Class ;
+    rdfs:comment "An enacted Estonian legal act of any level" .
+
+# Marker class for laws (the existing 615 root-level acts).
+# Stamped onto every law's act node during Layer 1 enrichment.
+estleg:Law a owl:Class ;
+    rdfs:subClassOf estleg:Act .
+
+# Existing regulation classes are declared as subclasses of Act
+estleg:NationalRegulation     rdfs:subClassOf estleg:Act .
+estleg:GovernmentRegulation   rdfs:subClassOf estleg:NationalRegulation .
+estleg:MinisterialRegulation  rdfs:subClassOf estleg:NationalRegulation .
+estleg:MunicipalRegulation    rdfs:subClassOf estleg:Act .
+
+# KOV entity model
 estleg:Municipality a owl:Class ;
-    rdfs:subClassOf estleg:LegalEntity ;
-    rdfs:comment "Current Estonian municipality (KOV unit)" .
+    rdfs:comment "Current Estonian municipality (KOV unit). Top-level
+                  class — represents a territorial unit, not an
+                  organizational body." .
 
 estleg:Issuer a owl:Class ;
     rdfs:subClassOf estleg:Institution ;
@@ -166,6 +215,11 @@ estleg:KovProvision a owl:Class ;
     rdfs:comment "A provision belonging to a MunicipalRegulation. Added
                   during Layer 1 enrichment so SHACL can target provision-
                   level KOV constraints without inference." .
+
+estleg:Citation a owl:Class ;
+    rdfs:comment "A reified preamble citation, carrying the resolved
+                  provision target and the original sub-paragraph
+                  specificity." .
 
 # Properties on Municipality
 estleg:ehakCode             xsd:string  # 4-digit EHAK code
@@ -184,9 +238,38 @@ estleg:mappingEvidence      xsd:string  # free-text source citation
 estleg:enactedBy             estleg:Issuer
 estleg:enactedByMunicipality estleg:Municipality
 
-# Property on KovProvision (i.e. provisions of MunicipalRegulation acts)
-estleg:enactedByMunicipality estleg:Municipality
+# Properties on KovProvision
+estleg:enactedBy             estleg:Issuer       # direct query path
+estleg:enactedByMunicipality estleg:Municipality # direct query path
+estleg:partOfAct             estleg:Act          # IRI link to parent act
+                                                  # (the existing sourceAct
+                                                  # is a literal, not an IRI,
+                                                  # so this is the join path
+                                                  # KOV consumers actually
+                                                  # need)
+
+# Properties on Act (used across Law, NationalRegulation, MunicipalRegulation)
+estleg:issuedUnder           estleg:Act          # range: any Act
+estleg:implementsCitation    estleg:Citation     # reified preamble citation
+estleg:implementedBy         estleg:Act          # inverse, from
+                                                  # any Act to any Act
+
+# Properties on Citation
+estleg:citationTarget        estleg:LegalProvision
+estleg:citationDetail        xsd:string          # optional, e.g. "lg 1 p 3"
+estleg:citationText          xsd:string          # optional original text
 ```
+
+**Layer 1 enrichment also stamps the new parent types:**
+
+- Every existing law peep file's act node gains `estleg:Law` rdf:type
+  (additive — keeps `owl:Ontology` and any existing types).
+- Every existing regulation peep file's act node already has its
+  specific subtype (NationalRegulation / MunicipalRegulation / etc.);
+  these are declared subclasses of `estleg:Act` in the schema so no
+  per-file rewrite is needed for the parent type.
+- Every KOV provision gains both `estleg:KovProvision` rdf:type **and**
+  `estleg:partOfAct` (IRI to the parent act node).
 
 ### Stable IRI patterns
 
@@ -205,34 +288,53 @@ by SHACL `sh:pattern` constraints to catch IRI drift in future imports.
 
 - `krr_outputs/municipalities_peep.json` — 79 Municipality nodes
 - `krr_outputs/issuers_kov_peep.json` — 357 Issuer nodes
-- In-place update to all 11,059 KOV act files: each act node gains
-  `estleg:enactedBy` and `estleg:enactedByMunicipality`
-- In-place update to all 116,708 KOV provision nodes: each provision
-  gains an additional `estleg:KovProvision` rdf:type **and** an
-  `estleg:enactedByMunicipality` triple (redundant for query convenience
-  — avoids requiring a join in queries)
+- In-place update to all 11,059 KOV act files. Each act node gains:
+  - `estleg:enactedBy` (Issuer IRI)
+  - `estleg:enactedByMunicipality` (Municipality IRI)
+  - `estleg:titleNormalized` (string, used by Layer 3 bucket detection)
+- In-place update to all 116,708 KOV provision nodes. Each provision
+  gains:
+  - additional `estleg:KovProvision` rdf:type
+  - `estleg:enactedByMunicipality` (Municipality IRI)
+  - `estleg:enactedBy` (Issuer IRI) — direct query path so consumers
+    don't need a join to ask "who enacted this provision"
+  - `estleg:partOfAct` (IRI of the parent act node) — the existing
+    `estleg:sourceAct` is a literal title, not an IRI link, so this
+    is the actual structural join path
+- In-place update to all 615 existing law peep files: each act node
+  gains an additional `estleg:Law` rdf:type stamp (Layer 1 schema
+  hierarchy completion).
 
 ### SHACL
 
 Add shapes:
 
-- **`MunicipalRegulation` shape** — must have both `enactedBy` and
-  `enactedByMunicipality` (act-level constraint).
-- **`KovProvision` shape** — must have `enactedByMunicipality`. This is
-  the reason for adding the explicit `KovProvision` class during
-  enrichment: provisions in the existing data are typed as
-  `owl:NamedIndividual` of per-act `Regulation_<terviktekstId>` classes
-  (subclasses of `LegalProvision`), so a shape targeting
-  `MunicipalRegulation` would not validate them. Stamping a direct
-  `KovProvision` rdf:type during Layer 1 enrichment gives SHACL a
-  concrete `sh:targetClass` without needing an OWL reasoner.
+- **`MunicipalRegulation` shape** — must have `enactedBy`,
+  `enactedByMunicipality`, and `titleNormalized` (act-level
+  constraints).
+- **`KovProvision` shape** — must have `enactedByMunicipality`,
+  `enactedBy`, and `partOfAct`. Adding the explicit `KovProvision`
+  class during enrichment is what makes this shape targetable:
+  provisions in the existing data are typed as `owl:NamedIndividual`
+  of per-act `Regulation_<terviktekstId>` classes (subclasses of
+  `LegalProvision`), so a shape targeting `MunicipalRegulation` would
+  not validate them. Stamping a direct `KovProvision` rdf:type during
+  Layer 1 enrichment gives SHACL a concrete `sh:targetClass` without
+  needing an OWL reasoner.
 - **`Issuer` shape** — must have `currentMunicipality`, `bodyType`,
   `mappingSource`. IRI conforms to `^estleg:Issuer_[a-z0-9_]+$`.
 - **`Municipality` shape** — must have `ehakCode` (4-digit) and
   `county`. IRI conforms to `^estleg:Municipality_EHAK_[0-9]{4}$`.
+- **`Law` shape** — every law act node has both `owl:Ontology` and
+  `estleg:Law` types after Layer 1 enrichment.
+- **`Citation` shape** — must have `citationTarget`. `citationDetail`
+  and `citationText` are optional. (Used by Layer 2.)
+- **`Similarity` shape** — must have `similarTarget`, `similarityScore`,
+  `similarityModel`. (Used by Layer 3.)
 
 These catch issuer-mapping drift the moment a future import introduces a
-new unmapped issuer.
+new unmapped issuer, and they catch any KOV act/provision that the
+Layer 1 enrichment fails to fully decorate.
 
 ## Layer 2 — Pipeline integration
 
@@ -252,39 +354,49 @@ and `estleg:summary`). It does not touch act-level
   citations.
 - **Where preamble references attach.** Attach to the **act node** via
   two new properties:
-  - `estleg:issuedUnder` — links the act to the **enabling act**
-    (range: `estleg:Law` ∪ `estleg:NationalRegulation` ∪
-    `estleg:MunicipalRegulation`). Used when only the act is
-    identifiable (e.g. *alkoholiseaduse alusel*, or *Vabariigi
-    Valitsuse 19. detsembri 2019. a määruse nr 112 alusel*, or
-    *Tallinna Linnavolikogu 18. juuni 2020 määruse nr 15 alusel*).
-  - `estleg:implementsProvision` — links the act to a specific
-    **provision** of the enabling act (range: `estleg:LegalProvision`,
-    which already covers law provisions, regulation provisions, and
-    `KovProvision`).
 
-  Both properties go on the act node, not on a provision. The preamble
-  is a property of the regulation as a whole. The range expansion is
-  important: real KOV preambles routinely cite **state regulations**
-  (Vabariigi Valitsuse määrused, ministerial määrused) and
-  **same-municipality regulations** as enabling bases, not just laws.
-  Restricting to laws only would lose or mis-model these common cases.
+  - `estleg:issuedUnder` — links the act to the **enabling act**
+    (range: `estleg:Act`, the new parent class — i.e. any
+    `Law`/`NationalRegulation`/`MunicipalRegulation`). Used for
+    coarse "which act authorizes this regulation?" queries, where
+    sub-paragraph specificity does not matter. Examples of citations
+    handled: *alkoholiseaduse alusel* (Law), *Vabariigi Valitsuse 19.
+    detsembri 2019. a määruse nr 112 alusel* (NationalRegulation),
+    *Tallinna Linnavolikogu 18. juuni 2020 määruse nr 15 alusel*
+    (MunicipalRegulation). Range expansion is important: real KOV
+    preambles routinely cite state regulations and same-municipality
+    regulations as enabling bases, not just laws.
+
+  - `estleg:implementsCitation` — range: `estleg:Citation`. Used for
+    full-detail preamble citations including paragraph and
+    sub-paragraph specificity. Each Citation is a **reified node**
+    rather than a value pair, because pairing a target with a
+    `citationDetail` literal by list ordering is unsafe in JSON-LD:
+    serialization, compaction, or graph round-trip can re-order the
+    two arrays independently and silently lose which detail belongs
+    to which target.
+
+  - `estleg:Citation` — new class. Each instance is a self-contained
+    object with:
+    - `estleg:citationTarget` — IRI of the resolved provision
+      (paragraph-level — see below)
+    - `estleg:citationDetail` — optional literal (`"lg 1 p 3"`,
+      `"lg 2"`) for sub-paragraph specificity
+    - `estleg:citationText` — optional original citation string
+      (`"§ 42 lg 1 alusel"`) for traceability
+
+  IRI scheme: `estleg:Citation_<source-act-shortid>_<seq>` (e.g.
+  `Citation_1014955_Map_2026_1` for the first preamble citation of
+  the Tallinn alcohol act). Each Citation is a `owl:NamedIndividual`
+  so SHACL can constrain it.
 
 - **Provision-citation granularity.** The current ontology has
   paragraph-level provision IRIs only — `loige` (lg) and `punkt` (p)
-  exist as text inside a paragraph but are not separately addressable.
-  `estleg:implementsProvision` therefore resolves at **paragraph
-  granularity** (the `§` IRI). The finer detail is preserved as
-  metadata on the link via a new property:
-  - `estleg:citationDetail` — literal companion (e.g. `"lg 1 p 3"`,
-    `"lg 2"`) attached to the same triple block. When the citation has
-    no sub-§ component, this property is omitted.
-
-  Modeled as a separate property on the source act, paired by ordering
-  with `implementsProvision` (one detail per provision link). This is
-  the lightest model that preserves the citation's specificity without
-  inventing a sub-paragraph IRI scheme. Adding a real `Loige` /
-  `Punkt` model is deferred to a future phase.
+  exist as text inside a paragraph but are not separately
+  addressable. `citationTarget` therefore resolves to the paragraph
+  IRI; the lg/p detail rides along on `citationDetail`. Adding a
+  real `Loige` / `Punkt` provision-IRI model is deferred to a future
+  phase.
 
 - **Body-text references — scoping rules.** KOV body text cites
   internal acts (*linnavolikogu määrus nr 5*) including
@@ -305,7 +417,8 @@ and `estleg:summary`). It does not touch act-level
      municipality, rather than picking arbitrarily.
 - "Käesolev määrus" already handled — no change.
 - Output growth: ~3–5× current cross-ref volume on body text, plus
-  ~11k preamble-derived `issuedUnder` / `implementsProvision` triples.
+  ~11k preamble-derived `issuedUnder` triples and a comparable number
+  of `implementsCitation`/`Citation` nodes.
 
 ### `generate_inverse_references`
 
@@ -313,18 +426,17 @@ This is **not code-free**. The current generator emits
 `estleg:referencedBy` from `estleg:references` body-text citations.
 Implementing-law inverses are a new concept on top:
 
-- **`estleg:implementedBy`** — a **new property** on enabling acts
-  (range source: `estleg:Law` ∪ `estleg:NationalRegulation` ∪
-  `estleg:MunicipalRegulation` and their provisions), populated by
-  inverting the act-level `estleg:issuedUnder` and
-  `estleg:implementsProvision` triples added in the cross-reference
-  extractor change above. Semantically "acts enacted under this act",
-  not "any text that mentions it". It is a **filtered projection** of
-  references where the source link is preamble-derived, not a copy of
-  the broader `referencedBy` set. The domain expansion (state
-  regulations and KOV regulations are themselves valid implementation
-  targets) follows the corresponding domain expansion of
-  `issuedUnder` / `implementsProvision`.
+- **`estleg:implementedBy`** — a **new property** on enabling acts and
+  their provisions (range/domain: `estleg:Act` ∪
+  `estleg:LegalProvision`), populated by inverting the act-level
+  `estleg:issuedUnder` triples and the `Citation.citationTarget`
+  links from `implementsCitation` reified nodes. Semantically "acts
+  enacted under this act", not "any text that mentions it". It is a
+  **filtered projection** of references where the source link is
+  preamble-derived, not a copy of the broader `referencedBy` set. The
+  range covers all `Act` subtypes because state regulations and KOV
+  regulations can themselves be implementation targets of higher-level
+  acts.
 - **`estleg:implementedByCount`** — a derived **aggregate** triple on
   each law and law provision, set to the integer count of
   `implementedBy` entries. Lets queries like "which laws spawn the most
@@ -417,19 +529,67 @@ Required changes:
 
 ### `extract_legal_concepts`
 
-- No KOV-specific change.
+This is **not code-free**. The current extractor (line ~254) filters
+to root-only files and (line ~240) builds provision IRIs from the
+**file slug** plus paragraph number rather than reading the actual
+node `@id` from the JSON-LD graph. For KOV files this would either
+skip them entirely or emit concept links to non-existent provision
+IRIs, since KOV provisions use `Reg_<terviktekstId>_Par_<n>` IDs that
+don't derive from filename slugs.
+
+Required changes:
+
+- **Switch input discovery** to `iter_peep_files(include_kov=True)`;
+  remove the root-only filter.
+- **Source provision IRIs from the actual node `@id`**, not from a
+  derived `f"{law_slug}_Par_{n}"` pattern. Walk the `@graph` of the
+  loaded file and use each node's own `@id` for the
+  `definedIn`/`definesTerm` triple targets.
+- **Output path** uses the source path, per the per-caller audit.
 
 ### `extract_court_provision_links`
 
-- KOV regulations do get cited in court decisions (zoning disputes,
-  traffic fines, public-order cases). Run over KOV files. No
-  algorithm change beyond file discovery.
+This is **not code-free**. The current resolver maps citations to
+provisions via **law abbreviations** (e.g. `KarS § 121`) and known
+law names. KOV regulations have no abbreviation registry — court
+decisions cite municipal acts by a different shape: RT IV reference,
+title, municipality, date, and act number (e.g.
+*Tallinna Linnavolikogu 18. juuni 2020 määruse nr 15 § 4*). Without a
+KOV-specific resolver, this pipeline would run cleanly but produce
+zero KOV→court links, defeating the integration.
+
+Required changes:
+
+- **Add a KOV citation resolver** that recognizes the
+  municipality+date+number citation form and resolves it via the
+  Issuer registry + act metadata (`actNumber`, `entryIntoForce`).
+- **Add an RT IV reference resolver** that maps the
+  `RT IV, YYYY-MM-DD, N` reference shape to the corresponding KOV
+  act's `globaalID`. The mapping table is built once at start-up by
+  scanning all KOV peep files for their `RT IV` source URLs.
+- **File discovery** through `iter_peep_files(include_kov=True)`;
+  remove any root-only filter.
+- **Citations that don't resolve** are logged to the per-pipeline
+  coverage report's failure samples, not silently dropped.
 
 ### `generate_amendment_history`
 
-- KOV acts have amendment chains (each `globaalID` is a redaction of a
-  `terviktekstID`). Existing chain logic is generic. Run over KOV files.
-  No algorithm change.
+This is **not code-free**. The current script (lines ~124, ~377)
+filters to root-only peep files and (line ~393) globs only
+`data/riigiteataja/*.xml` — laws-only, non-recursive. KOV regulation
+XML lives under `data/riigiteataja/maarus_kov/reg_<globalId>.xml`, so
+this needs the same `globaalID`/`terviktekst` mapping as the temporal
+extractor.
+
+Required changes:
+
+- **Recursive XML discovery** over `data/riigiteataja/`,
+  `data/riigiteataja/maarus/`, and `data/riigiteataja/maarus_kov/`.
+- **Pair XML to peep files via `globaalID`**, not by slug. KOV chain
+  logic uses `terviktekstID` as the stable group key (multiple
+  `globaalID` redactions map to one `terviktekstID`).
+- **Remove the two root-only peep-file filters.**
+- The chain-building algorithm itself is generic and unchanged.
 
 ### Pipelines that stay laws-and-state-only
 
@@ -510,14 +670,22 @@ detection runs, generate a one-time `data/kov/title_frequency.json`
 artefact:
 
 1. Walk `krr_outputs/regulations/kov/**/*_peep.json` and read each act
-   node's `rdfs:label` and `dc:source`.
-2. Normalize titles (strip municipality prefix, lowercase, collapse
-   whitespace, transliterate diacritics for stable matching).
-3. Compute frequency over normalized titles and save the top-200 to
+   node's `estleg:titleNormalized` literal (added during Layer 1 — see
+   below).
+2. Compute frequency over normalized titles and save the top-200 to
    `data/kov/title_frequency.json`. The bucket detector reads this.
-4. The Layer 1 enrichment also writes a derived `estleg:titleNormalized`
-   literal onto each KOV act node, so the bucket detector and SHACL
-   shapes can read it directly without re-deriving at every step.
+
+`estleg:titleNormalized` is a **Layer 1 deliverable**, not a Layer 3
+runtime field. It is written onto every KOV act node during Layer 1
+enrichment by a small normalization step:
+
+- Lowercase, transliterate diacritics, strip the municipality-name
+  prefix (using the `Issuer.displayName` token), strip leading/trailing
+  whitespace.
+
+Layer 1 acceptance criteria, SHACL, and tests cover it (see updates in
+those sections). Putting normalization in Layer 1 keeps the bucket
+pre-pass to a simple read-and-count over already-normalized data.
 
 The expected top-50 patterns (verified once `title_frequency.json`
 is generated):
@@ -550,9 +718,60 @@ the enabling state act"). Skip KOV→KOV cross-bucket pairs.
 
 ### Output
 
-`krr_outputs/similarity/kov_by_type/<bucket>.json`, one file per bucket.
-Each file lists top-K=20 most similar peer acts per source act. Bounded
-size; tractable to load and query.
+Two output surfaces, both with explicit schemas:
+
+**1. Per-bucket similarity reports** at
+`krr_outputs/similarity/kov_by_type/<bucket>.json`. One JSON object
+per file with the following shape:
+
+```json
+{
+  "bucket": "jaatmehoolduseeskiri",
+  "regulationCount": 359,
+  "topK": 20,
+  "generatedAt": "2026-05-02T12:34:56Z",
+  "pipelineVersion": "<git-sha>",
+  "pairs": [
+    {
+      "source": "estleg:Reg_1014955_Map_2026",
+      "peers": [
+        {
+          "target": "estleg:Reg_1023711_Map_2026",
+          "score": 0.873,
+          "scoreModel": "tfidf-cosine"
+        },
+        ...
+      ]
+    },
+    ...
+  ]
+}
+```
+
+`scoreModel` is fixed at `"tfidf-cosine"` for v1 and is recorded so a
+later switch (e.g. to embeddings) is identifiable from the file alone.
+
+**2. Act-level back-links written into each KOV peep file's act node**,
+so consumers can navigate similarity from a single act without loading
+the bucket file:
+
+- `estleg:regulationTypeBucket` — the bucket label (`xsd:string`),
+  e.g. `"jaatmehoolduseeskiri"` or `"_uncategorized"`.
+- `estleg:similarAct` — repeated property pointing at peer acts. Each
+  value is a reified `estleg:Similarity` object:
+  - `estleg:similarTarget` — peer act IRI
+  - `estleg:similarityScore` — `xsd:float`
+  - `estleg:similarityModel` — `"tfidf-cosine"`
+
+`estleg:Similarity` is a new class (sibling to `Citation`), declared
+in the schema and validated by SHACL. Reified so the score+model stay
+attached to the right peer (same JSON-LD ordering concern as
+citations). Top-K bound enforced at write time.
+
+These triples are **idempotent**: each Layer 3 rerun first clears any
+existing `estleg:similarAct` and `estleg:regulationTypeBucket` from
+KOV act nodes before rewriting. Same pattern as the existing
+`referencedBy` clear-then-regenerate flow.
 
 Estimated total pairs: ~200K vs naive 121M.
 
@@ -560,20 +779,33 @@ Estimated total pairs: ~200K vs naive 121M.
 
 Extends the existing 39-test pytest suite.
 
-### Layer 1 tests (~10)
+### Layer 1 tests (~14)
 
 - EHAK code list parses; 79 expected codes present
 - Every issuer slug from `krr_outputs/regulations/kov/*` resolves to a
   `currentMunicipalityCode`
-- Auto-mapping covers obvious matches; curated CSV covers the rest;
-  intersection check
+- Auto-mapping uses both name root and body type (linn vs vald);
+  ambiguous case *Tartu Linnavolikogu* vs *Tartu Vallavolikogu* maps
+  to two different municipalities, not one
+- Auto-mapping fails (does not silently guess) when root + body-type
+  is ambiguous; failure feeds the curated CSV
 - Synthetic unmapped issuer raises a clear error
 - Curated rows without `mapping_evidence` are rejected at load time
-- SHACL: every Municipality has `ehakCode` + `county`; every Issuer has
-  `currentMunicipality`, `bodyType`, and `mappingSource`
+- SHACL: every Municipality has `ehakCode` + `county`; every Issuer
+  has `currentMunicipality`, `bodyType`, and `mappingSource`
 - SHACL: IRI patterns match `Municipality_EHAK_<4digit>` and
   `Issuer_<slug>`
-- SHACL: every `KovProvision` has `enactedByMunicipality`
+- SHACL: every `KovProvision` has `enactedByMunicipality`,
+  `enactedBy`, and `partOfAct`
+- SHACL: every `MunicipalRegulation` act has `titleNormalized`
+- SHACL: every existing law act node has both `owl:Ontology` and
+  `estleg:Law` types after enrichment
+- `titleNormalized` strips municipality prefix correctly: e.g.
+  `"Tallinna jäätmehoolduseeskiri"` →
+  `"jaatmehoolduseeskiri"` (lowercase, transliterated, prefix
+  removed)
+- `partOfAct` on a sample of 20 KOV provisions points to a real act
+  IRI in the same file's `@graph`
 - Pre/post-reform: *Abja Vallavolikogu* maps to Mulgi vald,
   `historicalMunicipalityName` preserved
 
@@ -590,9 +822,13 @@ Extends the existing 39-test pytest suite.
   fixture
 - Cross-reference: preamble citation
   *alkoholiseaduse § 42 lg 1 alusel* produces `issuedUnder` (to
-  the alcohol law act IRI), `implementsProvision` (to the
-  paragraph-level IRI of `§ 42`), and `citationDetail = "lg 1"` —
-  all on the act node, none on any provision
+  the alcohol law act IRI) and one `implementsCitation` reified node
+  on the act with `citationTarget` = paragraph-level IRI of `§ 42`,
+  `citationDetail = "lg 1"`, and `citationText = "§ 42 lg 1 alusel"`
+- Cross-reference: a preamble with two citations produces two
+  separate `Citation` instances, each with its own target and detail
+  — verify by serialise/round-trip that no detail/target mismatch
+  occurs (the original ordering-pair concern)
 - Cross-reference: preamble citation of *Vabariigi Valitsuse määrus
   nr 112* resolves to a `NationalRegulation` target, not silently
   dropped
@@ -602,7 +838,8 @@ Extends the existing 39-test pytest suite.
 - Cross-reference: vallavalitsus act citing a vallavolikogu act of
   the same municipality resolves correctly under the
   municipality-first scoping rules
-- Cross-reference: act with no preamble emits no `issuedUnder`
+- Cross-reference: act with no preamble emits no `issuedUnder` or
+  `implementsCitation`
 - Cross-reference: intra-municipality `linnavolikogu määrus nr X`
   resolves to same-issuer act, not cross-municipality
 - Inverse: alcohol law gains `implementedBy` triples derived **only**
@@ -621,13 +858,25 @@ Extends the existing 39-test pytest suite.
 - Sanctions: KOV waste-violation fine clause is captured with
   `enforcedAtLevel = municipality`
 
-### Similarity tests (~7)
+### Similarity tests (~10)
 
 - `data/kov/title_frequency.json` is generated from the actual KOV
   corpus, has ≥200 entries, and survives a re-run unchanged
   (deterministic ordering)
-- Output IDs in similarity files are act IRIs
+- Output IDs in per-bucket similarity files are act IRIs
   (`estleg:Reg_<terviktekstId>_Map_<year>`), not provision IRIs
+- Per-bucket file conforms to the documented JSON shape (top-level
+  fields `bucket`, `regulationCount`, `topK`, `generatedAt`,
+  `pipelineVersion`, `pairs`)
+- Each `pairs` entry has `source` and a `peers` list; each peer has
+  `target`, `score`, and `scoreModel = "tfidf-cosine"`
+- Act-level back-links: every KOV act with similar peers has an
+  `estleg:regulationTypeBucket` and at least one `estleg:similarAct`
+  triple. Each `similarAct` value is a `Similarity` reified node
+  carrying its own `similarTarget`, `similarityScore`, and
+  `similarityModel`
+- Idempotent rerun: clearing and regenerating produces identical
+  output, no duplicate `similarAct` triples
 - Bucket detector classifies a fixture set of 30 KOV acts with ≥80%
   coverage
 - Two `jäätmehoolduseeskiri` acts from different municipalities land in
@@ -646,20 +895,32 @@ Extends the existing 39-test pytest suite.
 
 Three sequential PRs, each with its own gate:
 
-- **Gate A — Layer 1.** `validate_all.py` clean, every KOV act and
-  provision enriched, SHACL passes, all 357 issuers mapped. Ship as
-  standalone PR.
+- **Gate A — Layer 1.** `validate_all.py` clean. SHACL passes for all
+  Layer 1 shapes (Municipality, Issuer, MunicipalRegulation,
+  KovProvision, Law). All 357 issuers mapped using the body-type-aware
+  auto-match plus curated CSV. Every KOV act has `enactedBy`,
+  `enactedByMunicipality`, and `titleNormalized`. Every KOV provision
+  has `enactedBy`, `enactedByMunicipality`, `partOfAct`, and
+  `KovProvision` rdf:type. Every existing law act node has the new
+  `estleg:Law` rdf:type. Ship as standalone PR.
 - **Gate B — Layer 2.** All ten KOV-relevant pipelines (cross-ref,
   inverse, deontic, EuroVoc, temporal, sanctions, competence,
   legal-concepts, court-provision-links, amendment-history) run cleanly
   over the full KOV set. Per-pipeline coverage reports attached, with
   runtime metrics. **The per-caller audit (input discovery + output
   path handling + idempotency + per-script test) passes for every
-  consumer** before the `iter_peep_files()` default flips. Ship as
-  second PR.
-- **Gate C — Layer 3.** Bucket coverage ≥80% on full KOV set, similarity
-  output size bounded, KOV→state-law similarity sample reviewed. Ship
-  as third PR.
+  consumer** before the `iter_peep_files()` default flips.
+  **`generate_similarity_index` pins `include_kov=False` at the call
+  site in the same PR** — the iterator default cannot flip while
+  similarity is still provision-level. Ship as second PR.
+- **Gate C — Layer 3.** Bucket coverage ≥80% on full KOV set,
+  similarity output size bounded, KOV→state-law similarity sample
+  reviewed. Per-bucket output files conform to the documented JSON
+  schema. Act-level `similarAct` and `regulationTypeBucket` triples
+  written back into KOV peep files; SHACL `Similarity` shape passes.
+  The Gate B `include_kov=False` pin on `generate_similarity_index`
+  is removed and replaced with the new act-level KOV similarity
+  generator gated by `include_kov_similarity=True`. Ship as third PR.
 
 Each PR is independently revertible. Layer 1 alone provides immediate
 query value (per-municipality, per-issuer queries become possible) —
@@ -671,21 +932,26 @@ Layer 2 and Layer 3 are upgrades on top.
   status after Gate B
 - `docs/SCHEMA_REFERENCE.md` — new classes and every new property
   introduced by this spec:
-  - **Classes:** `Municipality`, `Issuer` (subclass of `Institution`),
-    `KovProvision` (subclass of `LegalProvision`)
+  - **New classes:** `Act` (parent), `Law` (subclass of Act),
+    `Municipality`, `Issuer` (subclass of `Institution`),
+    `KovProvision` (subclass of `LegalProvision`),
+    `Citation`, `Similarity`. Existing `*Regulation` classes
+    declared as subclasses of `Act`.
   - **Entity-layer properties:** `enactedBy`, `enactedByMunicipality`,
     `currentMunicipality`, `bodyType`, `ehakCode`, `county`,
     `historicalMunicipalityName`, `mappingSource`, `mappingEvidence`,
-    `titleNormalized`
+    `titleNormalized`, `partOfAct`
   - **Cross-reference / inverse properties:** `issuedUnder`,
-    `implementsProvision`, `citationDetail`, `implementedBy`,
-    `implementedByCount`
+    `implementsCitation`, `citationTarget`, `citationDetail`,
+    `citationText`, `implementedBy`, `implementedByCount`
   - **Sanctions:** `enforcedAtLevel`
-  - **Similarity:** the act-level similarity output property name
-    (e.g. `similarAct` / `actSimilarityScore`) and the
-    `regulationTypeBucket` annotation on each KOV act
-  - **IRI patterns** documented for `Municipality_EHAK_<code>` and
-    `Issuer_<slug>`
+  - **Similarity:** `similarAct` (object-valued, points to a reified
+    `Similarity` node), `similarTarget`, `similarityScore`,
+    `similarityModel`, and the `regulationTypeBucket` annotation on
+    each KOV act
+  - **IRI patterns** documented for `Municipality_EHAK_<code>`,
+    `Issuer_<slug>`, `Citation_<source>_<seq>`, and
+    `Similarity_<source>_<peer>`
 - `docs/API_GUIDE.md` — example queries by municipality, by issuer, by
   regulation-type bucket
 - `docs/REGULATIONS_INTEGRATION_PLAN.md` — mark Phase 2 complete; link
@@ -710,15 +976,22 @@ Deferred to a future phase:
 - 79 Municipality nodes and 357 Issuer nodes generated and SHACL-valid,
   using the documented IRI patterns
   (`Municipality_EHAK_<code>`, `Issuer_<slug>`).
+- Auto-match uses both name root and body type (linn vs vald);
+  ambiguous cases fail rather than guess.
 - Every Issuer carries `mappingSource`; every curated mapping carries
   non-empty `mappingEvidence`.
-- Every KOV act has `enactedBy` and `enactedByMunicipality`. Every KOV
-  provision is typed as `KovProvision` and has `enactedByMunicipality`.
+- New parent class hierarchy in place: `estleg:Act` declared, with
+  `estleg:Law`, `estleg:NationalRegulation`, and
+  `estleg:MunicipalRegulation` as subclasses. Every existing law act
+  node carries the new `estleg:Law` rdf:type.
+- Every KOV act has `enactedBy`, `enactedByMunicipality`, and
+  `titleNormalized`. Every KOV provision is typed as `KovProvision`
+  and has `enactedBy`, `enactedByMunicipality`, and `partOfAct`.
 - The cross-reference extractor scans both provision text and act-level
   `preambleText`. Preamble references attach to the act node via
-  `issuedUnder` (range: Law ∪ NationalRegulation ∪ MunicipalRegulation),
-  `implementsProvision` (paragraph-granularity), and `citationDetail`
-  (lg/p literal) where applicable.
+  `issuedUnder` (range: `Act`) and `implementsCitation` (range:
+  `Citation`, with `citationTarget`, optional `citationDetail`, and
+  optional `citationText` per reified node).
 - Internal-act references use the **municipality-first** resolver
   (vallavalitsus → vallavolikogu within the same municipality is
   supported); global fallback only on a unique high-confidence match.
@@ -750,5 +1023,7 @@ Deferred to a future phase:
   metrics (wall-time, items-per-second, memory) and failure samples.
 - KOV-aware similarity is **act-level**, ships behind
   `include_kov_similarity=True`, with bucket coverage ≥80% and bounded
-  output size.
+  output size. Per-bucket output files conform to the documented JSON
+  schema. Each KOV act node also carries back-link triples
+  (`regulationTypeBucket`, `similarAct` → reified `Similarity` nodes).
 - Three documentation surfaces updated; CHANGELOG carries three entries.
