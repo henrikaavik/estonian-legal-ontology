@@ -12,6 +12,15 @@
 > `docs/superpowers/specs/2026-05-02-kov-integration-design.md` and
 > `docs/superpowers/plans/2026-05-02-kov-integration-layer1.md`.
 
+> **Status (2026-05-03):** KOV integration Layer 2a (foundation +
+> discovery fixes) implemented. 5 pipelines (deontic, EuroVoc, temporal,
+> legal-concepts, amendment-history) now process KOV files; the iterator
+> default flips to `include_kov=True`; 9 deferred/irrelevant pipelines pin
+> `include_kov=False`. Layer 2b (cross-references + inverse) and 2c
+> (semantic resolvers) follow as separate PRs. Gate B = umbrella milestone
+> reached when 2a + 2b + 2c have all landed. See
+> `docs/superpowers/plans/2026-05-03-kov-integration-layer2a.md`.
+
 ## Finding
 
 The missing domestic **maarus / maarused** are in Riigi Teataja, not in a separate source. The current ontology pipeline already uses the right Riigi Teataja API, but `scripts/generate_all_laws.py` hard-codes `dokument=seadus`. The same endpoint supports `dokument=määrus`.
