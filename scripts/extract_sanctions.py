@@ -507,7 +507,7 @@ def main() -> None:
     print("Estonian Legal Ontology - Sanctions Extraction")
     print("=" * 70)
 
-    law_files = iter_peep_files()
+    law_files = iter_peep_files(include_kov=False)  # DEFERRED to Layer 2c
     print(f"\n[0/4] Clearing existing sanctions for idempotency...")
 
     # --- Fix 1: clearing pass for idempotency ---

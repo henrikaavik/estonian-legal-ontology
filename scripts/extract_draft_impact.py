@@ -144,7 +144,7 @@ def _read_ontology_iri(filepath: Path) -> str | None:
 def build_ontology_iri_map() -> dict[str, str]:
     """Scan all krr_outputs/*_peep.json files and build filename → ontology IRI map."""
     iri_map: dict[str, str] = {}
-    for fpath in iter_peep_files():
+    for fpath in iter_peep_files(include_kov=False):  # KOV does not apply (EU/draft pipeline)
         iri = _read_ontology_iri(fpath)
         if iri:
             iri_map[fpath.name] = iri
@@ -258,7 +258,7 @@ def main() -> None:
                 del node[key]
 
     # Clear estleg:affectedBy from all law peep files
-    for fpath in iter_peep_files():
+    for fpath in iter_peep_files(include_kov=False):  # KOV does not apply (EU/draft pipeline)
         try:
             with open(fpath, "r", encoding="utf-8") as f:
                 doc = json.load(f)

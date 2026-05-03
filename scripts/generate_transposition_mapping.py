@@ -456,7 +456,7 @@ def main():
     # --- Step 0: Clear existing transposition data ---
     print("\n--- Clearing existing transposition data ---")
     cleared_count = 0
-    for peep_file in iter_peep_files():
+    for peep_file in iter_peep_files(include_kov=False):  # KOV does not apply
         if peep_file.parent != KRR_DIR:
             continue
         if clear_transposition_from_file(peep_file):

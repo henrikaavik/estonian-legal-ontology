@@ -130,7 +130,7 @@ def collect_all_references() -> tuple[
     iri_to_file: dict[str, Path] = {}
 
     # Collect from main krr_outputs directory
-    all_files = iter_peep_files()
+    all_files = iter_peep_files(include_kov=False)  # DEFERRED to Layer 2b
     # Also include riigikohus files (though they typically don't have references)
     rk_dir = KRR_DIR / "riigikohus"
     if rk_dir.exists():
@@ -273,7 +273,7 @@ def clear_existing_inverse_refs() -> int:
     Returns count of files cleaned.
     """
     cleaned = 0
-    all_files = iter_peep_files()
+    all_files = iter_peep_files(include_kov=False)  # DEFERRED to Layer 2b
     rk_dir = KRR_DIR / "riigikohus"
     if rk_dir.exists():
         all_files.extend(sorted(rk_dir.glob("*_peep.json")))
@@ -309,7 +309,7 @@ def verify_symmetry() -> list[dict]:
     # Pass 1 – collect all referencedBy for quick lookup
     referenced_by: dict[str, set[str]] = defaultdict(set)
 
-    all_files = iter_peep_files()
+    all_files = iter_peep_files(include_kov=False)  # DEFERRED to Layer 2b
     rk_dir = KRR_DIR / "riigikohus"
     if rk_dir.exists():
         all_files.extend(sorted(rk_dir.glob("*_peep.json")))
