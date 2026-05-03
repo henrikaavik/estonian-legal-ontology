@@ -20,7 +20,7 @@ After 2a lands:
 1. The Layer 2 schema is fully declared in `metadata.jsonld` and `shacl/estonian_legal_shapes.ttl` — Citation class, `issuedUnder`, `implementsCitation`, `citationTarget`, `citationDetail`, `citationText`, `implementedBy`, `implementedByCount`, `enforcedAtLevel`. **No** Layer-2 triples are emitted yet — that's 2b and 2c.
 2. `estleg_common.iter_peep_files()` defaults `include_kov=True`. Every call site has been audited. The 9 KOV-deferred or KOV-irrelevant pipelines (cross-ref, inverse, sanctions, competence, court-links, similarity, draft-impact, harmonisation-links, transposition-mapping) explicitly pin `include_kov=False` at their call sites — they remain laws-and-state-only until their dedicated PRs land.
 3. The 5 KOV-relevant discovery-only pipelines (deontic, EuroVoc, temporal, legal-concepts, amendment-history) process KOV files end-to-end and emit their existing-shape triples (deontic classifications, EuroVoc tags, temporal dates, legal concepts, amendment chains) over the expanded input universe, with no regressions on the laws-and-state subset.
-4. Each of the 5 fixed pipelines emits `krr_outputs/reports/kov/<pipeline>_coverage.json` with per-run metrics (counts, triples emitted, runtime, failure samples). Pre-2a, KOV file counts were 0 by iter-default; the reports here are the absolute "after" values that reviewers verify on their own merits (input_files_kov ≥ 11k, triples_emitted > 0, error_count ≤ small).
+4. Each of the 5 fixed pipelines emits `krr_outputs/reports/kov/<pipeline>_coverage.json` with per-run metrics (counts, triples emitted, runtime, failure samples). Pre-2a, KOV file counts were 0 by iter-default; the reports here are the absolute "after" values that reviewers verify on their own merits — specifically `input_files_kov ≈ 11059`, `files_with_output_kov > 0`, `triples_emitted_kov > 0` (the KOV-specific fields prove that KOV actually contributed; total `triples_emitted > 0` could be satisfied by laws/state regs alone), and `error_count ≤ small`.
 
 **Not in 2a:** preamble scanning (2b), `implementedBy` aggregation (2b), KOV-aware competence resolution (2c), KOV citation resolver for court links (2c), `enforcedAtLevel` derivation (2c), Citation reified instances (2b — only the schema lands here).
 
@@ -634,17 +634,66 @@ pytest -q
 
 Expected: prior count + 3 new iter_peep_files tests, all passing.
 
-- [ ] **Step 5: Commit**
+- [ ] **Step 5: Update existing tests for the new default**
+
+Three tests in `tests/test_generate_regulations.py` were written
+against the old `include_kov=False` default and assert that KOV
+files are NOT in the iterator output:
+
+- `test_finds_regulation_when_included` (lines 310–318)
+- `test_excludes_regulation_when_not_included` (lines 320–327)
+- `test_kov_opt_in` (lines 329–338) — this one already passes
+  `include_kov=True` explicitly, so it stays correct
+
+The first two need explicit `include_kov=False` pinning to preserve
+their original intent (testing that KOV exclusion works when
+requested). Edit `tests/test_generate_regulations.py`:
+
+```python
+# In test_finds_regulation_when_included, change:
+        found = iter_peep_files(include_laws=True, include_regulations=True)
+# to:
+        found = iter_peep_files(
+            include_laws=True, include_regulations=True, include_kov=False
+        )
+        # Comment update: was implicit default; now opt-out is explicit.
+
+# In test_excludes_regulation_when_not_included, change:
+        found = iter_peep_files(include_laws=True, include_regulations=False)
+# to:
+        found = iter_peep_files(
+            include_laws=True, include_regulations=False, include_kov=False
+        )
+```
+
+The assertion lines (`assert files["kov"] not in found`) stay the same.
+
+- [ ] **Step 6: Re-run the suite**
+
+```
+pytest -q
+```
+
+Expected: all tests still pass, including the three updated ones in
+`test_generate_regulations.py` plus the three new
+`test_iter_peep_files.py` tests. No regressions from the default
+flip.
+
+- [ ] **Step 7: Commit**
 
 ```bash
-git add scripts/estleg_common.py tests/test_iter_peep_files.py
+git add scripts/estleg_common.py tests/test_iter_peep_files.py tests/test_generate_regulations.py
 git commit -m "Flip iter_peep_files() default to include_kov=True
 
 The 9 deferred/irrelevant pipelines pinned include_kov=False in the
 prior commit, so this flip routes KOV files only to the 5 KOV-ready
 pipelines (deontic, EuroVoc, temporal, legal-concepts, amendment-
 history). Per-pipeline coverage reports in subsequent tasks let
-reviewers verify the input universe shift."
+reviewers verify the input universe shift.
+
+Also pins include_kov=False on two existing test_generate_regulations
+cases that were written against the old default. The third KOV test
+(test_kov_opt_in) already passes include_kov=True explicitly."
 ```
 
 ---
@@ -687,16 +736,20 @@ class TestCoverageReport:
             pipeline="classify_eurovoc",
             run_timestamp="2026-05-03T12:00:00Z",
             pipeline_version="abc1234",
-            input_files_total=11796,
+            input_files_total=15508,
             input_files_kov=11059,
-            files_processed=11796,
-            files_skipped=0,
-            skip_reasons={},
+            files_processed=15500,
+            files_processed_kov=11055,
+            files_with_output=14800,
+            files_with_output_kov=10500,
+            files_skipped=8,
+            skip_reasons={"no_act_node": 6, "json_decode_error": 2},
             triples_emitted=42000,
+            triples_emitted_kov=28000,
             fallback_hits=0,
             unresolved_references=0,
             wall_time_seconds=125.4,
-            items_per_second=94.0,
+            items_per_second=124.0,
             peak_memory_mb=312.5,
             error_count=0,
             failure_samples=[],
@@ -708,11 +761,21 @@ class TestCoverageReport:
             doc = json.load(fh)
 
         assert doc["pipeline"] == "classify_eurovoc"
-        assert doc["input_files_total"] == 11796
+        assert doc["input_files_total"] == 15508
         assert doc["input_files_kov"] == 11059
-        assert doc["files_processed"] == 11796
-        assert doc["files_skipped"] == 0
+        assert doc["files_processed"] == 15500
+        # The KOV-specific fields are the load-bearing ones for the
+        # reviewer gate — assert each is correctly round-tripped.
+        assert doc["files_processed_kov"] == 11055
+        assert doc["files_with_output"] == 14800
+        assert doc["files_with_output_kov"] == 10500
+        assert doc["files_skipped"] == 8
+        assert doc["skip_reasons"] == {"no_act_node": 6,
+                                        "json_decode_error": 2}
         assert doc["triples_emitted"] == 42000
+        assert doc["triples_emitted_kov"] == 28000
+        assert doc["fallback_hits"] == 0
+        assert doc["unresolved_references"] == 0
         assert isinstance(doc["wall_time_seconds"], (int, float))
         assert isinstance(doc["items_per_second"], (int, float))
         assert isinstance(doc["peak_memory_mb"], (int, float))
@@ -720,7 +783,7 @@ class TestCoverageReport:
 
     def test_required_fields_only(self, tmp_path):
         """All count/runtime fields default to zero — only pipeline/
-        timestamp/version are required by the dataclass."""
+        timestamp/version + the two input_files counts are required."""
         report = CoverageReport(
             pipeline="x",
             run_timestamp="t",
@@ -731,9 +794,20 @@ class TestCoverageReport:
         out = tmp_path / "c.json"
         write_coverage_report(report, out)
         doc = json.load(open(out, encoding="utf-8"))
+        # All of the KOV-specific + extended fields must default to
+        # 0 / empty when not explicitly set.
         assert doc["files_processed"] == 0
+        assert doc["files_processed_kov"] == 0
+        assert doc["files_with_output"] == 0
+        assert doc["files_with_output_kov"] == 0
+        assert doc["files_skipped"] == 0
         assert doc["skip_reasons"] == {}
+        assert doc["triples_emitted"] == 0
+        assert doc["triples_emitted_kov"] == 0
         assert doc["fallback_hits"] == 0
+        assert doc["unresolved_references"] == 0
+        assert doc["items_per_second"] == 0.0
+        assert doc["peak_memory_mb"] == 0.0
 
     def test_failure_samples_capped(self, tmp_path):
         # Helper rejects more than 20 samples (the documented cap)
@@ -1491,62 +1565,147 @@ Replace with:
 4. Write back via `update_law_file_eurovoc(meta["path"], domains)` —
    pass the source path, not `KRR_DIR / law_file`.
 
-**At the discovery block (around line 432-475):**
+**Concrete replacement of the discovery block + classification loop
+(lines 440-520):**
 
-Find:
+The current main() does this in sequence:
+1. Loads INDEX.json into `laws` (a list of `{name, files: [...]}`
+   dicts).
+2. Loops `for i, law in enumerate(laws)` — pulls `name`, `files`,
+   loads `KRR_DIR / files[0]`, classifies, appends per-law entry to
+   `classifications`, updates each file in `files`.
+3. Aggregates a report dict using `len(laws)`, `name`, `files`,
+   `classifications`, `unclassified`, `files_updated`.
+
+The fix replaces both (1) discovery and (2) the loop with a
+peep-file-driven flow, while keeping the report-shape compatible so
+the existing report-emit logic (around lines 540-565) still works.
+
+Replace lines 440-520 of `scripts/classify_eurovoc.py`:
 
 ```python
-    print("\n--- Loading INDEX.json ---")
-    index_path = KRR_DIR / "INDEX.json"
-    # ... INDEX-loading logic ...
-```
-
-Replace with:
-
-```python
+    # --- Step 1: Discover peep files ---
     print("\n--- Discovering peep files ---")
     peep_files = iter_peep_files()
     print(f"  Discovered {len(peep_files)} peep files")
-    laws_meta = []
+    laws_meta: list[dict] = []
     for f in peep_files:
         meta = read_act_metadata_from_peep(f)
         if meta is None:
             continue
+        # Use the @id as the canonical "name" for the report — for
+        # backwards-compat with the report shape, also store a
+        # human-readable "name" derived from rdfs:label or @id.
         meta["path"] = f
+        meta["name"] = meta.get("title") or meta.get("@id") or f.stem
         laws_meta.append(meta)
-    print(f"  {len(laws_meta)} have a recognized act node")
-```
+    print(f"  {len(laws_meta)} have a recognized act node "
+          f"(skipped {len(peep_files) - len(laws_meta)} non-act files)")
 
-**At the per-file classification loop (around line 467):**
+    # --- Step 2: Classify each act ---
+    print("\n--- Classifying acts ---")
 
-The current loop probably looks like (reading existing code):
+    classifications: list[dict] = []
+    domain_counts: dict[str, int] = {}  # code → number of acts assigned
+    files_updated = 0
+    files_skipped = 0
+    files_error = 0
+    unclassified: list[str] = []
 
-```python
-    primary_file = KRR_DIR / files[0]
-    # ... checks ...
-    data = load_json(primary_file)
-    text = extract_text_from_law(data)
-    domains = classify_text(text)
-    update_law_file_eurovoc(primary_file, domains)
-```
+    for i, meta in enumerate(laws_meta):
+        name = meta["name"]
+        path = meta["path"]
 
-Replace with:
-
-```python
-    for meta in laws_meta:
-        data = load_json(meta["path"])
-        if data is None:
+        try:
+            data = load_json(path)
+        except Exception as e:
+            print(f"    ERROR loading {path.name}: {e}")
+            files_error += 1
             continue
+        if data is None:
+            files_error += 1
+            continue
+
+        # Keep extract_text_from_law(data) — it walks the @graph and
+        # gathers rdfs:label, dc:source, summaries, defined terms.
+        # The new metadata helper is only for path/identity
+        # bookkeeping, not classification text.
         text = extract_text_from_law(data)
         domains = classify_text(text)
-        if domains:
-            update_law_file_eurovoc(meta["path"], domains)
+
+        if not domains:
+            unclassified.append(name)
+            files_skipped += 1
+            continue
+
+        entry = {
+            "law_name": name,
+            "file": str(path.relative_to(KRR_DIR)),
+            "domains": [
+                {
+                    "code": code,
+                    "slug": slug,
+                    "label_et": label_et,
+                    "label_en": label_en,
+                    "eurovoc_uri": f"{EUROVOC_URI_BASE}{code}",
+                    "keyword_hits": hits,
+                }
+                for code, slug, label_et, label_en, hits in domains
+            ],
+        }
+        classifications.append(entry)
+
+        for code, *_ in domains:
+            domain_counts[code] = domain_counts.get(code, 0) + 1
+
+        # Write back to the source path (not KRR_DIR / filename) — the
+        # KOV files live under regulations/kov/<issuer>/, state regs
+        # under regulations/riik/, and laws at root. The helper takes
+        # the real path so all three cases work.
+        if update_law_file_eurovoc(path, domains):
+            files_updated += 1
+
+        if (i + 1) % 500 == 0:
+            print(f"  Processed {i + 1}/{len(laws_meta)} acts "
+                  f"({files_updated} files updated)...")
+
+    print(f"  Processed all {len(laws_meta)} acts")
 ```
 
-Crucially: keep `extract_text_from_law(data)` — it walks the @graph and
-gathers `rdfs:label`, `dc:source`, summaries, defined terms, and other
-text so classification has enough signal. The new
-`read_act_metadata_from_peep` is only for path/identity bookkeeping.
+The downstream report block (around lines 540-565) references
+`len(laws)`, `name`, `classifications`, `unclassified`,
+`files_updated`. Update it:
+
+```python
+# Find:
+        "total_laws_processed": len(laws),
+# Change to:
+        "total_laws_processed": len(laws_meta),
+```
+
+The `name` references are inside the per-classification entries
+which are now built from `meta["name"]`, so they remain valid.
+`files_updated`, `classifications`, `unclassified` keep their
+existing semantics.
+
+Sanity-check after the edit:
+
+```bash
+python3 -c "import ast; ast.parse(open('scripts/classify_eurovoc.py').read())" \
+    && echo "syntax OK"
+```
+
+Expected: `syntax OK`. Any `SyntaxError` means a stray `laws` /
+`law` reference survived the rewrite — grep for it:
+
+```bash
+grep -n "\\blaws\\b\\|\\blaw\\.get\\|index_data" scripts/classify_eurovoc.py
+```
+
+Expected: only `laws_meta` (and any string literals like
+`"laws_processed"`). Any remaining bare `laws` or `law.get(...)`
+reference is a leftover from the INDEX-driven flow and must be
+replaced.
 
 - [ ] **Step 7: Remove the root-only filter**
 
@@ -2594,15 +2753,17 @@ class TestAmendmentHistoryDiscovery:
         # XML with a muutmismarge block whose children match what
         # extract_amendments_from_xml expects (lines 162-210 of the
         # script): aktikuupaev, joustumine, and avaldamismarge with
-        # RTosa/RTaasta/RTnumber children. Each muutmismarge is
-        # extracted as a separate amendment entry.
+        # RTosa/RTaasta/RTnr children (the script reads RTnr, not
+        # RTnumber — see line 205 of the script). Each muutmismarge
+        # is extracted as a separate amendment entry; the RT fields
+        # are formatted as "RT IV, 2024, 1" in the output.
         (rt / "maarus_kov" / "reg_777.xml").write_text(
             '<akt globaalID="777"><metaandmed>'
             '<muutmismarge>'
             '<aktikuupaev>2023-06-15</aktikuupaev>'
             '<joustumine>2024-01-01</joustumine>'
             '<avaldamismarge>'
-            '<RTosa>IV</RTosa><RTaasta>2024</RTaasta><RTnumber>1</RTnumber>'
+            '<RTosa>IV</RTosa><RTaasta>2024</RTaasta><RTnr>1</RTnr>'
             '</avaldamismarge>'
             '</muutmismarge>'
             '</metaandmed></akt>',
@@ -3180,25 +3341,50 @@ lines for diagnosis (avoids `tail -5` masking the Python crash).
 
 ```bash
 ls -la krr_outputs/reports/kov/*.json
+
+set -e  # any per-pipeline gate failure halts the loop
+
 for p in classify_deontic classify_eurovoc extract_temporal_data extract_legal_concepts generate_amendment_history; do
   echo "=== $p ==="
   python3 -c "
-import json
+import json, sys
 d = json.load(open('krr_outputs/reports/kov/${p}_coverage.json'))
-print(f\"  input total/kov:     {d['input_files_total']} / {d['input_files_kov']}\")
-print(f\"  files processed:     {d['files_processed']}\")
-print(f\"  files skipped:       {d['files_skipped']}  (reasons: {d.get('skip_reasons')})\")
-print(f\"  triples emitted:     {d['triples_emitted']}\")
-print(f\"  fallback hits:       {d['fallback_hits']}\")
-print(f\"  unresolved refs:     {d['unresolved_references']}\")
-print(f\"  wall time:           {d['wall_time_seconds']}s ({d['items_per_second']} items/s)\")
-print(f\"  peak memory:         {d['peak_memory_mb']} MB\")
-print(f\"  errors:              {d['error_count']}\")
+print(f\"  input total/kov:        {d['input_files_total']} / {d['input_files_kov']}\")
+print(f\"  files processed (kov):  {d['files_processed']} ({d['files_processed_kov']})\")
+print(f\"  files w/ output (kov):  {d['files_with_output']} ({d['files_with_output_kov']})\")
+print(f\"  files skipped:          {d['files_skipped']}  (reasons: {d.get('skip_reasons')})\")
+print(f\"  triples emitted (kov):  {d['triples_emitted']} ({d['triples_emitted_kov']})\")
+print(f\"  fallback hits:          {d['fallback_hits']}\")
+print(f\"  unresolved refs:        {d['unresolved_references']}\")
+print(f\"  wall time:              {d['wall_time_seconds']}s ({d['items_per_second']} items/s)\")
+print(f\"  peak memory:            {d['peak_memory_mb']} MB\")
+print(f\"  errors:                 {d['error_count']}\")
+
+# KOV-specific gates: total triples_emitted > 0 is NOT enough because
+# laws/state regs could account for it while every KOV file is skipped.
+fail = []
+if d['input_files_kov'] < 11000:
+    fail.append(f'input_files_kov={d[\"input_files_kov\"]} < 11000')
+if d['files_with_output_kov'] == 0:
+    fail.append('files_with_output_kov is 0 — KOV produced no output')
+if d['triples_emitted_kov'] == 0:
+    fail.append('triples_emitted_kov is 0 — KOV produced no triples')
+if fail:
+    print('  GATE FAIL:')
+    for f in fail: print(f'    {f}')
+    sys.exit(1)
+print('  GATE OK')
 "
 done
 ```
 
-Expected: each pipeline shows `input_files_kov ≥ 11059`, `triples_emitted > 0`, and the runtime + memory fields populated (not 0.0). If `peak_memory_mb` is 0.0 you may be on Windows or the `resource` module is unavailable — note this in the PR body but don't block the PR.
+Expected: each pipeline reports `GATE OK` on the trailing line. If
+`peak_memory_mb` is 0.0 you may be on Windows or the `resource` module
+is unavailable — note this in the PR body but don't block the PR.
+
+The gate is intentionally strict on the KOV-specific output fields:
+total `triples_emitted > 0` is not sufficient evidence that KOV
+contributed (laws/state regs alone could satisfy it).
 
 - [ ] **Step 4: Verify the 9 pinned pipelines still skip KOV**
 
@@ -3239,16 +3425,17 @@ Layer 2a of the three-PR Layer 2 split. Gate B = umbrella milestone, reached whe
 ## Test plan
 - [ ] `pytest -q` — record actual pass count (≈ Layer 1 baseline + ≥25 new tests)
 - [ ] `python scripts/validate_all.py` — 0 errors
-- [ ] Coverage reports show input_files_kov ≥ 11k for the 5 fixed pipelines
+- [ ] Each of the 5 coverage reports passes the KOV-specific gate: `input_files_kov ≥ 11000`, `files_with_output_kov > 0`, `triples_emitted_kov > 0`
 - [ ] Pinned pipelines still receive a KOV-free file set when run
 
 ## Reviewer guide for the coverage reports
 
 Each KOV-relevant pipeline emits `krr_outputs/reports/kov/<pipeline>_coverage.json`. The coverage helper didn't exist on `main`, so the "before" baseline is implicit: pre-2a, `input_files_kov = 0` for all 5 fixed pipelines (KOV was excluded by the iterator default).
 
-Verify the absolute values in this PR's reports look reasonable:
-- `input_files_kov >= 11000` (full KOV corpus participated)
-- `triples_emitted > 0`
+Verify the **KOV-specific** values in this PR's reports — total triples > 0 alone is insufficient (laws/state regs could account for it):
+- `input_files_kov ≈ 11059` (full KOV corpus participated)
+- `files_with_output_kov > 0` (KOV files actually produced output)
+- `triples_emitted_kov > 0` (KOV files actually emitted triples)
 - `error_count` ideally 0; small numbers OK if `failure_samples` shows KOV-specific edge cases, not systemic failures
 - `items_per_second` and `peak_memory_mb` within budget
 
