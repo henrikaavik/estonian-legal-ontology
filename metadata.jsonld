@@ -472,6 +472,62 @@
       "rdfs:label": "mappingEvidence",
       "rdfs:comment": "Source citation for a curated Issuer mapping. Empty for auto-match rows; required for every curated row.",
       "rdfs:range": {"@id": "xsd:string"}
+    },
+    {
+      "@id": "estleg:citationTarget",
+      "@type": "owl:ObjectProperty",
+      "rdfs:label": "citationTarget",
+      "rdfs:comment": "Resolved provision IRI for a Citation. Range: LegalProvision (paragraph-level — sub-paragraph detail rides on citationDetail).",
+      "rdfs:range": {"@id": "estleg:LegalProvision"}
+    },
+    {
+      "@id": "estleg:citationDetail",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "citationDetail",
+      "rdfs:comment": "Optional sub-paragraph specificity for a Citation, e.g. 'lg 1 p 3'. Layer 2b populates from preamble text.",
+      "rdfs:range": {"@id": "xsd:string"}
+    },
+    {
+      "@id": "estleg:citationText",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "citationText",
+      "rdfs:comment": "Optional original citation string for traceability, e.g. '§ 42 lg 1 alusel'.",
+      "rdfs:range": {"@id": "xsd:string"}
+    },
+    {
+      "@id": "estleg:issuedUnder",
+      "@type": "owl:ObjectProperty",
+      "rdfs:label": "issuedUnder",
+      "rdfs:comment": "Act → enabling act link, derived from preamble citations. Range: Act (Law, NationalRegulation, MunicipalRegulation). Layer 2b populates.",
+      "rdfs:range": {"@id": "estleg:Act"}
+    },
+    {
+      "@id": "estleg:implementsCitation",
+      "@type": "owl:ObjectProperty",
+      "rdfs:label": "implementsCitation",
+      "rdfs:comment": "Act → reified Citation node carrying the resolved target plus original detail. Layer 2b populates.",
+      "rdfs:range": {"@id": "estleg:Citation"}
+    },
+    {
+      "@id": "estleg:implementedBy",
+      "@type": "owl:ObjectProperty",
+      "rdfs:label": "implementedBy",
+      "rdfs:comment": "Act → acts enacted under this act. Filtered projection of preamble enabling-link inverses (issuedUnder + Citation.citationTarget). Range: Act. Layer 2b populates.",
+      "rdfs:range": {"@id": "estleg:Act"}
+    },
+    {
+      "@id": "estleg:implementedByCount",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "implementedByCount",
+      "rdfs:comment": "Aggregate count of implementedBy entries on an act or provision. Layer 2b populates.",
+      "rdfs:range": {"@id": "xsd:integer"}
+    },
+    {
+      "@id": "estleg:enforcedAtLevel",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "enforcedAtLevel",
+      "rdfs:comment": "Sanction enforcement level: 'state' or 'municipality'. Derived in Layer 2c from the parent act's type.",
+      "rdfs:range": {"@id": "xsd:string"}
     }
   ]
 }
