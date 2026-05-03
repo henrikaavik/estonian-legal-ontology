@@ -351,6 +351,27 @@ class TestNormalizeTitle:
             "Põhimäärus", "Põlva Vallavolikogu"
         ) == "pohimaarus"
 
+    def test_strips_compound_hyphenated_prefix(self):
+        # Real-world case: Kohtla-Järve linn / Kohtla Jarve Linnavolikogu
+        assert normalize_title(
+            "Kohtla-Järve linna jäätmehoolduseeskiri",
+            "Kohtla Jarve Linnavolikogu",
+        ) == "jaatmehoolduseeskiri"
+
+    def test_strips_compound_space_prefix(self):
+        # Same compound issuer, but the title uses spaces instead of hyphen
+        assert normalize_title(
+            "Kohtla Järve linna jäätmehoolduseeskiri",
+            "Kohtla Jarve Linnavolikogu",
+        ) == "jaatmehoolduseeskiri"
+
+    def test_strips_compound_genitive_form(self):
+        # Põhja-Sakala vald (compound vald) genitive form
+        assert normalize_title(
+            "Põhja-Sakala valla hankekord",
+            "Pohja Sakala Vallavolikogu",
+        ) == "hankekord"
+
 
 class TestMetadataJsonLd:
     def test_new_classes_present(self):

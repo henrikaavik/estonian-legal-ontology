@@ -153,28 +153,53 @@ def normalize_title(title: str, issuer_display_name: str) -> str:
     """Lowercase + transliterate the title; strip the issuer's municipality
     name prefix when present at the start.
 
-    The issuer display name is e.g. ``Tallinna Linnavolikogu``. Its first
-    token (``Tallinna``) is the genitive form of the municipality name and
-    is the most common prefix on KOV act titles. The function also handles
-    the form ``<root> valla`` / ``<root> linna`` (e.g.
-    ``Mulgi valla hankekord``).
+    The issuer display name is e.g. ``Tallinna Linnavolikogu`` or
+    ``Kohtla Jarve Linnavolikogu`` (compound — derived from the slug).
+    Drops the body suffix (last token) and uses the remaining tokens as
+    the municipality root. Generates both space- and hyphen-joined
+    variants because real KOV act titles use either form
+    (``Kohtla-Järve linna ...``) while the slug-derived display name
+    uses spaces.
+
+    Examples:
+      ("Tallinna jäätmehoolduseeskiri", "Tallinna Linnavolikogu")
+        -> "jaatmehoolduseeskiri"
+      ("Kohtla-Järve linna jäätmehoolduseeskiri", "Kohtla Jarve Linnavolikogu")
+        -> "jaatmehoolduseeskiri"
+      ("Mulgi valla hankekord", "Mulgi Vallavolikogu")
+        -> "hankekord"
+      ("Üldhariduskooli põhimäärus", "Tartu Linnavolikogu")
+        -> "uldhariduskooli pohimaarus"  (no prefix match)
     """
     base = title.translate(_TRANSLIT).lower().strip()
     base = re.sub(r"\s+", " ", base)
 
-    # Issuer's first token is the municipality name in genitive form
-    issuer_first = issuer_display_name.split()[0]
-    prefix_token = issuer_first.translate(_TRANSLIT).lower()
+    parts = issuer_display_name.split()
+    if len(parts) < 2:
+        # Single-token display name has no body suffix to drop — bail
+        # out without prefix-stripping.
+        return base.strip()
 
-    # Try several prefix shapes, longest first
-    for prefix in (
-        f"{prefix_token} valla ",
-        f"{prefix_token} linna ",
-        f"{prefix_token} ",
-    ):
-        if base.startswith(prefix):
-            base = base[len(prefix):]
-            break
+    # All tokens except the last (the body — Linnavolikogu/Vallavalitsus/etc.)
+    root_tokens = parts[:-1]
+    root_space = " ".join(t.translate(_TRANSLIT).lower() for t in root_tokens)
+
+    # Generate root variants: space-joined and hyphen-joined for compound
+    # names. Single-token roots produce just one variant.
+    root_variants = [root_space]
+    if " " in root_space:
+        root_variants.append(root_space.replace(" ", "-"))
+
+    # Try each prefix shape (longest first to avoid partial matches),
+    # for each root variant.
+    for root in root_variants:
+        for prefix in (
+            f"{root} valla ",
+            f"{root} linna ",
+            f"{root} ",
+        ):
+            if base.startswith(prefix):
+                return base[len(prefix):].strip()
     return base.strip()
 
 
