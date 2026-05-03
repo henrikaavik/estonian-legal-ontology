@@ -350,3 +350,46 @@ class TestNormalizeTitle:
         assert normalize_title(
             "Põhimäärus", "Põlva Vallavolikogu"
         ) == "pohimaarus"
+
+
+class TestMetadataJsonLd:
+    def test_new_classes_present(self):
+        path = REPO_ROOT / "metadata.jsonld"
+        if not path.exists():
+            pytest.skip("metadata.jsonld missing")
+        with open(path, "r", encoding="utf-8") as fh:
+            doc = json.load(fh)
+        ids = {n.get("@id") for n in doc.get("@graph", [])}
+        for required in (
+            "estleg:Act", "estleg:Law",
+            "estleg:Municipality", "estleg:Issuer", "estleg:KovProvision",
+            "estleg:Citation", "estleg:Similarity",
+            "estleg:enactedBy", "estleg:enactedByMunicipality",
+            "estleg:titleNormalized", "estleg:partOfAct",
+            "estleg:ehakCode", "estleg:county", "estleg:bodyType",
+            "estleg:currentMunicipality", "estleg:historicalMunicipalityName",
+            "estleg:mappingSource", "estleg:mappingEvidence",
+        ):
+            assert required in ids, f"missing in metadata.jsonld: {required}"
+
+    def test_subclass_triples_present(self):
+        path = REPO_ROOT / "metadata.jsonld"
+        if not path.exists():
+            pytest.skip("metadata.jsonld missing")
+        with open(path, "r", encoding="utf-8") as fh:
+            doc = json.load(fh)
+
+        def parents_of(class_id):
+            for n in doc["@graph"]:
+                if n.get("@id") == class_id:
+                    raw = n.get("rdfs:subClassOf", [])
+                    if isinstance(raw, dict):
+                        raw = [raw]
+                    return {p.get("@id") for p in raw}
+            return set()
+
+        assert "estleg:Act" in parents_of("estleg:Law")
+        assert "estleg:Act" in parents_of("estleg:NationalRegulation")
+        assert "estleg:Act" in parents_of("estleg:MunicipalRegulation")
+        assert "estleg:Institution" in parents_of("estleg:Issuer")
+        assert "estleg:LegalProvision" in parents_of("estleg:KovProvision")
