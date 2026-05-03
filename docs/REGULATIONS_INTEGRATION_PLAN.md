@@ -6,6 +6,12 @@
 > regulations as first-class participants via `estleg_common.iter_peep_files()`.
 > Phase 2 (KOV regulations) remains opt-in via `--kov`.
 
+> **Status (2026-05-02):** KOV integration Layer 1 (Municipality + Issuer
+> entity model) implemented. Layers 2 (pipelines) and 3 (similarity) follow
+> as separate PRs. See
+> `docs/superpowers/specs/2026-05-02-kov-integration-design.md` and
+> `docs/superpowers/plans/2026-05-02-kov-integration-layer1.md`.
+
 ## Finding
 
 The missing domestic **maarus / maarused** are in Riigi Teataja, not in a separate source. The current ontology pipeline already uses the right Riigi Teataja API, but `scripts/generate_all_laws.py` hard-codes `dokument=seadus`. The same endpoint supports `dokument=määrus`.

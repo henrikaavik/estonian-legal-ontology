@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Added
+- KOV integration Layer 1: Municipality + Issuer entity model
+  (`estleg:Municipality`, `estleg:Issuer`, `estleg:KovProvision`,
+  `estleg:Act`, `estleg:Law` classes; 79 Municipality nodes; 357
+  Issuer nodes; per-act `enactedBy`/`enactedByMunicipality`/
+  `titleNormalized` enrichment; per-provision
+  `KovProvision`/`enactedBy`/`enactedByMunicipality`/`partOfAct`
+  enrichment; `estleg:Law` rdf:type stamped onto all existing law
+  nodes). See `docs/superpowers/specs/2026-05-02-kov-integration-design.md`.
+
+### Known issues
+- Pre-existing SHACL violations on `estleg:requestedCluster` (IRI-as-literal
+  serialization, ~21.5k) and missing `estleg:summary` on some KOV/state-reg
+  provisions (~523) surface when running full-corpus SHACL validation. These
+  pre-date Layer 1 and will be addressed in a follow-up cleanup PR. Layer 1
+  properties themselves have 0 SHACL violations.
+
 ## [0.10.0] - 2026-05-01
 
 ### Added

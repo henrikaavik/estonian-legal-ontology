@@ -7,6 +7,8 @@
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "skos": "http://www.w3.org/2004/02/skos/core#",
     "schema": "http://schema.org/",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "estleg": "https://data.riik.ee/ontology/estleg#"
   },
   "@id": "https://data.riik.ee/dataset/estonian-legal-ontology",
@@ -331,5 +333,145 @@
     "estleg:integrationLayerCount": 14,
     "estleg:courtDecisionYearRange": "1993-2026",
     "estleg:regulationSnapshotDate": "2026-05-01"
-  }
+  },
+  "@graph": [
+    {
+      "@id": "estleg:Act",
+      "@type": "owl:Class",
+      "rdfs:label": "Act",
+      "rdfs:comment": "An enacted Estonian legal act of any level (law, state regulation, municipal regulation)."
+    },
+    {
+      "@id": "estleg:Law",
+      "@type": "owl:Class",
+      "rdfs:label": "Law",
+      "rdfs:subClassOf": {"@id": "estleg:Act"},
+      "rdfs:comment": "A statute (seadus). Stamped onto every existing law act node during KOV layer 1 enrichment."
+    },
+    {
+      "@id": "estleg:Municipality",
+      "@type": "owl:Class",
+      "rdfs:label": "Municipality",
+      "rdfs:comment": "Current Estonian municipality (KOV unit). Territorial entity, identified by EHAK code."
+    },
+    {
+      "@id": "estleg:Issuer",
+      "@type": "owl:Class",
+      "rdfs:label": "Issuer",
+      "rdfs:subClassOf": {"@id": "estleg:Institution"},
+      "rdfs:comment": "An act-issuing body (volikogu or valitsus). Subclass of Institution so competence-extractor links target Issuers via existing Institution-range properties."
+    },
+    {
+      "@id": "estleg:KovProvision",
+      "@type": "owl:Class",
+      "rdfs:label": "KovProvision",
+      "rdfs:subClassOf": {"@id": "estleg:LegalProvision"},
+      "rdfs:comment": "A provision belonging to a MunicipalRegulation. Stamped during KOV layer 1 enrichment so SHACL can target provision-level constraints without OWL inference."
+    },
+    {
+      "@id": "estleg:Citation",
+      "@type": "owl:Class",
+      "rdfs:label": "Citation",
+      "rdfs:comment": "Reified preamble citation (used by KOV layer 2). Carries citationTarget, citationDetail, citationText."
+    },
+    {
+      "@id": "estleg:Similarity",
+      "@type": "owl:Class",
+      "rdfs:label": "Similarity",
+      "rdfs:comment": "Reified similarity link between two acts (used by KOV layer 3). Carries similarTarget, similarityScore, similarityModel."
+    },
+    {
+      "@id": "estleg:NationalRegulation",
+      "rdfs:subClassOf": {"@id": "estleg:Act"}
+    },
+    {
+      "@id": "estleg:MunicipalRegulation",
+      "rdfs:subClassOf": {"@id": "estleg:Act"}
+    },
+    {
+      "@id": "estleg:GovernmentRegulation",
+      "rdfs:subClassOf": {"@id": "estleg:NationalRegulation"}
+    },
+    {
+      "@id": "estleg:MinisterialRegulation",
+      "rdfs:subClassOf": {"@id": "estleg:NationalRegulation"}
+    },
+    {
+      "@id": "estleg:enactedBy",
+      "@type": "owl:ObjectProperty",
+      "rdfs:label": "enactedBy",
+      "rdfs:comment": "The Issuer that enacted this MunicipalRegulation or KovProvision.",
+      "rdfs:range": {"@id": "estleg:Issuer"}
+    },
+    {
+      "@id": "estleg:enactedByMunicipality",
+      "@type": "owl:ObjectProperty",
+      "rdfs:label": "enactedByMunicipality",
+      "rdfs:comment": "The current Municipality whose Issuer enacted this MunicipalRegulation or KovProvision.",
+      "rdfs:range": {"@id": "estleg:Municipality"}
+    },
+    {
+      "@id": "estleg:titleNormalized",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "titleNormalized",
+      "rdfs:comment": "Lowercased, transliterated title with the municipality-name prefix stripped. Used by Layer 3 bucket detection.",
+      "rdfs:range": {"@id": "xsd:string"}
+    },
+    {
+      "@id": "estleg:partOfAct",
+      "@type": "owl:ObjectProperty",
+      "rdfs:label": "partOfAct",
+      "rdfs:comment": "IRI link from a provision to its parent act node. The existing sourceAct is a literal title; partOfAct is the structural join path.",
+      "rdfs:range": {"@id": "estleg:Act"}
+    },
+    {
+      "@id": "estleg:ehakCode",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "ehakCode",
+      "rdfs:comment": "Four-digit EHAK code from Statistics Estonia.",
+      "rdfs:range": {"@id": "xsd:string"}
+    },
+    {
+      "@id": "estleg:county",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "county",
+      "rdfs:comment": "Estonian county (maakond) the Municipality belongs to.",
+      "rdfs:range": {"@id": "xsd:string"}
+    },
+    {
+      "@id": "estleg:bodyType",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "bodyType",
+      "rdfs:comment": "Issuer body type: 'volikogu' (legislative council) or 'valitsus' (executive).",
+      "rdfs:range": {"@id": "xsd:string"}
+    },
+    {
+      "@id": "estleg:currentMunicipality",
+      "@type": "owl:ObjectProperty",
+      "rdfs:label": "currentMunicipality",
+      "rdfs:comment": "The current Municipality that the Issuer maps to (post-2017 successor for legacy Issuers).",
+      "rdfs:range": {"@id": "estleg:Municipality"}
+    },
+    {
+      "@id": "estleg:historicalMunicipalityName",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "historicalMunicipalityName",
+      "rdfs:comment": "Free-text issuing-time municipality name. Preserves history without modeling defunct entities.",
+      "rdfs:range": {"@id": "xsd:string"}
+    },
+    {
+      "@id": "estleg:mappingSource",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "mappingSource",
+      "rdfs:comment": "How the Issuer→Municipality mapping was derived: 'auto-match' | 'haldusreform-2017' | 'manual-review' | 'url:<citation>'.",
+      "rdfs:range": {"@id": "xsd:string"}
+    },
+    {
+      "@id": "estleg:mappingEvidence",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "mappingEvidence",
+      "rdfs:comment": "Source citation for a curated Issuer mapping. Empty for auto-match rows; required for every curated row.",
+      "rdfs:range": {"@id": "xsd:string"}
+    }
+  ]
 }
