@@ -960,3 +960,41 @@ estleg:KovProvisionShape
         sh:name "partOfAct" ;
     ] .
 
+# CitationShape — Layer 2b populates instances; Layer 2a declares the shape.
+#
+# Note on citationTarget: we deliberately do NOT use sh:class
+# estleg:LegalProvision for the target, mirroring the project-wide
+# convention used by LegalProvisionShape (which uses
+# sh:targetSubjectsOf estleg:paragrahv to dodge subclass-inference
+# requirements). KovProvision instances are typed as
+# estleg:KovProvision (and per-act subclasses) but not directly as
+# estleg:LegalProvision; pyshacl with inference="rdfs" needs the
+# subclass triples loaded into the data graph to resolve that.
+# Validating only that citationTarget is an IRI (sh:nodeKind sh:IRI)
+# avoids the brittleness; the LegalProvision range constraint is
+# documented via rdfs:range in metadata.jsonld.
+estleg:CitationShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:Citation ;
+    sh:nodeKind sh:IRI ;
+    sh:pattern "^https://data\\.riik\\.ee/ontology/estleg#Citation_[A-Za-z0-9_]+_[0-9]+$" ;
+    sh:property [
+        sh:path estleg:citationTarget ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:nodeKind sh:IRI ;
+        sh:name "citationTarget" ;
+    ] ;
+    sh:property [
+        sh:path estleg:citationDetail ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "citationDetail" ;
+    ] ;
+    sh:property [
+        sh:path estleg:citationText ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "citationText" ;
+    ] .
+
