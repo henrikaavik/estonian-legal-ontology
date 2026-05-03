@@ -170,8 +170,8 @@ Create `tests/fixtures/kov_layer1/municipalities_min.json`:
   {"ehakCode": "0784", "name": "Tallinn", "county": "Harju maakond", "type": "linn"},
   {"ehakCode": "0793", "name": "Tartu linn", "county": "Tartu maakond", "type": "linn"},
   {"ehakCode": "0796", "name": "Tartu vald", "county": "Tartu maakond", "type": "vald"},
-  {"ehakCode": "0855", "name": "Mulgi vald", "county": "Viljandi maakond", "type": "vald"},
-  {"ehakCode": "0625", "name": "Saaremaa vald", "county": "Saare maakond", "type": "vald"}
+  {"ehakCode": "0480", "name": "Mulgi vald", "county": "Viljandi maakond", "type": "vald"},
+  {"ehakCode": "0714", "name": "Saaremaa vald", "county": "Saare maakond", "type": "vald"}
 ]
 ```
 
@@ -227,8 +227,8 @@ A few must-have rows for the auto-match disambiguation tests (Task 3) to pass:
 - Tartu linn `0793`, Tartu vald `0796`
 - Rakvere linn `0663`, Rakvere vald `0661`
 - Viljandi linn `0897`, Viljandi vald `0899`
-- Võru linn `0919`, Võru vald `0922`
-- Tallinn `0784`, Mulgi vald `0855`, Saaremaa vald `0625`
+- Võru linn `0919`, Võru vald `0917`
+- Tallinn `0784`, Mulgi vald `0480`, Saaremaa vald `0714`
 
 - [ ] **Step 7: Run the full test class**
 
@@ -381,7 +381,7 @@ class TestAutoMatchMunicipality:
         parts = {"slug": "mulgi_vallavolikogu", "root": "mulgi",
                  "body": "vallavolikogu", "bodyType": "volikogu",
                  "municipalityType": "vald"}
-        assert auto_match_municipality(parts, muns) == "0855"
+        assert auto_match_municipality(parts, muns) == "0480"
 
     def test_disambiguates_linn_from_vald(self, muns):
         # Tartu exists as both linn (0793) and vald (0796)
@@ -491,7 +491,7 @@ class TestLoadCuratedMap:
         p = tmp_path / "map.csv"
         p.write_text(
             "issuer_slug,current_municipality_ehak,mapping_source,mapping_evidence\n"
-            "abja_vallavolikogu,0855,haldusreform-2017,RT I 21.06.2017 1\n"
+            "abja_vallavolikogu,0480,haldusreform-2017,RT I 21.06.2017 1\n"
             "aegviidu_vallavolikogu,0150,haldusreform-2017,RT I 21.06.2017 1\n",
             encoding="utf-8",
         )
@@ -501,7 +501,7 @@ class TestLoadCuratedMap:
         rows = load_curated_map(csv_path)
         assert set(rows) == {"abja_vallavolikogu", "aegviidu_vallavolikogu"}
         abja = rows["abja_vallavolikogu"]
-        assert abja["currentMunicipalityCode"] == "0855"
+        assert abja["currentMunicipalityCode"] == "0480"
         assert abja["mappingSource"] == "haldusreform-2017"
         assert abja["mappingEvidence"] == "RT I 21.06.2017 1"
 
@@ -509,7 +509,7 @@ class TestLoadCuratedMap:
         p = tmp_path / "bad.csv"
         p.write_text(
             "issuer_slug,current_municipality_ehak,mapping_source,mapping_evidence\n"
-            "x_vallavolikogu,0855,haldusreform-2017,\n",
+            "x_vallavolikogu,0480,haldusreform-2017,\n",
             encoding="utf-8",
         )
         with pytest.raises(ValueError, match="mapping_evidence"):
@@ -519,7 +519,7 @@ class TestLoadCuratedMap:
         p = tmp_path / "dup.csv"
         p.write_text(
             "issuer_slug,current_municipality_ehak,mapping_source,mapping_evidence\n"
-            "x_vallavolikogu,0855,haldusreform-2017,evidence-a\n"
+            "x_vallavolikogu,0480,haldusreform-2017,evidence-a\n"
             "x_vallavolikogu,0784,haldusreform-2017,evidence-b\n",
             encoding="utf-8",
         )
@@ -670,7 +670,7 @@ class TestBuildIssuerRegistry:
         csv_path = tmp_path / "map.csv"
         csv_path.write_text(
             "issuer_slug,current_municipality_ehak,mapping_source,mapping_evidence\n"
-            "abja_vallavolikogu,0855,haldusreform-2017,RT I 21.06.2017 1\n",
+            "abja_vallavolikogu,0480,haldusreform-2017,RT I 21.06.2017 1\n",
             encoding="utf-8",
         )
 
@@ -686,7 +686,7 @@ class TestBuildIssuerRegistry:
         assert tallinn["bodyType"] == "volikogu"
 
         abja = issuers["abja_vallavolikogu"]
-        assert abja["currentMunicipalityCode"] == "0855"
+        assert abja["currentMunicipalityCode"] == "0480"
         assert abja["mappingSource"] == "haldusreform-2017"
         assert abja["mappingEvidence"] == "RT I 21.06.2017 1"
 
@@ -726,7 +726,7 @@ class TestBuildIssuerRegistry:
         slugs = discover_issuer_slugs(kov_root)
         curated = {
             "abja_vallavolikogu": {
-                "currentMunicipalityCode": "0855",
+                "currentMunicipalityCode": "0480",
                 "mappingSource": "guess",  # not in allowed set
                 "mappingEvidence": "anything",
             }
@@ -987,7 +987,7 @@ class TestBuildKovRegistryCLI:
             kov_slugs=["tallinna_linnavolikogu", "abja_vallavolikogu"],
             curated_csv=(
                 HEADER
-                + "abja_vallavolikogu,0855,haldusreform-2017,RT I 21.06.2017 1\n"
+                + "abja_vallavolikogu,0480,haldusreform-2017,RT I 21.06.2017 1\n"
             ),
         )
         result = _run_cli(repo)
@@ -1912,7 +1912,7 @@ class TestBuildIssuerDoc:
                 "slug": "abja_vallavolikogu",
                 "displayName": "Abja Vallavolikogu",
                 "bodyType": "volikogu",
-                "currentMunicipalityCode": "0855",
+                "currentMunicipalityCode": "0480",
                 "mappingSource": "haldusreform-2017",
                 "mappingEvidence": "RT I 21.06.2017 1",
                 "historicalMunicipalityName": "Abja",
