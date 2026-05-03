@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import csv
 import json
+import re
 from pathlib import Path
 from typing import Literal, TypedDict
 
@@ -146,6 +147,35 @@ def auto_match_municipality(
     if len(matches) == 1:
         return matches[0]
     return None
+
+
+def normalize_title(title: str, issuer_display_name: str) -> str:
+    """Lowercase + transliterate the title; strip the issuer's municipality
+    name prefix when present at the start.
+
+    The issuer display name is e.g. ``Tallinna Linnavolikogu``. Its first
+    token (``Tallinna``) is the genitive form of the municipality name and
+    is the most common prefix on KOV act titles. The function also handles
+    the form ``<root> valla`` / ``<root> linna`` (e.g.
+    ``Mulgi valla hankekord``).
+    """
+    base = title.translate(_TRANSLIT).lower().strip()
+    base = re.sub(r"\s+", " ", base)
+
+    # Issuer's first token is the municipality name in genitive form
+    issuer_first = issuer_display_name.split()[0]
+    prefix_token = issuer_first.translate(_TRANSLIT).lower()
+
+    # Try several prefix shapes, longest first
+    for prefix in (
+        f"{prefix_token} valla ",
+        f"{prefix_token} linna ",
+        f"{prefix_token} ",
+    ):
+        if base.startswith(prefix):
+            base = base[len(prefix):]
+            break
+    return base.strip()
 
 
 class CuratedRow(TypedDict):

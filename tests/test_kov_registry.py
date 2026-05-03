@@ -15,6 +15,7 @@ from kov_registry import (
     discover_issuer_slugs,
     load_curated_map,
     load_municipalities,
+    normalize_title,
     parse_issuer_slug,
 )
 
@@ -326,3 +327,26 @@ class TestBuildIssuerRegistry:
         }
         with pytest.raises(ValueError, match="mapping_source"):
             build_issuer_registry(slugs, muns, curated)
+
+
+class TestNormalizeTitle:
+    def test_strips_municipality_prefix(self):
+        assert normalize_title(
+            "Tallinna jäätmehoolduseeskiri", "Tallinna Linnavolikogu"
+        ) == "jaatmehoolduseeskiri"
+
+    def test_strips_genitive_form(self):
+        # "Mulgi valla" is the genitive of "Mulgi vald"
+        assert normalize_title(
+            "Mulgi valla hankekord", "Mulgi Vallavolikogu"
+        ) == "hankekord"
+
+    def test_no_prefix_match_keeps_full_title(self):
+        assert normalize_title(
+            "Üldhariduskooli põhimäärus", "Tartu Linnavolikogu"
+        ) == "uldhariduskooli pohimaarus"
+
+    def test_lowercases_and_transliterates(self):
+        assert normalize_title(
+            "Põhimäärus", "Põlva Vallavolikogu"
+        ) == "pohimaarus"
