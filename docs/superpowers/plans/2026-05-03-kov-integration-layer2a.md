@@ -382,17 +382,49 @@ The pinning pattern is uniform: every `iter_peep_files()` call without an explic
 
 - [ ] **Step 1: Pin all 9 scripts in one commit**
 
-For each script, run an exact textual replacement. Examples for each:
+For each call site, the textual replacement depends on context: a
+naive `iter_peep_files()` → `iter_peep_files(include_kov=False)  #
+DEFERRED` swap **breaks Python syntax** when the call is inside a
+`for ... in iter_peep_files():` loop, because the `# comment` lands
+between the closing `)` and the `:`.
 
-**`scripts/extract_cross_references.py`** — 3 sites at lines 66, 414, 463 (verify with grep before editing):
+Two safe patterns:
+
+**Pattern A — `for x in iter_peep_files():` loops:**
+
+```python
+# BEFORE
+for json_file in iter_peep_files():
+    ...
+
+# AFTER (note the colon comes BEFORE the comment)
+for json_file in iter_peep_files(include_kov=False):  # DEFERRED to Layer 2b
+    ...
+```
+
+**Pattern B — `xs = iter_peep_files()` assignments:**
+
+```python
+# BEFORE
+law_files = iter_peep_files()
+
+# AFTER (comment can go inline at the end of the assignment)
+law_files = iter_peep_files(include_kov=False)  # DEFERRED to Layer 2b
+```
+
+Both forms keep `:` adjacent to `)` for the loop case and put the
+comment after the full statement.
+
+For each script, first list the call sites:
 
 ```bash
 grep -n "iter_peep_files()" scripts/extract_cross_references.py
 ```
 
-For each match, change `iter_peep_files()` → `iter_peep_files(include_kov=False)  # DEFERRED to Layer 2b`.
+Then apply Pattern A or B per site by reading the surrounding line.
+Required pins:
 
-Apply the same pattern to:
+- `scripts/extract_cross_references.py` — 3 sites; comment `# DEFERRED to Layer 2b`
 - `scripts/generate_inverse_references.py` — 3 sites; comment `# DEFERRED to Layer 2b`
 - `scripts/extract_sanctions.py` — 1 site; comment `# DEFERRED to Layer 2c`
 - `scripts/extract_institutional_competence.py` — 1 site; comment `# DEFERRED to Layer 2c`
@@ -401,6 +433,17 @@ Apply the same pattern to:
 - `scripts/extract_draft_impact.py` — 2 sites; comment `# KOV does not apply (EU/draft pipeline)`
 - `scripts/generate_harmonisation_links.py` — 1 site; comment `# KOV does not apply`
 - `scripts/generate_transposition_mapping.py` — 1 site; comment `# KOV does not apply`
+
+After editing, sanity-check that every modified script still imports
+without syntax errors:
+
+```bash
+for script in scripts/extract_cross_references.py scripts/generate_inverse_references.py scripts/extract_sanctions.py scripts/extract_institutional_competence.py scripts/extract_court_provision_links.py scripts/generate_similarity_index.py scripts/extract_draft_impact.py scripts/generate_harmonisation_links.py scripts/generate_transposition_mapping.py; do
+    python3 -c "import ast; ast.parse(open('$script').read())" && echo "OK $script" || echo "SYNTAX ERROR $script"
+done
+```
+
+Expected: all 9 print `OK`. Any `SYNTAX ERROR` must be fixed before commit.
 
 - [ ] **Step 2: Verify the changes**
 
@@ -775,9 +818,14 @@ class CoverageReport:
     input_files_total: int
     input_files_kov: int
     files_processed: int = 0
+    files_processed_kov: int = 0  # KOV subset of files_processed
+    files_with_output: int = 0    # files that produced ≥1 output triple
+    files_with_output_kov: int = 0  # KOV subset of files_with_output
     files_skipped: int = 0
     skip_reasons: dict[str, int] = field(default_factory=dict)
     triples_emitted: int = 0
+    triples_emitted_kov: int = 0  # subset of triples_emitted attributed
+                                   # to KOV inputs (per-pipeline definition)
     fallback_hits: int = 0
     unresolved_references: int = 0
 
@@ -874,12 +922,16 @@ for diagnostics.
   "pipeline": "classify_eurovoc",
   "run_timestamp": "2026-05-03T12:00:00Z",
   "pipeline_version": "abc1234",
-  "input_files_total": 11796,
+  "input_files_total": 15508,
   "input_files_kov": 11059,
-  "files_processed": 11790,
-  "files_skipped": 6,
-  "skip_reasons": {"no_act_node": 4, "json_decode_error": 2},
+  "files_processed": 15500,
+  "files_processed_kov": 11055,
+  "files_with_output": 14800,
+  "files_with_output_kov": 10500,
+  "files_skipped": 8,
+  "skip_reasons": {"no_act_node": 6, "json_decode_error": 2},
   "triples_emitted": 42000,
+  "triples_emitted_kov": 28000,
   "fallback_hits": 0,
   "unresolved_references": 0,
   "wall_time_seconds": 125.4,
@@ -900,9 +952,13 @@ Field reference:
 | `input_files_total` | Total files iterated by `iter_peep_files()`. |
 | `input_files_kov` | Subset under `regulations/kov/`. |
 | `files_processed` | Files that classified/extracted successfully. |
+| `files_processed_kov` | KOV subset of `files_processed`. |
+| `files_with_output` | Files that produced ≥1 output triple. |
+| `files_with_output_kov` | KOV subset of `files_with_output`. **The proof that KOV actually contributed; ≥1 ≪ files_processed_kov is fine, but 0 means KOV produced nothing.** |
 | `files_skipped` | Files skipped, total. |
 | `skip_reasons` | Skip-reason → count, one per category. |
-| `triples_emitted` | Output triples written back (per-pipeline definition). |
+| `triples_emitted` | Total output triples written back (laws + state-regs + KOV). |
+| `triples_emitted_kov` | Subset attributed to KOV inputs. The KOV-output sanity check. |
 | `fallback_hits` | Times a fallback path fired (slug-based XML resolution, etc.). |
 | `unresolved_references` | References that couldn't pair (e.g. KOV peep with no XML). |
 | `wall_time_seconds` | Total run wall time. |
@@ -933,11 +989,13 @@ The "after" values come from this PR's coverage reports, committed at
 
 Verify the absolute values are reasonable, not a literal diff:
 
-1. `input_files_kov >= 11000` for each of the 5 fixed pipelines (full
+1. `input_files_kov ≈ 11059` for each of the 5 fixed pipelines (full
    KOV corpus participated).
-2. `input_files_total ≈ 11k + (laws+state-regs)` — should be > 15k for
-   pipelines that take everything; > 11k for KOV-only pipelines.
-3. `triples_emitted > 0` — KOV files contributed at least some output.
+2. `input_files_total ≈ 15508` (current corpus size with KOV enabled).
+3. **`files_with_output_kov > 0`** — the actual KOV-contributed-output
+   check. Total `triples_emitted > 0` is not enough because laws/state
+   regs alone could account for it while every KOV file is skipped.
+   Likewise check `triples_emitted_kov > 0`.
 4. `error_count` — ideally 0; small positive numbers OK if `failure_samples`
    shows the failures are KOV-specific edge cases rather than systemic.
 5. `items_per_second` — sanity: classify_deontic ≫ extract_temporal_data
@@ -1112,14 +1170,30 @@ def main() -> int:
     _unresolved = 0
     _failures: list[str] = []
 
+    _files_processed_kov = 0
+    _files_with_output = 0
+    _files_with_output_kov = 0
+    _triples_kov = 0
+
     for f in _files:
+        is_kov = "regulations/kov" in str(f)
         try:
+            _triples_before = _triples
             # ... existing per-file logic ...
-            # On each successful classification add to _triples.
-            # On per-provision skip ("no summary"), bump _skip_reasons["no_summary"]
-            #   and _files_skipped if the whole file was skipped.
-            # Never silently skip — always categorize.
+            # On each successful classification add to _triples (and to
+            # _triples_kov when is_kov).
+            # On per-provision skip ("no summary"), bump
+            # _skip_reasons["no_summary"] and _files_skipped if the
+            # whole file was skipped. Never silently skip — always
+            # categorize.
             _files_processed += 1
+            if is_kov:
+                _files_processed_kov += 1
+            if _triples > _triples_before:
+                _files_with_output += 1
+                if is_kov:
+                    _files_with_output_kov += 1
+                    _triples_kov += (_triples - _triples_before)
         except Exception as exc:  # noqa: BLE001
             _failures.append(f"{f.name}: {exc!r}")
 
@@ -1134,9 +1208,13 @@ def main() -> int:
             input_files_total=len(_files),
             input_files_kov=len(_kov_files),
             files_processed=_files_processed,
+            files_processed_kov=_files_processed_kov,
+            files_with_output=_files_with_output,
+            files_with_output_kov=_files_with_output_kov,
             files_skipped=_files_skipped,
             skip_reasons=_skip_reasons,
             triples_emitted=_triples,
+            triples_emitted_kov=_triples_kov,
             fallback_hits=_fallback_hits,
             unresolved_references=_unresolved,
             wall_time_seconds=round(_wall, 2),
@@ -1287,6 +1365,40 @@ class TestReadActMetadataFromPeep:
             ],
         }), encoding="utf-8")
         assert _read_act_metadata(bad) is None
+
+    def test_skips_municipality_registry_file(self, tmp_path):
+        # municipalities_peep.json's top node is typed only owl:Ontology.
+        # Without the registry exclusion, the broad acceptance of
+        # owl:Ontology would let EuroVoc tag it as an act.
+        registry = tmp_path / "municipalities_peep.json"
+        registry.write_text(json.dumps({
+            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+                         "owl": "http://www.w3.org/2002/07/owl#"},
+            "@graph": [
+                {"@id": "estleg:Municipalities_Map_2026",
+                 "@type": ["owl:Ontology"],
+                 "rdfs:label": "Estonian Municipalities (current EHAK)"},
+                {"@id": "estleg:Municipality_EHAK_0784",
+                 "@type": ["owl:NamedIndividual", "estleg:Municipality"]},
+            ],
+        }), encoding="utf-8")
+        # The registry header node has owl:Ontology but matches the
+        # IRI prefix exclusion — read_act_metadata_from_peep returns
+        # None and the file is skipped.
+        assert _read_act_metadata(registry) is None
+
+    def test_skips_issuer_registry_file(self, tmp_path):
+        registry = tmp_path / "issuers_kov_peep.json"
+        registry.write_text(json.dumps({
+            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+                         "owl": "http://www.w3.org/2002/07/owl#"},
+            "@graph": [
+                {"@id": "estleg:Issuers_Kov_Map_2026",
+                 "@type": ["owl:Ontology"],
+                 "rdfs:label": "KOV Issuers"},
+            ],
+        }), encoding="utf-8")
+        assert _read_act_metadata(registry) is None
 ```
 
 - [ ] **Step 3: Run the test (expect ImportError)**
@@ -1304,32 +1416,45 @@ def read_act_metadata_from_peep(path: Path) -> dict | None:
     INDEX.json. Returns dict with @id, title, source — or None if no
     act-typed node is present.
 
-    Recognises any node typed as one of: estleg:Act, estleg:Law,
-    estleg:NationalRegulation, estleg:GovernmentRegulation,
-    estleg:MinisterialRegulation, estleg:MunicipalRegulation, or
-    plain owl:Ontology (legacy law nodes pre-Layer 1 stamping).
+    Recognises any node typed as one of the concrete legal-act
+    classes. Importantly, ``owl:Ontology`` ALONE is NOT enough: the
+    Layer 1 KOV registry files (``municipalities_peep.json``,
+    ``issuers_kov_peep.json``) use ``owl:Ontology`` on their top
+    metadata node, but they are not legal acts and must not get
+    EuroVoc tags. The node must also carry one of the concrete act
+    types.
     """
     ACT_TYPES = {
         "estleg:Act", "estleg:Law",
         "estleg:NationalRegulation", "estleg:GovernmentRegulation",
         "estleg:MinisterialRegulation", "estleg:MunicipalRegulation",
-        "owl:Ontology",
     }
+    # Registry files identified by stable IRI prefixes — even if Layer 2
+    # later stamps them with new types, these map files remain
+    # ineligible for EuroVoc.
+    REGISTRY_ID_PREFIXES = (
+        "estleg:Municipalities_",
+        "estleg:Issuers_",
+        "estleg:LegalConcepts_",
+        "estleg:Citations_",
+        "estleg:Similarity_",
+    )
     try:
         with open(path, "r", encoding="utf-8") as fh:
             doc = json.load(fh)
     except (json.JSONDecodeError, OSError):
         return None
     for node in doc.get("@graph", []):
+        node_id = node.get("@id", "")
+        if any(node_id.startswith(p) for p in REGISTRY_ID_PREFIXES):
+            return None  # registry map — not classifiable
         types = node.get("@type") or []
         if isinstance(types, str):
             types = [types]
         if not ACT_TYPES.intersection(types):
             continue
-        # owl:Ontology alone isn't enough — a node typed only as
-        # owl:Ontology and nothing else is rare but possible. Accept it.
         return {
-            "@id": node.get("@id"),
+            "@id": node_id,
             "title": node.get("rdfs:label", ""),
             "source": node.get("dc:source", node.get("rdfs:label", "")),
         }
@@ -1339,7 +1464,8 @@ def read_act_metadata_from_peep(path: Path) -> dict | None:
 - [ ] **Step 5: Run the test to verify it passes**
 
 Run: `pytest tests/test_classify_eurovoc.py -v`
-Expected: 2 passed.
+Expected: 4 passed (act metadata + provision-only rejection +
+municipality registry rejection + issuer registry rejection).
 
 - [ ] **Step 6: Replace the discovery + write-back loop in `main()`**
 
@@ -1444,7 +1570,7 @@ Same pattern as Task 6 Step 4 — wrap `main()` with timing + counting, write to
 pytest -q
 ```
 
-Expected: prior count + 2 new EuroVoc tests, all passing.
+Expected: prior count + 4 new EuroVoc tests, all passing.
 
 - [ ] **Step 10: Commit**
 
@@ -1477,14 +1603,20 @@ Create `tests/fixtures/kov_layer2a/sample_kov_xml.xml`:
 <akt globaalID="999999999">
   <metaandmed>
     <vastuvotjaLiik>Tallinna Linnavolikogu</vastuvotjaLiik>
-    <vastuvotmiseAeg>2020-09-17</vastuvotmiseAeg>
-    <jouAeg>2020-10-02</jouAeg>
-    <kehtetuksMuutmiseAeg/>
+    <vastuvoetud>
+      <aktikuupaev>2020-09-17</aktikuupaev>
+      <joustumine>2020-10-02</joustumine>
+    </vastuvoetud>
   </metaandmed>
 </akt>
 ```
 
-Real RT XML is more complex but this minimal shape exercises the metadata-extraction path.
+The `<vastuvoetud>` block with `<aktikuupaev>` (adoption date) and
+`<joustumine>` (entry into force) matches the real shape that
+`extract_temporal_from_xml` reads at lines 133-145 of
+`scripts/extract_temporal_data.py`. Earlier draft fixture used
+`<vastuvotmiseAeg>` and `<jouAeg>` — those are NOT what the parser
+reads; it would silently extract no dates.
 
 - [ ] **Step 2: Write the failing test**
 
@@ -1590,6 +1722,74 @@ class TestPairPeepWithXml:
             ],
         }), encoding="utf-8")
         assert pair_peep_with_xml(peep, lookup={}) is None
+
+    def test_slug_fallback_for_law_without_globalid(self, tmp_path):
+        """The 615 indexed laws predate the estleg:globalId field — their
+        act nodes carry estleg:Law but no globalId. Without a slug
+        fallback, the new pairing would silently drop XML for every
+        law, regressing existing temporal/amendment-history coverage.
+        """
+        from extract_temporal_data import pair_peep_with_xml
+
+        # Stage a law peep file with NO estleg:globalId
+        rt = tmp_path / "data" / "riigiteataja"
+        rt.mkdir(parents=True)
+        krr = tmp_path / "krr_outputs"
+        krr.mkdir()
+
+        peep = krr / "alkoholiseadus_peep.json"
+        peep.write_text(json.dumps({
+            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+                         "owl": "http://www.w3.org/2002/07/owl#"},
+            "@graph": [
+                {"@id": "estleg:AlkS_Map_2026",
+                 "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
+                 "rdfs:label": "Alkoholiseadus"}
+                # NO estleg:globalId — matches real law peep shape
+            ],
+        }), encoding="utf-8")
+        # Slug-named XML at the data root (laws are at the top level,
+        # NOT under maarus/ or maarus_kov/)
+        (rt / "alkoholiseadus.xml").write_text(
+            '<akt><metaandmed></metaandmed></akt>',
+            encoding="utf-8",
+        )
+
+        # globalId path returns None (no globalId on the act);
+        # slug path resolves alkoholiseadus_peep -> alkoholiseadus.xml.
+        result = pair_peep_with_xml(peep, lookup={}, data_dir=rt)
+        assert result is not None
+        assert result.name == "alkoholiseadus.xml"
+
+    def test_slug_fallback_handles_osa_suffix(self, tmp_path):
+        """Multi-part laws like asjaoigusseadus_osa1 share their
+        XML with the base slug (asjaoigusseadus.xml). The slug
+        fallback strips _osaN before re-resolving."""
+        from extract_temporal_data import pair_peep_with_xml
+
+        rt = tmp_path / "data" / "riigiteataja"
+        rt.mkdir(parents=True)
+        krr = tmp_path / "krr_outputs"
+        krr.mkdir()
+
+        peep = krr / "asjaoigusseadus_osa3_peep.json"
+        peep.write_text(json.dumps({
+            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+                         "owl": "http://www.w3.org/2002/07/owl#"},
+            "@graph": [
+                {"@id": "estleg:AOS_Osa3_Map_2026",
+                 "@type": ["owl:Ontology", "estleg:Law"]}
+            ],
+        }), encoding="utf-8")
+        # XML lives at base-slug name only (no per-osa XML)
+        (rt / "asjaoigusseadus.xml").write_text(
+            '<akt><metaandmed></metaandmed></akt>',
+            encoding="utf-8",
+        )
+
+        result = pair_peep_with_xml(peep, lookup={}, data_dir=rt)
+        assert result is not None
+        assert result.name == "asjaoigusseadus.xml"
 
 
 class TestMainUsesGlobalIdLookup:
@@ -1738,15 +1938,37 @@ def build_globalid_xml_lookup(rt_root: Path) -> dict[str, Path]:
     return lookup
 
 
-def pair_peep_with_xml(peep_path: Path, lookup: dict[str, Path]) -> Path | None:
-    """Given a peep file and a globalId→XML lookup, return the XML
-    path for the file's act node, or None if not paired.
+def pair_peep_with_xml(
+    peep_path: Path,
+    lookup: dict[str, Path],
+    *,
+    data_dir: Path | None = None,
+) -> Path | None:
+    """Pair a peep file to its XML.
+
+    Two paths in priority order:
+
+    1. **globalId-based** (the new path, KOV + state regs): the
+       generators stamp ``estleg:globalId`` on every act node, and KOV
+       XML filenames embed the same id (``reg_<globalId>.xml``). This
+       is the canonical pairing for everything generated post-Phase-1.
+
+    2. **Slug-based fallback** (legacy laws): the 615 indexed laws
+       were generated before the ``estleg:globalId`` field existed,
+       so their act nodes carry ``estleg:Law``/``owl:Ontology`` types
+       but no globalId. For these, fall back to matching the peep
+       file's stem (sans ``_peep``) against
+       ``<data_dir>/<stem>.xml``. ``data_dir`` is required for the
+       fallback; if not supplied, only the globalId path runs.
+
+    Returns the XML path or None if neither path resolves.
     """
     try:
         with open(peep_path, "r", encoding="utf-8") as fh:
             doc = json.load(fh)
     except (json.JSONDecodeError, OSError):
         return None
+    gid = None
     for node in doc.get("@graph", []):
         types = node.get("@type") or []
         if isinstance(types, str):
@@ -1756,28 +1978,140 @@ def pair_peep_with_xml(peep_path: Path, lookup: dict[str, Path]) -> Path | None:
             continue
         gid = node.get("estleg:globalId")
         if gid:
-            return lookup.get(str(gid))
+            break
+    # Path 1: globalId
+    if gid:
+        xml = lookup.get(str(gid))
+        if xml is not None:
+            return xml
+    # Path 2: slug fallback (laws without globalId)
+    if data_dir is not None:
+        slug = peep_path.stem.replace("_peep", "")
+        xml = data_dir / f"{slug}.xml"
+        if xml.exists():
+            return xml
+        # Stripped-_osa fallback for multi-part laws
+        import re as _re
+        base_slug = _re.sub(r"_osa\d+$", "", slug)
+        xml = data_dir / f"{base_slug}.xml"
+        if xml.exists():
+            return xml
     return None
 ```
 
-- [ ] **Step 5: Wire the helpers into `main()`**
+- [ ] **Step 5: Rewire `main()` — concrete block replacement**
 
-Find the existing `main()`. Replace the `xml_files = sorted(DATA_DIR.glob("*.xml"))` block (around line 279) with:
+The current main() (lines 272-380) does this in sequence:
+1. Globs `DATA_DIR/*.xml` (laws only) → `xml_files`
+2. Loops `xml_files` → `temporal_by_slug[xml_path.stem] = temporal`
+3. Loops `law_files` (root-only) → for each peep, looks up
+   `temporal_by_slug.get(xml_slug)` and writes back triples
+
+The fix replaces (1) and (2) with a globalId XML index, leaves the
+intermediate `temporal_by_slug` dict alone (it stays slug-keyed —
+the keys come from peep files in step 3), and switches step 3's
+lookup to use `pair_peep_with_xml` per peep.
+
+**Concrete edit at lines 277-301** (step 1+2 in the existing main).
+Replace:
 
 ```python
-    xml_lookup = build_globalid_xml_lookup(DATA_DIR)
-    print(f"  Indexed {len(xml_lookup)} XML files by globalId")
+    # Step 1: Find all XML files
+    print("\n[1/4] Scanning XML files...")
+    xml_files = sorted(DATA_DIR.glob("*.xml")) if DATA_DIR.exists() else []
+    print(f"  Found {len(xml_files)} XML files in {DATA_DIR.relative_to(REPO_ROOT)}")
+
+    # Step 2: Extract temporal data from each XML
+    print("\n[2/4] Extracting temporal metadata from XML...")
+    temporal_by_slug: dict[str, dict] = {}
+    extracted = 0
+    parse_errors = 0
+
+    for xml_path in xml_files:
+        slug = xml_path.stem
+        try:
+            temporal = extract_temporal_from_xml(xml_path)
+            has_data = any(v is not None for v in temporal.values())
+            if has_data:
+                extracted += 1
+            temporal_by_slug[slug] = temporal
+        except Exception as e:
+            parse_errors += 1
+            print(f"  ERROR parsing {xml_path.name}: {e}")
+
+    print(f"  Extracted temporal data from {extracted} files ({parse_errors} errors)")
 ```
 
-Find the root-only filter (line ~312):
+with:
+
+```python
+    # Step 1: Build the globalId → XML path index (recursive — covers
+    # laws at the root, state regs under maarus/, and KOV under
+    # maarus_kov/).
+    print("\n[1/4] Indexing XML files by globalId...")
+    xml_lookup = build_globalid_xml_lookup(DATA_DIR)
+    print(f"  Indexed {len(xml_lookup)} XML files")
+
+    # Step 2: Per-peep XML pairing + temporal extraction. We pair each
+    # peep file individually rather than pre-extracting all XML to a
+    # dict, so the slug fallback for laws-without-globalId fires per
+    # file. Result is still keyed by peep filename stem (without the
+    # _peep suffix) so step 4's enrichment logic doesn't change.
+    print("\n[2/4] Extracting temporal metadata per peep file...")
+    temporal_by_slug: dict[str, dict] = {}
+    extracted = 0
+    parse_errors = 0
+
+    for peep in iter_peep_files():
+        xml_path = pair_peep_with_xml(peep, xml_lookup, data_dir=DATA_DIR)
+        if xml_path is None:
+            continue
+        slug = peep.stem.replace("_peep", "")
+        try:
+            temporal = extract_temporal_from_xml(xml_path)
+            has_data = any(v is not None for v in temporal.values())
+            if has_data:
+                extracted += 1
+            temporal_by_slug[slug] = temporal
+        except Exception as e:
+            parse_errors += 1
+            print(f"  ERROR parsing {xml_path.name}: {e}")
+
+    print(f"  Extracted temporal data from {extracted} files ({parse_errors} errors)")
+```
+
+**Concrete edit at line 312** — remove the root-only filter:
 
 ```python
     law_files = [f for f in law_files if f.parent == KRR_DIR]
 ```
 
-Delete it.
+Delete that line. After the iter_peep_files default flip and the
+globalId-aware pairing, the loop should walk all files.
 
-Find the slug-based pairing logic and replace with `pair_peep_with_xml(peep, xml_lookup)`. The existing logic likely has a section like `xml_path = DATA_DIR / f"{slug}.xml"`. Replace with the new helper.
+**Concrete edit at line 361** — the per-peep lookup. The existing
+code has:
+
+```python
+        xml_slug = ...  # derived from peep slug
+        temporal = temporal_by_slug.get(xml_slug) or temporal_by_slug.get(base_slug)
+```
+
+Read 3 lines of context around line 361. The `xml_slug` and
+`base_slug` come from the peep's filename. Since `temporal_by_slug`
+is now keyed by `peep.stem.replace("_peep", "")` (the same key these
+two compute), the lookup may already work without changes. If
+`xml_slug` was previously derived as `xml_path.stem` (the XML
+filename), it now needs to use the peep stem instead — change to:
+
+```python
+        slug = law_file.stem.replace("_peep", "")
+        temporal = temporal_by_slug.get(slug)
+```
+
+Confirm by re-reading the surrounding 20 lines — this is one of the
+spots where the existing code's exact shape decides the cleanest
+patch.
 
 - [ ] **Step 6: Add coverage instrumentation**
 
@@ -1786,13 +2120,13 @@ Same pattern as Task 6 Step 4 — write to `krr_outputs/reports/kov/extract_temp
 - [ ] **Step 7: Run the test to verify it passes**
 
 Run: `pytest tests/test_extract_temporal_data.py -v`
-Expected: 5 passed (2 lookup + 2 pairing + 1 main()-integration).
+Expected: 7 passed (2 lookup + 4 pairing including slug fallback + 1 main()-integration).
 
 ```
 pytest -q
 ```
 
-Expected: prior count + 5 new temporal tests, all passing.
+Expected: prior count + 7 new temporal tests, all passing.
 
 - [ ] **Step 8: Commit**
 
@@ -2090,18 +2424,13 @@ Add at the top of `main()` (right after loading the laws list):
 Then inside the per-law loop, replace the `xml_path = DATA_DIR / f"{slug}.xml"` block with:
 
 ```python
-        xml_path = pair_peep_with_xml(law["path"], xml_lookup)
+        # pair_peep_with_xml does both globalId (KOV/state-regs) and
+        # slug fallback (laws without globalId) when data_dir is passed.
+        xml_path = pair_peep_with_xml(
+            law["path"], xml_lookup, data_dir=DATA_DIR
+        )
         if xml_path is None:
-            # Slug-based fallback for legacy law files that predate
-            # the globalId field on their act node (Layer 1 stamping
-            # already added globalId to the 615 indexed laws + state
-            # regulations + KOV; this fallback is only for stragglers).
-            base_slug = re.sub(r"_osa\d+$", "", slug)
-            xml_path = DATA_DIR / f"{slug}.xml"
-            if not xml_path.exists():
-                xml_path = DATA_DIR / f"{base_slug}.xml"
-            if not xml_path.exists():
-                continue
+            continue
 ```
 
 **(b) Build the par-to-iri lookup and pass it through.**
@@ -2378,8 +2707,11 @@ globalId, plus a per-law lookup using the act's own globalId:
     unpaired_count = 0
 
     for slug, info in laws.items():
-        # info["path"] is the peep file path; pair via globalId.
-        xml_path = pair_peep_with_xml(info["path"], xml_lookup)
+        # info["path"] is the peep file path; pair via globalId, with
+        # slug fallback for laws that don't carry estleg:globalId.
+        xml_path = pair_peep_with_xml(
+            info["path"], xml_lookup, data_dir=DATA_DIR
+        )
         if xml_path is None:
             unpaired_count += 1
             continue
@@ -2510,7 +2842,25 @@ for p in classify_deontic classify_eurovoc extract_temporal_data extract_legal_c
 done
 ```
 
-Expected: each report shows reasonable values — `input_files_total > 16000`, `input_files_kov > 11000`, `triples_emitted > 0`, `error_count` ideally 0.
+Expected: each report shows reasonable values. Compute the ground
+truth from the iterator itself rather than hard-coding a threshold:
+
+```bash
+python3 -c "
+import sys; sys.path.insert(0, 'scripts')
+from estleg_common import iter_peep_files
+all_files = iter_peep_files()
+kov = [f for f in all_files if 'regulations/kov' in str(f)]
+print(f'expected input_files_total ≈ {len(all_files)}')
+print(f'expected input_files_kov ≈ {len(kov)}')
+"
+```
+
+Each pipeline's `input_files_total` should match this count (within
+±5 for files added/removed during the run); `input_files_kov` should
+match the KOV count exactly. Layer 1's corpus settled around 15,508
+total / 11,059 KOV; if your numbers are very different, investigate
+before committing.
 
 - [ ] **Step 3: Run validate_all (JSON/schema hygiene)**
 
@@ -2638,6 +2988,7 @@ for path in \
     krr_outputs/concepts \
     krr_outputs/amendments \
     krr_outputs/eelnoud \
+    krr_outputs/deontic_classification_report.json \
     krr_outputs/temporal_data_report.json \
     krr_outputs/amendment_history_report.json \
     krr_outputs/eurovoc_classification.json \
