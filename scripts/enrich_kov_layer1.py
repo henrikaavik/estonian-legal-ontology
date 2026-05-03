@@ -269,8 +269,125 @@ def enrich_kov_act_file(path: Path, issuer: IssuerEntry) -> None:
         fh.write("\n")
 
 
+def _load_issuers(path: Path) -> dict[str, IssuerEntry]:
+    with open(path, "r", encoding="utf-8") as fh:
+        rows = json.load(fh)
+    return {row["slug"]: row for row in rows}
+
+
+def _save_jsonld(path: Path, doc: dict) -> None:
+    with open(path, "w", encoding="utf-8") as fh:
+        json.dump(doc, fh, ensure_ascii=False, indent=2)
+        fh.write("\n")
+
+
+def _load_law_paths(index_path: Path) -> tuple[list[Path], list[str]]:
+    """Resolve law file paths from krr_outputs/INDEX.json.
+
+    INDEX.json's `laws` is a list of {name, files: [...]}. A multi-part
+    law (e.g. asjaoigusseadus_osa1, _osa2) has multiple files in one
+    entry. Flatten and resolve to absolute paths under KRR_DIR.
+
+    INDEX.json is the canonical source — using KRR_DIR.glob('*_peep.json')
+    instead would conflate the 615 laws with other root-level files
+    (combined ontology output, generated registry files, etc.) and would
+    drift over time.
+
+    Policy on missing entries: INDEX.json is known to drift (typos like
+    'ametiuhigute' for 'ametiuhingute', renames not propagated, etc.).
+    Rather than abort the whole Layer 1 run on stale INDEX entries —
+    which is an unrelated hygiene issue — we log them and continue.
+    The orchestrator surfaces the count in its summary so the drift
+    is visible. INDEX hygiene is fixed in a separate PR.
+
+    Mixed extensions: INDEX entries end in either `.json` or `.jsonld`.
+    Both are accepted as-is; we do NOT silently substitute the
+    alternate extension because that could mask real renames.
+
+    Returns: (resolved_paths, missing_filenames)
+    """
+    with open(index_path, "r", encoding="utf-8") as fh:
+        idx = json.load(fh)
+    paths: list[Path] = []
+    missing: list[str] = []
+    for entry in idx.get("laws", []):
+        for fname in entry.get("files", []):
+            p = KRR_DIR / fname
+            if p.exists():
+                paths.append(p)
+            else:
+                missing.append(fname)
+    return paths, missing
+
+
 def main() -> int:
-    print("KOV layer 1 enrichment — TODO: full pipeline (see later tasks)")
+    print("=" * 70)
+    print("KOV Integration Layer 1 — Enrichment")
+    print("=" * 70)
+
+    municipalities = load_municipalities(EHAK_DIR / "municipalities.json")
+    issuers = _load_issuers(EHAK_DIR / "issuers.json")
+    print(f"Loaded {len(municipalities)} municipalities, {len(issuers)} issuers")
+
+    # 1. Write Municipality JSON-LD
+    _save_jsonld(MUNICIPALITIES_OUT, build_municipality_doc(municipalities))
+    print(f"Wrote {MUNICIPALITIES_OUT.name}")
+
+    # 2. Write Issuer JSON-LD
+    _save_jsonld(ISSUERS_OUT, build_issuer_doc(issuers))
+    print(f"Wrote {ISSUERS_OUT.name}")
+
+    # 3. Enrich KOV act files
+    kov_files = sorted(KOV_DIR.glob("**/*_peep.json"))
+    # The KOV index file lives at the top of KOV_DIR — exclude it.
+    kov_files = [f for f in kov_files if not f.name.startswith("REGULATIONS_KOV_INDEX")]
+    print(f"\nEnriching {len(kov_files)} KOV act files...")
+    enriched = 0
+    missing_issuer = 0
+    for f in kov_files:
+        slug = f.parent.name
+        issuer = issuers.get(slug)
+        if issuer is None:
+            missing_issuer += 1
+            print(f"  ERROR: no issuer entry for {slug}; skipping {f.name}")
+            continue
+        # Will raise on malformed files (no MunicipalRegulation node).
+        enrich_kov_act_file(f, issuer)
+        enriched += 1
+    print(f"Enriched {enriched} KOV act files (missing-issuer: {missing_issuer})")
+    if missing_issuer:
+        # Hard-fail rather than let Gate A pass with skipped files.
+        print(
+            f"FAIL: {missing_issuer} KOV files had no matching issuer entry. "
+            "Re-run scripts/build_kov_registry.py to regenerate issuers.json.",
+            file=sys.stderr,
+        )
+        return 2
+
+    # 4. Stamp estleg:Law + estleg:Act on the 615 laws (paths from INDEX.json)
+    law_paths, missing_law_files = _load_law_paths(KRR_DIR / "INDEX.json")
+    law_count = len({p.stem.replace("_peep", "").rsplit("_osa", 1)[0]
+                     for p in law_paths})
+    print(f"\nStamping estleg:Law on {len(law_paths)} law files "
+          f"({law_count} unique laws)...")
+    if missing_law_files:
+        print(f"  WARN: INDEX.json references {len(missing_law_files)} "
+              "missing law files (stale index — fix in a separate PR):")
+        for f in missing_law_files[:10]:
+            print(f"    {f}")
+        if len(missing_law_files) > 10:
+            print(f"    ... and {len(missing_law_files) - 10} more")
+    for f in law_paths:
+        stamp_law_type(f)
+
+    # 5. Stamp estleg:Act on state regulation acts under regulations/riik/
+    riik_dir = KRR_DIR / "regulations" / "riik"
+    riik_files = sorted(riik_dir.glob("*_peep.json")) if riik_dir.exists() else []
+    print(f"\nStamping estleg:Act on {len(riik_files)} state regulation files...")
+    for f in riik_files:
+        stamp_act_type(f)
+
+    print("\nDone.")
     return 0
 
 

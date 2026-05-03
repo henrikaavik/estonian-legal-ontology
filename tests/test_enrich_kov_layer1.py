@@ -267,3 +267,89 @@ class TestStampActType:
         stamp_act_type(f)
         twice = json.load(open(f, encoding="utf-8"))
         assert once == twice
+
+
+class TestOrchestratorEndToEnd:
+    def test_run_against_temp_tree(self, tmp_path, monkeypatch):
+        """End-to-end: stage a small KOV tree + a law file in tmp, run main(),
+        assert outputs."""
+        # Arrange a faux KRR tree
+        krr = tmp_path / "krr_outputs"
+        ehak = tmp_path / "data" / "ehak"
+        krr.mkdir()
+        ehak.mkdir(parents=True)
+
+        shutil.copy(MIN_MUNICIPALITIES, ehak / "municipalities.json")
+        (ehak / "issuers.json").write_text(json.dumps([
+            {
+                "slug": "tallinna_linnavolikogu",
+                "displayName": "Tallinna Linnavolikogu",
+                "bodyType": "volikogu",
+                "currentMunicipalityCode": "0784",
+                "mappingSource": "auto-match",
+                "mappingEvidence": "",
+                "historicalMunicipalityName": "Tallinn",
+            }
+        ]), encoding="utf-8")
+
+        # KOV act
+        kov_dir = krr / "regulations" / "kov" / "tallinna_linnavolikogu"
+        kov_dir.mkdir(parents=True)
+        shutil.copy(SAMPLE_KOV_ACT, kov_dir / "act_peep.json")
+
+        # Law + INDEX.json (source of canonical law file list)
+        shutil.copy(SAMPLE_LAW, krr / "alkoholiseadus_peep.json")
+        (krr / "INDEX.json").write_text(json.dumps({
+            "generated": "2026-05-02",
+            "total_files": 1,
+            "total_laws": 1,
+            "laws": [{"name": "alkoholiseadus",
+                      "files": ["alkoholiseadus_peep.json"]}],
+        }), encoding="utf-8")
+
+        # State regulation under regulations/riik/
+        riik = krr / "regulations" / "riik"
+        riik.mkdir(parents=True)
+        (riik / "valitsuse_maarus_peep.json").write_text(json.dumps({
+            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+                         "owl": "http://www.w3.org/2002/07/owl#"},
+            "@graph": [
+                {"@id": "estleg:Reg_1009410_Map_2026",
+                 "@type": ["owl:Ontology", "estleg:GovernmentRegulation"],
+                 "rdfs:label": "Test government regulation"}
+            ],
+        }), encoding="utf-8")
+
+        # Patch module-level paths
+        import enrich_kov_layer1 as mod
+        monkeypatch.setattr(mod, "REPO_ROOT", tmp_path)
+        monkeypatch.setattr(mod, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "EHAK_DIR", ehak)
+        monkeypatch.setattr(mod, "KOV_DIR", krr / "regulations" / "kov")
+        monkeypatch.setattr(mod, "MUNICIPALITIES_OUT", krr / "municipalities_peep.json")
+        monkeypatch.setattr(mod, "ISSUERS_OUT", krr / "issuers_kov_peep.json")
+
+        rc = mod.main()
+        assert rc == 0
+
+        # Outputs
+        assert (krr / "municipalities_peep.json").exists()
+        assert (krr / "issuers_kov_peep.json").exists()
+
+        # KOV act enriched
+        kov_doc = json.load(open(kov_dir / "act_peep.json", encoding="utf-8"))
+        act = next(n for n in kov_doc["@graph"]
+                   if n["@id"] == "estleg:Reg_1014955_Map_2026")
+        assert "estleg:enactedBy" in act
+        assert act["estleg:titleNormalized"] == "jaatmehoolduseeskiri"
+
+        # Law type stamped (Law + Act both)
+        law_doc = json.load(open(krr / "alkoholiseadus_peep.json", encoding="utf-8"))
+        assert "estleg:Law" in law_doc["@graph"][0]["@type"]
+        assert "estleg:Act" in law_doc["@graph"][0]["@type"]
+
+        # State regulation stamped with Act, GovernmentRegulation preserved
+        reg_doc = json.load(open(riik / "valitsuse_maarus_peep.json", encoding="utf-8"))
+        types = reg_doc["@graph"][0]["@type"]
+        assert "estleg:Act" in types
+        assert "estleg:GovernmentRegulation" in types
