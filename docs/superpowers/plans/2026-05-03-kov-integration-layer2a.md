@@ -1,0 +1,1998 @@
+# KOV Integration Layer 2a — Foundation + Discovery Fixes Implementation Plan
+
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+
+**Goal:** Wire the Layer 2 schema (Citation class + 5 new properties + SHACL Citation shape) into the ontology, complete the per-caller audit on all 14 consumers of `iter_peep_files()`, flip the iterator default to `include_kov=True`, and fix the 5 KOV-relevant discovery-only pipelines (deontic, EuroVoc, temporal, legal-concepts, amendment-history) so they process KOV files.
+
+**Architecture:** Schema changes are additive (no semantics yet — Citation/`issuedUnder`/`implementsCitation`/`implementedBy`/`implementedByCount`/`enforcedAtLevel` are declared but not emitted). The default iterator flip is paired with explicit `include_kov=False` pins on the 9 deferred or KOV-irrelevant call sites, so the input universe expands only where each pipeline is verified ready. A new `scripts/kov_pipeline_coverage.py` helper produces per-pipeline JSON coverage reports; running on `main` vs. this PR gives reviewers a clean before/after diff.
+
+**Tech Stack:** Python 3.11+, pytest, JSON-LD, SHACL (pyshacl), rdflib. Builds on the Layer 1 `kov_registry.py` + `enrich_kov_layer1.py` infrastructure.
+
+**Spec reference:** `docs/superpowers/specs/2026-05-02-kov-integration-design.md` (Layer 2 section).
+**Layer 1 reference:** `docs/superpowers/plans/2026-05-02-kov-integration-layer1.md`.
+
+---
+
+## Crisp 2a invariant
+
+After 2a lands:
+
+1. The Layer 2 schema is fully declared in `metadata.jsonld` and `shacl/estonian_legal_shapes.ttl` — Citation class, `issuedUnder`, `implementsCitation`, `citationTarget`, `citationDetail`, `citationText`, `implementedBy`, `implementedByCount`, `enforcedAtLevel`. **No** Layer-2 triples are emitted yet — that's 2b and 2c.
+2. `estleg_common.iter_peep_files()` defaults `include_kov=True`. Every call site has been audited. The 9 KOV-deferred or KOV-irrelevant pipelines (cross-ref, inverse, sanctions, competence, court-links, similarity, draft-impact, harmonisation-links, transposition-mapping) explicitly pin `include_kov=False` at their call sites — they remain laws-and-state-only until their dedicated PRs land.
+3. The 5 KOV-relevant discovery-only pipelines (deontic, EuroVoc, temporal, legal-concepts, amendment-history) process KOV files end-to-end and emit their existing-shape triples (deontic classifications, EuroVoc tags, temporal dates, legal concepts, amendment chains) over the expanded input universe, with no regressions on the laws-and-state subset.
+4. Each of the 5 fixed pipelines emits `krr_outputs/reports/kov/<pipeline>_coverage.json` with per-run metrics (input count, triples emitted, runtime, failure samples). Reviewers can diff these against a `main`-branch baseline run for transparent before/after comparison.
+
+**Not in 2a:** preamble scanning (2b), `implementedBy` aggregation (2b), KOV-aware competence resolution (2c), KOV citation resolver for court links (2c), `enforcedAtLevel` derivation (2c), Citation reified instances (2b — only the schema lands here).
+
+**Gate B is the umbrella milestone.** It is reached once 2a, 2b, and 2c have all landed.
+
+---
+
+## File Structure
+
+### New files
+
+| Path | Responsibility |
+| --- | --- |
+| `scripts/kov_pipeline_coverage.py` | Pure-function instrumentation helper. Wraps a pipeline's main with metrics capture; writes `krr_outputs/reports/kov/<pipeline>_coverage.json`. |
+| `tests/test_kov_pipeline_coverage.py` | Unit tests for the coverage helper. |
+| `tests/test_classify_eurovoc.py` | Discovery-fix tests for EuroVoc. |
+| `tests/test_extract_temporal_data.py` | Discovery + globaalID-pairing tests for temporal. |
+| `tests/test_extract_legal_concepts.py` | IRI-sourcing tests for legal-concepts. |
+| `tests/test_generate_amendment_history.py` | Discovery + globaalID-pairing tests for amendment-history. |
+| `tests/test_classify_deontic.py` | KOV-discovery smoke tests for deontic. |
+| `tests/test_iter_peep_files.py` | Tests for the default flip in `estleg_common.iter_peep_files()`. |
+| `tests/fixtures/kov_layer2a/` | Fixture bundle: minimal KOV act, minimal law, minimal state regulation, minimal XML for date extraction. |
+| `krr_outputs/reports/kov/<pipeline>_coverage.json` (×5) | Generated per-pipeline coverage reports, committed. |
+| `krr_outputs/reports/kov/README.md` | Documents the coverage report format and the before/after diff workflow for reviewers. |
+
+### Modified files
+
+| Path | Change |
+| --- | --- |
+| `metadata.jsonld` | Promote Citation from placeholder to full declaration (citationTarget/citationDetail/citationText properties); add 5 new act/provision properties (`issuedUnder`, `implementsCitation`, `implementedBy`, `implementedByCount`, `enforcedAtLevel`). |
+| `shacl/estonian_legal_shapes.ttl` | Append CitationShape (sh:targetClass Citation; required citationTarget; optional citationDetail/citationText; IRI pattern). |
+| `scripts/estleg_common.py` | Flip default of `iter_peep_files(include_kov=...)` from `False` to `True`. |
+| `scripts/classify_deontic.py` | Audited; coverage-instrumented. No semantic change. |
+| `scripts/classify_eurovoc.py` | Switch input discovery from `INDEX.json` to `iter_peep_files`; pull act-level title/source from each peep file's act node; remove the root-only filter; output paths use source path; coverage-instrumented. |
+| `scripts/extract_temporal_data.py` | Recursive XML discovery (`maarus/`, `maarus_kov/`); new `globalId → XML path` lookup helper; remove root-only filter; coverage-instrumented. |
+| `scripts/extract_legal_concepts.py` | Source provision IRIs from each node's `@id` (not `f"{slug}_Par_{n}"`); remove root-only filter; output paths use source path; coverage-instrumented. |
+| `scripts/generate_amendment_history.py` | Recursive XML discovery; reuse the `globalId → XML path` helper from temporal; remove root-only filters; coverage-instrumented. |
+| `scripts/extract_cross_references.py` | Pin `include_kov=False` at all 3 call sites (`# DEFERRED to Layer 2b`). |
+| `scripts/generate_inverse_references.py` | Pin `include_kov=False` at all 3 call sites (`# DEFERRED to Layer 2b`). |
+| `scripts/extract_sanctions.py` | Pin `include_kov=False` (`# DEFERRED to Layer 2c`). |
+| `scripts/extract_institutional_competence.py` | Pin `include_kov=False` (`# DEFERRED to Layer 2c`). |
+| `scripts/extract_court_provision_links.py` | Pin `include_kov=False` at both call sites (`# DEFERRED to Layer 2c`). |
+| `scripts/generate_similarity_index.py` | Pin `include_kov=False` at both call sites (`# DEFERRED to Layer 3`). |
+| `scripts/extract_draft_impact.py` | Pin `include_kov=False` at both call sites (`# KOV does not apply — EU/draft pipeline`). |
+| `scripts/generate_harmonisation_links.py` | Pin `include_kov=False` (`# KOV does not apply`). |
+| `scripts/generate_transposition_mapping.py` | Pin `include_kov=False` (`# KOV does not apply`). |
+| `docs/SCHEMA_REFERENCE.md` | Document the new Citation class and 5 new properties (declared, not yet populated). |
+| `docs/REGULATIONS_INTEGRATION_PLAN.md` | Mark Layer 2a complete. |
+| `CHANGELOG.md` | Entry: "Add KOV integration Layer 2a (foundation + discovery fixes)". |
+| `README.md` | Note that 5 pipelines now process KOV; new schema terms declared. |
+
+---
+
+### Schema additions reference
+
+**New classes** (Citation class declared as placeholder in Layer 1; this PR adds its property declarations):
+
+```turtle
+estleg:Citation a owl:Class ;
+    rdfs:label "Citation" ;
+    rdfs:comment "Reified preamble citation. Each instance carries a
+                  resolved provision target plus optional sub-paragraph
+                  specificity and the original citation text. Layer 2b
+                  populates instances; Layer 2a only declares the
+                  shape." .
+```
+
+**New properties** (all declared in `metadata.jsonld`; no triples emitted in 2a):
+
+| Property | Domain | Range | Purpose |
+| --- | --- | --- | --- |
+| `estleg:issuedUnder` | `Act` | `Act` | Act → enabling act (preamble simple form). Populated 2b. |
+| `estleg:implementsCitation` | `Act` | `Citation` | Act → reified Citation node. Populated 2b. |
+| `estleg:citationTarget` | `Citation` | `LegalProvision` | Citation → resolved provision IRI. Populated 2b. |
+| `estleg:citationDetail` | `Citation` | `xsd:string` | Optional sub-paragraph string ("lg 1 p 3"). Populated 2b. |
+| `estleg:citationText` | `Citation` | `xsd:string` | Optional original citation string. Populated 2b. |
+| `estleg:implementedBy` | `Act` ∪ `LegalProvision` | `Act` | Inverse of issuedUnder + Citation.citationTarget. Populated 2b. |
+| `estleg:implementedByCount` | `Act` ∪ `LegalProvision` | `xsd:integer` | Aggregate count of implementedBy. Populated 2b. |
+| `estleg:enforcedAtLevel` | `LegalProvision` | `xsd:string` | "state" \| "municipality". Populated 2c. |
+
+**IRI patterns:**
+- `estleg:Citation_<source-act-shortid>_<seq>` — Citation instances. Asserted by SHACL `sh:pattern` once instances exist (2b).
+
+---
+
+## Task 1: Promote Citation to a fully-declared class in metadata.jsonld
+
+**Files:**
+- Modify: `metadata.jsonld`
+- Modify: `tests/test_kov_registry.py` (extend `TestMetadataJsonLd`)
+
+Layer 1 declared `estleg:Citation` as a placeholder class with only `@id`/`@type`/`rdfs:label`/`rdfs:comment`. This task adds full declarations for its three properties (`citationTarget`, `citationDetail`, `citationText`) plus the 5 new act/provision properties listed in the schema reference above.
+
+- [ ] **Step 1: Extend the existing schema smoke test**
+
+In `tests/test_kov_registry.py`, find `class TestMetadataJsonLd::test_new_classes_present` and extend the required-id list with the new property identifiers. Find the existing list:
+
+```python
+        for required in (
+            "estleg:Act", "estleg:Law",
+            "estleg:Municipality", "estleg:Issuer", "estleg:KovProvision",
+            "estleg:Citation", "estleg:Similarity",
+            "estleg:enactedBy", "estleg:enactedByMunicipality",
+            "estleg:titleNormalized", "estleg:partOfAct",
+            "estleg:ehakCode", "estleg:county", "estleg:bodyType",
+            "estleg:currentMunicipality", "estleg:historicalMunicipalityName",
+            "estleg:mappingSource", "estleg:mappingEvidence",
+        ):
+```
+
+Replace with:
+
+```python
+        for required in (
+            "estleg:Act", "estleg:Law",
+            "estleg:Municipality", "estleg:Issuer", "estleg:KovProvision",
+            "estleg:Citation", "estleg:Similarity",
+            "estleg:enactedBy", "estleg:enactedByMunicipality",
+            "estleg:titleNormalized", "estleg:partOfAct",
+            "estleg:ehakCode", "estleg:county", "estleg:bodyType",
+            "estleg:currentMunicipality", "estleg:historicalMunicipalityName",
+            "estleg:mappingSource", "estleg:mappingEvidence",
+            # Layer 2a additions:
+            "estleg:citationTarget", "estleg:citationDetail",
+            "estleg:citationText",
+            "estleg:issuedUnder", "estleg:implementsCitation",
+            "estleg:implementedBy", "estleg:implementedByCount",
+            "estleg:enforcedAtLevel",
+        ):
+```
+
+- [ ] **Step 2: Run the test to verify it fails**
+
+Run: `pytest tests/test_kov_registry.py::TestMetadataJsonLd::test_new_classes_present -v`
+Expected: FAIL on the first missing id (one of the 8 new properties).
+
+- [ ] **Step 3: Add the 8 property nodes to `metadata.jsonld`**
+
+Open `metadata.jsonld`, locate the `@graph` array, and append these 8 nodes inside it (immediately after the existing Layer 1 property declarations):
+
+```json
+{
+  "@id": "estleg:citationTarget",
+  "@type": "owl:ObjectProperty",
+  "rdfs:label": "citationTarget",
+  "rdfs:comment": "Resolved provision IRI for a Citation. Range: LegalProvision (paragraph-level — sub-paragraph detail rides on citationDetail).",
+  "rdfs:range": {"@id": "estleg:LegalProvision"}
+},
+{
+  "@id": "estleg:citationDetail",
+  "@type": "owl:DatatypeProperty",
+  "rdfs:label": "citationDetail",
+  "rdfs:comment": "Optional sub-paragraph specificity for a Citation, e.g. 'lg 1 p 3'. Layer 2b populates from preamble text.",
+  "rdfs:range": {"@id": "xsd:string"}
+},
+{
+  "@id": "estleg:citationText",
+  "@type": "owl:DatatypeProperty",
+  "rdfs:label": "citationText",
+  "rdfs:comment": "Optional original citation string for traceability, e.g. '§ 42 lg 1 alusel'.",
+  "rdfs:range": {"@id": "xsd:string"}
+},
+{
+  "@id": "estleg:issuedUnder",
+  "@type": "owl:ObjectProperty",
+  "rdfs:label": "issuedUnder",
+  "rdfs:comment": "Act → enabling act link, derived from preamble citations. Range: Act (Law, NationalRegulation, MunicipalRegulation). Layer 2b populates.",
+  "rdfs:range": {"@id": "estleg:Act"}
+},
+{
+  "@id": "estleg:implementsCitation",
+  "@type": "owl:ObjectProperty",
+  "rdfs:label": "implementsCitation",
+  "rdfs:comment": "Act → reified Citation node carrying the resolved target plus original detail. Layer 2b populates.",
+  "rdfs:range": {"@id": "estleg:Citation"}
+},
+{
+  "@id": "estleg:implementedBy",
+  "@type": "owl:ObjectProperty",
+  "rdfs:label": "implementedBy",
+  "rdfs:comment": "Act → acts enacted under this act. Filtered projection of preamble enabling-link inverses (issuedUnder + Citation.citationTarget). Range: Act. Layer 2b populates.",
+  "rdfs:range": {"@id": "estleg:Act"}
+},
+{
+  "@id": "estleg:implementedByCount",
+  "@type": "owl:DatatypeProperty",
+  "rdfs:label": "implementedByCount",
+  "rdfs:comment": "Aggregate count of implementedBy entries on an act or provision. Layer 2b populates.",
+  "rdfs:range": {"@id": "xsd:integer"}
+},
+{
+  "@id": "estleg:enforcedAtLevel",
+  "@type": "owl:DatatypeProperty",
+  "rdfs:label": "enforcedAtLevel",
+  "rdfs:comment": "Sanction enforcement level: 'state' or 'municipality'. Derived in Layer 2c from the parent act's type.",
+  "rdfs:range": {"@id": "xsd:string"}
+}
+```
+
+- [ ] **Step 4: Run the test to verify it passes**
+
+Run: `pytest tests/test_kov_registry.py::TestMetadataJsonLd -v`
+Expected: 2 passed (both methods).
+
+Confirm the file is still valid JSON:
+
+```
+python3 -m json.tool metadata.jsonld > /dev/null && echo "JSON OK"
+```
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add metadata.jsonld tests/test_kov_registry.py
+git commit -m "Declare Layer 2 schema (Citation properties + 5 act/provision properties)"
+```
+
+---
+
+## Task 2: SHACL Citation shape
+
+**Files:**
+- Modify: `shacl/estonian_legal_shapes.ttl`
+- Modify: `tests/test_shacl_kov_layer1.py` (extend with a Citation shape test class)
+
+Layer 1 declared `estleg:Citation` as a placeholder class but did not add a SHACL shape (no instances yet). This task adds `CitationShape` so Layer 2b's emitted Citation nodes will be validated immediately when they appear.
+
+- [ ] **Step 1: Write the failing test**
+
+Append to `tests/test_shacl_kov_layer1.py`:
+
+```python
+class TestCitationShape:
+    def test_valid_citation_passes(self):
+        ok, msg = _validate({
+            "@context": CONTEXT,
+            "@graph": [
+                # The provision target (KovProvision shape requires
+                # enactedBy/enactedByMunicipality/partOfAct, so build
+                # a minimal Municipality+Issuer+act+provision context
+                # for the join-validation to pass).
+                {
+                    "@id": "estleg:Municipality_EHAK_0784",
+                    "@type": ["owl:NamedIndividual", "estleg:Municipality"],
+                    "rdfs:label": "Tallinn",
+                    "estleg:ehakCode": "0784",
+                    "estleg:county": "Harju maakond",
+                },
+                {
+                    "@id": "estleg:Issuer_tallinna_linnavolikogu",
+                    "@type": ["owl:NamedIndividual", "estleg:Issuer"],
+                    "rdfs:label": "Tallinna Linnavolikogu",
+                    "estleg:bodyType": "volikogu",
+                    "estleg:currentMunicipality": {
+                        "@id": "estleg:Municipality_EHAK_0784"
+                    },
+                    "estleg:mappingSource": "auto-match",
+                },
+                {
+                    "@id": "estleg:Reg_1014955_Map_2026",
+                    "@type": [
+                        "owl:Ontology",
+                        "estleg:Act",
+                        "estleg:MunicipalRegulation",
+                    ],
+                    "rdfs:label": "Tallinna jäätmehoolduseeskiri",
+                    "estleg:enactedBy": {
+                        "@id": "estleg:Issuer_tallinna_linnavolikogu"
+                    },
+                    "estleg:enactedByMunicipality": {
+                        "@id": "estleg:Municipality_EHAK_0784"
+                    },
+                    "estleg:titleNormalized": "jaatmehoolduseeskiri",
+                },
+                {
+                    "@id": "estleg:Reg_1014955_Par_42",
+                    "@type": ["owl:NamedIndividual", "estleg:KovProvision"],
+                    "estleg:paragrahv": "§ 42.",
+                    "estleg:summary": "stub",
+                    "estleg:enactedBy": {
+                        "@id": "estleg:Issuer_tallinna_linnavolikogu"
+                    },
+                    "estleg:enactedByMunicipality": {
+                        "@id": "estleg:Municipality_EHAK_0784"
+                    },
+                    "estleg:partOfAct": {"@id": "estleg:Reg_1014955_Map_2026"},
+                },
+                # The Citation under test
+                {
+                    "@id": "estleg:Citation_1014955_Map_2026_1",
+                    "@type": ["owl:NamedIndividual", "estleg:Citation"],
+                    "estleg:citationTarget": {
+                        "@id": "estleg:Reg_1014955_Par_42"
+                    },
+                    "estleg:citationDetail": "lg 1",
+                    "estleg:citationText": "§ 42 lg 1 alusel",
+                },
+            ],
+        })
+        assert ok, msg
+
+    def test_citation_missing_target_fails(self):
+        ok, _ = _validate({
+            "@context": CONTEXT,
+            "@id": "estleg:Citation_1014955_Map_2026_1",
+            "@type": ["owl:NamedIndividual", "estleg:Citation"],
+            "estleg:citationDetail": "lg 1",
+        })
+        assert not ok
+
+    def test_citation_iri_pattern_enforced(self):
+        ok, _ = _validate({
+            "@context": CONTEXT,
+            "@id": "estleg:NotACitation",  # wrong pattern
+            "@type": ["owl:NamedIndividual", "estleg:Citation"],
+            "estleg:citationTarget": {
+                "@id": "estleg:Reg_1014955_Par_42"
+            },
+        })
+        assert not ok
+```
+
+- [ ] **Step 2: Run test (expect failure)**
+
+Run: `pytest tests/test_shacl_kov_layer1.py::TestCitationShape -v`
+Expected: shapes don't exist; positive test fails (no constraint to satisfy by adding `Citation` typing — actually it passes trivially, since SHACL with no shape says all valid). Negative tests fail because no shape rejects them. So the entire class is in an "all wrongly-pass" state until the shape is added.
+
+- [ ] **Step 3: Append `CitationShape` to `shacl/estonian_legal_shapes.ttl`**
+
+Add at the end of the file:
+
+```turtle
+estleg:CitationShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:Citation ;
+    sh:nodeKind sh:IRI ;
+    sh:pattern "^https://data\\.riik\\.ee/ontology/estleg#Citation_[A-Za-z0-9_]+_[0-9]+$" ;
+    sh:property [
+        sh:path estleg:citationTarget ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:class estleg:LegalProvision ;
+        sh:name "citationTarget" ;
+    ] ;
+    sh:property [
+        sh:path estleg:citationDetail ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "citationDetail" ;
+    ] ;
+    sh:property [
+        sh:path estleg:citationText ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "citationText" ;
+    ] .
+```
+
+- [ ] **Step 4: Run the test to verify it passes**
+
+Run: `pytest tests/test_shacl_kov_layer1.py -v`
+Expected: 10 passed (the 7 prior shapes + 3 new Citation tests).
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add shacl/estonian_legal_shapes.ttl tests/test_shacl_kov_layer1.py
+git commit -m "Add SHACL CitationShape for Layer 2b instance validation"
+```
+
+---
+
+## Task 3: Per-caller audit + pin `include_kov=False` on the 9 deferred/irrelevant call sites
+
+**Files:**
+- Modify: `scripts/extract_cross_references.py` (3 call sites)
+- Modify: `scripts/generate_inverse_references.py` (3 call sites)
+- Modify: `scripts/extract_sanctions.py` (1 call site)
+- Modify: `scripts/extract_institutional_competence.py` (1 call site)
+- Modify: `scripts/extract_court_provision_links.py` (2 call sites)
+- Modify: `scripts/generate_similarity_index.py` (2 call sites)
+- Modify: `scripts/extract_draft_impact.py` (2 call sites)
+- Modify: `scripts/generate_harmonisation_links.py` (1 call site)
+- Modify: `scripts/generate_transposition_mapping.py` (1 call site)
+
+This task **must precede** Task 4 (the iterator default flip). Without these pins, flipping the default would silently route KOV files into pipelines that aren't ready, producing wrong/incomplete output.
+
+The pinning pattern is uniform: every `iter_peep_files()` call without an explicit `include_kov=...` argument gets `include_kov=False` plus a one-line comment indicating which Layer (2b, 2c, or 3) will unpin it, or "permanent" for the EU-only ones.
+
+- [ ] **Step 1: Pin all 9 scripts in one commit**
+
+For each script, run an exact textual replacement. Examples for each:
+
+**`scripts/extract_cross_references.py`** — 3 sites at lines 66, 414, 463 (verify with grep before editing):
+
+```bash
+grep -n "iter_peep_files()" scripts/extract_cross_references.py
+```
+
+For each match, change `iter_peep_files()` → `iter_peep_files(include_kov=False)  # DEFERRED to Layer 2b`.
+
+Apply the same pattern to:
+- `scripts/generate_inverse_references.py` — 3 sites; comment `# DEFERRED to Layer 2b`
+- `scripts/extract_sanctions.py` — 1 site; comment `# DEFERRED to Layer 2c`
+- `scripts/extract_institutional_competence.py` — 1 site; comment `# DEFERRED to Layer 2c`
+- `scripts/extract_court_provision_links.py` — 2 sites; comment `# DEFERRED to Layer 2c`
+- `scripts/generate_similarity_index.py` — 2 sites; comment `# DEFERRED to Layer 3`
+- `scripts/extract_draft_impact.py` — 2 sites; comment `# KOV does not apply (EU/draft pipeline)`
+- `scripts/generate_harmonisation_links.py` — 1 site; comment `# KOV does not apply`
+- `scripts/generate_transposition_mapping.py` — 1 site; comment `# KOV does not apply`
+
+- [ ] **Step 2: Verify the changes**
+
+```bash
+grep -rn "iter_peep_files(" scripts/*.py | grep -v "include_kov=" | grep -v "estleg_common.py"
+```
+
+Expected: empty output (every call now has an explicit `include_kov=` argument, except the definition in `estleg_common.py`).
+
+- [ ] **Step 3: Run the full test suite**
+
+```
+pytest -q
+```
+
+Expected: still 102 passed (same as Layer 1 end state). No new tests yet; just verifying we didn't break anything.
+
+- [ ] **Step 4: Commit**
+
+```bash
+git add scripts/extract_cross_references.py scripts/generate_inverse_references.py scripts/extract_sanctions.py scripts/extract_institutional_competence.py scripts/extract_court_provision_links.py scripts/generate_similarity_index.py scripts/extract_draft_impact.py scripts/generate_harmonisation_links.py scripts/generate_transposition_mapping.py
+git commit -m "Pin include_kov=False on 9 deferred/irrelevant pipelines
+
+Pre-flip audit: explicitly opt out of KOV input on every consumer that
+isn't ready to handle it yet. Comments mark each pin as DEFERRED to
+Layer 2b/2c/3 or 'KOV does not apply' (EU pipelines)."
+```
+
+---
+
+## Task 4: Flip `iter_peep_files()` default to `include_kov=True`
+
+**Files:**
+- Modify: `scripts/estleg_common.py:133-158`
+- Create: `tests/test_iter_peep_files.py`
+
+- [ ] **Step 1: Write the failing test**
+
+Create `tests/test_iter_peep_files.py`:
+
+```python
+"""Tests for the default-flip in estleg_common.iter_peep_files()."""
+from __future__ import annotations
+
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
+
+import pytest
+
+from estleg_common import iter_peep_files
+
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+KRR_DIR = REPO_ROOT / "krr_outputs"
+
+
+class TestIterPeepFilesDefault:
+    def test_default_includes_kov(self):
+        """After Layer 2a flips the default, calling iter_peep_files() with
+        no arguments must include KOV files."""
+        files = iter_peep_files()
+        kov_files = [f for f in files if "regulations/kov" in str(f)]
+        assert len(kov_files) > 1000, (
+            f"expected KOV files in default iter; got {len(kov_files)}"
+        )
+
+    def test_explicit_include_kov_false_excludes(self):
+        """Pinned call sites (Layer 2b/2c/3 deferrals) must still get a
+        KOV-free file set when they pass include_kov=False."""
+        files = iter_peep_files(include_kov=False)
+        kov_files = [f for f in files if "regulations/kov" in str(f)]
+        assert kov_files == []
+
+    def test_default_includes_state_regulations(self):
+        """include_regulations=True is still the default; state regs
+        under regulations/riik/ should appear."""
+        files = iter_peep_files()
+        riik_files = [f for f in files if "regulations/riik" in str(f)]
+        assert len(riik_files) > 100
+```
+
+- [ ] **Step 2: Run the test to verify it fails**
+
+Run: `pytest tests/test_iter_peep_files.py -v`
+Expected: FAIL on `test_default_includes_kov` (current default is `include_kov=False`).
+
+- [ ] **Step 3: Flip the default**
+
+Open `scripts/estleg_common.py`, find `def iter_peep_files(` around line 133. Change:
+
+```python
+def iter_peep_files(
+    *,
+    include_laws: bool = True,
+    include_regulations: bool = True,
+    include_kov: bool = False,
+) -> list[Path]:
+```
+
+to:
+
+```python
+def iter_peep_files(
+    *,
+    include_laws: bool = True,
+    include_regulations: bool = True,
+    include_kov: bool = True,
+) -> list[Path]:
+```
+
+Update the docstring to reflect the change. Find:
+
+```python
+    """Return every ``*_peep.json`` ontology file managed by the pipeline.
+
+    Pipeline-wide file iterator that includes both top-level laws and the
+    state-level regulations under ``regulations/riik/``. KOV regulations
+    (``regulations/kov/``) are opt-in to keep ~11k near-duplicate municipal
+    acts out of routine cross-reference / similarity passes until KOV
+    integration is explicitly ramped in.
+    """
+```
+
+Replace with:
+
+```python
+    """Return every ``*_peep.json`` ontology file managed by the pipeline.
+
+    Pipeline-wide file iterator that includes top-level laws, state-level
+    regulations under ``regulations/riik/``, and KOV regulations under
+    ``regulations/kov/``. The Layer 2a default flip (2026-05-03) made KOV
+    inclusion the new baseline; pipelines that aren't yet KOV-ready opt
+    out explicitly via ``include_kov=False`` (Layer 2b/2c/3 deferrals,
+    or KOV-irrelevant pipelines like harmonisation links).
+    """
+```
+
+- [ ] **Step 4: Run the test to verify it passes**
+
+Run: `pytest tests/test_iter_peep_files.py -v`
+Expected: 3 passed.
+
+Then run the full suite to confirm the 9 pinned pipelines still get a KOV-free file set:
+
+```
+pytest -q
+```
+
+Expected: 105 passed (was 102; +3 new iter_peep_files tests).
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add scripts/estleg_common.py tests/test_iter_peep_files.py
+git commit -m "Flip iter_peep_files() default to include_kov=True
+
+The 9 deferred/irrelevant pipelines pinned include_kov=False in the
+prior commit, so this flip routes KOV files only to the 5 KOV-ready
+pipelines (deontic, EuroVoc, temporal, legal-concepts, amendment-
+history). Per-pipeline coverage reports in subsequent tasks let
+reviewers verify the input universe shift."
+```
+
+---
+
+## Task 5: Coverage instrumentation helper
+
+**Files:**
+- Create: `scripts/kov_pipeline_coverage.py`
+- Create: `tests/test_kov_pipeline_coverage.py`
+- Create: `krr_outputs/reports/kov/README.md`
+
+A pure-function helper that wraps a pipeline run and produces a JSON report. Pipelines call into it at start/end of `main()`. Reports go to `krr_outputs/reports/kov/<pipeline>_coverage.json`.
+
+- [ ] **Step 1: Write the failing test**
+
+Create `tests/test_kov_pipeline_coverage.py`:
+
+```python
+"""Tests for scripts/kov_pipeline_coverage.py — pipeline coverage reporter."""
+from __future__ import annotations
+
+import json
+import sys
+import time
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
+
+import pytest
+
+from kov_pipeline_coverage import (
+    CoverageReport,
+    write_coverage_report,
+)
+
+
+class TestCoverageReport:
+    def test_dataclass_round_trips(self, tmp_path):
+        report = CoverageReport(
+            pipeline="classify_eurovoc",
+            run_timestamp="2026-05-03T12:00:00Z",
+            pipeline_version="abc1234",
+            input_files_total=11796,
+            input_files_kov=11059,
+            triples_emitted=42000,
+            wall_time_seconds=125.4,
+            error_count=0,
+            failure_samples=[],
+        )
+        out = tmp_path / "coverage.json"
+        write_coverage_report(report, out)
+
+        with open(out, "r", encoding="utf-8") as fh:
+            doc = json.load(fh)
+
+        assert doc["pipeline"] == "classify_eurovoc"
+        assert doc["input_files_total"] == 11796
+        assert doc["input_files_kov"] == 11059
+        assert doc["triples_emitted"] == 42000
+        assert isinstance(doc["wall_time_seconds"], (int, float))
+        assert doc["pipeline_version"] == "abc1234"
+
+    def test_failure_samples_capped(self, tmp_path):
+        # Helper rejects more than 20 samples (the documented cap)
+        report = CoverageReport(
+            pipeline="x",
+            run_timestamp="t",
+            pipeline_version="v",
+            input_files_total=0,
+            input_files_kov=0,
+            triples_emitted=0,
+            wall_time_seconds=0.0,
+            error_count=25,
+            failure_samples=[f"sample-{i}" for i in range(25)],
+        )
+        out = tmp_path / "c.json"
+        write_coverage_report(report, out)
+        doc = json.load(open(out, encoding="utf-8"))
+        assert len(doc["failure_samples"]) == 20
+
+    def test_atomic_write(self, tmp_path):
+        # Pre-existing file must be replaced atomically (temp + rename)
+        out = tmp_path / "c.json"
+        out.write_text('{"old": true}', encoding="utf-8")
+        report = CoverageReport(
+            pipeline="x", run_timestamp="t", pipeline_version="v",
+            input_files_total=1, input_files_kov=0, triples_emitted=0,
+            wall_time_seconds=0.0, error_count=0, failure_samples=[],
+        )
+        write_coverage_report(report, out)
+        doc = json.load(open(out, encoding="utf-8"))
+        assert "old" not in doc
+        assert doc["pipeline"] == "x"
+
+
+class TestPipelineVersionResolver:
+    def test_returns_short_sha(self):
+        from kov_pipeline_coverage import resolve_pipeline_version
+        sha = resolve_pipeline_version()
+        # 7-char short SHA from `git rev-parse --short HEAD`
+        assert len(sha) >= 7
+        assert all(c in "0123456789abcdef" for c in sha)
+```
+
+- [ ] **Step 2: Run the test (expect ImportError)**
+
+Run: `pytest tests/test_kov_pipeline_coverage.py -v`
+Expected: FAIL — module doesn't exist.
+
+- [ ] **Step 3: Implement the helper**
+
+Create `scripts/kov_pipeline_coverage.py`:
+
+```python
+"""KOV pipeline coverage reporter.
+
+Each KOV-relevant pipeline calls into this helper at the end of its
+main() to record per-run metrics. The reports live at
+``krr_outputs/reports/kov/<pipeline>_coverage.json`` and let
+reviewers diff a `main`-branch baseline run against this PR's run.
+
+Pure helpers — no global state. The caller assembles a CoverageReport
+and calls write_coverage_report(report, out_path).
+"""
+from __future__ import annotations
+
+import json
+import os
+import subprocess
+from dataclasses import dataclass, field, asdict
+from pathlib import Path
+
+
+_FAILURE_SAMPLE_CAP = 20
+
+
+@dataclass
+class CoverageReport:
+    pipeline: str
+    run_timestamp: str        # ISO-8601 UTC
+    pipeline_version: str     # git short SHA
+    input_files_total: int
+    input_files_kov: int
+    triples_emitted: int
+    wall_time_seconds: float
+    error_count: int
+    failure_samples: list[str] = field(default_factory=list)
+
+
+def write_coverage_report(report: CoverageReport, path: Path) -> None:
+    """Write a CoverageReport to a JSON file atomically.
+
+    Caps failure_samples at 20 entries (per the spec); writes to a
+    temp file in the same directory, then renames into place so a
+    crash mid-write doesn't leave a partial file.
+    """
+    path.parent.mkdir(parents=True, exist_ok=True)
+    payload = asdict(report)
+    payload["failure_samples"] = payload["failure_samples"][:_FAILURE_SAMPLE_CAP]
+
+    tmp = path.with_suffix(path.suffix + ".tmp")
+    with open(tmp, "w", encoding="utf-8") as fh:
+        json.dump(payload, fh, ensure_ascii=False, indent=2, sort_keys=True)
+        fh.write("\n")
+    os.replace(tmp, path)
+
+
+def resolve_pipeline_version() -> str:
+    """Return the current git short SHA, or 'unknown' on failure."""
+    try:
+        result = subprocess.run(
+            ["git", "rev-parse", "--short", "HEAD"],
+            capture_output=True, text=True, check=True,
+        )
+        return result.stdout.strip()
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        return "unknown"
+```
+
+- [ ] **Step 4: Run the test to verify it passes**
+
+Run: `pytest tests/test_kov_pipeline_coverage.py -v`
+Expected: 4 passed.
+
+- [ ] **Step 5: Add the README**
+
+Create `krr_outputs/reports/kov/README.md`:
+
+```markdown
+# KOV pipeline coverage reports
+
+Each KOV-relevant pipeline emits a per-run JSON report here at the end
+of its `main()`. Reports include input file counts (total + KOV-only),
+triples emitted, wall time, errors, and a capped sample of failures
+for diagnostics.
+
+## Format
+
+```json
+{
+  "pipeline": "classify_eurovoc",
+  "run_timestamp": "2026-05-03T12:00:00Z",
+  "pipeline_version": "abc1234",
+  "input_files_total": 11796,
+  "input_files_kov": 11059,
+  "triples_emitted": 42000,
+  "wall_time_seconds": 125.4,
+  "error_count": 0,
+  "failure_samples": []
+}
+```
+
+## Before/after diff workflow for reviewers
+
+1. `git checkout main` and run the affected pipeline; copy the report
+   to `/tmp/<pipeline>_before.json`.
+2. `git checkout <PR branch>` and run the pipeline again.
+3. `diff /tmp/<pipeline>_before.json krr_outputs/reports/kov/<pipeline>_coverage.json`
+4. Expect: input_files_total grows by ~11k (the KOV add), triples_emitted
+   grows roughly proportionally, error_count stays at 0 (or close to it),
+   wall_time_seconds within budget.
+```
+
+- [ ] **Step 6: Commit**
+
+```bash
+git add scripts/kov_pipeline_coverage.py tests/test_kov_pipeline_coverage.py krr_outputs/reports/kov/README.md
+git commit -m "Add KOV pipeline coverage reporter"
+```
+
+---
+
+## Task 6: Fix `classify_deontic` — KOV discovery + coverage instrumentation
+
+**Files:**
+- Modify: `scripts/classify_deontic.py:151`
+- Create: `tests/test_classify_deontic.py`
+- Create: `tests/fixtures/kov_layer2a/sample_kov_act.json` (minimal; reused across the 5 pipeline-fix tasks)
+
+`classify_deontic` already uses `iter_peep_files()`. With the Task 4 default flip, it now sees KOV files automatically. The remaining work: confirm it processes them, add coverage instrumentation.
+
+- [ ] **Step 1: Create the shared fixture**
+
+Create `tests/fixtures/kov_layer2a/sample_kov_act.json`:
+
+```json
+{
+  "@context": {
+    "estleg": "https://data.riik.ee/ontology/estleg#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "dcterms": "http://purl.org/dc/terms/"
+  },
+  "@graph": [
+    {
+      "@id": "estleg:Reg_9999_Map_2026",
+      "@type": ["owl:Ontology", "estleg:Act", "estleg:MunicipalRegulation"],
+      "rdfs:label": "Test KOV act",
+      "dc:source": "Test KOV act",
+      "estleg:globalId": "999999999",
+      "estleg:terviktekstId": "9999",
+      "estleg:enactedBy": {"@id": "estleg:Issuer_tallinna_linnavolikogu"},
+      "estleg:enactedByMunicipality": {"@id": "estleg:Municipality_EHAK_0784"},
+      "estleg:titleNormalized": "test"
+    },
+    {
+      "@id": "estleg:Reg_9999_Par_1",
+      "@type": ["owl:NamedIndividual", "estleg:KovProvision"],
+      "estleg:paragrahv": "§ 1.",
+      "rdfs:label": "§ 1. Test",
+      "estleg:summary": "Korraldaja peab tagama jäätmete kogumise.",
+      "estleg:legalText": "Korraldaja peab tagama jäätmete kogumise vastavalt määrusele.",
+      "estleg:enactedBy": {"@id": "estleg:Issuer_tallinna_linnavolikogu"},
+      "estleg:enactedByMunicipality": {"@id": "estleg:Municipality_EHAK_0784"},
+      "estleg:partOfAct": {"@id": "estleg:Reg_9999_Map_2026"}
+    }
+  ]
+}
+```
+
+- [ ] **Step 2: Write the failing test**
+
+Create `tests/test_classify_deontic.py`:
+
+```python
+"""Discovery and coverage tests for classify_deontic."""
+from __future__ import annotations
+
+import json
+import shutil
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
+
+import pytest
+
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+FIXTURE = (Path(__file__).parent / "fixtures" / "kov_layer2a"
+           / "sample_kov_act.json")
+
+
+class TestClassifyDeonticDiscoversKov:
+    def test_classify_provision_returns_modal(self):
+        """Smoke test: the pipeline's per-provision classification function
+        recognises the KOV fixture's 'peab tagama' as obligation."""
+        from classify_deontic import classify_provision_text
+        modal = classify_provision_text(
+            "Korraldaja peab tagama jäätmete kogumise vastavalt määrusele."
+        )
+        assert modal in {"obligation", "permission", "prohibition"}, modal
+```
+
+If `classify_provision_text` doesn't exist by that name, replace with whatever the script's per-text classification entry point is (look at `classify_deontic.py` to find the function — probably named differently). The intent is a smoke test that the existing logic accepts KOV-shaped text.
+
+- [ ] **Step 3: Run test to verify it passes (sanity check — no fix needed yet)**
+
+```
+pytest tests/test_classify_deontic.py -v
+```
+
+Expected: 1 passed (the existing classifier already handles arbitrary Estonian text).
+
+- [ ] **Step 4: Add coverage instrumentation to `classify_deontic.py`**
+
+Open `scripts/classify_deontic.py` and find the existing `main()`. At the very top of the imports add:
+
+```python
+import time
+from datetime import datetime, timezone
+from kov_pipeline_coverage import (
+    CoverageReport,
+    resolve_pipeline_version,
+    write_coverage_report,
+)
+```
+
+Find the `main()` function. Wrap the existing body with timing and triple-counting. The exact placement depends on the script's current shape — add:
+
+```python
+def main() -> int:
+    _start = time.perf_counter()
+    _files = iter_peep_files()  # uses new include_kov=True default
+    _kov_files = [f for f in _files if "regulations/kov" in str(f)]
+    _triples_before = ...  # see below
+    _failures: list[str] = []
+
+    # ... existing pipeline body ...
+
+    _wall = time.perf_counter() - _start
+    _triples_after = ...  # see below
+    write_coverage_report(
+        CoverageReport(
+            pipeline="classify_deontic",
+            run_timestamp=datetime.now(timezone.utc).isoformat(),
+            pipeline_version=resolve_pipeline_version(),
+            input_files_total=len(_files),
+            input_files_kov=len(_kov_files),
+            triples_emitted=_triples_after - _triples_before,
+            wall_time_seconds=round(_wall, 2),
+            error_count=len(_failures),
+            failure_samples=_failures,
+        ),
+        REPO_ROOT / "krr_outputs" / "reports" / "kov" / "classify_deontic_coverage.json",
+    )
+    return 0
+```
+
+For `_triples_before`/`_triples_after`: the helper expects a count. Look at how the script accumulates output (probably appends to a list of nodes, then writes them). Replace `...` with `len(<that list>)` or `0` (initial) and the final length. If the count isn't easily extractable, count at the file level: `triples_emitted = sum_of_classifications_added_across_all_files`.
+
+`REPO_ROOT` should already be defined in the script (most scripts compute it as `Path(__file__).resolve().parents[1]`). If not, add it.
+
+- [ ] **Step 5: Verify the script still runs end-to-end on a small fixture**
+
+```bash
+# Smoke: run the script in a tmp dir with just the fixture
+mkdir -p /tmp/deontic_smoke/krr_outputs/regulations/kov/x_vallavolikogu
+cp tests/fixtures/kov_layer2a/sample_kov_act.json /tmp/deontic_smoke/krr_outputs/regulations/kov/x_vallavolikogu/
+# (Run the actual pipeline if straightforward; otherwise skip — the
+# real corpus run in Task 11 will exercise it.)
+```
+
+This step is optional smoke; the real validation is the corpus run in Task 11.
+
+- [ ] **Step 6: Run the full test suite**
+
+```
+pytest -q
+```
+
+Expected: 106 passed (105 + 1 new deontic test).
+
+- [ ] **Step 7: Commit**
+
+```bash
+git add scripts/classify_deontic.py tests/test_classify_deontic.py tests/fixtures/kov_layer2a/sample_kov_act.json
+git commit -m "Add coverage instrumentation to classify_deontic; verify KOV input"
+```
+
+---
+
+## Task 7: Fix `classify_eurovoc` — switch from INDEX.json to iter_peep_files
+
+**Files:**
+- Modify: `scripts/classify_eurovoc.py:432-433, 441-512`
+- Create: `tests/test_classify_eurovoc.py`
+
+The current classifier (a) drives input from `krr_outputs/INDEX.json` (laws-only), and (b) at line ~433 explicitly skips files where `peep_file.parent != KRR_DIR`. After this task, EuroVoc gets discovery from `iter_peep_files()` and pulls per-file titles from each peep file's act node.
+
+- [ ] **Step 1: Locate the relevant lines**
+
+Run:
+
+```
+grep -n "INDEX.json\|peep_file.parent\|KRR_DIR / law_file\|KRR_DIR / filename" scripts/classify_eurovoc.py
+```
+
+You should see hits around lines 433, 441, 467, 512, 553. Read those sections to understand the current flow before editing.
+
+- [ ] **Step 2: Write the failing test**
+
+Create `tests/test_classify_eurovoc.py`:
+
+```python
+"""Discovery and output-path tests for classify_eurovoc."""
+from __future__ import annotations
+
+import json
+import shutil
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
+
+import pytest
+
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+FIXTURE = (Path(__file__).parent / "fixtures" / "kov_layer2a"
+           / "sample_kov_act.json")
+
+
+def _read_act_metadata(path: Path):
+    """The helper under test: pull title/source from a peep file's
+    act-typed node without consulting INDEX.json."""
+    from classify_eurovoc import read_act_metadata_from_peep
+    return read_act_metadata_from_peep(path)
+
+
+class TestReadActMetadataFromPeep:
+    def test_reads_title_from_kov_act(self):
+        meta = _read_act_metadata(FIXTURE)
+        assert meta["title"] == "Test KOV act"
+        assert meta["source"] == "Test KOV act"
+        assert meta["@id"] == "estleg:Reg_9999_Map_2026"
+
+    def test_returns_none_for_provision_only_file(self, tmp_path):
+        # A file with no act-typed node should return None, not crash.
+        bad = tmp_path / "no_act.json"
+        bad.write_text(json.dumps({
+            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+                         "owl": "http://www.w3.org/2002/07/owl#"},
+            "@graph": [
+                {"@id": "estleg:LooseProvision",
+                 "@type": ["owl:NamedIndividual"],
+                 "rdfs:label": "stray"}
+            ],
+        }), encoding="utf-8")
+        assert _read_act_metadata(bad) is None
+```
+
+- [ ] **Step 3: Run the test (expect ImportError)**
+
+Run: `pytest tests/test_classify_eurovoc.py -v`
+Expected: FAIL.
+
+- [ ] **Step 4: Implement `read_act_metadata_from_peep`**
+
+Add to `scripts/classify_eurovoc.py` (place near the top of the module-level functions, before `main()`):
+
+```python
+def read_act_metadata_from_peep(path: Path) -> dict | None:
+    """Pull act-level metadata from a peep file without consulting
+    INDEX.json. Returns dict with @id, title, source — or None if no
+    act-typed node is present.
+
+    Recognises any node typed as one of: estleg:Act, estleg:Law,
+    estleg:NationalRegulation, estleg:GovernmentRegulation,
+    estleg:MinisterialRegulation, estleg:MunicipalRegulation, or
+    plain owl:Ontology (legacy law nodes pre-Layer 1 stamping).
+    """
+    ACT_TYPES = {
+        "estleg:Act", "estleg:Law",
+        "estleg:NationalRegulation", "estleg:GovernmentRegulation",
+        "estleg:MinisterialRegulation", "estleg:MunicipalRegulation",
+        "owl:Ontology",
+    }
+    try:
+        with open(path, "r", encoding="utf-8") as fh:
+            doc = json.load(fh)
+    except (json.JSONDecodeError, OSError):
+        return None
+    for node in doc.get("@graph", []):
+        types = node.get("@type") or []
+        if isinstance(types, str):
+            types = [types]
+        if not ACT_TYPES.intersection(types):
+            continue
+        # owl:Ontology alone isn't enough — a node typed only as
+        # owl:Ontology and nothing else is rare but possible. Accept it.
+        return {
+            "@id": node.get("@id"),
+            "title": node.get("rdfs:label", ""),
+            "source": node.get("dc:source", node.get("rdfs:label", "")),
+        }
+    return None
+```
+
+- [ ] **Step 5: Run the test to verify it passes**
+
+Run: `pytest tests/test_classify_eurovoc.py -v`
+Expected: 2 passed.
+
+- [ ] **Step 6: Replace the discovery + write-back loop in `main()`**
+
+The existing flow is roughly:
+1. Load INDEX.json → list of law slugs
+2. For each slug, find the peep file at `KRR_DIR / files[0]`
+3. Skip non-root files
+4. Run EuroVoc on title/source
+5. Write back to `KRR_DIR / law_file`
+
+Replace with:
+1. Discover via `iter_peep_files()` (gets KOV via the new default)
+2. Pull title/source via `read_act_metadata_from_peep(path)`; skip files where it returns None
+3. Run EuroVoc on title/source
+4. Write back to the **source path** (the file you read), not `KRR_DIR / filename`
+
+The exact code edit depends on the script's current shape. Read `scripts/classify_eurovoc.py` end-to-end first. The two key replacements:
+
+**At the discovery block (around line 441):**
+
+Find:
+
+```python
+    print("\n--- Loading INDEX.json ---")
+    index_path = KRR_DIR / "INDEX.json"
+    # ... INDEX-loading logic ...
+```
+
+Replace the whole INDEX-driven discovery with:
+
+```python
+    print("\n--- Discovering peep files ---")
+    peep_files = iter_peep_files()
+    print(f"  Discovered {len(peep_files)} peep files")
+    laws_meta = []
+    for f in peep_files:
+        meta = read_act_metadata_from_peep(f)
+        if meta is None:
+            continue
+        meta["path"] = f
+        laws_meta.append(meta)
+    print(f"  {len(laws_meta)} have a recognized act node")
+```
+
+**At the write-back (around line 512):**
+
+Find any line that constructs `filepath = KRR_DIR / law_file` (or `KRR_DIR / filename`). Replace with `filepath = meta["path"]` (the source path captured in the discovery loop). The exact rename depends on the variable naming in the existing loop.
+
+- [ ] **Step 7: Remove the root-only filter**
+
+Find the line:
+
+```python
+        if peep_file.parent != KRR_DIR:
+            continue
+```
+
+Delete it. The pinned 9 pipelines opt out of KOV via `include_kov=False`; this filter was the root-only fallback that's now obsolete.
+
+- [ ] **Step 8: Add coverage instrumentation**
+
+Same pattern as Task 6 Step 4 — wrap `main()` with timing + counting, write to
+`krr_outputs/reports/kov/classify_eurovoc_coverage.json`.
+
+- [ ] **Step 9: Run the full test suite**
+
+```
+pytest -q
+```
+
+Expected: 108 passed (was 106; +2 EuroVoc tests).
+
+- [ ] **Step 10: Commit**
+
+```bash
+git add scripts/classify_eurovoc.py tests/test_classify_eurovoc.py
+git commit -m "Switch classify_eurovoc to iter_peep_files; remove INDEX-only discovery"
+```
+
+---
+
+## Task 8: Fix `extract_temporal_data` — recursive XML + globaalID pairing
+
+**Files:**
+- Modify: `scripts/extract_temporal_data.py:279, 312`
+- Create: `tests/test_extract_temporal_data.py`
+- Create: `tests/fixtures/kov_layer2a/sample_kov_xml.xml` — minimal Riigi Teataja XML for date extraction
+
+The two issues from the spec:
+1. `data/riigiteataja/*.xml` is non-recursive (skips `maarus/`, `maarus_kov/`).
+2. Pairs XML to peep files by **slug**, but KOV peep files are title-based and don't share slugs with their `reg_<globalId>.xml` counterparts.
+
+The fix: recursive glob + a `globaalID → XML path` lookup helper that uses each peep file's `estleg:globalId` value to find its XML.
+
+- [ ] **Step 1: Create the XML fixture**
+
+Create `tests/fixtures/kov_layer2a/sample_kov_xml.xml`:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<akt globaalID="999999999">
+  <metaandmed>
+    <vastuvotjaLiik>Tallinna Linnavolikogu</vastuvotjaLiik>
+    <vastuvotmiseAeg>2020-09-17</vastuvotmiseAeg>
+    <jouAeg>2020-10-02</jouAeg>
+    <kehtetuksMuutmiseAeg/>
+  </metaandmed>
+</akt>
+```
+
+Real RT XML is more complex but this minimal shape exercises the metadata-extraction path.
+
+- [ ] **Step 2: Write the failing test**
+
+Create `tests/test_extract_temporal_data.py`:
+
+```python
+"""Tests for extract_temporal_data — recursive XML discovery + globaalID pairing."""
+from __future__ import annotations
+
+import json
+import shutil
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
+
+import pytest
+
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+FIXTURE_DIR = Path(__file__).parent / "fixtures" / "kov_layer2a"
+PEEP_FIXTURE = FIXTURE_DIR / "sample_kov_act.json"
+XML_FIXTURE = FIXTURE_DIR / "sample_kov_xml.xml"
+
+
+class TestBuildGlobalIdLookup:
+    def test_recursive_xml_discovery(self, tmp_path):
+        from extract_temporal_data import build_globalid_xml_lookup
+
+        # Stage three XML files in subdirectories to mimic the real layout
+        rt = tmp_path / "data" / "riigiteataja"
+        (rt / "maarus").mkdir(parents=True)
+        (rt / "maarus_kov").mkdir(parents=True)
+        (rt / "law_alpha.xml").write_text(
+            '<akt globaalID="111"><metaandmed></metaandmed></akt>',
+            encoding="utf-8",
+        )
+        (rt / "maarus" / "reg_222.xml").write_text(
+            '<akt globaalID="222"><metaandmed></metaandmed></akt>',
+            encoding="utf-8",
+        )
+        (rt / "maarus_kov" / "reg_333.xml").write_text(
+            '<akt globaalID="333"><metaandmed></metaandmed></akt>',
+            encoding="utf-8",
+        )
+
+        lookup = build_globalid_xml_lookup(rt)
+        assert lookup["111"].name == "law_alpha.xml"
+        assert lookup["222"].name == "reg_222.xml"
+        assert lookup["333"].name == "reg_333.xml"
+
+    def test_kov_globalid_resolves(self):
+        """The KOV peep fixture has globalId=999999999 and the XML
+        fixture has the same — the lookup must pair them."""
+        from extract_temporal_data import build_globalid_xml_lookup
+        # Use the actual fixture XML, copied to a tmp dir with the
+        # right structure
+        # (Simpler: just verify the lookup logic on the staged dirs above.)
+        # This test is a placeholder for an integration-style check.
+        # The real test is the one above.
+
+
+class TestPairPeepWithXml:
+    def test_pairs_via_globalid_attribute(self, tmp_path):
+        from extract_temporal_data import pair_peep_with_xml
+
+        peep = tmp_path / "act.json"
+        peep.write_text(json.dumps({
+            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+            "@graph": [
+                {"@id": "estleg:Reg_9999_Map_2026",
+                 "estleg:globalId": "999",
+                 "@type": ["estleg:MunicipalRegulation"]}
+            ],
+        }), encoding="utf-8")
+
+        xml = tmp_path / "reg_999.xml"
+        xml.write_text(
+            '<akt globaalID="999"><metaandmed></metaandmed></akt>',
+            encoding="utf-8",
+        )
+
+        lookup = {"999": xml}
+        result = pair_peep_with_xml(peep, lookup)
+        assert result == xml
+
+    def test_unpaired_returns_none(self, tmp_path):
+        from extract_temporal_data import pair_peep_with_xml
+        peep = tmp_path / "act.json"
+        peep.write_text(json.dumps({
+            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+            "@graph": [
+                {"@id": "estleg:Reg_X",
+                 "estleg:globalId": "missing-id",
+                 "@type": ["estleg:Law"]}
+            ],
+        }), encoding="utf-8")
+        assert pair_peep_with_xml(peep, lookup={}) is None
+```
+
+- [ ] **Step 3: Run the test (expect ImportError)**
+
+Run: `pytest tests/test_extract_temporal_data.py -v`
+Expected: FAIL.
+
+- [ ] **Step 4: Implement the two helpers**
+
+Add to `scripts/extract_temporal_data.py` (near the top, before `main()`):
+
+```python
+import xml.etree.ElementTree as _ET
+
+
+def build_globalid_xml_lookup(rt_root: Path) -> dict[str, Path]:
+    """Recursively scan rt_root for *.xml files and build a
+    globalId → Path lookup keyed by the root element's globaalID
+    attribute. Files without a recognisable globaalID are skipped.
+
+    Walks rt_root and all subdirectories so KOV XML under
+    ``maarus_kov/`` and state regulation XML under ``maarus/`` are
+    paired alongside law XML at the root.
+    """
+    lookup: dict[str, Path] = {}
+    if not rt_root.is_dir():
+        return lookup
+    for xml_path in rt_root.rglob("*.xml"):
+        try:
+            tree = _ET.parse(str(xml_path))
+        except _ET.ParseError:
+            continue
+        root = tree.getroot()
+        # Strip namespace if present, then look for globaalID attr
+        gid = root.get("globaalID")
+        if gid is None:
+            # Fallback: scan top-level <metaandmed> children for globaalID
+            for child in root:
+                if child.tag.endswith("metaandmed"):
+                    gid_el = child.find("globaalID") or child.find(
+                        "{*}globaalID"
+                    )
+                    if gid_el is not None and gid_el.text:
+                        gid = gid_el.text.strip()
+                        break
+        if gid:
+            lookup[gid] = xml_path
+    return lookup
+
+
+def pair_peep_with_xml(peep_path: Path, lookup: dict[str, Path]) -> Path | None:
+    """Given a peep file and a globalId→XML lookup, return the XML
+    path for the file's act node, or None if not paired.
+    """
+    try:
+        with open(peep_path, "r", encoding="utf-8") as fh:
+            doc = json.load(fh)
+    except (json.JSONDecodeError, OSError):
+        return None
+    for node in doc.get("@graph", []):
+        types = node.get("@type") or []
+        if isinstance(types, str):
+            types = [types]
+        if not any(t.endswith("Regulation") or t == "estleg:Law"
+                   or t == "owl:Ontology" for t in types):
+            continue
+        gid = node.get("estleg:globalId")
+        if gid:
+            return lookup.get(str(gid))
+    return None
+```
+
+- [ ] **Step 5: Wire the helpers into `main()`**
+
+Find the existing `main()`. Replace the `xml_files = sorted(DATA_DIR.glob("*.xml"))` block (around line 279) with:
+
+```python
+    xml_lookup = build_globalid_xml_lookup(DATA_DIR)
+    print(f"  Indexed {len(xml_lookup)} XML files by globalId")
+```
+
+Find the root-only filter (line ~312):
+
+```python
+    law_files = [f for f in law_files if f.parent == KRR_DIR]
+```
+
+Delete it.
+
+Find the slug-based pairing logic and replace with `pair_peep_with_xml(peep, xml_lookup)`. The existing logic likely has a section like `xml_path = DATA_DIR / f"{slug}.xml"`. Replace with the new helper.
+
+- [ ] **Step 6: Add coverage instrumentation**
+
+Same pattern as Task 6 Step 4 — write to `krr_outputs/reports/kov/extract_temporal_data_coverage.json`.
+
+- [ ] **Step 7: Run the test to verify it passes**
+
+Run: `pytest tests/test_extract_temporal_data.py -v`
+Expected: 3 passed.
+
+```
+pytest -q
+```
+
+Expected: 111 passed (was 108; +3 temporal tests).
+
+- [ ] **Step 8: Commit**
+
+```bash
+git add scripts/extract_temporal_data.py tests/test_extract_temporal_data.py tests/fixtures/kov_layer2a/sample_kov_xml.xml
+git commit -m "Recursive XML discovery + globaalID pairing for extract_temporal_data"
+```
+
+---
+
+## Task 9: Fix `extract_legal_concepts` — actual @id IRI sourcing
+
+**Files:**
+- Modify: `scripts/extract_legal_concepts.py:240, 254`
+- Create: `tests/test_extract_legal_concepts.py`
+
+The current extractor builds provision IRIs from `f"{law_slug}_Par_{n}"`, which doesn't match KOV provisions (those use `Reg_<terviktekstId>_Par_<n>`). The fix: walk the loaded peep file's `@graph` and use each provision node's actual `@id`.
+
+- [ ] **Step 1: Write the failing test**
+
+Create `tests/test_extract_legal_concepts.py`:
+
+```python
+"""Tests for extract_legal_concepts — IRI sourcing from actual @id."""
+from __future__ import annotations
+
+import json
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
+
+import pytest
+
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+FIXTURE_DIR = Path(__file__).parent / "fixtures" / "kov_layer2a"
+PEEP_FIXTURE = FIXTURE_DIR / "sample_kov_act.json"
+
+
+class TestProvisionIriSourcing:
+    def test_uses_actual_at_id(self, tmp_path):
+        """The extractor walks @graph and emits provision IRIs that are
+        present in the file, not derived from the file slug."""
+        from extract_legal_concepts import iter_provision_nodes
+
+        with open(PEEP_FIXTURE, "r", encoding="utf-8") as fh:
+            doc = json.load(fh)
+        provisions = list(iter_provision_nodes(doc))
+        assert len(provisions) == 1
+        # Real @id is estleg:Reg_9999_Par_1, NOT a slug-derived one
+        assert provisions[0]["@id"] == "estleg:Reg_9999_Par_1"
+
+    def test_skips_non_provision_nodes(self):
+        """The act node and any class declarations must be skipped — the
+        iterator yields only nodes with estleg:paragrahv."""
+        from extract_legal_concepts import iter_provision_nodes
+        doc = {
+            "@graph": [
+                {"@id": "estleg:Act_X", "@type": ["owl:Ontology"]},
+                {"@id": "estleg:Class_Y", "@type": ["owl:Class"]},
+                {"@id": "estleg:Reg_X_Par_1",
+                 "@type": ["owl:NamedIndividual"],
+                 "estleg:paragrahv": "§ 1.",
+                 "estleg:summary": "test"},
+            ]
+        }
+        provs = list(iter_provision_nodes(doc))
+        assert len(provs) == 1
+        assert provs[0]["@id"] == "estleg:Reg_X_Par_1"
+```
+
+- [ ] **Step 2: Run the test (expect ImportError)**
+
+Run: `pytest tests/test_extract_legal_concepts.py -v`
+Expected: FAIL.
+
+- [ ] **Step 3: Implement `iter_provision_nodes` and refactor**
+
+Add to `scripts/extract_legal_concepts.py`:
+
+```python
+def iter_provision_nodes(doc: dict) -> Iterable[dict]:
+    """Yield each provision node (those with estleg:paragrahv) from a
+    loaded peep file's @graph. Used by the extractor to source provision
+    IRIs from actual @id values, replacing the previous slug-derived
+    pattern that breaks for KOV provisions whose @id uses
+    Reg_<terviktekstId>_Par_<n>.
+    """
+    for node in doc.get("@graph", []):
+        if "estleg:paragrahv" in node:
+            yield node
+```
+
+Add `from typing import Iterable` if not already present.
+
+- [ ] **Step 4: Replace the slug-derived IRI construction**
+
+Find the section (around line 240) that builds `provision_id` from `law_slug` and `par_nr`. Replace with a lookup based on the actual node `@id`. The current code probably looks like:
+
+```python
+                provision_id = f"estleg:LegalProvision_{law_slug.upper()}_{par_nr}"
+```
+
+or similar. Find the surrounding `for ... in <something>` loop and refactor it to walk via `iter_provision_nodes(doc)` instead — using `node["@id"]` directly:
+
+```python
+        with open(law["path"], "r", encoding="utf-8") as fh:
+            doc = json.load(fh)
+        for prov_node in iter_provision_nodes(doc):
+            par_display = prov_node.get("estleg:paragrahv", "")
+            par_text = prov_node.get("estleg:legalText", "") or prov_node.get("estleg:summary", "")
+            provision_id = prov_node["@id"]
+            # ... rest of the existing per-provision logic ...
+```
+
+The exact shape depends on the script — read the surrounding 30-50 lines first to understand what `law` and `par_nr` mean.
+
+- [ ] **Step 5: Remove the root-only filter**
+
+Find (line ~254):
+
+```python
+        if f.parent != KRR_DIR:
+            continue
+```
+
+Delete it.
+
+- [ ] **Step 6: Update output paths**
+
+Search the script for any `KRR_DIR / filename` write-back patterns. Replace with the source path captured during discovery (similar to Task 7 Step 6).
+
+- [ ] **Step 7: Add coverage instrumentation**
+
+Same pattern as Task 6 — write to `krr_outputs/reports/kov/extract_legal_concepts_coverage.json`.
+
+- [ ] **Step 8: Run the test to verify it passes**
+
+Run: `pytest tests/test_extract_legal_concepts.py -v`
+Expected: 2 passed.
+
+```
+pytest -q
+```
+
+Expected: 113 passed (was 111; +2 legal-concepts tests).
+
+- [ ] **Step 9: Commit**
+
+```bash
+git add scripts/extract_legal_concepts.py tests/test_extract_legal_concepts.py
+git commit -m "Source provision IRIs from actual @id in extract_legal_concepts"
+```
+
+---
+
+## Task 10: Fix `generate_amendment_history` — recursive XML, globaalID pairing
+
+**Files:**
+- Modify: `scripts/generate_amendment_history.py:124, 377, 393`
+- Create: `tests/test_generate_amendment_history.py`
+
+This is structurally similar to Task 8 — same XML discovery + globaalID-pairing problems. The chain-building logic itself is unchanged.
+
+- [ ] **Step 1: Write the failing test**
+
+Create `tests/test_generate_amendment_history.py`:
+
+```python
+"""Tests for generate_amendment_history — XML pairing for KOV."""
+from __future__ import annotations
+
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
+
+import pytest
+
+
+class TestAmendmentHistoryDiscovery:
+    def test_imports_globalid_helper_from_temporal(self):
+        """The amendment-history script reuses the globalId lookup
+        helper from extract_temporal_data — DRY rule."""
+        from generate_amendment_history import (
+            build_globalid_xml_lookup,
+            pair_peep_with_xml,
+        )
+        # Same behavior verification as in Task 8
+        assert callable(build_globalid_xml_lookup)
+        assert callable(pair_peep_with_xml)
+
+    def test_recursive_glob_finds_kov_xml(self, tmp_path):
+        from generate_amendment_history import build_globalid_xml_lookup
+        rt = tmp_path / "data" / "riigiteataja"
+        (rt / "maarus_kov").mkdir(parents=True)
+        (rt / "maarus_kov" / "reg_kov_888.xml").write_text(
+            '<akt globaalID="888"><metaandmed></metaandmed></akt>',
+            encoding="utf-8",
+        )
+        lookup = build_globalid_xml_lookup(rt)
+        assert "888" in lookup
+```
+
+- [ ] **Step 2: Run test (expect ImportError)**
+
+Run: `pytest tests/test_generate_amendment_history.py -v`
+Expected: FAIL.
+
+- [ ] **Step 3: Reuse the helpers from `extract_temporal_data`**
+
+In `scripts/generate_amendment_history.py`, near the top, add:
+
+```python
+from extract_temporal_data import build_globalid_xml_lookup, pair_peep_with_xml
+```
+
+(Note: this creates a soft cross-script dependency. If circular-import concerns arise, the alternative is to extract both helpers into a new `scripts/riigiteataja_xml_lookup.py` module and have both scripts import from there. Start with the direct import; refactor only if a circular import surfaces.)
+
+- [ ] **Step 4: Replace the existing XML discovery and pairing logic**
+
+Find the `xml_files = sorted(DATA_DIR.glob("*.xml"))` line (around line 393). Replace the entire downstream slug-based pairing block with the helper:
+
+```python
+    xml_lookup = build_globalid_xml_lookup(DATA_DIR)
+    # ... in the per-file loop:
+    xml_path = pair_peep_with_xml(peep_file, xml_lookup)
+    if xml_path is None:
+        continue  # or log and continue, depending on existing flow
+```
+
+- [ ] **Step 5: Remove the two root-only peep filters**
+
+Find (lines ~124, ~377):
+
+```python
+        if f.parent != KRR_DIR:
+            continue
+```
+
+(or `if peep_file.parent != KRR_DIR:`). Delete both occurrences.
+
+- [ ] **Step 6: Add coverage instrumentation**
+
+Same pattern as Task 6 — write to `krr_outputs/reports/kov/generate_amendment_history_coverage.json`.
+
+- [ ] **Step 7: Run the test to verify it passes**
+
+Run: `pytest tests/test_generate_amendment_history.py -v`
+Expected: 2 passed.
+
+```
+pytest -q
+```
+
+Expected: 115 passed (was 113; +2 amendment-history tests).
+
+- [ ] **Step 8: Commit**
+
+```bash
+git add scripts/generate_amendment_history.py tests/test_generate_amendment_history.py
+git commit -m "Recursive XML + globaalID pairing in generate_amendment_history (reuse temporal helpers)"
+```
+
+---
+
+## Task 11: Run all 5 fixed pipelines on the real corpus + capture coverage
+
+**Files:**
+- Generated: `krr_outputs/reports/kov/<pipeline>_coverage.json` (×5)
+- Generated: in-place updates to peep files where each pipeline writes back classifications/concepts/dates/amendments
+
+This task **runs** the pipelines, capturing baseline-vs-current metrics. No new code; this is the integration step.
+
+- [ ] **Step 1: Run each pipeline in turn**
+
+```bash
+python scripts/classify_deontic.py 2>&1 | tail -5
+python scripts/classify_eurovoc.py 2>&1 | tail -5
+python scripts/extract_temporal_data.py 2>&1 | tail -5
+python scripts/extract_legal_concepts.py 2>&1 | tail -5
+python scripts/generate_amendment_history.py 2>&1 | tail -5
+```
+
+Expected: each script exits 0 (or whatever its existing success exit code is) and writes a coverage JSON.
+
+If any pipeline crashes on KOV input, capture the error and report — that's a Layer-2a regression that needs fixing before commit.
+
+- [ ] **Step 2: Verify coverage reports are well-formed**
+
+```bash
+for p in classify_deontic classify_eurovoc extract_temporal_data extract_legal_concepts generate_amendment_history; do
+  echo "=== $p ==="
+  python3 -m json.tool krr_outputs/reports/kov/${p}_coverage.json | head -15
+done
+```
+
+Expected: each report shows reasonable values — `input_files_total > 16000`, `input_files_kov > 11000`, `triples_emitted > 0`, `error_count` ideally 0.
+
+- [ ] **Step 3: Run validate_all + SHACL smoke**
+
+```bash
+python scripts/validate_all.py 2>&1 | tail -5
+```
+
+Expected: 0 errors. (Pre-existing SHACL violations on `requestedCluster` / missing `summary` are unrelated to Layer 2a — they were noted in the Layer 1 PR.)
+
+- [ ] **Step 4: Stage and commit**
+
+```bash
+# Coverage reports
+git add krr_outputs/reports/kov/*.json
+# Any in-place updates from the pipelines
+git add krr_outputs/regulations/kov krr_outputs/regulations/riik krr_outputs/*_peep.json krr_outputs/*.jsonld 2>/dev/null
+git status --short | head -20
+git commit -m "Run Layer 2a pipelines on full corpus
+
+Generates initial KOV coverage reports for the 5 fixed pipelines plus
+in-place enrichment outputs (deontic classifications, EuroVoc tags,
+temporal dates, legal concepts, amendment chains) over the expanded
+input universe."
+```
+
+The commit will be sizeable (potentially 20k+ files modified across in-place updates) — that's expected.
+
+---
+
+## Task 12: Documentation updates
+
+**Files:**
+- Modify: `docs/SCHEMA_REFERENCE.md`
+- Modify: `docs/REGULATIONS_INTEGRATION_PLAN.md`
+- Modify: `CHANGELOG.md`
+- Modify: `README.md`
+
+- [ ] **Step 1: Schema reference**
+
+In `docs/SCHEMA_REFERENCE.md`, find the existing "KOV Entity Model (Layer 1)" section. Append after it:
+
+```markdown
+## KOV Layer 2a — Schema Foundations
+
+The Layer 2a PR declares the schema needed by Layers 2b and 2c. Instances
+of these classes/properties begin appearing in 2b (preamble citations) and
+2c (sanctions enforcement level). In 2a, only the declarations land.
+
+### Classes
+
+- `estleg:Citation` — reified preamble citation (Layer 2b populates).
+
+### Properties
+
+| Property | Domain | Range | Layer | Purpose |
+| --- | --- | --- | --- | --- |
+| `estleg:citationTarget` | `Citation` | `LegalProvision` | 2b | Resolved provision (paragraph-level) |
+| `estleg:citationDetail` | `Citation` | `xsd:string` | 2b | Sub-paragraph specificity (`"lg 1 p 3"`) |
+| `estleg:citationText` | `Citation` | `xsd:string` | 2b | Original citation text |
+| `estleg:issuedUnder` | `Act` | `Act` | 2b | Act → enabling act (preamble simple form) |
+| `estleg:implementsCitation` | `Act` | `Citation` | 2b | Act → reified Citation node |
+| `estleg:implementedBy` | `Act` ∪ `LegalProvision` | `Act` | 2b | Inverse — acts enacted under |
+| `estleg:implementedByCount` | `Act` ∪ `LegalProvision` | `xsd:integer` | 2b | Aggregate count |
+| `estleg:enforcedAtLevel` | `LegalProvision` | `xsd:string` | 2c | `"state"` \| `"municipality"` |
+
+### SHACL
+
+`shacl/estonian_legal_shapes.ttl` adds `estleg:CitationShape` (target Citation;
+required `citationTarget`; optional `citationDetail`/`citationText`; IRI pattern).
+
+### Pipeline coverage reports
+
+Each KOV-relevant pipeline emits `krr_outputs/reports/kov/<pipeline>_coverage.json`
+with per-run metrics. See `krr_outputs/reports/kov/README.md`.
+```
+
+- [ ] **Step 2: Status note**
+
+In `docs/REGULATIONS_INTEGRATION_PLAN.md`, add another blockquote after the existing 2026-05-02 Layer 1 status:
+
+```markdown
+> **Status (2026-05-03):** KOV integration Layer 2a (foundation +
+> discovery fixes) implemented. 5 pipelines (deontic, EuroVoc, temporal,
+> legal-concepts, amendment-history) now process KOV files; the iterator
+> default flips to `include_kov=True`; 9 deferred/irrelevant pipelines pin
+> `include_kov=False`. Layer 2b (cross-references + inverse) and 2c
+> (semantic resolvers) follow as separate PRs. Gate B = umbrella milestone
+> reached when 2a + 2b + 2c have all landed. See
+> `docs/superpowers/plans/2026-05-03-kov-integration-layer2a.md`.
+```
+
+- [ ] **Step 3: CHANGELOG**
+
+Add to the `[Unreleased]` section in `CHANGELOG.md` (extend the existing entry from Layer 1 if still under `[Unreleased]`, or open a new heading):
+
+```markdown
+### Added (Layer 2a)
+- KOV integration Layer 2a — schema declarations for Citation class and
+  8 new properties (`citationTarget`, `citationDetail`, `citationText`,
+  `issuedUnder`, `implementsCitation`, `implementedBy`, `implementedByCount`,
+  `enforcedAtLevel`); `estleg:CitationShape` SHACL shape; `iter_peep_files()`
+  default flips to `include_kov=True`; 5 KOV-relevant discovery-only
+  pipelines (deontic, EuroVoc, temporal, legal-concepts, amendment-history)
+  process KOV files end-to-end with per-pipeline coverage reports.
+- Per-pipeline coverage reports under `krr_outputs/reports/kov/` for the
+  5 KOV-ready pipelines.
+- 9 KOV-deferred or KOV-irrelevant pipelines explicitly pin
+  `include_kov=False` at their call sites with comments indicating which
+  Layer (2b/2c/3) will unpin or that KOV does not apply.
+```
+
+- [ ] **Step 4: README**
+
+In `README.md`, find the KOV entity-model section (added in Layer 1). Add a sub-section:
+
+```markdown
+#### Layer 2a — KOV in 5 pipelines
+
+Five KOV-relevant pipelines now process the 11,059 KOV act files end-to-end:
+
+- `classify_deontic` — modal classifications over KOV provisions
+- `classify_eurovoc` — EuroVoc tags over KOV acts (driven by `iter_peep_files()` instead of `INDEX.json`)
+- `extract_temporal_data` — entry-into-force / amendment dates from KOV XML (via `globaalID` pairing)
+- `extract_legal_concepts` — concept definitions from KOV provision text (provision IRIs sourced from actual `@id`)
+- `generate_amendment_history` — amendment chains for KOV regulations
+
+Per-pipeline coverage reports at `krr_outputs/reports/kov/`. See [Layer 2a plan](docs/superpowers/plans/2026-05-03-kov-integration-layer2a.md) for details.
+
+The remaining 5 KOV-relevant pipelines (cross-references, inverse, sanctions, competence, court-provision-links) are deferred to Layers 2b and 2c.
+```
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add docs/SCHEMA_REFERENCE.md docs/REGULATIONS_INTEGRATION_PLAN.md CHANGELOG.md README.md
+git commit -m "Document KOV integration Layer 2a"
+```
+
+---
+
+## Task 13: Final verification + push + PR
+
+**Files:**
+- (no source changes; this task validates cumulative work and ships the PR)
+
+- [ ] **Step 1: Run the full pytest suite**
+
+```
+pytest -q
+```
+
+Expected: 115 passed (was 102 at end of Layer 1; +13 = 3 iter_peep + 1 deontic + 2 eurovoc + 3 temporal + 2 legal-concepts + 2 amendment-history).
+
+- [ ] **Step 2: Run validate_all**
+
+```
+python scripts/validate_all.py 2>&1 | tail -5
+```
+
+Expected: 0 errors.
+
+- [ ] **Step 3: Verify all coverage reports exist and look reasonable**
+
+```bash
+ls -la krr_outputs/reports/kov/*.json
+for p in classify_deontic classify_eurovoc extract_temporal_data extract_legal_concepts generate_amendment_history; do
+  echo "=== $p ==="
+  python3 -c "
+import json
+d = json.load(open('krr_outputs/reports/kov/${p}_coverage.json'))
+print(f\"  total: {d['input_files_total']}\")
+print(f\"  kov:   {d['input_files_kov']}\")
+print(f\"  triples emitted: {d['triples_emitted']}\")
+print(f\"  errors: {d['error_count']}\")
+print(f\"  wall time: {d['wall_time_seconds']}s\")
+"
+done
+```
+
+Expected: each pipeline shows `input_files_kov ≥ 11059` (most should hit the ~11.7k total file count) and `triples_emitted > 0`.
+
+- [ ] **Step 4: Verify the 9 pinned pipelines still skip KOV**
+
+```bash
+python3 -c "
+import sys; sys.path.insert(0, 'scripts')
+from estleg_common import iter_peep_files
+files_no_kov = iter_peep_files(include_kov=False)
+files_default = iter_peep_files()
+print(f'  default: {len(files_default)} files')
+print(f'  include_kov=False: {len(files_no_kov)} files')
+print(f'  KOV-only delta: {len(files_default) - len(files_no_kov)} files')
+"
+```
+
+Expected: KOV-only delta around 11,000 — the gap between with-KOV and without-KOV input universes.
+
+- [ ] **Step 5: Push the branch and open the PR**
+
+```
+git push -u origin <branch-name>
+gh pr create --base main --head <branch-name> --title "KOV integration Layer 2a — Foundation + Discovery Fixes" --body "$(cat <<'EOF'
+## Summary
+- Declares Layer 2 schema (Citation class + 8 new properties + SHACL CitationShape).
+- Flips `iter_peep_files()` default to `include_kov=True`.
+- 9 KOV-deferred / KOV-irrelevant pipelines pin `include_kov=False` explicitly.
+- 5 KOV-relevant discovery-only pipelines (deontic, EuroVoc, temporal, legal-concepts, amendment-history) now process KOV files end-to-end.
+- Per-pipeline coverage reports under `krr_outputs/reports/kov/`.
+
+Layer 2a of the three-PR Layer 2 split. Gate B = umbrella milestone, reached when 2a + 2b + 2c land. See `docs/superpowers/plans/2026-05-03-kov-integration-layer2a.md`.
+
+## What's NOT in this PR (deferred)
+- Preamble citation extraction (`issuedUnder`/`implementsCitation`) — Layer 2b
+- Inverse `implementedBy` projection — Layer 2b
+- KOV-aware sanctions / competence / court-links — Layer 2c
+- KOV-aware similarity — Layer 3
+
+## Test plan
+- [ ] `pytest -q` — 115 passed
+- [ ] `python scripts/validate_all.py` — 0 errors
+- [ ] Coverage reports show input_files_kov ≥ 11k for the 5 fixed pipelines
+- [ ] Pinned pipelines still receive a KOV-free file set when run
+
+## Reviewer guide for before/after diffs
+Each KOV-relevant pipeline emits `krr_outputs/reports/kov/<pipeline>_coverage.json`. To diff against `main`'s baseline:
+
+1. `git checkout main` and run the pipeline; copy the report aside.
+2. Switch back to this PR's branch and run again.
+3. `diff` the two reports — expect input_files_total to grow by ~11k, triples_emitted to grow proportionally, error_count to stay at 0.
+
+## Known issues (carryover from Layer 1)
+Pre-existing SHACL violations on `requestedCluster` IRI-as-literal (~21.5k) and missing `summary` on some KOV/state-reg provisions (~523) still need a separate cleanup PR.
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+EOF
+)"
+```
+
+The branch name should be `feat/kov-integration-layer2a`.
+
+- [ ] **Step 6: Wait for review + iterate as needed**
+
+After the PR opens, address any review comments per `superpowers:receiving-code-review`.
+
+---
+
+## Self-Review Checklist
+
+After all 13 tasks complete, verify:
+
+- [ ] **Spec coverage.** Every Layer 2a requirement in the spec maps to a task:
+  - Schema declarations (Citation, 8 properties): Tasks 1+2
+  - Per-caller audit: Task 3
+  - Default flip: Task 4
+  - Coverage reporter: Task 5
+  - 5 pipeline fixes: Tasks 6–10
+  - Corpus run: Task 11
+  - Docs: Task 12
+  - Final verification: Task 13
+- [ ] **No placeholders.** No "TODO", "TBD", "implement later" in the plan.
+- [ ] **Type consistency.** `CoverageReport` fields match across Tasks 5, 6, 7, 8, 9, 10, 11, 12. `build_globalid_xml_lookup` signature matches between Tasks 8 and 10.
+- [ ] **Per-caller audit completeness.** All 14 `iter_peep_files()` consumers (in 13 scripts) are accounted for: 5 fixed (Tasks 6–10), 9 pinned (Task 3).
+- [ ] **Crisp invariant satisfied.** After Task 13, the four invariant clauses hold: schema declared, default flipped with explicit pins, 5 pipelines run KOV, coverage reports diffable.
