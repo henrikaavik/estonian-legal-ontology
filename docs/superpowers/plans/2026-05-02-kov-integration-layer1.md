@@ -919,10 +919,120 @@ The 2017 reform act is at <https://www.riigiteataja.ee/akt/121062017001>; the pe
 Run: `python scripts/build_kov_registry.py`
 Expected: zero exit, message like `Wrote 357 issuers to data/ehak/issuers.json`. Counts by source roughly: ~200 auto-match, ~150 haldusreform-2017, handful of manual-review.
 
-- [ ] **Step 12: Commit**
+- [ ] **Step 12: Add CLI tests for `build_kov_registry.py`**
+
+The CLI's exit-code contract is part of the deliverable: it must exit
+non-zero when issuers are unmapped, so CI can fail loudly. Add a
+subprocess-driven test that exercises both the success and the
+unmapped-failure paths.
+
+Create `tests/test_build_kov_registry.py`:
+
+```python
+"""Subprocess tests for scripts/build_kov_registry.py CLI behaviour.
+
+Drives the CLI as a child process so the test exercises the real
+argument parsing, exit code, and stderr handling — not just the
+underlying library functions.
+"""
+from __future__ import annotations
+
+import json
+import shutil
+import subprocess
+import sys
+from pathlib import Path
+
+import pytest
+
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+SCRIPT = REPO_ROOT / "scripts" / "build_kov_registry.py"
+FIXTURE_DIR = Path(__file__).parent / "fixtures" / "kov_layer1"
+MIN_MUNICIPALITIES = FIXTURE_DIR / "municipalities_min.json"
+
+
+def _stage_repo(tmp_path: Path, kov_slugs: list[str], curated_csv: str):
+    """Create a fake repo tree under tmp_path so the CLI can run."""
+    (tmp_path / "krr_outputs" / "regulations" / "kov").mkdir(parents=True)
+    (tmp_path / "data" / "ehak").mkdir(parents=True)
+    for slug in kov_slugs:
+        (tmp_path / "krr_outputs" / "regulations" / "kov" / slug).mkdir()
+    shutil.copy(MIN_MUNICIPALITIES,
+                tmp_path / "data" / "ehak" / "municipalities.json")
+    (tmp_path / "data" / "ehak" / "issuer_successor_map.csv").write_text(
+        curated_csv, encoding="utf-8"
+    )
+    # The script imports kov_registry; symlink scripts/ so imports resolve.
+    (tmp_path / "scripts").symlink_to(REPO_ROOT / "scripts")
+    return tmp_path
+
+
+def _run_cli(repo_root: Path) -> subprocess.CompletedProcess:
+    return subprocess.run(
+        [sys.executable, str(SCRIPT)],
+        cwd=str(repo_root),
+        capture_output=True,
+        text=True,
+    )
+
+
+HEADER = "issuer_slug,current_municipality_ehak,mapping_source,mapping_evidence\n"
+
+
+class TestBuildKovRegistryCLI:
+    def test_success_writes_issuers_json(self, tmp_path):
+        repo = _stage_repo(
+            tmp_path,
+            kov_slugs=["tallinna_linnavolikogu", "abja_vallavolikogu"],
+            curated_csv=(
+                HEADER
+                + "abja_vallavolikogu,0855,haldusreform-2017,RT I 21.06.2017 1\n"
+            ),
+        )
+        result = _run_cli(repo)
+        assert result.returncode == 0, result.stderr
+        out_path = repo / "data" / "ehak" / "issuers.json"
+        assert out_path.exists()
+        rows = json.load(out_path.open())
+        slugs = {r["slug"] for r in rows}
+        assert slugs == {"tallinna_linnavolikogu", "abja_vallavolikogu"}
+        # Stdout should mention the source breakdown
+        assert "auto-match" in result.stdout
+
+    def test_unmapped_issuer_exits_nonzero(self, tmp_path):
+        repo = _stage_repo(
+            tmp_path,
+            kov_slugs=["obscure_vallavolikogu"],
+            curated_csv=HEADER,  # empty — no curated mapping for obscure
+        )
+        result = _run_cli(repo)
+        assert result.returncode != 0
+        assert "obscure_vallavolikogu" in result.stderr
+
+    def test_curated_unknown_ehak_exits_nonzero(self, tmp_path):
+        # A curated row pointing at a nonexistent EHAK code surfaces here,
+        # not at SHACL time.
+        repo = _stage_repo(
+            tmp_path,
+            kov_slugs=["abja_vallavolikogu"],
+            curated_csv=(
+                HEADER
+                + "abja_vallavolikogu,9999,haldusreform-2017,evidence\n"
+            ),
+        )
+        result = _run_cli(repo)
+        assert result.returncode != 0
+        assert "9999" in (result.stderr + result.stdout)
+```
+
+Run: `pytest tests/test_build_kov_registry.py -v`
+Expected: 3 passed.
+
+- [ ] **Step 13: Commit**
 
 ```bash
-git add scripts/build_kov_registry.py scripts/kov_registry.py tests/test_kov_registry.py data/ehak/issuer_successor_map.csv data/ehak/issuers.json
+git add scripts/build_kov_registry.py scripts/kov_registry.py tests/test_kov_registry.py tests/test_build_kov_registry.py data/ehak/issuer_successor_map.csv data/ehak/issuers.json
 git commit -m "Build combined KOV issuer registry with curated successor map"
 ```
 
@@ -2647,7 +2757,7 @@ This is a real-data run, not a code change. It produces the artefacts that Gate 
 - [ ] **Step 1: Run the orchestrator**
 
 Run: `python scripts/enrich_kov_layer1.py`
-Expected output (counts may vary slightly):
+Expected output (exact counts depend on INDEX state at run time):
 
 ```
 Loaded 79 municipalities, 357 issuers
@@ -2657,16 +2767,37 @@ Wrote issuers_kov_peep.json
 Enriching 11059 KOV act files...
 Enriched 11059 KOV act files (missing-issuer: 0)
 
-Stamping estleg:Law on 652 law files (615 unique laws)...
+Stamping estleg:Law on 637 law files (607 unique laws)...
+  WARN: INDEX.json references 15 missing law files (stale index — fix in a separate PR):
+    ametiuhigute_seadus_peep.json
+    mittetulundusuhingu_seadus_peep.json
+    riigivastutuse_peep.json
+    taitemenetluse_peep.json
+    tervishoiuteenuste_peep.json
+    volaoigusseadus_osa1_peep.json
+    volaoigusseadus_osa10_peep.json
+    volaoigusseadus_osa2_peep.json
+    ... and 7 more
 
 Stamping estleg:Act on 3813 state regulation files...
 Done.
 ```
 
-The "law files" count (~652) is higher than the "unique laws" count
-(615) because multi-part laws like *asjaõigusseadus* have multiple
-files (`_osa1`, `_osa2`, ...). The 615 number is the canonical law
-count from `INDEX.json`.
+Notes on counts:
+
+- **Law files vs unique laws.** INDEX.json's `laws` field has 615
+  entries, but the file count is higher because multi-part laws
+  (e.g. *asjaõigusseadus_osa1, _osa2, …*) appear as multiple files
+  under one `laws[i].files` array.
+- **Missing-INDEX warning is expected.** The current INDEX.json
+  references 15 files that no longer exist in the repo (typo entries
+  like `ametiuhigute_seadus`, ortographically-deprecated entries like
+  `volaoigusseadus_osa*`). The loader skips them and the warning
+  summarises which. After skipping, the present count is **637 law
+  files / 607 unique laws** at the time of writing — these numbers
+  drift as INDEX is fixed in a separate PR. Whatever the orchestrator
+  prints is the source of truth for that run; pin the verification
+  numbers in Step 4 to this output, not to the static numbers above.
 
 - [ ] **Step 2: Verify outputs exist**
 
@@ -2700,13 +2831,40 @@ Two options — pick whichever fits your workflow:
 
 **Option A — snapshot-based diff (no commit needed yet):**
 
+The hash list must cover every file the orchestrator can touch,
+including indexed law files ending in `.jsonld`. Build it from the
+same resolved INDEX path list used for staging:
+
 ```bash
-# Hash every output file before the second run
-find krr_outputs -name '*_peep.json' -print0 | sort -z | xargs -0 sha256sum > /tmp/before.sha256
+python3 - <<'PY' > /tmp/layer1_outputs.list
+import json, os
+idx = json.load(open("krr_outputs/INDEX.json"))
+files = []
+# Indexed law files (.json + .jsonld both)
+for entry in idx["laws"]:
+    for f in entry.get("files", []):
+        p = f"krr_outputs/{f}"
+        if os.path.exists(p):
+            files.append(p)
+# All KOV peep files
+import glob
+files += glob.glob("krr_outputs/regulations/kov/**/*_peep.json", recursive=True)
+files = [f for f in files if not f.endswith("REGULATIONS_KOV_INDEX.json")]
+# State regulations
+files += glob.glob("krr_outputs/regulations/riik/*_peep.json")
+# Generated registry outputs
+files += [
+    "krr_outputs/municipalities_peep.json",
+    "krr_outputs/issuers_kov_peep.json",
+]
+print("\n".join(sorted(set(files))))
+PY
+
+xargs -a /tmp/layer1_outputs.list sha256sum > /tmp/before.sha256
 
 python scripts/enrich_kov_layer1.py
 
-find krr_outputs -name '*_peep.json' -print0 | sort -z | xargs -0 sha256sum > /tmp/after.sha256
+xargs -a /tmp/layer1_outputs.list sha256sum > /tmp/after.sha256
 diff /tmp/before.sha256 /tmp/after.sha256
 ```
 
@@ -2941,32 +3099,116 @@ Expected: all existing tests still pass plus the new tests added in Tasks 1–13
 Run: `python scripts/validate_all.py`
 Expected: zero exit.
 
-- [ ] **Step 3: Run full SHACL validation across all peep files**
+- [ ] **Step 3: Run full SHACL validation across the complete file set**
 
-Run:
-```bash
-python -c "
-import glob, rdflib, pyshacl
-g = rdflib.Graph()
-files = (
-    glob.glob('krr_outputs/municipalities_peep.json')
-    + glob.glob('krr_outputs/issuers_kov_peep.json')
-    + glob.glob('krr_outputs/*_peep.json')
-    + glob.glob('krr_outputs/regulations/kov/**/*_peep.json', recursive=True)[:200]  # sample for speed
-)
-for f in files:
-    try:
-        g.parse(f, format='json-ld')
-    except Exception as e:
-        print('PARSE FAIL', f, e)
-shapes = rdflib.Graph().parse('shacl/estonian_legal_shapes.ttl', format='turtle')
-ok, _, msg = pyshacl.validate(g, shacl_graph=shapes, inference='rdfs')
-print('SHACL', 'PASS' if ok else 'FAIL')
-if not ok:
-    print(msg)
-"
+Save this script to `scripts/shacl_validate_all.py` and run it. It
+loads the same complete file set as the staging command (every KOV
+act, every state regulation, every indexed law file `.json` /
+`.jsonld`, plus the two new registry outputs) and runs pyshacl over
+the union graph. Expect a multi-minute run.
+
+```python
+"""Full SHACL validation across the Layer 1 output corpus."""
+from __future__ import annotations
+
+import glob
+import json
+import os
+import sys
+from pathlib import Path
+
+REPO = Path(__file__).resolve().parents[1]
+KRR = REPO / "krr_outputs"
+SHAPES = REPO / "shacl" / "estonian_legal_shapes.ttl"
+
+
+def collect_files() -> list[Path]:
+    out: list[Path] = [
+        KRR / "municipalities_peep.json",
+        KRR / "issuers_kov_peep.json",
+    ]
+    # Indexed law files (covers .json and .jsonld)
+    idx = json.load(open(KRR / "INDEX.json"))
+    for entry in idx["laws"]:
+        for f in entry.get("files", []):
+            p = KRR / f
+            if p.exists():
+                out.append(p)
+    # All KOV acts (recursive)
+    out += [
+        Path(p)
+        for p in glob.glob(str(KRR / "regulations/kov/**/*_peep.json"),
+                            recursive=True)
+        if not p.endswith("REGULATIONS_KOV_INDEX.json")
+    ]
+    # State regulations
+    out += [Path(p) for p in glob.glob(str(KRR / "regulations/riik/*_peep.json"))]
+    return sorted(set(out))
+
+
+def main() -> int:
+    import rdflib
+    import pyshacl
+
+    files = collect_files()
+    print(f"Loading {len(files)} files into a single graph...")
+    g = rdflib.Graph()
+    parse_failures: list[tuple[str, str]] = []
+    for i, f in enumerate(files):
+        if i % 1000 == 0:
+            print(f"  {i}/{len(files)}")
+        try:
+            g.parse(str(f), format="json-ld")
+        except Exception as exc:
+            parse_failures.append((str(f), str(exc)))
+
+    if parse_failures:
+        print(f"\nPARSE FAILURES: {len(parse_failures)}")
+        for f, exc in parse_failures[:10]:
+            print(f"  {f}: {exc}")
+        return 2
+
+    print(f"\nLoaded {len(g)} triples. Running pyshacl...")
+    shapes = rdflib.Graph().parse(str(SHAPES), format="turtle")
+    ok, _, msg = pyshacl.validate(g, shacl_graph=shapes, inference="rdfs")
+    print("SHACL", "PASS" if ok else "FAIL")
+    if not ok:
+        print(msg)
+    return 0 if ok else 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())
 ```
-Expected: `SHACL PASS`. (Sampling 200 KOV files keeps this tractable; if any fail SHACL the message will identify the failing node.)
+
+Then run:
+
+```bash
+python scripts/shacl_validate_all.py
+```
+
+Expected: `SHACL PASS`. Wall time: typically 5–15 minutes depending
+on hardware.
+
+If RAM is constrained, the alternative is to validate per-file
+in a loop with the shapes graph reused — slower wall time but
+constant memory:
+
+```python
+ok_count = fail_count = 0
+for f in collect_files():
+    g = rdflib.Graph()
+    g.parse(str(f), format="json-ld")
+    ok, _, msg = pyshacl.validate(g, shacl_graph=shapes, inference="rdfs")
+    if ok:
+        ok_count += 1
+    else:
+        fail_count += 1
+        print(f"FAIL {f}: {msg}")
+print(f"\n{ok_count} pass, {fail_count} fail")
+```
+
+Expected: `0 fail`.
 
 - [ ] **Step 4: Verify Gate A acceptance criteria**
 
@@ -3031,6 +3273,11 @@ def check_kov_acts():
 
 
 def check_kov_provisions():
+    """Verify each KOV provision is fully enriched AND its partOfAct
+    points at the same file's MunicipalRegulation node — not just any
+    IRI. A bug that wrote a stale or unrelated act IRI would be caught
+    here, not just at SHACL.
+    """
     fields = ("estleg:enactedBy", "estleg:enactedByMunicipality",
               "estleg:partOfAct")
     files = [
@@ -3042,16 +3289,30 @@ def check_kov_provisions():
     total = 0
     for f in files:
         doc = _load(f)
+        # Locate the file's exactly-one MunicipalRegulation @id
+        act_iri = None
+        for n in doc.get("@graph", []):
+            types = n.get("@type") or []
+            if isinstance(types, str):
+                types = [types]
+            if "estleg:MunicipalRegulation" in types:
+                if act_iri is not None:
+                    act_iri = "<MULTIPLE>"  # invalidate
+                    break
+                act_iri = n.get("@id")
         for n in doc.get("@graph", []):
             if "estleg:paragrahv" not in n:
                 continue
             total += 1
             types = n.get("@type") or []
-            if (
-                "estleg:KovProvision" in types
-                and all(k in n for k in fields)
-            ):
-                ok += 1
+            if "estleg:KovProvision" not in types:
+                continue
+            if not all(k in n for k in fields):
+                continue
+            link = n.get("estleg:partOfAct") or {}
+            if link.get("@id") != act_iri:
+                continue
+            ok += 1
     return ok == total, f"{ok}/{total}"
 
 
