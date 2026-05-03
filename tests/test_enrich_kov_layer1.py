@@ -16,6 +16,7 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 FIXTURE_DIR = Path(__file__).parent / "fixtures" / "kov_layer1"
 MIN_MUNICIPALITIES = FIXTURE_DIR / "municipalities_min.json"
 SAMPLE_KOV_ACT = FIXTURE_DIR / "sample_kov_act.json"
+SAMPLE_LAW = FIXTURE_DIR / "sample_law.json"
 
 
 class TestBuildMunicipalityDoc:
@@ -180,3 +181,89 @@ class TestEnrichKovActFile:
         }), encoding="utf-8")
         with pytest.raises(ValueError, match="found 2"):
             enrich_kov_act_file(bad, issuer)
+
+
+class TestStampLawType:
+    @pytest.fixture
+    def temp_law(self, tmp_path):
+        dest = tmp_path / "law.json"
+        shutil.copy(SAMPLE_LAW, dest)
+        return dest
+
+    def test_stamps_law_type(self, temp_law):
+        from enrich_kov_layer1 import stamp_law_type
+        stamp_law_type(temp_law)
+        with open(temp_law, "r", encoding="utf-8") as fh:
+            doc = json.load(fh)
+        law_node = doc["@graph"][0]
+        assert "owl:Ontology" in law_node["@type"]
+        assert "estleg:Law" in law_node["@type"]
+        # estleg:Act is stamped alongside Law so SHACL constraints with
+        # sh:class estleg:Act don't require RDFS inference.
+        assert "estleg:Act" in law_node["@type"]
+
+    def test_idempotent(self, temp_law):
+        from enrich_kov_layer1 import stamp_law_type
+        stamp_law_type(temp_law)
+        once = json.load(open(temp_law, encoding="utf-8"))
+        stamp_law_type(temp_law)
+        twice = json.load(open(temp_law, encoding="utf-8"))
+        assert once == twice
+
+    def test_skips_non_root_types(self, temp_law):
+        # If the act node is already a different specific type (e.g.
+        # NationalRegulation), don't add Law — only top-level
+        # owl:Ontology act nodes should be stamped with Law. (Act is
+        # stamped on regulation acts via stamp_act_type instead.)
+        with open(temp_law, "r", encoding="utf-8") as fh:
+            doc = json.load(fh)
+        doc["@graph"][0]["@type"] = ["owl:Ontology", "estleg:NationalRegulation"]
+        with open(temp_law, "w", encoding="utf-8") as fh:
+            json.dump(doc, fh)
+
+        from enrich_kov_layer1 import stamp_law_type
+        stamp_law_type(temp_law)
+        with open(temp_law, "r", encoding="utf-8") as fh:
+            doc2 = json.load(fh)
+        assert "estleg:Law" not in doc2["@graph"][0]["@type"]
+
+
+class TestStampActType:
+    """Stamps estleg:Act on state regulation acts (regulations/riik/)
+    so that partOfAct and issuedUnder SHACL constraints don't need
+    inference."""
+
+    def test_stamps_act_on_national_regulation(self, tmp_path):
+        from enrich_kov_layer1 import stamp_act_type
+        f = tmp_path / "reg.json"
+        f.write_text(json.dumps({
+            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+                         "owl": "http://www.w3.org/2002/07/owl#"},
+            "@graph": [
+                {"@id": "estleg:Reg_1009410_Map_2026",
+                 "@type": ["owl:Ontology", "estleg:NationalRegulation"],
+                 "rdfs:label": "test"}
+            ],
+        }), encoding="utf-8")
+        stamp_act_type(f)
+        doc = json.load(open(f, encoding="utf-8"))
+        types = doc["@graph"][0]["@type"]
+        assert "estleg:Act" in types
+        assert "estleg:NationalRegulation" in types  # preserved
+
+    def test_idempotent(self, tmp_path):
+        from enrich_kov_layer1 import stamp_act_type
+        f = tmp_path / "reg.json"
+        f.write_text(json.dumps({
+            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+                         "owl": "http://www.w3.org/2002/07/owl#"},
+            "@graph": [
+                {"@id": "estleg:Reg_1_Map_2026",
+                 "@type": ["owl:Ontology", "estleg:GovernmentRegulation"]}
+            ],
+        }), encoding="utf-8")
+        stamp_act_type(f)
+        once = json.load(open(f, encoding="utf-8"))
+        stamp_act_type(f)
+        twice = json.load(open(f, encoding="utf-8"))
+        assert once == twice

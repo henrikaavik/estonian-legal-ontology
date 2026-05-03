@@ -108,6 +108,14 @@ def build_issuer_doc(issuers: dict[str, IssuerEntry]) -> dict:
     return {"@context": CONTEXT, "@graph": nodes}
 
 
+_REGULATION_TYPES = {
+    "estleg:NationalRegulation",
+    "estleg:GovernmentRegulation",
+    "estleg:MinisterialRegulation",
+    "estleg:MunicipalRegulation",
+}
+
+
 def _add_type(node: dict, type_iri: str) -> bool:
     """Add type_iri to node["@type"] if missing. Returns True if changed."""
     types = node.get("@type")
@@ -120,6 +128,75 @@ def _add_type(node: dict, type_iri: str) -> bool:
     types.append(type_iri)
     node["@type"] = types
     return True
+
+
+def stamp_law_type(path: Path) -> None:
+    """Add `estleg:Law` and `estleg:Act` rdf:type to the act node of a
+    law peep file.
+
+    Skips files whose act node already has a regulation-specific type
+    (NationalRegulation, MunicipalRegulation, etc.) — those go through
+    `stamp_act_type` instead.
+
+    Idempotent.
+    """
+    with open(path, "r", encoding="utf-8") as fh:
+        doc = json.load(fh)
+
+    changed = False
+    for node in doc.get("@graph", []):
+        types = node.get("@type", [])
+        if isinstance(types, str):
+            types = [types]
+        if "owl:Ontology" not in types:
+            continue
+        if _REGULATION_TYPES.intersection(types):
+            continue
+        if _add_type(node, "estleg:Law"):
+            changed = True
+        if _add_type(node, "estleg:Act"):
+            changed = True
+        node["@type"] = sorted(set(node["@type"]))  # stable order
+
+    if changed:
+        with open(path, "w", encoding="utf-8") as fh:
+            json.dump(doc, fh, ensure_ascii=False, indent=2)
+            fh.write("\n")
+
+
+def stamp_act_type(path: Path) -> None:
+    """Add `estleg:Act` to act nodes already typed as a regulation
+    subclass (NationalRegulation / GovernmentRegulation /
+    MinisterialRegulation). For state regulation files under
+    `regulations/riik/`. Idempotent.
+
+    KOV act nodes are handled by `enrich_kov_act_file`; this function is
+    for the state regulation files that Layer 1 otherwise leaves alone.
+    """
+    with open(path, "r", encoding="utf-8") as fh:
+        doc = json.load(fh)
+
+    changed = False
+    for node in doc.get("@graph", []):
+        types = node.get("@type", [])
+        if isinstance(types, str):
+            types = [types]
+        if "owl:Ontology" not in types:
+            continue
+        # Only stamp Act on regulation acts; KOV acts go through
+        # enrich_kov_act_file.
+        if "estleg:MunicipalRegulation" in types:
+            continue
+        if not _REGULATION_TYPES.intersection(types):
+            continue
+        if _add_type(node, "estleg:Act"):
+            changed = True
+            node["@type"] = sorted(set(node["@type"]))
+
+    if changed:
+        with open(path, "w", encoding="utf-8") as fh:
+            json.dump(doc, fh, ensure_ascii=False, indent=2)
+            fh.write("\n")
 
 
 def enrich_kov_act_file(path: Path, issuer: IssuerEntry) -> None:
