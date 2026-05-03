@@ -162,7 +162,7 @@ def load_curated_map(path: Path) -> dict[str, CuratedRow]:
     mapping_evidence — this is the auditable trail.
     """
     out: dict[str, CuratedRow] = {}
-    with open(path, "r", encoding="utf-8", newline="") as fh:
+    with open(path, "r", encoding="utf-8-sig", newline="") as fh:
         reader = csv.DictReader(fh)
         for row in reader:
             slug = row["issuer_slug"].strip()

@@ -225,3 +225,14 @@ class TestLoadCuratedMap:
         )
         with pytest.raises(ValueError, match="duplicate"):
             load_curated_map(p)
+
+    def test_header_only_returns_empty(self, tmp_path):
+        # The seed file at data/ehak/issuer_successor_map.csv ships
+        # with the header only — Task 5 fills it in. Loading it must
+        # return an empty dict, not raise.
+        p = tmp_path / "header_only.csv"
+        p.write_text(
+            "issuer_slug,current_municipality_ehak,mapping_source,mapping_evidence\n",
+            encoding="utf-8",
+        )
+        assert load_curated_map(p) == {}
