@@ -372,6 +372,16 @@ class TestNormalizeTitle:
             "Pohja Sakala Vallavolikogu",
         ) == "hankekord"
 
+    def test_strips_alevi_genitive(self):
+        # Vändra alev (historical small-town unit, abolished in 2017
+        # haldusreform). The single alevivolikogu issuer in the corpus
+        # produces titles like "Vändra alevi <topic>"; the alevi
+        # genitive must be stripped.
+        assert normalize_title(
+            "Vändra alevi terviseprofiil",
+            "Vandra Alevivolikogu",
+        ) == "terviseprofiil"
+
 
 class TestMetadataJsonLd:
     def test_new_classes_present(self):

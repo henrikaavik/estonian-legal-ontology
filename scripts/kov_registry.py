@@ -168,6 +168,8 @@ def normalize_title(title: str, issuer_display_name: str) -> str:
         -> "jaatmehoolduseeskiri"
       ("Mulgi valla hankekord", "Mulgi Vallavolikogu")
         -> "hankekord"
+      ("Vändra alevi terviseprofiil", "Vandra Alevivolikogu")
+        -> "terviseprofiil"
       ("Üldhariduskooli põhimäärus", "Tartu Linnavolikogu")
         -> "uldhariduskooli pohimaarus"  (no prefix match)
     """
@@ -196,6 +198,7 @@ def normalize_title(title: str, issuer_display_name: str) -> str:
         for prefix in (
             f"{root} valla ",
             f"{root} linna ",
+            f"{root} alevi ",
             f"{root} ",
         ):
             if base.startswith(prefix):
