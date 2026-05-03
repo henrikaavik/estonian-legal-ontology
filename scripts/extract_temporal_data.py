@@ -15,11 +15,18 @@ from __future__ import annotations
 
 import json
 import re
+import time
 import xml.etree.ElementTree as ET
-from datetime import date, datetime
+from datetime import date, datetime, timezone
 from pathlib import Path
 
 from estleg_common import iter_peep_files
+from kov_pipeline_coverage import (
+    CoverageReport,
+    measure_runtime,
+    resolve_pipeline_version,
+    write_coverage_report,
+)
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
@@ -269,36 +276,194 @@ def save_json(filepath: Path, doc: dict):
         f.write("\n")
 
 
+import xml.etree.ElementTree as _ET
+
+
+def build_globalid_xml_lookup(rt_root: Path) -> dict[str, Path]:
+    """Recursively scan rt_root for *.xml files and build a
+    globalId → Path lookup keyed by the root element's globaalID
+    attribute. Files without a recognisable globaalID are skipped.
+
+    Walks rt_root and all subdirectories so KOV XML under
+    ``maarus_kov/`` and state regulation XML under ``maarus/`` are
+    paired alongside law XML at the root.
+    """
+    lookup: dict[str, Path] = {}
+    if not rt_root.is_dir():
+        return lookup
+    for xml_path in rt_root.rglob("*.xml"):
+        try:
+            tree = _ET.parse(str(xml_path))
+        except _ET.ParseError:
+            continue
+        root = tree.getroot()
+        # Primary: root element's globaalID attribute (most RT XML).
+        gid = root.get("globaalID")
+        if gid is None:
+            # Fallback: scan top-level <metaandmed> children for a
+            # globaalID leaf element.
+            #
+            # NOTE: ElementTree's truthiness on Element is False when
+            # the element has no children, so `child.find(a) or
+            # child.find(b)` would silently discard a leaf hit. Use
+            # explicit `is None` checks throughout.
+            for child in root:
+                if not child.tag.endswith("metaandmed"):
+                    continue
+                gid_el = child.find("globaalID")
+                if gid_el is None:
+                    gid_el = child.find("{*}globaalID")
+                if gid_el is not None and gid_el.text:
+                    gid = gid_el.text.strip()
+                    break
+        if gid:
+            lookup[str(gid)] = xml_path
+    return lookup
+
+
+def pair_peep_with_xml(
+    peep_path: Path,
+    lookup: dict[str, Path],
+    *,
+    data_dir: Path | None = None,
+) -> Path | None:
+    """Pair a peep file to its XML.
+
+    Two paths in priority order:
+
+    1. **globalId-based** (the new path, KOV + state regs): the
+       generators stamp ``estleg:globalId`` on every act node, and KOV
+       XML filenames embed the same id (``reg_<globalId>.xml``). This
+       is the canonical pairing for everything generated post-Phase-1.
+
+    2. **Slug-based fallback** (legacy laws): the 615 indexed laws
+       were generated before the ``estleg:globalId`` field existed,
+       so their act nodes carry ``estleg:Law``/``owl:Ontology`` types
+       but no globalId. For these, fall back to matching the peep
+       file's stem (sans ``_peep``) against
+       ``<data_dir>/<stem>.xml``. ``data_dir`` is required for the
+       fallback; if not supplied, only the globalId path runs.
+
+    Returns the XML path or None if neither path resolves.
+    """
+    try:
+        with open(peep_path, "r", encoding="utf-8") as fh:
+            doc = json.load(fh)
+    except (json.JSONDecodeError, OSError):
+        return None
+    gid = None
+    for node in doc.get("@graph", []):
+        types = node.get("@type") or []
+        if isinstance(types, str):
+            types = [types]
+        if not any(t.endswith("Regulation") or t == "estleg:Law"
+                   or t == "owl:Ontology" for t in types):
+            continue
+        gid = node.get("estleg:globalId")
+        if gid:
+            break
+    # Path 1: globalId
+    if gid:
+        xml = lookup.get(str(gid))
+        if xml is not None:
+            return xml
+    # Path 2: slug fallback (laws without globalId)
+    if data_dir is not None:
+        slug = peep_path.stem.replace("_peep", "")
+        xml = data_dir / f"{slug}.xml"
+        if xml.exists():
+            return xml
+        # Stripped-_osa fallback for multi-part laws
+        import re as _re
+        base_slug = _re.sub(r"_osa\d+$", "", slug)
+        xml = data_dir / f"{base_slug}.xml"
+        if xml.exists():
+            return xml
+    return None
+
+
 def main():
     print("=" * 70)
     print("Estonian Legal Ontology - Extract Temporal Validity Data")
     print("=" * 70)
 
-    # Step 1: Find all XML files
-    print("\n[1/4] Scanning XML files...")
-    xml_files = sorted(DATA_DIR.glob("*.xml")) if DATA_DIR.exists() else []
-    print(f"  Found {len(xml_files)} XML files in {DATA_DIR.relative_to(REPO_ROOT)}")
+    _start = time.perf_counter()
 
-    # Step 2: Extract temporal data from each XML
-    print("\n[2/4] Extracting temporal metadata from XML...")
+    # Step 1: Build the globalId → XML path index (recursive — covers
+    # laws at the root, state regs under maarus/, and KOV under
+    # maarus_kov/).
+    print("\n[1/4] Indexing XML files by globalId...")
+    xml_lookup = build_globalid_xml_lookup(DATA_DIR)
+    print(f"  Indexed {len(xml_lookup)} XML files")
+
+    # Step 2: Per-peep XML pairing + temporal extraction. We pair each
+    # peep file individually rather than pre-extracting all XML to a
+    # dict, so the slug fallback for laws-without-globalId fires per
+    # file. Result is still keyed by peep filename stem (without the
+    # _peep suffix) so step 4's enrichment logic doesn't change.
+    #
+    # Multi-part laws (asjaoigusseadus_osa1, _osa2, ...) all pair to
+    # the same base XML file, so we cache temporal extraction by XML
+    # path to avoid re-parsing AND to keep the unique-XML count honest
+    # for the report (the existing report fields total_xml_files /
+    # xml_with_temporal_data are XML-oriented, not peep-oriented).
+    print("\n[2/4] Extracting temporal metadata per peep file...")
     temporal_by_slug: dict[str, dict] = {}
-    extracted = 0
+    temporal_by_xml: dict[Path, dict] = {}
+    unique_xml_paths: set[Path] = set()
+    extracted_xml = 0  # unique XML files that yielded ≥1 date
     parse_errors = 0
 
-    for xml_path in xml_files:
-        slug = xml_path.stem
+    # Coverage counters (initialised here so step 2's _unresolved
+    # counter is visible to the per-peep loop below).
+    _files_processed = 0
+    _files_processed_kov = 0
+    _files_with_output = 0
+    _files_with_output_kov = 0
+    _triples = 0
+    _triples_kov = 0
+    _fallback_hits = 0
+    _unresolved = 0
+    _failures: list[str] = []
+    _skip_reasons: dict[str, int] = {}
+
+    all_peep_files = iter_peep_files()
+    _kov_files = [f for f in all_peep_files if "regulations/kov" in str(f)]
+
+    for peep in all_peep_files:
+        xml_path = pair_peep_with_xml(peep, xml_lookup, data_dir=DATA_DIR)
+        if xml_path is None:
+            _unresolved += 1
+            continue
+        slug = peep.stem.replace("_peep", "")
+
+        # Track slug-fallback hits (laws-without-globalId path):
+        # detected when the XML returned is not in the globalId
+        # lookup's values.
+        if xml_path not in xml_lookup.values():
+            _fallback_hits += 1
+
+        # Reuse cached extraction if this XML was already parsed
+        # (multi-part laws share their base XML).
+        if xml_path in temporal_by_xml:
+            temporal_by_slug[slug] = temporal_by_xml[xml_path]
+            continue
+
         try:
             temporal = extract_temporal_from_xml(xml_path)
-            # Only count as extracted if we got at least one date
+            unique_xml_paths.add(xml_path)
             has_data = any(v is not None for v in temporal.values())
             if has_data:
-                extracted += 1
+                extracted_xml += 1
+            temporal_by_xml[xml_path] = temporal
             temporal_by_slug[slug] = temporal
         except Exception as e:
             parse_errors += 1
+            _failures.append(f"{xml_path.name}: {e!r}")
             print(f"  ERROR parsing {xml_path.name}: {e}")
 
-    print(f"  Extracted temporal data from {extracted} files ({parse_errors} errors)")
+    print(f"  Extracted temporal data from {extracted_xml} unique XML files "
+          f"(across {len(temporal_by_slug)} peep files; {parse_errors} errors)")
 
     # Step 3: Load INDEX.json for fallback data
     print("\n[3/4] Loading INDEX.json for fallback metadata...")
@@ -308,8 +473,6 @@ def main():
     # Step 4: Enrich law JSON-LD files
     print("\n[4/4] Enriching law JSON-LD files with temporal properties...")
     law_files = iter_peep_files()
-    # Exclude files in subdirectories
-    law_files = [f for f in law_files if f.parent == KRR_DIR]
     print(f"  Found {len(law_files)} law JSON-LD files")
 
     # --- Clearing pass: remove old temporal data from ontology nodes ---
@@ -349,11 +512,14 @@ def main():
     report_entries: list[dict] = []
 
     for law_file in law_files:
+        is_kov = "regulations/kov" in str(law_file)
         # Derive the slug: remove _peep.json, also handle _osa variants
         stem = law_file.stem.replace("_peep", "")
 
-        # Try to find matching XML slug
-        # For multi-part laws like "vos_osa1", the XML is "vos" or full name
+        # Try to find matching XML slug. With the new flow,
+        # temporal_by_slug is keyed by peep.stem.replace("_peep", "")
+        # — exactly what `stem` computes here. The base_slug fallback
+        # remains for safety against unexpected key shapes.
         xml_slug = stem
         # Remove osa suffix for lookup
         base_slug = re.sub(r"_osa\d+$", "", stem)
@@ -377,6 +543,9 @@ def main():
         if temporal is None:
             skipped += 1
             status_counts["unknown"] += 1
+            _skip_reasons["no_xml_data"] = (
+                _skip_reasons.get("no_xml_data", 0) + 1
+            )
             report_entries.append({
                 "file": law_file.name,
                 "slug": stem,
@@ -384,6 +553,10 @@ def main():
                 "temporal": {},
             })
             continue
+
+        _files_processed += 1
+        if is_kov:
+            _files_processed_kov += 1
 
         # Determine temporal status
         status = determine_temporal_status(temporal)
@@ -423,32 +596,49 @@ def main():
 
         # Add temporal properties to the ontology node
         modified = False
+        # Count date triples written for this file (entryIntoForce,
+        # repealDate, lastAmendmentDate, publicationDate) plus the
+        # always-written temporalStatus.
+        _file_triples = 0
 
         if temporal.get("entry_into_force"):
             ontology_node["estleg:entryIntoForce"] = make_xsd_date(temporal["entry_into_force"])
             modified = True
+            _file_triples += 1
 
         if temporal.get("valid_until") and status == "repealed":
             ontology_node["estleg:repealDate"] = make_xsd_date(temporal["valid_until"])
             modified = True
+            _file_triples += 1
         elif temporal.get("invalidation_date"):
             ontology_node["estleg:repealDate"] = make_xsd_date(temporal["invalidation_date"])
             modified = True
+            _file_triples += 1
 
         if temporal.get("last_amendment_date"):
             ontology_node["estleg:lastAmendmentDate"] = make_xsd_date(temporal["last_amendment_date"])
             modified = True
+            _file_triples += 1
 
         if temporal.get("publication_date"):
             ontology_node["estleg:publicationDate"] = make_xsd_date(temporal["publication_date"])
             modified = True
+            _file_triples += 1
 
         ontology_node["estleg:temporalStatus"] = status
         modified = True
+        _file_triples += 1  # temporalStatus is always written
 
         if modified:
             save_json(law_file, doc)
             enriched += 1
+            _triples += _file_triples
+            if is_kov:
+                _triples_kov += _file_triples
+            if _file_triples > 0:
+                _files_with_output += 1
+                if is_kov:
+                    _files_with_output_kov += 1
 
         report_entries.append({
             "file": law_file.name,
@@ -462,8 +652,9 @@ def main():
     report = {
         "generated": date.today().isoformat(),
         "summary": {
-            "total_xml_files": len(xml_files),
-            "xml_with_temporal_data": extracted,
+            "total_xml_files": len(unique_xml_paths),
+            "xml_with_temporal_data": extracted_xml,
+            "total_peep_files_paired": len(temporal_by_slug),
             "xml_parse_errors": parse_errors,
             "total_law_files": len(law_files),
             "enriched": enriched,
@@ -479,8 +670,9 @@ def main():
     print("\n" + "=" * 70)
     print("SUMMARY")
     print("=" * 70)
-    print(f"  XML files scanned:     {len(xml_files)}")
-    print(f"  With temporal data:    {extracted}")
+    print(f"  Unique XML files paired: {len(unique_xml_paths)}")
+    print(f"  With temporal data:    {extracted_xml}")
+    print(f"  Peep files paired:     {len(temporal_by_slug)}")
     print(f"  Law files enriched:    {enriched}")
     print(f"  Skipped (no data):     {skipped}")
     print(f"  Status breakdown:")
@@ -488,6 +680,35 @@ def main():
         print(f"    {status}: {count}")
     print(f"\n  Report: {report_path.relative_to(REPO_ROOT)}")
     print("=" * 70)
+
+    # ---------- coverage report ----------
+    _wall, _rate, _peak_mb = measure_runtime(_start, _files_processed)
+    write_coverage_report(
+        CoverageReport(
+            pipeline="extract_temporal_data",
+            run_timestamp=datetime.now(timezone.utc).isoformat(),
+            pipeline_version=resolve_pipeline_version(),
+            input_files_total=len(all_peep_files),
+            input_files_kov=len(_kov_files),
+            files_processed=_files_processed,
+            files_processed_kov=_files_processed_kov,
+            files_with_output=_files_with_output,
+            files_with_output_kov=_files_with_output_kov,
+            files_skipped=skipped,
+            skip_reasons=_skip_reasons,
+            triples_emitted=_triples,
+            triples_emitted_kov=_triples_kov,
+            fallback_hits=_fallback_hits,
+            unresolved_references=_unresolved,
+            wall_time_seconds=round(_wall, 2),
+            items_per_second=round(_rate, 2),
+            peak_memory_mb=round(_peak_mb, 1),
+            error_count=len(_failures),
+            failure_samples=_failures,
+        ),
+        REPO_ROOT / "krr_outputs" / "reports" / "kov"
+        / "extract_temporal_data_coverage.json",
+    )
 
 
 if __name__ == "__main__":
