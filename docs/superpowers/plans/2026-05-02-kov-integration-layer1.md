@@ -40,8 +40,9 @@
 | `metadata.jsonld` | Add new classes: `Act`, `Law`, `Municipality`, `Issuer`, `KovProvision`, `Citation`, `Similarity`. Declare existing `*Regulation` classes as `rdfs:subClassOf` `Act`. Add new properties (see schema additions). |
 | `shacl/estonian_legal_shapes.ttl` | Append new node shapes: `MunicipalRegulationShape` (Layer-1 fields), `KovProvisionShape`, `IssuerShape`, `MunicipalityShape`, `LawShape`. |
 | `scripts/validate_all.py` | Add the new generated output files (`municipalities_peep.json`, `issuers_kov_peep.json`) to the file scan list so its existing duplicate-`@id` and `@type`-as-array checks cover them. |
-| All 11,059 KOV act peep files under `krr_outputs/regulations/kov/<issuer>/*_peep.json` | Each act node gains `enactedBy`, `enactedByMunicipality`, `titleNormalized`. Each provision node gains `KovProvision` rdf:type, `enactedBy`, `enactedByMunicipality`, `partOfAct`. |
-| All 615 law peep files under `krr_outputs/*_peep.json` | Each act node gains an additional `estleg:Law` rdf:type entry. |
+| All 11,059 KOV act peep files under `krr_outputs/regulations/kov/<issuer>/*_peep.json` | Each act node gains `estleg:Act` and `enactedBy`, `enactedByMunicipality`, `titleNormalized`. Each provision node gains `KovProvision` rdf:type, `enactedBy`, `enactedByMunicipality`, `partOfAct`. |
+| 615 law peep files (paths from `krr_outputs/INDEX.json` `laws[].files`) | Each act node gains both `estleg:Law` and `estleg:Act` rdf:type entries. |
+| All 3,813 state regulation peep files under `krr_outputs/regulations/riik/*_peep.json` | Each act node gains `estleg:Act` rdf:type. The specific subtype (`NationalRegulation` / `GovernmentRegulation` / `MinisterialRegulation`) is already present from the Phase 1 generator. |
 | `docs/SCHEMA_REFERENCE.md` | New section "KOV entity model (Layer 1)" enumerating all new classes, properties, IRI patterns, and SHACL shapes. |
 | `README.md` | KOV section updated to describe the entity layer; example query snippets. |
 | `CHANGELOG.md` | Entry: "Add KOV integration Layer 1 (Municipality + Issuer entity model)". |
@@ -83,6 +84,20 @@ The full set of schema additions for Layer 1, gathered here so individual tasks 
 **IRI patterns:**
 - `estleg:Municipality_EHAK_<4-digit>` — Municipality
 - `estleg:Issuer_<slug>` — Issuer (where `<slug>` is the existing KOV directory name)
+
+**Direct-typing decision (important for SHACL).** The plan stamps
+`estleg:Act` rdf:type **directly** on every act node (KOV
+MunicipalRegulation, Law, NationalRegulation/Government/Ministerial)
+during Layer 1 enrichment, in addition to the act's specific subtype.
+This avoids requiring SHACL validators to do RDFS subclass inference
+to satisfy `sh:class estleg:Act` constraints (e.g. on `partOfAct`'s
+range). Same pattern as `KovProvision` getting stamped directly on
+provision nodes. The schema declarations in `metadata.jsonld` still
+record the subclass relationships for documentation and reasoner
+use, but the data is self-describing without inference. Without this
+step, `partOfAct` SHACL constraints would fail under common pyshacl
+configurations because act nodes are typed only as
+`MunicipalRegulation` (not directly as `Act`).
 
 ---
 
@@ -684,6 +699,40 @@ class TestBuildIssuerRegistry:
 
         with pytest.raises(ValueError, match="obscure_vallavolikogu"):
             build_issuer_registry(slugs, muns, curated={})
+
+    def test_curated_with_unknown_ehak_raises(self, tmp_path):
+        # Curated row points at a non-existent EHAK code — must fail at
+        # registry build time, not later at SHACL.
+        kov_root = tmp_path / "regulations" / "kov"
+        (kov_root / "abja_vallavolikogu").mkdir(parents=True)
+
+        muns = load_municipalities(MIN_MUNICIPALITIES)
+        slugs = discover_issuer_slugs(kov_root)
+        curated = {
+            "abja_vallavolikogu": {
+                "currentMunicipalityCode": "9999",  # not in registry
+                "mappingSource": "haldusreform-2017",
+                "mappingEvidence": "RT I 21.06.2017 1",
+            }
+        }
+        with pytest.raises(ValueError, match="9999"):
+            build_issuer_registry(slugs, muns, curated)
+
+    def test_curated_with_invalid_source_raises(self, tmp_path):
+        kov_root = tmp_path / "regulations" / "kov"
+        (kov_root / "abja_vallavolikogu").mkdir(parents=True)
+
+        muns = load_municipalities(MIN_MUNICIPALITIES)
+        slugs = discover_issuer_slugs(kov_root)
+        curated = {
+            "abja_vallavolikogu": {
+                "currentMunicipalityCode": "0855",
+                "mappingSource": "guess",  # not in allowed set
+                "mappingEvidence": "anything",
+            }
+        }
+        with pytest.raises(ValueError, match="mapping_source"):
+            build_issuer_registry(slugs, muns, curated)
 ```
 
 - [ ] **Step 5: Run the test (expect failure)**
@@ -712,6 +761,23 @@ def _slug_to_display_name(slug: str) -> str:
     return " ".join(part.capitalize() for part in slug.split("_"))
 
 
+_ALLOWED_MAPPING_SOURCES = {
+    "auto-match",
+    "haldusreform-2017",
+    "manual-review",
+}
+
+
+def _validate_mapping_source(source: str) -> None:
+    if source.startswith("url:"):
+        return
+    if source not in _ALLOWED_MAPPING_SOURCES:
+        raise ValueError(
+            f"invalid mapping_source: {source!r} "
+            f"(allowed: {sorted(_ALLOWED_MAPPING_SOURCES)} or 'url:<...>')"
+        )
+
+
 def build_issuer_registry(
     slugs: list[str],
     municipalities: dict[str, Municipality],
@@ -721,7 +787,9 @@ def build_issuer_registry(
 
     Auto-match wins where (root, municipalityType) is unique. Curated
     CSV covers the rest. Unmapped issuers raise ValueError listing every
-    failure.
+    failure. Curated rows are also validated against the municipalities
+    registry (EHAK code must exist) and the allowed mapping_source set,
+    so typos surface here rather than at SHACL time.
     """
     out: dict[str, IssuerEntry] = {}
     unmapped: list[str] = []
@@ -736,6 +804,12 @@ def build_issuer_registry(
             ehak = row["currentMunicipalityCode"]
             mapping_source = row["mappingSource"]
             mapping_evidence = row["mappingEvidence"]
+            _validate_mapping_source(mapping_source)
+            if ehak not in municipalities:
+                raise ValueError(
+                    f"curated row for {slug!r} references unknown EHAK "
+                    f"code {ehak!r}; not present in municipalities.json"
+                )
         else:
             unmapped.append(slug)
             continue
@@ -1329,6 +1403,73 @@ class TestKovProvisionShape:
             "estleg:enactedByMunicipality": {"@id": "estleg:Municipality_EHAK_0784"},
         })
         assert not ok
+
+
+class TestEndToEndEnrichedKovGraph:
+    """Validate a complete enriched KOV graph: Municipality + Issuer +
+    MunicipalRegulation (typed Act) + KovProvision joined by partOfAct.
+
+    Catches sh:class join failures that the negative-only tests miss —
+    e.g. if `partOfAct` requires `sh:class estleg:Act` but the act node
+    is only typed as `MunicipalRegulation`, this graph fails.
+    """
+
+    def test_full_enriched_graph_passes(self):
+        ok, msg = _validate({
+            "@context": CONTEXT,
+            "@graph": [
+                # Municipality
+                {
+                    "@id": "estleg:Municipality_EHAK_0784",
+                    "@type": ["owl:NamedIndividual", "estleg:Municipality"],
+                    "rdfs:label": "Tallinn",
+                    "estleg:ehakCode": "0784",
+                    "estleg:county": "Harju maakond",
+                },
+                # Issuer
+                {
+                    "@id": "estleg:Issuer_tallinna_linnavolikogu",
+                    "@type": ["owl:NamedIndividual", "estleg:Issuer"],
+                    "rdfs:label": "Tallinna Linnavolikogu",
+                    "estleg:bodyType": "volikogu",
+                    "estleg:currentMunicipality": {
+                        "@id": "estleg:Municipality_EHAK_0784"
+                    },
+                    "estleg:mappingSource": "auto-match",
+                },
+                # MunicipalRegulation (act node, directly typed as Act)
+                {
+                    "@id": "estleg:Reg_1014955_Map_2026",
+                    "@type": [
+                        "owl:Ontology",
+                        "estleg:Act",
+                        "estleg:MunicipalRegulation",
+                    ],
+                    "rdfs:label": "Tallinna jäätmehoolduseeskiri",
+                    "estleg:enactedBy": {"@id": "estleg:Issuer_tallinna_linnavolikogu"},
+                    "estleg:enactedByMunicipality": {
+                        "@id": "estleg:Municipality_EHAK_0784"
+                    },
+                    "estleg:titleNormalized": "jaatmehoolduseeskiri",
+                },
+                # KovProvision joined to act via partOfAct
+                {
+                    "@id": "estleg:Reg_1014955_Par_1",
+                    "@type": [
+                        "owl:NamedIndividual",
+                        "estleg:KovProvision",
+                    ],
+                    "estleg:paragrahv": "§ 1.",
+                    "estleg:summary": "stub",
+                    "estleg:enactedBy": {"@id": "estleg:Issuer_tallinna_linnavolikogu"},
+                    "estleg:enactedByMunicipality": {
+                        "@id": "estleg:Municipality_EHAK_0784"
+                    },
+                    "estleg:partOfAct": {"@id": "estleg:Reg_1014955_Map_2026"},
+                },
+            ],
+        })
+        assert ok, f"enriched graph failed SHACL: {msg}"
 ```
 
 - [ ] **Step 2: Run the test (expect failure)**
@@ -1457,7 +1598,7 @@ estleg:KovProvisionShape
 - [ ] **Step 4: Run the test to verify it passes**
 
 Run: `pytest tests/test_shacl_kov_layer1.py -v`
-Expected: all 6 tests pass.
+Expected: all 7 tests pass (3 Municipality + 2 Issuer + 1 KovProvision negative + 1 end-to-end positive).
 
 - [ ] **Step 5: Commit**
 
@@ -1850,6 +1991,10 @@ class TestEnrichKovActFile:
         assert act["estleg:enactedBy"] == {"@id": "estleg:Issuer_tallinna_linnavolikogu"}
         assert act["estleg:enactedByMunicipality"] == {"@id": "estleg:Municipality_EHAK_0784"}
         assert act["estleg:titleNormalized"] == "jaatmehoolduseeskiri"
+        # Direct Act type stamped (so partOfAct SHACL doesn't need inference)
+        assert "estleg:Act" in act["@type"]
+        # MunicipalRegulation preserved
+        assert "estleg:MunicipalRegulation" in act["@type"]
 
     def test_provisions_enriched(self, temp_act, issuer):
         from enrich_kov_layer1 import enrich_kov_act_file
@@ -1871,6 +2016,24 @@ class TestEnrichKovActFile:
         enrich_kov_act_file(temp_act, issuer)
         twice = json.load(open(temp_act, encoding="utf-8"))
         assert once == twice  # second run is a no-op
+
+    def test_missing_act_node_raises(self, tmp_path, issuer):
+        # A KOV file shape that lacks any estleg:MunicipalRegulation node
+        # must fail loudly — not silently skip while the orchestrator
+        # increments its enriched-count.
+        from enrich_kov_layer1 import enrich_kov_act_file
+        bad = tmp_path / "broken.json"
+        bad.write_text(json.dumps({
+            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+                         "owl": "http://www.w3.org/2002/07/owl#"},
+            "@graph": [
+                {"@id": "estleg:NotAnAct_Map_2026",
+                 "@type": ["owl:Ontology"],
+                 "rdfs:label": "garbage"}
+            ],
+        }), encoding="utf-8")
+        with pytest.raises(ValueError, match="MunicipalRegulation"):
+            enrich_kov_act_file(bad, issuer)
 ```
 
 - [ ] **Step 3: Run test (expect failure)**
@@ -1900,6 +2063,11 @@ def _add_type(node: dict, type_iri: str) -> bool:
 def enrich_kov_act_file(path: Path, issuer: IssuerEntry) -> None:
     """Add Layer 1 properties to a single KOV act peep file in place.
 
+    Raises ValueError if the file does not contain exactly one node
+    typed as estleg:MunicipalRegulation. A KOV file under the corpus
+    must have that node — silently skipping malformed files would let
+    Gate A pass while leaving acts undecorated.
+
     Idempotent — running on an already-enriched file leaves it
     byte-identical.
     """
@@ -1920,6 +2088,10 @@ def enrich_kov_act_file(path: Path, issuer: IssuerEntry) -> None:
         if "estleg:MunicipalRegulation" in types:
             act_iri = node.get("@id")
             title = node.get("rdfs:label") or node.get("dc:source") or ""
+            # Stamp estleg:Act directly so SHACL constraints with
+            # sh:class estleg:Act on partOfAct don't require RDFS
+            # inference at validation time.
+            _add_type(node, "estleg:Act")
             node["estleg:enactedBy"] = issuer_ref
             node["estleg:enactedByMunicipality"] = municipality_ref
             normalized = normalize_title(title, issuer["displayName"])
@@ -1927,10 +2099,10 @@ def enrich_kov_act_file(path: Path, issuer: IssuerEntry) -> None:
             break  # there is exactly one MunicipalRegulation per file
 
     if act_iri is None:
-        # Not a KOV act file — leave it alone. (Defensive: orchestrator only
-        # passes KOV files, but bailing on shape mismatch is safer than
-        # silently corrupting an unexpected file.)
-        return
+        raise ValueError(
+            f"{path}: no estleg:MunicipalRegulation node in @graph; "
+            "expected a KOV act file"
+        )
 
     # Pass 2: enrich provisions.
     for node in doc.get("@graph", []):
@@ -2016,6 +2188,9 @@ class TestStampLawType:
         law_node = doc["@graph"][0]
         assert "owl:Ontology" in law_node["@type"]
         assert "estleg:Law" in law_node["@type"]
+        # estleg:Act is stamped alongside Law so SHACL constraints with
+        # sh:class estleg:Act don't require RDFS inference.
+        assert "estleg:Act" in law_node["@type"]
 
     def test_idempotent(self, temp_law):
         from enrich_kov_layer1 import stamp_law_type
@@ -2028,7 +2203,8 @@ class TestStampLawType:
     def test_skips_non_root_types(self, temp_law):
         # If the act node is already a different specific type (e.g.
         # NationalRegulation), don't add Law — only top-level
-        # owl:Ontology act nodes should be stamped.
+        # owl:Ontology act nodes should be stamped with Law. (Act is
+        # stamped on regulation acts via stamp_act_type instead.)
         with open(temp_law, "r", encoding="utf-8") as fh:
             doc = json.load(fh)
         doc["@graph"][0]["@type"] = ["owl:Ontology", "estleg:NationalRegulation"]
@@ -2040,6 +2216,47 @@ class TestStampLawType:
         with open(temp_law, "r", encoding="utf-8") as fh:
             doc2 = json.load(fh)
         assert "estleg:Law" not in doc2["@graph"][0]["@type"]
+
+
+class TestStampActType:
+    """Stamps estleg:Act on state regulation acts (regulations/riik/)
+    so that partOfAct and issuedUnder SHACL constraints don't need
+    inference."""
+
+    def test_stamps_act_on_national_regulation(self, tmp_path):
+        from enrich_kov_layer1 import stamp_act_type
+        f = tmp_path / "reg.json"
+        f.write_text(json.dumps({
+            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+                         "owl": "http://www.w3.org/2002/07/owl#"},
+            "@graph": [
+                {"@id": "estleg:Reg_1009410_Map_2026",
+                 "@type": ["owl:Ontology", "estleg:NationalRegulation"],
+                 "rdfs:label": "test"}
+            ],
+        }), encoding="utf-8")
+        stamp_act_type(f)
+        doc = json.load(open(f, encoding="utf-8"))
+        types = doc["@graph"][0]["@type"]
+        assert "estleg:Act" in types
+        assert "estleg:NationalRegulation" in types  # preserved
+
+    def test_idempotent(self, tmp_path):
+        from enrich_kov_layer1 import stamp_act_type
+        f = tmp_path / "reg.json"
+        f.write_text(json.dumps({
+            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+                         "owl": "http://www.w3.org/2002/07/owl#"},
+            "@graph": [
+                {"@id": "estleg:Reg_1_Map_2026",
+                 "@type": ["owl:Ontology", "estleg:GovernmentRegulation"]}
+            ],
+        }), encoding="utf-8")
+        stamp_act_type(f)
+        once = json.load(open(f, encoding="utf-8"))
+        stamp_act_type(f)
+        twice = json.load(open(f, encoding="utf-8"))
+        assert once == twice
 ```
 
 - [ ] **Step 3: Run test (expect failure)**
@@ -2061,11 +2278,12 @@ _REGULATION_TYPES = {
 
 
 def stamp_law_type(path: Path) -> None:
-    """Add `estleg:Law` rdf:type to the act node of a law peep file.
+    """Add `estleg:Law` and `estleg:Act` rdf:type to the act node of a
+    law peep file.
 
     Skips files whose act node already has a regulation-specific type
-    (NationalRegulation, MunicipalRegulation, etc.) — those are already
-    typed correctly.
+    (NationalRegulation, MunicipalRegulation, etc.) — those go through
+    `stamp_act_type` instead.
 
     Idempotent.
     """
@@ -2083,7 +2301,44 @@ def stamp_law_type(path: Path) -> None:
             continue
         if _add_type(node, "estleg:Law"):
             changed = True
-            node["@type"] = sorted(set(node["@type"]))  # stable order
+        if _add_type(node, "estleg:Act"):
+            changed = True
+        node["@type"] = sorted(set(node["@type"]))  # stable order
+
+    if changed:
+        with open(path, "w", encoding="utf-8") as fh:
+            json.dump(doc, fh, ensure_ascii=False, indent=2)
+            fh.write("\n")
+
+
+def stamp_act_type(path: Path) -> None:
+    """Add `estleg:Act` to act nodes already typed as a regulation
+    subclass (NationalRegulation / GovernmentRegulation /
+    MinisterialRegulation). For state regulation files under
+    `regulations/riik/`. Idempotent.
+
+    KOV act nodes are handled by `enrich_kov_act_file`; this function is
+    for the state regulation files that Layer 1 otherwise leaves alone.
+    """
+    with open(path, "r", encoding="utf-8") as fh:
+        doc = json.load(fh)
+
+    changed = False
+    for node in doc.get("@graph", []):
+        types = node.get("@type", [])
+        if isinstance(types, str):
+            types = [types]
+        if "owl:Ontology" not in types:
+            continue
+        # Only stamp Act on regulation acts; KOV acts go through
+        # enrich_kov_act_file.
+        if "estleg:MunicipalRegulation" in types:
+            continue
+        if not _REGULATION_TYPES.intersection(types):
+            continue
+        if _add_type(node, "estleg:Act"):
+            changed = True
+            node["@type"] = sorted(set(node["@type"]))
 
     if changed:
         with open(path, "w", encoding="utf-8") as fh:
@@ -2091,16 +2346,16 @@ def stamp_law_type(path: Path) -> None:
             fh.write("\n")
 ```
 
-- [ ] **Step 5: Run test to verify it passes**
+- [ ] **Step 5: Run tests to verify they pass**
 
-Run: `pytest tests/test_enrich_kov_layer1.py::TestStampLawType -v`
-Expected: 3 passed.
+Run: `pytest tests/test_enrich_kov_layer1.py::TestStampLawType tests/test_enrich_kov_layer1.py::TestStampActType -v`
+Expected: 5 passed (3 in StampLawType, 2 in StampActType).
 
 - [ ] **Step 6: Commit**
 
 ```bash
 git add scripts/enrich_kov_layer1.py tests/test_enrich_kov_layer1.py tests/fixtures/kov_layer1/sample_law.json
-git commit -m "Add Law type stamping for existing law nodes"
+git commit -m "Add Law + Act type stamping for existing acts"
 ```
 
 ---
@@ -2151,8 +2406,28 @@ class TestOrchestratorEndToEnd:
         kov_dir.mkdir(parents=True)
         shutil.copy(SAMPLE_KOV_ACT, kov_dir / "act_peep.json")
 
-        # Law
+        # Law + INDEX.json (source of canonical law file list)
         shutil.copy(SAMPLE_LAW, krr / "alkoholiseadus_peep.json")
+        (krr / "INDEX.json").write_text(json.dumps({
+            "generated": "2026-05-02",
+            "total_files": 1,
+            "total_laws": 1,
+            "laws": [{"name": "alkoholiseadus",
+                      "files": ["alkoholiseadus_peep.json"]}],
+        }), encoding="utf-8")
+
+        # State regulation under regulations/riik/
+        riik = krr / "regulations" / "riik"
+        riik.mkdir(parents=True)
+        (riik / "valitsuse_maarus_peep.json").write_text(json.dumps({
+            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+                         "owl": "http://www.w3.org/2002/07/owl#"},
+            "@graph": [
+                {"@id": "estleg:Reg_1009410_Map_2026",
+                 "@type": ["owl:Ontology", "estleg:GovernmentRegulation"],
+                 "rdfs:label": "Test government regulation"}
+            ],
+        }), encoding="utf-8")
 
         # Patch module-level paths
         import enrich_kov_layer1 as mod
@@ -2177,9 +2452,16 @@ class TestOrchestratorEndToEnd:
         assert "estleg:enactedBy" in act
         assert act["estleg:titleNormalized"] == "jaatmehoolduseeskiri"
 
-        # Law type stamped
+        # Law type stamped (Law + Act both)
         law_doc = json.load(open(krr / "alkoholiseadus_peep.json", encoding="utf-8"))
         assert "estleg:Law" in law_doc["@graph"][0]["@type"]
+        assert "estleg:Act" in law_doc["@graph"][0]["@type"]
+
+        # State regulation stamped with Act, GovernmentRegulation preserved
+        reg_doc = json.load(open(riik / "valitsuse_maarus_peep.json", encoding="utf-8"))
+        types = reg_doc["@graph"][0]["@type"]
+        assert "estleg:Act" in types
+        assert "estleg:GovernmentRegulation" in types
 ```
 
 - [ ] **Step 2: Run the test (expect failure)**
@@ -2204,6 +2486,32 @@ def _save_jsonld(path: Path, doc: dict) -> None:
         fh.write("\n")
 
 
+def _load_law_paths(index_path: Path) -> list[Path]:
+    """Resolve law file paths from krr_outputs/INDEX.json.
+
+    INDEX.json's `laws` is a list of {name, files: [...]}. A multi-part
+    law (e.g. asjaoigusseadus_osa1, _osa2) has multiple files in one
+    entry. Flatten and resolve to absolute paths under KRR_DIR.
+
+    INDEX.json is the canonical source — using KRR_DIR.glob('*_peep.json')
+    instead would conflate the 615 laws with ~20 other root-level files
+    (combined ontology output, generated registry files, etc.) and would
+    drift over time.
+    """
+    with open(index_path, "r", encoding="utf-8") as fh:
+        idx = json.load(fh)
+    paths: list[Path] = []
+    for entry in idx.get("laws", []):
+        for fname in entry.get("files", []):
+            p = KRR_DIR / fname
+            if not p.exists():
+                raise FileNotFoundError(
+                    f"INDEX.json references missing law file: {p}"
+                )
+            paths.append(p)
+    return paths
+
+
 def main() -> int:
     print("=" * 70)
     print("KOV Integration Layer 1 — Enrichment")
@@ -2223,25 +2531,48 @@ def main() -> int:
 
     # 3. Enrich KOV act files
     kov_files = sorted(KOV_DIR.glob("**/*_peep.json"))
+    # The KOV index file lives at the top of KOV_DIR — exclude it.
+    kov_files = [f for f in kov_files if not f.name.startswith("REGULATIONS_KOV_INDEX")]
     print(f"\nEnriching {len(kov_files)} KOV act files...")
     enriched = 0
+    missing_issuer = 0
     for f in kov_files:
-        # Issuer slug = parent directory name
         slug = f.parent.name
         issuer = issuers.get(slug)
         if issuer is None:
-            print(f"  WARN: no issuer entry for {slug}; skipping {f.name}")
+            missing_issuer += 1
+            print(f"  ERROR: no issuer entry for {slug}; skipping {f.name}")
             continue
+        # Will raise on malformed files (no MunicipalRegulation node).
         enrich_kov_act_file(f, issuer)
         enriched += 1
-    print(f"Enriched {enriched} KOV act files")
+    print(f"Enriched {enriched} KOV act files (missing-issuer: {missing_issuer})")
+    if missing_issuer:
+        # Hard-fail rather than let Gate A pass with skipped files.
+        print(
+            f"FAIL: {missing_issuer} KOV files had no matching issuer entry. "
+            "Re-run scripts/build_kov_registry.py to regenerate issuers.json.",
+            file=sys.stderr,
+        )
+        return 2
 
-    # 4. Stamp Law type on existing law peep files
-    law_files = sorted(KRR_DIR.glob("*_peep.json"))
-    print(f"\nStamping estleg:Law on {len(law_files)} root-level peep files...")
-    for f in law_files:
+    # 4. Stamp estleg:Law + estleg:Act on the 615 laws (paths from INDEX.json)
+    law_paths = _load_law_paths(KRR_DIR / "INDEX.json")
+    law_count = len({p.name.replace("_peep.json", "").rsplit("_osa", 1)[0]
+                     for p in law_paths})
+    print(f"\nStamping estleg:Law on {len(law_paths)} law files "
+          f"({law_count} unique laws)...")
+    for f in law_paths:
         stamp_law_type(f)
-    print("Done.")
+
+    # 5. Stamp estleg:Act on state regulation acts under regulations/riik/
+    riik_dir = KRR_DIR / "regulations" / "riik"
+    riik_files = sorted(riik_dir.glob("*_peep.json")) if riik_dir.exists() else []
+    print(f"\nStamping estleg:Act on {len(riik_files)} state regulation files...")
+    for f in riik_files:
+        stamp_act_type(f)
+
+    print("\nDone.")
     return 0
 ```
 
@@ -2270,7 +2601,26 @@ This is a real-data run, not a code change. It produces the artefacts that Gate 
 - [ ] **Step 1: Run the orchestrator**
 
 Run: `python scripts/enrich_kov_layer1.py`
-Expected: prints counts like `Loaded 79 municipalities, 357 issuers`, then `Enriched 11059 KOV act files`, then `Stamping estleg:Law on 615 root-level peep files`.
+Expected output (counts may vary slightly):
+
+```
+Loaded 79 municipalities, 357 issuers
+Wrote municipalities_peep.json
+Wrote issuers_kov_peep.json
+
+Enriching 11059 KOV act files...
+Enriched 11059 KOV act files (missing-issuer: 0)
+
+Stamping estleg:Law on 652 law files (615 unique laws)...
+
+Stamping estleg:Act on 3813 state regulation files...
+Done.
+```
+
+The "law files" count (~652) is higher than the "unique laws" count
+(615) because multi-part laws like *asjaõigusseadus* have multiple
+files (`_osa1`, `_osa2`, ...). The 615 number is the canonical law
+count from `INDEX.json`.
 
 - [ ] **Step 2: Verify outputs exist**
 
@@ -2385,6 +2735,15 @@ territorial unit and issuing body.
 
 - `krr_outputs/municipalities_peep.json` — 79 Municipality nodes
 - `krr_outputs/issuers_kov_peep.json` — 357 Issuer nodes
+
+### Direct-typing in enriched data
+
+Every act node carries `estleg:Act` rdf:type **directly**, in
+addition to its specific subtype (`Law`, `MunicipalRegulation`,
+`NationalRegulation`, etc.). Same pattern as `KovProvision` on
+provisions. This keeps the data self-describing and means SHACL
+constraints on `estleg:Act` (e.g. `partOfAct`'s range) work without
+requiring RDFS subclass inference at validation time.
 
 ### SHACL shapes
 
@@ -2503,16 +2862,19 @@ Expected: `SHACL PASS`. (Sampling 200 KOV files keeps this tractable; if any fai
 
 - [ ] **Step 4: Verify Gate A acceptance criteria**
 
-Run a checklist by hand against the spec's Gate A list:
+Each check below has a concrete command. Run them in order; tick the
+box only after the command produces the expected output. Do **not**
+pre-tick.
 
-- [x] `validate_all.py` clean
-- [x] SHACL passes for Municipality, Issuer, MunicipalRegulation, KovProvision, Law
-- [x] All 357 issuers mapped via auto-match + curated CSV (no unmapped)
-- [x] Every KOV act has `enactedBy`, `enactedByMunicipality`, `titleNormalized`
-- [x] Every KOV provision has `enactedBy`, `enactedByMunicipality`, `partOfAct`, `KovProvision` rdf:type
-- [x] Every existing law act node carries `estleg:Law` rdf:type
+- [ ] `python scripts/validate_all.py` exits 0
+- [ ] SHACL passes — see Step 6 below for the validation script
+- [ ] `python -c "import json; print(len(json.load(open('data/ehak/issuers.json'))))"` prints `357`
+- [ ] `python -c "import json,glob; n=0; ok=0; [(*globals().__setitem__('n', n+1), *globals().__setitem__('ok', ok+all(k in [a for a in d['@graph'] if 'estleg:MunicipalRegulation' in (a.get('@type') or [])][0] for k in ('estleg:enactedBy','estleg:enactedByMunicipality','estleg:titleNormalized')))) for f in glob.glob('krr_outputs/regulations/kov/**/*_peep.json', recursive=True) if not f.endswith('REGULATIONS_KOV_INDEX.json') for d in [json.load(open(f))]]; print(f'{ok}/{n} acts enriched')"` reports `11059/11059`
+- [ ] Same shape but checking provisions for `KovProvision` rdf:type, `enactedBy`, `enactedByMunicipality`, `partOfAct` — should report `116708/116708` provisions enriched
+- [ ] `python -c "import json; print(sum(1 for f in __import__('glob').glob('krr_outputs/*_peep.json') for d in [json.load(open(f))] if any('estleg:Law' in (n.get('@type') or []) for n in d['@graph'])))"` prints the law-file count from the orchestrator output (typically ~652)
 
-If any check fails, fix it before opening the PR.
+If any check fails, fix the underlying issue before opening the PR. Do
+not commit pre-ticked checkboxes.
 
 - [ ] **Step 5: Push and open the PR**
 
