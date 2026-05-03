@@ -115,3 +115,43 @@ class TestParseIssuerSlug:
     def test_no_underscore_raises(self):
         with pytest.raises(ValueError, match="unknown body suffix"):
             parse_issuer_slug("foo")
+
+
+from kov_registry import auto_match_municipality
+
+
+class TestAutoMatchMunicipality:
+    @pytest.fixture
+    def muns(self):
+        return load_municipalities(MIN_MUNICIPALITIES)
+
+    def test_unique_linn_match(self, muns):
+        parts = {"slug": "tallinna_linnavolikogu", "root": "tallinna",
+                 "body": "linnavolikogu", "bodyType": "volikogu",
+                 "municipalityType": "linn"}
+        assert auto_match_municipality(parts, muns) == "0784"
+
+    def test_unique_vald_match(self, muns):
+        parts = {"slug": "mulgi_vallavolikogu", "root": "mulgi",
+                 "body": "vallavolikogu", "bodyType": "volikogu",
+                 "municipalityType": "vald"}
+        assert auto_match_municipality(parts, muns) == "0480"
+
+    def test_disambiguates_linn_from_vald(self, muns):
+        # Tartu exists as both linn (0793) and vald (0796)
+        # tartu_linnavolikogu must match only the linn
+        linn_parts = {"slug": "tartu_linnavolikogu", "root": "tartu",
+                      "body": "linnavolikogu", "bodyType": "volikogu",
+                      "municipalityType": "linn"}
+        vald_parts = {"slug": "tartu_vallavolikogu", "root": "tartu",
+                      "body": "vallavolikogu", "bodyType": "volikogu",
+                      "municipalityType": "vald"}
+        assert auto_match_municipality(linn_parts, muns) == "0793"
+        assert auto_match_municipality(vald_parts, muns) == "0796"
+
+    def test_no_match_returns_none(self, muns):
+        # 'abja' is a defunct pre-2017 vald, not in the current 79
+        parts = {"slug": "abja_vallavolikogu", "root": "abja",
+                 "body": "vallavolikogu", "bodyType": "volikogu",
+                 "municipalityType": "vald"}
+        assert auto_match_municipality(parts, muns) is None

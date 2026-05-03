@@ -73,3 +73,47 @@ def parse_issuer_slug(slug: str) -> IssuerSlugParts:
                 "municipalityType": mun_type,
             }
     raise ValueError(f"unknown body suffix in slug: {slug!r}")
+
+
+_TRANSLIT = str.maketrans({
+    "ö": "o", "ä": "a", "ü": "u", "õ": "o",
+    "Ö": "O", "Ä": "A", "Ü": "U", "Õ": "O",
+    "š": "s", "ž": "z", "Š": "S", "Ž": "Z",
+})
+
+
+def _normalize_name_for_matching(name: str) -> str:
+    """Lowercase, transliterate, strip type suffix for slug-matching."""
+    base = name.translate(_TRANSLIT).lower().strip()
+    for suffix in (" linn", " vald"):
+        if base.endswith(suffix):
+            base = base[: -len(suffix)].rstrip()
+            break
+    # Compound names like "Kohtla-Järve" use a hyphen; slugs use underscore.
+    return base.replace("-", "_").replace(" ", "_")
+
+
+def auto_match_municipality(
+    parts: IssuerSlugParts,
+    municipalities: dict[str, Municipality],
+) -> str | None:
+    """Return EHAK code if (root, municipalityType) uniquely identifies a
+    municipality. Returns None if there is no match or more than one.
+
+    Returning None is the "fail loudly to the curated CSV" path — auto-match
+    never guesses.
+    """
+    target_root = parts["root"]
+    target_type = parts["municipalityType"]
+    matches: list[str] = []
+    for code, mun in municipalities.items():
+        if mun["type"] != target_type:
+            continue
+        normalized = _normalize_name_for_matching(mun["name"])
+        # Slugs use the Estonian genitive form (e.g. "tallinna" for Tallinn);
+        # for consonant-final names like Tallinn this adds an "a" suffix.
+        if target_root == normalized or target_root == normalized + "a":
+            matches.append(code)
+    if len(matches) == 1:
+        return matches[0]
+    return None
