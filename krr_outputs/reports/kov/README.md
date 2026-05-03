@@ -49,7 +49,7 @@ Field reference:
 | `skip_reasons` | Skip-reason → count, one per category. |
 | `triples_emitted` | Total output triples written back (laws + state-regs + KOV). |
 | `triples_emitted_kov` | Subset attributed to KOV inputs. The KOV-output sanity check. |
-| `fallback_hits` | Times a fallback path fired (slug-based XML resolution, etc.). |
+| `fallback_hits` | Times the slug-based XML resolution fallback fired (laws without globalId), counted across all consumers. |
 | `unresolved_references` | References that couldn't pair (e.g. KOV peep with no XML). |
 | `wall_time_seconds` | Total run wall time. |
 | `items_per_second` | `files_processed / wall_time_seconds`. |

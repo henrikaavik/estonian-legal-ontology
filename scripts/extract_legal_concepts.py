@@ -348,7 +348,7 @@ def main():
     # Layer 2a: pair peep files to XML via globalId (the canonical path
     # for KOV + state regs). The slug fallback is preserved via the
     # ``data_dir=DATA_DIR`` kwarg for laws-without-globalId.
-    from extract_temporal_data import (
+    from estleg_common import (
         build_globalid_xml_lookup,
         pair_peep_with_xml,
     )
@@ -363,6 +363,12 @@ def main():
     # Build globalId → XML path lookup once
     xml_lookup = build_globalid_xml_lookup(DATA_DIR)
     print(f"  Indexed {len(xml_lookup)} XML files by globalId")
+
+    # Precompute set of canonical-pairing paths for O(1) fallback
+    # detection. Mirrors the pattern in generate_amendment_history /
+    # extract_temporal_data — _fallback_hits semantics is "XML resolved
+    # via slug fallback", consistent across all three pipelines.
+    _lookup_paths = {str(p) for p in xml_lookup.values()}
 
     # Step 2: Extract concepts from XML
     print("\n[2/5] Extracting defined terms from XML files...")
@@ -399,8 +405,13 @@ def main():
                 _skip_reasons["no_xml"] = _skip_reasons.get("no_xml", 0) + 1
                 continue
 
-            # Track slug-based fallback hits — when an act has no
-            # globalId, the helper falls back to slug-based lookup.
+            # Track slug-based fallback hits — _fallback_hits semantics
+            # are "XML resolved via slug fallback" (path not in the
+            # canonical globalId lookup), aligned with temporal /
+            # amendment-history.
+            if str(xml_path) not in _lookup_paths:
+                _fallback_hits += 1
+
             try:
                 with open(path, "r", encoding="utf-8") as fh:
                     peep_doc = json.load(fh)
@@ -409,16 +420,6 @@ def main():
                 _skip_reasons["json_decode_error"] = (
                     _skip_reasons.get("json_decode_error", 0) + 1
                 )
-
-            # Detect whether globalId is present on the act node — used
-            # for fallback_hits accounting.
-            has_globalid = False
-            for node in peep_doc.get("@graph", []):
-                if node.get("estleg:globalId"):
-                    has_globalid = True
-                    break
-            if not has_globalid:
-                _fallback_hits += 1
 
             par_to_iri = build_par_to_iri_lookup(peep_doc)
 

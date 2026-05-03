@@ -13,12 +13,23 @@ import pytest
 class TestAmendmentHistoryDiscovery:
     def test_imports_globalid_helper_from_temporal(self):
         """The amendment-history script reuses the globalId lookup
-        helper from extract_temporal_data — DRY rule."""
+        helper — DRY rule. After Layer 2a I1, the canonical home is
+        estleg_common, but the import-from-amendment-history surface
+        still works via the re-export chain."""
         from generate_amendment_history import (
             build_globalid_xml_lookup,
             pair_peep_with_xml,
         )
         # Same behavior verification as in Task 8
+        assert callable(build_globalid_xml_lookup)
+        assert callable(pair_peep_with_xml)
+
+    def test_helpers_in_canonical_location(self):
+        """After Layer 2a I1, build_globalid_xml_lookup and
+        pair_peep_with_xml live in estleg_common alongside
+        iter_peep_files — the canonical home of pipeline-shared
+        helpers. Layer 2b's preamble scanner imports from here."""
+        from estleg_common import build_globalid_xml_lookup, pair_peep_with_xml
         assert callable(build_globalid_xml_lookup)
         assert callable(pair_peep_with_xml)
 

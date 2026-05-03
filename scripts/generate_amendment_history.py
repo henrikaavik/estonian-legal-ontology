@@ -20,8 +20,11 @@ import xml.etree.ElementTree as ET
 from datetime import date, datetime, timezone
 from pathlib import Path
 
-from estleg_common import iter_peep_files
-from extract_temporal_data import build_globalid_xml_lookup, pair_peep_with_xml
+from estleg_common import (
+    build_globalid_xml_lookup,
+    iter_peep_files,
+    pair_peep_with_xml,
+)
 from kov_pipeline_coverage import (
     CoverageReport,
     measure_runtime,

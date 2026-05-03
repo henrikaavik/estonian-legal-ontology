@@ -20,13 +20,25 @@ import xml.etree.ElementTree as ET
 from datetime import date, datetime, timezone
 from pathlib import Path
 
-from estleg_common import iter_peep_files
+from estleg_common import (
+    build_globalid_xml_lookup,
+    iter_peep_files,
+    pair_peep_with_xml,
+)
 from kov_pipeline_coverage import (
     CoverageReport,
     measure_runtime,
     resolve_pipeline_version,
     write_coverage_report,
 )
+
+# Re-export for backwards-compat: existing tests and callers import
+# these helpers from extract_temporal_data. Layer 2b can drop the
+# re-export once those callers are updated.
+__all__ = [
+    "build_globalid_xml_lookup",
+    "pair_peep_with_xml",
+]
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
@@ -276,112 +288,6 @@ def save_json(filepath: Path, doc: dict):
         f.write("\n")
 
 
-import xml.etree.ElementTree as _ET
-
-
-def build_globalid_xml_lookup(rt_root: Path) -> dict[str, Path]:
-    """Recursively scan rt_root for *.xml files and build a
-    globalId → Path lookup keyed by the root element's globaalID
-    attribute. Files without a recognisable globaalID are skipped.
-
-    Walks rt_root and all subdirectories so KOV XML under
-    ``maarus_kov/`` and state regulation XML under ``maarus/`` are
-    paired alongside law XML at the root.
-    """
-    lookup: dict[str, Path] = {}
-    if not rt_root.is_dir():
-        return lookup
-    for xml_path in rt_root.rglob("*.xml"):
-        try:
-            tree = _ET.parse(str(xml_path))
-        except _ET.ParseError:
-            continue
-        root = tree.getroot()
-        # Primary: root element's globaalID attribute (most RT XML).
-        gid = root.get("globaalID")
-        if gid is None:
-            # Fallback: scan top-level <metaandmed> children for a
-            # globaalID leaf element.
-            #
-            # NOTE: ElementTree's truthiness on Element is False when
-            # the element has no children, so `child.find(a) or
-            # child.find(b)` would silently discard a leaf hit. Use
-            # explicit `is None` checks throughout.
-            for child in root:
-                if not child.tag.endswith("metaandmed"):
-                    continue
-                gid_el = child.find("globaalID")
-                if gid_el is None:
-                    gid_el = child.find("{*}globaalID")
-                if gid_el is not None and gid_el.text:
-                    gid = gid_el.text.strip()
-                    break
-        if gid:
-            lookup[str(gid)] = xml_path
-    return lookup
-
-
-def pair_peep_with_xml(
-    peep_path: Path,
-    lookup: dict[str, Path],
-    *,
-    data_dir: Path | None = None,
-) -> Path | None:
-    """Pair a peep file to its XML.
-
-    Two paths in priority order:
-
-    1. **globalId-based** (the new path, KOV + state regs): the
-       generators stamp ``estleg:globalId`` on every act node, and KOV
-       XML filenames embed the same id (``reg_<globalId>.xml``). This
-       is the canonical pairing for everything generated post-Phase-1.
-
-    2. **Slug-based fallback** (legacy laws): the 615 indexed laws
-       were generated before the ``estleg:globalId`` field existed,
-       so their act nodes carry ``estleg:Law``/``owl:Ontology`` types
-       but no globalId. For these, fall back to matching the peep
-       file's stem (sans ``_peep``) against
-       ``<data_dir>/<stem>.xml``. ``data_dir`` is required for the
-       fallback; if not supplied, only the globalId path runs.
-
-    Returns the XML path or None if neither path resolves.
-    """
-    try:
-        with open(peep_path, "r", encoding="utf-8") as fh:
-            doc = json.load(fh)
-    except (json.JSONDecodeError, OSError):
-        return None
-    gid = None
-    for node in doc.get("@graph", []):
-        types = node.get("@type") or []
-        if isinstance(types, str):
-            types = [types]
-        if not any(t.endswith("Regulation") or t == "estleg:Law"
-                   or t == "owl:Ontology" for t in types):
-            continue
-        gid = node.get("estleg:globalId")
-        if gid:
-            break
-    # Path 1: globalId
-    if gid:
-        xml = lookup.get(str(gid))
-        if xml is not None:
-            return xml
-    # Path 2: slug fallback (laws without globalId)
-    if data_dir is not None:
-        slug = peep_path.stem.replace("_peep", "")
-        xml = data_dir / f"{slug}.xml"
-        if xml.exists():
-            return xml
-        # Stripped-_osa fallback for multi-part laws
-        import re as _re
-        base_slug = _re.sub(r"_osa\d+$", "", slug)
-        xml = data_dir / f"{base_slug}.xml"
-        if xml.exists():
-            return xml
-    return None
-
-
 def main():
     print("=" * 70)
     print("Estonian Legal Ontology - Extract Temporal Validity Data")
@@ -430,6 +336,11 @@ def main():
     all_peep_files = iter_peep_files()
     _kov_files = [f for f in all_peep_files if "regulations/kov" in str(f)]
 
+    # Precompute set of canonical-pairing paths for O(1) fallback
+    # detection. Mirrors the pattern in generate_amendment_history —
+    # avoids a per-peep O(N) scan over xml_lookup.values().
+    _lookup_paths = {str(p) for p in xml_lookup.values()}
+
     for peep in all_peep_files:
         xml_path = pair_peep_with_xml(peep, xml_lookup, data_dir=DATA_DIR)
         if xml_path is None:
@@ -440,7 +351,7 @@ def main():
         # Track slug-fallback hits (laws-without-globalId path):
         # detected when the XML returned is not in the globalId
         # lookup's values.
-        if xml_path not in xml_lookup.values():
+        if str(xml_path) not in _lookup_paths:
             _fallback_hits += 1
 
         # Reuse cached extraction if this XML was already parsed
