@@ -5,6 +5,7 @@ tests/test_kov_registry.py.
 """
 from __future__ import annotations
 
+import csv
 import json
 from pathlib import Path
 from typing import Literal, TypedDict
@@ -145,3 +146,37 @@ def auto_match_municipality(
     if len(matches) == 1:
         return matches[0]
     return None
+
+
+class CuratedRow(TypedDict):
+    currentMunicipalityCode: str
+    mappingSource: str  # "auto-match" | "haldusreform-2017" | "manual-review" | "url:<...>"
+    mappingEvidence: str
+
+
+def load_curated_map(path: Path) -> dict[str, CuratedRow]:
+    """Load the curated issuer→municipality map.
+
+    Required columns: issuer_slug, current_municipality_ehak,
+    mapping_source, mapping_evidence. Every row MUST have non-empty
+    mapping_evidence — this is the auditable trail.
+    """
+    out: dict[str, CuratedRow] = {}
+    with open(path, "r", encoding="utf-8", newline="") as fh:
+        reader = csv.DictReader(fh)
+        for row in reader:
+            slug = row["issuer_slug"].strip()
+            evidence = (row.get("mapping_evidence") or "").strip()
+            if not evidence:
+                raise ValueError(
+                    f"Row for {slug!r} has empty mapping_evidence; "
+                    "every curated row must cite its source."
+                )
+            if slug in out:
+                raise ValueError(f"duplicate issuer_slug: {slug}")
+            out[slug] = {
+                "currentMunicipalityCode": row["current_municipality_ehak"].strip(),
+                "mappingSource": row["mapping_source"].strip(),
+                "mappingEvidence": evidence,
+            }
+    return out

@@ -11,6 +11,7 @@ import pytest
 
 from kov_registry import (
     auto_match_municipality,
+    load_curated_map,
     load_municipalities,
     parse_issuer_slug,
 )
@@ -182,3 +183,45 @@ class TestAutoMatchMunicipality:
         # Vowel-final names should not silently match an `+a` extension
         # of an unrelated name.
         assert _matches_municipality_root("tartua", "Tartu vald") is False
+
+
+class TestLoadCuratedMap:
+    @pytest.fixture
+    def csv_path(self, tmp_path):
+        p = tmp_path / "map.csv"
+        p.write_text(
+            "issuer_slug,current_municipality_ehak,mapping_source,mapping_evidence\n"
+            "abja_vallavolikogu,0480,haldusreform-2017,RT I 21.06.2017 1\n"
+            "aegviidu_vallavolikogu,0150,haldusreform-2017,RT I 21.06.2017 1\n",
+            encoding="utf-8",
+        )
+        return p
+
+    def test_loads_rows_keyed_by_slug(self, csv_path):
+        rows = load_curated_map(csv_path)
+        assert set(rows) == {"abja_vallavolikogu", "aegviidu_vallavolikogu"}
+        abja = rows["abja_vallavolikogu"]
+        assert abja["currentMunicipalityCode"] == "0480"
+        assert abja["mappingSource"] == "haldusreform-2017"
+        assert abja["mappingEvidence"] == "RT I 21.06.2017 1"
+
+    def test_empty_evidence_rejected(self, tmp_path):
+        p = tmp_path / "bad.csv"
+        p.write_text(
+            "issuer_slug,current_municipality_ehak,mapping_source,mapping_evidence\n"
+            "x_vallavolikogu,0480,haldusreform-2017,\n",
+            encoding="utf-8",
+        )
+        with pytest.raises(ValueError, match="mapping_evidence"):
+            load_curated_map(p)
+
+    def test_duplicate_slug_rejected(self, tmp_path):
+        p = tmp_path / "dup.csv"
+        p.write_text(
+            "issuer_slug,current_municipality_ehak,mapping_source,mapping_evidence\n"
+            "x_vallavolikogu,0480,haldusreform-2017,evidence-a\n"
+            "x_vallavolikogu,0784,haldusreform-2017,evidence-b\n",
+            encoding="utf-8",
+        )
+        with pytest.raises(ValueError, match="duplicate"):
+            load_curated_map(p)
