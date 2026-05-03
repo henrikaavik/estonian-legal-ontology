@@ -171,6 +171,17 @@ class IssuerEntry(TypedDict):
     historicalMunicipalityName: str  # the issuing-time KOV unit, free text
 
 
+# Layer 1 limitation (acknowledged): displayName and
+# historicalMunicipalityName are derived from the slug by simple title-
+# casing, which drops Estonian diacritics (ä/ö/ü/õ) and hyphens. So
+# 'kohtla_jarve_linnavolikogu' becomes 'Kohtla Jarve Linnavolikogu'
+# rather than the correct 'Kohtla-Järve Linnavolikogu'. These fields
+# are display-only literals (rdfs:label, estleg:historicalMunicipalityName)
+# — they do NOT participate in IRIs, joins, or SPARQL keys, so the
+# limitation does not affect data integrity. Layer 2 will replace these
+# strings with diacritic-correct lookups (probably by adding a
+# 'historical_municipality_name' column to issuer_successor_map.csv and
+# sourcing auto-match display names from municipalities.json's `name`).
 def _slug_to_display_name(slug: str) -> str:
     """Convert ``tallinna_linnavolikogu`` → ``Tallinna Linnavolikogu``."""
     return " ".join(part.capitalize() for part in slug.split("_"))

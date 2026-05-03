@@ -19,14 +19,10 @@ from kov_registry import (
 )
 
 
-def main() -> int:
-    # Resolve repo root from cwd, not __file__. The script is intended to
-    # run from the repo root (`python scripts/build_kov_registry.py`); using
-    # cwd lets tests stage a fake repo tree and drive the CLI against it.
-    repo_root = Path.cwd()
+def build(repo_root: Path) -> int:
+    """Build issuers.json under <repo_root>/data/ehak/. Returns CLI exit code."""
     ehak_dir = repo_root / "data" / "ehak"
     kov_root = repo_root / "krr_outputs" / "regulations" / "kov"
-
     municipalities_path = ehak_dir / "municipalities.json"
     curated_csv = ehak_dir / "issuer_successor_map.csv"
     issuers_out = ehak_dir / "issuers.json"
@@ -53,6 +49,10 @@ def main() -> int:
     print(f"Wrote {len(rows)} issuers to {issuers_out}")
     print("By mapping source:", by_source)
     return 0
+
+
+def main() -> int:
+    return build(Path(__file__).resolve().parents[1])
 
 
 if __name__ == "__main__":
