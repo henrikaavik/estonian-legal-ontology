@@ -11,6 +11,8 @@ import pytest
 
 from kov_registry import (
     auto_match_municipality,
+    build_issuer_registry,
+    discover_issuer_slugs,
     load_curated_map,
     load_municipalities,
     parse_issuer_slug,
@@ -236,3 +238,91 @@ class TestLoadCuratedMap:
             encoding="utf-8",
         )
         assert load_curated_map(p) == {}
+
+
+class TestDiscoverIssuerSlugs:
+    def test_finds_directory_names(self, tmp_path):
+        kov_root = tmp_path / "regulations" / "kov"
+        for name in ("tallinna_linnavolikogu", "mulgi_vallavolikogu"):
+            (kov_root / name).mkdir(parents=True)
+        # Also create the index file that should be ignored
+        (kov_root / "REGULATIONS_KOV_INDEX.json").write_text("{}")
+
+        slugs = discover_issuer_slugs(kov_root)
+        assert slugs == ["mulgi_vallavolikogu", "tallinna_linnavolikogu"]
+
+    def test_missing_root_raises(self, tmp_path):
+        with pytest.raises(FileNotFoundError):
+            discover_issuer_slugs(tmp_path / "does_not_exist")
+
+
+class TestBuildIssuerRegistry:
+    def test_combines_auto_and_curated(self, tmp_path):
+        kov_root = tmp_path / "regulations" / "kov"
+        (kov_root / "tallinna_linnavolikogu").mkdir(parents=True)
+        (kov_root / "abja_vallavolikogu").mkdir(parents=True)
+
+        csv_path = tmp_path / "map.csv"
+        csv_path.write_text(
+            "issuer_slug,current_municipality_ehak,mapping_source,mapping_evidence\n"
+            "abja_vallavolikogu,0480,haldusreform-2017,RT I 21.06.2017 1\n",
+            encoding="utf-8",
+        )
+
+        muns = load_municipalities(MIN_MUNICIPALITIES)
+        curated = load_curated_map(csv_path)
+        slugs = discover_issuer_slugs(kov_root)
+        issuers = build_issuer_registry(slugs, muns, curated)
+
+        tallinn = issuers["tallinna_linnavolikogu"]
+        assert tallinn["currentMunicipalityCode"] == "0784"
+        assert tallinn["mappingSource"] == "auto-match"
+        assert tallinn["mappingEvidence"] == ""
+        assert tallinn["bodyType"] == "volikogu"
+
+        abja = issuers["abja_vallavolikogu"]
+        assert abja["currentMunicipalityCode"] == "0480"
+        assert abja["mappingSource"] == "haldusreform-2017"
+        assert abja["mappingEvidence"] == "RT I 21.06.2017 1"
+
+    def test_unmapped_issuer_raises(self, tmp_path):
+        kov_root = tmp_path / "regulations" / "kov"
+        (kov_root / "obscure_vallavolikogu").mkdir(parents=True)
+
+        muns = load_municipalities(MIN_MUNICIPALITIES)
+        slugs = discover_issuer_slugs(kov_root)
+
+        with pytest.raises(ValueError, match="obscure_vallavolikogu"):
+            build_issuer_registry(slugs, muns, curated={})
+
+    def test_curated_with_unknown_ehak_raises(self, tmp_path):
+        kov_root = tmp_path / "regulations" / "kov"
+        (kov_root / "abja_vallavolikogu").mkdir(parents=True)
+
+        muns = load_municipalities(MIN_MUNICIPALITIES)
+        slugs = discover_issuer_slugs(kov_root)
+        curated = {
+            "abja_vallavolikogu": {
+                "currentMunicipalityCode": "9999",
+                "mappingSource": "haldusreform-2017",
+                "mappingEvidence": "RT I 21.06.2017 1",
+            }
+        }
+        with pytest.raises(ValueError, match="9999"):
+            build_issuer_registry(slugs, muns, curated)
+
+    def test_curated_with_invalid_source_raises(self, tmp_path):
+        kov_root = tmp_path / "regulations" / "kov"
+        (kov_root / "abja_vallavolikogu").mkdir(parents=True)
+
+        muns = load_municipalities(MIN_MUNICIPALITIES)
+        slugs = discover_issuer_slugs(kov_root)
+        curated = {
+            "abja_vallavolikogu": {
+                "currentMunicipalityCode": "0480",
+                "mappingSource": "guess",
+                "mappingEvidence": "anything",
+            }
+        }
+        with pytest.raises(ValueError, match="mapping_source"):
+            build_issuer_registry(slugs, muns, curated)

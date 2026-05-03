@@ -154,6 +154,99 @@ class CuratedRow(TypedDict):
     mappingEvidence: str
 
 
+def discover_issuer_slugs(kov_root: Path) -> list[str]:
+    """Return sorted list of issuer-directory slugs under regulations/kov/."""
+    if not kov_root.is_dir():
+        raise FileNotFoundError(f"KOV root not found: {kov_root}")
+    return sorted(p.name for p in kov_root.iterdir() if p.is_dir())
+
+
+class IssuerEntry(TypedDict):
+    slug: str
+    displayName: str
+    bodyType: str                    # "volikogu" | "valitsus"
+    currentMunicipalityCode: str
+    mappingSource: str               # see _ALLOWED_MAPPING_SOURCES + "url:..."
+    mappingEvidence: str             # may be empty for auto-match rows
+    historicalMunicipalityName: str  # the issuing-time KOV unit, free text
+
+
+def _slug_to_display_name(slug: str) -> str:
+    """Convert ``tallinna_linnavolikogu`` → ``Tallinna Linnavolikogu``."""
+    return " ".join(part.capitalize() for part in slug.split("_"))
+
+
+_ALLOWED_MAPPING_SOURCES = {
+    "auto-match",
+    "haldusreform-2017",
+    "manual-review",
+}
+
+
+def _validate_mapping_source(source: str) -> None:
+    if source.startswith("url:"):
+        return
+    if source not in _ALLOWED_MAPPING_SOURCES:
+        raise ValueError(
+            f"invalid mapping_source: {source!r} "
+            f"(allowed: {sorted(_ALLOWED_MAPPING_SOURCES)} or 'url:<...>')"
+        )
+
+
+def build_issuer_registry(
+    slugs: list[str],
+    municipalities: dict[str, Municipality],
+    curated: dict[str, CuratedRow],
+) -> dict[str, IssuerEntry]:
+    """Build the combined issuer registry.
+
+    Auto-match wins where (root, municipalityType) is unique. Curated
+    CSV covers the rest. Unmapped issuers raise ValueError listing every
+    failure. Curated rows are also validated against the municipalities
+    registry (EHAK code must exist) and the allowed mapping_source set,
+    so typos surface here rather than at SHACL time.
+    """
+    out: dict[str, IssuerEntry] = {}
+    unmapped: list[str] = []
+    for slug in slugs:
+        parts = parse_issuer_slug(slug)
+        ehak = auto_match_municipality(parts, municipalities)
+        if ehak is not None:
+            mapping_source = "auto-match"
+            mapping_evidence = ""
+        elif slug in curated:
+            row = curated[slug]
+            ehak = row["currentMunicipalityCode"]
+            mapping_source = row["mappingSource"]
+            mapping_evidence = row["mappingEvidence"]
+            _validate_mapping_source(mapping_source)
+            if ehak not in municipalities:
+                raise ValueError(
+                    f"curated row for {slug!r} references unknown EHAK "
+                    f"code {ehak!r}; not present in municipalities.json"
+                )
+        else:
+            unmapped.append(slug)
+            continue
+
+        out[slug] = {
+            "slug": slug,
+            "displayName": _slug_to_display_name(slug),
+            "bodyType": parts["bodyType"],
+            "currentMunicipalityCode": ehak,
+            "mappingSource": mapping_source,
+            "mappingEvidence": mapping_evidence,
+            "historicalMunicipalityName": parts["root"].replace("_", " ").title(),
+        }
+
+    if unmapped:
+        raise ValueError(
+            "Unmapped issuers (add curated rows for each):\n  "
+            + "\n  ".join(unmapped)
+        )
+    return out
+
+
 def load_curated_map(path: Path) -> dict[str, CuratedRow]:
     """Load the curated issuer→municipality map.
 
