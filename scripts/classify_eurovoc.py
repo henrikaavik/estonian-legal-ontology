@@ -15,11 +15,18 @@ from __future__ import annotations
 import json
 import re
 import sys
+import time
 import unicodedata
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 from estleg_common import iter_peep_files
+from kov_pipeline_coverage import (
+    CoverageReport,
+    measure_runtime,
+    resolve_pipeline_version,
+    write_coverage_report,
+)
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
@@ -255,6 +262,56 @@ def load_json(filepath: Path) -> dict:
         return json.load(f)
 
 
+def read_act_metadata_from_peep(path: Path) -> dict | None:
+    """Pull act-level metadata from a peep file without consulting
+    INDEX.json. Returns dict with @id, title, source — or None if no
+    act-typed node is present.
+
+    Recognises any node typed as one of the concrete legal-act
+    classes. Importantly, ``owl:Ontology`` ALONE is NOT enough: the
+    Layer 1 KOV registry files (``municipalities_peep.json``,
+    ``issuers_kov_peep.json``) use ``owl:Ontology`` on their top
+    metadata node, but they are not legal acts and must not get
+    EuroVoc tags. The node must also carry one of the concrete act
+    types.
+    """
+    ACT_TYPES = {
+        "estleg:Act", "estleg:Law",
+        "estleg:NationalRegulation", "estleg:GovernmentRegulation",
+        "estleg:MinisterialRegulation", "estleg:MunicipalRegulation",
+    }
+    # Registry files identified by stable IRI prefixes — even if Layer 2
+    # later stamps them with new types, these map files remain
+    # ineligible for EuroVoc.
+    REGISTRY_ID_PREFIXES = (
+        "estleg:Municipalities_",
+        "estleg:Issuers_",
+        "estleg:LegalConcepts_",
+        "estleg:Citations_",
+        "estleg:Similarity_",
+    )
+    try:
+        with open(path, "r", encoding="utf-8") as fh:
+            doc = json.load(fh)
+    except (json.JSONDecodeError, OSError):
+        return None
+    for node in doc.get("@graph", []):
+        node_id = node.get("@id", "")
+        if any(node_id.startswith(p) for p in REGISTRY_ID_PREFIXES):
+            return None  # registry map — not classifiable
+        types = node.get("@type") or []
+        if isinstance(types, str):
+            types = [types]
+        if not ACT_TYPES.intersection(types):
+            continue
+        return {
+            "@id": node_id,
+            "title": node.get("rdfs:label", ""),
+            "source": node.get("dc:source", node.get("rdfs:label", "")),
+        }
+    return None
+
+
 def extract_text_from_law(data: dict) -> str:
     """
     Extract all searchable text from a law JSON-LD file.
@@ -426,98 +483,145 @@ def main():
     print(f"EuroVoc domains defined: {len(EUROVOC_DOMAINS)}")
     print("=" * 60)
 
+    _start = time.perf_counter()
+
     # --- Step 0: Clear existing EuroVoc subjects ---
     print("\n--- Clearing existing EuroVoc subjects ---")
     cleared_count = 0
     for peep_file in iter_peep_files():
-        if peep_file.parent != KRR_DIR:
-            continue
         if clear_eurovoc_subjects_from_file(peep_file):
             cleared_count += 1
     print(f"  Cleared EuroVoc subjects from {cleared_count} files")
 
-    # --- Step 1: Load index ---
-    print("\n--- Loading INDEX.json ---")
-    index_path = KRR_DIR / "INDEX.json"
-    if not index_path.exists():
-        print(f"ERROR: {index_path} not found. Run generate_all_laws.py first.")
-        sys.exit(1)
+    # --- Step 1: Discover peep files ---
+    print("\n--- Discovering peep files ---")
+    peep_files = iter_peep_files()
+    _kov_files = [f for f in peep_files if "regulations/kov" in str(f)]
+    print(f"  Discovered {len(peep_files)} peep files")
+    laws_meta: list[dict] = []
+    # Coverage skip-reasons for files dropped at metadata-read time
+    _skip_reasons: dict[str, int] = {}
+    for f in peep_files:
+        meta = read_act_metadata_from_peep(f)
+        if meta is None:
+            _skip_reasons["no_act_node"] = _skip_reasons.get("no_act_node", 0) + 1
+            continue
+        # Use the @id as the canonical "name" for the report — for
+        # backwards-compat with the report shape, also store a
+        # human-readable "name" derived from rdfs:label or @id.
+        meta["path"] = f
+        meta["name"] = meta.get("title") or meta.get("@id") or f.stem
+        laws_meta.append(meta)
+    print(f"  {len(laws_meta)} have a recognized act node "
+          f"(skipped {len(peep_files) - len(laws_meta)} non-act files)")
 
-    index_data = load_json(index_path)
-    laws = index_data.get("laws", [])
-    print(f"  Total laws in index: {len(laws)}")
-
-    # --- Step 2: Classify each law ---
-    print("\n--- Classifying laws ---")
+    # --- Step 2: Classify each act ---
+    print("\n--- Classifying acts ---")
 
     classifications: list[dict] = []
-    domain_counts: dict[str, int] = {}  # code → number of laws assigned
+    domain_counts: dict[str, int] = {}  # code → number of acts assigned
     files_updated = 0
     files_skipped = 0
     files_error = 0
     unclassified: list[str] = []
 
-    for i, law in enumerate(laws):
-        name = law.get("name", "")
-        files = law.get("files", [])
-        if not files:
-            continue
+    # Coverage counters
+    _files_processed = 0
+    _files_processed_kov = 0
+    _files_with_output = 0
+    _files_with_output_kov = 0
+    _triples = 0
+    _triples_kov = 0
+    _fallback_hits = 0
+    _unresolved = 0
+    _failures: list[str] = []
 
-        # Load the primary law file
-        primary_file = KRR_DIR / files[0]
-        if not primary_file.exists():
-            files_error += 1
-            continue
+    for i, meta in enumerate(laws_meta):
+        name = meta["name"]
+        path = meta["path"]
+        is_kov = "regulations/kov" in str(path)
 
         try:
-            data = load_json(primary_file)
-        except Exception as e:
-            print(f"    ERROR loading {primary_file.name}: {e}")
-            files_error += 1
-            continue
+            try:
+                data = load_json(path)
+            except (json.JSONDecodeError, OSError) as e:
+                print(f"    ERROR loading {path.name}: {e}")
+                files_error += 1
+                files_skipped += 1
+                _skip_reasons["json_decode_error"] = (
+                    _skip_reasons.get("json_decode_error", 0) + 1
+                )
+                continue
+            if data is None:
+                files_error += 1
+                files_skipped += 1
+                _skip_reasons["json_decode_error"] = (
+                    _skip_reasons.get("json_decode_error", 0) + 1
+                )
+                continue
 
-        # Extract text and classify
-        text = extract_text_from_law(data)
-        domains = classify_text(text)
+            # Keep extract_text_from_law(data) — it walks the @graph and
+            # gathers rdfs:label, dc:source, summaries, defined terms.
+            # The new metadata helper is only for path/identity
+            # bookkeeping, not classification text.
+            text = extract_text_from_law(data)
+            domains = classify_text(text)
 
-        if not domains:
-            unclassified.append(name)
-            files_skipped += 1
-            continue
+            _files_processed += 1
+            if is_kov:
+                _files_processed_kov += 1
 
-        # Record classification
-        entry = {
-            "law_name": name,
-            "file": files[0],
-            "domains": [
-                {
-                    "code": code,
-                    "slug": slug,
-                    "label_et": label_et,
-                    "label_en": label_en,
-                    "eurovoc_uri": f"{EUROVOC_URI_BASE}{code}",
-                    "keyword_hits": hits,
-                }
-                for code, slug, label_et, label_en, hits in domains
-            ],
-        }
-        classifications.append(entry)
+            if not domains:
+                unclassified.append(name)
+                files_skipped += 1
+                _skip_reasons["unclassified"] = (
+                    _skip_reasons.get("unclassified", 0) + 1
+                )
+                continue
 
-        # Count domain assignments
-        for code, *_ in domains:
-            domain_counts[code] = domain_counts.get(code, 0) + 1
+            entry = {
+                "law_name": name,
+                "file": str(path.relative_to(KRR_DIR)) if KRR_DIR in path.parents else str(path),
+                "domains": [
+                    {
+                        "code": code,
+                        "slug": slug,
+                        "label_et": label_et,
+                        "label_en": label_en,
+                        "eurovoc_uri": f"{EUROVOC_URI_BASE}{code}",
+                        "keyword_hits": hits,
+                    }
+                    for code, slug, label_et, label_en, hits in domains
+                ],
+            }
+            classifications.append(entry)
 
-        # Update law file(s)
-        for law_file in files:
-            filepath = KRR_DIR / law_file
-            if filepath.exists():
-                if update_law_file_eurovoc(filepath, domains):
-                    files_updated += 1
+            for code, *_ in domains:
+                domain_counts[code] = domain_counts.get(code, 0) + 1
 
-        if (i + 1) % 50 == 0:
-            print(f"  Processed {i + 1}/{len(laws)} laws ({files_updated} files updated)...")
+            # Write back to the source path (not KRR_DIR / filename) — the
+            # KOV files live under regulations/kov/<issuer>/, state regs
+            # under regulations/riik/, and laws at root. The helper takes
+            # the real path so all three cases work.
+            if update_law_file_eurovoc(path, domains):
+                files_updated += 1
+                _files_with_output += 1
+                if is_kov:
+                    _files_with_output_kov += 1
+                # Each successful update adds the selected domains as
+                # subject IRIs on the act node. Count one triple per
+                # domain entry assigned.
+                _triples += len(domains)
+                if is_kov:
+                    _triples_kov += len(domains)
+        except Exception as exc:  # noqa: BLE001
+            _failures.append(f"{path.name}: {exc!r}")
 
-    print(f"  Processed all {len(laws)} laws")
+        if (i + 1) % 500 == 0:
+            print(f"  Processed {i + 1}/{len(laws_meta)} acts "
+                  f"({files_updated} files updated)...")
+
+    print(f"  Processed all {len(laws_meta)} acts")
 
     # --- Step 3: Generate domain statistics ---
     print("\n--- Domain statistics ---")
@@ -540,7 +644,7 @@ def main():
         "generated": datetime.now().strftime("%Y-%m-%d"),
         "method": "keyword-matching",
         "eurovoc_domains_defined": len(EUROVOC_DOMAINS),
-        "total_laws_processed": len(laws),
+        "total_laws_processed": len(laws_meta),
         "total_classified": len(classifications),
         "total_unclassified": len(unclassified),
         "files_updated": files_updated,
@@ -557,7 +661,7 @@ def main():
     # --- Summary ---
     print("\n" + "=" * 60)
     print("EuroVoc classification complete!")
-    print(f"  Laws processed:       {len(laws)}")
+    print(f"  Acts processed:       {len(laws_meta)}")
     print(f"  Laws classified:      {len(classifications)}")
     print(f"  Laws unclassified:    {len(unclassified)}")
     print(f"  Law files updated:    {files_updated}")
@@ -565,6 +669,35 @@ def main():
     print(f"  Domains used:         {len(domain_counts)}/{len(EUROVOC_DOMAINS)}")
     print(f"\nOutput: {report_path.relative_to(REPO_ROOT)}")
     print("=" * 60)
+
+    # ---------- coverage report ----------
+    _wall, _rate, _peak_mb = measure_runtime(_start, _files_processed)
+    write_coverage_report(
+        CoverageReport(
+            pipeline="classify_eurovoc",
+            run_timestamp=datetime.now(timezone.utc).isoformat(),
+            pipeline_version=resolve_pipeline_version(),
+            input_files_total=len(peep_files),
+            input_files_kov=len(_kov_files),
+            files_processed=_files_processed,
+            files_processed_kov=_files_processed_kov,
+            files_with_output=_files_with_output,
+            files_with_output_kov=_files_with_output_kov,
+            files_skipped=files_skipped,
+            skip_reasons=_skip_reasons,
+            triples_emitted=_triples,
+            triples_emitted_kov=_triples_kov,
+            fallback_hits=_fallback_hits,
+            unresolved_references=_unresolved,
+            wall_time_seconds=round(_wall, 2),
+            items_per_second=round(_rate, 2),
+            peak_memory_mb=round(_peak_mb, 1),
+            error_count=len(_failures),
+            failure_samples=_failures,
+        ),
+        REPO_ROOT / "krr_outputs" / "reports" / "kov"
+        / "classify_eurovoc_coverage.json",
+    )
 
 
 if __name__ == "__main__":
