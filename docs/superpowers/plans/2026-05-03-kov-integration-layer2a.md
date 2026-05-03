@@ -621,18 +621,16 @@ Replace with:
     """
 ```
 
-- [ ] **Step 4: Run the test to verify it passes**
+- [ ] **Step 4: Run the focused test to verify it passes**
+
+Run only the new test file — full pytest comes AFTER updating the
+legacy-default-assertion tests in Step 5. Running `pytest -q` here
+would fail two existing tests in `test_generate_regulations.py` that
+were written against the old `include_kov=False` default; that's
+expected and Step 5 fixes them.
 
 Run: `pytest tests/test_iter_peep_files.py -v`
 Expected: 3 passed.
-
-Then run the full suite to confirm the 9 pinned pipelines still get a KOV-free file set:
-
-```
-pytest -q
-```
-
-Expected: prior count + 3 new iter_peep_files tests, all passing.
 
 - [ ] **Step 5: Update existing tests for the new default**
 
@@ -668,16 +666,19 @@ requested). Edit `tests/test_generate_regulations.py`:
 
 The assertion lines (`assert files["kov"] not in found`) stay the same.
 
-- [ ] **Step 6: Re-run the suite**
+- [ ] **Step 6: Now run the full suite**
+
+With the legacy assertions updated in Step 5, the full suite should
+be green again:
 
 ```
 pytest -q
 ```
 
-Expected: all tests still pass, including the three updated ones in
-`test_generate_regulations.py` plus the three new
-`test_iter_peep_files.py` tests. No regressions from the default
-flip.
+Expected: prior count + 3 new `test_iter_peep_files` tests, all
+passing. The two updated `test_generate_regulations` cases continue
+to pass (now via explicit `include_kov=False`); the third
+(`test_kov_opt_in`) was always KOV-aware. No regressions.
 
 - [ ] **Step 7: Commit**
 
@@ -1329,11 +1330,25 @@ six counters.** Pipeline-specific notes:
   (when XML date fields are missing, helper falls back to peep file's
   `entryIntoForce`). `_unresolved` = count of peep files whose XML
   could not be paired (`pair_peep_with_xml` returned None).
-- `extract_legal_concepts`: `_triples` = count of concept-defines /
-  concept-definedIn triples. `_unresolved` = count of concepts whose
-  par_nr isn't in the peep file's par_to_iri lookup (so the slug
-  fallback fired). `_fallback_hits` = count of times the slug-based
-  XML resolution fallback ran.
+- `extract_legal_concepts`: writes an **aggregate** output to
+  `krr_outputs/concepts/<slug>_concepts.json` (per-act files) plus
+  a combined graph file, NOT in-place per-provision triples on the
+  KOV peep files themselves. The coverage contract for this pipeline:
+  - `_triples` = total count of concept entries written across all
+    aggregate outputs (≈ 2 triples per concept: `definesTerm` +
+    `definedIn`).
+  - `_files_with_output` = peep files whose paired XML produced ≥1
+    concept (i.e. files that contributed to the aggregate output).
+  - `_files_with_output_kov` = the KOV subset of the above —
+    increment when `is_kov` AND ≥1 concept came out of this file.
+  - `_triples_kov` = sum of concept-triples whose `provision_id`
+    points at a KOV @id (i.e. the par_to_iri lookup that produced
+    them was built from a KOV peep). Equivalently: count concepts
+    where `is_kov` was true at extraction time.
+  - `_unresolved` = count of concepts whose `par_nr` was not in the
+    par_to_iri lookup (slug-derived fallback IRI was used).
+  - `_fallback_hits` = count of times the slug-based XML resolution
+    fallback ran (laws without `globalId`).
 - `generate_amendment_history`: `_triples` = count of amendedBy
   triples emitted. `_unresolved` = same as temporal (XML pairing
   failures). `_fallback_hits` = count of slug-based pairings that
@@ -1672,40 +1687,63 @@ Replace lines 440-520 of `scripts/classify_eurovoc.py`:
     print(f"  Processed all {len(laws_meta)} acts")
 ```
 
-The downstream report block (around lines 540-565) references
-`len(laws)`, `name`, `classifications`, `unclassified`,
-`files_updated`. Update it:
+The downstream report+summary blocks (around lines 540-565) have
+**three** `len(laws)` references that need updating, plus assorted
+references to the old shape. Apply each change:
 
 ```python
-# Find:
+# 1. Per-i progress print at line ~518:
+        if (i + 1) % 50 == 0:
+            print(f"  Processed {i + 1}/{len(laws)} laws ({files_updated} files updated)...")
+# Change to (matches the new variable name + interval that's friendlier
+# for the larger 11k+ corpus):
+        if (i + 1) % 500 == 0:
+            print(f"  Processed {i + 1}/{len(laws_meta)} acts ({files_updated} files updated)...")
+
+# 2. End-of-loop print at line ~520:
+    print(f"  Processed all {len(laws)} laws")
+# Change to:
+    print(f"  Processed all {len(laws_meta)} acts")
+
+# 3. Report dict at line ~543:
         "total_laws_processed": len(laws),
 # Change to:
         "total_laws_processed": len(laws_meta),
+
+# 4. Summary print at line ~560:
+    print(f"  Laws processed:       {len(laws)}")
+# Change to:
+    print(f"  Acts processed:       {len(laws_meta)}")
 ```
 
-The `name` references are inside the per-classification entries
-which are now built from `meta["name"]`, so they remain valid.
-`files_updated`, `classifications`, `unclassified` keep their
-existing semantics.
-
-Sanity-check after the edit:
+**Hard gate after the edit (REQUIRED, not optional):**
 
 ```bash
+# 1. Syntax-check
 python3 -c "import ast; ast.parse(open('scripts/classify_eurovoc.py').read())" \
     && echo "syntax OK"
+
+# 2. Strip strings + comments, then grep for any remaining bare `laws`
+# variable references. After Task 7's rewrite, the only legitimate
+# survivors should be `laws_meta` and string-literal field names like
+# "total_laws_processed". A bare `len(laws)` or `for ... in laws` left
+# over from the INDEX-driven flow is a regression and must be removed.
+python3 - <<'PY'
+import ast, sys
+src = open("scripts/classify_eurovoc.py").read()
+tree = ast.parse(src)
+bare_laws = []
+for node in ast.walk(tree):
+    if isinstance(node, ast.Name) and node.id == "laws":
+        bare_laws.append(node.lineno)
+if bare_laws:
+    print(f"FAIL: bare `laws` still referenced at lines: {bare_laws}")
+    sys.exit(1)
+print("OK: no bare `laws` references — only `laws_meta` survives")
+PY
 ```
 
-Expected: `syntax OK`. Any `SyntaxError` means a stray `laws` /
-`law` reference survived the rewrite — grep for it:
-
-```bash
-grep -n "\\blaws\\b\\|\\blaw\\.get\\|index_data" scripts/classify_eurovoc.py
-```
-
-Expected: only `laws_meta` (and any string literals like
-`"laws_processed"`). Any remaining bare `laws` or `law.get(...)`
-reference is a leftover from the INDEX-driven flow and must be
-replaced.
+Both gates must pass before committing Task 7.
 
 - [ ] **Step 7: Remove the root-only filter**
 
@@ -2216,9 +2254,17 @@ with:
     # dict, so the slug fallback for laws-without-globalId fires per
     # file. Result is still keyed by peep filename stem (without the
     # _peep suffix) so step 4's enrichment logic doesn't change.
+    #
+    # Multi-part laws (asjaoigusseadus_osa1, _osa2, ...) all pair to
+    # the same base XML file, so we cache temporal extraction by XML
+    # path to avoid re-parsing AND to keep the unique-XML count honest
+    # for the report (the existing report fields total_xml_files /
+    # xml_with_temporal_data are XML-oriented, not peep-oriented).
     print("\n[2/4] Extracting temporal metadata per peep file...")
     temporal_by_slug: dict[str, dict] = {}
-    extracted = 0
+    temporal_by_xml: dict[Path, dict] = {}
+    unique_xml_paths: set[Path] = set()
+    extracted_xml = 0  # unique XML files that yielded ≥1 date
     parse_errors = 0
 
     for peep in iter_peep_files():
@@ -2226,18 +2272,54 @@ with:
         if xml_path is None:
             continue
         slug = peep.stem.replace("_peep", "")
+
+        # Reuse cached extraction if this XML was already parsed
+        # (multi-part laws share their base XML).
+        if xml_path in temporal_by_xml:
+            temporal_by_slug[slug] = temporal_by_xml[xml_path]
+            continue
+
         try:
             temporal = extract_temporal_from_xml(xml_path)
+            unique_xml_paths.add(xml_path)
             has_data = any(v is not None for v in temporal.values())
             if has_data:
-                extracted += 1
+                extracted_xml += 1
+            temporal_by_xml[xml_path] = temporal
             temporal_by_slug[slug] = temporal
         except Exception as e:
             parse_errors += 1
             print(f"  ERROR parsing {xml_path.name}: {e}")
 
-    print(f"  Extracted temporal data from {extracted} files ({parse_errors} errors)")
+    print(f"  Extracted temporal data from {extracted_xml} unique XML files "
+          f"(across {len(temporal_by_slug)} peep files; {parse_errors} errors)")
 ```
+
+The existing report block (around line 461-475) reads `xml_files` and
+`extracted` — both no longer exist with the new flow. Update the
+report dict at line ~462 to use the new variables:
+
+```python
+# Find:
+        "metadata": {
+            "total_xml_files": len(xml_files),
+            "xml_with_temporal_data": extracted,
+            ...
+        },
+# Change to (semantics now match what the field names claim — they
+# count unique XML files, not peep files):
+        "metadata": {
+            "total_xml_files": len(unique_xml_paths),
+            "xml_with_temporal_data": extracted_xml,
+            "total_peep_files_paired": len(temporal_by_slug),
+            ...
+        },
+```
+
+The new `total_peep_files_paired` field disambiguates the two
+populations: 1 unique XML may pair to N multi-part peep files. Without
+this, "xml_with_temporal_data: 50" was ambiguous — was that 50 XMLs
+or 50 peep slugs? Now it's clearly XMLs.
 
 **Concrete edit at line 312** — remove the root-only filter:
 
@@ -2957,7 +3039,12 @@ git commit -m "Recursive XML + globaalID pairing in generate_amendment_history (
 
 **Files:**
 - Generated: `krr_outputs/reports/kov/<pipeline>_coverage.json` (×5)
-- Generated: in-place updates to peep files where each pipeline writes back classifications/concepts/dates/amendments
+- Generated: per-pipeline outputs of mixed shapes:
+  - `classify_deontic` — in-place per-provision `estleg:normativeType`/`estleg:dutyHolder` writes
+  - `classify_eurovoc` — in-place per-act `estleg:eurovocSubject` writes
+  - `extract_temporal_data` — in-place per-act date-property writes (`estleg:entryIntoForce`, etc.)
+  - `extract_legal_concepts` — **aggregate** outputs under `krr_outputs/concepts/` plus a combined graph file (NOT in-place); the per-act peep files are not modified
+  - `generate_amendment_history` — in-place per-act `estleg:amendedBy` writes plus an `amendment_history_report.json` aggregate
 
 This task **runs** the pipelines, capturing baseline-vs-current metrics. No new code; this is the integration step.
 
@@ -3070,36 +3157,69 @@ g.parse(sample_riik, format="json-ld")
 
 shapes = rdflib.Graph().parse("shacl/estonian_legal_shapes.ttl", format="turtle")
 ok, _, msg = pyshacl.validate(g, shacl_graph=shapes, inference="rdfs")
-# Filter to Layer-2a-relevant violation paths (Citation, issuedUnder,
-# implementsCitation — none of these should fire because no instances
-# exist yet).
-LAYER2_PATHS = {"citationTarget", "citationDetail", "citationText",
-                "issuedUnder", "implementsCitation",
-                "implementedBy", "implementedByCount", "enforcedAtLevel"}
-layer2a_violations = [
-    line for line in (msg or "").splitlines()
-    if any(p in line for p in LAYER2_PATHS)
-]
+
+# Three categories of violation:
+# 1. PRE-EXISTING (tolerated, tracked in a follow-up PR):
+#      requestedCluster IRI-as-literal (~21k), missing summary on
+#      some KOV/state-reg provisions (~523).
+# 2. LAYER-2a (must be 0): violations on Citation, issuedUnder,
+#      implementsCitation, citationTarget, etc. — would mean we
+#      shipped invalid 2a-property data. Layer 2a doesn't emit any
+#      instances yet, so this set MUST be empty.
+# 3. LAYER-1 REGRESSIONS (must be 0): violations on enactedBy,
+#      enactedByMunicipality, partOfAct, titleNormalized, ehakCode,
+#      county, bodyType, currentMunicipality, mappingSource — these
+#      are Layer 1 properties that already shipped clean. Any new
+#      violation here is a regression caused by a pipeline writing
+#      bad data and must fail the gate.
+PREEXISTING_PATHS = {"requestedCluster", "summary"}
+LAYER2A_PATHS = {"citationTarget", "citationDetail", "citationText",
+                 "issuedUnder", "implementsCitation",
+                 "implementedBy", "implementedByCount", "enforcedAtLevel"}
+LAYER1_PATHS = {"enactedBy", "enactedByMunicipality", "partOfAct",
+                "titleNormalized", "ehakCode", "county", "bodyType",
+                "currentMunicipality", "mappingSource",
+                "historicalMunicipalityName", "mappingEvidence"}
+
+def categorize(line):
+    if any(p in line for p in PREEXISTING_PATHS):
+        return "preexisting"
+    if any(p in line for p in LAYER2A_PATHS):
+        return "layer2a"
+    if any(p in line for p in LAYER1_PATHS):
+        return "layer1"
+    return "other"
+
+lines = (msg or "").splitlines()
+buckets = {"preexisting": [], "layer2a": [], "layer1": [], "other": []}
+for line in lines:
+    if "Result Path" in line or "ResultPath" in line:
+        buckets[categorize(line)].append(line)
+
 print(f"SHACL_TARGETED {'PASS' if ok else 'FAIL'}")
-print(f"Layer-2a-property violations: {len(layer2a_violations)}")
-for v in layer2a_violations[:5]:
-    print(f"  {v}")
-# Exit non-zero if any Layer-2a property is in violation. Pre-existing
-# violations (requestedCluster/summary) are tolerated; Layer-2a-property
-# violations are not — they would mean we shipped invalid Citation /
-# issuedUnder / implementsCitation / etc. data.
+for cat, items in buckets.items():
+    print(f"  {cat}: {len(items)}")
+    for v in items[:3]:
+        print(f"    {v.strip()}")
+
+# Gate: fail on Layer-2a violations (must be 0 — no instances yet),
+# Layer-1 regressions (must be 0 — Layer 1 shipped clean), or any
+# uncategorized violations (we don't know what they are; escalate).
 import sys as _sys
-_sys.exit(1 if layer2a_violations else 0)
+hard_fail = (
+    bool(buckets["layer2a"])
+    or bool(buckets["layer1"])
+    or bool(buckets["other"])
+)
+if hard_fail:
+    _sys.exit(1)
+# Pre-existing-only violations are acceptable for Layer 2a.
+_sys.exit(0)
 PY
 ```
 
-Expected:
-- `Layer-2a-property violations: 0` (no Citation instances exist yet
-  in 2a; Layer 2b populates them).
-- `SHACL_TARGETED FAIL` is acceptable iff every violation falls into
-  the pre-existing categories noted above. If there are violations on
-  `enactedBy`/`enactedByMunicipality`/`partOfAct`/`titleNormalized`/
-  `Act`/`Law` (Layer 1 properties), that's a regression — escalate.
+Expected exit 0 with at most pre-existing violations. Any Layer-2a,
+Layer-1, or uncategorized violation surfaces as a hard failure.
 
 Skip the full-corpus `python scripts/shacl_validate_all.py` run for
 Layer 2a; rerun it as part of Layer 2c when more semantic triples
@@ -3117,13 +3237,18 @@ JSON reports (e.g. `temporal_data_report.json`,
 # Coverage reports (this PR's primary deliverable)
 git add krr_outputs/reports/kov/
 
-# In-place updates to KOV peep files (deontic, eurovoc, temporal,
-# legal-concepts, amendment-history all write back per-act/per-provision
-# triples)
+# In-place updates to KOV peep files. Four of the five pipelines
+# write back per-act or per-provision triples (deontic = normativeType,
+# eurovoc = eurovocSubject, temporal = date properties, amendment-
+# history = amendedBy). legal-concepts is the exception — it writes
+# aggregate outputs under krr_outputs/concepts/ and does NOT modify
+# the KOV peep files in place; it's still staged here because Layer 1
+# enrichment + the four other pipelines DO modify these files.
 git add krr_outputs/regulations/kov
 
-# State regulation in-place updates (eurovoc, temporal, legal-concepts,
-# amendment-history may add triples here too)
+# State regulation in-place updates (deontic, eurovoc, temporal,
+# amendment-history may add triples here too; legal-concepts again
+# writes aggregate-only output)
 git add krr_outputs/regulations/riik
 
 # Indexed law files (driven by INDEX.json — same chunked-staging
@@ -3163,11 +3288,11 @@ git status --short | head -30
 git commit -m "Run Layer 2a pipelines on full corpus
 
 Generates initial KOV coverage reports for the 5 fixed pipelines, plus:
-- in-place updates to KOV / state-reg / law peep files (deontic
-  classifications, EuroVoc tags, temporal dates on act+provision
-  nodes)
-- per-pipeline output files (concepts/, amendments/, root JSON
-  reports)
+- in-place updates to KOV / state-reg / law peep files for 4 of the
+  5 pipelines (deontic classifications, EuroVoc tags, temporal
+  dates, amendment-history amendedBy back-links)
+- aggregate outputs for legal-concepts (concepts/) and report-style
+  outputs for the others (amendments/, root JSON reports)
 
 All five pipelines now process KOV files via the iter_peep_files
 default flip; the deferred / KOV-irrelevant pipelines remain pinned
@@ -3360,8 +3485,14 @@ print(f\"  wall time:              {d['wall_time_seconds']}s ({d['items_per_seco
 print(f\"  peak memory:            {d['peak_memory_mb']} MB\")
 print(f\"  errors:                 {d['error_count']}\")
 
-# KOV-specific gates: total triples_emitted > 0 is NOT enough because
-# laws/state regs could account for it while every KOV file is skipped.
+# Gates:
+# - KOV-specific output: total triples_emitted > 0 is NOT enough
+#   because laws/state regs could account for it while every KOV
+#   file is skipped.
+# - error_count: must be ≤ 1% of files_processed (matches the
+#   invariant's 'error_count <= small'). A higher threshold means
+#   systemic failures and warrants a per-pipeline waiver in the PR
+#   body, not a silent merge.
 fail = []
 if d['input_files_kov'] < 11000:
     fail.append(f'input_files_kov={d[\"input_files_kov\"]} < 11000')
@@ -3369,6 +3500,17 @@ if d['files_with_output_kov'] == 0:
     fail.append('files_with_output_kov is 0 — KOV produced no output')
 if d['triples_emitted_kov'] == 0:
     fail.append('triples_emitted_kov is 0 — KOV produced no triples')
+
+# error_count threshold: 1% of files_processed, with a floor of 5
+# absolute errors (small pipelines can hit 1% on a single failure).
+err_threshold = max(5, int(0.01 * d['files_processed']))
+if d['error_count'] > err_threshold:
+    fail.append(
+        f'error_count={d[\"error_count\"]} > {err_threshold} '
+        f'(1% of files_processed={d[\"files_processed\"]}, floor 5). '
+        f'Sample failures: {d[\"failure_samples\"][:3]}'
+    )
+
 if fail:
     print('  GATE FAIL:')
     for f in fail: print(f'    {f}')
