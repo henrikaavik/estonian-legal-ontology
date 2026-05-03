@@ -577,7 +577,7 @@ def main():
             "@type": ["owl:NamedIndividual", "estleg:LegalConcept"],
             "skos:prefLabel": concept["term"],
             "skos:definition": concept["definition"],
-            "estleg:definedIn": {"@id": concept["provision_id"]},
+            "estleg:definedIn": [{"@id": concept["provision_id"]}],
             "estleg:sourceAct": concept["law_title"],
             "rdfs:label": f"{concept['term']} ({concept['law_slug']})",
         }

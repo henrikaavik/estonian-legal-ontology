@@ -469,14 +469,28 @@ def main():
     draft_amendments = load_draft_amendments()
     print(f"  Found {len(draft_amendments)} amendment bill entries")
 
-    # Match drafts to existing laws
+    # Match drafts to existing laws.
+    #
+    # Drafts often list the affected law multiple times (e.g. once in
+    # genitive form "X seaduse" and once with the full title "X seaduse
+    # muutmise ja sellega seonduvalt teiste seaduste muutmise seadus").
+    # Both forms can resolve to the same target slug, which would
+    # produce duplicate AmendmentLink @ids when chain_entries are built.
+    # Dedupe by draft_id within each target slug to avoid that.
     draft_matches: dict[str, list[dict]] = {}  # target law slug -> list of amending drafts
+    seen_per_target: dict[str, set[str]] = {}
     matched_drafts = 0
     unmatched_drafts = 0
 
     for da in draft_amendments:
         target_slug = match_law_name_to_slug(da["affected_law_name"], title_map, laws)
         if target_slug:
+            seen = seen_per_target.setdefault(target_slug, set())
+            if da["draft_id"] in seen:
+                # Duplicate (same draft → same target via a second
+                # affected_law_name spelling). Skip the duplicate.
+                continue
+            seen.add(da["draft_id"])
             draft_matches.setdefault(target_slug, []).append(da)
             matched_drafts += 1
         else:
