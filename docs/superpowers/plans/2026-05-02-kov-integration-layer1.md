@@ -2032,7 +2032,26 @@ class TestEnrichKovActFile:
                  "rdfs:label": "garbage"}
             ],
         }), encoding="utf-8")
-        with pytest.raises(ValueError, match="MunicipalRegulation"):
+        with pytest.raises(ValueError, match="no estleg:MunicipalRegulation"):
+            enrich_kov_act_file(bad, issuer)
+
+    def test_multiple_act_nodes_raise(self, tmp_path, issuer):
+        # Two MunicipalRegulation nodes in one file must also fail —
+        # otherwise provisions would all link to whichever comes first
+        # and partial enrichment would corrupt the file silently.
+        from enrich_kov_layer1 import enrich_kov_act_file
+        bad = tmp_path / "two_acts.json"
+        bad.write_text(json.dumps({
+            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+                         "owl": "http://www.w3.org/2002/07/owl#"},
+            "@graph": [
+                {"@id": "estleg:Reg_1_Map_2026",
+                 "@type": ["owl:Ontology", "estleg:MunicipalRegulation"]},
+                {"@id": "estleg:Reg_2_Map_2026",
+                 "@type": ["owl:Ontology", "estleg:MunicipalRegulation"]},
+            ],
+        }), encoding="utf-8")
+        with pytest.raises(ValueError, match="found 2"):
             enrich_kov_act_file(bad, issuer)
 ```
 
@@ -2077,32 +2096,39 @@ def enrich_kov_act_file(path: Path, issuer: IssuerEntry) -> None:
     issuer_ref = {"@id": issuer_iri(issuer["slug"])}
     municipality_ref = {"@id": municipality_iri(issuer["currentMunicipalityCode"])}
 
-    act_iri: str | None = None
-    title: str | None = None
-
-    # Pass 1: enrich the act node and capture its IRI for partOfAct.
+    # Pass 1: collect every MunicipalRegulation node, enforce exactly one,
+    # then enrich it.
+    act_nodes: list[dict] = []
     for node in doc.get("@graph", []):
         types = node.get("@type", [])
         if isinstance(types, str):
             types = [types]
         if "estleg:MunicipalRegulation" in types:
-            act_iri = node.get("@id")
-            title = node.get("rdfs:label") or node.get("dc:source") or ""
-            # Stamp estleg:Act directly so SHACL constraints with
-            # sh:class estleg:Act on partOfAct don't require RDFS
-            # inference at validation time.
-            _add_type(node, "estleg:Act")
-            node["estleg:enactedBy"] = issuer_ref
-            node["estleg:enactedByMunicipality"] = municipality_ref
-            normalized = normalize_title(title, issuer["displayName"])
-            node["estleg:titleNormalized"] = normalized
-            break  # there is exactly one MunicipalRegulation per file
+            act_nodes.append(node)
 
-    if act_iri is None:
+    if len(act_nodes) == 0:
         raise ValueError(
             f"{path}: no estleg:MunicipalRegulation node in @graph; "
             "expected a KOV act file"
         )
+    if len(act_nodes) > 1:
+        raise ValueError(
+            f"{path}: found {len(act_nodes)} estleg:MunicipalRegulation "
+            "nodes; KOV files must contain exactly one"
+        )
+
+    act_node = act_nodes[0]
+    act_iri = act_node.get("@id")
+    title = act_node.get("rdfs:label") or act_node.get("dc:source") or ""
+    # Stamp estleg:Act directly so SHACL constraints with
+    # sh:class estleg:Act on partOfAct don't require RDFS inference
+    # at validation time.
+    _add_type(act_node, "estleg:Act")
+    act_node["estleg:enactedBy"] = issuer_ref
+    act_node["estleg:enactedByMunicipality"] = municipality_ref
+    act_node["estleg:titleNormalized"] = normalize_title(
+        title, issuer["displayName"]
+    )
 
     # Pass 2: enrich provisions.
     for node in doc.get("@graph", []):
@@ -2486,7 +2512,7 @@ def _save_jsonld(path: Path, doc: dict) -> None:
         fh.write("\n")
 
 
-def _load_law_paths(index_path: Path) -> list[Path]:
+def _load_law_paths(index_path: Path) -> tuple[list[Path], list[str]]:
     """Resolve law file paths from krr_outputs/INDEX.json.
 
     INDEX.json's `laws` is a list of {name, files: [...]}. A multi-part
@@ -2494,22 +2520,35 @@ def _load_law_paths(index_path: Path) -> list[Path]:
     entry. Flatten and resolve to absolute paths under KRR_DIR.
 
     INDEX.json is the canonical source — using KRR_DIR.glob('*_peep.json')
-    instead would conflate the 615 laws with ~20 other root-level files
+    instead would conflate the 615 laws with other root-level files
     (combined ontology output, generated registry files, etc.) and would
     drift over time.
+
+    Policy on missing entries: INDEX.json is known to drift (typos like
+    'ametiuhigute' for 'ametiuhingute', renames not propagated, etc.).
+    Rather than abort the whole Layer 1 run on stale INDEX entries —
+    which is an unrelated hygiene issue — we log them and continue.
+    The orchestrator surfaces the count in its summary so the drift
+    is visible. INDEX hygiene is fixed in a separate PR.
+
+    Mixed extensions: INDEX entries end in either `.json` or `.jsonld`.
+    Both are accepted as-is; we do NOT silently substitute the
+    alternate extension because that could mask real renames.
+
+    Returns: (resolved_paths, missing_filenames)
     """
     with open(index_path, "r", encoding="utf-8") as fh:
         idx = json.load(fh)
     paths: list[Path] = []
+    missing: list[str] = []
     for entry in idx.get("laws", []):
         for fname in entry.get("files", []):
             p = KRR_DIR / fname
-            if not p.exists():
-                raise FileNotFoundError(
-                    f"INDEX.json references missing law file: {p}"
-                )
-            paths.append(p)
-    return paths
+            if p.exists():
+                paths.append(p)
+            else:
+                missing.append(fname)
+    return paths, missing
 
 
 def main() -> int:
@@ -2557,11 +2596,18 @@ def main() -> int:
         return 2
 
     # 4. Stamp estleg:Law + estleg:Act on the 615 laws (paths from INDEX.json)
-    law_paths = _load_law_paths(KRR_DIR / "INDEX.json")
-    law_count = len({p.name.replace("_peep.json", "").rsplit("_osa", 1)[0]
+    law_paths, missing_law_files = _load_law_paths(KRR_DIR / "INDEX.json")
+    law_count = len({p.stem.replace("_peep", "").rsplit("_osa", 1)[0]
                      for p in law_paths})
     print(f"\nStamping estleg:Law on {len(law_paths)} law files "
           f"({law_count} unique laws)...")
+    if missing_law_files:
+        print(f"  WARN: INDEX.json references {len(missing_law_files)} "
+              "missing law files (stale index — fix in a separate PR):")
+        for f in missing_law_files[:10]:
+            print(f"    {f}")
+        if len(missing_law_files) > 10:
+            print(f"    ... and {len(missing_law_files) - 10} more")
     for f in law_paths:
         stamp_law_type(f)
 
@@ -2647,8 +2693,40 @@ Expected: zero exit. The existing checks (duplicate `@id`, `@type` arrays, etc.)
 
 - [ ] **Step 5: Run idempotency check**
 
-Run: `python scripts/enrich_kov_layer1.py && git status --short`
-Expected: a second run leaves no `M` (modified) entries in `git status`. Any modifications mean enrichment is not idempotent.
+A naive `git status --short` after the second run will *also* show
+the (uncommitted) diffs from the first run, so it can't distinguish
+"new diffs from second run" from "first-run output not yet committed".
+Two options — pick whichever fits your workflow:
+
+**Option A — snapshot-based diff (no commit needed yet):**
+
+```bash
+# Hash every output file before the second run
+find krr_outputs -name '*_peep.json' -print0 | sort -z | xargs -0 sha256sum > /tmp/before.sha256
+
+python scripts/enrich_kov_layer1.py
+
+find krr_outputs -name '*_peep.json' -print0 | sort -z | xargs -0 sha256sum > /tmp/after.sha256
+diff /tmp/before.sha256 /tmp/after.sha256
+```
+
+Expected: `diff` is empty (no output, exit 0). Any line of diff
+output means the second run mutated a file → enrichment is not
+idempotent.
+
+**Option B — commit baseline first, then re-run:**
+
+If you've already done Step 7 (committed the generated outputs), just
+run the orchestrator again and check that the working tree stays
+clean:
+
+```bash
+python scripts/enrich_kov_layer1.py
+git status --short
+```
+
+Expected: no `M` entries. If anything is modified, that's a second-run
+mutation = idempotency bug.
 
 - [ ] **Step 6: Run full SHACL validation against the integrated graph**
 
@@ -2668,12 +2746,42 @@ Expected: `PASS`.
 
 - [ ] **Step 7: Commit the generated outputs**
 
+Drive the staging from the resolved INDEX path list so that law files
+ending in `.jsonld` (which exist in INDEX) are not missed, and stage
+the state regulation directory explicitly so the new `estleg:Act`
+stamps actually ship:
+
 ```bash
-git add krr_outputs/municipalities_peep.json krr_outputs/issuers_kov_peep.json krr_outputs/regulations/kov krr_outputs/*_peep.json
+# 1. KOV outputs + new registry files
+git add krr_outputs/municipalities_peep.json krr_outputs/issuers_kov_peep.json
+git add krr_outputs/regulations/kov
+
+# 2. State regulations (all 3,813 files gained estleg:Act)
+git add krr_outputs/regulations/riik
+
+# 3. Law files — driven by INDEX so .jsonld and .json are both included
+python3 - <<'PY'
+import json, subprocess, os
+idx = json.load(open("krr_outputs/INDEX.json"))
+paths = [
+    f"krr_outputs/{f}"
+    for entry in idx["laws"] for f in entry.get("files", [])
+    if os.path.exists(f"krr_outputs/{f}")
+]
+# git add in chunks so the command line stays well under typical limits
+chunk = 500
+for i in range(0, len(paths), chunk):
+    subprocess.check_call(["git", "add", "--"] + paths[i:i + chunk])
+print(f"staged {len(paths)} indexed law files")
+PY
+
+git status --short | head -20
 git commit -m "Generate KOV layer 1 enrichment outputs"
 ```
 
-This commit will be large (11k+ files). That's expected — every KOV act file gets a few new triples.
+This commit will be large (~15k files). That's expected: 11,059 KOV
+acts + 3,813 state regs + ~652 indexed law files + 2 new registry
+outputs.
 
 ---
 
@@ -2862,16 +2970,166 @@ Expected: `SHACL PASS`. (Sampling 200 KOV files keeps this tractable; if any fai
 
 - [ ] **Step 4: Verify Gate A acceptance criteria**
 
-Each check below has a concrete command. Run them in order; tick the
-box only after the command produces the expected output. Do **not**
-pre-tick.
+Save this verification script to `scripts/verify_layer1.py` and run it.
+Tick the boxes below only after the script reports each as `OK`. Do
+**not** pre-tick.
+
+```python
+"""Layer 1 acceptance verification. Exit 0 = all checks pass."""
+from __future__ import annotations
+
+import glob
+import json
+import os
+import sys
+from pathlib import Path
+
+REPO = Path(__file__).resolve().parents[1]
+KRR = REPO / "krr_outputs"
+
+
+def _load(path):
+    with open(path, "r", encoding="utf-8") as fh:
+        return json.load(fh)
+
+
+def _act_node(doc, type_iri):
+    for n in doc.get("@graph", []):
+        types = n.get("@type") or []
+        if isinstance(types, str):
+            types = [types]
+        if type_iri in types:
+            return n
+    return None
+
+
+def check_issuer_count():
+    issuers = _load(REPO / "data" / "ehak" / "issuers.json")
+    expected = 357
+    return len(issuers) == expected, f"{len(issuers)}/{expected}"
+
+
+def check_kov_acts():
+    fields = ("estleg:enactedBy", "estleg:enactedByMunicipality",
+              "estleg:titleNormalized")
+    types_required = ("estleg:Act", "estleg:MunicipalRegulation")
+    files = [
+        f for f in glob.glob(str(KRR / "regulations/kov/**/*_peep.json"),
+                              recursive=True)
+        if not f.endswith("REGULATIONS_KOV_INDEX.json")
+    ]
+    ok = 0
+    for f in files:
+        doc = _load(f)
+        act = _act_node(doc, "estleg:MunicipalRegulation")
+        if act is None:
+            continue
+        types = act.get("@type") or []
+        if all(k in act for k in fields) and all(t in types for t in types_required):
+            ok += 1
+    return ok == len(files), f"{ok}/{len(files)}"
+
+
+def check_kov_provisions():
+    fields = ("estleg:enactedBy", "estleg:enactedByMunicipality",
+              "estleg:partOfAct")
+    files = [
+        f for f in glob.glob(str(KRR / "regulations/kov/**/*_peep.json"),
+                              recursive=True)
+        if not f.endswith("REGULATIONS_KOV_INDEX.json")
+    ]
+    ok = 0
+    total = 0
+    for f in files:
+        doc = _load(f)
+        for n in doc.get("@graph", []):
+            if "estleg:paragrahv" not in n:
+                continue
+            total += 1
+            types = n.get("@type") or []
+            if (
+                "estleg:KovProvision" in types
+                and all(k in n for k in fields)
+            ):
+                ok += 1
+    return ok == total, f"{ok}/{total}"
+
+
+def check_laws():
+    idx = _load(KRR / "INDEX.json")
+    paths = [
+        KRR / f
+        for entry in idx["laws"] for f in entry.get("files", [])
+        if os.path.exists(KRR / f)
+    ]
+    ok = 0
+    for p in paths:
+        doc = _load(p)
+        n = _act_node(doc, "owl:Ontology")
+        if n is None:
+            continue
+        types = n.get("@type") or []
+        if "estleg:Law" in types and "estleg:Act" in types:
+            ok += 1
+    return ok == len(paths), f"{ok}/{len(paths)}"
+
+
+def check_state_regulations():
+    files = sorted(glob.glob(str(KRR / "regulations/riik/*_peep.json")))
+    ok = 0
+    for f in files:
+        doc = _load(f)
+        for n in doc.get("@graph", []):
+            types = n.get("@type") or []
+            if isinstance(types, str):
+                types = [types]
+            if "owl:Ontology" not in types:
+                continue
+            if any(t.endswith("Regulation") and t.startswith("estleg:")
+                   for t in types):
+                if "estleg:Act" in types:
+                    ok += 1
+                break
+    return ok == len(files), f"{ok}/{len(files)}"
+
+
+CHECKS = [
+    ("issuer count = 357", check_issuer_count),
+    ("KOV acts enriched", check_kov_acts),
+    ("KOV provisions enriched", check_kov_provisions),
+    ("indexed laws stamped (Law + Act)", check_laws),
+    ("state regulations stamped (Act)", check_state_regulations),
+]
+
+
+def main():
+    fail = 0
+    for label, fn in CHECKS:
+        ok, detail = fn()
+        status = "OK  " if ok else "FAIL"
+        print(f"  [{status}] {label}: {detail}")
+        if not ok:
+            fail += 1
+    return 0 if fail == 0 else 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())
+```
+
+Then run:
+
+```bash
+python scripts/verify_layer1.py
+```
 
 - [ ] `python scripts/validate_all.py` exits 0
-- [ ] SHACL passes — see Step 6 below for the validation script
-- [ ] `python -c "import json; print(len(json.load(open('data/ehak/issuers.json'))))"` prints `357`
-- [ ] `python -c "import json,glob; n=0; ok=0; [(*globals().__setitem__('n', n+1), *globals().__setitem__('ok', ok+all(k in [a for a in d['@graph'] if 'estleg:MunicipalRegulation' in (a.get('@type') or [])][0] for k in ('estleg:enactedBy','estleg:enactedByMunicipality','estleg:titleNormalized')))) for f in glob.glob('krr_outputs/regulations/kov/**/*_peep.json', recursive=True) if not f.endswith('REGULATIONS_KOV_INDEX.json') for d in [json.load(open(f))]]; print(f'{ok}/{n} acts enriched')"` reports `11059/11059`
-- [ ] Same shape but checking provisions for `KovProvision` rdf:type, `enactedBy`, `enactedByMunicipality`, `partOfAct` — should report `116708/116708` provisions enriched
-- [ ] `python -c "import json; print(sum(1 for f in __import__('glob').glob('krr_outputs/*_peep.json') for d in [json.load(open(f))] if any('estleg:Law' in (n.get('@type') or []) for n in d['@graph'])))"` prints the law-file count from the orchestrator output (typically ~652)
+- [ ] SHACL passes (Step 6 below)
+- [ ] `verify_layer1.py` reports `[OK]` for issuer count = 357
+- [ ] `verify_layer1.py` reports `[OK]` for KOV acts enriched (`11059/11059`)
+- [ ] `verify_layer1.py` reports `[OK]` for KOV provisions enriched (`116708/116708`)
+- [ ] `verify_layer1.py` reports `[OK]` for indexed laws stamped — count matches the orchestrator's "Stamping estleg:Law on N law files" output (the missing-INDEX entries are excluded automatically)
+- [ ] `verify_layer1.py` reports `[OK]` for state regulations stamped (`3813/3813` or whatever count the orchestrator printed)
 
 If any check fails, fix the underlying issue before opening the PR. Do
 not commit pre-ticked checkboxes.
