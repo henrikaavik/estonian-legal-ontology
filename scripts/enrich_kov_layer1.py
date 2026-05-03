@@ -79,6 +79,35 @@ def build_municipality_doc(municipalities: dict[str, Municipality]) -> dict:
     return {"@context": CONTEXT, "@graph": nodes}
 
 
+def build_issuer_doc(issuers: dict[str, IssuerEntry]) -> dict:
+    """Build the JSON-LD document containing all Issuer nodes."""
+    nodes: list[dict] = [
+        {
+            "@id": "estleg:Issuers_Kov_Map_2026",
+            "@type": ["owl:Ontology"],
+            "rdfs:label": "KOV Issuers (volikogu and valitsus bodies)",
+        }
+    ]
+    for slug in sorted(issuers):
+        entry = issuers[slug]
+        node: dict = {
+            "@id": issuer_iri(slug),
+            "@type": ["owl:NamedIndividual", "estleg:Issuer"],
+            "rdfs:label": entry["displayName"],
+            "estleg:bodyType": entry["bodyType"],
+            "estleg:currentMunicipality": {
+                "@id": municipality_iri(entry["currentMunicipalityCode"])
+            },
+            "estleg:mappingSource": entry["mappingSource"],
+        }
+        if entry["mappingEvidence"]:
+            node["estleg:mappingEvidence"] = entry["mappingEvidence"]
+        if entry["historicalMunicipalityName"]:
+            node["estleg:historicalMunicipalityName"] = entry["historicalMunicipalityName"]
+        nodes.append(node)
+    return {"@context": CONTEXT, "@graph": nodes}
+
+
 def main() -> int:
     print("KOV layer 1 enrichment — TODO: full pipeline (see later tasks)")
     return 0
