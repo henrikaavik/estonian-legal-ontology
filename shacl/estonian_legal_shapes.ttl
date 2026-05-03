@@ -848,3 +848,115 @@ estleg:AnnexShape
         sh:description "Optional IRI to the original annex document on riigiteataja.ee" ;
     ] .
 
+# ---------------------------------------------------------------------------
+# KOV integration Layer 1 shapes
+# ---------------------------------------------------------------------------
+
+estleg:MunicipalityShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:Municipality ;
+    sh:nodeKind sh:IRI ;
+    sh:pattern "^https://data\\.riik\\.ee/ontology/estleg#Municipality_EHAK_[0-9]{4}$" ;
+    sh:property [
+        sh:path estleg:ehakCode ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:pattern "^[0-9]{4}$" ;
+        sh:name "ehakCode" ;
+    ] ;
+    sh:property [
+        sh:path estleg:county ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "county" ;
+    ] ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+    ] .
+
+estleg:IssuerShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:Issuer ;
+    sh:nodeKind sh:IRI ;
+    sh:pattern "^https://data\\.riik\\.ee/ontology/estleg#Issuer_[a-z0-9_]+$" ;
+    sh:property [
+        sh:path estleg:bodyType ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:in ("volikogu" "valitsus") ;
+        sh:name "bodyType" ;
+    ] ;
+    sh:property [
+        sh:path estleg:currentMunicipality ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:class estleg:Municipality ;
+        sh:name "currentMunicipality" ;
+    ] ;
+    sh:property [
+        sh:path estleg:mappingSource ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "mappingSource" ;
+    ] ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+    ] .
+
+estleg:MunicipalRegulationLayer1Shape
+    a sh:NodeShape ;
+    sh:targetClass estleg:MunicipalRegulation ;
+    sh:property [
+        sh:path estleg:enactedBy ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:class estleg:Issuer ;
+        sh:name "enactedBy" ;
+    ] ;
+    sh:property [
+        sh:path estleg:enactedByMunicipality ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:class estleg:Municipality ;
+        sh:name "enactedByMunicipality" ;
+    ] ;
+    sh:property [
+        sh:path estleg:titleNormalized ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "titleNormalized" ;
+    ] .
+
+estleg:KovProvisionShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:KovProvision ;
+    sh:property [
+        sh:path estleg:enactedBy ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:class estleg:Issuer ;
+        sh:name "enactedBy" ;
+    ] ;
+    sh:property [
+        sh:path estleg:enactedByMunicipality ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:class estleg:Municipality ;
+        sh:name "enactedByMunicipality" ;
+    ] ;
+    sh:property [
+        sh:path estleg:partOfAct ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:class estleg:Act ;
+        sh:name "partOfAct" ;
+    ] .
+
