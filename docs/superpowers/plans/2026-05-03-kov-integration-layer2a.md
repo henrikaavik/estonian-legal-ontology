@@ -876,12 +876,40 @@ for diagnostics.
   "pipeline_version": "abc1234",
   "input_files_total": 11796,
   "input_files_kov": 11059,
+  "files_processed": 11790,
+  "files_skipped": 6,
+  "skip_reasons": {"no_act_node": 4, "json_decode_error": 2},
   "triples_emitted": 42000,
+  "fallback_hits": 0,
+  "unresolved_references": 0,
   "wall_time_seconds": 125.4,
+  "items_per_second": 94.0,
+  "peak_memory_mb": 312.5,
   "error_count": 0,
   "failure_samples": []
 }
 ```
+
+Field reference:
+
+| Field | Meaning |
+| --- | --- |
+| `pipeline` | Script name (without `.py` and `scripts/` prefix). |
+| `run_timestamp` | ISO-8601 UTC start time. |
+| `pipeline_version` | Git short SHA at run time. |
+| `input_files_total` | Total files iterated by `iter_peep_files()`. |
+| `input_files_kov` | Subset under `regulations/kov/`. |
+| `files_processed` | Files that classified/extracted successfully. |
+| `files_skipped` | Files skipped, total. |
+| `skip_reasons` | Skip-reason → count, one per category. |
+| `triples_emitted` | Output triples written back (per-pipeline definition). |
+| `fallback_hits` | Times a fallback path fired (slug-based XML resolution, etc.). |
+| `unresolved_references` | References that couldn't pair (e.g. KOV peep with no XML). |
+| `wall_time_seconds` | Total run wall time. |
+| `items_per_second` | `files_processed / wall_time_seconds`. |
+| `peak_memory_mb` | Peak RSS in MB (0.0 on Windows where `resource` is unavailable). |
+| `error_count` | Number of exceptions captured. |
+| `failure_samples` | Up to 20 failure messages for diagnosis. |
 
 ## Baseline-by-construction (the "before" state)
 
@@ -1123,11 +1151,12 @@ def main() -> int:
     return 0
 ```
 
-For `_triples`: deontic appends a `NormType` IRI per provision to the
-peep file. Count each successful `node["estleg:hasNormType"] = ...`
-write. Look at how the script currently emits classifications (around
-line 196 — `norm_iri = classify_provision(summary)`), and increment
-`_triples` each time a classification is written back.
+For `_triples`: deontic writes `estleg:normativeType` (object value
+`{"@id": norm_iri}`) on each classified provision node — see the
+script's existing line 198: `node["estleg:normativeType"] = {"@id": norm_iri}`.
+Increment `_triples` each time that assignment runs successfully.
+Optionally also count the `estleg:dutyHolder` assignment (line 200)
+as a separate triple — both are emitted per classified provision.
 
 For pipelines that don't have an obvious "fallback" or "unresolved"
 concept (e.g., classify_deontic), leave those counters at 0. They're
@@ -1168,7 +1197,10 @@ cp tests/fixtures/kov_layer2a/sample_kov_act.json /tmp/deontic_smoke/krr_outputs
 # real corpus run in Task 11 will exercise it.)
 ```
 
-This step is optional smoke; the real validation is the corpus run in Task 11.
+Skip — the real validation is the corpus run in Task 11. Per-pipeline
+smoke tests like this are uneven across the 5 pipelines (some are
+trivial to set up, some need an XML fixture), so the plan delegates
+the integration-level check to Task 11 uniformly.
 
 - [ ] **Step 6: Run the full test suite**
 
@@ -1572,6 +1604,7 @@ class TestMainUsesGlobalIdLookup:
 
     def test_main_pairs_kov_via_globalid(self, tmp_path, monkeypatch):
         import extract_temporal_data as mod
+        import estleg_common
 
         # Stage a tiny tree
         krr = tmp_path / "krr_outputs"
@@ -1600,45 +1633,53 @@ class TestMainUsesGlobalIdLookup:
             ],
         }), encoding="utf-8")
 
-        # XML with matching globaalID under the maarus_kov subdir
+        # XML uses the actual tags the extractor reads:
+        # vastuvoetud/aktikuupaev (adoption) and vastuvoetud/joustumine
+        # (entry into force). See scripts/extract_temporal_data.py
+        # lines 133-145 for the field reader.
         (rt / "maarus_kov" / "reg_999.xml").write_text(
             '<akt globaalID="999"><metaandmed>'
-            '<jouAeg>2024-01-01</jouAeg>'
+            '<vastuvoetud>'
+            '<aktikuupaev>2023-12-15</aktikuupaev>'
+            '<joustumine>2024-01-01</joustumine>'
+            '</vastuvoetud>'
             '</metaandmed></akt>',
             encoding="utf-8",
         )
 
-        # Patch module paths
+        # Critical: iter_peep_files() is imported from estleg_common,
+        # whose own KRR_DIR was bound at import time. Patch BOTH the
+        # extractor module's KRR_DIR/DATA_DIR AND estleg_common.KRR_DIR
+        # — otherwise the iterator will scan the real repo regardless
+        # of what extract_temporal_data thinks KRR_DIR is.
         monkeypatch.setattr(mod, "KRR_DIR", krr)
         monkeypatch.setattr(mod, "DATA_DIR", rt)
-        # If REPO_ROOT is referenced inside main(), patch that too
+        monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
         if hasattr(mod, "REPO_ROOT"):
             monkeypatch.setattr(mod, "REPO_ROOT", tmp_path)
 
-        # Run main() (or the equivalent if main doesn't return). On
-        # success it should write back temporal triples to the peep
+        # Run main() — should write back temporal triples to the peep
         # file based on the paired XML.
         rc = mod.main()
         assert rc in (None, 0)
 
         # Re-read the peep file and verify a temporal triple was added
-        # from the paired XML. The exact triple name depends on the
-        # script's output convention — check for entryIntoForce or a
-        # similar dated property.
+        # from the paired XML. The script writes estleg:entryIntoForce
+        # (and possibly estleg:adoptionDate / estleg:repealDate /
+        # estleg:lastAmendmentDate). Any of these is acceptable
+        # evidence that pairing worked.
         with open(peep, "r", encoding="utf-8") as fh:
             doc = json.load(fh)
         act = next(n for n in doc["@graph"]
                    if "estleg:MunicipalRegulation" in (n.get("@type") or []))
-        # Some date-bearing property must have been written. The
-        # script probably writes estleg:entryIntoForce, but accept
-        # any dated field for resilience to refactors.
-        date_props = [k for k in act if "estleg:" in k and "Date" in k
-                      or k.endswith("entryIntoForce")
-                      or k.endswith("forceDate")]
-        assert date_props, (
+        date_keys = {"estleg:entryIntoForce", "estleg:adoptionDate",
+                     "estleg:repealDate", "estleg:lastAmendmentDate",
+                     "estleg:publicationDate"}
+        present = date_keys.intersection(act.keys())
+        assert present, (
             f"main() ran but no date triples appeared on the act node "
-            f"after pairing — the per-peep pairing path may not be "
-            f"calling pair_peep_with_xml. Act keys: {list(act.keys())}"
+            f"after pairing — pair_peep_with_xml may not be wired into "
+            f"main(). Act keys: {list(act.keys())}"
         )
 ```
 
@@ -2092,7 +2133,18 @@ Delete it.
 
 - [ ] **Step 7: Update output paths**
 
-Search the script for any `KRR_DIR / filename` write-back patterns. Replace with the source path captured during discovery (similar to Task 7 Step 6).
+Grep the script for `KRR_DIR / filename` and `KRR_DIR / law_file`
+patterns:
+
+```bash
+grep -nE "KRR_DIR / (filename|law_file|f\")" scripts/extract_legal_concepts.py
+```
+
+For each match, replace the path with the source path captured in
+the discovery loop (`law["path"]` in the new flow). Re-grep to
+confirm zero matches remain. The pattern is identical to Task 7
+Step 6 for EuroVoc — the same anti-pattern existed in both scripts
+because they share a heritage from the laws-only era.
 
 - [ ] **Step 8: Add coverage instrumentation**
 
@@ -2107,7 +2159,7 @@ Expected: 4 passed (2 lookup-builder tests + 2 extractor tests including the slu
 pytest -q
 ```
 
-Expected: count grows by 3 over the prior task baseline.
+Expected: prior count + 4 new legal-concepts tests, all passing.
 
 - [ ] **Step 10: Commit**
 
@@ -2142,6 +2194,7 @@ Create `tests/test_generate_amendment_history.py`:
 """Tests for generate_amendment_history — XML pairing for KOV."""
 from __future__ import annotations
 
+import json
 import sys
 from pathlib import Path
 
@@ -2180,12 +2233,15 @@ class TestAmendmentHistoryDiscovery:
         under maarus_kov/ paired by globalId contributed an amendment
         chain entry."""
         import generate_amendment_history as mod
+        import estleg_common
 
         krr = tmp_path / "krr_outputs"
         rt = tmp_path / "data" / "riigiteataja"
         kov = krr / "regulations" / "kov" / "tallinna_linnavolikogu"
         kov.mkdir(parents=True)
         (rt / "maarus_kov").mkdir(parents=True)
+        (krr / "amendments").mkdir(parents=True)
+        (krr / "eelnoud").mkdir(parents=True)
 
         peep = kov / "test_act_peep.json"
         peep.write_text(json.dumps({
@@ -2206,19 +2262,34 @@ class TestAmendmentHistoryDiscovery:
             ],
         }), encoding="utf-8")
 
-        # XML with one muutmismarge block — minimal shape that
-        # extract_amendments_from_xml recognises.
+        # XML with a muutmismarge block whose children match what
+        # extract_amendments_from_xml expects (lines 162-210 of the
+        # script): aktikuupaev, joustumine, and avaldamismarge with
+        # RTosa/RTaasta/RTnumber children. Each muutmismarge is
+        # extracted as a separate amendment entry.
         (rt / "maarus_kov" / "reg_777.xml").write_text(
             '<akt globaalID="777"><metaandmed>'
-            '<muutmisAlus>'
-            '<muutmismarge>RT IV, 01.01.2024, 1</muutmismarge>'
-            '</muutmisAlus>'
+            '<muutmismarge>'
+            '<aktikuupaev>2023-06-15</aktikuupaev>'
+            '<joustumine>2024-01-01</joustumine>'
+            '<avaldamismarge>'
+            '<RTosa>IV</RTosa><RTaasta>2024</RTaasta><RTnumber>1</RTnumber>'
+            '</avaldamismarge>'
+            '</muutmismarge>'
             '</metaandmed></akt>',
             encoding="utf-8",
         )
 
+        # Patch ALL the import-time-bound paths. AMENDMENTS_DIR and
+        # EELNOUD_DIR are derived from KRR_DIR at import time so they
+        # need explicit rebinding too.
         monkeypatch.setattr(mod, "KRR_DIR", krr)
         monkeypatch.setattr(mod, "DATA_DIR", rt)
+        if hasattr(mod, "AMENDMENTS_DIR"):
+            monkeypatch.setattr(mod, "AMENDMENTS_DIR", krr / "amendments")
+        if hasattr(mod, "EELNOUD_DIR"):
+            monkeypatch.setattr(mod, "EELNOUD_DIR", krr / "eelnoud")
+        monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
         if hasattr(mod, "REPO_ROOT"):
             monkeypatch.setattr(mod, "REPO_ROOT", tmp_path)
 
@@ -2259,7 +2330,11 @@ In `scripts/generate_amendment_history.py`, near the top, add:
 from extract_temporal_data import build_globalid_xml_lookup, pair_peep_with_xml
 ```
 
-(Note: this creates a soft cross-script dependency. If circular-import concerns arise, the alternative is to extract both helpers into a new `scripts/riigiteataja_xml_lookup.py` module and have both scripts import from there. Start with the direct import; refactor only if a circular import surfaces.)
+There's no circular-import risk: `extract_temporal_data` doesn't
+import anything from `generate_amendment_history`. If a future change
+introduces one, extract both helpers into a new
+`scripts/riigiteataja_xml_lookup.py` module — but don't preemptively
+do that here.
 
 - [ ] **Step 4: Replace the existing XML discovery and pairing logic**
 
@@ -2498,6 +2573,12 @@ print(f"SHACL_TARGETED {'PASS' if ok else 'FAIL'}")
 print(f"Layer-2a-property violations: {len(layer2a_violations)}")
 for v in layer2a_violations[:5]:
     print(f"  {v}")
+# Exit non-zero if any Layer-2a property is in violation. Pre-existing
+# violations (requestedCluster/summary) are tolerated; Layer-2a-property
+# violations are not — they would mean we shipped invalid Citation /
+# issuedUnder / implementsCitation / etc. data.
+import sys as _sys
+_sys.exit(1 if layer2a_violations else 0)
 PY
 ```
 
@@ -2732,13 +2813,17 @@ Expected: ≥25 new test methods, all passing. If pytest's `passed`
 count is significantly less than `(102 + new test method count)`,
 investigate before pushing.
 
-- [ ] **Step 2: Run validate_all**
+- [ ] **Step 2: Run validate_all (with proper exit-code propagation)**
 
-```
-python scripts/validate_all.py 2>&1 | tail -5
+```bash
+set -o pipefail
+python scripts/validate_all.py > /tmp/validate_all_final.log 2>&1 || \
+    { tail -50 /tmp/validate_all_final.log; exit 1; }
+tail -5 /tmp/validate_all_final.log
 ```
 
-Expected: 0 errors.
+Expected: 0 errors. A non-zero exit halts and dumps the last 50 log
+lines for diagnosis (avoids `tail -5` masking the Python crash).
 
 - [ ] **Step 3: Verify all coverage reports exist and look reasonable**
 
@@ -2749,16 +2834,20 @@ for p in classify_deontic classify_eurovoc extract_temporal_data extract_legal_c
   python3 -c "
 import json
 d = json.load(open('krr_outputs/reports/kov/${p}_coverage.json'))
-print(f\"  total: {d['input_files_total']}\")
-print(f\"  kov:   {d['input_files_kov']}\")
-print(f\"  triples emitted: {d['triples_emitted']}\")
-print(f\"  errors: {d['error_count']}\")
-print(f\"  wall time: {d['wall_time_seconds']}s\")
+print(f\"  input total/kov:     {d['input_files_total']} / {d['input_files_kov']}\")
+print(f\"  files processed:     {d['files_processed']}\")
+print(f\"  files skipped:       {d['files_skipped']}  (reasons: {d.get('skip_reasons')})\")
+print(f\"  triples emitted:     {d['triples_emitted']}\")
+print(f\"  fallback hits:       {d['fallback_hits']}\")
+print(f\"  unresolved refs:     {d['unresolved_references']}\")
+print(f\"  wall time:           {d['wall_time_seconds']}s ({d['items_per_second']} items/s)\")
+print(f\"  peak memory:         {d['peak_memory_mb']} MB\")
+print(f\"  errors:              {d['error_count']}\")
 "
 done
 ```
 
-Expected: each pipeline shows `input_files_kov ≥ 11059` (most should hit the ~11.7k total file count) and `triples_emitted > 0`.
+Expected: each pipeline shows `input_files_kov ≥ 11059`, `triples_emitted > 0`, and the runtime + memory fields populated (not 0.0). If `peak_memory_mb` is 0.0 you may be on Windows or the `resource` module is unavailable — note this in the PR body but don't block the PR.
 
 - [ ] **Step 4: Verify the 9 pinned pipelines still skip KOV**
 
@@ -2843,7 +2932,12 @@ After all 13 tasks complete, verify:
   - Corpus run: Task 11
   - Docs: Task 12
   - Final verification: Task 13
-- [ ] **No placeholders.** No "TODO", "TBD", "implement later" in the plan.
+- [ ] **No actionable gaps.** No "TODO", "TBD", "implement later",
+  "Add appropriate <thing>" in the plan. (Code-block `...` ellipses
+  are allowed and signal "the surrounding existing code stays as it
+  is" — they have a clear meaning in context. Hedges like "if X
+  arises, Y" are treated as actionable gaps and must be replaced
+  with concrete instructions.)
 - [ ] **Type consistency.** `CoverageReport` fields match across Tasks 5, 6, 7, 8, 9, 10, 11, 12. `build_globalid_xml_lookup` signature matches between Tasks 8 and 10.
 - [ ] **Per-caller audit completeness.** All 14 `iter_peep_files()` consumers (in 13 scripts) are accounted for: 5 fixed (Tasks 6–10), 9 pinned (Task 3).
 - [ ] **Crisp invariant satisfied.** After Task 13, the four invariant clauses hold: schema declared, default flipped with explicit pins, 5 pipelines run KOV, coverage reports diffable.
