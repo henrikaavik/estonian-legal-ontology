@@ -14,6 +14,20 @@ All notable changes to this project will be documented in this file.
   enrichment; `estleg:Law` rdf:type stamped onto all existing law
   nodes). See `docs/superpowers/specs/2026-05-02-kov-integration-design.md`.
 
+### Added (Layer 2a)
+- KOV integration Layer 2a — schema declarations for Citation class and
+  8 new properties (`citationTarget`, `citationDetail`, `citationText`,
+  `issuedUnder`, `implementsCitation`, `implementedBy`, `implementedByCount`,
+  `enforcedAtLevel`); `estleg:CitationShape` SHACL shape; `iter_peep_files()`
+  default flips to `include_kov=True`; 5 KOV-relevant discovery-only
+  pipelines (deontic, EuroVoc, temporal, legal-concepts, amendment-history)
+  process KOV files end-to-end with per-pipeline coverage reports.
+- Per-pipeline coverage reports under `krr_outputs/reports/kov/` for the
+  5 KOV-ready pipelines.
+- 9 KOV-deferred or KOV-irrelevant pipelines explicitly pin
+  `include_kov=False` at their call sites with comments indicating which
+  Layer (2b/2c/3) will unpin or that KOV does not apply.
+
 ### Known issues
 - Pre-existing SHACL violations on `estleg:requestedCluster` (IRI-as-literal
   serialization, ~21.5k) and missing `estleg:summary` on some KOV/state-reg

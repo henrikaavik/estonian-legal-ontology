@@ -776,3 +776,36 @@ SELECT ?mun ?reg WHERE {
        estleg:enactedByMunicipality ?mun .
 }
 ```
+
+## KOV Layer 2a — Schema Foundations
+
+The Layer 2a PR declares the schema needed by Layers 2b and 2c. Instances
+of these classes/properties begin appearing in 2b (preamble citations) and
+2c (sanctions enforcement level). In 2a, only the declarations land.
+
+### Classes
+
+- `estleg:Citation` — reified preamble citation (Layer 2b populates).
+
+### Properties
+
+| Property | Domain | Range | Layer | Purpose |
+| --- | --- | --- | --- | --- |
+| `estleg:citationTarget` | `Citation` | `LegalProvision` | 2b | Resolved provision (paragraph-level) |
+| `estleg:citationDetail` | `Citation` | `xsd:string` | 2b | Sub-paragraph specificity (`"lg 1 p 3"`) |
+| `estleg:citationText` | `Citation` | `xsd:string` | 2b | Original citation text |
+| `estleg:issuedUnder` | `Act` | `Act` | 2b | Act → enabling act (preamble simple form) |
+| `estleg:implementsCitation` | `Act` | `Citation` | 2b | Act → reified Citation node |
+| `estleg:implementedBy` | `Act` ∪ `LegalProvision` | `Act` | 2b | Inverse — acts enacted under |
+| `estleg:implementedByCount` | `Act` ∪ `LegalProvision` | `xsd:integer` | 2b | Aggregate count |
+| `estleg:enforcedAtLevel` | `LegalProvision` | `xsd:string` | 2c | `"state"` \| `"municipality"` |
+
+### SHACL
+
+`shacl/estonian_legal_shapes.ttl` adds `estleg:CitationShape` (target Citation;
+required `citationTarget`; optional `citationDetail`/`citationText`; IRI pattern).
+
+### Pipeline coverage reports
+
+Each KOV-relevant pipeline emits `krr_outputs/reports/kov/<pipeline>_coverage.json`
+with per-run metrics. See `krr_outputs/reports/kov/README.md`.

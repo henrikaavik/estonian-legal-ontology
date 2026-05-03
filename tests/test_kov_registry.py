@@ -400,6 +400,12 @@ class TestMetadataJsonLd:
             "estleg:ehakCode", "estleg:county", "estleg:bodyType",
             "estleg:currentMunicipality", "estleg:historicalMunicipalityName",
             "estleg:mappingSource", "estleg:mappingEvidence",
+            # Layer 2a additions:
+            "estleg:citationTarget", "estleg:citationDetail",
+            "estleg:citationText",
+            "estleg:issuedUnder", "estleg:implementsCitation",
+            "estleg:implementedBy", "estleg:implementedByCount",
+            "estleg:enforcedAtLevel",
         ):
             assert required in ids, f"missing in metadata.jsonld: {required}"
 

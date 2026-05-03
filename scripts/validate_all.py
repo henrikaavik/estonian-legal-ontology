@@ -166,7 +166,7 @@ def main():
     # Exclude index and summary files
     exclude_prefixes = ("INDEX", "combined_", "EELNOUD_INDEX", "eelnoud_combined", "RIIGIKOHUS_INDEX", "EURLEX_INDEX", "eurlex_combined", "CURIA_INDEX", "curia_combined", "REGULATIONS_")
     # Exclude report/metadata files (not JSON-LD)
-    exclude_suffixes = ("_report.json", "_mapping.json", "_index.json", "_classification.json")
+    exclude_suffixes = ("_report.json", "_mapping.json", "_index.json", "_classification.json", "_coverage.json")
     files = [f for f in files if not any(f.name.startswith(p) for p in exclude_prefixes)]
     files = [f for f in files if not any(f.name.endswith(s) for s in exclude_suffixes)]
 

@@ -311,7 +311,9 @@ class TestIterPeepFiles:
         files = self._setup_tmp_layout(tmp_path)
         monkeypatch.setattr(estleg_common, "KRR_DIR", tmp_path)
 
-        found = iter_peep_files(include_laws=True, include_regulations=True)
+        found = iter_peep_files(
+            include_laws=True, include_regulations=True, include_kov=False
+        )
         assert files["law"] in found
         assert files["regulation"] in found
         # Default kov=False — the KOV file must NOT appear.
@@ -321,7 +323,9 @@ class TestIterPeepFiles:
         files = self._setup_tmp_layout(tmp_path)
         monkeypatch.setattr(estleg_common, "KRR_DIR", tmp_path)
 
-        found = iter_peep_files(include_laws=True, include_regulations=False)
+        found = iter_peep_files(
+            include_laws=True, include_regulations=False, include_kov=False
+        )
         assert files["law"] in found
         assert files["regulation"] not in found
         assert files["kov"] not in found

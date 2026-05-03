@@ -211,6 +211,20 @@ KOV regulations are now a **first-class entity layer**: every act and provision 
 
 See [docs/SCHEMA_REFERENCE.md#kov-entity-model-layer-1](docs/SCHEMA_REFERENCE.md#kov-entity-model-layer-1) for the full schema, IRI patterns, and SPARQL examples.
 
+#### Layer 2a — KOV in 5 pipelines
+
+Five KOV-relevant pipelines now process the 11,059 KOV act files end-to-end:
+
+- `classify_deontic` — modal classifications over KOV provisions
+- `classify_eurovoc` — EuroVoc tags over KOV acts (driven by `iter_peep_files()` instead of `INDEX.json`)
+- `extract_temporal_data` — entry-into-force / amendment dates from KOV XML (via `globaalID` pairing)
+- `extract_legal_concepts` — concept definitions from KOV provision text (provision IRIs sourced from actual `@id`)
+- `generate_amendment_history` — amendment chains for KOV regulations
+
+Per-pipeline coverage reports at `krr_outputs/reports/kov/`. See [Layer 2a plan](docs/superpowers/plans/2026-05-03-kov-integration-layer2a.md) for details.
+
+The remaining 5 KOV-relevant pipelines (cross-references, inverse, sanctions, competence, court-provision-links) are deferred to Layers 2b and 2c.
+
 ### Supreme Court Decisions (Riigikohus)
 
 | Case Type | Estonian | Count |

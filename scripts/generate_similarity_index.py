@@ -134,7 +134,7 @@ def main():
     print("\n[1/4] Loading provisions and extracting keywords...")
     provisions: list[dict] = []  # {id, label, source_act, keywords, file}
 
-    jsonld_files = iter_peep_files()
+    jsonld_files = iter_peep_files(include_kov=False)  # DEFERRED to Layer 3
     for fpath in jsonld_files:
         # Skip non-law files
         if fpath.parent != KRR_DIR:
@@ -261,7 +261,7 @@ def main():
     print(f"  Saved: {index_path.name} ({len(similarity_pairs)} pairs)")
 
     # Clearing pass: remove stale estleg:semanticallySimilarTo from all peep files
-    for fpath in iter_peep_files():
+    for fpath in iter_peep_files(include_kov=False):  # DEFERRED to Layer 3
         try:
             with open(fpath, "r", encoding="utf-8") as f:
                 doc = json.load(f)

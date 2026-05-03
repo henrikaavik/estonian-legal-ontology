@@ -15,11 +15,18 @@ from __future__ import annotations
 
 import json
 import re
+import time
 import xml.etree.ElementTree as ET
-from datetime import date
+from datetime import date, datetime, timezone
 from pathlib import Path
 
 from estleg_common import iter_peep_files
+from kov_pipeline_coverage import (
+    CoverageReport,
+    measure_runtime,
+    resolve_pipeline_version,
+    write_coverage_report,
+)
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
@@ -193,10 +200,54 @@ def extract_definitions_from_text(text: str) -> list[tuple[str, str, str]]:
     return results
 
 
-def extract_concepts_from_xml(xml_path: Path, law_title: str, law_slug: str) -> list[dict]:
+def build_par_to_iri_lookup(doc: dict) -> dict[str, str]:
+    """Build a (par_nr | par_display) → provision @id lookup from a
+    loaded peep file's @graph.
+
+    Used to bridge XML-extracted concepts (which know paragraphs by
+    their numeric par_nr or display form like "§ 1.") to the
+    JSON-LD provision IRIs (which use Reg_<terviktekstId>_Par_<n>
+    for KOV files — the actual @id is decoupled from the filename
+    slug).
+
+    The lookup keys both forms so the XML extractor can use whichever
+    field it has: paragrahvNr ("1") OR kuvatavNr ("§ 1."). If a
+    peep file has multiple provisions with the same par_nr (rare
+    but possible across different chapters), later entries win — for
+    Layer 2a's purposes that's acceptable.
+    """
+    lookup: dict[str, str] = {}
+    for node in doc.get("@graph", []):
+        par_display = node.get("estleg:paragrahv")
+        if not par_display:
+            continue
+        node_id = node.get("@id")
+        if not node_id:
+            continue
+        # Display form: "§ 1." → also key under "1"
+        lookup[par_display] = node_id
+        # Strip "§ " prefix and trailing "." to get the bare number
+        bare = par_display.lstrip("§").strip().rstrip(".")
+        if bare:
+            lookup[bare] = node_id
+    return lookup
+
+
+def extract_concepts_from_xml(
+    xml_path: Path,
+    law_title: str,
+    law_slug: str,
+    par_to_iri: dict[str, str] | None = None,
+) -> list[dict]:
     """
     Extract legal concept definitions from a law's XML file.
     Returns list of concept dicts.
+
+    When ``par_to_iri`` is provided, ``provision_id`` is sourced from
+    the lookup (bridging XML par_nr/par_display to the peep file's
+    actual @id). Falls back to the slug-derived form when no lookup
+    is provided OR a particular par_nr/par_display is unmapped — this
+    keeps backwards-compat with laws-only callers.
     """
     concepts = []
 
@@ -229,7 +280,15 @@ def extract_concepts_from_xml(xml_path: Path, law_title: str, law_slug: str) -> 
 
         for number, term, definition in defs:
             concept_id = f"estleg:Concept_{sanitize_id(law_slug)}_{sanitize_id(term)}"
-            provision_id = f"estleg:{sanitize_id(law_slug)}_Par_{sanitize_id(par_nr)}"
+            # Bridge XML par_nr to peep @id when a lookup is provided.
+            # Falls back to the slug-derived form so existing law-only
+            # callers still work — Layer 2a callers should always pass
+            # par_to_iri.
+            provision_id = None
+            if par_to_iri is not None:
+                provision_id = par_to_iri.get(par_nr) or par_to_iri.get(par_display)
+            if provision_id is None:
+                provision_id = f"estleg:{sanitize_id(law_slug)}_Par_{sanitize_id(par_nr)}"
 
             concepts.append({
                 "concept_id": concept_id,
@@ -248,11 +307,15 @@ def extract_concepts_from_xml(xml_path: Path, law_title: str, law_slug: str) -> 
 
 
 def load_law_files() -> list[dict]:
-    """Load all law JSON-LD files (top-level only) and return their metadata."""
+    """Load every peep JSON-LD file (laws + state regs + KOV) and return their metadata.
+
+    Layer 2a: the historic root-only filter (``f.parent != KRR_DIR``) was
+    removed so KOV peeps under ``regulations/kov/<issuer>/`` and state
+    regulations under ``regulations/riik/`` are now included alongside
+    top-level laws.
+    """
     laws = []
     for f in iter_peep_files():
-        if f.parent != KRR_DIR:
-            continue
         slug = f.stem.replace("_peep", "")
         try:
             with open(f, "r", encoding="utf-8") as fh:
@@ -280,34 +343,125 @@ def main():
     print("Estonian Legal Ontology - Extract Legal Concepts")
     print("=" * 70)
 
+    _start = time.perf_counter()
+
+    # Layer 2a: pair peep files to XML via globalId (the canonical path
+    # for KOV + state regs). The slug fallback is preserved via the
+    # ``data_dir=DATA_DIR`` kwarg for laws-without-globalId.
+    from estleg_common import (
+        build_globalid_xml_lookup,
+        pair_peep_with_xml,
+    )
+
     # Step 1: Load law files
-    print("\n[1/5] Loading law JSON-LD files...")
+    print("\n[1/5] Loading peep JSON-LD files...")
     laws = load_law_files()
-    print(f"  Found {len(laws)} law files")
+    print(f"  Found {len(laws)} peep files")
+    _kov_files = [law["path"] for law in laws if "regulations/kov" in str(law["path"])]
+    print(f"  Indexed {len(_kov_files)} KOV peep files")
+
+    # Build globalId → XML path lookup once
+    xml_lookup = build_globalid_xml_lookup(DATA_DIR)
+    print(f"  Indexed {len(xml_lookup)} XML files by globalId")
+
+    # Precompute set of canonical-pairing paths for O(1) fallback
+    # detection. Mirrors the pattern in generate_amendment_history /
+    # extract_temporal_data — _fallback_hits semantics is "XML resolved
+    # via slug fallback", consistent across all three pipelines.
+    _lookup_paths = {str(p) for p in xml_lookup.values()}
 
     # Step 2: Extract concepts from XML
     print("\n[2/5] Extracting defined terms from XML files...")
     all_concepts: list[dict] = []
     laws_with_concepts = 0
 
+    # Coverage counters (aggregate-output semantics)
+    _files_processed = 0
+    _files_processed_kov = 0
+    _files_with_output = 0
+    _files_with_output_kov = 0
+    _triples = 0
+    _triples_kov = 0
+    _unresolved = 0
+    _fallback_hits = 0
+    _failures: list[str] = []
+    _skip_reasons: dict[str, int] = {}
+
     for i, law in enumerate(laws):
         slug = law["slug"]
         title = law["title"]
+        path = law["path"]
+        is_kov = "regulations/kov" in str(path)
 
-        # Find XML file — try exact slug, then base slug (without _osa suffix)
-        base_slug = re.sub(r"_osa\d+$", "", slug)
-        xml_path = DATA_DIR / f"{slug}.xml"
-        if not xml_path.exists():
-            xml_path = DATA_DIR / f"{base_slug}.xml"
-        if not xml_path.exists():
-            continue
+        try:
+            # pair_peep_with_xml: globalId-based pairing for KOV + state
+            # regs, slug-fallback for laws without globalId. The fallback
+            # path runs only if globalId resolution misses AND data_dir
+            # is supplied.
+            xml_path = pair_peep_with_xml(
+                path, xml_lookup, data_dir=DATA_DIR
+            )
+            if xml_path is None:
+                _skip_reasons["no_xml"] = _skip_reasons.get("no_xml", 0) + 1
+                continue
 
-        concepts = extract_concepts_from_xml(xml_path, title, slug)
-        if concepts:
-            all_concepts.extend(concepts)
-            laws_with_concepts += 1
-            if len(concepts) >= 3:
-                print(f"  {title}: {len(concepts)} defined terms")
+            # Track slug-based fallback hits — _fallback_hits semantics
+            # are "XML resolved via slug fallback" (path not in the
+            # canonical globalId lookup), aligned with temporal /
+            # amendment-history.
+            if str(xml_path) not in _lookup_paths:
+                _fallback_hits += 1
+
+            try:
+                with open(path, "r", encoding="utf-8") as fh:
+                    peep_doc = json.load(fh)
+            except (json.JSONDecodeError, OSError):
+                peep_doc = {}
+                _skip_reasons["json_decode_error"] = (
+                    _skip_reasons.get("json_decode_error", 0) + 1
+                )
+
+            par_to_iri = build_par_to_iri_lookup(peep_doc)
+
+            concepts = extract_concepts_from_xml(
+                xml_path, title, slug, par_to_iri=par_to_iri
+            )
+
+            _files_processed += 1
+            if is_kov:
+                _files_processed_kov += 1
+
+            if concepts:
+                all_concepts.extend(concepts)
+                laws_with_concepts += 1
+                _files_with_output += 1
+                if is_kov:
+                    _files_with_output_kov += 1
+                # Each concept emits two triples: definesTerm (provision
+                # → concept) and definedIn (concept → provision). We
+                # also track the KOV subset based on whether the
+                # provision_id was bridged via this peep's par_to_iri.
+                for c in concepts:
+                    _triples += 2  # definesTerm + definedIn
+                    bridged = (
+                        par_to_iri
+                        and (
+                            c["provision_id"] == par_to_iri.get(c["par_nr"])
+                            or c["provision_id"] == par_to_iri.get(c["paragraph"])
+                        )
+                    )
+                    if bridged and is_kov:
+                        _triples_kov += 2
+                    if not bridged:
+                        # par_nr wasn't in par_to_iri — slug fallback
+                        # fired per-concept. Useful for spotting peep
+                        # files whose @ids don't follow the expected
+                        # shape.
+                        _unresolved += 1
+                if len(concepts) >= 3:
+                    print(f"  {title}: {len(concepts)} defined terms")
+        except Exception as exc:  # noqa: BLE001
+            _failures.append(f"{path.name}: {exc!r}")
 
     print(f"\n  Total: {len(all_concepts)} defined terms from {laws_with_concepts} laws")
 
@@ -424,7 +578,7 @@ def main():
             "@type": ["owl:NamedIndividual", "estleg:LegalConcept"],
             "skos:prefLabel": concept["term"],
             "skos:definition": concept["definition"],
-            "estleg:definedIn": {"@id": concept["provision_id"]},
+            "estleg:definedIn": [{"@id": concept["provision_id"]}],
             "estleg:sourceAct": concept["law_title"],
             "rdfs:label": f"{concept['term']} ({concept['law_slug']})",
         }
@@ -551,6 +705,38 @@ def main():
     print(f"  Combined: concepts_combined.jsonld")
     print(f"  Report:   concept_crossref_report.json")
     print("=" * 70)
+
+    # ---------- coverage report ----------
+    # Aggregate-output pipeline: legal-concepts writes one combined
+    # JSON-LD plus a report — counters track how many peep files
+    # contributed (vs. the per-act in-place pipelines).
+    _wall, _rate, _peak_mb = measure_runtime(_start, _files_processed)
+    write_coverage_report(
+        CoverageReport(
+            pipeline="extract_legal_concepts",
+            run_timestamp=datetime.now(timezone.utc).isoformat(),
+            pipeline_version=resolve_pipeline_version(),
+            input_files_total=len(laws),
+            input_files_kov=len(_kov_files),
+            files_processed=_files_processed,
+            files_processed_kov=_files_processed_kov,
+            files_with_output=_files_with_output,
+            files_with_output_kov=_files_with_output_kov,
+            files_skipped=sum(_skip_reasons.values()),
+            skip_reasons=_skip_reasons,
+            triples_emitted=_triples,
+            triples_emitted_kov=_triples_kov,
+            fallback_hits=_fallback_hits,
+            unresolved_references=_unresolved,
+            wall_time_seconds=round(_wall, 2),
+            items_per_second=round(_rate, 2),
+            peak_memory_mb=round(_peak_mb, 1),
+            error_count=len(_failures),
+            failure_samples=_failures,
+        ),
+        REPO_ROOT / "krr_outputs" / "reports" / "kov"
+        / "extract_legal_concepts_coverage.json",
+    )
 
 
 if __name__ == "__main__":

@@ -50,7 +50,7 @@ def build_provision_index() -> tuple[dict[str, dict[str, str]], dict[str, str], 
     source_act_to_prefix: dict[str, str] = {}
     iri_to_file: dict[str, Path] = {}
 
-    for json_file in iter_peep_files():
+    for json_file in iter_peep_files(include_kov=False):  # DEFERRED to Layer 2c
         # Skip court decision files
         if json_file.name.startswith("riigikohus"):
             continue
@@ -362,7 +362,7 @@ def clear_existing_court_links() -> int:
                 cleaned += 1
 
     # Clear interpretedBy from law files
-    for law_file in iter_peep_files():
+    for law_file in iter_peep_files(include_kov=False):  # DEFERRED to Layer 2c
         if law_file.name.startswith("riigikohus"):
             continue
         try:

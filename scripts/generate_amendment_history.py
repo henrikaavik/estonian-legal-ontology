@@ -15,11 +15,22 @@ from __future__ import annotations
 
 import json
 import re
+import time
 import xml.etree.ElementTree as ET
-from datetime import date
+from datetime import date, datetime, timezone
 from pathlib import Path
 
-from estleg_common import iter_peep_files
+from estleg_common import (
+    build_globalid_xml_lookup,
+    iter_peep_files,
+    pair_peep_with_xml,
+)
+from kov_pipeline_coverage import (
+    CoverageReport,
+    measure_runtime,
+    resolve_pipeline_version,
+    write_coverage_report,
+)
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
@@ -121,8 +132,6 @@ def load_law_files() -> dict[str, dict]:
     """
     laws = {}
     for f in iter_peep_files():
-        if f.parent != KRR_DIR:
-            continue
         slug = f.stem.replace("_peep", "")
         try:
             with open(f, "r", encoding="utf-8") as fh:
@@ -370,12 +379,26 @@ def main():
     print("Estonian Legal Ontology - Generate Amendment History")
     print("=" * 70)
 
+    _start = time.perf_counter()
+
+    # Coverage counters — initialised early so all downstream steps
+    # can update them. Amendment-history is a hybrid pipeline: per-act
+    # estleg:amendedBy writes (in-place) PLUS aggregate report files.
+    _files_processed = 0
+    _files_processed_kov = 0
+    _files_with_output = 0
+    _files_with_output_kov = 0
+    _triples = 0
+    _triples_kov = 0
+    _fallback_hits = 0
+    _unresolved = 0
+    _failures: list[str] = []
+    _skip_reasons: dict[str, int] = {}
+
     # Step 0: Clear existing amendedBy references
     print("\n[0/5] Clearing existing estleg:amendedBy from all law files...")
     cleared_count = 0
     for peep_file in iter_peep_files():
-        if peep_file.parent != KRR_DIR:
-            continue
         if clear_amended_by_from_file(peep_file):
             cleared_count += 1
     print(f"  Cleared estleg:amendedBy from {cleared_count} files")
@@ -388,23 +411,59 @@ def main():
     title_map = build_title_to_slug_map(laws)
     print(f"  Built title-to-slug mapping with {len(title_map)} entries")
 
-    # Step 2: Extract amendments from XML files
+    # Step 2: Extract amendments from XML files (paired per-peep via
+    # globalId, with a slug fallback for legacy laws that have no
+    # estleg:globalId on their act node).
     print("\n[2/5] Extracting amendment references from XML files...")
-    xml_files = sorted(DATA_DIR.glob("*.xml")) if DATA_DIR.exists() else []
+    xml_lookup = build_globalid_xml_lookup(DATA_DIR)
+    print(f"  Indexed {len(xml_lookup)} XML files by globalId")
+
     amendments_by_slug: dict[str, list[dict]] = {}
     rt_refs_by_slug: dict[str, list[str]] = {}
     total_amendments = 0
+    paired_count = 0
+    unpaired_count = 0
+    # Track which slugs were paired+extracted (regardless of whether
+    # the XML had any muutmismarge blocks) — feeds _files_processed
+    # in the coverage report.
+    paired_slugs: set[str] = set()
+    # Set of canonical XML paths that came via the globalId lookup —
+    # used to detect when the slug fallback fired.
+    _lookup_paths = {str(p) for p in xml_lookup.values()}
 
-    for xml_path in xml_files:
-        slug = xml_path.stem
-        amendments = extract_amendments_from_xml(xml_path)
+    for slug, info in laws.items():
+        # info["path"] is the peep file path; pair via globalId, with
+        # slug fallback for laws that don't carry estleg:globalId.
+        xml_path = pair_peep_with_xml(
+            info["path"], xml_lookup, data_dir=DATA_DIR
+        )
+        if xml_path is None:
+            unpaired_count += 1
+            continue
+        paired_count += 1
+        paired_slugs.add(slug)
+        if str(xml_path) not in _lookup_paths:
+            _fallback_hits += 1
+        try:
+            amendments = extract_amendments_from_xml(xml_path)
+        except Exception as e:
+            _failures.append(f"{xml_path.name}: {e!r}")
+            amendments = []
         if amendments:
             amendments_by_slug[slug] = amendments
             total_amendments += len(amendments)
-        rt_refs = extract_rt_references_from_text(xml_path)
+        try:
+            rt_refs = extract_rt_references_from_text(xml_path)
+        except Exception as e:
+            _failures.append(f"{xml_path.name}: {e!r}")
+            rt_refs = []
         if rt_refs:
             rt_refs_by_slug[slug] = rt_refs
 
+    _unresolved = unpaired_count
+
+    print(f"  Paired XML for {paired_count} of {len(laws)} laws "
+          f"({unpaired_count} unpaired — see coverage report).")
     print(f"  Found {total_amendments} amendment references across {len(amendments_by_slug)} laws")
     print(f"  Found RT references in {len(rt_refs_by_slug)} laws")
 
@@ -413,14 +472,28 @@ def main():
     draft_amendments = load_draft_amendments()
     print(f"  Found {len(draft_amendments)} amendment bill entries")
 
-    # Match drafts to existing laws
+    # Match drafts to existing laws.
+    #
+    # Drafts often list the affected law multiple times (e.g. once in
+    # genitive form "X seaduse" and once with the full title "X seaduse
+    # muutmise ja sellega seonduvalt teiste seaduste muutmise seadus").
+    # Both forms can resolve to the same target slug, which would
+    # produce duplicate AmendmentLink @ids when chain_entries are built.
+    # Dedupe by draft_id within each target slug to avoid that.
     draft_matches: dict[str, list[dict]] = {}  # target law slug -> list of amending drafts
+    seen_per_target: dict[str, set[str]] = {}
     matched_drafts = 0
     unmatched_drafts = 0
 
     for da in draft_amendments:
         target_slug = match_law_name_to_slug(da["affected_law_name"], title_map, laws)
         if target_slug:
+            seen = seen_per_target.setdefault(target_slug, set())
+            if da["draft_id"] in seen:
+                # Duplicate (same draft → same target via a second
+                # affected_law_name spelling). Skip the duplicate.
+                continue
+            seen.add(da["draft_id"])
             draft_matches.setdefault(target_slug, []).append(da)
             matched_drafts += 1
         else:
@@ -435,11 +508,24 @@ def main():
     amendment_chains: list[dict] = []
 
     for slug, info in sorted(laws.items()):
+        is_kov = "regulations/kov" in str(info["path"])
+        # Coverage: every peep file we successfully paired counts as
+        # "processed" (we did the work — extracted amendments — even
+        # if the XML had zero muutmismarge blocks).
+        if slug in paired_slugs:
+            _files_processed += 1
+            if is_kov:
+                _files_processed_kov += 1
+
         base_slug = re.sub(r"_osa\d+$", "", slug)
         xml_amendments = amendments_by_slug.get(slug) or amendments_by_slug.get(base_slug, [])
         drafts = draft_matches.get(slug) or draft_matches.get(base_slug, [])
 
         if not xml_amendments and not drafts:
+            if slug in paired_slugs:
+                _skip_reasons["no_amendments_found"] = (
+                    _skip_reasons.get("no_amendments_found", 0) + 1
+                )
             continue
 
         doc = info["doc"]
@@ -513,6 +599,19 @@ def main():
         # Save enriched law file
         save_json(info["path"], doc)
         enriched += 1
+
+        # Coverage: amendedBy triples written = number of references in
+        # the amendedBy list. Drafted-only links (no XML amendments)
+        # still count as triples; XML amendments and drafts both
+        # contribute one ref each.
+        if amended_by_refs:
+            n_triples = len(amended_by_refs)
+            _triples += n_triples
+            if is_kov:
+                _triples_kov += n_triples
+            _files_with_output += 1
+            if is_kov:
+                _files_with_output_kov += 1
 
         # Save amendment chain for this law
         if chain_entries:
@@ -613,6 +712,40 @@ def main():
     print(f"\n  Report: {report_path.relative_to(REPO_ROOT)}")
     print(f"  Chains: {AMENDMENTS_DIR.relative_to(REPO_ROOT)}/")
     print("=" * 70)
+
+    # ---------- coverage report ----------
+    # Hybrid pipeline: per-act in-place amendedBy writes PLUS aggregate
+    # report files. Counters track per-peep activity (paired +
+    # extracted) and per-peep output (amendedBy triples written).
+    all_peep_files = iter_peep_files()
+    kov_files = [f for f in all_peep_files if "regulations/kov" in str(f)]
+    _wall, _rate, _peak_mb = measure_runtime(_start, _files_processed)
+    write_coverage_report(
+        CoverageReport(
+            pipeline="generate_amendment_history",
+            run_timestamp=datetime.now(timezone.utc).isoformat(),
+            pipeline_version=resolve_pipeline_version(),
+            input_files_total=len(all_peep_files),
+            input_files_kov=len(kov_files),
+            files_processed=_files_processed,
+            files_processed_kov=_files_processed_kov,
+            files_with_output=_files_with_output,
+            files_with_output_kov=_files_with_output_kov,
+            files_skipped=sum(_skip_reasons.values()),
+            skip_reasons=_skip_reasons,
+            triples_emitted=_triples,
+            triples_emitted_kov=_triples_kov,
+            fallback_hits=_fallback_hits,
+            unresolved_references=_unresolved,
+            wall_time_seconds=round(_wall, 2),
+            items_per_second=round(_rate, 2),
+            peak_memory_mb=round(_peak_mb, 1),
+            error_count=len(_failures),
+            failure_samples=_failures,
+        ),
+        REPO_ROOT / "krr_outputs" / "reports" / "kov"
+        / "generate_amendment_history_coverage.json",
+    )
 
 
 if __name__ == "__main__":

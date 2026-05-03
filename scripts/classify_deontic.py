@@ -15,11 +15,18 @@ from __future__ import annotations
 
 import json
 import re
+import time
 from collections import defaultdict
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 from estleg_common import iter_peep_files
+from kov_pipeline_coverage import (
+    CoverageReport,
+    measure_runtime,
+    resolve_pipeline_version,
+    write_coverage_report,
+)
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
@@ -148,8 +155,23 @@ def main() -> None:
     print("Estonian Legal Ontology - Deontic Classification")
     print("=" * 70)
 
-    law_files = iter_peep_files()
+    _start = time.perf_counter()
+    law_files = iter_peep_files()  # uses new include_kov=True default
+    _kov_files = [f for f in law_files if "regulations/kov" in str(f)]
     print(f"\n[1/3] Found {len(law_files)} law files to process")
+
+    # Coverage counters
+    _files_processed = 0
+    _files_processed_kov = 0
+    _files_with_output = 0
+    _files_with_output_kov = 0
+    _files_skipped = 0
+    _skip_reasons: dict[str, int] = {}
+    _triples = 0
+    _triples_kov = 0
+    _fallback_hits = 0
+    _unresolved = 0
+    _failures: list[str] = []
 
     # --- Clearing pass: remove old deontic data from all files ---
     print("  Clearing old deontic classification data from all files...")
@@ -178,43 +200,70 @@ def main() -> None:
     files_modified = 0
 
     for idx, filepath in enumerate(law_files, 1):
-        doc = load_json(filepath)
-        if doc is None or "@graph" not in doc:
-            continue
-
-        law_name = filepath.stem.replace("_peep", "")
-        law_stats: dict[str, int] = defaultdict(int)
-        modified = False
-
-        for node in doc["@graph"]:
-            summary = node.get("estleg:summary", "")
-            if not summary:
+        is_kov = "regulations/kov" in str(filepath)
+        try:
+            doc = load_json(filepath)
+            if doc is None:
+                _files_skipped += 1
+                _skip_reasons["json_decode_error"] = (
+                    _skip_reasons.get("json_decode_error", 0) + 1
+                )
+                continue
+            if "@graph" not in doc:
+                _files_skipped += 1
+                _skip_reasons["no_graph"] = _skip_reasons.get("no_graph", 0) + 1
                 continue
 
-            total_provisions += 1
+            _triples_before = _triples
+            law_name = filepath.stem.replace("_peep", "")
+            law_stats: dict[str, int] = defaultdict(int)
+            modified = False
 
-            norm_iri = classify_provision(summary)
-            if norm_iri:
-                node["estleg:normativeType"] = {"@id": norm_iri}
-                total_classified += 1
-                # Readable key for stats
-                short = norm_iri.split("_", 1)[1] if "_" in norm_iri else norm_iri
-                law_stats[short] += 1
-                stats_per_type[short] += 1
-                modified = True
+            for node in doc["@graph"]:
+                summary = node.get("estleg:summary", "")
+                if not summary:
+                    continue
 
-            holder = extract_duty_holder(summary)
-            if holder:
-                node["estleg:dutyHolder"] = holder
-                total_duty_holders += 1
-                modified = True
+                total_provisions += 1
 
-        if modified:
-            save_json(filepath, doc)
-            files_modified += 1
+                norm_iri = classify_provision(summary)
+                if norm_iri:
+                    node["estleg:normativeType"] = {"@id": norm_iri}
+                    _triples += 1
+                    if is_kov:
+                        _triples_kov += 1
+                    total_classified += 1
+                    # Readable key for stats
+                    short = norm_iri.split("_", 1)[1] if "_" in norm_iri else norm_iri
+                    law_stats[short] += 1
+                    stats_per_type[short] += 1
+                    modified = True
 
-        if law_stats:
-            stats_per_law[law_name] = dict(law_stats)
+                holder = extract_duty_holder(summary)
+                if holder:
+                    node["estleg:dutyHolder"] = holder
+                    _triples += 1
+                    if is_kov:
+                        _triples_kov += 1
+                    total_duty_holders += 1
+                    modified = True
+
+            if modified:
+                save_json(filepath, doc)
+                files_modified += 1
+
+            if law_stats:
+                stats_per_law[law_name] = dict(law_stats)
+
+            _files_processed += 1
+            if is_kov:
+                _files_processed_kov += 1
+            if _triples > _triples_before:
+                _files_with_output += 1
+                if is_kov:
+                    _files_with_output_kov += 1
+        except Exception as exc:  # noqa: BLE001
+            _failures.append(f"{filepath.name}: {exc!r}")
 
         if idx % 100 == 0 or idx == len(law_files):
             print(f"  [{idx}/{len(law_files)}] processed – {total_classified} classified so far")
@@ -253,6 +302,35 @@ def main() -> None:
     for ntype, count in sorted(stats_per_type.items(), key=lambda x: -x[1]):
         print(f"    {ntype:20s}  {count}")
     print("=" * 70)
+
+    # ---------- coverage report ----------
+    _wall, _rate, _peak_mb = measure_runtime(_start, _files_processed)
+    write_coverage_report(
+        CoverageReport(
+            pipeline="classify_deontic",
+            run_timestamp=datetime.now(timezone.utc).isoformat(),
+            pipeline_version=resolve_pipeline_version(),
+            input_files_total=len(law_files),
+            input_files_kov=len(_kov_files),
+            files_processed=_files_processed,
+            files_processed_kov=_files_processed_kov,
+            files_with_output=_files_with_output,
+            files_with_output_kov=_files_with_output_kov,
+            files_skipped=_files_skipped,
+            skip_reasons=_skip_reasons,
+            triples_emitted=_triples,
+            triples_emitted_kov=_triples_kov,
+            fallback_hits=_fallback_hits,
+            unresolved_references=_unresolved,
+            wall_time_seconds=round(_wall, 2),
+            items_per_second=round(_rate, 2),
+            peak_memory_mb=round(_peak_mb, 1),
+            error_count=len(_failures),
+            failure_samples=_failures,
+        ),
+        REPO_ROOT / "krr_outputs" / "reports" / "kov"
+        / "classify_deontic_coverage.json",
+    )
 
 
 if __name__ == "__main__":

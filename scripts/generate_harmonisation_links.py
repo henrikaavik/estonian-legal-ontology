@@ -305,7 +305,7 @@ def main():
     # --- Step 0: Clear existing harmonisation data ---
     print("\n--- Clearing existing harmonisation data ---")
     cleared = 0
-    for peep_file in iter_peep_files():
+    for peep_file in iter_peep_files(include_kov=False):  # KOV does not apply
         try:
             with open(peep_file, "r", encoding="utf-8") as f:
                 doc = json.load(f)

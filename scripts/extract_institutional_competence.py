@@ -236,7 +236,7 @@ def main() -> None:
     print("Estonian Legal Ontology - Institutional Competence Extraction")
     print("=" * 70)
 
-    law_files = iter_peep_files()
+    law_files = iter_peep_files(include_kov=False)  # DEFERRED to Layer 2c
     print(f"\n[1/4] Found {len(law_files)} law files to process")
 
     # --- Clearing pass: remove old competence data from all files ---
