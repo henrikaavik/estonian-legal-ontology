@@ -41,6 +41,7 @@ _BODY_SUFFIXES: dict[str, tuple[Literal["volikogu", "valitsus"], Literal["linn",
     "linnavalitsus": ("valitsus", "linn"),
     "vallavolikogu": ("volikogu", "vald"),
     "vallavalitsus": ("valitsus", "vald"),
+    "alevivolikogu": ("volikogu", "vald"),  # historical: Vändra alev → successor vald
 }
 
 

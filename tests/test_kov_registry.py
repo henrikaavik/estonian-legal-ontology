@@ -82,11 +82,36 @@ class TestParseIssuerSlug:
         assert parts["bodyType"] == "valitsus"
         assert parts["municipalityType"] == "vald"
 
+    def test_linnavalitsus(self):
+        parts = parse_issuer_slug("tartu_linnavalitsus")
+        assert parts["bodyType"] == "valitsus"
+        assert parts["municipalityType"] == "linn"
+
+    def test_vallavolikogu(self):
+        parts = parse_issuer_slug("kose_vallavolikogu")
+        assert parts["bodyType"] == "volikogu"
+        assert parts["municipalityType"] == "vald"
+
     def test_compound_root(self):
         parts = parse_issuer_slug("kohtla_jarve_linnavolikogu")
         assert parts["root"] == "kohtla_jarve"
         assert parts["body"] == "linnavolikogu"
 
+    def test_alevivolikogu_historical(self):
+        # Vändra alev existed pre-2017 reform; its volikogu issued
+        # municipal regulations that are still in the corpus. Treated
+        # as municipalityType=vald because alev maps to a vald-class
+        # successor in current EHAK.
+        parts = parse_issuer_slug("vandra_alevivolikogu")
+        assert parts["root"] == "vandra"
+        assert parts["body"] == "alevivolikogu"
+        assert parts["bodyType"] == "volikogu"
+        assert parts["municipalityType"] == "vald"
+
     def test_unknown_body_raises(self):
         with pytest.raises(ValueError, match="unknown body suffix"):
             parse_issuer_slug("foo_riigikogu")
+
+    def test_no_underscore_raises(self):
+        with pytest.raises(ValueError, match="unknown body suffix"):
+            parse_issuer_slug("foo")
