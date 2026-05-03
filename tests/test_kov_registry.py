@@ -31,9 +31,36 @@ class TestLoadMunicipalities:
             assert entry["county"]
             assert entry["type"] in {"linn", "vald"}
 
+    def test_duplicate_ehak_raises(self, tmp_path):
+        path = tmp_path / "dup.json"
+        path.write_text(json.dumps([
+            {"ehakCode": "0784", "name": "Tallinn",
+             "county": "Harju maakond", "type": "linn"},
+            {"ehakCode": "0784", "name": "Duplicate",
+             "county": "Harju maakond", "type": "linn"},
+        ]), encoding="utf-8")
+        with pytest.raises(ValueError, match="0784"):
+            load_municipalities(path)
+
+    def test_invalid_type_raises(self, tmp_path):
+        path = tmp_path / "bad.json"
+        path.write_text(json.dumps([
+            {"ehakCode": "0784", "name": "Tallinn",
+             "county": "Harju maakond", "type": "city"},  # not linn|vald
+        ]), encoding="utf-8")
+        with pytest.raises(ValueError, match="city"):
+            load_municipalities(path)
+
+    def test_invalid_ehak_shape_raises(self, tmp_path):
+        path = tmp_path / "bad_code.json"
+        path.write_text(json.dumps([
+            {"ehakCode": "784", "name": "Tallinn",  # 3 digits
+             "county": "Harju maakond", "type": "linn"},
+        ]), encoding="utf-8")
+        with pytest.raises(ValueError, match="4-digit"):
+            load_municipalities(path)
+
     def test_real_file_has_79_entries(self):
         path = REPO_ROOT / "data" / "ehak" / "municipalities.json"
-        if not path.exists():
-            pytest.skip("real registry not yet generated")
         muns = load_municipalities(path)
         assert len(muns) == 79
