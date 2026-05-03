@@ -692,3 +692,87 @@ SELECT ?provision ?label ?type ?maxPenalty WHERE {
 | EUR-Lex | https://eur-lex.europa.eu | SPARQL | `generate_eu_legislation.py` |
 | EUR-Lex / CURIA | https://eur-lex.europa.eu | SPARQL | `generate_eu_court_decisions.py` |
 | EuroVoc | https://op.europa.eu/en/web/eu-vocabularies | SKOS | `classify_eurovoc.py` |
+
+## KOV Entity Model (Layer 1)
+
+The KOV (kohaliku omavalitsuse) layer adds a Municipality + Issuer entity
+model so every municipal regulation and provision is queryable by
+territorial unit and issuing body.
+
+### Class hierarchy
+
+- `estleg:Act` — top-level "any enacted Estonian legal act"
+  - `estleg:Law` — statute (seadus); stamped onto every existing law node
+  - `estleg:NationalRegulation`
+    - `estleg:GovernmentRegulation`
+    - `estleg:MinisterialRegulation`
+  - `estleg:MunicipalRegulation`
+- `estleg:Municipality` — territorial KOV unit (top-level)
+- `estleg:Issuer` — `rdfs:subClassOf estleg:Institution`
+- `estleg:KovProvision` — `rdfs:subClassOf estleg:LegalProvision`
+- `estleg:Citation` — reified preamble citation (Layer 2)
+- `estleg:Similarity` — reified act-level similarity link (Layer 3)
+
+### Properties
+
+| Property | Domain | Range | Purpose |
+| --- | --- | --- | --- |
+| `estleg:enactedBy` | `MunicipalRegulation`, `KovProvision` | `Issuer` | Which body enacted this |
+| `estleg:enactedByMunicipality` | `MunicipalRegulation`, `KovProvision` | `Municipality` | Which KOV unit |
+| `estleg:titleNormalized` | `MunicipalRegulation` | `xsd:string` | Lowercased, transliterated, prefix-stripped title |
+| `estleg:partOfAct` | `KovProvision` | `Act` | IRI link from provision to parent act |
+| `estleg:ehakCode` | `Municipality` | `xsd:string` | Four-digit EHAK code |
+| `estleg:county` | `Municipality` | `xsd:string` | Maakond |
+| `estleg:bodyType` | `Issuer` | `xsd:string` | `"volikogu"` \| `"valitsus"` |
+| `estleg:currentMunicipality` | `Issuer` | `Municipality` | Today's successor for legacy issuers |
+| `estleg:historicalMunicipalityName` | `Issuer` | `xsd:string` | Issuing-time municipality name |
+| `estleg:mappingSource` | `Issuer` | `xsd:string` | How the mapping was derived |
+| `estleg:mappingEvidence` | `Issuer` | `xsd:string` | Source citation for curated mappings |
+
+### IRI patterns
+
+- `estleg:Municipality_EHAK_<4-digit>` — Municipality
+- `estleg:Issuer_<slug>` — Issuer; slug matches the directory name under `krr_outputs/regulations/kov/`
+
+### Generated files
+
+- `krr_outputs/municipalities_peep.json` — 79 Municipality nodes
+- `krr_outputs/issuers_kov_peep.json` — 357 Issuer nodes
+
+### Direct-typing in enriched data
+
+Every act node carries `estleg:Act` rdf:type **directly**, in
+addition to its specific subtype (`Law`, `MunicipalRegulation`,
+`NationalRegulation`, etc.). Same pattern as `KovProvision` on
+provisions. This keeps the data self-describing and means SHACL
+constraints on `estleg:Act` (e.g. `partOfAct`'s range) work without
+requiring RDFS subclass inference at validation time.
+
+### SHACL shapes
+
+`shacl/estonian_legal_shapes.ttl` enforces required fields and IRI
+patterns on `Municipality`, `Issuer`, `MunicipalRegulation` (Layer-1
+fields), and `KovProvision`. Layer 2 will add a `Citation` shape;
+Layer 3 will add a `Similarity` shape.
+
+### Example queries
+
+Find all Tallinn-issued regulations:
+
+```sparql
+SELECT ?reg ?title WHERE {
+  ?reg a estleg:MunicipalRegulation ;
+       estleg:enactedByMunicipality estleg:Municipality_EHAK_0784 ;
+       rdfs:label ?title .
+}
+```
+
+Compare a normalized title across municipalities:
+
+```sparql
+SELECT ?mun ?reg WHERE {
+  ?reg a estleg:MunicipalRegulation ;
+       estleg:titleNormalized "jaatmehoolduseeskiri" ;
+       estleg:enactedByMunicipality ?mun .
+}
+```
