@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import shutil
 import sys
 from pathlib import Path
 
@@ -14,6 +15,7 @@ from enrich_kov_layer1 import build_municipality_doc
 REPO_ROOT = Path(__file__).resolve().parent.parent
 FIXTURE_DIR = Path(__file__).parent / "fixtures" / "kov_layer1"
 MIN_MUNICIPALITIES = FIXTURE_DIR / "municipalities_min.json"
+SAMPLE_KOV_ACT = FIXTURE_DIR / "sample_kov_act.json"
 
 
 class TestBuildMunicipalityDoc:
@@ -85,3 +87,96 @@ class TestBuildIssuerDoc:
                     if n["@id"] == "estleg:Issuer_abja_vallavolikogu")
         assert abja["estleg:mappingEvidence"] == "RT I 21.06.2017 1"
         assert abja["estleg:historicalMunicipalityName"] == "Abja"
+
+
+class TestEnrichKovActFile:
+    @pytest.fixture
+    def issuer(self):
+        return {
+            "slug": "tallinna_linnavolikogu",
+            "displayName": "Tallinna Linnavolikogu",
+            "bodyType": "volikogu",
+            "currentMunicipalityCode": "0784",
+            "mappingSource": "auto-match",
+            "mappingEvidence": "",
+            "historicalMunicipalityName": "Tallinn",
+        }
+
+    @pytest.fixture
+    def temp_act(self, tmp_path):
+        dest = tmp_path / "act.json"
+        shutil.copy(SAMPLE_KOV_ACT, dest)
+        return dest
+
+    def test_act_node_enriched(self, temp_act, issuer):
+        from enrich_kov_layer1 import enrich_kov_act_file
+        enrich_kov_act_file(temp_act, issuer)
+        with open(temp_act, "r", encoding="utf-8") as fh:
+            doc = json.load(fh)
+        act = next(n for n in doc["@graph"]
+                   if n["@id"] == "estleg:Reg_1014955_Map_2026")
+        assert act["estleg:enactedBy"] == {"@id": "estleg:Issuer_tallinna_linnavolikogu"}
+        assert act["estleg:enactedByMunicipality"] == {"@id": "estleg:Municipality_EHAK_0784"}
+        assert act["estleg:titleNormalized"] == "jaatmehoolduseeskiri"
+        # Direct Act type stamped (so partOfAct SHACL doesn't need inference)
+        assert "estleg:Act" in act["@type"]
+        # MunicipalRegulation preserved
+        assert "estleg:MunicipalRegulation" in act["@type"]
+
+    def test_provisions_enriched(self, temp_act, issuer):
+        from enrich_kov_layer1 import enrich_kov_act_file
+        enrich_kov_act_file(temp_act, issuer)
+        with open(temp_act, "r", encoding="utf-8") as fh:
+            doc = json.load(fh)
+        provisions = [n for n in doc["@graph"] if "estleg:paragrahv" in n]
+        assert len(provisions) == 2
+        for p in provisions:
+            assert "estleg:KovProvision" in p["@type"]
+            assert p["estleg:enactedBy"] == {"@id": "estleg:Issuer_tallinna_linnavolikogu"}
+            assert p["estleg:enactedByMunicipality"] == {"@id": "estleg:Municipality_EHAK_0784"}
+            assert p["estleg:partOfAct"] == {"@id": "estleg:Reg_1014955_Map_2026"}
+
+    def test_idempotent(self, temp_act, issuer):
+        from enrich_kov_layer1 import enrich_kov_act_file
+        enrich_kov_act_file(temp_act, issuer)
+        once = json.load(open(temp_act, encoding="utf-8"))
+        enrich_kov_act_file(temp_act, issuer)
+        twice = json.load(open(temp_act, encoding="utf-8"))
+        assert once == twice  # second run is a no-op
+
+    def test_missing_act_node_raises(self, tmp_path, issuer):
+        # A KOV file shape that lacks any estleg:MunicipalRegulation node
+        # must fail loudly — not silently skip while the orchestrator
+        # increments its enriched-count.
+        from enrich_kov_layer1 import enrich_kov_act_file
+        bad = tmp_path / "broken.json"
+        bad.write_text(json.dumps({
+            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+                         "owl": "http://www.w3.org/2002/07/owl#"},
+            "@graph": [
+                {"@id": "estleg:NotAnAct_Map_2026",
+                 "@type": ["owl:Ontology"],
+                 "rdfs:label": "garbage"}
+            ],
+        }), encoding="utf-8")
+        with pytest.raises(ValueError, match="no estleg:MunicipalRegulation"):
+            enrich_kov_act_file(bad, issuer)
+
+    def test_multiple_act_nodes_raise(self, tmp_path, issuer):
+        # Two MunicipalRegulation nodes in one file must also fail —
+        # otherwise provisions would all link to whichever comes first
+        # and partial enrichment would corrupt the file silently.
+        from enrich_kov_layer1 import enrich_kov_act_file
+        bad = tmp_path / "two_acts.json"
+        bad.write_text(json.dumps({
+            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+                         "owl": "http://www.w3.org/2002/07/owl#"},
+            "@graph": [
+                {"@id": "estleg:Reg_1_Map_2026",
+                 "@type": ["owl:Ontology", "estleg:MunicipalRegulation"]},
+                {"@id": "estleg:Reg_2_Map_2026",
+                 "@type": ["owl:Ontology", "estleg:MunicipalRegulation"]},
+            ],
+        }), encoding="utf-8")
+        with pytest.raises(ValueError, match="found 2"):
+            enrich_kov_act_file(bad, issuer)

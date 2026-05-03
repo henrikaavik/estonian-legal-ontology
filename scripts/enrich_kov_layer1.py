@@ -108,6 +108,90 @@ def build_issuer_doc(issuers: dict[str, IssuerEntry]) -> dict:
     return {"@context": CONTEXT, "@graph": nodes}
 
 
+def _add_type(node: dict, type_iri: str) -> bool:
+    """Add type_iri to node["@type"] if missing. Returns True if changed."""
+    types = node.get("@type")
+    if isinstance(types, str):
+        types = [types]
+    elif types is None:
+        types = []
+    if type_iri in types:
+        return False
+    types.append(type_iri)
+    node["@type"] = types
+    return True
+
+
+def enrich_kov_act_file(path: Path, issuer: IssuerEntry) -> None:
+    """Add Layer 1 properties to a single KOV act peep file in place.
+
+    Raises ValueError if the file does not contain exactly one node
+    typed as estleg:MunicipalRegulation. A KOV file under the corpus
+    must have that node — silently skipping malformed files would let
+    Gate A pass while leaving acts undecorated.
+
+    Idempotent — running on an already-enriched file leaves it
+    byte-identical.
+    """
+    with open(path, "r", encoding="utf-8") as fh:
+        doc = json.load(fh)
+
+    issuer_ref = {"@id": issuer_iri(issuer["slug"])}
+    municipality_ref = {"@id": municipality_iri(issuer["currentMunicipalityCode"])}
+
+    # Pass 1: collect every MunicipalRegulation node, enforce exactly one,
+    # then enrich it.
+    act_nodes: list[dict] = []
+    for node in doc.get("@graph", []):
+        types = node.get("@type", [])
+        if isinstance(types, str):
+            types = [types]
+        if "estleg:MunicipalRegulation" in types:
+            act_nodes.append(node)
+
+    if len(act_nodes) == 0:
+        raise ValueError(
+            f"{path}: no estleg:MunicipalRegulation node in @graph; "
+            "expected a KOV act file"
+        )
+    if len(act_nodes) > 1:
+        raise ValueError(
+            f"{path}: found {len(act_nodes)} estleg:MunicipalRegulation "
+            "nodes; KOV files must contain exactly one"
+        )
+
+    act_node = act_nodes[0]
+    act_iri = act_node.get("@id")
+    # Prefer dc:source over rdfs:label: the canonical KOV peep shape
+    # has rdfs:label with the document-type suffix appended (e.g.
+    # "Tallinna jäätmehoolduseeskiri (määrus)") while dc:source carries
+    # the clean title ("Tallinna jäätmehoolduseeskiri"). The clean title
+    # is what we want to feed normalize_title.
+    title = act_node.get("dc:source") or act_node.get("rdfs:label") or ""
+    # Stamp estleg:Act directly so SHACL constraints with
+    # sh:class estleg:Act on partOfAct don't require RDFS inference
+    # at validation time.
+    _add_type(act_node, "estleg:Act")
+    act_node["estleg:enactedBy"] = issuer_ref
+    act_node["estleg:enactedByMunicipality"] = municipality_ref
+    act_node["estleg:titleNormalized"] = normalize_title(
+        title, issuer["displayName"]
+    )
+
+    # Pass 2: enrich provisions.
+    for node in doc.get("@graph", []):
+        if "estleg:paragrahv" not in node:
+            continue
+        _add_type(node, "estleg:KovProvision")
+        node["estleg:enactedBy"] = issuer_ref
+        node["estleg:enactedByMunicipality"] = municipality_ref
+        node["estleg:partOfAct"] = {"@id": act_iri}
+
+    with open(path, "w", encoding="utf-8") as fh:
+        json.dump(doc, fh, ensure_ascii=False, indent=2)
+        fh.write("\n")
+
+
 def main() -> int:
     print("KOV layer 1 enrichment — TODO: full pipeline (see later tasks)")
     return 0
