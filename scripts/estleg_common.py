@@ -134,15 +134,16 @@ def iter_peep_files(
     *,
     include_laws: bool = True,
     include_regulations: bool = True,
-    include_kov: bool = False,
+    include_kov: bool = True,
 ) -> list[Path]:
     """Return every ``*_peep.json`` ontology file managed by the pipeline.
 
-    Pipeline-wide file iterator that includes both top-level laws and the
-    state-level regulations under ``regulations/riik/``. KOV regulations
-    (``regulations/kov/``) are opt-in to keep ~11k near-duplicate municipal
-    acts out of routine cross-reference / similarity passes until KOV
-    integration is explicitly ramped in.
+    Pipeline-wide file iterator that includes top-level laws, state-level
+    regulations under ``regulations/riik/``, and KOV regulations under
+    ``regulations/kov/``. The Layer 2a default flip (2026-05-03) made KOV
+    inclusion the new baseline; pipelines that aren't yet KOV-ready opt
+    out explicitly via ``include_kov=False`` (Layer 2b/2c/3 deferrals,
+    or KOV-irrelevant pipelines like harmonisation links).
     """
     files: list[Path] = []
     if include_laws:
