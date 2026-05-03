@@ -9,7 +9,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 
 import pytest
 
-from kov_registry import load_municipalities
+from kov_registry import load_municipalities, parse_issuer_slug
 
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -64,3 +64,29 @@ class TestLoadMunicipalities:
         path = REPO_ROOT / "data" / "ehak" / "municipalities.json"
         muns = load_municipalities(path)
         assert len(muns) == 79
+
+
+class TestParseIssuerSlug:
+    def test_linnavolikogu(self):
+        parts = parse_issuer_slug("tallinna_linnavolikogu")
+        assert parts == {
+            "slug": "tallinna_linnavolikogu",
+            "root": "tallinna",
+            "body": "linnavolikogu",
+            "bodyType": "volikogu",
+            "municipalityType": "linn",
+        }
+
+    def test_vallavalitsus(self):
+        parts = parse_issuer_slug("mulgi_vallavalitsus")
+        assert parts["bodyType"] == "valitsus"
+        assert parts["municipalityType"] == "vald"
+
+    def test_compound_root(self):
+        parts = parse_issuer_slug("kohtla_jarve_linnavolikogu")
+        assert parts["root"] == "kohtla_jarve"
+        assert parts["body"] == "linnavolikogu"
+
+    def test_unknown_body_raises(self):
+        with pytest.raises(ValueError, match="unknown body suffix"):
+            parse_issuer_slug("foo_riigikogu")

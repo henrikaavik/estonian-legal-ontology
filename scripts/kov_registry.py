@@ -34,3 +34,41 @@ def load_municipalities(path: Path) -> dict[str, Municipality]:
             )
         out[code] = row
     return out
+
+
+_BODY_SUFFIXES: dict[str, tuple[Literal["volikogu", "valitsus"], Literal["linn", "vald"]]] = {
+    "linnavolikogu": ("volikogu", "linn"),
+    "linnavalitsus": ("valitsus", "linn"),
+    "vallavolikogu": ("volikogu", "vald"),
+    "vallavalitsus": ("valitsus", "vald"),
+}
+
+
+class IssuerSlugParts(TypedDict):
+    slug: str
+    root: str
+    body: str
+    bodyType: Literal["volikogu", "valitsus"]
+    municipalityType: Literal["linn", "vald"]
+
+
+def parse_issuer_slug(slug: str) -> IssuerSlugParts:
+    """Split an issuer directory slug into its components.
+
+    Slugs look like ``tallinna_linnavolikogu`` or
+    ``kohtla_jarve_linnavolikogu`` (compound root). The body suffix is
+    one of ``linnavolikogu``, ``linnavalitsus``, ``vallavolikogu``,
+    ``vallavalitsus``.
+    """
+    for body, (body_type, mun_type) in _BODY_SUFFIXES.items():
+        suffix = f"_{body}"
+        if slug.endswith(suffix):
+            root = slug[: -len(suffix)]
+            return {
+                "slug": slug,
+                "root": root,
+                "body": body,
+                "bodyType": body_type,
+                "municipalityType": mun_type,
+            }
+    raise ValueError(f"unknown body suffix in slug: {slug!r}")
