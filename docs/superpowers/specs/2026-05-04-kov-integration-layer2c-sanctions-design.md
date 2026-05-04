@@ -28,10 +28,19 @@ After the PR lands, all of the following hold:
    for state laws — no KOV-specific extraction code added in this PR.
 5. Coverage report `krr_outputs/reports/kov/extract_sanctions_coverage.json`
    shows `files_with_output_kov > 0` and `triples_emitted_kov > 0`.
-6. Re-runs are idempotent: a provision that previously had
-   `hasSanction` + `enforcedAtLevel` and no longer matches the
-   sanction regex loses BOTH triples on the next run.
-7. Targeted SHACL: zero new violations on `enforcedAtLevel`.
+6. Re-runs are idempotent at BOTH layers:
+   - Provision-level: a provision that previously had `hasSanction` +
+     `enforcedAtLevel` and no longer matches the sanction regex loses
+     BOTH triples on the next run.
+   - Sanction-file-level: when the act loses all its sanction matches
+     between runs, the corresponding `krr_outputs/sanctions/sanctions_<law>.json`
+     file is deleted (or overwritten with an empty `@graph`) so stale
+     `Sanction_*` nodes don't linger pointing at provisions that no
+     longer carry `hasSanction`.
+7. Targeted SHACL: `LegalProvisionShape` gains an explicit property
+   constraint for `enforcedAtLevel` in this PR (datatype `xsd:string`,
+   `sh:maxCount 1`, value set `"state"` ∪ `"municipality"`). Zero new
+   violations against this constraint.
 
 **Real-world impact estimate** (read-only dry count over the current
 corpus): about 82 KOV files gain sanction triples, with ~85 sanction
@@ -50,8 +59,11 @@ because:
 - The existing sanction extraction regex bank already handles the
   Estonian patterns KOV regulations use (`väärtegu, mille eest on ette
   nähtud rahatrahv kuni X trahviühikut` matches the state-law form).
-- No new SHACL shapes — `enforcedAtLevel` was declared in Layer 2a
-  with `Domain: estleg:LegalProvision, Range: xsd:string`.
+- No new SHACL **shapes** — `LegalProvisionShape` already exists.
+  This PR adds a single property constraint to that shape for
+  `enforcedAtLevel`. Layer 2a declared the property in
+  `metadata.jsonld` but the SHACL TTL did not yet reference it; this
+  PR closes that gap.
 
 ## Architecture
 
@@ -91,8 +103,28 @@ without colliding with this one.
 ### Where the rule fires
 
 In `extract_sanctions.py` itself, inside the existing per-provision
-loop. When `sanction_refs` is non-empty for a provision (i.e., at
-least one sanction was extracted from its summary text), set both:
+loop. The current script doesn't carry an `act_node` reference at
+that point; this PR adds a small helper:
+
+```python
+def _find_act_node(doc: dict) -> dict | None:
+    """Return the owl:Ontology-typed act node from a peep file's
+    @graph, or None if no act node is present (defensive — the
+    upstream generators always emit one).
+
+    The returned node is the source of truth for @type-based
+    classification; the helper centralises the lookup so the per-
+    provision loop doesn't repeat the same scan."""
+    for n in doc.get("@graph", []):
+        types = n.get("@type") or []
+        if isinstance(types, str):
+            types = [types]
+        if "owl:Ontology" in types:
+            return n
+    return None
+```
+
+When `sanction_refs` is non-empty for a provision:
 
 ```python
 node["estleg:hasSanction"] = sanction_refs
@@ -104,23 +136,52 @@ partial preservation. This is what makes the property idempotent
 under act-type changes (extremely rare in practice but possible in
 principle if a corpus correction reclassifies an act).
 
+**One literal per provision, regardless of sanction count.** A
+provision that emits multiple `Sanction_*` records still carries
+exactly one `enforcedAtLevel` literal. The integration tests assert
+this explicitly.
+
 ### Idempotency
 
-Same shape as Layer 2b's preamble pass:
+Same shape as Layer 2b's preamble pass — but covering BOTH the peep
+file mutations AND the sibling sanctions JSON file. Replace the
+current global pre-clear pass (which scans every law file once to
+strip prior sanctions before the extraction loop) with per-file
+in-memory processing inside the per-law iteration:
 
-1. Detect existing output BEFORE clearing — track `had_existing` flag
-   (any of: `estleg:hasSanction`, `estleg:enforcedAtLevel` on the
-   provision; existing `Sanction_*` nodes in the law's sanction file).
-2. Clear unconditionally: `pop("estleg:hasSanction", None)`,
-   `pop("estleg:enforcedAtLevel", None)`.
-3. Run extraction.
-4. Save when EITHER fresh sanction output exists OR `had_existing`
-   was true (so a provision that lost its sanctions persists the
-   cleared state to disk).
+1. Load the peep file's `doc` into memory.
+2. Find the act node via `_find_act_node(doc)`.
+3. Compute the path of the corresponding sanctions JSON file (e.g.
+   `krr_outputs/sanctions/sanctions_<law_slug>.json`).
+4. Detect existing output BEFORE any mutation:
+   - **Peep-side `had_existing`:** True if ANY provision in `doc`
+     carries `estleg:hasSanction` OR `estleg:enforcedAtLevel`.
+   - **Sanctions-file-side `had_sanction_file`:** True if the
+     sanctions file exists on disk.
+5. Clear peep-side unconditionally: walk every provision and
+   `pop("estleg:hasSanction", None)` + `pop("estleg:enforcedAtLevel", None)`.
+6. Run sanction extraction over the in-memory `doc`. If any
+   provision matches, build `sanction_refs` and set the two triples
+   on the provision (one literal per provision per the rule above).
+7. Save the peep file when EITHER fresh sanction output exists OR
+   `had_existing` was true.
+8. Handle the sanctions file:
+   - If the act produced fresh sanction output, write/overwrite the
+     sanctions JSON normally (existing logic).
+   - If the act produced no fresh sanction output AND
+     `had_sanction_file` was true, **delete** the stale sanctions
+     file. Otherwise stale `Sanction_*` nodes pointing at provisions
+     that no longer carry `hasSanction` would outlive the inverse
+     pass, leaving dangling `estleg:applicableProvision` triples and
+     misleading the downstream sanctions analytics queries.
 
-Without step 4, a provision whose source text changes such that the
-regex no longer matches would keep stale `hasSanction` /
-`enforcedAtLevel` triples forever.
+Without steps 7-8, a provision (or a whole act) whose source text
+changes such that the regex no longer matches would keep stale
+triples forever and leak orphan `Sanction_*` nodes.
+
+The per-file iteration replaces the existing global pre-clear so
+that `had_existing` / `had_sanction_file` can be computed per file
+without losing race-safety.
 
 ### Coverage instrumentation
 
@@ -140,6 +201,20 @@ _triples_kov = 0
 `set[Path]` length feeds the `int` fields the helper expects. KOV
 attribution is by source act path (the file we're scanning), not the
 output target's path.
+
+**`triples_emitted` definition (be explicit):** counts EXTRACTED
+SANCTION RECORDS, NOT the underlying RDF triple count. Each
+`Sanction_*` node typically projects 4-7 RDF triples (`@type`, label,
+`sanctionType`, optional `maxPenalty`/`minPenalty`,
+`applicableProvision`); `triples_emitted` reports the record count
+because that's the analytically meaningful unit and matches how the
+existing `sanctions_report.json` `total_sanction_count` is computed.
+A coverage report saying `triples_emitted: 85` means "85 sanction
+records were extracted," not "85 RDF triples were written." Document
+this in the coverage instrumentation block of `extract_sanctions.py`
+so readers don't misinterpret across pipelines (the cross-references
+pipeline counts actual triples, since "preamble triples" are the
+analytical unit there).
 
 Gate check (matches Layer 2a/2b convention):
 
@@ -163,10 +238,11 @@ Coverage report writes to
 
 | Path | Change |
 | --- | --- |
-| `scripts/extract_sanctions.py` | Remove `include_kov=False` pin (line ~510); add `_classify_enforcement_level` helper; emit `enforcedAtLevel` alongside `hasSanction`; extend idempotency clear to include `enforcedAtLevel`; add coverage instrumentation. |
-| `tests/test_extract_sanctions.py` | **New file.** ~12 tests across 4 classes (unit + integration + idempotency + coverage). |
-| `docs/SCHEMA_REFERENCE.md` | Mark `estleg:enforcedAtLevel` as populated; add a short example block in the existing Sanctions section AND in the Layer 2 schema table. |
-| `CHANGELOG.md` | Layer 2c sub-PR-1 entry — sanctions unpinned, coverage numbers, KOV impact. |
+| `scripts/extract_sanctions.py` | Remove `include_kov=False` pin (line ~510); add `_find_act_node` + `_classify_enforcement_level` helpers; replace global pre-clear with per-file in-memory processing; emit `enforcedAtLevel` alongside `hasSanction` (one literal per provision); extend idempotency to delete stale sanctions JSON files when fresh output is empty; change `main()` to return `int` and use `raise SystemExit(main())`; add coverage instrumentation reusing `kov_pipeline_coverage.CoverageReport`. |
+| `tests/test_extract_sanctions.py` | **New file.** ~14 tests across 5 classes (unit + integration + idempotency + sanctions-file idempotency + coverage + corpus-level invariant). |
+| `shacl/estonian_legal_shapes.ttl` | Add a property constraint inside the existing `LegalProvisionShape`: `sh:path estleg:enforcedAtLevel ; sh:datatype xsd:string ; sh:maxCount 1 ; sh:in ("state" "municipality") ; sh:name "enforcedAtLevel" ; sh:description "..."` . Closes the gap between `metadata.jsonld` (declares the property) and the SHACL TTL (didn't reference it). |
+| `docs/SCHEMA_REFERENCE.md` | Mark `estleg:enforcedAtLevel` as populated; add a short example block in the existing Sanctions section AND in the Layer 2 schema table; document the `sh:in ("state" "municipality")` constraint addition. |
+| `CHANGELOG.md` | Layer 2c sub-PR-1 entry — sanctions unpinned, SHACL property constraint added, coverage numbers, KOV impact. |
 
 ### NOT in this PR
 
@@ -193,7 +269,7 @@ test classes, ~12 tests total.
 - `test_string_type_normalised` — `@type` as bare `str` (not list) is
   handled correctly.
 
-### `TestSanctionExtractionWithEnforcementStamp` (integration, 3 tests)
+### `TestSanctionExtractionWithEnforcementStamp` (integration, 4 tests)
 
 - `test_kov_act_sanctions_get_municipality_stamp` — stage a tmp KOV
   peep with a parking-fine sanction; run the extraction; assert
@@ -205,8 +281,15 @@ test classes, ~12 tests total.
   provision whose summary text contains no matching sanction pattern
   does NOT gain `enforcedAtLevel` (preserves the "stamps only on
   sanction-bearing provisions" rule).
+- `test_provision_with_multiple_sanctions_gets_one_enforcement_literal` —
+  stage a provision whose summary matches BOTH an imprisonment and a
+  fine pattern (e.g. KarS-style "kuni kolm aastat vangistust või
+  rahatrahv kuni 300 trahviühikut"); assert `estleg:hasSanction` is a
+  list of two refs, AND `estleg:enforcedAtLevel` is a single bare
+  string literal (NOT a list). Locks in the "one literal per
+  provision regardless of sanction count" rule.
 
-### `TestSanctionsIdempotency` (integration, 3 tests)
+### `TestSanctionsIdempotency` (integration, 4 tests)
 
 - `test_stale_enforcement_cleared_when_sanctions_removed` — provision
   starts with prior `hasSanction` + `enforcedAtLevel`; the act's
@@ -218,6 +301,13 @@ test classes, ~12 tests total.
   the new type, not the prior emission.
 - `test_no_op_when_no_existing_no_fresh` — provision with no
   sanctions, no prior stamps; rerun doesn't touch the file.
+- `test_stale_sanctions_json_deleted_when_act_loses_all_sanctions` —
+  stage a peep with a prior sanctions JSON file at
+  `krr_outputs/sanctions/sanctions_<law>.json` containing a
+  `Sanction_*` node; the act's summary text changes so no sanction
+  matches now; rerun deletes the sanctions JSON file from disk so
+  the orphan `Sanction_*` node and its `applicableProvision` triple
+  don't survive.
 
 ### `TestSanctionsCoverageReport` (integration, 2 tests)
 
@@ -227,28 +317,58 @@ test classes, ~12 tests total.
   `triples_emitted_kov >= 1`.
 - `test_gate_fails_when_kov_input_nontrivial_but_no_output` — invoke
   `main()` with mocked `iter_peep_files` returning ≥11,000 KOV paths
-  but the regex never matches; assert exit code is non-zero.
+  but the regex never matches; assert `main()` returns 1 (the
+  `raise SystemExit(main())` line then propagates the exit code).
+
+### `TestCorpusInvariant` (integration, 1 test)
+
+- `test_every_has_sanction_provision_has_exactly_one_enforced_at_level` —
+  scan ALL files in `krr_outputs/` (recursive, including
+  `regulations/kov/**/*_peep.json`). For every node carrying
+  `estleg:hasSanction`, assert `estleg:enforcedAtLevel` is a single
+  bare string (not a list, not absent), AND the value is one of
+  `"state"` or `"municipality"`. This is a corpus-level invariant
+  check: a regression where one sanction-bearing provision lost its
+  stamp would surface here even if the unit tests pass. Marked
+  `@pytest.mark.slow` so CI can skip it on every commit and run only
+  in the integration suite. Skipped if `krr_outputs/` is empty
+  (clean checkout).
 
 ## Implementation order
 
-Eight commits, TDD shape (matches Layer 2b convention):
+Ten commits, TDD shape (matches Layer 2b convention):
 
-1. Add `_classify_enforcement_level` helper + unit tests
-   (`TestClassifyEnforcementLevel`, 4 tests).
+1. Add `_find_act_node` + `_classify_enforcement_level` helpers +
+   unit tests (`TestClassifyEnforcementLevel`, 4 tests).
 2. Wire `enforcedAtLevel` emission into the existing sanction
    extraction pass + integration tests
-   (`TestSanctionExtractionWithEnforcementStamp`, 3 tests).
-3. Add idempotency: clear stale `enforcedAtLevel`, save-even-when-empty
-   pattern + idempotency tests (`TestSanctionsIdempotency`, 3 tests).
-4. Add coverage instrumentation reusing `kov_pipeline_coverage` +
-   coverage tests (`TestSanctionsCoverageReport`, 2 tests).
-5. Unpin: remove `include_kov=False` from `iter_peep_files` call
+   (`TestSanctionExtractionWithEnforcementStamp`, 4 tests). Includes
+   the multiple-sanctions-one-literal regression test.
+3. Refactor to per-file in-memory processing + clear stale
+   `enforcedAtLevel` + save-even-when-empty pattern. Adds
+   `TestSanctionsIdempotency` provision-level tests (3 of 4).
+4. Extend idempotency to delete stale sanctions JSON files when
+   fresh output is empty. Adds `TestSanctionsIdempotency`
+   sanctions-file test (4th of 4).
+5. Add SHACL property constraint to `LegalProvisionShape` for
+   `enforcedAtLevel` (`xsd:string`, `sh:maxCount 1`,
+   `sh:in ("state" "municipality")`). Run targeted SHACL to
+   confirm zero new violations against the constraint.
+6. Add coverage instrumentation reusing `kov_pipeline_coverage`;
+   change `main()` to return `int`; add
+   `raise SystemExit(main())`. Coverage tests
+   (`TestSanctionsCoverageReport`, 2 tests).
+7. Unpin: remove `include_kov=False` from the `iter_peep_files` call
    (one-line change). Re-run the test suite.
-6. Run full corpus + commit output (~82 KOV files modified,
-   `extract_sanctions_coverage.json` first run).
-7. Documentation commit (SCHEMA_REFERENCE.md, CHANGELOG.md).
-8. Final verification + PR body — `pytest -q`, `validate_all`,
-   gate-check one-liner, generate PR body, stop short of pushing.
+8. Run full corpus + commit output (~82 KOV files modified plus
+   any state-side regenerations; `extract_sanctions_coverage.json`
+   first run). Add the corpus-invariant test
+   (`TestCorpusInvariant`, 1 test) to the test suite — it runs after
+   the corpus output is in place, validating the global property.
+9. Documentation commit (SCHEMA_REFERENCE.md, CHANGELOG.md).
+10. Final verification + PR body — `pytest -q`, `validate_all`,
+    targeted SHACL on the new constraint, gate-check one-liner,
+    generate PR body, stop short of pushing.
 
 ## Risks and mitigations
 
@@ -269,10 +389,15 @@ class of bug fixed in PR #99 review round 2.
 
 **Risk 3: SHACL violations from the new `enforcedAtLevel` triples.**
 
-Mitigation: Layer 2a's `LegalProvisionShape` constrains
-`enforcedAtLevel` only by `xsd:string` datatype. The classification
-function returns `"state"` or `"municipality"` (string literals), so
-this is zero-risk.
+Mitigation: Layer 2a's `metadata.jsonld` declared
+`enforcedAtLevel` but the SHACL TTL never referenced it — meaning
+the previous spec's "zero new violations" claim was vacuous. This
+PR closes that gap by ADDING the property constraint to
+`LegalProvisionShape` in commit 5. The classification function
+returns exactly `"state"` or `"municipality"`, both of which are
+in the new `sh:in` value set, so the constraint validates clean by
+construction. The test suite locks in the contract; the corpus run
+in commit 8 validates against real data.
 
 **Risk 4: Re-running on the corpus replaces 82 KOV files plus
 sanctions/ regeneration — large diff in the PR.**
@@ -287,10 +412,11 @@ This PR does **not**:
 
 - Modify `extract_institutional_competence` or `extract_court_provision_links` (subsequent Layer 2c PRs).
 - Add new sanction patterns or extraction logic.
-- Add new SHACL shapes.
+- Add new SHACL **shapes** — only adds a property constraint to
+  the existing `LegalProvisionShape`.
 - Touch the `iter_peep_files` default flip (already done in Layer 2a).
-- Refactor the sanction file output format (`krr_outputs/sanctions/*.json`
-  remains unchanged).
+- Refactor the sanction file output format (`krr_outputs/sanctions/sanctions_*.json`
+  remains unchanged in shape; only the deletion-on-empty behaviour is new).
 
 ## Gate B umbrella status (after this PR lands)
 
