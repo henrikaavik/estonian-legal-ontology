@@ -22,8 +22,9 @@ from __future__ import annotations
 
 import json
 import re
+import time
 import xml.etree.ElementTree as ET
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 from estleg_common import (
@@ -34,6 +35,12 @@ from estleg_common import (
     iter_peep_files,
     save_json,
     sanitize_id,
+)
+from kov_pipeline_coverage import (
+    CoverageReport,
+    measure_runtime,
+    resolve_pipeline_version,
+    write_coverage_report,
 )
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -1498,10 +1505,22 @@ def clear_existing_references() -> int:
     return cleaned
 
 
-def main() -> None:
+def main() -> int:
     print("=" * 70)
     print("Estonian Legal Ontology - Extract Cross-Law References")
     print("=" * 70)
+
+    _start = time.perf_counter()
+    _files_processed: set[Path] = set()
+    _files_processed_kov: set[Path] = set()
+    _files_with_output: set[Path] = set()
+    _files_with_output_kov: set[Path] = set()
+    _triples = 0
+    _triples_kov = 0
+    _files_skipped = 0
+    _skip_reasons: dict[str, int] = {}
+    _failures: list[str] = []
+    _unresolved = 0
 
     # Step 1: Clear existing references for idempotent re-run
     print("\n[1/5] Clearing existing estleg:references from law files...")
@@ -1567,6 +1586,23 @@ def main() -> None:
         total_with_refs += stats.get("provisions_with_refs", 0)
         if stats.get("provisions_with_refs", 0) > 0:
             files_modified += 1
+
+        # Coverage accumulators — set-based dedup avoids double-counting
+        # files that also produce output in the preamble pass below.
+        is_kov = "regulations/kov/" in str(json_file)
+        _files_processed.add(json_file)
+        if is_kov:
+            _files_processed_kov.add(json_file)
+        if stats.get("provisions_with_refs", 0) > 0:
+            _files_with_output.add(json_file)
+            if is_kov:
+                _files_with_output_kov.add(json_file)
+        delta = stats.get("citations_resolved", 0)
+        _triples += delta
+        if is_kov:
+            _triples_kov += delta
+        if stats.get("error"):
+            _failures.append(f"{json_file.name}: {stats['error']}")
 
         if i % 50 == 0 or i == len(law_files):
             print(f"  Processed {i}/{len(law_files)} files "
@@ -1698,6 +1734,17 @@ def main() -> None:
     print(f"  preamble citations resolved/unresolved: "
           f"{preamble_citations_resolved}/{preamble_citations_unresolved}")
 
+    # Fold the preamble pass into the run-level coverage accumulators.
+    # The set unions deduplicate against the body-text pass above, so a
+    # file emitting from both passes counts once in files_with_output.
+    _files_processed |= preamble_files_processed
+    _files_processed_kov |= preamble_files_kov_processed
+    _files_with_output |= preamble_files_with_output
+    _files_with_output_kov |= preamble_files_kov_with_output
+    _triples += preamble_triples_emitted
+    _triples_kov += preamble_triples_emitted_kov
+    _unresolved += preamble_citations_unresolved
+
     # Step 5: Generate report
     print("\n[5/5] Generating cross-references report...")
     total_unresolved = total_citations - total_resolved
@@ -1741,6 +1788,54 @@ def main() -> None:
     print(f"  Report: {report_path}")
     print("=" * 70)
 
+    # Coverage report (KOV-aware schema, shared across the 6 KOV pipelines)
+    all_input_files = list(iter_peep_files())
+    _kov_files = [p for p in all_input_files
+                  if "regulations/kov/" in str(p)]
+
+    _wall, _rate, _peak_mb = measure_runtime(_start, len(_files_processed))
+    out_path = KRR_DIR / "reports" / "kov" / "extract_cross_references_coverage.json"
+    write_coverage_report(
+        CoverageReport(
+            pipeline="extract_cross_references",
+            run_timestamp=datetime.now(timezone.utc).isoformat(),
+            pipeline_version=resolve_pipeline_version(),
+            input_files_total=len(all_input_files),
+            input_files_kov=len(_kov_files),
+            files_processed=len(_files_processed),
+            files_processed_kov=len(_files_processed_kov),
+            files_with_output=len(_files_with_output),
+            files_with_output_kov=len(_files_with_output_kov),
+            files_skipped=_files_skipped,
+            skip_reasons=_skip_reasons,
+            triples_emitted=_triples,
+            triples_emitted_kov=_triples_kov,
+            unresolved_references=_unresolved,
+            wall_time_seconds=round(_wall, 2),
+            items_per_second=round(_rate, 2),
+            peak_memory_mb=round(_peak_mb, 1),
+            error_count=len(_failures),
+            failure_samples=_failures,
+        ),
+        out_path,
+    )
+    print(f"\nCoverage report: {out_path}")
+    print(f"  input_files_total: {len(all_input_files)} (KOV: {len(_kov_files)})")
+    print(f"  files_with_output: {len(_files_with_output)} "
+          f"(KOV: {len(_files_with_output_kov)})")
+    print(f"  triples_emitted: {_triples} (KOV: {_triples_kov})")
+
+    # Gate check — fails the run when the KOV side produced nothing
+    # despite the corpus being present.
+    if len(_kov_files) >= 11000 and len(_files_with_output_kov) == 0:
+        print("\nGATE FAIL: KOV files were processed but none produced output.")
+        return 1
+    if _triples_kov == 0 and len(_kov_files) >= 11000:
+        print("\nGATE FAIL: zero KOV triples emitted.")
+        return 1
+    print("\nGATE OK")
+    return 0
+
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())
