@@ -250,6 +250,23 @@ The existing per-provision loop already calls `extract_sanctions(summary)` and a
 - [ ] **Step 1: Append `TestSanctionExtractionWithEnforcementStamp` to `tests/test_extract_sanctions.py`**
 
 ```python
+def _iter_kov_inclusive(*args, **kwargs):
+    """Wrapper that forces include_kov=True regardless of caller args.
+
+    Tasks 2-6 are scheduled BEFORE the unpin in Task 7, so production
+    main() still calls iter_peep_files(include_kov=False) at this
+    point. Tests that stage KOV fixtures must monkeypatch
+    `mod.iter_peep_files` with this wrapper so KOV-staged peeps are
+    visible regardless of whether the production unpin has landed yet.
+    After Task 7, production defaults to include_kov=True and the
+    wrapper becomes a no-op — but keep it in the tests so they remain
+    self-contained and independent of task-execution order.
+    """
+    from estleg_common import iter_peep_files as _real_iter
+    kwargs.pop("include_kov", None)
+    return _real_iter(include_kov=True, **kwargs)
+
+
 class TestSanctionExtractionWithEnforcementStamp:
     """Integration tests verifying enforcedAtLevel lands on every
     provision that gains hasSanction, with one literal per provision
@@ -327,6 +344,10 @@ class TestSanctionExtractionWithEnforcementStamp:
         monkeypatch.setattr(mod, "KRR_DIR", krr)
         monkeypatch.setattr(mod, "SANCTION_DIR", sanctions_dir)
         monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+        # Production main() still calls iter_peep_files(include_kov=False)
+        # at this point in the task order; force KOV inclusion so the
+        # staged KOV fixture is visible.
+        monkeypatch.setattr(mod, "iter_peep_files", _iter_kov_inclusive)
 
         rc = mod.main()
         assert rc in (0, None)
@@ -350,6 +371,9 @@ class TestSanctionExtractionWithEnforcementStamp:
         monkeypatch.setattr(mod, "KRR_DIR", krr)
         monkeypatch.setattr(mod, "SANCTION_DIR", sanctions_dir)
         monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+        # State-only fixture, but use the wrapper for consistency
+        # with the other tests in this class.
+        monkeypatch.setattr(mod, "iter_peep_files", _iter_kov_inclusive)
 
         rc = mod.main()
         assert rc in (0, None)
@@ -393,6 +417,7 @@ class TestSanctionExtractionWithEnforcementStamp:
         monkeypatch.setattr(mod, "KRR_DIR", krr)
         monkeypatch.setattr(mod, "SANCTION_DIR", sanctions_dir)
         monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "iter_peep_files", _iter_kov_inclusive)
 
         rc = mod.main()
         assert rc in (0, None)
@@ -437,6 +462,7 @@ class TestSanctionExtractionWithEnforcementStamp:
         monkeypatch.setattr(mod, "KRR_DIR", krr)
         monkeypatch.setattr(mod, "SANCTION_DIR", sanctions_dir)
         monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "iter_peep_files", _iter_kov_inclusive)
 
         rc = mod.main()
         assert rc in (0, None)
@@ -1185,6 +1211,7 @@ class TestSanctionsCoverageReport:
         monkeypatch.setattr(mod, "KRR_DIR", krr)
         monkeypatch.setattr(mod, "SANCTION_DIR", sanctions_dir)
         monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "iter_peep_files", _iter_kov_inclusive)
 
         rc = mod.main()
         assert rc == 0, f"main() should return 0 on success, got {rc}"
@@ -1308,17 +1335,46 @@ from kov_pipeline_coverage import (
     _unresolved = 0  # always 0 for this pipeline; field required by helper
 ```
 
-(d) Inside the per-file loop, AFTER `act_node = _find_act_node(doc)` but BEFORE the early-return on `act_node is None`, add malformed-input bookkeeping:
+(d) Inside the per-file loop, AFTER `act_node = _find_act_node(doc)` but BEFORE the early-return on `act_node is None`, add bookkeeping that distinguishes aggregate-registry peeps from malformed act peeps:
 
 ```python
         if act_node is None:
-            _files_skipped += 1
-            _skip_reasons["missing_act_node"] = (
-                _skip_reasons.get("missing_act_node", 0) + 1
+            # Distinguish aggregate-registry peeps (issuers_kov_peep.json,
+            # municipalities_peep.json, etc.) from malformed act peeps.
+            #
+            # Aggregate peeps have NO LegalProvision/KovProvision nodes —
+            # they're catalogues of Issuer/Municipality/etc. entities.
+            # Silently skip those (no counter, no failure log) because
+            # they're correctly-formed non-act peeps that just don't
+            # carry sanctions.
+            #
+            # Malformed act peeps DO have provision nodes but no
+            # estleg:Act + owl:Ontology typing on their root node —
+            # that's a Layer 1 data bug worth surfacing in the
+            # coverage report's failure_samples.
+            has_provisions = any(
+                "estleg:LegalProvision" in (n.get("@type") or [])
+                or "estleg:KovProvision" in (n.get("@type") or [])
+                or any(
+                    isinstance(t, str) and t.startswith("estleg:LegalProvision_")
+                    for t in (n.get("@type") or [])
+                )
+                for n in doc.get("@graph", [])
             )
-            _failures.append(f"{filepath.name}: missing act node (estleg:Act + owl:Ontology)")
+            if has_provisions:
+                _files_skipped += 1
+                _skip_reasons["missing_act_node"] = (
+                    _skip_reasons.get("missing_act_node", 0) + 1
+                )
+                _failures.append(
+                    f"{filepath.name}: malformed peep — has provisions "
+                    f"but missing estleg:Act + owl:Ontology root node"
+                )
+            # Either way, the file has no act to classify — skip extraction.
             continue
 ```
+
+The `estleg:LegalProvision_<lawprefix>` membership check covers per-act subclasses (e.g. `estleg:LegalProvision_KOKS`) that the corpus stamps on top of the bare `estleg:LegalProvision` type.
 
 After `enforcement_level = _classify_enforcement_level(act_node)` and BEFORE the per-provision loop, add file-level bookkeeping:
 
@@ -1423,7 +1479,7 @@ Run: `pytest tests/test_extract_sanctions.py -v`
 Expected: 4 + 4 + 4 + 2 = 14 passed (corpus-invariant test lands after the corpus run in Task 8).
 
 Run: `pytest -q`
-Expected: 199 + 4 + 1 + 2 = 206 passed (Task 1 added 4, Task 2 added 4, Task 3 added 3, Task 4 added 1, Task 6 adds 2 = 14 new).
+Expected: 205 passed. Cumulative count from baseline 191: Task 1 +4 = 195; Task 2 +4 = 199; Task 3 +3 = 202; Task 4 +1 = 203; Task 5 +0 (SHACL only) = 203; Task 6 +2 = 205. Task 8's corpus-invariant test will bring the total to 206.
 
 - [ ] **Step 6: Commit**
 
@@ -1490,7 +1546,7 @@ Expected: `OK`.
 - [ ] **Step 5: Run the full suite**
 
 Run: `pytest -q`
-Expected: 206 passed (no test count change — the unpin is structural; the existing tests run on tmp fixtures so they're insensitive to the default).
+Expected: 205 passed (no test count change — the unpin is structural; the existing tests run on tmp fixtures + the `_iter_kov_inclusive` wrapper so they're insensitive to the production default).
 
 - [ ] **Step 6: Commit**
 
@@ -1628,7 +1684,7 @@ If it fails, the implementation has a bug — investigate and fix BEFORE staging
 - [ ] **Step 6: Run the full suite**
 
 Run: `pytest -q`
-Expected: 206 + 1 = 207 passed.
+Expected: 205 + 1 = 206 passed.
 
 - [ ] **Step 7: Stage the corpus diff in chunks**
 
@@ -1817,7 +1873,7 @@ Gate B closes when all three Layer 2c sub-PRs land.
 - [ ] **Step 3: Verify**
 
 Run: `pytest -q`
-Expected: 207 passed (no test count change — the doc edits are markdown only).
+Expected: 206 passed (no test count change — the doc edits are markdown only).
 
 - [ ] **Step 4: Commit**
 
@@ -1846,7 +1902,7 @@ Coverage numbers reference the actual corpus run (Task 8 commit)."
 - [ ] **Step 1: Run the full test suite**
 
 Run: `pytest -q`
-Expected: 207 passed.
+Expected: 206 passed.
 
 - [ ] **Step 2: Run validate_all**
 
@@ -1855,36 +1911,36 @@ Expected: `VALIDATION PASSED` with 0 errors / 0 warnings.
 
 - [ ] **Step 3: Run targeted SHACL on the new constraint**
 
+The verification queries the SHACL results GRAPH directly via `sh:resultPath` rather than text-grepping the prose report. Text-grep is fragile because pyshacl puts `sh:resultPath` and other violation fields on separate lines — a per-line grep can return zero matches even when violations exist.
+
 ```bash
 python3 - <<'PY'
-from rdflib import Graph
+from rdflib import Graph, URIRef
+from rdflib.namespace import SH
 from pyshacl import validate
 import json
 from pathlib import Path
 
-# Build a small data graph from a sample of corpus peeps that have
-# enforcedAtLevel triples.
+ESTLEG_NS = "https://data.riik.ee/ontology/estleg#"
+ENFORCED_AT_LEVEL = URIRef(ESTLEG_NS + "enforcedAtLevel")
+
+# Build a data graph from a sample of corpus peeps that carry
+# enforcedAtLevel triples (the ones whose constraint behaviour
+# matters for this verification).
 data = Graph()
 sample_count = 0
 for peep in Path("krr_outputs").glob("*_peep.json"):
     with open(peep, "r", encoding="utf-8") as fh:
         doc = json.load(fh)
-    has_enforced = any(
-        "estleg:enforcedAtLevel" in n for n in doc.get("@graph", [])
-    )
-    if has_enforced:
+    if any("estleg:enforcedAtLevel" in n for n in doc.get("@graph", [])):
         data.parse(data=json.dumps(doc), format="json-ld")
         sample_count += 1
     if sample_count >= 50:
         break
-# Add KOV samples
 for peep in Path("krr_outputs/regulations/kov").rglob("*_peep.json"):
     with open(peep, "r", encoding="utf-8") as fh:
         doc = json.load(fh)
-    has_enforced = any(
-        "estleg:enforcedAtLevel" in n for n in doc.get("@graph", [])
-    )
-    if has_enforced:
+    if any("estleg:enforcedAtLevel" in n for n in doc.get("@graph", [])):
         data.parse(data=json.dumps(doc), format="json-ld")
         sample_count += 1
     if sample_count >= 100:
@@ -1893,16 +1949,28 @@ print(f"Sampled {sample_count} files with enforcedAtLevel")
 
 shapes = Graph()
 shapes.parse("shacl/estonian_legal_shapes.ttl", format="turtle")
-conforms, _, results = validate(data, shacl_graph=shapes, inference="rdfs")
-# Count violations specifically against enforcedAtLevel.
-new_violations = []
-for line in results.split("\n") if isinstance(results, str) else []:
-    if "enforcedAtLevel" in line and "Violation" in line:
-        new_violations.append(line)
+conforms, results_graph, _ = validate(
+    data, shacl_graph=shapes, inference="rdfs"
+)
+
+# Query the results graph for ValidationResult nodes whose
+# sh:resultPath is exactly estleg:enforcedAtLevel. This catches
+# every violation that pyshacl flagged against our new constraint,
+# regardless of whitespace/line-break formatting in the textual
+# report.
+new_violations = list(
+    results_graph.subjects(SH.resultPath, ENFORCED_AT_LEVEL)
+)
 print(f"enforcedAtLevel violations on sample: {len(new_violations)}")
+if new_violations:
+    print("First 5 violation focus nodes:")
+    for v in new_violations[:5]:
+        focus = list(results_graph.objects(v, SH.focusNode))
+        value = list(results_graph.objects(v, SH.value))
+        print(f"  focus={focus} value={value}")
 assert len(new_violations) == 0, (
-    f"Found {len(new_violations)} new SHACL violations on the new "
-    f"constraint:\n" + "\n".join(new_violations[:5])
+    f"Found {len(new_violations)} SHACL violations on the new "
+    f"enforcedAtLevel constraint."
 )
 print("Targeted SHACL: 0 violations on enforcedAtLevel — OK")
 PY
@@ -1927,7 +1995,9 @@ print(f"extract_sanctions: GATE OK — "
 PY
 ```
 
-Expected: `extract_sanctions: GATE OK — <N> KOV files, <M> KOV sanction records, 0 skipped`.
+Expected: `extract_sanctions: GATE OK — <N> KOV files, <M> KOV sanction records, <K> skipped`.
+
+`<K>` should be 0 if no peep files have provisions but missing `estleg:Act + owl:Ontology` typing. Aggregate-registry peeps (`issuers_kov_peep.json`, `municipalities_peep.json`, etc.) are filtered silently and do NOT contribute to `<K>`. If `<K>` is non-zero, inspect `failure_samples` in the coverage report — those are real Layer 1 data bugs to surface in a follow-up.
 
 - [ ] **Step 5: Generate the PR body at `/tmp/pr-body-2c-sanctions.md`**
 
@@ -1963,7 +2033,7 @@ sanction.
 | Input files (total / KOV) | 15,508 / 11,059 |
 | Files with output (total / KOV) | <N> / ~82 |
 | Sanction records emitted (total / KOV) | <N> / ~85 |
-| Files skipped (`missing_act_node`) | 0 |
+| Files skipped (`missing_act_node`) | `<K>` (substitute exact value from coverage report; aggregate-registry peeps are silently filtered and do NOT count) |
 
 (Exact numbers in `krr_outputs/reports/kov/extract_sanctions_coverage.json`.)
 
@@ -1980,7 +2050,7 @@ and are tracked in CHANGELOG known issues.
 
 ## Test plan
 
-- [x] Full pytest suite passing (207 tests, +16 vs Layer 2b end-state)
+- [x] Full pytest suite passing (206 tests, +15 vs Layer 2b end-state)
 - [x] validate_all reports zero errors / warnings
 - [x] Targeted SHACL on `enforcedAtLevel`: zero violations
 - [x] extract_sanctions_coverage.json gate OK
