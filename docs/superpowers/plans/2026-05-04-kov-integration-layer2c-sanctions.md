@@ -484,10 +484,16 @@ class TestSanctionExtractionWithEnforcementStamp:
         assert level == "state"
 ```
 
-- [ ] **Step 2: Run the new tests (expect ALL to fail — emission isn't wired yet)**
+- [ ] **Step 2: Run the new tests (expect 3 failures + 1 pass — emission isn't wired yet)**
 
 Run: `pytest tests/test_extract_sanctions.py::TestSanctionExtractionWithEnforcementStamp -v`
-Expected: 4 failures (the `enforcedAtLevel` assertions all fail because the emission code doesn't exist yet).
+Expected: 3 failures + 1 pass:
+- `test_kov_act_sanctions_get_municipality_stamp` — FAIL (no `enforcedAtLevel` emitted yet)
+- `test_state_law_sanctions_get_state_stamp` — FAIL (no `enforcedAtLevel` emitted yet)
+- `test_provision_with_no_sanction_gets_no_enforcement_stamp` — **PASS** (the assertion is "should NOT have enforcedAtLevel"; before emission is wired, it's correctly absent for free)
+- `test_provision_with_multiple_sanctions_gets_one_enforcement_literal` — FAIL (no `enforcedAtLevel` emitted yet)
+
+Don't waste time hunting for the fourth failure — the negative-assertion test is well-formed and just happens to be vacuously satisfied by the pre-emission state. After Step 3 lands, all four will pass.
 
 - [ ] **Step 3: Modify the per-provision loop in `scripts/extract_sanctions.py` to emit `enforcedAtLevel`**
 
@@ -677,6 +683,9 @@ class TestSanctionsIdempotency:
         monkeypatch.setattr(mod, "KRR_DIR", krr)
         monkeypatch.setattr(mod, "SANCTION_DIR", sanctions_dir)
         monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+        # KOV-staged fixture; force include_kov=True since Task 7
+        # hasn't unpinned yet.
+        monkeypatch.setattr(mod, "iter_peep_files", _iter_kov_inclusive)
 
         rc = mod.main()
         assert rc in (0, None)
@@ -730,10 +739,15 @@ class TestSanctionsIdempotency:
         )
 ```
 
-- [ ] **Step 2: Run the idempotency tests (expect failures — current code does global pre-clear that won't restore stale triples on the no-op test, plus the missing per-file save-when-empty logic)**
+- [ ] **Step 2: Run the idempotency tests (expect 1 failure + 2 passes — the missing `enforcedAtLevel` clear is the real gap)**
 
 Run: `pytest tests/test_extract_sanctions.py::TestSanctionsIdempotency -v`
-Expected: at least `test_no_op_when_no_existing_no_fresh` fails (current code mtime-touches every file via the pre-clear pass; the other two may pass coincidentally because the pre-clear strips `hasSanction` but doesn't yet strip `enforcedAtLevel`).
+Expected:
+- `test_stale_enforcement_cleared_when_sanctions_removed` — **FAIL.** The current `_clear_existing_sanctions` pass only strips `estleg:hasSanction`; the stale `estleg:enforcedAtLevel` survives. This is the test the refactor must satisfy.
+- `test_classification_recomputed_when_act_type_flips` — likely PASS already, because Task 2's emission code overwrites `enforcedAtLevel` on every run regardless of prior state (classification is stateless by design). The test still has value as a regression lock.
+- `test_no_op_when_no_existing_no_fresh` — likely PASS already. The current `_clear_existing_sanctions` only saves files where it actually removed a triple (`if changed: save_json(...)`); a peep with no sanctions has nothing to remove and isn't re-saved, so mtime is preserved.
+
+Don't try to reproduce 3 failures — the refactor's value comes from preserving the 2-pass behaviour AND fixing the 1 real gap (stale `enforcedAtLevel` not being cleared). After Step 3 lands, all 3 must pass.
 
 - [ ] **Step 3: Replace `_clear_existing_sanctions` with per-file in-memory processing**
 
@@ -1612,7 +1626,16 @@ The exact KOV numbers should be near the dry-count estimate (~82 KOV files, ~85 
 - [ ] **Step 3: Inspect the coverage report**
 
 Run: `cat krr_outputs/reports/kov/extract_sanctions_coverage.json`
-Expected: a JSON object with `pipeline: "extract_sanctions"`, `gate_*` fields populated, `files_with_output_kov >= 50`, `triples_emitted_kov >= 50`. Memorise the exact numbers — the docs and PR body reference them.
+Expected: a JSON object matching the `kov_pipeline_coverage.CoverageReport` schema (same shape as Layer 2a/2b reports). Required field values for this run:
+
+- `pipeline == "extract_sanctions"`
+- `input_files_total == 15508`, `input_files_kov == 11059`
+- `files_with_output_kov >= 50` (dry count predicts ~82)
+- `triples_emitted_kov >= 50` (dry count predicts ~85; field counts SANCTION RECORDS)
+- `files_skipped` is small (0 if no malformed peeps; otherwise inspect `failure_samples` and `skip_reasons["missing_act_node"]`)
+- `error_count == 0`
+
+There are no `gate_*` fields in `CoverageReport` — the gate decision is reflected in `main()`'s exit code (`0` for OK, `1` for fail), not in the JSON. Memorise the exact `files_with_output_kov` and `triples_emitted_kov` values — the docs and PR body reference them.
 
 - [ ] **Step 4: Append the corpus-invariant test to `tests/test_extract_sanctions.py`**
 
@@ -1765,13 +1788,17 @@ coverage report when committing — the body above is a template."
 
 - [ ] **Step 1: Update `docs/SCHEMA_REFERENCE.md`**
 
-(a) Find the Layer 2 schema table (around line 792). The row for `estleg:enforcedAtLevel` currently reads:
+(a) Find the Layer 2 schema table (around line 803). The table has 6 columns: `Property | Domain | Range | Layer | Status | Purpose`. The row for `estleg:enforcedAtLevel` currently reads:
 
 ```
-| `estleg:enforcedAtLevel` | `LegalProvision` | `xsd:string` | 2c | `"state"` \| `"municipality"` |
+| `estleg:enforcedAtLevel` | `LegalProvision` | `xsd:string` | 2c | declared | `"state"` \| `"municipality"` |
 ```
 
-Update the "Layer" column from `2c` to `2c (populated)` and add a footnote pointer.
+Change the `Status` column from `declared` to `populated`. Leave the other 5 columns untouched. After the edit, the row should read:
+
+```
+| `estleg:enforcedAtLevel` | `LegalProvision` | `xsd:string` | 2c | populated | `"state"` \| `"municipality"` |
+```
 
 (b) Find the Sanctions section (locate via `grep -n "## Sanctions\|## .*Sanction" docs/SCHEMA_REFERENCE.md`). Add a new subsection at the end:
 
