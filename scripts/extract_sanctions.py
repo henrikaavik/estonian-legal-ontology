@@ -128,6 +128,46 @@ def _provision_ref(node: dict) -> str:
     return law_abbr or node.get("@id", "unknown")
 
 
+def _find_act_node(doc: dict) -> dict | None:
+    """Return the act node from a peep file's @graph, or None if no
+    act node is present.
+
+    Match criteria: the node must be typed BOTH `estleg:Act` and
+    `owl:Ontology`. Some peep files contain auxiliary `owl:Ontology`
+    wrappers (concept-cluster manifests etc.) that aren't acts; the
+    `estleg:Act` constraint prevents misclassifying those as
+    sanction-bearing acts. Layer 1 generators stamp every real act
+    node with both types.
+
+    Callers must handle a None return \u2014 the per-file processing
+    treats it as a malformed-input skip (logged to the coverage
+    report's failure_samples + skip_reasons['missing_act_node']).
+    """
+    for n in doc.get("@graph", []):
+        types = n.get("@type") or []
+        if isinstance(types, str):
+            types = [types]
+        if "estleg:Act" in types and "owl:Ontology" in types:
+            return n
+    return None
+
+
+def _classify_enforcement_level(act_node: dict) -> str:
+    """Classify the enforcement level of an act node by its @type.
+
+    Returns "municipality" iff the act is typed
+    estleg:MunicipalRegulation; otherwise "state".
+
+    Handles @type as either a string or a list of strings.
+    """
+    types = act_node.get("@type") or []
+    if isinstance(types, str):
+        types = [types]
+    if "estleg:MunicipalRegulation" in types:
+        return "municipality"
+    return "state"
+
+
 # ---------- sanction pattern definitions ----------
 
 # Each extractor returns a list of dicts with keys:
