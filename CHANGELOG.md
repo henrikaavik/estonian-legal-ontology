@@ -28,6 +28,91 @@ All notable changes to this project will be documented in this file.
   `include_kov=False` at their call sites with comments indicating which
   Layer (2b/2c/3) will unpin or that KOV does not apply.
 
+### Added (Layer 2c PR #2 — Institutional Competence)
+- `extract_institutional_competence.py` runs the full corpus
+  including KOV by default (single `include_kov=False` pin
+  removed).
+- `GENERIC_PATTERNS` gains two new regex entries for KOV body
+  words: `linnavolikogu` / `vallavolikogu` / `alevivolikogu`
+  (volikogu bodies) and `linnavalitsus` / `vallavalitsus`
+  (executive bodies), in all common Estonian case suffixes
+  including the short illative (`vallavalitsusse`).
+- KOV-scoped `competentAuthority` Issuer-binding via a
+  3-priority resolver: Path 1 (same-body source_issuer),
+  Path 2 (paired-body slug swap with municipal-family
+  compatibility), Path 3 (municipality-wide unique fallback
+  for inconsistent Layer 1 mappings).
+- `_canonical_body_slug` strips Estonian case inflections;
+  `_swap_issuer_body_suffix` derives paired-body Issuer IRIs;
+  `_resolve_kov_authority` orchestrates the 3-priority
+  resolution; `_is_path3_case` predicate counts Path 3
+  diagnostic firings.
+- The Issuer registry stays canonical: KOV-bound
+  `competentAuthority` IRIs come from the same registry Layer 1
+  emits as `enactedBy` targets. NO parallel
+  `institutions/institution_<body_slug>.json` files are written
+  for KOV-bound resolutions.
+
+### Changed (Layer 2c PR #2)
+- `extract_institutional_competence.main()` returns `int`;
+  `raise SystemExit(main())` propagates the gate's exit code.
+- Per-file in-memory processing replaces the inline global
+  pre-clear pass. The per-file flow detects pre-existing
+  peep-side output BEFORE clearing and saves the file when
+  EITHER fresh competence output exists OR pre-existing output
+  existed (so cleared-but-empty files persist the cleared
+  state to disk).
+- Stale `krr_outputs/institutions/institution_<slug>.json`
+  files are DELETED at end-of-run when no provisions cite the
+  slug AND no per-peep load errors occurred. Without this,
+  orphan `Institution_*` nodes survive pointing at provisions
+  that no longer carry `competentAuthority`.
+- Coverage instrumentation reuses
+  `kov_pipeline_coverage.CoverageReport` (same schema as Layer 2a
+  / Layer 2b / Layer 2c PR #1).
+- SHACL: `LegalProvisionShape`'s existing `competentAuthority`
+  constraint (`sh:nodeKind sh:IRI`) is unchanged structurally;
+  only the `sh:description` is updated to mention the broader
+  Issuer/Institution value range.
+
+### Coverage (Layer 2c PR #2, 2026-05-04 corpus run)
+- `extract_institutional_competence`: 15,508 input files
+  (11,059 KOV); 8,302 KOV files with output (75% of KOV acts);
+  48,431 KOV competentAuthority references emitted (59,460 total
+  including state-side); 1,108 body-word abstains; 0 Path 3
+  fallback hits (Layer 1 issuer assignment is fully consistent
+  with enactedByMunicipality); 0 errors; wall time 21.94s at
+  706.59 items/s, 95.8 MB peak; GATE OK.
+
+### Internal (Layer 2c PR #2)
+- New `tests/test_extract_institutional_competence.py` with
+  30 tests across 7 classes (3 detection + 13 resolver +
+  3 integration + 3 idempotency + 3 institution-file
+  deletion + 4 coverage + 1 corpus-wide invariant marked
+  `@pytest.mark.slow`).
+- `_unresolved_count` and `_fallback_hits` counters track
+  body-word abstains and successful Path 3 resolutions
+  respectively. `fallback_hits` is a diagnostic signal: high
+  values surface Layer 1 mapping inconsistencies for
+  follow-up investigation. The 2026-05-04 corpus run reports
+  zero fallback hits — Layer 1's enactedBy assignments are
+  fully consistent with enactedByMunicipality scoping.
+- 77 of 158 `(currentMunicipality, bodyType)` registry buckets
+  are ambiguous (276 of 357 issuers — 77%, mostly post-2017
+  haldusreform mergers). The source-issuer-based Path 1+2
+  authoritative rule resolves these correctly using the act's
+  own enactedBy identity rather than collapsing to a
+  same-modern-municipality conflated issuer.
+
+### Gate B umbrella status (after this PR)
+- 2a COMPLETE (#98)
+- 2b COMPLETE (#99)
+- 2c PR #1 sanctions: COMPLETE (#100)
+- 2c PR #2 institutional-competence: this PR
+- 2c PR #3 court-provision-links: pending
+
+Gate B closes when Layer 2c PR #3 lands.
+
 ### Added (Layer 2c PR #1 — Sanctions)
 - `extract_sanctions.py` runs the full corpus including KOV by
   default (single `include_kov=False` pin removed).

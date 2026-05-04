@@ -589,6 +589,74 @@ These properties enable cross-referencing between different parts of the legal s
 | `estleg:competentAuthority` | LegalProvision | Institution (IRI) | Responsible institution |
 | `estleg:competenceType` | Institution | `xsd:string` | Type: supervision, licensing, enforcement |
 
+### Layer 2c PR #2 — KOV Issuer-binding for `competentAuthority`
+
+KOV regulations frequently delegate competence via generic body
+words: "linnavolikogu kehtestab korra", "vallavalitsus väljastab
+loa". Layer 2c PR #2 detects these body words and binds them to
+the existing Layer 1 Issuer registry when the source act is a
+`MunicipalRegulation` with `enactedByMunicipality` scope.
+
+Resolution strategy (3 priority paths):
+
+1. **Path 1 — same body type + suffix match.** When the body
+   word's body type AND slug suffix match the source act's
+   `enactedBy` issuer, the `competentAuthority` triple targets
+   the source issuer directly. Example: `Issuer_abja_vallavolikogu`
+   act + `vallavolikogu` body word → `Issuer_abja_vallavolikogu`.
+2. **Path 2 — paired body in the same place family.** Body type
+   differs from source issuer's; derive paired slug by swapping
+   the body suffix. Family-prefix compatibility required
+   (`linna*` and `valla*` cannot pair). Example:
+   `Issuer_abja_vallavolikogu` act + `vallavalitsus` body word
+   → `Issuer_abja_vallavalitsus` (if registered).
+3. **Path 3 — municipality-wide unique match.** Reached only
+   when source_issuer is missing, unknown to the registry, or
+   has municipality inconsistent with the act's stated
+   `enactedByMunicipality`. Best-effort rescue with the act's
+   stated municipality + body type + suffix compatibility.
+   Successful Path 3 resolutions are counted in
+   `fallback_hits` as a diagnostic signal for Layer 1 follow-up.
+
+Abstain conditions (the resolver returns `None`):
+
+- Source act is a Law / state regulation (no `enactedByMunicipality`).
+- Path 1 suffix mismatch
+  (e.g. `Issuer_abja_vallavolikogu` + `linnavolikogu`).
+- Path 2 paired body absent in registry OR in different
+  municipality.
+- Path 2 cross-family swap rejected
+  (e.g. `Issuer_elva_linnavalitsus` + `vallavolikogu`).
+- Path 3 finds zero or more than one suffix-compatible match.
+
+Example KOV-bound provision:
+
+```json
+{
+  "@id": "estleg:Reg_TLN_15_Map_2020_Par_1",
+  "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+  "estleg:paragrahv": "§ 1",
+  "estleg:summary": "Linnavolikogu kehtestab maksu määra.",
+  "estleg:competentAuthority": [
+    {"@id": "estleg:Issuer_tallinna_linnavolikogu"}
+  ],
+  "estleg:competenceType": "regulation"
+}
+```
+
+The Issuer entity is the canonical anchor for "this municipal
+body" across the graph. Layer 1's `enactedBy` and Layer 2c PR #2's
+`competentAuthority` BOTH target IRIs from the same registry.
+On Path 1 the two IRIs coincide (the act's enactedBy IS the
+competent authority). On Path 2 they intentionally differ but
+stay within the same place's issuer family.
+
+SHACL: the existing `competentAuthority` constraint
+(`sh:nodeKind sh:IRI`) accepts both `Institution_*` and `Issuer_*`
+IRI forms. The constraint description is updated in this PR to
+mention the broader value range; no new constraint block is
+added.
+
 ### Sanctions
 | Property | Domain | Range | Description |
 |----------|--------|-------|-------------|
