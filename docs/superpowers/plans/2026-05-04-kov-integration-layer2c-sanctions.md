@@ -43,14 +43,40 @@ git worktree add .worktrees/kov-layer2c-sanctions -b feature/kov-layer2c-sanctio
 cd .worktrees/kov-layer2c-sanctions
 ```
 
-The XML data directory `data/riigiteataja/` is gitignored (8.6 GB). The worktree gets a stub copy. Replace with a symlink to the main checkout:
+The XML data directory `data/riigiteataja/` is gitignored (8.6 GB). The worktree gets a stub copy. Replace with a symlink to the main checkout — but use a GUARDED setup that refuses to clobber unexpected content:
 
 ```bash
-rm -rf data/riigiteataja
-ln -s /Users/henrikaavik/progemoge/law-ontology/data/riigiteataja data/riigiteataja
+TARGET=/Users/henrikaavik/progemoge/law-ontology/data/riigiteataja
+
+if [ -L data/riigiteataja ]; then
+    # Already a symlink — point it at the right place if needed, else leave alone.
+    current=$(readlink data/riigiteataja)
+    if [ "$current" != "$TARGET" ]; then
+        unlink data/riigiteataja
+        ln -s "$TARGET" data/riigiteataja
+    fi
+elif [ -d data/riigiteataja ]; then
+    # Real directory — only auto-remove if it contains nothing but the
+    # known gitignored stub file (`karistusseadustik.xml`). If anything
+    # unexpected is present, abort and ask the human to inspect.
+    extras=$(ls -A data/riigiteataja 2>/dev/null | grep -v "^karistusseadustik\.xml$" || true)
+    if [ -z "$extras" ]; then
+        rm -rf data/riigiteataja
+        ln -s "$TARGET" data/riigiteataja
+    else
+        echo "REFUSING to remove data/riigiteataja — unexpected content:"
+        ls -la data/riigiteataja | head -10
+        echo "Inspect manually and re-run."
+        exit 1
+    fi
+else
+    ln -s "$TARGET" data/riigiteataja
+fi
+
+ls -la data/riigiteataja  # confirm the symlink resolves
 ```
 
-(Same workaround Layer 2b used. The symlink is fragile across destructive worktree operations — re-create if it disappears.)
+(Same workaround Layer 2b used, but with the guard added per the local workspace preference for recoverable deletes. The symlink is fragile across destructive worktree operations — re-run the guarded setup if it disappears between tasks.)
 
 Confirm baseline tests pass:
 
@@ -1306,7 +1332,16 @@ class TestSanctionsCoverageReport:
     ):
         """Mock iter_peep_files to return ≥11,000 KOV paths whose
         summaries contain no sanction language. main() must return 1
-        (gate fail)."""
+        (gate fail).
+
+        Implementation note: rather than physically writing 11,001
+        fixture files (slow on every full pytest run after Task 6
+        unpins the script), monkeypatch BOTH `mod.iter_peep_files`
+        (returns synthetic Path objects) AND `mod.load_json` (returns
+        a single canned doc for each synthetic path). The script's
+        per-file flow processes each path identically, so one canned
+        doc covers all 11,001 calls.
+        """
         import extract_sanctions as mod
         import estleg_common
         krr = tmp_path / "krr_outputs"
@@ -1315,16 +1350,19 @@ class TestSanctionsCoverageReport:
         sanctions_dir.mkdir(parents=True)
         reports_dir.mkdir(parents=True)
 
-        # Generate 11,001 KOV peeps whose summaries have NO sanction
-        # text. In practice, regenerating that many tmp files is
-        # expensive — mock iter_peep_files to return synthetic Path
-        # objects pointing at one shared peep file replicated under
-        # 11,001 distinct kov subpaths.
-        kov = krr / "regulations" / "kov" / "no_sanctions"
-        kov.mkdir(parents=True)
-        # Single shared file with NO sanction text:
-        shared = kov / "boring_peep.json"
-        shared.write_text(json.dumps({
+        # Synthetic KOV paths — never physically created, only used
+        # for path-identity checks (KOV attribution scans for
+        # "regulations/kov/" in str(path)).
+        kov_dir_marker = krr / "regulations" / "kov" / "no_sanctions"
+        synthetic_kov_paths = [
+            kov_dir_marker / f"act_{i}_peep.json" for i in range(11001)
+        ]
+
+        # Canned doc — KOV act with NO sanction text. The script's
+        # extract_sanctions() returns [] on this summary, so no
+        # sanctions are emitted regardless of how many times the
+        # doc is read.
+        canned_doc = {
             "@context": {
                 "estleg": "https://data.riik.ee/ontology/estleg#",
                 "owl": "http://www.w3.org/2002/07/owl#",
@@ -1340,23 +1378,27 @@ class TestSanctionsCoverageReport:
                      "Käesolev määrus reguleerib administratiivseid "
                      "küsimusi ega sätesta karistusi."},
             ],
-        }), encoding="utf-8")
+        }
 
-        # Build a synthetic list of 11,001 paths all pointing at the
-        # same file. The script reads the file content per call;
-        # path identity is what KOV-attribution checks.
-        synthetic_kov_paths = [
-            kov / f"act_{i}_peep.json" for i in range(11001)
-        ]
-        # Map all synthetic paths to the shared file's contents so
-        # load_json can read them. Simpler: write hard links.
-        for p in synthetic_kov_paths:
-            p.write_text(shared.read_text(encoding="utf-8"), encoding="utf-8")
-
-        # Monkeypatch iter_peep_files to return ALL synthetic paths.
         def fake_iter(*args, **kwargs):
             return synthetic_kov_paths
+
+        def fake_load(filepath):
+            # Return a deepcopy so each per-file iteration mutates an
+            # independent dict (the script clears stale triples
+            # in-memory; sharing one dict would corrupt later
+            # iterations).
+            import copy
+            return copy.deepcopy(canned_doc)
+
+        # Stub save_json to a no-op so per-file save calls don't try
+        # to write the synthetic (non-existent) paths.
+        def fake_save(filepath, doc):
+            return None
+
         monkeypatch.setattr(mod, "iter_peep_files", fake_iter)
+        monkeypatch.setattr(mod, "load_json", fake_load)
+        monkeypatch.setattr(mod, "save_json", fake_save)
         monkeypatch.setattr(mod, "KRR_DIR", krr)
         monkeypatch.setattr(mod, "SANCTION_DIR", sanctions_dir)
         monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
@@ -1597,12 +1639,7 @@ This task runs the unpinned script over the full corpus and stages the resulting
 Run: `ls -la data/riigiteataja | head -3`
 Expected: `data/riigiteataja -> /Users/henrikaavik/progemoge/law-ontology/data/riigiteataja` (symlink).
 
-If it's a real directory instead of a symlink, restore:
-
-```bash
-rm -rf data/riigiteataja
-ln -s /Users/henrikaavik/progemoge/law-ontology/data/riigiteataja data/riigiteataja
-```
+If it's a real directory instead of a symlink, re-run the guarded restore from the worktree-setup section above (refuses to clobber unexpected content; only removes the known gitignored stub).
 
 (Note: the sanctions pipeline doesn't actually USE the XML — it reads `estleg:summary` from peep files. The symlink is precautionary; the previous worktree dance left it fragile.)
 
