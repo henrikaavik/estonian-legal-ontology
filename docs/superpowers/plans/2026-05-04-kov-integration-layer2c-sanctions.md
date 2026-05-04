@@ -253,12 +253,12 @@ The existing per-provision loop already calls `extract_sanctions(summary)` and a
 def _iter_kov_inclusive(*args, **kwargs):
     """Wrapper that forces include_kov=True regardless of caller args.
 
-    Tasks 2-6 are scheduled BEFORE the unpin in Task 7, so production
+    Tasks 2-5 are scheduled BEFORE the unpin in Task 6, so production
     main() still calls iter_peep_files(include_kov=False) at this
     point. Tests that stage KOV fixtures must monkeypatch
     `mod.iter_peep_files` with this wrapper so KOV-staged peeps are
     visible regardless of whether the production unpin has landed yet.
-    After Task 7, production defaults to include_kov=True and the
+    After Task 6, production defaults to include_kov=True and the
     wrapper becomes a no-op — but keep it in the tests so they remain
     self-contained and independent of task-execution order.
     """
@@ -522,7 +522,7 @@ Specifically, locate the block at lines 526-540 (after `for idx, filepath in enu
         if act_node is None:
             # Malformed peep — no act node typed both estleg:Act
             # AND owl:Ontology. Skip with a coverage note (the full
-            # skip-reason wiring lands in Task 6).
+            # skip-reason wiring lands in Task 7).
             continue
         enforcement_level = _classify_enforcement_level(act_node)
 ```
@@ -683,7 +683,7 @@ class TestSanctionsIdempotency:
         monkeypatch.setattr(mod, "KRR_DIR", krr)
         monkeypatch.setattr(mod, "SANCTION_DIR", sanctions_dir)
         monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
-        # KOV-staged fixture; force include_kov=True since Task 7
+        # KOV-staged fixture; force include_kov=True since Task 6
         # hasn't unpinned yet.
         monkeypatch.setattr(mod, "iter_peep_files", _iter_kov_inclusive)
 
@@ -772,7 +772,7 @@ print(f"  Cleared estleg:hasSanction from {cleared} file(s)")
 
         act_node = _find_act_node(doc)
         if act_node is None:
-            # Malformed peep — coverage skip handled in Task 6.
+            # Malformed peep — coverage skip handled in Task 7.
             continue
         enforcement_level = _classify_enforcement_level(act_node)
 
@@ -1150,7 +1150,67 @@ Targeted SHACL verification on the corpus run lands in Task 8."
 
 ---
 
-## Task 6: Coverage instrumentation + `main() -> int` (TDD)
+## Task 6: Unpin — remove `include_kov=False`
+
+**Files:**
+- Modify: `scripts/extract_sanctions.py` (line 510 only).
+
+- [ ] **Step 1: Confirm the pin location**
+
+Run: `grep -n "include_kov" scripts/extract_sanctions.py`
+Expected: one line — `law_files = iter_peep_files(include_kov=False)  # DEFERRED to Layer 2c`.
+
+- [ ] **Step 2: Edit the pin**
+
+Open `scripts/extract_sanctions.py`. Find:
+
+```python
+    law_files = iter_peep_files(include_kov=False)  # DEFERRED to Layer 2c
+```
+
+Replace with:
+
+```python
+    law_files = iter_peep_files()
+```
+
+(Keep the variable name and the surrounding code unchanged; only the argument and the trailing comment go.)
+
+- [ ] **Step 3: Confirm the pin is gone**
+
+Run: `grep -n "include_kov" scripts/extract_sanctions.py`
+Expected: empty output.
+
+- [ ] **Step 4: AST-parse the file**
+
+Run: `python3 -c "import ast; ast.parse(open('scripts/extract_sanctions.py').read())" && echo OK`
+Expected: `OK`.
+
+- [ ] **Step 5: Run the full suite**
+
+Run: `pytest -q`
+Expected: 203 passed (no test count change — the unpin is structural; the existing tests run on tmp fixtures + the `_iter_kov_inclusive` wrapper so they're insensitive to the production default).
+
+- [ ] **Step 6: Commit**
+
+```bash
+git add scripts/extract_sanctions.py
+git commit -m "Unpin extract_sanctions — runs KOV by default
+
+Removes the include_kov=False argument and the trailing 'DEFERRED
+to Layer 2c' comment. iter_peep_files() now defaults to
+include_kov=True (the Layer 2a default), so the script processes
+laws + state regulations + KOV acts in one pass.
+
+Real-world impact (read-only dry count): ~82 KOV files gain
+sanction triples, ~85 sanction records.
+
+Coverage gate verification on the corpus run lands in Task 8."
+```
+
+---
+
+## Task 7: Coverage instrumentation + `main() -> int` (TDD)
 
 **Files:**
 - Modify: `scripts/extract_sanctions.py` (add coverage instrumentation, change `main()` signature, add gate check, change `if __name__` block).
@@ -1356,8 +1416,8 @@ from kov_pipeline_coverage import (
             # Distinguish aggregate-registry peeps (issuers_kov_peep.json,
             # municipalities_peep.json, etc.) from malformed act peeps.
             #
-            # Aggregate peeps have NO LegalProvision/KovProvision nodes —
-            # they're catalogues of Issuer/Municipality/etc. entities.
+            # Aggregate peeps have no provision nodes — they're
+            # catalogues of Issuer/Municipality/etc. entities.
             # Silently skip those (no counter, no failure log) because
             # they're correctly-formed non-act peeps that just don't
             # carry sanctions.
@@ -1366,13 +1426,16 @@ from kov_pipeline_coverage import (
             # estleg:Act + owl:Ontology typing on their root node —
             # that's a Layer 1 data bug worth surfacing in the
             # coverage report's failure_samples.
+            #
+            # Use `estleg:paragrahv` as the provision signal rather
+            # than @type membership: it's universal across all
+            # provision class shapes (estleg:LegalProvision,
+            # estleg:KovProvision, estleg:LegalProvision_<prefix>,
+            # estleg:Regulation_<id>, etc.). @type-based detection
+            # would silently miss state-regulation provisions typed
+            # only as estleg:Regulation_<id>.
             has_provisions = any(
-                "estleg:LegalProvision" in (n.get("@type") or [])
-                or "estleg:KovProvision" in (n.get("@type") or [])
-                or any(
-                    isinstance(t, str) and t.startswith("estleg:LegalProvision_")
-                    for t in (n.get("@type") or [])
-                )
+                "estleg:paragrahv" in n
                 for n in doc.get("@graph", [])
             )
             if has_provisions:
@@ -1387,8 +1450,6 @@ from kov_pipeline_coverage import (
             # Either way, the file has no act to classify — skip extraction.
             continue
 ```
-
-The `estleg:LegalProvision_<lawprefix>` membership check covers per-act subclasses (e.g. `estleg:LegalProvision_KOKS`) that the corpus stamps on top of the bare `estleg:LegalProvision` type.
 
 After `enforcement_level = _classify_enforcement_level(act_node)` and BEFORE the per-provision loop, add file-level bookkeeping:
 
@@ -1493,7 +1554,7 @@ Run: `pytest tests/test_extract_sanctions.py -v`
 Expected: 4 + 4 + 4 + 2 = 14 passed (corpus-invariant test lands after the corpus run in Task 8).
 
 Run: `pytest -q`
-Expected: 205 passed. Cumulative count from baseline 191: Task 1 +4 = 195; Task 2 +4 = 199; Task 3 +3 = 202; Task 4 +1 = 203; Task 5 +0 (SHACL only) = 203; Task 6 +2 = 205. Task 8's corpus-invariant test will bring the total to 206.
+Expected: 205 passed. Cumulative count from baseline 191: Task 1 +4 = 195; Task 2 +4 = 199; Task 3 +3 = 202; Task 4 +1 = 203; Task 5 +0 (SHACL only) = 203; Task 6 +0 (unpin only) = 203; Task 7 +2 = 205. Task 8's corpus-invariant test will bring the total to 206.
 
 - [ ] **Step 6: Commit**
 
@@ -1517,66 +1578,6 @@ intentional and documented in code).
 
 Gate check: fails when KOV input ≥11,000 files but produces zero
 KOV output, or when ≥11k input but zero KOV triples emitted."
-```
-
----
-
-## Task 7: Unpin — remove `include_kov=False`
-
-**Files:**
-- Modify: `scripts/extract_sanctions.py` (line 510 only).
-
-- [ ] **Step 1: Confirm the pin location**
-
-Run: `grep -n "include_kov" scripts/extract_sanctions.py`
-Expected: one line — `law_files = iter_peep_files(include_kov=False)  # DEFERRED to Layer 2c`.
-
-- [ ] **Step 2: Edit the pin**
-
-Open `scripts/extract_sanctions.py`. Find:
-
-```python
-    law_files = iter_peep_files(include_kov=False)  # DEFERRED to Layer 2c
-```
-
-Replace with:
-
-```python
-    law_files = iter_peep_files()
-```
-
-(Keep the variable name and the surrounding code unchanged; only the argument and the trailing comment go.)
-
-- [ ] **Step 3: Confirm the pin is gone**
-
-Run: `grep -n "include_kov" scripts/extract_sanctions.py`
-Expected: empty output.
-
-- [ ] **Step 4: AST-parse the file**
-
-Run: `python3 -c "import ast; ast.parse(open('scripts/extract_sanctions.py').read())" && echo OK`
-Expected: `OK`.
-
-- [ ] **Step 5: Run the full suite**
-
-Run: `pytest -q`
-Expected: 205 passed (no test count change — the unpin is structural; the existing tests run on tmp fixtures + the `_iter_kov_inclusive` wrapper so they're insensitive to the production default).
-
-- [ ] **Step 6: Commit**
-
-```bash
-git add scripts/extract_sanctions.py
-git commit -m "Unpin extract_sanctions — runs KOV by default
-
-Removes the include_kov=False argument and the trailing 'DEFERRED
-to Layer 2c' comment. iter_peep_files() now defaults to
-include_kov=True (the Layer 2a default), so the script processes
-laws + state regulations + KOV acts in one pass.
-
-Real-world impact (read-only dry count): ~82 KOV files gain
-sanction triples, ~85 sanction records.
-
-Coverage gate verification on the corpus run lands in Task 8."
 ```
 
 ---
@@ -1714,23 +1715,29 @@ Expected: 205 + 1 = 206 passed.
 ```bash
 python3 - <<'PY'
 import subprocess
-mods = subprocess.check_output(
-    ["git", "diff", "--name-only"], text=True
-).splitlines()
-to_stage = [
-    f for f in mods
-    if f.startswith("krr_outputs/") or f.startswith("krr_outputs/sanctions/")
-]
-# Also include the coverage report (new file) and modified report
-mods_all = subprocess.check_output(
+# git diff --name-only only lists modified files (not deleted or
+# untracked). Use git status --porcelain to capture every status
+# letter (M / A / D / ??) under krr_outputs/.
+status_lines = subprocess.check_output(
     ["git", "status", "--porcelain"], text=True
 ).splitlines()
-for line in mods_all:
+to_stage: list[str] = []
+for line in status_lines:
+    if not line:
+        continue
+    # Porcelain format: "XY path" where XY is two status chars.
+    status = line[:2]
     path = line[3:]
-    if (path.startswith("krr_outputs/") and path not in to_stage
-            and ".json" in path):
+    if not path.startswith("krr_outputs/"):
+        continue
+    # Stage modified, added, deleted, AND untracked files. Deletions
+    # are EXPECTED when an act loses all its sanctions between runs
+    # (the script unlinks the corresponding sanctions JSON in Task 4's
+    # idempotency contract).
+    if status[1] in ("M", "D") or status[0] in ("M", "A", "D", "?"):
         to_stage.append(path)
-print(f"krr_outputs files to stage: {len(to_stage)}")
+
+print(f"krr_outputs paths to stage (M/A/D/??): {len(to_stage)}")
 chunk = 500
 for i in range(0, len(to_stage), chunk):
     subprocess.check_call(["git", "add", "--"] + to_stage[i:i+chunk])
@@ -1746,8 +1753,10 @@ git add tests/test_extract_sanctions.py
 
 - [ ] **Step 9: Verify staging is clean**
 
-Run: `git status --short | grep -v "^M  krr_outputs\|^A  krr_outputs\|^M  tests" | head -10`
+Run: `git status --short | grep -v "^M  krr_outputs\|^A  krr_outputs\|^D  krr_outputs\|^M  tests" | head -10`
 Expected: only the worktree-symlink artifact (`D data/riigiteataja/karistusseadustik.xml` and untracked `?? data/riigiteataja`) — anything else is unintended scope creep.
+
+The `^D  krr_outputs` exemption is intentional: Task 4 introduced sanctions-file deletion (when an act loses all matches between runs). Any deleted `krr_outputs/sanctions/sanctions_<law>.json` paths under that path are EXPECTED and must be staged.
 
 - [ ] **Step 10: Commit**
 
@@ -2135,25 +2144,25 @@ Per the plan convention: do NOT run `git push`. Do NOT run `gh pr create`. The p
 After all 10 tasks complete:
 
 - [ ] **Spec coverage.** Each spec invariant maps to a task:
-  - Inv 1 (pin removal): Task 7
+  - Inv 1 (pin removal): Task 6
   - Inv 2 (one literal per sanction-bearing provision): Tasks 2 + corpus-invariant test in Task 8
   - Inv 3 (act-type classification rule): Task 1 + Task 2
   - Inv 4 (SHACL property constraint): Task 5
   - Inv 5 (provision + file-level idempotency): Tasks 3 + 4
-  - Inv 6 (coverage gate): Task 6
-  - Inv 7 (`main() -> int` + `SystemExit`): Task 6
+  - Inv 6 (coverage gate): Task 7
+  - Inv 7 (`main() -> int` + `SystemExit`): Task 7
   - Inv 8 (zero new SHACL violations on `enforcedAtLevel`): Tasks 5 + 10
 
 - [ ] **Test coverage matches the design.** 5 classes, 15 tests:
   - `TestClassifyEnforcementLevel` (4 unit, Task 1)
   - `TestSanctionExtractionWithEnforcementStamp` (4 integration, Task 2)
   - `TestSanctionsIdempotency` (4 idempotency, Tasks 3 + 4)
-  - `TestSanctionsCoverageReport` (2 coverage, Task 6)
+  - `TestSanctionsCoverageReport` (2 coverage, Task 7)
   - `TestCorpusInvariant` (1 corpus-wide, Task 8, marked `@pytest.mark.slow`)
 
 - [ ] **No actionable gaps.** No "TODO", "TBD", "implement later", "code omitted for brevity" anywhere in the plan.
 
-- [ ] **Type consistency.** `_classify_enforcement_level(act_node: dict) -> str` and `_find_act_node(doc: dict) -> dict | None` signatures are consistent across Tasks 1, 2, 3, 6. `main() -> int` consistent across Task 6 and the test files.
+- [ ] **Type consistency.** `_classify_enforcement_level(act_node: dict) -> str` and `_find_act_node(doc: dict) -> dict | None` signatures are consistent across Tasks 1, 2, 3, 7. `main() -> int` consistent across Task 7 and the test files.
 
 - [ ] **Idempotency invariants hold.** Three states tested: (peep_existing, fresh) ∈ {(yes, yes), (yes, no), (no, yes), (no, no)}. The (no, no) case must NOT mtime-touch the file.
 
