@@ -639,6 +639,138 @@ def resolve_preamble_citation(
     return None
 
 
+# Body-text KOV reference pattern. KOV body text typically cites by
+# issuer + act number (no date in body refs, unlike preambles).
+# Example: "Tallinna Linnavolikogu määruse nr 15 § 4"
+# Or generic: "linnavolikogu määrus nr 5"
+_PAT_KOV_BODY_REF = re.compile(
+    r"(?:(?P<issuer>(?:[A-ZÕÄÖÜŠŽ][a-zõäöüšž\-]+\s+)*)\s*)?"
+    r"(?P<body>(?:[Ll]innavolikogu|[Ll]innavalitsuse?|"
+    r"[Vv]allavolikogu|[Vv]allavalitsuse?|"
+    r"[Aa]levivolikogu))\s+"
+    r"määrus(?:e(?:ga)?)?\s+nr\s*(?P<num>\d+)",
+    re.UNICODE,
+)
+
+
+def extract_kov_act_refs_from_text(text: str) -> list[dict]:
+    """Parse body text for KOV-act references.
+
+    Returns a list of dicts with:
+        issuer    : full issuer label normalised via _normalize_issuer_label,
+                    or None (when only generic body word like 'linnavolikogu'
+                    is used without a place name)
+        body_type : 'volikogu' | 'valitsus'
+        act_number: digit string
+        text      : matched substring (preserved verbatim from input)
+    """
+    if not text:
+        return []
+    out: list[dict] = []
+    for m in _PAT_KOV_BODY_REF.finditer(text):
+        body_raw = m.group("body")
+        body_lower = body_raw.lower()
+        body_type = "volikogu" if "volikogu" in body_lower else "valitsus"
+        # Body word is captured in genitive form (e.g. "Vallavalitsuse")
+        # by the alternation '[Vv]allavalitsuse?'. Strip the trailing
+        # 'e' so the label matches the registry's nominative form
+        # ('Vallavalitsus') after _normalize_issuer_label collapses case.
+        body_canon = body_raw.rstrip("e") if body_lower.endswith("se") else body_raw
+        issuer_full = m.group("issuer")
+        if issuer_full and issuer_full.strip():
+            # Issuer prefix may absorb leading capitalised non-place
+            # words (e.g. sentence-initial "Vastavalt", "Lähtudes",
+            # "Käesolevaga"). Place names in Estonian KOV issuer labels
+            # are typically the single token immediately preceding the
+            # body word (hyphenated compounds like "Lääne-Nigula" remain
+            # one token). Take only that trailing token to avoid
+            # contaminating the lookup key with adverbs.
+            issuer_tokens = issuer_full.strip().split()
+            place_name = issuer_tokens[-1] if issuer_tokens else ""
+            raw_label = (place_name + " " + body_canon).strip()
+            issuer_label = _normalize_issuer_label(raw_label)
+        else:
+            issuer_label = None
+        out.append({
+            "issuer": issuer_label,
+            "body_type": body_type,
+            "act_number": m.group("num"),
+            "text": m.group(0).strip(),
+        })
+    return out
+
+
+def resolve_kov_internal_act_ref(
+    *,
+    source_municipality: str | None,
+    explicit_issuer: str | None,
+    body_type: str | None,
+    act_number: str,
+    kov_act_lookup_by_number: dict[tuple[str, str], list[str]],
+    issuer_registry: dict[str, tuple[str, str, str]],
+) -> str | None:
+    """Resolve a KOV-internal act reference by act_number, scoped to the
+    source act's municipality.
+
+    Args:
+        source_municipality: the @id of the source act's
+            ``enactedByMunicipality``. None disables scoping.
+        explicit_issuer: a pre-normalised issuer label parsed from the
+            body-text (e.g. 'tallinna linnavolikogu'). When present,
+            the resolver narrows directly to that issuer instead of
+            enumerating every issuer in the source municipality. When
+            None, the resolver falls back to body-type-scoped enumeration.
+        body_type: 'volikogu' | 'valitsus' | None — secondary scope.
+        act_number: digit string from the body-text reference.
+        kov_act_lookup_by_number: (issuer_label_normalized, act_number)
+            → list of candidate act @ids (Task 3 stores all candidates).
+        issuer_registry: issuer @id → (label_normalized, municipality @id,
+            body_type). The label is the rdfs:label from
+            issuers_kov_peep.json passed through _normalize_issuer_label.
+
+    Returns the resolved target @id only when the candidate list
+    narrows to exactly one entry. Otherwise None.
+    """
+    if source_municipality is None:
+        return None
+
+    # Path A: explicit issuer string from the body text — the most
+    # reliable disambiguator. Verify it belongs to the source
+    # municipality (cross-municipality citations should be skipped).
+    if explicit_issuer is not None:
+        municipality_for_issuer = None
+        for _iri, (label, mun_iri, _btype) in issuer_registry.items():
+            if label == explicit_issuer:
+                municipality_for_issuer = mun_iri
+                break
+        if municipality_for_issuer != source_municipality:
+            return None
+        candidates = kov_act_lookup_by_number.get(
+            (explicit_issuer, act_number), []
+        )
+        return candidates[0] if len(candidates) == 1 else None
+
+    # Path B: no explicit issuer — enumerate issuers in the source
+    # municipality, narrow by body_type when supplied.
+    candidate_labels: list[str] = []
+    for _iri, (label, mun_iri, btype) in issuer_registry.items():
+        if mun_iri != source_municipality:
+            continue
+        if body_type is not None and btype != body_type:
+            continue
+        candidate_labels.append(label)
+
+    matches: list[str] = []
+    for label in candidate_labels:
+        matches.extend(
+            kov_act_lookup_by_number.get((label, act_number), [])
+        )
+    # Dedupe + uniqueness check — body text isn't reliable enough to
+    # pick a winner among ambiguous matches.
+    unique = sorted(set(matches))
+    return unique[0] if len(unique) == 1 else None
+
+
 def extract_citations_from_text(text: str) -> list[dict]:
     """
     Parse text for Estonian legal citation patterns.

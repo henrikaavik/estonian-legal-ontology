@@ -516,3 +516,135 @@ class TestResolvePreambleCitation:
         }
         result = resolve_preamble_citation(cit, **lookups)
         assert result is None
+
+
+class TestExtractKovActRefsFromText:
+    def test_parses_full_issuer_label(self):
+        from extract_cross_references import extract_kov_act_refs_from_text
+        refs = extract_kov_act_refs_from_text(
+            "Vastavalt Tallinna Linnavolikogu määruse nr 15 § 4 lõikele 1 ..."
+        )
+        assert len(refs) == 1
+        assert refs[0]["issuer"] == "tallinna linnavolikogu"  # normalised
+        assert refs[0]["body_type"] == "volikogu"
+        assert refs[0]["act_number"] == "15"
+
+    def test_parses_generic_body_word_no_place_name(self):
+        from extract_cross_references import extract_kov_act_refs_from_text
+        refs = extract_kov_act_refs_from_text(
+            "linnavolikogu määrus nr 5 sätestab täpsemad tingimused."
+        )
+        assert len(refs) == 1
+        assert refs[0]["issuer"] is None         # no place name → ambiguous
+        assert refs[0]["body_type"] == "volikogu"
+        assert refs[0]["act_number"] == "5"
+
+    def test_parses_diacritic_issuer(self):
+        from extract_cross_references import extract_kov_act_refs_from_text
+        refs = extract_kov_act_refs_from_text(
+            "Põlva Vallavalitsuse määrusega nr 3 kehtestatud korras."
+        )
+        assert len(refs) == 1
+        assert refs[0]["issuer"] == "polva vallavalitsus"  # normalised + transliterated
+        assert refs[0]["body_type"] == "valitsus"
+        assert refs[0]["act_number"] == "3"
+
+    def test_no_match_returns_empty(self):
+        from extract_cross_references import extract_kov_act_refs_from_text
+        assert extract_kov_act_refs_from_text("Plain text.") == []
+        assert extract_kov_act_refs_from_text("") == []
+
+
+class TestKovBodyTextScope:
+    @pytest.fixture
+    def fixture_data(self):
+        # Two acts under different municipalities. Both have the same
+        # actNumber to expose any cross-municipality leakage.
+        kov_act_lookup_by_number = {
+            ("tallinna linnavolikogu", "15"): ["estleg:Reg_TLN15_Map_2020"],
+            ("tartu linnavolikogu", "15"): ["estleg:Reg_TRT15_Map_2018"],
+            # Ambiguous case — same issuer reused number 7 across revisions
+            ("polva vallavolikogu", "7"): [
+                "estleg:Reg_POLVA7_Map_2010",
+                "estleg:Reg_POLVA7_Map_2018",
+            ],
+        }
+        issuer_registry = {
+            "estleg:Issuer_tallinna_linnavolikogu": (
+                "tallinna linnavolikogu",
+                "estleg:Municipality_tallinn", "volikogu",
+            ),
+            "estleg:Issuer_tartu_linnavolikogu": (
+                "tartu linnavolikogu",
+                "estleg:Municipality_tartu", "volikogu",
+            ),
+            "estleg:Issuer_polva_vallavolikogu": (
+                "polva vallavolikogu",
+                "estleg:Municipality_polva_vald", "volikogu",
+            ),
+        }
+        return kov_act_lookup_by_number, issuer_registry
+
+    def test_explicit_issuer_in_same_municipality_resolves(self, fixture_data):
+        from extract_cross_references import resolve_kov_internal_act_ref
+        lookup, registry = fixture_data
+        target = resolve_kov_internal_act_ref(
+            source_municipality="estleg:Municipality_tallinn",
+            explicit_issuer="tallinna linnavolikogu",
+            body_type="volikogu",
+            act_number="15",
+            kov_act_lookup_by_number=lookup,
+            issuer_registry=registry,
+        )
+        assert target == "estleg:Reg_TLN15_Map_2020"
+
+    def test_explicit_issuer_in_different_municipality_returns_none(
+        self, fixture_data
+    ):
+        """Tallinn act citing 'Tartu Linnavolikogu' explicitly is
+        cross-municipality — skip rather than resolve."""
+        from extract_cross_references import resolve_kov_internal_act_ref
+        lookup, registry = fixture_data
+        target = resolve_kov_internal_act_ref(
+            source_municipality="estleg:Municipality_tallinn",
+            explicit_issuer="tartu linnavolikogu",
+            body_type="volikogu",
+            act_number="15",
+            kov_act_lookup_by_number=lookup,
+            issuer_registry=registry,
+        )
+        assert target is None
+
+    def test_generic_body_word_resolves_via_municipality_scope(
+        self, fixture_data
+    ):
+        """No explicit issuer → enumerate volikogus in source
+        municipality. Tallinn has only one volikogu, so this resolves
+        uniquely."""
+        from extract_cross_references import resolve_kov_internal_act_ref
+        lookup, registry = fixture_data
+        target = resolve_kov_internal_act_ref(
+            source_municipality="estleg:Municipality_tallinn",
+            explicit_issuer=None,
+            body_type="volikogu",
+            act_number="15",
+            kov_act_lookup_by_number=lookup,
+            issuer_registry=registry,
+        )
+        assert target == "estleg:Reg_TLN15_Map_2020"
+
+    def test_ambiguous_candidates_returns_none(self, fixture_data):
+        """When the issuer has reused the act_number across revisions,
+        the resolver MUST abstain rather than pick a 'latest by file
+        order' winner."""
+        from extract_cross_references import resolve_kov_internal_act_ref
+        lookup, registry = fixture_data
+        target = resolve_kov_internal_act_ref(
+            source_municipality="estleg:Municipality_polva_vald",
+            explicit_issuer="polva vallavolikogu",
+            body_type="volikogu",
+            act_number="7",
+            kov_act_lookup_by_number=lookup,
+            issuer_registry=registry,
+        )
+        assert target is None
