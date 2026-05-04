@@ -148,19 +148,30 @@ The remaining 5 KOV-relevant pipelines (cross-references, inverse, sanctions, co
 
 - [ ] **Step 6: M7 — Expand `FULLNAME_GENITIVE` and `KNOWN_ABBREVIATIONS` for KOV enabling laws**
 
-Open `scripts/estleg_common.py`. Find the `KNOWN_ABBREVIATIONS` dict (around line 19) and add the following entries. These are the abbreviations for the 20 most-cited KOV enabling laws (sampled from `krr_outputs/regulations/kov/**/preambleText`); without them the resolver chain `genitive → abbrev → full_name → prefix → act_iri` breaks at the second hop.
+`build_provision_index` keys `source_act_to_prefix` by `estleg:sourceAct` (the canonical, parenthetical-free name on every provision node), NOT by the act-level `dc:source` (which sometimes carries a `(Riigi Teataja, kehtiv redaktsioon …)` suffix). The resolver chain is therefore:
+
+```
+parser-extracted genitive (lowercase)
+  → FULLNAME_GENITIVE  →  abbrev
+  → KNOWN_ABBREVIATIONS  →  full-name (matches estleg:sourceAct exactly)
+  → source_act_to_prefix  →  prefix
+  → prefix_to_act_iri  →  act IRI
+```
+
+The full-name strings below are the exact `estleg:sourceAct` values from current peep files. They were validated against the corpus (verification one-liner in Step 7). Four candidate KOV-preamble laws (Kohanimeseadus, Alusharidusseadus, Kohaliku omavalitsuse üksuse finantsjuhtimise seadus, Kohaliku omavalitsuse volikogu valimise seadus) are intentionally **omitted** — they have no peep file in the current corpus, so the resolver would return `None` regardless. The parser still recognises them as `law-genitive` form; they simply remain unresolved (counted as `preamble_citations_unresolved`). This is correct behaviour. When peep files are added later, M-something in a future layer can include them.
+
+Open `scripts/estleg_common.py`. Find the `KNOWN_ABBREVIATIONS` dict (around line 19) and add these 16 entries (the 20 corpus-cited candidates minus the 4 missing-from-corpus ones; values are exact `estleg:sourceAct` strings):
 
 ```python
 KNOWN_ABBREVIATIONS: dict[str, str] = {
     # ... existing entries ...
-    # M7 additions — KOV enabling laws (preamble corpus, top-20 by frequency)
-    "KNS": "Kohanimeseadus",
+    # M7 additions — KOV enabling laws that have peep files in the corpus.
+    # Values MUST match the canonical estleg:sourceAct on the act's
+    # provisions. Verified by the validation one-liner in Step 7.
     "PGS": "Põhikooli- ja gümnaasiumiseadus",
     "KELS_LASTEAS": "Koolieelse lasteasutuse seadus",
-    "AluS": "Alusharidusseadus",
     "HuviKS": "Huvikooli seadus",
     "RuumS": "Ruumiandmete seadus",
-    "KOFS": "Kohaliku omavalitsuse üksuse finantsjuhtimise seadus",
     "ÜVVKS": "Ühisveevärgi ja -kanalisatsiooni seadus",
     "KaugKS": "Kaugkütteseadus",
     "ElamuS": "Elamuseadus",
@@ -171,18 +182,21 @@ KNOWN_ABBREVIATIONS: dict[str, str] = {
     "TeeS": "Teeseadus",
     "RahvaS": "Rahvahääletuse seadus",
     "RKVS": "Riigikogu valimise seadus",
-    "KOVVS": "Kohaliku omavalitsuse volikogu valimise seadus",
     "RaamatPS": "Raamatupidamise seadus",
     "ÜTS": "Ühistranspordiseadus",
 }
 ```
 
-Then find `FULLNAME_GENITIVE` (around line 71) and add the corresponding genitive forms. Keys are lowercased for case-insensitive matching by Task 5's resolver.
+Then find `FULLNAME_GENITIVE` (around line 71) and add the corresponding genitive forms. Keys are lowercased for case-insensitive matching by Task 5's resolver. Genitive entries are included for **all 20** corpus-cited candidates (including the 4 with no peep file) so the parser still recognises them; they will fail later in the chain at `source_act_to_prefix` and that's the expected fall-through.
 
 ```python
 FULLNAME_GENITIVE: dict[str, str] = {
     # ... existing entries ...
-    # M7 additions — match against parser's lowercased law_ref output
+    # M7 — match against parser's lowercased law_ref output. Entries
+    # whose abbrev resolves through KNOWN_ABBREVIATIONS to a corpus
+    # peep file produce real triples; entries whose target law has
+    # no peep file (KNS, AluS, KOFS, KOVVS) silently fall through —
+    # this is intentional and correct.
     "kohanimeseaduse": "KNS",
     "põhikooli- ja gümnaasiumiseaduse": "PGS",
     "koolieelse lasteasutuse seaduse": "KELS_LASTEAS",
@@ -210,51 +224,76 @@ FULLNAME_GENITIVE: dict[str, str] = {
 }
 ```
 
-**Important:** if a `dc:source` value in the existing law corpus does not exactly match the new full-name string (case-sensitive), the chain still breaks at `source_act_to_prefix.get(full_name)` in Task 5. After editing, verify with:
+- [ ] **Step 7: Verify the M7 chain end-to-end against the corpus**
+
+This script keys lookups by `estleg:sourceAct` (the canonical field used by `build_provision_index`), not `dc:source` (which has parenthetical variants for some acts):
 
 ```bash
 python3 - <<'PY'
 import json, glob
 from pathlib import Path
-ROOT = Path('krr_outputs')
-sources = set()
-for f in ROOT.glob('*_peep.json'):
+
+# Build the canonical {sourceAct: prefix_file_stub} map from the corpus.
+sourceacts = set()
+for f in glob.glob('krr_outputs/*_peep.json'):
     try:
         d = json.load(open(f))
-        for n in d.get('@graph', []):
-            t = n.get('@type') or []
-            if isinstance(t, str): t = [t]
-            if 'owl:Ontology' in t:
-                src = n.get('dc:source')
-                if isinstance(src, str): sources.add(src)
-                elif isinstance(src, list):
-                    for s in src:
-                        if isinstance(s, str): sources.add(s)
-    except Exception: pass
-new_full_names = ['Kohanimeseadus', 'Põhikooli- ja gümnaasiumiseadus',
-                  'Koolieelse lasteasutuse seadus', 'Alusharidusseadus',
-                  'Huvikooli seadus', 'Ruumiandmete seadus',
-                  'Kohaliku omavalitsuse üksuse finantsjuhtimise seadus',
-                  'Ühisveevärgi ja -kanalisatsiooni seadus', 'Kaugkütteseadus',
-                  'Elamuseadus', 'Rahvaraamatukogu seadus', 'Hädaolukorra seadus',
-                  'Ehitusseadustik', 'Jäätmeseadus', 'Teeseadus',
-                  'Rahvahääletuse seadus', 'Riigikogu valimise seadus',
-                  'Kohaliku omavalitsuse volikogu valimise seadus',
-                  'Raamatupidamise seadus', 'Ühistranspordiseadus',
-                  'Sotsiaalhoolekande seadus', 'Avaliku teabe seadus',
-                  'Avaliku teenistuse seadus', 'Planeerimisseadus']
-missing = [n for n in new_full_names if n not in sources]
-if missing:
-    print('NOT FOUND in any dc:source — chain will break for these:')
-    for m in missing: print(' ', m)
-else:
-    print('All M7 full-names match a corpus dc:source')
+    except Exception:
+        continue
+    for n in d.get('@graph', []):
+        sa = n.get('estleg:sourceAct')
+        if isinstance(sa, str):
+            sourceacts.add(sa)
+            break
+
+# Expected hits (16 of 20) — these MUST resolve to a corpus peep
+expected_hits = [
+    "Põhikooli- ja gümnaasiumiseadus",
+    "Koolieelse lasteasutuse seadus",
+    "Huvikooli seadus",
+    "Ruumiandmete seadus",
+    "Ühisveevärgi ja -kanalisatsiooni seadus",
+    "Kaugkütteseadus",
+    "Elamuseadus",
+    "Rahvaraamatukogu seadus",
+    "Hädaolukorra seadus",
+    "Ehitusseadustik",
+    "Jäätmeseadus",
+    "Teeseadus",
+    "Rahvahääletuse seadus",
+    "Riigikogu valimise seadus",
+    "Raamatupidamise seadus",
+    "Ühistranspordiseadus",
+]
+
+# Expected misses (4 of 20) — no peep file currently; resolver
+# fall-through is the documented behaviour.
+expected_misses = [
+    "Kohanimeseadus",
+    "Alusharidusseadus",
+    "Kohaliku omavalitsuse üksuse finantsjuhtimise seadus",
+    "Kohaliku omavalitsuse volikogu valimise seadus",
+]
+
+bad = []
+for n in expected_hits:
+    if n not in sourceacts:
+        bad.append(("UNEXPECTED MISS", n))
+for n in expected_misses:
+    if n in sourceacts:
+        bad.append(("UNEXPECTED HIT (should add to KNOWN_ABBREVIATIONS)", n))
+
+if bad:
+    for kind, n in bad:
+        print(f"  {kind}: {n}")
+    raise SystemExit(1)
+print("M7 verified: 16 hits + 4 documented misses match corpus state.")
 PY
 ```
 
-If the script reports any name as missing, search for the actual `dc:source` of the corresponding peep file and update either `KNOWN_ABBREVIATIONS` value or the abbreviation chain in Task 5 (`build_genitive_to_act_iri`) to use a fallback `dc:source` lookup. For cleanliness, prefer to fix `KNOWN_ABBREVIATIONS` to use the corpus-attested form.
+If any "UNEXPECTED MISS" appears, the corresponding `KNOWN_ABBREVIATIONS` value is wrong — open the named peep file, copy its provision-node `estleg:sourceAct` value verbatim, and update the dict. If any "UNEXPECTED HIT" appears, that law just gained a peep file; move it from the "missing" list into `KNOWN_ABBREVIATIONS`.
 
-- [ ] **Step 7: Verify**
+- [ ] **Step 8: Verify**
 
 ```
 pytest -q
@@ -266,17 +305,19 @@ python3 -c "import ast; ast.parse(open('scripts/generate_amendment_history.py').
 
 Expected: 135 passed (unchanged from 2a end-state, modulo the M5 test count shift).
 
-- [ ] **Step 7: Commit**
+- [ ] **Step 9: Commit**
 
 ```bash
 git add scripts/extract_legal_concepts.py scripts/generate_amendment_history.py scripts/estleg_common.py scripts/classify_eurovoc.py tests/test_generate_amendment_history.py README.md
 git commit -m "Address Layer 2a review nits (M2-M7) before 2b work
 
-M2-M6 are the carryover nits. M7 expands FULLNAME_GENITIVE +
-KNOWN_ABBREVIATIONS to cover the ~20 most-cited KOV enabling laws
-(kohanimeseaduse, põhikooli- ja gümnaasiumiseaduse, etc.); without it
-Layer 2b's preamble resolver returns None for the bulk of real KOV
-preambles even when the parser succeeds."
+M2-M6 are the carryover nits. M7 expands KNOWN_ABBREVIATIONS with
+16 KOV enabling laws and FULLNAME_GENITIVE with 24 genitive forms
+(matched against estleg:sourceAct, the canonical key used by
+build_provision_index — NOT dc:source which has parenthetical
+variants for some acts). Four enabling laws (KNS, AluS, KOFS,
+KOVVS) are documented as 'parser-recognised, resolver-fallthrough'
+because they have no peep file in the current corpus."
 ```
 
 ---
@@ -390,6 +431,15 @@ Create `tests/fixtures/kov_layer2b/preamble_samples.json`:
       "expected_issuer": "rahandusminister",
       "expected_adoption_date": "2003-12-11",
       "expected_act_number": "105"
+    },
+    {
+      "id": "seadustiku-genitive",
+      "text": "Lähtudes karistusseadustiku § 121 lõikest 2 ja ehitusseadustiku § 27 alusel, kehtestatakse järgmine kord.",
+      "expected_count": 2,
+      "expected_first_form": "law-genitive",
+      "expected_law_genitive": "karistusseadustiku",
+      "expected_paragraph": "121",
+      "expected_first_detail": "lg 2"
     }
   ]
 }
@@ -517,15 +567,26 @@ _P_TOKEN = r"(?:punkti|punkt|p)"
 
 # Pattern A — law in genitive form + § N (lõike M (punkti K)?)?
 # Matches one paragraph reference. The law genitive name can be
-# multiword and contain hyphens / non-Latin diacritics.
+# multiword and contain hyphens / non-Latin diacritics. The genitive
+# suffix is either '-seaduse' (e.g. 'alkoholiseaduse',
+# 'kohaliku omavalitsuse korralduse seaduse') or '-seadustiku'
+# (e.g. 'karistusseadustiku', 'ehitusseadustiku', 'äriseadustiku',
+# 'tsiviilseadustiku üldosa seaduse'). Note: 'seaduse' is genitive
+# of 'seadus' (law); 'seadustiku' is genitive of 'seadustik' (code).
+# Both must match — the v3 regex 'seaduse(?:tiku)?' incorrectly
+# matched 'seaduse' OR 'seadusetiku' (which doesn't exist), missing
+# clean '-seadustiku' forms.
+#
 # Example matches:
 #   "kohaliku omavalitsuse korralduse seaduse § 22 lõike 1 punkti 34"
 #   "põhikooli- ja gümnaasiumiseaduse § 66 lõike 2"
 #   "Kohanimeseaduse § 5 lõike 4"
-#   "kohaliku omavalitsuse korralduse seaduse paragrahv 6 lõike 1"
+#   "karistusseadustiku § 121"
+#   "ehitusseadustiku § 27"
 _PAT_LAW_PARA = re.compile(
     r"(?P<law>(?:[a-zõäöüšžA-ZÕÄÖÜŠŽ][a-zõäöüšžA-ZÕÄÖÜŠŽ\-]*\s+){0,5}"
-    r"[a-zõäöüšžA-ZÕÄÖÜŠŽ][a-zõäöüšžA-ZÕÄÖÜŠŽ\-]*seaduse(?:tiku)?)\s*"
+    r"[a-zõäöüšžA-ZÕÄÖÜŠŽ][a-zõäöüšžA-ZÕÄÖÜŠŽ\-]*"
+    r"(?:seaduse|seadustiku))\s*"
     rf"{_PARA_TOKEN}\s*(?P<par>\d+)"
     rf"(?:\s+{_LG_TOKEN}\s+(?P<lg>\d+))?"
     rf"(?:\s+{_P_TOKEN}\s+(?P<p>\d+))?",
@@ -723,9 +784,9 @@ def extract_preamble_citations(text: str) -> list[dict]:
 pytest tests/test_extract_cross_references.py::TestExtractPreambleCitations -v
 ```
 
-Expected: 11 parametrized samples + `test_empty_text_returns_empty` + `test_no_match_returns_empty` = 13 passed.
+Expected: 12 parametrized samples + `test_empty_text_returns_empty` + `test_no_match_returns_empty` = 14 passed.
 
-If a sample fails, the regex doesn't yet handle that case. **Iterate on the regex until all 11 samples pass — do not relax the test fixtures.** The samples are corpus-derived; they represent real text the pipeline will hit.
+If a sample fails, the regex doesn't yet handle that case. **Iterate on the regex until all 12 samples pass — do not relax the test fixtures.** The samples are corpus-derived; they represent real text the pipeline will hit.
 
 - [ ] **Step 6: Run the full suite**
 
@@ -733,7 +794,7 @@ If a sample fails, the regex doesn't yet handle that case. **Iterate on the rege
 pytest -q
 ```
 
-Expected: prior count + 13 new tests, all passing.
+Expected: prior count + 14 new tests, all passing.
 
 - [ ] **Step 7: Commit**
 
@@ -741,15 +802,16 @@ Expected: prior count + 13 new tests, all passing.
 git add scripts/extract_cross_references.py tests/test_extract_cross_references.py tests/fixtures/kov_layer2b/preamble_samples.json
 git commit -m "Add corpus-aware preamble citation parser
 
-Drives the parser with 11 corpus-derived preamble fixtures covering
+Drives the parser with 12 corpus-derived preamble fixtures covering
 real Estonian variation: multiword law names, paragraph word/symbol
 forms, lõige genitive/elative/plural cases, named-month and numeric
 date formats, instrumental määrusega and locative määruses,
 multi-word lowercase ministers (majandus- ja kommunikatsiooniministri,
-riigihalduse ministri), quoted law names. The regex bank handles
-all 11 samples; iterate on the bank if any fail rather than
-weakening the fixtures. citationText is preserved as the original
-input substring (quotes intact)."
+riigihalduse ministri), quoted law names, and -seadustiku genitive
+(karistusseadustiku, ehitusseadustiku — distinct from -seaduse
+genitive). The regex bank handles all 12 samples; iterate on the
+bank if any fail rather than weakening the fixtures. citationText
+is preserved as the original input substring (quotes intact)."
 ```
 
 ---
@@ -1125,10 +1187,28 @@ def build_provision_index() -> tuple[
         except (json.JSONDecodeError, OSError):
             continue
 
-        # ... existing scan logic that populates prefix_to_provisions,
-        #     source_act_to_prefix, iri_to_file ...
+        # Existing scan logic populates prefix_to_provisions,
+        # source_act_to_prefix, iri_to_file. The local file_prefix
+        # is the segment shared by every provision IRI in this file
+        # (e.g. 'KOKS' for estleg:KOKS_Par_22 / estleg:KOKS_Par_30,
+        # or 'KARIST_2' for estleg:KARIST_2_Par_1). We REUSE that
+        # exact value when binding act_iri_to_prefix, instead of
+        # re-deriving via _prefix_from_act_iri. Reusing file_prefix
+        # is safer because:
+        #   1. provisions are the ground truth for prefix grouping
+        #   2. multi-part laws (KARIST_2_Osa1, KARIST_2_Osa2) share
+        #      the same prefix, so the first occurrence wins
+        #      under setdefault — and when the act IRI happens to
+        #      diverge from the prefix-extraction heuristic (rare
+        #      legacy files), provisions are still keyed correctly.
+        # _prefix_from_act_iri is used only as a fallback for files
+        # that have an act node but no provisions.
 
-        # Layer 2b: capture the act node and bind both prefix maps.
+        # ... existing per-provision scan derives file_prefix and
+        #     records source_act_to_prefix[source_act] = file_prefix ...
+
+        # Layer 2b: bind act_iri ↔ prefix maps using file_prefix when
+        # available, _prefix_from_act_iri as a fallback.
         for node in doc.get("@graph", []):
             types = node.get("@type") or []
             if isinstance(types, str):
@@ -1138,7 +1218,7 @@ def build_provision_index() -> tuple[
             act_iri = node.get("@id")
             if not act_iri:
                 continue
-            prefix = _prefix_from_act_iri(act_iri)
+            prefix = file_prefix or _prefix_from_act_iri(act_iri)
             if not prefix:
                 continue
             # Multi-part laws (e.g. KARIST_2_Osa1, KARIST_2_Osa2) share
@@ -1206,10 +1286,15 @@ import xml.etree.ElementTree as _ET_LOCAL
 
 def _read_adoption_date_from_xml(xml_path: Path) -> str | None:
     """Read <vastuvoetud><aktikuupaev> from a Riigi Teataja XML.
-    Returns the ISO-8601 date string or None when absent."""
+    Returns the ISO-8601 date string or None when absent or unreadable.
+
+    Both XML parse errors AND filesystem errors (missing file, EACCES,
+    EIO mid-read) return None so the caller's lookup-build loop can
+    skip the entry without crashing the whole pipeline.
+    """
     try:
         tree = _ET_LOCAL.parse(str(xml_path))
-    except _ET_LOCAL.ParseError:
+    except (_ET_LOCAL.ParseError, OSError):
         return None
     for node in tree.iter():
         # Tag local-name match (ns-aware)
@@ -1225,10 +1310,12 @@ def build_state_regulation_lookup(
     riik_root: Path,
     data_dir: Path,
 ) -> dict[tuple[str, str, str], str]:
-    """Build (issuer, adoption_date, act_number) → act @id for state
-    regulations under riik_root. adoption_date is read from each
-    paired XML at <vastuvoetud><aktikuupaev>; the corpus has zero
-    estleg:adoptionDate fields."""
+    """Build (normalized_issuer, adoption_date, act_number) → act @id
+    for state regulations under riik_root. adoption_date is read
+    from each paired XML at <vastuvoetud><aktikuupaev>; the corpus
+    has zero estleg:adoptionDate fields. Issuer is normalised via
+    _normalize_issuer_label for symmetry with the resolver query
+    side (Task 5)."""
     from estleg_common import build_globalid_xml_lookup, pair_peep_with_xml
 
     lookup: dict[tuple[str, str, str], str] = {}
@@ -1270,7 +1357,12 @@ def build_state_regulation_lookup(
         if adoption_date is None:
             continue
 
-        lookup[(issuer, adoption_date, str(act_num))] = act_node["@id"]
+        # Normalise issuer at construction time so resolver-side
+        # queries (which also normalise) hit the same key.
+        key = (_normalize_issuer_label(issuer),
+               adoption_date,
+               str(act_num))
+        lookup[key] = act_node["@id"]
     return lookup
 
 
@@ -1279,13 +1371,17 @@ def build_kov_act_lookup(
     data_dir: Path,
     issuers_path: Path,
 ) -> dict[tuple[str, str, str], str]:
-    """Build (issuer_label, adoption_date, act_number) → act @id for
-    KOV regulations.
+    """Build (normalized_issuer, adoption_date, act_number) → act @id
+    for KOV regulations.
 
-    The issuer key is taken from estleg:issuer on the act node
-    (which the corpus generator stamps), with the registry's
-    rdfs:label as a sanity reference. adoption_date is read from
-    paired XML."""
+    The issuer key is taken from estleg:issuer on the act node and
+    passed through _normalize_issuer_label so that registry-side
+    ASCII labels ('Polva Vallavalitsus') and act-side canonical
+    labels with diacritics ('Põlva Vallavalitsus') hash to the same
+    key. issuers_path is consulted only as a sanity validation;
+    mismatches are tolerated to absorb Layer 1's slug-derived label
+    quirks. adoption_date is read from paired XML.
+    """
     from estleg_common import build_globalid_xml_lookup, pair_peep_with_xml
 
     lookup: dict[tuple[str, str, str], str] = {}
@@ -1294,7 +1390,8 @@ def build_kov_act_lookup(
 
     xml_lookup = build_globalid_xml_lookup(data_dir)
 
-    # Load issuer registry to validate the issuer label appears there
+    # Load issuer registry for sanity reference (does not gate the
+    # build — diacritic mismatches are tolerated).
     valid_issuer_labels: set[str] = set()
     if issuers_path.exists():
         try:
@@ -1304,7 +1401,7 @@ def build_kov_act_lookup(
                 if "estleg:Issuer" in (n.get("@type") or []):
                     label = n.get("rdfs:label")
                     if label:
-                        valid_issuer_labels.add(label)
+                        valid_issuer_labels.add(_normalize_issuer_label(label))
         except (json.JSONDecodeError, OSError):
             pass
 
@@ -1333,14 +1430,6 @@ def build_kov_act_lookup(
         if not (issuer and act_num):
             continue
 
-        # Note: when valid_issuer_labels is non-empty, prefer matching
-        # against it; otherwise accept whatever the act node says.
-        if valid_issuer_labels and issuer not in valid_issuer_labels:
-            # Tolerate this — the registry build may have used
-            # transliterated labels while the act has the canonical
-            # form. Don't reject.
-            pass
-
         xml_path = pair_peep_with_xml(peep, xml_lookup, data_dir=data_dir)
         if xml_path is None:
             continue
@@ -1348,7 +1437,16 @@ def build_kov_act_lookup(
         if adoption_date is None:
             continue
 
-        lookup[(issuer, adoption_date, str(act_num))] = act_node["@id"]
+        # Normalise issuer label symmetrically with the resolver-side
+        # query (Task 5). When the registry is non-empty, log (don't
+        # reject) when the normalised act-issuer isn't in it — this
+        # surfaces Layer 1 corpus-build oddities without dropping data.
+        norm_issuer = _normalize_issuer_label(issuer)
+        if valid_issuer_labels and norm_issuer not in valid_issuer_labels:
+            # Tolerate; future Layer 2c may tighten this.
+            pass
+
+        lookup[(norm_issuer, adoption_date, str(act_num))] = act_node["@id"]
     return lookup
 
 
@@ -1386,6 +1484,9 @@ def build_kov_act_lookup_by_number(
     resolver (Task 6) can decide whether the match is unique. The
     resolver returns a target only when the candidate list contains
     exactly one entry (after scoping by enactedByMunicipality).
+
+    Issuer labels are passed through _normalize_issuer_label for
+    symmetry with the resolver's query side (which does the same).
     """
     lookup: dict[tuple[str, str], list[str]] = {}
     if not kov_root.is_dir():
@@ -1414,17 +1515,7 @@ def build_kov_act_lookup_by_number(
     return lookup
 ```
 
-The `build_kov_act_lookup` (date-keyed) and `build_state_regulation_lookup` builders also call `_normalize_issuer_label` symmetrically when constructing the key, so the resolver's query side can pass an already-normalised value without worrying about diacritic alignment. Update both functions:
-
-```python
-# In build_state_regulation_lookup, replace the final tuple-key line:
-lookup[(_normalize_issuer_label(issuer), adoption_date, str(act_num))] = act_node["@id"]
-
-# In build_kov_act_lookup, replace the final tuple-key line:
-lookup[(_normalize_issuer_label(issuer), adoption_date, str(act_num))] = act_node["@id"]
-```
-
-Update each test that asserts against these lookups to use the normalised issuer key. For `test_state_regulation_lookup_reads_adoption_from_xml`:
+**Test assertion updates.** Both `build_state_regulation_lookup` and `build_kov_act_lookup` now normalise the issuer at construction time via `_normalize_issuer_label` (folded into the function bodies above). Tests that assert against these lookups must query with the normalised form. For `test_state_regulation_lookup_reads_adoption_from_xml`:
 
 ```python
 assert lookup[("vabariigi valitsus", "2019-12-19", "112")] == \
@@ -1781,11 +1872,11 @@ def resolve_preamble_citation(
         return (target, act_iri)
 
     if form == "state-regulation-date-number":
-        # Issuer is normalised by the parser side; lookup keys are
-        # also normalised at construction time (Task 3).
-        from estleg_common import sanitize_id  # already imported in module
-        # Reuse _normalize_issuer_label so query-side and build-side
-        # hash to the same key.
+        # Issuer is normalised symmetrically: parser side calls
+        # _normalize_state_issuer to strip the genitive ending; the
+        # state_reg_lookup builder (Task 3) calls _normalize_issuer_label
+        # on the act-side issuer string. Apply the same here so both
+        # sides hash to the same key.
         key = (
             _normalize_issuer_label(cit["issuer"]),
             cit["adoption_date"],
@@ -2557,113 +2648,150 @@ in the round-3 review)."
 
 ---
 
-## Task 8: Coverage instrumentation (set-based dedup, KOV-by-source-path)
+## Task 8: Coverage instrumentation (Layer 2a `kov_pipeline_coverage` helper, set-based dedup)
 
 **Files:**
 - Modify: `scripts/extract_cross_references.py`
 
-Apply the canonical coverage instrumentation pattern, using SETS for the processed/with-output counters so the body-text and preamble passes don't double-count files. KOV attribution is by source act path (the file we're scanning), NOT the output target's path.
+**Reuse the existing `kov_pipeline_coverage` module** (`scripts/kov_pipeline_coverage.py`) introduced in Layer 2a. It already exposes the canonical `CoverageReport` dataclass, `write_coverage_report`, `resolve_pipeline_version`, and `measure_runtime`. Re-using it keeps the report schema consistent across all 6 KOV-aware pipelines (`classify_deontic`, `classify_eurovoc`, `extract_temporal_data`, `extract_legal_concepts`, `generate_amendment_history`, plus our two Layer 2b additions).
 
-Pattern:
-- `_files_processed_kov` is a `set[Path]` of KOV peep paths that the pipeline reached
-- `_files_with_output_kov` is a `set[Path]` of KOV peep paths whose pipeline emitted ≥1 triple
-- At report-write, convert to `len(...)` for the report fields
+The `kov_pipeline_coverage.CoverageReport` uses **plain `int` counters** for `files_processed[_kov]`, `files_with_output[_kov]`, etc. The set-based dedup happens at the call site via local `set[Path]` variables; their `len()` is passed into the report at write time. Layer 2a's `extract_temporal_data.py` (line 326+) and `classify_deontic.py` (line 165+) are the canonical references.
 
-This avoids the bug where a KOV file that produces both body-text references AND preamble triples gets counted twice.
+The dedup matters here because Layer 2b adds two passes (preamble + body-text KOV) over the same file set as the existing in-law citation pass; without `set[Path]` accumulation a file with output from both passes would be counted twice in `files_with_output`.
 
-- [ ] **Step 1: Add the CoverageReport-style accumulator**
+- [ ] **Step 1: Import and start the timer**
 
-Above `main()`, near the existing report dataclasses:
+At the top of `scripts/extract_cross_references.py`, with the other imports:
 
 ```python
-from dataclasses import dataclass, field
+import time
+from datetime import datetime, timezone
 
-
-@dataclass
-class CoverageReport:
-    """Layer 2a/2b canonical coverage instrumentation. KOV-specific
-    counters are independent of overall counters so the gate check
-    in validate_all can fail when the KOV side produces nothing."""
-    pipeline: str
-    input_files: int = 0
-    input_files_kov: int = 0
-    files_processed: set = field(default_factory=set)
-    files_with_output: set = field(default_factory=set)
-    files_processed_kov: set = field(default_factory=set)
-    files_with_output_kov: set = field(default_factory=set)
-    triples_emitted: int = 0
-    triples_emitted_kov: int = 0
-    errors: list = field(default_factory=list)
-
-    def to_dict(self) -> dict:
-        return {
-            "pipeline": self.pipeline,
-            "input_files": self.input_files,
-            "input_files_kov": self.input_files_kov,
-            "files_processed": len(self.files_processed),
-            "files_with_output": len(self.files_with_output),
-            "files_processed_kov": len(self.files_processed_kov),
-            "files_with_output_kov": len(self.files_with_output_kov),
-            "triples_emitted": self.triples_emitted,
-            "triples_emitted_kov": self.triples_emitted_kov,
-            "error_count": len(self.errors),
-            "errors": self.errors[:50],  # cap to keep report size sane
-        }
+from kov_pipeline_coverage import (
+    CoverageReport,
+    measure_runtime,
+    resolve_pipeline_version,
+    write_coverage_report,
+)
 ```
 
-- [ ] **Step 2: Wire the accumulator through `main()`**
+At the top of `main()` (after argparse, before `build_provision_index`):
 
 ```python
-    coverage = CoverageReport(pipeline="extract_cross_references")
-    coverage.input_files = sum(1 for _ in iter_peep_files())
-    coverage.input_files_kov = sum(
-        1 for p in iter_peep_files()
-        if "regulations/kov/" in str(p)
-    )
+    _start = time.perf_counter()
+    _files_processed: set[Path] = set()
+    _files_processed_kov: set[Path] = set()
+    _files_with_output: set[Path] = set()
+    _files_with_output_kov: set[Path] = set()
+    _triples = 0
+    _triples_kov = 0
+    _files_skipped = 0
+    _skip_reasons: dict[str, int] = {}
+    _failures: list[str] = []
+    _unresolved = 0
+```
 
-    # ... existing in-law citation pass and Layer 2b passes ...
-    # Each pass increments coverage.files_processed{,_kov},
-    # coverage.files_with_output{,_kov}, coverage.triples_emitted{,_kov}
-    # via .add(peep) on the sets and += on the int counters.
+- [ ] **Step 2: Update each pass to feed the dedup sets**
 
-    # The body-text branch and preamble branch both call:
-    coverage.files_processed.add(peep)
+The three places that touch a peep file (existing in-law branch, new body-text KOV branch in `process_law_file`, new preamble branch in `main`) MUST each:
+
+```python
+    # Inside the per-peep iteration, after open()
+    is_kov = "regulations/kov/" in str(peep)
+    _files_processed.add(peep)
     if is_kov:
-        coverage.files_processed_kov.add(peep)
+        _files_processed_kov.add(peep)
 
-    if produced_output_for_this_file:
-        coverage.files_with_output.add(peep)
+    # ... do the work ...
+
+    # When this pass emits ≥1 triple from this file:
+    if produced_output:
+        _files_with_output.add(peep)
         if is_kov:
-            coverage.files_with_output_kov.add(peep)
-
-    coverage.triples_emitted += n_triples_this_file
+            _files_with_output_kov.add(peep)
+    _triples += n_triples_this_file
     if is_kov:
-        coverage.triples_emitted_kov += n_triples_this_file
+        _triples_kov += n_triples_this_file
 ```
 
-- [ ] **Step 3: Write the coverage report**
+For the body-text branch in `process_law_file`, the function already returns a `stats` dict with `provisions_with_refs`. In `main()`, after each `process_law_file(...)` call:
 
 ```python
-    report_dir = KRR_DIR / "reports" / "kov"
-    report_dir.mkdir(parents=True, exist_ok=True)
-    out_path = report_dir / "extract_cross_references_coverage.json"
-    save_json(out_path, coverage.to_dict())
+    is_kov = "regulations/kov/" in str(json_file)
+    _files_processed.add(json_file)
+    if is_kov:
+        _files_processed_kov.add(json_file)
+    if stats.get("provisions_with_refs", 0) > 0:
+        _files_with_output.add(json_file)
+        if is_kov:
+            _files_with_output_kov.add(json_file)
+    delta = stats.get("citations_resolved", 0)
+    _triples += delta
+    if is_kov:
+        _triples_kov += delta
+    if stats.get("error"):
+        _failures.append(f"{json_file.name}: {stats['error']}")
+```
+
+The preamble branch from Task 7 already populates `preamble_files_processed[_kov]`, `preamble_files_with_output[_kov]`, `preamble_triples_emitted[_kov]`, and `preamble_citations_unresolved` as locals — fold them in:
+
+```python
+    _files_processed |= preamble_files_processed
+    _files_processed_kov |= preamble_files_kov_processed
+    _files_with_output |= preamble_files_with_output
+    _files_with_output_kov |= preamble_files_kov_with_output
+    _triples += preamble_triples_emitted
+    _triples_kov += preamble_triples_emitted_kov
+    _unresolved += preamble_citations_unresolved
+```
+
+- [ ] **Step 3: Write the coverage report at the end of `main()`**
+
+Replace the v3 plan's local `to_dict()` block with the canonical helper call (matches the pattern in `classify_deontic.py:308`):
+
+```python
+    all_input_files = list(iter_peep_files())
+    _kov_files = [p for p in all_input_files
+                  if "regulations/kov/" in str(p)]
+
+    _wall, _rate, _peak_mb = measure_runtime(_start, len(_files_processed))
+    out_path = KRR_DIR / "reports" / "kov" / "extract_cross_references_coverage.json"
+    write_coverage_report(
+        CoverageReport(
+            pipeline="extract_cross_references",
+            run_timestamp=datetime.now(timezone.utc).isoformat(),
+            pipeline_version=resolve_pipeline_version(),
+            input_files_total=len(all_input_files),
+            input_files_kov=len(_kov_files),
+            files_processed=len(_files_processed),
+            files_processed_kov=len(_files_processed_kov),
+            files_with_output=len(_files_with_output),
+            files_with_output_kov=len(_files_with_output_kov),
+            files_skipped=_files_skipped,
+            skip_reasons=_skip_reasons,
+            triples_emitted=_triples,
+            triples_emitted_kov=_triples_kov,
+            unresolved_references=_unresolved,
+            wall_time_seconds=round(_wall, 2),
+            items_per_second=round(_rate, 2),
+            peak_memory_mb=round(_peak_mb, 1),
+            error_count=len(_failures),
+            failure_samples=_failures,
+        ),
+        out_path,
+    )
     print(f"\nCoverage report: {out_path}")
-    print(f"  input_files: {coverage.input_files} "
-          f"(KOV: {coverage.input_files_kov})")
-    print(f"  files_processed: {len(coverage.files_processed)} "
-          f"(KOV: {len(coverage.files_processed_kov)})")
-    print(f"  files_with_output: {len(coverage.files_with_output)} "
-          f"(KOV: {len(coverage.files_with_output_kov)})")
-    print(f"  triples_emitted: {coverage.triples_emitted} "
-          f"(KOV: {coverage.triples_emitted_kov})")
+    print(f"  input_files_total: {len(all_input_files)} "
+          f"(KOV: {len(_kov_files)})")
+    print(f"  files_with_output: {len(_files_with_output)} "
+          f"(KOV: {len(_files_with_output_kov)})")
+    print(f"  triples_emitted: {_triples} (KOV: {_triples_kov})")
 
     # Gate check — fails the run when KOV side produced nothing.
-    if (coverage.input_files_kov >= 11000
-            and len(coverage.files_with_output_kov) == 0):
+    if len(_kov_files) >= 11000 and len(_files_with_output_kov) == 0:
         print("\nGATE FAIL: KOV files were processed but none produced output.")
         return 1
-    if coverage.triples_emitted_kov == 0 and coverage.input_files_kov >= 11000:
+    if _triples_kov == 0 and len(_kov_files) >= 11000:
         print("\nGATE FAIL: zero KOV triples emitted.")
         return 1
     print("\nGATE OK")
@@ -2681,12 +2809,13 @@ pytest tests/test_extract_cross_references.py -v
 
 ```bash
 git add scripts/extract_cross_references.py
-git commit -m "Add coverage instrumentation to extract_cross_references (set-based dedup)
+git commit -m "Add coverage instrumentation to extract_cross_references
 
-CoverageReport tracks files_processed/with_output as set[Path] so
-the body-text and preamble passes don't double-count files. KOV
-attribution is by source act path (the file we're scanning) — the
-gate fails when KOV input is non-trivial but output is zero."
+Reuses the existing kov_pipeline_coverage helper (Layer 2a) so the
+report schema matches the other 5 KOV pipelines. Local set[Path]
+accumulators for files_processed and files_with_output prevent the
+preamble + body-text passes from double-counting files; their len()
+feeds the int fields the helper expects."
 ```
 
 ---
@@ -2888,12 +3017,57 @@ def collect_preamble_back_references(json_files: list[Path]) -> dict[str, list[s
     return {k: sorted(set(v)) for k, v in inverse.items()}
 
 
+def clear_stale_implemented_by(json_files: list[Path]) -> int:
+    """Idempotency pass: scan every peep file once and remove any
+    pre-existing estleg:implementedBy / estleg:implementedByCount
+    triples. Returns the number of files modified.
+
+    Required because apply_implemented_by writes ONLY to nodes still
+    present in the current preamble_inverse map. Without this clear
+    pass, a stale target whose source act lost its issuedUnder triple
+    (e.g. preamble parser improvement, or act removal) would retain
+    a now-incorrect implementedBy across re-runs.
+    """
+    n_modified = 0
+    for json_file in json_files:
+        try:
+            with open(json_file, "r", encoding="utf-8") as fh:
+                doc = json.load(fh)
+        except (json.JSONDecodeError, OSError):
+            continue
+        modified = False
+        for node in doc.get("@graph", []):
+            if "estleg:implementedBy" in node:
+                node.pop("estleg:implementedBy")
+                modified = True
+            if "estleg:implementedByCount" in node:
+                node.pop("estleg:implementedByCount")
+                modified = True
+        if modified:
+            with open(json_file, "w", encoding="utf-8") as fh:
+                json.dump(doc, fh, ensure_ascii=False, indent=2)
+                fh.write("\n")
+            n_modified += 1
+    return n_modified
+
+
 def apply_implemented_by(
     inverse: dict[str, list[str]],
     iri_to_file: dict[str, Path],
-) -> dict[str, int]:
-    """Write estleg:implementedBy onto target nodes. Returns
-    {filepath_name: count_of_nodes_updated}."""
+) -> dict[Path, int]:
+    """Write estleg:implementedBy + estleg:implementedByCount onto
+    target nodes. Returns {target_filepath: count_of_nodes_updated}.
+
+    NOTE: callers MUST run clear_stale_implemented_by() over the same
+    file set BEFORE this function. Otherwise stale targets that no
+    longer appear in `inverse` retain old triples.
+
+    The Path-keyed return matches apply_inverse_references' new
+    signature so the coverage accumulator (Task 11) can resolve the
+    target file path losslessly even when peeps live in nested
+    regulations/kov/<municipality>/ directories with colliding
+    basenames.
+    """
     file_updates: dict[Path, dict[str, list[str]]] = defaultdict(dict)
     for target_iri, sources in inverse.items():
         target_file = iri_to_file.get(target_iri)
@@ -2901,7 +3075,7 @@ def apply_implemented_by(
             continue
         file_updates[target_file][target_iri] = sources
 
-    counts: dict[str, int] = {}
+    counts: dict[Path, int] = {}
     for target_file, by_iri in sorted(file_updates.items()):
         try:
             with open(target_file, "r", encoding="utf-8") as fh:
@@ -2915,13 +3089,20 @@ def apply_implemented_by(
                 continue
             sources = by_iri[nid]
             node["estleg:implementedBy"] = [{"@id": s} for s in sources]
+            # JSON-LD 1.1 expands a plain integer to xsd:integer per
+            # spec, with no @context coercion needed. We deliberately
+            # use a plain int here (not {"@type": "xsd:integer",
+            # "@value": ...}) to match the project's existing literal
+            # convention; SPARQL queries can still filter via
+            # xsd:integer. If a future SHACL constraint requires the
+            # expanded form, refactor to typed-literal at that point.
             node["estleg:implementedByCount"] = len(sources)
             nodes_updated += 1
         if nodes_updated:
             with open(target_file, "w", encoding="utf-8") as fh:
                 json.dump(doc, fh, ensure_ascii=False, indent=2)
                 fh.write("\n")
-            counts[target_file.name] = nodes_updated
+            counts[target_file] = nodes_updated
     return counts
 
 
@@ -2932,12 +3113,18 @@ def compute_implemented_by_count(
     return {target: len(set(sources)) for target, sources in inverse.items()}
 ```
 
-Wire the helpers into `main()`:
+Wire the helpers into `main()`. The clear pass MUST run BEFORE the apply pass:
 
 ```python
     print("\nLayer 2b: collecting preamble back-references...")
     files = list(iter_peep_files())
     preamble_inverse = collect_preamble_back_references(files)
+
+    # Idempotent clear before re-applying. Strips any stale
+    # implementedBy / implementedByCount triples from prior runs.
+    cleared = clear_stale_implemented_by(files)
+    print(f"  cleared stale implementedBy/Count from {cleared} files")
+
     impl_counts = apply_implemented_by(preamble_inverse, iri_to_file)
     print(f"  implementedBy emitted to {sum(impl_counts.values())} nodes "
           f"across {len(impl_counts)} files")
@@ -3029,7 +3216,69 @@ class TestImplementedByBodyTextExclusion:
         assert any(e["@id"] == "estleg:Reg_A_Map" for e in impls)
 ```
 
-- [ ] **Step 3: Run + commit**
+- [ ] **Step 3: Idempotency regression test**
+
+Append to `tests/test_generate_inverse_references.py`:
+
+```python
+class TestImplementedByIdempotency:
+    def test_stale_implemented_by_cleared_before_reapply(
+        self, tmp_path, monkeypatch
+    ):
+        """Round 4 review item #6: a target that no longer appears in
+        the preamble_inverse map MUST lose its implementedBy /
+        implementedByCount triples on the next run. Without
+        clear_stale_implemented_by(), the apply-only path would
+        leave stale triples in place forever."""
+        import generate_inverse_references as mod
+        import estleg_common
+
+        krr = tmp_path / "krr_outputs"
+        krr.mkdir()
+
+        # Target peep with PRE-EXISTING (stale) implementedBy/Count
+        # that no other act in this test references via issuedUnder.
+        (krr / "stale_target_peep.json").write_text(json.dumps({
+            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+                         "owl": "http://www.w3.org/2002/07/owl#"},
+            "@graph": [
+                {"@id": "estleg:Stale_Map_2026",
+                 "@type": ["owl:Ontology", "estleg:Law"],
+                 "estleg:implementedBy": [
+                     {"@id": "estleg:Reg_GhostSource_Map_2025"}
+                 ],
+                 "estleg:implementedByCount": 1}
+            ],
+        }), encoding="utf-8")
+
+        # A live source act with no issuedUnder, no Citation — so
+        # preamble_inverse will be empty.
+        kov = krr / "regulations" / "kov" / "tallinn"
+        kov.mkdir(parents=True)
+        (kov / "live_source_peep.json").write_text(json.dumps({
+            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+                         "owl": "http://www.w3.org/2002/07/owl#"},
+            "@graph": [
+                {"@id": "estleg:Reg_Live_Map_2026",
+                 "@type": ["owl:Ontology", "estleg:MunicipalRegulation"]}
+            ],
+        }), encoding="utf-8")
+
+        monkeypatch.setattr(mod, "KRR_DIR", krr)
+        monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+
+        rc = mod.main()
+        assert rc in (None, 0)
+
+        # The stale target must have lost both triples.
+        with open(krr / "stale_target_peep.json", "r", encoding="utf-8") as fh:
+            saved = json.load(fh)
+        target = saved["@graph"][0]
+        assert "estleg:implementedBy" not in target
+        assert "estleg:implementedByCount" not in target
+```
+
+- [ ] **Step 4: Run + commit**
 
 ```
 pytest tests/test_generate_inverse_references.py -v
@@ -3038,7 +3287,12 @@ pytest -q
 
 ```bash
 git add scripts/generate_inverse_references.py tests/test_generate_inverse_references.py
-git commit -m "Add implementedBy filtered projection + body-text-exclusion E2E test"
+git commit -m "Add implementedBy filtered projection + body-text-exclusion E2E test
+
+Includes clear_stale_implemented_by idempotency pass: every run
+strips pre-existing implementedBy/implementedByCount before
+re-applying so corrected preamble parses and removed acts can't
+leave stale triples behind."
 ```
 
 ---
@@ -3056,62 +3310,148 @@ grep -n "include_kov=False" scripts/generate_inverse_references.py
 
 There are 3 occurrences. Remove the `include_kov=False` argument and the trailing `# DEFERRED to Layer 2b` comment from each call.
 
-- [ ] **Step 2: Add the CoverageReport accumulator**
+- [ ] **Step 2: Patch `apply_inverse_references` to return Path-keyed counts**
 
-Add the same `CoverageReport` dataclass as in Task 8 (or import it from a shared module). Use `pipeline="generate_inverse_references"`.
-
-- [ ] **Step 3: Wire the accumulator**
-
-Coverage attribution: `triples_emitted_kov` increments when the SOURCE act path (the act emitting the inverse triple) is under `regulations/kov/`. `files_with_output[_kov]` is a set keyed by TARGET peep path (the file the inverse triple was written into) — the same as the existing `update_counts` keys, just stored as `set[Path]`.
+The existing function returns `update_counts: dict[str, int]` keyed by `target_file.name`, which collapses nested-directory paths (e.g. two regs in different `regulations/kov/<municipality>/` folders with the same filename collide). Change the signature to return `dict[Path, int]` so coverage accounting can resolve the target path back to a real `Path` object without the lossy `KRR_DIR / fname` reconstruction.
 
 ```python
-    coverage = CoverageReport(pipeline="generate_inverse_references")
+def apply_inverse_references(
+    inverse_map: dict[str, list[str]],
+    iri_to_file: dict[str, Path],
+    prefix_par_index: dict[str, dict[str, str]],
+) -> tuple[dict[Path, int], list[str], dict[str, str]]:
+    # ... existing logic ...
+    update_counts: dict[Path, int] = {}      # was dict[str, int]
+    for target_file, iri_sources in sorted(file_updates.items()):
+        # ... existing per-file logic ...
+        if nodes_updated:
+            update_counts[target_file] = nodes_updated
+    return update_counts, unresolved_iris, alias_resolved
+```
 
-    # ... existing collect_all_references + apply_inverse_references ...
-    # The set-of-target-paths comes from update_counts.
-    for fname, n in update_counts.items():
-        target_path = KRR_DIR / fname  # may need adjustment for nested dirs
-        coverage.files_with_output.add(target_path)
+The single existing caller in `main()` previously consumed `update_counts` with `for fname, n in update_counts.items()`. Update it to use the `Path` key directly:
+
+```python
+    update_counts, unresolved_iris, alias_resolved = apply_inverse_references(...)
+    print(f"\nUpdated {sum(update_counts.values())} nodes across "
+          f"{len(update_counts)} files")
+    for path, n in sorted(update_counts.items()):
+        print(f"  {path.relative_to(KRR_DIR)}: {n}")
+```
+
+- [ ] **Step 3: Add coverage instrumentation using the canonical helper**
+
+Match the pattern from `classify_deontic.py:308` — same as Task 8. Add the imports and timer-start at the top of `main()`:
+
+```python
+import time
+from datetime import datetime, timezone
+from kov_pipeline_coverage import (
+    CoverageReport,
+    measure_runtime,
+    resolve_pipeline_version,
+    write_coverage_report,
+)
+```
+
+```python
+    _start = time.perf_counter()
+    _files_processed: set[Path] = set()
+    _files_processed_kov: set[Path] = set()
+    _files_with_output: set[Path] = set()
+    _files_with_output_kov: set[Path] = set()
+    _triples = 0
+    _triples_kov = 0
+    _failures: list[str] = []
+```
+
+After `apply_inverse_references` returns, accumulate target-side stats. The variable in `inverse_map` is `target_iri → [source_iris]` — name it correctly:
+
+```python
+    # Target-side attribution: each (target_path, count) pair is
+    # one peep file that received ≥1 referencedBy triple.
+    for target_path, n in update_counts.items():
+        _files_with_output.add(target_path)
         if "regulations/kov/" in str(target_path):
-            coverage.files_with_output_kov.add(target_path)
-        coverage.triples_emitted += n
+            _files_with_output_kov.add(target_path)
+        _triples += n
+        if "regulations/kov/" in str(target_path):
+            _triples_kov += n   # target side is what we wrote into
 
-    # Source-side attribution: count how many KOV-source acts contributed
-    # at least one referencedBy / implementedBy triple.
-    for source_iri, target_list in inverse_map.items():
-        # Each target_list contains source_iris that produced the triple
-        # — we want the SOURCE files. Resolve via iri_to_file.
-        for source in target_list:
-            source_path = iri_to_file.get(source)
+    # Source-side processed-files attribution: the inverse_map maps
+    # target_iri → [source_iri, ...]. Walk it correctly to resolve
+    # source PATHS for the processed-set.
+    for target_iri, source_list in inverse_map.items():
+        for source_iri in source_list:
+            source_path = iri_to_file.get(source_iri)
             if source_path is None:
                 continue
-            coverage.files_processed.add(source_path)
+            _files_processed.add(source_path)
             if "regulations/kov/" in str(source_path):
-                coverage.files_processed_kov.add(source_path)
-                coverage.triples_emitted_kov += 1
+                _files_processed_kov.add(source_path)
+```
 
-    # Layer 2b implementedBy attribution — same pattern, against
-    # preamble_inverse instead of inverse_map.
-    for target_iri, sources in preamble_inverse.items():
-        for source in sources:
-            source_path = iri_to_file.get(source)
+After `apply_implemented_by` returns its `dict[Path, int]` (Task 10 must mirror the `Path`-keyed signature):
+
+```python
+    # Layer 2b implementedBy attribution — target side
+    for target_path, n in impl_counts.items():
+        _files_with_output.add(target_path)
+        if "regulations/kov/" in str(target_path):
+            _files_with_output_kov.add(target_path)
+        _triples += n
+        if "regulations/kov/" in str(target_path):
+            _triples_kov += n
+
+    # implementedBy source-side: walk preamble_inverse the right way
+    # (target_iri → [source_iri, ...]).
+    for target_iri, source_list in preamble_inverse.items():
+        for source_iri in source_list:
+            source_path = iri_to_file.get(source_iri)
             if source_path is None:
                 continue
+            _files_processed.add(source_path)
             if "regulations/kov/" in str(source_path):
-                coverage.triples_emitted_kov += 1
+                _files_processed_kov.add(source_path)
 ```
 
 - [ ] **Step 4: Write the coverage report**
 
 ```python
-    report_dir = KRR_DIR / "reports" / "kov"
-    report_dir.mkdir(parents=True, exist_ok=True)
-    out_path = report_dir / "generate_inverse_references_coverage.json"
-    save_json(out_path, coverage.to_dict())
-    print(f"\nCoverage report: {out_path}")
+    all_input_files = list(iter_peep_files())
+    _kov_files = [p for p in all_input_files
+                  if "regulations/kov/" in str(p)]
 
-    if (coverage.input_files_kov >= 11000
-            and len(coverage.files_with_output_kov) == 0):
+    _wall, _rate, _peak_mb = measure_runtime(_start, len(_files_processed))
+    out_path = KRR_DIR / "reports" / "kov" / "generate_inverse_references_coverage.json"
+    write_coverage_report(
+        CoverageReport(
+            pipeline="generate_inverse_references",
+            run_timestamp=datetime.now(timezone.utc).isoformat(),
+            pipeline_version=resolve_pipeline_version(),
+            input_files_total=len(all_input_files),
+            input_files_kov=len(_kov_files),
+            files_processed=len(_files_processed),
+            files_processed_kov=len(_files_processed_kov),
+            files_with_output=len(_files_with_output),
+            files_with_output_kov=len(_files_with_output_kov),
+            triples_emitted=_triples,
+            triples_emitted_kov=_triples_kov,
+            unresolved_references=len(unresolved_iris),
+            wall_time_seconds=round(_wall, 2),
+            items_per_second=round(_rate, 2),
+            peak_memory_mb=round(_peak_mb, 1),
+            error_count=len(_failures),
+            failure_samples=_failures,
+        ),
+        out_path,
+    )
+    print(f"\nCoverage report: {out_path}")
+    print(f"  files_with_output: {len(_files_with_output)} "
+          f"(KOV: {len(_files_with_output_kov)})")
+    print(f"  triples_emitted: {_triples} (KOV: {_triples_kov})")
+
+    if len(_kov_files) >= 11000 and len(_files_with_output_kov) == 0:
         print("\nGATE FAIL: KOV files were processed but none received output.")
         return 1
     print("\nGATE OK")
@@ -3129,13 +3469,15 @@ pytest tests/test_generate_inverse_references.py -v
 git add scripts/generate_inverse_references.py
 git commit -m "Unpin generate_inverse_references + add coverage instrumentation
 
-Removes the 3 include_kov=False pins, indexes act-level nodes in
-iri_to_file (so KOV body-text refs targeting act IRIs gain
-referencedBy on their target file instead of being silently
-dropped), and adds CoverageReport with set-based dedup. KOV
-attribution counts triples by SOURCE act path (the file emitting
-the inverse triple); the gate fails when KOV input is non-trivial
-but output is zero."
+- Removes the 3 include_kov=False pins (KOV runs by default).
+- Indexes act-level nodes in iri_to_file (Round-3 fix #7) so KOV
+  body-text refs targeting act IRIs gain referencedBy.
+- apply_inverse_references now returns dict[Path, int] (was
+  dict[str, int] keyed by basename) so nested-directory targets
+  don't collide and coverage accounting can resolve target paths
+  losslessly.
+- Coverage uses the existing kov_pipeline_coverage helper (matches
+  the schema of the 5 Layer 2a pipelines)."
 ```
 
 ---
@@ -3469,6 +3811,19 @@ After all 14 tasks complete:
   - B5 (body-text not wired): Task 6 parser + Task 7 process_law_file integration
   - B6 (issuer label fragile): Task 6 reads from `issuers_kov_peep.json` rdfs:label
   - B7 (self-import): Task 7 explicitly says do not self-import
+
+- [ ] **Round-4 review items (1-7 + 4 polish) addressed:**
+  - **R1 M7 deterministic matching:** Step 6 chains via `estleg:sourceAct` (the canonical key built by `build_provision_index`), not `dc:source`. Step 7's verification one-liner checks the 16 expected hits and 4 documented misses (KNS, AluS, KOFS, KOVVS — no peep file in corpus; parser-recognised, resolver-fallthrough is correct).
+  - **R2 seadustiku regex:** `_PAT_LAW_PARA` suffix is now `(?:seaduse|seadustiku)`. New corpus fixture `seadustiku-genitive` covers `karistusseadustiku § 121 lõikest 2` and `ehitusseadustiku § 27`.
+  - **R3 Reuse `kov_pipeline_coverage`:** Tasks 8 + 11 import `CoverageReport`, `measure_runtime`, `resolve_pipeline_version`, `write_coverage_report` from the existing module (Layer 2a). Set-based dedup happens at the call site via local `set[Path]` accumulators; their `len()` feeds the helper's `int` fields. Schema matches the other 5 KOV pipelines.
+  - **R4 Inverse coverage variable naming:** loop variable in Task 11 Step 3 is `for target_iri, source_list in inverse_map.items()` (was misleadingly `source_iri, target_list`).
+  - **R5 Inverse coverage path accounting:** `apply_inverse_references` and `apply_implemented_by` both return `dict[Path, int]` (was `dict[str, int]` keyed by basename). Coverage uses the Path keys directly; nested `regulations/kov/<municipality>/` targets no longer collide on basename.
+  - **R6 implementedBy idempotency:** `clear_stale_implemented_by` strips pre-existing `estleg:implementedBy` / `estleg:implementedByCount` from every peep file BEFORE `apply_implemented_by` writes the fresh map. Regression test `TestImplementedByIdempotency` proves stale targets lose their triples on re-run.
+  - **R7 implementedByCount datatype:** plain Python `int` written to JSON; documented in code comment that JSON-LD 1.1 expands to `xsd:integer` per spec without `@context` coercion. No SHACL constraint exists yet (Layer 2c may add `sh:datatype xsd:integer`); typed-literal refactor stays a Layer 2c follow-up.
+  - **P1 (polish) `_normalize_issuer_label` folded into builders:** `build_state_regulation_lookup`, `build_kov_act_lookup`, `build_kov_act_lookup_by_number`, `build_issuer_registry` all call it directly when constructing keys; no "replace tuple-key lines" instruction remains.
+  - **P2 (polish) `_read_adoption_date_from_xml` catches OSError:** `except (_ET_LOCAL.ParseError, OSError)` so missing/unreadable XML is skipped without crashing the pipeline.
+  - **P3 (polish) unused `sanitize_id` import removed:** the `from estleg_common import sanitize_id` line inside `resolve_preamble_citation`'s state-regulation branch is gone.
+  - **P4 (polish) `act_iri_to_prefix` from `file_prefix`:** `build_provision_index` binds `act_iri_to_prefix[act_iri] = file_prefix` (the prefix derived from provision IRIs — ground truth for grouping), with `_prefix_from_act_iri(act_iri)` only as a fallback for files with an act node but no provisions.
 
 - [ ] **Round-3 review items (1-8 + 3 nice-to-fixes) addressed:**
   - **#1 prefix derivation:** Task 3 returns `act_iri_to_prefix` reverse map; Task 5 resolver uses it (no `split("_")[0]`). Test `test_law_with_multipart_prefix_resolves_via_reverse_map` proves the multi-segment case.
