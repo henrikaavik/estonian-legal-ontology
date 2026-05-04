@@ -389,3 +389,130 @@ class TestCitationNodeBuilder:
         assert "estleg:citationTarget" in node
         assert "estleg:citationDetail" not in node
         assert "estleg:citationText" not in node
+
+
+class TestResolvePreambleCitation:
+    @pytest.fixture
+    def lookups(self):
+        # Fixtures use corpus-shaped IRIs throughout:
+        #   act IRIs: <prefix>_Map_<year> or <prefix>_Osa<n>_...
+        #   provision IRIs: <prefix>_Par_<n>  (NO _Map_<year> in the middle)
+        return {
+            "genitive_to_act_iri": {
+                "kohaliku omavalitsuse korralduse seaduse": "estleg:KOKS_Map_2026",
+                "alkoholiseaduse": "estleg:AS_Map_2026",
+                "karistusseadustiku": "estleg:KARIST_2_Osa1_1_87",
+            },
+            "prefix_to_provisions": {
+                "KOKS": {"22": "estleg:KOKS_Par_22",
+                          "6": "estleg:KOKS_Par_6"},
+                "AS":   {"42": "estleg:AS_Par_42"},
+                "KARIST_2": {"1": "estleg:KARIST_2_Par_1"},
+            },
+            "act_iri_to_prefix": {
+                "estleg:KOKS_Map_2026": "KOKS",
+                "estleg:AS_Map_2026": "AS",
+                # Multi-segment prefix — the case the v2 plan got wrong.
+                "estleg:KARIST_2_Osa1_1_87": "KARIST_2",
+            },
+            "state_reg_lookup": {
+                ("vabariigi valitsus", "2007-12-20", "251"):
+                    "estleg:Reg_VV251_Map_2007",
+            },
+            "kov_act_lookup": {
+                ("tallinna linnavolikogu", "2020-12-02", "60"):
+                    "estleg:Reg_TLN60_Map_2020",
+            },
+        }
+
+    def test_law_with_paragraph_returns_act_level_issuedUnder(self, lookups):
+        """issuedUnder must be act-level, citation_target is the provision."""
+        from extract_cross_references import resolve_preamble_citation
+        cit = {
+            "form": "law-genitive",
+            "law_ref": "kohaliku omavalitsuse korralduse seaduse",
+            "paragraphs": ["22"],
+            "citationDetail": "lg 1 p 34",
+            "citationText": "kohaliku omavalitsuse korralduse seaduse § 22 lõike 1 punkti 34",
+        }
+        result = resolve_preamble_citation(cit, **lookups)
+        assert result is not None
+        target_iri, enabling_act_iri = result
+        # Provision-level for citation target — corpus shape is <prefix>_Par_<n>
+        assert target_iri == "estleg:KOKS_Par_22"
+        # Act-level for issuedUnder — this is the key Layer 2b semantic
+        assert enabling_act_iri == "estleg:KOKS_Map_2026"
+
+    def test_law_without_paragraph(self, lookups):
+        """When citation has no §, both target and enabling_act are act-level."""
+        from extract_cross_references import resolve_preamble_citation
+        cit = {
+            "form": "law-genitive",
+            "law_ref": "alkoholiseaduse",
+            "paragraphs": [],
+            "citationDetail": None,
+            "citationText": "alkoholiseaduse",
+        }
+        result = resolve_preamble_citation(cit, **lookups)
+        assert result == ("estleg:AS_Map_2026", "estleg:AS_Map_2026")
+
+    def test_law_with_multipart_prefix_resolves_via_reverse_map(self, lookups):
+        """Reverse map (act_iri_to_prefix) MUST be consulted for the
+        prefix — naive split on '_' would yield 'KARIST' for
+        'estleg:KARIST_2_Osa1_1_87' and miss the real prefix
+        'KARIST_2'. This is the regression that motivated the
+        round-3 review (B1)."""
+        from extract_cross_references import resolve_preamble_citation
+        cit = {
+            "form": "law-genitive",
+            "law_ref": "karistusseadustiku",
+            "paragraphs": ["1"],
+            "citationDetail": None,
+            "citationText": "karistusseadustiku § 1",
+        }
+        result = resolve_preamble_citation(cit, **lookups)
+        assert result == (
+            "estleg:KARIST_2_Par_1",       # provision under the multi-segment prefix
+            "estleg:KARIST_2_Osa1_1_87",   # act IRI with the same multi-segment prefix
+        )
+
+    def test_state_regulation(self, lookups):
+        from extract_cross_references import resolve_preamble_citation
+        cit = {
+            "form": "state-regulation-date-number",
+            "issuer": "Vabariigi Valitsus",
+            "adoption_date": "2007-12-20",
+            "act_number": "251",
+            "citationDetail": None,
+            "citationText": "Vabariigi Valitsuse 20.12.2007 määrusega nr 251",
+        }
+        result = resolve_preamble_citation(cit, **lookups)
+        # Date+number form has no provision granularity — both equal
+        assert result == ("estleg:Reg_VV251_Map_2007",
+                          "estleg:Reg_VV251_Map_2007")
+
+    def test_kov_regulation(self, lookups):
+        from extract_cross_references import resolve_preamble_citation
+        cit = {
+            "form": "kov-regulation-date-number",
+            "issuer": "Tallinna Linnavolikogu",
+            "adoption_date": "2020-12-02",
+            "act_number": "60",
+            "citationDetail": None,
+            "citationText": "Tallinna Linnavolikogu 2. detsembri 2010 määruse nr 60",
+        }
+        result = resolve_preamble_citation(cit, **lookups)
+        assert result == ("estleg:Reg_TLN60_Map_2020",
+                          "estleg:Reg_TLN60_Map_2020")
+
+    def test_unresolved_returns_none(self, lookups):
+        from extract_cross_references import resolve_preamble_citation
+        cit = {
+            "form": "law-genitive",
+            "law_ref": "ettetuntmatu_seaduse",
+            "paragraphs": ["1"],
+            "citationDetail": None,
+            "citationText": "ettetuntmatu seaduse § 1",
+        }
+        result = resolve_preamble_citation(cit, **lookups)
+        assert result is None

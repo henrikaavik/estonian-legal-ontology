@@ -561,6 +561,84 @@ def build_citation_node(
     return node
 
 
+def resolve_preamble_citation(
+    cit: dict,
+    *,
+    genitive_to_act_iri: dict[str, str],
+    prefix_to_provisions: dict[str, dict[str, str]],
+    act_iri_to_prefix: dict[str, str],
+    state_reg_lookup: dict[tuple[str, str, str], str],
+    kov_act_lookup: dict[tuple[str, str, str], str],
+) -> tuple[str, str] | None:
+    """Resolve a preamble citation to (citation_target_iri, enabling_act_iri).
+
+    citation_target_iri:
+        - paragraph-level provision IRI for law citations with §
+        - act-level IRI otherwise
+
+    enabling_act_iri:
+        - ALWAYS act-level. Layer 2b's issuedUnder semantic is "act
+          enacted under THIS act" — the range is Act, not LegalProvision.
+
+    Returns None when the citation can't be resolved against any lookup.
+    """
+    form = cit.get("form")
+
+    if form == "law-genitive":
+        genitive = cit.get("law_ref", "").lower()
+        act_iri = genitive_to_act_iri.get(genitive)
+        if act_iri is None:
+            return None
+        # If no paragraph, both target and enabling_act are act-level.
+        if not cit.get("paragraphs"):
+            return (act_iri, act_iri)
+        # Resolve paragraph via prefix_to_provisions. The prefix MUST
+        # come from act_iri_to_prefix — naive split on '_' breaks for
+        # 34 corpus acts whose prefix itself contains underscores
+        # (e.g. estleg:KARIST_2_Osa1_1_87 → prefix is 'KARIST_2',
+        # NOT 'KARIST').
+        prefix = act_iri_to_prefix.get(act_iri)
+        if prefix is None:
+            # Act IRI not in the prefix index — fall back to act-level.
+            return (act_iri, act_iri)
+        par = cit["paragraphs"][0]
+        target = prefix_to_provisions.get(prefix, {}).get(par)
+        if target is None:
+            # Paragraph not in provision index — fall back to act-level
+            # for citation_target while keeping enabling_act_iri at act.
+            return (act_iri, act_iri)
+        return (target, act_iri)
+
+    if form == "state-regulation-date-number":
+        # Issuer is normalised symmetrically: parser side calls
+        # _normalize_state_issuer to strip the genitive ending; the
+        # state_reg_lookup builder (Task 3) calls _normalize_issuer_label
+        # on the act-side issuer string. Apply the same here so both
+        # sides hash to the same key.
+        key = (
+            _normalize_issuer_label(cit["issuer"]),
+            cit["adoption_date"],
+            cit["act_number"],
+        )
+        act_iri = state_reg_lookup.get(key)
+        if act_iri is None:
+            return None
+        return (act_iri, act_iri)
+
+    if form == "kov-regulation-date-number":
+        key = (
+            _normalize_issuer_label(cit["issuer"]),
+            cit["adoption_date"],
+            cit["act_number"],
+        )
+        act_iri = kov_act_lookup.get(key)
+        if act_iri is None:
+            return None
+        return (act_iri, act_iri)
+
+    return None
+
+
 def extract_citations_from_text(text: str) -> list[dict]:
     """
     Parse text for Estonian legal citation patterns.
