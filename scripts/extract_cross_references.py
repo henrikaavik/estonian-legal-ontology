@@ -207,6 +207,345 @@ def extract_citations_from_text(text: str) -> list[dict]:
     return citations
 
 
+# ----------------------------------------------------------------------
+# Preamble citation extraction (Layer 2b)
+# ----------------------------------------------------------------------
+
+# Estonian month name (genitive) → 2-digit month number.
+# All forms come from the spec text "<day>. <month-genitive> <year>".
+_ET_MONTHS = {
+    "jaanuari": "01", "veebruari": "02", "märtsi": "03", "aprilli": "04",
+    "mai": "05", "juuni": "06", "juuli": "07", "augusti": "08",
+    "septembri": "09", "oktoobri": "10", "novembri": "11", "detsembri": "12",
+}
+
+# Quote characters seen in the corpus around law names. The parser
+# strips these before matching the genitive form.
+_QUOTES = '"\'„""«»«»“”„’‘'
+
+# Section symbol or its word form. KOV preambles freely mix § and
+# the spelled-out "paragrahv" / "paragrahvi".
+_PARA_TOKEN = r"(?:§|paragrahv(?:i)?|paragrahvid?)"
+
+# Lõige (subsection) — multiple case forms in the corpus:
+#   lõike (singular genitive) — most common
+#   lõikest (singular elative)
+#   lõigete (plural genitive) — for "lõigete 1 ja 2"
+#   lg (abbreviation) — common in shorter preambles
+_LG_TOKEN = r"(?:lõike(?:st|s)?|lõigete|lg)"
+
+# Punkt — multiple forms:
+#   punkti (genitive) — "punkti 34"
+#   punkt (nominative)
+#   p (abbreviation)
+_P_TOKEN = r"(?:punkti|punkt|p)"
+
+# Pattern A — law in genitive form + § N (lõike M (punkti K)?)?
+#
+# The law-name genitive suffix appears in TWO grammatical positions:
+#
+#   1. ATTACHED to the final word of the name:
+#        "alkoholiseaduse § 42"        (alkohol + seaduse)
+#        "karistusseadustiku § 121"    (karistus + seadustiku)
+#        "põhikooli- ja gümnaasiumiseaduse § 66"
+#
+#   2. STANDALONE as the final word, after a separate noun phrase:
+#        "kohaliku omavalitsuse korralduse seaduse § 22"
+#        "rahvaraamatukogu seaduse § 16"
+#        "avaliku teabe seaduse § 1"
+#        "sotsiaalhoolekande seaduse § 14"
+#        "ühisveevärgi ja -kanalisatsiooni seaduse § 5"
+#
+# A regex requiring the FINAL token to itself end in seaduse|seadustiku
+# (the v3+v4 form) misses every shape in case (2) — and case (2)
+# covers the bulk of real KOV enabling-act citations. The fix below
+# alternates: either (a) attached form `<word><seaduse|seadustiku>`
+# or (b) standalone marker `seaduse|seadustiku` after up to 7 leading
+# law-name words.
+#
+# A leading hyphen on a word is allowed so names like
+# "ühisveevärgi ja -kanalisatsiooni seaduse" tokenise cleanly.
+_LAW_WORD = r"-?[a-zõäöüšžA-ZÕÄÖÜŠŽ][a-zõäöüšžA-ZÕÄÖÜŠŽ\-]*"
+
+_PAT_LAW_PARA = re.compile(
+    rf"(?P<law>(?:{_LAW_WORD}\s+){{0,7}}"
+    rf"(?:{_LAW_WORD}(?:seaduse|seadustiku)|seaduse|seadustiku))\s*"
+    rf"{_PARA_TOKEN}\s*(?P<par>\d+)"
+    rf"(?:\s+{_LG_TOKEN}\s+(?P<lg>\d+))?"
+    rf"(?:\s+{_P_TOKEN}\s+(?P<p>\d+))?",
+    re.UNICODE | re.IGNORECASE,
+)
+
+# The greedy 0-7 leading-word group also absorbs preamble-license
+# verbs that precede a law citation in the wild ("Määrus kehtestatakse",
+# "Kooskõlas", "Lähtudes", etc.). These are NOT part of the law name
+# itself. After capture, _trim_preamble_prefix strips them so
+# law_ref matches FULLNAME_GENITIVE.
+#
+# Words that MAY appear inside multiword law names (ja, ning, või,
+# adjectives like 'kohaliku', 'avaliku', etc.) are deliberately
+# OMITTED from this set. Adding them would break legitimate
+# multiword law names.
+_PREAMBLE_LICENSE_PREFIXES = {
+    # Establishment / license verbs
+    "määrus", "määrust", "määruse", "määrusega", "määrustes",
+    "kehtestatakse", "kehtestatud", "kehtestab", "kehtestada",
+    "antakse", "antud", "annab",
+    "vastu", "vastavalt", "võetud",
+    # Copula 'on' — sits between 'määrus' and 'kehtestatud' in
+    # passive constructions like "Käesolev määrus on kehtestatud …".
+    # Not part of any Estonian law name (finite verb), so safe to trim.
+    "on",
+    # Connector phrases that license a law citation
+    "kooskõlas", "lähtudes", "võttes",
+    "tulenevalt", "tuginedes", "tuleneb", "tulenevat",
+    # Sentence-starts that frame a law citation
+    "käesolev", "käesolevaga",
+    "see",
+    # Adverbial prepositions
+    "alusel", "alus",
+}
+
+
+def _trim_preamble_prefix(law: str) -> str:
+    """Strip leading preamble-license tokens from a parser match.
+
+    The greedy regex captures up to 7 leading words; this trims off
+    common 'Määrus kehtestatakse <lawname>' / 'Kooskõlas <lawname>'
+    framings without touching words that belong inside the law name
+    itself.
+
+    Trailing punctuation (',', '.', etc.) is stripped before
+    membership check so 'Lähtudes,' is recognised as 'lähtudes'.
+    """
+    words = law.split()
+    while words and words[0].lower().rstrip(",.;:") in _PREAMBLE_LICENSE_PREFIXES:
+        words.pop(0)
+    return " ".join(words)
+
+# Pattern B — state regulation: "Vabariigi Valitsuse <date> määruse(ga) nr N"
+# Date can be:
+#   - "19. detsembri 2019. a" (named-month genitive form)
+#   - "20.12.2007" (numeric DD.MM.YYYY)
+# määruse / määrusega — case form varies by sentence position.
+_DATE_NAMED = (
+    r"(?P<day_n>\d{1,2})\.\s*"
+    r"(?P<month>jaanuari|veebruari|märtsi|aprilli|mai|juuni|juuli|"
+    r"augusti|septembri|oktoobri|novembri|detsembri)\s+"
+    r"(?P<year_n>\d{4})\.?\s*a?\.?"
+)
+_DATE_NUMERIC = (
+    r"(?P<day_d>\d{1,2})\.\s*(?P<month_d>\d{1,2})\.\s*(?P<year_d>\d{4})\.?\s*a?\.?"
+)
+_DATE_EITHER = rf"(?:{_DATE_NAMED}|{_DATE_NUMERIC})"
+
+_PAT_STATE_REG = re.compile(
+    # Issuer alternatives:
+    #   1. "Vabariigi Valitsuse" (genitive of Government)
+    #   2. minister names ending in "ministri", in three shapes:
+    #         "rahandusministri"                  (compound, single token)
+    #         "majandus- ja kommunikatsiooniministri" (multiword + hyphen)
+    #         "riigihalduse ministri"              (descriptor + standalone token)
+    #
+    # The standalone "ministri" branch (third shape) is critical — about
+    # 1/4 of state regulations in the corpus use the separate-word form
+    # ("Riigihalduse minister" issued ~150 acts in the corpus). The
+    # alternation `[a-z]+ministri|ministri` covers both attached and
+    # standalone usage; the optional leading group consumes any
+    # descriptor words preceding a standalone "ministri".
+    r"(?P<issuer>Vabariigi\s+Valitsuse|"
+    r"(?:[A-ZÕÄÖÜŠŽa-zõäöüšž][\w\-õäöüšžÕÄÖÜŠŽ]*(?:[-\s]+(?:ja\s+)?[a-zõäöüšž][\w\-õäöüšžÕÄÖÜŠŽ]*){0,4}\s+)?"
+    r"(?:[a-zõäöüšž]+ministri|ministri))\s+"
+    rf"{_DATE_EITHER}\s+määrus(?:ega|es|e|est)\s+nr\s*\.?\s*(?P<num>\d+)",
+    re.UNICODE | re.IGNORECASE,
+)
+
+# Pattern C — KOV regulation: "<Issuer Display Name> <date> määruse(ga) nr N"
+# Issuer ends in volikogu / valitsus(e) — the genitive form is
+# "Linnavolikogu" / "Linnavalitsuse" / "Vallavolikogu" / "Vallavalitsuse".
+# Issuer name may be compound (Häädemeeste, Lääne-Nigula).
+_PAT_KOV_REG = re.compile(
+    r"(?P<issuer>[A-ZÕÄÖÜŠŽ][a-zõäöüšž\-]+(?:\s+[A-ZÕÄÖÜŠŽ][a-zõäöüšž\-]+)*\s+"
+    r"(?:Linnavolikogu|Linnavalitsuse|Linnavalitsus|"
+    r"Vallavolikogu|Vallavalitsuse|Vallavalitsus|"
+    r"Alevivolikogu))\s+"
+    rf"{_DATE_EITHER}\s+määrus(?:ega|e|est)\s+nr\s*(?P<num>\d+)",
+    re.UNICODE,
+)
+
+
+def _build_citation_detail(lg: str | None, p: str | None) -> str | None:
+    """Combine lõige (lg) and punkt (p) into 'lg 1' / 'lg 1 p 3'."""
+    parts = []
+    if lg:
+        parts.append(f"lg {lg}")
+    if p:
+        parts.append(f"p {p}")
+    return " ".join(parts) if parts else None
+
+
+def _normalize_state_issuer(issuer_text: str) -> str:
+    """Strip Estonian genitive ending ("...ministri" → "...minister",
+    "Vabariigi Valitsuse" → "Vabariigi Valitsus") so the resolver's
+    state-regulation lookup key matches the corpus issuer label.
+
+    The corpus stamps state-regulation issuers in nominative case on
+    the act node's ``estleg:issuer`` field (e.g. "Rahandusminister",
+    "Riigihalduse minister", "Vabariigi Valitsus"). Without normalisation,
+    the parser-extracted genitives "rahandusministri" / "riigihalduse
+    ministri" / "Vabariigi Valitsuse" would never match any lookup key.
+
+    Estonian: nominative '-minister' takes genitive '-ministri'
+    (the final 'er' becomes 'ri'). To round-trip correctly, the
+    suffix '-ministri' is replaced with '-minister', not just
+    truncated by one char (which would yield '-ministr' — wrong).
+    """
+    # Collapse internal whitespace (multiword minister regex can pick
+    # up stray spaces around hyphens or 'ja').
+    s = re.sub(r"\s+", " ", issuer_text.strip())
+    if s.endswith("Valitsuse"):
+        return s[:-1]  # Valitsuse → Valitsus (single trailing 'e' drop)
+    # Reverse the Estonian -er→-ri genitive transform.
+    if s.endswith("ministri"):
+        return s[:-len("ministri")] + "minister"
+    if s.endswith("Ministri"):
+        return s[:-len("Ministri")] + "Minister"
+    return s
+
+
+def _strip_quotes(text: str) -> str:
+    """Strip surrounding quote characters around a single token. The
+    parser pre-processes preamble text to remove these so the law-name
+    regex can match `Kohanimeseaduse` whether or not it's quoted."""
+    return text.strip(_QUOTES + " ")
+
+
+def _normalize_date(
+    day_n: str | None, month_named: str | None, year_n: str | None,
+    day_d: str | None, month_d: str | None, year_d: str | None,
+) -> str | None:
+    """Build ISO-8601 date from either named-month or numeric-date
+    capture groups. Returns None if neither pair is fully populated."""
+    if day_n and month_named and year_n:
+        m = _ET_MONTHS.get(month_named.lower())
+        if m is None:
+            return None
+        return f"{year_n}-{m}-{int(day_n):02d}"
+    if day_d and month_d and year_d:
+        return f"{year_d}-{int(month_d):02d}-{int(day_d):02d}"
+    return None
+
+
+def extract_preamble_citations(text: str) -> list[dict]:
+    """Parse a preamble for Estonian legal citation forms.
+
+    Returns a list of dicts in textual order. Each dict has:
+        form           : "law-genitive" | "state-regulation-date-number"
+                         | "kov-regulation-date-number"
+        citationText   : original matched substring
+        citationDetail : "lg 1" / "lg 1 p 3" / None
+
+    Form-specific keys:
+        law-genitive:
+            law_ref      : the full genitive law name
+            paragraphs   : ["N"] (always one entry — no ranges in
+                           preambles in the current corpus)
+
+        state-regulation-date-number / kov-regulation-date-number:
+            issuer        : nominative issuer string
+            adoption_date : ISO-8601 date string
+            act_number    : the digit string after "määruse(ga) nr"
+    """
+    if not text:
+        return []
+
+    # Substitute quote characters with spaces in a SCRATCH copy used
+    # only for matching. The original `text` is preserved so that
+    # citationText (intended for traceability and SHACL display) is
+    # the literal input substring with quotes intact.
+    cleaned = re.sub(rf"[{re.escape(_QUOTES)}]", " ", text)
+
+    def _orig_substring(start_in_cleaned: int, end_in_cleaned: int) -> str:
+        # Quote substitution is one-char-for-one-char, so offsets in
+        # `cleaned` are valid in `text`. Use the original text for
+        # citationText to preserve quotes / punctuation.
+        return text[start_in_cleaned:end_in_cleaned].strip()
+
+    citations: list[tuple[int, dict]] = []
+
+    for m in _PAT_LAW_PARA.finditer(cleaned):
+        # Strip surrounding quotes, then strip leading preamble-license
+        # verbs (Määrus kehtestatakse, Kooskõlas, Lähtudes, …) so the
+        # law_ref is a clean genitive law name suitable for
+        # FULLNAME_GENITIVE lookup. The regex is intentionally
+        # permissive on the leading side; this post-step is what
+        # actually narrows the capture to the law name itself.
+        raw = _strip_quotes(m.group("law")).strip()
+        law_ref = _trim_preamble_prefix(raw)
+        if not law_ref:
+            # Defensive: if trimming consumed everything (the match
+            # captured ONLY preamble-license words plus a standalone
+            # 'seaduse'), skip the match.
+            continue
+        cit = {
+            "form": "law-genitive",
+            "law_ref": law_ref,
+            "paragraphs": [m.group("par")],
+            "citationDetail": _build_citation_detail(m.group("lg"), m.group("p")),
+            "citationText": _orig_substring(m.start(), m.end()),
+        }
+        citations.append((m.start(), cit))
+
+    for m in _PAT_STATE_REG.finditer(cleaned):
+        date = _normalize_date(
+            m.group("day_n"), m.group("month"), m.group("year_n"),
+            m.group("day_d"), m.group("month_d"), m.group("year_d"),
+        )
+        if date is None:
+            continue
+        # Same trim as the law-citation branch — strip leading
+        # "Määrus kehtestatakse" / "Lähtudes" / etc. that the greedy
+        # leading-words group absorbed when the citation is embedded
+        # in a sentence.
+        raw_issuer = _trim_preamble_prefix(m.group("issuer").strip())
+        if not raw_issuer:
+            continue
+        cit = {
+            "form": "state-regulation-date-number",
+            "issuer": _normalize_state_issuer(raw_issuer),
+            "adoption_date": date,
+            "act_number": m.group("num"),
+            "citationDetail": None,
+            "citationText": _orig_substring(m.start(), m.end()),
+        }
+        citations.append((m.start(), cit))
+
+    for m in _PAT_KOV_REG.finditer(cleaned):
+        date = _normalize_date(
+            m.group("day_n"), m.group("month"), m.group("year_n"),
+            m.group("day_d"), m.group("month_d"), m.group("year_d"),
+        )
+        if date is None:
+            continue
+        raw_issuer = _trim_preamble_prefix(
+            re.sub(r"\s+", " ", m.group("issuer").strip())
+        )
+        if not raw_issuer:
+            continue
+        cit = {
+            "form": "kov-regulation-date-number",
+            "issuer": raw_issuer,
+            "adoption_date": date,
+            "act_number": m.group("num"),
+            "citationDetail": None,
+            "citationText": _orig_substring(m.start(), m.end()),
+        }
+        citations.append((m.start(), cit))
+
+    citations.sort(key=lambda pair: pair[0])
+    return [c for _, c in citations]
+
+
 def _expand_par_range(par_range: str) -> list[str]:
     """Expand '208-210' into ['208', '209', '210']. Single numbers return as-is."""
     par_range = par_range.replace("–", "-").replace("‑", "-")
