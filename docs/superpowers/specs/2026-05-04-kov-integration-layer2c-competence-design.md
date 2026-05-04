@@ -385,18 +385,51 @@ def _swap_issuer_body_suffix(
     """Given an Issuer @id like 'estleg:Issuer_abja_vallavolikogu'
     and a target body slug like 'vallavalitsus', return the
     paired Issuer @id 'estleg:Issuer_abja_vallavalitsus'.
-    Returns None when the source IRI doesn't match the expected
-    `Issuer_<place>_<body>` shape."""
+
+    Returns None when:
+    - The source IRI doesn't match the expected
+      `Issuer_<place>_<body>` shape.
+    - The source body and target body belong to DIFFERENT
+      municipal families. Estonian KOV bodies group into three
+      mutually-exclusive families:
+          linna*  (city / town body — linnavolikogu, linnavalitsus)
+          valla*  (rural municipality body — vallavolikogu, vallavalitsus)
+          alevi*  (small-town body — alevivolikogu)
+      A `linnavalitsus` source must NOT pair with `vallavolikogu`
+      target even if `Issuer_<place>_vallavolikogu` exists in the
+      registry — that's the same historical-conflation problem
+      Path 1's suffix check rejects. Cross-family swaps abstain.
+    """
     if not source_issuer.startswith("estleg:Issuer_"):
         return None
     suffix = source_issuer[len("estleg:Issuer_"):]
     # The body slug is the last "_<body>" segment.
+    source_body = None
+    place = None
     for body in ("vallavolikogu", "vallavalitsus", "linnavolikogu",
                   "linnavalitsus", "alevivolikogu"):
         if suffix.endswith("_" + body):
+            source_body = body
             place = suffix[: -len("_" + body)]
-            return f"estleg:Issuer_{place}_{target_body_slug}"
-    return None
+            break
+    if source_body is None or place is None:
+        return None
+
+    # Family-prefix compatibility check.
+    family_prefixes = ("linna", "valla", "alevi")
+    source_family = next(
+        (p for p in family_prefixes if source_body.startswith(p)), None)
+    target_family = next(
+        (p for p in family_prefixes if target_body_slug.startswith(p)), None)
+    if source_family is None or target_family is None:
+        return None
+    if source_family != target_family:
+        # Cross-family swap (e.g. linnavalitsus → vallavolikogu).
+        # Reject — the body word's municipal family doesn't match
+        # the source act's institutional family.
+        return None
+
+    return f"estleg:Issuer_{place}_{target_body_slug}"
 ```
 
 Why this matters: the registry has 77 ambiguous
@@ -509,8 +542,14 @@ source_issuer = _id_ref(act_node.get("estleg:enactedBy"))
 # source_municipality and source_issuer are STRING IRIs or None.
 # Both are passed to the resolver; source_issuer enables the
 # 1+2 priority paths (same-body or paired-body lookup) that
-# work in ambiguous-bucket cases. source_municipality is used
-# only as the Path 3 fallback.
+# work in ambiguous-bucket cases. source_municipality is required
+# for ALL resolver paths: Path 1 uses it to verify the source
+# issuer's currentMunicipality is consistent with the act's
+# enactedByMunicipality; Path 2 uses it to verify the paired
+# issuer is in the same municipality; Path 3 uses it as the
+# scope filter for the unique-suffix-compatible-match rule.
+# When source_municipality is None (Law / state regulation),
+# the resolver returns None across every path — abstain.
 ```
 
 `issuer_registry` is built once at startup using
@@ -600,11 +639,20 @@ abstained for any reason: source non-KOV (no
 suffix-mismatched on Path 1 (e.g. `vallavolikogu` source +
 `linnavolikogu` body word); source_issuer authoritative but
 paired-body issuer absent or in different municipality on
-Path 2; Path 3 fallback found zero matches; Path 3 fallback
-found more than one match (ambiguous). Useful for sniffing
-under-extraction AND for surfacing Layer 1 mapping
-inconsistencies (Path 3 fallback firings imply the source act
-had no usable enactedBy).
+Path 2; source_issuer authoritative but cross-family swap on
+Path 2 (e.g. `linnavalitsus` source + `vallavolikogu` body word);
+Path 3 fallback found zero matches; Path 3 fallback found more
+than one match (ambiguous). Useful for sniffing under-extraction.
+
+`fallback_hits` reports SUCCESSFUL Path 3 fallback resolutions —
+cases where source_issuer was missing, unknown to the registry,
+or had a `currentMunicipality` inconsistent with the act's
+`enactedByMunicipality`, and Path 3 nonetheless found a unique
+suffix-compatible match in the act's stated municipality. A high
+`fallback_hits` count is a diagnostic signal: it surfaces real
+Layer 1 mapping inconsistencies that would otherwise be invisible
+(the resolver still produces output for these acts, but a
+Layer 1 follow-up may be warranted).
 
 ### SHACL
 
@@ -646,7 +694,7 @@ accidental duplicate blocks).
 | Path | Change |
 | --- | --- |
 | `scripts/extract_institutional_competence.py` | Remove `include_kov=False` pin (line 239); add 2 new `GENERIC_PATTERNS` entries for KOV body words (placed before `vald|linn`); add `_find_act_node` helper (or import from `extract_sanctions` — verify during implementation); add `_resolve_kov_authority` resolver; add `issuer_registry` build at startup (re-uses Layer 2b's `build_issuer_registry`); replace global `_clear_existing_institutions` with per-file in-memory processing; wire body-word matches through the resolver, ABSTAINING when the resolver returns None (no `Institution_*` fallback for `local_government_body` detections); other institution types (named institutions, ministries, courts, generic `local_government` / `kohalik_omavalitsus`) keep the existing `Institution_*` path unchanged; skip `inst_data` entry when resolver succeeds; track `pre_existing_institution_files` for end-of-run deletion of orphaned files; add coverage instrumentation reusing `kov_pipeline_coverage.CoverageReport`; change `main()` to return `int`; use `raise SystemExit(main())`. |
-| `tests/test_extract_institutional_competence.py` | **New file.** 25 tests across 7 classes (3 detection unit + 9 resolver unit + 3 integration + 3 idempotency + 3 institutions-file deletion + 3 coverage + 1 corpus-wide invariant). |
+| `tests/test_extract_institutional_competence.py` | **New file.** 29 tests across 7 classes (3 detection unit + 12 resolver unit + 3 integration + 3 idempotency + 3 institutions-file deletion + 4 coverage + 1 corpus-wide invariant). |
 | `shacl/estonian_legal_shapes.ttl` | UPDATE the existing `competentAuthority` constraint's `sh:description` to mention the broader Issuer/Institution range (the constraint itself — `sh:nodeKind sh:IRI` — already exists at lines 140-145; do NOT add a duplicate). |
 | `docs/SCHEMA_REFERENCE.md` | Mark `competentAuthority` populated in the Layer 2 schema table; add a new subsection in the existing Institutional Competence section with KOV Issuer-binding semantics, a worked KOV example, and the SHACL constraint summary. |
 | `CHANGELOG.md` | Layer 2c PR #2 entry under `## [Unreleased]` with Added/Changed/Coverage/Internal subsections. |
@@ -667,15 +715,15 @@ accidental duplicate blocks).
 
 ## Test plan
 
-**7 new test classes, 25 tests total.** Files: `tests/test_extract_institutional_competence.py`.
+**7 new test classes, 29 tests total.** Files: `tests/test_extract_institutional_competence.py`.
 
-Class breakdown (3 + 9 + 3 + 3 + 3 + 3 + 1 = 25):
+Class breakdown (3 + 12 + 3 + 3 + 3 + 4 + 1 = 29):
 - `TestKovBodyWordDetection` — 3 unit tests
-- `TestResolveKovAuthority` — 9 unit tests (covers all 3 resolver priority paths + every abstain condition including the haldusreform-merger safety property)
+- `TestResolveKovAuthority` — 12 unit tests (covers all 3 resolver priority paths + every abstain condition including the haldusreform-merger safety property and family-prefix compatibility; plus the `_is_path3_case` predicate)
 - `TestExtractCompetenceWithIssuerBinding` — 3 integration tests
 - `TestCompetenceIdempotency` — 3 integration tests
 - `TestStaleInstitutionFileDeletion` — 3 integration tests
-- `TestCompetenceCoverageReport` — 3 integration tests
+- `TestCompetenceCoverageReport` — 4 integration tests (includes the `fallback_hits` Path 3 diagnostic test)
 - `TestCorpusInvariant` — 1 corpus-wide test (`@pytest.mark.slow`)
 
 ### `TestKovBodyWordDetection` (unit, 3 tests)
@@ -684,7 +732,7 @@ Class breakdown (3 + 9 + 3 + 3 + 3 + 3 + 1 = 25):
 - `test_vallavalitsus_inflections` — parametrized over six singular case forms each: `["vallavalitsus", "vallavalitsuse", "vallavalitsust", "vallavalitsusele", "vallavalitsuses", "vallavalitsusesse"]` and `["linnavalitsus", "linnavalitsuse", "linnavalitsust", "linnavalitsusele", "linnavalitsuses", "linnavalitsusesse"]`. Each case asserts canonicalisation to `vallavalitsus` / `linnavalitsus` respectively. **Critical:** the inessive forms `vallavalitsuses` and `linnavalitsuses` MUST be in the parametrization — earlier-version regex missed them; the regex+canonicalizer combination must catch them now. **Out of scope:** plural forms (`linnavalitsuste`, `valitsustele`, etc.) — rare in legal text and not handled by this PR's regex/canonicalizer; tracked as a follow-up if corpus data shows they matter.
 - `test_named_institutions_still_win` (regression — ensure new patterns don't override existing named-institution detections)
 
-### `TestResolveKovAuthority` (unit, 9 tests)
+### `TestResolveKovAuthority` (unit, 12 tests)
 
 The resolver has three priority paths (same-body source-issuer
 direct, paired-body slug swap, municipality-wide uniqueness
@@ -712,8 +760,18 @@ municipality mismatch, ambiguous fallback).
   same modern municipality. Resolver returns None — source
   identity is authoritative; Path 3 must NOT bind to a
   conflated historical issuer in the same successor municipality.
-  This locks in the haldusreform-merger safety property
-  (Fix 1 contract).
+  This locks in the haldusreform-merger safety property.
+- `test_path2_cross_family_linna_to_valla_abstains` — source
+  act enacted by `Issuer_elva_linnavalitsus` (urban executive);
+  detected body word `vallavolikogu` (rural council). Even
+  if `Issuer_elva_vallavolikogu` were registered (rare but
+  possible in the corpus), the swap MUST be rejected:
+  `linna*` and `valla*` are mutually exclusive municipal
+  families. Resolver returns None.
+- `test_path2_cross_family_valla_to_linna_abstains` — source
+  act enacted by `Issuer_abja_vallavalitsus` (rural executive);
+  detected body word `linnavolikogu` (urban council). Same
+  family-prefix rejection. Resolver returns None.
 - `test_path1_suffix_mismatch_abstains` — source act enacted by
   `Issuer_abja_vallavolikogu` (body=volikogu); detected body
   word `linnavolikogu` (body=volikogu — same body_type, but
@@ -743,6 +801,14 @@ municipality mismatch, ambiguous fallback).
   None.
 - `test_no_municipality_returns_none` — `source_municipality=None`;
   every path requires it; resolver returns None.
+- `test_is_path3_case_predicate` — companion `_is_path3_case`
+  helper (used by `main()` to detect Path 3 firings for
+  `fallback_hits` accounting). Parametrized:
+  - `source_issuer=None, source_municipality=valid` → True
+  - `source_issuer=unknown_to_registry, source_municipality=valid` → True
+  - `source_issuer=registered_with_matching_mun` → False
+  - `source_issuer=registered_with_mismatched_mun` → True
+  - `source_municipality=None` → False (nothing resolves anyway)
 
 ### `TestExtractCompetenceWithIssuerBinding` (integration, 3 tests)
 
@@ -803,7 +869,7 @@ municipality mismatch, ambiguous fallback).
   `_per_peep_errors == 0`). Asserts both: file still present,
   log line "[skip stale-deletion]" emitted.
 
-### `TestCompetenceCoverageReport` (integration, 3 tests)
+### `TestCompetenceCoverageReport` (integration, 4 tests)
 
 - `test_coverage_report_written_with_kov_split` (1 KOV act
   + 1 state law → JSON has expected splits).
@@ -817,6 +883,15 @@ municipality mismatch, ambiguous fallback).
   coverage JSON's `unresolved_references >= 1` (the state-side
   abstain counts). The assertion that Task 2's integration test
   deferred to here.
+- `test_fallback_hits_counts_path3_resolutions` — fixture stages
+  a KOV peep where the source act's `enactedBy` is missing OR
+  references an issuer NOT in the registry, while the act's
+  `enactedByMunicipality` IS valid and the registry has exactly
+  one suffix-compatible match in that municipality (Path 3
+  rescue case). The provision text includes a body-word match.
+  After main(), the coverage JSON's `fallback_hits >= 1`. Locks
+  in the diagnostic counter so Layer 1 mapping problems surface
+  in coverage reports rather than going silent.
 
 ### `TestCorpusInvariant` (corpus-wide, 1 test, `@pytest.mark.slow`)
 
@@ -832,17 +907,58 @@ scheduled BEFORE coverage):
 
 1. Add 2 new `GENERIC_PATTERNS` entries + `_resolve_kov_authority`
    helper + unit tests (`TestKovBodyWordDetection` 3 +
-   `TestResolveKovAuthority` 9 = 12 tests).
+   `TestResolveKovAuthority` 12 = 15 tests).
 2. Wire `_resolve_kov_authority` into `main()`'s per-provision
    loop + integration tests
    (`TestExtractCompetenceWithIssuerBinding`, 3 tests). Introduce
-   a minimal local `_unresolved_count: int = 0` incremented when
-   the resolver returns None for a `local_government_body`
-   detection. The counter has no observable surface yet (no
-   coverage report); Task 7 wires it into `unresolved_references`
-   when CoverageReport is added. This keeps the counter live
-   between commits even though state-side abstains have no
-   downstream effect at the Task 2 commit point.
+   TWO minimal local counters:
+   - `_unresolved_count: int = 0` incremented when the resolver
+     returns None for a `local_government_body` detection.
+   - `_fallback_hits: int = 0` incremented when the resolver
+     returns a non-None result AND Path 3 is the path that
+     produced it.
+
+   To track Path 3 firings without changing the resolver's
+   `str | None` signature, add a small predicate helper:
+
+   ```python
+   def _is_path3_case(
+       source_issuer: str | None,
+       source_municipality: str | None,
+       issuer_registry: dict[str, tuple[str, str, str]],
+   ) -> bool:
+       """Return True iff the resolver's Path 1+2 are not
+       authoritative for this case — i.e. Path 3 is what would run.
+       Mirrors the resolver's source_issuer_authoritative check."""
+       if source_municipality is None:
+           return False  # nothing resolves anyway
+       if source_issuer is None:
+           return True
+       entry = issuer_registry.get(source_issuer)
+       if entry is None:
+           return True
+       _label, source_mun, _btype = entry
+       return source_mun != source_municipality
+   ```
+
+   Caller pattern in `main()`:
+
+   ```python
+   issuer_iri = _resolve_kov_authority(...)
+   if issuer_iri is None:
+       _unresolved_count += 1
+       continue  # body-word abstain
+   if _is_path3_case(source_issuer, source_municipality, issuer_registry):
+       _fallback_hits += 1
+   authority_refs.append({"@id": issuer_iri})
+   ```
+
+   Both counters have no observable surface yet (no coverage
+   report); Task 7 wires `_unresolved_count` into
+   `unresolved_references` and `_fallback_hits` into
+   `fallback_hits` when CoverageReport is added. The
+   `_is_path3_case` predicate becomes another testable unit
+   (one test in TestResolveKovAuthority — see below).
 3. Refactor to per-file in-memory processing + provision-level
    idempotency (`TestCompetenceIdempotency`, 3 tests).
 4. Stale `institutions/<slug>.json` deletion when no provisions
@@ -856,9 +972,14 @@ scheduled BEFORE coverage):
 6. Unpin: remove `include_kov=False` from `iter_peep_files` call.
 7. Coverage instrumentation reusing `kov_pipeline_coverage` +
    `main() -> int` + `SystemExit` (`TestCompetenceCoverageReport`,
-   3 tests: `test_coverage_report_written_with_kov_split`,
+   4 tests: `test_coverage_report_written_with_kov_split`,
    `test_gate_fails_when_kov_input_nontrivial_but_no_output`,
-   `test_unresolved_count_includes_state_side_kov_body_words`).
+   `test_unresolved_count_includes_state_side_kov_body_words`,
+   `test_fallback_hits_counts_path3_resolutions`). The
+   `_unresolved_count` and `_fallback_hits` counters introduced
+   in Task 2 are wired into `unresolved_references` and
+   `fallback_hits` respectively when the CoverageReport is
+   constructed.
 8. Run full corpus + commit output (~8,000 peep modifications +
    institutions/ regenerations; `extract_institutional_competence_coverage.json`
    first run). Add `TestCorpusInvariant` (1 test).
@@ -873,18 +994,18 @@ PR #1 ended at 206 passing.
 
 | Task | New tests | Cumulative |
 | --- | --- | --- |
-| 1 | +12 (3 detection + 9 resolver) | 218 |
-| 2 | +3 | 221 |
-| 3 | +3 | 224 |
-| 4 | +3 | 227 |
-| 5 | +0 (SHACL) | 227 |
-| 6 | +0 (unpin) | 227 |
-| 7 | +3 | 230 |
-| 8 | +1 | 231 |
-| 9 | +0 (docs) | 231 |
-| 10 | +0 (verification) | 231 |
+| 1 | +15 (3 detection + 12 resolver) | 221 |
+| 2 | +3 | 224 |
+| 3 | +3 | 227 |
+| 4 | +3 | 230 |
+| 5 | +0 (SHACL) | 230 |
+| 6 | +0 (unpin) | 230 |
+| 7 | +4 | 234 |
+| 8 | +1 | 235 |
+| 9 | +0 (docs) | 235 |
+| 10 | +0 (verification) | 235 |
 
-**Final expected count: 231 tests (+25 vs Layer 2c PR #1
+**Final expected count: 235 tests (+29 vs Layer 2c PR #1
 end-state).**
 
 ## Risks and mitigations
@@ -895,10 +1016,33 @@ acts referenced under their pre-2017-haldusreform names.**
 The Layer 1 `currentMunicipality` field maps historical municipalities
 to their successor entities (per the parent spec's Layer 1 design).
 A 2010 Tallinn KOV act whose `enactedByMunicipality` is the modern
-Tallinn municipality entity should still resolve cleanly. If the
-upstream Layer 1 mapping is wrong for a particular act, the
-resolver returns None (abstain) — a benign failure mode that
-surfaces in `unresolved_references`.
+Tallinn municipality entity should still resolve cleanly through
+Path 1 or Path 2 because source_issuer and the act's
+enactedByMunicipality both come from Layer 1's coordinated mapping.
+
+Behavior when Layer 1 itself has an inconsistent entry (the act's
+`enactedByMunicipality` disagrees with the source issuer's
+`currentMunicipality` in the registry):
+
+- source_issuer is NOT treated as authoritative for this act
+  (the consistency check fails).
+- The resolver falls through to Path 3, which scans the registry
+  for any issuer matching `(act.enactedByMunicipality, body_type,
+  body_slug)`. If exactly one matches, the resolver returns it
+  (best-effort rescue using the act's stated municipality);
+  ambiguous or zero matches abstain.
+- Path 3 successes are counted in `CoverageReport.fallback_hits`,
+  giving operators visibility into how often the rescue fires.
+  A high `fallback_hits` count signals a real Layer 1 mapping
+  problem worth investigating in a follow-up; the pipeline still
+  produces useful output during that investigation.
+
+This is a documented divergence from "abstain on bad mapping" —
+chosen because the act's stated municipality plus the body slug
+plus suffix compatibility plus uniqueness is, in practice, a
+strong-enough signal to bind correctly. See `TestResolveKovAuthority::test_municipality_mismatch_falls_through_to_path3`
+for the success case and `test_municipality_mismatch_abstains_when_path3_also_empty`
+for the abstain case.
 
 **Risk 2: Detection regex over-matches on word boundaries.**
 
