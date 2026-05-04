@@ -440,6 +440,49 @@ Create `tests/fixtures/kov_layer2b/preamble_samples.json`:
       "expected_law_genitive": "karistusseadustiku",
       "expected_paragraph": "121",
       "expected_first_detail": "lg 2"
+    },
+    {
+      "id": "standalone-seaduse-multiword",
+      "text": "Määrus kehtestatakse rahvaraamatukogu seaduse § 16 alusel.",
+      "expected_count": 1,
+      "expected_form": "law-genitive",
+      "expected_law_genitive": "rahvaraamatukogu seaduse",
+      "expected_paragraph": "16"
+    },
+    {
+      "id": "standalone-seaduse-three-words",
+      "text": "Lähtudes avaliku teabe seaduse § 5 lõikest 4 kehtestatakse järgmine kord.",
+      "expected_count": 1,
+      "expected_form": "law-genitive",
+      "expected_law_genitive": "avaliku teabe seaduse",
+      "expected_paragraph": "5",
+      "expected_detail": "lg 4"
+    },
+    {
+      "id": "standalone-seaduse-with-hyphen-token",
+      "text": "Käesolev määrus on kehtestatud ühisveevärgi ja -kanalisatsiooni seaduse § 5 alusel.",
+      "expected_count": 1,
+      "expected_form": "law-genitive",
+      "expected_law_genitive": "ühisveevärgi ja -kanalisatsiooni seaduse",
+      "expected_paragraph": "5"
+    },
+    {
+      "id": "embedded-in-license-verb-then-multiword",
+      "text": "Määrus kehtestatakse Kohaliku omavalitsuse korralduse seaduse § 22 lõike 1 punkti 34 alusel.",
+      "expected_count": 1,
+      "expected_form": "law-genitive",
+      "expected_law_genitive": "kohaliku omavalitsuse korralduse seaduse",
+      "expected_paragraph": "22",
+      "expected_detail": "lg 1 p 34"
+    },
+    {
+      "id": "minister-standalone-token-form",
+      "text": "Lähtudes riigihalduse ministri 30. detsembri 2019. a määruse nr 66 § 17 lõike 1 punkti 1 alusel.",
+      "expected_count": 1,
+      "expected_form": "state-regulation-date-number",
+      "expected_issuer": "riigihalduse minister",
+      "expected_adoption_date": "2019-12-30",
+      "expected_act_number": "66"
     }
   ]
 }
@@ -566,32 +609,83 @@ _LG_TOKEN = r"(?:lõike(?:st|s)?|lõigete|lg)"
 _P_TOKEN = r"(?:punkti|punkt|p)"
 
 # Pattern A — law in genitive form + § N (lõike M (punkti K)?)?
-# Matches one paragraph reference. The law genitive name can be
-# multiword and contain hyphens / non-Latin diacritics. The genitive
-# suffix is either '-seaduse' (e.g. 'alkoholiseaduse',
-# 'kohaliku omavalitsuse korralduse seaduse') or '-seadustiku'
-# (e.g. 'karistusseadustiku', 'ehitusseadustiku', 'äriseadustiku',
-# 'tsiviilseadustiku üldosa seaduse'). Note: 'seaduse' is genitive
-# of 'seadus' (law); 'seadustiku' is genitive of 'seadustik' (code).
-# Both must match — the v3 regex 'seaduse(?:tiku)?' incorrectly
-# matched 'seaduse' OR 'seadusetiku' (which doesn't exist), missing
-# clean '-seadustiku' forms.
 #
-# Example matches:
-#   "kohaliku omavalitsuse korralduse seaduse § 22 lõike 1 punkti 34"
-#   "põhikooli- ja gümnaasiumiseaduse § 66 lõike 2"
-#   "Kohanimeseaduse § 5 lõike 4"
-#   "karistusseadustiku § 121"
-#   "ehitusseadustiku § 27"
+# The law-name genitive suffix appears in TWO grammatical positions:
+#
+#   1. ATTACHED to the final word of the name:
+#        "alkoholiseaduse § 42"        (alkohol + seaduse)
+#        "karistusseadustiku § 121"    (karistus + seadustiku)
+#        "põhikooli- ja gümnaasiumiseaduse § 66"
+#
+#   2. STANDALONE as the final word, after a separate noun phrase:
+#        "kohaliku omavalitsuse korralduse seaduse § 22"
+#        "rahvaraamatukogu seaduse § 16"
+#        "avaliku teabe seaduse § 1"
+#        "sotsiaalhoolekande seaduse § 14"
+#        "ühisveevärgi ja -kanalisatsiooni seaduse § 5"
+#
+# A regex requiring the FINAL token to itself end in seaduse|seadustiku
+# (the v3+v4 form) misses every shape in case (2) — and case (2)
+# covers the bulk of real KOV enabling-act citations. The fix below
+# alternates: either (a) attached form `<word><seaduse|seadustiku>`
+# or (b) standalone marker `seaduse|seadustiku` after up to 7 leading
+# law-name words.
+#
+# A leading hyphen on a word is allowed so names like
+# "ühisveevärgi ja -kanalisatsiooni seaduse" tokenise cleanly.
+_LAW_WORD = r"-?[a-zõäöüšžA-ZÕÄÖÜŠŽ][a-zõäöüšžA-ZÕÄÖÜŠŽ\-]*"
+
 _PAT_LAW_PARA = re.compile(
-    r"(?P<law>(?:[a-zõäöüšžA-ZÕÄÖÜŠŽ][a-zõäöüšžA-ZÕÄÖÜŠŽ\-]*\s+){0,5}"
-    r"[a-zõäöüšžA-ZÕÄÖÜŠŽ][a-zõäöüšžA-ZÕÄÖÜŠŽ\-]*"
-    r"(?:seaduse|seadustiku))\s*"
+    rf"(?P<law>(?:{_LAW_WORD}\s+){{0,7}}"
+    rf"(?:{_LAW_WORD}(?:seaduse|seadustiku)|seaduse|seadustiku))\s*"
     rf"{_PARA_TOKEN}\s*(?P<par>\d+)"
     rf"(?:\s+{_LG_TOKEN}\s+(?P<lg>\d+))?"
     rf"(?:\s+{_P_TOKEN}\s+(?P<p>\d+))?",
     re.UNICODE | re.IGNORECASE,
 )
+
+# The greedy 0-7 leading-word group also absorbs preamble-license
+# verbs that precede a law citation in the wild ("Määrus kehtestatakse",
+# "Kooskõlas", "Lähtudes", etc.). These are NOT part of the law name
+# itself. After capture, _trim_preamble_prefix strips them so
+# law_ref matches FULLNAME_GENITIVE.
+#
+# Words that MAY appear inside multiword law names (ja, ning, või,
+# adjectives like 'kohaliku', 'avaliku', etc.) are deliberately
+# OMITTED from this set. Adding them would break legitimate
+# multiword law names.
+_PREAMBLE_LICENSE_PREFIXES = {
+    # Establishment / license verbs
+    "määrus", "määrust", "määruse", "määrusega", "määrustes",
+    "kehtestatakse", "kehtestatud", "kehtestab", "kehtestada",
+    "antakse", "antud", "annab",
+    "vastu", "vastavalt", "võetud",
+    # Connector phrases that license a law citation
+    "kooskõlas", "lähtudes", "võttes",
+    "tulenevalt", "tuginedes", "tuleneb", "tulenevat",
+    # Sentence-starts that frame a law citation
+    "käesolev", "käesolevaga",
+    "see",
+    # Adverbial prepositions
+    "alusel", "alus",
+}
+
+
+def _trim_preamble_prefix(law: str) -> str:
+    """Strip leading preamble-license tokens from a parser match.
+
+    The greedy regex captures up to 7 leading words; this trims off
+    common 'Määrus kehtestatakse <lawname>' / 'Kooskõlas <lawname>'
+    framings without touching words that belong inside the law name
+    itself.
+
+    Trailing punctuation (',', '.', etc.) is stripped before
+    membership check so 'Lähtudes,' is recognised as 'lähtudes'.
+    """
+    words = law.split()
+    while words and words[0].lower().rstrip(",.;:") in _PREAMBLE_LICENSE_PREFIXES:
+        words.pop(0)
+    return " ".join(words)
 
 # Pattern B — state regulation: "Vabariigi Valitsuse <date> määruse(ga) nr N"
 # Date can be:
@@ -612,14 +706,20 @@ _DATE_EITHER = rf"(?:{_DATE_NAMED}|{_DATE_NUMERIC})"
 _PAT_STATE_REG = re.compile(
     # Issuer alternatives:
     #   1. "Vabariigi Valitsuse" (genitive of Government)
-    #   2. multiword/lowercase minister names ending in "ministri":
-    #         "rahandusministri" (compound)
+    #   2. minister names ending in "ministri", in three shapes:
+    #         "rahandusministri"                  (compound, single token)
     #         "majandus- ja kommunikatsiooniministri" (multiword + hyphen)
-    #         "riigihalduse ministri" (separate word)
-    #   The lookahead prevents the issuer match from running into the date.
+    #         "riigihalduse ministri"              (descriptor + standalone token)
+    #
+    # The standalone "ministri" branch (third shape) is critical — about
+    # 1/4 of state regulations in the corpus use the separate-word form
+    # ("Riigihalduse minister" issued ~150 acts in the corpus). The
+    # alternation `[a-z]+ministri|ministri` covers both attached and
+    # standalone usage; the optional leading group consumes any
+    # descriptor words preceding a standalone "ministri".
     r"(?P<issuer>Vabariigi\s+Valitsuse|"
-    r"(?:[A-ZÕÄÖÜŠŽa-zõäöüšž][\w\-õäöüšžÕÄÖÜŠŽ]*(?:[-\s]+(?:ja\s+)?[a-zõäöüšž][\w\-õäöüšžÕÄÖÜŠŽ]*){0,4}\s*)?"
-    r"[a-zõäöüšž]+ministri)\s+"
+    r"(?:[A-ZÕÄÖÜŠŽa-zõäöüšž][\w\-õäöüšžÕÄÖÜŠŽ]*(?:[-\s]+(?:ja\s+)?[a-zõäöüšž][\w\-õäöüšžÕÄÖÜŠŽ]*){0,4}\s+)?"
+    r"(?:[a-zõäöüšž]+ministri|ministri))\s+"
     rf"{_DATE_EITHER}\s+määrus(?:ega|es|e|est)\s+nr\s*\.?\s*(?P<num>\d+)",
     re.UNICODE | re.IGNORECASE,
 )
@@ -654,19 +754,26 @@ def _normalize_state_issuer(issuer_text: str) -> str:
     state-regulation lookup key matches the corpus issuer label.
 
     The corpus stamps state-regulation issuers in nominative case on
-    the act node's ``estleg:issuer`` field (e.g. "rahandusminister",
-    "Vabariigi Valitsus"). Without normalisation, the parser-extracted
-    "rahandusministri" would never match any lookup key.
+    the act node's ``estleg:issuer`` field (e.g. "Rahandusminister",
+    "Riigihalduse minister", "Vabariigi Valitsus"). Without normalisation,
+    the parser-extracted genitives "rahandusministri" / "riigihalduse
+    ministri" / "Vabariigi Valitsuse" would never match any lookup key.
+
+    Estonian: nominative '-minister' takes genitive '-ministri'
+    (the final 'er' becomes 'ri'). To round-trip correctly, the
+    suffix '-ministri' is replaced with '-minister', not just
+    truncated by one char (which would yield '-ministr' — wrong).
     """
     # Collapse internal whitespace (multiword minister regex can pick
     # up stray spaces around hyphens or 'ja').
     s = re.sub(r"\s+", " ", issuer_text.strip())
     if s.endswith("Valitsuse"):
-        return s[:-1]  # Valitsuse → Valitsus
-    # Both "rahandusministri" (compound, one word) and "riigihalduse
-    # ministri" (separate word) collapse to "...minister".
+        return s[:-1]  # Valitsuse → Valitsus (single trailing 'e' drop)
+    # Reverse the Estonian -er→-ri genitive transform.
     if s.endswith("ministri"):
-        return s[:-1]
+        return s[:-len("ministri")] + "minister"
+    if s.endswith("Ministri"):
+        return s[:-len("Ministri")] + "Minister"
     return s
 
 
@@ -731,9 +838,22 @@ def extract_preamble_citations(text: str) -> list[dict]:
     citations: list[tuple[int, dict]] = []
 
     for m in _PAT_LAW_PARA.finditer(cleaned):
+        # Strip surrounding quotes, then strip leading preamble-license
+        # verbs (Määrus kehtestatakse, Kooskõlas, Lähtudes, …) so the
+        # law_ref is a clean genitive law name suitable for
+        # FULLNAME_GENITIVE lookup. The regex is intentionally
+        # permissive on the leading side; this post-step is what
+        # actually narrows the capture to the law name itself.
+        raw = _strip_quotes(m.group("law")).strip()
+        law_ref = _trim_preamble_prefix(raw)
+        if not law_ref:
+            # Defensive: if trimming consumed everything (the match
+            # captured ONLY preamble-license words plus a standalone
+            # 'seaduse'), skip the match.
+            continue
         cit = {
             "form": "law-genitive",
-            "law_ref": _strip_quotes(m.group("law")).strip(),
+            "law_ref": law_ref,
             "paragraphs": [m.group("par")],
             "citationDetail": _build_citation_detail(m.group("lg"), m.group("p")),
             "citationText": _orig_substring(m.start(), m.end()),
@@ -747,9 +867,16 @@ def extract_preamble_citations(text: str) -> list[dict]:
         )
         if date is None:
             continue
+        # Same trim as the law-citation branch — strip leading
+        # "Määrus kehtestatakse" / "Lähtudes" / etc. that the greedy
+        # leading-words group absorbed when the citation is embedded
+        # in a sentence.
+        raw_issuer = _trim_preamble_prefix(m.group("issuer").strip())
+        if not raw_issuer:
+            continue
         cit = {
             "form": "state-regulation-date-number",
-            "issuer": _normalize_state_issuer(m.group("issuer")),
+            "issuer": _normalize_state_issuer(raw_issuer),
             "adoption_date": date,
             "act_number": m.group("num"),
             "citationDetail": None,
@@ -764,9 +891,14 @@ def extract_preamble_citations(text: str) -> list[dict]:
         )
         if date is None:
             continue
+        raw_issuer = _trim_preamble_prefix(
+            re.sub(r"\s+", " ", m.group("issuer").strip())
+        )
+        if not raw_issuer:
+            continue
         cit = {
             "form": "kov-regulation-date-number",
-            "issuer": re.sub(r"\s+", " ", m.group("issuer").strip()),
+            "issuer": raw_issuer,
             "adoption_date": date,
             "act_number": m.group("num"),
             "citationDetail": None,
@@ -784,9 +916,9 @@ def extract_preamble_citations(text: str) -> list[dict]:
 pytest tests/test_extract_cross_references.py::TestExtractPreambleCitations -v
 ```
 
-Expected: 12 parametrized samples + `test_empty_text_returns_empty` + `test_no_match_returns_empty` = 14 passed.
+Expected: 17 parametrized samples + `test_empty_text_returns_empty` + `test_no_match_returns_empty` = 19 passed.
 
-If a sample fails, the regex doesn't yet handle that case. **Iterate on the regex until all 12 samples pass — do not relax the test fixtures.** The samples are corpus-derived; they represent real text the pipeline will hit.
+If a sample fails, the regex doesn't yet handle that case. **Iterate on the regex until all 17 samples pass — do not relax the test fixtures.** The samples are corpus-derived; they represent real text the pipeline will hit.
 
 - [ ] **Step 6: Run the full suite**
 
@@ -794,7 +926,7 @@ If a sample fails, the regex doesn't yet handle that case. **Iterate on the rege
 pytest -q
 ```
 
-Expected: prior count + 14 new tests, all passing.
+Expected: prior count + 19 new tests, all passing.
 
 - [ ] **Step 7: Commit**
 
@@ -3365,6 +3497,18 @@ from kov_pipeline_coverage import (
     _failures: list[str] = []
 ```
 
+For Layer 2a parity, count EVERY scanned input file as processed (not just those that participate in inverse triples). This matches the convention used by `classify_deontic`, `extract_temporal_data`, etc. and makes `files_processed` a meaningful denominator against `files_with_output` in the gate check.
+
+```python
+    # Layer 2a parity: every scanned file counts as processed.
+    # collect_all_references() opened all of these; mark them all,
+    # regardless of whether they ended up emitting an inverse triple.
+    for path in iter_peep_files():
+        _files_processed.add(path)
+        if "regulations/kov/" in str(path):
+            _files_processed_kov.add(path)
+```
+
 After `apply_inverse_references` returns, accumulate target-side stats. The variable in `inverse_map` is `target_iri → [source_iris]` — name it correctly:
 
 ```python
@@ -3377,24 +3521,15 @@ After `apply_inverse_references` returns, accumulate target-side stats. The vari
         _triples += n
         if "regulations/kov/" in str(target_path):
             _triples_kov += n   # target side is what we wrote into
-
-    # Source-side processed-files attribution: the inverse_map maps
-    # target_iri → [source_iri, ...]. Walk it correctly to resolve
-    # source PATHS for the processed-set.
-    for target_iri, source_list in inverse_map.items():
-        for source_iri in source_list:
-            source_path = iri_to_file.get(source_iri)
-            if source_path is None:
-                continue
-            _files_processed.add(source_path)
-            if "regulations/kov/" in str(source_path):
-                _files_processed_kov.add(source_path)
 ```
 
 After `apply_implemented_by` returns its `dict[Path, int]` (Task 10 must mirror the `Path`-keyed signature):
 
 ```python
-    # Layer 2b implementedBy attribution — target side
+    # Layer 2b implementedBy attribution — target side only. The
+    # source-side processed-set already covers every scanned input
+    # file (the loop above runs once at startup) and doesn't need
+    # additional bookkeeping here.
     for target_path, n in impl_counts.items():
         _files_with_output.add(target_path)
         if "regulations/kov/" in str(target_path):
@@ -3402,17 +3537,6 @@ After `apply_implemented_by` returns its `dict[Path, int]` (Task 10 must mirror 
         _triples += n
         if "regulations/kov/" in str(target_path):
             _triples_kov += n
-
-    # implementedBy source-side: walk preamble_inverse the right way
-    # (target_iri → [source_iri, ...]).
-    for target_iri, source_list in preamble_inverse.items():
-        for source_iri in source_list:
-            source_path = iri_to_file.get(source_iri)
-            if source_path is None:
-                continue
-            _files_processed.add(source_path)
-            if "regulations/kov/" in str(source_path):
-                _files_processed_kov.add(source_path)
 ```
 
 - [ ] **Step 4: Write the coverage report**
@@ -3811,6 +3935,11 @@ After all 14 tasks complete:
   - B5 (body-text not wired): Task 6 parser + Task 7 process_law_file integration
   - B6 (issuer label fragile): Task 6 reads from `issuers_kov_peep.json` rdfs:label
   - B7 (self-import): Task 7 explicitly says do not self-import
+
+- [ ] **Round-5 review items (F1-F2 + non-blocking F3) addressed:**
+  - **F1 `_PAT_LAW_PARA` standalone-`seaduse` form:** `_LAW_WORD` factored out; final marker alternates `_LAW_WORD(?:seaduse|seadustiku)` (attached) OR standalone `seaduse|seadustiku` (separate token). `_PREAMBLE_LICENSE_PREFIXES` + `_trim_preamble_prefix` strip the leading "Määrus kehtestatakse" / "Lähtudes" / etc. that the now-permissive regex absorbs. New corpus fixtures cover `kohaliku omavalitsuse korralduse seaduse § 22`, `rahvaraamatukogu seaduse § 16`, `avaliku teabe seaduse § 1`, `ühisveevärgi ja -kanalisatsiooni seaduse § 5`, and the embedded-in-license-verb form.
+  - **F2 `_PAT_STATE_REG` standalone `ministri` form:** ministers can now appear as separate-word genitives (`riigihalduse ministri`) via the `[a-z]+ministri|ministri` alternation. `_normalize_state_issuer` correctly reverses `-er → -ri` (Estonian: `minister` → `ministri`) using `s[:-len("ministri")] + "minister"` instead of the buggy `s[:-1]` from v3-v4 which produced `ministr`. `_trim_preamble_prefix` is also applied to the captured issuer so embedded sentences ("Lähtudes riigihalduse ministri ...") strip the license verb. New corpus fixture `minister-standalone-token-form` covers it.
+  - **F3 (non-blocking) inverse coverage processed-file semantics:** `_files_processed[_kov]` is now seeded from `iter_peep_files()` at startup so every scanned input file counts as processed, matching Layer 2a's convention (`classify_deontic`, `extract_temporal_data`, etc.). `_files_with_output[_kov]` remains the subset that received output. Per-source attribution loops removed.
 
 - [ ] **Round-4 review items (1-7 + 4 polish) addressed:**
   - **R1 M7 deterministic matching:** Step 6 chains via `estleg:sourceAct` (the canonical key built by `build_provision_index`), not `dc:source`. Step 7's verification one-liner checks the 16 expected hits and 4 documented misses (KNS, AluS, KOFS, KOVVS — no peep file in corpus; parser-recognised, resolver-fallthrough is correct).
