@@ -518,43 +518,14 @@ def _build_label(sanction_type: str, sanction_data: dict, provision_ref: str) ->
     return desc
 
 
-def _clear_existing_sanctions(law_files: list[Path]) -> int:
-    """Remove estleg:hasSanction from all nodes in all law files.
-
-    Returns the number of files that were modified.
-    """
-    modified = 0
-    for filepath in law_files:
-        doc = load_json(filepath)
-        if doc is None or "@graph" not in doc:
-            continue
-
-        changed = False
-        for node in doc["@graph"]:
-            if "estleg:hasSanction" in node:
-                del node["estleg:hasSanction"]
-                changed = True
-
-        if changed:
-            save_json(filepath, doc)
-            modified += 1
-
-    return modified
-
-
 def main() -> None:
     print("=" * 70)
     print("Estonian Legal Ontology - Sanctions Extraction")
     print("=" * 70)
 
     law_files = iter_peep_files(include_kov=False)  # DEFERRED to Layer 2c
-    print(f"\n[0/4] Clearing existing sanctions for idempotency...")
 
-    # --- Fix 1: clearing pass for idempotency ---
-    cleared = _clear_existing_sanctions(law_files)
-    print(f"  Cleared estleg:hasSanction from {cleared} file(s)")
-
-    print(f"\n[1/4] Found {len(law_files)} law files to process")
+    print("\n[1/4] Processing law files (per-file idempotent)...")
 
     # Collect sanctions per law
     all_law_sanctions: dict[str, list[dict]] = {}
@@ -570,18 +541,27 @@ def main() -> None:
 
         act_node = _find_act_node(doc)
         if act_node is None:
-            # Malformed peep — no act node typed both estleg:Act
-            # AND owl:Ontology. Skip with a coverage note (the full
-            # skip-reason wiring lands in Task 7).
+            # Malformed peep — coverage skip handled in Task 7.
             continue
         enforcement_level = _classify_enforcement_level(act_node)
+
+        # Step 1: detect prior peep-side output BEFORE any mutation.
+        had_existing_peep = any(
+            ("estleg:hasSanction" in n) or ("estleg:enforcedAtLevel" in n)
+            for n in doc["@graph"]
+        )
+
+        # Step 2: clear peep-side state unconditionally (idempotency).
+        for n in doc["@graph"]:
+            n.pop("estleg:hasSanction", None)
+            n.pop("estleg:enforcedAtLevel", None)
 
         law_name = filepath.stem.replace("_peep", "")
         law_sanctions: list[dict] = []
 
-        # --- Fix 3: track IRI usage per provision to handle duplicates ---
         iri_counts: dict[str, int] = defaultdict(int)
 
+        # Step 3: run extraction over the cleared graph.
         for node in doc["@graph"]:
             summary = node.get("estleg:summary", "")
             if not summary:
@@ -595,11 +575,10 @@ def main() -> None:
             provisions_with_sanctions += 1
             provision_iri = node.get("@id", "")
             provision_ref = _provision_ref(node)
-
-            # Deterministic provision ID for IRI: derived from the provision's @id
-            # e.g. "estleg:KARIST_2_Par_113" -> "Karistusseadustik_Par_113"
-            provision_par = provision_iri.replace("estleg:", "") if provision_iri else sanitize_id(
-                node.get("estleg:paragrahv", "unknown")
+            provision_par = (
+                provision_iri.replace("estleg:", "")
+                if provision_iri
+                else sanitize_id(node.get("estleg:paragrahv", "unknown"))
             )
 
             sanction_refs: list[dict] = []
@@ -607,13 +586,11 @@ def main() -> None:
                 total_sanction_count += 1
                 stype = s["sanction_type"]
 
-                # --- Fix 4: improve maxPenalty extraction ---
                 if "max_penalty" not in s:
                     fallback = _try_extract_penalty_from_summary(summary, stype)
                     if fallback:
                         s["max_penalty"] = fallback
 
-                # --- Deterministic IRI based on provision @id and sanction type ---
                 base_iri = f"estleg:Sanction_{provision_par}_{stype}"
                 iri_counts[base_iri] += 1
                 if iri_counts[base_iri] == 1:
@@ -631,22 +608,22 @@ def main() -> None:
                     sanction_node["estleg:maxPenalty"] = s["max_penalty"]
                 if "min_penalty" in s:
                     sanction_node["estleg:minPenalty"] = s["min_penalty"]
-
-                # --- Fix 4: descriptive label ---
                 sanction_node["rdfs:label"] = _build_label(stype, s, provision_ref)
 
                 law_sanctions.append(sanction_node)
                 sanction_refs.append({"@id": sanction_iri})
                 stats_per_type[stype] += 1
 
-            # Add hasSanction link to provision
             if sanction_refs:
                 node["estleg:hasSanction"] = sanction_refs
                 node["estleg:enforcedAtLevel"] = enforcement_level
 
-        # Save modified law file
-        if law_sanctions:
+        # Step 4: save when EITHER fresh output exists OR pre-existing
+        # output existed (so cleared-but-empty files persist the
+        # cleared state to disk).
+        if law_sanctions or had_existing_peep:
             save_json(filepath, doc)
+        if law_sanctions:
             all_law_sanctions[law_name] = law_sanctions
 
         if idx % 100 == 0 or idx == len(law_files):

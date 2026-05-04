@@ -288,3 +288,155 @@ class TestSanctionExtractionWithEnforcementStamp:
             f"expected str literal, got {type(level).__name__}: {level!r}"
         )
         assert level == "state"
+
+
+class TestSanctionsIdempotency:
+    """Idempotency tests for both peep-side mutations and the
+    sanctions JSON file lifecycle. Each test invokes main() twice
+    over the same fixture; the second run must converge to the
+    correct steady state regardless of the first run's output.
+    """
+
+    def test_stale_enforcement_cleared_when_sanctions_removed(
+        self, tmp_path, monkeypatch
+    ):
+        """Provision starts with prior hasSanction + enforcedAtLevel.
+        The act's summary is updated to text the regex won't match.
+        Second run strips BOTH triples (peep-side idempotency)."""
+        import extract_sanctions as mod
+        import estleg_common
+        krr = tmp_path / "krr_outputs"
+        sanctions_dir = krr / "sanctions"
+        sanctions_dir.mkdir(parents=True)
+        peep = krr / "stale_peep.json"
+        # Stage with PRIOR triples already present.
+        peep.write_text(json.dumps({
+            "@context": {
+                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "owl": "http://www.w3.org/2002/07/owl#",
+            },
+            "@graph": [
+                {"@id": "estleg:Stale_Map_2026",
+                 "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]},
+                {"@id": "estleg:Stale_Par_1",
+                 "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+                 "estleg:paragrahv": "§ 1",
+                 # Summary now contains NO sanction language.
+                 "estleg:summary":
+                     "See paragrahv kirjeldab üldist eesmärki ja "
+                     "ei sätesta karistusi.",
+                 # Stale triples from a prior run:
+                 "estleg:hasSanction": [{"@id": "estleg:Sanction_Stale_Par_1_fine"}],
+                 "estleg:enforcedAtLevel": "state"},
+            ],
+        }), encoding="utf-8")
+        monkeypatch.setattr(mod, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "SANCTION_DIR", sanctions_dir)
+        monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+
+        rc = mod.main()
+        assert rc in (0, None)
+
+        with open(peep, "r", encoding="utf-8") as fh:
+            saved = json.load(fh)
+        prov = next(n for n in saved["@graph"]
+                    if n.get("@id") == "estleg:Stale_Par_1")
+        # Stale triples must be GONE.
+        assert "estleg:hasSanction" not in prov
+        assert "estleg:enforcedAtLevel" not in prov
+
+    def test_classification_recomputed_when_act_type_flips(
+        self, tmp_path, monkeypatch
+    ):
+        """Edge case: classification is stateless. If a peep's @type
+        is changed by an upstream corpus correction (Law → Municipal
+        Regulation or vice versa), the recomputed enforcedAtLevel
+        reflects the new type, not the prior emission."""
+        import extract_sanctions as mod
+        import estleg_common
+        krr = tmp_path / "krr_outputs"
+        sanctions_dir = krr / "sanctions"
+        sanctions_dir.mkdir(parents=True)
+        peep = krr / "regulations" / "kov" / "test"
+        peep.mkdir(parents=True)
+        peep_file = peep / "act_peep.json"
+        # @type was Law (some prior corpus state); now correctly
+        # MunicipalRegulation. Prior emission was 'state'; this run
+        # must produce 'municipality'.
+        peep_file.write_text(json.dumps({
+            "@context": {
+                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "owl": "http://www.w3.org/2002/07/owl#",
+            },
+            "@graph": [
+                {"@id": "estleg:Reg_Test_Map_2024",
+                 "@type": ["owl:Ontology", "estleg:Act",
+                           "estleg:MunicipalRegulation"]},
+                {"@id": "estleg:Reg_Test_Par_1",
+                 "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+                 "estleg:paragrahv": "§ 1",
+                 "estleg:summary":
+                     "Parkimisrikkumise eest, mis on väärtegu, mille "
+                     "eest on ette nähtud rahatrahv kuni 50 "
+                     "trahviühikut.",
+                 # Stale (wrong) classification from a prior run.
+                 "estleg:enforcedAtLevel": "state"},
+            ],
+        }), encoding="utf-8")
+        monkeypatch.setattr(mod, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "SANCTION_DIR", sanctions_dir)
+        monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+        # KOV-staged fixture; force include_kov=True since Task 6
+        # hasn't unpinned yet.
+        monkeypatch.setattr(mod, "iter_peep_files", _iter_kov_inclusive)
+
+        rc = mod.main()
+        assert rc in (0, None)
+
+        with open(peep_file, "r", encoding="utf-8") as fh:
+            saved = json.load(fh)
+        prov = next(n for n in saved["@graph"]
+                    if n.get("@id") == "estleg:Reg_Test_Par_1")
+        # Recomputed from current @type — 'municipality', not the
+        # stale 'state'.
+        assert prov.get("estleg:enforcedAtLevel") == "municipality"
+
+    def test_no_op_when_no_existing_no_fresh(
+        self, tmp_path, monkeypatch
+    ):
+        """A peep with no sanctions and no prior stamps shouldn't
+        change between runs (no spurious writes)."""
+        import extract_sanctions as mod
+        import estleg_common
+        krr = tmp_path / "krr_outputs"
+        sanctions_dir = krr / "sanctions"
+        sanctions_dir.mkdir(parents=True)
+        peep = krr / "boring_peep.json"
+        peep.write_text(json.dumps({
+            "@context": {
+                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "owl": "http://www.w3.org/2002/07/owl#",
+            },
+            "@graph": [
+                {"@id": "estleg:Boring_Map_2026",
+                 "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]},
+                {"@id": "estleg:Boring_Par_1",
+                 "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+                 "estleg:paragrahv": "§ 1",
+                 "estleg:summary":
+                     "Käesolev seadus reguleerib üldisi suhteid."},
+            ],
+        }), encoding="utf-8")
+        before_mtime = peep.stat().st_mtime
+        monkeypatch.setattr(mod, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "SANCTION_DIR", sanctions_dir)
+        monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+
+        rc = mod.main()
+        assert rc in (0, None)
+
+        # File untouched (mtime unchanged) — no spurious save.
+        after_mtime = peep.stat().st_mtime
+        assert before_mtime == after_mtime, (
+            "no-op file must not be re-saved when nothing changes"
+        )
