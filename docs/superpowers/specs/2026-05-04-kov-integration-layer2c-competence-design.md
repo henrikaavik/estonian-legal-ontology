@@ -40,10 +40,14 @@ After the PR lands, all of the following hold:
    entries are placed BEFORE the existing `\b(vald|linn)\b` so
    more-specific matches take precedence.
 3. KOV-scoped Issuer-binding: when a generic body word matches AND
-   the source act has `estleg:enactedByMunicipality` set, the
-   `competentAuthority` triple targets the matching `estleg:Issuer_*`
-   IRI from the existing Issuer registry. Lookup re-uses Layer 2b's
-   `build_issuer_registry`.
+   the source act has `estleg:enactedByMunicipality` set AND the
+   resolver returns exactly one Issuer match (Path 1 same-body-and-suffix,
+   Path 2 paired-body-and-family, or Path 3 unique fallback), the
+   `competentAuthority` triple targets that `estleg:Issuer_*` IRI.
+   Lookup re-uses Layer 2b's `build_issuer_registry`. The resolver
+   intentionally abstains in several cases (suffix mismatch,
+   cross-family swap, paired-body absent, Path 3 ambiguous or empty);
+   abstain accounting is described in invariant #9.
 4. Non-KOV abstain: when a generic body word matches in a Law / state
    regulation (no `enactedByMunicipality`), the script does NOT emit
    a `competentAuthority` triple for that body. The detection counts
@@ -86,10 +90,19 @@ After the PR lands, all of the following hold:
        (e.g. vallavolikogu source + `linnavolikogu` body word);
    (c) source_issuer authoritative + Path 2 paired-body issuer
        absent or in different municipality;
-   (d) Path 3 fallback finds zero matches under
+   (d) source_issuer authoritative + Path 2 cross-family swap
+       rejected (e.g. linnavalitsus source + vallavolikogu body word);
+   (e) Path 3 fallback finds zero matches under
        (source_municipality, body_type, suffix);
-   (e) Path 3 fallback finds more than one matching issuer
+   (f) Path 3 fallback finds more than one matching issuer
        (ambiguous; abstains rather than guesses).
+   `fallback_hits` reports the count of SUCCESSFUL Path 3
+   resolutions — cases where source_issuer was missing, unknown
+   to the registry, or had a `currentMunicipality` inconsistent
+   with the act's `enactedByMunicipality`, and Path 3 nonetheless
+   resolved to a unique suffix-compatible Issuer in the act's
+   stated municipality. A high `fallback_hits` count is a
+   diagnostic signal worth investigating in a Layer 1 follow-up.
 10. `main()` returns `int`; `raise SystemExit(main())` propagates
     the gate's exit code.
 
@@ -188,11 +201,18 @@ def _canonical_body_slug(matched: str) -> str | None:
             if stripped.endswith(("volikogu", "valitsus")):
                 s = stripped
                 break
-    # Validate the canonical form
-    for prefix in ("linna", "valla", "alevi"):
-        for stem in ("volikogu", "valitsus"):
-            if s == prefix + stem:
-                return s
+    # Validate against the FIVE supported canonical forms.
+    # `alevivalitsus` is intentionally excluded: small towns
+    # (alevi) commonly have a volikogu but rarely a separately-
+    # named executive; the GENERIC_PATTERNS regex doesn't match
+    # `alevivalitsus` and the resolver's body_type_map doesn't
+    # include it. Listing only the five reachable slugs keeps
+    # the helper consistent with the rest of the pipeline (so
+    # direct unit calls return None for `alevivalitsus` rather
+    # than emitting an unreachable slug).
+    if s in {"linnavolikogu", "vallavolikogu", "alevivolikogu",
+              "linnavalitsus", "vallavalitsus"}:
+        return s
     return None
 ```
 
@@ -754,13 +774,17 @@ municipality mismatch, ambiguous fallback).
   via `_swap_issuer_body_suffix`).
 - `test_path2_paired_body_missing_abstains_without_path3` —
   source act enacted by `Issuer_xyz_vallavolikogu`; detected
-  body word `linnavalitsus`. Registry has NO
-  `Issuer_xyz_linnavalitsus` (the paired city executive doesn't
-  exist) BUT has another `Issuer_other_linnavalitsus` under the
-  same modern municipality. Resolver returns None — source
-  identity is authoritative; Path 3 must NOT bind to a
-  conflated historical issuer in the same successor municipality.
-  This locks in the haldusreform-merger safety property.
+  body word `vallavalitsus` (SAME municipal family — valla*).
+  Registry has NO `Issuer_xyz_vallavalitsus` (the paired rural
+  executive doesn't exist) BUT has another
+  `Issuer_other_vallavalitsus` under the same modern
+  municipality. Resolver returns None — source identity is
+  authoritative on Path 2; Path 3 must NOT bind to a conflated
+  historical issuer in the same successor municipality. This
+  locks in the haldusreform-merger safety property and is a
+  TRUE Path-2-paired-body-missing test (same family — passes
+  the `_swap_issuer_body_suffix` family-prefix gate, then fails
+  the registry-presence check).
 - `test_path2_cross_family_linna_to_valla_abstains` — source
   act enacted by `Issuer_elva_linnavalitsus` (urban executive);
   detected body word `vallavolikogu` (rural council). Even
@@ -1048,9 +1072,12 @@ for the abstain case.
 
 The new patterns use `\b...\b` boundaries and require the full
 body word (no partial matching). The inflection group
-`(?:e|t|ele|ses|sse)?` for `valitsus` is greedy; it might match
-nominative `valitsus` followed by a hyphen and another word
-(e.g. `vallavalitsus-eelnõu` — though that's not real Estonian).
+`(?:e(?:le|sse)?|es|t)?` for `valitsus` is the actual proposed
+form; it greedily tries longer alternatives first
+(`esse` > `ele` > `sse` > `es` > `le` > `e` > `t`) and might
+match nominative `valitsus` followed by a hyphen and another
+word (e.g. `vallavalitsus-eelnõu` — though that's not real
+Estonian).
 Mitigation: test corpus-derived inflections in
 `test_vallavalitsus_inflections`. If post-merge analysis shows
 unexpected matches, tighten in a follow-up.
