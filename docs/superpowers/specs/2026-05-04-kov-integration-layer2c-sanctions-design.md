@@ -34,9 +34,11 @@ After the PR lands, all of the following hold:
      BOTH triples on the next run.
    - Sanction-file-level: when the act loses all its sanction matches
      between runs, the corresponding `krr_outputs/sanctions/sanctions_<law>.json`
-     file is deleted (or overwritten with an empty `@graph`) so stale
-     `Sanction_*` nodes don't linger pointing at provisions that no
-     longer carry `hasSanction`.
+     file is **deleted** so stale `Sanction_*` nodes don't linger
+     pointing at provisions that no longer carry `hasSanction`.
+     Deletion (not empty-graph overwrite) keeps the directory
+     listing semantically accurate: the presence of a sanctions file
+     means the act has at least one sanction.
 7. Targeted SHACL: `LegalProvisionShape` gains an explicit property
    constraint for `enforcedAtLevel` in this PR (datatype `xsd:string`,
    `sh:maxCount 1`, value set `"state"` ∪ `"municipality"`). Zero new
@@ -108,20 +110,48 @@ that point; this PR adds a small helper:
 
 ```python
 def _find_act_node(doc: dict) -> dict | None:
-    """Return the owl:Ontology-typed act node from a peep file's
-    @graph, or None if no act node is present (defensive — the
-    upstream generators always emit one).
+    """Return the act node from a peep file's @graph, or None if no
+    act node is present.
+
+    Match criteria: the node must be typed BOTH `estleg:Act` and
+    `owl:Ontology`. Some peep files contain auxiliary `owl:Ontology`
+    wrappers (e.g. concept-cluster manifests) that aren't acts; the
+    `estleg:Act` constraint prevents misclassifying those as
+    sanction-bearing acts. The upstream Layer 1 generators stamp
+    every real act node with both types, so this is a tight match
+    in practice.
 
     The returned node is the source of truth for @type-based
     classification; the helper centralises the lookup so the per-
-    provision loop doesn't repeat the same scan."""
+    provision loop doesn't repeat the same scan. Callers must
+    handle a None return — see the malformed-input contract below.
+    """
     for n in doc.get("@graph", []):
         types = n.get("@type") or []
         if isinstance(types, str):
             types = [types]
-        if "owl:Ontology" in types:
+        if "estleg:Act" in types and "owl:Ontology" in types:
             return n
     return None
+```
+
+**Malformed-input contract.** If `_find_act_node(doc)` returns
+`None`, the per-file processing must:
+
+1. Log a warning to the failure-samples list of the coverage
+   report.
+2. Increment `_files_skipped` and add a `"missing_act_node"` entry
+   to `_skip_reasons`.
+3. Skip extraction on that file (do not classify the missing act as
+   `"state"` by default — that would produce a false-positive
+   `enforcedAtLevel` stamp on whatever provisions are still in the
+   `@graph`).
+4. Continue to the next file.
+
+This is defensive: every legitimately-generated peep carries an
+`estleg:Act` + `owl:Ontology` node, but a malformed/partial fixture
+shouldn't crash the pipeline OR silently get a misleading
+classification.
 ```
 
 When `sanction_refs` is non-empty for a provision:
@@ -239,7 +269,7 @@ Coverage report writes to
 | Path | Change |
 | --- | --- |
 | `scripts/extract_sanctions.py` | Remove `include_kov=False` pin (line ~510); add `_find_act_node` + `_classify_enforcement_level` helpers; replace global pre-clear with per-file in-memory processing; emit `enforcedAtLevel` alongside `hasSanction` (one literal per provision); extend idempotency to delete stale sanctions JSON files when fresh output is empty; change `main()` to return `int` and use `raise SystemExit(main())`; add coverage instrumentation reusing `kov_pipeline_coverage.CoverageReport`. |
-| `tests/test_extract_sanctions.py` | **New file.** ~14 tests across 5 classes (unit + integration + idempotency + sanctions-file idempotency + coverage + corpus-level invariant). |
+| `tests/test_extract_sanctions.py` | **New file.** 15 tests across 5 classes (unit + integration + idempotency + coverage + corpus-level invariant). |
 | `shacl/estonian_legal_shapes.ttl` | Add a property constraint inside the existing `LegalProvisionShape`: `sh:path estleg:enforcedAtLevel ; sh:datatype xsd:string ; sh:maxCount 1 ; sh:in ("state" "municipality") ; sh:name "enforcedAtLevel" ; sh:description "..."` . Closes the gap between `metadata.jsonld` (declares the property) and the SHACL TTL (didn't reference it). |
 | `docs/SCHEMA_REFERENCE.md` | Mark `estleg:enforcedAtLevel` as populated; add a short example block in the existing Sanctions section AND in the Layer 2 schema table; document the `sh:in ("state" "municipality")` constraint addition. |
 | `CHANGELOG.md` | Layer 2c sub-PR-1 entry — sanctions unpinned, SHACL property constraint added, coverage numbers, KOV impact. |
@@ -255,8 +285,9 @@ Coverage report writes to
 
 ## Test plan
 
-`tests/test_extract_sanctions.py` is created as a new file with 4
-test classes, ~12 tests total.
+`tests/test_extract_sanctions.py` is created as a new file with 5
+test classes, 15 tests total: 4 unit + 4 integration + 4 idempotency
++ 2 coverage + 1 corpus-invariant.
 
 ### `TestClassifyEnforcementLevel` (unit, 4 tests)
 
