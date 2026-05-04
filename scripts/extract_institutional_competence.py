@@ -118,6 +118,30 @@ SAMEAS_ALIASES: dict[str, str] = {
 }
 
 
+_CANONICAL_BODY_SLUGS = frozenset({
+    "linnavolikogu", "vallavolikogu", "alevivolikogu",
+    "linnavalitsus", "vallavalitsus",
+})
+
+
+def _canonical_body_slug(matched: str) -> str | None:
+    """Strip Estonian case suffixes from a KOV body-word match
+    and return the canonical slug (linnavolikogu, vallavolikogu,
+    alevivolikogu, linnavalitsus, vallavalitsus) or None if the
+    match doesn't fit one of the five reachable stems.
+    """
+    s = matched.lower()
+    for suffix in ("esse", "ele", "sse", "es", "le", "se", "ses", "s", "t", "e"):
+        if s.endswith(suffix) and len(s) > len(suffix) + 4:
+            stripped = s[: -len(suffix)]
+            if stripped.endswith(("volikogu", "valitsus")):
+                s = stripped
+                break
+    if s in _CANONICAL_BODY_SLUGS:
+        return s
+    return None
+
+
 # ---------- institution catalogue ----------
 
 # Named institutions: (canonical name, IRI suffix, institution type)
@@ -164,6 +188,10 @@ GENERIC_PATTERNS: list[tuple[re.Pattern, str, str]] = [
     # Local government
     (re.compile(r"\bkohalik(?:u)?\s+omavalitsus(?:e)?\b", re.IGNORECASE),
      "local_government", "local_government"),
+    (re.compile(r"\b(?:linna|valla|alevi)volikogu(?:le|sse|s)?\b", re.IGNORECASE),
+     "local_government_council", "local_government_body"),
+    (re.compile(r"\b(?:linna|valla)valitsus(?:e(?:le|sse)?|es|se|t)?\b", re.IGNORECASE),
+     "local_government_executive", "local_government_body"),
     (re.compile(r"\b(vald|linn)\b", re.IGNORECASE),
      "local_government", "local_government"),
 ]
@@ -229,6 +257,142 @@ def detect_competence_type(text: str) -> str:
         if pat.search(text):
             return ctype
     return "general"
+
+
+def _swap_issuer_body_suffix(
+    source_issuer: str, target_body_slug: str
+) -> str | None:
+    """Given an Issuer @id like 'estleg:Issuer_abja_vallavolikogu'
+    and a target body slug like 'vallavalitsus', return the paired
+    Issuer @id 'estleg:Issuer_abja_vallavalitsus'.
+
+    Returns None when:
+    - The source IRI doesn't match the expected
+      `Issuer_<place>_<body>` shape.
+    - The source body and target body belong to DIFFERENT
+      municipal families (linna* / valla* / alevi* are mutually
+      exclusive). A linnavalitsus source must NOT pair with
+      vallavolikogu target — same historical-conflation problem
+      Path 1's suffix check rejects.
+    """
+    if not source_issuer.startswith("estleg:Issuer_"):
+        return None
+    suffix = source_issuer[len("estleg:Issuer_"):]
+    source_body = None
+    place = None
+    for body in ("vallavolikogu", "vallavalitsus", "linnavolikogu",
+                  "linnavalitsus", "alevivolikogu"):
+        if suffix.endswith("_" + body):
+            source_body = body
+            place = suffix[: -len("_" + body)]
+            break
+    if source_body is None or place is None:
+        return None
+
+    family_prefixes = ("linna", "valla", "alevi")
+    source_family = next(
+        (p for p in family_prefixes if source_body.startswith(p)), None)
+    target_family = next(
+        (p for p in family_prefixes if target_body_slug.startswith(p)), None)
+    if source_family is None or target_family is None:
+        return None
+    if source_family != target_family:
+        return None
+
+    return f"estleg:Issuer_{place}_{target_body_slug}"
+
+
+def _resolve_kov_authority(
+    body_slug: str,
+    source_municipality: str | None,
+    source_issuer: str | None,
+    issuer_registry: dict[str, tuple[str, str, str]],
+) -> str | None:
+    """Resolve a KOV body-word detection to an Issuer @id.
+
+    Three priority paths (in order):
+      1. Same body type AND slug suffix match source_issuer →
+         return source_issuer.
+      2. Opposite body type → derive paired issuer slug; return
+         it if registered AND in same municipality.
+      3. Path 3 fallback: registry-wide unique match in
+         source_municipality. Reached ONLY when source_issuer is
+         missing, unknown to the registry, or has municipality
+         inconsistent with the act's stated enactedByMunicipality.
+
+    When source_issuer is known and consistent (Path 1+2
+    authoritative), Path 3 is NOT consulted — abstain instead.
+    """
+    if source_municipality is None:
+        return None
+
+    body_type_map = {
+        "linnavolikogu": "volikogu",
+        "vallavolikogu": "volikogu",
+        "alevivolikogu": "volikogu",
+        "linnavalitsus": "valitsus",
+        "vallavalitsus": "valitsus",
+    }
+    target_body_type = body_type_map.get(body_slug)
+    if target_body_type is None:
+        return None
+
+    source_issuer_authoritative = False
+    if source_issuer is not None:
+        source_entry = issuer_registry.get(source_issuer)
+        if source_entry is not None:
+            _label, source_mun, source_body_type = source_entry
+            if source_mun == source_municipality:
+                source_issuer_authoritative = True
+
+                if (source_body_type == target_body_type
+                        and source_issuer.endswith("_" + body_slug)):
+                    return source_issuer
+
+                if source_body_type != target_body_type:
+                    paired_iri = _swap_issuer_body_suffix(source_issuer, body_slug)
+                    if paired_iri is not None and paired_iri in issuer_registry:
+                        paired_entry = issuer_registry.get(paired_iri)
+                        if (paired_entry is not None
+                                and paired_entry[1] == source_municipality):
+                            return paired_iri
+                    return None
+
+                return None
+
+    if source_issuer_authoritative:
+        return None
+    suffix = "_" + body_slug
+    matches = [
+        issuer_iri
+        for issuer_iri, (_label, mun_iri, btype) in issuer_registry.items()
+        if mun_iri == source_municipality
+        and btype == target_body_type
+        and issuer_iri.endswith(suffix)
+    ]
+    if len(matches) == 1:
+        return matches[0]
+    return None
+
+
+def _is_path3_case(
+    source_issuer: str | None,
+    source_municipality: str | None,
+    issuer_registry: dict[str, tuple[str, str, str]],
+) -> bool:
+    """Return True iff the resolver's Path 1+2 are not
+    authoritative for this case (i.e. Path 3 is what would run).
+    Mirrors the resolver's source_issuer_authoritative check;
+    used by main() to count fallback_hits."""
+    if source_municipality is None:
+        return False
+    if source_issuer is None:
+        return True
+    entry = issuer_registry.get(source_issuer)
+    if entry is None:
+        return True
+    _label, source_mun, _btype = entry
+    return source_mun != source_municipality
 
 
 def main() -> None:
