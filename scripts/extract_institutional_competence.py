@@ -70,7 +70,7 @@ def load_json(filepath: Path) -> dict | None:
     try:
         with open(filepath, "r", encoding="utf-8") as f:
             return json.load(f)
-    except (json.JSONDecodeError, UnicodeDecodeError) as exc:
+    except (json.JSONDecodeError, UnicodeDecodeError, OSError) as exc:
         print(f"  WARN: cannot load {filepath.name}: {exc}")
         return None
 
@@ -669,8 +669,8 @@ def main() -> None:
             if slug not in written_slugs:
                 try:
                     path.unlink()
-                except OSError:
-                    pass
+                except OSError as exc:
+                    print(f"  WARN: could not delete stale file {path.name}: {exc}")
     else:
         print(f"[skip stale-deletion] {_per_peep_errors} per-peep "
               f"errors during this run; preserving "
