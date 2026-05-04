@@ -21,6 +21,7 @@ from pathlib import Path
 
 from estleg_common import iter_peep_files
 from extract_sanctions import _find_act_node
+from extract_cross_references import build_issuer_registry
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
@@ -436,7 +437,6 @@ def main() -> None:
     print(f"\n[1/4] Found {len(law_files)} law files to process")
 
     # Layer 2c PR #2: build issuer registry once at startup.
-    from extract_cross_references import build_issuer_registry
     issuer_registry = build_issuer_registry(
         KRR_DIR / "issuers_kov_peep.json"
     )
@@ -539,9 +539,10 @@ def main() -> None:
                 authority_refs.append({"@id": inst_iri})
 
             # Add competent-authority link to provision node
-            node["estleg:competentAuthority"] = authority_refs
-            node["estleg:competenceType"] = competence_type
-            modified = True
+            if authority_refs:
+                node["estleg:competentAuthority"] = authority_refs
+                node["estleg:competenceType"] = competence_type
+                modified = True
 
         # Only save if we actually changed nodes in this file
         if modified:

@@ -483,6 +483,11 @@ class TestExtractCompetenceWithIssuerBinding:
             saved = json.load(fh)
         prov = next(n for n in saved["@graph"]
                     if n.get("@id") == "estleg:KOKS_Par_22")
+        # After Fix 1: no detections produced authoritative bindings,
+        # so neither competentAuthority nor competenceType should be
+        # written to the provision.
+        assert "estleg:competentAuthority" not in prov
+        assert "estleg:competenceType" not in prov
         refs = prov.get("estleg:competentAuthority", [])
         if isinstance(refs, dict):
             refs = [refs]
