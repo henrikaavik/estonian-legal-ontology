@@ -545,3 +545,163 @@ class TestExtractCompetenceWithIssuerBinding:
         ids = [r.get("@id") for r in refs]
         assert "estleg:Institution_riigikohus" in ids
         assert (institutions_dir / "institution_riigikohus.json").exists()
+
+
+class TestCompetenceIdempotency:
+    """Idempotency at the peep level: clear → extract → save iff
+    either fresh output OR prior output existed."""
+
+    @pytest.fixture
+    def issuers_registry_file(self, tmp_path):
+        krr = tmp_path / "krr_outputs"
+        krr.mkdir()
+        path = krr / "issuers_kov_peep.json"
+        path.write_text(json.dumps({
+            "@context": {
+                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "owl": "http://www.w3.org/2002/07/owl#",
+                "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+            },
+            "@graph": [
+                {"@id": "estleg:Issuer_tallinna_linnavolikogu",
+                 "@type": ["owl:NamedIndividual", "estleg:Issuer"],
+                 "rdfs:label": "Tallinna Linnavolikogu",
+                 "estleg:bodyType": "volikogu",
+                 "estleg:currentMunicipality": {
+                     "@id": "estleg:Municipality_tallinn"}},
+            ],
+        }), encoding="utf-8")
+        return krr
+
+    def test_stale_competentauthority_cleared_when_text_changes(
+        self, issuers_registry_file, monkeypatch
+    ):
+        import extract_institutional_competence as mod
+        import estleg_common
+        krr = issuers_registry_file
+        institutions_dir = krr / "institutions"
+        institutions_dir.mkdir(parents=True, exist_ok=True)
+
+        peep = krr / "stale_peep.json"
+        peep.write_text(json.dumps({
+            "@context": {
+                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "owl": "http://www.w3.org/2002/07/owl#",
+            },
+            "@graph": [
+                {"@id": "estleg:Stale_Map_2026",
+                 "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]},
+                {"@id": "estleg:Stale_Par_1",
+                 "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+                 "estleg:paragrahv": "§ 1",
+                 "estleg:summary": "Käesolev säte kirjeldab üldist eesmärki.",
+                 "estleg:competentAuthority": [
+                     {"@id": "estleg:Institution_riigikohus"}],
+                 "estleg:competenceType": "supervision"},
+            ],
+        }), encoding="utf-8")
+        monkeypatch.setattr(mod, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "INSTIT_DIR", institutions_dir)
+        monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "iter_peep_files", _iter_kov_inclusive)
+
+        rc = mod.main()
+        assert rc in (0, None)
+
+        with open(peep, "r", encoding="utf-8") as fh:
+            saved = json.load(fh)
+        prov = next(n for n in saved["@graph"]
+                    if n.get("@id") == "estleg:Stale_Par_1")
+        assert "estleg:competentAuthority" not in prov
+        assert "estleg:competenceType" not in prov
+
+    def test_classification_recomputed_from_act_type(
+        self, issuers_registry_file, monkeypatch
+    ):
+        """A peep's enactedByMunicipality flips between runs;
+        recomputed resolution reflects the new value, not the
+        stale prior emission."""
+        import extract_institutional_competence as mod
+        import estleg_common
+        krr = issuers_registry_file
+        institutions_dir = krr / "institutions"
+        institutions_dir.mkdir(parents=True, exist_ok=True)
+        kov = krr / "regulations" / "kov" / "tallinna_linnavolikogu"
+        kov.mkdir(parents=True)
+        peep = kov / "act_peep.json"
+        peep.write_text(json.dumps({
+            "@context": {
+                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "owl": "http://www.w3.org/2002/07/owl#",
+            },
+            "@graph": [
+                {"@id": "estleg:Reg_TLN_Z_Map_2024",
+                 "@type": ["owl:Ontology", "estleg:Act",
+                           "estleg:MunicipalRegulation"],
+                 "estleg:enactedBy": {"@id": "estleg:Issuer_tallinna_linnavolikogu"},
+                 "estleg:enactedByMunicipality": {
+                     "@id": "estleg:Municipality_tallinn"}},
+                {"@id": "estleg:Reg_TLN_Z_Par_1",
+                 "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+                 "estleg:paragrahv": "§ 1",
+                 "estleg:summary": "Linnavolikogu kehtestab maksu.",
+                 "estleg:competentAuthority": [
+                     {"@id": "estleg:Institution_some_stale_value"}]},
+            ],
+        }), encoding="utf-8")
+        monkeypatch.setattr(mod, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "INSTIT_DIR", institutions_dir)
+        monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "iter_peep_files", _iter_kov_inclusive)
+
+        rc = mod.main()
+        assert rc in (0, None)
+
+        with open(peep, "r", encoding="utf-8") as fh:
+            saved = json.load(fh)
+        prov = next(n for n in saved["@graph"]
+                    if n.get("@id") == "estleg:Reg_TLN_Z_Par_1")
+        refs = prov.get("estleg:competentAuthority", [])
+        if isinstance(refs, dict):
+            refs = [refs]
+        ids = [r.get("@id") for r in refs]
+        assert "estleg:Issuer_tallinna_linnavolikogu" in ids
+        assert "estleg:Institution_some_stale_value" not in ids
+
+    def test_no_op_when_no_existing_no_fresh(
+        self, issuers_registry_file, monkeypatch
+    ):
+        """Peep with no detections AND no prior triples — mtime
+        preserved (no spurious write)."""
+        import extract_institutional_competence as mod
+        import estleg_common
+        krr = issuers_registry_file
+        institutions_dir = krr / "institutions"
+        institutions_dir.mkdir(parents=True, exist_ok=True)
+        peep = krr / "boring_peep.json"
+        peep.write_text(json.dumps({
+            "@context": {
+                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "owl": "http://www.w3.org/2002/07/owl#",
+            },
+            "@graph": [
+                {"@id": "estleg:Boring_Map_2026",
+                 "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]},
+                {"@id": "estleg:Boring_Par_1",
+                 "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+                 "estleg:paragrahv": "§ 1",
+                 "estleg:summary":
+                     "Käesolev seadus reguleerib üldisi suhteid."},
+            ],
+        }), encoding="utf-8")
+        before = peep.stat().st_mtime
+        monkeypatch.setattr(mod, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "INSTIT_DIR", institutions_dir)
+        monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "iter_peep_files", _iter_kov_inclusive)
+
+        rc = mod.main()
+        assert rc in (0, None)
+
+        after = peep.stat().st_mtime
+        assert before == after, "no-op file must not be re-saved"

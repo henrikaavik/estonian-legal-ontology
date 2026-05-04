@@ -441,23 +441,7 @@ def main() -> None:
         KRR_DIR / "issuers_kov_peep.json"
     )
 
-    # --- Clearing pass: remove old competence data from all files ---
-    print("  Clearing old competence data from all files...")
-    for filepath in law_files:
-        doc = load_json(filepath)
-        if doc is None or "@graph" not in doc:
-            continue
-        cleared = False
-        for node in doc["@graph"]:
-            if "estleg:competentAuthority" in node:
-                del node["estleg:competentAuthority"]
-                cleared = True
-            if "estleg:competenceType" in node:
-                del node["estleg:competenceType"]
-                cleared = True
-        if cleared:
-            save_json(filepath, doc)
-    print("  Done clearing.")
+    print("\n[1/4] Processing law files (per-file idempotent)...")
 
     # institution IRI → collected data
     inst_data: dict[str, dict] = {}
@@ -481,6 +465,19 @@ def main() -> None:
             continue
         source_municipality = _id_ref(act_node.get("estleg:enactedByMunicipality"))
         source_issuer = _id_ref(act_node.get("estleg:enactedBy"))
+
+        # Detect prior peep-side output BEFORE clearing.
+        had_existing_peep = any(
+            ("estleg:competentAuthority" in n)
+            or ("estleg:competenceType" in n)
+            for n in doc["@graph"]
+        )
+
+        # Clear unconditionally — the per-provision loop below
+        # re-emits when detection succeeds.
+        for n in doc["@graph"]:
+            n.pop("estleg:competentAuthority", None)
+            n.pop("estleg:competenceType", None)
 
         law_name = filepath.stem.replace("_peep", "")
         modified = False
@@ -544,8 +541,8 @@ def main() -> None:
                 node["estleg:competenceType"] = competence_type
                 modified = True
 
-        # Only save if we actually changed nodes in this file
-        if modified:
+        # Save when EITHER fresh output OR pre-existing output existed.
+        if modified or had_existing_peep:
             save_json(filepath, doc)
 
         if idx % 100 == 0 or idx == len(law_files):
