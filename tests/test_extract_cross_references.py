@@ -663,3 +663,70 @@ class TestKovBodyTextScope:
             issuer_registry=registry,
         )
         assert target is None
+
+
+class TestKovBodyTextSavesFile:
+    """A KOV peep that gains references ONLY from the new Layer 2b
+    body-text branch must still be saved and counted. Tests that
+    `modified = True` and the three counters fire even when the
+    in-law branch found nothing."""
+
+    def test_kov_only_body_text_triggers_save(self, tmp_path):
+        from extract_cross_references import process_law_file
+
+        # Stage a KOV peep whose body text references a same-municipality
+        # act by issuer + number, with no in-law citations.
+        peep = tmp_path / "kov_peep.json"
+        peep.write_text(json.dumps({
+            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+                         "owl": "http://www.w3.org/2002/07/owl#"},
+            "@graph": [
+                {"@id": "estleg:Reg_TLN_Test_Map_2024",
+                 "@type": ["owl:Ontology", "estleg:MunicipalRegulation"],
+                 "estleg:enactedByMunicipality": {
+                     "@id": "estleg:Municipality_tallinn"},
+                 "estleg:issuer": "Tallinna Linnavolikogu",
+                 "estleg:actNumber": "999"},
+                {"@id": "estleg:Reg_TLN_Test_Map_2024_Par_1",
+                 "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+                 "estleg:paragrahv": "§ 1",
+                 "estleg:legalText":
+                    "Vastavalt Tallinna Linnavolikogu määruse nr 15 § 4 ..."},
+            ],
+        }), encoding="utf-8")
+
+        kov_lookup = {
+            ("tallinna linnavolikogu", "15"): ["estleg:Reg_TLN15_Map_2020"],
+        }
+        registry = {
+            "estleg:Issuer_tallinna_linnavolikogu": (
+                "tallinna linnavolikogu",
+                "estleg:Municipality_tallinn", "volikogu",
+            ),
+        }
+
+        stats = process_law_file(
+            peep,
+            abbrev_to_prefix={},
+            prefix_to_provisions={},
+            iri_to_file={},
+            kov_act_lookup_by_number=kov_lookup,
+            issuer_registry=registry,
+        )
+
+        # File must have been saved with the new ref, and stats must
+        # reflect that the KOV-only branch fired.
+        assert stats["citations_found"] >= 1
+        assert stats["citations_resolved"] >= 1
+        assert stats["provisions_with_refs"] >= 1
+
+        with open(peep, "r", encoding="utf-8") as fh:
+            saved = json.load(fh)
+        prov = next(n for n in saved["@graph"]
+                    if n.get("@id", "").endswith("_Par_1"))
+        refs = prov.get("estleg:references", [])
+        if isinstance(refs, dict):
+            refs = [refs]
+        assert {"@id": "estleg:Reg_TLN15_Map_2020"} in refs
+        # Temporary marker MUST NOT be persisted.
+        assert "_layer2b_counted" not in prov

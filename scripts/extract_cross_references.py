@@ -1278,7 +1278,10 @@ def process_law_file(
     json_file: Path,
     abbrev_to_prefix: dict[str, str],
     prefix_to_provisions: dict[str, dict[str, str]],
-    source_act_to_prefix: dict[str, str],
+    iri_to_file: dict[str, Path],
+    *,
+    kov_act_lookup_by_number: dict[tuple[str, str], list[str]] | None = None,
+    issuer_registry: dict[str, tuple[str, str, str]] | None = None,
 ) -> dict:
     """
     Process a single law JSON-LD file to extract and add cross-references.
@@ -1377,6 +1380,90 @@ def process_law_file(
         stats["provisions_with_refs"] += 1
         modified = True
 
+    # Layer 2b: KOV body-text refs scoped to source municipality.
+    # Runs AFTER the existing in-law citation pass on the same graph.
+    if kov_act_lookup_by_number is not None:
+        # Read the source act's municipality (may be None for laws or
+        # for state regulations that aren't municipality-bound).
+        source_municipality = None
+        for node in graph:
+            types = node.get("@type") or []
+            if isinstance(types, str):
+                types = [types]
+            if "estleg:MunicipalRegulation" in types:
+                ebm = node.get("estleg:enactedByMunicipality")
+                if isinstance(ebm, dict):
+                    source_municipality = ebm.get("@id")
+                elif isinstance(ebm, str):
+                    source_municipality = ebm
+                break
+
+        # Per provision, parse body-text KOV refs and resolve.
+        for prov_node in graph:
+            if "estleg:paragrahv" not in prov_node:
+                continue
+            text_parts = []
+            lt = prov_node.get("estleg:legalText")
+            if isinstance(lt, str):
+                text_parts.append(lt)
+            sm = prov_node.get("estleg:summary")
+            if isinstance(sm, str):
+                text_parts.append(sm)
+            text = " ".join(text_parts)
+            kov_refs = extract_kov_act_refs_from_text(text)
+            if not kov_refs:
+                continue
+
+            # Treat every parsed KOV body-text ref as a "found" citation;
+            # whether resolved or not, this is real signal in the coverage
+            # report (matches the convention from the in-law branch).
+            stats["citations_found"] += len(kov_refs)
+
+            new_targets: list[str] = []
+            for ref in kov_refs:
+                target = resolve_kov_internal_act_ref(
+                    source_municipality=source_municipality,
+                    explicit_issuer=ref["issuer"],
+                    body_type=ref["body_type"],
+                    act_number=ref["act_number"],
+                    kov_act_lookup_by_number=kov_act_lookup_by_number,
+                    issuer_registry=issuer_registry or {},
+                )
+                if target is not None:
+                    new_targets.append(target)
+
+            if not new_targets:
+                continue
+
+            # Append to existing references (preserving the in-law refs)
+            # and dedupe.
+            refs = prov_node.get("estleg:references")
+            if refs is None:
+                refs = []
+                prov_node["estleg:references"] = refs
+            elif isinstance(refs, dict):
+                refs = [refs]
+                prov_node["estleg:references"] = refs
+
+            had_new = False
+            for tgt in new_targets:
+                if {"@id": tgt} not in refs:
+                    refs.append({"@id": tgt})
+                    had_new = True
+
+            if had_new:
+                stats["citations_resolved"] += len(new_targets)
+                # Only count the provision the FIRST time a Layer 2b ref
+                # lands on it (the in-law pass may have already counted it).
+                if not prov_node.get("_layer2b_counted"):
+                    stats["provisions_with_refs"] += 1
+                    prov_node["_layer2b_counted"] = True
+                modified = True
+
+    # Strip the temporary marker before saving so it never persists.
+    for prov_node in graph:
+        prov_node.pop("_layer2b_counted", None)
+
     if modified:
         save_json(json_file, doc)
 
@@ -1429,6 +1516,23 @@ def main() -> None:
     print(f"  Found {len(prefix_to_provisions)} law prefixes with {total_provisions} provisions")
     print(f"  Source act mappings: {len(source_act_to_prefix)}")
 
+    # Layer 2b: canonical lookups for the preamble + body-text passes
+    genitive_to_act_iri = build_genitive_to_act_iri(
+        source_act_to_prefix=source_act_to_prefix,
+        prefix_to_act_iri=prefix_to_act_iri,
+    )
+
+    riik_root = KRR_DIR / "regulations" / "riik"
+    kov_root = KRR_DIR / "regulations" / "kov"
+    issuers_path = KRR_DIR / "issuers_kov_peep.json"
+    state_reg_lookup = build_state_regulation_lookup(riik_root, DATA_DIR)
+    kov_act_lookup = build_kov_act_lookup(kov_root, DATA_DIR, issuers_path)
+    kov_act_lookup_by_number = build_kov_act_lookup_by_number(kov_root)
+    issuer_registry = build_issuer_registry(issuers_path)
+    print(f"  state-reg lookup: {len(state_reg_lookup)} entries")
+    print(f"  KOV act lookup (date-keyed): {len(kov_act_lookup)} entries")
+    print(f"  KOV act lookup (number-only): {len(kov_act_lookup_by_number)} keys")
+
     # Step 3: Build abbreviation mapping
     print("\n[3/5] Building abbreviation-to-prefix mapping...")
     abbrev_to_prefix = build_abbreviation_to_prefix(source_act_to_prefix)
@@ -1451,7 +1555,9 @@ def main() -> None:
 
     for i, json_file in enumerate(law_files, 1):
         stats = process_law_file(
-            json_file, abbrev_to_prefix, prefix_to_provisions, source_act_to_prefix
+            json_file, abbrev_to_prefix, prefix_to_provisions, iri_to_file,
+            kov_act_lookup_by_number=kov_act_lookup_by_number,
+            issuer_registry=issuer_registry,
         )
         all_stats.append(stats)
 
@@ -1465,6 +1571,132 @@ def main() -> None:
         if i % 50 == 0 or i == len(law_files):
             print(f"  Processed {i}/{len(law_files)} files "
                   f"(refs found so far: {total_resolved})")
+
+    # Layer 2b: preamble pass — issuedUnder + implementsCitation + Citation
+    print("\nLayer 2b: scanning preambles for issuedUnder citations...")
+    preamble_files_processed: set[Path] = set()
+    preamble_files_with_output: set[Path] = set()
+    preamble_files_kov_processed: set[Path] = set()
+    preamble_files_kov_with_output: set[Path] = set()
+    preamble_triples_emitted = 0
+    preamble_triples_emitted_kov = 0
+    preamble_citations_resolved = 0
+    preamble_citations_unresolved = 0
+
+    for peep in iter_peep_files():
+        is_kov = "regulations/kov/" in str(peep)
+        try:
+            with open(peep, "r", encoding="utf-8") as fh:
+                doc = json.load(fh)
+        except (json.JSONDecodeError, OSError):
+            continue
+        graph = doc.get("@graph", [])
+        if not graph:
+            continue
+
+        # Find the act node (owl:Ontology-typed). Skip the file if absent.
+        act_node = None
+        for n in graph:
+            types = n.get("@type") or []
+            if isinstance(types, str):
+                types = [types]
+            if "owl:Ontology" in types and n.get("@id"):
+                act_node = n
+                break
+        if act_node is None:
+            continue
+        source_act_iri = act_node["@id"]
+
+        preamble_text = act_node.get("estleg:preambleText")
+        if not preamble_text:
+            continue
+
+        preamble_files_processed.add(peep)
+        if is_kov:
+            preamble_files_kov_processed.add(peep)
+
+        # Idempotency: clear prior pass output before regenerating.
+        act_node.pop("estleg:issuedUnder", None)
+        act_node.pop("estleg:implementsCitation", None)
+        graph[:] = [n for n in graph
+                    if not (isinstance(n.get("@id"), str)
+                            and n["@id"].startswith(
+                                f"estleg:Citation_{source_act_iri.removeprefix('estleg:')}_"
+                            ))]
+
+        # Re-find act_node after the comprehension — safe because we
+        # only filtered Citation_* nodes.
+        for n in graph:
+            if n.get("@id") == source_act_iri:
+                act_node = n
+                break
+
+        citations = extract_preamble_citations(preamble_text)
+        if not citations:
+            continue
+
+        issued_under_set: set[str] = set()
+        implements_citation_refs: list[dict] = []
+        new_citation_nodes: list[dict] = []
+
+        for seq, cit in enumerate(citations, start=1):
+            resolved = resolve_preamble_citation(
+                cit,
+                genitive_to_act_iri=genitive_to_act_iri,
+                prefix_to_provisions=prefix_to_provisions,
+                act_iri_to_prefix=act_iri_to_prefix,
+                state_reg_lookup=state_reg_lookup,
+                kov_act_lookup=kov_act_lookup,
+            )
+            if resolved is None:
+                preamble_citations_unresolved += 1
+                continue
+            preamble_citations_resolved += 1
+            target_iri, enabling_act_iri = resolved
+            issued_under_set.add(enabling_act_iri)
+
+            # Emit a reified Citation node only when the citation has
+            # paragraph or detail granularity.
+            if cit.get("paragraphs") or cit.get("citationDetail"):
+                citation_iri = build_citation_iri(source_act_iri, seq)
+                citation_node = build_citation_node(
+                    iri=citation_iri,
+                    target_iri=target_iri,
+                    citation_detail=cit.get("citationDetail"),
+                    citation_text=cit.get("citationText"),
+                )
+                new_citation_nodes.append(citation_node)
+                implements_citation_refs.append({"@id": citation_iri})
+
+        if issued_under_set:
+            act_node["estleg:issuedUnder"] = [
+                {"@id": iri} for iri in sorted(issued_under_set)
+            ]
+            preamble_triples_emitted += len(issued_under_set)
+            if is_kov:
+                preamble_triples_emitted_kov += len(issued_under_set)
+
+        if implements_citation_refs:
+            act_node["estleg:implementsCitation"] = implements_citation_refs
+            graph.extend(new_citation_nodes)
+            preamble_triples_emitted += len(implements_citation_refs)
+            if is_kov:
+                preamble_triples_emitted_kov += len(implements_citation_refs)
+
+        if issued_under_set or implements_citation_refs:
+            preamble_files_with_output.add(peep)
+            if is_kov:
+                preamble_files_kov_with_output.add(peep)
+            save_json(peep, doc)
+
+    print(f"  preamble files processed: {len(preamble_files_processed)} "
+          f"(KOV: {len(preamble_files_kov_processed)})")
+    print(f"  preamble files with output: {len(preamble_files_with_output)} "
+          f"(KOV: {len(preamble_files_kov_with_output)})")
+    print(f"  preamble triples emitted: {preamble_triples_emitted} "
+          f"(KOV: {preamble_triples_emitted_kov})")
+    print(f"  preamble citations resolved/unresolved: "
+          f"{preamble_citations_resolved}/{preamble_citations_unresolved}")
 
     # Step 5: Generate report
     print("\n[5/5] Generating cross-references report...")
