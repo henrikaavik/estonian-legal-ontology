@@ -521,7 +521,7 @@ def build_issuer_registry(
             continue
         iid = node.get("@id")
         label = node.get("rdfs:label")
-        muni = node.get("estleg:enactedByMunicipality")
+        muni = node.get("estleg:currentMunicipality")
         body_type = node.get("estleg:bodyType")
         if isinstance(muni, dict):
             muni = muni.get("@id")
@@ -677,17 +677,19 @@ def extract_kov_act_refs_from_text(text: str) -> list[dict]:
         # ('Vallavalitsus') after _normalize_issuer_label collapses case.
         body_canon = body_raw.rstrip("e") if body_lower.endswith("se") else body_raw
         issuer_full = m.group("issuer")
-        if issuer_full and issuer_full.strip():
-            # Issuer prefix may absorb leading capitalised non-place
-            # words (e.g. sentence-initial "Vastavalt", "Lähtudes",
-            # "Käesolevaga"). Place names in Estonian KOV issuer labels
-            # are typically the single token immediately preceding the
-            # body word (hyphenated compounds like "Lääne-Nigula" remain
-            # one token). Take only that trailing token to avoid
-            # contaminating the lookup key with adverbs.
-            issuer_tokens = issuer_full.strip().split()
-            place_name = issuer_tokens[-1] if issuer_tokens else ""
-            raw_label = (place_name + " " + body_canon).strip()
+        # Trim leading preamble-license verbs (Vastavalt, Lähtudes, …)
+        # but PRESERVE multi-word place names (Järva Jaani, Lääne-Nigula,
+        # Saare-Anija, etc.). Reuse _trim_preamble_prefix from Task 2:
+        # it strips only known license verbs from _PREAMBLE_LICENSE_PREFIXES,
+        # leaving real place tokens intact. A naive "last token" trim
+        # incorrectly drops the leading word of 26 multi-word KOV names.
+        trimmed_issuer = (
+            _trim_preamble_prefix(issuer_full.strip())
+            if issuer_full and issuer_full.strip()
+            else ""
+        )
+        if trimmed_issuer:
+            raw_label = (trimmed_issuer + " " + body_canon).strip()
             issuer_label = _normalize_issuer_label(raw_label)
         else:
             issuer_label = None

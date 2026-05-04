@@ -554,6 +554,21 @@ class TestExtractKovActRefsFromText:
         assert extract_kov_act_refs_from_text("Plain text.") == []
         assert extract_kov_act_refs_from_text("") == []
 
+    def test_parses_multi_word_place_name(self):
+        """Regression: 'Järva Jaani' is a real two-word KOV name. The
+        prefix trimmer must NOT mistakenly drop 'Järva' as a leading
+        preamble word — it's part of the place name."""
+        from extract_cross_references import extract_kov_act_refs_from_text
+        refs = extract_kov_act_refs_from_text(
+            "Vastavalt Järva Jaani Vallavolikogu määruse nr 5 § 2 ..."
+        )
+        assert len(refs) == 1
+        # Trim removes 'Vastavalt' (preamble verb), preserves
+        # 'Järva Jaani' (place name).
+        assert refs[0]["issuer"] == "jarva jaani vallavolikogu"
+        assert refs[0]["body_type"] == "volikogu"
+        assert refs[0]["act_number"] == "5"
+
 
 class TestKovBodyTextScope:
     @pytest.fixture
