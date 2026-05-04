@@ -533,6 +533,34 @@ def build_issuer_registry(
     return out
 
 
+def build_citation_iri(source_act_iri: str, seq: int) -> str:
+    """Build a SHACL-valid Citation IRI from the source act @id and a
+    1-based sequence number. The 'estleg:' prefix is stripped from the
+    source IRI before embedding."""
+    shortid = source_act_iri.removeprefix("estleg:")
+    return f"estleg:Citation_{shortid}_{seq}"
+
+
+def build_citation_node(
+    iri: str,
+    target_iri: str,
+    citation_detail: str | None,
+    citation_text: str | None,
+) -> dict:
+    """Build a reified Citation node ready to insert into a peep file's
+    @graph. Optional fields are omitted when None."""
+    node: dict = {
+        "@id": iri,
+        "@type": ["owl:NamedIndividual", "estleg:Citation"],
+        "estleg:citationTarget": {"@id": target_iri},
+    }
+    if citation_detail:
+        node["estleg:citationDetail"] = citation_detail
+    if citation_text:
+        node["estleg:citationText"] = citation_text
+    return node
+
+
 def extract_citations_from_text(text: str) -> list[dict]:
     """
     Parse text for Estonian legal citation patterns.

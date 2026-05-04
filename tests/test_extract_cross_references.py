@@ -349,3 +349,43 @@ class TestCanonicalLookups:
         assert lookup[("polva vallavalitsus", "5")] == [
             "estleg:Reg_POLVA_5_Map_2020"
         ]
+
+
+class TestCitationNodeBuilder:
+    def test_iri_pattern_matches_shacl(self):
+        from extract_cross_references import build_citation_iri
+        # Use a corpus-shaped IRI as input — Reg_<id>_Map_<year>
+        iri = build_citation_iri("estleg:Reg_1014955_Map_2026", seq=1)
+        assert iri == "estleg:Citation_Reg_1014955_Map_2026_1"
+        import re
+        assert re.match(r"^estleg:Citation_[A-Za-z0-9_]+_[0-9]+$", iri)
+
+    def test_citation_node_with_full_detail(self):
+        from extract_cross_references import build_citation_node
+        node = build_citation_node(
+            iri="estleg:Citation_Reg_1014955_Map_2026_1",
+            # Corpus shape for provisions is <prefix>_Par_<n> (NOT
+            # <prefix>_Map_<year>_Par_<n>). The act IRI carries the
+            # _Map_<year> suffix; provisions reuse the bare prefix.
+            target_iri="estleg:KOKS_Par_22",
+            citation_detail="lg 1 p 34",
+            citation_text="kohaliku omavalitsuse korralduse seaduse § 22 lõike 1 punkti 34",
+        )
+        assert node["@id"] == "estleg:Citation_Reg_1014955_Map_2026_1"
+        assert "estleg:Citation" in node["@type"]
+        assert "owl:NamedIndividual" in node["@type"]
+        assert node["estleg:citationTarget"] == {"@id": "estleg:KOKS_Par_22"}
+        assert node["estleg:citationDetail"] == "lg 1 p 34"
+        assert node["estleg:citationText"].startswith("kohaliku omavalitsuse")
+
+    def test_citation_node_omits_optional_when_none(self):
+        from extract_cross_references import build_citation_node
+        node = build_citation_node(
+            iri="estleg:Citation_Reg_X_Map_2026_1",
+            target_iri="estleg:Reg_Y_Map_2020",  # act-level when no §
+            citation_detail=None,
+            citation_text=None,
+        )
+        assert "estleg:citationTarget" in node
+        assert "estleg:citationDetail" not in node
+        assert "estleg:citationText" not in node
