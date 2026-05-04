@@ -131,7 +131,7 @@ def _canonical_body_slug(matched: str) -> str | None:
     match doesn't fit one of the five reachable stems.
     """
     s = matched.lower()
-    for suffix in ("esse", "ele", "sse", "es", "le", "se", "ses", "s", "t", "e"):
+    for suffix in ("esse", "ele", "sse", "es", "le", "se", "s", "t", "e"):
         if s.endswith(suffix) and len(s) > len(suffix) + 4:
             stripped = s[: -len(suffix)]
             if stripped.endswith(("volikogu", "valitsus")):
@@ -322,6 +322,19 @@ def _resolve_kov_authority(
 
     When source_issuer is known and consistent (Path 1+2
     authoritative), Path 3 is NOT consulted — abstain instead.
+
+    Args:
+        body_slug: Canonical body slug from _canonical_body_slug().
+            Must be one of: linnavolikogu, vallavolikogu, alevivolikogu,
+            linnavalitsus, vallavalitsus. Inflected forms are not
+            accepted (body_type_map returns None → resolver abstains).
+        source_municipality: Plain-string IRI of estleg:enactedByMunicipality,
+            unwrapped from JSON-LD {"@id": "..."} form via _id_ref().
+            None when the source is a Law or state regulation.
+        source_issuer: Plain-string IRI of estleg:enactedBy, unwrapped via
+            _id_ref(). None when absent or non-KOV.
+        issuer_registry: issuer @id → (label, municipality_iri, body_type)
+            from build_issuer_registry().
     """
     if source_municipality is None:
         return None
