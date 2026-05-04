@@ -61,23 +61,25 @@
   removed in Tasks 8 and 11).
 - Per-pipeline coverage reports under `krr_outputs/reports/kov/`.
 
-**Coverage (2026-05-04 corpus run):**
+**Coverage (2026-05-04 corpus run, post chained-§ + idempotency fix):**
 
 | Metric | extract_cross_references | generate_inverse_references |
 | --- | --- | --- |
 | Input files (total / KOV) | 15,508 / 11,059 | — |
 | Files with output (total / KOV) | 9,648 / 8,837 (80% of KOV) | 921 / 511 (KOV) |
-| Triples emitted (total / KOV) | 30,495 / 22,153 | 4,008 / 512 |
-| Preamble citations resolved | 11,700 / 22,538 found (51%) | — |
-| Preamble triples (total / KOV) | 21,700 / 20,916 | — |
-| `implementedBy` edges | — | 833 across 604 files |
+| Triples emitted (total / KOV) | 32,413 / 24,020 | 4,057 / 512 |
+| Preamble citations resolved | 13,618 / 27,299 found (50%) | — |
+| Preamble triples (total / KOV) | 23,618 / 22,783 | — |
+| `implementedBy` edges | — | 21,256 source links across 882 target nodes in 604 files |
 | `referencedBy` edges | — | 3,175 across 346 files |
-| Wall-time | 226.29 s | 27.10 s |
-| Items/s | 68.53 | 572.29 |
-| Peak RSS | 330 MB | 199 MB |
 
 Inverse-pass invariants: 0 stale `implementedBy` left after the
-idempotency clear; 0 symmetry mismatches.
+idempotency clear; 0 symmetry mismatches; 0 unresolved target IRIs.
+
+The fix-rerun improved over the initial run by +1,918 chained-paragraph
+citations (`<law> § 6 lg 3 p 2 ja § 22 lg 1 p 34` style references the
+v1 parser missed) — see PR #99 commits `b6614e75` (code) and
+`6d9e533f` (corpus).
 
 **Gate B umbrella status:** 2/3 sub-PRs merged (Layer 2a + Layer 2b).
 Layer 2c (sanctions, competence, court-provision-links) is the

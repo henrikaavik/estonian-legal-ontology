@@ -232,13 +232,14 @@ Layer 2b adds two more pipelines:
 
 - `extract_cross_references` — preamble citations resolved into
   `estleg:issuedUnder` and reified `estleg:Citation` nodes; KOV body-
-  text act references scoped by `enactedByMunicipality`. 11,700
-  preamble citations resolved (51% of 22,538 found) and 30,495 triples
+  text act references scoped by `enactedByMunicipality`. 13,618
+  preamble citations resolved (50% of 27,299 found) and 32,413 triples
   emitted across 9,648 files in the 2026-05-04 corpus run.
 - `generate_inverse_references` — `estleg:implementedBy` /
   `estleg:implementedByCount` filtered inverse projection (preamble-
-  only — body-text refs continue to use `estleg:referencedBy`). 833
-  `implementedBy` edges across 604 files in the 2026-05-04 corpus run.
+  only — body-text refs continue to use `estleg:referencedBy`). 882
+  target nodes carrying `implementedBy` across 604 files (21,256
+  total source-link edges) in the 2026-05-04 corpus run.
 
 Per-pipeline coverage reports at `krr_outputs/reports/kov/`. See the
 [Layer 2a plan](docs/superpowers/plans/2026-05-03-kov-integration-layer2a.md)

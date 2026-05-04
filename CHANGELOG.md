@@ -32,15 +32,16 @@ All notable changes to this project will be documented in this file.
 - KOV integration Layer 2b — preamble citations and filtered inverse
   projection populated for the full corpus (laws + state regulations +
   KOV acts).
-- 11,700 preamble citations resolved (51% of 22,538 found) into
+- 13,618 preamble citations resolved (50% of 27,299 found) into
   `estleg:issuedUnder` (act-level) + reified `estleg:Citation` nodes
   (with `citationTarget`, `citationDetail`, `citationText`) on every
-  parseable preamble. 21,700 preamble triples emitted (20,916 KOV).
-- 833 `estleg:implementedBy` edges across 604 files, plus
-  `estleg:implementedByCount` aggregates — filtered projection that
-  draws strictly from preamble citations. Body-text references
-  (`estleg:references`) continue to feed `estleg:referencedBy` (3,175
-  edges across 346 files, unchanged from pre-Layer-2b).
+  parseable preamble. 23,618 preamble triples emitted (22,783 KOV).
+- 882 target nodes carrying `estleg:implementedBy` across 604 files
+  (21,256 total source-link edges), plus `estleg:implementedByCount`
+  aggregates — filtered projection that draws strictly from preamble
+  citations. Body-text references (`estleg:references`) continue to
+  feed `estleg:referencedBy` (3,175 edges across 346 files, unchanged
+  from pre-Layer-2b).
 - KOV body-text act references resolved with `enactedByMunicipality`
   scoping; cross-municipality matches are explicitly skipped to prevent
   false positives between like-named issuers.
@@ -70,14 +71,15 @@ All notable changes to this project will be documented in this file.
   stale `implementedBy` edges, 0 symmetry mismatches.
 - 11 corpus-derived preamble fixtures drive the parser tests.
 
-### Coverage (Layer 2b, 2026-05-04 corpus run)
+### Coverage (Layer 2b, 2026-05-04 corpus run, post-fix)
 - `extract_cross_references`: 15,508 input files (11,059 KOV); 9,648
-  files with output (8,837 KOV = 80% of KOV acts); 30,495 triples
-  emitted (22,153 KOV); 226.29 s wall-time at 68.53 items/s, 330 MB
-  peak.
+  files with output (8,837 KOV = 80% of KOV acts); 32,413 triples
+  emitted (24,020 KOV).
 - `generate_inverse_references`: 921 files with output (511 KOV);
-  4,008 triples emitted (512 KOV); 27.10 s wall-time at 572.29 items/s,
-  199 MB peak.
+  4,057 triples emitted (512 KOV).
+- The post-fix re-run recovered 1,918 chained-paragraph citations
+  (resolved 11,700 → 13,618, +16%) that the initial parser missed in
+  forms like `<law> § 6 lg 3 p 2 ja § 22 lg 1 p 34`.
 
 ### Known issues
 - Pre-existing SHACL violations on `estleg:requestedCluster` (IRI-as-literal
