@@ -20,11 +20,18 @@ authored with an alternate prefix still get their inverse links.
 from __future__ import annotations
 
 import json
+import time
 from collections import defaultdict
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 from estleg_common import iter_peep_files
+from kov_pipeline_coverage import (
+    CoverageReport,
+    measure_runtime,
+    resolve_pipeline_version,
+    write_coverage_report,
+)
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
@@ -202,14 +209,18 @@ def apply_inverse_references(
     inverse_map: dict[str, list[str]],
     iri_to_file: dict[str, Path],
     prefix_par_index: dict[str, dict[str, str]],
-) -> tuple[dict[str, int], list[str], dict[str, str]]:
+) -> tuple[dict[Path, int], list[str], dict[str, str]]:
     """
     Apply estleg:referencedBy to target files.
 
     Uses alias resolution for target IRIs that cannot be found directly.
 
     Returns:
-      - update_counts: {filepath_name: count_of_nodes_updated}
+      - update_counts: {target_filepath: count_of_nodes_updated}
+        (Path-keyed so nested-directory targets — e.g. KOV peeps under
+        regulations/kov/<municipality>/ — never collide on basename;
+        also matches apply_implemented_by's signature so the coverage
+        accumulator can resolve target paths losslessly)
       - unresolved_iris: list of target IRIs that could not be resolved
       - alias_resolved: {original_iri: canonical_iri} for IRIs fixed via alias
     """
@@ -250,7 +261,7 @@ def apply_inverse_references(
     if alias_resolved:
         print(f"  Resolved {len(alias_resolved)} IRIs via prefix aliases")
 
-    update_counts: dict[str, int] = {}
+    update_counts: dict[Path, int] = {}
 
     for target_file, iri_sources in sorted(file_updates.items()):
         try:
@@ -282,7 +293,7 @@ def apply_inverse_references(
 
         if modified:
             save_json(target_file, doc)
-            update_counts[target_file.name] = nodes_updated
+            update_counts[target_file] = nodes_updated
 
     return update_counts, unresolved_iris, alias_resolved
 
@@ -576,10 +587,28 @@ def verify_symmetry() -> list[dict]:
     return mismatches
 
 
-def main() -> None:
+def main() -> int:
     print("=" * 70)
     print("Estonian Legal Ontology - Generate Inverse References (referencedBy)")
     print("=" * 70)
+
+    # ---------- coverage instrumentation ----------
+    _start = time.perf_counter()
+    _files_processed: set[Path] = set()
+    _files_processed_kov: set[Path] = set()
+    _files_with_output: set[Path] = set()
+    _files_with_output_kov: set[Path] = set()
+    _triples = 0
+    _triples_kov = 0
+    _failures: list[str] = []
+
+    # Layer 2a parity: every scanned file counts as processed.
+    # collect_all_references() opened all of these; mark them all,
+    # regardless of whether they ended up emitting an inverse triple.
+    for path in iter_peep_files():
+        _files_processed.add(path)
+        if "regulations/kov/" in str(path):
+            _files_processed_kov.add(path)
 
     # Step 1: Clear existing inverse references for idempotent re-run
     print("\n[1/5] Clearing existing estleg:referencedBy properties...")
@@ -601,7 +630,18 @@ def main() -> None:
         inverse_map, iri_to_file, prefix_par_index,
     )
     total_nodes_updated = sum(update_counts.values())
-    print(f"  Updated {len(update_counts)} files with {total_nodes_updated} nodes")
+    print(f"\nUpdated {sum(update_counts.values())} nodes across "
+          f"{len(update_counts)} files")
+
+    # Target-side attribution: each (target_path, count) pair is one
+    # peep file that received >=1 referencedBy triple in this pass.
+    for target_path, n in update_counts.items():
+        _files_with_output.add(target_path)
+        if "regulations/kov/" in str(target_path):
+            _files_with_output_kov.add(target_path)
+        _triples += n
+        if "regulations/kov/" in str(target_path):
+            _triples_kov += n
 
     print("\nLayer 2b: collecting preamble back-references...")
     files = list(iter_peep_files())
@@ -617,6 +657,18 @@ def main() -> None:
     impl_counts = apply_implemented_by(preamble_inverse, iri_to_file)
     print(f"  implementedBy emitted to {sum(impl_counts.values())} nodes "
           f"across {len(impl_counts)} files")
+
+    # Layer 2b implementedBy attribution — target side only. The
+    # source-side processed-set already covers every scanned input
+    # file (the loop at the top of main() runs once at startup) and
+    # doesn't need additional bookkeeping here.
+    for target_path, n in impl_counts.items():
+        _files_with_output.add(target_path)
+        if "regulations/kov/" in str(target_path):
+            _files_with_output_kov.add(target_path)
+        _triples += n
+        if "regulations/kov/" in str(target_path):
+            _triples_kov += n
 
     # Step 4: Verify symmetry
     print("\n[4/5] Verifying references/referencedBy symmetry...")
@@ -666,8 +718,16 @@ def main() -> None:
             reverse=True,
         )[:50],
         "per_file_updates": {
-            name: count
-            for name, count in sorted(update_counts.items(), key=lambda x: -x[1])
+            # Path keys aren't JSON-serializable. Render each target
+            # as its corpus-relative path (falling back to the absolute
+            # POSIX form if the file lives outside KRR_DIR — defensive,
+            # shouldn't happen in normal runs).
+            (
+                str(path.relative_to(KRR_DIR))
+                if path.is_absolute() and KRR_DIR in path.parents
+                else path.as_posix()
+            ): count
+            for path, count in sorted(update_counts.items(), key=lambda x: -x[1])
         },
     }
 
@@ -694,6 +754,48 @@ def main() -> None:
     print(f"  Report: {report_path}")
     print("=" * 70)
 
+    # ---------- coverage report (KOV-aware schema) ----------
+    all_input_files = list(iter_peep_files())
+    _kov_files = [p for p in all_input_files
+                  if "regulations/kov/" in str(p)]
+
+    _wall, _rate, _peak_mb = measure_runtime(_start, len(_files_processed))
+    out_path = KRR_DIR / "reports" / "kov" / "generate_inverse_references_coverage.json"
+    write_coverage_report(
+        CoverageReport(
+            pipeline="generate_inverse_references",
+            run_timestamp=datetime.now(timezone.utc).isoformat(),
+            pipeline_version=resolve_pipeline_version(),
+            input_files_total=len(all_input_files),
+            input_files_kov=len(_kov_files),
+            files_processed=len(_files_processed),
+            files_processed_kov=len(_files_processed_kov),
+            files_with_output=len(_files_with_output),
+            files_with_output_kov=len(_files_with_output_kov),
+            triples_emitted=_triples,
+            triples_emitted_kov=_triples_kov,
+            unresolved_references=len(unresolved_iris),
+            wall_time_seconds=round(_wall, 2),
+            items_per_second=round(_rate, 2),
+            peak_memory_mb=round(_peak_mb, 1),
+            error_count=len(_failures),
+            failure_samples=_failures,
+        ),
+        out_path,
+    )
+    print(f"\nCoverage report: {out_path}")
+    print(f"  files_with_output: {len(_files_with_output)} "
+          f"(KOV: {len(_files_with_output_kov)})")
+    print(f"  triples_emitted: {_triples} (KOV: {_triples_kov})")
+
+    # Gate check — fails the run when the KOV side produced nothing
+    # despite the corpus being present.
+    if len(_kov_files) >= 11000 and len(_files_with_output_kov) == 0:
+        print("\nGATE FAIL: KOV files were processed but none received output.")
+        return 1
+    print("\nGATE OK")
+    return 0
+
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())
