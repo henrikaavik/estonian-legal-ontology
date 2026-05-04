@@ -437,10 +437,12 @@ def main():
                 _files_with_output += 1
                 if is_kov:
                     _files_with_output_kov += 1
-                # Each concept emits two triples: definesTerm (provision
-                # → concept) and definedIn (concept → provision). We
-                # also track the KOV subset based on whether the
-                # provision_id was bridged via this peep's par_to_iri.
+                # Each concept emits two triples: definesTerm + definedIn.
+                # KOV attribution is by file location (is_kov) — same
+                # convention as the other Layer 2a pipelines. The
+                # `bridged` flag below feeds only the `_unresolved`
+                # diagnostic, which counts peep files whose @ids don't
+                # follow the expected shape.
                 for c in concepts:
                     _triples += 2  # definesTerm + definedIn
                     bridged = (

@@ -67,6 +67,10 @@ KNOWN_ABBREVIATIONS: dict[str, str] = {
     # Values MUST match the canonical estleg:sourceAct on the act's
     # provisions. Verified by the validation one-liner in Task 1 Step 7
     # of the Layer 2b plan.
+    # Note on underscore-suffixed keys: `RHS_HÄDA` and `KELS_LASTEAS`
+    # disambiguate from already-registered abbreviations (RHS for
+    # Riigihangete seadus, KELS for Kõrgharidusseadus). Future
+    # collisions should follow the same `_<HINT>` pattern.
     "PGS": "Põhikooli- ja gümnaasiumiseadus",
     "KELS_LASTEAS": "Koolieelse lasteasutuse seadus",
     "HuviKS": "Huvikooli seadus",
@@ -111,6 +115,10 @@ FULLNAME_GENITIVE: dict[str, str] = {
     # no peep file (KNS, AluS, KOFS, KOVVS) silently fall through —
     # this is intentional and correct (parser-recognised,
     # resolver-fallthrough).
+    # Four entries (sotsiaalhoolekande seaduse → SHS, avaliku teabe
+    # seaduse → AVTS, avaliku teenistuse seaduse → AVVKHS,
+    # planeerimisseaduse → PPVS) reuse abbreviations already in
+    # KNOWN_ABBREVIATIONS from Layer 2a — only the genitive form is new.
     "kohanimeseaduse": "KNS",
     "põhikooli- ja gümnaasiumiseaduse": "PGS",
     "koolieelse lasteasutuse seaduse": "KELS_LASTEAS",
@@ -131,7 +139,7 @@ FULLNAME_GENITIVE: dict[str, str] = {
     "kohaliku omavalitsuse volikogu valimise seaduse": "KOVVS",
     "raamatupidamise seaduse": "RaamatPS",
     "ühistranspordiseaduse": "ÜTS",
-    "sotsiaalhoolekande seaduse": "SHS",  # SHS already in KNOWN_ABBREVIATIONS
+    "sotsiaalhoolekande seaduse": "SHS",
     "avaliku teabe seaduse": "AVTS",
     "avaliku teenistuse seaduse": "AVVKHS",
     "planeerimisseaduse": "PPVS",

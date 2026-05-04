@@ -223,7 +223,7 @@ Five KOV-relevant pipelines now process the 11,059 KOV act files end-to-end:
 
 Per-pipeline coverage reports at `krr_outputs/reports/kov/`. See [Layer 2a plan](docs/superpowers/plans/2026-05-03-kov-integration-layer2a.md) for details.
 
-The remaining 5 KOV-relevant pipelines (cross-references, inverse, sanctions, competence, court-provision-links) are deferred to Layers 2b and 2c, plus 4 KOV-not-applicable pipelines (similarity, draft-impact, harmonisation-links, transposition-mapping) stay pinned indefinitely.
+The remaining 5 KOV-relevant pipelines (cross-references, inverse, sanctions, competence, court-provision-links) are deferred to Layers 2b and 2c. A further 4 pipelines (similarity, draft-impact, harmonisation-links, transposition-mapping) are KOV-not-applicable and remain laws-and-state-only.
 
 ### Supreme Court Decisions (Riigikohus)
 
