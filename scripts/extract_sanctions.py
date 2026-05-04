@@ -568,6 +568,14 @@ def main() -> None:
         if doc is None or "@graph" not in doc:
             continue
 
+        act_node = _find_act_node(doc)
+        if act_node is None:
+            # Malformed peep — no act node typed both estleg:Act
+            # AND owl:Ontology. Skip with a coverage note (the full
+            # skip-reason wiring lands in Task 7).
+            continue
+        enforcement_level = _classify_enforcement_level(act_node)
+
         law_name = filepath.stem.replace("_peep", "")
         law_sanctions: list[dict] = []
 
@@ -634,6 +642,7 @@ def main() -> None:
             # Add hasSanction link to provision
             if sanction_refs:
                 node["estleg:hasSanction"] = sanction_refs
+                node["estleg:enforcedAtLevel"] = enforcement_level
 
         # Save modified law file
         if law_sanctions:
