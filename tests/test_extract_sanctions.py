@@ -440,3 +440,74 @@ class TestSanctionsIdempotency:
         assert before_mtime == after_mtime, (
             "no-op file must not be re-saved when nothing changes"
         )
+
+    def test_stale_sanctions_json_deleted_when_act_loses_all_sanctions(
+        self, tmp_path, monkeypatch
+    ):
+        """When an act loses ALL its sanction matches between runs,
+        the corresponding krr_outputs/sanctions/sanctions_<law>.json
+        file is DELETED so orphan Sanction_* nodes don't outlive the
+        inverse pass."""
+        import extract_sanctions as mod
+        import estleg_common
+        krr = tmp_path / "krr_outputs"
+        sanctions_dir = krr / "sanctions"
+        sanctions_dir.mkdir(parents=True)
+
+        # Stage a peep whose summary has NO sanction language.
+        peep = krr / "lostsanc_peep.json"
+        peep.write_text(json.dumps({
+            "@context": {
+                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "owl": "http://www.w3.org/2002/07/owl#",
+            },
+            "@graph": [
+                {"@id": "estleg:LostSanc_Map_2026",
+                 "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
+                 "rdfs:label": "Lost sanctions law"},
+                {"@id": "estleg:LostSanc_Par_1",
+                 "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+                 "estleg:paragrahv": "§ 1",
+                 "estleg:summary":
+                     "See seadus käsitleb üldisi põhimõtteid."},
+            ],
+        }), encoding="utf-8")
+
+        # Stage a STALE sanctions file from a prior run, containing
+        # a Sanction_* node + applicableProvision pointing at the
+        # provision that no longer carries hasSanction.
+        # The filename uses sanitize_id of the law slug — match the
+        # script's filename convention exactly.
+        from extract_sanctions import sanitize_id
+        stale_filename = f"sanctions_{sanitize_id('lostsanc')}.json"
+        stale_path = sanctions_dir / stale_filename
+        stale_path.write_text(json.dumps({
+            "@context": {
+                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "owl": "http://www.w3.org/2002/07/owl#",
+            },
+            "@graph": [
+                {"@id": "estleg:Sanctions_lostsanc_Map",
+                 "@type": ["owl:Ontology"],
+                 "rdfs:label": "Sanctions – lostsanc",
+                 "dc:source": "lostsanc"},
+                {"@id": "estleg:Sanction_LostSanc_Par_1_fine",
+                 "@type": ["owl:NamedIndividual", "estleg:Sanction"],
+                 "estleg:sanctionType": "fine",
+                 "estleg:applicableProvision": {"@id": "estleg:LostSanc_Par_1"}},
+            ],
+        }), encoding="utf-8")
+        assert stale_path.exists()
+
+        monkeypatch.setattr(mod, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "SANCTION_DIR", sanctions_dir)
+        monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+
+        rc = mod.main()
+        assert rc in (0, None)
+
+        # The stale sanctions JSON file MUST be gone.
+        assert not stale_path.exists(), (
+            "stale sanctions JSON must be deleted when act loses "
+            "all matches"
+        )

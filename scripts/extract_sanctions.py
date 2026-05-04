@@ -559,6 +559,12 @@ def main() -> None:
         law_name = filepath.stem.replace("_peep", "")
         law_sanctions: list[dict] = []
 
+        # Detect pre-existing sanctions JSON file (path computed
+        # the same way the writer uses).
+        sanctions_filename = f"sanctions_{sanitize_id(law_name)}.json"
+        sanctions_path = SANCTION_DIR / sanctions_filename
+        had_existing_sanctions_file = sanctions_path.exists()
+
         iri_counts: dict[str, int] = defaultdict(int)
 
         # Step 3: run extraction over the cleared graph.
@@ -625,6 +631,17 @@ def main() -> None:
             save_json(filepath, doc)
         if law_sanctions:
             all_law_sanctions[law_name] = law_sanctions
+
+        # Sanctions-file lifecycle:
+        # - If the act produced fresh sanctions, the writer block
+        #   below regenerates the file (Step 2 of main()).
+        # - If the act produced NO fresh sanctions but a stale file
+        #   exists on disk, delete it.
+        if not law_sanctions and had_existing_sanctions_file:
+            try:
+                sanctions_path.unlink()
+            except OSError:
+                pass  # tolerate concurrent removal
 
         if idx % 100 == 0 or idx == len(law_files):
             print(f"  [{idx}/{len(law_files)}] processed \u2013 {total_sanction_count} sanctions found")
