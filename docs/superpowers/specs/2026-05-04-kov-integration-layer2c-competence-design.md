@@ -16,10 +16,17 @@ body-word detection patterns the script currently lacks
 existing Layer 1 Issuer registry when the source act is a
 `MunicipalRegulation` with `enactedByMunicipality`.
 
-The Issuer entity becomes the canonical anchor for "this municipal
-body" across the graph: Layer 1's `enactedBy` and Layer 2c PR #2's
-`competentAuthority` both point at the same `estleg:Issuer_*` IRI
-when the act is municipality-scoped.
+The Issuer registry becomes the canonical anchor for "municipal
+bodies" across the graph: Layer 1's `enactedBy` and Layer 2c PR #2's
+`competentAuthority` both target IRIs from the SAME registry when
+the act is municipality-scoped. The two IRIs coincide on Path 1
+(same body type — the act's enactedBy IS the competent authority,
+e.g. a vallavolikogu act citing "vallavolikogu kehtestab korra").
+On Path 2 they intentionally differ but stay within the same place's
+issuer family — e.g. a vallavolikogu act citing "vallavalitsus"
+emits `competentAuthority → Issuer_<place>_vallavalitsus` (the
+paired executive body of the same municipality), not the source's
+own enactedBy IRI.
 
 ## Crisp invariant
 
@@ -159,7 +166,7 @@ in `GENERIC_PATTERNS` so more-specific matches take precedence:
 # suffixes -ele/-ses/-sse stack on top of the genitive form.
 (re.compile(r"\b(?:linna|valla|alevi)volikogu(?:le|sse|s)?\b", re.IGNORECASE),
  "local_government_council", "local_government_body"),
-(re.compile(r"\b(?:linna|valla)valitsus(?:e(?:le|sse)?|es|t)?\b", re.IGNORECASE),
+(re.compile(r"\b(?:linna|valla)valitsus(?:e(?:le|sse)?|es|se|t)?\b", re.IGNORECASE),
  "local_government_executive", "local_government_body"),
 ```
 
@@ -174,9 +181,13 @@ resolver receives one of the five canonical body slugs:
 # the matched text so the resolver's body_type_map lookup hits.
 # Without this, "vallavalitsusele" becomes the slug
 # "vallavalitsusele" (no map entry → resolver abstains).
-_BODY_SLUG_CANONICAL = {
-    "volikogu", "valitsus",
-}
+# Five canonical body slugs the resolver and detection both accept.
+# Re-used by _canonical_body_slug for validation.
+_CANONICAL_BODY_SLUGS = frozenset({
+    "linnavolikogu", "vallavolikogu", "alevivolikogu",
+    "linnavalitsus", "vallavalitsus",
+})
+
 
 def _canonical_body_slug(matched: str) -> str | None:
     """Strip Estonian case suffixes from a KOV body-word match
@@ -201,7 +212,8 @@ def _canonical_body_slug(matched: str) -> str | None:
             if stripped.endswith(("volikogu", "valitsus")):
                 s = stripped
                 break
-    # Validate against the FIVE supported canonical forms.
+    # Validate against the FIVE supported canonical forms
+    # (_CANONICAL_BODY_SLUGS, defined above this function).
     # `alevivalitsus` is intentionally excluded: small towns
     # (alevi) commonly have a volikogu but rarely a separately-
     # named executive; the GENERIC_PATTERNS regex doesn't match
@@ -210,8 +222,7 @@ def _canonical_body_slug(matched: str) -> str | None:
     # the helper consistent with the rest of the pipeline (so
     # direct unit calls return None for `alevivalitsus` rather
     # than emitting an unreachable slug).
-    if s in {"linnavolikogu", "vallavolikogu", "alevivolikogu",
-              "linnavalitsus", "vallavalitsus"}:
+    if s in _CANONICAL_BODY_SLUGS:
         return s
     return None
 ```
@@ -714,7 +725,7 @@ accidental duplicate blocks).
 | Path | Change |
 | --- | --- |
 | `scripts/extract_institutional_competence.py` | Remove `include_kov=False` pin (line 239); add 2 new `GENERIC_PATTERNS` entries for KOV body words (placed before `vald|linn`); add `_find_act_node` helper (or import from `extract_sanctions` — verify during implementation); add `_resolve_kov_authority` resolver; add `issuer_registry` build at startup (re-uses Layer 2b's `build_issuer_registry`); replace global `_clear_existing_institutions` with per-file in-memory processing; wire body-word matches through the resolver, ABSTAINING when the resolver returns None (no `Institution_*` fallback for `local_government_body` detections); other institution types (named institutions, ministries, courts, generic `local_government` / `kohalik_omavalitsus`) keep the existing `Institution_*` path unchanged; skip `inst_data` entry when resolver succeeds; track `pre_existing_institution_files` for end-of-run deletion of orphaned files; add coverage instrumentation reusing `kov_pipeline_coverage.CoverageReport`; change `main()` to return `int`; use `raise SystemExit(main())`. |
-| `tests/test_extract_institutional_competence.py` | **New file.** 29 tests across 7 classes (3 detection unit + 12 resolver unit + 3 integration + 3 idempotency + 3 institutions-file deletion + 4 coverage + 1 corpus-wide invariant). |
+| `tests/test_extract_institutional_competence.py` | **New file.** 30 tests across 7 classes (3 detection unit + 13 resolver unit + 3 integration + 3 idempotency + 3 institutions-file deletion + 4 coverage + 1 corpus-wide invariant). |
 | `shacl/estonian_legal_shapes.ttl` | UPDATE the existing `competentAuthority` constraint's `sh:description` to mention the broader Issuer/Institution range (the constraint itself — `sh:nodeKind sh:IRI` — already exists at lines 140-145; do NOT add a duplicate). |
 | `docs/SCHEMA_REFERENCE.md` | Mark `competentAuthority` populated in the Layer 2 schema table; add a new subsection in the existing Institutional Competence section with KOV Issuer-binding semantics, a worked KOV example, and the SHACL constraint summary. |
 | `CHANGELOG.md` | Layer 2c PR #2 entry under `## [Unreleased]` with Added/Changed/Coverage/Internal subsections. |
@@ -735,11 +746,11 @@ accidental duplicate blocks).
 
 ## Test plan
 
-**7 new test classes, 29 tests total.** Files: `tests/test_extract_institutional_competence.py`.
+**7 new test classes, 30 tests total.** Files: `tests/test_extract_institutional_competence.py`.
 
-Class breakdown (3 + 12 + 3 + 3 + 3 + 4 + 1 = 29):
+Class breakdown (3 + 13 + 3 + 3 + 3 + 4 + 1 = 30):
 - `TestKovBodyWordDetection` — 3 unit tests
-- `TestResolveKovAuthority` — 12 unit tests (covers all 3 resolver priority paths + every abstain condition including the haldusreform-merger safety property and family-prefix compatibility; plus the `_is_path3_case` predicate)
+- `TestResolveKovAuthority` — 13 unit tests (covers all 3 resolver priority paths + every abstain condition including the haldusreform-merger safety property and family-prefix compatibility; plus the `_is_path3_case` predicate AND a parity test against the resolver to prevent future drift)
 - `TestExtractCompetenceWithIssuerBinding` — 3 integration tests
 - `TestCompetenceIdempotency` — 3 integration tests
 - `TestStaleInstitutionFileDeletion` — 3 integration tests
@@ -749,10 +760,10 @@ Class breakdown (3 + 12 + 3 + 3 + 3 + 4 + 1 = 29):
 ### `TestKovBodyWordDetection` (unit, 3 tests)
 
 - `test_linnavolikogu_matches_basic_form` — text `"linnavolikogu kehtestab korra"` detected with normalised slug `linnavolikogu`. Parametrized cases include `linnavolikogus` (inessive), `linnavolikogule` (allative), `linnavolikogusse` (illative).
-- `test_vallavalitsus_inflections` — parametrized over six singular case forms each: `["vallavalitsus", "vallavalitsuse", "vallavalitsust", "vallavalitsusele", "vallavalitsuses", "vallavalitsusesse"]` and `["linnavalitsus", "linnavalitsuse", "linnavalitsust", "linnavalitsusele", "linnavalitsuses", "linnavalitsusesse"]`. Each case asserts canonicalisation to `vallavalitsus` / `linnavalitsus` respectively. **Critical:** the inessive forms `vallavalitsuses` and `linnavalitsuses` MUST be in the parametrization — earlier-version regex missed them; the regex+canonicalizer combination must catch them now. **Out of scope:** plural forms (`linnavalitsuste`, `valitsustele`, etc.) — rare in legal text and not handled by this PR's regex/canonicalizer; tracked as a follow-up if corpus data shows they matter.
+- `test_vallavalitsus_inflections` — parametrized over seven singular case forms each: `["vallavalitsus", "vallavalitsuse", "vallavalitsust", "vallavalitsusele", "vallavalitsuses", "vallavalitsusesse", "vallavalitsusse"]` and `["linnavalitsus", "linnavalitsuse", "linnavalitsust", "linnavalitsusele", "linnavalitsuses", "linnavalitsusesse", "linnavalitsusse"]`. Each case asserts canonicalisation to `vallavalitsus` / `linnavalitsus` respectively. **Critical:** the inessive forms `vallavalitsuses` and `linnavalitsuses` AND the short-illative forms `vallavalitsusse` and `linnavalitsusse` MUST be in the parametrization — earlier-version regex missed them; the regex+canonicalizer combination must catch them now. **Out of scope:** plural forms (`linnavalitsuste`, `valitsustele`, etc.) — rare in legal text and not handled by this PR's regex/canonicalizer; tracked as a follow-up if corpus data shows they matter.
 - `test_named_institutions_still_win` (regression — ensure new patterns don't override existing named-institution detections)
 
-### `TestResolveKovAuthority` (unit, 12 tests)
+### `TestResolveKovAuthority` (unit, 13 tests)
 
 The resolver has three priority paths (same-body source-issuer
 direct, paired-body slug swap, municipality-wide uniqueness
@@ -833,6 +844,22 @@ municipality mismatch, ambiguous fallback).
   - `source_issuer=registered_with_matching_mun` → False
   - `source_issuer=registered_with_mismatched_mun` → True
   - `source_municipality=None` → False (nothing resolves anyway)
+- `test_is_path3_case_stays_in_sync_with_resolver` — parity test
+  guarding against future drift. The predicate duplicates the
+  resolver's `source_issuer_authoritative` check; if either
+  diverges, `fallback_hits` accounting silently rots. The test
+  iterates a small fixture of synthesised
+  `(source_issuer, source_municipality, body_slug, registry)`
+  cases covering each authoritative/non-authoritative branch
+  AND asserts an invariant: when `_is_path3_case` returns
+  False AND the resolver returns a non-None IRI, the IRI MUST
+  be either source_issuer (Path 1) or `_swap_issuer_body_suffix`
+  output (Path 2) — never a registry-wide unique match. When
+  `_is_path3_case` returns True AND the resolver returns a
+  non-None IRI, the IRI MUST come from the registry-wide unique
+  match (Path 3). This bound on observable behaviour keeps the
+  two functions semantically aligned even if either is later
+  refactored.
 
 ### `TestExtractCompetenceWithIssuerBinding` (integration, 3 tests)
 
@@ -931,7 +958,7 @@ scheduled BEFORE coverage):
 
 1. Add 2 new `GENERIC_PATTERNS` entries + `_resolve_kov_authority`
    helper + unit tests (`TestKovBodyWordDetection` 3 +
-   `TestResolveKovAuthority` 12 = 15 tests).
+   `TestResolveKovAuthority` 13 = 16 tests).
 2. Wire `_resolve_kov_authority` into `main()`'s per-provision
    loop + integration tests
    (`TestExtractCompetenceWithIssuerBinding`, 3 tests). Introduce
@@ -1018,18 +1045,18 @@ PR #1 ended at 206 passing.
 
 | Task | New tests | Cumulative |
 | --- | --- | --- |
-| 1 | +15 (3 detection + 12 resolver) | 221 |
-| 2 | +3 | 224 |
-| 3 | +3 | 227 |
-| 4 | +3 | 230 |
-| 5 | +0 (SHACL) | 230 |
-| 6 | +0 (unpin) | 230 |
-| 7 | +4 | 234 |
-| 8 | +1 | 235 |
-| 9 | +0 (docs) | 235 |
-| 10 | +0 (verification) | 235 |
+| 1 | +16 (3 detection + 13 resolver) | 222 |
+| 2 | +3 | 225 |
+| 3 | +3 | 228 |
+| 4 | +3 | 231 |
+| 5 | +0 (SHACL) | 231 |
+| 6 | +0 (unpin) | 231 |
+| 7 | +4 | 235 |
+| 8 | +1 | 236 |
+| 9 | +0 (docs) | 236 |
+| 10 | +0 (verification) | 236 |
 
-**Final expected count: 235 tests (+29 vs Layer 2c PR #1
+**Final expected count: 236 tests (+30 vs Layer 2c PR #1
 end-state).**
 
 ## Risks and mitigations
