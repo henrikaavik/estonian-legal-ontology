@@ -596,6 +596,39 @@ These properties enable cross-referencing between different parts of the legal s
 | `estleg:sanctionType` | Sanction | `xsd:string` | imprisonment, fine, etc. |
 | `estleg:maxPenalty` | Sanction | `xsd:string` | Maximum penalty value |
 
+### Layer 2c — `enforcedAtLevel`
+
+Every provision that carries `estleg:hasSanction` ALSO carries exactly
+one `estleg:enforcedAtLevel` literal classifying the parent act type:
+
+- `"municipality"` — provisions in `MunicipalRegulation` acts.
+- `"state"` — provisions in any other act type (`Law`,
+  `NationalRegulation`, `GovernmentRegulation`, `MinisterialRegulation`).
+
+The classification is purely structural (act `@type` field) — it does
+NOT analyse delegation language or sanction-text context. State laws
+that delegate enforcement to local government (e.g. KOKS § 66 lg 4
+parking-fine ceilings) classify as `"state"` because the parent act is
+`estleg:Law`. If a future analytics query needs delegation-aware
+classification, a separate property (`estleg:enforcementContext`) can
+be introduced without colliding.
+
+Example:
+
+```json
+{
+  "@id": "estleg:Reg_TLN_15_Map_2020_Par_1",
+  "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+  "estleg:paragrahv": "§ 1",
+  "estleg:hasSanction": [{"@id": "estleg:Sanction_Reg_TLN_15_Map_2020_Par_1_fine"}],
+  "estleg:enforcedAtLevel": "municipality"
+}
+```
+
+SHACL: `LegalProvisionShape` constrains `enforcedAtLevel` with
+`sh:datatype xsd:string`, `sh:maxCount 1`, and a closed value set
+`sh:in ("state" "municipality")`.
+
 ## Integration SPARQL Examples
 
 ### Find all provisions that reference a specific paragraph
@@ -800,7 +833,7 @@ references. Layer 2c (sanctions enforcement level) remains pending.
 | `estleg:implementsCitation` | `Act` | `Citation` | 2b | populated | Act → reified Citation node |
 | `estleg:implementedBy` | `Act` ∪ `LegalProvision` | `Act` | 2b | populated | Filtered inverse — acts citing this as enabling authority |
 | `estleg:implementedByCount` | `Act` ∪ `LegalProvision` | `xsd:integer` | 2b | populated | Aggregate count of distinct sources |
-| `estleg:enforcedAtLevel` | `LegalProvision` | `xsd:string` | 2c | declared | `"state"` \| `"municipality"` |
+| `estleg:enforcedAtLevel` | `LegalProvision` | `xsd:string` | 2c | populated | `"state"` \| `"municipality"` |
 
 ### Property semantics and examples
 

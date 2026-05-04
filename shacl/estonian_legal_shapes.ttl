@@ -118,6 +118,14 @@ estleg:LegalProvisionShape
         sh:description "Temporal status: inForce, repealed, or notYetEffective" ;
     ] ;
     sh:property [
+        sh:path estleg:enforcedAtLevel ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+        sh:in ( "state" "municipality" ) ;
+        sh:name "enforcedAtLevel" ;
+        sh:description "Layer 2c — coarse classification of where this provision's sanctions are enforced. Set only on provisions that also carry estleg:hasSanction. 'state' for provisions in Law, NationalRegulation, GovernmentRegulation, or MinisterialRegulation acts; 'municipality' for provisions in MunicipalRegulation acts." ;
+    ] ;
+    sh:property [
         sh:path estleg:amendedBy ;
         sh:nodeKind sh:IRI ;
         sh:name "amendedBy" ;

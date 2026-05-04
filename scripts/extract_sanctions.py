@@ -15,11 +15,18 @@ from __future__ import annotations
 
 import json
 import re
+import time
 from collections import defaultdict
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 from estleg_common import iter_peep_files
+from kov_pipeline_coverage import (
+    CoverageReport,
+    measure_runtime,
+    resolve_pipeline_version,
+    write_coverage_report,
+)
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
@@ -126,6 +133,46 @@ def _provision_ref(node: dict) -> str:
     if par:
         return f"{law_abbr} \u00a7 {par}".strip()
     return law_abbr or node.get("@id", "unknown")
+
+
+def _find_act_node(doc: dict) -> dict | None:
+    """Return the act node from a peep file's @graph, or None if no
+    act node is present.
+
+    Match criteria: the node must be typed BOTH `estleg:Act` and
+    `owl:Ontology`. Some peep files contain auxiliary `owl:Ontology`
+    wrappers (concept-cluster manifests etc.) that aren't acts; the
+    `estleg:Act` constraint prevents misclassifying those as
+    sanction-bearing acts. Layer 1 generators stamp every real act
+    node with both types.
+
+    Callers must handle a None return \u2014 the per-file processing
+    treats it as a malformed-input skip (logged to the coverage
+    report's failure_samples + skip_reasons['missing_act_node']).
+    """
+    for n in doc.get("@graph", []):
+        types = n.get("@type") or []
+        if isinstance(types, str):
+            types = [types]
+        if "estleg:Act" in types and "owl:Ontology" in types:
+            return n
+    return None
+
+
+def _classify_enforcement_level(act_node: dict) -> str:
+    """Classify the enforcement level of an act node by its @type.
+
+    Returns "municipality" iff the act is typed
+    estleg:MunicipalRegulation; otherwise "state".
+
+    Handles @type as either a string or a list of strings.
+    """
+    types = act_node.get("@type") or []
+    if isinstance(types, str):
+        types = [types]
+    if "estleg:MunicipalRegulation" in types:
+        return "municipality"
+    return "state"
 
 
 # ---------- sanction pattern definitions ----------
@@ -478,43 +525,26 @@ def _build_label(sanction_type: str, sanction_data: dict, provision_ref: str) ->
     return desc
 
 
-def _clear_existing_sanctions(law_files: list[Path]) -> int:
-    """Remove estleg:hasSanction from all nodes in all law files.
-
-    Returns the number of files that were modified.
-    """
-    modified = 0
-    for filepath in law_files:
-        doc = load_json(filepath)
-        if doc is None or "@graph" not in doc:
-            continue
-
-        changed = False
-        for node in doc["@graph"]:
-            if "estleg:hasSanction" in node:
-                del node["estleg:hasSanction"]
-                changed = True
-
-        if changed:
-            save_json(filepath, doc)
-            modified += 1
-
-    return modified
-
-
-def main() -> None:
+def main() -> int:
     print("=" * 70)
     print("Estonian Legal Ontology - Sanctions Extraction")
     print("=" * 70)
 
-    law_files = iter_peep_files(include_kov=False)  # DEFERRED to Layer 2c
-    print(f"\n[0/4] Clearing existing sanctions for idempotency...")
+    _start = time.perf_counter()
+    _files_processed: set[Path] = set()
+    _files_processed_kov: set[Path] = set()
+    _files_with_output: set[Path] = set()
+    _files_with_output_kov: set[Path] = set()
+    _triples = 0
+    _triples_kov = 0
+    _files_skipped = 0
+    _skip_reasons: dict[str, int] = {}
+    _failures: list[str] = []
+    _unresolved = 0  # always 0 for this pipeline; field required by helper
 
-    # --- Fix 1: clearing pass for idempotency ---
-    cleared = _clear_existing_sanctions(law_files)
-    print(f"  Cleared estleg:hasSanction from {cleared} file(s)")
+    law_files = iter_peep_files()
 
-    print(f"\n[1/4] Found {len(law_files)} law files to process")
+    print("\n[1/4] Processing law files (per-file idempotent)...")
 
     # Collect sanctions per law
     all_law_sanctions: dict[str, list[dict]] = {}
@@ -528,12 +558,74 @@ def main() -> None:
         if doc is None or "@graph" not in doc:
             continue
 
+        act_node = _find_act_node(doc)
+        if act_node is None:
+            # Distinguish aggregate-registry peeps (issuers_kov_peep.json,
+            # municipalities_peep.json, etc.) from malformed act peeps.
+            #
+            # Aggregate peeps have no provision nodes — they're
+            # catalogues of Issuer/Municipality/etc. entities.
+            # Silently skip those (no counter, no failure log) because
+            # they're correctly-formed non-act peeps that just don't
+            # carry sanctions.
+            #
+            # Malformed act peeps DO have provision nodes but no
+            # estleg:Act + owl:Ontology typing on their root node —
+            # that's a Layer 1 data bug worth surfacing in the
+            # coverage report's failure_samples.
+            #
+            # Use `estleg:paragrahv` as the provision signal rather
+            # than @type membership: it's universal across all
+            # provision class shapes (estleg:LegalProvision,
+            # estleg:KovProvision, estleg:LegalProvision_<prefix>,
+            # estleg:Regulation_<id>, etc.). @type-based detection
+            # would silently miss state-regulation provisions typed
+            # only as estleg:Regulation_<id>.
+            has_provisions = any(
+                "estleg:paragrahv" in n
+                for n in doc.get("@graph", [])
+            )
+            if has_provisions:
+                _files_skipped += 1
+                _skip_reasons["missing_act_node"] = (
+                    _skip_reasons.get("missing_act_node", 0) + 1
+                )
+                _failures.append(
+                    f"{filepath.name}: malformed peep — has provisions "
+                    f"but missing estleg:Act + owl:Ontology root node"
+                )
+            # Either way, the file has no act to classify — skip extraction.
+            continue
+        enforcement_level = _classify_enforcement_level(act_node)
+
+        is_kov = "regulations/kov/" in str(filepath)
+        _files_processed.add(filepath)
+        if is_kov:
+            _files_processed_kov.add(filepath)
+
+        # Step 1: detect prior peep-side output BEFORE any mutation.
+        had_existing_peep = any(
+            ("estleg:hasSanction" in n) or ("estleg:enforcedAtLevel" in n)
+            for n in doc["@graph"]
+        )
+
+        # Step 2: clear peep-side state unconditionally (idempotency).
+        for n in doc["@graph"]:
+            n.pop("estleg:hasSanction", None)
+            n.pop("estleg:enforcedAtLevel", None)
+
         law_name = filepath.stem.replace("_peep", "")
         law_sanctions: list[dict] = []
 
-        # --- Fix 3: track IRI usage per provision to handle duplicates ---
+        # Detect pre-existing sanctions JSON file (path computed
+        # the same way the writer uses).
+        sanctions_filename = f"sanctions_{sanitize_id(law_name)}.json"
+        sanctions_path = SANCTION_DIR / sanctions_filename
+        had_existing_sanctions_file = sanctions_path.exists()
+
         iri_counts: dict[str, int] = defaultdict(int)
 
+        # Step 3: run extraction over the cleared graph.
         for node in doc["@graph"]:
             summary = node.get("estleg:summary", "")
             if not summary:
@@ -547,11 +639,10 @@ def main() -> None:
             provisions_with_sanctions += 1
             provision_iri = node.get("@id", "")
             provision_ref = _provision_ref(node)
-
-            # Deterministic provision ID for IRI: derived from the provision's @id
-            # e.g. "estleg:KARIST_2_Par_113" -> "Karistusseadustik_Par_113"
-            provision_par = provision_iri.replace("estleg:", "") if provision_iri else sanitize_id(
-                node.get("estleg:paragrahv", "unknown")
+            provision_par = (
+                provision_iri.replace("estleg:", "")
+                if provision_iri
+                else sanitize_id(node.get("estleg:paragrahv", "unknown"))
             )
 
             sanction_refs: list[dict] = []
@@ -559,13 +650,11 @@ def main() -> None:
                 total_sanction_count += 1
                 stype = s["sanction_type"]
 
-                # --- Fix 4: improve maxPenalty extraction ---
                 if "max_penalty" not in s:
                     fallback = _try_extract_penalty_from_summary(summary, stype)
                     if fallback:
                         s["max_penalty"] = fallback
 
-                # --- Deterministic IRI based on provision @id and sanction type ---
                 base_iri = f"estleg:Sanction_{provision_par}_{stype}"
                 iri_counts[base_iri] += 1
                 if iri_counts[base_iri] == 1:
@@ -583,22 +672,40 @@ def main() -> None:
                     sanction_node["estleg:maxPenalty"] = s["max_penalty"]
                 if "min_penalty" in s:
                     sanction_node["estleg:minPenalty"] = s["min_penalty"]
-
-                # --- Fix 4: descriptive label ---
                 sanction_node["rdfs:label"] = _build_label(stype, s, provision_ref)
 
                 law_sanctions.append(sanction_node)
                 sanction_refs.append({"@id": sanction_iri})
                 stats_per_type[stype] += 1
 
-            # Add hasSanction link to provision
             if sanction_refs:
                 node["estleg:hasSanction"] = sanction_refs
+                node["estleg:enforcedAtLevel"] = enforcement_level
 
-        # Save modified law file
-        if law_sanctions:
+        # Step 4: save when EITHER fresh output exists OR pre-existing
+        # output existed (so cleared-but-empty files persist the
+        # cleared state to disk).
+        if law_sanctions or had_existing_peep:
             save_json(filepath, doc)
+        if law_sanctions:
             all_law_sanctions[law_name] = law_sanctions
+            _files_with_output.add(filepath)
+            if is_kov:
+                _files_with_output_kov.add(filepath)
+            _triples += len(law_sanctions)  # SANCTION RECORDS, not RDF triples
+            if is_kov:
+                _triples_kov += len(law_sanctions)
+
+        # Sanctions-file lifecycle:
+        # - If the act produced fresh sanctions, the writer block
+        #   below regenerates the file (Step 2 of main()).
+        # - If the act produced NO fresh sanctions but a stale file
+        #   exists on disk, delete it.
+        if not law_sanctions and had_existing_sanctions_file:
+            try:
+                sanctions_path.unlink()
+            except OSError:
+                pass  # tolerate concurrent removal
 
         if idx % 100 == 0 or idx == len(law_files):
             print(f"  [{idx}/{len(law_files)}] processed \u2013 {total_sanction_count} sanctions found")
@@ -684,6 +791,59 @@ def main() -> None:
         print(f"    {entry['law']:45s}  severity={entry['max_severity']}  count={entry['sanction_count']}")
     print("=" * 70)
 
+    # ----- coverage report -----
+    # Note: triples_emitted counts SANCTION RECORDS (not RDF triples).
+    # Each Sanction_* node typically projects 4-7 RDF triples
+    # (@type, label, sanctionType, applicableProvision, optional
+    # min/maxPenalty). Counting records matches the analytical unit
+    # (cf. total_sanction_count in the existing sanctions_report.json).
+    # extract_cross_references counts actual triples; sanctions counts
+    # records; the difference is intentional.
+    all_input_files = list(iter_peep_files())
+    _kov_files = [p for p in all_input_files
+                  if "regulations/kov/" in str(p)]
+
+    _wall, _rate, _peak_mb = measure_runtime(_start, len(_files_processed))
+    out_path = KRR_DIR / "reports" / "kov" / "extract_sanctions_coverage.json"
+    write_coverage_report(
+        CoverageReport(
+            pipeline="extract_sanctions",
+            run_timestamp=datetime.now(timezone.utc).isoformat(),
+            pipeline_version=resolve_pipeline_version(),
+            input_files_total=len(all_input_files),
+            input_files_kov=len(_kov_files),
+            files_processed=len(_files_processed),
+            files_processed_kov=len(_files_processed_kov),
+            files_with_output=len(_files_with_output),
+            files_with_output_kov=len(_files_with_output_kov),
+            files_skipped=_files_skipped,
+            skip_reasons=_skip_reasons,
+            triples_emitted=_triples,
+            triples_emitted_kov=_triples_kov,
+            unresolved_references=_unresolved,
+            wall_time_seconds=round(_wall, 2),
+            items_per_second=round(_rate, 2),
+            peak_memory_mb=round(_peak_mb, 1),
+            error_count=len(_failures),
+            failure_samples=_failures,
+        ),
+        out_path,
+    )
+    print(f"\nCoverage report: {out_path}")
+    print(f"  input_files_total: {len(all_input_files)} (KOV: {len(_kov_files)})")
+    print(f"  files_with_output: {len(_files_with_output)} (KOV: {len(_files_with_output_kov)})")
+    print(f"  triples_emitted (sanction records): {_triples} (KOV: {_triples_kov})")
+
+    # Gate check (matches Layer 2a/2b convention).
+    if len(_kov_files) >= 11000 and len(_files_with_output_kov) == 0:
+        print("\nGATE FAIL: KOV files were processed but none produced sanction output.")
+        return 1
+    if _triples_kov == 0 and len(_kov_files) >= 11000:
+        print("\nGATE FAIL: zero KOV sanction records emitted.")
+        return 1
+    print("\nGATE OK")
+    return 0
+
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())
