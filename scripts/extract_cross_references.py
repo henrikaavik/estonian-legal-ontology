@@ -51,16 +51,72 @@ def ln(tag: str) -> str:
     return tag.split("}", 1)[1] if "}" in tag else tag
 
 
-def build_provision_index() -> tuple[dict[str, dict[str, str]], dict[str, str], dict[str, Path]]:
+# ----------------------------------------------------------------------
+# Act-IRI ↔ prefix derivation (Layer 2b)
+#
+# The corpus uses three @id shapes for act nodes:
+#   estleg:<prefix>_Map_<year>            (most laws)
+#   estleg:<prefix>_Osa<N>[_descriptor]   (multi-part laws)
+#   estleg:<prefix>                       (rare legacy with no suffix)
+#
+# A naive ``shortid.split("_")[0]`` is wrong for 34 corpus acts whose
+# prefix itself contains an underscore (e.g. KARIST_2_Map_2026 →
+# provisions live at estleg:KARIST_2_Par_<n>, NOT estleg:KARIST_Par_<n>).
+# ``_prefix_from_act_iri`` strips known suffix patterns so the leading
+# prefix is recovered correctly.
+# ----------------------------------------------------------------------
+
+_ACT_SUFFIX_PATTERNS = [
+    re.compile(r"_Map_\d{4}$"),                            # _Map_2026
+    re.compile(r"_Osa\d+(?:_.+)?$"),                       # _Osa1, _Osa5_AsjaoigusteKaitse
+    re.compile(r"_(?:Procedure|Substantive)Map_\d{4}$"),   # KrMS variants
+]
+
+
+def _prefix_from_act_iri(act_iri: str) -> str | None:
+    """Derive the provision-keying prefix from a full act @id.
+
+    The prefix is the leading segment that all of the act's provisions
+    share (e.g. 'KOKS' for 'estleg:KOKS_Map_2026' whose provisions look
+    like 'estleg:KOKS_Par_22'; 'KARIST_2' for 'estleg:KARIST_2_Osa1_1_87'
+    whose provisions look like 'estleg:KARIST_2_Par_1').
+
+    Used as a fallback when build_provision_index encounters a peep
+    that has an owl:Ontology act node but no provisions to ground-truth
+    the prefix (a rare edge case for legacy or stub files).
+    """
+    if not act_iri.startswith("estleg:"):
+        return None
+    short = act_iri[len("estleg:"):]
+    for pat in _ACT_SUFFIX_PATTERNS:
+        m = pat.search(short)
+        if m:
+            return short[: m.start()]
+    return short  # legacy: no suffix
+
+
+def build_provision_index() -> tuple[
+    dict[str, dict[str, str]],
+    dict[str, str],
+    dict[str, Path],
+    dict[str, str],   # prefix → act @id
+    dict[str, str],   # act @id → prefix (reverse, for resolver use)
+]:
     """
     Scan all *_peep.json files to build:
     1. prefix_to_provisions: {prefix: {par_number: full_iri}} e.g. {"Karistusseadustik": {"121": "estleg:KARIST_2_Par_121"}}
     2. source_act_to_prefix: {source_act_name: prefix} e.g. {"Karistusseadustik": "Karistusseadustik"}
     3. iri_to_file: {iri: filepath} mapping each provision IRI to its containing file
+    4. prefix_to_act_iri: {prefix: act_@id} e.g. {"KOKS": "estleg:KOKS_Map_2026"}
+    5. act_iri_to_prefix: {act_@id: prefix} (reverse — required by Task 5
+       resolver because ``act_iri.split("_")[0]`` breaks for 34 corpus
+       acts with multi-segment prefixes like ``KARIST_2_Map_2026``).
     """
     prefix_to_provisions: dict[str, dict[str, str]] = {}
     source_act_to_prefix: dict[str, str] = {}
     iri_to_file: dict[str, Path] = {}
+    prefix_to_act_iri: dict[str, str] = {}
+    act_iri_to_prefix: dict[str, str] = {}
 
     # Scan all JSON-LD law files (not riigikohus, not schema/index files)
     for json_file in iter_peep_files(include_kov=False):  # DEFERRED to Layer 2b
@@ -102,6 +158,29 @@ def build_provision_index() -> tuple[dict[str, dict[str, str]], dict[str, str], 
         if file_prefix and source_act:
             source_act_to_prefix[source_act] = file_prefix
 
+        # Layer 2b: bind act_iri ↔ prefix maps. Reuse file_prefix when
+        # available (provisions are the ground truth for prefix
+        # grouping), fall back to _prefix_from_act_iri for peeps with
+        # an act node but no provisions. Multi-part laws (KARIST_2_Osa1
+        # / KARIST_2_Osa2) share the same prefix; setdefault keeps the
+        # FIRST act_iri under that prefix and the reverse map keys
+        # every act_iri individually.
+        for node in graph:
+            types = node.get("@type") or []
+            if isinstance(types, str):
+                types = [types]
+            if "owl:Ontology" not in types:
+                continue
+            act_iri = node.get("@id")
+            if not act_iri:
+                continue
+            prefix = file_prefix or _prefix_from_act_iri(act_iri)
+            if not prefix:
+                continue
+            prefix_to_act_iri.setdefault(prefix, act_iri)
+            act_iri_to_prefix[act_iri] = prefix
+            break
+
     # Also scan riigikohus subdirectory files (but those don't have provisions)
     for json_file in sorted((KRR_DIR / "riigikohus").glob("*_peep.json")):
         try:
@@ -114,7 +193,8 @@ def build_provision_index() -> tuple[dict[str, dict[str, str]], dict[str, str], 
             if "_Par_" in node_id:
                 iri_to_file[node_id] = json_file
 
-    return prefix_to_provisions, source_act_to_prefix, iri_to_file
+    return (prefix_to_provisions, source_act_to_prefix, iri_to_file,
+            prefix_to_act_iri, act_iri_to_prefix)
 
 
 def build_abbreviation_to_prefix(
@@ -132,6 +212,325 @@ def build_abbreviation_to_prefix(
             abbrev_to_prefix[abbrev] = source_act_to_prefix[full_name]
 
     return abbrev_to_prefix
+
+
+# ----------------------------------------------------------------------
+# Canonical lookups (Layer 2b)
+#
+# These translate the parser's output (genitive law name + (issuer,
+# date, act_number) tuples) into real corpus IRIs. The lookups are
+# built once per pipeline run and consulted by the Task 5/6 resolver.
+# ----------------------------------------------------------------------
+
+_ESTONIAN_TO_ASCII = str.maketrans({
+    "õ": "o", "ä": "a", "ö": "o", "ü": "u",
+    "Õ": "O", "Ä": "A", "Ö": "O", "Ü": "U",
+    "š": "s", "ž": "z", "Š": "S", "Ž": "Z",
+})
+
+
+def _normalize_issuer_label(label: str) -> str:
+    """Normalise an issuer label so registry-side ASCII forms
+    ('Polva Vallavalitsus') and act-side canonical forms ('Põlva
+    Vallavalitsus') hash to the same key.
+
+    Applied SYMMETRICALLY: both lookup-construction and lookup-query
+    sides must call this function before keying the dict. The
+    transformation strips Estonian diacritics, collapses whitespace,
+    and lowercases the result.
+    """
+    if not label:
+        return ""
+    s = label.strip().translate(_ESTONIAN_TO_ASCII)
+    s = re.sub(r"\s+", " ", s)
+    return s.lower()
+
+
+def build_genitive_to_act_iri(
+    source_act_to_prefix: dict[str, str],
+    prefix_to_act_iri: dict[str, str],
+) -> dict[str, str]:
+    """Build a {genitive_law_name (lowercased) → act @id} lookup by
+    chaining FULLNAME_GENITIVE → abbrev → source_act_to_prefix →
+    prefix_to_act_iri.
+
+    The returned keys are lowercased so the parser's case-insensitive
+    output ('Kohaliku omavalitsuse korralduse seaduse' or 'kohaliku
+    omavalitsuse korralduse seaduse') resolves uniformly via .lower().
+
+    Entries that fail at any link in the chain (genitive → abbrev →
+    full_name → prefix → act_iri) are silently skipped — Layer 2b
+    accepts that some genitive forms recognise laws without a corpus
+    peep file.
+    """
+    out: dict[str, str] = {}
+    for genitive, abbrev in FULLNAME_GENITIVE.items():
+        full_name = KNOWN_ABBREVIATIONS.get(abbrev)
+        if full_name is None:
+            continue
+        prefix = source_act_to_prefix.get(full_name)
+        if prefix is None:
+            continue
+        act_iri = prefix_to_act_iri.get(prefix)
+        if act_iri is None:
+            continue
+        out[genitive.lower()] = act_iri
+    return out
+
+
+def _read_adoption_date_from_xml(xml_path: Path) -> str | None:
+    """Read <vastuvoetud><aktikuupaev> from a Riigi Teataja XML.
+    Returns the ISO-8601 date string or None when absent or unreadable.
+
+    Both XML parse errors AND filesystem errors (missing file, EACCES,
+    EIO mid-read) return None so the caller's lookup-build loop can
+    skip the entry without crashing the whole pipeline.
+    """
+    try:
+        tree = ET.parse(str(xml_path))
+    except (ET.ParseError, OSError):
+        return None
+    for node in tree.iter():
+        # Tag local-name match (ns-aware)
+        if node.tag.endswith("vastuvoetud"):
+            for child in node:
+                if child.tag.endswith("aktikuupaev"):
+                    if child.text:
+                        return child.text.strip()
+    return None
+
+
+def build_state_regulation_lookup(
+    riik_root: Path,
+    data_dir: Path,
+) -> dict[tuple[str, str, str], str]:
+    """Build (normalized_issuer, adoption_date, act_number) → act @id
+    for state regulations under riik_root.
+
+    adoption_date is read from each paired XML at
+    <vastuvoetud><aktikuupaev>; the corpus has zero estleg:adoptionDate
+    fields. Issuer is normalised via _normalize_issuer_label for
+    symmetry with the resolver query side (Task 5).
+    """
+    from estleg_common import build_globalid_xml_lookup, pair_peep_with_xml
+
+    lookup: dict[tuple[str, str, str], str] = {}
+    if not riik_root.is_dir():
+        return lookup
+
+    xml_lookup = build_globalid_xml_lookup(data_dir)
+
+    for peep in sorted(riik_root.rglob("*_peep.json")):
+        try:
+            with open(peep, "r", encoding="utf-8") as fh:
+                doc = json.load(fh)
+        except (json.JSONDecodeError, OSError):
+            continue
+
+        # Find the act node — filter to the regulation type set.
+        act_node = None
+        for node in doc.get("@graph", []):
+            types = node.get("@type") or []
+            if isinstance(types, str):
+                types = [types]
+            if any(t in {"estleg:NationalRegulation",
+                          "estleg:GovernmentRegulation",
+                          "estleg:MinisterialRegulation"} for t in types):
+                act_node = node
+                break
+        if act_node is None:
+            continue
+
+        issuer = act_node.get("estleg:issuer")
+        act_num = act_node.get("estleg:actNumber")
+        aid = act_node.get("@id")
+        if not (issuer and act_num and aid):
+            continue
+
+        xml_path = pair_peep_with_xml(peep, xml_lookup, data_dir=data_dir)
+        if xml_path is None:
+            continue
+        adoption_date = _read_adoption_date_from_xml(xml_path)
+        if adoption_date is None:
+            continue
+
+        # Normalise issuer at construction time so resolver-side
+        # queries (which also normalise) hit the same key.
+        key = (_normalize_issuer_label(issuer),
+               adoption_date,
+               str(act_num))
+        lookup[key] = aid
+    return lookup
+
+
+def build_kov_act_lookup(
+    kov_root: Path,
+    data_dir: Path,
+    issuers_path: Path,
+) -> dict[tuple[str, str, str], str]:
+    """Build (normalized_issuer, adoption_date, act_number) → act @id
+    for KOV regulations.
+
+    The issuer key is taken from estleg:issuer on the act node and
+    passed through _normalize_issuer_label so that registry-side
+    ASCII labels ('Polva Vallavalitsus') and act-side canonical
+    labels with diacritics ('Põlva Vallavalitsus') hash to the same
+    key. issuers_path is consulted only as a sanity validation;
+    mismatches are tolerated to absorb Layer 1's slug-derived label
+    quirks. adoption_date is read from paired XML.
+    """
+    from estleg_common import build_globalid_xml_lookup, pair_peep_with_xml
+
+    lookup: dict[tuple[str, str, str], str] = {}
+    if not kov_root.is_dir():
+        return lookup
+
+    xml_lookup = build_globalid_xml_lookup(data_dir)
+
+    # Load issuer registry for sanity reference (does not gate the
+    # build — diacritic mismatches are tolerated).
+    valid_issuer_labels: set[str] = set()
+    if issuers_path.exists():
+        try:
+            with open(issuers_path, "r", encoding="utf-8") as fh:
+                idoc = json.load(fh)
+            for n in idoc.get("@graph", []):
+                types = n.get("@type") or []
+                if isinstance(types, str):
+                    types = [types]
+                if "estleg:Issuer" in types:
+                    label = n.get("rdfs:label")
+                    if label:
+                        valid_issuer_labels.add(_normalize_issuer_label(label))
+        except (json.JSONDecodeError, OSError):
+            pass
+
+    for peep in sorted(kov_root.rglob("*_peep.json")):
+        if peep.name.startswith("REGULATIONS_KOV_INDEX"):
+            continue
+        try:
+            with open(peep, "r", encoding="utf-8") as fh:
+                doc = json.load(fh)
+        except (json.JSONDecodeError, OSError):
+            continue
+
+        act_node = None
+        for node in doc.get("@graph", []):
+            types = node.get("@type") or []
+            if isinstance(types, str):
+                types = [types]
+            if "estleg:MunicipalRegulation" in types:
+                act_node = node
+                break
+        if act_node is None:
+            continue
+
+        issuer = act_node.get("estleg:issuer")
+        act_num = act_node.get("estleg:actNumber")
+        aid = act_node.get("@id")
+        if not (issuer and act_num and aid):
+            continue
+
+        xml_path = pair_peep_with_xml(peep, xml_lookup, data_dir=data_dir)
+        if xml_path is None:
+            continue
+        adoption_date = _read_adoption_date_from_xml(xml_path)
+        if adoption_date is None:
+            continue
+
+        # Normalise issuer label symmetrically with the resolver-side
+        # query (Task 5). When the registry is non-empty, log (don't
+        # reject) when the normalised act-issuer isn't in it — this
+        # surfaces Layer 1 corpus-build oddities without dropping data.
+        norm_issuer = _normalize_issuer_label(issuer)
+        if valid_issuer_labels and norm_issuer not in valid_issuer_labels:
+            # Tolerate; future Layer 2c may tighten this.
+            pass
+
+        lookup[(norm_issuer, adoption_date, str(act_num))] = aid
+    return lookup
+
+
+def build_kov_act_lookup_by_number(
+    kov_root: Path,
+) -> dict[tuple[str, str], list[str]]:
+    """Build (normalized_issuer, act_number) → [act @id, ...] for KOV
+    regulations.
+
+    Used for body-text references that don't carry adoption_date.
+    Multiple acts under the same issuer can share an act_number across
+    historical revisions; the lookup STORES ALL CANDIDATES so the
+    resolver (Task 6) can decide whether the match is unique. The
+    resolver returns a target only when the candidate list contains
+    exactly one entry (after scoping by enactedByMunicipality).
+
+    Issuer labels are passed through _normalize_issuer_label for
+    symmetry with the resolver's query side (which does the same).
+    """
+    lookup: dict[tuple[str, str], list[str]] = {}
+    if not kov_root.is_dir():
+        return lookup
+    for peep in sorted(kov_root.rglob("*_peep.json")):
+        if peep.name.startswith("REGULATIONS_KOV_INDEX"):
+            continue
+        try:
+            with open(peep, "r", encoding="utf-8") as fh:
+                doc = json.load(fh)
+        except (json.JSONDecodeError, OSError):
+            continue
+        for node in doc.get("@graph", []):
+            types = node.get("@type") or []
+            if isinstance(types, str):
+                types = [types]
+            if "estleg:MunicipalRegulation" not in types:
+                continue
+            issuer = node.get("estleg:issuer")
+            act_num = node.get("estleg:actNumber")
+            aid = node.get("@id")
+            if issuer and act_num and aid:
+                key = (_normalize_issuer_label(issuer), str(act_num))
+                lookup.setdefault(key, []).append(aid)
+            break
+    return lookup
+
+
+def build_issuer_registry(
+    issuers_path: Path,
+) -> dict[str, tuple[str, str, str]]:
+    """Build {issuer @id → (label_normalized, municipality_iri,
+    body_type)} from the KOV issuers registry peep file.
+
+    Used by the Task 5/6 resolver to derive municipality scoping from
+    an enactedBy reference. Nodes missing any of the three required
+    fields are skipped — partial issuer entries can't drive resolver
+    scoping reliably.
+    """
+    out: dict[str, tuple[str, str, str]] = {}
+    if not issuers_path.exists():
+        return out
+    try:
+        with open(issuers_path, "r", encoding="utf-8") as fh:
+            doc = json.load(fh)
+    except (json.JSONDecodeError, OSError):
+        return out
+    for node in doc.get("@graph", []):
+        types = node.get("@type") or []
+        if isinstance(types, str):
+            types = [types]
+        if "estleg:Issuer" not in types:
+            continue
+        iid = node.get("@id")
+        label = node.get("rdfs:label")
+        muni = node.get("estleg:enactedByMunicipality")
+        body_type = node.get("estleg:bodyType")
+        if isinstance(muni, dict):
+            muni = muni.get("@id")
+        if isinstance(body_type, dict):
+            body_type = body_type.get("@id")
+        if not (iid and label and muni and body_type):
+            continue
+        out[iid] = (_normalize_issuer_label(label), muni, body_type)
+    return out
 
 
 def extract_citations_from_text(text: str) -> list[dict]:
@@ -784,7 +1183,8 @@ def main() -> None:
 
     # Step 2: Build provision index
     print("\n[2/5] Building provision index from JSON-LD files...")
-    prefix_to_provisions, source_act_to_prefix, iri_to_file = build_provision_index()
+    (prefix_to_provisions, source_act_to_prefix, iri_to_file,
+     prefix_to_act_iri, act_iri_to_prefix) = build_provision_index()
     total_provisions = sum(len(v) for v in prefix_to_provisions.values())
     print(f"  Found {len(prefix_to_provisions)} law prefixes with {total_provisions} provisions")
     print(f"  Source act mappings: {len(source_act_to_prefix)}")
