@@ -452,10 +452,16 @@ def main() -> None:
     provisions_with_institutions = 0
     _unresolved_count = 0
     _fallback_hits = 0
+    _per_peep_errors = 0
+    pre_existing_institution_files: list[Path] = []
+    if INSTIT_DIR.exists():
+        pre_existing_institution_files = list(INSTIT_DIR.glob("institution_*.json"))
+    written_slugs: set[str] = set()
 
     for idx, filepath in enumerate(law_files, 1):
         doc = load_json(filepath)
         if doc is None or "@graph" not in doc:
+            _per_peep_errors += 1
             continue
 
         act_node = _find_act_node(doc)
@@ -551,10 +557,6 @@ def main() -> None:
     # ---------- generate institution files ----------
     print(f"\n[2/4] Generating institution files ({len(inst_data)} institutions)...")
 
-    # Remove all old institution files first to avoid stale/capitalized leftovers
-    for old_file in INSTIT_DIR.glob("institution_*.json"):
-        old_file.unlink()
-
     # Build reverse map: canonical suffix → list of abbreviation aliases
     canonical_aliases: dict[str, list[str]] = defaultdict(list)
     for alias, canonical in SAMEAS_ALIASES.items():
@@ -601,6 +603,7 @@ def main() -> None:
         doc = {"@context": CONTEXT, "@graph": graph}
         filename = f"institution_{info['iri_suffix']}.json"
         save_json(INSTIT_DIR / filename, doc)
+        written_slugs.add(info["iri_suffix"])
 
     # ---------- report ----------
     print(f"\n[3/4] Generating report...")
@@ -656,6 +659,23 @@ def main() -> None:
     for inst_iri, provs in top:
         print(f"    {inst_data[inst_iri]['name']:45s}  {len(provs)} provisions")
     print("=" * 70)
+
+    # Layer 2c PR #2: stale-file pruning. Only delete when the run
+    # was clean (no per-peep load errors); otherwise we might delete
+    # a file whose owning peep failed to load.
+    if _per_peep_errors == 0:
+        for path in pre_existing_institution_files:
+            slug = path.stem.removeprefix("institution_")
+            if slug not in written_slugs:
+                try:
+                    path.unlink()
+                except OSError:
+                    pass
+    else:
+        print(f"[skip stale-deletion] {_per_peep_errors} per-peep "
+              f"errors during this run; preserving "
+              f"{len(pre_existing_institution_files)} pre-existing "
+              f"institution files.")
 
 
 if __name__ == "__main__":

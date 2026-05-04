@@ -705,3 +705,159 @@ class TestCompetenceIdempotency:
 
         after = peep.stat().st_mtime
         assert before == after, "no-op file must not be re-saved"
+
+
+class TestStaleInstitutionFileDeletion:
+    """End-of-run institution-file pruning. Stale files are unlinked
+    only when no per-peep errors occurred."""
+
+    @pytest.fixture
+    def issuers_registry_file(self, tmp_path):
+        krr = tmp_path / "krr_outputs"
+        krr.mkdir()
+        path = krr / "issuers_kov_peep.json"
+        path.write_text(json.dumps({
+            "@context": {
+                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "owl": "http://www.w3.org/2002/07/owl#",
+                "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+            },
+            "@graph": [
+                {"@id": "estleg:Issuer_dummy",
+                 "@type": ["owl:NamedIndividual", "estleg:Issuer"],
+                 "rdfs:label": "Dummy",
+                 "estleg:bodyType": "volikogu",
+                 "estleg:currentMunicipality": {
+                     "@id": "estleg:Municipality_x"}},
+            ],
+        }), encoding="utf-8")
+        return krr
+
+    def test_stale_institutions_json_deleted_when_no_provisions_cite_it(
+        self, issuers_registry_file, monkeypatch
+    ):
+        import extract_institutional_competence as mod
+        import estleg_common
+        krr = issuers_registry_file
+        institutions_dir = krr / "institutions"
+        institutions_dir.mkdir(parents=True, exist_ok=True)
+
+        stale = institutions_dir / "institution_xyz.json"
+        stale.write_text(json.dumps({
+            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+            "@graph": [{"@id": "estleg:Institution_xyz",
+                        "@type": ["estleg:Institution"]}],
+        }), encoding="utf-8")
+        peep = krr / "boring_peep.json"
+        peep.write_text(json.dumps({
+            "@context": {
+                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "owl": "http://www.w3.org/2002/07/owl#",
+            },
+            "@graph": [
+                {"@id": "estleg:Boring_Map_2026",
+                 "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]},
+                {"@id": "estleg:Boring_Par_1",
+                 "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+                 "estleg:paragrahv": "§ 1",
+                 "estleg:summary": "Käesolev seadus on üldine."},
+            ],
+        }), encoding="utf-8")
+
+        monkeypatch.setattr(mod, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "INSTIT_DIR", institutions_dir)
+        monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "iter_peep_files", _iter_kov_inclusive)
+
+        rc = mod.main()
+        assert rc in (0, None)
+
+        assert not stale.exists(), "stale institution file must be unlinked"
+
+    def test_living_institution_files_preserved(
+        self, issuers_registry_file, monkeypatch
+    ):
+        """A pre-existing institutions/institution_riigikohus.json
+        AND a peep that triggers Riigikohus detection — the file
+        MUST be preserved (NOT deleted via incorrect stem-prefix
+        comparison)."""
+        import extract_institutional_competence as mod
+        import estleg_common
+        krr = issuers_registry_file
+        institutions_dir = krr / "institutions"
+        institutions_dir.mkdir(parents=True, exist_ok=True)
+
+        living = institutions_dir / "institution_riigikohus.json"
+        living.write_text(json.dumps({
+            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+            "@graph": [{"@id": "estleg:Institution_riigikohus",
+                        "@type": ["estleg:Institution"],
+                        "rdfs:label": "old label"}],
+        }), encoding="utf-8")
+        peep = krr / "active_peep.json"
+        peep.write_text(json.dumps({
+            "@context": {
+                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "owl": "http://www.w3.org/2002/07/owl#",
+            },
+            "@graph": [
+                {"@id": "estleg:Active_Map_2026",
+                 "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]},
+                {"@id": "estleg:Active_Par_1",
+                 "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+                 "estleg:paragrahv": "§ 1",
+                 "estleg:summary": "Riigikohus otsustab vaidlused."},
+            ],
+        }), encoding="utf-8")
+
+        monkeypatch.setattr(mod, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "INSTIT_DIR", institutions_dir)
+        monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "iter_peep_files", _iter_kov_inclusive)
+
+        rc = mod.main()
+        assert rc in (0, None)
+
+        assert living.exists()
+
+    def test_deletion_skipped_when_per_peep_errors_present(
+        self, issuers_registry_file, monkeypatch
+    ):
+        """When at least one peep returns load_json None or no @graph,
+        stale-file deletion is skipped (preserves files whose owning
+        peeps failed to load)."""
+        import extract_institutional_competence as mod
+        import estleg_common
+        krr = issuers_registry_file
+        institutions_dir = krr / "institutions"
+        institutions_dir.mkdir(parents=True, exist_ok=True)
+
+        stale = institutions_dir / "institution_unused.json"
+        stale.write_text("{}", encoding="utf-8")
+        broken = krr / "broken_peep.json"
+        broken.write_text("not json", encoding="utf-8")
+        peep = krr / "ok_peep.json"
+        peep.write_text(json.dumps({
+            "@context": {
+                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "owl": "http://www.w3.org/2002/07/owl#",
+            },
+            "@graph": [
+                {"@id": "estleg:OK_Map_2026",
+                 "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]},
+                {"@id": "estleg:OK_Par_1",
+                 "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+                 "estleg:paragrahv": "§ 1",
+                 "estleg:summary": "Üldnorm."},
+            ],
+        }), encoding="utf-8")
+
+        monkeypatch.setattr(mod, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "INSTIT_DIR", institutions_dir)
+        monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "iter_peep_files", _iter_kov_inclusive)
+
+        rc = mod.main()
+        assert rc in (0, None)
+
+        assert stale.exists()
