@@ -672,3 +672,58 @@ class TestSanctionsCoverageReport:
             f"gate must fail (return 1) when KOV input ≥11k but "
             f"no output; got rc={rc}"
         )
+
+
+class TestCorpusInvariant:
+    """Corpus-wide invariant: every provision carrying
+    estleg:hasSanction has exactly ONE estleg:enforcedAtLevel
+    literal in {"state", "municipality"}.
+
+    Skipped when krr_outputs/ is empty (clean checkout). Marked
+    @pytest.mark.slow so CI can opt out on the fast path; runs in
+    the integration suite.
+    """
+
+    @pytest.mark.slow
+    def test_every_has_sanction_provision_has_exactly_one_enforced_at_level(self):
+        from estleg_common import iter_peep_files, KRR_DIR
+        if not KRR_DIR.exists() or not list(KRR_DIR.glob("*_peep.json")):
+            pytest.skip("krr_outputs/ empty — clean checkout")
+
+        violations = []
+        for peep in iter_peep_files():
+            try:
+                with open(peep, "r", encoding="utf-8") as fh:
+                    doc = json.load(fh)
+            except (json.JSONDecodeError, OSError):
+                continue
+            for node in doc.get("@graph", []):
+                if "estleg:hasSanction" not in node:
+                    continue
+                level = node.get("estleg:enforcedAtLevel")
+                if level is None:
+                    violations.append(
+                        f"{peep.name}: {node.get('@id')} has hasSanction "
+                        f"but no enforcedAtLevel"
+                    )
+                elif isinstance(level, list):
+                    violations.append(
+                        f"{peep.name}: {node.get('@id')} has list-valued "
+                        f"enforcedAtLevel: {level}"
+                    )
+                elif not isinstance(level, str):
+                    violations.append(
+                        f"{peep.name}: {node.get('@id')} has non-string "
+                        f"enforcedAtLevel ({type(level).__name__}): {level!r}"
+                    )
+                elif level not in {"state", "municipality"}:
+                    violations.append(
+                        f"{peep.name}: {node.get('@id')} has unexpected "
+                        f"enforcedAtLevel value: {level!r}"
+                    )
+        assert not violations, (
+            f"Corpus invariant violated by {len(violations)} provisions:\n  "
+            + "\n  ".join(violations[:20])
+            + (f"\n  ... and {len(violations) - 20} more"
+               if len(violations) > 20 else "")
+        )
