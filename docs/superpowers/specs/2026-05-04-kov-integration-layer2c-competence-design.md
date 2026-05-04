@@ -272,30 +272,62 @@ def _resolve_kov_authority(
         return None
 
     # Path 1+2: source_issuer-based resolution.
+    #
+    # Two extra checks beyond body_type alignment:
+    # (a) suffix compatibility — the issuer's slug must end with
+    #     "_<body_slug>". A vallavolikogu source act with a
+    #     `linnavolikogu` detection MUST NOT bind: both are body_type
+    #     "volikogu" but the body word literally says
+    #     "town/city council", which doesn't apply to a rural-
+    #     municipality act. The suffix check rejects this.
+    # (b) municipality match — the registry entry's municipality
+    #     must equal source_municipality. If Layer 1's mapping
+    #     incorrectly attached an issuer to a different
+    #     municipality, abstain rather than propagate the error.
     if source_issuer is not None:
         source_entry = issuer_registry.get(source_issuer)
         if source_entry is not None:
-            _label, _mun, source_body_type = source_entry
-            if source_body_type == target_body_type:
-                # Path 1: same body type → use source directly.
+            _label, source_mun, source_body_type = source_entry
+            if source_mun != source_municipality:
+                # Layer 1 mapping inconsistency between act's
+                # enactedByMunicipality and issuer's
+                # currentMunicipality. Abstain on Path 1+2; let
+                # Path 3 try the municipality-wide rule against
+                # the act's stated municipality.
+                pass
+            elif (source_body_type == target_body_type
+                    and source_issuer.endswith("_" + body_slug)):
+                # Path 1: same body type AND slug suffix matches
+                # the body word — use source directly.
                 return source_issuer
-            # Path 2: opposite body type → derive paired slug.
-            # Issuer slugs follow the pattern Issuer_<place>_<body>
-            # where <body> is one of vallavolikogu / vallavalitsus /
-            # linnavolikogu / linnavalitsus / alevivolikogu.
-            # Swap the body suffix using the body_slug we detected.
-            paired_iri = _swap_issuer_body_suffix(source_issuer, body_slug)
-            if paired_iri is not None and paired_iri in issuer_registry:
-                return paired_iri
-            # Path 2 fall-through if the paired issuer doesn't
-            # exist in the registry (e.g. some places have a
-            # volikogu but no separate valitsus). Try Path 3.
+            elif source_body_type != target_body_type:
+                # Path 2: opposite body type → derive paired slug.
+                # _swap_issuer_body_suffix produces an IRI whose
+                # slug ends with "_<body_slug>" by construction,
+                # so suffix compatibility is guaranteed.
+                paired_iri = _swap_issuer_body_suffix(source_issuer, body_slug)
+                if paired_iri is not None and paired_iri in issuer_registry:
+                    paired_entry = issuer_registry.get(paired_iri)
+                    if paired_entry is not None and paired_entry[1] == source_municipality:
+                        return paired_iri
+                # Path 2 fall-through if the paired issuer doesn't
+                # exist in the registry OR sits under a different
+                # municipality. Try Path 3.
+            # else: same body_type but suffix mismatch — fall through
+            # to Path 3 which checks municipality + body_type +
+            # explicit suffix compatibility.
 
-    # Path 3: municipality-wide uniqueness.
+    # Path 3: municipality-wide uniqueness with suffix compatibility.
+    # Filter by both body_type AND suffix so a vallavolikogu source
+    # with detected `linnavolikogu` can't accidentally fall through
+    # to a same-municipality vallavolikogu match.
+    suffix = "_" + body_slug
     matches = [
         issuer_iri
         for issuer_iri, (_label, mun_iri, btype) in issuer_registry.items()
-        if mun_iri == source_municipality and btype == target_body_type
+        if mun_iri == source_municipality
+        and btype == target_body_type
+        and issuer_iri.endswith(suffix)
     ]
     if len(matches) == 1:
         return matches[0]
@@ -557,7 +589,7 @@ accidental duplicate blocks).
 | Path | Change |
 | --- | --- |
 | `scripts/extract_institutional_competence.py` | Remove `include_kov=False` pin (line 239); add 2 new `GENERIC_PATTERNS` entries for KOV body words (placed before `vald|linn`); add `_find_act_node` helper (or import from `extract_sanctions` — verify during implementation); add `_resolve_kov_authority` resolver; add `issuer_registry` build at startup (re-uses Layer 2b's `build_issuer_registry`); replace global `_clear_existing_institutions` with per-file in-memory processing; wire body-word matches through resolver before falling back to `Institution_*`; skip `inst_data` entry when resolver succeeds; track `pre_existing_institution_files` for end-of-run deletion of orphaned files; add coverage instrumentation reusing `kov_pipeline_coverage.CoverageReport`; change `main()` to return `int`; use `raise SystemExit(main())`. |
-| `tests/test_extract_institutional_competence.py` | **New file.** 20 tests across 7 classes (3 detection unit + 4 resolver unit + 3 integration + 3 idempotency + 3 institutions-file deletion + 3 coverage + 1 corpus-wide invariant). |
+| `tests/test_extract_institutional_competence.py` | **New file.** 23 tests across 7 classes (3 detection unit + 7 resolver unit + 3 integration + 3 idempotency + 3 institutions-file deletion + 3 coverage + 1 corpus-wide invariant). |
 | `shacl/estonian_legal_shapes.ttl` | UPDATE the existing `competentAuthority` constraint's `sh:description` to mention the broader Issuer/Institution range (the constraint itself — `sh:nodeKind sh:IRI` — already exists at lines 140-145; do NOT add a duplicate). |
 | `docs/SCHEMA_REFERENCE.md` | Mark `competentAuthority` populated in the Layer 2 schema table; add a new subsection in the existing Institutional Competence section with KOV Issuer-binding semantics, a worked KOV example, and the SHACL constraint summary. |
 | `CHANGELOG.md` | Layer 2c PR #2 entry under `## [Unreleased]` with Added/Changed/Coverage/Internal subsections. |
@@ -578,11 +610,11 @@ accidental duplicate blocks).
 
 ## Test plan
 
-**7 new test classes, 20 tests total.** Files: `tests/test_extract_institutional_competence.py`.
+**7 new test classes, 23 tests total.** Files: `tests/test_extract_institutional_competence.py`.
 
-Class breakdown (3 + 4 + 3 + 3 + 3 + 3 + 1 = 20):
+Class breakdown (3 + 7 + 3 + 3 + 3 + 3 + 1 = 23):
 - `TestKovBodyWordDetection` — 3 unit tests
-- `TestResolveKovAuthority` — 4 unit tests
+- `TestResolveKovAuthority` — 7 unit tests (covers all 3 resolver priority paths + their abstain conditions)
 - `TestExtractCompetenceWithIssuerBinding` — 3 integration tests
 - `TestCompetenceIdempotency` — 3 integration tests
 - `TestStaleInstitutionFileDeletion` — 3 integration tests
@@ -592,16 +624,51 @@ Class breakdown (3 + 4 + 3 + 3 + 3 + 3 + 1 = 20):
 ### `TestKovBodyWordDetection` (unit, 3 tests)
 
 - `test_linnavolikogu_matches_basic_form` — text `"linnavolikogu kehtestab korra"` detected with normalised slug `linnavolikogu`. Parametrized cases include `linnavolikogus` (inessive), `linnavolikogule` (allative), `linnavolikogusse` (illative).
-- `test_vallavalitsus_inflections` — parametrized over `["vallavalitsus", "vallavalitsuse", "vallavalitsust", "vallavalitsusele", "vallavalitsuses", "vallavalitsusesse"]` and `["linnavalitsus", "linnavalitsuse", "linnavalitsuses", "linnavalitsuste"]`. Each case asserts canonicalisation to `vallavalitsus` / `linnavalitsus` respectively. **Critical:** the inessive forms `vallavalitsuses` and `linnavalitsuses` MUST be in the parametrization — earlier-version regex missed them; the regex+canonicalizer combination must catch them now.
+- `test_vallavalitsus_inflections` — parametrized over six singular case forms each: `["vallavalitsus", "vallavalitsuse", "vallavalitsust", "vallavalitsusele", "vallavalitsuses", "vallavalitsusesse"]` and `["linnavalitsus", "linnavalitsuse", "linnavalitsust", "linnavalitsusele", "linnavalitsuses", "linnavalitsusesse"]`. Each case asserts canonicalisation to `vallavalitsus` / `linnavalitsus` respectively. **Critical:** the inessive forms `vallavalitsuses` and `linnavalitsuses` MUST be in the parametrization — earlier-version regex missed them; the regex+canonicalizer combination must catch them now. **Out of scope:** plural forms (`linnavalitsuste`, `valitsustele`, etc.) — rare in legal text and not handled by this PR's regex/canonicalizer; tracked as a follow-up if corpus data shows they matter.
 - `test_named_institutions_still_win` (regression — ensure new patterns don't override existing named-institution detections)
 
-### `TestResolveKovAuthority` (unit, 4 tests)
+### `TestResolveKovAuthority` (unit, 7 tests)
 
-- `test_kov_scoped_body_resolves_to_issuer`
-- `test_no_municipality_returns_none`
-- `test_municipality_with_no_matching_issuer_returns_none`
-- `test_ambiguous_returns_none` (two volikogu issuers in same
-  municipality)
+The resolver has three priority paths (same-body source-issuer
+direct, paired-body slug swap, municipality-wide uniqueness
+fallback). The test set covers each path's success case AND the
+abstain conditions added per Round 2 review (suffix mismatch,
+municipality mismatch, ambiguous fallback).
+
+- `test_path1_source_issuer_same_body_resolves_directly` — source
+  act enacted by `Issuer_abja_vallavolikogu` (body=volikogu);
+  detected body word `vallavolikogu` (body=volikogu). Resolver
+  returns `Issuer_abja_vallavolikogu` directly (Path 1; no
+  registry walk needed). Critical even when the
+  `(municipality, body_type)` bucket is ambiguous.
+- `test_path2_paired_body_slug_swap` — source act enacted by
+  `Issuer_abja_vallavolikogu`; detected body word
+  `vallavalitsus`. Registry contains the paired
+  `Issuer_abja_vallavalitsus` under the same municipality.
+  Resolver returns `Issuer_abja_vallavalitsus` (Path 2 succeeds
+  via `_swap_issuer_body_suffix`).
+- `test_path1_suffix_mismatch_abstains` — source act enacted by
+  `Issuer_abja_vallavolikogu` (body=volikogu); detected body
+  word `linnavolikogu` (body=volikogu — same body_type, but
+  literally "town/city council" which doesn't apply to a rural
+  municipality act). Resolver returns None (Path 1's suffix
+  check rejects).
+- `test_path1_municipality_mismatch_abstains` — source act
+  `enactedByMunicipality: estleg:Municipality_tartu`; source
+  issuer's registry entry says it belongs to
+  `estleg:Municipality_tallinn` (Layer 1 mapping inconsistency).
+  Resolver returns None (Path 1's municipality check rejects);
+  Path 3 then tries with the act's stated municipality
+  `estleg:Municipality_tartu`.
+- `test_path3_unique_fallback_resolves` — source has no
+  enactedBy (None); source municipality has exactly one issuer
+  matching the body slug. Path 3 returns it.
+- `test_path3_ambiguous_returns_none` — Path 1+2 both fall
+  through (e.g. source_issuer absent); the source municipality
+  has TWO issuers matching the same body slug. Resolver returns
+  None.
+- `test_no_municipality_returns_none` — `source_municipality=None`;
+  every path requires it; resolver returns None.
 
 ### `TestExtractCompetenceWithIssuerBinding` (integration, 3 tests)
 
@@ -691,7 +758,7 @@ scheduled BEFORE coverage):
 
 1. Add 2 new `GENERIC_PATTERNS` entries + `_resolve_kov_authority`
    helper + unit tests (`TestKovBodyWordDetection` 3 +
-   `TestResolveKovAuthority` 4 = 7 tests).
+   `TestResolveKovAuthority` 7 = 10 tests).
 2. Wire `_resolve_kov_authority` into `main()`'s per-provision
    loop + integration tests
    (`TestExtractCompetenceWithIssuerBinding`, 3 tests). Introduce
@@ -715,7 +782,9 @@ scheduled BEFORE coverage):
 6. Unpin: remove `include_kov=False` from `iter_peep_files` call.
 7. Coverage instrumentation reusing `kov_pipeline_coverage` +
    `main() -> int` + `SystemExit` (`TestCompetenceCoverageReport`,
-   2 tests).
+   3 tests: `test_coverage_report_written_with_kov_split`,
+   `test_gate_fails_when_kov_input_nontrivial_but_no_output`,
+   `test_unresolved_count_includes_state_side_kov_body_words`).
 8. Run full corpus + commit output (~8,000 peep modifications +
    institutions/ regenerations; `extract_institutional_competence_coverage.json`
    first run). Add `TestCorpusInvariant` (1 test).
@@ -730,18 +799,18 @@ PR #1 ended at 206 passing.
 
 | Task | New tests | Cumulative |
 | --- | --- | --- |
-| 1 | +7 | 213 |
-| 2 | +3 | 216 |
-| 3 | +3 | 219 |
-| 4 | +3 | 222 |
-| 5 | +0 (SHACL) | 222 |
-| 6 | +0 (unpin) | 222 |
-| 7 | +3 | 225 |
-| 8 | +1 | 226 |
-| 9 | +0 (docs) | 226 |
-| 10 | +0 (verification) | 226 |
+| 1 | +10 (3 detection + 7 resolver) | 216 |
+| 2 | +3 | 219 |
+| 3 | +3 | 222 |
+| 4 | +3 | 225 |
+| 5 | +0 (SHACL) | 225 |
+| 6 | +0 (unpin) | 225 |
+| 7 | +3 | 228 |
+| 8 | +1 | 229 |
+| 9 | +0 (docs) | 229 |
+| 10 | +0 (verification) | 229 |
 
-**Final expected count: 226 tests (+20 vs Layer 2c PR #1
+**Final expected count: 229 tests (+23 vs Layer 2c PR #1
 end-state).**
 
 ## Risks and mitigations
