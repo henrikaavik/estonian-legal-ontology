@@ -354,3 +354,189 @@ class TestResolveKovAuthority:
                 assert result == swapped, (
                     f"non-Path3 result {result!r} doesn't match Path 1 or 2"
                 )
+
+
+class TestExtractCompetenceWithIssuerBinding:
+    """End-to-end via main(). Same _iter_kov_inclusive monkeypatch
+    pattern as Layer 2c PR #1's tests."""
+
+    @pytest.fixture
+    def issuers_registry_file(self, tmp_path):
+        """Stage a minimal issuers_kov_peep.json in tmp_path/krr_outputs/
+        so build_issuer_registry returns a usable mapping."""
+        krr = tmp_path / "krr_outputs"
+        krr.mkdir(exist_ok=True)
+        path = krr / "issuers_kov_peep.json"
+        path.write_text(json.dumps({
+            "@context": {
+                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "owl": "http://www.w3.org/2002/07/owl#",
+                "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+            },
+            "@graph": [
+                {"@id": "estleg:Issuer_tallinna_linnavolikogu",
+                 "@type": ["owl:NamedIndividual", "estleg:Issuer"],
+                 "rdfs:label": "Tallinna Linnavolikogu",
+                 "estleg:bodyType": "volikogu",
+                 "estleg:currentMunicipality": {
+                     "@id": "estleg:Municipality_tallinn"}},
+                {"@id": "estleg:Issuer_tallinna_linnavalitsus",
+                 "@type": ["owl:NamedIndividual", "estleg:Issuer"],
+                 "rdfs:label": "Tallinna Linnavalitsus",
+                 "estleg:bodyType": "valitsus",
+                 "estleg:currentMunicipality": {
+                     "@id": "estleg:Municipality_tallinn"}},
+            ],
+        }), encoding="utf-8")
+        return krr
+
+    def test_kov_act_competence_binds_to_issuer(
+        self, issuers_registry_file, monkeypatch
+    ):
+        import extract_institutional_competence as mod
+        import estleg_common
+        krr = issuers_registry_file
+        institutions_dir = krr / "institutions"
+        institutions_dir.mkdir(parents=True, exist_ok=True)
+
+        # Stage a Tallinn KOV act with a provision citing linnavolikogu
+        kov = krr / "regulations" / "kov" / "tallinna_linnavolikogu"
+        kov.mkdir(parents=True)
+        peep = kov / "act_peep.json"
+        peep.write_text(json.dumps({
+            "@context": {
+                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "owl": "http://www.w3.org/2002/07/owl#",
+            },
+            "@graph": [
+                {"@id": "estleg:Reg_TLN_X_Map_2024",
+                 "@type": ["owl:Ontology", "estleg:Act",
+                           "estleg:MunicipalRegulation"],
+                 "estleg:enactedBy": {"@id": "estleg:Issuer_tallinna_linnavolikogu"},
+                 "estleg:enactedByMunicipality": {
+                     "@id": "estleg:Municipality_tallinn"}},
+                {"@id": "estleg:Reg_TLN_X_Par_1",
+                 "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+                 "estleg:paragrahv": "§ 1",
+                 "estleg:summary":
+                     "Linnavolikogu kehtestab maksu määra."},
+            ],
+        }), encoding="utf-8")
+
+        monkeypatch.setattr(mod, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "INSTIT_DIR", institutions_dir)
+        monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "iter_peep_files", _iter_kov_inclusive)
+
+        rc = mod.main()
+        assert rc in (0, None)
+
+        with open(peep, "r", encoding="utf-8") as fh:
+            saved = json.load(fh)
+        prov = next(n for n in saved["@graph"]
+                    if n.get("@id") == "estleg:Reg_TLN_X_Par_1")
+        refs = prov.get("estleg:competentAuthority", [])
+        if isinstance(refs, dict):
+            refs = [refs]
+        ids = [r.get("@id") for r in refs]
+        assert "estleg:Issuer_tallinna_linnavolikogu" in ids
+        assert not any(i and i.endswith("Institution_linnavolikogu") for i in ids)
+        assert not (institutions_dir / "institution_linnavolikogu.json").exists()
+
+    def test_state_law_competence_with_kov_body_word_abstains(
+        self, issuers_registry_file, monkeypatch
+    ):
+        """Law-typed peep (no enactedByMunicipality). Detected
+        linnavolikogu must NOT bind."""
+        import extract_institutional_competence as mod
+        import estleg_common
+        krr = issuers_registry_file
+        institutions_dir = krr / "institutions"
+        institutions_dir.mkdir(parents=True, exist_ok=True)
+        peep = krr / "kov_seadus_peep.json"
+        peep.write_text(json.dumps({
+            "@context": {
+                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "owl": "http://www.w3.org/2002/07/owl#",
+            },
+            "@graph": [
+                {"@id": "estleg:KOKS_Map_2026",
+                 "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]},
+                {"@id": "estleg:KOKS_Par_22",
+                 "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+                 "estleg:paragrahv": "§ 22",
+                 "estleg:summary":
+                     "Linnavolikogu kehtestab kohaliku elu küsimuste "
+                     "lahendamise korra."},
+            ],
+        }), encoding="utf-8")
+
+        monkeypatch.setattr(mod, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "INSTIT_DIR", institutions_dir)
+        monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "iter_peep_files", _iter_kov_inclusive)
+
+        rc = mod.main()
+        assert rc in (0, None)
+
+        with open(peep, "r", encoding="utf-8") as fh:
+            saved = json.load(fh)
+        prov = next(n for n in saved["@graph"]
+                    if n.get("@id") == "estleg:KOKS_Par_22")
+        refs = prov.get("estleg:competentAuthority", [])
+        if isinstance(refs, dict):
+            refs = [refs]
+        ids = [r.get("@id") for r in refs]
+        assert not any(i and "linnavolikogu" in (i or "") for i in ids)
+
+    def test_kov_act_with_named_authority_still_emits_institution(
+        self, issuers_registry_file, monkeypatch
+    ):
+        """Named institutions (Riigikohus etc.) follow the existing
+        Institution_* path even in KOV peeps."""
+        import extract_institutional_competence as mod
+        import estleg_common
+        krr = issuers_registry_file
+        institutions_dir = krr / "institutions"
+        institutions_dir.mkdir(parents=True, exist_ok=True)
+        kov = krr / "regulations" / "kov" / "tallinna_linnavolikogu"
+        kov.mkdir(parents=True)
+        peep = kov / "act_peep.json"
+        peep.write_text(json.dumps({
+            "@context": {
+                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "owl": "http://www.w3.org/2002/07/owl#",
+            },
+            "@graph": [
+                {"@id": "estleg:Reg_TLN_Y_Map_2024",
+                 "@type": ["owl:Ontology", "estleg:Act",
+                           "estleg:MunicipalRegulation"],
+                 "estleg:enactedBy": {"@id": "estleg:Issuer_tallinna_linnavolikogu"},
+                 "estleg:enactedByMunicipality": {
+                     "@id": "estleg:Municipality_tallinn"}},
+                {"@id": "estleg:Reg_TLN_Y_Par_1",
+                 "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+                 "estleg:paragrahv": "§ 1",
+                 "estleg:summary":
+                     "Riigikohus otsustab vaidlused selle määruse alusel."},
+            ],
+        }), encoding="utf-8")
+
+        monkeypatch.setattr(mod, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "INSTIT_DIR", institutions_dir)
+        monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "iter_peep_files", _iter_kov_inclusive)
+
+        rc = mod.main()
+        assert rc in (0, None)
+
+        with open(peep, "r", encoding="utf-8") as fh:
+            saved = json.load(fh)
+        prov = next(n for n in saved["@graph"]
+                    if n.get("@id") == "estleg:Reg_TLN_Y_Par_1")
+        refs = prov.get("estleg:competentAuthority", [])
+        if isinstance(refs, dict):
+            refs = [refs]
+        ids = [r.get("@id") for r in refs]
+        assert "estleg:Institution_riigikohus" in ids
+        assert (institutions_dir / "institution_riigikohus.json").exists()

@@ -20,11 +20,30 @@ from datetime import datetime
 from pathlib import Path
 
 from estleg_common import iter_peep_files
+from extract_sanctions import _find_act_node
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
 INST_DIR = KRR_DIR / "institutions"
 INST_DIR.mkdir(parents=True, exist_ok=True)
+# INSTIT_DIR is the monkeypatch-friendly alias used by tests (and Task 4+).
+# main() writes institution files via INSTIT_DIR so tests can redirect to tmp_path.
+INSTIT_DIR = INST_DIR
+
+
+def _id_ref(value: object) -> str | None:
+    """Unwrap a JSON-LD {"@id": "..."} object to a plain IRI string.
+    Returns the string directly if *value* is already a string, or
+    None when *value* is None or lacks an "@id" key.
+    """
+    if value is None:
+        return None
+    if isinstance(value, str):
+        return value
+    if isinstance(value, dict):
+        return value.get("@id")
+    return None
+
 
 NS = "https://data.riik.ee/ontology/estleg#"
 
@@ -416,6 +435,12 @@ def main() -> None:
     law_files = iter_peep_files(include_kov=False)  # DEFERRED to Layer 2c
     print(f"\n[1/4] Found {len(law_files)} law files to process")
 
+    # Layer 2c PR #2: build issuer registry once at startup.
+    from extract_cross_references import build_issuer_registry
+    issuer_registry = build_issuer_registry(
+        KRR_DIR / "issuers_kov_peep.json"
+    )
+
     # --- Clearing pass: remove old competence data from all files ---
     print("  Clearing old competence data from all files...")
     for filepath in law_files:
@@ -441,11 +466,21 @@ def main() -> None:
 
     total_provisions = 0
     provisions_with_institutions = 0
+    _unresolved_count = 0
+    _fallback_hits = 0
 
     for idx, filepath in enumerate(law_files, 1):
         doc = load_json(filepath)
         if doc is None or "@graph" not in doc:
             continue
+
+        act_node = _find_act_node(doc)
+        if act_node is None:
+            # Aggregate-registry peep or malformed; Task 7 adds the
+            # full coverage skip-reason wiring.
+            continue
+        source_municipality = _id_ref(act_node.get("estleg:enactedByMunicipality"))
+        source_issuer = _id_ref(act_node.get("estleg:enactedBy"))
 
         law_name = filepath.stem.replace("_peep", "")
         modified = False
@@ -466,6 +501,29 @@ def main() -> None:
 
             authority_refs = []
             for canon_name, iri_suffix, itype in institutions:
+                if itype == "local_government_body":
+                    canonical = _canonical_body_slug(canon_name)
+                    if canonical is None:
+                        continue
+                    issuer_iri = _resolve_kov_authority(
+                        body_slug=canonical,
+                        source_municipality=source_municipality,
+                        source_issuer=source_issuer,
+                        issuer_registry=issuer_registry,
+                    )
+                    if issuer_iri is None:
+                        _unresolved_count += 1
+                        continue
+                    if _is_path3_case(
+                        source_issuer=source_issuer,
+                        source_municipality=source_municipality,
+                        issuer_registry=issuer_registry,
+                    ):
+                        _fallback_hits += 1
+                    authority_refs.append({"@id": issuer_iri})
+                    continue
+
+                # Existing Institution_* path for everything else
                 inst_iri = f"estleg:Institution_{iri_suffix}"
 
                 if inst_iri not in inst_data:
@@ -496,7 +554,7 @@ def main() -> None:
     print(f"\n[2/4] Generating institution files ({len(inst_data)} institutions)...")
 
     # Remove all old institution files first to avoid stale/capitalized leftovers
-    for old_file in INST_DIR.glob("institution_*.json"):
+    for old_file in INSTIT_DIR.glob("institution_*.json"):
         old_file.unlink()
 
     # Build reverse map: canonical suffix → list of abbreviation aliases
@@ -544,7 +602,7 @@ def main() -> None:
 
         doc = {"@context": CONTEXT, "@graph": graph}
         filename = f"institution_{info['iri_suffix']}.json"
-        save_json(INST_DIR / filename, doc)
+        save_json(INSTIT_DIR / filename, doc)
 
     # ---------- report ----------
     print(f"\n[3/4] Generating report...")
