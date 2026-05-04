@@ -1112,3 +1112,54 @@ class TestCompetenceCoverageReport:
         with open(cov_path, "r", encoding="utf-8") as fh:
             cov = json.load(fh)
         assert cov["fallback_hits"] >= 1
+
+
+class TestCorpusInvariant:
+    """Corpus-wide invariant: every KOV provision carrying
+    competentAuthority targeting a body word (volikogu/valitsus
+    body type) MUST resolve to an Issuer_* IRI, never an
+    Institution_<body_slug> fallback."""
+
+    @pytest.mark.slow
+    def test_kov_competentauthority_is_issuer_iri(self):
+        from estleg_common import iter_peep_files, KRR_DIR
+        if not KRR_DIR.exists() or not list(KRR_DIR.glob("*_peep.json")):
+            pytest.skip("krr_outputs/ empty — clean checkout")
+
+        body_slug_institutions = {
+            "Institution_linnavolikogu", "Institution_vallavolikogu",
+            "Institution_alevivolikogu", "Institution_linnavalitsus",
+            "Institution_vallavalitsus",
+        }
+
+        violations = []
+        for peep in iter_peep_files():
+            if "regulations/kov/" not in str(peep):
+                continue
+            try:
+                with open(peep, "r", encoding="utf-8") as fh:
+                    doc = json.load(fh)
+            except (json.JSONDecodeError, OSError):
+                continue
+            for node in doc.get("@graph", []):
+                refs = node.get("estleg:competentAuthority")
+                if not refs:
+                    continue
+                if isinstance(refs, dict):
+                    refs = [refs]
+                for ref in refs:
+                    iri = ref.get("@id") if isinstance(ref, dict) else None
+                    if iri is None:
+                        continue
+                    suffix = iri.removeprefix("estleg:")
+                    if suffix in body_slug_institutions:
+                        violations.append(
+                            f"{peep.name}: {node.get('@id')} has body-slug "
+                            f"Institution_* fallback: {iri}"
+                        )
+        assert not violations, (
+            f"Corpus invariant violated by {len(violations)} provisions:\n  "
+            + "\n  ".join(violations[:20])
+            + (f"\n  ... and {len(violations) - 20} more"
+               if len(violations) > 20 else "")
+        )
