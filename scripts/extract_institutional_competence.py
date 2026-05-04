@@ -434,7 +434,7 @@ def main() -> None:
     print("=" * 70)
 
     law_files = iter_peep_files(include_kov=False)  # DEFERRED to Layer 2c
-    print(f"\n[1/4] Found {len(law_files)} law files to process")
+    print(f"\n  Found {len(law_files)} law files to process")
 
     # Layer 2c PR #2: build issuer registry once at startup.
     issuer_registry = build_issuer_registry(
