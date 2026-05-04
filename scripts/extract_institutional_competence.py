@@ -480,6 +480,9 @@ def main() -> int:
         doc = load_json(filepath)
         if doc is None or "@graph" not in doc:
             _per_peep_errors += 1
+            _failures.append(
+                f"{filepath.name}: JSON load failed or missing @graph"
+            )
             continue
 
         act_node = _find_act_node(doc)
@@ -587,6 +590,10 @@ def main() -> int:
                 node["estleg:competenceType"] = competence_type
                 modified = True
 
+        # Note: _triples counts COMPETENT-AUTHORITY REFERENCES
+        # (elements of competentAuthority lists across all provisions),
+        # not raw RDF triples — matches the analytical question
+        # "how many provision→authority bindings did we produce?"
         if modified:
             _files_with_output.add(filepath)
             if is_kov:
@@ -732,6 +739,10 @@ def main() -> int:
               f"institution files.")
 
     # ----- coverage report -----
+    # Second scan to get the full input universe for input_files_total /
+    # input_files_kov. Cannot reuse law_files here: aggregate-registry
+    # peeps were silently skipped above but still count toward the input
+    # universe.
     all_input_files = list(iter_peep_files())
     _kov_files = [p for p in all_input_files
                   if "regulations/kov/" in str(p)]
@@ -767,9 +778,10 @@ def main() -> int:
     print(f"\nCoverage report: {out_path}")
     print(f"  input_files_total: {len(all_input_files)} (KOV: {len(_kov_files)})")
     print(f"  files_with_output: {len(_files_with_output)} (KOV: {len(_files_with_output_kov)})")
-    print(f"  triples_emitted: {_triples} (KOV: {_triples_kov})")
+    print(f"  triples_emitted (authority references): {_triples} (KOV: {_triples_kov})")
     print(f"  unresolved_references: {_unresolved_count}; fallback_hits: {_fallback_hits}")
 
+    # Gate check (matches Layer 2c PR #1 convention; corpus KOV count ~11,059).
     if len(_kov_files) >= 11000 and len(_files_with_output_kov) == 0:
         print("\nGATE FAIL: KOV files were processed but none produced output.")
         return 1
