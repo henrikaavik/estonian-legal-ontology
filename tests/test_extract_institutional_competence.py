@@ -861,3 +861,254 @@ class TestStaleInstitutionFileDeletion:
         assert rc in (0, None)
 
         assert stale.exists()
+
+
+class TestCompetenceCoverageReport:
+    """Coverage report shape + gate behavior."""
+
+    @pytest.fixture
+    def issuers_registry_file(self, tmp_path):
+        krr = tmp_path / "krr_outputs"
+        krr.mkdir()
+        path = krr / "issuers_kov_peep.json"
+        path.write_text(json.dumps({
+            "@context": {
+                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "owl": "http://www.w3.org/2002/07/owl#",
+                "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+            },
+            "@graph": [
+                {"@id": "estleg:Issuer_tallinna_linnavolikogu",
+                 "@type": ["owl:NamedIndividual", "estleg:Issuer"],
+                 "rdfs:label": "Tallinna Linnavolikogu",
+                 "estleg:bodyType": "volikogu",
+                 "estleg:currentMunicipality": {
+                     "@id": "estleg:Municipality_tallinn"}},
+            ],
+        }), encoding="utf-8")
+        return krr
+
+    def test_coverage_report_written_with_kov_split(
+        self, issuers_registry_file, monkeypatch
+    ):
+        import extract_institutional_competence as mod
+        import estleg_common
+        krr = issuers_registry_file
+        institutions_dir = krr / "institutions"
+        reports_dir = krr / "reports" / "kov"
+        institutions_dir.mkdir(parents=True)
+        reports_dir.mkdir(parents=True)
+
+        kov = krr / "regulations" / "kov" / "tallinna_linnavolikogu"
+        kov.mkdir(parents=True)
+        (kov / "act_peep.json").write_text(json.dumps({
+            "@context": {
+                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "owl": "http://www.w3.org/2002/07/owl#",
+            },
+            "@graph": [
+                {"@id": "estleg:Reg_TLN_K_Map_2024",
+                 "@type": ["owl:Ontology", "estleg:Act",
+                           "estleg:MunicipalRegulation"],
+                 "estleg:enactedBy": {"@id": "estleg:Issuer_tallinna_linnavolikogu"},
+                 "estleg:enactedByMunicipality": {
+                     "@id": "estleg:Municipality_tallinn"}},
+                {"@id": "estleg:Reg_TLN_K_Par_1",
+                 "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+                 "estleg:paragrahv": "§ 1",
+                 "estleg:summary": "Linnavolikogu kehtestab maksu."},
+            ],
+        }), encoding="utf-8")
+        (krr / "state_peep.json").write_text(json.dumps({
+            "@context": {
+                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "owl": "http://www.w3.org/2002/07/owl#",
+            },
+            "@graph": [
+                {"@id": "estleg:State_Map_2026",
+                 "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]},
+                {"@id": "estleg:State_Par_1",
+                 "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+                 "estleg:paragrahv": "§ 1",
+                 "estleg:summary": "Riigikohus otsustab vaidlused."},
+            ],
+        }), encoding="utf-8")
+
+        monkeypatch.setattr(mod, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "INSTIT_DIR", institutions_dir)
+        monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "iter_peep_files", _iter_kov_inclusive)
+
+        rc = mod.main()
+        assert rc == 0
+
+        cov_path = reports_dir / "extract_institutional_competence_coverage.json"
+        assert cov_path.exists()
+        with open(cov_path, "r", encoding="utf-8") as fh:
+            cov = json.load(fh)
+        assert cov["pipeline"] == "extract_institutional_competence"
+        assert cov["files_processed_kov"] >= 1
+        assert cov["files_with_output_kov"] >= 1
+        assert cov["triples_emitted_kov"] >= 1
+        assert cov["files_with_output"] >= 2
+
+    def test_gate_fails_when_kov_input_nontrivial_but_no_output(
+        self, issuers_registry_file, monkeypatch
+    ):
+        """Triple-monkeypatch trick (iter_peep_files + load_json +
+        save_json) — 11,001 synthetic KOV paths with no detection."""
+        import extract_institutional_competence as mod
+        import estleg_common
+        krr = issuers_registry_file
+        institutions_dir = krr / "institutions"
+        reports_dir = krr / "reports" / "kov"
+        institutions_dir.mkdir(parents=True)
+        reports_dir.mkdir(parents=True)
+
+        kov_marker = krr / "regulations" / "kov" / "no_match"
+        synthetic_kov_paths = [
+            kov_marker / f"act_{i}_peep.json" for i in range(11001)
+        ]
+
+        canned_doc = {
+            "@context": {
+                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "owl": "http://www.w3.org/2002/07/owl#",
+            },
+            "@graph": [
+                {"@id": "estleg:Reg_NoMatch_Map_2024",
+                 "@type": ["owl:Ontology", "estleg:Act",
+                           "estleg:MunicipalRegulation"],
+                 "estleg:enactedByMunicipality": {
+                     "@id": "estleg:Municipality_tallinn"}},
+                {"@id": "estleg:Reg_NoMatch_Par_1",
+                 "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+                 "estleg:paragrahv": "§ 1",
+                 "estleg:summary": "Käesolev määrus ei viita ühelegi institutsioonile."},
+            ],
+        }
+
+        def fake_iter(*args, **kwargs):
+            return synthetic_kov_paths
+
+        def fake_load(filepath):
+            import copy
+            return copy.deepcopy(canned_doc)
+
+        def fake_save(filepath, doc):
+            return None
+
+        monkeypatch.setattr(mod, "iter_peep_files", fake_iter)
+        monkeypatch.setattr(mod, "load_json", fake_load)
+        monkeypatch.setattr(mod, "save_json", fake_save)
+        monkeypatch.setattr(mod, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "INSTIT_DIR", institutions_dir)
+        monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+
+        rc = mod.main()
+        assert rc == 1, f"gate must fail when KOV >=11k but no output; got rc={rc}"
+
+    def test_unresolved_count_includes_state_side_kov_body_words(
+        self, issuers_registry_file, monkeypatch
+    ):
+        """State law with KOV body word counts toward
+        unresolved_references."""
+        import extract_institutional_competence as mod
+        import estleg_common
+        krr = issuers_registry_file
+        institutions_dir = krr / "institutions"
+        reports_dir = krr / "reports" / "kov"
+        institutions_dir.mkdir(parents=True)
+        reports_dir.mkdir(parents=True)
+
+        (krr / "kov_seadus_peep.json").write_text(json.dumps({
+            "@context": {
+                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "owl": "http://www.w3.org/2002/07/owl#",
+            },
+            "@graph": [
+                {"@id": "estleg:KOKS_Map_2026",
+                 "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]},
+                {"@id": "estleg:KOKS_Par_22",
+                 "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+                 "estleg:paragrahv": "§ 22",
+                 "estleg:summary": "Linnavolikogu kehtestab korra."},
+            ],
+        }), encoding="utf-8")
+
+        monkeypatch.setattr(mod, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "INSTIT_DIR", institutions_dir)
+        monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "iter_peep_files", _iter_kov_inclusive)
+
+        rc = mod.main()
+        assert rc in (0, None)
+
+        cov_path = reports_dir / "extract_institutional_competence_coverage.json"
+        with open(cov_path, "r", encoding="utf-8") as fh:
+            cov = json.load(fh)
+        assert cov["unresolved_references"] >= 1
+
+    def test_fallback_hits_counts_path3_resolutions(
+        self, tmp_path, monkeypatch
+    ):
+        """KOV act whose enactedBy is unknown to the registry; act's
+        enactedByMunicipality has exactly one suffix-compatible
+        Issuer match. Resolver uses Path 3 -> fallback_hits >= 1."""
+        import extract_institutional_competence as mod
+        import estleg_common
+        krr = tmp_path / "krr_outputs"
+        institutions_dir = krr / "institutions"
+        reports_dir = krr / "reports" / "kov"
+        institutions_dir.mkdir(parents=True)
+        reports_dir.mkdir(parents=True)
+
+        (krr / "issuers_kov_peep.json").write_text(json.dumps({
+            "@context": {
+                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "owl": "http://www.w3.org/2002/07/owl#",
+                "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+            },
+            "@graph": [
+                {"@id": "estleg:Issuer_tartu_linnavolikogu",
+                 "@type": ["owl:NamedIndividual", "estleg:Issuer"],
+                 "rdfs:label": "Tartu Linnavolikogu",
+                 "estleg:bodyType": "volikogu",
+                 "estleg:currentMunicipality": {
+                     "@id": "estleg:Municipality_tartu"}},
+            ],
+        }), encoding="utf-8")
+
+        kov = krr / "regulations" / "kov" / "tartu"
+        kov.mkdir(parents=True)
+        (kov / "act_peep.json").write_text(json.dumps({
+            "@context": {
+                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "owl": "http://www.w3.org/2002/07/owl#",
+            },
+            "@graph": [
+                {"@id": "estleg:Reg_Tartu_X_Map_2024",
+                 "@type": ["owl:Ontology", "estleg:Act",
+                           "estleg:MunicipalRegulation"],
+                 "estleg:enactedBy": {"@id": "estleg:Issuer_unknown"},
+                 "estleg:enactedByMunicipality": {
+                     "@id": "estleg:Municipality_tartu"}},
+                {"@id": "estleg:Reg_Tartu_X_Par_1",
+                 "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+                 "estleg:paragrahv": "§ 1",
+                 "estleg:summary": "Linnavolikogu kehtestab maksu."},
+            ],
+        }), encoding="utf-8")
+
+        monkeypatch.setattr(mod, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "INSTIT_DIR", institutions_dir)
+        monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "iter_peep_files", _iter_kov_inclusive)
+
+        rc = mod.main()
+        assert rc in (0, None)
+
+        cov_path = reports_dir / "extract_institutional_competence_coverage.json"
+        with open(cov_path, "r", encoding="utf-8") as fh:
+            cov = json.load(fh)
+        assert cov["fallback_hits"] >= 1

@@ -15,13 +15,20 @@ from __future__ import annotations
 
 import json
 import re
+import time
 from collections import defaultdict
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 from estleg_common import iter_peep_files
 from extract_sanctions import _find_act_node
 from extract_cross_references import build_issuer_registry
+from kov_pipeline_coverage import (
+    CoverageReport,
+    measure_runtime,
+    resolve_pipeline_version,
+    write_coverage_report,
+)
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
@@ -428,7 +435,7 @@ def _is_path3_case(
     return source_mun != source_municipality
 
 
-def main() -> None:
+def main() -> int:
     print("=" * 70)
     print("Estonian Legal Ontology - Institutional Competence Extraction")
     print("=" * 70)
@@ -448,6 +455,17 @@ def main() -> None:
     # institution IRI → list of (provision IRI, competence_type, law_name)
     inst_provisions: dict[str, list[tuple[str, str, str]]] = defaultdict(list)
 
+    _start = time.perf_counter()
+    _files_processed: set[Path] = set()
+    _files_processed_kov: set[Path] = set()
+    _files_with_output: set[Path] = set()
+    _files_with_output_kov: set[Path] = set()
+    _triples = 0
+    _triples_kov = 0
+    _files_skipped = 0
+    _skip_reasons: dict[str, int] = {}
+    _failures: list[str] = []
+
     total_provisions = 0
     provisions_with_institutions = 0
     _unresolved_count = 0
@@ -466,11 +484,33 @@ def main() -> None:
 
         act_node = _find_act_node(doc)
         if act_node is None:
-            # Aggregate-registry peep or malformed; Task 7 adds the
-            # full coverage skip-reason wiring.
+            # Aggregate-registry peeps (issuers_kov_peep.json,
+            # municipalities_peep.json, etc.) have no provisions —
+            # silently skip (no counter, no failure log).
+            # Malformed act peeps DO have provisions but no
+            # estleg:Act + owl:Ontology root — that's a Layer 1
+            # data bug worth surfacing.
+            has_provisions = any(
+                "estleg:paragrahv" in n
+                for n in doc.get("@graph", [])
+            )
+            if has_provisions:
+                _files_skipped += 1
+                _skip_reasons["missing_act_node"] = (
+                    _skip_reasons.get("missing_act_node", 0) + 1
+                )
+                _failures.append(
+                    f"{filepath.name}: malformed peep — has provisions "
+                    f"but missing estleg:Act + owl:Ontology root node"
+                )
             continue
         source_municipality = _id_ref(act_node.get("estleg:enactedByMunicipality"))
         source_issuer = _id_ref(act_node.get("estleg:enactedBy"))
+
+        is_kov = "regulations/kov/" in str(filepath)
+        _files_processed.add(filepath)
+        if is_kov:
+            _files_processed_kov.add(filepath)
 
         # Detect prior peep-side output BEFORE clearing.
         had_existing_peep = any(
@@ -546,6 +586,20 @@ def main() -> None:
                 node["estleg:competentAuthority"] = authority_refs
                 node["estleg:competenceType"] = competence_type
                 modified = True
+
+        if modified:
+            _files_with_output.add(filepath)
+            if is_kov:
+                _files_with_output_kov.add(filepath)
+            n_refs = sum(
+                len(node.get("estleg:competentAuthority", []))
+                if isinstance(node.get("estleg:competentAuthority"), list)
+                else (1 if "estleg:competentAuthority" in node else 0)
+                for node in doc.get("@graph", [])
+            )
+            _triples += n_refs
+            if is_kov:
+                _triples_kov += n_refs
 
         # Save when EITHER fresh output OR pre-existing output existed.
         if modified or had_existing_peep:
@@ -677,6 +731,54 @@ def main() -> None:
               f"{len(pre_existing_institution_files)} pre-existing "
               f"institution files.")
 
+    # ----- coverage report -----
+    all_input_files = list(iter_peep_files())
+    _kov_files = [p for p in all_input_files
+                  if "regulations/kov/" in str(p)]
+
+    _wall, _rate, _peak_mb = measure_runtime(_start, len(_files_processed))
+    out_path = (KRR_DIR / "reports" / "kov"
+                / "extract_institutional_competence_coverage.json")
+    write_coverage_report(
+        CoverageReport(
+            pipeline="extract_institutional_competence",
+            run_timestamp=datetime.now(timezone.utc).isoformat(),
+            pipeline_version=resolve_pipeline_version(),
+            input_files_total=len(all_input_files),
+            input_files_kov=len(_kov_files),
+            files_processed=len(_files_processed),
+            files_processed_kov=len(_files_processed_kov),
+            files_with_output=len(_files_with_output),
+            files_with_output_kov=len(_files_with_output_kov),
+            files_skipped=_files_skipped,
+            skip_reasons=_skip_reasons,
+            triples_emitted=_triples,
+            triples_emitted_kov=_triples_kov,
+            unresolved_references=_unresolved_count,
+            fallback_hits=_fallback_hits,
+            wall_time_seconds=round(_wall, 2),
+            items_per_second=round(_rate, 2),
+            peak_memory_mb=round(_peak_mb, 1),
+            error_count=len(_failures),
+            failure_samples=_failures,
+        ),
+        out_path,
+    )
+    print(f"\nCoverage report: {out_path}")
+    print(f"  input_files_total: {len(all_input_files)} (KOV: {len(_kov_files)})")
+    print(f"  files_with_output: {len(_files_with_output)} (KOV: {len(_files_with_output_kov)})")
+    print(f"  triples_emitted: {_triples} (KOV: {_triples_kov})")
+    print(f"  unresolved_references: {_unresolved_count}; fallback_hits: {_fallback_hits}")
+
+    if len(_kov_files) >= 11000 and len(_files_with_output_kov) == 0:
+        print("\nGATE FAIL: KOV files were processed but none produced output.")
+        return 1
+    if _triples_kov == 0 and len(_kov_files) >= 11000:
+        print("\nGATE FAIL: zero KOV triples emitted.")
+        return 1
+    print("\nGATE OK")
+    return 0
+
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())
