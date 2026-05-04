@@ -922,6 +922,25 @@ _PAT_LAW_PARA = re.compile(
     re.UNICODE | re.IGNORECASE,
 )
 
+# Chained paragraph reference following a law-genitive match.
+# Matches "§ N", "§ N lõike M", "§ N lõike M punkti K" preceded by
+# a comma or 'ja'/'ning'/'või' connector. Used to extract chained
+# same-law paragraphs after the initial law citation.
+#
+# Real KOV preambles routinely chain multiple paragraphs under a single
+# law (e.g. "kohaliku omavalitsuse korralduse seaduse § 6 lg 3 p 2 ja
+# § 22 lg 1 p 34"). _PAT_LAW_PARA captures only the first paragraph;
+# this companion pattern is anchored at the position immediately after
+# each base match end, advancing through ", §" / " ja §" / " ning §"
+# connectors until no contiguous chain remains.
+_PAT_PAR_CHAIN = re.compile(
+    rf"(?:\s*,\s*|\s+(?:ja|ning|või)\s+)"
+    rf"{_PARA_TOKEN}\s*(?P<par>\d+)"
+    rf"(?:\s+{_LG_TOKEN}\s+(?P<lg>\d+))?"
+    rf"(?:\s+{_P_TOKEN}\s+(?P<p>\d+))?",
+    re.UNICODE | re.IGNORECASE,
+)
+
 # The greedy 0-7 leading-word group also absorbs preamble-license
 # verbs that precede a law citation in the wild ("Määrus kehtestatakse",
 # "Kooskõlas", "Lähtudes", etc.). These are NOT part of the law name
@@ -1141,6 +1160,32 @@ def extract_preamble_citations(text: str) -> list[dict]:
             "citationText": _orig_substring(m.start(), m.end()),
         }
         citations.append((m.start(), cit))
+
+        # Chain extension: same law_ref, additional paragraphs.
+        # The chain regex is anchored to the position immediately after
+        # the base match end, advancing through ", §" / " ja §" / " ning §"
+        # connectors until no contiguous chain remains. Each chained
+        # paragraph carries its OWN lg/p detail — the leading match's
+        # detail is NOT propagated forward.
+        pos = m.end()
+        while True:
+            chain_m = _PAT_PAR_CHAIN.match(cleaned, pos)
+            if chain_m is None:
+                break
+            chained_cit = {
+                "form": "law-genitive",
+                "law_ref": law_ref,
+                "paragraphs": [chain_m.group("par")],
+                "citationDetail": _build_citation_detail(
+                    chain_m.group("lg"), chain_m.group("p")
+                ),
+                # Use the original-text substring for the FULL match
+                # including the connector, so citationText is
+                # human-readable.
+                "citationText": _orig_substring(chain_m.start(), chain_m.end()),
+            }
+            citations.append((chain_m.start(), chained_cit))
+            pos = chain_m.end()
 
     for m in _PAT_STATE_REG.finditer(cleaned):
         date = _normalize_date(
@@ -1505,6 +1550,166 @@ def clear_existing_references() -> int:
     return cleaned
 
 
+def _process_preamble_for_act(
+    peep: Path,
+    doc: dict,
+    *,
+    genitive_to_act_iri: dict[str, str],
+    prefix_to_provisions: dict[str, dict[str, str]],
+    act_iri_to_prefix: dict[str, str],
+    state_reg_lookup: dict,
+    kov_act_lookup: dict,
+) -> dict | None:
+    """Run the Layer 2b preamble pass on a single peep file's @graph.
+
+    Performs the per-peep clear-and-regenerate cycle:
+
+      1. Detect existing prior-pass output (issuedUnder /
+         implementsCitation / Citation_<shortid>_* nodes) BEFORE clearing,
+         so a file whose parser output went from "some" to "none" still
+         persists the cleared state to disk on re-run.
+      2. Unconditionally clear those triples.
+      3. Re-run extract_preamble_citations + resolver.
+      4. Re-attach issuedUnder / implementsCitation / Citation nodes
+         from the fresh parse.
+      5. Save the file when EITHER fresh output exists OR something was
+         cleared. The caller's bookkeeping uses the returned `had_output`
+         flag (positive output only) for files_with_output counting; the
+         `had_existing` flag is an internal save-gating concern.
+
+    Returns None when the peep is malformed for the preamble pass
+    (no @graph, no act_node, no preambleText). Returns a stats dict
+    otherwise:
+
+        triples_emitted        : count of issuedUnder + implementsCitation
+        had_output             : True if fresh parse produced any triples
+        had_existing           : True if any prior-pass triples were cleared
+        citations_resolved     : count of citations that resolved
+        citations_unresolved   : count of citations that did not resolve
+        saved                  : True if the file was written to disk
+    """
+    graph = doc.get("@graph", [])
+    if not graph:
+        return None
+
+    # Find the act node (owl:Ontology-typed). Skip the file if absent.
+    act_node = None
+    for n in graph:
+        types = n.get("@type") or []
+        if isinstance(types, str):
+            types = [types]
+        if "owl:Ontology" in types and n.get("@id"):
+            act_node = n
+            break
+    if act_node is None:
+        return None
+    source_act_iri = act_node["@id"]
+
+    preamble_text = act_node.get("estleg:preambleText")
+    if not preamble_text:
+        return None
+
+    # Detect existing prior-pass output BEFORE clearing. Without this
+    # flag, the save would be gated solely on positive fresh output —
+    # so a parser tightening that drops an act's last citation would
+    # leave the now-stale issuedUnder / Citation_* triples on disk.
+    citation_prefix = (
+        f"estleg:Citation_{source_act_iri.removeprefix('estleg:')}_"
+    )
+    had_existing = (
+        "estleg:issuedUnder" in act_node
+        or "estleg:implementsCitation" in act_node
+        or any(
+            isinstance(n.get("@id"), str) and n["@id"].startswith(citation_prefix)
+            for n in graph
+        )
+    )
+
+    # Idempotency: clear prior pass output before regenerating.
+    act_node.pop("estleg:issuedUnder", None)
+    act_node.pop("estleg:implementsCitation", None)
+    graph[:] = [
+        n for n in graph
+        if not (isinstance(n.get("@id"), str)
+                and n["@id"].startswith(citation_prefix))
+    ]
+
+    # Re-find act_node after the comprehension — safe because we only
+    # filtered Citation_* nodes.
+    for n in graph:
+        if n.get("@id") == source_act_iri:
+            act_node = n
+            break
+
+    citations = extract_preamble_citations(preamble_text)
+
+    issued_under_set: set[str] = set()
+    implements_citation_refs: list[dict] = []
+    new_citation_nodes: list[dict] = []
+    citations_resolved = 0
+    citations_unresolved = 0
+
+    for seq, cit in enumerate(citations, start=1):
+        resolved = resolve_preamble_citation(
+            cit,
+            genitive_to_act_iri=genitive_to_act_iri,
+            prefix_to_provisions=prefix_to_provisions,
+            act_iri_to_prefix=act_iri_to_prefix,
+            state_reg_lookup=state_reg_lookup,
+            kov_act_lookup=kov_act_lookup,
+        )
+        if resolved is None:
+            citations_unresolved += 1
+            continue
+        citations_resolved += 1
+        target_iri, enabling_act_iri = resolved
+        issued_under_set.add(enabling_act_iri)
+
+        # Emit a reified Citation node only when the citation has
+        # paragraph or detail granularity.
+        if cit.get("paragraphs") or cit.get("citationDetail"):
+            citation_iri = build_citation_iri(source_act_iri, seq)
+            citation_node = build_citation_node(
+                iri=citation_iri,
+                target_iri=target_iri,
+                citation_detail=cit.get("citationDetail"),
+                citation_text=cit.get("citationText"),
+            )
+            new_citation_nodes.append(citation_node)
+            implements_citation_refs.append({"@id": citation_iri})
+
+    triples_emitted = 0
+    if issued_under_set:
+        act_node["estleg:issuedUnder"] = [
+            {"@id": iri} for iri in sorted(issued_under_set)
+        ]
+        triples_emitted += len(issued_under_set)
+
+    if implements_citation_refs:
+        act_node["estleg:implementsCitation"] = implements_citation_refs
+        graph.extend(new_citation_nodes)
+        triples_emitted += len(implements_citation_refs)
+
+    had_output = bool(issued_under_set or implements_citation_refs)
+
+    # Save when EITHER fresh output exists OR something was cleared.
+    # The cleared-but-empty case must persist the cleared state to disk
+    # so stale triples don't survive a parser tightening.
+    saved = False
+    if had_output or had_existing:
+        save_json(peep, doc)
+        saved = True
+
+    return {
+        "triples_emitted": triples_emitted,
+        "had_output": had_output,
+        "had_existing": had_existing,
+        "citations_resolved": citations_resolved,
+        "citations_unresolved": citations_unresolved,
+        "saved": saved,
+    }
+
+
 def main() -> int:
     print("=" * 70)
     print("Estonian Legal Ontology - Extract Cross-Law References")
@@ -1626,104 +1831,41 @@ def main() -> int:
                 doc = json.load(fh)
         except (json.JSONDecodeError, OSError):
             continue
-        graph = doc.get("@graph", [])
-        if not graph:
+
+        result = _process_preamble_for_act(
+            peep,
+            doc,
+            genitive_to_act_iri=genitive_to_act_iri,
+            prefix_to_provisions=prefix_to_provisions,
+            act_iri_to_prefix=act_iri_to_prefix,
+            state_reg_lookup=state_reg_lookup,
+            kov_act_lookup=kov_act_lookup,
+        )
+        if result is None:
+            # Peep had no @graph, no act_node, or no preambleText —
+            # not a candidate for the preamble pass.
             continue
 
-        # Find the act node (owl:Ontology-typed). Skip the file if absent.
-        act_node = None
-        for n in graph:
-            types = n.get("@type") or []
-            if isinstance(types, str):
-                types = [types]
-            if "owl:Ontology" in types and n.get("@id"):
-                act_node = n
-                break
-        if act_node is None:
-            continue
-        source_act_iri = act_node["@id"]
-
-        preamble_text = act_node.get("estleg:preambleText")
-        if not preamble_text:
-            continue
-
+        # Files with a preambleText count as processed even when the
+        # parser produced zero citations (matches prior behaviour).
         preamble_files_processed.add(peep)
         if is_kov:
             preamble_files_kov_processed.add(peep)
 
-        # Idempotency: clear prior pass output before regenerating.
-        act_node.pop("estleg:issuedUnder", None)
-        act_node.pop("estleg:implementsCitation", None)
-        graph[:] = [n for n in graph
-                    if not (isinstance(n.get("@id"), str)
-                            and n["@id"].startswith(
-                                f"estleg:Citation_{source_act_iri.removeprefix('estleg:')}_"
-                            ))]
+        preamble_triples_emitted += result["triples_emitted"]
+        if is_kov:
+            preamble_triples_emitted_kov += result["triples_emitted"]
+        preamble_citations_resolved += result["citations_resolved"]
+        preamble_citations_unresolved += result["citations_unresolved"]
 
-        # Re-find act_node after the comprehension — safe because we
-        # only filtered Citation_* nodes.
-        for n in graph:
-            if n.get("@id") == source_act_iri:
-                act_node = n
-                break
-
-        citations = extract_preamble_citations(preamble_text)
-        if not citations:
-            continue
-
-        issued_under_set: set[str] = set()
-        implements_citation_refs: list[dict] = []
-        new_citation_nodes: list[dict] = []
-
-        for seq, cit in enumerate(citations, start=1):
-            resolved = resolve_preamble_citation(
-                cit,
-                genitive_to_act_iri=genitive_to_act_iri,
-                prefix_to_provisions=prefix_to_provisions,
-                act_iri_to_prefix=act_iri_to_prefix,
-                state_reg_lookup=state_reg_lookup,
-                kov_act_lookup=kov_act_lookup,
-            )
-            if resolved is None:
-                preamble_citations_unresolved += 1
-                continue
-            preamble_citations_resolved += 1
-            target_iri, enabling_act_iri = resolved
-            issued_under_set.add(enabling_act_iri)
-
-            # Emit a reified Citation node only when the citation has
-            # paragraph or detail granularity.
-            if cit.get("paragraphs") or cit.get("citationDetail"):
-                citation_iri = build_citation_iri(source_act_iri, seq)
-                citation_node = build_citation_node(
-                    iri=citation_iri,
-                    target_iri=target_iri,
-                    citation_detail=cit.get("citationDetail"),
-                    citation_text=cit.get("citationText"),
-                )
-                new_citation_nodes.append(citation_node)
-                implements_citation_refs.append({"@id": citation_iri})
-
-        if issued_under_set:
-            act_node["estleg:issuedUnder"] = [
-                {"@id": iri} for iri in sorted(issued_under_set)
-            ]
-            preamble_triples_emitted += len(issued_under_set)
-            if is_kov:
-                preamble_triples_emitted_kov += len(issued_under_set)
-
-        if implements_citation_refs:
-            act_node["estleg:implementsCitation"] = implements_citation_refs
-            graph.extend(new_citation_nodes)
-            preamble_triples_emitted += len(implements_citation_refs)
-            if is_kov:
-                preamble_triples_emitted_kov += len(implements_citation_refs)
-
-        if issued_under_set or implements_citation_refs:
+        # files_with_output only counts files whose fresh parse produced
+        # positive output. The cleared-but-empty case (had_existing but
+        # not had_output) modifies the file but contributes zero triples
+        # to the report — that's the correct semantic.
+        if result["had_output"]:
             preamble_files_with_output.add(peep)
             if is_kov:
                 preamble_files_kov_with_output.add(peep)
-            save_json(peep, doc)
 
     print(f"  preamble files processed: {len(preamble_files_processed)} "
           f"(KOV: {len(preamble_files_kov_processed)})")

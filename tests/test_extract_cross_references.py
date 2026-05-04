@@ -64,6 +64,26 @@ class TestExtractPreambleCitations:
         from extract_cross_references import extract_preamble_citations
         assert extract_preamble_citations("Plain text with no citations.") == []
 
+    def test_chain_extension_emits_per_paragraph_citations(self):
+        """Chained same-law § references must each carry their OWN
+        lg/p detail, not the leading match's. Locks in the critical
+        invariant: '§ 6 lg 3 p 2 ja § 22 lg 1 p 34' produces TWO
+        citations, the second with its own (lg 1 p 34) detail."""
+        from extract_cross_references import extract_preamble_citations
+        cits = extract_preamble_citations(
+            "Määrus kehtestatakse kohaliku omavalitsuse korralduse "
+            "seaduse § 6 lg 3 p 2 ja § 22 lg 1 p 34 alusel."
+        )
+        assert len(cits) == 2
+        # Same law_ref shared
+        assert cits[0]["law_ref"] == cits[1]["law_ref"]
+        # First paragraph has its own detail
+        assert cits[0]["paragraphs"] == ["6"]
+        assert cits[0]["citationDetail"] == "lg 3 p 2"
+        # Second paragraph carries its OWN detail (lg 1 p 34, not lg 3 p 2)
+        assert cits[1]["paragraphs"] == ["22"]
+        assert cits[1]["citationDetail"] == "lg 1 p 34"
+
 
 class TestCanonicalLookups:
     def test_extends_provision_index_with_prefix_to_act_iri_and_reverse(
@@ -730,3 +750,133 @@ class TestKovBodyTextSavesFile:
         assert {"@id": "estleg:Reg_TLN15_Map_2020"} in refs
         # Temporary marker MUST NOT be persisted.
         assert "_layer2b_counted" not in prov
+
+
+class TestPreamblePassIdempotency:
+    """When a prior preamble pass produced output but the current run
+    produces no citations (parser tightening, source-act removal, or
+    edited preambleText), the cleared in-memory mutations MUST persist
+    to disk. Otherwise stale issuedUnder / implementsCitation /
+    Citation_* triples survive on the next re-read."""
+
+    def test_cleared_when_fresh_parse_empty_persists_to_disk(self, tmp_path):
+        """The bug: with prior output present and fresh parse empty,
+        the file was mutated in memory (pop / graph[:]) but NEVER saved
+        because the save was gated only on positive output. The fix:
+        save when EITHER fresh output OR had_existing."""
+        from extract_cross_references import _process_preamble_for_act
+
+        # Stage a peep with prior pass output and a preambleText that
+        # the parser cannot extract any citation from.
+        peep = tmp_path / "stale_preamble_peep.json"
+        doc = {
+            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+                         "owl": "http://www.w3.org/2002/07/owl#"},
+            "@graph": [
+                {
+                    "@id": "estleg:Reg_TLN_Test_Map_2024",
+                    "@type": ["owl:Ontology", "estleg:MunicipalRegulation"],
+                    "estleg:preambleText":
+                        "Plain text with no citations.",
+                    # Prior-pass output the new run must clear:
+                    "estleg:issuedUnder": [
+                        {"@id": "estleg:KOKS_Map_2026"}
+                    ],
+                    "estleg:implementsCitation": [
+                        {"@id": "estleg:Citation_Reg_TLN_Test_Map_2024_1"}
+                    ],
+                },
+                {
+                    # A stale Citation node from a prior parse:
+                    "@id": "estleg:Citation_Reg_TLN_Test_Map_2024_1",
+                    "@type": ["owl:NamedIndividual", "estleg:Citation"],
+                    "estleg:citationTarget": {"@id": "estleg:KOKS_Par_22"},
+                    "estleg:citationDetail": "lg 1 p 34",
+                    "estleg:citationText":
+                        "kohaliku omavalitsuse korralduse seaduse § 22 "
+                        "lõike 1 punkti 34",
+                },
+            ],
+        }
+        peep.write_text(json.dumps(doc, ensure_ascii=False, indent=2),
+                        encoding="utf-8")
+
+        # Re-load to pass a fresh dict to the helper (mirrors main()).
+        with open(peep, "r", encoding="utf-8") as fh:
+            doc_in = json.load(fh)
+
+        result = _process_preamble_for_act(
+            peep,
+            doc_in,
+            genitive_to_act_iri={},
+            prefix_to_provisions={},
+            act_iri_to_prefix={},
+            state_reg_lookup={},
+            kov_act_lookup={},
+        )
+
+        assert result is not None
+        # No fresh output (parser cannot match), but had_existing must
+        # be True since we staged prior triples.
+        assert result["had_output"] is False
+        assert result["had_existing"] is True
+        # Helper must save the cleared state to disk.
+        assert result["saved"] is True
+
+        # Reload from disk — the cleared state MUST persist.
+        with open(peep, "r", encoding="utf-8") as fh:
+            saved = json.load(fh)
+
+        act_node = next(n for n in saved["@graph"]
+                        if n["@id"] == "estleg:Reg_TLN_Test_Map_2024")
+        assert "estleg:issuedUnder" not in act_node
+        assert "estleg:implementsCitation" not in act_node
+        # No Citation_<shortid>_* nodes survive in the graph.
+        assert all(
+            not (isinstance(n.get("@id"), str)
+                 and n["@id"].startswith(
+                     "estleg:Citation_Reg_TLN_Test_Map_2024_"))
+            for n in saved["@graph"]
+        )
+
+    def test_no_existing_no_fresh_does_not_save(self, tmp_path):
+        """When neither prior output nor fresh output is present,
+        the helper must NOT save (no spurious file writes)."""
+        from extract_cross_references import _process_preamble_for_act
+
+        peep = tmp_path / "empty_preamble_peep.json"
+        doc = {
+            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+                         "owl": "http://www.w3.org/2002/07/owl#"},
+            "@graph": [
+                {
+                    "@id": "estleg:Reg_TLN_Empty_Map_2024",
+                    "@type": ["owl:Ontology", "estleg:MunicipalRegulation"],
+                    "estleg:preambleText":
+                        "Plain text with no citations.",
+                },
+            ],
+        }
+        peep.write_text(json.dumps(doc, ensure_ascii=False, indent=2),
+                        encoding="utf-8")
+        mtime_before = peep.stat().st_mtime_ns
+
+        with open(peep, "r", encoding="utf-8") as fh:
+            doc_in = json.load(fh)
+
+        result = _process_preamble_for_act(
+            peep,
+            doc_in,
+            genitive_to_act_iri={},
+            prefix_to_provisions={},
+            act_iri_to_prefix={},
+            state_reg_lookup={},
+            kov_act_lookup={},
+        )
+
+        assert result is not None
+        assert result["had_output"] is False
+        assert result["had_existing"] is False
+        assert result["saved"] is False
+        # Verify the file was NOT touched on disk.
+        assert peep.stat().st_mtime_ns == mtime_before
