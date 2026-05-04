@@ -126,7 +126,7 @@ def build_provision_index() -> tuple[
     act_iri_to_prefix: dict[str, str] = {}
 
     # Scan all JSON-LD law files (not riigikohus, not schema/index files)
-    for json_file in iter_peep_files(include_kov=False):  # DEFERRED to Layer 2b
+    for json_file in iter_peep_files():
         if json_file.name.startswith("riigikohus"):
             continue
         try:
@@ -1483,7 +1483,7 @@ def clear_existing_references() -> int:
     so the script is idempotent on re-run.
     """
     cleaned = 0
-    for json_file in iter_peep_files(include_kov=False):  # DEFERRED to Layer 2b
+    for json_file in iter_peep_files():
         if json_file.name.startswith("riigikohus"):
             continue
         try:
@@ -1562,7 +1562,7 @@ def main() -> int:
 
     # Step 4: Process each law file
     print("\n[4/5] Processing law files for cross-references...")
-    law_files = iter_peep_files(include_kov=False)  # DEFERRED to Layer 2b
+    law_files = iter_peep_files()
     # Exclude riigikohus files and non-law files
     law_files = [f for f in law_files if not f.name.startswith("riigikohus")]
 
