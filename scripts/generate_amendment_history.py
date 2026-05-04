@@ -36,7 +36,6 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
 DATA_DIR = REPO_ROOT / "data" / "riigiteataja"
 AMENDMENTS_DIR = KRR_DIR / "amendments"
-AMENDMENTS_DIR.mkdir(parents=True, exist_ok=True)
 EELNOUD_DIR = KRR_DIR / "eelnoud"
 
 NS = "https://data.riik.ee/ontology/estleg#"
@@ -375,6 +374,9 @@ def clear_amended_by_from_file(filepath: Path) -> bool:
 
 
 def main():
+    AMENDMENTS_DIR.mkdir(parents=True, exist_ok=True)
+    EELNOUD_DIR.mkdir(parents=True, exist_ok=True)
+
     print("=" * 70)
     print("Estonian Legal Ontology - Generate Amendment History")
     print("=" * 70)

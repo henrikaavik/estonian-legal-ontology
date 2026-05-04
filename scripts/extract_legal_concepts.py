@@ -450,7 +450,7 @@ def main():
                             or c["provision_id"] == par_to_iri.get(c["paragraph"])
                         )
                     )
-                    if bridged and is_kov:
+                    if is_kov:
                         _triples_kov += 2
                     if not bridged:
                         # par_nr wasn't in par_to_iri — slug fallback

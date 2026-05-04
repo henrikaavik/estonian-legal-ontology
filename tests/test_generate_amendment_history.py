@@ -11,18 +11,58 @@ import pytest
 
 
 class TestAmendmentHistoryDiscovery:
-    def test_imports_globalid_helper_from_temporal(self):
+    @pytest.mark.parametrize(
+        "module_name",
+        [
+            "generate_amendment_history",
+            "estleg_common",
+            "extract_temporal_data",
+        ],
+    )
+    def test_pair_peep_with_xml_dry_across_imports(self, tmp_path, module_name):
         """The amendment-history script reuses the globalId lookup
         helper — DRY rule. After Layer 2a I1, the canonical home is
-        estleg_common, but the import-from-amendment-history surface
-        still works via the re-export chain."""
-        from generate_amendment_history import (
-            build_globalid_xml_lookup,
-            pair_peep_with_xml,
+        estleg_common, and both generate_amendment_history and
+        extract_temporal_data re-export it. This test proves the rule
+        SEMANTICALLY: every accessible import path resolves the SAME
+        peep file to the SAME XML path against a shared fixture."""
+        import importlib
+
+        module = importlib.import_module(module_name)
+        pair_peep_with_xml = module.pair_peep_with_xml
+        build_globalid_xml_lookup = module.build_globalid_xml_lookup
+
+        # Fixture: one peep with estleg:globalId="555" and an XML file
+        # under maarus_kov/ keyed by globaalID="555".
+        rt = tmp_path / "data" / "riigiteataja"
+        (rt / "maarus_kov").mkdir(parents=True)
+        xml_path = rt / "maarus_kov" / "reg_555.xml"
+        xml_path.write_text(
+            '<akt globaalID="555"><metaandmed></metaandmed></akt>',
+            encoding="utf-8",
         )
-        # Same behavior verification as in Task 8
-        assert callable(build_globalid_xml_lookup)
-        assert callable(pair_peep_with_xml)
+
+        peep = tmp_path / "test_act_peep.json"
+        peep.write_text(
+            json.dumps({
+                "@context": {
+                    "estleg": "https://data.riik.ee/ontology/estleg#",
+                    "owl": "http://www.w3.org/2002/07/owl#",
+                },
+                "@graph": [
+                    {
+                        "@id": "estleg:Reg_X",
+                        "@type": ["owl:Ontology", "estleg:MunicipalRegulation"],
+                        "estleg:globalId": "555",
+                    }
+                ],
+            }),
+            encoding="utf-8",
+        )
+
+        lookup = build_globalid_xml_lookup(rt)
+        result = pair_peep_with_xml(peep, lookup)
+        assert result == xml_path
 
     def test_helpers_in_canonical_location(self):
         """After Layer 2a I1, build_globalid_xml_lookup and
