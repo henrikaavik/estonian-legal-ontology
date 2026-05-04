@@ -31,10 +31,14 @@ After the PR lands, all of the following hold:
 2. `GENERIC_PATTERNS` gains TWO new regex entries that match
    `linnavolikogu` / `vallavolikogu` / `alevivolikogu` (volikogu
    bodies) and `linnavalitsus` / `vallavalitsus` (executive
-   bodies), in all common Estonian case suffixes (genitive,
-   partitive, allative, inessive, illative). The new entries are
-   placed BEFORE the existing `\b(vald|linn)\b` so more-specific
-   matches take precedence.
+   bodies), in all common Estonian case suffixes (nominative,
+   genitive, partitive, allative, inessive, illative). The
+   matched text is then NORMALISED to the canonical body slug
+   (one of `linnavolikogu`, `vallavolikogu`, `alevivolikogu`,
+   `linnavalitsus`, `vallavalitsus`) via a helper that strips
+   case suffixes BEFORE the resolver receives the slug. The new
+   entries are placed BEFORE the existing `\b(vald|linn)\b` so
+   more-specific matches take precedence.
 3. KOV-scoped Issuer-binding: when a generic body word matches AND
    the source act has `estleg:enactedByMunicipality` set, the
    `competentAuthority` triple targets the matching `estleg:Issuer_*`
@@ -46,8 +50,12 @@ After the PR lands, all of the following hold:
    against `unresolved_references` in the coverage report.
 5. The Issuer registry stays canonical: KOV-bound `competentAuthority`
    IRIs are the same IRIs Layer 1 emits as `enactedBy` targets. NO
-   parallel `institutions/institution_<issuer_slug>.json` files are
-   written for KOV-bound resolutions.
+   parallel `institutions/institution_<body_slug>.json` files are
+   written for KOV-bound resolutions (e.g. when a Tallinn KOV act
+   resolves "linnavolikogu" to `estleg:Issuer_tallinna_linnavolikogu`,
+   no `institutions/institution_linnavolikogu.json` is created from
+   the body slug — the only side effect is the `competentAuthority`
+   triple pointing at the existing Issuer registry IRI).
 6. Existing non-KOV institution detection (Riigikohus, ministries,
    `kohalik_omavalitsus`, etc.) is unchanged: same `Institution_*`
    IRIs and same per-institution provenance files emitted.
@@ -59,10 +67,15 @@ After the PR lands, all of the following hold:
      loses ALL its provision references between runs, the
      corresponding `krr_outputs/institutions/institution_<slug>.json`
      file is **deleted**.
-8. `LegalProvisionShape` in `shacl/estonian_legal_shapes.ttl` gains
-   a property constraint for `competentAuthority`:
-   `sh:nodeKind sh:IRI` only. No class constraint — the value can
-   be either an `Institution_*` IRI or an `Issuer_*` IRI.
+8. `LegalProvisionShape` in `shacl/estonian_legal_shapes.ttl`
+   already has a `competentAuthority` constraint at lines 140-145
+   (`sh:nodeKind sh:IRI` only). This PR REVIEWS the constraint —
+   no new block. The existing description string ("Institution
+   responsible for enforcing or implementing this provision") is
+   updated to reflect that the value range now includes
+   `Issuer_*` IRIs in addition to the original `Institution_*`
+   form. A new test asserts EXACTLY one constraint exists for the
+   path (regression lock against an accidental duplicate block).
 9. Coverage report
    `krr_outputs/reports/kov/extract_institutional_competence_coverage.json`
    shows `files_with_output_kov > 0` and `triples_emitted_kov > 0`.
@@ -109,23 +122,66 @@ Two new regex entries, placed BEFORE the existing `\b(vald|linn)\b`
 in `GENERIC_PATTERNS` so more-specific matches take precedence:
 
 ```python
-# KOV body words (Layer 2c PR #2). Five Estonian case suffixes:
-# nominative (linnavolikogu), genitive (linnavolikogu),
-# partitive (linnavolikogu), illative (linnavolikogusse),
-# inessive (linnavolikogus), allative (linnavolikogule).
-# The volikogu word stem doesn't change across cases, but the
-# valitsus stem does (-e for genitive, -t for partitive, etc.).
-(re.compile(r"\b(?:linna|valla|alevi)volikogu\b", re.IGNORECASE),
+# KOV body words (Layer 2c PR #2). Both regexes match across all
+# common Estonian case suffixes:
+#   nominative   linnavolikogu, vallavalitsus
+#   genitive     linnavolikogu (same), vallavalitsuse (-e)
+#   partitive    linnavolikogu (same), vallavalitsust (-t)
+#   allative     linnavolikogule (-le), vallavalitsusele (-ele)
+#   inessive     linnavolikogus (-s), vallavalitsuses (-ses)
+#   illative     linnavolikogusse (-sse), vallavalitsusesse (-sse)
+#
+# The volikogu stem is invariant across cases, but the SUFFIX -le
+# / -s / -sse can append; the regex permits all three.
+# The valitsus stem mutates with -e in genitive, then composite
+# suffixes -ele/-ses/-sse stack on top of the genitive form.
+(re.compile(r"\b(?:linna|valla|alevi)volikogu(?:le|sse|s)?\b", re.IGNORECASE),
  "local_government_council", "local_government_body"),
-(re.compile(r"\b(?:linna|valla)valitsus(?:e|t|ele|ses|sse)?\b", re.IGNORECASE),
+(re.compile(r"\b(?:linna|valla)valitsus(?:e(?:le|ses|sse)?|t)?\b", re.IGNORECASE),
  "local_government_executive", "local_government_body"),
 ```
 
-The matched group passes through the existing `sanitize_id` →
-`normalize_iri_suffix` chain to produce a body-word slug
-(`linnavolikogu`, `vallavolikogu`, `linnavalitsus`,
-`vallavalitsus`, `alevivolikogu`). The slug is what the resolver
-keys on.
+After the regex match, the captured text passes through a NEW
+canonicalisation helper `_canonical_body_slug(matched_text)` that
+strips case suffixes before the existing `sanitize_id` →
+`normalize_iri_suffix` chain runs. This is what guarantees the
+resolver receives one of the five canonical body slugs:
+
+```python
+# Body-slug canonicalisation: trim Estonian case suffixes from
+# the matched text so the resolver's body_type_map lookup hits.
+# Without this, "vallavalitsusele" becomes the slug
+# "vallavalitsusele" (no map entry → resolver abstains).
+_BODY_SLUG_CANONICAL = {
+    "volikogu", "valitsus",
+}
+
+def _canonical_body_slug(matched: str) -> str | None:
+    """Strip Estonian case suffixes from a KOV body-word match
+    and return the canonical slug (linnavolikogu, vallavolikogu,
+    alevivolikogu, linnavalitsus, vallavalitsus) or None if the
+    match doesn't fit one of the known stems.
+    """
+    s = matched.lower()
+    # Strip trailing case suffixes greedily from longest to shortest
+    # so 'vallavalitsusele' → 'vallavalitsuse' → 'vallavalitsus'.
+    for suffix in ("esse", "ele", "ses", "sse", "le", "s", "t", "e"):
+        if s.endswith(suffix) and len(s) > len(suffix) + 4:
+            stripped = s[: -len(suffix)]
+            if stripped.endswith(("volikogu", "valitsus")):
+                s = stripped
+                break
+    # Validate the canonical form
+    for prefix in ("linna", "valla", "alevi"):
+        for stem in ("volikogu", "valitsus"):
+            if s == prefix + stem:
+                return s
+    return None
+```
+
+The slug returned by `_canonical_body_slug` is what the resolver
+keys on. If `None`, the detection is skipped entirely (defensive
+— keeps regex over-match noise out of the institutions output).
 
 ### Resolution — `_resolve_kov_authority`
 
@@ -143,16 +199,20 @@ def _resolve_kov_authority(
     estleg:Issuer_* IRI for the source act's municipality.
 
     Args:
-        body_slug: normalised body word from GENERIC_PATTERNS detection.
+        body_slug: canonical body word from _canonical_body_slug.
             Expected: "linnavolikogu", "vallavolikogu",
             "linnavalitsus", "vallavalitsus", "alevivolikogu".
-        source_municipality: the @id of the source act's
-            estleg:enactedByMunicipality. None when the source is a
-            Law or state regulation — the resolver returns None
-            (abstain rule).
+        source_municipality: the @id STRING of the source act's
+            estleg:enactedByMunicipality. The caller MUST unwrap
+            the JSON-LD object form (`{"@id": "estleg:Municipality_..."}`)
+            before passing — see _id_ref helper below. None when
+            the source is a Law or state regulation — the resolver
+            returns None (abstain rule).
         issuer_registry: issuer @id → (label_normalized,
             municipality_iri, body_type) from Layer 2b's
-            build_issuer_registry.
+            build_issuer_registry. `municipality_iri` is a plain
+            STRING IRI (e.g. "estleg:Municipality_tallinn"), so
+            the resolver compares strings, not dicts.
 
     Returns:
         The matching Issuer @id when EXACTLY one issuer in the
@@ -249,8 +309,46 @@ if authority_refs:
 
 `source_municipality` is read once per peep file (immediately after
 loading the doc) via the same `_find_act_node` helper added in
-PR #1. `issuer_registry` is built once at startup using
-`build_issuer_registry(KRR_DIR / "issuers_kov_peep.json")`.
+PR #1, then unwrapped to a plain string IRI via a new
+`_id_ref(value)` helper:
+
+```python
+def _id_ref(value) -> str | None:
+    """Unwrap a JSON-LD object form `{"@id": "..."}` to a plain
+    string IRI. Returns the string as-is if already a string, or
+    None when the value is missing or malformed.
+
+    KOV peeps store estleg:enactedByMunicipality as
+    `{"@id": "estleg:Municipality_..."}` (JSON-LD object form),
+    while build_issuer_registry stores municipality_iri as a
+    plain string. Without this unwrap, the resolver would compare
+    a dict against a string and ALWAYS return None — silently
+    breaking every KOV Issuer resolution.
+    """
+    if isinstance(value, str):
+        return value
+    if isinstance(value, dict):
+        return value.get("@id")
+    return None
+```
+
+Per-peep usage in `main()`:
+
+```python
+act_node = _find_act_node(doc)
+if act_node is None:
+    # ... aggregate-vs-malformed handling per PR #1 ...
+    continue
+source_municipality = _id_ref(act_node.get("estleg:enactedByMunicipality"))
+# source_municipality is now a STRING IRI or None.
+```
+
+`issuer_registry` is built once at startup using
+`build_issuer_registry(KRR_DIR / "issuers_kov_peep.json")` from
+Layer 2b. Its `municipality_iri` field is already a plain string
+(see `extract_cross_references.py:_id_ref`-style normalisation in
+the registry builder), so the resolver's `mun_iri == source_municipality`
+comparison is string-to-string.
 
 ### Idempotency
 
@@ -286,9 +384,27 @@ peep). We can extend that flow:
    existing files; track them as `pre_existing_institution_files`.
 2. After the per-peep loop completes, the writer block iterates
    `inst_data.items()` to emit per-institution files. Track which
-   slugs got written this run.
-3. At the end: `for path in pre_existing_institution_files: if
-   path.stem not in written_slugs: path.unlink()`.
+   slugs got written this run as `written_slugs: set[str]` (just
+   the slug — e.g. `"riigikohus"`, NOT `"institution_riigikohus"`).
+3. At the end:
+   ```python
+   for path in pre_existing_institution_files:
+       # path.stem is "institution_riigikohus"; the slug-only form
+       # is the part after the "institution_" prefix.
+       slug = path.stem.removeprefix("institution_")
+       if slug not in written_slugs:
+           try:
+               path.unlink()
+           except OSError:
+               pass  # tolerate concurrent removal
+   ```
+
+   The `removeprefix` is critical: comparing `path.stem` directly
+   against `written_slugs` would compare `"institution_riigikohus"`
+   against `"riigikohus"` and ALWAYS report not-found, deleting
+   every legitimate file. Test
+   `TestStaleInstitutionFileDeletion::test_living_institution_files_preserved`
+   locks this in.
 
 The resolver-bound Issuer IRIs do NOT add to `inst_data` (per
 "identity stays canonical" decision), so they don't trigger
@@ -314,22 +430,36 @@ issuer). Useful for sniffing under-extraction.
 
 ### SHACL
 
-Add to `LegalProvisionShape` in `shacl/estonian_legal_shapes.ttl`:
+The `competentAuthority` property already has a constraint in
+`shacl/estonian_legal_shapes.ttl` (lines 140-145):
 
 ```turtle
 sh:property [
     sh:path estleg:competentAuthority ;
     sh:nodeKind sh:IRI ;
     sh:name "competentAuthority" ;
-    sh:description "Layer 2c — institutional body competent for the matter described in this provision. Range is open: may be estleg:Institution_* (named institutions, ministries, courts, generic local-government references) or estleg:Issuer_* (when the source act is a MunicipalRegulation with enactedByMunicipality scope and the body word resolves to a registered Issuer). Bare-string literals and blank nodes are not permitted." ;
+    sh:description "Institution responsible for enforcing or implementing this provision" ;
 ] ;
 ```
 
-No class constraint. Estonian-language judicial structure is still
-evolving in the corpus (e.g. `estleg:Court` subclass paths may
-land in a future PR); locking the value to one of two specific
-classes today would create churn when other authority types are
-introduced.
+The existing `sh:nodeKind sh:IRI` constraint is exactly what this
+PR needs — both `Institution_*` and `Issuer_*` IRI values pass.
+No class constraint is desired (Estonian-language judicial
+structure is still evolving; e.g. `estleg:Court` subclass paths
+may land in a future PR; locking the value to one of two specific
+classes today would create churn).
+
+This PR's only TTL change is to UPDATE the description string to
+reflect the broader value range:
+
+```turtle
+    sh:description "Institution or Issuer responsible for enforcing or implementing this provision. May be an estleg:Institution_* IRI (named institutions, ministries, courts, generic local-government references) or an estleg:Issuer_* IRI (when the source act is a MunicipalRegulation with enactedByMunicipality scope and the body word resolves to a registered Issuer)." ;
+```
+
+No new constraint block. The `TestExtractCompetenceWithIssuerBinding`
+suite includes a regression assertion that exactly ONE
+`competentAuthority` constraint exists in the SHACL graph (catches
+accidental duplicate blocks).
 
 ## Components
 
@@ -338,8 +468,8 @@ introduced.
 | Path | Change |
 | --- | --- |
 | `scripts/extract_institutional_competence.py` | Remove `include_kov=False` pin (line 239); add 2 new `GENERIC_PATTERNS` entries for KOV body words (placed before `vald|linn`); add `_find_act_node` helper (or import from `extract_sanctions` — verify during implementation); add `_resolve_kov_authority` resolver; add `issuer_registry` build at startup (re-uses Layer 2b's `build_issuer_registry`); replace global `_clear_existing_institutions` with per-file in-memory processing; wire body-word matches through resolver before falling back to `Institution_*`; skip `inst_data` entry when resolver succeeds; track `pre_existing_institution_files` for end-of-run deletion of orphaned files; add coverage instrumentation reusing `kov_pipeline_coverage.CoverageReport`; change `main()` to return `int`; use `raise SystemExit(main())`. |
-| `tests/test_extract_institutional_competence.py` | **New file.** 17 tests across 6 classes (3 detection unit + 4 resolver unit + 3 integration + 3 idempotency + 1 institutions-file deletion + 2 coverage + 1 corpus-wide invariant). |
-| `shacl/estonian_legal_shapes.ttl` | Add `sh:property` block to `LegalProvisionShape` for `competentAuthority` (`sh:nodeKind sh:IRI`, no class constraint). |
+| `tests/test_extract_institutional_competence.py` | **New file.** 17 tests across 7 classes (3 detection unit + 4 resolver unit + 3 integration + 3 idempotency + 1 institutions-file deletion + 2 coverage + 1 corpus-wide invariant). |
+| `shacl/estonian_legal_shapes.ttl` | UPDATE the existing `competentAuthority` constraint's `sh:description` to mention the broader Issuer/Institution range (the constraint itself — `sh:nodeKind sh:IRI` — already exists at lines 140-145; do NOT add a duplicate). |
 | `docs/SCHEMA_REFERENCE.md` | Mark `competentAuthority` populated in the Layer 2 schema table; add a new subsection in the existing Institutional Competence section with KOV Issuer-binding semantics, a worked KOV example, and the SHACL constraint summary. |
 | `CHANGELOG.md` | Layer 2c PR #2 entry under `## [Unreleased]` with Added/Changed/Coverage/Internal subsections. |
 
@@ -356,9 +486,16 @@ introduced.
 
 ## Test plan
 
-5 new test classes plus supporting unit tests, **17 tests total**
-(corrected from earlier "~16" tally — the corpus invariant landed
-as a separate class in Section 4). Files: `tests/test_extract_institutional_competence.py`.
+**7 new test classes, 17 tests total.** Files: `tests/test_extract_institutional_competence.py`.
+
+Class breakdown (3 + 4 + 3 + 3 + 1 + 2 + 1 = 17):
+- `TestKovBodyWordDetection` — 3 unit tests
+- `TestResolveKovAuthority` — 4 unit tests
+- `TestExtractCompetenceWithIssuerBinding` — 3 integration tests
+- `TestCompetenceIdempotency` — 3 integration tests
+- `TestStaleInstitutionFileDeletion` — 1 integration test
+- `TestCompetenceCoverageReport` — 2 integration tests
+- `TestCorpusInvariant` — 1 corpus-wide test (`@pytest.mark.slow`)
 
 ### `TestKovBodyWordDetection` (unit, 3 tests)
 
@@ -381,8 +518,15 @@ as a separate class in Section 4). Files: `tests/test_extract_institutional_comp
 - `test_kov_act_competence_binds_to_issuer` (provision text
   `"linnavolikogu kehtestab korra"` in a Tallinn KOV act →
   `competentAuthority` contains
-  `estleg:Issuer_tallinna_linnavolikogu`; NO parallel
-  `Institution_linnavolikogu`)
+  `estleg:Issuer_tallinna_linnavolikogu`; provision's
+  `competentAuthority` list does NOT contain
+  `estleg:Institution_linnavolikogu` (the body-slug fallback that
+  would land if the resolver silently failed); the
+  `krr_outputs/institutions/` directory does NOT contain
+  `institution_linnavolikogu.json` — the body-slug name, not the
+  issuer-slug name. This is what catches the regression where
+  the resolver falls through and the original `Institution_*`
+  path takes over.)
 - `test_state_law_competence_with_kov_body_word_abstains` (Law-
   typed peep with same text → no `competentAuthority` for
   linnavolikogu; counts as unresolved)
@@ -440,8 +584,10 @@ scheduled BEFORE coverage):
 4. Stale `institutions/<slug>.json` deletion when no provisions
    cite the slug after re-run (`TestStaleInstitutionFileDeletion`,
    1 test).
-5. Add SHACL property constraint for `competentAuthority`
-   (`sh:nodeKind sh:IRI`).
+5. UPDATE the existing SHACL `competentAuthority` constraint's
+   description (the `sh:nodeKind sh:IRI` shape already exists at
+   lines 140-145; this commit only refreshes the `sh:description`
+   to reflect the broader value range).
 6. Unpin: remove `include_kov=False` from `iter_peep_files` call.
 7. Coverage instrumentation reusing `kov_pipeline_coverage` +
    `main() -> int` + `SystemExit` (`TestCompetenceCoverageReport`,
@@ -505,28 +651,77 @@ Reviewer focuses on the 4 source-code commits + 1 corpus run +
 the SHACL/docs/PR-body commits; the corpus output is mechanical
 artifact.
 
-**Risk 4: `inst_data` accidentally accumulating Issuer entries.**
+**Risk 4: Resolver silently failing → fallthrough to body-slug
+`Institution_*` path.**
 
 The wiring change skips `inst_data[inst_iri] = ...` when the
-resolver succeeds. A bug here would leak Issuer slugs into the
-institutions output and create duplicate per-institution files.
-Mitigation: `test_kov_act_competence_binds_to_issuer` asserts
-the absence of a parallel `Institution_*` IRI in the same
-`competentAuthority` list AND the absence of a sibling
-`institutions/institution_<issuer_slug>.json`.
+resolver succeeds. The DANGER is a bug where the resolver
+silently returns None (e.g. `_id_ref` mis-unwrap, registry build
+empty, body-slug normalisation failing) — the code would
+fallthrough to the original `Institution_*` path and emit
+`estleg:Institution_linnavolikogu` (the BODY slug — not the
+issuer slug, because at fallthrough we only have the body word).
+Mitigation: `test_kov_act_competence_binds_to_issuer` asserts:
+
+1. The provision's `competentAuthority` list contains the
+   expected Issuer IRI (e.g. `estleg:Issuer_tallinna_linnavolikogu`).
+2. The same list does NOT contain `estleg:Institution_linnavolikogu`
+   or `estleg:Institution_vallavolikogu` etc. (body-slug fallback).
+3. The `krr_outputs/institutions/` directory does NOT contain
+   `institution_linnavolikogu.json` etc. (body-slug per-institution
+   file that would only exist on a fallthrough emission).
+
+The corpus invariant test (`TestCorpusInvariant`) extends this to
+a corpus-wide check: no KOV peep's `competentAuthority` may
+contain a body-slug `Institution_*` IRI, and no body-slug
+`institution_<body_slug>.json` may exist after the run.
 
 **Risk 5: Stale-institution-file deletion deletes a file that's
 still cited by a peep that errored out and didn't get processed.**
 
 The deletion runs at the end of `main()` over the full
 `pre_existing_institution_files` set, scoped against the FULL run's
-`written_slugs` aggregate. If a peep file errors mid-iteration
-(`failure_samples` log), the institution it would have cited is
-not in `written_slugs`, and a stale file CAN be deleted incorrectly.
-Mitigation: only delete when `error_count == 0` for the run.
-Documented in code; the per-file flow naturally rolls forward
-from a few failures, but stale-file deletion is a more
-destructive op that should require a clean run.
+`written_slugs` aggregate. If a peep file errors mid-iteration,
+the institution it would have cited is not in `written_slugs`, and
+a stale file CAN be deleted incorrectly. Mitigation: only delete
+when zero per-peep errors occurred. Documented in code; the
+per-file flow naturally rolls forward from a few failures, but
+stale-file deletion is a more destructive op that should require
+a clean run.
+
+**Implementation-order note:** the per-peep error counter must
+exist BEFORE Task 4's deletion logic. Task 7 (coverage
+instrumentation) wires the full `_files_skipped` / `_failures` /
+`_skip_reasons` accumulators per the kov_pipeline_coverage helper,
+but Task 4 lands earlier. Resolution: Task 4 introduces a MINIMAL
+local counter (`_per_peep_errors: int = 0`, incremented inside the
+existing `try / except (json.JSONDecodeError, OSError)` block
+around `load_json`) used solely to guard the deletion:
+
+```python
+# At the end of main(), AFTER the per-peep loop and AFTER the
+# per-institution writer block:
+if _per_peep_errors == 0:
+    for path in pre_existing_institution_files:
+        slug = path.stem.removeprefix("institution_")
+        if slug not in written_slugs:
+            try:
+                path.unlink()
+            except OSError:
+                pass
+else:
+    print(f"[skip stale-deletion] {_per_peep_errors} per-peep "
+          f"errors during this run; preserving "
+          f"{len(pre_existing_institution_files)} pre-existing "
+          f"institution files to avoid deleting valid entries "
+          f"whose owning peep failed to load.")
+```
+
+Task 7 then EXTENDS this counter into the full `_failures` list +
+`error_count` reporting; the deletion guard uses
+`len(_failures) == 0` after Task 7 lands. The per-peep counter
+introduced in Task 4 is the minimal scaffolding to keep the
+guard meaningful at every commit point.
 
 ## Out-of-scope reminders
 
