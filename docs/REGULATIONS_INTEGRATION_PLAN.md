@@ -21,6 +21,68 @@
 > reached when 2a + 2b + 2c have all landed. See
 > `docs/superpowers/plans/2026-05-03-kov-integration-layer2a.md`.
 
+> **Status (2026-05-04):** KOV integration Layer 2b (cross-references +
+> inverse projection) implemented. `extract_cross_references` and
+> `generate_inverse_references` run KOV by default; the three remaining
+> `include_kov=False` pins are removed. Preamble citations resolve into
+> `estleg:issuedUnder` + reified `estleg:Citation` (with
+> `citationTarget` / `citationDetail` / `citationText`); KOV body-text
+> act references are scoped by `enactedByMunicipality`;
+> `estleg:implementedBy` / `estleg:implementedByCount` are emitted as a
+> filtered inverse projection (preamble-only — body-text refs continue
+> to use `estleg:referencedBy`). Gate B umbrella status: **2/3 sub-PRs
+> merged** (2a + 2b). Layer 2c (sanctions, competence,
+> court-provision-links) remains. See
+> `docs/superpowers/plans/2026-05-03-kov-integration-layer2b.md`.
+
+### Gate B — Layer 2b: Cross-references + Inverse (COMPLETE)
+
+- **Date completed:** 2026-05-04
+- **PR:** (created in Task 14)
+- **Branch:** `feature/kov-layer2b`
+
+**Deliverables:**
+- `extract_cross_references.py` emits `estleg:issuedUnder`,
+  `estleg:implementsCitation`, and reified `estleg:Citation` nodes from
+  every parseable preamble (laws, state regulations, KOV acts).
+- `extract_cross_references.py` resolves KOV body-text act references
+  scoped to the source municipality — cross-municipality false
+  positives are explicitly skipped via `enactedByMunicipality`.
+- `generate_inverse_references.py` emits
+  `estleg:implementedBy` / `estleg:implementedByCount` as a filtered
+  inverse projection (preamble citations only — body-text references
+  are excluded; the existing `estleg:referencedBy` inverse continues to
+  cover those).
+- `generate_inverse_references.py` indexes act-level nodes in
+  `iri_to_file` so KOV body-text references targeting act IRIs gain
+  `referencedBy` correctly (a Layer 2a-era latent bug surfaced once
+  KOV joined).
+- Both pipelines run KOV by default (3 `include_kov=False` pins
+  removed in Tasks 8 and 11).
+- Per-pipeline coverage reports under `krr_outputs/reports/kov/`.
+
+**Coverage (2026-05-04 corpus run):**
+
+| Metric | extract_cross_references | generate_inverse_references |
+| --- | --- | --- |
+| Input files (total / KOV) | 15,508 / 11,059 | — |
+| Files with output (total / KOV) | 9,648 / 8,837 (80% of KOV) | 921 / 511 (KOV) |
+| Triples emitted (total / KOV) | 30,495 / 22,153 | 4,008 / 512 |
+| Preamble citations resolved | 11,700 / 22,538 found (51%) | — |
+| Preamble triples (total / KOV) | 21,700 / 20,916 | — |
+| `implementedBy` edges | — | 833 across 604 files |
+| `referencedBy` edges | — | 3,175 across 346 files |
+| Wall-time | 226.29 s | 27.10 s |
+| Items/s | 68.53 | 572.29 |
+| Peak RSS | 330 MB | 199 MB |
+
+Inverse-pass invariants: 0 stale `implementedBy` left after the
+idempotency clear; 0 symmetry mismatches.
+
+**Gate B umbrella status:** 2/3 sub-PRs merged (Layer 2a + Layer 2b).
+Layer 2c (sanctions, competence, court-provision-links) is the
+remaining piece.
+
 ## Finding
 
 The missing domestic **maarus / maarused** are in Riigi Teataja, not in a separate source. The current ontology pipeline already uses the right Riigi Teataja API, but `scripts/generate_all_laws.py` hard-codes `dokument=seadus`. The same endpoint supports `dokument=määrus`.
