@@ -523,7 +523,7 @@ def main() -> None:
     print("Estonian Legal Ontology - Sanctions Extraction")
     print("=" * 70)
 
-    law_files = iter_peep_files(include_kov=False)  # DEFERRED to Layer 2c
+    law_files = iter_peep_files()
 
     print("\n[1/4] Processing law files (per-file idempotent)...")
 
