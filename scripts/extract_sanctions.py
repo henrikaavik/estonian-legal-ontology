@@ -15,11 +15,18 @@ from __future__ import annotations
 
 import json
 import re
+import time
 from collections import defaultdict
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 from estleg_common import iter_peep_files
+from kov_pipeline_coverage import (
+    CoverageReport,
+    measure_runtime,
+    resolve_pipeline_version,
+    write_coverage_report,
+)
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
@@ -518,10 +525,22 @@ def _build_label(sanction_type: str, sanction_data: dict, provision_ref: str) ->
     return desc
 
 
-def main() -> None:
+def main() -> int:
     print("=" * 70)
     print("Estonian Legal Ontology - Sanctions Extraction")
     print("=" * 70)
+
+    _start = time.perf_counter()
+    _files_processed: set[Path] = set()
+    _files_processed_kov: set[Path] = set()
+    _files_with_output: set[Path] = set()
+    _files_with_output_kov: set[Path] = set()
+    _triples = 0
+    _triples_kov = 0
+    _files_skipped = 0
+    _skip_reasons: dict[str, int] = {}
+    _failures: list[str] = []
+    _unresolved = 0  # always 0 for this pipeline; field required by helper
 
     law_files = iter_peep_files()
 
@@ -541,9 +560,48 @@ def main() -> None:
 
         act_node = _find_act_node(doc)
         if act_node is None:
-            # Malformed peep — coverage skip handled in Task 7.
+            # Distinguish aggregate-registry peeps (issuers_kov_peep.json,
+            # municipalities_peep.json, etc.) from malformed act peeps.
+            #
+            # Aggregate peeps have no provision nodes — they're
+            # catalogues of Issuer/Municipality/etc. entities.
+            # Silently skip those (no counter, no failure log) because
+            # they're correctly-formed non-act peeps that just don't
+            # carry sanctions.
+            #
+            # Malformed act peeps DO have provision nodes but no
+            # estleg:Act + owl:Ontology typing on their root node —
+            # that's a Layer 1 data bug worth surfacing in the
+            # coverage report's failure_samples.
+            #
+            # Use `estleg:paragrahv` as the provision signal rather
+            # than @type membership: it's universal across all
+            # provision class shapes (estleg:LegalProvision,
+            # estleg:KovProvision, estleg:LegalProvision_<prefix>,
+            # estleg:Regulation_<id>, etc.). @type-based detection
+            # would silently miss state-regulation provisions typed
+            # only as estleg:Regulation_<id>.
+            has_provisions = any(
+                "estleg:paragrahv" in n
+                for n in doc.get("@graph", [])
+            )
+            if has_provisions:
+                _files_skipped += 1
+                _skip_reasons["missing_act_node"] = (
+                    _skip_reasons.get("missing_act_node", 0) + 1
+                )
+                _failures.append(
+                    f"{filepath.name}: malformed peep — has provisions "
+                    f"but missing estleg:Act + owl:Ontology root node"
+                )
+            # Either way, the file has no act to classify — skip extraction.
             continue
         enforcement_level = _classify_enforcement_level(act_node)
+
+        is_kov = "regulations/kov/" in str(filepath)
+        _files_processed.add(filepath)
+        if is_kov:
+            _files_processed_kov.add(filepath)
 
         # Step 1: detect prior peep-side output BEFORE any mutation.
         had_existing_peep = any(
@@ -631,6 +689,12 @@ def main() -> None:
             save_json(filepath, doc)
         if law_sanctions:
             all_law_sanctions[law_name] = law_sanctions
+            _files_with_output.add(filepath)
+            if is_kov:
+                _files_with_output_kov.add(filepath)
+            _triples += len(law_sanctions)  # SANCTION RECORDS, not RDF triples
+            if is_kov:
+                _triples_kov += len(law_sanctions)
 
         # Sanctions-file lifecycle:
         # - If the act produced fresh sanctions, the writer block
@@ -727,6 +791,59 @@ def main() -> None:
         print(f"    {entry['law']:45s}  severity={entry['max_severity']}  count={entry['sanction_count']}")
     print("=" * 70)
 
+    # ----- coverage report -----
+    # Note: triples_emitted counts SANCTION RECORDS (not RDF triples).
+    # Each Sanction_* node typically projects 4-7 RDF triples
+    # (@type, label, sanctionType, applicableProvision, optional
+    # min/maxPenalty). Counting records matches the analytical unit
+    # (cf. total_sanction_count in the existing sanctions_report.json).
+    # extract_cross_references counts actual triples; sanctions counts
+    # records; the difference is intentional.
+    all_input_files = list(iter_peep_files())
+    _kov_files = [p for p in all_input_files
+                  if "regulations/kov/" in str(p)]
+
+    _wall, _rate, _peak_mb = measure_runtime(_start, len(_files_processed))
+    out_path = KRR_DIR / "reports" / "kov" / "extract_sanctions_coverage.json"
+    write_coverage_report(
+        CoverageReport(
+            pipeline="extract_sanctions",
+            run_timestamp=datetime.now(timezone.utc).isoformat(),
+            pipeline_version=resolve_pipeline_version(),
+            input_files_total=len(all_input_files),
+            input_files_kov=len(_kov_files),
+            files_processed=len(_files_processed),
+            files_processed_kov=len(_files_processed_kov),
+            files_with_output=len(_files_with_output),
+            files_with_output_kov=len(_files_with_output_kov),
+            files_skipped=_files_skipped,
+            skip_reasons=_skip_reasons,
+            triples_emitted=_triples,
+            triples_emitted_kov=_triples_kov,
+            unresolved_references=_unresolved,
+            wall_time_seconds=round(_wall, 2),
+            items_per_second=round(_rate, 2),
+            peak_memory_mb=round(_peak_mb, 1),
+            error_count=len(_failures),
+            failure_samples=_failures,
+        ),
+        out_path,
+    )
+    print(f"\nCoverage report: {out_path}")
+    print(f"  input_files_total: {len(all_input_files)} (KOV: {len(_kov_files)})")
+    print(f"  files_with_output: {len(_files_with_output)} (KOV: {len(_files_with_output_kov)})")
+    print(f"  triples_emitted (sanction records): {_triples} (KOV: {_triples_kov})")
+
+    # Gate check (matches Layer 2a/2b convention).
+    if len(_kov_files) >= 11000 and len(_files_with_output_kov) == 0:
+        print("\nGATE FAIL: KOV files were processed but none produced sanction output.")
+        return 1
+    if _triples_kov == 0 and len(_kov_files) >= 11000:
+        print("\nGATE FAIL: zero KOV sanction records emitted.")
+        return 1
+    print("\nGATE OK")
+    return 0
+
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

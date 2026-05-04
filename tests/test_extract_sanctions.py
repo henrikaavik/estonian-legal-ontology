@@ -511,3 +511,164 @@ class TestSanctionsIdempotency:
             "stale sanctions JSON must be deleted when act loses "
             "all matches"
         )
+
+
+class TestSanctionsCoverageReport:
+    """The script must write a kov_pipeline_coverage CoverageReport
+    JSON to krr_outputs/reports/kov/extract_sanctions_coverage.json,
+    and main() must return non-zero when the gate fails."""
+
+    def test_coverage_report_written_with_kov_split(
+        self, tmp_path, monkeypatch
+    ):
+        """Stage 1 KOV act + 1 state law, both with sanction text.
+        Run main(). Assert the coverage JSON exists with files_with_output_kov >= 1
+        and triples_emitted_kov >= 1."""
+        import extract_sanctions as mod
+        import estleg_common
+        krr = tmp_path / "krr_outputs"
+        sanctions_dir = krr / "sanctions"
+        reports_dir = krr / "reports" / "kov"
+        sanctions_dir.mkdir(parents=True)
+        reports_dir.mkdir(parents=True)
+
+        # KOV act with sanction
+        kov = krr / "regulations" / "kov" / "test"
+        kov.mkdir(parents=True)
+        (kov / "kov_peep.json").write_text(json.dumps({
+            "@context": {
+                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "owl": "http://www.w3.org/2002/07/owl#",
+            },
+            "@graph": [
+                {"@id": "estleg:Reg_TST_Map_2024",
+                 "@type": ["owl:Ontology", "estleg:Act",
+                           "estleg:MunicipalRegulation"]},
+                {"@id": "estleg:Reg_TST_Par_1",
+                 "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+                 "estleg:paragrahv": "§ 1",
+                 "estleg:summary":
+                     "Parkimisrikkumise eest, mis on väärtegu, mille "
+                     "eest on ette nähtud rahatrahv kuni 50 trahviühikut."},
+            ],
+        }), encoding="utf-8")
+
+        # State law with sanction
+        (krr / "alko_peep.json").write_text(json.dumps({
+            "@context": {
+                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "owl": "http://www.w3.org/2002/07/owl#",
+            },
+            "@graph": [
+                {"@id": "estleg:AS_Map_2026",
+                 "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]},
+                {"@id": "estleg:AS_Par_1",
+                 "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+                 "estleg:paragrahv": "§ 1",
+                 "estleg:summary":
+                     "Alkoholi keelu rikkumise eest, mis on väärtegu, "
+                     "mille eest on ette nähtud rahatrahv kuni 100 "
+                     "trahviühikut."},
+            ],
+        }), encoding="utf-8")
+
+        monkeypatch.setattr(mod, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "SANCTION_DIR", sanctions_dir)
+        monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "iter_peep_files", _iter_kov_inclusive)
+
+        rc = mod.main()
+        assert rc == 0, f"main() should return 0 on success, got {rc}"
+
+        coverage_path = reports_dir / "extract_sanctions_coverage.json"
+        assert coverage_path.exists()
+        with open(coverage_path, "r", encoding="utf-8") as fh:
+            cov = json.load(fh)
+        assert cov["files_processed_kov"] >= 1
+        assert cov["files_with_output_kov"] >= 1
+        assert cov["triples_emitted_kov"] >= 1
+        # Total counters include KOV + non-KOV
+        assert cov["files_with_output"] >= 2
+        assert cov["triples_emitted"] >= 2
+
+    def test_gate_fails_when_kov_input_nontrivial_but_no_output(
+        self, tmp_path, monkeypatch
+    ):
+        """Mock iter_peep_files to return ≥11,000 KOV paths whose
+        summaries contain no sanction language. main() must return 1
+        (gate fail).
+
+        Implementation note: rather than physically writing 11,001
+        fixture files (slow on every full pytest run after Task 6
+        unpins the script), monkeypatch BOTH `mod.iter_peep_files`
+        (returns synthetic Path objects) AND `mod.load_json` (returns
+        a single canned doc for each synthetic path). The script's
+        per-file flow processes each path identically, so one canned
+        doc covers all 11,001 calls.
+        """
+        import extract_sanctions as mod
+        import estleg_common
+        krr = tmp_path / "krr_outputs"
+        sanctions_dir = krr / "sanctions"
+        reports_dir = krr / "reports" / "kov"
+        sanctions_dir.mkdir(parents=True)
+        reports_dir.mkdir(parents=True)
+
+        # Synthetic KOV paths — never physically created, only used
+        # for path-identity checks (KOV attribution scans for
+        # "regulations/kov/" in str(path)).
+        kov_dir_marker = krr / "regulations" / "kov" / "no_sanctions"
+        synthetic_kov_paths = [
+            kov_dir_marker / f"act_{i}_peep.json" for i in range(11001)
+        ]
+
+        # Canned doc — KOV act with NO sanction text. The script's
+        # extract_sanctions() returns [] on this summary, so no
+        # sanctions are emitted regardless of how many times the
+        # doc is read.
+        canned_doc = {
+            "@context": {
+                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "owl": "http://www.w3.org/2002/07/owl#",
+            },
+            "@graph": [
+                {"@id": "estleg:Reg_Boring_Map_2024",
+                 "@type": ["owl:Ontology", "estleg:Act",
+                           "estleg:MunicipalRegulation"]},
+                {"@id": "estleg:Reg_Boring_Par_1",
+                 "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+                 "estleg:paragrahv": "§ 1",
+                 "estleg:summary":
+                     "Käesolev määrus reguleerib administratiivseid "
+                     "küsimusi ega sätesta karistusi."},
+            ],
+        }
+
+        def fake_iter(*args, **kwargs):
+            return synthetic_kov_paths
+
+        def fake_load(filepath):
+            # Return a deepcopy so each per-file iteration mutates an
+            # independent dict (the script clears stale triples
+            # in-memory; sharing one dict would corrupt later
+            # iterations).
+            import copy
+            return copy.deepcopy(canned_doc)
+
+        # Stub save_json to a no-op so per-file save calls don't try
+        # to write the synthetic (non-existent) paths.
+        def fake_save(filepath, doc):
+            return None
+
+        monkeypatch.setattr(mod, "iter_peep_files", fake_iter)
+        monkeypatch.setattr(mod, "load_json", fake_load)
+        monkeypatch.setattr(mod, "save_json", fake_save)
+        monkeypatch.setattr(mod, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "SANCTION_DIR", sanctions_dir)
+        monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+
+        rc = mod.main()
+        assert rc == 1, (
+            f"gate must fail (return 1) when KOV input ≥11k but "
+            f"no output; got rc={rc}"
+        )
