@@ -28,6 +28,62 @@ All notable changes to this project will be documented in this file.
   `include_kov=False` at their call sites with comments indicating which
   Layer (2b/2c/3) will unpin or that KOV does not apply.
 
+### Added (Layer 2c PR #1 — Sanctions)
+- `extract_sanctions.py` runs the full corpus including KOV by
+  default (single `include_kov=False` pin removed).
+- `estleg:enforcedAtLevel` populated on every provision that
+  carries `estleg:hasSanction`. Value is `"municipality"` for
+  provisions in `MunicipalRegulation` acts, `"state"` otherwise.
+- SHACL: `LegalProvisionShape` gains a property constraint for
+  `enforcedAtLevel` (`sh:datatype xsd:string`, `sh:maxCount 1`,
+  `sh:in ("state" "municipality")`). Closes the Layer 2a gap
+  where the property was declared in `metadata.jsonld` but not
+  referenced in `shacl/estonian_legal_shapes.ttl`.
+
+### Changed (Layer 2c PR #1)
+- `extract_sanctions.main()` returns `int`; `raise SystemExit(main())`
+  propagates the gate's exit code.
+- Per-file in-memory processing replaces the global `_clear_existing_sanctions`
+  pre-clear pass. Each peep is processed independently; the per-file
+  flow detects pre-existing peep-side output BEFORE clearing and
+  saves the file when EITHER fresh sanction output exists OR
+  pre-existing output existed (so cleared-but-empty files persist
+  the cleared state to disk).
+- Stale `krr_outputs/sanctions/sanctions_<law>.json` files are
+  DELETED when an act loses all its sanction matches between runs.
+  Without this, orphan `Sanction_*` nodes survive pointing at
+  provisions that no longer carry `hasSanction`.
+- Coverage instrumentation reuses `kov_pipeline_coverage.CoverageReport`
+  (same schema as the 5 Layer 2a pipelines + 2 Layer 2b pipelines).
+
+### Coverage (Layer 2c PR #1, 2026-05-04 corpus run)
+- `extract_sanctions`: 15,508 input files (11,059 KOV); 282 files with
+  output (82 KOV = ~0.74% of KOV acts — sanction-bearing KOV regulations
+  are a minority of the corpus); 2,067 sanction records (85 KOV);
+  27.59 s wall-time at 562 items/s, 91 MB peak; GATE OK.
+
+### Internal (Layer 2c PR #1)
+- New `tests/test_extract_sanctions.py` with 15 tests across 5
+  classes (4 unit + 4 integration + 4 idempotency + 2 coverage +
+  1 corpus-wide invariant marked `@pytest.mark.slow`).
+- `_classify_enforcement_level(act_node) -> str` and
+  `_find_act_node(doc) -> dict | None` helpers added to the
+  module.
+- `triples_emitted` counts SANCTION RECORDS (not RDF triples) —
+  matches the existing `total_sanction_count` semantics from
+  `sanctions_report.json`. Documented inline so readers don't
+  misinterpret across pipelines (cross-references counts actual
+  triples; sanctions counts records — intentional).
+
+### Gate B umbrella status (after this PR)
+- 2a COMPLETE (#98)
+- 2b COMPLETE (#99)
+- 2c PR #1 sanctions: this PR
+- 2c PR #2 institutional-competence: pending
+- 2c PR #3 court-provision-links: pending
+
+Gate B closes when all three Layer 2c sub-PRs land.
+
 ### Added (Layer 2b)
 - KOV integration Layer 2b — preamble citations and filtered inverse
   projection populated for the full corpus (laws + state regulations +
