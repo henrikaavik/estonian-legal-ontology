@@ -63,6 +63,30 @@ KNOWN_ABBREVIATIONS: dict[str, str] = {
     "TuMS": "Tulumaksuseadus",
     "SMMS": "Sotsiaalmaksuseadus",
     "KindlTS": "Kindlustustegevuse seadus",
+    # M7 additions — KOV enabling laws that have peep files in the corpus.
+    # Values MUST match the canonical estleg:sourceAct on the act's
+    # provisions. Verified by the validation one-liner in Task 1 Step 7
+    # of the Layer 2b plan.
+    # Note on underscore-suffixed keys: `RHS_HÄDA` and `KELS_LASTEAS`
+    # disambiguate from already-registered abbreviations (RHS for
+    # Riigihangete seadus, KELS for Kõrgharidusseadus). Future
+    # collisions should follow the same `_<HINT>` pattern.
+    "PGS": "Põhikooli- ja gümnaasiumiseadus",
+    "KELS_LASTEAS": "Koolieelse lasteasutuse seadus",
+    "HuviKS": "Huvikooli seadus",
+    "RuumS": "Ruumiandmete seadus",
+    "ÜVVKS": "Ühisveevärgi ja -kanalisatsiooni seadus",
+    "KaugKS": "Kaugkütteseadus",
+    "ElamuS": "Elamuseadus",
+    "RaamatS": "Rahvaraamatukogu seadus",
+    "RHS_HÄDA": "Hädaolukorra seadus",
+    "EhSE": "Ehitusseadustik",
+    "JäätS": "Jäätmeseadus",
+    "TeeS": "Teeseadus",
+    "RahvaS": "Rahvahääletuse seadus",
+    "RKVS": "Riigikogu valimise seadus",
+    "RaamatPS": "Raamatupidamise seadus",
+    "ÜTS": "Ühistranspordiseadus",
 }
 
 # ---------------------------------------------------------------------------
@@ -85,7 +109,55 @@ FULLNAME_GENITIVE: dict[str, str] = {
     "maksukorralduse seaduse": "MKS",
     "töölepingu seaduse": "TLS",
     "riigilõivuseaduse": "RLS",
+    # M7 — match against parser's lowercased law_ref output. Entries
+    # whose abbrev resolves through KNOWN_ABBREVIATIONS to a corpus
+    # peep file produce real triples; entries whose target law has
+    # no peep file (KNS, AluS, KOFS, KOVVS) silently fall through —
+    # this is intentional and correct (parser-recognised,
+    # resolver-fallthrough).
+    # Four entries (sotsiaalhoolekande seaduse → SHS, avaliku teabe
+    # seaduse → AVTS, avaliku teenistuse seaduse → AVVKHS,
+    # planeerimisseaduse → PPVS) reuse abbreviations already in
+    # KNOWN_ABBREVIATIONS from Layer 2a — only the genitive form is new.
+    "kohanimeseaduse": "KNS",
+    "põhikooli- ja gümnaasiumiseaduse": "PGS",
+    "koolieelse lasteasutuse seaduse": "KELS_LASTEAS",
+    "alusharidusseaduse": "AluS",
+    "huvikooli seaduse": "HuviKS",
+    "ruumiandmete seaduse": "RuumS",
+    "kohaliku omavalitsuse üksuse finantsjuhtimise seaduse": "KOFS",
+    "ühisveevärgi ja -kanalisatsiooni seaduse": "ÜVVKS",
+    "kaugkütteseaduse": "KaugKS",
+    "elamuseaduse": "ElamuS",
+    "rahvaraamatukogu seaduse": "RaamatS",
+    "hädaolukorra seaduse": "RHS_HÄDA",
+    "ehitusseadustiku": "EhSE",
+    "jäätmeseaduse": "JäätS",
+    "teeseaduse": "TeeS",
+    "rahvahääletuse seaduse": "RahvaS",
+    "riigikogu valimise seaduse": "RKVS",
+    "kohaliku omavalitsuse volikogu valimise seaduse": "KOVVS",
+    "raamatupidamise seaduse": "RaamatPS",
+    "ühistranspordiseaduse": "ÜTS",
+    "sotsiaalhoolekande seaduse": "SHS",
+    "avaliku teabe seaduse": "AVTS",
+    "avaliku teenistuse seaduse": "AVVKHS",
+    "planeerimisseaduse": "PPVS",
 }
+
+# ---------------------------------------------------------------------------
+# Aggregate registry IRI prefixes — files whose @id values use these
+# prefixes are registry/aggregate maps (not classifiable as a single
+# act). Centralised here so EuroVoc classification and any future
+# pipeline that needs to skip these files share one source of truth.
+# ---------------------------------------------------------------------------
+AGGREGATE_REGISTRY_PREFIXES: tuple[str, ...] = (
+    "estleg:Municipalities_",
+    "estleg:Issuers_",
+    "estleg:LegalConcepts_",
+    "estleg:Citations_",
+    "estleg:Similarity_",
+)
 
 # ---------------------------------------------------------------------------
 # JSON-LD shared context

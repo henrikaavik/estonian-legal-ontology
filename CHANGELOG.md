@@ -28,6 +28,59 @@ All notable changes to this project will be documented in this file.
   `include_kov=False` at their call sites with comments indicating which
   Layer (2b/2c/3) will unpin or that KOV does not apply.
 
+### Added (Layer 2b)
+- KOV integration Layer 2b — preamble citations and filtered inverse
+  projection populated for the full corpus (laws + state regulations +
+  KOV acts).
+- 13,618 preamble citations resolved (50% of 27,299 found) into
+  `estleg:issuedUnder` (act-level) + reified `estleg:Citation` nodes
+  (with `citationTarget`, `citationDetail`, `citationText`) on every
+  parseable preamble. 23,618 preamble triples emitted (22,783 KOV).
+- 882 target nodes carrying `estleg:implementedBy` across 604 files
+  (21,256 total source-link edges), plus `estleg:implementedByCount`
+  aggregates — filtered projection that draws strictly from preamble
+  citations. Body-text references (`estleg:references`) continue to
+  feed `estleg:referencedBy` (3,175 edges across 346 files, unchanged
+  from pre-Layer-2b).
+- KOV body-text act references resolved with `enactedByMunicipality`
+  scoping; cross-municipality matches are explicitly skipped to prevent
+  false positives between like-named issuers.
+- 16 new entries in `KNOWN_ABBREVIATIONS` and 24 new entries in
+  `FULLNAME_GENITIVE` covering the most-cited KOV enabling laws.
+
+### Changed (Layer 2b)
+- `extract_cross_references.py` and `generate_inverse_references.py`
+  run the full corpus (laws + state regs + KOV) by default; all 3
+  `include_kov=False` pins removed.
+- `build_provision_index` now returns a 5-tuple — added
+  `prefix_to_act_iri` and `act_iri_to_prefix` for act-level resolution.
+  Callers must update their unpacking.
+- `generate_inverse_references.collect_all_references` now indexes
+  act-level nodes in `iri_to_file` (was provisions-only). Fixes a
+  silent `referencedBy` drop on KOV body-text refs that target act
+  IRIs.
+- `apply_inverse_references` now returns `dict[Path, int]` (was
+  `dict[str, int]` keyed by basename) so per-municipality KOV
+  subdirectories disambiguate correctly.
+
+### Internal (Layer 2b)
+- `_normalize_issuer_label` transliterates Estonian diacritics (õ, ä,
+  ö, ü, š, ž) so registry-side ASCII labels match act-side canonical
+  forms.
+- `clear_stale_implemented_by` idempotency pass — re-runs leave 0
+  stale `implementedBy` edges, 0 symmetry mismatches.
+- 11 corpus-derived preamble fixtures drive the parser tests.
+
+### Coverage (Layer 2b, 2026-05-04 corpus run, post-fix)
+- `extract_cross_references`: 15,508 input files (11,059 KOV); 9,648
+  files with output (8,837 KOV = 80% of KOV acts); 32,413 triples
+  emitted (24,020 KOV).
+- `generate_inverse_references`: 921 files with output (511 KOV);
+  4,057 triples emitted (512 KOV).
+- The post-fix re-run recovered 1,918 chained-paragraph citations
+  (resolved 11,700 → 13,618, +16%) that the initial parser missed in
+  forms like `<law> § 6 lg 3 p 2 ja § 22 lg 1 p 34`.
+
 ### Known issues
 - Pre-existing SHACL violations on `estleg:requestedCluster` (IRI-as-literal
   serialization, ~21.5k) and missing `estleg:summary` on some KOV/state-reg

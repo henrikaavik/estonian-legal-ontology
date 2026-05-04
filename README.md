@@ -211,9 +211,16 @@ KOV regulations are now a **first-class entity layer**: every act and provision 
 
 See [docs/SCHEMA_REFERENCE.md#kov-entity-model-layer-1](docs/SCHEMA_REFERENCE.md#kov-entity-model-layer-1) for the full schema, IRI patterns, and SPARQL examples.
 
-#### Layer 2a — KOV in 5 pipelines
+#### Layer 2 — KOV pipeline status
 
-Five KOV-relevant pipelines now process the 11,059 KOV act files end-to-end:
+- Layer 2a: Discovery + 5 pipelines — **COMPLETE** (deontic, EuroVoc,
+  temporal, legal-concepts, amendment-history)
+- Layer 2b: Cross-references + Inverse — **COMPLETE** (`issuedUnder`,
+  `implementsCitation`, `implementedBy`, KOV body-text scope)
+- Layer 2c: Semantic resolvers — **PENDING** (sanctions, institutional
+  competence, court-provision-links)
+
+Layer 2a (five pipelines) processes the 11,059 KOV act files end-to-end:
 
 - `classify_deontic` — modal classifications over KOV provisions
 - `classify_eurovoc` — EuroVoc tags over KOV acts (driven by `iter_peep_files()` instead of `INDEX.json`)
@@ -221,9 +228,28 @@ Five KOV-relevant pipelines now process the 11,059 KOV act files end-to-end:
 - `extract_legal_concepts` — concept definitions from KOV provision text (provision IRIs sourced from actual `@id`)
 - `generate_amendment_history` — amendment chains for KOV regulations
 
-Per-pipeline coverage reports at `krr_outputs/reports/kov/`. See [Layer 2a plan](docs/superpowers/plans/2026-05-03-kov-integration-layer2a.md) for details.
+Layer 2b adds two more pipelines:
 
-The remaining 5 KOV-relevant pipelines (cross-references, inverse, sanctions, competence, court-provision-links) are deferred to Layers 2b and 2c.
+- `extract_cross_references` — preamble citations resolved into
+  `estleg:issuedUnder` and reified `estleg:Citation` nodes; KOV body-
+  text act references scoped by `enactedByMunicipality`. 13,618
+  preamble citations resolved (50% of 27,299 found) and 32,413 triples
+  emitted across 9,648 files in the 2026-05-04 corpus run.
+- `generate_inverse_references` — `estleg:implementedBy` /
+  `estleg:implementedByCount` filtered inverse projection (preamble-
+  only — body-text refs continue to use `estleg:referencedBy`). 882
+  target nodes carrying `implementedBy` across 604 files (21,256
+  total source-link edges) in the 2026-05-04 corpus run.
+
+Per-pipeline coverage reports at `krr_outputs/reports/kov/`. See the
+[Layer 2a plan](docs/superpowers/plans/2026-05-03-kov-integration-layer2a.md)
+and [Layer 2b plan](docs/superpowers/plans/2026-05-03-kov-integration-layer2b.md)
+for details.
+
+Layer 2c (sanctions, institutional competence, court-provision-links) is
+the remaining piece. The 4 KOV-not-applicable pipelines (similarity,
+draft-impact, harmonisation-links, transposition-mapping) remain
+laws-and-state-only by design.
 
 ### Supreme Court Decisions (Riigikohus)
 

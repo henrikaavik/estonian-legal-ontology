@@ -20,7 +20,7 @@ import unicodedata
 from datetime import datetime, timezone
 from pathlib import Path
 
-from estleg_common import iter_peep_files
+from estleg_common import AGGREGATE_REGISTRY_PREFIXES, iter_peep_files
 from kov_pipeline_coverage import (
     CoverageReport,
     measure_runtime,
@@ -282,14 +282,7 @@ def read_act_metadata_from_peep(path: Path) -> dict | None:
     }
     # Registry files identified by stable IRI prefixes — even if Layer 2
     # later stamps them with new types, these map files remain
-    # ineligible for EuroVoc.
-    REGISTRY_ID_PREFIXES = (
-        "estleg:Municipalities_",
-        "estleg:Issuers_",
-        "estleg:LegalConcepts_",
-        "estleg:Citations_",
-        "estleg:Similarity_",
-    )
+    # ineligible for EuroVoc. Source: estleg_common.AGGREGATE_REGISTRY_PREFIXES.
     try:
         with open(path, "r", encoding="utf-8") as fh:
             doc = json.load(fh)
@@ -297,7 +290,7 @@ def read_act_metadata_from_peep(path: Path) -> dict | None:
         return None
     for node in doc.get("@graph", []):
         node_id = node.get("@id", "")
-        if any(node_id.startswith(p) for p in REGISTRY_ID_PREFIXES):
+        if any(node_id.startswith(p) for p in AGGREGATE_REGISTRY_PREFIXES):
             return None  # registry map — not classifiable
         types = node.get("@type") or []
         if isinstance(types, str):

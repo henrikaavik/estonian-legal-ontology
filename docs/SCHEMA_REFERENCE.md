@@ -777,35 +777,134 @@ SELECT ?mun ?reg WHERE {
 }
 ```
 
-## KOV Layer 2a — Schema Foundations
+## KOV Layer 2 — Cross-references and Inverse Projection
 
-The Layer 2a PR declares the schema needed by Layers 2b and 2c. Instances
-of these classes/properties begin appearing in 2b (preamble citations) and
-2c (sanctions enforcement level). In 2a, only the declarations land.
+Layer 2a declared the schema (Citation class, 8 new properties, SHACL
+shape, opt-in flag flips). Layer 2b populates the cross-reference and
+inverse-projection properties from real preamble text and KOV body-text
+references. Layer 2c (sanctions enforcement level) remains pending.
 
 ### Classes
 
-- `estleg:Citation` — reified preamble citation (Layer 2b populates).
+- `estleg:Citation` — reified preamble citation. **POPULATED** by Layer
+  2b for every act with a parseable preamble.
 
 ### Properties
 
-| Property | Domain | Range | Layer | Purpose |
-| --- | --- | --- | --- | --- |
-| `estleg:citationTarget` | `Citation` | `LegalProvision` | 2b | Resolved provision (paragraph-level) |
-| `estleg:citationDetail` | `Citation` | `xsd:string` | 2b | Sub-paragraph specificity (`"lg 1 p 3"`) |
-| `estleg:citationText` | `Citation` | `xsd:string` | 2b | Original citation text |
-| `estleg:issuedUnder` | `Act` | `Act` | 2b | Act → enabling act (preamble simple form) |
-| `estleg:implementsCitation` | `Act` | `Citation` | 2b | Act → reified Citation node |
-| `estleg:implementedBy` | `Act` ∪ `LegalProvision` | `Act` | 2b | Inverse — acts enacted under |
-| `estleg:implementedByCount` | `Act` ∪ `LegalProvision` | `xsd:integer` | 2b | Aggregate count |
-| `estleg:enforcedAtLevel` | `LegalProvision` | `xsd:string` | 2c | `"state"` \| `"municipality"` |
+| Property | Domain | Range | Layer | Status | Purpose |
+| --- | --- | --- | --- | --- | --- |
+| `estleg:citationTarget` | `Citation` | `Act` ∪ `LegalProvision` | 2b | populated | Resolved target (provision when § present, act otherwise) |
+| `estleg:citationDetail` | `Citation` | `xsd:string` | 2b | populated | Sub-paragraph specificity (`"lg 1 p 3"`) |
+| `estleg:citationText` | `Citation` | `xsd:string` | 2b | populated | Original preamble substring |
+| `estleg:issuedUnder` | `Act` | `Act` | 2b | populated | Act → enabling act (act-level only) |
+| `estleg:implementsCitation` | `Act` | `Citation` | 2b | populated | Act → reified Citation node |
+| `estleg:implementedBy` | `Act` ∪ `LegalProvision` | `Act` | 2b | populated | Filtered inverse — acts citing this as enabling authority |
+| `estleg:implementedByCount` | `Act` ∪ `LegalProvision` | `xsd:integer` | 2b | populated | Aggregate count of distinct sources |
+| `estleg:enforcedAtLevel` | `LegalProvision` | `xsd:string` | 2c | declared | `"state"` \| `"municipality"` |
+
+### Property semantics and examples
+
+#### estleg:issuedUnder
+
+**Domain:** `estleg:Act` (Law, NationalRegulation, GovernmentRegulation,
+MinisterialRegulation, MunicipalRegulation)
+**Range:** `estleg:Act` (act-level only — never a `LegalProvision`)
+**Cardinality:** many-per-act
+
+Identifies the ACT under whose authority this act was issued. For
+municipal regulations, the most common targets are KOKS
+(`estleg:KOKS_Map_2026`), state-regulation acts, or other KOV acts.
+Provision-level granularity (e.g. "issued under § 22 lg 1 p 34") is
+captured separately on `Citation.citationTarget` — see
+`estleg:implementsCitation` below.
+
+```json
+{
+  "@id": "estleg:Reg_1014955_Map_2026",
+  "@type": ["owl:Ontology", "estleg:Act", "estleg:MunicipalRegulation"],
+  "estleg:issuedUnder": [
+    {"@id": "estleg:KOKS_Map_2026"},
+    {"@id": "estleg:RaamatPS_Map_2026"}
+  ]
+}
+```
+
+#### estleg:implementsCitation
+
+**Domain:** `estleg:Act`
+**Range:** `estleg:Citation`
+**Cardinality:** many-per-act
+
+Reified citation node carrying the original preamble substring, the
+paragraph/lõige/punkti detail, and the resolved target (provision
+when § is present, act otherwise). See `estleg:Citation` below for an
+example.
+
+#### estleg:Citation (class)
+
+A reified citation node. Always co-occurs with `estleg:implementsCitation`
+on the source act.
+
+**Properties:**
+- `estleg:citationTarget` — provision OR act IRI (cardinality 1)
+- `estleg:citationDetail` — `"lg 1 p 34"` style literal (optional)
+- `estleg:citationText` — original input substring (optional, recommended)
+
+**IRI pattern:** `estleg:Citation_<source-act-shortid>_<seq>` where
+`<source-act-shortid>` is the source act's @id minus `estleg:` and
+`<seq>` is a 1-based per-act counter.
+
+```json
+{
+  "@id": "estleg:Citation_Reg_1014955_Map_2026_1",
+  "@type": ["owl:NamedIndividual", "estleg:Citation"],
+  "estleg:citationTarget": {"@id": "estleg:KOKS_Par_22"},
+  "estleg:citationDetail": "lg 1 p 34",
+  "estleg:citationText": "kohaliku omavalitsuse korralduse seaduse § 22 lõike 1 punkti 34"
+}
+```
+
+#### estleg:implementedBy
+
+**Domain:** `estleg:Act` ∪ `estleg:LegalProvision`
+**Range:** `estleg:Act` (the implementing act — typically a regulation)
+**Cardinality:** many-per-target
+
+Filtered inverse projection of `issuedUnder` and `Citation.citationTarget`.
+Body-text references (`estleg:references`) do NOT contribute. The
+existing `estleg:referencedBy` continues to serve as the inverse for
+body-text references — `implementedBy` is strictly the "what acts cite
+me as their enabling authority" view.
+
+```json
+{
+  "@id": "estleg:KOKS_Par_22",
+  "estleg:implementedBy": [
+    {"@id": "estleg:Reg_1014955_Map_2026"},
+    {"@id": "estleg:Reg_2034567_Map_2024"}
+  ],
+  "estleg:implementedByCount": 2
+}
+```
+
+#### estleg:implementedByCount
+
+**Domain:** `estleg:Act` ∪ `estleg:LegalProvision`
+**Range:** `xsd:integer`
+**Cardinality:** exactly one (when `implementedBy` is present)
+
+Aggregate count of distinct sources, useful for SPARQL ranking queries.
 
 ### SHACL
 
-`shacl/estonian_legal_shapes.ttl` adds `estleg:CitationShape` (target Citation;
-required `citationTarget`; optional `citationDetail`/`citationText`; IRI pattern).
+`shacl/estonian_legal_shapes.ttl` enforces `estleg:CitationShape` on
+every reified `Citation` node (target Citation; required `citationTarget`;
+optional `citationDetail`/`citationText`; IRI pattern).
 
 ### Pipeline coverage reports
 
 Each KOV-relevant pipeline emits `krr_outputs/reports/kov/<pipeline>_coverage.json`
-with per-run metrics. See `krr_outputs/reports/kov/README.md`.
+with per-run metrics. See `krr_outputs/reports/kov/README.md`. Layer 2b
+adds coverage outputs for `extract_cross_references` (preamble + body-text
+KOV scope) and `generate_inverse_references` (`implementedBy` filtered
+projection).

@@ -22,8 +22,9 @@ from __future__ import annotations
 
 import json
 import re
+import time
 import xml.etree.ElementTree as ET
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 from estleg_common import (
@@ -34,6 +35,12 @@ from estleg_common import (
     iter_peep_files,
     save_json,
     sanitize_id,
+)
+from kov_pipeline_coverage import (
+    CoverageReport,
+    measure_runtime,
+    resolve_pipeline_version,
+    write_coverage_report,
 )
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -51,19 +58,75 @@ def ln(tag: str) -> str:
     return tag.split("}", 1)[1] if "}" in tag else tag
 
 
-def build_provision_index() -> tuple[dict[str, dict[str, str]], dict[str, str], dict[str, Path]]:
+# ----------------------------------------------------------------------
+# Act-IRI ↔ prefix derivation (Layer 2b)
+#
+# The corpus uses three @id shapes for act nodes:
+#   estleg:<prefix>_Map_<year>            (most laws)
+#   estleg:<prefix>_Osa<N>[_descriptor]   (multi-part laws)
+#   estleg:<prefix>                       (rare legacy with no suffix)
+#
+# A naive ``shortid.split("_")[0]`` is wrong for 34 corpus acts whose
+# prefix itself contains an underscore (e.g. KARIST_2_Map_2026 →
+# provisions live at estleg:KARIST_2_Par_<n>, NOT estleg:KARIST_Par_<n>).
+# ``_prefix_from_act_iri`` strips known suffix patterns so the leading
+# prefix is recovered correctly.
+# ----------------------------------------------------------------------
+
+_ACT_SUFFIX_PATTERNS = [
+    re.compile(r"_Map_\d{4}$"),                            # _Map_2026
+    re.compile(r"_Osa\d+(?:_.+)?$"),                       # _Osa1, _Osa5_AsjaoigusteKaitse
+    re.compile(r"_(?:Procedure|Substantive)Map_\d{4}$"),   # KrMS variants
+]
+
+
+def _prefix_from_act_iri(act_iri: str) -> str | None:
+    """Derive the provision-keying prefix from a full act @id.
+
+    The prefix is the leading segment that all of the act's provisions
+    share (e.g. 'KOKS' for 'estleg:KOKS_Map_2026' whose provisions look
+    like 'estleg:KOKS_Par_22'; 'KARIST_2' for 'estleg:KARIST_2_Osa1_1_87'
+    whose provisions look like 'estleg:KARIST_2_Par_1').
+
+    Used as a fallback when build_provision_index encounters a peep
+    that has an owl:Ontology act node but no provisions to ground-truth
+    the prefix (a rare edge case for legacy or stub files).
+    """
+    if not act_iri.startswith("estleg:"):
+        return None
+    short = act_iri[len("estleg:"):]
+    for pat in _ACT_SUFFIX_PATTERNS:
+        m = pat.search(short)
+        if m:
+            return short[: m.start()]
+    return short  # legacy: no suffix
+
+
+def build_provision_index() -> tuple[
+    dict[str, dict[str, str]],
+    dict[str, str],
+    dict[str, Path],
+    dict[str, str],   # prefix → act @id
+    dict[str, str],   # act @id → prefix (reverse, for resolver use)
+]:
     """
     Scan all *_peep.json files to build:
     1. prefix_to_provisions: {prefix: {par_number: full_iri}} e.g. {"Karistusseadustik": {"121": "estleg:KARIST_2_Par_121"}}
     2. source_act_to_prefix: {source_act_name: prefix} e.g. {"Karistusseadustik": "Karistusseadustik"}
     3. iri_to_file: {iri: filepath} mapping each provision IRI to its containing file
+    4. prefix_to_act_iri: {prefix: act_@id} e.g. {"KOKS": "estleg:KOKS_Map_2026"}
+    5. act_iri_to_prefix: {act_@id: prefix} (reverse — required by Task 5
+       resolver because ``act_iri.split("_")[0]`` breaks for 34 corpus
+       acts with multi-segment prefixes like ``KARIST_2_Map_2026``).
     """
     prefix_to_provisions: dict[str, dict[str, str]] = {}
     source_act_to_prefix: dict[str, str] = {}
     iri_to_file: dict[str, Path] = {}
+    prefix_to_act_iri: dict[str, str] = {}
+    act_iri_to_prefix: dict[str, str] = {}
 
     # Scan all JSON-LD law files (not riigikohus, not schema/index files)
-    for json_file in iter_peep_files(include_kov=False):  # DEFERRED to Layer 2b
+    for json_file in iter_peep_files():
         if json_file.name.startswith("riigikohus"):
             continue
         try:
@@ -102,6 +165,29 @@ def build_provision_index() -> tuple[dict[str, dict[str, str]], dict[str, str], 
         if file_prefix and source_act:
             source_act_to_prefix[source_act] = file_prefix
 
+        # Layer 2b: bind act_iri ↔ prefix maps. Reuse file_prefix when
+        # available (provisions are the ground truth for prefix
+        # grouping), fall back to _prefix_from_act_iri for peeps with
+        # an act node but no provisions. Multi-part laws (KARIST_2_Osa1
+        # / KARIST_2_Osa2) share the same prefix; setdefault keeps the
+        # FIRST act_iri under that prefix and the reverse map keys
+        # every act_iri individually.
+        for node in graph:
+            types = node.get("@type") or []
+            if isinstance(types, str):
+                types = [types]
+            if "owl:Ontology" not in types:
+                continue
+            act_iri = node.get("@id")
+            if not act_iri:
+                continue
+            prefix = file_prefix or _prefix_from_act_iri(act_iri)
+            if not prefix:
+                continue
+            prefix_to_act_iri.setdefault(prefix, act_iri)
+            act_iri_to_prefix[act_iri] = prefix
+            break
+
     # Also scan riigikohus subdirectory files (but those don't have provisions)
     for json_file in sorted((KRR_DIR / "riigikohus").glob("*_peep.json")):
         try:
@@ -114,7 +200,8 @@ def build_provision_index() -> tuple[dict[str, dict[str, str]], dict[str, str], 
             if "_Par_" in node_id:
                 iri_to_file[node_id] = json_file
 
-    return prefix_to_provisions, source_act_to_prefix, iri_to_file
+    return (prefix_to_provisions, source_act_to_prefix, iri_to_file,
+            prefix_to_act_iri, act_iri_to_prefix)
 
 
 def build_abbreviation_to_prefix(
@@ -132,6 +219,565 @@ def build_abbreviation_to_prefix(
             abbrev_to_prefix[abbrev] = source_act_to_prefix[full_name]
 
     return abbrev_to_prefix
+
+
+# ----------------------------------------------------------------------
+# Canonical lookups (Layer 2b)
+#
+# These translate the parser's output (genitive law name + (issuer,
+# date, act_number) tuples) into real corpus IRIs. The lookups are
+# built once per pipeline run and consulted by the Task 5/6 resolver.
+# ----------------------------------------------------------------------
+
+_ESTONIAN_TO_ASCII = str.maketrans({
+    "õ": "o", "ä": "a", "ö": "o", "ü": "u",
+    "Õ": "O", "Ä": "A", "Ö": "O", "Ü": "U",
+    "š": "s", "ž": "z", "Š": "S", "Ž": "Z",
+})
+
+
+def _normalize_issuer_label(label: str) -> str:
+    """Normalise an issuer label so registry-side ASCII forms
+    ('Polva Vallavalitsus') and act-side canonical forms ('Põlva
+    Vallavalitsus') hash to the same key.
+
+    Applied SYMMETRICALLY: both lookup-construction and lookup-query
+    sides must call this function before keying the dict. The
+    transformation strips Estonian diacritics, collapses whitespace,
+    and lowercases the result.
+    """
+    if not label:
+        return ""
+    s = label.strip().translate(_ESTONIAN_TO_ASCII)
+    s = re.sub(r"\s+", " ", s)
+    return s.lower()
+
+
+def build_genitive_to_act_iri(
+    source_act_to_prefix: dict[str, str],
+    prefix_to_act_iri: dict[str, str],
+) -> dict[str, str]:
+    """Build a {genitive_law_name (lowercased) → act @id} lookup by
+    chaining FULLNAME_GENITIVE → abbrev → source_act_to_prefix →
+    prefix_to_act_iri.
+
+    The returned keys are lowercased so the parser's case-insensitive
+    output ('Kohaliku omavalitsuse korralduse seaduse' or 'kohaliku
+    omavalitsuse korralduse seaduse') resolves uniformly via .lower().
+
+    Entries that fail at any link in the chain (genitive → abbrev →
+    full_name → prefix → act_iri) are silently skipped — Layer 2b
+    accepts that some genitive forms recognise laws without a corpus
+    peep file.
+    """
+    out: dict[str, str] = {}
+    for genitive, abbrev in FULLNAME_GENITIVE.items():
+        full_name = KNOWN_ABBREVIATIONS.get(abbrev)
+        if full_name is None:
+            continue
+        prefix = source_act_to_prefix.get(full_name)
+        if prefix is None:
+            continue
+        act_iri = prefix_to_act_iri.get(prefix)
+        if act_iri is None:
+            continue
+        out[genitive.lower()] = act_iri
+    return out
+
+
+def _read_adoption_date_from_xml(xml_path: Path) -> str | None:
+    """Read <vastuvoetud><aktikuupaev> from a Riigi Teataja XML.
+    Returns the ISO-8601 date string or None when absent or unreadable.
+
+    Both XML parse errors AND filesystem errors (missing file, EACCES,
+    EIO mid-read) return None so the caller's lookup-build loop can
+    skip the entry without crashing the whole pipeline.
+    """
+    try:
+        tree = ET.parse(str(xml_path))
+    except (ET.ParseError, OSError):
+        return None
+    for node in tree.iter():
+        # Tag local-name match (ns-aware)
+        if node.tag.endswith("vastuvoetud"):
+            for child in node:
+                if child.tag.endswith("aktikuupaev"):
+                    if child.text:
+                        return child.text.strip()
+    return None
+
+
+def build_state_regulation_lookup(
+    riik_root: Path,
+    data_dir: Path,
+) -> dict[tuple[str, str, str], str]:
+    """Build (normalized_issuer, adoption_date, act_number) → act @id
+    for state regulations under riik_root.
+
+    adoption_date is read from each paired XML at
+    <vastuvoetud><aktikuupaev>; the corpus has zero estleg:adoptionDate
+    fields. Issuer is normalised via _normalize_issuer_label for
+    symmetry with the resolver query side (Task 5).
+    """
+    from estleg_common import build_globalid_xml_lookup, pair_peep_with_xml
+
+    lookup: dict[tuple[str, str, str], str] = {}
+    if not riik_root.is_dir():
+        return lookup
+
+    xml_lookup = build_globalid_xml_lookup(data_dir)
+
+    for peep in sorted(riik_root.rglob("*_peep.json")):
+        try:
+            with open(peep, "r", encoding="utf-8") as fh:
+                doc = json.load(fh)
+        except (json.JSONDecodeError, OSError):
+            continue
+
+        # Find the act node — filter to the regulation type set.
+        act_node = None
+        for node in doc.get("@graph", []):
+            types = node.get("@type") or []
+            if isinstance(types, str):
+                types = [types]
+            if any(t in {"estleg:NationalRegulation",
+                          "estleg:GovernmentRegulation",
+                          "estleg:MinisterialRegulation"} for t in types):
+                act_node = node
+                break
+        if act_node is None:
+            continue
+
+        issuer = act_node.get("estleg:issuer")
+        act_num = act_node.get("estleg:actNumber")
+        aid = act_node.get("@id")
+        if not (issuer and act_num and aid):
+            continue
+
+        xml_path = pair_peep_with_xml(peep, xml_lookup, data_dir=data_dir)
+        if xml_path is None:
+            continue
+        adoption_date = _read_adoption_date_from_xml(xml_path)
+        if adoption_date is None:
+            continue
+
+        # Normalise issuer at construction time so resolver-side
+        # queries (which also normalise) hit the same key.
+        key = (_normalize_issuer_label(issuer),
+               adoption_date,
+               str(act_num))
+        lookup[key] = aid
+    return lookup
+
+
+def build_kov_act_lookup(
+    kov_root: Path,
+    data_dir: Path,
+    issuers_path: Path,
+) -> dict[tuple[str, str, str], str]:
+    """Build (normalized_issuer, adoption_date, act_number) → act @id
+    for KOV regulations.
+
+    The issuer key is taken from estleg:issuer on the act node and
+    passed through _normalize_issuer_label so that registry-side
+    ASCII labels ('Polva Vallavalitsus') and act-side canonical
+    labels with diacritics ('Põlva Vallavalitsus') hash to the same
+    key. issuers_path is consulted only as a sanity validation;
+    mismatches are tolerated to absorb Layer 1's slug-derived label
+    quirks. adoption_date is read from paired XML.
+    """
+    from estleg_common import build_globalid_xml_lookup, pair_peep_with_xml
+
+    lookup: dict[tuple[str, str, str], str] = {}
+    if not kov_root.is_dir():
+        return lookup
+
+    xml_lookup = build_globalid_xml_lookup(data_dir)
+
+    # Load issuer registry for sanity reference (does not gate the
+    # build — diacritic mismatches are tolerated).
+    valid_issuer_labels: set[str] = set()
+    if issuers_path.exists():
+        try:
+            with open(issuers_path, "r", encoding="utf-8") as fh:
+                idoc = json.load(fh)
+            for n in idoc.get("@graph", []):
+                types = n.get("@type") or []
+                if isinstance(types, str):
+                    types = [types]
+                if "estleg:Issuer" in types:
+                    label = n.get("rdfs:label")
+                    if label:
+                        valid_issuer_labels.add(_normalize_issuer_label(label))
+        except (json.JSONDecodeError, OSError):
+            pass
+
+    for peep in sorted(kov_root.rglob("*_peep.json")):
+        if peep.name.startswith("REGULATIONS_KOV_INDEX"):
+            continue
+        try:
+            with open(peep, "r", encoding="utf-8") as fh:
+                doc = json.load(fh)
+        except (json.JSONDecodeError, OSError):
+            continue
+
+        act_node = None
+        for node in doc.get("@graph", []):
+            types = node.get("@type") or []
+            if isinstance(types, str):
+                types = [types]
+            if "estleg:MunicipalRegulation" in types:
+                act_node = node
+                break
+        if act_node is None:
+            continue
+
+        issuer = act_node.get("estleg:issuer")
+        act_num = act_node.get("estleg:actNumber")
+        aid = act_node.get("@id")
+        if not (issuer and act_num and aid):
+            continue
+
+        xml_path = pair_peep_with_xml(peep, xml_lookup, data_dir=data_dir)
+        if xml_path is None:
+            continue
+        adoption_date = _read_adoption_date_from_xml(xml_path)
+        if adoption_date is None:
+            continue
+
+        # Normalise issuer label symmetrically with the resolver-side
+        # query (Task 5). When the registry is non-empty, log (don't
+        # reject) when the normalised act-issuer isn't in it — this
+        # surfaces Layer 1 corpus-build oddities without dropping data.
+        norm_issuer = _normalize_issuer_label(issuer)
+        if valid_issuer_labels and norm_issuer not in valid_issuer_labels:
+            # Tolerate; future Layer 2c may tighten this.
+            pass
+
+        lookup[(norm_issuer, adoption_date, str(act_num))] = aid
+    return lookup
+
+
+def build_kov_act_lookup_by_number(
+    kov_root: Path,
+) -> dict[tuple[str, str], list[str]]:
+    """Build (normalized_issuer, act_number) → [act @id, ...] for KOV
+    regulations.
+
+    Used for body-text references that don't carry adoption_date.
+    Multiple acts under the same issuer can share an act_number across
+    historical revisions; the lookup STORES ALL CANDIDATES so the
+    resolver (Task 6) can decide whether the match is unique. The
+    resolver returns a target only when the candidate list contains
+    exactly one entry (after scoping by enactedByMunicipality).
+
+    Issuer labels are passed through _normalize_issuer_label for
+    symmetry with the resolver's query side (which does the same).
+    """
+    lookup: dict[tuple[str, str], list[str]] = {}
+    if not kov_root.is_dir():
+        return lookup
+    for peep in sorted(kov_root.rglob("*_peep.json")):
+        if peep.name.startswith("REGULATIONS_KOV_INDEX"):
+            continue
+        try:
+            with open(peep, "r", encoding="utf-8") as fh:
+                doc = json.load(fh)
+        except (json.JSONDecodeError, OSError):
+            continue
+        for node in doc.get("@graph", []):
+            types = node.get("@type") or []
+            if isinstance(types, str):
+                types = [types]
+            if "estleg:MunicipalRegulation" not in types:
+                continue
+            issuer = node.get("estleg:issuer")
+            act_num = node.get("estleg:actNumber")
+            aid = node.get("@id")
+            if issuer and act_num and aid:
+                key = (_normalize_issuer_label(issuer), str(act_num))
+                lookup.setdefault(key, []).append(aid)
+            break
+    return lookup
+
+
+def build_issuer_registry(
+    issuers_path: Path,
+) -> dict[str, tuple[str, str, str]]:
+    """Build {issuer @id → (label_normalized, municipality_iri,
+    body_type)} from the KOV issuers registry peep file.
+
+    Used by the Task 5/6 resolver to derive municipality scoping from
+    an enactedBy reference. Nodes missing any of the three required
+    fields are skipped — partial issuer entries can't drive resolver
+    scoping reliably.
+    """
+    out: dict[str, tuple[str, str, str]] = {}
+    if not issuers_path.exists():
+        return out
+    try:
+        with open(issuers_path, "r", encoding="utf-8") as fh:
+            doc = json.load(fh)
+    except (json.JSONDecodeError, OSError):
+        return out
+    for node in doc.get("@graph", []):
+        types = node.get("@type") or []
+        if isinstance(types, str):
+            types = [types]
+        if "estleg:Issuer" not in types:
+            continue
+        iid = node.get("@id")
+        label = node.get("rdfs:label")
+        muni = node.get("estleg:currentMunicipality")
+        body_type = node.get("estleg:bodyType")
+        if isinstance(muni, dict):
+            muni = muni.get("@id")
+        if isinstance(body_type, dict):
+            body_type = body_type.get("@id")
+        if not (iid and label and muni and body_type):
+            continue
+        out[iid] = (_normalize_issuer_label(label), muni, body_type)
+    return out
+
+
+def build_citation_iri(source_act_iri: str, seq: int) -> str:
+    """Build a SHACL-valid Citation IRI from the source act @id and a
+    1-based sequence number. The 'estleg:' prefix is stripped from the
+    source IRI before embedding."""
+    shortid = source_act_iri.removeprefix("estleg:")
+    return f"estleg:Citation_{shortid}_{seq}"
+
+
+def build_citation_node(
+    iri: str,
+    target_iri: str,
+    citation_detail: str | None,
+    citation_text: str | None,
+) -> dict:
+    """Build a reified Citation node ready to insert into a peep file's
+    @graph. Optional fields are omitted when None."""
+    node: dict = {
+        "@id": iri,
+        "@type": ["owl:NamedIndividual", "estleg:Citation"],
+        "estleg:citationTarget": {"@id": target_iri},
+    }
+    if citation_detail:
+        node["estleg:citationDetail"] = citation_detail
+    if citation_text:
+        node["estleg:citationText"] = citation_text
+    return node
+
+
+def resolve_preamble_citation(
+    cit: dict,
+    *,
+    genitive_to_act_iri: dict[str, str],
+    prefix_to_provisions: dict[str, dict[str, str]],
+    act_iri_to_prefix: dict[str, str],
+    state_reg_lookup: dict[tuple[str, str, str], str],
+    kov_act_lookup: dict[tuple[str, str, str], str],
+) -> tuple[str, str] | None:
+    """Resolve a preamble citation to (citation_target_iri, enabling_act_iri).
+
+    citation_target_iri:
+        - paragraph-level provision IRI for law citations with §
+        - act-level IRI otherwise
+
+    enabling_act_iri:
+        - ALWAYS act-level. Layer 2b's issuedUnder semantic is "act
+          enacted under THIS act" — the range is Act, not LegalProvision.
+
+    Returns None when the citation can't be resolved against any lookup.
+    """
+    form = cit.get("form")
+
+    if form == "law-genitive":
+        genitive = cit.get("law_ref", "").lower()
+        act_iri = genitive_to_act_iri.get(genitive)
+        if act_iri is None:
+            return None
+        # If no paragraph, both target and enabling_act are act-level.
+        if not cit.get("paragraphs"):
+            return (act_iri, act_iri)
+        # Resolve paragraph via prefix_to_provisions. The prefix MUST
+        # come from act_iri_to_prefix — naive split on '_' breaks for
+        # 34 corpus acts whose prefix itself contains underscores
+        # (e.g. estleg:KARIST_2_Osa1_1_87 → prefix is 'KARIST_2',
+        # NOT 'KARIST').
+        prefix = act_iri_to_prefix.get(act_iri)
+        if prefix is None:
+            # Act IRI not in the prefix index — fall back to act-level.
+            return (act_iri, act_iri)
+        par = cit["paragraphs"][0]
+        target = prefix_to_provisions.get(prefix, {}).get(par)
+        if target is None:
+            # Paragraph not in provision index — fall back to act-level
+            # for citation_target while keeping enabling_act_iri at act.
+            return (act_iri, act_iri)
+        return (target, act_iri)
+
+    if form == "state-regulation-date-number":
+        # Issuer is normalised symmetrically: parser side calls
+        # _normalize_state_issuer to strip the genitive ending; the
+        # state_reg_lookup builder (Task 3) calls _normalize_issuer_label
+        # on the act-side issuer string. Apply the same here so both
+        # sides hash to the same key.
+        key = (
+            _normalize_issuer_label(cit["issuer"]),
+            cit["adoption_date"],
+            cit["act_number"],
+        )
+        act_iri = state_reg_lookup.get(key)
+        if act_iri is None:
+            return None
+        return (act_iri, act_iri)
+
+    if form == "kov-regulation-date-number":
+        key = (
+            _normalize_issuer_label(cit["issuer"]),
+            cit["adoption_date"],
+            cit["act_number"],
+        )
+        act_iri = kov_act_lookup.get(key)
+        if act_iri is None:
+            return None
+        return (act_iri, act_iri)
+
+    return None
+
+
+# Body-text KOV reference pattern. KOV body text typically cites by
+# issuer + act number (no date in body refs, unlike preambles).
+# Example: "Tallinna Linnavolikogu määruse nr 15 § 4"
+# Or generic: "linnavolikogu määrus nr 5"
+_PAT_KOV_BODY_REF = re.compile(
+    r"(?:(?P<issuer>(?:[A-ZÕÄÖÜŠŽ][a-zõäöüšž\-]+\s+)*)\s*)?"
+    r"(?P<body>(?:[Ll]innavolikogu|[Ll]innavalitsuse?|"
+    r"[Vv]allavolikogu|[Vv]allavalitsuse?|"
+    r"[Aa]levivolikogu))\s+"
+    r"määrus(?:e(?:ga)?)?\s+nr\s*(?P<num>\d+)",
+    re.UNICODE,
+)
+
+
+def extract_kov_act_refs_from_text(text: str) -> list[dict]:
+    """Parse body text for KOV-act references.
+
+    Returns a list of dicts with:
+        issuer    : full issuer label normalised via _normalize_issuer_label,
+                    or None (when only generic body word like 'linnavolikogu'
+                    is used without a place name)
+        body_type : 'volikogu' | 'valitsus'
+        act_number: digit string
+        text      : matched substring (preserved verbatim from input)
+    """
+    if not text:
+        return []
+    out: list[dict] = []
+    for m in _PAT_KOV_BODY_REF.finditer(text):
+        body_raw = m.group("body")
+        body_lower = body_raw.lower()
+        body_type = "volikogu" if "volikogu" in body_lower else "valitsus"
+        # Body word is captured in genitive form (e.g. "Vallavalitsuse")
+        # by the alternation '[Vv]allavalitsuse?'. Strip the trailing
+        # 'e' so the label matches the registry's nominative form
+        # ('Vallavalitsus') after _normalize_issuer_label collapses case.
+        body_canon = body_raw.rstrip("e") if body_lower.endswith("se") else body_raw
+        issuer_full = m.group("issuer")
+        # Trim leading preamble-license verbs (Vastavalt, Lähtudes, …)
+        # but PRESERVE multi-word place names (Järva Jaani, Lääne-Nigula,
+        # Saare-Anija, etc.). Reuse _trim_preamble_prefix from Task 2:
+        # it strips only known license verbs from _PREAMBLE_LICENSE_PREFIXES,
+        # leaving real place tokens intact. A naive "last token" trim
+        # incorrectly drops the leading word of 26 multi-word KOV names.
+        trimmed_issuer = (
+            _trim_preamble_prefix(issuer_full.strip())
+            if issuer_full and issuer_full.strip()
+            else ""
+        )
+        if trimmed_issuer:
+            raw_label = (trimmed_issuer + " " + body_canon).strip()
+            issuer_label = _normalize_issuer_label(raw_label)
+        else:
+            issuer_label = None
+        out.append({
+            "issuer": issuer_label,
+            "body_type": body_type,
+            "act_number": m.group("num"),
+            "text": m.group(0).strip(),
+        })
+    return out
+
+
+def resolve_kov_internal_act_ref(
+    *,
+    source_municipality: str | None,
+    explicit_issuer: str | None,
+    body_type: str | None,
+    act_number: str,
+    kov_act_lookup_by_number: dict[tuple[str, str], list[str]],
+    issuer_registry: dict[str, tuple[str, str, str]],
+) -> str | None:
+    """Resolve a KOV-internal act reference by act_number, scoped to the
+    source act's municipality.
+
+    Args:
+        source_municipality: the @id of the source act's
+            ``enactedByMunicipality``. None disables scoping.
+        explicit_issuer: a pre-normalised issuer label parsed from the
+            body-text (e.g. 'tallinna linnavolikogu'). When present,
+            the resolver narrows directly to that issuer instead of
+            enumerating every issuer in the source municipality. When
+            None, the resolver falls back to body-type-scoped enumeration.
+        body_type: 'volikogu' | 'valitsus' | None — secondary scope.
+        act_number: digit string from the body-text reference.
+        kov_act_lookup_by_number: (issuer_label_normalized, act_number)
+            → list of candidate act @ids (Task 3 stores all candidates).
+        issuer_registry: issuer @id → (label_normalized, municipality @id,
+            body_type). The label is the rdfs:label from
+            issuers_kov_peep.json passed through _normalize_issuer_label.
+
+    Returns the resolved target @id only when the candidate list
+    narrows to exactly one entry. Otherwise None.
+    """
+    if source_municipality is None:
+        return None
+
+    # Path A: explicit issuer string from the body text — the most
+    # reliable disambiguator. Verify it belongs to the source
+    # municipality (cross-municipality citations should be skipped).
+    if explicit_issuer is not None:
+        municipality_for_issuer = None
+        for _iri, (label, mun_iri, _btype) in issuer_registry.items():
+            if label == explicit_issuer:
+                municipality_for_issuer = mun_iri
+                break
+        if municipality_for_issuer != source_municipality:
+            return None
+        candidates = kov_act_lookup_by_number.get(
+            (explicit_issuer, act_number), []
+        )
+        return candidates[0] if len(candidates) == 1 else None
+
+    # Path B: no explicit issuer — enumerate issuers in the source
+    # municipality, narrow by body_type when supplied.
+    candidate_labels: list[str] = []
+    for _iri, (label, mun_iri, btype) in issuer_registry.items():
+        if mun_iri != source_municipality:
+            continue
+        if body_type is not None and btype != body_type:
+            continue
+        candidate_labels.append(label)
+
+    matches: list[str] = []
+    for label in candidate_labels:
+        matches.extend(
+            kov_act_lookup_by_number.get((label, act_number), [])
+        )
+    # Dedupe + uniqueness check — body text isn't reliable enough to
+    # pick a winner among ambiguous matches.
+    unique = sorted(set(matches))
+    return unique[0] if len(unique) == 1 else None
 
 
 def extract_citations_from_text(text: str) -> list[dict]:
@@ -205,6 +851,390 @@ def extract_citations_from_text(text: str) -> list[dict]:
                 })
 
     return citations
+
+
+# ----------------------------------------------------------------------
+# Preamble citation extraction (Layer 2b)
+# ----------------------------------------------------------------------
+
+# Estonian month name (genitive) → 2-digit month number.
+# All forms come from the spec text "<day>. <month-genitive> <year>".
+_ET_MONTHS = {
+    "jaanuari": "01", "veebruari": "02", "märtsi": "03", "aprilli": "04",
+    "mai": "05", "juuni": "06", "juuli": "07", "augusti": "08",
+    "septembri": "09", "oktoobri": "10", "novembri": "11", "detsembri": "12",
+}
+
+# Quote characters seen in the corpus around law names. The parser
+# strips these before matching the genitive form.
+_QUOTES = '"\'„""«»«»“”„’‘'
+
+# Section symbol or its word form. KOV preambles freely mix § and
+# the spelled-out "paragrahv" / "paragrahvi".
+_PARA_TOKEN = r"(?:§|paragrahv(?:i)?|paragrahvid?)"
+
+# Lõige (subsection) — multiple case forms in the corpus:
+#   lõike (singular genitive) — most common
+#   lõikest (singular elative)
+#   lõigete (plural genitive) — for "lõigete 1 ja 2"
+#   lg (abbreviation) — common in shorter preambles
+_LG_TOKEN = r"(?:lõike(?:st|s)?|lõigete|lg)"
+
+# Punkt — multiple forms:
+#   punkti (genitive) — "punkti 34"
+#   punkt (nominative)
+#   p (abbreviation)
+_P_TOKEN = r"(?:punkti|punkt|p)"
+
+# Pattern A — law in genitive form + § N (lõike M (punkti K)?)?
+#
+# The law-name genitive suffix appears in TWO grammatical positions:
+#
+#   1. ATTACHED to the final word of the name:
+#        "alkoholiseaduse § 42"        (alkohol + seaduse)
+#        "karistusseadustiku § 121"    (karistus + seadustiku)
+#        "põhikooli- ja gümnaasiumiseaduse § 66"
+#
+#   2. STANDALONE as the final word, after a separate noun phrase:
+#        "kohaliku omavalitsuse korralduse seaduse § 22"
+#        "rahvaraamatukogu seaduse § 16"
+#        "avaliku teabe seaduse § 1"
+#        "sotsiaalhoolekande seaduse § 14"
+#        "ühisveevärgi ja -kanalisatsiooni seaduse § 5"
+#
+# A regex requiring the FINAL token to itself end in seaduse|seadustiku
+# (the v3+v4 form) misses every shape in case (2) — and case (2)
+# covers the bulk of real KOV enabling-act citations. The fix below
+# alternates: either (a) attached form `<word><seaduse|seadustiku>`
+# or (b) standalone marker `seaduse|seadustiku` after up to 7 leading
+# law-name words.
+#
+# A leading hyphen on a word is allowed so names like
+# "ühisveevärgi ja -kanalisatsiooni seaduse" tokenise cleanly.
+_LAW_WORD = r"-?[a-zõäöüšžA-ZÕÄÖÜŠŽ][a-zõäöüšžA-ZÕÄÖÜŠŽ\-]*"
+
+_PAT_LAW_PARA = re.compile(
+    rf"(?P<law>(?:{_LAW_WORD}\s+){{0,7}}"
+    rf"(?:{_LAW_WORD}(?:seaduse|seadustiku)|seaduse|seadustiku))\s*"
+    rf"{_PARA_TOKEN}\s*(?P<par>\d+)"
+    rf"(?:\s+{_LG_TOKEN}\s+(?P<lg>\d+))?"
+    rf"(?:\s+{_P_TOKEN}\s+(?P<p>\d+))?",
+    re.UNICODE | re.IGNORECASE,
+)
+
+# Chained paragraph reference following a law-genitive match.
+# Matches "§ N", "§ N lõike M", "§ N lõike M punkti K" preceded by
+# a comma or 'ja'/'ning'/'või' connector. Used to extract chained
+# same-law paragraphs after the initial law citation.
+#
+# Real KOV preambles routinely chain multiple paragraphs under a single
+# law (e.g. "kohaliku omavalitsuse korralduse seaduse § 6 lg 3 p 2 ja
+# § 22 lg 1 p 34"). _PAT_LAW_PARA captures only the first paragraph;
+# this companion pattern is anchored at the position immediately after
+# each base match end, advancing through ", §" / " ja §" / " ning §"
+# connectors until no contiguous chain remains.
+_PAT_PAR_CHAIN = re.compile(
+    rf"(?:\s*,\s*|\s+(?:ja|ning|või)\s+)"
+    rf"{_PARA_TOKEN}\s*(?P<par>\d+)"
+    rf"(?:\s+{_LG_TOKEN}\s+(?P<lg>\d+))?"
+    rf"(?:\s+{_P_TOKEN}\s+(?P<p>\d+))?",
+    re.UNICODE | re.IGNORECASE,
+)
+
+# The greedy 0-7 leading-word group also absorbs preamble-license
+# verbs that precede a law citation in the wild ("Määrus kehtestatakse",
+# "Kooskõlas", "Lähtudes", etc.). These are NOT part of the law name
+# itself. After capture, _trim_preamble_prefix strips them so
+# law_ref matches FULLNAME_GENITIVE.
+#
+# Words that MAY appear inside multiword law names (ja, ning, või,
+# adjectives like 'kohaliku', 'avaliku', etc.) are deliberately
+# OMITTED from this set. Adding them would break legitimate
+# multiword law names.
+_PREAMBLE_LICENSE_PREFIXES = {
+    # Establishment / license verbs
+    "määrus", "määrust", "määruse", "määrusega", "määrustes",
+    "kehtestatakse", "kehtestatud", "kehtestab", "kehtestada",
+    "antakse", "antud", "annab",
+    "vastu", "vastavalt", "võetud",
+    # Copula 'on' — sits between 'määrus' and 'kehtestatud' in
+    # passive constructions like "Käesolev määrus on kehtestatud …".
+    # Not part of any Estonian law name (finite verb), so safe to trim.
+    "on",
+    # Connector phrases that license a law citation
+    "kooskõlas", "lähtudes", "võttes",
+    "tulenevalt", "tuginedes", "tuleneb", "tulenevat",
+    # Sentence-starts that frame a law citation
+    "käesolev", "käesolevaga",
+    "see",
+    # Adverbial prepositions
+    "alusel", "alus",
+}
+
+
+def _trim_preamble_prefix(law: str) -> str:
+    """Strip leading preamble-license tokens from a parser match.
+
+    The greedy regex captures up to 7 leading words; this trims off
+    common 'Määrus kehtestatakse <lawname>' / 'Kooskõlas <lawname>'
+    framings without touching words that belong inside the law name
+    itself.
+
+    Trailing punctuation (',', '.', etc.) is stripped before
+    membership check so 'Lähtudes,' is recognised as 'lähtudes'.
+    """
+    words = law.split()
+    while words and words[0].lower().rstrip(",.;:") in _PREAMBLE_LICENSE_PREFIXES:
+        words.pop(0)
+    return " ".join(words)
+
+# Pattern B — state regulation: "Vabariigi Valitsuse <date> määruse(ga) nr N"
+# Date can be:
+#   - "19. detsembri 2019. a" (named-month genitive form)
+#   - "20.12.2007" (numeric DD.MM.YYYY)
+# määruse / määrusega — case form varies by sentence position.
+_DATE_NAMED = (
+    r"(?P<day_n>\d{1,2})\.\s*"
+    r"(?P<month>jaanuari|veebruari|märtsi|aprilli|mai|juuni|juuli|"
+    r"augusti|septembri|oktoobri|novembri|detsembri)\s+"
+    r"(?P<year_n>\d{4})\.?\s*a?\.?"
+)
+_DATE_NUMERIC = (
+    r"(?P<day_d>\d{1,2})\.\s*(?P<month_d>\d{1,2})\.\s*(?P<year_d>\d{4})\.?\s*a?\.?"
+)
+_DATE_EITHER = rf"(?:{_DATE_NAMED}|{_DATE_NUMERIC})"
+
+_PAT_STATE_REG = re.compile(
+    # Issuer alternatives:
+    #   1. "Vabariigi Valitsuse" (genitive of Government)
+    #   2. minister names ending in "ministri", in three shapes:
+    #         "rahandusministri"                  (compound, single token)
+    #         "majandus- ja kommunikatsiooniministri" (multiword + hyphen)
+    #         "riigihalduse ministri"              (descriptor + standalone token)
+    #
+    # The standalone "ministri" branch (third shape) is critical — about
+    # 1/4 of state regulations in the corpus use the separate-word form
+    # ("Riigihalduse minister" issued ~150 acts in the corpus). The
+    # alternation `[a-z]+ministri|ministri` covers both attached and
+    # standalone usage; the optional leading group consumes any
+    # descriptor words preceding a standalone "ministri".
+    r"(?P<issuer>Vabariigi\s+Valitsuse|"
+    r"(?:[A-ZÕÄÖÜŠŽa-zõäöüšž][\w\-õäöüšžÕÄÖÜŠŽ]*(?:[-\s]+(?:ja\s+)?[a-zõäöüšž][\w\-õäöüšžÕÄÖÜŠŽ]*){0,4}\s+)?"
+    r"(?:[a-zõäöüšž]+ministri|ministri))\s+"
+    rf"{_DATE_EITHER}\s+määrus(?:ega|es|e|est)\s+nr\s*\.?\s*(?P<num>\d+)",
+    re.UNICODE | re.IGNORECASE,
+)
+
+# Pattern C — KOV regulation: "<Issuer Display Name> <date> määruse(ga) nr N"
+# Issuer ends in volikogu / valitsus(e) — the genitive form is
+# "Linnavolikogu" / "Linnavalitsuse" / "Vallavolikogu" / "Vallavalitsuse".
+# Issuer name may be compound (Häädemeeste, Lääne-Nigula).
+_PAT_KOV_REG = re.compile(
+    r"(?P<issuer>[A-ZÕÄÖÜŠŽ][a-zõäöüšž\-]+(?:\s+[A-ZÕÄÖÜŠŽ][a-zõäöüšž\-]+)*\s+"
+    r"(?:Linnavolikogu|Linnavalitsuse|Linnavalitsus|"
+    r"Vallavolikogu|Vallavalitsuse|Vallavalitsus|"
+    r"Alevivolikogu))\s+"
+    rf"{_DATE_EITHER}\s+määrus(?:ega|e|est)\s+nr\s*(?P<num>\d+)",
+    re.UNICODE,
+)
+
+
+def _build_citation_detail(lg: str | None, p: str | None) -> str | None:
+    """Combine lõige (lg) and punkt (p) into 'lg 1' / 'lg 1 p 3'."""
+    parts = []
+    if lg:
+        parts.append(f"lg {lg}")
+    if p:
+        parts.append(f"p {p}")
+    return " ".join(parts) if parts else None
+
+
+def _normalize_state_issuer(issuer_text: str) -> str:
+    """Strip Estonian genitive ending ("...ministri" → "...minister",
+    "Vabariigi Valitsuse" → "Vabariigi Valitsus") so the resolver's
+    state-regulation lookup key matches the corpus issuer label.
+
+    The corpus stamps state-regulation issuers in nominative case on
+    the act node's ``estleg:issuer`` field (e.g. "Rahandusminister",
+    "Riigihalduse minister", "Vabariigi Valitsus"). Without normalisation,
+    the parser-extracted genitives "rahandusministri" / "riigihalduse
+    ministri" / "Vabariigi Valitsuse" would never match any lookup key.
+
+    Estonian: nominative '-minister' takes genitive '-ministri'
+    (the final 'er' becomes 'ri'). To round-trip correctly, the
+    suffix '-ministri' is replaced with '-minister', not just
+    truncated by one char (which would yield '-ministr' — wrong).
+    """
+    # Collapse internal whitespace (multiword minister regex can pick
+    # up stray spaces around hyphens or 'ja').
+    s = re.sub(r"\s+", " ", issuer_text.strip())
+    if s.endswith("Valitsuse"):
+        return s[:-1]  # Valitsuse → Valitsus (single trailing 'e' drop)
+    # Reverse the Estonian -er→-ri genitive transform.
+    if s.endswith("ministri"):
+        return s[:-len("ministri")] + "minister"
+    if s.endswith("Ministri"):
+        return s[:-len("Ministri")] + "Minister"
+    return s
+
+
+def _strip_quotes(text: str) -> str:
+    """Strip surrounding quote characters around a single token. The
+    parser pre-processes preamble text to remove these so the law-name
+    regex can match `Kohanimeseaduse` whether or not it's quoted."""
+    return text.strip(_QUOTES + " ")
+
+
+def _normalize_date(
+    day_n: str | None, month_named: str | None, year_n: str | None,
+    day_d: str | None, month_d: str | None, year_d: str | None,
+) -> str | None:
+    """Build ISO-8601 date from either named-month or numeric-date
+    capture groups. Returns None if neither pair is fully populated."""
+    if day_n and month_named and year_n:
+        m = _ET_MONTHS.get(month_named.lower())
+        if m is None:
+            return None
+        return f"{year_n}-{m}-{int(day_n):02d}"
+    if day_d and month_d and year_d:
+        return f"{year_d}-{int(month_d):02d}-{int(day_d):02d}"
+    return None
+
+
+def extract_preamble_citations(text: str) -> list[dict]:
+    """Parse a preamble for Estonian legal citation forms.
+
+    Returns a list of dicts in textual order. Each dict has:
+        form           : "law-genitive" | "state-regulation-date-number"
+                         | "kov-regulation-date-number"
+        citationText   : original matched substring
+        citationDetail : "lg 1" / "lg 1 p 3" / None
+
+    Form-specific keys:
+        law-genitive:
+            law_ref      : the full genitive law name
+            paragraphs   : ["N"] (always one entry — no ranges in
+                           preambles in the current corpus)
+
+        state-regulation-date-number / kov-regulation-date-number:
+            issuer        : nominative issuer string
+            adoption_date : ISO-8601 date string
+            act_number    : the digit string after "määruse(ga) nr"
+    """
+    if not text:
+        return []
+
+    # Substitute quote characters with spaces in a SCRATCH copy used
+    # only for matching. The original `text` is preserved so that
+    # citationText (intended for traceability and SHACL display) is
+    # the literal input substring with quotes intact.
+    cleaned = re.sub(rf"[{re.escape(_QUOTES)}]", " ", text)
+
+    def _orig_substring(start_in_cleaned: int, end_in_cleaned: int) -> str:
+        # Quote substitution is one-char-for-one-char, so offsets in
+        # `cleaned` are valid in `text`. Use the original text for
+        # citationText to preserve quotes / punctuation.
+        return text[start_in_cleaned:end_in_cleaned].strip()
+
+    citations: list[tuple[int, dict]] = []
+
+    for m in _PAT_LAW_PARA.finditer(cleaned):
+        # Strip surrounding quotes, then strip leading preamble-license
+        # verbs (Määrus kehtestatakse, Kooskõlas, Lähtudes, …) so the
+        # law_ref is a clean genitive law name suitable for
+        # FULLNAME_GENITIVE lookup. The regex is intentionally
+        # permissive on the leading side; this post-step is what
+        # actually narrows the capture to the law name itself.
+        raw = _strip_quotes(m.group("law")).strip()
+        law_ref = _trim_preamble_prefix(raw)
+        if not law_ref:
+            # Defensive: if trimming consumed everything (the match
+            # captured ONLY preamble-license words plus a standalone
+            # 'seaduse'), skip the match.
+            continue
+        cit = {
+            "form": "law-genitive",
+            "law_ref": law_ref,
+            "paragraphs": [m.group("par")],
+            "citationDetail": _build_citation_detail(m.group("lg"), m.group("p")),
+            "citationText": _orig_substring(m.start(), m.end()),
+        }
+        citations.append((m.start(), cit))
+
+        # Chain extension: same law_ref, additional paragraphs.
+        # The chain regex is anchored to the position immediately after
+        # the base match end, advancing through ", §" / " ja §" / " ning §"
+        # connectors until no contiguous chain remains. Each chained
+        # paragraph carries its OWN lg/p detail — the leading match's
+        # detail is NOT propagated forward.
+        pos = m.end()
+        while True:
+            chain_m = _PAT_PAR_CHAIN.match(cleaned, pos)
+            if chain_m is None:
+                break
+            chained_cit = {
+                "form": "law-genitive",
+                "law_ref": law_ref,
+                "paragraphs": [chain_m.group("par")],
+                "citationDetail": _build_citation_detail(
+                    chain_m.group("lg"), chain_m.group("p")
+                ),
+                # Use the original-text substring for the FULL match
+                # including the connector, so citationText is
+                # human-readable.
+                "citationText": _orig_substring(chain_m.start(), chain_m.end()),
+            }
+            citations.append((chain_m.start(), chained_cit))
+            pos = chain_m.end()
+
+    for m in _PAT_STATE_REG.finditer(cleaned):
+        date = _normalize_date(
+            m.group("day_n"), m.group("month"), m.group("year_n"),
+            m.group("day_d"), m.group("month_d"), m.group("year_d"),
+        )
+        if date is None:
+            continue
+        # Same trim as the law-citation branch — strip leading
+        # "Määrus kehtestatakse" / "Lähtudes" / etc. that the greedy
+        # leading-words group absorbed when the citation is embedded
+        # in a sentence.
+        raw_issuer = _trim_preamble_prefix(m.group("issuer").strip())
+        if not raw_issuer:
+            continue
+        cit = {
+            "form": "state-regulation-date-number",
+            "issuer": _normalize_state_issuer(raw_issuer),
+            "adoption_date": date,
+            "act_number": m.group("num"),
+            "citationDetail": None,
+            "citationText": _orig_substring(m.start(), m.end()),
+        }
+        citations.append((m.start(), cit))
+
+    for m in _PAT_KOV_REG.finditer(cleaned):
+        date = _normalize_date(
+            m.group("day_n"), m.group("month"), m.group("year_n"),
+            m.group("day_d"), m.group("month_d"), m.group("year_d"),
+        )
+        if date is None:
+            continue
+        raw_issuer = _trim_preamble_prefix(
+            re.sub(r"\s+", " ", m.group("issuer").strip())
+        )
+        if not raw_issuer:
+            continue
+        cit = {
+            "form": "kov-regulation-date-number",
+            "issuer": raw_issuer,
+            "adoption_date": date,
+            "act_number": m.group("num"),
+            "citationDetail": None,
+            "citationText": _orig_substring(m.start(), m.end()),
+        }
+        citations.append((m.start(), cit))
+
+    citations.sort(key=lambda pair: pair[0])
+    return [c for _, c in citations]
 
 
 def _expand_par_range(par_range: str) -> list[str]:
@@ -300,7 +1330,10 @@ def process_law_file(
     json_file: Path,
     abbrev_to_prefix: dict[str, str],
     prefix_to_provisions: dict[str, dict[str, str]],
-    source_act_to_prefix: dict[str, str],
+    iri_to_file: dict[str, Path],
+    *,
+    kov_act_lookup_by_number: dict[tuple[str, str], list[str]] | None = None,
+    issuer_registry: dict[str, tuple[str, str, str]] | None = None,
 ) -> dict:
     """
     Process a single law JSON-LD file to extract and add cross-references.
@@ -399,6 +1432,90 @@ def process_law_file(
         stats["provisions_with_refs"] += 1
         modified = True
 
+    # Layer 2b: KOV body-text refs scoped to source municipality.
+    # Runs AFTER the existing in-law citation pass on the same graph.
+    if kov_act_lookup_by_number is not None:
+        # Read the source act's municipality (may be None for laws or
+        # for state regulations that aren't municipality-bound).
+        source_municipality = None
+        for node in graph:
+            types = node.get("@type") or []
+            if isinstance(types, str):
+                types = [types]
+            if "estleg:MunicipalRegulation" in types:
+                ebm = node.get("estleg:enactedByMunicipality")
+                if isinstance(ebm, dict):
+                    source_municipality = ebm.get("@id")
+                elif isinstance(ebm, str):
+                    source_municipality = ebm
+                break
+
+        # Per provision, parse body-text KOV refs and resolve.
+        for prov_node in graph:
+            if "estleg:paragrahv" not in prov_node:
+                continue
+            text_parts = []
+            lt = prov_node.get("estleg:legalText")
+            if isinstance(lt, str):
+                text_parts.append(lt)
+            sm = prov_node.get("estleg:summary")
+            if isinstance(sm, str):
+                text_parts.append(sm)
+            text = " ".join(text_parts)
+            kov_refs = extract_kov_act_refs_from_text(text)
+            if not kov_refs:
+                continue
+
+            # Treat every parsed KOV body-text ref as a "found" citation;
+            # whether resolved or not, this is real signal in the coverage
+            # report (matches the convention from the in-law branch).
+            stats["citations_found"] += len(kov_refs)
+
+            new_targets: list[str] = []
+            for ref in kov_refs:
+                target = resolve_kov_internal_act_ref(
+                    source_municipality=source_municipality,
+                    explicit_issuer=ref["issuer"],
+                    body_type=ref["body_type"],
+                    act_number=ref["act_number"],
+                    kov_act_lookup_by_number=kov_act_lookup_by_number,
+                    issuer_registry=issuer_registry or {},
+                )
+                if target is not None:
+                    new_targets.append(target)
+
+            if not new_targets:
+                continue
+
+            # Append to existing references (preserving the in-law refs)
+            # and dedupe.
+            refs = prov_node.get("estleg:references")
+            if refs is None:
+                refs = []
+                prov_node["estleg:references"] = refs
+            elif isinstance(refs, dict):
+                refs = [refs]
+                prov_node["estleg:references"] = refs
+
+            had_new = False
+            for tgt in new_targets:
+                if {"@id": tgt} not in refs:
+                    refs.append({"@id": tgt})
+                    had_new = True
+
+            if had_new:
+                stats["citations_resolved"] += len(new_targets)
+                # Only count the provision the FIRST time a Layer 2b ref
+                # lands on it (the in-law pass may have already counted it).
+                if not prov_node.get("_layer2b_counted"):
+                    stats["provisions_with_refs"] += 1
+                    prov_node["_layer2b_counted"] = True
+                modified = True
+
+    # Strip the temporary marker before saving so it never persists.
+    for prov_node in graph:
+        prov_node.pop("_layer2b_counted", None)
+
     if modified:
         save_json(json_file, doc)
 
@@ -411,7 +1528,7 @@ def clear_existing_references() -> int:
     so the script is idempotent on re-run.
     """
     cleaned = 0
-    for json_file in iter_peep_files(include_kov=False):  # DEFERRED to Layer 2b
+    for json_file in iter_peep_files():
         if json_file.name.startswith("riigikohus"):
             continue
         try:
@@ -433,10 +1550,182 @@ def clear_existing_references() -> int:
     return cleaned
 
 
-def main() -> None:
+def _process_preamble_for_act(
+    peep: Path,
+    doc: dict,
+    *,
+    genitive_to_act_iri: dict[str, str],
+    prefix_to_provisions: dict[str, dict[str, str]],
+    act_iri_to_prefix: dict[str, str],
+    state_reg_lookup: dict,
+    kov_act_lookup: dict,
+) -> dict | None:
+    """Run the Layer 2b preamble pass on a single peep file's @graph.
+
+    Performs the per-peep clear-and-regenerate cycle:
+
+      1. Detect existing prior-pass output (issuedUnder /
+         implementsCitation / Citation_<shortid>_* nodes) BEFORE clearing,
+         so a file whose parser output went from "some" to "none" still
+         persists the cleared state to disk on re-run.
+      2. Unconditionally clear those triples.
+      3. Re-run extract_preamble_citations + resolver.
+      4. Re-attach issuedUnder / implementsCitation / Citation nodes
+         from the fresh parse.
+      5. Save the file when EITHER fresh output exists OR something was
+         cleared. The caller's bookkeeping uses the returned `had_output`
+         flag (positive output only) for files_with_output counting; the
+         `had_existing` flag is an internal save-gating concern.
+
+    Returns None when the peep is malformed for the preamble pass
+    (no @graph, no act_node, no preambleText). Returns a stats dict
+    otherwise:
+
+        triples_emitted        : count of issuedUnder + implementsCitation
+        had_output             : True if fresh parse produced any triples
+        had_existing           : True if any prior-pass triples were cleared
+        citations_resolved     : count of citations that resolved
+        citations_unresolved   : count of citations that did not resolve
+        saved                  : True if the file was written to disk
+    """
+    graph = doc.get("@graph", [])
+    if not graph:
+        return None
+
+    # Find the act node (owl:Ontology-typed). Skip the file if absent.
+    act_node = None
+    for n in graph:
+        types = n.get("@type") or []
+        if isinstance(types, str):
+            types = [types]
+        if "owl:Ontology" in types and n.get("@id"):
+            act_node = n
+            break
+    if act_node is None:
+        return None
+    source_act_iri = act_node["@id"]
+
+    preamble_text = act_node.get("estleg:preambleText")
+    if not preamble_text:
+        return None
+
+    # Detect existing prior-pass output BEFORE clearing. Without this
+    # flag, the save would be gated solely on positive fresh output —
+    # so a parser tightening that drops an act's last citation would
+    # leave the now-stale issuedUnder / Citation_* triples on disk.
+    citation_prefix = (
+        f"estleg:Citation_{source_act_iri.removeprefix('estleg:')}_"
+    )
+    had_existing = (
+        "estleg:issuedUnder" in act_node
+        or "estleg:implementsCitation" in act_node
+        or any(
+            isinstance(n.get("@id"), str) and n["@id"].startswith(citation_prefix)
+            for n in graph
+        )
+    )
+
+    # Idempotency: clear prior pass output before regenerating.
+    act_node.pop("estleg:issuedUnder", None)
+    act_node.pop("estleg:implementsCitation", None)
+    graph[:] = [
+        n for n in graph
+        if not (isinstance(n.get("@id"), str)
+                and n["@id"].startswith(citation_prefix))
+    ]
+
+    # Re-find act_node after the comprehension — safe because we only
+    # filtered Citation_* nodes.
+    for n in graph:
+        if n.get("@id") == source_act_iri:
+            act_node = n
+            break
+
+    citations = extract_preamble_citations(preamble_text)
+
+    issued_under_set: set[str] = set()
+    implements_citation_refs: list[dict] = []
+    new_citation_nodes: list[dict] = []
+    citations_resolved = 0
+    citations_unresolved = 0
+
+    for seq, cit in enumerate(citations, start=1):
+        resolved = resolve_preamble_citation(
+            cit,
+            genitive_to_act_iri=genitive_to_act_iri,
+            prefix_to_provisions=prefix_to_provisions,
+            act_iri_to_prefix=act_iri_to_prefix,
+            state_reg_lookup=state_reg_lookup,
+            kov_act_lookup=kov_act_lookup,
+        )
+        if resolved is None:
+            citations_unresolved += 1
+            continue
+        citations_resolved += 1
+        target_iri, enabling_act_iri = resolved
+        issued_under_set.add(enabling_act_iri)
+
+        # Emit a reified Citation node only when the citation has
+        # paragraph or detail granularity.
+        if cit.get("paragraphs") or cit.get("citationDetail"):
+            citation_iri = build_citation_iri(source_act_iri, seq)
+            citation_node = build_citation_node(
+                iri=citation_iri,
+                target_iri=target_iri,
+                citation_detail=cit.get("citationDetail"),
+                citation_text=cit.get("citationText"),
+            )
+            new_citation_nodes.append(citation_node)
+            implements_citation_refs.append({"@id": citation_iri})
+
+    triples_emitted = 0
+    if issued_under_set:
+        act_node["estleg:issuedUnder"] = [
+            {"@id": iri} for iri in sorted(issued_under_set)
+        ]
+        triples_emitted += len(issued_under_set)
+
+    if implements_citation_refs:
+        act_node["estleg:implementsCitation"] = implements_citation_refs
+        graph.extend(new_citation_nodes)
+        triples_emitted += len(implements_citation_refs)
+
+    had_output = bool(issued_under_set or implements_citation_refs)
+
+    # Save when EITHER fresh output exists OR something was cleared.
+    # The cleared-but-empty case must persist the cleared state to disk
+    # so stale triples don't survive a parser tightening.
+    saved = False
+    if had_output or had_existing:
+        save_json(peep, doc)
+        saved = True
+
+    return {
+        "triples_emitted": triples_emitted,
+        "had_output": had_output,
+        "had_existing": had_existing,
+        "citations_resolved": citations_resolved,
+        "citations_unresolved": citations_unresolved,
+        "saved": saved,
+    }
+
+
+def main() -> int:
     print("=" * 70)
     print("Estonian Legal Ontology - Extract Cross-Law References")
     print("=" * 70)
+
+    _start = time.perf_counter()
+    _files_processed: set[Path] = set()
+    _files_processed_kov: set[Path] = set()
+    _files_with_output: set[Path] = set()
+    _files_with_output_kov: set[Path] = set()
+    _triples = 0
+    _triples_kov = 0
+    _files_skipped = 0
+    _skip_reasons: dict[str, int] = {}
+    _failures: list[str] = []
+    _unresolved = 0
 
     # Step 1: Clear existing references for idempotent re-run
     print("\n[1/5] Clearing existing estleg:references from law files...")
@@ -445,10 +1734,28 @@ def main() -> None:
 
     # Step 2: Build provision index
     print("\n[2/5] Building provision index from JSON-LD files...")
-    prefix_to_provisions, source_act_to_prefix, iri_to_file = build_provision_index()
+    (prefix_to_provisions, source_act_to_prefix, iri_to_file,
+     prefix_to_act_iri, act_iri_to_prefix) = build_provision_index()
     total_provisions = sum(len(v) for v in prefix_to_provisions.values())
     print(f"  Found {len(prefix_to_provisions)} law prefixes with {total_provisions} provisions")
     print(f"  Source act mappings: {len(source_act_to_prefix)}")
+
+    # Layer 2b: canonical lookups for the preamble + body-text passes
+    genitive_to_act_iri = build_genitive_to_act_iri(
+        source_act_to_prefix=source_act_to_prefix,
+        prefix_to_act_iri=prefix_to_act_iri,
+    )
+
+    riik_root = KRR_DIR / "regulations" / "riik"
+    kov_root = KRR_DIR / "regulations" / "kov"
+    issuers_path = KRR_DIR / "issuers_kov_peep.json"
+    state_reg_lookup = build_state_regulation_lookup(riik_root, DATA_DIR)
+    kov_act_lookup = build_kov_act_lookup(kov_root, DATA_DIR, issuers_path)
+    kov_act_lookup_by_number = build_kov_act_lookup_by_number(kov_root)
+    issuer_registry = build_issuer_registry(issuers_path)
+    print(f"  state-reg lookup: {len(state_reg_lookup)} entries")
+    print(f"  KOV act lookup (date-keyed): {len(kov_act_lookup)} entries")
+    print(f"  KOV act lookup (number-only): {len(kov_act_lookup_by_number)} keys")
 
     # Step 3: Build abbreviation mapping
     print("\n[3/5] Building abbreviation-to-prefix mapping...")
@@ -460,7 +1767,7 @@ def main() -> None:
 
     # Step 4: Process each law file
     print("\n[4/5] Processing law files for cross-references...")
-    law_files = iter_peep_files(include_kov=False)  # DEFERRED to Layer 2b
+    law_files = iter_peep_files()
     # Exclude riigikohus files and non-law files
     law_files = [f for f in law_files if not f.name.startswith("riigikohus")]
 
@@ -472,7 +1779,9 @@ def main() -> None:
 
     for i, json_file in enumerate(law_files, 1):
         stats = process_law_file(
-            json_file, abbrev_to_prefix, prefix_to_provisions, source_act_to_prefix
+            json_file, abbrev_to_prefix, prefix_to_provisions, iri_to_file,
+            kov_act_lookup_by_number=kov_act_lookup_by_number,
+            issuer_registry=issuer_registry,
         )
         all_stats.append(stats)
 
@@ -483,9 +1792,100 @@ def main() -> None:
         if stats.get("provisions_with_refs", 0) > 0:
             files_modified += 1
 
+        # Coverage accumulators — set-based dedup avoids double-counting
+        # files that also produce output in the preamble pass below.
+        is_kov = "regulations/kov/" in str(json_file)
+        _files_processed.add(json_file)
+        if is_kov:
+            _files_processed_kov.add(json_file)
+        if stats.get("provisions_with_refs", 0) > 0:
+            _files_with_output.add(json_file)
+            if is_kov:
+                _files_with_output_kov.add(json_file)
+        delta = stats.get("citations_resolved", 0)
+        _triples += delta
+        if is_kov:
+            _triples_kov += delta
+        if stats.get("error"):
+            _failures.append(f"{json_file.name}: {stats['error']}")
+
         if i % 50 == 0 or i == len(law_files):
             print(f"  Processed {i}/{len(law_files)} files "
                   f"(refs found so far: {total_resolved})")
+
+    # Layer 2b: preamble pass — issuedUnder + implementsCitation + Citation
+    print("\nLayer 2b: scanning preambles for issuedUnder citations...")
+    preamble_files_processed: set[Path] = set()
+    preamble_files_with_output: set[Path] = set()
+    preamble_files_kov_processed: set[Path] = set()
+    preamble_files_kov_with_output: set[Path] = set()
+    preamble_triples_emitted = 0
+    preamble_triples_emitted_kov = 0
+    preamble_citations_resolved = 0
+    preamble_citations_unresolved = 0
+
+    for peep in iter_peep_files():
+        is_kov = "regulations/kov/" in str(peep)
+        try:
+            with open(peep, "r", encoding="utf-8") as fh:
+                doc = json.load(fh)
+        except (json.JSONDecodeError, OSError):
+            continue
+
+        result = _process_preamble_for_act(
+            peep,
+            doc,
+            genitive_to_act_iri=genitive_to_act_iri,
+            prefix_to_provisions=prefix_to_provisions,
+            act_iri_to_prefix=act_iri_to_prefix,
+            state_reg_lookup=state_reg_lookup,
+            kov_act_lookup=kov_act_lookup,
+        )
+        if result is None:
+            # Peep had no @graph, no act_node, or no preambleText —
+            # not a candidate for the preamble pass.
+            continue
+
+        # Files with a preambleText count as processed even when the
+        # parser produced zero citations (matches prior behaviour).
+        preamble_files_processed.add(peep)
+        if is_kov:
+            preamble_files_kov_processed.add(peep)
+
+        preamble_triples_emitted += result["triples_emitted"]
+        if is_kov:
+            preamble_triples_emitted_kov += result["triples_emitted"]
+        preamble_citations_resolved += result["citations_resolved"]
+        preamble_citations_unresolved += result["citations_unresolved"]
+
+        # files_with_output only counts files whose fresh parse produced
+        # positive output. The cleared-but-empty case (had_existing but
+        # not had_output) modifies the file but contributes zero triples
+        # to the report — that's the correct semantic.
+        if result["had_output"]:
+            preamble_files_with_output.add(peep)
+            if is_kov:
+                preamble_files_kov_with_output.add(peep)
+
+    print(f"  preamble files processed: {len(preamble_files_processed)} "
+          f"(KOV: {len(preamble_files_kov_processed)})")
+    print(f"  preamble files with output: {len(preamble_files_with_output)} "
+          f"(KOV: {len(preamble_files_kov_with_output)})")
+    print(f"  preamble triples emitted: {preamble_triples_emitted} "
+          f"(KOV: {preamble_triples_emitted_kov})")
+    print(f"  preamble citations resolved/unresolved: "
+          f"{preamble_citations_resolved}/{preamble_citations_unresolved}")
+
+    # Fold the preamble pass into the run-level coverage accumulators.
+    # The set unions deduplicate against the body-text pass above, so a
+    # file emitting from both passes counts once in files_with_output.
+    _files_processed |= preamble_files_processed
+    _files_processed_kov |= preamble_files_kov_processed
+    _files_with_output |= preamble_files_with_output
+    _files_with_output_kov |= preamble_files_kov_with_output
+    _triples += preamble_triples_emitted
+    _triples_kov += preamble_triples_emitted_kov
+    _unresolved += preamble_citations_unresolved
 
     # Step 5: Generate report
     print("\n[5/5] Generating cross-references report...")
@@ -530,6 +1930,54 @@ def main() -> None:
     print(f"  Report: {report_path}")
     print("=" * 70)
 
+    # Coverage report (KOV-aware schema, shared across the 6 KOV pipelines)
+    all_input_files = list(iter_peep_files())
+    _kov_files = [p for p in all_input_files
+                  if "regulations/kov/" in str(p)]
+
+    _wall, _rate, _peak_mb = measure_runtime(_start, len(_files_processed))
+    out_path = KRR_DIR / "reports" / "kov" / "extract_cross_references_coverage.json"
+    write_coverage_report(
+        CoverageReport(
+            pipeline="extract_cross_references",
+            run_timestamp=datetime.now(timezone.utc).isoformat(),
+            pipeline_version=resolve_pipeline_version(),
+            input_files_total=len(all_input_files),
+            input_files_kov=len(_kov_files),
+            files_processed=len(_files_processed),
+            files_processed_kov=len(_files_processed_kov),
+            files_with_output=len(_files_with_output),
+            files_with_output_kov=len(_files_with_output_kov),
+            files_skipped=_files_skipped,
+            skip_reasons=_skip_reasons,
+            triples_emitted=_triples,
+            triples_emitted_kov=_triples_kov,
+            unresolved_references=_unresolved,
+            wall_time_seconds=round(_wall, 2),
+            items_per_second=round(_rate, 2),
+            peak_memory_mb=round(_peak_mb, 1),
+            error_count=len(_failures),
+            failure_samples=_failures,
+        ),
+        out_path,
+    )
+    print(f"\nCoverage report: {out_path}")
+    print(f"  input_files_total: {len(all_input_files)} (KOV: {len(_kov_files)})")
+    print(f"  files_with_output: {len(_files_with_output)} "
+          f"(KOV: {len(_files_with_output_kov)})")
+    print(f"  triples_emitted: {_triples} (KOV: {_triples_kov})")
+
+    # Gate check — fails the run when the KOV side produced nothing
+    # despite the corpus being present.
+    if len(_kov_files) >= 11000 and len(_files_with_output_kov) == 0:
+        print("\nGATE FAIL: KOV files were processed but none produced output.")
+        return 1
+    if _triples_kov == 0 and len(_kov_files) >= 11000:
+        print("\nGATE FAIL: zero KOV triples emitted.")
+        return 1
+    print("\nGATE OK")
+    return 0
+
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())
