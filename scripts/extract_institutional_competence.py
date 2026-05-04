@@ -433,7 +433,7 @@ def main() -> None:
     print("Estonian Legal Ontology - Institutional Competence Extraction")
     print("=" * 70)
 
-    law_files = iter_peep_files(include_kov=False)  # DEFERRED to Layer 2c
+    law_files = iter_peep_files()
     print(f"\n  Found {len(law_files)} law files to process")
 
     # Layer 2c PR #2: build issuer registry once at startup.
