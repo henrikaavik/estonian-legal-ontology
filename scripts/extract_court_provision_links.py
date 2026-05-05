@@ -16,8 +16,9 @@ from __future__ import annotations
 
 import json
 import re
+import time
 from collections import defaultdict
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import NamedTuple
 
@@ -657,9 +658,6 @@ def clear_existing_court_links(counters: "_RunCounters") -> int:
 
 
 def main() -> None:
-    import time
-    from datetime import datetime, timezone
-
     from kov_pipeline_coverage import (
         CoverageReport,
         measure_runtime,
@@ -826,21 +824,12 @@ def main() -> None:
     print(f"  Saved: {report_path.name}")
 
     # ----- KOV coverage report -----
-    state_peep_count = 0
-    state_peeps_scanned = 0
-    for _ in iter_peep_files(include_kov=False):
-        state_peep_count += 1
-        state_peeps_scanned += 1
-    kov_peep_count = 0
-    kov_peeps_scanned = 0
-    for _ in iter_peep_files():
-        kov_peep_count += 1
-        kov_peeps_scanned += 1
-    kov_peep_count -= state_peep_count       # subtract the state subset
-    kov_peeps_scanned -= state_peeps_scanned
+    state_peeps = list(iter_peep_files(include_kov=False))
+    all_peeps = list(iter_peep_files())
+    state_peep_count = len(state_peeps)
+    kov_peep_count = len(all_peeps) - state_peep_count
 
     rk_file_count = len(per_file_stats)
-    rk_files_read = rk_file_count    # _safe_load failures already in counters
 
     court_files_written = sum(1 for s in per_file_stats if s.get("citations_resolved", 0) > 0)
     # Discriminate KOV vs state-law output files using the kov_iri_to_file
@@ -857,8 +846,8 @@ def main() -> None:
         pipeline_version=resolve_pipeline_version(),
         input_files_total=rk_file_count + state_peep_count + kov_peep_count,
         input_files_kov=kov_peep_count,
-        files_processed=rk_files_read + state_peeps_scanned + kov_peeps_scanned,
-        files_processed_kov=kov_peeps_scanned,
+        files_processed=rk_file_count + state_peep_count + kov_peep_count,
+        files_processed_kov=kov_peep_count,
         # files_with_output counts ALL files that received any new triple
         # this run: court files (interpretsLaw), state-law files (interpretedBy),
         # AND KOV files (interpretedBy). files_with_output_kov is the KOV
