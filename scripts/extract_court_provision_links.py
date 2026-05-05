@@ -37,6 +37,31 @@ RK_DIR = KRR_DIR / "riigikohus"
 NS = "https://data.riik.ee/ontology/estleg#"
 
 
+def expand_two_digit_year(date_str: str) -> int:
+    """Resolve the year component of a citation date to a 4-digit year.
+
+    Two-digit years use the boundary ``y > 50``: ``00..50`` → ``2000..2050``,
+    ``51..99`` → ``1951..1999``. Long-form Estonian-month dates already
+    carry a 4-digit year; numeric ``d.m.y`` dates may be 2- or 4-digit.
+    """
+    parts = date_str.split()
+    last_token = parts[-1] if parts else ""
+    if last_token.isdigit() and len(last_token) == 4:
+        return int(last_token)
+    # numeric d.m.y form
+    pieces = date_str.split(".")
+    if len(pieces) >= 3:
+        tail = pieces[2].split()[0]   # strip optional trailing ". a." etc.
+        digits = "".join(ch for ch in tail if ch.isdigit())
+        if not digits:
+            return 0
+        y = int(digits)
+        if y < 100:
+            return 1900 + y if y > 50 else 2000 + y
+        return y
+    return 0
+
+
 def build_provision_index() -> tuple[dict[str, dict[str, str]], dict[str, str], dict[str, Path]]:
     """
     Scan all law *_peep.json files to build provision indexes.
