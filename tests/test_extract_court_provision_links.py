@@ -11,6 +11,7 @@ import pytest
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 
 from extract_court_provision_links import expand_two_digit_year
+from extract_court_provision_links import PAT_KOV_ACT
 
 
 # ---------------------------------------------------------------------------
@@ -44,3 +45,63 @@ def test_year_four_digit_passthrough() -> None:
 
 def test_year_long_form_estonian_month() -> None:
     assert expand_two_digit_year("18. juuni 2020") == 2020
+
+
+# ---------------------------------------------------------------------------
+# Group 1b — PAT_KOV_ACT regex
+# ---------------------------------------------------------------------------
+
+def _first_match(text: str):
+    return PAT_KOV_ACT.search(text)
+
+
+def test_pat_numeric_date_genitive_body() -> None:
+    m = _first_match("Keila Vallavolikogu 21.06.99 määrus nr 55")
+    assert m is not None
+    assert m.group("municipality").strip() == "Keila"
+    assert m.group("body").lower() == "vallavolikogu"
+    assert m.group("date") == "21.06.99"
+    assert m.group("num") == "55"
+
+
+def test_pat_long_date_form() -> None:
+    m = _first_match("Tallinna Linnavolikogu 18. juuni 2020. a määruse nr 15")
+    assert m is not None
+    assert m.group("municipality").strip() == "Tallinna"
+    assert m.group("body").lower() == "linnavolikogu"
+    assert m.group("date") == "18. juuni 2020"
+    assert m.group("num") == "15"
+
+
+def test_pat_instrumental() -> None:
+    m = _first_match("Tallinna Linnavalitsuse 14.05.2009 määrusega nr 23")
+    assert m is not None
+    assert m.group("num") == "23"
+
+
+def test_pat_nominative_body() -> None:
+    m = _first_match("Tallinna Linnavalitsus 14.05.2009 määrus nr 23")
+    assert m is not None
+    assert m.group("body").lower() == "linnavalitsus"
+
+
+def test_pat_no_match_vague_plural() -> None:
+    assert _first_match("Pärnu Linnavalitsuse määruste peale") is None
+
+
+def test_pat_no_match_case_name() -> None:
+    # "Tallinna Linna määruskaebus" is a case-name pattern, not an act citation.
+    assert _first_match("Tallinna Linna määruskaebus Tallinna Ringkonnakohtu otsuse peale") is None
+
+
+def test_pat_no_overcapture_lowercase_prefix_long() -> None:
+    # Pins the case-sensitive municipality match against IGNORECASE-driven regression.
+    m = _first_match("Õiguskantsleri taotlus Tallinna Linnavolikogu 19.02.2009 määruse nr 3 muutmise kohta")
+    assert m is not None
+    assert m.group("municipality").strip() == "Tallinna"
+
+
+def test_pat_no_overcapture_lowercase_prefix_short() -> None:
+    m = _first_match("tunnistada kehtetuks Keila Vallavolikogu 21.06.99 määrus nr 55")
+    assert m is not None
+    assert m.group("municipality").strip() == "Keila"

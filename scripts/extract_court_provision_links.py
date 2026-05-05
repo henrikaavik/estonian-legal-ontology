@@ -62,6 +62,37 @@ def expand_two_digit_year(date_str: str) -> int:
     return 0
 
 
+# ---------------------------------------------------------------------------
+# KOV act citation regex (Layer 2c PR #3)
+# ---------------------------------------------------------------------------
+# CRITICAL: do NOT apply re.IGNORECASE globally. Under global IGNORECASE the
+# municipality character class [A-ZÕÄÖÜŠŽ] would also accept lowercase
+# letters, and the {1,3} quantifier would consume preceding lowercase
+# words like "Õiguskantsleri taotlus" or "tunnistada kehtetuks" before
+# the municipality name, polluting issuer_norm and breaking resolution.
+# Case-insensitivity is scoped via inline (?i:...) only to the body word,
+# month names, and act-marker keyword.
+PAT_KOV_ACT = re.compile(
+    # Municipality: 1-3 titlecase words. The character class enforces
+    # uppercase initial + lowercase continuation (case-SENSITIVE).
+    r"(?P<municipality>(?:[A-ZÕÄÖÜŠŽ][a-zõäöüšž][\wõäöüšž-]*\s+){1,3})"
+    # Body word: case-insensitive scope. Genitive forms first inside each
+    # pair so longest-match-wins under alternation is well-defined.
+    r"(?P<body>(?i:linnavalitsuse|vallavalitsuse|"
+    r"linnavalitsus|vallavalitsus|"
+    r"linnavolikogu|vallavolikogu))\s+"
+    # Date: numeric d.m.y or long form with case-insensitive Estonian month.
+    r"(?P<date>\d{1,2}\.\d{1,2}\.(?:\d{2}|\d{4})|"
+    r"\d{1,2}\.\s*(?i:jaanuari|veebruari|märtsi|aprilli|mai|juuni|juuli|"
+    r"augusti|septembri|oktoobri|novembri|detsembri)\s+\d{4})"
+    # Optional " . " / " . a. " / " . aasta " between date and act marker.
+    r"\.?\s*(?i:a\.?|aasta)?\s+"
+    # Act marker, case-insensitive scope. Covers määrus / määruse / määrust / määrusega.
+    r"(?i:määrus(?:e|t|ega)?)\s*nr\s*\.?\s*(?P<num>\d+)",
+    re.UNICODE,
+)
+
+
 def build_provision_index() -> tuple[dict[str, dict[str, str]], dict[str, str], dict[str, Path]]:
     """
     Scan all law *_peep.json files to build provision indexes.
