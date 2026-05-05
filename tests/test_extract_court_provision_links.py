@@ -444,3 +444,113 @@ def test_two_runs_byte_identical(tmp_path, monkeypatch) -> None:
         "coverage report differs across runs (modulo volatile fields)"
     assert bytes1 == bytes2, \
         "peep files differ across runs (idempotency violated)"
+
+
+# ---------------------------------------------------------------------------
+# Group 4b — targeted SHACL widening test
+# ---------------------------------------------------------------------------
+
+def test_shacl_widened_range_validates() -> None:
+    pyshacl = pytest.importorskip("pyshacl")
+    rdflib = pytest.importorskip("rdflib")
+
+    repo_root = Path(__file__).resolve().parents[1]
+    shapes = rdflib.Graph()
+    shapes.parse(str(repo_root / "shacl" / "estonian_legal_shapes.ttl"), format="turtle")
+
+    # CourtDecisionShape requires caseNumber (xsd:string, minCount 1) and
+    # caseType (IRI, minCount 1). Provide both so we're exercising the
+    # widening, not falling over on unrelated mandatory fields.
+    data_jsonld = {
+        "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+                     "rdfs":   "http://www.w3.org/2000/01/rdf-schema#"},
+        "@graph": [
+            {
+                "@id": "estleg:RK_TEST_WIDEN_001",
+                "@type": ["estleg:CourtDecision"],
+                "rdfs:label": "Test decision (widened range)",
+                "estleg:caseNumber": "TEST-WIDEN-001",
+                "estleg:caseType": {"@id": "estleg:CaseType_Other"},
+                "estleg:interpretsLaw": [
+                    {"@id": "estleg:Some_Provision_Par_5"},
+                    {"@id": "estleg:Reg_1024484_Map_2026"},
+                ],
+            },
+            {
+                "@id": "estleg:Some_Provision_Par_5",
+                "@type": ["estleg:LegalProvision"],
+                "rdfs:label": "Test provision",
+                "estleg:interpretedBy": [{"@id": "estleg:RK_TEST_WIDEN_001"}],
+            },
+            {
+                "@id": "estleg:Reg_1024484_Map_2026",
+                "@type": ["estleg:MunicipalRegulation", "estleg:Act"],
+                "rdfs:label": "Viimsi 2009 #22 (test)",
+                # MunicipalRegulationLayer1Shape mandatory fields — provide them
+                # so we're exercising the widening, not falling over on
+                # unrelated mandatory fields.
+                "estleg:enactedBy": {"@id": "estleg:Issuer_viimsi_vv_test"},
+                "estleg:enactedByMunicipality": {"@id": "estleg:Municipality_EHAK_8905"},
+                "estleg:titleNormalized": "viimsi 2009 #22 (test)",
+                "estleg:interpretedBy": [{"@id": "estleg:RK_TEST_WIDEN_001"}],
+            },
+            {
+                # IRI must match IssuerShape sh:pattern
+                # ^https://data.riik.ee/ontology/estleg#Issuer_[a-z0-9_]+$
+                "@id": "estleg:Issuer_viimsi_vv_test",
+                "@type": ["estleg:Issuer"],
+                "rdfs:label": "Viimsi Vallavolikogu (test)",
+                "estleg:bodyType": "volikogu",
+                "estleg:currentMunicipality": {"@id": "estleg:Municipality_EHAK_8905"},
+                "estleg:mappingSource": "test",
+            },
+            {
+                # IRI must match MunicipalityShape sh:pattern
+                # ^https://data.riik.ee/ontology/estleg#Municipality_EHAK_[0-9]{4}$
+                "@id": "estleg:Municipality_EHAK_8905",
+                "@type": ["estleg:Municipality"],
+                "rdfs:label": "Viimsi vald (test)",
+                "estleg:ehakCode": "8905",
+                "estleg:county": "Harju maakond",
+            },
+        ],
+    }
+    data = rdflib.Graph()
+    data.parse(data=json.dumps(data_jsonld), format="json-ld")
+
+    conforms, _, msg = pyshacl.validate(
+        data, shacl_graph=shapes, inference="rdfs", abort_on_first=False,
+    )
+    assert conforms, f"SHACL validation failed:\n{msg}"
+
+
+def test_shacl_municipal_regulation_shape_has_interpreted_by_property() -> None:
+    """Direct shapes-graph assertion that pins the new SHACL change.
+
+    SHACL allows extra properties by default — a CourtDecision pointing at
+    a MunicipalRegulation passes validation even WITHOUT the new
+    MunicipalRegulationShape interpretedBy property. To pin the new shape
+    explicitly, query the loaded shapes graph for a property shape on
+    MunicipalRegulationShape with sh:path estleg:interpretedBy.
+    """
+    rdflib = pytest.importorskip("rdflib")
+    SH = rdflib.Namespace("http://www.w3.org/ns/shacl#")
+    ESTLEG = rdflib.Namespace("https://data.riik.ee/ontology/estleg#")
+
+    repo_root = Path(__file__).resolve().parents[1]
+    shapes = rdflib.Graph()
+    shapes.parse(str(repo_root / "shacl" / "estonian_legal_shapes.ttl"), format="turtle")
+
+    matched = False
+    for prop_shape in shapes.objects(ESTLEG.MunicipalRegulationShape, SH.property):
+        for path in shapes.objects(prop_shape, SH.path):
+            if path == ESTLEG.interpretedBy:
+                matched = True
+                break
+        if matched:
+            break
+
+    assert matched, (
+        "MunicipalRegulationShape is missing the sh:path estleg:interpretedBy "
+        "property shape introduced in Layer 2c PR #3."
+    )
