@@ -10,8 +10,12 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 
-from extract_court_provision_links import expand_two_digit_year
-from extract_court_provision_links import PAT_KOV_ACT, PAT_RTIV
+from extract_court_provision_links import (
+    PAT_KOV_ACT,
+    PAT_RTIV,
+    expand_two_digit_year,
+    extract_citations_from_text,
+)
 
 
 # ---------------------------------------------------------------------------
@@ -123,3 +127,44 @@ def test_pat_rtiv_alternate_form() -> None:
 
 def test_pat_rtiv_no_match_plain_text() -> None:
     assert PAT_RTIV.search("KarS § 121") is None
+
+
+# ---------------------------------------------------------------------------
+# Group 1c — extract_citations_from_text returns (state, kov) tuple
+# ---------------------------------------------------------------------------
+
+def test_extract_returns_tuple() -> None:
+    result = extract_citations_from_text("KarS § 121")
+    assert isinstance(result, tuple)
+    assert len(result) == 2
+
+
+def test_extract_state_only_text() -> None:
+    state, kov = extract_citations_from_text("KarS § 121")
+    assert state                      # at least one state-law citation
+    assert kov == []
+
+
+def test_extract_kov_only_text() -> None:
+    state, kov = extract_citations_from_text(
+        "Viimsi Vallavolikogu 13.10.2009 määruse nr 22"
+    )
+    assert state == []
+    assert len(kov) == 1
+    assert kov[0]["municipality"].strip() == "Viimsi"
+    assert kov[0]["body"].lower() == "vallavolikogu"
+    assert kov[0]["num"] == "22"
+    assert kov[0]["raw_text"].startswith("Viimsi Vallavolikogu")
+
+
+def test_extract_mixed_text() -> None:
+    state, kov = extract_citations_from_text(
+        "Vt KarS § 121 ja Viimsi Vallavolikogu 13.10.2009 määruse nr 22"
+    )
+    assert len(state) >= 1
+    assert len(kov) == 1
+
+
+def test_extract_empty_text() -> None:
+    assert extract_citations_from_text("") == ([], [])
+    assert extract_citations_from_text(None) == ([], [])

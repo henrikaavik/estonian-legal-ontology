@@ -182,15 +182,20 @@ def _expand_par_range(par_range: str) -> list[str]:
     return [clean] if clean else []
 
 
-def extract_citations_from_text(text: str) -> list[dict]:
-    """
-    Parse text for Estonian legal citation patterns.
+def extract_citations_from_text(text: str | None) -> tuple[list[dict], list[dict]]:
+    """Parse text for Estonian legal citation patterns.
 
-    Returns list of dicts: {law_ref, paragraphs}.
+    Returns ``(state_citations, kov_citations)``:
+
+    - ``state_citations``: list of ``{"law_ref": <abbrev>, "paragraphs": [<p>, ...]}``
+      for state-law citations matching the abbreviation+§ or genitive+§ patterns.
+    - ``kov_citations``:   list of ``{"municipality", "body", "date", "num", "raw_text"}``
+      for KOV act-form citations matching ``PAT_KOV_ACT``.
     """
-    citations: list[dict] = []
+    state_citations: list[dict] = []
+    kov_citations: list[dict] = []
     if not text:
-        return citations
+        return state_citations, kov_citations
 
     abbrevs = "|".join(
         re.escape(a) for a in sorted(KNOWN_ABBREVIATIONS.keys(), key=len, reverse=True)
@@ -206,7 +211,7 @@ def extract_citations_from_text(text: str) -> list[dict]:
         par_range = m.group(2).strip()
         paragraphs = _expand_par_range(par_range)
         if paragraphs:
-            citations.append({"law_ref": abbrev, "paragraphs": paragraphs})
+            state_citations.append({"law_ref": abbrev, "paragraphs": paragraphs})
 
     # Pattern 2: Full name in genitive + § + number
     genitive_names = "|".join(
@@ -223,9 +228,19 @@ def extract_citations_from_text(text: str) -> list[dict]:
             paragraphs = _expand_par_range(par_range)
             abbrev = FULLNAME_GENITIVE.get(gen_name)
             if abbrev and paragraphs:
-                citations.append({"law_ref": abbrev, "paragraphs": paragraphs})
+                state_citations.append({"law_ref": abbrev, "paragraphs": paragraphs})
 
-    return citations
+    # Pattern 3: KOV act-level citation (Layer 2c PR #3)
+    for m in PAT_KOV_ACT.finditer(text):
+        kov_citations.append({
+            "municipality": m.group("municipality"),
+            "body":         m.group("body"),
+            "date":         m.group("date"),
+            "num":          m.group("num"),
+            "raw_text":     m.group(0),
+        })
+
+    return state_citations, kov_citations
 
 
 def resolve_citations(
