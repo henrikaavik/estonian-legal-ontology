@@ -79,3 +79,21 @@ def test_safe_load_dedup_same_path(tmp_path: Path) -> None:
     assert c.skip_reasons["json_decode_error"] == 1
     assert len(c.failures) == 1
     assert p in c.seen_error_paths
+
+
+def test_bump_citation_skip_does_not_touch_file_skips() -> None:
+    c = _RunCounters()
+    c.bump_citation_skip("kov_citation_ambiguous", "ambiguous | A | B")
+    assert c.file_skips == 0           # citation-level, not file-level
+    assert c.error_count == 0
+    assert c.skip_reasons["kov_citation_ambiguous"] == 1
+    assert c.failures == ["ambiguous | A | B"]
+
+
+def test_bump_citation_count_no_sample() -> None:
+    c = _RunCounters()
+    c.bump_citation_count("rtiv_form_citation")
+    c.bump_citation_count("rtiv_form_citation")
+    assert c.skip_reasons["rtiv_form_citation"] == 2
+    assert c.failures == []
+    assert c.file_skips == 0

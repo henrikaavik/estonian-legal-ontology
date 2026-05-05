@@ -250,6 +250,22 @@ class _RunCounters:
         if len(self.failures) < _FAILURE_SAMPLES_INMEMORY_CAP:
             self.failures.append(sample)
 
+    def bump_citation_skip(self, reason: str, sample: str) -> None:
+        """Citation-level skip: bumps skip_reasons + failures only.
+
+        Use this for per-citation routing (ambiguous_key, unknown_issuer,
+        etc.) where the underlying file is fine and only one citation
+        within it is skipped. Use bump_skip() instead when the entire
+        file is unreadable (file_skips/error_count get bumped there).
+        """
+        self.skip_reasons[reason] = self.skip_reasons.get(reason, 0) + 1
+        if len(self.failures) < _FAILURE_SAMPLES_INMEMORY_CAP:
+            self.failures.append(sample)
+
+    def bump_citation_count(self, reason: str) -> None:
+        """Counter-only bump (no failure sample) — for known-deferred buckets."""
+        self.skip_reasons[reason] = self.skip_reasons.get(reason, 0) + 1
+
 
 def _safe_load(path: Path, counters: _RunCounters) -> dict | None:
     """Load JSON from ``path``; return ``None`` and bump counters on failure.

@@ -19,6 +19,7 @@ import re
 from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
+from typing import NamedTuple
 
 from estleg_common import (
     BODY_CANON,
@@ -26,6 +27,7 @@ from estleg_common import (
     FULLNAME_GENITIVE,
     KNOWN_ABBREVIATIONS,
     PAR_SUFFIX,
+    _FAILURE_SAMPLES_INMEMORY_CAP,
     _RunCounters,
     _safe_load,
     iter_peep_files,
@@ -33,6 +35,16 @@ from estleg_common import (
     save_json,
     sanitize_id,
 )
+
+
+class CourtProcessResult(NamedTuple):
+    per_file_stats: list[dict]
+    interpreted_by: dict[str, list[str]]
+    state_link_count: int
+    kov_link_count: int
+    kov_unresolved: int
+    kov_citations_matched: int
+    kov_citations_resolved_raw: int
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
@@ -365,7 +377,7 @@ def process_court_files(
     kov_collision_keys: set[tuple[str, int, str]],
     known_issuer_norms: set[str],
     counters: "_RunCounters",
-) -> tuple[list[dict], dict[str, list[str]], int, int, int, int, int]:
+) -> CourtProcessResult:
     """Process all riigikohus_YYYY_peep.json files.
 
     Returns:
@@ -395,7 +407,7 @@ def process_court_files(
     rk_files = sorted(RK_DIR.glob("riigikohus_*_peep.json"))
     if not rk_files:
         print("  No riigikohus files found!")
-        return per_file_stats, dict(interpreted_by), 0, 0, 0, 0, 0
+        return CourtProcessResult(per_file_stats, dict(interpreted_by), 0, 0, 0, 0, 0)
 
     for rk_file in rk_files:
         stats = {
@@ -430,9 +442,7 @@ def process_court_files(
 
             # RT IV detector — counted only.
             for _ in PAT_RTIV.finditer(summary):
-                counters.skip_reasons["rtiv_form_citation"] = (
-                    counters.skip_reasons.get("rtiv_form_citation", 0) + 1
-                )
+                counters.bump_citation_count("rtiv_form_citation")
 
             state_citations, kov_citations = extract_citations_from_text(summary)
             if not (state_citations or kov_citations):
@@ -467,20 +477,12 @@ def process_court_files(
                     f"reason={reason}"
                 )
                 if reason == "ambiguous_key":
-                    counters.skip_reasons["kov_citation_ambiguous"] = (
-                        counters.skip_reasons.get("kov_citation_ambiguous", 0) + 1
-                    )
-                    if len(counters.failures) < 200:
-                        counters.failures.append(sample)
+                    counters.bump_citation_skip("kov_citation_ambiguous", sample)
                 elif reason == "unknown_issuer":
-                    counters.skip_reasons["kov_citation_unknown_issuer"] = (
-                        counters.skip_reasons.get("kov_citation_unknown_issuer", 0) + 1
-                    )
-                    if len(counters.failures) < 200:
-                        counters.failures.append(sample)
+                    counters.bump_citation_skip("kov_citation_unknown_issuer", sample)
                 else:    # issuer_year_num_unmatched
                     kov_unresolved += 1
-                    if len(counters.failures) < 200:
+                    if len(counters.failures) < _FAILURE_SAMPLES_INMEMORY_CAP:
                         counters.failures.append(sample)
 
             # Dedupe kov_iris per-decision before counting so triples_emitted_kov
@@ -508,14 +510,14 @@ def process_court_files(
 
         per_file_stats.append(stats)
 
-    return (
-        per_file_stats,
-        dict(interpreted_by),
-        state_link_count,
-        kov_link_count,
-        kov_unresolved,
-        kov_citations_matched,
-        kov_citations_resolved_raw,
+    return CourtProcessResult(
+        per_file_stats=per_file_stats,
+        interpreted_by=dict(interpreted_by),
+        state_link_count=state_link_count,
+        kov_link_count=kov_link_count,
+        kov_unresolved=kov_unresolved,
+        kov_citations_matched=kov_citations_matched,
+        kov_citations_resolved_raw=kov_citations_resolved_raw,
     )
 
 
