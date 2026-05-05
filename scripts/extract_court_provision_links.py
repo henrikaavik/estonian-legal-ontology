@@ -657,34 +657,79 @@ def clear_existing_court_links(counters: "_RunCounters") -> int:
 
 
 def main() -> None:
+    import time
+    from datetime import datetime, timezone
+
+    from kov_pipeline_coverage import (
+        CoverageReport,
+        measure_runtime,
+        resolve_pipeline_version,
+        write_coverage_report,
+    )
+
+    start = time.perf_counter()
+    counters = _RunCounters()
+    # Pre-seed expected skip_reasons buckets to 0 so the report shape
+    # is stable across runs (tests and consumers can index directly).
+    for _key in (
+        "kov_citation_ambiguous",
+        "kov_citation_unknown_issuer",
+        "rtiv_form_citation",
+        "json_decode_error",
+    ):
+        counters.skip_reasons[_key] = 0
+
     print("=" * 70)
     print("Estonian Legal Ontology - Extract Court Decision Provision Links")
     print("=" * 70)
 
-    # Step 1: Clear existing links for idempotent re-run
-    print("\n[1/5] Clearing existing court-provision links...")
-    cleaned = clear_existing_court_links()
+    # Step 1: Clear existing links for idempotent re-run.
+    print("\n[1/6] Clearing existing court-provision links...")
+    cleaned = clear_existing_court_links(counters)
     print(f"  Cleaned {cleaned} files")
 
-    # Step 2: Build provision index
-    print("\n[2/5] Building provision index from law JSON-LD files...")
-    prefix_to_provisions, source_act_to_prefix, iri_to_file = build_provision_index()
+    # Step 2: Build state-law provision index.
+    print("\n[2/6] Building provision index from law JSON-LD files...")
+    prefix_to_provisions, source_act_to_prefix, iri_to_file = build_provision_index(counters)
     total_provisions = sum(len(v) for v in prefix_to_provisions.values())
     print(f"  Found {len(prefix_to_provisions)} law prefixes with {total_provisions} provisions")
 
-    # Step 3: Build abbreviation mapping
-    print("\n[3/5] Building abbreviation-to-prefix mapping...")
+    # Step 3: Build abbreviation mapping.
+    print("\n[3/6] Building abbreviation-to-prefix mapping...")
     abbrev_to_prefix = build_abbreviation_to_prefix(source_act_to_prefix)
     print(f"  Mapped {len(abbrev_to_prefix)} abbreviations to IRI prefixes")
     for abbrev, prefix in sorted(abbrev_to_prefix.items()):
         prov_count = len(prefix_to_provisions.get(prefix, {}))
         print(f"    {abbrev} -> {prefix} ({prov_count} provisions)")
 
-    # Step 4: Process court decision files
-    print("\n[4/5] Processing court decision files...")
-    per_file_stats, interpreted_by = process_court_files(
-        abbrev_to_prefix, prefix_to_provisions
+    # Step 4 (NEW): Build KOV act index.
+    print("\n[4/6] Building KOV act index...")
+    kov_index, kov_collision_keys, kov_iri_to_file, known_issuer_norms = (
+        build_kov_act_index(counters)
     )
+    print(
+        f"  KOV acts in index: {len(kov_index)} "
+        f"(collisions excluded: {len(kov_collision_keys)}); "
+        f"known issuers: {len(known_issuer_norms)}"
+    )
+
+    # Step 5: Process court decision files.
+    print("\n[5/6] Processing court decision files...")
+    result = process_court_files(
+        abbrev_to_prefix,
+        prefix_to_provisions,
+        kov_index,
+        kov_collision_keys,
+        known_issuer_norms,
+        counters,
+    )
+    per_file_stats = result.per_file_stats
+    interpreted_by = result.interpreted_by
+    state_link_count = result.state_link_count
+    kov_link_count = result.kov_link_count
+    kov_unresolved = result.kov_unresolved
+    kov_citations_matched = result.kov_citations_matched
+    kov_citations_resolved_raw = result.kov_citations_resolved_raw
 
     total_decisions = sum(s.get("decisions_scanned", 0) for s in per_file_stats)
     total_with_citations = sum(s.get("decisions_with_citations", 0) for s in per_file_stats)
@@ -698,30 +743,62 @@ def main() -> None:
                   f"{s['decisions_with_citations']} with citations, "
                   f"{resolved} resolved")
 
-    # Step 5: Apply inverse links (interpretedBy) on provision files
-    print("\n[5/5] Applying estleg:interpretedBy to provision files...")
-    total_interpreted_provisions = len(interpreted_by)
+    # Step 6: Apply inverse interpretedBy on target files (state-law + KOV).
+    print("\n[6/6] Applying estleg:interpretedBy to target files...")
+    total_interpreted_targets = len(interpreted_by)
     total_inverse_edges = sum(len(v) for v in interpreted_by.values())
-    print(f"  {total_interpreted_provisions} provisions referenced by court decisions")
-    print(f"  {total_inverse_edges} total court-provision inverse links")
+    print(f"  {total_interpreted_targets} targets referenced by court decisions")
+    print(f"  {total_inverse_edges} total court-target inverse links")
 
-    update_counts = apply_interpreted_by(interpreted_by, iri_to_file)
-    print(f"  Updated {len(update_counts)} law files with interpretedBy links")
+    merged_iri_to_file = {**iri_to_file, **kov_iri_to_file}
+    update_counts = apply_interpreted_by(interpreted_by, merged_iri_to_file, counters)
+    print(f"  Updated {len(update_counts)} target files with interpretedBy links")
 
-    # Generate report
+    # KOV citation summary. Distinguishes RAW citations (every regex hit) from
+    # UNIQUE emitted forward arcs (kov_link_count, after per-decision dedup
+    # of repeated identical citations within one decision summary).
+    print("\nKOV act citation summary:")
+    print(f"  KOV citations matched (raw):       {kov_citations_matched}")
+    print(f"  KOV citations resolved (raw):      {kov_citations_resolved_raw}")
+    print(f"  KOV unique emitted arcs:           {kov_link_count}")
+    print(f"  KOV citations unresolved:          {kov_unresolved}")
+    print(f"  KOV citations ambiguous-key:       {counters.skip_reasons.get('kov_citation_ambiguous', 0)}")
+    print(f"  KOV citations unknown-issuer:      {counters.skip_reasons.get('kov_citation_unknown_issuer', 0)}")
+    print(f"  RT IV-form citations seen:         {counters.skip_reasons.get('rtiv_form_citation', 0)}")
+    # Sanity invariant: matched = resolved + unresolved + ambiguous + unknown.
+    expected_matched = (
+        kov_citations_resolved_raw
+        + kov_unresolved
+        + counters.skip_reasons.get("kov_citation_ambiguous", 0)
+        + counters.skip_reasons.get("kov_citation_unknown_issuer", 0)
+    )
+    if expected_matched != kov_citations_matched:
+        print(
+            f"  WARN: counter drift — matched={kov_citations_matched} "
+            f"but resolved+unresolved+ambiguous+unknown={expected_matched}"
+        )
+
+    # Generate report (existing per-file shape).
+    # The "generated" timestamp field is intentionally OMITTED so this report
+    # is byte-identical across runs over the same input. Run-time metadata
+    # (timestamps, wall-time, memory) lives in the KOV coverage report below
+    # and is excluded from idempotency comparison via VOLATILE_KEYS in tests.
     print("\n--- Generating report ---")
     report = {
-        "generated": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         "summary": {
             "court_files_processed": len(per_file_stats),
             "total_decisions_scanned": total_decisions,
             "decisions_with_citations": total_with_citations,
             "total_citations_found": total_citations,
             "total_citations_resolved": total_resolved,
-            "provisions_interpreted": total_interpreted_provisions,
+            "kov_citations_resolved": kov_link_count,
+            "kov_citations_unresolved": kov_unresolved,
+            "targets_interpreted": total_interpreted_targets,
             "inverse_link_edges": total_inverse_edges,
             "law_files_updated": len(update_counts),
             "abbreviations_mapped": len(abbrev_to_prefix),
+            "kov_acts_in_index": len(kov_index),
+            "kov_collision_keys": len(kov_collision_keys),
         },
         "abbreviation_mapping": {
             abbrev: {
@@ -730,10 +807,10 @@ def main() -> None:
             }
             for abbrev, prefix in sorted(abbrev_to_prefix.items())
         },
-        "top_interpreted_provisions": sorted(
+        "top_interpreted_targets": sorted(
             [
                 {
-                    "provision_iri": iri,
+                    "target_iri": iri,
                     "court_decision_count": len(decisions),
                 }
                 for iri, decisions in interpreted_by.items()
@@ -748,23 +825,81 @@ def main() -> None:
     save_json(report_path, report)
     print(f"  Saved: {report_path.name}")
 
+    # ----- KOV coverage report -----
+    state_peep_count = 0
+    state_peeps_scanned = 0
+    for _ in iter_peep_files(include_kov=False):
+        state_peep_count += 1
+        state_peeps_scanned += 1
+    kov_peep_count = 0
+    kov_peeps_scanned = 0
+    for _ in iter_peep_files():
+        kov_peep_count += 1
+        kov_peeps_scanned += 1
+    kov_peep_count -= state_peep_count       # subtract the state subset
+    kov_peeps_scanned -= state_peeps_scanned
+
+    rk_file_count = len(per_file_stats)
+    rk_files_read = rk_file_count    # _safe_load failures already in counters
+
+    court_files_written = sum(1 for s in per_file_stats if s.get("citations_resolved", 0) > 0)
+    # Discriminate KOV vs state-law output files using the kov_iri_to_file
+    # filename set built during build_kov_act_index. KOV peep filenames have
+    # no reliable substring marker, so set membership is the correct test.
+    kov_filenames = {p.name for p in kov_iri_to_file.values()}
+    kov_files_written = sum(1 for f in update_counts if f in kov_filenames)
+    law_files_written = len(update_counts) - kov_files_written
+
+    wall, rate, peak_mb = measure_runtime(start, total_decisions)
+    cov = CoverageReport(
+        pipeline="extract_court_provision_links",
+        run_timestamp=datetime.now(timezone.utc).isoformat(),
+        pipeline_version=resolve_pipeline_version(),
+        input_files_total=rk_file_count + state_peep_count + kov_peep_count,
+        input_files_kov=kov_peep_count,
+        files_processed=rk_files_read + state_peeps_scanned + kov_peeps_scanned,
+        files_processed_kov=kov_peeps_scanned,
+        # files_with_output counts ALL files that received any new triple
+        # this run: court files (interpretsLaw), state-law files (interpretedBy),
+        # AND KOV files (interpretedBy). files_with_output_kov is the KOV
+        # subset of that count.
+        files_with_output=court_files_written + law_files_written + kov_files_written,
+        files_with_output_kov=kov_files_written,
+        files_skipped=counters.file_skips,
+        skip_reasons=dict(counters.skip_reasons),
+        # triples_emitted counts forward interpretsLaw arcs only (one per
+        # resolved citation, regardless of how many inverse interpretedBy
+        # writes that fans out to). Aligned with invariant #11.
+        # triples_emitted_kov is the subset whose target IRI is a KOV act.
+        triples_emitted=state_link_count + kov_link_count,
+        triples_emitted_kov=kov_link_count,
+        fallback_hits=0,
+        unresolved_references=kov_unresolved,
+        wall_time_seconds=wall,
+        items_per_second=rate,
+        peak_memory_mb=peak_mb,
+        error_count=counters.error_count,
+        failure_samples=list(counters.failures),
+    )
+    cov_out = KRR_DIR / "reports" / "kov" / "court_provision_links_coverage.json"
+    write_coverage_report(cov, cov_out)
+    print(f"  KOV coverage report: {cov_out}")
+
     # Summary
     print("\n" + "=" * 70)
     print("SUMMARY")
     print("=" * 70)
-    print(f"  Court files processed:        {len(per_file_stats)}")
-    print(f"  Decisions scanned:            {total_decisions}")
-    print(f"  Decisions with citations:     {total_with_citations}")
-    print(f"  Citations found:              {total_citations}")
-    print(f"  Citations resolved to IRIs:   {total_resolved}")
-    print(f"  Provisions with interpretedBy: {total_interpreted_provisions}")
-    print(f"  Law files updated:            {len(update_counts)}")
-
-    if interpreted_by:
-        top_prov = max(interpreted_by.items(), key=lambda x: len(x[1]))
-        print(f"  Most interpreted provision:   {top_prov[0]} ({len(top_prov[1])} decisions)")
-
-    print(f"  Report: {report_path}")
+    print(f"  Court files processed:          {len(per_file_stats)}")
+    print(f"  Decisions scanned:              {total_decisions}")
+    print(f"  Decisions with citations:       {total_with_citations}")
+    print(f"  Citations found:                {total_citations}")
+    print(f"  Citations resolved (total):     {total_resolved}")
+    print(f"  → state-law provisions:         {state_link_count}")
+    print(f"  → KOV acts (NEW):               {kov_link_count}")
+    print(f"  Targets with interpretedBy:     {total_interpreted_targets}")
+    print(f"  Target files updated:           {len(update_counts)}")
+    print(f"  Report:                         {report_path}")
+    print(f"  KOV coverage:                   {cov_out}")
     print("=" * 70)
 
 
