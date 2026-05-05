@@ -10,9 +10,12 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 
+from estleg_common import _RunCounters
+
 from extract_court_provision_links import (
     PAT_KOV_ACT,
     PAT_RTIV,
+    build_kov_act_index,
     expand_two_digit_year,
     extract_citations_from_text,
 )
@@ -168,3 +171,51 @@ def test_extract_mixed_text() -> None:
 def test_extract_empty_text() -> None:
     assert extract_citations_from_text("") == ([], [])
     assert extract_citations_from_text(None) == ([], [])
+
+
+# ---------------------------------------------------------------------------
+# Group 2 — build_kov_act_index
+# ---------------------------------------------------------------------------
+
+FIXTURE_KOV = Path(__file__).parent / "fixtures" / "kov_court_provision_links" / "kov"
+
+
+def test_build_kov_index_resolves_viimsi(monkeypatch) -> None:
+    """Index walks fixture KOV peeps and registers the Viimsi 2009 #22 act."""
+    fixture_files = list((FIXTURE_KOV / "viimsi_vallavolikogu").glob("*_peep.json"))
+
+    def fake_iter(*, include_kov: bool = True):
+        return iter(fixture_files)
+
+    monkeypatch.setattr(
+        "extract_court_provision_links.iter_peep_files", fake_iter
+    )
+
+    counters = _RunCounters()
+    kov_index, collisions, iri_to_file, known_issuers = build_kov_act_index(counters)
+
+    assert ("viimsi vallavolikogu", 2009, "22") in kov_index
+    assert kov_index[("viimsi vallavolikogu", 2009, "22")] == "estleg:Reg_1024484_Map_2026"
+    assert "viimsi vallavolikogu" in known_issuers
+    assert collisions == set()
+
+
+def test_build_kov_index_detects_collisions(monkeypatch) -> None:
+    fixture_files = list((FIXTURE_KOV / "collision_pair").glob("*_peep.json"))
+
+    def fake_iter(*, include_kov: bool = True):
+        return iter(fixture_files)
+
+    monkeypatch.setattr(
+        "extract_court_provision_links.iter_peep_files", fake_iter
+    )
+
+    counters = _RunCounters()
+    kov_index, collisions, iri_to_file, known_issuers = build_kov_act_index(counters)
+
+    key = ("test vallavolikogu", 2016, "5")
+    assert key in collisions
+    assert key not in kov_index            # removed on collision detection
+    # Both files still recorded in iri_to_file (cleanup pass needs them)
+    assert "estleg:Reg_2000001_Map_2026" in iri_to_file
+    assert "estleg:Reg_2000002_Map_2026" in iri_to_file

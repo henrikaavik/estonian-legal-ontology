@@ -21,11 +21,15 @@ from datetime import datetime
 from pathlib import Path
 
 from estleg_common import (
+    BODY_CANON,
     CONTEXT,
     FULLNAME_GENITIVE,
     KNOWN_ABBREVIATIONS,
     PAR_SUFFIX,
+    _RunCounters,
+    _safe_load,
     iter_peep_files,
+    normalize_issuer_name,
     save_json,
     sanitize_id,
 )
@@ -164,6 +168,62 @@ def build_abbreviation_to_prefix(
         if full_name in source_act_to_prefix:
             abbrev_to_prefix[abbrev] = source_act_to_prefix[full_name]
     return abbrev_to_prefix
+
+
+def build_kov_act_index(
+    counters: "_RunCounters",
+) -> tuple[
+    dict[tuple[str, int, str], str],
+    set[tuple[str, int, str]],
+    dict[str, Path],
+    set[str],
+]:
+    """Build the KOV act index over MunicipalRegulation peeps.
+
+    Returns ``(kov_index, kov_collision_keys, kov_iri_to_file, known_issuer_norms)``.
+    Keys are ``(issuer_norm, entryIntoForce.year, actNumber)``. On collision
+    (two acts mapping to the same key) the key is removed from kov_index and
+    added to kov_collision_keys; never silent-overwrites.
+    """
+    kov_index: dict[tuple[str, int, str], str] = {}
+    kov_collision_keys: set[tuple[str, int, str]] = set()
+    kov_iri_to_file: dict[str, Path] = {}
+    known_issuer_norms: set[str] = set()
+
+    for f in iter_peep_files():
+        doc = _safe_load(f, counters)
+        if doc is None:
+            continue
+        for node in doc.get("@graph", []):
+            types = node.get("@type", [])
+            if "estleg:MunicipalRegulation" not in types:
+                continue
+            iri = node.get("@id", "")
+            issuer = node.get("estleg:issuer", "")
+            entry_force = ""
+            eif = node.get("estleg:entryIntoForce")
+            if isinstance(eif, dict):
+                entry_force = eif.get("@value", "")
+            act_number = str(node.get("estleg:actNumber", "") or "")
+            if not (iri and issuer and entry_force and act_number):
+                break
+            issuer_norm = normalize_issuer_name(issuer)
+            known_issuer_norms.add(issuer_norm)
+            try:
+                year = int(entry_force[:4])
+            except ValueError:
+                break
+            key = (issuer_norm, year, act_number)
+            if key in kov_collision_keys:
+                pass   # already marked ambiguous; subsequent dupes are silent
+            elif key in kov_index and kov_index[key] != iri:
+                kov_collision_keys.add(key)
+                del kov_index[key]
+            else:
+                kov_index[key] = iri
+            kov_iri_to_file[iri] = f
+            break    # one act node per peep
+    return kov_index, kov_collision_keys, kov_iri_to_file, known_issuer_norms
 
 
 def _expand_par_range(par_range: str) -> list[str]:
