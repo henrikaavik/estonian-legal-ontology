@@ -15,16 +15,43 @@ from __future__ import annotations
 
 import json
 import re
+import time
 from collections import defaultdict
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 from estleg_common import iter_peep_files
+from extract_sanctions import _find_act_node
+from extract_cross_references import build_issuer_registry
+from kov_pipeline_coverage import (
+    CoverageReport,
+    measure_runtime,
+    resolve_pipeline_version,
+    write_coverage_report,
+)
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
 INST_DIR = KRR_DIR / "institutions"
 INST_DIR.mkdir(parents=True, exist_ok=True)
+# INSTIT_DIR is the monkeypatch-friendly alias used by tests (and Task 4+).
+# main() writes institution files via INSTIT_DIR so tests can redirect to tmp_path.
+INSTIT_DIR = INST_DIR
+
+
+def _id_ref(value: object) -> str | None:
+    """Unwrap a JSON-LD {"@id": "..."} object to a plain IRI string.
+    Returns the string directly if *value* is already a string, or
+    None when *value* is None or lacks an "@id" key.
+    """
+    if value is None:
+        return None
+    if isinstance(value, str):
+        return value
+    if isinstance(value, dict):
+        return value.get("@id")
+    return None
+
 
 NS = "https://data.riik.ee/ontology/estleg#"
 
@@ -50,7 +77,7 @@ def load_json(filepath: Path) -> dict | None:
     try:
         with open(filepath, "r", encoding="utf-8") as f:
             return json.load(f)
-    except (json.JSONDecodeError, UnicodeDecodeError) as exc:
+    except (json.JSONDecodeError, UnicodeDecodeError, OSError) as exc:
         print(f"  WARN: cannot load {filepath.name}: {exc}")
         return None
 
@@ -118,6 +145,30 @@ SAMEAS_ALIASES: dict[str, str] = {
 }
 
 
+_CANONICAL_BODY_SLUGS = frozenset({
+    "linnavolikogu", "vallavolikogu", "alevivolikogu",
+    "linnavalitsus", "vallavalitsus",
+})
+
+
+def _canonical_body_slug(matched: str) -> str | None:
+    """Strip Estonian case suffixes from a KOV body-word match
+    and return the canonical slug (linnavolikogu, vallavolikogu,
+    alevivolikogu, linnavalitsus, vallavalitsus) or None if the
+    match doesn't fit one of the five reachable stems.
+    """
+    s = matched.lower()
+    for suffix in ("esse", "elt", "ele", "ega", "est", "sse", "el", "es", "ga", "le", "lt", "se", "st", "e", "l", "s", "t"):
+        if s.endswith(suffix) and len(s) > len(suffix) + 4:
+            stripped = s[: -len(suffix)]
+            if stripped.endswith(("volikogu", "valitsus")):
+                s = stripped
+                break
+    if s in _CANONICAL_BODY_SLUGS:
+        return s
+    return None
+
+
 # ---------- institution catalogue ----------
 
 # Named institutions: (canonical name, IRI suffix, institution type)
@@ -164,6 +215,10 @@ GENERIC_PATTERNS: list[tuple[re.Pattern, str, str]] = [
     # Local government
     (re.compile(r"\bkohalik(?:u)?\s+omavalitsus(?:e)?\b", re.IGNORECASE),
      "local_government", "local_government"),
+    (re.compile(r"\b(?:linna|valla|alevi)volikogu(?:sse|lt|le|st|ga|l|s)?\b", re.IGNORECASE),
+     "local_government_council", "local_government_body"),
+    (re.compile(r"\b(?:linna|valla)valitsus(?:e(?:sse|le|lt|ga|st|s|l)?|se|t)?\b", re.IGNORECASE),
+     "local_government_executive", "local_government_body"),
     (re.compile(r"\b(vald|linn)\b", re.IGNORECASE),
      "local_government", "local_government"),
 ]
@@ -231,44 +286,247 @@ def detect_competence_type(text: str) -> str:
     return "general"
 
 
-def main() -> None:
+def _swap_issuer_body_suffix(
+    source_issuer: str, target_body_slug: str
+) -> str | None:
+    """Given an Issuer @id like 'estleg:Issuer_abja_vallavolikogu'
+    and a target body slug like 'vallavalitsus', return the paired
+    Issuer @id 'estleg:Issuer_abja_vallavalitsus'.
+
+    Returns None when:
+    - The source IRI doesn't match the expected
+      `Issuer_<place>_<body>` shape.
+    - The source body and target body belong to DIFFERENT
+      municipal families (linna* / valla* / alevi* are mutually
+      exclusive). A linnavalitsus source must NOT pair with
+      vallavolikogu target — same historical-conflation problem
+      Path 1's suffix check rejects.
+    """
+    if not source_issuer.startswith("estleg:Issuer_"):
+        return None
+    suffix = source_issuer[len("estleg:Issuer_"):]
+    source_body = None
+    place = None
+    for body in ("vallavolikogu", "vallavalitsus", "linnavolikogu",
+                  "linnavalitsus", "alevivolikogu"):
+        if suffix.endswith("_" + body):
+            source_body = body
+            place = suffix[: -len("_" + body)]
+            break
+    if source_body is None or place is None:
+        return None
+
+    family_prefixes = ("linna", "valla", "alevi")
+    source_family = next(
+        (p for p in family_prefixes if source_body.startswith(p)), None)
+    target_family = next(
+        (p for p in family_prefixes if target_body_slug.startswith(p)), None)
+    if source_family is None or target_family is None:
+        return None
+    if source_family != target_family:
+        return None
+
+    return f"estleg:Issuer_{place}_{target_body_slug}"
+
+
+def _resolve_kov_authority(
+    body_slug: str,
+    source_municipality: str | None,
+    source_issuer: str | None,
+    issuer_registry: dict[str, tuple[str, str, str]],
+) -> str | None:
+    """Resolve a KOV body-word detection to an Issuer @id.
+
+    Three priority paths (in order):
+      1. Same body type AND slug suffix match source_issuer →
+         return source_issuer.
+      2. Opposite body type → derive paired issuer slug; return
+         it if registered AND in same municipality.
+      3. Path 3 fallback: registry-wide unique match in
+         source_municipality. Reached ONLY when source_issuer is
+         missing, unknown to the registry, or has municipality
+         inconsistent with the act's stated enactedByMunicipality.
+
+    When source_issuer is known and consistent (Path 1+2
+    authoritative), Path 3 is NOT consulted — abstain instead.
+
+    Args:
+        body_slug: Canonical body slug from _canonical_body_slug().
+            Must be one of: linnavolikogu, vallavolikogu, alevivolikogu,
+            linnavalitsus, vallavalitsus. Inflected forms are not
+            accepted (body_type_map returns None → resolver abstains).
+        source_municipality: Plain-string IRI of estleg:enactedByMunicipality,
+            unwrapped from JSON-LD {"@id": "..."} form via _id_ref().
+            None when the source is a Law or state regulation.
+        source_issuer: Plain-string IRI of estleg:enactedBy, unwrapped via
+            _id_ref(). None when absent or non-KOV.
+        issuer_registry: issuer @id → (label, municipality_iri, body_type)
+            from build_issuer_registry().
+    """
+    if source_municipality is None:
+        return None
+
+    body_type_map = {
+        "linnavolikogu": "volikogu",
+        "vallavolikogu": "volikogu",
+        "alevivolikogu": "volikogu",
+        "linnavalitsus": "valitsus",
+        "vallavalitsus": "valitsus",
+    }
+    target_body_type = body_type_map.get(body_slug)
+    if target_body_type is None:
+        return None
+
+    source_issuer_authoritative = False
+    if source_issuer is not None:
+        source_entry = issuer_registry.get(source_issuer)
+        if source_entry is not None:
+            _label, source_mun, source_body_type = source_entry
+            if source_mun == source_municipality:
+                source_issuer_authoritative = True
+
+                if (source_body_type == target_body_type
+                        and source_issuer.endswith("_" + body_slug)):
+                    return source_issuer
+
+                if source_body_type != target_body_type:
+                    paired_iri = _swap_issuer_body_suffix(source_issuer, body_slug)
+                    if paired_iri is not None and paired_iri in issuer_registry:
+                        paired_entry = issuer_registry.get(paired_iri)
+                        if (paired_entry is not None
+                                and paired_entry[1] == source_municipality):
+                            return paired_iri
+                    return None
+
+                return None
+
+    if source_issuer_authoritative:
+        return None
+    suffix = "_" + body_slug
+    matches = [
+        issuer_iri
+        for issuer_iri, (_label, mun_iri, btype) in issuer_registry.items()
+        if mun_iri == source_municipality
+        and btype == target_body_type
+        and issuer_iri.endswith(suffix)
+    ]
+    if len(matches) == 1:
+        return matches[0]
+    return None
+
+
+def _is_path3_case(
+    source_issuer: str | None,
+    source_municipality: str | None,
+    issuer_registry: dict[str, tuple[str, str, str]],
+) -> bool:
+    """Return True iff the resolver's Path 1+2 are not
+    authoritative for this case (i.e. Path 3 is what would run).
+    Mirrors the resolver's source_issuer_authoritative check;
+    used by main() to count fallback_hits."""
+    if source_municipality is None:
+        return False
+    if source_issuer is None:
+        return True
+    entry = issuer_registry.get(source_issuer)
+    if entry is None:
+        return True
+    _label, source_mun, _btype = entry
+    return source_mun != source_municipality
+
+
+def main() -> int:
     print("=" * 70)
     print("Estonian Legal Ontology - Institutional Competence Extraction")
     print("=" * 70)
 
-    law_files = iter_peep_files(include_kov=False)  # DEFERRED to Layer 2c
-    print(f"\n[1/4] Found {len(law_files)} law files to process")
+    law_files = iter_peep_files()
+    print(f"\n  Found {len(law_files)} law files to process")
 
-    # --- Clearing pass: remove old competence data from all files ---
-    print("  Clearing old competence data from all files...")
-    for filepath in law_files:
-        doc = load_json(filepath)
-        if doc is None or "@graph" not in doc:
-            continue
-        cleared = False
-        for node in doc["@graph"]:
-            if "estleg:competentAuthority" in node:
-                del node["estleg:competentAuthority"]
-                cleared = True
-            if "estleg:competenceType" in node:
-                del node["estleg:competenceType"]
-                cleared = True
-        if cleared:
-            save_json(filepath, doc)
-    print("  Done clearing.")
+    # Layer 2c PR #2: build issuer registry once at startup.
+    issuer_registry = build_issuer_registry(
+        KRR_DIR / "issuers_kov_peep.json"
+    )
+
+    print("\n[1/4] Processing law files (per-file idempotent)...")
 
     # institution IRI → collected data
     inst_data: dict[str, dict] = {}
     # institution IRI → list of (provision IRI, competence_type, law_name)
     inst_provisions: dict[str, list[tuple[str, str, str]]] = defaultdict(list)
 
+    _start = time.perf_counter()
+    _files_processed: set[Path] = set()
+    _files_processed_kov: set[Path] = set()
+    _files_with_output: set[Path] = set()
+    _files_with_output_kov: set[Path] = set()
+    _triples = 0
+    _triples_kov = 0
+    _files_skipped = 0
+    _skip_reasons: dict[str, int] = {}
+    _failures: list[str] = []
+
     total_provisions = 0
     provisions_with_institutions = 0
+    _unresolved_count = 0
+    _fallback_hits = 0
+    _per_peep_errors = 0
+    pre_existing_institution_files: list[Path] = []
+    if INSTIT_DIR.exists():
+        pre_existing_institution_files = list(INSTIT_DIR.glob("institution_*.json"))
+    written_slugs: set[str] = set()
 
     for idx, filepath in enumerate(law_files, 1):
         doc = load_json(filepath)
         if doc is None or "@graph" not in doc:
+            _per_peep_errors += 1
+            _failures.append(
+                f"{filepath.name}: JSON load failed or missing @graph"
+            )
             continue
+
+        act_node = _find_act_node(doc)
+        if act_node is None:
+            # Aggregate-registry peeps (issuers_kov_peep.json,
+            # municipalities_peep.json, etc.) have no provisions —
+            # silently skip (no counter, no failure log).
+            # Malformed act peeps DO have provisions but no
+            # estleg:Act + owl:Ontology root — that's a Layer 1
+            # data bug worth surfacing.
+            has_provisions = any(
+                "estleg:paragrahv" in n
+                for n in doc.get("@graph", [])
+            )
+            if has_provisions:
+                _files_skipped += 1
+                _skip_reasons["missing_act_node"] = (
+                    _skip_reasons.get("missing_act_node", 0) + 1
+                )
+                _failures.append(
+                    f"{filepath.name}: malformed peep — has provisions "
+                    f"but missing estleg:Act + owl:Ontology root node"
+                )
+            continue
+        source_municipality = _id_ref(act_node.get("estleg:enactedByMunicipality"))
+        source_issuer = _id_ref(act_node.get("estleg:enactedBy"))
+
+        is_kov = "regulations/kov/" in str(filepath)
+        _files_processed.add(filepath)
+        if is_kov:
+            _files_processed_kov.add(filepath)
+
+        # Detect prior peep-side output BEFORE clearing.
+        had_existing_peep = any(
+            ("estleg:competentAuthority" in n)
+            or ("estleg:competenceType" in n)
+            for n in doc["@graph"]
+        )
+
+        # Clear unconditionally — the per-provision loop below
+        # re-emits when detection succeeds.
+        for n in doc["@graph"]:
+            n.pop("estleg:competentAuthority", None)
+            n.pop("estleg:competenceType", None)
 
         law_name = filepath.stem.replace("_peep", "")
         modified = False
@@ -288,7 +546,31 @@ def main() -> None:
             provision_iri = node.get("@id", "")
 
             authority_refs = []
+            added_inst_iris_this_provision: set[str] = set()
             for canon_name, iri_suffix, itype in institutions:
+                if itype == "local_government_body":
+                    canonical = _canonical_body_slug(canon_name)
+                    if canonical is None:
+                        continue
+                    issuer_iri = _resolve_kov_authority(
+                        body_slug=canonical,
+                        source_municipality=source_municipality,
+                        source_issuer=source_issuer,
+                        issuer_registry=issuer_registry,
+                    )
+                    if issuer_iri is None:
+                        _unresolved_count += 1
+                        continue
+                    if _is_path3_case(
+                        source_issuer=source_issuer,
+                        source_municipality=source_municipality,
+                        issuer_registry=issuer_registry,
+                    ):
+                        _fallback_hits += 1
+                    authority_refs.append({"@id": issuer_iri})
+                    continue
+
+                # Existing Institution_* path for everything else
                 inst_iri = f"estleg:Institution_{iri_suffix}"
 
                 if inst_iri not in inst_data:
@@ -298,18 +580,53 @@ def main() -> None:
                         "type": itype,
                     }
 
-                inst_provisions[inst_iri].append(
-                    (provision_iri, competence_type, law_name)
-                )
+                if inst_iri not in added_inst_iris_this_provision:
+                    inst_provisions[inst_iri].append(
+                        (provision_iri, competence_type, law_name)
+                    )
+                    added_inst_iris_this_provision.add(inst_iri)
                 authority_refs.append({"@id": inst_iri})
 
-            # Add competent-authority link to provision node
-            node["estleg:competentAuthority"] = authority_refs
-            node["estleg:competenceType"] = competence_type
-            modified = True
+            # Dedupe authority_refs by @id (preserve first-occurrence order).
+            # Required because a single provision can mention the same body
+            # multiple times (different inflections), and each match would
+            # otherwise emit a separate competentAuthority ref.
+            seen: set[str] = set()
+            deduped: list[dict] = []
+            for ref in authority_refs:
+                iri = ref.get("@id") if isinstance(ref, dict) else None
+                if iri is None or iri in seen:
+                    continue
+                seen.add(iri)
+                deduped.append(ref)
+            authority_refs = deduped
 
-        # Only save if we actually changed nodes in this file
+            # Add competent-authority link to provision node
+            if authority_refs:
+                node["estleg:competentAuthority"] = authority_refs
+                node["estleg:competenceType"] = competence_type
+                modified = True
+
+        # Note: _triples counts COMPETENT-AUTHORITY REFERENCES
+        # (elements of competentAuthority lists across all provisions),
+        # not raw RDF triples — matches the analytical question
+        # "how many provision→authority bindings did we produce?"
         if modified:
+            _files_with_output.add(filepath)
+            if is_kov:
+                _files_with_output_kov.add(filepath)
+            n_refs = sum(
+                len(node.get("estleg:competentAuthority", []))
+                if isinstance(node.get("estleg:competentAuthority"), list)
+                else (1 if "estleg:competentAuthority" in node else 0)
+                for node in doc.get("@graph", [])
+            )
+            _triples += n_refs
+            if is_kov:
+                _triples_kov += n_refs
+
+        # Save when EITHER fresh output OR pre-existing output existed.
+        if modified or had_existing_peep:
             save_json(filepath, doc)
 
         if idx % 100 == 0 or idx == len(law_files):
@@ -317,10 +634,6 @@ def main() -> None:
 
     # ---------- generate institution files ----------
     print(f"\n[2/4] Generating institution files ({len(inst_data)} institutions)...")
-
-    # Remove all old institution files first to avoid stale/capitalized leftovers
-    for old_file in INST_DIR.glob("institution_*.json"):
-        old_file.unlink()
 
     # Build reverse map: canonical suffix → list of abbreviation aliases
     canonical_aliases: dict[str, list[str]] = defaultdict(list)
@@ -367,7 +680,8 @@ def main() -> None:
 
         doc = {"@context": CONTEXT, "@graph": graph}
         filename = f"institution_{info['iri_suffix']}.json"
-        save_json(INST_DIR / filename, doc)
+        save_json(INSTIT_DIR / filename, doc)
+        written_slugs.add(info["iri_suffix"])
 
     # ---------- report ----------
     print(f"\n[3/4] Generating report...")
@@ -424,6 +738,76 @@ def main() -> None:
         print(f"    {inst_data[inst_iri]['name']:45s}  {len(provs)} provisions")
     print("=" * 70)
 
+    # Layer 2c PR #2: stale-file pruning. Only delete when the run
+    # was clean (no per-peep load errors); otherwise we might delete
+    # a file whose owning peep failed to load.
+    if _per_peep_errors == 0:
+        for path in pre_existing_institution_files:
+            slug = path.stem.removeprefix("institution_")
+            if slug not in written_slugs:
+                try:
+                    path.unlink()
+                except OSError as exc:
+                    print(f"  WARN: could not delete stale file {path.name}: {exc}")
+    else:
+        print(f"[skip stale-deletion] {_per_peep_errors} per-peep "
+              f"errors during this run; preserving "
+              f"{len(pre_existing_institution_files)} pre-existing "
+              f"institution files.")
+
+    # ----- coverage report -----
+    # Second scan to get the full input universe for input_files_total /
+    # input_files_kov. Cannot reuse law_files here: aggregate-registry
+    # peeps were silently skipped above but still count toward the input
+    # universe.
+    all_input_files = list(iter_peep_files())
+    _kov_files = [p for p in all_input_files
+                  if "regulations/kov/" in str(p)]
+
+    _wall, _rate, _peak_mb = measure_runtime(_start, len(_files_processed))
+    out_path = (KRR_DIR / "reports" / "kov"
+                / "extract_institutional_competence_coverage.json")
+    write_coverage_report(
+        CoverageReport(
+            pipeline="extract_institutional_competence",
+            run_timestamp=datetime.now(timezone.utc).isoformat(),
+            pipeline_version=resolve_pipeline_version(),
+            input_files_total=len(all_input_files),
+            input_files_kov=len(_kov_files),
+            files_processed=len(_files_processed),
+            files_processed_kov=len(_files_processed_kov),
+            files_with_output=len(_files_with_output),
+            files_with_output_kov=len(_files_with_output_kov),
+            files_skipped=_files_skipped,
+            skip_reasons=_skip_reasons,
+            triples_emitted=_triples,
+            triples_emitted_kov=_triples_kov,
+            unresolved_references=_unresolved_count,
+            fallback_hits=_fallback_hits,
+            wall_time_seconds=round(_wall, 2),
+            items_per_second=round(_rate, 2),
+            peak_memory_mb=round(_peak_mb, 1),
+            error_count=len(_failures),
+            failure_samples=_failures,
+        ),
+        out_path,
+    )
+    print(f"\nCoverage report: {out_path}")
+    print(f"  input_files_total: {len(all_input_files)} (KOV: {len(_kov_files)})")
+    print(f"  files_with_output: {len(_files_with_output)} (KOV: {len(_files_with_output_kov)})")
+    print(f"  triples_emitted (authority references): {_triples} (KOV: {_triples_kov})")
+    print(f"  unresolved_references: {_unresolved_count}; fallback_hits: {_fallback_hits}")
+
+    # Gate check (matches Layer 2c PR #1 convention; corpus KOV count ~11,059).
+    if len(_kov_files) >= 11000 and len(_files_with_output_kov) == 0:
+        print("\nGATE FAIL: KOV files were processed but none produced output.")
+        return 1
+    if _triples_kov == 0 and len(_kov_files) >= 11000:
+        print("\nGATE FAIL: zero KOV triples emitted.")
+        return 1
+    print("\nGATE OK")
+    return 0
+
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())
