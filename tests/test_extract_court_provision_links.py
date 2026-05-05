@@ -18,6 +18,7 @@ from extract_court_provision_links import (
     build_kov_act_index,
     expand_two_digit_year,
     extract_citations_from_text,
+    resolve_kov_citation,
 )
 
 
@@ -219,3 +220,63 @@ def test_build_kov_index_detects_collisions(monkeypatch) -> None:
     # Both files still recorded in iri_to_file (cleanup pass needs them)
     assert "estleg:Reg_2000001_Map_2026" in iri_to_file
     assert "estleg:Reg_2000002_Map_2026" in iri_to_file
+
+
+# ---------------------------------------------------------------------------
+# Group 2b — resolve_kov_citation
+# ---------------------------------------------------------------------------
+
+def _kc(municipality="Viimsi ", body="Vallavolikogu", date="13.10.2009", num="22"):
+    return {
+        "municipality": municipality,
+        "body": body,
+        "date": date,
+        "num": num,
+        "raw_text": f"{municipality}{body} {date} määruse nr {num}",
+    }
+
+
+def test_resolver_strict_match() -> None:
+    idx = {("viimsi vallavolikogu", 2009, "22"): "estleg:Reg_1024484_Map_2026"}
+    iri, reason = resolve_kov_citation(_kc(), idx, set(), {"viimsi vallavolikogu"})
+    assert iri == "estleg:Reg_1024484_Map_2026"
+    assert reason is None
+
+
+def test_resolver_year_plus_one_alternate() -> None:
+    # Index has 2010 entry; query year 2009 resolves via +1 alternate.
+    idx = {("tallinna linnavalitsus", 2010, "75"): "estleg:Reg_1014396_Map_2026"}
+    iri, reason = resolve_kov_citation(
+        _kc(municipality="Tallinna ", body="Linnavalitsus", date="14.05.2009", num="75"),
+        idx, set(), {"tallinna linnavalitsus"},
+    )
+    assert iri == "estleg:Reg_1014396_Map_2026"
+    assert reason is None
+
+
+def test_resolver_ambiguous_primary_short_circuits() -> None:
+    collisions = {("viimsi vallavolikogu", 2009, "22")}
+    iri, reason = resolve_kov_citation(_kc(), {}, collisions, {"viimsi vallavolikogu"})
+    assert iri is None
+    assert reason == "ambiguous_key"
+
+
+def test_resolver_ambiguous_alternate_short_circuits() -> None:
+    # Primary 2009 missing; alternate 2010 collision-tracked.
+    collisions = {("viimsi vallavolikogu", 2010, "22")}
+    iri, reason = resolve_kov_citation(_kc(), {}, collisions, {"viimsi vallavolikogu"})
+    assert iri is None
+    assert reason == "ambiguous_key"
+
+
+def test_resolver_unmatched() -> None:
+    iri, reason = resolve_kov_citation(_kc(), {}, set(), {"viimsi vallavolikogu"})
+    assert iri is None
+    assert reason == "issuer_year_num_unmatched"
+
+
+def test_resolver_unknown_issuer_short_circuits() -> None:
+    # Issuer NOT in known_issuer_norms → unknown_issuer, no index lookup.
+    iri, reason = resolve_kov_citation(_kc(), {}, set(), set())
+    assert iri is None
+    assert reason == "unknown_issuer"

@@ -21,7 +21,7 @@ from datetime import datetime
 from pathlib import Path
 
 from estleg_common import (
-    BODY_CANON,  # noqa: F401  # used by Task 8 resolver
+    BODY_CANON,
     CONTEXT,
     FULLNAME_GENITIVE,
     KNOWN_ABBREVIATIONS,
@@ -325,6 +325,37 @@ def resolve_citations(
                 if stripped in provisions:
                     resolved.append(provisions[stripped])
     return list(dict.fromkeys(resolved))  # deduplicate
+
+
+def resolve_kov_citation(
+    match: dict,
+    kov_index: dict[tuple[str, int, str], str],
+    kov_collision_keys: set[tuple[str, int, str]],
+    known_issuer_norms: set[str],
+) -> tuple[str | None, str | None]:
+    """Resolve a single KOV citation match to an Act IRI.
+
+    Returns ``(act_iri, None)`` on success, or ``(None, reason)`` where
+    ``reason`` is one of:
+
+    - ``"unknown_issuer"`` — issuer string not in known_issuer_norms (defensive).
+    - ``"ambiguous_key"`` — primary or +1 alternate key in kov_collision_keys.
+    - ``"issuer_year_num_unmatched"`` — issuer is known but no peep matches.
+    """
+    issuer_norm = normalize_issuer_name(
+        f"{match['municipality'].strip()} {BODY_CANON[match['body'].lower()]}"
+    )
+    if issuer_norm not in known_issuer_norms:
+        return None, "unknown_issuer"
+    primary_year = expand_two_digit_year(match["date"])
+    num = match["num"]
+    for year in (primary_year, primary_year + 1):
+        key = (issuer_norm, year, num)
+        if key in kov_collision_keys:
+            return None, "ambiguous_key"
+        if key in kov_index:
+            return kov_index[key], None
+    return None, "issuer_year_num_unmatched"
 
 
 def process_court_files(
