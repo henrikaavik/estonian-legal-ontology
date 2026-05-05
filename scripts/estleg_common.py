@@ -176,6 +176,40 @@ CONTEXT: dict[str, str] = {
 }
 
 # ---------------------------------------------------------------------------
+# KOV body-word canonicalization and issuer-name normalization (Layer 2c PR #3)
+# ---------------------------------------------------------------------------
+# Court summaries cite KOV bodies using genitive forms (Linnavalitsuse,
+# Vallavalitsuse); KOV peep estleg:issuer fields use nominative (Linnavalitsus,
+# Vallavalitsus). The volikogu forms are identical in both cases. BODY_CANON
+# normalizes either side's body word to the nominative form so issuer-string
+# compare works after normalize_issuer_name().
+BODY_CANON: dict[str, str] = {
+    "linnavalitsuse": "linnavalitsus",
+    "vallavalitsuse": "vallavalitsus",
+    "linnavalitsus":  "linnavalitsus",
+    "vallavalitsus":  "vallavalitsus",
+    "linnavolikogu":  "linnavolikogu",
+    "vallavolikogu":  "vallavolikogu",
+}
+
+
+def normalize_issuer_name(s: str) -> str:
+    """Lowercase + Estonian diacritic transliteration + whitespace collapse.
+
+    Same approach as Layer 1 ``titleNormalized``. Used at both index-build
+    time (over KOV peep ``estleg:issuer`` strings) and citation-resolve
+    time (over reconstructed display name from a regex match).
+    """
+    s = s.lower()
+    for src, dst in (
+        ("õ", "o"), ("ä", "a"), ("ö", "o"),
+        ("ü", "u"), ("š", "s"), ("ž", "z"),
+    ):
+        s = s.replace(src, dst)
+    return " ".join(s.split())
+
+
+# ---------------------------------------------------------------------------
 # Paragraph citation regex fragment
 #
 # Handles all Estonian grammatical cases for the § symbol:
