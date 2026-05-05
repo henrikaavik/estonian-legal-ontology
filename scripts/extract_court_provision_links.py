@@ -21,7 +21,7 @@ from datetime import datetime
 from pathlib import Path
 
 from estleg_common import (
-    BODY_CANON,
+    BODY_CANON,  # noqa: F401  # used by Task 8 resolver
     CONTEXT,
     FULLNAME_GENITIVE,
     KNOWN_ABBREVIATIONS,
