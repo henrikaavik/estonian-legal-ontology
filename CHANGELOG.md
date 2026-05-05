@@ -4,6 +4,31 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### KOV integration Layer 2c PR #3 — Court-Provision Links (closes Gate B)
+
+- `extract_court_provision_links.py` now resolves KOV act-level citations
+  in Riigikohus court decision summaries to `MunicipalRegulation` IRIs,
+  alongside the existing state-law provision-level resolution.
+- `estleg:interpretsLaw` formal range widened to
+  `owl:unionOf (LegalProvision Act)` so it admits `MunicipalRegulation`
+  (Act) IRIs in addition to `LegalProvision`.
+- `estleg:interpretedBy` usage broadens: the predicate now also appears
+  on `MunicipalRegulation` act nodes (subject side); the object remains
+  a `CourtDecision` IRI in all cases. No formal `rdfs:range` is declared
+  for `interpretedBy` in this PR. SHACL `MunicipalRegulationShape` gains
+  a parallel `interpretedBy` property shape (`sh:nodeKind sh:IRI`).
+- New per-pipeline coverage report at
+  `krr_outputs/reports/kov/court_provision_links_coverage.json`.
+- New helpers in `estleg_common.py`: `BODY_CANON`, `normalize_issuer_name`,
+  `_RunCounters`, `_safe_load`.
+- Empirical impact: ~5 new `interpretsLaw` edges with KOV act IRI targets;
+  ~29 unresolved historical citations surfaced in `failure_samples`.
+- RT IV citation resolver deferred — counted only under
+  `skip_reasons["rtiv_form_citation"]`.
+
+**Gate B closes.** All ten KOV-relevant pipelines now run cleanly over
+the full KOV set with per-pipeline coverage reports.
+
 ### Added
 - KOV integration Layer 1: Municipality + Issuer entity model
   (`estleg:Municipality`, `estleg:Issuer`, `estleg:KovProvision`,

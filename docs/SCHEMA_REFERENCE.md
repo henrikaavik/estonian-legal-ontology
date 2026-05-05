@@ -183,7 +183,7 @@ Classifies the type of court case.
 * `estleg:decisionLink`: URL to full decision on riigikohus.ee — `xsd:anyURI`
 * `estleg:rikObjectId`: Internal RIK database object ID — `xsd:string`
 * `estleg:referencedLaw`: Law abbreviation referenced in the decision — `xsd:string`
-* `estleg:interpretsLaw`: Object property linking to LegalProvision being interpreted — `owl:ObjectProperty`
+* `estleg:interpretsLaw`: Object property linking to a `LegalProvision` (state-law provision) OR a `MunicipalRegulation` / `Act` (KOV act-level citation) interpreted by this decision — `owl:ObjectProperty`. Range is `owl:unionOf (LegalProvision Act)` since Layer 2c PR #3.
 
 ### Court Decision Example
 
@@ -546,8 +546,8 @@ These properties enable cross-referencing between different parts of the legal s
 ### Court Decision Links
 | Property | Domain | Range | Description |
 |----------|--------|-------|-------------|
-| `estleg:interpretsLaw` | CourtDecision | LegalProvision (IRI) | Specific provision interpreted |
-| `estleg:interpretedBy` | LegalProvision | CourtDecision (IRI) | Inverse: court decisions interpreting this provision |
+| `estleg:interpretsLaw` | CourtDecision | LegalProvision \| MunicipalRegulation/Act (IRI) | Specific provision (state law) or whole act (KOV) interpreted. `owl:unionOf` since Layer 2c PR #3. |
+| `estleg:interpretedBy` | LegalProvision \| MunicipalRegulation (informal) | CourtDecision (IRI) | Inverse of `interpretsLaw`. The object is always a `CourtDecision`; the subject is a `LegalProvision` for state-law citations, and may also be a `MunicipalRegulation` act node for KOV act-level citations (since Layer 2c PR #3). No formal `rdfs:range` is declared (range stays unconstrained beyond `sh:nodeKind sh:IRI`); SHACL `MunicipalRegulationShape` adds a parallel `sh:nodeKind sh:IRI` constraint to document the new subject usage. |
 
 ### EU Transposition
 | Property | Domain | Range | Description |
