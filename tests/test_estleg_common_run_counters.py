@@ -7,7 +7,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 
-from estleg_common import _RunCounters, _safe_load
+from estleg_common import _FAILURE_SAMPLES_INMEMORY_CAP, _RunCounters, _safe_load
 
 
 def test_run_counters_defaults() -> None:
@@ -28,12 +28,13 @@ def test_run_counters_bump_skip() -> None:
     assert c.failures == ["json_decode_error | foo.json | ValueError: bad"]
 
 
-def test_run_counters_failures_capped_at_200_in_memory() -> None:
+def test_run_counters_failures_capped_at_inmemory_cap() -> None:
     c = _RunCounters()
-    for i in range(250):
+    over = _FAILURE_SAMPLES_INMEMORY_CAP + 50
+    for i in range(over):
         c.bump_skip("x", f"sample_{i}")
-    assert c.skip_reasons["x"] == 250    # counter increments every call
-    assert len(c.failures) == 200         # in-memory cap before final 20-cap
+    assert c.skip_reasons["x"] == over
+    assert len(c.failures) == _FAILURE_SAMPLES_INMEMORY_CAP
 
 
 def test_safe_load_success(tmp_path: Path) -> None:

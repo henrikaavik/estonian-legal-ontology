@@ -11,6 +11,7 @@ from __future__ import annotations
 import json
 import re
 import xml.etree.ElementTree as ET
+from dataclasses import dataclass, field
 from pathlib import Path
 
 # ---------------------------------------------------------------------------
@@ -217,7 +218,14 @@ def normalize_issuer_name(s: str) -> str:
 # bookkeeping (files_skipped + skip_reasons + error_count + failure_samples)
 # stays atomic. _safe_load wraps json.load with the four bumps; callers
 # treat None as "skip this file."
-from dataclasses import dataclass, field
+
+# In-memory cap on failures samples. The downstream coverage-report writer
+# (kov_pipeline_coverage.write_coverage_report) enforces a final cap of 20
+# samples in the JSON output. We over-provision 10× that cap here so a
+# single run can collect a diverse pool across reasons before the writer
+# truncates — otherwise a single high-frequency failure (e.g. a corrupt
+# fixture) could fill the 20-slot budget and crowd out other failure modes.
+_FAILURE_SAMPLES_INMEMORY_CAP = 200
 
 
 @dataclass
@@ -239,7 +247,7 @@ class _RunCounters:
         self.file_skips += 1
         self.error_count += 1
         self.skip_reasons[reason] = self.skip_reasons.get(reason, 0) + 1
-        if len(self.failures) < 200:   # over-cap; helper writer enforces 20 final
+        if len(self.failures) < _FAILURE_SAMPLES_INMEMORY_CAP:
             self.failures.append(sample)
 
 
