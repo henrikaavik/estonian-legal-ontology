@@ -11,7 +11,7 @@ import pytest
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 
 from extract_court_provision_links import expand_two_digit_year
-from extract_court_provision_links import PAT_KOV_ACT
+from extract_court_provision_links import PAT_KOV_ACT, PAT_RTIV
 
 
 # ---------------------------------------------------------------------------
@@ -107,15 +107,18 @@ def test_pat_no_overcapture_lowercase_prefix_short() -> None:
     assert m.group("municipality").strip() == "Keila"
 
 
-from extract_court_provision_links import PAT_RTIV
-
-
 def test_pat_rtiv_canonical_form() -> None:
-    assert PAT_RTIV.search("vt RT IV, 2020-04-15, 7") is not None
+    m = PAT_RTIV.search("vt RT IV, 2020-04-15, 7")
+    assert m is not None
+    assert m.group(0).startswith("RT IV")
+    assert "2020-04-15" in m.group(0)
 
 
 def test_pat_rtiv_alternate_form() -> None:
-    assert PAT_RTIV.search("avaldatud RT IV 2018, 3, 5") is not None
+    m = PAT_RTIV.search("avaldatud RT IV 2018, 3, 5")
+    assert m is not None
+    assert m.group(0).startswith("RT IV")
+    assert "2018" in m.group(0)
 
 
 def test_pat_rtiv_no_match_plain_text() -> None:
