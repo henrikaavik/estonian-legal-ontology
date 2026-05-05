@@ -361,21 +361,41 @@ def resolve_kov_citation(
 def process_court_files(
     abbrev_to_prefix: dict[str, str],
     prefix_to_provisions: dict[str, dict[str, str]],
-) -> tuple[list[dict], dict[str, list[str]]]:
-    """
-    Process all riigikohus_YYYY_peep.json files.
+    kov_index: dict[tuple[str, int, str], str],
+    kov_collision_keys: set[tuple[str, int, str]],
+    known_issuer_norms: set[str],
+    counters: "_RunCounters",
+) -> tuple[list[dict], dict[str, list[str]], int, int, int, int, int]:
+    """Process all riigikohus_YYYY_peep.json files.
 
     Returns:
-      - per_file_stats: list of stat dicts
-      - interpreted_by: {provision_iri: [court_decision_iri, ...]}
+      - per_file_stats:              list of stat dicts (existing shape).
+      - interpreted_by:              {target_iri: [court_decision_iri, ...]} — target_iri
+                                     may be either a LegalProvision or a MunicipalRegulation.
+      - state_link_count:            number of forward arcs to state-law provisions.
+      - kov_link_count:              UNIQUE forward arcs to KOV act IRIs (post per-decision
+                                     dedup). Feeds triples_emitted_kov in the coverage report.
+      - kov_unresolved:              number of KOV citations failing with
+                                     reason=issuer_year_num_unmatched. Feeds top-level
+                                     unresolved_references in the coverage report.
+      - kov_citations_matched:       RAW regex hit count across all decisions (pre-resolve).
+                                     Diagnostic only — not a coverage-report field.
+      - kov_citations_resolved_raw:  RAW count of resolver successes BEFORE per-decision
+                                     dedup. Diagnostic only — kov_link_count is the
+                                     unique-arcs version.
     """
     per_file_stats: list[dict] = []
     interpreted_by: dict[str, list[str]] = defaultdict(list)
+    state_link_count = 0
+    kov_link_count = 0           # unique forward arcs after per-decision dedup
+    kov_citations_matched = 0    # raw regex hits across all decisions
+    kov_citations_resolved_raw = 0   # raw resolved (pre-dedup) for diagnostics
+    kov_unresolved = 0
 
     rk_files = sorted(RK_DIR.glob("riigikohus_*_peep.json"))
     if not rk_files:
         print("  No riigikohus files found!")
-        return per_file_stats, dict(interpreted_by)
+        return per_file_stats, dict(interpreted_by), 0, 0, 0, 0, 0
 
     for rk_file in rk_files:
         stats = {
@@ -386,11 +406,9 @@ def process_court_files(
             "citations_resolved": 0,
         }
 
-        try:
-            with open(rk_file, "r", encoding="utf-8") as f:
-                doc = json.load(f)
-        except (json.JSONDecodeError, OSError) as e:
-            stats["error"] = str(e)
+        doc = _safe_load(rk_file, counters)
+        if doc is None:
+            stats["error"] = "load_failed"
             per_file_stats.append(stats)
             continue
 
@@ -401,56 +419,110 @@ def process_court_files(
             node_id = node.get("@id", "")
             node_types = node.get("@type", [])
 
-            # Only process CourtDecision nodes
             if "estleg:CourtDecision" not in node_types:
                 continue
 
             stats["decisions_scanned"] += 1
 
-            # Get summary text to parse
             summary = node.get("estleg:summary", "")
             if not summary:
                 continue
 
-            # Extract citations
-            citations = extract_citations_from_text(summary)
-            if not citations:
+            # RT IV detector — counted only.
+            for _ in PAT_RTIV.finditer(summary):
+                counters.skip_reasons["rtiv_form_citation"] = (
+                    counters.skip_reasons.get("rtiv_form_citation", 0) + 1
+                )
+
+            state_citations, kov_citations = extract_citations_from_text(summary)
+            if not (state_citations or kov_citations):
                 continue
 
-            stats["citations_found"] += len(citations)
+            stats["citations_found"] += len(state_citations) + len(kov_citations)
             stats["decisions_with_citations"] += 1
+            kov_citations_matched += len(kov_citations)
 
-            # Resolve to provision IRIs
-            resolved = resolve_citations(
-                citations, abbrev_to_prefix, prefix_to_provisions
+            # State-law resolver (existing, unchanged).
+            state_iris = resolve_citations(
+                state_citations, abbrev_to_prefix, prefix_to_provisions
             )
-            stats["citations_resolved"] += len(resolved)
+            state_link_count += len(state_iris)
 
+            # KOV act resolver (new).
+            kov_iris: list[str] = []
+            for kc in kov_citations:
+                iri, reason = resolve_kov_citation(
+                    kc, kov_index, kov_collision_keys, known_issuer_norms,
+                )
+                issuer_norm_for_log = normalize_issuer_name(
+                    f"{kc['municipality'].strip()} {BODY_CANON[kc['body'].lower()]}"
+                )
+                primary_year = expand_two_digit_year(kc["date"])
+                if iri:
+                    kov_iris.append(iri)
+                    continue
+                sample = (
+                    f"{reason:<25s} | {node_id} | "
+                    f"issuer={issuer_norm_for_log} year={primary_year} num={kc['num']} | "
+                    f"reason={reason}"
+                )
+                if reason == "ambiguous_key":
+                    counters.skip_reasons["kov_citation_ambiguous"] = (
+                        counters.skip_reasons.get("kov_citation_ambiguous", 0) + 1
+                    )
+                    if len(counters.failures) < 200:
+                        counters.failures.append(sample)
+                elif reason == "unknown_issuer":
+                    counters.skip_reasons["kov_citation_unknown_issuer"] = (
+                        counters.skip_reasons.get("kov_citation_unknown_issuer", 0) + 1
+                    )
+                    if len(counters.failures) < 200:
+                        counters.failures.append(sample)
+                else:    # issuer_year_num_unmatched
+                    kov_unresolved += 1
+                    if len(counters.failures) < 200:
+                        counters.failures.append(sample)
+
+            # Dedupe kov_iris per-decision before counting so triples_emitted_kov
+            # matches the number of unique forward arcs actually written
+            # (a decision repeating the same KOV citation emits one arc, not N).
+            # state_iris is already deduped by resolve_citations() at return time.
+            kov_citations_resolved_raw += len(kov_iris)
+            unique_kov_iris = list(dict.fromkeys(kov_iris))
+            kov_link_count += len(unique_kov_iris)
+            stats["citations_resolved"] += len(state_iris) + len(unique_kov_iris)
+
+            resolved = list(dict.fromkeys(state_iris + unique_kov_iris))
             if not resolved:
                 continue
 
-            # Remove any existing estleg:interpretsLaw (idempotent)
-            # Add resolved IRIs as estleg:interpretsLaw
             ref_iris = [{"@id": r} for r in resolved]
             node["estleg:interpretsLaw"] = ref_iris
-
             modified = True
 
-            # Record inverse links for interpreted_by
-            for prov_iri in resolved:
-                interpreted_by[prov_iri].append(node_id)
+            for target_iri in resolved:
+                interpreted_by[target_iri].append(node_id)
 
         if modified:
             save_json(rk_file, doc)
 
         per_file_stats.append(stats)
 
-    return per_file_stats, dict(interpreted_by)
+    return (
+        per_file_stats,
+        dict(interpreted_by),
+        state_link_count,
+        kov_link_count,
+        kov_unresolved,
+        kov_citations_matched,
+        kov_citations_resolved_raw,
+    )
 
 
 def apply_interpreted_by(
     interpreted_by: dict[str, list[str]],
     iri_to_file: dict[str, Path],
+    counters: "_RunCounters",
 ) -> dict[str, int]:
     """
     Apply estleg:interpretedBy inverse links to provision files.
@@ -475,11 +547,8 @@ def apply_interpreted_by(
     update_counts: dict[str, int] = {}
 
     for target_file, iri_decisions in sorted(files_to_update.items()):
-        try:
-            with open(target_file, "r", encoding="utf-8") as f:
-                doc = json.load(f)
-        except (json.JSONDecodeError, OSError) as e:
-            print(f"  Error reading {target_file.name}: {e}")
+        doc = _safe_load(target_file, counters)
+        if doc is None:
             continue
 
         modified = False
