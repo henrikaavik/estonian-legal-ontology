@@ -280,3 +280,156 @@ def test_resolver_unknown_issuer_short_circuits() -> None:
     iri, reason = resolve_kov_citation(_kc(), {}, set(), set())
     assert iri is None
     assert reason == "unknown_issuer"
+
+
+# ---------------------------------------------------------------------------
+# Group 3 — end-to-end fixture run
+# ---------------------------------------------------------------------------
+
+FIXTURE_ROOT = Path(__file__).parent / "fixtures" / "kov_court_provision_links"
+
+
+def _stage_fixture(tmp_path: Path) -> tuple[Path, Path, Path]:
+    """Stage fixture into tmp_path so the script writes to a copy.
+
+    Layout under tmp_path:
+        krr_outputs/riigikohus/riigikohus_*_peep.json
+        krr_outputs/regulations/<state-laws>
+        krr_outputs/regulations/kov/<KOV peeps>
+        krr_outputs/reports/kov/  (for coverage report output)
+    """
+    krr = tmp_path / "krr_outputs"
+    rk = krr / "riigikohus"
+    laws = krr / "regulations"
+    kov = krr / "regulations" / "kov"
+    (krr / "reports" / "kov").mkdir(parents=True, exist_ok=True)
+    rk.mkdir(parents=True, exist_ok=True)
+    laws.mkdir(parents=True, exist_ok=True)
+    kov.mkdir(parents=True, exist_ok=True)
+
+    for f in (FIXTURE_ROOT / "riigikohus").glob("*_peep.json"):
+        shutil.copy(f, rk / f.name)
+    for f in (FIXTURE_ROOT / "state_laws").glob("*_peep.json"):
+        shutil.copy(f, laws / f.name)
+    for sub in (FIXTURE_ROOT / "kov").iterdir():
+        if sub.is_dir():
+            dst = kov / sub.name
+            dst.mkdir(parents=True, exist_ok=True)
+            for f in sub.glob("*_peep.json"):
+                shutil.copy(f, dst / f.name)
+
+    return krr, rk, kov
+
+
+def _run_script_against(krr: Path, monkeypatch) -> dict:
+    """Run main() with the fixture as the active KRR root; return coverage dict."""
+    import extract_court_provision_links as ecpl
+
+    monkeypatch.setattr(ecpl, "KRR_DIR", krr)
+    monkeypatch.setattr(ecpl, "RK_DIR", krr / "riigikohus")
+
+    # Override iter_peep_files to walk the fixture's regulations directory.
+    def fake_iter(*, include_kov: bool = True):
+        files = list((krr / "regulations").rglob("*_peep.json"))
+        if not include_kov:
+            files = [f for f in files if "/kov/" not in str(f) and "\\kov\\" not in str(f)]
+        return files
+
+    monkeypatch.setattr(ecpl, "iter_peep_files", fake_iter)
+
+    ecpl.main()
+    cov_path = krr / "reports" / "kov" / "court_provision_links_coverage.json"
+    return json.loads(cov_path.read_text(encoding="utf-8"))
+
+
+def test_end_to_end_resolves_viimsi_unresolved_keila(tmp_path, monkeypatch) -> None:
+    krr, rk, kov = _stage_fixture(tmp_path)
+
+    # Add Viimsi peep to make Viimsi resolvable AND a collision pair to trigger
+    # ambiguous_key. We use the Group 2 fixtures already created in Task 7.
+    fixture_kov_root = Path(__file__).parent / "fixtures" / "kov_court_provision_links" / "kov"
+    for sub in ("viimsi_vallavolikogu", "collision_pair"):
+        src_dir = fixture_kov_root / sub
+        dst_dir = kov / sub
+        dst_dir.mkdir(parents=True, exist_ok=True)
+        for f in src_dir.glob("*_peep.json"):
+            shutil.copy(f, dst_dir / f.name)
+
+    cov = _run_script_against(krr, monkeypatch)
+
+    # Stable report shape: pre-seeded keys present.
+    for key in (
+        "kov_citation_ambiguous",
+        "kov_citation_unknown_issuer",
+        "rtiv_form_citation",
+        "json_decode_error",
+    ):
+        assert key in cov["skip_reasons"], f"missing pre-seeded key: {key}"
+
+    # Resolved exactly 1 KOV citation (Viimsi 2009 #22).
+    assert cov["triples_emitted_kov"] == 1
+
+    # Keila citation lands in unresolved (issuer known via fixture peep, year/num miss).
+    assert cov["unresolved_references"] == 1
+
+    # Test Vallavolikogu 2016 #5 → ambiguous (collision pair).
+    assert cov["skip_reasons"]["kov_citation_ambiguous"] == 1
+
+    # No RT IV in fixture summaries.
+    assert cov["skip_reasons"]["rtiv_form_citation"] == 0
+
+    # Keila Vallavolikogu IS a known issuer (Layer 1 fixture peep).
+    assert cov["skip_reasons"].get("kov_citation_unknown_issuer", 0) == 0
+
+    # Subset invariants.
+    assert cov["files_processed_kov"] <= cov["files_processed"]
+    assert cov["files_with_output_kov"] <= cov["files_with_output"]
+
+
+def test_end_to_end_writes_interpretsLaw_and_interpretedBy(tmp_path, monkeypatch) -> None:
+    krr, rk, kov = _stage_fixture(tmp_path)
+
+    fixture_kov_root = Path(__file__).parent / "fixtures" / "kov_court_provision_links" / "kov"
+    for sub in ("viimsi_vallavolikogu", "collision_pair"):
+        src_dir = fixture_kov_root / sub
+        dst_dir = kov / sub
+        dst_dir.mkdir(parents=True, exist_ok=True)
+        for f in src_dir.glob("*_peep.json"):
+            shutil.copy(f, dst_dir / f.name)
+
+    _run_script_against(krr, monkeypatch)
+
+    # Court decision file: interpretsLaw includes the Viimsi act IRI.
+    rk_doc = json.loads((rk / "riigikohus_2009_peep.json").read_text(encoding="utf-8"))
+    decision = next(
+        n for n in rk_doc["@graph"]
+        if n["@id"] == "estleg:RK_FIXT_VIIMSI_2009"
+    )
+    iris = [v["@id"] for v in decision.get("estleg:interpretsLaw", [])]
+    assert "estleg:Reg_1024484_Map_2026" in iris
+    # State-law TsMS provision regression check.
+    assert "estleg:Tsiviilkohtumenetluse_seadustik_Par_208" in iris
+
+    # KOV act file: interpretedBy points back to the court decision.
+    viimsi_doc = json.loads(
+        (kov / "viimsi_vallavolikogu" / "maarus_22_t1024484_peep.json").read_text(encoding="utf-8")
+    )
+    viimsi_act = next(
+        n for n in viimsi_doc["@graph"]
+        if n["@id"] == "estleg:Reg_1024484_Map_2026"
+    )
+    by = [v["@id"] for v in viimsi_act.get("estleg:interpretedBy", [])]
+    assert "estleg:RK_FIXT_VIIMSI_2009" in by
+
+    # State-law provision file: interpretedBy regression check.
+    tsms_doc = json.loads(
+        (krr / "regulations" / "tsiviilkohtumenetluse_seadustik_peep.json").read_text(encoding="utf-8")
+    )
+    tsms_par = next(
+        n for n in tsms_doc["@graph"]
+        if n["@id"] == "estleg:Tsiviilkohtumenetluse_seadustik_Par_208"
+    )
+    assert any(
+        v["@id"] == "estleg:RK_FIXT_VIIMSI_2009"
+        for v in tsms_par.get("estleg:interpretedBy", [])
+    )
