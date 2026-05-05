@@ -516,12 +516,17 @@ def clear_existing_court_links(counters: "_RunCounters") -> int:
          estleg:interpretedBy. Pinned: KOV peeps must NOT enter the state-law
          provision index (line ~53 callsite); the same exclusion applies here
          to keep the cleanup symmetric with the index build.
-      3. KOV peep files (iter_peep_files() filtered to MunicipalRegulation)
-         → strip estleg:interpretedBy. Walks ALL KOV peeps each run so that
-         a peep that was a target last run but isn't this run loses its
-         stale triples.
+      3. KOV peep files (iter_peep_files() minus state_files, then defensive
+         MunicipalRegulation @type check) → strip estleg:interpretedBy. Walks
+         ALL KOV peeps each run so that a peep that was a target last run but
+         isn't this run loses its stale triples.
     """
     cleaned = 0
+
+    # Pre-compute the KOV file set so walk 3 can iterate KOV-only without
+    # re-loading every state-law peep just to filter on @type.
+    state_files = set(iter_peep_files(include_kov=False))   # DEFERRED to Layer 2c
+    kov_files = [f for f in iter_peep_files() if f not in state_files]
 
     # Walk 1: court files
     if RK_DIR.exists():
@@ -538,8 +543,8 @@ def clear_existing_court_links(counters: "_RunCounters") -> int:
                 save_json(rk_file, doc)
                 cleaned += 1
 
-    # Walk 2: state-law peeps (pinned: include_kov=False)
-    for law_file in iter_peep_files(include_kov=False):     # DEFERRED to Layer 2c
+    # Walk 2: state-law peeps (sorted for deterministic output ordering)
+    for law_file in sorted(state_files):
         if law_file.name.startswith("riigikohus"):
             continue
         doc = _safe_load(law_file, counters)
@@ -554,8 +559,11 @@ def clear_existing_court_links(counters: "_RunCounters") -> int:
             save_json(law_file, doc)
             cleaned += 1
 
-    # Walk 3 (NEW, Layer 2c PR #3): KOV peeps
-    for kov_file in iter_peep_files():
+    # Walk 3 (NEW, Layer 2c PR #3): KOV peeps only — no double-load of
+    # state-law peeps. Defensive content check still validates the @type,
+    # since the path-based difference assumes iter_peep_files's
+    # include_kov=False filter is reliable.
+    for kov_file in kov_files:
         doc = _safe_load(kov_file, counters)
         if doc is None:
             continue
