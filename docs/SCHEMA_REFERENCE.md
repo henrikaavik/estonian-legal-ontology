@@ -586,7 +586,7 @@ These properties enable cross-referencing between different parts of the legal s
 ### Institutional Competence
 | Property | Domain | Range | Description |
 |----------|--------|-------|-------------|
-| `estleg:competentAuthority` | LegalProvision | Institution (IRI) | Responsible institution |
+| `estleg:competentAuthority` | LegalProvision | Institution or Issuer (IRI) | Responsible authority — `Institution_*` for state/general detections, `Issuer_*` for KOV-bound matches (see KOV subsection below) |
 | `estleg:competenceType` | Institution | `xsd:string` | Type: supervision, licensing, enforcement |
 
 ### Layer 2c PR #2 — KOV Issuer-binding for `competentAuthority`
