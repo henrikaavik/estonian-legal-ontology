@@ -82,7 +82,7 @@ estleg:LegalProvisionShape
         sh:path estleg:interpretedBy ;
         sh:nodeKind sh:IRI ;
         sh:name "interpretedBy" ;
-        sh:description "Court decisions that interpret this provision" ;
+        sh:description """Court decisions that interpret this provision. The same predicate is also used on MunicipalRegulation act nodes for KOV act-level citations — the object remains a CourtDecision in both cases; the subject differs.""" ;
     ] ;
     sh:property [
         sh:path estleg:transposesDirective ;
@@ -391,7 +391,7 @@ estleg:CourtDecisionShape
         sh:path estleg:interpretsLaw ;
         sh:nodeKind sh:IRI ;
         sh:name "interpretsLaw" ;
-        sh:description "Specific legal provisions interpreted by this decision" ;
+        sh:description """Provisions interpreted by this decision; for KOV citations the target may be a MunicipalRegulation act node when provision-level resolution is unavailable.""" ;
     ] ;
     sh:property [
         sh:path estleg:referencedLaw ;
@@ -825,6 +825,12 @@ estleg:MunicipalRegulationShape
         sh:minCount 1 ;
         sh:name "label" ;
         sh:description "Every MunicipalRegulation must have a label" ;
+    ] ;
+    sh:property [
+        sh:path estleg:interpretedBy ;
+        sh:nodeKind sh:IRI ;
+        sh:name "interpretedBy" ;
+        sh:description """Court decisions that interpret this municipal act (act-level KOV citation).""" ;
     ] .
 
 # Shape for Annex instances (regulation lisa).
