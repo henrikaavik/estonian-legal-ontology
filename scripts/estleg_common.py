@@ -11,6 +11,7 @@ from __future__ import annotations
 import json
 import re
 import xml.etree.ElementTree as ET
+from dataclasses import dataclass, field
 from pathlib import Path
 
 # ---------------------------------------------------------------------------
@@ -174,6 +175,117 @@ CONTEXT: dict[str, str] = {
     "skos": "http://www.w3.org/2004/02/skos/core#",
     "dcterms": "http://purl.org/dc/terms/",
 }
+
+# ---------------------------------------------------------------------------
+# KOV body-word canonicalization and issuer-name normalization (Layer 2c PR #3)
+# ---------------------------------------------------------------------------
+# Court summaries cite KOV bodies using genitive forms (Linnavalitsuse,
+# Vallavalitsuse); KOV peep estleg:issuer fields use nominative (Linnavalitsus,
+# Vallavalitsus). The volikogu forms are identical in both cases. BODY_CANON
+# normalizes either side's body word to the nominative form so issuer-string
+# compare works after normalize_issuer_name().
+BODY_CANON: dict[str, str] = {
+    "linnavalitsuse": "linnavalitsus",
+    "vallavalitsuse": "vallavalitsus",
+    "linnavalitsus":  "linnavalitsus",
+    "vallavalitsus":  "vallavalitsus",
+    "linnavolikogu":  "linnavolikogu",
+    "vallavolikogu":  "vallavolikogu",
+}
+
+
+def normalize_issuer_name(s: str) -> str:
+    """Lowercase + Estonian diacritic transliteration + whitespace collapse.
+
+    Same approach as Layer 1 ``titleNormalized``. Used at both index-build
+    time (over KOV peep ``estleg:issuer`` strings) and citation-resolve
+    time (over reconstructed display name from a regex match).
+    """
+    s = s.lower()
+    for src, dst in (
+        ("õ", "o"), ("ä", "a"), ("ö", "o"),
+        ("ü", "u"), ("š", "s"), ("ž", "z"),
+    ):
+        s = s.replace(src, dst)
+    return " ".join(s.split())
+
+
+# ---------------------------------------------------------------------------
+# Run-counters helper (Layer 2c PR #3)
+# ---------------------------------------------------------------------------
+# Pipelines that read many JSON files and need to record malformed inputs
+# under coverage-report fields share this accumulator so failure
+# bookkeeping (files_skipped + skip_reasons + error_count + failure_samples)
+# stays atomic. _safe_load wraps json.load with the four bumps; callers
+# treat None as "skip this file."
+
+# In-memory cap on failures samples. The downstream coverage-report writer
+# (kov_pipeline_coverage.write_coverage_report) enforces a final cap of 20
+# samples in the JSON output. We over-provision 10× that cap here so a
+# single run can collect a diverse pool across reasons before the writer
+# truncates — otherwise a single high-frequency failure (e.g. a corrupt
+# fixture) could fill the 20-slot budget and crowd out other failure modes.
+_FAILURE_SAMPLES_INMEMORY_CAP = 200
+
+
+@dataclass
+class _RunCounters:
+    """Mutable accumulator threaded through every read site of a pipeline.
+
+    De-dup set ``seen_error_paths`` ensures the same malformed file
+    encountered by multiple walks (cleanup, index-build, processing)
+    counts once toward ``file_skips`` rather than once per walk.
+    """
+
+    file_skips: int = 0
+    error_count: int = 0
+    skip_reasons: dict[str, int] = field(default_factory=dict)
+    failures: list[str] = field(default_factory=list)
+    seen_error_paths: set[Path] = field(default_factory=set)
+
+    def bump_skip(self, reason: str, sample: str) -> None:
+        self.file_skips += 1
+        self.error_count += 1
+        self.skip_reasons[reason] = self.skip_reasons.get(reason, 0) + 1
+        if len(self.failures) < _FAILURE_SAMPLES_INMEMORY_CAP:
+            self.failures.append(sample)
+
+    def bump_citation_skip(self, reason: str, sample: str) -> None:
+        """Citation-level skip: bumps skip_reasons + failures only.
+
+        Use this for per-citation routing (ambiguous_key, unknown_issuer,
+        etc.) where the underlying file is fine and only one citation
+        within it is skipped. Use bump_skip() instead when the entire
+        file is unreadable (file_skips/error_count get bumped there).
+        """
+        self.skip_reasons[reason] = self.skip_reasons.get(reason, 0) + 1
+        if len(self.failures) < _FAILURE_SAMPLES_INMEMORY_CAP:
+            self.failures.append(sample)
+
+    def bump_citation_count(self, reason: str) -> None:
+        """Counter-only bump (no failure sample) — for known-deferred buckets."""
+        self.skip_reasons[reason] = self.skip_reasons.get(reason, 0) + 1
+
+
+def _safe_load(path: Path, counters: _RunCounters) -> dict | None:
+    """Load JSON from ``path``; return ``None`` and bump counters on failure.
+
+    Same path counted only once across the whole run via
+    ``counters.seen_error_paths``.
+    """
+    try:
+        with open(path, encoding="utf-8") as fh:
+            return json.load(fh)
+    except (json.JSONDecodeError, OSError) as exc:
+        if path not in counters.seen_error_paths:
+            counters.seen_error_paths.add(path)
+            counters.bump_skip(
+                "json_decode_error",
+                f"json_decode_error | {path.name} | "
+                f"{type(exc).__name__}: {str(exc)[:80]}",
+            )
+        return None
+
 
 # ---------------------------------------------------------------------------
 # Paragraph citation regex fragment

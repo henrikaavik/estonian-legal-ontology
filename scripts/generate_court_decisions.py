@@ -248,8 +248,19 @@ def generate_schema_nodes() -> list[dict]:
             "@type": ["owl:ObjectProperty"],
             "rdfs:label": {"@value": "tõlgendab seadust", "@language": "et"},
             "rdfs:domain": {"@id": "estleg:CourtDecision"},
-            "rdfs:range": {"@id": "estleg:LegalProvision"},
-            "rdfs:comment": {"@value": "Links a court decision to the legal provision it interprets or applies.", "@language": "en"},
+            "rdfs:range": {
+                "@type": "owl:Class",
+                "owl:unionOf": {
+                    "@list": [
+                        {"@id": "estleg:LegalProvision"},
+                        {"@id": "estleg:Act"},
+                    ],
+                },
+            },
+            "rdfs:comment": {
+                "@value": "Links a court decision to the legal provision or whole act it interprets or applies.",
+                "@language": "en",
+            },
         },
     ])
 
