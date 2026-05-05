@@ -332,7 +332,7 @@ def _run_script_against(krr: Path, monkeypatch) -> dict:
     def fake_iter(*, include_kov: bool = True):
         files = list((krr / "regulations").rglob("*_peep.json"))
         if not include_kov:
-            files = [f for f in files if "/kov/" not in str(f) and "\\kov\\" not in str(f)]
+            files = [f for f in files if "kov" not in f.parts]
         return files
 
     monkeypatch.setattr(ecpl, "iter_peep_files", fake_iter)
@@ -344,17 +344,6 @@ def _run_script_against(krr: Path, monkeypatch) -> dict:
 
 def test_end_to_end_resolves_viimsi_unresolved_keila(tmp_path, monkeypatch) -> None:
     krr, rk, kov = _stage_fixture(tmp_path)
-
-    # Add Viimsi peep to make Viimsi resolvable AND a collision pair to trigger
-    # ambiguous_key. We use the Group 2 fixtures already created in Task 7.
-    fixture_kov_root = Path(__file__).parent / "fixtures" / "kov_court_provision_links" / "kov"
-    for sub in ("viimsi_vallavolikogu", "collision_pair"):
-        src_dir = fixture_kov_root / sub
-        dst_dir = kov / sub
-        dst_dir.mkdir(parents=True, exist_ok=True)
-        for f in src_dir.glob("*_peep.json"):
-            shutil.copy(f, dst_dir / f.name)
-
     cov = _run_script_against(krr, monkeypatch)
 
     # Stable report shape: pre-seeded keys present.
@@ -388,15 +377,6 @@ def test_end_to_end_resolves_viimsi_unresolved_keila(tmp_path, monkeypatch) -> N
 
 def test_end_to_end_writes_interpretsLaw_and_interpretedBy(tmp_path, monkeypatch) -> None:
     krr, rk, kov = _stage_fixture(tmp_path)
-
-    fixture_kov_root = Path(__file__).parent / "fixtures" / "kov_court_provision_links" / "kov"
-    for sub in ("viimsi_vallavolikogu", "collision_pair"):
-        src_dir = fixture_kov_root / sub
-        dst_dir = kov / sub
-        dst_dir.mkdir(parents=True, exist_ok=True)
-        for f in src_dir.glob("*_peep.json"):
-            shutil.copy(f, dst_dir / f.name)
-
     _run_script_against(krr, monkeypatch)
 
     # Court decision file: interpretsLaw includes the Viimsi act IRI.
