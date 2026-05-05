@@ -107,7 +107,9 @@ PAT_RTIV = re.compile(
 )
 
 
-def build_provision_index() -> tuple[dict[str, dict[str, str]], dict[str, str], dict[str, Path]]:
+def build_provision_index(
+    counters: "_RunCounters",
+) -> tuple[dict[str, dict[str, str]], dict[str, str], dict[str, Path]]:
     """
     Scan all law *_peep.json files to build provision indexes.
 
@@ -124,10 +126,8 @@ def build_provision_index() -> tuple[dict[str, dict[str, str]], dict[str, str], 
         # Skip court decision files
         if json_file.name.startswith("riigikohus"):
             continue
-        try:
-            with open(json_file, "r", encoding="utf-8") as f:
-                doc = json.load(f)
-        except (json.JSONDecodeError, OSError):
+        doc = _safe_load(json_file, counters)
+        if doc is None:
             continue
 
         graph = doc.get("@graph", [])
@@ -507,50 +507,71 @@ def apply_interpreted_by(
     return update_counts
 
 
-def clear_existing_court_links() -> int:
-    """
-    Clear existing estleg:interpretsLaw from court files and
-    estleg:interpretedBy from law files for idempotent re-run.
+def clear_existing_court_links(counters: "_RunCounters") -> int:
+    """Clear stale court-provision link triples for idempotent re-run.
+
+    Three walks:
+      1. Court files (RK_DIR/riigikohus_*_peep.json) → strip estleg:interpretsLaw.
+      2. State-law peep files (iter_peep_files(include_kov=False)) → strip
+         estleg:interpretedBy. Pinned: KOV peeps must NOT enter the state-law
+         provision index (line ~53 callsite); the same exclusion applies here
+         to keep the cleanup symmetric with the index build.
+      3. KOV peep files (iter_peep_files() filtered to MunicipalRegulation)
+         → strip estleg:interpretedBy. Walks ALL KOV peeps each run so that
+         a peep that was a target last run but isn't this run loses its
+         stale triples.
     """
     cleaned = 0
 
-    # Clear interpretsLaw from court files
+    # Walk 1: court files
     if RK_DIR.exists():
         for rk_file in sorted(RK_DIR.glob("riigikohus_*_peep.json")):
-            try:
-                with open(rk_file, "r", encoding="utf-8") as f:
-                    doc = json.load(f)
-            except (json.JSONDecodeError, OSError):
+            doc = _safe_load(rk_file, counters)
+            if doc is None:
                 continue
-
             modified = False
             for node in doc.get("@graph", []):
                 if "estleg:interpretsLaw" in node:
                     del node["estleg:interpretsLaw"]
                     modified = True
-
             if modified:
                 save_json(rk_file, doc)
                 cleaned += 1
 
-    # Clear interpretedBy from law files
-    for law_file in iter_peep_files(include_kov=False):  # DEFERRED to Layer 2c
+    # Walk 2: state-law peeps (pinned: include_kov=False)
+    for law_file in iter_peep_files(include_kov=False):     # DEFERRED to Layer 2c
         if law_file.name.startswith("riigikohus"):
             continue
-        try:
-            with open(law_file, "r", encoding="utf-8") as f:
-                doc = json.load(f)
-        except (json.JSONDecodeError, OSError):
+        doc = _safe_load(law_file, counters)
+        if doc is None:
             continue
-
         modified = False
         for node in doc.get("@graph", []):
             if "estleg:interpretedBy" in node:
                 del node["estleg:interpretedBy"]
                 modified = True
-
         if modified:
             save_json(law_file, doc)
+            cleaned += 1
+
+    # Walk 3 (NEW, Layer 2c PR #3): KOV peeps
+    for kov_file in iter_peep_files():
+        doc = _safe_load(kov_file, counters)
+        if doc is None:
+            continue
+        is_kov = any(
+            "estleg:MunicipalRegulation" in node.get("@type", [])
+            for node in doc.get("@graph", [])
+        )
+        if not is_kov:
+            continue
+        modified = False
+        for node in doc.get("@graph", []):
+            if "estleg:interpretedBy" in node:
+                del node["estleg:interpretedBy"]
+                modified = True
+        if modified:
+            save_json(kov_file, doc)
             cleaned += 1
 
     return cleaned
