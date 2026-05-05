@@ -92,6 +92,16 @@ PAT_KOV_ACT = re.compile(
     re.UNICODE,
 )
 
+# Counted-only RT IV reference detector. We do not resolve these (no
+# prebuilt RT IV → IRI lookup table); they're tracked under
+# skip_reasons["rtiv_form_citation"] so a future PR notices when this
+# bucket becomes nonzero.
+PAT_RTIV = re.compile(
+    r"\bRT\s+IV[,\s]+\d{2,4}(?:[\.\-/]\d{1,2}[\.\-/]\d{2,4}|[,\s]+\d+)"
+    r"(?:[,\s]+\d+)?",
+    re.IGNORECASE,
+)
+
 
 def build_provision_index() -> tuple[dict[str, dict[str, str]], dict[str, str], dict[str, Path]]:
     """

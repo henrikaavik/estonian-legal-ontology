@@ -105,3 +105,18 @@ def test_pat_no_overcapture_lowercase_prefix_short() -> None:
     m = _first_match("tunnistada kehtetuks Keila Vallavolikogu 21.06.99 määrus nr 55")
     assert m is not None
     assert m.group("municipality").strip() == "Keila"
+
+
+from extract_court_provision_links import PAT_RTIV
+
+
+def test_pat_rtiv_canonical_form() -> None:
+    assert PAT_RTIV.search("vt RT IV, 2020-04-15, 7") is not None
+
+
+def test_pat_rtiv_alternate_form() -> None:
+    assert PAT_RTIV.search("avaldatud RT IV 2018, 3, 5") is not None
+
+
+def test_pat_rtiv_no_match_plain_text() -> None:
+    assert PAT_RTIV.search("KarS § 121") is None
