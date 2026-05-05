@@ -210,6 +210,60 @@ def normalize_issuer_name(s: str) -> str:
 
 
 # ---------------------------------------------------------------------------
+# Run-counters helper (Layer 2c PR #3)
+# ---------------------------------------------------------------------------
+# Pipelines that read many JSON files and need to record malformed inputs
+# under coverage-report fields share this accumulator so failure
+# bookkeeping (files_skipped + skip_reasons + error_count + failure_samples)
+# stays atomic. _safe_load wraps json.load with the four bumps; callers
+# treat None as "skip this file."
+from dataclasses import dataclass, field
+
+
+@dataclass
+class _RunCounters:
+    """Mutable accumulator threaded through every read site of a pipeline.
+
+    De-dup set ``seen_error_paths`` ensures the same malformed file
+    encountered by multiple walks (cleanup, index-build, processing)
+    counts once toward ``file_skips`` rather than once per walk.
+    """
+
+    file_skips: int = 0
+    error_count: int = 0
+    skip_reasons: dict[str, int] = field(default_factory=dict)
+    failures: list[str] = field(default_factory=list)
+    seen_error_paths: set[Path] = field(default_factory=set)
+
+    def bump_skip(self, reason: str, sample: str) -> None:
+        self.file_skips += 1
+        self.error_count += 1
+        self.skip_reasons[reason] = self.skip_reasons.get(reason, 0) + 1
+        if len(self.failures) < 200:   # over-cap; helper writer enforces 20 final
+            self.failures.append(sample)
+
+
+def _safe_load(path: Path, counters: _RunCounters) -> dict | None:
+    """Load JSON from ``path``; return ``None`` and bump counters on failure.
+
+    Same path counted only once across the whole run via
+    ``counters.seen_error_paths``.
+    """
+    try:
+        with open(path, encoding="utf-8") as fh:
+            return json.load(fh)
+    except (json.JSONDecodeError, OSError) as exc:
+        if path not in counters.seen_error_paths:
+            counters.seen_error_paths.add(path)
+            counters.bump_skip(
+                "json_decode_error",
+                f"json_decode_error | {path.name} | "
+                f"{type(exc).__name__}: {str(exc)[:80]}",
+            )
+        return None
+
+
+# ---------------------------------------------------------------------------
 # Paragraph citation regex fragment
 #
 # Handles all Estonian grammatical cases for the § symbol:
