@@ -413,3 +413,34 @@ def test_end_to_end_writes_interpretsLaw_and_interpretedBy(tmp_path, monkeypatch
         v["@id"] == "estleg:RK_FIXT_VIIMSI_2009"
         for v in tsms_par.get("estleg:interpretedBy", [])
     )
+
+
+# ---------------------------------------------------------------------------
+# Group 4a — idempotency
+# ---------------------------------------------------------------------------
+
+VOLATILE_KEYS = (
+    "run_timestamp",
+    "wall_time_seconds",
+    "items_per_second",
+    "peak_memory_mb",
+)
+
+
+def _stable(cov: dict) -> dict:
+    return {k: v for k, v in cov.items() if k not in VOLATILE_KEYS}
+
+
+def test_two_runs_byte_identical(tmp_path, monkeypatch) -> None:
+    krr, rk, kov = _stage_fixture(tmp_path)
+    cov1 = _run_script_against(krr, monkeypatch)
+    # Snapshot every touched file's bytes after run 1.
+    bytes1 = {p: p.read_bytes() for p in krr.rglob("*_peep.json")}
+
+    cov2 = _run_script_against(krr, monkeypatch)
+    bytes2 = {p: p.read_bytes() for p in krr.rglob("*_peep.json")}
+
+    assert _stable(cov1) == _stable(cov2), \
+        "coverage report differs across runs (modulo volatile fields)"
+    assert bytes1 == bytes2, \
+        "peep files differ across runs (idempotency violated)"
