@@ -75,14 +75,25 @@ All notable changes to this project will be documented in this file.
   only the `sh:description` is updated to mention the broader
   Issuer/Institution value range.
 
-### Coverage (Layer 2c PR #2, 2026-05-04 corpus run)
+### Coverage (Layer 2c PR #2, 2026-05-05 corpus run — post-review fixes)
 - `extract_institutional_competence`: 15,508 input files
-  (11,059 KOV); 8,302 KOV files with output (75% of KOV acts);
-  48,431 KOV competentAuthority references emitted (59,460 total
-  including state-side); 1,108 body-word abstains; 0 Path 3
+  (11,059 KOV); 8,386 KOV files with output (76% of KOV acts);
+  45,233 KOV competentAuthority references emitted (56,262 total
+  including state-side); 1,232 body-word abstains; 0 Path 3
   fallback hits (Layer 1 issuer assignment is fully consistent
-  with enactedByMunicipality); 0 errors; wall time 21.94s at
-  706.59 items/s, 95.8 MB peak; GATE OK.
+  with enactedByMunicipality); 0 errors; wall time 22.88s at
+  677.69 items/s, 95.9 MB peak; GATE OK.
+- **Review-driven re-run (after PR #101 review):** extended GENERIC_PATTERNS
+  to cover adessive/ablative/elative/comitative case forms
+  (e.g. `vallavalitsusel`, `linnavolikogult`, `vallavalitsusega`,
+  `linnavolikogust`); added per-provision deduplication so a
+  summary with multiple inflected mentions of the same body emits
+  exactly one `competentAuthority` ref. Pre-fix corpus had 4,194
+  provisions with duplicate refs; post-fix: 0. Coverage numbers
+  above reflect the post-fix run. `triples_emitted_kov` dropped
+  from 48,431 to 45,233 due to dedupe; `files_with_output_kov`
+  rose from 8,302 to 8,386 as new case forms catch additional
+  peeps.
 
 ### Internal (Layer 2c PR #2)
 - New `tests/test_extract_institutional_competence.py` with

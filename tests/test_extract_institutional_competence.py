@@ -83,6 +83,42 @@ class TestKovBodyWordDetection:
         slug = _canonical_body_slug(match.group(0))
         assert slug == expected
 
+    @pytest.mark.parametrize("text,expected", [
+        # Adessive (-l): "X-l on õigus" pattern
+        ("vallavalitsusel", "vallavalitsus"),
+        ("linnavalitsusel", "linnavalitsus"),
+        ("vallavolikogul", "vallavolikogu"),
+        ("linnavolikogul", "linnavolikogu"),
+        ("alevivolikogul", "alevivolikogu"),
+        # Ablative (-lt): "X-lt küsib"
+        ("vallavalitsuselt", "vallavalitsus"),
+        ("linnavolikogult", "linnavolikogu"),
+        # Elative (-st): "X-st kostis"
+        ("vallavalitsusest", "vallavalitsus"),
+        ("linnavolikogust", "linnavolikogu"),
+        # Comitative (-ga): "X-ga koos"
+        ("vallavalitsusega", "vallavalitsus"),
+        ("linnavolikoguga", "linnavolikogu"),
+    ])
+    def test_extended_case_forms(self, text, expected):
+        """Adessive/ablative/elative/comitative forms — common in
+        legal text ("vallavalitsusel on õigus...", "linnavolikogult
+        küsib", etc.). Layer 2c PR #2 review surfaced 29 corpus
+        cases of "vallavalitsusel on õigus" alone."""
+        from extract_institutional_competence import (
+            _canonical_body_slug,
+            GENERIC_PATTERNS,
+        )
+        match = None
+        for pat, _label, _itype in GENERIC_PATTERNS:
+            m = pat.search(f"see {text} on õigus midagi teha")
+            if m and m.group(0).lower() == text.lower():
+                match = m
+                break
+        assert match is not None, f"no GENERIC_PATTERNS regex matched {text!r}"
+        slug = _canonical_body_slug(match.group(0))
+        assert slug == expected
+
     def test_named_institutions_still_win(self):
         """Adding the new patterns must not override existing
         named-institution detection. detect_institutions returns
@@ -545,6 +581,163 @@ class TestExtractCompetenceWithIssuerBinding:
         ids = [r.get("@id") for r in refs]
         assert "estleg:Institution_riigikohus" in ids
         assert (institutions_dir / "institution_riigikohus.json").exists()
+
+
+class TestAuthorityRefDeduplication:
+    """A summary with multiple inflected mentions of the same body
+    must produce ONE competentAuthority ref, not N."""
+
+    @pytest.fixture
+    def issuers_registry_file(self, tmp_path):
+        krr = tmp_path / "krr_outputs"
+        krr.mkdir()
+        path = krr / "issuers_kov_peep.json"
+        path.write_text(json.dumps({
+            "@context": {
+                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "owl": "http://www.w3.org/2002/07/owl#",
+                "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+            },
+            "@graph": [
+                {"@id": "estleg:Issuer_polva_vallavalitsus",
+                 "@type": ["owl:NamedIndividual", "estleg:Issuer"],
+                 "rdfs:label": "Põlva Vallavalitsus",
+                 "estleg:bodyType": "valitsus",
+                 "estleg:currentMunicipality": {
+                     "@id": "estleg:Municipality_polva"}},
+            ],
+        }), encoding="utf-8")
+        return krr
+
+    def test_multiple_inflected_mentions_dedupe_to_one(
+        self, issuers_registry_file, monkeypatch
+    ):
+        """Reviewer-cited regression: polva hankekord §1 had three
+        identical Issuer_polva_vallavalitsus refs because the summary
+        mentioned vallavalitsus three times in different cases."""
+        import extract_institutional_competence as mod
+        import estleg_common
+        krr = issuers_registry_file
+        institutions_dir = krr / "institutions"
+        institutions_dir.mkdir(parents=True, exist_ok=True)
+        kov = krr / "regulations" / "kov" / "polva_vallavalitsus"
+        kov.mkdir(parents=True)
+        peep = kov / "hankekord_peep.json"
+        peep.write_text(json.dumps({
+            "@context": {
+                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "owl": "http://www.w3.org/2002/07/owl#",
+            },
+            "@graph": [
+                {"@id": "estleg:Reg_Polva_Map_2024",
+                 "@type": ["owl:Ontology", "estleg:Act",
+                           "estleg:MunicipalRegulation"],
+                 "estleg:enactedBy": {"@id": "estleg:Issuer_polva_vallavalitsus"},
+                 "estleg:enactedByMunicipality": {
+                     "@id": "estleg:Municipality_polva"}},
+                {"@id": "estleg:Reg_Polva_Par_1",
+                 "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+                 "estleg:paragrahv": "§ 1",
+                 "estleg:summary":
+                     "Vallavalitsus kehtestab korra. Vallavalitsusel on "
+                     "õigus küsida lisateavet. Vallavalitsuse otsus on "
+                     "lõplik."},
+            ],
+        }), encoding="utf-8")
+
+        monkeypatch.setattr(mod, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "INSTIT_DIR", institutions_dir)
+        monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "iter_peep_files", _iter_kov_inclusive)
+
+        rc = mod.main()
+        assert rc in (0, None)
+
+        with open(peep, "r", encoding="utf-8") as fh:
+            saved = json.load(fh)
+        prov = next(n for n in saved["@graph"]
+                    if n.get("@id") == "estleg:Reg_Polva_Par_1")
+        refs = prov.get("estleg:competentAuthority", [])
+        if isinstance(refs, dict):
+            refs = [refs]
+        ids = [r.get("@id") for r in refs]
+        # Three inflected mentions of the same body → exactly ONE ref.
+        assert ids == ["estleg:Issuer_polva_vallavalitsus"], (
+            f"expected 1 deduped ref, got {ids}"
+        )
+
+    def test_institution_path_dedupes_inst_provisions(
+        self, issuers_registry_file, monkeypatch
+    ):
+        """Same pattern but for state-side Institution_* path: the
+        institutions/institution_<slug>.json provision list must not
+        contain duplicate (provision, type, law) tuples when the
+        same named institution is detected multiple times in one
+        summary."""
+        import extract_institutional_competence as mod
+        import estleg_common
+        krr = issuers_registry_file
+        institutions_dir = krr / "institutions"
+        institutions_dir.mkdir(parents=True, exist_ok=True)
+        peep = krr / "state_law_peep.json"
+        peep.write_text(json.dumps({
+            "@context": {
+                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "owl": "http://www.w3.org/2002/07/owl#",
+            },
+            "@graph": [
+                {"@id": "estleg:State_Map_2026",
+                 "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]},
+                {"@id": "estleg:State_Par_1",
+                 "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+                 "estleg:paragrahv": "§ 1",
+                 "estleg:summary":
+                     "Riigikohus otsustab vaidlused. Riigikohtu otsus "
+                     "on lõplik. Riigikohus võib kaaluda."},
+            ],
+        }), encoding="utf-8")
+
+        monkeypatch.setattr(mod, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "INSTIT_DIR", institutions_dir)
+        monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "iter_peep_files", _iter_kov_inclusive)
+
+        rc = mod.main()
+        assert rc in (0, None)
+
+        # Provision side: exactly one Institution_riigikohus ref.
+        with open(peep, "r", encoding="utf-8") as fh:
+            saved = json.load(fh)
+        prov = next(n for n in saved["@graph"]
+                    if n.get("@id") == "estleg:State_Par_1")
+        refs = prov.get("estleg:competentAuthority", [])
+        if isinstance(refs, dict):
+            refs = [refs]
+        ids = [r.get("@id") for r in refs]
+        assert ids == ["estleg:Institution_riigikohus"], (
+            f"expected 1 deduped Institution ref, got {ids}"
+        )
+        # Institution-side: the provision tuple appears exactly once.
+        inst_file = institutions_dir / "institution_riigikohus.json"
+        assert inst_file.exists()
+        with open(inst_file, "r", encoding="utf-8") as fh:
+            inst_doc = json.load(fh)
+        # The institution writer groups provisions under
+        # estleg:Competence nodes (one per competence type), each
+        # with estleg:appliesToProvision. Find State_Par_1 refs
+        # across ALL Competence nodes — there should be exactly one.
+        state_par_1_count = 0
+        for node in inst_doc.get("@graph", []):
+            applies = node.get("estleg:appliesToProvision", [])
+            if isinstance(applies, dict):
+                applies = [applies]
+            for p in applies:
+                if isinstance(p, dict) and p.get("@id") == "estleg:State_Par_1":
+                    state_par_1_count += 1
+        assert state_par_1_count <= 1, (
+            f"institution file lists provision State_Par_1 "
+            f"{state_par_1_count} times (expected 0 or 1)"
+        )
 
 
 class TestCompetenceIdempotency:

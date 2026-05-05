@@ -158,7 +158,7 @@ def _canonical_body_slug(matched: str) -> str | None:
     match doesn't fit one of the five reachable stems.
     """
     s = matched.lower()
-    for suffix in ("esse", "ele", "sse", "es", "le", "se", "s", "t", "e"):
+    for suffix in ("esse", "elt", "ele", "ega", "est", "sse", "el", "es", "ga", "le", "lt", "se", "st", "e", "l", "s", "t"):
         if s.endswith(suffix) and len(s) > len(suffix) + 4:
             stripped = s[: -len(suffix)]
             if stripped.endswith(("volikogu", "valitsus")):
@@ -215,9 +215,9 @@ GENERIC_PATTERNS: list[tuple[re.Pattern, str, str]] = [
     # Local government
     (re.compile(r"\bkohalik(?:u)?\s+omavalitsus(?:e)?\b", re.IGNORECASE),
      "local_government", "local_government"),
-    (re.compile(r"\b(?:linna|valla|alevi)volikogu(?:le|sse|s)?\b", re.IGNORECASE),
+    (re.compile(r"\b(?:linna|valla|alevi)volikogu(?:sse|lt|le|st|ga|l|s)?\b", re.IGNORECASE),
      "local_government_council", "local_government_body"),
-    (re.compile(r"\b(?:linna|valla)valitsus(?:e(?:le|sse)?|es|se|t)?\b", re.IGNORECASE),
+    (re.compile(r"\b(?:linna|valla)valitsus(?:e(?:sse|le|lt|ga|st|s|l)?|se|t)?\b", re.IGNORECASE),
      "local_government_executive", "local_government_body"),
     (re.compile(r"\b(vald|linn)\b", re.IGNORECASE),
      "local_government", "local_government"),
@@ -546,6 +546,7 @@ def main() -> int:
             provision_iri = node.get("@id", "")
 
             authority_refs = []
+            added_inst_iris_this_provision: set[str] = set()
             for canon_name, iri_suffix, itype in institutions:
                 if itype == "local_government_body":
                     canonical = _canonical_body_slug(canon_name)
@@ -579,10 +580,26 @@ def main() -> int:
                         "type": itype,
                     }
 
-                inst_provisions[inst_iri].append(
-                    (provision_iri, competence_type, law_name)
-                )
+                if inst_iri not in added_inst_iris_this_provision:
+                    inst_provisions[inst_iri].append(
+                        (provision_iri, competence_type, law_name)
+                    )
+                    added_inst_iris_this_provision.add(inst_iri)
                 authority_refs.append({"@id": inst_iri})
+
+            # Dedupe authority_refs by @id (preserve first-occurrence order).
+            # Required because a single provision can mention the same body
+            # multiple times (different inflections), and each match would
+            # otherwise emit a separate competentAuthority ref.
+            seen: set[str] = set()
+            deduped: list[dict] = []
+            for ref in authority_refs:
+                iri = ref.get("@id") if isinstance(ref, dict) else None
+                if iri is None or iri in seen:
+                    continue
+                seen.add(iri)
+                deduped.append(ref)
+            authority_refs = deduped
 
             # Add competent-authority link to provision node
             if authority_refs:
