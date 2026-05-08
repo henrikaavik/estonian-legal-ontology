@@ -8,6 +8,7 @@ All tests run offline against fixtures under `tests/fixtures/regulations/`.
 """
 from __future__ import annotations
 
+import json
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
@@ -15,7 +16,14 @@ import pytest
 
 import estleg_common
 import riigiteataja_common
-from generate_regulations import build_regulation_jsonld, classify_issuer
+from generate_regulations import (
+    build_regulation_index,
+    build_regulation_jsonld,
+    classify_issuer,
+    provision_summary,
+    source_removed_files,
+    write_regulation_output,
+)
 from riigiteataja_common import (
     iter_peep_files,
     parse_act_metadata,
@@ -86,8 +94,9 @@ class TestClassifyIssuer:
 
     def test_kov_regulation_only_municipal(self):
         classes = classify_issuer("Tartu Linnavolikogu", is_kov=True)
-        # KOV must not pick up the National/Government markers — KOV is its own bucket.
-        assert classes == ["estleg:MunicipalRegulation"]
+        # KOV regulations are municipal and also carry the domestic-regulation
+        # umbrella class so common SHACL constraints target them directly.
+        assert classes == ["estleg:NationalRegulation", "estleg:MunicipalRegulation"]
 
     def test_central_bank_only_national(self):
         # Eesti Pank is central but not a minister and not the government.
@@ -130,6 +139,10 @@ class TestStructuredParsing:
             assert "owl:NamedIndividual" in type_list
             assert "estleg:Regulation_160748" in type_list
 
+    def test_provision_summary_falls_back_to_label_or_source_title(self):
+        assert provision_summary("§ 1.", "§ 1. Reguleerimisala", "Testmäärus", "") == "§ 1. Reguleerimisala"
+        assert provision_summary("§ 1.", "§ 1.", "Testmäärus", "") == "Testmäärus § 1."
+
     def test_ontology_classes_for_government(self):
         root = _parse(STRUCTURED_FIXTURE)
         doc, _ = build_regulation_jsonld(STRUCTURED_TITLE, {}, root, is_kov=False)
@@ -151,6 +164,32 @@ class TestStructuredParsing:
         # Content from `<preambul>` should mention the legal basis.
         assert "Määrus kehtestatakse" in preamble
         assert "§ 12 alusel" in preamble
+
+    def test_no_body_regulation_is_modeled_as_stub(self):
+        root = ET.fromstring(
+            """
+            <akt>
+              <metaandmed>
+                <aktinimi>Menetlustoimingu määrus</aktinimi>
+                <terviktekstID>999001</terviktekstID>
+                <globaalID>999002</globaalID>
+                <aktinumber>1</aktinumber>
+              </metaandmed>
+            </akt>
+            """
+        )
+
+        doc, stats = build_regulation_jsonld(
+            "Menetlustoimingu määrus",
+            {"tid": "999001", "gid": "999002"},
+            root,
+            is_kov=False,
+        )
+
+        ontology = doc["@graph"][0]
+        assert stats["no_paragraphs"] == 1
+        assert ontology["estleg:contentStatus"] == "noStructuredBody"
+        assert ontology["dcterms:title"] == "Menetlustoimingu määrus"
 
 
 # ---------------------------------------------------------------------------
@@ -268,8 +307,7 @@ class TestIsKovFlag:
 
         type_list = ontology["@type"]
         assert "estleg:MunicipalRegulation" in type_list
-        # Sanity: KOV docs must NOT carry the national markers.
-        assert "estleg:NationalRegulation" not in type_list
+        assert "estleg:NationalRegulation" in type_list
         assert "estleg:GovernmentRegulation" not in type_list
 
     def test_kov_false_marks_national(self):
@@ -340,3 +378,103 @@ class TestIterPeepFiles:
         assert files["kov"] in found
         assert files["regulation"] in found
         assert files["law"] not in found
+
+
+class TestRegulationIndex:
+    def test_build_index_counts_existing_files(self, tmp_path):
+        out_dir = tmp_path / "riik"
+        out_dir.mkdir()
+        for idx in range(2):
+            doc = {
+                "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+                "@graph": [
+                    {
+                        "@id": f"estleg:Reg_{idx}_Map_2026",
+                        "@type": ["owl:Ontology", "estleg:NationalRegulation"],
+                        "estleg:issuer": "Vabariigi Valitsus",
+                    },
+                    {
+                        "@id": f"estleg:Reg_{idx}_Par_1",
+                        "@type": ["owl:NamedIndividual", f"estleg:Regulation_{idx}"],
+                        "estleg:paragrahv": "§ 1.",
+                    },
+                ],
+            }
+            (out_dir / f"reg_{idx}_peep.json").write_text(
+                json.dumps(doc),
+                encoding="utf-8",
+            )
+
+        index = build_regulation_index(
+            out_dir,
+            is_kov=False,
+            kehtiv="2026-05-01",
+            run_stats={"rebuiltFromExistingFiles": True},
+        )
+
+        assert index["totalRegulations"] == 2
+        assert index["totalParagraphs"] == 2
+        assert index["run"]["rebuiltFromExistingFiles"] is True
+
+    def test_refresh_rewrites_changed_existing_output(self, tmp_path):
+        out_path = tmp_path / "reg_peep.json"
+        out_path.write_text(
+            json.dumps({"@graph": [{"@id": "estleg:Old"}]}),
+            encoding="utf-8",
+        )
+        new_doc = {"@graph": [{"@id": "estleg:New"}]}
+
+        status = write_regulation_output(out_path, new_doc, mode="refresh")
+
+        assert status == "refreshed"
+        assert json.loads(out_path.read_text(encoding="utf-8")) == new_doc
+
+    def test_refresh_leaves_unchanged_existing_output(self, tmp_path):
+        out_path = tmp_path / "reg_peep.json"
+        doc = {"@graph": [{"@id": "estleg:Same"}]}
+        out_path.write_text(json.dumps(doc), encoding="utf-8")
+
+        status = write_regulation_output(out_path, doc, mode="refresh")
+
+        assert status == "unchanged"
+        assert json.loads(out_path.read_text(encoding="utf-8")) == doc
+
+    def test_missing_only_skips_existing_output(self, tmp_path):
+        out_path = tmp_path / "reg_peep.json"
+        old_doc = {"@graph": [{"@id": "estleg:Old"}]}
+        out_path.write_text(json.dumps(old_doc), encoding="utf-8")
+
+        status = write_regulation_output(
+            out_path,
+            {"@graph": [{"@id": "estleg:New"}]},
+            mode="missing-only",
+        )
+
+        assert status == "existingSkipped"
+        assert json.loads(out_path.read_text(encoding="utf-8")) == old_doc
+
+    def test_source_removed_files_reports_existing_outputs_missing_from_snapshot(self, tmp_path):
+        out_dir = tmp_path / "riik"
+        out_dir.mkdir()
+        current = {
+            "@graph": [
+                {
+                    "@id": "estleg:Reg_1_Map_2026",
+                    "@type": ["owl:Ontology", "estleg:NationalRegulation"],
+                    "estleg:terviktekstId": "1",
+                }
+            ]
+        }
+        removed = {
+            "@graph": [
+                {
+                    "@id": "estleg:Reg_2_Map_2026",
+                    "@type": ["owl:Ontology", "estleg:NationalRegulation"],
+                    "estleg:terviktekstId": "2",
+                }
+            ]
+        }
+        (out_dir / "current_t1_peep.json").write_text(json.dumps(current), encoding="utf-8")
+        (out_dir / "removed_t2_peep.json").write_text(json.dumps(removed), encoding="utf-8")
+
+        assert source_removed_files(out_dir, {"1"}) == ["removed_t2_peep.json"]

@@ -13,6 +13,7 @@ This script:
 
 from __future__ import annotations
 
+import argparse
 import json
 import re
 import time
@@ -109,6 +110,16 @@ def parse_date(value: str) -> str | None:
     return None
 
 
+def parse_rt_year(value: str) -> str | None:
+    """Extract a strict four-digit RT publication year."""
+    if not value:
+        return None
+    match = re.match(r"^\s*(\d{4})(?:[+-]\d{2}:\d{2})?\s*$", value)
+    if not match:
+        return None
+    return match.group(1)
+
+
 def extract_temporal_from_xml(xml_path: Path) -> dict:
     """
     Extract all temporal metadata from a Riigi Teataja XML file.
@@ -197,10 +208,9 @@ def extract_temporal_from_xml(xml_path: Path) -> dict:
         if avaldamismarge is not None:
             rt_aasta = ct(avaldamismarge, "RTaasta")
             if rt_aasta:
-                try:
-                    result["publication_date"] = f"{rt_aasta}-01-01"
-                except ValueError:
-                    pass
+                year = parse_rt_year(rt_aasta)
+                if year:
+                    result["publication_date"] = f"{year}-01-01"
 
     # Last amendment date: find the latest muutmismarge
     muutmismarked = find_all_elements(root, "muutmismarge")
@@ -232,12 +242,20 @@ def extract_temporal_from_xml(xml_path: Path) -> dict:
     return result
 
 
-def determine_temporal_status(temporal: dict) -> str:
+def validate_evaluation_date(value: str) -> str:
+    try:
+        datetime.strptime(value, "%Y-%m-%d")
+    except ValueError as exc:
+        raise argparse.ArgumentTypeError("evaluation date must be YYYY-MM-DD") from exc
+    return value
+
+
+def determine_temporal_status(temporal: dict, evaluation_date: str | None = None) -> str:
     """
     Determine the temporal status of a law.
     Returns one of: "inForce", "repealed", "notYetEffective"
     """
-    today = date.today().isoformat()
+    today = evaluation_date or date.today().isoformat()
 
     # If there is an invalidation date or valid_until in the past, it is repealed
     if temporal.get("invalidation_date"):
@@ -288,10 +306,13 @@ def save_json(filepath: Path, doc: dict):
         f.write("\n")
 
 
-def main():
+def main(evaluation_date: str | None = None):
+    evaluation_date = evaluation_date or date.today().isoformat()
+
     print("=" * 70)
     print("Estonian Legal Ontology - Extract Temporal Validity Data")
     print("=" * 70)
+    print(f"Evaluation date: {evaluation_date}")
 
     _start = time.perf_counter()
 
@@ -470,7 +491,7 @@ def main():
             _files_processed_kov += 1
 
         # Determine temporal status
-        status = determine_temporal_status(temporal)
+        status = determine_temporal_status(temporal, evaluation_date=evaluation_date)
         status_counts[status] += 1
 
         # Load existing JSON-LD
@@ -562,6 +583,7 @@ def main():
     print("\n  Generating temporal_data_report.json...")
     report = {
         "generated": date.today().isoformat(),
+        "evaluationDate": evaluation_date,
         "summary": {
             "total_xml_files": len(unique_xml_paths),
             "xml_with_temporal_data": extracted_xml,
@@ -623,4 +645,12 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--evaluation-date",
+        type=validate_evaluation_date,
+        default=None,
+        help="Date used for temporalStatus evaluation (YYYY-MM-DD). Defaults to today's date.",
+    )
+    args = parser.parse_args()
+    main(evaluation_date=args.evaluation_date)

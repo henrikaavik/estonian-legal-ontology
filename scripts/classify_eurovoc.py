@@ -636,6 +636,14 @@ def main():
     report = {
         "generated": datetime.now().strftime("%Y-%m-%d"),
         "method": "keyword-matching",
+        "classification_level": "act",
+        "quality_evaluation": {
+            "status": "not_evaluated",
+            "note": (
+                "Keyword matches are candidate act-level EuroVoc subjects. "
+                "No reviewed precision/recall sample is bundled yet."
+            ),
+        },
         "eurovoc_domains_defined": len(EUROVOC_DOMAINS),
         "total_laws_processed": len(laws_meta),
         "total_classified": len(classifications),

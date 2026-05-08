@@ -25,11 +25,11 @@
   ],
   "dcterms:description": [
     {
-      "@value": "A comprehensive, machine-readable ontology of Estonian and EU legislation in JSON-LD format. Maps 615 enacted laws, 3,792 state-level domestic regulations, 22,832 draft legislation items, 12,137 Supreme Court decisions, 33,242 EU legal acts, and 22,290 EU court decisions into a semantic knowledge graph with 170,000+ semantic nodes. Includes 14 integration layers: cross-law references, court decision links, EU directive transposition mapping, EuroVoc taxonomy, amendment history, legal concept graph, deontic classification, institutional competence, sanction index, semantic similarity, and temporal validity.",
+      "@value": "A comprehensive, machine-readable ontology of Estonian and EU legislation in JSON-LD format. Maps 608 enacted-law index records across 637 law files, 3,812 state-level domestic regulations, 11,059 municipal regulations, 22,832 draft legislation items, 12,137 Supreme Court decisions, 33,242 EU legal acts, and 22,290 EU court decisions into a semantic knowledge graph. Includes 14 integration layers: cross-law references, court decision links, EU directive transposition mapping, EuroVoc taxonomy, amendment history, legal concept graph, deontic classification, institutional competence, sanction index, semantic similarity, and temporal validity.",
       "@language": "en"
     },
     {
-      "@value": "Terviklik masinloetav Eesti ja EL oigusaktide ontoloogia JSON-LD formaadis. Kaardistab 615 kehtivat seadust, 3 792 riigi tasandi maarust, 22 832 eelnou, 12 137 Riigikohtu lahendit, 33 242 EL oigusakti ja 22 290 EL kohtulahendit semantilisse teadmusgraafi, mis sisaldab ule 170 000 semantilise soelme. Sisaldab 14 integratsioonikihti: ristviited seaduste vahel, kohtuotsuste seosed, EL direktiivide ulevotukaardistus, EuroVoc taksonoomia, muudatuste ajalugu, oigusmoistete graaf, deontiline klassifikatsioon, institutsioonide padevus, sanktsioonide indeks, semantiline sarnasus ja ajaline kehtivus.",
+      "@value": "Terviklik masinloetav Eesti ja EL õigusaktide ontoloogia JSON-LD formaadis. Kaardistab 608 seaduse registrikirjet 637 seadusefailis, 3 812 riigi tasandi määrust, 11 059 kohaliku omavalitsuse määrust, 22 832 eelnõu, 12 137 Riigikohtu lahendit, 33 242 EL õigusakti ja 22 290 EL kohtulahendit semantilisse teadmusgraafi. Sisaldab 14 integratsioonikihti: ristviited seaduste vahel, kohtuotsuste seosed, EL direktiivide ülevõtukaardistus, EuroVoc taksonoomia, muudatuste ajalugu, õigusmõistete graaf, deontiline klassifikatsioon, institutsioonide pädevus, sanktsioonide indeks, semantiline sarnasus ja ajaline kehtivus.",
       "@language": "et"
     }
   ],
@@ -45,7 +45,7 @@
     "@type": "xsd:date"
   },
   "dcterms:modified": {
-    "@value": "2026-05-01",
+    "@value": "2026-05-08",
     "@type": "xsd:date"
   },
   "dcterms:language": [
@@ -273,7 +273,8 @@
         "@id": "http://publications.europa.eu/resource/authority/file-type/JSON_LD"
       },
       "dcat:byteSize": null,
-      "dcterms:description": "5,124 JSON-LD files across enacted laws, domestic regulations, draft legislation, court decisions, EU legislation, and EU court decisions."
+      "dcterms:description": "21,861 JSON/JSON-LD files across enacted laws, domestic regulations, draft legislation, court decisions, EU legislation, EU court decisions, controlled vocabularies, reports, and indexes.",
+      "estleg:fileCount": 21861
     },
     {
       "@type": "dcat:Distribution",
@@ -282,7 +283,9 @@
       "dcat:downloadURL": {
         "@id": "https://github.com/henrikaavik/estonian-legal-ontology/raw/main/krr_outputs/combined_ontology.jsonld"
       },
-      "dcterms:description": "All 615 enacted Estonian laws in a single JSON-LD file."
+      "dcterms:description": "608 enacted-law index records across 637 top-level law JSON-LD files; combined ontology artifact remains available for consumers that need a single file.",
+      "estleg:lawIndexRecordCount": 608,
+      "estleg:lawFileCount": 637
     },
     {
       "@type": "dcat:Distribution",
@@ -291,7 +294,8 @@
       "dcat:accessURL": {
         "@id": "https://github.com/henrikaavik/estonian-legal-ontology/tree/main/krr_outputs/regulations/riik"
       },
-      "dcterms:description": "3,792 state-level Estonian regulations (määrused) issued by Vabariigi Valitsus, ministers, and Eesti Pank — one JSON-LD file each, plus REGULATIONS_RIIK_INDEX.json."
+      "dcterms:description": "3,812 state-level Estonian regulations (määrused) issued by Vabariigi Valitsus, ministers, and Eesti Pank — one JSON-LD file each, plus REGULATIONS_RIIK_INDEX.json.",
+      "estleg:fileCount": 3812
     },
     {
       "@type": "dcat:Distribution",
@@ -300,7 +304,8 @@
       "dcat:downloadURL": {
         "@id": "https://github.com/henrikaavik/estonian-legal-ontology/raw/main/krr_outputs/eelnoud/eelnoud_combined.jsonld"
       },
-      "dcterms:description": "All 22,832 draft legislation items in a single JSON-LD file."
+      "dcterms:description": "All 22,832 draft legislation items in a single JSON-LD file.",
+      "estleg:draftLegislationCount": 22832
     },
     {
       "@type": "dcat:Distribution",
@@ -309,7 +314,8 @@
       "dcat:downloadURL": {
         "@id": "https://github.com/henrikaavik/estonian-legal-ontology/raw/main/krr_outputs/eurlex/eurlex_combined.jsonld"
       },
-      "dcterms:description": "All 33,242 EU legal acts in a single JSON-LD file."
+      "dcterms:description": "All 33,242 EU legal acts in a single JSON-LD file.",
+      "estleg:euLegislationCount": 33242
     },
     {
       "@type": "dcat:Distribution",
@@ -318,17 +324,20 @@
       "dcat:downloadURL": {
         "@id": "https://github.com/henrikaavik/estonian-legal-ontology/raw/main/krr_outputs/curia/curia_combined.jsonld"
       },
-      "dcterms:description": "All 22,290 EU court decisions in a single JSON-LD file."
+      "dcterms:description": "All 22,290 EU court decisions in a single JSON-LD file.",
+      "estleg:euCourtDecisionCount": 22290
     }
   ],
   "estleg:statistics": {
-    "estleg:enactedLawCount": 615,
-    "estleg:domesticRegulationCount": 3792,
+    "estleg:enactedLawCount": 608,
+    "estleg:enactedLawFileCount": 637,
+    "estleg:domesticRegulationCount": 3812,
+    "estleg:municipalRegulationCount": 11059,
     "estleg:draftLegislationCount": 22832,
     "estleg:courtDecisionCount": 12137,
     "estleg:euLegislationCount": 33242,
     "estleg:euCourtDecisionCount": 22290,
-    "estleg:totalFiles": 5124,
+    "estleg:totalFiles": 21861,
     "estleg:semanticNodeCount": 170000,
     "estleg:integrationLayerCount": 14,
     "estleg:courtDecisionYearRange": "1993-2026",
@@ -345,7 +354,9 @@
       "@id": "estleg:Law",
       "@type": "owl:Class",
       "rdfs:label": "Law",
-      "rdfs:subClassOf": {"@id": "estleg:Act"},
+      "rdfs:subClassOf": {
+        "@id": "estleg:Act"
+      },
       "rdfs:comment": "A statute (seadus). Stamped onto every existing law act node during KOV layer 1 enrichment."
     },
     {
@@ -358,14 +369,18 @@
       "@id": "estleg:Issuer",
       "@type": "owl:Class",
       "rdfs:label": "Issuer",
-      "rdfs:subClassOf": {"@id": "estleg:Institution"},
+      "rdfs:subClassOf": {
+        "@id": "estleg:Institution"
+      },
       "rdfs:comment": "An act-issuing body (volikogu or valitsus). Subclass of Institution so competence-extractor links target Issuers via existing Institution-range properties."
     },
     {
       "@id": "estleg:KovProvision",
       "@type": "owl:Class",
       "rdfs:label": "KovProvision",
-      "rdfs:subClassOf": {"@id": "estleg:LegalProvision"},
+      "rdfs:subClassOf": {
+        "@id": "estleg:LegalProvision"
+      },
       "rdfs:comment": "A provision belonging to a MunicipalRegulation. Stamped during KOV layer 1 enrichment so SHACL can target provision-level constraints without OWL inference."
     },
     {
@@ -382,152 +397,203 @@
     },
     {
       "@id": "estleg:NationalRegulation",
-      "rdfs:subClassOf": {"@id": "estleg:Act"}
+      "rdfs:subClassOf": {
+        "@id": "estleg:Act"
+      }
     },
     {
       "@id": "estleg:MunicipalRegulation",
-      "rdfs:subClassOf": {"@id": "estleg:Act"}
+      "rdfs:subClassOf": [
+        {
+          "@id": "estleg:Act"
+        },
+        {
+          "@id": "estleg:NationalRegulation"
+        }
+      ]
     },
     {
       "@id": "estleg:GovernmentRegulation",
-      "rdfs:subClassOf": {"@id": "estleg:NationalRegulation"}
+      "rdfs:subClassOf": {
+        "@id": "estleg:NationalRegulation"
+      }
     },
     {
       "@id": "estleg:MinisterialRegulation",
-      "rdfs:subClassOf": {"@id": "estleg:NationalRegulation"}
+      "rdfs:subClassOf": {
+        "@id": "estleg:NationalRegulation"
+      }
     },
     {
       "@id": "estleg:enactedBy",
       "@type": "owl:ObjectProperty",
       "rdfs:label": "enactedBy",
       "rdfs:comment": "The Issuer that enacted this MunicipalRegulation or KovProvision.",
-      "rdfs:range": {"@id": "estleg:Issuer"}
+      "rdfs:range": {
+        "@id": "estleg:Issuer"
+      }
     },
     {
       "@id": "estleg:enactedByMunicipality",
       "@type": "owl:ObjectProperty",
       "rdfs:label": "enactedByMunicipality",
       "rdfs:comment": "The current Municipality whose Issuer enacted this MunicipalRegulation or KovProvision.",
-      "rdfs:range": {"@id": "estleg:Municipality"}
+      "rdfs:range": {
+        "@id": "estleg:Municipality"
+      }
     },
     {
       "@id": "estleg:titleNormalized",
       "@type": "owl:DatatypeProperty",
       "rdfs:label": "titleNormalized",
       "rdfs:comment": "Lowercased, transliterated title with the municipality-name prefix stripped. Used by Layer 3 bucket detection.",
-      "rdfs:range": {"@id": "xsd:string"}
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
     },
     {
       "@id": "estleg:partOfAct",
       "@type": "owl:ObjectProperty",
       "rdfs:label": "partOfAct",
       "rdfs:comment": "IRI link from a provision to its parent act node. The existing sourceAct is a literal title; partOfAct is the structural join path.",
-      "rdfs:range": {"@id": "estleg:Act"}
+      "rdfs:range": {
+        "@id": "estleg:Act"
+      }
     },
     {
       "@id": "estleg:ehakCode",
       "@type": "owl:DatatypeProperty",
       "rdfs:label": "ehakCode",
       "rdfs:comment": "Four-digit EHAK code from Statistics Estonia.",
-      "rdfs:range": {"@id": "xsd:string"}
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
     },
     {
       "@id": "estleg:county",
       "@type": "owl:DatatypeProperty",
       "rdfs:label": "county",
       "rdfs:comment": "Estonian county (maakond) the Municipality belongs to.",
-      "rdfs:range": {"@id": "xsd:string"}
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
     },
     {
       "@id": "estleg:bodyType",
       "@type": "owl:DatatypeProperty",
       "rdfs:label": "bodyType",
       "rdfs:comment": "Issuer body type: 'volikogu' (legislative council) or 'valitsus' (executive).",
-      "rdfs:range": {"@id": "xsd:string"}
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
     },
     {
       "@id": "estleg:currentMunicipality",
       "@type": "owl:ObjectProperty",
       "rdfs:label": "currentMunicipality",
       "rdfs:comment": "The current Municipality that the Issuer maps to (post-2017 successor for legacy Issuers).",
-      "rdfs:range": {"@id": "estleg:Municipality"}
+      "rdfs:range": {
+        "@id": "estleg:Municipality"
+      }
     },
     {
       "@id": "estleg:historicalMunicipalityName",
       "@type": "owl:DatatypeProperty",
       "rdfs:label": "historicalMunicipalityName",
       "rdfs:comment": "Free-text issuing-time municipality name. Preserves history without modeling defunct entities.",
-      "rdfs:range": {"@id": "xsd:string"}
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
     },
     {
       "@id": "estleg:mappingSource",
       "@type": "owl:DatatypeProperty",
       "rdfs:label": "mappingSource",
       "rdfs:comment": "How the Issuer→Municipality mapping was derived: 'auto-match' | 'haldusreform-2017' | 'manual-review' | 'url:<citation>'.",
-      "rdfs:range": {"@id": "xsd:string"}
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
     },
     {
       "@id": "estleg:mappingEvidence",
       "@type": "owl:DatatypeProperty",
       "rdfs:label": "mappingEvidence",
       "rdfs:comment": "Source citation for a curated Issuer mapping. Empty for auto-match rows; required for every curated row.",
-      "rdfs:range": {"@id": "xsd:string"}
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
     },
     {
       "@id": "estleg:citationTarget",
       "@type": "owl:ObjectProperty",
       "rdfs:label": "citationTarget",
       "rdfs:comment": "Resolved provision IRI for a Citation. Range: LegalProvision (paragraph-level — sub-paragraph detail rides on citationDetail).",
-      "rdfs:range": {"@id": "estleg:LegalProvision"}
+      "rdfs:range": {
+        "@id": "estleg:LegalProvision"
+      }
     },
     {
       "@id": "estleg:citationDetail",
       "@type": "owl:DatatypeProperty",
       "rdfs:label": "citationDetail",
       "rdfs:comment": "Optional sub-paragraph specificity for a Citation, e.g. 'lg 1 p 3'. Layer 2b populates from preamble text.",
-      "rdfs:range": {"@id": "xsd:string"}
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
     },
     {
       "@id": "estleg:citationText",
       "@type": "owl:DatatypeProperty",
       "rdfs:label": "citationText",
       "rdfs:comment": "Optional original citation string for traceability, e.g. '§ 42 lg 1 alusel'.",
-      "rdfs:range": {"@id": "xsd:string"}
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
     },
     {
       "@id": "estleg:issuedUnder",
       "@type": "owl:ObjectProperty",
       "rdfs:label": "issuedUnder",
       "rdfs:comment": "Act → enabling act link, derived from preamble citations. Range: Act (Law, NationalRegulation, MunicipalRegulation). Layer 2b populates.",
-      "rdfs:range": {"@id": "estleg:Act"}
+      "rdfs:range": {
+        "@id": "estleg:Act"
+      }
     },
     {
       "@id": "estleg:implementsCitation",
       "@type": "owl:ObjectProperty",
       "rdfs:label": "implementsCitation",
       "rdfs:comment": "Act → reified Citation node carrying the resolved target plus original detail. Layer 2b populates.",
-      "rdfs:range": {"@id": "estleg:Citation"}
+      "rdfs:range": {
+        "@id": "estleg:Citation"
+      }
     },
     {
       "@id": "estleg:implementedBy",
       "@type": "owl:ObjectProperty",
       "rdfs:label": "implementedBy",
       "rdfs:comment": "Act → acts enacted under this act. Filtered projection of preamble enabling-link inverses (issuedUnder + Citation.citationTarget). Range: Act. Layer 2b populates.",
-      "rdfs:range": {"@id": "estleg:Act"}
+      "rdfs:range": {
+        "@id": "estleg:Act"
+      }
     },
     {
       "@id": "estleg:implementedByCount",
       "@type": "owl:DatatypeProperty",
       "rdfs:label": "implementedByCount",
       "rdfs:comment": "Aggregate count of implementedBy entries on an act or provision. Layer 2b populates.",
-      "rdfs:range": {"@id": "xsd:integer"}
+      "rdfs:range": {
+        "@id": "xsd:integer"
+      }
     },
     {
       "@id": "estleg:enforcedAtLevel",
       "@type": "owl:DatatypeProperty",
       "rdfs:label": "enforcedAtLevel",
       "rdfs:comment": "Sanction enforcement level: 'state' or 'municipality'. Derived in Layer 2c from the parent act's type.",
-      "rdfs:range": {"@id": "xsd:string"}
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
     }
   ]
 }

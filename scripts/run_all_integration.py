@@ -43,10 +43,17 @@ If a dependency fails, its dependents are automatically skipped.
 import subprocess
 import sys
 import time
+import argparse
+import json
+import shutil
+import tempfile
+from datetime import datetime, timezone
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 SCRIPTS_DIR = REPO_ROOT / "scripts"
+KRR_DIR = REPO_ROOT / "krr_outputs"
+MANIFEST_DIR = KRR_DIR / "reports" / "integration"
 
 # ---------------------------------------------------------------------------
 # Pipeline definition
@@ -108,7 +115,56 @@ PIPELINE = [
 ]
 
 
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--dry-run", action="store_true", help="Print the execution plan without running scripts.")
+    parser.add_argument("--resume-from", choices=[p[0] for p in PIPELINE], help="Start at this script and skip earlier phases.")
+    parser.add_argument(
+        "--no-restore-on-failure",
+        action="store_true",
+        help="Leave partial output changes in place if a later phase fails.",
+    )
+    parser.add_argument(
+        "--validate-each",
+        action="store_true",
+        help="Run scripts/validate_all.py after each successful phase before continuing.",
+    )
+    return parser.parse_args()
+
+
+def snapshot_outputs() -> tempfile.TemporaryDirectory:
+    tmp = tempfile.TemporaryDirectory(prefix="estleg_integration_")
+    backup = Path(tmp.name) / "krr_outputs"
+    shutil.copytree(KRR_DIR, backup)
+    return tmp
+
+
+def restore_outputs(snapshot: tempfile.TemporaryDirectory) -> None:
+    backup = Path(snapshot.name) / "krr_outputs"
+    if not backup.exists():
+        return
+    if KRR_DIR.exists():
+        shutil.rmtree(KRR_DIR)
+    shutil.copytree(backup, KRR_DIR)
+
+
+def run_validator() -> int:
+    return subprocess.run(
+        [sys.executable, str(SCRIPTS_DIR / "validate_all.py")],
+        cwd=str(REPO_ROOT),
+    ).returncode
+
+
+def write_manifest(manifest: dict) -> None:
+    MANIFEST_DIR.mkdir(parents=True, exist_ok=True)
+    path = MANIFEST_DIR / "latest_pipeline_manifest.json"
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(manifest, f, ensure_ascii=False, indent=2)
+        f.write("\n")
+
+
 def main():
+    args = parse_args()
     print("=" * 70)
     print("Estonian Legal Ontology — Integration Pipeline")
     print("Scripts run SEQUENTIALLY — do not run them in parallel.")
@@ -117,12 +173,33 @@ def main():
     failed = set()
     skipped = []
     succeeded = []
+    phase_results: list[dict] = []
+    restore_on_failure = not args.no_restore_on_failure
+    snapshot = None
+    if restore_on_failure and not args.dry_run:
+        print("\nCreating rollback snapshot of krr_outputs/ ...")
+        snapshot = snapshot_outputs()
+        print("  Snapshot ready.")
+
+    started = args.resume_from is None
 
     for i, (script, description, deps) in enumerate(PIPELINE, 1):
+        if not started:
+            if script == args.resume_from:
+                started = True
+            else:
+                skipped.append(script)
+                phase_results.append({
+                    "script": script,
+                    "status": "skipped_before_resume_point",
+                })
+                continue
+
         script_path = SCRIPTS_DIR / script
         if not script_path.exists():
             print(f"\n[{i}/{len(PIPELINE)}] SKIP: {script} (file not found)")
             skipped.append(script)
+            phase_results.append({"script": script, "status": "missing"})
             continue
 
         # Check that all prerequisites succeeded
@@ -132,6 +209,11 @@ def main():
             print(f"  Prerequisite(s) failed: {', '.join(sorted(blocked_by))}")
             skipped.append(script)
             failed.add(script)  # treat as failed so transitive deps are skipped
+            phase_results.append({
+                "script": script,
+                "status": "blocked",
+                "blockedBy": sorted(blocked_by),
+            })
             continue
 
         print(f"\n{'=' * 70}")
@@ -140,6 +222,10 @@ def main():
         if deps:
             print(f"  Depends on: {', '.join(sorted(deps))}")
         print("=" * 70)
+
+        if args.dry_run:
+            phase_results.append({"script": script, "status": "planned"})
+            continue
 
         start = time.time()
         result = subprocess.run(
@@ -151,9 +237,36 @@ def main():
         if result.returncode != 0:
             print(f"  FAILED (exit code {result.returncode}, {elapsed:.1f}s)")
             failed.add(script)
+            phase_results.append({
+                "script": script,
+                "status": "failed",
+                "exitCode": result.returncode,
+                "elapsedSeconds": round(elapsed, 1),
+            })
+            break
         else:
             print(f"  OK ({elapsed:.1f}s)")
             succeeded.append(script)
+            validation_exit = None
+            if args.validate_each:
+                print("  Running phase validation...")
+                validation_exit = run_validator()
+                if validation_exit != 0:
+                    print(f"  VALIDATION FAILED after {script} (exit code {validation_exit})")
+                    failed.add(script)
+                    phase_results.append({
+                        "script": script,
+                        "status": "validation_failed",
+                        "exitCode": validation_exit,
+                        "elapsedSeconds": round(elapsed, 1),
+                    })
+                    break
+            phase_results.append({
+                "script": script,
+                "status": "succeeded",
+                "elapsedSeconds": round(elapsed, 1),
+                "validationExitCode": validation_exit,
+            })
 
     print("\n" + "=" * 70)
     print("PIPELINE COMPLETE")
@@ -166,6 +279,28 @@ def main():
         print(f"  Failed scripts: {', '.join(sorted(failed))}")
     if skipped:
         print(f"  Skipped scripts: {', '.join(skipped)}")
+    if failed:
+        if restore_on_failure and snapshot is not None:
+            print("  Restoring krr_outputs/ from rollback snapshot...")
+            restore_outputs(snapshot)
+            print("  Restore complete.")
+    manifest = {
+        "generated": datetime.now(timezone.utc).isoformat(),
+        "restoreOnFailure": restore_on_failure,
+        "dryRun": args.dry_run,
+        "resumeFrom": args.resume_from,
+        "summary": {
+            "totalScripts": len(PIPELINE),
+            "succeeded": len(succeeded),
+            "skipped": len(skipped),
+            "failed": len(failed),
+        },
+        "phases": phase_results,
+    }
+    if not args.dry_run:
+        write_manifest(manifest)
+    if snapshot is not None:
+        snapshot.cleanup()
     if failed:
         sys.exit(1)
 

@@ -20,7 +20,7 @@ from collections import defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 
-from estleg_common import iter_peep_files
+from estleg_common import iter_peep_files, jsonld_text
 from kov_pipeline_coverage import (
     CoverageReport,
     measure_runtime,
@@ -627,7 +627,7 @@ def main() -> int:
 
         # Step 3: run extraction over the cleared graph.
         for node in doc["@graph"]:
-            summary = node.get("estleg:summary", "")
+            summary = jsonld_text(node.get("estleg:summary", ""))
             if not summary:
                 continue
 

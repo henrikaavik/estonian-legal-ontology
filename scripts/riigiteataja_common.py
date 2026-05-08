@@ -17,6 +17,7 @@ from __future__ import annotations
 import html
 import json
 import re
+import time
 import xml.etree.ElementTree as ET
 from pathlib import Path
 from typing import Iterable, Iterator
@@ -42,6 +43,10 @@ CONTEXT: dict[str, str] = {
     "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
 }
+
+
+class SourceListFetchError(RuntimeError):
+    """Raised when a source-list page cannot be fetched completely."""
 
 _ESTONIAN_TRANSLITERATION: dict[str, str] = {
     "ö": "o", "ä": "a", "ü": "u", "õ": "o",
@@ -124,6 +129,9 @@ def fetch_acts(
     limiit: int = 500,
     max_pages: int = 100,
     timeout: int = 30,
+    allow_partial: bool = False,
+    max_retries: int = 2,
+    retry_sleep: float = 1.0,
 ) -> Iterator[dict]:
     """Yield acts from the Riigi Teataja search API page by page.
 
@@ -149,13 +157,25 @@ def fetch_acts(
         if kov is not None:
             params["kov"] = "true" if kov else "false"
 
-        try:
-            resp = requests.get(SEARCH_URL, params=params, timeout=timeout)
-            resp.raise_for_status()
-            data = resp.json()
-        except Exception as e:
-            print(f"  API error on page {page}: {e}")
-            break
+        last_error: Exception | None = None
+        for attempt in range(max_retries + 1):
+            try:
+                resp = requests.get(SEARCH_URL, params=params, timeout=timeout)
+                resp.raise_for_status()
+                data = resp.json()
+                last_error = None
+                break
+            except Exception as e:  # noqa: BLE001 - preserve underlying API error in message
+                last_error = e
+                if attempt < max_retries:
+                    time.sleep(retry_sleep * (attempt + 1))
+
+        if last_error is not None:
+            message = f"API error on page {page}: {last_error}"
+            print(f"  {message}")
+            if allow_partial:
+                break
+            raise SourceListFetchError(message) from last_error
 
         aktid = data.get("aktid", []) or []
         if not aktid:
@@ -172,6 +192,7 @@ def fetch_xml(
     cache_name: str,
     cache_subdir: str | None = None,
     *,
+    refresh: bool = False,
     timeout: int = 60,
     min_size: int = 200,
 ) -> ET.Element | None:
@@ -180,7 +201,7 @@ def fetch_xml(
     cache_dir.mkdir(parents=True, exist_ok=True)
     cache_path = cache_dir / f"{cache_name}.xml"
 
-    if cache_path.exists() and cache_path.stat().st_size > 1000:
+    if not refresh and cache_path.exists() and cache_path.stat().st_size > 1000:
         try:
             return ET.parse(str(cache_path)).getroot()
         except ET.ParseError:

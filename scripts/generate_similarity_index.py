@@ -19,7 +19,7 @@ from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
 
-from estleg_common import iter_peep_files
+from estleg_common import iter_peep_files, jsonld_text
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
@@ -125,6 +125,108 @@ def jaccard_similarity(set_a: set, set_b: set) -> float:
     return intersection / union if union > 0 else 0.0
 
 
+def node_types(node: dict) -> list[str]:
+    types = node.get("@type", [])
+    if isinstance(types, str):
+        return [types]
+    if isinstance(types, list):
+        return [t for t in types if isinstance(t, str)]
+    return []
+
+
+def find_act_node(doc: dict) -> dict | None:
+    for node in doc.get("@graph", []):
+        types = set(node_types(node))
+        if "estleg:Act" in types or (
+            "owl:Ontology" in types
+            and types.intersection(
+                {
+                    "estleg:Law",
+                    "estleg:NationalRegulation",
+                    "estleg:GovernmentRegulation",
+                    "estleg:MinisterialRegulation",
+                    "estleg:MunicipalRegulation",
+                }
+            )
+        ):
+            return node
+    return None
+
+
+def classify_act_type(fpath: Path, act_node: dict) -> str:
+    types = set(node_types(act_node))
+    path = fpath.as_posix()
+    if "estleg:MunicipalRegulation" in types or "/regulations/kov/" in path:
+        return "kov"
+    if (
+        types.intersection(
+            {
+                "estleg:NationalRegulation",
+                "estleg:GovernmentRegulation",
+                "estleg:MinisterialRegulation",
+            }
+        )
+        or "/regulations/riik/" in path
+    ):
+        return "state_regulation"
+    if "estleg:Law" in types:
+        return "law"
+    return "other"
+
+
+def relative_output_path(fpath: Path) -> str:
+    try:
+        return str(fpath.relative_to(KRR_DIR))
+    except ValueError:
+        return fpath.name
+
+
+def extract_provisions_from_file(fpath: Path) -> tuple[list[dict], str | None]:
+    try:
+        with open(fpath, "r", encoding="utf-8") as f:
+            doc = json.load(f)
+    except (json.JSONDecodeError, FileNotFoundError):
+        return [], None
+
+    act_node = find_act_node(doc)
+    if act_node is None:
+        return [], None
+    act_type = classify_act_type(fpath, act_node)
+    file_name = relative_output_path(fpath)
+
+    provisions: list[dict] = []
+    for node in doc.get("@graph", []):
+        node_id = node.get("@id", "")
+        if not node_id or not node_id.startswith("estleg:"):
+            continue
+
+        types = node_types(node)
+        if "owl:Ontology" in types or "owl:Class" in types:
+            continue
+        if "estleg:TopicCluster" in str(types):
+            continue
+
+        summary = jsonld_text(node.get("estleg:summary", ""))
+        label = jsonld_text(node.get("rdfs:label", ""))
+        source_act = jsonld_text(node.get("estleg:sourceAct", ""))
+
+        if is_boilerplate(summary):
+            continue
+
+        keywords = extract_keywords(summary) | extract_keywords(label)
+
+        if len(keywords) >= MIN_SHARED_KEYWORDS:
+            provisions.append({
+                "id": node_id,
+                "label": label,
+                "source_act": source_act,
+                "keywords": keywords,
+                "file": file_name,
+                "act_type": act_type,
+            })
+    return provisions, act_type
+
+
 def main():
     print("=" * 60)
     print("Generating semantic similarity index (keyword-based)")
@@ -132,51 +234,20 @@ def main():
 
     # Load all provisions with their keywords
     print("\n[1/4] Loading provisions and extracting keywords...")
-    provisions: list[dict] = []  # {id, label, source_act, keywords, file}
+    provisions: list[dict] = []  # {id, label, source_act, keywords, file, act_type}
+    file_counts_by_type = {"law": 0, "state_regulation": 0, "kov": 0, "other": 0}
+    provision_counts_by_type = {"law": 0, "state_regulation": 0, "kov": 0, "other": 0}
 
     jsonld_files = iter_peep_files(include_kov=False)  # DEFERRED to Layer 3
     for fpath in jsonld_files:
-        # Skip non-law files
-        if fpath.parent != KRR_DIR:
+        file_provisions, act_type = extract_provisions_from_file(fpath)
+        if act_type is None:
             continue
-        try:
-            with open(fpath, "r", encoding="utf-8") as f:
-                doc = json.load(f)
-        except (json.JSONDecodeError, FileNotFoundError):
-            continue
-
-        for node in doc.get("@graph", []):
-            node_id = node.get("@id", "")
-            if not node_id or not node_id.startswith("estleg:"):
-                continue
-
-            # Skip ontology and class nodes
-            types = node.get("@type", [])
-            if isinstance(types, str):
-                types = [types]
-            if "owl:Ontology" in types or "owl:Class" in types:
-                continue
-            if "estleg:TopicCluster" in str(types):
-                continue
-
-            summary = node.get("estleg:summary", "")
-            label = node.get("rdfs:label", "")
-            source_act = node.get("estleg:sourceAct", "")
-
-            # Skip boilerplate provisions (entry-into-force, repeal clauses)
-            if is_boilerplate(summary):
-                continue
-
-            keywords = extract_keywords(summary) | extract_keywords(label)
-
-            if len(keywords) >= MIN_SHARED_KEYWORDS:
-                provisions.append({
-                    "id": node_id,
-                    "label": label,
-                    "source_act": source_act,
-                    "keywords": keywords,
-                    "file": fpath.name,
-                })
+        file_counts_by_type[act_type] = file_counts_by_type.get(act_type, 0) + 1
+        provision_counts_by_type[act_type] = (
+            provision_counts_by_type.get(act_type, 0) + len(file_provisions)
+        )
+        provisions.extend(file_provisions)
 
     print(f"  Loaded {len(provisions)} provisions with keywords")
 
@@ -252,8 +323,20 @@ def main():
     index_path = KRR_DIR / "similarity_index.json"
     save_json(index_path, {
         "generated": datetime.now().strftime("%Y-%m-%d"),
+        "relation_semantics": "candidate",
+        "algorithm": {
+            "name": "keyword_jaccard",
+            "version": "1",
+            "source_fields": ["estleg:summary", "rdfs:label"],
+        },
+        "quality_evaluation": {
+            "status": "not_evaluated",
+            "note": "Similarity pairs are heuristic candidate links pending reviewed precision metrics.",
+        },
         "total_provisions": len(provisions),
         "total_pairs": len(similarity_pairs),
+        "candidate_files_by_type": file_counts_by_type,
+        "provisions_by_type": provision_counts_by_type,
         "threshold": MIN_SIMILARITY,
         "min_shared_keywords": MIN_SHARED_KEYWORDS,
         "pairs": similarity_pairs,
@@ -310,9 +393,21 @@ def main():
     # Generate report
     report = {
         "generated": datetime.now().strftime("%Y-%m-%d"),
+        "relation_semantics": "candidate",
+        "algorithm": {
+            "name": "keyword_jaccard",
+            "version": "1",
+            "source_fields": ["estleg:summary", "rdfs:label"],
+        },
+        "quality_evaluation": {
+            "status": "not_evaluated",
+            "note": "Similarity pairs are heuristic candidate links pending reviewed precision metrics.",
+        },
         "total_provisions_analyzed": len(provisions),
         "total_similarity_pairs": len(similarity_pairs),
         "files_updated": updated_files,
+        "candidate_files_by_type": file_counts_by_type,
+        "provisions_by_type": provision_counts_by_type,
         "parameters": {
             "min_similarity": MIN_SIMILARITY,
             "min_shared_keywords": MIN_SHARED_KEYWORDS,

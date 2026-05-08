@@ -61,6 +61,54 @@ class TestBuildGlobalIdLookup:
         assert "maarus_kov" in str(lookup["999999999"])
 
 
+class TestPublicationYearFallback:
+    def test_parse_rt_year_accepts_plain_year_and_timezone_offsets(self):
+        from extract_temporal_data import parse_rt_year
+
+        assert parse_rt_year("2012") == "2012"
+        assert parse_rt_year("2012+02:00") == "2012"
+        assert parse_rt_year("2012+03:00") == "2012"
+
+    @pytest.mark.parametrize("value", ["", "12", "201", "20122", "abcd", "2012-01"])
+    def test_parse_rt_year_rejects_malformed_years(self, value):
+        from extract_temporal_data import parse_rt_year
+
+        assert parse_rt_year(value) is None
+
+    def test_extract_temporal_normalizes_rtaasta_fallback(self, tmp_path):
+        from extract_temporal_data import extract_temporal_from_xml
+
+        xml_path = tmp_path / "rt.xml"
+        xml_path.write_text(
+            "<akt><metaandmed><avaldamismarge>"
+            "<RTaasta>2012+02:00</RTaasta>"
+            "</avaldamismarge></metaandmed></akt>",
+            encoding="utf-8",
+        )
+
+        temporal = extract_temporal_from_xml(xml_path)
+
+        assert temporal["publication_date"] == "2012-01-01"
+
+
+class TestTemporalStatusEvaluationDate:
+    def test_evaluation_date_controls_not_yet_effective_status(self):
+        from extract_temporal_data import determine_temporal_status
+
+        temporal = {"entry_into_force": "2026-06-01"}
+
+        assert determine_temporal_status(temporal, evaluation_date="2026-05-01") == "notYetEffective"
+        assert determine_temporal_status(temporal, evaluation_date="2026-06-01") == "inForce"
+
+    def test_evaluation_date_controls_repealed_status(self):
+        from extract_temporal_data import determine_temporal_status
+
+        temporal = {"valid_until": "2026-05-15"}
+
+        assert determine_temporal_status(temporal, evaluation_date="2026-05-14") == "inForce"
+        assert determine_temporal_status(temporal, evaluation_date="2026-05-15") == "repealed"
+
+
 class TestPairPeepWithXml:
     def test_pairs_via_globalid_attribute(self, tmp_path):
         from extract_temporal_data import pair_peep_with_xml

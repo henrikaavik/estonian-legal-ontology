@@ -210,6 +210,25 @@ def normalize_issuer_name(s: str) -> str:
     return " ".join(s.split())
 
 
+def jsonld_text(value: object, default: str = "") -> str:
+    """Return a plain string from common JSON-LD text shapes.
+
+    Generated corpus fields may be plain strings, value objects such as
+    ``{"@value": "...", "@language": "et"}``, or lists of those objects.
+    Semantic extractors should call this before regex/token processing so
+    fresh generator output and enriched normalized output use one contract.
+    """
+    if isinstance(value, str):
+        return value
+    if isinstance(value, dict):
+        text = value.get("@value")
+        return text if isinstance(text, str) else default
+    if isinstance(value, list):
+        parts = [text for item in value if (text := jsonld_text(item))]
+        return " ".join(parts) if parts else default
+    return default
+
+
 # ---------------------------------------------------------------------------
 # Run-counters helper (Layer 2c PR #3)
 # ---------------------------------------------------------------------------

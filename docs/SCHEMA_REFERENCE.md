@@ -231,7 +231,7 @@ Regulation issued by Vabariigi Valitsus (the Government of the Republic). Subcla
 Regulation issued by an individual minister (e.g. *Sotsiaalminister*, *Justiitsminister*). Subclass of `NationalRegulation`.
 
 ### MunicipalRegulation (`estleg:MunicipalRegulation`)
-Regulation issued by a local government council (KOV). Subclass of `NationalRegulation`. Phase 2 of the regulations integration plan; the class exists in the ontology now so consumers can target it as soon as KOV regulations are imported.
+Regulation issued by a local government council or government (KOV). Subclass of `NationalRegulation`; generated KOV regulation act nodes carry both `NationalRegulation` and `MunicipalRegulation` so common domestic-regulation SHACL constraints apply without OWL inference.
 
 ### Annex (`estleg:Annex`)
 Represents an annex (*lisa*) attached to a regulation. Annexes are emitted as separate named individuals and linked from the regulation via `estleg:hasAnnex`. Annex tables are not normalised in the first pass — the node carries the title, number, and a link to the original document on riigiteataja.ee.
@@ -256,6 +256,22 @@ For each regulation, the generator emits one provision class named `estleg:Regul
 | `estleg:lastAmendmentDate` | `xsd:date` | Date of the most recent amendment |
 | `estleg:annexNumber` | `xsd:string` | Annex number as printed in the regulation (`Annex` only) |
 | `dcterms:source` | IRI | Link to the original act XML on riigiteataja.ee |
+
+### Source And Title Provenance Contract
+
+Generators use the same provenance shape for act-level ontology nodes:
+
+| Property | Type | Contract |
+|----------|------|----------|
+| `dcterms:source` | `{"@id": "https://..."}` | Resolvable canonical source IRI for the concrete source record or XML |
+| `owl:sameAs` | `{"@id": "https://..."}` | Same source IRI when the source URL identifies the act text itself |
+| `dcterms:title` | language-tagged string or plain string | Canonical source title of the act |
+| `dc:source` | plain string | Legacy title/source label retained for backward compatibility; do not use it for resolvable IRIs |
+| `estleg:contentStatus` | string | `structuredBody`, `noStructuredBody`, `controlledVocabulary`, or a more specific documented status |
+
+New generators should write `dcterms:source` for URLs and `dcterms:title`
+for titles. Downstream enrichers should prefer `dcterms:title`, then
+`dc:source`, then `rdfs:label` only as a fallback.
 
 ### Domestic Regulation Example
 
@@ -559,15 +575,16 @@ These properties enable cross-referencing between different parts of the legal s
 ### Subject Classification
 | Property | Domain | Range | Description |
 |----------|--------|-------|-------------|
-| `dcterms:subject` | LegalProvision | IRI | EuroVoc concept URI (e.g., `http://eurovoc.europa.eu/2411`) |
+| `dcterms:subject` | Act | IRI | Act-level EuroVoc concept URI (e.g., `http://eurovoc.europa.eu/2411`). Current classifier is keyword-based and reports quality status separately. |
 
 ### Temporal Properties
 | Property | Domain | Range | Description |
 |----------|--------|-------|-------------|
-| `estleg:entryIntoForce` | LegalProvision | `xsd:date` | Date when provision became effective |
-| `estleg:repealDate` | LegalProvision | `xsd:date` | Date when provision was repealed |
-| `estleg:lastAmendmentDate` | LegalProvision | `xsd:date` | Most recent amendment date |
-| `estleg:temporalStatus` | LegalProvision | `xsd:string` | Status: inForce, repealed, notYetEffective |
+| `estleg:entryIntoForce` | Act | `xsd:date` | Date when the selected act snapshot became effective |
+| `estleg:repealDate` | Act | `xsd:date` | Date when the selected act snapshot was repealed |
+| `estleg:lastAmendmentDate` | Act | `xsd:date` | Most recent amendment date for the selected act snapshot |
+| `estleg:publicationDate` | Act | `xsd:date` | Publication date for the selected act snapshot |
+| `estleg:temporalStatus` | Act | `xsd:string` | Status evaluated against the build's declared temporal evaluation date: inForce, repealed, notYetEffective |
 
 ### Amendment Properties
 | Property | Domain | Range | Description |

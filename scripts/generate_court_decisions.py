@@ -53,6 +53,7 @@ CASE_TYPE_MAP = {
     "3": ("Administrative", "Haldusasi", "Administrative Case"),
     "4": ("Misdemeanor", "Väärteoasi", "Misdemeanor Case"),
     "5": ("ConstitutionalReview", "Põhiseaduslikkuse järelevalve", "Constitutional Review"),
+    "Other": ("Other", "Muu", "Other Case"),
 }
 
 # Decision type mapping
@@ -84,7 +85,7 @@ def sanitize_id(value: str) -> str:
 def classify_case(case_nr: str) -> tuple[str, str, str]:
     """Classify case type from case number prefix."""
     first_digit = case_nr[0] if case_nr else ""
-    return CASE_TYPE_MAP.get(first_digit, ("Other", "Muu", "Other Case"))
+    return CASE_TYPE_MAP.get(first_digit, CASE_TYPE_MAP["Other"])
 
 
 def detect_referenced_laws(summary: str) -> list[str]:

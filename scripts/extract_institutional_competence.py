@@ -20,7 +20,7 @@ from collections import defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 
-from estleg_common import iter_peep_files
+from estleg_common import iter_peep_files, jsonld_text
 from extract_sanctions import _find_act_node
 from extract_cross_references import build_issuer_registry
 from kov_pipeline_coverage import (
@@ -95,6 +95,7 @@ def sanitize_id(value: str) -> str:
     # Transliterate Estonian diacritics before stripping non-ASCII
     s = s.translate(_TRANSLIT_TABLE)
     s = re.sub(r"[^0-9A-Za-z_]", "", s)
+    s = re.sub(r"_+", "_", s).strip("_")
     return s[:80] or "Unknown"
 
 
@@ -105,10 +106,10 @@ def normalize_iri_suffix(raw_suffix: str) -> str:
     """
     # Map known abbreviations to canonical full-name suffixes (lowercase)
     ABBREVIATION_MAP: dict[str, str] = {
-        "mta": "maksu__ja_tolliamet",
-        "ppa": "politsei__ja_piirivalveamet",
+        "mta": "maksu_ja_tolliamet",
+        "ppa": "politsei_ja_piirivalveamet",
         "ttja": "tarbijakaitse_ja_tehnilise_jarelevalve_amet",
-        "harno": "haridus__ja_noorteamet",
+        "harno": "haridus_ja_noorteamet",
     }
 
     # Map known Estonian inflected forms to nominative (lowercase)
@@ -118,9 +119,18 @@ def normalize_iri_suffix(raw_suffix: str) -> str:
         "kohalik_omavalitsuse": "kohalik_omavalitsus",
         # Typo variant: missing 'e' in Andmekaitse
         "andmekaitsinspektsioon": "andmekaitseinspektsioon",
+        "politsei_ja_piirivalveamet": "politsei_ja_piirivalveamet",
+        "politsei__ja_piirivalveamet": "politsei_ja_piirivalveamet",
+        "politsei___ja_piirivalveamet": "politsei_ja_piirivalveamet",
+        "keskkonna_ja_kommunaalamet": "keskkonna_ja_kommunaalamet",
+        "keskkonna__ja_kommunaalamet": "keskkonna_ja_kommunaalamet",
+        "keskkonna___ja_kommunaalamet": "keskkonna_ja_kommunaalamet",
+        "kultuuri_ja_spordiamet": "kultuuri_ja_spordiamet",
+        "kultuuri__ja_spordiamet": "kultuuri_ja_spordiamet",
+        "kultuuri___ja_spordiamet": "kultuuri_ja_spordiamet",
     }
 
-    lower = raw_suffix.lower()
+    lower = re.sub(r"_+", "_", raw_suffix.lower()).strip("_")
 
     # Check abbreviation map first
     if lower in ABBREVIATION_MAP:
@@ -138,10 +148,10 @@ def normalize_iri_suffix(raw_suffix: str) -> str:
 # These are emitted as owl:sameAs triples in institution definition files so
 # that consumers can resolve either form.
 SAMEAS_ALIASES: dict[str, str] = {
-    "mta": "maksu__ja_tolliamet",
-    "ppa": "politsei__ja_piirivalveamet",
+    "mta": "maksu_ja_tolliamet",
+    "ppa": "politsei_ja_piirivalveamet",
     "ttja": "tarbijakaitse_ja_tehnilise_jarelevalve_amet",
-    "harno": "haridus__ja_noorteamet",
+    "harno": "haridus_ja_noorteamet",
 }
 
 
@@ -183,11 +193,11 @@ NAMED_INSTITUTIONS: list[tuple[str, str, str]] = [
     # Abbreviations map to canonical full-name suffixes via normalize_iri_suffix()
     ("Andmekaitse Inspektsioon", "andmekaitseinspektsioon", "agency"),
     ("Tarbijakaitse ja Tehnilise Järelevalve Amet", "ttja", "agency"),
-    ("Maksu- ja Tolliamet", "maksu__ja_tolliamet", "agency"),
-    ("Politsei- ja Piirivalveamet", "politsei__ja_piirivalveamet", "agency"),
+    ("Maksu- ja Tolliamet", "maksu_ja_tolliamet", "agency"),
+    ("Politsei- ja Piirivalveamet", "politsei_ja_piirivalveamet", "agency"),
     ("Keskkonnaamet", "keskkonnaamet", "agency"),
     ("Terviseamet", "terviseamet", "agency"),
-    ("Haridus- ja Noorteamet", "haridus__ja_noorteamet", "agency"),
+    ("Haridus- ja Noorteamet", "haridus_ja_noorteamet", "agency"),
     # Abbreviation-only matches (text may say "MTA" or "PPA" without full name)
     ("MTA", "mta", "agency"),
     ("PPA", "ppa", "agency"),
@@ -532,7 +542,7 @@ def main() -> int:
         modified = False
 
         for node in doc["@graph"]:
-            summary = node.get("estleg:summary", "")
+            summary = jsonld_text(node.get("estleg:summary", ""))
             if not summary:
                 continue
 

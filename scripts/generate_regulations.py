@@ -2,15 +2,12 @@
 """Fetch Estonian state-level regulations (määrused) from Riigi Teataja and
 generate JSON-LD ontology files under ``krr_outputs/regulations/riik/``.
 
-Phase 1 scope:
-  * State-level regulations only — Vabariigi Valitsus, ministers, Eesti Pank,
-    and other central issuers (`kov=false` in the API).
+Scope:
+  * State-level regulations by default — Vabariigi Valitsus, ministers,
+    Eesti Pank, and other central issuers (`kov=false` in the API).
+  * Municipal regulations when ``--kov`` is passed.
   * Current snapshot only — generated against an explicit `kehtiv=YYYY-MM-DD`
     date for reproducibility. Historical redactions are out of scope.
-
-KOV regulations and historical redactions are intentionally deferred. Run
-this script with ``--kov`` to include municipal regulations once the rest
-of the pipeline is ready to consume them.
 """
 
 from __future__ import annotations
@@ -19,6 +16,8 @@ import argparse
 import json
 import sys
 import time
+from collections import Counter
+from datetime import datetime, timezone
 from pathlib import Path
 import xml.etree.ElementTree as ET
 
@@ -41,11 +40,13 @@ from riigiteataja_common import (  # noqa: E402
     sanitize_id,
     save_json,
     slugify,
+    SourceListFetchError,
 )
 
 DEFAULT_KEHTIV = "2026-05-01"
 OUTPUT_RIIK = KRR_DIR / "regulations" / "riik"
 OUTPUT_KOV = KRR_DIR / "regulations" / "kov"
+GENERATION_MODES = ("missing-only", "refresh", "force")
 
 
 # ---------------------------------------------------------------------------
@@ -59,10 +60,10 @@ def classify_issuer(issuer: str | None, is_kov: bool) -> list[str]:
       Vabariigi Valitsus            -> [NationalRegulation, GovernmentRegulation]
       Sotsiaalminister              -> [NationalRegulation, MinisterialRegulation]
       Eesti Pank                    -> [NationalRegulation]
-      <KOV name>, is_kov=True       -> [MunicipalRegulation]
+      <KOV name>, is_kov=True       -> [NationalRegulation, MunicipalRegulation]
     """
     if is_kov:
-        return ["estleg:MunicipalRegulation"]
+        return ["estleg:NationalRegulation", "estleg:MunicipalRegulation"]
 
     classes = ["estleg:NationalRegulation"]
     if not issuer:
@@ -162,6 +163,20 @@ def extract_preamble(root: ET.Element) -> str:
 # Provision extraction — structured XML path
 # ---------------------------------------------------------------------------
 
+def provision_summary(display: str, label: str, source_title: str, body_text: str = "") -> str:
+    """Return the SHACL-required compact summary for a regulation provision."""
+    if body_text:
+        return body_text[:500]
+
+    label_text = " ".join(label.split())
+    display_text = " ".join(display.split())
+    if label_text and label_text != display_text:
+        return label_text[:500]
+
+    fallback = " ".join(part for part in (source_title, display_text) if part)
+    return fallback[:500] if fallback else display_text
+
+
 def collect_structured_paragraphs(root: ET.Element, prefix: str, title: str, class_id: str) -> list[dict]:
     """Build provision nodes from `<paragrahv>` elements (modern XML)."""
     nodes: list[dict] = []
@@ -195,9 +210,8 @@ def collect_structured_paragraphs(root: ET.Element, prefix: str, title: str, cla
             "estleg:paragrahv": display,
             "rdfs:label": label,
             "estleg:sourceAct": title,
+            "estleg:summary": provision_summary(display, label, title, text),
         }
-        if text:
-            node["estleg:summary"] = text
         if full_text:
             node["estleg:legalText"] = full_text
         nodes.append(node)
@@ -255,9 +269,8 @@ def collect_html_paragraphs(root: ET.Element, prefix: str, title: str, class_id:
             "estleg:paragrahv": display,
             "rdfs:label": label,
             "estleg:sourceAct": title,
+            "estleg:summary": provision_summary(display, label, title, summary),
         }
-        if summary:
-            node["estleg:summary"] = summary
         if text_full:
             node["estleg:legalText"] = text_full
         nodes.append(node)
@@ -311,14 +324,16 @@ def build_regulation_jsonld(
     annexes = extract_annexes(root, prefix)
 
     # ---- Build the act ontology node ------------------------------------
-    act_classes = ["owl:Ontology", *classify_issuer(issuer, is_kov)]
+    act_classes = ["owl:Ontology", "estleg:Act", *classify_issuer(issuer, is_kov)]
     ontology_node: dict = {
         "@id": ontology_id,
         "@type": act_classes,
         "rdfs:label": f"{title} (määrus)",
         "dc:source": title,
+        "dcterms:title": title,
         "estleg:documentType": "määrus",
         "estleg:isKov": {"@value": "true" if is_kov else "false", "@type": "xsd:boolean"},
+        "estleg:parseMode": parse_mode,
     }
     if rt_source_url:
         ontology_node["dcterms:source"] = {"@id": rt_source_url}
@@ -349,6 +364,12 @@ def build_regulation_jsonld(
         ontology_node["estleg:preambleText"] = preamble
     if annexes:
         ontology_node["estleg:hasAnnex"] = [{"@id": a["@id"]} for a in annexes]
+    if parse_mode == "no_paragraphs":
+        ontology_node["estleg:contentStatus"] = "noStructuredBody"
+        ontology_node["estleg:contentStatusReason"] = (
+            "No structured paragraphs, HTML paragraphs, annexes, or preamble "
+            "were parsed from the source XML."
+        )
 
     graph: list[dict] = [
         ontology_node,
@@ -387,7 +408,13 @@ def make_filename(title: str, tid: str, is_kov: bool, issuer: str | None) -> tup
     return OUTPUT_RIIK / filename, slug_base
 
 
-def gather_regulations(kov: bool, kehtiv: str, limit: int | None) -> dict[str, dict]:
+def gather_regulations(
+    kov: bool,
+    kehtiv: str,
+    limit: int | None,
+    *,
+    allow_partial: bool = False,
+) -> tuple[dict[str, dict], dict]:
     """Run the search API and return ``{terviktekstID: act_info}``.
 
     De-duplication: keep the entry with the largest globalID per terviktekstID
@@ -395,26 +422,168 @@ def gather_regulations(kov: bool, kehtiv: str, limit: int | None) -> dict[str, d
     """
     by_tid: dict[str, dict] = {}
     seen = 0
-    for act in fetch_acts(document="määrus", kov=kov, kehtiv=kehtiv, limiit=500):
-        seen += 1
-        tid = str(act.get("terviktekstID") or "")
-        gid = str(act.get("globaalID") or "")
-        if not tid:
-            continue
-        prev = by_tid.get(tid)
-        if prev is None or gid > str(prev.get("gid", "")):
-            by_tid[tid] = {
-                "tid": tid,
-                "gid": gid,
-                "url": act.get("url", ""),
-                "pealkiri": (act.get("pealkiri") or "").strip(),
-                "valjaandja": act.get("valjaandja") or "",
-                "kehtivus": act.get("kehtivus") or {},
-            }
-        if limit is not None and len(by_tid) >= limit:
-            break
+    completed = True
+    try:
+        for act in fetch_acts(
+            document="määrus",
+            kov=kov,
+            kehtiv=kehtiv,
+            limiit=500,
+            allow_partial=allow_partial,
+        ):
+            seen += 1
+            tid = str(act.get("terviktekstID") or "")
+            gid = str(act.get("globaalID") or "")
+            if not tid:
+                continue
+            prev = by_tid.get(tid)
+            if prev is None or gid > str(prev.get("gid", "")):
+                by_tid[tid] = {
+                    "tid": tid,
+                    "gid": gid,
+                    "url": act.get("url", ""),
+                    "pealkiri": (act.get("pealkiri") or "").strip(),
+                    "valjaandja": act.get("valjaandja") or "",
+                    "kehtivus": act.get("kehtivus") or {},
+                }
+            if limit is not None and len(by_tid) >= limit:
+                break
+    except SourceListFetchError:
+        completed = False
+        raise
     print(f"  Pulled {seen} search rows -> {len(by_tid)} unique regulations")
-    return by_tid
+    return by_tid, {
+        "requestedDocument": "määrus",
+        "kov": kov,
+        "kehtiv": kehtiv,
+        "searchRowsSeen": seen,
+        "uniqueActs": len(by_tid),
+        "complete": completed,
+        "limited": limit is not None,
+    }
+
+
+def regulation_files(out_dir: Path) -> list[Path]:
+    return sorted(p for p in out_dir.glob("**/*_peep.json") if p.is_file())
+
+
+def summarize_regulation_doc(doc: dict) -> dict:
+    graph = doc.get("@graph", [])
+    ontology = next(
+        (
+            node for node in graph
+            if isinstance(node, dict)
+            and "owl:Ontology" in (node.get("@type") or [])
+        ),
+        {},
+    )
+    issuer = ontology.get("estleg:issuer") or "(unknown)"
+    return {
+        "paragraphs": sum(1 for n in graph if isinstance(n, dict) and "estleg:paragrahv" in n),
+        "annexes": sum(1 for n in graph if isinstance(n, dict) and "estleg:Annex" in (n.get("@type") or [])),
+        "has_preamble": int(bool(ontology.get("estleg:preambleText"))),
+        "html_fallback": int(ontology.get("estleg:parseMode") == "html_fallback"),
+        "no_paragraphs": int(ontology.get("estleg:contentStatus") == "noStructuredBody"),
+        "issuer": issuer if isinstance(issuer, str) else "(unknown)",
+    }
+
+
+def build_regulation_index(
+    out_dir: Path,
+    *,
+    is_kov: bool,
+    kehtiv: str,
+    run_stats: dict | None = None,
+) -> dict:
+    files = regulation_files(out_dir)
+    totals = Counter()
+    issuer_counts: Counter[str] = Counter()
+    file_entries = []
+
+    for path in files:
+        try:
+            with open(path, "r", encoding="utf-8") as f:
+                doc = json.load(f)
+        except (json.JSONDecodeError, OSError):
+            continue
+        stats = summarize_regulation_doc(doc)
+        for key in ("paragraphs", "annexes", "has_preamble", "html_fallback", "no_paragraphs"):
+            totals[key] += stats[key]
+        issuer_counts[stats["issuer"]] += 1
+        file_entries.append(str(path.relative_to(out_dir)))
+
+    return {
+        "generated": datetime.now(timezone.utc).isoformat(),
+        "kehtiv": kehtiv,
+        "kov": is_kov,
+        "totalRegulations": len(files),
+        "totalParagraphs": totals["paragraphs"],
+        "totalAnnexes": totals["annexes"],
+        "regulationsWithPreamble": totals["has_preamble"],
+        "htmlFallbackCount": totals["html_fallback"],
+        "noStructuredBodyCount": totals["no_paragraphs"],
+        "byIssuer": dict(sorted(issuer_counts.items(), key=lambda x: (-x[1], x[0]))),
+        "files": file_entries,
+        "run": run_stats or {},
+    }
+
+
+def existing_doc_matches(path: Path, doc: dict) -> bool:
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            existing = json.load(f)
+    except (json.JSONDecodeError, OSError):
+        return False
+    return existing == doc
+
+
+def write_regulation_output(out_path: Path, doc: dict, *, mode: str) -> str:
+    """Write one regulation artifact and return a run-stat status key."""
+    if mode not in GENERATION_MODES:
+        raise ValueError(f"Unsupported generation mode: {mode}")
+
+    existed = out_path.exists()
+    if existed and mode == "missing-only":
+        return "existingSkipped"
+    if existed and mode == "refresh" and existing_doc_matches(out_path, doc):
+        return "unchanged"
+
+    save_json(out_path, doc)
+    if not existed:
+        return "newlyGenerated"
+    if mode == "force":
+        return "forceRewritten"
+    return "refreshed"
+
+
+def regulation_file_tid(path: Path) -> str | None:
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            doc = json.load(f)
+    except (json.JSONDecodeError, OSError):
+        return None
+
+    for node in doc.get("@graph", []):
+        if not isinstance(node, dict):
+            continue
+        types = node.get("@type") or []
+        if isinstance(types, str):
+            types = [types]
+        if "owl:Ontology" not in types:
+            continue
+        tid = node.get("estleg:terviktekstId")
+        if isinstance(tid, str) and tid:
+            return tid
+    return None
+
+
+def source_removed_files(out_dir: Path, current_tids: set[str]) -> list[str]:
+    removed: list[str] = []
+    for path in regulation_files(out_dir):
+        tid = regulation_file_tid(path)
+        if tid and tid not in current_tids:
+            removed.append(str(path.relative_to(out_dir)))
+    return removed
 
 
 def main():
@@ -423,26 +592,62 @@ def main():
     parser.add_argument("--kehtiv", default=DEFAULT_KEHTIV, help="Snapshot date YYYY-MM-DD (default: %(default)s).")
     parser.add_argument("--limit", type=int, default=None, help="Process at most N regulations (for dry runs).")
     parser.add_argument("--sleep", type=float, default=0.3, help="Seconds to sleep between XML fetches (be polite).")
+    mode_group = parser.add_mutually_exclusive_group()
+    mode_group.add_argument(
+        "--missing-only",
+        action="store_true",
+        help="Only generate missing files; existing outputs are left untouched. This is the default.",
+    )
+    mode_group.add_argument(
+        "--refresh",
+        action="store_true",
+        help="Fetch current XML and rewrite existing outputs when generated JSON-LD changed.",
+    )
+    mode_group.add_argument(
+        "--force",
+        action="store_true",
+        help="Fetch current XML and rewrite all selected outputs, even when unchanged.",
+    )
+    parser.add_argument(
+        "--allow-partial",
+        action="store_true",
+        help="Allow a source-list fetch failure to produce a visibly partial exploratory run.",
+    )
     args = parser.parse_args()
 
     is_kov = args.kov
+    mode = "force" if args.force else "refresh" if args.refresh else "missing-only"
     out_dir = OUTPUT_KOV if is_kov else OUTPUT_RIIK
     out_dir.mkdir(parents=True, exist_ok=True)
     cache_subdir = "maarus_kov" if is_kov else "maarus"
 
     print("=" * 70)
-    print(f"Generate regulations (kov={'true' if is_kov else 'false'}, kehtiv={args.kehtiv})")
+    print(f"Generate regulations (kov={'true' if is_kov else 'false'}, kehtiv={args.kehtiv}, mode={mode})")
     print("=" * 70)
 
     print("\n[1/3] Querying Riigi Teataja API...")
-    regs = gather_regulations(kov=is_kov, kehtiv=args.kehtiv, limit=args.limit)
+    try:
+        regs, source_manifest = gather_regulations(
+            kov=is_kov,
+            kehtiv=args.kehtiv,
+            limit=args.limit,
+            allow_partial=args.allow_partial,
+        )
+    except SourceListFetchError as exc:
+        print(f"  FATAL: {exc}")
+        sys.exit(2)
 
     print(f"\n[2/3] Generating JSON-LD for {len(regs)} regulations...")
-    generated = 0
+    run_counts = Counter({
+        "newlyGenerated": 0,
+        "existingSkipped": 0,
+        "unchanged": 0,
+        "refreshed": 0,
+        "forceRewritten": 0,
+        "failedFetches": 0,
+    })
     failed = 0
-    skipped = 0
     totals = {"paragraphs": 0, "annexes": 0, "has_preamble": 0, "html_fallback": 0, "no_paragraphs": 0}
-    issuer_counts: dict[str, int] = {}
 
     for i, (tid, info) in enumerate(sorted(regs.items()), 1):
         title = info["pealkiri"]
@@ -451,17 +656,24 @@ def main():
         out_path, slug = make_filename(title, tid, is_kov, issuer)
 
         if out_path.exists():
-            skipped += 1
-            continue
+            if mode == "missing-only":
+                run_counts["existingSkipped"] += 1
+                continue
 
         print(f"  [{i}/{len(regs)}] {issuer} | {title[:80]}")
 
         # Cache name: use globalID first (cheap to verify against RT), tid as fallback
         cache_name = f"reg_{info.get('gid') or tid}"
-        root = fetch_xml(url, cache_name=cache_name, cache_subdir=cache_subdir)
+        root = fetch_xml(
+            url,
+            cache_name=cache_name,
+            cache_subdir=cache_subdir,
+            refresh=mode in {"refresh", "force"},
+        )
         if root is None:
             print(f"    SKIP: could not fetch XML")
             failed += 1
+            run_counts["failedFetches"] += 1
             continue
 
         try:
@@ -469,19 +681,13 @@ def main():
         except Exception as e:
             print(f"    FAIL: {e}")
             failed += 1
+            run_counts["failedFetches"] += 1
             continue
 
-        if stats["paragraphs"] == 0 and stats["annexes"] == 0 and not stats.get("has_preamble"):
-            # Pure procedural / amendment-only act with no body — skip.
-            print(f"    SKIP: no parseable body")
-            skipped += 1
-            continue
-
-        save_json(out_path, doc)
-        generated += 1
+        status = write_regulation_output(out_path, doc, mode=mode)
+        run_counts[status] += 1
         for k, v in stats.items():
             totals[k] = totals.get(k, 0) + v
-        issuer_counts[issuer or "(unknown)"] = issuer_counts.get(issuer or "(unknown)", 0) + 1
 
         if args.sleep > 0:
             time.sleep(args.sleep)
@@ -489,28 +695,43 @@ def main():
     # ---------------------------------------------------------------------
     print("\n[3/3] Writing index...")
     index_path = out_dir / ("REGULATIONS_KOV_INDEX.json" if is_kov else "REGULATIONS_RIIK_INDEX.json")
-    index_doc = {
-        "kehtiv": args.kehtiv,
-        "kov": is_kov,
-        "totalRegulations": generated,
-        "totalParagraphs": totals["paragraphs"],
-        "totalAnnexes": totals["annexes"],
-        "regulationsWithPreamble": totals["has_preamble"],
-        "htmlFallbackCount": totals["html_fallback"],
-        "byIssuer": dict(sorted(issuer_counts.items(), key=lambda x: -x[1])),
-    }
+    removed_from_source = source_removed_files(out_dir, set(regs))
+    index_doc = build_regulation_index(
+        out_dir,
+        is_kov=is_kov,
+        kehtiv=args.kehtiv,
+        run_stats={
+            **source_manifest,
+            "generationMode": mode,
+            "newlyGenerated": run_counts["newlyGenerated"],
+            "existingSkipped": run_counts["existingSkipped"],
+            "unchanged": run_counts["unchanged"],
+            "refreshed": run_counts["refreshed"],
+            "forceRewritten": run_counts["forceRewritten"],
+            "failedFetches": run_counts["failedFetches"],
+            "partialAllowed": args.allow_partial,
+            "sourceRemovedFromSnapshotCount": len(removed_from_source),
+            "sourceRemovedFromSnapshot": removed_from_source,
+        },
+    )
     save_json(index_path, index_doc)
 
     print("\n" + "=" * 70)
     print("SUMMARY")
     print("=" * 70)
     print(f"  Total regulations from API: {len(regs)}")
-    print(f"  Newly generated:            {generated}")
-    print(f"  Skipped (existing/empty):   {skipped}")
+    print(f"  Generation mode:            {mode}")
+    print(f"  Newly generated:            {run_counts['newlyGenerated']}")
+    print(f"  Skipped (existing):         {run_counts['existingSkipped']}")
+    print(f"  Unchanged:                  {run_counts['unchanged']}")
+    print(f"  Refreshed:                  {run_counts['refreshed']}")
+    print(f"  Force rewritten:            {run_counts['forceRewritten']}")
+    print(f"  Source removed from snapshot: {len(removed_from_source)}")
     print(f"  Failed:                     {failed}")
-    print(f"  Total paragraphs written:   {totals['paragraphs']}")
-    print(f"  Total annexes:              {totals['annexes']}")
-    print(f"  HTML-fallback regulations:  {totals['html_fallback']}")
+    print(f"  Corpus regulations indexed: {index_doc['totalRegulations']}")
+    print(f"  Corpus paragraphs indexed:  {index_doc['totalParagraphs']}")
+    print(f"  Corpus annexes indexed:     {index_doc['totalAnnexes']}")
+    print(f"  No-body stubs indexed:      {index_doc['noStructuredBodyCount']}")
     print(f"  Output directory:           {out_dir}")
     print(f"  Index file:                 {index_path.name}")
 

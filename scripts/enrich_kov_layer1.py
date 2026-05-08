@@ -64,7 +64,7 @@ def build_municipality_doc(municipalities: dict[str, Municipality]) -> dict:
             "@id": "estleg:Municipalities_Map_2026",
             "@type": ["owl:Ontology"],
             "rdfs:label": "Estonian Municipalities (current EHAK)",
-            "dcterms:source": "https://www.stat.ee/sites/default/files/2020-03/ehak.csv",
+            "dcterms:source": {"@id": "https://www.stat.ee/sites/default/files/2020-03/ehak.csv"},
         }
     ]
     for code in sorted(municipalities):

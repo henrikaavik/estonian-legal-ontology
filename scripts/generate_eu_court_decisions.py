@@ -281,6 +281,7 @@ def generate_schema_nodes() -> list[dict]:
         "Order": ("Kohtumäärus", "Order"),
         "AGOpinion": ("Kohtujuristi ettepanek", "Advocate General Opinion"),
         "CourtOpinion": ("Kohtu arvamus", "Court Opinion"),
+        "Other": ("Muu", "Other"),
     }
     for type_id, (label_et, label_en) in decision_types.items():
         nodes.append({

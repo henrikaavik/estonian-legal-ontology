@@ -20,7 +20,7 @@ from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
 
-from estleg_common import iter_peep_files
+from estleg_common import iter_peep_files, jsonld_text
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
@@ -105,6 +105,13 @@ def normalize_law_name(name: str) -> str:
     # Collapse whitespace
     n = re.sub(r"\s+", " ", n)
     return n
+
+
+def affected_law_name_values(value: object) -> list[str]:
+    if isinstance(value, list):
+        return [text for item in value if (text := jsonld_text(item))]
+    text = jsonld_text(value)
+    return [text] if text else []
 
 
 def slug_from_name(name: str) -> str:
@@ -319,12 +326,8 @@ def main() -> None:
         if not affected_raw:
             continue
 
-        # affectedLawName can be a string or a list
-        if isinstance(affected_raw, str):
-            affected_names = [affected_raw]
-        elif isinstance(affected_raw, list):
-            affected_names = affected_raw
-        else:
+        affected_names = affected_law_name_values(affected_raw)
+        if not affected_names:
             continue
 
         amends_iris: list[dict] = []

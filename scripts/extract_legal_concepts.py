@@ -20,7 +20,7 @@ import xml.etree.ElementTree as ET
 from datetime import date, datetime, timezone
 from pathlib import Path
 
-from estleg_common import iter_peep_files
+from estleg_common import iter_peep_files, jsonld_text
 from kov_pipeline_coverage import (
     CoverageReport,
     measure_runtime,
@@ -327,7 +327,7 @@ def load_law_files() -> list[dict]:
         for node in doc.get("@graph", []):
             types = node.get("@type", [])
             if "owl:Ontology" in types:
-                title = node.get("dc:source", node.get("rdfs:label", ""))
+                title = jsonld_text(node.get("dc:source", node.get("rdfs:label", "")))
                 break
 
         laws.append({

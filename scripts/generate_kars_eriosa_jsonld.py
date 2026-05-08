@@ -140,27 +140,28 @@ def main() -> None:
 
     graph: list[dict] = [
         {
-            "@id": base,
-            "@type": "owl:Ontology",
+            "@id": "estleg:KarS_Eriosa_Map_2026",
+            "@type": ["owl:Ontology"],
             "rdfs:label": "KarS Eriosa ontoloogia",
             "dc:title": f"{title} – Eriosa",
-            "dc:source": xml_url,
+            "dc:source": title,
+            "dcterms:source": {"@id": xml_url},
         },
-        {"@id": f"{base}LegalPart", "@type": "owl:Class", "rdfs:label": "Seaduse osa"},
-        {"@id": f"{base}Chapter", "@type": "owl:Class", "rdfs:label": "Peatükk"},
-        {"@id": f"{base}Division", "@type": "owl:Class", "rdfs:label": "Jagu"},
-        {"@id": f"{base}Subdivision", "@type": "owl:Class", "rdfs:label": "Jaotis"},
-        {"@id": f"{base}Section", "@type": "owl:Class", "rdfs:label": "Paragrahv"},
-        {"@id": f"{base}LegalConcept", "@type": "owl:Class", "rdfs:label": "Õigusmõiste"},
+        {"@id": "estleg:LegalPart", "@type": ["owl:Class"], "rdfs:label": "Seaduse osa"},
+        {"@id": "estleg:Chapter", "@type": ["owl:Class"], "rdfs:label": "Peatükk"},
+        {"@id": "estleg:Division", "@type": ["owl:Class"], "rdfs:label": "Jagu"},
+        {"@id": "estleg:Subdivision", "@type": ["owl:Class"], "rdfs:label": "Jaotis"},
+        {"@id": "estleg:Section", "@type": ["owl:Class"], "rdfs:label": "Paragrahv"},
+        {"@id": "estleg:LegalConcept", "@type": ["owl:Class"], "rdfs:label": "Õigusmõiste"},
     ]
 
-    part_id = f"{base}Part2"
+    part_id = "estleg:Part2"
     part_label = f"{child_text(osa2, 'kuvatavNr') or '2. osa'} – {child_text(osa2, 'osaPealkiri') or 'ERIOSA'}"
     part_node = {
         "@id": part_id,
-        "@type": [f"{base}LegalPart", "owl:NamedIndividual"],
+        "@type": ["estleg:LegalPart", "owl:NamedIndividual"],
         "rdfs:label": part_label,
-        "hasChapter": [],
+        "estleg:hasChapter": [],
     }
 
     section_count = 0
@@ -171,93 +172,93 @@ def main() -> None:
     for ch in [x for x in list(osa2) if ln(x.tag) == "peatykk"]:
         chapter_count += 1
         ch_nr = child_text(ch, "peatykkNr") or str(chapter_count)
-        ch_id = f"{base}Chapter{sanitize_identifier(ch_nr)}"
-        part_node["hasChapter"].append({"@id": ch_id})
+        ch_id = f"estleg:Chapter{sanitize_identifier(ch_nr)}"
+        part_node["estleg:hasChapter"].append({"@id": ch_id})
         ch_node: dict = {
             "@id": ch_id,
-            "@type": [f"{base}Chapter", "owl:NamedIndividual"],
+            "@type": ["estleg:Chapter", "owl:NamedIndividual"],
             "rdfs:label": f"{child_text(ch, 'kuvatavNr') or ''} – {child_text(ch, 'peatykkPealkiri') or ''}".strip(" –"),
         }
 
         # Collect direct paragrahvid (if no jagu)
         direct_sections = [x for x in list(ch) if ln(x.tag) == "paragrahv"]
         if direct_sections:
-            ch_node["hasSection"] = []
+            ch_node["estleg:hasSection"] = []
             for p in direct_sections:
                 p_nr = child_text(p, "paragrahvNr") or "?"
-                p_id = f"{base}Par{sanitize_identifier(p_nr)}"
-                ch_node["hasSection"].append({"@id": p_id})
+                p_id = f"estleg:Par{sanitize_identifier(p_nr)}"
+                ch_node["estleg:hasSection"].append({"@id": p_id})
                 graph.append(
                     {
                         "@id": p_id,
-                        "@type": [f"{base}Section", "owl:NamedIndividual"],
+                        "@type": ["estleg:Section", "owl:NamedIndividual"],
                         "rdfs:label": f"{child_text(p, 'kuvatavNr') or ''} {child_text(p, 'paragrahvPealkiri') or ''}".strip(),
-                        "sectionNumber": p_nr,
-                        "legalText": collect_loige_preview(p),
+                        "estleg:sectionNumber": p_nr,
+                        "estleg:legalText": collect_loige_preview(p),
                     }
                 )
                 section_count += 1
 
         divisions = [x for x in list(ch) if ln(x.tag) == "jagu"]
         if divisions:
-            ch_node["hasDivision"] = []
+            ch_node["estleg:hasDivision"] = []
             for d in divisions:
                 division_count += 1
                 d_nr = child_text(d, "jaguNr") or str(division_count)
-                d_id = f"{base}Division{sanitize_identifier(ch_nr)}_{sanitize_identifier(d_nr)}"
-                ch_node["hasDivision"].append({"@id": d_id})
+                d_id = f"estleg:Division{sanitize_identifier(ch_nr)}_{sanitize_identifier(d_nr)}"
+                ch_node["estleg:hasDivision"].append({"@id": d_id})
 
                 d_node: dict = {
                     "@id": d_id,
-                    "@type": [f"{base}Division", "owl:NamedIndividual"],
+                    "@type": ["estleg:Division", "owl:NamedIndividual"],
                     "rdfs:label": f"{child_text(d, 'kuvatavNr') or ''} – {child_text(d, 'jaguPealkiri') or ''}".strip(" –"),
                 }
 
                 # direct paragrahvid in jagu
                 d_pars = [x for x in list(d) if ln(x.tag) == "paragrahv"]
                 if d_pars:
-                    d_node["hasSection"] = []
+                    d_node["estleg:hasSection"] = []
                     for p in d_pars:
                         p_nr = child_text(p, "paragrahvNr") or "?"
-                        p_id = f"{base}Par{sanitize_identifier(p_nr)}"
-                        d_node["hasSection"].append({"@id": p_id})
+                        p_id = f"estleg:Par{sanitize_identifier(p_nr)}"
+                        d_node["estleg:hasSection"].append({"@id": p_id})
                         graph.append(
                             {
                                 "@id": p_id,
-                                "@type": [f"{base}Section", "owl:NamedIndividual"],
+                                "@type": ["estleg:Section", "owl:NamedIndividual"],
                                 "rdfs:label": f"{child_text(p, 'kuvatavNr') or ''} {child_text(p, 'paragrahvPealkiri') or ''}".strip(),
-                                "sectionNumber": p_nr,
-                                "legalText": collect_loige_preview(p),
+                                "estleg:sectionNumber": p_nr,
+                                "estleg:legalText": collect_loige_preview(p),
                             }
                         )
                         section_count += 1
 
                 subds = [x for x in list(d) if ln(x.tag) == "jaotis"]
                 if subds:
-                    d_node["hasSubdivision"] = []
+                    d_node["estleg:hasSubdivision"] = []
                     for s in subds:
                         subdivision_count += 1
                         s_nr = child_text(s, "jaotisNr") or str(subdivision_count)
-                        s_id = f"{base}Subdivision{sanitize_identifier(ch_nr)}_{sanitize_identifier(d_nr)}_{sanitize_identifier(s_nr)}"
-                        d_node["hasSubdivision"].append({"@id": s_id})
+                        s_id = f"estleg:Subdivision{sanitize_identifier(ch_nr)}_{sanitize_identifier(d_nr)}_{sanitize_identifier(s_nr)}"
+                        d_node["estleg:hasSubdivision"].append({"@id": s_id})
 
                         s_node: dict = {
                             "@id": s_id,
-                            "@type": [f"{base}Subdivision", "owl:NamedIndividual"],
+                            "@type": ["estleg:Subdivision", "owl:NamedIndividual"],
                             "rdfs:label": f"{child_text(s, 'kuvatavNr') or ''} – {child_text(s, 'jaotisPealkiri') or ''}".strip(" –"),
-                            "hasSection": [],
+                            "estleg:hasSection": [],
                         }
                         for p in [x for x in list(s) if ln(x.tag) == "paragrahv"]:
                             p_nr = child_text(p, "paragrahvNr") or "?"
-                            p_id = f"{base}Par{sanitize_identifier(p_nr)}"
-                            s_node["hasSection"].append({"@id": p_id})
+                            p_id = f"estleg:Par{sanitize_identifier(p_nr)}"
+                            s_node["estleg:hasSection"].append({"@id": p_id})
                             graph.append(
                                 {
                                     "@id": p_id,
-                                    "@type": [f"{base}Section", "owl:NamedIndividual"],
+                                    "@type": ["estleg:Section", "owl:NamedIndividual"],
                                     "rdfs:label": f"{child_text(p, 'kuvatavNr') or ''} {child_text(p, 'paragrahvPealkiri') or ''}".strip(),
-                                    "sectionNumber": p_nr,
-                                    "legalText": collect_loige_preview(p),
+                                    "estleg:sectionNumber": p_nr,
+                                    "estleg:legalText": collect_loige_preview(p),
                                 }
                             )
                             section_count += 1
@@ -275,7 +276,7 @@ def main() -> None:
         graph.append(
             {
                 "@id": f"{base}{concept['id']}",
-                "@type": [f"{base}LegalConcept", "owl:NamedIndividual"],
+                "@type": ["estleg:LegalConcept", "owl:NamedIndividual"],
                 "rdfs:label": concept["label"],
                 "skos:definition": concept["definition"],
                 "dc:references": concept["crossReference"],
@@ -291,13 +292,7 @@ def main() -> None:
             "dc": "http://purl.org/dc/terms/",
             "skos": "http://www.w3.org/2004/02/skos/core#",
             "estleg": base,
-            "hasChapter": {"@id": "estleg:hasChapter", "@type": "@id"},
-            "hasDivision": {"@id": "estleg:hasDivision", "@type": "@id"},
-            "hasSubdivision": {"@id": "estleg:hasSubdivision", "@type": "@id"},
-            "hasSection": {"@id": "estleg:hasSection", "@type": "@id"},
-            "coversConcept": {"@id": "estleg:coversConcept", "@type": "@id"},
-            "sectionNumber": "estleg:sectionNumber",
-            "legalText": "estleg:legalText",
+            "dcterms": "http://purl.org/dc/terms/",
         },
         "@graph": graph,
     }

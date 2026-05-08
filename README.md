@@ -523,23 +523,36 @@ The ontology uses the `estleg` namespace (`https://data.riik.ee/ontology/estleg#
 
 See [docs/SCHEMA_REFERENCE.md](docs/SCHEMA_REFERENCE.md) for full schema documentation.
 
+## Setup
+
+```bash
+python3 -m pip install -e ".[dev]"
+```
+
 ## Validation
 
 ```bash
+python3 -m pytest -q
 python3 scripts/validate_all.py
 ```
 
-CI runs automatically on every push to `main` that modifies `krr_outputs/`.
+CI runs tests and validation for changes to scripts, tests, SHACL, metadata,
+workflow files, docs, and ontology outputs.
 
 ## Refreshing Data
 
 ```bash
-# Re-fetch all enacted laws from Riigi Teataja
-python3 scripts/generate_all_laws.py
+# Refresh enacted laws from a declared Riigi Teataja snapshot.
+# Default is --missing-only against --kehtiv 2026-05-01.
+python3 scripts/generate_all_laws.py --missing-only
+python3 scripts/generate_all_laws.py --refresh --kehtiv 2026-05-01
 
-# Re-fetch state-level domestic regulations from Riigi Teataja
-python3 scripts/generate_regulations.py
-# (add --kov to also fetch ~11,087 municipal regulations)
+# Refresh state-level domestic regulations from Riigi Teataja.
+# Default is --missing-only; use --refresh to re-fetch XML and rewrite changed files.
+# Source-list fetch failures are fatal unless --allow-partial is explicit.
+python3 scripts/generate_regulations.py --missing-only
+python3 scripts/generate_regulations.py --refresh --kehtiv 2026-05-01
+# (add --kov to refresh municipal regulations)
 
 # Re-fetch draft legislation from EIS
 python3 scripts/generate_draft_legislation.py
@@ -553,8 +566,8 @@ python3 scripts/generate_eu_legislation.py
 # Re-fetch EU court decisions from EUR-Lex
 python3 scripts/generate_eu_court_decisions.py
 
-# Run all integration scripts in dependency order (recommended):
-python3 scripts/run_all_integration.py
+# Run all integration scripts in dependency order with rollback on failure:
+python3 scripts/run_all_integration.py --validate-each
 
 # Or run individually:
 python3 scripts/extract_cross_references.py
@@ -577,7 +590,7 @@ python3 scripts/generate_harmonisation_links.py
 
 1. Fork the repository
 2. Create a feature branch
-3. Ensure `python3 scripts/validate_all.py` passes
+3. Ensure `python3 -m pytest -q` and `python3 scripts/validate_all.py` pass
 4. Submit a pull request
 
 ## License

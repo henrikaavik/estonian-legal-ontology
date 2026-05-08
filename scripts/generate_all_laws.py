@@ -19,6 +19,8 @@ import sys
 import time
 import unicodedata
 import xml.etree.ElementTree as ET
+import argparse
+from datetime import datetime, timezone
 from pathlib import Path
 
 import requests
@@ -31,6 +33,7 @@ DATA_DIR.mkdir(parents=True, exist_ok=True)
 SEARCH_URL = "https://www.riigiteataja.ee/api/oigusakt_otsing/1/otsi"
 BASE_URL = "https://www.riigiteataja.ee"
 NS = "https://data.riik.ee/ontology/estleg#"
+DEFAULT_KEHTIV = "2026-05-01"
 
 CONTEXT = {
     "estleg": NS,
@@ -115,28 +118,48 @@ def collect_full_text(el: ET.Element) -> str:
     return " ".join(parts)
 
 
-def get_all_laws() -> dict[str, dict]:
+class SourceListFetchError(RuntimeError):
+    """Raised when the law source list cannot be fetched completely."""
+
+
+def get_all_laws(*, kehtiv: str | None = DEFAULT_KEHTIV, allow_partial: bool = False) -> tuple[dict[str, dict], dict]:
     """Fetch all law entries from Riigi Teataja API, keeping latest version of each."""
     all_laws = {}
     page = 1
+    rows_seen = 0
+    completed = False
     while True:
+        params: dict[str, str | int] = {
+            "leht": page,
+            "dokument": "seadus",
+            "tekst": "terviktekst",
+        }
+        if kehtiv:
+            params["kehtiv"] = kehtiv
+            params["kehtivKehtetus"] = "false"
+            params["mitteJoustunud"] = "false"
         try:
             resp = requests.get(
                 SEARCH_URL,
-                params={"leht": page, "dokument": "seadus", "tekst": "terviktekst"},
+                params=params,
                 timeout=30,
             )
             resp.raise_for_status()
             data = resp.json()
         except Exception as e:
-            print(f"  API error on page {page}: {e}")
-            break
+            message = f"API error on page {page}: {e}"
+            print(f"  {message}")
+            if allow_partial:
+                break
+            raise SourceListFetchError(message) from e
 
         aktid = data.get("aktid", [])
         if not aktid:
+            completed = True
             break
 
         for law in aktid:
+            rows_seen += 1
             title = law.get("pealkiri", "").strip()
             if not title:
                 continue
@@ -152,9 +175,17 @@ def get_all_laws() -> dict[str, dict]:
                 }
         page += 1
         if page > 250:
+            completed = True
             break
 
-    return all_laws
+    return all_laws, {
+        "requestedDocument": "seadus",
+        "kehtiv": kehtiv,
+        "searchRowsSeen": rows_seen,
+        "uniqueActs": len(all_laws),
+        "complete": completed,
+        "partialAllowed": allow_partial,
+    }
 
 
 def get_existing_files() -> set[str]:
@@ -163,6 +194,14 @@ def get_existing_files() -> set[str]:
     for f in KRR_DIR.glob("*_peep.json"):
         existing.add(f.stem.replace("_peep", ""))
     return existing
+
+
+def has_existing_output(existing: set[str], title: str, slug: str) -> bool:
+    if slug in existing:
+        return True
+    if title in MULTIPART_LAWS:
+        return any(ex.startswith(f"{slug}_osa") for ex in existing)
+    return False
 
 
 def fetch_xml(url: str, cache_name: str) -> ET.Element | None:
@@ -293,9 +332,11 @@ def generate_law_jsonld(title: str, slug: str, root: ET.Element, abbreviation: s
 
     ontology_node: dict = {
         "@id": ontology_id,
-        "@type": ["owl:Ontology"],
+        "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
         "rdfs:label": {"@value": f"{title} teemakaardistus", "@language": "et"},
-        "dc:source": {"@value": title, "@language": "et"},
+        "dc:source": title,
+        "dcterms:title": {"@value": title, "@language": "et"},
+        "estleg:contentStatus": "structuredBody",
     }
     if rt_source_url:
         ontology_node["dcterms:source"] = {"@id": rt_source_url}
@@ -489,7 +530,7 @@ def generate_law_jsonld(title: str, slug: str, root: ET.Element, abbreviation: s
             node["estleg:legalText"] = {"@value": full_text, "@language": "et"}
 
         if cluster_ref:
-            node["estleg:requestedCluster"] = cluster_ref
+            node["estleg:requestedCluster"] = {"@id": cluster_ref}
 
         # Issue #89: Link provision to containing chapter or division
         container_ref = par_to_container.get(p_num)
@@ -499,6 +540,36 @@ def generate_law_jsonld(title: str, slug: str, root: ET.Element, abbreviation: s
         graph.append(node)
 
     return {"@context": CONTEXT, "@graph": graph}
+
+
+def generate_law_stub_jsonld(
+    title: str,
+    slug: str,
+    root: ET.Element,
+    abbreviation: str = "",
+    rt_url: str = "",
+    *,
+    content_status: str = "noStructuredBody",
+) -> dict:
+    """Generate an act-level representation for laws without paragraph nodes."""
+    prefix = _unique_prefix(abbreviation, slug, title)
+    rt_source_url = BASE_URL + rt_url if rt_url.startswith("/") else rt_url
+    ontology_node: dict = {
+        "@id": f"estleg:{prefix}_Map_2026",
+        "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
+        "rdfs:label": {"@value": f"{title} teemakaardistus", "@language": "et"},
+        "dc:source": title,
+        "dcterms:title": {"@value": title, "@language": "et"},
+        "estleg:contentStatus": content_status,
+        "estleg:contentStatusReason": (
+            "No structured paragraph nodes were found in the source XML; "
+            "the act is modeled at act level to preserve coverage."
+        ),
+    }
+    if rt_source_url:
+        ontology_node["dcterms:source"] = {"@id": rt_source_url}
+        ontology_node["owl:sameAs"] = {"@id": rt_source_url}
+    return {"@context": CONTEXT, "@graph": [ontology_node]}
 
 
 def generate_multipart_law(title: str, slug: str, root: ET.Element, abbreviation: str = "", rt_url: str = "") -> list[tuple[str, dict]]:
@@ -542,9 +613,11 @@ def generate_multipart_law(title: str, slug: str, root: ET.Element, abbreviation
         # Issue #89: Mark file-level ontology node with estleg:Part type
         osa_ontology_node: dict = {
             "@id": ontology_id,
-            "@type": ["owl:Ontology", "estleg:Part"],
+            "@type": ["owl:Ontology", "estleg:Act", "estleg:Law", "estleg:Part"],
             "rdfs:label": {"@value": f"{title} Osa {osa_nr} ({osa_title}) §{par_min}–{par_max} kaardistus", "@language": "et"},
-            "dc:source": {"@value": title, "@language": "et"},
+            "dc:source": title,
+            "dcterms:title": {"@value": title, "@language": "et"},
+            "estleg:contentStatus": "structuredBody",
         }
         if rt_source_url:
             osa_ontology_node["dcterms:source"] = {"@id": rt_source_url}
@@ -751,7 +824,7 @@ def generate_multipart_law(title: str, slug: str, root: ET.Element, abbreviation
             if full_text:
                 node["estleg:legalText"] = {"@value": full_text, "@language": "et"}
             if cluster_ref:
-                node["estleg:requestedCluster"] = cluster_ref
+                node["estleg:requestedCluster"] = {"@id": cluster_ref}
             # Issue #89: Link provision to containing chapter or division
             container_ref = par_to_container.get(p_num)
             if container_ref:
@@ -781,14 +854,37 @@ MULTIPART_LAWS = {
 }
 
 
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__)
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("--missing-only", action="store_true", help="Only create outputs that do not exist. Default.")
+    mode.add_argument("--refresh", action="store_true", help="Refresh expected outputs for every source act.")
+    mode.add_argument("--force", action="store_true", help="Force regeneration of every source act output.")
+    parser.add_argument("--kehtiv", default=DEFAULT_KEHTIV, help="Snapshot date YYYY-MM-DD (default: %(default)s).")
+    parser.add_argument("--allow-partial", action="store_true", help="Allow source-list fetch failures and mark the run partial.")
+    parser.add_argument("--limit", type=int, default=None, help="Process at most N law titles.")
+    return parser.parse_args()
+
+
 def main():
+    args = parse_args()
+    mode = "refresh" if args.refresh else "force" if args.force else "missing-only"
+
     print("=" * 70)
     print("Estonian Legal Ontology - Generate ALL Laws from Riigi Teataja")
     print("=" * 70)
 
     # Step 1: Get all laws from API
     print("\n[1/4] Fetching law list from Riigi Teataja API...")
-    all_laws = get_all_laws()
+    try:
+        all_laws, source_manifest = get_all_laws(kehtiv=args.kehtiv, allow_partial=args.allow_partial)
+    except SourceListFetchError as exc:
+        print(f"  FATAL: {exc}")
+        sys.exit(2)
+    if args.limit is not None:
+        all_laws = dict(list(sorted(all_laws.items()))[:args.limit])
+        source_manifest["limited"] = True
+        source_manifest["limit"] = args.limit
     print(f"  Found {len(all_laws)} unique law titles")
 
     # Step 2: Check existing files
@@ -801,18 +897,10 @@ def main():
     already_mapped = 0
     for title, info in sorted(all_laws.items()):
         slug = slugify(title)
-        if slug in existing:
+        if mode == "missing-only" and has_existing_output(existing, title, slug):
             already_mapped += 1
             continue
-        # Also check if any existing file starts with this slug
-        matched = False
-        for ex in existing:
-            if ex.startswith(slug[:20]):
-                matched = True
-                already_mapped += 1
-                break
-        if not matched:
-            to_generate[title] = {**info, "slug": slug}
+        to_generate[title] = {**info, "slug": slug}
 
     print(f"  Already mapped: {already_mapped}")
     print(f"  To generate: {len(to_generate)}")
@@ -841,7 +929,12 @@ def main():
         # Count paragraphs
         par_count = sum(1 for el in root.iter() if ln(el.tag) == "paragrahv")
         if par_count == 0:
-            print(f"    SKIP: No paragraphs found (likely a ratification/procedural law)")
+            doc = generate_law_stub_jsonld(title, slug, root, abbreviation, rt_url=url)
+            filename = f"{slug}_peep.json"
+            out_path = KRR_DIR / filename
+            save_json(out_path, doc)
+            print(f"    Saved stub: {filename} (no structured body)")
+            generated += 1
             skipped += 1
             continue
 
@@ -880,6 +973,31 @@ def main():
     print(f"  Skipped (no paragraphs): {skipped}")
     print(f"  Failed (fetch errors): {failed}")
     print(f"  Total files now: {len(list(KRR_DIR.glob('*_peep.json')))}")
+
+    manifest = {
+        "generated": datetime.now(timezone.utc).isoformat(),
+        "mode": mode,
+        "source": source_manifest,
+        "counts": {
+            "sourceActs": len(all_laws),
+            "alreadyMapped": already_mapped,
+            "selectedForGeneration": len(to_generate),
+            "generatedFiles": generated,
+            "stubbedActs": skipped,
+            "failedFetches": failed,
+        },
+        "outputs": [
+            {
+                "title": title,
+                "slug": info["slug"],
+                "terviktekstId": info.get("tid"),
+                "globaalId": info.get("gid"),
+                "sourceUrl": BASE_URL + info["url"] if str(info.get("url", "")).startswith("/") else info.get("url", ""),
+            }
+            for title, info in sorted(to_generate.items())
+        ],
+    }
+    save_json(KRR_DIR / "generation_manifest_laws.json", manifest)
 
 
 if __name__ == "__main__":
