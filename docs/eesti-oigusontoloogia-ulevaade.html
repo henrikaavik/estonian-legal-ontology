@@ -1,0 +1,921 @@
+<!doctype html>
+<html lang="et">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Eesti õigusontoloogia ülevaade</title>
+  <style>
+    :root {
+      --ink: #14213d;
+      --muted: #526174;
+      --line: #d9e2ec;
+      --paper: #ffffff;
+      --band: #f5f8fb;
+      --teal: #0f766e;
+      --blue: #2563eb;
+      --green: #3f7d20;
+      --amber: #b7791f;
+      --red: #b42318;
+      --shadow: 0 18px 45px rgba(20, 33, 61, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: #eef3f7;
+      line-height: 1.55;
+    }
+
+    main {
+      max-width: 1180px;
+      margin: 0 auto;
+      background: var(--paper);
+      min-height: 100vh;
+    }
+
+    section,
+    header {
+      padding: 42px 56px;
+    }
+
+    header {
+      padding-top: 56px;
+      background: linear-gradient(180deg, #f8fbfd 0%, #ffffff 100%);
+      border-bottom: 1px solid var(--line);
+    }
+
+    h1,
+    h2,
+    h3 {
+      margin: 0;
+      line-height: 1.15;
+      letter-spacing: 0;
+    }
+
+    h1 {
+      max-width: 820px;
+      font-size: 42px;
+      font-weight: 760;
+    }
+
+    h2 {
+      margin-bottom: 16px;
+      font-size: 27px;
+      font-weight: 730;
+    }
+
+    h3 {
+      margin-top: 26px;
+      margin-bottom: 10px;
+      font-size: 18px;
+      font-weight: 720;
+    }
+
+    p {
+      margin: 0 0 14px;
+    }
+
+    a {
+      color: var(--blue);
+      text-decoration: none;
+    }
+
+    code {
+      padding: 1px 5px;
+      border-radius: 4px;
+      background: #eef2f7;
+      color: #0f172a;
+      font-family: "SFMono-Regular", Consolas, monospace;
+      font-size: 0.93em;
+    }
+
+    pre {
+      overflow-x: auto;
+      margin: 14px 0 0;
+      padding: 16px 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #0f172a;
+      color: #f8fafc;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    pre code {
+      padding: 0;
+      border-radius: 0;
+      background: transparent;
+      color: inherit;
+      font-size: inherit;
+    }
+
+    ul,
+    ol {
+      margin: 0 0 14px 22px;
+      padding: 0;
+    }
+
+    li {
+      margin: 6px 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 4px;
+      font-size: 14px;
+    }
+
+    th,
+    td {
+      padding: 10px 11px;
+      border: 1px solid var(--line);
+      vertical-align: top;
+      text-align: left;
+    }
+
+    th {
+      background: #eef4f8;
+      color: #1f2a44;
+      font-weight: 700;
+    }
+
+    .lead {
+      max-width: 900px;
+      margin-top: 16px;
+      color: #344258;
+      font-size: 18px;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 26px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 4px 10px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #ffffff;
+      color: #405169;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 30px;
+    }
+
+    .stat {
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #ffffff;
+      box-shadow: var(--shadow);
+    }
+
+    .stat b {
+      display: block;
+      color: var(--ink);
+      font-size: 25px;
+      line-height: 1.1;
+    }
+
+    .stat span {
+      display: block;
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .band {
+      background: var(--band);
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 26px;
+      align-items: start;
+    }
+
+    .note {
+      padding: 16px 18px;
+      border-left: 4px solid var(--teal);
+      background: #edfafa;
+      color: #214b51;
+    }
+
+    .warning {
+      border-left-color: var(--amber);
+      background: #fff8e8;
+      color: #63420f;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .card {
+      padding: 16px 17px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #ffffff;
+      break-inside: avoid;
+    }
+
+    .card h3 {
+      margin-top: 0;
+    }
+
+    .small {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .figure {
+      margin: 22px 0 30px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #ffffff;
+      box-shadow: var(--shadow);
+      break-inside: avoid;
+    }
+
+    .figure h3 {
+      margin: 0 0 12px;
+    }
+
+    .image-stage {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid #d4dde8;
+      border-radius: 8px;
+      background: #f9fbfd;
+    }
+
+    .image-stage img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .label {
+      position: absolute;
+      max-width: 210px;
+      padding: 7px 9px;
+      border: 1px solid rgba(20, 33, 61, 0.22);
+      border-radius: 7px;
+      background: rgba(255, 255, 255, 0.93);
+      color: #172033;
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1.25;
+      box-shadow: 0 6px 18px rgba(20, 33, 61, 0.08);
+    }
+
+    .l-source { left: 2%; top: 3%; width: 25%; }
+    .l-gen { left: 31%; top: 8%; width: 16%; }
+    .l-val { left: 48%; top: 8%; width: 14%; }
+    .l-enrich { left: 65%; top: 8%; width: 15%; }
+    .l-graph { right: 3%; top: 42%; width: 15%; }
+
+    .s-core { left: 42%; top: 41%; width: 16%; text-align: center; }
+    .s-law { left: 4%; top: 6%; width: 23%; }
+    .s-draft { left: 5%; top: 36%; width: 24%; }
+    .s-kov { right: 5%; top: 6%; width: 25%; }
+    .s-court { right: 5%; top: 36%; width: 24%; }
+    .s-eu { right: 5%; top: 54%; width: 24%; }
+    .s-eucourt { right: 5%; bottom: 12%; width: 24%; }
+    .s-ring { left: 36%; top: 9%; width: 25%; text-align: center; }
+
+    .legend {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .legend div {
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #f8fafc;
+      font-size: 13px;
+    }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 12px;
+      margin: 18px 0;
+      align-items: stretch;
+    }
+
+    .flow .step {
+      position: relative;
+      min-height: 112px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #ffffff;
+    }
+
+    .flow .step:not(:last-child)::after {
+      content: "→";
+      position: absolute;
+      top: 38px;
+      right: -18px;
+      color: var(--blue);
+      font-size: 24px;
+      font-weight: 700;
+      z-index: 2;
+    }
+
+    .step strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 15px;
+    }
+
+    .usecases {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .usecase {
+      padding: 16px 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #ffffff;
+      break-inside: avoid;
+    }
+
+    .usecase h3 {
+      margin-top: 0;
+    }
+
+    .footer {
+      padding: 24px 56px 42px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 860px) {
+      section,
+      header,
+      .footer {
+        padding-left: 24px;
+        padding-right: 24px;
+      }
+
+      h1 {
+        font-size: 32px;
+      }
+
+      .stats,
+      .cards,
+      .two-col,
+      .usecases,
+      .legend,
+      .flow {
+        grid-template-columns: 1fr;
+      }
+
+      .flow .step:not(:last-child)::after {
+        content: "↓";
+        top: auto;
+        right: 50%;
+        bottom: -24px;
+        transform: translateX(50%);
+      }
+
+      .label {
+        position: static;
+        display: inline-block;
+        margin: 6px;
+      }
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+      }
+
+      main {
+        max-width: none;
+      }
+
+      section,
+      header {
+        padding: 28px 38px;
+      }
+
+      h1 {
+        font-size: 34px;
+      }
+
+      h2 {
+        font-size: 22px;
+      }
+
+      .stat,
+      .figure {
+        box-shadow: none;
+      }
+
+      .cards {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .stats {
+        grid-template-columns: repeat(4, 1fr);
+      }
+
+      .usecases {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      table {
+        font-size: 11.5px;
+      }
+
+      th,
+      td {
+        padding: 7px 8px;
+      }
+
+      pre {
+        white-space: pre-wrap;
+        font-size: 11px;
+      }
+
+      .page-break {
+        break-before: page;
+      }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Eesti õigusontoloogia ülevaade</h1>
+    <p class="lead">
+      See dokument selgitab, mis on selles repos olev Eesti õigusontoloogia, millistest avalikest andmeallikatest see koosneb,
+      kuidas andmeid uuendada, kuidas ontoloogia sisemine struktuur töötab ning milliseid praktilisi kasutusjuhte see avab
+      ministeeriumidele.
+    </p>
+    <div class="meta">
+      <span class="pill">Seis: 8. mai 2026</span>
+      <span class="pill">Andmesnapshot: 1. mai 2026</span>
+      <span class="pill">Formaat: JSON-LD / RDF</span>
+      <span class="pill">Nimeruum: <code>https://data.riik.ee/ontology/estleg#</code></span>
+    </div>
+    <div class="stats">
+      <div class="stat"><b>608 / 637</b><span>seaduse registrikirjet / seadusefaili</span></div>
+      <div class="stat"><b>14 871</b><span>riigi ja KOV määrust kokku</span></div>
+      <div class="stat"><b>90 501</b><span>eelnõu, kohtu- ja EL-akti kirjet</span></div>
+      <div class="stat"><b>0 / 0</b><span>valideerimisvigu / hoiatusi viimases raportis</span></div>
+    </div>
+  </header>
+
+  <section>
+    <h2>1. Mis See On?</h2>
+    <p>
+      Eesti õigusontoloogia on masinloetav teadmusgraaf, mis kirjeldab Eesti ja Euroopa Liidu õigusruumi JSON-LD vormingus.
+      Praktiliselt tähendab see, et seadused, määrused, paragrahvid, eelnõud, kohtuotsused, EL õigusaktid, mõisted,
+      sanktsioonid, pädevad asutused ja ristviited ei ole ainult tekstifailid, vaid omavahel seostatud objektid.
+    </p>
+    <p>
+      Ontoloogia keskne mõte on muuta õigus masinale päringutavaks. Kui tavalises dokumendikogus saab otsida sõnu, siis
+      siin saab küsida seoseid: millised sätted viitavad konkreetsele paragrahvile, milline eelnõu mõjutab olemasolevat
+      seadust, millised Riigikohtu lahendid tõlgendavad teatud normi, millised EL direktiivid on Eesti õigusesse üle võetud
+      või millised KOV määrused on sama sisulise teemaga seotud.
+    </p>
+    <div class="note">
+      Repo ei ole ainult ontoloogiafailide kogum. See sisaldab ka generaator- ja rikastusskripte, SHACL-kujusid,
+      valideerimist, indeksifaile ning dokumentatsiooni. Andmed on seega taastoodetavad, mitte käsitsi kokku kleebitud
+      staatiline eksport.
+    </div>
+  </section>
+
+  <section class="band">
+    <h2>2. Mida Sellega Teha Saab?</h2>
+    <div class="cards">
+      <div class="card">
+        <h3>Õigusinfo semantiline otsing</h3>
+        <p>Laadi JSON-LD failid RDF graafi ja tee SPARQL päringuid sätete, aktide, kohtulahendite, EL direktiivide ja mõistete kohta.</p>
+      </div>
+      <div class="card">
+        <h3>Ristviidete jälgimine</h3>
+        <p>Tuvasta, milline säte viitab millisele teisele sättele, millised normid sõltuvad samast volitusnormist ja kuhu mõju kandub.</p>
+      </div>
+      <div class="card">
+        <h3>Eelnõude mõjukaart</h3>
+        <p>Seo EIS eelnõud kehtivate õigusaktidega ning leia, milliseid seadusi või sätteid pooleliolevad muudatused puudutavad.</p>
+      </div>
+      <div class="card">
+        <h3>Kohtupraktika ühendamine normidega</h3>
+        <p>Riigikohtu lahendid on seotud seaduste ja osaliselt ka konkreetsete sätetega, mis võimaldab leida normi tõlgendava praktika.</p>
+      </div>
+      <div class="card">
+        <h3>EL õiguse jälgitavus</h3>
+        <p>EUR-Lexi aktid, direktiivid, CELEX/ELI tunnused ja ülevõtuseosed aitavad jälgida Eesti õiguse seost EL õigusraamiga.</p>
+      </div>
+      <div class="card">
+        <h3>Analüütika ja kvaliteedikontroll</h3>
+        <p>Deontiline klassifikatsioon, sanktsioonide indeks, pädevuskaardistus, ajaline kehtivus ja sarnasusseosed annavad aluse audititeks.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>3. Kust Info Pärineb Ja Kuidas Seda Uuendada?</h2>
+    <p>
+      Põhiandmed tulevad avalikest õigusinfoallikatest. Lisaks kasutatakse kohalikke abiregistreid ja kureeritud sõnastikke, et
+      lahendada lühendeid, KOV väljaandjaid, haldusreformi järgseid järglusseoseid ja kontrollitud teemasõnastikke.
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>Allikas</th>
+          <th>Mida kasutatakse</th>
+          <th>Tehniline ligipääs / failid</th>
+          <th>Uuendamine</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Riigi Teataja</td>
+          <td>Kehtivad seadused ja nende XML tekstid.</td>
+          <td><code>https://www.riigiteataja.ee/api/oigusakt_otsing/1/otsi?leht=N&amp;dokument=seadus</code>, <code>https://www.riigiteataja.ee/akt/GLOBALID.xml</code></td>
+          <td><code>python3 scripts/generate_all_laws.py --refresh --kehtiv YYYY-MM-DD</code></td>
+        </tr>
+        <tr>
+          <td>Riigi Teataja</td>
+          <td>Riigi ja KOV määrused, volitusnormide preambulid, paragrahvid, lisad ja metaandmed.</td>
+          <td><code>.../otsi?leht=N&amp;dokument=määrus</code>, sama XML skeem; KOV väljundid <code>krr_outputs/regulations/kov/</code></td>
+          <td><code>python3 scripts/generate_regulations.py --refresh --kehtiv YYYY-MM-DD</code>; KOV jaoks lisa <code>--kov</code></td>
+        </tr>
+        <tr>
+          <td>EIS ehk eelnõude infosüsteem</td>
+          <td>Eelnõud faaside kaupa: avalik konsultatsioon, kooskõlastamine, Vabariigi Valitsusele esitamine.</td>
+          <td><code>publicConsult.rss</code>, <code>review.rss</code>, <code>submission.rss</code> aadressil <code>https://eelnoud.valitsus.ee</code></td>
+          <td><code>python3 scripts/generate_draft_legislation.py</code></td>
+        </tr>
+        <tr>
+          <td>RIK / Riigikohus</td>
+          <td>Riigikohtu lahendite loend, aastad, asjanumbrid, lahendi liigid, lingid ja kokkuvõtted.</td>
+          <td><code>https://rikos.rik.ee/?aasta=YYYY&amp;pageSize=100&amp;lk=N</code>, <code>https://www.riigikohus.ee/et/lahendid/?asjaNr=CASE_NR</code></td>
+          <td><code>python3 scripts/generate_court_decisions.py</code></td>
+        </tr>
+        <tr>
+          <td>EUR-Lex / Publications Office</td>
+          <td>EL määrused, direktiivid ja otsused eesti keeles; CELEX, ELI, jõusolek ja EL institutsioonid.</td>
+          <td><code>https://publications.europa.eu/webapi/rdf/sparql</code>, EUR-Lexi CELEX lehed</td>
+          <td><code>python3 scripts/generate_eu_legislation.py</code></td>
+        </tr>
+        <tr>
+          <td>EUR-Lex / CURIA</td>
+          <td>EL kohtulahendid: Euroopa Kohtu, Üldkohtu ja Avaliku Teenistuse Kohtu lahendid, ECLI ja CELEX tunnused.</td>
+          <td>Sama SPARQL endpoint; CURIA/EUR-Lexi kohtulahendi kirjed.</td>
+          <td><code>python3 scripts/generate_eu_court_decisions.py</code></td>
+        </tr>
+        <tr>
+          <td>EuroVoc</td>
+          <td>EL standardne teemaklassifikaator; ontoloogias <code>dcterms:subject</code> akti tasemel.</td>
+          <td><code>http://eurovoc.europa.eu/...</code> URI-d ja Publications Office kontrollsõnastikud.</td>
+          <td><code>python3 scripts/classify_eurovoc.py</code>; klassifikaator on praegu kvaliteediraportiga heuristiline kiht.</td>
+        </tr>
+        <tr>
+          <td>EHAK / Statistikaamet</td>
+          <td>79 praegust KOV üksust, EHAK koodid ja maakonnad.</td>
+          <td><code>data/ehak/municipalities.json</code>; JSON-LD väljund <code>krr_outputs/municipalities_peep.json</code></td>
+          <td>Uuenda alusfaili ja käivita <code>python3 scripts/enrich_kov_layer1.py</code></td>
+        </tr>
+        <tr>
+          <td>2017 haldusreformi järglusseosed</td>
+          <td>Ajalooliste KOV väljaandjate sidumine praeguste omavalitsustega.</td>
+          <td><code>data/ehak/issuer_successor_map.csv</code>, tõendites Wikidata ja Riigi Teataja viide <code>RT I 21.06.2017 1</code></td>
+          <td><code>python3 scripts/build_kov_registry.py</code>, seejärel <code>python3 scripts/enrich_kov_layer1.py</code></td>
+        </tr>
+        <tr>
+          <td>Kohalikud kureeritud sõnastikud</td>
+          <td>Seaduste lühendid, genitiivivormid, URI migratsioonid ja generaatorite ühine JSON-LD kontekst.</td>
+          <td><code>data/law_abbreviations.json</code>, <code>scripts/estleg_common.py</code>, <code>data/uri_migration_report.json</code></td>
+          <td>Uuenda sõnastikku, käivita vastavad rikastuskihid ja valideeri kogu korpus.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Soovitatav täisuuenduse järjestus</h3>
+    <div class="flow">
+      <div class="step"><strong>1. Snapshot</strong><span>Vali õigusandmete kuupäev, nt <code>2026-05-01</code>, et väljund oleks korratav.</span></div>
+      <div class="step"><strong>2. Allikate tõmme</strong><span>Käivita seaduste, määruste, eelnõude, Riigikohtu ja EUR-Lexi generaatorid.</span></div>
+      <div class="step"><strong>3. KOV register</strong><span>Kui KOV määrused muutusid, uuenda väljaandjate ja EHAK seosed.</span></div>
+      <div class="step"><strong>4. Rikastuskihid</strong><span>Käivita <code>run_all_integration.py --validate-each</code>, mis hoiab sõltuvused järjekorras.</span></div>
+      <div class="step"><strong>5. Kontroll</strong><span>Käivita testid, SHACL ja <code>validate_all.py</code>; uuenda <code>metadata.jsonld</code>.</span></div>
+    </div>
+
+    <pre><code># Näidiskäsud täisuuenduseks
+python3 scripts/generate_all_laws.py --refresh --kehtiv 2026-05-01
+python3 scripts/generate_regulations.py --refresh --kehtiv 2026-05-01
+python3 scripts/generate_regulations.py --refresh --kehtiv 2026-05-01 --kov
+python3 scripts/generate_draft_legislation.py
+python3 scripts/generate_court_decisions.py
+python3 scripts/generate_eu_legislation.py
+python3 scripts/generate_eu_court_decisions.py
+python3 scripts/build_kov_registry.py
+python3 scripts/enrich_kov_layer1.py
+python3 scripts/run_all_integration.py --validate-each
+python3 -m pytest -q
+python3 scripts/validate_all.py</code></pre>
+  </section>
+
+  <section class="band page-break">
+    <h2>4. Ontoloogia Struktuur Ja Toimimine</h2>
+    <p>
+      Kõik põhiobjektid paiknevad <code>@graph</code> massiivides ning kasutavad ühist <code>@context</code> plokki.
+      Põhinimeruum on <code>estleg:</code>. Akti tasemel objektid kirjeldavad tervikakti; sätte tasemel objektid
+      kirjeldavad paragrahve või määruse paragrahve; rikastuskihid lisavad nende vahele uued objekt- ja andmeomadused.
+    </p>
+
+    <div class="two-col">
+      <div>
+        <h3>Akti ja sätte mudel</h3>
+        <ul>
+          <li><code>estleg:Act</code> on ülene klass Eesti kehtestatud õigusaktidele.</li>
+          <li><code>estleg:Law</code> tähistab seadusi; seadusefailides on akti sõlm ja selle sätete sõlmed.</li>
+          <li><code>estleg:NationalRegulation</code> tähistab Eesti määruseid; alamklassid on <code>GovernmentRegulation</code>, <code>MinisterialRegulation</code> ja <code>MunicipalRegulation</code>.</li>
+          <li><code>estleg:LegalProvision</code> tähistab sätteid; KOV määruse sätted saavad lisaks tüübi <code>estleg:KovProvision</code>.</li>
+          <li>Aktidel on allika- ja pealkirjaprovenants: <code>dcterms:source</code>, <code>dcterms:title</code>, <code>owl:sameAs</code>.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>KOV erikiht</h3>
+        <ul>
+          <li><code>estleg:Municipality</code> esindab praegust KOV territoriaalüksust, IRI mustriga <code>Municipality_EHAK_0000</code>.</li>
+          <li><code>estleg:Issuer</code> esindab volikogu või valitsust ja on <code>Institution</code> alamklass.</li>
+          <li>KOV akt kannab seoseid <code>enactedBy</code>, <code>enactedByMunicipality</code> ja <code>titleNormalized</code>.</li>
+          <li>KOV sisemised viited lahendatakse omavalitsuse kontekstis, et sama numbriga määrused eri valdades ei seguneks.</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Põhiseosed</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Seos / omadus</th>
+          <th>Kust kuhu</th>
+          <th>Milleks seda kasutatakse</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>estleg:references</code> / <code>referencedBy</code></td>
+          <td>Säte → säte või akt; pöördseos tagasi.</td>
+          <td>Õigusaktide ristviidete ja sõltuvuste analüüs.</td>
+        </tr>
+        <tr>
+          <td><code>estleg:issuedUnder</code> / <code>implementedBy</code></td>
+          <td>Määrus → volitusakt; volitusakt → rakendusmäärused.</td>
+          <td>Volitusnormide ja rakendusaktide jälgimine.</td>
+        </tr>
+        <tr>
+          <td><code>estleg:interpretsLaw</code> / <code>interpretedBy</code></td>
+          <td>Kohtulahend → säte või KOV akt; pöördseos normi juures.</td>
+          <td>Kohtupraktika sidumine normidega.</td>
+        </tr>
+        <tr>
+          <td><code>estleg:transposesDirective</code> / <code>transposedBy</code></td>
+          <td>Eesti säte või akt → EL direktiiv; EL direktiiv → Eesti ülevõtja.</td>
+          <td>EL õiguse ülevõtu ja harmoneerimise jälgitavus.</td>
+        </tr>
+        <tr>
+          <td><code>dcterms:subject</code></td>
+          <td>Akt → EuroVoc teema IRI.</td>
+          <td>Valdkonnapõhine otsing ja portfellivaade.</td>
+        </tr>
+        <tr>
+          <td><code>estleg:normativeType</code></td>
+          <td>Säte → kohustus, õigus, luba või keeld.</td>
+          <td>Normatiivse koormuse ja õiguste-kohustuste analüüs.</td>
+        </tr>
+        <tr>
+          <td><code>estleg:competentAuthority</code></td>
+          <td>Säte → pädev asutus või KOV väljaandja.</td>
+          <td>Järelevalve-, loa-, menetlus- ja rakendusvastutuse kaardistamine.</td>
+        </tr>
+        <tr>
+          <td><code>estleg:hasSanction</code></td>
+          <td>Säte → sanktsiooni sõlm.</td>
+          <td>Trahvide, karistuste ja sunniraha leidmine ning võrdlemine.</td>
+        </tr>
+        <tr>
+          <td><code>estleg:entryIntoForce</code>, <code>repealDate</code>, <code>temporalStatus</code></td>
+          <td>Akt → kuupäevad ja kehtivusstaatus.</td>
+          <td>Ajaline filtreerimine ja snapshot'i kontroll.</td>
+        </tr>
+        <tr>
+          <td><code>skos:exactMatch</code> / <code>closeMatch</code></td>
+          <td>Mõiste → sama või lähedane mõiste teises aktis.</td>
+          <td>Õigusmõistete konsolideerimine ja definitsioonide audit.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Rikastuskihid</h3>
+    <p>
+      Ontoloogia ei piirdu lähteteksti teisendamisega. 14 integratsioonikihti lisavad semantilisi seoseid:
+      ristviited, pöördviited, kohtulahendite seosed, EL ülevõtukaardistus, EuroVoc, muudatusajalugu, õigusmõisted,
+      eelnõude mõju, ajaline kehtivus, harmoneerimislingid, deontiline klassifikatsioon, pädevad asutused,
+      sanktsioonid ja semantiline sarnasus.
+    </p>
+    <div class="note warning">
+      Mõni kiht on heuristiline, näiteks EuroVoc klassifitseerimine ja semantiline sarnasus. Seetõttu on kvaliteediraportid
+      ja valideerimine sama tähtsad kui andmefailid ise.
+    </div>
+  </section>
+
+  <section>
+    <h2>5. Voodiagrammid: Image 2.0</h2>
+    <p>
+      Allolevad kaks voodiagrammi kasutavad Image 2.0-ga loodud pildipõhju. Täpsed eestikeelsed sildid on lisatud HTML-i
+      eraldi kihina, et vältida pildigeneraatori tekstivigu ja säilitada PDF-is loetavus.
+    </p>
+
+    <div class="figure">
+      <h3>Voodiagramm A: andmeallikatest teadmusgraafini</h3>
+      <div class="image-stage">
+        <img src="assets/ontology-overview/data-pipeline-image2.png" alt="Image 2.0 voodiagramm andmeallikatest teadmusgraafini">
+        <div class="label l-source">Avalikud allikad: Riigi Teataja, EIS, RIK/Riigikohus, EUR-Lex/CURIA, EuroVoc, EHAK</div>
+        <div class="label l-gen">Generaatorid: <code>generate_*.py</code> ja KOV registrid</div>
+        <div class="label l-val">Valideerimine: JSON-LD, indeksid, SHACL</div>
+        <div class="label l-enrich">Rikastuskihid: viited, kohtupraktika, EL, sanktsioonid, pädevus</div>
+        <div class="label l-graph">Väljund: semantiline õigusgraaf</div>
+      </div>
+      <div class="legend">
+        <div><strong>Allikas</strong><br>Avalikud registrid ja kontrollsõnastikud.</div>
+        <div><strong>ETL</strong><br>Python skriptid teisendavad XML/RSS/SPARQL tulemused JSON-LD-ks.</div>
+        <div><strong>Kvaliteedivärav</strong><br>Valideerimine katkestab vigase või osalise väljalaske.</div>
+        <div><strong>Graaf</strong><br>Aktid, sätted ja analüüsisõlmed on päringutavad RDF mudelina.</div>
+      </div>
+    </div>
+
+    <div class="figure page-break">
+      <h3>Voodiagramm B: ontoloogia sisemine struktuur</h3>
+      <div class="image-stage">
+        <img src="assets/ontology-overview/structure-graph-image2.png" alt="Image 2.0 voodiagramm ontoloogia sisemisest struktuurist">
+        <div class="label s-core">Keskne <code>estleg</code> teadmusgraaf</div>
+        <div class="label s-law">Seadused ja paragrahvid: <code>Law</code>, <code>LegalProvision</code></div>
+        <div class="label s-draft">Eelnõud: faas, tüüp, mõjutatud õigusaktid</div>
+        <div class="label s-kov">Määrused ja KOV: <code>NationalRegulation</code>, <code>Municipality</code>, <code>Issuer</code></div>
+        <div class="label s-court">Riigikohus: lahend → tõlgendatav säte või akt</div>
+        <div class="label s-eu">EL õigus: CELEX, direktiivid, määrused, ülevõtt</div>
+        <div class="label s-eucourt">EL kohtulahendid: ECLI, kohus, lahendi liik</div>
+        <div class="label s-ring">Rikastused: EuroVoc, muudatused, sanktsioonid, pädevus, aeg, sarnasus</div>
+      </div>
+      <div class="legend">
+        <div><strong>Hierarhia</strong><br>Akt → sätteklass → paragrahvisõlm.</div>
+        <div><strong>Õiguslik mõju</strong><br>Eelnõu, muudatus ja volitusnorm seotakse olemasoleva aktiga.</div>
+        <div><strong>Tõlgendus</strong><br>Kohtulahend viitab normile, mida ta tõlgendab.</div>
+        <div><strong>EL seos</strong><br>Direktiivide ja Eesti sätete vahel tekib ülevõtu- või harmoneerimislink.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band page-break">
+    <h2>6. Tulevikuvisioon</h2>
+    <div class="cards">
+      <div class="card">
+        <h3>Versioneeritud õigusajaloo mudel</h3>
+        <p>Lisada sätte- ja lõikepõhine redaktsioonimudel, et iga normi kehtivus oleks päringutav ajateljel, mitte ainult akti snapshot'i tasemel.</p>
+      </div>
+      <div class="card">
+        <h3>Täisteksti sügavam kasutamine</h3>
+        <p>Ühtlustada kõikide sätete ja kohtulahendite täisteksti kiht, et semantilised seosed ei sõltuks kokkuvõtetest ega heuristilistest väljavõtetest.</p>
+      </div>
+      <div class="card">
+        <h3>Graafi-API ja kasutajaliides</h3>
+        <p>Pakkuda SPARQL endpoint, REST/GraphQL teenus ja ametnikele mõeldud otsingu- ning mõjukaardistuse vaated.</p>
+      </div>
+      <div class="card">
+        <h3>Kvaliteedi- ja usaldusmudel</h3>
+        <p>Iga automaatselt tuvastatud seose juurde lisada meetod, tõenäosus, lähtekatkend ja inimkinnituse olek.</p>
+      </div>
+      <div class="card">
+        <h3>Automaatne väljalasketsükkel</h3>
+        <p>Ehitatav release-DAG võiks tuua allikad, rikastada andmed, jooksutada testid ja avaldada versioonitud andmepaketi.</p>
+      </div>
+      <div class="card">
+        <h3>Valdkonnapõhine eksperthooldus</h3>
+        <p>Luua ministeeriumide ja juristide ülevaatusvoog, kus nad kinnitavad mõisteid, pädevusseoseid, EL ülevõttu ja sanktsioonide tõlgendust.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>7. Kasutusjuhud Ministeeriumitele</h2>
+    <div class="usecases">
+      <div class="usecase">
+        <h3>Justiitsvaldkond: normi mõjuahel</h3>
+        <p>Enne seaduse muutmist saab automaatselt näha, millised sätted viitavad muudetavale paragrahvile, millised eelnõud seda puudutavad ja milline Riigikohtu praktika on seotud.</p>
+      </div>
+      <div class="usecase">
+        <h3>EL asjade koordineerimine</h3>
+        <p>Direktiivide ülevõtuvaade aitab leida, millised Eesti sätted on seotud konkreetse CELEX aktiga ning kus on ülevõtu või harmoneerimise lüngad.</p>
+      </div>
+      <div class="usecase">
+        <h3>KOV poliitika ja regionaalhaldus</h3>
+        <p>KOV määruseid saab võrrelda omavalitsuste, väljaandjate ja normaliseeritud pealkirjade kaupa, näiteks jäätmehoolduseeskirjade või sotsiaaltoetuste kordade ühtlustamiseks.</p>
+      </div>
+      <div class="usecase">
+        <h3>Järelevalve ja pädevuste audit</h3>
+        <p>Pädevuskaardistus näitab, millistele asutustele on seadustes ja määrustes pandud loa-, järelevalve-, menetlus- või täitmisülesanded.</p>
+      </div>
+      <div class="usecase">
+        <h3>Sanktsioonipoliitika võrdlus</h3>
+        <p>Sanktsioonide indeks võimaldab võrrelda rahatrahve, sunniraha, vangistust ja muid karistusliike valdkondade või õigusaktide lõikes.</p>
+      </div>
+      <div class="usecase">
+        <h3>Õigusloome koormuse juhtimine</h3>
+        <p>Deontiline klassifikatsioon aitab leida kohustuste, keeldude, lubade ja õiguste kontsentratsiooni, mis on kasulik halduskoormuse hindamisel.</p>
+      </div>
+      <div class="usecase">
+        <h3>Kriisi- ja siseturvalisuse õiguskaart</h3>
+        <p>Ristviited ja pädevused aitavad koondada kriisiolukorra, politsei, pääste, andmekaitse ja kohaliku tasandi normid ühte töövaatesse.</p>
+      </div>
+      <div class="usecase">
+        <h3>Avaliku teenuse tervikvaade</h3>
+        <p>Teenust reguleerivad seadused, määrused, KOV korrad, kohtupraktika ja EL aktid saab ühendada üheks päringuks, mitte otsida eri portaalidest käsitsi.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <h2>Valideerimine Ja Kvaliteediseis</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Mõõdik</th>
+          <th>Seis viimases raportis</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Valideeritud failid</td><td>21 826</td></tr>
+        <tr><td>JSON/JSON-LD vead</td><td>0</td></tr>
+        <tr><td>Hoiatused</td><td>0</td></tr>
+        <tr><td>SHACL ämbrid</td><td><code>laws</code>, <code>kov</code>, <code>riigikohus</code>, <code>drafts</code>, <code>eurlex</code>, <code>curia</code> kõik PASS</td></tr>
+        <tr><td>Sarnasuse analüüs</td><td>71 421 sätet, 101 506 paari; KOV sarnasus on eraldi tuleviku kiht</td></tr>
+      </tbody>
+    </table>
+    <p class="small">
+      Põhikontrollid: JSON süntaks, <code>@context</code>, <code>@type</code> kuju, kuupäevad, korduvad ID-d,
+      sisemiste <code>estleg:</code> viidete lahenduvus, indeksite ja tegeliku failipuu kooskõla, allika IRI kuju,
+      KOV ja riigi määruste registrid ning institutsiooninimede normaliseeritud duplikaadid.
+    </p>
+  </section>
+
+  <section>
+    <h2>Lühikokkuvõte</h2>
+    <p>
+      Ontoloogia on Eesti õigusruumi semantiline infrastruktuur: see teisendab avalikud õigusallikad teadmussõlmedeks ja
+      seosteks, mida saab kontrollida, uuendada ja pärida. Kõige suurem väärtus tekib seal, kus tavaline otsing ei piisa:
+      mõjuanalüüs, normide sõltuvused, EL ülevõtt, KOV võrdlus, kohtulahendite seosed ning pädevuste ja sanktsioonide audit.
+    </p>
+    <p>
+      Edasi arendades peaks fookus olema täpsemal ajaloolisel redaktsioonimudelil, täisteksti põhisel semantilisel eraldusel,
+      kvaliteediskooridel, ministeeriumidele mõeldud töövaadetel ja automaatsel versioonitud väljalaskel.
+    </p>
+  </section>
+
+  <div class="footer">
+    Koostatud repo <code>/Users/henrikaavik/progemoge/law-ontology</code> failide põhjal. Image 2.0 pildipõhjad:
+    <code>docs/assets/ontology-overview/data-pipeline-image2.png</code> ja
+    <code>docs/assets/ontology-overview/structure-graph-image2.png</code>.
+  </div>
+</main>
+</body>
+</html>

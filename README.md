@@ -2,6 +2,8 @@
 
 A comprehensive, machine-readable ontology of Estonian and EU legislation in JSON-LD format. Maps **enacted laws**, **draft legislation**, **domestic regulations (määrused)**, **Supreme Court decisions**, **EU legal acts**, and **EU court decisions** into a semantic knowledge graph suitable for advanced search, cross-referencing, and automated legal analysis.
 
+**Eestikeelne ülevaade:** [loe ontoloogia ülevaadet](docs/eesti-oigusontoloogia-ulevaade.html) — mis see on, kuidas see töötab, kust andmed pärinevad, kuidas seda uuendada ning kuidas ministeeriumid seda kasutada saaksid. PDF-versioon: [docs/eesti-oigusontoloogia-ulevaade.pdf](docs/eesti-oigusontoloogia-ulevaade.pdf).
+
 **Status: 615 enacted laws + 22,832 drafts + ~3,820 state regulations + 12,137 court decisions + 33,242 EU acts + 22,290 EU court decisions** | **5,200+ JSON-LD files** | **120,000+ semantic nodes**
 
 **Integration features:** Cross-law reference links | Court decision → provision links | EU directive transposition mapping | EuroVoc taxonomy | Amendment history | Legal concept graph | Deontic classification | Institutional competence | Sanction index | Semantic similarity | Temporal validity
