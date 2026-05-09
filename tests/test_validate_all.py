@@ -227,6 +227,109 @@ def test_validate_regulation_indexes_reports_count_drift(tmp_path):
     assert any("totalRegulations=0 but filesystem has 1 peep files" in err for err in validate_all.errors)
 
 
+def _provision_node(nid: str, *, cluster_as_string: bool = False, summary: str | None = "topic") -> dict:
+    node = {
+        "@id": nid,
+        "@type": ["estleg:LegalProvision"],
+        "estleg:paragrahv": "§ 1.",
+        "estleg:sourceAct": "Test Act",
+    }
+    if summary is not None:
+        node["estleg:summary"] = summary
+    cluster_value = (
+        f"estleg:Cluster_{nid}" if cluster_as_string else {"@id": f"estleg:Cluster_{nid}"}
+    )
+    node["estleg:requestedCluster"] = cluster_value
+    return node
+
+
+def _write_combined(krr: Path, nodes: list[dict]) -> None:
+    write_json(krr / "combined_ontology.jsonld", {"@graph": nodes})
+
+
+def test_validate_combined_ontology_rejects_unexpected_extra_node(tmp_path):
+    validate_all.errors.clear()
+    krr = tmp_path / "krr_outputs"
+    write_json(krr / "law_a_peep.json", {"@graph": [_provision_node("estleg:A_1")]})
+    _write_combined(
+        krr,
+        [
+            _provision_node("estleg:A_1"),
+            _provision_node("estleg:Stale_Old_1"),
+        ],
+    )
+
+    validate_all.validate_combined_ontology(krr)
+
+    assert any(
+        "stale extra IDs" in err for err in validate_all.errors
+    ), validate_all.errors
+
+
+def test_validate_combined_ontology_rejects_requested_cluster_string_drift(tmp_path):
+    validate_all.errors.clear()
+    krr = tmp_path / "krr_outputs"
+    write_json(krr / "law_a_peep.json", {"@graph": [_provision_node("estleg:A_1")]})
+    _write_combined(
+        krr,
+        [_provision_node("estleg:A_1", cluster_as_string=True)],
+    )
+
+    validate_all.validate_combined_ontology(krr)
+
+    assert any(
+        "drift from source on SHACL-sensitive fields" in err for err in validate_all.errors
+    ), validate_all.errors
+
+
+def test_validate_combined_ontology_rejects_dropped_summary(tmp_path):
+    validate_all.errors.clear()
+    krr = tmp_path / "krr_outputs"
+    write_json(krr / "law_a_peep.json", {"@graph": [_provision_node("estleg:A_1")]})
+    _write_combined(
+        krr,
+        [_provision_node("estleg:A_1", summary=None)],
+    )
+
+    validate_all.validate_combined_ontology(krr)
+
+    assert any(
+        "drift from source on SHACL-sensitive fields" in err for err in validate_all.errors
+    ), validate_all.errors
+
+
+def test_validate_combined_ontology_allows_vocabulary_only_node(tmp_path):
+    validate_all.errors.clear()
+    krr = tmp_path / "krr_outputs"
+    write_json(krr / "law_a_peep.json", {"@graph": [_provision_node("estleg:A_1")]})
+    write_json(
+        krr / "controlled_vocabulary.jsonld",
+        {"@graph": [{"@id": "estleg:Act", "@type": ["owl:Class"]}]},
+    )
+    _write_combined(
+        krr,
+        [
+            _provision_node("estleg:A_1"),
+            {"@id": "estleg:Act", "@type": ["owl:Class"]},
+        ],
+    )
+
+    validate_all.validate_combined_ontology(krr)
+
+    assert validate_all.errors == [], validate_all.errors
+
+
+def test_validate_combined_ontology_passes_on_clean_corpus(tmp_path):
+    validate_all.errors.clear()
+    krr = tmp_path / "krr_outputs"
+    write_json(krr / "law_a_peep.json", {"@graph": [_provision_node("estleg:A_1")]})
+    _write_combined(krr, [_provision_node("estleg:A_1")])
+
+    validate_all.validate_combined_ontology(krr)
+
+    assert validate_all.errors == [], validate_all.errors
+
+
 def test_validate_institution_duplicates_reports_normalized_label_collision(tmp_path):
     validate_all.errors.clear()
     inst = tmp_path / "krr_outputs" / "institutions"

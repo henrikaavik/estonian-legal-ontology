@@ -25,6 +25,27 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
 EXPECTED_NS = "https://data.riik.ee/ontology/estleg#"
 
+# Root-level JSON-LD files that are canonical inputs to
+# `combined_ontology.jsonld` alongside every `*_peep.json`. Kept in sync
+# with `scripts/fix_all_issues.COMBINED_ALLOWED_JSONLD`.
+COMBINED_ALLOWED_JSONLD = (
+    "controlled_vocabulary.jsonld",
+    "karistusseadustik_eriosa_owl.jsonld",
+    "tsus_osa7_138_169_owl.jsonld",
+)
+
+# SHACL-sensitive provision fields that Seadusloome's ontology load path
+# validates. Drift in any of these between source `*_peep.json` and the
+# combined artifact reproduces consumer-side warnings, so the parity
+# check rejects them before publication.
+PROVISION_PARITY_FIELDS = (
+    "@type",
+    "estleg:paragrahv",
+    "estleg:sourceAct",
+    "estleg:summary",
+    "estleg:requestedCluster",
+)
+
 EXCLUDE_PREFIXES = (
     "INDEX",
     "combined_",
@@ -620,6 +641,77 @@ def validate_vocabulary_coverage(files: list[Path]):
         print(f"  OK: {len(used_predicates)} predicates and {len(used_classes)} classes are covered")
 
 
+def collect_source_nodes(krr_dir: Path = KRR_DIR) -> tuple[dict[str, dict], set[str], list[Path]]:
+    """Return (id -> source node, allowlisted IDs, source file list).
+
+    Source = every root `*_peep.json` plus the explicit canonical
+    JSON-LD allowlist (vocabulary + standalone OWL serializations). The
+    second element is the set of IDs contributed only by the allowlisted
+    JSON-LD files so the parity check can permit those without flagging
+    them as missing-from-source.
+    """
+    source_nodes: dict[str, dict] = {}
+    allowlist_ids: set[str] = set()
+    files: list[Path] = sorted(krr_dir.glob("*_peep.json"))
+    for path in files:
+        doc = validate_json_syntax(path)
+        if not isinstance(doc, dict):
+            continue
+        for node in doc.get("@graph", []):
+            if not isinstance(node, dict):
+                continue
+            nid = node.get("@id")
+            if isinstance(nid, str) and nid:
+                source_nodes.setdefault(nid, node)
+
+    for name in COMBINED_ALLOWED_JSONLD:
+        path = krr_dir / name
+        if not path.exists():
+            continue
+        files.append(path)
+        doc = validate_json_syntax(path)
+        if not isinstance(doc, dict):
+            continue
+        for node in doc.get("@graph", []):
+            if not isinstance(node, dict):
+                continue
+            nid = node.get("@id")
+            if isinstance(nid, str) and nid:
+                source_nodes.setdefault(nid, node)
+                allowlist_ids.add(nid)
+    return source_nodes, allowlist_ids, files
+
+
+def _normalize_parity_value(value):
+    """Normalize a JSON-LD value so equality compares semantics, not order.
+
+    Lists are compared as a stable representation that preserves the
+    distinction between a string literal and a `{"@id": "..."}` object —
+    that is the exact distinction that produces SHACL `nodeKind` warnings
+    when the combined artifact drifts from its sources.
+    """
+    if isinstance(value, list):
+        return sorted(
+            (json.dumps(_normalize_parity_value(item), sort_keys=True, ensure_ascii=False)
+             for item in value)
+        )
+    if isinstance(value, dict):
+        return {k: _normalize_parity_value(v) for k, v in value.items()}
+    return value
+
+
+def _parity_field_drift(source_node: dict, combined_node: dict) -> list[str]:
+    drift: list[str] = []
+    for field in PROVISION_PARITY_FIELDS:
+        if field not in source_node and field not in combined_node:
+            continue
+        src_value = _normalize_parity_value(source_node.get(field))
+        comb_value = _normalize_parity_value(combined_node.get(field))
+        if src_value != comb_value:
+            drift.append(field)
+    return drift
+
+
 def validate_combined_ontology(krr_dir: Path = KRR_DIR):
     print("\n--- Combined Ontology Artifact ---")
     combined_path = krr_dir / "combined_ontology.jsonld"
@@ -630,25 +722,64 @@ def validate_combined_ontology(krr_dir: Path = KRR_DIR):
     combined_doc = validate_json_syntax(combined_path)
     if combined_doc is None:
         return
-    combined_ids = graph_ids(combined_doc)
 
-    source_files = sorted(krr_dir.glob("*_peep.json"))
-    source_ids: set[str] = set()
-    max_source_mtime = 0.0
-    for path in source_files:
-        max_source_mtime = max(max_source_mtime, path.stat().st_mtime)
-        doc = validate_json_syntax(path)
-        if isinstance(doc, dict):
-            source_ids.update(graph_ids(doc))
+    combined_nodes: dict[str, dict] = {}
+    for node in combined_doc.get("@graph", []):
+        if isinstance(node, dict):
+            nid = node.get("@id")
+            if isinstance(nid, str) and nid:
+                combined_nodes.setdefault(nid, node)
+    combined_ids = set(combined_nodes)
+
+    source_nodes, allowlist_ids, source_files = collect_source_nodes(krr_dir)
+    source_ids = set(source_nodes)
 
     missing = source_ids - combined_ids
     if missing:
         error(f"combined_ontology.jsonld: missing {len(missing)} source graph IDs")
         for node_id in sorted(missing)[:20]:
             print(f"    missing from combined: {node_id}")
+
+    extras = combined_ids - source_ids - allowlist_ids
+    if extras:
+        error(
+            f"combined_ontology.jsonld: {len(extras)} stale extra IDs "
+            f"not present in any canonical source"
+        )
+        for node_id in sorted(extras)[:20]:
+            print(f"    stale extra in combined: {node_id}")
+        if len(extras) > 20:
+            print(f"    ... and {len(extras) - 20} more")
+
+    drift_samples: dict[str, list[str]] = {field: [] for field in PROVISION_PARITY_FIELDS}
+    drift_count = 0
+    for nid in sorted(source_ids & combined_ids):
+        drift_fields = _parity_field_drift(source_nodes[nid], combined_nodes[nid])
+        if not drift_fields:
+            continue
+        drift_count += 1
+        for field in drift_fields:
+            if len(drift_samples[field]) < 5:
+                drift_samples[field].append(nid)
+    if drift_count:
+        error(
+            f"combined_ontology.jsonld: {drift_count} shared provision IDs "
+            f"drift from source on SHACL-sensitive fields"
+        )
+        for field, ids in drift_samples.items():
+            if ids:
+                print(f"    drift in {field}: {', '.join(ids)}")
+
+    max_source_mtime = max(
+        (path.stat().st_mtime for path in source_files),
+        default=0.0,
+    )
     if max_source_mtime and combined_path.stat().st_mtime < max_source_mtime:
-        error("combined_ontology.jsonld: older than at least one source *_peep.json file")
-    print(f"  Checked combined_ontology.jsonld against {len(source_files)} root source files")
+        error("combined_ontology.jsonld: older than at least one canonical source file")
+    print(
+        f"  Checked combined_ontology.jsonld against {len(source_files)} canonical source files "
+        f"({len(allowlist_ids)} allowlisted vocabulary IDs)"
+    )
 
 
 _ESTONIAN_TRANSLITERATION = str.maketrans({

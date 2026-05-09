@@ -26,6 +26,17 @@ KRR_DIR = REPO_ROOT / "krr_outputs"
 OLD_NS = "https://example.org/estonian-legal#"
 NEW_NS = "https://data.riik.ee/ontology/estleg#"
 
+# Root-level non-`*_peep.json` JSON-LD files that are canonical inputs to
+# `combined_ontology.jsonld`. Anything outside this list (including
+# `combined_ontology.jsonld` itself, INDEX/aggregate/report files, and
+# generator outputs) must NEVER be re-ingested.
+COMBINED_ALLOWED_JSONLD = (
+    "controlled_vocabulary.jsonld",
+    "karistusseadustik_eriosa_owl.jsonld",
+    "tsus_osa7_138_169_owl.jsonld",
+)
+COMBINED_OUTPUT_NAME = "combined_ontology.jsonld"
+
 # Multi-valued properties that should always be arrays
 MULTI_VALUED_PROPS = {
     "estleg:coversConcept", "coversConcept",
@@ -398,8 +409,28 @@ def generate_index():
     print(f"  Generated {index_path.name} with {len(laws)} laws")
 
 
-def generate_combined_jsonld():
-    """Generate combined JSON-LD file (Issue #26)."""
+def canonical_combined_inputs(krr_dir: Path = KRR_DIR) -> list[Path]:
+    """Return the canonical input list for combined_ontology.jsonld.
+
+    The combined artifact is built from:
+      - every root `*_peep.json` source file, and
+      - the explicit allowlist in COMBINED_ALLOWED_JSONLD (vocabulary +
+        standalone OWL serializations).
+
+    `combined_ontology.jsonld` itself is never an input to its own build;
+    aggregate/report/index files (`INDEX.json`, `*_report.json`,
+    `*_summary.json`, `*_INDEX.json`, etc.) are outputs, not sources.
+    """
+    inputs: list[Path] = sorted(krr_dir.glob("*_peep.json"))
+    for name in COMBINED_ALLOWED_JSONLD:
+        path = krr_dir / name
+        if path.exists():
+            inputs.append(path)
+    return inputs
+
+
+def generate_combined_jsonld(krr_dir: Path = KRR_DIR):
+    """Generate combined JSON-LD file (Issue #26, DQ-1)."""
     print("\n=== Generating combined JSON-LD ===")
 
     combined_context = {
@@ -413,43 +444,43 @@ def generate_combined_jsonld():
         "schema": "http://schema.org/",
     }
 
-    all_nodes = []
-    seen_ids = set()
+    all_nodes: list[dict] = []
+    seen_ids: set[str] = set()
+    out_path = krr_dir / COMBINED_OUTPUT_NAME
 
-    for filepath in sorted(KRR_DIR.glob("*_peep.json")):
+    for filepath in canonical_combined_inputs(krr_dir):
+        if filepath.name == COMBINED_OUTPUT_NAME:
+            # Defensive guard. canonical_combined_inputs() never returns the
+            # combined output file, but make doubly sure we never read it
+            # back into itself even if the input list is hand-extended.
+            continue
         try:
             with open(filepath, "r", encoding="utf-8") as f:
                 doc = json.load(f)
-            if "@graph" in doc:
-                for node in doc["@graph"]:
-                    nid = node.get("@id", "")
-                    if nid not in seen_ids:
-                        all_nodes.append(node)
-                        seen_ids.add(nid)
         except (json.JSONDecodeError, UnicodeDecodeError):
             continue
-
-    for filepath in sorted(KRR_DIR.glob("*.jsonld")):
-        try:
-            with open(filepath, "r", encoding="utf-8") as f:
-                doc = json.load(f)
-            if "@graph" in doc:
-                for node in doc["@graph"]:
-                    nid = node.get("@id", "")
-                    if nid not in seen_ids:
-                        all_nodes.append(node)
-                        seen_ids.add(nid)
-        except (json.JSONDecodeError, UnicodeDecodeError):
+        graph = doc.get("@graph")
+        if not isinstance(graph, list):
             continue
+        for node in graph:
+            if not isinstance(node, dict):
+                continue
+            nid = node.get("@id", "")
+            if not nid or nid in seen_ids:
+                continue
+            all_nodes.append(node)
+            seen_ids.add(nid)
 
     combined = {
         "@context": combined_context,
         "@graph": all_nodes,
     }
 
-    out_path = KRR_DIR / "combined_ontology.jsonld"
     save_json(out_path, combined)
-    print(f"  Generated {out_path.name} with {len(all_nodes)} nodes from {len(seen_ids)} unique IDs")
+    print(
+        f"  Generated {out_path.name} with {len(all_nodes)} nodes "
+        f"from {len(seen_ids)} unique IDs"
+    )
 
 
 def main():

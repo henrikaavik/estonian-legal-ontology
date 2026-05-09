@@ -541,6 +541,58 @@ python3 scripts/validate_all.py
 CI runs tests and validation for changes to scripts, tests, SHACL, metadata,
 workflow files, docs, and ontology outputs.
 
+### Canonical artifacts
+
+The following artifacts are authoritative for downstream consumers and the
+release pipeline:
+
+- **Source files (edit here):** every root `krr_outputs/*_peep.json` plus
+  `krr_outputs/controlled_vocabulary.jsonld`,
+  `krr_outputs/karistusseadustik_eriosa_owl.jsonld`, and
+  `krr_outputs/tsus_osa7_138_169_owl.jsonld`. These are the canonical
+  per-act mappings.
+- **Sub-corpora (edit per generator):** `krr_outputs/eelnoud/`,
+  `krr_outputs/riigikohus/`, `krr_outputs/curia/`, and
+  `krr_outputs/eurlex/`. Seadusloome consumes these alongside the
+  combined aggregate.
+- **Generated aggregate (do not edit by hand):**
+  `krr_outputs/combined_ontology.jsonld`. Regenerate it via
+  `scripts/fix_all_issues.py` (the `generate_combined_jsonld()` step) so
+  it stays in lockstep with the source files. Editing it directly will
+  reintroduce the drift the Seadusloome zero-warning gate exists to
+  catch.
+
+### Validation and release order
+
+Run these steps in order before publishing or merging release-grade
+ontology changes:
+
+1. Build or regenerate canonical artifacts
+   (`python3 scripts/fix_all_issues.py` or the targeted generators).
+2. Validate sources and combined parity
+   (`python3 scripts/validate_all.py`).
+3. Run full bucket SHACL
+   (`python3 scripts/shacl_validate_all.py --all`, or per bucket via
+   `--bucket <name>`).
+4. Run the Seadusloome zero-warning gate
+   (`python3 scripts/validate_seadusloome_sync.py`).
+5. Refresh metadata and documentation counts
+   (`docs/VALIDATION_REPORT.md`, `metadata.jsonld`) if the release
+   artifacts changed.
+
+### Seadusloome zero-warning policy
+
+Seadusloome consumers must see zero SHACL warnings on the published
+branch. `scripts/validate_seadusloome_sync.py` mirrors the Seadusloome
+load path (root `*_peep.json` files, the listed JSON-LD vocabularies,
+the four sub-corpora, and `combined_ontology.jsonld`) and exits non-zero
+if any warning or violation is observed. The gate runs on every pull
+request and on `main` pushes via the
+`Seadusloome zero-warning gate` job in
+`.github/workflows/validate.yml`. The bucket SHACL job remains
+authoritative for class-by-class semantic checks; the new gate is the
+release contract for downstream sync.
+
 ## Refreshing Data
 
 ```bash

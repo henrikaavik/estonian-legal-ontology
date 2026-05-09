@@ -69,6 +69,40 @@ Every SHACL bucket includes the controlled vocabulary/fallback-node graph so cro
 
 Similarity output now contains 71,421 analyzed provisions, 101,506 pairs, and updates 3,475 JSON-LD files.
 
+## Seadusloome Zero-Warning Gate
+
+`scripts/validate_seadusloome_sync.py` mirrors the Seadusloome `main` sync load path and enforces a zero-warning policy on the published ontology.
+
+- **Load set:** every root `krr_outputs/*_peep.json`,
+  `krr_outputs/controlled_vocabulary.jsonld`,
+  `krr_outputs/karistusseadustik_eriosa_owl.jsonld`,
+  `krr_outputs/tsus_osa7_138_169_owl.jsonld`,
+  the four sub-corpora (`eelnoud/`, `riigikohus/`, `curia/`, `eurlex/`),
+  and `krr_outputs/combined_ontology.jsonld`. This is the same set that
+  Seadusloome ingests when it clones the ontology repository on `main`.
+- **Validator:** pyshacl with `inference="none"` against
+  `shacl/estonian_legal_shapes.ttl`. The Seadusloome consumer does not
+  apply RDFS inference, so the gate intentionally diverges from the
+  bucket validator (`scripts/shacl_validate_all.py`), which uses
+  `inference="rdfs"` to derive class memberships before checking shape
+  targets.
+- **Expectation:** zero SHACL warnings and zero SHACL violations.
+  `--max-warnings` defaults to `0`. Exit codes: `0` clean, `1` warnings
+  or violations exceed the threshold, `2` parse failures.
+- **Relation to bucket SHACL:** the bucket validator catches semantic
+  defects per class with inferred types; the Seadusloome gate catches
+  defects that are visible to a downstream consumer that does not apply
+  inference, including stale aggregate drift in
+  `combined_ontology.jsonld`. Both gates must pass on release.
+- **CI wiring:** the `Seadusloome zero-warning gate` job in
+  `.github/workflows/validate.yml` runs on every pull request and `main`
+  push. The job uploads the rdflib turtle SHACL report as
+  `seadusloome-shacl-report` on failure for offline triage. The full
+  load (~57 inputs and ~1.1M triples, ~60s on contemporary hardware) is
+  acceptable for the existing CI runner; if corpus growth makes the gate
+  too slow for per-PR execution, demote it to release-only via
+  `.github/workflows/validate.yml`.
+
 ## Known Remaining Issues
 
-No validation-blocking issues are known in the remediated scope. The current corpus passes `scripts/validate_all.py`, unit tests, whitespace checks, and all configured SHACL buckets.
+No validation-blocking issues are known in the remediated scope. The current corpus passes `scripts/validate_all.py`, unit tests, whitespace checks, all configured SHACL buckets, and the Seadusloome zero-warning gate.

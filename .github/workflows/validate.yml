@@ -78,3 +78,28 @@ jobs:
 
       - name: Run targeted SHACL validation
         run: python3 scripts/shacl_validate_all.py --bucket "${{ matrix.bucket }}"
+
+  seadusloome-zero-warning:
+    name: Seadusloome zero-warning gate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: python3 -m pip install -e ".[dev]"
+
+      - name: Run Seadusloome zero-warning SHACL gate
+        run: python3 scripts/validate_seadusloome_sync.py --report seadusloome-shacl-report.ttl
+
+      - name: Upload SHACL report on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: seadusloome-shacl-report
+          path: seadusloome-shacl-report.ttl
+          if-no-files-found: ignore
