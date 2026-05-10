@@ -16,10 +16,10 @@ from __future__ import annotations
 import json
 import re
 from collections import defaultdict
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
-from estleg_common import iter_peep_files, jsonld_text
+from estleg_common import iter_peep_files, jsonld_text, save_json
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
@@ -84,12 +84,6 @@ def is_boilerplate(text: str) -> bool:
         if pat.search(text):
             return True
     return False
-
-
-def save_json(filepath: Path, doc: dict | list):
-    with open(filepath, "w", encoding="utf-8") as f:
-        json.dump(doc, f, ensure_ascii=False, indent=2)
-        f.write("\n")
 
 
 def extract_keywords(text: str) -> set[str]:
@@ -213,7 +207,7 @@ def extract_provisions_from_file(fpath: Path) -> tuple[list[dict], str | None]:
         if is_boilerplate(summary):
             continue
 
-        keywords = extract_keywords(summary) | extract_keywords(label)
+        keywords = extract_keywords(summary)
 
         if len(keywords) >= MIN_SHARED_KEYWORDS:
             provisions.append({
@@ -301,7 +295,7 @@ def main():
                 best_similar.append((sim, j))
 
         # Keep top N similar provisions
-        best_similar.sort(reverse=True)
+        best_similar.sort(key=lambda item: (-item[0], provisions[item[1]]["id"]))
         for sim, j in best_similar[:MAX_SIMILAR_PER_PROVISION]:
             prov_b = provisions[j]
             similarity_pairs.append({
@@ -316,18 +310,19 @@ def main():
             })
             processed += 1
 
+    similarity_pairs.sort(key=lambda p: (p["source"], p["target"]))
     print(f"  Found {len(similarity_pairs)} similarity pairs")
 
     # Save similarity index
     print("\n[4/4] Saving outputs...")
     index_path = KRR_DIR / "similarity_index.json"
     save_json(index_path, {
-        "generated": datetime.now().strftime("%Y-%m-%d"),
+        "generated": datetime.now(timezone.utc).date().isoformat(),
         "relation_semantics": "candidate",
         "algorithm": {
             "name": "keyword_jaccard",
             "version": "1",
-            "source_fields": ["estleg:summary", "rdfs:label"],
+            "source_fields": ["estleg:summary"],
         },
         "quality_evaluation": {
             "status": "not_evaluated",
@@ -343,23 +338,7 @@ def main():
     })
     print(f"  Saved: {index_path.name} ({len(similarity_pairs)} pairs)")
 
-    # Clearing pass: remove stale estleg:semanticallySimilarTo from all peep files
-    for fpath in iter_peep_files(include_kov=False):  # DEFERRED to Layer 3
-        try:
-            with open(fpath, "r", encoding="utf-8") as f:
-                doc = json.load(f)
-        except (json.JSONDecodeError, FileNotFoundError):
-            continue
-        modified = False
-        for node in doc.get("@graph", []):
-            if "estleg:semanticallySimilarTo" in node:
-                del node["estleg:semanticallySimilarTo"]
-                modified = True
-        if modified:
-            save_json(fpath, doc)
-
-    # Update JSON-LD files with similarity links
-    # Group pairs by source file
+    # Update JSON-LD files with similarity links in one write per touched file.
     prov_id_to_file = {p["id"]: p["file"] for p in provisions}
     file_updates: dict[str, dict[str, list[str]]] = defaultdict(lambda: defaultdict(list))
     for pair in similarity_pairs:
@@ -368,8 +347,9 @@ def main():
             file_updates[src_file][pair["source"]].append(pair["target"])
 
     updated_files = 0
-    for filename, node_updates in file_updates.items():
-        fpath = KRR_DIR / filename
+    candidate_files = {relative_output_path(path): path for path in iter_peep_files(include_kov=False)}
+    for filename, fpath in candidate_files.items():
+        node_updates = file_updates.get(filename, {})
         try:
             with open(fpath, "r", encoding="utf-8") as f:
                 doc = json.load(f)
@@ -379,8 +359,11 @@ def main():
         modified = False
         for node in doc.get("@graph", []):
             node_id = node.get("@id", "")
+            if "estleg:semanticallySimilarTo" in node:
+                del node["estleg:semanticallySimilarTo"]
+                modified = True
             if node_id in node_updates:
-                targets = node_updates[node_id]
+                targets = sorted(node_updates[node_id])
                 node["estleg:semanticallySimilarTo"] = [{"@id": t} for t in targets]
                 modified = True
 
@@ -392,12 +375,12 @@ def main():
 
     # Generate report
     report = {
-        "generated": datetime.now().strftime("%Y-%m-%d"),
+        "generated": datetime.now(timezone.utc).date().isoformat(),
         "relation_semantics": "candidate",
         "algorithm": {
             "name": "keyword_jaccard",
             "version": "1",
-            "source_fields": ["estleg:summary", "rdfs:label"],
+            "source_fields": ["estleg:summary"],
         },
         "quality_evaluation": {
             "status": "not_evaluated",

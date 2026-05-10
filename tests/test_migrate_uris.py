@@ -1,6 +1,11 @@
 """Tests for migrate_uris.py — Tasks 1-4."""
 import pytest
-from migrate_uris import auto_derive_abbreviation, build_rename_map, PAR_NO_UNDERSCORE_RE
+from migrate_uris import (
+    PAR_NO_UNDERSCORE_RE,
+    apply_renames_to_file,
+    auto_derive_abbreviation,
+    build_rename_map,
+)
 
 
 class TestAutoDerive:
@@ -127,3 +132,36 @@ class TestBuildRenameMap:
         f.write_text('{"@id": "estleg:VOS_Par271"}')
         rename_map = build_rename_map(sample_registry, scan_paths=[f])
         assert rename_map["estleg:VOS_Par271"] == "estleg:VOS_Par_271"
+
+
+class TestApplyRenames:
+    def test_does_not_replace_inside_longer_iri_token(self, tmp_path):
+        f = tmp_path / "test.json"
+        f.write_text('"estleg:OLD" "estleg:OLD_SUFFIX"', encoding="utf-8")
+
+        count = apply_renames_to_file(f, [("estleg:OLD", "estleg:NEW")])
+
+        assert count == 1
+        assert f.read_text(encoding="utf-8") == '"estleg:NEW" "estleg:OLD_SUFFIX"'
+
+    def test_python_files_are_not_rewritten_by_default(self, tmp_path):
+        f = tmp_path / "test.py"
+        f.write_text('IRI = "estleg:OLD"', encoding="utf-8")
+
+        count = apply_renames_to_file(f, [("estleg:OLD", "estleg:NEW")])
+
+        assert count == 0
+        assert "estleg:OLD" in f.read_text(encoding="utf-8")
+
+    def test_python_files_require_explicit_flag(self, tmp_path):
+        f = tmp_path / "test.py"
+        f.write_text('IRI = "estleg:OLD"', encoding="utf-8")
+
+        count = apply_renames_to_file(
+            f,
+            [("estleg:OLD", "estleg:NEW")],
+            rewrite_python=True,
+        )
+
+        assert count == 1
+        assert "estleg:NEW" in f.read_text(encoding="utf-8")

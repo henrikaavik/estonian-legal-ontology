@@ -1,9 +1,9 @@
 """Discovery and output-path tests for classify_eurovoc."""
 from __future__ import annotations
 
+from pathlib import Path
 import json
 import sys
-from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 
@@ -62,6 +62,27 @@ class TestReadActMetadataFromPeep:
         # IRI prefix exclusion — read_act_metadata_from_peep returns
         # None and the file is skipped.
         assert _read_act_metadata(registry) is None
+
+    def test_raises_parse_error_for_malformed_json(self, tmp_path):
+        from classify_eurovoc import PeepMetadataParseError
+
+        bad = tmp_path / "bad_peep.json"
+        bad.write_text("{not json", encoding="utf-8")
+
+        try:
+            _read_act_metadata(bad)
+        except PeepMetadataParseError as exc:
+            assert "bad_peep.json" in str(exc)
+        else:
+            raise AssertionError("expected PeepMetadataParseError")
+
+
+def test_extract_text_normalizes_to_nfc_casefold():
+    from classify_eurovoc import extract_text_from_law
+
+    text = extract_text_from_law({"@graph": [{"estleg:summary": "O\u0303IGUS TÖÖ"}]})
+
+    assert text == "õigus töö"
 
     def test_skips_issuer_registry_file(self, tmp_path):
         registry = tmp_path / "issuers_kov_peep.json"

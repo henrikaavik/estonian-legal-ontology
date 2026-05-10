@@ -15,7 +15,6 @@ This module exposes the pieces that are identical between both pipelines.
 from __future__ import annotations
 
 import html
-import json
 import re
 import time
 import xml.etree.ElementTree as ET
@@ -24,7 +23,7 @@ from typing import Iterator
 
 import requests
 
-from estleg_common import KRR_DIR, iter_peep_files  # re-exported for callers  # noqa: F401
+from estleg_common import KRR_DIR, iter_peep_files, save_json as _save_json  # noqa: F401
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR = REPO_ROOT / "data" / "riigiteataja"
@@ -114,10 +113,7 @@ def collect_full_text(el: ET.Element) -> str:
 
 
 def save_json(filepath: Path, doc: dict) -> None:
-    filepath.parent.mkdir(parents=True, exist_ok=True)
-    with open(filepath, "w", encoding="utf-8") as f:
-        json.dump(doc, f, ensure_ascii=False, indent=2)
-        f.write("\n")
+    _save_json(filepath, doc)
 
 
 def fetch_acts(

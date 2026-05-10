@@ -42,6 +42,8 @@ _TRANSLIT_TABLE = str.maketrans(_ESTONIAN_TRANSLITERATION)
 ESTLEG_RE = re.compile(r"estleg:[A-Za-z0-9_]+")
 PAR_NO_UNDERSCORE_RE = re.compile(r"_Par(\d)")
 SHORT_PREFIX_THRESHOLD = 12
+DEFAULT_REWRITE_SUFFIXES = {".json", ".jsonld", ".ttl", ".md"}
+TOKEN_BOUNDARY_RE = r"(?<![A-Za-z0-9_])({})(?![A-Za-z0-9_])"
 
 
 # ── Task 2: auto_derive_abbreviation ──────────────────────────────────────────
@@ -379,9 +381,16 @@ def dry_run_cmd() -> None:
 
 
 def apply_renames_to_file(
-    filepath: Path, sorted_renames: list[tuple[str, str]]
+    filepath: Path,
+    sorted_renames: list[tuple[str, str]],
+    *,
+    rewrite_python: bool = False,
 ) -> int:
     """Apply URI renames to a single file. Returns count of replacements made."""
+    if filepath.suffix == ".py" and not rewrite_python:
+        return 0
+    if filepath.suffix != ".py" and filepath.suffix not in DEFAULT_REWRITE_SUFFIXES:
+        return 0
     try:
         content = filepath.read_text(encoding="utf-8")
     except (OSError, UnicodeDecodeError):
@@ -390,13 +399,16 @@ def apply_renames_to_file(
     original = content
     found_iris = set(ESTLEG_RE.findall(content))
     relevant = [(old, new) for old, new in sorted_renames if old in found_iris]
+    if not relevant:
+        return 0
 
-    for old_iri, new_iri in relevant:
-        content = content.replace(old_iri, new_iri)
+    rename_lookup = dict(relevant)
+    pattern = re.compile(TOKEN_BOUNDARY_RE.format("|".join(re.escape(old) for old, _ in relevant)))
+    content, replacements = pattern.subn(lambda m: rename_lookup[m.group(1)], content)
 
     if content != original:
         filepath.write_text(content, encoding="utf-8")
-        return len(relevant)
+        return replacements
     return 0
 
 
@@ -426,7 +438,7 @@ def verify_migration(rename_map: dict[str, str]) -> tuple[bool, list[str]]:
     return len(issues) == 0, issues
 
 
-def apply_cmd() -> None:
+def apply_cmd(*, rewrite_python: bool = False) -> None:
     """Apply the URI migration to all files."""
     print("=" * 70)
     print("Phase 3: Applying migration")
@@ -459,7 +471,7 @@ def apply_cmd() -> None:
     total_renames_applied = 0
 
     for fp in files:
-        count = apply_renames_to_file(fp, sorted_renames)
+        count = apply_renames_to_file(fp, sorted_renames, rewrite_python=rewrite_python)
         if count > 0:
             total_files_changed += 1
             total_renames_applied += count
@@ -493,12 +505,17 @@ def main() -> None:
         choices=["build-registry", "dry-run", "apply"],
         help="Command to run: build-registry, dry-run, or apply",
     )
+    parser.add_argument(
+        "--rewrite-python",
+        action="store_true",
+        help="Allow apply to rewrite hardcoded estleg IRIs in Python files.",
+    )
     args = parser.parse_args()
 
     dispatch = {
         "build-registry": build_registry_cmd,
         "dry-run": dry_run_cmd,
-        "apply": apply_cmd,
+        "apply": lambda: apply_cmd(rewrite_python=args.rewrite_python),
     }
     dispatch[args.command]()
 

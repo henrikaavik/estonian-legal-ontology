@@ -9,7 +9,9 @@ extract_court_provision_links.py so they stay in sync.
 from __future__ import annotations
 
 import json
+import os
 import re
+import tempfile
 import xml.etree.ElementTree as ET
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -295,7 +297,7 @@ def _safe_load(path: Path, counters: _RunCounters) -> dict | None:
     try:
         with open(path, encoding="utf-8") as fh:
             return json.load(fh)
-    except (json.JSONDecodeError, OSError) as exc:
+    except (ValueError, OSError) as exc:
         if path not in counters.seen_error_paths:
             counters.seen_error_paths.add(path)
             counters.bump_skip(
@@ -313,7 +315,7 @@ def _safe_load(path: Path, counters: _RunCounters) -> dict | None:
 #   §, §§, §-de, §-des, §-d, §-s, §-st, §-le, §-i, §-ga
 # Also accepts non-breaking hyphen (\u2011).
 # ---------------------------------------------------------------------------
-PAR_SUFFIX = r"§(?:§|[\-\u2011](?:de(?:s)?|d|s|st|le|i|ga))?"
+PAR_SUFFIX = r"§§?(?:[\-\u2011](?:de(?:s)?|d|s|st|le|i|ga))?"
 
 
 # ---------------------------------------------------------------------------
@@ -327,11 +329,21 @@ KRR_DIR = REPO_ROOT / "krr_outputs"
 # Helper functions
 # ---------------------------------------------------------------------------
 
-def save_json(filepath: Path, doc: dict) -> None:
+def save_json(filepath: Path, doc: dict | list) -> None:
     """Write JSON-LD document to file with consistent formatting."""
-    with open(filepath, "w", encoding="utf-8") as f:
+    filepath.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.NamedTemporaryFile(
+        "w",
+        encoding="utf-8",
+        dir=filepath.parent,
+        prefix=f".{filepath.name}.",
+        suffix=".tmp",
+        delete=False,
+    ) as f:
         json.dump(doc, f, ensure_ascii=False, indent=2)
         f.write("\n")
+        tmp_name = f.name
+    os.replace(tmp_name, filepath)
 
 
 def iter_peep_files(
@@ -360,7 +372,7 @@ def iter_peep_files(
             kov_dir = KRR_DIR / "regulations" / "kov"
             if kov_dir.exists():
                 files.extend(kov_dir.glob("**/*_peep.json"))
-    return sorted(files)
+    return sorted(files, key=lambda p: str(p.relative_to(KRR_DIR)).casefold())
 
 
 def build_globalid_xml_lookup(rt_root: Path) -> dict[str, Path]:
@@ -375,7 +387,7 @@ def build_globalid_xml_lookup(rt_root: Path) -> dict[str, Path]:
     lookup: dict[str, Path] = {}
     if not rt_root.is_dir():
         return lookup
-    for xml_path in rt_root.rglob("*.xml"):
+    for xml_path in sorted(rt_root.rglob("*.xml"), key=lambda p: str(p.relative_to(rt_root)).casefold()):
         try:
             tree = ET.parse(str(xml_path))
         except ET.ParseError:
@@ -401,7 +413,15 @@ def build_globalid_xml_lookup(rt_root: Path) -> dict[str, Path]:
                     gid = gid_el.text.strip()
                     break
         if gid:
-            lookup[str(gid)] = xml_path
+            gid = str(gid)
+            if gid in lookup:
+                print(
+                    "WARN: duplicate globalId "
+                    f"{gid} in {lookup[gid].relative_to(rt_root)} and {xml_path.relative_to(rt_root)}; "
+                    "keeping first"
+                )
+                continue
+            lookup[gid] = xml_path
     return lookup
 
 
@@ -410,6 +430,7 @@ def pair_peep_with_xml(
     lookup: dict[str, Path],
     *,
     data_dir: Path | None = None,
+    counters: _RunCounters | None = None,
 ) -> Path | None:
     """Pair a peep file to its XML.
 
@@ -433,7 +454,14 @@ def pair_peep_with_xml(
     try:
         with open(peep_path, "r", encoding="utf-8") as fh:
             doc = json.load(fh)
-    except (json.JSONDecodeError, OSError):
+    except (ValueError, OSError) as exc:
+        if counters is not None and peep_path not in counters.seen_error_paths:
+            counters.seen_error_paths.add(peep_path)
+            counters.bump_skip(
+                "json_decode_error",
+                f"json_decode_error | {peep_path.name} | "
+                f"{type(exc).__name__}: {str(exc)[:80]}",
+            )
         return None
     gid = None
     for node in doc.get("@graph", []):

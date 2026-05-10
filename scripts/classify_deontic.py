@@ -62,7 +62,6 @@ RIGHT_PATTERNS = [
     (re.compile(r"\bõigus on\b", re.IGNORECASE), 3),
     (re.compile(r"\bon õigustatud\b", re.IGNORECASE), 3),
     (re.compile(r"\bon lubatud nõuda\b", re.IGNORECASE), 3),
-    (re.compile(r"\bvõib\b", re.IGNORECASE), 1),  # weak – also permissive
 ]
 
 PERMISSION_PATTERNS = [
@@ -86,15 +85,23 @@ NORM_TYPES = {
     "permission": ("estleg:NormType_Permission", PERMISSION_PATTERNS),
     "prohibition": ("estleg:NormType_Prohibition", PROHIBITION_PATTERNS),
 }
+NORM_TIE_PRIORITY = {
+    "prohibition": 4,
+    "obligation": 3,
+    "right": 2,
+    "permission": 1,
+}
 
 # ---------- duty-holder extraction ----------
 
 # Pattern: "<noun phrase> peab / on kohustatud / kohustub / ..."
 DUTY_HOLDER_RE = re.compile(
-    r"(\b[A-ZÄÖÜÕŠŽ][a-zäöüõšž]+(?:\s+[a-zäöüõšž]+){0,3})"
+    r"(\b[A-ZÄÖÜÕŠŽ][\wÄÖÜÕŠŽäöüõšž-]+"
+    r"(?:\s+(?:[A-ZÄÖÜÕŠŽ][\wÄÖÜÕŠŽäöüõšž-]+|[a-zäöüõšž-]+)){0,4})"
     r"\s+(?:peab|on kohustatud|kohustub|on sunnitud|tuleb)",
     re.UNICODE,
 )
+GENERIC_DUTY_HOLDER_STARTS = {"Käesolev", "Käesoleva", "Paragrahv", "Seadus", "Lõige", "Punkt"}
 
 
 def save_json(filepath: Path, doc: dict) -> None:
@@ -132,20 +139,16 @@ def classify_provision(text: str) -> str | None:
     if not scores:
         return None
 
-    # Prohibition beats permission when both match (ei tohi vs. on lubatud)
-    best = max(scores, key=lambda k: scores[k])
+    best = max(scores, key=lambda k: (scores[k], NORM_TIE_PRIORITY[k]))
     return NORM_TYPES[best][0]
 
 
 def extract_duty_holder(text: str) -> str | None:
     """Try to extract who must comply from the provision text."""
-    m = DUTY_HOLDER_RE.search(text)
-    if m:
+    for m in DUTY_HOLDER_RE.finditer(text):
         holder = m.group(1).strip()
-        # Skip very generic words that are not real actors
-        skip = {"Käesolev", "Käesoleva", "Paragrahv", "Seadus", "Lõige", "Punkt"}
-        if holder.split()[0] in skip:
-            return None
+        if holder.split()[0] in GENERIC_DUTY_HOLDER_STARTS:
+            continue
         return holder
     return None
 

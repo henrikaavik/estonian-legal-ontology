@@ -106,3 +106,32 @@ def test_fresh_generator_language_maps_contribute_similarity_candidates(tmp_path
     assert provisions[0]["label"] == "§ 1. Maakasutuse kontroll ja teavitamine"
     assert provisions[0]["source_act"] == "Test act"
     assert "maakasutuse" in provisions[0]["keywords"]
+
+
+def test_label_keywords_do_not_make_similarity_candidate(tmp_path):
+    path = tmp_path / "krr_outputs" / "law_peep.json"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(
+        json.dumps(
+            {
+                "@graph": [
+                    {
+                        "@id": "estleg:Act_1",
+                        "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
+                    },
+                    {
+                        "@id": "estleg:Act_1_Par_1",
+                        "@type": ["owl:NamedIndividual", "estleg:LegalProvision_Act1"],
+                        "rdfs:label": "§ 1. Maakasutuse kontroll ja teavitamine",
+                        "estleg:summary": "Maakasutus",
+                    },
+                ]
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    provisions, act_type = similarity.extract_provisions_from_file(path)
+
+    assert act_type == "law"
+    assert provisions == []

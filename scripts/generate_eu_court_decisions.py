@@ -22,13 +22,14 @@ Generates:
 
 from __future__ import annotations
 
-import json
 import re
 import time
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 import requests
+
+from estleg_common import save_json
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
@@ -67,6 +68,8 @@ CELEX_TYPE_MAP = {
     "TA": ("AGOpinion", "Kohtujuristi ettepanek", "Advocate General Opinion"),
     "CV": ("CourtOpinion", "Kohtu arvamus", "Court Opinion"),
     "CP": ("Order", "Kohtumäärus", "Order"),
+    "CB": ("Order", "Kohtumäärus", "Order"),
+    "CD": ("Order", "Kohtumäärus", "Order"),
     "TC": ("AGOpinion", "Kohtujuristi ettepanek", "Advocate General Opinion"),
     "CS": ("Order", "Kohtumäärus", "Order"),
     "CT": ("Order", "Kohtumäärus", "Order"),
@@ -81,6 +84,8 @@ CELEX_COURT_MAP = {
     "CN": "CourtOfJustice",
     "CV": "CourtOfJustice",
     "CP": "CourtOfJustice",
+    "CB": "CourtOfJustice",
+    "CD": "CourtOfJustice",
     "CS": "CourtOfJustice",
     "CT": "CourtOfJustice",
     "TJ": "GeneralCourt",
@@ -90,6 +95,8 @@ CELEX_COURT_MAP = {
     "FJ": "CivilServiceTribunal",
     "FO": "CivilServiceTribunal",
 }
+
+UNKNOWN_CELEX_CODES: set[str] = set()
 
 # Court info
 EU_COURTS = {
@@ -115,14 +122,16 @@ def sanitize_celex(celex: str) -> str:
 def classify_from_celex(celex: str) -> tuple[str, str, str, str]:
     """
     Classify decision type and court from CELEX number.
-    CELEX format for case-law: 6YYYYXXNNNN
+    CELEX format for case-law: 6YYYYXXNNNN or EYYYYXXNNNN.
     Returns: (decision_type_id, decision_label_et, court_id, category_key)
     """
     # Extract the two-letter type code after year (positions 5-6 in the CELEX)
-    match = re.match(r"6\d{4}([A-Z]{2})", celex)
+    match = re.match(r"[6E]\d{4}([A-Z]{2})", celex)
     if match:
         code = match.group(1)
         type_info = CELEX_TYPE_MAP.get(code, ("Other", "Muu", "Other"))
+        if code not in CELEX_TYPE_MAP:
+            UNKNOWN_CELEX_CODES.add(code)
         court_id = CELEX_COURT_MAP.get(code, "CourtOfJustice")
 
         # Determine category for file grouping
@@ -157,6 +166,13 @@ def clean_title(title: str) -> str:
     # EUR-Lex uses # as separator in case-law titles
     parts = [p.strip() for p in title.split("#") if p.strip()]
     return " — ".join(parts) if parts else title
+
+
+def truncate_label(title: str, max_len: int = 500) -> str:
+    """Shorten display labels while keeping the beginning of the case title."""
+    if len(title) <= max_len:
+        return title
+    return title[: max_len - 3].rstrip() + "..."
 
 
 def sparql_query(query: str) -> list[dict]:
@@ -196,7 +212,7 @@ SELECT DISTINCT ?work ?celex ?title ?date ?ecli ?author WHERE {{
   OPTIONAL {{ ?work cdm:work_date_document ?date }}
   OPTIONAL {{ ?work cdm:case-law_ecli ?ecli }}
   OPTIONAL {{ ?work cdm:work_created_by_agent ?author }}
-}} LIMIT {PAGE_SIZE} OFFSET {offset}
+}} ORDER BY ?work LIMIT {PAGE_SIZE} OFFSET {offset}
 """
         print(f"  Fetching offset {offset}...")
         try:
@@ -361,7 +377,8 @@ def decision_to_node(item: dict) -> dict:
     node: dict = {
         "@id": f"estleg:EUCJ_{safe_celex}",
         "@type": ["owl:NamedIndividual", "estleg:EUCourtDecision"],
-        "rdfs:label": {"@value": cleaned_title[:500], "@language": "et"},
+        "rdfs:label": {"@value": truncate_label(cleaned_title), "@language": "et"},
+        "dcterms:title": {"@value": cleaned_title, "@language": "et"},
         "estleg:celexNumber": item["celex"],
         "estleg:euCourtDecisionType": {"@id": f"estleg:EUDecType_{type_id}"},
         "estleg:euCourt": {"@id": f"estleg:EUCourt_{court_id}"},
@@ -390,12 +407,6 @@ def decision_to_node(item: dict) -> dict:
         node["estleg:documentDate"] = {"@value": item["date"], "@type": "xsd:date"}
 
     return node
-
-
-def save_json(filepath: Path, doc: dict):
-    with open(filepath, "w", encoding="utf-8") as f:
-        json.dump(doc, f, ensure_ascii=False, indent=2)
-        f.write("\n")
 
 
 def main():
@@ -474,8 +485,6 @@ def main():
             "dc:source": "EUR-Lex / CURIA – eur-lex.europa.eu",
         },
     ]
-    combined_graph.extend(generate_schema_nodes())
-
     for item in all_items:
         combined_graph.append(decision_to_node(item))
 
@@ -495,13 +504,14 @@ def main():
     # Generate index
     print("\n--- Generating index ---")
     index = {
-        "generated": datetime.now().strftime("%Y-%m-%d"),
+        "generated": datetime.now(timezone.utc).date().isoformat(),
         "source": "https://eur-lex.europa.eu",
         "sparql_endpoint": SPARQL_ENDPOINT,
         "total_decisions": len(all_items),
         "by_type": {k: v for k, v in sorted(type_counts.items(), key=lambda x: -x[1])},
         "by_court": {k: v for k, v in sorted(court_counts.items(), key=lambda x: -x[1])},
         "by_category": {k: len(v) for k, v in categories.items() if v},
+        "unknown_celex_type_codes": sorted(UNKNOWN_CELEX_CODES),
     }
 
     index_path = CURIA_DIR / "CURIA_INDEX.json"

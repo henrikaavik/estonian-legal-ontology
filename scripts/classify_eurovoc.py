@@ -15,10 +15,11 @@ from __future__ import annotations
 import json
 import re
 import time
+import unicodedata
 from datetime import datetime, timezone
 from pathlib import Path
 
-from estleg_common import AGGREGATE_REGISTRY_PREFIXES, iter_peep_files
+from estleg_common import AGGREGATE_REGISTRY_PREFIXES, iter_peep_files, save_json as _save_json
 from kov_pipeline_coverage import (
     CoverageReport,
     measure_runtime,
@@ -247,11 +248,13 @@ MIN_HITS_OVERRIDES: dict[str, int] = {
 }
 
 
+class PeepMetadataParseError(ValueError):
+    """Raised when a peep file cannot be parsed for act metadata."""
+
+
 def save_json(filepath: Path, doc: dict | list):
     """Write a JSON document to disk with UTF-8 encoding."""
-    with open(filepath, "w", encoding="utf-8") as f:
-        json.dump(doc, f, ensure_ascii=False, indent=2)
-        f.write("\n")
+    _save_json(filepath, doc)
 
 
 def load_json(filepath: Path) -> dict:
@@ -284,8 +287,8 @@ def read_act_metadata_from_peep(path: Path) -> dict | None:
     try:
         with open(path, "r", encoding="utf-8") as fh:
             doc = json.load(fh)
-    except (json.JSONDecodeError, OSError):
-        return None
+    except (ValueError, OSError) as exc:
+        raise PeepMetadataParseError(f"{path}: {type(exc).__name__}: {exc}") from exc
     for node in doc.get("@graph", []):
         node_id = node.get("@id", "")
         if any(node_id.startswith(p) for p in AGGREGATE_REGISTRY_PREFIXES):
@@ -332,7 +335,7 @@ def extract_text_from_law(data: dict) -> str:
         if dc_desc:
             parts.append(dc_desc)
 
-    return " ".join(parts).lower()
+    return unicodedata.normalize("NFC", " ".join(parts)).casefold()
 
 
 def classify_text(text: str) -> list[tuple[str, str, str, str, int]]:
@@ -347,10 +350,10 @@ def classify_text(text: str) -> list[tuple[str, str, str, str, int]]:
         for kw in keywords:
             if kw.startswith("r:"):
                 # Regex pattern (e.g. for word-boundary-aware matching)
-                hit_count += len(re.findall(kw[2:], text, re.IGNORECASE))
+                hit_count += len(re.findall(kw[2:], text))
             else:
-                # Plain case-insensitive substring match
-                hit_count += len(re.findall(re.escape(kw), text, re.IGNORECASE))
+                normalized_kw = unicodedata.normalize("NFC", kw).casefold()
+                hit_count += len(re.findall(re.escape(normalized_kw), text))
 
         threshold = MIN_HITS_OVERRIDES.get(code, MIN_HITS_THRESHOLD)
         if hit_count >= threshold:
@@ -493,7 +496,12 @@ def main():
     # Coverage skip-reasons for files dropped at metadata-read time
     _skip_reasons: dict[str, int] = {}
     for f in peep_files:
-        meta = read_act_metadata_from_peep(f)
+        try:
+            meta = read_act_metadata_from_peep(f)
+        except PeepMetadataParseError as exc:
+            _skip_reasons["parse_error"] = _skip_reasons.get("parse_error", 0) + 1
+            print(f"    ERROR reading metadata: {exc}")
+            continue
         if meta is None:
             _skip_reasons["no_act_node"] = _skip_reasons.get("no_act_node", 0) + 1
             continue

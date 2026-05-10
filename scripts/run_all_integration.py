@@ -129,6 +129,12 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Run scripts/validate_all.py after each successful phase before continuing.",
     )
+    parser.add_argument(
+        "--per-script-timeout",
+        type=int,
+        default=1800,
+        help="Maximum seconds to allow each integration script to run.",
+    )
     return parser.parse_args()
 
 
@@ -163,11 +169,19 @@ def write_manifest(manifest: dict) -> None:
         f.write("\n")
 
 
+def script_log_path(script: str) -> Path:
+    logs_dir = MANIFEST_DIR / "logs"
+    logs_dir.mkdir(parents=True, exist_ok=True)
+    return logs_dir / f"{Path(script).stem}.log"
+
+
 def main():
     args = parse_args()
     print("=" * 70)
     print("Estonian Legal Ontology — Integration Pipeline")
     print("Scripts run SEQUENTIALLY — do not run them in parallel.")
+    if args.dry_run:
+        print("DRY-RUN — no scripts will be executed.")
     print("=" * 70)
 
     failed = set()
@@ -224,28 +238,49 @@ def main():
         print("=" * 70)
 
         if args.dry_run:
-            phase_results.append({"script": script, "status": "planned"})
+            phase_results.append({
+                "script": script,
+                "status": "planned",
+                "description": description,
+            })
             continue
 
         start = time.time()
-        result = subprocess.run(
-            [sys.executable, str(script_path)],
-            cwd=str(REPO_ROOT),
-        )
+        log_path = script_log_path(script)
+        with open(log_path, "w", encoding="utf-8") as log_file:
+            log_file.write(f"# {script} started {datetime.now(timezone.utc).isoformat()}\n")
+            try:
+                result = subprocess.run(
+                    [sys.executable, str(script_path)],
+                    cwd=str(REPO_ROOT),
+                    stdout=log_file,
+                    stderr=subprocess.STDOUT,
+                    timeout=args.per_script_timeout,
+                )
+                exit_code = result.returncode
+            except subprocess.TimeoutExpired:
+                exit_code = 124
+                log_file.write(
+                    f"\nTIMEOUT after {args.per_script_timeout} seconds "
+                    f"at {datetime.now(timezone.utc).isoformat()}\n"
+                )
         elapsed = time.time() - start
 
-        if result.returncode != 0:
-            print(f"  FAILED (exit code {result.returncode}, {elapsed:.1f}s)")
+        if exit_code != 0:
+            print(f"  FAILED (exit code {exit_code}, {elapsed:.1f}s)")
+            print(f"  Log: {log_path.relative_to(REPO_ROOT)}")
             failed.add(script)
             phase_results.append({
                 "script": script,
                 "status": "failed",
-                "exitCode": result.returncode,
+                "exitCode": exit_code,
                 "elapsedSeconds": round(elapsed, 1),
+                "logPath": str(log_path.relative_to(REPO_ROOT)),
             })
             break
         else:
             print(f"  OK ({elapsed:.1f}s)")
+            print(f"  Log: {log_path.relative_to(REPO_ROOT)}")
             succeeded.append(script)
             validation_exit = None
             if args.validate_each:
@@ -259,6 +294,7 @@ def main():
                         "status": "validation_failed",
                         "exitCode": validation_exit,
                         "elapsedSeconds": round(elapsed, 1),
+                        "logPath": str(log_path.relative_to(REPO_ROOT)),
                     })
                     break
             phase_results.append({
@@ -266,10 +302,13 @@ def main():
                 "status": "succeeded",
                 "elapsedSeconds": round(elapsed, 1),
                 "validationExitCode": validation_exit,
+                "logPath": str(log_path.relative_to(REPO_ROOT)),
             })
 
     print("\n" + "=" * 70)
     print("PIPELINE COMPLETE")
+    if args.dry_run:
+        print("DRY-RUN — no scripts were executed.")
     print("=" * 70)
     print(f"  Total scripts: {len(PIPELINE)}")
     print(f"  Succeeded: {len(succeeded)}")

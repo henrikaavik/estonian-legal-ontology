@@ -16,17 +16,18 @@ Generates:
 
 from __future__ import annotations
 
+import argparse
 import json
 import re
 import shutil
 import sys
 import time
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 import requests
 
-from estleg_common import iter_peep_files
+from estleg_common import iter_peep_files, save_json
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
@@ -59,13 +60,6 @@ TARGET_COUNTRIES = {
 
 # Country filter for SPARQL
 COUNTRY_FILTER = ", ".join(f'"{c}"' for c in TARGET_COUNTRIES)
-
-
-def save_json(filepath: Path, doc: dict | list):
-    """Write a JSON document to disk with UTF-8 encoding."""
-    with open(filepath, "w", encoding="utf-8") as f:
-        json.dump(doc, f, ensure_ascii=False, indent=2)
-        f.write("\n")
 
 
 def load_json(filepath: Path) -> dict:
@@ -107,13 +101,9 @@ SELECT DISTINCT ?directive ?celex_dir ?national ?celex_nat ?country WHERE {{
   ?national cdm:work_created_by_agent ?country_uri .
   BIND(STRAFTER(STR(?country_uri), "authority/country/") AS ?country)
   FILTER(?country IN ({COUNTRY_FILTER}))
-}}
+}} ORDER BY ?country ?celex_nat
 """
-    try:
-        bindings = sparql_query(query)
-    except Exception as e:
-        print(f"    ERROR querying for {celex_dir}: {e}")
-        return []
+    bindings = sparql_query(query)
 
     results: list[dict] = []
     seen: set[tuple[str, str]] = set()
@@ -293,7 +283,39 @@ def update_law_file_harmonisation(filepath: Path, harmonisation_ids: list[str]) 
     return True
 
 
+def get_law_harmonisation_target_iri(law_file: str) -> str | None:
+    """Return the real act-level node IRI for a mapped law file."""
+    try:
+        data = load_json(KRR_DIR / law_file)
+    except Exception:
+        return None
+
+    graph = data.get("@graph", [])
+    for node in graph:
+        types = node.get("@type", [])
+        if isinstance(types, str):
+            types = [types]
+        if "owl:Ontology" in types:
+            node_id = node.get("@id")
+            return node_id if isinstance(node_id, str) and node_id else None
+    if graph:
+        node_id = graph[0].get("@id")
+        return node_id if isinstance(node_id, str) and node_id else None
+    return None
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--allow-partial",
+        action="store_true",
+        help="Write outputs even if one or more EUR-Lex directive lookups fail.",
+    )
+    return parser.parse_args()
+
+
 def main():
+    args = parse_args()
     print("=" * 60)
     print("Generate harmonisation links: Estonian laws ↔ neighboring EU states")
     countries = ', '.join(f"{v['label_en']} ({k})" for k, v in TARGET_COUNTRIES.items())
@@ -362,6 +384,8 @@ def main():
             "source_act": m.get("matched_source_act", ""),
             "files": m.get("law_files", []),
         }
+        if law_entry["files"]:
+            law_entry["iri"] = get_law_harmonisation_target_iri(law_entry["files"][0])
         # Avoid duplicate law entries per directive
         existing_names = {
             law["name"] for law in directives_to_process[celex]["estonian_laws"]
@@ -425,7 +449,11 @@ def main():
             # Generate per-directive harmonisation file
             safe_celex = sanitize_celex(celex_dir)
             primary_law = estonian_laws[0] if estonian_laws else {"name": "unknown", "files": []}
-            law_iri = f"estleg:LegalProvision_{primary_law['name']}"
+            law_iri = primary_law.get("iri")
+            if not law_iri:
+                print(f"    ERROR: no law IRI for {primary_law['name']} ({celex_dir})")
+                errors += 1
+                continue
 
             directive_doc = build_directive_node(
                 celex_dir=celex_dir,
@@ -452,7 +480,11 @@ def main():
                 "directive_celex": celex_dir,
                 "directive_iri": directive_iri,
                 "estonian_laws": [
-                    {"name": law["name"], "source_act": law.get("source_act", "")}
+                    {
+                        "name": law["name"],
+                        "source_act": law.get("source_act", ""),
+                        "iri": law.get("iri", ""),
+                    }
                     for law in estonian_laws
                 ],
                 "parallel_measures": len(other_measures),
@@ -495,7 +527,7 @@ def main():
     print("\n--- Generating harmonisation report ---")
 
     report = {
-        "generated": datetime.now().strftime("%Y-%m-%d"),
+        "generated": datetime.now(timezone.utc).date().isoformat(),
         "source": SPARQL_ENDPOINT,
         "estonian_country_code": "EST",
         "target_countries": {
@@ -540,6 +572,8 @@ def main():
     print(f"  {schema_path.relative_to(REPO_ROOT)}")
     print(f"  {BY_DIRECTIVE_DIR.relative_to(REPO_ROOT)}/ ({len(harmonisation_data)} files)")
     print("=" * 60)
+    if errors and not args.allow_partial:
+        sys.exit(1)
 
 
 if __name__ == "__main__":

@@ -16,13 +16,14 @@ Generates:
 
 from __future__ import annotations
 
-import json
 import re
 import time
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 import requests
+
+from estleg_common import save_json
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
@@ -129,7 +130,7 @@ SELECT DISTINCT ?work ?celex ?title ?date ?inforce ?eli ?author WHERE {{
   OPTIONAL {{ ?work cdm:resource_legal_in-force ?inforce }}
   OPTIONAL {{ ?work cdm:resource_legal_eli ?eli }}
   OPTIONAL {{ ?work cdm:work_created_by_agent ?author }}
-}} LIMIT {PAGE_SIZE} OFFSET {offset}
+}} ORDER BY ?work LIMIT {PAGE_SIZE} OFFSET {offset}
 """
         print(f"    Fetching offset {offset}...")
         try:
@@ -295,6 +296,10 @@ def generate_schema_nodes() -> list[dict]:
     return nodes
 
 
+def is_in_force_value(value: object) -> bool:
+    return str(value).strip().casefold() in {"1", "true"}
+
+
 def legislation_to_node(item: dict, type_id: str) -> dict:
     """Convert a legislation dict to a JSON-LD node."""
     safe_celex = sanitize_celex(item["celex"])
@@ -329,7 +334,7 @@ def legislation_to_node(item: dict, type_id: str) -> dict:
 
     # In-force status
     if item.get("in_force"):
-        in_force_bool = "true" if item["in_force"] == "1" else "false"
+        in_force_bool = "true" if is_in_force_value(item["in_force"]) else "false"
         node["estleg:inForce"] = {"@value": in_force_bool, "@type": "xsd:boolean"}
 
     # Institutions
@@ -348,12 +353,6 @@ def legislation_to_node(item: dict, type_id: str) -> dict:
             node["estleg:euInstitution"] = inst_refs
 
     return node
-
-
-def save_json(filepath: Path, doc: dict):
-    with open(filepath, "w", encoding="utf-8") as f:
-        json.dump(doc, f, ensure_ascii=False, indent=2)
-        f.write("\n")
 
 
 def main():
@@ -429,10 +428,10 @@ def main():
     print("\n--- Generating index ---")
     in_force_counts: dict[str, int] = {}
     for doc_key, items in all_legislation.items():
-        in_force_counts[doc_key] = sum(1 for i in items if i.get("in_force") == "1")
+        in_force_counts[doc_key] = sum(1 for i in items if is_in_force_value(i.get("in_force")))
 
     index = {
-        "generated": datetime.now().strftime("%Y-%m-%d"),
+        "generated": datetime.now(timezone.utc).date().isoformat(),
         "source": "https://eur-lex.europa.eu",
         "sparql_endpoint": SPARQL_ENDPOINT,
         "total_acts": total,

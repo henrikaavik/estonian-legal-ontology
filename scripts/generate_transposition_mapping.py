@@ -24,7 +24,7 @@ from pathlib import Path
 
 import requests
 
-from estleg_common import iter_peep_files
+from estleg_common import iter_peep_files, save_json as _save_json
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
@@ -50,9 +50,7 @@ CONTEXT = {
 
 def save_json(filepath: Path, doc: dict):
     """Write a JSON document to disk with UTF-8 encoding."""
-    with open(filepath, "w", encoding="utf-8") as f:
-        json.dump(doc, f, ensure_ascii=False, indent=2)
-        f.write("\n")
+    _save_json(filepath, doc)
 
 
 def load_json(filepath: Path) -> dict:
