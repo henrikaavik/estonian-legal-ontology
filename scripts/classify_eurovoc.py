@@ -46,8 +46,11 @@ CONTEXT = {
 EUROVOC_URI_BASE = "http://eurovoc.europa.eu/"
 
 # EuroVoc domain mapping: code → (slug, label_et, label_en, [keywords])
-# Keywords are Estonian stems/substrings matched case-insensitively against law text.
-# Prefix a keyword with "r:" to use it as a regex pattern instead of a plain substring.
+# Keywords are Estonian stems/substrings matched against law text after the
+# corpus has been normalised (NFC + casefold). Both plain keywords and
+# ``r:``-prefixed regex patterns are normalised the same way, so authors
+# write keywords/patterns in their natural Estonian spelling — case and
+# combining-mark differences are absorbed by normalisation.
 EUROVOC_DOMAINS: dict[str, tuple[str, str, str, list[str]]] = {
     # "2411" (Law) removed: 609/615 laws matched — tautological for a legal ontology.
     "2421": (
@@ -349,8 +352,12 @@ def classify_text(text: str) -> list[tuple[str, str, str, str, int]]:
         hit_count = 0
         for kw in keywords:
             if kw.startswith("r:"):
-                # Regex pattern (e.g. for word-boundary-aware matching)
-                hit_count += len(re.findall(kw[2:], text))
+                # Regex pattern (e.g. for word-boundary-aware matching).
+                # Normalise the pattern with NFC + casefold so it lines up
+                # with the corpus, which extract_text_from_law already
+                # normalised the same way.
+                pattern = unicodedata.normalize("NFC", kw[2:]).casefold()
+                hit_count += len(re.findall(pattern, text))
             else:
                 normalized_kw = unicodedata.normalize("NFC", kw).casefold()
                 hit_count += len(re.findall(re.escape(normalized_kw), text))

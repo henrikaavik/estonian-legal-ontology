@@ -95,9 +95,20 @@ NORM_TIE_PRIORITY = {
 # ---------- duty-holder extraction ----------
 
 # Pattern: "<noun phrase> peab / on kohustatud / kohustub / ..."
+# The first word must be Capital-initial. Subsequent words must be either
+# Capital-initial themselves (e.g. "Vastutav Töötleja") or one of a small
+# whitelist of Estonian connectors ("ja", "või", "ning", "ega") so that
+# adverbials such as "Igal aastal …" do not get absorbed into the
+# duty-holder phrase. Hyphenation inside a single word (e.g. "Tervise-")
+# is supported via the trailing ``-`` in the letter character class.
+# Digits are deliberately excluded (we use an explicit Estonian letter
+# class instead of ``\w``).
+_LETTER = r"[A-Za-zÄÖÜÕŠŽäöüõšž-]"
+_CAPITAL_WORD = rf"[A-ZÄÖÜÕŠŽ]{_LETTER}+"
+_CONNECTOR = r"(?:ja|või|ning|ega)\b"
 DUTY_HOLDER_RE = re.compile(
-    r"(\b[A-ZÄÖÜÕŠŽ][\wÄÖÜÕŠŽäöüõšž-]+"
-    r"(?:\s+(?:[A-ZÄÖÜÕŠŽ][\wÄÖÜÕŠŽäöüõšž-]+|[a-zäöüõšž-]+)){0,4})"
+    rf"(\b{_CAPITAL_WORD}"
+    rf"(?:\s+(?:{_CAPITAL_WORD}|{_CONNECTOR})){{0,4}})"
     r"\s+(?:peab|on kohustatud|kohustub|on sunnitud|tuleb)",
     re.UNICODE,
 )

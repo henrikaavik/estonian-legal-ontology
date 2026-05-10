@@ -11,6 +11,7 @@ from __future__ import annotations
 import json
 import os
 import re
+import sys
 import tempfile
 import xml.etree.ElementTree as ET
 from dataclasses import dataclass, field
@@ -330,20 +331,39 @@ KRR_DIR = REPO_ROOT / "krr_outputs"
 # ---------------------------------------------------------------------------
 
 def save_json(filepath: Path, doc: dict | list) -> None:
-    """Write JSON-LD document to file with consistent formatting."""
+    """Write JSON-LD document to file with consistent formatting.
+
+    Uses a tempfile + atomic ``os.replace`` so partial writes never appear
+    at ``filepath``. If serialization fails (non-serialisable payload, OS
+    error mid-write), the tempfile is unlinked best-effort before the
+    original exception propagates so failed runs don't litter ``.tmp``
+    droppings in the target directory.
+    """
     filepath.parent.mkdir(parents=True, exist_ok=True)
-    with tempfile.NamedTemporaryFile(
+    tmp = tempfile.NamedTemporaryFile(
         "w",
         encoding="utf-8",
         dir=filepath.parent,
         prefix=f".{filepath.name}.",
         suffix=".tmp",
         delete=False,
-    ) as f:
-        json.dump(doc, f, ensure_ascii=False, indent=2)
-        f.write("\n")
-        tmp_name = f.name
-    os.replace(tmp_name, filepath)
+    )
+    tmp_name = tmp.name
+    try:
+        with tmp as f:
+            json.dump(doc, f, ensure_ascii=False, indent=2)
+            f.write("\n")
+        os.replace(tmp_name, filepath)
+    except BaseException:
+        # Best-effort cleanup of the tempfile so failed writes never
+        # leave ``.<name>.<rand>.tmp`` droppings in the target directory.
+        # Suppress FileNotFoundError so we don't mask the original error
+        # if the tempfile was already removed (e.g. by os.replace).
+        try:
+            os.unlink(tmp_name)
+        except FileNotFoundError:
+            pass
+        raise
 
 
 def iter_peep_files(
@@ -372,7 +392,10 @@ def iter_peep_files(
             kov_dir = KRR_DIR / "regulations" / "kov"
             if kov_dir.exists():
                 files.extend(kov_dir.glob("**/*_peep.json"))
-    return sorted(files, key=lambda p: str(p.relative_to(KRR_DIR)).casefold())
+    # Sort by absolute posix path (casefold) — using relative_to(KRR_DIR)
+    # would raise ValueError for any path outside KRR_DIR, which is a
+    # footgun for future callers, symlinks, or test scaffolding.
+    return sorted(files, key=lambda p: p.as_posix().casefold())
 
 
 def build_globalid_xml_lookup(rt_root: Path) -> dict[str, Path]:
@@ -455,12 +478,22 @@ def pair_peep_with_xml(
         with open(peep_path, "r", encoding="utf-8") as fh:
             doc = json.load(fh)
     except (ValueError, OSError) as exc:
-        if counters is not None and peep_path not in counters.seen_error_paths:
-            counters.seen_error_paths.add(peep_path)
-            counters.bump_skip(
-                "json_decode_error",
-                f"json_decode_error | {peep_path.name} | "
-                f"{type(exc).__name__}: {str(exc)[:80]}",
+        if counters is not None:
+            if peep_path not in counters.seen_error_paths:
+                counters.seen_error_paths.add(peep_path)
+                counters.bump_skip(
+                    "json_decode_error",
+                    f"json_decode_error | {peep_path.name} | "
+                    f"{type(exc).__name__}: {str(exc)[:80]}",
+                )
+        else:
+            # No counters provided — still surface the corruption signal so
+            # callers that haven't been wired into the run-counter framework
+            # don't silently conflate "corrupt peep" with "no XML found".
+            print(
+                f"pair_peep_with_xml: corrupt peep {peep_path}: "
+                f"{type(exc).__name__}: {exc}",
+                file=sys.stderr,
             )
         return None
     gid = None
@@ -508,3 +541,17 @@ def sanitize_id(value: str) -> str:
     s = s.translate(_TRANSLIT_TABLE)
     s = re.sub(r"[^0-9A-Za-z_]", "", s)
     return s or "Unknown"
+
+
+def slugify(text: str, max_len: int = 80) -> str:
+    """Convert Estonian text to a filename-safe slug.
+
+    Lowercases, transliterates Estonian diacritics, replaces non-alnum
+    runs with underscores, and truncates to ``max_len`` characters.
+    Centralised here so callers (laws, regulations, downstream scripts)
+    share one definition.
+    """
+    text = text.translate(_TRANSLIT_TABLE)
+    text = text.lower().strip()
+    text = re.sub(r"[^a-z0-9]+", "_", text)
+    return text.strip("_")[:max_len]

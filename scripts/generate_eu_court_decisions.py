@@ -22,7 +22,9 @@ Generates:
 
 from __future__ import annotations
 
+import argparse
 import re
+import sys
 import time
 from datetime import datetime, timezone
 from pathlib import Path
@@ -103,6 +105,11 @@ EU_COURTS = {
     "CourtOfJustice": ("Euroopa Kohus", "Court of Justice", "CJ"),
     "GeneralCourt": ("Üldkohus", "General Court", "GCEU"),
     "CivilServiceTribunal": ("Avaliku Teenistuse Kohus", "Civil Service Tribunal", "CST"),
+    # CELEX sector ``E`` covers the EFTA Court (https://www.eftacourt.int).
+    # It is *not* a CJEU formation, so it gets its own bucket so consumers
+    # can filter EFTA cases out of CJEU statistics. Cases mined from
+    # EUR-Lex that carry sector ``E`` (e.g. ``E2024CB0001``) map here.
+    "EFTACourt": ("EFTA Kohus", "EFTA Court", "EFTA"),
 }
 
 # Known author codes
@@ -122,17 +129,27 @@ def sanitize_celex(celex: str) -> str:
 def classify_from_celex(celex: str) -> tuple[str, str, str, str]:
     """
     Classify decision type and court from CELEX number.
-    CELEX format for case-law: 6YYYYXXNNNN or EYYYYXXNNNN.
+    CELEX format for case-law: 6YYYYXXNNNN (CJEU) or EYYYYXXNNNN (EFTA).
     Returns: (decision_type_id, decision_label_et, court_id, category_key)
+
+    Sector ``E`` is the EFTA Court — it shares the case-law type-code
+    namespace with the CJEU (CB orders, etc.) but is a separate
+    institution. Mapping it to the dedicated ``EFTACourt`` bucket keeps
+    EFTA jurisprudence out of CJEU per-court statistics.
     """
     # Extract the two-letter type code after year (positions 5-6 in the CELEX)
-    match = re.match(r"[6E]\d{4}([A-Z]{2})", celex)
+    match = re.match(r"([6E])\d{4}([A-Z]{2})", celex)
     if match:
-        code = match.group(1)
+        sector = match.group(1)
+        code = match.group(2)
         type_info = CELEX_TYPE_MAP.get(code, ("Other", "Muu", "Other"))
         if code not in CELEX_TYPE_MAP:
             UNKNOWN_CELEX_CODES.add(code)
-        court_id = CELEX_COURT_MAP.get(code, "CourtOfJustice")
+
+        if sector == "E":
+            court_id = "EFTACourt"
+        else:
+            court_id = CELEX_COURT_MAP.get(code, "CourtOfJustice")
 
         # Determine category for file grouping
         if type_info[0] == "Judgment":
@@ -188,11 +205,44 @@ def sparql_query(query: str) -> list[dict]:
     return data.get("results", {}).get("bindings", [])
 
 
-def fetch_all_case_law() -> list[dict]:
-    """Fetch all EU case-law with Estonian translations via SPARQL."""
+def sparql_query_with_retry(
+    query: str, *, retries: int = 3, backoff: float = 2.0
+) -> list[dict]:
+    """Execute a SPARQL query with bounded exponential backoff on failure.
+
+    EUR-Lex 5xxs intermittently. Without a retry layer a single transient
+    error truncates a multi-page sweep and silently produces partial
+    output. We sleep ``backoff * 2**attempt`` between attempts and re-
+    raise the underlying exception (wrapped in ``RuntimeError``) on
+    terminal failure so the caller can either ``break`` (under
+    ``--allow-partial``) or propagate to the run's exit code.
+    """
+    last_exc: BaseException | None = None
+    for attempt in range(retries):
+        try:
+            return sparql_query(query)
+        except Exception as exc:  # noqa: BLE001 — broad to retry network/JSON
+            last_exc = exc
+            if attempt < retries - 1:
+                time.sleep(backoff * (2 ** attempt))
+    raise RuntimeError(
+        f"sparql_query failed after {retries} attempts: {last_exc}"
+    ) from last_exc
+
+
+def fetch_all_case_law(*, allow_partial: bool = False) -> tuple[list[dict], bool]:
+    """Fetch all EU case-law with Estonian translations via SPARQL.
+
+    Returns ``(items, partial)`` where ``partial`` is ``True`` iff the
+    sweep stopped early due to terminal SPARQL failure under
+    ``allow_partial``. Without ``allow_partial``, terminal failures
+    propagate so the run exits non-zero rather than silently
+    truncating the dataset.
+    """
     all_items: list[dict] = []
     seen_celex: set[str] = set()
     offset = 0
+    partial = False
 
     while True:
         query = f"""
@@ -216,10 +266,13 @@ SELECT DISTINCT ?work ?celex ?title ?date ?ecli ?author WHERE {{
 """
         print(f"  Fetching offset {offset}...")
         try:
-            bindings = sparql_query(query)
+            bindings = sparql_query_with_retry(query)
         except Exception as e:
-            print(f"  ERROR at offset {offset}: {e}")
-            break
+            if allow_partial:
+                print(f"  ERROR at offset {offset} (partial run): {e}")
+                partial = True
+                break
+            raise
 
         if not bindings:
             break
@@ -260,7 +313,7 @@ SELECT DISTINCT ?work ?celex ?title ?date ?ecli ?author WHERE {{
         offset += PAGE_SIZE
         time.sleep(RATE_DELAY)
 
-    return all_items
+    return all_items, partial
 
 
 def generate_schema_nodes() -> list[dict]:
@@ -409,7 +462,21 @@ def decision_to_node(item: dict) -> dict:
     return node
 
 
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--allow-partial",
+        action="store_true",
+        help=(
+            "Continue and write partial output (with ``partial: true`` in "
+            "the index) if a SPARQL pagination request fails after retries."
+        ),
+    )
+    return parser.parse_args()
+
+
 def main():
+    args = parse_args()
     print("=" * 60)
     print("Fetching EU court decisions from EUR-Lex SPARQL endpoint")
     print(f"Endpoint: {SPARQL_ENDPOINT}")
@@ -424,7 +491,7 @@ def main():
 
     # Fetch all case-law
     print("\n--- Fetching all EU case-law ---")
-    all_items = fetch_all_case_law()
+    all_items, partial = fetch_all_case_law(allow_partial=args.allow_partial)
     print(f"  Total unique decisions: {len(all_items)}")
 
     # Classify into categories
@@ -508,6 +575,7 @@ def main():
         "source": "https://eur-lex.europa.eu",
         "sparql_endpoint": SPARQL_ENDPOINT,
         "total_decisions": len(all_items),
+        "partial": partial,
         "by_type": {k: v for k, v in sorted(type_counts.items(), key=lambda x: -x[1])},
         "by_court": {k: v for k, v in sorted(court_counts.items(), key=lambda x: -x[1])},
         "by_category": {k: len(v) for k, v in categories.items() if v},
@@ -532,6 +600,27 @@ def main():
         label = EU_COURTS.get(court_id, (court_id, "", ""))[1]
         print(f"  {label:30s}: {count:6d}")
     print("=" * 60)
+
+    # ``UNKNOWN_CELEX_CODES`` is populated as a side-effect of
+    # ``classify_from_celex`` for any sector-6/E type code we have not
+    # mapped yet. Surface it loudly so reviewers notice when EUR-Lex
+    # introduces new codes (e.g. when CST/EFTA case types are added)
+    # and we silently bucket them as ``Other``. We deliberately do NOT
+    # exit non-zero here: the index already records the offending codes
+    # for traceability and emitting a warning keeps the run a no-op for
+    # well-known codes.
+    if UNKNOWN_CELEX_CODES:
+        unknown_sorted = sorted(UNKNOWN_CELEX_CODES)
+        print(
+            f"WARNING: {len(unknown_sorted)} unknown CELEX type codes "
+            f"(bucketed as 'Other'): {unknown_sorted}"
+        )
+
+    if partial:
+        # ``--allow-partial`` was set (otherwise we would have raised).
+        # Non-zero exit signals downstream pipelines to retry as soon as
+        # a clean run is possible.
+        sys.exit(2)
 
 
 if __name__ == "__main__":

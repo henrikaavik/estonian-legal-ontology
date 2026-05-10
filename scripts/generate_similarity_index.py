@@ -175,20 +175,27 @@ def relative_output_path(fpath: Path) -> str:
         return fpath.name
 
 
-def extract_provisions_from_file(fpath: Path) -> tuple[list[dict], str | None]:
+def extract_provisions_from_file(fpath: Path) -> tuple[list[dict], str | None, int]:
+    """Extract eligible provisions plus the count excluded by the keyword floor.
+
+    Returns a tuple of (provisions, act_type, excluded_for_keyword_floor) where
+    excluded_for_keyword_floor counts provisions that pass boilerplate/type
+    filters but yield fewer than ``MIN_SHARED_KEYWORDS`` keywords.
+    """
     try:
         with open(fpath, "r", encoding="utf-8") as f:
             doc = json.load(f)
     except (json.JSONDecodeError, FileNotFoundError):
-        return [], None
+        return [], None, 0
 
     act_node = find_act_node(doc)
     if act_node is None:
-        return [], None
+        return [], None, 0
     act_type = classify_act_type(fpath, act_node)
     file_name = relative_output_path(fpath)
 
     provisions: list[dict] = []
+    excluded_for_keyword_floor = 0
     for node in doc.get("@graph", []):
         node_id = node.get("@id", "")
         if not node_id or not node_id.startswith("estleg:"):
@@ -218,7 +225,9 @@ def extract_provisions_from_file(fpath: Path) -> tuple[list[dict], str | None]:
                 "file": file_name,
                 "act_type": act_type,
             })
-    return provisions, act_type
+        else:
+            excluded_for_keyword_floor += 1
+    return provisions, act_type, excluded_for_keyword_floor
 
 
 def main():
@@ -231,19 +240,36 @@ def main():
     provisions: list[dict] = []  # {id, label, source_act, keywords, file, act_type}
     file_counts_by_type = {"law": 0, "state_regulation": 0, "kov": 0, "other": 0}
     provision_counts_by_type = {"law": 0, "state_regulation": 0, "kov": 0, "other": 0}
+    excluded_for_keyword_floor_by_type: dict[str, int] = {
+        "law": 0, "state_regulation": 0, "kov": 0, "other": 0,
+    }
 
     jsonld_files = iter_peep_files(include_kov=False)  # DEFERRED to Layer 3
     for fpath in jsonld_files:
-        file_provisions, act_type = extract_provisions_from_file(fpath)
+        file_provisions, act_type, excluded_for_keyword_floor = (
+            extract_provisions_from_file(fpath)
+        )
         if act_type is None:
             continue
         file_counts_by_type[act_type] = file_counts_by_type.get(act_type, 0) + 1
         provision_counts_by_type[act_type] = (
             provision_counts_by_type.get(act_type, 0) + len(file_provisions)
         )
+        excluded_for_keyword_floor_by_type[act_type] = (
+            excluded_for_keyword_floor_by_type.get(act_type, 0)
+            + excluded_for_keyword_floor
+        )
         provisions.extend(file_provisions)
 
     print(f"  Loaded {len(provisions)} provisions with keywords")
+    total_excluded = sum(excluded_for_keyword_floor_by_type.values())
+    if total_excluded:
+        print(
+            f"\nExcluded due to keyword-floor (<{MIN_SHARED_KEYWORDS} keywords required):"
+        )
+        for act_type_name, count in sorted(excluded_for_keyword_floor_by_type.items()):
+            if count:
+                print(f"  {act_type_name}: {count} provisions")
 
     # Build inverted index for efficient matching
     print("\n[2/4] Building inverted keyword index...")
@@ -391,6 +417,7 @@ def main():
         "files_updated": updated_files,
         "candidate_files_by_type": file_counts_by_type,
         "provisions_by_type": provision_counts_by_type,
+        "excluded_provisions": dict(excluded_for_keyword_floor_by_type),
         "parameters": {
             "min_similarity": MIN_SIMILARITY,
             "min_shared_keywords": MIN_SHARED_KEYWORDS,

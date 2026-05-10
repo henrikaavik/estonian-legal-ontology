@@ -80,19 +80,40 @@ class TestReadActMetadataFromPeep:
 def test_extract_text_normalizes_to_nfc_casefold():
     from classify_eurovoc import extract_text_from_law
 
-    text = extract_text_from_law({"@graph": [{"estleg:summary": "O\u0303IGUS TÖÖ"}]})
+    text = extract_text_from_law({"@graph": [{"estleg:summary": "ÕIGUS TÖÖ"}]})
 
     assert text == "õigus töö"
 
-    def test_skips_issuer_registry_file(self, tmp_path):
-        registry = tmp_path / "issuers_kov_peep.json"
-        registry.write_text(json.dumps({
-            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
-                         "owl": "http://www.w3.org/2002/07/owl#"},
-            "@graph": [
-                {"@id": "estleg:Issuers_Kov_Map_2026",
-                 "@type": ["owl:Ontology"],
-                 "rdfs:label": "KOV Issuers"},
-            ],
-        }), encoding="utf-8")
-        assert _read_act_metadata(registry) is None
+
+def test_classify_text_normalises_regex_pattern(monkeypatch):
+    """Regression for Finding 5: ``r:`` regex patterns must be NFC +
+    casefold normalised before being matched, so that authors can write
+    them with uppercase letters and decomposed diacritics and still get
+    a match against the (already normalised) corpus."""
+    import classify_eurovoc
+
+    # ``r:`` pattern with decomposed diacritic (O + COMBINING TILDE) and
+    # uppercase letters. After NFC + casefold normalisation in
+    # classify_text it becomes ``\bõigus\b`` and matches the corpus
+    # produced by extract_text_from_law.
+    decomposed_pattern = "r:\\bÕIGUS\\b"
+    monkeypatch.setattr(
+        classify_eurovoc,
+        "EUROVOC_DOMAINS",
+        {
+            "9999": (
+                "test-domain", "test", "Test domain",
+                [decomposed_pattern],
+            ),
+        },
+    )
+
+    text = classify_eurovoc.extract_text_from_law(
+        {"@graph": [{"estleg:summary": "Isikul on õigus saada teavet."}]}
+    )
+
+    results = classify_eurovoc.classify_text(text)
+
+    assert any(code == "9999" for code, *_ in results), (
+        "expected r: pattern to match NFC + casefold normalised corpus"
+    )

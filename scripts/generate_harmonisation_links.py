@@ -34,6 +34,22 @@ KRR_DIR = REPO_ROOT / "krr_outputs"
 HARMONISATION_DIR = KRR_DIR / "harmonisation"
 BY_DIRECTIVE_DIR = HARMONISATION_DIR / "harmonisation_by_directive"
 
+# Per-CELEX SPARQL response cache. The harmonisation pipeline issues one
+# SPARQL query per directive (typically 200-400 directives) with a
+# ~1.5s rate-limit sleep between calls — that's 5-15 minutes of wall
+# time even when nothing has changed upstream. Caching successful
+# responses to disk lets reruns finish in seconds when EUR-Lex hasn't
+# moved.
+CACHE_DIR = REPO_ROOT / ".cache" / "harmonisation"
+CACHE_TTL_DAYS = 30
+
+# Default freshness window for ``transposition_mapping.json``. The
+# transposition mapping is generated upstream from the directives index;
+# if it's older than this, the harmonisation report risks being
+# anchored to stale Estonian-side data. Override with
+# ``--allow-stale-mapping`` when you knowingly run against a snapshot.
+MAPPING_FRESHNESS_DAYS = 30
+
 NS = "https://data.riik.ee/ontology/estleg#"
 
 SPARQL_ENDPOINT = "https://publications.europa.eu/webapi/rdf/sparql"
@@ -86,11 +102,67 @@ def sparql_query(query: str) -> list[dict]:
     return data.get("results", {}).get("bindings", [])
 
 
-def fetch_other_transpositions(celex_dir: str) -> list[dict]:
+def sparql_query_with_retry(
+    query: str, *, retries: int = 3, backoff: float = 2.0
+) -> list[dict]:
+    """Execute a SPARQL query with bounded exponential backoff on failure.
+
+    EUR-Lex 5xxs intermittently. The harmonisation script previously
+    propagated a single transient error as an ``errors`` count and
+    skipped the directive — silently producing partial output. Retrying
+    transient failures first lets us isolate truly broken directives
+    from network blips.
+    """
+    last_exc: BaseException | None = None
+    for attempt in range(retries):
+        try:
+            return sparql_query(query)
+        except Exception as exc:  # noqa: BLE001 — broad to retry network/JSON
+            last_exc = exc
+            if attempt < retries - 1:
+                time.sleep(backoff * (2 ** attempt))
+    raise RuntimeError(
+        f"sparql_query failed after {retries} attempts: {last_exc}"
+    ) from last_exc
+
+
+def _cache_path_for(celex_dir: str) -> Path:
+    """Compute the on-disk cache path for a directive CELEX response."""
+    return CACHE_DIR / f"{sanitize_celex(celex_dir)}.json"
+
+
+def _cache_is_fresh(path: Path, ttl_days: int = CACHE_TTL_DAYS) -> bool:
+    """Return ``True`` iff ``path`` exists and was written within the TTL."""
+    if not path.exists():
+        return False
+    age_seconds = time.time() - path.stat().st_mtime
+    return age_seconds < ttl_days * 86400
+
+
+def fetch_other_transpositions(
+    celex_dir: str, *, use_cache: bool = True
+) -> list[dict]:
     """
     For a given directive CELEX, fetch transposition measures from target countries.
     Returns list of dicts with country, celex_nat, title.
+
+    Uses an on-disk per-CELEX cache (``CACHE_DIR``) with ``CACHE_TTL_DAYS``
+    TTL. Cache hits skip both the SPARQL call and the rate-limit sleep
+    that follows it in the main loop, so reruns within the TTL are
+    near-instant. Pass ``use_cache=False`` to force a network round-trip.
     """
+    cache_path = _cache_path_for(celex_dir)
+    if use_cache and _cache_is_fresh(cache_path):
+        try:
+            with open(cache_path, "r", encoding="utf-8") as f:
+                cached = json.load(f)
+            if isinstance(cached, list):
+                return cached
+        except (OSError, json.JSONDecodeError):
+            # Corrupt cache entry — fall through to a fresh query and
+            # overwrite it.
+            pass
+
     query = f"""
 PREFIX cdm: <http://publications.europa.eu/ontology/cdm#>
 SELECT DISTINCT ?directive ?celex_dir ?national ?celex_nat ?country WHERE {{
@@ -103,7 +175,7 @@ SELECT DISTINCT ?directive ?celex_dir ?national ?celex_nat ?country WHERE {{
   FILTER(?country IN ({COUNTRY_FILTER}))
 }} ORDER BY ?country ?celex_nat
 """
-    bindings = sparql_query(query)
+    bindings = sparql_query_with_retry(query)
 
     results: list[dict] = []
     seen: set[tuple[str, str]] = set()
@@ -123,6 +195,16 @@ SELECT DISTINCT ?directive ?celex_dir ?national ?celex_nat ?country WHERE {{
             "country_et": TARGET_COUNTRIES.get(country, {}).get("label_et", country),
             "celex_nat": celex_nat,
         })
+
+    if use_cache:
+        try:
+            CACHE_DIR.mkdir(parents=True, exist_ok=True)
+            with open(cache_path, "w", encoding="utf-8") as f:
+                json.dump(results, f, ensure_ascii=False, indent=2)
+        except OSError as exc:
+            # Cache write is best-effort: a failed write should not abort
+            # the pipeline run.
+            print(f"    WARNING: cache write failed for {celex_dir}: {exc}")
 
     return results
 
@@ -283,14 +365,46 @@ def update_law_file_harmonisation(filepath: Path, harmonisation_ids: list[str]) 
     return True
 
 
+# Node @type values that legitimately represent the act-level entity
+# we want harmonisation links to point at. Provision-level nodes (e.g.
+# ``estleg:Provision``) intentionally do NOT appear here so the fallback
+# below never silently picks a section/sub-paragraph node.
+_ACT_LEVEL_TYPES = frozenset(
+    {
+        "owl:Ontology",
+        "estleg:Act",
+        "estleg:Map",
+    }
+)
+
+
 def get_law_harmonisation_target_iri(law_file: str) -> str | None:
-    """Return the real act-level node IRI for a mapped law file."""
+    """Return the real act-level node IRI for a mapped law file.
+
+    The previous implementation fell through to ``graph[0]`` whenever no
+    ``owl:Ontology`` node was found — which silently anchored the
+    harmonisation link on whatever sat first in the file (often a
+    provision, not the act). We now require the fallback node to carry
+    an act-level ``@type`` (see ``_ACT_LEVEL_TYPES``); otherwise return
+    ``None`` and let the caller skip the law (and log it in the report).
+    """
     try:
         data = load_json(KRR_DIR / law_file)
     except Exception:
         return None
 
     graph = data.get("@graph", [])
+
+    def _node_id_if_act_level(node: dict) -> str | None:
+        types = node.get("@type", [])
+        if isinstance(types, str):
+            types = [types]
+        if not any(t in _ACT_LEVEL_TYPES for t in types):
+            return None
+        node_id = node.get("@id")
+        return node_id if isinstance(node_id, str) and node_id else None
+
+    # Preferred path: explicit ``owl:Ontology`` metadata node.
     for node in graph:
         types = node.get("@type", [])
         if isinstance(types, str):
@@ -298,9 +412,11 @@ def get_law_harmonisation_target_iri(law_file: str) -> str | None:
         if "owl:Ontology" in types:
             node_id = node.get("@id")
             return node_id if isinstance(node_id, str) and node_id else None
+
+    # Restricted fallback: only accept ``graph[0]`` if it is itself an
+    # act-level node — never an arbitrary provision node.
     if graph:
-        node_id = graph[0].get("@id")
-        return node_id if isinstance(node_id, str) and node_id else None
+        return _node_id_if_act_level(graph[0])
     return None
 
 
@@ -311,7 +427,81 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Write outputs even if one or more EUR-Lex directive lookups fail.",
     )
+    parser.add_argument(
+        "--allow-stale-mapping",
+        action="store_true",
+        help=(
+            "Skip the freshness gate on transposition_mapping.json. "
+            f"By default the run fails if the mapping is older than "
+            f"{MAPPING_FRESHNESS_DAYS} days."
+        ),
+    )
+    parser.add_argument(
+        "--no-cache",
+        action="store_true",
+        help=(
+            "Bypass the per-CELEX SPARQL response cache "
+            f"({CACHE_DIR.relative_to(REPO_ROOT)}). Useful for forcing a "
+            f"fresh sweep before a release."
+        ),
+    )
+    parser.add_argument(
+        "--mapping-freshness-days",
+        type=int,
+        default=MAPPING_FRESHNESS_DAYS,
+        help=(
+            "Override the staleness threshold (in days) for "
+            "transposition_mapping.json."
+        ),
+    )
     return parser.parse_args()
+
+
+def _check_mapping_freshness(
+    mapping_data: dict, *, threshold_days: int, allow_stale: bool
+) -> None:
+    """Validate that ``transposition_mapping.json`` was generated recently.
+
+    Reads ``mapping_data['generated']`` (an ISO date), compares against
+    today (UTC), and either warns or aborts depending on ``allow_stale``.
+    Always prints the generated date for traceability.
+    """
+    generated = mapping_data.get("generated")
+    if not generated:
+        msg = "transposition_mapping.json missing 'generated' timestamp"
+        if allow_stale:
+            print(f"  WARNING: {msg} (allowed via --allow-stale-mapping)")
+            return
+        print(f"ERROR: {msg}")
+        sys.exit(1)
+
+    try:
+        gen_date = datetime.fromisoformat(generated).date()
+    except ValueError as exc:
+        msg = f"unparseable 'generated' timestamp {generated!r}: {exc}"
+        if allow_stale:
+            print(f"  WARNING: {msg} (allowed via --allow-stale-mapping)")
+            return
+        print(f"ERROR: {msg}")
+        sys.exit(1)
+
+    today = datetime.now(timezone.utc).date()
+    age_days = (today - gen_date).days
+    print(f"  transposition_mapping.json generated: {generated} ({age_days}d ago)")
+
+    if age_days > threshold_days:
+        msg = (
+            f"transposition_mapping.json is {age_days} days old "
+            f"(threshold: {threshold_days})"
+        )
+        if allow_stale:
+            print(f"  WARNING: {msg} (allowed via --allow-stale-mapping)")
+            return
+        print(
+            f"ERROR: {msg}. Re-run generate_transposition_mapping.py or "
+            "pass --allow-stale-mapping to override."
+        )
+        sys.exit(1)
 
 
 def main():
@@ -363,6 +553,11 @@ def main():
         sys.exit(1)
 
     mapping_data = load_json(mapping_path)
+    _check_mapping_freshness(
+        mapping_data,
+        threshold_days=args.mapping_freshness_days,
+        allow_stale=args.allow_stale_mapping,
+    )
     mappings = mapping_data.get("mappings", [])
     print(f"  Transposition mappings loaded: {len(mappings)}")
 
@@ -371,6 +566,10 @@ def main():
         return
 
     # Deduplicate by directive CELEX (we only need to query each directive once)
+    # Track laws whose target IRI couldn't be resolved (e.g. file missing,
+    # only provision-level nodes present after the graph[0] guard) so we
+    # can surface them in the report rather than silently dropping.
+    skipped_laws: list[dict] = []
     directives_to_process: dict[str, dict] = {}
     for m in mappings:
         celex = m["directive_celex"]
@@ -385,7 +584,18 @@ def main():
             "files": m.get("law_files", []),
         }
         if law_entry["files"]:
-            law_entry["iri"] = get_law_harmonisation_target_iri(law_entry["files"][0])
+            resolved = get_law_harmonisation_target_iri(law_entry["files"][0])
+            law_entry["iri"] = resolved
+            if not resolved:
+                skipped_laws.append(
+                    {
+                        "name": law_entry["name"],
+                        "source_act": law_entry["source_act"],
+                        "law_file": law_entry["files"][0],
+                        "directive_celex": celex,
+                        "reason": "no act-level @id found",
+                    }
+                )
         # Avoid duplicate law entries per directive
         existing_names = {
             law["name"] for law in directives_to_process[celex]["estonian_laws"]
@@ -394,6 +604,11 @@ def main():
             directives_to_process[celex]["estonian_laws"].append(law_entry)
 
     print(f"  Unique directives to query: {len(directives_to_process)}")
+    if skipped_laws:
+        print(
+            f"  WARNING: {len(skipped_laws)} law(s) skipped — could not "
+            f"resolve act-level IRI (see harmonisation_report.json)"
+        )
 
     # --- Step 2: Create output directories ---
     HARMONISATION_DIR.mkdir(parents=True, exist_ok=True)
@@ -416,6 +631,11 @@ def main():
     # Track which law files get which harmonisation node IDs
     law_file_harmonisation: dict[str, list[str]] = {}
     errors = 0
+    # Persist failed CELEXes so reruns can target them (and the
+    # harmonisation report shows what's outstanding).
+    failed_directives: list[dict] = []
+    cache_hits = 0
+    use_cache = not args.no_cache
 
     directive_list = sorted(directives_to_process.keys())
 
@@ -427,13 +647,30 @@ def main():
         if (i + 1) % 10 == 0 or i == 0:
             print(f"  Processing directive {i + 1}/{len(directive_list)}: {celex_dir}")
 
-        # Query for other countries' transpositions
+        # Detect cache hits up-front so we can skip the rate-limit sleep
+        # below — that sleep is a defence against EUR-Lex throttling, but
+        # a cache hit issued zero requests.
+        cache_hit = use_cache and _cache_is_fresh(_cache_path_for(celex_dir))
+        if cache_hit:
+            cache_hits += 1
+
+        # Query for other countries' transpositions. ``sparql_query_with_retry``
+        # already retries transient 5xxs with exponential backoff;
+        # reaching this except branch means the failure was terminal for
+        # this directive. We log it, stash the CELEX for the report, and
+        # continue rather than aborting the whole sweep.
         try:
-            other_measures = fetch_other_transpositions(celex_dir)
+            other_measures = fetch_other_transpositions(
+                celex_dir, use_cache=use_cache
+            )
         except Exception as e:
-            print(f"    ERROR: {e}")
+            print(f"    ERROR ({celex_dir}): {e}")
             errors += 1
-            time.sleep(RATE_DELAY)
+            failed_directives.append(
+                {"directive_celex": celex_dir, "error": str(e)}
+            )
+            if not cache_hit:
+                time.sleep(RATE_DELAY)
             continue
 
         if other_measures:
@@ -453,6 +690,12 @@ def main():
             if not law_iri:
                 print(f"    ERROR: no law IRI for {primary_law['name']} ({celex_dir})")
                 errors += 1
+                # Still fall through to the rate-limit sleep below — the
+                # SPARQL query already happened, so we owe EUR-Lex a
+                # courtesy delay before the next request unless this was
+                # a cache hit.
+                if not cache_hit:
+                    time.sleep(RATE_DELAY)
                 continue
 
             directive_doc = build_directive_node(
@@ -503,12 +746,15 @@ def main():
                     if harmonisation_id not in law_file_harmonisation[filepath_str]:
                         law_file_harmonisation[filepath_str].append(harmonisation_id)
 
-        # Rate limiting
-        time.sleep(RATE_DELAY)
+        # Rate limiting: only sleep when we actually issued a network
+        # request (cache hits read from disk and incur no remote load).
+        if not cache_hit:
+            time.sleep(RATE_DELAY)
 
     print(f"\n  Directives queried: {len(directive_list)}")
     print(f"  Directives with parallel measures: {directives_with_parallels}")
     print(f"  Total parallel measures found: {total_parallel_measures}")
+    print(f"  Cache hits: {cache_hits}/{len(directive_list)}")
     print(f"  Query errors: {errors}")
 
     # --- Step 5: Update Estonian law files with harmonisation links ---
@@ -530,6 +776,7 @@ def main():
         "generated": datetime.now(timezone.utc).date().isoformat(),
         "source": SPARQL_ENDPOINT,
         "estonian_country_code": "EST",
+        "transposition_mapping_generated": mapping_data.get("generated", ""),
         "target_countries": {
             code: info for code, info in TARGET_COUNTRIES.items()
         },
@@ -537,6 +784,11 @@ def main():
         "directives_with_parallels": directives_with_parallels,
         "total_parallel_measures": total_parallel_measures,
         "query_errors": errors,
+        "cache_hits": cache_hits,
+        "failed_directives": sorted(
+            failed_directives, key=lambda d: d["directive_celex"]
+        ),
+        "skipped_laws": sorted(skipped_laws, key=lambda s: s["name"]),
         "law_files_updated": files_updated,
         "measures_by_country": {
             code: {
