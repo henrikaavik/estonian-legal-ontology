@@ -25,6 +25,7 @@ CONTEXT = {
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/",
 }
 
 
@@ -143,6 +144,45 @@ def test_corrected_inputs_pass(tmp_path, capsys):
 
     assert code == 0, output
     assert "PASS" in output
+
+
+def test_act_without_subject_passes_optional_eurovoc_contract(tmp_path, capsys):
+    krr = tmp_path / "krr_outputs"
+    _seed_seadusloome_subdirs(krr)
+    _write_combined(
+        krr,
+        [
+            {
+                "@id": "estleg:Act_Without_Subject",
+                "@type": ["estleg:Act"],
+            }
+        ],
+    )
+
+    code, output = _run_validator(krr, capsys)
+
+    assert code == 0, output
+
+
+def test_non_eurovoc_subject_warns(tmp_path, capsys):
+    krr = tmp_path / "krr_outputs"
+    _seed_seadusloome_subdirs(krr)
+    _write_combined(
+        krr,
+        [
+            {
+                "@id": "estleg:Act_With_Non_EuroVoc_Subject",
+                "@type": ["estleg:Act"],
+                "dcterms:subject": {"@id": "http://example.com/topic"},
+            }
+        ],
+    )
+
+    code, output = _run_validator(krr, capsys)
+
+    assert code != 0, output
+    assert "Warning" in output
+    assert "subject" in output
 
 
 def test_missing_combined_ontology_is_fatal(tmp_path, capsys):

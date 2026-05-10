@@ -242,6 +242,11 @@ def build_directive_index() -> dict[str, str]:
     return directive_index
 
 
+def resolve_directive_iri(celex: str, directive_index: dict[str, str]) -> str | None:
+    """Return the known ontology IRI for a directive CELEX, if present."""
+    return directive_index.get(celex) or None
+
+
 def match_title_to_law(title: str, law_index: dict[str, dict]) -> dict | None:
     """
     Try to match a transposition measure title to an Estonian law.
@@ -288,8 +293,8 @@ def generate_schema() -> dict:
             "@id": "estleg:transposesDirective",
             "@type": ["owl:ObjectProperty"],
             "rdfs:label": "võtab üle direktiivi (transposes directive)",
-            "rdfs:comment": "Links an Estonian legal provision to the EU directive it transposes.",
-            "rdfs:domain": {"@id": "estleg:LegalProvision"},
+            "rdfs:comment": "Links an Estonian act to the EU directive it transposes.",
+            "rdfs:domain": {"@id": "estleg:Act"},
             "rdfs:range": {"@id": "estleg:EULegislation"},
         },
         # ObjectProperty: transposedBy (inverse)
@@ -299,7 +304,7 @@ def generate_schema() -> dict:
             "rdfs:label": "üle võetud (transposed by)",
             "rdfs:comment": "Inverse of transposesDirective — links an EU directive to the national law that transposes it.",
             "rdfs:domain": {"@id": "estleg:EULegislation"},
-            "rdfs:range": {"@id": "estleg:LegalProvision"},
+            "rdfs:range": {"@id": "estleg:Act"},
             "owl:inverseOf": {"@id": "estleg:transposesDirective"},
         },
         # DatatypeProperty: transpositionStatus
@@ -308,7 +313,7 @@ def generate_schema() -> dict:
             "@type": ["owl:DatatypeProperty"],
             "rdfs:label": "ülevõtmise staatus (transposition status)",
             "rdfs:comment": "Status of directive transposition: full, partial, or unknown.",
-            "rdfs:domain": {"@id": "estleg:LegalProvision"},
+            "rdfs:domain": {"@id": "estleg:Act"},
             "rdfs:range": {"@id": "xsd:string"},
         },
     ]
@@ -316,9 +321,37 @@ def generate_schema() -> dict:
     return {"@context": CONTEXT, "@graph": schema_nodes}
 
 
+def find_law_transposition_target(data: dict) -> dict | None:
+    """Find the act-level node that receives transposition links."""
+    graph = data.get("@graph", [])
+    for node in graph:
+        types = node.get("@type", [])
+        if isinstance(types, str):
+            types = [types]
+        if "owl:Ontology" in types:
+            return node
+    return graph[0] if graph else None
+
+
+def get_law_transposition_target_iri(filepath: Path) -> str | None:
+    """Load a law file and return the real node IRI used for transposition links."""
+    try:
+        data = load_json(filepath)
+    except Exception as e:
+        print(f"    ERROR loading {filepath.name}: {e}")
+        return None
+
+    target_node = find_law_transposition_target(data)
+    if target_node is None:
+        return None
+
+    node_id = target_node.get("@id")
+    return node_id if isinstance(node_id, str) and node_id else None
+
+
 def update_law_file(filepath: Path, directive_ids: list[str]) -> bool:
     """
-    Add estleg:transposesDirective to the first LegalProvision-typed node in a law file.
+    Add estleg:transposesDirective to the act-level node in a law file.
     Returns True if the file was modified.
     """
     try:
@@ -333,21 +366,7 @@ def update_law_file(filepath: Path, directive_ids: list[str]) -> bool:
         ctx["dcterms"] = "http://purl.org/dc/terms/"
         data["@context"] = ctx
 
-    modified = False
-    graph = data.get("@graph", [])
-
-    # Find the ontology node or first named individual to attach the directive link
-    target_node = None
-    for node in graph:
-        types = node.get("@type", [])
-        # Look for the ontology metadata node
-        if "owl:Ontology" in types:
-            target_node = node
-            break
-
-    if target_node is None and graph:
-        target_node = graph[0]
-
+    target_node = find_law_transposition_target(data)
     if target_node is None:
         return False
 
@@ -371,8 +390,7 @@ def update_law_file(filepath: Path, directive_ids: list[str]) -> bool:
         target_node["estleg:transpositionStatus"] = "unknown"
 
     save_json(filepath, data)
-    modified = True
-    return modified
+    return True
 
 
 def update_directive_file(directive_celex_to_laws: dict[str, list[str]]) -> int:
@@ -536,6 +554,8 @@ def main():
     law_file_directives: dict[str, list[str]] = {}  # filepath → [directive IRI, ...]
     # Track which directives are transposed by which law IRIs
     directive_celex_to_law_iris: dict[str, list[str]] = {}  # celex → [law ontology node IRI, ...]
+    missing_directives: list[dict] = []
+    missing_law_iris: list[dict] = []
 
     for measure in measures:
         celex_dir = measure["celex_dir"]
@@ -547,10 +567,14 @@ def main():
             continue
 
         # Determine the directive IRI in our ontology
-        directive_iri = directive_index.get(celex_dir, "")
+        directive_iri = resolve_directive_iri(celex_dir, directive_index)
         if not directive_iri:
-            # Create a synthetic IRI
-            directive_iri = f"estleg:EU_{sanitize_celex(celex_dir)}"
+            missing_directives.append({
+                "directive_celex": celex_dir,
+                "national_title": title_nat,
+                "matched_law_name": law_match["name"],
+            })
+            continue
 
         # Track the mapping
         mapping_entry = {
@@ -571,19 +595,25 @@ def main():
             if directive_iri not in law_file_directives[filepath]:
                 law_file_directives[filepath].append(directive_iri)
 
-        # Collect law IRIs for inverse links
-        # Use a generic IRI pattern based on the law name
-        law_name = law_match["name"]
-        # The ontology node pattern from files is typically estleg:XX_Map_2026
-        # But we link to the LegalProvision class node
-        law_iri = f"estleg:LegalProvision_{law_name}"
-        if celex_dir not in directive_celex_to_law_iris:
-            directive_celex_to_law_iris[celex_dir] = []
-        if law_iri not in directive_celex_to_law_iris[celex_dir]:
-            directive_celex_to_law_iris[celex_dir].append(law_iri)
+        for law_file in law_match["files"]:
+            filepath = KRR_DIR / law_file
+            law_iri = get_law_transposition_target_iri(filepath)
+            if law_iri is None:
+                missing_law_iris.append({
+                    "directive_celex": celex_dir,
+                    "law_file": law_file,
+                    "matched_law_name": law_match["name"],
+                })
+                continue
+            if celex_dir not in directive_celex_to_law_iris:
+                directive_celex_to_law_iris[celex_dir] = []
+            if law_iri not in directive_celex_to_law_iris[celex_dir]:
+                directive_celex_to_law_iris[celex_dir].append(law_iri)
 
     print(f"  Matched: {len(matched_mappings)}")
     print(f"  Unmatched: {len(unmatched_titles)}")
+    print(f"  Skipped missing directives: {len(missing_directives)}")
+    print(f"  Skipped missing law IRIs: {len(missing_law_iris)}")
 
     # Deduplicate matched mappings (same law + same directive)
     seen_pairs: set[tuple[str, str]] = set()
@@ -629,12 +659,16 @@ def main():
         "total_measures_fetched": len(measures),
         "total_matched": len(matched_mappings),
         "total_unmatched": len(unmatched_titles),
+        "total_skipped_missing_directives": len(missing_directives),
+        "total_skipped_missing_law_iris": len(missing_law_iris),
         "unique_directives": len(unique_directives),
         "unique_laws": len(unique_laws),
         "law_files_updated": files_updated,
         "directive_nodes_updated": directives_updated,
         "mappings": sorted(matched_mappings, key=lambda m: m["directive_celex"]),
         "unmatched_sample": unmatched_titles[:50],
+        "missing_directives_sample": missing_directives[:50],
+        "missing_law_iris_sample": missing_law_iris[:50],
     }
 
     report_path = KRR_DIR / "transposition_mapping.json"
@@ -647,11 +681,13 @@ def main():
     print(f"  Measures fetched from EUR-Lex:  {len(measures)}")
     print(f"  Matched to Estonian laws:       {len(matched_mappings)}")
     print(f"  Unmatched:                      {len(unmatched_titles)}")
+    print(f"  Skipped missing directives:     {len(missing_directives)}")
+    print(f"  Skipped missing law IRIs:       {len(missing_law_iris)}")
     print(f"  Unique EU directives:           {len(unique_directives)}")
     print(f"  Unique Estonian laws:           {len(unique_laws)}")
     print(f"  Law files updated:              {files_updated}")
     print(f"  Directive nodes updated:        {directives_updated}")
-    print(f"\nOutputs:")
+    print("\nOutputs:")
     print(f"  {report_path.relative_to(REPO_ROOT)}")
     print(f"  {schema_path.relative_to(REPO_ROOT)}")
     print("=" * 60)

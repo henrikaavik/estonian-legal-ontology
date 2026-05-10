@@ -15,8 +15,6 @@ Fixes GitHub issues:
 """
 
 import json
-import os
-import shutil
 from pathlib import Path
 from collections import defaultdict
 
@@ -198,7 +196,7 @@ def fix_notariaadiseadus_naming():
         doc = process_json_file(old_path)
         save_json(new_path, doc)
         old_path.unlink()
-        print(f"  Renamed: notari_seadus_peep.json → notariaadiseadus_peep.json")
+        print("  Renamed: notari_seadus_peep.json → notariaadiseadus_peep.json")
         stats["files_renamed"] += 1
     else:
         print(f"  File not found: {old_path.name}")
@@ -232,8 +230,7 @@ def audit_duplicate_ids():
                 seen_in_file.add(nid)
                 id_locations[nid].append(filepath.name)
 
-    # Find cross-file duplicates (excluding ontology class definitions)
-    class_types = {"owl:Class", "owl:ObjectProperty", "owl:DatatypeProperty"}
+    # Find cross-file duplicates.
     duplicates = []
     for nid, files in id_locations.items():
         if len(files) > 1:
@@ -249,7 +246,7 @@ def audit_duplicate_ids():
             f.write("| @id | Files |\n|-----|-------|\n")
             for nid, files in sorted(duplicates):
                 f.write(f"| `{nid}` | {', '.join(sorted(set(files)))} |\n")
-        print(f"  Report written to docs/DUPLICATE_IDS_REPORT.md")
+        print("  Report written to docs/DUPLICATE_IDS_REPORT.md")
     else:
         print("  No cross-file duplicate IDs found")
 
@@ -390,7 +387,7 @@ def generate_index():
 
     index = {
         "generated": "2026-03-02",
-        "total_files": sum(len(l["files"]) for l in laws.values()),
+        "total_files": sum(len(law["files"]) for law in laws.values()),
         "total_laws": len(laws),
         "laws": []
     }

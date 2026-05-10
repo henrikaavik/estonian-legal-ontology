@@ -27,7 +27,6 @@ sys.path.insert(0, str(REPO_ROOT / "scripts"))
 from riigiteataja_common import (  # noqa: E402
     BASE_URL,
     CONTEXT,
-    DATA_DIR,
     KRR_DIR,
     collect_full_text,
     collect_text,
@@ -671,7 +670,7 @@ def main():
             refresh=mode in {"refresh", "force"},
         )
         if root is None:
-            print(f"    SKIP: could not fetch XML")
+            print("    SKIP: could not fetch XML")
             failed += 1
             run_counts["failedFetches"] += 1
             continue

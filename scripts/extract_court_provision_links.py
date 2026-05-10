@@ -14,7 +14,6 @@ This script:
 
 from __future__ import annotations
 
-import json
 import re
 import time
 from collections import defaultdict
@@ -24,7 +23,6 @@ from typing import NamedTuple
 
 from estleg_common import (
     BODY_CANON,
-    CONTEXT,
     FULLNAME_GENITIVE,
     KNOWN_ABBREVIATIONS,
     PAR_SUFFIX,
@@ -34,7 +32,6 @@ from estleg_common import (
     iter_peep_files,
     normalize_issuer_name,
     save_json,
-    sanitize_id,
 )
 
 

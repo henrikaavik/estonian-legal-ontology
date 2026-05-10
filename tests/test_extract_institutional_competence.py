@@ -1317,7 +1317,7 @@ class TestCorpusInvariant:
     def test_kov_competentauthority_is_issuer_iri(self):
         from estleg_common import iter_peep_files, KRR_DIR
         if not KRR_DIR.exists() or not list(KRR_DIR.glob("*_peep.json")):
-            pytest.skip("krr_outputs/ empty — clean checkout")
+            pytest.fail("krr_outputs/ empty; corpus invariant was not checked")
 
         body_slug_institutions = {
             "Institution_linnavolikogu", "Institution_vallavolikogu",

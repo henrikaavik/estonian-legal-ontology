@@ -393,7 +393,7 @@ def main() -> None:
     print(f"  Law files updated: {inverse_count}")
 
     # ---------- report ----------
-    print(f"\n[5/5] Generating report...")
+    print("\n[5/5] Generating report...")
 
     # Most-affected laws
     most_affected = sorted(

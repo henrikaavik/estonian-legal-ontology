@@ -269,7 +269,7 @@ def main() -> None:
             print(f"  [{idx}/{len(law_files)}] processed – {total_classified} classified so far")
 
     # ---------- report ----------
-    print(f"\n[2/3] Generating report...")
+    print("\n[2/3] Generating report...")
 
     report = {
         "generated": datetime.now().strftime("%Y-%m-%d"),
@@ -292,7 +292,7 @@ def main() -> None:
     print(f"  Saved: {report_path.name}")
 
     # ---------- summary ----------
-    print(f"\n[3/3] SUMMARY")
+    print("\n[3/3] SUMMARY")
     print("=" * 70)
     print(f"  Provisions analysed:    {total_provisions}")
     print(f"  Classified:             {total_classified}")

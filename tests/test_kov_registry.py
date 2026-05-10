@@ -387,7 +387,7 @@ class TestMetadataJsonLd:
     def test_new_classes_present(self):
         path = REPO_ROOT / "metadata.jsonld"
         if not path.exists():
-            pytest.skip("metadata.jsonld missing")
+            pytest.fail("metadata.jsonld missing")
         with open(path, "r", encoding="utf-8") as fh:
             doc = json.load(fh)
         ids = {n.get("@id") for n in doc.get("@graph", [])}
@@ -412,7 +412,7 @@ class TestMetadataJsonLd:
     def test_subclass_triples_present(self):
         path = REPO_ROOT / "metadata.jsonld"
         if not path.exists():
-            pytest.skip("metadata.jsonld missing")
+            pytest.fail("metadata.jsonld missing")
         with open(path, "r", encoding="utf-8") as fh:
             doc = json.load(fh)
 

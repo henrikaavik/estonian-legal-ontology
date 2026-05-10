@@ -263,7 +263,6 @@ def extract_concepts_from_xml(
             continue
 
         par_nr = ct(el, "paragrahvNr") or ""
-        par_title = ct(el, "paragrahvPealkiri") or ""
         par_display = ct(el, "kuvatavNr") or f"§ {par_nr}"
 
         # Check if this paragraph is a definition section
@@ -665,8 +664,8 @@ def main():
                 "term": em["term"],
                 "appears_in": em["count"],
                 "laws": [
-                    {"title": l["title"], "paragraph": l["paragraph"]}
-                    for l in em["laws"]
+                    {"title": law["title"], "paragraph": law["paragraph"]}
+                    for law in em["laws"]
                 ],
             }
             for em in sorted(exact_matches, key=lambda x: x["count"], reverse=True)
@@ -695,17 +694,17 @@ def main():
     print(f"  Terms in multiple laws:     {len(exact_matches)}")
     print(f"  Close-match pairs:          {len(close_matches)}")
     if laws_ranked:
-        print(f"\n  Top 5 laws by definitions:")
+        print("\n  Top 5 laws by definitions:")
         for slug, count in laws_ranked[:5]:
             print(f"    {slug}: {count} terms")
     if exact_matches:
         top_crossref = sorted(exact_matches, key=lambda x: x["count"], reverse=True)[:5]
-        print(f"\n  Top 5 cross-referenced terms:")
+        print("\n  Top 5 cross-referenced terms:")
         for em in top_crossref:
             print(f"    \"{em['term']}\" appears in {em['count']} laws")
     print(f"\n  Output: {CONCEPTS_DIR.relative_to(REPO_ROOT)}/")
-    print(f"  Combined: concepts_combined.jsonld")
-    print(f"  Report:   concept_crossref_report.json")
+    print("  Combined: concepts_combined.jsonld")
+    print("  Report:   concept_crossref_report.json")
     print("=" * 70)
 
     # ---------- coverage report ----------

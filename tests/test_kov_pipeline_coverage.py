@@ -3,12 +3,10 @@ from __future__ import annotations
 
 import json
 import sys
-import time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 
-import pytest
 
 from kov_pipeline_coverage import (
     CoverageReport,

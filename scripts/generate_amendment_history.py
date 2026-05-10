@@ -708,7 +708,7 @@ def main():
     print(f"  Law files enriched:       {enriched}")
     print(f"  Amendment chain files:    {len(amendment_chains)}")
     if most_amended_list:
-        print(f"\n  Top 5 most amended laws:")
+        print("\n  Top 5 most amended laws:")
         for c in most_amended_list[:5]:
             print(f"    {c['law']}: {c['total_amendments']} amendments")
     print(f"\n  Report: {report_path.relative_to(REPO_ROOT)}")

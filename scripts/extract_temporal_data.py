@@ -608,7 +608,7 @@ def main(evaluation_date: str | None = None):
     print(f"  Peep files paired:     {len(temporal_by_slug)}")
     print(f"  Law files enriched:    {enriched}")
     print(f"  Skipped (no data):     {skipped}")
-    print(f"  Status breakdown:")
+    print("  Status breakdown:")
     for status, count in status_counts.items():
         print(f"    {status}: {count}")
     print(f"\n  Report: {report_path.relative_to(REPO_ROOT)}")

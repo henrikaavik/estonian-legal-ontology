@@ -66,14 +66,6 @@ def get_file_prefix(filepath: str) -> str | None:
             return nid.replace("estleg:", "").split("_Par_")[0]
         if "_Map_2026" in nid:
             return nid.replace("estleg:", "").split("_Map_2026")[0]
-    # Try cluster IDs
-    for node in doc.get("@graph", []):
-        nid = node.get("@id", "")
-        if nid.startswith("estleg:Cluster_"):
-            rest = nid.replace("estleg:Cluster_", "")
-            # The prefix is the part before the last underscore-separated chunk
-            # but this varies, so just return None for files without provisions
-            pass
     return None
 
 
@@ -170,7 +162,6 @@ def build_remap_table(dupes: dict[str, list[str]]) -> dict[str, dict[str, str]]:
                         continue  # Already remapped
 
                     if "_Par_" in dupe_id:
-                        old_prefix = dupe_id.replace("estleg:", "").split("_Par_")[0]
                         par_part = dupe_id.split("_Par_", 1)[1]
                         new_id = f"estleg:{new_prefix}_Par_{par_part}"
                         if new_id != dupe_id:

@@ -17,7 +17,6 @@ from __future__ import annotations
 
 import json
 import re
-import sys
 import xml.etree.ElementTree as ET
 from datetime import datetime
 from pathlib import Path

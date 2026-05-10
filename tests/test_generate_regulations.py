@@ -15,7 +15,6 @@ from pathlib import Path
 import pytest
 
 import estleg_common
-import riigiteataja_common
 from generate_regulations import (
     build_regulation_index,
     build_regulation_jsonld,

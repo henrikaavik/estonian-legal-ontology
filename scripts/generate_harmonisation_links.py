@@ -231,7 +231,6 @@ def build_directive_node(
     for country_code, measures in sorted(by_country.items()):
         country_info = TARGET_COUNTRIES.get(country_code, {})
         for idx, m in enumerate(measures):
-            safe_nat = sanitize_celex(m["celex_nat"])
             node_id = f"estleg:Harm_{safe_celex}_{country_code}_{idx + 1}"
 
             node: dict = {
@@ -364,7 +363,9 @@ def main():
             "files": m.get("law_files", []),
         }
         # Avoid duplicate law entries per directive
-        existing_names = {l["name"] for l in directives_to_process[celex]["estonian_laws"]}
+        existing_names = {
+            law["name"] for law in directives_to_process[celex]["estonian_laws"]
+        }
         if law_entry["name"] not in existing_names:
             directives_to_process[celex]["estonian_laws"].append(law_entry)
 
@@ -530,11 +531,11 @@ def main():
     print(f"  Total parallel measures:        {total_parallel_measures}")
     print(f"  Query errors:                   {errors}")
     print(f"  Law files updated:              {files_updated}")
-    print(f"\n  Measures by country:")
+    print("\n  Measures by country:")
     for code, count in sorted(country_totals.items(), key=lambda x: -x[1]):
         label = TARGET_COUNTRIES[code]["label_en"]
         print(f"    {label:20s} ({code}): {count:4d}")
-    print(f"\nOutputs:")
+    print("\nOutputs:")
     print(f"  {report_path.relative_to(REPO_ROOT)}")
     print(f"  {schema_path.relative_to(REPO_ROOT)}")
     print(f"  {BY_DIRECTIVE_DIR.relative_to(REPO_ROOT)}/ ({len(harmonisation_data)} files)")

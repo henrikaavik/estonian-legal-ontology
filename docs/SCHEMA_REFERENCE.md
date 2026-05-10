@@ -568,14 +568,14 @@ These properties enable cross-referencing between different parts of the legal s
 ### EU Transposition
 | Property | Domain | Range | Description |
 |----------|--------|-------|-------------|
-| `estleg:transposesDirective` | LegalProvision | EULegislation (IRI) | EU directive transposed by this law |
-| `estleg:transposedBy` | EULegislation | LegalProvision (IRI) | Inverse: Estonian law transposing this directive |
+| `estleg:transposesDirective` | Act | EULegislation (IRI) | EU directive transposed by this law |
+| `estleg:transposedBy` | EULegislation | Act (IRI) | Inverse: Estonian law transposing this directive |
 | `estleg:harmonisedWith` | LegalProvision | EULegislation (IRI) | EU harmonisation requirement |
 
 ### Subject Classification
 | Property | Domain | Range | Description |
 |----------|--------|-------|-------------|
-| `dcterms:subject` | Act | IRI | Act-level EuroVoc concept URI (e.g., `http://eurovoc.europa.eu/2411`). Current classifier is keyword-based and reports quality status separately. |
+| `dcterms:subject` | Act | IRI | Optional act-level EuroVoc concept URI (e.g., `http://eurovoc.europa.eu/2411`). Current classifier is keyword-based and reports quality status separately. When present, SHACL expects a EuroVoc IRI. |
 
 ### Temporal Properties
 | Property | Domain | Range | Description |

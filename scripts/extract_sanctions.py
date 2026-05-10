@@ -749,7 +749,7 @@ def main() -> int:
     severity_index.sort(key=lambda x: (-x["max_severity"], -x["sanction_count"]))
 
     # ---------- report ----------
-    print(f"\n[3/4] Generating report...")
+    print("\n[3/4] Generating report...")
 
     report = {
         "generated": datetime.now().strftime("%Y-%m-%d"),
@@ -775,7 +775,7 @@ def main() -> int:
     print(f"  Saved: {report_path.name}")
 
     # ---------- summary ----------
-    print(f"\n[4/4] SUMMARY")
+    print("\n[4/4] SUMMARY")
     print("=" * 70)
     print(f"  Provisions analysed:       {total_provisions}")
     print(f"  With sanctions:            {provisions_with_sanctions}")

@@ -435,7 +435,7 @@ def main():
     if similarity_pairs:
         avg_sim = sum(p["similarity"] for p in similarity_pairs) / len(similarity_pairs)
         print(f"Average similarity: {avg_sim:.3f}")
-        print(f"\nTop 5 most similar cross-law pairs:")
+        print("\nTop 5 most similar cross-law pairs:")
         for pair in sorted(similarity_pairs, key=lambda p: -p["similarity"])[:5]:
             print(f"  {pair['similarity']:.3f}: {pair['source_label']} <-> {pair['target_label']}")
     print("=" * 60)

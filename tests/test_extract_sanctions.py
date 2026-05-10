@@ -679,16 +679,16 @@ class TestCorpusInvariant:
     estleg:hasSanction has exactly ONE estleg:enforcedAtLevel
     literal in {"state", "municipality"}.
 
-    Skipped when krr_outputs/ is empty (clean checkout). Marked
-    @pytest.mark.slow so CI can opt out on the fast path; runs in
-    the integration suite.
+    Fails when krr_outputs/ is empty because this is a corpus gate.
+    Marked @pytest.mark.slow so CI can opt out on the fast path; runs
+    in the integration suite.
     """
 
     @pytest.mark.slow
     def test_every_has_sanction_provision_has_exactly_one_enforced_at_level(self):
         from estleg_common import iter_peep_files, KRR_DIR
         if not KRR_DIR.exists() or not list(KRR_DIR.glob("*_peep.json")):
-            pytest.skip("krr_outputs/ empty — clean checkout")
+            pytest.fail("krr_outputs/ empty; corpus invariant was not checked")
 
         violations = []
         for peep in iter_peep_files():

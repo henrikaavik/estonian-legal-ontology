@@ -13,11 +13,9 @@ This script:
 from __future__ import annotations
 
 import json
-import os
 import re
 import sys
 import time
-import unicodedata
 import xml.etree.ElementTree as ET
 import argparse
 from datetime import datetime, timezone
@@ -922,7 +920,7 @@ def main():
         # Fetch XML
         root = fetch_xml(url, slug)
         if root is None:
-            print(f"    SKIP: Could not fetch XML")
+            print("    SKIP: Could not fetch XML")
             failed += 1
             continue
 

@@ -17,7 +17,6 @@ import html as html_mod
 import json
 import math
 import re
-import sys
 import time
 from datetime import datetime
 from pathlib import Path
@@ -400,7 +399,7 @@ def main():
             continue
 
         if not decisions:
-            print(f"  No decisions found")
+            print("  No decisions found")
             continue
 
         year_stats[year] = len(decisions)

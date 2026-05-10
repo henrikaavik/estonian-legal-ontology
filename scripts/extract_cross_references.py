@@ -28,13 +28,11 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from estleg_common import (
-    CONTEXT,
     FULLNAME_GENITIVE,
     KNOWN_ABBREVIATIONS,
     PAR_SUFFIX,
     iter_peep_files,
     save_json,
-    sanitize_id,
 )
 from kov_pipeline_coverage import (
     CoverageReport,
@@ -1359,15 +1357,13 @@ def process_law_file(
     if not graph:
         return stats
 
-    # Determine this file's prefix and source act for self-references
+    # Determine this file's prefix for self-references
     self_prefix = None
-    self_source_act = None
     for node in graph:
         node_id = node.get("@id", "")
         if "_Par_" in node_id and node_id.startswith("estleg:"):
             local = node_id[len("estleg:"):]
             self_prefix = local.split("_Par_")[0]
-            self_source_act = node.get("estleg:sourceAct", "")
             break
 
     if not self_prefix:

@@ -18,8 +18,10 @@ estleg:ActTemporalShape
     sh:property [
         sh:path dcterms:subject ;
         sh:nodeKind sh:IRI ;
+        sh:pattern "^http://eurovoc\\.europa\\.eu/[0-9]+$" ;
+        sh:severity sh:Warning ;
         sh:name "subject" ;
-        sh:description "Act-level EuroVoc subject classification URI" ;
+        sh:description "Optional act-level EuroVoc subject classification URI. When present it must point at a EuroVoc concept." ;
     ] ;
     sh:property [
         sh:path estleg:entryIntoForce ;
@@ -55,6 +57,19 @@ estleg:ActTemporalShape
         sh:datatype xsd:string ;
         sh:name "temporalStatus" ;
         sh:description "Temporal status evaluated against the declared build evaluation date" ;
+    ] ;
+    sh:property [
+        sh:path estleg:transposesDirective ;
+        sh:nodeKind sh:IRI ;
+        sh:name "transposesDirective" ;
+        sh:description "EU directive that this act transposes" ;
+    ] ;
+    sh:property [
+        sh:path estleg:transpositionStatus ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "transpositionStatus" ;
+        sh:description "Status of directive transposition for this act" ;
     ] .
 
 # Shape for LegalProvision instances.

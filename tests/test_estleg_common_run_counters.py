@@ -1,7 +1,6 @@
 """Tests for _RunCounters and _safe_load in estleg_common."""
 from __future__ import annotations
 
-import json
 import sys
 from pathlib import Path
 

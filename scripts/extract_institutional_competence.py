@@ -694,7 +694,7 @@ def main() -> int:
         written_slugs.add(info["iri_suffix"])
 
     # ---------- report ----------
-    print(f"\n[3/4] Generating report...")
+    print("\n[3/4] Generating report...")
 
     # Competence-type breakdown
     competence_counts: dict[str, int] = defaultdict(int)
@@ -735,7 +735,7 @@ def main() -> int:
     print(f"  Saved: {report_path.name}")
 
     # ---------- summary ----------
-    print(f"\n[4/4] SUMMARY")
+    print("\n[4/4] SUMMARY")
     print("=" * 70)
     print(f"  Total provisions analysed: {total_provisions}")
     print(f"  With institution refs:     {provisions_with_institutions}")
