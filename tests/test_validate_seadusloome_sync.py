@@ -145,6 +145,25 @@ def test_corrected_inputs_pass(tmp_path, capsys):
     assert "PASS" in output
 
 
+def test_missing_combined_ontology_is_fatal(tmp_path, capsys):
+    """Regression for issue #140/#141.
+
+    If ``combined_ontology.jsonld`` is missing, the gate must exit 2 — a
+    PASS on the partial sub-directory inputs would silently skip the
+    hundreds of root ``*_peep.json`` enacted-law files that the consumer
+    only receives via the combined artifact.
+    """
+    krr = tmp_path / "krr_outputs"
+    _seed_seadusloome_subdirs(krr)
+    # No combined_ontology.jsonld is written.
+
+    code, output = _run_validator(krr, capsys)
+
+    assert code == 2, output
+    assert "combined_ontology.jsonld" in output
+    assert "ERROR" in output
+
+
 def test_grouped_summary_includes_focus_nodes(tmp_path, capsys):
     krr = tmp_path / "krr_outputs"
     _seed_seadusloome_subdirs(krr)

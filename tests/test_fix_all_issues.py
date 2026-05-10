@@ -124,3 +124,45 @@ def test_combined_builder_skips_unallowed_root_jsonld(tmp_path):
     rebuilt = read_json(tmp_path / "combined_ontology.jsonld")
     assert "estleg:NotASource" not in graph_ids(rebuilt)
     assert "estleg:A_1" in graph_ids(rebuilt)
+
+
+def test_combined_context_binds_dcterms(tmp_path):
+    """Regression for issue #139/#138.
+
+    Source peep files use ``dcterms:subject`` / ``dcterms:source``; if the
+    combined context drops the dcterms binding, rdflib parses those as
+    raw curies instead of ``http://purl.org/dc/terms/*`` IRIs and
+    downstream consumers (Seadusloome) lose every Dublin Core Terms
+    triple.
+    """
+    import rdflib
+
+    write_json(
+        tmp_path / "law_a_peep.json",
+        {
+            "@graph": [
+                {
+                    "@id": "estleg:A_1",
+                    "@type": ["estleg:LegalProvision"],
+                    "estleg:paragrahv": "§ 1.",
+                    "estleg:summary": "Summary",
+                    "estleg:requestedCluster": {"@id": "estleg:A_1_cluster"},
+                    "dcterms:subject": "Topic",
+                    "dcterms:source": "https://example.org/A_1",
+                }
+            ]
+        },
+    )
+
+    fix_all_issues.generate_combined_jsonld(tmp_path)
+
+    combined = read_json(tmp_path / "combined_ontology.jsonld")
+    ctx = combined["@context"]
+    assert ctx.get("dcterms") == "http://purl.org/dc/terms/"
+
+    g = rdflib.Graph()
+    g.parse(str(tmp_path / "combined_ontology.jsonld"), format="json-ld")
+    predicates = {str(p) for _, p, _ in g}
+    assert "http://purl.org/dc/terms/subject" in predicates
+    assert "http://purl.org/dc/terms/source" in predicates
+    assert not any(p.startswith("dcterms:") for p in predicates)

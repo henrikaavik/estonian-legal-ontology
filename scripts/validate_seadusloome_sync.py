@@ -49,21 +49,26 @@ JSONLD_SUFFIXES: tuple[str, ...] = (".json", ".jsonld")
 SHAPES_SUFFIXES: tuple[str, ...] = (".ttl", ".jsonld")
 
 
-def collect_inputs(krr_dir: Path) -> tuple[list[Path], list[str]]:
+def collect_inputs(krr_dir: Path) -> tuple[list[Path], list[str], list[str]]:
     """Build the sorted, de-duplicated list of JSON-LD inputs.
 
-    Returns ``(inputs, warnings)``. ``warnings`` is a list of human
-    messages (e.g. missing combined artifact); they are non-fatal.
+    Returns ``(inputs, warnings, errors)``. ``errors`` is fatal — a
+    missing ``combined_ontology.jsonld`` belongs here because it is the
+    only delivery path for the root ``*_peep.json`` corpus, so a partial
+    run would silently drop hundreds of enacted-law files.
     """
     warnings: list[str] = []
+    errors: list[str] = []
     inputs: set[Path] = set()
 
     combined = krr_dir / "combined_ontology.jsonld"
     if combined.exists():
         inputs.add(combined)
     else:
-        warnings.append(
-            f"WARNING: {combined} not found — Seadusloome sync would fall back to per-file ingest only."
+        errors.append(
+            f"ERROR: {combined} not found — refusing to run a partial gate that "
+            f"would skip every root *_peep.json file. Regenerate the combined "
+            f"artifact (scripts/fix_all_issues.py) before re-running."
         )
 
     for subdir_name in SEADUSLOOME_SUBDIRS:
@@ -76,7 +81,7 @@ def collect_inputs(krr_dir: Path) -> tuple[list[Path], list[str]]:
                 if path.is_file():
                     inputs.add(path)
 
-    return sorted(inputs), warnings
+    return sorted(inputs), warnings, errors
 
 
 def collect_shapes(shapes_dir: Path) -> list[Path]:
@@ -309,9 +314,13 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv)
 
-    inputs, input_warnings = collect_inputs(args.krr_dir)
+    inputs, input_warnings, input_errors = collect_inputs(args.krr_dir)
     for warning in input_warnings:
         print(warning)
+    for err in input_errors:
+        print(err)
+    if input_errors:
+        return 2
 
     if not inputs:
         print(f"ERROR: no JSON-LD inputs discovered under {args.krr_dir}.")
