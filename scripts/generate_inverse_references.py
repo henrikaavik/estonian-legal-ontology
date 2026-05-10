@@ -89,35 +89,74 @@ def _build_prefix_par_index(
     return dict(index)
 
 
+class AliasResolution:
+    """Result of an alias-resolution attempt.
+
+    ``canonical`` carries the resolved IRI when alias resolution
+    produced exactly one canonical match; otherwise ``None``.
+
+    ``ambiguous_candidates`` is non-empty only when the alias matched
+    >1 canonical prefix — i.e. two or more canonical laws contain the
+    requested paragraph. In that case we refuse to pick one to avoid
+    silently corrupting back-links across acts (#157).
+    """
+
+    __slots__ = ("canonical", "ambiguous_candidates")
+
+    def __init__(
+        self,
+        canonical: str | None,
+        ambiguous_candidates: list[str] | None = None,
+    ) -> None:
+        self.canonical = canonical
+        self.ambiguous_candidates = ambiguous_candidates or []
+
+
 def _resolve_alias(
     target_iri: str,
     iri_to_file: dict[str, Path],
     prefix_par_index: dict[str, dict[str, str]],
-) -> str | None:
+) -> AliasResolution:
     """
     Try to resolve *target_iri* via IRI_PREFIX_ALIASES.
 
-    If the target uses a known alias prefix **and** the paragraph number
-    exists under one of the canonical prefixes, return the canonical IRI.
-    Otherwise return ``None``.
+    Issue #157: ``IRI_PREFIX_ALIASES[<alias>]`` lists ALL canonical
+    prefixes whose acts can plausibly be the alias's referent. If
+    more than one of those canonical prefixes contains the requested
+    paragraph number, picking the first match silently mis-attributes
+    the back-link to a sibling osa. Refuse to resolve in that case
+    and let the caller record an unresolved warning instead.
+
+    Returns an :class:`AliasResolution` describing what we found:
+      * ``canonical`` set on a single confident match;
+      * ``ambiguous_candidates`` populated when multiple prefixes
+        carry the same paragraph number (caller must NOT use it);
+      * both empty when the alias is unknown or no canonical prefix
+        holds the paragraph (caller treats it as unresolved).
     """
     if not target_iri.startswith("estleg:") or "_Par_" not in target_iri:
-        return None
+        return AliasResolution(None)
 
     local = target_iri[len("estleg:"):]
     alias_prefix, par_num = local.split("_Par_", 1)
 
     canonical_prefixes = IRI_PREFIX_ALIASES.get(alias_prefix)
     if canonical_prefixes is None:
-        return None
+        return AliasResolution(None)
 
+    matches: list[str] = []
     for canon in canonical_prefixes:
         pars = prefix_par_index.get(canon, {})
         if par_num in pars:
             resolved = pars[par_num]
             if resolved in iri_to_file:
-                return resolved
-    return None
+                matches.append(resolved)
+
+    if not matches:
+        return AliasResolution(None)
+    if len(matches) > 1:
+        return AliasResolution(None, ambiguous_candidates=matches)
+    return AliasResolution(matches[0])
 
 
 def collect_all_references() -> tuple[
@@ -209,7 +248,7 @@ def apply_inverse_references(
     inverse_map: dict[str, list[str]],
     iri_to_file: dict[str, Path],
     prefix_par_index: dict[str, dict[str, str]],
-) -> tuple[dict[Path, int], list[str], dict[str, str]]:
+) -> tuple[dict[Path, int], list[str], dict[str, str], dict[str, list[str]]]:
     """
     Apply estleg:referencedBy to target files.
 
@@ -223,24 +262,34 @@ def apply_inverse_references(
         accumulator can resolve target paths losslessly)
       - unresolved_iris: list of target IRIs that could not be resolved
       - alias_resolved: {original_iri: canonical_iri} for IRIs fixed via alias
+      - alias_ambiguous: {alias_iri: [candidate_canonical_iri, ...]} for
+        IRIs that matched multiple canonical prefixes (#157). These
+        are recorded for diagnostics but never written as back-links —
+        attributing them to one canonical would risk silent corruption.
     """
     # Group inverse references by target file
     file_updates: dict[Path, dict[str, list[str]]] = defaultdict(dict)
 
     unresolved_iris: list[str] = []
     alias_resolved: dict[str, str] = {}
+    alias_ambiguous: dict[str, list[str]] = {}
 
     for target_iri, source_iris in inverse_map.items():
         target_file = iri_to_file.get(target_iri)
 
         # If direct lookup fails, try alias resolution
         if target_file is None:
-            canonical = _resolve_alias(target_iri, iri_to_file, prefix_par_index)
-            if canonical is not None:
-                target_file = iri_to_file.get(canonical)
-                alias_resolved[target_iri] = canonical
+            res = _resolve_alias(target_iri, iri_to_file, prefix_par_index)
+            if res.canonical is not None:
+                target_file = iri_to_file.get(res.canonical)
+                alias_resolved[target_iri] = res.canonical
                 # Re-key: merge sources under the canonical IRI
-                target_iri = canonical
+                target_iri = res.canonical
+            elif res.ambiguous_candidates:
+                # Refuse to silently pick one canonical (#157).
+                alias_ambiguous[target_iri] = sorted(res.ambiguous_candidates)
+                unresolved_iris.append(target_iri)
+                continue
 
         if target_file is None:
             unresolved_iris.append(target_iri)
@@ -260,6 +309,13 @@ def apply_inverse_references(
             print(f"    ... and {len(unresolved_iris) - 10} more")
     if alias_resolved:
         print(f"  Resolved {len(alias_resolved)} IRIs via prefix aliases")
+    if alias_ambiguous:
+        print(
+            f"  Refused {len(alias_ambiguous)} ambiguous alias resolutions "
+            "(multiple canonical prefixes carry the same paragraph)"
+        )
+        for iri in sorted(alias_ambiguous)[:5]:
+            print(f"    {iri} -> {alias_ambiguous[iri]}")
 
     update_counts: dict[Path, int] = {}
 
@@ -295,7 +351,7 @@ def apply_inverse_references(
             save_json(target_file, doc)
             update_counts[target_file] = nodes_updated
 
-    return update_counts, unresolved_iris, alias_resolved
+    return update_counts, unresolved_iris, alias_resolved, alias_ambiguous
 
 
 # ---------------------------------------------------------------------------
@@ -514,11 +570,26 @@ def verify_symmetry() -> list[dict]:
     Post-verification: for every ``estleg:references`` A->B, verify that
     node B carries ``estleg:referencedBy`` pointing back to A.
 
+    Issue #157: when the forward reference uses an alias prefix (e.g.
+    ``Vlaigusseadus_Par_14``), apply the same alias-resolution logic
+    used by ``apply_inverse_references`` before declaring a mismatch.
+    Otherwise every aliased forward ref shows up as a phantom missing
+    back-link even though the canonical IRI carries the inverse.
+
+    Mismatch categories:
+      * ``target node does not exist in any file`` — pure dangling.
+      * ``unresolved-after-alias`` — alias unknown OR ambiguous.
+      * ``genuine-missing-back-link`` — forward ref resolved cleanly to
+        a canonical IRI yet the canonical target lacks the back-link.
+
     Returns a list of mismatch dicts:
       {"source": A, "target": B, "file": filename, "issue": description}
     """
-    # Pass 1 – collect all referencedBy for quick lookup
+    # Pass 1 – collect all referencedBy + iri-to-file map for quick
+    # lookup. We rebuild the prefix index here too so verify_symmetry
+    # can resolve aliases the same way apply_inverse_references does.
     referenced_by: dict[str, set[str]] = defaultdict(set)
+    iri_to_file: dict[str, Path] = {}
 
     # KOV inclusion is now the baseline — KOV targets carrying
     # referencedBy must be reachable for symmetry verification (Layer 2b).
@@ -539,6 +610,7 @@ def verify_symmetry() -> list[dict]:
             node_id = node.get("@id", "")
             if node_id:
                 iri_exists.add(node_id)
+                iri_to_file[node_id] = json_file
             inv = node.get("estleg:referencedBy")
             if inv is None:
                 continue
@@ -548,7 +620,12 @@ def verify_symmetry() -> list[dict]:
                 if isinstance(entry, dict) and "@id" in entry:
                     referenced_by[node_id].add(entry["@id"])
 
-    # Pass 2 – check every forward reference
+    prefix_par_index = _build_prefix_par_index(iri_to_file)
+
+    # Pass 2 – check every forward reference. When the target IRI does
+    # not exist directly, run alias resolution before deciding the
+    # category; mirrors apply_inverse_references' behaviour so the
+    # symmetry view doesn't double-count alias gaps.
     mismatches: list[dict] = []
     for json_file in all_files:
         try:
@@ -569,19 +646,62 @@ def verify_symmetry() -> list[dict]:
                 target_id = ref["@id"]
                 if target_id == source_id:
                     continue
-                if target_id not in iri_exists:
+
+                resolved_target: str | None = None
+                if target_id in iri_exists:
+                    resolved_target = target_id
+                else:
+                    res = _resolve_alias(target_id, iri_to_file, prefix_par_index)
+                    if res.canonical is not None:
+                        resolved_target = res.canonical
+                    elif res.ambiguous_candidates:
+                        mismatches.append({
+                            "source": source_id,
+                            "target": target_id,
+                            "file": json_file.name,
+                            "issue": "unresolved-after-alias",
+                            "candidates": res.ambiguous_candidates,
+                        })
+                        continue
+
+                if resolved_target is None:
+                    # If the prefix WAS in IRI_PREFIX_ALIASES but no
+                    # canonical contained the paragraph, the gap is
+                    # alias-shaped; otherwise it's a pure dangling ref.
+                    local = (
+                        target_id[len("estleg:"):]
+                        if target_id.startswith("estleg:")
+                        else target_id
+                    )
+                    alias_prefix = (
+                        local.split("_Par_", 1)[0]
+                        if "_Par_" in local
+                        else None
+                    )
+                    if alias_prefix and alias_prefix in IRI_PREFIX_ALIASES:
+                        mismatches.append({
+                            "source": source_id,
+                            "target": target_id,
+                            "file": json_file.name,
+                            "issue": "unresolved-after-alias",
+                        })
+                    else:
+                        mismatches.append({
+                            "source": source_id,
+                            "target": target_id,
+                            "file": json_file.name,
+                            "issue": "target node does not exist in any file",
+                        })
+                    continue
+
+                # Resolved. Check for the back-link.
+                if source_id not in referenced_by.get(resolved_target, set()):
                     mismatches.append({
                         "source": source_id,
                         "target": target_id,
+                        "resolvedTarget": resolved_target,
                         "file": json_file.name,
-                        "issue": "target node does not exist in any file",
-                    })
-                elif source_id not in referenced_by.get(target_id, set()):
-                    mismatches.append({
-                        "source": source_id,
-                        "target": target_id,
-                        "file": json_file.name,
-                        "issue": "target exists but missing referencedBy back-link",
+                        "issue": "genuine-missing-back-link",
                     })
 
     return mismatches
@@ -626,7 +746,7 @@ def main() -> int:
 
     # Step 3: Apply inverse references (with alias resolution)
     print("\n[3/5] Applying estleg:referencedBy to target files...")
-    update_counts, unresolved_iris, alias_resolved = apply_inverse_references(
+    update_counts, unresolved_iris, alias_resolved, alias_ambiguous = apply_inverse_references(
         inverse_map, iri_to_file, prefix_par_index,
     )
     total_nodes_updated = sum(update_counts.values())
@@ -673,19 +793,27 @@ def main() -> int:
     # Step 4: Verify symmetry
     print("\n[4/5] Verifying references/referencedBy symmetry...")
     mismatches = verify_symmetry()
+    # Categorisation (#157):
+    #   * "target node does not exist in any file" — pure dangling
+    #   * "unresolved-after-alias"                  — alias prefix gap
+    #   * "genuine-missing-back-link"               — canonical target
+    #                                                  exists, missing
+    #                                                  back-link.
+    cat_missing = [m for m in mismatches if "does not exist" in m["issue"]]
+    cat_unresolved_alias = [m for m in mismatches if m["issue"] == "unresolved-after-alias"]
+    cat_genuine = [m for m in mismatches if m["issue"] == "genuine-missing-back-link"]
     if mismatches:
-        # Categorise
-        missing_node = [m for m in mismatches if "does not exist" in m["issue"]]
-        missing_back = [m for m in mismatches if "missing referencedBy" in m["issue"]]
         print(f"  Mismatches found: {len(mismatches)}")
-        if missing_node:
-            print(f"    - target node missing from all files: {len(missing_node)}")
-        if missing_back:
-            print(f"    - referencedBy back-link missing:     {len(missing_back)}")
-            for m in missing_back[:5]:
+        if cat_missing:
+            print(f"    - target node missing from all files:  {len(cat_missing)}")
+        if cat_unresolved_alias:
+            print(f"    - unresolved-after-alias:              {len(cat_unresolved_alias)}")
+        if cat_genuine:
+            print(f"    - genuine-missing-back-link:           {len(cat_genuine)}")
+            for m in cat_genuine[:5]:
                 print(f"      {m['source']} -> {m['target']} (in {m['file']})")
-            if len(missing_back) > 5:
-                print(f"      ... and {len(missing_back) - 5} more")
+            if len(cat_genuine) > 5:
+                print(f"      ... and {len(cat_genuine) - 5} more")
     else:
         print("  All forward references have matching referencedBy links (or target does not exist)")
 
@@ -700,12 +828,22 @@ def main() -> int:
             "total_nodes_updated": total_nodes_updated,
             "iris_indexed": len(iri_to_file),
             "alias_resolved": len(alias_resolved),
+            "alias_ambiguous_refused": len(alias_ambiguous),
             "unresolved_target_iris": len(unresolved_iris),
             "symmetry_mismatches": len(mismatches),
+            "symmetry_mismatch_categories": {
+                "target_missing": len(cat_missing),
+                "unresolved_after_alias": len(cat_unresolved_alias),
+                "genuine_missing_back_link": len(cat_genuine),
+            },
         },
         "alias_resolutions": {
             orig: canon
             for orig, canon in sorted(alias_resolved.items())
+        },
+        "alias_ambiguous": {
+            orig: cands
+            for orig, cands in sorted(alias_ambiguous.items())
         },
         "unresolved_target_iris": sorted(unresolved_iris),
         "symmetry_mismatches": mismatches[:100],
@@ -744,6 +882,7 @@ def main() -> int:
     print(f"  Files updated:                        {len(update_counts)}")
     print(f"  Total nodes with referencedBy:        {total_nodes_updated}")
     print(f"  Alias-resolved IRIs:                  {len(alias_resolved)}")
+    print(f"  Alias-ambiguous (refused):            {len(alias_ambiguous)}")
     print(f"  Unresolved target IRIs:               {len(unresolved_iris)}")
     print(f"  Symmetry mismatches:                  {len(mismatches)}")
 

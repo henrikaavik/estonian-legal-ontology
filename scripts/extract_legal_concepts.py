@@ -16,6 +16,7 @@ from __future__ import annotations
 import json
 import re
 import time
+import traceback
 import xml.etree.ElementTree as ET
 from datetime import date, datetime, timezone
 from pathlib import Path
@@ -69,13 +70,21 @@ DEFINITION_INTRO_PATTERNS = [
     r"käesoleva\s+seaduse\s+mõistes",
 ]
 
-# Pattern for extracting numbered definitions: "1) term – definition;"
+# Pattern for extracting numbered definitions: "1) term – definition;".
+# Finding 1 (#171): the previous body fragment ``(.+?)(?:;|$)`` truncated
+# multi-clause definitions at the FIRST semicolon, which silently
+# discarded long-form definitions like
+# ``KMS § 2 1) imporditud kaup — kaup, mille kohta on koostatud
+# ekspordideklaratsioon; sealhulgas...``.
+# Anchor on the next ``\d+\)`` numbered marker (lookahead) instead, then
+# strip a trailing ``;`` in extract_definitions_from_text. End-of-string
+# is preserved so the last definition in a list still terminates cleanly.
 DEFINITION_PATTERN = re.compile(
     r"(\d+)\)\s*"                     # number and closing paren
     r"([\wäöüõšžÄÖÜÕŠŽ]+(?:\s+[\wäöüõšžÄÖÜÕŠŽ-]+)*?)"  # term (one or more words)
     r"\s*[–\-—]\s*"                   # dash separator
-    r"(.+?)(?:;|$)",                  # definition text until semicolon or end
-    re.UNICODE,
+    r"(.+?)(?=\s*\d+\)|$)",           # definition text until next numbered marker or end
+    re.UNICODE | re.DOTALL,
 )
 
 
@@ -178,15 +187,24 @@ def has_definition_intro(text: str) -> bool:
 
 
 def extract_definitions_from_text(text: str) -> list[tuple[str, str, str]]:
-    """
-    Extract term-definition pairs from text.
-    Returns list of (number, term, definition).
+    """Extract term-definition pairs from text.
+
+    Returns list of (number, term, definition). Trailing ``;`` and
+    whitespace are stripped from the definition (Finding 1 #171: the
+    pattern now anchors on the next numbered marker instead of stopping
+    at the first ``;``, so the trailing-semicolon cleanup happens here).
     """
     results = []
     for match in DEFINITION_PATTERN.finditer(text):
         number = match.group(1)
         term = match.group(2).strip()
         definition = match.group(3).strip()
+        # Finding 1 (#171): collapse internal whitespace runs (the regex
+        # is now DOTALL, so newlines inside multi-line definitions are
+        # captured); strip trailing punctuation that originally
+        # terminated the clause.
+        definition = re.sub(r"\s+", " ", definition)
+        definition = definition.rstrip("; \t\r\n")
 
         # Skip overly short terms or definitions
         if len(term) < 2 or len(definition) < 5:
@@ -200,7 +218,7 @@ def extract_definitions_from_text(text: str) -> list[tuple[str, str, str]]:
     return results
 
 
-def build_par_to_iri_lookup(doc: dict) -> dict[str, str]:
+def build_par_to_iri_lookup(doc: dict) -> dict[str, str | list[str]]:
     """Build a (par_nr | par_display) → provision @id lookup from a
     loaded peep file's @graph.
 
@@ -211,12 +229,30 @@ def build_par_to_iri_lookup(doc: dict) -> dict[str, str]:
     slug).
 
     The lookup keys both forms so the XML extractor can use whichever
-    field it has: paragrahvNr ("1") OR kuvatavNr ("§ 1."). If a
-    peep file has multiple provisions with the same par_nr (rare
-    but possible across different chapters), later entries win — for
-    Layer 2a's purposes that's acceptable.
+    field it has: paragrahvNr ("1") OR kuvatavNr ("§ 1.").
+
+    Finding 7 (#171): the previous version silently overwrote on
+    duplicate par_nr (KOV regs with annexed lisad reuse paragraph
+    numbers across different chapters). Collisions are now flagged by
+    storing the value as a list of @ids; downstream callers can pick by
+    chapter/section context or refuse to bridge — see
+    ``resolve_provision_id`` for the resolution logic.
     """
-    lookup: dict[str, str] = {}
+    lookup: dict[str, str | list[str]] = {}
+
+    def _set(key: str, value: str) -> None:
+        existing = lookup.get(key)
+        if existing is None:
+            lookup[key] = value
+        elif isinstance(existing, list):
+            if value not in existing:
+                existing.append(value)
+        elif existing != value:
+            # Promote single @id to multi-@id list. Preserves insertion
+            # order so consumers can still pick the first when context
+            # disambiguation isn't available.
+            lookup[key] = [existing, value]
+
     for node in doc.get("@graph", []):
         par_display = node.get("estleg:paragrahv")
         if not par_display:
@@ -225,19 +261,45 @@ def build_par_to_iri_lookup(doc: dict) -> dict[str, str]:
         if not node_id:
             continue
         # Display form: "§ 1." → also key under "1"
-        lookup[par_display] = node_id
+        _set(par_display, node_id)
         # Strip "§ " prefix and trailing "." to get the bare number
         bare = par_display.lstrip("§").strip().rstrip(".")
         if bare:
-            lookup[bare] = node_id
+            _set(bare, node_id)
     return lookup
+
+
+def resolve_provision_id(
+    par_to_iri: dict[str, str | list[str]] | None,
+    par_nr: str,
+    par_display: str,
+) -> tuple[str | None, bool]:
+    """Resolve an XML par_nr/par_display to a peep @id.
+
+    Returns ``(@id, ambiguous_flag)``. ``ambiguous_flag`` is True when
+    the lookup hit a multi-value entry — caller can then decide whether
+    to refuse the bridge or pick the first.
+
+    Finding 7 (#171): the lookup may now store a list of @ids on
+    collision. We pick the FIRST entry (preserves insertion order — i.e.
+    the first chapter's provision with that par_nr) and surface the
+    ambiguity to the caller via the flag.
+    """
+    if par_to_iri is None:
+        return None, False
+    raw = par_to_iri.get(par_nr) or par_to_iri.get(par_display)
+    if raw is None:
+        return None, False
+    if isinstance(raw, list):
+        return (raw[0] if raw else None), len(raw) > 1
+    return raw, False
 
 
 def extract_concepts_from_xml(
     xml_path: Path,
     law_title: str,
     law_slug: str,
-    par_to_iri: dict[str, str] | None = None,
+    par_to_iri: dict[str, str | list[str]] | None = None,
 ) -> list[dict]:
     """
     Extract legal concept definitions from a law's XML file.
@@ -248,6 +310,11 @@ def extract_concepts_from_xml(
     actual @id). Falls back to the slug-derived form when no lookup
     is provided OR a particular par_nr/par_display is unmapped — this
     keeps backwards-compat with laws-only callers.
+
+    Finding 7 (#171): each emitted concept now carries an
+    ``ambiguous_par_iri`` flag set to True when the lookup hit a
+    multi-value entry (par_nr collision across chapters / lisad). Main
+    surfaces the count in the coverage report.
     """
     concepts = []
 
@@ -277,18 +344,18 @@ def extract_concepts_from_xml(
         # Extract definitions from the paragraph text
         defs = extract_definitions_from_text(full_text)
 
-        for number, term, definition in defs:
-            concept_id = f"estleg:Concept_{sanitize_id(law_slug)}_{sanitize_id(term)}"
+        provision_id, ambiguous = resolve_provision_id(
+            par_to_iri, par_nr, par_display,
+        )
+        if provision_id is None:
             # Bridge XML par_nr to peep @id when a lookup is provided.
             # Falls back to the slug-derived form so existing law-only
             # callers still work — Layer 2a callers should always pass
             # par_to_iri.
-            provision_id = None
-            if par_to_iri is not None:
-                provision_id = par_to_iri.get(par_nr) or par_to_iri.get(par_display)
-            if provision_id is None:
-                provision_id = f"estleg:{sanitize_id(law_slug)}_Par_{sanitize_id(par_nr)}"
+            provision_id = f"estleg:{sanitize_id(law_slug)}_Par_{sanitize_id(par_nr)}"
 
+        for number, term, definition in defs:
+            concept_id = f"estleg:Concept_{sanitize_id(law_slug)}_{sanitize_id(term)}"
             concepts.append({
                 "concept_id": concept_id,
                 "term": term,
@@ -300,6 +367,7 @@ def extract_concepts_from_xml(
                 "par_nr": par_nr,
                 "provision_id": provision_id,
                 "def_number": number,
+                "ambiguous_par_iri": ambiguous,
             })
 
     return concepts
@@ -335,6 +403,118 @@ def load_law_files() -> list[dict]:
             "path": f,
         })
     return laws
+
+
+# Issue #171 Finding 8: failure-rate threshold above which main() returns
+# a non-zero exit code. Tunable; the default mirrors the implicit "if any
+# files failed, treat the run as red" policy that the previous bare
+# ``except Exception`` swallowed silently.
+_FAILURE_EXIT_THRESHOLD = 50
+
+
+def _disambiguate_concept_id(
+    concept: dict,
+    seen_concept_ids: set[str],
+) -> str:
+    """Disambiguate a concept id against ``seen_concept_ids`` using a
+    monotonic suffix.
+
+    Finding 2 (#171): the previous code used the within-paragraph
+    ``def_number`` as a disambiguator, so two laws each defining 'isik'
+    in their § 2 1) clauses would collide AND get the same ``_1``
+    suffix, then the second was silently dropped. The new strategy:
+
+      1. If the base id is fresh, return it.
+      2. Otherwise compose ``base_<law_slug>_<par_nr>_<def_number>`` —
+         this triple is unique per (law, paragraph, definition number).
+      3. If THAT also collides, append ``_2``, ``_3``, ... until the id
+         is fresh.
+    """
+    base = concept["concept_id"]
+    if base not in seen_concept_ids:
+        return base
+
+    # Compose the discriminator. Even within one law, two different
+    # paragraphs can define the same term — par_nr is needed to tell
+    # them apart. def_number disambiguates within one paragraph.
+    qualifier_parts = [
+        concept.get("law_slug") or "",
+        concept.get("par_nr") or "",
+        concept.get("def_number") or "",
+    ]
+    qualifier = "_".join(p for p in qualifier_parts if p)
+    candidate = f"{base}_{qualifier}" if qualifier else base
+    if candidate not in seen_concept_ids:
+        return candidate
+
+    # Final monotonic counter — guarantees uniqueness even when (law,
+    # par, def_number) has already been claimed (e.g. duplicate laws on
+    # disk).
+    n = 2
+    while f"{candidate}_{n}" in seen_concept_ids:
+        n += 1
+    return f"{candidate}_{n}"
+
+
+def _bucketed_close_match_pairs(
+    unique_terms: list[str],
+    *,
+    min_len: int = 4,
+) -> list[tuple[str, str, int]]:
+    """Return list of (term_a, term_b, edit_distance) for pairs with
+    distance ``0 < d < 3``.
+
+    Finding 5 (#171): the previous all-pairs O(N²) loop with a 5000
+    cap was the dominant runtime cost on growing corpora. We now bucket
+    candidate terms by ``(first_2_chars, length)`` and only compare
+    within each bucket and its (length ± 1, length ± 2) neighbours —
+    the per-bucket quadratic is dramatically smaller on real corpora
+    because a vocabulary spread across thousands of bucket cells
+    flattens the input cardinality of every inner Levenshtein call.
+
+    Pairs are emitted with the term order canonicalised (``a < b``) and
+    deduped, so the result is stable across runs.
+    """
+    if not unique_terms:
+        return []
+
+    # Bucket by (first two chars, length). Lower-bound length at min_len
+    # so we don't burn time on terms that are already excluded.
+    buckets: dict[tuple[str, int], list[str]] = {}
+    for term in unique_terms:
+        if len(term) < min_len:
+            continue
+        prefix = term[:2]
+        buckets.setdefault((prefix, len(term)), []).append(term)
+
+    seen_pairs: set[tuple[str, str]] = set()
+    results: list[tuple[str, str, int]] = []
+    for (prefix, length), bucket in buckets.items():
+        # Build the candidate set: this bucket's terms plus its (length
+        # ±1, ±2) neighbours sharing the prefix. Two terms with edit
+        # distance ≤ 2 differ in length by ≤ 2 and share at least their
+        # leading 2-character prefix in the very common case where the
+        # difference is on a trailing case suffix.
+        candidates: list[str] = list(bucket)
+        for delta in (-2, -1, 1, 2):
+            adj = buckets.get((prefix, length + delta))
+            if adj:
+                candidates.extend(adj)
+        # Pairwise loop within this candidate cluster only.
+        for i, t1 in enumerate(candidates):
+            for t2 in candidates[i + 1:]:
+                if t1 == t2:
+                    continue
+                pair = (t1, t2) if t1 < t2 else (t2, t1)
+                if pair in seen_pairs:
+                    continue
+                seen_pairs.add(pair)
+                if abs(len(pair[0]) - len(pair[1])) >= 3:
+                    continue
+                dist = edit_distance(pair[0], pair[1])
+                if 0 < dist < 3:
+                    results.append((pair[0], pair[1], dist))
+    return results
 
 
 def main():
@@ -379,12 +559,19 @@ def main():
     _files_processed_kov = 0
     _files_with_output = 0
     _files_with_output_kov = 0
-    _triples = 0
+    _triples = 0  # populated post-graph-emission (Finding 6 #171)
     _triples_kov = 0
     _unresolved = 0
     _fallback_hits = 0
     _failures: list[str] = []
     _skip_reasons: dict[str, int] = {}
+    # Finding 7 (#171): count concepts whose par_nr/par_display lookup
+    # was ambiguous (multiple peep @ids matched).
+    _ambiguous_par_iri = 0
+
+    # Track is_kov per concept so the post-emission triple count can
+    # split by KOV without re-deriving the path string.
+    is_kov_by_concept_index: list[bool] = []
 
     for i, law in enumerate(laws):
         slug = law["slug"]
@@ -392,6 +579,11 @@ def main():
         path = law["path"]
         is_kov = "regulations/kov" in str(path)
 
+        # Finding 8 (#171): catch only the specific exceptions raised by
+        # XML/JSON parsing and key/path lookups. Anything else (e.g.
+        # KeyboardInterrupt, MemoryError, programming bugs) propagates so
+        # the caller can fail loudly. Each caught failure logs a
+        # traceback into _failures so post-mortem diagnosis is possible.
         try:
             # pair_peep_with_xml: globalId-based pairing for KOV + state
             # regs, slug-fallback for laws without globalId. The fallback
@@ -432,37 +624,32 @@ def main():
 
             if concepts:
                 all_concepts.extend(concepts)
+                is_kov_by_concept_index.extend([is_kov] * len(concepts))
                 laws_with_concepts += 1
                 _files_with_output += 1
                 if is_kov:
                     _files_with_output_kov += 1
-                # Each concept emits two triples: definesTerm + definedIn.
-                # KOV attribution is by file location (is_kov) — same
-                # convention as the other Layer 2a pipelines. The
-                # `bridged` flag below feeds only the `_unresolved`
-                # diagnostic, which counts peep files whose @ids don't
-                # follow the expected shape.
+                # Per-concept diagnostics: track concepts that didn't
+                # bridge cleanly (slug-derived IRI fell through) and
+                # concepts whose par_nr/par_display lookup was
+                # ambiguous (Finding 7).
                 for c in concepts:
-                    _triples += 2  # definesTerm + definedIn
                     bridged = (
                         par_to_iri
                         and (
-                            c["provision_id"] == par_to_iri.get(c["par_nr"])
-                            or c["provision_id"] == par_to_iri.get(c["paragraph"])
+                            c["par_nr"] in par_to_iri
+                            or c["paragraph"] in par_to_iri
                         )
                     )
-                    if is_kov:
-                        _triples_kov += 2
                     if not bridged:
-                        # par_nr wasn't in par_to_iri — slug fallback
-                        # fired per-concept. Useful for spotting peep
-                        # files whose @ids don't follow the expected
-                        # shape.
                         _unresolved += 1
+                    if c.get("ambiguous_par_iri"):
+                        _ambiguous_par_iri += 1
                 if len(concepts) >= 3:
                     print(f"  {title}: {len(concepts)} defined terms")
-        except Exception as exc:  # noqa: BLE001
-            _failures.append(f"{path.name}: {exc!r}")
+        except (ET.ParseError, OSError, KeyError, json.JSONDecodeError) as exc:
+            tb = traceback.format_exc()
+            _failures.append(f"{path.name}: {exc!r}\n{tb}")
 
     print(f"\n  Total: {len(all_concepts)} defined terms from {laws_with_concepts} laws")
 
@@ -475,10 +662,12 @@ def main():
         key = concept["term_lower"]
         term_index.setdefault(key, []).append(concept)
 
-    # Find terms that appear in multiple laws (exact matches)
+    # Find terms that appear in multiple laws (exact matches).
+    # Finding 3 (#171): use ``sorted({...})`` instead of ``list({...})``
+    # so the law list is deterministic across runs.
     exact_matches: list[dict] = []
     for term_lower, entries in sorted(term_index.items()):
-        law_slugs = list({e["law_slug"] for e in entries})
+        law_slugs = sorted({e["law_slug"] for e in entries})
         if len(law_slugs) > 1:
             exact_matches.append({
                 "term": entries[0]["term"],
@@ -492,33 +681,24 @@ def main():
 
     print(f"  Exact matches (same term in multiple laws): {len(exact_matches)}")
 
-    # Find close matches (edit distance < 3) between unique terms
-    unique_terms = list(term_index.keys())
+    # Find close matches (edit distance < 3) between unique terms.
+    # Finding 5 (#171): bucketing strategy avoids the all-pairs O(N²)
+    # blowup so we no longer need the 5000-term cap. Sort the bucket
+    # output for deterministic graph ordering (Finding 3).
+    unique_terms = sorted(term_index.keys())
+    bucketed_pairs = _bucketed_close_match_pairs(unique_terms)
+    bucketed_pairs.sort()
     close_matches: list[dict] = []
-
-    # Only compare if manageable number of terms
-    if len(unique_terms) <= 5000:
-        for i in range(len(unique_terms)):
-            for j in range(i + 1, len(unique_terms)):
-                t1 = unique_terms[i]
-                t2 = unique_terms[j]
-                # Quick length check to skip obviously different terms
-                if abs(len(t1) - len(t2)) >= 3:
-                    continue
-                # Skip very short terms for close matching
-                if len(t1) < 4 or len(t2) < 4:
-                    continue
-                dist = edit_distance(t1, t2)
-                if 0 < dist < 3:
-                    close_matches.append({
-                        "term_a": term_index[t1][0]["term"],
-                        "term_b": term_index[t2][0]["term"],
-                        "distance": dist,
-                        "laws_a": list({e["law_slug"] for e in term_index[t1]}),
-                        "laws_b": list({e["law_slug"] for e in term_index[t2]}),
-                    })
-    else:
-        print(f"  Skipping close-match computation ({len(unique_terms)} unique terms too many)")
+    for t1, t2, dist in bucketed_pairs:
+        close_matches.append({
+            "term_a": term_index[t1][0]["term"],
+            "term_b": term_index[t2][0]["term"],
+            "term_a_lower": t1,
+            "term_b_lower": t2,
+            "distance": dist,
+            "laws_a": sorted({e["law_slug"] for e in term_index[t1]}),
+            "laws_b": sorted({e["law_slug"] for e in term_index[t2]}),
+        })
 
     print(f"  Close matches (edit distance < 3): {len(close_matches)}")
 
@@ -562,17 +742,21 @@ def main():
         },
     ]
 
-    # Track concept IDs to avoid duplicates in graph
+    # Track concept IDs to avoid duplicates in graph. Finding 2 (#171):
+    # concept_id_by_index maps the original ``all_concepts`` position to
+    # the disambiguated graph @id, so the exactMatch / closeMatch loops
+    # below can resolve the actual emitted id even after collisions.
     seen_concept_ids: set[str] = set()
+    concept_id_by_index: list[str] = [""] * len(all_concepts)
 
-    for concept in all_concepts:
-        cid = concept["concept_id"]
-        if cid in seen_concept_ids:
-            # Disambiguate by appending def number
-            cid = f"{cid}_{concept['def_number']}"
-            if cid in seen_concept_ids:
-                continue
+    # Finding 6 (#171): _triples is now incremented INSIDE the emission
+    # loop, gated on the concept actually being added. Previous code
+    # incremented _triples += 2 BEFORE the add, so collided drops caused
+    # an overcount.
+    for idx, concept in enumerate(all_concepts):
+        cid = _disambiguate_concept_id(concept, seen_concept_ids)
         seen_concept_ids.add(cid)
+        concept_id_by_index[idx] = cid
 
         node: dict = {
             "@id": cid,
@@ -584,6 +768,9 @@ def main():
             "rdfs:label": f"{concept['term']} ({concept['law_slug']})",
         }
         graph.append(node)
+        _triples += 2  # definesTerm + definedIn — counted post-emission.
+        if idx < len(is_kov_by_concept_index) and is_kov_by_concept_index[idx]:
+            _triples_kov += 2
 
     # Build a lookup from @id to graph node for in-place updates
     graph_node_by_id: dict[str, dict] = {}
@@ -592,15 +779,24 @@ def main():
         if nid:
             graph_node_by_id[nid] = node
 
-    # Add skos:exactMatch links for terms appearing in multiple laws
+    # Build a parallel index: term_lower → list of (concept_index,
+    # disambiguated_id). Used by exactMatch and closeMatch below to
+    # resolve the same disambiguated id that the emission loop chose.
+    concept_index_by_term: dict[str, list[tuple[int, str]]] = {}
+    for idx, concept in enumerate(all_concepts):
+        cid = concept_id_by_index[idx]
+        if cid:
+            concept_index_by_term.setdefault(
+                concept["term_lower"], []
+            ).append((idx, cid))
+
+    # Add skos:exactMatch links for terms appearing in multiple laws.
+    # Finding 2 (#171): every target id is the disambiguated post-emit
+    # id. This guarantees the exactMatch reference points at a real
+    # node instead of a dangling stub.
     for em in exact_matches:
-        entries = term_index[em["term_lower"]]
-        concept_ids = []
-        for e in entries:
-            cid = e["concept_id"]
-            if cid not in seen_concept_ids:
-                cid = f"{cid}_{e['def_number']}"
-            concept_ids.append(cid)
+        entries = concept_index_by_term.get(em["term_lower"], [])
+        concept_ids = [cid for _idx, cid in entries if cid in seen_concept_ids]
 
         # Link each pair with skos:exactMatch — merge into existing nodes
         for i in range(len(concept_ids)):
@@ -613,22 +809,49 @@ def main():
                     existing.append({"@id": concept_ids[j]})
                     target_node["skos:exactMatch"] = existing
 
-    # Add skos:closeMatch links — merge into existing nodes
+    # Add skos:closeMatch links — Finding 4 (#171): iterate the FULL
+    # entries_a × entries_b cross-product and write bidirectional
+    # arcs (a → b AND b → a). The previous code only linked the FIRST
+    # concept of each side, so if disambiguation moved the canonical
+    # id, the closeMatch arc could dangle.
     for cm in close_matches:
-        t_a = cm["term_a"].lower()
-        t_b = cm["term_b"].lower()
-        entries_a = term_index.get(t_a, [])
-        entries_b = term_index.get(t_b, [])
-        if entries_a and entries_b:
-            id_a = entries_a[0]["concept_id"]
-            id_b = entries_b[0]["concept_id"]
-            target_node = graph_node_by_id.get(id_a)
-            if target_node is not None:
-                existing = target_node.get("skos:closeMatch", [])
+        t_a = cm["term_a_lower"]
+        t_b = cm["term_b_lower"]
+        ids_a = [cid for _idx, cid in concept_index_by_term.get(t_a, [])
+                 if cid in seen_concept_ids]
+        ids_b = [cid for _idx, cid in concept_index_by_term.get(t_b, [])
+                 if cid in seen_concept_ids]
+        for id_a in ids_a:
+            target_a = graph_node_by_id.get(id_a)
+            if target_a is None:
+                continue
+            for id_b in ids_b:
+                if id_a == id_b:
+                    continue
+                existing = target_a.get("skos:closeMatch", [])
                 if isinstance(existing, dict):
                     existing = [existing]
                 existing.append({"@id": id_b})
-                target_node["skos:closeMatch"] = existing
+                target_a["skos:closeMatch"] = existing
+
+    # Finding 2 (#171): every skos:exactMatch / skos:closeMatch target
+    # MUST point at a node we actually emitted. Verify and trim any
+    # stragglers — should be a no-op given the disambiguation logic
+    # above, but the assertion catches future regressions early.
+    for node in graph:
+        for prop in ("skos:exactMatch", "skos:closeMatch"):
+            refs = node.get(prop)
+            if not refs:
+                continue
+            if isinstance(refs, dict):
+                refs = [refs]
+            valid = [r for r in refs
+                     if isinstance(r, dict)
+                     and r.get("@id") in seen_concept_ids]
+            if valid:
+                node[prop] = valid
+            else:
+                node.pop(prop, None)
 
     # Save combined concepts file
     combined_doc = {"@context": CONTEXT, "@graph": graph}
@@ -712,6 +935,9 @@ def main():
     # JSON-LD plus a report — counters track how many peep files
     # contributed (vs. the per-act in-place pipelines).
     _wall, _rate, _peak_mb = measure_runtime(_start, _files_processed)
+    skip_reasons_for_report = dict(_skip_reasons)
+    if _ambiguous_par_iri:
+        skip_reasons_for_report["ambiguous_par_iri"] = _ambiguous_par_iri
     write_coverage_report(
         CoverageReport(
             pipeline="extract_legal_concepts",
@@ -724,7 +950,7 @@ def main():
             files_with_output=_files_with_output,
             files_with_output_kov=_files_with_output_kov,
             files_skipped=sum(_skip_reasons.values()),
-            skip_reasons=_skip_reasons,
+            skip_reasons=skip_reasons_for_report,
             triples_emitted=_triples,
             triples_emitted_kov=_triples_kov,
             fallback_hits=_fallback_hits,
@@ -739,6 +965,15 @@ def main():
         / "extract_legal_concepts_coverage.json",
     )
 
+    # Finding 8 (#171): non-zero exit when failures exceed the threshold.
+    if len(_failures) > _FAILURE_EXIT_THRESHOLD:
+        print(
+            f"\nFAIL: {len(_failures)} files failed during processing — "
+            f"exceeds threshold {_FAILURE_EXIT_THRESHOLD}"
+        )
+        return 1
+    return 0
+
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main() or 0)

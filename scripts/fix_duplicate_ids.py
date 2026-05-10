@@ -20,8 +20,6 @@ Strategy:
 from __future__ import annotations
 
 import json
-import glob
-import os
 import re
 import sys
 from collections import defaultdict
@@ -47,9 +45,10 @@ def sanitize_id(value: str) -> str:
 def detect_duplicates() -> dict[str, list[str]]:
     """Find all @id values that appear in multiple files."""
     id_files: dict[str, list[str]] = defaultdict(list)
-    for f in sorted(glob.glob(str(KRR_DIR / "*_peep.json"))):
-        doc = json.load(open(f))
-        fname = os.path.basename(f)
+    for f in sorted(KRR_DIR.glob("*_peep.json")):
+        with open(f, "r", encoding="utf-8") as fh:
+            doc = json.load(fh)
+        fname = f.name
         for node in doc.get("@graph", []):
             nid = node.get("@id", "")
             if nid:
@@ -58,8 +57,16 @@ def detect_duplicates() -> dict[str, list[str]]:
 
 
 def get_file_prefix(filepath: str) -> str | None:
-    """Extract the IRI prefix used in a file's provision/cluster IDs."""
-    doc = json.load(open(filepath))
+    """Extract the IRI prefix used in a file's provision/cluster IDs.
+
+    Returns the first non-empty prefix found by scanning `_Par_` /
+    `_Map_2026` IDs in the file's `@graph`. The previous implementation
+    contained an unused dead-code fallback (issue #159); that block has
+    been removed and the function now returns ``None`` directly when no
+    recognisable id pattern is present.
+    """
+    with open(filepath, "r", encoding="utf-8") as fh:
+        doc = json.load(fh)
     for node in doc.get("@graph", []):
         nid = node.get("@id", "")
         if "_Par_" in nid:
@@ -238,26 +245,83 @@ def apply_remap_to_file(filepath: str, id_map: dict[str, str]) -> int:
     return count
 
 
+def _transitive_closure(remap: dict[str, str]) -> dict[str, str]:
+    """Apply chained renames until none of the values is also a key.
+
+    Computes the fixed point of the rename map so that an old-id chain
+    `A -> B -> C` collapses to `A -> C, B -> C`. This eliminates the
+    bug (#159) where a partial substitution would leave references
+    pointing at a now-stale intermediate id.
+
+    Asserts no cycles (which would be a corpus authoring bug). Stops
+    after a generous fixed-point cap to defend against pathological
+    inputs.
+    """
+    closed = dict(remap)
+    for _ in range(64):
+        next_closed: dict[str, str] = {}
+        for key, value in closed.items():
+            seen = {key}
+            current = value
+            while current in closed and current not in seen:
+                seen.add(current)
+                current = closed[current]
+                if current in seen and current != value:
+                    raise RuntimeError(
+                        f"Cycle in cross-file rename map starting at {key!r}"
+                    )
+            next_closed[key] = current
+        if next_closed == closed:
+            break
+        closed = next_closed
+    # Sanity check: no key may also be a value of the closed map.
+    values = set(closed.values())
+    overlap = set(closed) & values
+    if overlap:
+        raise RuntimeError(
+            f"Cross-file rename map is not closed: {sorted(overlap)} appear "
+            f"as both keys and values"
+        )
+    return closed
+
+
 def update_cross_references(remap: dict[str, dict[str, str]]) -> int:
-    """Update references in OTHER files that point to remapped IDs."""
+    """Update references in OTHER files that point to remapped IDs.
+
+    Two correctness fixes versus the previous implementation
+    (issue #159):
+
+    1. **Index-based list iteration.** Previously, `val.index(item)`
+       was used while iterating `val`, which silently misbehaves on
+       lists with duplicate string entries (it always returned the
+       first match's index). We now use ``for i, item in
+       enumerate(val):`` and assign by index.
+
+    2. **Transitive closure.** Chained renames (A -> B and B -> C)
+       are now collapsed to (A -> C, B -> C) before being applied so
+       references never resolve to a stale intermediate id. We also
+       assert the closed map has no key that is also a value.
+    """
     # Build a global old->new map and track which file the old ID belongs to
-    global_remap: dict[str, str] = {}
+    raw_remap: dict[str, str] = {}
     id_home_file: dict[str, str] = {}  # old_id -> filename it was defined in
 
     for fname, id_map in remap.items():
         for old_id, new_id in id_map.items():
-            global_remap[old_id] = new_id
+            raw_remap[old_id] = new_id
             id_home_file[old_id] = fname
 
-    if not global_remap:
+    if not raw_remap:
         return 0
 
+    global_remap = _transitive_closure(raw_remap)
+
     # Scan all files for references to remapped IDs
-    all_files = sorted(glob.glob(str(KRR_DIR / "*_peep.json")))
+    all_files = sorted(KRR_DIR.glob("*_peep.json"))
     total_updated = 0
 
     for filepath in all_files:
-        fname = os.path.basename(filepath)
+        fname = filepath.name
 
         with open(filepath, "r", encoding="utf-8") as f:
             doc = json.load(f)
@@ -285,12 +349,13 @@ def update_cross_references(remap: dict[str, dict[str, str]]) -> int:
                         changed = True
                         total_updated += 1
                 elif isinstance(val, list):
-                    for item in val:
+                    # Iterate by index so we never trip over `list.index()`
+                    # returning the first occurrence on duplicates (#159).
+                    for i, item in enumerate(val):
                         if isinstance(item, str) and item in global_remap:
                             home = id_home_file.get(item)
                             if home and home != fname:
-                                idx = val.index(item)
-                                val[idx] = global_remap[item]
+                                val[i] = global_remap[item]
                                 changed = True
                                 total_updated += 1
                         elif isinstance(item, dict) and item.get("@id") in global_remap:

@@ -33,10 +33,18 @@ from kov_pipeline_coverage import (
 REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
 INST_DIR = KRR_DIR / "institutions"
-INST_DIR.mkdir(parents=True, exist_ok=True)
 # INSTIT_DIR is the monkeypatch-friendly alias used by tests (and Task 4+).
 # main() writes institution files via INSTIT_DIR so tests can redirect to tmp_path.
+# Issue #170 Finding 9: mkdir moved from import-time to _ensure_dirs() to
+# avoid filesystem side effects on import.
 INSTIT_DIR = INST_DIR
+
+
+def _ensure_dirs() -> None:
+    """Create output directories. Called from main(); avoids import-time
+    side effects so tests that monkeypatch INSTIT_DIR don't accidentally
+    create the production institutions directory."""
+    INSTIT_DIR.mkdir(parents=True, exist_ok=True)
 
 
 def _id_ref(value: object) -> str | None:
@@ -99,46 +107,122 @@ def sanitize_id(value: str) -> str:
     return s[:80] or "Unknown"
 
 
+# Map known abbreviations to canonical full-name suffixes (lowercase).
+# Module-level so it can be reused by detect_institutions and tests without
+# rebuilding on every call.
+_ABBREVIATION_MAP: dict[str, str] = {
+    "mta": "maksu_ja_tolliamet",
+    "ppa": "politsei_ja_piirivalveamet",
+    "ttja": "tarbijakaitse_ja_tehnilise_jarelevalve_amet",
+    "harno": "haridus_ja_noorteamet",
+}
+
+# Map known Estonian inflected forms to nominative (lowercase).
+# Issue #170 Finding 10: the old map enumerated double/triple-underscore
+# variants (e.g. politsei__ja_piirivalveamet); these are unreachable
+# because normalize_iri_suffix() collapses runs of underscores via
+# re.sub(r"_+", "_") BEFORE the lookup. They've been deleted; the typo
+# variant and the kohalik_omavalitsus inflections are the only entries
+# that survive.
+_INFLECTION_MAP: dict[str, str] = {
+    "kohaliku_omavalitsus": "kohalik_omavalitsus",
+    "kohaliku_omavalitsuse": "kohalik_omavalitsus",
+    "kohalik_omavalitsuse": "kohalik_omavalitsus",
+    # Typo variant: missing 'e' in Andmekaitse
+    "andmekaitsinspektsioon": "andmekaitseinspektsioon",
+}
+
+# Issue #170 Finding 5: Estonian noun-stem normaliser.
+# Estonian nominal inflection layers a case suffix onto the GENITIVE stem,
+# which itself adds "i" for vowel-ending forms — so e.g.:
+#   nominative: maksuamet
+#   genitive:   maksuameti
+#   allative:   maksuametile  (genitive + "le")
+#   adessive:   maksuametil   (genitive + "l")
+#   elative:    maksuametist  (genitive + "st")
+# To collapse all of these to nominative, we strip the case suffix first
+# and then drop a trailing "i" if the result still doesn't end in a known
+# institutional root. Order matters — longer suffixes ("esse", "sse",
+# "ele") must be checked before shorter ("se", "le", "e") so the
+# stripper doesn't carve a longer case into a wrong stem.
+_CASE_SUFFIXES_LONGEST_FIRST: tuple[str, ...] = (
+    "esse", "iks", "ele",
+    "lt", "le", "st", "ks", "ga", "se", "ts", "tt",
+    "sse",                              # tertiary illative, e.g. "...esse"
+    "elt",                              # rare ablative variant
+    "est",                              # rare elative variant
+    "ile",                              # genitive-+-le composite
+    "i", "l", "s", "t", "e",
+)
+
+_INSTITUTION_ROOTS: tuple[str, ...] = (
+    "amet", "ministeerium", "inspektsioon", "minister",
+)
+
+
+def _strip_estonian_case(stem: str) -> str:
+    """Strip a single Estonian case suffix from the trailing component of
+    ``stem`` and return the bare nominative stem.
+
+    The stripper iterates: try every suffix; if the resulting stem ends
+    in a known institutional root (or in genitive + root, e.g.
+    ``maksuameti`` → strip ``i`` → ``maksuamet``), return the stripped
+    form. Otherwise return ``stem`` unchanged so we don't accidentally
+    truncate a non-institution word that happens to share a Finno-Ugric
+    case ending.
+    """
+    if not stem:
+        return stem
+
+    def _ends_in_root(s: str) -> bool:
+        return any(s.endswith(b) for b in _INSTITUTION_ROOTS)
+
+    # Already nominative — nothing to do.
+    if _ends_in_root(stem):
+        return stem
+
+    for suffix in _CASE_SUFFIXES_LONGEST_FIRST:
+        if not stem.endswith(suffix):
+            continue
+        candidate = stem[: -len(suffix)]
+        if not candidate:
+            continue
+        if _ends_in_root(candidate):
+            return candidate
+        # Genitive form: stem ends in <root>+"i". Drop trailing "i" to
+        # check for a root match (e.g. "maksuameti" → "maksuamet").
+        if candidate.endswith("i") and _ends_in_root(candidate[:-1]):
+            return candidate[:-1]
+    return stem
+
+
 def normalize_iri_suffix(raw_suffix: str) -> str:
-    """
-    Normalize an IRI suffix to lowercase convention (matching institution
+    """Normalize an IRI suffix to lowercase convention (matching institution
     definition files) and map known abbreviations/inflections to canonical forms.
+
+    Applies:
+      1. Lowercase + underscore-collapse (existing).
+      2. Abbreviation lookup (MTA, PPA, ...).
+      3. Explicit inflection-map lookup (typo variants, KOV omavalitsus).
+      4. Estonian case-suffix stripping for ``*amet`` / ``*ministeerium`` /
+         ``*inspektsioon`` / ``*minister`` stems (Finding 5 — fixes inflated
+         siblings like ``Institution_maksuametile``).
     """
-    # Map known abbreviations to canonical full-name suffixes (lowercase)
-    ABBREVIATION_MAP: dict[str, str] = {
-        "mta": "maksu_ja_tolliamet",
-        "ppa": "politsei_ja_piirivalveamet",
-        "ttja": "tarbijakaitse_ja_tehnilise_jarelevalve_amet",
-        "harno": "haridus_ja_noorteamet",
-    }
-
-    # Map known Estonian inflected forms to nominative (lowercase)
-    INFLECTION_MAP: dict[str, str] = {
-        "kohaliku_omavalitsus": "kohalik_omavalitsus",
-        "kohaliku_omavalitsuse": "kohalik_omavalitsus",
-        "kohalik_omavalitsuse": "kohalik_omavalitsus",
-        # Typo variant: missing 'e' in Andmekaitse
-        "andmekaitsinspektsioon": "andmekaitseinspektsioon",
-        "politsei_ja_piirivalveamet": "politsei_ja_piirivalveamet",
-        "politsei__ja_piirivalveamet": "politsei_ja_piirivalveamet",
-        "politsei___ja_piirivalveamet": "politsei_ja_piirivalveamet",
-        "keskkonna_ja_kommunaalamet": "keskkonna_ja_kommunaalamet",
-        "keskkonna__ja_kommunaalamet": "keskkonna_ja_kommunaalamet",
-        "keskkonna___ja_kommunaalamet": "keskkonna_ja_kommunaalamet",
-        "kultuuri_ja_spordiamet": "kultuuri_ja_spordiamet",
-        "kultuuri__ja_spordiamet": "kultuuri_ja_spordiamet",
-        "kultuuri___ja_spordiamet": "kultuuri_ja_spordiamet",
-    }
-
     lower = re.sub(r"_+", "_", raw_suffix.lower()).strip("_")
 
     # Check abbreviation map first
-    if lower in ABBREVIATION_MAP:
-        return ABBREVIATION_MAP[lower]
+    if lower in _ABBREVIATION_MAP:
+        return _ABBREVIATION_MAP[lower]
 
     # Check inflection map
-    if lower in INFLECTION_MAP:
-        return INFLECTION_MAP[lower]
+    if lower in _INFLECTION_MAP:
+        return _INFLECTION_MAP[lower]
+
+    # Estonian case-suffix stripping — collapses inflected forms of *amet,
+    # *ministeerium, *inspektsioon, *minister to their nominative stems.
+    stripped = _strip_estonian_case(lower)
+    if stripped != lower:
+        return stripped
 
     # Default: lowercase the entire suffix
     return lower
@@ -208,17 +292,80 @@ NAMED_INSTITUTIONS: list[tuple[str, str, str]] = [
     ("maakohus", "maakohus", "court"),
 ]
 
+# Issue #170 Findings 1 + 2: pre-compile word-boundary regexes for each
+# named institution and cache them at module load.
+#
+# Why we don't reuse the simple substring matcher: ``"riigikogu" in
+# text.lower()`` will match inside unrelated words that happen to contain
+# the substring (e.g. abbreviations like "MTA" appear inside random ASCII
+# triples). Running through compiled ``\bMTA\b`` patterns with
+# re.IGNORECASE | re.UNICODE eliminates the leak.
+#
+# Abbreviations (MTA / PPA) are checked case-SENSITIVELY against the
+# original text and only against \bABBR\b — that's how the legal text
+# distinguishes the abbreviation from a stray uppercase substring.
+# Additionally, an abbreviation entry only registers when the canonical
+# full-name entry has NOT already been matched in the same provision —
+# enforced inside detect_institutions() via the
+# full_name_norm_suffixes_present sentinel set.
+
+
+def _is_abbreviation_entry(name: str) -> bool:
+    """Return True iff ``name`` is an abbreviation-only entry (e.g. ``MTA``,
+    ``PPA``). Such entries match the original-case text against
+    ``\\bNAME\\b`` (no IGNORECASE) and only register when the canonical
+    full-name entry hasn't already been matched in the same provision."""
+    return name.isupper() and " " not in name
+
+
+def _compile_named_pattern(name: str) -> re.Pattern[str]:
+    """Compile a word-boundary regex for a named institution.
+
+    Abbreviation-only entries (MTA, PPA, ...) compile to a case-sensitive
+    pattern; full-name entries compile case-insensitively. Estonian
+    diacritics are preserved (UNICODE flag) so ``Järelevalve`` stays
+    distinct from ``Jarelevalve``.
+    """
+    flags = re.UNICODE
+    if not _is_abbreviation_entry(name):
+        flags |= re.IGNORECASE
+    return re.compile(rf"\b{re.escape(name)}\b", flags)
+
+
+_NAMED_PATTERNS: list[tuple[re.Pattern[str], str, str, str]] = [
+    (_compile_named_pattern(name), name, raw_suffix, itype)
+    for name, raw_suffix, itype in NAMED_INSTITUTIONS
+]
+
+# Issue #170 Finding 4: regex used to suppress the generic ``kohus`` token
+# when a specific court has already been mentioned in the SAME text — the
+# previous logic relied on the order of ``found`` accumulator state, which
+# is order-dependent and fragile. This pattern is checked directly against
+# the input text instead.
+_SPECIFIC_COURT_PATTERN: re.Pattern[str] = re.compile(
+    r"\b(?:riigikohus|ringkonnakohus|halduskohus|maakohus)\w*\b",
+    re.IGNORECASE | re.UNICODE,
+)
+
+
 # Generic patterns: regex → (label template, IRI template, inst type)
+# Issue #170 Finding 3: ministry/agency/inspektsioon patterns now run with
+# re.IGNORECASE so sentence-internal forms like "siseministeeriumi" or
+# "rahandusministeeriumile" match. The IRI suffix is then lowercased and
+# de-inflected by normalize_iri_suffix().
 GENERIC_PATTERNS: list[tuple[re.Pattern, str, str]] = [
     # Ministries: "Xministeerium" or "Xminister"
-    (re.compile(r"\b([A-ZÄÖÜÕŠŽ][a-zäöüõšž]+(?:\s*-\s*ja\s+[A-ZÄÖÜÕŠŽ]?[a-zäöüõšž]+)*ministeerium)\b", re.UNICODE),
+    (re.compile(r"\b([a-zäöüõšž]+(?:\s*-\s*ja\s+[a-zäöüõšž]+)*ministeerium\w*)\b",
+                re.IGNORECASE | re.UNICODE),
      "ministry", "ministry"),
-    (re.compile(r"\b([a-zäöüõšž]+minister)\b", re.IGNORECASE | re.UNICODE),
+    (re.compile(r"\b([a-zäöüõšž]+minister\w*)\b", re.IGNORECASE | re.UNICODE),
      "ministry", "ministry"),
     # Agencies: "Xamet", "Xinspektsioon"
-    (re.compile(r"\b([A-ZÄÖÜÕŠŽ][a-zäöüõšž]+(?:\s*-\s*ja\s+[A-ZÄÖÜÕŠŽ]?[a-zäöüõšž]+)*amet)\b", re.UNICODE),
+    (re.compile(r"\b([a-zäöüõšž]+(?:\s*-\s*ja\s+[a-zäöüõšž]+)*amet\w*)\b",
+                re.IGNORECASE | re.UNICODE),
      "agency", "agency"),
-    (re.compile(r"\b([A-ZÄÖÜÕŠŽ][a-zäöüõšž]+inspektsioon)\b", re.UNICODE),
+    (re.compile(r"\b([a-zäöüõšž]+inspektsioon\w*)\b",
+                re.IGNORECASE | re.UNICODE),
      "agency", "agency"),
     # Courts (generic)
     (re.compile(r"\b(kohus)\b", re.IGNORECASE), "court", "court"),
@@ -250,22 +397,63 @@ COMPETENCE_PATTERNS: list[tuple[re.Pattern, str]] = [
 
 
 def detect_institutions(text: str) -> list[tuple[str, str, str]]:
-    """
-    Return list of (canonical_name, normalized_iri_suffix, inst_type) found in *text*.
-    Named institutions are checked first; generic patterns fill in the rest.
-    All IRI suffixes are normalized to lowercase convention via normalize_iri_suffix().
+    """Return list of (canonical_name, normalized_iri_suffix, inst_type)
+    found in *text*. Named institutions are checked first; generic
+    patterns fill in the rest. All IRI suffixes are normalized to
+    lowercase convention via normalize_iri_suffix().
+
+    Issue #170 findings addressed:
+      Finding 1. Substring matcher leaks — replaced ``substring in
+         text.lower()`` with compiled ``\\b...\\b`` regexes
+         (re.IGNORECASE | re.UNICODE for full-name entries,
+         case-sensitive for abbreviation-only entries).
+      Finding 2. Abbreviation entries (MTA / PPA) are now matched
+         against the original-case text, and only register when the
+         canonical full-name entry has NOT already matched in the same
+         provision (full names take precedence so we don't emit a
+         duplicate Institution_mta alongside
+         Institution_maksu_ja_tolliamet).
+      Finding 4. Generic ``kohus`` is suppressed when ANY of riigikohus
+         / ringkonnakohus / halduskohus / maakohus appears in the text.
+         The check is now a regex against the input text, not based on
+         ``found`` accumulator state.
     """
     found: dict[str, tuple[str, str, str]] = {}
-    text_lower = text.lower()
 
     # 1. Named institutions (first match for a given norm_suffix wins,
     #    so full-name entries should precede abbreviation-only entries
-    #    in NAMED_INSTITUTIONS to keep the better canonical label)
-    for name, raw_suffix, itype in NAMED_INSTITUTIONS:
-        if name.lower() in text_lower:
+    #    in NAMED_INSTITUTIONS to keep the better canonical label).
+    full_name_norm_suffixes_present: set[str] = set()
+    for pattern, name, raw_suffix, itype in _NAMED_PATTERNS:
+        if _is_abbreviation_entry(name):
+            # Defer abbrev entries until after we know which full names
+            # matched in this same text (Finding 2).
+            continue
+        if pattern.search(text):
             norm_suffix = normalize_iri_suffix(raw_suffix)
+            full_name_norm_suffixes_present.add(norm_suffix)
             if norm_suffix not in found:
                 found[norm_suffix] = (name, norm_suffix, itype)
+
+    # 1b. Abbreviation-only entries — register only when the canonical
+    #     full-name suffix is NOT already present in this provision.
+    for pattern, name, raw_suffix, itype in _NAMED_PATTERNS:
+        if not _is_abbreviation_entry(name):
+            continue
+        norm_suffix = normalize_iri_suffix(raw_suffix)
+        if norm_suffix in full_name_norm_suffixes_present:
+            continue
+        if norm_suffix in found:
+            continue
+        if pattern.search(text):
+            found[norm_suffix] = (name, norm_suffix, itype)
+
+    # Issue #170 Finding 4: pre-compute "specific court mentioned" once
+    # instead of relying on the ordering of NAMED_INSTITUTIONS or the
+    # state of ``found``. Using the compiled pattern means the
+    # suppression decision is robust no matter what generic patterns
+    # fire.
+    has_specific_court = bool(_SPECIFIC_COURT_PATTERN.search(text))
 
     # 2. Generic patterns (only if not already captured by a named entry)
     for pat, default_label, itype in GENERIC_PATTERNS:
@@ -274,11 +462,10 @@ def detect_institutions(text: str) -> list[tuple[str, str, str]]:
             raw_key = sanitize_id(matched)
             norm_key = normalize_iri_suffix(raw_key)
             if norm_key and norm_key not in found:
-                # Skip if this is just the generic "kohus" and we already have
-                # a specific court
-                if norm_key == "kohus" and any(
-                    t == "court" for _, _, t in found.values()
-                ):
+                # Skip if this is just the generic "kohus" and a specific
+                # court appears anywhere in the text (riigikohus,
+                # ringkonnakohus, halduskohus, maakohus).
+                if norm_key == "kohus" and has_specific_court:
                     continue
                 # Use canonical label for local government (avoid inflected forms)
                 if norm_key == "kohalik_omavalitsus":
@@ -445,213 +632,323 @@ def _is_path3_case(
     return source_mun != source_municipality
 
 
-def main() -> int:
-    print("=" * 70)
-    print("Estonian Legal Ontology - Institutional Competence Extraction")
-    print("=" * 70)
+# Issue #170 Finding 7: truncation cap for estleg:appliesToProvision.
+# Major institutions (Vabariigi Valitsus, Riigikogu, ...) easily exceed
+# this; main() now emits the FULL list AND records a count plus a warning
+# whenever truncation would have lost provisions. Tests that need to
+# verify behaviour around this threshold can pin _APPLIES_TO_PROVISION_CAP
+# directly.
+_APPLIES_TO_PROVISION_CAP = 50
 
-    law_files = iter_peep_files()
-    print(f"\n  Found {len(law_files)} law files to process")
 
-    # Layer 2c PR #2: build issuer registry once at startup.
-    issuer_registry = build_issuer_registry(
-        KRR_DIR / "issuers_kov_peep.json"
+def _load_canonical_institutions(directory: Path) -> set[str]:
+    """Issue #170 Finding 8: load the registry of canonical institution
+    suffixes by inspecting the existing per-institution JSON files.
+
+    The registry feeds detect-time validation: any institution whose
+    normalized iri_suffix isn't in the registry is dropped (or routed to
+    ``_unverified`` if a future PR opts to surface them). When the
+    directory is empty (first-run bootstrap, or test run with no fixture
+    files), an empty set is returned and validation is skipped — we don't
+    want to refuse to emit institutions on a freshly-cloned tree.
+    """
+    if not directory.exists():
+        return set()
+    suffixes: set[str] = set()
+    for path in directory.glob("institution_*.json"):
+        slug = path.stem.removeprefix("institution_")
+        if slug:
+            suffixes.add(slug)
+    return suffixes
+
+
+class _PipelineState:
+    """Bundle of mutable counters/state shared by the per-file processing
+    helpers. Pulled out of main() so process_law_file / write_*
+    helpers (Issue #170 Finding 11 — main was 370+ lines) can update one
+    shared object instead of returning a tuple of bookkeeping deltas."""
+
+    def __init__(self) -> None:
+        self.inst_data: dict[str, dict] = {}
+        # institution IRI → list of (provision IRI, competence_type, law_name)
+        self.inst_provisions: dict[str, list[tuple[str, str, str]]] = defaultdict(list)
+        # institution IRI → set of (provision_iri, competence_type, law_name)
+        # tuples seen so far. Finding 6: dedup at append-time across ALL
+        # provisions (and across the whole run), not just within one provision.
+        self.inst_provision_keys: dict[str, set[tuple[str, str, str]]] = defaultdict(set)
+
+        self.files_processed: set[Path] = set()
+        self.files_processed_kov: set[Path] = set()
+        self.files_with_output: set[Path] = set()
+        self.files_with_output_kov: set[Path] = set()
+        self.triples = 0
+        self.triples_kov = 0
+        self.files_skipped = 0
+        self.skip_reasons: dict[str, int] = {}
+        self.failures: list[str] = []
+
+        self.total_provisions = 0
+        self.provisions_with_institutions = 0
+        self.unresolved_count = 0
+        self.fallback_hits = 0
+        self.per_peep_errors = 0
+        # Finding 8: count of detected suffixes that didn't match the
+        # canonical registry; surfaced in the coverage report.
+        self.unknown_institution_count = 0
+        # Finding 7: institutions whose appliesToProvision list would have
+        # been truncated. Logged once per (institution, ctype) pair.
+        self.truncated_institution_competences: set[tuple[str, str]] = set()
+
+
+def _record_provision_for_institution(
+    state: _PipelineState,
+    inst_iri: str,
+    canon_name: str,
+    iri_suffix: str,
+    itype: str,
+    provision_iri: str,
+    competence_type: str,
+    law_name: str,
+) -> None:
+    """Update ``state.inst_data`` and ``state.inst_provisions`` with a new
+    (provision, competence-type, law) tuple, deduping at append-time.
+
+    Issue #170 Finding 6: the per-institution dedup is now keyed by the
+    full triple, so the same provision IRI never lands in
+    ``inst_provisions[inst_iri]`` twice — even if main() is called
+    repeatedly via the same module instance, or if the same provision
+    triggers the same institution detection across multiple summaries.
+    """
+    if inst_iri not in state.inst_data:
+        state.inst_data[inst_iri] = {
+            "name": canon_name,
+            "iri_suffix": iri_suffix,
+            "type": itype,
+        }
+    key = (provision_iri, competence_type, law_name)
+    if key in state.inst_provision_keys[inst_iri]:
+        return
+    state.inst_provision_keys[inst_iri].add(key)
+    state.inst_provisions[inst_iri].append(key)
+
+
+def _process_provision_node(
+    node: dict,
+    state: _PipelineState,
+    source_municipality: str | None,
+    source_issuer: str | None,
+    issuer_registry: dict[str, tuple[str, str, str]],
+    canonical_suffixes: set[str],
+    law_name: str,
+) -> bool:
+    """Detect institutions in one provision node, mutate the node with
+    competentAuthority/competenceType triples, and update ``state``.
+
+    Returns True iff the node was mutated.
+    """
+    summary = jsonld_text(node.get("estleg:summary", ""))
+    if not summary:
+        return False
+
+    state.total_provisions += 1
+    institutions = detect_institutions(summary)
+    if not institutions:
+        return False
+
+    state.provisions_with_institutions += 1
+    competence_type = detect_competence_type(summary)
+    provision_iri = node.get("@id", "")
+
+    authority_refs: list[dict] = []
+    for canon_name, iri_suffix, itype in institutions:
+        if itype == "local_government_body":
+            canonical = _canonical_body_slug(canon_name)
+            if canonical is None:
+                continue
+            issuer_iri = _resolve_kov_authority(
+                body_slug=canonical,
+                source_municipality=source_municipality,
+                source_issuer=source_issuer,
+                issuer_registry=issuer_registry,
+            )
+            if issuer_iri is None:
+                state.unresolved_count += 1
+                continue
+            if _is_path3_case(
+                source_issuer=source_issuer,
+                source_municipality=source_municipality,
+                issuer_registry=issuer_registry,
+            ):
+                state.fallback_hits += 1
+            authority_refs.append({"@id": issuer_iri})
+            continue
+
+        # Issue #170 Finding 8: validate against the canonical
+        # 126-institution registry. When the registry is empty
+        # (bootstrap mode), accept every detection so a clean tree can
+        # populate the registry from scratch.
+        if canonical_suffixes and iri_suffix not in canonical_suffixes:
+            state.unknown_institution_count += 1
+            continue
+
+        # Existing Institution_* path for everything else
+        inst_iri = f"estleg:Institution_{iri_suffix}"
+        _record_provision_for_institution(
+            state=state,
+            inst_iri=inst_iri,
+            canon_name=canon_name,
+            iri_suffix=iri_suffix,
+            itype=itype,
+            provision_iri=provision_iri,
+            competence_type=competence_type,
+            law_name=law_name,
+        )
+        authority_refs.append({"@id": inst_iri})
+
+    # Dedupe authority_refs by @id (preserve first-occurrence order).
+    # Required because a single provision can mention the same body
+    # multiple times (different inflections), and each match would
+    # otherwise emit a separate competentAuthority ref.
+    seen: set[str] = set()
+    deduped: list[dict] = []
+    for ref in authority_refs:
+        iri = ref.get("@id") if isinstance(ref, dict) else None
+        if iri is None or iri in seen:
+            continue
+        seen.add(iri)
+        deduped.append(ref)
+    authority_refs = deduped
+
+    if authority_refs:
+        node["estleg:competentAuthority"] = authority_refs
+        node["estleg:competenceType"] = competence_type
+        return True
+    return False
+
+
+def process_law_file(
+    filepath: Path,
+    state: _PipelineState,
+    issuer_registry: dict[str, tuple[str, str, str]],
+    canonical_suffixes: set[str],
+) -> None:
+    """Load a peep file, detect institutions in every provision, write
+    competentAuthority/competenceType triples, and persist the result.
+
+    Updates ``state`` for coverage-report bookkeeping (Issue #170 Finding
+    11 refactor — main() was 370+ lines).
+    """
+    doc = load_json(filepath)
+    if doc is None or "@graph" not in doc:
+        state.per_peep_errors += 1
+        state.failures.append(
+            f"{filepath.name}: JSON load failed or missing @graph"
+        )
+        return
+
+    act_node = _find_act_node(doc)
+    if act_node is None:
+        # Aggregate-registry peeps (issuers_kov_peep.json,
+        # municipalities_peep.json, etc.) have no provisions —
+        # silently skip (no counter, no failure log).
+        # Malformed act peeps DO have provisions but no
+        # estleg:Act + owl:Ontology root — that's a Layer 1
+        # data bug worth surfacing.
+        has_provisions = any(
+            "estleg:paragrahv" in n
+            for n in doc.get("@graph", [])
+        )
+        if has_provisions:
+            state.files_skipped += 1
+            state.skip_reasons["missing_act_node"] = (
+                state.skip_reasons.get("missing_act_node", 0) + 1
+            )
+            state.failures.append(
+                f"{filepath.name}: malformed peep — has provisions "
+                f"but missing estleg:Act + owl:Ontology root node"
+            )
+        return
+
+    source_municipality = _id_ref(act_node.get("estleg:enactedByMunicipality"))
+    source_issuer = _id_ref(act_node.get("estleg:enactedBy"))
+
+    is_kov = "regulations/kov/" in str(filepath)
+    state.files_processed.add(filepath)
+    if is_kov:
+        state.files_processed_kov.add(filepath)
+
+    # Detect prior peep-side output BEFORE clearing.
+    had_existing_peep = any(
+        ("estleg:competentAuthority" in n)
+        or ("estleg:competenceType" in n)
+        for n in doc["@graph"]
     )
 
-    print("\n[1/4] Processing law files (per-file idempotent)...")
+    # Clear unconditionally — the per-provision loop below
+    # re-emits when detection succeeds.
+    for n in doc["@graph"]:
+        n.pop("estleg:competentAuthority", None)
+        n.pop("estleg:competenceType", None)
 
-    # institution IRI → collected data
-    inst_data: dict[str, dict] = {}
-    # institution IRI → list of (provision IRI, competence_type, law_name)
-    inst_provisions: dict[str, list[tuple[str, str, str]]] = defaultdict(list)
+    law_name = filepath.stem.replace("_peep", "")
+    modified = False
 
-    _start = time.perf_counter()
-    _files_processed: set[Path] = set()
-    _files_processed_kov: set[Path] = set()
-    _files_with_output: set[Path] = set()
-    _files_with_output_kov: set[Path] = set()
-    _triples = 0
-    _triples_kov = 0
-    _files_skipped = 0
-    _skip_reasons: dict[str, int] = {}
-    _failures: list[str] = []
+    for node in doc["@graph"]:
+        if _process_provision_node(
+            node=node,
+            state=state,
+            source_municipality=source_municipality,
+            source_issuer=source_issuer,
+            issuer_registry=issuer_registry,
+            canonical_suffixes=canonical_suffixes,
+            law_name=law_name,
+        ):
+            modified = True
 
-    total_provisions = 0
-    provisions_with_institutions = 0
-    _unresolved_count = 0
-    _fallback_hits = 0
-    _per_peep_errors = 0
-    pre_existing_institution_files: list[Path] = []
-    if INSTIT_DIR.exists():
-        pre_existing_institution_files = list(INSTIT_DIR.glob("institution_*.json"))
-    written_slugs: set[str] = set()
-
-    for idx, filepath in enumerate(law_files, 1):
-        doc = load_json(filepath)
-        if doc is None or "@graph" not in doc:
-            _per_peep_errors += 1
-            _failures.append(
-                f"{filepath.name}: JSON load failed or missing @graph"
-            )
-            continue
-
-        act_node = _find_act_node(doc)
-        if act_node is None:
-            # Aggregate-registry peeps (issuers_kov_peep.json,
-            # municipalities_peep.json, etc.) have no provisions —
-            # silently skip (no counter, no failure log).
-            # Malformed act peeps DO have provisions but no
-            # estleg:Act + owl:Ontology root — that's a Layer 1
-            # data bug worth surfacing.
-            has_provisions = any(
-                "estleg:paragrahv" in n
-                for n in doc.get("@graph", [])
-            )
-            if has_provisions:
-                _files_skipped += 1
-                _skip_reasons["missing_act_node"] = (
-                    _skip_reasons.get("missing_act_node", 0) + 1
-                )
-                _failures.append(
-                    f"{filepath.name}: malformed peep — has provisions "
-                    f"but missing estleg:Act + owl:Ontology root node"
-                )
-            continue
-        source_municipality = _id_ref(act_node.get("estleg:enactedByMunicipality"))
-        source_issuer = _id_ref(act_node.get("estleg:enactedBy"))
-
-        is_kov = "regulations/kov/" in str(filepath)
-        _files_processed.add(filepath)
+    # Note: triples counts COMPETENT-AUTHORITY REFERENCES
+    # (elements of competentAuthority lists across all provisions),
+    # not raw RDF triples — matches the analytical question
+    # "how many provision→authority bindings did we produce?"
+    if modified:
+        state.files_with_output.add(filepath)
         if is_kov:
-            _files_processed_kov.add(filepath)
-
-        # Detect prior peep-side output BEFORE clearing.
-        had_existing_peep = any(
-            ("estleg:competentAuthority" in n)
-            or ("estleg:competenceType" in n)
-            for n in doc["@graph"]
+            state.files_with_output_kov.add(filepath)
+        n_refs = sum(
+            len(node.get("estleg:competentAuthority", []))
+            if isinstance(node.get("estleg:competentAuthority"), list)
+            else (1 if "estleg:competentAuthority" in node else 0)
+            for node in doc.get("@graph", [])
         )
+        state.triples += n_refs
+        if is_kov:
+            state.triples_kov += n_refs
 
-        # Clear unconditionally — the per-provision loop below
-        # re-emits when detection succeeds.
-        for n in doc["@graph"]:
-            n.pop("estleg:competentAuthority", None)
-            n.pop("estleg:competenceType", None)
+    # Save when EITHER fresh output OR pre-existing output existed.
+    if modified or had_existing_peep:
+        save_json(filepath, doc)
 
-        law_name = filepath.stem.replace("_peep", "")
-        modified = False
 
-        for node in doc["@graph"]:
-            summary = jsonld_text(node.get("estleg:summary", ""))
-            if not summary:
-                continue
+def write_institution_files(state: _PipelineState) -> set[str]:
+    """Emit one JSON-LD file per institution under INSTIT_DIR. Returns
+    the set of slugs written (used for stale-file pruning).
 
-            total_provisions += 1
-            institutions = detect_institutions(summary)
-            if not institutions:
-                continue
-
-            provisions_with_institutions += 1
-            competence_type = detect_competence_type(summary)
-            provision_iri = node.get("@id", "")
-
-            authority_refs = []
-            added_inst_iris_this_provision: set[str] = set()
-            for canon_name, iri_suffix, itype in institutions:
-                if itype == "local_government_body":
-                    canonical = _canonical_body_slug(canon_name)
-                    if canonical is None:
-                        continue
-                    issuer_iri = _resolve_kov_authority(
-                        body_slug=canonical,
-                        source_municipality=source_municipality,
-                        source_issuer=source_issuer,
-                        issuer_registry=issuer_registry,
-                    )
-                    if issuer_iri is None:
-                        _unresolved_count += 1
-                        continue
-                    if _is_path3_case(
-                        source_issuer=source_issuer,
-                        source_municipality=source_municipality,
-                        issuer_registry=issuer_registry,
-                    ):
-                        _fallback_hits += 1
-                    authority_refs.append({"@id": issuer_iri})
-                    continue
-
-                # Existing Institution_* path for everything else
-                inst_iri = f"estleg:Institution_{iri_suffix}"
-
-                if inst_iri not in inst_data:
-                    inst_data[inst_iri] = {
-                        "name": canon_name,
-                        "iri_suffix": iri_suffix,
-                        "type": itype,
-                    }
-
-                if inst_iri not in added_inst_iris_this_provision:
-                    inst_provisions[inst_iri].append(
-                        (provision_iri, competence_type, law_name)
-                    )
-                    added_inst_iris_this_provision.add(inst_iri)
-                authority_refs.append({"@id": inst_iri})
-
-            # Dedupe authority_refs by @id (preserve first-occurrence order).
-            # Required because a single provision can mention the same body
-            # multiple times (different inflections), and each match would
-            # otherwise emit a separate competentAuthority ref.
-            seen: set[str] = set()
-            deduped: list[dict] = []
-            for ref in authority_refs:
-                iri = ref.get("@id") if isinstance(ref, dict) else None
-                if iri is None or iri in seen:
-                    continue
-                seen.add(iri)
-                deduped.append(ref)
-            authority_refs = deduped
-
-            # Add competent-authority link to provision node
-            if authority_refs:
-                node["estleg:competentAuthority"] = authority_refs
-                node["estleg:competenceType"] = competence_type
-                modified = True
-
-        # Note: _triples counts COMPETENT-AUTHORITY REFERENCES
-        # (elements of competentAuthority lists across all provisions),
-        # not raw RDF triples — matches the analytical question
-        # "how many provision→authority bindings did we produce?"
-        if modified:
-            _files_with_output.add(filepath)
-            if is_kov:
-                _files_with_output_kov.add(filepath)
-            n_refs = sum(
-                len(node.get("estleg:competentAuthority", []))
-                if isinstance(node.get("estleg:competentAuthority"), list)
-                else (1 if "estleg:competentAuthority" in node else 0)
-                for node in doc.get("@graph", [])
-            )
-            _triples += n_refs
-            if is_kov:
-                _triples_kov += n_refs
-
-        # Save when EITHER fresh output OR pre-existing output existed.
-        if modified or had_existing_peep:
-            save_json(filepath, doc)
-
-        if idx % 100 == 0 or idx == len(law_files):
-            print(f"  [{idx}/{len(law_files)}] processed – {len(inst_data)} institutions found")
-
-    # ---------- generate institution files ----------
-    print(f"\n[2/4] Generating institution files ({len(inst_data)} institutions)...")
+    Issue #170 Finding 7: emit ALL provisions per competence type and
+    add estleg:appliesToProvisionCount alongside the (capped) list.
+    When the list would be truncated, log a single warning per
+    (institution, competence_type) pair so the truncation is visible
+    in the run output.
+    """
+    print(f"\n[2/4] Generating institution files ({len(state.inst_data)} institutions)...")
 
     # Build reverse map: canonical suffix → list of abbreviation aliases
     canonical_aliases: dict[str, list[str]] = defaultdict(list)
     for alias, canonical in SAMEAS_ALIASES.items():
         canonical_aliases[canonical].append(alias)
 
-    for inst_iri, info in sorted(inst_data.items()):
-        provisions = inst_provisions[inst_iri]
+    written_slugs: set[str] = set()
+
+    for inst_iri, info in sorted(state.inst_data.items()):
+        provisions = state.inst_provisions[inst_iri]
         inst_node: dict = {
             "@id": inst_iri,
             "@type": ["owl:NamedIndividual", "estleg:Institution"],
@@ -679,13 +976,29 @@ def main() -> int:
             by_competence[ctype].append(prov_iri)
 
         for ctype, prov_iris in sorted(by_competence.items()):
+            applies_to = [{"@id": p} for p in prov_iris[:_APPLIES_TO_PROVISION_CAP]]
+            total_count = len(prov_iris)
+            if total_count > _APPLIES_TO_PROVISION_CAP:
+                key = (inst_iri, ctype)
+                if key not in state.truncated_institution_competences:
+                    state.truncated_institution_competences.add(key)
+                    print(
+                        f"  WARN: truncating {info['name']} / {ctype} "
+                        f"appliesToProvision from {total_count} → "
+                        f"{_APPLIES_TO_PROVISION_CAP}; full count surfaced "
+                        f"as estleg:appliesToProvisionCount"
+                    )
             graph.append({
                 "@id": f"{inst_iri}_competence_{ctype}",
                 "@type": ["owl:NamedIndividual", "estleg:Competence"],
                 "rdfs:label": f"{info['name']} – {ctype}",
                 "estleg:competenceType": ctype,
                 "estleg:institution": {"@id": inst_iri},
-                "estleg:appliesToProvision": [{"@id": p} for p in prov_iris[:50]],
+                "estleg:appliesToProvision": applies_to,
+                "estleg:appliesToProvisionCount": {
+                    "@value": str(total_count),
+                    "@type": "xsd:integer",
+                },
             })
 
         doc = {"@context": CONTEXT, "@graph": graph}
@@ -693,88 +1006,73 @@ def main() -> int:
         save_json(INSTIT_DIR / filename, doc)
         written_slugs.add(info["iri_suffix"])
 
-    # ---------- report ----------
+    return written_slugs
+
+
+def write_report(state: _PipelineState, total_law_files: int) -> Path:
+    """Emit the human-readable competence report."""
     print("\n[3/4] Generating report...")
 
     # Competence-type breakdown
     competence_counts: dict[str, int] = defaultdict(int)
-    for provisions in inst_provisions.values():
+    for provisions in state.inst_provisions.values():
         for _, ctype, _ in provisions:
             competence_counts[ctype] += 1
 
     # Laws per institution
     inst_law_counts: dict[str, int] = {}
-    for inst_iri, provisions in inst_provisions.items():
+    for inst_iri, provisions in state.inst_provisions.items():
         laws = {law for _, _, law in provisions}
-        inst_law_counts[inst_data[inst_iri]["name"]] = len(laws)
+        inst_law_counts[state.inst_data[inst_iri]["name"]] = len(laws)
 
     report = {
         "generated": datetime.now().strftime("%Y-%m-%d"),
         "summary": {
-            "total_law_files": len(law_files),
-            "total_provisions_with_text": total_provisions,
-            "provisions_with_institutions": provisions_with_institutions,
-            "unique_institutions": len(inst_data),
+            "total_law_files": total_law_files,
+            "total_provisions_with_text": state.total_provisions,
+            "provisions_with_institutions": state.provisions_with_institutions,
+            "unique_institutions": len(state.inst_data),
         },
         "by_competence_type": dict(sorted(competence_counts.items(), key=lambda x: -x[1])),
         "institutions_by_provision_count": {
-            inst_data[k]["name"]: len(v)
-            for k, v in sorted(inst_provisions.items(), key=lambda x: -len(x[1]))
+            state.inst_data[k]["name"]: len(v)
+            for k, v in sorted(state.inst_provisions.items(), key=lambda x: -len(x[1]))
         },
         "institutions_by_law_count": dict(
             sorted(inst_law_counts.items(), key=lambda x: -x[1])
         ),
         "institution_types": {
             info["type"]: info["name"]
-            for info in sorted(inst_data.values(), key=lambda x: x["type"])
+            for info in sorted(state.inst_data.values(), key=lambda x: x["type"])
         },
     }
 
     report_path = KRR_DIR / "institutional_competence_report.json"
     save_json(report_path, report)
     print(f"  Saved: {report_path.name}")
+    return report_path
 
-    # ---------- summary ----------
-    print("\n[4/4] SUMMARY")
-    print("=" * 70)
-    print(f"  Total provisions analysed: {total_provisions}")
-    print(f"  With institution refs:     {provisions_with_institutions}")
-    print(f"  Unique institutions:       {len(inst_data)}")
-    print(f"  Institution files:         {len(inst_data)}")
-    print()
-    print("  Top institutions by provision count:")
-    top = sorted(inst_provisions.items(), key=lambda x: -len(x[1]))[:10]
-    for inst_iri, provs in top:
-        print(f"    {inst_data[inst_iri]['name']:45s}  {len(provs)} provisions")
-    print("=" * 70)
 
-    # Layer 2c PR #2: stale-file pruning. Only delete when the run
-    # was clean (no per-peep load errors); otherwise we might delete
-    # a file whose owning peep failed to load.
-    if _per_peep_errors == 0:
-        for path in pre_existing_institution_files:
-            slug = path.stem.removeprefix("institution_")
-            if slug not in written_slugs:
-                try:
-                    path.unlink()
-                except OSError as exc:
-                    print(f"  WARN: could not delete stale file {path.name}: {exc}")
-    else:
-        print(f"[skip stale-deletion] {_per_peep_errors} per-peep "
-              f"errors during this run; preserving "
-              f"{len(pre_existing_institution_files)} pre-existing "
-              f"institution files.")
+def write_coverage(state: _PipelineState, start_time: float) -> tuple[Path, list[Path]]:
+    """Emit the KOV coverage report and return (report path, kov_files).
 
-    # ----- coverage report -----
+    Issue #170 Finding 8: ``unknown_institution_count`` is added to
+    ``skip_reasons`` so it's visible in the JSON output without changing
+    the CoverageReport schema.
+    """
     # Second scan to get the full input universe for input_files_total /
     # input_files_kov. Cannot reuse law_files here: aggregate-registry
     # peeps were silently skipped above but still count toward the input
     # universe.
     all_input_files = list(iter_peep_files())
-    _kov_files = [p for p in all_input_files
-                  if "regulations/kov/" in str(p)]
+    kov_files = [p for p in all_input_files
+                 if "regulations/kov/" in str(p)]
 
-    _wall, _rate, _peak_mb = measure_runtime(_start, len(_files_processed))
+    skip_reasons = dict(state.skip_reasons)
+    if state.unknown_institution_count:
+        skip_reasons["unknown_institution"] = state.unknown_institution_count
+
+    wall, rate, peak_mb = measure_runtime(start_time, len(state.files_processed))
     out_path = (KRR_DIR / "reports" / "kov"
                 / "extract_institutional_competence_coverage.json")
     write_coverage_report(
@@ -783,36 +1081,122 @@ def main() -> int:
             run_timestamp=datetime.now(timezone.utc).isoformat(),
             pipeline_version=resolve_pipeline_version(),
             input_files_total=len(all_input_files),
-            input_files_kov=len(_kov_files),
-            files_processed=len(_files_processed),
-            files_processed_kov=len(_files_processed_kov),
-            files_with_output=len(_files_with_output),
-            files_with_output_kov=len(_files_with_output_kov),
-            files_skipped=_files_skipped,
-            skip_reasons=_skip_reasons,
-            triples_emitted=_triples,
-            triples_emitted_kov=_triples_kov,
-            unresolved_references=_unresolved_count,
-            fallback_hits=_fallback_hits,
-            wall_time_seconds=round(_wall, 2),
-            items_per_second=round(_rate, 2),
-            peak_memory_mb=round(_peak_mb, 1),
-            error_count=len(_failures),
-            failure_samples=_failures,
+            input_files_kov=len(kov_files),
+            files_processed=len(state.files_processed),
+            files_processed_kov=len(state.files_processed_kov),
+            files_with_output=len(state.files_with_output),
+            files_with_output_kov=len(state.files_with_output_kov),
+            files_skipped=state.files_skipped,
+            skip_reasons=skip_reasons,
+            triples_emitted=state.triples,
+            triples_emitted_kov=state.triples_kov,
+            unresolved_references=state.unresolved_count,
+            fallback_hits=state.fallback_hits,
+            wall_time_seconds=round(wall, 2),
+            items_per_second=round(rate, 2),
+            peak_memory_mb=round(peak_mb, 1),
+            error_count=len(state.failures),
+            failure_samples=state.failures,
         ),
         out_path,
     )
     print(f"\nCoverage report: {out_path}")
-    print(f"  input_files_total: {len(all_input_files)} (KOV: {len(_kov_files)})")
-    print(f"  files_with_output: {len(_files_with_output)} (KOV: {len(_files_with_output_kov)})")
-    print(f"  triples_emitted (authority references): {_triples} (KOV: {_triples_kov})")
-    print(f"  unresolved_references: {_unresolved_count}; fallback_hits: {_fallback_hits}")
+    print(f"  input_files_total: {len(all_input_files)} (KOV: {len(kov_files)})")
+    print(f"  files_with_output: {len(state.files_with_output)} (KOV: {len(state.files_with_output_kov)})")
+    print(f"  triples_emitted (authority references): {state.triples} (KOV: {state.triples_kov})")
+    print(f"  unresolved_references: {state.unresolved_count}; fallback_hits: {state.fallback_hits}")
+    if state.unknown_institution_count:
+        print(f"  unknown_institution_count: {state.unknown_institution_count}")
+    return out_path, kov_files
+
+
+def main() -> int:
+    print("=" * 70)
+    print("Estonian Legal Ontology - Institutional Competence Extraction")
+    print("=" * 70)
+
+    # Issue #170 Finding 9: create the institutions directory only when
+    # main() actually runs — keeps imports side-effect-free.
+    _ensure_dirs()
+
+    law_files = iter_peep_files()
+    print(f"\n  Found {len(law_files)} law files to process")
+
+    # Layer 2c PR #2: build issuer registry once at startup.
+    issuer_registry = build_issuer_registry(
+        KRR_DIR / "issuers_kov_peep.json"
+    )
+
+    # Issue #170 Finding 8: load the canonical 126-institution registry
+    # from disk. Empty-set return means we're bootstrapping (no
+    # validation).
+    canonical_suffixes = _load_canonical_institutions(INSTIT_DIR)
+    if canonical_suffixes:
+        print(f"  Loaded {len(canonical_suffixes)} canonical institution suffixes")
+    else:
+        print("  No canonical institutions found — bootstrap mode "
+              "(validation disabled)")
+
+    print("\n[1/4] Processing law files (per-file idempotent)...")
+
+    state = _PipelineState()
+    start_time = time.perf_counter()
+
+    pre_existing_institution_files: list[Path] = []
+    if INSTIT_DIR.exists():
+        pre_existing_institution_files = list(INSTIT_DIR.glob("institution_*.json"))
+
+    for idx, filepath in enumerate(law_files, 1):
+        process_law_file(
+            filepath=filepath,
+            state=state,
+            issuer_registry=issuer_registry,
+            canonical_suffixes=canonical_suffixes,
+        )
+        if idx % 100 == 0 or idx == len(law_files):
+            print(f"  [{idx}/{len(law_files)}] processed – {len(state.inst_data)} institutions found")
+
+    written_slugs = write_institution_files(state)
+    write_report(state, total_law_files=len(law_files))
+
+    # ---------- summary ----------
+    print("\n[4/4] SUMMARY")
+    print("=" * 70)
+    print(f"  Total provisions analysed: {state.total_provisions}")
+    print(f"  With institution refs:     {state.provisions_with_institutions}")
+    print(f"  Unique institutions:       {len(state.inst_data)}")
+    print(f"  Institution files:         {len(state.inst_data)}")
+    print()
+    print("  Top institutions by provision count:")
+    top = sorted(state.inst_provisions.items(), key=lambda x: -len(x[1]))[:10]
+    for inst_iri, provs in top:
+        print(f"    {state.inst_data[inst_iri]['name']:45s}  {len(provs)} provisions")
+    print("=" * 70)
+
+    # Layer 2c PR #2: stale-file pruning. Only delete when the run
+    # was clean (no per-peep load errors); otherwise we might delete
+    # a file whose owning peep failed to load.
+    if state.per_peep_errors == 0:
+        for path in pre_existing_institution_files:
+            slug = path.stem.removeprefix("institution_")
+            if slug not in written_slugs:
+                try:
+                    path.unlink()
+                except OSError as exc:
+                    print(f"  WARN: could not delete stale file {path.name}: {exc}")
+    else:
+        print(f"[skip stale-deletion] {state.per_peep_errors} per-peep "
+              f"errors during this run; preserving "
+              f"{len(pre_existing_institution_files)} pre-existing "
+              f"institution files.")
+
+    _, kov_files = write_coverage(state, start_time)
 
     # Gate check (matches Layer 2c PR #1 convention; corpus KOV count ~11,059).
-    if len(_kov_files) >= 11000 and len(_files_with_output_kov) == 0:
+    if len(kov_files) >= 11000 and len(state.files_with_output_kov) == 0:
         print("\nGATE FAIL: KOV files were processed but none produced output.")
         return 1
-    if _triples_kov == 0 and len(_kov_files) >= 11000:
+    if state.triples_kov == 0 and len(kov_files) >= 11000:
         print("\nGATE FAIL: zero KOV triples emitted.")
         return 1
     print("\nGATE OK")

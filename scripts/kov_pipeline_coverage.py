@@ -13,12 +13,72 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import subprocess
-from dataclasses import dataclass, field, asdict
+from dataclasses import asdict, dataclass, field
+from datetime import datetime, timezone
 from pathlib import Path
 
 
 _FAILURE_SAMPLE_CAP = 20
+
+
+# RFC-3339 / ISO-8601 UTC timestamp regex. We accept either a `Z`
+# suffix (the spec's canonical UTC marker) or `+00:00` (what
+# `datetime.isoformat()` produces). Sub-second precision is optional.
+_UTC_TIMESTAMP_RE = re.compile(
+    r"^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}:\d{2}(?:\.\d+)?"
+    r"(?:Z|\+00:00)$"
+)
+
+
+def validate_run_timestamp(value: str) -> str:
+    """Validate that `value` is a UTC ISO-8601 timestamp.
+
+    Returns the input unchanged on success. Raises ValueError with a
+    pointed message on any of:
+      - non-string input
+      - unparseable shape (regex mismatch)
+      - parses but is not UTC (tzinfo missing or offset != UTC)
+
+    Use `format_run_timestamp(datetime)` to produce a value that
+    passes this check from a `datetime` object (Finding #13 in
+    issue #182).
+    """
+    if not isinstance(value, str):
+        raise ValueError(
+            f"run_timestamp must be a string, got {type(value).__name__}"
+        )
+    if not _UTC_TIMESTAMP_RE.match(value):
+        raise ValueError(
+            f"run_timestamp {value!r} is not an ISO-8601 UTC timestamp; "
+            "expected e.g. '2026-05-10T12:34:56Z' or "
+            "'2026-05-10T12:34:56+00:00'"
+        )
+    # Also parse it via fromisoformat as a defence against shapes the
+    # regex permits but Python rejects (e.g. impossible day numbers).
+    parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    if parsed.tzinfo is None or parsed.tzinfo.utcoffset(parsed) != timezone.utc.utcoffset(parsed):
+        raise ValueError(
+            f"run_timestamp {value!r} parses with tzinfo "
+            f"{parsed.tzinfo!r}; UTC offset is required."
+        )
+    return value
+
+
+def format_run_timestamp(when: datetime) -> str:
+    """Serialise a `datetime` as an ISO-8601 UTC timestamp suitable for
+    `CoverageReport.run_timestamp`.
+
+    Naive `when` values are rejected (tzinfo-required) so we don't
+    silently mark a local-time wall-clock value as UTC.
+    """
+    if when.tzinfo is None:
+        raise ValueError(
+            "format_run_timestamp requires a tz-aware datetime; pass "
+            "datetime.now(timezone.utc), not datetime.now()."
+        )
+    return when.astimezone(timezone.utc).isoformat()
 
 
 @dataclass
@@ -28,7 +88,7 @@ class CoverageReport:
     metrics, failure samples)."""
 
     pipeline: str
-    run_timestamp: str        # ISO-8601 UTC
+    run_timestamp: str        # ISO-8601 UTC; see validate_run_timestamp
     pipeline_version: str     # git short SHA
 
     # Coverage counts
@@ -59,10 +119,14 @@ class CoverageReport:
 def write_coverage_report(report: CoverageReport, path: Path) -> None:
     """Write a CoverageReport to a JSON file atomically.
 
-    Caps failure_samples at 20 entries (per the spec); writes to a
-    temp file in the same directory, then renames into place so a
-    crash mid-write doesn't leave a partial file.
+    Validates `run_timestamp` is a UTC ISO-8601 string before
+    serialising so a wall-clock-style timestamp can never end up in a
+    machine-consumed report (Finding #13). Caps `failure_samples` at
+    20 entries (per the spec); writes to a temp file in the same
+    directory, then renames into place so a crash mid-write doesn't
+    leave a partial file.
     """
+    validate_run_timestamp(report.run_timestamp)
     path.parent.mkdir(parents=True, exist_ok=True)
     payload = asdict(report)
     payload["failure_samples"] = payload["failure_samples"][:_FAILURE_SAMPLE_CAP]
@@ -95,21 +159,42 @@ def measure_runtime(
 
     Wall time uses ``time.perf_counter()`` (monotonic, sub-second
     resolution). Peak memory comes from ``resource.getrusage`` with
-    a platform-specific normalization to MB (Linux ru_maxrss is in KB,
-    macOS in bytes). On platforms where ``resource`` is unavailable
-    (Windows), peak_memory_mb is 0.0.
+    a platform-specific normalization to MB:
+      * Linux: ``ru_maxrss`` is in KB → divide by 1024
+      * macOS: ``ru_maxrss`` is in bytes → divide by 1024**2
+      * Windows: ``resource`` is unavailable → 0.0
+
+    A sanity assertion guards against the historical macOS double-
+    divide bug: a 100 MB process would have ru_maxrss ≈ 1e8 (bytes)
+    or ≈ 1e5 (KB if mis-typed). If the resulting MB value implies
+    >1 TB of RSS we treat that as a unit-detection regression and
+    raise — silently emitting nonsensical memory numbers into the
+    coverage report would mask real bugs (Finding #10).
     """
+    import sys as _sys
     import time as _time
     wall = _time.perf_counter() - start_time
     rate = items_processed / wall if wall > 0 else 0.0
+    if _sys.platform.startswith("win"):
+        # `resource` is not available on Windows, and `psutil` is not
+        # in this project's dependency set. Surface the gap
+        # explicitly rather than emit a misleading 0 with no comment.
+        return wall, rate, 0.0
     try:
         import resource
-        import sys as _sys
-        rss = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
-        if _sys.platform == "darwin":
-            peak_mb = rss / (1024 * 1024)  # macOS: bytes
-        else:
-            peak_mb = rss / 1024  # Linux: KB
     except ImportError:
-        peak_mb = 0.0
+        return wall, rate, 0.0
+    rss = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
+    if _sys.platform == "darwin":
+        peak_mb = rss / (1024 * 1024)  # macOS: bytes
+    else:
+        peak_mb = rss / 1024  # Linux/BSD: KB
+    # Sanity: any RSS reading that comes back as >1 TB is a unit-
+    # detection bug, not a real datapoint. Catching this here means
+    # the bad reading is loud, not silently propagated into the
+    # coverage report's `peak_memory_mb` field.
+    assert peak_mb < 1_000_000, (
+        f"peak_memory_mb={peak_mb} on platform {_sys.platform!r}; "
+        "ru_maxrss unit detection is wrong."
+    )
     return wall, rate, peak_mb

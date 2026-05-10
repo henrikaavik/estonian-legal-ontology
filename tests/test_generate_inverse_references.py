@@ -1,4 +1,5 @@
-"""Tests for scripts/generate_inverse_references.py — Layer 2b additions.
+"""Tests for scripts/generate_inverse_references.py — Layer 2b additions
+plus #157 alias-resolution refusal.
 
 Covers:
   * TestActLevelIndex — Round-3 review item #7: collect_all_references
@@ -13,6 +14,13 @@ Covers:
     pre-existing implementedBy/implementedByCount before each apply
     pass so removed source acts or corrected preamble parses cannot
     leave stale triples.
+  * TestAliasAmbiguousRefused — #157: when an alias prefix matches
+    multiple canonical prefixes, refuse to resolve and surface the
+    ambiguity rather than silently picking one.
+  * TestVerifySymmetryCategorisation — #157: verify_symmetry must
+    emit ``unresolved-after-alias`` and ``genuine-missing-back-link``
+    categories instead of the legacy fold-everything-into-"missing"
+    label.
 """
 
 from __future__ import annotations
@@ -218,3 +226,260 @@ class TestImplementedByIdempotency:
         target = saved["@graph"][0]
         assert "estleg:implementedBy" not in target
         assert "estleg:implementedByCount" not in target
+
+
+# ---------------------------------------------------------------------------
+# Issue #157 — alias resolution must refuse on ambiguous matches
+# ---------------------------------------------------------------------------
+
+
+class TestAliasResolveAmbiguous:
+    """Direct unit-test of ``_resolve_alias`` with an ambiguous index.
+
+    When IRI_PREFIX_ALIASES maps an alias to multiple canonical
+    prefixes and >1 of those canonicals carry the requested paragraph
+    number, _resolve_alias must return ``AliasResolution`` with
+    ``canonical=None`` and ``ambiguous_candidates`` populated.
+    """
+
+    def test_resolve_alias_refuses_when_multiple_canonicals_match(
+        self, monkeypatch
+    ):
+        import generate_inverse_references as mod
+
+        # Two canonical IRIs both carry Par_14: ambiguous.
+        iri_to_file = {
+            "estleg:VOS_Par_14": Path("/tmp/vos_peep.json"),
+            "estleg:VOS3_Par_14": Path("/tmp/vos3_peep.json"),
+        }
+        prefix_par_index = {
+            "VOS": {"14": "estleg:VOS_Par_14"},
+            "VOS3": {"14": "estleg:VOS3_Par_14"},
+        }
+        # Inject the alias rule
+        monkeypatch.setitem(
+            mod.IRI_PREFIX_ALIASES,
+            "Vlaigusseadus",
+            ["VOS", "VOS3"],
+        )
+
+        res = mod._resolve_alias(
+            "estleg:Vlaigusseadus_Par_14", iri_to_file, prefix_par_index,
+        )
+        assert res.canonical is None
+        assert sorted(res.ambiguous_candidates) == [
+            "estleg:VOS3_Par_14",
+            "estleg:VOS_Par_14",
+        ]
+
+    def test_resolve_alias_resolves_when_only_one_canonical_matches(
+        self, monkeypatch
+    ):
+        import generate_inverse_references as mod
+
+        iri_to_file = {
+            "estleg:VOS_Par_14": Path("/tmp/vos_peep.json"),
+            "estleg:VOS3_Par_99": Path("/tmp/vos3_peep.json"),
+        }
+        prefix_par_index = {
+            "VOS": {"14": "estleg:VOS_Par_14"},
+            "VOS3": {"99": "estleg:VOS3_Par_99"},
+        }
+        monkeypatch.setitem(
+            mod.IRI_PREFIX_ALIASES,
+            "Vlaigusseadus",
+            ["VOS", "VOS3"],
+        )
+
+        res = mod._resolve_alias(
+            "estleg:Vlaigusseadus_Par_14", iri_to_file, prefix_par_index,
+        )
+        assert res.canonical == "estleg:VOS_Par_14"
+        assert res.ambiguous_candidates == []
+
+
+class TestAliasAmbiguousRefused:
+    """End-to-end: when two canonical prefixes carry the same paragraph
+    and an alias claims to point at it, the run must NOT write
+    referencedBy on either canonical, and the report must record the
+    refusal.
+    """
+
+    def test_main_records_ambiguous_alias_in_report(
+        self, tmp_path, monkeypatch
+    ):
+        import generate_inverse_references as mod
+        import estleg_common
+
+        krr = tmp_path / "krr_outputs"
+        krr.mkdir()
+
+        # Source act references an alias-prefixed IRI.
+        (krr / "source_peep.json").write_text(json.dumps({
+            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+                         "owl": "http://www.w3.org/2002/07/owl#"},
+            "@graph": [
+                {"@id": "estleg:Reg_X_Map_2026",
+                 "@type": ["owl:Ontology", "estleg:Law"]},
+                {"@id": "estleg:Reg_X_Par_1",
+                 "@type": ["owl:NamedIndividual"],
+                 "estleg:references": [
+                     {"@id": "estleg:Vlaigusseadus_Par_14"},
+                 ]}
+            ],
+        }), encoding="utf-8")
+
+        # Two canonical targets: VOS_Par_14 AND VOS3_Par_14 (ambiguous).
+        (krr / "vos_peep.json").write_text(json.dumps({
+            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+                         "owl": "http://www.w3.org/2002/07/owl#"},
+            "@graph": [
+                {"@id": "estleg:VOS_Map", "@type": ["owl:Ontology", "estleg:Law"]},
+                {"@id": "estleg:VOS_Par_14", "@type": ["owl:NamedIndividual"]},
+            ],
+        }), encoding="utf-8")
+        (krr / "vos3_peep.json").write_text(json.dumps({
+            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+                         "owl": "http://www.w3.org/2002/07/owl#"},
+            "@graph": [
+                {"@id": "estleg:VOS3_Map", "@type": ["owl:Ontology", "estleg:Law"]},
+                {"@id": "estleg:VOS3_Par_14", "@type": ["owl:NamedIndividual"]},
+            ],
+        }), encoding="utf-8")
+
+        monkeypatch.setattr(mod, "KRR_DIR", krr)
+        monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+        # Force the alias to be ambiguous (two canonicals share Par_14)
+        monkeypatch.setitem(
+            mod.IRI_PREFIX_ALIASES, "Vlaigusseadus", ["VOS", "VOS3"],
+        )
+
+        rc = mod.main()
+        assert rc in (None, 0)
+
+        # Neither canonical may have gained referencedBy from the alias.
+        with open(krr / "vos_peep.json") as fh:
+            vos_doc = json.load(fh)
+        with open(krr / "vos3_peep.json") as fh:
+            vos3_doc = json.load(fh)
+        for doc in (vos_doc, vos3_doc):
+            par = next(n for n in doc["@graph"]
+                       if n.get("@id", "").endswith("_Par_14"))
+            assert "estleg:referencedBy" not in par, (
+                "ambiguous alias must not silently attribute back-links"
+            )
+
+        # The report must record the refusal.
+        with open(krr / "inverse_references_report.json") as fh:
+            report = json.load(fh)
+        assert "alias_ambiguous" in report
+        assert "estleg:Vlaigusseadus_Par_14" in report["alias_ambiguous"]
+        assert sorted(report["alias_ambiguous"]["estleg:Vlaigusseadus_Par_14"]) == [
+            "estleg:VOS3_Par_14",
+            "estleg:VOS_Par_14",
+        ]
+        assert report["summary"]["alias_ambiguous_refused"] >= 1
+
+
+# ---------------------------------------------------------------------------
+# Issue #157 — verify_symmetry categorises mismatches
+# ---------------------------------------------------------------------------
+
+
+class TestVerifySymmetryCategorisation:
+    def test_unresolved_after_alias_emitted_when_alias_unknown_paragraph(
+        self, tmp_path, monkeypatch
+    ):
+        """A forward ref using an alias prefix where no canonical
+        carries the paragraph number must produce a
+        ``unresolved-after-alias`` mismatch (NOT ``does not exist``).
+        """
+        import generate_inverse_references as mod
+        import estleg_common
+
+        krr = tmp_path / "krr_outputs"
+        krr.mkdir()
+
+        # Source ref to an alias prefix
+        (krr / "src_peep.json").write_text(json.dumps({
+            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+                         "owl": "http://www.w3.org/2002/07/owl#"},
+            "@graph": [
+                {"@id": "estleg:Src_Map", "@type": ["owl:Ontology", "estleg:Law"]},
+                {"@id": "estleg:Src_Par_1",
+                 "@type": ["owl:NamedIndividual"],
+                 "estleg:references": [
+                     {"@id": "estleg:Vlaigusseadus_Par_999"},
+                 ]}
+            ],
+        }), encoding="utf-8")
+        # No canonical carries Par_999
+        (krr / "vos_peep.json").write_text(json.dumps({
+            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+                         "owl": "http://www.w3.org/2002/07/owl#"},
+            "@graph": [
+                {"@id": "estleg:VOS_Map", "@type": ["owl:Ontology", "estleg:Law"]},
+                {"@id": "estleg:VOS_Par_14", "@type": ["owl:NamedIndividual"]},
+            ],
+        }), encoding="utf-8")
+
+        monkeypatch.setattr(mod, "KRR_DIR", krr)
+        monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+        # Vlaigusseadus is a known alias here
+        monkeypatch.setitem(mod.IRI_PREFIX_ALIASES, "Vlaigusseadus", ["VOS"])
+
+        mismatches = mod.verify_symmetry()
+        # Find our row
+        offending = [m for m in mismatches
+                     if m.get("source") == "estleg:Src_Par_1"]
+        assert offending
+        assert offending[0]["issue"] == "unresolved-after-alias"
+
+    def test_genuine_missing_back_link_emitted_when_canonical_exists(
+        self, tmp_path, monkeypatch
+    ):
+        """When a forward ref resolves cleanly to a canonical IRI and
+        the canonical exists but lacks the back-link, the mismatch
+        must be ``genuine-missing-back-link`` — not the legacy
+        "missing referencedBy" string.
+        """
+        import generate_inverse_references as mod
+        import estleg_common
+
+        krr = tmp_path / "krr_outputs"
+        krr.mkdir()
+        # Source has a forward reference but the target is missing
+        # the back-link.
+        (krr / "src_peep.json").write_text(json.dumps({
+            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+                         "owl": "http://www.w3.org/2002/07/owl#"},
+            "@graph": [
+                {"@id": "estleg:Src_Map", "@type": ["owl:Ontology", "estleg:Law"]},
+                {"@id": "estleg:Src_Par_1",
+                 "@type": ["owl:NamedIndividual"],
+                 "estleg:references": [
+                     {"@id": "estleg:Tgt_Par_5"},
+                 ]}
+            ],
+        }), encoding="utf-8")
+        # Target node exists but does NOT carry estleg:referencedBy
+        # for Src_Par_1. This simulates an out-of-sync state.
+        (krr / "tgt_peep.json").write_text(json.dumps({
+            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+                         "owl": "http://www.w3.org/2002/07/owl#"},
+            "@graph": [
+                {"@id": "estleg:Tgt_Map", "@type": ["owl:Ontology", "estleg:Law"]},
+                {"@id": "estleg:Tgt_Par_5",
+                 "@type": ["owl:NamedIndividual"]},
+            ],
+        }), encoding="utf-8")
+
+        monkeypatch.setattr(mod, "KRR_DIR", krr)
+        monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+
+        mismatches = mod.verify_symmetry()
+        offending = [m for m in mismatches
+                     if m.get("source") == "estleg:Src_Par_1"]
+        assert offending
+        assert offending[0]["issue"] == "genuine-missing-back-link"
+        assert offending[0].get("resolvedTarget") == "estleg:Tgt_Par_5"

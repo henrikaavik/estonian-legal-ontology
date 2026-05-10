@@ -1356,3 +1356,442 @@ class TestCorpusInvariant:
             + (f"\n  ... and {len(violations) - 20} more"
                if len(violations) > 20 else "")
         )
+
+
+# ---------------------------------------------------------------------------
+# Issue #170 regression tests — substring leaks, inflection, validation, etc.
+# ---------------------------------------------------------------------------
+
+
+class TestIssue170SubstringLeak:
+    """Finding 1 (#170): the old `name.lower() in text.lower()` matcher
+    leaked false positives — abbreviations and short institution names
+    matched inside unrelated words. The new \\b...\\b regex matcher must
+    reject these."""
+
+    def test_mta_substring_in_unrelated_word_is_rejected(self):
+        from extract_institutional_competence import detect_institutions
+        # 'uMTAga' contains MTA as a substring, but \bMTA\b won't match.
+        results = detect_institutions("kasutati uMTAga maagilist sõna")
+        assert all(s != "maksu_ja_tolliamet" for _, s, _ in results)
+
+    def test_ppa_substring_in_unrelated_word_is_rejected(self):
+        from extract_institutional_competence import detect_institutions
+        # PPA inside hyperPPAclause should not match.
+        results = detect_institutions("toimetab edasi hyperPPAclause vorm")
+        assert all(s != "politsei_ja_piirivalveamet" for _, s, _ in results)
+
+    def test_mta_word_boundary_match_is_kept(self):
+        from extract_institutional_competence import detect_institutions
+        results = detect_institutions("MTA juhend on kohustuslik")
+        slugs = {s for _, s, _ in results}
+        assert "maksu_ja_tolliamet" in slugs
+
+    def test_riigikogu_inside_unrelated_word_is_rejected(self):
+        from extract_institutional_competence import detect_institutions
+        # 'Riigikogu' as a substring of 'rahvusVabariigikogu' (synthetic) shouldn't fire.
+        results = detect_institutions(
+            "X rahvusVabariigikogu Y", )
+        slugs = {s for _, s, _ in results}
+        assert "riigikogu" not in slugs
+
+
+class TestIssue170AbbreviationFullnamePrecedence:
+    """Finding 2 (#170): when both the abbreviation and the canonical
+    full name appear in the same provision, only register the canonical
+    institution. The abbreviation entry must be suppressed."""
+
+    def test_mta_and_full_name_collapse_to_one_institution(self):
+        from extract_institutional_competence import detect_institutions
+        results = detect_institutions(
+            "Maksu- ja Tolliamet vastutab MTA poolt välja antud reeglite eest"
+        )
+        slugs = [s for _, s, _ in results]
+        # Single canonical entry, no extra MTA-only entry.
+        assert slugs.count("maksu_ja_tolliamet") == 1
+        assert "mta" not in slugs
+
+    def test_ppa_and_full_name_collapse(self):
+        from extract_institutional_competence import detect_institutions
+        results = detect_institutions(
+            "Politsei- ja Piirivalveamet ehk PPA tegutseb"
+        )
+        slugs = [s for _, s, _ in results]
+        assert slugs.count("politsei_ja_piirivalveamet") == 1
+        assert "ppa" not in slugs
+
+    def test_lone_mta_still_registers_when_full_name_absent(self):
+        from extract_institutional_competence import detect_institutions
+        results = detect_institutions("MTA poolt määratud sanktsioon")
+        slugs = {s for _, s, _ in results}
+        assert "maksu_ja_tolliamet" in slugs
+
+
+class TestIssue170MinistryCaseInsensitive:
+    """Finding 3 (#170): ministry/agency/inspektsioon patterns now run
+    with re.IGNORECASE, so sentence-internal forms like 'siseministeeriumi'
+    and 'rahandusministeeriumile' match."""
+
+    def test_lowercase_ministeerium_matches(self):
+        from extract_institutional_competence import detect_institutions
+        results = detect_institutions(
+            "siseministeeriumi pädevuses on järgmine"
+        )
+        slugs = {s for _, s, _ in results}
+        assert "siseministeerium" in slugs
+
+    def test_inflected_ministeerium_collapses_to_nominative(self):
+        from extract_institutional_competence import detect_institutions
+        results = detect_institutions(
+            "rahandusministeeriumile esitatakse aruanne"
+        )
+        slugs = {s for _, s, _ in results}
+        assert "rahandusministeerium" in slugs
+
+    def test_lowercase_inspektsioon_matches(self):
+        from extract_institutional_competence import detect_institutions
+        results = detect_institutions("andmekaitseinspektsiooni nõuandel")
+        slugs = {s for _, s, _ in results}
+        # via the explicit inflection-strip path
+        assert "andmekaitseinspektsioon" in slugs
+
+
+class TestIssue170KohusSuppression:
+    """Finding 4 (#170): generic 'kohus' is suppressed whenever any of
+    riigikohus/ringkonnakohus/halduskohus/maakohus appears in the text —
+    independent of `found` accumulator state ordering."""
+
+    def test_generic_kohus_kept_when_alone(self):
+        from extract_institutional_competence import detect_institutions
+        results = detect_institutions("kohus otsustab vaidluse")
+        slugs = {s for _, s, _ in results}
+        assert "kohus" in slugs
+
+    def test_generic_kohus_suppressed_with_riigikohus(self):
+        from extract_institutional_competence import detect_institutions
+        results = detect_institutions(
+            "Riigikohus võib edastada kohusele uue otsuse"
+        )
+        slugs = {s for _, s, _ in results}
+        assert "riigikohus" in slugs
+        assert "kohus" not in slugs
+
+    def test_generic_kohus_suppressed_with_halduskohus(self):
+        from extract_institutional_competence import detect_institutions
+        results = detect_institutions("halduskohus tuvastas kohuse rikkumise")
+        slugs = {s for _, s, _ in results}
+        assert "halduskohus" in slugs
+        assert "kohus" not in slugs
+
+
+class TestIssue170InflectionCollapse:
+    """Finding 5 (#170): Estonian noun-stem normaliser must collapse all
+    case forms of *amet/*ministeerium/*inspektsioon/*minister to their
+    nominative slug."""
+
+    @pytest.mark.parametrize("form,expected", [
+        ("Maksuametile", "maksuamet"),
+        ("Maksuameti",   "maksuamet"),
+        ("maksuametil",  "maksuamet"),
+        ("maksuametilt", "maksuamet"),
+        ("maksuametist", "maksuamet"),
+        ("maksuametisse", "maksuamet"),
+        ("maksuametiga", "maksuamet"),
+        ("maksuametiks", "maksuamet"),
+        ("Siseministeeriumile", "siseministeerium"),
+        ("siseministeeriumi", "siseministeerium"),
+        ("rahandusministeerium", "rahandusministeerium"),
+        ("kaitseministeeriumiga", "kaitseministeerium"),
+    ])
+    def test_normalize_iri_suffix_collapses_inflection(self, form, expected):
+        from extract_institutional_competence import normalize_iri_suffix
+        assert normalize_iri_suffix(form) == expected
+
+    def test_inflected_form_does_not_create_sibling_iri(self):
+        """The whole point of Finding 5: 'Maksuametile' and 'Maksuameti'
+        must share a single IRI suffix, not produce
+        Institution_maksuametile + Institution_maksuameti siblings."""
+        from extract_institutional_competence import detect_institutions
+        # Run two detections separately and verify they collapse.
+        results_a = detect_institutions("Maksuametile esitati taotlus")
+        results_b = detect_institutions("Maksuameti otsus on lõplik")
+        slugs_a = {s for _, s, _ in results_a}
+        slugs_b = {s for _, s, _ in results_b}
+        assert "maksuamet" in slugs_a
+        assert "maksuamet" in slugs_b
+
+
+class TestIssue170CrossProvisionDedup:
+    """Finding 6 (#170): the per-institution provision list must be
+    deduped at append-time across ALL provisions (not just within one
+    provision); same `(provision, ctype, law)` tuple shouldn't appear
+    twice."""
+
+    def test_record_provision_does_not_duplicate(self):
+        from extract_institutional_competence import (
+            _PipelineState,
+            _record_provision_for_institution,
+        )
+        state = _PipelineState()
+        for _ in range(3):
+            _record_provision_for_institution(
+                state=state,
+                inst_iri="estleg:Institution_test",
+                canon_name="Test",
+                iri_suffix="test",
+                itype="agency",
+                provision_iri="estleg:Test_Par_1",
+                competence_type="general",
+                law_name="test_law",
+            )
+        provisions = state.inst_provisions["estleg:Institution_test"]
+        assert provisions == [("estleg:Test_Par_1", "general", "test_law")], (
+            f"expected exactly one tuple, got {provisions}"
+        )
+
+
+class TestIssue170TruncationAware:
+    """Finding 7 (#170): when an institution would have its
+    appliesToProvision list truncated past `_APPLIES_TO_PROVISION_CAP`,
+    the institution file MUST surface
+    estleg:appliesToProvisionCount with the full count, even when the
+    appliesToProvision list itself is capped."""
+
+    def test_truncated_count_surfaced(self, tmp_path, monkeypatch):
+        import extract_institutional_competence as mod
+        krr = tmp_path / "krr_outputs"
+        institutions_dir = krr / "institutions"
+        krr.mkdir()
+        institutions_dir.mkdir()
+
+        # Stage one peep with 60 provisions all citing Riigikohus —
+        # that's well above the 50-cap, so truncation fires.
+        peep = krr / "big_peep.json"
+        graph = [
+            {"@id": "estleg:Big_Map_2026",
+             "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]},
+        ]
+        for i in range(60):
+            graph.append({
+                "@id": f"estleg:Big_Par_{i}",
+                "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+                "estleg:paragrahv": f"§ {i}",
+                "estleg:summary": "Riigikohus otsustab vaidluse.",
+            })
+        peep.write_text(json.dumps({
+            "@context": {
+                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "owl": "http://www.w3.org/2002/07/owl#",
+            },
+            "@graph": graph,
+        }), encoding="utf-8")
+        # Empty issuers registry — Riigikohus is named, so this works.
+        (krr / "issuers_kov_peep.json").write_text(json.dumps({
+            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+            "@graph": [],
+        }), encoding="utf-8")
+
+        import estleg_common
+        monkeypatch.setattr(mod, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "INSTIT_DIR", institutions_dir)
+        monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "iter_peep_files", _iter_kov_inclusive)
+
+        rc = mod.main()
+        assert rc in (0, None)
+
+        inst_path = institutions_dir / "institution_riigikohus.json"
+        assert inst_path.exists()
+        with open(inst_path, "r", encoding="utf-8") as fh:
+            doc = json.load(fh)
+
+        # Find the Competence node for Riigikohus.
+        competences = [n for n in doc["@graph"]
+                       if "estleg:Competence" in n.get("@type", [])]
+        assert competences, "expected at least one Competence node"
+        for comp in competences:
+            count = comp.get("estleg:appliesToProvisionCount")
+            assert count is not None, (
+                f"missing estleg:appliesToProvisionCount on {comp.get('@id')}"
+            )
+            applies = comp.get("estleg:appliesToProvision", [])
+            if isinstance(applies, dict):
+                applies = [applies]
+            # appliesToProvision is capped...
+            assert len(applies) <= mod._APPLIES_TO_PROVISION_CAP
+            # ...but appliesToProvisionCount records the full count.
+            count_value = int(count.get("@value")) if isinstance(count, dict) else int(count)
+            assert count_value == 60, (
+                f"appliesToProvisionCount should reflect all 60 provisions, got {count_value}"
+            )
+
+
+class TestIssue170CanonicalValidation:
+    """Finding 8 (#170): institutions whose normalized iri_suffix isn't
+    in the canonical 126-list registry must be dropped, with a counter
+    surfaced in the coverage report."""
+
+    def test_unknown_institution_dropped(self, tmp_path, monkeypatch):
+        import extract_institutional_competence as mod
+        import estleg_common
+        krr = tmp_path / "krr_outputs"
+        institutions_dir = krr / "institutions"
+        reports_dir = krr / "reports" / "kov"
+        krr.mkdir()
+        institutions_dir.mkdir()
+        reports_dir.mkdir(parents=True)
+
+        # Pre-stage the canonical registry with ONLY 'riigikohus' so any
+        # other detection (e.g. 'mitteamet' from a generic *amet pattern)
+        # is rejected.
+        (institutions_dir / "institution_riigikohus.json").write_text(
+            "{}", encoding="utf-8"
+        )
+
+        # Empty issuers registry.
+        (krr / "issuers_kov_peep.json").write_text(json.dumps({
+            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+            "@graph": [],
+        }), encoding="utf-8")
+
+        # Peep with text triggering BOTH a known canonical institution
+        # (Riigikohus) and an unknown one matched via generic *amet
+        # ('hüpoteetilineamet').
+        peep = krr / "weird_peep.json"
+        peep.write_text(json.dumps({
+            "@context": {
+                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "owl": "http://www.w3.org/2002/07/owl#",
+            },
+            "@graph": [
+                {"@id": "estleg:Weird_Map_2026",
+                 "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]},
+                {"@id": "estleg:Weird_Par_1",
+                 "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+                 "estleg:paragrahv": "§ 1",
+                 "estleg:summary":
+                     "Riigikohus võib küsida hüpoteetilineamet käest "
+                     "lisateavet."},
+            ],
+        }), encoding="utf-8")
+
+        monkeypatch.setattr(mod, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "INSTIT_DIR", institutions_dir)
+        monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "iter_peep_files", _iter_kov_inclusive)
+
+        rc = mod.main()
+        assert rc in (0, None)
+
+        # Riigikohus is canonical — file must be (re)written.
+        assert (institutions_dir / "institution_riigikohus.json").exists()
+        # 'hüpoteetilineamet' is unknown — must NOT be emitted.
+        assert not (institutions_dir / "institution_hupoteetilineamet.json").exists()
+
+        # Coverage report records the unknown count.
+        cov_path = reports_dir / "extract_institutional_competence_coverage.json"
+        with open(cov_path, "r", encoding="utf-8") as fh:
+            cov = json.load(fh)
+        assert cov["skip_reasons"].get("unknown_institution", 0) >= 1
+
+    def test_bootstrap_mode_when_registry_empty(self, tmp_path, monkeypatch):
+        """When the canonical registry is empty (fresh-clone bootstrap),
+        validation is disabled — all detections still emit."""
+        import extract_institutional_competence as mod
+        import estleg_common
+        krr = tmp_path / "krr_outputs"
+        institutions_dir = krr / "institutions"
+        reports_dir = krr / "reports" / "kov"
+        krr.mkdir()
+        institutions_dir.mkdir()
+        reports_dir.mkdir(parents=True)
+
+        (krr / "issuers_kov_peep.json").write_text(json.dumps({
+            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+            "@graph": [],
+        }), encoding="utf-8")
+
+        peep = krr / "fresh_peep.json"
+        peep.write_text(json.dumps({
+            "@context": {
+                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "owl": "http://www.w3.org/2002/07/owl#",
+            },
+            "@graph": [
+                {"@id": "estleg:Fresh_Map_2026",
+                 "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]},
+                {"@id": "estleg:Fresh_Par_1",
+                 "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+                 "estleg:paragrahv": "§ 1",
+                 "estleg:summary": "Riigikohus otsustab vaidlused."},
+            ],
+        }), encoding="utf-8")
+
+        monkeypatch.setattr(mod, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "INSTIT_DIR", institutions_dir)
+        monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "iter_peep_files", _iter_kov_inclusive)
+
+        rc = mod.main()
+        assert rc in (0, None)
+        # Bootstrap mode emits the institution despite the empty registry.
+        assert (institutions_dir / "institution_riigikohus.json").exists()
+
+
+class TestIssue170NoImportSideEffect:
+    """Finding 9 (#170): importing the module must not create the
+    institutions directory on disk."""
+
+    def test_import_does_not_mkdir(self, tmp_path, monkeypatch):
+        import importlib
+        import extract_institutional_competence as mod
+        # Point at a location that doesn't exist; reload the module and
+        # confirm nothing was created.
+        nonexistent = tmp_path / "shouldnt_exist"
+        monkeypatch.setattr(mod, "INSTIT_DIR", nonexistent)
+        importlib.reload(mod)
+        # After reload, the (newly-imported) module's INSTIT_DIR points
+        # back at the production path, so check the tmp path stayed
+        # untouched.
+        assert not nonexistent.exists()
+
+
+class TestIssue170MainRefactor:
+    """Finding 11 (#170): main() now delegates to process_law_file,
+    write_institution_files, write_report, write_coverage helpers — pin
+    their public surface so future refactors don't accidentally remove
+    the helpers."""
+
+    def test_helpers_are_exported(self):
+        from extract_institutional_competence import (
+            process_law_file,
+            write_institution_files,
+            write_report,
+            write_coverage,
+            _PipelineState,
+            _ensure_dirs,
+            _record_provision_for_institution,
+        )
+        assert callable(process_law_file)
+        assert callable(write_institution_files)
+        assert callable(write_report)
+        assert callable(write_coverage)
+        assert callable(_ensure_dirs)
+        assert callable(_record_provision_for_institution)
+        state = _PipelineState()
+        assert state.inst_data == {}
+        assert state.unknown_institution_count == 0
+
+
+class TestIssue170DeadInflectionMapDeleted:
+    """Finding 10 (#170): triple/double-underscore variants in the
+    INFLECTION_MAP are unreachable because normalize_iri_suffix collapses
+    runs of underscores BEFORE the lookup. They've been deleted; verify
+    by importing the (now-private) map."""
+
+    def test_inflection_map_has_no_double_underscore_keys(self):
+        from extract_institutional_competence import _INFLECTION_MAP
+        bad = [k for k in _INFLECTION_MAP if "__" in k]
+        assert bad == [], (
+            f"unreachable double-underscore keys still in _INFLECTION_MAP: {bad}"
+        )

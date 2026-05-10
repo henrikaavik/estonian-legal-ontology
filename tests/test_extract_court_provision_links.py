@@ -15,6 +15,8 @@ from estleg_common import _RunCounters
 from extract_court_provision_links import (
     PAT_KOV_ACT,
     PAT_RTIV,
+    _expand_par_range,
+    _trim_municipality_to_known_issuer,
     build_kov_act_index,
     expand_two_digit_year,
     extract_citations_from_text,
@@ -554,3 +556,306 @@ def test_shacl_municipal_regulation_shape_has_interpreted_by_property() -> None:
         "MunicipalRegulationShape is missing the sh:path estleg:interpretedBy "
         "property shape introduced in Layer 2c PR #3."
     )
+
+
+# ---------------------------------------------------------------------------
+# Issue #172 regression tests
+# ---------------------------------------------------------------------------
+
+
+class TestIssue172BuildKovActIndexContinue:
+    """Finding 1 (#172): validation failures inside build_kov_act_index
+    must use ``continue`` (skip this node) rather than ``break``
+    (silently drop the entire peep). A peep with a malformed early
+    MunicipalRegulation node followed by a valid one MUST be indexed."""
+
+    def test_peep_with_malformed_node_before_valid_node(
+        self, tmp_path, monkeypatch
+    ):
+        """Stage a peep where the FIRST MunicipalRegulation node is missing
+        the actNumber (validation failure → previously triggered `break`),
+        and the SECOND MunicipalRegulation node is valid. Index MUST
+        register the second."""
+        from extract_court_provision_links import build_kov_act_index
+
+        peep = tmp_path / "act_peep.json"
+        peep.write_text(json.dumps({
+            "@context": {
+                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "owl": "http://www.w3.org/2002/07/owl#",
+            },
+            "@graph": [
+                # Malformed early node — missing actNumber.
+                {"@id": "estleg:Reg_BadNode_Map_2024",
+                 "@type": ["estleg:Act", "estleg:MunicipalRegulation"],
+                 "estleg:issuer": "Test Vallavolikogu",
+                 "estleg:entryIntoForce": {"@value": "2020-01-01"},
+                 # actNumber intentionally omitted
+                 },
+                # Valid node — must reach the index even though the
+                # early one was malformed.
+                {"@id": "estleg:Reg_GoodNode_Map_2024",
+                 "@type": ["estleg:Act", "estleg:MunicipalRegulation"],
+                 "estleg:issuer": "Test Vallavolikogu",
+                 "estleg:entryIntoForce": {"@value": "2020-01-01"},
+                 "estleg:actNumber": "42"},
+            ],
+        }), encoding="utf-8")
+
+        def fake_iter(*, include_kov: bool = True):
+            return iter([peep])
+
+        monkeypatch.setattr(
+            "extract_court_provision_links.iter_peep_files", fake_iter,
+        )
+
+        counters = _RunCounters()
+        kov_index, collisions, iri_to_file, known_issuers = build_kov_act_index(counters)
+
+        # The valid node MUST be indexed.
+        assert ("test vallavolikogu", 2020, "42") in kov_index, (
+            f"build_kov_act_index dropped a peep whose FIRST "
+            f"MunicipalRegulation node was malformed; index keys: "
+            f"{list(kov_index.keys())}"
+        )
+        assert kov_index[("test vallavolikogu", 2020, "42")] == "estleg:Reg_GoodNode_Map_2024"
+
+    def test_peep_with_malformed_year_before_valid(
+        self, tmp_path, monkeypatch
+    ):
+        """Same scenario but the early node has a malformed year
+        (ValueError on int(entry_force[:4])). Must still continue."""
+        from extract_court_provision_links import build_kov_act_index
+
+        peep = tmp_path / "act_peep.json"
+        peep.write_text(json.dumps({
+            "@context": {
+                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "owl": "http://www.w3.org/2002/07/owl#",
+            },
+            "@graph": [
+                # Malformed early node — year not parseable as int.
+                {"@id": "estleg:Reg_BadYear_Map_2024",
+                 "@type": ["estleg:Act", "estleg:MunicipalRegulation"],
+                 "estleg:issuer": "Test Vallavolikogu",
+                 "estleg:entryIntoForce": {"@value": "abcd-01-01"},
+                 "estleg:actNumber": "1"},
+                # Valid node.
+                {"@id": "estleg:Reg_GoodYear_Map_2024",
+                 "@type": ["estleg:Act", "estleg:MunicipalRegulation"],
+                 "estleg:issuer": "Test Vallavolikogu",
+                 "estleg:entryIntoForce": {"@value": "2020-01-01"},
+                 "estleg:actNumber": "99"},
+            ],
+        }), encoding="utf-8")
+
+        def fake_iter(*, include_kov: bool = True):
+            return iter([peep])
+
+        monkeypatch.setattr(
+            "extract_court_provision_links.iter_peep_files", fake_iter,
+        )
+
+        counters = _RunCounters()
+        kov_index, _, _, _ = build_kov_act_index(counters)
+
+        assert ("test vallavolikogu", 2020, "99") in kov_index, (
+            f"index missed valid node after malformed year; "
+            f"index keys: {list(kov_index.keys())}"
+        )
+
+    def test_peep_with_non_municipal_node_first(self, tmp_path, monkeypatch):
+        """A peep with a non-MunicipalRegulation @type node FIRST,
+        followed by a valid MunicipalRegulation node — the
+        ``if 'estleg:MunicipalRegulation' not in types: continue``
+        gate already worked in the original code, but pin it here."""
+        from extract_court_provision_links import build_kov_act_index
+
+        peep = tmp_path / "act_peep.json"
+        peep.write_text(json.dumps({
+            "@context": {
+                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "owl": "http://www.w3.org/2002/07/owl#",
+            },
+            "@graph": [
+                # Random ontology header.
+                {"@id": "estleg:Misc_Map_2024",
+                 "@type": ["owl:Ontology"]},
+                # Random class.
+                {"@id": "estleg:SomeClass",
+                 "@type": ["owl:Class"]},
+                # Then the actual MunicipalRegulation.
+                {"@id": "estleg:Reg_Real_Map_2024",
+                 "@type": ["estleg:Act", "estleg:MunicipalRegulation"],
+                 "estleg:issuer": "Test Vallavolikogu",
+                 "estleg:entryIntoForce": {"@value": "2020-01-01"},
+                 "estleg:actNumber": "1"},
+            ],
+        }), encoding="utf-8")
+
+        def fake_iter(*, include_kov: bool = True):
+            return iter([peep])
+
+        monkeypatch.setattr(
+            "extract_court_provision_links.iter_peep_files", fake_iter,
+        )
+
+        counters = _RunCounters()
+        kov_index, _, _, _ = build_kov_act_index(counters)
+        assert ("test vallavolikogu", 2020, "1") in kov_index
+
+
+class TestIssue172ExpandTwoDigitYear:
+    """Finding 2 (#172): tokenize via re.findall(r'\\d{4}', ...);
+    long-form dates with a 4-digit year tail should resolve; missing
+    year bumps a counter."""
+
+    def test_long_form_date_with_4_digit_year(self):
+        assert expand_two_digit_year("18. juuni 2020") == 2020
+        assert expand_two_digit_year("13. detsembri 1995") == 1995
+
+    def test_numeric_date_with_4_digit_year(self):
+        assert expand_two_digit_year("14.05.2009") == 2009
+
+    def test_numeric_date_with_2_digit_year_high(self):
+        assert expand_two_digit_year("21.06.99") == 1999
+
+    def test_numeric_date_with_2_digit_year_low(self):
+        assert expand_two_digit_year("01.01.50") == 2050
+
+    def test_unparseable_input_bumps_counter(self):
+        counters = _RunCounters()
+        result = expand_two_digit_year("Lorem ipsum dolor", counters=counters)
+        assert result == 0
+        assert counters.skip_reasons.get("date_parse_failed", 0) >= 1
+
+    def test_empty_input_bumps_counter(self):
+        counters = _RunCounters()
+        result = expand_two_digit_year("", counters=counters)
+        assert result == 0
+        assert counters.skip_reasons.get("date_parse_failed", 0) >= 1
+
+    def test_no_counter_no_bump_on_empty(self):
+        # Backwards compat: passing no counter must not error.
+        assert expand_two_digit_year("") == 0
+        assert expand_two_digit_year("garbage") == 0
+
+
+class TestIssue172ExpandParRange:
+    """Finding 3 (#172): wide ranges return [] with skip-reason bump;
+    malformed ranges return [] (not garbage); scalar par numbers still
+    expand via the digit-fallback."""
+
+    def test_wide_range_returns_empty_and_bumps(self):
+        counters = _RunCounters()
+        result = _expand_par_range("100-200", counters=counters)
+        assert result == []
+        assert counters.skip_reasons.get("par_range_too_wide", 0) >= 1
+
+    def test_malformed_range_returns_empty_and_bumps(self):
+        counters = _RunCounters()
+        result = _expand_par_range("foo-bar", counters=counters)
+        assert result == []
+        assert counters.skip_reasons.get("par_range_malformed", 0) >= 1
+
+    def test_inverted_range_returns_empty(self):
+        counters = _RunCounters()
+        result = _expand_par_range("210-208", counters=counters)
+        assert result == []
+        assert counters.skip_reasons.get("par_range_too_wide", 0) >= 1
+
+    def test_normal_range_still_expands(self):
+        result = _expand_par_range("208-210")
+        assert result == ["208", "209", "210"]
+
+    def test_scalar_still_works(self):
+        # Backwards-compat: pure-numeric scalar still passes.
+        result = _expand_par_range("208")
+        assert result == ["208"]
+
+    def test_no_counter_does_not_error(self):
+        # Backwards-compat: callers that don't pass counters still work.
+        assert _expand_par_range("100-200") == []
+        assert _expand_par_range("foo-bar") == []
+
+
+class TestIssue172TrimMunicipality:
+    """Finding 4 (#172): the {1,3} greedy quantifier in PAT_KOV_ACT can
+    overcapture preceding titlecase words. The trim helper recovers
+    by trying right-suffix substrings against known_issuer_norms."""
+
+    def test_trim_finds_known_suffix(self):
+        known = {"tallinna linnavolikogu", "tartu vallavolikogu"}
+        result = _trim_municipality_to_known_issuer(
+            "Pärnu Maakohtu Tallinna ", "linnavolikogu", known,
+        )
+        assert result.strip() == "Tallinna"
+
+    def test_trim_falls_back_to_rightmost_word(self):
+        # No suffix matches a known issuer — heuristic returns
+        # rightmost word so the resolver still has something to try.
+        known = {"unrelated entity"}
+        result = _trim_municipality_to_known_issuer(
+            "A B C ", "linnavolikogu", known,
+        )
+        assert result.strip() == "C"
+
+    def test_trim_keeps_full_string_when_already_known(self):
+        known = {"tallinna linnavolikogu"}
+        result = _trim_municipality_to_known_issuer(
+            "Tallinna ", "linnavolikogu", known,
+        )
+        assert result.strip() == "Tallinna"
+
+
+class TestIssue172PatKovActLeftAnchor:
+    """Finding 4 (#172): the regex now requires a left anchor (start,
+    whitespace, comma, semicolon, or open paren) so it can't fire
+    mid-word."""
+
+    def test_left_anchor_rejects_mid_word_match(self):
+        # Substring inside a word — no left-anchor character precedes.
+        m = PAT_KOV_ACT.search(
+            "xxxTallinna Linnavolikogu 18. juuni 2020. a määruse nr 15"
+        )
+        assert m is None
+
+    def test_left_anchor_allows_sentence_start(self):
+        m = PAT_KOV_ACT.search(
+            "Tallinna Linnavolikogu 18. juuni 2020. a määruse nr 15"
+        )
+        assert m is not None
+
+    def test_left_anchor_allows_after_comma(self):
+        m = PAT_KOV_ACT.search(
+            "vrd, Tallinna Linnavolikogu 18. juuni 2020. a määruse nr 15"
+        )
+        assert m is not None
+
+    def test_left_anchor_allows_after_open_paren(self):
+        m = PAT_KOV_ACT.search(
+            "(Tallinna Linnavolikogu 18. juuni 2020. a määruse nr 15)"
+        )
+        assert m is not None
+
+    def test_resolver_recovers_overcaptured_municipality(self):
+        """When PAT_KOV_ACT overcaptures (multiple titlecase words),
+        the resolver's trim step still resolves to the right issuer."""
+        from extract_court_provision_links import resolve_kov_citation
+        # Synthetic: regex captured "Pärnu Maakohtu Tallinna" but only
+        # "tallinna linnavolikogu" is in known_issuer_norms.
+        match = {
+            "municipality": "Pärnu Maakohtu Tallinna ",
+            "body": "Linnavolikogu",
+            "date": "18. juuni 2020",
+            "num": "15",
+            "raw_text": "Pärnu Maakohtu Tallinna Linnavolikogu 18. juuni 2020. a määruse nr 15",
+        }
+        idx = {("tallinna linnavolikogu", 2020, "15"): "estleg:Reg_TLN_15_Map_2026"}
+        iri, reason = resolve_kov_citation(
+            match, idx, set(), {"tallinna linnavolikogu"},
+        )
+        assert iri == "estleg:Reg_TLN_15_Map_2026", (
+            f"trim should have recovered the runaway municipality; "
+            f"got iri={iri}, reason={reason}"
+        )

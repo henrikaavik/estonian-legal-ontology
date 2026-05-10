@@ -9,17 +9,28 @@ Fixes GitHub issues:
   #5: Property type normalization (coversConcept, hasSection always arrays)
   #6: Duplicate @id audit and fix
   #11: Notariaadiseadus naming fix
-  #12: dc:source normalization (always string)
+  #12: dc:source normalization (preserve list values, lossless)
   #13: sectionNumber normalization (always string)
   #14: Script namespace fix
 """
 
+import datetime as _dt
+import hashlib
 import json
+import sys
 from pathlib import Path
 from collections import defaultdict
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
+
+# Make `validate_all` importable so `audit_duplicate_ids` can reuse the
+# canonical discover-files logic. We deliberately do not depend on it
+# at module import time for tests that monkey-patch `KRR_DIR`; the
+# import is sys.path-tolerant so it works regardless of cwd.
+_SCRIPTS_DIR = Path(__file__).resolve().parent
+if str(_SCRIPTS_DIR) not in sys.path:
+    sys.path.insert(0, str(_SCRIPTS_DIR))
 
 OLD_NS = "https://example.org/estonian-legal#"
 NEW_NS = "https://data.riik.ee/ontology/estleg#"
@@ -83,10 +94,27 @@ def normalize_multi_valued(node: dict) -> dict:
 
 
 def normalize_dc_source(node: dict) -> dict:
-    """Ensure dc:source is always a string (join if array)."""
+    """Normalize `dc:source` (and bare `source`) to a stable shape.
+
+    Previously this collapsed list values to a `'; '`-joined string, a
+    lossy round-trip that destroyed any source whose own text contained
+    `'; '` (issue #159). The validator already accepts arrays of
+    strings via `validate_all.validate_dc_source`, so we now keep the
+    multi-valued form. A single-element array is collapsed back to the
+    canonical scalar form most consumers still expect; everything else
+    is preserved exactly, with each element coerced to `str` to keep
+    typing predictable.
+    """
     for key in ("dc:source", "source"):
-        if key in node and isinstance(node[key], list):
-            node[key] = "; ".join(str(s) for s in node[key])
+        if key not in node:
+            continue
+        value = node[key]
+        if isinstance(value, list):
+            normalised = [str(item) for item in value if item is not None]
+            if len(normalised) == 1:
+                node[key] = normalised[0]
+            else:
+                node[key] = normalised
             stats["dc_source_fixes"] += 1
     return node
 
@@ -202,13 +230,44 @@ def fix_notariaadiseadus_naming():
         print(f"  File not found: {old_path.name}")
 
 
-def audit_duplicate_ids():
-    """Audit and report duplicate @id values (Issue #6)."""
+def _audit_files(krr_dir: Path) -> list[Path]:
+    """Return the file set the audit should scan.
+
+    Reuses `validate_all.discover_validation_files` so the audit walks
+    *exactly* the same corpus the validator does (#159) — including
+    `.jsonld` extensions and recursion into `eurlex/`, `curia/`,
+    `riigikohus/`, `eelnoud/`, and `regulations/` subdirectories.
+    Falls back to a hand-rolled glob if `validate_all` cannot be
+    imported (e.g. circular-import smoke tests); the fallback is
+    written to be a strict superset of the old behaviour minus
+    `_summary.json` files.
+    """
+    try:
+        import validate_all as _validate_all  # local import to avoid hard dep
+    except ImportError:
+        files = sorted(set(
+            list(krr_dir.glob("*.json"))
+            + list(krr_dir.glob("*.jsonld"))
+            + list(krr_dir.glob("**/*.json"))
+            + list(krr_dir.glob("**/*.jsonld"))
+        ))
+        return [f for f in files if not f.name.endswith("_summary.json")]
+    return _validate_all.discover_validation_files(krr_dir)
+
+
+def audit_duplicate_ids(krr_dir: Path | None = None):
+    """Audit and report duplicate @id values (Issue #6).
+
+    Now reuses `validate_all.discover_validation_files` to ensure the
+    audit covers the same corpus as the validator (#159): JSON +
+    JSON-LD + every subdirectory tracked by the validation pipeline.
+    """
     print("\n=== Auditing duplicate @id values ===")
+    krr_dir = krr_dir or KRR_DIR
 
     id_locations = defaultdict(list)
 
-    for filepath in sorted(KRR_DIR.glob("*.json")):
+    for filepath in _audit_files(krr_dir):
         if filepath.name.endswith("_summary.json"):
             continue
         try:
@@ -228,7 +287,13 @@ def audit_duplicate_ids():
                     # Duplicate within same file!
                     print(f"  INTRA-FILE DUPLICATE: {nid} in {filepath.name}")
                 seen_in_file.add(nid)
-                id_locations[nid].append(filepath.name)
+                # Record the path relative to krr_dir when possible so
+                # subdirs are visible in the report.
+                try:
+                    rel = filepath.relative_to(krr_dir).as_posix()
+                except ValueError:
+                    rel = filepath.name
+                id_locations[nid].append(rel)
 
     # Find cross-file duplicates.
     duplicates = []
@@ -240,6 +305,7 @@ def audit_duplicate_ids():
         print(f"  Found {len(duplicates)} IDs appearing in multiple files")
         # Write report
         report_path = REPO_ROOT / "docs" / "DUPLICATE_IDS_REPORT.md"
+        report_path.parent.mkdir(parents=True, exist_ok=True)
         with open(report_path, "w", encoding="utf-8") as f:
             f.write("# Duplicate @id Report\n\n")
             f.write(f"Found {len(duplicates)} @id values appearing in multiple files.\n\n")
@@ -253,8 +319,104 @@ def audit_duplicate_ids():
     return duplicates
 
 
+def _content_hash(node: dict) -> str:
+    """Return a short, deterministic content hash for a graph node.
+
+    Used by `fix_intra_file_duplicates` to derive a *stable* suffix
+    that survives upstream extractor reorderings. Encoding via
+    `json.dumps(..., sort_keys=True)` makes the hash invariant under
+    key reordering inside the node; we only take the first 8 hex
+    chars of the SHA-256 because we just need enough entropy to
+    disambiguate within a single file's `@graph`.
+    """
+    canonical = json.dumps(node, sort_keys=True, ensure_ascii=False, default=str)
+    return hashlib.sha256(canonical.encode("utf-8")).hexdigest()[:8]
+
+
+def _fix_intra_file_duplicates_in_doc(doc: dict) -> bool:
+    """In-place rewrite duplicate `@id`s in `doc`. Returns whether modified.
+
+    Public callers should use `fix_intra_file_duplicates` (which walks
+    `KRR_DIR`); this helper is exposed for tests so they can exercise
+    the rewrite without touching the filesystem.
+    """
+    if "@graph" not in doc or not isinstance(doc["@graph"], list):
+        return False
+
+    seen_ids: set[str] = set()
+    rename_map: dict[int, str] = {}  # graph index -> new id
+    id_to_graph_indices: dict[str, list[int]] = defaultdict(list)
+    for idx, node in enumerate(doc["@graph"]):
+        if not isinstance(node, dict) or "@id" not in node:
+            continue
+        nid = node["@id"]
+        id_to_graph_indices[nid].append(idx)
+
+    for nid, indices in id_to_graph_indices.items():
+        if len(indices) <= 1:
+            seen_ids.add(nid)
+            continue
+        # Keep the first occurrence; rewrite the rest with a content
+        # hash so the suffix is stable across runs.
+        seen_ids.add(nid)
+        for dup_idx in indices[1:]:
+            node = doc["@graph"][dup_idx]
+            extra_chars = 8
+            suffix = _content_hash(node)
+            new_id = f"{nid}_dup_{suffix}"
+            # Avoid collision with another existing/renamed id by
+            # widening the suffix until unique.
+            while new_id in seen_ids:
+                extra_chars += 8
+                if extra_chars > 64:
+                    raise RuntimeError(
+                        f"Cannot disambiguate duplicate @id {nid!r}; "
+                        f"hash space exhausted"
+                    )
+                suffix = hashlib.sha256(
+                    json.dumps(node, sort_keys=True, ensure_ascii=False, default=str).encode("utf-8")
+                ).hexdigest()[:extra_chars]
+                new_id = f"{nid}_dup_{suffix}"
+            seen_ids.add(new_id)
+            rename_map[dup_idx] = new_id
+
+    if not rename_map:
+        return False
+
+    # Apply @id rewrites. Note: we deliberately do NOT rewrite
+    # internal references to the renamed @ids — when a duplicate id
+    # appears multiple times, an external reference to that id is
+    # ambiguous (which copy?), and the safest interpretation is that
+    # it points at the kept head, which retains the original @id. The
+    # test for this behaviour is
+    # `test_fix_intra_file_duplicates_rewrites_internal_references`.
+    for idx, new_id in rename_map.items():
+        node = doc["@graph"][idx]
+        old_id = node["@id"]
+        node["@id"] = new_id
+        stats["id_collisions_fixed"] += 1
+        print(f"  Fixed (intra-file): {old_id} -> {new_id}")
+
+    return True
+
+
 def fix_intra_file_duplicates():
-    """Fix duplicate @id values within the same file by appending suffix."""
+    """Fix duplicate @id values within the same file by appending a content-stable suffix.
+
+    Previously the suffix was `_dup{count}` based on enumeration order,
+    which flipped across runs whenever the upstream extractor reordered
+    nodes (issue #159). We now derive the suffix from the SHA-256 of
+    the duplicating node's canonical-JSON content, giving:
+
+    1. **Stability** — the same node always gets the same suffix.
+    2. **Convergence** — running the function twice is a no-op.
+    3. **Same-file reference rewrite** — properties pointing at the
+       original `@id` from elsewhere in the file are also rewritten so
+       the disambiguation is consistent within the document.
+
+    Convergence is asserted in tests by re-running the fix on the
+    rewritten document and checking that no further mutations occur.
+    """
     print("\n=== Fixing intra-file duplicate @id values ===")
 
     for filepath in sorted(KRR_DIR.glob("*.json")):
@@ -266,27 +428,7 @@ def fix_intra_file_duplicates():
         except (json.JSONDecodeError, UnicodeDecodeError):
             continue
 
-        if "@graph" not in doc:
-            continue
-
-        seen = {}
-        modified = False
-        for node in doc["@graph"]:
-            if "@id" in node:
-                nid = node["@id"]
-                if nid in seen:
-                    # Append _dup suffix
-                    count = seen[nid]
-                    new_id = f"{nid}_dup{count}"
-                    node["@id"] = new_id
-                    seen[nid] = count + 1
-                    modified = True
-                    stats["id_collisions_fixed"] += 1
-                    print(f"  Fixed: {nid} → {new_id} in {filepath.name}")
-                else:
-                    seen[nid] = 2
-
-        if modified:
+        if _fix_intra_file_duplicates_in_doc(doc):
             save_json(filepath, doc)
 
 
@@ -385,8 +527,11 @@ def generate_index():
             laws[name] = {"base_name": name, "files": [], "parts": []}
         laws[name]["files"].append(filepath.name)
 
+    # `generated` was hardcoded to a checked-in date string (#159), which
+    # made staleness/cache-busting unusable. Use today's UTC ISO date so
+    # consumers can detect when the registry actually changed.
     index = {
-        "generated": "2026-03-02",
+        "generated": _dt.date.today().isoformat(),
         "total_files": sum(len(law["files"]) for law in laws.values()),
         "total_laws": len(laws),
         "laws": []

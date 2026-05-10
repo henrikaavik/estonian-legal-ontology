@@ -103,12 +103,153 @@ def collect_text(el: ET.Element, max_len: int = 500) -> str:
     return joined[:max_len] if joined else ""
 
 
+# Mapping of Unicode superscript digits to plain digits.
+_SUPERSCRIPT_DIGIT_MAP: dict[str, str] = {
+    "¹": "1",  # superscript 1
+    "²": "2",  # superscript 2
+    "³": "3",  # superscript 3
+    "⁰": "0",  # superscript 0
+    "⁴": "4",  # superscript 4
+    "⁵": "5",  # superscript 5
+    "⁶": "6",  # superscript 6
+    "⁷": "7",  # superscript 7
+    "⁸": "8",  # superscript 8
+    "⁹": "9",  # superscript 9
+}
+
+
+def _superscript_index(par_el: ET.Element) -> str:
+    """Extract the superscript index for a paragrahv element.
+
+    Riigi Teataja XML records superscripted paragraph numbers in two
+    forms:
+      * ``ylaIndeks="N"`` attribute on the ``paragrahvNr`` element
+        (canonical, machine-friendly);
+      * the ``kuvatavNr`` CDATA, either as a Unicode superscript glyph
+        or as ``<sup>N</sup>`` markup.
+
+    Returns the index as a plain digit string ("1", "2", ...) or ``""``
+    when no superscript is present.
+    """
+    for c in par_el:
+        if ln(c.tag) == "paragrahvNr":
+            ya = c.attrib.get("ylaIndeks")
+            if ya and ya.strip():
+                return ya.strip()
+            break
+
+    kuv = None
+    for c in par_el:
+        if ln(c.tag) == "kuvatavNr":
+            kuv = "".join(c.itertext()) or ""
+            break
+    if not kuv:
+        return ""
+
+    m = re.search(
+        r"\d+\s*(?:<sup>\s*(\d+)\s*</sup>|([¹²³⁰⁴-⁹]+))",
+        kuv,
+    )
+    if not m:
+        return ""
+    if m.group(1):
+        return m.group(1).strip()
+    if m.group(2):
+        return "".join(_SUPERSCRIPT_DIGIT_MAP.get(ch, "") for ch in m.group(2))
+    return ""
+
+
+def _paragraph_id_suffix(par_el: ET.Element) -> str:
+    """Return the canonical IRI suffix for a paragrahv element.
+
+    Combines ``paragrahvNr`` with any superscript index so that
+    duplicate paragraph numbers (``§ 22`` and ``§ 22¹``) get distinct,
+    order-independent IRIs (``Par_22`` vs ``Par_22_1``). This replaces
+    the previous insertion-order disambiguation (#156, #165 fix 2).
+    """
+    par_nr = ct(par_el, "paragrahvNr") or ""
+    sup = _superscript_index(par_el)
+    base = sanitize_id(par_nr) if par_nr else "Unknown"
+    if sup:
+        return f"{base}_{sanitize_id(sup)}"
+    return base
+
+
+def _walk_paragraphs_direct(
+    container: ET.Element,
+    *,
+    block_tags: tuple[str, ...] = ("peatykk", "jagu", "osa"),
+) -> list[ET.Element]:
+    """Return paragrahv elements that belong DIRECTLY to ``container``.
+
+    Recursively descends through wrapper elements but stops as soon as
+    it encounters a deeper structural block — paragraphs inside those
+    nested blocks belong to the inner block, not to ``container``.
+    Replaces the ``ch.iter()`` walk that mis-attributed paragraphs in
+    osa → peatykk → jagu nesting (#166).
+    """
+    out: list[ET.Element] = []
+    for child in container:
+        tag = ln(child.tag)
+        if tag == "paragrahv":
+            out.append(child)
+        elif tag in block_tags:
+            continue
+        else:
+            out.extend(_walk_paragraphs_direct(child, block_tags=block_tags))
+    return out
+
+
 def collect_full_text(el: ET.Element) -> str:
-    """Return the complete text of a provision without any truncation."""
+    """Return the complete text of a provision, preserving lõige boundaries.
+
+    Each ``loige`` is prefixed with its own marker (``(N) ...``) drawn
+    from ``loigeNr`` (or ``kuvatavNr`` when ``loigeNr`` is missing).
+    When no lõige structure exists, fall back to concatenating the raw
+    text fragments (``lauseOsa``/``lause``/``tavatekst``) directly so
+    single-paragraph laws still emit useful text.
+    """
+    lõige_blocks: list[str] = []
+    for child in el:
+        if ln(child.tag) != "loige":
+            continue
+        loige_nr = ""
+        for sub in child:
+            if ln(sub.tag) == "loigeNr" and sub.text:
+                loige_nr = sub.text.strip()
+                break
+        if not loige_nr:
+            for sub in child:
+                if ln(sub.tag) == "kuvatavNr":
+                    raw = "".join(sub.itertext()).strip()
+                    inner = re.sub(r"[()]", "", raw).strip()
+                    if inner:
+                        loige_nr = inner
+                        break
+
+        body_parts: list[str] = []
+        for grandchild in child.iter():
+            tag = ln(grandchild.tag)
+            if tag in ("lauseOsa", "lause", "tavatekst"):
+                txt = "".join(grandchild.itertext()).strip()
+                txt = re.sub(r"\s+", " ", txt)
+                if txt and len(txt) > 3:
+                    body_parts.append(txt)
+        body = " ".join(body_parts).strip()
+        if not body:
+            continue
+        if loige_nr:
+            lõige_blocks.append(f"({loige_nr}) {body}")
+        else:
+            lõige_blocks.append(body)
+
+    if lõige_blocks:
+        return " ".join(lõige_blocks)
+
     parts: list[str] = []
     for child in el.iter():
         tag = ln(child.tag)
-        if tag in ("loige", "lauseOsa", "lause", "tavatekst"):
+        if tag in ("lauseOsa", "lause", "tavatekst"):
             txt = "".join(child.itertext()).strip()
             txt = re.sub(r"\s+", " ", txt)
             if txt and len(txt) > 3:
@@ -120,12 +261,29 @@ class SourceListFetchError(RuntimeError):
     """Raised when the law source list cannot be fetched completely."""
 
 
-def get_all_laws(*, kehtiv: str | None = DEFAULT_KEHTIV, allow_partial: bool = False) -> tuple[dict[str, dict], dict]:
-    """Fetch all law entries from Riigi Teataja API, keeping latest version of each."""
-    all_laws = {}
+PAGE_SCAN_LIMIT = 250
+
+
+def get_all_laws(
+    *,
+    kehtiv: str | None = DEFAULT_KEHTIV,
+    allow_partial: bool = False,
+    page_limit: int = PAGE_SCAN_LIMIT,
+) -> tuple[dict[str, dict], dict]:
+    """Fetch all law entries from Riigi Teataja API, keeping latest version of each.
+
+    Issue #165 fix 10: hitting the pagination cap (``page_limit``) used
+    to silently mark the run ``complete=True``. Now the run is flagged
+    incomplete and, unless ``allow_partial`` is set, raises
+    ``SourceListFetchError``. The manifest reports ``pagesScanned`` so
+    operators can see when the cap matters.
+    """
+    all_laws: dict[str, dict] = {}
     page = 1
     rows_seen = 0
     completed = False
+    pages_scanned = 0
+    cap_hit = False
     while True:
         params: dict[str, str | int] = {
             "leht": page,
@@ -152,6 +310,7 @@ def get_all_laws(*, kehtiv: str | None = DEFAULT_KEHTIV, allow_partial: bool = F
             raise SourceListFetchError(message) from e
 
         aktid = data.get("aktid", [])
+        pages_scanned = page
         if not aktid:
             completed = True
             break
@@ -172,14 +331,26 @@ def get_all_laws(*, kehtiv: str | None = DEFAULT_KEHTIV, allow_partial: bool = F
                     "lyhend": law.get("lyhend", ""),
                 }
         page += 1
-        if page > 250:
-            completed = True
+        if page > page_limit:
+            cap_hit = True
+            completed = False
             break
+
+    if cap_hit and not allow_partial:
+        raise SourceListFetchError(
+            f"Riigi Teataja pagination cap hit at page {page_limit} "
+            f"({rows_seen} rows seen, {len(all_laws)} unique acts). "
+            "Re-run with --allow-partial to accept truncation, or "
+            "raise the cap."
+        )
 
     return all_laws, {
         "requestedDocument": "seadus",
         "kehtiv": kehtiv,
         "searchRowsSeen": rows_seen,
+        "pagesScanned": pages_scanned,
+        "pageLimit": page_limit,
+        "pageLimitHit": cap_hit,
         "uniqueActs": len(all_laws),
         "complete": completed,
         "partialAllowed": allow_partial,
@@ -202,15 +373,34 @@ def has_existing_output(existing: set[str], title: str, slug: str) -> bool:
     return False
 
 
-def fetch_xml(url: str, cache_name: str) -> ET.Element | None:
-    """Fetch law XML, using cache if available."""
-    cache_path = DATA_DIR / f"{cache_name}.xml"
+def fetch_xml(
+    url: str,
+    cache_name: str,
+    *,
+    tid: str | None = None,
+) -> ET.Element | None:
+    """Fetch law XML, using cache if available.
 
-    if cache_path.exists() and cache_path.stat().st_size > 1000:
-        try:
-            return ET.parse(str(cache_path)).getroot()
-        except ET.ParseError:
-            pass
+    Issue #165 fix 9: when ``tid`` is supplied, embed it in the cache
+    filename. That way, when Riigi Teataja publishes a new tervikteksti
+    edition for the same slug, the next run misses the cache and
+    re-fetches automatically. Legacy slug-only cache files are still
+    consulted as a fallback so the first upgrade does not trigger a
+    full corpus refetch.
+    """
+    primary_path = (
+        DATA_DIR / f"{cache_name}__tid{sanitize_id(tid)}.xml"
+        if tid
+        else DATA_DIR / f"{cache_name}.xml"
+    )
+    legacy_path = DATA_DIR / f"{cache_name}.xml"
+
+    for cache_path in (primary_path, legacy_path):
+        if cache_path.exists() and cache_path.stat().st_size > 1000:
+            try:
+                return ET.parse(str(cache_path)).getroot()
+            except ET.ParseError:
+                pass
 
     full_url = BASE_URL + url if url.startswith("/") else url
     try:
@@ -222,78 +412,197 @@ def fetch_xml(url: str, cache_name: str) -> ET.Element | None:
         if len(xml_text) < 200:
             return None
 
-        cache_path.write_text(xml_text, encoding="utf-8")
+        primary_path.write_text(xml_text, encoding="utf-8")
         return ET.fromstring(xml_text)
     except Exception as e:
         print(f"    Fetch error: {e}")
         return None
 
 
-_used_prefixes: dict[str, str] = {}  # prefix -> title that claimed it
-_registry_cache: dict | None = None
-
-
 def _load_registry() -> dict:
-    """Lazily load the abbreviation registry if it exists."""
-    global _registry_cache
-    if _registry_cache is None:
-        registry_path = REPO_ROOT / "data" / "law_abbreviations.json"
-        if registry_path.exists():
-            with open(registry_path, encoding="utf-8") as f:
-                _registry_cache = json.load(f)
-        else:
-            _registry_cache = {}
-    return _registry_cache
+    """Load the abbreviation registry from disk (or return empty dict)."""
+    registry_path = REPO_ROOT / "data" / "law_abbreviations.json"
+    if registry_path.exists():
+        with open(registry_path, encoding="utf-8") as f:
+            return json.load(f)
+    return {}
 
 
-def _unique_prefix(abbreviation: str, slug: str, title: str) -> str:
-    """Return a collision-free prefix for IRI generation.
+class PrefixCollisionError(RuntimeError):
+    """Raised when a slug claims an abbreviation already taken by another law,
+    and the registry does not record either side as a multi-claimant winner.
 
-    Strategy:
-    0. Check the abbreviation registry first (if present).
-    1. Try the abbreviation if it is long enough (>3 chars) and unique.
-    2. Otherwise, try progressively longer slug prefixes (40, 50, 60, 70, 80, full).
-    3. If all slug lengths still collide, append a numeric suffix.
+    This is intentionally fatal: silent re-assignment is what causes the
+    order-dependent IRI drift described in #156/#165.
     """
-    # Check registry first
-    registry = _load_registry()
-    base_slug = re.sub(r"_osa\d+$", "", slug)
-    if base_slug in registry:
-        candidate = registry[base_slug]["abbrev"]
-        _used_prefixes[candidate] = title
-        return candidate
 
-    candidate = sanitize_id(abbreviation) if abbreviation else None
 
-    # Use slug-based prefix when abbreviation is too short or absent
-    if not candidate or len(candidate) <= 3:
-        candidate = sanitize_id(slug[:40])
+class PrefixAllocator:
+    """Encapsulates per-run prefix allocation state.
 
-    # Check for collision with a *different* law and resolve it
-    if candidate in _used_prefixes and _used_prefixes[candidate] != title:
-        # Try progressively longer slug prefixes
-        resolved = False
+    Replaces the module-level ``_used_prefixes`` dict so that:
+      * partial regenerations cannot reassign abbreviations across runs;
+      * tests can construct an allocator with a freshly-loaded registry
+        without leaking state between cases;
+      * multi-claimant abbreviations MUST appear in
+        ``data/law_abbreviations.json`` — if a previously-allocated prefix
+        clashes with another law, allocation raises rather than silently
+        switching to a slug-based fallback.
+    """
+
+    def __init__(self, registry: dict | None = None) -> None:
+        # registry: {slug: {"abbrev": str, ...}}
+        self._registry: dict = registry if registry is not None else _load_registry()
+        # used_prefixes: {prefix: title} — the law that currently owns this prefix
+        self._used_prefixes: dict[str, str] = {}
+
+    @property
+    def used_prefixes(self) -> dict[str, str]:
+        """Read-only view of {prefix -> claimant title}; for tests/diagnostics."""
+        return dict(self._used_prefixes)
+
+    def reset(self) -> None:
+        self._used_prefixes.clear()
+
+    def allocate(self, abbreviation: str, slug: str, title: str) -> str:
+        """Return a stable prefix for the (slug, title) pair.
+
+        Order of resolution:
+          1. If the slug (with any ``_osaN`` suffix stripped) is in the
+             static registry, use ``registry[base_slug]["abbrev"]``. The
+             registry is the single source of truth for multi-claimant
+             abbreviations; if the registered prefix is already used by a
+             different title, we raise — the registry must be corrected.
+          2. Otherwise, derive a candidate from ``abbreviation`` (>3 chars)
+             or fall back to the first 40 chars of the slug.
+          3. On collision with a *different* title, attempt progressively
+             longer slug prefixes; if they all collide, raise — the
+             abbreviation MUST be added to the registry instead of silently
+             falling back to a numeric suffix.
+        """
+        registry = self._registry
+        base_slug = re.sub(r"_osa\d+$", "", slug)
+
+        # 1. registry path — single source of truth for multi-claimant
+        if base_slug in registry:
+            candidate = registry[base_slug]["abbrev"]
+            owner = self._used_prefixes.get(candidate)
+            if owner is not None and owner != title:
+                raise PrefixCollisionError(
+                    f"Registry-mandated prefix {candidate!r} for slug "
+                    f"{base_slug!r} (title {title!r}) is already claimed "
+                    f"by {owner!r}. Update data/law_abbreviations.json."
+                )
+            self._used_prefixes[candidate] = title
+            return candidate
+
+        # 2. derive candidate from abbreviation or slug head
+        candidate = sanitize_id(abbreviation) if abbreviation else None
+        if not candidate or len(candidate) <= 3:
+            candidate = sanitize_id(slug[:40])
+
+        owner = self._used_prefixes.get(candidate)
+        if owner is None or owner == title:
+            self._used_prefixes[candidate] = title
+            return candidate
+
+        # 3. collision with a different title — try longer slug prefixes
         for length in (40, 50, 60, 70, 80, len(slug)):
-            candidate = sanitize_id(slug[:length])
-            if candidate not in _used_prefixes or _used_prefixes[candidate] == title:
-                resolved = True
-                break
-        # If slug-based prefixes all collide, append a numeric suffix
-        if not resolved:
-            base = sanitize_id(slug)
-            counter = 2
-            candidate = f"{base}_{counter}"
-            while candidate in _used_prefixes and _used_prefixes[candidate] != title:
-                counter += 1
-                candidate = f"{base}_{counter}"
+            attempt = sanitize_id(slug[:length])
+            attempt_owner = self._used_prefixes.get(attempt)
+            if attempt_owner is None or attempt_owner == title:
+                self._used_prefixes[attempt] = title
+                return attempt
 
-    _used_prefixes[candidate] = title
-    return candidate
+        raise PrefixCollisionError(
+            f"Could not allocate a unique prefix for slug {slug!r} "
+            f"(title {title!r}, abbreviation {abbreviation!r}); "
+            f"candidate {candidate!r} is owned by "
+            f"{self._used_prefixes.get(candidate)!r}. "
+            "Add this law to data/law_abbreviations.json with a stable "
+            "abbreviation."
+        )
 
 
-def generate_law_jsonld(title: str, slug: str, root: ET.Element, abbreviation: str = "", rt_url: str = "") -> dict:
+# Module-level default allocator used when ``generate_law_jsonld`` /
+# ``generate_multipart_law`` / ``generate_law_stub_jsonld`` are called
+# without an explicit allocator argument. main() resets this once per
+# run; callers that need an isolated state (tests, library use) should
+# instantiate their own ``PrefixAllocator``.
+_default_allocator: PrefixAllocator = PrefixAllocator()
+
+
+# Backwards-compatible shim. Existing tests reach in via
+# ``generate_all_laws._used_prefixes.clear()`` to reset state between
+# cases. The real state now lives on ``_default_allocator``; the
+# module-level dict mirrors it so legacy ``.clear()`` calls keep
+# working without breaking unrelated test files.
+class _UsedPrefixesProxy(dict):
+    """Mutable dict-view of the default allocator's used_prefixes."""
+
+    def __init__(self) -> None:
+        super().__init__()
+
+    def __contains__(self, key: object) -> bool:
+        return key in _default_allocator._used_prefixes
+
+    def __getitem__(self, key):
+        return _default_allocator._used_prefixes[key]
+
+    def __iter__(self):
+        return iter(_default_allocator._used_prefixes)
+
+    def __len__(self) -> int:
+        return len(_default_allocator._used_prefixes)
+
+    def get(self, key, default=None):
+        return _default_allocator._used_prefixes.get(key, default)
+
+    def items(self):
+        return _default_allocator._used_prefixes.items()
+
+    def keys(self):
+        return _default_allocator._used_prefixes.keys()
+
+    def values(self):
+        return _default_allocator._used_prefixes.values()
+
+    def __setitem__(self, key, value) -> None:
+        _default_allocator._used_prefixes[key] = value
+
+    def clear(self) -> None:
+        _default_allocator.reset()
+
+    def pop(self, key, *args):
+        return _default_allocator._used_prefixes.pop(key, *args)
+
+
+_used_prefixes: _UsedPrefixesProxy = _UsedPrefixesProxy()
+
+
+def _unique_prefix(
+    abbreviation: str,
+    slug: str,
+    title: str,
+    *,
+    allocator: PrefixAllocator | None = None,
+) -> str:
+    """Module-level wrapper around ``PrefixAllocator.allocate``."""
+    alloc = allocator if allocator is not None else _default_allocator
+    return alloc.allocate(abbreviation, slug, title)
+
+
+def generate_law_jsonld(
+    title: str,
+    slug: str,
+    root: ET.Element,
+    abbreviation: str = "",
+    rt_url: str = "",
+    *,
+    allocator: PrefixAllocator | None = None,
+) -> dict:
     """Generate JSON-LD for a single law."""
-    prefix = _unique_prefix(abbreviation, slug, title)
+    prefix = _unique_prefix(abbreviation, slug, title, allocator=allocator)
 
     # Collect all paragrahv elements
     paragrahvid = [el for el in root.iter() if ln(el.tag) == "paragrahv"]
@@ -354,12 +663,28 @@ def generate_law_jsonld(title: str, slug: str, root: ET.Element, abbreviation: s
     # Maps paragrahv number -> containing chapter/division IRI for isPartOf links
     par_to_container: dict[int, str] = {}
     clusters = []
-    for ch in root.iter():
+    # Issue #166: walk peatykks at any depth, but mapping each paragrahv
+    # only to its IMMEDIATE enclosing peatykk/jagu. ``root.iter()`` on
+    # its own — combined with ``ch.iter()`` for paragrahvs below — would
+    # double-count any paragrahv that lives in a nested block.
+    def _peatykks(parent: ET.Element) -> list[ET.Element]:
+        out: list[ET.Element] = []
+        for c in parent:
+            tag = ln(c.tag)
+            if tag == "peatykk":
+                out.append(c)
+            else:
+                out.extend(_peatykks(c))
+        return out
+
+    for ch in _peatykks(root):
         if ln(ch.tag) == "peatykk":
             ch_nr = ct(ch, "peatykkNr") or ""
             ch_title = ct(ch, "peatykkPealkiri") or ""
             if ch_title:
-                ch_pars = [p for p in ch.iter() if ln(p.tag) == "paragrahv"]
+                # Issue #166: only paragrahvs that DIRECTLY belong to
+                # this peatykk (or one of its jagu children).
+                ch_pars = _walk_paragraphs_direct(ch)
                 ch_par_nrs = []
                 for p in ch_pars:
                     nr = ct(p, "paragrahvNr")
@@ -411,15 +736,15 @@ def generate_law_jsonld(title: str, slug: str, root: ET.Element, abbreviation: s
                             "rdfs:label": {"@value": f"{j_nr}. jagu – {j_title}".strip(" –"), "@language": "et"},
                             "estleg:isPartOf": {"@id": chapter_id},
                         })
-                        # Map paragrahvs inside this jagu to the division
-                        for jp in jagu_el.iter():
-                            if ln(jp.tag) == "paragrahv":
-                                jp_nr = ct(jp, "paragrahvNr")
-                                if jp_nr:
-                                    try:
-                                        par_to_container[int(re.sub(r"[^\d]", "", jp_nr))] = div_id
-                                    except ValueError:
-                                        pass
+                        # Issue #166: only paragraphs that DIRECTLY belong
+                        # to this jagu — not those nested in deeper blocks.
+                        for jp in _walk_paragraphs_direct(jagu_el):
+                            jp_nr = ct(jp, "paragrahvNr")
+                            if jp_nr:
+                                try:
+                                    par_to_container[int(re.sub(r"[^\d]", "", jp_nr))] = div_id
+                                except ValueError:
+                                    pass
 
                 if division_ids:
                     chapter_node["estleg:hasPart"] = [{"@id": d} for d in division_ids]
@@ -474,7 +799,7 @@ def generate_law_jsonld(title: str, slug: str, root: ET.Element, abbreviation: s
         graph.insert(2, scheme_node)
 
     # Add paragraph nodes
-    seen_ids = set()
+    seen_ids: set[str] = set()
     for p in paragrahvid:
         p_nr = ct(p, "paragrahvNr") or "?"
         p_title = ct(p, "paragrahvPealkiri") or ""
@@ -482,11 +807,17 @@ def generate_law_jsonld(title: str, slug: str, root: ET.Element, abbreviation: s
         text = collect_text(p)
         full_text = collect_full_text(p)
 
-        p_id = f"estleg:{prefix}_Par_{sanitize_id(p_nr)}"
+        # Issue #156/#165 fix 2: build the IRI suffix from paragrahvNr
+        # plus any superscript index (ylaIndeks="N" or §X¹). This is
+        # order-independent so partial regenerations no longer drift
+        # IRIs based on insertion order.
+        p_id = f"estleg:{prefix}_Par_{_paragraph_id_suffix(p)}"
 
-        # Handle duplicates
         if p_id in seen_ids:
-            p_id = f"{p_id}_{len(seen_ids)}"
+            raise ValueError(
+                f"Duplicate paragraph IRI {p_id!r} produced for prefix "
+                f"{prefix!r}; check ylaIndeks or kuvatavNr in the source XML."
+            )
         seen_ids.add(p_id)
 
         # Find cluster
@@ -548,10 +879,15 @@ def generate_law_stub_jsonld(
     rt_url: str = "",
     *,
     content_status: str = "noStructuredBody",
+    allocator: PrefixAllocator | None = None,
 ) -> dict:
     """Generate an act-level representation for laws without paragraph nodes."""
-    prefix = _unique_prefix(abbreviation, slug, title)
-    rt_source_url = BASE_URL + rt_url if rt_url.startswith("/") else rt_url
+    prefix = _unique_prefix(abbreviation, slug, title, allocator=allocator)
+    # Issue #165 fix 5: rt_url may be None (or empty) for laws missing a
+    # Riigi Teataja link, so guard against ``None.startswith``.
+    rt_source_url = ""
+    if rt_url:
+        rt_source_url = BASE_URL + rt_url if rt_url.startswith("/") else rt_url
     ontology_node: dict = {
         "@id": f"estleg:{prefix}_Map_2026",
         "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
@@ -570,9 +906,17 @@ def generate_law_stub_jsonld(
     return {"@context": CONTEXT, "@graph": [ontology_node]}
 
 
-def generate_multipart_law(title: str, slug: str, root: ET.Element, abbreviation: str = "", rt_url: str = "") -> list[tuple[str, dict]]:
+def generate_multipart_law(
+    title: str,
+    slug: str,
+    root: ET.Element,
+    abbreviation: str = "",
+    rt_url: str = "",
+    *,
+    allocator: PrefixAllocator | None = None,
+) -> list[tuple[str, dict]]:
     """Generate separate JSON-LD files for each osa (part) of a multi-part law."""
-    prefix = _unique_prefix(abbreviation, slug, title)
+    prefix = _unique_prefix(abbreviation, slug, title, allocator=allocator)
     results = []
 
     # Construct Riigi Teataja source URL
@@ -636,12 +980,29 @@ def generate_multipart_law(title: str, slug: str, root: ET.Element, abbreviation
         clusters = []
         part_concept_id = f"estleg:Cluster_{prefix}_{osa_nr}_Part"
         scheme_id = f"estleg:{prefix}_Osa{osa_nr}_TopicScheme"
-        for ch in osa_el:
+        # Issue #166: walk peatykk children directly so paragrahvs that
+        # belong to a deeper nested chapter inside the same osa do not
+        # double-count up to the outer chapter.
+        def _osa_peatykks(parent: ET.Element) -> list[ET.Element]:
+            out: list[ET.Element] = []
+            for c in parent:
+                tag = ln(c.tag)
+                if tag == "peatykk":
+                    out.append(c)
+                elif tag == "osa":
+                    continue
+                else:
+                    out.extend(_osa_peatykks(c))
+            return out
+
+        for ch in _osa_peatykks(osa_el):
             if ln(ch.tag) == "peatykk":
                 ch_nr = ct(ch, "peatykkNr") or ""
                 ch_title = ct(ch, "peatykkPealkiri") or ""
                 if ch_title:
-                    ch_pars = [p for p in ch.iter() if ln(p.tag) == "paragrahv"]
+                    # Issue #166: only paragrahvs that are immediate
+                    # descendants of THIS chapter (or its jagu children).
+                    ch_pars = _walk_paragraphs_direct(ch)
                     ch_par_nrs = set()
                     for p in ch_pars:
                         nr = ct(p, "paragrahvNr")
@@ -689,15 +1050,16 @@ def generate_multipart_law(title: str, slug: str, root: ET.Element, abbreviation
                                 "rdfs:label": {"@value": f"{j_nr}. jagu – {j_title}".strip(" –"), "@language": "et"},
                                 "estleg:isPartOf": {"@id": chapter_id},
                             })
-                            # Map paragrahvs inside this jagu to the division
-                            for jp in jagu_el.iter():
-                                if ln(jp.tag) == "paragrahv":
-                                    jp_nr = ct(jp, "paragrahvNr")
-                                    if jp_nr:
-                                        try:
-                                            par_to_container[int(re.sub(r"[^\d]", "", jp_nr))] = div_id
-                                        except ValueError:
-                                            pass
+                            # Issue #166: only paragraphs that DIRECTLY
+                            # belong to this jagu, not those inside any
+                            # nested peatykk/jagu/osa blocks.
+                            for jp in _walk_paragraphs_direct(jagu_el):
+                                jp_nr = ct(jp, "paragrahvNr")
+                                if jp_nr:
+                                    try:
+                                        par_to_container[int(re.sub(r"[^\d]", "", jp_nr))] = div_id
+                                    except ValueError:
+                                        pass
 
                     if division_ids:
                         chapter_node["estleg:hasPart"] = [{"@id": d} for d in division_ids]
@@ -775,16 +1137,21 @@ def generate_multipart_law(title: str, slug: str, root: ET.Element, abbreviation
             }
             graph.insert(2, scheme_node)
 
-        seen_ids = set()
+        seen_ids: set[str] = set()
         for p in paragrahvid:
             p_nr = ct(p, "paragrahvNr") or "?"
             p_title = ct(p, "paragrahvPealkiri") or ""
             p_display = ct(p, "kuvatavNr") or f"§ {p_nr}"
             text = collect_text(p)
             full_text = collect_full_text(p)
-            p_id = f"estleg:{prefix}_Osa{osa_nr}_Par_{sanitize_id(p_nr)}"
+            # Issue #156/#165 fix 2: superscript-aware paragraph IRI suffix.
+            p_id = f"estleg:{prefix}_Osa{osa_nr}_Par_{_paragraph_id_suffix(p)}"
             if p_id in seen_ids:
-                p_id = f"{p_id}_{len(seen_ids)}"
+                raise ValueError(
+                    f"Duplicate paragraph IRI {p_id!r} produced for prefix "
+                    f"{prefix!r} osa {osa_nr!r}; check ylaIndeks or kuvatavNr "
+                    f"in the source XML."
+                )
             seen_ids.add(p_id)
 
             try:
@@ -872,6 +1239,11 @@ def main():
     print("Estonian Legal Ontology - Generate ALL Laws from Riigi Teataja")
     print("=" * 70)
 
+    # Issue #165 fix 1 / fix 7: reset the default allocator so a stale
+    # in-memory state from a previous run (in long-lived test
+    # processes, REPL sessions, etc.) cannot bias prefix selection.
+    _default_allocator.reset()
+
     # Step 1: Get all laws from API
     print("\n[1/4] Fetching law list from Riigi Teataja API...")
     try:
@@ -917,8 +1289,9 @@ def main():
         print(f"\n  [{i}/{len(to_generate)}] {title}")
         print(f"    slug: {slug}, url: {url}")
 
-        # Fetch XML
-        root = fetch_xml(url, slug)
+        # Fetch XML — pass tid so cache invalidates when RT publishes a
+        # newer terviktekst edition (#165 fix 9).
+        root = fetch_xml(url, slug, tid=info.get("tid"))
         if root is None:
             print("    SKIP: Could not fetch XML")
             failed += 1
@@ -944,10 +1317,15 @@ def main():
             results = generate_multipart_law(title, slug, root, abbreviation, rt_url=url)
             for filename, doc in results:
                 out_path = KRR_DIR / filename
-                if not out_path.exists():
-                    save_json(out_path, doc)
-                    print(f"    Saved: {filename} ({len(doc['@graph'])} nodes)")
-                    generated += 1
+                # Issue #165 fix 3: respect the run mode. Previously the
+                # multipart branch hard-coded ``if not exists`` so
+                # ``--refresh``/``--force`` silently left stale osa
+                # outputs. Mirror the single-file branch.
+                if mode == "missing-only" and out_path.exists():
+                    continue
+                save_json(out_path, doc)
+                print(f"    Saved: {filename} ({len(doc['@graph'])} nodes)")
+                generated += 1
         else:
             # Single file
             doc = generate_law_jsonld(title, slug, root, abbreviation, rt_url=url)
@@ -972,6 +1350,34 @@ def main():
     print(f"  Failed (fetch errors): {failed}")
     print(f"  Total files now: {len(list(KRR_DIR.glob('*_peep.json')))}")
 
+    def _entry(title: str, info: dict, slug_override: str | None = None) -> dict:
+        """Build a manifest entry from an ``all_laws`` row."""
+        slug = slug_override if slug_override is not None else slugify(title)
+        url = info.get("url") or ""
+        source_url = (
+            BASE_URL + url if isinstance(url, str) and url.startswith("/") else url
+        )
+        return {
+            "title": title,
+            "slug": slug,
+            "terviktekstId": info.get("tid"),
+            "globaalId": info.get("gid"),
+            "sourceUrl": source_url,
+        }
+
+    # Issue #165 fix 8: ``outputs`` keeps the existing meaning (delta
+    # for this run). ``outputsAll`` is the new mode-invariant
+    # projection of every act in ``all_laws`` regardless of whether
+    # it was regenerated this pass.
+    outputs_all = [
+        _entry(title, info)
+        for title, info in sorted(all_laws.items())
+    ]
+    outputs_generated = [
+        _entry(title, info, info.get("slug"))
+        for title, info in sorted(to_generate.items())
+    ]
+
     manifest = {
         "generated": datetime.now(timezone.utc).isoformat(),
         "mode": mode,
@@ -984,16 +1390,11 @@ def main():
             "stubbedActs": skipped,
             "failedFetches": failed,
         },
-        "outputs": [
-            {
-                "title": title,
-                "slug": info["slug"],
-                "terviktekstId": info.get("tid"),
-                "globaalId": info.get("gid"),
-                "sourceUrl": BASE_URL + info["url"] if str(info.get("url", "")).startswith("/") else info.get("url", ""),
-            }
-            for title, info in sorted(to_generate.items())
-        ],
+        # Backwards-compat alias: old downstreams keep working.
+        "outputs": outputs_generated,
+        # New keys (#165 fix 8):
+        "outputsGenerated": outputs_generated,
+        "outputsAll": outputs_all,
     }
     save_json(KRR_DIR / "generation_manifest_laws.json", manifest)
 

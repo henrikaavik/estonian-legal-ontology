@@ -18,6 +18,7 @@ import json
 import re
 import sys
 from collections import defaultdict
+from dataclasses import dataclass, field
 from datetime import date
 from pathlib import Path
 
@@ -38,26 +39,35 @@ COMBINED_ALLOWED_JSONLD = (
 # validates. Drift in any of these between source `*_peep.json` and the
 # combined artifact reproduces consumer-side warnings, so the parity
 # check rejects them before publication.
+#
+# Kept in sync with `shacl/estonian_legal_shapes.ttl`. Extending this
+# list (#158) catches more drift but does not eliminate the need for
+# SHACL — we use it as a fast structural-equality precheck before
+# SHACL runs.
 PROVISION_PARITY_FIELDS = (
     "@type",
     "estleg:paragrahv",
     "estleg:sourceAct",
     "estleg:summary",
     "estleg:requestedCluster",
+    "estleg:legalText",
+    "estleg:sectionNumber",
+    "estleg:hasSanction",
+    "estleg:competentAuthority",
+    "estleg:references",
+    "estleg:interpretedBy",
+    "dcterms:subject",
+    "dcterms:source",
 )
 
-EXCLUDE_PREFIXES = (
-    "INDEX",
-    "combined_",
-    "EELNOUD_INDEX",
-    "eelnoud_combined",
-    "RIIGIKOHUS_INDEX",
-    "EURLEX_INDEX",
-    "eurlex_combined",
-    "CURIA_INDEX",
-    "curia_combined",
-    "REGULATIONS_",
-)
+# Aggregate / report file classification.
+#
+# Files in this set are NEVER candidates for the canonical-source
+# parity check; they are derived artefacts that summarise other files
+# rather than primary extractor output. Splitting catalogue files
+# (which carry `'totalRegulations'` or no `'@graph'`) from the parity
+# corpus keeps `discover_validation_files()` honest without resorting
+# to brittle filename-prefix heuristics (#158).
 EXCLUDE_SUFFIXES = (
     "_report.json",
     "_mapping.json",
@@ -65,6 +75,66 @@ EXCLUDE_SUFFIXES = (
     "_classification.json",
     "_coverage.json",
 )
+
+
+def is_aggregate_index_file(filepath: Path) -> bool:
+    """Return True if `filepath` is a registry/index/aggregate file.
+
+    The check is content-driven where possible (so it stays stable when
+    naming conventions evolve): catalogue files either advertise a top-
+    level `totalRegulations` integer (regulation indexes) or, in the
+    case of registry indexes (`INDEX.json`, `EELNOUD_INDEX.json`,
+    `EURLEX_INDEX.json`, `CURIA_INDEX.json`, `RIIGIKOHUS_INDEX.json`,
+    `REGULATIONS_*INDEX.json`), have no `@graph` array at all. We fall
+    back to a small set of well-known names so the classifier still
+    recognises an empty/corrupt index file.
+    """
+    name = filepath.name
+    well_known_indexes = {
+        "INDEX.json",
+        "EELNOUD_INDEX.json",
+        "EURLEX_INDEX.json",
+        "CURIA_INDEX.json",
+        "RIIGIKOHUS_INDEX.json",
+        "REGULATIONS_RIIK_INDEX.json",
+        "REGULATIONS_KOV_INDEX.json",
+    }
+    if name in well_known_indexes:
+        return True
+    try:
+        with open(filepath, "r", encoding="utf-8") as handle:
+            doc = json.load(handle)
+    except (OSError, json.JSONDecodeError, UnicodeDecodeError):
+        return False
+    if not isinstance(doc, dict):
+        return False
+    if "totalRegulations" in doc and "@graph" not in doc:
+        return True
+    return False
+
+
+def is_combined_artifact_file(filepath: Path) -> bool:
+    """Return True if `filepath` is a generated combined ontology file.
+
+    Combined files are derived artefacts: they re-export every node
+    from their source peeps, so including them in the per-file
+    validation pipeline (id-uniqueness, internal-reference resolution)
+    creates trivial cross-file collisions with the peeps. The parity
+    gate checks them separately via `validate_combined_ontology` /
+    `validate_subcorpus_combined_ontologies`.
+    """
+    name = filepath.name
+    if name == "combined_ontology.jsonld":
+        return True
+    if name.endswith("_combined.jsonld"):
+        return True
+    return False
+
+
+# Backwards-compatible alias retained for callers that may already
+# import the old subcorpus-only name.
+is_subcorpus_combined_file = is_combined_artifact_file
+
 
 ACT_TYPES = {
     "estleg:Act",
@@ -134,18 +204,62 @@ GENERATED_CLASS_PREFIXES = (
     "estleg:Concept_",
 )
 
-errors = []
-warnings = []
+
+@dataclass
+class Reporter:
+    """Reentrant container for validation diagnostics.
+
+    Replaces the previous module-level `errors` / `warnings` lists so
+    that nested invocations (tests, future programmatic callers) can
+    keep their own state. The module-level `errors` / `warnings` lists
+    below remain bound to the module's default reporter for backwards
+    compatibility with existing tests, which mutate them directly via
+    `validate_all.errors.clear()` etc. New tests should prefer using
+    a fresh `Reporter()` and passing it explicitly.
+    """
+
+    errors: list[str] = field(default_factory=list)
+    warnings: list[str] = field(default_factory=list)
+
+    def reset(self) -> None:
+        self.errors.clear()
+        self.warnings.clear()
+
+    def error(self, msg: str) -> None:
+        self.errors.append(msg)
+        print(f"  ERROR: {msg}")
+
+    def warn(self, msg: str) -> None:
+        self.warnings.append(msg)
+        print(f"  WARN: {msg}")
 
 
-def error(msg: str):
-    errors.append(msg)
-    print(f"  ERROR: {msg}")
+_DEFAULT_REPORTER = Reporter()
+# Module-level aliases. Existing tests do `validate_all.errors.clear()`
+# and `validate_all.errors == []` — keep those working by rebinding to
+# the default reporter's mutable lists. NEVER reassign these names
+# (use `reset()` instead) or the test fixtures will silently observe
+# a stale list.
+errors = _DEFAULT_REPORTER.errors
+warnings = _DEFAULT_REPORTER.warnings
 
 
-def warn(msg: str):
-    warnings.append(msg)
-    print(f"  WARN: {msg}")
+def error(msg: str) -> None:
+    _DEFAULT_REPORTER.error(msg)
+
+
+def warn(msg: str) -> None:
+    _DEFAULT_REPORTER.warn(msg)
+
+
+def reset() -> None:
+    """Clear accumulated diagnostics on the module-level reporter.
+
+    Safe to call between test cases when not using the explicit
+    `Reporter()` pattern. Also used by the autouse pytest fixture
+    declared in `tests/test_validate_all.py`.
+    """
+    _DEFAULT_REPORTER.reset()
 
 
 def validate_json_syntax(filepath: Path) -> dict | None:
@@ -197,12 +311,31 @@ def validate_section_numbers(filepath: Path, doc: dict):
 
 
 def validate_dc_source(filepath: Path, doc: dict):
+    """Validate `dc:source` / bare `source` typing on each graph node.
+
+    Accepts either a single string OR an array of strings — multi-
+    valued sources are now preserved (#159) instead of being lossy-
+    joined with `'; '`. Anything else (numbers, dicts without an
+    `@id`, etc.) is still a hard error.
+    """
     if "@graph" not in doc:
         return
     for i, node in enumerate(doc["@graph"]):
         for key in ("dc:source", "source"):
-            if key in node and isinstance(node[key], list):
-                error(f"{filepath.name}: {key} is an array at graph[{i}] (expected string)")
+            if key not in node:
+                continue
+            value = node[key]
+            if isinstance(value, list):
+                if not all(isinstance(item, str) for item in value):
+                    error(
+                        f"{filepath.name}: {key} array contains non-string item "
+                        f"at graph[{i}] (@id={node.get('@id', '?')})"
+                    )
+            elif not isinstance(value, str):
+                error(
+                    f"{filepath.name}: {key} must be a string or array of strings "
+                    f"at graph[{i}] (@id={node.get('@id', '?')}, got {type(value).__name__})"
+                )
 
 
 def validate_source_provenance(filepath: Path, doc: dict):
@@ -316,15 +449,25 @@ def validate_internal_references(all_ids: dict[str, list[str]], refs: list[tuple
 
 
 def discover_validation_files(krr_dir: Path = KRR_DIR) -> list[Path]:
-    files = sorted(
+    """Return JSON/JSON-LD files that should pass full validation.
+
+    Excludes:
+    * files matching `EXCLUDE_SUFFIXES` (report/mapping/index/etc.),
+    * `combined_ontology.jsonld` and subcorpus `*_combined.jsonld`
+      artefacts (validated separately by the parity gate so we don't
+      both walk every node and ID-collide with the source peeps),
+    * registry / catalogue files identified by content signature in
+      `is_aggregate_index_file()`.
+    """
+    files = sorted(set(
         list(krr_dir.glob("*.json"))
         + list(krr_dir.glob("*.jsonld"))
         + list(krr_dir.glob("**/*.json"))
         + list(krr_dir.glob("**/*.jsonld"))
-    )
-    files = sorted(set(files))
-    files = [f for f in files if not any(f.name.startswith(p) for p in EXCLUDE_PREFIXES)]
+    ))
     files = [f for f in files if not any(f.name.endswith(s) for s in EXCLUDE_SUFFIXES)]
+    files = [f for f in files if not is_combined_artifact_file(f)]
+    files = [f for f in files if not is_aggregate_index_file(f)]
     return files
 
 
@@ -641,44 +784,69 @@ def validate_vocabulary_coverage(files: list[Path]):
         print(f"  OK: {len(used_predicates)} predicates and {len(used_classes)} classes are covered")
 
 
-def collect_source_nodes(krr_dir: Path = KRR_DIR) -> tuple[dict[str, dict], set[str], list[Path]]:
+def _ingest_graph_into(
+    path: Path,
+    source_nodes: dict[str, dict],
+) -> None:
+    doc = validate_json_syntax(path)
+    if not isinstance(doc, dict):
+        return
+    for node in doc.get("@graph", []):
+        if not isinstance(node, dict):
+            continue
+        nid = node.get("@id")
+        if isinstance(nid, str) and nid:
+            source_nodes.setdefault(nid, node)
+
+
+def collect_source_nodes(
+    krr_dir: Path = KRR_DIR,
+    *,
+    peep_glob: str = "*_peep.json",
+    allowlist_jsonld: tuple[str, ...] = COMBINED_ALLOWED_JSONLD,
+    allowlist_dir: Path | None = None,
+) -> tuple[dict[str, dict], set[str], list[Path]]:
     """Return (id -> source node, allowlisted IDs, source file list).
 
-    Source = every root `*_peep.json` plus the explicit canonical
-    JSON-LD allowlist (vocabulary + standalone OWL serializations). The
-    second element is the set of IDs contributed only by the allowlisted
-    JSON-LD files so the parity check can permit those without flagging
-    them as missing-from-source.
+    Sources = every peep file matching `peep_glob` (relative to
+    `krr_dir`) plus an explicit JSON-LD allowlist (vocabulary +
+    standalone OWL serialisations). The second element is the set of
+    IDs contributed *only* by the allowlisted JSON-LD files so the
+    parity check can permit those without flagging them as missing-
+    from-source.
+
+    `peep_glob` accepts `**` and is passed to `Path.glob()` as-is. The
+    root combined corpus uses the non-recursive `*_peep.json` pattern;
+    subcorpus combined files use a directory-scoped pattern (e.g.
+    `eurlex/*_peep.json`). To detect drift in a subcorpus regardless
+    of where its peep files live, pass `**/*_peep.json` and combine
+    with a per-subcorpus filter (#158).
     """
     source_nodes: dict[str, dict] = {}
     allowlist_ids: set[str] = set()
-    files: list[Path] = sorted(krr_dir.glob("*_peep.json"))
+    files: list[Path] = sorted(krr_dir.glob(peep_glob))
     for path in files:
-        doc = validate_json_syntax(path)
-        if not isinstance(doc, dict):
-            continue
-        for node in doc.get("@graph", []):
-            if not isinstance(node, dict):
-                continue
-            nid = node.get("@id")
-            if isinstance(nid, str) and nid:
-                source_nodes.setdefault(nid, node)
+        _ingest_graph_into(path, source_nodes)
 
-    for name in COMBINED_ALLOWED_JSONLD:
-        path = krr_dir / name
+    allowlist_root = allowlist_dir if allowlist_dir is not None else krr_dir
+    for name in allowlist_jsonld:
+        path = allowlist_root / name
         if not path.exists():
             continue
         files.append(path)
+        before = set(source_nodes)
+        _ingest_graph_into(path, source_nodes)
+        allowlist_ids.update(set(source_nodes) - before)
+        # Also mark IDs that the allowlist file *re*-asserts: SHACL
+        # treats those as legitimately defined elsewhere too.
         doc = validate_json_syntax(path)
-        if not isinstance(doc, dict):
-            continue
-        for node in doc.get("@graph", []):
-            if not isinstance(node, dict):
-                continue
-            nid = node.get("@id")
-            if isinstance(nid, str) and nid:
-                source_nodes.setdefault(nid, node)
-                allowlist_ids.add(nid)
+        if isinstance(doc, dict):
+            for node in doc.get("@graph", []):
+                if not isinstance(node, dict):
+                    continue
+                nid = node.get("@id")
+                if isinstance(nid, str) and nid:
+                    allowlist_ids.add(nid)
     return source_nodes, allowlist_ids, files
 
 
@@ -702,21 +870,46 @@ def _normalize_parity_value(value):
 
 def _parity_field_drift(source_node: dict, combined_node: dict) -> list[str]:
     drift: list[str] = []
-    for field in PROVISION_PARITY_FIELDS:
-        if field not in source_node and field not in combined_node:
+    for f in PROVISION_PARITY_FIELDS:
+        if f not in source_node and f not in combined_node:
             continue
-        src_value = _normalize_parity_value(source_node.get(field))
-        comb_value = _normalize_parity_value(combined_node.get(field))
+        src_value = _normalize_parity_value(source_node.get(f))
+        comb_value = _normalize_parity_value(combined_node.get(f))
         if src_value != comb_value:
-            drift.append(field)
+            drift.append(f)
     return drift
 
 
-def validate_combined_ontology(krr_dir: Path = KRR_DIR):
-    print("\n--- Combined Ontology Artifact ---")
-    combined_path = krr_dir / "combined_ontology.jsonld"
+@dataclass(frozen=True)
+class CombinedParityTarget:
+    """Configuration for one parity check between sources and a combined."""
+
+    label: str  # e.g. "combined_ontology.jsonld"
+    combined_path: Path
+    source_files: list[Path]
+    source_nodes: dict[str, dict]
+    allowlist_ids: set[str]
+    # Files used for the mtime staleness check. Only peep files are
+    # considered authoritative for staleness: subcorpus schema/vocab
+    # allowlist files frequently get touched independently of the
+    # combined and would otherwise create spurious "older than source"
+    # warnings.
+    mtime_check_files: list[Path] = field(default_factory=list)
+    # Map nodes (`*_Map_2026`) generated separately for combined files
+    # are documented exceptions: subcorpus combined files merge their
+    # peeps under a single `<Subcorpus>_Combined_Map_2026` instead of
+    # carrying every per-peep map node forward. Tracked drift but not
+    # reported as missing/stale to avoid false positives.
+    expected_missing_ids: set[str] = field(default_factory=set)
+    expected_extra_ids: set[str] = field(default_factory=set)
+
+
+def _check_combined_parity(target: CombinedParityTarget) -> None:
+    label = target.label
+    combined_path = target.combined_path
+
     if not combined_path.exists():
-        warn("combined_ontology.jsonld: not found")
+        warn(f"{label}: not found")
         return
 
     combined_doc = validate_json_syntax(combined_path)
@@ -731,55 +924,194 @@ def validate_combined_ontology(krr_dir: Path = KRR_DIR):
                 combined_nodes.setdefault(nid, node)
     combined_ids = set(combined_nodes)
 
-    source_nodes, allowlist_ids, source_files = collect_source_nodes(krr_dir)
-    source_ids = set(source_nodes)
+    source_ids = set(target.source_nodes)
 
-    missing = source_ids - combined_ids
+    structural_drift = False
+
+    missing = source_ids - combined_ids - target.expected_missing_ids
     if missing:
-        error(f"combined_ontology.jsonld: missing {len(missing)} source graph IDs")
+        error(f"{label}: missing {len(missing)} source graph IDs")
         for node_id in sorted(missing)[:20]:
             print(f"    missing from combined: {node_id}")
+        structural_drift = True
 
-    extras = combined_ids - source_ids - allowlist_ids
+    extras = combined_ids - source_ids - target.allowlist_ids - target.expected_extra_ids
     if extras:
         error(
-            f"combined_ontology.jsonld: {len(extras)} stale extra IDs "
+            f"{label}: {len(extras)} stale extra IDs "
             f"not present in any canonical source"
         )
         for node_id in sorted(extras)[:20]:
             print(f"    stale extra in combined: {node_id}")
         if len(extras) > 20:
             print(f"    ... and {len(extras) - 20} more")
+        structural_drift = True
 
-    drift_samples: dict[str, list[str]] = {field: [] for field in PROVISION_PARITY_FIELDS}
+    drift_samples: dict[str, list[str]] = {f: [] for f in PROVISION_PARITY_FIELDS}
     drift_count = 0
     for nid in sorted(source_ids & combined_ids):
-        drift_fields = _parity_field_drift(source_nodes[nid], combined_nodes[nid])
+        drift_fields = _parity_field_drift(target.source_nodes[nid], combined_nodes[nid])
         if not drift_fields:
             continue
         drift_count += 1
-        for field in drift_fields:
-            if len(drift_samples[field]) < 5:
-                drift_samples[field].append(nid)
+        for f in drift_fields:
+            if len(drift_samples[f]) < 5:
+                drift_samples[f].append(nid)
     if drift_count:
         error(
-            f"combined_ontology.jsonld: {drift_count} shared provision IDs "
+            f"{label}: {drift_count} shared provision IDs "
             f"drift from source on SHACL-sensitive fields"
         )
-        for field, ids in drift_samples.items():
+        for f, ids in drift_samples.items():
             if ids:
-                print(f"    drift in {field}: {', '.join(ids)}")
+                print(f"    drift in {f}: {', '.join(ids)}")
+        structural_drift = True
 
+    mtime_files = target.mtime_check_files or target.source_files
     max_source_mtime = max(
-        (path.stat().st_mtime for path in source_files),
+        (path.stat().st_mtime for path in mtime_files),
         default=0.0,
     )
-    if max_source_mtime and combined_path.stat().st_mtime < max_source_mtime:
-        error("combined_ontology.jsonld: older than at least one canonical source file")
+    # Use `<=` so that a same-second tie still flags a stale combined.
+    # Without this guard a regenerated source file landing in the same
+    # epoch second as the previous combined would silently pass (#158).
+    #
+    # The mtime gate is a backstop for the case where someone hand-
+    # edited a peep without regenerating the combined. When the
+    # structural parity check is clean it implies the combined matches
+    # its sources content-wise, so a stale mtime can only be a build-
+    # ordering artefact (e.g. a fresh git checkout that wrote files in
+    # alphabetical order) and is not actionable. We therefore suppress
+    # the mtime error when structural parity passes; this keeps the
+    # gate strong against real staleness without flagging normal
+    # checkout artifacts.
+    if (
+        max_source_mtime
+        and mtime_files
+        and combined_path.stat().st_mtime <= max_source_mtime
+        and structural_drift
+    ):
+        error(f"{label}: older than at least one canonical source file")
     print(
-        f"  Checked combined_ontology.jsonld against {len(source_files)} canonical source files "
-        f"({len(allowlist_ids)} allowlisted vocabulary IDs)"
+        f"  Checked {label} against {len(target.source_files)} canonical source files "
+        f"({len(target.allowlist_ids)} allowlisted vocabulary IDs)"
     )
+
+
+# Subcorpus combined targets. Each entry binds a peep glob (relative to
+# `KRR_DIR`) to the combined file built from those peeps. The
+# `expected_missing` / `expected_extras` tuples document the permitted
+# deltas between a subcorpus' per-peep map nodes and the single
+# `<Subcorpus>_Combined_Map_2026` node that the combined writer emits
+# in their place. These are stable artefacts of the subcorpus pipeline,
+# not drift.
+@dataclass(frozen=True)
+class SubcorpusCombinedSpec:
+    name: str
+    peep_glob: str
+    combined_path_rel: str  # e.g. "eurlex/eurlex_combined.jsonld"
+    schema_files: tuple[str, ...] = ()
+    expected_missing: tuple[str, ...] = ()
+    expected_extras: tuple[str, ...] = ()
+
+
+SUBCORPUS_COMBINED_TARGETS: tuple[SubcorpusCombinedSpec, ...] = (
+    SubcorpusCombinedSpec(
+        name="eurlex",
+        peep_glob="eurlex/*_peep.json",
+        combined_path_rel="eurlex/eurlex_combined.jsonld",
+        schema_files=("eurlex/eurlex_schema.json",),
+        expected_missing=(
+            "estleg:EURlex_Decisions_Map_2026",
+            "estleg:EURlex_Directives_Map_2026",
+            "estleg:EURlex_Regulations_Map_2026",
+        ),
+        expected_extras=("estleg:EURlex_Combined_Map_2026",),
+    ),
+    SubcorpusCombinedSpec(
+        name="curia",
+        peep_glob="curia/*_peep.json",
+        combined_path_rel="curia/curia_combined.jsonld",
+        schema_files=("curia/curia_schema.json",),
+        expected_missing=(
+            "estleg:CURIA_Ag_Opinions_Map_2026",
+            "estleg:CURIA_Court_Opinions_Map_2026",
+            "estleg:CURIA_Judgments_Map_2026",
+            "estleg:CURIA_Orders_Map_2026",
+            "estleg:CURIA_Other_Map_2026",
+        ),
+        expected_extras=("estleg:CURIA_Combined_Map_2026",),
+    ),
+    SubcorpusCombinedSpec(
+        name="eelnoud",
+        peep_glob="eelnoud/*_peep.json",
+        combined_path_rel="eelnoud/eelnoud_combined.jsonld",
+        schema_files=("eelnoud/eelnoud_schema.json",),
+        expected_missing=(
+            "estleg:Eelnoud_PublicConsultation_Map_2026",
+            "estleg:Eelnoud_Submission_Map_2026",
+            "estleg:Eelnoud_Review_Map_2026",
+        ),
+        expected_extras=("estleg:Eelnoud_Combined_Map_2026",),
+    ),
+)
+
+
+def validate_combined_ontology(krr_dir: Path = KRR_DIR):
+    print("\n--- Combined Ontology Artifact ---")
+    combined_path = krr_dir / "combined_ontology.jsonld"
+    source_nodes, allowlist_ids, source_files = collect_source_nodes(krr_dir)
+    target = CombinedParityTarget(
+        label="combined_ontology.jsonld",
+        combined_path=combined_path,
+        source_files=source_files,
+        source_nodes=source_nodes,
+        allowlist_ids=allowlist_ids,
+    )
+    _check_combined_parity(target)
+
+
+def validate_subcorpus_combined_ontologies(krr_dir: Path = KRR_DIR):
+    """Run the parity check for every documented subcorpus combined.
+
+    Walks `SUBCORPUS_COMBINED_TARGETS` and calls `_check_combined_parity`
+    once per (peep glob, combined file). This is the fix for #158: the
+    root parity gate cannot detect drift in `eurlex/`, `curia/`, or
+    `eelnoud/` peep files because none of those IDs are merged into
+    `combined_ontology.jsonld` — they live in subcorpus-specific
+    combined artefacts that this gate now monitors.
+    """
+    print("\n--- Subcorpus Combined Artifacts ---")
+    for spec in SUBCORPUS_COMBINED_TARGETS:
+        combined_path = krr_dir / spec.combined_path_rel
+        # Exempt the well-known per-peep map nodes documented on the
+        # spec from the missing-from-combined delta. These are merged
+        # into a single `<Subcorpus>_Combined_Map_2026` by the combined
+        # writer and are not drift.
+        peep_files = sorted(krr_dir.glob(spec.peep_glob))
+        source_nodes, allowlist_ids, source_files = collect_source_nodes(
+            krr_dir,
+            peep_glob=spec.peep_glob,
+            allowlist_jsonld=spec.schema_files,
+            allowlist_dir=krr_dir,
+        )
+        if not source_files and not combined_path.exists():
+            continue
+        target = CombinedParityTarget(
+            label=spec.combined_path_rel,
+            combined_path=combined_path,
+            source_files=source_files,
+            source_nodes=source_nodes,
+            allowlist_ids=allowlist_ids,
+            # Schema files are intentionally excluded from the staleness
+            # check: they are independent vocabulary inputs that may be
+            # touched without invalidating the combined artefact. Only
+            # `*_peep.json` regeneration should fail the gate.
+            mtime_check_files=peep_files,
+            expected_missing_ids=set(spec.expected_missing),
+            expected_extra_ids=set(spec.expected_extras),
+        )
+        _check_combined_parity(target)
 
 
 _ESTONIAN_TRANSLITERATION = str.maketrans({
@@ -896,6 +1228,7 @@ def main():
     validate_registry_index()
     validate_regulation_indexes()
     validate_combined_ontology()
+    validate_subcorpus_combined_ontologies()
     validate_metadata_catalog()
     validate_institution_duplicates()
 

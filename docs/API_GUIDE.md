@@ -138,7 +138,7 @@ print(f"Total drafts: {index['total_drafts']}")
 with open("krr_outputs/eelnoud/eelnoud_submission_peep.json") as f:
     submitted = json.load(f)
 for node in submitted["@graph"][:3]:
-    print(node.get("schema:name"), node.get("estleg:eisNumber"))
+    print(node.get("rdfs:label"), node.get("estleg:eisNumber"))
 ```
 
 ### Supreme Court Decisions
@@ -151,7 +151,7 @@ with open("krr_outputs/riigikohus/riigikohus_2025_peep.json") as f:
     decisions = json.load(f)
 
 for node in decisions["@graph"][:3]:
-    print(node.get("estleg:caseNumber"), node.get("estleg:caseType"))
+    print(node.get("estleg:caseNumber"), node.get("rdfs:label"))
 ```
 
 ### EU Legislation (EUR-Lex)
@@ -164,7 +164,7 @@ with open("krr_outputs/eurlex/eurlex_directives_peep.json") as f:
     directives = json.load(f)
 
 for node in directives["@graph"][:3]:
-    print(node.get("estleg:celexNumber"), node.get("schema:name"))
+    print(node.get("estleg:celexNumber"), node.get("rdfs:label"))
 ```
 
 ### EU Court Decisions (CURIA)
@@ -240,12 +240,11 @@ The most powerful way to query this dataset is loading files into a semantic gra
 ```sparql
 PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-PREFIX schema: <http://schema.org/>
 
 SELECT ?provision ?text WHERE {
   ?provision a estleg:LegalProvision ;
              estleg:topicCluster <https://data.riik.ee/taxonomy/topic/OiguslikAlus> ;
-             schema:text ?text .
+             estleg:summary ?text .
 }
 ```
 
@@ -288,14 +287,14 @@ SELECT ?regulation ?label ?actNumber ?entry WHERE {
 ### Draft Legislation Impacting a Specific Law
 ```sparql
 PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
-PREFIX schema: <http://schema.org/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 SELECT ?draft ?phase ?name WHERE {
   ?draft a estleg:DraftLegislation ;
          estleg:amendsLaw ?law ;
          estleg:legislativePhase ?phase ;
-         schema:name ?name .
-  ?law schema:name "Perekonnaseadus" .
+         rdfs:label ?name .
+  ?law rdfs:label "Perekonnaseadus"@et .
 }
 ```
 
@@ -312,19 +311,18 @@ SELECT ?directive ?estonianLaw WHERE {
 ### Sanctions by Penalty Type
 ```sparql
 PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
-PREFIX schema: <http://schema.org/>
 
-SELECT ?provision ?sanctionText WHERE {
+SELECT ?provision ?sanctionType ?maxPenalty WHERE {
   ?provision estleg:hasSanction ?sanction .
   ?sanction a estleg:Sanction ;
-            schema:text ?sanctionText .
+            estleg:sanctionType ?sanctionType ;
+            estleg:maxPenalty ?maxPenalty .
 }
 ```
 
 ### Institutional Competence
 ```sparql
 PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
-PREFIX schema: <http://schema.org/>
 
 SELECT ?institution ?provision WHERE {
   ?provision estleg:competentAuthority ?institution .
