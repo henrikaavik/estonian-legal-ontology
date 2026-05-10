@@ -13,8 +13,10 @@ This script:
 
 from __future__ import annotations
 
+import hashlib
 import json
 import re
+import sys
 import time
 import xml.etree.ElementTree as ET
 from datetime import date, datetime, timezone
@@ -124,10 +126,12 @@ def save_json(filepath: Path, doc: dict):
         f.write("\n")
 
 
-def load_law_files() -> dict[str, dict]:
+def load_law_files(*, failures: list[str] | None = None) -> dict[str, dict]:
     """
     Load all law JSON-LD files.
     Returns dict keyed by slug (stem without _peep).
+    Records JSON / IO errors to the optional `failures` sink instead of
+    swallowing them silently.
     """
     laws = {}
     for f in iter_peep_files():
@@ -140,8 +144,12 @@ def load_law_files() -> dict[str, dict]:
                 "doc": doc,
                 "title": extract_title(doc),
             }
-        except (json.JSONDecodeError, OSError):
-            pass
+        except (json.JSONDecodeError, OSError) as exc:
+            if failures is not None:
+                failures.append(
+                    f"load_law_files | {f.name} | "
+                    f"{type(exc).__name__}: {str(exc)[:80]}"
+                )
     return laws
 
 
@@ -167,16 +175,25 @@ def build_title_to_slug_map(laws: dict[str, dict]) -> dict[str, str]:
     return mapping
 
 
-def extract_amendments_from_xml(xml_path: Path) -> list[dict]:
+def extract_amendments_from_xml(
+    xml_path: Path,
+    *,
+    failures: list[str] | None = None,
+) -> list[dict]:
     """
     Extract amendment references (muutmismarge blocks) from a law XML file.
     Each muutmismarge contains info about an amending act.
     """
-    amendments = []
+    amendments: list[dict] = []
     try:
         tree = ET.parse(str(xml_path))
         root = tree.getroot()
-    except (ET.ParseError, OSError):
+    except (ET.ParseError, OSError) as exc:
+        if failures is not None:
+            failures.append(
+                f"extract_amendments_from_xml | {xml_path.name} | "
+                f"{type(exc).__name__}: {str(exc)[:80]}"
+            )
         return amendments
 
     for el in root.iter():
@@ -225,21 +242,37 @@ def extract_amendments_from_xml(xml_path: Path) -> list[dict]:
     return amendments
 
 
-def extract_rt_references_from_text(xml_path: Path) -> list[str]:
+def extract_rt_references_from_text(
+    xml_path: Path,
+    *,
+    failures: list[str] | None = None,
+) -> list[str]:
     """
     Scan law text for inline RT publication references like "RT I, 28.06.2023, 10".
     These often indicate amendment acts referenced in the body text.
     """
-    references = []
+    references: list[str] = []
     try:
         tree = ET.parse(str(xml_path))
         root = tree.getroot()
-    except (ET.ParseError, OSError):
+    except (ET.ParseError, OSError) as exc:
+        if failures is not None:
+            failures.append(
+                f"extract_rt_references_from_text | {xml_path.name} | "
+                f"{type(exc).__name__}: {str(exc)[:80]}"
+            )
         return references
 
     full_text = " ".join(root.itertext())
-    # Pattern: RT I, YYYY, NR, ART  or  RT I, DD.MM.YYYY, NR
-    pattern = r"RT\s+I{1,2}\s*,\s*(?:\d{2}\.\d{2}\.)?\d{4}\s*,\s*\d+(?:\s*,\s*\d+)?"
+    # Pattern: RT I, YYYY, NR, ART or RT I, DD.MM.YYYY, NR
+    # Roman numeral group is anchored with a word boundary so we accept
+    # I/II/III but not stray "IIII" runs. Article portion is allowed to
+    # include hyphenated lisa numbers ("RT III, 2009, 14, 89-90").
+    pattern = (
+        r"RT\s+(?:I{1,3})\b\s*,\s*"
+        r"(?:\d{2}\.\d{2}\.)?\d{4}\s*,\s*"
+        r"\d+(?:\s*[-,]\s*\d+)*"
+    )
     matches = re.findall(pattern, full_text)
     # Deduplicate while preserving order
     seen = set()
@@ -251,12 +284,12 @@ def extract_rt_references_from_text(xml_path: Path) -> list[str]:
     return references
 
 
-def load_draft_amendments() -> list[dict]:
+def load_draft_amendments(*, failures: list[str] | None = None) -> list[dict]:
     """
     Load draft legislation that are amendment bills from eelnoud directory.
     Returns list of dicts with draft_id, affected_law_name, etc.
     """
-    drafts = []
+    drafts: list[dict] = []
 
     # Try the combined file first
     combined_path = EELNOUD_DIR / "eelnoud_combined.jsonld"
@@ -266,7 +299,12 @@ def load_draft_amendments() -> list[dict]:
     try:
         with open(combined_path, "r", encoding="utf-8") as f:
             doc = json.load(f)
-    except (json.JSONDecodeError, OSError):
+    except (json.JSONDecodeError, OSError) as exc:
+        if failures is not None:
+            failures.append(
+                f"load_draft_amendments | {combined_path.name} | "
+                f"{type(exc).__name__}: {str(exc)[:80]}"
+            )
         return drafts
 
     for node in doc.get("@graph", []):
@@ -309,49 +347,104 @@ def load_draft_amendments() -> list[dict]:
     return drafts
 
 
+def _normalize_title(text: str) -> str:
+    """Normalise a title for exact comparison (lower, collapse ws)."""
+    return re.sub(r"\s+", " ", text.lower()).strip()
+
+
+def _title_tokens(text: str) -> set[str]:
+    """Tokenise a title for Jaccard similarity (alnum tokens, lowered)."""
+    return {t for t in re.findall(r"[\wäöüõšž]+", text.lower()) if t}
+
+
+def _jaccard(a: set[str], b: set[str]) -> float:
+    if not a or not b:
+        return 0.0
+    intersect = a & b
+    union = a | b
+    return len(intersect) / len(union) if union else 0.0
+
+
 def match_law_name_to_slug(
     law_name: str,
     title_map: dict[str, str],
     laws: dict[str, dict],
+    *,
+    failures: list[str] | None = None,
 ) -> str | None:
-    """
-    Try to match a law name (from a draft's affectedLawName) to an existing law slug.
-    Uses multiple matching strategies.
-    """
-    # Direct title match (case-insensitive)
-    lower_name = law_name.lower().strip()
-    if lower_name in title_map:
-        return title_map[lower_name]
+    """Match a law name (from a draft's affectedLawName) to an existing law slug.
 
-    # Slugified match
+    Strategy (strict-first):
+      1. Exact normalised title match.
+      2. Slugified exact match.
+      3. Direct slug match.
+      4. Suffix-normalised match ("X seaduse" -> "X seadus").
+      5. Token-level Jaccard ≥ 0.9 — exactly one candidate wins.
+         Multiple candidates above the threshold are AMBIGUOUS — bail
+         out and surface to the failures sink rather than picking one.
+    """
+    norm_name = _normalize_title(law_name)
+    if not norm_name:
+        return None
+
+    # 1. Exact normalised title
+    if norm_name in title_map:
+        return title_map[norm_name]
+
+    # 2. Slugified exact match
     slug_name = slugify(law_name)
-    if slug_name in title_map:
+    if slug_name and slug_name in title_map:
         return title_map[slug_name]
 
-    # Try direct slug match
-    if slug_name in laws:
+    # 3. Direct slug match against laws keyed by slug
+    if slug_name and slug_name in laws:
         return slug_name
 
-    # Partial match: check if any law title contains this name
-    for title_lower, slug in title_map.items():
-        if lower_name in title_lower or title_lower in lower_name:
-            return slug
-
-    # Try suffix matching: "X seaduse" -> "X seadus"
-    normalized = re.sub(r"seaduse$", "seadus", lower_name)
+    # 4. Suffix normalisation: "X seaduse" -> "X seadus"
+    normalized = re.sub(r"seaduse$", "seadus", norm_name)
     normalized = re.sub(r"seadustiku$", "seadustik", normalized)
     if normalized in title_map:
         return title_map[normalized]
     slug_norm = slugify(normalized)
-    if slug_norm in title_map:
+    if slug_norm and slug_norm in title_map:
         return title_map[slug_norm]
-    if slug_norm in laws:
+    if slug_norm and slug_norm in laws:
         return slug_norm
 
-    return None
+    # 5. Token Jaccard fallback — strict, NO substring fallthrough.
+    name_tokens = _title_tokens(law_name)
+    if not name_tokens:
+        return None
+    candidates: list[tuple[float, str, str]] = []
+    for title_lower, slug in title_map.items():
+        score = _jaccard(name_tokens, _title_tokens(title_lower))
+        if score >= 0.9:
+            candidates.append((score, title_lower, slug))
+
+    if not candidates:
+        return None
+
+    # Distinct slugs above threshold => ambiguous match.
+    distinct_slugs = {slug for _, _, slug in candidates}
+    if len(distinct_slugs) > 1:
+        if failures is not None:
+            top = sorted(candidates, key=lambda x: -x[0])[:3]
+            failures.append(
+                "match_law_name_to_slug | ambiguous | "
+                f"input={law_name!r} | candidates="
+                f"{[(s, slug) for s, _, slug in top]}"
+            )
+        return None
+
+    # Exactly one slug at >= 0.9 wins.
+    return candidates[0][2]
 
 
-def clear_amended_by_from_file(filepath: Path) -> bool:
+def clear_amended_by_from_file(
+    filepath: Path,
+    *,
+    failures: list[str] | None = None,
+) -> bool:
     """
     Remove estleg:amendedBy from all nodes in a law JSON-LD file.
     Returns True if the file was modified.
@@ -359,7 +452,12 @@ def clear_amended_by_from_file(filepath: Path) -> bool:
     try:
         with open(filepath, "r", encoding="utf-8") as fh:
             data = json.load(fh)
-    except (json.JSONDecodeError, OSError):
+    except (json.JSONDecodeError, OSError) as exc:
+        if failures is not None:
+            failures.append(
+                f"clear_amended_by_from_file | {filepath.name} | "
+                f"{type(exc).__name__}: {str(exc)[:80]}"
+            )
         return False
 
     modified = False
@@ -373,7 +471,39 @@ def clear_amended_by_from_file(filepath: Path) -> bool:
     return modified
 
 
-def main():
+def _stable_amend_suffix(amend: dict) -> str:
+    """Compute a stable IRI suffix for an XML amendment record.
+
+    Hashes ``rt_reference`` (preferred — unique RT publication ref) or,
+    when missing, the (date, entry_into_force) pair so the resulting
+    Amendment IRI doesn't shift between regenerations just because one
+    earlier amendment was inserted upstream.
+    """
+    payload = amend.get("rt_reference") or "|".join(
+        [
+            amend.get("date") or "",
+            amend.get("entry_into_force") or "",
+            amend.get("akt_viide") or "",
+        ]
+    )
+    digest = hashlib.md5(payload.encode("utf-8")).hexdigest()
+    return digest[:10]
+
+
+def _amend_sort_key(amend: dict) -> str:
+    """Return a YYYY-MM-DD-shaped string for chronological sorting.
+
+    Prefer ``entry_into_force`` (when the amendment took legal effect),
+    fall back to the act's signing date. Empty strings sort first; we
+    push them to the end with a sentinel.
+    """
+    eif = amend.get("entry_into_force") or ""
+    sig = amend.get("date") or ""
+    primary = eif or sig
+    return primary or "9999-99-99"
+
+
+def main() -> int:
     AMENDMENTS_DIR.mkdir(parents=True, exist_ok=True)
     EELNOUD_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -390,8 +520,17 @@ def main():
     _files_processed_kov = 0
     _files_with_output = 0
     _files_with_output_kov = 0
-    _triples = 0
-    _triples_kov = 0
+    # Coverage triples are split into the two surfaces this script
+    # writes so the totals don't lie:
+    #   - amendedBy_link_total: estleg:amendedBy refs stamped on each
+    #     act's ontology node (one per chain entry).
+    #   - amendment_event_triples: properties (@type, amends,
+    #     amendmentDate, entryIntoForce, rtReference, label, etc.)
+    #     emitted on each Amendment / AmendmentLink node.
+    _amendedBy_link_total = 0
+    _amendment_event_triples = 0
+    _amendedBy_link_total_kov = 0
+    _amendment_event_triples_kov = 0
     _fallback_hits = 0
     _unresolved = 0
     _failures: list[str] = []
@@ -401,13 +540,13 @@ def main():
     print("\n[0/5] Clearing existing estleg:amendedBy from all law files...")
     cleared_count = 0
     for peep_file in iter_peep_files():
-        if clear_amended_by_from_file(peep_file):
+        if clear_amended_by_from_file(peep_file, failures=_failures):
             cleared_count += 1
     print(f"  Cleared estleg:amendedBy from {cleared_count} files")
 
     # Step 1: Load all law files
     print("\n[1/5] Loading law JSON-LD files...")
-    laws = load_law_files()
+    laws = load_law_files(failures=_failures)
     print(f"  Loaded {len(laws)} law files")
 
     title_map = build_title_to_slug_map(laws)
@@ -446,19 +585,11 @@ def main():
         paired_slugs.add(slug)
         if str(xml_path) not in _lookup_paths:
             _fallback_hits += 1
-        try:
-            amendments = extract_amendments_from_xml(xml_path)
-        except Exception as e:
-            _failures.append(f"{xml_path.name}: {e!r}")
-            amendments = []
+        amendments = extract_amendments_from_xml(xml_path, failures=_failures)
         if amendments:
             amendments_by_slug[slug] = amendments
             total_amendments += len(amendments)
-        try:
-            rt_refs = extract_rt_references_from_text(xml_path)
-        except Exception as e:
-            _failures.append(f"{xml_path.name}: {e!r}")
-            rt_refs = []
+        rt_refs = extract_rt_references_from_text(xml_path, failures=_failures)
         if rt_refs:
             rt_refs_by_slug[slug] = rt_refs
 
@@ -471,7 +602,7 @@ def main():
 
     # Step 3: Load draft amendments
     print("\n[3/5] Loading draft legislation amendment relationships...")
-    draft_amendments = load_draft_amendments()
+    draft_amendments = load_draft_amendments(failures=_failures)
     print(f"  Found {len(draft_amendments)} amendment bill entries")
 
     # Match drafts to existing laws.
@@ -488,7 +619,9 @@ def main():
     unmatched_drafts = 0
 
     for da in draft_amendments:
-        target_slug = match_law_name_to_slug(da["affected_law_name"], title_map, laws)
+        target_slug = match_law_name_to_slug(
+            da["affected_law_name"], title_map, laws, failures=_failures
+        )
         if target_slug:
             seen = seen_per_target.setdefault(target_slug, set())
             if da["draft_id"] in seen:
@@ -504,66 +637,114 @@ def main():
     print(f"  Matched {matched_drafts} drafts to existing laws")
     print(f"  Unmatched: {unmatched_drafts} (law not in ontology)")
 
-    # Step 4: Build amendment chain data and enrich JSON-LD files
+    # Step 4: Build amendment chain data and enrich JSON-LD files.
+    #
+    # Multipart laws (e.g. võlaõigusseadus_osa1..osa9) all share the
+    # same canonical XML; they amend "Võlaõigusseadus" as a whole.
+    # Group by base_slug (= slug with trailing ``_osaN`` stripped) so
+    # one chain document covers every part — separate per-part files
+    # would race-write the same path and lose data.
     print("\n[4/5] Building amendment chains and enriching JSON-LD files...")
     enriched = 0
     amendment_chains: list[dict] = []
 
+    # Coverage: every paired peep counts as processed regardless of
+    # whether it ends up grouped under a base_slug.
     for slug, info in sorted(laws.items()):
         is_kov = "regulations/kov" in str(info["path"])
-        # Coverage: every peep file we successfully paired counts as
-        # "processed" (we did the work — extracted amendments — even
-        # if the XML had zero muutmismarge blocks).
         if slug in paired_slugs:
             _files_processed += 1
             if is_kov:
                 _files_processed_kov += 1
 
+    # Group paired laws by base_slug (drop trailing _osaN suffix).
+    groups: dict[str, list[tuple[str, dict]]] = {}
+    for slug, info in laws.items():
         base_slug = re.sub(r"_osa\d+$", "", slug)
-        xml_amendments = amendments_by_slug.get(slug) or amendments_by_slug.get(base_slug, [])
-        drafts = draft_matches.get(slug) or draft_matches.get(base_slug, [])
+        groups.setdefault(base_slug, []).append((slug, info))
+
+    for base_slug in sorted(groups):
+        members = groups[base_slug]
+
+        # Pull XML amendments / drafts for the group. All parts of a
+        # multipart law share the same canonical XML so any member's
+        # entry is canonical; pick the first non-empty one.
+        xml_amendments: list[dict] = []
+        for slug, _info in members:
+            cand = amendments_by_slug.get(slug)
+            if cand:
+                xml_amendments = cand
+                break
+        if not xml_amendments:
+            xml_amendments = amendments_by_slug.get(base_slug, [])
+
+        drafts: list[dict] = []
+        seen_draft_ids: set[str] = set()
+        for slug, _info in members:
+            for da in draft_matches.get(slug, []):
+                if da["draft_id"] in seen_draft_ids:
+                    continue
+                seen_draft_ids.add(da["draft_id"])
+                drafts.append(da)
+        for da in draft_matches.get(base_slug, []):
+            if da["draft_id"] in seen_draft_ids:
+                continue
+            seen_draft_ids.add(da["draft_id"])
+            drafts.append(da)
 
         if not xml_amendments and not drafts:
-            if slug in paired_slugs:
-                _skip_reasons["no_amendments_found"] = (
-                    _skip_reasons.get("no_amendments_found", 0) + 1
-                )
+            for slug, _info in members:
+                if slug in paired_slugs:
+                    _skip_reasons["no_amendments_found"] = (
+                        _skip_reasons.get("no_amendments_found", 0) + 1
+                    )
             continue
 
-        doc = info["doc"]
-        graph = doc.get("@graph", [])
+        # Sort xml_amendments chronologically (entry_into_force first,
+        # falling back to signing date) so chain index numbers track
+        # legal-effect order, not arbitrary XML document order.
+        xml_amendments_sorted = sorted(xml_amendments, key=_amend_sort_key)
 
-        # Find ontology node
-        ontology_node = None
-        for node in graph:
-            types = node.get("@type", [])
-            if "owl:Ontology" in types:
-                ontology_node = node
+        # Build chain entries ONCE for the whole base_slug.
+        # Each Amendment node gets a stable IRI suffix derived from
+        # its rt_reference so regenerations don't reshuffle IDs.
+        chain_entries: list[dict] = []
+        # Use the first member's ontology IRI as the canonical "amends"
+        # target for the chain document. (Each part still gets its own
+        # estleg:amendedBy — see the per-member loop below.)
+        canonical_ontology_id = ""
+        canonical_title = members[0][1]["title"]
+        for _slug, _info in members:
+            for node in _info["doc"].get("@graph", []):
+                if "owl:Ontology" in (node.get("@type") or []):
+                    canonical_ontology_id = node.get("@id", "")
+                    if canonical_title is None or not canonical_title:
+                        canonical_title = (
+                            node.get("dc:source") or node.get("rdfs:label") or ""
+                        )
+                    break
+            if canonical_ontology_id:
                 break
-        if ontology_node is None and graph:
-            ontology_node = graph[0]
-        if ontology_node is None:
-            continue
 
-        # Ensure context has dcterms
-        ctx = doc.get("@context", {})
-        if isinstance(ctx, dict) and "dcterms" not in ctx:
-            ctx["dcterms"] = "http://purl.org/dc/terms/"
-            doc["@context"] = ctx
-
-        # Build amendment references from XML muutmismarge blocks
-        amended_by_refs = []
-        chain_entries = []
-
-        for i, amend in enumerate(xml_amendments):
-            # Create an amendment event ID
-            amend_id = f"estleg:Amendment_{sanitize_id(base_slug)}_{i + 1}"
+        seen_amend_ids: set[str] = set()
+        for amend in xml_amendments_sorted:
+            suffix = _stable_amend_suffix(amend)
+            amend_id = f"estleg:Amendment_{sanitize_id(base_slug)}_{suffix}"
+            # Collisions on hash prefix are extremely unlikely but
+            # defended against here so re-runs remain idempotent.
+            disambig = 1
+            base_id = amend_id
+            while amend_id in seen_amend_ids:
+                disambig += 1
+                amend_id = f"{base_id}_{disambig}"
+            seen_amend_ids.add(amend_id)
 
             amend_node: dict = {
                 "@id": amend_id,
                 "@type": ["owl:NamedIndividual", "estleg:AmendmentEvent"],
-                "estleg:amends": {"@id": ontology_node["@id"]},
             }
+            if canonical_ontology_id:
+                amend_node["estleg:amends"] = {"@id": canonical_ontology_id}
 
             if amend.get("date"):
                 amend_node["estleg:amendmentDate"] = make_xsd_date(amend["date"])
@@ -574,48 +755,90 @@ def main():
                 amend_node["rdfs:label"] = f"Muudatus: {amend['rt_reference']}"
             else:
                 amend_node["rdfs:label"] = f"Muudatus {amend.get('date', 'unknown')}"
-
-            amended_by_refs.append({"@id": amend_id})
             chain_entries.append(amend_node)
 
-        # Build amendment references from draft legislation
+        # Build draft entries (no chronological ordering — drafts use
+        # publication_date if available; we keep their input order so
+        # IDs remain stable across reruns of the same input set).
         for da in drafts:
             draft_id = da["draft_id"]
-            amended_by_refs.append({"@id": draft_id})
-            # Create a linking node
             link_node: dict = {
-                "@id": f"estleg:AmendmentLink_{sanitize_id(draft_id.replace('estleg:', ''))}_{sanitize_id(base_slug)}",
+                "@id": (
+                    f"estleg:AmendmentLink_"
+                    f"{sanitize_id(draft_id.replace('estleg:', ''))}_"
+                    f"{sanitize_id(base_slug)}"
+                ),
                 "@type": ["owl:NamedIndividual", "estleg:AmendmentEvent"],
                 "rdfs:label": f"Eelnõu muudatus: {da['draft_label']}",
-                "estleg:amends": {"@id": ontology_node["@id"]},
                 "estleg:amendingDraft": {"@id": draft_id},
             }
+            if canonical_ontology_id:
+                link_node["estleg:amends"] = {"@id": canonical_ontology_id}
             if da.get("publication_date"):
                 link_node["estleg:amendmentDate"] = make_xsd_date(da["publication_date"])
             chain_entries.append(link_node)
 
-        # Add amendedBy to ontology node
-        if amended_by_refs:
+        # Stamp estleg:amendedBy on every member's ontology node so
+        # each part's peep file references the shared chain. Track
+        # per-member flags so coverage counts each member fairly.
+        amended_by_refs = [{"@id": e["@id"]} for e in chain_entries]
+        # AmendmentLink nodes for drafts also count as amendedBy.
+        # (They're already in chain_entries.)
+        # Note: amended_by_refs index parallels chain_entries.
+
+        members_enriched_for_kov = 0
+        members_enriched = 0
+        for slug, info in members:
+            doc = info["doc"]
+            graph = doc.get("@graph", [])
+            ontology_node = None
+            for node in graph:
+                if "owl:Ontology" in (node.get("@type") or []):
+                    ontology_node = node
+                    break
+            if ontology_node is None and graph:
+                ontology_node = graph[0]
+            if ontology_node is None:
+                continue
+
+            ctx = doc.get("@context", {})
+            if isinstance(ctx, dict) and "dcterms" not in ctx:
+                ctx["dcterms"] = "http://purl.org/dc/terms/"
+                doc["@context"] = ctx
+
             ontology_node["estleg:amendedBy"] = amended_by_refs
+            save_json(info["path"], doc)
+            enriched += 1
+            members_enriched += 1
 
-        # Save enriched law file
-        save_json(info["path"], doc)
-        enriched += 1
-
-        # Coverage: amendedBy triples written = number of references in
-        # the amendedBy list. Drafted-only links (no XML amendments)
-        # still count as triples; XML amendments and drafts both
-        # contribute one ref each.
-        if amended_by_refs:
-            n_triples = len(amended_by_refs)
-            _triples += n_triples
-            if is_kov:
-                _triples_kov += n_triples
+            is_member_kov = "regulations/kov" in str(info["path"])
+            n_links = len(amended_by_refs)
+            _amendedBy_link_total += n_links
             _files_with_output += 1
-            if is_kov:
+            if is_member_kov:
+                _amendedBy_link_total_kov += n_links
                 _files_with_output_kov += 1
+                members_enriched_for_kov += 1
 
-        # Save amendment chain for this law
+        # Amendment event triples: count properties on each chain node.
+        if chain_entries:
+            event_triples = sum(
+                # @id + each property key (excluding @id itself counted once via key list)
+                len(node) for node in chain_entries
+            )
+            _amendment_event_triples += event_triples
+            if members_enriched_for_kov > 0:
+                # Attribute event triples proportionally to KOV — for a
+                # purely KOV chain, all event triples count toward KOV.
+                if members_enriched > 0:
+                    kov_share = int(
+                        round(event_triples * members_enriched_for_kov / members_enriched)
+                    )
+                else:
+                    kov_share = 0
+                _amendment_event_triples_kov += kov_share
+
+        # Save ONE chain doc per base_slug.
         if chain_entries:
             chain_doc = {
                 "@context": CONTEXT,
@@ -623,8 +846,8 @@ def main():
                     {
                         "@id": f"estleg:AmendmentChain_{sanitize_id(base_slug)}",
                         "@type": ["owl:Ontology"],
-                        "rdfs:label": f"Muudatuste ahel: {info['title']}",
-                        "dc:source": info["title"],
+                        "rdfs:label": f"Muudatuste ahel: {canonical_title}",
+                        "dc:source": canonical_title,
                         "estleg:totalAmendments": {
                             "@value": str(len(chain_entries)),
                             "@type": "xsd:integer",
@@ -636,9 +859,10 @@ def main():
             chain_path = AMENDMENTS_DIR / f"amendments_{base_slug}.json"
             save_json(chain_path, chain_doc)
             amendment_chains.append({
-                "law": info["title"],
-                "slug": slug,
-                "xml_amendments": len(xml_amendments),
+                "law": canonical_title,
+                "base_slug": base_slug,
+                "parts": [s for s, _ in members],
+                "xml_amendments": len(xml_amendments_sorted),
                 "draft_amendments": len(drafts),
                 "total": len(chain_entries),
                 "file": chain_path.name,
@@ -653,9 +877,9 @@ def main():
     # Find most amended laws
     amendment_chains_sorted = sorted(amendment_chains, key=lambda x: x["total"], reverse=True)
 
-    # Deduplicate most_amended_laws by canonical law name (multi-part laws
-    # like "Võlaõigusseadus osa 1..9" share the same law name and XML
-    # amendment counts — aggregate across part files).
+    # Multipart laws are now already aggregated into one chain doc per
+    # base_slug, so this block just maps law title -> stats. Kept for
+    # backwards-compatible report shape.
     deduped_most_amended: dict[str, dict] = {}
     for c in amendment_chains_sorted:
         canon_name = c["law"]
@@ -673,12 +897,14 @@ def main():
                 "draft_amendments": c["draft_amendments"],
                 "_part_count": 1,
             }
-    # Sort deduplicated entries by total descending, strip internal key
     most_amended_list = sorted(
         deduped_most_amended.values(), key=lambda x: x["total_amendments"], reverse=True
     )
     for entry in most_amended_list:
         del entry["_part_count"]
+
+    total_triples = _amendedBy_link_total + _amendment_event_triples
+    total_triples_kov = _amendedBy_link_total_kov + _amendment_event_triples_kov
 
     report = {
         "generated": date.today().isoformat(),
@@ -689,6 +915,12 @@ def main():
             "draft_amendments_matched": matched_drafts,
             "draft_amendments_unmatched": unmatched_drafts,
             "laws_enriched": enriched,
+            # Split coverage triples — see comment near the counter
+            # initialisations for why both surfaces are exposed.
+            "amendedBy_link_total": _amendedBy_link_total,
+            "amendment_event_triples": _amendment_event_triples,
+            "triples_total": total_triples,
+            "failures": len(_failures),
         },
         "most_amended_laws": most_amended_list[:30],
         "amendment_chains": amendment_chains_sorted,
@@ -696,6 +928,15 @@ def main():
 
     report_path = KRR_DIR / "amendment_history_report.json"
     save_json(report_path, report)
+
+    # Surface failures aggressively — silent swallowing was the root
+    # cause of issue #173's bare-except ladder.
+    if _failures:
+        print(
+            f"\n[P1] generate_amendment_history: {len(_failures)} failure(s) "
+            "logged during run — see coverage report for samples.",
+            file=sys.stderr,
+        )
 
     # Summary
     print("\n" + "=" * 70)
@@ -707,6 +948,8 @@ def main():
     print(f"  Draft amendments matched: {matched_drafts}")
     print(f"  Law files enriched:       {enriched}")
     print(f"  Amendment chain files:    {len(amendment_chains)}")
+    print(f"  amendedBy link triples:   {_amendedBy_link_total}")
+    print(f"  Amendment event triples:  {_amendment_event_triples}")
     if most_amended_list:
         print("\n  Top 5 most amended laws:")
         for c in most_amended_list[:5]:
@@ -735,8 +978,8 @@ def main():
             files_with_output_kov=_files_with_output_kov,
             files_skipped=sum(_skip_reasons.values()),
             skip_reasons=_skip_reasons,
-            triples_emitted=_triples,
-            triples_emitted_kov=_triples_kov,
+            triples_emitted=total_triples,
+            triples_emitted_kov=total_triples_kov,
             fallback_hits=_fallback_hits,
             unresolved_references=_unresolved,
             wall_time_seconds=round(_wall, 2),
@@ -748,6 +991,7 @@ def main():
         REPO_ROOT / "krr_outputs" / "reports" / "kov"
         / "generate_amendment_history_coverage.json",
     )
+    return 0
 
 
 if __name__ == "__main__":

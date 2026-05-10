@@ -2,30 +2,44 @@
 """
 Fetch missing law parts from Riigi Teataja and generate JSON-LD ontology files.
 
-Missing parts:
+Default missing parts (when run without args):
   - VÕS Osa 2 (Lepingu üldosa / General part of contracts)
   - VÕS Osa 6 (Kindlustuslepingud / Insurance contracts)
   - VÕS Osa 10 (Seltsingulepingud / Partnership)
   - TsÜS Osa 1 (Üldsätted / General provisions)
+
+CLI:
+  ``python -m scripts.generate_missing_parts --kehtiv 2026-05-01``
+
+  Override which laws / parts to generate via ``--input-xml-vos``,
+  ``--input-xml-tsus``, ``--vos-osa`` (repeatable), ``--skip-tsus``, and
+  ``--output-dir``. Pass an explicit XML path to bypass the network and
+  test against fixture data.
 """
 
 from __future__ import annotations
 
+import argparse
 import json
 import re
 import sys
 import xml.etree.ElementTree as ET
+from datetime import date as _date_cls
 from pathlib import Path
 
-import requests
-
 REPO_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(REPO_ROOT / "scripts"))
+
+from riigiteataja_common import (  # noqa: E402
+    fetch_acts,
+    fetch_xml,
+    SourceListFetchError,
+)
+
 KRR_DIR = REPO_ROOT / "krr_outputs"
 DATA_DIR = REPO_ROOT / "data" / "riigiteataja"
 DATA_DIR.mkdir(parents=True, exist_ok=True)
 
-SEARCH_URL = "https://www.riigiteataja.ee/api/oigusakt_otsing/1/otsi"
-BASE_URL = "https://www.riigiteataja.ee"
 NS = "https://data.riik.ee/ontology/estleg#"
 
 CONTEXT = {
@@ -37,6 +51,9 @@ CONTEXT = {
     "dc": "http://purl.org/dc/elements/1.1/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
 }
+
+DEFAULT_VOS_OSA_NUMBERS = ("2", "6", "10")
+DEFAULT_KEHTIV = _date_cls.today().isoformat()
 
 
 def ln(tag: str) -> str:
@@ -82,39 +99,127 @@ def collect_text(el: ET.Element, max_len: int = 800) -> str:
     return joined[:max_len] if joined else ""
 
 
-def fetch_law_xml(title: str) -> tuple[ET.Element, str, dict]:
-    """Fetch a law's XML from Riigi Teataja."""
-    print(f"  Searching for '{title}'...")
-    resp = requests.get(
-        SEARCH_URL,
-        params={"leht": 1, "dokument": "seadus", "pealkiri": title},
-        timeout=30,
+# ---------------------------------------------------------------------------
+# Riigi Teataja law lookup
+# ---------------------------------------------------------------------------
+
+def _select_law_match(matches: list[dict], title: str) -> dict | None:
+    """Pick the canonical match from a list of search-API rows.
+
+    Strategy:
+      1. Filter to entries whose ``pealkiri`` matches ``title``
+         exactly (case-insensitive) or contains it as a substring.
+      2. Within the filtered set, return the entry with the largest
+         numeric ``globaalID`` (newest redaction wins). When no
+         globalIDs are numeric, fall back to lexicographic order on
+         the raw string.
+    """
+    if not matches:
+        return None
+    needle = title.lower().strip()
+
+    exact: list[dict] = []
+    substring: list[dict] = []
+    for m in matches:
+        haystack = (m.get("pealkiri") or "").lower().strip()
+        if haystack == needle:
+            exact.append(m)
+        elif needle in haystack:
+            substring.append(m)
+
+    candidates = exact or substring
+    if not candidates:
+        return None
+
+    def _gid_key(m: dict) -> tuple[int, int, str]:
+        gid = str(m.get("globaalID") or "")
+        try:
+            return (1, int(gid), gid)
+        except (TypeError, ValueError):
+            return (0, 0, gid)
+
+    return max(candidates, key=_gid_key)
+
+
+def fetch_law_xml(
+    title: str,
+    *,
+    kehtiv: str = DEFAULT_KEHTIV,
+    cache_subdir: str | None = "seadus",
+    explicit_xml: Path | None = None,
+) -> tuple[ET.Element, str, dict]:
+    """Fetch a law's XML from Riigi Teataja (or load from disk).
+
+    When ``explicit_xml`` is supplied, parse and return that file
+    directly — no network. Otherwise:
+
+      * Query the search API with ``dokument=seadus`` and
+        ``kehtiv=<date>`` so we never accept a historically-redacted
+        match by accident.
+      * Filter the rows to exact-or-substring matches and take the
+        one with the largest numeric ``globaalID``.
+      * Delegate to ``riigiteataja_common.fetch_xml`` so caching, retry,
+        and timeout policy stay aligned with other generators.
+    """
+    if explicit_xml is not None:
+        path = Path(explicit_xml)
+        if not path.exists():
+            raise RuntimeError(
+                f"Explicit XML path does not exist: {explicit_xml}"
+            )
+        print(f"  Loading {title} from explicit XML: {path}")
+        try:
+            tree = ET.parse(str(path))
+        except ET.ParseError as exc:
+            raise RuntimeError(
+                f"Could not parse {path}: {exc}"
+            ) from exc
+        root = tree.getroot()
+        return root, str(path), {"source": "explicit", "path": str(path)}
+
+    print(f"  Searching for '{title}' (kehtiv={kehtiv})...")
+    try:
+        rows = list(
+            fetch_acts(
+                document="seadus",
+                kehtiv=kehtiv,
+                limiit=50,
+                allow_partial=False,
+            )
+        )
+    except SourceListFetchError as exc:
+        raise RuntimeError(
+            f"Riigi Teataja search failed for '{title}': {exc}"
+        ) from exc
+
+    # The search API doesn't accept a free-text title parameter via
+    # fetch_acts(), so filter client-side. Substring + globalID rank
+    # is enforced by _select_law_match.
+    needle = title.lower().strip()
+    pre_filtered = [
+        r for r in rows
+        if needle in (r.get("pealkiri") or "").lower()
+    ]
+    match = _select_law_match(pre_filtered, title)
+    if match is None:
+        raise RuntimeError(f"'{title}' not found in Riigi Teataja API (kehtiv={kehtiv})")
+
+    gid = str(match.get("globaalID") or "")
+    cache_name = f"law_{gid or sanitize_id(title)}"
+    print(f"  Selected globaalID={gid or '(unknown)'}; fetching XML via cache...")
+
+    root = fetch_xml(
+        match["url"],
+        cache_name=cache_name,
+        cache_subdir=cache_subdir,
+        refresh=False,
     )
-    resp.raise_for_status()
-    data = resp.json()
+    if root is None:
+        raise RuntimeError(
+            f"Could not fetch XML for '{title}' (globaalID={gid})"
+        )
 
-    match = None
-    for law in data.get("aktid", []):
-        if title.lower() in (law.get("pealkiri") or "").lower():
-            match = law
-            break
-    if not match:
-        raise RuntimeError(f"'{title}' not found in Riigi Teataja API")
-
-    xml_url = BASE_URL + match["url"]
-    print(f"  Fetching XML from {xml_url}...")
-    xml_resp = requests.get(xml_url, timeout=60)
-    xml_resp.raise_for_status()
-    xml_resp.encoding = "utf-8"
-    xml_text = xml_resp.text
-
-    # Cache locally
-    safe_name = re.sub(r"[^a-z0-9_]", "_", title.lower())
-    cache_path = DATA_DIR / f"{safe_name}.xml"
-    cache_path.write_text(xml_text, encoding="utf-8")
-    print(f"  Cached XML to {cache_path.name}")
-
-    root = ET.fromstring(xml_text)
+    xml_url = match.get("url", "")
     return root, xml_url, match
 
 
@@ -138,7 +243,15 @@ def extract_paragrahvid(parent: ET.Element) -> list[ET.Element]:
 
 
 def generate_vos_part(root: ET.Element, xml_url: str, osa_nr: str) -> dict | None:
-    """Generate JSON-LD for a VÕS part."""
+    """Generate JSON-LD for a VÕS part.
+
+    Issue #175: each part gets its own LegalProvision class IRI
+    (``estleg:LegalProvision_VOS_osa<N>``) — the earlier hardcoded
+    ``Osa7`` literal was a copy-paste typo. Paragraph IRIs are
+    namespaced per part (``estleg:VOS_Osa<N>_Par_<n>``) so two parts
+    that happen to renumber paragraphs can never collide on the same
+    @id.
+    """
     osa = find_osa(root, osa_nr)
     if osa is None:
         print(f"  WARNING: VÕS osa {osa_nr} not found in XML!")
@@ -170,7 +283,9 @@ def generate_vos_part(root: ET.Element, xml_url: str, osa_nr: str) -> dict | Non
 
     # Build graph
     prefix = "VOS"
-    ontology_id = f"estleg:{prefix}_Osa{osa_nr}_{par_min}_{par_max}"
+    osa_safe = sanitize_id(osa_nr)
+    ontology_id = f"estleg:{prefix}_Osa{osa_safe}_{par_min}_{par_max}"
+    class_iri = f"estleg:LegalProvision_VOS_osa{osa_safe}"
 
     graph: list[dict] = [
         {
@@ -180,7 +295,7 @@ def generate_vos_part(root: ET.Element, xml_url: str, osa_nr: str) -> dict | Non
             "dc:source": "Võlaõigusseadus",
         },
         {
-            "@id": f"estleg:LegalProvision_VOS_Osa7_osa{osa_nr}",
+            "@id": class_iri,
             "@type": ["owl:Class"],
             "rdfs:label": "Õigusnorm (paragrahv)",
         },
@@ -193,7 +308,7 @@ def generate_vos_part(root: ET.Element, xml_url: str, osa_nr: str) -> dict | Non
             ch_nr = child_text(ch, "peatykkNr") or ""
             ch_title = child_text(ch, "peatykkPealkiri") or ""
             if ch_title:
-                cluster_id = f"estleg:Cluster_VOS_{osa_nr}_{sanitize_id(ch_nr or ch_title[:20])}"
+                cluster_id = f"estleg:Cluster_VOS_{osa_safe}_{sanitize_id(ch_nr or ch_title[:20])}"
                 ch_pars = extract_paragrahvid(ch)
                 ch_par_nrs = []
                 for p in ch_pars:
@@ -216,7 +331,10 @@ def generate_vos_part(root: ET.Element, xml_url: str, osa_nr: str) -> dict | Non
             jg_nr = child_text(jg, "jaguNr") or ""
             jg_title = child_text(jg, "jaguPealkiri") or ""
             if jg_title:
-                cluster_id = f"estleg:Cluster_VOS_{osa_nr}_jagu_{sanitize_id(jg_nr or jg_title[:20])}"
+                cluster_id = (
+                    f"estleg:Cluster_VOS_{osa_safe}_jagu_"
+                    f"{sanitize_id(jg_nr or jg_title[:20])}"
+                )
                 jg_pars = extract_paragrahvid(jg)
                 jg_par_nrs = []
                 for p in jg_pars:
@@ -241,14 +359,15 @@ def generate_vos_part(root: ET.Element, xml_url: str, osa_nr: str) -> dict | Non
             "rdfs:label": cl["label"],
         })
 
-    # Add paragraph nodes
+    # Add paragraph nodes — IRIs are namespaced by osa so cross-part
+    # collisions on @id are impossible (smoke-test enforced).
     for p in paragrahvid:
         p_nr = child_text(p, "paragrahvNr") or "?"
         p_title = child_text(p, "paragrahvPealkiri") or ""
         p_display = child_text(p, "kuvatavNr") or f"§ {p_nr}"
         text = collect_text(p)
 
-        p_id = f"estleg:VOS_Par_{sanitize_id(p_nr)}"
+        p_id = f"estleg:VOS_Osa{osa_safe}_Par_{sanitize_id(p_nr)}"
 
         # Find which cluster this paragraph belongs to
         try:
@@ -266,7 +385,7 @@ def generate_vos_part(root: ET.Element, xml_url: str, osa_nr: str) -> dict | Non
             "@id": p_id,
             "@type": [
                 "owl:NamedIndividual",
-                f"estleg:LegalProvision_VOS_Osa7_osa{osa_nr}",
+                class_iri,
             ],
             "estleg:paragrahv": p_display,
             "rdfs:label": f"{p_display} {p_title}".strip() if p_title else p_display,
@@ -349,7 +468,7 @@ def generate_tsus_part1(root: ET.Element, xml_url: str) -> dict | None:
         p_display = child_text(p, "kuvatavNr") or f"§ {p_nr}"
         text = collect_text(p)
 
-        p_id = f"estleg:TsUS_Par_{sanitize_id(p_nr)}"
+        p_id = f"estleg:TsUS_Osa1_Par_{sanitize_id(p_nr)}"
 
         node: dict = {
             "@id": p_id,
@@ -372,13 +491,67 @@ def generate_tsus_part1(root: ET.Element, xml_url: str) -> dict | None:
 
 
 def save_json(filepath: Path, doc: dict):
+    filepath.parent.mkdir(parents=True, exist_ok=True)
     with open(filepath, "w", encoding="utf-8") as f:
         json.dump(doc, f, ensure_ascii=False, indent=2)
         f.write("\n")
     print(f"  Saved: {filepath.name}")
 
 
-def main():
+# ---------------------------------------------------------------------------
+# CLI driver
+# ---------------------------------------------------------------------------
+
+def _parse_args(argv: list[str] | None) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--input-xml-vos",
+        type=Path,
+        default=None,
+        help="Path to a Võlaõigusseadus XML file (skip the search API).",
+    )
+    parser.add_argument(
+        "--input-xml-tsus",
+        type=Path,
+        default=None,
+        help="Path to a Tsiviilseadustiku üldosa seadus XML file.",
+    )
+    parser.add_argument(
+        "--output-dir",
+        type=Path,
+        default=KRR_DIR,
+        help="Directory to write *_peep.json files (default: %(default)s).",
+    )
+    parser.add_argument(
+        "--kehtiv",
+        default=DEFAULT_KEHTIV,
+        help="Snapshot date YYYY-MM-DD (default: today's date).",
+    )
+    parser.add_argument(
+        "--vos-osa",
+        action="append",
+        dest="vos_osa",
+        default=None,
+        metavar="N",
+        help=(
+            "VÕS osa number to generate; pass multiple times. "
+            f"Defaults to {','.join(DEFAULT_VOS_OSA_NUMBERS)}."
+        ),
+    )
+    parser.add_argument(
+        "--skip-tsus",
+        action="store_true",
+        help="Skip Tsiviilseadustiku üldosa seadus generation.",
+    )
+    return parser.parse_args(argv)
+
+
+def main(argv: list[str] | None = None) -> int:
+    args = _parse_args(argv)
+    osa_numbers = args.vos_osa or list(DEFAULT_VOS_OSA_NUMBERS)
+    out_dir: Path = args.output_dir
+    out_dir.mkdir(parents=True, exist_ok=True)
+
     print("=" * 60)
     print("Generating missing law parts from Riigi Teataja")
     print("=" * 60)
@@ -386,10 +559,15 @@ def main():
     # === VÕS ===
     print("\n--- Fetching Võlaõigusseadus ---")
     try:
-        vos_root, vos_url, vos_match = fetch_law_xml("Võlaõigusseadus")
+        vos_root, vos_url, _vos_match = fetch_law_xml(
+            "Võlaõigusseadus",
+            kehtiv=args.kehtiv,
+            cache_subdir="seadus",
+            explicit_xml=args.input_xml_vos,
+        )
     except Exception as e:
         print(f"  ERROR fetching VÕS: {e}")
-        sys.exit(1)
+        return 1
 
     # List all osa elements for debugging
     print("\n  Available parts in VÕS:")
@@ -399,11 +577,11 @@ def main():
             title = child_text(el, "osaPealkiri")
             print(f"    Osa {nr}: {title}")
 
-    for osa_nr in ["2", "6", "10"]:
+    for osa_nr in osa_numbers:
         print(f"\n--- Generating VÕS Osa {osa_nr} ---")
         doc = generate_vos_part(vos_root, vos_url, osa_nr)
         if doc:
-            out_path = KRR_DIR / f"volaigusseadus_osa{osa_nr}_peep.json"
+            out_path = out_dir / f"volaigusseadus_osa{osa_nr}_peep.json"
             save_json(out_path, doc)
             node_count = len(doc["@graph"])
             print(f"  Generated {node_count} nodes")
@@ -411,35 +589,44 @@ def main():
             print(f"  FAILED to generate VÕS Osa {osa_nr}")
 
     # === TsÜS ===
-    print("\n--- Fetching Tsiviilseadustiku üldosa seadus ---")
-    try:
-        tsus_root, tsus_url, tsus_match = fetch_law_xml("Tsiviilseadustiku üldosa seadus")
-    except Exception as e:
-        print(f"  ERROR fetching TsÜS: {e}")
-        sys.exit(1)
-
-    # List all osa elements
-    print("\n  Available parts in TsÜS:")
-    for el in tsus_root.iter():
-        if ln(el.tag) == "osa":
-            nr = child_text(el, "osaNr")
-            title = child_text(el, "osaPealkiri")
-            print(f"    Osa {nr}: {title}")
-
-    print("\n--- Generating TsÜS Osa 1 ---")
-    doc = generate_tsus_part1(tsus_root, tsus_url)
-    if doc:
-        out_path = KRR_DIR / "tsiviilseadustik_osa1_peep.json"
-        save_json(out_path, doc)
-        node_count = len(doc["@graph"])
-        print(f"  Generated {node_count} nodes")
+    if args.skip_tsus:
+        print("\n--- Skipping TsÜS (--skip-tsus) ---")
     else:
-        print("  FAILED to generate TsÜS Osa 1")
+        print("\n--- Fetching Tsiviilseadustiku üldosa seadus ---")
+        try:
+            tsus_root, tsus_url, _tsus_match = fetch_law_xml(
+                "Tsiviilseadustiku üldosa seadus",
+                kehtiv=args.kehtiv,
+                cache_subdir="seadus",
+                explicit_xml=args.input_xml_tsus,
+            )
+        except Exception as e:
+            print(f"  ERROR fetching TsÜS: {e}")
+            return 1
+
+        # List all osa elements
+        print("\n  Available parts in TsÜS:")
+        for el in tsus_root.iter():
+            if ln(el.tag) == "osa":
+                nr = child_text(el, "osaNr")
+                title = child_text(el, "osaPealkiri")
+                print(f"    Osa {nr}: {title}")
+
+        print("\n--- Generating TsÜS Osa 1 ---")
+        doc = generate_tsus_part1(tsus_root, tsus_url)
+        if doc:
+            out_path = out_dir / "tsiviilseadustik_osa1_peep.json"
+            save_json(out_path, doc)
+            node_count = len(doc["@graph"])
+            print(f"  Generated {node_count} nodes")
+        else:
+            print("  FAILED to generate TsÜS Osa 1")
 
     print("\n" + "=" * 60)
     print("Done!")
     print("=" * 60)
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

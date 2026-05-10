@@ -16,6 +16,7 @@ import argparse
 import json
 import sys
 import time
+import urllib.parse
 from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
@@ -126,7 +127,16 @@ def extract_annexes(root: ET.Element, prefix: str) -> list[dict]:
             "estleg:annexNumber": str(annex_nr),
         }
         if href:
-            full = href if href.startswith(("http://", "https://")) else BASE_URL + href.lstrip(".")
+            full = (
+                href
+                if href.startswith(("http://", "https://"))
+                # urljoin handles ./, ../, and bare-relative correctly;
+                # the previous "BASE_URL + href.lstrip('.')" produced
+                # "https://www.riigiteataja.ee//akt/..." for "../akt/..."
+                # and "https://www.riigiteataja.eelisa/foo.pdf" for
+                # bare-relative "lisa/foo.pdf".
+                else urllib.parse.urljoin(BASE_URL + "/", href)
+            )
             node["dcterms:source"] = {"@id": full}
         annexes.append(node)
 
@@ -287,10 +297,16 @@ def build_regulation_jsonld(
     root: ET.Element,
     *,
     is_kov: bool,
+    kehtiv: str | None = None,
 ) -> tuple[dict, dict[str, int]]:
     """Generate the JSON-LD document for one regulation.
 
     Returns the doc plus a small stats dict used for reporting.
+
+    ``kehtiv`` (when provided) is stamped onto the ontology node as
+    ``estleg:kehtiv`` so downstream staleness checks (missing-only
+    re-runs) can compare a stored snapshot date against the current
+    run.
     """
     metadata = parse_act_metadata(root)
     tid = metadata.get("terviktekstId") or info.get("tid") or ""
@@ -344,6 +360,10 @@ def build_regulation_jsonld(
     if gid:
         ontology_node["estleg:globalId"] = str(gid)
     ontology_node["estleg:terviktekstId"] = str(tid)
+    if kehtiv:
+        # Snapshot date as xsd:date so downstream queries can compare
+        # cleanly against today() during a staleness audit.
+        ontology_node["estleg:kehtiv"] = {"@value": kehtiv, "@type": "xsd:date"}
     if metadata.get("entryIntoForce"):
         ontology_node["estleg:entryIntoForce"] = {
             "@value": metadata["entryIntoForce"],
@@ -407,6 +427,29 @@ def make_filename(title: str, tid: str, is_kov: bool, issuer: str | None) -> tup
     return OUTPUT_RIIK / filename, slug_base
 
 
+def _gid_rank(gid: str) -> tuple[int, int, str]:
+    """Return a sort key for a globalID dedup comparison.
+
+    Riigi Teataja globalIDs are numeric strings of varying lengths
+    (e.g. ``"99052024005"`` vs ``"128062023003"``). A naive lexicographic
+    compare ranks ``"99..."`` above ``"128..."`` so the OLDER redaction
+    wins — exactly the bug we're fixing here.
+
+    The returned tuple sorts so:
+      * numeric-castable IDs are ranked above non-numeric (rank=1 > rank=0),
+      * within numeric, larger numeric value wins,
+      * within non-numeric (rank=0), the integer field stays 0 and we
+        fall back to lexicographic order on the original string.
+    """
+    if gid is None:
+        return (0, 0, "")
+    s = str(gid).strip()
+    try:
+        return (1, int(s), s)
+    except (TypeError, ValueError):
+        return (0, 0, s)
+
+
 def gather_regulations(
     kov: bool,
     kehtiv: str,
@@ -422,12 +465,20 @@ def gather_regulations(
     by_tid: dict[str, dict] = {}
     seen = 0
     completed = True
+    # When a --limit is set, ask the API for fewer rows so we don't
+    # gratuitously pull a full 500-row page when the caller just wants
+    # a 5-act dry run. Floor at 50 to keep page-iteration efficient
+    # for moderate limits.
+    if limit is None:
+        page_size = 500
+    else:
+        page_size = min(500, max(50, limit * 2))
     try:
         for act in fetch_acts(
             document="määrus",
             kov=kov,
             kehtiv=kehtiv,
-            limiit=500,
+            limiit=page_size,
             allow_partial=allow_partial,
         ):
             seen += 1
@@ -436,7 +487,7 @@ def gather_regulations(
             if not tid:
                 continue
             prev = by_tid.get(tid)
-            if prev is None or gid > str(prev.get("gid", "")):
+            if prev is None or _gid_rank(gid) > _gid_rank(str(prev.get("gid", ""))):
                 by_tid[tid] = {
                     "tid": tid,
                     "gid": gid,
@@ -493,18 +544,30 @@ def build_regulation_index(
     is_kov: bool,
     kehtiv: str,
     run_stats: dict | None = None,
+    doc_cache: dict[Path, dict] | None = None,
 ) -> dict:
+    """Build the regulation index for ``out_dir``.
+
+    ``doc_cache`` (optional) supplies in-memory ``{Path: doc}`` entries
+    written during the current run so the index can avoid re-reading
+    JSON files we just produced. Paths missing from the cache fall
+    back to disk read.
+    """
     files = regulation_files(out_dir)
     totals = Counter()
     issuer_counts: Counter[str] = Counter()
     file_entries = []
 
     for path in files:
-        try:
-            with open(path, "r", encoding="utf-8") as f:
-                doc = json.load(f)
-        except (json.JSONDecodeError, OSError):
-            continue
+        doc: dict | None = None
+        if doc_cache is not None:
+            doc = doc_cache.get(path)
+        if doc is None:
+            try:
+                with open(path, "r", encoding="utf-8") as f:
+                    doc = json.load(f)
+            except (json.JSONDecodeError, OSError):
+                continue
         stats = summarize_regulation_doc(doc)
         for key in ("paragraphs", "annexes", "has_preamble", "html_fallback", "no_paragraphs"):
             totals[key] += stats[key]
@@ -536,13 +599,97 @@ def existing_doc_matches(path: Path, doc: dict) -> bool:
     return existing == doc
 
 
-def write_regulation_output(out_path: Path, doc: dict, *, mode: str) -> str:
-    """Write one regulation artifact and return a run-stat status key."""
+def _ontology_node(doc: dict) -> dict | None:
+    """Return the first ``owl:Ontology`` node in a doc's @graph."""
+    for node in doc.get("@graph", []):
+        if not isinstance(node, dict):
+            continue
+        types = node.get("@type") or []
+        if isinstance(types, str):
+            types = [types]
+        if "owl:Ontology" in types:
+            return node
+    return None
+
+
+def existing_is_stale(
+    path: Path,
+    *,
+    expected_tid: str | None,
+    expected_kehtiv: str | None,
+) -> bool:
+    """Return True when an existing output is stale w.r.t. current run.
+
+    Stale = the on-disk file's stored ``terviktekstId`` differs from
+    the current build's terviktekstId, OR its stored ``estleg:kehtiv``
+    snapshot date differs from the current run's kehtiv. Used by
+    missing-only mode to refresh quietly when a previous snapshot is
+    out of date — the previous behaviour was to keep stale files
+    forever once written.
+
+    A file is considered NOT stale (returns False) when:
+      * it is unreadable / missing — caller treats that as "needs
+        write" anyway, so the dispatch is unchanged;
+      * neither check could be made (no expected values supplied).
+    """
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            existing = json.load(f)
+    except (json.JSONDecodeError, OSError):
+        return False
+
+    ontology = _ontology_node(existing)
+    if ontology is None:
+        return False
+
+    if expected_tid:
+        stored_tid = ontology.get("estleg:terviktekstId")
+        if isinstance(stored_tid, dict):
+            stored_tid = stored_tid.get("@value")
+        if stored_tid and str(stored_tid) != str(expected_tid):
+            return True
+
+    if expected_kehtiv:
+        stored_kehtiv = ontology.get("estleg:kehtiv")
+        if isinstance(stored_kehtiv, dict):
+            stored_kehtiv = stored_kehtiv.get("@value")
+        if stored_kehtiv is None or str(stored_kehtiv) != str(expected_kehtiv):
+            return True
+
+    return False
+
+
+def write_regulation_output(
+    out_path: Path,
+    doc: dict,
+    *,
+    mode: str,
+    expected_kehtiv: str | None = None,
+) -> str:
+    """Write one regulation artifact and return a run-stat status key.
+
+    ``expected_kehtiv`` (optional) drives a staleness check in
+    missing-only mode: when the on-disk file's stored kehtiv or
+    terviktekstId differs from the current run, the output is
+    refreshed in place rather than skipped silently.
+    """
     if mode not in GENERATION_MODES:
         raise ValueError(f"Unsupported generation mode: {mode}")
 
     existed = out_path.exists()
     if existed and mode == "missing-only":
+        # Find the new doc's tid up front so the stale check has it.
+        new_ontology = _ontology_node(doc) or {}
+        new_tid = new_ontology.get("estleg:terviktekstId")
+        if isinstance(new_tid, dict):
+            new_tid = new_tid.get("@value")
+        if existing_is_stale(
+            out_path,
+            expected_tid=new_tid if new_tid else None,
+            expected_kehtiv=expected_kehtiv,
+        ):
+            save_json(out_path, doc)
+            return "refreshedStale"
         return "existingSkipped"
     if existed and mode == "refresh" and existing_doc_matches(out_path, doc):
         return "unchanged"
@@ -555,12 +702,26 @@ def write_regulation_output(out_path: Path, doc: dict, *, mode: str) -> str:
     return "refreshed"
 
 
-def regulation_file_tid(path: Path) -> str | None:
-    try:
-        with open(path, "r", encoding="utf-8") as f:
-            doc = json.load(f)
-    except (json.JSONDecodeError, OSError):
-        return None
+def regulation_file_tid(
+    path: Path,
+    *,
+    doc_cache: dict[Path, dict] | None = None,
+) -> str | None:
+    """Read the terviktekstId stored on an existing regulation peep file.
+
+    ``doc_cache`` (optional) supplies in-memory ``{Path: doc}`` entries
+    so the index pass doesn't re-read files written earlier in the
+    same run.
+    """
+    doc: dict | None = None
+    if doc_cache is not None:
+        doc = doc_cache.get(path)
+    if doc is None:
+        try:
+            with open(path, "r", encoding="utf-8") as f:
+                doc = json.load(f)
+        except (json.JSONDecodeError, OSError):
+            return None
 
     for node in doc.get("@graph", []):
         if not isinstance(node, dict):
@@ -576,10 +737,21 @@ def regulation_file_tid(path: Path) -> str | None:
     return None
 
 
-def source_removed_files(out_dir: Path, current_tids: set[str]) -> list[str]:
+def source_removed_files(
+    out_dir: Path,
+    current_tids: set[str],
+    *,
+    doc_cache: dict[Path, dict] | None = None,
+) -> list[str]:
+    """List existing peep files whose tid is no longer in the API snapshot.
+
+    ``doc_cache`` is threaded through to ``regulation_file_tid`` so we
+    skip re-reading JSON files we've just written or read earlier in
+    the run.
+    """
     removed: list[str] = []
     for path in regulation_files(out_dir):
-        tid = regulation_file_tid(path)
+        tid = regulation_file_tid(path, doc_cache=doc_cache)
         if tid and tid not in current_tids:
             removed.append(str(path.relative_to(out_dir)))
     return removed
@@ -640,6 +812,7 @@ def main():
     run_counts = Counter({
         "newlyGenerated": 0,
         "existingSkipped": 0,
+        "refreshedStale": 0,
         "unchanged": 0,
         "refreshed": 0,
         "forceRewritten": 0,
@@ -647,6 +820,10 @@ def main():
     })
     failed = 0
     totals = {"paragraphs": 0, "annexes": 0, "has_preamble": 0, "html_fallback": 0, "no_paragraphs": 0}
+    # Cache the JSON-LD docs we just built (or read off disk for the
+    # missing-only-skip path). Threaded into the index builder so it
+    # doesn't re-read every file we just wrote.
+    built_docs: dict[Path, dict] = {}
 
     for i, (tid, info) in enumerate(sorted(regs.items()), 1):
         title = info["pealkiri"]
@@ -654,9 +831,22 @@ def main():
         issuer = info.get("valjaandja", "")
         out_path, slug = make_filename(title, tid, is_kov, issuer)
 
-        if out_path.exists():
-            if mode == "missing-only":
+        # Missing-only fast path: if the existing file is already up
+        # to date with the current (kehtiv, terviktekstId) signature,
+        # skip the network/XML round-trip entirely.
+        if out_path.exists() and mode == "missing-only":
+            try:
+                with open(out_path, "r", encoding="utf-8") as f:
+                    existing_doc = json.load(f)
+            except (json.JSONDecodeError, OSError):
+                existing_doc = None
+            if existing_doc is not None and not existing_is_stale(
+                out_path,
+                expected_tid=tid,
+                expected_kehtiv=args.kehtiv,
+            ):
                 run_counts["existingSkipped"] += 1
+                built_docs[out_path] = existing_doc
                 continue
 
         print(f"  [{i}/{len(regs)}] {issuer} | {title[:80]}")
@@ -676,15 +866,20 @@ def main():
             continue
 
         try:
-            doc, stats = build_regulation_jsonld(title, info, root, is_kov=is_kov)
+            doc, stats = build_regulation_jsonld(
+                title, info, root, is_kov=is_kov, kehtiv=args.kehtiv
+            )
         except Exception as e:
             print(f"    FAIL: {e}")
             failed += 1
             run_counts["failedFetches"] += 1
             continue
 
-        status = write_regulation_output(out_path, doc, mode=mode)
+        status = write_regulation_output(
+            out_path, doc, mode=mode, expected_kehtiv=args.kehtiv
+        )
         run_counts[status] += 1
+        built_docs[out_path] = doc
         for k, v in stats.items():
             totals[k] = totals.get(k, 0) + v
 
@@ -694,7 +889,9 @@ def main():
     # ---------------------------------------------------------------------
     print("\n[3/3] Writing index...")
     index_path = out_dir / ("REGULATIONS_KOV_INDEX.json" if is_kov else "REGULATIONS_RIIK_INDEX.json")
-    removed_from_source = source_removed_files(out_dir, set(regs))
+    removed_from_source = source_removed_files(
+        out_dir, set(regs), doc_cache=built_docs
+    )
     index_doc = build_regulation_index(
         out_dir,
         is_kov=is_kov,
@@ -704,6 +901,7 @@ def main():
             "generationMode": mode,
             "newlyGenerated": run_counts["newlyGenerated"],
             "existingSkipped": run_counts["existingSkipped"],
+            "refreshedStale": run_counts["refreshedStale"],
             "unchanged": run_counts["unchanged"],
             "refreshed": run_counts["refreshed"],
             "forceRewritten": run_counts["forceRewritten"],
@@ -712,6 +910,7 @@ def main():
             "sourceRemovedFromSnapshotCount": len(removed_from_source),
             "sourceRemovedFromSnapshot": removed_from_source,
         },
+        doc_cache=built_docs,
     )
     save_json(index_path, index_doc)
 
@@ -722,6 +921,7 @@ def main():
     print(f"  Generation mode:            {mode}")
     print(f"  Newly generated:            {run_counts['newlyGenerated']}")
     print(f"  Skipped (existing):         {run_counts['existingSkipped']}")
+    print(f"  Refreshed stale (missing-only): {run_counts['refreshedStale']}")
     print(f"  Unchanged:                  {run_counts['unchanged']}")
     print(f"  Refreshed:                  {run_counts['refreshed']}")
     print(f"  Force rewritten:            {run_counts['forceRewritten']}")

@@ -880,3 +880,371 @@ class TestPreamblePassIdempotency:
         assert result["saved"] is False
         # Verify the file was NOT touched on disk.
         assert peep.stat().st_mtime_ns == mtime_before
+
+
+class TestIsProvisionNodeHelper:
+    """The single-source-of-truth predicate for "is this a provision".
+
+    Both citation passes (in-law and KOV body-text) used to disagree on
+    this question — one keyed on ``'_Par_' in @id`` while the other
+    keyed on ``'estleg:paragrahv' not in node``. Locking in the
+    canonical predicate prevents that drift returning."""
+
+    @pytest.mark.parametrize("node, expected", [
+        # Provision nodes — _Par_ in @id
+        ({"@id": "estleg:KOKS_Par_22"}, True),
+        ({"@id": "estleg:KARIST_2_Par_1"}, True),
+        ({"@id": "estleg:Reg_TLN_Test_Map_2024_Par_1"}, True),
+        # Provision shapes that LACK estleg:paragrahv (the old KOV pass
+        # would have skipped these — the new predicate picks them up).
+        ({"@id": "estleg:AS_Par_42",
+          "@type": ["owl:NamedIndividual"]}, True),
+
+        # Non-provisions — owl:Ontology act nodes, citation nodes,
+        # malformed inputs, missing @id.
+        ({"@id": "estleg:KOKS_Map_2026"}, False),
+        ({"@id": "estleg:Citation_KOKS_Map_2026_1"}, False),
+        ({"@id": ""}, False),
+        ({}, False),
+        # Defensive: non-string @id and non-dict input.
+        ({"@id": 42}, False),
+        ({"@id": None}, False),
+        (None, False),
+        ([], False),
+    ])
+    def test_predicate(self, node, expected):
+        from extract_cross_references import is_provision_node
+        assert is_provision_node(node) is expected
+
+
+class TestRunInlawCitationPass:
+    """The in-law pass extracts citations from the JSON-LD summary
+    and/or paired XML text and attaches estleg:references to each
+    matched provision node. This test drives the helper directly with
+    an in-memory graph so the assertion isolates the pass logic from
+    file IO."""
+
+    def test_run_inlaw_citation_pass_produces_correct_references(self):
+        from extract_cross_references import _run_inlaw_citation_pass
+
+        # A provision whose summary contains a self-reference and a
+        # cross-law citation. self_prefix='KARIST_2' matches a real
+        # multi-segment corpus prefix; the citation '§ 121' must
+        # resolve via the registry.
+        graph = [
+            {"@id": "estleg:KARIST_2_Map_2026",
+             "@type": ["owl:Ontology"]},
+            {"@id": "estleg:KARIST_2_Par_1",
+             "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+             "estleg:summary":
+                 "Käesoleva seaduse § 121 alusel kohaldatakse VÕS § 208."},
+        ]
+        prefix_to_provisions = {
+            "KARIST_2": {
+                "1": "estleg:KARIST_2_Par_1",
+                "121": "estleg:KARIST_2_Par_121",
+            },
+            # 'VÕS' → 'Vlaisustseadus' or similar — only the prefix
+            # mapping matters for the resolve, so use a stub prefix.
+            "VOS_STUB": {"208": "estleg:VOS_STUB_Par_208"},
+        }
+        abbrev_to_prefix = {"VÕS": "VOS_STUB"}
+
+        stats = _run_inlaw_citation_pass(
+            graph,
+            self_prefix="KARIST_2",
+            abbrev_to_prefix=abbrev_to_prefix,
+            prefix_to_provisions=prefix_to_provisions,
+            xml_par_texts={},
+        )
+
+        assert stats["modified"] is True
+        assert stats["provisions_scanned"] == 1
+        assert stats["provisions_with_refs"] == 1
+        # Two paragraphs cited (121 self + 208 VÕS), both resolve.
+        assert stats["citations_found"] == 2
+        assert stats["citations_resolved"] == 2
+
+        # The provision must carry both refs, with self-link to itself
+        # filtered out (the resolver tries Par_1 against self_prefix
+        # 'KARIST_2' only when the citation says so — this test cites
+        # 121 and 208, so neither equals @id Par_1).
+        prov = next(n for n in graph
+                    if n["@id"] == "estleg:KARIST_2_Par_1")
+        refs = prov["estleg:references"]
+        ref_ids = {r["@id"] for r in refs}
+        assert "estleg:KARIST_2_Par_121" in ref_ids
+        assert "estleg:VOS_STUB_Par_208" in ref_ids
+
+    def test_inlaw_pass_skips_self_link(self):
+        """When the self-reference resolves to the provision itself,
+        the helper must drop it (no estleg:references → self)."""
+        from extract_cross_references import _run_inlaw_citation_pass
+
+        graph = [
+            {"@id": "estleg:KOKS_Par_1",
+             "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+             # Self-reference whose paragraph IS this provision.
+             "estleg:summary": "Käesoleva seaduse § 1 alusel ..."},
+        ]
+        stats = _run_inlaw_citation_pass(
+            graph,
+            self_prefix="KOKS",
+            abbrev_to_prefix={},
+            prefix_to_provisions={"KOKS": {"1": "estleg:KOKS_Par_1"}},
+            xml_par_texts={},
+        )
+        # Citation found+resolved, but the only resolved ref equals
+        # the provision's @id and is filtered, so no node mutation.
+        assert stats["citations_found"] == 1
+        assert stats["citations_resolved"] == 1
+        assert stats["provisions_with_refs"] == 0
+        assert stats["modified"] is False
+        assert "estleg:references" not in graph[0]
+
+
+class TestRunKovBodyPass:
+    """The KOV body-text pass extracts ``<Issuer> määruse nr N``
+    references from each provision's legalText/summary and attaches
+    them as estleg:references. This test drives the helper directly
+    so the assertion isolates the pass from process_law_file."""
+
+    def test_run_kov_body_pass_emits_implementsCitation(self):
+        from extract_cross_references import _run_kov_body_pass
+
+        graph = [
+            {"@id": "estleg:Reg_TLN_Test_Map_2024",
+             "@type": ["owl:Ontology", "estleg:MunicipalRegulation"],
+             "estleg:enactedByMunicipality": {
+                 "@id": "estleg:Municipality_tallinn"},
+             "estleg:issuer": "Tallinna Linnavolikogu",
+             "estleg:actNumber": "999"},
+            {"@id": "estleg:Reg_TLN_Test_Map_2024_Par_1",
+             "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+             "estleg:legalText":
+                 "Vastavalt Tallinna Linnavolikogu määruse nr 15 § 4 ..."},
+        ]
+        kov_lookup = {
+            ("tallinna linnavolikogu", "15"): ["estleg:Reg_TLN15_Map_2020"],
+        }
+        registry = {
+            "estleg:Issuer_tallinna_linnavolikogu": (
+                "tallinna linnavolikogu",
+                "estleg:Municipality_tallinn", "volikogu",
+            ),
+        }
+
+        stats = _run_kov_body_pass(
+            graph,
+            kov_act_lookup_by_number=kov_lookup,
+            issuer_registry=registry,
+        )
+
+        assert stats["modified"] is True
+        assert stats["citations_found"] == 1
+        assert stats["citations_resolved"] == 1
+        assert stats["provisions_with_refs"] == 1
+        assert "estleg:Reg_TLN_Test_Map_2024_Par_1" in stats["counted_ids"]
+
+        prov = graph[1]
+        refs = prov["estleg:references"]
+        # The KOV target was appended.
+        assert {"@id": "estleg:Reg_TLN15_Map_2020"} in refs
+
+    def test_kov_body_pass_returns_frozenset_counted_ids(self):
+        """counted_ids must be a frozenset (immutable post-return).
+        The old code stamped ``_layer2b_counted`` on each provision
+        which leaked to disk; the new contract returns the set in the
+        stats dict and never touches the document."""
+        from extract_cross_references import _run_kov_body_pass
+
+        graph = [
+            {"@id": "estleg:Reg_X_Map_2024",
+             "@type": ["owl:Ontology", "estleg:MunicipalRegulation"],
+             "estleg:enactedByMunicipality": {
+                 "@id": "estleg:Municipality_tallinn"}},
+            {"@id": "estleg:Reg_X_Map_2024_Par_1",
+             "@type": ["owl:NamedIndividual"],
+             "estleg:legalText":
+                 "Tallinna Linnavolikogu määruse nr 15 § 1 ..."},
+        ]
+        stats = _run_kov_body_pass(
+            graph,
+            kov_act_lookup_by_number={
+                ("tallinna linnavolikogu", "15"):
+                    ["estleg:Reg_TLN15_Map_2020"],
+            },
+            issuer_registry={
+                "estleg:Issuer_tallinna_linnavolikogu": (
+                    "tallinna linnavolikogu",
+                    "estleg:Municipality_tallinn", "volikogu",
+                ),
+            },
+        )
+        assert isinstance(stats["counted_ids"], frozenset)
+
+
+class TestSelfReferencePrefix:
+    """The self-reference prefix MUST come from act_iri_to_prefix
+    (registry-built, authoritative for the 34 corpus acts whose prefix
+    contains underscores). The earlier code derived it via
+    ``local.split('_Par_')[0]`` which works coincidentally for most
+    files but is fragile to graph-iteration order and silently
+    incorrect for a few legacy peeps."""
+
+    def test_self_reference_prefix_uses_registry_not_string_split(self):
+        from extract_cross_references import _derive_self_prefix
+
+        # Multi-segment prefix corpus shape: an act_iri whose prefix
+        # itself contains underscores. The registry-driven path MUST
+        # return the multi-segment prefix even though the provision
+        # @id below would also work via the fallback string split.
+        graph = [
+            {"@id": "estleg:KARIST_2_Osa1_1_87",
+             "@type": ["owl:Ontology"]},
+            {"@id": "estleg:KARIST_2_Par_1",
+             "@type": ["owl:NamedIndividual"]},
+        ]
+        # Registry maps the act IRI to the multi-segment prefix.
+        act_iri_to_prefix = {
+            "estleg:KARIST_2_Osa1_1_87": "KARIST_2",
+        }
+        prefix = _derive_self_prefix(graph, act_iri_to_prefix)
+        assert prefix == "KARIST_2"
+
+    def test_self_reference_prefix_falls_back_when_registry_missing(self):
+        """When act_iri_to_prefix is None or doesn't carry the act,
+        the helper falls back to _prefix_from_act_iri (suffix-stripper)
+        before resorting to the legacy provision-id string split."""
+        from extract_cross_references import _derive_self_prefix
+
+        graph = [
+            {"@id": "estleg:KOKS_Map_2026",
+             "@type": ["owl:Ontology"]},
+            {"@id": "estleg:KOKS_Par_22",
+             "@type": ["owl:NamedIndividual"]},
+        ]
+        prefix = _derive_self_prefix(graph, act_iri_to_prefix=None)
+        assert prefix == "KOKS"
+
+    def test_self_reference_prefix_handles_no_ontology_node(self):
+        """Last-resort path: when the peep has no owl:Ontology node
+        (rare legacy fragments), the helper still returns a usable
+        prefix from the first provision @id."""
+        from extract_cross_references import _derive_self_prefix
+
+        graph = [
+            {"@id": "estleg:LEGACY_Par_1",
+             "@type": ["owl:NamedIndividual"]},
+        ]
+        prefix = _derive_self_prefix(graph, act_iri_to_prefix={})
+        assert prefix == "LEGACY"
+
+    def test_self_reference_prefix_threaded_through_process_law_file(
+        self, tmp_path
+    ):
+        """The orchestrator must consult act_iri_to_prefix when given.
+        Ensures the kwarg actually reaches _derive_self_prefix and
+        beats the legacy provision-id split path."""
+        from extract_cross_references import process_law_file
+
+        # Stage a peep whose act_iri carries a multi-segment prefix
+        # but whose ONLY provision is keyed under a different
+        # surface form. The legacy split path would derive 'KARIST'
+        # from 'KARIST_2_Par_1'; the registry path returns 'KARIST_2'.
+        peep = tmp_path / "karist_peep.json"
+        peep.write_text(json.dumps({
+            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+                         "owl": "http://www.w3.org/2002/07/owl#"},
+            "@graph": [
+                {"@id": "estleg:KARIST_2_Map_2026",
+                 "@type": ["owl:Ontology", "estleg:Act"]},
+                {"@id": "estleg:KARIST_2_Par_1",
+                 "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+                 # Self-reference to § 99 — resolves only when the
+                 # prefix index agrees on 'KARIST_2'.
+                 "estleg:summary": "Käesoleva seaduse § 99 alusel ..."},
+            ],
+        }), encoding="utf-8")
+
+        # Provision index keyed under the multi-segment prefix.
+        prefix_to_provisions = {
+            "KARIST_2": {
+                "1": "estleg:KARIST_2_Par_1",
+                "99": "estleg:KARIST_2_Par_99",
+            },
+        }
+        act_iri_to_prefix = {"estleg:KARIST_2_Map_2026": "KARIST_2"}
+
+        stats = process_law_file(
+            peep,
+            abbrev_to_prefix={},
+            prefix_to_provisions=prefix_to_provisions,
+            iri_to_file={},
+            act_iri_to_prefix=act_iri_to_prefix,
+        )
+        assert stats["citations_resolved"] == 1
+        # Provision must carry the resolved self-reference.
+        with open(peep, "r", encoding="utf-8") as fh:
+            saved = json.load(fh)
+        prov = next(n for n in saved["@graph"]
+                    if n["@id"] == "estleg:KARIST_2_Par_1")
+        assert {"@id": "estleg:KARIST_2_Par_99"} in prov["estleg:references"]
+
+
+class TestLayer2bMarkerDoesNotLeak:
+    """The temporary bookkeeping flag ``_layer2b_counted`` was
+    historically stamped on provision nodes and stripped just before
+    save. If the save loop crashed mid-iteration, or if save_json
+    silently failed, the marker would leak to disk. The new contract
+    tracks counted ids in a local set, never mutating the document."""
+
+    def test_layer2b_marker_does_not_leak_to_output(self, tmp_path):
+        from extract_cross_references import process_law_file
+
+        peep = tmp_path / "kov_peep.json"
+        peep.write_text(json.dumps({
+            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+                         "owl": "http://www.w3.org/2002/07/owl#"},
+            "@graph": [
+                {"@id": "estleg:Reg_TLN_Test_Map_2024",
+                 "@type": ["owl:Ontology", "estleg:MunicipalRegulation"],
+                 "estleg:enactedByMunicipality": {
+                     "@id": "estleg:Municipality_tallinn"},
+                 "estleg:issuer": "Tallinna Linnavolikogu",
+                 "estleg:actNumber": "999"},
+                {"@id": "estleg:Reg_TLN_Test_Map_2024_Par_1",
+                 "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+                 "estleg:paragrahv": "§ 1",
+                 "estleg:legalText":
+                     "Vastavalt Tallinna Linnavolikogu määruse nr 15 § 4 ..."},
+            ],
+        }), encoding="utf-8")
+
+        kov_lookup = {
+            ("tallinna linnavolikogu", "15"): ["estleg:Reg_TLN15_Map_2020"],
+        }
+        registry = {
+            "estleg:Issuer_tallinna_linnavolikogu": (
+                "tallinna linnavolikogu",
+                "estleg:Municipality_tallinn", "volikogu",
+            ),
+        }
+
+        process_law_file(
+            peep,
+            abbrev_to_prefix={},
+            prefix_to_provisions={},
+            iri_to_file={},
+            kov_act_lookup_by_number=kov_lookup,
+            issuer_registry=registry,
+        )
+
+        with open(peep, "r", encoding="utf-8") as fh:
+            saved = json.load(fh)
+
+        # No node — provision OR act — may carry the temporary marker.
+        for node in saved["@graph"]:
+            assert "_layer2b_counted" not in node, (
+                f"_layer2b_counted leaked to disk on {node.get('@id')}"
+            )
