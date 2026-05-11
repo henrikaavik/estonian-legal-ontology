@@ -409,3 +409,157 @@ def load_curated_map(path: Path) -> dict[str, CuratedRow]:
                 "mappingEvidence": evidence,
             }
     return out
+
+
+# ---------------------------------------------------------------------------
+# Historical (pre-merger) municipality extraction — issue #130
+# ---------------------------------------------------------------------------
+#
+# The issuer registry already records, for every legacy KOV body, the
+# surviving municipality it maps to plus a `mappingEvidence` citation
+# that embeds the *pre-merger* EHAK code and name. The vast majority of
+# the corpus comes from the 2017 haldusreform (`mappingSource ==
+# "haldusreform-2017"`), whose evidence strings look like:
+#
+#   Wikidata: Abja vald (EHAK 0105) -> Mulgi vald (EHAK 0480); per RT I 21.06.2017 1
+#
+# A handful of split-municipality cases are `mappingSource ==
+# "manual-review"` with prose evidence that still opens with
+# `<Old name> vald (EHAK <old code>)`:
+#
+#   Misso vald (EHAK 0468) was split in the 2017 reform: ...
+#
+# Both shapes are matched by `_HISTORICAL_EVIDENCE_RE` (the first
+# `<Name> <vald|linn> (EHAK <code>)` occurrence — for the haldusreform
+# arrow form that is the left-hand side, i.e. the predecessor). Issuers
+# with `mappingSource == "auto-match"` map to a still-current
+# municipality and contribute no historical node.
+#
+# The 2017 haldusreform local-government reorganisation took legal
+# effect on the day the new councils convened after the 15 October 2017
+# local elections, i.e. 2017-10-15 — used as `mergedAt` for every
+# `haldusreform-2017` (and the manual-review 2017-split) entry. Other
+# `mappingSource` values would need their own date handling; none exist
+# in the corpus today, so an unrecognised source simply omits
+# `mergedAt` (the JSON-LD builder leaves the key off).
+
+_HISTORICAL_EVIDENCE_RE = re.compile(
+    r"(?P<name>[A-ZÄÖÜÕ][A-Za-zÄÖÜÕäöüõ.\-]*"
+    r"(?:[ /][A-ZÄÖÜÕ][A-Za-zÄÖÜÕäöüõ.\-]*)*)"
+    r"\s+(?P<type>vald|linn)\s+\(EHAK\s+(?P<code>\d{4})\)"
+)
+
+# Mapping sources whose entries describe a 2017-haldusreform merger.
+_HALDUSREFORM_2017_SOURCES = frozenset({"haldusreform-2017", "manual-review"})
+HALDUSREFORM_2017_MERGE_DATE = "2017-10-15"
+
+
+class HistoricalMunicipality(TypedDict):
+    formerEhakCode: str          # pre-merger EHAK code, 4 digits
+    formerName: str              # diacritic-correct pre-merger name, e.g. "Abja vald"
+    municipalityType: Literal["vald", "linn"]
+    succeededByCode: str         # surviving municipality EHAK code
+    mergedAt: str | None         # merger effective date (xsd:date) or None
+    mergerEvidence: str          # citation string from mappingEvidence
+    issuerSlugs: list[str]       # legacy issuer slugs that map to this unit (sorted)
+
+
+def _merge_date_for_source(source: str) -> str | None:
+    """Return the merger effective date for a given `mappingSource`.
+
+    The 2017 haldusreform took effect 2017-10-15; that covers every
+    ``haldusreform-2017`` entry and the small set of ``manual-review``
+    rows (all of which are 2017-reform splits — their evidence cites
+    "the 2017 reform"). Any other source returns ``None`` so the
+    builder omits ``estleg:mergedAt`` rather than guessing a date.
+    """
+    if source in _HALDUSREFORM_2017_SOURCES:
+        return HALDUSREFORM_2017_MERGE_DATE
+    return None
+
+
+def extract_historical_municipalities(
+    issuers: list[IssuerEntry],
+    municipalities: dict[str, Municipality] | None = None,
+) -> dict[str, HistoricalMunicipality]:
+    """Derive distinct pre-merger municipalities from the issuer registry.
+
+    For every issuer whose ``mappingEvidence`` embeds a predecessor
+    ``<Name> <vald|linn> (EHAK <code>)`` reference, produce one
+    :class:`HistoricalMunicipality` keyed by the pre-merger EHAK code.
+    Multiple issuers (e.g. a vallavolikogu and a vallavalitsus) that
+    map to the same historical unit are de-duplicated; their slugs are
+    collected (sorted) under ``issuerSlugs``.
+
+    ``municipalities``, when provided, is used to validate that every
+    derived ``succeededByCode`` resolves to a real current
+    municipality — a mismatch raises ``ValueError`` (a corpus/CSV drift
+    signal) rather than silently emitting a dangling successor link.
+    Pass ``None`` to skip that check (e.g. in unit tests with synthetic
+    issuer rows).
+
+    Issuers with ``mappingSource == "auto-match"`` (or any other
+    evidence shape that lacks a parseable predecessor reference) are
+    skipped — they map directly to a still-current municipality.
+
+    Determinism: the returned dict is built by iterating ``issuers`` in
+    input order, but every list value (``issuerSlugs``) is sorted, and
+    callers that serialise the result should iterate ``sorted(...)`` on
+    the keys (the JSON-LD builder does).
+    """
+    out: dict[str, HistoricalMunicipality] = {}
+    for entry in issuers:
+        evidence = (entry.get("mappingEvidence") or "").strip()
+        if not evidence:
+            continue
+        match = _HISTORICAL_EVIDENCE_RE.search(evidence)
+        if match is None:
+            continue
+        former_code = match.group("code")
+        current_code = entry["currentMunicipalityCode"]
+        if former_code == current_code:
+            # Evidence cites the *current* code first (unexpected for
+            # the known shapes) — not a predecessor, skip rather than
+            # invent a self-succession edge.
+            continue
+        former_name = " ".join(match.group("name").split())
+        mun_type = match.group("type")
+        slug = entry["slug"]
+        existing = out.get(former_code)
+        if existing is None:
+            out[former_code] = {
+                "formerEhakCode": former_code,
+                "formerName": f"{former_name} {mun_type}",
+                "municipalityType": mun_type,  # type: ignore[typeddict-item]
+                "succeededByCode": current_code,
+                "mergedAt": _merge_date_for_source(entry["mappingSource"]),
+                "mergerEvidence": evidence,
+                "issuerSlugs": [slug],
+            }
+        else:
+            # Same historical unit reached via another issuer. The
+            # successor code / name / type must agree — divergence is a
+            # data bug worth surfacing.
+            if existing["succeededByCode"] != current_code:
+                raise ValueError(
+                    f"historical municipality EHAK {former_code} "
+                    f"({former_name}) has conflicting successors: "
+                    f"{existing['succeededByCode']!r} (via "
+                    f"{existing['issuerSlugs'][0]!r}) vs {current_code!r} "
+                    f"(via {slug!r})"
+                )
+            if slug not in existing["issuerSlugs"]:
+                existing["issuerSlugs"].append(slug)
+                existing["issuerSlugs"].sort()
+
+    if municipalities is not None:
+        for code, hist in out.items():
+            succ = hist["succeededByCode"]
+            if succ not in municipalities:
+                raise ValueError(
+                    f"historical municipality EHAK {code} "
+                    f"({hist['formerName']}) is succeeded by EHAK "
+                    f"{succ!r}, which is not a current municipality in "
+                    "municipalities.json — registry/CSV drift."
+                )
+    return out

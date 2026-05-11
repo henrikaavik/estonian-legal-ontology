@@ -10,9 +10,11 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 import pytest
 
 from kov_registry import (
+    HALDUSREFORM_2017_MERGE_DATE,
     auto_match_municipality,
     build_issuer_registry,
     discover_issuer_slugs,
+    extract_historical_municipalities,
     load_curated_map,
     load_municipalities,
     normalize_title,
@@ -497,6 +499,208 @@ class TestNormalizeTitle:
             parse_issuer_slug("tallinna_linnavolikogu"),
         )
         assert out == "alevi haldusakt"
+
+
+def _issuer_row(
+    slug: str,
+    current: str,
+    *,
+    source: str = "haldusreform-2017",
+    evidence: str = "",
+    historical_name: str = "",
+) -> dict:
+    return {
+        "slug": slug,
+        "displayName": slug.replace("_", " ").title(),
+        "bodyType": "volikogu" if slug.endswith("volikogu") else "valitsus",
+        "currentMunicipalityCode": current,
+        "mappingSource": source,
+        "mappingEvidence": evidence,
+        "historicalMunicipalityName": historical_name,
+    }
+
+
+class TestExtractHistoricalMunicipalities:
+    """`extract_historical_municipalities` derives one
+    estleg:HistoricalMunicipality per distinct pre-merger EHAK code from
+    the issuer registry's mappingEvidence citations — issue #130."""
+
+    def test_parses_haldusreform_arrow_evidence(self):
+        rows = [
+            _issuer_row(
+                "abja_vallavolikogu", "0480",
+                evidence=(
+                    "Wikidata: Abja vald (EHAK 0105) -> Mulgi vald "
+                    "(EHAK 0480); per RT I 21.06.2017 1"
+                ),
+                historical_name="Abja",
+            ),
+        ]
+        hist = extract_historical_municipalities(rows)
+        assert set(hist) == {"0105"}
+        abja = hist["0105"]
+        assert abja["formerEhakCode"] == "0105"
+        assert abja["formerName"] == "Abja vald"
+        assert abja["municipalityType"] == "vald"
+        assert abja["succeededByCode"] == "0480"
+        assert abja["mergedAt"] == HALDUSREFORM_2017_MERGE_DATE == "2017-10-15"
+        assert "EHAK 0105" in abja["mergerEvidence"]
+        assert abja["issuerSlugs"] == ["abja_vallavolikogu"]
+
+    def test_parses_linn_unit_type(self):
+        rows = [
+            _issuer_row(
+                "elva_linnavolikogu", "0171",
+                evidence=(
+                    "Wikidata: Elva linn (EHAK 0170) -> Elva vald "
+                    "(EHAK 0171); per RT I 21.06.2017 1"
+                ),
+            ),
+        ]
+        hist = extract_historical_municipalities(rows)
+        assert hist["0170"]["municipalityType"] == "linn"
+        assert hist["0170"]["formerName"] == "Elva linn"
+
+    def test_parses_compound_hyphenated_name(self):
+        rows = [
+            _issuer_row(
+                "kohtla_nomme_vallavolikogu", "0803",
+                evidence=(
+                    "Wikidata: Kohtla-Nõmme vald (EHAK 0323) -> Toila "
+                    "vald (EHAK 0803); per RT I 21.06.2017 1"
+                ),
+            ),
+        ]
+        hist = extract_historical_municipalities(rows)
+        assert hist["0323"]["formerName"] == "Kohtla-Nõmme vald"
+
+    def test_parses_manual_review_split_prose(self):
+        # The manual-review rows use prose evidence that still opens
+        # with "<Old> vald (EHAK <old>)" — the predecessor.
+        rows = [
+            _issuer_row(
+                "misso_vallavolikogu", "0698",
+                source="manual-review",
+                evidence=(
+                    "Misso vald (EHAK 0468) was split in the 2017 "
+                    "reform: most territory plus the administrative "
+                    "center merged into Rõuge vald (0698); southern "
+                    "parishes joined Setomaa vald (0732)."
+                ),
+            ),
+        ]
+        hist = extract_historical_municipalities(rows)
+        assert set(hist) == {"0468"}
+        assert hist["0468"]["succeededByCode"] == "0698"
+        assert hist["0468"]["mergedAt"] == "2017-10-15"
+
+    def test_dedups_multiple_issuers_for_one_unit(self):
+        ev = (
+            "Wikidata: Alatskivi vald (EHAK 0126) -> Peipsiääre vald "
+            "(EHAK 0586); per RT I 21.06.2017 1"
+        )
+        rows = [
+            _issuer_row("alatskivi_vallavalitsus", "0586", evidence=ev),
+            _issuer_row("alatskivi_vallavolikogu", "0586", evidence=ev),
+        ]
+        hist = extract_historical_municipalities(rows)
+        assert set(hist) == {"0126"}
+        # Both issuers collected, sorted.
+        assert hist["0126"]["issuerSlugs"] == [
+            "alatskivi_vallavalitsus", "alatskivi_vallavolikogu",
+        ]
+
+    def test_auto_match_issuers_contribute_no_historical_node(self):
+        # auto-match issuers map to a still-current municipality and
+        # have empty mappingEvidence — no historical node.
+        rows = [
+            _issuer_row(
+                "tallinna_linnavolikogu", "0784", source="auto-match",
+                evidence="",
+            ),
+        ]
+        assert extract_historical_municipalities(rows) == {}
+
+    def test_unparseable_evidence_is_skipped(self):
+        rows = [
+            _issuer_row(
+                "weird_vallavolikogu", "0480",
+                evidence="some note without a parseable predecessor EHAK ref",
+            ),
+        ]
+        assert extract_historical_municipalities(rows) == {}
+
+    def test_conflicting_successors_raise(self):
+        # Same historical code reached via two issuers but with
+        # different successors → data bug, surface it.
+        rows = [
+            _issuer_row(
+                "x_vallavalitsus", "0480",
+                evidence="Foo vald (EHAK 0105) -> Bar vald (EHAK 0480)",
+            ),
+            _issuer_row(
+                "x_vallavolikogu", "0481",
+                evidence="Foo vald (EHAK 0105) -> Baz vald (EHAK 0481)",
+            ),
+        ]
+        with pytest.raises(ValueError, match="conflicting successors"):
+            extract_historical_municipalities(rows)
+
+    def test_successor_not_in_municipalities_raises_when_checked(self):
+        rows = [
+            _issuer_row(
+                "x_vallavolikogu", "9999",
+                evidence="Foo vald (EHAK 0105) -> Ghost vald (EHAK 9999)",
+            ),
+        ]
+        muns = load_municipalities(MIN_MUNICIPALITIES)
+        with pytest.raises(ValueError, match="9999"):
+            extract_historical_municipalities(rows, muns)
+        # Without the municipalities arg the check is skipped.
+        assert "0105" in extract_historical_municipalities(rows)
+
+    def test_self_succession_evidence_is_skipped(self):
+        # If the first (EHAK NNNN) match equals the current code, it is
+        # not a predecessor — don't emit a self-succession edge.
+        rows = [
+            _issuer_row(
+                "x_vallavolikogu", "0480",
+                evidence="Mulgi vald (EHAK 0480) absorbed several units",
+            ),
+        ]
+        assert extract_historical_municipalities(rows) == {}
+
+    def test_real_registry_yields_expected_shape(self):
+        # Drive the live data/ehak/issuers.json: every issuer that is
+        # NOT mappingSource=auto-match must contribute to exactly one
+        # historical node, and every node must have a 4-digit code, a
+        # non-empty name ending in " vald" or " linn", and a successor
+        # that exists in the current municipalities registry.
+        issuers = json.loads(
+            (REPO_ROOT / "data" / "ehak" / "issuers.json").read_text(
+                encoding="utf-8",
+            )
+        )
+        muns = load_municipalities(
+            REPO_ROOT / "data" / "ehak" / "municipalities.json"
+        )
+        hist = extract_historical_municipalities(issuers, muns)
+        non_auto = [r for r in issuers if r["mappingSource"] != "auto-match"]
+        assert len(hist) >= 130, (
+            f"expected ~150 historical municipalities, got {len(hist)}"
+        )
+        # Every non-auto issuer is accounted for in some node's slug list.
+        accounted = {s for h in hist.values() for s in h["issuerSlugs"]}
+        assert {r["slug"] for r in non_auto} == accounted
+        for code, h in hist.items():
+            assert len(code) == 4 and code.isdigit()
+            assert h["formerName"].endswith((" vald", " linn"))
+            assert h["municipalityType"] in {"vald", "linn"}
+            assert h["succeededByCode"] in muns
+            assert h["succeededByCode"] != code
+            # All real entries are 2017-haldusreform (or manual-review
+            # 2017 splits), so every node carries the merger date.
+            assert h["mergedAt"] == "2017-10-15"
 
 
 class TestMetadataJsonLd:
