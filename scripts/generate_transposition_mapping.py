@@ -14,6 +14,7 @@ Generates:
 
 from __future__ import annotations
 
+import argparse
 import json
 import re
 import sys
@@ -111,14 +112,54 @@ def sparql_query(query: str) -> list[dict]:
     return data.get("results", {}).get("bindings", [])
 
 
-def fetch_transposition_measures() -> list[dict]:
+def sparql_query_with_retry(
+    query: str, *, retries: int = 3, backoff: float = 2.0
+) -> list[dict]:
+    """Execute a SPARQL query with bounded exponential backoff on failure.
+
+    Mirrors ``generate_eu_legislation.sparql_query_with_retry`` (kept
+    local — this file is the only intended caller, see #129). EUR-Lex
+    5xxs intermittently; without a retry layer a single transient error
+    in the middle of a paginated sweep silently truncates the dataset.
+    We sleep ``backoff * 2**attempt`` between attempts and re-raise the
+    underlying exception (wrapped in ``RuntimeError``) on terminal
+    failure so the caller can either ``break`` (under ``--allow-partial``)
+    or propagate to the run's exit code.
+    """
+    last_exc: BaseException | None = None
+    for attempt in range(retries):
+        try:
+            return sparql_query(query)
+        except Exception as exc:  # noqa: BLE001 — broad to retry network/JSON
+            last_exc = exc
+            if attempt < retries - 1:
+                time.sleep(backoff * (2 ** attempt))
+    raise RuntimeError(
+        f"sparql_query failed after {retries} attempts: {last_exc}"
+    ) from last_exc
+
+
+def fetch_transposition_measures(
+    *, allow_partial: bool = False
+) -> tuple[list[dict], bool]:
     """
     Fetch national transposition measures for Estonia from EUR-Lex.
-    Returns list of dicts with celex_dir, directive_uri, title_nat, celex_nat.
+
+    Returns ``(items, partial)`` where each item is a dict with
+    ``celex_dir``, ``directive_uri``, ``title_nat`` and ``partial`` is
+    ``True`` iff the sweep stopped early due to a terminal SPARQL
+    failure under ``allow_partial``. Without ``allow_partial``, terminal
+    failures propagate as ``RuntimeError`` so the run exits non-zero
+    rather than silently truncating the dataset (#129).
+
+    Note: ``ORDER BY ?national`` makes OFFSET pagination stable across
+    pages — without it EUR-Lex may reorder rows between requests and
+    drop/duplicate measures (#183).
     """
     all_items: list[dict] = []
     seen: set[tuple[str, str]] = set()
     offset = 0
+    partial = False
 
     while True:
         query = f"""
@@ -132,14 +173,17 @@ SELECT DISTINCT ?directive ?celex_dir ?national ?title_nat WHERE {{
   ?exp_nat cdm:expression_belongs_to_work ?national .
   ?exp_nat cdm:expression_uses_language <http://publications.europa.eu/resource/authority/language/EST> .
   ?exp_nat cdm:expression_title ?title_nat .
-}} LIMIT {PAGE_SIZE} OFFSET {offset}
+}} ORDER BY ?national LIMIT {PAGE_SIZE} OFFSET {offset}
 """
         print(f"  Fetching transposition measures, offset {offset}...")
         try:
-            bindings = sparql_query(query)
+            bindings = sparql_query_with_retry(query)
         except Exception as e:
-            print(f"  ERROR at offset {offset}: {e}")
-            break
+            if allow_partial:
+                print(f"  ERROR at offset {offset} (partial run): {e}")
+                partial = True
+                break
+            raise
 
         if not bindings:
             break
@@ -166,7 +210,7 @@ SELECT DISTINCT ?directive ?celex_dir ?national ?title_nat WHERE {{
         offset += PAGE_SIZE
         time.sleep(RATE_DELAY)
 
-    return all_items
+    return all_items, partial
 
 
 def build_law_index(index_data: dict) -> dict[str, dict]:
@@ -463,7 +507,61 @@ def clear_transposition_from_file(filepath: Path) -> bool:
     return modified
 
 
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--allow-empty",
+        action="store_true",
+        help=(
+            "Record an intentional empty snapshot (with ``documented_empty: "
+            "true``) instead of failing when EUR-Lex returns zero "
+            "transposition measures for Estonia. Without this flag a "
+            "zero-measure result is treated as an error and the run exits "
+            "non-zero (#129)."
+        ),
+    )
+    parser.add_argument(
+        "--allow-partial",
+        action="store_true",
+        help=(
+            "Continue and write partial output (with ``partial: true`` in "
+            "the report) if a SPARQL pagination request fails after retries, "
+            "rather than aborting the run."
+        ),
+    )
+    return parser.parse_args()
+
+
+def _write_documented_empty_report(*, partial: bool, reason: str) -> Path:
+    """Write the current-shape report for an intentionally empty layer."""
+    report = {
+        "generated": datetime.now().strftime("%Y-%m-%d"),
+        "source": SPARQL_ENDPOINT,
+        "country": "EST",
+        "documented_empty": True,
+        "documented_empty_reason": reason,
+        "partial": partial,
+        "total_measures_fetched": 0,
+        "total_matched": 0,
+        "total_unmatched": 0,
+        "total_skipped_missing_directives": 0,
+        "total_skipped_missing_law_iris": 0,
+        "unique_directives": 0,
+        "unique_laws": 0,
+        "law_files_updated": 0,
+        "directive_nodes_updated": 0,
+        "mappings": [],
+        "unmatched_sample": [],
+        "missing_directives_sample": [],
+        "missing_law_iris_sample": [],
+    }
+    report_path = KRR_DIR / "transposition_mapping.json"
+    save_json(report_path, report)
+    return report_path
+
+
 def main():
+    args = parse_args()
     print("=" * 60)
     print("Generate transposition mapping: Estonian laws ↔ EU directives")
     print(f"Endpoint: {SPARQL_ENDPOINT}")
@@ -525,23 +623,35 @@ def main():
 
     # --- Step 3: Fetch transposition measures from EUR-Lex ---
     print("\n--- Fetching transposition measures for Estonia ---")
-    measures = fetch_transposition_measures()
+    measures, was_partial = fetch_transposition_measures(
+        allow_partial=args.allow_partial
+    )
     print(f"  Total transposition measures found: {len(measures)}")
 
     if not measures:
-        print("  No transposition measures found. Check endpoint availability.")
-        # Still produce an empty report
-        report = {
-            "generated": datetime.now().strftime("%Y-%m-%d"),
-            "source": SPARQL_ENDPOINT,
-            "total_measures_fetched": 0,
-            "matched": 0,
-            "unmatched": 0,
-            "mappings": [],
-        }
-        save_json(KRR_DIR / "transposition_mapping.json", report)
-        print("  Saved empty transposition_mapping.json")
-        return
+        if args.allow_empty:
+            report_path = _write_documented_empty_report(
+                partial=was_partial,
+                reason=(
+                    "EUR-Lex returned zero Estonian transposition measures; "
+                    "recorded as an intentional empty snapshot via --allow-empty."
+                ),
+            )
+            print(f"  Saved documented-empty {report_path.name}")
+            if was_partial:
+                sys.exit(2)
+            return
+        # Zero-fetch is NOT a success: the transposition layer is
+        # advertised in README, so an empty + unflagged layer is a
+        # defect (#129). Leave the existing report untouched and exit
+        # non-zero so callers/CI notice.
+        print(
+            "  ERROR: zero transposition measures fetched from EUR-Lex. "
+            "The endpoint may be unavailable or the query may need updating. "
+            "Pass --allow-empty to record an intentional empty snapshot, "
+            "or --allow-partial if a mid-sweep SPARQL error truncated results."
+        )
+        sys.exit(1)
 
     # --- Step 4: Match measures to Estonian laws ---
     print("\n--- Matching measures to Estonian law ontology entries ---")
@@ -654,6 +764,8 @@ def main():
         "generated": datetime.now().strftime("%Y-%m-%d"),
         "source": SPARQL_ENDPOINT,
         "country": "EST",
+        "documented_empty": False,
+        "partial": was_partial,
         "total_measures_fetched": len(measures),
         "total_matched": len(matched_mappings),
         "total_unmatched": len(unmatched_titles),
@@ -685,10 +797,20 @@ def main():
     print(f"  Unique Estonian laws:           {len(unique_laws)}")
     print(f"  Law files updated:              {files_updated}")
     print(f"  Directive nodes updated:        {directives_updated}")
+    if was_partial:
+        print("  NOTE: run was PARTIAL — re-run without --allow-partial when "
+              "EUR-Lex is healthy to refresh the layer.")
     print("\nOutputs:")
     print(f"  {report_path.relative_to(REPO_ROOT)}")
     print(f"  {schema_path.relative_to(REPO_ROOT)}")
     print("=" * 60)
+
+    if was_partial:
+        # ``--allow-partial`` was set (otherwise the run would have raised
+        # before reaching here). Non-zero exit signals downstream that the
+        # report/peep files should be refreshed once a clean run is
+        # possible.
+        sys.exit(2)
 
 
 if __name__ == "__main__":

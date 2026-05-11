@@ -571,6 +571,164 @@ class TestIndexFallbackDoesNotMisclassifyAsInForce:
         assert ont.get("estleg:temporalStatus") == "repealed"
 
 
+class TestActLevelPlacement:
+    """Temporal props go onto act / owl:Ontology nodes ONLY — no graph[0]
+    fallback (#128). A file whose graph carries neither an owl:Ontology
+    node nor an estleg:Act node is skipped (counted as no_act_node), and
+    any stale temporal props on its non-Act nodes are scrubbed.
+    """
+
+    def test_is_act_level_node(self):
+        from extract_temporal_data import is_act_level_node
+        assert is_act_level_node({"@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]})
+        assert is_act_level_node({"@type": ["estleg:Act"]})
+        assert is_act_level_node({"@type": ["owl:Ontology"]})
+        assert is_act_level_node({"@type": "estleg:Act"})
+        assert not is_act_level_node({"@type": ["owl:NamedIndividual", "estleg:LegalConcept"]})
+        assert not is_act_level_node({"@type": ["estleg:LegalProvision_Foo"]})
+        assert not is_act_level_node({})
+
+    def test_find_act_node_prefers_ontology_then_act(self):
+        from extract_temporal_data import find_act_node
+        graph = [
+            {"@id": "estleg:P1", "@type": ["estleg:LegalProvision"]},
+            {"@id": "estleg:A1", "@type": ["estleg:Act"]},
+            {"@id": "estleg:M1", "@type": ["owl:Ontology", "estleg:Act"]},
+        ]
+        assert find_act_node(graph)["@id"] == "estleg:M1"
+        # No owl:Ontology -> first estleg:Act node.
+        assert find_act_node(graph[:2])["@id"] == "estleg:A1"
+        # Neither -> None (no graph[0] fallback).
+        assert find_act_node([{"@id": "estleg:C1", "@type": ["estleg:LegalConcept"]}]) is None
+        assert find_act_node([]) is None
+
+    def test_clear_temporal_keys_scrubs_non_act_nodes(self):
+        from extract_temporal_data import clear_temporal_keys
+        graph = [
+            {"@id": "estleg:M1", "@type": ["owl:Ontology", "estleg:Act"],
+             "estleg:temporalStatus": "inForce"},
+            {"@id": "estleg:C1", "@type": ["estleg:LegalConcept"],
+             "estleg:temporalStatus": "inForce",
+             "estleg:entryIntoForce": {"@value": "1999-01-01", "@type": "xsd:date"}},
+        ]
+        assert clear_temporal_keys(graph) is True
+        assert "estleg:temporalStatus" not in graph[0]
+        assert "estleg:temporalStatus" not in graph[1]
+        assert "estleg:entryIntoForce" not in graph[1]
+        # Idempotent: nothing left to remove.
+        assert clear_temporal_keys(graph) is False
+
+    def test_main_skips_concept_only_file_and_scrubs_stale_temporal(
+        self, tmp_path, monkeypatch
+    ):
+        """A concept-only peep (the tsiviilseadustik_osa6/osa7 case): no
+        owl:Ontology, no estleg:Act, just an estleg:LegalConcept. main()
+        must NOT stamp temporal props onto it (no graph[0] fallback),
+        must strip any stale temporal props it already carries, and must
+        count it under skipped_no_act_node in the report.
+        """
+        import extract_temporal_data as mod
+        import estleg_common
+
+        krr = tmp_path / "krr_outputs"
+        rt = tmp_path / "data" / "riigiteataja"
+        krr.mkdir()
+        rt.mkdir(parents=True)
+        (krr / "reports" / "kov").mkdir(parents=True)
+
+        peep = krr / "concept_only_peep.json"
+        peep.write_text(json.dumps({
+            "@context": {
+                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "owl": "http://www.w3.org/2002/07/owl#",
+            },
+            "@graph": [
+                {"@id": "estleg:Concept_time_limits",
+                 "@type": ["owl:NamedIndividual", "estleg:LegalConcept"],
+                 "rdfs:label": "Time limits",
+                 # Stale temporal props from an old graph[0] fallback.
+                 "estleg:temporalStatus": "inForce",
+                 "estleg:entryIntoForce": {"@value": "1999-01-01",
+                                            "@type": "xsd:date"}},
+            ],
+        }), encoding="utf-8")
+
+        monkeypatch.setattr(mod, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "DATA_DIR", rt)
+        monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+        if hasattr(mod, "REPO_ROOT"):
+            monkeypatch.setattr(mod, "REPO_ROOT", tmp_path)
+
+        rc = mod.main()
+        assert rc in (None, 0)
+
+        doc = json.loads(peep.read_text(encoding="utf-8"))
+        concept = doc["@graph"][0]
+        # Stale temporal props scrubbed; none re-added (no act node).
+        assert "estleg:temporalStatus" not in concept
+        assert "estleg:entryIntoForce" not in concept
+
+        report = json.loads(
+            (krr / "temporal_data_report.json").read_text(encoding="utf-8")
+        )
+        assert report["summary"]["skipped_no_act_node"] >= 1
+        entry = next(e for e in report["laws"] if e["file"] == "concept_only_peep.json")
+        assert entry["status"] == "no_act_node"
+
+    def test_main_does_not_write_temporal_onto_provision_node(
+        self, tmp_path, monkeypatch
+    ):
+        """When an act node IS present, only it (not sibling provision
+        nodes) receives temporal props."""
+        import extract_temporal_data as mod
+        import estleg_common
+
+        krr = tmp_path / "krr_outputs"
+        rt = tmp_path / "data" / "riigiteataja"
+        krr.mkdir()
+        rt.mkdir(parents=True)
+        (krr / "reports" / "kov").mkdir(parents=True)
+        (krr / "INDEX.json").write_text(json.dumps({
+            "laws": [{
+                "name": "demo_law",
+                "files": ["demo_law_peep.json"],
+                "kehtivus": {"joustumine": "2010-01-01"},
+            }],
+        }), encoding="utf-8")
+
+        peep = krr / "demo_law_peep.json"
+        peep.write_text(json.dumps({
+            "@context": {
+                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "owl": "http://www.w3.org/2002/07/owl#",
+            },
+            "@graph": [
+                {"@id": "estleg:Demo_Map_2026",
+                 "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
+                 "rdfs:label": "Demo Law"},
+                {"@id": "estleg:Demo_Par_1",
+                 "@type": ["owl:NamedIndividual", "estleg:LegalProvision_Demo"],
+                 "estleg:paragrahv": "§ 1."},
+            ],
+        }), encoding="utf-8")
+
+        monkeypatch.setattr(mod, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "DATA_DIR", rt)
+        monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+        if hasattr(mod, "REPO_ROOT"):
+            monkeypatch.setattr(mod, "REPO_ROOT", tmp_path)
+
+        rc = mod.main(evaluation_date="2024-01-01")
+        assert rc in (None, 0)
+
+        doc = json.loads(peep.read_text(encoding="utf-8"))
+        act = next(n for n in doc["@graph"] if "owl:Ontology" in n["@type"])
+        provision = next(n for n in doc["@graph"] if "estleg:Demo_Par_1" == n["@id"])
+        assert act.get("estleg:temporalStatus") == "inForce"
+        assert "estleg:temporalStatus" not in provision
+        assert "estleg:entryIntoForce" not in provision
+
+
 class TestSinglePassClearAndEnrich:
     """The merged single-pass pattern: open + clear + enrich + save in
     one iteration. The previous double-pass pattern saved the same

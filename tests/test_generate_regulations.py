@@ -17,25 +17,32 @@ dedicated test file exists yet.
 from __future__ import annotations
 
 import json
+import sys
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
 import pytest
 
 import estleg_common
+import generate_regulations
+import riigiteataja_common
 from generate_regulations import (
     _gid_rank,
     build_regulation_index,
     build_regulation_jsonld,
     classify_issuer,
     existing_is_stale,
+    gather_regulations,
     provision_summary,
     regulation_file_tid,
     source_removed_files,
     write_regulation_output,
 )
 from riigiteataja_common import (
+    SourceListFetchError,
+    fetch_acts,
     iter_peep_files,
+    new_page_stats,
     parse_act_metadata,
 )
 
@@ -1024,3 +1031,281 @@ class TestMissingPartsCli:
         # The other two parts must NOT have been written.
         assert not (out_dir / "volaigusseadus_osa2_peep.json").exists()
         assert not (out_dir / "volaigusseadus_osa10_peep.json").exists()
+
+
+# ---------------------------------------------------------------------------
+# Issue #114 — source-list fetch failures are fatal by default; per-page
+# success/fail/retry counters; a truncated run must never publish an index
+# that looks like a complete corpus refresh.
+# ---------------------------------------------------------------------------
+
+
+def _reg_act_row(n: int) -> dict:
+    return {
+        "terviktekstID": str(5000 + n),
+        "globaalID": str(9000 + n),
+        "url": f"/akt/{n}.xml",
+        "pealkiri": f"Test määrus {n}",
+        "valjaandja": "Vabariigi Valitsus",
+        "kehtivus": {},
+    }
+
+
+def _make_fake_fetch_acts(rows: list[dict]):
+    """Return a fake ``fetch_acts`` that yields ``rows`` (the successfully
+    fetched "page 1"), then simulates a terminal fetch failure on "page
+    2": it raises ``SourceListFetchError`` unless ``allow_partial`` is
+    set, in which case it stops early. It mutates the supplied ``stats``
+    dict exactly like the real generator would.
+    """
+
+    def fake_fetch_acts(*, allow_partial: bool = False, stats: dict | None = None, **_kw):
+        if stats is not None:
+            for key in ("pagesFetchedOk", "pagesFailed", "pagesRetried"):
+                stats.setdefault(key, 0)
+            stats["pagesFetchedOk"] += 1  # "page 1" came back fine
+        yield from rows
+        # "page 2" — the API blows up.
+        if stats is not None:
+            stats["pagesFailed"] += 1
+        if not allow_partial:
+            raise SourceListFetchError("API error on page 2: simulated outage")
+        # allow_partial: stop without raising — the caller must detect the
+        # truncation via stats["pagesFailed"] > 0.
+
+    return fake_fetch_acts
+
+
+class _PageOneFullPageTwoFailsHttpGet:
+    """Fake ``requests.get`` for the Riigi Teataja search API: returns a
+    full page (exactly ``limiit`` rows) on ``leht=1`` so ``fetch_acts``
+    advances, then fails on ``leht>=2``.
+    """
+
+    class _OkResp:
+        def __init__(self, payload):
+            self._payload = payload
+
+        def raise_for_status(self):
+            pass
+
+        def json(self):
+            return self._payload
+
+    class _BoomResp:
+        def raise_for_status(self):
+            raise RuntimeError("simulated 503")
+
+        def json(self):  # pragma: no cover - never reached
+            return {}
+
+    def __call__(self, url, *, params=None, timeout=None, **kw):
+        params = params or {}
+        page = int(params.get("leht", 1))
+        limiit = int(params.get("limiit", 1))
+        if page == 1:
+            return self._OkResp({"aktid": [_reg_act_row(i) for i in range(limiit)]})
+        return self._BoomResp()
+
+
+class TestFetchActsPageCounters:
+    """``fetch_acts`` must populate the per-page counter dict and stop /
+    raise correctly on a mid-enumeration failure (issue #114)."""
+
+    def test_terminal_failure_raises_and_counts_pages(self, monkeypatch):
+        monkeypatch.setattr(
+            riigiteataja_common.requests, "get", _PageOneFullPageTwoFailsHttpGet()
+        )
+        monkeypatch.setattr(riigiteataja_common.time, "sleep", lambda *_a, **_k: None)
+
+        stats = new_page_stats()
+        gen = fetch_acts(document="määrus", limiit=2, stats=stats)
+        with pytest.raises(SourceListFetchError):
+            list(gen)
+
+        assert stats["pagesFetchedOk"] == 1
+        assert stats["pagesFailed"] == 1
+        # Default max_retries=2 > 0, so the failed page counts as retried.
+        assert stats["pagesRetried"] == 1
+
+    def test_allow_partial_stops_early_and_counts_pages(self, monkeypatch):
+        monkeypatch.setattr(
+            riigiteataja_common.requests, "get", _PageOneFullPageTwoFailsHttpGet()
+        )
+        monkeypatch.setattr(riigiteataja_common.time, "sleep", lambda *_a, **_k: None)
+
+        stats = new_page_stats()
+        rows = list(
+            fetch_acts(document="määrus", limiit=2, allow_partial=True, stats=stats)
+        )
+        # Page 1's two rows still made it through.
+        assert len(rows) == 2
+        assert stats["pagesFetchedOk"] == 1
+        assert stats["pagesFailed"] == 1
+
+    def test_retry_then_success_increments_pages_retried(self, monkeypatch):
+        calls = {"n": 0}
+
+        class _OkResp:
+            def raise_for_status(self):
+                pass
+
+            def json(self):
+                # Short page (< limiit) terminates enumeration cleanly.
+                return {"aktid": [_reg_act_row(1)]}
+
+        class _BoomResp:
+            def raise_for_status(self):
+                raise RuntimeError("transient")
+
+            def json(self):  # pragma: no cover
+                return {}
+
+        def flaky_get(url, *, params=None, timeout=None, **kw):
+            calls["n"] += 1
+            # Fail the first attempt, succeed on the retry.
+            return _BoomResp() if calls["n"] == 1 else _OkResp()
+
+        monkeypatch.setattr(riigiteataja_common.requests, "get", flaky_get)
+        monkeypatch.setattr(riigiteataja_common.time, "sleep", lambda *_a, **_k: None)
+
+        stats = new_page_stats()
+        rows = list(fetch_acts(document="määrus", limiit=10, stats=stats))
+        assert len(rows) == 1
+        assert stats["pagesFetchedOk"] == 1
+        assert stats["pagesFailed"] == 0
+        assert stats["pagesRetried"] == 1
+
+
+class TestGatherRegulationsFetchFailure:
+    """``gather_regulations`` must propagate the fatal error by default and,
+    under ``--allow-partial``, mark the manifest incomplete with the page
+    counters intact."""
+
+    def test_fetch_failure_is_fatal_by_default(self, monkeypatch):
+        monkeypatch.setattr(
+            generate_regulations,
+            "fetch_acts",
+            _make_fake_fetch_acts([_reg_act_row(1)]),
+        )
+        with pytest.raises(SourceListFetchError):
+            gather_regulations(kov=False, kehtiv="2026-05-01", limit=None)
+
+    def test_allow_partial_marks_manifest_incomplete_with_page_counters(
+        self, monkeypatch
+    ):
+        monkeypatch.setattr(
+            generate_regulations,
+            "fetch_acts",
+            _make_fake_fetch_acts([_reg_act_row(1), _reg_act_row(2)]),
+        )
+        regs, manifest = gather_regulations(
+            kov=False, kehtiv="2026-05-01", limit=None, allow_partial=True
+        )
+        # Page 1's two rows still produced two unique regulations.
+        assert len(regs) == 2
+        assert manifest["complete"] is False
+        assert manifest["pages"]["pagesFetchedOk"] >= 1
+        assert manifest["pages"]["pagesFailed"] >= 1
+        assert set(manifest["pages"]) == {
+            "pagesFetchedOk",
+            "pagesFailed",
+            "pagesRetried",
+        }
+
+    def test_clean_run_marks_manifest_complete(self, monkeypatch):
+        def fake_fetch_acts(*, stats=None, **_kw):
+            if stats is not None:
+                for key in ("pagesFetchedOk", "pagesFailed", "pagesRetried"):
+                    stats.setdefault(key, 0)
+                stats["pagesFetchedOk"] += 1
+            yield _reg_act_row(1)
+            # No failure — enumeration ran to the end.
+
+        monkeypatch.setattr(generate_regulations, "fetch_acts", fake_fetch_acts)
+        regs, manifest = gather_regulations(
+            kov=False, kehtiv="2026-05-01", limit=None
+        )
+        assert manifest["complete"] is True
+        assert manifest["pages"]["pagesFailed"] == 0
+        assert manifest["pages"]["pagesFetchedOk"] >= 1
+
+
+class TestGenerateRegulationsNoPartialWrite:
+    """``generate_regulations.main()`` must, on a mid-enumeration fetch
+    failure without ``--allow-partial``, exit non-zero and write NEITHER
+    the index NOR any ``*_peep.json`` output. With ``--allow-partial`` the
+    run completes and the index carries ``complete: false`` plus the page
+    counters so a consumer cannot mistake it for a full refresh.
+    """
+
+    def _wire_outputs(self, tmp_path, monkeypatch):
+        riik = tmp_path / "regulations" / "riik"
+        kov = tmp_path / "regulations" / "kov"
+        monkeypatch.setattr(generate_regulations, "OUTPUT_RIIK", riik)
+        monkeypatch.setattr(generate_regulations, "OUTPUT_KOV", kov)
+        return riik
+
+    def test_main_exits_nonzero_and_writes_no_index(self, tmp_path, monkeypatch):
+        riik = self._wire_outputs(tmp_path, monkeypatch)
+        monkeypatch.setattr(
+            generate_regulations,
+            "fetch_acts",
+            _make_fake_fetch_acts([_reg_act_row(1)]),
+        )
+        # fetch_xml must never be reached — gather_regulations raises first.
+        monkeypatch.setattr(
+            generate_regulations,
+            "fetch_xml",
+            lambda *a, **kw: pytest.fail("fetch_xml must not run after fetch failure"),
+        )
+        monkeypatch.setattr(sys, "argv", ["generate_regulations.py"])
+
+        with pytest.raises(SystemExit) as exc_info:
+            generate_regulations.main()
+        assert exc_info.value.code != 0
+
+        assert not (riik / "REGULATIONS_RIIK_INDEX.json").exists(), (
+            "index must NOT be written after a truncated source enumeration"
+        )
+        assert list(riik.glob("**/*_peep.json")) == [], (
+            "no per-regulation outputs may be written when the fetch failed"
+        )
+
+    def test_allow_partial_writes_index_marked_incomplete(
+        self, tmp_path, monkeypatch
+    ):
+        riik = self._wire_outputs(tmp_path, monkeypatch)
+        monkeypatch.setattr(
+            generate_regulations,
+            "fetch_acts",
+            _make_fake_fetch_acts([_reg_act_row(1)]),
+        )
+        # Serve a minimal act XML offline so the partial run actually
+        # produces one peep file alongside the partial index.
+        monkeypatch.setattr(
+            generate_regulations,
+            "fetch_xml",
+            lambda *a, **kw: ET.fromstring(
+                "<akt><metaandmed>"
+                "<terviktekstiGrupiID>5001</terviktekstiGrupiID>"
+                "<globaalID>9001</globaalID>"
+                "</metaandmed></akt>"
+            ),
+        )
+        monkeypatch.setattr(
+            sys, "argv", ["generate_regulations.py", "--allow-partial", "--sleep", "0"]
+        )
+
+        generate_regulations.main()
+
+        index_path = riik / "REGULATIONS_RIIK_INDEX.json"
+        assert index_path.exists()
+        index = json.loads(index_path.read_text(encoding="utf-8"))
+        assert index["run"]["complete"] is False
+        assert index["run"]["partialAllowed"] is True
+        pages = index["run"]["pages"]
+        assert pages["pagesFetchedOk"] >= 1
+        assert pages["pagesFailed"] >= 1
+        # The partial run still wrote (and indexed) the rows it got.
+        assert index["totalRegulations"] >= 1

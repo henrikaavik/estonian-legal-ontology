@@ -404,6 +404,76 @@ def validate_affected_law_names(filepath: Path, doc: dict):
             )
 
 
+# Act-level temporal validity properties (#128). The ontology models
+# temporal validity at the *act* level: these predicates are only ever
+# written onto a node whose `@type` includes `estleg:Act` (laws, state
+# regulations, KOV regulations all get `estleg:Act` stamped on their act
+# node during KOV layer-1 enrichment). `estleg:publicationDate` is
+# deliberately excluded — it is also a legitimate DraftLegislation
+# property, so it is not act-exclusive.
+TEMPORAL_ACT_LEVEL_PROPS = frozenset({
+    "estleg:temporalStatus",
+    "estleg:entryIntoForce",
+    "estleg:adoptionDate",
+    "estleg:repealDate",
+    "estleg:lastAmendmentDate",
+})
+
+# Documented (property, type) exceptions to the act-level placement rule.
+# `estleg:AmendmentEvent` reified amendment nodes carry their own
+# `estleg:entryIntoForce` (the date *that amendment* took effect) — that
+# is an event date, not the act-validity property, so it is allowed on
+# non-Act nodes. Any other temporal property on a non-Act node is the
+# bug class from #128 (a `graph[0]` fallback stamping temporal props
+# onto e.g. an `estleg:LegalConcept`).
+TEMPORAL_PLACEMENT_EXCEPTIONS = frozenset({
+    ("estleg:entryIntoForce", "estleg:AmendmentEvent"),
+})
+
+
+def validate_temporal_property_targets(files: list[Path]):
+    """Closed-world check: act-level temporal props must live on Act nodes.
+
+    Fails (errors) when `estleg:temporalStatus` / `estleg:entryIntoForce`
+    / `estleg:adoptionDate` / `estleg:repealDate` / `estleg:lastAmendmentDate`
+    appear on a node whose `@type` does not include `estleg:Act`, unless
+    the (property, type) pair is in `TEMPORAL_PLACEMENT_EXCEPTIONS`. This
+    catches the historical `graph[0]` fallback in `extract_temporal_data.py`
+    that wrote temporal props onto non-Act `estleg:LegalConcept` nodes
+    (#128). SHACL's `estleg:ActTemporalShape` only constrains nodes that
+    *are* `estleg:Act` (open-world `sh:targetClass`), so this gate is the
+    only thing that flags misplacement.
+    """
+    print("\n--- Temporal Property Placement ---")
+    offenders: list[tuple[str, str, str]] = []
+    for filepath in files:
+        doc = validate_json_syntax(filepath)
+        if not isinstance(doc, dict):
+            continue
+        for node in doc.get("@graph", []):
+            if not isinstance(node, dict):
+                continue
+            types = set(node_types(node))
+            if "estleg:Act" in types:
+                continue
+            for prop in TEMPORAL_ACT_LEVEL_PROPS:
+                if prop not in node:
+                    continue
+                if any((prop, t) in TEMPORAL_PLACEMENT_EXCEPTIONS for t in types):
+                    continue
+                offenders.append((filepath.name, node.get("@id", "?"), prop))
+    if offenders:
+        error(
+            f"{len(offenders)} act-level temporal properties on non-Act nodes"
+        )
+        for file_name, node_id, prop in offenders[:20]:
+            print(f"    {file_name}: {node_id} carries {prop} (not estleg:Act)")
+        if len(offenders) > 20:
+            print(f"    ... and {len(offenders) - 20} more")
+    else:
+        print("  OK: all act-level temporal properties live on estleg:Act nodes")
+
+
 def collect_internal_refs(filepath: Path, doc: dict) -> list[tuple[str, str, str, str]]:
     refs: list[tuple[str, str, str, str]] = []
 
@@ -659,6 +729,35 @@ def metadata_stats(krr_dir: Path = KRR_DIR) -> dict[str, int]:
     }
 
 
+# Maps each `dcat:distribution` entry (keyed by its `dcterms:title`) to
+# the `estleg:*Count` predicates it advertises and the canonical
+# `metadata_stats()` key each one must equal. Without this, the
+# per-distribution count keys (and the parallel `estleg:fileCount` keys
+# that mean different things in different distributions) drift
+# independently of the validated `estleg:statistics` block (#110).
+DISTRIBUTION_COUNT_KEYS: dict[str, dict[str, str]] = {
+    "JSON-LD ontology files (complete dataset)": {
+        "estleg:fileCount": "estleg:totalFiles",
+    },
+    "Combined enacted laws ontology": {
+        "estleg:lawIndexRecordCount": "estleg:enactedLawCount",
+        "estleg:lawFileCount": "estleg:enactedLawFileCount",
+    },
+    "Domestic regulations (state-level)": {
+        "estleg:fileCount": "estleg:domesticRegulationCount",
+    },
+    "Combined draft legislation ontology": {
+        "estleg:draftLegislationCount": "estleg:draftLegislationCount",
+    },
+    "Combined EU legislation ontology": {
+        "estleg:euLegislationCount": "estleg:euLegislationCount",
+    },
+    "Combined EU court decisions ontology": {
+        "estleg:euCourtDecisionCount": "estleg:euCourtDecisionCount",
+    },
+}
+
+
 def validate_metadata_catalog(krr_dir: Path = KRR_DIR):
     print("\n--- Catalog Metadata ---")
     metadata_path = REPO_ROOT / "metadata.jsonld"
@@ -676,7 +775,98 @@ def validate_metadata_catalog(krr_dir: Path = KRR_DIR):
     for key, value in actual.items():
         if advertised.get(key) != value:
             error(f"metadata.jsonld: {key}={advertised.get(key)!r}, expected {value!r}")
-    print(f"  Checked {len(actual)} advertised corpus statistics")
+
+    # Cross-check the per-distribution `estleg:*Count` keys too — the
+    # `dcat:distribution` prose previously hard-coded counts that
+    # nothing validated (#110). Counts in the free-text `dcterms:description`
+    # strings have been replaced with qualitative wording; the remaining
+    # numeric assertions live only in these structured keys, which we now
+    # pin against `metadata_stats()`.
+    checked_dist_keys = 0
+    distributions = doc.get("dcat:distribution", [])
+    if not isinstance(distributions, list):
+        error("metadata.jsonld: dcat:distribution is not an array")
+        distributions = []
+    for dist in distributions:
+        if not isinstance(dist, dict):
+            continue
+        title = dist.get("dcterms:title")
+        expected_keys = DISTRIBUTION_COUNT_KEYS.get(title) if isinstance(title, str) else None
+        if not expected_keys:
+            continue
+        for dist_key, stats_key in expected_keys.items():
+            checked_dist_keys += 1
+            if dist.get(dist_key) != actual.get(stats_key):
+                error(
+                    f"metadata.jsonld: dcat:distribution[{title!r}].{dist_key}="
+                    f"{dist.get(dist_key)!r}, expected {actual.get(stats_key)!r}"
+                )
+    print(
+        f"  Checked {len(actual)} advertised corpus statistics "
+        f"and {checked_dist_keys} distribution count keys"
+    )
+
+
+# Required keys in the *current* shape of `transposition_mapping.json`
+# (the shape `generate_transposition_mapping.py` emits, mirroring the
+# other EU generators per #183/#129). The presence of `country` and
+# `total_matched` discriminates it from the legacy `{matched, unmatched,
+# mappings}` shape that the generator no longer produces.
+TRANSPOSITION_REPORT_REQUIRED_KEYS = frozenset({
+    "generated",
+    "source",
+    "country",
+    "total_measures_fetched",
+    "total_matched",
+    "total_unmatched",
+    "unique_directives",
+    "unique_laws",
+    "mappings",
+})
+
+
+def validate_transposition_mapping(krr_dir: Path = KRR_DIR):
+    """Gate the EU transposition layer (#129).
+
+    If `transposition_mapping.json` exists it must (1) be in the current
+    report shape, and (2) either carry a non-empty `mappings` array or be
+    explicitly flagged as an intentional empty snapshot (`documented_empty:
+    true`, set by the generator's `--allow-empty`). README advertises EU
+    directive transposition as an active integration feature, so an empty
+    *and* unflagged layer is a release defect, not a no-op.
+    """
+    print("\n--- Transposition Mapping ---")
+    report_path = krr_dir / "transposition_mapping.json"
+    if not report_path.exists():
+        warn("transposition_mapping.json: not found")
+        return
+    doc = validate_json_syntax(report_path)
+    if not isinstance(doc, dict):
+        error("transposition_mapping.json: not a JSON object")
+        return
+    missing_keys = sorted(TRANSPOSITION_REPORT_REQUIRED_KEYS - set(doc))
+    if missing_keys:
+        error(
+            "transposition_mapping.json: stale/legacy report shape — missing "
+            f"keys {missing_keys}. Re-run scripts/generate_transposition_mapping.py."
+        )
+        return
+    mappings = doc.get("mappings")
+    if not isinstance(mappings, list):
+        error("transposition_mapping.json: 'mappings' is not an array")
+        return
+    if not mappings and not doc.get("documented_empty"):
+        error(
+            "transposition_mapping.json: 'mappings' is empty and "
+            "'documented_empty' is not set — the transposition layer is "
+            "advertised but unpopulated. Re-run the generator, or pass "
+            "--allow-empty to record an intentional empty snapshot."
+        )
+        return
+    if mappings:
+        print(f"  OK: {len(mappings)} law↔directive mappings, current report shape")
+    else:
+        print("  OK: empty transposition layer, explicitly flagged (documented_empty)")
 
 
 def graph_ids(doc: dict) -> set[str]:
@@ -1225,6 +1415,8 @@ def main():
     validate_id_uniqueness(all_ids)
     validate_internal_references(all_ids, internal_refs)
     validate_vocabulary_coverage(files)
+    validate_temporal_property_targets(files)
+    validate_transposition_mapping()
     validate_registry_index()
     validate_regulation_indexes()
     validate_combined_ontology()

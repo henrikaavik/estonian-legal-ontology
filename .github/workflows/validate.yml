@@ -122,6 +122,11 @@ jobs:
 
   semantic-validation:
     runs-on: ubuntu-latest
+    # ``kov`` walks ~11k municipal regulation peep files into a single
+    # graph before pyshacl runs, so the default GitHub step timeout is
+    # tight. 30 minutes leaves comfortable headroom for the largest
+    # bucket while still failing fast on a genuine hang.
+    timeout-minutes: 30
     strategy:
       fail-fast: false
       matrix:
@@ -129,7 +134,10 @@ jobs:
         # the ``combined_ontology.jsonld`` artifact (the most-consumed
         # file). Issue #164: combined drift is a real failure mode that
         # would otherwise slip past the per-bucket gates.
-        bucket: [riigikohus, drafts, eurlex, curia, laws]
+        # ``kov`` covers the municipal (KOV) regulation corpus under
+        # ``krr_outputs/regulations/kov/**/*_peep.json`` plus the KOV
+        # issuer/municipality registries (issue #105).
+        bucket: [riigikohus, drafts, eurlex, curia, laws, kov]
     steps:
       - uses: actions/checkout@v4
 

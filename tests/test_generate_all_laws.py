@@ -674,3 +674,181 @@ class TestFetchXmlTidCache:
             "/akt/x.xml", "myslug", tid="42",
         )
         assert root is not None
+
+
+# ---------------------------------------------------------------------------
+# Issue #114 — fail on source-list fetch failure; per-page counters; the
+# index/manifest must never look "complete" after a truncated enumeration.
+# ---------------------------------------------------------------------------
+
+
+def _law_row(n: int) -> dict:
+    return {
+        "pealkiri": f"Test seadus {n}",
+        "globaalID": str(100 + n),
+        "terviktekstID": str(200 + n),
+        "url": f"/akt/{n}.xml",
+        "lyhend": f"TS{n}",
+    }
+
+
+class _PageOneOkPageTwoFailsGet:
+    """A fake ``requests.get`` for the law-list API that returns a full
+    page of acts on ``leht=1`` and raises (via ``raise_for_status``) on
+    ``leht>=2`` — i.e. a transient failure mid-enumeration.
+    """
+
+    class _OkResp:
+        def __init__(self, payload: dict) -> None:
+            self._payload = payload
+
+        def raise_for_status(self) -> None:
+            pass
+
+        def json(self) -> dict:
+            return self._payload
+
+    class _BoomResp:
+        def raise_for_status(self) -> None:
+            raise RuntimeError("API error on page 2: boom")
+
+        def json(self) -> dict:  # pragma: no cover - never reached
+            return {}
+
+    def __call__(self, url, *, params=None, timeout=None, **kw):
+        params = params or {}
+        page = int(params.get("leht", 1))
+        if page == 1:
+            # Non-empty page so ``get_all_laws`` advances to page 2.
+            return self._OkResp({"aktid": [_law_row(1)]})
+        return self._BoomResp()
+
+
+class TestGetAllLawsPageCounters:
+    """``get_all_laws`` must surface per-page success/fail/retry counts."""
+
+    def test_happy_path_reports_pages_fetched_ok(self, monkeypatch):
+        class _Resp:
+            def __init__(self, payload):
+                self._payload = payload
+
+            def raise_for_status(self):
+                pass
+
+            def json(self):
+                return self._payload
+
+        def fake_get(url, *, params=None, timeout=None, **kw):
+            params = params or {}
+            page = int(params.get("leht", 1))
+            if page == 1:
+                return _Resp({"aktid": [_law_row(1)]})
+            # Empty page terminates enumeration cleanly.
+            return _Resp({"aktid": []})
+
+        monkeypatch.setattr(generate_all_laws.requests, "get", fake_get)
+        all_laws, manifest = generate_all_laws.get_all_laws(allow_partial=False)
+
+        assert manifest["complete"] is True
+        assert manifest["pages"]["pagesFetchedOk"] == 2
+        assert manifest["pages"]["pagesFailed"] == 0
+        assert manifest["pages"]["pagesRetried"] == 0
+        assert set(manifest["pages"]) == {
+            "pagesFetchedOk",
+            "pagesFailed",
+            "pagesRetried",
+        }
+
+    def test_partial_run_counts_the_failed_page(self, monkeypatch):
+        monkeypatch.setattr(
+            generate_all_laws.requests, "get", _PageOneOkPageTwoFailsGet()
+        )
+        all_laws, manifest = generate_all_laws.get_all_laws(allow_partial=True)
+
+        assert manifest["complete"] is False
+        assert manifest["partialAllowed"] is True
+        assert manifest["pages"]["pagesFetchedOk"] == 1
+        assert manifest["pages"]["pagesFailed"] == 1
+        # Page 1's single act still made it through.
+        assert len(all_laws) == 1
+
+
+class TestGenerateAllLawsNoPartialWrite:
+    """When a law-list page fails mid-enumeration and ``--allow-partial``
+    is NOT set, ``main()`` must exit non-zero and write NEITHER the
+    manifest NOR any ``*_peep.json`` output — a consumer must not be able
+    to mistake a truncated run for a complete corpus refresh.
+    """
+
+    def _wire_tmp_run(self, tmp_path, monkeypatch, *, allow_partial: bool):
+        krr = tmp_path / "krr_outputs"
+        krr.mkdir()
+        data_dir = tmp_path / "data" / "riigiteataja"
+        data_dir.mkdir(parents=True)
+        monkeypatch.setattr(generate_all_laws, "KRR_DIR", krr)
+        monkeypatch.setattr(generate_all_laws, "DATA_DIR", data_dir)
+        monkeypatch.setattr(generate_all_laws, "MULTIPART_LAWS", set())
+        monkeypatch.setattr(
+            generate_all_laws.requests, "get", _PageOneOkPageTwoFailsGet()
+        )
+        # No real XML behind the (only, partial) row — keep the per-act
+        # fetch offline; main() counts it as a failed fetch.
+        monkeypatch.setattr(generate_all_laws, "fetch_xml", lambda *a, **kw: None)
+
+        class _Args:
+            refresh = False
+            force = False
+            missing_only = True
+            kehtiv = generate_all_laws.DEFAULT_KEHTIV
+            limit = None
+
+        _Args.allow_partial = allow_partial
+        monkeypatch.setattr(generate_all_laws, "parse_args", lambda: _Args())
+        return krr
+
+    def test_main_exits_nonzero_and_writes_nothing(self, tmp_path, monkeypatch):
+        krr = self._wire_tmp_run(tmp_path, monkeypatch, allow_partial=False)
+        generate_all_laws._used_prefixes.clear()
+
+        with pytest.raises(SystemExit) as exc_info:
+            generate_all_laws.main()
+        assert exc_info.value.code != 0
+
+        assert not (krr / "generation_manifest_laws.json").exists(), (
+            "manifest must NOT be written after a truncated source enumeration"
+        )
+        assert list(krr.glob("*_peep.json")) == [], (
+            "no peep outputs may be written when the source list fetch failed"
+        )
+
+    def test_get_all_laws_raises_so_main_never_proceeds(
+        self, tmp_path, monkeypatch
+    ):
+        # Direct check on the helper used by main(): the partial fetch is
+        # fatal by default, so no caller can observe a partial dict.
+        monkeypatch.setattr(
+            generate_all_laws.requests, "get", _PageOneOkPageTwoFailsGet()
+        )
+        with pytest.raises(generate_all_laws.SourceListFetchError):
+            generate_all_laws.get_all_laws(allow_partial=False)
+
+    def test_allow_partial_writes_manifest_marked_incomplete(
+        self, tmp_path, monkeypatch
+    ):
+        krr = self._wire_tmp_run(tmp_path, monkeypatch, allow_partial=True)
+        generate_all_laws._used_prefixes.clear()
+
+        # ``--allow-partial`` lets main() complete; page 1's act has no
+        # cached XML and the fake get() only serves the search API, so
+        # fetch_xml returns None and the act is counted as a failed fetch
+        # — but the run still produces a (visibly partial) manifest.
+        generate_all_laws.main()
+
+        manifest_path = krr / "generation_manifest_laws.json"
+        assert manifest_path.exists()
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        assert manifest["source"]["complete"] is False
+        assert manifest["source"]["partialAllowed"] is True
+        pages = manifest["source"]["pages"]
+        assert pages["pagesFetchedOk"] >= 1
+        assert pages["pagesFailed"] >= 1
