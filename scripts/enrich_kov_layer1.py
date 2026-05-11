@@ -25,8 +25,10 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from kov_registry import (
+    HistoricalMunicipality,
     IssuerEntry,
     Municipality,
+    extract_historical_municipalities,
     load_municipalities,
     normalize_title,
     parse_issuer_slug,
@@ -39,6 +41,12 @@ KOV_DIR = KRR_DIR / "regulations" / "kov"
 
 MUNICIPALITIES_OUT = KRR_DIR / "municipalities_peep.json"
 ISSUERS_OUT = KRR_DIR / "issuers_kov_peep.json"
+# Historical (pre-merger) municipality nodes — issue #130. Written under
+# data/ehak/ (alongside municipalities.json / issuers.json, the source
+# KOV registry files) rather than krr_outputs/ so it does not bump the
+# krr_outputs/ file-count statistics validated against metadata.jsonld.
+# It is added to the `kov` SHACL bucket in shacl_validate_all.py.
+HISTORICAL_MUNICIPALITIES_OUT = EHAK_DIR / "historical_municipalities.jsonld"
 
 # >5 missing law files in INDEX.json indicates real corpus drift,
 # not the occasional stale entry. Hard-fail in that case so the
@@ -64,6 +72,10 @@ def municipality_iri(ehak_code: str) -> str:
 
 def issuer_iri(slug: str) -> str:
     return f"estleg:Issuer_{slug}"
+
+
+def historical_municipality_iri(former_ehak_code: str) -> str:
+    return f"estleg:HistoricalMunicipality_{former_ehak_code}"
 
 
 def build_municipality_doc(municipalities: dict[str, Municipality]) -> dict:
@@ -113,6 +125,63 @@ def build_issuer_doc(issuers: dict[str, IssuerEntry]) -> dict:
             node["estleg:mappingEvidence"] = entry["mappingEvidence"]
         if entry["historicalMunicipalityName"]:
             node["estleg:historicalMunicipalityName"] = entry["historicalMunicipalityName"]
+        nodes.append(node)
+    return {"@context": CONTEXT, "@graph": nodes}
+
+
+def build_historical_municipality_doc(
+    historical: dict[str, HistoricalMunicipality],
+) -> dict:
+    """Build the JSON-LD document containing all HistoricalMunicipality nodes.
+
+    One node per distinct pre-merger EHAK code (deduped across the
+    multiple issuers that map to it). Each node carries
+    ``estleg:formerEhakCode`` / ``estleg:formerName`` /
+    ``estleg:succeededBy`` (always), plus ``estleg:mergedAt`` /
+    ``estleg:mergerEvidence`` / ``estleg:municipalityType`` where
+    derivable. Nodes are emitted in ascending former-EHAK order for a
+    stable on-disk diff. The ``issuerSlugs`` carried on the in-memory
+    :class:`HistoricalMunicipality` records are used for coverage
+    reporting only and are not serialised onto the nodes — the
+    issuer→historical relationship remains via the issuer node's
+    ``estleg:historicalMunicipalityName`` literal, unchanged here.
+    """
+    nodes: list[dict] = [
+        {
+            "@id": "estleg:HistoricalMunicipalities_Map_2026",
+            "@type": ["owl:Ontology"],
+            "rdfs:label": "Estonian Historical Municipalities (pre-merger KOV units)",
+            "rdfs:comment": (
+                "Former Estonian municipalities abolished by territorial "
+                "reform (chiefly the 2017 haldusreform). Each node links "
+                "to its surviving successor via estleg:succeededBy. "
+                "Derived from the issuer registry's mappingEvidence "
+                "citations; see issue #130."
+            ),
+            "dcterms:source": {"@id": "https://data.riik.ee/ontology/estleg#Issuers_Kov_Map_2026"},
+        }
+    ]
+    for code in sorted(historical):
+        hist = historical[code]
+        node: dict = {
+            "@id": historical_municipality_iri(code),
+            "@type": ["owl:NamedIndividual", "estleg:HistoricalMunicipality"],
+            "rdfs:label": hist["formerName"],
+            "estleg:formerEhakCode": code,
+            "estleg:formerName": hist["formerName"],
+            "estleg:succeededBy": {
+                "@id": municipality_iri(hist["succeededByCode"])
+            },
+        }
+        if hist.get("municipalityType"):
+            node["estleg:municipalityType"] = hist["municipalityType"]
+        if hist.get("mergedAt"):
+            node["estleg:mergedAt"] = {
+                "@value": hist["mergedAt"],
+                "@type": "xsd:date",
+            }
+        if hist.get("mergerEvidence"):
+            node["estleg:mergerEvidence"] = hist["mergerEvidence"]
         nodes.append(node)
     return {"@context": CONTEXT, "@graph": nodes}
 
@@ -440,6 +509,24 @@ def main(argv: list[str] | None = None) -> int:
     # 2. Write Issuer JSON-LD
     _save_jsonld(ISSUERS_OUT, build_issuer_doc(issuers))
     print(f"Wrote {ISSUERS_OUT.name}")
+
+    # 2b. Write HistoricalMunicipality JSON-LD (issue #130). Derived
+    #     from the issuer registry's mappingEvidence citations; one node
+    #     per distinct pre-merger EHAK code, deduped across issuers.
+    #     Path is resolved from the (monkeypatchable) EHAK_DIR so test
+    #     trees that patch EHAK_DIR don't write into the real repo.
+    historical_out = EHAK_DIR / HISTORICAL_MUNICIPALITIES_OUT.name
+    historical = extract_historical_municipalities(
+        list(issuers.values()), municipalities,
+    )
+    _save_jsonld(
+        historical_out,
+        build_historical_municipality_doc(historical),
+    )
+    print(
+        f"Wrote {historical_out.name} "
+        f"({len(historical)} HistoricalMunicipality nodes)"
+    )
 
     # 3. Enrich KOV act files
     kov_files = sorted(KOV_DIR.glob("**/*_peep.json"))

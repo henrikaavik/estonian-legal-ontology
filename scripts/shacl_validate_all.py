@@ -35,9 +35,16 @@ def collect_laws(krr: Path = KRR) -> list[Path]:
 
 
 def collect_kov(krr: Path = KRR) -> list[Path]:
+    # ``data/ehak/historical_municipalities.jsonld`` (issue #130) lives
+    # under the source KOV registry directory rather than ``krr_outputs/``
+    # (to keep it out of the krr_outputs/ file-count statistics that are
+    # validated against ``metadata.jsonld``), so it has to be listed here
+    # explicitly — the ``regulations/kov/**`` glob below does not reach it.
+    repo_root = krr.parent
     out = [
         krr / "municipalities_peep.json",
         krr / "issuers_kov_peep.json",
+        repo_root / "data" / "ehak" / "historical_municipalities.jsonld",
         *collect_controlled_vocabulary(krr),
     ]
     out.extend(sorted((krr / "regulations" / "kov").glob("**/*_peep.json")))

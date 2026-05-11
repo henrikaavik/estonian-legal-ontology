@@ -2147,6 +2147,88 @@
       "rdfs:range": {
         "@id": "xsd:string"
       }
+    },
+    {
+      "@id": "estleg:Municipality",
+      "@type": [
+        "owl:Class"
+      ],
+      "rdfs:label": "Municipality",
+      "rdfs:comment": "Reusable class materialized for vocabulary coverage validation. A current Estonian municipality (KOV unit) — a territorial entity identified by its EHAK code; the canonical definition lives in metadata.jsonld. Re-asserted here so estleg:succeededBy's rdfs:range (and the metadata.jsonld estleg:currentMunicipality / estleg:enactedByMunicipality ranges) resolve within the published corpus."
+    },
+    {
+      "@id": "estleg:HistoricalMunicipality",
+      "@type": [
+        "owl:Class"
+      ],
+      "rdfs:label": "Historical Municipality",
+      "rdfs:comment": "A former Estonian municipality (KOV unit) that was merged or abolished by a territorial reform — chiefly the 2017 haldusreform. Modelled as a distinct node (IRI scheme estleg:HistoricalMunicipality_<formerEhakCode>) carrying its pre-merger EHAK code, pre-merger name, and an estleg:succeededBy link to the surviving current municipality, so KOV acts can be queried by issuing-time jurisdiction rather than only by present-day successor. Deliberately NOT a subclass of estleg:Municipality (the latter's SHACL shape constrains the Municipality_EHAK_<code> IRI form and requires estleg:ehakCode/estleg:county, which do not apply to abolished units). Introduced for issue #130; nodes are derived from the issuer registry's mappingEvidence citations."
+    },
+    {
+      "@id": "estleg:formerEhakCode",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": "Former EHAK Code",
+      "rdfs:comment": "The pre-merger four-digit EHAK code of an estleg:HistoricalMunicipality (e.g. \"0105\" for the former Abja vald). Distinct from estleg:ehakCode, which carries the still-current code on estleg:Municipality nodes.",
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "estleg:formerName",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": "Former Name",
+      "rdfs:comment": "The pre-merger name of an estleg:HistoricalMunicipality, including the unit-type word (e.g. \"Abja vald\", \"Kallaste linn\"). Diacritic-correct — sourced from the merger-evidence citation, not the diacritic-stripped issuer slug.",
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "estleg:succeededBy",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:label": "Succeeded By",
+      "rdfs:comment": "Links an estleg:HistoricalMunicipality to the current estleg:Municipality that succeeded it after a territorial reform (the surviving EHAK unit). Where a former municipality was split across several successors, this points at the primary successor (the one holding the former administrative centre); the full set is recorded in estleg:mergerEvidence.",
+      "rdfs:range": {
+        "@id": "estleg:Municipality"
+      }
+    },
+    {
+      "@id": "estleg:mergedAt",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": "Merged At",
+      "rdfs:comment": "The date on which an estleg:HistoricalMunicipality ceased to exist as an independent unit (the merger/abolition effective date). For 2017-haldusreform units this is 2017-10-15, the day the post-election councils of the merged municipalities convened. Omitted when the effective date cannot be determined from the source evidence.",
+      "rdfs:range": {
+        "@id": "xsd:date"
+      }
+    },
+    {
+      "@id": "estleg:mergerEvidence",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": "Merger Evidence",
+      "rdfs:comment": "Free-text citation supporting an estleg:HistoricalMunicipality's pre-merger identity and its successor mapping (e.g. \"Wikidata: Abja vald (EHAK 0105) -> Mulgi vald (EHAK 0480); per RT I 21.06.2017 1\"). Carried verbatim from the issuer registry's mappingEvidence — the auditable trail.",
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "estleg:municipalityType",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": "Municipality Type",
+      "rdfs:comment": "The Estonian local-government unit type of an estleg:HistoricalMunicipality. SHACL constrains it to one of: \"vald\" (rural municipality) or \"linn\" (town/city). Derived from the unit-type word in the pre-merger name; omitted if not derivable.",
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
     }
   ]
 }

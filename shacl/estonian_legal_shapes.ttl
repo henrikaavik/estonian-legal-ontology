@@ -1107,6 +1107,80 @@ estleg:IssuerShape
         sh:datatype xsd:string ;
     ] .
 
+# HistoricalMunicipalityShape — pre-merger KOV units (issue #130).
+#
+# A former Estonian municipality merged/abolished by a territorial
+# reform (chiefly the 2017 haldusreform). One node per distinct
+# pre-merger EHAK code, IRI form
+# estleg:HistoricalMunicipality_<formerEhakCode>. estleg:succeededBy
+# points at the surviving current municipality; it is only constrained
+# to be an IRI here (not sh:class estleg:Municipality) — the live `kov`
+# SHACL bucket also loads municipalities_peep.json so the link does
+# resolve, but the IRI-only constraint keeps this shape independent of
+# RDFS subclass inference, mirroring the convention used elsewhere in
+# this file (CitationShape / AnnotationShape). estleg:municipalityType,
+# when present, is one of "vald" | "linn".
+estleg:HistoricalMunicipalityShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:HistoricalMunicipality ;
+    sh:nodeKind sh:IRI ;
+    sh:pattern "^https://data\\.riik\\.ee/ontology/estleg#HistoricalMunicipality_[0-9]{4}$" ;
+    sh:property [
+        sh:path estleg:formerEhakCode ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:pattern "^[0-9]{4}$" ;
+        sh:name "formerEhakCode" ;
+        sh:description "The pre-merger four-digit EHAK code." ;
+    ] ;
+    sh:property [
+        sh:path estleg:formerName ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "formerName" ;
+        sh:description "The pre-merger name including the unit-type word (e.g. \"Abja vald\")." ;
+    ] ;
+    sh:property [
+        sh:path estleg:succeededBy ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:nodeKind sh:IRI ;
+        sh:name "succeededBy" ;
+        sh:description "The current estleg:Municipality (an IRI) that succeeded this unit." ;
+    ] ;
+    sh:property [
+        sh:path estleg:mergedAt ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:date ;
+        sh:name "mergedAt" ;
+        sh:description "The merger/abolition effective date (2017-10-15 for haldusreform-2017 units). Absent ⇒ date undetermined." ;
+    ] ;
+    sh:property [
+        sh:path estleg:mergerEvidence ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "mergerEvidence" ;
+        sh:description "Free-text citation supporting the pre-merger identity and the successor mapping." ;
+    ] ;
+    sh:property [
+        sh:path estleg:municipalityType ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:in ( "vald" "linn" ) ;
+        sh:name "municipalityType" ;
+        sh:description "The Estonian local-government unit type: \"vald\" or \"linn\"." ;
+    ] ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+    ] .
+
 estleg:MunicipalRegulationLayer1Shape
     a sh:NodeShape ;
     sh:targetClass estleg:MunicipalRegulation ;
