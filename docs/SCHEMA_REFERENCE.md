@@ -658,6 +658,154 @@ These properties enable cross-referencing between different parts of the legal s
 | `estleg:changeType` | DraftLegislation | `xsd:string` | Type of change: amends, repeals, supplements, enacts |
 | `estleg:affectedBy` | LegalProvision | DraftLegislation (IRI) | Pending drafts affecting this provision |
 
+### Provision versioning (historical redactions)
+
+**Status:** model defined (issue #131); **population is future work** — see issue #198.
+
+The enacted-law corpus is currently *current snapshot only*: each `estleg:LegalProvision`
+carries the text from one selected Riigi Teataja consolidated text (`terviktekst`), and
+`estleg:globalId` on the act node points at that one redaction. It does not yet carry the
+history of how a provision's text changed across earlier redactions.
+
+The `estleg:ProvisionVersion` model adds that capability. It keeps the **stable provision
+identity** (the `estleg:LegalProvision` IRI) deliberately separate from the
+**redaction/version identity** (the `estleg:ProvisionVersion` IRI), and records a
+non-overlapping validity interval per version.
+
+#### ProvisionVersion (`estleg:ProvisionVersion`)
+A redaction-specific version of a provision's text, with the interval over which that text
+was in force.
+
+| Property | Domain | Range | Cardinality | Description |
+|----------|--------|-------|-------------|-------------|
+| `estleg:versionOf` | ProvisionVersion | LegalProvision (IRI) | exactly 1 | The provision this version belongs to. Inverse of `estleg:hasVersion`. |
+| `estleg:versionValidFrom` | ProvisionVersion | `xsd:date` | exactly 1 | When this text became effective. |
+| `estleg:versionValidTo` | ProvisionVersion | `xsd:date` | 0–1 | When this text ceased to be in force. Absent ⇒ still current. |
+| `estleg:versionText` | ProvisionVersion | `xsd:string` | 1+ | The provision text at this redaction, verbatim. |
+| `estleg:versionRedactionId` | ProvisionVersion | `xsd:string` | 0–1 | The Riigi Teataja `terviktekstID` of the redaction that produced this text. |
+| `estleg:supersededByVersion` | ProvisionVersion | ProvisionVersion (IRI) | 0–1 | The chronologically next version of the same provision. Absent on the current version. |
+
+| Property | Domain | Range | Cardinality | Description |
+|----------|--------|-------|-------------|-------------|
+| `estleg:hasVersion` | LegalProvision | ProvisionVersion (IRI) | 0+ | A version in this provision's text history (one per redaction). Inverse of `estleg:versionOf`. Optional on `estleg:LegalProvisionShape`. |
+| `estleg:currentVersion` | LegalProvision | ProvisionVersion (IRI) | 0–1 | The latest version (the one with no `estleg:versionValidTo` / `estleg:supersededByVersion`). Convenience pointer; optional on `estleg:LegalProvisionShape`. |
+
+SHACL: `estleg:ProvisionVersionShape` (`sh:targetClass estleg:ProvisionVersion`) enforces the
+cardinalities above; `estleg:LegalProvisionShape` gains optional `estleg:hasVersion` /
+`estleg:currentVersion` property shapes (`sh:nodeKind sh:IRI`, `sh:minCount 0`) so existing
+provisions still conform.
+
+##### Example
+
+```json
+{
+  "@id": "estleg:LegalProvision_TsÜS_40_v1",
+  "@type": ["owl:NamedIndividual", "estleg:ProvisionVersion"],
+  "estleg:versionOf": {"@id": "estleg:LegalProvision_TsÜS_40"},
+  "estleg:versionValidFrom": {"@type": "xsd:date", "@value": "2011-07-01"},
+  "estleg:versionValidTo": {"@type": "xsd:date", "@value": "2018-12-31"},
+  "estleg:versionText": "§ 40. Tehing on toiming või omavahel seotud toimingute kogum, milles sisaldub kindla õigusliku tagajärje kaasatoomisele suunatud tahteavaldus.",
+  "estleg:versionRedactionId": "13335775",
+  "estleg:supersededByVersion": {"@id": "estleg:LegalProvision_TsÜS_40_v2"}
+}
+```
+```json
+{
+  "@id": "estleg:LegalProvision_TsÜS_40",
+  "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+  "estleg:paragrahv": "TsÜS § 40",
+  "estleg:summary": "Defines what counts as a transaction (tehing).",
+  "estleg:hasVersion": [
+    {"@id": "estleg:LegalProvision_TsÜS_40_v1"},
+    {"@id": "estleg:LegalProvision_TsÜS_40_v2"}
+  ],
+  "estleg:currentVersion": {"@id": "estleg:LegalProvision_TsÜS_40_v2"}
+}
+```
+
+##### SPARQL — "what did § X say as of date D?"
+
+```sparql
+PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?versionText WHERE {
+  ?provision estleg:paragrahv "TsÜS § 40" ;
+             estleg:hasVersion ?v .
+  ?v estleg:versionText     ?versionText ;
+     estleg:versionValidFrom ?from .
+  OPTIONAL { ?v estleg:versionValidTo ?to . }
+  FILTER ( ?from <= "2015-06-01"^^xsd:date
+           && ( !BOUND(?to) || ?to >= "2015-06-01"^^xsd:date ) )
+}
+```
+
+> **Population is future work.** No `estleg:ProvisionVersion` instances are emitted by any
+> generator today — the corpus remains current-snapshot-only. Building the version history
+> requires re-fetching every act at every historical redaction point and diffing provisions;
+> that ingestion is tracked in issue #198.
+
+### Annotations (practitioner layer)
+
+**Status:** model defined (issue #40); **population is future work** — see issue #199.
+
+The corpus captures the law *as written*, not how it is applied or interpreted in practice.
+The `estleg:Annotation` model adds a separate layer of practitioner-facing notes — guidance,
+commentary, practice notes, warnings, interpretations — attached to legal entities, without
+mixing them into the law-as-written nodes.
+
+#### Annotation (`estleg:Annotation`)
+A practitioner-facing note about a `Law`, an `estleg:LegalProvision`, a `MunicipalRegulation`,
+a `CourtDecision`, an EU instrument, etc.
+
+| Property | Domain | Range | Cardinality | Description |
+|----------|--------|-------|-------------|-------------|
+| `estleg:annotates` | Annotation | `owl:Thing` (IRI) | exactly 1 | The legal entity this annotation is about. Range is intentionally unconstrained — an annotation may attach to any legal entity. |
+| `estleg:annotationText` | Annotation | `xsd:string` | 1+ | The body of the note. |
+| `estleg:annotationType` | Annotation | `xsd:string` | exactly 1 | One of `guidance`, `commentary`, `practice_note`, `warning`, `interpretation` (SHACL `sh:in` enum). |
+| `estleg:annotationSource` | Annotation | `xsd:string` | 0–1 | Where the note comes from, as a string (e.g. `"Õiguskantsler"`, `"RT kommentaar"`, a publication name). String for now; a future iteration may make it an IRI to a source node. |
+| `estleg:annotationSourceUrl` | Annotation | `xsd:anyURI` | 0–1 | Optional link to the source document. |
+| `estleg:annotationDate` | Annotation | `xsd:date` | 0–1 | When the annotation was authored / published. |
+
+SHACL: `estleg:AnnotationShape` (`sh:targetClass estleg:Annotation`) requires
+`estleg:annotates` (exactly 1, IRI), `estleg:annotationText` (1+, string), and
+`estleg:annotationType` (exactly 1, string, `sh:in` the enum above); `estleg:annotationSource`,
+`estleg:annotationSourceUrl`, and `estleg:annotationDate` are optional with the datatypes above.
+
+##### Example
+
+```json
+{
+  "@id": "estleg:Annotation_OK_2020_TsÜS_40",
+  "@type": ["owl:NamedIndividual", "estleg:Annotation"],
+  "estleg:annotates": {"@id": "estleg:LegalProvision_TsÜS_40"},
+  "estleg:annotationText": "Õiguskantsler on rõhutanud, et tahteavalduse tuvastamisel tuleb arvestada poolte tegelikku tahet, mitte üksnes sõnastust.",
+  "estleg:annotationType": "interpretation",
+  "estleg:annotationSource": "Õiguskantsler",
+  "estleg:annotationSourceUrl": {"@type": "xsd:anyURI", "@value": "https://www.oiguskantsler.ee/et/seisukohad"},
+  "estleg:annotationDate": {"@type": "xsd:date", "@value": "2020-03-15"}
+}
+```
+
+##### SPARQL — annotations about a provision
+
+```sparql
+PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
+
+SELECT ?text ?type ?source WHERE {
+  ?provision estleg:paragrahv "TsÜS § 40" .
+  ?ann estleg:annotates       ?provision ;
+       estleg:annotationText  ?text ;
+       estleg:annotationType  ?type .
+  OPTIONAL { ?ann estleg:annotationSource ?source . }
+}
+```
+
+> **Population is future work.** No `estleg:Annotation` instances exist today. Ingestion needs
+> a source-data decision first (Õiguskantsleri opinions? Riigi Teataja commentaries? ministry
+> guidelines?), then a parser that emits `estleg:Annotation` nodes linked to the annotated
+> entities; that work is tracked in issue #199.
+
 ### Normative Classification
 | Property | Domain | Range | Description |
 |----------|--------|-------|-------------|

@@ -222,6 +222,25 @@ estleg:LegalProvisionShape
         sh:nodeKind sh:IRI ;
         sh:name "harmonisedWith" ;
         sh:description "EU or international legislation this provision is harmonised with" ;
+    ] ;
+    # --- versioned legal-text model (issue #131) ---
+    # Both optional: the corpus is currently "current snapshot only" and
+    # carries no estleg:ProvisionVersion nodes yet. When a provision's
+    # text history is populated, estleg:hasVersion lists every redaction
+    # version and estleg:currentVersion points at the latest one.
+    sh:property [
+        sh:path estleg:hasVersion ;
+        sh:minCount 0 ;
+        sh:nodeKind sh:IRI ;
+        sh:name "hasVersion" ;
+        sh:description "Optional — estleg:ProvisionVersion nodes in this provision's text history (one per Riigi Teataja redaction). Population is future work (#131 follow-up)." ;
+    ] ;
+    sh:property [
+        sh:path estleg:currentVersion ;
+        sh:minCount 0 ;
+        sh:nodeKind sh:IRI ;
+        sh:name "currentVersion" ;
+        sh:description "Optional — the latest estleg:ProvisionVersion in this provision's text history. Population is future work (#131 follow-up)." ;
     ] .
 
 # Shape for TopicCluster instances.
@@ -1174,4 +1193,131 @@ estleg:CitationShape
         sh:maxCount 1 ;
         sh:datatype xsd:string ;
         sh:name "citationText" ;
+    ] .
+
+# ============================================================
+# Versioned legal-text model — issue #131 (model only; population deferred)
+# ============================================================
+#
+# An estleg:ProvisionVersion captures the text an estleg:LegalProvision
+# carried during one Riigi Teataja consolidated-text redaction, plus the
+# validity interval over which that text was in force. The redaction/version
+# identity (the ProvisionVersion IRI) is deliberately separate from the
+# stable provision identity (the LegalProvision IRI, reached via
+# estleg:versionOf). No corpus instances exist yet — see the #131
+# follow-up data-completeness issue for the ingestion plan; this shape
+# is the model the ingestion must satisfy.
+estleg:ProvisionVersionShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:ProvisionVersion ;
+    sh:property [
+        sh:path estleg:versionOf ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:nodeKind sh:IRI ;
+        sh:name "versionOf" ;
+        sh:description "Exactly one estleg:LegalProvision this version belongs to (an IRI)." ;
+    ] ;
+    sh:property [
+        sh:path estleg:versionValidFrom ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:date ;
+        sh:name "versionValidFrom" ;
+        sh:description "Date this provision text became effective." ;
+    ] ;
+    sh:property [
+        sh:path estleg:versionValidTo ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:date ;
+        sh:name "versionValidTo" ;
+        sh:description "Date this provision text ceased to be in force. Absent ⇒ still current." ;
+    ] ;
+    sh:property [
+        sh:path estleg:versionText ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "versionText" ;
+        sh:description "The provision text at this redaction, verbatim." ;
+    ] ;
+    sh:property [
+        sh:path estleg:versionRedactionId ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "versionRedactionId" ;
+        sh:description "Riigi Teataja terviktekstID of the redaction that produced this text." ;
+    ] ;
+    sh:property [
+        sh:path estleg:supersededByVersion ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:nodeKind sh:IRI ;
+        sh:name "supersededByVersion" ;
+        sh:description "The chronologically next estleg:ProvisionVersion of the same provision (an IRI). Absent on the current version." ;
+    ] .
+
+# ============================================================
+# Practitioner annotation layer — issue #40 (model only; ingestion deferred)
+# ============================================================
+#
+# An estleg:Annotation is a practitioner-facing note (guidance, commentary,
+# practice note, warning, interpretation) attached to a legal entity — a
+# Law, an estleg:LegalProvision, a MunicipalRegulation, a CourtDecision,
+# an EU instrument, etc. estleg:annotates is intentionally only constrained
+# to be an IRI here (not sh:class), mirroring the project-wide convention
+# of avoiding sh:class on cross-typed targets. No corpus instances exist
+# yet — see the #40 follow-up data-completeness issue for the source
+# decision and ingestion plan.
+estleg:AnnotationShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:Annotation ;
+    sh:property [
+        sh:path estleg:annotates ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:nodeKind sh:IRI ;
+        sh:name "annotates" ;
+        sh:description "Exactly one legal entity this annotation is about (an IRI)." ;
+    ] ;
+    sh:property [
+        sh:path estleg:annotationText ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "annotationText" ;
+        sh:description "The body of the annotation." ;
+    ] ;
+    sh:property [
+        sh:path estleg:annotationType ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:in ( "guidance" "commentary" "practice_note" "warning" "interpretation" ) ;
+        sh:name "annotationType" ;
+        sh:description "Category of the annotation: guidance, commentary, practice_note, warning, or interpretation." ;
+    ] ;
+    sh:property [
+        sh:path estleg:annotationSource ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "annotationSource" ;
+        sh:description "Where the note comes from, as a human-readable string (e.g. \"Õiguskantsler\", \"RT kommentaar\")." ;
+    ] ;
+    sh:property [
+        sh:path estleg:annotationSourceUrl ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:anyURI ;
+        sh:name "annotationSourceUrl" ;
+        sh:description "Optional link to the annotation's source document." ;
+    ] ;
+    sh:property [
+        sh:path estleg:annotationDate ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:date ;
+        sh:name "annotationDate" ;
+        sh:description "Date the annotation was authored or published." ;
     ] .

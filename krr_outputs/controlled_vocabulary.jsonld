@@ -1971,6 +1971,182 @@
       "rdfs:range": {
         "@id": "xsd:string"
       }
+    },
+    {
+      "@id": "estleg:ProvisionVersion",
+      "@type": [
+        "owl:Class"
+      ],
+      "rdfs:label": "Provision Version",
+      "rdfs:comment": "A redaction-specific version of an estleg:LegalProvision's text. Each ProvisionVersion captures the text a provision carried during one Riigi Teataja consolidated-text redaction (terviktekst), together with the validity interval over which that text was in force. Defined for issue #131; population from historical Riigi Teataja redactions is tracked separately (see the follow-up data-completeness issue)."
+    },
+    {
+      "@id": "estleg:versionOf",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:label": "Version Of",
+      "rdfs:comment": "Links an estleg:ProvisionVersion to the estleg:LegalProvision whose text it captures. The stable provision identity (the LegalProvision IRI) is deliberately distinct from the redaction/version identity (the ProvisionVersion IRI). Inverse of estleg:hasVersion.",
+      "rdfs:range": {
+        "@id": "estleg:LegalProvision"
+      },
+      "owl:inverseOf": {
+        "@id": "estleg:hasVersion"
+      }
+    },
+    {
+      "@id": "estleg:versionValidFrom",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": "Version Valid From",
+      "rdfs:comment": "Date on which this provision text became effective (the entry-into-force date of the redaction that introduced it).",
+      "rdfs:range": {
+        "@id": "xsd:date"
+      }
+    },
+    {
+      "@id": "estleg:versionValidTo",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": "Version Valid To",
+      "rdfs:comment": "Date on which this provision text ceased to be in force (the day before the next redaction took effect). Absent when this is the current text.",
+      "rdfs:range": {
+        "@id": "xsd:date"
+      }
+    },
+    {
+      "@id": "estleg:versionText",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": "Version Text",
+      "rdfs:comment": "The provision text at this redaction, verbatim.",
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "estleg:versionRedactionId",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": "Version Redaction Id",
+      "rdfs:comment": "The Riigi Teataja terviktekstID (consolidated-text identifier) of the redaction that produced this provision text. Ties the version to its concrete source document, mirroring how estleg:globalId ties an act snapshot to one concrete redaction.",
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "estleg:supersededByVersion",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:label": "Superseded By Version",
+      "rdfs:comment": "Links an estleg:ProvisionVersion to the chronologically next estleg:ProvisionVersion of the same provision. Absent on the current (latest) version. Forms a single-successor chain so consumers can walk a provision's text history forward.",
+      "rdfs:range": {
+        "@id": "estleg:ProvisionVersion"
+      }
+    },
+    {
+      "@id": "estleg:hasVersion",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:label": "Has Version",
+      "rdfs:comment": "Links an estleg:LegalProvision to an estleg:ProvisionVersion in its text history. A provision with a populated history has one estleg:hasVersion triple per redaction. Inverse of estleg:versionOf.",
+      "rdfs:range": {
+        "@id": "estleg:ProvisionVersion"
+      },
+      "owl:inverseOf": {
+        "@id": "estleg:versionOf"
+      }
+    },
+    {
+      "@id": "estleg:currentVersion",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:label": "Current Version",
+      "rdfs:comment": "Links an estleg:LegalProvision to the latest estleg:ProvisionVersion in its text history (the one with no estleg:versionValidTo and no estleg:supersededByVersion). Convenience pointer so consumers do not have to scan the whole estleg:hasVersion set.",
+      "rdfs:range": {
+        "@id": "estleg:ProvisionVersion"
+      }
+    },
+    {
+      "@id": "estleg:Annotation",
+      "@type": [
+        "owl:Class"
+      ],
+      "rdfs:label": "Annotation",
+      "rdfs:comment": "A practitioner-facing note (guidance, commentary, practice note, warning, or interpretation) about a legal entity — a Law, an estleg:LegalProvision, a MunicipalRegulation, a CourtDecision, and so on. The annotation layer records how the law is applied or interpreted in practice, alongside (not inside) the law-as-written corpus. Defined for issue #40; ingestion of annotation source data is tracked separately (see the follow-up data-completeness issue)."
+    },
+    {
+      "@id": "estleg:annotates",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:label": "Annotates",
+      "rdfs:comment": "Links an estleg:Annotation to the legal entity it is about. The range is intentionally unconstrained (owl:Thing): an annotation may attach to a Law, an estleg:LegalProvision, a MunicipalRegulation, a CourtDecision, an EU instrument, etc.",
+      "rdfs:range": {
+        "@id": "owl:Thing"
+      }
+    },
+    {
+      "@id": "estleg:annotationText",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": "Annotation Text",
+      "rdfs:comment": "The body of the annotation — the practitioner note itself.",
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "estleg:annotationSource",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": "Annotation Source",
+      "rdfs:comment": "Where the annotation comes from, as a human-readable string (e.g. \"Õiguskantsler\", \"RT kommentaar\", a commentary publication name). Kept as a string for now; a future iteration may replace it with an IRI to a source node.",
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "estleg:annotationSourceUrl",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": "Annotation Source Url",
+      "rdfs:comment": "Optional link to the annotation's source document.",
+      "rdfs:range": {
+        "@id": "xsd:anyURI"
+      }
+    },
+    {
+      "@id": "estleg:annotationDate",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": "Annotation Date",
+      "rdfs:comment": "Date on which the annotation was authored or published.",
+      "rdfs:range": {
+        "@id": "xsd:date"
+      }
+    },
+    {
+      "@id": "estleg:annotationType",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": "Annotation Type",
+      "rdfs:comment": "Category of the annotation. SHACL constrains it to one of: \"guidance\", \"commentary\", \"practice_note\", \"warning\", \"interpretation\".",
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
     }
   ]
 }
