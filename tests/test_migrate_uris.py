@@ -14,11 +14,17 @@ import migrate_uris
 from migrate_uris import (
     NEW_IRI_FORMAT_RE,
     PAR_NO_UNDERSCORE_RE,
+    RENAME_FAMILY_AMENDMENT,
+    RENAME_FAMILY_SANCTION,
     _already_migrated_per_state,
+    _amendment_base_slug_in_iri,
     _atomic_write_text,
+    _shorten_amendment_iri,
+    _stem_from_amends_target,
     apply_renames_to_file,
     assign_abbreviations,
     auto_derive_abbreviation,
+    build_amendment_prefix_map,
     build_rename_map,
     compute_corpus_hash,
     compute_registry_hash,
@@ -190,6 +196,380 @@ class TestApplyRenames:
         assert "estleg:NEW" in f.read_text(encoding="utf-8")
 
 
+# ── Issue #192 — Amendment_/AmendmentChain_/AmendmentLink_ shortening ─────────
+
+
+_AMEND_REGISTRY = {
+    "karistusseadustik": {
+        "abbrev": "KARIST_2",
+        "source": "auto",
+        "title": "Karistusseadustik",
+        "old_prefix": "Karistusseadustik",
+    },
+    "karistusseadustiku_rakendamise_seadus": {
+        "abbrev": "KarSRS",
+        "source": "rt_api",
+        "title": "Karistusseadustiku rakendamise seadus",
+        "old_prefix": "KarSRS",
+    },
+    "abieluvararegistri_seadus": {
+        "abbrev": "AVRS",
+        "source": "rt_api",
+        "title": "Abieluvararegistri seadus",
+        "old_prefix": "AVRS",
+    },
+}
+
+
+def _seed_amendments_dir(amendments_dir: Path) -> None:
+    """Write a small amendments/ tree covering a law, a multipart-ish slug, and a
+    regulation (whose base_slug is *absent* from the registry — so it must be
+    resolved via the chain's estleg:amends Reg_<id> target)."""
+    amendments_dir.mkdir(parents=True, exist_ok=True)
+    (amendments_dir / "amendments_karistusseadustik.json").write_text(
+        json.dumps({
+            "@graph": [
+                {"@id": "estleg:AmendmentChain_karistusseadustik",
+                 "@type": ["owl:Ontology"]},
+                {"@id": "estleg:Amendment_karistusseadustik_1",
+                 "estleg:amends": {"@id": "estleg:KARIST_2_Osa1_1_87"}},
+                {"@id": "estleg:Amendment_karistusseadustik_2",
+                 "estleg:amends": {"@id": "estleg:KARIST_2_Osa1_1_87"}},
+            ]
+        }), encoding="utf-8")
+    (amendments_dir / "amendments_aadressiandmete_susteem_t1052132.json").write_text(
+        json.dumps({
+            "@graph": [
+                {"@id": "estleg:AmendmentChain_aadressiandmete_susteem_t1052132",
+                 "@type": ["owl:Ontology"]},
+                {"@id": "estleg:Amendment_aadressiandmete_susteem_t1052132_1",
+                 "estleg:amends": {"@id": "estleg:Reg_1052132_Map_2026"}},
+                {"@id": "estleg:Amendment_aadressiandmete_susteem_t1052132_10",
+                 "estleg:amends": {"@id": "estleg:Reg_1052132_Map_2026"}},
+            ]
+        }), encoding="utf-8")
+    (amendments_dir / "amendments_abieluvararegistri_seadus.json").write_text(
+        json.dumps({
+            "@graph": [
+                {"@id": "estleg:AmendmentChain_abieluvararegistri_seadus",
+                 "@type": ["owl:Ontology"]},
+                {"@id": "estleg:AmendmentLink_Draft_JDM16_0008_abieluvararegistri_seadus",
+                 "estleg:amends": {"@id": "estleg:AVRS_Map_2026"},
+                 "estleg:amendingDraft": {"@id": "estleg:Draft_JDM16_0008"}},
+            ]
+        }), encoding="utf-8")
+
+
+class TestStemFromAmendsTarget:
+    @pytest.mark.parametrize(
+        "amends_iri, expected",
+        [
+            ("estleg:Reg_1052132_Map_2026", "Reg_1052132"),
+            ("estleg:AVRS_Map_2026", "AVRS"),
+            ("estleg:KARIST_2_Osa2_88_451", "KARIST_2"),
+            ("estleg:STS2004_2006_2_Map_2026", "STS2004_2006_2"),
+            ("estleg:VOS_Par_271", "VOS"),
+            # Not an estleg: IRI / nothing compact-looking → None.
+            ("http://example.org/foo", None),
+            ("estleg:_Map_2026", None),
+        ],
+    )
+    def test_recovers_compact_stem(self, amends_iri, expected):
+        assert _stem_from_amends_target(amends_iri) == expected
+
+
+class TestBuildAmendmentPrefixMap:
+    def test_registry_then_amends_target_resolution(self, tmp_path: Path):
+        amd = tmp_path / "amendments"
+        _seed_amendments_dir(amd)
+        prefix_map, skipped = build_amendment_prefix_map(
+            _AMEND_REGISTRY, amendments_dir=amd
+        )
+        assert skipped == {}
+        # Registry-resolved law.
+        assert prefix_map["karistusseadustik"] == "KARIST_2"
+        assert prefix_map["abieluvararegistri_seadus"] == "AVRS"
+        # Regulation absent from the registry — resolved via the Reg_<id> stem
+        # recovered from the chain's estleg:amends target (NOT the slug's
+        # _t<id> suffix, which can disagree with the act's numeric id).
+        assert prefix_map["aadressiandmete_susteem_t1052132"] == "Reg_1052132"
+
+    def test_skips_when_no_shorter_stem_available(self, tmp_path: Path):
+        amd = tmp_path / "amendments"
+        amd.mkdir()
+        # amends target is itself longer than the slug → can't improve.
+        (amd / "amendments_xyz.json").write_text(
+            json.dumps({"@graph": [
+                {"@id": "estleg:AmendmentChain_xyz", "@type": ["owl:Ontology"]},
+                {"@id": "estleg:Amendment_xyz_1",
+                 "estleg:amends": {
+                     "@id": "estleg:a_very_long_slug_that_is_longer_Map_2026"}},
+            ]}), encoding="utf-8")
+        prefix_map, skipped = build_amendment_prefix_map({}, amendments_dir=amd)
+        assert "xyz" not in prefix_map
+        assert "xyz" in skipped
+        assert "no shorter" in skipped["xyz"]
+
+    def test_missing_amendments_dir_returns_empty(self, tmp_path: Path):
+        prefix_map, skipped = build_amendment_prefix_map(
+            {}, amendments_dir=tmp_path / "nope"
+        )
+        assert prefix_map == {}
+        assert skipped == {}
+
+
+class TestShortenAmendmentIri:
+    @pytest.fixture
+    def shortener(self, tmp_path: Path):
+        amd = tmp_path / "amendments"
+        _seed_amendments_dir(amd)
+        prefix_map, _ = build_amendment_prefix_map(_AMEND_REGISTRY, amendments_dir=amd)
+        by_len = sorted(prefix_map.keys(), key=len, reverse=True)
+        known = set(prefix_map.values())
+
+        def _go(iri: str, unmatched=None):
+            return _shorten_amendment_iri(
+                iri, by_len, prefix_map, unmatched=unmatched, known_prefixes=known
+            )
+
+        return _go
+
+    @pytest.mark.parametrize(
+        "old_iri, new_iri",
+        [
+            # Amendment_<base_slug>_<n> (legacy decimal counter).
+            ("estleg:Amendment_karistusseadustik_1", "estleg:Amendment_KARIST_2_1"),
+            ("estleg:Amendment_karistusseadustik_528", "estleg:Amendment_KARIST_2_528"),
+            # Disambiguated counter.
+            ("estleg:Amendment_karistusseadustik_528_2",
+             "estleg:Amendment_KARIST_2_528_2"),
+            # md5-prefix suffix (post-#173 generator shape).
+            ("estleg:Amendment_karistusseadustik_a1b2c3d4e5",
+             "estleg:Amendment_KARIST_2_a1b2c3d4e5"),
+            # Regulation: base_slug → Reg_<id> recovered from amends target.
+            ("estleg:Amendment_aadressiandmete_susteem_t1052132_1",
+             "estleg:Amendment_Reg_1052132_1"),
+            ("estleg:Amendment_aadressiandmete_susteem_t1052132_10",
+             "estleg:Amendment_Reg_1052132_10"),
+            # Chain.
+            ("estleg:AmendmentChain_karistusseadustik", "estleg:AmendmentChain_KARIST_2"),
+            ("estleg:AmendmentChain_aadressiandmete_susteem_t1052132",
+             "estleg:AmendmentChain_Reg_1052132"),
+            # Link: <draft_id> verbatim, base_slug → abbrev.
+            ("estleg:AmendmentLink_Draft_JDM16_0008_abieluvararegistri_seadus",
+             "estleg:AmendmentLink_Draft_JDM16_0008_AVRS"),
+        ],
+    )
+    def test_volaigusseadus_style_substitution(self, shortener, old_iri, new_iri):
+        assert shortener(old_iri) == new_iri
+
+    def test_unknown_base_slug_left_unchanged_and_recorded(self, shortener):
+        unmatched: set[str] = set()
+        # 'volaigusseadus' is the registry key form; 'volaoigusseadus' (the
+        # corpus's amendments-file form) is *not* a known base_slug here.
+        result = shortener("estleg:Amendment_volaoigusseadus_3", unmatched=unmatched)
+        assert result is None
+        assert "estleg:Amendment_volaoigusseadus_3" in unmatched
+
+    def test_already_migrated_iri_not_recorded(self, shortener):
+        """A second pass over an already-shortened corpus must stay quiet."""
+        unmatched: set[str] = set()
+        # KARIST_2 is a known compact prefix — the IRI is already migrated.
+        assert shortener("estleg:Amendment_KARIST_2_1", unmatched=unmatched) is None
+        assert shortener("estleg:Amendment_Reg_1052132_1", unmatched=unmatched) is None
+        assert shortener(
+            "estleg:AmendmentLink_Draft_JDM16_0008_AVRS", unmatched=unmatched
+        ) is None
+        assert unmatched == set()
+
+    def test_unicode_truncated_fragment_ignored(self, shortener):
+        """`ESTLEG_RE` truncates `..._ÕÕS` to `..._`; that fragment is not an
+        anomaly to flag."""
+        unmatched: set[str] = set()
+        assert shortener(
+            "estleg:AmendmentLink_Draft_HTM18_0730_", unmatched=unmatched
+        ) is None
+        assert shortener("estleg:Amendment_", unmatched=unmatched) is None
+        assert unmatched == set()
+
+    def test_amendment_with_no_numeric_tail_left_alone(self, shortener):
+        # `Amendment_<base_slug>` with no counter is not a shape the generator
+        # produces — leave it (and don't flag it).
+        unmatched: set[str] = set()
+        assert shortener("estleg:Amendment_karistusseadustik", unmatched=unmatched) is None
+
+
+class TestAmendmentInBuildRenameMap:
+    def test_build_rename_map_rewrites_definitions_and_references(self, tmp_path: Path):
+        """The same OLD→NEW pairs must cover both the @id definitions in
+        amendments/ AND the estleg:amendedBy references in peep files."""
+        amd = tmp_path / "amendments"
+        _seed_amendments_dir(amd)
+        # A peep file that references the (still-long) Amendment ids.
+        peep = tmp_path / "aadressiandmete_susteem_t1052132_peep.json"
+        peep.write_text(json.dumps({"@graph": [
+            {"@id": "estleg:Reg_1052132_Map_2026", "estleg:amendedBy": [
+                {"@id": "estleg:Amendment_aadressiandmete_susteem_t1052132_1"},
+                {"@id": "estleg:Amendment_aadressiandmete_susteem_t1052132_10"},
+            ]},
+        ]}), encoding="utf-8")
+        scan = [peep, *sorted(amd.glob("*.json"))]
+        skipped: dict[str, str] = {}
+        rename_map = build_rename_map(
+            _AMEND_REGISTRY,
+            scan_paths=scan,
+            amendments_dir=amd,
+            skipped_amendments=skipped,
+            families={RENAME_FAMILY_AMENDMENT, RENAME_FAMILY_SANCTION},
+        )
+        assert skipped == {}
+        # @id definitions:
+        assert rename_map["estleg:AmendmentChain_aadressiandmete_susteem_t1052132"] == \
+            "estleg:AmendmentChain_Reg_1052132"
+        assert rename_map["estleg:Amendment_aadressiandmete_susteem_t1052132_1"] == \
+            "estleg:Amendment_Reg_1052132_1"
+        assert rename_map["estleg:Amendment_aadressiandmete_susteem_t1052132_10"] == \
+            "estleg:Amendment_Reg_1052132_10"
+        # The references in the peep file are the *same* old IRIs — apply will
+        # rewrite them via the same map entries.
+        assert "estleg:Amendment_karistusseadustik_1" in rename_map
+        assert (
+            rename_map["estleg:AmendmentLink_Draft_JDM16_0008_abieluvararegistri_seadus"]
+            == "estleg:AmendmentLink_Draft_JDM16_0008_AVRS"
+        )
+
+    def test_legacy_family_not_touched_in_amendment_layer(self, tmp_path: Path):
+        """With families={amendment, sanction}, a legacy <prefix>_Par_ IRI is
+        left alone (the legacy remap is already applied)."""
+        amd = tmp_path / "amendments"
+        amd.mkdir()
+        f = tmp_path / "x.json"
+        f.write_text(
+            '{"@id": "estleg:Alkoholi_tubaka_ktuse_ja_Map_2026"}', encoding="utf-8"
+        )
+        rename_map = build_rename_map(
+            {"alkoholi_tubaka_kutuse_ja_elektriaktsiisi_seadus": {
+                "abbrev": "ATKE", "source": "auto",
+                "title": "x", "old_prefix": "Alkoholi_tubaka_ktuse_ja"}},
+            scan_paths=[f],
+            amendments_dir=amd,
+            families={RENAME_FAMILY_AMENDMENT, RENAME_FAMILY_SANCTION},
+        )
+        assert rename_map == {}
+        # …but with the legacy family included it *is* renamed.
+        rename_map_legacy = build_rename_map(
+            {"alkoholi_tubaka_kutuse_ja_elektriaktsiisi_seadus": {
+                "abbrev": "ATKE", "source": "auto",
+                "title": "x", "old_prefix": "Alkoholi_tubaka_ktuse_ja"}},
+            scan_paths=[f],
+            amendments_dir=amd,
+            families=None,
+        )
+        assert rename_map_legacy["estleg:Alkoholi_tubaka_ktuse_ja_Map_2026"] == \
+            "estleg:ATKE_Map_2026"
+
+    def test_sanctions_long_slug_iri_shortened(self, tmp_path: Path):
+        amd = tmp_path / "amendments"
+        amd.mkdir()
+        f = tmp_path / "s.json"
+        f.write_text(
+            '{"@id": "estleg:Sanctions_punase_risti_nimetuse_ja_embleemi_seadus_Map"}'
+            ' {"@id": "estleg:Sanction_punase_risti_nimetuse_ja_embleemi_seadus_Par_13_fine"}'
+            ' {"@id": "estleg:Sanction_PRS_Par_14_fine"}',
+            encoding="utf-8",
+        )
+        rename_map = build_rename_map(
+            {"punase_risti_nimetuse_ja_embleemi_seadus": {
+                "abbrev": "PRS", "source": "rt_api",
+                "title": "x", "old_prefix": "PRS"}},
+            scan_paths=[f],
+            amendments_dir=amd,
+            families={RENAME_FAMILY_SANCTION},
+        )
+        assert rename_map[
+            "estleg:Sanctions_punase_risti_nimetuse_ja_embleemi_seadus_Map"
+        ] == "estleg:Sanctions_PRS_Map"
+        assert rename_map[
+            "estleg:Sanction_punase_risti_nimetuse_ja_embleemi_seadus_Par_13_fine"
+        ] == "estleg:Sanction_PRS_Par_13_fine"
+        # Already-compact one is not touched.
+        assert "estleg:Sanction_PRS_Par_14_fine" not in rename_map
+
+
+class TestVerifyMigrationAmendmentCheck:
+    def test_rejects_amendment_iri_with_long_base_slug(
+        self, isolated_paths: Path
+    ) -> None:
+        """If a long-slug Amendment IRI escapes the migration, verify must FAIL."""
+        krr = isolated_paths / "krr_outputs"
+        amd = krr / "amendments"
+        amd.mkdir(parents=True)
+        # Registry maps the slug → KARIST_2, so the long form is "shortenable".
+        (isolated_paths / "data" / "law_abbreviations.json").write_text(
+            json.dumps(_AMEND_REGISTRY), encoding="utf-8"
+        )
+        (amd / "amendments_karistusseadustik.json").write_text(
+            json.dumps({"@graph": [
+                {"@id": "estleg:AmendmentChain_karistusseadustik",
+                 "@type": ["owl:Ontology"]},
+                {"@id": "estleg:Amendment_karistusseadustik_1",
+                 "estleg:amends": {"@id": "estleg:KARIST_2_Osa1_1_87"}},
+            ]}), encoding="utf-8")
+        # A peep file still carrying the long ref (the migration "missed" it).
+        (krr / "a.json").write_text(
+            '{"@id": "estleg:X", "estleg:amendedBy": '
+            '[{"@id": "estleg:Amendment_karistusseadustik_1"}]}',
+            encoding="utf-8",
+        )
+        ok, issues = verify_migration({})  # empty rename map → only the slug check fires
+        assert ok is False
+        joined = "\n".join(issues)
+        assert "still embed a shortenable base slug" in joined
+        assert "estleg:Amendment_karistusseadustik_1" in joined
+
+    def test_passes_when_all_amendment_iris_are_compact(
+        self, isolated_paths: Path
+    ) -> None:
+        krr = isolated_paths / "krr_outputs"
+        amd = krr / "amendments"
+        amd.mkdir(parents=True)
+        (isolated_paths / "data" / "law_abbreviations.json").write_text(
+            json.dumps(_AMEND_REGISTRY), encoding="utf-8"
+        )
+        (amd / "amendments_karistusseadustik.json").write_text(
+            json.dumps({"@graph": [
+                {"@id": "estleg:AmendmentChain_KARIST_2", "@type": ["owl:Ontology"]},
+                {"@id": "estleg:Amendment_KARIST_2_1",
+                 "estleg:amends": {"@id": "estleg:KARIST_2_Osa1_1_87"}},
+            ]}), encoding="utf-8")
+        (krr / "a.json").write_text(
+            '{"@id": "estleg:X", "estleg:amendedBy": '
+            '[{"@id": "estleg:Amendment_KARIST_2_1"}]}',
+            encoding="utf-8",
+        )
+        ok, issues = verify_migration({})
+        assert ok is True
+        # The longest-@id INFO line is advisory, not a failure.
+        assert all(i.startswith("INFO:") for i in issues) or issues == []
+
+    def test_amendment_base_slug_in_iri_helper(self) -> None:
+        by_len = ["karistusseadustiku_rakendamise_seadus", "karistusseadustik",
+                  "aadressiandmete_susteem_t1052132", "abieluvararegistri_seadus"]
+        assert _amendment_base_slug_in_iri(
+            "estleg:Amendment_karistusseadustik_5", by_len
+        ) == "karistusseadustik"
+        assert _amendment_base_slug_in_iri(
+            "estleg:AmendmentChain_karistusseadustik", by_len
+        ) == "karistusseadustik"
+        assert _amendment_base_slug_in_iri(
+            "estleg:AmendmentLink_Draft_X_abieluvararegistri_seadus", by_len
+        ) == "abieluvararegistri_seadus"
+        # Already-compact / unrelated IRIs → None.
+        assert _amendment_base_slug_in_iri("estleg:Amendment_KARIST_2_5", by_len) is None
+        assert _amendment_base_slug_in_iri("estleg:Amendment_", by_len) is None
+        assert _amendment_base_slug_in_iri("estleg:KARIST_2_Par_1", by_len) is None
+
+
 # ── Helpers shared by the review-finding regression tests ────────────────────
 
 
@@ -212,6 +592,10 @@ def isolated_paths(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
 
     monkeypatch.setattr(migrate_uris, "PROJECT_ROOT", project_root)
     monkeypatch.setattr(migrate_uris, "KRR_DIR", krr_dir)
+    # ``AMENDMENTS_DIR`` is import-time-bound off the original ``KRR_DIR`` —
+    # redirect it too so ``build_amendment_prefix_map`` (issue #192) reads the
+    # fixture tree, not the real corpus.
+    monkeypatch.setattr(migrate_uris, "AMENDMENTS_DIR", krr_dir / "amendments")
     monkeypatch.setattr(migrate_uris, "DATA_DIR", data_dir)
     monkeypatch.setattr(migrate_uris, "SCRIPTS_DIR", scripts_dir)
     monkeypatch.setattr(
@@ -503,10 +887,16 @@ class TestVerifyMigration:
 def _run_dry_run_with_registry(
     isolated_paths: Path, registry: dict, corpus: dict[str, str]
 ) -> dict:
-    """Run the dry-run flow against an isolated corpus and return the report."""
+    """Run the dry-run flow against an isolated corpus and return the report.
+
+    Uses ``families=None`` (the full historical remap) so these legacy
+    prefix-rename fixtures still produce renames — the CLI's default
+    (amendment + sanction only, issue #192) is exercised by the
+    ``TestAmendmentMigration`` tests below.
+    """
     _write_registry(migrate_uris.REGISTRY_PATH, registry)
     _seed_corpus(isolated_paths / "krr_outputs", corpus)
-    migrate_uris.dry_run_cmd()
+    migrate_uris.dry_run_cmd(families=None)
     with open(migrate_uris.REPORT_PATH, encoding="utf-8") as f:
         return json.load(f)
 
@@ -954,7 +1344,7 @@ class TestDryRunReport:
             isolated_paths / "krr_outputs",
             {"a.json": '{"@id": "estleg:demo_long_prefix_law_overflow_Par_1"}'},
         )
-        migrate_uris.dry_run_cmd()
+        migrate_uris.dry_run_cmd(families=None)
         report = json.loads(
             migrate_uris.REPORT_PATH.read_text(encoding="utf-8")
         )
@@ -963,6 +1353,42 @@ class TestDryRunReport:
         assert report["generated"].endswith("+00:00")
         assert "registry_hash" in report
         assert "corpus_hash" in report
+        # Issue #192 added this field (always present, even when empty).
+        assert "skipped_amendment_slugs" in report
+        assert isinstance(report["skipped_amendment_slugs"], dict)
+
+    def test_cli_default_families_skip_the_legacy_prefix_remap(
+        self, isolated_paths: Path
+    ) -> None:
+        """``dry_run_cmd(families=DEFAULT_MIGRATION_FAMILIES)`` — the CLI's
+        default — must skip the historical law/regulation prefix remap and
+        only shorten the Amendment/Sanction families."""
+        registry = {
+            "demo_long_prefix_law": {
+                "abbrev": "DLP",
+                "source": "auto",
+                "title": "Demo",
+                "old_prefix": "demo_long_prefix_law_overflow",
+            }
+        }
+        _write_registry(migrate_uris.REGISTRY_PATH, registry)
+        krr = isolated_paths / "krr_outputs"
+        (krr / "amendments").mkdir(parents=True)
+        _seed_corpus(
+            krr,
+            {"a.json": '{"@id": "estleg:demo_long_prefix_law_overflow_Par_1"}'},
+        )
+        migrate_uris.dry_run_cmd(families=migrate_uris.DEFAULT_MIGRATION_FAMILIES)
+        report = json.loads(migrate_uris.REPORT_PATH.read_text(encoding="utf-8"))
+        # The legacy <prefix>_Par_ IRI is NOT in the rename map (no Amendment_
+        # or Sanction_ IRI in the corpus → nothing to do).
+        assert report["renames"] == {}
+        # …but with the legacy family it *would* be renamed.
+        migrate_uris.dry_run_cmd(families=None)
+        report2 = json.loads(migrate_uris.REPORT_PATH.read_text(encoding="utf-8"))
+        assert report2["renames"] == {
+            "estleg:demo_long_prefix_law_overflow_Par_1": "estleg:DLP_Par_1"
+        }
 
 
 # ── #83 task 1 — migration_state.json sentinel ───────────────────────────────
@@ -1075,9 +1501,11 @@ class TestRealMigrationStateFile:
         # Timestamp parses as ISO-8601 (and is UTC-qualified).
         parsed = datetime.fromisoformat(state["last_applied_at"])
         assert parsed.tzinfo is not None
-        # The note records the migration provenance.
+        # The note records the migration provenance: Layer 1 (#83 commits) and
+        # Layer 2 (#192 — the Amendment_ IRI shortening).
         assert "3880cb688" in state["note"]
         assert "c5c0f88b2" in state["note"]
+        assert "#192" in state["note"]
         # The public loader returns the same content.
         assert load_migration_state() == state
 
