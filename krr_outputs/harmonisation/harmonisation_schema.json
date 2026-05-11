@@ -1,0 +1,78 @@
+{
+  "@context": {
+    "estleg": "https://data.riik.ee/ontology/estleg#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/"
+  },
+  "@graph": [
+    {
+      "@id": "estleg:HarmonisationLink",
+      "@type": [
+        "owl:Class"
+      ],
+      "rdfs:label": "Harmoniseerimisseos (Harmonisation link)",
+      "rdfs:comment": "A link between an Estonian law and national laws of other EU member states that transpose the same EU directive."
+    },
+    {
+      "@id": "estleg:harmonisedWith",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:label": "harmoniseeritud (harmonised with)",
+      "rdfs:comment": "Links an Estonian law to a harmonisation record showing parallel implementations of the same EU directive in other member states.",
+      "rdfs:domain": {
+        "@id": "estleg:LegalProvision"
+      },
+      "rdfs:range": {
+        "@id": "estleg:HarmonisationLink"
+      }
+    },
+    {
+      "@id": "estleg:sharedDirective",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:label": "ühine direktiiv (shared directive)",
+      "rdfs:comment": "The EU directive that multiple member states have transposed.",
+      "rdfs:domain": {
+        "@id": "estleg:HarmonisationLink"
+      },
+      "rdfs:range": {
+        "@id": "estleg:EULegislation"
+      }
+    },
+    {
+      "@id": "estleg:memberStateCode",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": "liikmesriigi kood (member state code)",
+      "rdfs:comment": "ISO 3166-1 alpha-3 country code of the EU member state.",
+      "rdfs:domain": {
+        "@id": "estleg:HarmonisationLink"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "estleg:nationalCelex",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": "riigisisene CELEX (national CELEX number)",
+      "rdfs:comment": "CELEX identifier for the national transposition measure.",
+      "rdfs:domain": {
+        "@id": "estleg:HarmonisationLink"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    }
+  ]
+}

@@ -60,7 +60,22 @@ def collect_drafts(krr: Path = KRR) -> list[Path]:
 
 
 def collect_eurlex(krr: Path = KRR) -> list[Path]:
-    return sorted(set(sorted((krr / "eurlex").glob("*_peep.json")) + collect_controlled_vocabulary(krr)))
+    # The EU-transposition harmonisation layer (issue #197) is the natural
+    # home for these files: ``krr_outputs/harmonisation/harmonisation_by_directive/*.json``
+    # carry ``estleg:HarmonisationLink`` nodes (validated by
+    # ``HarmonisationLinkShape``). The sibling ``harmonisation_report.json``
+    # (no ``@graph``) and ``harmonisation_schema.json`` (vocab declarations,
+    # not shaped data) are deliberately excluded.
+    harmonisation = sorted(
+        (krr / "harmonisation" / "harmonisation_by_directive").glob("harm_*.json")
+    )
+    return sorted(
+        set(
+            sorted((krr / "eurlex").glob("*_peep.json"))
+            + harmonisation
+            + collect_controlled_vocabulary(krr)
+        )
+    )
 
 
 def collect_curia(krr: Path = KRR) -> list[Path]:

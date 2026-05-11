@@ -92,6 +92,81 @@ def test_harmonisation_query_is_ordered(monkeypatch, tmp_path):
     assert "ORDER BY ?country ?celex_nat" in queries[0]
 
 
+def test_harmonisation_query_uses_nim_vocab(monkeypatch, tmp_path):
+    """#197: the query must use the real CDM National-Implementing-Measure
+    vocabulary, not the non-existent ``cdm:resource_legal_measures_transposition_*``
+    properties that returned zero rows for every directive."""
+    queries: list[str] = []
+
+    def fake_query(query: str) -> list[dict]:
+        queries.append(query)
+        return []
+
+    monkeypatch.setattr(harmonisation, "sparql_query", fake_query)
+    monkeypatch.setattr(harmonisation, "CACHE_DIR", tmp_path / "cache")
+
+    harmonisation.fetch_other_transpositions("32016L0680")
+    q = queries[0]
+    assert "cdm:measure_national_implementing_implements_directive" in q
+    assert "cdm:measure_national_implementing_implemented_by_country" in q
+    assert "cdm:resource_legal_measures_transposition_for" not in q
+    assert "cdm:resource_legal_measures_transposition_by" not in q
+
+
+def test_harmonisation_parses_nim_rows(monkeypatch, tmp_path):
+    """#197: NIM bindings (country / national CELEX / title / date) are parsed
+    into the expected per-measure record shape, and rows for countries outside
+    the target set are dropped."""
+    def fake_query(_query: str) -> list[dict]:
+        def b(country, celex, title=None, date=None, nim=None):
+            row = {
+                "country": {"value": country},
+                "celex_nat": {"value": celex},
+            }
+            if title:
+                row["title"] = {"value": title}
+            if date:
+                row["date"] = {"value": date}
+            if nim:
+                row["nim"] = {"value": nim}
+            return row
+
+        return [
+            b("LVA", "72016L0680LV01", title="Latvian transposition", date="2018-05-04"),
+            b("FIN", "72016L0680FI01", title="Suomen täytäntöönpano"),
+            b("DEU", "72016L0680DE01", title="should be dropped — not a target country"),
+            b("LVA", "72016L0680LV01"),  # duplicate (country, celex) — deduped
+        ]
+
+    monkeypatch.setattr(harmonisation, "sparql_query", fake_query)
+    monkeypatch.setattr(harmonisation, "CACHE_DIR", tmp_path / "cache")
+
+    rows = harmonisation.fetch_other_transpositions("32016L0680")
+    assert [(r["country_code"], r["celex_nat"]) for r in rows] == [
+        ("LVA", "72016L0680LV01"),
+        ("FIN", "72016L0680FI01"),
+    ]
+    lv = rows[0]
+    assert lv["country_en"] == "Latvia" and lv["country_et"] == "Läti"
+    assert lv["title"] == "Latvian transposition" and lv["date"] == "2018-05-04"
+    fi = rows[1]
+    assert fi["country_en"] == "Finland" and fi["title"] == "Suomen täytäntöönpano"
+    assert "date" not in fi  # OPTIONAL ?date was unbound
+
+
+def test_harmonisation_report_is_non_empty():
+    """#197: the committed harmonisation report must actually contain parallel
+    measures (the whole point — it was {0 parallels} before the NIM-vocab fix)."""
+    report_path = (
+        Path(__file__).resolve().parent.parent
+        / "krr_outputs" / "harmonisation" / "harmonisation_report.json"
+    )
+    assert report_path.exists(), "harmonisation report not generated"
+    report = json.loads(report_path.read_text(encoding="utf-8"))
+    assert report["total_parallel_measures"] > 0
+    assert report["directives_with_parallels"] > 0
+
+
 def test_harmonisation_resolves_real_law_iri(tmp_path, monkeypatch):
     krr = tmp_path / "krr_outputs"
     law = krr / "law_peep.json"
