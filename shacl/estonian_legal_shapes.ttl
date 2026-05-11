@@ -247,7 +247,12 @@ estleg:TopicClusterShape
         sh:description "Every TopicCluster must have an rdfs:label used as its display name" ;
     ] .
 
-# Shape for LegalConcept instances
+# Shape for LegalConcept instances — the provision-local definition node.
+# Each non-noise definition node also carries `estleg:definesConcept`, a hub
+# link to the canonical `estleg:Concept` node for that term (#134). This
+# replaces the former O(k²) `skos:exactMatch` clique between definition nodes;
+# the link is optional because noise-term definition nodes (repealed-marker
+# slots etc.) are still emitted but get no canonical concept.
 estleg:LegalConceptShape
     a sh:NodeShape ;
     sh:targetClass estleg:LegalConcept ;
@@ -256,6 +261,73 @@ estleg:LegalConceptShape
         sh:minCount 1 ;
         sh:name "label" ;
         sh:description "Every LegalConcept must have a label" ;
+    ] ;
+    sh:property [
+        sh:path estleg:definesConcept ;
+        sh:nodeKind sh:IRI ;
+        sh:maxCount 1 ;
+        sh:name "definesConcept" ;
+        sh:description "Canonical estleg:Concept node this provision-local definition belongs to (absent for filtered noise terms)" ;
+    ] .
+
+# Shape for canonical Concept instances (#134) — one node per distinct
+# normalised legal term, aggregating every provision-local definition of it.
+estleg:ConceptShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:Concept ;
+    sh:property [
+        sh:path skos:prefLabel ;
+        sh:nodeKind sh:Literal ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:name "prefLabel" ;
+        sh:description "Exactly one preferred label (a language-tagged literal): the most common surface form of the term" ;
+    ] ;
+    sh:property [
+        sh:path skos:altLabel ;
+        sh:nodeKind sh:Literal ;
+        sh:name "altLabel" ;
+        sh:description "Other surface forms of the term seen across laws (language-tagged literals)" ;
+    ] ;
+    sh:property [
+        sh:path skos:definition ;
+        sh:nodeKind sh:Literal ;
+        sh:name "definition" ;
+        sh:description "Definition(s) of the term — one value when laws agree, otherwise one per distinct wording (capped; see estleg:definitionVariantCount)" ;
+    ] ;
+    sh:property [
+        sh:path estleg:definitionCount ;
+        sh:datatype xsd:integer ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:name "definitionCount" ;
+        sh:description "Number of provision-local definitions aggregated by this concept" ;
+    ] ;
+    sh:property [
+        sh:path estleg:definitionVariantCount ;
+        sh:datatype xsd:integer ;
+        sh:maxCount 1 ;
+        sh:name "definitionVariantCount" ;
+        sh:description "Total distinct definition wordings, present only when skos:definition carries a capped subset" ;
+    ] ;
+    sh:property [
+        sh:path estleg:definedIn ;
+        sh:nodeKind sh:IRI ;
+        sh:minCount 1 ;
+        sh:name "definedIn" ;
+        sh:description "The provision-local definition nodes that define this term" ;
+    ] ;
+    sh:property [
+        sh:path skos:closeMatch ;
+        sh:nodeKind sh:IRI ;
+        sh:name "closeMatch" ;
+        sh:description "Other canonical Concept nodes with a near-identical term (edit distance < 3)" ;
+    ] ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:name "label" ;
+        sh:description "Every Concept must have an rdfs:label" ;
     ] .
 
 # Shape enforcing @type is always a list (validated programmatically)

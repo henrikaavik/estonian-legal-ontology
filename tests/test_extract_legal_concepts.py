@@ -5,6 +5,8 @@ import json
 import sys
 from pathlib import Path
 
+import pytest
+
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 
 
@@ -12,6 +14,97 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 REPO_ROOT = Path(__file__).resolve().parent.parent
 FIXTURE_DIR = Path(__file__).parent / "fixtures" / "kov_layer2a"
 PEEP_FIXTURE = FIXTURE_DIR / "sample_kov_act.json"
+SHAPES_TTL = REPO_ROOT / "shacl" / "estonian_legal_shapes.ttl"
+
+
+# ---------------------------------------------------------------------------
+# Issue #134 helpers — stage a synthetic corpus and run the extractor.
+# ---------------------------------------------------------------------------
+
+
+def _run_extractor(tmp_path, monkeypatch, peeps: dict[str, str], xmls: dict[str, str]):
+    """Stage ``peeps`` (slug -> peep JSON text) and ``xmls`` (slug -> XML text)
+    under a temp ``krr_outputs`` / ``data/riigiteataja`` tree, point
+    ``extract_legal_concepts`` at it, run ``main()``, and return the parsed
+    ``concepts_combined.jsonld`` ``@graph``."""
+    import extract_legal_concepts as mod
+
+    krr = tmp_path / "krr_outputs"
+    concepts = krr / "concepts"
+    reports = krr / "reports" / "kov"
+    krr.mkdir()
+    concepts.mkdir()
+    reports.mkdir(parents=True)
+    data_dir = tmp_path / "data" / "riigiteataja"
+    data_dir.mkdir(parents=True)
+
+    for slug, text in peeps.items():
+        (krr / f"{slug}_peep.json").write_text(text, encoding="utf-8")
+    for slug, text in xmls.items():
+        (data_dir / f"{slug}.xml").write_text(text, encoding="utf-8")
+
+    monkeypatch.setattr(mod, "KRR_DIR", krr)
+    monkeypatch.setattr(mod, "DATA_DIR", data_dir)
+    monkeypatch.setattr(mod, "CONCEPTS_DIR", concepts)
+    monkeypatch.setattr(mod, "REPO_ROOT", tmp_path)
+    import estleg_common
+    monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+
+    rc = mod.main()
+    assert rc in (0, None)
+    combined = json.loads(
+        (concepts / "concepts_combined.jsonld").read_text(encoding="utf-8")
+    )
+    return combined["@graph"]
+
+
+def _peep_text(slug: str, source: str, par_nr: str = "2") -> str:
+    return json.dumps({
+        "@context": {
+            "estleg": "https://data.riik.ee/ontology/estleg#",
+            "owl": "http://www.w3.org/2002/07/owl#",
+        },
+        "@graph": [
+            {"@id": f"estleg:{slug}_Map_2026",
+             "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
+             "dc:source": source},
+            {"@id": f"estleg:{slug}_Par_{par_nr}",
+             "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+             "estleg:paragrahv": f"§ {par_nr}"},
+        ],
+    })
+
+
+def _moisted_xml(body: str, par_nr: str = "2") -> str:
+    return f"""<?xml version="1.0" encoding="UTF-8"?>
+<akt>
+  <sisu>
+    <paragrahv>
+      <paragrahvNr>{par_nr}</paragrahvNr>
+      <kuvatavNr>§ {par_nr}.</kuvatavNr>
+      <paragrahvPealkiri>Mõisted</paragrahvPealkiri>
+      <loige>
+        <tavatekst>Käesolevas seaduses kasutatakse järgmisi mõisteid:
+        {body}</tavatekst>
+      </loige>
+    </paragrahv>
+  </sisu>
+</akt>"""
+
+
+def _by_id(graph: list[dict], node_id: str) -> dict | None:
+    for n in graph:
+        if n.get("@id") == node_id:
+            return n
+    return None
+
+
+def _legal_concept_nodes(graph: list[dict]) -> list[dict]:
+    return [n for n in graph if "estleg:LegalConcept" in n.get("@type", [])]
+
+
+def _concept_nodes(graph: list[dict]) -> list[dict]:
+    return [n for n in graph if "estleg:Concept" in n.get("@type", [])]
 
 
 class TestParToIriLookup:
@@ -369,13 +462,45 @@ class TestIssue171BucketingPerformance:
         assert ("auto", "auts") in pair_set
 
 
+def _expected_pipeline_triples(graph: list[dict]) -> int:
+    """Recompute the coverage ``triples_emitted`` figure from the combined
+    graph: the pipeline counts each provision-local definition node's
+    ``estleg:definedIn`` plus its hub links (``estleg:definesConcept`` +
+    ``skos:exactMatch`` for non-noise terms), and each canonical Concept
+    node's ``skos:prefLabel`` / ``estleg:definitionCount`` /
+    ``estleg:definedIn`` / ``skos:altLabel`` / ``skos:definition`` /
+    ``estleg:definitionVariantCount`` / ``skos:closeMatch`` triples."""
+
+    def _n(node: dict, prop: str) -> int:
+        v = node.get(prop)
+        if v is None:
+            return 0
+        return len(v) if isinstance(v, list) else 1
+
+    total = 0
+    for n in graph:
+        types = n.get("@type", [])
+        if "estleg:LegalConcept" in types:
+            total += _n(n, "estleg:definedIn")
+            total += _n(n, "estleg:definesConcept")
+            total += _n(n, "skos:exactMatch")
+        elif "estleg:Concept" in types:
+            total += 2  # prefLabel + definitionCount (always exactly one each)
+            total += _n(n, "estleg:definedIn")
+            total += _n(n, "skos:altLabel")
+            total += _n(n, "skos:definition")
+            total += _n(n, "estleg:definitionVariantCount")
+            total += _n(n, "skos:closeMatch")
+    return total
+
+
 class TestIssue171TripleCounting:
     """Finding 6 (#171): _triples increments AFTER graph emission, not
     before — collided drops no longer cause overcount.
 
     This is hard to test in isolation since the increment is inside
-    main(); use a synthetic end-to-end run and pin the post-emission
-    semantics: triples_emitted == 2 * len(graph_concept_nodes).
+    main(); use a synthetic end-to-end run and verify the post-emission
+    figure matches the triples actually present in the combined graph.
     """
 
     def test_triples_match_emitted_concept_count(self, tmp_path, monkeypatch):
@@ -437,16 +562,21 @@ class TestIssue171TripleCounting:
         combined = json.loads(
             (concepts / "concepts_combined.jsonld").read_text(encoding="utf-8")
         )
-        concept_nodes = [
-            n for n in combined["@graph"]
+        graph = combined["@graph"]
+        legal_concept_nodes = [
+            n for n in graph
             if "estleg:LegalConcept" in n.get("@type", [])
             and "owl:NamedIndividual" in n.get("@type", [])
         ]
-        # Each concept emits 2 triples (definesTerm + definedIn).
-        assert cov["triples_emitted"] == 2 * len(concept_nodes), (
-            f"triples_emitted ({cov['triples_emitted']}) doesn't match "
-            f"2 × concept count ({len(concept_nodes)})"
+        assert legal_concept_nodes, "no provision-local definition nodes emitted"
+        # Post-emission count: must equal the linking + canonical-metadata
+        # triples actually present in the graph (no overcount from collided
+        # drops, no undercount).
+        assert cov["triples_emitted"] == _expected_pipeline_triples(graph), (
+            f"triples_emitted ({cov['triples_emitted']}) doesn't match the "
+            f"graph-derived figure ({_expected_pipeline_triples(graph)})"
         )
+        assert cov["triples_emitted"] > 0
 
 
 class TestIssue171ParToIriCollision:
@@ -525,3 +655,385 @@ class TestIssue171ImportTraceback:
         src = Path(__file__).resolve().parent.parent / "scripts" / "extract_legal_concepts.py"
         text = src.read_text(encoding="utf-8")
         assert "import traceback" in text
+
+
+# ---------------------------------------------------------------------------
+# Issue #134 — canonical estleg:Concept nodes + noise filter
+# ---------------------------------------------------------------------------
+
+
+class TestIssue134NoiseFilterUnit:
+    """Unit tests for the term / definition noise predicates."""
+
+    @pytest.mark.parametrize("term", [
+        "a",                # single char
+        "x",
+        "1",                # pure digit
+        "42",
+        "...",
+        "…",
+        "[kehtetu]",        # bracketed repealed marker
+        "(kehtetu)",
+        "kehtetu",
+        "kehtetud",
+        "ja",               # stopword
+        "või",
+        "ja või",           # stopword-only phrase
+        "the of",
+    ])
+    def test_is_noise_term_true(self, term):
+        from extract_legal_concepts import is_noise_term
+        assert is_noise_term(term) is True, term
+
+    @pytest.mark.parametrize("term", [
+        "isik",
+        "reovesi",
+        "tee kaitsevöönd",
+        "vee",              # short but a real fragment — NOT filtered by design
+        "ühisveevärgi ja",  # trailing stopword but not stopword-only
+    ])
+    def test_is_noise_term_false(self, term):
+        from extract_legal_concepts import is_noise_term
+        assert is_noise_term(term) is False, term
+
+    @pytest.mark.parametrize("definition", [
+        "",
+        "   ",
+        "...",
+        "-",
+        "kehtetu",
+        "kehtetu;",
+        "Kehtetu - RT I, 2024, 1, 1",
+        "välja jäetud",
+    ])
+    def test_is_noise_definition_true(self, definition):
+        from extract_legal_concepts import is_noise_definition
+        assert is_noise_definition(definition) is True, definition
+
+    @pytest.mark.parametrize("definition", [
+        "füüsiline isik",
+        "kogumissüsteemi sattunud reostunud vesi",
+    ])
+    def test_is_noise_definition_false(self, definition):
+        from extract_legal_concepts import is_noise_definition
+        assert is_noise_definition(definition) is False, definition
+
+
+class TestIssue134ConceptNodeShape:
+    """A canonical estleg:Concept node carries skos:prefLabel (lang-tagged),
+    skos:definition, estleg:definedIn (provision-local definition nodes), and
+    estleg:definitionCount."""
+
+    def test_concept_node_has_required_properties(self, tmp_path, monkeypatch):
+        graph = _run_extractor(
+            tmp_path, monkeypatch,
+            peeps={"law_a": _peep_text("law_a", "Test law A")},
+            xmls={"law_a": _moisted_xml(
+                "1) klient — füüsiline isik kes saab teenust;"
+            )},
+        )
+        concepts = _concept_nodes(graph)
+        assert len(concepts) == 1, [n["@id"] for n in concepts]
+        c = concepts[0]
+        assert c["@id"] == "estleg:Concept_klient"
+        assert c["@type"] == ["owl:NamedIndividual", "estleg:Concept"]
+        # prefLabel: a single language-tagged literal.
+        assert c["skos:prefLabel"] == {"@value": "klient", "@language": "et"}
+        # definition(s): language-tagged literal(s).
+        defs = c["skos:definition"]
+        assert isinstance(defs, list) and len(defs) == 1
+        assert defs[0]["@language"] == "et"
+        assert "füüsiline isik" in defs[0]["@value"]
+        # definedIn → the provision-local definition node(s), as IRIs.
+        defined_in = c["estleg:definedIn"]
+        assert isinstance(defined_in, list) and len(defined_in) == 1
+        lc_id = defined_in[0]["@id"]
+        lc_node = _by_id(graph, lc_id)
+        assert lc_node is not None
+        assert "estleg:LegalConcept" in lc_node["@type"]
+        # definitionCount: xsd:integer.
+        assert c["estleg:definitionCount"] == {"@value": "1", "@type": "xsd:integer"}
+        assert c["rdfs:label"] == "klient"
+
+    def test_alt_labels_collected_from_surface_variants(self, tmp_path, monkeypatch):
+        # Two laws define the same normalised term with different casings.
+        graph = _run_extractor(
+            tmp_path, monkeypatch,
+            peeps={
+                "law_a": _peep_text("law_a", "Test law A"),
+                "law_b": _peep_text("law_b", "Test law B"),
+            },
+            xmls={
+                "law_a": _moisted_xml("1) klient — füüsiline isik üks;"),
+                "law_b": _moisted_xml("1) Klient — füüsiline isik kaks;"),
+            },
+        )
+        c = _by_id(graph, "estleg:Concept_klient")
+        assert c is not None
+        # prefLabel is one of the surface forms; the other shows up in altLabel.
+        surface_forms = {"klient", "Klient"}
+        assert c["skos:prefLabel"]["@value"] in surface_forms
+        alts = {a["@value"] for a in c.get("skos:altLabel", [])}
+        assert surface_forms == ({c["skos:prefLabel"]["@value"]} | alts)
+        assert c["estleg:definitionCount"] == {"@value": "2", "@type": "xsd:integer"}
+
+    def test_definition_variant_count_when_capped(self, tmp_path, monkeypatch):
+        # Seven laws each give a distinct wording → only 5 emitted, the true
+        # total recorded in estleg:definitionVariantCount.
+        peeps = {f"law_{i}": _peep_text(f"law_{i}", f"Test law {i}") for i in range(7)}
+        xmls = {
+            f"law_{i}": _moisted_xml(f"1) mõiste — definitsioon number {i} siin;")
+            for i in range(7)
+        }
+        graph = _run_extractor(tmp_path, monkeypatch, peeps=peeps, xmls=xmls)
+        c = _by_id(graph, "estleg:Concept_moiste")
+        assert c is not None
+        assert len(c["skos:definition"]) == 5
+        assert c["estleg:definitionVariantCount"] == {
+            "@value": "7", "@type": "xsd:integer",
+        }
+        assert c["estleg:definitionCount"] == {"@value": "7", "@type": "xsd:integer"}
+
+
+class TestIssue134HubLinksReplaceClique:
+    """A term defined in N laws emits N estleg:definesConcept arcs to ONE
+    canonical Concept (plus N skos:exactMatch arcs Concept-ward), NOT an
+    O(N²) clique of skos:exactMatch arcs between the N provision-local
+    definition nodes."""
+
+    def test_three_laws_one_concept_three_hub_links(self, tmp_path, monkeypatch):
+        peeps = {f"law_{s}": _peep_text(f"law_{s}", f"Test law {s}")
+                 for s in ("a", "b", "c")}
+        xmls = {f"law_{s}": _moisted_xml(
+            "1) isik — füüsiline või juriidiline isik;")
+            for s in ("a", "b", "c")}
+        graph = _run_extractor(tmp_path, monkeypatch, peeps=peeps, xmls=xmls)
+
+        # Exactly one canonical Concept for 'isik'.
+        concepts = _concept_nodes(graph)
+        assert [n["@id"] for n in concepts] == ["estleg:Concept_isik"]
+        cc_id = "estleg:Concept_isik"
+
+        lc_nodes = _legal_concept_nodes(graph)
+        assert len(lc_nodes) == 3
+
+        # Every provision-local node hubs to the canonical Concept exactly once.
+        for lc in lc_nodes:
+            assert lc.get("estleg:definesConcept") == {"@id": cc_id}, lc["@id"]
+            assert lc.get("skos:exactMatch") == [{"@id": cc_id}], lc["@id"]
+
+        # 3 definesConcept arcs total — O(k), not O(k²).
+        defines_arcs = sum(
+            1 for lc in lc_nodes if lc.get("estleg:definesConcept")
+        )
+        assert defines_arcs == 3
+
+        # No exactMatch / closeMatch arc points from one provision-local node
+        # to another provision-local node (the clique is gone).
+        lc_ids = {lc["@id"] for lc in lc_nodes}
+        for lc in lc_nodes:
+            for prop in ("skos:exactMatch", "skos:closeMatch"):
+                refs = lc.get(prop) or []
+                if isinstance(refs, dict):
+                    refs = [refs]
+                for r in refs:
+                    assert r["@id"] not in lc_ids, (
+                        f"{lc['@id']} {prop} -> {r['@id']} — provision-local "
+                        "clique edge still present"
+                    )
+
+        # The canonical Concept lists all 3 provision-local nodes in definedIn.
+        cc = _by_id(graph, cc_id)
+        assert {d["@id"] for d in cc["estleg:definedIn"]} == lc_ids
+        assert cc["estleg:definitionCount"] == {"@value": "3", "@type": "xsd:integer"}
+
+
+class TestIssue134NoiseFilterEndToEnd:
+    """Junk terms (single-char already dropped at extraction; kehtetu /
+    stopword-only / all-noise-definition terms) get NO canonical Concept and
+    their provision-local nodes get NO estleg:definesConcept."""
+
+    def test_kehtetu_and_stopword_terms_get_no_concept(self, tmp_path, monkeypatch):
+        graph = _run_extractor(
+            tmp_path, monkeypatch,
+            peeps={"law_a": _peep_text("law_a", "Test law A")},
+            xmls={"law_a": _moisted_xml(
+                "1) isik — füüsiline isik kes osaleb; "
+                "2) kehtetu — RT I, 2024, 1, 1 jõust 2024-01-01; "
+                "3) ja — siin on midagi teksti; "
+                "4) foo — kehtetu;"
+            )},
+        )
+        concept_ids = {n["@id"] for n in _concept_nodes(graph)}
+        # 'isik' is a real concept; 'kehtetu', 'ja' (stopword) and 'foo'
+        # (all-noise-definition) are filtered.
+        assert concept_ids == {"estleg:Concept_isik"}
+
+        lc_by_label = {}
+        for lc in _legal_concept_nodes(graph):
+            pref = lc.get("skos:prefLabel")
+            lc_by_label[pref] = lc
+        # The provision-local nodes for the junk terms still exist…
+        assert "kehtetu" in lc_by_label
+        assert "ja" in lc_by_label
+        assert "foo" in lc_by_label
+        # …but with no estleg:definesConcept / skos:exactMatch hub link.
+        for label in ("kehtetu", "ja", "foo"):
+            assert "estleg:definesConcept" not in lc_by_label[label], label
+            assert "skos:exactMatch" not in lc_by_label[label], label
+        # Whereas the real concept's node is fully linked.
+        assert lc_by_label["isik"]["estleg:definesConcept"] == {
+            "@id": "estleg:Concept_isik"
+        }
+
+    def test_coverage_report_records_filtered_noise(self, tmp_path, monkeypatch):
+        _run_extractor(
+            tmp_path, monkeypatch,
+            peeps={"law_a": _peep_text("law_a", "Test law A")},
+            xmls={"law_a": _moisted_xml(
+                "1) isik — füüsiline isik; 2) kehtetu — kehtetu;"
+            )},
+        )
+        cov = json.loads(
+            (tmp_path / "krr_outputs" / "reports" / "kov"
+             / "extract_legal_concepts_coverage.json").read_text(encoding="utf-8")
+        )
+        # 'kehtetu' is the one filtered term — surfaced via skip_reasons.
+        assert cov["skip_reasons"].get("concepts_filtered_noise") == 1
+        # And the cross-reference report's summary carries it too.
+        report = json.loads(
+            (tmp_path / "krr_outputs" / "concepts"
+             / "concept_crossref_report.json").read_text(encoding="utf-8")
+        )
+        assert report["summary"]["concepts_filtered_noise"] == 1
+        assert report["summary"]["canonical_concepts"] == 1
+        assert any(
+            t["term"] == "kehtetu" for t in report["noisy_candidate_terms"]
+        )
+
+
+class TestIssue134CloseMatchIsConceptToConcept:
+    """skos:closeMatch now connects canonical Concept nodes to each other
+    (bidirectional), never the provision-local definition nodes."""
+
+    def test_close_match_between_concepts(self, tmp_path, monkeypatch):
+        # 'isik' / 'isiku' — edit distance 1, both ≥4 chars (pass the
+        # bucketing min_len), so they should be linked as close matches.
+        graph = _run_extractor(
+            tmp_path, monkeypatch,
+            peeps={"law_a": _peep_text("law_a", "Test law A")},
+            xmls={"law_a": _moisted_xml(
+                "1) isik — füüsiline isik üks; 2) isiku — füüsilise isiku oma;"
+            )},
+        )
+        ci = _by_id(graph, "estleg:Concept_isik")
+        cu = _by_id(graph, "estleg:Concept_isiku")
+        assert ci is not None and cu is not None
+
+        def _refs(node, prop):
+            v = node.get(prop) or []
+            return [r["@id"] for r in (v if isinstance(v, list) else [v])]
+
+        # Bidirectional Concept ↔ Concept.
+        assert "estleg:Concept_isiku" in _refs(ci, "skos:closeMatch")
+        assert "estleg:Concept_isik" in _refs(cu, "skos:closeMatch")
+
+        # No provision-local definition node carries skos:closeMatch.
+        for lc in _legal_concept_nodes(graph):
+            assert "skos:closeMatch" not in lc, lc["@id"]
+
+
+class TestIssue134Vocabulary:
+    """The new estleg vocabulary terms are registered in
+    controlled_vocabulary.jsonld."""
+
+    def test_new_vocab_terms_present(self):
+        vocab = json.loads(
+            (REPO_ROOT / "krr_outputs" / "controlled_vocabulary.jsonld")
+            .read_text(encoding="utf-8")
+        )
+        by_id = {n["@id"]: n for n in vocab["@graph"] if isinstance(n, dict)}
+        assert "estleg:Concept" in by_id
+        assert "owl:Class" in by_id["estleg:Concept"]["@type"]
+        for prop, expected_type in [
+            ("estleg:definesConcept", "owl:ObjectProperty"),
+            ("estleg:definedIn", "owl:ObjectProperty"),
+            ("estleg:definitionCount", "owl:DatatypeProperty"),
+            ("estleg:definitionVariantCount", "owl:DatatypeProperty"),
+        ]:
+            assert prop in by_id, prop
+            assert expected_type in by_id[prop]["@type"], prop
+
+
+class TestIssue134ConceptShapeSHACL:
+    """ConceptShape accepts a well-formed estleg:Concept and rejects one
+    missing skos:prefLabel or estleg:definitionCount."""
+
+    @staticmethod
+    def _validate(graph_nodes: list[dict]) -> bool:
+        pyshacl = pytest.importorskip("pyshacl")
+        rdflib = pytest.importorskip("rdflib")
+        shapes = rdflib.Graph()
+        shapes.parse(str(SHAPES_TTL), format="turtle")
+        data = rdflib.Graph()
+        data.parse(data=json.dumps({
+            "@context": {
+                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+                "skos": "http://www.w3.org/2004/02/skos/core#",
+                "xsd": "http://www.w3.org/2001/XMLSchema#",
+            },
+            "@graph": graph_nodes,
+        }), format="json-ld")
+        conforms, _, _msg = pyshacl.validate(
+            data, shacl_graph=shapes, inference="rdfs", abort_on_first=False,
+        )
+        return bool(conforms)
+
+    @staticmethod
+    def _well_formed_concept() -> dict:
+        return {
+            "@id": "estleg:Concept_test_term",
+            "@type": ["owl:NamedIndividual", "estleg:Concept"],
+            "skos:prefLabel": {"@value": "test term", "@language": "et"},
+            "skos:altLabel": [{"@value": "Test Term", "@language": "et"}],
+            "skos:definition": [{"@value": "a definition of the test term",
+                                 "@language": "et"}],
+            "estleg:definitionCount": {"@value": "2", "@type": "xsd:integer"},
+            "estleg:definedIn": [
+                {"@id": "estleg:Concept_law_a_test_term"},
+                {"@id": "estleg:Concept_law_b_test_term"},
+            ],
+            "rdfs:label": "test term",
+        }
+
+    def test_well_formed_concept_conforms(self):
+        assert self._validate([self._well_formed_concept()]) is True
+
+    def test_missing_pref_label_rejected(self):
+        node = self._well_formed_concept()
+        del node["skos:prefLabel"]
+        assert self._validate([node]) is False
+
+    def test_missing_definition_count_rejected(self):
+        node = self._well_formed_concept()
+        del node["estleg:definitionCount"]
+        assert self._validate([node]) is False
+
+    def test_missing_defined_in_rejected(self):
+        node = self._well_formed_concept()
+        del node["estleg:definedIn"]
+        assert self._validate([node]) is False
+
+    def test_legal_concept_shape_allows_defines_concept(self):
+        """Pin the new sh:property on LegalConceptShape (SHACL is open-world,
+        so query the shapes graph directly)."""
+        rdflib = pytest.importorskip("rdflib")
+        SH = rdflib.Namespace("http://www.w3.org/ns/shacl#")
+        ESTLEG = rdflib.Namespace("https://data.riik.ee/ontology/estleg#")
+        shapes = rdflib.Graph()
+        shapes.parse(str(SHAPES_TTL), format="turtle")
+        paths = set()
+        for ps in shapes.objects(ESTLEG.LegalConceptShape, SH.property):
+            paths.update(shapes.objects(ps, SH.path))
+        assert ESTLEG.definesConcept in paths
