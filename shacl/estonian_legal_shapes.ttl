@@ -660,7 +660,7 @@ estleg:SanctionShape
         sh:maxCount 1 ;
         sh:datatype xsd:string ;
         sh:name "maxPenalty" ;
-        sh:description "Maximum penalty (e.g., '5 years', '300 fine units')" ;
+        sh:description "Maximum penalty, human-readable display string (e.g., '5 years', '300 fine units')" ;
     ] ;
     sh:property [
         sh:path estleg:applicableProvision ;
@@ -674,7 +674,67 @@ estleg:SanctionShape
         sh:maxCount 1 ;
         sh:datatype xsd:string ;
         sh:name "minPenalty" ;
-        sh:description "Minimum penalty if specified" ;
+        sh:description "Minimum penalty if specified, human-readable display string" ;
+    ] ;
+    # --- structured, computable penalty fields (issue #133) ---
+    # All optional: a Sanction whose free-text penalty couldn't be
+    # parsed carries only the display string above and still validates.
+    sh:property [
+        sh:path estleg:isStatutoryDefault ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:boolean ;
+        sh:name "isStatutoryDefault" ;
+        sh:description "True when the penalty value comes from a statutory ceiling rather than the provision text" ;
+    ] ;
+    sh:property [
+        sh:path estleg:maxPenaltyAmount ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:decimal ;
+        sh:name "maxPenaltyAmount" ;
+        sh:description "Numeric value of the maximum penalty (e.g., 5, 300, 15000)" ;
+    ] ;
+    sh:property [
+        sh:path estleg:minPenaltyAmount ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:decimal ;
+        sh:name "minPenaltyAmount" ;
+        sh:description "Numeric value of the minimum penalty" ;
+    ] ;
+    sh:property [
+        sh:path estleg:maxPenaltyUnit ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:in ( "years" "months" "days" "daily_rates" "fine_units" "monetary" ) ;
+        sh:name "maxPenaltyUnit" ;
+        sh:description "Unit of the maximum penalty amount: years/months/days, daily_rates (KarS päevamäär), fine_units (väärteo trahviühik), or monetary (a fixed sum)" ;
+    ] ;
+    sh:property [
+        sh:path estleg:minPenaltyUnit ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:in ( "years" "months" "days" "daily_rates" "fine_units" "monetary" ) ;
+        sh:name "minPenaltyUnit" ;
+        sh:description "Unit of the minimum penalty amount (same controlled set as maxPenaltyUnit)" ;
+    ] ;
+    sh:property [
+        sh:path estleg:maxPenaltyCurrency ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "maxPenaltyCurrency" ;
+        sh:description "Currency code for a monetary maximum penalty (e.g., 'EUR'); present only when maxPenaltyUnit is 'monetary'" ;
+    ] ;
+    sh:property [
+        sh:path estleg:minPenaltyCurrency ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "minPenaltyCurrency" ;
+        sh:description "Currency code for a monetary minimum penalty; present only when minPenaltyUnit is 'monetary'" ;
     ] .
 
 # Shape for Institution instances

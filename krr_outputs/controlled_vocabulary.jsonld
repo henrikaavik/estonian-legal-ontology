@@ -1513,6 +1513,17 @@
       "rdfs:comment": "Reusable property observed in generated corpus and materialized for vocabulary coverage validation."
     },
     {
+      "@id": "estleg:isStatutoryDefault",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": "Is Statutory Default",
+      "rdfs:comment": "True when a sanction's penalty value comes from a statutory ceiling (e.g. KarS § 44 daily-rate cap, KarS § 48 arrest cap) rather than the offence provision text.",
+      "rdfs:range": {
+        "@id": "xsd:boolean"
+      }
+    },
+    {
       "@id": "estleg:issuer",
       "@type": [
         "owl:DatatypeProperty"
@@ -1574,7 +1585,40 @@
         "owl:DatatypeProperty"
       ],
       "rdfs:label": "Max Penalty",
-      "rdfs:comment": "Reusable property observed in generated corpus and materialized for vocabulary coverage validation."
+      "rdfs:comment": "Maximum penalty as a human-readable display string (e.g. '5 years', '300 fine units', '15000 EUR'); see estleg:maxPenaltyAmount/Unit/Currency for the structured form."
+    },
+    {
+      "@id": "estleg:maxPenaltyAmount",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": "Max Penalty Amount",
+      "rdfs:comment": "Numeric value of the maximum penalty (e.g. 5, 300, 15000), paired with estleg:maxPenaltyUnit. Emitted only when the display string parses confidently into amount + unit.",
+      "rdfs:range": {
+        "@id": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:maxPenaltyCurrency",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": "Max Penalty Currency",
+      "rdfs:comment": "Currency code (e.g. 'EUR') for a monetary maximum penalty; present only when estleg:maxPenaltyUnit is 'monetary'.",
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "estleg:maxPenaltyUnit",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": "Max Penalty Unit",
+      "rdfs:comment": "Unit of estleg:maxPenaltyAmount; one of years, months, days, daily_rates (KarS päevamäär), fine_units (väärteo trahviühik), monetary (a fixed monetary sum).",
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
     },
     {
       "@id": "estleg:minPenalty",
@@ -1582,7 +1626,40 @@
         "owl:DatatypeProperty"
       ],
       "rdfs:label": "Min Penalty",
-      "rdfs:comment": "Reusable property observed in generated corpus and materialized for vocabulary coverage validation."
+      "rdfs:comment": "Minimum penalty as a human-readable display string; see estleg:minPenaltyAmount/Unit/Currency for the structured form."
+    },
+    {
+      "@id": "estleg:minPenaltyAmount",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": "Min Penalty Amount",
+      "rdfs:comment": "Numeric value of the minimum penalty, paired with estleg:minPenaltyUnit. Emitted only when the display string parses confidently into amount + unit.",
+      "rdfs:range": {
+        "@id": "xsd:decimal"
+      }
+    },
+    {
+      "@id": "estleg:minPenaltyCurrency",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": "Min Penalty Currency",
+      "rdfs:comment": "Currency code (e.g. 'EUR') for a monetary minimum penalty; present only when estleg:minPenaltyUnit is 'monetary'.",
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "estleg:minPenaltyUnit",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": "Min Penalty Unit",
+      "rdfs:comment": "Unit of estleg:minPenaltyAmount; same controlled set as estleg:maxPenaltyUnit (years, months, days, daily_rates, fine_units, monetary).",
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
     },
     {
       "@id": "estleg:normativeType",

@@ -1070,3 +1070,592 @@ class TestDatetimeNowUTC:
             f"report 'generated' should match UTC date; "
             f"expected={expected} got={report['generated']}"
         )
+
+
+# --------------------------------------------------------------------- #
+# Regression tests for issue #133 — structured, computable penalties.
+# --------------------------------------------------------------------- #
+
+
+class TestParsePenaltyToStructured:
+    """``_parse_penalty_to_structured`` maps the free-text strings the
+    extractors produce onto an (amount, unit, currency) triple from the
+    controlled unit set, or returns ``None`` when the string can't be
+    confidently parsed."""
+
+    @pytest.mark.parametrize(
+        "penalty_str, expected",
+        [
+            ("5 years", ("5", "years", None)),
+            ("12 years", ("12", "years", None)),
+            ("1 year", ("1", "years", None)),
+            ("6 months", ("6", "months", None)),
+            ("1 month", ("1", "months", None)),
+            ("30 days", ("30", "days", None)),
+            ("14 days", ("14", "days", None)),
+            ("1 day", ("1", "days", None)),
+            ("300 daily rates", ("300", "daily_rates", None)),
+            ("500 daily rates", ("500", "daily_rates", None)),
+            ("1 daily rate", ("1", "daily_rates", None)),
+            ("300 fine units", ("300", "fine_units", None)),
+            ("20 fine units", ("20", "fine_units", None)),
+            ("1 fine unit", ("1", "fine_units", None)),
+            ("15000 EUR", ("15000", "monetary", "EUR")),
+            ("640 EUR", ("640", "monetary", "EUR")),
+            # ``_normalise_penalty_text`` never singularises EUR, but
+            # the parser is tolerant of the digit-form anyway.
+            ("1 EUR", ("1", "monetary", "EUR")),
+        ],
+    )
+    def test_parseable_strings(self, penalty_str, expected):
+        from decimal import Decimal
+
+        from extract_sanctions import _parse_penalty_to_structured
+
+        result = _parse_penalty_to_structured(penalty_str)
+        assert result is not None, f"{penalty_str!r} should parse"
+        amount, unit, currency = result
+        assert (str(amount), unit, currency) == expected
+        assert amount == Decimal(expected[0])
+
+    @pytest.mark.parametrize(
+        "penalty_str",
+        [
+            "life",          # life imprisonment — no finite amount
+            "",              # empty
+            "   ",           # whitespace only
+            "12 weeks",      # unit token outside the controlled set
+            "five years",    # non-numeric amount
+            "years",         # no amount
+            "30",            # no unit
+            "0 days",        # non-positive amount
+        ],
+    )
+    def test_unparseable_strings_return_none(self, penalty_str):
+        from extract_sanctions import _parse_penalty_to_structured
+
+        assert _parse_penalty_to_structured(penalty_str) is None
+
+    def test_returned_unit_is_in_controlled_set(self):
+        from extract_sanctions import (
+            PENALTY_UNITS,
+            _parse_penalty_to_structured,
+        )
+
+        for s in ("5 years", "6 months", "30 days", "300 daily rates",
+                  "300 fine units", "15000 EUR"):
+            res = _parse_penalty_to_structured(s)
+            assert res is not None
+            assert res[1] in PENALTY_UNITS
+
+    def test_currency_only_emitted_for_monetary(self):
+        from extract_sanctions import (
+            PENALTY_UNIT_MONETARY,
+            _parse_penalty_to_structured,
+        )
+
+        for s in ("5 years", "300 fine units", "300 daily rates", "30 days"):
+            amount, unit, currency = _parse_penalty_to_structured(s)
+            assert currency is None
+            assert unit != PENALTY_UNIT_MONETARY
+        amount, unit, currency = _parse_penalty_to_structured("15000 EUR")
+        assert unit == PENALTY_UNIT_MONETARY
+        assert currency == "EUR"
+
+
+class TestStructuredPenaltyFieldHelpers:
+    """``_structured_penalty_fields`` / ``_attach_structured_penalties``
+    build the JSON-LD property block for a Sanction node and return the
+    count of penalty strings that couldn't be parsed."""
+
+    def test_fields_block_for_monetary(self):
+        from extract_sanctions import _structured_penalty_fields
+
+        fields, miss = _structured_penalty_fields("15000 EUR", "max")
+        assert miss == 0
+        assert fields["estleg:maxPenaltyAmount"] == {
+            "@value": "15000", "@type": "xsd:decimal",
+        }
+        assert fields["estleg:maxPenaltyUnit"] == "monetary"
+        assert fields["estleg:maxPenaltyCurrency"] == "EUR"
+
+    def test_fields_block_for_duration_has_no_currency(self):
+        from extract_sanctions import _structured_penalty_fields
+
+        fields, miss = _structured_penalty_fields("5 years", "max")
+        assert miss == 0
+        assert fields["estleg:maxPenaltyAmount"] == {
+            "@value": "5", "@type": "xsd:decimal",
+        }
+        assert fields["estleg:maxPenaltyUnit"] == "years"
+        assert "estleg:maxPenaltyCurrency" not in fields
+
+    def test_fields_block_unparseable_returns_empty_and_one(self):
+        from extract_sanctions import _structured_penalty_fields
+
+        fields, miss = _structured_penalty_fields("life", "max")
+        assert fields == {}
+        assert miss == 1
+
+    def test_min_prefix_uses_min_property_names(self):
+        from extract_sanctions import _structured_penalty_fields
+
+        fields, _miss = _structured_penalty_fields("3 years", "min")
+        assert "estleg:minPenaltyAmount" in fields
+        assert "estleg:minPenaltyUnit" in fields
+        assert fields["estleg:minPenaltyUnit"] == "years"
+
+    def test_attach_handles_both_min_and_max(self):
+        from extract_sanctions import _attach_structured_penalties
+
+        node = {"@id": "estleg:X"}
+        miss = _attach_structured_penalties(
+            node, {"max_penalty": "12 years", "min_penalty": "3 years"}
+        )
+        assert miss == 0
+        assert node["estleg:maxPenaltyAmount"] == {
+            "@value": "12", "@type": "xsd:decimal",
+        }
+        assert node["estleg:maxPenaltyUnit"] == "years"
+        assert node["estleg:minPenaltyAmount"] == {
+            "@value": "3", "@type": "xsd:decimal",
+        }
+        assert node["estleg:minPenaltyUnit"] == "years"
+
+    def test_attach_skips_missing_penalty_keys(self):
+        from extract_sanctions import _attach_structured_penalties
+
+        node = {"@id": "estleg:X"}
+        miss = _attach_structured_penalties(node, {"sanction_type": "fine"})
+        assert miss == 0
+        assert node == {"@id": "estleg:X"}
+
+    def test_attach_unparseable_max_only_bumps_one(self):
+        from extract_sanctions import _attach_structured_penalties
+
+        node = {"@id": "estleg:X"}
+        miss = _attach_structured_penalties(node, {"max_penalty": "life"})
+        assert miss == 1
+        # No structured fields landed.
+        assert all(
+            k not in node
+            for k in (
+                "estleg:maxPenaltyAmount",
+                "estleg:maxPenaltyUnit",
+                "estleg:maxPenaltyCurrency",
+            )
+        )
+
+    def test_decimal_literal_renders_cleanly(self):
+        from decimal import Decimal
+
+        from extract_sanctions import _decimal_literal
+
+        assert _decimal_literal(Decimal("5")) == "5"
+        assert _decimal_literal(Decimal("15000")) == "15000"
+        assert _decimal_literal(Decimal("300")) == "300"
+        # A genuine fractional value is preserved (trailing zeros trimmed).
+        assert _decimal_literal(Decimal("5.50")) == "5.5"
+
+
+class TestStructuredPenaltyEndToEnd:
+    """A Sanction node built from a parseable penalty carries the
+    structured trio with the right ``xsd:decimal`` typing; an
+    unparseable penalty gets only the free-text field and bumps the
+    ``penalty_unparsed`` counter in the report."""
+
+    def test_parseable_fine_node_has_structured_trio(
+        self, tmp_path, monkeypatch
+    ):
+        import extract_sanctions as mod
+        import estleg_common
+
+        krr = tmp_path / "krr_outputs"
+        sanctions_dir = krr / "sanctions"
+        sanctions_dir.mkdir(parents=True)
+        peep = krr / "struct_fine_peep.json"
+        peep.write_text(json.dumps({
+            "@context": {
+                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "owl": "http://www.w3.org/2002/07/owl#",
+            },
+            "@graph": [
+                {"@id": "estleg:SF_Map_2026",
+                 "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]},
+                {"@id": "estleg:SF_Par_1",
+                 "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+                 "estleg:paragrahv": "§ 1",
+                 "estleg:summary":
+                     "Rikkumise eest, mis on väärtegu, mille eest on "
+                     "ette nähtud rahatrahv kuni 300 trahviühikut."},
+            ],
+        }), encoding="utf-8")
+
+        monkeypatch.setattr(mod, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "SANCTION_DIR", sanctions_dir)
+        monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+
+        rc = mod.main()
+        assert rc in (0, None)
+
+        from extract_sanctions import sanitize_id
+        sanc_file = sanctions_dir / f"sanctions_{sanitize_id('struct_fine')}.json"
+        assert sanc_file.exists()
+        with open(sanc_file, "r", encoding="utf-8") as fh:
+            sdoc = json.load(fh)
+        fine_nodes = [
+            n for n in sdoc["@graph"]
+            if n.get("estleg:sanctionType") == "fine"
+        ]
+        assert fine_nodes, "expected a fine sanction node"
+        node = fine_nodes[0]
+        # Free-text field preserved (backward compat).
+        assert node["estleg:maxPenalty"] == "300 fine units"
+        # Structured trio present with correct typing.
+        assert node["estleg:maxPenaltyAmount"] == {
+            "@value": "300", "@type": "xsd:decimal",
+        }
+        assert node["estleg:maxPenaltyUnit"] == "fine_units"
+        # fine_units is not monetary → no currency.
+        assert "estleg:maxPenaltyCurrency" not in node
+
+        # Report records the structured count, no unparsed.
+        report = json.load(open(krr / "sanctions_report.json"))
+        assert report["penalty_normalisation"]["penalty_structured"] >= 1
+        assert report["penalty_normalisation"]["penalty_unparsed"] == 0
+
+    def test_life_imprisonment_node_has_no_structured_fields_and_bumps_counter(
+        self, tmp_path, monkeypatch
+    ):
+        import extract_sanctions as mod
+        import estleg_common
+
+        krr = tmp_path / "krr_outputs"
+        sanctions_dir = krr / "sanctions"
+        sanctions_dir.mkdir(parents=True)
+        peep = krr / "life_peep.json"
+        peep.write_text(json.dumps({
+            "@context": {
+                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "owl": "http://www.w3.org/2002/07/owl#",
+            },
+            "@graph": [
+                {"@id": "estleg:LIFE_Map_2026",
+                 "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]},
+                {"@id": "estleg:LIFE_Par_1",
+                 "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+                 "estleg:paragrahv": "§ 1",
+                 "estleg:summary":
+                     "Selle eest karistatakse eluaegse vangistusega."},
+            ],
+        }), encoding="utf-8")
+
+        monkeypatch.setattr(mod, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "SANCTION_DIR", sanctions_dir)
+        monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+
+        rc = mod.main()
+        assert rc in (0, None)
+
+        from extract_sanctions import sanitize_id
+        sanc_file = sanctions_dir / f"sanctions_{sanitize_id('life')}.json"
+        assert sanc_file.exists()
+        with open(sanc_file, "r", encoding="utf-8") as fh:
+            sdoc = json.load(fh)
+        imp_nodes = [
+            n for n in sdoc["@graph"]
+            if n.get("estleg:sanctionType") == "imprisonment"
+        ]
+        assert imp_nodes, "expected an imprisonment sanction node"
+        node = imp_nodes[0]
+        assert node["estleg:maxPenalty"] == "life"
+        # No structured fields for an unparseable penalty.
+        for k in ("estleg:maxPenaltyAmount", "estleg:maxPenaltyUnit",
+                  "estleg:maxPenaltyCurrency"):
+            assert k not in node, f"{k} must not be emitted for 'life'"
+
+        report = json.load(open(krr / "sanctions_report.json"))
+        assert report["penalty_normalisation"]["penalty_unparsed"] >= 1
+
+    def test_imprisonment_range_node_has_both_min_and_max_structured(
+        self, tmp_path, monkeypatch
+    ):
+        import extract_sanctions as mod
+        import estleg_common
+
+        krr = tmp_path / "krr_outputs"
+        sanctions_dir = krr / "sanctions"
+        sanctions_dir.mkdir(parents=True)
+        peep = krr / "range_peep.json"
+        peep.write_text(json.dumps({
+            "@context": {
+                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "owl": "http://www.w3.org/2002/07/owl#",
+            },
+            "@graph": [
+                {"@id": "estleg:RNG_Map_2026",
+                 "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]},
+                {"@id": "estleg:RNG_Par_1",
+                 "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+                 "estleg:paragrahv": "§ 1",
+                 "estleg:summary":
+                     "Karistatakse kahe kuni viieaastase vangistusega."},
+            ],
+        }), encoding="utf-8")
+
+        monkeypatch.setattr(mod, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "SANCTION_DIR", sanctions_dir)
+        monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+
+        rc = mod.main()
+        assert rc in (0, None)
+
+        from extract_sanctions import sanitize_id
+        sanc_file = sanctions_dir / f"sanctions_{sanitize_id('range')}.json"
+        with open(sanc_file, "r", encoding="utf-8") as fh:
+            sdoc = json.load(fh)
+        imp_nodes = [
+            n for n in sdoc["@graph"]
+            if n.get("estleg:sanctionType") == "imprisonment"
+            and "estleg:minPenalty" in n
+        ]
+        assert imp_nodes, "expected a range imprisonment sanction node"
+        node = imp_nodes[0]
+        assert node["estleg:minPenalty"] == "2 years"
+        assert node["estleg:maxPenalty"] == "5 years"
+        assert node["estleg:minPenaltyAmount"] == {
+            "@value": "2", "@type": "xsd:decimal",
+        }
+        assert node["estleg:minPenaltyUnit"] == "years"
+        assert node["estleg:maxPenaltyAmount"] == {
+            "@value": "5", "@type": "xsd:decimal",
+        }
+        assert node["estleg:maxPenaltyUnit"] == "years"
+
+    def test_statutory_default_flag_coexists_with_structured_fields(
+        self, tmp_path, monkeypatch
+    ):
+        """The #169 ``estleg:isStatutoryDefault`` flag still lands on a
+        node that also carries the #133 structured penalty fields."""
+        import extract_sanctions as mod
+        import estleg_common
+
+        krr = tmp_path / "krr_outputs"
+        sanctions_dir = krr / "sanctions"
+        sanctions_dir.mkdir(parents=True)
+        peep = krr / "pecu_struct_peep.json"
+        peep.write_text(json.dumps({
+            "@context": {
+                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "owl": "http://www.w3.org/2002/07/owl#",
+            },
+            "@graph": [
+                {"@id": "estleg:PS_Map_2026",
+                 "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]},
+                {"@id": "estleg:PS_Par_1",
+                 "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+                 "estleg:paragrahv": "§ 1",
+                 "estleg:summary":
+                     "Selle eest karistatakse rahalise karistusega."},
+            ],
+        }), encoding="utf-8")
+
+        monkeypatch.setattr(mod, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "SANCTION_DIR", sanctions_dir)
+        monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+
+        rc = mod.main()
+        assert rc in (0, None)
+
+        from extract_sanctions import sanitize_id
+        sanc_file = sanctions_dir / f"sanctions_{sanitize_id('pecu_struct')}.json"
+        with open(sanc_file, "r", encoding="utf-8") as fh:
+            sdoc = json.load(fh)
+        pecu = [
+            n for n in sdoc["@graph"]
+            if n.get("estleg:sanctionType") == "pecuniary_punishment"
+        ]
+        assert pecu
+        node = pecu[0]
+        # Statutory-default fallback: "500 daily rates".
+        assert node["estleg:maxPenalty"] == "500 daily rates"
+        assert node["estleg:isStatutoryDefault"] is True
+        # ...and the structured trio is present too.
+        assert node["estleg:maxPenaltyAmount"] == {
+            "@value": "500", "@type": "xsd:decimal",
+        }
+        assert node["estleg:maxPenaltyUnit"] == "daily_rates"
+
+
+class TestStructuredPenaltySHACL:
+    """``estleg:SanctionShape`` accepts both a Sanction carrying the
+    structured penalty fields and one carrying only the free-text
+    display string; and it rejects an out-of-set unit value."""
+
+    def _shapes_graph(self):
+        rdflib = pytest.importorskip("rdflib")
+        repo_root = Path(__file__).resolve().parents[1]
+        g = rdflib.Graph()
+        g.parse(
+            str(repo_root / "shacl" / "estonian_legal_shapes.ttl"),
+            format="turtle",
+        )
+        return g
+
+    def _validate(self, data_jsonld):
+        pyshacl = pytest.importorskip("pyshacl")
+        rdflib = pytest.importorskip("rdflib")
+        data = rdflib.Graph()
+        data.parse(data=json.dumps(data_jsonld), format="json-ld")
+        conforms, _, msg = pyshacl.validate(
+            data, shacl_graph=self._shapes_graph(),
+            inference="rdfs", abort_on_first=False,
+        )
+        return conforms, msg
+
+    _CTX = {
+        "estleg": "https://data.riik.ee/ontology/estleg#",
+        "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+        "xsd": "http://www.w3.org/2001/XMLSchema#",
+        "owl": "http://www.w3.org/2002/07/owl#",
+    }
+
+    def test_structured_sanction_validates(self):
+        conforms, msg = self._validate({
+            "@context": self._CTX,
+            "@graph": [{
+                "@id": "estleg:Sanction_TEST_struct",
+                "@type": ["owl:NamedIndividual", "estleg:Sanction"],
+                "rdfs:label": "Fine, max 15000 EUR (test)",
+                "estleg:sanctionType": "fine",
+                "estleg:applicableProvision": {"@id": "estleg:Test_Par_1"},
+                "estleg:maxPenalty": "15000 EUR",
+                "estleg:maxPenaltyAmount": {
+                    "@value": "15000", "@type": "xsd:decimal",
+                },
+                "estleg:maxPenaltyUnit": "monetary",
+                "estleg:maxPenaltyCurrency": "EUR",
+            }],
+        })
+        assert conforms, f"structured Sanction should validate:\n{msg}"
+
+    def test_structured_imprisonment_range_validates(self):
+        conforms, msg = self._validate({
+            "@context": self._CTX,
+            "@graph": [{
+                "@id": "estleg:Sanction_TEST_range",
+                "@type": ["owl:NamedIndividual", "estleg:Sanction"],
+                "rdfs:label": "Imprisonment, 3 years to 12 years (test)",
+                "estleg:sanctionType": "imprisonment",
+                "estleg:applicableProvision": {"@id": "estleg:Test_Par_2"},
+                "estleg:maxPenalty": "12 years",
+                "estleg:minPenalty": "3 years",
+                "estleg:maxPenaltyAmount": {
+                    "@value": "12", "@type": "xsd:decimal",
+                },
+                "estleg:maxPenaltyUnit": "years",
+                "estleg:minPenaltyAmount": {
+                    "@value": "3", "@type": "xsd:decimal",
+                },
+                "estleg:minPenaltyUnit": "years",
+                "estleg:isStatutoryDefault": False,
+            }],
+        })
+        assert conforms, f"structured range Sanction should validate:\n{msg}"
+
+    def test_free_text_only_sanction_still_validates(self):
+        conforms, msg = self._validate({
+            "@context": self._CTX,
+            "@graph": [{
+                "@id": "estleg:Sanction_TEST_freetext",
+                "@type": ["owl:NamedIndividual", "estleg:Sanction"],
+                "rdfs:label": "Imprisonment, life (test)",
+                "estleg:sanctionType": "imprisonment",
+                "estleg:applicableProvision": {"@id": "estleg:Test_Par_3"},
+                # Only the free-text display string — no structured trio,
+                # mirroring the unparseable "life" case.
+                "estleg:maxPenalty": "life",
+            }],
+        })
+        assert conforms, (
+            f"free-text-only Sanction should still validate:\n{msg}"
+        )
+
+    def test_out_of_set_unit_value_rejected(self):
+        conforms, msg = self._validate({
+            "@context": self._CTX,
+            "@graph": [{
+                "@id": "estleg:Sanction_TEST_badunit",
+                "@type": ["owl:NamedIndividual", "estleg:Sanction"],
+                "rdfs:label": "Fine, bad unit (test)",
+                "estleg:sanctionType": "fine",
+                "estleg:applicableProvision": {"@id": "estleg:Test_Par_4"},
+                "estleg:maxPenaltyAmount": {
+                    "@value": "12", "@type": "xsd:decimal",
+                },
+                # "weeks" is not in the controlled sh:in (...) set.
+                "estleg:maxPenaltyUnit": "weeks",
+            }],
+        })
+        assert not conforms, (
+            "Sanction with an out-of-set maxPenaltyUnit must NOT validate"
+        )
+
+    def test_shape_pins_structured_property_paths(self):
+        """Direct shapes-graph assertion: SanctionShape has property
+        shapes for the new structured-penalty paths (SHACL allows extra
+        properties by default, so a passing instance alone wouldn't pin
+        the shape change)."""
+        rdflib = pytest.importorskip("rdflib")
+        SH = rdflib.Namespace("http://www.w3.org/ns/shacl#")
+        ESTLEG = rdflib.Namespace("https://data.riik.ee/ontology/estleg#")
+        g = self._shapes_graph()
+        shape = ESTLEG.SanctionShape
+        paths = {
+            str(g.value(pshape, SH.path))
+            for pshape in g.objects(shape, SH["property"])
+        }
+        for prop in ("maxPenaltyAmount", "minPenaltyAmount",
+                     "maxPenaltyUnit", "minPenaltyUnit",
+                     "maxPenaltyCurrency", "minPenaltyCurrency"):
+            assert str(ESTLEG[prop]) in paths, (
+                f"SanctionShape must declare a property shape for "
+                f"estleg:{prop}; found paths: {sorted(paths)}"
+            )
+
+
+class TestStructuredPenaltyVocabulary:
+    """The 6 structured-penalty DatatypeProperties are defined in the
+    controlled vocabulary so ``validate_all.py``'s vocabulary-coverage
+    gate accepts the regenerated sanctions corpus."""
+
+    def test_new_properties_defined_in_controlled_vocab(self):
+        repo_root = Path(__file__).resolve().parents[1]
+        vocab = json.load(
+            open(repo_root / "krr_outputs" / "controlled_vocabulary.jsonld")
+        )
+        ids = {n["@id"] for n in vocab.get("@graph", []) if isinstance(n, dict)}
+        for prop in ("estleg:maxPenaltyAmount", "estleg:minPenaltyAmount",
+                     "estleg:maxPenaltyUnit", "estleg:minPenaltyUnit",
+                     "estleg:maxPenaltyCurrency", "estleg:minPenaltyCurrency",
+                     "estleg:isStatutoryDefault"):
+            assert prop in ids, f"{prop} must be defined in controlled_vocabulary"
+
+    def test_new_properties_typed_as_datatype_property(self):
+        repo_root = Path(__file__).resolve().parents[1]
+        vocab = json.load(
+            open(repo_root / "krr_outputs" / "controlled_vocabulary.jsonld")
+        )
+        by_id = {n["@id"]: n for n in vocab.get("@graph", [])
+                 if isinstance(n, dict)}
+        amount_props = ("estleg:maxPenaltyAmount", "estleg:minPenaltyAmount")
+        for prop in amount_props:
+            node = by_id[prop]
+            types = node["@type"]
+            types = types if isinstance(types, list) else [types]
+            assert "owl:DatatypeProperty" in types
+            assert node.get("rdfs:range", {}).get("@id") == "xsd:decimal"
+        for prop in ("estleg:maxPenaltyUnit", "estleg:minPenaltyUnit",
+                     "estleg:maxPenaltyCurrency", "estleg:minPenaltyCurrency"):
+            node = by_id[prop]
+            assert node.get("rdfs:range", {}).get("@id") == "xsd:string"
