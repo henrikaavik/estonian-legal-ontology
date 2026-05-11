@@ -9,7 +9,10 @@ extract_court_provision_links.py so they stay in sync.
 from __future__ import annotations
 
 import json
+import os
 import re
+import sys
+import tempfile
 import xml.etree.ElementTree as ET
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -210,6 +213,25 @@ def normalize_issuer_name(s: str) -> str:
     return " ".join(s.split())
 
 
+def jsonld_text(value: object, default: str = "") -> str:
+    """Return a plain string from common JSON-LD text shapes.
+
+    Generated corpus fields may be plain strings, value objects such as
+    ``{"@value": "...", "@language": "et"}``, or lists of those objects.
+    Semantic extractors should call this before regex/token processing so
+    fresh generator output and enriched normalized output use one contract.
+    """
+    if isinstance(value, str):
+        return value
+    if isinstance(value, dict):
+        text = value.get("@value")
+        return text if isinstance(text, str) else default
+    if isinstance(value, list):
+        parts = [text for item in value if (text := jsonld_text(item))]
+        return " ".join(parts) if parts else default
+    return default
+
+
 # ---------------------------------------------------------------------------
 # Run-counters helper (Layer 2c PR #3)
 # ---------------------------------------------------------------------------
@@ -276,7 +298,7 @@ def _safe_load(path: Path, counters: _RunCounters) -> dict | None:
     try:
         with open(path, encoding="utf-8") as fh:
             return json.load(fh)
-    except (json.JSONDecodeError, OSError) as exc:
+    except (ValueError, OSError) as exc:
         if path not in counters.seen_error_paths:
             counters.seen_error_paths.add(path)
             counters.bump_skip(
@@ -294,7 +316,7 @@ def _safe_load(path: Path, counters: _RunCounters) -> dict | None:
 #   §, §§, §-de, §-des, §-d, §-s, §-st, §-le, §-i, §-ga
 # Also accepts non-breaking hyphen (\u2011).
 # ---------------------------------------------------------------------------
-PAR_SUFFIX = r"§(?:§|[\-\u2011](?:de(?:s)?|d|s|st|le|i|ga))?"
+PAR_SUFFIX = r"§§?(?:[\-\u2011](?:de(?:s)?|d|s|st|le|i|ga))?"
 
 
 # ---------------------------------------------------------------------------
@@ -308,11 +330,40 @@ KRR_DIR = REPO_ROOT / "krr_outputs"
 # Helper functions
 # ---------------------------------------------------------------------------
 
-def save_json(filepath: Path, doc: dict) -> None:
-    """Write JSON-LD document to file with consistent formatting."""
-    with open(filepath, "w", encoding="utf-8") as f:
-        json.dump(doc, f, ensure_ascii=False, indent=2)
-        f.write("\n")
+def save_json(filepath: Path, doc: dict | list) -> None:
+    """Write JSON-LD document to file with consistent formatting.
+
+    Uses a tempfile + atomic ``os.replace`` so partial writes never appear
+    at ``filepath``. If serialization fails (non-serialisable payload, OS
+    error mid-write), the tempfile is unlinked best-effort before the
+    original exception propagates so failed runs don't litter ``.tmp``
+    droppings in the target directory.
+    """
+    filepath.parent.mkdir(parents=True, exist_ok=True)
+    tmp = tempfile.NamedTemporaryFile(
+        "w",
+        encoding="utf-8",
+        dir=filepath.parent,
+        prefix=f".{filepath.name}.",
+        suffix=".tmp",
+        delete=False,
+    )
+    tmp_name = tmp.name
+    try:
+        with tmp as f:
+            json.dump(doc, f, ensure_ascii=False, indent=2)
+            f.write("\n")
+        os.replace(tmp_name, filepath)
+    except BaseException:
+        # Best-effort cleanup of the tempfile so failed writes never
+        # leave ``.<name>.<rand>.tmp`` droppings in the target directory.
+        # Suppress FileNotFoundError so we don't mask the original error
+        # if the tempfile was already removed (e.g. by os.replace).
+        try:
+            os.unlink(tmp_name)
+        except FileNotFoundError:
+            pass
+        raise
 
 
 def iter_peep_files(
@@ -341,7 +392,10 @@ def iter_peep_files(
             kov_dir = KRR_DIR / "regulations" / "kov"
             if kov_dir.exists():
                 files.extend(kov_dir.glob("**/*_peep.json"))
-    return sorted(files)
+    # Sort by absolute posix path (casefold) — using relative_to(KRR_DIR)
+    # would raise ValueError for any path outside KRR_DIR, which is a
+    # footgun for future callers, symlinks, or test scaffolding.
+    return sorted(files, key=lambda p: p.as_posix().casefold())
 
 
 def build_globalid_xml_lookup(rt_root: Path) -> dict[str, Path]:
@@ -356,7 +410,7 @@ def build_globalid_xml_lookup(rt_root: Path) -> dict[str, Path]:
     lookup: dict[str, Path] = {}
     if not rt_root.is_dir():
         return lookup
-    for xml_path in rt_root.rglob("*.xml"):
+    for xml_path in sorted(rt_root.rglob("*.xml"), key=lambda p: str(p.relative_to(rt_root)).casefold()):
         try:
             tree = ET.parse(str(xml_path))
         except ET.ParseError:
@@ -382,7 +436,15 @@ def build_globalid_xml_lookup(rt_root: Path) -> dict[str, Path]:
                     gid = gid_el.text.strip()
                     break
         if gid:
-            lookup[str(gid)] = xml_path
+            gid = str(gid)
+            if gid in lookup:
+                print(
+                    "WARN: duplicate globalId "
+                    f"{gid} in {lookup[gid].relative_to(rt_root)} and {xml_path.relative_to(rt_root)}; "
+                    "keeping first"
+                )
+                continue
+            lookup[gid] = xml_path
     return lookup
 
 
@@ -391,6 +453,7 @@ def pair_peep_with_xml(
     lookup: dict[str, Path],
     *,
     data_dir: Path | None = None,
+    counters: _RunCounters | None = None,
 ) -> Path | None:
     """Pair a peep file to its XML.
 
@@ -414,7 +477,24 @@ def pair_peep_with_xml(
     try:
         with open(peep_path, "r", encoding="utf-8") as fh:
             doc = json.load(fh)
-    except (json.JSONDecodeError, OSError):
+    except (ValueError, OSError) as exc:
+        if counters is not None:
+            if peep_path not in counters.seen_error_paths:
+                counters.seen_error_paths.add(peep_path)
+                counters.bump_skip(
+                    "json_decode_error",
+                    f"json_decode_error | {peep_path.name} | "
+                    f"{type(exc).__name__}: {str(exc)[:80]}",
+                )
+        else:
+            # No counters provided — still surface the corruption signal so
+            # callers that haven't been wired into the run-counter framework
+            # don't silently conflate "corrupt peep" with "no XML found".
+            print(
+                f"pair_peep_with_xml: corrupt peep {peep_path}: "
+                f"{type(exc).__name__}: {exc}",
+                file=sys.stderr,
+            )
         return None
     gid = None
     for node in doc.get("@graph", []):
@@ -461,3 +541,17 @@ def sanitize_id(value: str) -> str:
     s = s.translate(_TRANSLIT_TABLE)
     s = re.sub(r"[^0-9A-Za-z_]", "", s)
     return s or "Unknown"
+
+
+def slugify(text: str, max_len: int = 80) -> str:
+    """Convert Estonian text to a filename-safe slug.
+
+    Lowercases, transliterates Estonian diacritics, replaces non-alnum
+    runs with underscores, and truncates to ``max_len`` characters.
+    Centralised here so callers (laws, regulations, downstream scripts)
+    share one definition.
+    """
+    text = text.translate(_TRANSLIT_TABLE)
+    text = text.lower().strip()
+    text = re.sub(r"[^a-z0-9]+", "_", text)
+    return text.strip("_")[:max_len]

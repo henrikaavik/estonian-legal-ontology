@@ -14,7 +14,6 @@ This script:
 
 from __future__ import annotations
 
-import json
 import re
 import time
 from collections import defaultdict
@@ -24,7 +23,6 @@ from typing import NamedTuple
 
 from estleg_common import (
     BODY_CANON,
-    CONTEXT,
     FULLNAME_GENITIVE,
     KNOWN_ABBREVIATIONS,
     PAR_SUFFIX,
@@ -34,7 +32,6 @@ from estleg_common import (
     iter_peep_files,
     normalize_issuer_name,
     save_json,
-    sanitize_id,
 )
 
 
@@ -54,28 +51,71 @@ RK_DIR = KRR_DIR / "riigikohus"
 NS = "https://data.riik.ee/ontology/estleg#"
 
 
-def expand_two_digit_year(date_str: str) -> int:
+def expand_two_digit_year(
+    date_str: str,
+    counters: "_RunCounters | None" = None,
+) -> int:
     """Resolve the year component of a citation date to a 4-digit year.
 
     Two-digit years use the boundary ``y > 50``: ``00..50`` → ``2000..2050``,
     ``51..99`` → ``1951..1999``. Long-form Estonian-month dates already
     carry a 4-digit year; numeric ``d.m.y`` dates may be 2- or 4-digit.
+
+    Issue #172 Finding 2: the previous implementation bailed to ``0``
+    on any non-d.m.y form AND returned ``0`` on malformed numerics —
+    silent recall loss because resolve_kov_citation then asked the
+    KOV index for ``(issuer_norm, 0, num)``, which never matches.
+
+    The new strategy:
+
+      1. Use ``re.findall(r'\\d{4}', date_str)`` to grab any 4-digit
+         year token present in the input (covers long-form dates with
+         month names AND numeric dates with a 4-digit year tail).
+      2. If no 4-digit token exists, fall back to numeric d.m.y parsing
+         and apply the 2-digit boundary rule.
+      3. If both strategies fail, optionally bump
+         ``counters.bump_citation_skip("date_parse_failed", ...)`` and
+         return 0 — the caller treats 0 as "no year extracted".
     """
-    parts = date_str.split()
-    last_token = parts[-1] if parts else ""
-    if last_token.isdigit() and len(last_token) == 4:
-        return int(last_token)
-    # numeric d.m.y form
+    if not date_str:
+        if counters is not None:
+            counters.bump_citation_skip(
+                "date_parse_failed",
+                f"date_parse_failed | {date_str!r}",
+            )
+        return 0
+
+    # Strategy 1: any 4-digit year token in the input — handles
+    # long-form dates ("18. juuni 2020"), numeric dates with 4-digit
+    # year tails ("14.05.2009"), and any future formats that include
+    # a 4-digit year somewhere in the string.
+    four_digit = re.findall(r"\d{4}", date_str)
+    if four_digit:
+        # Use the LAST 4-digit token — for "13.10.2009" that's the
+        # year; for malformed inputs like "2020-04-15 Some 1234" it
+        # would still pick the most recent 4-digit token (an
+        # acceptable heuristic since dates are written
+        # most-significant-last in Estonian).
+        return int(four_digit[-1])
+
+    # Strategy 2: numeric d.m.y form with a 2-digit year tail.
     pieces = date_str.split(".")
     if len(pieces) >= 3:
         tail = pieces[2].split()[0]   # strip optional trailing ". a." etc.
         digits = "".join(ch for ch in tail if ch.isdigit())
-        if not digits:
-            return 0
-        y = int(digits)
-        if y < 100:
-            return 1900 + y if y > 50 else 2000 + y
-        return y
+        if digits:
+            y = int(digits)
+            if y < 100:
+                return 1900 + y if y > 50 else 2000 + y
+            return y
+
+    # Strategy 3: nothing matched. Bump the counter (when provided)
+    # and return 0.
+    if counters is not None:
+        counters.bump_citation_skip(
+            "date_parse_failed",
+            f"date_parse_failed | {date_str!r}",
+        )
     return 0
 
 
@@ -89,7 +129,20 @@ def expand_two_digit_year(date_str: str) -> int:
 # the municipality name, polluting issuer_norm and breaking resolution.
 # Case-insensitivity is scoped via inline (?i:...) only to the body word,
 # month names, and act-marker keyword.
+#
+# Issue #172 Finding 4: the previous regex used a {1,3} greedy quantifier
+# without a left-anchor. Long sentences with multiple titlecase tokens
+# preceding a KOV body word ("Pärnu Maakohtu Tallinna Linnavolikogu ...")
+# could overcapture into the municipality group. The fix:
+#   - left-anchor on a sentence start, whitespace, comma, semicolon, or
+#     opening parenthesis so the {1,3} quantifier can't consume "earlier"
+#     titlecase words from the same sentence.
+#   - post-process the captured municipality via known_issuer_norms to
+#     trim runaway prefixes — see ``_trim_municipality_to_known_issuer``
+#     in resolve_kov_citation.
 PAT_KOV_ACT = re.compile(
+    # Left anchor: sentence start, whitespace, comma, semicolon, or "(".
+    r"(?:^|[\s,;\(])"
     # Municipality: 1-3 titlecase words. The character class enforces
     # uppercase initial + lowercase continuation (case-SENSITIVE).
     r"(?P<municipality>(?:[A-ZÕÄÖÜŠŽ][a-zõäöüšž][\wõäöüšž-]*\s+){1,3})"
@@ -108,6 +161,39 @@ PAT_KOV_ACT = re.compile(
     r"(?i:määrus(?:e|t|ega)?)\s*nr\s*\.?\s*(?P<num>\d+)",
     re.UNICODE,
 )
+
+
+def _trim_municipality_to_known_issuer(
+    municipality: str,
+    body_canonical: str,
+    known_issuer_norms: set[str],
+) -> str:
+    """Trim a captured municipality string from the right back to a
+    known issuer norm.
+
+    Issue #172 Finding 4: the {1,3} greedy quantifier in PAT_KOV_ACT can
+    overcapture preceding titlecase words. After the regex emits a
+    raw match, post-process by trying suffix substrings of the
+    captured municipality against ``known_issuer_norms``: if
+    "<words> <body_canonical>" is in the set, return that suffix; if
+    only the rightmost word + body_canonical is in the set, return
+    that. Always return at least the rightmost titlecase word so the
+    resolver can still attempt a lookup against the index.
+    """
+    words = municipality.strip().split()
+    if not words:
+        return municipality
+    # Try progressively shorter suffixes from longest to shortest.
+    for start in range(len(words)):
+        candidate_words = words[start:]
+        candidate = " ".join(candidate_words).strip()
+        if not candidate:
+            continue
+        candidate_norm = normalize_issuer_name(f"{candidate} {body_canonical}")
+        if candidate_norm in known_issuer_norms:
+            return candidate + " "
+    # No suffix matched — fall back to the rightmost word as a heuristic.
+    return words[-1] + " "
 
 # Counted-only RT IV reference detector. We do not resolve these (no
 # prebuilt RT IV → IRI lookup table); they're tracked under
@@ -197,6 +283,14 @@ def build_kov_act_index(
     Keys are ``(issuer_norm, entryIntoForce.year, actNumber)``. On collision
     (two acts mapping to the same key) the key is removed from kov_index and
     added to kov_collision_keys; never silent-overwrites.
+
+    Issue #172 Finding 1: validation failures (missing field, malformed
+    year) used to ``break`` out of the per-node loop, which silently
+    skipped a peep whose first MunicipalRegulation node was malformed
+    even when later nodes were valid. The fix replaces those failure
+    ``break`` statements with ``continue`` so the loop walks every node
+    in the graph; the trailing ``break`` after a successful insert
+    remains (one act node per peep).
     """
     kov_index: dict[tuple[str, int, str], str] = {}
     kov_collision_keys: set[tuple[str, int, str]] = set()
@@ -219,13 +313,17 @@ def build_kov_act_index(
                 entry_force = eif.get("@value", "")
             act_number = str(node.get("estleg:actNumber", "") or "")
             if not (iri and issuer and entry_force and act_number):
-                break
+                # Finding 1 (#172): skip THIS node, keep walking the graph.
+                continue
             issuer_norm = normalize_issuer_name(issuer)
             known_issuer_norms.add(issuer_norm)
             try:
                 year = int(entry_force[:4])
             except ValueError:
-                break
+                # Finding 1 (#172): malformed year on this node — skip
+                # it, but keep walking the graph for later
+                # MunicipalRegulation nodes that might be valid.
+                continue
             key = (issuer_norm, year, act_number)
             if key in kov_collision_keys:
                 pass   # already marked ambiguous; subsequent dupes are silent
@@ -235,27 +333,63 @@ def build_kov_act_index(
             else:
                 kov_index[key] = iri
             kov_iri_to_file[iri] = f
-            break    # one act node per peep
+            break    # one act node per peep — only after a successful insert
     return kov_index, kov_collision_keys, kov_iri_to_file, known_issuer_norms
 
 
-def _expand_par_range(par_range: str) -> list[str]:
-    """Expand '208-210' into ['208', '209', '210']."""
+def _expand_par_range(
+    par_range: str,
+    counters: "_RunCounters | None" = None,
+) -> list[str]:
+    """Expand '208-210' into ['208', '209', '210'].
+
+    Issue #172 Finding 3: previously, a wide range (``end - start > 50``)
+    silently fell through to a digit-stripping fallback that produced
+    garbage (e.g. ``"100-200" → "100200"``), and a malformed range
+    (``"foo-bar"``) similarly collapsed into the concatenated digit
+    string. Both behaviours hid real data issues.
+
+    The fix:
+
+      - Wide ranges return ``[]`` and bump
+        ``counters.bump_citation_skip("par_range_too_wide", ...)``.
+      - Malformed ranges return ``[]`` and bump
+        ``counters.bump_citation_skip("par_range_malformed", ...)``.
+      - Pure-numeric scalars (e.g. "208") still resolve via the
+        digit-stripping fallback for backward compatibility.
+    """
     par_range = par_range.replace("–", "-").replace("‑", "-")
     if "-" in par_range:
         parts = par_range.split("-", 1)
         try:
             start = int(parts[0].strip())
             end = int(parts[1].strip())
-            if end - start <= 50:
-                return [str(n) for n in range(start, end + 1)]
         except ValueError:
-            pass
+            if counters is not None:
+                counters.bump_citation_skip(
+                    "par_range_malformed",
+                    f"par_range_malformed | {par_range!r}",
+                )
+            return []
+        # Reject inverted ranges (end < start) and too-wide ranges.
+        if end < start or end - start > 50:
+            if counters is not None:
+                counters.bump_citation_skip(
+                    "par_range_too_wide",
+                    f"par_range_too_wide | {par_range!r} "
+                    f"(start={start}, end={end})",
+                )
+            return []
+        return [str(n) for n in range(start, end + 1)]
+
     clean = re.sub(r"[^\d]", "", par_range)
     return [clean] if clean else []
 
 
-def extract_citations_from_text(text: str | None) -> tuple[list[dict], list[dict]]:
+def extract_citations_from_text(
+    text: str | None,
+    counters: "_RunCounters | None" = None,
+) -> tuple[list[dict], list[dict]]:
     """Parse text for Estonian legal citation patterns.
 
     Returns ``(state_citations, kov_citations)``:
@@ -264,6 +398,10 @@ def extract_citations_from_text(text: str | None) -> tuple[list[dict], list[dict
       for state-law citations matching the abbreviation+§ or genitive+§ patterns.
     - ``kov_citations``:   list of ``{"municipality", "body", "date", "num", "raw_text"}``
       for KOV act-form citations matching ``PAT_KOV_ACT``.
+
+    Issue #172 Finding 3: the optional ``counters`` argument is forwarded
+    to ``_expand_par_range`` so wide / malformed ranges bump the right
+    skip-reason buckets in the coverage report.
     """
     state_citations: list[dict] = []
     kov_citations: list[dict] = []
@@ -282,7 +420,7 @@ def extract_citations_from_text(text: str | None) -> tuple[list[dict], list[dict
     for m in pat_abbrev.finditer(text):
         abbrev = m.group(1)
         par_range = m.group(2).strip()
-        paragraphs = _expand_par_range(par_range)
+        paragraphs = _expand_par_range(par_range, counters=counters)
         if paragraphs:
             state_citations.append({"law_ref": abbrev, "paragraphs": paragraphs})
 
@@ -298,7 +436,7 @@ def extract_citations_from_text(text: str | None) -> tuple[list[dict], list[dict
         for m in pat_fullname.finditer(text):
             gen_name = m.group(1).lower()
             par_range = m.group(2).strip()
-            paragraphs = _expand_par_range(par_range)
+            paragraphs = _expand_par_range(par_range, counters=counters)
             abbrev = FULLNAME_GENITIVE.get(gen_name)
             if abbrev and paragraphs:
                 state_citations.append({"law_ref": abbrev, "paragraphs": paragraphs})
@@ -354,12 +492,29 @@ def resolve_kov_citation(
     - ``"unknown_issuer"`` — issuer string not in known_issuer_norms (defensive).
     - ``"ambiguous_key"`` — primary or +1 alternate key in kov_collision_keys.
     - ``"issuer_year_num_unmatched"`` — issuer is known but no peep matches.
+
+    Issue #172 Finding 4: when the municipality string captured by
+    PAT_KOV_ACT overcaptures (e.g. "Pärnu Maakohtu Tallinna" preceding
+    "Linnavolikogu"), the first issuer_norm lookup misses. We then call
+    ``_trim_municipality_to_known_issuer`` to take a right-suffix of
+    the captured words; if THAT trimmed form matches a known issuer,
+    we retry the lookup. This recovers from greedy-quantifier
+    overcapture without changing the regex's capture rules.
     """
+    body_canonical = BODY_CANON[match["body"].lower()]
     issuer_norm = normalize_issuer_name(
-        f"{match['municipality'].strip()} {BODY_CANON[match['body'].lower()]}"
+        f"{match['municipality'].strip()} {body_canonical}"
     )
     if issuer_norm not in known_issuer_norms:
-        return None, "unknown_issuer"
+        # Try trimming the municipality to a known issuer (Finding 4).
+        trimmed = _trim_municipality_to_known_issuer(
+            match["municipality"], body_canonical, known_issuer_norms,
+        )
+        retry_norm = normalize_issuer_name(f"{trimmed.strip()} {body_canonical}")
+        if retry_norm in known_issuer_norms:
+            issuer_norm = retry_norm
+        else:
+            return None, "unknown_issuer"
     primary_year = expand_two_digit_year(match["date"])
     num = match["num"]
     for year in (primary_year, primary_year + 1):
@@ -445,7 +600,9 @@ def process_court_files(
             for _ in PAT_RTIV.finditer(summary):
                 counters.bump_citation_count("rtiv_form_citation")
 
-            state_citations, kov_citations = extract_citations_from_text(summary)
+            state_citations, kov_citations = extract_citations_from_text(
+                summary, counters=counters,
+            )
             if not (state_citations or kov_citations):
                 continue
 
@@ -468,7 +625,11 @@ def process_court_files(
                 issuer_norm_for_log = normalize_issuer_name(
                     f"{kc['municipality'].strip()} {BODY_CANON[kc['body'].lower()]}"
                 )
-                primary_year = expand_two_digit_year(kc["date"])
+                # Issue #172 Finding 2: pass counters so a malformed
+                # date bumps the ``date_parse_failed`` bucket exactly
+                # once. The resolver above DOES NOT pass counters, so
+                # this is the only call site that bumps the counter.
+                primary_year = expand_two_digit_year(kc["date"], counters=counters)
                 if iri:
                     kov_iris.append(iri)
                     continue

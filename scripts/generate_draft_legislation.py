@@ -17,7 +17,6 @@ from __future__ import annotations
 
 import json
 import re
-import sys
 import xml.etree.ElementTree as ET
 from datetime import datetime
 from pathlib import Path
@@ -462,7 +461,7 @@ def generate_draft_node(
             pass
 
     if affected_laws:
-        node["estleg:affectedLawName"] = [{"@value": law, "@language": "et"} for law in affected_laws]
+        node["estleg:affectedLawName"] = affected_laws
 
     return node
 

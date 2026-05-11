@@ -112,7 +112,11 @@ def _matches_municipality_root(slug_root: str, municipality_name: str) -> bool:
     nominatives so a vowel-final name like ``Tartu`` never silently
     matches an unrelated ``tartua`` slug.
 
-    No false-positive collisions on the current corpus (audited).
+    No false-positive collisions on the current corpus (audited via
+    `test_no_pairwise_collision_on_real_registry` in
+    `tests/test_kov_registry.py`, which iterates the auto-match rows
+    in the live `data/ehak/issuers.json` and asserts no slug root
+    maps to more than one municipality of its type — Finding #7).
     """
     normalized = _normalize_name_for_matching(municipality_name)
     if slug_root == normalized:
@@ -126,16 +130,38 @@ def _matches_municipality_root(slug_root: str, municipality_name: str) -> bool:
 def auto_match_municipality(
     parts: IssuerSlugParts,
     municipalities: dict[str, Municipality],
+    *,
+    overrides: dict[str, str] | None = None,
 ) -> str | None:
     """Return EHAK code if (root, municipalityType) uniquely identifies a
     current municipality. Returns None if there is no match or more than
     one. Returning None is the "fail loudly to the curated CSV" path —
     auto-match never guesses.
 
+    `overrides`, when provided, is a slug → EHAK code map that wins
+    unconditionally over the auto-match heuristic. Use it to pin
+    edge-case slugs whose root happens to collide with another
+    municipality (none today on the 79-municipality registry, but the
+    hook lets a curated row take precedence WITHOUT having to flag the
+    auto-match algorithm itself as buggy when EHAK eventually adds a
+    new municipality whose name collides). Curated CSV rows go through
+    `build_issuer_registry` and use `mappingSource="manual-review"`
+    rather than this hook — `overrides` is for mid-flight corrections
+    where editing the CSV would be too coarse (Finding #7).
+
     Slug-vs-name matching uses ``_matches_municipality_root`` which
     accommodates the Estonian genitive case (Tallinn ↔ tallinna). See
     that helper's docstring for details.
     """
+    if overrides:
+        ehak = overrides.get(parts["slug"])
+        if ehak is not None:
+            if ehak not in municipalities:
+                raise ValueError(
+                    f"override for {parts['slug']!r} references unknown "
+                    f"EHAK code {ehak!r}"
+                )
+            return ehak
     target_root = parts["root"]
     target_type = parts["municipalityType"]
     matches: list[str] = []
@@ -149,58 +175,92 @@ def auto_match_municipality(
     return None
 
 
-def normalize_title(title: str, issuer_display_name: str) -> str:
-    """Lowercase + transliterate the title; strip the issuer's municipality
-    name prefix when present at the start.
+# Slugs whose `<root>_alevivolikogu` shape is intentional (historical
+# alev unit pre-2017 haldusreform that still issues regulations). The
+# alevi-genitive prefix-stripping rule in `normalize_title` is gated
+# to these roots so a generic vald or linn slug can never have an
+# `alevi`-style title prefix silently stripped — that would
+# collapse otherwise-distinct titles into the same `titleNormalized`
+# bucket and corrupt any downstream uniqueness check (Finding #8).
+_KNOWN_ALEV_ROOTS = frozenset({"vandra"})
 
-    The issuer display name is e.g. ``Tallinna Linnavolikogu`` or
-    ``Kohtla Jarve Linnavolikogu`` (compound — derived from the slug).
-    Drops the body suffix (last token) and uses the remaining tokens as
-    the municipality root. Generates both space- and hyphen-joined
-    variants because real KOV act titles use either form
-    (``Kohtla-Järve linna ...``) while the slug-derived display name
-    uses spaces.
+
+def normalize_title(title: str, issuer_parts: IssuerSlugParts) -> str:
+    """Lowercase + transliterate the title; strip the issuer's
+    municipality name prefix when present at the start.
+
+    `issuer_parts` is the slug-parts dict from `parse_issuer_slug`. We
+    take parts (rather than just a display-name string) so the alevi-
+    genitive rule can be gated on `municipalityType` AND on whether
+    the root is one of the known historical-alev units. Without that
+    gate, a generic linn or vald title that happened to start with
+    `<root> alevi ` (theoretically possible: e.g.
+    `Foo alevi piirkonna määrus` issued by a foo_vallavolikogu) would
+    have its prefix silently stripped, which breaks downstream
+    `titleNormalized`-keyed uniqueness assumptions (Finding #8).
+
+    The display name used for the body-prefix derivation is computed
+    from the slug parts here (``Tallinna Linnavolikogu``, etc.) — so
+    the function is self-contained and callers pass exactly one
+    object.
 
     Examples:
-      ("Tallinna jäätmehoolduseeskiri", "Tallinna Linnavolikogu")
+      normalize_title("Tallinna jäätmehoolduseeskiri",
+                      parse_issuer_slug("tallinna_linnavolikogu"))
         -> "jaatmehoolduseeskiri"
-      ("Kohtla-Järve linna jäätmehoolduseeskiri", "Kohtla Jarve Linnavolikogu")
+      normalize_title("Kohtla-Järve linna jäätmehoolduseeskiri",
+                      parse_issuer_slug("kohtla_jarve_linnavolikogu"))
         -> "jaatmehoolduseeskiri"
-      ("Mulgi valla hankekord", "Mulgi Vallavolikogu")
+      normalize_title("Mulgi valla hankekord",
+                      parse_issuer_slug("mulgi_vallavolikogu"))
         -> "hankekord"
-      ("Vändra alevi terviseprofiil", "Vandra Alevivolikogu")
+      normalize_title("Vändra alevi terviseprofiil",
+                      parse_issuer_slug("vandra_alevivolikogu"))
         -> "terviseprofiil"
-      ("Üldhariduskooli põhimäärus", "Tartu Linnavolikogu")
+      normalize_title("Üldhariduskooli põhimäärus",
+                      parse_issuer_slug("tartu_linnavolikogu"))
         -> "uldhariduskooli pohimaarus"  (no prefix match)
     """
     base = title.translate(_TRANSLIT).lower().strip()
     base = re.sub(r"\s+", " ", base)
 
-    parts = issuer_display_name.split()
-    if len(parts) < 2:
-        # Single-token display name has no body suffix to drop — bail
-        # out without prefix-stripping.
+    # Body-name from slug — drop the body suffix and rejoin underscores
+    # as spaces. tallinna_linnavolikogu -> "tallinna" root tokens.
+    root_tokens_underscore = issuer_parts["root"].split("_")
+    root_space = " ".join(
+        tok.translate(_TRANSLIT).lower() for tok in root_tokens_underscore
+    )
+    if not root_space:
         return base.strip()
 
-    # All tokens except the last (the body — Linnavolikogu/Vallavalitsus/etc.)
-    root_tokens = parts[:-1]
-    root_space = " ".join(t.translate(_TRANSLIT).lower() for t in root_tokens)
-
-    # Generate root variants: space-joined and hyphen-joined for compound
-    # names. Single-token roots produce just one variant.
+    # Generate root variants: space-joined and hyphen-joined for
+    # compound names. Single-token roots produce just one variant.
     root_variants = [root_space]
     if " " in root_space:
         root_variants.append(root_space.replace(" ", "-"))
 
+    # Gate the alevi prefix on (a) issuer is a vald (incl.
+    # historical alev → vald successor) AND (b) root is one of the
+    # known historical-alev units. Building the list here (rather
+    # than always including ``f"{root} alevi "`` like the previous
+    # implementation did) prevents the silent strip described in the
+    # docstring.
+    is_known_alev = (
+        issuer_parts["municipalityType"] == "vald"
+        and issuer_parts["root"] in _KNOWN_ALEV_ROOTS
+    )
+
     # Try each prefix shape (longest first to avoid partial matches),
     # for each root variant.
     for root in root_variants:
-        for prefix in (
+        prefixes = [
             f"{root} valla ",
             f"{root} linna ",
-            f"{root} alevi ",
-            f"{root} ",
-        ):
+        ]
+        if is_known_alev:
+            prefixes.append(f"{root} alevi ")
+        prefixes.append(f"{root} ")
+        for prefix in prefixes:
             if base.startswith(prefix):
                 return base[len(prefix):].strip()
     return base.strip()
@@ -271,9 +331,16 @@ def build_issuer_registry(
 
     Auto-match wins where (root, municipalityType) is unique. Curated
     CSV covers the rest. Unmapped issuers raise ValueError listing every
-    failure. Curated rows are also validated against the municipalities
-    registry (EHAK code must exist) and the allowed mapping_source set,
-    so typos surface here rather than at SHACL time.
+    failure (sorted alphabetically — Finding #12 — so the message is
+    reproducible across runs). Curated rows are also validated against
+    the municipalities registry (EHAK code must exist) and the allowed
+    mapping_source set, so typos surface here rather than at SHACL time.
+
+    Input ordering: `slugs` may be in any order — we sort the iteration
+    only via the explicit `sorted(unmapped)` in the error path so the
+    raised message is reproducible. The output dict is populated in
+    input order; callers that care about output ordering should iterate
+    `sorted(out)` themselves (`build_kov_registry.py` does exactly that).
     """
     out: dict[str, IssuerEntry] = {}
     unmapped: list[str] = []
@@ -311,7 +378,7 @@ def build_issuer_registry(
     if unmapped:
         raise ValueError(
             "Unmapped issuers (add curated rows for each):\n  "
-            + "\n  ".join(unmapped)
+            + "\n  ".join(sorted(unmapped))
         )
     return out
 

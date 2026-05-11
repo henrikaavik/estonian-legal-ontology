@@ -1,46 +1,108 @@
 # Validation Report
 
-**Last updated:** 2026-04-11
-**Validator:** `scripts/validate_all.py`
+**Last updated:** 2026-05-08
+**Primary validator:** `scripts/validate_all.py`
 
 ## Summary
 
 | Metric | Count |
 |--------|-------|
-| Files validated | 1,302 |
+| Files validated | 21,826 |
 | Errors | 0 |
-| Warnings | 1 |
+| Warnings | 0 |
 | Result | **PASSED** |
 
 ## Checks Performed
 
 1. JSON syntax validity
-2. @context namespace consistency (`estleg:` → `https://data.riik.ee/ontology/estleg#`)
-3. @type is always an array
-4. Multi-valued properties are arrays (estleg:references, estleg:referencedBy, etc.)
-5. sectionNumber is always a string
-6. dc:source is always a string
-7. @id uniqueness within files
-
-## Warnings
-
-- 495 @id values appear in multiple files (intentional: shared schema class definitions)
+2. `@context` namespace consistency (`estleg:` -> `https://data.riik.ee/ontology/estleg#`)
+3. `@type` is always an array
+4. Multi-valued properties are arrays
+5. `sectionNumber` is always a string
+6. `dc:source` is not an array
+7. `xsd:date` value objects use strict `YYYY-MM-DD` literals
+8. `estleg:affectedLawName` uses the canonical array-of-strings shape
+9. `@id` uniqueness within and across files, excluding known shared class IDs
+10. `dcterms:source` uses a resolvable IRI object when present
+11. Internal `estleg:` object references resolve to corpus nodes
+12. `krr_outputs/INDEX.json` registry drift: indexed files exist, counts match, act/provision shape is valid unless explicitly excepted
+13. State and KOV regulation indexes match their output trees
+14. `metadata.jsonld` advertised counts match repository counts
+15. Institution labels have no duplicate normalized canonical form
 
 ## Data Coverage
 
-| Category | Files | Nodes |
-|----------|-------|-------|
-| Enacted laws | 635 | 28,598 provisions |
-| Draft legislation | 6 | 22,832 drafts |
+| Category | Files | Indexed records |
+|----------|-------|-----------------|
+| Enacted law peep files | 637 | 608 law index entries / 637 indexed files |
+| State regulations | 3,812 | 3,812 in current regulation index |
+| KOV regulations | 11,059 | 11,059 |
+| Draft legislation | 3 phase files | 22,832 drafts |
 | Supreme Court decisions | 34 | 12,137 decisions |
-| EU legislation | 6 | 33,242 acts |
-| EU court decisions | 8 | 22,290 decisions |
-| Amendment chains | 376 | 18,068 amendment events |
-| Legal concepts | 2 | 812 concept nodes + report |
-| Institutions | 85 | 315 institutional competence nodes |
-| Sanctions | 152 | 1,340 sanction records |
-| Reports/indexes | 23 | metadata (excluded from validation) |
+| EU legislation | 3 | 33,242 acts |
+| EU court decisions | 5 | 22,290 decisions |
+| Institutions | 126 | institution files |
+| Controlled vocabulary | 1 | 134 vocabulary and fallback nodes |
+
+## SHACL Bucket Checks
+
+| Bucket | Files | Result |
+|--------|-------|--------|
+| `riigikohus` | 35 | PASS |
+| `drafts` | 4 | PASS |
+| `eurlex` | 4 | PASS |
+| `curia` | 6 | PASS |
+| `laws` | 4,450 | PASS |
+| `kov` | 11,062 | PASS |
+
+Every SHACL bucket includes the controlled vocabulary/fallback-node graph so cross-file references and shared classification nodes are validated consistently.
+
+## Similarity Coverage
+
+`scripts/generate_similarity_index.py` now includes state regulations while still deferring KOV similarity to Layer 3.
+
+| Type | Files | Provisions analyzed |
+|------|-------|---------------------|
+| Laws | 633 | 23,036 |
+| State regulations | 3,812 | 48,385 |
+| KOV regulations | 0 | 0 |
+
+Similarity output now contains 71,421 analyzed provisions, 101,506 pairs, and updates 3,475 JSON-LD files.
+
+## Seadusloome Zero-Warning Gate
+
+`scripts/validate_seadusloome_sync.py` mirrors the Seadusloome `main` sync load path and enforces a zero-warning policy on the published ontology.
+
+- **Load set:** every root `krr_outputs/*_peep.json`,
+  `krr_outputs/controlled_vocabulary.jsonld`,
+  `krr_outputs/karistusseadustik_eriosa_owl.jsonld`,
+  `krr_outputs/tsus_osa7_138_169_owl.jsonld`,
+  the four sub-corpora (`eelnoud/`, `riigikohus/`, `curia/`, `eurlex/`),
+  and `krr_outputs/combined_ontology.jsonld`. This is the same set that
+  Seadusloome ingests when it clones the ontology repository on `main`.
+- **Validator:** pyshacl with `inference="none"` against
+  `shacl/estonian_legal_shapes.ttl`. The Seadusloome consumer does not
+  apply RDFS inference, so the gate intentionally diverges from the
+  bucket validator (`scripts/shacl_validate_all.py`), which uses
+  `inference="rdfs"` to derive class memberships before checking shape
+  targets.
+- **Expectation:** zero SHACL warnings and zero SHACL violations.
+  `--max-warnings` defaults to `0`. Exit codes: `0` clean, `1` warnings
+  or violations exceed the threshold, `2` parse failures.
+- **Relation to bucket SHACL:** the bucket validator catches semantic
+  defects per class with inferred types; the Seadusloome gate catches
+  defects that are visible to a downstream consumer that does not apply
+  inference, including stale aggregate drift in
+  `combined_ontology.jsonld`. Both gates must pass on release.
+- **CI wiring:** the `Seadusloome zero-warning gate` job in
+  `.github/workflows/validate.yml` runs on every pull request and `main`
+  push. The job uploads the rdflib turtle SHACL report as
+  `seadusloome-shacl-report` on failure for offline triage. The full
+  load (~57 inputs and ~1.1M triples, ~60s on contemporary hardware) is
+  acceptable for the existing CI runner; if corpus growth makes the gate
+  too slow for per-PR execution, demote it to release-only via
+  `.github/workflows/validate.yml`.
 
 ## Known Remaining Issues
 
-1. **Ontology IRI collisions** — some abbreviated law prefixes collide across files (tracked in #46)
+No validation-blocking issues are known in the remediated scope. The current corpus passes `scripts/validate_all.py`, unit tests, whitespace checks, all configured SHACL buckets, and the Seadusloome zero-warning gate.

@@ -2,6 +2,8 @@
 
 A comprehensive, machine-readable ontology of Estonian and EU legislation in JSON-LD format. Maps **enacted laws**, **draft legislation**, **domestic regulations (määrused)**, **Supreme Court decisions**, **EU legal acts**, and **EU court decisions** into a semantic knowledge graph suitable for advanced search, cross-referencing, and automated legal analysis.
 
+**Eestikeelne ülevaade:** [loe ontoloogia ülevaadet](docs/eesti-oigusontoloogia-ulevaade.html) — mis see on, kuidas see töötab, kust andmed pärinevad, kuidas seda uuendada ning kuidas ministeeriumid seda kasutada saaksid. PDF-versioon: [docs/eesti-oigusontoloogia-ulevaade.pdf](docs/eesti-oigusontoloogia-ulevaade.pdf).
+
 **Status: 615 enacted laws + 22,832 drafts + ~3,820 state regulations + 12,137 court decisions + 33,242 EU acts + 22,290 EU court decisions** | **5,200+ JSON-LD files** | **120,000+ semantic nodes**
 
 **Integration features:** Cross-law reference links | Court decision → provision links | EU directive transposition mapping | EuroVoc taxonomy | Amendment history | Legal concept graph | Deontic classification | Institutional competence | Sanction index | Semantic similarity | Temporal validity
@@ -523,23 +525,88 @@ The ontology uses the `estleg` namespace (`https://data.riik.ee/ontology/estleg#
 
 See [docs/SCHEMA_REFERENCE.md](docs/SCHEMA_REFERENCE.md) for full schema documentation.
 
+## Setup
+
+```bash
+python3 -m pip install -e ".[dev]"
+```
+
 ## Validation
 
 ```bash
+python3 -m pytest -q
 python3 scripts/validate_all.py
 ```
 
-CI runs automatically on every push to `main` that modifies `krr_outputs/`.
+CI runs tests and validation for changes to scripts, tests, SHACL, metadata,
+workflow files, docs, and ontology outputs.
+
+### Canonical artifacts
+
+The following artifacts are authoritative for downstream consumers and the
+release pipeline:
+
+- **Source files (edit here):** every root `krr_outputs/*_peep.json` plus
+  `krr_outputs/controlled_vocabulary.jsonld`,
+  `krr_outputs/karistusseadustik_eriosa_owl.jsonld`, and
+  `krr_outputs/tsus_osa7_138_169_owl.jsonld`. These are the canonical
+  per-act mappings.
+- **Sub-corpora (edit per generator):** `krr_outputs/eelnoud/`,
+  `krr_outputs/riigikohus/`, `krr_outputs/curia/`, and
+  `krr_outputs/eurlex/`. Seadusloome consumes these alongside the
+  combined aggregate.
+- **Generated aggregate (do not edit by hand):**
+  `krr_outputs/combined_ontology.jsonld`. Regenerate it via
+  `scripts/fix_all_issues.py` (the `generate_combined_jsonld()` step) so
+  it stays in lockstep with the source files. Editing it directly will
+  reintroduce the drift the Seadusloome zero-warning gate exists to
+  catch.
+
+### Validation and release order
+
+Run these steps in order before publishing or merging release-grade
+ontology changes:
+
+1. Build or regenerate canonical artifacts
+   (`python3 scripts/fix_all_issues.py` or the targeted generators).
+2. Validate sources and combined parity
+   (`python3 scripts/validate_all.py`).
+3. Run full bucket SHACL
+   (`python3 scripts/shacl_validate_all.py --all`, or per bucket via
+   `--bucket <name>`).
+4. Run the Seadusloome zero-warning gate
+   (`python3 scripts/validate_seadusloome_sync.py`).
+5. Refresh metadata and documentation counts
+   (`docs/VALIDATION_REPORT.md`, `metadata.jsonld`) if the release
+   artifacts changed.
+
+### Seadusloome zero-warning policy
+
+Seadusloome consumers must see zero SHACL warnings on the published
+branch. `scripts/validate_seadusloome_sync.py` mirrors the Seadusloome
+load path (root `*_peep.json` files, the listed JSON-LD vocabularies,
+the four sub-corpora, and `combined_ontology.jsonld`) and exits non-zero
+if any warning or violation is observed. The gate runs on every pull
+request and on `main` pushes via the
+`Seadusloome zero-warning gate` job in
+`.github/workflows/validate.yml`. The bucket SHACL job remains
+authoritative for class-by-class semantic checks; the new gate is the
+release contract for downstream sync.
 
 ## Refreshing Data
 
 ```bash
-# Re-fetch all enacted laws from Riigi Teataja
-python3 scripts/generate_all_laws.py
+# Refresh enacted laws from a declared Riigi Teataja snapshot.
+# Default is --missing-only against --kehtiv 2026-05-01.
+python3 scripts/generate_all_laws.py --missing-only
+python3 scripts/generate_all_laws.py --refresh --kehtiv 2026-05-01
 
-# Re-fetch state-level domestic regulations from Riigi Teataja
-python3 scripts/generate_regulations.py
-# (add --kov to also fetch ~11,087 municipal regulations)
+# Refresh state-level domestic regulations from Riigi Teataja.
+# Default is --missing-only; use --refresh to re-fetch XML and rewrite changed files.
+# Source-list fetch failures are fatal unless --allow-partial is explicit.
+python3 scripts/generate_regulations.py --missing-only
+python3 scripts/generate_regulations.py --refresh --kehtiv 2026-05-01
+# (add --kov to refresh municipal regulations)
 
 # Re-fetch draft legislation from EIS
 python3 scripts/generate_draft_legislation.py
@@ -553,8 +620,8 @@ python3 scripts/generate_eu_legislation.py
 # Re-fetch EU court decisions from EUR-Lex
 python3 scripts/generate_eu_court_decisions.py
 
-# Run all integration scripts in dependency order (recommended):
-python3 scripts/run_all_integration.py
+# Run all integration scripts in dependency order with rollback on failure:
+python3 scripts/run_all_integration.py --validate-each
 
 # Or run individually:
 python3 scripts/extract_cross_references.py
@@ -577,7 +644,7 @@ python3 scripts/generate_harmonisation_links.py
 
 1. Fork the repository
 2. Create a feature branch
-3. Ensure `python3 scripts/validate_all.py` passes
+3. Ensure `python3 -m pytest -q` and `python3 scripts/validate_all.py` pass
 4. Submit a pull request
 
 ## License

@@ -9,6 +9,25 @@ nodes linked to the originating provision.
 Outputs:
   - krr_outputs/sanctions/  (per-law sanction JSON-LD files)
   - krr_outputs/sanctions_report.json
+
+Estonian numerals
+-----------------
+Numeral parsing is intentionally **lemma-based** — only the forms listed
+in ``_ESTONIAN_NUMBERS`` are recognised. Compound numerals such as
+``kahekümneühe`` (21) are not synthesised from constituents; they must
+be added to ``_ESTONIAN_NUMBERS`` explicitly. ``estonian_numerals_supported()``
+returns the canonical set as a frozenset for tests/diagnostics.
+
+Supported forms (current set):
+
+* Partitive/genitive base forms: ``ühe`` (1) – ``kümne`` (10).
+* Teen forms: ``üheteist`` (11) – ``üheksateist`` (19).
+* Tens: ``kahekümne`` (20), ``kahekümneviie`` (25), ``kolmkümmend`` (30).
+* Hundreds/thousands: ``sada``/``kakssada``/``kolmsada``/``kolmesada``/``viissada``,
+  ``tuhat``.
+
+Unrepresented compounds raise no error — the extractor simply emits no
+``max_penalty`` for that match. Add lemmas as the corpus surfaces them.
 """
 
 from __future__ import annotations
@@ -20,7 +39,7 @@ from collections import defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 
-from estleg_common import iter_peep_files
+from estleg_common import iter_peep_files, jsonld_text
 from kov_pipeline_coverage import (
     CoverageReport,
     measure_runtime,
@@ -58,6 +77,15 @@ def _estonian_word_to_int(word: str) -> int | None:
     """Convert an Estonian number word to an integer, or return None."""
     word_lower = word.lower()
     return _ESTONIAN_NUMBERS.get(word_lower)
+
+
+def estonian_numerals_supported() -> frozenset[str]:
+    """Return the canonical set of supported Estonian numeral lemmas.
+
+    Used by tests and diagnostic tooling to assert the supported
+    surface area without depending on the internal mutable dict.
+    """
+    return frozenset(_ESTONIAN_NUMBERS.keys())
 
 CONTEXT = {
     "estleg": NS,
@@ -121,7 +149,14 @@ def sanitize_id(value: str) -> str:
 
 
 def _provision_ref(node: dict) -> str:
-    """Build a short human-readable provision reference like 'KarS § 121'."""
+    """Build a short human-readable provision reference like 'KarS § 121'.
+
+    Returns an empty string when no usable reference can be derived.
+    Previously the fallback emitted the literal ``'unknown'`` which
+    polluted ``_build_label`` output (e.g. ``"Imprisonment, max 5 years (unknown)"``).
+    ``_build_label`` already suppresses the parenthetical when the ref
+    is empty, so returning ``""`` is the cleaner contract.
+    """
     par = node.get("estleg:paragrahv", "")
     law_abbr = node.get("estleg:lawAbbreviation", "")
     if not law_abbr:
@@ -132,7 +167,7 @@ def _provision_ref(node: dict) -> str:
             law_abbr = parts[0]
     if par:
         return f"{law_abbr} \u00a7 {par}".strip()
-    return law_abbr or node.get("@id", "unknown")
+    return law_abbr or ""
 
 
 def _find_act_node(doc: dict) -> dict | None:
@@ -193,6 +228,11 @@ def extract_imprisonment(text: str) -> list[dict]:
 
     Handles both digit-based ("kuni 5 aastase vangistusega") and
     Estonian word-based ("kuni viieaastase vangistusega") patterns.
+
+    Word-based patterns are anchored to the closed set of supported
+    Estonian numerals (``_ESTONIAN_NUMBERS``). The previous ``\\w+``
+    over-matched arbitrary tokens before ``aasta``, which produced
+    spurious empty matches and hid genuine extraction failures.
     """
     results: list[dict] = []
 
@@ -209,12 +249,15 @@ def extract_imprisonment(text: str) -> list[dict]:
         })
 
     # --- Word-based patterns (most common in KarS) ---
+    _NUMBER_ALT = "|".join(
+        sorted((re.escape(k) for k in _ESTONIAN_NUMBERS), key=len, reverse=True)
+    )
 
     # Range: "kuue- kuni viieteistaastase vangistusega"
-    for m in re.finditer(
-        r"(\w+)-?\s+kuni\s+(\w+)aasta(?:se)?\s+vangistus",
-        text, re.IGNORECASE,
-    ):
+    range_pat = (
+        rf"({_NUMBER_ALT})-?\s+kuni\s+({_NUMBER_ALT})aasta(?:se)?\s+vangistus"
+    )
+    for m in re.finditer(range_pat, text, re.IGNORECASE):
         min_val = _parse_number(m.group(1))
         max_val = _parse_number(m.group(2))
         if min_val is not None and max_val is not None:
@@ -225,10 +268,8 @@ def extract_imprisonment(text: str) -> list[dict]:
             })
 
     # Max only (word): "kuni viieaastase vangistusega"
-    for m in re.finditer(
-        r"kuni\s+(\w+)aasta(?:se)?\s+vangistus",
-        text, re.IGNORECASE,
-    ):
+    max_pat = rf"kuni\s+({_NUMBER_ALT})aasta(?:se)?\s+vangistus"
+    for m in re.finditer(max_pat, text, re.IGNORECASE):
         val = _parse_number(m.group(1))
         if val is not None and not _already(f"{val} years"):
             results.append({
@@ -276,12 +317,31 @@ def extract_imprisonment(text: str) -> list[dict]:
                 "max_penalty": f"{val} years",
             })
 
-    # Fallback: "vangistus(ega) N"
-    for m in re.finditer(
-        r"vangistus(?:ega)?\s+(\d+)", text, re.IGNORECASE,
-    ):
+    # Fallback: "vangistus(ega) N <unit>" — REQUIRES an explicit unit
+    # token to interpret the number. The previous heuristic guessed
+    # ``years`` for N <= 20 and ``months`` otherwise, which silently
+    # mis-attributed sentences (e.g. "vangistus 24 päeva" → "24 months").
+    # If no unit token follows, no max_penalty is emitted.
+    fallback_pat = (
+        r"vangistus(?:ega)?\s+(\d+)\s*"
+        r"(aasta(?:se|t|ne|id)?|kuu(?:d|s|line)?|päev(?:a|ad)?)"
+    )
+    _UNIT_TO_NORMAL = {
+        "aasta": "years",
+        "kuu": "months",
+        "päev": "days",
+    }
+    for m in re.finditer(fallback_pat, text, re.IGNORECASE):
         val = m.group(1)
-        penalty_str = f"{val} years" if int(val) <= 20 else f"{val} months"
+        unit_raw = m.group(2).lower()
+        normalised = None
+        for prefix, mapped in _UNIT_TO_NORMAL.items():
+            if unit_raw.startswith(prefix):
+                normalised = mapped
+                break
+        if normalised is None:
+            continue
+        penalty_str = f"{val} {normalised}"
         if not _already(penalty_str):
             results.append({
                 "sanction_type": "imprisonment",
@@ -297,21 +357,17 @@ def extract_pecuniary(text: str) -> list[dict]:
     Per KarS § 44, pecuniary punishment is 30–500 daily rates for natural
     persons.  The specific offence provision almost never states the amount;
     it just says "karistatakse rahalise karistusega" (optionally followed by
-    "või kuni N-aastase vangistusega").  We set maxPenalty to the statutory
-    ceiling of "500 daily rates" so the field is never empty.
+    "või kuni N-aastase vangistusega").  When the value comes from the
+    statutory ceiling rather than the provision text we mark the record
+    with ``is_statutory_default=True`` so downstream consumers can
+    distinguish "extracted from text" from "statutory fallback".
     """
     results: list[dict] = []
     if re.search(r"rahalise?\s+karistus", text, re.IGNORECASE):
         results.append({
             "sanction_type": "pecuniary_punishment",
             "max_penalty": "500 daily rates",
-        })
-    if not results and re.search(
-        r"karistatakse\s+rahalise\s+karistusega", text, re.IGNORECASE
-    ):
-        results.append({
-            "sanction_type": "pecuniary_punishment",
-            "max_penalty": "500 daily rates",
+            "is_statutory_default": True,
         })
     return results
 
@@ -390,7 +446,17 @@ def extract_arrest(text: str) -> list[dict]:
     Provision text typically says "karistatakse ... või arestiga" without
     specifying the number of days.  We try to extract an explicit day count
     first (e.g. "aresti kuni kolmkümmend päeva") and fall back to the
-    statutory maximum of 30 days.
+    statutory maximum of 30 days **only** when the surrounding text
+    confirms a punishment context. The bare ``\\barest`` regex used to
+    fire on words like "arestima" outside sentencing language; the
+    fallback now requires both:
+
+    * a ``arest``-prefix word ending with a punishment-context suffix
+      (``arestiga``, ``aresti``, ``arestiks``);
+    * a sentencing co-occurrence (``karistatakse``, ``kohaldatakse``)
+      somewhere in the text.
+
+    Statutory-default emissions are tagged with ``is_statutory_default=True``.
     """
     results: list[dict] = []
 
@@ -417,12 +483,21 @@ def extract_arrest(text: str) -> list[dict]:
                     "max_penalty": f"{val} days",
                 })
 
-    # Generic arrest mention without explicit days → statutory max 30 days
-    if not results and re.search(r"\barest", text, re.IGNORECASE):
-        results.append({
-            "sanction_type": "arrest",
-            "max_penalty": "30 days",
-        })
+    # Generic arrest mention without explicit days → statutory max 30 days,
+    # gated on (a) punishment-context suffix and (b) sentencing verb.
+    if not results:
+        punishment_suffix = re.search(
+            r"\barest(?:i|iga|iks|ile)\b", text, re.IGNORECASE
+        )
+        sentencing_verb = re.search(
+            r"\b(?:karistatakse|kohaldatakse)\b", text, re.IGNORECASE
+        )
+        if punishment_suffix and sentencing_verb:
+            results.append({
+                "sanction_type": "arrest",
+                "max_penalty": "30 days",
+                "is_statutory_default": True,
+            })
 
     return results
 
@@ -438,15 +513,31 @@ ALL_EXTRACTORS = [
 
 
 def extract_sanctions(text: str) -> list[dict]:
-    """Run all extractors and return deduplicated sanction records."""
+    """Run all extractors and return deduplicated sanction records.
+
+    The ``is_statutory_default`` flag (when present) is preserved
+    through dedup so callers can distinguish a fallback emission
+    from a text-derived one. If both flagged and unflagged variants
+    of the same logical key appear, the unflagged variant wins (a
+    text-derived value is more specific than a statutory default).
+    """
     all_sanctions: list[dict] = []
-    seen: set[str] = set()
+    seen: dict[str, dict] = {}
     for extractor in ALL_EXTRACTORS:
         for s in extractor(text):
             key = f"{s['sanction_type']}|{s.get('max_penalty', '')}|{s.get('min_penalty', '')}"
-            if key not in seen:
-                seen.add(key)
+            existing = seen.get(key)
+            if existing is None:
+                seen[key] = s
                 all_sanctions.append(s)
+            elif existing.get("is_statutory_default") and not s.get(
+                "is_statutory_default"
+            ):
+                # Replace the statutory-default record with the
+                # text-derived one in-place so list order is stable.
+                idx = all_sanctions.index(existing)
+                all_sanctions[idx] = s
+                seen[key] = s
     return all_sanctions
 
 
@@ -627,7 +718,7 @@ def main() -> int:
 
         # Step 3: run extraction over the cleared graph.
         for node in doc["@graph"]:
-            summary = node.get("estleg:summary", "")
+            summary = jsonld_text(node.get("estleg:summary", ""))
             if not summary:
                 continue
 
@@ -645,6 +736,21 @@ def main() -> int:
                 else sanitize_id(node.get("estleg:paragrahv", "unknown"))
             )
 
+            # Sort sanctions deterministically before assigning IRI
+            # suffixes. The previous order depended on extractor
+            # iteration / regex match order, which produced different
+            # ``estleg:Sanction_<par>_<type>_2`` suffixes across runs
+            # whenever a provision triggered the same sanction type
+            # twice.
+            sanctions = sorted(
+                sanctions,
+                key=lambda s: (
+                    s.get("sanction_type", ""),
+                    s.get("max_penalty", "") or "",
+                    s.get("min_penalty", "") or "",
+                ),
+            )
+
             sanction_refs: list[dict] = []
             for s in sanctions:
                 total_sanction_count += 1
@@ -654,6 +760,9 @@ def main() -> int:
                     fallback = _try_extract_penalty_from_summary(summary, stype)
                     if fallback:
                         s["max_penalty"] = fallback
+                        # Mark statutory-default emission so consumers
+                        # can distinguish text-extracted from fallback.
+                        s.setdefault("is_statutory_default", True)
 
                 base_iri = f"estleg:Sanction_{provision_par}_{stype}"
                 iri_counts[base_iri] += 1
@@ -672,6 +781,8 @@ def main() -> int:
                     sanction_node["estleg:maxPenalty"] = s["max_penalty"]
                 if "min_penalty" in s:
                     sanction_node["estleg:minPenalty"] = s["min_penalty"]
+                if s.get("is_statutory_default"):
+                    sanction_node["estleg:isStatutoryDefault"] = True
                 sanction_node["rdfs:label"] = _build_label(stype, s, provision_ref)
 
                 law_sanctions.append(sanction_node)
@@ -749,10 +860,10 @@ def main() -> int:
     severity_index.sort(key=lambda x: (-x["max_severity"], -x["sanction_count"]))
 
     # ---------- report ----------
-    print(f"\n[3/4] Generating report...")
+    print("\n[3/4] Generating report...")
 
     report = {
-        "generated": datetime.now().strftime("%Y-%m-%d"),
+        "generated": datetime.now(timezone.utc).date().isoformat(),
         "summary": {
             "total_law_files": len(law_files),
             "total_provisions_with_text": total_provisions,
@@ -775,7 +886,7 @@ def main() -> int:
     print(f"  Saved: {report_path.name}")
 
     # ---------- summary ----------
-    print(f"\n[4/4] SUMMARY")
+    print("\n[4/4] SUMMARY")
     print("=" * 70)
     print(f"  Provisions analysed:       {total_provisions}")
     print(f"  With sanctions:            {provisions_with_sanctions}")

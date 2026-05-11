@@ -16,10 +16,10 @@ from __future__ import annotations
 import json
 import re
 from collections import defaultdict
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
-from estleg_common import iter_peep_files
+from estleg_common import iter_peep_files, jsonld_text, save_json
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
@@ -86,12 +86,6 @@ def is_boilerplate(text: str) -> bool:
     return False
 
 
-def save_json(filepath: Path, doc: dict | list):
-    with open(filepath, "w", encoding="utf-8") as f:
-        json.dump(doc, f, ensure_ascii=False, indent=2)
-        f.write("\n")
-
-
 def extract_keywords(text: str) -> set[str]:
     """Extract meaningful keywords from text."""
     if not text:
@@ -125,6 +119,117 @@ def jaccard_similarity(set_a: set, set_b: set) -> float:
     return intersection / union if union > 0 else 0.0
 
 
+def node_types(node: dict) -> list[str]:
+    types = node.get("@type", [])
+    if isinstance(types, str):
+        return [types]
+    if isinstance(types, list):
+        return [t for t in types if isinstance(t, str)]
+    return []
+
+
+def find_act_node(doc: dict) -> dict | None:
+    for node in doc.get("@graph", []):
+        types = set(node_types(node))
+        if "estleg:Act" in types or (
+            "owl:Ontology" in types
+            and types.intersection(
+                {
+                    "estleg:Law",
+                    "estleg:NationalRegulation",
+                    "estleg:GovernmentRegulation",
+                    "estleg:MinisterialRegulation",
+                    "estleg:MunicipalRegulation",
+                }
+            )
+        ):
+            return node
+    return None
+
+
+def classify_act_type(fpath: Path, act_node: dict) -> str:
+    types = set(node_types(act_node))
+    path = fpath.as_posix()
+    if "estleg:MunicipalRegulation" in types or "/regulations/kov/" in path:
+        return "kov"
+    if (
+        types.intersection(
+            {
+                "estleg:NationalRegulation",
+                "estleg:GovernmentRegulation",
+                "estleg:MinisterialRegulation",
+            }
+        )
+        or "/regulations/riik/" in path
+    ):
+        return "state_regulation"
+    if "estleg:Law" in types:
+        return "law"
+    return "other"
+
+
+def relative_output_path(fpath: Path) -> str:
+    try:
+        return str(fpath.relative_to(KRR_DIR))
+    except ValueError:
+        return fpath.name
+
+
+def extract_provisions_from_file(fpath: Path) -> tuple[list[dict], str | None, int]:
+    """Extract eligible provisions plus the count excluded by the keyword floor.
+
+    Returns a tuple of (provisions, act_type, excluded_for_keyword_floor) where
+    excluded_for_keyword_floor counts provisions that pass boilerplate/type
+    filters but yield fewer than ``MIN_SHARED_KEYWORDS`` keywords.
+    """
+    try:
+        with open(fpath, "r", encoding="utf-8") as f:
+            doc = json.load(f)
+    except (json.JSONDecodeError, FileNotFoundError):
+        return [], None, 0
+
+    act_node = find_act_node(doc)
+    if act_node is None:
+        return [], None, 0
+    act_type = classify_act_type(fpath, act_node)
+    file_name = relative_output_path(fpath)
+
+    provisions: list[dict] = []
+    excluded_for_keyword_floor = 0
+    for node in doc.get("@graph", []):
+        node_id = node.get("@id", "")
+        if not node_id or not node_id.startswith("estleg:"):
+            continue
+
+        types = node_types(node)
+        if "owl:Ontology" in types or "owl:Class" in types:
+            continue
+        if "estleg:TopicCluster" in str(types):
+            continue
+
+        summary = jsonld_text(node.get("estleg:summary", ""))
+        label = jsonld_text(node.get("rdfs:label", ""))
+        source_act = jsonld_text(node.get("estleg:sourceAct", ""))
+
+        if is_boilerplate(summary):
+            continue
+
+        keywords = extract_keywords(summary)
+
+        if len(keywords) >= MIN_SHARED_KEYWORDS:
+            provisions.append({
+                "id": node_id,
+                "label": label,
+                "source_act": source_act,
+                "keywords": keywords,
+                "file": file_name,
+                "act_type": act_type,
+            })
+        else:
+            excluded_for_keyword_floor += 1
+    return provisions, act_type, excluded_for_keyword_floor
+
+
 def main():
     print("=" * 60)
     print("Generating semantic similarity index (keyword-based)")
@@ -132,53 +237,39 @@ def main():
 
     # Load all provisions with their keywords
     print("\n[1/4] Loading provisions and extracting keywords...")
-    provisions: list[dict] = []  # {id, label, source_act, keywords, file}
+    provisions: list[dict] = []  # {id, label, source_act, keywords, file, act_type}
+    file_counts_by_type = {"law": 0, "state_regulation": 0, "kov": 0, "other": 0}
+    provision_counts_by_type = {"law": 0, "state_regulation": 0, "kov": 0, "other": 0}
+    excluded_for_keyword_floor_by_type: dict[str, int] = {
+        "law": 0, "state_regulation": 0, "kov": 0, "other": 0,
+    }
 
     jsonld_files = iter_peep_files(include_kov=False)  # DEFERRED to Layer 3
     for fpath in jsonld_files:
-        # Skip non-law files
-        if fpath.parent != KRR_DIR:
+        file_provisions, act_type, excluded_for_keyword_floor = (
+            extract_provisions_from_file(fpath)
+        )
+        if act_type is None:
             continue
-        try:
-            with open(fpath, "r", encoding="utf-8") as f:
-                doc = json.load(f)
-        except (json.JSONDecodeError, FileNotFoundError):
-            continue
-
-        for node in doc.get("@graph", []):
-            node_id = node.get("@id", "")
-            if not node_id or not node_id.startswith("estleg:"):
-                continue
-
-            # Skip ontology and class nodes
-            types = node.get("@type", [])
-            if isinstance(types, str):
-                types = [types]
-            if "owl:Ontology" in types or "owl:Class" in types:
-                continue
-            if "estleg:TopicCluster" in str(types):
-                continue
-
-            summary = node.get("estleg:summary", "")
-            label = node.get("rdfs:label", "")
-            source_act = node.get("estleg:sourceAct", "")
-
-            # Skip boilerplate provisions (entry-into-force, repeal clauses)
-            if is_boilerplate(summary):
-                continue
-
-            keywords = extract_keywords(summary) | extract_keywords(label)
-
-            if len(keywords) >= MIN_SHARED_KEYWORDS:
-                provisions.append({
-                    "id": node_id,
-                    "label": label,
-                    "source_act": source_act,
-                    "keywords": keywords,
-                    "file": fpath.name,
-                })
+        file_counts_by_type[act_type] = file_counts_by_type.get(act_type, 0) + 1
+        provision_counts_by_type[act_type] = (
+            provision_counts_by_type.get(act_type, 0) + len(file_provisions)
+        )
+        excluded_for_keyword_floor_by_type[act_type] = (
+            excluded_for_keyword_floor_by_type.get(act_type, 0)
+            + excluded_for_keyword_floor
+        )
+        provisions.extend(file_provisions)
 
     print(f"  Loaded {len(provisions)} provisions with keywords")
+    total_excluded = sum(excluded_for_keyword_floor_by_type.values())
+    if total_excluded:
+        print(
+            f"\nExcluded due to keyword-floor (<{MIN_SHARED_KEYWORDS} keywords required):"
+        )
+        for act_type_name, count in sorted(excluded_for_keyword_floor_by_type.items()):
+            if count:
+                print(f"  {act_type_name}: {count} provisions")
 
     # Build inverted index for efficient matching
     print("\n[2/4] Building inverted keyword index...")
@@ -230,7 +321,7 @@ def main():
                 best_similar.append((sim, j))
 
         # Keep top N similar provisions
-        best_similar.sort(reverse=True)
+        best_similar.sort(key=lambda item: (-item[0], provisions[item[1]]["id"]))
         for sim, j in best_similar[:MAX_SIMILAR_PER_PROVISION]:
             prov_b = provisions[j]
             similarity_pairs.append({
@@ -245,38 +336,35 @@ def main():
             })
             processed += 1
 
+    similarity_pairs.sort(key=lambda p: (p["source"], p["target"]))
     print(f"  Found {len(similarity_pairs)} similarity pairs")
 
     # Save similarity index
     print("\n[4/4] Saving outputs...")
     index_path = KRR_DIR / "similarity_index.json"
     save_json(index_path, {
-        "generated": datetime.now().strftime("%Y-%m-%d"),
+        "generated": datetime.now(timezone.utc).date().isoformat(),
+        "relation_semantics": "candidate",
+        "algorithm": {
+            "name": "keyword_jaccard",
+            "version": "1",
+            "source_fields": ["estleg:summary"],
+        },
+        "quality_evaluation": {
+            "status": "not_evaluated",
+            "note": "Similarity pairs are heuristic candidate links pending reviewed precision metrics.",
+        },
         "total_provisions": len(provisions),
         "total_pairs": len(similarity_pairs),
+        "candidate_files_by_type": file_counts_by_type,
+        "provisions_by_type": provision_counts_by_type,
         "threshold": MIN_SIMILARITY,
         "min_shared_keywords": MIN_SHARED_KEYWORDS,
         "pairs": similarity_pairs,
     })
     print(f"  Saved: {index_path.name} ({len(similarity_pairs)} pairs)")
 
-    # Clearing pass: remove stale estleg:semanticallySimilarTo from all peep files
-    for fpath in iter_peep_files(include_kov=False):  # DEFERRED to Layer 3
-        try:
-            with open(fpath, "r", encoding="utf-8") as f:
-                doc = json.load(f)
-        except (json.JSONDecodeError, FileNotFoundError):
-            continue
-        modified = False
-        for node in doc.get("@graph", []):
-            if "estleg:semanticallySimilarTo" in node:
-                del node["estleg:semanticallySimilarTo"]
-                modified = True
-        if modified:
-            save_json(fpath, doc)
-
-    # Update JSON-LD files with similarity links
-    # Group pairs by source file
+    # Update JSON-LD files with similarity links in one write per touched file.
     prov_id_to_file = {p["id"]: p["file"] for p in provisions}
     file_updates: dict[str, dict[str, list[str]]] = defaultdict(lambda: defaultdict(list))
     for pair in similarity_pairs:
@@ -285,8 +373,9 @@ def main():
             file_updates[src_file][pair["source"]].append(pair["target"])
 
     updated_files = 0
-    for filename, node_updates in file_updates.items():
-        fpath = KRR_DIR / filename
+    candidate_files = {relative_output_path(path): path for path in iter_peep_files(include_kov=False)}
+    for filename, fpath in candidate_files.items():
+        node_updates = file_updates.get(filename, {})
         try:
             with open(fpath, "r", encoding="utf-8") as f:
                 doc = json.load(f)
@@ -296,8 +385,11 @@ def main():
         modified = False
         for node in doc.get("@graph", []):
             node_id = node.get("@id", "")
+            if "estleg:semanticallySimilarTo" in node:
+                del node["estleg:semanticallySimilarTo"]
+                modified = True
             if node_id in node_updates:
-                targets = node_updates[node_id]
+                targets = sorted(node_updates[node_id])
                 node["estleg:semanticallySimilarTo"] = [{"@id": t} for t in targets]
                 modified = True
 
@@ -309,10 +401,23 @@ def main():
 
     # Generate report
     report = {
-        "generated": datetime.now().strftime("%Y-%m-%d"),
+        "generated": datetime.now(timezone.utc).date().isoformat(),
+        "relation_semantics": "candidate",
+        "algorithm": {
+            "name": "keyword_jaccard",
+            "version": "1",
+            "source_fields": ["estleg:summary"],
+        },
+        "quality_evaluation": {
+            "status": "not_evaluated",
+            "note": "Similarity pairs are heuristic candidate links pending reviewed precision metrics.",
+        },
         "total_provisions_analyzed": len(provisions),
         "total_similarity_pairs": len(similarity_pairs),
         "files_updated": updated_files,
+        "candidate_files_by_type": file_counts_by_type,
+        "provisions_by_type": provision_counts_by_type,
+        "excluded_provisions": dict(excluded_for_keyword_floor_by_type),
         "parameters": {
             "min_similarity": MIN_SIMILARITY,
             "min_shared_keywords": MIN_SHARED_KEYWORDS,
@@ -340,7 +445,7 @@ def main():
     if similarity_pairs:
         avg_sim = sum(p["similarity"] for p in similarity_pairs) / len(similarity_pairs)
         print(f"Average similarity: {avg_sim:.3f}")
-        print(f"\nTop 5 most similar cross-law pairs:")
+        print("\nTop 5 most similar cross-law pairs:")
         for pair in sorted(similarity_pairs, key=lambda p: -p["similarity"])[:5]:
             print(f"  {pair['similarity']:.3f}: {pair['source_label']} <-> {pair['target_label']}")
     print("=" * 60)

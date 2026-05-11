@@ -28,13 +28,11 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from estleg_common import (
-    CONTEXT,
     FULLNAME_GENITIVE,
     KNOWN_ABBREVIATIONS,
     PAR_SUFFIX,
     iter_peep_files,
     save_json,
-    sanitize_id,
 )
 from kov_pipeline_coverage import (
     CoverageReport,
@@ -56,6 +54,22 @@ FULLNAME_TO_ABBREV = {v.lower(): k for k, v in KNOWN_ABBREVIATIONS.items()}
 def ln(tag: str) -> str:
     """Extract local name from a possibly namespaced XML tag."""
     return tag.split("}", 1)[1] if "}" in tag else tag
+
+
+def is_provision_node(node: dict) -> bool:
+    """Identify provision nodes by their ``_Par_`` @id segment.
+
+    The whole script keys provisions on this convention — every JSON-LD
+    provision in the corpus has an @id of shape ``estleg:<prefix>_Par_<n>``.
+    Centralising the predicate avoids the historical drift where
+    different passes used different heuristics (e.g.
+    ``'estleg:paragrahv' not in node`` vs ``'_Par_' in @id``) and could
+    disagree on which nodes count as provisions.
+    """
+    if not isinstance(node, dict):
+        return False
+    node_id = node.get("@id", "")
+    return isinstance(node_id, str) and "_Par_" in node_id
 
 
 # ----------------------------------------------------------------------
@@ -1326,6 +1340,273 @@ def collect_text_from_xml(xml_path: Path) -> dict[str, str]:
     return par_texts
 
 
+def _load_provision_text(
+    node: dict,
+    xml_par_texts: dict[str, str],
+) -> str:
+    """Compose the scannable text for a provision node.
+
+    Prefers the XML paragraph body keyed by paragraph number (parsed
+    out of the @id), then concatenates the JSON-LD ``estleg:summary``
+    when present. Returns an empty string when neither source carries
+    text.
+    """
+    node_id = node.get("@id", "")
+    if not isinstance(node_id, str) or "_Par_" not in node_id:
+        return ""
+    local = node_id[len("estleg:"):] if node_id.startswith("estleg:") else node_id
+    par_num = local.split("_Par_", 1)[1]
+    text_to_scan = xml_par_texts.get(par_num, "")
+    summary = node.get("estleg:summary", "")
+    if summary:
+        text_to_scan = (
+            text_to_scan + " " + summary if text_to_scan else summary
+        )
+    return text_to_scan
+
+
+def _derive_self_prefix(
+    graph: list[dict],
+    act_iri_to_prefix: dict[str, str] | None,
+) -> str | None:
+    """Derive the file's own prefix for resolving self-references.
+
+    Strategy (in order):
+
+    1. Look up the act @id from the ``owl:Ontology`` node and consult
+       ``act_iri_to_prefix`` (the registry built by
+       ``build_provision_index``). This is the authoritative path —
+       the registry already handles the 34 corpus acts whose prefix
+       contains underscores (e.g. ``KARIST_2_Map_2026``).
+    2. Fall back to ``_prefix_from_act_iri`` against the act @id when
+       the registry doesn't carry it (rare legacy peep without a
+       provision-anchored prefix entry).
+    3. Last-resort fallback: scan the first provision @id and split
+       on ``_Par_``. This preserves prior behaviour for files whose
+       owl:Ontology act node is absent or whose registry mapping is
+       missing — but the previous fragile string-split code path is
+       no longer the primary derivation.
+    """
+    # Path 1 + 2: act-IRI driven (registry-first, suffix-stripper second)
+    for node in graph:
+        types = node.get("@type") or []
+        if isinstance(types, str):
+            types = [types]
+        if "owl:Ontology" not in types:
+            continue
+        act_iri = node.get("@id")
+        if not isinstance(act_iri, str):
+            continue
+        if act_iri_to_prefix:
+            prefix = act_iri_to_prefix.get(act_iri)
+            if prefix:
+                return prefix
+        derived = _prefix_from_act_iri(act_iri)
+        if derived:
+            return derived
+        break
+
+    # Path 3: last-resort provision @id scan. Kept so peeps without an
+    # owl:Ontology act node still resolve self-references.
+    for node in graph:
+        node_id = node.get("@id", "")
+        if "_Par_" in node_id and isinstance(node_id, str) \
+                and node_id.startswith("estleg:"):
+            local = node_id[len("estleg:"):]
+            return local.split("_Par_", 1)[0]
+    return None
+
+
+def _run_inlaw_citation_pass(
+    graph: list[dict],
+    *,
+    self_prefix: str,
+    abbrev_to_prefix: dict[str, str],
+    prefix_to_provisions: dict[str, dict[str, str]],
+    xml_par_texts: dict[str, str],
+) -> dict:
+    """Run the in-law citation pass over ``graph``.
+
+    Mutates provision nodes by attaching ``estleg:references``. Returns
+    a stats fragment with ``provisions_scanned``, ``citations_found``,
+    ``citations_resolved``, ``provisions_with_refs``, and ``modified``
+    (True when at least one provision gained a reference).
+    """
+    stats = {
+        "provisions_scanned": 0,
+        "citations_found": 0,
+        "citations_resolved": 0,
+        "provisions_with_refs": 0,
+        "modified": False,
+    }
+    for node in graph:
+        if not is_provision_node(node):
+            continue
+        stats["provisions_scanned"] += 1
+
+        text_to_scan = _load_provision_text(node, xml_par_texts)
+        if not text_to_scan:
+            continue
+
+        citations = extract_citations_from_text(text_to_scan)
+        if not citations:
+            continue
+
+        # Count individual paragraph references (not citation objects)
+        # so that total_citations_found >= total_citations_resolved
+        # always holds.
+        stats["citations_found"] += sum(len(c["paragraphs"]) for c in citations)
+
+        all_refs: list[str] = []
+        for cit in citations:
+            resolved = resolve_citation(
+                cit, self_prefix, abbrev_to_prefix, prefix_to_provisions
+            )
+            all_refs.extend(resolved)
+            stats["citations_resolved"] += len(resolved)
+
+        node_id = node.get("@id", "")
+        all_refs = list(dict.fromkeys(r for r in all_refs if r != node_id))
+
+        if not all_refs:
+            continue
+
+        node["estleg:references"] = [{"@id": r} for r in all_refs]
+        stats["provisions_with_refs"] += 1
+        stats["modified"] = True
+
+    return stats
+
+
+def _run_kov_body_pass(
+    graph: list[dict],
+    *,
+    kov_act_lookup_by_number: dict[tuple[str, str], list[str]],
+    issuer_registry: dict[str, tuple[str, str, str]],
+) -> dict:
+    """Run the KOV body-text reference pass over ``graph``.
+
+    Mutates provision nodes by appending KOV-internal references to
+    ``estleg:references``. Tracks which provision @ids were counted
+    locally (no document mutation) and returns a stats fragment with
+    ``citations_found``, ``citations_resolved``, ``provisions_with_refs``,
+    ``counted_ids`` (frozenset of provision @ids that gained a Layer 2b
+    ref this pass), and ``modified``.
+    """
+    stats = {
+        "citations_found": 0,
+        "citations_resolved": 0,
+        "provisions_with_refs": 0,
+        "counted_ids": frozenset(),
+        "modified": False,
+    }
+
+    # Read the source act's municipality (may be None for laws or for
+    # state regulations that aren't municipality-bound).
+    source_municipality = None
+    for node in graph:
+        types = node.get("@type") or []
+        if isinstance(types, str):
+            types = [types]
+        if "estleg:MunicipalRegulation" in types:
+            ebm = node.get("estleg:enactedByMunicipality")
+            if isinstance(ebm, dict):
+                source_municipality = ebm.get("@id")
+            elif isinstance(ebm, str):
+                source_municipality = ebm
+            break
+
+    counted_ids: set[str] = set()
+
+    for prov_node in graph:
+        if not is_provision_node(prov_node):
+            continue
+        text_parts: list[str] = []
+        lt = prov_node.get("estleg:legalText")
+        if isinstance(lt, str):
+            text_parts.append(lt)
+        sm = prov_node.get("estleg:summary")
+        if isinstance(sm, str):
+            text_parts.append(sm)
+        text = " ".join(text_parts)
+        kov_refs = extract_kov_act_refs_from_text(text)
+        if not kov_refs:
+            continue
+
+        # Treat every parsed KOV body-text ref as a "found" citation
+        # to mirror the in-law branch convention.
+        stats["citations_found"] += len(kov_refs)
+
+        new_targets: list[str] = []
+        for ref in kov_refs:
+            target = resolve_kov_internal_act_ref(
+                source_municipality=source_municipality,
+                explicit_issuer=ref["issuer"],
+                body_type=ref["body_type"],
+                act_number=ref["act_number"],
+                kov_act_lookup_by_number=kov_act_lookup_by_number,
+                issuer_registry=issuer_registry,
+            )
+            if target is not None:
+                new_targets.append(target)
+
+        if not new_targets:
+            continue
+
+        # Append to existing references (preserving the in-law refs)
+        # and dedupe.
+        refs = prov_node.get("estleg:references")
+        if refs is None:
+            refs = []
+            prov_node["estleg:references"] = refs
+        elif isinstance(refs, dict):
+            refs = [refs]
+            prov_node["estleg:references"] = refs
+
+        had_new = False
+        for tgt in new_targets:
+            if {"@id": tgt} not in refs:
+                refs.append({"@id": tgt})
+                had_new = True
+
+        if had_new:
+            stats["citations_resolved"] += len(new_targets)
+            # Only count the provision the FIRST time a Layer 2b ref
+            # lands on it (the in-law pass may have already counted it).
+            node_id = prov_node.get("@id")
+            if isinstance(node_id, str) and node_id not in counted_ids:
+                counted_ids.add(node_id)
+                stats["provisions_with_refs"] += 1
+            stats["modified"] = True
+
+    stats["counted_ids"] = frozenset(counted_ids)
+    return stats
+
+
+def _merge_pass_stats(base: dict, *passes: dict) -> bool:
+    """Merge counter fields from one or more pass-stats dicts into
+    ``base``. Returns True when ANY pass reported ``modified``.
+
+    ``base`` is mutated in place. Numeric fields are summed; the
+    ``modified`` flag from each pass is OR-ed; pass-specific fields
+    (e.g. ``counted_ids``) are NOT propagated upward.
+    """
+    numeric_fields = (
+        "provisions_scanned",
+        "citations_found",
+        "citations_resolved",
+        "provisions_with_refs",
+    )
+    modified = False
+    for pass_stats in passes:
+        for field in numeric_fields:
+            if field in pass_stats:
+                base[field] = base.get(field, 0) + pass_stats[field]
+        if pass_stats.get("modified"):
+            modified = True
+    return modified
+
+
 def process_law_file(
     json_file: Path,
     abbrev_to_prefix: dict[str, str],
@@ -1334,13 +1615,18 @@ def process_law_file(
     *,
     kov_act_lookup_by_number: dict[tuple[str, str], list[str]] | None = None,
     issuer_registry: dict[str, tuple[str, str, str]] | None = None,
+    act_iri_to_prefix: dict[str, str] | None = None,
 ) -> dict:
     """
     Process a single law JSON-LD file to extract and add cross-references.
 
+    Thin orchestrator: loads the doc, derives context, runs the in-law
+    citation pass and the optional KOV body-text pass, merges stats,
+    and persists the file when any pass mutated the graph.
+
     Returns statistics dict.
     """
-    stats = {
+    stats: dict = {
         "file": json_file.name,
         "provisions_scanned": 0,
         "citations_found": 0,
@@ -1359,162 +1645,39 @@ def process_law_file(
     if not graph:
         return stats
 
-    # Determine this file's prefix and source act for self-references
-    self_prefix = None
-    self_source_act = None
-    for node in graph:
-        node_id = node.get("@id", "")
-        if "_Par_" in node_id and node_id.startswith("estleg:"):
-            local = node_id[len("estleg:"):]
-            self_prefix = local.split("_Par_")[0]
-            self_source_act = node.get("estleg:sourceAct", "")
-            break
-
+    self_prefix = _derive_self_prefix(graph, act_iri_to_prefix)
     if not self_prefix:
         return stats
 
-    # Try to find corresponding XML file for richer text
-    # The JSON-LD filename pattern is {slug}_peep.json or {slug}_osa{N}_peep.json
+    # Try to find corresponding XML file for richer text. The JSON-LD
+    # filename pattern is {slug}_peep.json or {slug}_osa{N}_peep.json.
     slug = json_file.stem.replace("_peep", "")
-    # Remove _osa{N} suffix for XML lookup
     xml_slug = re.sub(r"_osa\d+$", "", slug)
     xml_path = DATA_DIR / f"{xml_slug}.xml"
     xml_par_texts: dict[str, str] = {}
     if xml_path.exists():
         xml_par_texts = collect_text_from_xml(xml_path)
 
-    modified = False
-    for node in graph:
-        node_id = node.get("@id", "")
-        if "_Par_" not in node_id:
-            continue
+    pass_results: list[dict] = []
 
-        stats["provisions_scanned"] += 1
+    inlaw_stats = _run_inlaw_citation_pass(
+        graph,
+        self_prefix=self_prefix,
+        abbrev_to_prefix=abbrev_to_prefix,
+        prefix_to_provisions=prefix_to_provisions,
+        xml_par_texts=xml_par_texts,
+    )
+    pass_results.append(inlaw_stats)
 
-        # Get text to scan: prefer XML text, fall back to JSON-LD summary
-        local = node_id[len("estleg:"):]
-        par_num = local.split("_Par_")[1]
-        text_to_scan = xml_par_texts.get(par_num, "")
-        summary = node.get("estleg:summary", "")
-        if summary:
-            text_to_scan = text_to_scan + " " + summary if text_to_scan else summary
-
-        if not text_to_scan:
-            continue
-
-        # Extract and resolve citations
-        citations = extract_citations_from_text(text_to_scan)
-        if not citations:
-            continue
-
-        # Count individual paragraph references (not citation objects) so
-        # that total_citations_found >= total_citations_resolved always holds.
-        stats["citations_found"] += sum(len(c["paragraphs"]) for c in citations)
-
-        all_refs: list[str] = []
-        for cit in citations:
-            resolved = resolve_citation(
-                cit, self_prefix, abbrev_to_prefix, prefix_to_provisions
-            )
-            all_refs.extend(resolved)
-            stats["citations_resolved"] += len(resolved)
-
-        # Deduplicate and remove self-links
-        all_refs = list(dict.fromkeys(r for r in all_refs if r != node_id))
-
-        if not all_refs:
-            continue
-
-        # Add estleg:references (using IRI references, always as list)
-        ref_iris = [{"@id": r} for r in all_refs]
-        node["estleg:references"] = ref_iris
-
-        stats["provisions_with_refs"] += 1
-        modified = True
-
-    # Layer 2b: KOV body-text refs scoped to source municipality.
-    # Runs AFTER the existing in-law citation pass on the same graph.
     if kov_act_lookup_by_number is not None:
-        # Read the source act's municipality (may be None for laws or
-        # for state regulations that aren't municipality-bound).
-        source_municipality = None
-        for node in graph:
-            types = node.get("@type") or []
-            if isinstance(types, str):
-                types = [types]
-            if "estleg:MunicipalRegulation" in types:
-                ebm = node.get("estleg:enactedByMunicipality")
-                if isinstance(ebm, dict):
-                    source_municipality = ebm.get("@id")
-                elif isinstance(ebm, str):
-                    source_municipality = ebm
-                break
+        kov_stats = _run_kov_body_pass(
+            graph,
+            kov_act_lookup_by_number=kov_act_lookup_by_number,
+            issuer_registry=issuer_registry or {},
+        )
+        pass_results.append(kov_stats)
 
-        # Per provision, parse body-text KOV refs and resolve.
-        for prov_node in graph:
-            if "estleg:paragrahv" not in prov_node:
-                continue
-            text_parts = []
-            lt = prov_node.get("estleg:legalText")
-            if isinstance(lt, str):
-                text_parts.append(lt)
-            sm = prov_node.get("estleg:summary")
-            if isinstance(sm, str):
-                text_parts.append(sm)
-            text = " ".join(text_parts)
-            kov_refs = extract_kov_act_refs_from_text(text)
-            if not kov_refs:
-                continue
-
-            # Treat every parsed KOV body-text ref as a "found" citation;
-            # whether resolved or not, this is real signal in the coverage
-            # report (matches the convention from the in-law branch).
-            stats["citations_found"] += len(kov_refs)
-
-            new_targets: list[str] = []
-            for ref in kov_refs:
-                target = resolve_kov_internal_act_ref(
-                    source_municipality=source_municipality,
-                    explicit_issuer=ref["issuer"],
-                    body_type=ref["body_type"],
-                    act_number=ref["act_number"],
-                    kov_act_lookup_by_number=kov_act_lookup_by_number,
-                    issuer_registry=issuer_registry or {},
-                )
-                if target is not None:
-                    new_targets.append(target)
-
-            if not new_targets:
-                continue
-
-            # Append to existing references (preserving the in-law refs)
-            # and dedupe.
-            refs = prov_node.get("estleg:references")
-            if refs is None:
-                refs = []
-                prov_node["estleg:references"] = refs
-            elif isinstance(refs, dict):
-                refs = [refs]
-                prov_node["estleg:references"] = refs
-
-            had_new = False
-            for tgt in new_targets:
-                if {"@id": tgt} not in refs:
-                    refs.append({"@id": tgt})
-                    had_new = True
-
-            if had_new:
-                stats["citations_resolved"] += len(new_targets)
-                # Only count the provision the FIRST time a Layer 2b ref
-                # lands on it (the in-law pass may have already counted it).
-                if not prov_node.get("_layer2b_counted"):
-                    stats["provisions_with_refs"] += 1
-                    prov_node["_layer2b_counted"] = True
-                modified = True
-
-    # Strip the temporary marker before saving so it never persists.
-    for prov_node in graph:
-        prov_node.pop("_layer2b_counted", None)
+    modified = _merge_pass_stats(stats, *pass_results)
 
     if modified:
         save_json(json_file, doc)
@@ -1782,6 +1945,7 @@ def main() -> int:
             json_file, abbrev_to_prefix, prefix_to_provisions, iri_to_file,
             kov_act_lookup_by_number=kov_act_lookup_by_number,
             issuer_registry=issuer_registry,
+            act_iri_to_prefix=act_iri_to_prefix,
         )
         all_stats.append(stats)
 

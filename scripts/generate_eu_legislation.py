@@ -16,14 +16,16 @@ Generates:
 
 from __future__ import annotations
 
-import json
+import argparse
 import re
 import sys
 import time
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 import requests
+
+from estleg_common import save_json
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
@@ -107,14 +109,48 @@ def sparql_query(query: str) -> list[dict]:
     return data.get("results", {}).get("bindings", [])
 
 
-def fetch_legislation_type(cdm_class: str) -> list[dict]:
+def sparql_query_with_retry(
+    query: str, *, retries: int = 3, backoff: float = 2.0
+) -> list[dict]:
+    """Execute a SPARQL query with bounded exponential backoff on failure.
+
+    EUR-Lex 5xxs intermittently. Without a retry layer a single transient
+    error truncates a multi-page sweep and silently produces partial
+    output. We sleep ``backoff * 2**attempt`` between attempts and re-
+    raise the underlying exception (wrapped in ``RuntimeError``) on
+    terminal failure so the caller can either ``break`` (under
+    ``--allow-partial``) or propagate to the run's exit code.
+    """
+    last_exc: BaseException | None = None
+    for attempt in range(retries):
+        try:
+            return sparql_query(query)
+        except Exception as exc:  # noqa: BLE001 — broad to retry network/JSON
+            last_exc = exc
+            if attempt < retries - 1:
+                time.sleep(backoff * (2 ** attempt))
+    raise RuntimeError(
+        f"sparql_query failed after {retries} attempts: {last_exc}"
+    ) from last_exc
+
+
+def fetch_legislation_type(
+    cdm_class: str, *, allow_partial: bool = False
+) -> tuple[list[dict], bool]:
     """
     Fetch all legislation of a given type with Estonian translations.
     Uses OFFSET/LIMIT pagination. Deduplicates by CELEX.
+
+    Returns ``(items, partial)`` where ``partial`` is ``True`` iff the
+    sweep stopped early due to terminal SPARQL failure under
+    ``allow_partial``. Without ``allow_partial``, terminal failures
+    propagate as ``RuntimeError`` so the run exits non-zero rather than
+    silently truncating the dataset.
     """
     all_items: list[dict] = []
     seen_celex: set[str] = set()
     offset = 0
+    partial = False
 
     while True:
         query = f"""
@@ -130,14 +166,17 @@ SELECT DISTINCT ?work ?celex ?title ?date ?inforce ?eli ?author WHERE {{
   OPTIONAL {{ ?work cdm:resource_legal_in-force ?inforce }}
   OPTIONAL {{ ?work cdm:resource_legal_eli ?eli }}
   OPTIONAL {{ ?work cdm:work_created_by_agent ?author }}
-}} LIMIT {PAGE_SIZE} OFFSET {offset}
+}} ORDER BY ?work LIMIT {PAGE_SIZE} OFFSET {offset}
 """
         print(f"    Fetching offset {offset}...")
         try:
-            bindings = sparql_query(query)
+            bindings = sparql_query_with_retry(query)
         except Exception as e:
-            print(f"    ERROR at offset {offset}: {e}")
-            break
+            if allow_partial:
+                print(f"    ERROR at offset {offset} (partial run): {e}")
+                partial = True
+                break
+            raise
 
         if not bindings:
             break
@@ -180,7 +219,7 @@ SELECT DISTINCT ?work ?celex ?title ?date ?inforce ?eli ?author WHERE {{
         offset += PAGE_SIZE
         time.sleep(RATE_DELAY)
 
-    return all_items
+    return all_items, partial
 
 
 def generate_schema_nodes() -> list[dict]:
@@ -296,6 +335,25 @@ def generate_schema_nodes() -> list[dict]:
     return nodes
 
 
+def is_in_force_value(value: object) -> bool:
+    """Best-effort coercion of EUR-Lex ``in_force`` payloads to a Python bool.
+
+    EUR-Lex returns this field as ``"1"``/``"0"``, ``"true"``/``"false"``,
+    or occasionally upper-case (``"TRUE"``) — and the field can be entirely
+    absent, in which case our SPARQL extractor leaves an empty string or
+    ``None`` on the item dict. The previous implementation called
+    ``str(None)`` and treated ``"none"`` as truthy-on-equality (which it
+    isn't), masking a bug class where missing values silently became
+    ``False`` only because ``"none" not in {"1", "true"}``. Make the
+    semantics explicit so callers can rely on them.
+    """
+    if value is None:
+        return False
+    if isinstance(value, bool):
+        return value
+    return str(value).strip().casefold() in {"1", "true", "yes", "y"}
+
+
 def legislation_to_node(item: dict, type_id: str) -> dict:
     """Convert a legislation dict to a JSON-LD node."""
     safe_celex = sanitize_celex(item["celex"])
@@ -330,7 +388,7 @@ def legislation_to_node(item: dict, type_id: str) -> dict:
 
     # In-force status
     if item.get("in_force"):
-        in_force_bool = "true" if item["in_force"] == "1" else "false"
+        in_force_bool = "true" if is_in_force_value(item["in_force"]) else "false"
         node["estleg:inForce"] = {"@value": in_force_bool, "@type": "xsd:boolean"}
 
     # Institutions
@@ -351,13 +409,21 @@ def legislation_to_node(item: dict, type_id: str) -> dict:
     return node
 
 
-def save_json(filepath: Path, doc: dict):
-    with open(filepath, "w", encoding="utf-8") as f:
-        json.dump(doc, f, ensure_ascii=False, indent=2)
-        f.write("\n")
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--allow-partial",
+        action="store_true",
+        help=(
+            "Continue and write partial output (with ``partial: true`` in "
+            "the index) if a SPARQL pagination request fails after retries."
+        ),
+    )
+    return parser.parse_args()
 
 
 def main():
+    args = parse_args()
     print("=" * 60)
     print("Fetching EU legislation from EUR-Lex SPARQL endpoint")
     print(f"Endpoint: {SPARQL_ENDPOINT}")
@@ -365,21 +431,42 @@ def main():
 
     # Generate schema
     print("\n--- Generating schema ---")
-    schema_doc = {"@context": CONTEXT, "@graph": generate_schema_nodes()}
+    schema_graph: list[dict] = [
+        {
+            "@id": "estleg:EURlex_Schema_2026",
+            "@type": ["owl:Ontology"],
+            "rdfs:label": {"@value": "EUR-Lex skeem (EU Legislation schema)", "@language": "et"},
+            "dc:description": {
+                "@value": (
+                    "Schema-only ontology for EU legislation: classes, "
+                    "object/datatype properties, and named individuals. "
+                    "Imported by the combined dataset to avoid duplicate "
+                    "schema declarations across per-type files."
+                ),
+                "@language": "en",
+            },
+        },
+    ]
+    schema_graph.extend(generate_schema_nodes())
+    schema_doc = {"@context": CONTEXT, "@graph": schema_graph}
     schema_path = EURLEX_DIR / "eurlex_schema.json"
     save_json(schema_path, schema_doc)
     print(f"  Saved: {schema_path.name} ({len(schema_doc['@graph'])} nodes)")
 
     all_legislation: dict[str, list[dict]] = {}
     type_counts: dict[str, int] = {}
+    partial_types: dict[str, bool] = {}
 
     for doc_key, doc_info in EU_DOC_TYPES.items():
         print(f"\n--- Fetching {doc_info['label_en']}s ({doc_info['cdm_class']}) ---")
-        items = fetch_legislation_type(doc_info["cdm_class"])
+        items, was_partial = fetch_legislation_type(
+            doc_info["cdm_class"], allow_partial=args.allow_partial
+        )
         print(f"  Total unique: {len(items)}")
 
         all_legislation[doc_key] = items
         type_counts[doc_key] = len(items)
+        partial_types[doc_key] = was_partial
 
         # Generate per-type file
         graph: list[dict] = [
@@ -404,6 +491,11 @@ def main():
 
     # Generate combined file
     print("\n--- Generating combined file ---")
+    # NOTE: The combined file imports the canonical schema from
+    # ``eurlex_schema.json`` via ``owl:imports`` rather than embedding the
+    # schema nodes inline. Keeping schema in a single file avoids
+    # duplicate ``owl:Class``/``owl:NamedIndividual`` declarations that
+    # break downstream reasoning when both files are loaded together.
     combined_graph: list[dict] = [
         {
             "@id": "estleg:EURlex_Combined_Map_2026",
@@ -411,9 +503,9 @@ def main():
             "rdfs:label": {"@value": "EL õigusaktid – kõik liigid (Combined)", "@language": "et"},
             "dc:description": {"@value": "Kõik Euroopa Liidu õigusaktid eesti keeles EUR-Lexist.", "@language": "et"},
             "dc:source": "EUR-Lex – eur-lex.europa.eu",
+            "owl:imports": {"@id": "estleg:EURlex_Schema_2026"},
         },
     ]
-    combined_graph.extend(generate_schema_nodes())
 
     total = 0
     for doc_key, doc_info in EU_DOC_TYPES.items():
@@ -430,13 +522,15 @@ def main():
     print("\n--- Generating index ---")
     in_force_counts: dict[str, int] = {}
     for doc_key, items in all_legislation.items():
-        in_force_counts[doc_key] = sum(1 for i in items if i.get("in_force") == "1")
+        in_force_counts[doc_key] = sum(1 for i in items if is_in_force_value(i.get("in_force")))
 
+    any_partial = any(partial_types.values())
     index = {
-        "generated": datetime.now().strftime("%Y-%m-%d"),
+        "generated": datetime.now(timezone.utc).date().isoformat(),
         "source": "https://eur-lex.europa.eu",
         "sparql_endpoint": SPARQL_ENDPOINT,
         "total_acts": total,
+        "partial": any_partial,
         "by_type": {},
     }
 
@@ -450,6 +544,7 @@ def main():
             "in_force": in_force,
             "not_in_force": count - in_force,
             "file": f"eurlex_{doc_key}s_peep.json",
+            "partial": partial_types.get(doc_key, False),
         }
 
     index_path = EURLEX_DIR / "EURLEX_INDEX.json"
@@ -464,8 +559,15 @@ def main():
     for doc_key, doc_info in EU_DOC_TYPES.items():
         count = type_counts.get(doc_key, 0)
         in_force = in_force_counts.get(doc_key, 0)
-        print(f"  {doc_info['label_en']:25s}: {count:6d} total ({in_force} in force)")
+        flag = " [PARTIAL]" if partial_types.get(doc_key) else ""
+        print(f"  {doc_info['label_en']:25s}: {count:6d} total ({in_force} in force){flag}")
     print("=" * 60)
+    if any_partial:
+        # ``--allow-partial`` was set (otherwise the run would have raised
+        # before reaching here). Non-zero exit signals downstream
+        # pipelines that the index/peep files should be replaced as soon
+        # as a clean run is possible.
+        sys.exit(2)
 
 
 if __name__ == "__main__":

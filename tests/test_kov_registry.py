@@ -187,6 +187,67 @@ class TestAutoMatchMunicipality:
         # of an unrelated name.
         assert _matches_municipality_root("tartua", "Tartu vald") is False
 
+    def test_overrides_take_precedence(self, muns):
+        # Regression test for Finding #7's curated-CSV override hook:
+        # an override pins a slug to a specific EHAK code regardless
+        # of what auto-match would produce. Used for edge cases where
+        # the slug root collides with another municipality.
+        parts = {"slug": "tallinna_linnavolikogu", "root": "tallinna",
+                 "body": "linnavolikogu", "bodyType": "volikogu",
+                 "municipalityType": "linn"}
+        # Auto-match would have returned 0784. The override forces 0793.
+        assert auto_match_municipality(
+            parts, muns, overrides={"tallinna_linnavolikogu": "0793"},
+        ) == "0793"
+
+    def test_overrides_unknown_ehak_raises(self, muns):
+        # An override that points at a code not in the municipalities
+        # registry is a configuration bug — surface it loudly.
+        parts = {"slug": "tallinna_linnavolikogu", "root": "tallinna",
+                 "body": "linnavolikogu", "bodyType": "volikogu",
+                 "municipalityType": "linn"}
+        with pytest.raises(ValueError, match="9999"):
+            auto_match_municipality(
+                parts, muns, overrides={"tallinna_linnavolikogu": "9999"},
+            )
+
+    def test_no_pairwise_collision_on_real_registry(self):
+        # Finding #7 audit: every (root, municipalityType) pair that
+        # auto-match resolves on the real 79-municipality registry
+        # must resolve to a UNIQUE EHAK code. If a future EHAK
+        # update introduces a collision, this test fails before the
+        # silent mismatch can land in production.
+        muns = load_municipalities(
+            REPO_ROOT / "data" / "ehak" / "municipalities.json"
+        )
+        # Use the live issuers.json so the test follows real corpus
+        # growth — adding a slug that collides will fail this test
+        # in the same PR that adds the slug.
+        issuers = json.loads(
+            (REPO_ROOT / "data" / "ehak" / "issuers.json").read_text(
+                encoding="utf-8",
+            )
+        )
+        seen: dict[tuple[str, str], str] = {}
+        for entry in issuers:
+            if entry["mappingSource"] != "auto-match":
+                continue  # only the auto-match path is at risk
+            parts = parse_issuer_slug(entry["slug"])
+            ehak = auto_match_municipality(parts, muns)
+            assert ehak is not None, (
+                f"{entry['slug']!r} is mappingSource=auto-match in "
+                "issuers.json but auto_match_municipality returned "
+                "None — registry/CSV drift."
+            )
+            key = (parts["root"], parts["municipalityType"])
+            if key in seen:
+                assert seen[key] == ehak, (
+                    f"slug-root collision: {parts['root']!r} "
+                    f"({parts['municipalityType']}) maps to both "
+                    f"{seen[key]!r} and {ehak!r}"
+                )
+            seen[key] = ehak
+
 
 class TestLoadCuratedMap:
     @pytest.fixture
@@ -328,66 +389,121 @@ class TestBuildIssuerRegistry:
         with pytest.raises(ValueError, match="mapping_source"):
             build_issuer_registry(slugs, muns, curated)
 
+    def test_unmapped_listed_in_sorted_order(self):
+        # Regression test for Finding #12: the error message must be
+        # reproducible across runs — sorted alphabetically — so a
+        # diff against a previous run is meaningful (not just
+        # "different file iteration order"). Pass slugs in reverse-
+        # sorted order to verify the sort is on the OUTPUT, not the
+        # input.
+        muns = load_municipalities(MIN_MUNICIPALITIES)
+        # Use slugs whose roots don't match any municipality so all
+        # of them land in `unmapped`.
+        slugs = ["zzz_vallavolikogu", "aaa_vallavolikogu", "mmm_vallavolikogu"]
+        with pytest.raises(ValueError) as exc_info:
+            build_issuer_registry(slugs, muns, curated={})
+        msg = str(exc_info.value)
+        # Slugs must appear in alphabetical order regardless of the
+        # input order.
+        a_pos = msg.index("aaa_vallavolikogu")
+        m_pos = msg.index("mmm_vallavolikogu")
+        z_pos = msg.index("zzz_vallavolikogu")
+        assert a_pos < m_pos < z_pos
+
 
 class TestNormalizeTitle:
+    """`normalize_title` takes a parts-dict (from `parse_issuer_slug`)
+    rather than the display-name string so the alevi-genitive prefix
+    rule can be gated on (municipalityType, root) — see the function
+    docstring for why (Finding #8 in issue #182).
+    """
+
     def test_strips_municipality_prefix(self):
         assert normalize_title(
-            "Tallinna jäätmehoolduseeskiri", "Tallinna Linnavolikogu"
+            "Tallinna jäätmehoolduseeskiri",
+            parse_issuer_slug("tallinna_linnavolikogu"),
         ) == "jaatmehoolduseeskiri"
 
     def test_strips_genitive_form(self):
         # "Mulgi valla" is the genitive of "Mulgi vald"
         assert normalize_title(
-            "Mulgi valla hankekord", "Mulgi Vallavolikogu"
+            "Mulgi valla hankekord",
+            parse_issuer_slug("mulgi_vallavolikogu"),
         ) == "hankekord"
 
     def test_no_prefix_match_keeps_full_title(self):
         assert normalize_title(
-            "Üldhariduskooli põhimäärus", "Tartu Linnavolikogu"
+            "Üldhariduskooli põhimäärus",
+            parse_issuer_slug("tartu_linnavolikogu"),
         ) == "uldhariduskooli pohimaarus"
 
     def test_lowercases_and_transliterates(self):
         assert normalize_title(
-            "Põhimäärus", "Põlva Vallavolikogu"
+            "Põhimäärus",
+            parse_issuer_slug("polva_vallavolikogu"),
         ) == "pohimaarus"
 
     def test_strips_compound_hyphenated_prefix(self):
-        # Real-world case: Kohtla-Järve linn / Kohtla Jarve Linnavolikogu
+        # Real-world case: Kohtla-Järve linn / kohtla_jarve_linnavolikogu
         assert normalize_title(
             "Kohtla-Järve linna jäätmehoolduseeskiri",
-            "Kohtla Jarve Linnavolikogu",
+            parse_issuer_slug("kohtla_jarve_linnavolikogu"),
         ) == "jaatmehoolduseeskiri"
 
     def test_strips_compound_space_prefix(self):
         # Same compound issuer, but the title uses spaces instead of hyphen
         assert normalize_title(
             "Kohtla Järve linna jäätmehoolduseeskiri",
-            "Kohtla Jarve Linnavolikogu",
+            parse_issuer_slug("kohtla_jarve_linnavolikogu"),
         ) == "jaatmehoolduseeskiri"
 
     def test_strips_compound_genitive_form(self):
         # Põhja-Sakala vald (compound vald) genitive form
         assert normalize_title(
             "Põhja-Sakala valla hankekord",
-            "Pohja Sakala Vallavolikogu",
+            parse_issuer_slug("pohja_sakala_vallavolikogu"),
         ) == "hankekord"
 
-    def test_strips_alevi_genitive(self):
+    def test_strips_alevi_genitive_for_known_alev(self):
         # Vändra alev (historical small-town unit, abolished in 2017
         # haldusreform). The single alevivolikogu issuer in the corpus
         # produces titles like "Vändra alevi <topic>"; the alevi
         # genitive must be stripped.
         assert normalize_title(
             "Vändra alevi terviseprofiil",
-            "Vandra Alevivolikogu",
+            parse_issuer_slug("vandra_alevivolikogu"),
         ) == "terviseprofiil"
+
+    def test_alevi_prefix_not_stripped_for_unrelated_vald(self):
+        # Regression test for Finding #8: a vallavolikogu slug whose
+        # root happens to produce a title starting with `<root> alevi
+        # ...` MUST keep the prefix — only known historical-alev
+        # roots ('vandra' today) get the alevi-strip treatment.
+        # Without this gate, distinct titles would silently collapse
+        # into the same titleNormalized.
+        out = normalize_title(
+            "Mulgi alevi piirkonna määrus",
+            parse_issuer_slug("mulgi_vallavolikogu"),
+        )
+        # The "mulgi " single-token prefix still strips, but the
+        # following "alevi piirkonna määrus" must NOT.
+        assert out == "alevi piirkonna maarus"
+
+    def test_alevi_prefix_not_stripped_for_linn(self):
+        # Same gate, but for a linnavolikogu — alevi has no semantic
+        # meaning for a linn issuer, so the prefix must be left alone.
+        out = normalize_title(
+            "Tallinna alevi haldusakt",
+            parse_issuer_slug("tallinna_linnavolikogu"),
+        )
+        assert out == "alevi haldusakt"
 
 
 class TestMetadataJsonLd:
     def test_new_classes_present(self):
         path = REPO_ROOT / "metadata.jsonld"
         if not path.exists():
-            pytest.skip("metadata.jsonld missing")
+            pytest.fail("metadata.jsonld missing")
         with open(path, "r", encoding="utf-8") as fh:
             doc = json.load(fh)
         ids = {n.get("@id") for n in doc.get("@graph", [])}
@@ -412,7 +528,7 @@ class TestMetadataJsonLd:
     def test_subclass_triples_present(self):
         path = REPO_ROOT / "metadata.jsonld"
         if not path.exists():
-            pytest.skip("metadata.jsonld missing")
+            pytest.fail("metadata.jsonld missing")
         with open(path, "r", encoding="utf-8") as fh:
             doc = json.load(fh)
 

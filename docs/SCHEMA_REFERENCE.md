@@ -29,11 +29,11 @@
 
 #### Enacted Law Properties
 * `estleg:identifier`: A unique identifier for the provision.
-* `schema:name`: The title or heading of the provision.
-* `schema:text`: The actual text of the law.
+* `rdfs:label`: The title or heading of the provision (language-tagged Estonian/English literal). Replaces the legacy `schema:name`; current generators emit `rdfs:label` and SHACL validates it via `LegalProvisionShape`.
+* `estleg:summary`: Free-text summary of the provision (language-tagged Estonian/English literal). Replaces the legacy `schema:text`; current generators emit `estleg:summary`.
 * `estleg:topicCluster`: Associates a provision with a TopicCluster.
 * `estleg:references`: Defines cross-references to other legal provisions or laws.
-* `schema:isPartOf`: Indicates the hierarchical structure (e.g., paragraph is part of a section).
+* `dcterms:isPartOf`: Indicates the hierarchical structure (e.g., paragraph is part of a section). Replaces the legacy `schema:isPartOf`; pipelines that reference parent acts use `estleg:partOfAct` (KOV) or `estleg:sourceAct` (state laws).
 * `skos:prefLabel`: The preferred label for a LegalConcept or TopicCluster.
 
 #### Draft Legislation Properties
@@ -86,11 +86,24 @@
       "@type": ["owl:NamedIndividual", "estleg:LegalProvision_PS"],
       "estleg:paragrahv": "§ 8",
       "rdfs:label": "§ 8 Kodakondsus",
-      "estleg:sourceAct": "Eesti Vabariigi põhiseadus"
+      "estleg:sourceAct": "Eesti Vabariigi põhiseadus",
+      "estleg:summary": "Iga lapsel, kelle vanematest üks on Eesti kodanik, on õigus Eesti kodakondsusele sünni järgi."
     }
   ]
 }
 ```
+
+> **Note on `schema:*` properties.** Earlier versions of this document
+> referenced `schema:name`, `schema:text`, and `schema:isPartOf`. The
+> current generators DO NOT emit those predicates, and the SHACL
+> shapes do not constrain them. Use `rdfs:label` for titles and
+> `estleg:summary` for textual content. The migration plan for the
+> `metadata.jsonld` description-prose vs hard counts (608/637/11,059)
+> is tracked in #162: the hard numbers should move into a structured
+> `estleg:statistics` block and the descriptions should become
+> qualitative. That metadata change is out of this PR's scope; the
+> note here serves as a forward-pointer so future readers know the
+> drift is intentional, not undocumented.
 
 ### Draft Legislation Example
 
@@ -231,7 +244,7 @@ Regulation issued by Vabariigi Valitsus (the Government of the Republic). Subcla
 Regulation issued by an individual minister (e.g. *Sotsiaalminister*, *Justiitsminister*). Subclass of `NationalRegulation`.
 
 ### MunicipalRegulation (`estleg:MunicipalRegulation`)
-Regulation issued by a local government council (KOV). Subclass of `NationalRegulation`. Phase 2 of the regulations integration plan; the class exists in the ontology now so consumers can target it as soon as KOV regulations are imported.
+Regulation issued by a local government council or government (KOV). Subclass of `NationalRegulation`; generated KOV regulation act nodes carry both `NationalRegulation` and `MunicipalRegulation` so common domestic-regulation SHACL constraints apply without OWL inference.
 
 ### Annex (`estleg:Annex`)
 Represents an annex (*lisa*) attached to a regulation. Annexes are emitted as separate named individuals and linked from the regulation via `estleg:hasAnnex`. Annex tables are not normalised in the first pass — the node carries the title, number, and a link to the original document on riigiteataja.ee.
@@ -256,6 +269,22 @@ For each regulation, the generator emits one provision class named `estleg:Regul
 | `estleg:lastAmendmentDate` | `xsd:date` | Date of the most recent amendment |
 | `estleg:annexNumber` | `xsd:string` | Annex number as printed in the regulation (`Annex` only) |
 | `dcterms:source` | IRI | Link to the original act XML on riigiteataja.ee |
+
+### Source And Title Provenance Contract
+
+Generators use the same provenance shape for act-level ontology nodes:
+
+| Property | Type | Contract |
+|----------|------|----------|
+| `dcterms:source` | `{"@id": "https://..."}` | Resolvable canonical source IRI for the concrete source record or XML |
+| `owl:sameAs` | `{"@id": "https://..."}` | Same source IRI when the source URL identifies the act text itself |
+| `dcterms:title` | language-tagged string or plain string | Canonical source title of the act |
+| `dc:source` | plain string | Legacy title/source label retained for backward compatibility; do not use it for resolvable IRIs |
+| `estleg:contentStatus` | string | `structuredBody`, `noStructuredBody`, `controlledVocabulary`, or a more specific documented status |
+
+New generators should write `dcterms:source` for URLs and `dcterms:title`
+for titles. Downstream enrichers should prefer `dcterms:title`, then
+`dc:source`, then `rdfs:label` only as a fallback.
 
 ### Domestic Regulation Example
 
@@ -517,6 +546,26 @@ Represents a section (jagu/peatükk) in the KarS special parts structure, genera
 |----------|------|-------------|
 | `estleg:sectionNumber` | `xsd:string` | Section number |
 
+> **Important — Section is validated by predicate presence, not class
+> typing.** `SectionShape` in `shacl/estonian_legal_shapes.ttl`
+> uses `sh:targetSubjectsOf estleg:sectionNumber` rather than
+> `sh:targetClass estleg:Section`. The practical consequence:
+> any node that emits `estleg:sectionNumber` is treated as a
+> Section for SHACL validation, regardless of the `@type` array.
+> Conversely, a node typed `estleg:Section` but missing
+> `estleg:sectionNumber` will NOT be validated. SPARQL queries
+> over the corpus should follow the same convention and select on
+> the predicate, e.g.:
+>
+> ```sparql
+> SELECT ?s ?n WHERE { ?s estleg:sectionNumber ?n }
+> ```
+>
+> rather than `?s a estleg:Section`. The same predicate-targeting
+> pattern is used by `LegalProvisionShape`
+> (`sh:targetSubjectsOf estleg:paragrahv`) and avoids requiring
+> RDFS subclass inference at validation time.
+
 ### AmendmentEvent (`estleg:AmendmentEvent`)
 Represents an amendment event linking a provision to its amending act or draft. Generated by `generate_amendment_history.py` and stored in `krr_outputs/amendments/`.
 
@@ -552,22 +601,23 @@ These properties enable cross-referencing between different parts of the legal s
 ### EU Transposition
 | Property | Domain | Range | Description |
 |----------|--------|-------|-------------|
-| `estleg:transposesDirective` | LegalProvision | EULegislation (IRI) | EU directive transposed by this law |
-| `estleg:transposedBy` | EULegislation | LegalProvision (IRI) | Inverse: Estonian law transposing this directive |
+| `estleg:transposesDirective` | Act | EULegislation (IRI) | EU directive transposed by this law |
+| `estleg:transposedBy` | EULegislation | Act (IRI) | Inverse: Estonian law transposing this directive |
 | `estleg:harmonisedWith` | LegalProvision | EULegislation (IRI) | EU harmonisation requirement |
 
 ### Subject Classification
 | Property | Domain | Range | Description |
 |----------|--------|-------|-------------|
-| `dcterms:subject` | LegalProvision | IRI | EuroVoc concept URI (e.g., `http://eurovoc.europa.eu/2411`) |
+| `dcterms:subject` | Act | IRI | Optional act-level EuroVoc concept URI (e.g., `http://eurovoc.europa.eu/2411`). Current classifier is keyword-based and reports quality status separately. When present, SHACL expects a EuroVoc IRI. |
 
 ### Temporal Properties
 | Property | Domain | Range | Description |
 |----------|--------|-------|-------------|
-| `estleg:entryIntoForce` | LegalProvision | `xsd:date` | Date when provision became effective |
-| `estleg:repealDate` | LegalProvision | `xsd:date` | Date when provision was repealed |
-| `estleg:lastAmendmentDate` | LegalProvision | `xsd:date` | Most recent amendment date |
-| `estleg:temporalStatus` | LegalProvision | `xsd:string` | Status: inForce, repealed, notYetEffective |
+| `estleg:entryIntoForce` | Act | `xsd:date` | Date when the selected act snapshot became effective |
+| `estleg:repealDate` | Act | `xsd:date` | Date when the selected act snapshot was repealed |
+| `estleg:lastAmendmentDate` | Act | `xsd:date` | Most recent amendment date for the selected act snapshot |
+| `estleg:publicationDate` | Act | `xsd:date` | Publication date for the selected act snapshot |
+| `estleg:temporalStatus` | Act | `xsd:string` | Status evaluated against the build's declared temporal evaluation date: inForce, repealed, notYetEffective |
 
 ### Amendment Properties
 | Property | Domain | Range | Description |

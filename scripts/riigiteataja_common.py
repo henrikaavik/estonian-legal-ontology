@@ -15,40 +15,39 @@ This module exposes the pieces that are identical between both pipelines.
 from __future__ import annotations
 
 import html
-import json
 import re
+import time
 import xml.etree.ElementTree as ET
 from pathlib import Path
-from typing import Iterable, Iterator
+from typing import Iterator
 
 import requests
 
-from estleg_common import KRR_DIR, iter_peep_files  # re-exported for callers  # noqa: F401
+# Single source of truth: NS, CONTEXT, the Estonian transliteration table,
+# sanitize_id, slugify, and save_json all live in estleg_common. They are
+# re-exported here so legacy `from riigiteataja_common import ...` callers
+# (e.g. generate_regulations.py) keep working without churn.
+from estleg_common import (  # noqa: F401  -- re-exports for public API
+    CONTEXT,
+    KRR_DIR,
+    NS,
+    _ESTONIAN_TRANSLITERATION,
+    _TRANSLIT_TABLE,
+    iter_peep_files,
+    sanitize_id,
+    save_json,
+    slugify,
+)
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR = REPO_ROOT / "data" / "riigiteataja"
 
 SEARCH_URL = "https://www.riigiteataja.ee/api/oigusakt_otsing/1/otsi"
 BASE_URL = "https://www.riigiteataja.ee"
-NS = "https://data.riik.ee/ontology/estleg#"
 
-CONTEXT: dict[str, str] = {
-    "estleg": NS,
-    "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
-    "xsd": "http://www.w3.org/2001/XMLSchema#",
-    "dc": "http://purl.org/dc/elements/1.1/",
-    "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-}
 
-_ESTONIAN_TRANSLITERATION: dict[str, str] = {
-    "ö": "o", "ä": "a", "ü": "u", "õ": "o",
-    "Ö": "O", "Ä": "A", "Ü": "U", "Õ": "O",
-    "š": "s", "ž": "z", "Š": "S", "Ž": "Z",
-}
-_TRANSLIT_TABLE = str.maketrans(_ESTONIAN_TRANSLITERATION)
+class SourceListFetchError(RuntimeError):
+    """Raised when a source-list page cannot be fetched completely."""
 
 
 def ln(tag: str) -> str:
@@ -62,21 +61,6 @@ def ct(el: ET.Element, name: str) -> str | None:
         if ln(c.tag) == name and c.text:
             return c.text.strip()
     return None
-
-
-def slugify(text: str, max_len: int = 80) -> str:
-    """Convert Estonian text to a filename-safe slug."""
-    text = text.translate(_TRANSLIT_TABLE)
-    text = text.lower().strip()
-    text = re.sub(r"[^a-z0-9]+", "_", text)
-    return text.strip("_")[:max_len]
-
-
-def sanitize_id(value: str) -> str:
-    """Create an ASCII-only ID component safe for use inside an IRI."""
-    s = value.replace(" ", "_").translate(_TRANSLIT_TABLE)
-    s = re.sub(r"[^0-9A-Za-z_]", "", s)
-    return s or "Unknown"
 
 
 def collect_text(el: ET.Element, max_len: int = 500) -> str:
@@ -108,13 +92,6 @@ def collect_full_text(el: ET.Element) -> str:
     return " ".join(parts)
 
 
-def save_json(filepath: Path, doc: dict) -> None:
-    filepath.parent.mkdir(parents=True, exist_ok=True)
-    with open(filepath, "w", encoding="utf-8") as f:
-        json.dump(doc, f, ensure_ascii=False, indent=2)
-        f.write("\n")
-
-
 def fetch_acts(
     document: str,
     *,
@@ -124,6 +101,9 @@ def fetch_acts(
     limiit: int = 500,
     max_pages: int = 100,
     timeout: int = 30,
+    allow_partial: bool = False,
+    max_retries: int = 2,
+    retry_sleep: float = 1.0,
 ) -> Iterator[dict]:
     """Yield acts from the Riigi Teataja search API page by page.
 
@@ -149,13 +129,25 @@ def fetch_acts(
         if kov is not None:
             params["kov"] = "true" if kov else "false"
 
-        try:
-            resp = requests.get(SEARCH_URL, params=params, timeout=timeout)
-            resp.raise_for_status()
-            data = resp.json()
-        except Exception as e:
-            print(f"  API error on page {page}: {e}")
-            break
+        last_error: Exception | None = None
+        for attempt in range(max_retries + 1):
+            try:
+                resp = requests.get(SEARCH_URL, params=params, timeout=timeout)
+                resp.raise_for_status()
+                data = resp.json()
+                last_error = None
+                break
+            except Exception as e:  # noqa: BLE001 - preserve underlying API error in message
+                last_error = e
+                if attempt < max_retries:
+                    time.sleep(retry_sleep * (attempt + 1))
+
+        if last_error is not None:
+            message = f"API error on page {page}: {last_error}"
+            print(f"  {message}")
+            if allow_partial:
+                break
+            raise SourceListFetchError(message) from last_error
 
         aktid = data.get("aktid", []) or []
         if not aktid:
@@ -172,6 +164,7 @@ def fetch_xml(
     cache_name: str,
     cache_subdir: str | None = None,
     *,
+    refresh: bool = False,
     timeout: int = 60,
     min_size: int = 200,
 ) -> ET.Element | None:
@@ -180,7 +173,7 @@ def fetch_xml(
     cache_dir.mkdir(parents=True, exist_ok=True)
     cache_path = cache_dir / f"{cache_name}.xml"
 
-    if cache_path.exists() and cache_path.stat().st_size > 1000:
+    if not refresh and cache_path.exists() and cache_path.stat().st_size > 1000:
         try:
             return ET.parse(str(cache_path)).getroot()
         except ET.ParseError:
@@ -207,19 +200,6 @@ def fetch_xml(
 # ---------------------------------------------------------------------------
 # HTML body fallback (for pre-2010 regulations stored as HTMLKonteiner CDATA)
 # ---------------------------------------------------------------------------
-
-# Match the start of a regulation paragraph in HTML body text.
-# Examples we want to catch:
-#   <b>§ 1. Reguleerimisala</b>
-#   <b>§ 2. Tuukrite tervisenõuded</b>
-#   §-de 5–7
-# We match the literal `§` symbol followed by a paragraph number and (usually)
-# a period and a heading. The trailing capture is optional because some legacy
-# regulations only have `§ 1` without a heading.
-_HTML_PARAGRAPH_RE = re.compile(
-    r"§\s*(\d+(?:[′'·]\d+)?)\s*[\. ]?\s*([^<\n]{0,200}?)(?=<|$)",
-    re.MULTILINE,
-)
 
 
 def strip_html_tags(text: str) -> str:
@@ -279,8 +259,10 @@ def parse_html_konteiner(html_text: str) -> tuple[str, list[dict]]:
     return preamble, paragraphs
 
 
-# `iter_peep_files` and `KRR_DIR` are re-exported from `estleg_common` so a
-# single canonical implementation lives there — see the import at the top.
+# `iter_peep_files`, `KRR_DIR`, `NS`, `CONTEXT`, `sanitize_id`, `slugify`,
+# `save_json`, and the Estonian transliteration table are re-exported from
+# `estleg_common` so a single canonical implementation lives there — see the
+# import at the top.
 
 
 # ---------------------------------------------------------------------------

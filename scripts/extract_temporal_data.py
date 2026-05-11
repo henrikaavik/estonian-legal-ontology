@@ -13,6 +13,7 @@ This script:
 
 from __future__ import annotations
 
+import argparse
 import json
 import re
 import time
@@ -87,26 +88,65 @@ def find_all_elements(root: ET.Element, name: str) -> list[ET.Element]:
 def parse_date(value: str) -> str | None:
     """
     Parse various date formats from Riigi Teataja XML into ISO date string.
-    Handles: YYYY-MM-DD, YYYY-MM-DD+TZ, DD.MM.YYYY, etc.
+    Handles: YYYY-MM-DD, YYYY-MM-DD+TZ, YYYY-MM-DD-TZ, DD.MM.YYYY, etc.
     Also handles malformed dates like "2011+02:00-01-01" where timezone offset
     is embedded in the middle of the date string.
+
+    Strategy: try ``datetime.fromisoformat`` first on the raw value (Python 3.11+
+    handles trailing timezone offsets including negative offsets). Only fall
+    back to regex stripping when fromisoformat fails — this avoids the prior
+    behaviour of greedily eating dashes that were date separators.
     """
     if not value:
         return None
     value = value.strip()
-    # Strip timezone offsets like +02:00 or +03:00 anywhere in the string
-    # (handles both trailing offsets and mid-string offsets like "2011+02:00-01-01")
-    value = re.sub(r'\+\d{2}:\d{2}', '', value)
-    # Also strip trailing negative offsets (e.g. -02:00) but only at end to avoid
-    # eating date separators
-    value = re.sub(r'-\d{2}:\d{2}$', '', value)
-    # Try ISO format first
+
+    # Step 1: try fromisoformat directly. This handles trailing offsets
+    # like "+02:00" and "-02:00" natively (Python 3.11+) without
+    # accidentally consuming date separators.
+    try:
+        parsed = datetime.fromisoformat(value)
+        return parsed.strftime("%Y-%m-%d")
+    except ValueError:
+        pass
+
+    # Step 2: regex fallback for legacy/malformed inputs. Strip embedded
+    # offsets first ("2011+02:00-01-01" → "2011-01-01"), then trailing
+    # negative offsets at end-of-string only (so we don't eat date
+    # separators in well-formed dates).
+    cleaned = re.sub(r'\+\d{2}:\d{2}', '', value)
+    cleaned = re.sub(r'-\d{2}:\d{2}$', '', cleaned)
+
     for fmt in ("%Y-%m-%d", "%d.%m.%Y", "%Y-%m-%dT%H:%M:%S"):
         try:
-            return datetime.strptime(value, fmt).strftime("%Y-%m-%d")
+            return datetime.strptime(cleaned, fmt).strftime("%Y-%m-%d")
         except ValueError:
             continue
     return None
+
+
+def parse_rt_year(value: str) -> str | None:
+    """Extract a strict four-digit RT publication year."""
+    if not value:
+        return None
+    match = re.match(r"^\s*(\d{4})(?:[+-]\d{2}:\d{2})?\s*$", value)
+    if not match:
+        return None
+    return match.group(1)
+
+
+def _coerce_iso_date(value: str) -> date:
+    """Parse an ISO ``YYYY-MM-DD`` string into a ``date`` object.
+
+    Defensive helper: ``parse_date`` is the only producer of these
+    strings and it always normalises to ``YYYY-MM-DD``. The assertion
+    catches caller bugs that would otherwise silently degrade ordering
+    via string comparison.
+    """
+    assert isinstance(value, str), (
+        f"_coerce_iso_date expected str, got {type(value).__name__}: {value!r}"
+    )
+    return date.fromisoformat(value)
 
 
 def extract_temporal_from_xml(xml_path: Path) -> dict:
@@ -197,33 +237,46 @@ def extract_temporal_from_xml(xml_path: Path) -> dict:
         if avaldamismarge is not None:
             rt_aasta = ct(avaldamismarge, "RTaasta")
             if rt_aasta:
-                try:
-                    result["publication_date"] = f"{rt_aasta}-01-01"
-                except ValueError:
-                    pass
+                year = parse_rt_year(rt_aasta)
+                if year:
+                    result["publication_date"] = f"{year}-01-01"
 
-    # Last amendment date: find the latest muutmismarge
+    # Last amendment date: find the latest muutmismarge.
+    # Compare as ``date`` objects rather than as ISO strings — string
+    # comparison silently mis-orders any non-ISO format that slips
+    # through (DD.MM.YYYY etc.).
     muutmismarked = find_all_elements(root, "muutmismarge")
-    latest_amendment: str | None = None
+    latest_amendment: date | None = None
     for mm in muutmismarked:
         aktikp = ct(mm, "aktikuupaev")
         if aktikp:
-            parsed = parse_date(aktikp)
-            if parsed:
-                if latest_amendment is None or parsed > latest_amendment:
-                    latest_amendment = parsed
+            parsed_iso = parse_date(aktikp)
+            if parsed_iso:
+                parsed_date = _coerce_iso_date(parsed_iso)
+                if latest_amendment is None or parsed_date > latest_amendment:
+                    latest_amendment = parsed_date
     if latest_amendment:
-        result["last_amendment_date"] = latest_amendment
+        result["last_amendment_date"] = latest_amendment.isoformat()
 
-    # muutmisKuupaev — explicit last amendment date field
+    # muutmisKuupaev — explicit last amendment date field. Iterate ALL
+    # occurrences (the XML may carry multiple historical amendment
+    # markers) and keep the latest. Previously the loop bailed out
+    # after the first hit which under-reported the latest amendment.
+    current_latest = (
+        _coerce_iso_date(result["last_amendment_date"])
+        if result["last_amendment_date"]
+        else None
+    )
     for el in root.iter():
         tag = ln(el.tag)
         if tag == "muutmisKuupaev" and el.text:
-            parsed = parse_date(el.text.strip())
-            if parsed:
-                if not result["last_amendment_date"] or parsed > result["last_amendment_date"]:
-                    result["last_amendment_date"] = parsed
-            break
+            parsed_iso = parse_date(el.text.strip())
+            if parsed_iso:
+                parsed_date = _coerce_iso_date(parsed_iso)
+                if current_latest is None or parsed_date > current_latest:
+                    current_latest = parsed_date
+    if current_latest is not None:
+        result["last_amendment_date"] = current_latest.isoformat()
 
     # Use valid_from as entry_into_force fallback
     if not result["entry_into_force"] and result["valid_from"]:
@@ -232,24 +285,51 @@ def extract_temporal_from_xml(xml_path: Path) -> dict:
     return result
 
 
-def determine_temporal_status(temporal: dict) -> str:
+def validate_evaluation_date(value: str) -> str:
+    try:
+        datetime.strptime(value, "%Y-%m-%d")
+    except ValueError as exc:
+        raise argparse.ArgumentTypeError("evaluation date must be YYYY-MM-DD") from exc
+    return value
+
+
+def determine_temporal_status(temporal: dict, evaluation_date: str | None = None) -> str:
     """
     Determine the temporal status of a law.
-    Returns one of: "inForce", "repealed", "notYetEffective"
+    Returns one of: "inForce", "repealed", "notYetEffective", "unknown".
+
+    "unknown" is returned when the temporal dict is empty or has no
+    actionable date fields — previously this case fell through to
+    "inForce" which mass-misclassified repealed/not-yet-effective laws
+    that lacked XML metadata. ``date`` objects (not ISO strings) drive
+    all comparisons to avoid lexicographic-ordering surprises.
     """
-    today = date.today().isoformat()
+    today_iso = evaluation_date or date.today().isoformat()
+    today = _coerce_iso_date(today_iso)
+
+    # Distinguish "no data at all" from "in force": when none of the
+    # actionable date fields have a value, callers cannot conclude the
+    # law is in force, so we emit ``unknown``.
+    actionable_keys = (
+        "invalidation_date",
+        "valid_until",
+        "entry_into_force",
+        "valid_from",
+    )
+    if not any(temporal.get(k) for k in actionable_keys):
+        return "unknown"
 
     # If there is an invalidation date or valid_until in the past, it is repealed
     if temporal.get("invalidation_date"):
-        if temporal["invalidation_date"] <= today:
+        if _coerce_iso_date(temporal["invalidation_date"]) <= today:
             return "repealed"
     if temporal.get("valid_until"):
-        if temporal["valid_until"] <= today:
+        if _coerce_iso_date(temporal["valid_until"]) <= today:
             return "repealed"
 
     # If entry_into_force is in the future, not yet effective
     if temporal.get("entry_into_force"):
-        if temporal["entry_into_force"] > today:
+        if _coerce_iso_date(temporal["entry_into_force"]) > today:
             return "notYetEffective"
 
     return "inForce"
@@ -258,6 +338,68 @@ def determine_temporal_status(temporal: dict) -> str:
 def make_xsd_date(iso_date: str) -> dict:
     """Create an xsd:date typed value for JSON-LD."""
     return {"@value": iso_date, "@type": "xsd:date"}
+
+
+TEMPORAL_KEYS_TO_CLEAR = [
+    "estleg:entryIntoForce",
+    "estleg:repealDate",
+    "estleg:lastAmendmentDate",
+    "estleg:publicationDate",
+    "estleg:temporalStatus",
+]
+
+
+# INDEX.json date keys we know how to map into our internal temporal
+# dict. Both top-level and ``kehtivus``-block forms are recognised.
+_INDEX_DATE_KEY_MAP: dict[str, str] = {
+    "joustumine": "entry_into_force",
+    "joustumiseKuupaev": "entry_into_force",
+    "kehtivAlates": "valid_from",
+    "kehtivuseAlgus": "valid_from",
+    "kehtivKuni": "valid_until",
+    "kehtivuseLopp": "valid_until",
+    "kehtetuKuupaev": "invalidation_date",
+    "kehtetuksTunnistamiseKuupaev": "invalidation_date",
+    "muutmisKuupaev": "last_amendment_date",
+    "viimaneMuutmine": "last_amendment_date",
+    "avaldamiseKuupaev": "publication_date",
+    "vastuvotmiseKuupaev": "adoption_date",
+    "aktikuupaev": "adoption_date",
+}
+
+
+def _index_to_temporal(idx_data: dict) -> dict:
+    """Map INDEX.json fields (top-level or ``kehtivus`` block) onto
+    the internal temporal dict shape.
+
+    Skips fields we cannot parse and returns an all-None scaffold when
+    no actionable dates are present — callers must check before
+    feeding it to ``determine_temporal_status``.
+    """
+    result: dict[str, str | None] = {
+        "entry_into_force": None,
+        "valid_from": None,
+        "valid_until": None,
+        "invalidation_date": None,
+        "last_amendment_date": None,
+        "publication_date": None,
+        "adoption_date": None,
+    }
+
+    def _ingest(source: dict) -> None:
+        for src_key, dst_key in _INDEX_DATE_KEY_MAP.items():
+            raw = source.get(src_key)
+            if not raw or result.get(dst_key):
+                continue
+            parsed = parse_date(str(raw))
+            if parsed:
+                result[dst_key] = parsed
+
+    _ingest(idx_data)
+    kehtivus = idx_data.get("kehtivus")
+    if isinstance(kehtivus, dict):
+        _ingest(kehtivus)
+    return result
 
 
 def load_index_metadata() -> dict[str, dict]:
@@ -288,10 +430,13 @@ def save_json(filepath: Path, doc: dict):
         f.write("\n")
 
 
-def main():
+def main(evaluation_date: str | None = None):
+    evaluation_date = evaluation_date or date.today().isoformat()
+
     print("=" * 70)
     print("Estonian Legal Ontology - Extract Temporal Validity Data")
     print("=" * 70)
+    print(f"Evaluation date: {evaluation_date}")
 
     _start = time.perf_counter()
 
@@ -381,47 +526,22 @@ def main():
     index_meta = load_index_metadata()
     print(f"  Loaded metadata for {len(index_meta)} laws from INDEX.json")
 
-    # Step 4: Enrich law JSON-LD files
+    # Step 4: Enrich law JSON-LD files (single pass — clear stale
+    # keys + write fresh values + save once per file).
     print("\n[4/4] Enriching law JSON-LD files with temporal properties...")
     law_files = iter_peep_files()
     print(f"  Found {len(law_files)} law JSON-LD files")
-
-    # --- Clearing pass: remove old temporal data from ontology nodes ---
-    TEMPORAL_KEYS_TO_CLEAR = [
-        "estleg:entryIntoForce",
-        "estleg:repealDate",
-        "estleg:lastAmendmentDate",
-        "estleg:publicationDate",
-        "estleg:temporalStatus",
-    ]
-    print("  Clearing old temporal data from ontology nodes...")
-    for law_file in law_files:
-        try:
-            with open(law_file, "r", encoding="utf-8") as f:
-                doc = json.load(f)
-        except (json.JSONDecodeError, OSError):
-            continue
-        graph = doc.get("@graph", [])
-        if not graph:
-            continue
-        cleared = False
-        for node in graph:
-            types = node.get("@type", [])
-            if "owl:Ontology" in types:
-                for key in TEMPORAL_KEYS_TO_CLEAR:
-                    if key in node:
-                        del node[key]
-                        cleared = True
-                break
-        if cleared:
-            save_json(law_file, doc)
-    print("  Done clearing.")
 
     enriched = 0
     skipped = 0
     status_counts = {"inForce": 0, "repealed": 0, "notYetEffective": 0, "unknown": 0}
     report_entries: list[dict] = []
 
+    # Merged single-pass (clear + enrich): the prior implementation
+    # opened/saved each file twice — once to clear stale temporal keys
+    # and again to re-enrich. Now we load the doc once, mutate
+    # in-memory using a ``dirty`` flag, and save at most once at the
+    # end of each file's iteration.
     for law_file in law_files:
         is_kov = "regulations/kov" in str(law_file)
         # Derive the slug: remove _peep.json, also handle _osa variants
@@ -437,21 +557,70 @@ def main():
 
         temporal = temporal_by_slug.get(xml_slug) or temporal_by_slug.get(base_slug)
 
-        # Fallback: try INDEX.json
+        # INDEX.json fallback. Previously, an empty `idx_data` caused
+        # us to fabricate an all-None temporal dict, which then drove
+        # ``determine_temporal_status`` into the "inForce" default —
+        # mass-misclassifying repealed/not-yet-effective laws.
+        # Now we map idx_data.kehtivus block fields (when present)
+        # into the temporal dict; if no real dates can be derived,
+        # we leave temporal as-is so downstream classification yields
+        # ``unknown`` rather than ``inForce``.
         if temporal is None or not any(v for v in temporal.values()):
             idx_data = index_meta.get(stem) or index_meta.get(base_slug)
-            if idx_data and not temporal:
-                temporal = {
-                    "entry_into_force": None,
-                    "valid_from": None,
-                    "valid_until": None,
-                    "invalidation_date": None,
-                    "last_amendment_date": None,
-                    "publication_date": None,
-                    "adoption_date": None,
-                }
+            if idx_data:
+                merged = _index_to_temporal(idx_data)
+                if temporal is None:
+                    temporal = merged
+                else:
+                    # Fill in any blanks the XML left empty.
+                    for k, v in merged.items():
+                        if v and not temporal.get(k):
+                            temporal[k] = v
 
+        # Load JSON-LD and clear stale temporal keys in a single pass.
+        try:
+            with open(law_file, "r", encoding="utf-8") as f:
+                doc = json.load(f)
+        except (json.JSONDecodeError, OSError) as e:
+            print(f"  ERROR reading {law_file.name}: {e}")
+            skipped += 1
+            continue
+
+        graph = doc.get("@graph", [])
+        if not graph:
+            skipped += 1
+            continue
+
+        # Ensure context has dcterms (in-memory mutation, marked dirty
+        # only if it was actually missing).
+        dirty = False
+        ctx = doc.get("@context", {})
+        if isinstance(ctx, dict) and "dcterms" not in ctx:
+            ctx["dcterms"] = "http://purl.org/dc/terms/"
+            doc["@context"] = ctx
+            dirty = True
+
+        # Locate the ontology node and clear stale temporal keys
+        # in-place.
+        ontology_node = None
+        for node in graph:
+            types = node.get("@type", [])
+            if "owl:Ontology" in types:
+                ontology_node = node
+                break
+        if ontology_node is None:
+            ontology_node = graph[0]
+
+        for key in TEMPORAL_KEYS_TO_CLEAR:
+            if key in ontology_node:
+                del ontology_node[key]
+                dirty = True
+
+        # If we have no temporal data at all, persist any clears, log
+        # a skip, and continue.
         if temporal is None:
+            if dirty:
+                save_json(law_file, doc)
             skipped += 1
             status_counts["unknown"] += 1
             _skip_reasons["no_xml_data"] = (
@@ -470,43 +639,10 @@ def main():
             _files_processed_kov += 1
 
         # Determine temporal status
-        status = determine_temporal_status(temporal)
+        status = determine_temporal_status(temporal, evaluation_date=evaluation_date)
         status_counts[status] += 1
 
-        # Load existing JSON-LD
-        try:
-            with open(law_file, "r", encoding="utf-8") as f:
-                doc = json.load(f)
-        except (json.JSONDecodeError, OSError) as e:
-            print(f"  ERROR reading {law_file.name}: {e}")
-            skipped += 1
-            continue
-
-        # Ensure context has dcterms
-        ctx = doc.get("@context", {})
-        if isinstance(ctx, dict) and "dcterms" not in ctx:
-            ctx["dcterms"] = "http://purl.org/dc/terms/"
-            doc["@context"] = ctx
-
-        # Find the ontology node (first node with owl:Ontology type) to add temporal data
-        graph = doc.get("@graph", [])
-        if not graph:
-            skipped += 1
-            continue
-
-        ontology_node = None
-        for node in graph:
-            types = node.get("@type", [])
-            if "owl:Ontology" in types:
-                ontology_node = node
-                break
-
-        if ontology_node is None:
-            # Use the first node as fallback
-            ontology_node = graph[0]
-
         # Add temporal properties to the ontology node
-        modified = False
         # Count date triples written for this file (entryIntoForce,
         # repealDate, lastAmendmentDate, publicationDate) plus the
         # always-written temporalStatus.
@@ -514,33 +650,33 @@ def main():
 
         if temporal.get("entry_into_force"):
             ontology_node["estleg:entryIntoForce"] = make_xsd_date(temporal["entry_into_force"])
-            modified = True
+            dirty = True
             _file_triples += 1
 
         if temporal.get("valid_until") and status == "repealed":
             ontology_node["estleg:repealDate"] = make_xsd_date(temporal["valid_until"])
-            modified = True
+            dirty = True
             _file_triples += 1
         elif temporal.get("invalidation_date"):
             ontology_node["estleg:repealDate"] = make_xsd_date(temporal["invalidation_date"])
-            modified = True
+            dirty = True
             _file_triples += 1
 
         if temporal.get("last_amendment_date"):
             ontology_node["estleg:lastAmendmentDate"] = make_xsd_date(temporal["last_amendment_date"])
-            modified = True
+            dirty = True
             _file_triples += 1
 
         if temporal.get("publication_date"):
             ontology_node["estleg:publicationDate"] = make_xsd_date(temporal["publication_date"])
-            modified = True
+            dirty = True
             _file_triples += 1
 
         ontology_node["estleg:temporalStatus"] = status
-        modified = True
+        dirty = True
         _file_triples += 1  # temporalStatus is always written
 
-        if modified:
+        if dirty:
             save_json(law_file, doc)
             enriched += 1
             _triples += _file_triples
@@ -562,6 +698,7 @@ def main():
     print("\n  Generating temporal_data_report.json...")
     report = {
         "generated": date.today().isoformat(),
+        "evaluationDate": evaluation_date,
         "summary": {
             "total_xml_files": len(unique_xml_paths),
             "xml_with_temporal_data": extracted_xml,
@@ -586,7 +723,7 @@ def main():
     print(f"  Peep files paired:     {len(temporal_by_slug)}")
     print(f"  Law files enriched:    {enriched}")
     print(f"  Skipped (no data):     {skipped}")
-    print(f"  Status breakdown:")
+    print("  Status breakdown:")
     for status, count in status_counts.items():
         print(f"    {status}: {count}")
     print(f"\n  Report: {report_path.relative_to(REPO_ROOT)}")
@@ -623,4 +760,12 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--evaluation-date",
+        type=validate_evaluation_date,
+        default=None,
+        help="Date used for temporalStatus evaluation (YYYY-MM-DD). Defaults to today's date.",
+    )
+    args = parser.parse_args()
+    main(evaluation_date=args.evaluation_date)

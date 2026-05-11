@@ -7,6 +7,71 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
 
+# Shape for act-level metadata shared by laws and domestic regulations.
+#
+# Temporal enrichment currently describes the selected act snapshot, not
+# individual historical provision redactions. Provision-level validity is a
+# separate future model; these constraints intentionally target estleg:Act.
+estleg:ActTemporalShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:Act ;
+    sh:property [
+        sh:path dcterms:subject ;
+        sh:nodeKind sh:IRI ;
+        sh:pattern "^http://eurovoc\\.europa\\.eu/[0-9]+$" ;
+        sh:severity sh:Warning ;
+        sh:name "subject" ;
+        sh:description "Optional act-level EuroVoc subject classification URI. When present it must point at a EuroVoc concept." ;
+    ] ;
+    sh:property [
+        sh:path estleg:entryIntoForce ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:date ;
+        sh:name "entryIntoForce" ;
+        sh:description "Date when the selected act snapshot entered into force" ;
+    ] ;
+    sh:property [
+        sh:path estleg:repealDate ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:date ;
+        sh:name "repealDate" ;
+        sh:description "Date when the selected act snapshot was repealed" ;
+    ] ;
+    sh:property [
+        sh:path estleg:lastAmendmentDate ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:date ;
+        sh:name "lastAmendmentDate" ;
+        sh:description "Date of the most recent amendment to the selected act snapshot" ;
+    ] ;
+    sh:property [
+        sh:path estleg:publicationDate ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:date ;
+        sh:name "publicationDate" ;
+        sh:description "Date when the selected act snapshot was published" ;
+    ] ;
+    sh:property [
+        sh:path estleg:temporalStatus ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "temporalStatus" ;
+        sh:description "Temporal status evaluated against the declared build evaluation date" ;
+    ] ;
+    sh:property [
+        sh:path estleg:transposesDirective ;
+        sh:nodeKind sh:IRI ;
+        sh:name "transposesDirective" ;
+        sh:description "EU directive that this act transposes" ;
+    ] ;
+    sh:property [
+        sh:path estleg:transpositionStatus ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "transpositionStatus" ;
+        sh:description "Status of directive transposition for this act" ;
+    ] .
+
 # Shape for LegalProvision instances.
 #
 # The generators in scripts/ emit LegalProvision instances using Estonian-
@@ -91,33 +156,6 @@ estleg:LegalProvisionShape
         sh:description "EU directive that this provision transposes" ;
     ] ;
     sh:property [
-        sh:path dcterms:subject ;
-        sh:nodeKind sh:IRI ;
-        sh:name "subject" ;
-        sh:description "EuroVoc subject classification URI" ;
-    ] ;
-    sh:property [
-        sh:path estleg:entryIntoForce ;
-        sh:maxCount 1 ;
-        sh:datatype xsd:date ;
-        sh:name "entryIntoForce" ;
-        sh:description "Date when the provision entered into force" ;
-    ] ;
-    sh:property [
-        sh:path estleg:repealDate ;
-        sh:maxCount 1 ;
-        sh:datatype xsd:date ;
-        sh:name "repealDate" ;
-        sh:description "Date when the provision was repealed" ;
-    ] ;
-    sh:property [
-        sh:path estleg:temporalStatus ;
-        sh:maxCount 1 ;
-        sh:datatype xsd:string ;
-        sh:name "temporalStatus" ;
-        sh:description "Temporal status: inForce, repealed, or notYetEffective" ;
-    ] ;
-    sh:property [
         sh:path estleg:enforcedAtLevel ;
         sh:datatype xsd:string ;
         sh:maxCount 1 ;
@@ -180,20 +218,6 @@ estleg:LegalProvisionShape
         sh:description "Entity responsible for fulfilling the duty" ;
     ] ;
     sh:property [
-        sh:path estleg:lastAmendmentDate ;
-        sh:maxCount 1 ;
-        sh:datatype xsd:date ;
-        sh:name "lastAmendmentDate" ;
-        sh:description "Date of the most recent amendment" ;
-    ] ;
-    sh:property [
-        sh:path estleg:publicationDate ;
-        sh:maxCount 1 ;
-        sh:datatype xsd:date ;
-        sh:name "publicationDate" ;
-        sh:description "Date when the provision or ontology was published" ;
-    ] ;
-    sh:property [
         sh:path estleg:harmonisedWith ;
         sh:nodeKind sh:IRI ;
         sh:name "harmonisedWith" ;
@@ -238,10 +262,11 @@ estleg:LegalConceptShape
 # Note: JSON-LD @type arrays cannot be validated via SHACL directly;
 # use scripts/validate_all.py for this check.
 
-# Shape for Section instances (from KarS generator)
+# Shape for generated Section instances. Target by sectionNumber so unresolved
+# reference placeholders are not treated as concrete sections under RDFS inference.
 estleg:SectionShape
     a sh:NodeShape ;
-    sh:targetClass estleg:Section ;
+    sh:targetSubjectsOf estleg:sectionNumber ;
     sh:property [
         sh:path estleg:sectionNumber ;
         sh:minCount 1 ;
@@ -1011,4 +1036,3 @@ estleg:CitationShape
         sh:datatype xsd:string ;
         sh:name "citationText" ;
     ] .
-

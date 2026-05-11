@@ -1,18 +1,69 @@
 name: Validate Ontology
 
+# CI is split so docs-only PRs don't trigger the heavy SHACL matrix.
+# The ``docs-light`` job below internally filters on docs/** + README.md
+# so the multi-minute SHACL matrix only runs when source code, scripts,
+# fixtures, shapes, or krr_outputs/ change. Docs typos finish in seconds.
+
 on:
   push:
     branches: [main]
     paths:
       - 'krr_outputs/**'
-      - 'scripts/validate_all.py'
+      - 'scripts/**'
+      - 'tests/**'
+      - 'shacl/**'
+      - 'metadata.jsonld'
+      - 'pyproject.toml'
+      - '.github/workflows/**'
+      - 'docs/**'
+      - 'README.md'
   pull_request:
     branches: [main]
     paths:
       - 'krr_outputs/**'
+      - 'scripts/**'
+      - 'tests/**'
+      - 'shacl/**'
+      - 'metadata.jsonld'
+      - 'pyproject.toml'
+      - '.github/workflows/**'
+      - 'docs/**'
+      - 'README.md'
 
 jobs:
-  validate:
+  # Fast docs-only check — markdownlint catches typos in seconds
+  # rather than waiting on the multi-minute SHACL matrix walk.
+  docs-light:
+    name: Docs lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Detect docs-only changes
+        id: filter
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            docs:
+              - 'docs/**'
+              - 'README.md'
+
+      - name: Set up Node
+        if: steps.filter.outputs.docs == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install markdownlint-cli
+        if: steps.filter.outputs.docs == 'true'
+        run: npm install -g markdownlint-cli@0.41.0
+
+      - name: Run markdownlint
+        if: steps.filter.outputs.docs == 'true'
+        run: markdownlint 'docs/**/*.md' 'README.md' --disable MD013 MD033 MD041 MD024 MD025
+
+  lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -21,6 +72,105 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+          # Cache pip downloads keyed on pyproject.toml so subsequent
+          # runs reuse pyshacl + rdflib + pytest wheels (each multi-MB,
+          # accounting for ~30s of per-job wall time).
+          cache: 'pip'
+          cache-dependency-path: 'pyproject.toml'
 
-      - name: Run validation
+      - name: Install dependencies
+        run: python3 -m pip install -e ".[dev]"
+
+      - name: Run Ruff
+        run: python3 -m ruff check scripts/ tests/
+
+  pytest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+          cache-dependency-path: 'pyproject.toml'
+
+      - name: Install dependencies
+        run: python3 -m pip install -e ".[dev]"
+
+      - name: Run tests
+        run: python3 -m pytest -q
+
+  json-validation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+          cache-dependency-path: 'pyproject.toml'
+
+      - name: Install dependencies
+        run: python3 -m pip install -e ".[dev]"
+
+      - name: Validate JSON-LD hygiene
         run: python3 scripts/validate_all.py
+
+  semantic-validation:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # ``laws`` covers root-level ``*_peep.json`` enacted-law files PLUS
+        # the ``combined_ontology.jsonld`` artifact (the most-consumed
+        # file). Issue #164: combined drift is a real failure mode that
+        # would otherwise slip past the per-bucket gates.
+        bucket: [riigikohus, drafts, eurlex, curia, laws]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+          cache-dependency-path: 'pyproject.toml'
+
+      - name: Install dependencies
+        run: python3 -m pip install -e ".[dev]"
+
+      - name: Run targeted SHACL validation
+        env:
+          BUCKET: ${{ matrix.bucket }}
+        run: python3 scripts/shacl_validate_all.py --bucket "$BUCKET"
+
+  seadusloome-zero-warning:
+    name: Seadusloome zero-warning gate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+          cache-dependency-path: 'pyproject.toml'
+
+      - name: Install dependencies
+        run: python3 -m pip install -e ".[dev]"
+
+      - name: Run Seadusloome zero-warning SHACL gate
+        run: python3 scripts/validate_seadusloome_sync.py --report seadusloome-shacl-report.ttl
+
+      - name: Upload SHACL report on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: seadusloome-shacl-report
+          path: seadusloome-shacl-report.ttl
+          if-no-files-found: ignore

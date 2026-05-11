@@ -679,16 +679,16 @@ class TestCorpusInvariant:
     estleg:hasSanction has exactly ONE estleg:enforcedAtLevel
     literal in {"state", "municipality"}.
 
-    Skipped when krr_outputs/ is empty (clean checkout). Marked
-    @pytest.mark.slow so CI can opt out on the fast path; runs in
-    the integration suite.
+    Fails when krr_outputs/ is empty because this is a corpus gate.
+    Marked @pytest.mark.slow so CI can opt out on the fast path; runs
+    in the integration suite.
     """
 
     @pytest.mark.slow
     def test_every_has_sanction_provision_has_exactly_one_enforced_at_level(self):
         from estleg_common import iter_peep_files, KRR_DIR
         if not KRR_DIR.exists() or not list(KRR_DIR.glob("*_peep.json")):
-            pytest.skip("krr_outputs/ empty — clean checkout")
+            pytest.fail("krr_outputs/ empty; corpus invariant was not checked")
 
         violations = []
         for peep in iter_peep_files():
@@ -726,4 +726,347 @@ class TestCorpusInvariant:
             + "\n  ".join(violations[:20])
             + (f"\n  ... and {len(violations) - 20} more"
                if len(violations) > 20 else "")
+        )
+
+
+# --------------------------------------------------------------------- #
+# Regression tests for ontology-review-plan issue #169.
+# --------------------------------------------------------------------- #
+
+
+class TestImprisonmentUnitHeuristic:
+    """The fallback ``vangistus(ega) N`` pattern must require an
+    explicit unit token (aasta/kuu/päev). The previous heuristic
+    guessed ``years`` for N <= 20 and ``months`` otherwise, which
+    silently mis-attributed sentences. If no unit is present, no
+    ``max_penalty`` is emitted from this branch.
+    """
+
+    def test_no_unit_emits_no_penalty(self):
+        from extract_sanctions import extract_imprisonment
+        # No unit: previous code would have emitted "5 years"; new code
+        # emits nothing from the fallback (no other branch matches
+        # the bare digit form either).
+        results = extract_imprisonment("vangistusega 5")
+        assert results == [], (
+            f"unit-less fallback must emit nothing, got {results}"
+        )
+
+    def test_no_unit_at_30_emits_no_penalty(self):
+        """The previous heuristic mapped 30 → '30 months'. The new
+        code refuses to guess and emits nothing."""
+        from extract_sanctions import extract_imprisonment
+        results = extract_imprisonment("vangistusega 30")
+        assert results == []
+
+    def test_explicit_aasta_unit_yields_years(self):
+        from extract_sanctions import extract_imprisonment
+        results = extract_imprisonment("vangistus 5 aasta")
+        assert any(r.get("max_penalty") == "5 years" for r in results)
+
+    def test_explicit_kuu_unit_yields_months(self):
+        from extract_sanctions import extract_imprisonment
+        results = extract_imprisonment("vangistusega 6 kuud")
+        assert any(r.get("max_penalty") == "6 months" for r in results)
+
+    def test_explicit_paev_unit_yields_days(self):
+        from extract_sanctions import extract_imprisonment
+        results = extract_imprisonment("vangistusega 14 päeva")
+        assert any(r.get("max_penalty") == "14 days" for r in results)
+
+
+class TestImprisonmentWordRegexAnchored:
+    """``extract_imprisonment`` word-based patterns must be anchored
+    to the closed set of supported Estonian numerals so an arbitrary
+    token before ``aasta`` does not silently match.
+    """
+
+    def test_unsupported_numeral_does_not_match(self):
+        from extract_sanctions import extract_imprisonment
+        # 'ksdjflk' is not a numeral; the prior `\w+` pattern would
+        # have captured it and yielded a None _parse_number, but the
+        # new pattern won't even match.
+        results = extract_imprisonment("kuni ksdjflkaasta vangistus")
+        assert all(r.get("max_penalty") != "None years" for r in results)
+        assert results == []
+
+    def test_supported_numeral_still_matches(self):
+        from extract_sanctions import extract_imprisonment
+        results = extract_imprisonment("kuni viieaastase vangistusega")
+        assert any(r.get("max_penalty") == "5 years" for r in results)
+
+    def test_range_pattern_with_supported_numerals(self):
+        from extract_sanctions import extract_imprisonment
+        results = extract_imprisonment(
+            "kahe kuni viieaastase vangistusega"
+        )
+        assert any(
+            r.get("min_penalty") == "2 years"
+            and r.get("max_penalty") == "5 years"
+            for r in results
+        )
+
+
+class TestSanctionIRICounterDeterministic:
+    """The sanction loop sorts sanctions before assigning suffix
+    counts so IRI assignment is reproducible across runs."""
+
+    def test_sorted_before_iri_assignment(self, tmp_path, monkeypatch):
+        import extract_sanctions as mod
+        import estleg_common
+
+        krr = tmp_path / "krr_outputs"
+        sanctions_dir = krr / "sanctions"
+        sanctions_dir.mkdir(parents=True)
+
+        # Provision text that triggers BOTH imprisonment AND a fine.
+        peep = krr / "deterministic_peep.json"
+        peep.write_text(json.dumps({
+            "@context": {
+                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "owl": "http://www.w3.org/2002/07/owl#",
+            },
+            "@graph": [
+                {"@id": "estleg:Det_Map_2026",
+                 "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]},
+                {"@id": "estleg:Det_Par_1",
+                 "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+                 "estleg:paragrahv": "§ 1",
+                 # Two imprisonment sanctions: max-only (3 years) and
+                 # range (1-5 years) — these used to compete on the
+                 # same ``Sanction_<par>_imprisonment`` base IRI.
+                 "estleg:summary":
+                     "Karistatakse kuni kolmeaastase vangistusega või "
+                     "ühe kuni viieaastase vangistusega."},
+            ],
+        }), encoding="utf-8")
+        monkeypatch.setattr(mod, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "SANCTION_DIR", sanctions_dir)
+        monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+
+        # Run twice and capture the IRI suffix order both times.
+        runs = []
+        for _ in range(2):
+            mod.main()
+            with open(peep, "r", encoding="utf-8") as fh:
+                doc = json.load(fh)
+            prov = next(n for n in doc["@graph"]
+                        if n.get("@id") == "estleg:Det_Par_1")
+            iris = [
+                ref["@id"]
+                for ref in (prov.get("estleg:hasSanction") or [])
+            ]
+            runs.append(iris)
+
+        assert runs[0] == runs[1], (
+            f"sanction IRIs must be deterministic across runs; "
+            f"run1={runs[0]} run2={runs[1]}"
+        )
+
+
+class TestPecuniaryStatutoryDefaultFlag:
+    """Pecuniary punishment fallback emits ``estleg:isStatutoryDefault``
+    on the Sanction node so consumers can distinguish text-extracted
+    from statutory-default values.
+    """
+
+    def test_pecuniary_default_flag_lands(self, tmp_path, monkeypatch):
+        import extract_sanctions as mod
+        import estleg_common
+
+        krr = tmp_path / "krr_outputs"
+        sanctions_dir = krr / "sanctions"
+        sanctions_dir.mkdir(parents=True)
+
+        peep = krr / "pecu_peep.json"
+        peep.write_text(json.dumps({
+            "@context": {
+                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "owl": "http://www.w3.org/2002/07/owl#",
+            },
+            "@graph": [
+                {"@id": "estleg:Pecu_Map_2026",
+                 "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]},
+                {"@id": "estleg:Pecu_Par_1",
+                 "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+                 "estleg:paragrahv": "§ 1",
+                 "estleg:summary":
+                     "Selle eest karistatakse rahalise karistusega."},
+            ],
+        }), encoding="utf-8")
+
+        monkeypatch.setattr(mod, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "SANCTION_DIR", sanctions_dir)
+        monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+
+        rc = mod.main()
+        assert rc in (0, None)
+
+        # Find the sanction file produced for this law.
+        from extract_sanctions import sanitize_id
+        sanc_file = sanctions_dir / f"sanctions_{sanitize_id('pecu')}.json"
+        assert sanc_file.exists()
+        with open(sanc_file, "r", encoding="utf-8") as fh:
+            sdoc = json.load(fh)
+        pecu_nodes = [
+            n for n in sdoc["@graph"]
+            if n.get("estleg:sanctionType") == "pecuniary_punishment"
+        ]
+        assert pecu_nodes, "expected at least one pecuniary sanction node"
+        for n in pecu_nodes:
+            assert n.get("estleg:isStatutoryDefault") is True, (
+                f"pecuniary statutory-default emission must carry "
+                f"the flag; got {n}"
+            )
+
+    def test_extract_pecuniary_records_flag(self):
+        """Unit-level: extract_pecuniary tags its emitted records."""
+        from extract_sanctions import extract_pecuniary
+        results = extract_pecuniary("karistatakse rahalise karistusega")
+        assert results
+        assert all(r.get("is_statutory_default") is True for r in results)
+
+
+class TestArrestFallbackTightened:
+    """Bare ``\\barest`` no longer triggers the statutory-default
+    fallback. Both a punishment-context suffix AND a sentencing verb
+    must co-occur. When fallback fires it carries the
+    ``is_statutory_default`` flag.
+    """
+
+    def test_arestima_word_does_not_match(self):
+        """``arestima`` (verb 'to arrest') outside sentencing
+        language must not produce a 30-day record."""
+        from extract_sanctions import extract_arrest
+        results = extract_arrest("Politsei võib arestima kahtlustatava.")
+        # No fallback emission — no sentencing verb in context.
+        assert results == []
+
+    def test_punishment_suffix_without_sentencing_verb_does_not_match(self):
+        """``arestiga`` alone (no karistatakse/kohaldatakse) does
+        not trigger the fallback."""
+        from extract_sanctions import extract_arrest
+        results = extract_arrest("Otsus täidetakse arestiga.")
+        assert results == []
+
+    def test_full_sentencing_context_triggers_fallback(self):
+        """``karistatakse ... arestiga`` triggers the statutory
+        fallback with the flag set."""
+        from extract_sanctions import extract_arrest
+        results = extract_arrest(
+            "Selle eest karistatakse rahatrahviga või arestiga."
+        )
+        assert results
+        assert any(
+            r.get("max_penalty") == "30 days"
+            and r.get("is_statutory_default") is True
+            for r in results
+        )
+
+    def test_explicit_day_count_wins_over_fallback(self):
+        from extract_sanctions import extract_arrest
+        results = extract_arrest(
+            "Karistatakse aresti kuni 15 päeva."
+        )
+        assert any(r.get("max_penalty") == "15 days" for r in results)
+        # Explicit count is NOT statutory default.
+        assert all(
+            not r.get("is_statutory_default") for r in results
+        )
+
+
+class TestEstonianNumeralsHelpers:
+    """Public helper for tests/diagnostics returns the supported set."""
+
+    def test_helper_returns_frozenset(self):
+        from extract_sanctions import estonian_numerals_supported
+        s = estonian_numerals_supported()
+        assert isinstance(s, frozenset)
+
+    def test_helper_includes_canonical_lemmas(self):
+        from extract_sanctions import estonian_numerals_supported
+        s = estonian_numerals_supported()
+        for lemma in ("ühe", "kahe", "viie", "kümne",
+                      "kahekümne", "sada", "tuhat"):
+            assert lemma in s, (
+                f"{lemma!r} should be in supported numerals; got {sorted(s)}"
+            )
+
+
+class TestProvisionRefEmptyFallback:
+    """``_provision_ref`` returns '' (not 'unknown') when no info
+    is available. ``_build_label`` already suppresses the
+    parenthetical when ref is empty.
+    """
+
+    def test_empty_when_no_info(self):
+        from extract_sanctions import _provision_ref
+        assert _provision_ref({}) == ""
+
+    def test_with_paragrahv_and_law_abbr(self):
+        from extract_sanctions import _provision_ref
+        ref = _provision_ref({
+            "estleg:paragrahv": "121",
+            "estleg:lawAbbreviation": "KarS",
+        })
+        assert "KarS" in ref
+        assert "121" in ref
+
+    def test_with_node_id_only(self):
+        """Falls back to law abbreviation parsed from @id when
+        explicit lawAbbreviation is missing."""
+        from extract_sanctions import _provision_ref
+        ref = _provision_ref({
+            "@id": "estleg:KarS_p121",
+            "estleg:paragrahv": "121",
+        })
+        assert ref.startswith("KarS")
+
+    def test_label_no_parenthetical_when_ref_empty(self):
+        """Integration: ``_build_label`` does not emit '(unknown)'
+        when ``_provision_ref`` returns ''."""
+        from extract_sanctions import _build_label, _provision_ref
+        empty_ref = _provision_ref({})
+        assert empty_ref == ""
+        label = _build_label(
+            "imprisonment",
+            {"max_penalty": "5 years"},
+            empty_ref,
+        )
+        assert "(" not in label
+        assert "unknown" not in label.lower()
+
+
+class TestDatetimeNowUTC:
+    """``datetime.now()`` must use ``timezone.utc`` for date stamps
+    so the report's day boundary aligns with other UTC-stamped
+    artefacts."""
+
+    def test_report_generated_uses_utc_today(
+        self, tmp_path, monkeypatch
+    ):
+        import extract_sanctions as mod
+        import estleg_common
+        from datetime import datetime, timezone
+
+        krr = tmp_path / "krr_outputs"
+        sanctions_dir = krr / "sanctions"
+        sanctions_dir.mkdir(parents=True)
+
+        # Empty corpus — main() produces an empty report.
+        monkeypatch.setattr(mod, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "SANCTION_DIR", sanctions_dir)
+        monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+
+        rc = mod.main()
+        assert rc in (0, None)
+        report_path = krr / "sanctions_report.json"
+        assert report_path.exists()
+        with open(report_path, "r", encoding="utf-8") as fh:
+            report = json.load(fh)
+        # The 'generated' field must be the UTC date in ISO form.
+        expected = datetime.now(timezone.utc).date().isoformat()
+        assert report["generated"] == expected, (
+            f"report 'generated' should match UTC date; "
+            f"expected={expected} got={report['generated']}"
         )

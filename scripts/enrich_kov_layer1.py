@@ -16,8 +16,10 @@ Idempotent: safe to re-run.
 """
 from __future__ import annotations
 
+import argparse
 import json
 import sys
+from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -27,6 +29,7 @@ from kov_registry import (
     Municipality,
     load_municipalities,
     normalize_title,
+    parse_issuer_slug,
 )
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -36,6 +39,12 @@ KOV_DIR = KRR_DIR / "regulations" / "kov"
 
 MUNICIPALITIES_OUT = KRR_DIR / "municipalities_peep.json"
 ISSUERS_OUT = KRR_DIR / "issuers_kov_peep.json"
+
+# >5 missing law files in INDEX.json indicates real corpus drift,
+# not the occasional stale entry. Hard-fail in that case so the
+# orchestrator does not silently keep running on degraded input
+# (Finding #4 in issue #182).
+MISSING_LAW_FILES_FAIL_THRESHOLD = 5
 
 CONTEXT = {
     "estleg": "https://data.riik.ee/ontology/estleg#",
@@ -64,7 +73,7 @@ def build_municipality_doc(municipalities: dict[str, Municipality]) -> dict:
             "@id": "estleg:Municipalities_Map_2026",
             "@type": ["owl:Ontology"],
             "rdfs:label": "Estonian Municipalities (current EHAK)",
-            "dcterms:source": "https://www.stat.ee/sites/default/files/2020-03/ehak.csv",
+            "dcterms:source": {"@id": "https://www.stat.ee/sites/default/files/2020-03/ehak.csv"},
         }
     ]
     for code in sorted(municipalities):
@@ -130,7 +139,24 @@ def _add_type(node: dict, type_iri: str) -> bool:
     return True
 
 
-def stamp_law_type(path: Path) -> None:
+def is_stampable_law_node(types: list[str]) -> bool:
+    """Return True iff a node should be stamped by `stamp_law_type`.
+
+    A node is "applicable" for Law-stamping iff it carries
+    `owl:Ontology` and is NOT already typed as a regulation subclass
+    (those go through `stamp_act_type`). This helper exists so
+    `verify_layer1.check_laws` and `stamp_law_type` share exactly one
+    definition of "applicable" — without it, the two could drift and
+    silently mask coverage gaps (Finding #1 in issue #182).
+    """
+    if "owl:Ontology" not in types:
+        return False
+    if _REGULATION_TYPES.intersection(types):
+        return False
+    return True
+
+
+def stamp_law_type(path: Path) -> bool:
     """Add `estleg:Law` and `estleg:Act` rdf:type to the act node of a
     law peep file.
 
@@ -138,30 +164,44 @@ def stamp_law_type(path: Path) -> None:
     (NationalRegulation, MunicipalRegulation, etc.) — those go through
     `stamp_act_type` instead.
 
-    Idempotent.
+    Returns True if the file contained at least one applicable node
+    (i.e. an owl:Ontology node that is not already a regulation
+    subclass) and got stamped (or was already stamped). Returns False
+    when no applicable node exists — sub-part files such as
+    `*_osa6_peep.json` lack the parent ontology node and are filtered
+    out by `_load_law_paths`/`verify_layer1.check_laws` via
+    `is_stampable_law_node`. The orchestrator uses the return value
+    to compare `stamped` against `expected_applicable` and surface a
+    coverage gap loudly (Finding #1).
+
+    Idempotent: re-running on an already-stamped file is a no-op (no
+    write, so mtime does not churn — Finding #2).
     """
     with open(path, "r", encoding="utf-8") as fh:
-        doc = json.load(fh)
+        original_text = fh.read()
+    doc = json.loads(original_text)
 
-    changed = False
+    applicable = False
     for node in doc.get("@graph", []):
         types = node.get("@type", [])
         if isinstance(types, str):
             types = [types]
-        if "owl:Ontology" not in types:
+        if not is_stampable_law_node(types):
             continue
-        if _REGULATION_TYPES.intersection(types):
-            continue
-        if _add_type(node, "estleg:Law"):
-            changed = True
-        if _add_type(node, "estleg:Act"):
-            changed = True
-        node["@type"] = sorted(set(node["@type"]))  # stable order
+        applicable = True
+        _add_type(node, "estleg:Law")
+        _add_type(node, "estleg:Act")
+        # Sort once at the end for stable on-disk order; do this even
+        # when nothing was added so that the in-memory list mirrors
+        # what we'd write — keeps the comparison consistent and the
+        # idempotency contract explicit.
+        node["@type"] = sorted(set(node["@type"]))
 
-    if changed:
+    new_text = json.dumps(doc, ensure_ascii=False, indent=2) + "\n"
+    if new_text != original_text:
         with open(path, "w", encoding="utf-8") as fh:
-            json.dump(doc, fh, ensure_ascii=False, indent=2)
-            fh.write("\n")
+            fh.write(new_text)
+    return applicable
 
 
 def stamp_act_type(path: Path) -> None:
@@ -170,54 +210,54 @@ def stamp_act_type(path: Path) -> None:
     MinisterialRegulation). For state regulation files under
     `regulations/riik/`. Idempotent.
 
-    KOV act nodes are handled by `enrich_kov_act_file`; this function is
-    for the state regulation files that Layer 1 otherwise leaves alone.
+    KOV act nodes are handled by `enrich_kov_act_file`; this function
+    is for the state regulation files that Layer 1 otherwise leaves
+    alone. It is an error to call this on a file containing a
+    `MunicipalRegulation` node — the caller selected the wrong
+    pipeline. We raise rather than silently skip so a wiring bug in
+    the orchestrator surfaces here, not as silently mis-stamped state
+    files (Finding #11).
     """
     with open(path, "r", encoding="utf-8") as fh:
-        doc = json.load(fh)
+        original_text = fh.read()
+    doc = json.loads(original_text)
 
-    changed = False
     for node in doc.get("@graph", []):
         types = node.get("@type", [])
         if isinstance(types, str):
             types = [types]
         if "owl:Ontology" not in types:
             continue
-        # Only stamp Act on regulation acts; KOV acts go through
-        # enrich_kov_act_file.
         if "estleg:MunicipalRegulation" in types:
-            continue
+            raise ValueError(
+                f"{path}: stamp_act_type called on a KOV act file "
+                "(node has estleg:MunicipalRegulation). KOV acts are "
+                "stamped by enrich_kov_act_file."
+            )
         if not _REGULATION_TYPES.intersection(types):
             continue
         if _add_type(node, "estleg:Act"):
-            changed = True
             node["@type"] = sorted(set(node["@type"]))
 
-    if changed:
+    new_text = json.dumps(doc, ensure_ascii=False, indent=2) + "\n"
+    if new_text != original_text:
         with open(path, "w", encoding="utf-8") as fh:
-            json.dump(doc, fh, ensure_ascii=False, indent=2)
-            fh.write("\n")
+            fh.write(new_text)
 
 
-def enrich_kov_act_file(path: Path, issuer: IssuerEntry) -> None:
-    """Add Layer 1 properties to a single KOV act peep file in place.
+def _build_enriched_act_doc(doc: dict, issuer: IssuerEntry, path: Path) -> dict:
+    """Compute the enriched JSON-LD doc for a KOV act file.
 
-    Raises ValueError if the file does not contain exactly one node
-    typed as estleg:MunicipalRegulation. A KOV file under the corpus
-    must have that node — silently skipping malformed files would let
-    Gate A pass while leaving acts undecorated.
-
-    Idempotent — running on an already-enriched file leaves it
-    byte-identical.
+    Mutates and returns `doc` (callers pass an independent in-memory
+    copy when they need the original for comparison). Raises
+    ValueError on malformed input — exactly the same conditions that
+    `enrich_kov_act_file` reports.
     """
-    with open(path, "r", encoding="utf-8") as fh:
-        doc = json.load(fh)
-
     issuer_ref = {"@id": issuer_iri(issuer["slug"])}
     municipality_ref = {"@id": municipality_iri(issuer["currentMunicipalityCode"])}
 
-    # Pass 1: collect every MunicipalRegulation node, enforce exactly one,
-    # then enrich it.
+    # Pass 1: collect every MunicipalRegulation node, enforce exactly
+    # one, then enrich it.
     act_nodes: list[dict] = []
     for node in doc.get("@graph", []):
         types = node.get("@type", [])
@@ -241,9 +281,9 @@ def enrich_kov_act_file(path: Path, issuer: IssuerEntry) -> None:
     act_iri = act_node.get("@id")
     # Prefer dc:source over rdfs:label: the canonical KOV peep shape
     # has rdfs:label with the document-type suffix appended (e.g.
-    # "Tallinna jäätmehoolduseeskiri (määrus)") while dc:source carries
-    # the clean title ("Tallinna jäätmehoolduseeskiri"). The clean title
-    # is what we want to feed normalize_title.
+    # "Tallinna jäätmehoolduseeskiri (määrus)") while dc:source
+    # carries the clean title ("Tallinna jäätmehoolduseeskiri"). The
+    # clean title is what we want to feed normalize_title.
     title = act_node.get("dc:source") or act_node.get("rdfs:label") or ""
     # Stamp estleg:Act directly so SHACL constraints with
     # sh:class estleg:Act on partOfAct don't require RDFS inference
@@ -251,8 +291,12 @@ def enrich_kov_act_file(path: Path, issuer: IssuerEntry) -> None:
     _add_type(act_node, "estleg:Act")
     act_node["estleg:enactedBy"] = issuer_ref
     act_node["estleg:enactedByMunicipality"] = municipality_ref
+    # Pass slug parts (not the display-name string) so normalize_title
+    # can gate the alevi-genitive prefix on (municipalityType, root)
+    # rather than blindly stripping it from any title that happens to
+    # start with `<root> alevi `.
     act_node["estleg:titleNormalized"] = normalize_title(
-        title, issuer["displayName"]
+        title, parse_issuer_slug(issuer["slug"]),
     )
 
     # Pass 2: enrich provisions.
@@ -264,9 +308,39 @@ def enrich_kov_act_file(path: Path, issuer: IssuerEntry) -> None:
         node["estleg:enactedByMunicipality"] = municipality_ref
         node["estleg:partOfAct"] = {"@id": act_iri}
 
+    return doc
+
+
+def enrich_kov_act_file(path: Path, issuer: IssuerEntry) -> bool:
+    """Add Layer 1 properties to a single KOV act peep file in place.
+
+    Raises ValueError if the file does not contain exactly one node
+    typed as estleg:MunicipalRegulation. A KOV file under the corpus
+    must have that node — silently skipping malformed files would let
+    Gate A pass while leaving acts undecorated.
+
+    Returns True iff the file was actually written. Idempotent — when
+    the on-disk content already matches the enriched form, the file
+    is NOT re-written so mtimes do not churn (Finding #2).
+    """
+    with open(path, "r", encoding="utf-8") as fh:
+        original_text = fh.read()
+    original_doc = json.loads(original_text)
+
+    # Independent in-memory copy so the comparison below sees the
+    # pre-enrichment shape. Round-tripping through JSON is fine here:
+    # peep docs are pure data (no recursive refs, no datetimes).
+    enriched_doc = _build_enriched_act_doc(
+        json.loads(original_text), issuer, path,
+    )
+
+    if enriched_doc == original_doc:
+        return False
+
     with open(path, "w", encoding="utf-8") as fh:
-        json.dump(doc, fh, ensure_ascii=False, indent=2)
+        json.dump(enriched_doc, fh, ensure_ascii=False, indent=2)
         fh.write("\n")
+    return True
 
 
 def _load_issuers(path: Path) -> dict[str, IssuerEntry]:
@@ -293,12 +367,11 @@ def _load_law_paths(index_path: Path) -> tuple[list[Path], list[str]]:
     (combined ontology output, generated registry files, etc.) and would
     drift over time.
 
-    Policy on missing entries: INDEX.json is known to drift (typos like
-    'ametiuhigute' for 'ametiuhingute', renames not propagated, etc.).
-    Rather than abort the whole Layer 1 run on stale INDEX entries —
-    which is an unrelated hygiene issue — we log them and continue.
-    The orchestrator surfaces the count in its summary so the drift
-    is visible. INDEX hygiene is fixed in a separate PR.
+    Policy on missing entries: a small number of stale INDEX entries
+    (typos, renames not propagated) is logged but tolerated. More than
+    `MISSING_LAW_FILES_FAIL_THRESHOLD` missing files is treated as
+    real corpus drift and the caller hard-fails (see `main()`,
+    Finding #4).
 
     Mixed extensions: INDEX entries end in either `.json` or `.jsonld`.
     Both are accepted as-is; we do NOT silently substitute the
@@ -320,7 +393,38 @@ def _load_law_paths(index_path: Path) -> tuple[list[Path], list[str]]:
     return paths, missing
 
 
-def main() -> int:
+def _enrich_one_kov(args: tuple[Path, IssuerEntry]) -> tuple[Path, str | None]:
+    """Worker for parallel KOV enrichment.
+
+    Returns (path, error_message_or_None). The serialised error
+    message survives the cross-process boundary cleanly; raising
+    inside the worker would lose argument fidelity in the parent.
+    """
+    path, issuer = args
+    try:
+        enrich_kov_act_file(path, issuer)
+    except (ValueError, OSError) as exc:
+        return path, str(exc)
+    return path, None
+
+
+def main(argv: list[str] | None = None) -> int:
+    # Default to no arguments rather than `sys.argv[1:]` so callers
+    # like the test suite — which run main() inside a pytest process
+    # whose own argv contains test filters — don't accidentally pick
+    # up unrelated flags. The CLI entry point passes sys.argv[1:]
+    # explicitly; tests pass either nothing or e.g. ["--workers=2"].
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--workers", type=int, default=1,
+        help="Number of parallel workers for the KOV enrichment loop "
+             "(default: 1 = serial / deterministic). Use a higher "
+             "value for the full 11k-file corpus run (Finding #3).",
+    )
+    args = parser.parse_args(argv if argv is not None else [])
+    if args.workers < 1:
+        parser.error("--workers must be >= 1")
+
     print("=" * 70)
     print("KOV Integration Layer 1 — Enrichment")
     print("=" * 70)
@@ -341,8 +445,9 @@ def main() -> int:
     kov_files = sorted(KOV_DIR.glob("**/*_peep.json"))
     # The KOV index file lives at the top of KOV_DIR — exclude it.
     kov_files = [f for f in kov_files if not f.name.startswith("REGULATIONS_KOV_INDEX")]
-    print(f"\nEnriching {len(kov_files)} KOV act files...")
-    enriched = 0
+    print(f"\nEnriching {len(kov_files)} KOV act files (workers={args.workers})...")
+
+    work_items: list[tuple[Path, IssuerEntry]] = []
     missing_issuer = 0
     for f in kov_files:
         slug = f.parent.name
@@ -351,17 +456,51 @@ def main() -> int:
             missing_issuer += 1
             print(f"  ERROR: no issuer entry for {slug}; skipping {f.name}")
             continue
-        # Will raise on malformed files (no MunicipalRegulation node).
-        enrich_kov_act_file(f, issuer)
-        enriched += 1
-    print(f"Enriched {enriched} KOV act files (missing-issuer: {missing_issuer})")
-    if missing_issuer:
+        work_items.append((f, issuer))
+
+    enriched = 0
+    errors: list[tuple[Path, str]] = []
+    if args.workers == 1:
+        # Serial path — keeps deterministic order and is the default
+        # for tests.
+        for item in work_items:
+            path, err = _enrich_one_kov(item)
+            if err is not None:
+                errors.append((path, err))
+            else:
+                enriched += 1
+    else:
+        # Parallel path — order-insensitive results. The work is
+        # naturally per-file so we don't need to pin a worker per
+        # issuer slug.
+        with ProcessPoolExecutor(max_workers=args.workers) as pool:
+            for path, err in pool.map(_enrich_one_kov, work_items):
+                if err is not None:
+                    errors.append((path, err))
+                else:
+                    enriched += 1
+
+    print(
+        f"Enriched {enriched} KOV act files "
+        f"(missing-issuer: {missing_issuer}, errors: {len(errors)})"
+    )
+    for path, err in errors[:10]:
+        print(f"  ERROR: {path}: {err}", file=sys.stderr)
+    if len(errors) > 10:
+        print(f"  ... and {len(errors) - 10} more errors", file=sys.stderr)
+    if missing_issuer or errors:
         # Hard-fail rather than let Gate A pass with skipped files.
-        print(
-            f"FAIL: {missing_issuer} KOV files had no matching issuer entry. "
-            "Re-run scripts/build_kov_registry.py to regenerate issuers.json.",
-            file=sys.stderr,
-        )
+        if missing_issuer:
+            print(
+                f"FAIL: {missing_issuer} KOV files had no matching issuer entry. "
+                "Re-run scripts/build_kov_registry.py to regenerate issuers.json.",
+                file=sys.stderr,
+            )
+        if errors:
+            print(
+                f"FAIL: {len(errors)} KOV files raised during enrichment.",
+                file=sys.stderr,
+            )
         return 2
 
     # 4. Stamp estleg:Law + estleg:Act on the 615 laws (paths from INDEX.json)
@@ -377,8 +516,41 @@ def main() -> int:
             print(f"    {f}")
         if len(missing_law_files) > 10:
             print(f"    ... and {len(missing_law_files) - 10} more")
+    if len(missing_law_files) > MISSING_LAW_FILES_FAIL_THRESHOLD:
+        print(
+            f"FAIL: {len(missing_law_files)} missing law files exceeds "
+            f"the tolerance threshold of "
+            f"{MISSING_LAW_FILES_FAIL_THRESHOLD}. Update INDEX.json or "
+            "regenerate the law-file index before re-running Layer 1.",
+            file=sys.stderr,
+        )
+        return 2
+
+    stamped = 0
+    skipped_no_ontology = 0
     for f in law_paths:
-        stamp_law_type(f)
+        if stamp_law_type(f):
+            stamped += 1
+        else:
+            skipped_no_ontology += 1
+    # Cross-check with verify_layer1.check_laws's "applicable" filter:
+    # both helpers route through `is_stampable_law_node`, so `stamped`
+    # is the count of files whose root ontology node was stampable.
+    # If any applicable file ended up unstamped we'd have a real bug
+    # — print a loud WARN so the gap is visible in CI logs.
+    print(
+        f"  Stamped {stamped} law files "
+        f"({skipped_no_ontology} skipped: sub-part files without an "
+        "owl:Ontology node)"
+    )
+    expected_stamped = len(law_paths) - skipped_no_ontology
+    if stamped < expected_stamped:
+        print(
+            f"WARN: stamped {stamped} but expected {expected_stamped} "
+            "applicable law files; check stamp_law_type / "
+            "is_stampable_law_node for drift.",
+            file=sys.stderr,
+        )
 
     # 5. Stamp estleg:Act on state regulation acts under regulations/riik/
     riik_dir = KRR_DIR / "regulations" / "riik"
@@ -392,4 +564,4 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    raise SystemExit(main(sys.argv[1:]))

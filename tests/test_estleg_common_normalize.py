@@ -6,7 +6,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 
-from estleg_common import BODY_CANON, normalize_issuer_name
+from estleg_common import BODY_CANON, jsonld_text, normalize_issuer_name
 
 
 def test_normalize_issuer_lowercase() -> None:
@@ -38,3 +38,10 @@ def test_body_canon_volikogu_passthrough() -> None:
     # Volikogu forms are identical in nominative and the genitive used in court text.
     assert BODY_CANON["linnavolikogu"] == "linnavolikogu"
     assert BODY_CANON["vallavolikogu"] == "vallavolikogu"
+
+
+def test_jsonld_text_unwraps_common_value_shapes() -> None:
+    assert jsonld_text("plain") == "plain"
+    assert jsonld_text({"@value": "keel", "@language": "et"}) == "keel"
+    assert jsonld_text([{"@value": "üks"}, {"@value": "kaks"}]) == "üks kaks"
+    assert jsonld_text({"@id": "estleg:Thing"}, default="") == ""

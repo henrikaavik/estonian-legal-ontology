@@ -20,7 +20,7 @@ from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
 
-from estleg_common import iter_peep_files
+from estleg_common import iter_peep_files, jsonld_text
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
@@ -80,13 +80,38 @@ CHANGE_TYPE_PATTERNS: list[tuple[re.Pattern, str, str]] = [
     (re.compile(r"kehtestami", re.IGNORECASE), "enacts", "kehtestab"),
 ]
 
+# Canonical priority for change types when multiple match. The
+# previous "first-pattern wins" rule was order-of-list dependent and
+# would classify a draft titled "X seaduse muutmise ja Y kehtetuks
+# tunnistamise seadus" as "amends" even though it also repeals — the
+# stronger statement should dominate.
+_CHANGE_TYPE_PRIORITY: list[str] = [
+    "repeals",
+    "enacts",
+    "amends",
+    "supplements",
+]
 
-def classify_change_type(title: str) -> tuple[str, str] | None:
-    """Return (change_type, label_et) or None."""
+
+def classify_change_types(title: str) -> list[tuple[str, str]]:
+    """Return ALL change-type matches as (change_type, label_et) tuples,
+    deduplicated and ordered by canonical priority.
+    """
+    matches: dict[str, tuple[str, str]] = {}
     for pat, ctype, label in CHANGE_TYPE_PATTERNS:
         if pat.search(title):
-            return ctype, label
-    return None
+            matches[ctype] = (ctype, label)
+    return [matches[ct] for ct in _CHANGE_TYPE_PRIORITY if ct in matches]
+
+
+def classify_change_type(title: str) -> tuple[str, str] | None:
+    """Return the highest-priority (change_type, label_et) match, or None.
+
+    Priority order (strongest first): repeals → enacts → amends →
+    supplements. This replaces the prior "first-pattern wins" rule.
+    """
+    matches = classify_change_types(title)
+    return matches[0] if matches else None
 
 
 # ---------- fuzzy law-name resolution ----------
@@ -105,6 +130,13 @@ def normalize_law_name(name: str) -> str:
     # Collapse whitespace
     n = re.sub(r"\s+", " ", n)
     return n
+
+
+def affected_law_name_values(value: object) -> list[str]:
+    if isinstance(value, list):
+        return [text for item in value if (text := jsonld_text(item))]
+    text = jsonld_text(value)
+    return [text] if text else []
 
 
 def slug_from_name(name: str) -> str:
@@ -151,50 +183,139 @@ def build_ontology_iri_map() -> dict[str, str]:
     return iri_map
 
 
-def build_law_lookup(index_data: dict) -> dict[str, dict]:
+def build_law_lookup(
+    index_data: dict,
+    on_collision: str = "warn",
+) -> dict[str, dict]:
     """
     Build a lookup:  normalized_name → { name, files, slug }
     Also add slug-based keys for fallback matching.
+
+    Collisions occur when two laws produce the same readable/slug key
+    (multiple laws with the same name in INDEX.json). The previous
+    implementation silently overwrote the earlier entry, collapsing
+    them into one. The new behaviour is configurable:
+
+    * ``on_collision='warn'`` (default): drop ambiguous keys with a
+      printed warning. Subsequent ``resolve_law_name`` calls will not
+      match those keys, forcing the caller to disambiguate.
+    * ``on_collision='raise'``: raise ``ValueError`` so the pipeline
+      fails loudly.
     """
+    if on_collision not in {"warn", "raise"}:
+        raise ValueError(
+            f"on_collision must be 'warn' or 'raise', got {on_collision!r}"
+        )
+
     lookup: dict[str, dict] = {}
+    collisions: dict[str, list[str]] = defaultdict(list)
+
     for law in index_data.get("laws", []):
         slug = law["name"]
         files = law.get("files", [])
         # Reconstruct a readable name from the slug (imperfect but useful for matching)
         readable = slug.replace("_", " ")
         entry = {"name": slug, "files": files, "slug": slug}
-        lookup[readable] = entry
-        lookup[slug] = entry
+
+        for key in (readable, slug):
+            if key in lookup and lookup[key] is not entry:
+                # Track every entry that wanted this key so we can
+                # report all participants in the collision.
+                if not collisions[key]:
+                    collisions[key].append(lookup[key]["slug"])
+                collisions[key].append(slug)
+            else:
+                lookup[key] = entry
+
+    if collisions:
+        if on_collision == "raise":
+            raise ValueError(
+                "Ambiguous law-lookup keys: "
+                + ", ".join(
+                    f"{k} → {sorted(set(v))}"
+                    for k, v in sorted(collisions.items())
+                )
+            )
+        # 'warn' branch: drop ambiguous keys so resolve_law_name
+        # cannot accidentally match the wrong entry.
+        for key, participants in sorted(collisions.items()):
+            print(
+                f"  WARN: ambiguous law-lookup key {key!r} matched by "
+                f"{sorted(set(participants))}; key dropped from lookup."
+            )
+            lookup.pop(key, None)
+
     return lookup
+
+
+def _contiguous_subsequence(needle: str, haystack: str) -> bool:
+    """Return True iff every whitespace-separated token of ``needle``
+    appears in ``haystack`` as a whole-token contiguous run.
+
+    This is the word-boundary alignment used by ``resolve_law_name``
+    for substring matches: ``"alko seadus"`` matches ``"alko seadus
+    plus"`` (the tokens line up and run consecutively) but not
+    ``"alkohoolne seadus"`` (no whole-token match for ``alko``).
+    """
+    needle_tokens = needle.split()
+    haystack_tokens = haystack.split()
+    if not needle_tokens or len(needle_tokens) > len(haystack_tokens):
+        return False
+    for offset in range(len(haystack_tokens) - len(needle_tokens) + 1):
+        if haystack_tokens[offset : offset + len(needle_tokens)] == needle_tokens:
+            return True
+    return False
 
 
 def resolve_law_name(
     affected_name: str,
     lookup: dict[str, dict],
 ) -> dict | None:
-    """Try to resolve an affected-law name to an INDEX entry."""
+    """Try to resolve an affected-law name to an INDEX entry.
+
+    The lookup is iterated in **sorted-key order** so the result is
+    deterministic regardless of dict insertion order. Substring
+    matches require word-boundary alignment via
+    ``_contiguous_subsequence`` to avoid e.g. ``"riik"`` colliding
+    with ``"riiklik"``. Ties on substring matches are broken by
+    shortest key length (more specific wins).
+    """
     norm = normalize_law_name(affected_name)
     slug = slug_from_name(norm)
 
-    # 1. Direct slug match
+    # 1. Direct slug match (still a deterministic exact-equality check)
     if slug in lookup:
         return lookup[slug]
 
-    # 2. Substring match: find lookup keys that contain the slug or vice versa
-    for key, entry in lookup.items():
-        if slug in key or key in slug:
-            return entry
+    # 2. Substring match with word-boundary alignment. Sort keys so
+    # iteration is deterministic; tie-break by shortest key length
+    # (the more specific match wins).
+    candidates: list[tuple[int, str, dict]] = []
+    for key in sorted(lookup):
+        entry = lookup[key]
+        if _contiguous_subsequence(slug, key) or _contiguous_subsequence(key, slug):
+            candidates.append((len(key), key, entry))
+    if candidates:
+        candidates.sort(key=lambda item: (item[0], item[1]))
+        return candidates[0][2]
 
-    # 3. Token overlap: at least 2 significant tokens must match
+    # 3. Token overlap: at least 2 significant tokens must match.
+    #    Sort the iteration to make ties deterministic.
     norm_tokens = set(norm.split()) - {"ja", "ning", "seadus", "seadustik"}
     best_match = None
     best_overlap = 0
-    for key, entry in lookup.items():
+    best_key_len = float("inf")
+    for key in sorted(lookup):
+        entry = lookup[key]
         key_tokens = set(key.split()) - {"ja", "ning", "seadus", "seadustik"}
         overlap = len(norm_tokens & key_tokens)
-        if overlap >= 2 and overlap > best_overlap:
+        if overlap >= 2 and (
+            overlap > best_overlap
+            or (overlap == best_overlap and len(key) < best_key_len)
+        ):
             best_overlap = overlap
             best_match = entry
+            best_key_len = len(key)
 
     return best_match
 
@@ -272,8 +393,27 @@ def main() -> None:
         if modified:
             save_json(fpath, doc)
 
-    # Clear estleg:amendsLaw and estleg:changeType from all draft eelnoud files
-    for fpath in sorted(EELNOUD_DIR.glob("*.json*")):
+    # Clear estleg:amendsLaw and estleg:changeType from all draft eelnoud files.
+    # Use explicit globs (NOT ``*.json*``) so backup/temp/lock files
+    # ending in suffixes like ``.json.bak``, ``.json~``, ``.json.swp``
+    # are not opened. We process ``*.jsonld`` first, then ``*.json``,
+    # de-duping by path so a file matched by both globs is touched
+    # once.
+    seen_paths: set[Path] = set()
+    eelnoud_targets: list[Path] = []
+    for pattern in ("*.jsonld", "*.json"):
+        for fpath in sorted(EELNOUD_DIR.glob(pattern)):
+            # Skip backup/temp suffixes (extra defence in depth — the
+            # globs above already exclude them, but a future glob change
+            # shouldn't silently regress this).
+            if fpath.name.endswith((".bak", ".swp", "~")):
+                continue
+            if fpath in seen_paths:
+                continue
+            seen_paths.add(fpath)
+            eelnoud_targets.append(fpath)
+
+    for fpath in eelnoud_targets:
         if fpath == combined_path:
             continue  # already handled above via draft_nodes
         try:
@@ -319,12 +459,8 @@ def main() -> None:
         if not affected_raw:
             continue
 
-        # affectedLawName can be a string or a list
-        if isinstance(affected_raw, str):
-            affected_names = [affected_raw]
-        elif isinstance(affected_raw, list):
-            affected_names = affected_raw
-        else:
+        affected_names = affected_law_name_values(affected_raw)
+        if not affected_names:
             continue
 
         amends_iris: list[dict] = []
@@ -390,7 +526,7 @@ def main() -> None:
     print(f"  Law files updated: {inverse_count}")
 
     # ---------- report ----------
-    print(f"\n[5/5] Generating report...")
+    print("\n[5/5] Generating report...")
 
     # Most-affected laws
     most_affected = sorted(
