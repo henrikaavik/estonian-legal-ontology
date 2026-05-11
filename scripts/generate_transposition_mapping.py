@@ -66,10 +66,21 @@ def sanitize_celex(celex: str) -> str:
 
 
 def normalize_text(text: str) -> str:
-    """Normalize text for fuzzy matching: lowercase, strip diacritics, collapse whitespace."""
+    """Normalize text for fuzzy matching.
+
+    Lowercase; NFKD-decompose and *drop* combining marks so Estonian
+    diacritics collapse the same way the filename-derived law names do
+    (``õ``→``o``, ``ä``→``a`` …); strip a trailing run of "consolidation"
+    digits that EUR-Lex appends to NIM titles (``"AUDIITORTEGEVUSE
+    SEADUS1"`` → ``audiitortegevuse seadus``); collapse whitespace.
+    """
     text = text.lower().strip()
-    # Normalize unicode
+    # Decompose and drop combining marks (diacritics) — keeps matching
+    # consistent with the underscore→space filename-derived index keys.
     text = unicodedata.normalize("NFKD", text)
+    text = "".join(ch for ch in text if not unicodedata.combining(ch))
+    # Drop a trailing consolidation digit run (``seadus1``, ``seadus2`` …).
+    text = re.sub(r"\d+$", "", text).strip()
     # Collapse whitespace
     text = re.sub(r"\s+", " ", text)
     return text
@@ -84,7 +95,9 @@ def extract_law_name(title: str) -> str | None:
       - "Isikuandmete kaitse seadus"
       - Things ending in "seadus", "seadustik", "määrus"
     """
-    title_norm = title.strip()
+    # Strip a trailing consolidation digit run that EUR-Lex appends to
+    # some NIM titles (``"Tubakaseadus1"`` → ``"Tubakaseadus"``).
+    title_norm = re.sub(r"\d+$", "", title.strip()).strip()
 
     # Try to find explicit law name patterns
     # Pattern: title IS the law name (short titles)
@@ -100,15 +113,40 @@ def extract_law_name(title: str) -> str | None:
 
 
 def sparql_query(query: str) -> list[dict]:
-    """Execute a SPARQL query and return bindings."""
-    resp = requests.get(
+    """Execute a SPARQL query and return bindings.
+
+    We POST the query as ``application/x-www-form-urlencoded`` rather than
+    GETting it with a ``?query=`` string. The Publications Office Virtuoso
+    endpoint (``publications.europa.eu/webapi/rdf/sparql``) answers GET
+    requests for non-trivial queries with ``HTTP 202 Accepted`` and an
+    *empty* body — and ``Response.raise_for_status()`` does NOT raise on a
+    2xx, so a GET-based helper silently returns ``[]`` (this was the real
+    cause of #129/#96). POST returns ``200`` + ``application/sparql-results+json``.
+    We still guard explicitly against a 202 / non-JSON body so the retry
+    layer can react if the endpoint ever misbehaves on POST too.
+    """
+    resp = requests.post(
         SPARQL_ENDPOINT,
-        params={"query": query},
-        headers={"Accept": "application/sparql-results+json"},
+        data={"query": query},
+        headers={
+            "Accept": "application/sparql-results+json",
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
         timeout=120,
     )
     resp.raise_for_status()
-    data = resp.json()
+    if resp.status_code == 202:
+        raise RuntimeError(
+            f"SPARQL endpoint returned HTTP 202 (empty body) — "
+            f"endpoint unhealthy or rate-limiting: {SPARQL_ENDPOINT}"
+        )
+    try:
+        data = resp.json()
+    except ValueError as exc:
+        raise RuntimeError(
+            f"SPARQL endpoint returned a non-JSON body "
+            f"(status {resp.status_code}): {exc}"
+        ) from exc
     return data.get("results", {}).get("bindings", [])
 
 
@@ -139,11 +177,30 @@ def sparql_query_with_retry(
     ) from last_exc
 
 
+# Authority URI for Estonia in the Publications Office country vocabulary.
+ESTONIA_COUNTRY_URI = "http://publications.europa.eu/resource/authority/country/EST"
+
+
 def fetch_transposition_measures(
     *, allow_partial: bool = False
 ) -> tuple[list[dict], bool]:
     """
     Fetch national transposition measures for Estonia from EUR-Lex.
+
+    The CDM models a National Implementing Measure (NIM) as a ``work``
+    typed (effectively) ``cdm:measure_national_implementing`` that carries:
+      * ``cdm:measure_national_implementing_implemented_by_country`` → the
+        country authority URI (we filter for Estonia);
+      * ``cdm:measure_national_implementing_implements_directive`` → the
+        directive ``work`` URI it transposes;
+      * ``cdm:work_title`` → the (national-language) title — for Estonian
+        NIMs this is already the Estonian act title (e.g.
+        ``"TÖÖLEPINGU SEADUS"``), so no per-language expression join is
+        needed.
+    The earlier query used ``cdm:resource_legal_measures_transposition_for``
+    and required the directive to be ``a cdm:directive`` with a
+    ``"7"``-prefixed national CELEX in an EST *expression* — none of which
+    holds in CELLAR today, so it returned zero rows (#129).
 
     Returns ``(items, partial)`` where each item is a dict with
     ``celex_dir``, ``directive_uri``, ``title_nat`` and ``partial`` is
@@ -152,7 +209,7 @@ def fetch_transposition_measures(
     failures propagate as ``RuntimeError`` so the run exits non-zero
     rather than silently truncating the dataset (#129).
 
-    Note: ``ORDER BY ?national`` makes OFFSET pagination stable across
+    Note: ``ORDER BY ?nim`` makes OFFSET pagination stable across
     pages — without it EUR-Lex may reorder rows between requests and
     drop/duplicate measures (#183).
     """
@@ -164,16 +221,12 @@ def fetch_transposition_measures(
     while True:
         query = f"""
 PREFIX cdm: <http://publications.europa.eu/ontology/cdm#>
-SELECT DISTINCT ?directive ?celex_dir ?national ?title_nat WHERE {{
-  ?directive a cdm:directive .
+SELECT DISTINCT ?nim ?directive ?celex_dir ?title_nat WHERE {{
+  ?nim cdm:measure_national_implementing_implemented_by_country <{ESTONIA_COUNTRY_URI}> .
+  ?nim cdm:measure_national_implementing_implements_directive ?directive .
   ?directive cdm:resource_legal_id_celex ?celex_dir .
-  ?national cdm:resource_legal_measures_transposition_for ?directive .
-  ?national cdm:resource_legal_id_celex ?celex_nat .
-  FILTER(STRSTARTS(?celex_nat, "7"))
-  ?exp_nat cdm:expression_belongs_to_work ?national .
-  ?exp_nat cdm:expression_uses_language <http://publications.europa.eu/resource/authority/language/EST> .
-  ?exp_nat cdm:expression_title ?title_nat .
-}} ORDER BY ?national LIMIT {PAGE_SIZE} OFFSET {offset}
+  OPTIONAL {{ ?nim cdm:work_title ?title_nat }}
+}} ORDER BY ?nim LIMIT {PAGE_SIZE} OFFSET {offset}
 """
         print(f"  Fetching transposition measures, offset {offset}...")
         try:
@@ -193,6 +246,12 @@ SELECT DISTINCT ?directive ?celex_dir ?national ?title_nat WHERE {{
             title_nat = b.get("title_nat", {}).get("value", "")
             directive_uri = b.get("directive", {}).get("value", "")
 
+            if not title_nat:
+                # A NIM without a title cannot be matched to an Estonian
+                # act by name — skip it (it still counts in EUR-Lex's NIM
+                # tally but not in ours).
+                continue
+
             key = (celex_dir, title_nat)
             if key in seen:
                 continue
@@ -211,6 +270,107 @@ SELECT DISTINCT ?directive ?celex_dir ?national ?title_nat WHERE {{
         time.sleep(RATE_DELAY)
 
     return all_items, partial
+
+
+def fetch_directive_deadlines(*, allow_partial: bool = False) -> tuple[dict[str, str], bool]:
+    """Fetch the transposition deadline (``cdm:directive_date_transposition``)
+    for every directive that declares one (#96).
+
+    Returns ``({celex: "YYYY-MM-DD"}, partial)``. A directive may carry
+    several deadline values (corrigenda); we keep the earliest so the
+    resulting node has one deterministic ``estleg:transpositionDeadline``.
+    This is a single, cheap query (no pagination needed — the property is
+    sparse), so a terminal failure under ``allow_partial`` just yields an
+    empty map and ``partial=True`` (deadlines are optional, #96), while
+    without ``allow_partial`` it propagates like every other SPARQL
+    failure in this script (#129).
+    """
+    query = """
+PREFIX cdm: <http://publications.europa.eu/ontology/cdm#>
+SELECT ?celex (MIN(?d) AS ?deadline) WHERE {
+  ?work a cdm:directive .
+  ?work cdm:resource_legal_id_celex ?celex .
+  ?work cdm:directive_date_transposition ?d .
+} GROUP BY ?celex
+"""
+    print("  Fetching directive transposition deadlines...")
+    try:
+        bindings = sparql_query_with_retry(query)
+    except Exception as e:
+        if allow_partial:
+            print(f"  ERROR fetching directive deadlines (partial run): {e}")
+            return {}, True
+        raise
+
+    deadlines: dict[str, str] = {}
+    for b in bindings:
+        celex = b.get("celex", {}).get("value", "")
+        deadline = b.get("deadline", {}).get("value", "")
+        if not celex or not deadline:
+            continue
+        # The SPARQL ``MIN`` already picks the earliest; defend anyway.
+        cur = deadlines.get(celex)
+        if cur is None or deadline < cur:
+            deadlines[celex] = deadline
+    return deadlines, False
+
+
+def update_directive_deadlines(deadlines: dict[str, str]) -> int:
+    """Add ``estleg:transpositionDeadline`` (xsd:date) to directive nodes in
+    ``eurlex_directives_peep.json`` for every CELEX with a known deadline (#96).
+
+    Emits the property only when a deadline is present (it is optional).
+    Returns the count of directive nodes updated. This is the low-risk
+    path for #96 — it patches the already-generated directives peep file
+    instead of forcing a network-heavy ``generate_eu_legislation.py``
+    rerun; ``generate_eu_legislation.py`` also emits the property on a
+    full regen (see its ``OPTIONAL ?deadline`` projection).
+    """
+    directives_file = EURLEX_DIR / "eurlex_directives_peep.json"
+    if not directives_file.exists() or not deadlines:
+        return 0
+    try:
+        data = load_json(directives_file)
+    except Exception as e:
+        print(f"  ERROR loading directives file for deadlines: {e}")
+        return 0
+
+    updated = 0
+    for node in data.get("@graph", []):
+        celex = node.get("estleg:celexNumber", "")
+        deadline = deadlines.get(celex)
+        if not deadline:
+            continue
+        new_val = {"@value": deadline, "@type": "xsd:date"}
+        if node.get("estleg:transpositionDeadline") == new_val:
+            continue
+        node["estleg:transpositionDeadline"] = new_val
+        updated += 1
+
+    if updated > 0:
+        save_json(directives_file, data)
+    return updated
+
+
+def clear_directive_deadlines() -> int:
+    """Strip ``estleg:transpositionDeadline`` from every directive node in
+    ``eurlex_directives_peep.json`` (mirrors the other clear-then-rebuild
+    steps so a deadline that disappeared upstream does not linger)."""
+    directives_file = EURLEX_DIR / "eurlex_directives_peep.json"
+    if not directives_file.exists():
+        return 0
+    try:
+        data = load_json(directives_file)
+    except Exception:
+        return 0
+    cleared = 0
+    for node in data.get("@graph", []):
+        if "estleg:transpositionDeadline" in node:
+            del node["estleg:transpositionDeadline"]
+            cleared += 1
+    if cleared > 0:
+        save_json(directives_file, data)
+    return cleared
 
 
 def build_law_index(index_data: dict) -> dict[str, dict]:
@@ -358,6 +518,11 @@ def generate_schema() -> dict:
             "rdfs:domain": {"@id": "estleg:Act"},
             "rdfs:range": {"@id": "xsd:string"},
         },
+        # NOTE: ``estleg:transpositionDeadline`` (the directive's transposition
+        # deadline, #96) is intentionally NOT declared here. It is a corpus-wide
+        # reusable property and lives in ``krr_outputs/controlled_vocabulary.jsonld``;
+        # declaring it again in this per-layer schema would trip
+        # ``validate_all.validate_id_uniqueness`` (same @id in two files).
     ]
 
     return {"@context": CONTEXT, "@graph": schema_nodes}
@@ -594,6 +759,12 @@ def main():
         except Exception as e:
             print(f"  Warning: could not clear directives file: {e}")
 
+    # And clear transpositionDeadline so a deadline removed upstream
+    # does not linger on the directive node (#96).
+    cleared_deadlines = clear_directive_deadlines()
+    if cleared_deadlines:
+        print(f"  Cleared transpositionDeadline from {cleared_deadlines} directive node(s)")
+
     # --- Step 1: Load existing indexes ---
     print("\n--- Loading existing indexes ---")
 
@@ -753,6 +924,19 @@ def main():
     directives_updated = update_directive_file(directive_celex_to_law_iris)
     print(f"  Directive nodes updated: {directives_updated}")
 
+    # --- Step 6b: Add transposition deadlines to EU directive nodes (#96) ---
+    print("\n--- Adding transposition deadlines to EU directives ---")
+    deadlines, deadlines_partial = fetch_directive_deadlines(
+        allow_partial=args.allow_partial
+    )
+    if deadlines_partial:
+        was_partial = True
+    deadline_nodes_updated = update_directive_deadlines(deadlines)
+    print(
+        f"  Directive deadlines fetched: {len(deadlines)}; "
+        f"directive nodes annotated: {deadline_nodes_updated}"
+    )
+
     # --- Step 7: Generate report ---
     print("\n--- Generating transposition mapping report ---")
 
@@ -775,6 +959,8 @@ def main():
         "unique_laws": len(unique_laws),
         "law_files_updated": files_updated,
         "directive_nodes_updated": directives_updated,
+        "directive_deadlines_fetched": len(deadlines),
+        "directive_deadline_nodes_updated": deadline_nodes_updated,
         "mappings": sorted(matched_mappings, key=lambda m: m["directive_celex"]),
         "unmatched_sample": unmatched_titles[:50],
         "missing_directives_sample": missing_directives[:50],
@@ -797,6 +983,8 @@ def main():
     print(f"  Unique Estonian laws:           {len(unique_laws)}")
     print(f"  Law files updated:              {files_updated}")
     print(f"  Directive nodes updated:        {directives_updated}")
+    print(f"  Directive deadlines fetched:    {len(deadlines)}")
+    print(f"  Directive nodes w/ deadline:    {deadline_nodes_updated}")
     if was_partial:
         print("  NOTE: run was PARTIAL — re-run without --allow-partial when "
               "EUR-Lex is healthy to refresh the layer.")
