@@ -474,3 +474,242 @@ def test_detect_duplicates_returns_only_multi_file_ids(tmp_path, monkeypatch):
     assert "estleg:Shared" in dupes
     assert "estleg:Unique_A" not in dupes
     assert "estleg:Unique_B" not in dupes
+
+
+# ---------------------------------------------------------------------------
+# #116 — "generators produce validator-clean output" guarantee.
+#
+# These fixtures build tiny law / regulation / draft documents the way the
+# generators do, then run them through the EXISTING `validate_all` per-node
+# validators *without* first passing through any `fix_all_issues.normalize_*`
+# pass. This pins the contract: fresh generator output is validator-clean on
+# @type / sectionNumber / dc:source / dcterms:source / namespace, so
+# `fix_all_issues` repair passes are a safety net, not a build requirement.
+# ---------------------------------------------------------------------------
+
+import importlib  # noqa: E402
+
+import estleg_common  # noqa: E402
+
+validate_all = importlib.import_module("validate_all")
+generate_draft_legislation = importlib.import_module("generate_draft_legislation")
+
+
+# Per-node `validate_all` validators that take (filepath, doc). These are the
+# repair-equivalent checks `fix_all_issues.normalize_*` exists to satisfy.
+_PER_NODE_VALIDATORS = (
+    validate_all.validate_context,
+    validate_all.validate_types,
+    validate_all.validate_multi_valued,
+    validate_all.validate_section_numbers,
+    validate_all.validate_dc_source,
+    validate_all.validate_source_provenance,
+    validate_all.validate_xsd_dates,
+    validate_all.validate_affected_law_names,
+)
+
+
+def _run_per_node_validators(doc: dict) -> list[str]:
+    """Run every per-node validator over ``doc`` and return collected errors."""
+    validate_all.reset()
+    fake_path = Path("fixture_generator_output.json")
+    for fn in _PER_NODE_VALIDATORS:
+        fn(fake_path, doc)
+    return list(validate_all.errors)
+
+
+def _law_act_doc() -> dict:
+    """A law act node + provision class + provision, shaped the way
+    ``generate_all_laws.py`` emits them (see its act-node construction):
+    ``@type`` arrays, scalar ``dc:source`` string, IRI-object
+    ``dcterms:source``, language-tagged ``dcterms:title``."""
+    title = "Karistusseadustik"
+    rt_url = "https://www.riigiteataja.ee/akt/610920.xml"
+    act_node = {
+        "@id": "estleg:KarS_Map_2026",
+        "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
+        "rdfs:label": {"@value": f"{title} teemakaardistus", "@language": "et"},
+        "estleg:contentStatus": "structuredBody",
+        "estleg:lastAmendmentDate": {"@value": "2026-01-15", "@type": "xsd:date"},
+    }
+    # Use the shared provenance helper — it produces exactly the inline shape
+    # generators write (dc:source scalar, dcterms:source IRI object, ...).
+    act_node.update(estleg_common.source_provenance(rt_url=rt_url, label=title))
+    act_node["owl:sameAs"] = {"@id": rt_url}
+    return {
+        "@context": estleg_common.CONTEXT,
+        "@graph": [
+            act_node,
+            {
+                "@id": "estleg:LegalProvision_karistusseadustik",
+                "@type": ["owl:Class"],
+                "rdfs:label": {"@value": "Õigusnorm (paragrahv)", "@language": "et"},
+                "rdfs:subClassOf": {"@id": "estleg:LegalProvision"},
+            },
+            {
+                "@id": "estleg:KarS_Par_121",
+                "@type": ["owl:NamedIndividual", "estleg:LegalProvision_karistusseadustik"],
+                "estleg:paragrahv": "§ 121",
+                "rdfs:label": {"@value": "§ 121 Kehaline väärkohtlemine", "@language": "et"},
+                "estleg:sourceAct": {"@value": title, "@language": "et"},
+                "estleg:summary": {"@value": "Teise inimese tervise kahjustamise eest ...", "@language": "et"},
+                "estleg:references": [{"@id": "estleg:KarS_Par_122"}],
+            },
+        ],
+    }
+
+
+def _regulation_doc() -> dict:
+    """A domestic-regulation act node + per-regulation provision class +
+    provision, shaped the way ``generate_regulations.py`` emits them
+    (see SCHEMA_REFERENCE "Domestic Regulation Example")."""
+    title = "Volitatud asutuste määramine"
+    rt_url = "https://www.riigiteataja.ee/akt/610920.xml"
+    act_node = {
+        "@id": "estleg:Reg_160748_Map_2026",
+        "@type": ["owl:Ontology", "estleg:Act", "estleg:NationalRegulation", "estleg:GovernmentRegulation"],
+        "rdfs:label": f"{title} (määrus)",
+        "estleg:documentType": "määrus",
+        "estleg:isKov": {"@value": "false", "@type": "xsd:boolean"},
+        "estleg:parseMode": "structured",
+        "estleg:globalId": "610920",
+        "estleg:terviktekstId": "160748",
+        "estleg:entryIntoForce": {"@value": "2003-07-19", "@type": "xsd:date"},
+        "estleg:issuer": {"@value": "Vabariigi Valitsus", "@language": "et"},
+        "estleg:actNumber": "199",
+    }
+    act_node.update(estleg_common.source_provenance(rt_url=rt_url, label=title, language=None))
+    act_node["owl:sameAs"] = {"@id": rt_url}
+    return {
+        "@context": estleg_common.CONTEXT,
+        "@graph": [
+            act_node,
+            {
+                "@id": "estleg:Regulation_160748",
+                "@type": ["owl:Class"],
+                "rdfs:label": {"@value": "Õigusnorm (paragrahv)", "@language": "et"},
+                "rdfs:subClassOf": {"@id": "estleg:LegalProvision"},
+            },
+            {
+                "@id": "estleg:Reg_160748_Par_1",
+                "@type": ["owl:NamedIndividual", "estleg:Regulation_160748"],
+                "estleg:paragrahv": "§ 1.",
+                "rdfs:label": {"@value": "§ 1. [Käesoleva määrusega kehtestatakse ...]", "@language": "et"},
+                "estleg:sourceAct": {"@value": title, "@language": "et"},
+                "estleg:summary": {"@value": "Käesoleva määrusega kehtestatakse ...", "@language": "et"},
+            },
+        ],
+    }
+
+
+def _draft_doc() -> dict:
+    """A draft-legislation document built via the actual generator helper
+    ``generate_draft_legislation.generate_draft_node`` — i.e. exactly the
+    way ``generate_draft_legislation.py`` builds it (IRI-object
+    ``dcterms:source``, ``@type`` arrays, list-of-strings
+    ``estleg:affectedLawName``, ``xsd:date`` literals)."""
+    draft_node = generate_draft_legislation.generate_draft_node(
+        {
+            "title": "Kohtute seaduse ja teiste seaduste muutmise seadus",
+            "raw_title": "Kohtute seaduse ja teiste seaduste muutmise seadus (JM/26-0268)",
+            "link": "https://eelnoud.valitsus.ee/main/mount/docList/abc-def",
+        },
+        phase_id="Submission",
+        eis_number="JM/26-0268",
+        ministry_code="JM",
+        date_str="27.02.2026",
+    )
+    return {
+        "@context": estleg_common.CONTEXT,
+        "@graph": [
+            {
+                "@id": "estleg:Eelnoud_Submission_Map_2026",
+                "@type": ["owl:Ontology"],
+                "rdfs:label": {"@value": "EIS eelnõud – esitatud", "@language": "et"},
+                "dc:source": "Eelnõude infosüsteem (EIS) – eelnoud.valitsus.ee",
+            },
+            draft_node,
+        ],
+    }
+
+
+def test_generated_law_document_is_validator_clean_without_repair():
+    """Fresh law-generator output passes the per-node validators with zero
+    errors WITHOUT going through any `fix_all_issues.normalize_*` pass."""
+    assert _run_per_node_validators(_law_act_doc()) == []
+
+
+def test_generated_regulation_document_is_validator_clean_without_repair():
+    """Fresh regulation-generator output is validator-clean without repair."""
+    assert _run_per_node_validators(_regulation_doc()) == []
+
+
+def test_generated_draft_document_is_validator_clean_without_repair():
+    """Fresh draft-generator output (built via the real
+    `generate_draft_node` helper) is validator-clean without repair."""
+    assert _run_per_node_validators(_draft_doc()) == []
+
+
+def test_namespace_is_already_correct_in_generator_output():
+    """Generator output uses the canonical `data.riik.ee` namespace, so
+    `migrate_namespace_in_value` has nothing to migrate (the repair pass is
+    a no-op on fresh output)."""
+    for doc in (_law_act_doc(), _regulation_doc(), _draft_doc()):
+        raw = json.dumps(doc, ensure_ascii=False)
+        assert fix_all_issues.OLD_NS not in raw
+        assert estleg_common.NS == fix_all_issues.NEW_NS
+        # And the migration helper returns an equal structure.
+        assert fix_all_issues.migrate_namespace_in_value(doc) == doc
+
+
+# ---------------------------------------------------------------------------
+# #116 — `fix_all_issues.normalize_*` repair passes are idempotent no-ops on
+# already-clean input. Running them on fresh generator output changes nothing.
+# ---------------------------------------------------------------------------
+
+
+def _apply_all_normalizers(doc: dict) -> dict:
+    """Run every `fix_all_issues.normalize_*` pass over a copy of ``doc``."""
+    import copy
+
+    out = copy.deepcopy(doc)
+    out = fix_all_issues.migrate_namespace_in_value(out)
+    if isinstance(out.get("@graph"), list):
+        out["@graph"] = [
+            fix_all_issues.normalize_section_number(
+                fix_all_issues.normalize_dc_source(
+                    fix_all_issues.normalize_multi_valued(
+                        fix_all_issues.normalize_type(node)
+                    )
+                )
+            )
+            for node in out["@graph"]
+        ]
+    return out
+
+
+def test_normalizers_are_noop_on_clean_law_document():
+    """`normalize_*` passes leave a clean law document byte-for-byte unchanged."""
+    doc = _law_act_doc()
+    assert _apply_all_normalizers(doc) == doc
+
+
+def test_normalizers_are_noop_on_clean_regulation_document():
+    """`normalize_*` passes leave a clean regulation document unchanged."""
+    doc = _regulation_doc()
+    assert _apply_all_normalizers(doc) == doc
+
+
+def test_normalizers_are_noop_on_clean_draft_document():
+    """`normalize_*` passes leave a clean draft document unchanged."""
+    doc = _draft_doc()
+    assert _apply_all_normalizers(doc) == doc
+
+
+def test_intra_file_dedup_is_noop_on_clean_generator_output():
+    """`_fix_intra_file_duplicates_in_doc` makes no changes when every @id in
+    the document is already unique (the dedup pass is a no-op on fresh
+    generator output, which produces file-disjoint id spaces)."""
+    for builder in (_law_act_doc, _regulation_doc, _draft_doc):
+        doc = builder()
+        assert fix_all_issues._fix_intra_file_duplicates_in_doc(doc) is False

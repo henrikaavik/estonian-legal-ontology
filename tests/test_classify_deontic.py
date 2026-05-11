@@ -7,6 +7,7 @@ import sys
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 
 from classify_deontic import classify_provision, extract_duty_holder
+from estleg_common import jsonld_text
 
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -113,3 +114,61 @@ def test_duty_holder_rejects_digits_in_word() -> None:
         extract_duty_holder("Vastutav Töötleja2024 peab andmed kustutama.")
         is None
     )
+
+
+# ---------------------------------------------------------------------------
+# Regression for #121: classify_deontic must read estleg:summary through
+# jsonld_text so a fresh-generator value-object summary classifies identically
+# to a normalized plain-string summary.
+# ---------------------------------------------------------------------------
+
+_DEONTIC_SENTENCE = "Korraldaja peab tagama jäätmete kogumise vastavalt määrusele."
+
+
+def _classify_node_summary(node: dict) -> str | None:
+    """Mirror the main()-loop read path: unwrap estleg:summary then classify."""
+    summary = jsonld_text(node.get("estleg:summary", ""))
+    if not summary:
+        return None
+    return classify_provision(summary)
+
+
+def test_value_object_summary_classifies_like_plain_string() -> None:
+    plain_node = {"@id": "estleg:X_Par_1", "estleg:summary": _DEONTIC_SENTENCE}
+    value_object_node = {
+        "@id": "estleg:X_Par_1",
+        "estleg:summary": {"@value": _DEONTIC_SENTENCE, "@language": "et"},
+    }
+    list_node = {
+        "@id": "estleg:X_Par_1",
+        "estleg:summary": [{"@value": _DEONTIC_SENTENCE, "@language": "et"}],
+    }
+
+    plain_result = _classify_node_summary(plain_node)
+    assert plain_result is not None
+    assert plain_result.startswith("estleg:NormType_")
+    assert _classify_node_summary(value_object_node) == plain_result
+    assert _classify_node_summary(list_node) == plain_result
+
+
+def test_value_object_summary_duty_holder_matches_plain_string() -> None:
+    sentence = "Vastutav Töötleja peab andmed kustutama."
+    plain_node = {"estleg:summary": sentence}
+    value_object_node = {"estleg:summary": {"@value": sentence, "@language": "et"}}
+
+    plain_holder = extract_duty_holder(jsonld_text(plain_node["estleg:summary"]))
+    assert plain_holder == "Vastutav Töötleja"
+    assert (
+        extract_duty_holder(jsonld_text(value_object_node["estleg:summary"]))
+        == plain_holder
+    )
+
+
+def test_classify_provision_rejects_raw_value_object() -> None:
+    # The jsonld_text wrap in classify_deontic is load-bearing: passing the
+    # raw {"@value": ...} dict straight to classify_provision blows up, which
+    # is exactly what would happen if the wrap were removed.
+    import pytest
+
+    with pytest.raises(TypeError):
+        classify_provision({"@value": _DEONTIC_SENTENCE, "@language": "et"})

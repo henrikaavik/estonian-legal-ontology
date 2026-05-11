@@ -364,6 +364,219 @@ def test_validate_institution_duplicates_reports_normalized_label_collision(tmp_
 
 
 # ---------------------------------------------------------------------------
+# Issue #118 — validate_institution_registry_consistency
+# ---------------------------------------------------------------------------
+
+
+def _inst_file(inst_dir: Path, slug: str, *, id_override: str | None = None) -> None:
+    write_json(
+        inst_dir / f"institution_{slug}.json",
+        {
+            "@graph": [
+                {
+                    "@id": id_override or f"estleg:Institution_{slug}",
+                    "@type": ["owl:NamedIndividual", "estleg:Institution"],
+                    "rdfs:label": slug.replace("_", " ").title(),
+                    "estleg:institutionType": "agency",
+                },
+                {
+                    "@id": (id_override or f"estleg:Institution_{slug}") + "_competence_general",
+                    "@type": ["owl:NamedIndividual", "estleg:Competence"],
+                    "estleg:competenceType": "general",
+                },
+            ]
+        },
+    )
+
+
+def test_registry_consistency_passes_for_well_formed_registry_and_aliases(tmp_path, monkeypatch):
+    krr = tmp_path / "krr_outputs"
+    inst = krr / "institutions"
+    _inst_file(inst, "maksu_ja_tolliamet")
+    _inst_file(inst, "riigikohus")
+    # Alias table whose canonical target exists.
+    import json as _json
+    repo = tmp_path / "repo"
+    (repo / "data").mkdir(parents=True)
+    (repo / "data" / "institution_aliases.json").write_text(
+        _json.dumps({
+            "version": 1,
+            "aliases": {
+                "maksuamet": {"canonical": "maksu_ja_tolliamet", "evidence": "merger 2004"},
+            },
+        }),
+        encoding="utf-8",
+    )
+    validate_all.validate_institution_registry_consistency(krr, repo)
+    assert validate_all.errors == [], validate_all.errors
+
+
+def test_registry_consistency_tolerates_double_underscore_canonical(tmp_path):
+    """The on-disk registry has a few stale ``__`` filenames; an alias
+    target written with single underscores must still resolve via the
+    collapse-tolerant compare."""
+    krr = tmp_path / "krr_outputs"
+    inst = krr / "institutions"
+    _inst_file(inst, "maksu__ja_tolliamet")  # double underscore on disk
+    import json as _json
+    repo = tmp_path / "repo"
+    (repo / "data").mkdir(parents=True)
+    (repo / "data" / "institution_aliases.json").write_text(
+        _json.dumps({"version": 1, "aliases": {"maksuamet": {"canonical": "maksu_ja_tolliamet"}}}),
+        encoding="utf-8",
+    )
+    validate_all.validate_institution_registry_consistency(krr, repo)
+    assert validate_all.errors == [], validate_all.errors
+
+
+def test_registry_consistency_flags_unknown_institution_id(tmp_path):
+    krr = tmp_path / "krr_outputs"
+    inst = krr / "institutions"
+    # File named riigikohus but its @id points at a non-canonical slug.
+    _inst_file(inst, "riigikohus", id_override="estleg:Institution_riigikohus_typo")
+    repo = tmp_path / "repo"
+    (repo / "data").mkdir(parents=True)
+    validate_all.validate_institution_registry_consistency(krr, repo)
+    assert any("are not canonical institution slugs" in e
+               for e in validate_all.errors), validate_all.errors
+
+
+def test_registry_consistency_flags_dangling_alias_target(tmp_path):
+    krr = tmp_path / "krr_outputs"
+    inst = krr / "institutions"
+    _inst_file(inst, "riigikohus")
+    import json as _json
+    repo = tmp_path / "repo"
+    (repo / "data").mkdir(parents=True)
+    (repo / "data" / "institution_aliases.json").write_text(
+        _json.dumps({
+            "version": 1,
+            "aliases": {"some_old_amet": {"canonical": "nonexistent_amet"}},
+        }),
+        encoding="utf-8",
+    )
+    validate_all.validate_institution_registry_consistency(krr, repo)
+    assert any("no institution file" in e for e in validate_all.errors), validate_all.errors
+
+
+def test_load_institution_alias_canonicals_handles_missing_and_malformed(tmp_path):
+    # Missing file -> empty set.
+    assert validate_all.load_institution_alias_canonicals(tmp_path) == set()
+    # Malformed -> empty set.
+    (tmp_path / "data").mkdir()
+    (tmp_path / "data" / "institution_aliases.json").write_text("not json", encoding="utf-8")
+    assert validate_all.load_institution_alias_canonicals(tmp_path) == set()
+
+
+# ---------------------------------------------------------------------------
+# Issue #119 — validate_act_coverage_reconciliation
+# ---------------------------------------------------------------------------
+
+
+def _laws_manifest(krr: Path, entries: list[dict]) -> None:
+    import json as _json
+    krr.mkdir(parents=True, exist_ok=True)
+    (krr / "generation_manifest_laws.json").write_text(
+        _json.dumps({
+            "generated": "2026-05-11T00:00:00+00:00",
+            "mode": "missing-only",
+            "counts": {"sourceActs": len(entries)},
+            "outputsAll": entries,
+        }),
+        encoding="utf-8",
+    )
+
+
+def _full_peep(krr: Path, slug: str) -> None:
+    write_json(
+        krr / f"{slug}_peep.json",
+        {
+            "@graph": [
+                {"@id": f"estleg:X_{slug}_Map_2026", "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
+                 "dc:source": slug, "estleg:contentStatus": "structuredBody"},
+                {"@id": f"estleg:X_{slug}_Par_1", "@type": ["owl:NamedIndividual"], "estleg:paragrahv": "§ 1."},
+            ]
+        },
+    )
+
+
+def _stub_peep(krr: Path, slug: str, *, content_status: str | None = "noStructuredBody") -> None:
+    ont: dict = {"@id": f"estleg:X_{slug}_Map_2026", "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
+                 "dc:source": slug}
+    if content_status is not None:
+        ont["estleg:contentStatus"] = content_status
+    write_json(krr / f"{slug}_peep.json", {"@graph": [ont]})
+
+
+def test_act_coverage_reconciliation_missing_manifest_is_warning(tmp_path):
+    krr = tmp_path / "krr_outputs"
+    krr.mkdir()
+    validate_all.validate_act_coverage_reconciliation(krr)
+    assert validate_all.errors == []
+    assert any("not found" in w for w in validate_all.warnings)
+
+
+def test_act_coverage_reconciliation_clean(tmp_path):
+    krr = tmp_path / "krr_outputs"
+    _full_peep(krr, "law_a")
+    _stub_peep(krr, "law_b")
+    _laws_manifest(krr, [
+        {"title": "Law A", "slug": "law_a", "status": "full"},
+        {"title": "Law B", "slug": "law_b", "status": "stub", "reason": "no paragraphs"},
+        {"title": "Law C", "slug": "law_c", "status": "failed", "reason": "fetch failed"},
+    ])
+    validate_all.validate_act_coverage_reconciliation(krr)
+    assert validate_all.errors == [], validate_all.errors
+
+
+def test_act_coverage_reconciliation_flags_manifest_act_without_file(tmp_path):
+    krr = tmp_path / "krr_outputs"
+    _full_peep(krr, "law_a")
+    # 'law_b' is in the manifest with status full but has no peep file.
+    _laws_manifest(krr, [
+        {"title": "Law A", "slug": "law_a", "status": "full"},
+        {"title": "Law B", "slug": "law_b", "status": "full"},
+    ])
+    validate_all.validate_act_coverage_reconciliation(krr)
+    assert any("no peep file on disk" in e for e in validate_all.errors), validate_all.errors
+
+
+def test_act_coverage_reconciliation_flags_orphan_peep(tmp_path):
+    krr = tmp_path / "krr_outputs"
+    _full_peep(krr, "law_a")
+    _full_peep(krr, "orphan_law")  # on disk, not in manifest
+    _laws_manifest(krr, [{"title": "Law A", "slug": "law_a", "status": "full"}])
+    validate_all.validate_act_coverage_reconciliation(krr)
+    assert any("not listed in" in e for e in validate_all.errors), validate_all.errors
+
+
+def test_act_coverage_reconciliation_flags_stub_without_marker(tmp_path):
+    krr = tmp_path / "krr_outputs"
+    # Manifest says law_b is a stub, but its peep file lacks the
+    # contentStatus marker.
+    _stub_peep(krr, "law_b", content_status=None)
+    _laws_manifest(krr, [{"title": "Law B", "slug": "law_b", "status": "stub"}])
+    validate_all.validate_act_coverage_reconciliation(krr)
+    assert any("noStructuredBody" in e for e in validate_all.errors), validate_all.errors
+
+
+def test_act_coverage_reconciliation_accepts_multipart_osa_files(tmp_path):
+    krr = tmp_path / "krr_outputs"
+    # Multipart law: two osa peep files, one manifest entry.
+    write_json(krr / "big_law_osa1_peep.json", {"@graph": [
+        {"@id": "estleg:BIG_Osa1_Map_2026", "@type": ["owl:Ontology", "estleg:Act", "estleg:Law", "estleg:Part"],
+         "dc:source": "big_law", "estleg:contentStatus": "structuredBody"},
+    ]})
+    write_json(krr / "big_law_osa2_peep.json", {"@graph": [
+        {"@id": "estleg:BIG_Osa2_Map_2026", "@type": ["owl:Ontology", "estleg:Act", "estleg:Law", "estleg:Part"],
+         "dc:source": "big_law", "estleg:contentStatus": "structuredBody"},
+    ]})
+    _laws_manifest(krr, [{"title": "Big Law", "slug": "big_law", "status": "full"}])
+    validate_all.validate_act_coverage_reconciliation(krr)
+    assert validate_all.errors == [], validate_all.errors
+
+
+# ---------------------------------------------------------------------------
 # Regression tests for #158 (subcorpus parity, classifier, reporter, mtime).
 # ---------------------------------------------------------------------------
 

@@ -270,21 +270,52 @@ For each regulation, the generator emits one provision class named `estleg:Regul
 | `estleg:annexNumber` | `xsd:string` | Annex number as printed in the regulation (`Annex` only) |
 | `dcterms:source` | IRI | Link to the original act XML on riigiteataja.ee |
 
-### Source And Title Provenance Contract
+### Source provenance
 
-Generators use the same provenance shape for act-level ontology nodes:
+This is the **single normative contract** for how generated ontology
+nodes (act-level and provision-level alike) carry "where this came
+from" and "what this is called" metadata. It supersedes the looser
+guidance that appeared in earlier revisions. The contract is
+intentional and stable: `dc:source` is **not** scheduled for removal —
+it is the legacy, human-readable descriptor and downstream consumers
+still depend on it. The two `dc*` predicates are *complementary*, not
+alternatives, and they carry **different kinds of value**:
 
-| Property | Type | Contract |
-|----------|------|----------|
-| `dcterms:source` | `{"@id": "https://..."}` | Resolvable canonical source IRI for the concrete source record or XML |
-| `owl:sameAs` | `{"@id": "https://..."}` | Same source IRI when the source URL identifies the act text itself |
-| `dcterms:title` | language-tagged string or plain string | Canonical source title of the act |
-| `dc:source` | plain string | Legacy title/source label retained for backward compatibility; do not use it for resolvable IRIs |
-| `estleg:contentStatus` | string | `structuredBody`, `noStructuredBody`, `controlledVocabulary`, or a more specific documented status |
+| Property | Type | Carries | Stability |
+|----------|------|---------|-----------|
+| `dcterms:source` | IRI object `{"@id": "https://..."}` | The **canonical, resolvable source IRI/URL** for the concrete source record (e.g. the Riigi Teataja act XML at `https://www.riigiteataja.ee/akt/<globalId>.xml`, an EUR-Lex CELEX URL, an EIS document URL, a riigikohus.ee decision URL). Reserved for IRI objects only — never a bare string. Enforced by `validate_source_provenance` in `validate_all.py`. | Canonical; new data SHOULD emit this whenever an authoritative IRI exists. |
+| `owl:sameAs` | IRI object `{"@id": "https://..."}` | The same source IRI as `dcterms:source` **when that URL identifies the act text itself** (i.e. it is not merely "about" the act but *is* the act). Optional; only emitted for sources that are the canonical text. | Stable. |
+| `dcterms:title` | language-tagged string (or plain string) | The **canonical source title** of the act/document as published (e.g. `"Karistusseadustik"@et`). This is the preferred field for a clean, structured title. | Stable; preferred for titles. |
+| `dc:source` | plain string (or array of plain strings) | **Legacy — the human-readable source descriptor.** Depending on the document type this is the RT/source citation string, the act title, or the originating-database name (e.g. `"Karistusseadustik"`, `"Riigi Teataja XML"`, `"Eelnõude infosüsteem (EIS) – eelnoud.valitsus.ee"`, `"Riigikohus – rikos.rik.ee"`, `"EUR-Lex – eur-lex.europa.eu"`). It is **semantically overloaded by design** — it is whatever a human would read as "the source" for that document type. Multi-valued arrays of strings are permitted and are preserved losslessly (issue #159); a single-element array is collapsed back to a scalar by `fix_all_issues.normalize_dc_source`. Typing is enforced by `validate_dc_source` in `validate_all.py`. | **Stable but legacy.** New data SHOULD ALSO emit `dcterms:source` (IRI) and/or `dcterms:title` (structured title) where an authoritative value exists. `dc:source` is **not to be removed** — consumers rely on it as the human-readable fallback. |
+| `estleg:contentStatus` | string | `structuredBody`, `noStructuredBody`, `controlledVocabulary`, or a more specific documented status. (Not a provenance field per se, but emitted alongside the above on act nodes.) | Stable. |
 
-New generators should write `dcterms:source` for URLs and `dcterms:title`
-for titles. Downstream enrichers should prefer `dcterms:title`, then
-`dc:source`, then `rdfs:label` only as a fallback.
+#### Consumer fallback chain
+
+When a downstream enricher needs **"the resolvable source URL"**, use:
+
+> `dcterms:source` IRI → (if absent) parse a URL out of `dc:source` only if it is actually a URL → (if absent) no resolvable source.
+
+When a downstream enricher needs **"the title / display name of the act"**, use:
+
+> `dcterms:title` → (if absent) `dc:source` string → (if absent) `rdfs:label`.
+
+`estleg_common.source_provenance(rt_url=None, db_name=None, label=None)`
+returns the canonical `dc:source` / `dcterms:source` / `dcterms:title`
+field pair built to this contract; see that helper's docstring. Note
+that most generators construct these fields inline today — the helper
+documents and centralises the shape, it is not (yet) wired through
+every generator.
+
+#### Why `dc:source` stays overloaded (and that is fine)
+
+A corpus-wide migration to split `dc:source` into one-meaning-per-field
+was considered and **deliberately not done**: (1) `dcterms:source`
+already carries the unambiguous resolvable IRI, (2) `dcterms:title`
+already carries the structured title, (3) `dc:source` is now documented
+as exactly "the human-readable source descriptor for this document
+type", and (4) breaking the existing `dc:source` shape would churn
+every consumer for no semantic gain. The overload is therefore a
+**documented, intentional contract**, not an outstanding defect.
 
 ### Domestic Regulation Example
 

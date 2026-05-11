@@ -18,6 +18,7 @@ import sys
 import time
 import xml.etree.ElementTree as ET
 import argparse
+from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -32,6 +33,8 @@ SEARCH_URL = "https://www.riigiteataja.ee/api/oigusakt_otsing/1/otsi"
 BASE_URL = "https://www.riigiteataja.ee"
 NS = "https://data.riik.ee/ontology/estleg#"
 DEFAULT_KEHTIV = "2026-05-01"
+GENERATION_MODES = ("missing-only", "refresh", "force")
+MANIFEST_NAME = "generation_manifest_laws.json"
 
 CONTEXT = {
     "estleg": NS,
@@ -600,6 +603,19 @@ def _unique_prefix(
     return alloc.allocate(abbreviation, slug, title)
 
 
+def _kehtiv_node(kehtiv: str | None) -> dict | None:
+    """Return the ``estleg:kehtiv`` literal value for an ontology node.
+
+    Mirrors ``generate_regulations.build_regulation_jsonld``: the snapshot
+    date is stamped as an ``xsd:date`` literal so a downstream staleness
+    audit (or ``--missing-only`` re-run) can compare a stored snapshot
+    date against the current run cleanly.
+    """
+    if not kehtiv:
+        return None
+    return {"@value": kehtiv, "@type": "xsd:date"}
+
+
 def generate_law_jsonld(
     title: str,
     slug: str,
@@ -607,9 +623,16 @@ def generate_law_jsonld(
     abbreviation: str = "",
     rt_url: str = "",
     *,
+    kehtiv: str | None = None,
     allocator: PrefixAllocator | None = None,
 ) -> dict:
-    """Generate JSON-LD for a single law."""
+    """Generate JSON-LD for a single law.
+
+    ``kehtiv`` (when supplied) is stamped onto the ``owl:Ontology`` node
+    as ``estleg:kehtiv`` (xsd:date), mirroring
+    ``generate_regulations.build_regulation_jsonld`` so that
+    ``missing-only`` re-runs can refresh stale snapshots.
+    """
     prefix = _unique_prefix(abbreviation, slug, title, allocator=allocator)
 
     # Collect all paragrahv elements
@@ -656,6 +679,9 @@ def generate_law_jsonld(
     if rt_source_url:
         ontology_node["dcterms:source"] = {"@id": rt_source_url}
         ontology_node["owl:sameAs"] = {"@id": rt_source_url}
+    kehtiv_value = _kehtiv_node(kehtiv)
+    if kehtiv_value is not None:
+        ontology_node["estleg:kehtiv"] = kehtiv_value
 
     graph: list[dict] = [
         ontology_node,
@@ -887,9 +913,15 @@ def generate_law_stub_jsonld(
     rt_url: str = "",
     *,
     content_status: str = "noStructuredBody",
+    kehtiv: str | None = None,
     allocator: PrefixAllocator | None = None,
 ) -> dict:
-    """Generate an act-level representation for laws without paragraph nodes."""
+    """Generate an act-level representation for laws without paragraph nodes.
+
+    ``kehtiv`` (when supplied) is stamped as ``estleg:kehtiv`` (xsd:date)
+    so missing-only re-runs can refresh stale stubs the same way they
+    refresh structured law files.
+    """
     prefix = _unique_prefix(abbreviation, slug, title, allocator=allocator)
     # Issue #165 fix 5: rt_url may be None (or empty) for laws missing a
     # Riigi Teataja link, so guard against ``None.startswith``.
@@ -911,6 +943,9 @@ def generate_law_stub_jsonld(
     if rt_source_url:
         ontology_node["dcterms:source"] = {"@id": rt_source_url}
         ontology_node["owl:sameAs"] = {"@id": rt_source_url}
+    kehtiv_value = _kehtiv_node(kehtiv)
+    if kehtiv_value is not None:
+        ontology_node["estleg:kehtiv"] = kehtiv_value
     return {"@context": CONTEXT, "@graph": [ontology_node]}
 
 
@@ -921,11 +956,17 @@ def generate_multipart_law(
     abbreviation: str = "",
     rt_url: str = "",
     *,
+    kehtiv: str | None = None,
     allocator: PrefixAllocator | None = None,
 ) -> list[tuple[str, dict]]:
-    """Generate separate JSON-LD files for each osa (part) of a multi-part law."""
+    """Generate separate JSON-LD files for each osa (part) of a multi-part law.
+
+    ``kehtiv`` (when supplied) is stamped as ``estleg:kehtiv`` (xsd:date)
+    on every per-osa ``owl:Ontology`` node.
+    """
     prefix = _unique_prefix(abbreviation, slug, title, allocator=allocator)
     results = []
+    kehtiv_value = _kehtiv_node(kehtiv)
 
     # Construct Riigi Teataja source URL
     rt_source_url = ""
@@ -972,6 +1013,8 @@ def generate_multipart_law(
         if rt_source_url:
             osa_ontology_node["dcterms:source"] = {"@id": rt_source_url}
             osa_ontology_node["owl:sameAs"] = {"@id": rt_source_url}
+        if kehtiv_value is not None:
+            osa_ontology_node["estleg:kehtiv"] = kehtiv_value
 
         graph: list[dict] = [
             osa_ontology_node,
@@ -1216,6 +1259,231 @@ def save_json(filepath: Path, doc: dict):
         f.write("\n")
 
 
+def _ontology_node(doc: dict) -> dict | None:
+    """Return the first ``owl:Ontology`` node in a doc's ``@graph``."""
+    for node in doc.get("@graph", []):
+        if not isinstance(node, dict):
+            continue
+        types = node.get("@type") or []
+        if isinstance(types, str):
+            types = [types]
+        if "owl:Ontology" in types:
+            return node
+    return None
+
+
+def _stored_literal(value: object) -> str | None:
+    """Unwrap a JSON-LD literal (``{"@value": ...}``) to a plain string."""
+    if value is None:
+        return None
+    if isinstance(value, dict):
+        inner = value.get("@value")
+        return None if inner is None else str(inner)
+    return str(value)
+
+
+def existing_law_is_stale(
+    existing_doc: dict,
+    current_kehtiv: str | None,
+    current_tid: str | None = None,
+) -> bool:
+    """Return True when an already-written law file is stale w.r.t. this run.
+
+    Analogous to ``generate_regulations.existing_is_stale``. A file is
+    stale when, on its first ``owl:Ontology`` node:
+      * the stored ``estleg:kehtiv`` snapshot date is missing or differs
+        from the current run's ``current_kehtiv``, OR
+      * a ``current_tid`` was supplied and the stored
+        ``estleg:terviktekstId`` differs from it.
+
+    Returns False when the document is unreadable / has no ontology node
+    (the caller already treats those as "needs write"), or when neither
+    comparison could be made because no expected values were supplied.
+    """
+    if not isinstance(existing_doc, dict):
+        return False
+    ontology = _ontology_node(existing_doc)
+    if ontology is None:
+        return False
+
+    if current_tid:
+        stored_tid = _stored_literal(ontology.get("estleg:terviktekstId"))
+        if stored_tid and stored_tid != str(current_tid):
+            return True
+
+    if current_kehtiv:
+        stored_kehtiv = _stored_literal(ontology.get("estleg:kehtiv"))
+        if stored_kehtiv is None or stored_kehtiv != str(current_kehtiv):
+            return True
+
+    return False
+
+
+def _load_existing_doc(path: Path) -> dict | None:
+    """Read a JSON document off disk, returning None on any error."""
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except (json.JSONDecodeError, OSError):
+        return None
+
+
+def existing_doc_matches(path: Path, doc: dict) -> bool:
+    """Return True iff ``path`` already contains exactly ``doc``."""
+    existing = _load_existing_doc(path)
+    if existing is None:
+        return False
+    return existing == doc
+
+
+def write_law_output(
+    out_path: Path,
+    doc: dict,
+    *,
+    mode: str,
+    expected_kehtiv: str | None = None,
+    expected_tid: str | None = None,
+) -> str:
+    """Write one law artifact and return a run-stat status key.
+
+    Mirrors ``generate_regulations.write_regulation_output``:
+
+      * ``missing-only`` — skip when the on-disk file is present and not
+        stale (``existingSkipped``); otherwise refresh it in place
+        (``refreshedStale`` when a stale file was overwritten,
+        ``newlyGenerated`` when there was nothing there before).
+      * ``refresh`` — rewrite when the generated JSON-LD changed
+        (``refreshed``), leave it alone otherwise (``unchanged``).
+      * ``force`` — always rewrite (``forceRewritten``, or
+        ``newlyGenerated`` when the file did not exist).
+    """
+    if mode not in GENERATION_MODES:
+        raise ValueError(f"Unsupported generation mode: {mode}")
+
+    existed = out_path.exists()
+    if existed and mode == "missing-only":
+        existing = _load_existing_doc(out_path)
+        if existing is not None and not existing_law_is_stale(
+            existing, expected_kehtiv, expected_tid
+        ):
+            return "existingSkipped"
+        save_json(out_path, doc)
+        return "refreshedStale"
+    if existed and mode == "refresh" and existing_doc_matches(out_path, doc):
+        return "unchanged"
+
+    save_json(out_path, doc)
+    if not existed:
+        return "newlyGenerated"
+    if mode == "force":
+        return "forceRewritten"
+    return "refreshed"
+
+
+def _law_file_base_slug(name: str) -> str:
+    """Return the law slug for a peep filename.
+
+    Strips the trailing ``_peep.json`` and any ``_osaN`` part suffix so a
+    multipart law's per-osa files all resolve to the parent slug:
+      * ``advokatuuriseadus_peep.json`` -> ``advokatuuriseadus``
+      * ``volaigusseadus_osa2_peep.json`` -> ``volaigusseadus``
+    """
+    stem = name[: -len("_peep.json")] if name.endswith("_peep.json") else name
+    return re.sub(r"_osa\d+$", "", stem)
+
+
+def source_removed_law_files(
+    krr_dir: Path,
+    current_titles: set[str],
+    *,
+    multipart_titles: set[str] | None = None,
+) -> list[str]:
+    """List root ``*_peep.json`` files whose law is no longer in the source.
+
+    Identity is slug-based (``slugify(title)``) rather than ``dc:source``
+    text, so the check is robust to historical drift in the ``dc:source``
+    literal format. A file is reported when the slug derived from its
+    filename (with any ``_osaN`` suffix stripped) does not match the
+    slug of any title in ``current_titles`` (the titles the live search
+    returned this run). Reported, NOT deleted — mirrors
+    ``generate_regulations.source_removed_files``.
+    """
+    current_slugs = {slugify(t) for t in current_titles}
+    # A multipart law also "owns" its per-osa slug shape; nothing extra to
+    # add to the set because ``_law_file_base_slug`` already collapses
+    # ``_osaN`` back to the parent slug.
+    removed: list[str] = []
+    for path in sorted(krr_dir.glob("*_peep.json")):
+        base_slug = _law_file_base_slug(path.name)
+        if base_slug and base_slug not in current_slugs:
+            removed.append(path.name)
+    return removed
+
+
+# ---------------------------------------------------------------------------
+# Manifest replay (#108)
+# ---------------------------------------------------------------------------
+
+
+def load_law_list_from_manifest(manifest_path: Path) -> dict[str, dict]:
+    """Read a previously-emitted manifest and reconstruct an ``all_laws``-like dict.
+
+    The returned shape matches what ``get_all_laws`` produces
+    (``{title: {"gid", "tid", "url", "kehtivus", "lyhend"}}``) so the rest
+    of ``main()`` can run unchanged. Only the act *list* is replayed —
+    the per-act XML is still fetched live (keyed on the recorded
+    ``terviktekstId`` so a snapshot edition that has since changed misses
+    the cache). The ``outputsAll`` block is preferred; ``outputs`` /
+    ``outputsGenerated`` are accepted as fallbacks for older manifests.
+
+    Raises ``ValueError`` when the manifest is missing, unreadable, or
+    carries no usable act list.
+    """
+    if not manifest_path.exists():
+        raise ValueError(f"Manifest not found: {manifest_path}")
+    try:
+        with open(manifest_path, "r", encoding="utf-8") as f:
+            manifest = json.load(f)
+    except (json.JSONDecodeError, OSError) as exc:
+        raise ValueError(f"Cannot read manifest {manifest_path}: {exc}") from exc
+    if not isinstance(manifest, dict):
+        raise ValueError(f"Manifest {manifest_path} is not a JSON object")
+
+    entries = None
+    for key in ("outputsAll", "outputsGenerated", "outputs"):
+        candidate = manifest.get(key)
+        if isinstance(candidate, list) and candidate:
+            entries = candidate
+            break
+    if not entries:
+        raise ValueError(
+            f"Manifest {manifest_path} has no outputsAll/outputsGenerated/outputs list"
+        )
+
+    all_laws: dict[str, dict] = {}
+    for entry in entries:
+        if not isinstance(entry, dict):
+            continue
+        title = entry.get("title")
+        if not isinstance(title, str) or not title:
+            continue
+        url = entry.get("sourceUrl") or ""
+        if isinstance(url, str) and url.startswith(BASE_URL):
+            url = url[len(BASE_URL):]
+        all_laws[title] = {
+            "gid": "" if entry.get("globaalId") is None else str(entry.get("globaalId")),
+            "tid": "" if entry.get("terviktekstId") is None else str(entry.get("terviktekstId")),
+            "url": url,
+            "kehtivus": {},
+            "lyhend": entry.get("lyhend", ""),
+        }
+    if not all_laws:
+        raise ValueError(
+            f"Manifest {manifest_path} produced an empty law list (no usable entries)"
+        )
+    return all_laws
+
+
 # Laws that should be split by osa (large multi-part laws)
 MULTIPART_LAWS = {
     "Võlaõigusseadus",
@@ -1230,13 +1498,58 @@ MULTIPART_LAWS = {
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     mode = parser.add_mutually_exclusive_group()
-    mode.add_argument("--missing-only", action="store_true", help="Only create outputs that do not exist. Default.")
+    mode.add_argument("--missing-only", action="store_true", help="Only create outputs that do not exist (refreshing stale snapshots). Default.")
     mode.add_argument("--refresh", action="store_true", help="Refresh expected outputs for every source act.")
     mode.add_argument("--force", action="store_true", help="Force regeneration of every source act output.")
     parser.add_argument("--kehtiv", default=DEFAULT_KEHTIV, help="Snapshot date YYYY-MM-DD (default: %(default)s).")
+    parser.add_argument(
+        "--from-manifest",
+        default=None,
+        metavar="PATH",
+        help=(
+            "Replay the law list from a previously-emitted manifest "
+            "(its outputsAll block) instead of querying the live search. "
+            "Per-act XML is still fetched (keyed on the recorded terviktekstId)."
+        ),
+    )
     parser.add_argument("--allow-partial", action="store_true", help="Allow source-list fetch failures and mark the run partial.")
     parser.add_argument("--limit", type=int, default=None, help="Process at most N law titles.")
     return parser.parse_args()
+
+
+def _manifest_entry(
+    title: str,
+    info: dict,
+    *,
+    slug_override: str | None = None,
+    status: str = "full",
+    reason: str | None = None,
+) -> dict:
+    """Build a per-act manifest entry from an ``all_laws`` row.
+
+    Issue #119: ``status`` records whether the act was modeled with a
+    structured body (``full``), as an act-level stub (``stub``), or could
+    not be fetched/parsed (``failed``); ``skipped`` means the act was not
+    selected for (re)generation this run (e.g. ``missing-only`` and the
+    file is already up to date). ``reason`` carries a short human note for
+    non-``full`` statuses.
+    """
+    slug = slug_override if slug_override is not None else slugify(title)
+    url = info.get("url") or ""
+    source_url = (
+        BASE_URL + url if isinstance(url, str) and url.startswith("/") else url
+    )
+    entry: dict = {
+        "title": title,
+        "slug": slug,
+        "terviktekstId": info.get("tid"),
+        "globaalId": info.get("gid"),
+        "sourceUrl": source_url,
+        "status": status,
+    }
+    if reason:
+        entry["reason"] = reason
+    return entry
 
 
 def main():
@@ -1252,13 +1565,34 @@ def main():
     # processes, REPL sessions, etc.) cannot bias prefix selection.
     _default_allocator.reset()
 
-    # Step 1: Get all laws from API
-    print("\n[1/4] Fetching law list from Riigi Teataja API...")
-    try:
-        all_laws, source_manifest = get_all_laws(kehtiv=args.kehtiv, allow_partial=args.allow_partial)
-    except SourceListFetchError as exc:
-        print(f"  FATAL: {exc}")
-        sys.exit(2)
+    # Step 1: Get the law list — either replayed from a manifest (#108)
+    # or queried live from Riigi Teataja.
+    from_manifest = getattr(args, "from_manifest", None)
+    if from_manifest:
+        print(f"\n[1/4] Replaying law list from manifest: {from_manifest}")
+        try:
+            all_laws = load_law_list_from_manifest(Path(from_manifest))
+        except ValueError as exc:
+            print(f"  FATAL: {exc}")
+            sys.exit(2)
+        source_manifest = {
+            "requestedDocument": "seadus",
+            "kehtiv": args.kehtiv,
+            "replayedFromManifest": str(from_manifest),
+            "uniqueActs": len(all_laws),
+            # A replay regenerates only from the recorded act list; the
+            # live source list is *not* re-queried, so we cannot vouch
+            # for its completeness beyond what the manifest captured.
+            "complete": True,
+            "partialAllowed": args.allow_partial,
+        }
+    else:
+        print("\n[1/4] Fetching law list from Riigi Teataja API...")
+        try:
+            all_laws, source_manifest = get_all_laws(kehtiv=args.kehtiv, allow_partial=args.allow_partial)
+        except SourceListFetchError as exc:
+            print(f"  FATAL: {exc}")
+            sys.exit(2)
     if args.limit is not None:
         all_laws = dict(list(sorted(all_laws.items()))[:args.limit])
         source_manifest["limited"] = True
@@ -1270,14 +1604,37 @@ def main():
     existing = get_existing_files()
     print(f"  Found {len(existing)} existing output files")
 
-    # Step 3: Determine which laws to generate
-    to_generate = {}
+    # Step 3: Determine which laws to (re)generate. In missing-only mode
+    # an act is still selected when its on-disk snapshot is stale
+    # (estleg:kehtiv drift) so a stale snapshot gets refreshed quietly —
+    # this covers both the single-file shape (``<slug>_peep.json``) and
+    # multipart laws (any ``<slug>_osa*_peep.json`` whose stored snapshot
+    # is out of date).
+    def _existing_paths(slug: str, title: str) -> list[Path]:
+        out: list[Path] = []
+        single = KRR_DIR / f"{slug}_peep.json"
+        if single.exists():
+            out.append(single)
+        if title in MULTIPART_LAWS:
+            out.extend(sorted(KRR_DIR.glob(f"{slug}_osa*_peep.json")))
+        return out
+
+    to_generate: dict[str, dict] = {}
     already_mapped = 0
     for title, info in sorted(all_laws.items()):
         slug = slugify(title)
         if mode == "missing-only" and has_existing_output(existing, title, slug):
-            already_mapped += 1
-            continue
+            stale = False
+            for path in _existing_paths(slug, title):
+                existing_doc = _load_existing_doc(path)
+                if existing_doc is not None and existing_law_is_stale(
+                    existing_doc, args.kehtiv, info.get("tid")
+                ):
+                    stale = True
+                    break
+            if not stale:
+                already_mapped += 1
+                continue
         to_generate[title] = {**info, "slug": slug}
 
     print(f"  Already mapped: {already_mapped}")
@@ -1285,9 +1642,20 @@ def main():
 
     # Step 4: Generate each law
     print(f"\n[3/4] Generating {len(to_generate)} laws...")
+    run_counts = Counter({
+        "newlyGenerated": 0,
+        "existingSkipped": 0,
+        "refreshedStale": 0,
+        "unchanged": 0,
+        "refreshed": 0,
+        "forceRewritten": 0,
+    })
     generated = 0
     failed = 0
-    skipped = 0
+    skipped = 0  # stub acts (no structured body)
+    # Per-act outcome ledger keyed by title: (status, reason). Folded into
+    # the manifest's outputsAll/outputsGenerated entries (#119).
+    act_status: dict[str, tuple[str, str | None]] = {}
 
     for i, (title, info) in enumerate(sorted(to_generate.items()), 1):
         slug = info["slug"]
@@ -1303,18 +1671,30 @@ def main():
         if root is None:
             print("    SKIP: Could not fetch XML")
             failed += 1
+            act_status[title] = ("failed", "XML fetch/parse failed")
             continue
 
         # Count paragraphs
         par_count = sum(1 for el in root.iter() if ln(el.tag) == "paragrahv")
         if par_count == 0:
-            doc = generate_law_stub_jsonld(title, slug, root, abbreviation, rt_url=url)
+            doc = generate_law_stub_jsonld(
+                title, slug, root, abbreviation, rt_url=url, kehtiv=args.kehtiv
+            )
             filename = f"{slug}_peep.json"
             out_path = KRR_DIR / filename
-            save_json(out_path, doc)
-            print(f"    Saved stub: {filename} (no structured body)")
-            generated += 1
+            status = write_law_output(
+                out_path,
+                doc,
+                mode=mode,
+                expected_kehtiv=args.kehtiv,
+                expected_tid=info.get("tid"),
+            )
+            run_counts[status] += 1
+            if status != "existingSkipped":
+                generated += 1
             skipped += 1
+            print(f"    Saved stub: {filename} (no structured body, {status})")
+            act_status[title] = ("stub", "no structured paragraph nodes in source XML")
             continue
 
         # Check if multi-part
@@ -1322,69 +1702,100 @@ def main():
 
         if title in MULTIPART_LAWS and osa_count > 1:
             # Generate separate files per osa
-            results = generate_multipart_law(title, slug, root, abbreviation, rt_url=url)
+            results = generate_multipart_law(
+                title, slug, root, abbreviation, rt_url=url, kehtiv=args.kehtiv
+            )
             for filename, doc in results:
                 out_path = KRR_DIR / filename
-                # Issue #165 fix 3: respect the run mode. Previously the
-                # multipart branch hard-coded ``if not exists`` so
-                # ``--refresh``/``--force`` silently left stale osa
-                # outputs. Mirror the single-file branch.
-                if mode == "missing-only" and out_path.exists():
-                    continue
-                save_json(out_path, doc)
-                print(f"    Saved: {filename} ({len(doc['@graph'])} nodes)")
-                generated += 1
+                # Issue #165 fix 3 + #108: respect the run mode and refresh
+                # stale osa snapshots in missing-only (the multipart branch
+                # used to hard-code ``if not exists``).
+                status = write_law_output(
+                    out_path,
+                    doc,
+                    mode=mode,
+                    expected_kehtiv=args.kehtiv,
+                    expected_tid=info.get("tid"),
+                )
+                run_counts[status] += 1
+                if status != "existingSkipped":
+                    generated += 1
+                print(f"    Saved: {filename} ({len(doc['@graph'])} nodes, {status})")
+            act_status[title] = ("full", None)
         else:
             # Single file
-            doc = generate_law_jsonld(title, slug, root, abbreviation, rt_url=url)
+            doc = generate_law_jsonld(
+                title, slug, root, abbreviation, rt_url=url, kehtiv=args.kehtiv
+            )
             filename = f"{slug}_peep.json"
             out_path = KRR_DIR / filename
-            save_json(out_path, doc)
+            status = write_law_output(
+                out_path,
+                doc,
+                mode=mode,
+                expected_kehtiv=args.kehtiv,
+                expected_tid=info.get("tid"),
+            )
+            run_counts[status] += 1
+            if status != "existingSkipped":
+                generated += 1
             node_count = len(doc["@graph"])
-            print(f"    Saved: {filename} ({node_count} nodes, {par_count} paragraphs)")
-            generated += 1
+            print(f"    Saved: {filename} ({node_count} nodes, {par_count} paragraphs, {status})")
+            act_status[title] = ("full", None)
 
         # Rate limit - be polite to Riigi Teataja
         time.sleep(0.3)
+
+    # Source-removed detection (#108): existing peep files whose law title
+    # no longer appears in the current source list. Reported, not deleted.
+    source_removed = source_removed_law_files(
+        KRR_DIR, set(all_laws), multipart_titles=MULTIPART_LAWS
+    )
 
     # Step 4: Summary
     print("\n" + "=" * 70)
     print("[4/4] SUMMARY")
     print("=" * 70)
     print(f"  Total laws in Riigi Teataja: {len(all_laws)}")
-    print(f"  Already mapped: {already_mapped}")
-    print(f"  Newly generated: {generated}")
-    print(f"  Skipped (no paragraphs): {skipped}")
-    print(f"  Failed (fetch errors): {failed}")
-    print(f"  Total files now: {len(list(KRR_DIR.glob('*_peep.json')))}")
-
-    def _entry(title: str, info: dict, slug_override: str | None = None) -> dict:
-        """Build a manifest entry from an ``all_laws`` row."""
-        slug = slug_override if slug_override is not None else slugify(title)
-        url = info.get("url") or ""
-        source_url = (
-            BASE_URL + url if isinstance(url, str) and url.startswith("/") else url
-        )
-        return {
-            "title": title,
-            "slug": slug,
-            "terviktekstId": info.get("tid"),
-            "globaalId": info.get("gid"),
-            "sourceUrl": source_url,
-        }
+    print(f"  Already mapped (up to date): {already_mapped}")
+    print(f"  Newly generated/written:     {generated}")
+    print(f"  Unchanged (refresh):         {run_counts['unchanged']}")
+    print(f"  Refreshed stale (missing-only): {run_counts['refreshedStale']}")
+    print(f"  Refreshed (refresh):         {run_counts['refreshed']}")
+    print(f"  Force rewritten:             {run_counts['forceRewritten']}")
+    print(f"  Stub acts (no paragraphs):   {skipped}")
+    print(f"  Failed (fetch errors):       {failed}")
+    print(f"  Source-removed peep files:   {len(source_removed)}")
+    print(f"  Total files now:             {len(list(KRR_DIR.glob('*_peep.json')))}")
 
     # Issue #165 fix 8: ``outputs`` keeps the existing meaning (delta
-    # for this run). ``outputsAll`` is the new mode-invariant
-    # projection of every act in ``all_laws`` regardless of whether
-    # it was regenerated this pass.
-    outputs_all = [
-        _entry(title, info)
-        for title, info in sorted(all_laws.items())
-    ]
-    outputs_generated = [
-        _entry(title, info, info.get("slug"))
-        for title, info in sorted(to_generate.items())
-    ]
+    # for this run). ``outputsAll`` is the mode-invariant projection of
+    # every act. Issue #119: each entry now carries ``status`` (and an
+    # optional ``reason``).
+    def _status_for(title: str) -> tuple[str, str | None]:
+        if title in act_status:
+            return act_status[title]
+        if title in to_generate:
+            # Selected but never reached (shouldn't happen) — be honest.
+            return ("failed", "not processed")
+        # Not selected this run: in missing-only that means an existing
+        # up-to-date file, in refresh/force it can't happen.
+        return ("skipped", "existing file up to date" if mode == "missing-only" else None)
+
+    outputs_all = []
+    for title, info in sorted(all_laws.items()):
+        status, reason = _status_for(title)
+        outputs_all.append(_manifest_entry(title, info, status=status, reason=reason))
+    outputs_generated = []
+    for title, info in sorted(to_generate.items()):
+        status, reason = _status_for(title)
+        outputs_generated.append(
+            _manifest_entry(
+                title, info, slug_override=info.get("slug"), status=status, reason=reason
+            )
+        )
+
+    status_counts = Counter(entry["status"] for entry in outputs_all)
 
     manifest = {
         "generated": datetime.now(timezone.utc).isoformat(),
@@ -1397,14 +1808,32 @@ def main():
             "generatedFiles": generated,
             "stubbedActs": skipped,
             "failedFetches": failed,
+            "fullActs": status_counts.get("full", 0),
+            "stubActs": status_counts.get("stub", 0),
+            "failedActs": status_counts.get("failed", 0),
+            "skippedActs": status_counts.get("skipped", 0),
+        },
+        # Unchanged/refreshed split mirroring generate_regulations' run block.
+        "run": {
+            "generationMode": mode,
+            "newlyGenerated": run_counts["newlyGenerated"],
+            "existingSkipped": run_counts["existingSkipped"] + already_mapped,
+            "refreshedStale": run_counts["refreshedStale"],
+            "unchanged": run_counts["unchanged"],
+            "refreshed": run_counts["refreshed"],
+            "forceRewritten": run_counts["forceRewritten"],
+            "failedFetches": failed,
+            "partialAllowed": args.allow_partial,
+            "sourceRemovedFromSnapshotCount": len(source_removed),
+            "sourceRemovedFromSnapshot": source_removed,
         },
         # Backwards-compat alias: old downstreams keep working.
         "outputs": outputs_generated,
-        # New keys (#165 fix 8):
+        # New keys (#165 fix 8 / #119):
         "outputsGenerated": outputs_generated,
         "outputsAll": outputs_all,
     }
-    save_json(KRR_DIR / "generation_manifest_laws.json", manifest)
+    save_json(KRR_DIR / MANIFEST_NAME, manifest)
 
 
 if __name__ == "__main__":

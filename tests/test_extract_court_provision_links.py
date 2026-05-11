@@ -17,9 +17,12 @@ from extract_court_provision_links import (
     PAT_RTIV,
     _expand_par_range,
     _trim_municipality_to_known_issuer,
+    build_abbreviation_to_prefix,
     build_kov_act_index,
+    build_provision_index,
     expand_two_digit_year,
     extract_citations_from_text,
+    process_court_files,
     resolve_kov_citation,
 )
 
@@ -859,3 +862,98 @@ class TestIssue172PatKovActLeftAnchor:
             f"trim should have recovered the runaway municipality; "
             f"got iri={iri}, reason={reason}"
         )
+
+
+# ---------------------------------------------------------------------------
+# Regression for #121: estleg:summary on court decisions and estleg:sourceAct
+# on provisions must be read through jsonld_text so a fresh-generator
+# value-object corpus resolves identically to a normalized plain-string one.
+# ---------------------------------------------------------------------------
+
+def _write_provision_peep(path: Path, source_act_value) -> None:
+    path.write_text(json.dumps({
+        "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+                     "owl": "http://www.w3.org/2002/07/owl#"},
+        "@graph": [
+            {"@id": "estleg:Karistusseadustik_Map_2026",
+             "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]},
+            {"@id": "estleg:Karistusseadustik_Par_121",
+             "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+             "estleg:sourceAct": source_act_value},
+        ],
+    }), encoding="utf-8")
+
+
+def test_build_provision_index_handles_value_object_source_act(tmp_path, monkeypatch):
+    """estleg:sourceAct as a {@value,@language} object keys
+    source_act_to_prefix by the unwrapped string, same as a plain string."""
+    plain_peep = tmp_path / "kars_plain_peep.json"
+    _write_provision_peep(plain_peep, "Karistusseadustik")
+    vo_peep = tmp_path / "kars_vo_peep.json"
+    _write_provision_peep(vo_peep, {"@value": "Karistusseadustik", "@language": "et"})
+
+    def run(peep):
+        monkeypatch.setattr(
+            "extract_court_provision_links.iter_peep_files",
+            lambda *, include_kov=True: [peep],
+        )
+        counters = _RunCounters()
+        return build_provision_index(counters)
+
+    _, plain_map, _ = run(plain_peep)
+    _, vo_map, _ = run(vo_peep)
+
+    assert plain_map == {"Karistusseadustik": "Karistusseadustik"}
+    assert vo_map == plain_map
+    # And the abbreviation bridge still resolves KarS → the prefix.
+    assert build_abbreviation_to_prefix(vo_map).get("KarS") == "Karistusseadustik"
+
+
+def test_process_court_files_handles_value_object_summary(tmp_path, monkeypatch):
+    """A court decision whose estleg:summary is a value object yields the
+    same interpretsLaw / interpretedBy links as a plain-string summary."""
+    import extract_court_provision_links as ecpl
+
+    abbrev_to_prefix = {"KarS": "Karistusseadustik"}
+    prefix_to_provisions = {
+        "Karistusseadustik": {"121": "estleg:Karistusseadustik_Par_121"},
+    }
+    summary_text = "Riigikohus tugines otsuses sättele KarS § 121."
+
+    def run(summary_value):
+        rk_dir = tmp_path / f"rk_{'vo' if isinstance(summary_value, dict) else 'plain'}"
+        rk_dir.mkdir()
+        (rk_dir / "riigikohus_2009_peep.json").write_text(json.dumps({
+            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+                         "owl": "http://www.w3.org/2002/07/owl#"},
+            "@graph": [
+                {"@id": "estleg:RK_FIXT_2009_1",
+                 "@type": ["owl:NamedIndividual", "estleg:CourtDecision"],
+                 "estleg:summary": summary_value},
+            ],
+        }), encoding="utf-8")
+        monkeypatch.setattr(ecpl, "RK_DIR", rk_dir)
+        counters = _RunCounters()
+        result = process_court_files(
+            abbrev_to_prefix,
+            prefix_to_provisions,
+            kov_index={},
+            kov_collision_keys=set(),
+            known_issuer_norms=set(),
+            counters=counters,
+        )
+        doc = json.loads(
+            (rk_dir / "riigikohus_2009_peep.json").read_text(encoding="utf-8")
+        )
+        decision = doc["@graph"][0]
+        iris = [v["@id"] for v in decision.get("estleg:interpretsLaw", [])]
+        return result, iris
+
+    plain_result, plain_iris = run(summary_text)
+    vo_result, vo_iris = run({"@value": summary_text, "@language": "et"})
+
+    assert plain_result.state_link_count == 1
+    assert plain_iris == ["estleg:Karistusseadustik_Par_121"]
+    assert vo_result.state_link_count == plain_result.state_link_count
+    assert vo_iris == plain_iris
+    assert dict(vo_result.interpreted_by) == dict(plain_result.interpreted_by)

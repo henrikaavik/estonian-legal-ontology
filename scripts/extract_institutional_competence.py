@@ -39,6 +39,12 @@ INST_DIR = KRR_DIR / "institutions"
 # avoid filesystem side effects on import.
 INSTIT_DIR = INST_DIR
 
+# Issue #118: curated alias table mapping historical/predecessor
+# institution slugs -> canonical successor slugs (e.g. the 2004
+# Maksuamet+Tolliamet -> Maksu- ja Tolliamet merger). Loaded once at
+# import; see data/institution_aliases.json for the evidence per entry.
+INSTITUTION_ALIASES_PATH = REPO_ROOT / "data" / "institution_aliases.json"
+
 
 def _ensure_dirs() -> None:
     """Create output directories. Called from main(); avoids import-time
@@ -116,6 +122,52 @@ _ABBREVIATION_MAP: dict[str, str] = {
     "ttja": "tarbijakaitse_ja_tehnilise_jarelevalve_amet",
     "harno": "haridus_ja_noorteamet",
 }
+
+
+def _load_institution_aliases(path: Path = INSTITUTION_ALIASES_PATH) -> dict[str, str]:
+    """Issue #118: load the curated historical-merge alias table.
+
+    Returns a flat ``{historical_slug: canonical_slug}`` map. Missing or
+    malformed file -> empty map (the extractor still runs; the noun-stem
+    normaliser alone is the previous behaviour). Both keys and values are
+    lowercased and underscore-collapsed so a lookup matches whatever
+    ``normalize_iri_suffix`` produces.
+    """
+    if not path.exists():
+        return {}
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            raw = json.load(f)
+    except (json.JSONDecodeError, OSError):
+        return {}
+    if not isinstance(raw, dict):
+        return {}
+    entries = raw.get("aliases")
+    if not isinstance(entries, dict):
+        return {}
+    out: dict[str, str] = {}
+    for key, value in entries.items():
+        if not isinstance(key, str):
+            continue
+        canonical: str | None = None
+        if isinstance(value, str):
+            canonical = value
+        elif isinstance(value, dict):
+            cand = value.get("canonical")
+            if isinstance(cand, str):
+                canonical = cand
+        if not canonical:
+            continue
+        norm_key = re.sub(r"_+", "_", key.lower()).strip("_")
+        norm_val = re.sub(r"_+", "_", canonical.lower()).strip("_")
+        if norm_key and norm_val and norm_key != norm_val:
+            out[norm_key] = norm_val
+    return out
+
+
+# Loaded once at import. Tests that need a different table can
+# monkeypatch this directly or re-run ``_load_institution_aliases``.
+_INSTITUTION_ALIASES: dict[str, str] = _load_institution_aliases()
 
 # Map known Estonian inflected forms to nominative (lowercase).
 # Issue #170 Finding 10: the old map enumerated double/triple-underscore
@@ -196,36 +248,52 @@ def _strip_estonian_case(stem: str) -> str:
     return stem
 
 
+def _apply_alias(slug: str) -> str:
+    """Issue #118: resolve a normalised slug through the historical-merge
+    alias table, following the chain (capped) in case an alias points at
+    a slug that is itself an alias key (defensive — the curated table
+    avoids this, but a future edit shouldn't loop)."""
+    seen: set[str] = set()
+    current = slug
+    while current in _INSTITUTION_ALIASES and current not in seen:
+        seen.add(current)
+        current = _INSTITUTION_ALIASES[current]
+    return current
+
+
 def normalize_iri_suffix(raw_suffix: str) -> str:
     """Normalize an IRI suffix to lowercase convention (matching institution
     definition files) and map known abbreviations/inflections to canonical forms.
 
-    Applies:
+    Applies, in order:
       1. Lowercase + underscore-collapse (existing).
       2. Abbreviation lookup (MTA, PPA, ...).
       3. Explicit inflection-map lookup (typo variants, KOV omavalitsus).
       4. Estonian case-suffix stripping for ``*amet`` / ``*ministeerium`` /
          ``*inspektsioon`` / ``*minister`` stems (Finding 5 — fixes inflated
          siblings like ``Institution_maksuametile``).
+      5. Issue #118: curated historical-merge alias table — applied LAST
+         (after de-inflection) so a de-inflected predecessor name like
+         ``maksuamet`` is collapsed onto its successor ``maksu_ja_tolliamet``.
     """
     lower = re.sub(r"_+", "_", raw_suffix.lower()).strip("_")
 
     # Check abbreviation map first
     if lower in _ABBREVIATION_MAP:
-        return _ABBREVIATION_MAP[lower]
+        return _apply_alias(_ABBREVIATION_MAP[lower])
 
     # Check inflection map
     if lower in _INFLECTION_MAP:
-        return _INFLECTION_MAP[lower]
+        return _apply_alias(_INFLECTION_MAP[lower])
 
     # Estonian case-suffix stripping — collapses inflected forms of *amet,
     # *ministeerium, *inspektsioon, *minister to their nominative stems.
     stripped = _strip_estonian_case(lower)
     if stripped != lower:
-        return stripped
+        return _apply_alias(stripped)
 
-    # Default: lowercase the entire suffix
-    return lower
+    # Default: lowercase the entire suffix, then resolve aliases.
+    return _apply_alias(lower)
 
 
 # owl:sameAs aliases: abbreviation IRI → canonical IRI (both lowercase)

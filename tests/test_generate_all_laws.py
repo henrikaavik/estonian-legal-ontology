@@ -852,3 +852,468 @@ class TestGenerateAllLawsNoPartialWrite:
         pages = manifest["source"]["pages"]
         assert pages["pagesFetchedOk"] >= 1
         assert pages["pagesFailed"] >= 1
+
+
+# ---------------------------------------------------------------------------
+# Issue #108 residual — estleg:kehtiv stamping, stale-snapshot refresh,
+# unchanged/refreshed counters, source-removed detection, manifest replay.
+# ---------------------------------------------------------------------------
+
+
+class TestKehtivStamping:
+    def test_structured_law_node_carries_kehtiv(self):
+        xml = (
+            "<akt><sisu><peatykk><peatykkNr>1</peatykkNr>"
+            "<peatykkPealkiri>P</peatykkPealkiri>"
+            "<paragrahv><paragrahvNr>1</paragrahvNr><kuvatavNr>S 1.</kuvatavNr>"
+            "<paragrahvPealkiri>Yks</paragrahvPealkiri>"
+            "<loige><loigeNr>1</loigeNr><tavatekst>Tekst.</tavatekst></loige>"
+            "</paragrahv></peatykk></sisu></akt>"
+        )
+        root = ET.fromstring(xml)
+        alloc = generate_all_laws.PrefixAllocator(registry={})
+        doc = generate_all_laws.generate_law_jsonld(
+            "Test seadus", "test_seadus", root, abbreviation="TKS",
+            kehtiv="2026-05-01", allocator=alloc,
+        )
+        ont = doc["@graph"][0]
+        assert ont["estleg:kehtiv"] == {"@value": "2026-05-01", "@type": "xsd:date"}
+
+    def test_stub_law_node_carries_kehtiv(self):
+        root = ET.fromstring("<akt><sisu /></akt>")
+        alloc = generate_all_laws.PrefixAllocator(registry={})
+        doc = generate_all_laws.generate_law_stub_jsonld(
+            "Treaty", "treaty_slug", root, abbreviation="TR",
+            rt_url="/akt/1.xml", kehtiv="2026-05-01", allocator=alloc,
+        )
+        ont = doc["@graph"][0]
+        assert ont["estleg:kehtiv"] == {"@value": "2026-05-01", "@type": "xsd:date"}
+
+    def test_multipart_osa_nodes_carry_kehtiv(self):
+        xml = """<akt><sisu>
+            <osa><osaNr>1</osaNr><osaPealkiri>One</osaPealkiri>
+              <paragrahv><paragrahvNr>1</paragrahvNr><kuvatavNr>S 1.</kuvatavNr>
+                <loige><loigeNr>1</loigeNr><tavatekst>Aaa.</tavatekst></loige></paragrahv>
+            </osa>
+            <osa><osaNr>2</osaNr><osaPealkiri>Two</osaPealkiri>
+              <paragrahv><paragrahvNr>2</paragrahvNr><kuvatavNr>S 2.</kuvatavNr>
+                <loige><loigeNr>1</loigeNr><tavatekst>Bbb.</tavatekst></loige></paragrahv>
+            </osa>
+        </sisu></akt>"""
+        root = ET.fromstring(xml)
+        alloc = generate_all_laws.PrefixAllocator(registry={})
+        results = generate_all_laws.generate_multipart_law(
+            "Multi", "multi", root, abbreviation="MUL",
+            kehtiv="2026-05-01", allocator=alloc,
+        )
+        assert len(results) == 2
+        for _name, doc in results:
+            assert doc["@graph"][0]["estleg:kehtiv"] == {
+                "@value": "2026-05-01", "@type": "xsd:date"
+            }
+
+    def test_no_kehtiv_means_no_stamp(self):
+        root = ET.fromstring("<akt><sisu /></akt>")
+        alloc = generate_all_laws.PrefixAllocator(registry={})
+        doc = generate_all_laws.generate_law_stub_jsonld(
+            "X", "x_slug", root, abbreviation="XX", rt_url="/akt/1.xml",
+            allocator=alloc,
+        )
+        assert "estleg:kehtiv" not in doc["@graph"][0]
+
+
+class TestExistingLawIsStale:
+    def _stub_doc(self, *, tid="100", kehtiv="2026-05-01"):
+        ont = {
+            "@id": "estleg:X_Map_2026",
+            "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
+            "estleg:terviktekstId": tid,
+        }
+        if kehtiv is not None:
+            ont["estleg:kehtiv"] = {"@value": kehtiv, "@type": "xsd:date"}
+        return {"@graph": [ont]}
+
+    def test_fresh_file_not_stale(self):
+        assert generate_all_laws.existing_law_is_stale(
+            self._stub_doc(), "2026-05-01", "100"
+        ) is False
+
+    def test_kehtiv_drift_marks_stale(self):
+        assert generate_all_laws.existing_law_is_stale(
+            self._stub_doc(kehtiv="2024-01-01"), "2026-05-01", "100"
+        ) is True
+
+    def test_missing_kehtiv_marks_stale(self):
+        assert generate_all_laws.existing_law_is_stale(
+            self._stub_doc(kehtiv=None), "2026-05-01", "100"
+        ) is True
+
+    def test_tid_drift_marks_stale(self):
+        assert generate_all_laws.existing_law_is_stale(
+            self._stub_doc(tid="100"), "2026-05-01", "200"
+        ) is True
+
+    def test_no_ontology_node_not_stale(self):
+        assert generate_all_laws.existing_law_is_stale(
+            {"@graph": [{"@id": "x"}]}, "2026-05-01", "100"
+        ) is False
+
+    def test_non_dict_not_stale(self):
+        assert generate_all_laws.existing_law_is_stale(None, "2026-05-01", "100") is False  # type: ignore[arg-type]
+
+
+class TestWriteLawOutput:
+    def test_missing_only_skips_fresh(self, tmp_path):
+        p = tmp_path / "x_peep.json"
+        doc = {"@graph": [{"@id": "estleg:X_Map_2026", "@type": ["owl:Ontology"],
+                           "estleg:terviktekstId": "100",
+                           "estleg:kehtiv": {"@value": "2026-05-01", "@type": "xsd:date"}}]}
+        p.write_text(json.dumps(doc), encoding="utf-8")
+        status = generate_all_laws.write_law_output(
+            p, doc, mode="missing-only", expected_kehtiv="2026-05-01", expected_tid="100",
+        )
+        assert status == "existingSkipped"
+
+    def test_missing_only_refreshes_stale(self, tmp_path):
+        p = tmp_path / "x_peep.json"
+        stale = {"@graph": [{"@id": "estleg:X_Map_2026", "@type": ["owl:Ontology"],
+                             "estleg:terviktekstId": "100",
+                             "estleg:kehtiv": {"@value": "2024-01-01", "@type": "xsd:date"}}]}
+        fresh = {"@graph": [{"@id": "estleg:X_Map_2026", "@type": ["owl:Ontology"],
+                             "estleg:terviktekstId": "100",
+                             "estleg:kehtiv": {"@value": "2026-05-01", "@type": "xsd:date"}}]}
+        p.write_text(json.dumps(stale), encoding="utf-8")
+        status = generate_all_laws.write_law_output(
+            p, fresh, mode="missing-only", expected_kehtiv="2026-05-01", expected_tid="100",
+        )
+        assert status == "refreshedStale"
+        assert json.loads(p.read_text(encoding="utf-8")) == fresh
+
+    def test_missing_only_new_file(self, tmp_path):
+        p = tmp_path / "x_peep.json"
+        doc = {"@graph": [{"@id": "estleg:X_Map_2026", "@type": ["owl:Ontology"]}]}
+        status = generate_all_laws.write_law_output(p, doc, mode="missing-only")
+        assert status == "newlyGenerated"
+        assert p.exists()
+
+    def test_refresh_unchanged(self, tmp_path):
+        p = tmp_path / "x_peep.json"
+        doc = {"@graph": [{"@id": "estleg:X"}]}
+        p.write_text(json.dumps(doc), encoding="utf-8")
+        # save_json writes with indent=2 + trailing newline; existing_doc_matches
+        # compares parsed JSON, so the formatting difference is fine.
+        assert generate_all_laws.write_law_output(p, doc, mode="refresh") == "unchanged"
+
+    def test_refresh_rewrites_changed(self, tmp_path):
+        p = tmp_path / "x_peep.json"
+        p.write_text(json.dumps({"@graph": [{"@id": "estleg:Old"}]}), encoding="utf-8")
+        new_doc = {"@graph": [{"@id": "estleg:New"}]}
+        assert generate_all_laws.write_law_output(p, new_doc, mode="refresh") == "refreshed"
+        assert json.loads(p.read_text(encoding="utf-8")) == new_doc
+
+    def test_force_rewrites_even_unchanged(self, tmp_path):
+        p = tmp_path / "x_peep.json"
+        doc = {"@graph": [{"@id": "estleg:Same"}]}
+        p.write_text(json.dumps(doc), encoding="utf-8")
+        assert generate_all_laws.write_law_output(p, doc, mode="force") == "forceRewritten"
+
+    def test_unknown_mode_raises(self, tmp_path):
+        with pytest.raises(ValueError):
+            generate_all_laws.write_law_output(
+                tmp_path / "x.json", {"@graph": []}, mode="bogus"
+            )
+
+
+class TestSourceRemovedLawFiles:
+    def test_reports_files_whose_slug_left_the_snapshot(self, tmp_path):
+        krr = tmp_path / "krr_outputs"
+        krr.mkdir()
+        # File contents don't matter — identity is slug-based on the
+        # filename so the check is robust to dc:source format drift.
+        for name in ("keep_seadus_peep.json", "gone_seadus_peep.json"):
+            (krr / name).write_text(json.dumps({"@graph": []}), encoding="utf-8")
+        removed = generate_all_laws.source_removed_law_files(krr, {"Keep seadus"})
+        assert removed == ["gone_seadus_peep.json"]
+
+    def test_multipart_osa_files_resolve_to_parent_slug(self, tmp_path):
+        krr = tmp_path / "krr_outputs"
+        krr.mkdir()
+        # A multipart law's per-osa files must NOT be reported when the
+        # parent title is still in the snapshot — _law_file_base_slug
+        # strips the _osaN suffix back to the parent slug.
+        parent_slug = generate_all_laws.slugify("Võlaõigusseadus")
+        (krr / f"{parent_slug}_osa2_peep.json").write_text(json.dumps({"@graph": []}), "utf-8")
+        (krr / f"{parent_slug}_osa6_peep.json").write_text(json.dumps({"@graph": []}), "utf-8")
+        (krr / "kadunud_seadus_peep.json").write_text(json.dumps({"@graph": []}), "utf-8")
+        removed = generate_all_laws.source_removed_law_files(
+            krr, {"Võlaõigusseadus"}, multipart_titles={"Võlaõigusseadus"}
+        )
+        assert removed == ["kadunud_seadus_peep.json"]
+
+    def test_law_file_base_slug_strips_osa_and_peep(self):
+        assert generate_all_laws._law_file_base_slug("advokatuuriseadus_peep.json") == "advokatuuriseadus"
+        assert generate_all_laws._law_file_base_slug("volaigusseadus_osa10_peep.json") == "volaigusseadus"
+
+
+class TestLoadLawListFromManifest:
+    def test_round_trip_reconstructs_act_list(self, tmp_path):
+        manifest = {
+            "outputsAll": [
+                {"title": "Act A", "slug": "act_a", "terviktekstId": "100",
+                 "globaalId": "10", "sourceUrl": "https://www.riigiteataja.ee/akt/100.xml",
+                 "status": "full"},
+                {"title": "Act B", "slug": "act_b", "terviktekstId": "200",
+                 "globaalId": "20", "sourceUrl": "/akt/200.xml", "status": "stub"},
+            ]
+        }
+        p = tmp_path / "m.json"
+        p.write_text(json.dumps(manifest), encoding="utf-8")
+        laws = generate_all_laws.load_law_list_from_manifest(p)
+        assert set(laws) == {"Act A", "Act B"}
+        assert laws["Act A"]["tid"] == "100"
+        assert laws["Act A"]["url"] == "/akt/100.xml"  # BASE_URL stripped
+        assert laws["Act B"]["url"] == "/akt/200.xml"
+
+    def test_falls_back_to_outputs_key(self, tmp_path):
+        p = tmp_path / "m.json"
+        p.write_text(json.dumps({"outputs": [
+            {"title": "Only", "slug": "only", "terviktekstId": "1", "globaalId": "1",
+             "sourceUrl": "/akt/1.xml"}
+        ]}), encoding="utf-8")
+        laws = generate_all_laws.load_law_list_from_manifest(p)
+        assert set(laws) == {"Only"}
+
+    def test_missing_file_raises(self, tmp_path):
+        with pytest.raises(ValueError):
+            generate_all_laws.load_law_list_from_manifest(tmp_path / "nope.json")
+
+    def test_empty_manifest_raises(self, tmp_path):
+        p = tmp_path / "m.json"
+        p.write_text(json.dumps({"outputsAll": []}), encoding="utf-8")
+        with pytest.raises(ValueError):
+            generate_all_laws.load_law_list_from_manifest(p)
+
+
+def _padded_law_xml(*, paragraphs: list[int]) -> str:
+    """Minimal single-law XML with the given paragraph numbers, padded so
+    the on-disk cache file exceeds the 1000-byte threshold fetch_xml uses."""
+    pad = "<!-- " + ("x" * 1500) + " -->"
+    pars = "".join(
+        f"<paragrahv><paragrahvNr>{n}</paragrahvNr><kuvatavNr>S {n}.</kuvatavNr>"
+        f"<paragrahvPealkiri>Par {n}</paragrahvPealkiri>"
+        f"<loige><loigeNr>1</loigeNr><tavatekst>Tekst {n}.</tavatekst></loige>"
+        f"</paragrahv>"
+        for n in paragraphs
+    )
+    return (
+        f"<?xml version='1.0' encoding='utf-8'?>{pad}"
+        f"<akt><sisu><peatykk><peatykkNr>1</peatykkNr>"
+        f"<peatykkPealkiri>Peatykk</peatykkPealkiri>{pars}</peatykk></sisu></akt>"
+    )
+
+
+class _RerunArgs:
+    """Mutable args object for driving main() in rerun tests."""
+    refresh = False
+    force = False
+    missing_only = True
+    kehtiv = generate_all_laws.DEFAULT_KEHTIV
+    allow_partial = False
+    limit = None
+    from_manifest = None
+
+
+class TestRerunNoOpAndStaleRefresh:
+    """#108: a clean run then a second missing-only run rewrites nothing;
+    a stale-kehtiv file gets refreshed; --from-manifest reproduces the
+    same outputsAll."""
+
+    def _wire(self, tmp_path, monkeypatch, *, titles_to_xml: dict[str, str]):
+        krr = tmp_path / "krr_outputs"
+        krr.mkdir()
+        data_dir = tmp_path / "data" / "riigiteataja"
+        data_dir.mkdir(parents=True)
+        monkeypatch.setattr(generate_all_laws, "KRR_DIR", krr)
+        monkeypatch.setattr(generate_all_laws, "DATA_DIR", data_dir)
+        monkeypatch.setattr(generate_all_laws, "MULTIPART_LAWS", set())
+        # No network: every per-act fetch comes from the on-disk cache.
+        monkeypatch.setattr(
+            generate_all_laws.requests, "get",
+            lambda *a, **kw: pytest.fail("no network expected"),
+        )
+
+        laws: dict[str, dict] = {}
+        for i, (title, xml) in enumerate(sorted(titles_to_xml.items()), start=1):
+            slug = generate_all_laws.slugify(title)
+            tid = str(1000 + i)
+            laws[title] = {
+                "gid": str(2000 + i), "tid": tid,
+                "url": f"/akt/{slug}.xml", "lyhend": f"L{i}",
+            }
+            # Write the tid-keyed cache file so fetch_xml hits it.
+            (data_dir / f"{slug}__tid{tid}.xml").write_text(xml, encoding="utf-8")
+
+        def fake_get_all_laws(**kwargs):
+            return ({k: dict(v) for k, v in laws.items()}, {"complete": True})
+        monkeypatch.setattr(generate_all_laws, "get_all_laws", fake_get_all_laws)
+        return krr
+
+    def test_clean_run_then_missing_only_is_noop(self, tmp_path, monkeypatch):
+        krr = self._wire(tmp_path, monkeypatch, titles_to_xml={
+            "Esimene seadus": _padded_law_xml(paragraphs=[1, 2]),
+            "Teine seadus": _padded_law_xml(paragraphs=[1]),
+        })
+        monkeypatch.setattr(generate_all_laws, "parse_args", lambda: _RerunArgs())
+        generate_all_laws._used_prefixes.clear()
+        generate_all_laws.main()
+
+        peeps = sorted(krr.glob("*_peep.json"))
+        assert len(peeps) == 2
+        before = {p: p.read_bytes() for p in peeps}
+        first_manifest = json.loads((krr / "generation_manifest_laws.json").read_text("utf-8"))
+        assert first_manifest["run"]["newlyGenerated"] == 2
+
+        # Second run, same mode — nothing should be rewritten.
+        generate_all_laws._used_prefixes.clear()
+        generate_all_laws.main()
+        after = {p: p.read_bytes() for p in sorted(krr.glob("*_peep.json"))}
+        assert after == before, "missing-only re-run must not rewrite up-to-date files"
+
+        second_manifest = json.loads((krr / "generation_manifest_laws.json").read_text("utf-8"))
+        assert second_manifest["run"]["newlyGenerated"] == 0
+        assert second_manifest["counts"]["alreadyMapped"] == 2
+        # outputsAll is stable across runs (status differs: skipped vs full,
+        # but every act is present both times).
+        assert {e["slug"] for e in second_manifest["outputsAll"]} == {
+            generate_all_laws.slugify("Esimene seadus"),
+            generate_all_laws.slugify("Teine seadus"),
+        }
+
+    def test_stale_kehtiv_file_is_refreshed(self, tmp_path, monkeypatch):
+        krr = self._wire(tmp_path, monkeypatch, titles_to_xml={
+            "Esimene seadus": _padded_law_xml(paragraphs=[1]),
+        })
+        monkeypatch.setattr(generate_all_laws, "parse_args", lambda: _RerunArgs())
+        generate_all_laws._used_prefixes.clear()
+        generate_all_laws.main()
+        slug = generate_all_laws.slugify("Esimene seadus")
+        peep = krr / f"{slug}_peep.json"
+        assert peep.exists()
+        # Tamper: overwrite the stored kehtiv with an old snapshot date.
+        doc = json.loads(peep.read_text("utf-8"))
+        doc["@graph"][0]["estleg:kehtiv"] = {"@value": "2024-01-01", "@type": "xsd:date"}
+        peep.write_text(json.dumps(doc), encoding="utf-8")
+
+        # Re-run missing-only: the stale file must be refreshed back to the
+        # current --kehtiv.
+        generate_all_laws._used_prefixes.clear()
+        generate_all_laws.main()
+        refreshed = json.loads(peep.read_text("utf-8"))
+        assert refreshed["@graph"][0]["estleg:kehtiv"] == {
+            "@value": generate_all_laws.DEFAULT_KEHTIV, "@type": "xsd:date"
+        }
+        manifest = json.loads((krr / "generation_manifest_laws.json").read_text("utf-8"))
+        assert manifest["run"]["refreshedStale"] >= 1
+
+    def test_from_manifest_reproduces_outputsAll(self, tmp_path, monkeypatch):
+        krr = self._wire(tmp_path, monkeypatch, titles_to_xml={
+            "Esimene seadus": _padded_law_xml(paragraphs=[1, 2]),
+            "Teine seadus": _padded_law_xml(paragraphs=[1]),
+        })
+        monkeypatch.setattr(generate_all_laws, "parse_args", lambda: _RerunArgs())
+        generate_all_laws._used_prefixes.clear()
+        generate_all_laws.main()
+        manifest_path = krr / "generation_manifest_laws.json"
+        first = json.loads(manifest_path.read_text("utf-8"))
+        first_acts = sorted(
+            (e["title"], e["slug"], e["terviktekstId"], e["globaalId"])
+            for e in first["outputsAll"]
+        )
+
+        # Now replay from the manifest — get_all_laws must NOT be consulted.
+        monkeypatch.setattr(
+            generate_all_laws, "get_all_laws",
+            lambda **kw: pytest.fail("get_all_laws must not run during --from-manifest"),
+        )
+
+        class _ReplayArgs(_RerunArgs):
+            from_manifest = str(manifest_path)
+        monkeypatch.setattr(generate_all_laws, "parse_args", lambda: _ReplayArgs())
+        generate_all_laws._used_prefixes.clear()
+        generate_all_laws.main()
+        second = json.loads(manifest_path.read_text("utf-8"))
+        second_acts = sorted(
+            (e["title"], e["slug"], e["terviktekstId"], e["globaalId"])
+            for e in second["outputsAll"]
+        )
+        assert second_acts == first_acts
+        assert second["source"].get("replayedFromManifest") == str(manifest_path)
+
+
+class TestActStatusInManifest:
+    """#119: each outputsAll entry carries a per-act status (full / stub /
+    failed / skipped) and stub acts get a reason."""
+
+    def test_full_stub_and_failed_statuses_recorded(self, tmp_path, monkeypatch):
+        krr = tmp_path / "krr_outputs"
+        krr.mkdir()
+        data_dir = tmp_path / "data" / "riigiteataja"
+        data_dir.mkdir(parents=True)
+        monkeypatch.setattr(generate_all_laws, "KRR_DIR", krr)
+        monkeypatch.setattr(generate_all_laws, "DATA_DIR", data_dir)
+        monkeypatch.setattr(generate_all_laws, "MULTIPART_LAWS", set())
+
+        # Full law: cached XML with a paragraph.
+        (data_dir / "full_seadus__tid1001.xml").write_text(
+            _padded_law_xml(paragraphs=[1]), encoding="utf-8",
+        )
+        # Stub law: cached XML with no paragraphs (but >1000 bytes so the
+        # cache is used).
+        pad = "<!-- " + ("x" * 1500) + " -->"
+        (data_dir / "treaty_seadus__tid1002.xml").write_text(
+            f"<?xml version='1.0'?>{pad}<akt><sisu /></akt>", encoding="utf-8",
+        )
+        # Failed law: no cached XML; the (only) network call we expect is
+        # the per-act XML fetch for "Missing seadus", which returns a
+        # failing response so fetch_xml -> None -> status "failed".
+        class _FailResp:
+            def raise_for_status(self):
+                raise RuntimeError("404")
+        monkeypatch.setattr(
+            generate_all_laws.requests, "get", lambda *a, **kw: _FailResp(),
+        )
+
+        def fake_get_all_laws(**kwargs):
+            return ({
+                "Full seadus": {"gid": "2001", "tid": "1001",
+                                "url": "/akt/full_seadus.xml", "lyhend": "FS"},
+                "Treaty seadus": {"gid": "2002", "tid": "1002",
+                                  "url": "/akt/treaty_seadus.xml", "lyhend": "TS"},
+                "Missing seadus": {"gid": "2003", "tid": "1003",
+                                   "url": "/akt/missing_seadus.xml", "lyhend": "MS"},
+            }, {"complete": True})
+        monkeypatch.setattr(generate_all_laws, "get_all_laws", fake_get_all_laws)
+        monkeypatch.setattr(generate_all_laws, "parse_args", lambda: _RerunArgs())
+
+        generate_all_laws._used_prefixes.clear()
+        generate_all_laws.main()
+
+        manifest = json.loads((krr / "generation_manifest_laws.json").read_text("utf-8"))
+        by_slug = {e["slug"]: e for e in manifest["outputsAll"]}
+        assert by_slug[generate_all_laws.slugify("Full seadus")]["status"] == "full"
+        stub_entry = by_slug[generate_all_laws.slugify("Treaty seadus")]
+        assert stub_entry["status"] == "stub"
+        assert "reason" in stub_entry
+        failed_entry = by_slug[generate_all_laws.slugify("Missing seadus")]
+        assert failed_entry["status"] == "failed"
+        assert manifest["counts"]["stubActs"] == 1
+        assert manifest["counts"]["failedActs"] == 1
+        assert manifest["counts"]["fullActs"] == 1
+        # The stub file on disk carries the noStructuredBody marker.
+        stub_peep = json.loads(
+            (krr / f"{generate_all_laws.slugify('Treaty seadus')}_peep.json").read_text("utf-8")
+        )
+        assert stub_peep["@graph"][0]["estleg:contentStatus"] == "noStructuredBody"
+        assert stub_peep["@graph"][0]["estleg:kehtiv"] == {
+            "@value": generate_all_laws.DEFAULT_KEHTIV, "@type": "xsd:date"
+        }

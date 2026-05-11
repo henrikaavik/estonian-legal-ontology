@@ -496,6 +496,64 @@ class TestRegulationIndex:
 
         assert source_removed_files(out_dir, {"1"}) == ["removed_t2_peep.json"]
 
+    def test_index_acts_ledger_marks_full_and_stub(self, tmp_path):
+        """Issue #119: the regulation index now carries a per-act `acts`
+        ledger with status (full/stub) and the act node's contentStatus
+        marker for stubs."""
+        out_dir = tmp_path / "riik"
+        out_dir.mkdir()
+        # Full regulation: has a paragraph node, no contentStatus marker.
+        (out_dir / "full_reg_t100_peep.json").write_text(json.dumps({
+            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+            "@graph": [
+                {"@id": "estleg:Reg_100_Map_2026",
+                 "@type": ["owl:Ontology", "estleg:NationalRegulation"],
+                 "estleg:issuer": "Vabariigi Valitsus"},
+                {"@id": "estleg:Reg_100_Par_1",
+                 "@type": ["owl:NamedIndividual", "estleg:Regulation_100"],
+                 "estleg:paragrahv": "§ 1."},
+            ],
+        }), encoding="utf-8")
+        # No-body regulation: contentStatus = noStructuredBody.
+        (out_dir / "stub_reg_t200_peep.json").write_text(json.dumps({
+            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+            "@graph": [
+                {"@id": "estleg:Reg_200_Map_2026",
+                 "@type": ["owl:Ontology", "estleg:NationalRegulation"],
+                 "estleg:issuer": "Sotsiaalminister",
+                 "estleg:contentStatus": "noStructuredBody",
+                 "estleg:contentStatusReason": "no structured body"},
+            ],
+        }), encoding="utf-8")
+
+        index = build_regulation_index(out_dir, is_kov=False, kehtiv="2026-05-01")
+
+        acts = {a["slug"]: a for a in index["acts"]}
+        assert acts["full_reg"]["status"] == "full"
+        assert "contentStatus" not in acts["full_reg"]
+        assert acts["stub_reg"]["status"] == "stub"
+        assert acts["stub_reg"]["contentStatus"] == "noStructuredBody"
+        assert "reason" in acts["stub_reg"]
+        # byStatus aggregate is present and consistent.
+        assert index["byStatus"] == {"full": 1, "stub": 1}
+        assert index["noStructuredBodyCount"] == 1
+        # The acts ledger covers exactly the files list.
+        assert {a["file"] for a in index["acts"]} == set(index["files"])
+
+    def test_no_body_regulation_build_sets_status_via_summarize(self, tmp_path):
+        """Round-trip: a no-body regulation built via build_regulation_jsonld
+        is summarised as a stub."""
+        root = ET.fromstring(
+            "<akt><metaandmed><terviktekstID>900001</terviktekstID>"
+            "<globaalID>900002</globaalID></metaandmed></akt>"
+        )
+        doc, _stats = build_regulation_jsonld(
+            "Menetlusmäärus", {"tid": "900001", "gid": "900002"}, root, is_kov=False,
+        )
+        summary = generate_regulations.summarize_regulation_doc(doc)
+        assert summary["status"] == "stub"
+        assert summary["contentStatus"] == "noStructuredBody"
+
 
 # ---------------------------------------------------------------------------
 # Issue #174 regression coverage

@@ -9,11 +9,32 @@ with high keyword overlap from different laws.
 Generates:
   - krr_outputs/similarity_index.json
   - krr_outputs/similarity_report.json
+  - krr_outputs/reports/similarity_sample.json   (only with --emit-sample N)
+
+Per-link provenance
+-------------------
+Each ``estleg:semanticallySimilarTo`` value injected into a provision peep
+file is enriched in place (lowest-churn option: same property, same node,
+same list — only the list *elements* gain provenance) from a bare
+``{"@id": target}`` to::
+
+    {"@id": target, "estleg:similarityScore": <jaccard>, "estleg:similarityStatus": "candidate"}
+
+so every published link is self-describing about its confidence and the
+fact that it is a heuristic candidate, not an asserted legal relation.
+A reified ``estleg:SimilarityLink`` node was considered but rejected: it
+would add a top-level node + four new vocabulary terms to every one of
+the ~450 peep files, exploding the diff for no extra signal. The nested
+``estleg:similarityScore`` (xsd:decimal Jaccard value) and
+``estleg:similarityStatus`` (literal ``"candidate"``) keys appear only
+inside ``estleg:semanticallySimilarTo`` value objects.
 """
 
 from __future__ import annotations
 
+import argparse
 import json
+import random
 import re
 from collections import defaultdict
 from datetime import datetime, timezone
@@ -23,6 +44,17 @@ from estleg_common import iter_peep_files, jsonld_text, save_json
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
+REPORTS_DIR = KRR_DIR / "reports"
+
+# Status literal attached to every published similarity link. "candidate"
+# mirrors the index/report-level relation_semantics — these are heuristic
+# keyword-overlap links pending reviewed precision metrics, not asserted
+# legal semantics.
+SIMILARITY_STATUS = "candidate"
+
+# Deterministic seed for --emit-sample so the precision-review sample is
+# reproducible across runs (same corpus -> same sampled tuples).
+SAMPLE_SEED = 20260511
 
 NS = "https://data.riik.ee/ontology/estleg#"
 
@@ -37,7 +69,20 @@ CONTEXT = {
     "dcterms": "http://purl.org/dc/terms/",
 }
 
-# Estonian stopwords to filter out
+# Estonian stopwords to filter out.
+#
+# Two layers here:
+#  1. Function words / pronouns / determiners ("ja", "see", "mis", ...) —
+#     pure noise, never discriminative.
+#  2. Generic legal connectives that aren't *structural* tokens but are so
+#     common across Estonian statutes that two provisions sharing only
+#     these words tell us nothing about topical similarity ("seadus",
+#     "käesolev", "kohaldama", "sätestama", "tähenduses", "kohta",
+#     "alusel", "korras", "puhul", "juhul", ...). The pre-existing
+#     boilerplate filter removed *structural* tokens (paragrahv / lõige /
+#     jagu); this layer extends the same idea to non-structural-but-
+#     non-discriminative legal vocabulary. Stem-ish variants are listed
+#     explicitly because the tokenizer does no morphological analysis.
 STOPWORDS = {
     "ja", "ning", "või", "on", "ei", "see", "mis", "kes", "mille", "kelle",
     "selle", "tema", "oma", "kui", "et", "ka", "nii", "aga", "kuid", "vaid",
@@ -51,6 +96,18 @@ STOPWORDS = {
     "punkt", "lõikes", "punktis", "alusel", "korral", "juhul",
     "kohta", "kohaldatakse", "sätestatud", "kehtestatud", "määratud",
     "vastavalt", "järgi", "kohaselt", "tähenduses",
+    # Generic legal connectives / verbs (layer 2 — see note above).
+    "seadusandlik", "seadusandliku", "seadusandlikku",
+    "kohaldama", "kohaldamine", "kohaldamise", "kohaldamisel", "kohaldatav",
+    "sätestama", "sätestab", "sätestamine", "sätestamise", "säte", "sätte",
+    "sätted", "sätteid", "sätetele", "sätetes", "sätetest",
+    "korras", "korda", "korrast", "korrale",
+    "puhul", "puhuks",
+    "tähendus", "tähendab", "tähenduse", "tähendusega",
+    "kehtestama", "kehtestab", "kehtestamine", "kehtestamise", "kehtiv",
+    "kohaselt", "kohane", "kohaste",
+    "alus", "aluse", "alusele", "alused", "aluseks", "alustel",
+    "tulenevalt", "tulenev", "tulenevad", "tuleneva",
 }
 
 # Minimum keyword length to consider
@@ -61,6 +118,19 @@ MIN_SHARED_KEYWORDS = 3
 MIN_SIMILARITY = 0.3
 # Maximum similar provisions to link per provision
 MAX_SIMILAR_PER_PROVISION = 5
+
+# Corpus document-frequency cap for "generic" keywords.
+#
+# A token that shows up in more than this fraction of *all* analysed
+# provisions is too generic to be a useful similarity signal — it behaves
+# like an undeclared stopword (think domain-wide verbs/connectives the
+# static list above can't anticipate). Such tokens are dropped from every
+# provision's keyword set *after* the corpus has been scanned, before any
+# pair scoring. 0.45 (≈ "appears in <45% of provisions") is a deliberately
+# loose cap: real boilerplate and connectives sit far above it, genuine
+# topical terms far below, so the cut is unambiguous. Set to >=1.0 to
+# disable. The cap is reported in similarity_report.json for transparency.
+GENERIC_DOC_FREQUENCY_CAP = 0.45
 
 # Boilerplate provision patterns to exclude (entry-into-force, repeal clauses, etc.)
 BOILERPLATE_PATTERNS = [
@@ -97,6 +167,50 @@ def extract_keywords(text: str) -> set[str]:
         t for t in tokens
         if t not in STOPWORDS and len(t) >= MIN_KEYWORD_LEN
     }
+
+
+def compute_generic_keywords(
+    provisions: list[dict], cap: float | None = None
+) -> set[str]:
+    """Return keywords appearing in more than ``cap`` fraction of provisions.
+
+    These are corpus-wide generic tokens — undeclared stopwords / domain
+    connectives the static :data:`STOPWORDS` list can't anticipate. Two
+    provisions sharing only such tokens are not topically similar, so they
+    are stripped from every keyword set before pair scoring (see
+    :func:`apply_generic_keyword_filter`). With ``cap >= 1.0`` nothing is
+    flagged (filter disabled). ``cap is None`` -> use the module default
+    :data:`GENERIC_DOC_FREQUENCY_CAP` (looked up at call time so tests can
+    monkeypatch it).
+    """
+    if cap is None:
+        cap = GENERIC_DOC_FREQUENCY_CAP
+    if cap >= 1.0 or not provisions:
+        return set()
+    doc_freq: dict[str, int] = defaultdict(int)
+    for prov in provisions:
+        for kw in prov["keywords"]:
+            doc_freq[kw] += 1
+    threshold = cap * len(provisions)
+    return {kw for kw, count in doc_freq.items() if count > threshold}
+
+
+def apply_generic_keyword_filter(
+    provisions: list[dict], generic_keywords: set[str]
+) -> None:
+    """Strip ``generic_keywords`` from every provision's keyword set in place.
+
+    Provisions whose keyword set drops below :data:`MIN_SHARED_KEYWORDS`
+    after the strip keep their (now-shorter) set: the per-provision keyword
+    *floor* is enforced at extraction time on the raw set; here we only
+    want to keep generic tokens from inflating Jaccard scores, not to
+    re-run eligibility. A provision left with <MIN_SHARED_KEYWORDS keywords
+    simply can't reach the shared-keyword count needed to form a pair.
+    """
+    if not generic_keywords:
+        return
+    for prov in provisions:
+        prov["keywords"] = prov["keywords"] - generic_keywords
 
 
 def law_prefix(iri: str) -> str:
@@ -230,7 +344,96 @@ def extract_provisions_from_file(fpath: Path) -> tuple[list[dict], str | None, i
     return provisions, act_type, excluded_for_keyword_floor
 
 
-def main():
+def similarity_link_value(target: str, score: float) -> dict:
+    """Build one ``estleg:semanticallySimilarTo`` list element with provenance.
+
+    Lowest-churn per-link provenance: the value object keeps ``@id`` plus
+    two nested keys — ``estleg:similarityScore`` (the Jaccard value as an
+    ``xsd:decimal`` typed literal) and ``estleg:similarityStatus`` (the
+    literal ``"candidate"``). No reified node, no new provision-level
+    property. Score is rounded to 3 dp to mirror the index file.
+    """
+    return {
+        "@id": target,
+        "estleg:similarityScore": {
+            "@value": f"{round(score, 3)}",
+            "@type": "xsd:decimal",
+        },
+        "estleg:similarityStatus": SIMILARITY_STATUS,
+    }
+
+
+def emit_precision_sample(pairs: list[dict], sample_size: int, out_path: Path) -> int:
+    """Write a deterministic random sample of pairs for human precision review.
+
+    Samples ``min(sample_size, len(pairs))`` tuples of
+    ``(source_provision, target_provision, score, shared_keywords)`` so a
+    reviewer can label them and turn the index's permanent
+    ``quality_evaluation.status == "not_evaluated"`` into a real precision-
+    by-score-band number. Uses a fixed seed (:data:`SAMPLE_SEED`) so the
+    same corpus yields the same sample. Returns the number of pairs written.
+    """
+    n = max(0, min(sample_size, len(pairs)))
+    rng = random.Random(SAMPLE_SEED)
+    chosen = rng.sample(pairs, n) if n else []
+    chosen.sort(key=lambda p: (p["source"], p["target"]))
+    payload = {
+        "generated": datetime.now(timezone.utc).date().isoformat(),
+        "relation": "estleg:semanticallySimilarTo",
+        "relation_semantics": "candidate",
+        "purpose": (
+            "Human precision-review sample. Label each row "
+            "(relevant / not relevant) to compute reviewed precision by "
+            "score band for the keyword_jaccard similarity heuristic."
+        ),
+        "sample_seed": SAMPLE_SEED,
+        "requested_sample_size": sample_size,
+        "available_pairs": len(pairs),
+        "sample_size": len(chosen),
+        "samples": [
+            {
+                "source_provision": p["source"],
+                "source_label": p.get("source_label", ""),
+                "target_provision": p["target"],
+                "target_label": p.get("target_label", ""),
+                "score": p["similarity"],
+                "shared_keywords": p["shared_keywords"],
+                # Reviewer fills these in:
+                "reviewed_relevant": None,
+                "reviewer_note": "",
+            }
+            for p in chosen
+        ],
+    }
+    save_json(out_path, payload)
+    return len(chosen)
+
+
+def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description="Generate the keyword-overlap semantic similarity index."
+    )
+    parser.add_argument(
+        "--emit-sample",
+        type=int,
+        default=0,
+        metavar="N",
+        dest="emit_sample",
+        help=(
+            "Also write krr_outputs/reports/similarity_sample.json with N "
+            "randomly-sampled (source, target, score, shared_keywords) "
+            "tuples for human precision review. 0 (default) = don't emit."
+        ),
+    )
+    # ``argv is None`` -> parse an empty list, not ``sys.argv``. Callers
+    # that want CLI parsing (the __main__ block) pass ``sys.argv[1:]``
+    # explicitly; programmatic callers (tests) get safe defaults.
+    return parser.parse_args([] if argv is None else argv)
+
+
+def main(argv: list[str] | None = None):
+    args = parse_args(argv)
+
     print("=" * 60)
     print("Generating semantic similarity index (keyword-based)")
     print("=" * 60)
@@ -270,6 +473,21 @@ def main():
         for act_type_name, count in sorted(excluded_for_keyword_floor_by_type.items()):
             if count:
                 print(f"  {act_type_name}: {count} provisions")
+
+    # Down-weight corpus-wide generic tokens: any keyword appearing in
+    # >GENERIC_DOC_FREQUENCY_CAP of provisions behaves like an undeclared
+    # stopword and is stripped from every keyword set before pair scoring,
+    # so generic-but-not-boilerplate matches (e.g. "Menetlus", "Sunniraha
+    # määr") can no longer rack up high Jaccard scores on connectives alone.
+    generic_keywords = compute_generic_keywords(provisions)
+    apply_generic_keyword_filter(provisions, generic_keywords)
+    if generic_keywords:
+        print(
+            f"  Dropped {len(generic_keywords)} corpus-generic keyword(s) "
+            f"(appear in >{int(GENERIC_DOC_FREQUENCY_CAP * 100)}% of provisions): "
+            + ", ".join(sorted(generic_keywords)[:15])
+            + (" ..." if len(generic_keywords) > 15 else "")
+        )
 
     # Build inverted index for efficient matching
     print("\n[2/4] Building inverted keyword index...")
@@ -347,12 +565,30 @@ def main():
         "relation_semantics": "candidate",
         "algorithm": {
             "name": "keyword_jaccard",
-            "version": "1",
+            # v2: per-link provenance on estleg:semanticallySimilarTo
+            # value objects + corpus document-frequency cap on generic
+            # keywords (see module docstring).
+            "version": "2",
             "source_fields": ["estleg:summary"],
+            "generic_keyword_doc_frequency_cap": GENERIC_DOC_FREQUENCY_CAP,
+            "generic_keywords_dropped": sorted(generic_keywords),
+        },
+        "link_provenance": {
+            "shape": (
+                "estleg:semanticallySimilarTo value objects carry "
+                "estleg:similarityScore (xsd:decimal Jaccard) and "
+                "estleg:similarityStatus literals"
+            ),
+            "status_literal": SIMILARITY_STATUS,
         },
         "quality_evaluation": {
             "status": "not_evaluated",
-            "note": "Similarity pairs are heuristic candidate links pending reviewed precision metrics.",
+            "note": (
+                "Similarity pairs are heuristic candidate links pending "
+                "reviewed precision metrics. Run with --emit-sample N to "
+                "produce krr_outputs/reports/similarity_sample.json for "
+                "human labelling."
+            ),
         },
         "total_provisions": len(provisions),
         "total_pairs": len(similarity_pairs),
@@ -365,12 +601,17 @@ def main():
     print(f"  Saved: {index_path.name} ({len(similarity_pairs)} pairs)")
 
     # Update JSON-LD files with similarity links in one write per touched file.
+    # Each (source, target) carries its own Jaccard score so the per-link
+    # provenance written below is accurate.
     prov_id_to_file = {p["id"]: p["file"] for p in provisions}
-    file_updates: dict[str, dict[str, list[str]]] = defaultdict(lambda: defaultdict(list))
+    # file -> source_id -> {target_id: score}
+    file_updates: dict[str, dict[str, dict[str, float]]] = defaultdict(
+        lambda: defaultdict(dict)
+    )
     for pair in similarity_pairs:
         src_file = prov_id_to_file.get(pair["source"])
         if src_file:
-            file_updates[src_file][pair["source"]].append(pair["target"])
+            file_updates[src_file][pair["source"]][pair["target"]] = pair["similarity"]
 
     updated_files = 0
     candidate_files = {relative_output_path(path): path for path in iter_peep_files(include_kov=False)}
@@ -389,8 +630,11 @@ def main():
                 del node["estleg:semanticallySimilarTo"]
                 modified = True
             if node_id in node_updates:
-                targets = sorted(node_updates[node_id])
-                node["estleg:semanticallySimilarTo"] = [{"@id": t} for t in targets]
+                target_scores = node_updates[node_id]
+                node["estleg:semanticallySimilarTo"] = [
+                    similarity_link_value(t, target_scores[t])
+                    for t in sorted(target_scores)
+                ]
                 modified = True
 
         if modified:
@@ -399,18 +643,44 @@ def main():
 
     print(f"  Updated {updated_files} JSON-LD files with similarity links")
 
+    # Optional: human precision-review sample.
+    sample_written = None
+    if args.emit_sample > 0:
+        sample_path = REPORTS_DIR / "similarity_sample.json"
+        sample_written = emit_precision_sample(
+            similarity_pairs, args.emit_sample, sample_path
+        )
+        print(
+            f"  Wrote precision-review sample: {sample_path} "
+            f"({sample_written} of {len(similarity_pairs)} pairs)"
+        )
+
     # Generate report
     report = {
         "generated": datetime.now(timezone.utc).date().isoformat(),
         "relation_semantics": "candidate",
         "algorithm": {
             "name": "keyword_jaccard",
-            "version": "1",
+            "version": "2",
             "source_fields": ["estleg:summary"],
+            "generic_keyword_doc_frequency_cap": GENERIC_DOC_FREQUENCY_CAP,
+        },
+        "link_provenance": {
+            "shape": (
+                "estleg:semanticallySimilarTo value objects carry "
+                "estleg:similarityScore (xsd:decimal Jaccard) and "
+                "estleg:similarityStatus literals"
+            ),
+            "status_literal": SIMILARITY_STATUS,
         },
         "quality_evaluation": {
             "status": "not_evaluated",
-            "note": "Similarity pairs are heuristic candidate links pending reviewed precision metrics.",
+            "note": (
+                "Similarity pairs are heuristic candidate links pending "
+                "reviewed precision metrics. Run with --emit-sample N to "
+                "produce krr_outputs/reports/similarity_sample.json for "
+                "human labelling."
+            ),
         },
         "total_provisions_analyzed": len(provisions),
         "total_similarity_pairs": len(similarity_pairs),
@@ -418,10 +688,17 @@ def main():
         "candidate_files_by_type": file_counts_by_type,
         "provisions_by_type": provision_counts_by_type,
         "excluded_provisions": dict(excluded_for_keyword_floor_by_type),
+        "generic_keywords_dropped": sorted(generic_keywords),
+        "precision_sample": (
+            {"path": "reports/similarity_sample.json", "size": sample_written}
+            if sample_written is not None
+            else None
+        ),
         "parameters": {
             "min_similarity": MIN_SIMILARITY,
             "min_shared_keywords": MIN_SHARED_KEYWORDS,
             "max_similar_per_provision": MAX_SIMILAR_PER_PROVISION,
+            "generic_keyword_doc_frequency_cap": GENERIC_DOC_FREQUENCY_CAP,
         },
         "top_similar_pairs": similarity_pairs[:20],
         "similarity_distribution": {},
@@ -452,4 +729,6 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    import sys
+
+    main(sys.argv[1:])

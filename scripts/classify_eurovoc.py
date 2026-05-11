@@ -12,14 +12,21 @@ Generates:
 
 from __future__ import annotations
 
+import argparse
 import json
+import random
 import re
 import time
 import unicodedata
 from datetime import datetime, timezone
 from pathlib import Path
 
-from estleg_common import AGGREGATE_REGISTRY_PREFIXES, iter_peep_files, save_json as _save_json
+from estleg_common import (
+    AGGREGATE_REGISTRY_PREFIXES,
+    iter_peep_files,
+    jsonld_text,
+    save_json as _save_json,
+)
 from kov_pipeline_coverage import (
     CoverageReport,
     measure_runtime,
@@ -243,11 +250,42 @@ EUROVOC_DOMAINS: dict[str, tuple[str, str, str, list[str]]] = {
 
 # Maximum number of EuroVoc domains to assign per law
 MAX_DOMAINS_PER_LAW = 5
-# Minimum keyword hits to assign a domain (default)
+# Minimum *total* keyword occurrences to assign a domain (default).
 MIN_HITS_THRESHOLD = 1
-# Per-domain overrides for minimum hits (domain code → threshold)
+# Per-domain overrides for minimum total keyword occurrences (domain code →
+# threshold). Counts every match of every keyword, so "töö töö töö" == 3.
 MIN_HITS_OVERRIDES: dict[str, int] = {
     "5616": 3,  # Transport: require 3+ keyword hits to reduce over-classification
+}
+
+# Default number of *distinct* keywords from a domain's list that must each
+# match at least once. ``1`` keeps the historical behaviour for domains whose
+# keyword lists are made of long, distinctive Estonian terms.
+MIN_DISTINCT_KEYWORDS_DEFAULT = 1
+# Per-domain overrides for the distinct-keyword gate. These are the domains
+# whose keyword lists contain short Estonian stems (≤4 chars, or substrings of
+# common unrelated words) that the original substring-matching review (#153)
+# flagged as over-matching — e.g. 'töö' fires inside 'töötukassa', 'maks'
+# inside 'maksimaalne', 'side' inside 'asjasse', 'pank'/'fond' inside
+# placenames, 'vald'/'linn' inside 'väljakuulutamine'/'tallinn', 'kool' inside
+# 'koolitus', 'arst' inside 'tarvastu', 'ost' inside 'postitus'. Requiring TWO
+# distinct keyword hits forces a corroborating term before the domain is
+# assigned, trading a little recall for materially better precision on these
+# noisy domains. Domains built from only long/distinctive keywords are left at
+# the default (1); ``2836`` advertising has a single keyword ('reklaam') and so
+# must stay at 1 (it could never reach 2).
+MIN_DISTINCT_KEYWORDS_OVERRIDES: dict[str, int] = {
+    "3606": 2,  # employment — 'töö', 'palk'
+    "2821": 2,  # communications — 'side'
+    "5206": 2,  # taxation — 'maks'
+    "5231": 2,  # banking — 'pank', 'fond', 'laenu'
+    "1221": 2,  # local-government — 'vald', 'linn'
+    "5636": 2,  # education — 'kool', 'õpe'
+    "5631": 2,  # health — 'arst'
+    "5606": 2,  # energy — 'gaas', 'küte', 'energ'
+    "5621": 2,  # agriculture — 'mets', 'sööt'
+    "5226": 2,  # trade — 'ost', 'müük'
+    "2031": 2,  # political-parties — 'partei'
 }
 
 
@@ -301,10 +339,15 @@ def read_act_metadata_from_peep(path: Path) -> dict | None:
             types = [types]
         if not ACT_TYPES.intersection(types):
             continue
+        # rdfs:label / dc:source may be plain strings or
+        # {"@value": ..., "@language": "et"} objects depending on the
+        # generator; jsonld_text normalises both to a plain string.
+        title = jsonld_text(node.get("rdfs:label", ""))
+        source = jsonld_text(node.get("dc:source", "")) or title
         return {
             "@id": node_id,
-            "title": node.get("rdfs:label", ""),
-            "source": node.get("dc:source", node.get("rdfs:label", "")),
+            "title": title,
+            "source": source,
         }
     return None
 
@@ -313,43 +356,53 @@ def extract_text_from_law(data: dict) -> str:
     """
     Extract all searchable text from a law JSON-LD file.
     Combines rdfs:label, estleg:sourceAct, and estleg:summary fields.
+
+    Each of these fields may arrive as a plain string, a
+    ``{"@value": ..., "@language": "et"}`` value object, or a list of
+    either, depending on whether the corpus came straight off a
+    generator or through a normalisation pass. ``jsonld_text`` collapses
+    all of those shapes to a plain string so the keyword search blob is
+    text, never a stringified dict.
     """
     parts: list[str] = []
 
     for node in data.get("@graph", []):
-        label = node.get("rdfs:label", "")
-        if label:
-            parts.append(label)
-
-        source_act = node.get("estleg:sourceAct", "")
-        if source_act:
-            parts.append(source_act)
-
-        summary = node.get("estleg:summary", "")
-        if summary:
-            parts.append(summary)
-
-        # Also check skos:prefLabel, dc:description
-        pref_label = node.get("skos:prefLabel", "")
-        if pref_label:
-            parts.append(pref_label)
-
-        dc_desc = node.get("dc:description", "")
-        if dc_desc:
-            parts.append(dc_desc)
+        for key in (
+            "rdfs:label",
+            "estleg:sourceAct",
+            "estleg:summary",
+            "skos:prefLabel",
+            "dc:description",
+        ):
+            text = jsonld_text(node.get(key, ""))
+            if text:
+                parts.append(text)
 
     return unicodedata.normalize("NFC", " ".join(parts)).casefold()
 
 
-def classify_text(text: str) -> list[tuple[str, str, str, str, int]]:
+def classify_text(
+    text: str,
+) -> list[tuple[str, str, str, str, int, list[str]]]:
+    """Classify ``text`` against EuroVoc domains by keyword matching.
+
+    Returns a list of
+    ``(code, slug, label_et, label_en, hit_count, matched_keywords)``
+    sorted by ``hit_count`` descending then ``code``. ``hit_count`` is the
+    total number of keyword occurrences; ``matched_keywords`` is the list of
+    distinct keywords (in the domain's declared order) that each matched at
+    least once — used both for the precision gate and the review sample.
+
+    A domain is assigned only when BOTH gates pass:
+      * total occurrences ≥ ``MIN_HITS_OVERRIDES[code]`` (default 1), and
+      * distinct matched keywords ≥ ``MIN_DISTINCT_KEYWORDS_OVERRIDES[code]``
+        (default 1).
     """
-    Classify text against EuroVoc domains by keyword matching.
-    Returns list of (code, slug, label_et, label_en, hit_count) sorted by hit_count desc.
-    """
-    results: list[tuple[str, str, str, str, int]] = []
+    results: list[tuple[str, str, str, str, int, list[str]]] = []
 
     for code, (slug, label_et, label_en, keywords) in EUROVOC_DOMAINS.items():
         hit_count = 0
+        matched_keywords: list[str] = []
         for kw in keywords:
             if kw.startswith("r:"):
                 # Regex pattern (e.g. for word-boundary-aware matching).
@@ -357,14 +410,22 @@ def classify_text(text: str) -> list[tuple[str, str, str, str, int]]:
                 # with the corpus, which extract_text_from_law already
                 # normalised the same way.
                 pattern = unicodedata.normalize("NFC", kw[2:]).casefold()
-                hit_count += len(re.findall(pattern, text))
+                kw_hits = len(re.findall(pattern, text))
             else:
                 normalized_kw = unicodedata.normalize("NFC", kw).casefold()
-                hit_count += len(re.findall(re.escape(normalized_kw), text))
+                kw_hits = len(re.findall(re.escape(normalized_kw), text))
+            if kw_hits:
+                hit_count += kw_hits
+                matched_keywords.append(kw)
 
-        threshold = MIN_HITS_OVERRIDES.get(code, MIN_HITS_THRESHOLD)
-        if hit_count >= threshold:
-            results.append((code, slug, label_et, label_en, hit_count))
+        hits_threshold = MIN_HITS_OVERRIDES.get(code, MIN_HITS_THRESHOLD)
+        distinct_threshold = MIN_DISTINCT_KEYWORDS_OVERRIDES.get(
+            code, MIN_DISTINCT_KEYWORDS_DEFAULT
+        )
+        if hit_count >= hits_threshold and len(matched_keywords) >= distinct_threshold:
+            results.append(
+                (code, slug, label_et, label_en, hit_count, matched_keywords)
+            )
 
     # Sort by hit count descending, then by code
     results.sort(key=lambda r: (-r[4], r[0]))
@@ -373,7 +434,10 @@ def classify_text(text: str) -> list[tuple[str, str, str, str, int]]:
     return results[:MAX_DOMAINS_PER_LAW]
 
 
-def update_law_file_eurovoc(filepath: Path, domains: list[tuple[str, str, str, str, int]]) -> bool:
+def update_law_file_eurovoc(
+    filepath: Path,
+    domains: list[tuple[str, str, str, str, int, list[str]]],
+) -> bool:
     """
     Add dcterms:subject with EuroVoc concept URIs to a law JSON-LD file.
     Targets the owl:Ontology metadata node.
@@ -409,7 +473,8 @@ def update_law_file_eurovoc(filepath: Path, domains: list[tuple[str, str, str, s
 
     # Build subject references — bare IRI refs only (SHACL expects sh:nodeKind sh:IRI)
     subject_refs = []
-    for code, slug, label_et, label_en, _ in domains:
+    for domain in domains:
+        code = domain[0]
         subject_refs.append({
             "@id": f"{EUROVOC_URI_BASE}{code}",
         })
@@ -478,7 +543,80 @@ def clear_eurovoc_subjects_from_file(filepath: Path) -> bool:
     return modified
 
 
-def main():
+def _display_path(path: Path) -> str:
+    """Repo-relative display string, falling back to the absolute path.
+
+    ``Path.relative_to(REPO_ROOT)`` raises when ``KRR_DIR`` has been
+    re-pointed outside the repo (e.g. by tests), so guard against it.
+    """
+    try:
+        return str(path.relative_to(REPO_ROOT))
+    except ValueError:
+        return str(path)
+
+
+def _write_classification_sample(
+    pool: list[dict],
+    sample_size: int,
+    seed: int | None,
+) -> Path:
+    """Write a random precision-review sample of (act, subjects, keywords).
+
+    ``pool`` is the list of every classified act this run produced (each item
+    is ``{"act": ..., "file": ..., "assigned_subjects": [...],
+    "matched_keywords": {code: [...]}}``). We sample ``sample_size`` of them
+    (or all of them if the pool is smaller) and write the result to
+    ``krr_outputs/reports/eurovoc_classification_sample.json`` so a human can
+    eyeball whether the high-volume domains are meaningful.
+    """
+    rng = random.Random(seed)
+    chosen = pool if sample_size >= len(pool) else rng.sample(pool, sample_size)
+    chosen = sorted(chosen, key=lambda r: r["act"])
+    sample_doc = {
+        "generated": datetime.now().strftime("%Y-%m-%d"),
+        "method": "keyword-matching",
+        "classification_level": "act",
+        "purpose": (
+            "Random sample of act → EuroVoc subject assignments for manual "
+            "precision review. Each entry lists the matched keywords per "
+            "domain so a reviewer can judge whether the assignment is "
+            "meaningful or keyword noise."
+        ),
+        "random_seed": seed,
+        "population_size": len(pool),
+        "sample_size": len(chosen),
+        "samples": chosen,
+    }
+    out_dir = KRR_DIR / "reports"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    out_path = out_dir / "eurovoc_classification_sample.json"
+    save_json(out_path, sample_doc)
+    return out_path
+
+
+def main(argv: list[str] | None = None):
+    parser = argparse.ArgumentParser(
+        description="Classify Estonian acts with EuroVoc subject taxonomy.",
+    )
+    parser.add_argument(
+        "--emit-sample",
+        type=int,
+        metavar="N",
+        default=0,
+        help=(
+            "After classifying, write a random N-act precision-review sample "
+            "to krr_outputs/reports/eurovoc_classification_sample.json "
+            "(0 = disabled)."
+        ),
+    )
+    parser.add_argument(
+        "--sample-seed",
+        type=int,
+        default=None,
+        help="Optional RNG seed for --emit-sample (for reproducible samples).",
+    )
+    args = parser.parse_args(argv)
+
     print("=" * 60)
     print("Classify Estonian laws with EuroVoc subject taxonomy")
     print(f"EuroVoc domains defined: {len(EUROVOC_DOMAINS)}")
@@ -526,6 +664,9 @@ def main():
 
     classifications: list[dict] = []
     domain_counts: dict[str, int] = {}  # code → number of acts assigned
+    # Per-act sample rows: built for every classified act regardless of the
+    # --emit-sample flag, so a sample can be written cheaply at the end.
+    sample_pool: list[dict] = []
     files_updated = 0
     files_skipped = 0
     files_error = 0
@@ -585,9 +726,14 @@ def main():
                 )
                 continue
 
+            rel_file = (
+                str(path.relative_to(KRR_DIR))
+                if KRR_DIR in path.parents
+                else str(path)
+            )
             entry = {
                 "law_name": name,
-                "file": str(path.relative_to(KRR_DIR)) if KRR_DIR in path.parents else str(path),
+                "file": rel_file,
                 "domains": [
                     {
                         "code": code,
@@ -596,11 +742,29 @@ def main():
                         "label_en": label_en,
                         "eurovoc_uri": f"{EUROVOC_URI_BASE}{code}",
                         "keyword_hits": hits,
+                        "matched_keywords": matched_kws,
                     }
-                    for code, slug, label_et, label_en, hits in domains
+                    for code, slug, label_et, label_en, hits, matched_kws in domains
                 ],
             }
             classifications.append(entry)
+            sample_pool.append({
+                "act": meta.get("@id") or name,
+                "act_name": name,
+                "file": rel_file,
+                "assigned_subjects": [
+                    {
+                        "code": code,
+                        "eurovoc_uri": f"{EUROVOC_URI_BASE}{code}",
+                        "slug": slug,
+                    }
+                    for code, slug, _label_et, _label_en, _hits, _kws in domains
+                ],
+                "matched_keywords": {
+                    code: matched_kws
+                    for code, _slug, _label_et, _label_en, _hits, matched_kws in domains
+                },
+            })
 
             for code, *_ in domains:
                 domain_counts[code] = domain_counts.get(code, 0) + 1
@@ -630,10 +794,16 @@ def main():
     print(f"  Processed all {len(laws_meta)} acts")
 
     # --- Step 3: Generate domain statistics ---
+    # Surface a per-domain row for EVERY defined domain (including domains that
+    # got 0 acts) so coverage skew — and the effect of the precision gates — is
+    # visible in the report. Sorted by act count descending then code.
     print("\n--- Domain statistics ---")
     domain_stats: list[dict] = []
-    for code, count in sorted(domain_counts.items(), key=lambda x: -x[1]):
-        slug, label_et, label_en, _ = EUROVOC_DOMAINS[code]
+    for code, (slug, label_et, label_en, keywords) in sorted(
+        EUROVOC_DOMAINS.items(),
+        key=lambda kv: (-domain_counts.get(kv[0], 0), kv[0]),
+    ):
+        count = domain_counts.get(code, 0)
         domain_stats.append({
             "code": code,
             "slug": slug,
@@ -641,8 +811,21 @@ def main():
             "label_en": label_en,
             "eurovoc_uri": f"{EUROVOC_URI_BASE}{code}",
             "laws_count": count,
+            "keyword_count": len(keywords),
+            "min_total_hits": MIN_HITS_OVERRIDES.get(code, MIN_HITS_THRESHOLD),
+            "min_distinct_keywords": MIN_DISTINCT_KEYWORDS_OVERRIDES.get(
+                code, MIN_DISTINCT_KEYWORDS_DEFAULT
+            ),
         })
         print(f"    {code} {label_en:35s} ({label_et:30s}): {count:4d} laws")
+
+    # --- Optional precision-review sample ---
+    sample_path: Path | None = None
+    if args.emit_sample and args.emit_sample > 0:
+        sample_path = _write_classification_sample(
+            sample_pool, args.emit_sample, args.sample_seed
+        )
+        print(f"  Wrote precision-review sample: {_display_path(sample_path)}")
 
     # --- Step 4: Generate report ---
     print("\n--- Generating classification report ---")
@@ -651,10 +834,26 @@ def main():
         "method": "keyword-matching",
         "classification_level": "act",
         "quality_evaluation": {
-            "status": "not_evaluated",
+            "status": "tooling_available",
             "note": (
                 "Keyword matches are candidate act-level EuroVoc subjects. "
-                "No reviewed precision/recall sample is bundled yet."
+                "Domain assignments are gated by a total-hit threshold and a "
+                "distinct-keyword threshold (see min_total_hits / "
+                "min_distinct_keywords per domain in domain_statistics). Run "
+                "`python3 scripts/classify_eurovoc.py --emit-sample N` to "
+                "produce krr_outputs/reports/eurovoc_classification_sample.json "
+                "for manual precision review."
+            ),
+            "precision_gates": {
+                "min_total_hits_default": MIN_HITS_THRESHOLD,
+                "min_distinct_keywords_default": MIN_DISTINCT_KEYWORDS_DEFAULT,
+                "min_total_hits_overrides": dict(sorted(MIN_HITS_OVERRIDES.items())),
+                "min_distinct_keywords_overrides": dict(
+                    sorted(MIN_DISTINCT_KEYWORDS_OVERRIDES.items())
+                ),
+            },
+            "sample_emitted": (
+                _display_path(sample_path) if sample_path is not None else None
             ),
         },
         "eurovoc_domains_defined": len(EUROVOC_DOMAINS),
@@ -681,7 +880,7 @@ def main():
     print(f"  Law files updated:    {files_updated}")
     print(f"  File errors:          {files_error}")
     print(f"  Domains used:         {len(domain_counts)}/{len(EUROVOC_DOMAINS)}")
-    print(f"\nOutput: {report_path.relative_to(REPO_ROOT)}")
+    print(f"\nOutput: {_display_path(report_path)}")
     print("=" * 60)
 
     # ---------- coverage report ----------

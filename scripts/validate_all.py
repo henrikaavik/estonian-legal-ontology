@@ -686,7 +686,159 @@ def validate_regulation_indexes(krr_dir: Path = KRR_DIR):
         index_files = doc.get("files")
         if isinstance(index_files, list) and len(index_files) != len(files):
             error(f"{index_name}: files lists {len(index_files)} entries but filesystem has {len(files)} peep files")
+        # Issue #119: when the index carries the per-act `acts` ledger,
+        # cross-check it against `files` and verify stub acts carry a
+        # contentStatus marker.
+        acts = doc.get("acts")
+        if isinstance(acts, list):
+            act_files = {a.get("file") for a in acts if isinstance(a, dict)}
+            file_set = set(index_files) if isinstance(index_files, list) else None
+            if file_set is not None and act_files != file_set:
+                error(
+                    f"{index_name}: acts ledger lists {len(act_files)} files but "
+                    f"files lists {len(file_set)}"
+                )
+            for a in acts:
+                if not isinstance(a, dict):
+                    continue
+                if a.get("status") == "stub" and not a.get("contentStatus"):
+                    error(
+                        f"{index_name}: stub act {a.get('slug')!r} lacks a "
+                        f"contentStatus marker"
+                    )
         print(f"  Checked {index_name}: {len(files)} files")
+
+
+def _peep_ontology_node(doc: dict) -> dict | None:
+    """Return the first ``owl:Ontology`` node in a peep doc's ``@graph``."""
+    for node in doc.get("@graph", []):
+        if not isinstance(node, dict):
+            continue
+        types = node.get("@type") or []
+        if isinstance(types, str):
+            types = [types]
+        if "owl:Ontology" in types:
+            return node
+    return None
+
+
+def validate_act_coverage_reconciliation(krr_dir: Path = KRR_DIR):
+    """Issue #119: reconcile ``generation_manifest_laws.json`` against the
+    enacted-law peep files on disk.
+
+    When the manifest is present, assert:
+      * every act listed in the manifest (``outputsAll``) maps to a peep
+        file that exists on disk (``<slug>_peep.json`` for single-file
+        laws, or at least one ``<slug>_osa*_peep.json`` for multipart
+        laws, or — for ``failed`` acts — it is *allowed* to be missing);
+      * every root ``*_peep.json`` law file appears in the manifest (no
+        orphan peep file with no provenance entry);
+      * acts whose manifest status is ``stub`` carry the stub marker
+        (``estleg:contentStatus`` set to ``noStructuredBody``) on their
+        ontology node.
+
+    The manifest is not checked in by default, so a missing manifest is a
+    *warning* (the gate stays green) — it just means a supervised
+    ``generate_all_laws.py`` run hasn't happened on this tree yet.
+    """
+    print("\n--- Act Coverage Reconciliation ---")
+    manifest_path = krr_dir / "generation_manifest_laws.json"
+    if not manifest_path.exists():
+        warn(
+            "generation_manifest_laws.json: not found — run "
+            "scripts/generate_all_laws.py to produce act-coverage provenance"
+        )
+        return
+    manifest = validate_json_syntax(manifest_path)
+    if not isinstance(manifest, dict):
+        error("generation_manifest_laws.json: not a JSON object")
+        return
+    entries = manifest.get("outputsAll")
+    if not isinstance(entries, list):
+        # Older manifests used `outputs` only.
+        entries = manifest.get("outputs")
+    if not isinstance(entries, list):
+        error("generation_manifest_laws.json: no outputsAll/outputs list")
+        return
+
+    # Index the root law peep files on disk.
+    disk_files = {p.name for p in krr_dir.glob("*_peep.json")}
+    # Map slug -> set of peep filenames it could own (single + osa parts).
+    slug_files: dict[str, set[str]] = defaultdict(set)
+    osa_re = re.compile(r"^(?P<slug>.+?)_osa\d+_peep\.json$")
+    for name in disk_files:
+        m = osa_re.match(name)
+        if m:
+            slug_files[m.group("slug")].add(name)
+        elif name.endswith("_peep.json"):
+            slug_files[name[: -len("_peep.json")]].add(name)
+
+    manifest_slugs: set[str] = set()
+    manifest_files: set[str] = set()
+    missing_for_acts: list[str] = []
+    stub_marker_problems: list[str] = []
+
+    for entry in entries:
+        if not isinstance(entry, dict):
+            continue
+        slug = entry.get("slug")
+        if not isinstance(slug, str) or not slug:
+            continue
+        status = entry.get("status", "full")
+        manifest_slugs.add(slug)
+        owned = slug_files.get(slug, set())
+        manifest_files.update(owned)
+        single = f"{slug}_peep.json"
+        if status == "failed":
+            # A failed fetch is allowed to have no file on disk.
+            continue
+        if not owned:
+            missing_for_acts.append(f"{slug} (status={status})")
+            continue
+        # Stub acts must carry the noStructuredBody marker on the peep's
+        # ontology node (single-file shape — stubs are never multipart).
+        if status == "stub" and single in disk_files:
+            doc = validate_json_syntax(krr_dir / single)
+            if isinstance(doc, dict):
+                ont = _peep_ontology_node(doc)
+                marker = ont.get("estleg:contentStatus") if isinstance(ont, dict) else None
+                if marker != "noStructuredBody":
+                    stub_marker_problems.append(
+                        f"{single}: manifest status=stub but contentStatus={marker!r}"
+                    )
+
+    # Orphan peep files: on disk but not referenced by any manifest entry.
+    referenced = set()
+    for slug in manifest_slugs:
+        referenced.update(slug_files.get(slug, set()))
+    orphans = sorted(disk_files - referenced)
+
+    if missing_for_acts:
+        error(
+            f"{len(missing_for_acts)} acts in generation_manifest_laws.json "
+            f"have no peep file on disk"
+        )
+        for item in missing_for_acts[:15]:
+            print(f"    manifest act with no file: {item}")
+    if orphans:
+        error(
+            f"{len(orphans)} root law peep files are not listed in "
+            f"generation_manifest_laws.json"
+        )
+        for name in orphans[:15]:
+            print(f"    orphan peep (no manifest entry): {name}")
+    if stub_marker_problems:
+        error(
+            f"{len(stub_marker_problems)} stub acts lack the noStructuredBody "
+            f"content-status marker"
+        )
+        for item in stub_marker_problems[:15]:
+            print(f"    {item}")
+    if not (missing_for_acts or orphans or stub_marker_problems):
+        print(
+            f"  OK: {len(manifest_slugs)} manifest acts reconcile with "
+            f"{len(disk_files)} root law peep files"
+        )
 
 
 def jsonld_file_count(krr_dir: Path = KRR_DIR) -> int:
@@ -1347,6 +1499,125 @@ def validate_institution_duplicates(krr_dir: Path = KRR_DIR):
         print(f"  OK: {len(groups)} institution labels are canonical")
 
 
+def _collapse_slug(slug: str) -> str:
+    """Collapse underscore runs in an institution slug for comparison.
+
+    The on-disk registry currently contains a few stale double-underscore
+    filenames (e.g. ``institution_maksu__ja_tolliamet.json``) alongside
+    the single-underscore convention the extractor now emits. Comparing
+    collapsed forms makes the consistency check tolerant of that until
+    the extractor is re-run.
+    """
+    return re.sub(r"_+", "_", slug).strip("_")
+
+
+def load_institution_alias_canonicals(repo_root: Path = REPO_ROOT) -> set[str]:
+    """Return the set of canonical target slugs in data/institution_aliases.json.
+
+    Missing / malformed file -> empty set (the alias table is optional).
+    Slugs are returned underscore-collapsed for comparison with the
+    on-disk registry filenames.
+    """
+    path = repo_root / "data" / "institution_aliases.json"
+    if not path.exists():
+        return set()
+    doc = validate_json_syntax(path)
+    if not isinstance(doc, dict):
+        return set()
+    entries = doc.get("aliases")
+    if not isinstance(entries, dict):
+        return set()
+    out: set[str] = set()
+    for value in entries.values():
+        canonical = None
+        if isinstance(value, str):
+            canonical = value
+        elif isinstance(value, dict):
+            cand = value.get("canonical")
+            if isinstance(cand, str):
+                canonical = cand
+        if canonical:
+            out.add(_collapse_slug(canonical.lower()))
+    return out
+
+
+def validate_institution_registry_consistency(krr_dir: Path = KRR_DIR, repo_root: Path = REPO_ROOT):
+    """Issue #118: every ``Institution_*`` @id in the registry must be a
+    known canonical institution slug, and the alias table must point only
+    at known canonical slugs.
+
+    Checks (underscore-collapse tolerant):
+      1. The canonical slug set = filename stems of
+         ``krr_outputs/institutions/institution_*.json``.
+      2. Every node in those files whose @id is ``estleg:Institution_<X>``
+         must have ``collapse(X)`` present in the canonical set. (Catches
+         a file whose internal @id drifted from its filename, or a stray
+         Institution node smuggled into another institution file.)
+      3. Every ``canonical`` target in ``data/institution_aliases.json``
+         must resolve to a known canonical slug — an alias must not point
+         at a nonexistent institution. (Alias *keys* are historical and
+         may or may not still have their own file, so they are not
+         required to be in the set.)
+    """
+    print("\n--- Institution Registry Consistency ---")
+    inst_dir = krr_dir / "institutions"
+    files = sorted(inst_dir.glob("institution_*.json"))
+    if not files:
+        warn(f"{inst_dir}: no institution_*.json files found")
+        return
+
+    canonical: set[str] = set()
+    for path in files:
+        slug = path.stem.removeprefix("institution_")
+        if slug:
+            canonical.add(_collapse_slug(slug))
+
+    offending_ids: list[tuple[str, str]] = []
+    for path in files:
+        doc = validate_json_syntax(path)
+        if not isinstance(doc, dict):
+            continue
+        for node in doc.get("@graph", []):
+            if not isinstance(node, dict):
+                continue
+            nid = node.get("@id")
+            if not isinstance(nid, str):
+                continue
+            m = re.match(r"^estleg:Institution_([^_].*)$", nid)
+            if not m:
+                continue
+            # Strip any ``_competence_<type>`` Competence-node suffix —
+            # those legitimately extend the institution IRI.
+            base = re.sub(r"_competence_[a-z_]+$", "", m.group(1))
+            if "estleg:Competence" in (node.get("@type") or []):
+                continue
+            if _collapse_slug(base) not in canonical:
+                offending_ids.append((path.name, nid))
+
+    alias_canonicals = load_institution_alias_canonicals(repo_root)
+    dangling_aliases = sorted(slug for slug in alias_canonicals if slug not in canonical)
+
+    if offending_ids:
+        error(
+            f"{len(offending_ids)} Institution_* @ids in the registry are not "
+            f"canonical institution slugs"
+        )
+        for file_name, nid in offending_ids[:15]:
+            print(f"    {file_name}: {nid}")
+    if dangling_aliases:
+        error(
+            f"{len(dangling_aliases)} alias canonical targets in "
+            f"data/institution_aliases.json have no institution file"
+        )
+        for slug in dangling_aliases[:15]:
+            print(f"    alias -> {slug} (no institution_{slug}.json)")
+    if not offending_ids and not dangling_aliases:
+        print(
+            f"  OK: {len(canonical)} canonical institution slugs, "
+            f"{len(alias_canonicals)} alias targets all resolve"
+        )
+
+
 def validate_id_uniqueness(all_ids: dict[str, list[str]]):
     print("\n--- @id Uniqueness ---")
     # Shared ontology class definitions are expected to appear in multiple files
@@ -1419,10 +1690,12 @@ def main():
     validate_transposition_mapping()
     validate_registry_index()
     validate_regulation_indexes()
+    validate_act_coverage_reconciliation()
     validate_combined_ontology()
     validate_subcorpus_combined_ontologies()
     validate_metadata_catalog()
     validate_institution_duplicates()
+    validate_institution_registry_consistency()
 
     print("\n" + "=" * 60)
     print(f"Files validated: {len(files)}")

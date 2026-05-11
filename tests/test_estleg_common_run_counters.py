@@ -16,6 +16,7 @@ from estleg_common import (
     build_globalid_xml_lookup,
     pair_peep_with_xml,
     save_json,
+    source_provenance,
 )
 import re
 
@@ -273,3 +274,108 @@ def test_iter_peep_files_handles_paths_outside_krr_dir(
 
     assert inside_peep in result
     assert outside_peep in result
+
+
+# ---------------------------------------------------------------------------
+# source_provenance helper (issue #113) — the documented source-provenance
+# contract: dcterms:source is an IRI object, dcterms:title is a structured
+# title, dc:source is the legacy human-readable descriptor.
+# ---------------------------------------------------------------------------
+
+
+def test_source_provenance_full_act_node():
+    """RT-backed act: emits IRI dcterms:source, language-tagged dcterms:title,
+    and the legacy dc:source string (= the title for an RT act)."""
+    fields = source_provenance(
+        rt_url="https://www.riigiteataja.ee/akt/610920.xml",
+        label="Karistusseadustik",
+    )
+    assert fields["dcterms:source"] == {
+        "@id": "https://www.riigiteataja.ee/akt/610920.xml"
+    }
+    assert fields["dcterms:title"] == {
+        "@value": "Karistusseadustik",
+        "@language": "et",
+    }
+    # dc:source is the legacy human-readable descriptor — for an act with a
+    # title that's the title string.
+    assert fields["dc:source"] == "Karistusseadustik"
+
+
+def test_source_provenance_database_name_only():
+    """A source identified only by originating-database name (e.g. an EIS or
+    Riigikohus crawl) puts that name in the legacy dc:source and emits no
+    dcterms:source IRI."""
+    fields = source_provenance(db_name="Eelnõude infosüsteem (EIS) – eelnoud.valitsus.ee")
+    assert fields["dc:source"] == "Eelnõude infosüsteem (EIS) – eelnoud.valitsus.ee"
+    assert "dcterms:source" not in fields
+    assert "dcterms:title" not in fields
+
+
+def test_source_provenance_never_emits_bare_string_dcterms_source():
+    """dcterms:source is reserved for IRI objects — passing a falsy/empty
+    rt_url must NOT produce a dcterms:source key at all (never a bare
+    string), so the validator's IRI-object rule can't be violated."""
+    assert "dcterms:source" not in source_provenance(rt_url="", label="X")
+    assert "dcterms:source" not in source_provenance(rt_url=None, label="X")
+    # And when given, it is always wrapped as {"@id": ...}.
+    fields = source_provenance(rt_url="https://example.org/x", label="X")
+    assert isinstance(fields["dcterms:source"], dict)
+    assert isinstance(fields["dcterms:source"]["@id"], str)
+
+
+def test_source_provenance_plain_title_when_no_language():
+    """language=None yields a plain-string dcterms:title (still valid per the
+    validator, which accepts str or language-tagged value)."""
+    fields = source_provenance(label="Some Regulation", language=None)
+    assert fields["dcterms:title"] == "Some Regulation"
+    assert fields["dc:source"] == "Some Regulation"
+
+
+def test_source_provenance_label_takes_precedence_over_db_name_for_dc_source():
+    """When both a title and a database name are given, dc:source carries the
+    title (the more specific human-readable descriptor)."""
+    fields = source_provenance(db_name="Riigi Teataja XML", label="Töölepingu seadus")
+    assert fields["dc:source"] == "Töölepingu seadus"
+
+
+def test_source_provenance_output_passes_validate_all_validators():
+    """A node carrying source_provenance() output must pass the existing
+    validate_all per-node provenance validators with zero errors — this pins
+    the helper to the enforced contract (validate_source_provenance +
+    validate_dc_source)."""
+    import importlib
+
+    scripts_dir = Path(__file__).resolve().parents[1] / "scripts"
+    if str(scripts_dir) not in sys.path:
+        sys.path.insert(0, str(scripts_dir))
+    validate_all = importlib.import_module("validate_all")
+    validate_all.reset()
+
+    node = {
+        "@id": "estleg:Test_Map_2026",
+        "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
+        "rdfs:label": {"@value": "Test", "@language": "et"},
+    }
+    node.update(
+        source_provenance(
+            rt_url="https://www.riigiteataja.ee/akt/610920.xml",
+            label="Testseadus",
+        )
+    )
+    doc = {"@graph": [node]}
+    fake_path = Path("test_source_provenance.json")
+    validate_all.validate_source_provenance(fake_path, doc)
+    validate_all.validate_dc_source(fake_path, doc)
+    assert validate_all.errors == []
+
+    # Also exercise the db-name-only shape (no dcterms:source).
+    validate_all.reset()
+    node2 = {
+        "@id": "estleg:Test2_2026",
+        "@type": ["owl:NamedIndividual", "estleg:CourtDecision"],
+    }
+    node2.update(source_provenance(db_name="Riigikohus – rikos.rik.ee"))
+    validate_all.validate_source_provenance(fake_path, {"@graph": [node2]})
+    validate_all.validate_dc_source(fake_path, {"@graph": [node2]})
+    assert validate_all.errors == []

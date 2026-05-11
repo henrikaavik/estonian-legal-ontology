@@ -20,7 +20,7 @@ from collections import defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 
-from estleg_common import iter_peep_files
+from estleg_common import iter_peep_files, jsonld_text
 from kov_pipeline_coverage import (
     CoverageReport,
     measure_runtime,
@@ -234,7 +234,10 @@ def main() -> None:
             modified = False
 
             for node in doc["@graph"]:
-                summary = node.get("estleg:summary", "")
+                # Generators may emit estleg:summary as a plain string or as a
+                # {"@value": ..., "@language": "et"} value object; jsonld_text
+                # normalises both before the regex-based classifier runs.
+                summary = jsonld_text(node.get("estleg:summary", ""))
                 if not summary:
                     continue
 
