@@ -30,6 +30,7 @@ from estleg_common import (
     _RunCounters,
     _safe_load,
     iter_peep_files,
+    jsonld_text,
     normalize_issuer_name,
     save_json,
 )
@@ -250,7 +251,10 @@ def build_provision_index(
                 iri_to_file[node_id] = json_file
 
                 if source_act is None:
-                    source_act = node.get("estleg:sourceAct", "")
+                    # estleg:sourceAct may arrive as a plain string or a
+                    # {"@value": ..., "@language": "et"} object depending on
+                    # the generator; normalise before using it as a map key.
+                    source_act = jsonld_text(node.get("estleg:sourceAct", ""))
 
         if file_prefix and source_act:
             source_act_to_prefix[source_act] = file_prefix
@@ -592,7 +596,10 @@ def process_court_files(
 
             stats["decisions_scanned"] += 1
 
-            summary = node.get("estleg:summary", "")
+            # estleg:summary may be a plain string or a value object
+            # ({"@value": ..., "@language": "et"}); jsonld_text yields the
+            # raw text either way so the citation regexes never see a dict.
+            summary = jsonld_text(node.get("estleg:summary", ""))
             if not summary:
                 continue
 

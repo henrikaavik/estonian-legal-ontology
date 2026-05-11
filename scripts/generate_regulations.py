@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 import time
 import urllib.parse
@@ -534,13 +535,20 @@ def summarize_regulation_doc(doc: dict) -> dict:
         {},
     )
     issuer = ontology.get("estleg:issuer") or "(unknown)"
+    content_status = ontology.get("estleg:contentStatus")
+    is_stub = content_status == "noStructuredBody"
     return {
         "paragraphs": sum(1 for n in graph if isinstance(n, dict) and "estleg:paragrahv" in n),
         "annexes": sum(1 for n in graph if isinstance(n, dict) and "estleg:Annex" in (n.get("@type") or [])),
         "has_preamble": int(bool(ontology.get("estleg:preambleText"))),
         "html_fallback": int(ontology.get("estleg:parseMode") == "html_fallback"),
-        "no_paragraphs": int(ontology.get("estleg:contentStatus") == "noStructuredBody"),
+        "no_paragraphs": int(is_stub),
         "issuer": issuer if isinstance(issuer, str) else "(unknown)",
+        # Issue #119: per-act coverage status surfaced in the index.
+        # ``stub`` = act-level node only (no structured body); ``full``
+        # = structured (or HTML-fallback) provisions present.
+        "status": "stub" if is_stub else "full",
+        "contentStatus": content_status if isinstance(content_status, str) else None,
     }
 
 
@@ -562,7 +570,14 @@ def build_regulation_index(
     files = regulation_files(out_dir)
     totals = Counter()
     issuer_counts: Counter[str] = Counter()
+    status_counts: Counter[str] = Counter()
     file_entries = []
+    # Issue #119: per-act coverage ledger — slug, on-disk path, status
+    # (full/stub), and the act node's contentStatus marker (None when
+    # structured). Mirrors the laws manifest's outputsAll entries so a
+    # consumer can distinguish no-body acts from fully-mapped ones from
+    # the index alone, not just by re-opening each peep file.
+    act_entries: list[dict] = []
 
     for path in files:
         doc: dict | None = None
@@ -578,7 +593,22 @@ def build_regulation_index(
         for key in ("paragraphs", "annexes", "has_preamble", "html_fallback", "no_paragraphs"):
             totals[key] += stats[key]
         issuer_counts[stats["issuer"]] += 1
-        file_entries.append(str(path.relative_to(out_dir)))
+        status_counts[stats["status"]] += 1
+        rel = str(path.relative_to(out_dir))
+        file_entries.append(rel)
+        # Slug: filename stem with the trailing ``_t<id>_peep`` /
+        # ``_peep`` suffix stripped, matching make_filename's slug_base.
+        slug = re.sub(r"(_t\d+)?_peep$", "", path.stem)
+        entry: dict = {
+            "slug": slug,
+            "file": rel,
+            "status": stats["status"],
+        }
+        if stats["contentStatus"]:
+            entry["contentStatus"] = stats["contentStatus"]
+        if stats["status"] == "stub":
+            entry["reason"] = "no structured paragraphs, annexes, or preamble parsed from source XML"
+        act_entries.append(entry)
 
     return {
         "generated": datetime.now(timezone.utc).isoformat(),
@@ -591,7 +621,9 @@ def build_regulation_index(
         "htmlFallbackCount": totals["html_fallback"],
         "noStructuredBodyCount": totals["no_paragraphs"],
         "byIssuer": dict(sorted(issuer_counts.items(), key=lambda x: (-x[1], x[0]))),
+        "byStatus": dict(sorted(status_counts.items())),
         "files": file_entries,
+        "acts": act_entries,
         "run": run_stats or {},
     }
 

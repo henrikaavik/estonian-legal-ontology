@@ -352,6 +352,40 @@ SELECT ?law ?amendment ?date WHERE {
 } ORDER BY ?date
 ```
 
+### EuroVoc Subject Classification
+
+EuroVoc subjects are classified at the **act level** — `dcterms:subject` is
+attached to the act's metadata node (the one typed `estleg:Act`), not to
+individual provisions. To list all acts tagged with a given EuroVoc domain
+(here `3611` = "Social security"):
+
+```sparql
+PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?act ?label WHERE {
+  ?act a estleg:Act ;
+       dcterms:subject <http://eurovoc.europa.eu/3611> ;
+       rdfs:label ?label .
+}
+```
+
+To go the other way — list every EuroVoc subject assigned to a specific act:
+
+```sparql
+PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?subject WHERE {
+  ?act a estleg:Act ;
+       rdfs:label "Töölepingu seadus"@et ;
+       dcterms:subject ?subject .
+  FILTER(STRSTARTS(STR(?subject), "http://eurovoc.europa.eu/"))
+}
+```
+
 For the full list of classes, properties, and SPARQL examples, see [SCHEMA_REFERENCE.md](SCHEMA_REFERENCE.md).
 
 ## REST API Design Suggestions

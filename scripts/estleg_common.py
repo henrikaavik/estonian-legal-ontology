@@ -233,6 +233,64 @@ def jsonld_text(value: object, default: str = "") -> str:
 
 
 # ---------------------------------------------------------------------------
+# Source provenance helper (issue #113)
+# ---------------------------------------------------------------------------
+
+def source_provenance(
+    rt_url: str | None = None,
+    db_name: str | None = None,
+    label: str | None = None,
+    *,
+    language: str | None = "et",
+) -> dict:
+    """Build the canonical source-provenance field pair for an act node.
+
+    Implements the "Source provenance" contract documented in
+    ``docs/SCHEMA_REFERENCE.md``. The contract is:
+
+    - ``dcterms:source`` — reserved for a resolvable IRI object
+      ``{"@id": "https://..."}``. Emitted only when ``rt_url`` is a
+      non-empty string. Validated by
+      ``validate_all.validate_source_provenance``.
+    - ``dcterms:title`` — the structured (preferably language-tagged)
+      canonical title. Emitted from ``label`` when given; this is the
+      field downstream enrichers should prefer for titles.
+    - ``dc:source`` — the **legacy human-readable source descriptor**.
+      It is intentionally overloaded across document types: an RT/source
+      citation string, the act title, or the originating-database name.
+      Set to ``label`` if given, else ``db_name``. Stable but legacy —
+      not to be removed; new data should also emit ``dcterms:source``
+      where an authoritative IRI exists. Validated (typing only) by
+      ``validate_all.validate_dc_source``.
+
+    The consumer fallback chain documented in SCHEMA_REFERENCE is:
+    for a resolvable URL — ``dcterms:source`` IRI → URL parsed from
+    ``dc:source`` (only if it is a URL) → none; for a title —
+    ``dcterms:title`` → ``dc:source`` string → ``rdfs:label``.
+
+    Note: most generators currently build these fields inline; this
+    helper centralises and documents the shape rather than being wired
+    through every generator. Returned dict contains only the keys that
+    have a value, so callers can ``ontology_node.update(...)`` it.
+    """
+    fields: dict = {}
+    # dc:source — legacy human-readable descriptor (title preferred, else
+    # the originating-database / source label).
+    legacy = label if label else db_name
+    if legacy:
+        fields["dc:source"] = legacy
+    # dcterms:title — structured canonical title.
+    if label:
+        fields["dcterms:title"] = (
+            {"@value": label, "@language": language} if language else label
+        )
+    # dcterms:source — resolvable IRI object only; never a bare string.
+    if isinstance(rt_url, str) and rt_url:
+        fields["dcterms:source"] = {"@id": rt_url}
+    return fields
+
+
+# ---------------------------------------------------------------------------
 # Run-counters helper (Layer 2c PR #3)
 # ---------------------------------------------------------------------------
 # Pipelines that read many JSON files and need to record malformed inputs

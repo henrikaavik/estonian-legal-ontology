@@ -1,17 +1,69 @@
 #!/usr/bin/env python3
 """
-Comprehensive fix script for all Estonian Legal Ontology data issues.
+Build + repair helpers for the Estonian Legal Ontology corpus.
 
-Fixes GitHub issues:
-  #2/#17: Namespace migration (example.org → data.riik.ee)
-  #3/#21: AÕS file naming normalization
-  #4: @type normalization (always arrays)
-  #5: Property type normalization (coversConcept, hasSection always arrays)
-  #6: Duplicate @id audit and fix
-  #11: Notariaadiseadus naming fix
-  #12: dc:source normalization (preserve list values, lossless)
-  #13: sectionNumber normalization (always string)
-  #14: Script namespace fix
+This module has **two distinct responsibilities** that should not be
+conflated:
+
+(a) STILL-ESSENTIAL BUILD STEPS — part of every ordinary regeneration:
+    - ``generate_combined_jsonld`` — the canonical builder of
+      ``krr_outputs/combined_ontology.jsonld`` from ``canonical_combined_inputs``
+      (every root ``*_peep.json`` + the ``COMBINED_ALLOWED_JSONLD`` allowlist).
+      Nothing else builds this artifact; it is validated by
+      ``validate_all.validate_combined_ontology``.
+    - ``generate_index`` — the builder of ``krr_outputs/INDEX.json``
+      (the master law registry); validated by
+      ``validate_all.validate_registry_index``.
+    These two are *not* repair passes — they are first-class build outputs.
+
+(b) LEGACY ONE-TIME-MIGRATION / SAFETY-NET REPAIR PASSES — kept ONLY as a
+    belt-and-braces guard because the generators now emit the correct
+    JSON-LD shapes directly. They are no longer required for ordinary
+    regeneration and should be considered for removal once a regression
+    window confirms generator output stays validator-clean:
+      - ``migrate_namespace_in_value`` — example.org → data.riik.ee
+        namespace migration (#2/#17). Generators emit the
+        ``data.riik.ee`` namespace directly (see ``estleg_common.NS`` /
+        ``estleg_common.CONTEXT``).
+      - ``normalize_type`` — coerce ``@type`` to an array (#4).
+        Generators emit ``@type`` arrays directly (see the act-node
+        construction in ``generate_all_laws.py`` / ``generate_regulations.py``,
+        all of which write ``"@type": [...]``).
+      - ``normalize_multi_valued`` — coerce ``coversConcept`` / ``hasSection``
+        / etc. to arrays (#5). Generators emit these as arrays directly.
+      - ``normalize_dc_source`` — collapse a singleton ``dc:source`` array
+        to a scalar and coerce array items to ``str`` (#12 / lossless per
+        #159). Generators emit a scalar ``dc:source`` string directly
+        (see ``estleg_common.source_provenance`` and the inline
+        ``"dc:source": title`` in the generators).
+      - ``normalize_section_number`` — coerce ``estleg:sectionNumber`` to a
+        string (#13). ``generate_kars_eriosa_jsonld.py`` emits string
+        section numbers directly.
+      - ``fix_aos_naming`` — one-time Asjaõigusseadus file-rename (#3/#21).
+      - ``fix_notariaadiseadus_naming`` — one-time notariaadiseadus
+        file-rename (#11).
+      - ``audit_duplicate_ids`` — cross-file ``@id`` collision report (#6).
+        Reporting only; the generators produce file-disjoint id spaces.
+      - ``fix_intra_file_duplicates`` / ``_fix_intra_file_duplicates_in_doc``
+        — content-hash-stable intra-file ``@id`` dedup (#6 / #159).
+        Generators produce unique ids within a file; this is a no-op on
+        clean output.
+      - ``fix_generator_script`` / ``fix_docs_namespace`` — one-time
+        namespace fix in ``generate_kars_eriosa_jsonld.py`` and ``docs/*.md``
+        (#14).
+
+All of the ``normalize_*`` passes in group (b) are idempotent no-ops on
+already-clean input; ``tests/test_fix_all_issues.py`` pins both that
+property and the "generators produce validator-clean output" guarantee
+with fixture-based tests. ``scripts/validate_all.py``'s per-node
+validators (``validate_types``, ``validate_section_numbers``,
+``validate_dc_source``, ``validate_source_provenance``, ...) are the
+enforcement side of the contract.
+
+Originally fixed GitHub issues: #2/#17 (namespace), #3/#21 (AÕS naming),
+#4 (@type arrays), #5 (multi-valued property arrays), #6 (duplicate @id),
+#11 (notariaadiseadus naming), #12/#159 (dc:source), #13 (sectionNumber),
+#14 (script namespace), #19 (INDEX.json), #26 (combined_ontology.jsonld).
 """
 
 import datetime as _dt

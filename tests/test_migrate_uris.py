@@ -3,6 +3,8 @@ from __future__ import annotations
 
 import json
 import os
+import re
+from datetime import datetime
 from pathlib import Path
 from unittest.mock import patch
 
@@ -12,6 +14,7 @@ import migrate_uris
 from migrate_uris import (
     NEW_IRI_FORMAT_RE,
     PAR_NO_UNDERSCORE_RE,
+    _already_migrated_per_state,
     _atomic_write_text,
     apply_renames_to_file,
     assign_abbreviations,
@@ -19,8 +22,13 @@ from migrate_uris import (
     build_rename_map,
     compute_corpus_hash,
     compute_registry_hash,
+    get_all_scannable_files,
+    load_migration_state,
+    save_migration_state,
     verify_migration,
 )
+
+_SHA256_HEX_RE = re.compile(r"^[0-9a-f]{64}$")
 
 
 class TestAutoDerive:
@@ -617,21 +625,22 @@ class TestApplyHashBinding:
             )
         )
 
-    def test_re_apply_same_report_is_idempotent_short_circuit(
+    def test_re_apply_after_migration_short_circuits_via_state(
         self, isolated_paths: Path, capsys: pytest.CaptureFixture[str]
     ) -> None:
-        """Re-running apply against the *exact same* report short-circuits.
+        """Re-running apply on an already-migrated corpus is a no-op.
 
         After a successful apply, ``migration_state.json`` records the
-        report's hashes. Calling ``apply_cmd`` again with the report and
-        registry untouched (i.e. the operator hits "apply" twice by
-        mistake before the corpus has had a chance to drift) must detect
-        the matching state and return without rewriting anything.
+        post-migration hashes. The ``apply_cmd`` fast path
+        (``_already_migrated_per_state``) recognises that the *current*
+        registry+corpus already match the recorded state and returns
+        without touching anything — and without needing a fresh dry-run
+        report.
 
-        We accomplish this by skipping the corpus-hash check via a
-        targeted patch — in real life the operator would never see the
-        post-apply corpus_hash match the pre-apply hash, so this branch
-        is the one we explicitly support: same report, same state, no-op.
+        We patch ``compute_corpus_hash`` so the post-apply corpus hash the
+        helper reports equals the hash stored in the state (in real life
+        the state stores the report's pre-apply hash, which only matches
+        when nothing about the scanned corpus has changed since dry-run).
         """
         registry = {
             "long_prefix_one": {
@@ -650,22 +659,68 @@ class TestApplyHashBinding:
         migrate_uris.apply_cmd()
         capsys.readouterr()  # drain
 
-        # The corpus changed during apply, but the migration state now
-        # records the *post-apply* corpus hash equal to the report's
-        # corpus hash (because dry-run captured pre-apply, apply rewrote,
-        # and the state was stored with the report's hashes). Patching the
-        # current corpus hash to match the report hash simulates a perfect
-        # double-click without the corpus having been re-scanned.
-        report = json.loads(migrate_uris.REPORT_PATH.read_text(encoding="utf-8"))
+        state = json.loads(
+            migrate_uris.MIGRATION_STATE_PATH.read_text(encoding="utf-8")
+        )
         with patch.object(
             migrate_uris,
             "compute_corpus_hash",
-            return_value=report["corpus_hash"],
+            return_value=state["last_applied_corpus_hash"],
         ):
             migrate_uris.apply_cmd()
         out = capsys.readouterr().out
-        assert "matches the current report" in out
+        assert "already migrated per migration_state.json" in out
+        assert "nothing to do" in out
         # Corpus still in the post-migration state (unchanged by no-op apply).
+        assert (
+            "estleg:LP1_Par_1"
+            in (isolated_paths / "krr_outputs" / "a.json").read_text(
+                encoding="utf-8"
+            )
+        )
+
+    def test_force_reapply_overrides_already_migrated_fast_path(
+        self, isolated_paths: Path, capsys: pytest.CaptureFixture[str]
+    ) -> None:
+        """``--force-reapply`` must bypass the already-migrated fast path.
+
+        Even when ``migration_state.json`` says the corpus is current, an
+        operator can force a re-run (e.g. to repair files). Re-running the
+        original (now satisfied) plan against the already-migrated corpus
+        finds no old IRIs to replace, so verification still passes and the
+        state is re-recorded — but it did not take the no-op fast path.
+        """
+        registry = {
+            "long_prefix_one": {
+                "abbrev": "LP1",
+                "source": "auto",
+                "title": "Long Prefix One",
+                "old_prefix": "long_prefix_one_extra_long_pref",
+            }
+        }
+        _run_dry_run_with_registry(
+            isolated_paths,
+            registry,
+            {"a.json": '{"@id": "estleg:long_prefix_one_extra_long_pref_Par_1"}'},
+        )
+        migrate_uris.apply_cmd()
+        capsys.readouterr()
+
+        state = json.loads(
+            migrate_uris.MIGRATION_STATE_PATH.read_text(encoding="utf-8")
+        )
+        with patch.object(
+            migrate_uris,
+            "compute_corpus_hash",
+            return_value=state["last_applied_corpus_hash"],
+        ):
+            migrate_uris.apply_cmd(force_reapply=True)
+        out = capsys.readouterr().out
+        # Did NOT take the no-op fast path.
+        assert "already migrated per migration_state.json" not in out
+        # Re-applying a satisfied plan rewrites nothing but still verifies.
+        assert "VERIFICATION PASSED" in out
+        # The corpus is untouched (already in the migrated form).
         assert (
             "estleg:LP1_Par_1"
             in (isolated_paths / "krr_outputs" / "a.json").read_text(
@@ -908,3 +963,178 @@ class TestDryRunReport:
         assert report["generated"].endswith("+00:00")
         assert "registry_hash" in report
         assert "corpus_hash" in report
+
+
+# ── #83 task 1 — migration_state.json sentinel ───────────────────────────────
+
+
+class TestMigrationStateSentinelRoundTrip:
+    """``save_migration_state`` / ``load_migration_state`` are exact inverses."""
+
+    def test_save_then_load_roundtrips(self, isolated_paths: Path) -> None:
+        state = {
+            "last_applied_at": "2026-05-11T07:48:18.502144+00:00",
+            "last_applied_registry_hash": "a" * 64,
+            "last_applied_corpus_hash": "b" * 64,
+            "total_renames_applied": 14651,
+            "files_changed": 714,
+            "note": "backfilled — unicode ok: Võlaõigusseadus / TsÜS",
+        }
+        save_migration_state(state)
+        assert migrate_uris.MIGRATION_STATE_PATH.exists()
+        # Round-trips via the public loader …
+        assert load_migration_state() == state
+        # … and via raw JSON (unicode preserved, not \u-escaped).
+        on_disk = migrate_uris.MIGRATION_STATE_PATH.read_text(encoding="utf-8")
+        assert "Võlaõigusseadus" in on_disk
+        assert json.loads(on_disk) == state
+
+    def test_load_missing_returns_none(self, isolated_paths: Path) -> None:
+        assert not migrate_uris.MIGRATION_STATE_PATH.exists()
+        assert load_migration_state() is None
+
+    def test_load_corrupt_returns_none(self, isolated_paths: Path) -> None:
+        migrate_uris.MIGRATION_STATE_PATH.write_text("{not json", encoding="utf-8")
+        assert load_migration_state() is None
+
+    def test_already_migrated_predicate(self, isolated_paths: Path) -> None:
+        """``_already_migrated_per_state`` is True iff both hashes match now."""
+        _write_registry(migrate_uris.REGISTRY_PATH, {"x": {"abbrev": "X"}})
+        files = _seed_corpus(isolated_paths / "krr_outputs", {"a.json": "AAA"})
+        reg_hash = compute_registry_hash(migrate_uris.REGISTRY_PATH)
+        corpus_hash = compute_corpus_hash(get_all_scannable_files())
+
+        assert _already_migrated_per_state(None) is False
+        assert (
+            _already_migrated_per_state(
+                {"last_applied_registry_hash": reg_hash}
+            )
+            is False
+        )  # missing corpus hash
+        assert (
+            _already_migrated_per_state(
+                {
+                    "last_applied_registry_hash": reg_hash,
+                    "last_applied_corpus_hash": corpus_hash,
+                }
+            )
+            is True
+        )
+        # Drift in either hash flips it to False.
+        assert (
+            _already_migrated_per_state(
+                {
+                    "last_applied_registry_hash": "0" * 64,
+                    "last_applied_corpus_hash": corpus_hash,
+                }
+            )
+            is False
+        )
+        (isolated_paths / "krr_outputs" / "a.json").write_text(
+            "MUTATED", encoding="utf-8"
+        )
+        assert (
+            _already_migrated_per_state(
+                {
+                    "last_applied_registry_hash": reg_hash,
+                    "last_applied_corpus_hash": corpus_hash,
+                }
+            )
+            is False
+        )
+        # silence unused-var lint on ``files``
+        assert files
+
+
+class TestRealMigrationStateFile:
+    """The committed ``data/migration_state.json`` is well-formed and current.
+
+    These exercise the *real* repo file rather than an isolated fixture. The
+    registry hash is asserted exactly (``data/law_abbreviations.json`` is a
+    committed, stable artifact). The corpus hash is checked for shape and for
+    *self-consistency* with the ``apply`` fast path — but not asserted equal to
+    a freshly recomputed value, because the scanned corpus (which includes
+    ``scripts/*.py``) legitimately drifts between commits; the #178 sentinel is
+    designed to detect that drift and ask for a fresh ``dry-run`` rather than
+    to be a frozen invariant.
+    """
+
+    def test_file_exists_and_has_expected_shape(self) -> None:
+        path = migrate_uris.MIGRATION_STATE_PATH
+        assert path.exists(), "data/migration_state.json should be committed"
+        state = json.loads(path.read_text(encoding="utf-8"))
+        for key in (
+            "last_applied_at",
+            "last_applied_registry_hash",
+            "last_applied_corpus_hash",
+            "note",
+        ):
+            assert key in state, f"missing key: {key}"
+        assert _SHA256_HEX_RE.match(state["last_applied_registry_hash"])
+        assert _SHA256_HEX_RE.match(state["last_applied_corpus_hash"])
+        # Timestamp parses as ISO-8601 (and is UTC-qualified).
+        parsed = datetime.fromisoformat(state["last_applied_at"])
+        assert parsed.tzinfo is not None
+        # The note records the migration provenance.
+        assert "3880cb688" in state["note"]
+        assert "c5c0f88b2" in state["note"]
+        # The public loader returns the same content.
+        assert load_migration_state() == state
+
+    def test_registry_hash_matches_helper(self) -> None:
+        state = load_migration_state()
+        assert state is not None
+        assert state["last_applied_registry_hash"] == compute_registry_hash(
+            migrate_uris.REGISTRY_PATH
+        )
+
+    def test_corpus_hash_is_consistent_with_apply_fast_path(self) -> None:
+        """If the recorded corpus hash still matches the live corpus, the
+        ``apply`` fast path must recognise the corpus as already-migrated.
+
+        This is the "round-trips against the current corpus" property: when
+        nothing has drifted, ``migration_state.json`` plus the hash helpers
+        plus ``_already_migrated_per_state`` all agree. When the corpus *has*
+        drifted (e.g. unrelated edits to scanned files landed since the
+        sentinel was backfilled), we don't fail — drift is expected and
+        ``migrate_uris.py apply`` will guide a re-run.
+        """
+        state = load_migration_state()
+        assert state is not None
+        live_corpus_hash = compute_corpus_hash(get_all_scannable_files())
+        if state["last_applied_corpus_hash"] == live_corpus_hash:
+            assert _already_migrated_per_state(state) is True
+        else:
+            # Recorded hash refers to an earlier corpus snapshot; still must be
+            # a syntactically valid digest.
+            assert _SHA256_HEX_RE.match(state["last_applied_corpus_hash"])
+
+    def test_apply_command_recognises_already_migrated_when_in_sync(
+        self, capsys: pytest.CaptureFixture[str]
+    ) -> None:
+        """``migrate_uris.py apply`` no-ops on an already-migrated corpus.
+
+        Runs the real ``apply_cmd`` against the real repo. When the committed
+        ``migration_state.json`` matches the live registry+corpus the command
+        prints the "already migrated" no-op message and returns. If they have
+        drifted (unrelated scanned-file edits since the backfill) the command
+        instead refuses with a "Corpus has changed"/"missing hash stamps"
+        error — both are correct, neither mutates files, so we accept either.
+        """
+        state = load_migration_state()
+        assert state is not None
+        in_sync = _already_migrated_per_state(state)
+        if in_sync:
+            migrate_uris.apply_cmd()
+            out = capsys.readouterr().out
+            assert "already migrated per migration_state.json" in out
+            assert "nothing to do" in out
+        else:
+            with pytest.raises(SystemExit):
+                migrate_uris.apply_cmd()
+            out = capsys.readouterr().out
+            assert (
+                "Corpus has changed" in out
+                or "missing hash stamps" in out
+                or "different migration is already recorded" in out
+            )

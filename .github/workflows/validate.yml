@@ -137,7 +137,12 @@ jobs:
         # ``kov`` covers the municipal (KOV) regulation corpus under
         # ``krr_outputs/regulations/kov/**/*_peep.json`` plus the KOV
         # issuer/municipality registries (issue #105).
-        bucket: [riigikohus, drafts, eurlex, curia, laws, kov]
+        # ``sidecars`` covers the enrichment outputs under
+        # ``krr_outputs/{concepts,sanctions,amendments,institutions}/`` —
+        # the only validation path for ``estleg:LegalConcept`` /
+        # ``estleg:Sanction`` / ``estleg:AmendmentEvent`` /
+        # ``estleg:Institution`` shaped nodes (issue #106).
+        bucket: [riigikohus, drafts, eurlex, curia, laws, kov, sidecars]
     steps:
       - uses: actions/checkout@v4
 

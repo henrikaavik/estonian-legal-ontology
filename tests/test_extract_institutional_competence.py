@@ -1487,17 +1487,25 @@ class TestIssue170KohusSuppression:
 class TestIssue170InflectionCollapse:
     """Finding 5 (#170): Estonian noun-stem normaliser must collapse all
     case forms of *amet/*ministeerium/*inspektsioon/*minister to their
-    nominative slug."""
+    nominative slug.
+
+    NOTE: agencies covered by the issue-#118 alias table (e.g. Maksuamet)
+    are exercised in ``TestIssue118AliasCollapse`` instead — there the
+    de-inflected stem is further collapsed onto its successor slug, so
+    the expected output differs. The cases here use agencies/ministries
+    that are *not* alias keys, so de-inflection is the only step."""
 
     @pytest.mark.parametrize("form,expected", [
-        ("Maksuametile", "maksuamet"),
-        ("Maksuameti",   "maksuamet"),
-        ("maksuametil",  "maksuamet"),
-        ("maksuametilt", "maksuamet"),
-        ("maksuametist", "maksuamet"),
-        ("maksuametisse", "maksuamet"),
-        ("maksuametiga", "maksuamet"),
-        ("maksuametiks", "maksuamet"),
+        ("Statistikaametile", "statistikaamet"),
+        ("Statistikaameti",   "statistikaamet"),
+        ("statistikaametil",  "statistikaamet"),
+        ("statistikaametilt", "statistikaamet"),
+        ("statistikaametist", "statistikaamet"),
+        ("statistikaametisse", "statistikaamet"),
+        ("statistikaametiga", "statistikaamet"),
+        ("statistikaametiks", "statistikaamet"),
+        ("Tooinspektsioonile", "tooinspektsioon"),
+        ("tooinspektsiooni", "tooinspektsioon"),
         ("Siseministeeriumile", "siseministeerium"),
         ("siseministeeriumi", "siseministeerium"),
         ("rahandusministeerium", "rahandusministeerium"),
@@ -1508,17 +1516,103 @@ class TestIssue170InflectionCollapse:
         assert normalize_iri_suffix(form) == expected
 
     def test_inflected_form_does_not_create_sibling_iri(self):
-        """The whole point of Finding 5: 'Maksuametile' and 'Maksuameti'
-        must share a single IRI suffix, not produce
-        Institution_maksuametile + Institution_maksuameti siblings."""
+        """The whole point of Finding 5: 'Statistikaametile' and
+        'Statistikaameti' must share a single IRI suffix, not produce
+        Institution_statistikaametile + Institution_statistikaameti
+        siblings."""
         from extract_institutional_competence import detect_institutions
         # Run two detections separately and verify they collapse.
-        results_a = detect_institutions("Maksuametile esitati taotlus")
-        results_b = detect_institutions("Maksuameti otsus on lõplik")
+        results_a = detect_institutions("Statistikaametile esitati taotlus")
+        results_b = detect_institutions("Statistikaameti otsus on lõplik")
         slugs_a = {s for _, s, _ in results_a}
         slugs_b = {s for _, s, _ in results_b}
-        assert "maksuamet" in slugs_a
-        assert "maksuamet" in slugs_b
+        assert "statistikaamet" in slugs_a
+        assert "statistikaamet" in slugs_b
+
+
+class TestIssue118AliasCollapse:
+    """Issue #118: the curated historical-merge alias table collapses a
+    predecessor institution slug onto its canonical successor — applied
+    AFTER the noun-stem normaliser, so inflected predecessor names also
+    collapse correctly.
+
+    Conservative scope: only well-documented agency mergers/renames are
+    in data/institution_aliases.json (see that file for the evidence)."""
+
+    @pytest.mark.parametrize("form,expected", [
+        # Maksuamet + Tolliamet -> Maksu- ja Tolliamet (2004).
+        ("Maksuamet", "maksu_ja_tolliamet"),
+        ("Maksuametile", "maksu_ja_tolliamet"),
+        ("maksuametiga", "maksu_ja_tolliamet"),
+        ("Tolliamet", "maksu_ja_tolliamet"),
+        ("Tolliametile", "maksu_ja_tolliamet"),
+        # Politseiamet/Piirivalveamet/KMA -> Politsei- ja Piirivalveamet (2010).
+        ("Politseiamet", "politsei_ja_piirivalveamet"),
+        ("Piirivalveametile", "politsei_ja_piirivalveamet"),
+        # Tervishoiuamet / Tervisekaitseinspektsioon -> Terviseamet (2010).
+        ("Tervishoiuamet", "terviseamet"),
+        ("Tervishoiuametile", "terviseamet"),
+        ("Tervisekaitseinspektsioon", "terviseamet"),
+        # Tarbijakaitseamet -> Tarbijakaitse ja Tehnilise Järelevalve Amet (2019).
+        ("Tarbijakaitseamet", "tarbijakaitse_ja_tehnilise_jarelevalve_amet"),
+        # Maanteeamet/Lennuamet -> Transpordiamet (2021).
+        ("Maanteeamet", "transpordiamet"),
+        ("Lennuametile", "transpordiamet"),
+        # Keskkonnainspektsioon -> Keskkonnaamet (2021).
+        ("Keskkonnainspektsioon", "keskkonnaamet"),
+        # Not an alias key — must pass through unchanged (it's a target).
+        ("Keskkonnaamet", "keskkonnaamet"),
+        ("Riigikohus", "riigikohus"),
+    ])
+    def test_alias_collapses_predecessor_to_canonical(self, form, expected):
+        from extract_institutional_competence import normalize_iri_suffix
+        assert normalize_iri_suffix(form) == expected
+
+    def test_abbreviation_then_alias_chain(self):
+        """An abbreviation that maps to a predecessor full-name slug must
+        still land on the canonical successor — the alias is applied
+        after the abbreviation expansion."""
+        from extract_institutional_competence import normalize_iri_suffix
+        # 'mta' -> 'maksu_ja_tolliamet' (the abbrev map already points at
+        # the merged name); the alias step is a no-op here but must not
+        # break the lookup.
+        assert normalize_iri_suffix("mta") == "maksu_ja_tolliamet"
+
+    def test_detect_predecessor_resolves_to_canonical_node(self):
+        """Detecting a pre-merger reference in provision text must yield
+        the canonical successor's Institution slug, so a single node
+        absorbs both 'Maksuamet' and 'Maksu- ja Tolliamet' mentions."""
+        from extract_institutional_competence import detect_institutions
+        pre = detect_institutions("Maksuamet teostab järelevalvet maksukohustuse üle.")
+        post = detect_institutions("Maksu- ja Tolliamet teostab järelevalvet.")
+        pre_slugs = {s for _, s, _ in pre}
+        post_slugs = {s for _, s, _ in post}
+        assert "maksu_ja_tolliamet" in pre_slugs
+        assert "maksu_ja_tolliamet" in post_slugs
+        # The bare predecessor slug must NOT survive as a separate node.
+        assert "maksuamet" not in pre_slugs
+
+    def test_alias_loader_skips_self_referential_and_malformed(self, tmp_path, monkeypatch):
+        """_load_institution_aliases must drop entries that are missing a
+        canonical, map a slug to itself, or aren't dicts/strings."""
+        import extract_institutional_competence as mod
+        bad_table = {
+            "version": 1,
+            "aliases": {
+                "selfref": {"canonical": "selfref"},          # self-loop -> dropped
+                "nocanon": {"evidence": "no canonical key"},   # missing -> dropped
+                "goodkey": {"canonical": "goodvalue", "evidence": "ok"},
+                "stringform": "anothertarget",                 # string value form -> kept
+            },
+        }
+        path = tmp_path / "aliases.json"
+        path.write_text(json.dumps(bad_table), encoding="utf-8")
+        loaded = mod._load_institution_aliases(path)
+        assert loaded == {"goodkey": "goodvalue", "stringform": "anothertarget"}
+
+    def test_missing_alias_file_returns_empty(self, tmp_path):
+        import extract_institutional_competence as mod
+        assert mod._load_institution_aliases(tmp_path / "does_not_exist.json") == {}
 
 
 class TestIssue170CrossProvisionDedup:

@@ -32,6 +32,7 @@ from estleg_common import (
     KNOWN_ABBREVIATIONS,
     PAR_SUFFIX,
     iter_peep_files,
+    jsonld_text,
     save_json,
 )
 from kov_pipeline_coverage import (
@@ -172,9 +173,11 @@ def build_provision_index() -> tuple[
                 prefix_to_provisions[file_prefix][par_part] = node_id
                 iri_to_file[node_id] = json_file
 
-                # Get sourceAct
+                # Get sourceAct — generators may emit it as a plain string
+                # or a {"@value": ..., "@language": "et"} object; normalise
+                # before using it as a dict key.
                 if source_act is None:
-                    source_act = node.get("estleg:sourceAct", "")
+                    source_act = jsonld_text(node.get("estleg:sourceAct", ""))
 
         if file_prefix and source_act:
             source_act_to_prefix[source_act] = file_prefix
@@ -420,7 +423,7 @@ def build_kov_act_lookup(
                 if isinstance(types, str):
                     types = [types]
                 if "estleg:Issuer" in types:
-                    label = n.get("rdfs:label")
+                    label = jsonld_text(n.get("rdfs:label"))
                     if label:
                         valid_issuer_labels.add(_normalize_issuer_label(label))
         except (json.JSONDecodeError, OSError):
@@ -541,7 +544,7 @@ def build_issuer_registry(
         if "estleg:Issuer" not in types:
             continue
         iid = node.get("@id")
-        label = node.get("rdfs:label")
+        label = jsonld_text(node.get("rdfs:label"))
         muni = node.get("estleg:currentMunicipality")
         body_type = node.get("estleg:bodyType")
         if isinstance(muni, dict):
@@ -1357,7 +1360,10 @@ def _load_provision_text(
     local = node_id[len("estleg:"):] if node_id.startswith("estleg:") else node_id
     par_num = local.split("_Par_", 1)[1]
     text_to_scan = xml_par_texts.get(par_num, "")
-    summary = node.get("estleg:summary", "")
+    # estleg:summary may be a plain string or a {"@value": ..., "@language":
+    # "et"} object depending on the generator; jsonld_text yields the raw
+    # text either way so the string concatenation below never hits a dict.
+    summary = jsonld_text(node.get("estleg:summary", ""))
     if summary:
         text_to_scan = (
             text_to_scan + " " + summary if text_to_scan else summary
@@ -1522,11 +1528,14 @@ def _run_kov_body_pass(
         if not is_provision_node(prov_node):
             continue
         text_parts: list[str] = []
-        lt = prov_node.get("estleg:legalText")
-        if isinstance(lt, str):
+        # estleg:legalText / estleg:summary may be plain strings or
+        # {"@value": ..., "@language": "et"} objects depending on the
+        # generator; jsonld_text unwraps both (and yields "" otherwise).
+        lt = jsonld_text(prov_node.get("estleg:legalText"))
+        if lt:
             text_parts.append(lt)
-        sm = prov_node.get("estleg:summary")
-        if isinstance(sm, str):
+        sm = jsonld_text(prov_node.get("estleg:summary"))
+        if sm:
             text_parts.append(sm)
         text = " ".join(text_parts)
         kov_refs = extract_kov_act_refs_from_text(text)

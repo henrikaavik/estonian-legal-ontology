@@ -674,16 +674,45 @@ def _locate_iri(content: str, iri: str, rel: str) -> str:
     return f"{rel}:{line_no}"
 
 
+def _already_migrated_per_state(state: dict | None) -> bool:
+    """Return True iff ``migration_state.json`` says the corpus is current.
+
+    "Current" means the persisted ``last_applied_registry_hash`` /
+    ``last_applied_corpus_hash`` both equal what the hash helpers recompute
+    over the registry and the scannable corpus *right now*. When that holds,
+    a fresh ``dry-run`` would necessarily produce zero (real) renames, so
+    ``apply`` has nothing to do — even if the on-disk dry-run report is
+    stale, absent, or predates the hash-stamping added in #178.
+
+    Practically this is the path that fires when someone re-runs ``apply`` on
+    a corpus that has already been migrated (commits 3880cb688 / c5c0f88b2):
+    the migration state confirms there is nothing outstanding, so we no-op
+    instead of demanding a fresh ``dry-run`` report just to learn the same.
+    """
+    if state is None or not REGISTRY_PATH.exists():
+        return False
+    prev_registry = state.get("last_applied_registry_hash")
+    prev_corpus = state.get("last_applied_corpus_hash")
+    if not prev_registry or not prev_corpus:
+        return False
+    if compute_registry_hash(REGISTRY_PATH) != prev_registry:
+        return False
+    return compute_corpus_hash(get_all_scannable_files()) == prev_corpus
+
+
 def apply_cmd(*, rewrite_python: bool = False, force_reapply: bool = False) -> None:
     """Apply the URI migration to all files.
 
-    Refuses to run unless:
+    Behaviour:
 
-    1. A dry-run report exists and is hash-bound to the current registry
-       and corpus (so a stale plan can't quietly clobber files).
-    2. Either no migration has ever been applied, or the persisted
-       ``migration_state.json`` matches the report's hashes (i.e. the user
-       is re-applying the *same* plan), or ``--force-reapply`` was passed.
+    0. **Fast path** — if ``migration_state.json`` records that the corpus is
+       already migrated against the *current* registry+corpus, no-op (unless
+       ``--force-reapply``). This makes ``apply`` idempotent without needing a
+       fresh ``dry-run`` report.
+    1. Otherwise a dry-run report must exist and be hash-bound to the current
+       registry and corpus (so a stale plan can't quietly clobber files).
+    2. Either no migration has ever been applied, or ``--force-reapply`` was
+       passed; a *different* recorded migration aborts with guidance.
 
     On success we update ``migration_state.json`` so subsequent runs can
     detect drift.
@@ -691,6 +720,19 @@ def apply_cmd(*, rewrite_python: bool = False, force_reapply: bool = False) -> N
     print("=" * 70)
     print("Phase 3: Applying migration")
     print("=" * 70)
+
+    # Fast path: if migration_state.json records that the corpus is already
+    # migrated against the *current* registry+corpus, there is nothing to do.
+    # We honour ``--force-reapply`` so an operator can deliberately re-run a
+    # migration even when the state says it's a no-op (e.g. to repair files).
+    state = load_migration_state()
+    if not force_reapply and _already_migrated_per_state(state):
+        print(
+            "Corpus is already migrated per "
+            f"{MIGRATION_STATE_PATH.name} "
+            f"(last applied at {state.get('last_applied_at')}); nothing to do."
+        )
+        return
 
     if not REPORT_PATH.exists():
         print("ERROR: Dry-run report not found. Run 'dry-run' first.")
@@ -746,20 +788,20 @@ def apply_cmd(*, rewrite_python: bool = False, force_reapply: bool = False) -> N
 
     # Finding 2 — idempotency sentinel. Without this guard, a fresh registry
     # whose ``old_prefix`` happens to collide with an already-migrated abbrev
-    # would silently rename across the wrong axis on a second apply.
-    state = load_migration_state()
+    # would silently rename across the wrong axis on a second apply. ``state``
+    # was already loaded above for the fast-path check.
+    #
+    # By the time we reach here the hard checks above have proven
+    # ``report_registry_hash == current registry hash`` and
+    # ``report_corpus_hash == current corpus hash``. If the persisted state
+    # *also* matched both of those, ``_already_migrated_per_state`` would have
+    # short-circuited at the top of the function — so the only way control
+    # gets here with a non-None ``state`` is that the recorded run differs
+    # from the one this report describes (a *new* migration stacked on an old
+    # one). That requires an explicit ``--force-reapply``.
     if state is not None and not force_reapply:
         prev_registry = state.get("last_applied_registry_hash")
         prev_corpus = state.get("last_applied_corpus_hash")
-        if (
-            prev_registry == report_registry_hash
-            and prev_corpus == report_corpus_hash
-        ):
-            print(
-                "Migration state matches the current report — nothing to do "
-                f"(last applied at {state.get('last_applied_at')})."
-            )
-            return
         print(
             "ERROR: A different migration is already recorded in "
             f"{MIGRATION_STATE_PATH.name}.\n"

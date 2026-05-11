@@ -1248,3 +1248,119 @@ class TestLayer2bMarkerDoesNotLeak:
             assert "_layer2b_counted" not in node, (
                 f"_layer2b_counted leaked to disk on {node.get('@id')}"
             )
+
+
+# ---------------------------------------------------------------------------
+# Regression for #121: text fields (estleg:summary / estleg:legalText /
+# rdfs:label / estleg:sourceAct) must be read through jsonld_text so a
+# fresh-generator value-object corpus is parsed identically to a normalized
+# plain-string one.
+# ---------------------------------------------------------------------------
+
+class TestValueObjectTextReads:
+    def test_inlaw_pass_handles_value_object_summary(self):
+        """A provision whose estleg:summary is a {@value,@language} object
+        yields the same estleg:references as the plain-string form
+        (covers _load_provision_text)."""
+        from extract_cross_references import _run_inlaw_citation_pass
+
+        summary_text = "Käesoleva seaduse § 121 alusel kohaldatakse VÕS § 208."
+        prefix_to_provisions = {
+            "KARIST_2": {
+                "1": "estleg:KARIST_2_Par_1",
+                "121": "estleg:KARIST_2_Par_121",
+            },
+            "VOS_STUB": {"208": "estleg:VOS_STUB_Par_208"},
+        }
+        abbrev_to_prefix = {"VÕS": "VOS_STUB"}
+
+        def run(summary_value):
+            graph = [
+                {"@id": "estleg:KARIST_2_Par_1",
+                 "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+                 "estleg:summary": summary_value},
+            ]
+            stats = _run_inlaw_citation_pass(
+                graph,
+                self_prefix="KARIST_2",
+                abbrev_to_prefix=abbrev_to_prefix,
+                prefix_to_provisions=prefix_to_provisions,
+                xml_par_texts={},
+            )
+            prov = graph[0]
+            return stats, {r["@id"] for r in prov.get("estleg:references", [])}
+
+        plain_stats, plain_refs = run(summary_text)
+        vo_stats, vo_refs = run({"@value": summary_text, "@language": "et"})
+        list_stats, list_refs = run([{"@value": summary_text, "@language": "et"}])
+
+        assert plain_stats["citations_resolved"] == 2
+        assert plain_refs == {"estleg:KARIST_2_Par_121", "estleg:VOS_STUB_Par_208"}
+        assert (vo_stats["citations_resolved"], vo_refs) == (2, plain_refs)
+        assert (list_stats["citations_resolved"], list_refs) == (2, plain_refs)
+
+    def test_kov_body_pass_handles_value_object_text_fields(self):
+        """estleg:legalText / estleg:summary as value objects produce the
+        same KOV references as plain strings."""
+        from extract_cross_references import _run_kov_body_pass
+
+        body = "Vastavalt Tallinna Linnavolikogu määruse nr 15 § 4 ..."
+        kov_lookup = {
+            ("tallinna linnavolikogu", "15"): ["estleg:Reg_TLN15_Map_2020"],
+        }
+        registry = {
+            "estleg:Issuer_tallinna_linnavolikogu": (
+                "tallinna linnavolikogu",
+                "estleg:Municipality_tallinn", "volikogu",
+            ),
+        }
+
+        def run(legal_text_value):
+            graph = [
+                {"@id": "estleg:Reg_TLN_Test_Map_2024",
+                 "@type": ["owl:Ontology", "estleg:MunicipalRegulation"],
+                 "estleg:enactedByMunicipality": {
+                     "@id": "estleg:Municipality_tallinn"}},
+                {"@id": "estleg:Reg_TLN_Test_Map_2024_Par_1",
+                 "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+                 "estleg:legalText": legal_text_value},
+            ]
+            stats = _run_kov_body_pass(
+                graph,
+                kov_act_lookup_by_number=kov_lookup,
+                issuer_registry=registry,
+            )
+            return stats, [r["@id"] for r in graph[1].get("estleg:references", [])]
+
+        plain_stats, plain_refs = run(body)
+        vo_stats, vo_refs = run({"@value": body, "@language": "et"})
+
+        assert plain_stats["citations_resolved"] == 1
+        assert plain_refs == ["estleg:Reg_TLN15_Map_2020"]
+        assert (vo_stats["citations_resolved"], vo_refs) == (1, plain_refs)
+
+    def test_build_issuer_registry_handles_value_object_label(self, tmp_path):
+        """build_issuer_registry must unwrap a {@value,@language} rdfs:label
+        so the normalised label key is the text, not a stringified dict."""
+        from extract_cross_references import build_issuer_registry
+
+        issuers = tmp_path / "issuers_kov_peep.json"
+        issuers.write_text(json.dumps({
+            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+            "@graph": [
+                {"@id": "estleg:Issuer_tallinna_linnavolikogu",
+                 "@type": ["estleg:Issuer"],
+                 "rdfs:label": {"@value": "Tallinna Linnavolikogu",
+                                "@language": "et"},
+                 "estleg:currentMunicipality": {
+                     "@id": "estleg:Municipality_tallinn"},
+                 "estleg:bodyType": {"@id": "estleg:BodyType_volikogu"}},
+            ],
+        }), encoding="utf-8")
+
+        registry = build_issuer_registry(issuers)
+        assert "estleg:Issuer_tallinna_linnavolikogu" in registry
+        label_norm, muni, body_type = registry["estleg:Issuer_tallinna_linnavolikogu"]
+        assert label_norm == "tallinna linnavolikogu"
+        assert "@value" not in label_norm
+        assert muni == "estleg:Municipality_tallinn"

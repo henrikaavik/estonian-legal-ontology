@@ -172,6 +172,31 @@ SELECT ?decision ?title ?ecli ?date WHERE {
 
 ## Coverage
 
+Coverage is reported at two granularities and they should not be conflated:
+
+- **Provision-level coverage** — acts whose `<paragrahv>` structure was
+  parsed into per-section `estleg:LegalProvision` nodes (the bulk of the
+  enacted-law and domestic-regulation corpus).
+- **Act-level coverage** — acts that are *modelled* but have **no
+  structured body**: treaties and ratification acts, framework/enabling
+  acts, repealed shells, and procedural-only instruments that carry no
+  `<paragrahv>` nodes in the Riigi Teataja XML. Rather than dropping
+  these (which would be indistinguishable from a source-fetch failure),
+  `scripts/generate_all_laws.py` and `scripts/generate_regulations.py`
+  emit an act-level stub node with `estleg:contentStatus =
+  "noStructuredBody"` (plus an `estleg:contentStatusReason`). The number
+  of such stubs is recorded in `krr_outputs/generation_manifest_laws.json`
+  (`counts.stubActs`, and a per-act `status` on each `outputsAll` entry)
+  and in `krr_outputs/regulations/*/REGULATIONS_*_INDEX.json`
+  (`noStructuredBodyCount` / the per-act `acts` ledger). A consumer can
+  therefore tell a no-body act apart from a parse failure (`status:
+  "failed"`) and from an act that simply wasn't selected for
+  regeneration this run (`status: "skipped"`). At present the committed
+  corpus contains no `noStructuredBody` stubs — every act that survived
+  the source `kehtiv` filter parsed into provisions — but the path is
+  exercised on every supervised generator run; consult the manifest for
+  the live count.
+
 ### Enacted Laws (Riigi Teataja)
 
 | Category | Laws | Examples |
@@ -184,6 +209,9 @@ SELECT ?decision ?title ?ecli ?date WHERE {
 | Constitutional | 4 | PS, RVastS |
 | Environmental | 4 | KeUS, JaatS, VeeS |
 | Other | 574+ | PPVS, TLS, AUS, ... |
+
+Counts above are provision-level (acts with a parsed `<paragrahv>`
+body); add the manifest's `counts.stubActs` for the act-level total.
 
 ### Draft Legislation (EIS)
 
@@ -598,9 +626,24 @@ release contract for downstream sync.
 
 ```bash
 # Refresh enacted laws from a declared Riigi Teataja snapshot.
-# Default is --missing-only against --kehtiv 2026-05-01.
+# Default is --missing-only against --kehtiv 2026-05-01. In --missing-only
+# mode an existing file is *also* re-fetched when its stored
+# estleg:kehtiv snapshot date no longer matches --kehtiv (stale-snapshot
+# refresh); files already at the current snapshot are skipped.
 python3 scripts/generate_all_laws.py --missing-only
 python3 scripts/generate_all_laws.py --refresh --kehtiv 2026-05-01
+python3 scripts/generate_all_laws.py --force --kehtiv 2026-05-01
+
+# Re-generate the SAME law list a previous run captured, without
+# re-querying the live search (the per-act XML is still fetched, keyed on
+# the recorded terviktekstId). The manifest's outputsAll block is the
+# source of truth.
+python3 scripts/generate_all_laws.py --from-manifest krr_outputs/generation_manifest_laws.json
+
+# The run records counts (full / stub / failed / skipped acts), an
+# unchanged-vs-refreshed split, and source-removed peep files (acts no
+# longer in the live snapshot — reported, not deleted) in
+# krr_outputs/generation_manifest_laws.json.
 
 # Refresh state-level domestic regulations from Riigi Teataja.
 # Default is --missing-only; use --refresh to re-fetch XML and rewrite changed files.

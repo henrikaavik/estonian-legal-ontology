@@ -60,6 +60,37 @@ def collect_curia(krr: Path = KRR) -> list[Path]:
     return sorted(set(sorted((krr / "curia").glob("*_peep.json")) + collect_controlled_vocabulary(krr)))
 
 
+# Sidecar enrichment outputs live one level deep under ``krr_outputs/`` and
+# carry their own SHACL target classes (``estleg:LegalConcept``,
+# ``estleg:Sanction``, ``estleg:AmendmentEvent``, ``estleg:Institution`` plus
+# ``estleg:Competence``). They are *not* ``*_peep.json`` files, so the other
+# buckets miss them; without a bucket here those shaped classes have no
+# validation path (issue #106).
+SIDECAR_DIRS = ("concepts", "sanctions", "amendments", "institutions")
+# Aggregate/report artifacts that sit alongside the shaped data but contain no
+# ``@graph`` — exclude them so pyshacl is not handed plain summary JSON
+# (e.g. ``concepts/concept_crossref_report.json``).
+_SIDECAR_NON_DATA_SUFFIXES = ("_report", "_summary", "_index", "_review")
+
+
+def _is_sidecar_data_file(path: Path) -> bool:
+    stem = path.stem.lower()
+    if stem.startswith("index") or stem.endswith("index"):
+        return False
+    return not any(stem.endswith(suffix) for suffix in _SIDECAR_NON_DATA_SUFFIXES)
+
+
+def collect_sidecars(krr: Path = KRR) -> list[Path]:
+    out: list[Path] = list(collect_controlled_vocabulary(krr))
+    for name in SIDECAR_DIRS:
+        base = krr / name
+        if not base.exists():
+            continue
+        for pattern in ("**/*.json", "**/*.jsonld"):
+            out.extend(p for p in base.glob(pattern) if _is_sidecar_data_file(p))
+    return sorted(set(out))
+
+
 BUCKETS: dict[str, Callable[[Path], list[Path]]] = {
     "laws": collect_laws,
     "kov": collect_kov,
@@ -67,6 +98,7 @@ BUCKETS: dict[str, Callable[[Path], list[Path]]] = {
     "drafts": collect_drafts,
     "eurlex": collect_eurlex,
     "curia": collect_curia,
+    "sidecars": collect_sidecars,
 }
 
 
