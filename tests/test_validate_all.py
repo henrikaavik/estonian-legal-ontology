@@ -468,6 +468,36 @@ def test_load_institution_alias_canonicals_handles_missing_and_malformed(tmp_pat
     assert validate_all.load_institution_alias_canonicals(tmp_path) == set()
 
 
+def test_registry_consistency_passes_on_real_regenerated_corpus():
+    """Issue #118: after re-running extract_institutional_competence.py the
+    on-disk registry must satisfy validate_institution_registry_consistency
+    — every Institution_* @id is a canonical slug and every alias
+    `canonical` target resolves to an institution file (in particular the
+    two targets, Maksu- ja Tolliamet and Põllumajandus- ja Toiduamet, that
+    only ever appear via predecessor names)."""
+    validate_all.validate_institution_registry_consistency(
+        validate_all.KRR_DIR, validate_all.REPO_ROOT
+    )
+    assert validate_all.errors == [], validate_all.errors
+
+
+def test_real_institution_slugs_have_no_double_underscore():
+    """The pre-#118 corpus shipped stale ``institution_x__y.json`` names;
+    the re-run renames them to the single-underscore convention the
+    extractor emits, so none should remain on disk."""
+    inst_dir = validate_all.KRR_DIR / "institutions"
+    offenders = [p.name for p in inst_dir.glob("institution_*__*.json")]
+    assert offenders == [], offenders
+
+
+def test_applies_to_provision_count_in_controlled_vocabulary():
+    """Issue #118 / #170: the extractor writes estleg:appliesToProvisionCount
+    onto Competence nodes, so it must be a defined reusable term or the
+    vocabulary-coverage gate fails on re-run."""
+    defined = validate_all.collect_defined_vocabulary_terms()
+    assert "estleg:appliesToProvisionCount" in defined
+
+
 # ---------------------------------------------------------------------------
 # Issue #119 — validate_act_coverage_reconciliation
 # ---------------------------------------------------------------------------

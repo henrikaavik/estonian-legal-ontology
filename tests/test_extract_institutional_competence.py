@@ -1530,6 +1530,75 @@ class TestIssue170InflectionCollapse:
         assert "statistikaamet" in slugs_b
 
 
+class TestIssue118ExtendedCaseSuffixes:
+    """Issue #118: the noun-stem case-suffix list was widened to cover the
+    full set of Estonian grammatical cases (translative -ks, terminative
+    -ni, essive -na, abessive -ta and the plural-stem composites) so a
+    re-run of the extractor collapses every inflected agency reference to
+    its nominative slug — the earlier re-run left e.g.
+    ``Institution_finantsinspektsioonilt`` (ablative) as its own node.
+
+    Agencies that are *not* alias keys are used here so de-inflection is
+    the only transformation; alias-key cases live in
+    ``TestIssue118AliasCollapse`` and ``TestIssue118AliasCollapseExtended``."""
+
+    @pytest.mark.parametrize("form,expected", [
+        # The exact form named in the issue.
+        ("Finantsinspektsioonilt", "finantsinspektsioon"),
+        ("finantsinspektsiooni", "finantsinspektsioon"),
+        ("Finantsinspektsioonile", "finantsinspektsioon"),
+        ("finantsinspektsioonist", "finantsinspektsioon"),
+        ("finantsinspektsioonis", "finantsinspektsioon"),
+        ("finantsinspektsioonina", "finantsinspektsioon"),
+        ("finantsinspektsioonini", "finantsinspektsioon"),
+        # *amet across the full case paradigm.
+        ("Statistikaametini", "statistikaamet"),
+        ("Statistikaametina", "statistikaamet"),
+        ("Statistikaametita", "statistikaamet"),
+        ("Statistikaametitele", "statistikaamet"),     # plural allative
+        ("Statistikaametitega", "statistikaamet"),     # plural comitative
+        ("Statistikaametitest", "statistikaamet"),     # plural elative
+        # *ministeerium.
+        ("Siseministeeriumini", "siseministeerium"),
+        ("Siseministeeriumita", "siseministeerium"),
+        # Already nominative — must pass through untouched.
+        ("Finantsinspektsioon", "finantsinspektsioon"),
+        ("Statistikaamet", "statistikaamet"),
+        ("Rahandusministeerium", "rahandusministeerium"),
+        # *kogu / *valitsus roots (Issue #118): de-inflected forms must
+        # land on the nominative even though _canonical_body_slug also
+        # canonicalises KOV body words downstream.
+        ("riigikogule", "riigikogu"),
+        ("Vabariigivalitsusele", "vabariigivalitsus"),
+    ])
+    def test_extended_case_suffix_collapses_to_nominative(self, form, expected):
+        from extract_institutional_competence import normalize_iri_suffix
+        assert normalize_iri_suffix(form) == expected
+
+    @pytest.mark.parametrize("text,expected", [
+        ("vallavolikoguni", "vallavolikogu"),     # terminative
+        ("linnavolikoguna", "linnavolikogu"),     # essive
+        ("vallavalitsuseks", "vallavalitsus"),    # translative
+        ("linnavalitsuseni", "linnavalitsus"),    # terminative
+    ])
+    def test_canonical_body_slug_widened_cases(self, text, expected):
+        from extract_institutional_competence import _canonical_body_slug
+        assert _canonical_body_slug(text) == expected
+
+    def test_no_inflected_institution_slugs_on_disk(self):
+        """After the re-run every krr_outputs/institutions/institution_*.json
+        filename stem must already be its own canonical slug — i.e.
+        normalize_iri_suffix() is a fixed point on it."""
+        from extract_institutional_competence import INST_DIR, normalize_iri_suffix
+        offenders: list[tuple[str, str]] = []
+        for path in sorted(INST_DIR.glob("institution_*.json")):
+            slug = path.stem.removeprefix("institution_")
+            norm = normalize_iri_suffix(slug)
+            if norm != slug:
+                offenders.append((slug, norm))
+        assert offenders == [], offenders
+
+
 class TestIssue118AliasCollapse:
     """Issue #118: the curated historical-merge alias table collapses a
     predecessor institution slug onto its canonical successor — applied
@@ -1613,6 +1682,98 @@ class TestIssue118AliasCollapse:
     def test_missing_alias_file_returns_empty(self, tmp_path):
         import extract_institutional_competence as mod
         assert mod._load_institution_aliases(tmp_path / "does_not_exist.json") == {}
+
+
+class TestIssue118AliasCollapseExtended:
+    """Issue #118 re-run reconciliation: with the widened case-suffix list,
+    *inflected* predecessor-agency references also collapse onto the
+    canonical successor slug — and the curated-canonical seeding makes the
+    extractor accept those successor slugs even on the re-run that prunes
+    the stale double-underscore file for one of them."""
+
+    @pytest.mark.parametrize("form,expected", [
+        # Maksu- ja Tolliamet (2004) — inflected predecessor forms.
+        ("Maksuametile", "maksu_ja_tolliamet"),
+        ("Maksuametilt", "maksu_ja_tolliamet"),
+        ("Maksuametisse", "maksu_ja_tolliamet"),
+        ("Maksuametini", "maksu_ja_tolliamet"),
+        ("Tolliametisse", "maksu_ja_tolliamet"),
+        ("Tolliametita", "maksu_ja_tolliamet"),
+        # Terviseamet (2010).
+        ("Terviseametisse", "terviseamet"),
+        ("Tervishoiuametile", "terviseamet"),
+        ("Tervisekaitseinspektsioonilt", "terviseamet"),
+        ("Tervisekaitseametisse", "terviseamet"),
+        # Transpordiamet (2021).
+        ("Maanteeametile", "transpordiamet"),
+        ("Maanteeametilt", "transpordiamet"),
+        ("Lennuametisse", "transpordiamet"),
+        # Põllumajandus- ja Toiduamet (2021) — the second dangling target.
+        ("Pollumajandusametile", "pollumajandus_ja_toiduamet"),
+        ("Veterinaar- ja Toiduametile", "pollumajandus_ja_toiduamet"),
+        # Tarbijakaitse ja Tehnilise Järelevalve Amet (2019).
+        ("Tarbijakaitseametisse", "tarbijakaitse_ja_tehnilise_jarelevalve_amet"),
+        # Keskkonnaamet (2021).
+        ("Keskkonnainspektsioonilt", "keskkonnaamet"),
+        # Politsei- ja Piirivalveamet (2010).
+        ("Politseiametile", "politsei_ja_piirivalveamet"),
+        ("Piirivalveametisse", "politsei_ja_piirivalveamet"),
+        ("Kodakondsus- ja Migratsiooniametile", "politsei_ja_piirivalveamet"),
+    ])
+    def test_inflected_predecessor_collapses_to_successor(self, form, expected):
+        from extract_institutional_competence import normalize_iri_suffix, sanitize_id
+        # detect_institutions runs sanitize_id() on generic matches before
+        # normalize_iri_suffix(); mirror that so multi-word predecessor
+        # names are exercised the same way the pipeline does.
+        assert normalize_iri_suffix(sanitize_id(form)) == expected
+
+    def test_curated_canonical_suffixes_include_alias_targets(self):
+        """_curated_canonical_suffixes() seeds the registry with every
+        named-institution suffix plus every alias `canonical` target — so
+        Maksu- ja Tolliamet and Põllumajandus- ja Toiduamet are accepted
+        even when their on-disk file is briefly absent."""
+        from extract_institutional_competence import _curated_canonical_suffixes
+        seeded = _curated_canonical_suffixes()
+        assert "maksu_ja_tolliamet" in seeded
+        assert "pollumajandus_ja_toiduamet" in seeded
+        assert "politsei_ja_piirivalveamet" in seeded
+        assert "terviseamet" in seeded
+
+    def test_load_canonical_institutions_collapses_double_underscore(self, tmp_path):
+        """A stale ``institution_maksu__ja_tolliamet.json`` on disk must be
+        registered under the collapsed slug the normaliser emits, so
+        predecessor references aren't dropped as unknown_institution."""
+        import extract_institutional_competence as mod
+        inst = tmp_path / "institutions"
+        inst.mkdir(parents=True)
+        (inst / "institution_maksu__ja_tolliamet.json").write_text(
+            json.dumps({"@graph": []}), encoding="utf-8"
+        )
+        loaded = mod._load_canonical_institutions(inst)
+        assert "maksu_ja_tolliamet" in loaded
+        assert "maksu__ja_tolliamet" not in loaded
+
+    def test_load_canonical_institutions_empty_dir_stays_empty(self, tmp_path):
+        """Bootstrap mode: an empty institutions dir yields an empty set
+        (no curated seeding) so a freshly-cloned tree still populates
+        everything from scratch."""
+        import extract_institutional_competence as mod
+        inst = tmp_path / "institutions"
+        inst.mkdir(parents=True)
+        assert mod._load_canonical_institutions(inst) == set()
+
+    def test_real_corpus_has_canonical_alias_target_files(self):
+        """End-state: the regenerated corpus has an institution file for
+        every alias `canonical` target (the re-run reconciliation)."""
+        import extract_institutional_competence as mod
+        present = {
+            p.stem.removeprefix("institution_")
+            for p in mod.INST_DIR.glob("institution_*.json")
+        }
+        for canonical in set(mod._INSTITUTION_ALIASES.values()):
+            assert canonical in present, (
+                f"alias target {canonical!r} has no institution file"
+            )
 
 
 class TestIssue170CrossProvisionDedup:
