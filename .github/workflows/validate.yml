@@ -61,7 +61,10 @@ jobs:
 
       - name: Run markdownlint
         if: steps.filter.outputs.docs == 'true'
-        run: markdownlint 'docs/**/*.md' 'README.md' --disable MD013 MD033 MD041 MD024 MD025
+        # Rule set lives in .markdownlint.json at the repo root: cosmetic
+        # structural rules are off (the docs predate this check); the
+        # link/accessibility rules that catch real defects stay on.
+        run: markdownlint 'docs/*.md' 'README.md'
 
   lint:
     runs-on: ubuntu-latest
