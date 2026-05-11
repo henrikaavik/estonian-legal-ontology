@@ -36,10 +36,16 @@ code 2) if:
 
 - two steps share a name,
 - a `depends_on` entry names a step that does not exist (or names itself),
-- the dependency graph has a cycle (Kahn's algorithm), or
+- the dependency graph has a cycle (Kahn's algorithm),
 - a step's `reads` glob is neither a [committed input](#committed-vs-release-asset-policy)
   (`run_all_integration.py:COMMITTED_INPUTS`) nor covered by some *prior*
-  step's `writes`.
+  step's `writes`, or
+- `--parallel > 1` was requested **and** two steps that could run
+  concurrently (neither is a transitive dependency of the other) declare
+  overlapping `writes` globs — concurrent writes to a shared corpus target
+  are last-writer-wins and would clobber enrichments (see
+  [Why serial by default](#why-serial-by-default)). `--parallel 1` (serial,
+  the default) skips this check.
 
 The topological order ties are broken by source order, so the historical
 phase order is preserved exactly.
@@ -89,11 +95,23 @@ Serial execution is therefore the **deterministic default**.
 
 `--parallel N` is available and *is* implemented (a bounded
 `ThreadPoolExecutor` that dispatches any step whose `depends_on` are all
-satisfied), but because the steps share files it is genuinely useful only
-when the corpus is split per-step in future work — the declarative DAG is
-the deliverable here, parallelism is gravy. `--parallel` is mutually
-exclusive with `--validate-each` (the validator reads the whole corpus
-mid-flight).
+satisfied) — but it is **rejected for the current DAG**. At startup,
+`validate_dag()` exits **2** if any two steps that could run concurrently
+(i.e. neither is a transitive dependency of the other) declare overlapping
+`writes` globs; since most "independent" enrichment steps still rewrite the
+shared `*_peep.json` / `regulations/**/*_peep.json` corpus targets, that
+condition holds today. Concretely, `python3 scripts/run_all_integration.py
+--release --parallel 2` exits 2 with a message naming the two offending
+steps and the overlapping write target, and stating that `--parallel` is
+unsafe until per-step corpus writes are made disjoint (or an explicit
+dependency serializes the steps). `--parallel 1` (serial — the default) is
+never affected. `--parallel` is also mutually exclusive with
+`--validate-each` (the validator reads the whole corpus mid-flight).
+
+> So: `--parallel > 1` only becomes usable once the corpus is split per
+> step in future work. The declarative DAG is the deliverable here; the
+> parallel runner is wired up and guarded, but the current step set has
+> overlapping corpus writes so it stays serial.
 
 ### Preview the DAG
 
@@ -128,7 +146,9 @@ This is the **unified release command**. It:
    - `python3 scripts/validate_seadusloome_sync.py` — Seadusloome zero-warning gate
 5. Writes `krr_outputs/reports/integration/release_manifest.json`.
 6. Exits **0 only if `release_ok`** — i.e. all 14 steps succeeded **and**
-   all three validators passed. Otherwise exit 1.
+   all three validators passed **and** no release-surface artifact is
+   missing (`releaseArtifacts.missing` is empty; see
+   [the manifest schema](#the-release_manifestjson-schema)). Otherwise exit 1.
 
 Useful flags:
 
@@ -139,7 +159,7 @@ Useful flags:
 | `--no-restore-on-failure` | Leave a partial `krr_outputs/` tree in place on failure instead of rolling back. |
 | `--validate-each` | Run `validate_all.py` after each successful step. Incompatible with `--parallel`. |
 | `--per-script-timeout N` | Per-step (and per-validator) timeout in seconds (default 1800; a timeout is recorded as exit code 124). |
-| `--parallel N` | Run up to N dependency-ready steps concurrently (default 1 = serial). |
+| `--parallel N` | Run up to N dependency-ready steps concurrently (default 1 = serial). **N > 1 is rejected (exit 2) for the current DAG** — independent steps share `*_peep.json` writes; see [Why serial by default](#why-serial-by-default). |
 
 ---
 
@@ -237,11 +257,14 @@ Written to `krr_outputs/reports/integration/release_manifest.json` by every
       "krr_outputs/eurlex/EURLEX_INDEX.json": "…",
       "metadata.jsonld": "…"
     },
-    "missing": [],                              // any expected artifact not found
+    "missing": [],                              // any expected RELEASE_ARTIFACTS / INDEX
+                                                // glob entry not found on disk; releaseOk
+                                                // is False whenever this is non-empty
     "contentHash": "…64 hex…"                   // sha256 over sorted "path\nsha256\n" lines
   },
 
-  "releaseOk": true                             // steps all OK AND validators all passed;
+  "releaseOk": true                             // steps all OK AND validators all passed
+                                                // AND releaseArtifacts.missing is empty;
                                                 // null in --dry-run
 }
 ```
@@ -249,6 +272,12 @@ Written to `krr_outputs/reports/integration/release_manifest.json` by every
 `contentHash` is a single stable digest of the whole **committed release
 surface** — compare two release manifests to explain corpus/artifact drift
 (per-file hashes pinpoint exactly what changed).
+
+`releaseArtifacts.missing` is a *hard* gate, not just a diagnostic:
+`validate_all.py` only **warns** when `metadata.jsonld` is absent, so
+`releaseOk` would otherwise be `true` for a release whose release-surface
+artifact is gone. Folding `missing == []` into `releaseOk` closes that hole
+while still recording exactly which artifact was missing.
 
 The per-step (and per-validator) subprocess logs live under
 `krr_outputs/reports/integration/logs/`; each ledger/validator entry carries

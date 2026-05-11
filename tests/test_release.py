@@ -301,6 +301,163 @@ class TestParallelExecution:
 
 
 # ===========================================================================
+# 2c. --parallel safety gate: reject overlapping-writes among concurrent steps
+# ===========================================================================
+
+
+class TestParallelWriteDisjointness:
+    """``--parallel > 1`` must be rejected (exit 2 / DAGError) when two steps
+    with no dependency relation both write an overlapping corpus target —
+    concurrent execution there is last-writer-wins clobbering. ``--parallel
+    1`` (serial — the default) is never affected, and a DAG whose
+    overlapping-writes steps ARE dependency-ordered is accepted."""
+
+    def _overlapping_unordered_dag(self) -> list[dict]:
+        # a and b both write *_peep.json and neither depends on the other.
+        return [
+            {"name": "a.py", "description": "A", "script": "a.py",
+             "depends_on": [], "reads": ["*_peep.json"],
+             "writes": ["*_peep.json", "a_report.json"]},
+            {"name": "b.py", "description": "B", "script": "b.py",
+             "depends_on": [], "reads": ["*_peep.json"],
+             "writes": ["*_peep.json", "b_report.json"]},
+            {"name": "c.py", "description": "C", "script": "c.py",
+             "depends_on": ["a.py", "b.py"], "reads": ["*_peep.json"],
+             "writes": ["c_report.json"]},
+        ]
+
+    def _overlapping_ordered_dag(self) -> list[dict]:
+        # Same overlapping *_peep.json writes, but b depends on a — they can
+        # never be in flight at the same time, so --parallel is safe.
+        return [
+            {"name": "a.py", "description": "A", "script": "a.py",
+             "depends_on": [], "reads": ["*_peep.json"],
+             "writes": ["*_peep.json", "a_report.json"]},
+            {"name": "b.py", "description": "B", "script": "b.py",
+             "depends_on": ["a.py"], "reads": ["*_peep.json", "a_report.json"],
+             "writes": ["*_peep.json", "b_report.json"]},
+            {"name": "c.py", "description": "C", "script": "c.py",
+             "depends_on": ["b.py"], "reads": ["*_peep.json"],
+             "writes": ["c_report.json"]},
+        ]
+
+    def _disjoint_unordered_dag(self) -> list[dict]:
+        # Independent steps that write *different*, non-overlapping targets.
+        return [
+            {"name": "a.py", "description": "A", "script": "a.py",
+             "depends_on": [], "reads": [], "writes": ["a_only.json"]},
+            {"name": "b.py", "description": "B", "script": "b.py",
+             "depends_on": [], "reads": [], "writes": ["b_only.json"]},
+            {"name": "c.py", "description": "C", "script": "c.py",
+             "depends_on": ["a.py", "b.py"], "reads": [],
+             "writes": ["c_only.json"]},
+        ]
+
+    # -- direct validate_dag() checks ------------------------------------
+
+    def test_parallel2_rejected_for_overlapping_unordered_writes(self) -> None:
+        steps = self._overlapping_unordered_dag()
+        # Serial is fine.
+        assert r.validate_dag(steps, ("*_peep.json",), parallel=1) == [
+            "a.py", "b.py", "c.py"
+        ]
+        # Default (no parallel arg) is serial — also fine.
+        assert r.validate_dag(steps, ("*_peep.json",)) == ["a.py", "b.py", "c.py"]
+        # --parallel 2 must be rejected, naming both steps + the target.
+        with pytest.raises(r.DAGError) as excinfo:
+            r.validate_dag(steps, ("*_peep.json",), parallel=2)
+        msg = str(excinfo.value)
+        assert "a.py" in msg and "b.py" in msg
+        assert "*_peep.json" in msg
+        assert "--parallel" in msg
+
+    def test_parallel2_accepted_when_overlapping_writes_are_dependency_ordered(
+        self,
+    ) -> None:
+        steps = self._overlapping_ordered_dag()
+        # Overlapping *_peep.json writes, but the dependency edge serializes
+        # them — --parallel 2 is accepted.
+        assert r.validate_dag(steps, ("*_peep.json",), parallel=2) == [
+            "a.py", "b.py", "c.py"
+        ]
+
+    def test_parallel2_accepted_when_writes_are_disjoint(self) -> None:
+        steps = self._disjoint_unordered_dag()
+        assert r.validate_dag(steps, (), parallel=2) == ["a.py", "b.py", "c.py"]
+
+    def test_real_dag_rejects_parallel_gt_1(self) -> None:
+        # The real 14-step DAG has overlapping *_peep.json writes among
+        # independent steps, so --parallel 2 must be rejected.
+        assert len(r.validate_dag(r.STEPS, r.COMMITTED_INPUTS, parallel=1)) == len(
+            r.STEPS
+        )
+        with pytest.raises(r.DAGError) as excinfo:
+            r.validate_dag(r.STEPS, r.COMMITTED_INPUTS, parallel=2)
+        assert "*_peep.json" in str(excinfo.value)
+        assert "--parallel" in str(excinfo.value)
+
+    # -- overlap predicate unit checks ----------------------------------
+
+    def test_glob_overlap_predicate(self) -> None:
+        # Identical globs overlap.
+        assert r._globs_can_overlap("*_peep.json", "*_peep.json")
+        # A concrete path under a glob overlaps the glob.
+        assert r._globs_can_overlap("*_peep.json", "foo_peep.json")
+        assert r._globs_can_overlap("foo_peep.json", "*_peep.json")
+        # Two `**`-style globs that clearly intersect overlap.
+        assert r._globs_can_overlap(
+            "regulations/**/*_peep.json", "regulations/**/*_peep.json"
+        )
+        # The root *_peep.json glob has an empty fixed prefix, which (being
+        # the repo-root) is treated as containing everything — combined with
+        # identical *_peep.json basenames, this conservatively overlaps the
+        # regulations/**/*_peep.json glob ("when in doubt, treat as
+        # overlapping"). That is exactly why --parallel is rejected for the
+        # real DAG: classify_eurovoc.py writes both *_peep.json AND
+        # regulations/**/*_peep.json while extract_court_provision_links.py
+        # writes *_peep.json, with no dependency between them.
+        assert r._globs_can_overlap("*_peep.json", "regulations/**/*_peep.json")
+        # Nested fixed prefixes with compatible basenames overlap.
+        assert r._globs_can_overlap("a/**/x.json", "a/b/x.json")
+        # Disjoint, sibling fixed prefixes (neither contains the other) do
+        # NOT overlap even with identical basenames.
+        assert r._globs_can_overlap("a/**/x.json", "b/**/x.json") is False
+        # Different basenames in the same directory do NOT overlap.
+        assert r._globs_can_overlap("*.json", "*.txt") is False
+        assert r._globs_can_overlap("a/foo.json", "a/bar.json") is False
+        # Disjoint concrete paths do not overlap.
+        assert r._globs_can_overlap("a_only.json", "b_only.json") is False
+
+    # -- end-to-end via main() ------------------------------------------
+
+    def test_main_exits_2_for_parallel_gt_1_against_real_dag(
+        self, fake_repo: Path, monkeypatch: pytest.MonkeyPatch,
+        capsys: pytest.CaptureFixture[str],
+    ) -> None:
+        # subprocess.run must never be reached — we should bail at DAG
+        # validation before any work starts.
+        monkeypatch.setattr(
+            r.subprocess, "run",
+            lambda *a, **k: (_ for _ in ()).throw(AssertionError("no exec")),
+        )
+        exc = _run_main(monkeypatch, "--release", "--parallel", "2", "--dry-run")
+        assert exc.code == 2
+        err = capsys.readouterr().err
+        assert "--parallel" in err
+        assert "*_peep.json" in err
+
+    def test_main_parallel_1_against_real_dag_is_accepted(
+        self, fake_repo: Path, monkeypatch: pytest.MonkeyPatch,
+    ) -> None:
+        monkeypatch.setattr(
+            r.subprocess, "run",
+            lambda *a, **k: (_ for _ in ()).throw(AssertionError("no exec")),
+        )
+        exc = _run_main(monkeypatch, "--release", "--parallel", "1", "--dry-run")
+        assert exc.code == 0
+
+
+# ===========================================================================
 # 3. --dry-run --release prints the plan and runs nothing
 # ===========================================================================
 
@@ -585,6 +742,98 @@ class TestReleaseOkOnFailure:
         assert manifest["releaseOk"] is False
         failed = [v for v in manifest["validators"] if not v["passed"]]
         assert {v["name"] for v in failed} == {"validate_seadusloome_sync"}
+
+
+# ===========================================================================
+# 6b. releaseOk also requires a complete release surface (no missing artifacts)
+# ===========================================================================
+
+
+class TestReleaseOkRequiresArtifactsPresent:
+    """``releaseOk`` must be ``False`` when any ``RELEASE_ARTIFACTS`` entry is
+    absent on disk — even if every step and validator passed. ``validate_all``
+    only *warns* on a missing ``metadata.jsonld``, so this gate is what
+    actually fails such a release. The ``missing`` list stays in the manifest
+    so the failure is diagnosable."""
+
+    @staticmethod
+    def _all_green_run(monkeypatch: pytest.MonkeyPatch) -> None:
+        """Monkeypatch every step + validator subprocess to succeed, and
+        no-op the snapshot/restore (the tmp KRR_DIR is tiny)."""
+        def fake_run(cmd, **kwargs):
+            stdout = kwargs.get("stdout")
+            if stdout is not None and hasattr(stdout, "write"):
+                stdout.write("ok\n")
+            return subprocess.CompletedProcess(args=cmd, returncode=0)
+
+        monkeypatch.setattr(r.subprocess, "run", fake_run)
+        monkeypatch.setattr(r, "snapshot_outputs", lambda: r.KRR_DIR.parent /
+                            f"{r.KRR_DIR.name}.bak.x")
+        monkeypatch.setattr(r, "restore_outputs", lambda backup: None)
+        monkeypatch.setattr(r, "cleanup_snapshot", lambda backup: None)
+
+    def test_release_not_ok_when_a_release_artifact_is_missing(
+        self, fake_repo: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        # Remove a release-surface artifact (metadata.jsonld lives at repo
+        # root); everything else is green.
+        (fake_repo / "metadata.jsonld").unlink()
+        self._all_green_run(monkeypatch)
+
+        exc = _run_main(monkeypatch, "--release")
+        assert exc.code != 0  # missing release surface fails the build
+
+        manifest = json.loads(
+            (r.MANIFEST_DIR / "release_manifest.json").read_text(encoding="utf-8")
+        )
+        # Steps + validators all passed, but the artifact is missing →
+        # releaseOk is False.
+        assert manifest["stepSummary"]["failed"] == 0
+        assert manifest["validatorsPassed"] is True
+        assert manifest["releaseOk"] is False
+        # The missing list is recorded so the failure is diagnosable.
+        assert "metadata.jsonld" in manifest["releaseArtifacts"]["missing"]
+
+    def test_release_ok_when_all_release_artifacts_present(
+        self, fake_repo: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        # fake_repo seeds every RELEASE_ARTIFACTS entry — the green run
+        # should exit 0 with releaseOk True and an empty missing list.
+        self._all_green_run(monkeypatch)
+
+        exc = _run_main(monkeypatch, "--release")
+        assert exc.code == 0
+
+        manifest = json.loads(
+            (r.MANIFEST_DIR / "release_manifest.json").read_text(encoding="utf-8")
+        )
+        assert manifest["releaseArtifacts"]["missing"] == []
+        assert manifest["releaseOk"] is True
+
+    def test_validate_only_release_not_ok_when_artifact_missing(
+        self, fake_repo: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        # --validate-only also hashes the release surface; a missing artifact
+        # must drop releaseOk to False there too.
+        (r.KRR_DIR / "combined_ontology.jsonld").unlink()
+
+        def fake_run(cmd, **kwargs):
+            stdout = kwargs.get("stdout")
+            if stdout is not None and hasattr(stdout, "write"):
+                stdout.write("ok\n")
+            return subprocess.CompletedProcess(args=cmd, returncode=0)
+
+        monkeypatch.setattr(r.subprocess, "run", fake_run)
+        exc = _run_main(monkeypatch, "--release", "--validate-only")
+        assert exc.code != 0
+        manifest = json.loads(
+            (r.MANIFEST_DIR / "release_manifest.json").read_text(encoding="utf-8")
+        )
+        assert manifest["validatorsPassed"] is True
+        assert manifest["releaseOk"] is False
+        assert "krr_outputs/combined_ontology.jsonld" in (
+            manifest["releaseArtifacts"]["missing"]
+        )
 
 
 # ===========================================================================

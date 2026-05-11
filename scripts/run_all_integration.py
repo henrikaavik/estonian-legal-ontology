@@ -16,8 +16,13 @@ This module owns two things:
 
    All scripts modify the same ``*_peep.json`` files in ``krr_outputs/``,
    so the default execution mode is **serial** (determinism). ``--parallel
-   N`` runs steps with no unmet dependency concurrently — best effort; the
-   declarative DAG is the deliverable, parallelism is gravy.
+   N`` runs steps with no unmet dependency concurrently — but because most
+   "independent" steps still rewrite the shared ``*_peep.json`` corpus,
+   ``validate_dag()`` *rejects* ``--parallel > 1`` (exit 2) whenever two
+   steps that could run concurrently declare overlapping ``writes`` globs;
+   the current 14-step DAG has such overlaps, so ``--parallel`` is only
+   safe once per-step corpus writes are made disjoint. ``--parallel 1``
+   (serial, the default) is unaffected.
 
 2. A **release build**: ``--release`` runs the full DAG, then the three
    release validators (``validate_all.py``, ``shacl_validate_all.py --all``,
@@ -27,7 +32,8 @@ This module owns two things:
    content hash of the committed release artifacts, and ``release_ok``.
    ``--release --validate-only`` skips generation and just runs the three
    validators against the current corpus. Exit code is 0 only if
-   ``release_ok`` (all steps succeeded AND all validators passed).
+   ``release_ok`` (all steps succeeded AND all validators passed AND no
+   release-surface artifact is missing).
 
 Dependency chains (A must complete before B):
   extract_cross_references.py  ->  generate_inverse_references.py
@@ -349,7 +355,11 @@ def step_command(step: dict) -> list[str]:
     return [sys.executable, str(SCRIPTS_DIR / step["script"])]
 
 
-def validate_dag(steps: list[dict], committed_inputs: tuple[str, ...]) -> list[str]:
+def validate_dag(
+    steps: list[dict],
+    committed_inputs: tuple[str, ...],
+    parallel: int = 1,
+) -> list[str]:
     """Validate the DAG and return the topological order (list of step names).
 
     Checks, in order:
@@ -358,6 +368,11 @@ def validate_dag(steps: list[dict], committed_inputs: tuple[str, ...]) -> list[s
       * the dependency graph is acyclic (Kahn's algorithm)
       * every step's ``reads`` patterns are covered by a committed input or
         by some *prior* step's ``writes`` (prior == earlier in topo order)
+      * if ``parallel > 1``: no two steps that could run concurrently (i.e.
+        neither is a transitive dependency of the other) declare overlapping
+        ``writes`` globs — concurrent writes to a shared corpus target are
+        last-writer-wins and would silently clobber enrichments. ``parallel
+        <= 1`` (serial — the default) skips this check entirely.
 
     Raises :class:`DAGError` on the first problem found.
     """
@@ -417,7 +432,142 @@ def validate_dag(steps: list[dict], committed_inputs: tuple[str, ...]) -> list[s
                     f"committed input nor produced by any prior step"
                 )
         produced.update(s.get("writes", []))
+
+    # Concurrency safety: with --parallel, two steps with no dependency
+    # relation in either direction can be in flight at the same time. If
+    # both write a glob that can match a common path the corpus is at risk
+    # of last-writer-wins clobbering.
+    if parallel > 1:
+        _check_parallel_write_disjointness(steps, adj)
     return topo
+
+
+def _transitive_dependents(adj: dict[str, list[str]]) -> dict[str, set[str]]:
+    """Map each step name -> set of all steps reachable from it via ``adj``.
+
+    ``adj[x]`` lists the immediate successors of ``x`` (steps that declare
+    ``x`` in ``depends_on``). The returned set is the *transitive* closure
+    of that relation, i.e. every step that runs strictly after ``x`` because
+    of a dependency chain. Computed with a simple DFS per node (the DAG is
+    tiny — 14 steps).
+    """
+    closure: dict[str, set[str]] = {}
+
+    def _dfs(node: str) -> set[str]:
+        if node in closure:
+            return closure[node]
+        # Mark in-progress with an empty set to tolerate (already-rejected)
+        # cycles without infinite recursion.
+        closure[node] = set()
+        reachable: set[str] = set()
+        for succ in adj.get(node, []):
+            reachable.add(succ)
+            reachable |= _dfs(succ)
+        closure[node] = reachable
+        return reachable
+
+    for n in adj:
+        _dfs(n)
+    return closure
+
+
+def _globs_can_overlap(a: str, b: str) -> bool:
+    """Conservatively decide whether two glob patterns can match a common path.
+
+    Used to detect unsafe concurrent corpus writes. The check errs on the
+    side of *overlapping* (false positives are safe — they only forbid an
+    unsafe-looking ``--parallel`` config; false negatives would let a
+    clobber through):
+
+      * identical patterns overlap;
+      * if either pattern has no wildcard, it overlaps the other iff
+        ``fnmatch`` matches it against the other (a concrete path under a
+        glob, or two identical concrete paths);
+      * if both have wildcards, they overlap when their fixed directory
+        prefixes are nested or equal (so ``a/**/x`` and ``a/b/*`` overlap),
+        OR when both basenames are wildcard patterns that ``fnmatch`` can
+        satisfy in either direction (so ``*_peep.json`` overlaps
+        ``foo_peep.json`` and two ``**/*_peep.json``-style globs overlap).
+      * when in doubt, treat as overlapping.
+    """
+    if a == b:
+        return True
+    import fnmatch
+
+    def _has_wild(p: str) -> bool:
+        return any(ch in p for ch in "*?[")
+
+    a_wild, b_wild = _has_wild(a), _has_wild(b)
+    if not a_wild or not b_wild:
+        # At least one is a concrete path: it overlaps iff the glob matches
+        # it (fnmatch is exact when both sides lack wildcards).
+        return fnmatch.fnmatch(a, b) or fnmatch.fnmatch(b, a)
+
+    # Both are globs. Compare fixed directory prefixes (everything before the
+    # first wildcard segment).
+    def _fixed_dir(p: str) -> str:
+        parts = p.split("/")
+        fixed: list[str] = []
+        for seg in parts[:-1]:  # the basename segment is handled separately
+            if _has_wild(seg):
+                break
+            fixed.append(seg)
+        return "/".join(fixed)
+
+    da, db = _fixed_dir(a), _fixed_dir(b)
+    # Directory-prefix containment (treat "" as the repo-root prefix, which
+    # contains everything).
+    if not (da == db or da == "" or db == "" or da.startswith(db + "/")
+            or db.startswith(da + "/")):
+        return False
+    # Prefixes are compatible — now require the basename patterns to be
+    # mutually satisfiable (e.g. ``*_peep.json`` vs ``foo_peep.json``, or two
+    # ``*_peep.json``). This is still conservative: ``*.json`` vs ``*.txt``
+    # correctly does NOT overlap, while ``*_peep.json`` vs ``*_peep.json``
+    # does.
+    ba, bb = a.rsplit("/", 1)[-1], b.rsplit("/", 1)[-1]
+    return fnmatch.fnmatch(ba, bb) or fnmatch.fnmatch(bb, ba)
+
+
+def _check_parallel_write_disjointness(
+    steps: list[dict], adj: dict[str, list[str]]
+) -> None:
+    """Reject ``--parallel > 1`` if two concurrent-eligible steps can clobber.
+
+    Two steps are "concurrent-eligible" when neither is a transitive
+    dependency of the other (so the runner may dispatch them at the same
+    time). For every such pair, if any ``writes`` glob of one can overlap
+    (per :func:`_globs_can_overlap`) any ``writes`` glob of the other, the
+    DAG is not safe to run in parallel — raise :class:`DAGError` naming the
+    two steps and the overlapping write target.
+    """
+    closure = _transitive_dependents(adj)
+    ordered = [s["name"] for s in steps]
+    by_name = {s["name"]: s for s in steps}
+    for i, a_name in enumerate(ordered):
+        a_writes = by_name[a_name].get("writes", []) or []
+        if not a_writes:
+            continue
+        a_deps_closure = closure.get(a_name, set())
+        for b_name in ordered[i + 1:]:
+            # Skip pairs with a dependency relation in either direction.
+            if b_name in a_deps_closure or a_name in closure.get(b_name, set()):
+                continue
+            b_writes = by_name[b_name].get("writes", []) or []
+            for wa in a_writes:
+                for wb in b_writes:
+                    if _globs_can_overlap(wa, wb):
+                        target = wa if wa == wb else f"{wa!r} / {wb!r}"
+                        raise DAGError(
+                            f"--parallel > 1 is unsafe for this DAG: steps "
+                            f"{a_name!r} and {b_name!r} have no dependency "
+                            f"relation but both write overlapping corpus "
+                            f"target {target} — concurrent execution would "
+                            f"clobber enrichments (last-writer-wins). Re-run "
+                            f"with --parallel 1 (serial) until per-step "
+                            f"corpus writes are disjoint (or an explicit "
+                            f"dependency serializes these two steps)."
+                        )
 
 
 def _pattern_covered(pattern: str, produced: set[str]) -> bool:
@@ -492,7 +642,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         metavar="N",
         default=1,
         help="Run up to N steps with no unmet dependency concurrently "
-        "(default 1 = serial; serial is the deterministic default).",
+        "(default 1 = serial; serial is the deterministic default). "
+        "N > 1 is REJECTED (exit 2) when two steps that could run "
+        "concurrently both write overlapping corpus targets (e.g. the "
+        "shared *_peep.json files) — concurrent writes would clobber "
+        "enrichments; the current DAG has such overlaps, so --parallel is "
+        "only safe once per-step corpus writes are made disjoint.",
     )
     parser.add_argument(
         "--release",
@@ -1102,10 +1257,18 @@ def build_release_manifest(
     # is vacuously true; release_ok then turns purely on the validators.
     if validate_only:
         steps_ok = True
+    # The release surface must be complete: every artifact in
+    # RELEASE_ARTIFACTS (+ the index globs) has to be present on disk.
+    # ``validate_all.py`` only *warns* on a missing metadata.jsonld, so this
+    # is the gate that actually fails a release whose release-surface
+    # artifacts are absent. The ``missing`` list is always recorded in the
+    # manifest under ``releaseArtifacts`` so a False verdict is diagnosable.
+    artifacts_complete = not bool(artifact_hash.get("missing"))
     # A dry-run executed nothing, so release_ok is undefined (null) rather
     # than False — there is no failure, just no result.
     release_ok: bool | None = (
-        None if dry_run else bool(steps_ok and validators_passed)
+        None if dry_run
+        else bool(steps_ok and validators_passed and artifacts_complete)
     )
     return {
         "generated": datetime.now(timezone.utc).isoformat(),
@@ -1159,9 +1322,11 @@ def _print_dag_plan(topo: list[str], *, release: bool, validate_only: bool) -> N
 def main(argv: list[str] | None = None) -> None:
     args = parse_args(argv)
 
-    # Validate the DAG before doing anything else.
+    # Validate the DAG before doing anything else. With --parallel > 1 this
+    # also rejects DAGs where two concurrent-eligible steps would clobber a
+    # shared corpus write target.
     try:
-        topo = validate_dag(STEPS, COMMITTED_INPUTS)
+        topo = validate_dag(STEPS, COMMITTED_INPUTS, parallel=args.parallel)
     except DAGError as exc:
         print(f"FATAL: invalid step DAG: {exc}", file=sys.stderr)
         sys.exit(2)
