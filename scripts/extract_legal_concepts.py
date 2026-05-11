@@ -517,6 +517,156 @@ def _bucketed_close_match_pairs(
     return results
 
 
+# ---------------------------------------------------------------------------
+# Issue #134 — canonical estleg:Concept nodes + quality / noise filter
+# ---------------------------------------------------------------------------
+#
+# The old model emitted one provision-local ``estleg:LegalConcept`` node per
+# defined term and then connected every node defining the same term with a
+# clique of ``skos:exactMatch`` arcs (O(k²) per term). The new model adds one
+# canonical ``estleg:Concept`` node per distinct *normalised* term; each
+# provision-local definition node points at it once via ``estleg:definesConcept``
+# (a hub link — O(k) total) plus a single ``skos:exactMatch`` to the canonical
+# node (the proper SKOS relation), and the fuzzy ``skos:closeMatch`` relation
+# now connects ``estleg:Concept`` nodes to each other rather than the
+# provision-local nodes.
+
+# Maximum number of distinct ``skos:definition`` values emitted on a canonical
+# Concept node. When a term has more than this many *distinct* (normalised)
+# definitions across laws the node records ``estleg:definitionVariantCount``
+# with the true total instead of bloating the graph.
+_MAX_CONCEPT_DEFINITIONS = 5
+
+# Placeholder / repealed-marker "terms" that must never get a canonical
+# Concept node. Compared case-insensitively against the normalised term after
+# stripping surrounding brackets/parentheses.
+_NOISE_TERM_TOKENS = {
+    "kehtetu",
+    "kehtetud",
+    "kehtetuks tunnistatud",
+    "valja jaetud",
+    "väljajäetud",
+    "väljajaetud",
+    "valjajaetud",
+    "reserveeritud",
+    "...",
+    "…",
+}
+
+# Estonian (and a few stray English) stopwords. A "term" consisting solely of
+# stopwords is noise, not a concept.
+_STOPWORD_TERMS = {
+    "ja", "või", "voi", "ning", "ka", "kui", "et", "see", "selle", "sel",
+    "need", "ta", "tema", "nad", "nende", "on", "ei", "kes", "mis", "kus",
+    "millal", "kuidas", "ehk", "siis", "kuid", "aga", "vaid", "nii",
+    "the", "of", "in", "and", "or", "a", "an", "to", "for",
+}
+
+# Definition strings that signal "no real definition here" (a repealed or
+# omitted definition slot). Compared after lowercasing and stripping trailing
+# punctuation; also matched as a prefix so e.g. ``"kehtetu - RT I, ..."`` is
+# recognised.
+_NOISE_DEFINITION_PREFIXES = (
+    "kehtetu",
+    "kehtetuks tunnistatud",
+    "valja jaetud",
+    "välja jäetud",
+    "väljajäetud",
+)
+_NOISE_DEFINITION_EXACT = {
+    "...",
+    "…",
+    "-",
+    "–",
+    "—",
+}
+
+
+def _strip_term_brackets(term_lower: str) -> str:
+    """Strip a single layer of surrounding ``[]`` / ``()`` from a normalised
+    term so ``"[kehtetu]"`` and ``"(kehtetu)"`` match the noise token set."""
+    t = term_lower.strip()
+    while len(t) >= 2 and (
+        (t[0] == "[" and t[-1] == "]") or (t[0] == "(" and t[-1] == ")")
+    ):
+        t = t[1:-1].strip()
+    return t
+
+
+def is_noise_term(term_lower: str) -> bool:
+    """Return True if ``term_lower`` is junk that should not become a
+    canonical Concept node.
+
+    Filtered: empty / single-character "terms"; "terms" that are entirely
+    digits or punctuation; repealed-marker placeholders (``kehtetu`` and
+    variants, with or without surrounding brackets); and "terms" composed
+    solely of stopwords.
+    """
+    t = _strip_term_brackets(term_lower)
+    if len(t) < 2:
+        return True
+    # Entirely digits / whitespace / punctuation (no letters at all).
+    if not re.search(r"[^\W\d_]", t, re.UNICODE):
+        return True
+    if t in _NOISE_TERM_TOKENS:
+        return True
+    if t in _STOPWORD_TERMS:
+        return True
+    words = [w for w in re.split(r"\s+", t) if w]
+    if words and all(w in _STOPWORD_TERMS for w in words):
+        return True
+    return False
+
+
+def is_noise_definition(definition: str) -> bool:
+    """Return True if ``definition`` carries no real definitional content
+    (empty, a bare dash, or a ``kehtetu`` / ``välja jäetud`` placeholder)."""
+    if not definition:
+        return True
+    d = definition.strip().lower().rstrip(".;,…- \t\r\n–—")
+    if not d:
+        return True
+    if definition.strip().lower() in _NOISE_DEFINITION_EXACT:
+        return True
+    return any(d.startswith(prefix) for prefix in _NOISE_DEFINITION_PREFIXES)
+
+
+def _normalize_definition_for_dedup(definition: str) -> str:
+    """Normalise a definition string for near-duplicate detection: collapse
+    whitespace, lowercase, strip trailing punctuation."""
+    d = re.sub(r"\s+", " ", definition).strip().lower()
+    return d.rstrip(".;,…- \t\r\n–—")
+
+
+def _most_common(values: list[str]) -> str:
+    """Return the most frequent value in ``values``; ties broken by sorting
+    the surface form ascending so the result is deterministic."""
+    counts: dict[str, int] = {}
+    for v in values:
+        counts[v] = counts.get(v, 0) + 1
+    # Sort by (-count, value) — most frequent first, then alphabetical.
+    return sorted(counts.items(), key=lambda kv: (-kv[1], kv[0]))[0][0]
+
+
+def canonical_concept_id(term_lower: str, claimed: set[str]) -> str:
+    """Return a fresh ``estleg:Concept_<sanitized term>`` IRI.
+
+    ``sanitize_id`` lossily transliterates diacritics and truncates to 80
+    chars, so two distinct normalised terms can map to the same sanitized
+    form (e.g. ``"tee kaitsevöönd"`` and ``"tee-kaitsevöönd"`` both → ``…
+    _tee_kaitsevoond``). On collision append a monotonic ``_2``, ``_3`` …
+    suffix. Caller must add the returned id to ``claimed`` before the next
+    call so the sequence stays stable.
+    """
+    base = f"estleg:Concept_{sanitize_id(term_lower)}"
+    if base not in claimed:
+        return base
+    n = 2
+    while f"{base}_{n}" in claimed:
+        n += 1
+    return f"{base}_{n}"
+
+
 def main():
     print("=" * 70)
     print("Estonian Legal Ontology - Extract Legal Concepts")
@@ -653,25 +803,52 @@ def main():
 
     print(f"\n  Total: {len(all_concepts)} defined terms from {laws_with_concepts} laws")
 
-    # Step 3: Build cross-references
+    # Step 3: Build cross-references and the canonical Concept registry
     print("\n[3/5] Building cross-reference graph...")
 
-    # Group concepts by lowercased term
+    # Group provision-local definitions by normalised (lowercased,
+    # whitespace-stripped) term — this is the canonical-concept grouping key.
     term_index: dict[str, list[dict]] = {}
     for concept in all_concepts:
-        key = concept["term_lower"]
+        key = concept["term_lower"].strip()
+        concept["term_norm"] = key
         term_index.setdefault(key, []).append(concept)
 
-    # Find terms that appear in multiple laws (exact matches).
-    # Finding 3 (#171): use ``sorted({...})`` instead of ``list({...})``
-    # so the law list is deterministic across runs.
+    unique_terms = sorted(term_index.keys())
+
+    # ---- Quality / noise filter (#134) ----
+    # A normalised term gets NO canonical Concept node when it is obvious junk
+    # (``is_noise_term``) OR every definition collected for it is itself a
+    # placeholder (``is_noise_definition``). Provision-local definition nodes
+    # for such terms are still emitted (they remain part of each law's graph)
+    # but carry no ``estleg:definesConcept`` / ``skos:exactMatch`` cross-link.
+    concept_terms: list[str] = []
+    noise_terms: list[str] = []
+    for term_norm in unique_terms:
+        entries = term_index[term_norm]
+        if is_noise_term(term_norm) or all(
+            is_noise_definition(e["definition"]) for e in entries
+        ):
+            noise_terms.append(term_norm)
+        else:
+            concept_terms.append(term_norm)
+    _concepts_filtered_noise = len(noise_terms)
+    print(f"  Canonical concepts: {len(concept_terms)}  "
+          f"(filtered noise terms: {_concepts_filtered_noise})")
+
+    # Concept terms that appear in more than one law — kept for the report's
+    # ``cross_referenced_terms`` section. The equivalence itself is expressed
+    # by a shared ``estleg:definesConcept`` target rather than an O(k²)
+    # ``skos:exactMatch`` clique, so this list is reporting-only. Noise terms
+    # are excluded — they are surfaced separately in ``noisy_candidate_terms``.
     exact_matches: list[dict] = []
-    for term_lower, entries in sorted(term_index.items()):
+    for term_norm in concept_terms:
+        entries = term_index[term_norm]
         law_slugs = sorted({e["law_slug"] for e in entries})
         if len(law_slugs) > 1:
             exact_matches.append({
-                "term": entries[0]["term"],
-                "term_lower": term_lower,
+                "term": _most_common([e["term"] for e in entries]),
+                "term_lower": term_norm,
                 "laws": [
                     {"title": e["law_title"], "slug": e["law_slug"], "paragraph": e["paragraph"]}
                     for e in entries
@@ -679,25 +856,21 @@ def main():
                 "count": len(law_slugs),
             })
 
-    print(f"  Exact matches (same term in multiple laws): {len(exact_matches)}")
+    print(f"  Concept terms appearing in multiple laws: {len(exact_matches)}")
 
-    # Find close matches (edit distance < 3) between unique terms.
-    # Finding 5 (#171): bucketing strategy avoids the all-pairs O(N²)
-    # blowup so we no longer need the 5000-term cap. Sort the bucket
-    # output for deterministic graph ordering (Finding 3).
-    unique_terms = sorted(term_index.keys())
-    bucketed_pairs = _bucketed_close_match_pairs(unique_terms)
+    # Close matches (edit distance < 3) — now computed over the *Concept* term
+    # set only (far fewer comparisons; the result connects Concept nodes, not
+    # provision-local nodes). Sorted for deterministic graph ordering.
+    bucketed_pairs = _bucketed_close_match_pairs(concept_terms)
     bucketed_pairs.sort()
     close_matches: list[dict] = []
     for t1, t2, dist in bucketed_pairs:
         close_matches.append({
-            "term_a": term_index[t1][0]["term"],
-            "term_b": term_index[t2][0]["term"],
+            "term_a": _most_common([e["term"] for e in term_index[t1]]),
+            "term_b": _most_common([e["term"] for e in term_index[t2]]),
             "term_a_lower": t1,
             "term_b_lower": t2,
             "distance": dist,
-            "laws_a": sorted({e["law_slug"] for e in term_index[t1]}),
-            "laws_b": sorted({e["law_slug"] for e in term_index[t2]}),
         })
 
     print(f"  Close matches (edit distance < 3): {len(close_matches)}")
@@ -718,45 +891,132 @@ def main():
                 "@type": "xsd:integer",
             },
         },
-        # LegalConcept class definition
+        # LegalConcept class definition (the provision-local definition node).
         {
             "@id": "estleg:LegalConcept",
             "@type": ["owl:Class"],
             "rdfs:label": "Õigusmõiste (Legal Concept)",
-            "rdfs:comment": "Seaduses defineeritud mõiste.",
+            "rdfs:comment": (
+                "Seaduses defineeritud mõiste — sättepõhine definitsioon. "
+                "Provision-local legal-term definition extracted from one "
+                "law's definition section."
+            ),
         },
-        # definesTerm property
+        # Concept class definition — the canonical, cross-law term node (#134).
+        {
+            "@id": "estleg:Concept",
+            "@type": ["owl:Class"],
+            "rdfs:label": "Kanooniline mõiste (Canonical Concept)",
+            "rdfs:comment": (
+                "Kanooniline õigusmõiste — üks sõlm normaliseeritud termini "
+                "kohta, mis koondab kõik sättepõhised definitsioonid. "
+                "Canonical legal concept: one node per normalised term, "
+                "aggregating every provision-local definition of that term."
+            ),
+        },
+        # definesTerm property — provision → provision-local definition node.
         {
             "@id": "estleg:definesTerm",
             "@type": ["owl:ObjectProperty"],
             "rdfs:label": "defineerib mõiste",
             "rdfs:comment": "Links a legal provision to a concept it defines.",
         },
-        # definedIn property
+        # definesConcept property — provision-local definition node →
+        # canonical Concept node (the hub link that replaces the exactMatch
+        # clique, #134).
+        {
+            "@id": "estleg:definesConcept",
+            "@type": ["owl:ObjectProperty"],
+            "rdfs:label": "defineerib kanoonilise mõiste",
+            "rdfs:comment": (
+                "Links a provision-local legal-term definition node to the "
+                "canonical estleg:Concept node for that term."
+            ),
+        },
+        # definedIn property — provision-local definition node → the
+        # provision where it is defined. (Original, provision-local
+        # meaning only — see the owl:inverseOf estleg:definesTerm axiom
+        # below. The canonical Concept → definition-node membership now
+        # uses estleg:hasDefinitionNode instead, so this property's
+        # inverse-of axiom no longer corrupts the definesTerm semantics.)
         {
             "@id": "estleg:definedIn",
             "@type": ["owl:ObjectProperty"],
-            "rdfs:label": "defineeritud aktis",
-            "rdfs:comment": "Links a concept to the provision where it is defined.",
+            "rdfs:label": "defineeritud",
+            "rdfs:comment": (
+                "Links a provision-local legal-term definition node "
+                "(estleg:LegalConcept) to the provision where the term is "
+                "defined. Inverse of estleg:definesTerm."
+            ),
             "owl:inverseOf": {"@id": "estleg:definesTerm"},
+        },
+        # hasDefinitionNode property — canonical Concept node → the
+        # provision-local definition nodes that define it (#134, Finding
+        # F3). The natural inverse of estleg:definesConcept; introduced as
+        # a property distinct from estleg:definedIn so the latter's
+        # owl:inverseOf estleg:definesTerm axiom does not, under OWL
+        # reasoning, falsely conclude ``LegalConcept estleg:definesTerm
+        # Concept``.
+        {
+            "@id": "estleg:hasDefinitionNode",
+            "@type": ["owl:ObjectProperty"],
+            "rdfs:label": "defineeriv sõlm",
+            "rdfs:comment": (
+                "Links a canonical estleg:Concept node to every "
+                "provision-local definition node (estleg:LegalConcept) "
+                "that defines that term. Inverse of estleg:definesConcept."
+            ),
+            "owl:inverseOf": {"@id": "estleg:definesConcept"},
+        },
+        # definitionCount — number of provisions defining a canonical Concept.
+        {
+            "@id": "estleg:definitionCount",
+            "@type": ["owl:DatatypeProperty"],
+            "rdfs:label": "definitsioonide arv",
+            "rdfs:comment": (
+                "Number of provision-local definitions aggregated by a "
+                "canonical estleg:Concept node."
+            ),
+            "rdfs:range": {"@id": "xsd:integer"},
+        },
+        # definitionVariantCount — distinct definition wordings, when the
+        # node only carries a capped subset of them.
+        {
+            "@id": "estleg:definitionVariantCount",
+            "@type": ["owl:DatatypeProperty"],
+            "rdfs:label": "definitsioonivariantide arv",
+            "rdfs:comment": (
+                "Total number of distinct definition wordings observed for a "
+                "canonical estleg:Concept node when only a capped subset is "
+                "emitted as skos:definition."
+            ),
+            "rdfs:range": {"@id": "xsd:integer"},
         },
     ]
 
+    # ---- Provision-local definition (LegalConcept) nodes ----
     # Track concept IDs to avoid duplicates in graph. Finding 2 (#171):
     # concept_id_by_index maps the original ``all_concepts`` position to
-    # the disambiguated graph @id, so the exactMatch / closeMatch loops
-    # below can resolve the actual emitted id even after collisions.
+    # the disambiguated graph @id.
     seen_concept_ids: set[str] = set()
     concept_id_by_index: list[str] = [""] * len(all_concepts)
 
-    # Finding 6 (#171): _triples is now incremented INSIDE the emission
-    # loop, gated on the concept actually being added. Previous code
-    # incremented _triples += 2 BEFORE the add, so collided drops caused
-    # an overcount.
+    # Finding 6 (#171): _triples is incremented INSIDE the emission loop,
+    # gated on the concept actually being added. Each provision-local node
+    # emits: definedIn (→ provision) + definesConcept (→ Concept) when the
+    # term is non-noise, else just definedIn.
+    legal_concept_nodes_by_term: dict[str, list[str]] = {}
+    kov_legal_concept_ids: set[str] = set()
     for idx, concept in enumerate(all_concepts):
         cid = _disambiguate_concept_id(concept, seen_concept_ids)
         seen_concept_ids.add(cid)
         concept_id_by_index[idx] = cid
+        legal_concept_nodes_by_term.setdefault(
+            concept["term_norm"], []
+        ).append(cid)
+        is_kov = idx < len(is_kov_by_concept_index) and is_kov_by_concept_index[idx]
+        if is_kov:
+            kov_legal_concept_ids.add(cid)
 
         node: dict = {
             "@id": cid,
@@ -768,90 +1028,142 @@ def main():
             "rdfs:label": f"{concept['term']} ({concept['law_slug']})",
         }
         graph.append(node)
-        _triples += 2  # definesTerm + definedIn — counted post-emission.
-        if idx < len(is_kov_by_concept_index) and is_kov_by_concept_index[idx]:
-            _triples_kov += 2
+        _triples += 1  # definedIn — counted post-emission.
+        if is_kov:
+            _triples_kov += 1
 
-    # Build a lookup from @id to graph node for in-place updates
+    # ---- Canonical Concept nodes (#134) ----
+    # Emitted AFTER the LegalConcept nodes so canonical IRIs are disambiguated
+    # against the ids already claimed. Iterating ``concept_terms`` in sorted
+    # order keeps the disambiguation sequence deterministic.
+    concept_id_by_term: dict[str, str] = {}
+    for term_norm in concept_terms:
+        entries = term_index[term_norm]
+        cc_id = canonical_concept_id(term_norm, seen_concept_ids)
+        seen_concept_ids.add(cc_id)
+        concept_id_by_term[term_norm] = cc_id
+
+        surface_forms = [e["term"] for e in entries]
+        pref = _most_common(surface_forms)
+        alt = sorted({s for s in surface_forms if s != pref})
+
+        # Distinct definitions, ranked by frequency (desc) then alphabetically.
+        # Group by the normalised wording; keep the most common surface form
+        # of each group.
+        def_groups: dict[str, list[str]] = {}
+        for e in entries:
+            if is_noise_definition(e["definition"]):
+                continue
+            def_groups.setdefault(
+                _normalize_definition_for_dedup(e["definition"]), []
+            ).append(e["definition"])
+        ranked_defs = [
+            _most_common(forms)
+            for _norm, forms in sorted(
+                def_groups.items(), key=lambda kv: (-len(kv[1]), kv[0])
+            )
+        ]
+        emitted_defs = ranked_defs[:_MAX_CONCEPT_DEFINITIONS]
+
+        node = {
+            "@id": cc_id,
+            "@type": ["owl:NamedIndividual", "estleg:Concept"],
+            "skos:prefLabel": {"@value": pref, "@language": "et"},
+            # F3 (#134): point at the provision-local definition nodes via
+            # estleg:hasDefinitionNode — NOT estleg:definedIn, whose
+            # owl:inverseOf estleg:definesTerm axiom is reserved for the
+            # provision-local node → provision direction.
+            "estleg:hasDefinitionNode": [
+                {"@id": lc_id} for lc_id in legal_concept_nodes_by_term[term_norm]
+            ],
+            "estleg:definitionCount": {
+                "@value": str(len(entries)),
+                "@type": "xsd:integer",
+            },
+            "rdfs:label": pref,
+        }
+        if alt:
+            node["skos:altLabel"] = [{"@value": a, "@language": "et"} for a in alt]
+        if emitted_defs:
+            node["skos:definition"] = [
+                {"@value": d, "@language": "et"} for d in emitted_defs
+            ]
+        if len(ranked_defs) > _MAX_CONCEPT_DEFINITIONS:
+            node["estleg:definitionVariantCount"] = {
+                "@value": str(len(ranked_defs)),
+                "@type": "xsd:integer",
+            }
+        graph.append(node)
+        # Triples roughly: prefLabel + definitionCount + hasDefinitionNode
+        # (k) + altLabel (|alt|) + definition (|emitted_defs|).
+        _n_tr = 2 + len(legal_concept_nodes_by_term[term_norm]) + len(alt) + len(emitted_defs)
+        if len(ranked_defs) > _MAX_CONCEPT_DEFINITIONS:
+            _n_tr += 1
+        _triples += _n_tr
+
+    # ---- Hub links: provision-local definition node → canonical Concept ----
+    # ``estleg:definesConcept`` (hub, O(k) total) PLUS a single
+    # ``skos:exactMatch`` to the canonical node (the proper SKOS relation).
+    # This replaces the O(k²) exactMatch clique between provision-local nodes.
     graph_node_by_id: dict[str, dict] = {}
     for node in graph:
         nid = node.get("@id", "")
         if nid:
             graph_node_by_id[nid] = node
 
-    # Build a parallel index: term_lower → list of (concept_index,
-    # disambiguated_id). Used by exactMatch and closeMatch below to
-    # resolve the same disambiguated id that the emission loop chose.
-    concept_index_by_term: dict[str, list[tuple[int, str]]] = {}
-    for idx, concept in enumerate(all_concepts):
-        cid = concept_id_by_index[idx]
-        if cid:
-            concept_index_by_term.setdefault(
-                concept["term_lower"], []
-            ).append((idx, cid))
-
-    # Add skos:exactMatch links for terms appearing in multiple laws.
-    # Finding 2 (#171): every target id is the disambiguated post-emit
-    # id. This guarantees the exactMatch reference points at a real
-    # node instead of a dangling stub.
-    for em in exact_matches:
-        entries = concept_index_by_term.get(em["term_lower"], [])
-        concept_ids = [cid for _idx, cid in entries if cid in seen_concept_ids]
-
-        # Link each pair with skos:exactMatch — merge into existing nodes
-        for i in range(len(concept_ids)):
-            for j in range(i + 1, len(concept_ids)):
-                target_node = graph_node_by_id.get(concept_ids[i])
-                if target_node is not None:
-                    existing = target_node.get("skos:exactMatch", [])
-                    if isinstance(existing, dict):
-                        existing = [existing]
-                    existing.append({"@id": concept_ids[j]})
-                    target_node["skos:exactMatch"] = existing
-
-    # Add skos:closeMatch links — Finding 4 (#171): iterate the FULL
-    # entries_a × entries_b cross-product and write bidirectional
-    # arcs (a → b AND b → a). The previous code only linked the FIRST
-    # concept of each side, so if disambiguation moved the canonical
-    # id, the closeMatch arc could dangle.
-    for cm in close_matches:
-        t_a = cm["term_a_lower"]
-        t_b = cm["term_b_lower"]
-        ids_a = [cid for _idx, cid in concept_index_by_term.get(t_a, [])
-                 if cid in seen_concept_ids]
-        ids_b = [cid for _idx, cid in concept_index_by_term.get(t_b, [])
-                 if cid in seen_concept_ids]
-        for id_a in ids_a:
-            target_a = graph_node_by_id.get(id_a)
-            if target_a is None:
+    for term_norm, lc_ids in legal_concept_nodes_by_term.items():
+        cc_id = concept_id_by_term.get(term_norm)
+        if cc_id is None:  # noise term — no canonical Concept, no cross-link.
+            continue
+        for lc_id in lc_ids:
+            lc_node = graph_node_by_id.get(lc_id)
+            if lc_node is None:
                 continue
-            for id_b in ids_b:
-                if id_a == id_b:
-                    continue
-                existing = target_a.get("skos:closeMatch", [])
-                if isinstance(existing, dict):
-                    existing = [existing]
-                existing.append({"@id": id_b})
-                target_a["skos:closeMatch"] = existing
+            lc_node["estleg:definesConcept"] = {"@id": cc_id}
+            lc_node["skos:exactMatch"] = [{"@id": cc_id}]
+            _triples += 2
+            if lc_id in kov_legal_concept_ids:
+                _triples_kov += 2
 
-    # Finding 2 (#171): every skos:exactMatch / skos:closeMatch target
-    # MUST point at a node we actually emitted. Verify and trim any
-    # stragglers — should be a no-op given the disambiguation logic
-    # above, but the assertion catches future regressions early.
+    # ---- skos:closeMatch: Concept ↔ Concept (#134) ----
+    # The fuzzy near-match relation now connects canonical Concept nodes to
+    # each other (bidirectional), not the provision-local nodes.
+    for cm in close_matches:
+        id_a = concept_id_by_term.get(cm["term_a_lower"])
+        id_b = concept_id_by_term.get(cm["term_b_lower"])
+        if not id_a or not id_b or id_a == id_b:
+            continue
+        for src, dst in ((id_a, id_b), (id_b, id_a)):
+            node = graph_node_by_id.get(src)
+            if node is None:
+                continue
+            existing = node.get("skos:closeMatch", [])
+            if isinstance(existing, dict):
+                existing = [existing]
+            existing.append({"@id": dst})
+            node["skos:closeMatch"] = existing
+            _triples += 1
+
+    # Every estleg:definesConcept / skos:exactMatch / skos:closeMatch target
+    # MUST point at a node we actually emitted. Trim any straggler (defensive;
+    # the construction above makes this a no-op, but it catches regressions).
     for node in graph:
-        for prop in ("skos:exactMatch", "skos:closeMatch"):
+        for prop in ("skos:exactMatch", "skos:closeMatch", "estleg:definesConcept"):
             refs = node.get(prop)
             if not refs:
                 continue
-            if isinstance(refs, dict):
-                refs = [refs]
-            valid = [r for r in refs
-                     if isinstance(r, dict)
-                     and r.get("@id") in seen_concept_ids]
-            if valid:
-                node[prop] = valid
-            else:
+            single = isinstance(refs, dict)
+            ref_list = [refs] if single else refs
+            valid = [
+                r for r in ref_list
+                if isinstance(r, dict) and r.get("@id") in seen_concept_ids
+            ]
+            if not valid:
                 node.pop(prop, None)
+            elif single:
+                node[prop] = valid[0]
+            else:
+                node[prop] = valid
 
     # Save combined concepts file
     combined_doc = {"@context": CONTEXT, "@graph": graph}
@@ -868,6 +1180,14 @@ def main():
         concepts_per_law[c["law_slug"]] = concepts_per_law.get(c["law_slug"], 0) + 1
     laws_ranked = sorted(concepts_per_law.items(), key=lambda x: x[1], reverse=True)
 
+    # Canonical concepts ranked by how many provisions define them — a
+    # reviewer can eyeball the head of this list for over-broad fragments
+    # ("vee", "reovesi", …) that the automatic noise filter does not catch.
+    concepts_ranked = sorted(
+        ((t, len(term_index[t])) for t in concept_terms),
+        key=lambda x: (-x[1], x[0]),
+    )
+
     report = {
         "generated": date.today().isoformat(),
         "summary": {
@@ -875,12 +1195,28 @@ def main():
             "laws_with_definitions": laws_with_concepts,
             "total_defined_terms": len(all_concepts),
             "unique_terms": len(unique_terms),
+            "canonical_concepts": len(concept_terms),
+            "concepts_filtered_noise": _concepts_filtered_noise,
             "terms_in_multiple_laws": len(exact_matches),
             "close_match_pairs": len(close_matches),
         },
         "top_laws_by_definitions": [
             {"slug": slug, "count": count}
             for slug, count in laws_ranked[:30]
+        ],
+        "most_referenced_concepts": [
+            {"term": _most_common([e["term"] for e in term_index[t]]),
+             "defined_in_provisions": count}
+            for t, count in concepts_ranked[:50]
+        ],
+        # Noisy candidate labels surfaced for review instead of being treated
+        # as normal concepts (kehtetu / placeholder / stopword-only terms).
+        "noisy_candidate_terms": [
+            {"term": _most_common([e["term"] for e in term_index[t]]),
+             "occurrences": len(term_index[t])}
+            for t in sorted(
+                noise_terms, key=lambda x: (-len(term_index[x]), x)
+            )
         ],
         "cross_referenced_terms": [
             {
@@ -914,6 +1250,8 @@ def main():
     print(f"  Laws with definitions:      {laws_with_concepts}")
     print(f"  Total defined terms:        {len(all_concepts)}")
     print(f"  Unique terms:               {len(unique_terms)}")
+    print(f"  Canonical concepts:         {len(concept_terms)}")
+    print(f"  Filtered noise terms:       {_concepts_filtered_noise}")
     print(f"  Terms in multiple laws:     {len(exact_matches)}")
     print(f"  Close-match pairs:          {len(close_matches)}")
     if laws_ranked:
@@ -938,6 +1276,11 @@ def main():
     skip_reasons_for_report = dict(_skip_reasons)
     if _ambiguous_par_iri:
         skip_reasons_for_report["ambiguous_par_iri"] = _ambiguous_par_iri
+    # #134: surface the count of normalised terms dropped by the noise filter
+    # (kehtetu / placeholder / stopword-only / pure-punctuation "terms"). It
+    # is not a per-file skip, but skip_reasons is the only free-form counter
+    # bag in the coverage schema.
+    skip_reasons_for_report["concepts_filtered_noise"] = _concepts_filtered_noise
     write_coverage_report(
         CoverageReport(
             pipeline="extract_legal_concepts",

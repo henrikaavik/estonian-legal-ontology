@@ -51,6 +51,14 @@
       "rdfs:comment": "Reusable class materialized for vocabulary coverage validation."
     },
     {
+      "@id": "estleg:Concept",
+      "@type": [
+        "owl:Class"
+      ],
+      "rdfs:label": "Concept",
+      "rdfs:comment": "Canonical legal concept: one node per distinct normalised legal term, aggregating every provision-local definition (estleg:LegalConcept) of that term. Replaces the former pairwise skos:exactMatch cliques between provision-local definition nodes."
+    },
+    {
       "@id": "estleg:Division",
       "@type": [
         "owl:Class"
@@ -1364,6 +1372,38 @@
       "rdfs:comment": "Reusable property observed in generated corpus and materialized for vocabulary coverage validation."
     },
     {
+      "@id": "estleg:definedIn",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:label": "Defined In",
+      "rdfs:comment": "Links a provision-local legal-term definition node (estleg:LegalConcept) to the provision where the term is defined. Inverse of estleg:definesTerm. (The canonical estleg:Concept node → definition-node membership uses estleg:hasDefinitionNode instead, so this property's inverse-of axiom does not corrupt the definesTerm semantics.)"
+    },
+    {
+      "@id": "estleg:definesConcept",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:label": "Defines Concept",
+      "rdfs:comment": "Links a provision-local legal-term definition node (estleg:LegalConcept) to the canonical estleg:Concept node for that term — the hub link that replaces the former O(k²) skos:exactMatch clique."
+    },
+    {
+      "@id": "estleg:definitionCount",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": "Definition Count",
+      "rdfs:comment": "Number of provision-local definitions aggregated by a canonical estleg:Concept node. Range: xsd:integer."
+    },
+    {
+      "@id": "estleg:definitionVariantCount",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": "Definition Variant Count",
+      "rdfs:comment": "Total number of distinct definition wordings observed for a canonical estleg:Concept node when only a capped subset is emitted as skos:definition. Range: xsd:integer."
+    },
+    {
       "@id": "estleg:documentType",
       "@type": [
         "owl:DatatypeProperty"
@@ -1426,6 +1466,17 @@
       ],
       "rdfs:label": "Has Chapter",
       "rdfs:comment": "Reusable property observed in generated corpus and materialized for vocabulary coverage validation."
+    },
+    {
+      "@id": "estleg:hasDefinitionNode",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:label": "Has Definition Node",
+      "rdfs:comment": "Links a canonical estleg:Concept node to every provision-local definition node (estleg:LegalConcept) that defines that term. Inverse of estleg:definesConcept. Introduced (#134, Finding F3) as a property distinct from estleg:definedIn so the latter's owl:inverseOf estleg:definesTerm axiom does not falsely conclude that a LegalConcept estleg:definesTerm a Concept.",
+      "owl:inverseOf": {
+        "@id": "estleg:definesConcept"
+      }
     },
     {
       "@id": "estleg:hasDivision",
