@@ -1377,7 +1377,7 @@
         "owl:ObjectProperty"
       ],
       "rdfs:label": "Defined In",
-      "rdfs:comment": "Links a concept to where it is defined: a provision-local definition node (estleg:LegalConcept) points at its provision; a canonical estleg:Concept node points at every provision-local definition node that defines it."
+      "rdfs:comment": "Links a provision-local legal-term definition node (estleg:LegalConcept) to the provision where the term is defined. Inverse of estleg:definesTerm. (The canonical estleg:Concept node → definition-node membership uses estleg:hasDefinitionNode instead, so this property's inverse-of axiom does not corrupt the definesTerm semantics.)"
     },
     {
       "@id": "estleg:definesConcept",
@@ -1466,6 +1466,17 @@
       ],
       "rdfs:label": "Has Chapter",
       "rdfs:comment": "Reusable property observed in generated corpus and materialized for vocabulary coverage validation."
+    },
+    {
+      "@id": "estleg:hasDefinitionNode",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:label": "Has Definition Node",
+      "rdfs:comment": "Links a canonical estleg:Concept node to every provision-local definition node (estleg:LegalConcept) that defines that term. Inverse of estleg:definesConcept. Introduced (#134, Finding F3) as a property distinct from estleg:definedIn so the latter's owl:inverseOf estleg:definesTerm axiom does not falsely conclude that a LegalConcept estleg:definesTerm a Concept.",
+      "owl:inverseOf": {
+        "@id": "estleg:definesConcept"
+      }
     },
     {
       "@id": "estleg:hasDivision",

@@ -933,20 +933,40 @@ def main():
                 "canonical estleg:Concept node for that term."
             ),
         },
-        # definedIn property — concept → the provision (for LegalConcept
-        # nodes) or the provision-local definition nodes (for Concept nodes)
-        # where it is defined.
+        # definedIn property — provision-local definition node → the
+        # provision where it is defined. (Original, provision-local
+        # meaning only — see the owl:inverseOf estleg:definesTerm axiom
+        # below. The canonical Concept → definition-node membership now
+        # uses estleg:hasDefinitionNode instead, so this property's
+        # inverse-of axiom no longer corrupts the definesTerm semantics.)
         {
             "@id": "estleg:definedIn",
             "@type": ["owl:ObjectProperty"],
             "rdfs:label": "defineeritud",
             "rdfs:comment": (
-                "Links a concept to where it is defined: a provision-local "
-                "definition node points at its provision; a canonical "
-                "estleg:Concept node points at every provision-local "
-                "definition node that defines it."
+                "Links a provision-local legal-term definition node "
+                "(estleg:LegalConcept) to the provision where the term is "
+                "defined. Inverse of estleg:definesTerm."
             ),
             "owl:inverseOf": {"@id": "estleg:definesTerm"},
+        },
+        # hasDefinitionNode property — canonical Concept node → the
+        # provision-local definition nodes that define it (#134, Finding
+        # F3). The natural inverse of estleg:definesConcept; introduced as
+        # a property distinct from estleg:definedIn so the latter's
+        # owl:inverseOf estleg:definesTerm axiom does not, under OWL
+        # reasoning, falsely conclude ``LegalConcept estleg:definesTerm
+        # Concept``.
+        {
+            "@id": "estleg:hasDefinitionNode",
+            "@type": ["owl:ObjectProperty"],
+            "rdfs:label": "defineeriv sõlm",
+            "rdfs:comment": (
+                "Links a canonical estleg:Concept node to every "
+                "provision-local definition node (estleg:LegalConcept) "
+                "that defines that term. Inverse of estleg:definesConcept."
+            ),
+            "owl:inverseOf": {"@id": "estleg:definesConcept"},
         },
         # definitionCount — number of provisions defining a canonical Concept.
         {
@@ -1049,7 +1069,11 @@ def main():
             "@id": cc_id,
             "@type": ["owl:NamedIndividual", "estleg:Concept"],
             "skos:prefLabel": {"@value": pref, "@language": "et"},
-            "estleg:definedIn": [
+            # F3 (#134): point at the provision-local definition nodes via
+            # estleg:hasDefinitionNode — NOT estleg:definedIn, whose
+            # owl:inverseOf estleg:definesTerm axiom is reserved for the
+            # provision-local node → provision direction.
+            "estleg:hasDefinitionNode": [
                 {"@id": lc_id} for lc_id in legal_concept_nodes_by_term[term_norm]
             ],
             "estleg:definitionCount": {
@@ -1070,8 +1094,8 @@ def main():
                 "@type": "xsd:integer",
             }
         graph.append(node)
-        # Triples roughly: prefLabel + definitionCount + definedIn (k) +
-        # altLabel (|alt|) + definition (|emitted_defs|).
+        # Triples roughly: prefLabel + definitionCount + hasDefinitionNode
+        # (k) + altLabel (|alt|) + definition (|emitted_defs|).
         _n_tr = 2 + len(legal_concept_nodes_by_term[term_norm]) + len(alt) + len(emitted_defs)
         if len(ranked_defs) > _MAX_CONCEPT_DEFINITIONS:
             _n_tr += 1

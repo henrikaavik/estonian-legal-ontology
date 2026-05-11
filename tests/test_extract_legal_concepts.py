@@ -468,7 +468,7 @@ def _expected_pipeline_triples(graph: list[dict]) -> int:
     ``estleg:definedIn`` plus its hub links (``estleg:definesConcept`` +
     ``skos:exactMatch`` for non-noise terms), and each canonical Concept
     node's ``skos:prefLabel`` / ``estleg:definitionCount`` /
-    ``estleg:definedIn`` / ``skos:altLabel`` / ``skos:definition`` /
+    ``estleg:hasDefinitionNode`` / ``skos:altLabel`` / ``skos:definition`` /
     ``estleg:definitionVariantCount`` / ``skos:closeMatch`` triples."""
 
     def _n(node: dict, prop: str) -> int:
@@ -486,7 +486,7 @@ def _expected_pipeline_triples(graph: list[dict]) -> int:
             total += _n(n, "skos:exactMatch")
         elif "estleg:Concept" in types:
             total += 2  # prefLabel + definitionCount (always exactly one each)
-            total += _n(n, "estleg:definedIn")
+            total += _n(n, "estleg:hasDefinitionNode")
             total += _n(n, "skos:altLabel")
             total += _n(n, "skos:definition")
             total += _n(n, "estleg:definitionVariantCount")
@@ -721,8 +721,8 @@ class TestIssue134NoiseFilterUnit:
 
 class TestIssue134ConceptNodeShape:
     """A canonical estleg:Concept node carries skos:prefLabel (lang-tagged),
-    skos:definition, estleg:definedIn (provision-local definition nodes), and
-    estleg:definitionCount."""
+    skos:definition, estleg:hasDefinitionNode (provision-local definition
+    nodes), and estleg:definitionCount."""
 
     def test_concept_node_has_required_properties(self, tmp_path, monkeypatch):
         graph = _run_extractor(
@@ -744,10 +744,14 @@ class TestIssue134ConceptNodeShape:
         assert isinstance(defs, list) and len(defs) == 1
         assert defs[0]["@language"] == "et"
         assert "füüsiline isik" in defs[0]["@value"]
-        # definedIn → the provision-local definition node(s), as IRIs.
-        defined_in = c["estleg:definedIn"]
-        assert isinstance(defined_in, list) and len(defined_in) == 1
-        lc_id = defined_in[0]["@id"]
+        # F3 (#134): hasDefinitionNode → the provision-local definition
+        # node(s), as IRIs. estleg:definedIn is reserved for the
+        # provision-local node → provision direction and must NOT appear
+        # on a Concept node.
+        assert "estleg:definedIn" not in c
+        has_def_nodes = c["estleg:hasDefinitionNode"]
+        assert isinstance(has_def_nodes, list) and len(has_def_nodes) == 1
+        lc_id = has_def_nodes[0]["@id"]
         lc_node = _by_id(graph, lc_id)
         assert lc_node is not None
         assert "estleg:LegalConcept" in lc_node["@type"]
@@ -842,9 +846,11 @@ class TestIssue134HubLinksReplaceClique:
                         "clique edge still present"
                     )
 
-        # The canonical Concept lists all 3 provision-local nodes in definedIn.
+        # The canonical Concept lists all 3 provision-local nodes in
+        # hasDefinitionNode (not definedIn — F3 #134).
         cc = _by_id(graph, cc_id)
-        assert {d["@id"] for d in cc["estleg:definedIn"]} == lc_ids
+        assert "estleg:definedIn" not in cc
+        assert {d["@id"] for d in cc["estleg:hasDefinitionNode"]} == lc_ids
         assert cc["estleg:definitionCount"] == {"@value": "3", "@type": "xsd:integer"}
 
 
@@ -943,6 +949,112 @@ class TestIssue134CloseMatchIsConceptToConcept:
             assert "skos:closeMatch" not in lc, lc["@id"]
 
 
+class TestFindingF3HasDefinitionNode:
+    """F3 (#134, PR #195): canonical estleg:Concept nodes use
+    estleg:hasDefinitionNode (not estleg:definedIn) for the Concept →
+    provision-local-definition membership, so the
+    ``estleg:definedIn owl:inverseOf estleg:definesTerm`` axiom can no
+    longer (under OWL reasoning) falsely conclude
+    ``LegalConcept estleg:definesTerm Concept``."""
+
+    def test_concept_nodes_do_not_carry_defined_in(self, tmp_path, monkeypatch):
+        graph = _run_extractor(
+            tmp_path, monkeypatch,
+            peeps={
+                "law_a": _peep_text("law_a", "Test law A"),
+                "law_b": _peep_text("law_b", "Test law B"),
+            },
+            xmls={
+                "law_a": _moisted_xml(
+                    "1) isik — füüsiline isik üks; 2) klient — teenuse saaja;"
+                ),
+                "law_b": _moisted_xml("1) isik — juriidiline isik kaks;"),
+            },
+        )
+        concepts = _concept_nodes(graph)
+        assert concepts, "expected at least one canonical Concept node"
+        for c in concepts:
+            assert "estleg:definedIn" not in c, (
+                f"{c['@id']} still carries estleg:definedIn — the F3 "
+                "inverse-of collision can recur"
+            )
+
+    def test_has_definition_node_points_concept_to_legal_concept(
+        self, tmp_path, monkeypatch
+    ):
+        graph = _run_extractor(
+            tmp_path, monkeypatch,
+            peeps={
+                "law_a": _peep_text("law_a", "Test law A"),
+                "law_b": _peep_text("law_b", "Test law B"),
+            },
+            xmls={
+                "law_a": _moisted_xml("1) isik — füüsiline isik üks;"),
+                "law_b": _moisted_xml("1) isik — juriidiline isik kaks;"),
+            },
+        )
+        cc = _by_id(graph, "estleg:Concept_isik")
+        assert cc is not None
+        targets = cc["estleg:hasDefinitionNode"]
+        assert isinstance(targets, list) and len(targets) == 2
+        lc_ids = {lc["@id"] for lc in _legal_concept_nodes(graph)}
+        for ref in targets:
+            tid = ref["@id"]
+            assert tid in lc_ids, tid
+            lc = _by_id(graph, tid)
+            assert lc is not None and "estleg:LegalConcept" in lc["@type"]
+        # The hub direction is preserved: every LegalConcept hubs back to
+        # the same canonical Concept.
+        for ref in targets:
+            lc = _by_id(graph, ref["@id"])
+            assert lc["estleg:definesConcept"] == {"@id": "estleg:Concept_isik"}
+
+    def test_legal_concept_nodes_keep_defined_in_to_provision(
+        self, tmp_path, monkeypatch
+    ):
+        """The original estleg:definedIn semantics (definition node →
+        provision) is untouched: provision-local LegalConcept nodes still
+        point at their provision via estleg:definedIn."""
+        graph = _run_extractor(
+            tmp_path, monkeypatch,
+            peeps={"law_a": _peep_text("law_a", "Test law A", par_nr="2")},
+            xmls={"law_a": _moisted_xml(
+                "1) klient — füüsiline isik kes saab teenust;", par_nr="2"
+            )},
+        )
+        lc_nodes = _legal_concept_nodes(graph)
+        assert lc_nodes
+        cc_ids = {n["@id"] for n in _concept_nodes(graph)}
+        for lc in lc_nodes:
+            di = lc["estleg:definedIn"]
+            assert isinstance(di, list) and di
+            for ref in di:
+                tgt = ref["@id"]
+                # Points at the provision @id, never a Concept node.
+                assert tgt not in cc_ids, tgt
+                assert "_Par_" in tgt, tgt
+
+    def test_combined_graph_keeps_original_defined_in_inverse_axiom(
+        self, tmp_path, monkeypatch
+    ):
+        """The schema node emitted into concepts_combined.jsonld must keep
+        ``estleg:definedIn owl:inverseOf estleg:definesTerm`` (unchanged by
+        F3) AND declare ``estleg:hasDefinitionNode owl:inverseOf
+        estleg:definesConcept`` (the new property)."""
+        graph = _run_extractor(
+            tmp_path, monkeypatch,
+            peeps={"law_a": _peep_text("law_a", "Test law A")},
+            xmls={"law_a": _moisted_xml("1) klient — füüsiline isik;")},
+        )
+        di = _by_id(graph, "estleg:definedIn")
+        assert di is not None
+        assert di.get("owl:inverseOf") == {"@id": "estleg:definesTerm"}, di
+        hdn = _by_id(graph, "estleg:hasDefinitionNode")
+        assert hdn is not None
+        assert "owl:ObjectProperty" in hdn.get("@type", [])
+        assert hdn.get("owl:inverseOf") == {"@id": "estleg:definesConcept"}, hdn
+
+
 class TestIssue134Vocabulary:
     """The new estleg vocabulary terms are registered in
     controlled_vocabulary.jsonld."""
@@ -958,11 +1070,29 @@ class TestIssue134Vocabulary:
         for prop, expected_type in [
             ("estleg:definesConcept", "owl:ObjectProperty"),
             ("estleg:definedIn", "owl:ObjectProperty"),
+            # F3 (#134): the canonical Concept → definition-node membership
+            # property, distinct from estleg:definedIn.
+            ("estleg:hasDefinitionNode", "owl:ObjectProperty"),
             ("estleg:definitionCount", "owl:DatatypeProperty"),
             ("estleg:definitionVariantCount", "owl:DatatypeProperty"),
         ]:
             assert prop in by_id, prop
             assert expected_type in by_id[prop]["@type"], prop
+
+    def test_has_definition_node_is_inverse_of_defines_concept(self):
+        """F3 (#134): estleg:hasDefinitionNode is declared as the
+        owl:inverseOf estleg:definesConcept — the natural inverse of the
+        LegalConcept → Concept hub link. It must NOT be the inverse of
+        estleg:definesTerm (that axiom belongs to estleg:definedIn and is
+        what the F3 collision came from)."""
+        vocab = json.loads(
+            (REPO_ROOT / "krr_outputs" / "controlled_vocabulary.jsonld")
+            .read_text(encoding="utf-8")
+        )
+        by_id = {n["@id"]: n for n in vocab["@graph"] if isinstance(n, dict)}
+        node = by_id["estleg:hasDefinitionNode"]
+        inv = node.get("owl:inverseOf")
+        assert isinstance(inv, dict) and inv.get("@id") == "estleg:definesConcept", inv
 
 
 class TestIssue134ConceptShapeSHACL:
@@ -1000,7 +1130,9 @@ class TestIssue134ConceptShapeSHACL:
             "skos:definition": [{"@value": "a definition of the test term",
                                  "@language": "et"}],
             "estleg:definitionCount": {"@value": "2", "@type": "xsd:integer"},
-            "estleg:definedIn": [
+            # F3 (#134): membership via estleg:hasDefinitionNode, not
+            # estleg:definedIn.
+            "estleg:hasDefinitionNode": [
                 {"@id": "estleg:Concept_law_a_test_term"},
                 {"@id": "estleg:Concept_law_b_test_term"},
             ],
@@ -1020,9 +1152,9 @@ class TestIssue134ConceptShapeSHACL:
         del node["estleg:definitionCount"]
         assert self._validate([node]) is False
 
-    def test_missing_defined_in_rejected(self):
+    def test_missing_has_definition_node_rejected(self):
         node = self._well_formed_concept()
-        del node["estleg:definedIn"]
+        del node["estleg:hasDefinitionNode"]
         assert self._validate([node]) is False
 
     def test_legal_concept_shape_allows_defines_concept(self):
