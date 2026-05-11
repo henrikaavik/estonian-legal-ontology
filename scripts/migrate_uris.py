@@ -22,6 +22,7 @@ from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 KRR_DIR = PROJECT_ROOT / "krr_outputs"
+AMENDMENTS_DIR = KRR_DIR / "amendments"
 DATA_DIR = PROJECT_ROOT / "data"
 SCRIPTS_DIR = PROJECT_ROOT / "scripts"
 REGISTRY_PATH = DATA_DIR / "law_abbreviations.json"
@@ -64,6 +65,44 @@ PAR_NO_UNDERSCORE_RE = re.compile(r"_Par(\d)")
 SHORT_PREFIX_THRESHOLD = 12
 DEFAULT_REWRITE_SUFFIXES = {".json", ".jsonld", ".ttl", ".md"}
 TOKEN_BOUNDARY_RE = r"(?<![A-Za-z0-9_])({})(?![A-Za-z0-9_])"
+
+# ── Amendment IRI family (issue #192) ─────────────────────────────────────────
+# The amendment-history generator mints three IRI families whose length comes
+# from a long ``<base_slug>`` segment rather than the compact abbreviation used
+# elsewhere:
+#   estleg:Amendment_<base_slug>_<n>           (and ``_<n>_<disambig>``)
+#   estleg:AmendmentChain_<base_slug>
+#   estleg:AmendmentLink_<draft_id>_<base_slug>
+# where ``<base_slug>`` is the law/regulation slug with any trailing ``_osaN``
+# already stripped (per the #173 chain aggregation). ``<n>`` is either the
+# legacy sequential counter the corpus currently uses, or — for output minted
+# by the post-#173 generator — ``md5(rt_reference)[0:10]``; both are accepted.
+AMENDMENT_PREFIXES = ("Amendment_", "AmendmentChain_", "AmendmentLink_")
+# Suffix shapes that may legitimately follow ``Amendment_<base_slug>_``: the
+# legacy decimal counter (optionally with a ``_<disambig>`` tail) or the new
+# md5-prefix hash (likewise). Anything else is too ambiguous to decompose.
+_AMEND_SUFFIX_RE = re.compile(r"^(?:\d+|[0-9a-f]{10})(?:_\d+)+$|^(?:\d+|[0-9a-f]{10})$")
+# A compact prefix the amendment IRIs may carry after migration: an
+# abbreviation (ASCII letters/digits/underscore, starts with a letter) that is
+# meaningfully shorter than the slug it replaces. ``Reg_<digits>`` (the
+# regulation IRI stem) and the rt_api/auto abbreviations all match this.
+_COMPACT_PREFIX_RE = re.compile(r"^[A-Za-z][A-Za-z0-9_]*$")
+# Suffixes stripped from an ``estleg:amends`` target to recover the compact
+# stem the amendment IRIs should adopt: ``_Map_<year>`` (or bare ``_Map``) and
+# the per-provision ``_Osa<N>...`` / ``_Par_<N>...`` tails.
+_AMENDS_STEM_STRIP_RE = re.compile(
+    r"_(?:Map_\d+|Map|Osa\d+(?:_.*)?|Par_?\d+(?:_.*)?|Chapter\d+(?:_.*)?"
+    r"|Division\d+(?:_.*)?|TopicScheme\d+(?:_.*)?)$"
+)
+# Hard ceiling on how long a recovered "compact" stem may be before we give up
+# and skip the IRI — a stem longer than this is no improvement over the slug.
+_AMEND_STEM_MAX_LEN = 24
+# Soft length budget surfaced (not enforced) by ``verify_migration``: the
+# amendment shortening evicts the worst offenders, but raw-slug ``Concept_*`` /
+# ``Institution_*`` nodes and a few long auto-derived law abbreviations remain
+# above this and are explicitly out of scope for issue #192 — so the check only
+# *reports* the longest remaining ``@id``s rather than failing on them.
+ID_LENGTH_REPORT_THRESHOLD = 80
 
 
 # ── Helpers: atomic IO, hashing, state ────────────────────────────────────────
@@ -248,6 +287,211 @@ def fetch_rt_abbreviations() -> dict[str, str]:
     return rt_abbrevs
 
 
+# ── Amendment IRI shortening (issue #192) ─────────────────────────────────────
+
+
+def _stem_from_amends_target(amends_iri: str) -> str | None:
+    """Recover a compact prefix from an ``estleg:amends`` target IRI.
+
+    ``estleg:Reg_1052132_Map_2026`` → ``Reg_1052132``;
+    ``estleg:KARIST_2_Osa2_88_451`` → ``KARIST_2``;
+    ``estleg:AVRS_Map_2026``        → ``AVRS``.
+
+    Returns ``None`` when the target isn't an ``estleg:`` IRI or the
+    recovered stem doesn't look like a compact token.
+    """
+    if not amends_iri.startswith("estleg:"):
+        return None
+    local = amends_iri[len("estleg:"):]
+    # Strip the well-known structural tails. One pass is enough in practice
+    # (``_Map_2026`` etc. only appear once), but loop defensively in case a
+    # future IRI nests them.
+    prev = None
+    while prev != local:
+        prev = local
+        local = _AMENDS_STEM_STRIP_RE.sub("", local)
+    if not local or not _COMPACT_PREFIX_RE.match(local):
+        return None
+    return local
+
+
+def build_amendment_prefix_map(
+    registry: dict, amendments_dir: Path | None = None
+) -> tuple[dict[str, str], dict[str, str]]:
+    """Map each amendment-chain ``base_slug`` to a compact replacement prefix.
+
+    For every ``amendments_<base_slug>.json`` chain document the resolution
+    order is:
+
+    1. ``data/law_abbreviations.json`` — if ``<base_slug>`` is a registered
+       law, use its ``abbrev`` (the same compact form used everywhere else).
+    2. Otherwise, recover a stem from the chain's ``estleg:amends`` target
+       (``Reg_<digits>`` for regulations, the law's compact stem for the
+       handful of slug-spelling mismatches). This is the *authoritative*
+       binding — the amendment node literally points at the act it amends —
+       so it stays correct even when the slug's ``_t<id>`` suffix disagrees
+       with the act's numeric id.
+    3. If neither yields a token that is a genuine improvement over the slug,
+       the slug is left unchanged and the reason recorded.
+
+    Returns ``(base_slug -> compact_prefix, base_slug -> skip_reason)``. A
+    ``base_slug`` appears in exactly one of the two maps.
+    """
+    amendments_dir = amendments_dir if amendments_dir is not None else AMENDMENTS_DIR
+    prefix_map: dict[str, str] = {}
+    skipped: dict[str, str] = {}
+    if not amendments_dir.is_dir():
+        return prefix_map, skipped
+
+    for path in sorted(amendments_dir.glob("amendments_*.json")):
+        base_slug = path.name[len("amendments_"):-len(".json")]
+        if not base_slug:
+            continue
+        # 1. Registry hit — the canonical compact abbreviation.
+        reg_entry = registry.get(base_slug)
+        if isinstance(reg_entry, dict) and reg_entry.get("abbrev"):
+            prefix_map[base_slug] = reg_entry["abbrev"]
+            continue
+        # 2. Derive from the chain's amends target.
+        try:
+            with open(path, encoding="utf-8") as f:
+                doc = json.load(f)
+        except (json.JSONDecodeError, OSError) as exc:
+            skipped[base_slug] = f"unreadable chain file: {type(exc).__name__}"
+            continue
+        amends_target = None
+        for node in doc.get("@graph", []):
+            if not isinstance(node, dict):
+                continue
+            amends = node.get("estleg:amends")
+            if isinstance(amends, dict) and isinstance(amends.get("@id"), str):
+                amends_target = amends["@id"]
+                break
+        if not amends_target:
+            skipped[base_slug] = "no estleg:amends target in chain document"
+            continue
+        stem = _stem_from_amends_target(amends_target)
+        if not stem:
+            skipped[base_slug] = (
+                f"amends target {amends_target!r} did not yield a compact stem"
+            )
+            continue
+        if len(stem) > _AMEND_STEM_MAX_LEN or len(stem) >= len(base_slug):
+            skipped[base_slug] = (
+                f"recovered stem {stem!r} ({len(stem)} chars) is no shorter "
+                f"than the slug ({len(base_slug)} chars)"
+            )
+            continue
+        prefix_map[base_slug] = stem
+
+    return prefix_map, skipped
+
+
+def _shorten_amendment_iri(
+    iri: str,
+    base_slugs_by_len: list[str],
+    prefix_map: dict[str, str],
+    unmatched: set[str] | None = None,
+    known_prefixes: set[str] | None = None,
+) -> str | None:
+    """Return the shortened form of an ``Amendment_*`` family IRI, or ``None``.
+
+    ``iri`` is the full ``estleg:`` IRI. Decomposition:
+
+    * ``AmendmentChain_<base_slug>`` → ``AmendmentChain_<prefix>``.
+    * ``Amendment_<base_slug>_<n>``  → ``Amendment_<prefix>_<n>`` where ``<n>``
+      matches :data:`_AMEND_SUFFIX_RE` (the legacy decimal counter or the
+      md5-prefix hash, optionally followed by a ``_<disambig>`` tail).
+    * ``AmendmentLink_<draft_id>_<base_slug>`` →
+      ``AmendmentLink_<draft_id>_<prefix>`` where ``<draft_id>`` starts with
+      ``Draft_`` (matching how the generator mints these IRIs).
+
+    ``base_slugs_by_len`` must be sorted longest-first so the most specific
+    slug wins (``karistusseadustiku_rakendamise_seadus`` before
+    ``karistusseadustik``). ``known_prefixes`` (when given) is the set of
+    *already-compact* replacement prefixes; an IRI that already ends in one of
+    those is treated as migrated and *not* recorded as unmatched (this keeps
+    re-running the dry-run on an already-shortened corpus quiet). When the IRI
+    looks like an unmigrated amendment IRI but no confident decomposition is
+    possible, it is recorded in ``unmatched`` (if provided) and ``None``
+    returned.
+    """
+    if not iri.startswith("estleg:"):
+        return None
+    local = iri[len("estleg:"):]
+
+    def _record_unmatched(slug_candidate: str) -> None:
+        # Only flag IRIs that genuinely *look* unshortened: a long, mostly
+        # lowercase segment. Already-compact prefixes (uppercase abbreviations,
+        # ``Reg_<digits>``) and ``ESTLEG_RE``-truncated Unicode fragments
+        # (``..._`` with nothing after, or anything in ``known_prefixes``) are
+        # not anomalies and stay silent.
+        if unmatched is None:
+            return
+        if known_prefixes is not None and slug_candidate in known_prefixes:
+            return
+        if re.fullmatch(r"Reg_\d+", slug_candidate):
+            return
+        # Heuristic for "this still has a long slug in it".
+        if len(slug_candidate) >= 12 and any(c.islower() for c in slug_candidate):
+            unmatched.add(iri)
+
+    for family in AMENDMENT_PREFIXES:
+        if not local.startswith(family):
+            continue
+        rest = local[len(family):]
+        # ``rest == ""`` only happens when the "IRI" is actually a Python
+        # f-string fragment like ``f"estleg:Amendment_{prefix}_..."`` picked up
+        # by the permissive scanner. ``rest`` ending in ``_`` means ``ESTLEG_RE``
+        # truncated a Unicode-letter abbreviation (``..._ÕÕS``). Neither is a
+        # corpus IRI — ignore silently.
+        if not rest or rest.endswith("_"):
+            return None
+        if family == "AmendmentChain_":
+            prefix = prefix_map.get(rest)
+            if prefix and prefix != rest:
+                return "estleg:" + family + prefix
+            return None
+        if family == "Amendment_":
+            for bs in base_slugs_by_len:
+                if rest == bs:
+                    # An Amendment_<base_slug> with no numeric tail — not a
+                    # shape the generator produces; leave it.
+                    break
+                marker = bs + "_"
+                if rest.startswith(marker):
+                    tail = rest[len(marker):]
+                    if not _AMEND_SUFFIX_RE.match(tail):
+                        continue
+                    prefix = prefix_map.get(bs)
+                    if prefix and prefix != bs:
+                        return "estleg:" + family + prefix + "_" + tail
+                    return None
+            m = re.match(r"^(.*?)_(?:\d+|[0-9a-f]{10})(?:_\d+)*$", rest)
+            _record_unmatched(m.group(1) if m else rest)
+            return None
+        if family == "AmendmentLink_":
+            # rest == "<draft_id>_<base_slug>"; the draft id starts with
+            # "Draft_". Match the longest base_slug that is a trailing
+            # underscore-delimited segment with a Draft_-prefixed remainder.
+            for bs in base_slugs_by_len:
+                marker = "_" + bs
+                if rest.endswith(marker) and len(rest) > len(marker):
+                    draft_id = rest[: -len(marker)]
+                    if not draft_id.startswith("Draft_"):
+                        continue
+                    prefix = prefix_map.get(bs)
+                    if prefix and prefix != bs:
+                        return "estleg:" + family + draft_id + "_" + prefix
+                    return None
+            # The trailing segment is the slug-or-prefix. For ``Reg_<digits>``
+            # the regulation stem spans two underscore-segments, so peel both.
+            m = re.search(r"_(Reg_\d+)$", rest)
+            _record_unmatched(m.group(1) if m else rest.rsplit("_", 1)[-1])
+            return None
+    return None
+
+
 # ── Stub functions (to be implemented in later tasks) ─────────────────────────
 
 def assign_abbreviations(
@@ -367,10 +611,54 @@ def get_all_scannable_files() -> list[Path]:
     return sorted(set(files))
 
 
+# IRI-family selectors recognised by ``build_rename_map``'s ``families`` arg.
+RENAME_FAMILY_LEGACY = "legacy"   # LegalConcept_/LegalProvision_/Cluster_/<prefix>_*
+RENAME_FAMILY_AMENDMENT = "amendment"  # Amendment_/AmendmentChain_/AmendmentLink_
+RENAME_FAMILY_SANCTION = "sanction"    # Sanction_/Sanctions_
+ALL_RENAME_FAMILIES = frozenset(
+    {RENAME_FAMILY_LEGACY, RENAME_FAMILY_AMENDMENT, RENAME_FAMILY_SANCTION}
+)
+
+
 def build_rename_map(
-    registry: dict, scan_paths: list[Path] | None = None
+    registry: dict,
+    scan_paths: list[Path] | None = None,
+    *,
+    amendments_dir: Path | None = None,
+    skipped_amendments: dict[str, str] | None = None,
+    families: frozenset[str] | set[str] | None = None,
 ) -> dict[str, str]:
-    """Build old-URI -> new-URI rename mapping from the registry."""
+    """Build old-URI -> new-URI rename mapping from the registry.
+
+    Covers up to three IRI families (selectable via ``families``):
+
+    * ``legacy`` — the original compact-abbreviation remap for law/regulation
+      ``LegalProvision_`` / ``Cluster_`` / ``<prefix>_Par_`` / ``_Map_`` IRIs
+      (and the ``LegalConcept_`` → ``Concept_`` rename),
+    * ``amendment`` (issue #192) — shortening the ``Amendment_`` /
+      ``AmendmentChain_`` / ``AmendmentLink_`` family by substituting the law's
+      compact abbreviation — or, for regulations, the ``Reg_<id>`` stem — for
+      the long ``<base_slug>`` segment,
+    * ``sanction`` — the analogous fix for the long ``Sanctions_<slug>_Map`` /
+      ``Sanction_<slug>_Par_…`` IRIs (NOT in the CLI default; its definitions
+      live in ``krr_outputs/sanctions/``, outside issue #192's scope).
+
+    ``families=None`` (passed as ``ALL_RENAME_FAMILIES``) means *all* families
+    — the historical full remap. The issue #192 migration layer restricts to
+    ``{"amendment"}`` so it does not re-touch the already-applied legacy remap
+    (the corpus has since drifted in ways that would make blindly re-running
+    it on already-compact IRIs corrupt them) nor the sanction definitions.
+
+    ``skipped_amendments`` (if provided) is populated with ``base_slug ->
+    reason`` for chains whose slug could not be confidently shortened, so the
+    dry-run report can record why.
+    """
+    if families is None:
+        families = ALL_RENAME_FAMILIES
+    do_legacy = RENAME_FAMILY_LEGACY in families
+    do_amend = RENAME_FAMILY_AMENDMENT in families
+    do_sanction = RENAME_FAMILY_SANCTION in families
+
     # Build lookup maps
     prefix_remap: dict[str, str] = {}   # old_prefix -> new_abbrev
     slug_to_abbrev: dict[str, str] = {} # slug -> new_abbrev
@@ -384,6 +672,19 @@ def build_rename_map(
 
     sorted_prefixes = sorted(prefix_remap.keys(), key=len, reverse=True)
     sorted_slugs = sorted(slug_to_abbrev.keys(), key=len, reverse=True)
+
+    # Amendment-family base_slug -> compact prefix (issue #192).
+    amend_prefix_map: dict[str, str] = {}
+    amend_skipped: dict[str, str] = {}
+    if do_amend:
+        amend_prefix_map, amend_skipped = build_amendment_prefix_map(
+            registry, amendments_dir=amendments_dir
+        )
+        if skipped_amendments is not None:
+            skipped_amendments.update(amend_skipped)
+    amend_base_slugs_by_len = sorted(amend_prefix_map.keys(), key=len, reverse=True)
+    amend_known_prefixes = set(amend_prefix_map.values()) | set(slug_to_abbrev.values())
+    unmatched_amendments: set[str] = set()
 
     # Scan files for all unique estleg: IRIs
     files = scan_paths if scan_paths is not None else get_all_scannable_files()
@@ -404,11 +705,11 @@ def build_rename_map(
         new_iri = None
 
         # 1. LegalConcept_{X} -> Concept_{X}
-        if local.startswith("LegalConcept_"):
+        if do_legacy and local.startswith("LegalConcept_"):
             new_iri = "estleg:Concept_" + local[13:]
 
         # 2. LegalProvision_{slug}[_osa{N}] -> LegalProvision_{abbrev}[_osa{N}]
-        elif local.startswith("LegalProvision_"):
+        elif do_legacy and local.startswith("LegalProvision_"):
             rest = local[15:]
             for slug in sorted_slugs:
                 if rest == slug or rest.startswith(slug + "_osa"):
@@ -417,7 +718,7 @@ def build_rename_map(
                     break
 
         # 3. Cluster_{prefix}_{label} -> Cluster_{new}_{label}
-        elif local.startswith("Cluster_"):
+        elif do_legacy and local.startswith("Cluster_"):
             rest = local[8:]
             for old_prefix in sorted_prefixes:
                 if rest.startswith(old_prefix + "_"):
@@ -425,28 +726,82 @@ def build_rename_map(
                     new_iri = "estleg:Cluster_" + new_rest
                     break
 
+        # 3b. Amendment_ / AmendmentChain_ / AmendmentLink_ family (issue #192):
+        #     substitute the law abbreviation (or Reg_<id> stem) for the long
+        #     <base_slug> segment.
+        elif do_amend and local.startswith(AMENDMENT_PREFIXES):
+            new_iri = _shorten_amendment_iri(
+                iri,
+                amend_base_slugs_by_len,
+                amend_prefix_map,
+                unmatched=unmatched_amendments,
+                known_prefixes=amend_known_prefixes,
+            )
+
+        # 3c. Sanctions_<slug>_Map (and singular Sanction_<slug>_…): the long
+        #     offenders embed the law's *full slug* (not its old_prefix), so we
+        #     match against the slug→abbrev map. Already-compact
+        #     Sanction_<ABBREV>_Par_… pass through untouched because <ABBREV>
+        #     is not a slug; a no-op rename is dropped by the != guard below.
+        elif do_sanction and (
+            local.startswith("Sanctions_") or local.startswith("Sanction_")
+        ):
+            fam = "Sanctions_" if local.startswith("Sanctions_") else "Sanction_"
+            rest = local[len(fam):]
+            for slug in sorted_slugs:
+                if rest.startswith(slug + "_"):
+                    new_rest = slug_to_abbrev[slug] + rest[len(slug):]
+                    new_iri = "estleg:" + fam + new_rest
+                    break
+
         # 4. {prefix}_* patterns (Map, Par, Chapter, Division, TopicScheme, Osa)
-        else:
+        elif do_legacy:
             for old_prefix in sorted_prefixes:
                 if local.startswith(old_prefix + "_"):
                     suffix = local[len(old_prefix):]
                     new_iri = "estleg:" + prefix_remap[old_prefix] + suffix
                     break
 
-        # 5. Fix VOS-style missing underscore: _Par{N} -> _Par_{N}
+        # 5. Fix VOS-style missing underscore: _Par{N} -> _Par_{N}. Only when
+        #    the legacy family is in scope — the amendment/sanction-only layer
+        #    must not opportunistically rewrite unrelated _Par{N} IRIs.
         if new_iri:
             new_iri = PAR_NO_UNDERSCORE_RE.sub(r"_Par_\1", new_iri)
-        elif PAR_NO_UNDERSCORE_RE.search(iri):
+        elif do_legacy and PAR_NO_UNDERSCORE_RE.search(iri):
             new_iri = PAR_NO_UNDERSCORE_RE.sub(r"_Par_\1", iri)
 
         if new_iri and new_iri != iri:
             rename_map[iri] = new_iri
 
+    if unmatched_amendments and skipped_amendments is not None:
+        for u in sorted(unmatched_amendments):
+            skipped_amendments.setdefault(
+                u, "amendment IRI did not match any known base_slug shape"
+            )
+
     return rename_map
 
 
-def dry_run_cmd() -> None:
-    """Preview what the migration would change without modifying files."""
+# Default IRI families the CLI ``dry-run`` / ``apply`` operate on. Issue #192
+# is purely the Amendment_/AmendmentChain_/AmendmentLink_ shortening; the
+# legacy law/regulation prefix remap (and the analogous ``sanction`` cleanup,
+# whose definitions live in ``krr_outputs/sanctions/`` outside #192's file
+# scope) are *not* re-run by default — re-running the legacy remap on the
+# drifted corpus would corrupt already-compact IRIs. Pass ``--legacy`` to
+# include them.
+DEFAULT_MIGRATION_FAMILIES = frozenset({RENAME_FAMILY_AMENDMENT})
+
+
+def dry_run_cmd(families: frozenset[str] | set[str] | None = None) -> None:
+    """Preview what the migration would change without modifying files.
+
+    ``families`` selects which IRI families to consider; the CLI passes
+    :data:`DEFAULT_MIGRATION_FAMILIES` (amendment only — issue #192). ``None``
+    means *all* families — the historical full remap (legacy prefixes +
+    amendment + sanction), kept for completeness / power use.
+    """
+    if families is None:
+        families = ALL_RENAME_FAMILIES
     print("=" * 70)
     print("Phase 2: Dry run")
     print("=" * 70)
@@ -458,7 +813,12 @@ def dry_run_cmd() -> None:
     with open(REGISTRY_PATH, encoding="utf-8") as f:
         registry = json.load(f)
 
-    rename_map = build_rename_map(registry)
+    skipped_amendments: dict[str, str] = {}
+    rename_map = build_rename_map(
+        registry,
+        skipped_amendments=skipped_amendments,
+        families=families,
+    )
 
     # Check for collisions
     new_iris = list(rename_map.values())
@@ -470,7 +830,13 @@ def dry_run_cmd() -> None:
         seen.add(v)
     collisions = sorted(collision_set)
 
-    # Count per-file impact
+    # Count per-file impact. The naive ``sum(content.count(old) for old in
+    # rename_map)`` is O(files × renames) — fine when there were ~15k renames,
+    # crippling now that the amendment family pushes that toward ~100k. Instead
+    # find the IRIs actually present in each file via the same regex used to
+    # *build* the map, intersect with the rename keys, and count only those —
+    # turning the inner loop into O(occurrences-in-file).
+    rename_keys = set(rename_map)
     files = get_all_scannable_files()
     files_affected: dict[str, int] = {}
     py_hardcoded: dict[str, list[str]] = {}
@@ -480,14 +846,15 @@ def dry_run_cmd() -> None:
             content = fp.read_text(encoding="utf-8")
         except (OSError, UnicodeDecodeError):
             continue
-        count = sum(content.count(old) for old in rename_map)
+        present_iris = set(ESTLEG_RE.findall(content)) & rename_keys
+        if not present_iris:
+            continue
+        count = sum(content.count(old) for old in present_iris)
         if count > 0:
             rel = str(fp.relative_to(PROJECT_ROOT))
             files_affected[rel] = count
             if fp.suffix == ".py":
-                py_iris = [old for old in rename_map if old in content]
-                if py_iris:
-                    py_hardcoded[rel] = py_iris
+                py_hardcoded[rel] = sorted(present_iris)
 
     # Stamp the report with content-addressed hashes so apply_cmd can refuse
     # to consume a report that was generated against a different registry or
@@ -503,6 +870,7 @@ def dry_run_cmd() -> None:
         "collisions": collisions,
         "files_affected_count": len(files_affected),
         "total_replacements": sum(files_affected.values()),
+        "skipped_amendment_slugs": dict(sorted(skipped_amendments.items())),
         "renames": rename_map,
         "files_affected": files_affected,
         "py_hardcoded_iris": py_hardcoded,
@@ -522,6 +890,13 @@ def dry_run_cmd() -> None:
         for c in collisions[:10]:
             sources = [k for k, v in rename_map.items() if v == c]
             print(f"    {c} <- {sources}")
+    if skipped_amendments:
+        print(
+            f"Amendment chains left unshortened (recorded reasons): "
+            f"{len(skipped_amendments)}"
+        )
+        for slug, reason in list(sorted(skipped_amendments.items()))[:10]:
+            print(f"  {slug}: {reason}")
     if py_hardcoded:
         print(f"Python files with hardcoded IRIs: {len(py_hardcoded)}")
         for fp, iris in py_hardcoded.items():
@@ -564,10 +939,53 @@ def apply_renames_to_file(
     return 0
 
 
+def _amendment_base_slug_in_iri(
+    iri: str, base_slugs_by_len: list[str]
+) -> str | None:
+    """Return the (still-present, mappable) base_slug embedded in ``iri``.
+
+    Mirrors :func:`_shorten_amendment_iri`'s decomposition but only cares
+    *whether* a mappable slug is present — used by ``verify_migration`` to
+    fail-fast if any ``Amendment_*`` family IRI escaped the migration with a
+    long slug still in it. ``base_slugs_by_len`` is the set of slugs that have
+    a compact replacement, sorted longest-first.
+    """
+    if not iri.startswith("estleg:"):
+        return None
+    local = iri[len("estleg:"):]
+    base_slug_set = set(base_slugs_by_len)
+    for family in AMENDMENT_PREFIXES:
+        if not local.startswith(family):
+            continue
+        rest = local[len(family):]
+        if not rest:  # Python f-string fragment, not a corpus IRI.
+            return None
+        if family == "AmendmentChain_":
+            return rest if rest in base_slug_set else None
+        if family == "Amendment_":
+            for bs in base_slugs_by_len:
+                if rest == bs:
+                    return None
+                if rest.startswith(bs + "_") and _AMEND_SUFFIX_RE.match(
+                    rest[len(bs) + 1:]
+                ):
+                    return bs
+            return None
+        if family == "AmendmentLink_":
+            for bs in base_slugs_by_len:
+                marker = "_" + bs
+                if rest.endswith(marker) and len(rest) > len(marker):
+                    draft_id = rest[: -len(marker)]
+                    if draft_id.startswith("Draft_"):
+                        return bs
+            return None
+    return None
+
+
 def verify_migration(rename_map: dict[str, str]) -> tuple[bool, list[str]]:
     """Verify that the migration plan and applied corpus are consistent.
 
-    Three independent checks:
+    Checks:
 
     1. **Plan-time collision check** — no two distinct old IRIs may collapse
        to the same new IRI. (We catch this via reverse-mapping the rename
@@ -581,9 +999,16 @@ def verify_migration(rename_map: dict[str, str]) -> tuple[bool, list[str]]:
        the canonical format (defends against accidental token-level
        mangling during apply, e.g. partial replacement leaving
        ``estleg:_Par_1``).
+    4. **Amendment-shortening check (issue #192)** — no ``Amendment_*`` /
+       ``AmendmentChain_*`` / ``AmendmentLink_*`` IRI in the corpus may still
+       embed a long ``<base_slug>`` for which a compact abbreviation (or
+       ``Reg_<id>`` stem) is known. Chains whose slug genuinely couldn't be
+       shortened (recorded as skips) are exempt. Also *reports* (does not
+       fail on) the longest remaining ``@id``s — raw-slug ``Concept_*`` /
+       ``Institution_*`` nodes outside this issue's scope stay long.
 
-    Returns ``(ok, list_of_issues)`` where ``ok`` is True iff every check
-    passed. Issues are emitted with file:line context where possible.
+    Returns ``(ok, list_of_issues)`` where ``ok`` is True iff every *failing*
+    check passed. Issues are emitted with file:line context where possible.
     """
     issues: list[str] = []
 
@@ -613,11 +1038,25 @@ def verify_migration(rename_map: dict[str, str]) -> tuple[bool, list[str]]:
         for iri in bad_format[:20]:
             issues.append(f"  {iri}")
 
+    # 4. Amendment-shortening prerequisites — rebuild the base_slug → compact
+    #    prefix map so we can flag any amendment-family IRI that still embeds a
+    #    mappable slug. (The map is derived from the amendments/ chain files,
+    #    whose *filenames* the migration does not change.)
+    try:
+        with open(REGISTRY_PATH, encoding="utf-8") as f:
+            _registry = json.load(f)
+    except (json.JSONDecodeError, OSError):
+        _registry = {}
+    amend_prefix_map, _amend_skipped = build_amendment_prefix_map(_registry)
+    amend_base_slugs_by_len = sorted(amend_prefix_map.keys(), key=len, reverse=True)
+
     # 3. Post-apply corpus check.
     files = get_all_scannable_files()
     old_iris = set(rename_map.keys())
     remaining: dict[str, list[str]] = {}
     bad_corpus: dict[str, list[str]] = {}
+    long_amendment_iris: dict[str, list[str]] = {}  # iri -> locations
+    longest_ids: list[tuple[int, str, str]] = []  # (len, iri, location)
 
     for fp in files:
         try:
@@ -625,11 +1064,22 @@ def verify_migration(rename_map: dict[str, str]) -> tuple[bool, list[str]]:
         except (OSError, UnicodeDecodeError):
             continue
         rel = str(fp.relative_to(PROJECT_ROOT))
+        # The format/slug/length checks reason about *corpus* IRIs (the data
+        # files). They must not scan Python source — an f-string fragment
+        # (``estleg:Amendment_``) or a docstring example (``estleg:_Par_1``)
+        # would otherwise be flagged as malformed corpus data. The
+        # "old IRI lingering" check still spans .py because that's the safety
+        # net for ``--rewrite-python``.
+        is_data_file = fp.suffix in DEFAULT_REWRITE_SUFFIXES and fp.suffix != ".md"
+
+        file_iris = set(ESTLEG_RE.findall(content))
 
         # 3a. Old IRIs lingering after apply.
-        found = old_iris & set(ESTLEG_RE.findall(content))
-        for iri in found:
+        for iri in old_iris & file_iris:
             remaining.setdefault(iri, []).append(_locate_iri(content, iri, rel))
+
+        if not is_data_file:
+            continue
 
         # 3b. New IRIs that fail the canonical format check. We use the
         #     unicode-aware scanner so Estonian-letter abbreviations (TsÜS,
@@ -639,6 +1089,18 @@ def verify_migration(rename_map: dict[str, str]) -> tuple[bool, list[str]]:
                 bad_corpus.setdefault(iri, []).append(
                     _locate_iri(content, iri, rel)
                 )
+
+        # 4a. Amendment-family IRIs that still carry a mappable base_slug.
+        # 4b. Track the longest @ids seen (reporting only).
+        for iri in file_iris:
+            if iri.startswith(("estleg:Amendment_", "estleg:AmendmentChain_",
+                               "estleg:AmendmentLink_")):
+                if _amendment_base_slug_in_iri(iri, amend_base_slugs_by_len):
+                    long_amendment_iris.setdefault(iri, []).append(
+                        _locate_iri(content, iri, rel)
+                    )
+            if len(iri) > ID_LENGTH_REPORT_THRESHOLD:
+                longest_ids.append((len(iri), iri, f"{rel}"))
 
     if remaining:
         issues.append(f"FAIL: {len(remaining)} old IRIs still present in files")
@@ -657,7 +1119,49 @@ def verify_migration(rename_map: dict[str, str]) -> tuple[bool, list[str]]:
             extra = f" (+{len(locations)-1} more)" if len(locations) > 1 else ""
             issues.append(f"  {iri} in {head}{extra}")
 
-    return len(issues) == 0, issues
+    if long_amendment_iris:
+        issues.append(
+            f"FAIL: {len(long_amendment_iris)} Amendment_/AmendmentChain_/"
+            "AmendmentLink_ IRIs still embed a shortenable base slug"
+        )
+        for iri, locations in sorted(long_amendment_iris.items())[:20]:
+            head = locations[0]
+            extra = f" (+{len(locations)-1} more)" if len(locations) > 1 else ""
+            issues.append(f"  {iri} in {head}{extra}")
+
+    # Reporting only — the >80-char tail (raw-slug Concept_*/Institution_*,
+    # long auto-derived law abbreviations) is out of scope for issue #192.
+    if longest_ids:
+        longest_ids.sort(reverse=True)
+        # de-dup by IRI (the same long @id recurs across the combined file etc.)
+        seen_iri: set[str] = set()
+        uniq_longest: list[tuple[int, str, str]] = []
+        for length, iri, loc in longest_ids:
+            if iri in seen_iri:
+                continue
+            seen_iri.add(iri)
+            uniq_longest.append((length, iri, loc))
+        amend_long = [
+            x for x in uniq_longest
+            if x[1].startswith(("estleg:Amendment_", "estleg:AmendmentChain_",
+                                "estleg:AmendmentLink_"))
+        ]
+        issues.append(
+            "INFO: longest remaining @id is "
+            f"{uniq_longest[0][0]} chars ({uniq_longest[0][1]} in "
+            f"{uniq_longest[0][2]}); "
+            f"{len(uniq_longest)} distinct @ids exceed "
+            f"{ID_LENGTH_REPORT_THRESHOLD} chars"
+            + (
+                f"; longest amendment-family @id now "
+                f"{amend_long[0][0]} chars ({amend_long[0][1]})"
+                if amend_long else "; no amendment-family @id exceeds the threshold"
+            )
+        )
+
+    # An ``INFO:`` line does not constitute a failure.
+    failing = [i for i in issues if not i.startswith("INFO:")]
+    return len(failing) == 0, issues
 
 
 def _locate_iri(content: str, iri: str, rel: str) -> str:
@@ -860,6 +1364,12 @@ def apply_cmd(*, rewrite_python: bool = False, force_reapply: bool = False) -> N
     print("\nRunning post-migration verification...")
     passed, issues = verify_migration(rename_map)
 
+    # Surface any INFO lines (e.g. the longest-remaining-@id report) regardless
+    # of pass/fail — they're advisory, not blocking.
+    for issue in issues:
+        if issue.startswith("INFO:"):
+            print(f"  {issue}")
+
     if passed:
         print("VERIFICATION PASSED: All old IRIs replaced successfully.")
         save_migration_state(
@@ -869,6 +1379,12 @@ def apply_cmd(*, rewrite_python: bool = False, force_reapply: bool = False) -> N
                 "last_applied_corpus_hash": report_corpus_hash,
                 "total_renames_applied": total_renames_applied,
                 "files_changed": total_files_changed,
+                "note": (
+                    "Amendment_/AmendmentChain_/AmendmentLink_ IRI shortening "
+                    "(issue #192): long <base_slug> segments replaced with the "
+                    "law's compact abbreviation (data/law_abbreviations.json) "
+                    "or the regulation's Reg_<id> stem."
+                ),
             }
         )
     else:
@@ -935,11 +1451,23 @@ def main() -> None:
             "migrations."
         ),
     )
+    parser.add_argument(
+        "--legacy",
+        action="store_true",
+        help=(
+            "dry-run only: also include the historical law/regulation prefix "
+            "remap (LegalProvision_/Cluster_/<prefix>_*). By default dry-run "
+            "covers just the Amendment_/AmendmentChain_/AmendmentLink_ "
+            "shortening (issue #192) plus the Sanction(s)_<slug>_ cleanup."
+        ),
+    )
     args = parser.parse_args()
 
     dispatch = {
         "build-registry": build_registry_cmd,
-        "dry-run": dry_run_cmd,
+        "dry-run": lambda: dry_run_cmd(
+            families=None if args.legacy else DEFAULT_MIGRATION_FAMILIES
+        ),
         "apply": lambda: apply_cmd(
             rewrite_python=args.rewrite_python,
             force_reapply=args.force_reapply,

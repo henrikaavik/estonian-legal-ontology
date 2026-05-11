@@ -184,31 +184,56 @@ _INFLECTION_MAP: dict[str, str] = {
     "andmekaitsinspektsioon": "andmekaitseinspektsioon",
 }
 
-# Issue #170 Finding 5: Estonian noun-stem normaliser.
+# Issue #170 Finding 5 + Issue #118: Estonian noun-stem normaliser.
 # Estonian nominal inflection layers a case suffix onto the GENITIVE stem,
-# which itself adds "i" for vowel-ending forms — so e.g.:
-#   nominative: maksuamet
-#   genitive:   maksuameti
-#   allative:   maksuametile  (genitive + "le")
-#   adessive:   maksuametil   (genitive + "l")
-#   elative:    maksuametist  (genitive + "st")
+# which itself adds "i" for consonant-ending forms — so e.g.:
+#   nominative:   maksuamet
+#   genitive:     maksuameti
+#   partitive:    maksuametit
+#   illative:     maksuametisse  (genitive + "sse")
+#   inessive:     maksuametis    (genitive + "s")
+#   elative:      maksuametist   (genitive + "st")
+#   allative:     maksuametile   (genitive + "le")
+#   adessive:     maksuametil    (genitive + "l")
+#   ablative:     maksuametilt   (genitive + "lt")
+#   translative:  maksuametiks   (genitive + "ks")
+#   terminative:  maksuametini   (genitive + "ni")
+#   essive:       maksuametina   (genitive + "na")
+#   abessive:     maksuametita   (genitive + "ta")
+#   comitative:   maksuametiga   (genitive + "ga")
+# Plural forms layer "te"/"de" before the case ending (maksuametitele,
+# maksuametitega, ...) — rarer in legal text but they do occur.
+#
 # To collapse all of these to nominative, we strip the case suffix first
 # and then drop a trailing "i" if the result still doesn't end in a known
-# institutional root. Order matters — longer suffixes ("esse", "sse",
-# "ele") must be checked before shorter ("se", "le", "e") so the
-# stripper doesn't carve a longer case into a wrong stem.
+# institutional root. The list is sorted strictly longest-first so the
+# stripper can't carve a longer case into a wrong stem (e.g. "...isse"
+# must be tried before "...se"); the root-match guard in
+# _strip_estonian_case() makes this defensive in any case, but ordering
+# keeps the first matching strip the correct one.
 _CASE_SUFFIXES_LONGEST_FIRST: tuple[str, ...] = (
-    "esse", "iks", "ele",
-    "lt", "le", "st", "ks", "ga", "se", "ts", "tt",
-    "sse",                              # tertiary illative, e.g. "...esse"
-    "elt",                              # rare ablative variant
-    "est",                              # rare elative variant
-    "ile",                              # genitive-+-le composite
+    # Plural-stem composites (te-/de- + case ending) — 4–5 chars.
+    "tesse", "tega", "tele", "telt", "test", "teks", "teni", "tena", "teta",
+    "tide", "tes",
+    # Singular case endings attached to the genitive stem.
+    "esse",                             # illative after "-e-" stems
+    "sse",                              # illative ("...isse")
+    "iks",                              # rare "-iks" composite
+    "elt", "est", "ele", "ile",         # rare/composite variants
+    "lt", "le", "st", "ks", "ga", "se", "ni", "na", "ta", "ts", "tt", "de",
+    "te",
+    # Genitive marker / single-letter case endings — tried last.
     "i", "l", "s", "t", "e",
 )
 
 _INSTITUTION_ROOTS: tuple[str, ...] = (
     "amet", "ministeerium", "inspektsioon", "minister",
+    # Issue #118: also recognise *kogu (riigikogu / volikogu) and
+    # *valitsus (vabariigivalitsus / linnavalitsus / vallavalitsus) so a
+    # de-inflected stem ending in one of these is treated as already
+    # nominative. (KOV body words are additionally canonicalised by
+    # _canonical_body_slug(); this just guards normalize_iri_suffix().)
+    "kogu", "valitsus",
 )
 
 
@@ -313,6 +338,31 @@ _CANONICAL_BODY_SLUGS = frozenset({
 })
 
 
+# Estonian case suffixes that can trail a KOV body word, sorted strictly
+# longest-first. The genitive stem of a *valitsus word adds "e"
+# (vallavalitsuse), so its oblique cases are "...valitsuse" + ending —
+# hence the "e"-prefixed composites (-ele, -elt, -eks, -eni, -ena, ...).
+# *volikogu words take a bare genitive (vallavolikogu), so their oblique
+# cases attach the plain ending. The stripper below only commits a strip
+# when the remainder still ends in "volikogu"/"valitsus", so a spurious
+# match on a non-body word is a no-op. Issue #118 widened this from the
+# original set to cover translative (-ks), terminative (-ni), essive
+# (-na), abessive (-ta) and the plural-stem composites (-tele, -tega, ...),
+# matching _CASE_SUFFIXES_LONGEST_FIRST.
+_BODY_CASE_SUFFIXES_LONGEST_FIRST: tuple[str, ...] = (
+    # Plural-stem composites.
+    "tesse", "tega", "tele", "telt", "test", "teks", "teni", "tena", "teta",
+    "tide", "tes",
+    # "e"-stem (genitive-of-valitsus) composites.
+    "esse", "ele", "elt", "est", "eks", "eni", "ena", "eta", "ega", "el",
+    "es",
+    # Bare endings (genitive-of-volikogu) + the illative "sse".
+    "sse",
+    "le", "lt", "st", "ks", "ni", "na", "ta", "ga", "se", "de", "te",
+    "e", "l", "s", "t",
+)
+
+
 def _canonical_body_slug(matched: str) -> str | None:
     """Strip Estonian case suffixes from a KOV body-word match
     and return the canonical slug (linnavolikogu, vallavolikogu,
@@ -320,7 +370,7 @@ def _canonical_body_slug(matched: str) -> str | None:
     match doesn't fit one of the five reachable stems.
     """
     s = matched.lower()
-    for suffix in ("esse", "elt", "ele", "ega", "est", "sse", "el", "es", "ga", "le", "lt", "se", "st", "e", "l", "s", "t"):
+    for suffix in _BODY_CASE_SUFFIXES_LONGEST_FIRST:
         if s.endswith(suffix) and len(s) > len(suffix) + 4:
             stripped = s[: -len(suffix)]
             if stripped.endswith(("volikogu", "valitsus")):
@@ -719,15 +769,46 @@ def _load_canonical_institutions(directory: Path) -> set[str]:
     directory is empty (first-run bootstrap, or test run with no fixture
     files), an empty set is returned and validation is skipped — we don't
     want to refuse to emit institutions on a freshly-cloned tree.
+
+    Issue #118: slugs are returned underscore-collapsed so they compare
+    equal to whatever ``normalize_iri_suffix`` produces. Without this, a
+    stale double-underscore filename on disk (``institution_maksu__ja_
+    tolliamet.json``, the pre-#118 naming) would not match the collapsed
+    ``maksu_ja_tolliamet`` suffix the normaliser emits — so every
+    predecessor-name reference (``Maksuamet`` → ``maksu_ja_tolliamet``
+    via the alias table) would be dropped as ``unknown_institution`` and
+    the alias target would never get a file. Collapsing here lets the
+    re-run create the canonical-named file and prune the stale one.
     """
-    if not directory.exists():
-        return set()
     suffixes: set[str] = set()
-    for path in directory.glob("institution_*.json"):
-        slug = path.stem.removeprefix("institution_")
-        if slug:
-            suffixes.add(slug)
+    if directory.exists():
+        for path in directory.glob("institution_*.json"):
+            slug = path.stem.removeprefix("institution_")
+            if slug:
+                suffixes.add(re.sub(r"_+", "_", slug).strip("_"))
+    # Issue #118: when the directory holds at least one institution file we
+    # also seed the curated canonical slugs — the named-institution
+    # catalogue and every alias `canonical` target — so the registry
+    # check accepts them even on a re-run where a stale double-underscore
+    # file for one of them was just pruned (the file gets re-created with
+    # the canonical name this pass). When the directory is empty we leave
+    # the set empty so a freshly-cloned tree still bootstraps everything.
+    if suffixes:
+        suffixes |= _curated_canonical_suffixes()
     return suffixes
+
+
+def _curated_canonical_suffixes() -> set[str]:
+    """Issue #118: the always-valid canonical institution slugs — every
+    named-institution IRI suffix (after normalisation) plus every alias
+    `canonical` target. Used to seed the registry so curated agencies are
+    never dropped as ``unknown_institution`` even when their on-disk file
+    is briefly absent (e.g. a stale double-underscore name being pruned)."""
+    out: set[str] = set()
+    for _name, raw_suffix, _itype in NAMED_INSTITUTIONS:
+        out.add(normalize_iri_suffix(raw_suffix))
+    out |= set(_INSTITUTION_ALIASES.values())
+    return out
 
 
 class _PipelineState:

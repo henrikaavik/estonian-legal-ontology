@@ -37,6 +37,7 @@ import re
 import time
 from collections import defaultdict
 from datetime import datetime, timezone
+from decimal import Decimal, InvalidOperation
 from pathlib import Path
 
 from estleg_common import iter_peep_files, jsonld_text
@@ -591,6 +592,170 @@ def _normalise_penalty_text(penalty: str) -> str:
     return penalty
 
 
+# ---------- structured penalty normalisation (issue #133) ----------
+
+# Controlled set of structured penalty units. The free-text strings the
+# extractors emit map onto these so downstream consumers can compare /
+# filter / aggregate penalties numerically:
+#   "years"/"months"/"days" — imprisonment & arrest durations
+#   "daily_rates"           — KarS päevamäär (pecuniary punishment)
+#   "fine_units"            — väärteo trahviühik (misdemeanour fine)
+#   "monetary"              — a fixed monetary sum (paired with a currency)
+PENALTY_UNIT_YEARS = "years"
+PENALTY_UNIT_MONTHS = "months"
+PENALTY_UNIT_DAYS = "days"
+PENALTY_UNIT_DAILY_RATES = "daily_rates"
+PENALTY_UNIT_FINE_UNITS = "fine_units"
+PENALTY_UNIT_MONETARY = "monetary"
+
+PENALTY_UNITS: frozenset[str] = frozenset({
+    PENALTY_UNIT_YEARS,
+    PENALTY_UNIT_MONTHS,
+    PENALTY_UNIT_DAYS,
+    PENALTY_UNIT_DAILY_RATES,
+    PENALTY_UNIT_FINE_UNITS,
+    PENALTY_UNIT_MONETARY,
+})
+
+# Maps the trailing free-text unit token (already normalised by the
+# extractors / `_normalise_penalty_text`) onto a structured unit. Both
+# singular and plural forms are covered because `_build_label` /
+# `_normalise_penalty_text` may have singularised a "1 <unit>" string.
+_FREE_TEXT_UNIT_TO_STRUCTURED: dict[str, tuple[str, str | None]] = {
+    "year": (PENALTY_UNIT_YEARS, None),
+    "years": (PENALTY_UNIT_YEARS, None),
+    "month": (PENALTY_UNIT_MONTHS, None),
+    "months": (PENALTY_UNIT_MONTHS, None),
+    "day": (PENALTY_UNIT_DAYS, None),
+    "days": (PENALTY_UNIT_DAYS, None),
+    "daily rate": (PENALTY_UNIT_DAILY_RATES, None),
+    "daily rates": (PENALTY_UNIT_DAILY_RATES, None),
+    "fine unit": (PENALTY_UNIT_FINE_UNITS, None),
+    "fine units": (PENALTY_UNIT_FINE_UNITS, None),
+    "eur": (PENALTY_UNIT_MONETARY, "EUR"),
+}
+
+# "<amount> <unit-words>" — amount is digits (optionally with a decimal
+# point); the unit is whatever follows, matched case-insensitively
+# against `_FREE_TEXT_UNIT_TO_STRUCTURED`.
+_PENALTY_STRUCTURED_RE = re.compile(
+    r"^\s*(\d+(?:\.\d+)?)\s+(.+?)\s*$"
+)
+
+
+def _parse_penalty_to_structured(
+    penalty_str: str,
+) -> tuple[Decimal, str, str | None] | None:
+    """Map a free-text penalty string onto a structured (amount, unit, currency) triple.
+
+    Recognises exactly the strings ``extract_sanctions`` already produces:
+
+      * ``"<N> years"`` / ``"<N> months"`` / ``"<N> days"`` (also the
+        singular ``"1 year"`` etc. that ``_normalise_penalty_text``
+        emits) → ``(Decimal(N), "years"|"months"|"days", None)``
+      * ``"<N> daily rates"`` (KarS päevamäär) →
+        ``(Decimal(N), "daily_rates", None)``
+      * ``"<N> fine units"`` (väärteo trahviühik) →
+        ``(Decimal(N), "fine_units", None)``
+      * ``"<N> EUR"`` (a fixed monetary sum) →
+        ``(Decimal(N), "monetary", "EUR")``
+
+    Returns ``None`` when the string can't be confidently parsed into
+    ``amount + unit`` — notably ``"life"`` (life imprisonment has no
+    finite amount), the empty string, or any unit token outside the
+    controlled set. Callers emit only the free-text field in that case
+    and bump the ``penalty_unparsed`` counter.
+    """
+    if not penalty_str:
+        return None
+    text = penalty_str.strip()
+    if not text:
+        return None
+
+    m = _PENALTY_STRUCTURED_RE.match(text)
+    if m is None:
+        # No "<number> <unit>" shape — e.g. "life".
+        return None
+
+    amount_raw, unit_raw = m.group(1), m.group(2).strip().lower()
+    mapped = _FREE_TEXT_UNIT_TO_STRUCTURED.get(unit_raw)
+    if mapped is None:
+        return None
+    unit, currency = mapped
+
+    try:
+        amount = Decimal(amount_raw)
+    except (InvalidOperation, ValueError):
+        return None
+    # Guard against absurd / non-positive values slipping through.
+    if amount <= 0:
+        return None
+
+    return amount, unit, currency
+
+
+def _decimal_literal(value: Decimal) -> str:
+    """Render a Decimal as a clean JSON-LD xsd:decimal lexical form.
+
+    ``Decimal("5")`` → ``"5"`` (not ``"5.0"``); ``Decimal("15000")`` →
+    ``"15000"``. A genuine fractional value is preserved as-is.
+    """
+    text = format(value, "f")
+    if "." in text:
+        text = text.rstrip("0").rstrip(".")
+    return text or "0"
+
+
+def _structured_penalty_fields(
+    penalty_str: str, prefix: str,
+) -> tuple[dict, int]:
+    """Build the structured property block for one penalty string.
+
+    ``prefix`` is ``"max"`` or ``"min"`` — the returned dict keys are
+    ``estleg:{prefix}PenaltyAmount`` (xsd:decimal literal),
+    ``estleg:{prefix}PenaltyUnit`` (a value from ``PENALTY_UNITS``) and,
+    only when the unit is ``"monetary"``, ``estleg:{prefix}PenaltyCurrency``.
+
+    Returns ``({}, 1)`` when the string can't be parsed (caller bumps
+    the ``penalty_unparsed`` counter); ``({...}, 0)`` on success.
+    """
+    parsed = _parse_penalty_to_structured(penalty_str)
+    if parsed is None:
+        return {}, 1
+    amount, unit, currency = parsed
+    fields: dict = {
+        f"estleg:{prefix}PenaltyAmount": {
+            "@value": _decimal_literal(amount),
+            "@type": "xsd:decimal",
+        },
+        f"estleg:{prefix}PenaltyUnit": unit,
+    }
+    if unit == PENALTY_UNIT_MONETARY and currency:
+        fields[f"estleg:{prefix}PenaltyCurrency"] = currency
+    return fields, 0
+
+
+def _attach_structured_penalties(sanction_node: dict, sanction_data: dict) -> int:
+    """Add the structured penalty trio(s) to a Sanction node in place.
+
+    Mirrors whatever free-text ``estleg:maxPenalty`` / ``estleg:minPenalty``
+    the node already carries. Returns the number of penalty strings that
+    could *not* be parsed into ``amount + unit`` (so ``main()`` can bump
+    its ``penalty_unparsed`` tally). The ``estleg:isStatutoryDefault``
+    flag — when present — applies to these structured fields too; it is
+    written once on the node by the caller.
+    """
+    unparsed = 0
+    for prefix, key in (("max", "max_penalty"), ("min", "min_penalty")):
+        raw = sanction_data.get(key)
+        if not raw:
+            continue
+        fields, miss = _structured_penalty_fields(str(raw), prefix)
+        unparsed += miss
+        sanction_node.update(fields)
+    return unparsed
+
+
 def _build_label(sanction_type: str, sanction_data: dict, provision_ref: str) -> str:
     """Build a descriptive rdfs:label for a sanction node.
 
@@ -643,6 +808,11 @@ def main() -> int:
     total_provisions = 0
     provisions_with_sanctions = 0
     total_sanction_count = 0
+    # Penalty normalisation tallies (issue #133): how many free-text
+    # penalty strings were turned into a structured amount+unit triple
+    # vs. left as free-text only because they couldn't be parsed.
+    penalty_structured = 0
+    penalty_unparsed = 0
 
     for idx, filepath in enumerate(law_files, 1):
         doc = load_json(filepath)
@@ -781,6 +951,15 @@ def main() -> int:
                     sanction_node["estleg:maxPenalty"] = s["max_penalty"]
                 if "min_penalty" in s:
                     sanction_node["estleg:minPenalty"] = s["min_penalty"]
+                # Structured penalty fields (issue #133): emitted only
+                # when the free-text string parses confidently into
+                # amount+unit; otherwise bump the unparsed tally.
+                _unparsed = _attach_structured_penalties(sanction_node, s)
+                _emitted = sum(
+                    1 for k in ("max_penalty", "min_penalty") if s.get(k)
+                ) - _unparsed
+                penalty_structured += _emitted
+                penalty_unparsed += _unparsed
                 if s.get("is_statutory_default"):
                     sanction_node["estleg:isStatutoryDefault"] = True
                 sanction_node["rdfs:label"] = _build_label(stype, s, provision_ref)
@@ -871,6 +1050,14 @@ def main() -> int:
             "total_sanction_records": total_sanction_count,
             "laws_with_sanctions": len(all_law_sanctions),
         },
+        # Penalty normalisation coverage (issue #133): free-text penalty
+        # strings that were turned into a structured amount+unit triple
+        # vs. left as free-text only because they couldn't be parsed
+        # (e.g. "life", or any unit token outside the controlled set).
+        "penalty_normalisation": {
+            "penalty_structured": penalty_structured,
+            "penalty_unparsed": penalty_unparsed,
+        },
         "by_sanction_type": dict(sorted(stats_per_type.items(), key=lambda x: -x[1])),
         "severity_index": severity_index[:50],
         "laws_by_sanction_count": {
@@ -896,6 +1083,10 @@ def main() -> int:
     print("  By sanction type:")
     for stype, count in sorted(stats_per_type.items(), key=lambda x: -x[1]):
         print(f"    {stype:25s}  {count}")
+    print()
+    print("  Penalty normalisation (issue #133):")
+    print(f"    structured (amount+unit):  {penalty_structured}")
+    print(f"    penalty_unparsed:          {penalty_unparsed}")
     print()
     print("  Top 5 laws by severity:")
     for entry in severity_index[:5]:

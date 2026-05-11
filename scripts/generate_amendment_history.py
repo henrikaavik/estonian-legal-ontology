@@ -39,8 +39,22 @@ KRR_DIR = REPO_ROOT / "krr_outputs"
 DATA_DIR = REPO_ROOT / "data" / "riigiteataja"
 AMENDMENTS_DIR = KRR_DIR / "amendments"
 EELNOUD_DIR = KRR_DIR / "eelnoud"
+# Compact law-abbreviation registry (issue #83 / #192). Maps a law slug to
+# ``{"abbrev": ..., ...}``; used so the Amendment_/AmendmentChain_/
+# AmendmentLink_ IRIs minted below carry the compact abbreviation rather than
+# the long ``<base_slug>`` segment.
+LAW_ABBREVIATIONS_PATH = REPO_ROOT / "data" / "law_abbreviations.json"
 
 NS = "https://data.riik.ee/ontology/estleg#"
+
+# Structural tails stripped from an ``estleg:amends`` target to recover the
+# compact stem the amendment IRIs should adopt for laws/regulations absent from
+# the abbreviation registry (e.g. ``estleg:Reg_1052132_Map_2026`` → ``Reg_1052132``).
+_AMENDS_STEM_STRIP_RE = re.compile(
+    r"_(?:Map_\d+|Map|Osa\d+(?:_.*)?|Par_?\d+(?:_.*)?|Chapter\d+(?:_.*)?"
+    r"|Division\d+(?:_.*)?|TopicScheme\d+(?:_.*)?)$"
+)
+_COMPACT_PREFIX_RE = re.compile(r"^[A-Za-z][A-Za-z0-9_]*$")
 
 CONTEXT = {
     "estleg": NS,
@@ -471,6 +485,74 @@ def clear_amended_by_from_file(
     return modified
 
 
+def load_law_abbreviations(
+    path: Path | None = None,
+    *,
+    failures: list[str] | None = None,
+) -> dict[str, dict]:
+    """Load the compact law-abbreviation registry (slug -> entry).
+
+    Returns ``{}`` (with a recorded failure) if the file is absent or
+    unreadable — callers fall back to the slug so generation never crashes.
+    """
+    path = path if path is not None else LAW_ABBREVIATIONS_PATH
+    if not path.exists():
+        return {}
+    try:
+        with open(path, encoding="utf-8") as f:
+            data = json.load(f)
+        return data if isinstance(data, dict) else {}
+    except (json.JSONDecodeError, OSError) as exc:
+        if failures is not None:
+            failures.append(
+                f"load_law_abbreviations | {path.name} | "
+                f"{type(exc).__name__}: {str(exc)[:80]}"
+            )
+        return {}
+
+
+def _stem_from_amends_target(amends_iri: str) -> str | None:
+    """Recover a compact prefix from an ``estleg:amends`` target IRI.
+
+    ``estleg:Reg_1052132_Map_2026`` → ``Reg_1052132``; ``estleg:AVRS_Map_2026``
+    → ``AVRS``. Returns ``None`` when nothing compact-looking can be recovered.
+    """
+    if not amends_iri or not amends_iri.startswith("estleg:"):
+        return None
+    local = amends_iri[len("estleg:"):]
+    prev = None
+    while prev != local:
+        prev = local
+        local = _AMENDS_STEM_STRIP_RE.sub("", local)
+    if not local or not _COMPACT_PREFIX_RE.match(local):
+        return None
+    return local
+
+
+def short_prefix_for_base_slug(
+    base_slug: str,
+    canonical_ontology_id: str,
+    abbreviations: dict[str, dict],
+) -> str:
+    """Return the compact IRI prefix the amendment IRIs should use.
+
+    Resolution order (issue #192):
+      1. ``data/law_abbreviations.json`` — the law's registered ``abbrev``.
+      2. The compact stem recovered from the act's canonical ontology IRI
+         (``estleg:Reg_<id>_Map_2026`` → ``Reg_<id>``) — covers regulations
+         and the handful of slug-spelling mismatches absent from the registry.
+      3. ``sanitize_id(base_slug)`` as a last resort so generation never fails
+         on a slug with no registry entry and no usable ontology IRI.
+    """
+    entry = abbreviations.get(base_slug)
+    if isinstance(entry, dict) and entry.get("abbrev"):
+        return entry["abbrev"]
+    stem = _stem_from_amends_target(canonical_ontology_id)
+    if stem and len(stem) < len(base_slug):
+        return stem
+    return sanitize_id(base_slug)
+
+
 def _stable_amend_suffix(amend: dict) -> str:
     """Compute a stable IRI suffix for an XML amendment record.
 
@@ -551,6 +633,11 @@ def main() -> int:
 
     title_map = build_title_to_slug_map(laws)
     print(f"  Built title-to-slug mapping with {len(title_map)} entries")
+
+    # Compact-abbreviation registry (issue #192) — used so the amendment IRIs
+    # carry the law's compact prefix instead of the long <base_slug> segment.
+    law_abbreviations = load_law_abbreviations(failures=_failures)
+    print(f"  Loaded {len(law_abbreviations)} law abbreviations")
 
     # Step 2: Extract amendments from XML files (paired per-peep via
     # globalId, with a slug fallback for legacy laws that have no
@@ -726,10 +813,17 @@ def main() -> int:
             if canonical_ontology_id:
                 break
 
+        # Compact prefix for the Amendment_/AmendmentChain_/AmendmentLink_
+        # IRIs minted below — the law's registered abbreviation, the
+        # regulation's Reg_<id> stem, or (last resort) the sanitised slug.
+        amend_prefix = short_prefix_for_base_slug(
+            base_slug, canonical_ontology_id, law_abbreviations
+        )
+
         seen_amend_ids: set[str] = set()
         for amend in xml_amendments_sorted:
             suffix = _stable_amend_suffix(amend)
-            amend_id = f"estleg:Amendment_{sanitize_id(base_slug)}_{suffix}"
+            amend_id = f"estleg:Amendment_{amend_prefix}_{suffix}"
             # Collisions on hash prefix are extremely unlikely but
             # defended against here so re-runs remain idempotent.
             disambig = 1
@@ -766,7 +860,7 @@ def main() -> int:
                 "@id": (
                     f"estleg:AmendmentLink_"
                     f"{sanitize_id(draft_id.replace('estleg:', ''))}_"
-                    f"{sanitize_id(base_slug)}"
+                    f"{amend_prefix}"
                 ),
                 "@type": ["owl:NamedIndividual", "estleg:AmendmentEvent"],
                 "rdfs:label": f"Eelnõu muudatus: {da['draft_label']}",
@@ -838,13 +932,15 @@ def main() -> int:
                     kov_share = 0
                 _amendment_event_triples_kov += kov_share
 
-        # Save ONE chain doc per base_slug.
+        # Save ONE chain doc per base_slug. The chain @id uses the compact
+        # prefix; the *filename* keeps the human-readable base_slug (it's a
+        # stable on-disk artifact key, not part of the IRI namespace).
         if chain_entries:
             chain_doc = {
                 "@context": CONTEXT,
                 "@graph": [
                     {
-                        "@id": f"estleg:AmendmentChain_{sanitize_id(base_slug)}",
+                        "@id": f"estleg:AmendmentChain_{amend_prefix}",
                         "@type": ["owl:Ontology"],
                         "rdfs:label": f"Muudatuste ahel: {canonical_title}",
                         "dc:source": canonical_title,

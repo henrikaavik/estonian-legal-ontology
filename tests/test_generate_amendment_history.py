@@ -670,3 +670,217 @@ class TestFailuresSink:
         # P1 banner must surface to stderr when failures > 0.
         assert "[P1]" in captured.err
         assert "generate_amendment_history" in captured.err
+
+
+# ---------------------------------------------------------------------------
+# Issue #192 — compact Amendment_/AmendmentChain_/AmendmentLink_ IRIs
+# ---------------------------------------------------------------------------
+
+
+class TestShortPrefixForBaseSlug:
+    """``short_prefix_for_base_slug`` — registry abbrev > Reg_<id> stem > slug."""
+
+    def test_uses_registry_abbreviation(self):
+        from generate_amendment_history import short_prefix_for_base_slug
+
+        abbreviations = {
+            "karistusseadustik": {"abbrev": "KARIST_2", "source": "auto",
+                                  "title": "Karistusseadustik",
+                                  "old_prefix": "Karistusseadustik"},
+        }
+        assert short_prefix_for_base_slug(
+            "karistusseadustik", "estleg:KARIST_2_Osa1_1_87", abbreviations
+        ) == "KARIST_2"
+
+    def test_falls_back_to_reg_id_stem_for_unregistered_regulation(self):
+        from generate_amendment_history import short_prefix_for_base_slug
+
+        # base_slug absent from the registry → recover Reg_<id> from the
+        # canonical ontology IRI (NOT from the slug's _t<id> suffix, which can
+        # disagree with the act's numeric id).
+        assert short_prefix_for_base_slug(
+            "jarva_maakonna_looduse_uksikobjektide_kaitse_alla_votmine_t1049276",
+            "estleg:Reg_1056294_Map_2026",
+            {},
+        ) == "Reg_1056294"
+
+    def test_falls_back_to_sanitized_slug_when_nothing_better(self):
+        from generate_amendment_history import sanitize_id, short_prefix_for_base_slug
+
+        # No registry entry and the ontology IRI yields no *shorter* stem →
+        # keep the (sanitised) slug rather than crash.
+        assert short_prefix_for_base_slug(
+            "kutseseadus", "estleg:Kutseseadus_Map_2026", {}
+        ) == sanitize_id("kutseseadus")
+        # …and a totally absent ontology IRI also falls back gracefully.
+        assert short_prefix_for_base_slug("some_long_slug", "", {}) == sanitize_id(
+            "some_long_slug"
+        )
+
+
+class TestLoadLawAbbreviations:
+    def test_loads_registry(self, tmp_path):
+        from generate_amendment_history import load_law_abbreviations
+
+        p = tmp_path / "law_abbreviations.json"
+        p.write_text(json.dumps({"x": {"abbrev": "X"}}), encoding="utf-8")
+        assert load_law_abbreviations(p) == {"x": {"abbrev": "X"}}
+
+    def test_missing_file_returns_empty(self, tmp_path):
+        from generate_amendment_history import load_law_abbreviations
+
+        assert load_law_abbreviations(tmp_path / "nope.json") == {}
+
+    def test_corrupt_file_records_failure_and_returns_empty(self, tmp_path):
+        from generate_amendment_history import load_law_abbreviations
+
+        p = tmp_path / "law_abbreviations.json"
+        p.write_text("{not json", encoding="utf-8")
+        failures: list[str] = []
+        assert load_law_abbreviations(p, failures=failures) == {}
+        assert any("load_law_abbreviations" in f for f in failures)
+
+
+class TestGeneratorEmitsCompactAmendmentIris:
+    """End-to-end: ``generate_amendment_history.main`` mints
+    ``Amendment_<ABBREV>_…`` (registry hit) and degrades gracefully when the
+    law has no registry entry."""
+
+    def _setup(self, tmp_path: Path, monkeypatch):
+        import generate_amendment_history as mod
+        import estleg_common
+
+        krr = tmp_path / "krr_outputs"
+        rt = tmp_path / "data" / "riigiteataja"
+        krr.mkdir(parents=True)
+        rt.mkdir(parents=True)
+        (krr / "amendments").mkdir()
+        (krr / "eelnoud").mkdir()
+        (krr / "regulations" / "riik").mkdir(parents=True)
+        (krr / "regulations" / "kov").mkdir(parents=True)
+        monkeypatch.setattr(mod, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "DATA_DIR", rt)
+        monkeypatch.setattr(mod, "AMENDMENTS_DIR", krr / "amendments")
+        monkeypatch.setattr(mod, "EELNOUD_DIR", krr / "eelnoud")
+        monkeypatch.setattr(mod, "REPO_ROOT", tmp_path)
+        monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+        # The registry the generator reads (REPO_ROOT/data/law_abbreviations.json).
+        monkeypatch.setattr(
+            mod, "LAW_ABBREVIATIONS_PATH",
+            tmp_path / "data" / "law_abbreviations.json",
+        )
+        return krr, rt, mod
+
+    def _write_part(self, krr: Path, slug: str, gid: str, title: str) -> Path:
+        p = krr / f"{slug}_peep.json"
+        p.write_text(json.dumps({
+            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+                         "owl": "http://www.w3.org/2002/07/owl#"},
+            "@graph": [
+                {"@id": f"estleg:{slug.upper()}_Map",
+                 "@type": ["owl:Ontology", "estleg:Law"],
+                 "rdfs:label": title, "dc:source": title,
+                 "estleg:globalId": gid}],
+        }), encoding="utf-8")
+        return p
+
+    def _write_xml_with_amendments(self, rt: Path, gid: str, amendments: list[dict]):
+        blocks = []
+        for a in amendments:
+            blocks.append(
+                "<muutmismarge>"
+                f"<aktikuupaev>{a.get('date', '')}</aktikuupaev>"
+                f"<joustumine>{a.get('eif', '')}</joustumine>"
+                "<avaldamismarge>"
+                f"<RTosa>{a.get('rt_osa', 'I')}</RTosa>"
+                f"<RTaasta>{a.get('rt_aasta', '2024')}</RTaasta>"
+                f"<RTnr>{a.get('rt_nr', '1')}</RTnr>"
+                "</avaldamismarge></muutmismarge>"
+            )
+        (rt / f"reg_{gid}.xml").write_text(
+            f'<akt globaalID="{gid}"><metaandmed>' + "".join(blocks)
+            + "</metaandmed></akt>",
+            encoding="utf-8",
+        )
+
+    def _write_registry(self, tmp_path: Path, mapping: dict) -> None:
+        (tmp_path / "data").mkdir(parents=True, exist_ok=True)
+        (tmp_path / "data" / "law_abbreviations.json").write_text(
+            json.dumps(mapping), encoding="utf-8"
+        )
+
+    def test_registered_law_uses_compact_abbrev(self, tmp_path, monkeypatch):
+        krr, rt, mod = self._setup(tmp_path, monkeypatch)
+        self._write_registry(tmp_path, {"perekonnaseadus": {
+            "abbrev": "PKS", "source": "rt_api", "title": "Perekonnaseadus",
+            "old_prefix": "PKS"}})
+        self._write_part(krr, "perekonnaseadus", "3001", "Perekonnaseadus")
+        self._write_xml_with_amendments(
+            rt, "3001",
+            [{"date": "2010-01-01", "eif": "2010-06-01",
+              "rt_aasta": "2010", "rt_nr": "5"}],
+        )
+        rc = mod.main()
+        assert rc in (None, 0)
+        chain_doc = json.loads(
+            (krr / "amendments" / "amendments_perekonnaseadus.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        ids = [n["@id"] for n in chain_doc["@graph"]]
+        # Chain @id and every Amendment @id carry the compact PKS prefix.
+        assert "estleg:AmendmentChain_PKS" in ids
+        amend_ids = [i for i in ids if i.startswith("estleg:Amendment_")]
+        assert amend_ids
+        for i in amend_ids:
+            assert re.match(r"^estleg:Amendment_PKS_[0-9a-f]{10}(?:_\d+)?$", i), i
+        # The long slug must NOT appear in any amendment-family @id.
+        assert all("perekonnaseadus" not in i for i in ids
+                   if i.startswith(("estleg:Amendment_", "estleg:AmendmentChain_")))
+        # And the back-link stamped on the act node uses the compact id too.
+        peep = json.loads((krr / "perekonnaseadus_peep.json").read_text("utf-8"))
+        onto = next(n for n in peep["@graph"] if "owl:Ontology" in n.get("@type", []))
+        assert all(
+            r["@id"].startswith("estleg:Amendment_PKS_")
+            for r in onto["estleg:amendedBy"]
+        )
+
+    def test_unregistered_law_falls_back_without_crashing(self, tmp_path, monkeypatch):
+        krr, rt, mod = self._setup(tmp_path, monkeypatch)
+        # Registry exists but does NOT contain this slug; the part's ontology
+        # IRI (``ESIMENEPIKKSLUG_Map``, from slug.upper()) is no shorter than
+        # the slug, so the generator keeps the sanitised slug.
+        self._write_registry(tmp_path, {"unrelated": {"abbrev": "U"}})
+        slug = "esimenepikkslug"
+        self._write_part(krr, slug, "4001", "Esimene Pikk Slug")
+        self._write_xml_with_amendments(
+            rt, "4001",
+            [{"date": "2020-01-01", "eif": "2020-06-01",
+              "rt_aasta": "2020", "rt_nr": "1"}],
+        )
+        rc = mod.main()
+        assert rc in (None, 0)
+        chain_files = sorted((krr / "amendments").glob("amendments_*.json"))
+        assert chain_files
+        chain_doc = json.loads(chain_files[0].read_text(encoding="utf-8"))
+        ids = [n["@id"] for n in chain_doc["@graph"]]
+        # Fell back to the sanitised slug (no crash, IRIs still well-formed).
+        assert f"estleg:AmendmentChain_{slug}" in ids
+        assert any(re.match(rf"^estleg:Amendment_{slug}_[0-9a-f]{{10}}", i) for i in ids)
+
+    def test_runs_with_no_registry_file_at_all(self, tmp_path, monkeypatch):
+        krr, rt, mod = self._setup(tmp_path, monkeypatch)
+        # No data/law_abbreviations.json — load_law_abbreviations -> {} -> slug.
+        monkeypatch.setattr(
+            mod, "LAW_ABBREVIATIONS_PATH", tmp_path / "data" / "missing.json"
+        )
+        self._write_part(krr, "mingiseadus", "5001", "Mingiseadus")
+        self._write_xml_with_amendments(
+            rt, "5001",
+            [{"date": "2021-01-01", "eif": "2021-06-01",
+              "rt_aasta": "2021", "rt_nr": "2"}],
+        )
+        rc = mod.main()
+        assert rc in (None, 0)
+        chain_files = sorted((krr / "amendments").glob("amendments_*.json"))
+        assert chain_files
