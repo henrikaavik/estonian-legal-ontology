@@ -637,6 +637,343 @@ def test_validate_combined_ontology_mtime_check_uses_le(tmp_path):
     ), validate_all.errors
 
 
+# ---------------------------------------------------------------------------
+# Regression tests for #128 — act-level temporal property placement gate.
+# ---------------------------------------------------------------------------
+
+
+def test_validate_temporal_property_targets_rejects_concept_node(tmp_path):
+    """`estleg:temporalStatus` on a non-Act node is a hard error (#128).
+
+    Reproduces the historical `graph[0]` fallback in
+    `extract_temporal_data.py` that stamped temporal props onto an
+    `estleg:LegalConcept`.
+    """
+    doc = {
+        "@graph": [
+            {
+                "@id": "estleg:Concept_time_limits",
+                "@type": ["owl:NamedIndividual", "estleg:LegalConcept"],
+                "estleg:temporalStatus": "inForce",
+            }
+        ]
+    }
+    p = tmp_path / "tsiviilseadustik_osa6_peep.json"
+    write_json(p, doc)
+
+    validate_all.validate_temporal_property_targets([p])
+
+    assert any(
+        "act-level temporal properties on non-Act nodes" in e
+        for e in validate_all.errors
+    ), validate_all.errors
+
+
+def test_validate_temporal_property_targets_accepts_act_node(tmp_path):
+    """Temporal props on an `estleg:Act` node are fine."""
+    doc = {
+        "@graph": [
+            {
+                "@id": "estleg:AlkS_Map_2026",
+                "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
+                "estleg:temporalStatus": "inForce",
+                "estleg:entryIntoForce": {"@value": "2003-07-19", "@type": "xsd:date"},
+                "estleg:lastAmendmentDate": {"@value": "2024-01-01", "@type": "xsd:date"},
+            }
+        ]
+    }
+    p = tmp_path / "alkoholiseadus_peep.json"
+    write_json(p, doc)
+
+    validate_all.validate_temporal_property_targets([p])
+
+    assert validate_all.errors == [], validate_all.errors
+
+
+def test_validate_temporal_property_targets_allows_amendment_event_entry_into_force(tmp_path):
+    """Reified `estleg:AmendmentEvent` nodes legitimately carry
+    `estleg:entryIntoForce` (the date that amendment took effect)."""
+    doc = {
+        "@graph": [
+            {
+                "@id": "estleg:Amendment_demo_1",
+                "@type": ["owl:NamedIndividual", "estleg:AmendmentEvent"],
+                "estleg:entryIntoForce": {"@value": "2020-01-01", "@type": "xsd:date"},
+            }
+        ]
+    }
+    p = tmp_path / "amendments_demo.json"
+    write_json(p, doc)
+
+    validate_all.validate_temporal_property_targets([p])
+
+    assert validate_all.errors == [], validate_all.errors
+
+
+def test_validate_temporal_property_targets_flags_repeal_date_on_amendment_event(tmp_path):
+    """The AmendmentEvent exception is scoped to `entryIntoForce` only —
+    `estleg:repealDate` on an AmendmentEvent is still flagged."""
+    doc = {
+        "@graph": [
+            {
+                "@id": "estleg:Amendment_demo_1",
+                "@type": ["owl:NamedIndividual", "estleg:AmendmentEvent"],
+                "estleg:repealDate": {"@value": "2020-01-01", "@type": "xsd:date"},
+            }
+        ]
+    }
+    p = tmp_path / "amendments_demo.json"
+    write_json(p, doc)
+
+    validate_all.validate_temporal_property_targets([p])
+
+    assert any(
+        "act-level temporal properties on non-Act nodes" in e
+        for e in validate_all.errors
+    ), validate_all.errors
+
+
+# ---------------------------------------------------------------------------
+# Regression tests for #129 — transposition mapping gate.
+# ---------------------------------------------------------------------------
+
+
+def test_validate_transposition_mapping_rejects_legacy_shape(tmp_path):
+    """The legacy `{matched, unmatched, mappings}` report shape fails (#129)."""
+    krr = tmp_path / "krr_outputs"
+    write_json(
+        krr / "transposition_mapping.json",
+        {
+            "generated": "2026-03-21",
+            "source": "https://publications.europa.eu/webapi/rdf/sparql",
+            "total_measures_fetched": 0,
+            "matched": 0,
+            "unmatched": 0,
+            "mappings": [],
+        },
+    )
+
+    validate_all.validate_transposition_mapping(krr)
+
+    assert any(
+        "stale/legacy report shape" in e for e in validate_all.errors
+    ), validate_all.errors
+
+
+def test_validate_transposition_mapping_rejects_empty_unflagged(tmp_path):
+    """Current shape but empty `mappings` and no `documented_empty` -> error."""
+    krr = tmp_path / "krr_outputs"
+    write_json(
+        krr / "transposition_mapping.json",
+        {
+            "generated": "2026-05-11",
+            "source": "https://publications.europa.eu/webapi/rdf/sparql",
+            "country": "EST",
+            "total_measures_fetched": 0,
+            "total_matched": 0,
+            "total_unmatched": 0,
+            "unique_directives": 0,
+            "unique_laws": 0,
+            "mappings": [],
+        },
+    )
+
+    validate_all.validate_transposition_mapping(krr)
+
+    assert any(
+        "advertised but unpopulated" in e for e in validate_all.errors
+    ), validate_all.errors
+
+
+def test_validate_transposition_mapping_accepts_documented_empty(tmp_path):
+    """An explicitly flagged empty snapshot passes."""
+    krr = tmp_path / "krr_outputs"
+    write_json(
+        krr / "transposition_mapping.json",
+        {
+            "generated": "2026-05-11",
+            "source": "https://publications.europa.eu/webapi/rdf/sparql",
+            "country": "EST",
+            "documented_empty": True,
+            "total_measures_fetched": 0,
+            "total_matched": 0,
+            "total_unmatched": 0,
+            "unique_directives": 0,
+            "unique_laws": 0,
+            "mappings": [],
+        },
+    )
+
+    validate_all.validate_transposition_mapping(krr)
+
+    assert validate_all.errors == [], validate_all.errors
+
+
+def test_validate_transposition_mapping_accepts_populated(tmp_path):
+    """A non-empty `mappings` array in the current shape passes."""
+    krr = tmp_path / "krr_outputs"
+    write_json(
+        krr / "transposition_mapping.json",
+        {
+            "generated": "2026-05-11",
+            "source": "https://publications.europa.eu/webapi/rdf/sparql",
+            "country": "EST",
+            "total_measures_fetched": 5,
+            "total_matched": 2,
+            "total_unmatched": 3,
+            "unique_directives": 2,
+            "unique_laws": 2,
+            "mappings": [
+                {"directive_celex": "32000L0001", "matched_law_name": "alkoholiseadus"},
+            ],
+        },
+    )
+
+    validate_all.validate_transposition_mapping(krr)
+
+    assert validate_all.errors == [], validate_all.errors
+
+
+def test_validate_transposition_mapping_missing_file_is_only_a_warning(tmp_path):
+    """If `transposition_mapping.json` does not exist, warn (not error)."""
+    krr = tmp_path / "krr_outputs"
+    krr.mkdir()
+
+    validate_all.validate_transposition_mapping(krr)
+
+    assert validate_all.errors == []
+    assert any("transposition_mapping.json: not found" in w for w in validate_all.warnings)
+
+
+# ---------------------------------------------------------------------------
+# Regression tests for #110 — catalog metadata count cross-checks.
+# ---------------------------------------------------------------------------
+
+
+def _minimal_corpus_for_metadata(krr: Path) -> None:
+    """Stage a tiny corpus so `metadata_stats()` returns deterministic counts.
+
+    `metadata_stats()` reads a fixed set of combined files by path, so
+    those must exist (even if empty); all other counts come out as zero.
+    """
+    write_json(krr / "law_a_peep.json", {"@graph": [{"@id": "estleg:A"}]})
+    write_json(krr / "INDEX.json", {"laws": [{"name": "law_a", "files": ["law_a_peep.json"]}]})
+    write_json(krr / "eelnoud" / "eelnoud_combined.jsonld", {"@graph": []})
+    write_json(krr / "eurlex" / "eurlex_combined.jsonld", {"@graph": []})
+    write_json(krr / "curia" / "curia_combined.jsonld", {"@graph": []})
+
+
+def test_validate_metadata_catalog_flags_distribution_count_drift(tmp_path, monkeypatch):
+    """A stale `estleg:*Count` key in `dcat:distribution` fails (#110).
+
+    Previously only the `estleg:statistics` block was cross-checked; the
+    parallel per-distribution count keys could drift unnoticed.
+    """
+    krr = tmp_path / "krr_outputs"
+    _minimal_corpus_for_metadata(krr)
+    # Build a metadata.jsonld whose statistics block is correct but whose
+    # distribution count is wrong.
+    import sys
+
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
+    import validate_all as va
+
+    actual = va.metadata_stats(krr)
+    metadata = {
+        "estleg:statistics": actual,
+        "dcat:distribution": [
+            {
+                "dcterms:title": "JSON-LD ontology files (complete dataset)",
+                "estleg:fileCount": actual["estleg:totalFiles"] + 999,  # wrong
+            }
+        ],
+    }
+    md_path = tmp_path / "metadata.jsonld"
+    write_json(md_path, metadata)
+    monkeypatch.setattr(va, "REPO_ROOT", tmp_path)
+
+    va.validate_metadata_catalog(krr)
+
+    assert any(
+        "dcat:distribution" in e and "estleg:fileCount" in e for e in va.errors
+    ), va.errors
+
+
+def test_validate_metadata_catalog_passes_when_distribution_counts_agree(tmp_path, monkeypatch):
+    """Correct `estleg:statistics` AND `dcat:distribution` counts -> no error."""
+    krr = tmp_path / "krr_outputs"
+    _minimal_corpus_for_metadata(krr)
+    import sys
+
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
+    import validate_all as va
+
+    actual = va.metadata_stats(krr)
+    metadata = {
+        "estleg:statistics": actual,
+        "dcat:distribution": [
+            {
+                "dcterms:title": "JSON-LD ontology files (complete dataset)",
+                "estleg:fileCount": actual["estleg:totalFiles"],
+            },
+            {
+                "dcterms:title": "Combined enacted laws ontology",
+                "estleg:lawIndexRecordCount": actual["estleg:enactedLawCount"],
+                "estleg:lawFileCount": actual["estleg:enactedLawFileCount"],
+            },
+        ],
+    }
+    md_path = tmp_path / "metadata.jsonld"
+    write_json(md_path, metadata)
+    monkeypatch.setattr(va, "REPO_ROOT", tmp_path)
+
+    va.validate_metadata_catalog(krr)
+
+    assert va.errors == [], va.errors
+
+
+def test_readme_counts_match_metadata():
+    """README's status line agrees with metadata.jsonld's estleg:statistics (#110).
+
+    The README hard-codes corpus counts in its status header; this test
+    pins them to the single source of truth so the two cannot drift
+    independently again.
+    """
+    import json
+    import re
+
+    repo_root = Path(__file__).resolve().parent.parent
+    metadata = json.loads((repo_root / "metadata.jsonld").read_text(encoding="utf-8"))
+    stats = metadata["estleg:statistics"]
+    readme = (repo_root / "README.md").read_text(encoding="utf-8")
+
+    # Find the status header line.
+    status_line = next(
+        (ln for ln in readme.splitlines() if ln.startswith("**Status:")), None
+    )
+    assert status_line is not None, "README is missing its **Status:** header"
+
+    def _ints(text: str) -> list[int]:
+        return [int(m.replace(",", "")) for m in re.findall(r"\d[\d,]*", text)]
+
+    nums = set(_ints(status_line))
+    for key in (
+        "estleg:enactedLawCount",
+        "estleg:enactedLawFileCount",
+        "estleg:domesticRegulationCount",
+        "estleg:municipalRegulationCount",
+        "estleg:draftLegislationCount",
+        "estleg:courtDecisionCount",
+        "estleg:euLegislationCount",
+        "estleg:euCourtDecisionCount",
+        "estleg:totalFiles",
+    ):
+        assert stats[key] in nums, (
+            f"README status line is missing/stale for {key}={stats[key]}; "
+            f"line numbers seen: {sorted(nums)}"
+        )
+
+
 def test_discover_validation_files_skips_combined_and_index_files(tmp_path):
     """`discover_validation_files` returns the validator-quality file set.
 

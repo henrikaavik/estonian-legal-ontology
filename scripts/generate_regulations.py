@@ -35,6 +35,7 @@ from riigiteataja_common import (  # noqa: E402
     fetch_acts,
     fetch_xml,
     ln,
+    new_page_stats,
     parse_act_metadata,
     parse_html_konteiner,
     sanitize_id,
@@ -464,7 +465,10 @@ def gather_regulations(
     """
     by_tid: dict[str, dict] = {}
     seen = 0
-    completed = True
+    # Per-page success/fail/retry counters populated in-place by
+    # ``fetch_acts``. Surfaced in the index ``run`` block so a consumer
+    # can see exactly which pages were fetched, failed, or retried.
+    page_stats = new_page_stats()
     # When a --limit is set, ask the API for fewer rows so we don't
     # gratuitously pull a full 500-row page when the caller just wants
     # a 5-act dry run. Floor at 50 to keep page-iteration efficient
@@ -473,34 +477,35 @@ def gather_regulations(
         page_size = 500
     else:
         page_size = min(500, max(50, limit * 2))
-    try:
-        for act in fetch_acts(
-            document="määrus",
-            kov=kov,
-            kehtiv=kehtiv,
-            limiit=page_size,
-            allow_partial=allow_partial,
-        ):
-            seen += 1
-            tid = str(act.get("terviktekstID") or "")
-            gid = str(act.get("globaalID") or "")
-            if not tid:
-                continue
-            prev = by_tid.get(tid)
-            if prev is None or _gid_rank(gid) > _gid_rank(str(prev.get("gid", ""))):
-                by_tid[tid] = {
-                    "tid": tid,
-                    "gid": gid,
-                    "url": act.get("url", ""),
-                    "pealkiri": (act.get("pealkiri") or "").strip(),
-                    "valjaandja": act.get("valjaandja") or "",
-                    "kehtivus": act.get("kehtivus") or {},
-                }
-            if limit is not None and len(by_tid) >= limit:
-                break
-    except SourceListFetchError:
-        completed = False
-        raise
+    for act in fetch_acts(
+        document="määrus",
+        kov=kov,
+        kehtiv=kehtiv,
+        limiit=page_size,
+        allow_partial=allow_partial,
+        stats=page_stats,
+    ):
+        seen += 1
+        tid = str(act.get("terviktekstID") or "")
+        gid = str(act.get("globaalID") or "")
+        if not tid:
+            continue
+        prev = by_tid.get(tid)
+        if prev is None or _gid_rank(gid) > _gid_rank(str(prev.get("gid", ""))):
+            by_tid[tid] = {
+                "tid": tid,
+                "gid": gid,
+                "url": act.get("url", ""),
+                "pealkiri": (act.get("pealkiri") or "").strip(),
+                "valjaandja": act.get("valjaandja") or "",
+                "kehtivus": act.get("kehtivus") or {},
+            }
+        if limit is not None and len(by_tid) >= limit:
+            break
+    # A terminal fetch failure under --allow-partial makes ``fetch_acts``
+    # stop early without raising; detect that here so the run is marked
+    # incomplete rather than masquerading as a full snapshot.
+    completed = page_stats["pagesFailed"] == 0
     print(f"  Pulled {seen} search rows -> {len(by_tid)} unique regulations")
     return by_tid, {
         "requestedDocument": "määrus",
@@ -510,6 +515,7 @@ def gather_regulations(
         "uniqueActs": len(by_tid),
         "complete": completed,
         "limited": limit is not None,
+        "pages": page_stats,
     }
 
 

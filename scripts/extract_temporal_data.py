@@ -346,7 +346,76 @@ TEMPORAL_KEYS_TO_CLEAR = [
     "estleg:lastAmendmentDate",
     "estleg:publicationDate",
     "estleg:temporalStatus",
+    "estleg:adoptionDate",
 ]
+
+# Act-level type markers. Temporal validity is an *act-level* property
+# in this ontology (#128) — temporal triples are only ever written onto
+# a node whose ``@type`` includes ``estleg:Act`` (covers laws, state
+# regulations, and KOV regulations) or the standalone ``owl:Ontology``
+# act-metadata node that every peep file carries. If neither can be
+# located in a peep file we skip enrichment for that file rather than
+# falling back to ``graph[0]`` (which previously stamped temporal props
+# onto ``estleg:LegalConcept`` nodes).
+ACT_TYPE_MARKERS = {"estleg:Act"}
+
+
+def _node_types(node: dict) -> set[str]:
+    types = node.get("@type", [])
+    if isinstance(types, str):
+        return {types}
+    if isinstance(types, list):
+        return {t for t in types if isinstance(t, str)}
+    return set()
+
+
+def is_act_level_node(node: dict) -> bool:
+    """Return True if this node is a legitimate target for temporal props.
+
+    True when the node is an ``estleg:Act`` (any subclass, since the
+    KOV layer-1 enrichment stamps ``estleg:Act`` onto every act node) or
+    the ``owl:Ontology`` act-metadata node a peep file carries.
+    """
+    types = _node_types(node)
+    return bool(types & ACT_TYPE_MARKERS) or "owl:Ontology" in types
+
+
+def find_act_node(graph: list[dict]) -> dict | None:
+    """Return the act node a peep file's temporal triples belong on.
+
+    Preference order: the ``owl:Ontology`` act-metadata node (the
+    historical write site), then any ``estleg:Act``-typed node. Returns
+    ``None`` when neither exists — the caller must then skip enrichment
+    for that file (no ``graph[0]`` fallback, see #128).
+    """
+    for node in graph:
+        if "owl:Ontology" in _node_types(node):
+            return node
+    for node in graph:
+        if _node_types(node) & ACT_TYPE_MARKERS:
+            return node
+    return None
+
+
+def clear_temporal_keys(graph: list[dict]) -> bool:
+    """Strip every temporal property from every node in ``graph``.
+
+    Returns True if anything was removed. Run during the enrichment
+    pass so a fresh run re-derives temporal triples from scratch *and*
+    so stale temporal props that an earlier ``graph[0]`` fallback wrote
+    onto non-Act nodes (e.g. ``estleg:LegalConcept`` in
+    ``tsiviilseadustik_osa6/osa7``) are removed. The act node is
+    re-populated below; non-Act nodes are simply left clean.
+    """
+    removed = False
+    for node in graph:
+        if not isinstance(node, dict):
+            continue
+        for key in TEMPORAL_KEYS_TO_CLEAR:
+            if key in node:
+                del node[key]
+                removed = True
+    return removed
 
 
 # INDEX.json date keys we know how to map into our internal temporal
@@ -534,6 +603,10 @@ def main(evaluation_date: str | None = None):
 
     enriched = 0
     skipped = 0
+    # Files where no act / owl:Ontology node could be located. We refuse
+    # to fall back to graph[0] (#128) — those files are skipped and the
+    # counter surfaces them in the report so a regression is visible.
+    no_act_node = 0
     status_counts = {"inForce": 0, "repealed": 0, "notYetEffective": 0, "unknown": 0}
     report_entries: list[dict] = []
 
@@ -600,21 +673,34 @@ def main(evaluation_date: str | None = None):
             doc["@context"] = ctx
             dirty = True
 
-        # Locate the ontology node and clear stale temporal keys
-        # in-place.
-        ontology_node = None
-        for node in graph:
-            types = node.get("@type", [])
-            if "owl:Ontology" in types:
-                ontology_node = node
-                break
-        if ontology_node is None:
-            ontology_node = graph[0]
+        # Clear stale temporal keys from EVERY node — this re-derives a
+        # clean slate for the act node and, crucially, scrubs temporal
+        # props that an old graph[0] fallback wrote onto non-Act nodes
+        # (e.g. estleg:LegalConcept in tsiviilseadustik_osa6/osa7).
+        if clear_temporal_keys(graph):
+            dirty = True
 
-        for key in TEMPORAL_KEYS_TO_CLEAR:
-            if key in ontology_node:
-                del ontology_node[key]
-                dirty = True
+        # Locate the act-level node. No graph[0] fallback (#128): if the
+        # file carries neither an owl:Ontology node nor an estleg:Act
+        # node we skip enrichment entirely and bump a counter so the
+        # regression is visible in the report.
+        ontology_node = find_act_node(graph)
+        if ontology_node is None:
+            if dirty:
+                save_json(law_file, doc)
+            no_act_node += 1
+            skipped += 1
+            status_counts["unknown"] += 1
+            _skip_reasons["no_act_node"] = (
+                _skip_reasons.get("no_act_node", 0) + 1
+            )
+            report_entries.append({
+                "file": law_file.name,
+                "slug": stem,
+                "status": "no_act_node",
+                "temporal": {},
+            })
+            continue
 
         # If we have no temporal data at all, persist any clears, log
         # a skip, and continue.
@@ -707,6 +793,7 @@ def main(evaluation_date: str | None = None):
             "total_law_files": len(law_files),
             "enriched": enriched,
             "skipped_no_data": skipped,
+            "skipped_no_act_node": no_act_node,
             "status_counts": status_counts,
         },
         "laws": report_entries,
@@ -723,6 +810,7 @@ def main(evaluation_date: str | None = None):
     print(f"  Peep files paired:     {len(temporal_by_slug)}")
     print(f"  Law files enriched:    {enriched}")
     print(f"  Skipped (no data):     {skipped}")
+    print(f"  Skipped (no act node): {no_act_node}")
     print("  Status breakdown:")
     for status, count in status_counts.items():
         print(f"    {status}: {count}")

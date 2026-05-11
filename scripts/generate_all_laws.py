@@ -284,6 +284,11 @@ def get_all_laws(
     completed = False
     pages_scanned = 0
     cap_hit = False
+    # Per-page success/fail/retry counters surfaced in the manifest so a
+    # consumer can see which pages were fetched vs. failed. ``get_all_laws``
+    # has no retry-with-backoff loop, so ``pagesRetried`` stays 0 here; the
+    # key is kept for parity with the regulation/common counters.
+    page_stats = {"pagesFetchedOk": 0, "pagesFailed": 0, "pagesRetried": 0}
     while True:
         params: dict[str, str | int] = {
             "leht": page,
@@ -303,12 +308,14 @@ def get_all_laws(
             resp.raise_for_status()
             data = resp.json()
         except Exception as e:
+            page_stats["pagesFailed"] += 1
             message = f"API error on page {page}: {e}"
             print(f"  {message}")
             if allow_partial:
                 break
             raise SourceListFetchError(message) from e
 
+        page_stats["pagesFetchedOk"] += 1
         aktid = data.get("aktid", [])
         pages_scanned = page
         if not aktid:
@@ -354,6 +361,7 @@ def get_all_laws(
         "uniqueActs": len(all_laws),
         "complete": completed,
         "partialAllowed": allow_partial,
+        "pages": page_stats,
     }
 
 

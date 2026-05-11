@@ -30,6 +30,23 @@ def test_collect_files_splits_laws_and_state_regulations(tmp_path):
     ]
 
 
+def test_kov_bucket_registered_and_resolves_kov_peep_files(tmp_path):
+    # Guards the CI ``semantic-validation`` matrix entry: the ``kov``
+    # bucket must exist and must collect municipal regulation peep
+    # files from ``krr_outputs/regulations/kov/**`` (issue #105).
+    assert "kov" in shacl_validate_all.BUCKETS
+
+    krr = tmp_path / "krr_outputs"
+    touch(krr / "regulations" / "kov" / "tallinn" / "rule_peep.json")
+    touch(krr / "regulations" / "kov" / "tartu" / "nested" / "rule2_peep.json")
+
+    files = shacl_validate_all.collect_files("kov", krr=krr)
+
+    assert krr / "regulations" / "kov" / "tallinn" / "rule_peep.json" in files
+    assert krr / "regulations" / "kov" / "tartu" / "nested" / "rule2_peep.json" in files
+    assert all(p.name.endswith("_peep.json") for p in files)
+
+
 def test_collect_files_splits_kov_with_registries(tmp_path):
     krr = tmp_path / "krr_outputs"
     touch(krr / "municipalities_peep.json")

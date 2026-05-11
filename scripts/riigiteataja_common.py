@@ -50,6 +50,19 @@ class SourceListFetchError(RuntimeError):
     """Raised when a source-list page cannot be fetched completely."""
 
 
+# Keys used in the per-run page-fetch counter dict surfaced by source-list
+# generators in their manifest/index ``run`` blocks. ``pagesFetchedOk`` =
+# pages that returned JSON; ``pagesFailed`` = pages that ultimately failed
+# (after any retries); ``pagesRetried`` = pages that needed at least one
+# retry attempt before resolving (success or final failure).
+PAGE_STAT_KEYS = ("pagesFetchedOk", "pagesFailed", "pagesRetried")
+
+
+def new_page_stats() -> dict[str, int]:
+    """Return a fresh zeroed page-fetch counter dict."""
+    return {key: 0 for key in PAGE_STAT_KEYS}
+
+
 def ln(tag: str) -> str:
     """Strip an XML namespace prefix and return the local tag name."""
     return tag.split("}", 1)[1] if "}" in tag else tag
@@ -104,6 +117,7 @@ def fetch_acts(
     allow_partial: bool = False,
     max_retries: int = 2,
     retry_sleep: float = 1.0,
+    stats: dict | None = None,
 ) -> Iterator[dict]:
     """Yield acts from the Riigi Teataja search API page by page.
 
@@ -113,7 +127,18 @@ def fetch_acts(
         `None` to omit the parameter (returns both)
       * `kehtiv` — ISO date for the snapshot (`YYYY-MM-DD`); when set the
         API returns only acts in force on that day
+
+    When ``stats`` is supplied it is treated as a mutable counter dict and
+    the ``PAGE_STAT_KEYS`` (``pagesFetchedOk`` / ``pagesFailed`` /
+    ``pagesRetried``) are incremented in place so the caller can surface
+    per-page success/fail/retry counts in its manifest. Missing keys are
+    initialised to zero. On a terminal fetch failure with ``allow_partial``
+    the generator stops early; the caller can detect that via
+    ``stats["pagesFailed"] > 0``.
     """
+    if stats is not None:
+        for key in PAGE_STAT_KEYS:
+            stats.setdefault(key, 0)
     page = 1
     while page <= max_pages:
         params: dict[str, str | int | bool] = {
@@ -130,7 +155,9 @@ def fetch_acts(
             params["kov"] = "true" if kov else "false"
 
         last_error: Exception | None = None
+        attempts_made = 0
         for attempt in range(max_retries + 1):
+            attempts_made = attempt
             try:
                 resp = requests.get(SEARCH_URL, params=params, timeout=timeout)
                 resp.raise_for_status()
@@ -143,11 +170,20 @@ def fetch_acts(
                     time.sleep(retry_sleep * (attempt + 1))
 
         if last_error is not None:
+            if stats is not None:
+                stats["pagesFailed"] += 1
+                if max_retries > 0:
+                    stats["pagesRetried"] += 1
             message = f"API error on page {page}: {last_error}"
             print(f"  {message}")
             if allow_partial:
                 break
             raise SourceListFetchError(message) from last_error
+
+        if stats is not None:
+            stats["pagesFetchedOk"] += 1
+            if attempts_made > 0:
+                stats["pagesRetried"] += 1
 
         aktid = data.get("aktid", []) or []
         if not aktid:
