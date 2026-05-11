@@ -97,15 +97,38 @@ def sanitize_celex(celex: str) -> str:
 
 
 def sparql_query(query: str) -> list[dict]:
-    """Execute a SPARQL query and return bindings."""
-    resp = requests.get(
+    """Execute a SPARQL query and return bindings.
+
+    We POST the query (``application/x-www-form-urlencoded``) instead of
+    GETting it. The Publications Office Virtuoso endpoint answers GET for
+    non-trivial queries with ``HTTP 202 Accepted`` and an *empty* body;
+    ``raise_for_status()`` does not raise on 2xx, so a GET helper silently
+    returns ``[]`` (root cause of #129/#96). POST returns ``200`` +
+    ``application/sparql-results+json``. We still guard against a 202 /
+    non-JSON body so the retry layer reacts if POST ever misbehaves too.
+    """
+    resp = requests.post(
         SPARQL_ENDPOINT,
-        params={"query": query},
-        headers={"Accept": "application/sparql-results+json"},
+        data={"query": query},
+        headers={
+            "Accept": "application/sparql-results+json",
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
         timeout=120,
     )
     resp.raise_for_status()
-    data = resp.json()
+    if resp.status_code == 202:
+        raise RuntimeError(
+            f"SPARQL endpoint returned HTTP 202 (empty body) — "
+            f"endpoint unhealthy or rate-limiting: {SPARQL_ENDPOINT}"
+        )
+    try:
+        data = resp.json()
+    except ValueError as exc:
+        raise RuntimeError(
+            f"SPARQL endpoint returned a non-JSON body "
+            f"(status {resp.status_code}): {exc}"
+        ) from exc
     return data.get("results", {}).get("bindings", [])
 
 
@@ -153,10 +176,14 @@ def fetch_legislation_type(
     partial = False
 
     while True:
+        # ``cdm:directive_date_transposition`` only exists on directive
+        # works; including it as an OPTIONAL for the other types is a
+        # no-op (it simply never binds). It is the transposition deadline
+        # surfaced as ``estleg:transpositionDeadline`` (#96).
         query = f"""
 PREFIX cdm: <http://publications.europa.eu/ontology/cdm#>
 
-SELECT DISTINCT ?work ?celex ?title ?date ?inforce ?eli ?author WHERE {{
+SELECT DISTINCT ?work ?celex ?title ?date ?inforce ?eli ?author ?deadline WHERE {{
   ?work a {cdm_class} .
   ?work cdm:resource_legal_id_celex ?celex .
   ?exp cdm:expression_belongs_to_work ?work .
@@ -166,6 +193,7 @@ SELECT DISTINCT ?work ?celex ?title ?date ?inforce ?eli ?author WHERE {{
   OPTIONAL {{ ?work cdm:resource_legal_in-force ?inforce }}
   OPTIONAL {{ ?work cdm:resource_legal_eli ?eli }}
   OPTIONAL {{ ?work cdm:work_created_by_agent ?author }}
+  OPTIONAL {{ ?work cdm:directive_date_transposition ?deadline }}
 }} ORDER BY ?work LIMIT {PAGE_SIZE} OFFSET {offset}
 """
         print(f"    Fetching offset {offset}...")
@@ -197,6 +225,17 @@ SELECT DISTINCT ?work ?celex ?title ?date ?inforce ?eli ?author WHERE {{
                             if author_code not in item["authors"]:
                                 item["authors"].append(author_code)
                             break
+                # A directive may carry several ``directive_date_transposition``
+                # values (corrigenda). Keep the earliest so the node has a
+                # single deterministic deadline.
+                deadline = b.get("deadline", {}).get("value", "")
+                if deadline:
+                    for item in all_items:
+                        if item["celex"] == celex:
+                            cur = item.get("transposition_deadline", "")
+                            if not cur or deadline < cur:
+                                item["transposition_deadline"] = deadline
+                            break
                 continue
 
             seen_celex.add(celex)
@@ -211,6 +250,7 @@ SELECT DISTINCT ?work ?celex ?title ?date ?inforce ?eli ?author WHERE {{
                 "in_force": b.get("inforce", {}).get("value", ""),
                 "eli": b.get("eli", {}).get("value", ""),
                 "authors": [author_code] if author_code else [],
+                "transposition_deadline": b.get("deadline", {}).get("value", ""),
             })
 
         if len(bindings) < PAGE_SIZE:
@@ -322,6 +362,10 @@ def generate_schema_nodes() -> list[dict]:
             "rdfs:range": {"@id": "xsd:date"},
             "rdfs:comment": {"@value": "Date of the legal act.", "@language": "en"},
         },
+        # NOTE: ``estleg:transpositionDeadline`` (#96) is a corpus-wide
+        # reusable property declared in ``controlled_vocabulary.jsonld`` — not
+        # here — so it is defined exactly once (re-declaring it in this
+        # subcorpus schema would trip ``validate_all.validate_id_uniqueness``).
         {
             "@id": "estleg:inForce",
             "@type": ["owl:DatatypeProperty"],
@@ -385,6 +429,14 @@ def legislation_to_node(item: dict, type_id: str) -> dict:
     # Date
     if item.get("date"):
         node["estleg:documentDate"] = {"@value": item["date"], "@type": "xsd:date"}
+
+    # Transposition deadline (directives only; many directives — and all
+    # regulations/decisions — have none, so emit only when present, #96).
+    if item.get("transposition_deadline"):
+        node["estleg:transpositionDeadline"] = {
+            "@value": item["transposition_deadline"],
+            "@type": "xsd:date",
+        }
 
     # In-force status
     if item.get("in_force"):

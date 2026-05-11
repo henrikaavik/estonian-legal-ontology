@@ -90,15 +90,38 @@ def sanitize_celex(celex: str) -> str:
 
 
 def sparql_query(query: str) -> list[dict]:
-    """Execute a SPARQL query and return bindings."""
-    resp = requests.get(
+    """Execute a SPARQL query and return bindings.
+
+    We POST the query (``application/x-www-form-urlencoded``) instead of
+    GETting it. The Publications Office Virtuoso endpoint answers GET for
+    non-trivial queries with ``HTTP 202 Accepted`` and an *empty* body;
+    ``raise_for_status()`` does not raise on 2xx, so a GET helper silently
+    returns ``[]`` (root cause of #129/#96). POST returns ``200`` +
+    ``application/sparql-results+json``. We still guard against a 202 /
+    non-JSON body so the retry layer reacts if POST ever misbehaves too.
+    """
+    resp = requests.post(
         SPARQL_ENDPOINT,
-        params={"query": query},
-        headers={"Accept": "application/sparql-results+json"},
+        data={"query": query},
+        headers={
+            "Accept": "application/sparql-results+json",
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
         timeout=120,
     )
     resp.raise_for_status()
-    data = resp.json()
+    if resp.status_code == 202:
+        raise RuntimeError(
+            f"SPARQL endpoint returned HTTP 202 (empty body) — "
+            f"endpoint unhealthy or rate-limiting: {SPARQL_ENDPOINT}"
+        )
+    try:
+        data = resp.json()
+    except ValueError as exc:
+        raise RuntimeError(
+            f"SPARQL endpoint returned a non-JSON body "
+            f"(status {resp.status_code}): {exc}"
+        ) from exc
     return data.get("results", {}).get("bindings", [])
 
 

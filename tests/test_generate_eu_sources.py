@@ -382,3 +382,152 @@ def test_harmonisation_graph0_guard_accepts_act_level_first_node(tmp_path, monke
 def test_harmonisation_graph0_guard_handles_missing_file(tmp_path, monkeypatch):
     monkeypatch.setattr(harmonisation, "KRR_DIR", tmp_path / "nonexistent")
     assert harmonisation.get_law_harmonisation_target_iri("missing.json") is None
+
+
+# ---------------------------------------------------------------------------
+# GET → POST: the Publications Office Virtuoso endpoint 202s on GET (#129/#96).
+# ---------------------------------------------------------------------------
+
+
+class _FakeResp:
+    def __init__(self, status_code=200, json_data=None):
+        self.status_code = status_code
+        self._json = (
+            json_data
+            if json_data is not None
+            else {"results": {"bindings": [{"x": {"value": "ok"}}]}}
+        )
+
+    def raise_for_status(self):
+        return None
+
+    def json(self):
+        return self._json
+
+
+@pytest.mark.parametrize("module", [eurlex, curia, harmonisation])
+def test_eu_sparql_query_posts_not_gets(module, monkeypatch):
+    """Each EU generator's ``sparql_query`` must POST the query, never GET it.
+
+    The Publications Office Virtuoso endpoint answers GET for non-trivial
+    queries with HTTP 202 + an empty body; ``raise_for_status()`` does not
+    flag a 2xx, so a GET-based helper silently returns ``[]`` (#129/#96).
+    """
+    posted = {}
+
+    def fake_post(url, data=None, headers=None, timeout=None):
+        posted["url"] = url
+        posted["data"] = data
+        posted["headers"] = headers
+        return _FakeResp()
+
+    def fail_get(*_a, **_k):  # pragma: no cover - must not be reached
+        raise AssertionError(f"{module.__name__}.sparql_query must not use requests.get")
+
+    monkeypatch.setattr(module.requests, "post", fake_post)
+    monkeypatch.setattr(module.requests, "get", fail_get)
+
+    assert module.sparql_query("ASK {}") == [{"x": {"value": "ok"}}]
+    assert posted["url"] == module.SPARQL_ENDPOINT
+    assert posted["data"] == {"query": "ASK {}"}
+    assert posted["headers"]["Accept"] == "application/sparql-results+json"
+    assert "x-www-form-urlencoded" in posted["headers"]["Content-Type"]
+
+
+@pytest.mark.parametrize("module", [eurlex, curia, harmonisation])
+def test_eu_sparql_query_202_raises(module, monkeypatch):
+    """A bare HTTP 202 (empty body) must raise so the retry layer reacts."""
+    def fake_post(url, data=None, headers=None, timeout=None):
+        return _FakeResp(status_code=202, json_data={})
+
+    monkeypatch.setattr(module.requests, "post", fake_post)
+    with pytest.raises(RuntimeError, match="202"):
+        module.sparql_query("ASK {}")
+
+
+# ---------------------------------------------------------------------------
+# #96 — transposition deadline on EU directive nodes built by generate_eu_legislation.
+# ---------------------------------------------------------------------------
+
+
+def test_eurlex_directive_query_projects_deadline(monkeypatch):
+    """The legislation query carries an OPTIONAL ?deadline projection (#96)."""
+    queries: list[str] = []
+
+    def fake_query(query: str) -> list[dict]:
+        queries.append(query)
+        return []
+
+    monkeypatch.setattr(eurlex, "sparql_query", fake_query)
+    eurlex.fetch_legislation_type("cdm:directive")
+    assert "?deadline" in queries[0]
+    assert "cdm:directive_date_transposition" in queries[0]
+
+
+def test_legislation_to_node_emits_deadline_when_present():
+    node = eurlex.legislation_to_node(
+        {
+            "celex": "32011L0083",
+            "title": "Consumer Rights Directive",
+            "date": "2011-10-25",
+            "in_force": "true",
+            "eli": "",
+            "authors": [],
+            "transposition_deadline": "2013-12-13",
+        },
+        "Directive",
+    )
+    assert node["estleg:transpositionDeadline"] == {"@value": "2013-12-13", "@type": "xsd:date"}
+
+
+def test_legislation_to_node_omits_deadline_when_absent():
+    node = eurlex.legislation_to_node(
+        {
+            "celex": "32016R0679",
+            "title": "GDPR",
+            "date": "2016-04-27",
+            "in_force": "true",
+            "eli": "",
+            "authors": [],
+            "transposition_deadline": "",
+        },
+        "Regulation",
+    )
+    assert "estleg:transpositionDeadline" not in node
+
+
+def test_eurlex_schema_does_not_redeclare_transposition_deadline():
+    """estleg:transpositionDeadline (#96) is declared once, in
+    controlled_vocabulary.jsonld — re-declaring it in the eurlex subcorpus
+    schema would trip validate_all's @id-uniqueness gate."""
+    ids = {n["@id"] for n in eurlex.generate_schema_nodes()}
+    assert "estleg:transpositionDeadline" not in ids
+    # The other EU-legislation datatype props are still declared here.
+    assert "estleg:documentDate" in ids
+    assert "estleg:celexNumber" in ids
+
+
+def test_eurlex_dedup_keeps_earliest_deadline(monkeypatch):
+    """When a directive appears across rows with several deadlines, the
+    earliest is kept (corrigenda may declare later dates)."""
+    payload = [
+        {"celex": {"value": "32007L0073"}, "work": {"value": "w"}, "title": {"value": "T"},
+         "deadline": {"value": "2008-09-14"}},
+        {"celex": {"value": "32007L0073"}, "work": {"value": "w"}, "title": {"value": "T"},
+         "deadline": {"value": "2007-12-18"}},
+    ]
+    state = {"called": False}
+
+    def fake_query(_q):
+        if state["called"]:
+            return []
+        state["called"] = True
+        return payload
+
+    monkeypatch.setattr(eurlex, "sparql_query", fake_query)
+    monkeypatch.setattr(eurlex.time, "sleep", lambda _: None)
+
+    items, partial = eurlex.fetch_legislation_type("cdm:directive")
+    assert partial is False
+    assert len(items) == 1
+    assert items[0]["transposition_deadline"] == "2007-12-18"
