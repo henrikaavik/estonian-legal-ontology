@@ -70,6 +70,12 @@ estleg:ActTemporalShape
         sh:datatype xsd:string ;
         sh:name "transpositionStatus" ;
         sh:description "Status of directive transposition for this act" ;
+    ] ;
+    sh:property [
+        sh:path estleg:harmonisedWith ;
+        sh:nodeKind sh:IRI ;
+        sh:name "harmonisedWith" ;
+        sh:description "Harmonisation record(s) (estleg:HarmonisationLink) for directives this act transposes that a Baltic/Nordic neighbour also transposed (issue #197)" ;
     ] .
 
 # Shape for LegalProvision instances.
@@ -619,6 +625,61 @@ estleg:EULegislationShape
         sh:nodeKind sh:IRI ;
         sh:name "transposedBy" ;
         sh:description "Estonian law that transposes this EU directive" ;
+    ] .
+
+# Shape for HarmonisationLink instances (issue #197).
+#
+# `generate_harmonisation_links.py` writes two kinds of HarmonisationLink
+# node into `krr_outputs/harmonisation/harmonisation_by_directive/*.json`:
+#   * one aggregate node per directive (`estleg:Harmonisation_<celex>`)
+#     carrying `estleg:sharedDirective` (the EU directive) and
+#     `estleg:harmonisedWith` (the Estonian act that transposes it), and
+#   * one node per neighbouring-country National Implementing Measure
+#     (`estleg:Harm_<celex>_<COUNTRY3>_<n>`) carrying
+#     `estleg:memberStateCode` + `estleg:nationalCelex` (+ optional
+#     `dcterms:title` / `dcterms:date`).
+# Every property is therefore optional here so both shapes validate
+# against this one NodeShape; only `rdfs:label` is required.
+estleg:HarmonisationLinkShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:HarmonisationLink ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:name "label" ;
+        sh:description "Every HarmonisationLink node must have a human-readable label" ;
+    ] ;
+    sh:property [
+        sh:path estleg:sharedDirective ;
+        sh:nodeKind sh:IRI ;
+        sh:name "sharedDirective" ;
+        sh:description "The EU directive that Estonia and the listed neighbouring state(s) both transpose" ;
+    ] ;
+    sh:property [
+        sh:path estleg:harmonisedWith ;
+        sh:nodeKind sh:IRI ;
+        sh:name "harmonisedWith" ;
+        sh:description "On the aggregate node: the Estonian act that transposes the shared directive" ;
+    ] ;
+    sh:property [
+        sh:path estleg:memberStateCode ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "memberStateCode" ;
+        sh:description "ISO 3166-1 alpha-3 code of the neighbouring EU member state (LVA/LTU/FIN/SWE)" ;
+    ] ;
+    sh:property [
+        sh:path estleg:nationalCelex ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "nationalCelex" ;
+        sh:description "CELEX identifier of the neighbouring state's National Implementing Measure" ;
+    ] ;
+    sh:property [
+        sh:path dcterms:date ;
+        sh:maxCount 1 ;
+        sh:name "date" ;
+        sh:description "Document date of the neighbouring National Implementing Measure (xsd:date when CELLAR supplies a strict YYYY-MM-DD value, otherwise a plain string)" ;
     ] .
 
 # Shape for EUDocumentType instances

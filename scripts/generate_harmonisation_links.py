@@ -22,6 +22,7 @@ import re
 import shutil
 import sys
 import time
+from datetime import date as _date
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -66,7 +67,10 @@ CONTEXT = {
     "dcterms": "http://purl.org/dc/terms/",
 }
 
-# Target countries: Baltic/Nordic neighbors
+# Target countries: Baltic/Nordic neighbors. The keys are the ISO 3166-1
+# alpha-3 codes the Publications Office country vocabulary uses in
+# ``.../authority/country/<CODE>`` URIs (these match
+# ``cdm:measure_national_implementing_implemented_by_country`` exactly).
 TARGET_COUNTRIES = {
     "LVA": {"label_en": "Latvia", "label_et": "Läti"},
     "LTU": {"label_en": "Lithuania", "label_et": "Leedu"},
@@ -74,7 +78,8 @@ TARGET_COUNTRIES = {
     "SWE": {"label_en": "Sweden", "label_et": "Rootsi"},
 }
 
-# Country filter for SPARQL
+# Country filter for SPARQL — a ``VALUES``-style ``IN(...)`` list of the
+# 3-letter codes extracted from each NIM's country authority URI.
 COUNTRY_FILTER = ", ".join(f'"{c}"' for c in TARGET_COUNTRIES)
 
 
@@ -87,6 +92,21 @@ def load_json(filepath: Path) -> dict:
 def sanitize_celex(celex: str) -> str:
     """Create a safe ID from a CELEX number."""
     return re.sub(r"[^0-9A-Za-z]", "", celex)[:40] or "Unknown"
+
+
+def _is_strict_iso_date(value: str) -> bool:
+    """Return True iff ``value`` is a strict ``YYYY-MM-DD`` date.
+
+    Mirrors ``validate_all.is_strict_xsd_date`` so any ``xsd:date``
+    literal this script emits passes the corpus date validator
+    (``date.fromisoformat`` accepts ``"2011-7-8"`` on 3.11+, but the
+    validator additionally requires the round-tripped canonical form).
+    """
+    try:
+        parsed = _date.fromisoformat(value)
+    except ValueError:
+        return False
+    return value == parsed.isoformat()
 
 
 def sparql_query(query: str) -> list[dict]:
@@ -162,12 +182,51 @@ def _cache_is_fresh(path: Path, ttl_days: int = CACHE_TTL_DAYS) -> bool:
     return age_seconds < ttl_days * 86400
 
 
+def _nim_celex_prefix(celex_dir: str) -> str:
+    """Return the prefix every NIM CELEX for ``celex_dir`` shares.
+
+    CELLAR assigns each National-Implementing-Measure work a CELEX of the
+    form ``7<directive-CELEX-without-its-sector-digit><COUNTRY3>_<id>`` —
+    e.g. directive ``32009L0110`` → ``72009L0110FIN_184955``. A NIM that
+    transposes several directives carries one such CELEX *per directive*,
+    so restricting ``?celex_nat`` to this prefix collapses the SPARQL
+    result to one row per (country, NIM) for *this* directive instead of
+    a cartesian product over every directive the NIM happens to
+    implement. Empty string for a degenerate CELEX (never happens for the
+    ``3xxxxLxxxx`` directives in ``transposition_mapping.json``).
+    """
+    return ("7" + celex_dir[1:]) if len(celex_dir) > 1 else ""
+
+
 def fetch_other_transpositions(
     celex_dir: str, *, use_cache: bool = True
 ) -> list[dict]:
     """
     For a given directive CELEX, fetch transposition measures from target countries.
-    Returns list of dicts with country, celex_nat, title.
+    Returns list of dicts with ``country_code``/``country_en``/``country_et``,
+    ``celex_nat`` and (when CELLAR has them) ``title``, ``date``, ``nim_uri``.
+
+    The CDM models a National Implementing Measure (NIM) as a ``work``
+    typed ``cdm:measure_national_implementing`` that carries:
+      * ``cdm:measure_national_implementing_implements_directive`` → the
+        directive ``work`` it transposes;
+      * ``cdm:measure_national_implementing_implemented_by_country`` → the
+        country authority URI (we filter for LV/LT/FI/SE);
+      * ``cdm:resource_legal_id_celex`` → the NIM's CELEX(es);
+      * ``cdm:work_title`` → the national-language act title;
+      * ``cdm:work_date_document`` → the act's document date.
+    The directive is joined via its CELEX *variable* rather than a string
+    literal: Virtuoso treats an unqualified ``"X"`` literal as
+    ``rdf:langString`` (no lang tag), which never equals the ``xsd:string``
+    CELEX value, so ``?directive cdm:resource_legal_id_celex "<celex>"``
+    returns zero rows — the bug behind #197 (the GET→POST fix from #129
+    made the endpoint respond, but this query body still matched nothing).
+    ``FILTER(STR(?celex_dir) = "<celex>")`` matches regardless of the
+    literal's datatype, and the exact equality (vs ``STRSTARTS``) keeps
+    corrigenda works (``...R(01)``) out of the join. The earlier query
+    also used ``cdm:resource_legal_measures_transposition_for`` /
+    ``cdm:work_created_by_agent`` — neither holds for NIMs in CELLAR
+    today, so it returned nothing on every directive (#197).
 
     Uses an on-disk per-CELEX cache (``CACHE_DIR``) with ``CACHE_TTL_DAYS``
     TTL. Cache hits skip both the SPARQL call and the rate-limit sleep
@@ -186,16 +245,20 @@ def fetch_other_transpositions(
             # overwrite it.
             pass
 
+    nim_prefix = _nim_celex_prefix(celex_dir)
     query = f"""
 PREFIX cdm: <http://publications.europa.eu/ontology/cdm#>
-SELECT DISTINCT ?directive ?celex_dir ?national ?celex_nat ?country WHERE {{
-  ?directive cdm:resource_legal_id_celex "{celex_dir}" .
-  ?national cdm:resource_legal_measures_transposition_for ?directive .
-  ?national cdm:resource_legal_id_celex ?celex_nat .
-  FILTER(STRSTARTS(?celex_nat, "7"))
-  ?national cdm:work_created_by_agent ?country_uri .
+SELECT DISTINCT ?nim ?country ?celex_nat ?title ?date WHERE {{
+  ?nim cdm:measure_national_implementing_implements_directive ?directive .
+  ?directive cdm:resource_legal_id_celex ?celex_dir .
+  FILTER(STR(?celex_dir) = "{celex_dir}")
+  ?nim cdm:measure_national_implementing_implemented_by_country ?country_uri .
   BIND(STRAFTER(STR(?country_uri), "authority/country/") AS ?country)
   FILTER(?country IN ({COUNTRY_FILTER}))
+  ?nim cdm:resource_legal_id_celex ?celex_nat .
+  FILTER(STRSTARTS(STR(?celex_nat), "{nim_prefix}"))
+  OPTIONAL {{ ?nim cdm:work_title ?title }}
+  OPTIONAL {{ ?nim cdm:work_date_document ?date }}
 }} ORDER BY ?country ?celex_nat
 """
     bindings = sparql_query_with_retry(query)
@@ -206,18 +269,32 @@ SELECT DISTINCT ?directive ?celex_dir ?national ?celex_nat ?country WHERE {{
     for b in bindings:
         country = b.get("country", {}).get("value", "")
         celex_nat = b.get("celex_nat", {}).get("value", "")
+        # Defensive: the SPARQL FILTER already restricts to TARGET_COUNTRIES,
+        # but never trust a remote endpoint to enforce it.
+        if country not in TARGET_COUNTRIES or not celex_nat:
+            continue
 
         key = (country, celex_nat)
         if key in seen:
             continue
         seen.add(key)
 
-        results.append({
+        entry: dict = {
             "country_code": country,
-            "country_en": TARGET_COUNTRIES.get(country, {}).get("label_en", country),
-            "country_et": TARGET_COUNTRIES.get(country, {}).get("label_et", country),
+            "country_en": TARGET_COUNTRIES[country].get("label_en", country),
+            "country_et": TARGET_COUNTRIES[country].get("label_et", country),
             "celex_nat": celex_nat,
-        })
+        }
+        title = b.get("title", {}).get("value", "")
+        if title:
+            entry["title"] = title
+        date = b.get("date", {}).get("value", "")
+        if date:
+            entry["date"] = date
+        nim_uri = b.get("nim", {}).get("value", "")
+        if nim_uri:
+            entry["nim_uri"] = nim_uri
+        results.append(entry)
 
     if use_cache:
         try:
@@ -311,7 +388,9 @@ def build_directive_node(
                 f"{len(other_measures)} other member state measure(s)."
             ),
             "estleg:sharedDirective": {"@id": directive_iri},
-            "estleg:harmonisedWith": {"@id": estonian_law_iri},
+            # estleg:harmonisedWith is a multi-valued property (see
+            # validate_all.MULTI_VALUED_PROPS) — always emit it as an array.
+            "estleg:harmonisedWith": [{"@id": estonian_law_iri}],
         },
     ]
 
@@ -328,14 +407,32 @@ def build_directive_node(
         for idx, m in enumerate(measures):
             node_id = f"estleg:Harm_{safe_celex}_{country_code}_{idx + 1}"
 
+            title = m.get("title", "")
+            label_suffix = title if title else m["celex_nat"]
             node: dict = {
                 "@id": node_id,
-                "@type": ["owl:NamedIndividual"],
-                "rdfs:label": f"{country_info.get('label_en', country_code)}: {m['celex_nat']}",
+                # Typed as HarmonisationLink so the SHACL HarmonisationLinkShape
+                # (and the eurlex bucket validator) reaches these per-measure
+                # nodes too — all of HarmonisationLinkShape's constraints are
+                # optional, so the aggregate node above and these measure
+                # nodes both validate against it.
+                "@type": ["owl:NamedIndividual", "estleg:HarmonisationLink"],
+                "rdfs:label": f"{country_info.get('label_en', country_code)}: {label_suffix}",
                 "estleg:memberStateCode": country_code,
                 "estleg:nationalCelex": m["celex_nat"],
                 "estleg:sharedDirective": {"@id": directive_iri},
             }
+            if title:
+                node["dcterms:title"] = title
+            measure_date = m.get("date", "")
+            # Emit dcterms:date as xsd:date only when it is a strict
+            # YYYY-MM-DD value (validate_all rejects loose xsd:date literals);
+            # otherwise keep it as a plain string so no information is lost.
+            if measure_date:
+                if _is_strict_iso_date(measure_date):
+                    node["dcterms:date"] = {"@value": measure_date, "@type": "xsd:date"}
+                else:
+                    node["dcterms:date"] = measure_date
             graph.append(node)
 
     return {"@context": CONTEXT, "@graph": graph}
