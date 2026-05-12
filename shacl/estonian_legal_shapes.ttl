@@ -585,6 +585,13 @@ estleg:CourtDecisionShape
         sh:description "Riigikohus object identifier" ;
     ] ;
     sh:property [
+        sh:path estleg:legalText ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "legalText" ;
+        sh:description "Optional full decision text scraped from the RIK detail page (rikos.rik.ee/?asjaNr=<case_nr>). Populated incrementally by generate_court_decisions.py --fetch-full-text (issue #135); decisions not yet fetched only carry estleg:summary. Plain xsd:string — never language-tagged." ;
+    ] ;
+    sh:property [
         sh:path estleg:decisionType ;
         sh:nodeKind sh:IRI ;
         sh:name "decisionType" ;
