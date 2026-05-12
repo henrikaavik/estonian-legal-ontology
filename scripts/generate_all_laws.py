@@ -203,6 +203,106 @@ def _walk_paragraphs_direct(
     return out
 
 
+def _loige_body_text(loige_el: ET.Element) -> str:
+    """Return the joined text of one ``loige`` subtree.
+
+    Concatenates the ``lauseOsa``/``lause``/``tavatekst`` fragments below
+    the lõige, normalising whitespace and dropping fragments of length
+    <= 3 (the same filter ``collect_full_text`` applies). The lõige's own
+    ``(N)`` marker is *not* prepended here — callers add it when they want
+    the marker (the provision-level ``estleg:legalText`` does;
+    ``estleg:legalText`` on a Subsection node also does, mirroring the
+    provision-level form).
+    """
+    body_parts: list[str] = []
+    for grandchild in loige_el.iter():
+        tag = ln(grandchild.tag)
+        if tag in ("lauseOsa", "lause", "tavatekst"):
+            txt = "".join(grandchild.itertext()).strip()
+            txt = re.sub(r"\s+", " ", txt)
+            if txt and len(txt) > 3:
+                body_parts.append(txt)
+    return " ".join(body_parts).strip()
+
+
+def _superscript_from_text(value: str) -> str:
+    """Extract a trailing superscript index from a number-bearing string.
+
+    Mirrors the ``kuvatavNr`` branch of ``_superscript_index`` but works
+    on a bare string (a ``loige`` ``kuvatavNr`` like ``(2)`` or ``(2¹)``).
+    Machine ``loigeNr`` superscripts are carried in the ``ylaIndeks``
+    attribute, so this fallback only matters for the display form.
+    Returns the index as a plain digit string ("1", "2", ...) or ``""``.
+    """
+    if not value:
+        return ""
+    m = re.search(
+        r"\d+\s*(?:<sup>\s*(\d+)\s*</sup>|([¹²³⁰⁴-⁹]+))",
+        value,
+    )
+    if not m:
+        return ""
+    if m.group(1):
+        return m.group(1).strip()
+    if m.group(2):
+        return "".join(_SUPERSCRIPT_DIGIT_MAP.get(ch, "") for ch in m.group(2))
+    return ""
+
+
+def _loige_numbers(loige_el: ET.Element) -> tuple[str, str]:
+    """Return ``(display_number, id_suffix)`` for one ``loige`` element.
+
+    The *display number* is the human-facing lõige label — preferring the
+    ``kuvatavNr`` CDATA (stripped of its parentheses; e.g. ``(2¹)`` →
+    ``2¹``) and falling back to ``loigeNr``. The *id suffix* is the
+    canonical, order-independent IRI fragment: the base ``loigeNr`` digits
+    plus any superscript index (``ylaIndeks`` on the ``loigeNr`` element,
+    or a Unicode/``<sup>`` superscript glyph in ``kuvatavNr``), joined
+    with an underscore — ``§ 14 lg 2¹`` → ``2_1``. This mirrors
+    ``_paragraph_id_suffix`` for paragrahv elements.
+    """
+    loige_nr = ""
+    ya = ""
+    for sub in loige_el:
+        if ln(sub.tag) == "loigeNr":
+            if sub.text:
+                loige_nr = sub.text.strip()
+            ya = (sub.attrib.get("ylaIndeks") or "").strip()
+            break
+
+    kuv_raw = ""
+    for sub in loige_el:
+        if ln(sub.tag) == "kuvatavNr":
+            kuv_raw = "".join(sub.itertext()).strip()
+            break
+    kuv_inner = re.sub(r"[()]", "", kuv_raw).strip() if kuv_raw else ""
+
+    # Display: kuvatavNr (without parens) wins, else loigeNr, else "".
+    display = kuv_inner or loige_nr
+
+    # ID suffix base + superscript.
+    base = loige_nr
+    if not base:
+        # No machine loigeNr — fall back to the digits in the display form.
+        m = re.match(r"\s*(\d+)", kuv_inner)
+        base = m.group(1) if m else kuv_inner
+    sup = ya
+    if not sup and kuv_raw:
+        sup = _superscript_from_text(kuv_raw)
+    # sanitize_id keeps [0-9A-Za-z_] only, so a base like "2" stays "2"
+    # and any stray punctuation is dropped before it becomes an IRI fragment.
+    base_clean = sanitize_id(base) if base else "Unknown"
+    if sup:
+        return display, f"{base_clean}_{sanitize_id(sup)}"
+    return display, base_clean
+
+
+def _iter_loiked(el: ET.Element) -> list[ET.Element]:
+    """Return the direct ``loige`` children of a paragrahv element, in
+    document order."""
+    return [child for child in el if ln(child.tag) == "loige"]
+
+
 def collect_full_text(el: ET.Element) -> str:
     """Return the complete text of a provision, preserving lõige boundaries.
 
@@ -213,32 +313,9 @@ def collect_full_text(el: ET.Element) -> str:
     single-paragraph laws still emit useful text.
     """
     lõige_blocks: list[str] = []
-    for child in el:
-        if ln(child.tag) != "loige":
-            continue
-        loige_nr = ""
-        for sub in child:
-            if ln(sub.tag) == "loigeNr" and sub.text:
-                loige_nr = sub.text.strip()
-                break
-        if not loige_nr:
-            for sub in child:
-                if ln(sub.tag) == "kuvatavNr":
-                    raw = "".join(sub.itertext()).strip()
-                    inner = re.sub(r"[()]", "", raw).strip()
-                    if inner:
-                        loige_nr = inner
-                        break
-
-        body_parts: list[str] = []
-        for grandchild in child.iter():
-            tag = ln(grandchild.tag)
-            if tag in ("lauseOsa", "lause", "tavatekst"):
-                txt = "".join(grandchild.itertext()).strip()
-                txt = re.sub(r"\s+", " ", txt)
-                if txt and len(txt) > 3:
-                    body_parts.append(txt)
-        body = " ".join(body_parts).strip()
+    for child in _iter_loiked(el):
+        loige_nr, _suffix = _loige_numbers(child)
+        body = _loige_body_text(child)
         if not body:
             continue
         if loige_nr:
@@ -258,6 +335,84 @@ def collect_full_text(el: ET.Element) -> str:
             if txt and len(txt) > 3:
                 parts.append(txt)
     return " ".join(parts)
+
+
+def build_subsections(
+    par_el: ET.Element,
+    provision_id: str,
+    *,
+    abbrev_prefix: str,
+    par_suffix: str,
+    paragraph_display: str,
+    osa_nr: str | None = None,
+    seen_ids: set[str] | None = None,
+) -> list[dict]:
+    """Build ``estleg:Subsection`` nodes for one paragrahv's ``loige`` children.
+
+    Each lõige becomes one ``estleg:Subsection`` named individual:
+      * ``@id``: ``estleg:<PREFIX>[_Osa<N>]_Par_<parSuffix>_Lg_<loigeSuffix>``
+        (superscript ``§ 14 lg 2¹`` → ``..._Par_14_Lg_2_1``);
+      * ``@type``: ``["estleg:Subsection", "owl:NamedIndividual"]``;
+      * ``estleg:subsectionNumber``: the display lõige number as a string;
+      * ``estleg:legalText``: the lõige's own text, prefixed with its
+        ``(N)`` marker (mirroring the provision-level ``estleg:legalText``);
+      * ``estleg:parentProvision``: ``{"@id": provision_id}``;
+      * ``rdfs:label``: e.g. ``"§ 14 lg 2"``.
+
+    Subsections whose lõige carries no usable text are skipped (an empty
+    lõige is a structural artefact, not a citable unit, and SHACL requires
+    ``estleg:legalText``). Returns the nodes in document order. ``seen_ids``,
+    when supplied, accumulates the emitted Subsection IRIs and is checked
+    for collisions (a duplicate raises ``ValueError`` — the same fail-fast
+    contract the paragraph IRIs use).
+    """
+    if seen_ids is None:
+        seen_ids = set()
+    # Paragraph display strings from kuvatavNr carry a trailing period and
+    # whitespace ("§ 14. "); strip it so the Subsection label reads
+    # "§ 14 lg 2" rather than "§ 14.  lg 2".
+    par_label_base = None
+    if paragraph_display:
+        cleaned = re.sub(r"\s+", " ", paragraph_display).strip().rstrip(".").strip()
+        par_label_base = cleaned or None
+    subsection_nodes: list[dict] = []
+    for loige_el in _iter_loiked(par_el):
+        display_nr, suffix = _loige_numbers(loige_el)
+        body = _loige_body_text(loige_el)
+        if not body:
+            # Empty lõige (e.g. a repealed-marker placeholder) — no
+            # citable text, so no Subsection node.
+            continue
+        osa_segment = f"_Osa{osa_nr}" if osa_nr else ""
+        sub_id = f"estleg:{abbrev_prefix}{osa_segment}_Par_{par_suffix}_Lg_{suffix}"
+        if sub_id in seen_ids:
+            raise ValueError(
+                f"Duplicate subsection IRI {sub_id!r} produced for prefix "
+                f"{abbrev_prefix!r}; check loigeNr / ylaIndeks / kuvatavNr "
+                f"in the source XML."
+            )
+        seen_ids.add(sub_id)
+
+        legal_text = f"({display_nr}) {body}" if display_nr else body
+
+        # estleg:legalText / estleg:subsectionNumber are emitted as plain
+        # (xsd:string) literals, matching estleg:SubsectionShape's
+        # sh:datatype xsd:string and the existing estleg:legalText data in
+        # the corpus (the generate_missing_parts.py outputs).
+        node: dict = {
+            "@id": sub_id,
+            "@type": ["estleg:Subsection", "owl:NamedIndividual"],
+            "estleg:subsectionNumber": display_nr or suffix,
+            "estleg:legalText": legal_text,
+            "estleg:parentProvision": {"@id": provision_id},
+        }
+        if par_label_base and display_nr:
+            node["rdfs:label"] = {
+                "@value": f"{par_label_base} lg {display_nr}",
+                "@language": "et",
+            }
+        subsection_nodes.append(node)
+    return subsection_nodes
 
 
 class SourceListFetchError(RuntimeError):
@@ -834,6 +989,9 @@ def generate_law_jsonld(
 
     # Add paragraph nodes
     seen_ids: set[str] = set()
+    # Issue #132: every estleg:Subsection IRI emitted in this file —
+    # a collision (loigeNr/ylaIndeks/kuvatavNr clash) fails fast.
+    seen_subsection_ids: set[str] = set()
     for p in paragrahvid:
         p_nr = ct(p, "paragrahvNr") or "?"
         p_title = ct(p, "paragrahvPealkiri") or ""
@@ -845,7 +1003,8 @@ def generate_law_jsonld(
         # plus any superscript index (ylaIndeks="N" or §X¹). This is
         # order-independent so partial regenerations no longer drift
         # IRIs based on insertion order.
-        p_id = f"estleg:{prefix}_Par_{_paragraph_id_suffix(p)}"
+        par_suffix = _paragraph_id_suffix(p)
+        p_id = f"estleg:{prefix}_Par_{par_suffix}"
 
         if p_id in seen_ids:
             raise ValueError(
@@ -900,7 +1059,26 @@ def generate_law_jsonld(
         if container_ref:
             node["estleg:isPartOf"] = {"@id": container_ref}
 
+        # Issue #132: emit estleg:Subsection nodes for each lõige. The
+        # provision keeps its full concatenated estleg:legalText (the sum
+        # of the subsections) for backward compatibility; the per-lõige
+        # text additionally lives on Subsection nodes — the level
+        # citations actually reference ("TsÜS § 14 lg 2").
+        subsection_nodes = build_subsections(
+            p,
+            p_id,
+            abbrev_prefix=prefix,
+            par_suffix=par_suffix,
+            paragraph_display=p_display,
+            seen_ids=seen_subsection_ids,
+        )
+        if subsection_nodes:
+            node["estleg:hasSubsection"] = [
+                {"@id": s["@id"]} for s in subsection_nodes
+            ]
+
         graph.append(node)
+        graph.extend(subsection_nodes)
 
     return {"@context": CONTEXT, "@graph": graph}
 
@@ -1189,6 +1367,8 @@ def generate_multipart_law(
             graph.insert(2, scheme_node)
 
         seen_ids: set[str] = set()
+        # Issue #132: Subsection IRIs emitted within this osa file.
+        seen_subsection_ids: set[str] = set()
         for p in paragrahvid:
             p_nr = ct(p, "paragrahvNr") or "?"
             p_title = ct(p, "paragrahvPealkiri") or ""
@@ -1196,7 +1376,8 @@ def generate_multipart_law(
             text = collect_text(p)
             full_text = collect_full_text(p)
             # Issue #156/#165 fix 2: superscript-aware paragraph IRI suffix.
-            p_id = f"estleg:{prefix}_Osa{osa_nr}_Par_{_paragraph_id_suffix(p)}"
+            par_suffix = _paragraph_id_suffix(p)
+            p_id = f"estleg:{prefix}_Osa{osa_nr}_Par_{par_suffix}"
             if p_id in seen_ids:
                 raise ValueError(
                     f"Duplicate paragraph IRI {p_id!r} produced for prefix "
@@ -1245,7 +1426,22 @@ def generate_multipart_law(
             container_ref = par_to_container.get(p_num)
             if container_ref:
                 node["estleg:isPartOf"] = {"@id": container_ref}
+            # Issue #132: per-lõige estleg:Subsection nodes (osa-scoped IRIs).
+            subsection_nodes = build_subsections(
+                p,
+                p_id,
+                abbrev_prefix=prefix,
+                par_suffix=par_suffix,
+                paragraph_display=p_display,
+                osa_nr=str(osa_nr),
+                seen_ids=seen_subsection_ids,
+            )
+            if subsection_nodes:
+                node["estleg:hasSubsection"] = [
+                    {"@id": s["@id"]} for s in subsection_nodes
+                ]
             graph.append(node)
+            graph.extend(subsection_nodes)
 
         filename = f"{slug}_osa{osa_nr}_peep.json"
         results.append((filename, {"@context": CONTEXT, "@graph": graph}))

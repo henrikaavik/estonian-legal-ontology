@@ -247,6 +247,63 @@ estleg:LegalProvisionShape
         sh:nodeKind sh:IRI ;
         sh:name "currentVersion" ;
         sh:description "Optional — the latest estleg:ProvisionVersion in this provision's text history. Population is future work (#131 follow-up)." ;
+    ] ;
+    # --- subsection (lõige) model (issue #132) ---
+    # Optional: a provision with no lõiked carries no estleg:hasSubsection
+    # and still conforms; a provision with lõige structure links one
+    # estleg:Subsection per lõige (in document order). Each Subsection
+    # node is validated by estleg:SubsectionShape below.
+    sh:property [
+        sh:path estleg:hasSubsection ;
+        sh:minCount 0 ;
+        sh:nodeKind sh:IRI ;
+        sh:name "hasSubsection" ;
+        sh:description "Optional — estleg:Subsection (lõige) nodes belonging to this provision, one per lõige in document order. Absent on provisions with no lõige structure (their text lives directly on the § node)." ;
+    ] .
+
+# Shape for Subsection (lõige) instances — issue #132.
+#
+# An estleg:Subsection is one numbered lõige of an estleg:LegalProvision —
+# the level Estonian citations actually reference ("TsÜS § 14 lg 2").
+# IRI form: estleg:<PREFIX>[_Osa<N>]_Par_<parSuffix>_Lg_<loigeSuffix>
+# (superscript "§ 14 lg 2¹" → ..._Par_14_Lg_2_1). Each node carries the
+# lõige number, the lõige's own text (with its (N) marker), and exactly
+# one estleg:parentProvision link back to the § node. estleg:parentProvision
+# is constrained to be an IRI (not sh:class estleg:LegalProvision),
+# mirroring the project-wide convention of dodging subclass-inference
+# requirements (see LegalProvisionShape's targetSubjectsOf comment).
+estleg:SubsectionShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:Subsection ;
+    sh:property [
+        sh:path estleg:subsectionNumber ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "subsectionNumber" ;
+        sh:description "The lõige number as a display string (e.g. \"2\", \"2¹\")." ;
+    ] ;
+    sh:property [
+        sh:path estleg:legalText ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "legalText" ;
+        sh:description "The lõige's own text (the lõige-and-below text, including its (N) punkt markers), mirroring the provision-level estleg:legalText." ;
+    ] ;
+    sh:property [
+        sh:path estleg:parentProvision ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:nodeKind sh:IRI ;
+        sh:name "parentProvision" ;
+        sh:description "Exactly one estleg:LegalProvision (the § node, an IRI) this lõige belongs to." ;
+    ] ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:name "label" ;
+        sh:description "Optional human label, e.g. \"§ 14 lg 2\"." ;
     ] .
 
 # Shape for TopicCluster instances.
