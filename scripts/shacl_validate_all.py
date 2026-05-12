@@ -85,11 +85,11 @@ def collect_curia(krr: Path = KRR) -> list[Path]:
 # Sidecar enrichment outputs live one level deep under ``krr_outputs/`` and
 # carry their own SHACL target classes (``estleg:LegalConcept``,
 # ``estleg:Sanction``, ``estleg:AmendmentEvent``, ``estleg:Institution`` plus
-# ``estleg:Competence``, and ``estleg:ProvisionVersion`` under
-# ``provision_versions/`` — issue #198). They are *not* ``*_peep.json`` files, so
-# the other buckets miss them; without a bucket here those shaped classes have no
-# validation path (issue #106).
-SIDECAR_DIRS = ("concepts", "sanctions", "amendments", "institutions", "provision_versions")
+# ``estleg:Competence``, ``estleg:ProvisionVersion`` under ``provision_versions/``
+# — issue #198, and ``estleg:Annotation`` under ``annotations/`` — issue #199).
+# They are *not* ``*_peep.json`` files, so the other buckets miss them; without a
+# bucket here those shaped classes have no validation path (issue #106).
+SIDECAR_DIRS = ("concepts", "sanctions", "amendments", "institutions", "provision_versions", "annotations")
 # Aggregate/report artifacts that sit alongside the shaped data but contain no
 # ``@graph`` — exclude them so pyshacl is not handed plain summary JSON
 # (e.g. ``concepts/concept_crossref_report.json``).
