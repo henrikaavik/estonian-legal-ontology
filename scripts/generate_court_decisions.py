@@ -9,15 +9,37 @@ Generates:
   - krr_outputs/riigikohus/riigikohus_YYYY_peep.json  (per-year files)
   - krr_outputs/riigikohus/riigikohus_schema.json      (schema definitions)
   - krr_outputs/riigikohus/RIIGIKOHUS_INDEX.json        (registry)
+
+Full decision text (issue #135)
+-------------------------------
+By default this script ingests only the search-result table (date,
+case number, decision type, a long abstract used as ``estleg:summary``,
+and the RIK object id). Each decision additionally has a detail page at
+``https://rikos.rik.ee/?asjaNr=<case_nr>`` that serves the *full*
+decision text (``RIIGIKOHUS``, the operative part, ``ASJAOLUD``,
+reasoning, etc.) — for both the modern ``WordSection1`` layout and the
+older bare-``<P>`` layout.
+
+Run with ``--fetch-full-text`` to enrich the existing
+``riigikohus_*_peep.json`` files in place: for the first
+``--full-text-limit`` decisions (deterministic order: year descending,
+then file order; ``0`` means *all* — a multi-hour ~12k-page scrape) it
+fetches the detail page and adds a plain-string ``estleg:legalText``
+literal to that decision node. Fetches are cached on disk under
+``krr_outputs/.cache/court_decisions/<safe_case_nr>.txt`` so reruns are
+near-instant and the full run is resumable. Decisions not fetched in a
+given run keep their existing shape — ``estleg:legalText`` is optional.
 """
 
 from __future__ import annotations
 
+import argparse
 import html as html_mod
 import json
 import logging
 import math
 import re
+import sys
 import time
 import urllib.parse
 from datetime import datetime
@@ -45,6 +67,41 @@ NS = "https://data.riik.ee/ontology/estleg#"
 SEARCH_URL = "https://rikos.rik.ee/"
 PAGE_SIZE = 100
 RATE_DELAY = 0.3  # seconds between requests
+
+# --- Full decision-text fetch (issue #135) ---------------------------------
+# Each decision's full text lives on a detail page reachable as
+# ``SEARCH_URL?asjaNr=<case_nr>``. The page is plain HTML; the modern
+# layout wraps the text in ``<div class=WordSection1>`` while older
+# decisions emit bare ``<P>`` paragraphs straight under ``<body>``. We
+# extract every layout the same way: take the ``<body>``, drop scripts /
+# styles, strip the remaining tags, unescape entities, and collapse
+# whitespace (the ``print_nupp`` and ``custom-data-container`` wrapper
+# divs carry no text, so they vanish naturally).
+DETAIL_RATE_DELAY = RATE_DELAY  # seconds between detail-page fetches
+DETAIL_TIMEOUT = 30  # seconds per detail-page request
+DETAIL_RETRIES = 3  # attempts for a transient (5xx / network) failure
+DETAIL_BACKOFF = 2.0  # base seconds for exponential backoff between retries
+# Polite, identifiable UA — the bare ``python-requests`` default is the
+# kind of string sites rate-limit first.
+DETAIL_USER_AGENT = (
+    "law-ontology/1.0 (+https://github.com/henrikaavik/law-ontology; "
+    "Supreme Court decision-text ingestion, issue #135)"
+)
+# On-disk cache for fetched detail pages — one ``.txt`` per case number.
+# Mirrors the per-CELEX cache pattern in ``generate_harmonisation_links.py``;
+# the directory is gitignored and lives outside any path the corpus
+# validators scan (they only look at ``riigikohus/*_peep.json`` and
+# ``**/*.json{,ld}``, never ``.cache/`` or ``.txt``).
+COURT_TEXT_CACHE_DIR = KRR_DIR / ".cache" / "court_decisions"
+COURT_TEXT_CACHE_TTL_DAYS = 365  # decisions are immutable; refresh yearly
+# Below this many characters the "decision text" is almost certainly the
+# search form or an error stub rather than a real decision body — treat
+# as a failed fetch and do not cache it.
+MIN_DECISION_TEXT_LEN = 40
+# Default cap on how many decisions to fetch full text for in one
+# ``--fetch-full-text`` run. ``0`` (or ``--full-text-limit 0``) means
+# *all* ~12k decisions — the multi-hour run; the cache makes it resumable.
+DEFAULT_FULL_TEXT_LIMIT = 50
 
 CONTEXT = {
     "estleg": NS,
@@ -585,7 +642,418 @@ def save_json(filepath: Path, doc: dict):
         f.write("\n")
 
 
-def main():
+# ---------------------------------------------------------------------------
+# Full decision-text fetch (issue #135)
+# ---------------------------------------------------------------------------
+
+# Detail pages carry ``<meta name="description" content="LahendiDokument">``
+# and a ``data-faili-objekt-id`` attribute; the search form / "not found"
+# fallback page carries neither (it has ``id="lahenditeOtsing"`` instead).
+# We use these markers to reject a non-decision response before extracting.
+_DECISION_DOC_MARKERS = (
+    'content="LahendiDokument"',
+    "data-faili-objekt-id",
+)
+
+_SCRIPT_STYLE_RE = re.compile(
+    r"<(script|style)\b[^>]*>.*?</\1>", re.DOTALL | re.IGNORECASE
+)
+_BODY_RE = re.compile(r"<body\b[^>]*>(.*?)</body>", re.DOTALL | re.IGNORECASE)
+_TAG_RE = re.compile(r"<[^>]+>")
+_INLINE_WS_RE = re.compile(r"[ \t\r\f\v ]+")
+_MULTI_WS_RE = re.compile(r"\s+")
+
+
+def _looks_like_decision_document(html_text: str) -> bool:
+    """Return ``True`` iff ``html_text`` is a RIK decision detail page.
+
+    A missing / bogus ``asjaNr`` makes ``rikos.rik.ee`` serve the search
+    form instead of a 404; without this guard we would extract the form
+    markup as if it were decision text.
+    """
+    return any(marker in html_text for marker in _DECISION_DOC_MARKERS)
+
+
+def extract_decision_text(html_text: str) -> str | None:
+    """Strip a RIK decision detail page down to plain text.
+
+    Handles both the modern ``<div class=WordSection1>`` layout and the
+    older bare-``<P>`` layout by simply taking the whole ``<body>``,
+    dropping ``<script>``/``<style>`` blocks, removing the remaining
+    tags, unescaping HTML entities, and normalising whitespace. Returns
+    ``None`` for a response that is not a decision document or whose
+    extracted text is implausibly short (``< MIN_DECISION_TEXT_LEN``).
+    """
+    if not html_text or not _looks_like_decision_document(html_text):
+        return None
+    body_match = _BODY_RE.search(html_text)
+    body = body_match.group(1) if body_match else html_text
+    body = _SCRIPT_STYLE_RE.sub(" ", body)
+    plain = _TAG_RE.sub(" ", body)
+    plain = html_mod.unescape(plain)
+    # Collapse runs of inline whitespace (incl. NBSP) first so the final
+    # normalisation does not have to also fold those, then collapse the
+    # remainder (newlines, repeated spaces) into single spaces.
+    plain = _INLINE_WS_RE.sub(" ", plain)
+    plain = _MULTI_WS_RE.sub(" ", plain).strip()
+    if len(plain) < MIN_DECISION_TEXT_LEN:
+        return None
+    return plain
+
+
+def _rel_to_repo(path: Path) -> str:
+    """``path`` relative to the repo root, or the absolute path if outside it.
+
+    The cache dir is normally under the repo, but tests point it at a
+    ``tmp_path`` outside the tree — ``Path.relative_to`` raises there.
+    """
+    try:
+        return str(path.relative_to(REPO_ROOT))
+    except ValueError:
+        return str(path)
+
+
+def _detail_url(case_nr: str) -> str:
+    """Build the RIK detail-page URL for ``case_nr`` (query-string encoded)."""
+    encoded_query = urllib.parse.urlencode(
+        {"asjaNr": case_nr}, quote_via=urllib.parse.quote
+    )
+    return f"{SEARCH_URL}?{encoded_query}"
+
+
+def _court_text_cache_path(case_nr: str) -> Path:
+    """On-disk cache path for ``case_nr``'s fetched full text."""
+    return COURT_TEXT_CACHE_DIR / f"{sanitize_id(case_nr)}.txt"
+
+
+def _court_text_cache_is_fresh(
+    path: Path, ttl_days: int = COURT_TEXT_CACHE_TTL_DAYS
+) -> bool:
+    """Return ``True`` iff ``path`` exists and is younger than ``ttl_days``."""
+    if not path.exists():
+        return False
+    age_seconds = time.time() - path.stat().st_mtime
+    return age_seconds < ttl_days * 86400
+
+
+def _http_get_decision_page(url: str) -> str:
+    """GET a RIK detail page, retrying transient failures with backoff."""
+    last_exc: BaseException | None = None
+    for attempt in range(DETAIL_RETRIES):
+        try:
+            resp = requests.get(
+                url,
+                headers={"User-Agent": DETAIL_USER_AGENT},
+                timeout=DETAIL_TIMEOUT,
+            )
+            resp.raise_for_status()
+            return resp.text
+        except Exception as exc:  # noqa: BLE001 — broad to retry network/HTTP blips
+            last_exc = exc
+            if attempt < DETAIL_RETRIES - 1:
+                time.sleep(DETAIL_BACKOFF * (2 ** attempt))
+    raise RuntimeError(
+        f"detail-page fetch failed after {DETAIL_RETRIES} attempts: {last_exc}"
+    ) from last_exc
+
+
+def fetch_decision_text(
+    case_nr: str, *, use_cache: bool = True, session_fetched: list[bool] | None = None
+) -> str | None:
+    """Fetch the full text of a Supreme Court decision by case number.
+
+    Looks the text up first in the on-disk cache
+    (``COURT_TEXT_CACHE_DIR``); a fresh cache entry short-circuits both
+    the HTTP request and the courtesy ``time.sleep`` that follows it, so
+    reruns within the TTL never touch the network. On a cache miss it
+    GETs ``SEARCH_URL?asjaNr=<case_nr>`` (with a polite User-Agent and
+    bounded retry-on-transient-error), extracts the plain text, sleeps
+    ``DETAIL_RATE_DELAY`` to be nice to the endpoint, and writes the
+    result to the cache. Returns ``None`` when the case number is empty,
+    the response is not a decision document, or the extracted text is
+    implausibly short — callers treat ``None`` as "no full text for this
+    decision in this run" and leave the node's existing shape untouched.
+
+    ``session_fetched`` (when supplied) is a one-element list the caller
+    uses as an out-param: it is set to ``[True]`` iff this call issued a
+    network request (i.e. it was *not* a cache hit), so the caller can
+    skip its own inter-fetch sleep on cache hits.
+    """
+    if session_fetched is not None:
+        session_fetched[:] = [False]
+    case_nr = (case_nr or "").strip()
+    if not case_nr:
+        return None
+
+    cache_path = _court_text_cache_path(case_nr)
+    if use_cache and _court_text_cache_is_fresh(cache_path):
+        try:
+            text = cache_path.read_text(encoding="utf-8")
+        except OSError:
+            text = ""  # corrupt/unreadable cache entry — fall through to refetch
+        else:
+            return text or None
+
+    if session_fetched is not None:
+        session_fetched[:] = [True]
+    try:
+        html_text = _http_get_decision_page(_detail_url(case_nr))
+    except Exception as exc:  # noqa: BLE001 — terminal failure for this decision
+        logger.warning("fetch_decision_text: %s — %s", case_nr, exc)
+        time.sleep(DETAIL_RATE_DELAY)
+        return None
+
+    text = extract_decision_text(html_text)
+    time.sleep(DETAIL_RATE_DELAY)
+
+    if text is None:
+        logger.warning(
+            "fetch_decision_text: %s — response is not a decision document "
+            "(or text too short); skipping",
+            case_nr,
+        )
+        return None
+
+    if use_cache:
+        try:
+            COURT_TEXT_CACHE_DIR.mkdir(parents=True, exist_ok=True)
+            cache_path.write_text(text, encoding="utf-8")
+        except OSError as exc:
+            # Cache write is best-effort — a failed write must not abort the run.
+            logger.warning("fetch_decision_text: cache write failed for %s: %s", case_nr, exc)
+
+    return text
+
+
+def _iter_decision_nodes_in_year_order() -> list[tuple[Path, dict, list[dict]]]:
+    """Yield ``(peep_path, graph, decision_nodes)`` for every year file.
+
+    Ordered by year descending (newest first) so a small
+    ``--full-text-limit`` enriches the most recent — and most useful —
+    decisions first. Within a year file, node order is preserved.
+    """
+    def _year_key(p: Path) -> int:
+        m = re.search(r"riigikohus_(\d{4})_peep\.json$", p.name)
+        return int(m.group(1)) if m else -1
+
+    result: list[tuple[Path, dict, list[dict]]] = []
+    for peep_path in sorted(
+        RK_DIR.glob("riigikohus_*_peep.json"), key=_year_key, reverse=True
+    ):
+        try:
+            with open(peep_path, "r", encoding="utf-8") as f:
+                doc = json.load(f)
+        except (OSError, json.JSONDecodeError) as exc:
+            logger.warning("enrich_full_text: skipping unreadable %s: %s", peep_path.name, exc)
+            continue
+        graph = doc.get("@graph", [])
+        if not isinstance(graph, list):
+            continue
+        decision_nodes = [
+            node
+            for node in graph
+            if isinstance(node, dict) and "estleg:CourtDecision" in (node.get("@type") or [])
+        ]
+        result.append((peep_path, doc, decision_nodes))
+    return result
+
+
+def enrich_full_text(limit: int = DEFAULT_FULL_TEXT_LIMIT, *, use_cache: bool = True) -> dict:
+    """Add ``estleg:legalText`` to existing decision nodes (issue #135).
+
+    Operates on the already-generated ``riigikohus_*_peep.json`` files
+    (it does NOT re-scrape the search table). For the first ``limit``
+    decision nodes — in year-descending, then file order; ``limit <= 0``
+    means all of them — it calls :func:`fetch_decision_text` on the
+    node's ``estleg:caseNumber`` and, when text comes back, sets a plain
+    ``xsd:string`` ``estleg:legalText`` literal on the node. Nodes
+    already carrying ``estleg:legalText`` are skipped (idempotent /
+    resumable). Returns a small stats dict that the caller folds into
+    ``RIIGIKOHUS_INDEX.json``.
+    """
+    year_files = _iter_decision_nodes_in_year_order()
+    total_decisions = sum(len(nodes) for _, _, nodes in year_files)
+    unbounded = limit is None or limit <= 0
+    target = total_decisions if unbounded else min(limit, total_decisions)
+
+    print("\n--- Fetching full decision text (issue #135) ---")
+    print(f"  Decisions in corpus: {total_decisions}")
+    print(
+        "  Fetching full text for: "
+        + ("all decisions (this is the multi-hour run)" if unbounded else f"up to {target}")
+    )
+    print(f"  Cache: {_rel_to_repo(COURT_TEXT_CACHE_DIR)} "
+          f"({'enabled' if use_cache else 'BYPASSED'})")
+
+    attempted = 0
+    succeeded = 0
+    failed = 0
+    cache_hits = 0
+    already_had = 0
+    files_modified = 0
+    session_fetched: list[bool] = [False]
+
+    for peep_path, doc, decision_nodes in year_files:
+        modified = False
+        for node in decision_nodes:
+            if not unbounded and attempted >= target:
+                break
+            if "estleg:legalText" in node:
+                already_had += 1
+                continue
+            case_nr = (node.get("estleg:caseNumber") or "").strip()
+            if not case_nr:
+                continue
+
+            attempted += 1
+            text = fetch_decision_text(
+                case_nr, use_cache=use_cache, session_fetched=session_fetched
+            )
+            # ``session_fetched`` is set to ``[False]`` by fetch_decision_text
+            # iff the call was served from cache (no network request).
+            if session_fetched and session_fetched[0] is False:
+                cache_hits += 1
+
+            if text:
+                # Plain Python str → JSON-LD plain string literal, which
+                # expands to ``xsd:string`` (matching the SHACL shape).
+                # NEVER language-tag this — the SHACL ``sh:datatype
+                # xsd:string`` on ``estleg:legalText`` would reject a
+                # ``rdf:langString``.
+                node["estleg:legalText"] = text
+                succeeded += 1
+                modified = True
+            else:
+                failed += 1
+
+            if attempted % 25 == 0:
+                print(
+                    f"    {attempted}/{target} attempted "
+                    f"({succeeded} ok, {failed} no-text, {cache_hits} from cache)"
+                )
+
+        if modified:
+            save_json(peep_path, doc)
+            files_modified += 1
+        if not unbounded and attempted >= target:
+            break
+
+    remaining = total_decisions - already_had - succeeded
+    print(
+        f"  Done: attempted={attempted}, with full text now={already_had + succeeded} "
+        f"(new={succeeded}, pre-existing={already_had}), failed={failed}, "
+        f"cache hits={cache_hits}, files rewritten={files_modified}, "
+        f"still without full text={remaining}"
+    )
+    return {
+        "fetch_attempted": attempted,
+        "fetch_succeeded": succeeded,
+        "fetch_failed": failed,
+        "cache_hits": cache_hits,
+        "with_full_text_total": already_had + succeeded,
+        "without_full_text_total": remaining,
+        "total_decisions": total_decisions,
+    }
+
+
+def _update_index_full_text_stats(stats: dict) -> None:
+    """Merge ``enrich_full_text`` stats into ``RIIGIKOHUS_INDEX.json``."""
+    index_path = RK_DIR / "RIIGIKOHUS_INDEX.json"
+    if not index_path.exists():
+        logger.warning("enrich_full_text: %s not found — skipping index update", index_path.name)
+        return
+    try:
+        with open(index_path, "r", encoding="utf-8") as f:
+            index = json.load(f)
+    except (OSError, json.JSONDecodeError) as exc:
+        logger.warning("enrich_full_text: cannot update %s: %s", index_path.name, exc)
+        return
+    index["full_text"] = {
+        "generated": datetime.now().strftime("%Y-%m-%d"),
+        "source": f"{SEARCH_URL}?asjaNr=<case_nr>",
+        "property": "estleg:legalText",
+        "decisions_with_full_text": stats.get("with_full_text_total", 0),
+        "decisions_without_full_text": stats.get("without_full_text_total", 0),
+        "last_run_attempted": stats.get("fetch_attempted", 0),
+        "last_run_succeeded": stats.get("fetch_succeeded", 0),
+        "last_run_failed": stats.get("fetch_failed", 0),
+        "last_run_cache_hits": stats.get("cache_hits", 0),
+    }
+    save_json(index_path, index)
+    print(f"  Updated {index_path.name} with full-text coverage stats")
+
+
+def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument(
+        "--fetch-full-text",
+        action="store_true",
+        help=(
+            "Enrich the existing riigikohus_*_peep.json files with full "
+            "decision text (estleg:legalText) from each decision's RIK "
+            "detail page, instead of re-scraping the search table. "
+            "Fetches are cached under "
+            f"{_rel_to_repo(COURT_TEXT_CACHE_DIR)}."
+        ),
+    )
+    parser.add_argument(
+        "--full-text-limit",
+        type=int,
+        default=DEFAULT_FULL_TEXT_LIMIT,
+        metavar="N",
+        help=(
+            "With --fetch-full-text: fetch full text for at most N "
+            f"decisions in this run (default: {DEFAULT_FULL_TEXT_LIMIT}; "
+            "0 = all ~12k decisions, i.e. the multi-hour run — resumable "
+            "thanks to the on-disk cache)."
+        ),
+    )
+    parser.add_argument(
+        "--no-cache",
+        action="store_true",
+        help=(
+            "With --fetch-full-text: bypass the on-disk detail-page cache "
+            f"({_rel_to_repo(COURT_TEXT_CACHE_DIR)}) and force "
+            "fresh HTTP fetches."
+        ),
+    )
+    return parser.parse_args(argv)
+
+
+def run_full_text_enrichment(args: argparse.Namespace) -> None:
+    """Entry point for ``--fetch-full-text`` mode (issue #135)."""
+    print("=" * 60)
+    print("Enriching Supreme Court decisions with full decision text (#135)")
+    print("=" * 60)
+    decision_files = list(RK_DIR.glob("riigikohus_*_peep.json"))
+    if not decision_files:
+        print(
+            f"ERROR: no riigikohus_*_peep.json files under {_rel_to_repo(RK_DIR)}. "
+            "Run this script without --fetch-full-text first to scrape the corpus."
+        )
+        sys.exit(1)
+    stats = enrich_full_text(limit=args.full_text_limit, use_cache=not args.no_cache)
+    _update_index_full_text_stats(stats)
+    print("\n" + "=" * 60)
+    print("Full decision-text enrichment complete!")
+    print(f"  Decisions with estleg:legalText: {stats['with_full_text_total']}/{stats['total_decisions']}")
+    print(f"  New this run:                    {stats['fetch_succeeded']}")
+    print(f"  Failed fetches this run:         {stats['fetch_failed']}")
+    print(f"  Cache hits this run:             {stats['cache_hits']}")
+    if stats["without_full_text_total"]:
+        print(
+            f"  Still without full text:         {stats['without_full_text_total']} "
+            "— re-run with --fetch-full-text --full-text-limit 0 for the full sweep"
+        )
+    print("=" * 60)
+
+
+def main(argv: list[str] | None = None):
+    args = parse_args(argv)
+    if args.fetch_full_text:
+        run_full_text_enrichment(args)
+        return
+
     start_year = 1993
     end_year = 2026
 
@@ -690,7 +1158,7 @@ def main():
     print("\n" + "=" * 60)
     print(f"Done! Fetched {len(all_decisions)} Supreme Court decisions.")
     print(f"Years covered: {start_year}–{end_year}")
-    print(f"Files saved to: {RK_DIR.relative_to(REPO_ROOT)}")
+    print(f"Files saved to: {_rel_to_repo(RK_DIR)}")
     print()
     for type_id, count in sorted(type_counts.items(), key=lambda x: -x[1]):
         print(f"  {type_id}: {count}")

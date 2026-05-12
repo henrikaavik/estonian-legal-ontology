@@ -14,10 +14,22 @@ Covers the regression fixes called out in issue #176:
    ``\\w+seaduse?`` cannot cross a word boundary greedily.
 5. ``decision_to_node`` must produce stable IRIs across runs and
    skip rows missing ``object_id`` rather than collide.
+
+And the full-decision-text ingestion added for issue #135:
+
+6. ``extract_decision_text`` strips both the modern ``WordSection1``
+   and the legacy bare-``<P>`` detail-page layouts to plain text, and
+   rejects the search-form fallback page.
+7. ``fetch_decision_text`` serves a fresh cache entry without any HTTP
+   call, and writes the cache on a miss.
+8. ``--fetch-full-text --full-text-limit N`` adds a plain-string
+   ``estleg:legalText`` to exactly the first N decision nodes; without
+   the flag no node is touched.
 """
 
 from __future__ import annotations
 
+import json
 import logging
 import sys
 import urllib.parse
@@ -350,3 +362,372 @@ class TestDecisionToNode:
         assert refs is not None
         # KarS appears once in canonical form, not twice as 'KarS' + 'Kars'.
         assert refs.count("KarS") == 1
+
+
+# ---------------------------------------------------------------------------
+# extract_decision_text (issue #135)
+# ---------------------------------------------------------------------------
+
+# Modern RIK detail page: text wrapped in <div class=WordSection1>, with
+# the LahendiDokument meta marker and the data-faili-objekt-id attribute.
+_MODERN_DETAIL_HTML = """<!DOCTYPE HTML>
+<html><head>
+<meta name="description" content="LahendiDokument">
+<title>5-25-80/23</title></head>
+<body><div id="print_nupp"><a href="#"><img src="x.gif" alt="print"></a></div>
+<div id="custom-data-container" data-faili-objekt-id="445816132"
+     data-toimingu-nr="abc" data-on-lahend-annoteeritud="True"></div><br/>
+<div class=WordSection1>
+<p align=center><b>RIIGIKOHUS<br>PÕHISEADUSLIKKUSE JÄRELEVALVE KOLLEEGIUM</b></p>
+<p align=center><b>KOHTUOTSUS<br></b>Eesti Vabariigi nimel</p>
+<p>RIIGIKOHUS OTSUSTAB&nbsp;1.&nbsp;J&#228;tta veeseadus p&#245;hiseadusevastaseks tunnistamata.</p>
+</div></body></html>"""
+
+# Legacy detail page: no WordSection1, bare <P> straight under <body>.
+_LEGACY_DETAIL_HTML = """<!DOCTYPE HTML>
+<html><head>
+<meta name="description" content="LahendiDokument">
+<title>3-2-1-136-96</title></head>
+<body><div id="print_nupp"><a href="#"><img src="x.gif"></a></div>
+<div id="custom-data-container" data-faili-objekt-id="206086349"></div><br/>
+<P><a href="x">3-2-1-136-96</a></P>
+<B><P ALIGN="CENTER">K O H T U O T S U S</P></B>
+<P ALIGN="CENTER">Eesti Vabariigi nimel</P>
+<P>Riigikohtu tsiviilkolleegium koosseisus: eesistuja J. Luik vaatas l&#228;bi.</P>
+<B><P ALIGN="CENTER">o t s u s t a s:</P></B>
+<P>T&#252;histada otsus.</P></BODY></html>"""
+
+# The "no such decision" fallback: RIK serves the search form, not a 404.
+_SEARCH_FORM_HTML = """<!DOCTYPE html>
+<html><head><title>Lahendi Otsing</title></head>
+<body><div id="lahenditeOtsing" class="container body-content">
+<form action="/" method="get"><label>Aasta</label>
+<input name="aasta" type="text" /></form></div></body></html>"""
+
+
+class TestExtractDecisionText:
+    def test_modern_wordsection_layout_extracted(self) -> None:
+        text = gcd.extract_decision_text(_MODERN_DETAIL_HTML)
+        assert text is not None
+        assert "RIIGIKOHUS OTSUSTAB" in text
+        # HTML entities decoded; markup gone; NBSP folded to a space.
+        assert "Jätta veeseadus põhiseadusevastaseks tunnistamata" in text
+        assert "<" not in text and "&#" not in text
+        # The print-button / data-container wrappers contribute no text.
+        assert "print" not in text.lower()
+
+    def test_legacy_bare_p_layout_extracted(self) -> None:
+        text = gcd.extract_decision_text(_LEGACY_DETAIL_HTML)
+        assert text is not None
+        assert "K O H T U O T S U S" in text
+        assert "Riigikohtu tsiviilkolleegium koosseisus" in text
+        assert "Tühistada otsus" in text
+
+    def test_search_form_fallback_returns_none(self) -> None:
+        """A bogus asjaNr makes RIK serve the search form — not a decision."""
+        assert gcd.extract_decision_text(_SEARCH_FORM_HTML) is None
+
+    def test_empty_input_returns_none(self) -> None:
+        assert gcd.extract_decision_text("") is None
+        assert gcd.extract_decision_text(None or "") is None
+
+    def test_too_short_decision_text_returns_none(self) -> None:
+        tiny = (
+            '<html><head><meta name="description" content="LahendiDokument">'
+            '</head><body><div data-faili-objekt-id="1"></div><p>X</p></body></html>'
+        )
+        assert gcd.extract_decision_text(tiny) is None
+
+
+# ---------------------------------------------------------------------------
+# fetch_decision_text — caching (issue #135)
+# ---------------------------------------------------------------------------
+
+@pytest.fixture
+def _isolated_court_cache(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
+    """Point the detail-page cache at a throwaway dir and silence sleeps."""
+    cache_dir = tmp_path / "court_decisions"
+    monkeypatch.setattr(gcd, "COURT_TEXT_CACHE_DIR", cache_dir)
+    monkeypatch.setattr(gcd.time, "sleep", lambda *_a, **_k: None)
+    return cache_dir
+
+
+class TestFetchDecisionTextCache:
+    def test_cache_hit_does_not_call_requests_get(
+        self, _isolated_court_cache: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        """A fresh cache entry must short-circuit the HTTP request entirely."""
+        case_nr = "5-25-80/23"
+        _isolated_court_cache.mkdir(parents=True, exist_ok=True)
+        cache_path = _isolated_court_cache / f"{gcd.sanitize_id(case_nr)}.txt"
+        cache_path.write_text("CACHED FULL TEXT OF DECISION 5-25-80", encoding="utf-8")
+
+        def _boom(*_a, **_k):  # pragma: no cover - must not be reached
+            raise AssertionError("requests.get must not be called on a cache hit")
+
+        monkeypatch.setattr(gcd.requests, "get", _boom)
+        text = gcd.fetch_decision_text(case_nr)
+        assert text == "CACHED FULL TEXT OF DECISION 5-25-80"
+
+    def test_cache_hit_sets_session_fetched_false(
+        self, _isolated_court_cache: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        case_nr = "1-25-3086/25"
+        _isolated_court_cache.mkdir(parents=True, exist_ok=True)
+        (_isolated_court_cache / f"{gcd.sanitize_id(case_nr)}.txt").write_text(
+            "x" * 100, encoding="utf-8"
+        )
+        monkeypatch.setattr(
+            gcd.requests, "get",
+            lambda *_a, **_k: (_ for _ in ()).throw(AssertionError("no HTTP on cache hit")),
+        )
+        flag: list[bool] = [True]
+        gcd.fetch_decision_text(case_nr, session_fetched=flag)
+        assert flag == [False]
+
+    def test_cache_miss_fetches_and_writes_cache(
+        self, _isolated_court_cache: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        case_nr = "2-24-401/36"
+        calls: list[str] = []
+
+        class _Resp:
+            text = _MODERN_DETAIL_HTML
+
+            def raise_for_status(self) -> None:
+                return None
+
+        def _fake_get(url, **_kw):
+            calls.append(url)
+            return _Resp()
+
+        monkeypatch.setattr(gcd.requests, "get", _fake_get)
+        flag: list[bool] = [False]
+        text = gcd.fetch_decision_text(case_nr, session_fetched=flag)
+        assert text is not None and "RIIGIKOHUS OTSUSTAB" in text
+        assert flag == [True], "a network fetch must mark session_fetched True"
+        assert len(calls) == 1
+        # asjaNr must be query-string encoded into the detail URL.
+        assert "asjaNr=2-24-401%2F36" in calls[0]
+        # And the result must now be cached for the next run.
+        cache_path = _isolated_court_cache / f"{gcd.sanitize_id(case_nr)}.txt"
+        assert cache_path.exists()
+        assert "RIIGIKOHUS OTSUSTAB" in cache_path.read_text(encoding="utf-8")
+
+        # Second call: cache hit, no further HTTP.
+        monkeypatch.setattr(
+            gcd.requests, "get",
+            lambda *_a, **_k: (_ for _ in ()).throw(AssertionError("must hit cache")),
+        )
+        assert gcd.fetch_decision_text(case_nr) == text
+
+    def test_search_form_response_not_cached_and_returns_none(
+        self, _isolated_court_cache: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        case_nr = "BOGUS-99-9999/99"
+
+        class _Resp:
+            text = _SEARCH_FORM_HTML
+
+            def raise_for_status(self) -> None:
+                return None
+
+        monkeypatch.setattr(gcd.requests, "get", lambda *_a, **_k: _Resp())
+        assert gcd.fetch_decision_text(case_nr) is None
+        cache_path = _isolated_court_cache / f"{gcd.sanitize_id(case_nr)}.txt"
+        assert not cache_path.exists()
+
+    def test_transient_failure_returns_none(
+        self, _isolated_court_cache: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        monkeypatch.setattr(gcd, "DETAIL_RETRIES", 2)
+
+        def _always_500(*_a, **_k):
+            raise RuntimeError("HTTP 500")
+
+        monkeypatch.setattr(gcd.requests, "get", _always_500)
+        assert gcd.fetch_decision_text("3-21-2176/52") is None
+
+    def test_empty_case_nr_returns_none_without_http(
+        self, _isolated_court_cache: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        monkeypatch.setattr(
+            gcd.requests, "get",
+            lambda *_a, **_k: (_ for _ in ()).throw(AssertionError("no HTTP for empty case_nr")),
+        )
+        assert gcd.fetch_decision_text("") is None
+        assert gcd.fetch_decision_text("   ") is None
+
+
+# ---------------------------------------------------------------------------
+# enrich_full_text / --fetch-full-text (issue #135)
+# ---------------------------------------------------------------------------
+
+def _write_peep(path: Path, year: int, decisions: list[tuple[str, str]]) -> None:
+    """Write a minimal ``riigikohus_<year>_peep.json`` with given decisions.
+
+    ``decisions`` is a list of ``(case_nr, object_id)`` pairs.
+    """
+    graph: list[dict] = [
+        {
+            "@id": f"estleg:Riigikohus_{year}_Map",
+            "@type": ["owl:Ontology"],
+            "rdfs:label": {"@value": f"Riigikohtu lahendid {year}", "@language": "et"},
+        }
+    ]
+    for case_nr, object_id in decisions:
+        graph.append(
+            {
+                "@id": f"estleg:RK_{gcd.sanitize_id(case_nr)}_{gcd.sanitize_id(object_id)}",
+                "@type": ["owl:NamedIndividual", "estleg:CourtDecision"],
+                "rdfs:label": {"@value": f"RK {case_nr}", "@language": "et"},
+                "estleg:caseNumber": case_nr,
+                "estleg:caseType": {"@id": "estleg:CaseType_Administrative"},
+                "estleg:rikObjectId": object_id,
+                "estleg:summary": {"@value": "lühike kokkuvõte", "@language": "et"},
+            }
+        )
+    path.write_text(json.dumps({"@context": gcd.CONTEXT, "@graph": graph}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
+@pytest.fixture
+def _fake_rk_dir(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
+    """A scratch ``riigikohus/`` dir with two year files + isolated cache."""
+    rk_dir = tmp_path / "riigikohus"
+    rk_dir.mkdir()
+    monkeypatch.setattr(gcd, "RK_DIR", rk_dir)
+    monkeypatch.setattr(gcd, "COURT_TEXT_CACHE_DIR", tmp_path / ".cache" / "court_decisions")
+    monkeypatch.setattr(gcd.time, "sleep", lambda *_a, **_k: None)
+    # 2026 (newest, processed first): two decisions; 2025: one decision.
+    _write_peep(rk_dir / "riigikohus_2026_peep.json", 2026, [("3-26-1/2", "111"), ("2-26-2/3", "222")])
+    _write_peep(rk_dir / "riigikohus_2025_peep.json", 2025, [("1-25-9/9", "999")])
+    # An index file so the stats-merge path is exercised too.
+    (rk_dir / "RIIGIKOHUS_INDEX.json").write_text(
+        json.dumps({"generated": "2026-01-01", "total_decisions": 3}, indent=2) + "\n", encoding="utf-8"
+    )
+    return rk_dir
+
+
+def _stub_fetch_ok(monkeypatch: pytest.MonkeyPatch) -> list[str]:
+    """Make ``fetch_decision_text`` return deterministic text; track calls."""
+    seen: list[str] = []
+
+    def _fake(case_nr, *, use_cache=True, session_fetched=None):  # noqa: ARG001
+        if session_fetched is not None:
+            session_fetched[:] = [True]
+        seen.append(case_nr)
+        return f"FULL TEXT FOR {case_nr} " + "x" * 80
+
+    monkeypatch.setattr(gcd, "fetch_decision_text", _fake)
+    return seen
+
+
+class TestEnrichFullText:
+    def test_limit_one_enriches_exactly_first_decision(
+        self, _fake_rk_dir: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        seen = _stub_fetch_ok(monkeypatch)
+        stats = gcd.enrich_full_text(limit=1)
+        assert stats["fetch_attempted"] == 1
+        assert stats["fetch_succeeded"] == 1
+        # Only the first decision of the newest year file gets text.
+        assert seen == ["3-26-1/2"]
+
+        doc_2026 = json.loads((_fake_rk_dir / "riigikohus_2026_peep.json").read_text())
+        decs_2026 = [n for n in doc_2026["@graph"] if "estleg:CourtDecision" in n.get("@type", [])]
+        with_text = [n for n in decs_2026 if "estleg:legalText" in n]
+        assert len(with_text) == 1
+        node = with_text[0]
+        # Plain string literal — NOT a {"@value": ..., "@language": ...} dict.
+        assert isinstance(node["estleg:legalText"], str)
+        assert node["estleg:legalText"].startswith("FULL TEXT FOR 3-26-1/2")
+        assert node["estleg:caseNumber"] == "3-26-1/2"
+
+        # The other decision in 2026 and the one in 2025 are untouched.
+        assert all("estleg:legalText" not in n for n in decs_2026 if n is not node)
+        doc_2025 = json.loads((_fake_rk_dir / "riigikohus_2025_peep.json").read_text())
+        decs_2025 = [n for n in doc_2025["@graph"] if "estleg:CourtDecision" in n.get("@type", [])]
+        assert all("estleg:legalText" not in n for n in decs_2025)
+
+    def test_limit_all_enriches_every_decision(
+        self, _fake_rk_dir: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        _stub_fetch_ok(monkeypatch)
+        stats = gcd.enrich_full_text(limit=0)  # 0 == all
+        assert stats["fetch_attempted"] == 3
+        assert stats["fetch_succeeded"] == 3
+        assert stats["with_full_text_total"] == 3
+        assert stats["without_full_text_total"] == 0
+        for fname in ("riigikohus_2026_peep.json", "riigikohus_2025_peep.json"):
+            doc = json.loads((_fake_rk_dir / fname).read_text())
+            decs = [n for n in doc["@graph"] if "estleg:CourtDecision" in n.get("@type", [])]
+            assert decs and all(isinstance(n.get("estleg:legalText"), str) for n in decs)
+
+    def test_already_having_legaltext_is_skipped(
+        self, _fake_rk_dir: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        # Pre-stamp the first 2026 decision with legalText.
+        doc = json.loads((_fake_rk_dir / "riigikohus_2026_peep.json").read_text())
+        for n in doc["@graph"]:
+            if n.get("estleg:caseNumber") == "3-26-1/2":
+                n["estleg:legalText"] = "PRE-EXISTING"
+        (_fake_rk_dir / "riigikohus_2026_peep.json").write_text(json.dumps(doc, indent=2) + "\n", encoding="utf-8")
+
+        seen = _stub_fetch_ok(monkeypatch)
+        stats = gcd.enrich_full_text(limit=1)
+        # The pre-stamped one is skipped; the next decision is fetched instead.
+        assert seen == ["2-26-2/3"]
+        assert stats["fetch_succeeded"] == 1
+        doc = json.loads((_fake_rk_dir / "riigikohus_2026_peep.json").read_text())
+        by_case = {n.get("estleg:caseNumber"): n for n in doc["@graph"] if "estleg:caseNumber" in n}
+        assert by_case["3-26-1/2"]["estleg:legalText"] == "PRE-EXISTING"
+        assert by_case["2-26-2/3"]["estleg:legalText"].startswith("FULL TEXT FOR 2-26-2/3")
+
+    def test_failed_fetch_does_not_add_property(
+        self, _fake_rk_dir: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        def _fake(case_nr, *, use_cache=True, session_fetched=None):  # noqa: ARG001
+            if session_fetched is not None:
+                session_fetched[:] = [True]
+            return None  # simulate a non-decision / transient-failure response
+
+        monkeypatch.setattr(gcd, "fetch_decision_text", _fake)
+        stats = gcd.enrich_full_text(limit=2)
+        assert stats["fetch_attempted"] == 2
+        assert stats["fetch_succeeded"] == 0
+        assert stats["fetch_failed"] == 2
+        doc = json.loads((_fake_rk_dir / "riigikohus_2026_peep.json").read_text())
+        assert all("estleg:legalText" not in n for n in doc["@graph"])
+
+    def test_cli_main_without_flag_does_not_touch_legaltext(
+        self, _fake_rk_dir: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        """Default behaviour: no --fetch-full-text → enrich_full_text never runs."""
+        called: list[bool] = []
+        monkeypatch.setattr(
+            gcd, "enrich_full_text",
+            lambda *a, **k: called.append(True) or {},  # noqa: ARG005
+        )
+        # Stub out the heavy scrape path so plain main() returns fast.
+        monkeypatch.setattr(gcd, "fetch_year", lambda *_a, **_k: [])
+        monkeypatch.setattr(gcd, "save_json", lambda *_a, **_k: None)
+        gcd.main(["--full-text-limit", "5"])  # flag absent
+        assert called == []
+        # And the peep files retain no estleg:legalText.
+        for fname in ("riigikohus_2026_peep.json", "riigikohus_2025_peep.json"):
+            doc = json.loads((_fake_rk_dir / fname).read_text())
+            assert all("estleg:legalText" not in n for n in doc["@graph"])
+
+    def test_cli_main_with_flag_dispatches_enrichment(
+        self, _fake_rk_dir: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        seen = _stub_fetch_ok(monkeypatch)
+        gcd.main(["--fetch-full-text", "--full-text-limit", "1"])
+        assert seen == ["3-26-1/2"]
+        doc = json.loads((_fake_rk_dir / "riigikohus_2026_peep.json").read_text())
+        with_text = [n for n in doc["@graph"] if "estleg:legalText" in n]
+        assert len(with_text) == 1 and isinstance(with_text[0]["estleg:legalText"], str)
+        # The index file was updated with coverage stats.
+        index = json.loads((_fake_rk_dir / "RIIGIKOHUS_INDEX.json").read_text())
+        assert index["full_text"]["decisions_with_full_text"] == 1
+        assert index["full_text"]["property"] == "estleg:legalText"
