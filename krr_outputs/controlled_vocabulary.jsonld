@@ -2075,6 +2075,53 @@
       }
     },
     {
+      "@id": "estleg:Subsection",
+      "@type": [
+        "owl:Class"
+      ],
+      "rdfs:label": "Subsection (lõige)",
+      "rdfs:comment": "A numbered subsection (lõige) of an estleg:LegalProvision — the level Estonian legal citations actually reference (\"TsÜS § 14 lg 2\"). One node per lõige of a paragrahv that has lõige structure; it carries the lõige number (estleg:subsectionNumber), the lõige's own text (estleg:legalText, including the inline (N) punkt markers, mirroring the provision-level legalText), and an estleg:parentProvision link back to the § node. The parent provision keeps its full concatenated estleg:legalText for backward compatibility — the subsections sum to it. Defined for issue #132 (lõige level); modelling the punkt/alapunkt level below lõige is deferred to a follow-up."
+    },
+    {
+      "@id": "estleg:subsectionNumber",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": "Subsection Number",
+      "rdfs:comment": "The lõige number of an estleg:Subsection as a display string, e.g. \"2\" or \"2¹\" (the kuvatavNr form, falling back to loigeNr). Kept as a string because superscripted lõige numbers (lg 2¹) are not integers.",
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "estleg:hasSubsection",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:label": "Has Subsection",
+      "rdfs:comment": "Links an estleg:LegalProvision to one of its estleg:Subsection (lõige) nodes. A provision with lõige structure carries one estleg:hasSubsection triple per lõige, in document order; a provision with no lõiked carries none (its text lives directly on the § node). Inverse of estleg:parentProvision.",
+      "rdfs:range": {
+        "@id": "estleg:Subsection"
+      },
+      "owl:inverseOf": {
+        "@id": "estleg:parentProvision"
+      }
+    },
+    {
+      "@id": "estleg:parentProvision",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:label": "Parent Provision",
+      "rdfs:comment": "Links an estleg:Subsection (lõige) to the estleg:LegalProvision (§) it belongs to. Exactly one per Subsection. Inverse of estleg:hasSubsection.",
+      "rdfs:range": {
+        "@id": "estleg:LegalProvision"
+      },
+      "owl:inverseOf": {
+        "@id": "estleg:hasSubsection"
+      }
+    },
+    {
       "@id": "estleg:Annotation",
       "@type": [
         "owl:Class"

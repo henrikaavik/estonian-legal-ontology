@@ -1,6 +1,6 @@
 """Regression tests for scripts/generate_all_laws.py.
 
-Covers issues #156, #165, #166. Each test class has a comment that
+Covers issues #156, #165, #166, #132. Each test class has a comment that
 explains which fix it locks down.
 """
 
@@ -13,6 +13,27 @@ import xml.etree.ElementTree as ET
 import pytest
 
 import generate_all_laws
+
+_SHAPES_PATH = (
+    generate_all_laws.REPO_ROOT / "shacl" / "estonian_legal_shapes.ttl"
+)
+
+
+def _shacl_conforms(graph_json: dict) -> tuple[bool, str]:
+    """Validate a hand-built JSON-LD ``@graph`` against the shapes file.
+
+    Skips the test (``importorskip``) when pyshacl/rdflib are not
+    installed in the environment.
+    """
+    pyshacl = pytest.importorskip("pyshacl")
+    rdflib = pytest.importorskip("rdflib")
+    data_graph = rdflib.Graph()
+    data_graph.parse(data=json.dumps(graph_json), format="json-ld")
+    shapes_graph = rdflib.Graph().parse(str(_SHAPES_PATH), format="turtle")
+    conforms, _, msg = pyshacl.validate(
+        data_graph, shacl_graph=shapes_graph, inference="rdfs"
+    )
+    return conforms, str(msg)
 
 
 # ---------------------------------------------------------------------------
@@ -1317,3 +1338,442 @@ class TestActStatusInManifest:
         assert stub_peep["@graph"][0]["estleg:kehtiv"] == {
             "@value": generate_all_laws.DEFAULT_KEHTIV, "@type": "xsd:date"
         }
+
+
+# ---------------------------------------------------------------------------
+# Issue #132 — estleg:Subsection (lõige) nodes
+# ---------------------------------------------------------------------------
+
+
+def _subsection_nodes(graph: list[dict]) -> list[dict]:
+    return [
+        n
+        for n in graph
+        if isinstance(n, dict)
+        and isinstance(n.get("@type"), list)
+        and "estleg:Subsection" in n["@type"]
+    ]
+
+
+class TestSubsectionEmission:
+    """#132: a paragrahv with lõige children emits one estleg:Subsection
+    node per lõige; the § node carries estleg:hasSubsection listing them
+    in document order; a paragrahv with no lõiked emits neither."""
+
+    def _three_loige_law(self) -> dict:
+        xml = """
+        <akt><sisu><peatykk>
+          <peatykkNr>1</peatykkNr><peatykkPealkiri>Peatykk</peatykkPealkiri>
+          <paragrahv>
+            <paragrahvNr>14</paragrahvNr>
+            <kuvatavNr>§ 14. </kuvatavNr>
+            <paragrahvPealkiri>Teovõime</paragrahvPealkiri>
+            <loige><loigeNr>1</loigeNr><kuvatavNr>(1)</kuvatavNr>
+              <tavatekst>Esimene loige tekst siin.</tavatekst></loige>
+            <loige><loigeNr>2</loigeNr><kuvatavNr>(2)</kuvatavNr>
+              <tavatekst>Teine loige paneb piiri.</tavatekst></loige>
+            <loige><loigeNr>3</loigeNr><kuvatavNr>(3)</kuvatavNr>
+              <tavatekst>Kolmas loige tekst.</tavatekst></loige>
+          </paragrahv>
+          <paragrahv>
+            <paragrahvNr>15</paragrahvNr>
+            <kuvatavNr>§ 15. </kuvatavNr>
+            <paragrahvPealkiri>Üks lause</paragrahvPealkiri>
+            <tavatekst>Lihtsalt tekst ilma loigeteta siin.</tavatekst>
+          </paragrahv>
+        </peatykk></sisu></akt>
+        """
+        root = ET.fromstring(xml)
+        alloc = generate_all_laws.PrefixAllocator(registry={})
+        return generate_all_laws.generate_law_jsonld(
+            "Test seadus", "test_seadus", root, abbreviation="TSTS",
+            kehtiv="2026-05-01", allocator=alloc,
+        )
+
+    def test_three_loige_emits_three_subsection_nodes(self):
+        doc = self._three_loige_law()
+        subs = _subsection_nodes(doc["@graph"])
+        sub_ids = [s["@id"] for s in subs]
+        assert sub_ids == [
+            "estleg:TSTS_Par_14_Lg_1",
+            "estleg:TSTS_Par_14_Lg_2",
+            "estleg:TSTS_Par_14_Lg_3",
+        ]
+        for s, n in zip(subs, ("1", "2", "3")):
+            assert s["@type"] == ["estleg:Subsection", "owl:NamedIndividual"]
+            assert s["estleg:subsectionNumber"] == n
+            # legalText is a plain (xsd:string) literal carrying the (N) marker.
+            assert isinstance(s["estleg:legalText"], str)
+            assert s["estleg:legalText"].startswith(f"({n}) ")
+            assert s["estleg:parentProvision"] == {"@id": "estleg:TSTS_Par_14"}
+            assert s["rdfs:label"]["@value"] == f"§ 14 lg {n}"
+
+    def test_provision_has_subsection_list_in_order(self):
+        doc = self._three_loige_law()
+        par14 = next(
+            n for n in doc["@graph"] if n.get("@id") == "estleg:TSTS_Par_14"
+        )
+        assert par14["estleg:hasSubsection"] == [
+            {"@id": "estleg:TSTS_Par_14_Lg_1"},
+            {"@id": "estleg:TSTS_Par_14_Lg_2"},
+            {"@id": "estleg:TSTS_Par_14_Lg_3"},
+        ]
+        # The provision keeps its full concatenated legalText (the sum of
+        # the subsections) for backward compatibility.
+        full = par14["estleg:legalText"]["@value"]
+        assert "(1)" in full and "(2)" in full and "(3)" in full
+
+    def test_paragraph_without_loige_has_no_subsections(self):
+        doc = self._three_loige_law()
+        par15 = next(
+            n for n in doc["@graph"] if n.get("@id") == "estleg:TSTS_Par_15"
+        )
+        assert "estleg:hasSubsection" not in par15
+        # No Subsection node points at § 15.
+        for s in _subsection_nodes(doc["@graph"]):
+            assert s["estleg:parentProvision"]["@id"] != "estleg:TSTS_Par_15"
+
+    def test_superscript_loige_id_and_number(self):
+        """§ 14 lg 2¹ → Subsection @id ..._Par_14_Lg_2_1, subsectionNumber
+        is the display form "2¹"."""
+        xml = """
+        <akt><sisu><peatykk>
+          <peatykkNr>1</peatykkNr><peatykkPealkiri>P</peatykkPealkiri>
+          <paragrahv>
+            <paragrahvNr>14</paragrahvNr><kuvatavNr>§ 14. </kuvatavNr>
+            <paragrahvPealkiri>T</paragrahvPealkiri>
+            <loige><loigeNr>2</loigeNr><kuvatavNr>(2)</kuvatavNr>
+              <tavatekst>Teine loige.</tavatekst></loige>
+            <loige><loigeNr ylaIndeks="1">2</loigeNr><kuvatavNr>(2¹)</kuvatavNr>
+              <tavatekst>Lõike kaks ülaindeks üks tekst.</tavatekst></loige>
+          </paragrahv>
+        </peatykk></sisu></akt>
+        """
+        root = ET.fromstring(xml)
+        alloc = generate_all_laws.PrefixAllocator(registry={})
+        doc = generate_all_laws.generate_law_jsonld(
+            "Test", "test_sup", root, abbreviation="TSUPX", allocator=alloc,
+        )
+        subs = {s["@id"]: s for s in _subsection_nodes(doc["@graph"])}
+        assert "estleg:TSUPX_Par_14_Lg_2" in subs
+        assert "estleg:TSUPX_Par_14_Lg_2_1" in subs
+        assert subs["estleg:TSUPX_Par_14_Lg_2_1"]["estleg:subsectionNumber"] == "2¹"
+        # And both are listed on the provision, in order.
+        par14 = next(
+            n for n in doc["@graph"] if n.get("@id") == "estleg:TSUPX_Par_14"
+        )
+        assert par14["estleg:hasSubsection"] == [
+            {"@id": "estleg:TSUPX_Par_14_Lg_2"},
+            {"@id": "estleg:TSUPX_Par_14_Lg_2_1"},
+        ]
+
+    def test_parent_provision_resolves_to_a_real_provision(self):
+        """Every Subsection's estleg:parentProvision equals an actual
+        LegalProvision @id in the same graph — no dangling refs."""
+        doc = self._three_loige_law()
+        provision_ids = {
+            n["@id"]
+            for n in doc["@graph"]
+            if isinstance(n, dict)
+            and isinstance(n.get("@type"), list)
+            and any(t.startswith("estleg:LegalProvision") for t in n["@type"] if isinstance(t, str))
+        }
+        assert provision_ids  # sanity
+        for s in _subsection_nodes(doc["@graph"]):
+            assert s["estleg:parentProvision"]["@id"] in provision_ids
+
+    def test_empty_loige_does_not_emit_a_subsection(self):
+        """A lõige with no text fragments (e.g. a repealed placeholder)
+        is skipped — no Subsection node, and it is absent from
+        estleg:hasSubsection. SHACL requires estleg:legalText, so an
+        empty Subsection would be invalid."""
+        xml = """
+        <akt><sisu><peatykk>
+          <peatykkNr>1</peatykkNr><peatykkPealkiri>P</peatykkPealkiri>
+          <paragrahv>
+            <paragrahvNr>7</paragrahvNr><kuvatavNr>§ 7. </kuvatavNr>
+            <paragrahvPealkiri>T</paragrahvPealkiri>
+            <loige><loigeNr>1</loigeNr><kuvatavNr>(1)</kuvatavNr>
+              <tavatekst>Esimene loige on olemas.</tavatekst></loige>
+            <loige><loigeNr>2</loigeNr><kuvatavNr>(2)</kuvatavNr></loige>
+            <loige><loigeNr>3</loigeNr><kuvatavNr>(3)</kuvatavNr>
+              <tavatekst>Kolmas loige on ka olemas.</tavatekst></loige>
+          </paragrahv>
+        </peatykk></sisu></akt>
+        """
+        root = ET.fromstring(xml)
+        alloc = generate_all_laws.PrefixAllocator(registry={})
+        doc = generate_all_laws.generate_law_jsonld(
+            "Test", "test_empty", root, abbreviation="TEMPX", allocator=alloc,
+        )
+        sub_ids = [s["@id"] for s in _subsection_nodes(doc["@graph"])]
+        assert sub_ids == ["estleg:TEMPX_Par_7_Lg_1", "estleg:TEMPX_Par_7_Lg_3"]
+        par7 = next(
+            n for n in doc["@graph"] if n.get("@id") == "estleg:TEMPX_Par_7"
+        )
+        assert par7["estleg:hasSubsection"] == [
+            {"@id": "estleg:TEMPX_Par_7_Lg_1"},
+            {"@id": "estleg:TEMPX_Par_7_Lg_3"},
+        ]
+
+    def test_subsection_ids_unique_within_a_law(self):
+        """All Subsection @ids in one law file are distinct (the
+        generator asserts this; a collision raises ValueError)."""
+        doc = self._three_loige_law()
+        sub_ids = [s["@id"] for s in _subsection_nodes(doc["@graph"])]
+        assert len(sub_ids) == len(set(sub_ids))
+
+    def test_duplicate_subsection_iri_raises(self):
+        """If the source XML produces two lõiked with the same canonical
+        IRI suffix (malformed input), the generator fails fast."""
+        # Two lõiked both resolving to suffix "2": one plain loigeNr=2,
+        # one loigeNr=2 again (no ylaIndeks) — same id.
+        xml = """
+        <akt><sisu><peatykk>
+          <peatykkNr>1</peatykkNr><peatykkPealkiri>P</peatykkPealkiri>
+          <paragrahv>
+            <paragrahvNr>1</paragrahvNr><kuvatavNr>§ 1. </kuvatavNr>
+            <paragrahvPealkiri>T</paragrahvPealkiri>
+            <loige><loigeNr>2</loigeNr><kuvatavNr>(2)</kuvatavNr>
+              <tavatekst>Esimene tekst.</tavatekst></loige>
+            <loige><loigeNr>2</loigeNr><kuvatavNr>(2)</kuvatavNr>
+              <tavatekst>Teine tekst.</tavatekst></loige>
+          </paragrahv>
+        </peatykk></sisu></akt>
+        """
+        root = ET.fromstring(xml)
+        alloc = generate_all_laws.PrefixAllocator(registry={})
+        with pytest.raises(ValueError):
+            generate_all_laws.generate_law_jsonld(
+                "Test", "test_dup", root, abbreviation="TDUPX", allocator=alloc,
+            )
+
+    def test_multipart_subsection_ids_are_osa_scoped(self):
+        """In a multipart law each Subsection IRI is namespaced by osa:
+        estleg:<PREFIX>_Osa<N>_Par_<n>_Lg_<m>; the parent provision link
+        points at the osa-scoped § IRI."""
+        xml = """
+        <akt><sisu>
+          <osa><osaNr>1</osaNr><osaPealkiri>Üldosa</osaPealkiri>
+            <paragrahv><paragrahvNr>5</paragrahvNr><kuvatavNr>§ 5. </kuvatavNr>
+              <paragrahvPealkiri>T</paragrahvPealkiri>
+              <loige><loigeNr>1</loigeNr><kuvatavNr>(1)</kuvatavNr>
+                <tavatekst>Esimene osa1 loige tekst.</tavatekst></loige>
+              <loige><loigeNr>2</loigeNr><kuvatavNr>(2)</kuvatavNr>
+                <tavatekst>Teine osa1 loige tekst.</tavatekst></loige>
+            </paragrahv>
+          </osa>
+          <osa><osaNr>2</osaNr><osaPealkiri>Eriosa</osaPealkiri>
+            <paragrahv><paragrahvNr>10</paragrahvNr><kuvatavNr>§ 10. </kuvatavNr>
+              <paragrahvPealkiri>T2</paragrahvPealkiri>
+              <loige><loigeNr>1</loigeNr><kuvatavNr>(1)</kuvatavNr>
+                <tavatekst>Osa2 loige tekst.</tavatekst></loige>
+            </paragrahv>
+          </osa>
+        </sisu></akt>
+        """
+        root = ET.fromstring(xml)
+        alloc = generate_all_laws.PrefixAllocator(registry={})
+        results = generate_all_laws.generate_multipart_law(
+            "Multi", "multi_test", root, abbreviation="MULTX", allocator=alloc,
+        )
+        by_file = dict(results)
+        osa1_subs = [s["@id"] for s in _subsection_nodes(by_file["multi_test_osa1_peep.json"]["@graph"])]
+        assert osa1_subs == [
+            "estleg:MULTX_Osa1_Par_5_Lg_1",
+            "estleg:MULTX_Osa1_Par_5_Lg_2",
+        ]
+        par5 = next(
+            n for n in by_file["multi_test_osa1_peep.json"]["@graph"]
+            if n.get("@id") == "estleg:MULTX_Osa1_Par_5"
+        )
+        assert par5["estleg:hasSubsection"] == [
+            {"@id": "estleg:MULTX_Osa1_Par_5_Lg_1"},
+            {"@id": "estleg:MULTX_Osa1_Par_5_Lg_2"},
+        ]
+        # Subsections of osa1 only point at osa1's provisions.
+        for s in _subsection_nodes(by_file["multi_test_osa1_peep.json"]["@graph"]):
+            assert s["estleg:parentProvision"]["@id"] == "estleg:MULTX_Osa1_Par_5"
+        osa2_subs = [s["@id"] for s in _subsection_nodes(by_file["multi_test_osa2_peep.json"]["@graph"])]
+        assert osa2_subs == ["estleg:MULTX_Osa2_Par_10_Lg_1"]
+
+
+class TestSubsectionHelpers:
+    """Unit coverage for the lõige-text and -number helpers."""
+
+    def test_loige_numbers_plain(self):
+        lg = ET.fromstring(
+            "<loige><loigeNr>2</loigeNr><kuvatavNr>(2)</kuvatavNr>"
+            "<tavatekst>x</tavatekst></loige>"
+        )
+        assert generate_all_laws._loige_numbers(lg) == ("2", "2")
+
+    def test_loige_numbers_ylaindeks(self):
+        lg = ET.fromstring(
+            "<loige><loigeNr ylaIndeks='1'>2</loigeNr><kuvatavNr>(2¹)</kuvatavNr>"
+            "<tavatekst>x</tavatekst></loige>"
+        )
+        assert generate_all_laws._loige_numbers(lg) == ("2¹", "2_1")
+
+    def test_loige_numbers_unicode_superscript_in_kuvatavnr(self):
+        # No ylaIndeks but kuvatavNr carries the superscript glyph.
+        lg = ET.fromstring(
+            "<loige><loigeNr>2</loigeNr><kuvatavNr>2²</kuvatavNr>"
+            "<tavatekst>x</tavatekst></loige>"
+        )
+        display, suffix = generate_all_laws._loige_numbers(lg)
+        assert display == "2²"
+        assert suffix == "2_2"
+
+    def test_loige_body_text_joins_and_filters(self):
+        lg = ET.fromstring(
+            "<loige><loigeNr>1</loigeNr>"
+            "<lause>Esimene lause.</lause><lause>ok</lause>"
+            "<tavatekst>Teine tekstiosa.</tavatekst></loige>"
+        )
+        # "ok" is <= 3 chars and is dropped.
+        assert generate_all_laws._loige_body_text(lg) == "Esimene lause. Teine tekstiosa."
+
+    def test_build_subsections_returns_empty_for_no_loige(self):
+        par = ET.fromstring(
+            "<paragrahv><paragrahvNr>1</paragrahvNr><kuvatavNr>§ 1.</kuvatavNr>"
+            "<tavatekst>Pole loiget.</tavatekst></paragrahv>"
+        )
+        assert generate_all_laws.build_subsections(
+            par, "estleg:X_Par_1", abbrev_prefix="X", par_suffix="1",
+            paragraph_display="§ 1.",
+        ) == []
+
+
+# ---------------------------------------------------------------------------
+# Issue #132 — vocabulary + SHACL coverage for the new Subsection model
+# ---------------------------------------------------------------------------
+
+
+class TestSubsectionVocabularyAndShapes:
+    """The new estleg:Subsection class and its properties are present and
+    correctly typed in the controlled vocabulary, and the SHACL shapes
+    file declares estleg:SubsectionShape plus the optional hasSubsection
+    property shape on LegalProvisionShape."""
+
+    def _vocab(self) -> dict:
+        path = (
+            generate_all_laws.REPO_ROOT
+            / "krr_outputs"
+            / "controlled_vocabulary.jsonld"
+        )
+        return json.loads(path.read_text(encoding="utf-8"))
+
+    def test_subsection_class_and_properties_defined_and_typed(self):
+        vocab = self._vocab()
+        by_id = {n["@id"]: n for n in vocab["@graph"] if isinstance(n, dict) and "@id" in n}
+        assert "owl:Class" in by_id["estleg:Subsection"]["@type"]
+        assert "owl:DatatypeProperty" in by_id["estleg:subsectionNumber"]["@type"]
+        assert by_id["estleg:subsectionNumber"]["rdfs:range"]["@id"] == "xsd:string"
+        assert "owl:ObjectProperty" in by_id["estleg:hasSubsection"]["@type"]
+        assert by_id["estleg:hasSubsection"]["rdfs:range"]["@id"] == "estleg:Subsection"
+        assert by_id["estleg:hasSubsection"]["owl:inverseOf"]["@id"] == "estleg:parentProvision"
+        assert "owl:ObjectProperty" in by_id["estleg:parentProvision"]["@type"]
+        assert by_id["estleg:parentProvision"]["rdfs:range"]["@id"] == "estleg:LegalProvision"
+        assert by_id["estleg:parentProvision"]["owl:inverseOf"]["@id"] == "estleg:hasSubsection"
+        # Every term carries a label and a comment.
+        for term in ("estleg:Subsection", "estleg:subsectionNumber",
+                     "estleg:hasSubsection", "estleg:parentProvision"):
+            assert by_id[term].get("rdfs:label")
+            assert by_id[term].get("rdfs:comment")
+
+    def test_shacl_declares_subsection_shape_and_property(self):
+        ttl = (
+            generate_all_laws.REPO_ROOT / "shacl" / "estonian_legal_shapes.ttl"
+        ).read_text(encoding="utf-8")
+        assert "estleg:SubsectionShape" in ttl
+        assert "sh:targetClass estleg:Subsection" in ttl
+        assert "estleg:subsectionNumber" in ttl
+        assert "estleg:parentProvision" in ttl
+        # hasSubsection is wired into LegalProvisionShape as an optional
+        # (minCount 0) IRI-valued property.
+        assert "estleg:hasSubsection" in ttl
+
+
+_CONTEXT = generate_all_laws.CONTEXT
+
+
+def _doc(*nodes: dict) -> dict:
+    return {"@context": _CONTEXT, "@graph": list(nodes)}
+
+
+def _well_formed_subsection() -> dict:
+    return {
+        "@id": "estleg:X_Par_14_Lg_2",
+        "@type": ["estleg:Subsection", "owl:NamedIndividual"],
+        "estleg:subsectionNumber": "2",
+        "estleg:legalText": "(2) Lõike kaks tekst.",
+        "estleg:parentProvision": {"@id": "estleg:X_Par_14"},
+        "rdfs:label": {"@value": "§ 14 lg 2", "@language": "et"},
+    }
+
+
+class TestSubsectionShaclConformance:
+    """#132: estleg:SubsectionShape accepts a well-formed Subsection and
+    rejects one missing subsectionNumber / legalText / parentProvision;
+    a LegalProvision with (and without) estleg:hasSubsection conforms."""
+
+    def test_well_formed_subsection_conforms(self):
+        ok, msg = _shacl_conforms(_doc(_well_formed_subsection()))
+        assert ok, msg
+
+    def test_subsection_without_label_conforms(self):
+        node = _well_formed_subsection()
+        del node["rdfs:label"]
+        ok, msg = _shacl_conforms(_doc(node))
+        assert ok, msg
+
+    def test_subsection_missing_number_rejected(self):
+        node = _well_formed_subsection()
+        del node["estleg:subsectionNumber"]
+        ok, _msg = _shacl_conforms(_doc(node))
+        assert not ok
+
+    def test_subsection_missing_legal_text_rejected(self):
+        node = _well_formed_subsection()
+        del node["estleg:legalText"]
+        ok, _msg = _shacl_conforms(_doc(node))
+        assert not ok
+
+    def test_subsection_missing_parent_provision_rejected(self):
+        node = _well_formed_subsection()
+        del node["estleg:parentProvision"]
+        ok, _msg = _shacl_conforms(_doc(node))
+        assert not ok
+
+    def test_subsection_parent_provision_literal_not_iri_rejected(self):
+        node = _well_formed_subsection()
+        node["estleg:parentProvision"] = {"@value": "estleg:X_Par_14"}
+        ok, _msg = _shacl_conforms(_doc(node))
+        assert not ok
+
+    def test_provision_with_has_subsection_still_conforms(self):
+        # estleg:summary on a provision is a plain (xsd:string) literal per
+        # estleg:LegalProvisionShape; mirror that here so the test isolates
+        # the optional estleg:hasSubsection property.
+        provision = {
+            "@id": "estleg:X_Par_14",
+            "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+            "estleg:paragrahv": "§ 14",
+            "estleg:summary": "Teovõime.",
+            "estleg:legalText": "(2) Lõike kaks tekst.",
+            "estleg:hasSubsection": [{"@id": "estleg:X_Par_14_Lg_2"}],
+        }
+        ok, msg = _shacl_conforms(_doc(provision, _well_formed_subsection()))
+        assert ok, msg
+
+    def test_provision_without_has_subsection_still_conforms(self):
+        provision = {
+            "@id": "estleg:X_Par_15",
+            "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+            "estleg:paragrahv": "§ 15",
+            "estleg:summary": "Üks lause.",
+            "estleg:legalText": "Üks lause vaid.",
+        }
+        ok, msg = _shacl_conforms(_doc(provision))
+        assert ok, msg
