@@ -407,10 +407,7 @@ def build_subsections(
             "estleg:parentProvision": {"@id": provision_id},
         }
         if par_label_base and display_nr:
-            node["rdfs:label"] = {
-                "@value": f"{par_label_base} lg {display_nr}",
-                "@language": "et",
-            }
+            node["rdfs:label"] = f"{par_label_base} lg {display_nr}"
         subsection_nodes.append(node)
     return subsection_nodes
 
@@ -826,9 +823,9 @@ def generate_law_jsonld(
     ontology_node: dict = {
         "@id": ontology_id,
         "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
-        "rdfs:label": {"@value": f"{title} teemakaardistus", "@language": "et"},
+        "rdfs:label": f"{title} teemakaardistus",
         "dc:source": title,
-        "dcterms:title": {"@value": title, "@language": "et"},
+        "dcterms:title": title,
         "estleg:contentStatus": "structuredBody",
     }
     if rt_source_url:
@@ -843,7 +840,7 @@ def generate_law_jsonld(
         {
             "@id": class_id,
             "@type": ["owl:Class"],
-            "rdfs:label": {"@value": "Õigusnorm (paragrahv)", "@language": "et"},
+            "rdfs:label": "Õigusnorm (paragrahv)",
             "rdfs:subClassOf": {"@id": "estleg:LegalProvision"},
         },
     ]
@@ -896,8 +893,8 @@ def generate_law_jsonld(
                 graph.append({
                     "@id": cluster_id,
                     "@type": ["owl:NamedIndividual", "estleg:TopicCluster", "skos:Concept"],
-                    "rdfs:label": {"@value": f"{par_range} {ch_title}".strip(), "@language": "et"},
-                    "skos:prefLabel": {"@value": f"{par_range} {ch_title}".strip(), "@language": "et"},
+                    "rdfs:label": f"{par_range} {ch_title}".strip(),
+                    "skos:prefLabel": f"{par_range} {ch_title}".strip(),
                     "skos:inScheme": {"@id": f"estleg:{prefix}_TopicScheme"},
                 })
 
@@ -905,7 +902,7 @@ def generate_law_jsonld(
                 chapter_node: dict = {
                     "@id": chapter_id,
                     "@type": ["owl:NamedIndividual", "estleg:Chapter"],
-                    "rdfs:label": {"@value": f"{ch_nr}. peatükk – {ch_title}".strip(" –"), "@language": "et"},
+                    "rdfs:label": f"{ch_nr}. peatükk – {ch_title}".strip(" –"),
                     "estleg:chapterNumber": ch_nr,
                     "owl:sameAs": {"@id": cluster_id},
                 }
@@ -922,7 +919,7 @@ def generate_law_jsonld(
                         graph.append({
                             "@id": div_id,
                             "@type": ["owl:NamedIndividual", "estleg:Division"],
-                            "rdfs:label": {"@value": f"{j_nr}. jagu – {j_title}".strip(" –"), "@language": "et"},
+                            "rdfs:label": f"{j_nr}. jagu – {j_title}".strip(" –"),
                             "estleg:isPartOf": {"@id": chapter_id},
                         })
                         # Issue #166: only paragraphs that DIRECTLY belong
@@ -964,8 +961,8 @@ def generate_law_jsonld(
         graph.append({
             "@id": fallback_cluster_id,
             "@type": ["owl:NamedIndividual", "estleg:TopicCluster", "skos:Concept"],
-            "rdfs:label": {"@value": f"{par_range} {fallback_label}".strip(), "@language": "et"},
-            "skos:prefLabel": {"@value": f"{par_range} {fallback_label}".strip(), "@language": "et"},
+            "rdfs:label": f"{par_range} {fallback_label}".strip(),
+            "skos:prefLabel": f"{par_range} {fallback_label}".strip(),
             "skos:inScheme": {"@id": f"estleg:{prefix}_TopicScheme"},
         })
 
@@ -982,7 +979,7 @@ def generate_law_jsonld(
         scheme_node = {
             "@id": f"estleg:{prefix}_TopicScheme",
             "@type": ["skos:ConceptScheme"],
-            "rdfs:label": {"@value": f"{title} teemaskeem", "@language": "et"},
+            "rdfs:label": f"{title} teemaskeem",
             "skos:hasTopConcept": [{"@id": cl["id"]} for cl in clusters],
         }
         graph.insert(2, scheme_node)
@@ -1040,16 +1037,16 @@ def generate_law_jsonld(
             "@id": p_id,
             "@type": ["owl:NamedIndividual", class_id],
             "estleg:paragrahv": p_display,
-            "rdfs:label": {"@value": label, "@language": "et"},
-            "estleg:sourceAct": {"@value": title, "@language": "et"},
+            "rdfs:label": label,
+            "estleg:sourceAct": title,
         }
 
         if text:
-            node["estleg:summary"] = {"@value": text, "@language": "et"}
+            node["estleg:summary"] = text
 
         # Issue #88: Add full legal text without truncation
         if full_text:
-            node["estleg:legalText"] = {"@value": full_text, "@language": "et"}
+            node["estleg:legalText"] = full_text
 
         if cluster_ref:
             node["estleg:requestedCluster"] = {"@id": cluster_ref}
@@ -1109,9 +1106,9 @@ def generate_law_stub_jsonld(
     ontology_node: dict = {
         "@id": f"estleg:{prefix}_Map_2026",
         "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
-        "rdfs:label": {"@value": f"{title} teemakaardistus", "@language": "et"},
+        "rdfs:label": f"{title} teemakaardistus",
         "dc:source": title,
-        "dcterms:title": {"@value": title, "@language": "et"},
+        "dcterms:title": title,
         "estleg:contentStatus": content_status,
         "estleg:contentStatusReason": (
             "No structured paragraph nodes were found in the source XML; "
@@ -1183,9 +1180,9 @@ def generate_multipart_law(
         osa_ontology_node: dict = {
             "@id": ontology_id,
             "@type": ["owl:Ontology", "estleg:Act", "estleg:Law", "estleg:Part"],
-            "rdfs:label": {"@value": f"{title} Osa {osa_nr} ({osa_title}) §{par_min}–{par_max} kaardistus", "@language": "et"},
+            "rdfs:label": f"{title} Osa {osa_nr} ({osa_title}) §{par_min}–{par_max} kaardistus",
             "dc:source": title,
-            "dcterms:title": {"@value": title, "@language": "et"},
+            "dcterms:title": title,
             "estleg:contentStatus": "structuredBody",
         }
         if rt_source_url:
@@ -1199,7 +1196,7 @@ def generate_multipart_law(
             {
                 "@id": class_id,
                 "@type": ["owl:Class"],
-                "rdfs:label": {"@value": "Õigusnorm (paragrahv)", "@language": "et"},
+                "rdfs:label": "Õigusnorm (paragrahv)",
                 "rdfs:subClassOf": {"@id": "estleg:LegalProvision"},
             },
         ]
@@ -1249,8 +1246,8 @@ def generate_multipart_law(
                     graph.append({
                         "@id": cluster_id,
                         "@type": ["owl:NamedIndividual", "estleg:TopicCluster", "skos:Concept"],
-                        "rdfs:label": {"@value": f"{par_range} {ch_title}".strip(), "@language": "et"},
-                        "skos:prefLabel": {"@value": f"{par_range} {ch_title}".strip(), "@language": "et"},
+                        "rdfs:label": f"{par_range} {ch_title}".strip(),
+                        "skos:prefLabel": f"{par_range} {ch_title}".strip(),
                         "skos:inScheme": {"@id": scheme_id},
                         "skos:broader": {"@id": part_concept_id},
                     })
@@ -1259,7 +1256,7 @@ def generate_multipart_law(
                     chapter_node: dict = {
                         "@id": chapter_id,
                         "@type": ["owl:NamedIndividual", "estleg:Chapter"],
-                        "rdfs:label": {"@value": f"{ch_nr}. peatükk – {ch_title}".strip(" –"), "@language": "et"},
+                        "rdfs:label": f"{ch_nr}. peatükk – {ch_title}".strip(" –"),
                         "estleg:chapterNumber": ch_nr,
                         "owl:sameAs": {"@id": cluster_id},
                     }
@@ -1276,7 +1273,7 @@ def generate_multipart_law(
                             graph.append({
                                 "@id": div_id,
                                 "@type": ["owl:NamedIndividual", "estleg:Division"],
-                                "rdfs:label": {"@value": f"{j_nr}. jagu – {j_title}".strip(" –"), "@language": "et"},
+                                "rdfs:label": f"{j_nr}. jagu – {j_title}".strip(" –"),
                                 "estleg:isPartOf": {"@id": chapter_id},
                             })
                             # Issue #166: only paragraphs that DIRECTLY
@@ -1316,8 +1313,8 @@ def generate_multipart_law(
             graph.append({
                 "@id": fallback_cluster_id,
                 "@type": ["owl:NamedIndividual", "estleg:TopicCluster", "skos:Concept"],
-                "rdfs:label": {"@value": f"{osa_par_range} {fallback_label}".strip(), "@language": "et"},
-                "skos:prefLabel": {"@value": f"{osa_par_range} {fallback_label}".strip(), "@language": "et"},
+                "rdfs:label": f"{osa_par_range} {fallback_label}".strip(),
+                "skos:prefLabel": f"{osa_par_range} {fallback_label}".strip(),
                 "skos:inScheme": {"@id": scheme_id},
             })
 
@@ -1347,8 +1344,8 @@ def generate_multipart_law(
                 part_concept_node = {
                     "@id": part_concept_id,
                     "@type": ["owl:NamedIndividual", "skos:Concept"],
-                    "rdfs:label": {"@value": part_label, "@language": "et"},
-                    "skos:prefLabel": {"@value": part_label, "@language": "et"},
+                    "rdfs:label": part_label,
+                    "skos:prefLabel": part_label,
                     "skos:inScheme": {"@id": scheme_id},
                     "skos:narrower": [{"@id": cl["id"]} for cl in clusters],
                 }
@@ -1361,7 +1358,7 @@ def generate_multipart_law(
             scheme_node = {
                 "@id": scheme_id,
                 "@type": ["skos:ConceptScheme"],
-                "rdfs:label": {"@value": f"{title} {part_label} teemaskeem", "@language": "et"},
+                "rdfs:label": f"{title} {part_label} teemaskeem",
                 "skos:hasTopConcept": top_concepts,
             }
             graph.insert(2, scheme_node)
@@ -1412,14 +1409,14 @@ def generate_multipart_law(
                 "@id": p_id,
                 "@type": ["owl:NamedIndividual", class_id],
                 "estleg:paragrahv": p_display,
-                "rdfs:label": {"@value": label, "@language": "et"},
-                "estleg:sourceAct": {"@value": title, "@language": "et"},
+                "rdfs:label": label,
+                "estleg:sourceAct": title,
             }
             if text:
-                node["estleg:summary"] = {"@value": text, "@language": "et"}
+                node["estleg:summary"] = text
             # Issue #88: Add full legal text without truncation
             if full_text:
-                node["estleg:legalText"] = {"@value": full_text, "@language": "et"}
+                node["estleg:legalText"] = full_text
             if cluster_ref:
                 node["estleg:requestedCluster"] = {"@id": cluster_ref}
             # Issue #89: Link provision to containing chapter or division
@@ -1532,6 +1529,48 @@ def existing_doc_matches(path: Path, doc: dict) -> bool:
     return existing == doc
 
 
+def merge_existing_enrichments(new_doc: dict, existing_path: Path) -> dict:
+    """Additive-merge: copy enrichment fields from an existing law file onto
+    matching nodes in ``new_doc``. Generator-emitted fields always win — only
+    keys MISSING from the new node are pulled across from the existing one.
+
+    The generator owns structural fields (``@type``, ``rdfs:label``,
+    ``estleg:paragrahv``, ``estleg:summary``, ``estleg:legalText``,
+    ``estleg:sourceAct``, ``estleg:contentStatus``, ``estleg:kehtiv``,
+    ``estleg:hasSubsection`` …). Everything else on an act or provision node
+    — EuroVoc ``dcterms:subject`` (#123/#126), ``estleg:transposesDirective``
+    (#129/#96), ``estleg:harmonisedWith`` (#197), ``estleg:affectedBy``
+    (drafts), ``estleg:normativeType``, ``estleg:hasVersion`` (#198),
+    ``estleg:hasOpinion`` (#199), sanctions/court-link side-channel fields —
+    is layered on by separate enrichment scripts and would otherwise be
+    wiped on every regen. Acceptance test: re-running ``generate_all_laws``
+    twice in a row over an enriched corpus is a no-op (#205, drift #3).
+    """
+    if not existing_path.exists():
+        return new_doc
+    existing = _load_existing_doc(existing_path)
+    if not isinstance(existing, dict):
+        return new_doc
+    existing_by_id = {
+        n.get("@id"): n
+        for n in existing.get("@graph", [])
+        if isinstance(n, dict) and n.get("@id")
+    }
+    for new_node in new_doc.get("@graph", []):
+        if not isinstance(new_node, dict):
+            continue
+        node_id = new_node.get("@id")
+        if not node_id or node_id not in existing_by_id:
+            continue
+        existing_node = existing_by_id[node_id]
+        for key, value in existing_node.items():
+            if key.startswith("@"):
+                continue
+            if key not in new_node:
+                new_node[key] = value
+    return new_doc
+
+
 def write_law_output(
     out_path: Path,
     doc: dict,
@@ -1539,6 +1578,7 @@ def write_law_output(
     mode: str,
     expected_kehtiv: str | None = None,
     expected_tid: str | None = None,
+    preserve_enrichments: bool = True,
 ) -> str:
     """Write one law artifact and return a run-stat status key.
 
@@ -1552,11 +1592,17 @@ def write_law_output(
         (``refreshed``), leave it alone otherwise (``unchanged``).
       * ``force`` — always rewrite (``forceRewritten``, or
         ``newlyGenerated`` when the file did not exist).
+
+    When ``preserve_enrichments`` is true (default), enrichment fields on
+    matching @id nodes in an existing file are merged onto ``doc`` before
+    writing. See ``merge_existing_enrichments``.
     """
     if mode not in GENERATION_MODES:
         raise ValueError(f"Unsupported generation mode: {mode}")
 
     existed = out_path.exists()
+    if existed and preserve_enrichments:
+        doc = merge_existing_enrichments(doc, out_path)
     if existed and mode == "missing-only":
         existing = _load_existing_doc(out_path)
         if existing is not None and not existing_law_is_stale(

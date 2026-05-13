@@ -356,10 +356,10 @@ class TestNestedChapterAttribution:
 
         div1 = next(n for n in doc["@graph"]
                     if n.get("@id", "").startswith("estleg:Division_TNXX_")
-                    and "Esimene" in n.get("rdfs:label", {}).get("@value", ""))
+                    and "Esimene" in n.get("rdfs:label", ""))
         div2 = next(n for n in doc["@graph"]
                     if n.get("@id", "").startswith("estleg:Division_TNXX_")
-                    and "Teine" in n.get("rdfs:label", {}).get("@value", ""))
+                    and "Teine" in n.get("rdfs:label", ""))
 
         par5 = next(n for n in doc["@graph"]
                     if n.get("@id", "").endswith("Par_5"))
@@ -1045,6 +1045,167 @@ class TestWriteLawOutput:
             )
 
 
+class TestEnrichmentPreservation:
+    """#205 drift #3: regenerating a law preserves enrichment fields layered
+    on by separate scripts (EuroVoc subjects, transposition, harmonisation,
+    drafts, ProvisionVersion back-links, sanctions …)."""
+
+    def test_force_rewrite_preserves_act_enrichments(self, tmp_path):
+        p = tmp_path / "x_peep.json"
+        existing = {
+            "@graph": [
+                {
+                    "@id": "estleg:X_Map_2026",
+                    "@type": ["owl:Ontology"],
+                    "rdfs:label": "stale label",
+                    "dcterms:subject": [{"@id": "http://eurovoc.europa.eu/1"}],
+                    "estleg:transposesDirective": [{"@id": "estleg:EU_32009L0001"}],
+                    "estleg:harmonisedWith": [{"@id": "estleg:Harmonisation_32009L0001"}],
+                    "estleg:transpositionStatus": "complete",
+                    "estleg:temporalStatus": "inForce",
+                }
+            ]
+        }
+        p.write_text(json.dumps(existing), encoding="utf-8")
+        fresh = {
+            "@graph": [
+                {
+                    "@id": "estleg:X_Map_2026",
+                    "@type": ["owl:Ontology"],
+                    "rdfs:label": "fresh label",
+                    "estleg:contentStatus": "structuredBody",
+                }
+            ]
+        }
+        status = generate_all_laws.write_law_output(p, fresh, mode="force")
+        assert status == "forceRewritten"
+        written = json.loads(p.read_text(encoding="utf-8"))
+        act = written["@graph"][0]
+        assert act["rdfs:label"] == "fresh label"
+        assert act["estleg:contentStatus"] == "structuredBody"
+        assert act["dcterms:subject"] == [{"@id": "http://eurovoc.europa.eu/1"}]
+        assert act["estleg:transposesDirective"] == [{"@id": "estleg:EU_32009L0001"}]
+        assert act["estleg:harmonisedWith"] == [
+            {"@id": "estleg:Harmonisation_32009L0001"}
+        ]
+        assert act["estleg:transpositionStatus"] == "complete"
+        assert act["estleg:temporalStatus"] == "inForce"
+
+    def test_force_rewrite_preserves_provision_enrichments(self, tmp_path):
+        p = tmp_path / "x_peep.json"
+        existing = {
+            "@graph": [
+                {
+                    "@id": "estleg:X_Par_1",
+                    "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+                    "estleg:paragrahv": "§ 1.",
+                    "estleg:normativeType": "obligation",
+                    "estleg:hasVersion": [{"@id": "estleg:X_Par_1_v123"}],
+                    "estleg:hasOpinion": [{"@id": "estleg:Annotation_OK_x"}],
+                }
+            ]
+        }
+        p.write_text(json.dumps(existing), encoding="utf-8")
+        fresh = {
+            "@graph": [
+                {
+                    "@id": "estleg:X_Par_1",
+                    "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+                    "estleg:paragrahv": "§ 1.",
+                    "estleg:summary": "Refreshed summary.",
+                }
+            ]
+        }
+        status = generate_all_laws.write_law_output(p, fresh, mode="force")
+        assert status == "forceRewritten"
+        written = json.loads(p.read_text(encoding="utf-8"))
+        prov = written["@graph"][0]
+        assert prov["estleg:summary"] == "Refreshed summary."
+        assert prov["estleg:normativeType"] == "obligation"
+        assert prov["estleg:hasVersion"] == [{"@id": "estleg:X_Par_1_v123"}]
+        assert prov["estleg:hasOpinion"] == [{"@id": "estleg:Annotation_OK_x"}]
+
+    def test_generator_fields_win_over_existing(self, tmp_path):
+        p = tmp_path / "x_peep.json"
+        existing = {
+            "@graph": [
+                {
+                    "@id": "estleg:X_Par_1",
+                    "@type": ["owl:NamedIndividual"],
+                    "estleg:summary": "old summary",
+                    "estleg:normativeType": "permission",
+                }
+            ]
+        }
+        p.write_text(json.dumps(existing), encoding="utf-8")
+        fresh = {
+            "@graph": [
+                {
+                    "@id": "estleg:X_Par_1",
+                    "@type": ["owl:NamedIndividual"],
+                    "estleg:summary": "new summary",
+                }
+            ]
+        }
+        status = generate_all_laws.write_law_output(p, fresh, mode="force")
+        assert status == "forceRewritten"
+        prov = json.loads(p.read_text(encoding="utf-8"))["@graph"][0]
+        assert prov["estleg:summary"] == "new summary"
+        assert prov["estleg:normativeType"] == "permission"
+
+    def test_new_node_in_fresh_doc_has_no_merge_source(self, tmp_path):
+        """Subsection nodes appear only in fresh output; no merge target."""
+        p = tmp_path / "x_peep.json"
+        existing = {
+            "@graph": [
+                {
+                    "@id": "estleg:X_Par_1",
+                    "estleg:summary": "p1",
+                    "estleg:normativeType": "obligation",
+                }
+            ]
+        }
+        p.write_text(json.dumps(existing), encoding="utf-8")
+        fresh = {
+            "@graph": [
+                {"@id": "estleg:X_Par_1", "estleg:summary": "p1"},
+                {
+                    "@id": "estleg:X_Par_1_Lg_1",
+                    "@type": ["estleg:Subsection", "owl:NamedIndividual"],
+                    "estleg:legalText": "(1) ...",
+                },
+            ]
+        }
+        generate_all_laws.write_law_output(p, fresh, mode="force")
+        written = json.loads(p.read_text(encoding="utf-8"))
+        prov = next(n for n in written["@graph"] if n["@id"] == "estleg:X_Par_1")
+        sub = next(n for n in written["@graph"] if n["@id"] == "estleg:X_Par_1_Lg_1")
+        assert prov["estleg:normativeType"] == "obligation"
+        assert sub["estleg:legalText"] == "(1) ..."
+        assert "estleg:normativeType" not in sub
+
+    def test_preserve_disabled_does_not_merge(self, tmp_path):
+        p = tmp_path / "x_peep.json"
+        existing = {
+            "@graph": [
+                {"@id": "estleg:X_Par_1", "estleg:normativeType": "obligation"}
+            ]
+        }
+        p.write_text(json.dumps(existing), encoding="utf-8")
+        fresh = {"@graph": [{"@id": "estleg:X_Par_1", "estleg:summary": "new"}]}
+        generate_all_laws.write_law_output(
+            p, fresh, mode="force", preserve_enrichments=False
+        )
+        prov = json.loads(p.read_text(encoding="utf-8"))["@graph"][0]
+        assert prov == {"@id": "estleg:X_Par_1", "estleg:summary": "new"}
+
+    def test_no_existing_file_is_passthrough(self, tmp_path):
+        p = tmp_path / "x_peep.json"
+        fresh = {"@graph": [{"@id": "estleg:X_Par_1"}]}
+        generate_all_laws.write_law_output(p, fresh, mode="force")
+        assert json.loads(p.read_text(encoding="utf-8")) == fresh
+
+
 class TestSourceRemovedLawFiles:
     def test_reports_files_whose_slug_left_the_snapshot(self, tmp_path):
         krr = tmp_path / "krr_outputs"
@@ -1406,7 +1567,7 @@ class TestSubsectionEmission:
             assert isinstance(s["estleg:legalText"], str)
             assert s["estleg:legalText"].startswith(f"({n}) ")
             assert s["estleg:parentProvision"] == {"@id": "estleg:TSTS_Par_14"}
-            assert s["rdfs:label"]["@value"] == f"§ 14 lg {n}"
+            assert s["rdfs:label"] == f"§ 14 lg {n}"
 
     def test_provision_has_subsection_list_in_order(self):
         doc = self._three_loige_law()
@@ -1420,7 +1581,7 @@ class TestSubsectionEmission:
         ]
         # The provision keeps its full concatenated legalText (the sum of
         # the subsections) for backward compatibility.
-        full = par14["estleg:legalText"]["@value"]
+        full = par14["estleg:legalText"]
         assert "(1)" in full and "(2)" in full and "(3)" in full
 
     def test_paragraph_without_loige_has_no_subsections(self):
