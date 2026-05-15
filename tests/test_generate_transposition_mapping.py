@@ -8,6 +8,7 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 
+import eurlex_common  # noqa: E402
 import generate_transposition_mapping as mod  # noqa: E402
 
 REPO_ROOT_FOR_TESTS = Path(__file__).resolve().parent.parent
@@ -282,8 +283,8 @@ def test_sparql_query_posts_not_gets(monkeypatch):
     def fail_get(*_a, **_k):  # pragma: no cover - must not be reached
         raise AssertionError("sparql_query must not use requests.get")
 
-    monkeypatch.setattr(mod.requests, "post", fake_post)
-    monkeypatch.setattr(mod.requests, "get", fail_get)
+    monkeypatch.setattr(eurlex_common.requests, "post", fake_post)
+    monkeypatch.setattr(eurlex_common.requests, "get", fail_get)
 
     result = mod.sparql_query("ASK {}")
     assert result == [{"x": {"value": "ok"}}]
@@ -302,7 +303,7 @@ def test_sparql_query_202_triggers_retry(monkeypatch):
         calls["n"] += 1
         return _FakeResp(status_code=202, json_data={})
 
-    monkeypatch.setattr(mod.requests, "post", fake_post)
+    monkeypatch.setattr(eurlex_common.requests, "post", fake_post)
 
     # Direct call raises.
     with pytest.raises(RuntimeError, match="202"):
@@ -320,7 +321,7 @@ def test_sparql_query_non_json_body_raises(monkeypatch):
     def fake_post(url, data=None, headers=None, timeout=None):
         return _FakeResp(status_code=200, json_data=_RAISE_VALUE_ERROR)
 
-    monkeypatch.setattr(mod.requests, "post", fake_post)
+    monkeypatch.setattr(eurlex_common.requests, "post", fake_post)
     with pytest.raises(RuntimeError, match="non-JSON"):
         mod.sparql_query("ASK {}")
 

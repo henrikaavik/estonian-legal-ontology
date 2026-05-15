@@ -23,9 +23,12 @@ import unicodedata
 from datetime import datetime
 from pathlib import Path
 
-import requests
-
 from estleg_common import iter_peep_files, save_json as _save_json
+from eurlex_common import (
+    SPARQL_ENDPOINT,
+    sparql_query,
+    sparql_query_with_retry as _sparql_query_with_retry,
+)
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
@@ -33,7 +36,6 @@ EURLEX_DIR = KRR_DIR / "eurlex"
 
 NS = "https://data.riik.ee/ontology/estleg#"
 
-SPARQL_ENDPOINT = "https://publications.europa.eu/webapi/rdf/sparql"
 PAGE_SIZE = 5000
 RATE_DELAY = 1.5  # seconds between SPARQL requests
 
@@ -58,11 +60,6 @@ def load_json(filepath: Path) -> dict:
     """Load a JSON file."""
     with open(filepath, "r", encoding="utf-8") as f:
         return json.load(f)
-
-
-def sanitize_celex(celex: str) -> str:
-    """Create a safe ID from a CELEX number."""
-    return re.sub(r"[^0-9A-Za-z]", "", celex)[:40] or "Unknown"
 
 
 def normalize_text(text: str) -> str:
@@ -112,69 +109,14 @@ def extract_law_name(title: str) -> str | None:
     return None
 
 
-def sparql_query(query: str) -> list[dict]:
-    """Execute a SPARQL query and return bindings.
-
-    We POST the query as ``application/x-www-form-urlencoded`` rather than
-    GETting it with a ``?query=`` string. The Publications Office Virtuoso
-    endpoint (``publications.europa.eu/webapi/rdf/sparql``) answers GET
-    requests for non-trivial queries with ``HTTP 202 Accepted`` and an
-    *empty* body — and ``Response.raise_for_status()`` does NOT raise on a
-    2xx, so a GET-based helper silently returns ``[]`` (this was the real
-    cause of #129/#96). POST returns ``200`` + ``application/sparql-results+json``.
-    We still guard explicitly against a 202 / non-JSON body so the retry
-    layer can react if the endpoint ever misbehaves on POST too.
-    """
-    resp = requests.post(
-        SPARQL_ENDPOINT,
-        data={"query": query},
-        headers={
-            "Accept": "application/sparql-results+json",
-            "Content-Type": "application/x-www-form-urlencoded",
-        },
-        timeout=120,
-    )
-    resp.raise_for_status()
-    if resp.status_code == 202:
-        raise RuntimeError(
-            f"SPARQL endpoint returned HTTP 202 (empty body) — "
-            f"endpoint unhealthy or rate-limiting: {SPARQL_ENDPOINT}"
-        )
-    try:
-        data = resp.json()
-    except ValueError as exc:
-        raise RuntimeError(
-            f"SPARQL endpoint returned a non-JSON body "
-            f"(status {resp.status_code}): {exc}"
-        ) from exc
-    return data.get("results", {}).get("bindings", [])
-
-
 def sparql_query_with_retry(
     query: str, *, retries: int = 3, backoff: float = 2.0
 ) -> list[dict]:
-    """Execute a SPARQL query with bounded exponential backoff on failure.
-
-    Mirrors ``generate_eu_legislation.sparql_query_with_retry`` (kept
-    local — this file is the only intended caller, see #129). EUR-Lex
-    5xxs intermittently; without a retry layer a single transient error
-    in the middle of a paginated sweep silently truncates the dataset.
-    We sleep ``backoff * 2**attempt`` between attempts and re-raise the
-    underlying exception (wrapped in ``RuntimeError``) on terminal
-    failure so the caller can either ``break`` (under ``--allow-partial``)
-    or propagate to the run's exit code.
-    """
-    last_exc: BaseException | None = None
-    for attempt in range(retries):
-        try:
-            return sparql_query(query)
-        except Exception as exc:  # noqa: BLE001 — broad to retry network/JSON
-            last_exc = exc
-            if attempt < retries - 1:
-                time.sleep(backoff * (2 ** attempt))
-    raise RuntimeError(
-        f"sparql_query failed after {retries} attempts: {last_exc}"
-    ) from last_exc
+    # Forwards to the shared helper; resolves ``sparql_query`` from this
+    # module so tests that monkeypatch it on this module still take effect.
+    return _sparql_query_with_retry(
+        query, query_fn=sparql_query, retries=retries, backoff=backoff
+    )
 
 
 # Authority URI for Estonia in the Publications Office country vocabulary.
