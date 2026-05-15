@@ -9,6 +9,7 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 
+import eurlex_common
 import generate_eu_court_decisions as curia
 import generate_eu_legislation as eurlex
 import generate_harmonisation_links as harmonisation
@@ -499,8 +500,8 @@ def test_eu_sparql_query_posts_not_gets(module, monkeypatch):
     def fail_get(*_a, **_k):  # pragma: no cover - must not be reached
         raise AssertionError(f"{module.__name__}.sparql_query must not use requests.get")
 
-    monkeypatch.setattr(module.requests, "post", fake_post)
-    monkeypatch.setattr(module.requests, "get", fail_get)
+    monkeypatch.setattr(eurlex_common.requests, "post", fake_post)
+    monkeypatch.setattr(eurlex_common.requests, "get", fail_get)
 
     assert module.sparql_query("ASK {}") == [{"x": {"value": "ok"}}]
     assert posted["url"] == module.SPARQL_ENDPOINT
@@ -515,7 +516,7 @@ def test_eu_sparql_query_202_raises(module, monkeypatch):
     def fake_post(url, data=None, headers=None, timeout=None):
         return _FakeResp(status_code=202, json_data={})
 
-    monkeypatch.setattr(module.requests, "post", fake_post)
+    monkeypatch.setattr(eurlex_common.requests, "post", fake_post)
     with pytest.raises(RuntimeError, match="202"):
         module.sparql_query("ASK {}")
 

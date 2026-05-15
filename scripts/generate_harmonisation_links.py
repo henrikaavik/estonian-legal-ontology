@@ -18,7 +18,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import re
 import shutil
 import sys
 import time
@@ -26,9 +25,13 @@ from datetime import date as _date
 from datetime import datetime, timezone
 from pathlib import Path
 
-import requests
-
 from estleg_common import iter_peep_files, save_json
+from eurlex_common import (
+    SPARQL_ENDPOINT,
+    sanitize_celex,
+    sparql_query,
+    sparql_query_with_retry as _sparql_query_with_retry,
+)
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
@@ -53,7 +56,6 @@ MAPPING_FRESHNESS_DAYS = 30
 
 NS = "https://data.riik.ee/ontology/estleg#"
 
-SPARQL_ENDPOINT = "https://publications.europa.eu/webapi/rdf/sparql"
 RATE_DELAY = 1.5  # seconds between SPARQL requests
 
 CONTEXT = {
@@ -89,11 +91,6 @@ def load_json(filepath: Path) -> dict:
         return json.load(f)
 
 
-def sanitize_celex(celex: str) -> str:
-    """Create a safe ID from a CELEX number."""
-    return re.sub(r"[^0-9A-Za-z]", "", celex)[:40] or "Unknown"
-
-
 def _is_strict_iso_date(value: str) -> bool:
     """Return True iff ``value`` is a strict ``YYYY-MM-DD`` date.
 
@@ -109,64 +106,14 @@ def _is_strict_iso_date(value: str) -> bool:
     return value == parsed.isoformat()
 
 
-def sparql_query(query: str) -> list[dict]:
-    """Execute a SPARQL query and return bindings.
-
-    We POST the query (``application/x-www-form-urlencoded``) instead of
-    GETting it. The Publications Office Virtuoso endpoint answers GET for
-    non-trivial queries with ``HTTP 202 Accepted`` and an *empty* body;
-    ``raise_for_status()`` does not raise on 2xx, so a GET helper silently
-    returns ``[]`` (root cause of #129/#96). POST returns ``200`` +
-    ``application/sparql-results+json``. We still guard against a 202 /
-    non-JSON body so the retry layer reacts if POST ever misbehaves too.
-    """
-    resp = requests.post(
-        SPARQL_ENDPOINT,
-        data={"query": query},
-        headers={
-            "Accept": "application/sparql-results+json",
-            "Content-Type": "application/x-www-form-urlencoded",
-        },
-        timeout=120,
-    )
-    resp.raise_for_status()
-    if resp.status_code == 202:
-        raise RuntimeError(
-            f"SPARQL endpoint returned HTTP 202 (empty body) — "
-            f"endpoint unhealthy or rate-limiting: {SPARQL_ENDPOINT}"
-        )
-    try:
-        data = resp.json()
-    except ValueError as exc:
-        raise RuntimeError(
-            f"SPARQL endpoint returned a non-JSON body "
-            f"(status {resp.status_code}): {exc}"
-        ) from exc
-    return data.get("results", {}).get("bindings", [])
-
-
 def sparql_query_with_retry(
     query: str, *, retries: int = 3, backoff: float = 2.0
 ) -> list[dict]:
-    """Execute a SPARQL query with bounded exponential backoff on failure.
-
-    EUR-Lex 5xxs intermittently. The harmonisation script previously
-    propagated a single transient error as an ``errors`` count and
-    skipped the directive — silently producing partial output. Retrying
-    transient failures first lets us isolate truly broken directives
-    from network blips.
-    """
-    last_exc: BaseException | None = None
-    for attempt in range(retries):
-        try:
-            return sparql_query(query)
-        except Exception as exc:  # noqa: BLE001 — broad to retry network/JSON
-            last_exc = exc
-            if attempt < retries - 1:
-                time.sleep(backoff * (2 ** attempt))
-    raise RuntimeError(
-        f"sparql_query failed after {retries} attempts: {last_exc}"
-    ) from last_exc
+    # Forwards to the shared helper; resolves ``sparql_query`` from this
+    # module so tests that monkeypatch it on this module still take effect.
+    return _sparql_query_with_retry(
+        query, query_fn=sparql_query, retries=retries, backoff=backoff
+    )
 
 
 def _cache_path_for(celex_dir: str) -> Path:
