@@ -224,6 +224,13 @@ estleg:LegalProvisionShape
         sh:description "Entity responsible for fulfilling the duty" ;
     ] ;
     sh:property [
+        sh:path estleg:targetGroup ;
+        sh:datatype xsd:string ;
+        sh:in ( "citizen" "business" "public_body" "official" "ngo" ) ;
+        sh:name "targetGroup" ;
+        sh:description "The bearer(s) of the deontic norm: which group(s) of actors carry the obligation, hold the right, or otherwise receive the norm's effect. Multi-valued because one provision may target several groups." ;
+    ] ;
+    sh:property [
         sh:path estleg:harmonisedWith ;
         sh:nodeKind sh:IRI ;
         sh:name "harmonisedWith" ;
@@ -975,6 +982,56 @@ estleg:InstitutionShape
         sh:datatype xsd:string ;
         sh:name "competenceType" ;
         sh:description "Type of competence: supervision, licensing, enforcement, regulation" ;
+    ] .
+
+# Shape for reified institutional competence instances
+estleg:CompetenceShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:Competence ;
+    sh:property [
+        sh:path estleg:institution ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:nodeKind sh:IRI ;
+        sh:name "institution" ;
+        sh:description "Institution whose competence is being described" ;
+    ] ;
+    sh:property [
+        sh:path estleg:competenceType ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:in ( "supervision" "licensing" "enforcement" "regulation" "advisory" "general" ) ;
+        sh:name "competenceType" ;
+        sh:description "Type of competence: supervision, licensing, enforcement, regulation, advisory, or general" ;
+    ] ;
+    sh:property [
+        sh:path estleg:appliesToProvision ;
+        sh:minCount 1 ;
+        sh:nodeKind sh:IRI ;
+        sh:name "appliesToProvision" ;
+        sh:description "Provision to which this competence applies" ;
+    ] ;
+    sh:property [
+        sh:path estleg:appliesToProvisionCount ;
+        sh:datatype xsd:integer ;
+        sh:maxCount 1 ;
+        sh:name "appliesToProvisionCount" ;
+        sh:description "Full number of provisions covered by this competence, including any omitted from capped sidecar lists" ;
+    ] ;
+    sh:property [
+        sh:path estleg:grantedBy ;
+        sh:nodeKind sh:IRI ;
+        sh:maxCount 1 ;
+        sh:name "grantedBy" ;
+        sh:description "The act under which this competence is granted, usually derived from the majority source act of appliesToProvision" ;
+    ] ;
+    sh:property [
+        sh:path estleg:competenceArea ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+        sh:name "competenceArea" ;
+        sh:description "Coarse thematic area for cross-institution grouping" ;
     ] .
 
 # Shape for NormativeType instances

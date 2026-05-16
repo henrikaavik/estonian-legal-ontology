@@ -16,7 +16,7 @@ from __future__ import annotations
 import json
 import re
 import time
-from collections import defaultdict
+from collections import Counter, defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -601,6 +601,76 @@ def detect_competence_type(text: str) -> str:
     return "general"
 
 
+def _fold_area_text(value: str) -> str:
+    """Lowercase and ASCII-fold enough Estonian text for area keywords."""
+    folded = value.lower()
+    for src, dst in (
+        ("õ", "o"), ("ä", "a"), ("ö", "o"), ("ü", "u"),
+        ("š", "s"), ("ž", "z"),
+    ):
+        folded = folded.replace(src, dst)
+    return folded
+
+
+COMPETENCE_AREA_KEYWORDS: tuple[tuple[str, tuple[str, ...]], ...] = (
+    ("data_protection", ("andmekaitse", "isikuand", "iks")),
+    ("tax", ("maksu", "tolli", "mks", "kms", "tums", "smms", "aktsiis")),
+    ("environment", ("keskkonna", "looduskaitse", "jaat", "mets", "veesead", "keus", "lks")),
+    ("health", ("tervise", "ravimi", "haige", "patsient", "meditsiin")),
+    ("transport", ("transpordi", "maantee", "raudtee", "lennu", "laeva", "liiklus", "uts")),
+    ("education", ("haridus", "kool", "oppe", "noorte", "pgs", "kels_lasteas")),
+    ("labour", ("tooinspektsioon", "tootaja", "toolep", "tootus", "tls", "ttks")),
+    ("internal_security", ("politsei", "piirivalve", "paaste", "kapo", "kaitsepolitsei", "siseministeerium")),
+    ("justice", ("kohus", "prokur", "justiits", "kohtutaitur", "notar", "kriminaal", "tsiviil")),
+    ("consumer_protection", ("tarbijakaitse", "tarbija", "ttja")),
+    ("finance", ("finants", "pank", "kindlustus", "rahandus", "eelarve")),
+    ("agriculture", ("pollu", "veterinaar", "toidu", "kala")),
+    ("culture", ("kultuur", "muinsus", "raamatukogu")),
+    ("social_protection", ("sotsiaal", "sotsiaalkindlustus", "pension", "toetus")),
+    ("local_government", ("kohalik_omavalitsus", "vallavalitsus", "linnavalitsus", "volikogu")),
+    ("general_government", ("vabariigivalitsus", "riigikogu", "ministeerium", "minister", "juhtministeerium", "president")),
+)
+
+
+def infer_competence_area(
+    institution_name: str,
+    iri_suffix: str,
+    competence_type: str,
+    source_act_refs: list[str],
+) -> str:
+    """Infer a coarse area from institution identity and source-act hints."""
+    haystack = _fold_area_text(
+        " ".join([institution_name, iri_suffix, competence_type, *source_act_refs])
+    )
+    for area, keywords in COMPETENCE_AREA_KEYWORDS:
+        if any(keyword in haystack for keyword in keywords):
+            return area
+    return "general"
+
+
+def _select_granted_by(source_act_refs: list[str]) -> str | None:
+    """Choose one granting act IRI for a competence node.
+
+    The sidecar groups provisions by institution and competence type, so very
+    broad competences can span many unrelated acts. Emit a deterministic
+    granting act when there is a usable majority/top act; omit it for all-single
+    broad spreads where no primary act is defensible.
+    """
+    counts = Counter(
+        ref for ref in source_act_refs
+        if isinstance(ref, str) and ref.startswith("estleg:")
+    )
+    if not counts:
+        return None
+    top_count = max(counts.values())
+    top_refs = sorted(ref for ref, count in counts.items() if count == top_count)
+    if top_count == 1 and len(counts) > 3:
+        return None
+    if len(top_refs) > 1 and len(counts) > 3:
+        return None
+    return top_refs[0]
+
+
 def _swap_issuer_body_suffix(
     source_issuer: str, target_body_slug: str
 ) -> str | None:
@@ -1039,7 +1109,9 @@ def process_law_file(
         n.pop("estleg:competentAuthority", None)
         n.pop("estleg:competenceType", None)
 
-    law_name = filepath.stem.replace("_peep", "")
+    # Store the granting act as an IRI when available; CompetenceShape
+    # constrains estleg:grantedBy to IRI values.
+    law_name = act_node.get("@id") or filepath.stem.replace("_peep", "")
     modified = False
 
     for node in doc["@graph"]:
@@ -1119,12 +1191,15 @@ def write_institution_files(state: _PipelineState) -> set[str]:
 
         graph: list[dict] = [inst_node]
 
-        # Group provisions by competence type
-        by_competence: dict[str, list[str]] = defaultdict(list)
-        for prov_iri, ctype, _law in provisions:
-            by_competence[ctype].append(prov_iri)
+        # Group provisions by competence type, preserving the source act ref
+        # used to derive estleg:grantedBy for the reified Competence node.
+        by_competence: dict[str, list[tuple[str, str]]] = defaultdict(list)
+        for prov_iri, ctype, source_act_ref in provisions:
+            by_competence[ctype].append((prov_iri, source_act_ref))
 
-        for ctype, prov_iris in sorted(by_competence.items()):
+        for ctype, entries in sorted(by_competence.items()):
+            prov_iris = [prov_iri for prov_iri, _source_act_ref in entries]
+            source_act_refs = [source_act_ref for _prov_iri, source_act_ref in entries]
             applies_to = [{"@id": p} for p in prov_iris[:_APPLIES_TO_PROVISION_CAP]]
             total_count = len(prov_iris)
             if total_count > _APPLIES_TO_PROVISION_CAP:
@@ -1137,7 +1212,7 @@ def write_institution_files(state: _PipelineState) -> set[str]:
                         f"{_APPLIES_TO_PROVISION_CAP}; full count surfaced "
                         f"as estleg:appliesToProvisionCount"
                     )
-            graph.append({
+            competence_node = {
                 "@id": f"{inst_iri}_competence_{ctype}",
                 "@type": ["owl:NamedIndividual", "estleg:Competence"],
                 "rdfs:label": f"{info['name']} – {ctype}",
@@ -1148,7 +1223,17 @@ def write_institution_files(state: _PipelineState) -> set[str]:
                     "@value": str(total_count),
                     "@type": "xsd:integer",
                 },
-            })
+                "estleg:competenceArea": infer_competence_area(
+                    institution_name=info["name"],
+                    iri_suffix=info["iri_suffix"],
+                    competence_type=ctype,
+                    source_act_refs=source_act_refs,
+                ),
+            }
+            granted_by = _select_granted_by(source_act_refs)
+            if granted_by:
+                competence_node["estleg:grantedBy"] = {"@id": granted_by}
+            graph.append(competence_node)
 
         doc = {"@context": CONTEXT, "@graph": graph}
         filename = f"institution_{info['iri_suffix']}.json"

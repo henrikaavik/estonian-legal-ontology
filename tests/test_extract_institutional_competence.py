@@ -1881,6 +1881,74 @@ class TestIssue170TruncationAware:
             )
 
 
+class TestIssue215CompetenceBackfill:
+    """Issue #215: Competence nodes expose grantedBy and competenceArea."""
+
+    def test_select_granted_by_majority_tie_and_broad_spread(self):
+        from extract_institutional_competence import _select_granted_by
+
+        assert _select_granted_by([
+            "estleg:LAW_A_Map_2026",
+            "estleg:LAW_A_Map_2026",
+            "estleg:LAW_B_Map_2026",
+        ]) == "estleg:LAW_A_Map_2026"
+        assert _select_granted_by([
+            "estleg:LAW_B_Map_2026",
+            "estleg:LAW_A_Map_2026",
+        ]) == "estleg:LAW_A_Map_2026"
+        assert _select_granted_by([
+            "estleg:LAW_A_Map_2026",
+            "estleg:LAW_B_Map_2026",
+            "estleg:LAW_C_Map_2026",
+            "estleg:LAW_D_Map_2026",
+        ]) is None
+
+    def test_write_institution_files_emits_granted_by_and_competence_area(
+        self, tmp_path, monkeypatch
+    ):
+        import extract_institutional_competence as mod
+
+        institutions_dir = tmp_path / "institutions"
+        institutions_dir.mkdir()
+        monkeypatch.setattr(mod, "INSTIT_DIR", institutions_dir)
+
+        state = mod._PipelineState()
+        for idx in range(3):
+            mod._record_provision_for_institution(
+                state=state,
+                inst_iri="estleg:Institution_andmekaitseinspektsioon",
+                canon_name="Andmekaitse Inspektsioon",
+                iri_suffix="andmekaitseinspektsioon",
+                itype="agency",
+                provision_iri=f"estleg:IKS_Par_{idx}",
+                competence_type="supervision",
+                law_name="estleg:IKS_Map_2026",
+            )
+        mod._record_provision_for_institution(
+            state=state,
+            inst_iri="estleg:Institution_andmekaitseinspektsioon",
+            canon_name="Andmekaitse Inspektsioon",
+            iri_suffix="andmekaitseinspektsioon",
+            itype="agency",
+            provision_iri="estleg:OTHER_Par_1",
+            competence_type="supervision",
+            law_name="estleg:OTHER_Map_2026",
+        )
+
+        mod.write_institution_files(state)
+
+        doc = json.loads(
+            (institutions_dir / "institution_andmekaitseinspektsioon.json")
+            .read_text(encoding="utf-8")
+        )
+        competence = next(
+            node for node in doc["@graph"]
+            if "estleg:Competence" in node.get("@type", [])
+        )
+        assert competence["estleg:grantedBy"] == {"@id": "estleg:IKS_Map_2026"}
+        assert competence["estleg:competenceArea"] == "data_protection"
+
+
 class TestIssue170CanonicalValidation:
     """Finding 8 (#170): institutions whose normalized iri_suffix isn't
     in the canonical 126-list registry must be dropped, with a counter

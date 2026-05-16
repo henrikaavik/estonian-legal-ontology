@@ -567,6 +567,19 @@ Represents a state institution with legal competences.
 | `estleg:competenceType` | `xsd:string` | Type: supervision, licensing, enforcement, regulation |
 | `estleg:hasCompetence` | `owl:ObjectProperty` | Provisions assigning competence to this institution |
 
+### Competence (`estleg:Competence`)
+Reified institutional competence sidecar node generated under
+`krr_outputs/institutions/`.
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `estleg:institution` | `owl:ObjectProperty` | Institution whose competence is being described |
+| `estleg:competenceType` | `xsd:string` | Type: `supervision`, `licensing`, `enforcement`, `regulation`, `advisory`, or `general` |
+| `estleg:appliesToProvision` | `owl:ObjectProperty` | Provision(s) to which this competence applies |
+| `estleg:appliesToProvisionCount` | `xsd:integer` | Full provision count when the sidecar list is capped |
+| `estleg:grantedBy` | `owl:ObjectProperty` | Act IRI that most directly grants the competence, derived from the source act distribution |
+| `estleg:competenceArea` | `xsd:string` | Coarse thematic area for overlap/gap analysis across institutions |
+
 ### NormativeType (`estleg:NormativeType`)
 Deontic classification of provisions. Individuals: `NormType_Obligation`, `NormType_Right`, `NormType_Permission`, `NormType_Prohibition`.
 
@@ -811,12 +824,15 @@ SELECT ?text ?type ?source WHERE {
 |----------|--------|-------|-------------|
 | `estleg:normativeType` | LegalProvision | NormativeType (IRI) | Obligation, right, permission, prohibition |
 | `estleg:dutyHolder` | LegalProvision | `xsd:string` | Who must comply (e.g., "tööandja") |
+| `estleg:targetGroup` | LegalProvision | `xsd:string` enum, multi-valued | Affected group(s): `citizen`, `business`, `public_body`, `official`, `ngo` |
 
 ### Institutional Competence
 | Property | Domain | Range | Description |
 |----------|--------|-------|-------------|
 | `estleg:competentAuthority` | LegalProvision | Institution or Issuer (IRI) | Responsible authority — `Institution_*` for state/general detections, `Issuer_*` for KOV-bound matches (see KOV subsection below) |
 | `estleg:competenceType` | Institution | `xsd:string` | Type: supervision, licensing, enforcement |
+| `estleg:grantedBy` | Competence | Act (IRI) | The act under which this competence is granted when a primary source act is derivable |
+| `estleg:competenceArea` | Competence | `xsd:string` | Coarse thematic area used for cross-institutional grouping |
 
 ### Layer 2c PR #2 — KOV Issuer-binding for `competentAuthority`
 

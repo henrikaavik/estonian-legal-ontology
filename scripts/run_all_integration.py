@@ -4,7 +4,7 @@ Master orchestration script for the enrichment pipeline and release builds.
 
 This module owns two things:
 
-1. A declarative **step DAG** for the 14 enrichment scripts. Each step
+1. A declarative **step DAG** for the 15 enrichment scripts. Each step
    declares its ``command``, ``depends_on`` (other step names), ``writes``
    (glob patterns it produces under ``krr_outputs/``) and ``reads`` (glob
    patterns it consumes — either produced by an earlier step or a committed
@@ -20,7 +20,7 @@ This module owns two things:
    "independent" steps still rewrite the shared ``*_peep.json`` corpus,
    ``validate_dag()`` *rejects* ``--parallel > 1`` (exit 2) whenever two
    steps that could run concurrently declare overlapping ``writes`` globs;
-   the current 14-step DAG has such overlaps, so ``--parallel`` is only
+   the current 15-step DAG has such overlaps, so ``--parallel`` is only
    safe once per-step corpus writes are made disjoint. ``--parallel 1``
    (serial, the default) is unaffected.
 
@@ -60,11 +60,12 @@ Execution order (topological — equals the historical phase order):
     8.  generate_amendment_history.py
     9.  extract_legal_concepts.py
     10. classify_deontic.py
-    11. extract_institutional_competence.py
-    12. extract_sanctions.py
-    13. extract_draft_impact.py
+    11. classify_target_group.py
+    12. extract_institutional_competence.py
+    13. extract_sanctions.py
+    14. extract_draft_impact.py
   Phase 4 — Aggregation (benefits from all prior data)
-    14. generate_similarity_index.py
+    15. generate_similarity_index.py
 
 If a dependency fails, its dependents are automatically skipped.
 
@@ -231,6 +232,15 @@ STEPS: list[dict] = [
                    "deontic_classification_report.json"],
     },
     {
+        "name": "classify_target_group.py",
+        "description": "Target-group classification",
+        "script": "classify_target_group.py",
+        "depends_on": [],
+        "reads": ["*_peep.json", "regulations/**/*_peep.json"],
+        "writes": ["*_peep.json", "regulations/**/*_peep.json",
+                   "target_group_report.json"],
+    },
+    {
         "name": "extract_institutional_competence.py",
         "description": "Institutional competence mapping",
         "script": "extract_institutional_competence.py",
@@ -276,6 +286,7 @@ STEPS: list[dict] = [
             "generate_amendment_history.py",
             "extract_legal_concepts.py",
             "classify_deontic.py",
+            "classify_target_group.py",
             "extract_institutional_competence.py",
             "extract_sanctions.py",
             "extract_draft_impact.py",
@@ -449,7 +460,7 @@ def _transitive_dependents(adj: dict[str, list[str]]) -> dict[str, set[str]]:
     ``x`` in ``depends_on``). The returned set is the *transitive* closure
     of that relation, i.e. every step that runs strictly after ``x`` because
     of a dependency chain. Computed with a simple DFS per node (the DAG is
-    tiny — 14 steps).
+    tiny — 15 steps).
     """
     closure: dict[str, set[str]] = {}
 

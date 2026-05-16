@@ -386,7 +386,7 @@ class TestParallelWriteDisjointness:
         assert r.validate_dag(steps, (), parallel=2) == ["a.py", "b.py", "c.py"]
 
     def test_real_dag_rejects_parallel_gt_1(self) -> None:
-        # The real 14-step DAG has overlapping *_peep.json writes among
+        # The real DAG has overlapping *_peep.json writes among
         # independent steps, so --parallel 2 must be rejected.
         assert len(r.validate_dag(r.STEPS, r.COMMITTED_INPUTS, parallel=1)) == len(
             r.STEPS
