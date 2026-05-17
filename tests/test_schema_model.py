@@ -95,6 +95,16 @@ ANNOTATION_DATATYPE_PROPS = [
     "estleg:annotationType",
 ]
 
+# ---------------------------------------------------------------------------
+# Vocabulary terms — issues #214 / #215
+# ---------------------------------------------------------------------------
+
+TARGET_GROUP_DATATYPE_PROPS = [
+    "estleg:targetGroup",
+    "estleg:competenceArea",
+]
+COMPETENCE_OBJECT_PROPS = ["estleg:grantedBy"]
+
 
 @pytest.mark.parametrize("term", PROVISION_VERSION_CLASSES + ANNOTATION_CLASSES)
 def test_new_classes_declared_as_owl_class(term):
@@ -105,7 +115,10 @@ def test_new_classes_declared_as_owl_class(term):
     assert node.get("rdfs:comment"), f"{term} lacks rdfs:comment"
 
 
-@pytest.mark.parametrize("term", PROVISION_VERSION_OBJECT_PROPS + ANNOTATION_OBJECT_PROPS)
+@pytest.mark.parametrize(
+    "term",
+    PROVISION_VERSION_OBJECT_PROPS + ANNOTATION_OBJECT_PROPS + COMPETENCE_OBJECT_PROPS,
+)
 def test_new_object_properties_declared(term):
     node = _vocab_index().get(term)
     assert node is not None, f"{term} missing from controlled_vocabulary.jsonld"
@@ -114,7 +127,10 @@ def test_new_object_properties_declared(term):
     assert node.get("rdfs:comment"), f"{term} lacks rdfs:comment"
 
 
-@pytest.mark.parametrize("term", PROVISION_VERSION_DATATYPE_PROPS + ANNOTATION_DATATYPE_PROPS)
+@pytest.mark.parametrize(
+    "term",
+    PROVISION_VERSION_DATATYPE_PROPS + ANNOTATION_DATATYPE_PROPS + TARGET_GROUP_DATATYPE_PROPS,
+)
 def test_new_datatype_properties_declared(term):
     node = _vocab_index().get(term)
     assert node is not None, f"{term} missing from controlled_vocabulary.jsonld"
@@ -307,3 +323,111 @@ def test_legal_provision_without_version_links_still_conforms():
         "estleg:summary": "Provision with no version history populated.",
     })
     assert ok, msg
+
+
+# ---------------------------------------------------------------------------
+# SHACL — estleg:targetGroup enum is optional and multi-valued
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize(
+    "target_group",
+    ["citizen", "business", "public_body", "official", "ngo"],
+)
+def test_legal_provision_accepts_target_group_enum_values(target_group):
+    ok, msg = _validate({
+        "@context": CONTEXT,
+        "@id": f"estleg:LegalProvision_TARGET_{target_group}",
+        "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+        "estleg:paragrahv": "§ 10",
+        "estleg:summary": "Provision with a classified target group.",
+        "estleg:targetGroup": target_group,
+    })
+    assert ok, msg
+
+
+def test_legal_provision_accepts_multiple_target_groups():
+    ok, msg = _validate({
+        "@context": CONTEXT,
+        "@id": "estleg:LegalProvision_TARGET_MULTI",
+        "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+        "estleg:paragrahv": "§ 11",
+        "estleg:summary": "Provision affecting several target groups.",
+        "estleg:targetGroup": ["citizen", "business", "public_body"],
+    })
+    assert ok, msg
+
+
+def test_legal_provision_rejects_unknown_target_group():
+    ok, _ = _validate({
+        "@context": CONTEXT,
+        "@id": "estleg:LegalProvision_TARGET_BAD",
+        "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+        "estleg:paragrahv": "§ 12",
+        "estleg:summary": "Provision with an invalid target group.",
+        "estleg:targetGroup": "aliens",
+    })
+    assert not ok
+
+
+# ---------------------------------------------------------------------------
+# SHACL — estleg:CompetenceShape
+# ---------------------------------------------------------------------------
+
+
+def _competence_graph(extra: dict | None = None, remove: str | None = None) -> dict:
+    competence = {
+        "@id": "estleg:Institution_test_competence_general",
+        "@type": ["owl:NamedIndividual", "estleg:Competence"],
+        "estleg:institution": {"@id": "estleg:Institution_test"},
+        "estleg:competenceType": "general",
+        "estleg:appliesToProvision": {"@id": "estleg:TEST_Par_1"},
+        "estleg:appliesToProvisionCount": {"@value": "1", "@type": "xsd:integer"},
+        "estleg:grantedBy": {"@id": "estleg:TEST_Map_2026"},
+        "estleg:competenceArea": "general_government",
+    }
+    if extra:
+        competence.update(extra)
+    if remove:
+        competence.pop(remove, None)
+    return {
+        "@context": CONTEXT,
+        "@graph": [
+            {
+                "@id": "estleg:Institution_test",
+                "@type": ["owl:NamedIndividual", "estleg:Institution"],
+                "rdfs:label": "Test Institution",
+            },
+            competence,
+        ],
+    }
+
+
+def test_competence_shape_accepts_valid_node():
+    ok, msg = _validate(_competence_graph())
+    assert ok, msg
+
+
+def test_competence_shape_requires_institution():
+    ok, _ = _validate(_competence_graph(remove="estleg:institution"))
+    assert not ok
+
+
+def test_competence_shape_rejects_unknown_competence_type():
+    ok, _ = _validate(_competence_graph({"estleg:competenceType": "mystery"}))
+    assert not ok
+
+
+def test_competence_shape_rejects_literal_granted_by():
+    ok, _ = _validate(_competence_graph({"estleg:grantedBy": "estleg:TEST_Map_2026"}))
+    assert not ok
+
+
+def test_competence_shape_rejects_multiple_granted_by_values():
+    ok, _ = _validate(_competence_graph({
+        "estleg:grantedBy": [
+            {"@id": "estleg:TEST_Map_2026"},
+            {"@id": "estleg:OTHER_Map_2026"},
+        ],
+    }))
+    assert not ok

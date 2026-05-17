@@ -5,7 +5,7 @@ A comprehensive, machine-readable ontology of Estonian and EU legislation in JSO
 **Eestikeelne ülevaade:** [loe ontoloogia ülevaadet veebina](https://htmlpreview.github.io/?https://github.com/henrikaavik/estonian-legal-ontology/blob/main/docs/eesti-oigusontoloogia-ulevaade.html) — mis see on, kuidas see töötab, kust andmed pärinevad, kuidas seda uuendada ning kuidas ministeeriumid seda kasutada saaksid. PDF-versioon: [docs/eesti-oigusontoloogia-ulevaade.pdf](docs/eesti-oigusontoloogia-ulevaade.pdf).
 
 <!-- counts: keep in sync with metadata.jsonld estleg:statistics — validate_all.py::validate_metadata_catalog enforces metadata.jsonld vs the corpus, and tests/test_validate_all.py::test_readme_counts_match_metadata enforces README vs metadata.jsonld -->
-**Status: 608 enacted laws (637 law files) + 22,832 drafts + 3,812 state regulations + 11,059 municipal regulations (opt-in) + 12,137 court decisions + 33,242 EU acts + 22,290 EU court decisions** | **21,972 JSON/JSON-LD files** | **170,000+ semantic nodes**
+**Status: 608 enacted laws (637 law files) + 22,832 drafts + 3,812 state regulations + 11,059 municipal regulations (opt-in) + 12,137 court decisions + 33,242 EU acts + 22,290 EU court decisions** | **21,973 JSON/JSON-LD files** | **170,000+ semantic nodes**
 
 **Integration features:** Cross-law reference links | Court decision → provision links | EU directive transposition mapping | EuroVoc taxonomy | Amendment history | Legal concept graph | Deontic classification | Institutional competence | Sanction index | Semantic similarity | Temporal validity
 
@@ -360,7 +360,7 @@ Source: EUR-Lex SPARQL endpoint (22,290 decisions with Estonian translations)
 
 ## Integration & Cross-Linking
 
-The ontology includes 14 integration layers that connect laws, court decisions, drafts, and EU legislation:
+The ontology includes 15 integration layers that connect laws, court decisions, drafts, and EU legislation:
 
 | Feature | Script | Description |
 |---------|--------|-------------|
@@ -375,6 +375,7 @@ The ontology includes 14 integration layers that connect laws, court decisions, 
 | Temporal validity | `extract_temporal_data.py` | Entry-into-force and repeal dates |
 | Cross-border harmonisation | `generate_harmonisation_links.py` | Links to parallel EU transpositions |
 | Deontic classification | `classify_deontic.py` | Classifies provisions as obligations/rights/permissions/prohibitions |
+| Target groups | `classify_target_group.py` | Classifies affected groups for obligations, rights, permissions, and prohibitions |
 | Institutional competence | `extract_institutional_competence.py` | Maps which institution enforces what |
 | Sanctions | `extract_sanctions.py` | Penalty and sanction cross-reference index |
 | Semantic similarity | `generate_similarity_index.py` | Keyword-based similarity between provisions |
@@ -413,7 +414,7 @@ python3 scripts/generate_similarity_index.py
 
 ```
 .
-├── krr_outputs/              # JSON/JSON-LD ontology files (21,972 files)
+├── krr_outputs/              # JSON/JSON-LD ontology files (21,973 files)
 │   ├── *_peep.json           # Individual enacted law mappings
 │   ├── combined_ontology.jsonld  # All enacted laws in one file
 │   ├── INDEX.json            # Enacted law registry

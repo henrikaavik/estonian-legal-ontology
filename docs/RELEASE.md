@@ -1,7 +1,7 @@
 # Release build DAG
 
 `scripts/run_all_integration.py` owns the enrichment pipeline **and** the
-release build. The 14 enrichment steps are declared as an explicit,
+release build. The 15 enrichment steps are declared as an explicit,
 declarative directed acyclic graph (DAG); the runner topologically sorts it,
 runs it (serially by default), then — in `--release` mode — runs the three
 release validators and writes a release-wide manifest aggregating everything.
@@ -64,13 +64,14 @@ phase order is preserved exactly.
 | 8 | `generate_amendment_history.py` | — | `amendments/**/*.json`, `*_peep.json`, `amendment_history_report.json` |
 | 9 | `extract_legal_concepts.py` | — | `concepts/**/*.json`, `*_peep.json` |
 | 10 | `classify_deontic.py` | — | `*_peep.json`, `regulations/**/*_peep.json`, `deontic_classification_report.json` |
-| 11 | `extract_institutional_competence.py` | — | `institutions/**/*.json`, `*_peep.json`, `institutional_competence_report.json` |
-| 12 | `extract_sanctions.py` | — | `sanctions/**/*.json`, `*_peep.json`, `sanctions_report.json` |
-| 13 | `extract_draft_impact.py` | — | `*_peep.json`, `draft_impact_report.json` |
-| 14 | `generate_similarity_index.py` | steps 1–13 (all) | `similarity_index.json`, `similarity_report.json` |
+| 11 | `classify_target_group.py` | — | `*_peep.json`, `regulations/**/*_peep.json`, `target_group_report.json` |
+| 12 | `extract_institutional_competence.py` | — | `institutions/**/*.json`, `*_peep.json`, `institutional_competence_report.json` |
+| 13 | `extract_sanctions.py` | — | `sanctions/**/*.json`, `*_peep.json`, `sanctions_report.json` |
+| 14 | `extract_draft_impact.py` | — | `*_peep.json`, `draft_impact_report.json` |
+| 15 | `generate_similarity_index.py` | steps 1–14 (all) | `similarity_index.json`, `similarity_report.json` |
 
 ASCII view of the dependency edges (everything not shown is a no-dependency
-root that the topo sort places in source order; step 14 fans in from all
+root that the topo sort places in source order; step 15 fans in from all
 prior steps):
 
 ```
@@ -82,6 +83,7 @@ extract_temporal_data.py ──────────────────�
 generate_amendment_history.py ──────────────────────────────────────────┼─▶ generate_similarity_index.py
 extract_legal_concepts.py ──────────────────────────────────────────────┤
 classify_deontic.py ────────────────────────────────────────────────────┤
+classify_target_group.py ────────────────────────────────────────────────┤
 extract_institutional_competence.py ────────────────────────────────────┤
 extract_sanctions.py ───────────────────────────────────────────────────┤
 extract_draft_impact.py ────────────────────────────────────────────────┘
@@ -137,7 +139,7 @@ This is the **unified release command**. It:
 1. Validates the DAG (exit 2 on a structural problem).
 2. Takes an atomic rename-aside snapshot of `krr_outputs/` (unless
    `--no-restore-on-failure`).
-3. Runs all 14 steps in topo order. A failed step skips its dependents; the
+3. Runs all 15 steps in topo order. A failed step skips its dependents; the
    first hard failure stops the run and the snapshot is restored.
 4. If — and only if — every step succeeded, runs the three release
    validators in order:
@@ -145,7 +147,7 @@ This is the **unified release command**. It:
    - `python3 scripts/shacl_validate_all.py --all` — full-corpus SHACL conformance
    - `python3 scripts/validate_seadusloome_sync.py` — Seadusloome zero-warning gate
 5. Writes `krr_outputs/reports/integration/release_manifest.json`.
-6. Exits **0 only if `release_ok`** — i.e. all 14 steps succeeded **and**
+6. Exits **0 only if `release_ok`** — i.e. all 15 steps succeeded **and**
    all three validators passed **and** no release-surface artifact is
    missing (`releaseArtifacts.missing` is empty; see
    [the manifest schema](#the-release_manifestjson-schema)). Otherwise exit 1.
@@ -219,7 +221,7 @@ Written to `krr_outputs/reports/integration/release_manifest.json` by every
                                                 // validation_failed
     ...
   ],
-  "stepSummary": { "totalSteps": 14, "succeeded": 14, "failed": 0,
+  "stepSummary": { "totalSteps": 15, "succeeded": 15, "failed": 0,
                    "skipped": 0, "planned": 0 },
 
   "validators": [
