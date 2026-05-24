@@ -36,6 +36,8 @@ from riigiteataja_common import (  # noqa: E402
     SourceListFetchError,
 )
 from generate_all_laws import (  # noqa: E402
+    _iter_loiked as _iter_loiked,
+    _loige_numbers as _loige_numbers,
     _paragraph_id_suffix,
     build_subsections,
     collect_full_text,
