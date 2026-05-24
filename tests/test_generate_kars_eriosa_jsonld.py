@@ -99,6 +99,19 @@ class TestJoinLabel:
         assert result == "Number-1 – Title-2"
 
 
+class TestSectionRange:
+    def test_derives_base_section_range_for_act_iri(self) -> None:
+        root = ET.fromstring(_FAKE_KARS_XML)
+        osa2 = next(
+            osa
+            for osa in root.iter()
+            if gke.ln(osa.tag) == "osa"
+            and gke.child_text(osa, "osaNr") == "2"
+        )
+
+        assert gke.section_range(osa2) == (88, 113)
+
+
 # ---------------------------------------------------------------------------
 # Integration: build a fake KarS XML and verify graph invariants
 # ---------------------------------------------------------------------------

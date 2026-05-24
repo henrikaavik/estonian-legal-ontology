@@ -477,3 +477,46 @@ def test_run_scrape_with_mocked_listing(tmp_path: Path, monkeypatch: pytest.Monk
     assert ann_nodes[0]["estleg:annotationDate"] == {"@value": "2024-03-15", "@type": "xsd:date"}
     cov = json.loads(cov_path.read_text(encoding="utf-8"))
     assert cov["files_processed"] == 2 and cov["files_with_output"] == 1 and cov["triples_emitted"] == 1
+
+
+def test_pdf_text_layer_probe_reports_ocr_recommendation():
+    opinions = [
+        ga.Opinion(
+            opinion_id="usable",
+            title="Usable PDF",
+            url="https://www.oiguskantsler.ee/usable.pdf",
+            date_iso=None,
+            law_names=(),
+            summary="",
+        ),
+        ga.Opinion(
+            opinion_id="scan",
+            title="Scanned PDF",
+            url="https://www.oiguskantsler.ee/scan.pdf",
+            date_iso=None,
+            law_names=(),
+            summary="",
+        ),
+    ]
+
+    def _fetcher(url, **_kwargs):  # noqa: ANN001
+        return url.encode("utf-8")
+
+    def _extractor(pdf_bytes):  # noqa: ANN001
+        if b"usable" in pdf_bytes:
+            return "Õiguskantsleri seisukoha tekst. " * 30, None
+        return "", None
+
+    report = ga.probe_pdf_text_layers(
+        opinions,
+        sample_size=2,
+        fetcher=_fetcher,
+        extractor=_extractor,
+        cache_dir=None,
+        sleep=0,
+    )
+
+    assert report["sampled"] == 2
+    assert report["usable_text_layer_count"] == 1
+    assert report["usable_text_layer_ratio"] == 0.5
+    assert report["recommendation"] == "evaluate_ocr_before_full_ingestion"

@@ -438,6 +438,22 @@ class TestExtractDecisionText:
         )
         assert gcd.extract_decision_text(tiny) is None
 
+    def test_mojibake_like_text_returns_none(self) -> None:
+        garbled = (
+            '<html><head><meta name="description" content="LahendiDokument">'
+            '</head><body><div data-faili-objekt-id="1"></div><p>'
+            + ("Ã�Â¤�" * 30)
+            + "</p></body></html>"
+        )
+        assert gcd.extract_decision_text(garbled) is None
+
+    def test_normal_decision_text_quality_ratio_passes(self) -> None:
+        text = gcd.extract_decision_text(_MODERN_DETAIL_HTML)
+        assert text is not None
+        assert gcd.decision_text_quality_ratio(text) >= (
+            gcd.MIN_DECISION_TEXT_VALID_CHAR_RATIO
+        )
+
 
 # ---------------------------------------------------------------------------
 # fetch_decision_text — caching (issue #135)

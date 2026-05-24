@@ -13,8 +13,8 @@ Two things are checked:
    optional ``estleg:hasVersion`` / ``estleg:currentVersion`` properties
    still conforms to ``estleg:LegalProvisionShape``.
 
-Population of either model is future work — see the follow-up
-data-completeness issues referenced from ``docs/SCHEMA_REFERENCE.md``.
+Population is handled by separate ingestion scripts and data-completeness
+issues referenced from ``docs/SCHEMA_REFERENCE.md``.
 """
 from __future__ import annotations
 

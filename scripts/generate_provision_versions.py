@@ -84,6 +84,7 @@ BASE_URL = "https://www.riigiteataja.ee"
 VERSIONS_DIR = KRR_DIR / "provision_versions"
 XML_CACHE_SUBDIR = "provision_versions"
 COVERAGE_PATH = KRR_DIR / "reports" / "kov" / "extract_provision_versions_coverage.json"
+LAW_REPORT_NAME = "provision_versions_report.json"
 
 DEFAULT_LIMIT = 2
 DEFAULT_MAX_REDACTIONS = 12
@@ -640,11 +641,13 @@ def select_law_slugs(
     *,
     explicit: list[str] | None,
     limit: int | None,
+    all_laws: bool = False,
     krr_dir: Path = KRR_DIR,
 ) -> list[str]:
     """Resolve the list of law slugs to process.
 
     * ``--law`` (repeatable) wins — those exact slugs (that exist on disk), in order.
+    * ``--all`` processes every on-disk law slug.
     * otherwise the curated :data:`DEFAULT_LAW_SLUGS`, then any remaining on-disk slugs,
       truncated to ``limit`` (``--limit``; ``0`` ⇒ none, ``None`` ⇒ default).
     """
@@ -652,6 +655,8 @@ def select_law_slugs(
     if explicit:
         chosen = [s for s in explicit if s in on_disk or _peep_files_for_slug(s, krr_dir)]
         return chosen
+    if all_laws:
+        return sorted(on_disk)
     if limit is not None and limit <= 0:
         return []
     effective_limit = DEFAULT_LIMIT if limit is None else limit
@@ -703,6 +708,38 @@ def _write_coverage(results: list[LawResult], *, start_perf: float, path: Path =
     print(f"\nCoverage report -> {_rel(path)}")
 
 
+def write_law_report(results: list[LawResult], path: Path) -> None:
+    """Persist per-law progress rows for resumable/full-run review."""
+    rows = [
+        {
+            "slug": r.slug,
+            "title": r.title,
+            "redactions_total": r.redactions_total,
+            "redactions_processed": r.redactions_fetched,
+            "redactions_failed": r.redactions_failed,
+            "provisions_in_law": r.provisions_in_law,
+            "provisions_versioned": r.provisions_versioned,
+            "versions_emitted": r.versions_emitted,
+            "sidecar_path": r.sidecar_path,
+            "warnings": [r.error] if r.error else [],
+        }
+        for r in results
+    ]
+    payload = {
+        "laws_processed": len(results),
+        "laws_with_output": sum(1 for r in results if r.versions_emitted > 0),
+        "versions_emitted": sum(r.versions_emitted for r in results),
+        "rows": rows,
+    }
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp = path.with_suffix(path.suffix + ".tmp")
+    with open(tmp, "w", encoding="utf-8") as fh:
+        json.dump(payload, fh, ensure_ascii=False, indent=2, sort_keys=True)
+        fh.write("\n")
+    tmp.replace(path)
+    print(f"Per-law report -> {_rel(path)}")
+
+
 # ---------------------------------------------------------------------------
 # CLI
 # ---------------------------------------------------------------------------
@@ -723,6 +760,11 @@ def _parse_args(argv: list[str] | None) -> argparse.Namespace:
         action="append",
         metavar="SLUG",
         help="Process this specific law slug (repeatable). Overrides --limit.",
+    )
+    parser.add_argument(
+        "--all",
+        action="store_true",
+        help="Process every law slug with an on-disk peep file. This is the full ingestion mode.",
     )
     parser.add_argument(
         "--max-redactions",
@@ -763,12 +805,19 @@ def main(argv: list[str] | None = None) -> int:
     krr_dir = KRR_DIR
     versions_dir = VERSIONS_DIR
     coverage_path = COVERAGE_PATH
+    law_report_path = krr_dir / "reports" / LAW_REPORT_NAME
 
-    slugs = select_law_slugs(explicit=args.law, limit=args.limit, krr_dir=krr_dir)
+    slugs = select_law_slugs(
+        explicit=args.law,
+        limit=args.limit,
+        all_laws=args.all,
+        krr_dir=krr_dir,
+    )
     if not slugs:
         print("No laws selected (--limit 0 or --law matched nothing). Nothing to do.")
         # Still write a (zeroed) coverage report so the artefact exists.
         _write_coverage([], start_perf=start_perf, path=coverage_path)
+        write_law_report([], law_report_path)
         return 0
 
     print("=" * 70)
@@ -795,6 +844,7 @@ def main(argv: list[str] | None = None) -> int:
         results.append(result)
 
     _write_coverage(results, start_perf=start_perf, path=coverage_path)
+    write_law_report(results, law_report_path)
 
     # Summary
     total_versions = sum(r.versions_emitted for r in results)

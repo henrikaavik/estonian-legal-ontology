@@ -6,9 +6,11 @@ this script reports matches what consumers see when they ingest the
 ontology. Specifically:
 
 1. Prioritize ``krr_outputs/combined_ontology.jsonld`` if present.
-2. Append every ``*.json`` and ``*.jsonld`` under each of:
-   ``krr_outputs/eelnoud/``, ``krr_outputs/riigikohus/``,
-   ``krr_outputs/curia/``, and ``krr_outputs/eurlex/``.
+2. Append every public JSON-LD data file under the documented section 2
+   load-surface directories: ``eelnoud``, ``riigikohus``, ``curia``,
+   ``eurlex``, ``concepts``, ``sanctions``, ``amendments``,
+   ``institutions``, ``provision_versions``, ``annotations``,
+   ``harmonisation``, and ``regulations``.
 3. Parse all inputs into a single ``rdflib.Graph()`` via the JSON-LD
    parser.
 4. Load every ``*.ttl`` and ``*.jsonld`` under ``shacl/`` into a
@@ -27,10 +29,17 @@ suitable for CI gating (0 = clean, 1 = warnings exceed threshold,
 from __future__ import annotations
 
 import argparse
+import json
 import sys
-from collections import defaultdict
+from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Iterable
+
+from estleg_common import (
+    NS,
+    PUBLIC_LOAD_SUBDIRS,
+    iter_public_load_files,
+)
 
 REPO = Path(__file__).resolve().parents[1]
 DEFAULT_KRR = REPO / "krr_outputs"
@@ -39,7 +48,7 @@ DEFAULT_SHAPES = REPO / "shacl"
 # Sub-directories Seadusloome's converter pulls in addition to the
 # combined artifact at the krr root. Order is intentional and matches
 # the upstream loader.
-SEADUSLOOME_SUBDIRS: tuple[str, ...] = ("eelnoud", "riigikohus", "curia", "eurlex")
+SEADUSLOOME_SUBDIRS: tuple[str, ...] = PUBLIC_LOAD_SUBDIRS
 
 # JSON-LD inputs the Seadusloome loader recognises (matches both raw
 # .json and .jsonld extensions in the listed sub-directories).
@@ -47,6 +56,14 @@ JSONLD_SUFFIXES: tuple[str, ...] = (".json", ".jsonld")
 
 # Shapes graph file extensions.
 SHAPES_SUFFIXES: tuple[str, ...] = (".ttl", ".jsonld")
+
+# These properties are encoded as compact IRI-like controlled values, but the
+# values are not independently loadable graph nodes today. They are enum-ish
+# classifications, not followable enrichment links, so they are outside the
+# public graph-closure contract.
+GRAPH_CLOSURE_EXEMPT_PREDICATES: frozenset[str] = frozenset(
+    {"estleg:caseType", "estleg:decisionType"}
+)
 
 
 def collect_inputs(krr_dir: Path) -> tuple[list[Path], list[str], list[str]]:
@@ -59,12 +76,8 @@ def collect_inputs(krr_dir: Path) -> tuple[list[Path], list[str], list[str]]:
     """
     warnings: list[str] = []
     errors: list[str] = []
-    inputs: set[Path] = set()
-
     combined = krr_dir / "combined_ontology.jsonld"
-    if combined.exists():
-        inputs.add(combined)
-    else:
+    if not combined.exists():
         errors.append(
             f"ERROR: {combined} not found — refusing to run a partial gate that "
             f"would skip every root *_peep.json file. Regenerate the combined "
@@ -75,13 +88,128 @@ def collect_inputs(krr_dir: Path) -> tuple[list[Path], list[str], list[str]]:
         subdir = krr_dir / subdir_name
         if not subdir.is_dir():
             warnings.append(f"WARNING: missing input subdirectory {subdir}")
-            continue
-        for suffix in JSONLD_SUFFIXES:
-            for path in subdir.glob(f"*{suffix}"):
-                if path.is_file():
-                    inputs.add(path)
 
-    return sorted(inputs), warnings, errors
+    return iter_public_load_files(krr_dir), warnings, errors
+
+
+def _canonical_estleg_id(value: str) -> str | None:
+    """Return compact ``estleg:`` form for internal IDs, else ``None``."""
+    if value.startswith("estleg:"):
+        return value
+    if value.startswith(NS):
+        return "estleg:" + value[len(NS):]
+    return None
+
+
+def _iter_graph_nodes(doc: object) -> Iterable[dict]:
+    if not isinstance(doc, dict):
+        return
+    graph = doc.get("@graph")
+    if isinstance(graph, list):
+        for node in graph:
+            if isinstance(node, dict):
+                yield node
+
+
+def _walk_jsonld_refs(value: object, predicate: str) -> Iterable[tuple[str, str]]:
+    """Yield ``(predicate, ref)`` pairs for JSON-LD object references."""
+    if isinstance(value, dict):
+        ref = value.get("@id")
+        if isinstance(ref, str):
+            yield predicate, ref
+        for key, child in value.items():
+            if key in {"@context", "@id"}:
+                continue
+            yield from _walk_jsonld_refs(child, key)
+    elif isinstance(value, list):
+        for item in value:
+            yield from _walk_jsonld_refs(item, predicate)
+
+
+def validate_graph_closure(paths: Iterable[Path]) -> dict:
+    """Validate internal ``estleg:`` object-reference closure.
+
+    Returns a summary dict with ``total``, ``by_predicate``, ``samples``, and
+    ``load_errors``. The check is intentionally JSON-LD-shape based rather than
+    rdflib-based so it can report the source predicate as it appears in the
+    corpus files.
+    """
+    docs: list[tuple[Path, object]] = []
+    load_errors: list[tuple[str, str]] = []
+    defined_ids: set[str] = set()
+
+    for path in paths:
+        try:
+            doc = json.loads(path.read_text(encoding="utf-8"))
+        except Exception as exc:  # noqa: BLE001
+            load_errors.append((str(path), str(exc)))
+            continue
+        docs.append((path, doc))
+        for node in _iter_graph_nodes(doc):
+            node_id = node.get("@id")
+            if isinstance(node_id, str):
+                canonical = _canonical_estleg_id(node_id)
+                if canonical:
+                    defined_ids.add(canonical)
+
+    by_predicate: Counter[str] = Counter()
+    samples: dict[str, list[dict[str, str]]] = defaultdict(list)
+
+    for path, doc in docs:
+        for node in _iter_graph_nodes(doc):
+            source = str(node.get("@id", "(anonymous)"))
+            for key, value in node.items():
+                if key in {"@context", "@id"}:
+                    continue
+                for predicate, ref in _walk_jsonld_refs(value, key):
+                    if predicate in GRAPH_CLOSURE_EXEMPT_PREDICATES:
+                        continue
+                    canonical = _canonical_estleg_id(ref)
+                    if canonical is None or canonical in defined_ids:
+                        continue
+                    by_predicate[predicate] += 1
+                    if len(samples[predicate]) < 3:
+                        samples[predicate].append(
+                            {
+                                "file": str(path),
+                                "source": source,
+                                "target": ref,
+                            }
+                        )
+
+    return {
+        "total": sum(by_predicate.values()),
+        "by_predicate": dict(by_predicate),
+        "samples": dict(samples),
+        "load_errors": load_errors,
+    }
+
+
+def _format_closure_summary(summary: dict) -> list[str]:
+    lines: list[str] = []
+    load_errors = summary.get("load_errors", [])
+    if load_errors:
+        lines.append(f"GRAPH CLOSURE LOAD FAILURES: {len(load_errors)}")
+        for path, exc in load_errors[:10]:
+            lines.append(f"  {path}: {exc}")
+        return lines
+
+    total = summary.get("total", 0)
+    if total == 0:
+        lines.append("Graph closure: PASS")
+        return lines
+
+    lines.append(f"GRAPH CLOSURE FAILURES: {total} unresolved internal estleg:* refs")
+    for predicate, count in sorted(
+        summary.get("by_predicate", {}).items(),
+        key=lambda item: (-item[1], item[0]),
+    ):
+        sample_text = "; ".join(
+            f"{sample['target']} from {Path(sample['file']).name}"
+            for sample in summary.get("samples", {}).get(predicate, [])
+        )
+        lines.append(f"  {predicate}: {count}" + (f" e.g. {sample_text}" if sample_text else ""))
+    return lines
 
 
 def collect_shapes(shapes_dir: Path) -> list[Path]:
@@ -325,6 +453,14 @@ def main(argv: list[str] | None = None) -> int:
     if not inputs:
         print(f"ERROR: no JSON-LD inputs discovered under {args.krr_dir}.")
         return 2
+
+    closure_summary = validate_graph_closure(inputs)
+    for line in _format_closure_summary(closure_summary):
+        print(line)
+    if closure_summary.get("load_errors"):
+        return 2
+    if closure_summary.get("total", 0):
+        return 1
 
     print(f"Loading {len(inputs)} JSON-LD inputs into a single graph...")
     data_graph, parse_failures = load_graph(inputs)

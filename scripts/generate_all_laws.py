@@ -35,6 +35,7 @@ NS = "https://data.riik.ee/ontology/estleg#"
 DEFAULT_KEHTIV = "2026-05-01"
 GENERATION_MODES = ("missing-only", "refresh", "force")
 MANIFEST_NAME = "generation_manifest_laws.json"
+DEFAULT_REGEN_STATE_NAME = ".regen_state.json"
 
 CONTEXT = {
     "estleg": NS,
@@ -1756,6 +1757,18 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--allow-partial", action="store_true", help="Allow source-list fetch failures and mark the run partial.")
     parser.add_argument("--limit", type=int, default=None, help="Process at most N law titles.")
+    parser.add_argument(
+        "--regen-state",
+        nargs="?",
+        const=str(KRR_DIR / DEFAULT_REGEN_STATE_NAME),
+        default=None,
+        metavar="PATH",
+        help=(
+            "Persist per-law refresh progress to PATH. When PATH already "
+            "exists, laws listed under completed are skipped so a long run "
+            "can resume after interruption."
+        ),
+    )
     return parser.parse_args()
 
 
@@ -1794,9 +1807,110 @@ def _manifest_entry(
     return entry
 
 
+def _regen_state_path(value: str | Path | None) -> Path | None:
+    if value is None:
+        return None
+    path = Path(value)
+    return path if path.is_absolute() else REPO_ROOT / path
+
+
+def load_regen_state(path: Path | None) -> dict:
+    if path is None or not path.exists():
+        return {"completed": {}, "failed": {}}
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            state = json.load(f)
+    except (json.JSONDecodeError, OSError):
+        return {"completed": {}, "failed": {}}
+    if not isinstance(state, dict):
+        return {"completed": {}, "failed": {}}
+    if not isinstance(state.get("completed"), dict):
+        state["completed"] = {}
+    if not isinstance(state.get("failed"), dict):
+        state["failed"] = {}
+    return state
+
+
+def completed_regen_slugs(state: dict) -> set[str]:
+    completed = state.get("completed")
+    if not isinstance(completed, dict):
+        return set()
+    return {slug for slug in completed if isinstance(slug, str)}
+
+
+def _relative_output(path: Path) -> str:
+    try:
+        return str(path.relative_to(KRR_DIR))
+    except ValueError:
+        return str(path)
+
+
+def _subsection_count(doc: dict) -> int:
+    return sum(
+        1
+        for node in doc.get("@graph", [])
+        if isinstance(node, dict)
+        and "estleg:Subsection" in (node.get("@type") or [])
+    )
+
+
+def save_regen_state(path: Path | None, state: dict) -> None:
+    if path is None:
+        return
+    path.parent.mkdir(parents=True, exist_ok=True)
+    state["updatedAt"] = datetime.now(timezone.utc).isoformat()
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(state, f, ensure_ascii=False, indent=2)
+        f.write("\n")
+
+
+def record_regen_state(
+    path: Path | None,
+    state: dict,
+    *,
+    title: str,
+    slug: str,
+    info: dict,
+    status: str,
+    output_paths: list[Path] | None = None,
+    subsection_count: int = 0,
+    reason: str | None = None,
+    warnings: list[str] | None = None,
+) -> None:
+    if path is None:
+        return
+    entry = {
+        "title": title,
+        "slug": slug,
+        "globaalId": info.get("gid"),
+        "terviktekstId": info.get("tid"),
+        "sourceUrl": info.get("url"),
+        "status": status,
+        "outputPaths": [_relative_output(p) for p in (output_paths or [])],
+        "subsectionCount": subsection_count,
+        "warnings": warnings or [],
+        "completedAt": datetime.now(timezone.utc).isoformat(),
+    }
+    if reason:
+        entry["reason"] = reason
+    if status in {"full", "stub"}:
+        state.setdefault("completed", {})[slug] = entry
+        state.setdefault("failed", {}).pop(slug, None)
+    else:
+        state.setdefault("failed", {})[slug] = entry
+    save_regen_state(path, state)
+
+
 def main():
     args = parse_args()
     mode = "refresh" if args.refresh else "force" if args.force else "missing-only"
+    regen_state_path = _regen_state_path(getattr(args, "regen_state", None))
+    regen_state = load_regen_state(regen_state_path)
+    if regen_state_path is not None:
+        regen_state.setdefault("startedAt", datetime.now(timezone.utc).isoformat())
+        regen_state["mode"] = mode
+        regen_state["kehtiv"] = args.kehtiv
+        save_regen_state(regen_state_path, regen_state)
 
     print("=" * 70)
     print("Estonian Legal Ontology - Generate ALL Laws from Riigi Teataja")
@@ -1840,6 +1954,7 @@ def main():
         source_manifest["limited"] = True
         source_manifest["limit"] = args.limit
     print(f"  Found {len(all_laws)} unique law titles")
+    completed_slugs = completed_regen_slugs(regen_state)
 
     # Step 2: Check existing files
     print("\n[2/4] Checking existing files...")
@@ -1863,8 +1978,12 @@ def main():
 
     to_generate: dict[str, dict] = {}
     already_mapped = 0
+    resumed_completed_titles: set[str] = set()
     for title, info in sorted(all_laws.items()):
         slug = slugify(title)
+        if slug in completed_slugs:
+            resumed_completed_titles.add(title)
+            continue
         if mode == "missing-only" and has_existing_output(existing, title, slug):
             stale = False
             for path in _existing_paths(slug, title):
@@ -1897,7 +2016,10 @@ def main():
     skipped = 0  # stub acts (no structured body)
     # Per-act outcome ledger keyed by title: (status, reason). Folded into
     # the manifest's outputsAll/outputsGenerated entries (#119).
-    act_status: dict[str, tuple[str, str | None]] = {}
+    act_status: dict[str, tuple[str, str | None]] = {
+        title: ("skipped", "completed in regen state")
+        for title in resumed_completed_titles
+    }
 
     for i, (title, info) in enumerate(sorted(to_generate.items()), 1):
         slug = info["slug"]
@@ -1914,6 +2036,15 @@ def main():
             print("    SKIP: Could not fetch XML")
             failed += 1
             act_status[title] = ("failed", "XML fetch/parse failed")
+            record_regen_state(
+                regen_state_path,
+                regen_state,
+                title=title,
+                slug=slug,
+                info=info,
+                status="failed",
+                reason="XML fetch/parse failed",
+            )
             continue
 
         # Count paragraphs
@@ -1937,6 +2068,16 @@ def main():
             skipped += 1
             print(f"    Saved stub: {filename} (no structured body, {status})")
             act_status[title] = ("stub", "no structured paragraph nodes in source XML")
+            record_regen_state(
+                regen_state_path,
+                regen_state,
+                title=title,
+                slug=slug,
+                info=info,
+                status="stub",
+                output_paths=[out_path],
+                reason="no structured paragraph nodes in source XML",
+            )
             continue
 
         # Check if multi-part
@@ -1947,8 +2088,12 @@ def main():
             results = generate_multipart_law(
                 title, slug, root, abbreviation, rt_url=url, kehtiv=args.kehtiv
             )
+            output_paths: list[Path] = []
+            subsection_count = 0
             for filename, doc in results:
                 out_path = KRR_DIR / filename
+                output_paths.append(out_path)
+                subsection_count += _subsection_count(doc)
                 # Issue #165 fix 3 + #108: respect the run mode and refresh
                 # stale osa snapshots in missing-only (the multipart branch
                 # used to hard-code ``if not exists``).
@@ -1964,6 +2109,16 @@ def main():
                     generated += 1
                 print(f"    Saved: {filename} ({len(doc['@graph'])} nodes, {status})")
             act_status[title] = ("full", None)
+            record_regen_state(
+                regen_state_path,
+                regen_state,
+                title=title,
+                slug=slug,
+                info=info,
+                status="full",
+                output_paths=output_paths,
+                subsection_count=subsection_count,
+            )
         else:
             # Single file
             doc = generate_law_jsonld(
@@ -1984,6 +2139,16 @@ def main():
             node_count = len(doc["@graph"])
             print(f"    Saved: {filename} ({node_count} nodes, {par_count} paragraphs, {status})")
             act_status[title] = ("full", None)
+            record_regen_state(
+                regen_state_path,
+                regen_state,
+                title=title,
+                slug=slug,
+                info=info,
+                status="full",
+                output_paths=[out_path],
+                subsection_count=_subsection_count(doc),
+            )
 
         # Rate limit - be polite to Riigi Teataja
         time.sleep(0.3)
@@ -2060,6 +2225,7 @@ def main():
             "generationMode": mode,
             "newlyGenerated": run_counts["newlyGenerated"],
             "existingSkipped": run_counts["existingSkipped"] + already_mapped,
+            "resumedCompleted": len(resumed_completed_titles),
             "refreshedStale": run_counts["refreshedStale"],
             "unchanged": run_counts["unchanged"],
             "refreshed": run_counts["refreshed"],

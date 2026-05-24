@@ -73,13 +73,14 @@ Similarity output now contains 71,421 analyzed provisions, 101,506 pairs, and up
 
 `scripts/validate_seadusloome_sync.py` mirrors the Seadusloome `main` sync load path and enforces a zero-warning policy on the published ontology.
 
-- **Load set:** every root `krr_outputs/*_peep.json`,
-  `krr_outputs/controlled_vocabulary.jsonld`,
-  `krr_outputs/karistusseadustik_eriosa_owl.jsonld`,
-  `krr_outputs/tsus_osa7_138_169_owl.jsonld`,
-  the four sub-corpora (`eelnoud/`, `riigikohus/`, `curia/`, `eurlex/`),
-  and `krr_outputs/combined_ontology.jsonld`. This is the same set that
-  Seadusloome ingests when it clones the ontology repository on `main`.
+- **Load set:** `krr_outputs/combined_ontology.jsonld` plus the public
+  load-surface directories defined in `scripts/estleg_common.py`:
+  `eelnoud/`, `riigikohus/`, `curia/`, `eurlex/`, `concepts/`,
+  `sanctions/`, `amendments/`, `institutions/`, `provision_versions/`,
+  `annotations/`, `harmonisation/`, and `regulations/`. This is the same
+  set that Seadusloome ingests when it clones the ontology repository on
+  `main`, and it is the graph over which sidecar object references must
+  resolve.
 - **Validator:** pyshacl with `inference="none"` against
   `shacl/estonian_legal_shapes.ttl`. The Seadusloome consumer does not
   apply RDFS inference, so the gate intentionally diverges from the

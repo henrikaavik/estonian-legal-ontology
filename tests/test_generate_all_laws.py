@@ -1432,6 +1432,61 @@ class TestRerunNoOpAndStaleRefresh:
         assert second["source"].get("replayedFromManifest") == str(manifest_path)
 
 
+class TestRegenState:
+    """#213: long subsection-regeneration runs can resume per law."""
+
+    def test_completed_laws_are_recorded_and_skipped_on_resume(
+        self, tmp_path, monkeypatch
+    ):
+        krr = TestRerunNoOpAndStaleRefresh()._wire(
+            tmp_path,
+            monkeypatch,
+            titles_to_xml={
+                "Esimene seadus": _padded_law_xml(paragraphs=[1, 2]),
+                "Teine seadus": _padded_law_xml(paragraphs=[1]),
+            },
+        )
+        state_path = tmp_path / "regen_state.json"
+
+        class _Args(_RerunArgs):
+            refresh = True
+            missing_only = False
+            regen_state = str(state_path)
+
+        monkeypatch.setattr(generate_all_laws, "parse_args", lambda: _Args())
+        generate_all_laws._used_prefixes.clear()
+        generate_all_laws.main()
+
+        state = json.loads(state_path.read_text(encoding="utf-8"))
+        completed = state["completed"]
+        assert set(completed) == {
+            generate_all_laws.slugify("Esimene seadus"),
+            generate_all_laws.slugify("Teine seadus"),
+        }
+        first_entry = completed[generate_all_laws.slugify("Esimene seadus")]
+        assert first_entry["status"] == "full"
+        assert first_entry["outputPaths"] == ["esimene_seadus_peep.json"]
+        assert first_entry["subsectionCount"] == 2
+
+        peeps = sorted(krr.glob("*_peep.json"))
+        before = {p: p.read_bytes() for p in peeps}
+
+        generate_all_laws._used_prefixes.clear()
+        generate_all_laws.main()
+
+        after = {p: p.read_bytes() for p in sorted(krr.glob("*_peep.json"))}
+        assert after == before
+        manifest = json.loads(
+            (krr / "generation_manifest_laws.json").read_text("utf-8")
+        )
+        assert manifest["counts"]["selectedForGeneration"] == 0
+        assert manifest["run"]["resumedCompleted"] == 2
+        assert manifest["run"]["existingSkipped"] == 0
+        assert {
+            entry["reason"] for entry in manifest["outputsAll"]
+        } == {"completed in regen state"}
+
+
 class TestActStatusInManifest:
     """#119: each outputsAll entry carries a per-act status (full / stub /
     failed / skipped) and stub acts get a reason."""

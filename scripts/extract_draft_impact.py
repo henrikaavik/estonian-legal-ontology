@@ -445,7 +445,7 @@ def main() -> None:
 
     for node in draft_nodes:
         draft_iri = node.get("@id", "")
-        title = node.get("rdfs:label", "")
+        title = jsonld_text(node.get("rdfs:label", ""))
 
         # -- change type --
         ct = classify_change_type(title)
@@ -485,7 +485,7 @@ def main() -> None:
             node["estleg:amendsLaw"] = amends_iris
 
         # -- ministry stats --
-        initiator = node.get("estleg:initiator", "")
+        initiator = jsonld_text(node.get("estleg:initiator", ""))
         if initiator:
             ministry_drafts[initiator] += 1
 

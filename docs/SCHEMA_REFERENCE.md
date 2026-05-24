@@ -673,12 +673,17 @@ These properties enable cross-referencing between different parts of the legal s
 
 ### Provision versioning (historical redactions)
 
-**Status:** model defined (issue #131); **population is future work** — see issue #198.
+**Status:** model defined (issue #131); sidecar population is handled by
+`scripts/generate_provision_versions.py`. The first full ingestion keeps
+`estleg:versionOf` as the canonical link from version nodes to stable provision
+nodes; `estleg:hasVersion` / `estleg:currentVersion` back-links on law peeps are
+deferred so `combined_ontology.jsonld` does not point at sidecar-only nodes.
 
-The enacted-law corpus is currently *current snapshot only*: each `estleg:LegalProvision`
+The enacted-law corpus is *current snapshot first*: each `estleg:LegalProvision`
 carries the text from one selected Riigi Teataja consolidated text (`terviktekst`), and
-`estleg:globalId` on the act node points at that one redaction. It does not yet carry the
-history of how a provision's text changed across earlier redactions.
+`estleg:globalId` on the act node points at that one redaction. Historical text
+versions live in `krr_outputs/provision_versions/*.jsonld` and must be loaded
+with the public graph surface when historical queries are needed.
 
 The `estleg:ProvisionVersion` model adds that capability. It keeps the **stable provision
 identity** (the `estleg:LegalProvision` IRI) deliberately separate from the
@@ -700,8 +705,8 @@ was in force.
 
 | Property | Domain | Range | Cardinality | Description |
 |----------|--------|-------|-------------|-------------|
-| `estleg:hasVersion` | LegalProvision | ProvisionVersion (IRI) | 0+ | A version in this provision's text history (one per redaction). Inverse of `estleg:versionOf`. Optional on `estleg:LegalProvisionShape`. |
-| `estleg:currentVersion` | LegalProvision | ProvisionVersion (IRI) | 0–1 | The latest version (the one with no `estleg:versionValidTo` / `estleg:supersededByVersion`). Convenience pointer; optional on `estleg:LegalProvisionShape`. |
+| `estleg:hasVersion` | LegalProvision | ProvisionVersion (IRI) | 0+ | Optional inverse of `estleg:versionOf`. Deferred in the current sidecar population; consumers should query `?version estleg:versionOf ?provision` instead. |
+| `estleg:currentVersion` | LegalProvision | ProvisionVersion (IRI) | 0–1 | Optional convenience pointer to the latest version. Deferred in the current sidecar population. |
 
 SHACL: `estleg:ProvisionVersionShape` (`sh:targetClass estleg:ProvisionVersion`) enforces the
 cardinalities above; `estleg:LegalProvisionShape` gains optional `estleg:hasVersion` /
@@ -727,25 +732,23 @@ provisions still conform.
   "@id": "estleg:LegalProvision_TsÜS_40",
   "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
   "estleg:paragrahv": "TsÜS § 40",
-  "estleg:summary": "Defines what counts as a transaction (tehing).",
-  "estleg:hasVersion": [
-    {"@id": "estleg:LegalProvision_TsÜS_40_v1"},
-    {"@id": "estleg:LegalProvision_TsÜS_40_v2"}
-  ],
-  "estleg:currentVersion": {"@id": "estleg:LegalProvision_TsÜS_40_v2"}
+  "estleg:summary": "Defines what counts as a transaction (tehing)."
 }
 ```
 
 ##### SPARQL — "what did § X say as of date D?"
+
+Load the law peeps and `krr_outputs/provision_versions/*.jsonld`, then query
+from version nodes back to the stable provision IRI:
 
 ```sparql
 PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
 PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
 
 SELECT ?versionText WHERE {
-  ?provision estleg:paragrahv "TsÜS § 40" ;
-             estleg:hasVersion ?v .
-  ?v estleg:versionText     ?versionText ;
+  ?provision estleg:paragrahv "TsÜS § 40" .
+  ?v estleg:versionOf        ?provision ;
+     estleg:versionText      ?versionText ;
      estleg:versionValidFrom ?from .
   OPTIONAL { ?v estleg:versionValidTo ?to . }
   FILTER ( ?from <= "2015-06-01"^^xsd:date
@@ -753,10 +756,10 @@ SELECT ?versionText WHERE {
 }
 ```
 
-> **Population is future work.** No `estleg:ProvisionVersion` instances are emitted by any
-> generator today — the corpus remains current-snapshot-only. Building the version history
-> requires re-fetching every act at every historical redaction point and diffing provisions;
-> that ingestion is tracked in issue #198.
+`scripts/generate_provision_versions.py --all --max-redactions 0` is the full
+ingestion mode. It writes sidecars under `krr_outputs/provision_versions/`,
+coverage metrics under `krr_outputs/reports/kov/`, and per-law progress rows in
+`krr_outputs/reports/provision_versions_report.json`.
 
 ### Annotations (practitioner layer)
 

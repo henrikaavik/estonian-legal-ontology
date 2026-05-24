@@ -337,6 +337,12 @@ def test_select_law_slugs_limit_and_explicit(tmp_path: Path):
     # --limit 2 → first two (curated defaults absent → alphabetical)
     chosen = select_law_slugs(explicit=None, limit=2, krr_dir=krr)
     assert len(chosen) == 2 and set(chosen) <= {"alfa_seadus", "beeta_seadus", "gamma_seadus"}
+    # --all → every on-disk law slug, no curated/default sample truncation.
+    assert select_law_slugs(explicit=None, limit=None, all_laws=True, krr_dir=krr) == [
+        "alfa_seadus",
+        "beeta_seadus",
+        "gamma_seadus",
+    ]
     # explicit --law wins, unknown slugs dropped
     assert select_law_slugs(explicit=["gamma_seadus", "puudub_seadus"], limit=None, krr_dir=krr) == ["gamma_seadus"]
 
@@ -442,6 +448,14 @@ def test_main_processes_law_with_mocked_fetches(tmp_path: Path, monkeypatch: pyt
     assert cov["files_processed"] == 1
     assert cov["files_with_output"] == 1
     assert cov["triples_emitted"] == 4  # ProvisionVersion node count
+    law_report = json.loads(
+        (krr / "reports" / "provision_versions_report.json").read_text("utf-8")
+    )
+    assert law_report["laws_processed"] == 1
+    assert law_report["versions_emitted"] == 4
+    assert law_report["rows"][0]["redactions_processed"] == 3
+    assert law_report["rows"][0]["redactions_failed"] == 0
+    assert law_report["rows"][0]["warnings"] == []
 
 
 def test_main_limit_zero_writes_zeroed_coverage_and_no_sidecars(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
@@ -461,3 +475,8 @@ def test_main_limit_zero_writes_zeroed_coverage_and_no_sidecars(tmp_path: Path, 
     assert not (krr / "provision_versions").exists() or not list((krr / "provision_versions").glob("*.jsonld"))
     cov = json.loads((krr / "reports" / "kov" / "extract_provision_versions_coverage.json").read_text("utf-8"))
     assert cov["files_processed"] == 0 and cov["triples_emitted"] == 0
+    law_report = json.loads(
+        (krr / "reports" / "provision_versions_report.json").read_text("utf-8")
+    )
+    assert law_report["laws_processed"] == 0
+    assert law_report["rows"] == []

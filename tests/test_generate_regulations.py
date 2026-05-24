@@ -919,21 +919,21 @@ class TestMissingPartsCli:
             <osa><osaNr>2</osaNr><osaPealkiri>Lepingu üldosa</osaPealkiri>
               <peatykk><peatykkNr>1</peatykkNr><peatykkPealkiri>Üldsätted</peatykkPealkiri>
                 <paragrahv><paragrahvNr>1</paragrahvNr><paragrahvPealkiri>Reguleerimisala</paragrahvPealkiri>
-                  <loige><lauseOsa>Test text osa 2</lauseOsa></loige>
+                  <loige><loigeNr>1</loigeNr><kuvatavNr>(1)</kuvatavNr><lauseOsa>Test text osa 2</lauseOsa></loige>
                 </paragrahv>
               </peatykk>
             </osa>
             <osa><osaNr>6</osaNr><osaPealkiri>Kindlustuslepingud</osaPealkiri>
               <peatykk><peatykkNr>1</peatykkNr><peatykkPealkiri>Üldsätted</peatykkPealkiri>
                 <paragrahv><paragrahvNr>1</paragrahvNr><paragrahvPealkiri>Mõisted</paragrahvPealkiri>
-                  <loige><lauseOsa>Test text osa 6</lauseOsa></loige>
+                  <loige><loigeNr>1</loigeNr><kuvatavNr>(1)</kuvatavNr><lauseOsa>Test text osa 6</lauseOsa></loige>
                 </paragrahv>
               </peatykk>
             </osa>
             <osa><osaNr>10</osaNr><osaPealkiri>Seltsingulepingud</osaPealkiri>
               <peatykk><peatykkNr>1</peatykkNr><peatykkPealkiri>Üldsätted</peatykkPealkiri>
                 <paragrahv><paragrahvNr>1</paragrahvNr><paragrahvPealkiri>Reguleerimisala</paragrahvPealkiri>
-                  <loige><lauseOsa>Test text osa 10</lauseOsa></loige>
+                  <loige><loigeNr>1</loigeNr><kuvatavNr>(1)</kuvatavNr><lauseOsa>Test text osa 10</lauseOsa></loige>
                 </paragrahv>
               </peatykk>
             </osa>
@@ -1031,6 +1031,93 @@ class TestMissingPartsCli:
         # And the IRI shape includes Osa<N>.
         for osa_nr, iri in paragraph_ids_by_osa.items():
             assert f"_Osa{osa_nr}_" in iri, (osa_nr, iri)
+
+    def test_vos_part_emits_subsections_and_full_legal_text(self, tmp_path):
+        import generate_missing_parts as mod
+
+        vos_path = tmp_path / "vos.xml"
+        vos_path.write_text(self._vos_xml(), encoding="utf-8")
+        out_dir = tmp_path / "out"
+        rc = mod.main([
+            "--input-xml-vos", str(vos_path),
+            "--output-dir", str(out_dir),
+            "--skip-tsus",
+            "--vos-osa", "2",
+        ])
+        assert rc == 0
+
+        doc = json.loads((out_dir / "volaigusseadus_osa2_peep.json").read_text())
+        by_id = {node["@id"]: node for node in doc["@graph"]}
+        provision = by_id["estleg:VOS_Osa2_Par_1"]
+        subsection = by_id["estleg:VOS_Osa2_Par_1_Lg_1"]
+
+        assert provision["estleg:legalText"] == "(1) Test text osa 2"
+        assert provision["estleg:hasSubsection"] == [
+            {"@id": "estleg:VOS_Osa2_Par_1_Lg_1"}
+        ]
+        assert subsection["@type"] == ["estleg:Subsection", "owl:NamedIndividual"]
+        assert subsection["estleg:subsectionNumber"] == "1"
+        assert subsection["estleg:legalText"] == "(1) Test text osa 2"
+        assert subsection["estleg:parentProvision"] == {
+            "@id": "estleg:VOS_Osa2_Par_1"
+        }
+
+    def test_vos_part_without_loige_has_legal_text_but_no_subsection(self):
+        import generate_missing_parts as mod
+
+        root = ET.fromstring(
+            """<akt><osa><osaNr>2</osaNr><osaPealkiri>Lepingu üldosa</osaPealkiri>
+              <peatykk><peatykkNr>1</peatykkNr><peatykkPealkiri>Üldsätted</peatykkPealkiri>
+                <paragrahv><paragrahvNr>9</paragrahvNr><kuvatavNr>§ 9.</kuvatavNr>
+                  <lauseOsa>Direct provision text.</lauseOsa>
+                </paragrahv>
+              </peatykk>
+            </osa></akt>"""
+        )
+
+        doc = mod.generate_vos_part(root, "https://example.test/vos.xml", "2")
+        assert doc is not None
+        provision = next(
+            node for node in doc["@graph"]
+            if node.get("@id") == "estleg:VOS_Osa2_Par_9"
+        )
+
+        assert provision["estleg:legalText"] == "Direct provision text."
+        assert "estleg:hasSubsection" not in provision
+        assert not any(
+            "estleg:Subsection" in node.get("@type", [])
+            for node in doc["@graph"]
+        )
+
+    def test_vos_part_subsection_ids_preserve_superscripts(self):
+        import generate_missing_parts as mod
+
+        root = ET.fromstring(
+            """<akt><osa><osaNr>2</osaNr><osaPealkiri>Lepingu üldosa</osaPealkiri>
+              <peatykk><peatykkNr>1</peatykkNr><peatykkPealkiri>Üldsätted</peatykkPealkiri>
+                <paragrahv><paragrahvNr>9</paragrahvNr><kuvatavNr>§ 9.</kuvatavNr>
+                  <loige><loigeNr>1</loigeNr><kuvatavNr>(1)</kuvatavNr><lauseOsa>First text.</lauseOsa></loige>
+                  <loige><loigeNr ylaIndeks="1">1</loigeNr><kuvatavNr>(1¹)</kuvatavNr><lauseOsa>Inserted text.</lauseOsa></loige>
+                  <loige><loigeNr>2</loigeNr><kuvatavNr>(2)</kuvatavNr><lauseOsa>Second text.</lauseOsa></loige>
+                  <loige><loigeNr ylaIndeks="1">2</loigeNr><kuvatavNr>(2¹)</kuvatavNr><lauseOsa>Second inserted text.</lauseOsa></loige>
+                </paragrahv>
+              </peatykk>
+            </osa></akt>"""
+        )
+
+        doc = mod.generate_vos_part(root, "https://example.test/vos.xml", "2")
+        assert doc is not None
+        provision = next(
+            node for node in doc["@graph"]
+            if node.get("@id") == "estleg:VOS_Osa2_Par_9"
+        )
+
+        assert provision["estleg:hasSubsection"] == [
+            {"@id": "estleg:VOS_Osa2_Par_9_Lg_1"},
+            {"@id": "estleg:VOS_Osa2_Par_9_Lg_1_1"},
+            {"@id": "estleg:VOS_Osa2_Par_9_Lg_2"},
+            {"@id": "estleg:VOS_Osa2_Par_9_Lg_2_1"},
+        ]
 
     def test_main_returns_int_exit_code(self, tmp_path):
         import generate_missing_parts as mod

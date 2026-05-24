@@ -35,6 +35,11 @@ from riigiteataja_common import (  # noqa: E402
     fetch_xml,
     SourceListFetchError,
 )
+from generate_all_laws import (  # noqa: E402
+    _paragraph_id_suffix,
+    build_subsections,
+    collect_full_text,
+)
 
 KRR_DIR = REPO_ROOT / "krr_outputs"
 DATA_DIR = REPO_ROOT / "data" / "riigiteataja"
@@ -290,7 +295,7 @@ def generate_vos_part(root: ET.Element, xml_url: str, osa_nr: str) -> dict | Non
     graph: list[dict] = [
         {
             "@id": ontology_id,
-            "@type": ["owl:Ontology"],
+            "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
             "rdfs:label": f"VÕS Osa {osa_nr} ({osa_title}) §{par_min}–{par_max} kaardistus",
             "dc:source": "Võlaõigusseadus",
         },
@@ -361,13 +366,16 @@ def generate_vos_part(root: ET.Element, xml_url: str, osa_nr: str) -> dict | Non
 
     # Add paragraph nodes — IRIs are namespaced by osa so cross-part
     # collisions on @id are impossible (smoke-test enforced).
+    seen_subsection_ids: set[str] = set()
     for p in paragrahvid:
         p_nr = child_text(p, "paragrahvNr") or "?"
         p_title = child_text(p, "paragrahvPealkiri") or ""
         p_display = child_text(p, "kuvatavNr") or f"§ {p_nr}"
         text = collect_text(p)
+        full_text = collect_full_text(p)
+        par_suffix = _paragraph_id_suffix(p)
 
-        p_id = f"estleg:VOS_Osa{osa_safe}_Par_{sanitize_id(p_nr)}"
+        p_id = f"estleg:VOS_Osa{osa_safe}_Par_{par_suffix}"
 
         # Find which cluster this paragraph belongs to
         try:
@@ -395,10 +403,28 @@ def generate_vos_part(root: ET.Element, xml_url: str, osa_nr: str) -> dict | Non
         if text:
             node["estleg:summary"] = text
 
+        if full_text:
+            node["estleg:legalText"] = full_text
+
         if cluster_ref:
             node["estleg:requestedCluster"] = cluster_ref
 
+        subsection_nodes = build_subsections(
+            p,
+            p_id,
+            abbrev_prefix=prefix,
+            par_suffix=par_suffix,
+            paragraph_display=p_display,
+            osa_nr=osa_safe,
+            seen_ids=seen_subsection_ids,
+        )
+        if subsection_nodes:
+            node["estleg:hasSubsection"] = [
+                {"@id": subsection["@id"]} for subsection in subsection_nodes
+            ]
+
         graph.append(node)
+        graph.extend(subsection_nodes)
 
     return {"@context": CONTEXT, "@graph": graph}
 
@@ -446,7 +472,7 @@ def generate_tsus_part1(root: ET.Element, xml_url: str) -> dict | None:
     graph: list[dict] = [
         {
             "@id": f"estleg:TsUS_Osa1_{par_min}_{par_max}",
-            "@type": ["owl:Ontology"],
+            "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
             "rdfs:label": f"TsÜS Osa 1 (Üldsätted) §{par_min}–{par_max} kaardistus",
             "dc:source": "Tsiviilseadustiku üldosa seadus",
         },
@@ -462,13 +488,16 @@ def generate_tsus_part1(root: ET.Element, xml_url: str) -> dict | None:
         },
     ]
 
+    seen_subsection_ids: set[str] = set()
     for p in paragrahvid:
         p_nr = child_text(p, "paragrahvNr") or "?"
         p_title = child_text(p, "paragrahvPealkiri") or ""
         p_display = child_text(p, "kuvatavNr") or f"§ {p_nr}"
         text = collect_text(p)
+        full_text = collect_full_text(p)
+        par_suffix = _paragraph_id_suffix(p)
 
-        p_id = f"estleg:TsUS_Osa1_Par_{sanitize_id(p_nr)}"
+        p_id = f"estleg:TsUS_Osa1_Par_{par_suffix}"
 
         node: dict = {
             "@id": p_id,
@@ -485,7 +514,25 @@ def generate_tsus_part1(root: ET.Element, xml_url: str) -> dict | None:
         if text:
             node["estleg:summary"] = text
 
+        if full_text:
+            node["estleg:legalText"] = full_text
+
+        subsection_nodes = build_subsections(
+            p,
+            p_id,
+            abbrev_prefix="TsUS",
+            par_suffix=par_suffix,
+            paragraph_display=p_display,
+            osa_nr="1",
+            seen_ids=seen_subsection_ids,
+        )
+        if subsection_nodes:
+            node["estleg:hasSubsection"] = [
+                {"@id": subsection["@id"]} for subsection in subsection_nodes
+            ]
+
         graph.append(node)
+        graph.extend(subsection_nodes)
 
     return {"@context": CONTEXT, "@graph": graph}
 
