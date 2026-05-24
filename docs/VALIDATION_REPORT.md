@@ -1,16 +1,20 @@
 # Validation Report
 
-**Last updated:** 2026-05-08
+**Last updated:** 2026-05-24
 **Primary validator:** `scripts/validate_all.py`
 
 ## Summary
 
 | Metric | Count |
 |--------|-------|
-| Files validated | 21,826 |
+| Files validated | 21,932 |
 | Errors | 0 |
-| Warnings | 0 |
+| Warnings | 1 |
 | Result | **PASSED** |
+
+The remaining warning is the expected absence of
+`krr_outputs/generation_manifest_laws.json` in this checkout; it does not
+block the validation gate.
 
 ## Checks Performed
 
@@ -73,13 +77,14 @@ Similarity output now contains 71,421 analyzed provisions, 101,506 pairs, and up
 
 `scripts/validate_seadusloome_sync.py` mirrors the Seadusloome `main` sync load path and enforces a zero-warning policy on the published ontology.
 
-- **Load set:** every root `krr_outputs/*_peep.json`,
-  `krr_outputs/controlled_vocabulary.jsonld`,
-  `krr_outputs/karistusseadustik_eriosa_owl.jsonld`,
-  `krr_outputs/tsus_osa7_138_169_owl.jsonld`,
-  the four sub-corpora (`eelnoud/`, `riigikohus/`, `curia/`, `eurlex/`),
-  and `krr_outputs/combined_ontology.jsonld`. This is the same set that
-  Seadusloome ingests when it clones the ontology repository on `main`.
+- **Load set:** `krr_outputs/combined_ontology.jsonld` plus the public
+  load-surface directories defined in `scripts/estleg_common.py`:
+  `eelnoud/`, `riigikohus/`, `curia/`, `eurlex/`, `concepts/`,
+  `sanctions/`, `amendments/`, `institutions/`, `provision_versions/`,
+  `annotations/`, `harmonisation/`, and `regulations/`. This is the same
+  set that Seadusloome ingests when it clones the ontology repository on
+  `main`, and it is the graph over which sidecar object references must
+  resolve.
 - **Validator:** pyshacl with `inference="none"` against
   `shacl/estonian_legal_shapes.ttl`. The Seadusloome consumer does not
   apply RDFS inference, so the gate intentionally diverges from the
@@ -97,12 +102,38 @@ Similarity output now contains 71,421 analyzed provisions, 101,506 pairs, and up
 - **CI wiring:** the `Seadusloome zero-warning gate` job in
   `.github/workflows/validate.yml` runs on every pull request and `main`
   push. The job uploads the rdflib turtle SHACL report as
-  `seadusloome-shacl-report` on failure for offline triage. The full
-  load (~57 inputs and ~1.1M triples, ~60s on contemporary hardware) is
-  acceptable for the existing CI runner; if corpus growth makes the gate
-  too slow for per-PR execution, demote it to release-only via
+  `seadusloome-shacl-report` on failure for offline triage. The 2026-05-24
+  local benchmark loaded 21,290 JSON-LD inputs / 4,845,510 data triples and
+  completed in 5:17 wall time; if corpus growth makes the gate too slow for
+  per-PR execution, split the gate by bucket or demote it to release-only via
   `.github/workflows/validate.yml`.
+
+### Draft Reference Cleanup Notes
+
+The #217 graph-closure pass removed a small set of `estleg:amendsLaw`
+targets from `krr_outputs/eelnoud/eelnoud_combined.jsonld` because the
+referenced act nodes are not emitted anywhere in the public load surface.
+These were not treated as successful resolutions:
+
+| Removed target | Root cause |
+|----------------|------------|
+| `estleg:Vlaigusseadus_Osa10_1005_1067` | Draft law-name resolver lost the leading `Võ` during slug generation; should resolve to the VõS corpus node family. |
+| `estleg:hinenud_Rahvaste_Organisatsio_Map_2026` | Draft law-name resolver lost the leading `Ü` and truncated the treaty title; no such map node is emitted. |
+| `estleg:Eesti_Vabariigi_valitsuse_ja_A_Map_2026` | Treaty `_Map_2026` target was inferred from a truncated title but no act-map node is emitted by the current pipeline. |
+| `estleg:Eesti_Vabariigi_valitsuse_ja_L_Map_2026` | Treaty `_Map_2026` target was inferred from a truncated title but no act-map node is emitted by the current pipeline. |
+| `estleg:Eesti_Vabariigi_ja_Euroopa_Inv_Map_2026` | Treaty `_Map_2026` target was inferred from a truncated title but no act-map node is emitted by the current pipeline. |
+| `estleg:Isikuandmete_automatiseeritud__Map_2026` | Treaty `_Map_2026` target was inferred from a truncated title but no act-map node is emitted by the current pipeline. |
+| `estleg:Maailma_Terviseorganisatsiooni_Map_2026` | Treaty `_Map_2026` target was inferred from a title that no current generator materialises as an act-map node. |
+| `estleg:Merinuete_korral_vastutuse_pi_Map_2026` | Treaty `_Map_2026` target was inferred from a truncated title but no act-map node is emitted by the current pipeline. |
+
+Before the draft-impact enrichment is rerun against live data, fix the
+resolver path used by `scripts/extract_draft_impact.py` and
+`scripts/generate_draft_legislation.py` so leading Estonian diacritics
+and treaty titles resolve to existing registry abbreviations instead of
+re-emitting these dead references.
 
 ## Known Remaining Issues
 
-No validation-blocking issues are known in the remediated scope. The current corpus passes `scripts/validate_all.py`, unit tests, whitespace checks, all configured SHACL buckets, and the Seadusloome zero-warning gate.
+No validation-blocking issues are known in the remediated scope. The draft
+resolver cleanup documented above remains a required follow-up before the
+next live draft-impact ingestion run.

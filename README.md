@@ -582,10 +582,13 @@ release pipeline:
   `krr_outputs/karistusseadustik_eriosa_owl.jsonld`, and
   `krr_outputs/tsus_osa7_138_169_owl.jsonld`. These are the canonical
   per-act mappings.
-- **Sub-corpora (edit per generator):** `krr_outputs/eelnoud/`,
-  `krr_outputs/riigikohus/`, `krr_outputs/curia/`, and
-  `krr_outputs/eurlex/`. Seadusloome consumes these alongside the
-  combined aggregate.
+- **Public load-surface directories (edit per generator):**
+  `krr_outputs/eelnoud/`, `riigikohus/`, `curia/`, `eurlex/`,
+  `concepts/`, `sanctions/`, `amendments/`, `institutions/`,
+  `provision_versions/`, `annotations/`, `harmonisation/`, and
+  `regulations/`. Seadusloome consumes these alongside the combined
+  aggregate; sidecar targets are expected to resolve within this full
+  surface, not inside `combined_ontology.jsonld` alone.
 - **Generated aggregate (do not edit by hand):**
   `krr_outputs/combined_ontology.jsonld`. Regenerate it via
   `scripts/fix_all_issues.py` (the `generate_combined_jsonld()` step) so
@@ -615,10 +618,10 @@ ontology changes:
 
 Seadusloome consumers must see zero SHACL warnings on the published
 branch. `scripts/validate_seadusloome_sync.py` mirrors the Seadusloome
-load path (root `*_peep.json` files, the listed JSON-LD vocabularies,
-the four sub-corpora, and `combined_ontology.jsonld`) and exits non-zero
-if any warning or violation is observed. The gate runs on every pull
-request and on `main` pushes via the
+load path (`combined_ontology.jsonld` plus the public load-surface
+directories listed above) and exits non-zero if any warning, violation,
+or unresolved internal `estleg:` object reference is observed. The gate
+runs on every pull request and on `main` pushes via the
 `Seadusloome zero-warning gate` job in
 `.github/workflows/validate.yml`. The bucket SHACL job remains
 authoritative for class-by-class semantic checks; the new gate is the

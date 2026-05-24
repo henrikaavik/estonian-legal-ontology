@@ -1,10 +1,9 @@
 """Tests for the Seadusloome-compatible SHACL validator.
 
 These tests mirror the way the Seadusloome sync converter loads
-ontology data (priority `combined_ontology.jsonld` plus per-bucket
-ingest of every JSON/JSON-LD under `eelnoud/`, `riigikohus/`, `curia/`,
-and `eurlex/`) and call the validator's ``main`` directly so the exit
-code and the printed grouped summary can be asserted against.
+ontology data (priority `combined_ontology.jsonld` plus the documented
+public section 2 load surface) and call the validator's ``main`` directly
+so the exit code and the printed grouped summary can be asserted against.
 """
 from __future__ import annotations
 
@@ -39,9 +38,22 @@ def _write_combined(krr_dir: Path, graph_nodes: list[dict]) -> None:
 
 
 def _seed_seadusloome_subdirs(krr_dir: Path) -> None:
-    """Create the four Seadusloome sub-directories so the loader walks them."""
-    for name in ("eelnoud", "riigikohus", "curia", "eurlex"):
+    """Create public load-surface sub-directories so the loader walks them."""
+    for name in validate_seadusloome_sync.SEADUSLOOME_SUBDIRS:
         (krr_dir / name).mkdir(parents=True, exist_ok=True)
+
+
+def _write_sidecar_target(krr_dir: Path, iri: str = "estleg:Cluster_X") -> None:
+    """Write a tiny sidecar node used to close object references in tests."""
+    concepts = krr_dir / "concepts"
+    concepts.mkdir(parents=True, exist_ok=True)
+    payload = {
+        "@context": CONTEXT,
+        "@graph": [{"@id": iri, "@type": ["owl:NamedIndividual"]}],
+    }
+    (concepts / "concepts_combined.jsonld").write_text(
+        json.dumps(payload), encoding="utf-8"
+    )
 
 
 def _provision_node(
@@ -107,6 +119,7 @@ def test_literal_requested_cluster_fails(tmp_path, capsys):
 def test_missing_summary_fails(tmp_path, capsys):
     krr = tmp_path / "krr_outputs"
     _seed_seadusloome_subdirs(krr)
+    _write_sidecar_target(krr)
     _write_combined(
         krr,
         [
@@ -128,6 +141,7 @@ def test_missing_summary_fails(tmp_path, capsys):
 def test_corrected_inputs_pass(tmp_path, capsys):
     krr = tmp_path / "krr_outputs"
     _seed_seadusloome_subdirs(krr)
+    _write_sidecar_target(krr)
     _write_combined(
         krr,
         [
@@ -202,6 +216,125 @@ def test_missing_combined_ontology_is_fatal(tmp_path, capsys):
     assert code == 2, output
     assert "combined_ontology.jsonld" in output
     assert "ERROR" in output
+
+
+def test_collect_inputs_loads_public_sidecars_recursively_and_skips_reports(tmp_path):
+    krr = tmp_path / "krr_outputs"
+    _seed_seadusloome_subdirs(krr)
+    _write_combined(krr, [])
+
+    data_file = krr / "harmonisation" / "harmonisation_by_directive" / "harm_1.json"
+    data_file.parent.mkdir(parents=True, exist_ok=True)
+    data_file.write_text(json.dumps({"@context": CONTEXT, "@graph": []}), encoding="utf-8")
+
+    report_file = krr / "harmonisation" / "harmonisation_report.json"
+    report_file.write_text(json.dumps({"summary": {}}), encoding="utf-8")
+
+    inputs, warnings, errors = validate_seadusloome_sync.collect_inputs(krr)
+
+    assert errors == []
+    assert warnings == []
+    assert data_file in inputs
+    assert report_file not in inputs
+
+
+def test_graph_closure_fails_on_unresolved_public_reference(tmp_path, capsys):
+    krr = tmp_path / "krr_outputs"
+    _seed_seadusloome_subdirs(krr)
+    _write_combined(
+        krr,
+        [
+            {
+                "@id": "estleg:Draft_X",
+                "@type": ["owl:NamedIndividual"],
+                "estleg:amendsLaw": {"@id": "estleg:Missing_Map_2026"},
+            }
+        ],
+    )
+
+    code, output = _run_validator(krr, capsys)
+
+    assert code == 1, output
+    assert "GRAPH CLOSURE FAILURES" in output
+    assert "estleg:amendsLaw: 1" in output
+    assert "estleg:Missing_Map_2026" in output
+
+
+def test_graph_closure_passes_when_target_is_loaded_from_sidecar(tmp_path, capsys):
+    krr = tmp_path / "krr_outputs"
+    _seed_seadusloome_subdirs(krr)
+    _write_sidecar_target(krr, "estleg:Target_Map_2026")
+    _write_combined(
+        krr,
+        [
+            {
+                "@id": "estleg:Draft_X",
+                "@type": ["owl:NamedIndividual"],
+                "estleg:amendsLaw": {"@id": "estleg:Target_Map_2026"},
+                "estleg:decisionType": {"@id": "estleg:DecisionType_Judgment"},
+            }
+        ],
+    )
+
+    code, output = _run_validator(krr, capsys)
+
+    assert code == 0, output
+    assert "Graph closure: PASS" in output
+
+
+def test_graph_closure_indexes_top_level_jsonld_nodes(tmp_path):
+    single = tmp_path / "single.jsonld"
+    single.write_text(
+        json.dumps(
+            {
+                "@context": CONTEXT,
+                "@id": "estleg:Single_Target",
+                "@type": ["owl:NamedIndividual"],
+            }
+        ),
+        encoding="utf-8",
+    )
+    array = tmp_path / "array.jsonld"
+    array.write_text(
+        json.dumps(
+            [
+                {
+                    "@id": "estleg:Source_Node",
+                    "estleg:references": {"@id": "estleg:Single_Target"},
+                },
+                {"@id": "estleg:Array_Target"},
+            ]
+        ),
+        encoding="utf-8",
+    )
+
+    summary = validate_seadusloome_sync.validate_graph_closure([single, array])
+
+    assert summary["total"] == 0
+
+
+def test_graph_closure_preserves_outer_predicate_for_list_wrapped_refs(tmp_path):
+    path = tmp_path / "wrapped.jsonld"
+    path.write_text(
+        json.dumps(
+            {
+                "@context": CONTEXT,
+                "@graph": [
+                    {
+                        "@id": "estleg:Source_Node",
+                        "estleg:references": {
+                            "@list": [{"@id": "estleg:Missing_Target"}]
+                        },
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    summary = validate_seadusloome_sync.validate_graph_closure([path])
+
+    assert summary["by_predicate"] == {"estleg:references": 1}
 
 
 def test_grouped_summary_includes_focus_nodes(tmp_path, capsys):

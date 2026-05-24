@@ -328,7 +328,9 @@ delete and rebuild).
   `krr_outputs/curia/CURIA_INDEX.json`, `krr_outputs/eurlex/EURLEX_INDEX.json`
 - the enrichment sidecar trees `krr_outputs/concepts/`,
   `krr_outputs/sanctions/`, `krr_outputs/amendments/`,
-  `krr_outputs/institutions/` (the shaped per-item JSON-LD)
+  `krr_outputs/institutions/`, `krr_outputs/provision_versions/`,
+  `krr_outputs/annotations/`, `krr_outputs/harmonisation/`, and
+  `krr_outputs/regulations/` (the shaped per-item JSON-LD)
 - the cross-corpus indexes/maps `krr_outputs/similarity_index.json`,
   `krr_outputs/eurovoc_classification.json`,
   `krr_outputs/transposition_mapping.json`

@@ -4,7 +4,8 @@ Upgrade court decision law references from strings to granular provision IRIs.
 
 This script:
 1. Loads all riigikohus_YYYY_peep.json files from krr_outputs/riigikohus/
-2. Parses estleg:summary text for specific provision citations
+2. Parses estleg:legalText when available, falling back to
+   estleg:summary, for specific provision citations
 3. Resolves citations to existing provision IRIs
 4. Adds estleg:interpretsLaw with IRI values (linking to specific provisions)
 5. Adds estleg:interpretedBy inverse links on provision files
@@ -458,6 +459,17 @@ def extract_citations_from_text(
     return state_citations, kov_citations
 
 
+def decision_citation_text(node: dict) -> tuple[str, str]:
+    """Return citation source text and the field it came from."""
+    legal_text = jsonld_text(node.get("estleg:legalText", ""))
+    if legal_text:
+        return legal_text, "legalText"
+    summary = jsonld_text(node.get("estleg:summary", ""))
+    if summary:
+        return summary, "summary"
+    return "", "missing"
+
+
 def resolve_citations(
     citations: list[dict],
     abbrev_to_prefix: dict[str, str],
@@ -573,9 +585,16 @@ def process_court_files(
         stats = {
             "file": rk_file.name,
             "decisions_scanned": 0,
+            "decisions_with_full_text": 0,
             "decisions_with_citations": 0,
             "citations_found": 0,
             "citations_resolved": 0,
+            "state_citations_resolved": 0,
+            "legalText_citations_found": 0,
+            "summary_fallback_citations_found": 0,
+            "summary_baseline_citations_found": 0,
+            "summary_baseline_citations_resolved": 0,
+            "full_text_recall_lift": 0,
         }
 
         doc = _safe_load(rk_file, counters)
@@ -596,24 +615,44 @@ def process_court_files(
 
             stats["decisions_scanned"] += 1
 
-            # estleg:summary may be a plain string or a value object
-            # ({"@value": ..., "@language": "et"}); jsonld_text yields the
-            # raw text either way so the citation regexes never see a dict.
-            summary = jsonld_text(node.get("estleg:summary", ""))
-            if not summary:
+            # Prefer full decision text when available. Both
+            # estleg:legalText and estleg:summary may be plain strings or
+            # JSON-LD value objects; jsonld_text unwraps either shape.
+            citation_text, citation_source = decision_citation_text(node)
+            if citation_source == "legalText":
+                stats["decisions_with_full_text"] += 1
+            if not citation_text:
                 continue
 
+            summary_text = jsonld_text(node.get("estleg:summary", ""))
+            if summary_text:
+                baseline_state, baseline_kov = extract_citations_from_text(summary_text)
+                baseline_state_iris = resolve_citations(
+                    baseline_state, abbrev_to_prefix, prefix_to_provisions
+                )
+                stats["summary_baseline_citations_found"] += (
+                    len(baseline_state) + len(baseline_kov)
+                )
+                stats["summary_baseline_citations_resolved"] += len(
+                    baseline_state_iris
+                )
+
             # RT IV detector — counted only.
-            for _ in PAT_RTIV.finditer(summary):
+            for _ in PAT_RTIV.finditer(citation_text):
                 counters.bump_citation_count("rtiv_form_citation")
 
             state_citations, kov_citations = extract_citations_from_text(
-                summary, counters=counters,
+                citation_text, counters=counters,
             )
             if not (state_citations or kov_citations):
                 continue
 
-            stats["citations_found"] += len(state_citations) + len(kov_citations)
+            citations_found = len(state_citations) + len(kov_citations)
+            stats["citations_found"] += citations_found
+            if citation_source == "legalText":
+                stats["legalText_citations_found"] += citations_found
+            else:
+                stats["summary_fallback_citations_found"] += citations_found
             stats["decisions_with_citations"] += 1
             kov_citations_matched += len(kov_citations)
 
@@ -622,6 +661,7 @@ def process_court_files(
                 state_citations, abbrev_to_prefix, prefix_to_provisions
             )
             state_link_count += len(state_iris)
+            stats["state_citations_resolved"] += len(state_iris)
 
             # KOV act resolver (new).
             kov_iris: list[str] = []
@@ -662,6 +702,10 @@ def process_court_files(
             unique_kov_iris = list(dict.fromkeys(kov_iris))
             kov_link_count += len(unique_kov_iris)
             stats["citations_resolved"] += len(state_iris) + len(unique_kov_iris)
+            stats["full_text_recall_lift"] = (
+                stats["state_citations_resolved"]
+                - stats["summary_baseline_citations_resolved"]
+            )
 
             resolved = list(dict.fromkeys(state_iris + unique_kov_iris))
             if not resolved:
@@ -898,9 +942,22 @@ def main() -> None:
     kov_citations_resolved_raw = result.kov_citations_resolved_raw
 
     total_decisions = sum(s.get("decisions_scanned", 0) for s in per_file_stats)
+    total_with_full_text = sum(s.get("decisions_with_full_text", 0) for s in per_file_stats)
     total_with_citations = sum(s.get("decisions_with_citations", 0) for s in per_file_stats)
     total_citations = sum(s.get("citations_found", 0) for s in per_file_stats)
     total_resolved = sum(s.get("citations_resolved", 0) for s in per_file_stats)
+    total_legal_text_citations = sum(
+        s.get("legalText_citations_found", 0) for s in per_file_stats
+    )
+    total_summary_fallback_citations = sum(
+        s.get("summary_fallback_citations_found", 0) for s in per_file_stats
+    )
+    total_summary_baseline_resolved = sum(
+        s.get("summary_baseline_citations_resolved", 0) for s in per_file_stats
+    )
+    total_full_text_recall_lift = sum(
+        s.get("full_text_recall_lift", 0) for s in per_file_stats
+    )
 
     for s in per_file_stats:
         resolved = s.get("citations_resolved", 0)
@@ -954,8 +1011,13 @@ def main() -> None:
         "summary": {
             "court_files_processed": len(per_file_stats),
             "total_decisions_scanned": total_decisions,
+            "decisions_with_full_text": total_with_full_text,
             "decisions_with_citations": total_with_citations,
             "total_citations_found": total_citations,
+            "legalText_citations_found": total_legal_text_citations,
+            "summary_fallback_citations_found": total_summary_fallback_citations,
+            "summary_baseline_citations_resolved": total_summary_baseline_resolved,
+            "full_text_recall_lift": total_full_text_recall_lift,
             "total_citations_resolved": total_resolved,
             "kov_citations_resolved": kov_link_count,
             "kov_citations_unresolved": kov_unresolved,

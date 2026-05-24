@@ -34,6 +34,7 @@ given run keep their existing shape — ``estleg:legalText`` is optional.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import html as html_mod
 import json
 import logging
@@ -98,6 +99,11 @@ COURT_TEXT_CACHE_TTL_DAYS = 365  # decisions are immutable; refresh yearly
 # search form or an error stub rather than a real decision body — treat
 # as a failed fetch and do not cache it.
 MIN_DECISION_TEXT_LEN = 40
+# Guard against successful HTTP responses whose body is not usable
+# Estonian text (for example mojibake or binary-ish payloads decoded as
+# HTML). Ratio is measured over non-whitespace characters after tag
+# stripping; real decisions are well above this floor.
+MIN_DECISION_TEXT_VALID_CHAR_RATIO = 0.30
 # Default cap on how many decisions to fetch full text for in one
 # ``--fetch-full-text`` run. ``0`` (or ``--full-text-limit 0``) means
 # *all* ~12k decisions — the multi-hour run; the cache makes it resumable.
@@ -662,6 +668,9 @@ _BODY_RE = re.compile(r"<body\b[^>]*>(.*?)</body>", re.DOTALL | re.IGNORECASE)
 _TAG_RE = re.compile(r"<[^>]+>")
 _INLINE_WS_RE = re.compile(r"[ \t\r\f\v ]+")
 _MULTI_WS_RE = re.compile(r"\s+")
+_VISIBLE_WS_RE = re.compile(r"\s+")
+_ESTONIAN_TEXT_CHAR_RE = re.compile(r"[0-9A-Za-zÕÄÖÜõäöüŠŽšž]")
+_MOJIBAKE_MARKER_RE = re.compile(r"(?:Ã.|Â.|â€|�)")
 
 
 def _looks_like_decision_document(html_text: str) -> bool:
@@ -672,6 +681,15 @@ def _looks_like_decision_document(html_text: str) -> bool:
     markup as if it were decision text.
     """
     return any(marker in html_text for marker in _DECISION_DOC_MARKERS)
+
+
+def decision_text_quality_ratio(text: str) -> float:
+    """Return the share of visible chars that look like Estonian text."""
+    visible = _VISIBLE_WS_RE.sub("", text)
+    if not visible:
+        return 0.0
+    valid = sum(1 for ch in visible if _ESTONIAN_TEXT_CHAR_RE.fullmatch(ch))
+    return valid / len(visible)
 
 
 def extract_decision_text(html_text: str) -> str | None:
@@ -698,6 +716,10 @@ def extract_decision_text(html_text: str) -> str | None:
     plain = _MULTI_WS_RE.sub(" ", plain).strip()
     if len(plain) < MIN_DECISION_TEXT_LEN:
         return None
+    if _MOJIBAKE_MARKER_RE.search(plain):
+        return None
+    if decision_text_quality_ratio(plain) < MIN_DECISION_TEXT_VALID_CHAR_RATIO:
+        return None
     return plain
 
 
@@ -723,7 +745,8 @@ def _detail_url(case_nr: str) -> str:
 
 def _court_text_cache_path(case_nr: str) -> Path:
     """On-disk cache path for ``case_nr``'s fetched full text."""
-    return COURT_TEXT_CACHE_DIR / f"{sanitize_id(case_nr)}.txt"
+    digest = hashlib.sha1(case_nr.encode("utf-8")).hexdigest()[:10]
+    return COURT_TEXT_CACHE_DIR / f"{sanitize_id(case_nr)}_{digest}.txt"
 
 
 def _court_text_cache_is_fresh(

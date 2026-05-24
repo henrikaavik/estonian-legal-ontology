@@ -282,6 +282,22 @@ def validate_context(filepath: Path, doc: dict):
             error(f"{filepath.name}: Wrong estleg namespace: {ns} (expected {EXPECTED_NS})")
 
 
+def validate_bare_namespace_act_ids(filepath: Path, doc: dict):
+    """Reject act/law nodes that reuse the ontology namespace IRI as @id."""
+    if "@graph" not in doc:
+        return
+    for i, node in enumerate(doc["@graph"]):
+        if not isinstance(node, dict) or node.get("@id") != EXPECTED_NS:
+            continue
+        types = set(node_types(node))
+        if not (types & ACT_TYPES):
+            continue
+        error(
+            f"{filepath.name}: act/law node uses bare estleg namespace @id "
+            f"at graph[{i}] (derive a compact act IRI instead)"
+        )
+
+
 def validate_types(filepath: Path, doc: dict):
     if "@graph" not in doc:
         return
@@ -1664,6 +1680,7 @@ def main():
             continue
 
         validate_context(filepath, doc)
+        validate_bare_namespace_act_ids(filepath, doc)
         validate_types(filepath, doc)
         validate_multi_valued(filepath, doc)
         validate_section_numbers(filepath, doc)

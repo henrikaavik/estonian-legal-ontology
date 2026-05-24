@@ -192,6 +192,36 @@ def test_validate_source_provenance_requires_source_iri_object(tmp_path):
     assert any("dcterms:source must be an IRI object" in err for err in validate_all.errors)
 
 
+def test_validate_bare_namespace_act_ids_rejects_act_node(tmp_path):
+    doc = {
+        "@graph": [
+            {
+                "@id": "https://data.riik.ee/ontology/estleg#",
+                "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
+            }
+        ]
+    }
+
+    validate_all.validate_bare_namespace_act_ids(tmp_path / "multipart_peep.json", doc)
+
+    assert any("act/law node uses bare estleg namespace @id" in err for err in validate_all.errors)
+
+
+def test_validate_bare_namespace_act_ids_allows_vocabulary_node(tmp_path):
+    doc = {
+        "@graph": [
+            {
+                "@id": "https://data.riik.ee/ontology/estleg#",
+                "@type": ["owl:Ontology"],
+            }
+        ]
+    }
+
+    validate_all.validate_bare_namespace_act_ids(tmp_path / "vocabulary.jsonld", doc)
+
+    assert validate_all.errors == []
+
+
 def test_validate_internal_references_reports_missing_estleg_ref():
     validate_all.errors.clear()
     all_ids = {"estleg:Known": ["known.json"]}

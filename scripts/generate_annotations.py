@@ -55,6 +55,7 @@ Usage::
     python3 scripts/generate_annotations.py --limit 5             # the seed sample
     python3 scripts/generate_annotations.py --seed path/to/seed.json
     python3 scripts/generate_annotations.py --scrape --limit 5    # title-only live scrape
+    python3 scripts/generate_annotations.py --probe-pdfs --pdf-probe-sample-size 10
     python3 scripts/generate_annotations.py --scrape --limit 0    # (the unbounded full run is the follow-up)
 """
 
@@ -68,6 +69,7 @@ import sys
 import time
 from dataclasses import dataclass, field
 from datetime import date, datetime, timezone
+from io import BytesIO
 from pathlib import Path
 from urllib.parse import unquote as urllib_parse_unquote
 
@@ -99,6 +101,7 @@ ANNOTATIONS_DIR = KRR_DIR / "annotations"
 SIDECAR_PATH = ANNOTATIONS_DIR / "oiguskantsler_seisukohad.jsonld"
 COVERAGE_PATH = KRR_DIR / "reports" / "kov" / "extract_annotations_coverage.json"
 CACHE_DIR = KRR_DIR / ".cache" / "annotations"
+PDF_PROBE_REPORT_PATH = KRR_DIR / "reports" / "annotations_pdf_probe.json"
 
 SEED_PATH = REPO_ROOT / "data" / "annotations" / "seed_annotations.json"
 
@@ -109,6 +112,11 @@ SEISUKOHAD_LISTING_URL = "https://www.oiguskantsler.ee/seisukohad-ja-algatused/s
 FETCH_SLEEP_SECONDS = 0.4
 
 DEFAULT_LIMIT = 5
+PDF_PROBE_SAMPLE_SIZE = 10
+MIN_PDF_TEXT_CHARS = 500
+MIN_PDF_TEXT_VALID_CHAR_RATIO = 0.30
+PDF_TEXT_LAYER_ACCEPTANCE_RATIO = 0.80
+_PDF_TEXT_CHAR_RE = re.compile(r"[0-9A-Za-zÕÄÖÜõäöüŠŽšž]")
 
 # Act-level @type values that legitimately represent the act node an annotation should
 # point at; provision-level nodes intentionally do NOT appear here so the fallback never
@@ -120,6 +128,11 @@ _ACT_LEVEL_TYPES = frozenset({"owl:Ontology", "estleg:Act", "estleg:Map"})
 # IRI on the ontology node — those are not addressable, so we reject them).
 _BARE_NS = {"estleg:", "https://data.riik.ee/ontology/estleg#"}
 _MAP_IRI_RE = re.compile(r"^estleg:[^\s]+_Map(?:_\d{4})?$")
+
+
+def _looks_like_pdf_url(url: str) -> bool:
+    """Return whether ``url`` points directly at a PDF resource."""
+    return url.split("?", 1)[0].lower().endswith(".pdf")
 
 
 # ---------------------------------------------------------------------------
@@ -512,6 +525,154 @@ def _fetch_url(url: str, *, timeout: int = 30, cache_dir: Path | None = CACHE_DI
     return body
 
 
+def _fetch_bytes(
+    url: str,
+    *,
+    timeout: int = 60,
+    cache_dir: Path | None = CACHE_DIR,
+    sleep: float = FETCH_SLEEP_SECONDS,
+) -> bytes | None:
+    """GET binary content with the same annotations cache policy as HTML pages."""
+    import urllib.error
+    import urllib.request
+
+    cache_file: Path | None = None
+    if cache_dir is not None:
+        cache_dir.mkdir(parents=True, exist_ok=True)
+        suffix = ".pdf" if url.lower().split("?", 1)[0].endswith(".pdf") else ".bin"
+        cache_file = cache_dir / (sanitize_id(re.sub(r"^https?://", "", url)) + suffix)
+        if cache_file.exists() and cache_file.stat().st_size > 200:
+            try:
+                return cache_file.read_bytes()
+            except OSError:
+                pass
+    req = urllib.request.Request(
+        url, headers={"User-Agent": "law-ontology research crawler (contact henrik.aavik@gmail.com)"}
+    )
+    try:
+        if sleep:
+            time.sleep(sleep)
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            body = resp.read()
+    except (urllib.error.URLError, OSError, ValueError) as exc:  # noqa: BLE001
+        print(f"    fetch error for {url}: {exc}")
+        return None
+    if cache_file is not None and len(body) > 200:
+        try:
+            cache_file.write_bytes(body)
+        except OSError:
+            pass
+    return body
+
+
+def _text_quality_ratio(text: str) -> float:
+    visible = re.sub(r"\s+", "", text or "")
+    if not visible:
+        return 0.0
+    valid = sum(1 for ch in visible if _PDF_TEXT_CHAR_RE.fullmatch(ch))
+    return valid / len(visible)
+
+
+def pdf_text_is_usable(text: str | None) -> tuple[bool, int, float]:
+    """Return whether extracted PDF text is long and readable enough."""
+    text = text or ""
+    length = len(text.strip())
+    ratio = _text_quality_ratio(text)
+    return (
+        length >= MIN_PDF_TEXT_CHARS and ratio >= MIN_PDF_TEXT_VALID_CHAR_RATIO,
+        length,
+        ratio,
+    )
+
+
+def extract_pdf_text_layer(pdf_bytes: bytes) -> tuple[str | None, str | None]:
+    """Extract text from PDF bytes with an optional pdfminer installation."""
+    try:
+        from pdfminer.high_level import extract_text  # type: ignore[import-not-found]
+    except ImportError:
+        return None, 'pdfminer.six not installed; run pip install -e ".[pdf]"'
+    try:
+        text = extract_text(BytesIO(pdf_bytes)) or ""
+    except Exception as exc:  # noqa: BLE001
+        return None, f"pdfminer extraction failed: {exc}"
+    return text, None
+
+
+def probe_pdf_text_layers(
+    opinions: list[Opinion],
+    *,
+    sample_size: int = PDF_PROBE_SAMPLE_SIZE,
+    fetcher=_fetch_bytes,
+    extractor=extract_pdf_text_layer,
+    cache_dir: Path | None = CACHE_DIR,
+    sleep: float = FETCH_SLEEP_SECONDS,
+) -> dict:
+    """Probe whether sampled Õiguskantsler PDFs have extractable text layers."""
+    rows: list[dict] = []
+    skipped_non_pdf = 0
+    for op in opinions:
+        if len(rows) >= sample_size:
+            break
+        if not op.url:
+            continue
+        if not _looks_like_pdf_url(op.url):
+            skipped_non_pdf += 1
+            continue
+        row = {
+            "opinion_id": op.opinion_id,
+            "title": op.title,
+            "url": op.url,
+            "status": "pending",
+            "text_length": 0,
+            "valid_char_ratio": 0.0,
+        }
+        pdf_bytes = fetcher(op.url, cache_dir=cache_dir, sleep=sleep)
+        if not pdf_bytes:
+            row["status"] = "fetch_failed"
+            rows.append(row)
+            continue
+        text, error = extractor(pdf_bytes)
+        if error:
+            row["status"] = "extraction_unavailable"
+            row["warning"] = error
+            rows.append(row)
+            continue
+        usable, length, ratio = pdf_text_is_usable(text)
+        row["text_length"] = length
+        row["valid_char_ratio"] = round(ratio, 3)
+        row["status"] = "usable_text_layer" if usable else "unusable_or_scanned"
+        rows.append(row)
+
+    usable_count = sum(1 for r in rows if r["status"] == "usable_text_layer")
+    sampled = len(rows)
+    usable_ratio = usable_count / sampled if sampled else 0.0
+    recommendation = (
+        "pdf_text_layer_ok"
+        if sampled and usable_ratio >= PDF_TEXT_LAYER_ACCEPTANCE_RATIO
+        else "evaluate_ocr_before_full_ingestion"
+    )
+    return {
+        "sample_size_requested": sample_size,
+        "sampled": sampled,
+        "non_pdf_urls_skipped": skipped_non_pdf,
+        "usable_text_layer_count": usable_count,
+        "usable_text_layer_ratio": round(usable_ratio, 3),
+        "acceptance_ratio": PDF_TEXT_LAYER_ACCEPTANCE_RATIO,
+        "recommendation": recommendation,
+        "rows": rows,
+    }
+
+
+def write_pdf_probe_report(report: dict, path: Path = PDF_PROBE_REPORT_PATH) -> Path:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp = path.with_suffix(path.suffix + ".tmp")
+    with open(tmp, "w", encoding="utf-8") as fh:
+        json.dump(report, fh, ensure_ascii=False, indent=2, sort_keys=True)
+        fh.write("\n")
+    tmp.replace(path)
+    return path
+
+
 def scrape_recent_opinions(
     limit: int,
     *,
@@ -882,6 +1043,19 @@ def _parse_args(argv: list[str] | None) -> argparse.Namespace:
              "full-archive run with PDF-body parsing is the #199 follow-up).",
     )
     parser.add_argument(
+        "--probe-pdfs",
+        action="store_true",
+        help="Fetch a sample of live Õiguskantsler opinion PDFs, test text-layer extraction "
+             "with optional pdfminer.six, write an annotations_pdf_probe report, and exit.",
+    )
+    parser.add_argument(
+        "--pdf-probe-sample-size",
+        type=int,
+        default=PDF_PROBE_SAMPLE_SIZE,
+        metavar="N",
+        help=f"With --probe-pdfs, sample N opinion URLs (default {PDF_PROBE_SAMPLE_SIZE}).",
+    )
+    parser.add_argument(
         "--allow-partial",
         action="store_true",
         help="Continue past opinions that raise an error during annotation synthesis "
@@ -905,6 +1079,23 @@ def main(argv: list[str] | None = None) -> int:
     args = _parse_args(argv)
     cache_dir = None if args.no_cache else CACHE_DIR
     sleep = 0.0 if args.no_sleep else FETCH_SLEEP_SECONDS
+    if args.probe_pdfs:
+        limit = max(args.limit, args.pdf_probe_sample_size)
+        opinions = scrape_recent_opinions(limit, cache_dir=cache_dir, sleep=sleep)
+        report = probe_pdf_text_layers(
+            opinions,
+            sample_size=args.pdf_probe_sample_size,
+            cache_dir=cache_dir,
+            sleep=sleep,
+        )
+        path = write_pdf_probe_report(report)
+        print(
+            f"PDF probe -> {_rel(path)}; usable text layers "
+            f"{report['usable_text_layer_count']}/{report['sampled']} "
+            f"({report['usable_text_layer_ratio']:.0%}); "
+            f"recommendation={report['recommendation']}"
+        )
+        return 0
     return run(
         scrape=args.scrape,
         limit=args.limit,

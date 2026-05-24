@@ -957,3 +957,58 @@ def test_process_court_files_handles_value_object_summary(tmp_path, monkeypatch)
     assert vo_result.state_link_count == plain_result.state_link_count
     assert vo_iris == plain_iris
     assert dict(vo_result.interpreted_by) == dict(plain_result.interpreted_by)
+
+
+def test_process_court_files_prefers_legal_text_over_summary(
+    tmp_path, monkeypatch
+):
+    import extract_court_provision_links as ecpl
+
+    abbrev_to_prefix = {"KarS": "Karistusseadustik"}
+    prefix_to_provisions = {
+        "Karistusseadustik": {
+            "121": "estleg:Karistusseadustik_Par_121",
+            "122": "estleg:Karistusseadustik_Par_122",
+        },
+    }
+    rk_dir = tmp_path / "rk_full_text"
+    rk_dir.mkdir()
+    (rk_dir / "riigikohus_2026_peep.json").write_text(
+        json.dumps({
+            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+            "@graph": [
+                {
+                    "@id": "estleg:RK_FULL_TEXT_1",
+                    "@type": ["owl:NamedIndividual", "estleg:CourtDecision"],
+                    "estleg:summary": "Kokkuvõte mainib KarS § 121.",
+                    "estleg:legalText": "Täistekst lahendab asja KarS § 121 ja KarS § 122 alusel.",
+                },
+            ],
+        }),
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(ecpl, "RK_DIR", rk_dir)
+
+    result = process_court_files(
+        abbrev_to_prefix,
+        prefix_to_provisions,
+        kov_index={},
+        kov_collision_keys=set(),
+        known_issuer_norms=set(),
+        counters=_RunCounters(),
+    )
+
+    doc = json.loads(
+        (rk_dir / "riigikohus_2026_peep.json").read_text(encoding="utf-8")
+    )
+    decision = doc["@graph"][0]
+    assert decision["estleg:interpretsLaw"] == [
+        {"@id": "estleg:Karistusseadustik_Par_121"},
+        {"@id": "estleg:Karistusseadustik_Par_122"},
+    ]
+    stats = result.per_file_stats[0]
+    assert stats["decisions_with_full_text"] == 1
+    assert stats["legalText_citations_found"] == 2
+    assert stats["summary_fallback_citations_found"] == 0
+    assert stats["summary_baseline_citations_resolved"] == 1
+    assert stats["full_text_recall_lift"] == 1

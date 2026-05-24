@@ -163,6 +163,71 @@ AGGREGATE_REGISTRY_PREFIXES: tuple[str, ...] = (
     "estleg:Similarity_",
 )
 
+# Public section 2 / Seadusloome load surface. Consumers should load
+# ``combined_ontology.jsonld`` plus these subcorpora and sidecar directories
+# when they need to follow enrichment links from the published graph.
+PUBLIC_LOAD_SUBDIRS: tuple[str, ...] = (
+    "eelnoud",
+    "riigikohus",
+    "curia",
+    "eurlex",
+    "concepts",
+    "sanctions",
+    "amendments",
+    "institutions",
+    "provision_versions",
+    "annotations",
+    "harmonisation",
+    "regulations",
+)
+
+PUBLIC_LOAD_JSONLD_SUFFIXES: tuple[str, ...] = (".json", ".jsonld")
+
+_PUBLIC_NON_DATA_STEM_SUFFIXES: tuple[str, ...] = (
+    "_index",
+    "_report",
+    "_schema",
+    "_summary",
+)
+
+
+def is_public_jsonld_data_file(path: Path) -> bool:
+    """Return True for JSON-LD data files in the public load surface.
+
+    Sidecar directories contain reports, indexes, and schemas next to actual
+    ``@graph`` data. The public loader should include the data files and skip
+    those aggregate artifacts so SHACL and graph-closure checks see the same
+    consumer-facing graph.
+    """
+    if path.suffix.lower() not in PUBLIC_LOAD_JSONLD_SUFFIXES:
+        return False
+    stem = path.stem.lower()
+    if stem == "index" or stem.endswith("index"):
+        return False
+    return not any(stem.endswith(suffix) for suffix in _PUBLIC_NON_DATA_STEM_SUFFIXES)
+
+
+def iter_public_load_files(
+    krr_dir: Path,
+    *,
+    include_combined: bool = True,
+) -> list[Path]:
+    """Return sorted JSON-LD inputs for the public section 2 load surface."""
+    inputs: set[Path] = set()
+    combined = krr_dir / "combined_ontology.jsonld"
+    if include_combined and combined.exists():
+        inputs.add(combined)
+
+    for subdir_name in PUBLIC_LOAD_SUBDIRS:
+        subdir = krr_dir / subdir_name
+        if not subdir.is_dir():
+            continue
+        for suffix in PUBLIC_LOAD_JSONLD_SUFFIXES:
+            for path in subdir.rglob(f"*{suffix}"):
+                if path.is_file() and is_public_jsonld_data_file(path):
+                    inputs.add(path)
+    return sorted(inputs)
+
 # ---------------------------------------------------------------------------
 # JSON-LD shared context
 # ---------------------------------------------------------------------------
@@ -230,6 +295,17 @@ def jsonld_text(value: object, default: str = "") -> str:
         parts = [text for item in value if (text := jsonld_text(item))]
         return " ".join(parts) if parts else default
     return default
+
+
+def jsonld_texts(value: object) -> list[str]:
+    """Return all plain strings from common JSON-LD text shapes."""
+    if isinstance(value, list):
+        out: list[str] = []
+        for item in value:
+            out.extend(jsonld_texts(item))
+        return out
+    text = jsonld_text(value)
+    return [text] if text else []
 
 
 # ---------------------------------------------------------------------------

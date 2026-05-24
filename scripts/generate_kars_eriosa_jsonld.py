@@ -60,6 +60,21 @@ def child_text(el: ET.Element, name: str) -> str | None:
     return None
 
 
+def section_range(osa_el: ET.Element) -> tuple[int, int] | None:
+    """Return the base section-number range contained in an ``osa`` element."""
+    numbers: list[int] = []
+    for paragrahv in osa_el.iter():
+        if ln(paragrahv.tag) != "paragrahv":
+            continue
+        raw = child_text(paragrahv, "paragrahvNr") or ""
+        match = re.match(r"\s*(\d+)", raw)
+        if match:
+            numbers.append(int(match.group(1)))
+    if not numbers:
+        return None
+    return min(numbers), max(numbers)
+
+
 _ESTONIAN_TRANSLITERATION: dict[str, str] = {
     "ö": "o", "ä": "a", "ü": "u", "õ": "o",
     "Ö": "O", "Ä": "A", "Ü": "U", "Õ": "O",
@@ -187,11 +202,15 @@ def main() -> None:
         raise RuntimeError("Could not find Eriosa (osaNr=2)")
 
     base = "https://data.riik.ee/ontology/estleg#"
+    par_range = section_range(osa2)
+    ontology_id = "estleg:KarS_Eriosa_v1"
+    if par_range is None:
+        print("WARNING: cannot derive KarS Eriosa section range; using stable act IRI")
 
     graph: list[dict] = [
         {
-            "@id": "estleg:KarS_Eriosa_Map_2026",
-            "@type": ["owl:Ontology"],
+            "@id": ontology_id,
+            "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
             "rdfs:label": "KarS Eriosa ontoloogia",
             "dc:title": f"{title} – Eriosa",
             "dc:source": title,
@@ -204,6 +223,8 @@ def main() -> None:
         {"@id": "estleg:Section", "@type": ["owl:Class"], "rdfs:label": "Paragrahv"},
         {"@id": "estleg:LegalConcept", "@type": ["owl:Class"], "rdfs:label": "Õigusmõiste"},
     ]
+    if par_range is not None:
+        graph[0]["dcterms:extent"] = f"§{par_range[0]}-§{par_range[1]}"
 
     part_id = "estleg:KarS_Part2"
     part_label = _join_label(

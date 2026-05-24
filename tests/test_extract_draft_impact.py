@@ -276,3 +276,93 @@ class TestEelnoudClearingExplicitGlobs:
         assert backup.exists()
         assert backup.read_text(encoding="utf-8") == "not valid json {{{ <html>"
 
+
+class TestGeneratedDraftValueObjects:
+    """Fresh ``generate_draft_legislation.py`` output uses JSON-LD value
+    objects for title and initiator. Draft-impact extraction must unwrap
+    them before regex classification and ministry aggregation.
+    """
+
+    def test_main_unwraps_title_and_initiator_value_objects(self, tmp_path, monkeypatch):
+        import extract_draft_impact as mod
+        import estleg_common
+
+        krr = tmp_path / "krr_outputs"
+        eelnoud = krr / "eelnoud"
+        eelnoud.mkdir(parents=True)
+
+        law_file = krr / "riigi_teataja_seadus_peep.json"
+        law_file.write_text(
+            json.dumps({
+                "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+                "@graph": [
+                    {
+                        "@id": "estleg:RTS_Map_2026",
+                        "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
+                    }
+                ],
+            }),
+            encoding="utf-8",
+        )
+
+        (krr / "INDEX.json").write_text(
+            json.dumps({
+                "total_laws": 1,
+                "laws": [
+                    {
+                        "name": "riigi_teataja_seadus",
+                        "files": [law_file.name],
+                    }
+                ],
+            }),
+            encoding="utf-8",
+        )
+
+        combined = eelnoud / "eelnoud_combined.jsonld"
+        combined.write_text(
+            json.dumps({
+                "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+                "@graph": [
+                    {
+                        "@id": "estleg:Draft_TEST",
+                        "@type": ["estleg:DraftLegislation", "owl:NamedIndividual"],
+                        "rdfs:label": {
+                            "@value": "Riigi Teataja seaduse muutmise seadus",
+                            "@language": "et",
+                        },
+                        "estleg:initiator": [
+                            {
+                                "@value": "Justiitsministeerium",
+                                "@language": "et",
+                            },
+                            {
+                                "@value": "Rahandusministeerium",
+                                "@language": "et",
+                            },
+                        ],
+                        "estleg:affectedLawName": {
+                            "@value": "Riigi Teataja seaduse",
+                            "@language": "et",
+                        },
+                    }
+                ],
+            }),
+            encoding="utf-8",
+        )
+
+        monkeypatch.setattr(mod, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "EELNOUD_DIR", eelnoud)
+        monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+
+        mod.main()
+
+        enriched = json.loads(combined.read_text(encoding="utf-8"))
+        draft = enriched["@graph"][0]
+        assert draft["estleg:changeType"] == "amends"
+        assert draft["estleg:amendsLaw"] == {"@id": "estleg:RTS_Map_2026"}
+
+        report = json.loads((krr / "draft_impact_report.json").read_text(encoding="utf-8"))
+        assert report["pending_changes_by_ministry"] == {
+            "Justiitsministeerium": 1,
+            "Rahandusministeerium": 1,
+        }
