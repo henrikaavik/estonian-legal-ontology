@@ -1486,6 +1486,63 @@ class TestRegenState:
             entry["reason"] for entry in manifest["outputsAll"]
         } == {"completed in regen state"}
 
+    def test_state_write_is_atomic_on_dump_failure(self, tmp_path, monkeypatch):
+        state_path = tmp_path / "regen_state.json"
+        original = {"completed": {"old": {"status": "full"}}, "failed": {}}
+        state_path.write_text(json.dumps(original), encoding="utf-8")
+
+        def _boom(*_args, **_kwargs):
+            raise RuntimeError("simulated interrupted write")
+
+        monkeypatch.setattr(generate_all_laws.json, "dump", _boom)
+        with pytest.raises(RuntimeError, match="simulated interrupted write"):
+            generate_all_laws.save_regen_state(
+                state_path, {"completed": {"new": {"status": "full"}}, "failed": {}}
+            )
+
+        assert json.loads(state_path.read_text(encoding="utf-8")) == original
+        assert not state_path.with_suffix(state_path.suffix + ".tmp").exists()
+
+    def test_completed_state_must_match_kehtiv_and_terviktekst_id(self):
+        old_slug = generate_all_laws.slugify("Vana seadus")
+        stale_tid_slug = generate_all_laws.slugify("Uuenenud seadus")
+        current_slug = generate_all_laws.slugify("Kehtiv seadus")
+        state = {
+            "schemaVersion": generate_all_laws.REGEN_STATE_SCHEMA_VERSION,
+            "completed": {
+                old_slug: {
+                    "kehtiv": "2026-05-01",
+                    "terviktekstId": "111",
+                    "status": "full",
+                },
+                stale_tid_slug: {
+                    "kehtiv": "2027-01-01",
+                    "terviktekstId": "222",
+                    "status": "full",
+                },
+                current_slug: {
+                    "kehtiv": "2027-01-01",
+                    "terviktekstId": "333",
+                    "status": "full",
+                },
+            },
+            "failed": {},
+        }
+        all_laws = {
+            "Vana seadus": {"tid": "111"},
+            "Uuenenud seadus": {"tid": "222-new"},
+            "Kehtiv seadus": {"tid": "333"},
+        }
+
+        assert generate_all_laws.completed_regen_slugs(
+            state, all_laws, kehtiv="2027-01-01"
+        ) == {current_slug}
+        assert set(state["completed"]) == {current_slug}
+        assert state["droppedCompleted"]["entries"] == {
+            old_slug: "kehtiv changed",
+            stale_tid_slug: "terviktekstId changed",
+        }
+
 
 class TestActStatusInManifest:
     """#119: each outputsAll entry carries a per-act status (full / stub /

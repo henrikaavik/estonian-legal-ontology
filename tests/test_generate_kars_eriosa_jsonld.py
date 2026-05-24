@@ -100,7 +100,7 @@ class TestJoinLabel:
 
 
 class TestSectionRange:
-    def test_derives_base_section_range_for_act_iri(self) -> None:
+    def test_derives_base_section_range_metadata(self) -> None:
         root = ET.fromstring(_FAKE_KARS_XML)
         osa2 = next(
             osa
@@ -110,6 +110,11 @@ class TestSectionRange:
         )
 
         assert gke.section_range(osa2) == (88, 113)
+
+    def test_empty_osa_returns_none_for_stable_act_iri_fallback(self) -> None:
+        osa = ET.fromstring("<osa><osaNr>2</osaNr></osa>")
+
+        assert gke.section_range(osa) is None
 
 
 # ---------------------------------------------------------------------------

@@ -297,6 +297,17 @@ def jsonld_text(value: object, default: str = "") -> str:
     return default
 
 
+def jsonld_texts(value: object) -> list[str]:
+    """Return all plain strings from common JSON-LD text shapes."""
+    if isinstance(value, list):
+        out: list[str] = []
+        for item in value:
+            out.extend(jsonld_texts(item))
+        return out
+    text = jsonld_text(value)
+    return [text] if text else []
+
+
 # ---------------------------------------------------------------------------
 # Source provenance helper (issue #113)
 # ---------------------------------------------------------------------------

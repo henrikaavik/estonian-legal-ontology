@@ -589,8 +589,12 @@ def process_court_files(
             "decisions_with_citations": 0,
             "citations_found": 0,
             "citations_resolved": 0,
+            "state_citations_resolved": 0,
             "legalText_citations_found": 0,
             "summary_fallback_citations_found": 0,
+            "summary_baseline_citations_found": 0,
+            "summary_baseline_citations_resolved": 0,
+            "full_text_recall_lift": 0,
         }
 
         doc = _safe_load(rk_file, counters)
@@ -620,6 +624,19 @@ def process_court_files(
             if not citation_text:
                 continue
 
+            summary_text = jsonld_text(node.get("estleg:summary", ""))
+            if summary_text:
+                baseline_state, baseline_kov = extract_citations_from_text(summary_text)
+                baseline_state_iris = resolve_citations(
+                    baseline_state, abbrev_to_prefix, prefix_to_provisions
+                )
+                stats["summary_baseline_citations_found"] += (
+                    len(baseline_state) + len(baseline_kov)
+                )
+                stats["summary_baseline_citations_resolved"] += len(
+                    baseline_state_iris
+                )
+
             # RT IV detector — counted only.
             for _ in PAT_RTIV.finditer(citation_text):
                 counters.bump_citation_count("rtiv_form_citation")
@@ -644,6 +661,7 @@ def process_court_files(
                 state_citations, abbrev_to_prefix, prefix_to_provisions
             )
             state_link_count += len(state_iris)
+            stats["state_citations_resolved"] += len(state_iris)
 
             # KOV act resolver (new).
             kov_iris: list[str] = []
@@ -684,6 +702,10 @@ def process_court_files(
             unique_kov_iris = list(dict.fromkeys(kov_iris))
             kov_link_count += len(unique_kov_iris)
             stats["citations_resolved"] += len(state_iris) + len(unique_kov_iris)
+            stats["full_text_recall_lift"] = (
+                stats["state_citations_resolved"]
+                - stats["summary_baseline_citations_resolved"]
+            )
 
             resolved = list(dict.fromkeys(state_iris + unique_kov_iris))
             if not resolved:
@@ -930,6 +952,12 @@ def main() -> None:
     total_summary_fallback_citations = sum(
         s.get("summary_fallback_citations_found", 0) for s in per_file_stats
     )
+    total_summary_baseline_resolved = sum(
+        s.get("summary_baseline_citations_resolved", 0) for s in per_file_stats
+    )
+    total_full_text_recall_lift = sum(
+        s.get("full_text_recall_lift", 0) for s in per_file_stats
+    )
 
     for s in per_file_stats:
         resolved = s.get("citations_resolved", 0)
@@ -988,6 +1016,8 @@ def main() -> None:
             "total_citations_found": total_citations,
             "legalText_citations_found": total_legal_text_citations,
             "summary_fallback_citations_found": total_summary_fallback_citations,
+            "summary_baseline_citations_resolved": total_summary_baseline_resolved,
+            "full_text_recall_lift": total_full_text_recall_lift,
             "total_citations_resolved": total_resolved,
             "kov_citations_resolved": kov_link_count,
             "kov_citations_unresolved": kov_unresolved,

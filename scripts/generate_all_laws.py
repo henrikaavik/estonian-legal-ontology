@@ -13,6 +13,7 @@ This script:
 from __future__ import annotations
 
 import json
+import os
 import re
 import sys
 import time
@@ -36,6 +37,7 @@ DEFAULT_KEHTIV = "2026-05-01"
 GENERATION_MODES = ("missing-only", "refresh", "force")
 MANIFEST_NAME = "generation_manifest_laws.json"
 DEFAULT_REGEN_STATE_NAME = ".regen_state.json"
+REGEN_STATE_SCHEMA_VERSION = 1
 
 CONTEXT = {
     "estleg": NS,
@@ -1816,14 +1818,27 @@ def _regen_state_path(value: str | Path | None) -> Path | None:
 
 def load_regen_state(path: Path | None) -> dict:
     if path is None or not path.exists():
-        return {"completed": {}, "failed": {}}
+        return {
+            "schemaVersion": REGEN_STATE_SCHEMA_VERSION,
+            "completed": {},
+            "failed": {},
+        }
     try:
         with open(path, "r", encoding="utf-8") as f:
             state = json.load(f)
     except (json.JSONDecodeError, OSError):
-        return {"completed": {}, "failed": {}}
+        return {
+            "schemaVersion": REGEN_STATE_SCHEMA_VERSION,
+            "completed": {},
+            "failed": {},
+        }
     if not isinstance(state, dict):
-        return {"completed": {}, "failed": {}}
+        return {
+            "schemaVersion": REGEN_STATE_SCHEMA_VERSION,
+            "completed": {},
+            "failed": {},
+        }
+    state.setdefault("schemaVersion", REGEN_STATE_SCHEMA_VERSION)
     if not isinstance(state.get("completed"), dict):
         state["completed"] = {}
     if not isinstance(state.get("failed"), dict):
@@ -1831,11 +1846,47 @@ def load_regen_state(path: Path | None) -> dict:
     return state
 
 
-def completed_regen_slugs(state: dict) -> set[str]:
+def completed_regen_slugs(
+    state: dict, all_laws: dict[str, dict], *, kehtiv: str
+) -> set[str]:
     completed = state.get("completed")
     if not isinstance(completed, dict):
         return set()
-    return {slug for slug in completed if isinstance(slug, str)}
+    if state.get("schemaVersion") != REGEN_STATE_SCHEMA_VERSION:
+        completed.clear()
+        state["schemaVersion"] = REGEN_STATE_SCHEMA_VERSION
+        return set()
+
+    current_by_slug = {
+        slugify(title): info for title, info in all_laws.items() if isinstance(title, str)
+    }
+    valid: set[str] = set()
+    stale: dict[str, str] = {}
+    for slug, entry in list(completed.items()):
+        if not isinstance(slug, str) or not isinstance(entry, dict):
+            completed.pop(slug, None)
+            continue
+        info = current_by_slug.get(slug)
+        if info is None:
+            stale[slug] = "not in current source list"
+            completed.pop(slug, None)
+            continue
+        expected_tid = info.get("tid")
+        if entry.get("kehtiv") != kehtiv:
+            stale[slug] = "kehtiv changed"
+            completed.pop(slug, None)
+            continue
+        if str(entry.get("terviktekstId") or "") != str(expected_tid or ""):
+            stale[slug] = "terviktekstId changed"
+            completed.pop(slug, None)
+            continue
+        valid.add(slug)
+    if stale:
+        state["droppedCompleted"] = {
+            "at": datetime.now(timezone.utc).isoformat(),
+            "entries": stale,
+        }
+    return valid
 
 
 def _relative_output(path: Path) -> str:
@@ -1858,10 +1909,17 @@ def save_regen_state(path: Path | None, state: dict) -> None:
     if path is None:
         return
     path.parent.mkdir(parents=True, exist_ok=True)
+    state["schemaVersion"] = REGEN_STATE_SCHEMA_VERSION
     state["updatedAt"] = datetime.now(timezone.utc).isoformat()
-    with open(path, "w", encoding="utf-8") as f:
-        json.dump(state, f, ensure_ascii=False, indent=2)
-        f.write("\n")
+    tmp = path.with_suffix(path.suffix + ".tmp")
+    try:
+        with open(tmp, "w", encoding="utf-8") as f:
+            json.dump(state, f, ensure_ascii=False, indent=2)
+            f.write("\n")
+    except Exception:
+        tmp.unlink(missing_ok=True)
+        raise
+    os.replace(tmp, path)
 
 
 def record_regen_state(
@@ -1874,6 +1932,7 @@ def record_regen_state(
     status: str,
     output_paths: list[Path] | None = None,
     subsection_count: int = 0,
+    kehtiv: str | None = None,
     reason: str | None = None,
     warnings: list[str] | None = None,
 ) -> None:
@@ -1884,6 +1943,7 @@ def record_regen_state(
         "slug": slug,
         "globaalId": info.get("gid"),
         "terviktekstId": info.get("tid"),
+        "kehtiv": kehtiv,
         "sourceUrl": info.get("url"),
         "status": status,
         "outputPaths": [_relative_output(p) for p in (output_paths or [])],
@@ -1954,7 +2014,11 @@ def main():
         source_manifest["limited"] = True
         source_manifest["limit"] = args.limit
     print(f"  Found {len(all_laws)} unique law titles")
-    completed_slugs = completed_regen_slugs(regen_state)
+    completed_slugs = completed_regen_slugs(
+        regen_state, all_laws, kehtiv=args.kehtiv
+    )
+    if regen_state_path is not None:
+        save_regen_state(regen_state_path, regen_state)
 
     # Step 2: Check existing files
     print("\n[2/4] Checking existing files...")
@@ -2043,6 +2107,7 @@ def main():
                 slug=slug,
                 info=info,
                 status="failed",
+                kehtiv=args.kehtiv,
                 reason="XML fetch/parse failed",
             )
             continue
@@ -2076,6 +2141,7 @@ def main():
                 info=info,
                 status="stub",
                 output_paths=[out_path],
+                kehtiv=args.kehtiv,
                 reason="no structured paragraph nodes in source XML",
             )
             continue
@@ -2085,29 +2151,55 @@ def main():
 
         if title in MULTIPART_LAWS and osa_count > 1:
             # Generate separate files per osa
-            results = generate_multipart_law(
-                title, slug, root, abbreviation, rt_url=url, kehtiv=args.kehtiv
-            )
             output_paths: list[Path] = []
             subsection_count = 0
-            for filename, doc in results:
-                out_path = KRR_DIR / filename
-                output_paths.append(out_path)
-                subsection_count += _subsection_count(doc)
-                # Issue #165 fix 3 + #108: respect the run mode and refresh
-                # stale osa snapshots in missing-only (the multipart branch
-                # used to hard-code ``if not exists``).
-                status = write_law_output(
-                    out_path,
-                    doc,
-                    mode=mode,
-                    expected_kehtiv=args.kehtiv,
-                    expected_tid=info.get("tid"),
+            try:
+                results = generate_multipart_law(
+                    title, slug, root, abbreviation, rt_url=url, kehtiv=args.kehtiv
                 )
-                run_counts[status] += 1
-                if status != "existingSkipped":
-                    generated += 1
-                print(f"    Saved: {filename} ({len(doc['@graph'])} nodes, {status})")
+                for filename, doc in results:
+                    out_path = KRR_DIR / filename
+                    output_paths.append(out_path)
+                    subsection_count += _subsection_count(doc)
+                    # Issue #165 fix 3 + #108: respect the run mode and refresh
+                    # stale osa snapshots in missing-only (the multipart branch
+                    # used to hard-code ``if not exists``).
+                    status = write_law_output(
+                        out_path,
+                        doc,
+                        mode=mode,
+                        expected_kehtiv=args.kehtiv,
+                        expected_tid=info.get("tid"),
+                    )
+                    run_counts[status] += 1
+                    if status != "existingSkipped":
+                        generated += 1
+                    print(
+                        f"    Saved: {filename} ({len(doc['@graph'])} nodes, {status})"
+                    )
+            except Exception as exc:  # noqa: BLE001
+                failed += 1
+                reason = f"multipart generation failed: {exc}"
+                act_status[title] = ("failed", reason)
+                record_regen_state(
+                    regen_state_path,
+                    regen_state,
+                    title=title,
+                    slug=slug,
+                    info=info,
+                    status="failed",
+                    output_paths=output_paths,
+                    subsection_count=subsection_count,
+                    kehtiv=args.kehtiv,
+                    reason=reason,
+                )
+                print(f"    FAIL: {reason}")
+                continue
+            warnings = []
+            if subsection_count == 0 and any(
+                ln(el.tag) == "loige" for el in root.iter()
+            ):
+                warnings.append("source XML has loige elements but emitted no Subsection nodes")
             act_status[title] = ("full", None)
             record_regen_state(
                 regen_state_path,
@@ -2118,6 +2210,8 @@ def main():
                 status="full",
                 output_paths=output_paths,
                 subsection_count=subsection_count,
+                kehtiv=args.kehtiv,
+                warnings=warnings,
             )
         else:
             # Single file
@@ -2139,6 +2233,12 @@ def main():
             node_count = len(doc["@graph"])
             print(f"    Saved: {filename} ({node_count} nodes, {par_count} paragraphs, {status})")
             act_status[title] = ("full", None)
+            subsection_count = _subsection_count(doc)
+            warnings = []
+            if subsection_count == 0 and any(
+                ln(el.tag) == "loige" for el in root.iter()
+            ):
+                warnings.append("source XML has loige elements but emitted no Subsection nodes")
             record_regen_state(
                 regen_state_path,
                 regen_state,
@@ -2147,7 +2247,9 @@ def main():
                 info=info,
                 status="full",
                 output_paths=[out_path],
-                subsection_count=_subsection_count(doc),
+                subsection_count=subsection_count,
+                kehtiv=args.kehtiv,
+                warnings=warnings,
             )
 
         # Rate limit - be polite to Riigi Teataja

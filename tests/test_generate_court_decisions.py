@@ -447,6 +447,15 @@ class TestExtractDecisionText:
         )
         assert gcd.extract_decision_text(garbled) is None
 
+    def test_realistic_mojibake_markers_return_none(self) -> None:
+        garbled = (
+            '<html><head><meta name="description" content="LahendiDokument">'
+            '</head><body><div data-faili-objekt-id="1"></div><p>'
+            + ("PÃµhiseaduse Â§ 12 alusel lahendatud kohtuasja tekst. " * 4)
+            + "</p></body></html>"
+        )
+        assert gcd.extract_decision_text(garbled) is None
+
     def test_normal_decision_text_quality_ratio_passes(self) -> None:
         text = gcd.extract_decision_text(_MODERN_DETAIL_HTML)
         assert text is not None
@@ -475,7 +484,7 @@ class TestFetchDecisionTextCache:
         """A fresh cache entry must short-circuit the HTTP request entirely."""
         case_nr = "5-25-80/23"
         _isolated_court_cache.mkdir(parents=True, exist_ok=True)
-        cache_path = _isolated_court_cache / f"{gcd.sanitize_id(case_nr)}.txt"
+        cache_path = gcd._court_text_cache_path(case_nr)
         cache_path.write_text("CACHED FULL TEXT OF DECISION 5-25-80", encoding="utf-8")
 
         def _boom(*_a, **_k):  # pragma: no cover - must not be reached
@@ -490,9 +499,7 @@ class TestFetchDecisionTextCache:
     ) -> None:
         case_nr = "1-25-3086/25"
         _isolated_court_cache.mkdir(parents=True, exist_ok=True)
-        (_isolated_court_cache / f"{gcd.sanitize_id(case_nr)}.txt").write_text(
-            "x" * 100, encoding="utf-8"
-        )
+        gcd._court_text_cache_path(case_nr).write_text("x" * 100, encoding="utf-8")
         monkeypatch.setattr(
             gcd.requests, "get",
             lambda *_a, **_k: (_ for _ in ()).throw(AssertionError("no HTTP on cache hit")),
@@ -526,7 +533,7 @@ class TestFetchDecisionTextCache:
         # asjaNr must be query-string encoded into the detail URL.
         assert "asjaNr=2-24-401%2F36" in calls[0]
         # And the result must now be cached for the next run.
-        cache_path = _isolated_court_cache / f"{gcd.sanitize_id(case_nr)}.txt"
+        cache_path = gcd._court_text_cache_path(case_nr)
         assert cache_path.exists()
         assert "RIIGIKOHUS OTSUSTAB" in cache_path.read_text(encoding="utf-8")
 
@@ -536,6 +543,13 @@ class TestFetchDecisionTextCache:
             lambda *_a, **_k: (_ for _ in ()).throw(AssertionError("must hit cache")),
         )
         assert gcd.fetch_decision_text(case_nr) == text
+
+    def test_cache_filename_preserves_case_number_uniqueness(
+        self, _isolated_court_cache: Path
+    ) -> None:
+        case_numbers = ["5-25-80/23", "52-580/23", "5-25-8/023", "525-8/023"]
+        names = {gcd._court_text_cache_path(case_nr).name for case_nr in case_numbers}
+        assert len(names) == len(case_numbers)
 
     def test_search_form_response_not_cached_and_returns_none(
         self, _isolated_court_cache: Path, monkeypatch: pytest.MonkeyPatch
@@ -550,7 +564,7 @@ class TestFetchDecisionTextCache:
 
         monkeypatch.setattr(gcd.requests, "get", lambda *_a, **_k: _Resp())
         assert gcd.fetch_decision_text(case_nr) is None
-        cache_path = _isolated_court_cache / f"{gcd.sanitize_id(case_nr)}.txt"
+        cache_path = gcd._court_text_cache_path(case_nr)
         assert not cache_path.exists()
 
     def test_transient_failure_returns_none(

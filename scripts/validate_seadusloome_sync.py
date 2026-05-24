@@ -62,7 +62,7 @@ SHAPES_SUFFIXES: tuple[str, ...] = (".ttl", ".jsonld")
 # classifications, not followable enrichment links, so they are outside the
 # public graph-closure contract.
 GRAPH_CLOSURE_EXEMPT_PREDICATES: frozenset[str] = frozenset(
-    {"estleg:caseType", "estleg:decisionType"}
+    {"estleg:caseType", "estleg:decisionType", "estleg:euCourtDecisionType"}
 )
 
 
@@ -102,6 +102,10 @@ def _canonical_estleg_id(value: str) -> str | None:
 
 
 def _iter_graph_nodes(doc: object) -> Iterable[dict]:
+    if isinstance(doc, list):
+        for item in doc:
+            yield from _iter_graph_nodes(item)
+        return
     if not isinstance(doc, dict):
         return
     graph = doc.get("@graph")
@@ -109,6 +113,8 @@ def _iter_graph_nodes(doc: object) -> Iterable[dict]:
         for node in graph:
             if isinstance(node, dict):
                 yield node
+    elif isinstance(doc.get("@id"), str):
+        yield doc
 
 
 def _walk_jsonld_refs(value: object, predicate: str) -> Iterable[tuple[str, str]]:
@@ -120,7 +126,8 @@ def _walk_jsonld_refs(value: object, predicate: str) -> Iterable[tuple[str, str]
         for key, child in value.items():
             if key in {"@context", "@id"}:
                 continue
-            yield from _walk_jsonld_refs(child, key)
+            child_predicate = predicate if key in {"@list", "@set"} else key
+            yield from _walk_jsonld_refs(child, child_predicate)
     elif isinstance(value, list):
         for item in value:
             yield from _walk_jsonld_refs(item, predicate)
@@ -205,7 +212,7 @@ def _format_closure_summary(summary: dict) -> list[str]:
         key=lambda item: (-item[1], item[0]),
     ):
         sample_text = "; ".join(
-            f"{sample['target']} from {Path(sample['file']).name}"
+            f"{sample['target']} from {Path(sample['file']).name} ({sample['source']})"
             for sample in summary.get("samples", {}).get(predicate, [])
         )
         lines.append(f"  {predicate}: {count}" + (f" e.g. {sample_text}" if sample_text else ""))

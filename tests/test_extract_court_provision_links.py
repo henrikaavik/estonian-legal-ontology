@@ -981,7 +981,7 @@ def test_process_court_files_prefers_legal_text_over_summary(
                     "@id": "estleg:RK_FULL_TEXT_1",
                     "@type": ["owl:NamedIndividual", "estleg:CourtDecision"],
                     "estleg:summary": "Kokkuvõte mainib KarS § 121.",
-                    "estleg:legalText": "Täistekst lahendab asja KarS § 122 alusel.",
+                    "estleg:legalText": "Täistekst lahendab asja KarS § 121 ja KarS § 122 alusel.",
                 },
             ],
         }),
@@ -1003,9 +1003,12 @@ def test_process_court_files_prefers_legal_text_over_summary(
     )
     decision = doc["@graph"][0]
     assert decision["estleg:interpretsLaw"] == [
-        {"@id": "estleg:Karistusseadustik_Par_122"}
+        {"@id": "estleg:Karistusseadustik_Par_121"},
+        {"@id": "estleg:Karistusseadustik_Par_122"},
     ]
     stats = result.per_file_stats[0]
     assert stats["decisions_with_full_text"] == 1
-    assert stats["legalText_citations_found"] == 1
+    assert stats["legalText_citations_found"] == 2
     assert stats["summary_fallback_citations_found"] == 0
+    assert stats["summary_baseline_citations_resolved"] == 1
+    assert stats["full_text_recall_lift"] == 1

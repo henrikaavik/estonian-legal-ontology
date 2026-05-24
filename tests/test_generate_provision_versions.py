@@ -347,6 +347,15 @@ def test_select_law_slugs_limit_and_explicit(tmp_path: Path):
     assert select_law_slugs(explicit=["gamma_seadus", "puudub_seadus"], limit=None, krr_dir=krr) == ["gamma_seadus"]
 
 
+def test_max_redactions_default_distinguishes_all_mode():
+    assert gpv.effective_max_redactions(gpv._parse_args([])) == gpv.DEFAULT_MAX_REDACTIONS
+    assert gpv.effective_max_redactions(gpv._parse_args(["--all"])) == 0
+    assert (
+        gpv.effective_max_redactions(gpv._parse_args(["--all", "--max-redactions", "12"]))
+        == 12
+    )
+
+
 # ---------------------------------------------------------------------------
 # Sidecar writing
 # ---------------------------------------------------------------------------

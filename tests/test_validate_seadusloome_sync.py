@@ -282,6 +282,61 @@ def test_graph_closure_passes_when_target_is_loaded_from_sidecar(tmp_path, capsy
     assert "Graph closure: PASS" in output
 
 
+def test_graph_closure_indexes_top_level_jsonld_nodes(tmp_path):
+    single = tmp_path / "single.jsonld"
+    single.write_text(
+        json.dumps(
+            {
+                "@context": CONTEXT,
+                "@id": "estleg:Single_Target",
+                "@type": ["owl:NamedIndividual"],
+            }
+        ),
+        encoding="utf-8",
+    )
+    array = tmp_path / "array.jsonld"
+    array.write_text(
+        json.dumps(
+            [
+                {
+                    "@id": "estleg:Source_Node",
+                    "estleg:references": {"@id": "estleg:Single_Target"},
+                },
+                {"@id": "estleg:Array_Target"},
+            ]
+        ),
+        encoding="utf-8",
+    )
+
+    summary = validate_seadusloome_sync.validate_graph_closure([single, array])
+
+    assert summary["total"] == 0
+
+
+def test_graph_closure_preserves_outer_predicate_for_list_wrapped_refs(tmp_path):
+    path = tmp_path / "wrapped.jsonld"
+    path.write_text(
+        json.dumps(
+            {
+                "@context": CONTEXT,
+                "@graph": [
+                    {
+                        "@id": "estleg:Source_Node",
+                        "estleg:references": {
+                            "@list": [{"@id": "estleg:Missing_Target"}]
+                        },
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    summary = validate_seadusloome_sync.validate_graph_closure([path])
+
+    assert summary["by_predicate"] == {"estleg:references": 1}
+
+
 def test_grouped_summary_includes_focus_nodes(tmp_path, capsys):
     krr = tmp_path / "krr_outputs"
     _seed_seadusloome_subdirs(krr)

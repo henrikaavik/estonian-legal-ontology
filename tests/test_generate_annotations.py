@@ -520,3 +520,56 @@ def test_pdf_text_layer_probe_reports_ocr_recommendation():
     assert report["usable_text_layer_count"] == 1
     assert report["usable_text_layer_ratio"] == 0.5
     assert report["recommendation"] == "evaluate_ocr_before_full_ingestion"
+
+
+def test_pdf_text_layer_probe_skips_non_pdf_urls():
+    opinions = [
+        ga.Opinion(
+            opinion_id="html",
+            title="HTML detail page",
+            url="https://www.oiguskantsler.ee/seisukohad/detail",
+            date_iso=None,
+            law_names=(),
+            summary="",
+        ),
+        ga.Opinion(
+            opinion_id="one",
+            title="PDF one",
+            url="https://www.oiguskantsler.ee/one.pdf",
+            date_iso=None,
+            law_names=(),
+            summary="",
+        ),
+        ga.Opinion(
+            opinion_id="two",
+            title="PDF two",
+            url="https://www.oiguskantsler.ee/two.pdf?download=1",
+            date_iso=None,
+            law_names=(),
+            summary="",
+        ),
+    ]
+    fetched: list[str] = []
+
+    def _fetcher(url, **_kwargs):  # noqa: ANN001
+        fetched.append(url)
+        return url.encode("utf-8")
+
+    def _extractor(_pdf_bytes):  # noqa: ANN001
+        return "Õiguskantsleri seisukoha tekst. " * 30, None
+
+    report = ga.probe_pdf_text_layers(
+        opinions,
+        sample_size=2,
+        fetcher=_fetcher,
+        extractor=_extractor,
+        cache_dir=None,
+        sleep=0,
+    )
+
+    assert report["sampled"] == 2
+    assert report["non_pdf_urls_skipped"] == 1
+    assert fetched == [
+        "https://www.oiguskantsler.ee/one.pdf",
+        "https://www.oiguskantsler.ee/two.pdf?download=1",
+    ]

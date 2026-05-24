@@ -330,10 +330,16 @@ class TestGeneratedDraftValueObjects:
                             "@value": "Riigi Teataja seaduse muutmise seadus",
                             "@language": "et",
                         },
-                        "estleg:initiator": {
-                            "@value": "Justiitsministeerium",
-                            "@language": "et",
-                        },
+                        "estleg:initiator": [
+                            {
+                                "@value": "Justiitsministeerium",
+                                "@language": "et",
+                            },
+                            {
+                                "@value": "Rahandusministeerium",
+                                "@language": "et",
+                            },
+                        ],
                         "estleg:affectedLawName": {
                             "@value": "Riigi Teataja seaduse",
                             "@language": "et",
@@ -356,4 +362,7 @@ class TestGeneratedDraftValueObjects:
         assert draft["estleg:amendsLaw"] == {"@id": "estleg:RTS_Map_2026"}
 
         report = json.loads((krr / "draft_impact_report.json").read_text(encoding="utf-8"))
-        assert report["pending_changes_by_ministry"] == {"Justiitsministeerium": 1}
+        assert report["pending_changes_by_ministry"] == {
+            "Justiitsministeerium": 1,
+            "Rahandusministeerium": 1,
+        }

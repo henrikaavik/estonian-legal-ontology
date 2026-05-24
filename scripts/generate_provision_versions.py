@@ -769,10 +769,10 @@ def _parse_args(argv: list[str] | None) -> argparse.Namespace:
     parser.add_argument(
         "--max-redactions",
         type=int,
-        default=DEFAULT_MAX_REDACTIONS,
+        default=None,
         metavar="N",
         help=f"Cap each law to its N most-recent redactions (default {DEFAULT_MAX_REDACTIONS}; "
-             "0 = unbounded / full history — that is the multi-hour follow-up run).",
+             "--all defaults to unbounded; 0 = unbounded / full history).",
     )
     parser.add_argument(
         "--today",
@@ -795,11 +795,19 @@ def _parse_args(argv: list[str] | None) -> argparse.Namespace:
     return parser.parse_args(argv)
 
 
+def effective_max_redactions(args: argparse.Namespace) -> int:
+    """Return the redaction cap implied by CLI flags."""
+    if args.max_redactions is not None:
+        return args.max_redactions
+    return 0 if args.all else DEFAULT_MAX_REDACTIONS
+
+
 def main(argv: list[str] | None = None) -> int:
     args = _parse_args(argv)
     start_perf = time.perf_counter()
     today = args.today or date.today().isoformat()
     fetch_sleep = 0.0 if args.no_sleep else FETCH_SLEEP_SECONDS
+    max_redactions = effective_max_redactions(args)
     # Resolve the module-level path globals at call time so a test (or a caller)
     # that monkeypatches them is honoured everywhere downstream.
     krr_dir = KRR_DIR
@@ -822,7 +830,7 @@ def main(argv: list[str] | None = None) -> int:
 
     print("=" * 70)
     print(f"Provision version ingestion — {len(slugs)} law(s), "
-          f"max-redactions={args.max_redactions or 'unbounded'}, today={today}")
+          f"max-redactions={max_redactions or 'unbounded'}, today={today}")
     print("Selected:", ", ".join(slugs))
     print("=" * 70)
 
@@ -838,7 +846,7 @@ def main(argv: list[str] | None = None) -> int:
             ))
             continue
         result = process_law(
-            target, today=today, max_redactions=args.max_redactions,
+            target, today=today, max_redactions=max_redactions,
             out_dir=versions_dir, fetch_sleep=fetch_sleep,
         )
         results.append(result)

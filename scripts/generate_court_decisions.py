@@ -34,6 +34,7 @@ given run keep their existing shape — ``estleg:legalText`` is optional.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import html as html_mod
 import json
 import logging
@@ -669,6 +670,7 @@ _INLINE_WS_RE = re.compile(r"[ \t\r\f\v ]+")
 _MULTI_WS_RE = re.compile(r"\s+")
 _VISIBLE_WS_RE = re.compile(r"\s+")
 _ESTONIAN_TEXT_CHAR_RE = re.compile(r"[0-9A-Za-zÕÄÖÜõäöüŠŽšž]")
+_MOJIBAKE_MARKER_RE = re.compile(r"(?:Ã.|Â.|â€|�)")
 
 
 def _looks_like_decision_document(html_text: str) -> bool:
@@ -714,6 +716,8 @@ def extract_decision_text(html_text: str) -> str | None:
     plain = _MULTI_WS_RE.sub(" ", plain).strip()
     if len(plain) < MIN_DECISION_TEXT_LEN:
         return None
+    if _MOJIBAKE_MARKER_RE.search(plain):
+        return None
     if decision_text_quality_ratio(plain) < MIN_DECISION_TEXT_VALID_CHAR_RATIO:
         return None
     return plain
@@ -741,7 +745,8 @@ def _detail_url(case_nr: str) -> str:
 
 def _court_text_cache_path(case_nr: str) -> Path:
     """On-disk cache path for ``case_nr``'s fetched full text."""
-    return COURT_TEXT_CACHE_DIR / f"{sanitize_id(case_nr)}.txt"
+    digest = hashlib.sha1(case_nr.encode("utf-8")).hexdigest()[:10]
+    return COURT_TEXT_CACHE_DIR / f"{sanitize_id(case_nr)}_{digest}.txt"
 
 
 def _court_text_cache_is_fresh(

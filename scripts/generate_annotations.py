@@ -130,6 +130,11 @@ _BARE_NS = {"estleg:", "https://data.riik.ee/ontology/estleg#"}
 _MAP_IRI_RE = re.compile(r"^estleg:[^\s]+_Map(?:_\d{4})?$")
 
 
+def _looks_like_pdf_url(url: str) -> bool:
+    """Return whether ``url`` points directly at a PDF resource."""
+    return url.split("?", 1)[0].lower().endswith(".pdf")
+
+
 # ---------------------------------------------------------------------------
 # Data structures
 # ---------------------------------------------------------------------------
@@ -585,7 +590,7 @@ def extract_pdf_text_layer(pdf_bytes: bytes) -> tuple[str | None, str | None]:
     try:
         from pdfminer.high_level import extract_text  # type: ignore[import-not-found]
     except ImportError:
-        return None, "pdfminer.six not installed"
+        return None, 'pdfminer.six not installed; run pip install -e ".[pdf]"'
     try:
         text = extract_text(BytesIO(pdf_bytes)) or ""
     except Exception as exc:  # noqa: BLE001
@@ -604,10 +609,14 @@ def probe_pdf_text_layers(
 ) -> dict:
     """Probe whether sampled Õiguskantsler PDFs have extractable text layers."""
     rows: list[dict] = []
+    skipped_non_pdf = 0
     for op in opinions:
         if len(rows) >= sample_size:
             break
         if not op.url:
+            continue
+        if not _looks_like_pdf_url(op.url):
+            skipped_non_pdf += 1
             continue
         row = {
             "opinion_id": op.opinion_id,
@@ -645,6 +654,7 @@ def probe_pdf_text_layers(
     return {
         "sample_size_requested": sample_size,
         "sampled": sampled,
+        "non_pdf_urls_skipped": skipped_non_pdf,
         "usable_text_layer_count": usable_count,
         "usable_text_layer_ratio": round(usable_ratio, 3),
         "acceptance_ratio": PDF_TEXT_LAYER_ACCEPTANCE_RATIO,
