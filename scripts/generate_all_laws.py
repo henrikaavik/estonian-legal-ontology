@@ -38,6 +38,7 @@ GENERATION_MODES = ("missing-only", "refresh", "force")
 MANIFEST_NAME = "generation_manifest_laws.json"
 DEFAULT_REGEN_STATE_NAME = ".regen_state.json"
 REGEN_STATE_SCHEMA_VERSION = 1
+DEFAULT_REGEN_STATE_SENTINEL = "__default_regen_state__"
 
 CONTEXT = {
     "estleg": NS,
@@ -1762,13 +1763,21 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--regen-state",
         nargs="?",
-        const=str(KRR_DIR / DEFAULT_REGEN_STATE_NAME),
+        const=DEFAULT_REGEN_STATE_SENTINEL,
         default=None,
         metavar="PATH",
         help=(
             "Persist per-law refresh progress to PATH. When PATH already "
             "exists, laws listed under completed are skipped so a long run "
             "can resume after interruption."
+        ),
+    )
+    parser.add_argument(
+        "--reset-regen-state",
+        action="store_true",
+        help=(
+            "Discard an existing --regen-state file before running. Requires "
+            "--regen-state so accidental state deletion is explicit."
         ),
     )
     return parser.parse_args()
@@ -1812,6 +1821,8 @@ def _manifest_entry(
 def _regen_state_path(value: str | Path | None) -> Path | None:
     if value is None:
         return None
+    if value == DEFAULT_REGEN_STATE_SENTINEL:
+        return KRR_DIR / DEFAULT_REGEN_STATE_NAME
     path = Path(value)
     return path if path.is_absolute() else REPO_ROOT / path
 
@@ -1853,15 +1864,67 @@ def load_regen_state(path: Path | None) -> dict:
 def completed_regen_slugs(
     state: dict, all_laws: dict[str, dict], *, kehtiv: str
 ) -> set[str]:
+    """Return completed slugs that are still compatible with the current run."""
     completed = state.get("completed")
     if not isinstance(completed, dict):
         return set()
     if state.get("schemaVersion") != REGEN_STATE_SCHEMA_VERSION:
+        return set()
+
+    current_by_slug = {
+        slugify(title): info for title, info in all_laws.items() if isinstance(title, str)
+    }
+    valid: set[str] = set()
+    for slug, entry in list(completed.items()):
+        if not isinstance(slug, str) or not isinstance(entry, dict):
+            continue
+        info = current_by_slug.get(slug)
+        if info is None:
+            continue
+        expected_tid = info.get("tid")
+        if entry.get("kehtiv") != kehtiv:
+            continue
+        if str(entry.get("terviktekstId") or "") != str(expected_tid or ""):
+            continue
+        valid.add(slug)
+    return valid
+
+
+def _append_dropped_completed(state: dict, entries: dict[str, str]) -> None:
+    if not entries:
+        return
+    record = {
+        "at": datetime.now(timezone.utc).isoformat(),
+        "entries": entries,
+    }
+    history = state.get("droppedCompleted")
+    if isinstance(history, list):
+        history.append(record)
+    elif isinstance(history, dict):
+        state["droppedCompleted"] = [history, record]
+    else:
+        state["droppedCompleted"] = [record]
+
+
+def prune_completed_regen_state(
+    state: dict, all_laws: dict[str, dict], *, kehtiv: str
+) -> set[str]:
+    """Drop stale completed entries from regen state and return valid slugs."""
+    completed = state.get("completed")
+    if not isinstance(completed, dict):
+        return set()
+    if state.get("schemaVersion") != REGEN_STATE_SCHEMA_VERSION:
+        stale = {
+            slug: "schemaVersion changed"
+            for slug in completed
+            if isinstance(slug, str)
+        }
         completed.clear()
         failed = state.get("failed")
         if isinstance(failed, dict):
             failed.clear()
         state["schemaVersion"] = REGEN_STATE_SCHEMA_VERSION
+        _append_dropped_completed(state, stale)
         return set()
 
     current_by_slug = {
@@ -1871,6 +1934,8 @@ def completed_regen_slugs(
     stale: dict[str, str] = {}
     for slug, entry in list(completed.items()):
         if not isinstance(slug, str) or not isinstance(entry, dict):
+            if isinstance(slug, str):
+                stale[slug] = "invalid completed entry"
             completed.pop(slug, None)
             continue
         info = current_by_slug.get(slug)
@@ -1889,10 +1954,7 @@ def completed_regen_slugs(
             continue
         valid.add(slug)
     if stale:
-        state["droppedCompleted"] = {
-            "at": datetime.now(timezone.utc).isoformat(),
-            "entries": stale,
-        }
+        _append_dropped_completed(state, stale)
     return valid
 
 
@@ -1972,6 +2034,15 @@ def main():
     args = parse_args()
     mode = "refresh" if args.refresh else "force" if args.force else "missing-only"
     regen_state_path = _regen_state_path(getattr(args, "regen_state", None))
+    if getattr(args, "reset_regen_state", False) and regen_state_path is None:
+        print("FATAL: --reset-regen-state requires --regen-state", file=sys.stderr)
+        sys.exit(2)
+    if getattr(args, "reset_regen_state", False) and regen_state_path is not None:
+        try:
+            regen_state_path.unlink()
+            print(f"Reset regen state: {regen_state_path}")
+        except FileNotFoundError:
+            pass
     regen_state = load_regen_state(regen_state_path)
     if regen_state_path is not None:
         regen_state.setdefault("startedAt", datetime.now(timezone.utc).isoformat())
@@ -2021,7 +2092,7 @@ def main():
         source_manifest["limited"] = True
         source_manifest["limit"] = args.limit
     print(f"  Found {len(all_laws)} unique law titles")
-    completed_slugs = completed_regen_slugs(
+    completed_slugs = prune_completed_regen_state(
         regen_state, all_laws, kehtiv=args.kehtiv
     )
     if regen_state_path is not None:
@@ -2164,6 +2235,25 @@ def main():
                 results = generate_multipart_law(
                     title, slug, root, abbreviation, rt_url=url, kehtiv=args.kehtiv
                 )
+            except Exception as exc:  # noqa: BLE001
+                failed += 1
+                reason = f"multipart generation failed: {exc}"
+                act_status[title] = ("failed", reason)
+                record_regen_state(
+                    regen_state_path,
+                    regen_state,
+                    title=title,
+                    slug=slug,
+                    info=info,
+                    status="failed",
+                    output_paths=output_paths,
+                    subsection_count=subsection_count,
+                    kehtiv=args.kehtiv,
+                    reason=reason,
+                )
+                print(f"    FAIL: {reason}")
+                continue
+            try:
                 for filename, doc in results:
                     out_path = KRR_DIR / filename
                     # Issue #165 fix 3 + #108: respect the run mode and refresh
@@ -2186,7 +2276,7 @@ def main():
                     )
             except Exception as exc:  # noqa: BLE001
                 failed += 1
-                reason = f"multipart generation failed: {exc}"
+                reason = f"multipart output write failed: {exc}"
                 act_status[title] = ("failed", reason)
                 record_regen_state(
                     regen_state_path,

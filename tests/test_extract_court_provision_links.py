@@ -1103,6 +1103,12 @@ def test_process_court_files_splits_mixed_full_text_and_summary_only(
                     "@type": ["owl:NamedIndividual", "estleg:CourtDecision"],
                     "estleg:summary": "Kokkuvõte tugineb KarS § 121 sättele.",
                 },
+                {
+                    "@id": "estleg:RK_WHITESPACE_SUMMARY",
+                    "@type": ["owl:NamedIndividual", "estleg:CourtDecision"],
+                    "estleg:summary": "   ",
+                    "estleg:legalText": "Täistekst tugineb KarS § 121 sättele.",
+                },
             ],
         }),
         encoding="utf-8",
@@ -1119,12 +1125,12 @@ def test_process_court_files_splits_mixed_full_text_and_summary_only(
     )
 
     stats = result.per_file_stats[0]
-    assert stats["decisions_scanned"] == 2
-    assert stats["decisions_with_full_text"] == 1
-    assert stats["decisions_with_citations"] == 2
-    assert stats["legalText_citations_found"] == 2
+    assert stats["decisions_scanned"] == 3
+    assert stats["decisions_with_full_text"] == 2
+    assert stats["decisions_with_citations"] == 3
+    assert stats["legalText_citations_found"] == 3
     assert stats["summary_fallback_citations_found"] == 1
     assert stats["decisions_with_summary_baseline"] == 2
     assert stats["summary_baseline_citations_resolved"] == 2
-    assert stats["state_citations_resolved"] == 3
-    assert stats["full_text_recall_lift"] == 1
+    assert stats["state_citations_resolved"] == 4
+    assert stats["full_text_recall_lift"] == 2

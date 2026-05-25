@@ -25,7 +25,7 @@ Current delivery status:
   PR #222 follow-up commit `26960fb40`.
 - Phase 2.8 and 2.9 remain deferred until the first live PDF probe yields real
   distribution data; tracked in #227.
-- Remaining follow-ups are tracked in #225, #226, #227, and #228.
+- Remaining follow-up before Phase 3.4 is tracked in #227.
 
 Baseline validation as of PR #222 follow-up commit `26960fb40`:
 
@@ -197,8 +197,8 @@ Delivered behavior:
 
 ### 2.3 Missing tests for regen-state edge cases (O11)
 
-**Status:** Delivered in PR #222. Follow-up #228 tracks lower-risk code-hygiene
-and test-depth improvements from the PR #222 review.
+**Status:** Delivered in PR #222. Lower-risk code-hygiene and test-depth
+follow-ups delivered in PR #231 (#228).
 
 Add to `tests/test_generate_all_laws.py`:
 
@@ -289,8 +289,7 @@ observed values.
 
 ### 2.10 Other latent items
 
-**Status:** Partially delivered in PR #222; remaining items tracked in #225 and
-#228.
+**Status:** Delivered across PR #222 and PR #231 (#225/#228).
 
 - **O5 — delivered in PR #222.** `jsonld_text()` and `jsonld_texts()` now
   accept `prefer_language`, and draft-impact title, affected-law, and initiator
@@ -303,22 +302,21 @@ observed values.
 - **O9 — delivered in PR #222.** `docs/SCHEMA_REFERENCE.md` now separates the
   ProvisionVersion sidecar JSON example from the stable provision JSON example
   with lead-in prose.
-- **N3 — tracked in #225.** Split `completed_regen_slugs` into
-  `prune_completed(state)` getter + mutator pair (currently a getter with
-  side-effects).
-- **N8 — tracked in #225.** Append to `state["droppedCompleted"]` instead of
-  overwriting, if forensic value matters.
-- **O6 — tracked in #225.** Lazy-resolve the `--regen-state` argparse `const`
-  inside `main()` for relocated installs (currently frozen at import time using
-  `KRR_DIR`).
-- **O7 — tracked in #225.** Add `--reset-regen-state` CLI flag.
-- **O10 — tracked in #225.** Derive `GRAPH_CLOSURE_EXEMPT_PREDICATES` from
-  SHACL `sh:in` / `sh:hasValue` shapes so the closure check stays in sync when
-  new controlled-vocabulary predicates land.
-- **N1 follow-up — tracked in #225.** If court cache hash collisions are ever
-  observed, consider swapping the 10-hex-char SHA1 suffix for a
-  delimiter-preserving form (`case_nr.replace("/", "__SLASH__").replace("-",
-  "_")`) so `ls` output is grep-able.
+- **N3 — delivered in PR #231.** `completed_regen_slugs` is a pure getter;
+  `prune_completed_regen_state` performs the intentional mutation.
+- **N8 — delivered in PR #231.** `state["droppedCompleted"]` is append-only
+  history.
+- **O6 — delivered in PR #231.** Bare `--regen-state` resolves lazily against
+  the current `KRR_DIR` inside `main()`.
+- **O7 — delivered in PR #231.** `--reset-regen-state` intentionally discards
+  prior state and requires `--regen-state`.
+- **O10 — delivered in PR #231.** The Seadusloome graph-closure gate derives
+  exempt predicates from SHACL property shapes marked
+  `estleg:graphClosureExempt true`.
+- **N1 follow-up — retired in PR #231.** The cache filename shape introduced
+  in PR #221 already includes the original sanitized case id plus a 10-hex SHA1
+  suffix; no collision or parsing need has appeared. Revisit only if future
+  cache tooling needs delimiter-preserving filenames.
 
 ## Phase 3 — Live data ingestion jobs
 
@@ -513,16 +511,18 @@ deliberately."
   - #224 — Estonian citation-abbreviation-aware annotation truncation
     (delivered in PR #230)
   - #225 — Remaining Phase 2 latent cleanup items (O6, O7, O10, N1, N3, N8)
-  - #226 — Roadmap status update after Phase 2 (this document update)
+    (delivered in PR #231)
+  - #226 — Roadmap status update after Phase 2 (delivered in PR #231)
   - #227 — Annotation PDF probe sampling and quality threshold tuning
   - #228 — Lower-risk PR #222 code-hygiene/test-depth follow-ups
+    (delivered in PR #231)
 
 ## Summary Matrix
 
 | Phase | Items | Effort | Blocks |
 |---|---|---|---|
 | 1. Pre-merge | 1.1 tests, 1.2 cache cleanup, 1.3 warning, 1.4 doc table | Done (#220/#221) | Complete |
-| 2. Hardening | 2.1–2.7 + 2.10/O5/O8/O9 done; #223 delivered in PR #229; #224 delivered in PR #230; 2.8–2.9 deferred to #227; residuals in #225/#228 | Mostly done (#222/#229/#230) | Phase 3 live runs |
+| 2. Hardening | 2.1–2.7 + 2.10/O5/O8/O9 done; #223 delivered in PR #229; #224 delivered in PR #230; #225/#226/#228 delivered in PR #231; 2.8–2.9 deferred to #227 | Mostly done (#222/#229/#230/#231) | Phase 3 live runs |
 | 3. Live ingestion | #213, #207, #208, #210 (sequential, IRI-churn-ordered) | multi-day, network-bound | Phase 4 long-tail |
 | 4. Long-tail | #203 (conditional), final sync, process | ad-hoc | — |
 
@@ -542,9 +542,9 @@ deliberately."
   All except #203 and the deferred-data jobs (#207, #208, #210, #213) closed
   in `45a6bea59` groundwork.
 - **#223–#228** — Follow-up issues filed from PR #222 review. #223 is
-  delivered in PR #229 and #224 is delivered in PR #230; #225–#228 keep
-  remaining Phase 2 hardening, PDF probe decisions, code hygiene, and roadmap
-  maintenance visible before Phase 3 live ingestion.
+  delivered in PR #229, #224 in PR #230, and #225/#226/#228 in PR #231. #227
+  remains open for the live PDF probe sampling / threshold decision before
+  Phase 3.4.
 
 ### Acceptance gates that must pass at end of each phase
 

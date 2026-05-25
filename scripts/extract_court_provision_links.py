@@ -625,7 +625,7 @@ def process_court_files(
             if not citation_text:
                 continue
 
-            summary_text = jsonld_text(node.get("estleg:summary", ""))
+            summary_text = jsonld_text(node.get("estleg:summary", "")).strip()
             if summary_text:
                 stats["decisions_with_summary_baseline"] += 1
                 baseline_state, baseline_kov = extract_citations_from_text(summary_text)

@@ -282,6 +282,16 @@ def test_graph_closure_passes_when_target_is_loaded_from_sidecar(tmp_path, capsy
     assert "Graph closure: PASS" in output
 
 
+def test_graph_closure_exempt_predicates_are_loaded_from_shapes():
+    exempt = validate_seadusloome_sync.graph_closure_exempt_predicates()
+
+    assert {
+        "estleg:caseType",
+        "estleg:decisionType",
+        "estleg:euCourtDecisionType",
+    } <= exempt
+
+
 def test_graph_closure_indexes_top_level_jsonld_nodes(tmp_path):
     single = tmp_path / "single.jsonld"
     single.write_text(

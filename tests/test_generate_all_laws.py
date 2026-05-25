@@ -1318,6 +1318,7 @@ class _RerunArgs:
     allow_partial = False
     limit = None
     from_manifest = None
+    reset_regen_state = False
 
 
 class TestRerunNoOpAndStaleRefresh:
@@ -1587,9 +1588,67 @@ class TestRegenState:
         failed_entry = state["failed"][slug]
         assert failed_entry["status"] == "failed"
         assert failed_entry["outputPaths"] == [f"{slug}_osa1_peep.json"]
+        assert failed_entry["subsectionCount"] == 1
         assert "simulated second-part write failure" in failed_entry["reason"]
         assert slug not in state.get("completed", {})
         assert calls == [f"{slug}_osa1_peep.json", f"{slug}_osa2_peep.json"]
+
+    def test_multipart_generation_failure_records_no_partial_outputs(
+        self, tmp_path, monkeypatch
+    ):
+        title = "Multipart seadus"
+        slug = generate_all_laws.slugify(title)
+        krr = tmp_path / "krr_outputs"
+        krr.mkdir()
+        data_dir = tmp_path / "data" / "riigiteataja"
+        data_dir.mkdir(parents=True)
+        monkeypatch.setattr(generate_all_laws, "KRR_DIR", krr)
+        monkeypatch.setattr(generate_all_laws, "DATA_DIR", data_dir)
+        monkeypatch.setattr(generate_all_laws, "MULTIPART_LAWS", {title})
+        monkeypatch.setattr(
+            generate_all_laws.requests,
+            "get",
+            lambda *a, **kw: pytest.fail("no network expected"),
+        )
+        (data_dir / f"{slug}__tid1001.xml").write_text(
+            _padded_multipart_law_xml(),
+            encoding="utf-8",
+        )
+        monkeypatch.setattr(
+            generate_all_laws,
+            "get_all_laws",
+            lambda **kwargs: (
+                {title: {"gid": "2001", "tid": "1001", "url": f"/akt/{slug}.xml", "lyhend": "MULT"}},
+                {"complete": True},
+            ),
+        )
+        state_path = tmp_path / "regen_state.json"
+
+        class _Args(_RerunArgs):
+            refresh = True
+            missing_only = False
+            regen_state = str(state_path)
+
+        monkeypatch.setattr(
+            generate_all_laws,
+            "generate_multipart_law",
+            lambda *args, **kwargs: (_ for _ in ()).throw(
+                RuntimeError("simulated pre-write failure")
+            ),
+        )
+        monkeypatch.setattr(generate_all_laws, "parse_args", lambda: _Args())
+        generate_all_laws._used_prefixes.clear()
+
+        generate_all_laws.main()
+
+        state = json.loads(state_path.read_text(encoding="utf-8"))
+        failed_entry = state["failed"][slug]
+        assert failed_entry["status"] == "failed"
+        assert failed_entry["outputPaths"] == []
+        assert failed_entry["subsectionCount"] == 0
+        assert "multipart generation failed: simulated pre-write failure" in (
+            failed_entry["reason"]
+        )
 
     def test_schema_version_mismatch_triggers_full_reset(self):
         state = {
@@ -1598,12 +1657,40 @@ class TestRegenState:
             "failed": {"nurjunud_seadus": {"status": "failed"}},
         }
 
-        assert generate_all_laws.completed_regen_slugs(
+        assert generate_all_laws.prune_completed_regen_state(
             state, {"Vana seadus": {"tid": "1"}}, kehtiv="2026-05-01"
         ) == set()
         assert state["schemaVersion"] == generate_all_laws.REGEN_STATE_SCHEMA_VERSION
         assert state["completed"] == {}
         assert state["failed"] == {}
+        assert state["droppedCompleted"][-1]["entries"] == {
+            "vana_seadus": "schemaVersion changed"
+        }
+
+    def test_schema_version_mismatch_round_trips_through_disk(self, tmp_path):
+        state_path = tmp_path / "regen_state.json"
+        state_path.write_text(
+            json.dumps({
+                "schemaVersion": 0,
+                "completed": {"vana_seadus": {"status": "full"}},
+                "failed": {"nurjunud_seadus": {"status": "failed"}},
+            }),
+            encoding="utf-8",
+        )
+
+        state = generate_all_laws.load_regen_state(state_path)
+
+        assert generate_all_laws.prune_completed_regen_state(
+            state, {"Vana seadus": {"tid": "1"}}, kehtiv="2026-05-01"
+        ) == set()
+        generate_all_laws.save_regen_state(state_path, state)
+        saved = json.loads(state_path.read_text(encoding="utf-8"))
+        assert saved["schemaVersion"] == generate_all_laws.REGEN_STATE_SCHEMA_VERSION
+        assert saved["completed"] == {}
+        assert saved["failed"] == {}
+        assert saved["droppedCompleted"][-1]["entries"] == {
+            "vana_seadus": "schemaVersion changed"
+        }
 
     def test_zero_subsection_warning_appended(self, tmp_path, monkeypatch):
         title = "Hoiatus seadus"
@@ -1668,11 +1755,127 @@ class TestRegenState:
         assert generate_all_laws.completed_regen_slugs(
             state, all_laws, kehtiv="2027-01-01"
         ) == {current_slug}
+        assert set(state["completed"]) == {old_slug, stale_tid_slug, current_slug}
+
+        assert generate_all_laws.prune_completed_regen_state(
+            state, all_laws, kehtiv="2027-01-01"
+        ) == {current_slug}
         assert set(state["completed"]) == {current_slug}
-        assert state["droppedCompleted"]["entries"] == {
+        assert state["droppedCompleted"][-1]["entries"] == {
             old_slug: "kehtiv changed",
             stale_tid_slug: "terviktekstId changed",
         }
+
+    def test_dropped_completed_history_is_appended(self):
+        old_slug = generate_all_laws.slugify("Vana seadus")
+        stale_tid_slug = generate_all_laws.slugify("Uuenenud seadus")
+        state = {
+            "schemaVersion": generate_all_laws.REGEN_STATE_SCHEMA_VERSION,
+            "completed": {
+                old_slug: {
+                    "kehtiv": "2026-05-01",
+                    "terviktekstId": "111",
+                    "status": "full",
+                },
+                stale_tid_slug: {
+                    "kehtiv": "2027-01-01",
+                    "terviktekstId": "222",
+                    "status": "full",
+                },
+            },
+            "failed": {},
+            "droppedCompleted": [
+                {
+                    "at": "2026-05-24T00:00:00+00:00",
+                    "entries": {"eelmine": "kehtiv changed"},
+                }
+            ],
+        }
+
+        generate_all_laws.prune_completed_regen_state(
+            state,
+            {
+                "Vana seadus": {"tid": "111"},
+                "Uuenenud seadus": {"tid": "222-new"},
+            },
+            kehtiv="2027-01-01",
+        )
+
+        assert len(state["droppedCompleted"]) == 2
+        assert state["droppedCompleted"][0]["entries"] == {
+            "eelmine": "kehtiv changed"
+        }
+        assert state["droppedCompleted"][1]["entries"] == {
+            old_slug: "kehtiv changed",
+            stale_tid_slug: "terviktekstId changed",
+        }
+
+    def test_default_regen_state_path_resolves_after_krr_monkeypatch(
+        self, tmp_path, monkeypatch
+    ):
+        krr = tmp_path / "krr_outputs"
+        monkeypatch.setattr(generate_all_laws, "KRR_DIR", krr)
+
+        assert generate_all_laws._regen_state_path(
+            generate_all_laws.DEFAULT_REGEN_STATE_SENTINEL
+        ) == krr / generate_all_laws.DEFAULT_REGEN_STATE_NAME
+
+    def test_reset_regen_state_discards_prior_completed_entries(
+        self, tmp_path, monkeypatch
+    ):
+        title = "Esimene seadus"
+        slug = generate_all_laws.slugify(title)
+        krr = TestRerunNoOpAndStaleRefresh()._wire(
+            tmp_path,
+            monkeypatch,
+            titles_to_xml={title: _padded_law_xml(paragraphs=[1])},
+        )
+        state_path = tmp_path / "regen_state.json"
+        state_path.write_text(
+            json.dumps({
+                "schemaVersion": generate_all_laws.REGEN_STATE_SCHEMA_VERSION,
+                "completed": {
+                    slug: {
+                        "kehtiv": generate_all_laws.DEFAULT_KEHTIV,
+                        "terviktekstId": "1001",
+                        "status": "full",
+                    }
+                },
+                "failed": {},
+            }),
+            encoding="utf-8",
+        )
+
+        class _Args(_RerunArgs):
+            refresh = True
+            missing_only = False
+            regen_state = str(state_path)
+            reset_regen_state = True
+
+        monkeypatch.setattr(generate_all_laws, "parse_args", lambda: _Args())
+        generate_all_laws._used_prefixes.clear()
+
+        generate_all_laws.main()
+
+        state = json.loads(state_path.read_text(encoding="utf-8"))
+        assert set(state["completed"]) == {slug}
+        assert state["completed"][slug]["subsectionCount"] == 1
+        manifest = json.loads(
+            (krr / "generation_manifest_laws.json").read_text("utf-8")
+        )
+        assert manifest["run"]["resumedCompleted"] == 0
+
+    def test_reset_regen_state_requires_regen_state(self, monkeypatch):
+        class _Args(_RerunArgs):
+            regen_state = None
+            reset_regen_state = True
+
+        monkeypatch.setattr(generate_all_laws, "parse_args", lambda: _Args())
+
+        with pytest.raises(SystemExit) as excinfo:
+            generate_all_laws.main()
+
+        assert excinfo.value.code == 2
 
 
 class TestActStatusInManifest:
