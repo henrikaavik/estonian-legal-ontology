@@ -478,6 +478,20 @@ def _isolated_court_cache(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Pa
 
 
 class TestFetchDecisionTextCache:
+    def test_legacy_cache_files_are_purged(self, tmp_path: Path) -> None:
+        cache_dir = tmp_path / "court_decisions"
+        cache_dir.mkdir()
+        legacy_plain = cache_dir / "321217652.txt"
+        legacy_underscored = cache_dir / "3_21_2176_52.txt"
+        current = cache_dir / "321217652_0123456789.txt"
+        for path in (legacy_plain, legacy_underscored, current):
+            path.write_text("cached", encoding="utf-8")
+
+        assert gcd._migrate_legacy_cache(cache_dir) == 2
+        assert not legacy_plain.exists()
+        assert not legacy_underscored.exists()
+        assert current.exists()
+
     def test_cache_hit_does_not_call_requests_get(
         self, _isolated_court_cache: Path, monkeypatch: pytest.MonkeyPatch
     ) -> None:

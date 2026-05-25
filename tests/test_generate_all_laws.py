@@ -1435,6 +1435,22 @@ class TestRerunNoOpAndStaleRefresh:
 class TestRegenState:
     """#213: long subsection-regeneration runs can resume per law."""
 
+    def test_corrupt_regen_state_warns_and_resets(self, tmp_path, capsys):
+        state_path = tmp_path / "regen_state.json"
+        state_path.write_bytes(b"{not json")
+
+        state = generate_all_laws.load_regen_state(state_path)
+
+        captured = capsys.readouterr()
+        assert f"WARNING: regen state {state_path} unreadable; starting fresh" in (
+            captured.err
+        )
+        assert state == {
+            "schemaVersion": generate_all_laws.REGEN_STATE_SCHEMA_VERSION,
+            "completed": {},
+            "failed": {},
+        }
+
     def test_completed_laws_are_recorded_and_skipped_on_resume(
         self, tmp_path, monkeypatch
     ):
