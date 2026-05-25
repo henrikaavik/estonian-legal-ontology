@@ -332,6 +332,10 @@ class TestGeneratedDraftValueObjects:
                         },
                         "estleg:initiator": [
                             {
+                                "@value": "Ministry of Justice",
+                                "@language": "en",
+                            },
+                            {
                                 "@value": "Justiitsministeerium",
                                 "@language": "et",
                             },
@@ -340,10 +344,16 @@ class TestGeneratedDraftValueObjects:
                                 "@language": "et",
                             },
                         ],
-                        "estleg:affectedLawName": {
-                            "@value": "Riigi Teataja seaduse",
-                            "@language": "et",
-                        },
+                        "estleg:affectedLawName": [
+                            {
+                                "@value": "State Gazette Act",
+                                "@language": "en",
+                            },
+                            {
+                                "@value": "Riigi Teataja seaduse",
+                                "@language": "et",
+                            },
+                        ],
                     }
                 ],
             }),
@@ -366,3 +376,4 @@ class TestGeneratedDraftValueObjects:
             "Justiitsministeerium": 1,
             "Rahandusministeerium": 1,
         }
+        assert report["summary"]["affected_law_names_unresolved"] == 0

@@ -73,7 +73,8 @@ phase order is preserved exactly.
 `court_provision_links_report.json` includes both raw recall lift and its
 comparable denominator: use
 `full_text_recall_lift / decisions_with_summary_baseline` when comparing runs,
-so decisions without summaries do not skew the per-decision lift.
+so decisions without summaries do not skew the per-decision lift. If
+`decisions_with_summary_baseline` is zero, report the ratio as not applicable.
 
 ASCII view of the dependency edges (everything not shown is a no-dependency
 root that the topo sort places in source order; step 15 fans in from all

@@ -237,23 +237,23 @@ estleg:LegalProvisionShape
         sh:description "EU or international legislation this provision is harmonised with" ;
     ] ;
     # --- versioned legal-text model (issue #131) ---
-    # Both optional: the corpus is currently "current snapshot only" and
-    # carries no estleg:ProvisionVersion nodes yet. When a provision's
-    # text history is populated, estleg:hasVersion lists every redaction
-    # version and estleg:currentVersion points at the latest one.
+    # Both optional on law peeps: ProvisionVersion nodes are emitted into
+    # sidecar files, and consumers can query them through estleg:versionOf.
+    # Back-links on the stable provision node may be populated later when
+    # sidecar loading is part of the consumer graph.
     sh:property [
         sh:path estleg:hasVersion ;
         sh:minCount 0 ;
         sh:nodeKind sh:IRI ;
         sh:name "hasVersion" ;
-        sh:description "Optional — estleg:ProvisionVersion nodes in this provision's text history (one per Riigi Teataja redaction). Population is future work (#131 follow-up)." ;
+        sh:description "Optional inverse links to estleg:ProvisionVersion nodes in this provision's text history. Sidecar version nodes always link back with estleg:versionOf; these back-links may be absent from law peeps." ;
     ] ;
     sh:property [
         sh:path estleg:currentVersion ;
         sh:minCount 0 ;
         sh:nodeKind sh:IRI ;
         sh:name "currentVersion" ;
-        sh:description "Optional — the latest estleg:ProvisionVersion in this provision's text history. Population is future work (#131 follow-up)." ;
+        sh:description "Optional convenience pointer to the latest estleg:ProvisionVersion in this provision's text history. May be absent when version nodes live only in sidecars." ;
     ] ;
     # --- subsection (lõige) model (issue #132) ---
     # Optional: a provision with no lõiked carries no estleg:hasSubsection
