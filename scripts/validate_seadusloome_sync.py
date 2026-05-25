@@ -32,6 +32,7 @@ import argparse
 import json
 import sys
 from collections import Counter, defaultdict
+from functools import lru_cache
 from pathlib import Path
 from typing import Iterable
 
@@ -57,13 +58,7 @@ JSONLD_SUFFIXES: tuple[str, ...] = (".json", ".jsonld")
 # Shapes graph file extensions.
 SHAPES_SUFFIXES: tuple[str, ...] = (".ttl", ".jsonld")
 
-# These properties are encoded as compact IRI-like controlled values, but the
-# values are not independently loadable graph nodes today. They are enum-ish
-# classifications, not followable enrichment links, so they are outside the
-# public graph-closure contract.
-GRAPH_CLOSURE_EXEMPT_PREDICATES: frozenset[str] = frozenset(
-    {"estleg:caseType", "estleg:decisionType", "estleg:euCourtDecisionType"}
-)
+SHACL_NS = "http://www.w3.org/ns/shacl#"
 
 
 def collect_inputs(krr_dir: Path) -> tuple[list[Path], list[str], list[str]]:
@@ -99,6 +94,34 @@ def _canonical_estleg_id(value: str) -> str | None:
     if value.startswith(NS):
         return "estleg:" + value[len(NS):]
     return None
+
+
+@lru_cache(maxsize=4)
+def graph_closure_exempt_predicates(
+    shapes_dir: Path = DEFAULT_SHAPES,
+) -> frozenset[str]:
+    """Return graph-closure exemptions marked in SHACL property shapes."""
+    import rdflib
+
+    graph = rdflib.Graph()
+    for path in sorted(shapes_dir.iterdir()):
+        if path.suffix not in SHAPES_SUFFIXES:
+            continue
+        graph.parse(str(path))
+
+    marker = rdflib.URIRef(NS + "graphClosureExempt")
+    sh_path = rdflib.URIRef(SHACL_NS + "path")
+    exempt: set[str] = set()
+    for shape, _, value in graph.triples((None, marker, None)):
+        if str(value).lower() not in {"true", "1"}:
+            continue
+        predicate = graph.value(shape, sh_path)
+        if not isinstance(predicate, rdflib.URIRef):
+            continue
+        predicate_text = str(predicate)
+        if predicate_text.startswith(NS):
+            exempt.add("estleg:" + predicate_text[len(NS) :])
+    return frozenset(exempt)
 
 
 def _iter_graph_nodes(doc: object) -> Iterable[dict]:
@@ -161,6 +184,7 @@ def validate_graph_closure(paths: Iterable[Path]) -> dict:
 
     by_predicate: Counter[str] = Counter()
     samples: dict[str, list[dict[str, str]]] = defaultdict(list)
+    exempt_predicates = graph_closure_exempt_predicates()
 
     for path, doc in docs:
         for node in _iter_graph_nodes(doc):
@@ -169,7 +193,7 @@ def validate_graph_closure(paths: Iterable[Path]) -> dict:
                 if key in {"@context", "@id"}:
                     continue
                 for predicate, ref in _walk_jsonld_refs(value, key):
-                    if predicate in GRAPH_CLOSURE_EXEMPT_PREDICATES:
+                    if predicate in exempt_predicates:
                         continue
                     canonical = _canonical_estleg_id(ref)
                     if canonical is None or canonical in defined_ids:
