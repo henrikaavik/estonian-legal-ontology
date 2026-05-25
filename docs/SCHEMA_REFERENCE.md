@@ -768,6 +768,19 @@ ingestion mode. It writes sidecars under `krr_outputs/provision_versions/`,
 coverage metrics under `krr_outputs/reports/kov/`, and per-law progress rows in
 `krr_outputs/reports/provision_versions_report.json`.
 
+Full ingestion resumes by default from `provision_versions_report.json`. A law
+is skipped only when the prior row uses the supported report schema, emitted at
+least one version without errors or warnings, used a redaction cap that covers
+the current run, and still matches the current Riigi Teataja redaction id and
+valid-from date. `--max-redactions 0` means unbounded history, so rows from a
+sample run do not satisfy a full-history run. Reports written before
+`schemaVersion` was added are intentionally ignored once and the affected laws
+are reprocessed.
+
+Use `--no-resume` (or its compatibility alias `--force`) to bypass the prior
+report and process every selected law from scratch. Use `--no-sleep` only for
+warm-cache or controlled runs where the polite inter-fetch delay is not needed.
+
 ### Annotations (practitioner layer)
 
 **Status:** model defined (issue #40); **population is future work** — see issue #199.

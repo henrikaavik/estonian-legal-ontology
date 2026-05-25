@@ -89,6 +89,7 @@ LAW_REPORT_NAME = "provision_versions_report.json"
 DEFAULT_LIMIT = 2
 DEFAULT_MAX_REDACTIONS = 12
 FETCH_SLEEP_SECONDS = 0.3
+LAW_REPORT_SCHEMA_VERSION = 1
 
 # A curated default selection of heavily-amended laws (slug form) used when neither
 # ``--law`` nor an explicit list is given; ``--limit N`` takes the first N that have a
@@ -533,6 +534,9 @@ class LawResult:
     provisions_versioned: int
     versions_emitted: int
     sidecar_path: str | None
+    max_redactions: int = 0
+    current_redaction_id: str | None = None
+    current_redaction_valid_from: str | None = None
     error: str | None = None
 
 
@@ -555,7 +559,8 @@ def process_law(
             slug=target.slug, title=target.title,
             redactions_total=0, redactions_fetched=0, redactions_failed=0,
             provisions_in_law=len(target.provisions), provisions_versioned=0,
-            versions_emitted=0, sidecar_path=None, error=f"redaction-list: {exc}",
+            versions_emitted=0, sidecar_path=None, max_redactions=max_redactions,
+            error=f"redaction-list: {exc}",
         )
     redactions_total = len(chain)
     if not chain:
@@ -564,8 +569,10 @@ def process_law(
             slug=target.slug, title=target.title,
             redactions_total=0, redactions_fetched=0, redactions_failed=0,
             provisions_in_law=len(target.provisions), provisions_versioned=0,
-            versions_emitted=0, sidecar_path=None, error="no redactions",
+            versions_emitted=0, sidecar_path=None, max_redactions=max_redactions,
+            error="no redactions",
         )
+    current_redaction = chain[-1]
     if max_redactions and max_redactions > 0 and len(chain) > max_redactions:
         chain = chain[-max_redactions:]
         print(f"  capping to {len(chain)} most-recent redactions of {redactions_total} "
@@ -594,7 +601,10 @@ def process_law(
             slug=target.slug, title=target.title,
             redactions_total=redactions_total, redactions_fetched=0, redactions_failed=failed,
             provisions_in_law=len(target.provisions), provisions_versioned=0,
-            versions_emitted=0, sidecar_path=None, error="all fetches failed",
+            versions_emitted=0, sidecar_path=None, max_redactions=max_redactions,
+            current_redaction_id=current_redaction.global_id,
+            current_redaction_valid_from=current_redaction.valid_from,
+            error="all fetches failed",
         )
 
     version_nodes = synthesise_versions(target, redaction_texts)
@@ -609,6 +619,9 @@ def process_law(
             redactions_total=redactions_total, redactions_fetched=len(redaction_texts),
             redactions_failed=failed, provisions_in_law=len(target.provisions),
             provisions_versioned=0, versions_emitted=0, sidecar_path=None,
+            max_redactions=max_redactions,
+            current_redaction_id=current_redaction.global_id,
+            current_redaction_valid_from=current_redaction.valid_from,
         )
     out_path = write_sidecar(target, version_nodes, out_dir=out_dir)
     print(f"  wrote {len(version_nodes)} ProvisionVersion nodes across "
@@ -618,7 +631,9 @@ def process_law(
         redactions_total=redactions_total, redactions_fetched=len(redaction_texts),
         redactions_failed=failed, provisions_in_law=len(target.provisions),
         provisions_versioned=versioned_provisions, versions_emitted=len(version_nodes),
-        sidecar_path=_rel(out_path),
+        sidecar_path=_rel(out_path), max_redactions=max_redactions,
+        current_redaction_id=current_redaction.global_id,
+        current_redaction_valid_from=current_redaction.valid_from,
     )
 
 
@@ -643,7 +658,6 @@ def select_law_slugs(
     limit: int | None,
     all_laws: bool = False,
     krr_dir: Path = KRR_DIR,
-    skip_completed: list[str] | None = None,
 ) -> list[str]:
     """Resolve the list of law slugs to process.
 
@@ -651,21 +665,12 @@ def select_law_slugs(
     * ``--all`` processes every on-disk law slug.
     * otherwise the curated :data:`DEFAULT_LAW_SLUGS`, then any remaining on-disk slugs,
       truncated to ``limit`` (``--limit``; ``0`` ⇒ none, ``None`` ⇒ default).
-    * ``skip_completed`` removes slugs already completed by an earlier resumable run.
     """
     on_disk = set(_all_law_slugs(krr_dir))
-    completed = set(skip_completed or [])
-
-    def _skip_done(slugs: list[str]) -> list[str]:
-        if not completed:
-            return slugs
-        return [slug for slug in slugs if slug not in completed]
-
     if explicit:
-        chosen = [s for s in explicit if s in on_disk or _peep_files_for_slug(s, krr_dir)]
-        return _skip_done(chosen)
+        return [s for s in explicit if s in on_disk or _peep_files_for_slug(s, krr_dir)]
     if all_laws:
-        return _skip_done(sorted(on_disk))
+        return sorted(on_disk)
     if limit is not None and limit <= 0:
         return []
     effective_limit = DEFAULT_LIMIT if limit is None else limit
@@ -679,18 +684,67 @@ def select_law_slugs(
         if s not in seen:
             ordered.append(s)
             seen.add(s)
-    return _skip_done(ordered[:effective_limit])
+    return ordered[:effective_limit]
 
 
-def _completed_report_slugs(path: Path) -> list[str]:
-    """Return slugs already completed in a prior per-law report."""
+def _parse_nonnegative_int(value: object) -> int | None:
+    try:
+        parsed = int(value)
+    except (TypeError, ValueError):
+        return None
+    return parsed if parsed >= 0 else None
+
+
+def _max_redactions_covers(prior: int | None, requested: int) -> bool:
+    """Return True when a prior redaction cap is at least as complete as this run."""
+    if prior is None:
+        return False
+    if prior == 0:
+        return True
+    if requested == 0:
+        return False
+    return prior >= requested
+
+
+def _load_law_report(path: Path) -> dict | None:
+    """Load a compatible per-law report, or return None if it cannot be used."""
     if not path.exists():
-        return []
+        return None
     try:
         with open(path, "r", encoding="utf-8") as fh:
             report = json.load(fh)
     except (OSError, json.JSONDecodeError) as exc:
-        print(f"WARNING: could not read prior ProvisionVersion report {path}: {exc}", file=sys.stderr)
+        print(
+            f"WARNING: could not parse prior ProvisionVersion report {path}: {exc}",
+            file=sys.stderr,
+        )
+        return None
+
+    if not isinstance(report, dict):
+        print(
+            f"WARNING: ignoring prior ProvisionVersion report {path}: "
+            f"expected object, got {type(report).__name__}",
+            file=sys.stderr,
+        )
+        return None
+    if report.get("schemaVersion") != LAW_REPORT_SCHEMA_VERSION:
+        print(
+            f"WARNING: ignoring prior ProvisionVersion report {path}: "
+            f"unsupported schemaVersion {report.get('schemaVersion')!r}",
+            file=sys.stderr,
+        )
+        return None
+    return report
+
+
+def _completed_report_slugs(
+    report: dict | None,
+    *,
+    max_redactions: int,
+    current_redactions: dict[str, Redaction] | None = None,
+) -> list[str]:
+    """Return slugs safely resumable from a loaded per-law report."""
+    if report is None:
         return []
 
     rows = report.get("rows")
@@ -709,14 +763,99 @@ def _completed_report_slugs(path: Path) -> list[str]:
             versions_emitted = 0
         if versions_emitted <= 0:
             continue
+        if not _max_redactions_covers(
+            _parse_nonnegative_int(row.get("max_redactions")), max_redactions
+        ):
+            continue
         error = row.get("error")
         warnings = row.get("warnings")
         if error not in (None, ""):
             continue
         if warnings:
             continue
+        if current_redactions is not None:
+            current = current_redactions.get(slug)
+            if current is None:
+                continue
+            if row.get("current_redaction_id") != current.global_id:
+                continue
+            if row.get("current_redaction_valid_from") != current.valid_from:
+                continue
         completed.append(slug)
     return completed
+
+
+def _fetch_current_redactions(
+    slugs: list[str],
+    *,
+    krr_dir: Path,
+    today: str,
+    fetch_sleep: float = 0.0,
+) -> dict[str, Redaction]:
+    """Fetch current redaction heads for resume freshness checks."""
+    current: dict[str, Redaction] = {}
+    for index, slug in enumerate(slugs):
+        try:
+            target = build_law_target(slug, krr_dir=krr_dir)
+            if target is None:
+                continue
+            try:
+                head = fetch_current_redaction(target.title, today=today)
+            except Exception as exc:  # noqa: BLE001
+                print(
+                    f"WARNING: could not verify current redaction for {slug}; "
+                    f"will reprocess: {exc}",
+                    file=sys.stderr,
+                )
+                continue
+            if head is None:
+                print(
+                    f"WARNING: no current redaction found for {slug}; will reprocess",
+                    file=sys.stderr,
+                )
+                continue
+            current[slug] = head
+        finally:
+            if fetch_sleep > 0 and index < len(slugs) - 1:
+                time.sleep(fetch_sleep)
+    return current
+
+
+def resolve_resume_skips(
+    *,
+    candidates: list[str],
+    law_report_path: Path,
+    max_redactions: int,
+    krr_dir: Path,
+    today: str,
+    fetch_sleep: float,
+) -> set[str]:
+    """Return candidate slugs that can be skipped under resumable --all mode."""
+    report = _load_law_report(law_report_path)
+    candidate_set = set(candidates)
+    resume_candidates = [
+        slug
+        for slug in _completed_report_slugs(report, max_redactions=max_redactions)
+        if slug in candidate_set
+    ]
+    if not resume_candidates:
+        return set()
+
+    current_redactions = _fetch_current_redactions(
+        resume_candidates,
+        krr_dir=krr_dir,
+        today=today,
+        fetch_sleep=fetch_sleep,
+    )
+    return {
+        slug
+        for slug in _completed_report_slugs(
+            report,
+            max_redactions=max_redactions,
+            current_redactions=current_redactions,
+        )
+        if slug in candidate_set
+    }
 
 
 # ---------------------------------------------------------------------------
@@ -766,6 +905,9 @@ def write_law_report(results: list[LawResult], path: Path) -> None:
             "redactions_total": r.redactions_total,
             "redactions_processed": r.redactions_fetched,
             "redactions_failed": r.redactions_failed,
+            "max_redactions": r.max_redactions,
+            "current_redaction_id": r.current_redaction_id,
+            "current_redaction_valid_from": r.current_redaction_valid_from,
             "provisions_in_law": r.provisions_in_law,
             "provisions_versioned": r.provisions_versioned,
             "versions_emitted": r.versions_emitted,
@@ -776,6 +918,7 @@ def write_law_report(results: list[LawResult], path: Path) -> None:
         for r in results
     ]
     payload = {
+        "schemaVersion": LAW_REPORT_SCHEMA_VERSION,
         "laws_processed": len(results),
         "laws_with_output": sum(1 for r in results if r.versions_emitted > 0),
         "versions_emitted": sum(r.versions_emitted for r in results),
@@ -848,7 +991,11 @@ def _parse_args(argv: list[str] | None) -> argparse.Namespace:
         action="store_false",
         dest="resume",
         default=True,
-        help="Ignore an existing per-law report and process selected laws from scratch.",
+        help=(
+            "Ignore an existing per-law report and process selected laws from "
+            "scratch. By default --all resumes only rows with a compatible "
+            "report schema, redaction cap, and unchanged current redaction."
+        ),
     )
     args = parser.parse_args(argv)
     if args.max_redactions is not None and args.max_redactions < 0:
@@ -875,24 +1022,39 @@ def main(argv: list[str] | None = None) -> int:
     versions_dir = VERSIONS_DIR
     coverage_path = COVERAGE_PATH
     law_report_path = krr_dir / "reports" / LAW_REPORT_NAME
-    skip_completed: list[str] | None = None
-    if args.all and args.resume:
-        skip_completed = _completed_report_slugs(law_report_path)
-        if skip_completed:
-            print(
-                f"Resuming from {_rel(law_report_path)}; "
-                f"skipping {len(skip_completed)} completed law(s)."
-            )
-
-    slugs = select_law_slugs(
+    candidate_slugs = select_law_slugs(
         explicit=args.law,
         limit=args.limit,
         all_laws=args.all,
         krr_dir=krr_dir,
-        skip_completed=skip_completed,
     )
+    skip_completed: set[str] = set()
+    if args.all and args.resume:
+        skip_completed = resolve_resume_skips(
+            candidates=candidate_slugs,
+            law_report_path=law_report_path,
+            max_redactions=max_redactions,
+            krr_dir=krr_dir,
+            today=today,
+            fetch_sleep=fetch_sleep,
+        )
+        if skip_completed:
+            print(
+                f"Resuming from {_rel(law_report_path)}; "
+                f"skipping {len(skip_completed)} completed law(s) "
+                "with unchanged current redactions."
+            )
+        slugs = [slug for slug in candidate_slugs if slug not in skip_completed]
+    else:
+        slugs = candidate_slugs
     if not slugs:
-        print("No laws selected (--limit 0 or --law matched nothing). Nothing to do.")
+        if candidate_slugs and skip_completed:
+            print(
+                f"All {len(candidate_slugs)} selected law(s) are already complete "
+                "with compatible resume state. Nothing to do."
+            )
+        else:
+            print("No laws selected (--limit 0 or --law matched nothing). Nothing to do.")
         # Still write a (zeroed) coverage report so the artefact exists.
         _write_coverage([], start_perf=start_perf, path=coverage_path)
         write_law_report([], law_report_path)
@@ -912,7 +1074,8 @@ def main(argv: list[str] | None = None) -> int:
             results.append(LawResult(
                 slug=slug, title=slug, redactions_total=0, redactions_fetched=0,
                 redactions_failed=0, provisions_in_law=0, provisions_versioned=0,
-                versions_emitted=0, sidecar_path=None, error="no peep",
+                versions_emitted=0, sidecar_path=None,
+                max_redactions=max_redactions, error="no peep",
             ))
             continue
         result = process_law(
