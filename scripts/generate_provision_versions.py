@@ -658,7 +658,6 @@ def select_law_slugs(
     limit: int | None,
     all_laws: bool = False,
     krr_dir: Path = KRR_DIR,
-    skip_completed: list[str] | None = None,
 ) -> list[str]:
     """Resolve the list of law slugs to process.
 
@@ -666,21 +665,12 @@ def select_law_slugs(
     * ``--all`` processes every on-disk law slug.
     * otherwise the curated :data:`DEFAULT_LAW_SLUGS`, then any remaining on-disk slugs,
       truncated to ``limit`` (``--limit``; ``0`` ⇒ none, ``None`` ⇒ default).
-    * ``skip_completed`` removes slugs already completed by an earlier resumable run.
     """
     on_disk = set(_all_law_slugs(krr_dir))
-    completed = set(skip_completed or [])
-
-    def _skip_done(slugs: list[str]) -> list[str]:
-        if not completed:
-            return slugs
-        return [slug for slug in slugs if slug not in completed]
-
     if explicit:
-        chosen = [s for s in explicit if s in on_disk or _peep_files_for_slug(s, krr_dir)]
-        return _skip_done(chosen)
+        return [s for s in explicit if s in on_disk or _peep_files_for_slug(s, krr_dir)]
     if all_laws:
-        return _skip_done(sorted(on_disk))
+        return sorted(on_disk)
     if limit is not None and limit <= 0:
         return []
     effective_limit = DEFAULT_LIMIT if limit is None else limit
@@ -694,7 +684,7 @@ def select_law_slugs(
         if s not in seen:
             ordered.append(s)
             seen.add(s)
-    return _skip_done(ordered[:effective_limit])
+    return ordered[:effective_limit]
 
 
 def _parse_nonnegative_int(value: object) -> int | None:
@@ -716,15 +706,10 @@ def _max_redactions_covers(prior: int | None, requested: int) -> bool:
     return prior >= requested
 
 
-def _completed_report_slugs(
-    path: Path,
-    *,
-    max_redactions: int,
-    current_redactions: dict[str, Redaction] | None = None,
-) -> list[str]:
-    """Return slugs safely resumable from a prior per-law report."""
+def _load_law_report(path: Path) -> dict | None:
+    """Load a compatible per-law report, or return None if it cannot be used."""
     if not path.exists():
-        return []
+        return None
     try:
         with open(path, "r", encoding="utf-8") as fh:
             report = json.load(fh)
@@ -733,14 +718,33 @@ def _completed_report_slugs(
             f"WARNING: could not parse prior ProvisionVersion report {path}: {exc}",
             file=sys.stderr,
         )
-        return []
+        return None
 
+    if not isinstance(report, dict):
+        print(
+            f"WARNING: ignoring prior ProvisionVersion report {path}: "
+            f"expected object, got {type(report).__name__}",
+            file=sys.stderr,
+        )
+        return None
     if report.get("schemaVersion") != LAW_REPORT_SCHEMA_VERSION:
         print(
             f"WARNING: ignoring prior ProvisionVersion report {path}: "
             f"unsupported schemaVersion {report.get('schemaVersion')!r}",
             file=sys.stderr,
         )
+        return None
+    return report
+
+
+def _completed_report_slugs(
+    report: dict | None,
+    *,
+    max_redactions: int,
+    current_redactions: dict[str, Redaction] | None = None,
+) -> list[str]:
+    """Return slugs safely resumable from a loaded per-law report."""
+    if report is None:
         return []
 
     rows = report.get("rows")
@@ -786,30 +790,72 @@ def _fetch_current_redactions(
     *,
     krr_dir: Path,
     today: str,
+    fetch_sleep: float = 0.0,
 ) -> dict[str, Redaction]:
     """Fetch current redaction heads for resume freshness checks."""
     current: dict[str, Redaction] = {}
-    for slug in slugs:
-        target = build_law_target(slug, krr_dir=krr_dir)
-        if target is None:
-            continue
+    for index, slug in enumerate(slugs):
         try:
-            head = fetch_current_redaction(target.title, today=today)
-        except Exception as exc:  # noqa: BLE001
-            print(
-                f"WARNING: could not verify current redaction for {slug}; "
-                f"will reprocess: {exc}",
-                file=sys.stderr,
-            )
-            continue
-        if head is None:
-            print(
-                f"WARNING: no current redaction found for {slug}; will reprocess",
-                file=sys.stderr,
-            )
-            continue
-        current[slug] = head
+            target = build_law_target(slug, krr_dir=krr_dir)
+            if target is None:
+                continue
+            try:
+                head = fetch_current_redaction(target.title, today=today)
+            except Exception as exc:  # noqa: BLE001
+                print(
+                    f"WARNING: could not verify current redaction for {slug}; "
+                    f"will reprocess: {exc}",
+                    file=sys.stderr,
+                )
+                continue
+            if head is None:
+                print(
+                    f"WARNING: no current redaction found for {slug}; will reprocess",
+                    file=sys.stderr,
+                )
+                continue
+            current[slug] = head
+        finally:
+            if fetch_sleep > 0 and index < len(slugs) - 1:
+                time.sleep(fetch_sleep)
     return current
+
+
+def resolve_resume_skips(
+    *,
+    candidates: list[str],
+    law_report_path: Path,
+    max_redactions: int,
+    krr_dir: Path,
+    today: str,
+    fetch_sleep: float,
+) -> set[str]:
+    """Return candidate slugs that can be skipped under resumable --all mode."""
+    report = _load_law_report(law_report_path)
+    candidate_set = set(candidates)
+    resume_candidates = [
+        slug
+        for slug in _completed_report_slugs(report, max_redactions=max_redactions)
+        if slug in candidate_set
+    ]
+    if not resume_candidates:
+        return set()
+
+    current_redactions = _fetch_current_redactions(
+        resume_candidates,
+        krr_dir=krr_dir,
+        today=today,
+        fetch_sleep=fetch_sleep,
+    )
+    return {
+        slug
+        for slug in _completed_report_slugs(
+            report,
+            max_redactions=max_redactions,
+            current_redactions=current_redactions,
+        )
+        if slug in candidate_set
+    }
 
 
 # ---------------------------------------------------------------------------
@@ -982,42 +1028,33 @@ def main(argv: list[str] | None = None) -> int:
         all_laws=args.all,
         krr_dir=krr_dir,
     )
-    candidate_set = set(candidate_slugs)
-    skip_completed: list[str] = []
+    skip_completed: set[str] = set()
     if args.all and args.resume:
-        resume_candidates = _completed_report_slugs(
-            law_report_path,
+        skip_completed = resolve_resume_skips(
+            candidates=candidate_slugs,
+            law_report_path=law_report_path,
             max_redactions=max_redactions,
+            krr_dir=krr_dir,
+            today=today,
+            fetch_sleep=fetch_sleep,
         )
-        resume_candidates = [
-            slug for slug in resume_candidates if slug in candidate_set
-        ]
-        if resume_candidates:
-            current_redactions = _fetch_current_redactions(
-                resume_candidates,
-                krr_dir=krr_dir,
-                today=today,
-            )
-            skip_completed = _completed_report_slugs(
-                law_report_path,
-                max_redactions=max_redactions,
-                current_redactions=current_redactions,
-            )
-            skip_completed = [
-                slug for slug in skip_completed if slug in candidate_set
-            ]
         if skip_completed:
             print(
                 f"Resuming from {_rel(law_report_path)}; "
                 f"skipping {len(skip_completed)} completed law(s) "
                 "with unchanged current redactions."
             )
-        skipped_set = set(skip_completed)
-        slugs = [slug for slug in candidate_slugs if slug not in skipped_set]
+        slugs = [slug for slug in candidate_slugs if slug not in skip_completed]
     else:
         slugs = candidate_slugs
     if not slugs:
-        print("No laws selected (--limit 0 or --law matched nothing). Nothing to do.")
+        if candidate_slugs and skip_completed:
+            print(
+                f"All {len(candidate_slugs)} selected law(s) are already complete "
+                "with compatible resume state. Nothing to do."
+            )
+        else:
+            print("No laws selected (--limit 0 or --law matched nothing). Nothing to do.")
         # Still write a (zeroed) coverage report so the artefact exists.
         _write_coverage([], start_perf=start_perf, path=coverage_path)
         write_law_report([], law_report_path)

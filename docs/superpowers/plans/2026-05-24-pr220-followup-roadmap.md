@@ -25,7 +25,7 @@ Current delivery status:
   PR #222 follow-up commit `26960fb40`.
 - Phase 2.8 and 2.9 remain deferred until the first live PDF probe yields real
   distribution data; tracked in #227.
-- Remaining follow-ups are tracked in #223, #224, #225, #226, #227, and #228.
+- Remaining follow-ups are tracked in #224, #225, #226, #227, and #228.
 
 Baseline validation as of PR #222 follow-up commit `26960fb40`:
 
@@ -164,23 +164,21 @@ deferred multi-hour network jobs in Phase 3.
 
 ### 2.1 ProvisionVersion resume (O2 — blocks #208 live run)
 
-**Status:** Delivered in PR #222 for interrupted-run resume. Follow-up #223
-tracks schema/freshness/max-redactions hardening before Phase 3.3 live
-ingestion.
+**Status:** Interrupted-run resume delivered in PR #222. Schema,
+freshness, and max-redactions hardening delivered in PR #229 (#223).
 
-`scripts/generate_provision_versions.py` writes `provision_versions_report.json`
-but `main()` never reads it. A 12-hour `--all --max-redactions 0` run that
-fails at hour 10 must restart from scratch.
+Delivered behavior:
 
-Implement:
-
-- Add `skip_completed: list[str] | None = None` param to `select_law_slugs`.
-- In `main`, when `--all` and the report file exists and `--force` is not set:
-  load `rows[*].slug` where `versions_emitted > 0 and error is None`; exclude
-  from `slugs`.
-- Add `--force` / `--no-resume` CLI flag.
-- Test: write a partial report, invoke `select_law_slugs(skip_completed=...)`,
-  assert the completed slugs are excluded.
+- `--all` resumes from `provision_versions_report.json` by default.
+- A row is skipped only when it has a supported `schemaVersion`, emitted output
+  without errors or warnings, used a redaction cap compatible with the current
+  run, and still matches the current Riigi Teataja redaction id / valid-from
+  pair.
+- `--max-redactions 0` is full-history mode; prior sample rows do not satisfy
+  it.
+- `--no-resume` / `--force` bypasses prior report state and processes every
+  selected law.
+- Freshness checks use the same polite fetch delay as the main ingestion loop.
 
 ### 2.2 `annotationText` boundary-aware truncation (O4 — affects #210 quality)
 
@@ -404,9 +402,8 @@ python3 scripts/shacl_validate_all.py --bucket riigikohus
 
 ### 3.3 #208 — Full ProvisionVersion ingestion
 
-**Prerequisite:** Phase 2.1 (resume wired) complete; Phase 3.1 done. Land or
-explicitly waive #223 before the live full-history run so stale/sample resume
-state cannot silently skip laws.
+**Prerequisite:** Phase 2.1 resume hardening complete (#223 / PR #229); Phase
+3.1 done.
 
 **Run:**
 
@@ -522,6 +519,7 @@ deliberately."
   not a single squashed message with eight bullets.
 - **Follow-up GitHub issues filed from PR #222 review:**
   - #223 — ProvisionVersion resume schema/freshness/max-redactions hardening
+    (delivered in PR #229)
   - #224 — Estonian citation-abbreviation-aware annotation truncation
   - #225 — Remaining Phase 2 latent cleanup items (O6, O7, O10, N1, N3, N8)
   - #226 — Roadmap status update after Phase 2 (this document update)
@@ -533,7 +531,7 @@ deliberately."
 | Phase | Items | Effort | Blocks |
 |---|---|---|---|
 | 1. Pre-merge | 1.1 tests, 1.2 cache cleanup, 1.3 warning, 1.4 doc table | Done (#220/#221) | Complete |
-| 2. Hardening | 2.1–2.7 + 2.10/O5/O8/O9 done; 2.8–2.9 deferred to #227; residuals in #223–#225/#228 | Mostly done (#222) | Phase 3 live runs |
+| 2. Hardening | 2.1–2.7 + 2.10/O5/O8/O9 done; #223 delivered in PR #229; 2.8–2.9 deferred to #227; residuals in #224–#225/#228 | Mostly done (#222/#229) | Phase 3 live runs |
 | 3. Live ingestion | #213, #207, #208, #210 (sequential, IRI-churn-ordered) | multi-day, network-bound | Phase 4 long-tail |
 | 4. Long-tail | #203 (conditional), final sync, process | ad-hoc | — |
 
@@ -552,9 +550,10 @@ deliberately."
   [2026-05-24-open-issues-remediation.md](2026-05-24-open-issues-remediation.md).
   All except #203 and the deferred-data jobs (#207, #208, #210, #213) closed
   in `45a6bea59` groundwork.
-- **#223–#228** — Follow-up issues filed from PR #222 review to keep remaining
-  Phase 2 hardening, PDF probe decisions, code hygiene, and roadmap maintenance
-  visible before Phase 3 live ingestion.
+- **#223–#228** — Follow-up issues filed from PR #222 review. #223 is
+  delivered in PR #229; #224–#228 keep remaining Phase 2 hardening, PDF probe
+  decisions, code hygiene, and roadmap maintenance visible before Phase 3 live
+  ingestion.
 
 ### Acceptance gates that must pass at end of each phase
 
