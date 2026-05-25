@@ -357,17 +357,42 @@ def test_select_law_slugs_skips_completed_report_rows(tmp_path: Path):
     report_path.write_text(
         json.dumps(
             {
+                "schemaVersion": gpv.LAW_REPORT_SCHEMA_VERSION,
                 "rows": [
-                    {"slug": "alfa_seadus", "versions_emitted": 3, "error": None, "warnings": []},
-                    {"slug": "beeta_seadus", "versions_emitted": 0, "error": None, "warnings": []},
-                    {"slug": "gamma_seadus", "versions_emitted": 4, "error": "fetch failed", "warnings": ["fetch failed"]},
+                    {
+                        "slug": "alfa_seadus",
+                        "versions_emitted": 3,
+                        "max_redactions": 0,
+                        "current_redaction_id": "333",
+                        "current_redaction_valid_from": "2020-01-01",
+                        "error": None,
+                        "warnings": [],
+                    },
+                    {
+                        "slug": "beeta_seadus",
+                        "versions_emitted": 0,
+                        "max_redactions": 0,
+                        "current_redaction_id": "333",
+                        "current_redaction_valid_from": "2020-01-01",
+                        "error": None,
+                        "warnings": [],
+                    },
+                    {
+                        "slug": "gamma_seadus",
+                        "versions_emitted": 4,
+                        "max_redactions": 0,
+                        "current_redaction_id": "333",
+                        "current_redaction_valid_from": "2020-01-01",
+                        "error": "fetch failed",
+                        "warnings": ["fetch failed"],
+                    },
                 ]
             }
         ),
         encoding="utf-8",
     )
 
-    completed = gpv._completed_report_slugs(report_path)
+    completed = gpv._completed_report_slugs(report_path, max_redactions=0)
     assert completed == ["alfa_seadus"]
     assert select_law_slugs(
         explicit=None,
@@ -376,6 +401,95 @@ def test_select_law_slugs_skips_completed_report_rows(tmp_path: Path):
         krr_dir=krr,
         skip_completed=completed,
     ) == ["beeta_seadus", "gamma_seadus"]
+
+
+def test_completed_report_requires_supported_schema(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+):
+    report_path = tmp_path / "provision_versions_report.json"
+    report_path.write_text(
+        json.dumps({
+            "rows": [
+                {"slug": "alfa_seadus", "versions_emitted": 3, "max_redactions": 0}
+            ]
+        }),
+        encoding="utf-8",
+    )
+
+    assert gpv._completed_report_slugs(report_path, max_redactions=0) == []
+    assert "unsupported schemaVersion" in capsys.readouterr().err
+
+
+def test_completed_report_respects_max_redactions_compatibility(tmp_path: Path):
+    report_path = tmp_path / "provision_versions_report.json"
+    report_path.write_text(
+        json.dumps({
+            "schemaVersion": gpv.LAW_REPORT_SCHEMA_VERSION,
+            "rows": [
+                {
+                    "slug": "sample_run",
+                    "versions_emitted": 3,
+                    "max_redactions": 12,
+                    "error": None,
+                    "warnings": [],
+                },
+                {
+                    "slug": "full_run",
+                    "versions_emitted": 3,
+                    "max_redactions": 0,
+                    "error": None,
+                    "warnings": [],
+                },
+            ],
+        }),
+        encoding="utf-8",
+    )
+
+    assert gpv._completed_report_slugs(report_path, max_redactions=0) == ["full_run"]
+    assert gpv._completed_report_slugs(report_path, max_redactions=12) == [
+        "sample_run",
+        "full_run",
+    ]
+
+
+def test_completed_report_requires_matching_current_redaction(tmp_path: Path):
+    report_path = tmp_path / "provision_versions_report.json"
+    report_path.write_text(
+        json.dumps({
+            "schemaVersion": gpv.LAW_REPORT_SCHEMA_VERSION,
+            "rows": [
+                {
+                    "slug": "fresh_law",
+                    "versions_emitted": 3,
+                    "max_redactions": 0,
+                    "current_redaction_id": "333",
+                    "current_redaction_valid_from": "2020-01-01",
+                    "error": None,
+                    "warnings": [],
+                },
+                {
+                    "slug": "stale_law",
+                    "versions_emitted": 3,
+                    "max_redactions": 0,
+                    "current_redaction_id": "333",
+                    "current_redaction_valid_from": "2020-01-01",
+                    "error": None,
+                    "warnings": [],
+                },
+            ],
+        }),
+        encoding="utf-8",
+    )
+    current = {
+        "fresh_law": Redaction("333", "2020-01-01", None, "/akt/333.xml"),
+        "stale_law": Redaction("444", "2024-01-01", None, "/akt/444.xml"),
+    }
+
+    assert gpv._completed_report_slugs(
+        report_path,
+        max_redactions=0,
+        current_redactions=current,
+    ) == ["fresh_law"]
 
 
 def test_max_redactions_default_distinguishes_all_mode():
@@ -497,11 +611,78 @@ def test_main_processes_law_with_mocked_fetches(tmp_path: Path, monkeypatch: pyt
     law_report = json.loads(
         (krr / "reports" / "provision_versions_report.json").read_text("utf-8")
     )
+    assert law_report["schemaVersion"] == gpv.LAW_REPORT_SCHEMA_VERSION
     assert law_report["laws_processed"] == 1
     assert law_report["versions_emitted"] == 4
     assert law_report["rows"][0]["redactions_processed"] == 3
     assert law_report["rows"][0]["redactions_failed"] == 0
+    assert law_report["rows"][0]["max_redactions"] == 0
+    assert law_report["rows"][0]["current_redaction_id"] == "333"
+    assert law_report["rows"][0]["current_redaction_valid_from"] == "2020-01-01"
     assert law_report["rows"][0]["warnings"] == []
+
+
+def test_main_full_run_reprocesses_prior_sample_report(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    krr = tmp_path / "krr_outputs"
+    krr.mkdir()
+    _write_peep(krr, "fixture_law", "FIX", ["1"], title="Fikseeritud seadus")
+    report_path = krr / "reports" / "provision_versions_report.json"
+    report_path.parent.mkdir(parents=True)
+    report_path.write_text(
+        json.dumps({
+            "schemaVersion": gpv.LAW_REPORT_SCHEMA_VERSION,
+            "rows": [
+                {
+                    "slug": "fixture_law",
+                    "versions_emitted": 2,
+                    "max_redactions": gpv.DEFAULT_MAX_REDACTIONS,
+                    "current_redaction_id": "333",
+                    "current_redaction_valid_from": "2020-01-01",
+                    "error": None,
+                    "warnings": [],
+                }
+            ],
+        }),
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(gpv, "KRR_DIR", krr)
+    monkeypatch.setattr(gpv, "VERSIONS_DIR", krr / "provision_versions")
+    monkeypatch.setattr(
+        gpv,
+        "COVERAGE_PATH",
+        krr / "reports" / "kov" / "extract_provision_versions_coverage.json",
+    )
+    monkeypatch.setattr(gpv, "iter_peep_files", lambda *a, **k: list(krr.glob("*_peep.json")))
+    monkeypatch.setattr(
+        gpv,
+        "_fetch_current_redactions",
+        lambda *a, **k: pytest.fail("sample rows cannot satisfy full-history resume"),
+    )
+    processed: list[tuple[str, int]] = []
+
+    def fake_process_law(target: LawTarget, **kwargs) -> gpv.LawResult:
+        processed.append((target.slug, kwargs["max_redactions"]))
+        return gpv.LawResult(
+            slug=target.slug,
+            title=target.title,
+            redactions_total=3,
+            redactions_fetched=3,
+            redactions_failed=0,
+            provisions_in_law=len(target.provisions),
+            provisions_versioned=1,
+            versions_emitted=2,
+            sidecar_path="provision_versions/fixture_law.jsonld",
+            max_redactions=kwargs["max_redactions"],
+            current_redaction_id="333",
+            current_redaction_valid_from="2020-01-01",
+        )
+
+    monkeypatch.setattr(gpv, "process_law", fake_process_law)
+
+    assert gpv.main(["--all", "--max-redactions", "0", "--no-sleep"]) == 0
+    assert processed == [("fixture_law", 0)]
 
 
 def test_main_limit_zero_writes_zeroed_coverage_and_no_sidecars(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
@@ -524,6 +705,7 @@ def test_main_limit_zero_writes_zeroed_coverage_and_no_sidecars(tmp_path: Path, 
     law_report = json.loads(
         (krr / "reports" / "provision_versions_report.json").read_text("utf-8")
     )
+    assert law_report["schemaVersion"] == gpv.LAW_REPORT_SCHEMA_VERSION
     assert law_report["laws_processed"] == 0
     assert law_report["rows"] == []
 
