@@ -1,4 +1,4 @@
-"""Tests for normalize_issuer_name and BODY_CANON helpers."""
+"""Tests for common normalization and JSON-LD text helpers."""
 from __future__ import annotations
 
 import sys
@@ -6,7 +6,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 
-from estleg_common import BODY_CANON, jsonld_text, normalize_issuer_name
+from estleg_common import BODY_CANON, jsonld_text, jsonld_texts, normalize_issuer_name
 
 
 def test_normalize_issuer_lowercase() -> None:
@@ -45,3 +45,30 @@ def test_jsonld_text_unwraps_common_value_shapes() -> None:
     assert jsonld_text({"@value": "keel", "@language": "et"}) == "keel"
     assert jsonld_text([{"@value": "üks"}, {"@value": "kaks"}]) == "üks kaks"
     assert jsonld_text({"@id": "estleg:Thing"}, default="") == ""
+
+
+def test_jsonld_text_prefers_requested_language() -> None:
+    value = [
+        {"@value": "one", "@language": "en"},
+        {"@value": "üks", "@language": "et"},
+    ]
+
+    assert jsonld_text(value, prefer_language="et") == "üks"
+    assert jsonld_text(value, prefer_language="de") == "one üks"
+
+
+def test_jsonld_text_preference_keeps_untagged_values() -> None:
+    assert jsonld_text({"@value": "üks"}, prefer_language="et") == "üks"
+
+
+def test_jsonld_texts_prefers_requested_language() -> None:
+    value = [
+        {"@value": "one", "@language": "en"},
+        {"@value": "keel"},
+        {"@value": "üks", "@language": "et"},
+        {"@value": "kaks", "@language": "et"},
+    ]
+
+    assert jsonld_texts(value, prefer_language="et") == ["keel", "üks", "kaks"]
+    assert jsonld_texts(value, prefer_language="de") == ["keel"]
+    assert jsonld_texts(value) == ["one", "keel", "üks", "kaks"]

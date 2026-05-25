@@ -643,6 +643,7 @@ def select_law_slugs(
     limit: int | None,
     all_laws: bool = False,
     krr_dir: Path = KRR_DIR,
+    skip_completed: list[str] | None = None,
 ) -> list[str]:
     """Resolve the list of law slugs to process.
 
@@ -650,13 +651,21 @@ def select_law_slugs(
     * ``--all`` processes every on-disk law slug.
     * otherwise the curated :data:`DEFAULT_LAW_SLUGS`, then any remaining on-disk slugs,
       truncated to ``limit`` (``--limit``; ``0`` ⇒ none, ``None`` ⇒ default).
+    * ``skip_completed`` removes slugs already completed by an earlier resumable run.
     """
     on_disk = set(_all_law_slugs(krr_dir))
+    completed = set(skip_completed or [])
+
+    def _skip_done(slugs: list[str]) -> list[str]:
+        if not completed:
+            return slugs
+        return [slug for slug in slugs if slug not in completed]
+
     if explicit:
         chosen = [s for s in explicit if s in on_disk or _peep_files_for_slug(s, krr_dir)]
-        return chosen
+        return _skip_done(chosen)
     if all_laws:
-        return sorted(on_disk)
+        return _skip_done(sorted(on_disk))
     if limit is not None and limit <= 0:
         return []
     effective_limit = DEFAULT_LIMIT if limit is None else limit
@@ -670,7 +679,44 @@ def select_law_slugs(
         if s not in seen:
             ordered.append(s)
             seen.add(s)
-    return ordered[:effective_limit]
+    return _skip_done(ordered[:effective_limit])
+
+
+def _completed_report_slugs(path: Path) -> list[str]:
+    """Return slugs already completed in a prior per-law report."""
+    if not path.exists():
+        return []
+    try:
+        with open(path, "r", encoding="utf-8") as fh:
+            report = json.load(fh)
+    except (OSError, json.JSONDecodeError) as exc:
+        print(f"WARNING: could not read prior ProvisionVersion report {path}: {exc}", file=sys.stderr)
+        return []
+
+    rows = report.get("rows")
+    if not isinstance(rows, list):
+        return []
+    completed: list[str] = []
+    for row in rows:
+        if not isinstance(row, dict):
+            continue
+        slug = row.get("slug")
+        if not isinstance(slug, str) or not slug:
+            continue
+        try:
+            versions_emitted = int(row.get("versions_emitted") or 0)
+        except (TypeError, ValueError):
+            versions_emitted = 0
+        if versions_emitted <= 0:
+            continue
+        error = row.get("error")
+        warnings = row.get("warnings")
+        if error not in (None, ""):
+            continue
+        if warnings:
+            continue
+        completed.append(slug)
+    return completed
 
 
 # ---------------------------------------------------------------------------
@@ -710,6 +756,9 @@ def _write_coverage(results: list[LawResult], *, start_perf: float, path: Path =
 
 def write_law_report(results: list[LawResult], path: Path) -> None:
     """Persist per-law progress rows for resumable/full-run review."""
+    if not results and path.exists():
+        print(f"Per-law report unchanged (no results) -> {_rel(path)}")
+        return
     rows = [
         {
             "slug": r.slug,
@@ -721,6 +770,7 @@ def write_law_report(results: list[LawResult], path: Path) -> None:
             "provisions_versioned": r.provisions_versioned,
             "versions_emitted": r.versions_emitted,
             "sidecar_path": r.sidecar_path,
+            "error": r.error,
             "warnings": [r.error] if r.error else [],
         }
         for r in results
@@ -792,7 +842,18 @@ def _parse_args(argv: list[str] | None) -> argparse.Namespace:
              "(failures are recorded in the coverage report). On by default for sample runs; "
              "the flag is accepted for parity with the other generators.",
     )
-    return parser.parse_args(argv)
+    parser.add_argument(
+        "--force",
+        "--no-resume",
+        action="store_false",
+        dest="resume",
+        default=True,
+        help="Ignore an existing per-law report and process selected laws from scratch.",
+    )
+    args = parser.parse_args(argv)
+    if args.max_redactions is not None and args.max_redactions < 0:
+        parser.error("--max-redactions must be non-negative (0 = unbounded)")
+    return args
 
 
 def effective_max_redactions(args: argparse.Namespace) -> int:
@@ -814,12 +875,21 @@ def main(argv: list[str] | None = None) -> int:
     versions_dir = VERSIONS_DIR
     coverage_path = COVERAGE_PATH
     law_report_path = krr_dir / "reports" / LAW_REPORT_NAME
+    skip_completed: list[str] | None = None
+    if args.all and args.resume:
+        skip_completed = _completed_report_slugs(law_report_path)
+        if skip_completed:
+            print(
+                f"Resuming from {_rel(law_report_path)}; "
+                f"skipping {len(skip_completed)} completed law(s)."
+            )
 
     slugs = select_law_slugs(
         explicit=args.law,
         limit=args.limit,
         all_laws=args.all,
         krr_dir=krr_dir,
+        skip_completed=skip_completed,
     )
     if not slugs:
         print("No laws selected (--limit 0 or --law matched nothing). Nothing to do.")

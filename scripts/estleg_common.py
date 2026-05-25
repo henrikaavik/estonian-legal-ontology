@@ -278,33 +278,56 @@ def normalize_issuer_name(s: str) -> str:
     return " ".join(s.split())
 
 
-def jsonld_text(value: object, default: str = "") -> str:
+def jsonld_text(
+    value: object, default: str = "", *, prefer_language: str | None = None
+) -> str:
     """Return a plain string from common JSON-LD text shapes.
 
     Generated corpus fields may be plain strings, value objects such as
     ``{"@value": "...", "@language": "et"}``, or lists of those objects.
     Semantic extractors should call this before regex/token processing so
     fresh generator output and enriched normalized output use one contract.
+    When ``prefer_language`` is set, language-tagged lists prefer matching
+    values but fall back to the default joined text if no match exists.
     """
     if isinstance(value, str):
         return value
     if isinstance(value, dict):
         text = value.get("@value")
+        language = value.get("@language")
+        if (
+            prefer_language
+            and isinstance(language, str)
+            and language != prefer_language
+        ):
+            return default
         return text if isinstance(text, str) else default
     if isinstance(value, list):
+        if prefer_language:
+            preferred = [
+                text
+                for item in value
+                if (
+                    text := jsonld_text(
+                        item, default="", prefer_language=prefer_language
+                    )
+                )
+            ]
+            if preferred:
+                return " ".join(preferred)
         parts = [text for item in value if (text := jsonld_text(item))]
         return " ".join(parts) if parts else default
     return default
 
 
-def jsonld_texts(value: object) -> list[str]:
+def jsonld_texts(value: object, *, prefer_language: str | None = None) -> list[str]:
     """Return all plain strings from common JSON-LD text shapes."""
     if isinstance(value, list):
         out: list[str] = []
         for item in value:
-            out.extend(jsonld_texts(item))
+            out.extend(jsonld_texts(item, prefer_language=prefer_language))
         return out
-    text = jsonld_text(value)
+    text = jsonld_text(value, prefer_language=prefer_language)
     return [text] if text else []
 
 

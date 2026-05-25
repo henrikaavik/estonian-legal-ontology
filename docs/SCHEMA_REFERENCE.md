@@ -715,6 +715,8 @@ provisions still conform.
 
 ##### Example
 
+Version sidecar node:
+
 ```json
 {
   "@id": "estleg:LegalProvision_TsÜS_40_v1",
@@ -727,6 +729,11 @@ provisions still conform.
   "estleg:supersededByVersion": {"@id": "estleg:LegalProvision_TsÜS_40_v2"}
 }
 ```
+
+Stable provision node in the law peep. Back-links such as `estleg:hasVersion`
+and `estleg:currentVersion` are optional; consumers can join from the sidecar
+node through `estleg:versionOf`.
+
 ```json
 {
   "@id": "estleg:LegalProvision_TsÜS_40",

@@ -132,8 +132,10 @@ def normalize_law_name(name: str) -> str:
     return n
 
 
-def affected_law_name_values(value: object) -> list[str]:
-    return jsonld_texts(value)
+def affected_law_name_values(
+    value: object, *, prefer_language: str | None = None
+) -> list[str]:
+    return jsonld_texts(value, prefer_language=prefer_language)
 
 
 def slug_from_name(name: str) -> str:
@@ -442,7 +444,7 @@ def main() -> None:
 
     for node in draft_nodes:
         draft_iri = node.get("@id", "")
-        title = jsonld_text(node.get("rdfs:label", ""))
+        title = jsonld_text(node.get("rdfs:label", ""), prefer_language="et")
 
         # -- change type --
         ct = classify_change_type(title)
@@ -456,7 +458,9 @@ def main() -> None:
         if not affected_raw:
             continue
 
-        affected_names = affected_law_name_values(affected_raw)
+        affected_names = affected_law_name_values(
+            affected_raw, prefer_language="et"
+        )
         if not affected_names:
             continue
 
@@ -482,7 +486,9 @@ def main() -> None:
             node["estleg:amendsLaw"] = amends_iris
 
         # -- ministry stats --
-        for initiator in jsonld_texts(node.get("estleg:initiator", "")):
+        for initiator in jsonld_texts(
+            node.get("estleg:initiator", ""), prefer_language="et"
+        ):
             ministry_drafts[initiator] += 1
 
     print(f"  Resolved: {resolved_count}")
