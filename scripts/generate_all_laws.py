@@ -1858,6 +1858,9 @@ def completed_regen_slugs(
         return set()
     if state.get("schemaVersion") != REGEN_STATE_SCHEMA_VERSION:
         completed.clear()
+        failed = state.get("failed")
+        if isinstance(failed, dict):
+            failed.clear()
         state["schemaVersion"] = REGEN_STATE_SCHEMA_VERSION
         return set()
 
@@ -2163,8 +2166,6 @@ def main():
                 )
                 for filename, doc in results:
                     out_path = KRR_DIR / filename
-                    output_paths.append(out_path)
-                    subsection_count += _subsection_count(doc)
                     # Issue #165 fix 3 + #108: respect the run mode and refresh
                     # stale osa snapshots in missing-only (the multipart branch
                     # used to hard-code ``if not exists``).
@@ -2175,6 +2176,8 @@ def main():
                         expected_kehtiv=args.kehtiv,
                         expected_tid=info.get("tid"),
                     )
+                    output_paths.append(out_path)
+                    subsection_count += _subsection_count(doc)
                     run_counts[status] += 1
                     if status != "existingSkipped":
                         generated += 1

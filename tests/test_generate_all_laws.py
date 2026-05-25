@@ -1294,6 +1294,21 @@ def _padded_law_xml(*, paragraphs: list[int]) -> str:
     )
 
 
+def _padded_multipart_law_xml() -> str:
+    pad = "<!-- " + ("x" * 1500) + " -->"
+    parts = []
+    for osa_nr, par_nr in ((1, 10), (2, 20)):
+        parts.append(
+            f"<osa><osaNr>{osa_nr}</osaNr><osaPealkiri>Osa {osa_nr}</osaPealkiri>"
+            f"<paragrahv><paragrahvNr>{par_nr}</paragrahvNr>"
+            f"<kuvatavNr>S {par_nr}.</kuvatavNr>"
+            f"<paragrahvPealkiri>Par {par_nr}</paragrahvPealkiri>"
+            f"<loige><loigeNr>1</loigeNr><tavatekst>Tekst {par_nr}.</tavatekst></loige>"
+            f"</paragrahv></osa>"
+        )
+    return f"<?xml version='1.0' encoding='utf-8'?>{pad}<akt><sisu>{''.join(parts)}</sisu></akt>"
+
+
 class _RerunArgs:
     """Mutable args object for driving main() in rerun tests."""
     refresh = False
@@ -1518,6 +1533,106 @@ class TestRegenState:
 
         assert json.loads(state_path.read_text(encoding="utf-8")) == original
         assert not state_path.with_suffix(state_path.suffix + ".tmp").exists()
+
+    def test_multipart_partial_write_records_failed_entry(self, tmp_path, monkeypatch):
+        title = "Multipart seadus"
+        slug = generate_all_laws.slugify(title)
+        krr = tmp_path / "krr_outputs"
+        krr.mkdir()
+        data_dir = tmp_path / "data" / "riigiteataja"
+        data_dir.mkdir(parents=True)
+        monkeypatch.setattr(generate_all_laws, "KRR_DIR", krr)
+        monkeypatch.setattr(generate_all_laws, "DATA_DIR", data_dir)
+        monkeypatch.setattr(generate_all_laws, "MULTIPART_LAWS", {title})
+        monkeypatch.setattr(
+            generate_all_laws.requests,
+            "get",
+            lambda *a, **kw: pytest.fail("no network expected"),
+        )
+        (data_dir / f"{slug}__tid1001.xml").write_text(
+            _padded_multipart_law_xml(),
+            encoding="utf-8",
+        )
+        monkeypatch.setattr(
+            generate_all_laws,
+            "get_all_laws",
+            lambda **kwargs: (
+                {title: {"gid": "2001", "tid": "1001", "url": f"/akt/{slug}.xml", "lyhend": "MULT"}},
+                {"complete": True},
+            ),
+        )
+        state_path = tmp_path / "regen_state.json"
+
+        class _Args(_RerunArgs):
+            refresh = True
+            missing_only = False
+            regen_state = str(state_path)
+
+        original_write = generate_all_laws.write_law_output
+        calls: list[str] = []
+
+        def flaky_write(path, doc, **kwargs):
+            calls.append(path.name)
+            if len(calls) == 2:
+                raise RuntimeError("simulated second-part write failure")
+            return original_write(path, doc, **kwargs)
+
+        monkeypatch.setattr(generate_all_laws, "write_law_output", flaky_write)
+        monkeypatch.setattr(generate_all_laws, "parse_args", lambda: _Args())
+        generate_all_laws._used_prefixes.clear()
+
+        generate_all_laws.main()
+
+        state = json.loads(state_path.read_text(encoding="utf-8"))
+        failed_entry = state["failed"][slug]
+        assert failed_entry["status"] == "failed"
+        assert failed_entry["outputPaths"] == [f"{slug}_osa1_peep.json"]
+        assert "simulated second-part write failure" in failed_entry["reason"]
+        assert slug not in state.get("completed", {})
+        assert calls == [f"{slug}_osa1_peep.json", f"{slug}_osa2_peep.json"]
+
+    def test_schema_version_mismatch_triggers_full_reset(self):
+        state = {
+            "schemaVersion": 0,
+            "completed": {"vana_seadus": {"status": "full"}},
+            "failed": {"nurjunud_seadus": {"status": "failed"}},
+        }
+
+        assert generate_all_laws.completed_regen_slugs(
+            state, {"Vana seadus": {"tid": "1"}}, kehtiv="2026-05-01"
+        ) == set()
+        assert state["schemaVersion"] == generate_all_laws.REGEN_STATE_SCHEMA_VERSION
+        assert state["completed"] == {}
+        assert state["failed"] == {}
+
+    def test_zero_subsection_warning_appended(self, tmp_path, monkeypatch):
+        title = "Hoiatus seadus"
+        slug = generate_all_laws.slugify(title)
+        krr = TestRerunNoOpAndStaleRefresh()._wire(
+            tmp_path,
+            monkeypatch,
+            titles_to_xml={title: _padded_law_xml(paragraphs=[1])},
+        )
+        state_path = tmp_path / "regen_state.json"
+
+        class _Args(_RerunArgs):
+            refresh = True
+            missing_only = False
+            regen_state = str(state_path)
+
+        monkeypatch.setattr(generate_all_laws, "parse_args", lambda: _Args())
+        monkeypatch.setattr(generate_all_laws, "build_subsections", lambda *args, **kwargs: [])
+        generate_all_laws._used_prefixes.clear()
+
+        generate_all_laws.main()
+
+        state = json.loads(state_path.read_text(encoding="utf-8"))
+        entry = state["completed"][slug]
+        assert entry["subsectionCount"] == 0
+        assert entry["warnings"] == [
+            "source XML has loige elements but emitted no Subsection nodes"
+        ]
+        assert (krr / f"{slug}_peep.json").exists()
 
     def test_completed_state_must_match_kehtiv_and_terviktekst_id(self):
         old_slug = generate_all_laws.slugify("Vana seadus")

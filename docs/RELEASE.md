@@ -70,6 +70,11 @@ phase order is preserved exactly.
 | 14 | `extract_draft_impact.py` | — | `*_peep.json`, `draft_impact_report.json` |
 | 15 | `generate_similarity_index.py` | steps 1–14 (all) | `similarity_index.json`, `similarity_report.json` |
 
+`court_provision_links_report.json` includes both raw recall lift and its
+comparable denominator: use
+`full_text_recall_lift / decisions_with_summary_baseline` when comparing runs,
+so decisions without summaries do not skew the per-decision lift.
+
 ASCII view of the dependency edges (everything not shown is a no-dependency
 root that the topo sort places in source order; step 15 fans in from all
 prior steps):

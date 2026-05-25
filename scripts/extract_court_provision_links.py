@@ -592,6 +592,7 @@ def process_court_files(
             "state_citations_resolved": 0,
             "legalText_citations_found": 0,
             "summary_fallback_citations_found": 0,
+            "decisions_with_summary_baseline": 0,
             "summary_baseline_citations_found": 0,
             "summary_baseline_citations_resolved": 0,
             "full_text_recall_lift": 0,
@@ -626,6 +627,7 @@ def process_court_files(
 
             summary_text = jsonld_text(node.get("estleg:summary", ""))
             if summary_text:
+                stats["decisions_with_summary_baseline"] += 1
                 baseline_state, baseline_kov = extract_citations_from_text(summary_text)
                 baseline_state_iris = resolve_citations(
                     baseline_state, abbrev_to_prefix, prefix_to_provisions
@@ -702,10 +704,6 @@ def process_court_files(
             unique_kov_iris = list(dict.fromkeys(kov_iris))
             kov_link_count += len(unique_kov_iris)
             stats["citations_resolved"] += len(state_iris) + len(unique_kov_iris)
-            stats["full_text_recall_lift"] = (
-                stats["state_citations_resolved"]
-                - stats["summary_baseline_citations_resolved"]
-            )
 
             resolved = list(dict.fromkeys(state_iris + unique_kov_iris))
             if not resolved:
@@ -717,6 +715,11 @@ def process_court_files(
 
             for target_iri in resolved:
                 interpreted_by[target_iri].append(node_id)
+
+        stats["full_text_recall_lift"] = (
+            stats["state_citations_resolved"]
+            - stats["summary_baseline_citations_resolved"]
+        )
 
         if modified:
             save_json(rk_file, doc)
@@ -952,6 +955,9 @@ def main() -> None:
     total_summary_fallback_citations = sum(
         s.get("summary_fallback_citations_found", 0) for s in per_file_stats
     )
+    total_with_summary_baseline = sum(
+        s.get("decisions_with_summary_baseline", 0) for s in per_file_stats
+    )
     total_summary_baseline_resolved = sum(
         s.get("summary_baseline_citations_resolved", 0) for s in per_file_stats
     )
@@ -1016,6 +1022,7 @@ def main() -> None:
             "total_citations_found": total_citations,
             "legalText_citations_found": total_legal_text_citations,
             "summary_fallback_citations_found": total_summary_fallback_citations,
+            "decisions_with_summary_baseline": total_with_summary_baseline,
             "summary_baseline_citations_resolved": total_summary_baseline_resolved,
             "full_text_recall_lift": total_full_text_recall_lift,
             "total_citations_resolved": total_resolved,

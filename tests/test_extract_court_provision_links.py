@@ -959,6 +959,66 @@ def test_process_court_files_handles_value_object_summary(tmp_path, monkeypatch)
     assert dict(vo_result.interpreted_by) == dict(plain_result.interpreted_by)
 
 
+def test_process_court_files_handles_value_object_legal_text(tmp_path, monkeypatch):
+    import extract_court_provision_links as ecpl
+
+    abbrev_to_prefix = {"KarS": "Karistusseadustik"}
+    prefix_to_provisions = {
+        "Karistusseadustik": {
+            "121": "estleg:Karistusseadustik_Par_121",
+            "122": "estleg:Karistusseadustik_Par_122",
+        },
+    }
+    legal_text = "Täistekst lahendab asja KarS § 121 ja KarS § 122 alusel."
+
+    def run(legal_text_value):
+        rk_dir = tmp_path / f"rk_legal_text_{'vo' if isinstance(legal_text_value, dict) else 'plain'}"
+        rk_dir.mkdir()
+        (rk_dir / "riigikohus_2026_peep.json").write_text(
+            json.dumps({
+                "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+                "@graph": [
+                    {
+                        "@id": "estleg:RK_LEGAL_TEXT_1",
+                        "@type": ["owl:NamedIndividual", "estleg:CourtDecision"],
+                        "estleg:legalText": legal_text_value,
+                    },
+                ],
+            }),
+            encoding="utf-8",
+        )
+        monkeypatch.setattr(ecpl, "RK_DIR", rk_dir)
+        result = process_court_files(
+            abbrev_to_prefix,
+            prefix_to_provisions,
+            kov_index={},
+            kov_collision_keys=set(),
+            known_issuer_norms=set(),
+            counters=_RunCounters(),
+        )
+        doc = json.loads(
+            (rk_dir / "riigikohus_2026_peep.json").read_text(encoding="utf-8")
+        )
+        decision = doc["@graph"][0]
+        iris = [v["@id"] for v in decision.get("estleg:interpretsLaw", [])]
+        return result, iris
+
+    plain_result, plain_iris = run(legal_text)
+    vo_result, vo_iris = run({"@value": legal_text, "@language": "et"})
+
+    assert plain_iris == [
+        "estleg:Karistusseadustik_Par_121",
+        "estleg:Karistusseadustik_Par_122",
+    ]
+    assert vo_iris == plain_iris
+    assert plain_result.state_link_count == 2
+    assert vo_result.state_link_count == plain_result.state_link_count
+    stats = vo_result.per_file_stats[0]
+    assert stats["decisions_with_full_text"] == 1
+    assert stats["legalText_citations_found"] == 2
+    assert stats["summary_fallback_citations_found"] == 0
+
+
 def test_process_court_files_prefers_legal_text_over_summary(
     tmp_path, monkeypatch
 ):
@@ -1011,4 +1071,60 @@ def test_process_court_files_prefers_legal_text_over_summary(
     assert stats["legalText_citations_found"] == 2
     assert stats["summary_fallback_citations_found"] == 0
     assert stats["summary_baseline_citations_resolved"] == 1
+    assert stats["full_text_recall_lift"] == 1
+
+
+def test_process_court_files_splits_mixed_full_text_and_summary_only(
+    tmp_path, monkeypatch
+):
+    import extract_court_provision_links as ecpl
+
+    abbrev_to_prefix = {"KarS": "Karistusseadustik"}
+    prefix_to_provisions = {
+        "Karistusseadustik": {
+            "121": "estleg:Karistusseadustik_Par_121",
+            "122": "estleg:Karistusseadustik_Par_122",
+        },
+    }
+    rk_dir = tmp_path / "rk_mixed_sources"
+    rk_dir.mkdir()
+    (rk_dir / "riigikohus_2026_peep.json").write_text(
+        json.dumps({
+            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+            "@graph": [
+                {
+                    "@id": "estleg:RK_FULL_TEXT_1",
+                    "@type": ["owl:NamedIndividual", "estleg:CourtDecision"],
+                    "estleg:summary": "Kokkuvõte mainib KarS § 121.",
+                    "estleg:legalText": "Täistekst mainib KarS § 121 ja KarS § 122.",
+                },
+                {
+                    "@id": "estleg:RK_SUMMARY_1",
+                    "@type": ["owl:NamedIndividual", "estleg:CourtDecision"],
+                    "estleg:summary": "Kokkuvõte tugineb KarS § 121 sättele.",
+                },
+            ],
+        }),
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(ecpl, "RK_DIR", rk_dir)
+
+    result = process_court_files(
+        abbrev_to_prefix,
+        prefix_to_provisions,
+        kov_index={},
+        kov_collision_keys=set(),
+        known_issuer_norms=set(),
+        counters=_RunCounters(),
+    )
+
+    stats = result.per_file_stats[0]
+    assert stats["decisions_scanned"] == 2
+    assert stats["decisions_with_full_text"] == 1
+    assert stats["decisions_with_citations"] == 2
+    assert stats["legalText_citations_found"] == 2
+    assert stats["summary_fallback_citations_found"] == 1
+    assert stats["decisions_with_summary_baseline"] == 2
+    assert stats["summary_baseline_citations_resolved"] == 2
+    assert stats["state_citations_resolved"] == 3
     assert stats["full_text_recall_lift"] == 1

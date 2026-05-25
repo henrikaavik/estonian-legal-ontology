@@ -347,6 +347,37 @@ def test_select_law_slugs_limit_and_explicit(tmp_path: Path):
     assert select_law_slugs(explicit=["gamma_seadus", "puudub_seadus"], limit=None, krr_dir=krr) == ["gamma_seadus"]
 
 
+def test_select_law_slugs_skips_completed_report_rows(tmp_path: Path):
+    krr = tmp_path / "krr_outputs"
+    krr.mkdir()
+    for slug in ("alfa_seadus", "beeta_seadus", "gamma_seadus"):
+        _write_peep(krr, slug, slug[:4].upper(), ["1"], title=slug)
+    report_path = krr / "reports" / "provision_versions_report.json"
+    report_path.parent.mkdir()
+    report_path.write_text(
+        json.dumps(
+            {
+                "rows": [
+                    {"slug": "alfa_seadus", "versions_emitted": 3, "error": None, "warnings": []},
+                    {"slug": "beeta_seadus", "versions_emitted": 0, "error": None, "warnings": []},
+                    {"slug": "gamma_seadus", "versions_emitted": 4, "error": "fetch failed", "warnings": ["fetch failed"]},
+                ]
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    completed = gpv._completed_report_slugs(report_path)
+    assert completed == ["alfa_seadus"]
+    assert select_law_slugs(
+        explicit=None,
+        limit=None,
+        all_laws=True,
+        krr_dir=krr,
+        skip_completed=completed,
+    ) == ["beeta_seadus", "gamma_seadus"]
+
+
 def test_max_redactions_default_distinguishes_all_mode():
     assert gpv.effective_max_redactions(gpv._parse_args([])) == gpv.DEFAULT_MAX_REDACTIONS
     assert gpv.effective_max_redactions(gpv._parse_args(["--all"])) == 0
@@ -354,6 +385,12 @@ def test_max_redactions_default_distinguishes_all_mode():
         gpv.effective_max_redactions(gpv._parse_args(["--all", "--max-redactions", "12"]))
         == 12
     )
+
+
+def test_negative_max_redactions_rejected(capsys: pytest.CaptureFixture[str]):
+    with pytest.raises(SystemExit):
+        gpv._parse_args(["--max-redactions", "-1"])
+    assert "--max-redactions must be non-negative" in capsys.readouterr().err
 
 
 # ---------------------------------------------------------------------------
@@ -489,3 +526,14 @@ def test_main_limit_zero_writes_zeroed_coverage_and_no_sidecars(tmp_path: Path, 
     )
     assert law_report["laws_processed"] == 0
     assert law_report["rows"] == []
+
+
+def test_write_law_report_does_not_clobber_existing_noop(tmp_path: Path):
+    report_path = tmp_path / "reports" / "provision_versions_report.json"
+    report_path.parent.mkdir()
+    original = {"rows": [{"slug": "alfa_seadus", "versions_emitted": 2}]}
+    report_path.write_text(json.dumps(original), encoding="utf-8")
+
+    gpv.write_law_report([], report_path)
+
+    assert json.loads(report_path.read_text(encoding="utf-8")) == original

@@ -212,6 +212,22 @@ class TestListingParser:
 # ---------------------------------------------------------------------------
 
 
+class TestAnnotationTextTruncation:
+    def test_under_cap_input_is_rstripped(self):
+        assert ga._truncate_to_sentence("Lühike tekst.   ", 100) == "Lühike tekst."
+
+    def test_truncates_at_late_sentence_boundary(self):
+        text = "A" * 90 + ". " + "B" * 80
+        assert ga._truncate_to_sentence(text, 120) == "A" * 90 + "."
+
+    def test_early_sentence_boundary_falls_back_to_space(self):
+        text = "Algus. " + ("B" * 30) + " keskel " + ("C" * 80)
+        assert ga._truncate_to_sentence(text, 50) == "Algus. " + ("B" * 30) + " keskel…"
+
+    def test_no_space_fallback_keeps_head(self):
+        assert ga._truncate_to_sentence("A" * 100, 20) == ("A" * 20) + "…"
+
+
 class TestBuildAnnotations:
     def test_opinion_citing_two_laws_yields_one_annotation_each(self, tmp_path: Path):
         krr = tmp_path / "krr_outputs"

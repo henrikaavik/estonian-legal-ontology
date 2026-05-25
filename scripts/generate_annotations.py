@@ -725,6 +725,18 @@ def _xsd_anyuri(value: str) -> dict:
     return {"@value": value, "@type": "xsd:anyURI"}
 
 
+def _truncate_to_sentence(text: str, max_chars: int) -> str:
+    """Trim long annotation text at a sentence boundary where practical."""
+    if len(text) <= max_chars:
+        return text.rstrip()
+    head = text[:max_chars]
+    last_period = max(head.rfind(". "), head.rfind("! "), head.rfind("? "))
+    if last_period > max_chars * 0.7:
+        return head[: last_period + 1].rstrip()
+    last_space = head.rfind(" ")
+    return (head[:last_space] if last_space > 0 else head).rstrip() + "…"
+
+
 def _annotation_text(opinion: Opinion) -> str:
     """Build a substantive ``annotationText`` for the opinion.
 
@@ -738,7 +750,7 @@ def _annotation_text(opinion: Opinion) -> str:
     elif opinion.tags:
         parts.append("Õiguskantsleri seisukoht. Teemad: " + ", ".join(opinion.tags) + ".")
     text = "\n\n".join(p for p in parts if p)
-    return text[:2000].rstrip()
+    return _truncate_to_sentence(text, 2000)
 
 
 def build_annotations_for_opinion(opinion: Opinion, law_index: _LawIndex) -> _OpinionResult:

@@ -45,3 +45,13 @@ def test_jsonld_text_unwraps_common_value_shapes() -> None:
     assert jsonld_text({"@value": "keel", "@language": "et"}) == "keel"
     assert jsonld_text([{"@value": "üks"}, {"@value": "kaks"}]) == "üks kaks"
     assert jsonld_text({"@id": "estleg:Thing"}, default="") == ""
+
+
+def test_jsonld_text_prefers_requested_language() -> None:
+    value = [
+        {"@value": "one", "@language": "en"},
+        {"@value": "üks", "@language": "et"},
+    ]
+
+    assert jsonld_text(value, prefer_language="et") == "üks"
+    assert jsonld_text(value, prefer_language="de") == "one üks"

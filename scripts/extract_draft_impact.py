@@ -442,7 +442,7 @@ def main() -> None:
 
     for node in draft_nodes:
         draft_iri = node.get("@id", "")
-        title = jsonld_text(node.get("rdfs:label", ""))
+        title = jsonld_text(node.get("rdfs:label", ""), prefer_language="et")
 
         # -- change type --
         ct = classify_change_type(title)
