@@ -1826,7 +1826,11 @@ def load_regen_state(path: Path | None) -> dict:
     try:
         with open(path, "r", encoding="utf-8") as f:
             state = json.load(f)
-    except (json.JSONDecodeError, OSError):
+    except (json.JSONDecodeError, OSError) as exc:
+        print(
+            f"WARNING: regen state {path} unreadable; starting fresh: {exc}",
+            file=sys.stderr,
+        )
         return {
             "schemaVersion": REGEN_STATE_SCHEMA_VERSION,
             "completed": {},

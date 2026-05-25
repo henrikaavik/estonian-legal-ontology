@@ -26,8 +26,8 @@ Run with ``--fetch-full-text`` to enrich the existing
 then file order; ``0`` means *all* — a multi-hour ~12k-page scrape) it
 fetches the detail page and adds a plain-string ``estleg:legalText``
 literal to that decision node. Fetches are cached on disk under
-``krr_outputs/.cache/court_decisions/<safe_case_nr>.txt`` so reruns are
-near-instant and the full run is resumable. Decisions not fetched in a
+``krr_outputs/.cache/court_decisions/<safe_case_nr>_<digest>.txt`` so reruns
+are near-instant and the full run is resumable. Decisions not fetched in a
 given run keep their existing shape — ``estleg:legalText`` is optional.
 """
 
@@ -95,6 +95,7 @@ DETAIL_USER_AGENT = (
 # ``**/*.json{,ld}``, never ``.cache/`` or ``.txt``).
 COURT_TEXT_CACHE_DIR = KRR_DIR / ".cache" / "court_decisions"
 COURT_TEXT_CACHE_TTL_DAYS = 365  # decisions are immutable; refresh yearly
+_CACHE_DIGEST_SUFFIX_RE = re.compile(r"_[0-9a-f]{10}$")
 # Below this many characters the "decision text" is almost certainly the
 # search form or an error stub rather than a real decision body — treat
 # as a failed fetch and do not cache it.
@@ -749,6 +750,23 @@ def _court_text_cache_path(case_nr: str) -> Path:
     return COURT_TEXT_CACHE_DIR / f"{sanitize_id(case_nr)}_{digest}.txt"
 
 
+def _migrate_legacy_cache(cache_dir: Path) -> int:
+    """Delete pre-digest court full-text cache entries from ``cache_dir``."""
+    if not cache_dir.exists():
+        return 0
+    cleaned = 0
+    for path in cache_dir.glob("*.txt"):
+        if _CACHE_DIGEST_SUFFIX_RE.search(path.stem):
+            continue
+        try:
+            path.unlink()
+        except OSError as exc:
+            logger.warning("court cache cleanup: could not remove %s: %s", path, exc)
+        else:
+            cleaned += 1
+    return cleaned
+
+
 def _court_text_cache_is_fresh(
     path: Path, ttl_days: int = COURT_TEXT_CACHE_TTL_DAYS
 ) -> bool:
@@ -905,6 +923,10 @@ def enrich_full_text(limit: int = DEFAULT_FULL_TEXT_LIMIT, *, use_cache: bool = 
         "  Fetching full text for: "
         + ("all decisions (this is the multi-hour run)" if unbounded else f"up to {target}")
     )
+    if use_cache:
+        cleaned = _migrate_legacy_cache(COURT_TEXT_CACHE_DIR)
+        if cleaned:
+            print(f"cleaned {cleaned} legacy court cache entries")
     print(f"  Cache: {_rel_to_repo(COURT_TEXT_CACHE_DIR)} "
           f"({'enabled' if use_cache else 'BYPASSED'})")
 

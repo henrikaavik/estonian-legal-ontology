@@ -113,7 +113,9 @@ Similarity output now contains 71,421 analyzed provisions, 101,506 pairs, and up
 The #217 graph-closure pass removed a small set of `estleg:amendsLaw`
 targets from `krr_outputs/eelnoud/eelnoud_combined.jsonld` because the
 referenced act nodes are not emitted anywhere in the public load surface.
-These were not treated as successful resolutions:
+The table below is limited to dead-reference removals; successful target
+renames and array de-duplication are listed separately. These dead references
+were not treated as successful resolutions:
 
 | Removed target | Root cause |
 |----------------|------------|
@@ -125,6 +127,13 @@ These were not treated as successful resolutions:
 | `estleg:Isikuandmete_automatiseeritud__Map_2026` | Treaty `_Map_2026` target was inferred from a truncated title but no act-map node is emitted by the current pipeline. |
 | `estleg:Maailma_Terviseorganisatsiooni_Map_2026` | Treaty `_Map_2026` target was inferred from a title that no current generator materialises as an act-map node. |
 | `estleg:Merinuete_korral_vastutuse_pi_Map_2026` | Treaty `_Map_2026` target was inferred from a truncated title but no act-map node is emitted by the current pipeline. |
+
+Successful target rewrites in the same diff:
+
+| Removed target | Replacement target | Notes |
+|----------------|--------------------|-------|
+| `estleg:TKS_Map_2026` | `estleg:TarbKS_Map_2026` | Six references were rewritten to the emitted TarbKS map node. One duplicate-array entry on the draft "Ülikooliseaduse ja Tartu Ülikooli seaduse muutmise seadus" was removed without replacement because the array contained `TKS_Map_2026` twice. |
+| `estleg:TS_Map_2026` | `estleg:TõS_Map_2026` | Clean 1-to-1 rename to the emitted target. |
 
 Before the draft-impact enrichment is rerun against live data, fix the
 resolver path used by `scripts/extract_draft_impact.py` and
