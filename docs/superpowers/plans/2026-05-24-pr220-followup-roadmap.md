@@ -25,7 +25,7 @@ Current delivery status:
   PR #222 follow-up commit `26960fb40`.
 - Phase 2.8 and 2.9 remain deferred until the first live PDF probe yields real
   distribution data; tracked in #227.
-- Remaining follow-ups are tracked in #224, #225, #226, #227, and #228.
+- Remaining follow-ups are tracked in #225, #226, #227, and #228.
 
 Baseline validation as of PR #222 follow-up commit `26960fb40`:
 
@@ -182,28 +182,18 @@ Delivered behavior:
 
 ### 2.2 `annotationText` boundary-aware truncation (O4 — affects #210 quality)
 
-**Status:** Delivered in PR #222. Follow-up #224 tracks Estonian legal
-citation-abbreviation false-boundary handling before Phase 3.4 live ingestion.
+**Status:** Sentence-aware truncation delivered in PR #222. Estonian
+citation-abbreviation false-boundary handling delivered in PR #230 (#224).
 
-`scripts/generate_annotations.py:741` does `text[:2000].rstrip()` which
-truncates mid-sentence. The follow-up PDF wiring will hit this constantly.
+Delivered behavior:
 
-Implement:
-
-```python
-def _truncate_to_sentence(text: str, max_chars: int) -> str:
-    if len(text) <= max_chars:
-        return text.rstrip()
-    head = text[:max_chars]
-    last_period = max(head.rfind(". "), head.rfind("! "), head.rfind("? "))
-    if last_period > max_chars * 0.7:
-        return head[: last_period + 1].rstrip()
-    last_space = head.rfind(" ")
-    return (head[:last_space] if last_space > 0 else head).rstrip() + "…"
-```
-
-Tests: under-cap input, period-before-70%-mark, no-period-fallback-to-space,
-no-space-fallback.
+- Long annotation text is truncated at a late sentence boundary where practical.
+- Early sentence boundaries still fall back to a word boundary to preserve
+  useful content.
+- Period-space matches after Estonian legal citation / abbreviation tokens
+  (`lg`, `p`, `vt`, `nt`, `jt`, `nn`) are not treated as sentence boundaries.
+- Regression fixtures cover realistic fragments such as `§ 47 lg 1. p 3
+  kohaselt` so truncation cannot produce dangling `§ 47 lg 1.` annotations.
 
 ### 2.3 Missing tests for regen-state edge cases (O11)
 
@@ -433,9 +423,9 @@ python3 scripts/validate_seadusloome_sync.py
 
 ### 3.4 #210 — Live Õiguskantsler probe + ingestion
 
-**Prerequisite:** Phase 2.2 (boundary-aware truncation) complete. Land or
-explicitly waive #224 before the full ingest, and use the probe output to close
-#227 before committing to the live PDF strategy.
+**Prerequisite:** Phase 2.2 boundary-aware truncation complete in PR #230
+(#224). Use the probe output to close #227 before committing to the live PDF
+strategy.
 
 **Step A — Probe** (small, fast):
 
@@ -521,6 +511,7 @@ deliberately."
   - #223 — ProvisionVersion resume schema/freshness/max-redactions hardening
     (delivered in PR #229)
   - #224 — Estonian citation-abbreviation-aware annotation truncation
+    (delivered in PR #230)
   - #225 — Remaining Phase 2 latent cleanup items (O6, O7, O10, N1, N3, N8)
   - #226 — Roadmap status update after Phase 2 (this document update)
   - #227 — Annotation PDF probe sampling and quality threshold tuning
@@ -531,7 +522,7 @@ deliberately."
 | Phase | Items | Effort | Blocks |
 |---|---|---|---|
 | 1. Pre-merge | 1.1 tests, 1.2 cache cleanup, 1.3 warning, 1.4 doc table | Done (#220/#221) | Complete |
-| 2. Hardening | 2.1–2.7 + 2.10/O5/O8/O9 done; #223 delivered in PR #229; 2.8–2.9 deferred to #227; residuals in #224–#225/#228 | Mostly done (#222/#229) | Phase 3 live runs |
+| 2. Hardening | 2.1–2.7 + 2.10/O5/O8/O9 done; #223 delivered in PR #229; #224 delivered in PR #230; 2.8–2.9 deferred to #227; residuals in #225/#228 | Mostly done (#222/#229/#230) | Phase 3 live runs |
 | 3. Live ingestion | #213, #207, #208, #210 (sequential, IRI-churn-ordered) | multi-day, network-bound | Phase 4 long-tail |
 | 4. Long-tail | #203 (conditional), final sync, process | ad-hoc | — |
 
@@ -551,9 +542,9 @@ deliberately."
   All except #203 and the deferred-data jobs (#207, #208, #210, #213) closed
   in `45a6bea59` groundwork.
 - **#223–#228** — Follow-up issues filed from PR #222 review. #223 is
-  delivered in PR #229; #224–#228 keep remaining Phase 2 hardening, PDF probe
-  decisions, code hygiene, and roadmap maintenance visible before Phase 3 live
-  ingestion.
+  delivered in PR #229 and #224 is delivered in PR #230; #225–#228 keep
+  remaining Phase 2 hardening, PDF probe decisions, code hygiene, and roadmap
+  maintenance visible before Phase 3 live ingestion.
 
 ### Acceptance gates that must pass at end of each phase
 

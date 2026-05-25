@@ -725,14 +725,52 @@ def _xsd_anyuri(value: str) -> dict:
     return {"@value": value, "@type": "xsd:anyURI"}
 
 
+_SENTENCE_BOUNDARY_RE = re.compile(r"[.!?]\s+")
+_TOKEN_RE = re.compile(r"[^\W_]+", re.UNICODE)
+_ESTONIAN_ABBREVIATION_TOKENS = frozenset({"lg", "p", "vt", "nt", "jt", "nn"})
+
+
+def _is_false_estonian_abbreviation_boundary(head: str, boundary: int) -> bool:
+    """Return True for period-space matches that are abbreviation punctuation."""
+    if head[boundary] != ".":
+        return False
+
+    before_tokens = _TOKEN_RE.findall(head[:boundary])
+    if not before_tokens:
+        return False
+    before = before_tokens[-1].lower()
+    if before in _ESTONIAN_ABBREVIATION_TOKENS:
+        return True
+
+    after_match = _TOKEN_RE.search(head[boundary + 1 :])
+    after = after_match.group(0) if after_match else ""
+    if (
+        before.isdigit()
+        and len(before_tokens) >= 2
+        and before_tokens[-2].lower() in _ESTONIAN_ABBREVIATION_TOKENS
+    ):
+        return after[:1].islower()
+    return False
+
+
+def _late_sentence_boundary(head: str, min_index: float) -> int | None:
+    for match in reversed(list(_SENTENCE_BOUNDARY_RE.finditer(head))):
+        boundary = match.start()
+        if boundary <= min_index:
+            break
+        if not _is_false_estonian_abbreviation_boundary(head, boundary):
+            return boundary
+    return None
+
+
 def _truncate_to_sentence(text: str, max_chars: int) -> str:
     """Trim long annotation text at a sentence boundary where practical."""
     if len(text) <= max_chars:
         return text.rstrip()
     head = text[:max_chars]
-    last_period = max(head.rfind(". "), head.rfind("! "), head.rfind("? "))
-    if last_period > max_chars * 0.7:
-        return head[: last_period + 1].rstrip()
+    last_boundary = _late_sentence_boundary(head, max_chars * 0.7)
+    if last_boundary is not None:
+        return head[: last_boundary + 1].rstrip()
     last_space = head.rfind(" ")
     return (head[:last_space] if last_space > 0 else head).rstrip() + "…"
 
