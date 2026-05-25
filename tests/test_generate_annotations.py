@@ -227,6 +227,44 @@ class TestAnnotationTextTruncation:
     def test_no_space_fallback_keeps_head(self):
         assert ga._truncate_to_sentence("A" * 100, 20) == ("A" * 20) + "…"
 
+    @pytest.mark.parametrize(
+        ("fragment", "continuation"),
+        [
+            ("§ 47 lg 1. p 3", "kohaselt"),
+            ("§ 47 p 3. lg 2", "järgi"),
+            ("vt. Riigikohtu praktikat", "täpsemalt"),
+            ("nt. avalduse läbivaatamist", "hiljem"),
+            ("jt. menetlusosalisi", "eraldi"),
+            ("nn. halduspraktikat", "edaspidi"),
+        ],
+    )
+    def test_estonian_citation_abbreviation_boundary_is_not_used(
+        self, fragment: str, continuation: str
+    ):
+        text = (
+            ("A" * 70)
+            + f" {fragment} {continuation} tuleb asjaolusid hinnata "
+            + ("B" * 80)
+        )
+        max_chars = text.index("tuleb") + len("tuleb")
+
+        result = ga._truncate_to_sentence(text, max_chars)
+
+        assert f"{fragment} {continuation}" in result
+        assert result.endswith(f"{continuation}…")
+
+    def test_falls_back_to_prior_valid_sentence_before_false_citation_boundary(self):
+        text = (
+            ("A" * 90)
+            + ". "
+            + ("B" * 5)
+            + " § 47 lg 1. p 3 kohaselt tuleb asjaolusid hinnata "
+            + ("C" * 80)
+        )
+        max_chars = text.index("kohaselt") + len("kohaselt")
+
+        assert ga._truncate_to_sentence(text, max_chars) == ("A" * 90) + "."
+
 
 class TestBuildAnnotations:
     def test_opinion_citing_two_laws_yields_one_annotation_each(self, tmp_path: Path):
