@@ -582,7 +582,7 @@ class TestActLevelPlacement:
         from extract_temporal_data import is_act_level_node
         assert is_act_level_node({"@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]})
         assert is_act_level_node({"@type": ["estleg:Act"]})
-        assert is_act_level_node({"@type": ["owl:Ontology"]})
+        assert not is_act_level_node({"@type": ["owl:Ontology"]})
         assert is_act_level_node({"@type": "estleg:Act"})
         assert not is_act_level_node({"@type": ["owl:NamedIndividual", "estleg:LegalConcept"]})
         assert not is_act_level_node({"@type": ["estleg:LegalProvision_Foo"]})
@@ -598,6 +598,7 @@ class TestActLevelPlacement:
         assert find_act_node(graph)["@id"] == "estleg:M1"
         # No owl:Ontology -> first estleg:Act node.
         assert find_act_node(graph[:2])["@id"] == "estleg:A1"
+        assert find_act_node([{"@id": "estleg:Catalog", "@type": ["owl:Ontology"]}]) is None
         # Neither -> None (no graph[0] fallback).
         assert find_act_node([{"@id": "estleg:C1", "@type": ["estleg:LegalConcept"]}]) is None
         assert find_act_node([]) is None
@@ -791,4 +792,3 @@ class TestSinglePassClearAndEnrich:
             f"single-pass clear+enrich must save at most once per file; "
             f"got {peep_writes} saves for {peep}"
         )
-

@@ -1,0 +1,73 @@
+# generate_harmonisation_links.py started 2026-05-25T21:43:14.421048+00:00
+============================================================
+Generate harmonisation links: Estonian laws ↔ neighboring EU states
+Target countries: Latvia (LVA), Lithuania (LTU), Finland (FIN), Sweden (SWE)
+Endpoint: https://publications.europa.eu/webapi/rdf/sparql
+============================================================
+
+--- Clearing existing harmonisation data ---
+  Cleared harmonisedWith from 115 files
+  Cleared 159 old files from harmonisation_by_directive/
+
+--- Loading transposition mapping ---
+  transposition_mapping.json generated: 2026-05-26 (-1d ago)
+  Transposition mappings loaded: 299
+  Unique directives to query: 207
+
+--- Generating harmonisation schema ---
+  Saved: harmonisation_schema.json
+
+--- Querying EUR-Lex for parallel transpositions ---
+  Processing directive 1/207: 31990L0314
+  Processing directive 10/207: 32000L0059
+  Processing directive 20/207: 32003L0098
+  Processing directive 30/207: 32006L0050
+  Processing directive 40/207: 32007L0043
+  Processing directive 50/207: 32007L0070
+  Processing directive 60/207: 32008L0051
+  Processing directive 70/207: 32008L0079
+  Processing directive 80/207: 32008L0110
+  Processing directive 90/207: 32009L0017
+  Processing directive 100/207: 32009L0044
+  Processing directive 110/207: 32009L0081
+  Processing directive 120/207: 32009L0093
+  Processing directive 130/207: 32009L0123
+  Processing directive 140/207: 32009L0151
+  Processing directive 150/207: 32010L0016
+  Processing directive 160/207: 32010L0071
+  Processing directive 170/207: 32011L0012
+  Processing directive 180/207: 32011L0080
+  Processing directive 190/207: 32012L0040
+  Processing directive 200/207: 32013L0023
+
+  Directives queried: 207
+  Directives with parallel measures: 159
+  Total parallel measures found: 2625
+  Cache hits: 207/207
+  Query errors: 0
+
+--- Updating Estonian law files with harmonisation links ---
+  Law files updated: 115
+
+--- Generating harmonisation report ---
+  Saved: harmonisation_report.json
+
+============================================================
+Harmonisation linking complete!
+  Directives queried:             207
+  Directives with parallels:      159
+  Total parallel measures:        2625
+  Query errors:                   0
+  Law files updated:              115
+
+  Measures by country:
+    Lithuania            (LTU):  812
+    Finland              (FIN):  705
+    Sweden               (SWE):  634
+    Latvia               (LVA):  474
+
+Outputs:
+  krr_outputs/harmonisation/harmonisation_report.json
+  krr_outputs/harmonisation/harmonisation_schema.json
+  krr_outputs/harmonisation/harmonisation_by_directive/ (159 files)
+============================================================

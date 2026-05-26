@@ -6,20 +6,31 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
   },
   "@graph": [
     {
       "@id": "estleg:KVEKS_Map_2026",
       "@type": [
+        "owl:Ontology",
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "rdfs:label": "Kunstliku viljastamise ja embrüokaitse seadus teemakaardistus",
       "dc:source": "Kunstliku viljastamise ja embrüokaitse seadus",
-      "estleg:temporalStatus": "unknown",
+      "dcterms:title": "Kunstliku viljastamise ja embrüokaitse seadus",
+      "estleg:contentStatus": "structuredBody",
+      "dcterms:source": {
+        "@id": "https://www.riigiteataja.ee/akt/106072023052.xml"
+      },
+      "owl:sameAs": {
+        "@id": "https://www.riigiteataja.ee/akt/106072023052.xml"
+      },
+      "estleg:kehtiv": {
+        "@value": "2026-05-24",
+        "@type": "xsd:date"
+      },
       "dcterms:subject": [
         {
           "@id": "http://eurovoc.europa.eu/3221"
@@ -36,10 +47,11 @@
         {
           "@id": "http://eurovoc.europa.eu/3611"
         }
-      ]
+      ],
+      "estleg:temporalStatus": "unknown"
     },
     {
-      "@id": "estleg:LegalProvision_KVEKS",
+      "@id": "estleg:LegalProvision_kunstliku_viljastamise_ja_embruokaitse_seadus",
       "@type": [
         "owl:Class"
       ],
@@ -49,144 +61,541 @@
       }
     },
     {
+      "@id": "estleg:KVEKS_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": "Kunstliku viljastamise ja embrüokaitse seadus teemaskeem",
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_KVEKS_1"
+        },
+        {
+          "@id": "estleg:Cluster_KVEKS_2"
+        },
+        {
+          "@id": "estleg:Cluster_KVEKS_3"
+        },
+        {
+          "@id": "estleg:Cluster_KVEKS_4"
+        },
+        {
+          "@id": "estleg:Cluster_KVEKS_4_Dup2"
+        },
+        {
+          "@id": "estleg:Cluster_KVEKS_5"
+        }
+      ]
+    },
+    {
       "@id": "estleg:Cluster_KVEKS_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§1–3 ÜLDSÄTTED"
+      "rdfs:label": "§1–3 ÜLDSÄTTED",
+      "skos:prefLabel": "§1–3 ÜLDSÄTTED",
+      "skos:inScheme": {
+        "@id": "estleg:KVEKS_TopicScheme"
+      },
+      "estleg:provisionCount": 3
+    },
+    {
+      "@id": "estleg:Chapter_KVEKS_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "1. peatükk – ÜLDSÄTTED",
+      "estleg:chapterNumber": "1",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_KVEKS_1"
+      }
     },
     {
       "@id": "estleg:Cluster_KVEKS_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§4–15 KUNSTLIKU VILJASTAMISE KORD JA TINGIMUSED"
+      "rdfs:label": "§4–15 KUNSTLIKU VILJASTAMISE KORD JA TINGIMUSED",
+      "skos:prefLabel": "§4–15 KUNSTLIKU VILJASTAMISE KORD JA TINGIMUSED",
+      "skos:inScheme": {
+        "@id": "estleg:KVEKS_TopicScheme"
+      },
+      "estleg:provisionCount": 12
+    },
+    {
+      "@id": "estleg:Chapter_KVEKS_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "2. peatükk – KUNSTLIKU VILJASTAMISE KORD JA TINGIMUSED",
+      "estleg:chapterNumber": "2",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_KVEKS_2"
+      }
     },
     {
       "@id": "estleg:Cluster_KVEKS_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§16–28 KUNSTLIKUS VILJASTAMISES OSALEVATE ISIKUTE ÕIGUSED JA KOHUSTUSED"
+      "rdfs:label": "§16–28 KUNSTLIKUS VILJASTAMISES OSALEVATE ISIKUTE ÕIGUSED JA KOHUSTUSED",
+      "skos:prefLabel": "§16–28 KUNSTLIKUS VILJASTAMISES OSALEVATE ISIKUTE ÕIGUSED JA KOHUSTUSED",
+      "skos:inScheme": {
+        "@id": "estleg:KVEKS_TopicScheme"
+      },
+      "estleg:provisionCount": 13
+    },
+    {
+      "@id": "estleg:Chapter_KVEKS_3",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "3. peatükk – KUNSTLIKUS VILJASTAMISES OSALEVATE ISIKUTE ÕIGUSED JA KOHUSTUSED",
+      "estleg:chapterNumber": "3",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_KVEKS_3"
+      }
     },
     {
       "@id": "estleg:Cluster_KVEKS_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§29–35 KEHAVÄLISELT LOODUD EMBRÜO KAITSE"
+      "rdfs:label": "§29–35 KEHAVÄLISELT LOODUD EMBRÜO KAITSE",
+      "skos:prefLabel": "§29–35 KEHAVÄLISELT LOODUD EMBRÜO KAITSE",
+      "skos:inScheme": {
+        "@id": "estleg:KVEKS_TopicScheme"
+      },
+      "estleg:provisionCount": 7
+    },
+    {
+      "@id": "estleg:Chapter_KVEKS_4",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "4. peatükk – KEHAVÄLISELT LOODUD EMBRÜO KAITSE",
+      "estleg:chapterNumber": "4",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_KVEKS_4"
+      }
+    },
+    {
+      "@id": "estleg:Cluster_KVEKS_4_Dup2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": "§35–35 KEHAVÄLISE VILJASTAMISE HÜVITIS",
+      "skos:prefLabel": "§35–35 KEHAVÄLISE VILJASTAMISE HÜVITIS",
+      "skos:inScheme": {
+        "@id": "estleg:KVEKS_TopicScheme"
+      },
+      "estleg:provisionCount": 1
+    },
+    {
+      "@id": "estleg:Chapter_KVEKS_4_Dup2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "4. peatükk – KEHAVÄLISE VILJASTAMISE HÜVITIS",
+      "estleg:chapterNumber": "4",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_KVEKS_4_Dup2"
+      }
     },
     {
       "@id": "estleg:Cluster_KVEKS_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§36–120 LÕPPSÄTTED"
+      "rdfs:label": "§36–38 LÕPPSÄTTED",
+      "skos:prefLabel": "§36–38 LÕPPSÄTTED",
+      "skos:inScheme": {
+        "@id": "estleg:KVEKS_TopicScheme"
+      },
+      "estleg:provisionCount": 3
+    },
+    {
+      "@id": "estleg:Chapter_KVEKS_5",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "5. peatükk – LÕPPSÄTTED",
+      "estleg:chapterNumber": "5",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_KVEKS_5"
+      }
     },
     {
       "@id": "estleg:KVEKS_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KVEKS"
+        "estleg:LegalProvision_kunstliku_viljastamise_ja_embruokaitse_seadus"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. Seaduse reguleerimisala",
       "estleg:sourceAct": "Kunstliku viljastamise ja embrüokaitse seadus",
-      "estleg:summary": "Käesolev seadus reguleerib naise kunstlikku viljastamist mehe seemnerakkudega, samuti toiminguid naise munaraku kehavälisel viljastamisel ning toiminguid sel teel loodud ja säilitatava inimembrüoga. Käesolev seadus reguleerib naise kunstlikku viljastamist mehe seemnerakkudega, samuti toiminguid naise munaraku kehavälisel viljastamisel ning toiminguid sel teel loodud ja säilitatava inimembrüoga.",
+      "estleg:summary": "1 (1) Käesolev seadus reguleerib naise kunstlikku viljastamist mehe seemnerakuga, kehaväliselt loodud embrüo siirdamist ja kehaväliselt loodud embrüo kaitset ning kunstliku viljastamise tulemusena sündinud lapse põlvnemist. RT I 2023-07-06 6 106072023006 2024-01-01 Käesolev seadus reguleerib naise kunstlikku viljastamist mehe seemnerakuga, kehaväliselt loodud embrüo siirdamist ja kehaväliselt loodud embrüo kaitset ning kunstliku viljastamise tulemusena sündinud lapse põlvnemist. 2 (2) Sugurakkud",
+      "estleg:legalText": "(1) Käesolev seadus reguleerib naise kunstlikku viljastamist mehe seemnerakuga, kehaväliselt loodud embrüo siirdamist ja kehaväliselt loodud embrüo kaitset ning kunstliku viljastamise tulemusena sündinud lapse põlvnemist. (2) Sugurakkude hankimist ja embrüo loomist ning sugurakkude ja embrüo kodeerimist, märgistamist, uurimist, säilitamist, töötlemist, pakendamist, ladustamist, vabastamist ja väljastamist reguleerib rakkude, kudede ja elundite hankimise, käitlemise ja siirdamise seadus, kui käesolevas seaduses ei ole sätestatud teisiti.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KVEKS_1"
-      }
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KVEKS_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KVEKS_Par_1_Lg_1"
+        },
+        {
+          "@id": "estleg:KVEKS_Par_1_Lg_2"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:KVEKS_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolev seadus reguleerib naise kunstlikku viljastamist mehe seemnerakuga, kehaväliselt loodud embrüo siirdamist ja kehaväliselt loodud embrüo kaitset ning kunstliku viljastamise tulemusena sündinud lapse põlvnemist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
+    },
+    {
+      "@id": "estleg:KVEKS_Par_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Sugurakkude hankimist ja embrüo loomist ning sugurakkude ja embrüo kodeerimist, märgistamist, uurimist, säilitamist, töötlemist, pakendamist, ladustamist, vabastamist ja väljastamist reguleerib rakkude, kudede ja elundite hankimise, käitlemise ja siirdamise seadus, kui käesolevas seaduses ei ole sätestatud teisiti.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 2"
     },
     {
       "@id": "estleg:KVEKS_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KVEKS"
+        "estleg:LegalProvision_kunstliku_viljastamise_ja_embruokaitse_seadus"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. Kunstlik viljastamine",
       "estleg:sourceAct": "Kunstliku viljastamise ja embrüokaitse seadus",
-      "estleg:summary": "Kunstlik viljastamine kujutab endast naise rasestamise eesmärgil kehasiseselt või kehaväliselt sooritatavaid toiminguid, mille käigus kunstlikult kutsutakse esile mehe seemneraku tungimine naise munarakku, sisestatakse mehe seemnerakk kunstlikult naise munarakku või kantakse naisele üle kehaväliselt viljastatud munarakk. Kunstlik viljastamine kujutab endast naise rasestamise eesmärgil kehasiseselt või kehaväliselt sooritatavaid toiminguid, mille käigus kunstlikult kutsutakse esile mehe seemnerak",
+      "estleg:summary": "Kunstlik viljastamine kujutab endast naise rasestamise eesmärgil sooritatavaid toiminguid, mille käigus kantakse naisele üle mehe seemnerakud või kehaväliselt loodud embrüo. RT I 2008 25 163 12978679 2009-01-01 Kunstlik viljastamine kujutab endast naise rasestamise eesmärgil sooritatavaid toiminguid, mille käigus kantakse naisele üle mehe seemnerakud või kehaväliselt loodud embrüo.",
+      "estleg:legalText": "Kunstlik viljastamine kujutab endast naise rasestamise eesmärgil sooritatavaid toiminguid, mille käigus kantakse naisele üle mehe seemnerakud või kehaväliselt loodud embrüo.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KVEKS_1"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KVEKS_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KVEKS_Par_2_Lg_Unknown_1"
+        }
+      ],
       "estleg:referencedBy": [
         {
           "@id": "estleg:KVEKS_Par_8"
-        },
-        {
-          "@id": "estleg:KVEKS_Par_28"
         }
       ]
+    },
+    {
+      "@id": "estleg:KVEKS_Par_2_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Kunstlik viljastamine kujutab endast naise rasestamise eesmärgil sooritatavaid toiminguid, mille käigus kantakse naisele üle mehe seemnerakud või kehaväliselt loodud embrüo.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_2"
+      }
     },
     {
       "@id": "estleg:KVEKS_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KVEKS"
+        "estleg:LegalProvision_kunstliku_viljastamise_ja_embruokaitse_seadus"
       ],
       "estleg:paragrahv": "§ 3.",
       "rdfs:label": "§ 3. Embrüo",
       "estleg:sourceAct": "Kunstliku viljastamise ja embrüokaitse seadus",
       "estleg:summary": "Embrüo on varajases arenemisjärgus olev loode, alates munaraku viljastumisest. Kui ei ole sätestatud teisiti, mõeldakse käesolevas seaduses embrüo all inimembrüot. Embrüo on varajases arenemisjärgus olev loode, alates munaraku viljastumisest. Kui ei ole sätestatud teisiti, mõeldakse käesolevas seaduses embrüo all inimembrüot.",
+      "estleg:legalText": "Embrüo on varajases arenemisjärgus olev loode, alates munaraku viljastumisest. Kui ei ole sätestatud teisiti, mõeldakse käesolevas seaduses embrüo all inimembrüot.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KVEKS_1"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KVEKS_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KVEKS_Par_3_Lg_Unknown_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:KVEKS_Par_3_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Embrüo on varajases arenemisjärgus olev loode, alates munaraku viljastumisest. Kui ei ole sätestatud teisiti, mõeldakse käesolevas seaduses embrüo all inimembrüot.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_3"
       }
+    },
+    {
+      "@id": "estleg:KVEKS_Par_3_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_kunstliku_viljastamise_ja_embruokaitse_seadus"
+      ],
+      "estleg:paragrahv": "§ 3<sup>1</sup>.",
+      "rdfs:label": "§ 3<sup>1</sup>. Kunstliku viljastamise doonor",
+      "estleg:sourceAct": "Kunstliku viljastamise ja embrüokaitse seadus",
+      "estleg:summary": "Kunstliku viljastamise doonor (edaspidi doonor) on anonüümne doonor, mittepartnerist doonor või partnerannetaja, kes loovutab vabatahtlikult oma sugurakke kunstlikuks viljastamiseks. Kui käesolevast seadusest ei tulene teisiti, loetakse nii munaraku- kui ka spermadoonor doonoriks. RT I 2023-07-06 6 106072023006 2024-01-01 Kunstliku viljastamise doonor (edaspidi doonor) on anonüümne doonor, mittepartnerist doonor või partnerannetaja, kes loovutab vabatahtlikult oma sugurakke kunstlikuks viljastam",
+      "estleg:legalText": "Kunstliku viljastamise doonor (edaspidi doonor) on anonüümne doonor, mittepartnerist doonor või partnerannetaja, kes loovutab vabatahtlikult oma sugurakke kunstlikuks viljastamiseks. Kui käesolevast seadusest ei tulene teisiti, loetakse nii munaraku- kui ka spermadoonor doonoriks.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_KVEKS_1"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KVEKS_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KVEKS_Par_3_1_Lg_Unknown_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:KVEKS_Par_3_1_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Kunstliku viljastamise doonor (edaspidi doonor) on anonüümne doonor, mittepartnerist doonor või partnerannetaja, kes loovutab vabatahtlikult oma sugurakke kunstlikuks viljastamiseks. Kui käesolevast seadusest ei tulene teisiti, loetakse nii munaraku- kui ka spermadoonor doonoriks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_3_1"
+      }
+    },
+    {
+      "@id": "estleg:KVEKS_Par_3_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_kunstliku_viljastamise_ja_embruokaitse_seadus"
+      ],
+      "estleg:paragrahv": "§ 3<sup>2</sup>.",
+      "rdfs:label": "§ 3<sup>2</sup>. Partnerannetus, mittepartnerannetus ja anonüümne annetus",
+      "estleg:sourceAct": "Kunstliku viljastamise ja embrüokaitse seadus",
+      "estleg:summary": "1 (1) Partnerannetus käesoleva seaduse tähenduses on sugurakkude annetus mehe ja naise vahel, kus doonori isik on retsipiendile teada ning doonor avaldab, et laps loetakse põlvnevaks doonorist. Partnerannetus käesoleva seaduse tähenduses on sugurakkude annetus mehe ja naise vahel, kus doonori isik on retsipiendile teada ning doonor avaldab, et laps loetakse põlvnevaks doonorist. 2 (2) Mittepartnerannetus käesoleva seaduse tähenduses on sugurakkude annetus, kus doonori isik on retsipiendile teada",
+      "estleg:legalText": "(1) Partnerannetus käesoleva seaduse tähenduses on sugurakkude annetus mehe ja naise vahel, kus doonori isik on retsipiendile teada ning doonor avaldab, et laps loetakse põlvnevaks doonorist. (2) Mittepartnerannetus käesoleva seaduse tähenduses on sugurakkude annetus, kus doonori isik on retsipiendile teada, kuid doonor avaldab, et last ei loeta põlvnevaks doonorist. (3) Anonüümne annetus käesoleva seaduse tähenduses on sugurakkude annetus, kus doonori isik ei ole retsipiendile teada ning doonor avaldab, et last ei loeta põlvnevaks doonorist.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_KVEKS_1"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KVEKS_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KVEKS_Par_3_2_Lg_1"
+        },
+        {
+          "@id": "estleg:KVEKS_Par_3_2_Lg_2"
+        },
+        {
+          "@id": "estleg:KVEKS_Par_3_2_Lg_3"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen"
+      ]
+    },
+    {
+      "@id": "estleg:KVEKS_Par_3_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Partnerannetus käesoleva seaduse tähenduses on sugurakkude annetus mehe ja naise vahel, kus doonori isik on retsipiendile teada ning doonor avaldab, et laps loetakse põlvnevaks doonorist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_3_2"
+      },
+      "rdfs:label": "§ 3<sup>2</sup> lg 1"
+    },
+    {
+      "@id": "estleg:KVEKS_Par_3_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Mittepartnerannetus käesoleva seaduse tähenduses on sugurakkude annetus, kus doonori isik on retsipiendile teada, kuid doonor avaldab, et last ei loeta põlvnevaks doonorist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_3_2"
+      },
+      "rdfs:label": "§ 3<sup>2</sup> lg 2"
+    },
+    {
+      "@id": "estleg:KVEKS_Par_3_2_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Anonüümne annetus käesoleva seaduse tähenduses on sugurakkude annetus, kus doonori isik ei ole retsipiendile teada ning doonor avaldab, et last ei loeta põlvnevaks doonorist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_3_2"
+      },
+      "rdfs:label": "§ 3<sup>2</sup> lg 3"
     },
     {
       "@id": "estleg:KVEKS_Par_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KVEKS"
+        "estleg:LegalProvision_kunstliku_viljastamise_ja_embruokaitse_seadus"
       ],
       "estleg:paragrahv": "§ 4.",
       "rdfs:label": "§ 4. Kunstliku viljastamise vabatahtlikkus",
       "estleg:sourceAct": "Kunstliku viljastamise ja embrüokaitse seadus",
-      "estleg:summary": "1(1)Kunstlikult on lubatud viljastada üksnes täisealist kuni 50-aastast teovõimelist naist tema enda soovil. Keegi ei tohi sundida ega mõjutada naist laskma end kunstlikult viljastada. Kunstlikult on lubatud viljastada üksnes täisealist kuni 50-aastast teovõimelist naist tema enda soovil. Keegi ei tohi sundida ega mõjutada naist laskma end kunstlikult viljastada. 2(2)Naise nõusolek kunstlikuks viljastamiseks peab olema vormistatud käesoleva seaduse §-s 16 sätestatud korras. Naise nõusolek kunstl",
+      "estleg:summary": "1 (1) Kunstlikult on lubatud viljastada üksnes täisealist nooremat kui 51-aastast teovõimelist naist tema enda soovil. Keegi ei tohi sundida ega mõjutada naist laskma end kunstlikult viljastada. RT I 2023-07-06 6 106072023006 2024-01-01 Kunstlikult on lubatud viljastada üksnes täisealist nooremat kui 51-aastast teovõimelist naist tema enda soovil. Keegi ei tohi sundida ega mõjutada naist laskma end kunstlikult viljastada. 2 (2) Naise nõusolek kunstlikuks viljastamiseks peab olema vormistatud käe",
+      "estleg:legalText": "(1) Kunstlikult on lubatud viljastada üksnes täisealist nooremat kui 51-aastast teovõimelist naist tema enda soovil. Keegi ei tohi sundida ega mõjutada naist laskma end kunstlikult viljastada. (2) Naise nõusolek kunstlikuks viljastamiseks peab olema vormistatud käesoleva seaduse §-s 16 sätestatud korras. (3) Naisel on õigus kunstlikust viljastamisest loobuda kuni selle teostamiseni ning kuulutada oma nõusolek kehtetuks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KVEKS_2"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KVEKS_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KVEKS_Par_4_Lg_1"
+        },
+        {
+          "@id": "estleg:KVEKS_Par_4_Lg_2"
+        },
+        {
+          "@id": "estleg:KVEKS_Par_4_Lg_3"
+        }
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Prohibition"
       },
-      "estleg:dutyHolder": "Naise nõusolek kunstlikuks viljastamiseks",
-      "estleg:references": [
+      "estleg:semanticallySimilarTo": [
         {
-          "@id": "estleg:KVEKS_Par_16"
+          "@id": "estleg:RKSS_Par_5",
+          "estleg:similarityScore": {
+            "@value": "0.367",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
         }
       ],
       "estleg:referencedBy": [
         {
           "@id": "estleg:KVEKS_Par_16"
+        },
+        {
+          "@id": "estleg:KVEKS_Par_32"
         }
       ]
+    },
+    {
+      "@id": "estleg:KVEKS_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kunstlikult on lubatud viljastada üksnes täisealist nooremat kui 51-aastast teovõimelist naist tema enda soovil. Keegi ei tohi sundida ega mõjutada naist laskma end kunstlikult viljastada.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1"
+    },
+    {
+      "@id": "estleg:KVEKS_Par_4_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Naise nõusolek kunstlikuks viljastamiseks peab olema vormistatud käesoleva seaduse §-s 16 sätestatud korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 2"
+    },
+    {
+      "@id": "estleg:KVEKS_Par_4_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Naisel on õigus kunstlikust viljastamisest loobuda kuni selle teostamiseni ning kuulutada oma nõusolek kehtetuks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 3"
     },
     {
       "@id": "estleg:KVEKS_Par_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KVEKS"
+        "estleg:LegalProvision_kunstliku_viljastamise_ja_embruokaitse_seadus"
       ],
       "estleg:paragrahv": "§ 5.",
       "rdfs:label": "§ 5. Kunstliku viljastamise näidustused",
       "estleg:sourceAct": "Kunstliku viljastamise ja embrüokaitse seadus",
-      "estleg:summary": "1(1)Naise kunstlik viljastamine on lubatud vastavatel meditsiinilistel näidustustel. Naise kunstlik viljastamine on lubatud vastavatel meditsiinilistel näidustustel. 2(2)Vallalise naise kunstlik viljastamine toimub käesoleva seaduse §-des 21 ja 22 ettenähtud tingimustel. Vallalise naise kunstlik viljastamine toimub käesoleva seaduse §-des 21 ja 22 ettenähtud tingimustel. 3(3)Naise kunstlik viljastamine on keelatud, kui rasedus või sünnitamine ohustab naise või lapse elu või tervist, samuti muude",
+      "estleg:summary": "1 (1) Naise kunstlik viljastamine on lubatud doonorsugurakkude või võõrast munarakust loodud embrüoga sõltumata tema perekonnaseisust: 1 1) meditsiinilistel näidustustel või 2 2) sobiva meespartneri puudumisel. RT I 2023-07-06 6 106072023006 2024-01-01 Naise kunstlik viljastamine on lubatud doonorsugurakkude või võõrast munarakust loodud embrüoga sõltumata tema perekonnaseisust: meditsiinilistel näidustustel või sobiva meespartneri puudumisel. 2 (2) Kehtetu - RT I 2023-07-06 6 106072023006 2024-",
+      "estleg:legalText": "(1) Naise kunstlik viljastamine on lubatud doonorsugurakkude või võõrast munarakust loodud embrüoga sõltumata tema perekonnaseisust: meditsiinilistel näidustustel või sobiva meespartneri puudumisel. (2) Kehtetu - (3) Naise kunstlik viljastamine on keelatud, kui rasedus või sünnitamine ohustab naise või lapse elu või tervist, samuti muudel meditsiinilistel vastunäidustustel.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KVEKS_2"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KVEKS_2"
       },
-      "estleg:references": [
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:KVEKS_Par_21"
+          "@id": "estleg:KVEKS_Par_5_Lg_1"
+        },
+        {
+          "@id": "estleg:KVEKS_Par_5_Lg_2"
+        },
+        {
+          "@id": "estleg:KVEKS_Par_5_Lg_3"
         }
       ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
       "estleg:referencedBy": [
         {
           "@id": "estleg:KVEKS_Par_6"
@@ -197,447 +606,1380 @@
       ]
     },
     {
+      "@id": "estleg:KVEKS_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Naise kunstlik viljastamine on lubatud doonorsugurakkude või võõrast munarakust loodud embrüoga sõltumata tema perekonnaseisust: meditsiinilistel näidustustel või sobiva meespartneri puudumisel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1"
+    },
+    {
+      "@id": "estleg:KVEKS_Par_5_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 2"
+    },
+    {
+      "@id": "estleg:KVEKS_Par_5_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Naise kunstlik viljastamine on keelatud, kui rasedus või sünnitamine ohustab naise või lapse elu või tervist, samuti muudel meditsiinilistel vastunäidustustel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 3"
+    },
+    {
       "@id": "estleg:KVEKS_Par_6",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KVEKS"
+        "estleg:LegalProvision_kunstliku_viljastamise_ja_embruokaitse_seadus"
       ],
       "estleg:paragrahv": "§ 6.",
       "rdfs:label": "§ 6. Kunstliku viljastamise näidustuste tuvastamine",
       "estleg:sourceAct": "Kunstliku viljastamise ja embrüokaitse seadus",
-      "estleg:summary": "1(1)Käesoleva seaduse §-s 5 nimetatud näidustused tuvastab kunstlikku viljastamist teostav tervishoiuasutus, kellel on õigus suunata patsient vajaduse korral uuringutele mõnda teise tervishoiuasutusse või nõuda patsiendi kohta muid vajalikke andmeid. Käesoleva seaduse §-s 5 nimetatud näidustused tuvastab kunstlikku viljastamist teostav tervishoiuasutus, kellel on õigus suunata patsient vajaduse korral uuringutele mõnda teise tervishoiuasutusse või nõuda patsiendi kohta muid vajalikke andmeid. 2(",
+      "estleg:summary": "1 (1) Käesoleva seaduse §-s 5 nimetatud näidustused tuvastab pädev eriarstiabi osutaja, kellel on õigus suunata patsient vajaduse korral kunstlikku viljastamist korraldava eriarstiabi osutaja juurde. Kunstlikku viljastamist korraldav eriarstiabi osutaja kontrollib talle edastatud dokumentide põhjal kunstliku viljastamise näidustatust, sealhulgas on tal õigus nõuda täiendavaid andmeid patsiendi tervise seisundi kohta eriarstiabi osutajalt, kes patsiendi tema juurde suunas, ning teeb vajaduse korr",
+      "estleg:legalText": "(1) Käesoleva seaduse §-s 5 nimetatud näidustused tuvastab pädev eriarstiabi osutaja, kellel on õigus suunata patsient vajaduse korral kunstlikku viljastamist korraldava eriarstiabi osutaja juurde. Kunstlikku viljastamist korraldav eriarstiabi osutaja kontrollib talle edastatud dokumentide põhjal kunstliku viljastamise näidustatust, sealhulgas on tal õigus nõuda täiendavaid andmeid patsiendi tervise seisundi kohta eriarstiabi osutajalt, kes patsiendi tema juurde suunas, ning teeb vajaduse korral täiendavaid uuringuid. (2) Kunstliku viljastamise näidustatuse uurimine dokumenteeritakse tervishoiuteenuse osutamist tõendavas dokumendis, mis peab sisaldama järelduse kunstliku viljastamise meditsiiniliste näidustuste ja vastunäidustuste kohta.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KVEKS_2"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KVEKS_2"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KVEKS_Par_6_Lg_1"
+        },
+        {
+          "@id": "estleg:KVEKS_Par_6_Lg_2"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen"
+      ],
       "estleg:references": [
         {
           "@id": "estleg:KVEKS_Par_5"
         }
       ],
-      "estleg:targetGroup": [
-        "citizen"
-      ]
-    },
-    {
-      "@id": "estleg:KVEKS_Par_7",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_KVEKS"
-      ],
-      "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Arsti ainuõigus teostada kunstlikku viljastamist",
-      "estleg:sourceAct": "Kunstliku viljastamise ja embrüokaitse seadus",
-      "estleg:summary": "1(1)Kunstliku viljastamise vajalikkuse ja lubatavuse üle otsustab arst, lähtudes käesolevas seaduses ja muudes õigusaktides kehtestatud korrast. Kunstliku viljastamise vajalikkuse ja lubatavuse üle otsustab arst, lähtudes käesolevas seaduses ja muudes õigusaktides kehtestatud korrast. 2(2)Ainult arst võib teostada kunstlikku viljastamist, kanda naisele üle embrüo või külmutada embrüot. Kunstliku viljastamise toimingute teostamises võivad osaleda selleks väljaõppe saanud muud meditsiinitöötajad. ",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KVEKS_2"
-      },
       "estleg:normativeType": {
         "@id": "estleg:NormType_Right"
       }
     },
     {
+      "@id": "estleg:KVEKS_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesoleva seaduse §-s 5 nimetatud näidustused tuvastab pädev eriarstiabi osutaja, kellel on õigus suunata patsient vajaduse korral kunstlikku viljastamist korraldava eriarstiabi osutaja juurde. Kunstlikku viljastamist korraldav eriarstiabi osutaja kontrollib talle edastatud dokumentide põhjal kunstliku viljastamise näidustatust, sealhulgas on tal õigus nõuda täiendavaid andmeid patsiendi tervise seisundi kohta eriarstiabi osutajalt, kes patsiendi tema juurde suunas, ning teeb vajaduse korral täiendavaid uuringuid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1"
+    },
+    {
+      "@id": "estleg:KVEKS_Par_6_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kunstliku viljastamise näidustatuse uurimine dokumenteeritakse tervishoiuteenuse osutamist tõendavas dokumendis, mis peab sisaldama järelduse kunstliku viljastamise meditsiiniliste näidustuste ja vastunäidustuste kohta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 2"
+    },
+    {
+      "@id": "estleg:KVEKS_Par_7",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_kunstliku_viljastamise_ja_embruokaitse_seadus"
+      ],
+      "estleg:paragrahv": "§ 7.",
+      "rdfs:label": "§ 7. Arsti ainuõigus teostada kunstlikku viljastamist",
+      "estleg:sourceAct": "Kunstliku viljastamise ja embrüokaitse seadus",
+      "estleg:summary": "1 (1) Kunstliku viljastamise vajalikkuse ja lubatavuse üle otsustab arst, lähtudes käesolevas seaduses ja muudes õigusaktides kehtestatud korrast. Kunstliku viljastamise vajalikkuse ja lubatavuse üle otsustab arst, lähtudes käesolevas seaduses ja muudes õigusaktides kehtestatud korrast. 2 (2) Ainult arst võib teostada kunstlikku viljastamist ja kanda naisele üle embrüo. Kunstliku viljastamise toimingutes võivad osaleda selleks väljaõppe saanud muud tervishoiutöötajad. RT I 2008 25 163 12978679 2",
+      "estleg:legalText": "(1) Kunstliku viljastamise vajalikkuse ja lubatavuse üle otsustab arst, lähtudes käesolevas seaduses ja muudes õigusaktides kehtestatud korrast. (2) Ainult arst võib teostada kunstlikku viljastamist ja kanda naisele üle embrüo. Kunstliku viljastamise toimingutes võivad osaleda selleks väljaõppe saanud muud tervishoiutöötajad.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_KVEKS_2"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KVEKS_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KVEKS_Par_7_Lg_1"
+        },
+        {
+          "@id": "estleg:KVEKS_Par_7_Lg_2"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:KVEKS_Par_7_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kunstliku viljastamise vajalikkuse ja lubatavuse üle otsustab arst, lähtudes käesolevas seaduses ja muudes õigusaktides kehtestatud korrast.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 1"
+    },
+    {
+      "@id": "estleg:KVEKS_Par_7_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Ainult arst võib teostada kunstlikku viljastamist ja kanda naisele üle embrüo. Kunstliku viljastamise toimingutes võivad osaleda selleks väljaõppe saanud muud tervishoiutöötajad.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 2"
+    },
+    {
       "@id": "estleg:KVEKS_Par_8",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KVEKS"
+        "estleg:LegalProvision_kunstliku_viljastamise_ja_embruokaitse_seadus"
       ],
       "estleg:paragrahv": "§ 8.",
       "rdfs:label": "§ 8. Meditsiiniliste toimingute vabatahtlikkus",
       "estleg:sourceAct": "Kunstliku viljastamise ja embrüokaitse seadus",
-      "estleg:summary": "1(1)Arsti või muud meditsiinitöötajat ei saa kohustada teostama käesoleva seaduse §-s 2 nimetatud toiminguid ega neist osa võtma. Arsti või muud meditsiinitöötajat ei saa kohustada teostama käesoleva seaduse §-s 2 nimetatud toiminguid ega neist osa võtma. 2(2)Kui arst on alustanud kunstlikku viljastamist, võib ta selle katkestada meditsiiniliste vastunäidustuste korral. Kui arst on alustanud kunstlikku viljastamist, võib ta selle katkestada meditsiiniliste vastunäidustuste korral.",
+      "estleg:summary": "1 (1) Arsti või muud tervishoiutöötajat ei saa kohustada teostama käesoleva seaduse §-s 2 nimetatud toiminguid ega neist osa võtma. Arsti või muud tervishoiutöötajat ei saa kohustada teostama käesoleva seaduse §-s 2 nimetatud toiminguid ega neist osa võtma. 2 (2) Kui arst on alustanud kunstlikku viljastamist, võib ta selle katkestada meditsiiniliste vastunäidustuste korral. RT I 2003 18 102 259015 2003-03-07 Kui arst on alustanud kunstlikku viljastamist, võib ta selle katkestada meditsiiniliste ",
+      "estleg:legalText": "(1) Arsti või muud tervishoiutöötajat ei saa kohustada teostama käesoleva seaduse §-s 2 nimetatud toiminguid ega neist osa võtma. (2) Kui arst on alustanud kunstlikku viljastamist, võib ta selle katkestada meditsiiniliste vastunäidustuste korral.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KVEKS_2"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KVEKS_2"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KVEKS_Par_8_Lg_1"
+        },
+        {
+          "@id": "estleg:KVEKS_Par_8_Lg_2"
+        }
+      ],
       "estleg:references": [
         {
           "@id": "estleg:KVEKS_Par_2"
         }
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:KVEKS_Par_8_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Arsti või muud tervishoiutöötajat ei saa kohustada teostama käesoleva seaduse §-s 2 nimetatud toiminguid ega neist osa võtma.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 1"
+    },
+    {
+      "@id": "estleg:KVEKS_Par_8_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kui arst on alustanud kunstlikku viljastamist, võib ta selle katkestada meditsiiniliste vastunäidustuste korral.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 2"
     },
     {
       "@id": "estleg:KVEKS_Par_9",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KVEKS"
+        "estleg:LegalProvision_kunstliku_viljastamise_ja_embruokaitse_seadus"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Kunstliku viljastamise teostamine tervishoiuasutuses",
+      "rdfs:label": "§ 9. Kunstliku viljastamise korraldamine",
       "estleg:sourceAct": "Kunstliku viljastamise ja embrüokaitse seadus",
-      "estleg:summary": "1(1)Kunstlikku viljastamist võib teostada tervishoiuasutuses, millel on kunstliku viljastamise teostamiseks tegevusluba. Kunstlikku viljastamist võib teostada tervishoiuasutuses, millel on kunstliku viljastamise teostamiseks tegevusluba. 2(2)Kunstliku viljastamise tegevusluba antakse tervishoiuasutusele sotsiaalministri kehtestatud korras tervishoiukorralduse seaduse (RT I 1994, 10, 133; 1995, 57, 978) alusel. Kunstliku viljastamise tegevusluba antakse tervishoiuasutusele sotsiaalministri kehtes",
+      "estleg:summary": "Kunstlikku viljastamist võib korraldada eriarstiabi osutaja, kellele tervishoiuteenuste korraldamise seaduse alusel väljastatud tegevusluba annab õiguse kunstlikuks viljastamiseks. RT I 2003 18 102 259015 2003-03-07 Kunstlikku viljastamist võib korraldada eriarstiabi osutaja, kellele tervishoiuteenuste korraldamise seaduse alusel väljastatud tegevusluba annab õiguse kunstlikuks viljastamiseks.",
+      "estleg:legalText": "Kunstlikku viljastamist võib korraldada eriarstiabi osutaja, kellele tervishoiuteenuste korraldamise seaduse alusel väljastatud tegevusluba annab õiguse kunstlikuks viljastamiseks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KVEKS_2"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KVEKS_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KVEKS_Par_9_Lg_Unknown_1"
+        }
+      ],
       "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:KVEKS_Par_9_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Kunstlikku viljastamist võib korraldada eriarstiabi osutaja, kellele tervishoiuteenuste korraldamise seaduse alusel väljastatud tegevusluba annab õiguse kunstlikuks viljastamiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_9"
       }
     },
     {
       "@id": "estleg:KVEKS_Par_10",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KVEKS"
+        "estleg:LegalProvision_kunstliku_viljastamise_ja_embruokaitse_seadus"
       ],
       "estleg:paragrahv": "§ 10.",
       "rdfs:label": "§ 10. Meditsiiniline ja õiguslik nõustamine",
       "estleg:sourceAct": "Kunstliku viljastamise ja embrüokaitse seadus",
-      "estleg:summary": "1(1)Kunstlikku viljastamist soovivale naisele ning käesoleva seaduse §-des 17 ja 21 toodud juhtudel ka mehele tuleb kunstlikku viljastamist teostavas tervishoiuasutuses enne kunstliku viljastamise teostamist ning pärast käesoleva seaduse §-s 5 ettenähtud näidustuste tuvastamist selgitada kunstliku viljastamise bioloogilist ja meditsiinilist olemust ning sellega seotud võimalikke riske, samuti kunstliku viljastamise õiguslikke aluseid ja tagajärgi. Kunstlikku viljastamist soovivale naisele ning k",
+      "estleg:summary": "1 (1) Kunstlikku viljastamist soovivale naisele ja mehele, kes kunstliku viljastamise raames annetab oma seemnerakke mittepartnerist doonorina või partnerannetajana, peab kunstlikku viljastamist korraldav eriarstiabi osutaja enne kunstlikku viljastamist ning pärast käesoleva seaduse §-s 5 ettenähtud näidustuste tuvastamist selgitama kunstliku viljastamise bioloogilist ja meditsiinilist olemust ning sellega seotud võimalikke riske. RT I 2023-07-06 6 106072023006 2024-01-01 Kunstlikku viljastamist",
+      "estleg:legalText": "(1) Kunstlikku viljastamist soovivale naisele ja mehele, kes kunstliku viljastamise raames annetab oma seemnerakke mittepartnerist doonorina või partnerannetajana, peab kunstlikku viljastamist korraldav eriarstiabi osutaja enne kunstlikku viljastamist ning pärast käesoleva seaduse §-s 5 ettenähtud näidustuste tuvastamist selgitama kunstliku viljastamise bioloogilist ja meditsiinilist olemust ning sellega seotud võimalikke riske. (1<sup>1</sup>) Kunstlikku viljastamist korraldav eriarstiabi osutaja ei vastuta kunstliku viljastamise õiguslike aluste ja kunstliku viljastamise tulemusena sündinud lapse põlvnemisega seotud õiguslike tagajärgede alase nõustamise sisu eest. Kunstliku viljastamise õiguslike aluste ning kunstliku viljastamise tulemusena sündinud lapse põlvnemisega seotud õiguslike tagajärgede alase nõustamise sisu, vormi ja korra kehtestab määrusega. (2) Käesoleva paragrahvi lõikes 1 nimetatud nõustamise kohta koostatakse kahes eksemplaris nõustamisprotokoll. Nõustamisprotokolli üks eksemplar antakse nõustatud isiku(te)le, teine eksemplar jääb nõustamist korraldanud eriarstiabi osutajale. (3) Nõustamisprotokoll peab sisaldama: nõustamise aega ja kohta; nõustamist korraldava eriarstiabi osutaja nime, tegevusloa numbrit, aadressi ja sidevahendite numbreid; nõustava arsti ees- ja perekonnanime ning tervishoiutöötaja registreerimiskoodi; nõustatava(te) isiku(te) ees- ja perekonnanime, isikukoodi või selle puudumisel sünniaega, aadressi ja sidevahendite numbreid; nõustamise eesmärki ja sisu; nõustava arsti ning nõustatud isiku(te) allkirju.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KVEKS_2"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KVEKS_2"
       },
-      "estleg:references": [
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:KVEKS_Par_17"
+          "@id": "estleg:KVEKS_Par_10_Lg_1"
         },
+        {
+          "@id": "estleg:KVEKS_Par_10_Lg_1_1"
+        },
+        {
+          "@id": "estleg:KVEKS_Par_10_Lg_2"
+        },
+        {
+          "@id": "estleg:KVEKS_Par_10_Lg_3"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen"
+      ],
+      "estleg:references": [
         {
           "@id": "estleg:KVEKS_Par_5"
         }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:KVEKS_Par_37"
+        }
       ]
+    },
+    {
+      "@id": "estleg:KVEKS_Par_10_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kunstlikku viljastamist soovivale naisele ja mehele, kes kunstliku viljastamise raames annetab oma seemnerakke mittepartnerist doonorina või partnerannetajana, peab kunstlikku viljastamist korraldav eriarstiabi osutaja enne kunstlikku viljastamist ning pärast käesoleva seaduse §-s 5 ettenähtud näidustuste tuvastamist selgitama kunstliku viljastamise bioloogilist ja meditsiinilist olemust ning sellega seotud võimalikke riske.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 1"
+    },
+    {
+      "@id": "estleg:KVEKS_Par_10_Lg_1_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1<sup>1</sup>",
+      "estleg:legalText": "(1<sup>1</sup>) Kunstlikku viljastamist korraldav eriarstiabi osutaja ei vastuta kunstliku viljastamise õiguslike aluste ja kunstliku viljastamise tulemusena sündinud lapse põlvnemisega seotud õiguslike tagajärgede alase nõustamise sisu eest. Kunstliku viljastamise õiguslike aluste ning kunstliku viljastamise tulemusena sündinud lapse põlvnemisega seotud õiguslike tagajärgede alase nõustamise sisu, vormi ja korra kehtestab määrusega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 1<sup>1</sup>"
+    },
+    {
+      "@id": "estleg:KVEKS_Par_10_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Käesoleva paragrahvi lõikes 1 nimetatud nõustamise kohta koostatakse kahes eksemplaris nõustamisprotokoll. Nõustamisprotokolli üks eksemplar antakse nõustatud isiku(te)le, teine eksemplar jääb nõustamist korraldanud eriarstiabi osutajale.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 2"
+    },
+    {
+      "@id": "estleg:KVEKS_Par_10_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Nõustamisprotokoll peab sisaldama: nõustamise aega ja kohta; nõustamist korraldava eriarstiabi osutaja nime, tegevusloa numbrit, aadressi ja sidevahendite numbreid; nõustava arsti ees- ja perekonnanime ning tervishoiutöötaja registreerimiskoodi; nõustatava(te) isiku(te) ees- ja perekonnanime, isikukoodi või selle puudumisel sünniaega, aadressi ja sidevahendite numbreid; nõustamise eesmärki ja sisu; nõustava arsti ning nõustatud isiku(te) allkirju.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 3"
     },
     {
       "@id": "estleg:KVEKS_Par_11",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KVEKS"
+        "estleg:LegalProvision_kunstliku_viljastamise_ja_embruokaitse_seadus"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Vahendamis- ja reklaamikeeld",
+      "rdfs:label": "§ 11. Kunstliku viljastamise vahendamise keeld",
       "estleg:sourceAct": "Kunstliku viljastamise ja embrüokaitse seadus",
-      "estleg:summary": "1(1)Kunstliku viljastamise tervishoiusüsteemiväline vahendamine on keelatud ning vahendamise teel saavutatud kokkulepped kehtetud. Kunstliku viljastamise tervishoiusüsteemiväline vahendamine on keelatud ning vahendamise teel saavutatud kokkulepped kehtetud. 2(2)Kunstliku viljastamise reklaam on keelatud. Kunstlikku viljastamist teostaval tervishoiuasutusel on õigus tutvustada ajakirjanduses oma tööd, samuti rakendada abinõusid, mis on vajalikud doonorite leidmiseks. Kunstliku viljastamise reklaa",
+      "estleg:summary": "Kunstliku viljastamise tervishoiusüsteemiväline vahendamine on keelatud ning vahendamise teel saavutatud kokkulepped kehtetud. RT I 2008 15 108 12945067 2008-11-01 Kunstliku viljastamise tervishoiusüsteemiväline vahendamine on keelatud ning vahendamise teel saavutatud kokkulepped kehtetud.",
+      "estleg:legalText": "Kunstliku viljastamise tervishoiusüsteemiväline vahendamine on keelatud ning vahendamise teel saavutatud kokkulepped kehtetud.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KVEKS_2"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KVEKS_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KVEKS_Par_11_Lg_Unknown_1"
+        }
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Prohibition"
+      }
+    },
+    {
+      "@id": "estleg:KVEKS_Par_11_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Kunstliku viljastamise tervishoiusüsteemiväline vahendamine on keelatud ning vahendamise teel saavutatud kokkulepped kehtetud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_11"
       }
     },
     {
       "@id": "estleg:KVEKS_Par_12",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KVEKS"
+        "estleg:LegalProvision_kunstliku_viljastamise_ja_embruokaitse_seadus"
       ],
       "estleg:paragrahv": "§ 12.",
       "rdfs:label": "§ 12. Naise viljastamine ainult ühe mehe seemnerakkudega",
       "estleg:sourceAct": "Kunstliku viljastamise ja embrüokaitse seadus",
       "estleg:summary": "Naise kunstlikul viljastamisel võib igal kunstliku viljastamise juhul kasutada ainult ühe mehe seemnerakke. Naise kunstlikul viljastamisel võib igal kunstliku viljastamise juhul kasutada ainult ühe mehe seemnerakke.",
+      "estleg:legalText": "Naise kunstlikul viljastamisel võib igal kunstliku viljastamise juhul kasutada ainult ühe mehe seemnerakke.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KVEKS_2"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KVEKS_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KVEKS_Par_12_Lg_Unknown_1"
+        }
+      ],
       "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:KVEKS_Par_12_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Naise kunstlikul viljastamisel võib igal kunstliku viljastamise juhul kasutada ainult ühe mehe seemnerakke.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_12"
       }
     },
     {
       "@id": "estleg:KVEKS_Par_13",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KVEKS"
+        "estleg:LegalProvision_kunstliku_viljastamise_ja_embruokaitse_seadus"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Ühelt spermadoonorilt saadavate laste arv",
+      "rdfs:label": "§ 13. Ühelt anonüümselt või mittepartnerist doonorilt saadavate laste arv",
       "estleg:sourceAct": "Kunstliku viljastamise ja embrüokaitse seadus",
-      "estleg:summary": "Ühelt doonorilt võetud seemnerakke võib kasutada kuni kuue erinevalt naiselt sündiva lapse eostamiseks Eestis. Ühelt doonorilt võetud seemnerakke võib kasutada kuni kuue erinevalt naiselt sündiva lapse eostamiseks Eestis.",
+      "estleg:summary": "Ühelt anonüümselt või mittepartnerist doonorilt võetud sugurakke võib kasutada kuni kuue erinevalt naiselt sündiva lapse eostamiseks Eestis. RT I 2023-07-06 6 106072023006 2024-01-01 Ühelt anonüümselt või mittepartnerist doonorilt võetud sugurakke võib kasutada kuni kuue erinevalt naiselt sündiva lapse eostamiseks Eestis.",
+      "estleg:legalText": "Ühelt anonüümselt või mittepartnerist doonorilt võetud sugurakke võib kasutada kuni kuue erinevalt naiselt sündiva lapse eostamiseks Eestis.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KVEKS_2"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KVEKS_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KVEKS_Par_13_Lg_Unknown_1"
+        }
+      ],
       "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:KVEKS_Par_13_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Ühelt anonüümselt või mittepartnerist doonorilt võetud sugurakke võib kasutada kuni kuue erinevalt naiselt sündiva lapse eostamiseks Eestis.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_13"
       }
     },
     {
       "@id": "estleg:KVEKS_Par_14",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KVEKS"
+        "estleg:LegalProvision_kunstliku_viljastamise_ja_embruokaitse_seadus"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Kunstliku viljastamise arvestus ja dokumendid",
+      "rdfs:label": "§ 14. Kunstliku viljastamise dokumenteerimine",
       "estleg:sourceAct": "Kunstliku viljastamise ja embrüokaitse seadus",
-      "estleg:summary": "Kunstliku viljastamise kohta koostab selleks ettenähtud dokumendid kunstlikku viljastamist teostav tervishoiuasutus. Kunstliku viljastamise dokumentide vormi ja nende säilitamise korra kehtestab sotsiaalminister. Kunstliku viljastamise kohta koostab selleks ettenähtud dokumendid kunstlikku viljastamist teostav tervishoiuasutus. Kunstliku viljastamise dokumentide vormi ja nende säilitamise korra kehtestab sotsiaalminister.",
+      "estleg:summary": "Kunstliku viljastamise kohta koostab selleks ettenähtud dokumendid kunstlikku viljastamist korraldav eriarstiabi osutaja. Kunstliku viljastamise loo vormi ja dokumenteerimise korra kehtestab valdkonna eest vastutav minister ./dyn=106072023052&id=562490 . RT I 2003 18 102 259015 2003-03-07 Kunstliku viljastamise kohta koostab selleks ettenähtud dokumendid kunstlikku viljastamist korraldav eriarstiabi osutaja. Kunstliku viljastamise loo vormi ja dokumenteerimise korra kehtestab",
+      "estleg:legalText": "Kunstliku viljastamise kohta koostab selleks ettenähtud dokumendid kunstlikku viljastamist korraldav eriarstiabi osutaja. Kunstliku viljastamise loo vormi ja dokumenteerimise korra kehtestab",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KVEKS_2"
       },
-      "estleg:semanticallySimilarTo": [
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KVEKS_2"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:RKSS_Par_15",
-          "estleg:similarityScore": {
-            "@value": "0.333",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
+          "@id": "estleg:KVEKS_Par_14_Lg_Unknown_1"
         }
       ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_sotsiaalminister"
-        }
+      "estleg:targetGroup": [
+        "official"
+      ]
+    },
+    {
+      "@id": "estleg:KVEKS_Par_14_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:competenceType": "regulation"
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Kunstliku viljastamise kohta koostab selleks ettenähtud dokumendid kunstlikku viljastamist korraldav eriarstiabi osutaja. Kunstliku viljastamise loo vormi ja dokumenteerimise korra kehtestab",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_14"
+      }
     },
     {
       "@id": "estleg:KVEKS_Par_15",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KVEKS"
+        "estleg:LegalProvision_kunstliku_viljastamise_ja_embruokaitse_seadus"
       ],
       "estleg:paragrahv": "§ 15.",
       "rdfs:label": "§ 15. Kunstlikku viljastamist käsitlevate andmete avaldamine",
       "estleg:sourceAct": "Kunstliku viljastamise ja embrüokaitse seadus",
-      "estleg:summary": "1(1)Kunstlikku viljastamist käsitlevaid isikuandmeid ei avaldata, välja arvatud käesoleva seaduse §-s 28 ettenähtud juhul. Kunstlikku viljastamist käsitlevaid isikuandmeid ei avaldata, välja arvatud käesoleva seaduse §-s 28 ettenähtud juhul. 2(2)Kunstlikku viljastamist puudutavates teaduslikes käsitlustes tuleb andmete avaldamisel arvestada käesolevas seaduses ettenähtud piiranguid. Kunstlikku viljastamist puudutavates teaduslikes käsitlustes tuleb andmete avaldamisel arvestada käesolevas seadus",
+      "estleg:summary": "1 (1) Kunstlikku viljastamist käsitlevaid isikuandmeid ei avaldata, välja arvatud käesoleva seaduse §-s 28 ettenähtud juhul. Kunstlikku viljastamist käsitlevaid isikuandmeid ei avaldata, välja arvatud käesoleva seaduse §-s 28 ettenähtud juhul. 2 (2) Kunstlikku viljastamist puudutavates teaduslikes käsitlustes tuleb andmete avaldamisel arvestada käesolevas seaduses ettenähtud piiranguid. Kunstlikku viljastamist puudutavates teaduslikes käsitlustes tuleb andmete avaldamisel arvestada käesolevas se",
+      "estleg:legalText": "(1) Kunstlikku viljastamist käsitlevaid isikuandmeid ei avaldata, välja arvatud käesoleva seaduse §-s 28 ettenähtud juhul. (2) Kunstlikku viljastamist puudutavates teaduslikes käsitlustes tuleb andmete avaldamisel arvestada käesolevas seaduses ettenähtud piiranguid.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KVEKS_2"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KVEKS_2"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KVEKS_Par_15_Lg_1"
+        },
+        {
+          "@id": "estleg:KVEKS_Par_15_Lg_2"
+        }
+      ],
       "estleg:references": [
         {
           "@id": "estleg:KVEKS_Par_28"
         }
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
+    },
+    {
+      "@id": "estleg:KVEKS_Par_15_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kunstlikku viljastamist käsitlevaid isikuandmeid ei avaldata, välja arvatud käesoleva seaduse §-s 28 ettenähtud juhul.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 1"
+    },
+    {
+      "@id": "estleg:KVEKS_Par_15_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kunstlikku viljastamist puudutavates teaduslikes käsitlustes tuleb andmete avaldamisel arvestada käesolevas seaduses ettenähtud piiranguid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 2"
     },
     {
       "@id": "estleg:KVEKS_Par_16",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KVEKS"
+        "estleg:LegalProvision_kunstliku_viljastamise_ja_embruokaitse_seadus"
       ],
       "estleg:paragrahv": "§ 16.",
       "rdfs:label": "§ 16. Naise nõusolek kunstlikuks viljastamiseks",
       "estleg:sourceAct": "Kunstliku viljastamise ja embrüokaitse seadus",
-      "estleg:summary": "1(1)Naise kunstlik viljastamine toimub ainult käesoleva seaduse §-des 4 ja 5 ettenähtud tingimustel ning tema kirjalikul nõusolekul. Naise kunstlik viljastamine toimub ainult käesoleva seaduse §-des 4 ja 5 ettenähtud tingimustel ning tema kirjalikul nõusolekul. 2(2)Naise kirjalikust nõusolekust peab ilmnema, et ta on nõus:11)viljastamisega abikaasa, mõne teise konkreetse mehe või doonori seemnerakkudega;22)munaraku kehavälise viljastamisega;33)rasestamisega võõra munarakust pärineva embrüoga. Na",
+      "estleg:summary": "1 (1) Naise kunstlik viljastamine toimub ainult käesoleva seaduse §-des 4 ja 5 ettenähtud tingimustel ning tema kirjalikul nõusolekul. Naise kunstlik viljastamine toimub ainult käesoleva seaduse §-des 4 ja 5 ettenähtud tingimustel ning tema kirjalikul nõusolekul. 2 (2) Naise kirjalikust nõusolekust peab ilmnema, et ta on nõus: 1 1) viljastamisega anonüümse või mittepartnerist doonori seemnerakkudega või viljastamisega partnerannetusena; RT I 2023-07-06 6 106072023006 2024-01-01 2 2) munaraku keh",
+      "estleg:legalText": "(1) Naise kunstlik viljastamine toimub ainult käesoleva seaduse §-des 4 ja 5 ettenähtud tingimustel ning tema kirjalikul nõusolekul. (2) Naise kirjalikust nõusolekust peab ilmnema, et ta on nõus: viljastamisega anonüümse või mittepartnerist doonori seemnerakkudega või viljastamisega partnerannetusena; munaraku kehavälise viljastamisega; rasestamisega võõra munarakust pärineva embrüoga; embrüote külmutamisega. (3) Kui käesoleva seaduse § 6 alusel teostatud uuringute tulemusena ilmneb riskifaktoreid kinnitav leid, mis ei välista kunstlikku viljastamist, peab nõusolekus olema eraldi ära näidatud, et naine on kunstliku viljastamisega nõus ka nimetatud riski olemasolu korral. (4) Kunstlikku viljastamist saab teostada pärast seda, kui käesoleva seaduse §-s 10 ettenähtud nõustamisest on möödunud vähemalt üks kuu. (5) Käesolevas paragrahvis ettenähtud kirjaliku nõusoleku vormi kehtestab",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KVEKS_3"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KVEKS_3"
       },
-      "estleg:dutyHolder": "Naise kirjalikust nõusolekust",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KVEKS_Par_16_Lg_1"
+        },
+        {
+          "@id": "estleg:KVEKS_Par_16_Lg_2"
+        },
+        {
+          "@id": "estleg:KVEKS_Par_16_Lg_3"
+        },
+        {
+          "@id": "estleg:KVEKS_Par_16_Lg_4"
+        },
+        {
+          "@id": "estleg:KVEKS_Par_16_Lg_5"
+        }
+      ],
       "estleg:references": [
         {
           "@id": "estleg:KVEKS_Par_4"
         }
       ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
       "estleg:referencedBy": [
         {
-          "@id": "estleg:KVEKS_Par_4"
+          "@id": "estleg:KVEKS_Par_17_1"
         },
         {
-          "@id": "estleg:KVEKS_Par_17"
+          "@id": "estleg:KVEKS_Par_17_2"
         }
       ]
+    },
+    {
+      "@id": "estleg:KVEKS_Par_16_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Naise kunstlik viljastamine toimub ainult käesoleva seaduse §-des 4 ja 5 ettenähtud tingimustel ning tema kirjalikul nõusolekul.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 1"
+    },
+    {
+      "@id": "estleg:KVEKS_Par_16_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Naise kirjalikust nõusolekust peab ilmnema, et ta on nõus: viljastamisega anonüümse või mittepartnerist doonori seemnerakkudega või viljastamisega partnerannetusena; munaraku kehavälise viljastamisega; rasestamisega võõra munarakust pärineva embrüoga; embrüote külmutamisega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 2"
+    },
+    {
+      "@id": "estleg:KVEKS_Par_16_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kui käesoleva seaduse § 6 alusel teostatud uuringute tulemusena ilmneb riskifaktoreid kinnitav leid, mis ei välista kunstlikku viljastamist, peab nõusolekus olema eraldi ära näidatud, et naine on kunstliku viljastamisega nõus ka nimetatud riski olemasolu korral.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 3"
+    },
+    {
+      "@id": "estleg:KVEKS_Par_16_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Kunstlikku viljastamist saab teostada pärast seda, kui käesoleva seaduse §-s 10 ettenähtud nõustamisest on möödunud vähemalt üks kuu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 4"
+    },
+    {
+      "@id": "estleg:KVEKS_Par_16_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Käesolevas paragrahvis ettenähtud kirjaliku nõusoleku vormi kehtestab",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 5"
     },
     {
       "@id": "estleg:KVEKS_Par_17",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KVEKS"
+        "estleg:LegalProvision_kunstliku_viljastamise_ja_embruokaitse_seadus"
       ],
       "estleg:paragrahv": "§ 17.",
       "rdfs:label": "§ 17. Mehe nõusolek abikaasa kunstlikuks viljastamiseks",
       "estleg:sourceAct": "Kunstliku viljastamise ja embrüokaitse seadus",
-      "estleg:summary": "1(1)Abielus oleva naise kunstlikuks viljastamiseks peab olema tema abikaasa nõusolek, mis peab olema kooskõlas naise poolt vastavalt käesoleva seaduse §-le 16 antud nõusolekuga. Mehe nõusolekust peab ilmnema, kas ta nõustub abikaasa kunstliku viljastamisega oma seemnerakkudega ka pärast enda surma. Abielus oleva naise kunstlikuks viljastamiseks peab olema tema abikaasa nõusolek, mis peab olema kooskõlas naise poolt vastavalt käesoleva seaduse §-le 16 antud nõusolekuga. Mehe nõusolekust peab ilmn",
+      "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KVEKS_3"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KVEKS_3"
+      }
+    },
+    {
+      "@id": "estleg:KVEKS_Par_17_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_kunstliku_viljastamise_ja_embruokaitse_seadus"
+      ],
+      "estleg:paragrahv": "§ 17<sup>1</sup>.",
+      "rdfs:label": "§ 17<sup>1</sup>. Mehe nõusolek naise kunstlikuks viljastamiseks",
+      "estleg:sourceAct": "Kunstliku viljastamise ja embrüokaitse seadus",
+      "estleg:summary": "1 (1) Mees võib anda kirjaliku nõusoleku naise kunstlikuks viljastamiseks anonüümse või mittepartnerist doonori sugurakkudega või võõrast munarakust loodud embrüoga või partnerannetusena. Mehe sugurakke võib kasutada naise kunstlikuks viljastamiseks juhul, kui selleks on tema kirjalik nõusolek. Mehe nõusolek peab olema kooskõlas naise nõusolekuga, mille naine on andnud vastavalt käesoleva seaduse §-le 16. Mees võib anda kirjaliku nõusoleku naise kunstlikuks viljastamiseks anonüümse või mittepart",
+      "estleg:legalText": "(1) Mees võib anda kirjaliku nõusoleku naise kunstlikuks viljastamiseks anonüümse või mittepartnerist doonori sugurakkudega või võõrast munarakust loodud embrüoga või partnerannetusena. Mehe sugurakke võib kasutada naise kunstlikuks viljastamiseks juhul, kui selleks on tema kirjalik nõusolek. Mehe nõusolek peab olema kooskõlas naise nõusolekuga, mille naine on andnud vastavalt käesoleva seaduse §-le 16. (2) Kui naine viljastatakse selle mehe seemnerakkudega, kes on andnud nõusoleku naise kunstlikuks viljastamiseks partnerannetusena, peab nõusolekust ilmnema, kas ta nõustub naise kunstliku viljastamisega enda seemnerakkudega ka pärast enda surma. (3) Mehel on õigus kuni kunstliku viljastamise protseduuri alguseni nõusolek naise kunstlikuks viljastamiseks kirjalikult tagasi võtta. (4) Kui naise kunstlik viljastamine toimub anonüümse või mittepartnerist doonori sugurakkudega või võõrast munarakust loodud embrüoga, ei loeta last põlvnevaks sellest doonorist. Anonüümne või mittepartnerist doonor ei saa nõuda endast põlvnemise kindlakstegemist ning kolmandad isikud ei saa nõuda neist põlvnemise kindlakstegemist. (5) Kui mees on andnud nõusoleku naise kunstlikuks viljastamiseks anonüümse või mittepartnerist doonori sugurakkudega või võõrast munarakust loodud embrüoga või partnerannetusena vastavalt käesoleva paragrahvi lõikele 1 ega ole enda nõusolekut tagasi võtnud, loetakse laps kunstliku viljastamise nõusoleku andmise kaudu põlvnevaks naise kunstlikuks viljastamiseks nõusoleku andnud mehest. Naise kunstlikuks viljastamiseks nõusoleku andnud mees ei saa lapse põlvnemist endast vaidlustada. Kolmandad isikud ei saa vaidlustada lapse põlvnemist naise kunstlikuks viljastamiseks nõusoleku andnud mehest. (6) Kui mees, kes andis nõusoleku naise kunstlikuks viljastamiseks partnerannetusena vastavalt käesoleva paragrahvi lõikele 1, võtab enda nõusoleku tagasi, ei loeta last mehest põlvnevaks kunstliku viljastamise nõusoleku andmise kaudu. Lapse põlvnemine mehest tehakse kindlaks perekonnaseaduses sätestatud korras. (7) Käesolevas paragrahvis ettenähtud kirjaliku nõusoleku sisu ja vormi kehtestab",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_KVEKS_3"
       },
-      "estleg:dutyHolder": "Mehe nõusolekust",
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KVEKS_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KVEKS_Par_17_1_Lg_1"
+        },
+        {
+          "@id": "estleg:KVEKS_Par_17_1_Lg_2"
+        },
+        {
+          "@id": "estleg:KVEKS_Par_17_1_Lg_3"
+        },
+        {
+          "@id": "estleg:KVEKS_Par_17_1_Lg_4"
+        },
+        {
+          "@id": "estleg:KVEKS_Par_17_1_Lg_5"
+        },
+        {
+          "@id": "estleg:KVEKS_Par_17_1_Lg_6"
+        },
+        {
+          "@id": "estleg:KVEKS_Par_17_1_Lg_7"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen"
+      ],
       "estleg:references": [
         {
           "@id": "estleg:KVEKS_Par_16"
         }
       ],
-      "estleg:referencedBy": [
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
+    },
+    {
+      "@id": "estleg:KVEKS_Par_17_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Mees võib anda kirjaliku nõusoleku naise kunstlikuks viljastamiseks anonüümse või mittepartnerist doonori sugurakkudega või võõrast munarakust loodud embrüoga või partnerannetusena. Mehe sugurakke võib kasutada naise kunstlikuks viljastamiseks juhul, kui selleks on tema kirjalik nõusolek. Mehe nõusolek peab olema kooskõlas naise nõusolekuga, mille naine on andnud vastavalt käesoleva seaduse §-le 16.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_17_1"
+      },
+      "rdfs:label": "§ 17<sup>1</sup> lg 1"
+    },
+    {
+      "@id": "estleg:KVEKS_Par_17_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kui naine viljastatakse selle mehe seemnerakkudega, kes on andnud nõusoleku naise kunstlikuks viljastamiseks partnerannetusena, peab nõusolekust ilmnema, kas ta nõustub naise kunstliku viljastamisega enda seemnerakkudega ka pärast enda surma.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_17_1"
+      },
+      "rdfs:label": "§ 17<sup>1</sup> lg 2"
+    },
+    {
+      "@id": "estleg:KVEKS_Par_17_1_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Mehel on õigus kuni kunstliku viljastamise protseduuri alguseni nõusolek naise kunstlikuks viljastamiseks kirjalikult tagasi võtta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_17_1"
+      },
+      "rdfs:label": "§ 17<sup>1</sup> lg 3"
+    },
+    {
+      "@id": "estleg:KVEKS_Par_17_1_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Kui naise kunstlik viljastamine toimub anonüümse või mittepartnerist doonori sugurakkudega või võõrast munarakust loodud embrüoga, ei loeta last põlvnevaks sellest doonorist. Anonüümne või mittepartnerist doonor ei saa nõuda endast põlvnemise kindlakstegemist ning kolmandad isikud ei saa nõuda neist põlvnemise kindlakstegemist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_17_1"
+      },
+      "rdfs:label": "§ 17<sup>1</sup> lg 4"
+    },
+    {
+      "@id": "estleg:KVEKS_Par_17_1_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Kui mees on andnud nõusoleku naise kunstlikuks viljastamiseks anonüümse või mittepartnerist doonori sugurakkudega või võõrast munarakust loodud embrüoga või partnerannetusena vastavalt käesoleva paragrahvi lõikele 1 ega ole enda nõusolekut tagasi võtnud, loetakse laps kunstliku viljastamise nõusoleku andmise kaudu põlvnevaks naise kunstlikuks viljastamiseks nõusoleku andnud mehest. Naise kunstlikuks viljastamiseks nõusoleku andnud mees ei saa lapse põlvnemist endast vaidlustada. Kolmandad isikud ei saa vaidlustada lapse põlvnemist naise kunstlikuks viljastamiseks nõusoleku andnud mehest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_17_1"
+      },
+      "rdfs:label": "§ 17<sup>1</sup> lg 5"
+    },
+    {
+      "@id": "estleg:KVEKS_Par_17_1_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Kui mees, kes andis nõusoleku naise kunstlikuks viljastamiseks partnerannetusena vastavalt käesoleva paragrahvi lõikele 1, võtab enda nõusoleku tagasi, ei loeta last mehest põlvnevaks kunstliku viljastamise nõusoleku andmise kaudu. Lapse põlvnemine mehest tehakse kindlaks perekonnaseaduses sätestatud korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_17_1"
+      },
+      "rdfs:label": "§ 17<sup>1</sup> lg 6"
+    },
+    {
+      "@id": "estleg:KVEKS_Par_17_1_Lg_7",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "7",
+      "estleg:legalText": "(7) Käesolevas paragrahvis ettenähtud kirjaliku nõusoleku sisu ja vormi kehtestab",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_17_1"
+      },
+      "rdfs:label": "§ 17<sup>1</sup> lg 7"
+    },
+    {
+      "@id": "estleg:KVEKS_Par_17_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_kunstliku_viljastamise_ja_embruokaitse_seadus"
+      ],
+      "estleg:paragrahv": "§ 17<sup>2</sup>.",
+      "rdfs:label": "§ 17<sup>2</sup>. Naissoost abikaasa nõusolek enda naissoost abikaasa kunstlikuks viljastamiseks",
+      "estleg:sourceAct": "Kunstliku viljastamise ja embrüokaitse seadus",
+      "estleg:summary": "1 (1) Naissoost abikaasa võib anda kirjaliku nõusoleku enda naissoost abikaasa kunstlikuks viljastamiseks anonüümse või mittepartnerist doonori sugurakkudega või võõrast munarakust loodud embrüoga. Naissoost abikaasa nõusolek peab olema kooskõlas enda naissoost abikaasa nõusolekuga, mis on antud vastavalt käesoleva seaduse §-le 16. Naissoost abikaasa võib anda kirjaliku nõusoleku enda naissoost abikaasa kunstlikuks viljastamiseks anonüümse või mittepartnerist doonori sugurakkudega või võõrast mu",
+      "estleg:legalText": "(1) Naissoost abikaasa võib anda kirjaliku nõusoleku enda naissoost abikaasa kunstlikuks viljastamiseks anonüümse või mittepartnerist doonori sugurakkudega või võõrast munarakust loodud embrüoga. Naissoost abikaasa nõusolek peab olema kooskõlas enda naissoost abikaasa nõusolekuga, mis on antud vastavalt käesoleva seaduse §-le 16. (2) Naissoost abikaasal on õigus kuni kunstliku viljastamise protseduuri alguseni kirjalikult enda nõusolek tagasi võtta. (3) Kui naissoost abikaasa kunstlik viljastamine toimub anonüümse või mittepartnerist doonori sugurakkudega või võõrast munarakust loodud embrüoga, ei loeta last põlvnevaks anonüümsest või mittepartnerist doonorist. Anonüümne või mittepartnerist doonor ei saa nõuda endast põlvnemise kindlakstegemist ning kolmandad isikud ei saa nõuda neist põlvnemise kindlakstegemist. (4) Kui naissoost abikaasa on andnud nõusoleku enda naissoost abikaasa kunstlikuks viljastamiseks anonüümse või mittepartnerist doonori sugurakkudega või võõrast munarakust loodud embrüoga vastavalt käesoleva paragrahvi lõikele 1 ega ole enda nõusolekut tagasi võtnud, siis loetakse laps kunstliku viljastamise nõusoleku andmise kaudu põlvnevaks enda naissoost abikaasa kunstlikuks viljastamiseks nõusoleku andnud naissoost abikaasast. Naissoost abikaasa kunstlikuks viljastamiseks nõusoleku andnud naissoost abikaasa ei saa lapse põlvnemist endast vaidlustada. Kolmandad isikud ei saa vaidlustada lapse põlvnemist naissoost abikaasa kunstlikuks viljastamiseks nõusoleku andnud naissoost abikaasast. (5) Kui naissoost abikaasa võtab nõusoleku enda naissoost abikaasa kunstlikuks viljastamiseks tagasi, siis ei loeta last temast põlvnevaks. Lapse põlvnemine tehakse kindlaks perekonnaseaduses sätestatud korras. (6) Kui naissoost abikaasa on andnud nõusoleku enda kunstlikuks viljastamiseks mehe seemnerakkudega partnerannetusena, mees on andnud nõusoleku vastavalt käesoleva seaduse § 171 lõikele 1 ning mees ei ole enda nõusolekut tagasi võtnud, loetakse laps kunstliku viljastamise nõusoleku andmise kaudu põlvnevaks partnerannetusena seemnerakud andnud mehest. Naise kunstlikuks viljastamiseks partnerannetusena nõusoleku andnud mees ei saa lapse põlvnemist endast vaidlustada. Kolmandad isikud ei saa vaidlustada lapse põlvnemist naise kunstlikuks viljastamiseks partnerannetusena nõusoleku andnud mehest. (7) Kui mees, kes andis nõusoleku käesoleva paragrahvi lõikes 6 nimetatud naissoost abikaasa kunstlikuks viljastamiseks partnerannetusena vastavalt käesoleva seaduse § 171 lõikele 1, võtab enda nõusoleku tagasi, siis ei loeta last mehest põlvnevaks kunstliku viljastamise nõusoleku andmise kaudu. (8) Kui naissoost abikaasa annab nõusoleku enda naissoost abikaasa kunstlikuks viljastamiseks pärast seda, kui partnerannetusena kunstlikuks viljastamiseks nõusoleku andnud mees on enda nõusoleku tagasi võtnud, siis loetakse laps kunstliku viljastamise nõusoleku andmise kaudu põlvnevaks enda naissoost abikaasa kunstlikuks viljastamiseks nõusoleku andnud naissoost abikaasast. Naissoost abikaasa kunstlikuks viljastamiseks nõusoleku andnud naissoost abikaasa ei saa lapse põlvnemist endast vaidlustada. Kolmandad isikud ei saa vaidlustada lapse põlvnemist naissoost abikaasa kunstlikuks viljastamiseks nõusoleku andnud naissoost abikaasast. Muul juhul tehakse lapse põlvnemine mehest kindlaks perekonnaseaduses sätestatud korras. (9) Käesolevas paragrahvis ettenähtud kirjaliku nõusoleku sisu ja vormi kehtestab",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_KVEKS_3"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KVEKS_3"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:KVEKS_Par_10"
+          "@id": "estleg:KVEKS_Par_17_2_Lg_1"
         },
         {
-          "@id": "estleg:KVEKS_Par_18"
+          "@id": "estleg:KVEKS_Par_17_2_Lg_2"
         },
         {
-          "@id": "estleg:KVEKS_Par_21"
+          "@id": "estleg:KVEKS_Par_17_2_Lg_3"
+        },
+        {
+          "@id": "estleg:KVEKS_Par_17_2_Lg_4"
+        },
+        {
+          "@id": "estleg:KVEKS_Par_17_2_Lg_5"
+        },
+        {
+          "@id": "estleg:KVEKS_Par_17_2_Lg_6"
+        },
+        {
+          "@id": "estleg:KVEKS_Par_17_2_Lg_7"
+        },
+        {
+          "@id": "estleg:KVEKS_Par_17_2_Lg_8"
+        },
+        {
+          "@id": "estleg:KVEKS_Par_17_2_Lg_9"
         }
-      ]
+      ],
+      "estleg:targetGroup": [
+        "citizen"
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:KVEKS_Par_16"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
+    },
+    {
+      "@id": "estleg:KVEKS_Par_17_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Naissoost abikaasa võib anda kirjaliku nõusoleku enda naissoost abikaasa kunstlikuks viljastamiseks anonüümse või mittepartnerist doonori sugurakkudega või võõrast munarakust loodud embrüoga. Naissoost abikaasa nõusolek peab olema kooskõlas enda naissoost abikaasa nõusolekuga, mis on antud vastavalt käesoleva seaduse §-le 16.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_17_2"
+      },
+      "rdfs:label": "§ 17<sup>2</sup> lg 1"
+    },
+    {
+      "@id": "estleg:KVEKS_Par_17_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Naissoost abikaasal on õigus kuni kunstliku viljastamise protseduuri alguseni kirjalikult enda nõusolek tagasi võtta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_17_2"
+      },
+      "rdfs:label": "§ 17<sup>2</sup> lg 2"
+    },
+    {
+      "@id": "estleg:KVEKS_Par_17_2_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kui naissoost abikaasa kunstlik viljastamine toimub anonüümse või mittepartnerist doonori sugurakkudega või võõrast munarakust loodud embrüoga, ei loeta last põlvnevaks anonüümsest või mittepartnerist doonorist. Anonüümne või mittepartnerist doonor ei saa nõuda endast põlvnemise kindlakstegemist ning kolmandad isikud ei saa nõuda neist põlvnemise kindlakstegemist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_17_2"
+      },
+      "rdfs:label": "§ 17<sup>2</sup> lg 3"
+    },
+    {
+      "@id": "estleg:KVEKS_Par_17_2_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Kui naissoost abikaasa on andnud nõusoleku enda naissoost abikaasa kunstlikuks viljastamiseks anonüümse või mittepartnerist doonori sugurakkudega või võõrast munarakust loodud embrüoga vastavalt käesoleva paragrahvi lõikele 1 ega ole enda nõusolekut tagasi võtnud, siis loetakse laps kunstliku viljastamise nõusoleku andmise kaudu põlvnevaks enda naissoost abikaasa kunstlikuks viljastamiseks nõusoleku andnud naissoost abikaasast. Naissoost abikaasa kunstlikuks viljastamiseks nõusoleku andnud naissoost abikaasa ei saa lapse põlvnemist endast vaidlustada. Kolmandad isikud ei saa vaidlustada lapse põlvnemist naissoost abikaasa kunstlikuks viljastamiseks nõusoleku andnud naissoost abikaasast.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_17_2"
+      },
+      "rdfs:label": "§ 17<sup>2</sup> lg 4"
+    },
+    {
+      "@id": "estleg:KVEKS_Par_17_2_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Kui naissoost abikaasa võtab nõusoleku enda naissoost abikaasa kunstlikuks viljastamiseks tagasi, siis ei loeta last temast põlvnevaks. Lapse põlvnemine tehakse kindlaks perekonnaseaduses sätestatud korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_17_2"
+      },
+      "rdfs:label": "§ 17<sup>2</sup> lg 5"
+    },
+    {
+      "@id": "estleg:KVEKS_Par_17_2_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Kui naissoost abikaasa on andnud nõusoleku enda kunstlikuks viljastamiseks mehe seemnerakkudega partnerannetusena, mees on andnud nõusoleku vastavalt käesoleva seaduse § 171 lõikele 1 ning mees ei ole enda nõusolekut tagasi võtnud, loetakse laps kunstliku viljastamise nõusoleku andmise kaudu põlvnevaks partnerannetusena seemnerakud andnud mehest. Naise kunstlikuks viljastamiseks partnerannetusena nõusoleku andnud mees ei saa lapse põlvnemist endast vaidlustada. Kolmandad isikud ei saa vaidlustada lapse põlvnemist naise kunstlikuks viljastamiseks partnerannetusena nõusoleku andnud mehest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_17_2"
+      },
+      "rdfs:label": "§ 17<sup>2</sup> lg 6"
+    },
+    {
+      "@id": "estleg:KVEKS_Par_17_2_Lg_7",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "7",
+      "estleg:legalText": "(7) Kui mees, kes andis nõusoleku käesoleva paragrahvi lõikes 6 nimetatud naissoost abikaasa kunstlikuks viljastamiseks partnerannetusena vastavalt käesoleva seaduse § 171 lõikele 1, võtab enda nõusoleku tagasi, siis ei loeta last mehest põlvnevaks kunstliku viljastamise nõusoleku andmise kaudu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_17_2"
+      },
+      "rdfs:label": "§ 17<sup>2</sup> lg 7"
+    },
+    {
+      "@id": "estleg:KVEKS_Par_17_2_Lg_8",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "8",
+      "estleg:legalText": "(8) Kui naissoost abikaasa annab nõusoleku enda naissoost abikaasa kunstlikuks viljastamiseks pärast seda, kui partnerannetusena kunstlikuks viljastamiseks nõusoleku andnud mees on enda nõusoleku tagasi võtnud, siis loetakse laps kunstliku viljastamise nõusoleku andmise kaudu põlvnevaks enda naissoost abikaasa kunstlikuks viljastamiseks nõusoleku andnud naissoost abikaasast. Naissoost abikaasa kunstlikuks viljastamiseks nõusoleku andnud naissoost abikaasa ei saa lapse põlvnemist endast vaidlustada. Kolmandad isikud ei saa vaidlustada lapse põlvnemist naissoost abikaasa kunstlikuks viljastamiseks nõusoleku andnud naissoost abikaasast. Muul juhul tehakse lapse põlvnemine mehest kindlaks perekonnaseaduses sätestatud korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_17_2"
+      },
+      "rdfs:label": "§ 17<sup>2</sup> lg 8"
+    },
+    {
+      "@id": "estleg:KVEKS_Par_17_2_Lg_9",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "9",
+      "estleg:legalText": "(9) Käesolevas paragrahvis ettenähtud kirjaliku nõusoleku sisu ja vormi kehtestab",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_17_2"
+      },
+      "rdfs:label": "§ 17<sup>2</sup> lg 9"
     },
     {
       "@id": "estleg:KVEKS_Par_18",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KVEKS"
+        "estleg:LegalProvision_kunstliku_viljastamise_ja_embruokaitse_seadus"
       ],
       "estleg:paragrahv": "§ 18.",
-      "rdfs:label": "§ 18. Naise kunstlik viljastamine pärast abielu lahutamist",
+      "rdfs:label": "§ 18. Naise kunstlik viljastamine pärast abielu",
       "estleg:sourceAct": "Kunstliku viljastamise ja embrüokaitse seadus",
-      "estleg:summary": "1(1)Abielu lahutamine peatab mehe nõusoleku kunstlikuks viljastamiseks. Abielu lahutamine peatab mehe nõusoleku kunstlikuks viljastamiseks. 2(2)Naise kunstlik viljastamine tema lahutatud abikaasa seemnerakkudega võib toimuda üksnes mehe uuel nõusolekul vastavalt käesoleva seaduse §-le 17. Naise kunstlik viljastamine tema lahutatud abikaasa seemnerakkudega võib toimuda üksnes mehe uuel nõusolekul vastavalt käesoleva seaduse §-le 17.",
+      "estleg:summary": "1 (1) Abielu lahutamisega loetakse mehe nõusolek enda seemnerakkude kasutamiseks, samuti abikaasa nõusolek kunstlikuks viljastamiseks tagasi võetuks. Abielu lahutamisega loetakse mehe nõusolek enda seemnerakkude kasutamiseks, samuti abikaasa nõusolek kunstlikuks viljastamiseks tagasi võetuks. 2 (2) Naise saab kunstlikult viljastada tema lahutatud abikaasa seemnerakkudega, kui mees annab selleks uue kirjaliku nõusoleku vastavalt käesoleva seaduse § 171 lõikele 1. RT I 2023-07-06 6 106072023006 20",
+      "estleg:legalText": "(1) Abielu lahutamisega loetakse mehe nõusolek enda seemnerakkude kasutamiseks, samuti abikaasa nõusolek kunstlikuks viljastamiseks tagasi võetuks. (2) Naise saab kunstlikult viljastada tema lahutatud abikaasa seemnerakkudega, kui mees annab selleks uue kirjaliku nõusoleku vastavalt käesoleva seaduse § 171 lõikele 1.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KVEKS_3"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KVEKS_3"
       },
-      "estleg:references": [
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:KVEKS_Par_17"
+          "@id": "estleg:KVEKS_Par_18_Lg_1"
+        },
+        {
+          "@id": "estleg:KVEKS_Par_18_Lg_2"
         }
       ]
+    },
+    {
+      "@id": "estleg:KVEKS_Par_18_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Abielu lahutamisega loetakse mehe nõusolek enda seemnerakkude kasutamiseks, samuti abikaasa nõusolek kunstlikuks viljastamiseks tagasi võetuks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_18"
+      },
+      "rdfs:label": "§ 18 lg 1"
+    },
+    {
+      "@id": "estleg:KVEKS_Par_18_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Naise saab kunstlikult viljastada tema lahutatud abikaasa seemnerakkudega, kui mees annab selleks uue kirjaliku nõusoleku vastavalt käesoleva seaduse § 171 lõikele 1.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_18"
+      },
+      "rdfs:label": "§ 18 lg 2"
     },
     {
       "@id": "estleg:KVEKS_Par_19",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KVEKS"
+        "estleg:LegalProvision_kunstliku_viljastamise_ja_embruokaitse_seadus"
       ],
       "estleg:paragrahv": "§ 19.",
-      "rdfs:label": "§ 19. Naise ja mehe õigus seada kunstlik viljastamine sõltuvusse teatud tingimustest",
+      "rdfs:label": "§ 19. [Kehtetu -]",
       "estleg:sourceAct": "Kunstliku viljastamise ja embrüokaitse seadus",
-      "estleg:summary": "1(1)Kokkuleppel kunstlikku viljastamist teostava tervishoiuasutusega ning vastavate võimaluste olemasolul on naisel ja mehel õigus naise kunstlikule viljastamisele teatud ajavahemiku möödumisel või teatud tingimuste täitumisel pärast nõusoleku andmist. Kokkuleppel kunstlikku viljastamist teostava tervishoiuasutusega ning vastavate võimaluste olemasolul on naisel ja mehel õigus naise kunstlikule viljastamisele teatud ajavahemiku möödumisel või teatud tingimuste täitumisel pärast nõusoleku andmist",
+      "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KVEKS_3"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KVEKS_3"
       }
     },
     {
       "@id": "estleg:KVEKS_Par_20",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KVEKS"
+        "estleg:LegalProvision_kunstliku_viljastamise_ja_embruokaitse_seadus"
       ],
       "estleg:paragrahv": "§ 20.",
       "rdfs:label": "§ 20. Naise kunstlik viljastamine pärast mehe surma",
       "estleg:sourceAct": "Kunstliku viljastamise ja embrüokaitse seadus",
-      "estleg:summary": "Naise kunstlik viljastamine hiljem kui üks kuu pärast abikaasa või käesoleva seaduse §-s 21 nimetatud mehe surma, kellelt pärinevad seemnerakud, on keelatud. Naise kunstlik viljastamine hiljem kui üks kuu pärast abikaasa või käesoleva seaduse §-s 21 nimetatud mehe surma, kellelt pärinevad seemnerakud, on keelatud.",
+      "estleg:summary": "Naise kunstlik viljastamine hiljem kui üks kuu pärast partnerannetuses osalenud mehe surma, kellelt pärinevad seemnerakud, on keelatud. RT I 2023-07-06 6 106072023006 2024-01-01 Naise kunstlik viljastamine hiljem kui üks kuu pärast partnerannetuses osalenud mehe surma, kellelt pärinevad seemnerakud, on keelatud.",
+      "estleg:legalText": "Naise kunstlik viljastamine hiljem kui üks kuu pärast partnerannetuses osalenud mehe surma, kellelt pärinevad seemnerakud, on keelatud.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KVEKS_3"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KVEKS_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KVEKS_Par_20_Lg_Unknown_1"
+        }
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Prohibition"
-      },
-      "estleg:references": [
-        {
-          "@id": "estleg:KVEKS_Par_21"
-        }
-      ]
+      }
+    },
+    {
+      "@id": "estleg:KVEKS_Par_20_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Naise kunstlik viljastamine hiljem kui üks kuu pärast partnerannetuses osalenud mehe surma, kellelt pärinevad seemnerakud, on keelatud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_20"
+      }
     },
     {
       "@id": "estleg:KVEKS_Par_21",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KVEKS"
+        "estleg:LegalProvision_kunstliku_viljastamise_ja_embruokaitse_seadus"
       ],
       "estleg:paragrahv": "§ 21.",
       "rdfs:label": "§ 21. Vallalise naise kunstlik viljastamine konkreetse mehe seemnerakkudega",
       "estleg:sourceAct": "Kunstliku viljastamise ja embrüokaitse seadus",
-      "estleg:summary": "1(1)Vallalise naise kunstlik viljastamine temaga abielus mitteoleva konkreetse mehe seemnerakkudega on lubatud mehe kirjalikul nõusolekul vastavalt käesoleva seaduse §-le 17. Vallalise naise kunstlik viljastamine temaga abielus mitteoleva konkreetse mehe seemnerakkudega on lubatud mehe kirjalikul nõusolekul vastavalt käesoleva seaduse §-le 17. 2(2)Käesoleva paragrahvi lõikes 1 ettenähtud kunstliku viljastamise tulemusena sündinud laps loetakse põlvnevaks mehest, kes oli andnud nõusoleku naise ku",
+      "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KVEKS_3"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
-      },
-      "estleg:references": [
-        {
-          "@id": "estleg:KVEKS_Par_17"
-        }
-      ],
-      "estleg:referencedBy": [
-        {
-          "@id": "estleg:KVEKS_Par_5"
-        },
-        {
-          "@id": "estleg:KVEKS_Par_20"
-        }
-      ]
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KVEKS_3"
+      }
     },
     {
       "@id": "estleg:KVEKS_Par_22",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KVEKS"
+        "estleg:LegalProvision_kunstliku_viljastamise_ja_embruokaitse_seadus"
       ],
       "estleg:paragrahv": "§ 22.",
-      "rdfs:label": "§ 22. Vallalise naise kunstlik viljastamine spermadoonori seemnerakkudega",
+      "rdfs:label": "§ 22. Vallalise naise kunstlik viljastamine doonori seemnerakkudega",
       "estleg:sourceAct": "Kunstliku viljastamise ja embrüokaitse seadus",
-      "estleg:summary": "1(1)Vallalisel naisel on õigus kunstlikuks viljastamiseks doonori seemnerakkudega. Vallalisel naisel on õigus kunstlikuks viljastamiseks doonori seemnerakkudega. 2(2)Käesoleva paragrahvi lõikes 1 ettenähtud kunstliku viljastamise tulemusena sündinud lapse sünniakti tehakse isa kohta kanne vastavalt perekonnaseaduse § 43 lõikele 1. Käesoleva paragrahvi lõikes 1 ettenähtud kunstliku viljastamise tulemusena sündinud lapse sünniakti tehakse isa kohta kanne vastavalt perekonnaseaduse § 43 lõikele 1.",
+      "estleg:summary": "1 (1) Kehtetu - RT I 2023-07-06 6 106072023006 2024-01-01 Kehtetu - 2 (2) Kehtetu - RT I 2009 60 395 13240237 2010-07-01 Kehtetu -",
+      "estleg:legalText": "(1) Kehtetu - (2) Kehtetu -",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KVEKS_3"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      }
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KVEKS_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KVEKS_Par_22_Lg_1"
+        },
+        {
+          "@id": "estleg:KVEKS_Par_22_Lg_2"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:KVEKS_Par_22_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_22"
+      },
+      "rdfs:label": "§ 22 lg 1"
+    },
+    {
+      "@id": "estleg:KVEKS_Par_22_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_22"
+      },
+      "rdfs:label": "§ 22 lg 2"
     },
     {
       "@id": "estleg:KVEKS_Par_23",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KVEKS"
+        "estleg:LegalProvision_kunstliku_viljastamise_ja_embruokaitse_seadus"
       ],
       "estleg:paragrahv": "§ 23.",
-      "rdfs:label": "§ 23. Võõra munaraku või sellest loodud embrüo ülekandmine naisele",
+      "rdfs:label": "§ 23. Võõrast munarakust loodud embrüo ülekandmine naisele",
       "estleg:sourceAct": "Kunstliku viljastamise ja embrüokaitse seadus",
-      "estleg:summary": "1(1)Võõra munaraku või sellest loodud embrüo ülekandmine naisele on lubatud, kui naine, kellelt pärineb munarakk või embrüo, on surnud, loobunud enda kunstlikust viljastamisest või kui esinevad muud munaraku või embrüo ülekandmist takistavad asjaolud ja naise viljastamine, kellele munarakk või embrüo üle kantakse, ei ole muul viisil võimalik. Võõra munaraku või sellest loodud embrüo ülekandmine naisele on lubatud, kui naine, kellelt pärineb munarakk või embrüo, on surnud, loobunud enda kunstliku",
+      "estleg:summary": "1 (1) Võõrast munarakust loodud embrüo ülekandmine naisele on lubatud, kui naise viljastamine muul viisil ei ole võimalik. Võõrast munarakust loodud embrüo ülekandmine naisele on lubatud, kui naise viljastamine muul viisil ei ole võimalik. 2 (2) Doonor, kellelt pärineb munarakk, peab käesoleva paragrahvi lõikes 1 ettenähtud toiminguks andma kirjaliku nõusoleku. Nõusoleku andmise eelselt tuleb doonorit teavitada doonorlusega seotud riskidest tervisele. Doonori nõustamise kohta koostatakse nõustam",
+      "estleg:legalText": "(1) Võõrast munarakust loodud embrüo ülekandmine naisele on lubatud, kui naise viljastamine muul viisil ei ole võimalik. (2) Doonor, kellelt pärineb munarakk, peab käesoleva paragrahvi lõikes 1 ettenähtud toiminguks andma kirjaliku nõusoleku. Nõusoleku andmise eelselt tuleb doonorit teavitada doonorlusega seotud riskidest tervisele. Doonori nõustamise kohta koostatakse nõustamisprotokoll, järgides § 10 lõigetes 2 ja 3 toodud nõudeid. Doonor võib nõusoleku igal ajal kuni munaraku eemaldamise protseduuri alguseni tagasi võtta. (3) Käesoleva paragrahvi lõikes 1 ettenähtud alusel tohib teisele naisele üle kanda kuni 35-aastaselt naiselt pärinevast munarakust loodud embrüo. Kunstlikku viljastamist sooviva naise nõusolekul, kui doonoriks on kunstlikku viljastamist sooviva naise sugulane, võib munarakudoonor olla vanem kui 35 aastat. (4) Võõrast munarakust loodud embrüo ülekandmine on lubatud pärast külmutamist ja kuuekuulist säilitamist, välja arvatud juhul, kui naine soovib embrüo siirdamist varem, olles eelnevalt teavitatud sellega kaasnevatest riskidest.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KVEKS_3"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KVEKS_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KVEKS_Par_23_Lg_1"
+        },
+        {
+          "@id": "estleg:KVEKS_Par_23_Lg_2"
+        },
+        {
+          "@id": "estleg:KVEKS_Par_23_Lg_3"
+        },
+        {
+          "@id": "estleg:KVEKS_Par_23_Lg_4"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen"
+      ],
       "estleg:normativeType": {
-        "@id": "estleg:NormType_Permission"
+        "@id": "estleg:NormType_Obligation"
       },
       "estleg:referencedBy": [
         {
           "@id": "estleg:KVEKS_Par_24"
-        },
-        {
-          "@id": "estleg:KVEKS_Par_32"
         }
       ]
+    },
+    {
+      "@id": "estleg:KVEKS_Par_23_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Võõrast munarakust loodud embrüo ülekandmine naisele on lubatud, kui naise viljastamine muul viisil ei ole võimalik.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_23"
+      },
+      "rdfs:label": "§ 23 lg 1"
+    },
+    {
+      "@id": "estleg:KVEKS_Par_23_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Doonor, kellelt pärineb munarakk, peab käesoleva paragrahvi lõikes 1 ettenähtud toiminguks andma kirjaliku nõusoleku. Nõusoleku andmise eelselt tuleb doonorit teavitada doonorlusega seotud riskidest tervisele. Doonori nõustamise kohta koostatakse nõustamisprotokoll, järgides § 10 lõigetes 2 ja 3 toodud nõudeid. Doonor võib nõusoleku igal ajal kuni munaraku eemaldamise protseduuri alguseni tagasi võtta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_23"
+      },
+      "rdfs:label": "§ 23 lg 2"
+    },
+    {
+      "@id": "estleg:KVEKS_Par_23_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Käesoleva paragrahvi lõikes 1 ettenähtud alusel tohib teisele naisele üle kanda kuni 35-aastaselt naiselt pärinevast munarakust loodud embrüo. Kunstlikku viljastamist sooviva naise nõusolekul, kui doonoriks on kunstlikku viljastamist sooviva naise sugulane, võib munarakudoonor olla vanem kui 35 aastat.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_23"
+      },
+      "rdfs:label": "§ 23 lg 3"
+    },
+    {
+      "@id": "estleg:KVEKS_Par_23_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Võõrast munarakust loodud embrüo ülekandmine on lubatud pärast külmutamist ja kuuekuulist säilitamist, välja arvatud juhul, kui naine soovib embrüo siirdamist varem, olles eelnevalt teavitatud sellega kaasnevatest riskidest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_23"
+      },
+      "rdfs:label": "§ 23 lg 4"
     },
     {
       "@id": "estleg:KVEKS_Par_24",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KVEKS"
+        "estleg:LegalProvision_kunstliku_viljastamise_ja_embruokaitse_seadus"
       ],
       "estleg:paragrahv": "§ 24.",
-      "rdfs:label": "§ 24. Lapse põlvnemine võõra munaraku ülekandmise korral",
+      "rdfs:label": "§ 24. Lapse põlvnemine võõrast munarakust loodud embrüo ülekandmise korral",
       "estleg:sourceAct": "Kunstliku viljastamise ja embrüokaitse seadus",
-      "estleg:summary": "Käesoleva seaduse §-s 23 ettenähtud kunstliku viljastamise tulemusena sündinud laps loetakse vastavalt perekonnaseaduse § 38 lõikele 2 põlvnevaks naisest, kes on tema sünnitanud. Lapse põlvnemine isast tehakse kindlaks vastavalt perekonnaseaduse § 39 lõikele 6 ja käesoleva seaduse §-dele 21 ja 22. Käesoleva seaduse §-s 23 ettenähtud kunstliku viljastamise tulemusena sündinud laps loetakse vastavalt perekonnaseaduse § 38 lõikele 2 põlvnevaks naisest, kes on tema sünnitanud. Lapse põlvnemine isast",
+      "estleg:summary": "Käesoleva seaduse §-s 23 ettenähtud kunstliku viljastamise tulemusena sündinud laps loetakse vastavalt perekonnaseaduse §-le 83 põlvnevaks naisest, kes on tema sünnitanud. Lapse põlvnemine isast või teisest vanemast tehakse kindlaks vastavalt käesoleva seaduse §-dele 171 ja 172. RT I 2023-07-06 6 106072023006 2024-01-01 Käesoleva seaduse §-s 23 ettenähtud kunstliku viljastamise tulemusena sündinud laps loetakse vastavalt perekonnaseaduse §-le 83 põlvnevaks naisest, kes on tema sünnitanud. Lapse ",
+      "estleg:legalText": "Käesoleva seaduse §-s 23 ettenähtud kunstliku viljastamise tulemusena sündinud laps loetakse vastavalt perekonnaseaduse §-le 83 põlvnevaks naisest, kes on tema sünnitanud. Lapse põlvnemine isast või teisest vanemast tehakse kindlaks vastavalt käesoleva seaduse §-dele 171 ja 172.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KVEKS_3"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KVEKS_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KVEKS_Par_24_Lg_Unknown_1"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen"
+      ],
       "estleg:references": [
         {
           "@id": "estleg:KVEKS_Par_23"
+        },
+        {
+          "@id": "estleg:PKS_Par_83"
         }
       ]
+    },
+    {
+      "@id": "estleg:KVEKS_Par_24_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Käesoleva seaduse §-s 23 ettenähtud kunstliku viljastamise tulemusena sündinud laps loetakse vastavalt perekonnaseaduse §-le 83 põlvnevaks naisest, kes on tema sünnitanud. Lapse põlvnemine isast või teisest vanemast tehakse kindlaks vastavalt käesoleva seaduse §-dele 171 ja 172.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_24"
+      }
     },
     {
       "@id": "estleg:KVEKS_Par_25",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KVEKS"
+        "estleg:LegalProvision_kunstliku_viljastamise_ja_embruokaitse_seadus"
       ],
       "estleg:paragrahv": "§ 25.",
-      "rdfs:label": "§ 25. Spermadoonor",
+      "rdfs:label": "§ 25. Sugurakkude doonorlus",
       "estleg:sourceAct": "Kunstliku viljastamise ja embrüokaitse seadus",
-      "estleg:summary": "1(1)Spermadoonor võib olla iga täisealine kuni 40-aastane vaimselt ja füüsiliselt terve meessoost isik, kes on andnud nõusoleku sperma loovutamiseks kunstliku viljastamise tarvis ning sõlminud selleks kunstlikku viljastamist teostava tervishoiuasutusega vastava lepingu. Spermadoonor võib olla iga täisealine kuni 40-aastane vaimselt ja füüsiliselt terve meessoost isik, kes on andnud nõusoleku sperma loovutamiseks kunstliku viljastamise tarvis ning sõlminud selleks kunstlikku viljastamist teostava",
+      "estleg:summary": "1 (1) Spermadoonor võib olla iga täisealine kuni 40-aastane ja munarakudoonor iga täisealine kuni 35-aastane (välja arvatud § 23 lõikes 3 sätestatud juhul) vaimselt ja füüsiliselt terve isik, kes on andnud nõusoleku oma sugurakkude loovutamiseks kunstliku viljastamise tarvis ning sõlminud selleks kirjaliku lepingu. RT I 2008 25 163 12978679 2009-01-01 Spermadoonor võib olla iga täisealine kuni 40-aastane ja munarakudoonor iga täisealine kuni 35-aastane (välja arvatud § 23 lõikes 3 sätestatud juh",
+      "estleg:legalText": "(1) Spermadoonor võib olla iga täisealine kuni 40-aastane ja munarakudoonor iga täisealine kuni 35-aastane (välja arvatud § 23 lõikes 3 sätestatud juhul) vaimselt ja füüsiliselt terve isik, kes on andnud nõusoleku oma sugurakkude loovutamiseks kunstliku viljastamise tarvis ning sõlminud selleks kirjaliku lepingu. (2) Kehtetu - (3) Sugurakke ei ole lubatud kasutada kunstlikuks viljastamiseks, kui doonor ei ole sõlminud käesoleva paragrahvi lõikes 1 nimetatud lepingut, enne igakordset sugurakkude loovutamist läbinud nõutavat tervisekontrolli või spermadoonoril on sperma loovutamisest möödunud vähem kui kuus kuud. (4) Sugurakkude doonori valimise nõuded, annetamist välistavate asjaolude loetelu, doonorile ettenähtud kohustuslike laboratoorsete uuringute loetelu ning uuringute tegemise tingimused ja kord on sätestatud rakkude, kudede ja elundite hankimise, käitlemise ja siirdamise seaduses.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KVEKS_3"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KVEKS_3"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KVEKS_Par_25_Lg_1"
+        },
+        {
+          "@id": "estleg:KVEKS_Par_25_Lg_2"
+        },
+        {
+          "@id": "estleg:KVEKS_Par_25_Lg_3"
+        },
+        {
+          "@id": "estleg:KVEKS_Par_25_Lg_4"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen"
       ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
       "estleg:referencedBy": [
         {
           "@id": "estleg:KVEKS_Par_26"
@@ -645,69 +1987,254 @@
       ]
     },
     {
+      "@id": "estleg:KVEKS_Par_25_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Spermadoonor võib olla iga täisealine kuni 40-aastane ja munarakudoonor iga täisealine kuni 35-aastane (välja arvatud § 23 lõikes 3 sätestatud juhul) vaimselt ja füüsiliselt terve isik, kes on andnud nõusoleku oma sugurakkude loovutamiseks kunstliku viljastamise tarvis ning sõlminud selleks kirjaliku lepingu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_25"
+      },
+      "rdfs:label": "§ 25 lg 1"
+    },
+    {
+      "@id": "estleg:KVEKS_Par_25_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_25"
+      },
+      "rdfs:label": "§ 25 lg 2"
+    },
+    {
+      "@id": "estleg:KVEKS_Par_25_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Sugurakke ei ole lubatud kasutada kunstlikuks viljastamiseks, kui doonor ei ole sõlminud käesoleva paragrahvi lõikes 1 nimetatud lepingut, enne igakordset sugurakkude loovutamist läbinud nõutavat tervisekontrolli või spermadoonoril on sperma loovutamisest möödunud vähem kui kuus kuud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_25"
+      },
+      "rdfs:label": "§ 25 lg 3"
+    },
+    {
+      "@id": "estleg:KVEKS_Par_25_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Sugurakkude doonori valimise nõuded, annetamist välistavate asjaolude loetelu, doonorile ettenähtud kohustuslike laboratoorsete uuringute loetelu ning uuringute tegemise tingimused ja kord on sätestatud rakkude, kudede ja elundite hankimise, käitlemise ja siirdamise seaduses.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_25"
+      },
+      "rdfs:label": "§ 25 lg 4"
+    },
+    {
       "@id": "estleg:KVEKS_Par_26",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KVEKS"
+        "estleg:LegalProvision_kunstliku_viljastamise_ja_embruokaitse_seadus"
       ],
       "estleg:paragrahv": "§ 26.",
-      "rdfs:label": "§ 26. Spermadoonori õigused ja kohustused",
+      "rdfs:label": "§ 26. Anonüümse ja mittepartnerist doonori õigused ja kohustused",
       "estleg:sourceAct": "Kunstliku viljastamise ja embrüokaitse seadus",
-      "estleg:summary": "1(1)Doonoril on õigus:11)saada sperma loovutamise eest hüvitust;22)doonoriks olemise fakti mitteavaldamisele. Doonoril on õigus: saada sperma loovutamise eest hüvitust; doonoriks olemise fakti mitteavaldamisele. 2(2)Doonor on kohustatud:11)loovutama spermat vastavalt käesoleva seaduse §-le 25 sõlmitud lepingule;22)läbima käesoleva seaduse §-s 25 ettenähtud meditsiinilise kontrolli. Doonor on kohustatud: loovutama spermat vastavalt käesoleva seaduse §-le 25 sõlmitud lepingule; läbima käesoleva se",
+      "estleg:summary": "1 (1) Anonüümsel doonoril on õigus: 1 1) saada sugurakkude loovutamise eest hüvitist; 2 2) anonüümseks doonoriks olemise fakti mitteavaldamisele. Anonüümsel doonoril on õigus: saada sugurakkude loovutamise eest hüvitist; anonüümseks doonoriks olemise fakti mitteavaldamisele. 2 (2) Anonüümne ja mittepartnerist doonor on kohustatud läbima käesoleva seaduse §-s 25 ettenähtud tervisekontrolli. Anonüümne ja mittepartnerist doonor on kohustatud läbima käesoleva seaduse §-s 25 ettenähtud tervisekontrol",
+      "estleg:legalText": "(1) Anonüümsel doonoril on õigus: saada sugurakkude loovutamise eest hüvitist; anonüümseks doonoriks olemise fakti mitteavaldamisele. (2) Anonüümne ja mittepartnerist doonor on kohustatud läbima käesoleva seaduse §-s 25 ettenähtud tervisekontrolli. (3) Anonüümsel doonoril ei ole õigust seada enda loovutatud sugurakkude kasutamiseks eeltingimusi. (4) Anonüümsel ja mittepartnerist doonoril ei ole õigust nõuda ema, isa ega lapse isiku kindlakstegemist. (5) Anonüümsel ja mittepartnerist doonoril ei ole õigust nõuda enda tunnistamist lapse isaks või emaks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KVEKS_3"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KVEKS_3"
       },
-      "estleg:dutyHolder": "Doonor",
-      "estleg:references": [
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:KVEKS_Par_25"
-        }
-      ]
-    },
-    {
-      "@id": "estleg:KVEKS_Par_27",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_KVEKS"
-      ],
-      "estleg:paragrahv": "§ 27.",
-      "rdfs:label": "§ 27. Spermadoonori anonüümsus",
-      "estleg:sourceAct": "Kunstliku viljastamise ja embrüokaitse seadus",
-      "estleg:summary": "1(1)Kunstlikul viljastamisel doonorspermaga ei avaldata doonori isikuandmeid. Kunstlikuks viljastamiseks nõusoleku andnud naisel ja mehel on õigus teada doonori järgmisi bioloogilisi ja sotsiaalseid andmeid:11)rahvus;22)nahavärv;33)haridus;44)perekonnaseis;55)laste olemasolu;66)pikkus;77)kehaehitus;88)juuste värv;99)silmade värv. Kunstlikul viljastamisel doonorspermaga ei avaldata doonori isikuandmeid. Kunstlikuks viljastamiseks nõusoleku andnud naisel ja mehel on õigus teada doonori järgmisi bi",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KVEKS_3"
-      },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      }
-    },
-    {
-      "@id": "estleg:KVEKS_Par_28",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_KVEKS"
-      ],
-      "estleg:paragrahv": "§ 28.",
-      "rdfs:label": "§ 28. Lapse õigus saada teada oma kunstlikku eostatust",
-      "estleg:sourceAct": "Kunstliku viljastamise ja embrüokaitse seadus",
-      "estleg:summary": "1(1)Kunstliku viljastamise tulemusena sündinud ja täisealiseks saanud isikul on õigus pöörduda perekonnaseisuasutusse, et saada andmeid oma kunstliku eostatuse kohta. Kunstliku viljastamise tulemusena sündinud ja täisealiseks saanud isikul on õigus pöörduda perekonnaseisuasutusse, et saada andmeid oma kunstliku eostatuse kohta. 2(2)Kui käesoleva paragrahvi lõikes 1 nimetatud isik on sündinud doonori seemnerakkudega eostatult, avaldatakse talle andmed doonori kohta vastavalt käesoleva seaduse § 2",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KVEKS_3"
-      },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
-      "estleg:references": [
+          "@id": "estleg:KVEKS_Par_26_Lg_1"
+        },
         {
-          "@id": "estleg:KVEKS_Par_2"
+          "@id": "estleg:KVEKS_Par_26_Lg_2"
+        },
+        {
+          "@id": "estleg:KVEKS_Par_26_Lg_3"
+        },
+        {
+          "@id": "estleg:KVEKS_Par_26_Lg_4"
+        },
+        {
+          "@id": "estleg:KVEKS_Par_26_Lg_5"
         }
       ],
       "estleg:targetGroup": [
         "citizen"
       ],
+      "estleg:references": [
+        {
+          "@id": "estleg:KVEKS_Par_25"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
+    },
+    {
+      "@id": "estleg:KVEKS_Par_26_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Anonüümsel doonoril on õigus: saada sugurakkude loovutamise eest hüvitist; anonüümseks doonoriks olemise fakti mitteavaldamisele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_26"
+      },
+      "rdfs:label": "§ 26 lg 1"
+    },
+    {
+      "@id": "estleg:KVEKS_Par_26_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Anonüümne ja mittepartnerist doonor on kohustatud läbima käesoleva seaduse §-s 25 ettenähtud tervisekontrolli.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_26"
+      },
+      "rdfs:label": "§ 26 lg 2"
+    },
+    {
+      "@id": "estleg:KVEKS_Par_26_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Anonüümsel doonoril ei ole õigust seada enda loovutatud sugurakkude kasutamiseks eeltingimusi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_26"
+      },
+      "rdfs:label": "§ 26 lg 3"
+    },
+    {
+      "@id": "estleg:KVEKS_Par_26_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Anonüümsel ja mittepartnerist doonoril ei ole õigust nõuda ema, isa ega lapse isiku kindlakstegemist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_26"
+      },
+      "rdfs:label": "§ 26 lg 4"
+    },
+    {
+      "@id": "estleg:KVEKS_Par_26_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Anonüümsel ja mittepartnerist doonoril ei ole õigust nõuda enda tunnistamist lapse isaks või emaks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_26"
+      },
+      "rdfs:label": "§ 26 lg 5"
+    },
+    {
+      "@id": "estleg:KVEKS_Par_27",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_kunstliku_viljastamise_ja_embruokaitse_seadus"
+      ],
+      "estleg:paragrahv": "§ 27.",
+      "rdfs:label": "§ 27. Anonüümse doonori isikuandmete avaldamine",
+      "estleg:sourceAct": "Kunstliku viljastamise ja embrüokaitse seadus",
+      "estleg:summary": "1 (1) Kunstlikul viljastamisel ei avaldata anonüümse doonori isikuandmeid. RT I 2023-07-06 6 106072023006 2024-01-01 Kunstlikul viljastamisel ei avaldata anonüümse doonori isikuandmeid. 2 (2) Kunstlikuks viljastamiseks nõusoleku andnud naisel ja mehel on õigus teada anonüümse doonori järgmisi bioloogilisi ja sotsiaalseid andmeid: RT I 2023-07-06 6 106072023006 2024-01-01 1 1) rahvust; 2 2) nahavärvust; 3 3) haridust; 4 4) perekonnaseisu; 5 5) laste olemasolu; 6 6) pikkust; 7 7) kehaehitust; 8 8)",
+      "estleg:legalText": "(1) Kunstlikul viljastamisel ei avaldata anonüümse doonori isikuandmeid. (2) Kunstlikuks viljastamiseks nõusoleku andnud naisel ja mehel on õigus teada anonüümse doonori järgmisi bioloogilisi ja sotsiaalseid andmeid: rahvust; nahavärvust; haridust; perekonnaseisu; laste olemasolu; pikkust; kehaehitust; juuste värvust; silmade värvust.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_KVEKS_3"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KVEKS_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KVEKS_Par_27_Lg_1"
+        },
+        {
+          "@id": "estleg:KVEKS_Par_27_Lg_2"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      }
+    },
+    {
+      "@id": "estleg:KVEKS_Par_27_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kunstlikul viljastamisel ei avaldata anonüümse doonori isikuandmeid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_27"
+      },
+      "rdfs:label": "§ 27 lg 1"
+    },
+    {
+      "@id": "estleg:KVEKS_Par_27_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kunstlikuks viljastamiseks nõusoleku andnud naisel ja mehel on õigus teada anonüümse doonori järgmisi bioloogilisi ja sotsiaalseid andmeid: rahvust; nahavärvust; haridust; perekonnaseisu; laste olemasolu; pikkust; kehaehitust; juuste värvust; silmade värvust.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_27"
+      },
+      "rdfs:label": "§ 27 lg 2"
+    },
+    {
+      "@id": "estleg:KVEKS_Par_28",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_kunstliku_viljastamise_ja_embruokaitse_seadus"
+      ],
+      "estleg:paragrahv": "§ 28.",
+      "rdfs:label": "§ 28. Lapse õigus saada teada oma kunstlikku eostatust",
+      "estleg:sourceAct": "Kunstliku viljastamise ja embrüokaitse seadus",
+      "estleg:summary": "1 (1) Kunstliku viljastamise tulemusena sündinud ja täisealiseks saanud isikul on õigus pöörduda perekonnaseisuasutusse, et saada andmeid oma kunstliku eostatuse kohta. Kunstliku viljastamise tulemusena sündinud ja täisealiseks saanud isikul on õigus pöörduda perekonnaseisuasutusse, et saada andmeid oma kunstliku eostatuse kohta. 2 (2) Kui käesoleva paragrahvi lõikes 1 nimetatud isik on sündinud anonüümse doonori sugurakkudega eostatult, avaldatakse talle andmed anonüümse doonori kohta vastavalt",
+      "estleg:legalText": "(1) Kunstliku viljastamise tulemusena sündinud ja täisealiseks saanud isikul on õigus pöörduda perekonnaseisuasutusse, et saada andmeid oma kunstliku eostatuse kohta. (2) Kui käesoleva paragrahvi lõikes 1 nimetatud isik on sündinud anonüümse doonori sugurakkudega eostatult, avaldatakse talle andmed anonüümse doonori kohta vastavalt käesoleva seaduse § 27 lõikele 2.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_KVEKS_3"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KVEKS_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KVEKS_Par_28_Lg_1"
+        },
+        {
+          "@id": "estleg:KVEKS_Par_28_Lg_2"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      },
       "estleg:referencedBy": [
         {
           "@id": "estleg:KVEKS_Par_15"
@@ -715,103 +2242,246 @@
       ]
     },
     {
+      "@id": "estleg:KVEKS_Par_28_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kunstliku viljastamise tulemusena sündinud ja täisealiseks saanud isikul on õigus pöörduda perekonnaseisuasutusse, et saada andmeid oma kunstliku eostatuse kohta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_28"
+      },
+      "rdfs:label": "§ 28 lg 1"
+    },
+    {
+      "@id": "estleg:KVEKS_Par_28_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kui käesoleva paragrahvi lõikes 1 nimetatud isik on sündinud anonüümse doonori sugurakkudega eostatult, avaldatakse talle andmed anonüümse doonori kohta vastavalt käesoleva seaduse § 27 lõikele 2.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_28"
+      },
+      "rdfs:label": "§ 28 lg 2"
+    },
+    {
       "@id": "estleg:KVEKS_Par_29",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KVEKS"
+        "estleg:LegalProvision_kunstliku_viljastamise_ja_embruokaitse_seadus"
       ],
       "estleg:paragrahv": "§ 29.",
       "rdfs:label": "§ 29. Munaraku kehavälise viljastamise eesmärk",
       "estleg:sourceAct": "Kunstliku viljastamise ja embrüokaitse seadus",
       "estleg:summary": "Kehaväliselt on lubatud viljastada munarakku üksnes eesmärgiga see naisele üle kanda. Kehaväliselt on lubatud viljastada munarakku üksnes eesmärgiga see naisele üle kanda.",
+      "estleg:legalText": "Kehaväliselt on lubatud viljastada munarakku üksnes eesmärgiga see naisele üle kanda.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KVEKS_4"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KVEKS_4"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KVEKS_Par_29_Lg_Unknown_1"
+        }
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:KVEKS_Par_29_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Kehaväliselt on lubatud viljastada munarakku üksnes eesmärgiga see naisele üle kanda.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_29"
       }
     },
     {
       "@id": "estleg:KVEKS_Par_30",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KVEKS"
+        "estleg:LegalProvision_kunstliku_viljastamise_ja_embruokaitse_seadus"
       ],
       "estleg:paragrahv": "§ 30.",
       "rdfs:label": "§ 30. Embrüo külmutamine",
       "estleg:sourceAct": "Kunstliku viljastamise ja embrüokaitse seadus",
-      "estleg:summary": "1(1)Kehaväliselt võib embrüot külmutada kuni viis aastat üksnes kunstlikku viljastamist teostavas tervishoiuasutuses või teadusliku uurimise asutuses, millel on sotsiaalministri poolt väljaantud tegevusluba embrüote säilitamiseks ja uurimiseks. Nimetatud aja jooksul võib embrüot kasutada käesoleva seaduse §-s 31 ettenähtud eesmärkidel. Kehaväliselt võib embrüot külmutada kuni viis aastat üksnes kunstlikku viljastamist teostavas tervishoiuasutuses või teadusliku uurimise asutuses, millel on sotsi",
+      "estleg:summary": "1 (1) Kehaväliselt loodud embrüot võib külmutada ja säilitada külmutatuna kuni seitse aastat. RT I 2008 25 163 12978679 2009-01-01 Kehaväliselt loodud embrüot võib külmutada ja säilitada külmutatuna kuni seitse aastat. 2 (2) Kui pärast käesoleva paragrahvi lõikes 1 nimetatud aja möödumist ei ole embrüo naisele üle kantud, kasutatakse seda teaduslikuks uurimistööks või hävitatakse. Kui pärast käesoleva paragrahvi lõikes 1 nimetatud aja möödumist ei ole embrüo naisele üle kantud, kasutatakse seda ",
+      "estleg:legalText": "(1) Kehaväliselt loodud embrüot võib külmutada ja säilitada külmutatuna kuni seitse aastat. (2) Kui pärast käesoleva paragrahvi lõikes 1 nimetatud aja möödumist ei ole embrüo naisele üle kantud, kasutatakse seda teaduslikuks uurimistööks või hävitatakse.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KVEKS_4"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KVEKS_4"
       },
-      "estleg:references": [
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:KVEKS_Par_31"
+          "@id": "estleg:KVEKS_Par_30_Lg_1"
+        },
+        {
+          "@id": "estleg:KVEKS_Par_30_Lg_2"
         }
       ],
-      "estleg:targetGroup": [
-        "public_body"
-      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
       "estleg:referencedBy": [
         {
           "@id": "estleg:KVEKS_Par_34"
         }
       ]
+    },
+    {
+      "@id": "estleg:KVEKS_Par_30_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kehaväliselt loodud embrüot võib külmutada ja säilitada külmutatuna kuni seitse aastat.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_30"
+      },
+      "rdfs:label": "§ 30 lg 1"
+    },
+    {
+      "@id": "estleg:KVEKS_Par_30_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kui pärast käesoleva paragrahvi lõikes 1 nimetatud aja möödumist ei ole embrüo naisele üle kantud, kasutatakse seda teaduslikuks uurimistööks või hävitatakse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_30"
+      },
+      "rdfs:label": "§ 30 lg 2"
     },
     {
       "@id": "estleg:KVEKS_Par_31",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KVEKS"
+        "estleg:LegalProvision_kunstliku_viljastamise_ja_embruokaitse_seadus"
       ],
       "estleg:paragrahv": "§ 31.",
       "rdfs:label": "§ 31. Embrüo kasutamine",
       "estleg:sourceAct": "Kunstliku viljastamise ja embrüokaitse seadus",
-      "estleg:summary": "1(1)Kehaväliselt säilitatavat embrüot võib kasutada:11)naisele ülekandmiseks käesolevas seaduses ettenähtud korras;22)teaduslikuks uurimistööks käesoleva seaduse §-s 32 ettenähtud tingimustel. Kehaväliselt säilitatavat embrüot võib kasutada: naisele ülekandmiseks käesolevas seaduses ettenähtud korras; teaduslikuks uurimistööks käesoleva seaduse §-s 32 ettenähtud tingimustel. 2(2)Naisele ei ole lubatud ühe kunstliku viljastamise jooksul üle kanda üle kolme embrüo. Naisele ei ole lubatud ühe kunst",
+      "estleg:summary": "1 (1) Kehaväliselt säilitatavat embrüot võib kasutada: 1 1) naisele ülekandmiseks käesolevas seaduses ettenähtud korras; 2 2) teaduslikuks uurimistööks käesoleva seaduse §-s 32 ettenähtud tingimustel. Kehaväliselt säilitatavat embrüot võib kasutada: naisele ülekandmiseks käesolevas seaduses ettenähtud korras; teaduslikuks uurimistööks käesoleva seaduse §-s 32 ettenähtud tingimustel. 2 (2) Naisele võib ühe kunstliku viljastamise jooksul üle kanda kuni kolm embrüot, mis on loodud samadelt isikutel",
+      "estleg:legalText": "(1) Kehaväliselt säilitatavat embrüot võib kasutada: naisele ülekandmiseks käesolevas seaduses ettenähtud korras; teaduslikuks uurimistööks käesoleva seaduse §-s 32 ettenähtud tingimustel. (2) Naisele võib ühe kunstliku viljastamise jooksul üle kanda kuni kolm embrüot, mis on loodud samadelt isikutelt pärinevatest sugurakkudest. (3) Tehingud embrüoga on keelatud.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KVEKS_4"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KVEKS_4"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KVEKS_Par_31_Lg_1"
+        },
+        {
+          "@id": "estleg:KVEKS_Par_31_Lg_2"
+        },
+        {
+          "@id": "estleg:KVEKS_Par_31_Lg_3"
+        }
+      ],
       "estleg:references": [
         {
           "@id": "estleg:KVEKS_Par_32"
         }
       ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
       "estleg:referencedBy": [
-        {
-          "@id": "estleg:KVEKS_Par_30"
-        },
         {
           "@id": "estleg:KVEKS_Par_34"
         }
       ]
     },
     {
+      "@id": "estleg:KVEKS_Par_31_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kehaväliselt säilitatavat embrüot võib kasutada: naisele ülekandmiseks käesolevas seaduses ettenähtud korras; teaduslikuks uurimistööks käesoleva seaduse §-s 32 ettenähtud tingimustel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_31"
+      },
+      "rdfs:label": "§ 31 lg 1"
+    },
+    {
+      "@id": "estleg:KVEKS_Par_31_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Naisele võib ühe kunstliku viljastamise jooksul üle kanda kuni kolm embrüot, mis on loodud samadelt isikutelt pärinevatest sugurakkudest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_31"
+      },
+      "rdfs:label": "§ 31 lg 2"
+    },
+    {
+      "@id": "estleg:KVEKS_Par_31_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Tehingud embrüoga on keelatud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_31"
+      },
+      "rdfs:label": "§ 31 lg 3"
+    },
+    {
       "@id": "estleg:KVEKS_Par_32",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KVEKS"
+        "estleg:LegalProvision_kunstliku_viljastamise_ja_embruokaitse_seadus"
       ],
       "estleg:paragrahv": "§ 32.",
       "rdfs:label": "§ 32. Embrüo kasutamine teaduslikuks uurimistööks",
       "estleg:sourceAct": "Kunstliku viljastamise ja embrüokaitse seadus",
-      "estleg:summary": "1(1)Teaduslikuks uurimistööks võib kasutada embrüot, mida ei ole kunstliku viljastamise edukuse nimel või lapse ja ema tervise huvides naisele üle kantud, samuti embrüot, mis on osutunud liigseks käesoleva seaduse § 23 lõikes 4 ja § 30 lõikes 2 nimetatud asjaoludel. Teaduslikuks uurimistööks võib kasutada embrüot, mida ei ole kunstliku viljastamise edukuse nimel või lapse ja ema tervise huvides naisele üle kantud, samuti embrüot, mis on osutunud liigseks käesoleva seaduse § 23 lõikes 4 ja § 30 l",
+      "estleg:summary": "1 (1) Teaduslikuks uurimistööks võib kasutada embrüot, mida ei ole kunstliku viljastamise edukuse nimel või lapse ja ema tervise huvides naisele üle kantud, samuti embrüot, mis on osutunud liigseks käesoleva seaduse § 4 lõikes 3 või § 30 lõikes 2 nimetatud asjaoludel. Teaduslikuks uurimistööks võib kasutada embrüot, mida ei ole kunstliku viljastamise edukuse nimel või lapse ja ema tervise huvides naisele üle kantud, samuti embrüot, mis on osutunud liigseks käesoleva seaduse § 4 lõikes 3 või § 30",
+      "estleg:legalText": "(1) Teaduslikuks uurimistööks võib kasutada embrüot, mida ei ole kunstliku viljastamise edukuse nimel või lapse ja ema tervise huvides naisele üle kantud, samuti embrüot, mis on osutunud liigseks käesoleva seaduse § 4 lõikes 3 või § 30 lõikes 2 nimetatud asjaoludel. (2) Embrüo kasutamiseks teaduslikuks uurimistööks peab olema isikute nõusolek, kellelt sugurakud pärinevad.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KVEKS_4"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KVEKS_4"
       },
-      "estleg:references": [
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:KVEKS_Par_23"
+          "@id": "estleg:KVEKS_Par_32_Lg_1"
+        },
+        {
+          "@id": "estleg:KVEKS_Par_32_Lg_2"
         }
       ],
+      "estleg:targetGroup": [
+        "citizen"
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:KVEKS_Par_4"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
       "estleg:referencedBy": [
         {
           "@id": "estleg:KVEKS_Par_31"
@@ -819,38 +2489,91 @@
       ]
     },
     {
+      "@id": "estleg:KVEKS_Par_32_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Teaduslikuks uurimistööks võib kasutada embrüot, mida ei ole kunstliku viljastamise edukuse nimel või lapse ja ema tervise huvides naisele üle kantud, samuti embrüot, mis on osutunud liigseks käesoleva seaduse § 4 lõikes 3 või § 30 lõikes 2 nimetatud asjaoludel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_32"
+      },
+      "rdfs:label": "§ 32 lg 1"
+    },
+    {
+      "@id": "estleg:KVEKS_Par_32_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Embrüo kasutamiseks teaduslikuks uurimistööks peab olema isikute nõusolek, kellelt sugurakud pärinevad.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_32"
+      },
+      "rdfs:label": "§ 32 lg 2"
+    },
+    {
       "@id": "estleg:KVEKS_Par_33",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KVEKS"
+        "estleg:LegalProvision_kunstliku_viljastamise_ja_embruokaitse_seadus"
       ],
       "estleg:paragrahv": "§ 33.",
       "rdfs:label": "§ 33. Teaduslikuks uurimistööks kasutatud embrüo ülekandmise keeld",
       "estleg:sourceAct": "Kunstliku viljastamise ja embrüokaitse seadus",
       "estleg:summary": "Teaduslikuks uurimistööks kasutatud embrüo ülekandmine naisele on keelatud. Teaduslikuks uurimistööks kasutatud embrüo ülekandmine naisele on keelatud.",
+      "estleg:legalText": "Teaduslikuks uurimistööks kasutatud embrüo ülekandmine naisele on keelatud.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KVEKS_4"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KVEKS_4"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KVEKS_Par_33_Lg_Unknown_1"
+        }
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Prohibition"
+      }
+    },
+    {
+      "@id": "estleg:KVEKS_Par_33_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Teaduslikuks uurimistööks kasutatud embrüo ülekandmine naisele on keelatud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_33"
       }
     },
     {
       "@id": "estleg:KVEKS_Par_34",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KVEKS"
+        "estleg:LegalProvision_kunstliku_viljastamise_ja_embruokaitse_seadus"
       ],
       "estleg:paragrahv": "§ 34.",
-      "rdfs:label": "§ 34. Kehaväliselt viljastatud munaraku või embrüo hoidmise või kasutamise tähtaeg",
+      "rdfs:label": "§ 34. Embrüo hoidmise või kasutamise tähtaeg",
       "estleg:sourceAct": "Kunstliku viljastamise ja embrüokaitse seadus",
-      "estleg:summary": "Käesoleva seaduse §-des 31 ja 32 ettenähtud alustel võib embrüot hoida või kasutada kuni 14 päeva jooksul pärast munaraku viljastumist. Embrüote säilitamine või kasutamine pärast nimetatud aja möödumist on keelatud. Nimetatud tähtaja hulka ei loeta aega, mil munarakk või embrüo oli vastavalt käesoleva seaduse §-le 30 külmutatud. Käesoleva seaduse §-des 31 ja 32 ettenähtud alustel võib embrüot hoida või kasutada kuni 14 päeva jooksul pärast munaraku viljastumist. Embrüote säilitamine või kasutami",
+      "estleg:summary": "Käesoleva seaduse §-des 31 ja 32 ettenähtud alustel võib embrüot hoida või kasutada kuni 14 päeva jooksul pärast munaraku viljastumist. Embrüote säilitamine või kasutamine pärast nimetatud aja möödumist on keelatud. Nimetatud tähtaja hulka ei loeta aega, mil embrüo oli vastavalt käesoleva seaduse §-le 30 külmutatud. RT I 2003 18 102 259015 2003-03-07 Käesoleva seaduse §-des 31 ja 32 ettenähtud alustel võib embrüot hoida või kasutada kuni 14 päeva jooksul pärast munaraku viljastumist. Embrüote sä",
+      "estleg:legalText": "Käesoleva seaduse §-des 31 ja 32 ettenähtud alustel võib embrüot hoida või kasutada kuni 14 päeva jooksul pärast munaraku viljastumist. Embrüote säilitamine või kasutamine pärast nimetatud aja möödumist on keelatud. Nimetatud tähtaja hulka ei loeta aega, mil embrüo oli vastavalt käesoleva seaduse §-le 30 külmutatud.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KVEKS_4"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KVEKS_4"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KVEKS_Par_34_Lg_Unknown_1"
+        }
+      ],
       "estleg:references": [
         {
           "@id": "estleg:KVEKS_Par_31"
@@ -858,52 +2581,226 @@
         {
           "@id": "estleg:KVEKS_Par_30"
         }
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      }
+    },
+    {
+      "@id": "estleg:KVEKS_Par_34_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Käesoleva seaduse §-des 31 ja 32 ettenähtud alustel võib embrüot hoida või kasutada kuni 14 päeva jooksul pärast munaraku viljastumist. Embrüote säilitamine või kasutamine pärast nimetatud aja möödumist on keelatud. Nimetatud tähtaja hulka ei loeta aega, mil embrüo oli vastavalt käesoleva seaduse §-le 30 külmutatud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_34"
+      }
     },
     {
       "@id": "estleg:KVEKS_Par_35",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KVEKS"
+        "estleg:LegalProvision_kunstliku_viljastamise_ja_embruokaitse_seadus"
       ],
       "estleg:paragrahv": "§ 35.",
       "rdfs:label": "§ 35. Keelatud toimingud embrüoga",
       "estleg:sourceAct": "Kunstliku viljastamise ja embrüokaitse seadus",
-      "estleg:summary": "Naise kunstliku viljastamisega seoses on keelatud:11)viljastada munarakk kunstlikult sellise seemnerakuga, mis on välja valitud selles sisalduva sugukromosoomi järgi, välja arvatud juhud, mil sugurakk on välja valitud, hoidmaks ära lapse haigestumist raskesse soolisse pärilikku haigusesse;22)luua viljastatud munaraku tuuma asendamise teel mõne teise embrüo, loote, elava või surnud inimese keharakuga selle embrüo, loote, elava või surnud inimesega samase päriliku informatsiooniga embrüo;33)liita ",
+      "estleg:summary": "Naise kunstliku viljastamisega seoses on keelatud: 1 1) viljastada munarakk kunstlikult sellise seemnerakuga, mis on välja valitud selles sisalduva sugukromosoomi järgi, välja arvatud juhud, mil sugurakk on välja valitud, hoidmaks ära lapse haigestumist raskesse soolisse pärilikku haigusesse; 2 2) luua viljastatud munaraku tuuma asendamise teel mõne teise embrüo, loote, elava või surnud inimese keharakuga selle embrüo, loote, elava või surnud inimesega samase päriliku informatsiooniga embrüo; 3 ",
+      "estleg:legalText": "Naise kunstliku viljastamisega seoses on keelatud: viljastada munarakk kunstlikult sellise seemnerakuga, mis on välja valitud selles sisalduva sugukromosoomi järgi, välja arvatud juhud, mil sugurakk on välja valitud, hoidmaks ära lapse haigestumist raskesse soolisse pärilikku haigusesse; luua viljastatud munaraku tuuma asendamise teel mõne teise embrüo, loote, elava või surnud inimese keharakuga selle embrüo, loote, elava või surnud inimesega samase päriliku informatsiooniga embrüo; liita üheks rakuühenduseks erineva päriliku informatsiooniga embrüod, millest vähemalt üks on inimembrüo, või liita inimembrüoga rakk, mis sisaldab teistsugust pärilikku informatsiooni kui embrüo rakud ja mis võib koos sellega edasi areneda; luua arenemisvõimeline embrüo inimese munaraku viljastamisega looma seemnerakuga või looma munaraku viljastamisega inimese seemnerakuga.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KVEKS_4"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KVEKS_4"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KVEKS_Par_35_Lg_Unknown_1"
+        }
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Prohibition"
+      }
+    },
+    {
+      "@id": "estleg:KVEKS_Par_35_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Naise kunstliku viljastamisega seoses on keelatud: viljastada munarakk kunstlikult sellise seemnerakuga, mis on välja valitud selles sisalduva sugukromosoomi järgi, välja arvatud juhud, mil sugurakk on välja valitud, hoidmaks ära lapse haigestumist raskesse soolisse pärilikku haigusesse; luua viljastatud munaraku tuuma asendamise teel mõne teise embrüo, loote, elava või surnud inimese keharakuga selle embrüo, loote, elava või surnud inimesega samase päriliku informatsiooniga embrüo; liita üheks rakuühenduseks erineva päriliku informatsiooniga embrüod, millest vähemalt üks on inimembrüo, või liita inimembrüoga rakk, mis sisaldab teistsugust pärilikku informatsiooni kui embrüo rakud ja mis võib koos sellega edasi areneda; luua arenemisvõimeline embrüo inimese munaraku viljastamisega looma seemnerakuga või looma munaraku viljastamisega inimese seemnerakuga.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_35"
+      }
+    },
+    {
+      "@id": "estleg:KVEKS_Par_35_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_kunstliku_viljastamise_ja_embruokaitse_seadus"
+      ],
+      "estleg:paragrahv": "§ 35<sup>1</sup>.",
+      "rdfs:label": "§ 35<sup>1</sup>. Kehavälise viljastamise ja embrüo siirdamise tervishoiuteenuste ja nendega seonduvate ravimikulude hüvitamine",
+      "estleg:sourceAct": "Kunstliku viljastamise ja embrüokaitse seadus",
+      "estleg:summary": "Kehavälise viljastamise ja embrüo siirdamise tervishoiuteenused ning nendega seonduvad ravimikulud hüvitatakse ravikindlustuse seaduses sätestatud tingimustel ja korras. RT I 2017-12-28 4 128122017004 2018-01-01 Kehavälise viljastamise ja embrüo siirdamise tervishoiuteenused ning nendega seonduvad ravimikulud hüvitatakse ravikindlustuse seaduses sätestatud tingimustel ja korras.",
+      "estleg:legalText": "Kehavälise viljastamise ja embrüo siirdamise tervishoiuteenused ning nendega seonduvad ravimikulud hüvitatakse ravikindlustuse seaduses sätestatud tingimustel ja korras.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_KVEKS_4"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KVEKS_4"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KVEKS_Par_35_1_Lg_Unknown_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:KVEKS_Par_35_1_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Kehavälise viljastamise ja embrüo siirdamise tervishoiuteenused ning nendega seonduvad ravimikulud hüvitatakse ravikindlustuse seaduses sätestatud tingimustel ja korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_35_1"
       }
     },
     {
       "@id": "estleg:KVEKS_Par_36",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KVEKS"
+        "estleg:LegalProvision_kunstliku_viljastamise_ja_embruokaitse_seadus"
       ],
       "estleg:paragrahv": "§ 36.",
-      "rdfs:label": "§ 36. Kriminaalkoodeksi muutmine ja täiendamine",
+      "rdfs:label": "§ 36. [[Käesolevast tekstist välja jäetud.]]",
       "estleg:sourceAct": "Kunstliku viljastamise ja embrüokaitse seadus",
-      "estleg:summary": "Kriminaalkoodeksis (RT 1992, 20, 288; RT I 1997, 21/22, 353; 28, 423; 30, 472; 34, 535) tehakse järgmised muudatused ja täiendused:11)koodeksit täiendatakse §-dega 1201 ja 1202 järgmises sõnastuses:«§ 1201. Võõra munaraku või sellest loodud embrüo ülekandmine naiseleVõõra munaraku või sellest loodud embrüo ülekandmise eest naisele kunstliku viljastamise ja embrüokaitse seadust rikkudes, samuti võõra munaraku või sellest valmistatud embrüo ülekandmise eraviisilise vahendamise eest -- karistatakse",
+      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KVEKS_5"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KVEKS_5"
       }
     },
     {
-      "@id": "estleg:KVEKS_Par_120",
+      "@id": "estleg:KVEKS_Par_37",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KVEKS"
+        "estleg:LegalProvision_kunstliku_viljastamise_ja_embruokaitse_seadus"
       ],
-      "estleg:paragrahv": "§ 120<sup>2</sup>.",
-      "rdfs:label": "§ 120<sup>2</sup>. Keelatud toimingud embrüoga",
+      "estleg:paragrahv": "§ 37.",
+      "rdfs:label": "§ 37. Paragrahvi 10 rakendamine",
       "estleg:sourceAct": "Kunstliku viljastamise ja embrüokaitse seadus",
-      "estleg:summary": "Naise kunstliku viljastamise või kehaväliselt säilitatava inimembrüoga teostatavate toimingute käigus:11)naise munaraku kunstliku viljastamise eest seemnerakuga, mis on välja valitud selles sisalduva sugukromosoomi järgi, välja arvatud juhud, mil sugurakk on välja valitud, hoidmaks ära lapse haigestumist raskesse soolisse pärilikku haigusesse või22)viljastatud munaraku tuuma asendamise eest mõne teise embrüo, loote, elava või surnud inimese keharakuga eesmärgiga luua selle embrüo, loote, elava v",
+      "estleg:summary": "Käesoleva seaduse §-s 10 nimetatud registreerimistõendi numbri asemel võib kuni arsti tervishoiuteenuste korraldamise seaduses sätestatud korras registreerimiseni kasutada arstikoodi. RT I 2003 18 102 259015 2003-03-07 Käesoleva seaduse §-s 10 nimetatud registreerimistõendi numbri asemel võib kuni arsti tervishoiuteenuste korraldamise seaduses sätestatud korras registreerimiseni kasutada arstikoodi.",
+      "estleg:legalText": "Käesoleva seaduse §-s 10 nimetatud registreerimistõendi numbri asemel võib kuni arsti tervishoiuteenuste korraldamise seaduses sätestatud korras registreerimiseni kasutada arstikoodi.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KVEKS_5"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KVEKS_5"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KVEKS_Par_37_Lg_Unknown_1"
+        }
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:KVEKS_Par_10"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
+    },
+    {
+      "@id": "estleg:KVEKS_Par_37_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Käesoleva seaduse §-s 10 nimetatud registreerimistõendi numbri asemel võib kuni arsti tervishoiuteenuste korraldamise seaduses sätestatud korras registreerimiseni kasutada arstikoodi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_37"
+      }
+    },
+    {
+      "@id": "estleg:KVEKS_Par_38",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_kunstliku_viljastamise_ja_embruokaitse_seadus"
+      ],
+      "estleg:paragrahv": "§ 38.",
+      "rdfs:label": "§ 38. Rakendussätted",
+      "estleg:sourceAct": "Kunstliku viljastamise ja embrüokaitse seadus",
+      "estleg:summary": "1 (1) Käesoleva seaduse § 351 kohaldatakse alates 2006. aasta 1. jaanuarist. Käesoleva seaduse § 351 kohaldatakse alates 2006. aasta 1. jaanuarist. 2 (2) 2006. aasta kohta taotletud kehavälise viljastamise hüvitisi makstakse välja alates 2007. aasta 1. veebruarist kuni 2007. aasta 1. aprillini. RT I 2006 32 245 1044388 2006-09-01 2006. aasta kohta taotletud kehavälise viljastamise hüvitisi makstakse välja alates 2007. aasta 1. veebruarist kuni 2007. aasta 1. aprillini.",
+      "estleg:legalText": "(1) Käesoleva seaduse § 351 kohaldatakse alates 2006. aasta 1. jaanuarist. (2) 2006. aasta kohta taotletud kehavälise viljastamise hüvitisi makstakse välja alates 2007. aasta 1. veebruarist kuni 2007. aasta 1. aprillini.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_KVEKS_5"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KVEKS_5"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KVEKS_Par_38_Lg_1"
+        },
+        {
+          "@id": "estleg:KVEKS_Par_38_Lg_2"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:ReprS_Par_16_1",
+          "estleg:similarityScore": {
+            "@value": "0.312",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:SpS_Par_27_1",
+          "estleg:similarityScore": {
+            "@value": "0.333",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:KVEKS_Par_38_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesoleva seaduse § 351 kohaldatakse alates 2006. aasta 1. jaanuarist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_38"
+      },
+      "rdfs:label": "§ 38 lg 1"
+    },
+    {
+      "@id": "estleg:KVEKS_Par_38_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) 2006. aasta kohta taotletud kehavälise viljastamise hüvitisi makstakse välja alates 2007. aasta 1. veebruarist kuni 2007. aasta 1. aprillini.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KVEKS_Par_38"
+      },
+      "rdfs:label": "§ 38 lg 2"
     }
   ]
 }

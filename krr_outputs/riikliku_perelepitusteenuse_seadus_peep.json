@@ -6,20 +6,31 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
   },
   "@graph": [
     {
       "@id": "estleg:RIIKLI_Map_2026",
       "@type": [
+        "owl:Ontology",
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "rdfs:label": "Riikliku perelepitusteenuse seadus teemakaardistus",
       "dc:source": "Riikliku perelepitusteenuse seadus",
-      "estleg:temporalStatus": "unknown",
+      "dcterms:title": "Riikliku perelepitusteenuse seadus",
+      "estleg:contentStatus": "structuredBody",
+      "dcterms:source": {
+        "@id": "https://www.riigiteataja.ee/akt/131032022015.xml"
+      },
+      "owl:sameAs": {
+        "@id": "https://www.riigiteataja.ee/akt/131032022015.xml"
+      },
+      "estleg:kehtiv": {
+        "@value": "2026-05-24",
+        "@type": "xsd:date"
+      },
       "dcterms:subject": [
         {
           "@id": "http://eurovoc.europa.eu/3611"
@@ -34,12 +45,13 @@
           "@id": "http://eurovoc.europa.eu/5211"
         },
         {
-          "@id": "http://eurovoc.europa.eu/2441"
+          "@id": "http://eurovoc.europa.eu/5636"
         }
-      ]
+      ],
+      "estleg:temporalStatus": "unknown"
     },
     {
-      "@id": "estleg:LegalProvision_RIIKLI",
+      "@id": "estleg:LegalProvision_riikliku_perelepitusteenuse_seadus",
       "@type": [
         "owl:Class"
       ],
@@ -49,43 +61,190 @@
       }
     },
     {
+      "@id": "estleg:RIIKLI_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": "Riikliku perelepitusteenuse seadus teemaskeem",
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_RIIKLI_default"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Cluster_RIIKLI_default",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": "§1–25 Riikliku perelepitusteenuse seadus",
+      "skos:prefLabel": "§1–25 Riikliku perelepitusteenuse seadus",
+      "skos:inScheme": {
+        "@id": "estleg:RIIKLI_TopicScheme"
+      },
+      "estleg:provisionCount": 21
+    },
+    {
       "@id": "estleg:RIIKLI_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIKLI"
+        "estleg:LegalProvision_riikliku_perelepitusteenuse_seadus"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. Seaduse reguleerimis- ja kohaldamisala",
       "estleg:sourceAct": "Riikliku perelepitusteenuse seadus",
       "estleg:summary": "1 (1) Käesoleva seadusega reguleeritakse riiklikku perelepitusteenust ja sätestatakse lepitusmenetluse korraldamise alused eesmärgiga toetada vanemaid lahkumineku järel oma alaealise lapse edasises elukorralduses kokkuleppele jõudmisel, soodustada vanemate koostööd lapse kasvatamisel ning seeläbi tagada lapse huvide kaitse ja heaolu. Käesoleva seadusega reguleeritakse riiklikku perelepitusteenust ja sätestatakse lepitusmenetluse korraldamise alused eesmärgiga toetada vanemaid lahkumineku järel o",
+      "estleg:legalText": "(1) Käesoleva seadusega reguleeritakse riiklikku perelepitusteenust ja sätestatakse lepitusmenetluse korraldamise alused eesmärgiga toetada vanemaid lahkumineku järel oma alaealise lapse edasises elukorralduses kokkuleppele jõudmisel, soodustada vanemate koostööd lapse kasvatamisel ning seeläbi tagada lapse huvide kaitse ja heaolu. (2) Käesolevas seaduses sätestatud perelepitusteenust osutatakse, kui vanemate ja vaidlusest puudutatud lapse elukoht on Eestis. (3) Perelepitusteenust osutatakse ka juhul, kui vaidlus allub Eesti kohtule ja kohus on suunanud vanemad tsiviilkohtumenetluse seadustiku § 5601 alusel perelepitusse.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RIIKLI_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RIIKLI_Par_1_Lg_1"
+        },
+        {
+          "@id": "estleg:RIIKLI_Par_1_Lg_2"
+        },
+        {
+          "@id": "estleg:RIIKLI_Par_1_Lg_3"
+        }
+      ],
       "estleg:targetGroup": [
-        "citizen"
+        "citizen",
+        "public_body"
       ]
+    },
+    {
+      "@id": "estleg:RIIKLI_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesoleva seadusega reguleeritakse riiklikku perelepitusteenust ja sätestatakse lepitusmenetluse korraldamise alused eesmärgiga toetada vanemaid lahkumineku järel oma alaealise lapse edasises elukorralduses kokkuleppele jõudmisel, soodustada vanemate koostööd lapse kasvatamisel ning seeläbi tagada lapse huvide kaitse ja heaolu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIKLI_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
+    },
+    {
+      "@id": "estleg:RIIKLI_Par_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Käesolevas seaduses sätestatud perelepitusteenust osutatakse, kui vanemate ja vaidlusest puudutatud lapse elukoht on Eestis.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIKLI_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 2"
+    },
+    {
+      "@id": "estleg:RIIKLI_Par_1_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Perelepitusteenust osutatakse ka juhul, kui vaidlus allub Eesti kohtule ja kohus on suunanud vanemad tsiviilkohtumenetluse seadustiku § 5601 alusel perelepitusse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIKLI_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 3"
     },
     {
       "@id": "estleg:RIIKLI_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIKLI"
+        "estleg:LegalProvision_riikliku_perelepitusteenuse_seadus"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. Teiste seaduste kohaldamine",
       "estleg:sourceAct": "Riikliku perelepitusteenuse seadus",
       "estleg:summary": "1 (1) Käesolevas seaduses sätestatud lepitusmenetlusele, menetlusele lepitusorganis, perelepitaja kohustustele ning vanemluskokkuleppe kinnitamisele, kehtivusele ja täidetavusele kohaldatakse lepitusseaduse sätteid, arvestades käesolevas seaduses sätestatud erisusi. Käesolevas seaduses sätestatud lepitusmenetlusele, menetlusele lepitusorganis, perelepitaja kohustustele ning vanemluskokkuleppe kinnitamisele, kehtivusele ja täidetavusele kohaldatakse lepitusseaduse sätteid, arvestades käesolevas s",
+      "estleg:legalText": "(1) Käesolevas seaduses sätestatud lepitusmenetlusele, menetlusele lepitusorganis, perelepitaja kohustustele ning vanemluskokkuleppe kinnitamisele, kehtivusele ja täidetavusele kohaldatakse lepitusseaduse sätteid, arvestades käesolevas seaduses sätestatud erisusi. (2) Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse sätteid, arvestades käesolevas seaduses sätestatud erisusi. (3) Käesoleva seaduse alusel lepitusmenetluse läbiviimine, sealhulgas lepituskokkuleppe kinnitamine ja kinnitamata jätmine, ei ole haldusmenetlus haldusmenetluse seaduse tähenduses.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RIIKLI_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RIIKLI_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:RIIKLI_Par_2_Lg_2"
+        },
+        {
+          "@id": "estleg:RIIKLI_Par_2_Lg_3"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen"
       ]
     },
     {
+      "@id": "estleg:RIIKLI_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolevas seaduses sätestatud lepitusmenetlusele, menetlusele lepitusorganis, perelepitaja kohustustele ning vanemluskokkuleppe kinnitamisele, kehtivusele ja täidetavusele kohaldatakse lepitusseaduse sätteid, arvestades käesolevas seaduses sätestatud erisusi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIKLI_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
+    },
+    {
+      "@id": "estleg:RIIKLI_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse sätteid, arvestades käesolevas seaduses sätestatud erisusi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIKLI_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2"
+    },
+    {
+      "@id": "estleg:RIIKLI_Par_2_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Käesoleva seaduse alusel lepitusmenetluse läbiviimine, sealhulgas lepituskokkuleppe kinnitamine ja kinnitamata jätmine, ei ole haldusmenetlus haldusmenetluse seaduse tähenduses.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIKLI_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 3"
+    },
+    {
       "@id": "estleg:RIIKLI_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIKLI"
+        "estleg:LegalProvision_riikliku_perelepitusteenuse_seadus"
       ],
       "estleg:paragrahv": "§ 3.",
       "rdfs:label": "§ 3. Terminid",
       "estleg:sourceAct": "Riikliku perelepitusteenuse seadus",
       "estleg:summary": "1 (1) Perelepitaja käesoleva seaduse tähenduses on Sotsiaalkindlustusametiga lepingulises suhtes olev lepitusmenetlust vahetult läbiviiv isik, kes aitab vanematel (edaspidi lepitusosalised) leida nende alaealise lapse elukorralduslikes küsimustes tekkinud vaidlusele lapse huve arvestava lahenduse. Perelepitaja käesoleva seaduse tähenduses on Sotsiaalkindlustusametiga lepingulises suhtes olev lepitusmenetlust vahetult läbiviiv isik, kes aitab vanematel (edaspidi lepitusosalised) leida nende alaea",
+      "estleg:legalText": "(1) Perelepitaja käesoleva seaduse tähenduses on Sotsiaalkindlustusametiga lepingulises suhtes olev lepitusmenetlust vahetult läbiviiv isik, kes aitab vanematel (edaspidi lepitusosalised) leida nende alaealise lapse elukorralduslikes küsimustes tekkinud vaidlusele lapse huve arvestava lahenduse. (2) Vanemluskokkulepe on käesolevas seaduses sätestatud lepitusmenetluse edukal lõppemisel lepitusosaliste vahel sõlmitud ja Sotsiaalkindlustusameti kinnitatud kokkulepe.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RIIKLI_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RIIKLI_Par_3_Lg_1"
+        },
+        {
+          "@id": "estleg:RIIKLI_Par_3_Lg_2"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen"
       ],
@@ -97,15 +256,56 @@
       "estleg:competenceType": "general"
     },
     {
+      "@id": "estleg:RIIKLI_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Perelepitaja käesoleva seaduse tähenduses on Sotsiaalkindlustusametiga lepingulises suhtes olev lepitusmenetlust vahetult läbiviiv isik, kes aitab vanematel (edaspidi lepitusosalised) leida nende alaealise lapse elukorralduslikes küsimustes tekkinud vaidlusele lapse huve arvestava lahenduse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIKLI_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
+    },
+    {
+      "@id": "estleg:RIIKLI_Par_3_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Vanemluskokkulepe on käesolevas seaduses sätestatud lepitusmenetluse edukal lõppemisel lepitusosaliste vahel sõlmitud ja Sotsiaalkindlustusameti kinnitatud kokkulepe.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIKLI_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 2"
+    },
+    {
       "@id": "estleg:RIIKLI_Par_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIKLI"
+        "estleg:LegalProvision_riikliku_perelepitusteenuse_seadus"
       ],
       "estleg:paragrahv": "§ 4.",
       "rdfs:label": "§ 4. Perelepitusteenus",
       "estleg:sourceAct": "Riikliku perelepitusteenuse seadus",
       "estleg:summary": "1 (1) Käesolevas seaduses sätestatud perelepitusteenuse osutamise käigus viiakse perelepitaja vahendusel läbi lepitusmenetlus, mille tulemusel võivad lepitusosalised kokku leppida perekonnaseaduses sätestatud lapsega suhtlemise õiguse või alaealise lapse ülalpidamisega seotud küsimustes. Käesolevas seaduses sätestatud perelepitusteenuse osutamise käigus viiakse perelepitaja vahendusel läbi lepitusmenetlus, mille tulemusel võivad lepitusosalised kokku leppida perekonnaseaduses sätestatud lapsega ",
+      "estleg:legalText": "(1) Käesolevas seaduses sätestatud perelepitusteenuse osutamise käigus viiakse perelepitaja vahendusel läbi lepitusmenetlus, mille tulemusel võivad lepitusosalised kokku leppida perekonnaseaduses sätestatud lapsega suhtlemise õiguse või alaealise lapse ülalpidamisega seotud küsimustes. (2) Kui kohus on teinud tsiviilkohtumenetluse seadustiku § 5601 alusel perelepitusse suunamise määruse, võib lepitusmenetluse käigus kokku leppida ka ühise hooldusõiguse lõpetamises või muutmises perekonnaseaduse § 1371 kohaselt.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RIIKLI_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RIIKLI_Par_4_Lg_1"
+        },
+        {
+          "@id": "estleg:RIIKLI_Par_4_Lg_2"
+        }
+      ],
+      "estleg:targetGroup": [
+        "public_body"
+      ],
       "estleg:referencedBy": [
         {
           "@id": "estleg:RIIKLI_Par_25"
@@ -113,15 +313,50 @@
       ]
     },
     {
+      "@id": "estleg:RIIKLI_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolevas seaduses sätestatud perelepitusteenuse osutamise käigus viiakse perelepitaja vahendusel läbi lepitusmenetlus, mille tulemusel võivad lepitusosalised kokku leppida perekonnaseaduses sätestatud lapsega suhtlemise õiguse või alaealise lapse ülalpidamisega seotud küsimustes.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIKLI_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1"
+    },
+    {
+      "@id": "estleg:RIIKLI_Par_4_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kui kohus on teinud tsiviilkohtumenetluse seadustiku § 5601 alusel perelepitusse suunamise määruse, võib lepitusmenetluse käigus kokku leppida ka ühise hooldusõiguse lõpetamises või muutmises perekonnaseaduse § 1371 kohaselt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIKLI_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 2"
+    },
+    {
       "@id": "estleg:RIIKLI_Par_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIKLI"
+        "estleg:LegalProvision_riikliku_perelepitusteenuse_seadus"
       ],
       "estleg:paragrahv": "§ 5.",
       "rdfs:label": "§ 5. Lepitusorgan ja perelepituse korraldamine",
       "estleg:sourceAct": "Riikliku perelepitusteenuse seadus",
       "estleg:summary": "Sotsiaalkindlustusamet on lepitusorgan lepitusseaduse § 19 tähenduses ja tagab perelepitusteenuse osutamise. Sotsiaalkindlustusamet on lepitusorgan lepitusseaduse § 19 tähenduses ja tagab perelepitusteenuse osutamise.",
+      "estleg:legalText": "Sotsiaalkindlustusamet on lepitusorgan lepitusseaduse § 19 tähenduses ja tagab perelepitusteenuse osutamise.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RIIKLI_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RIIKLI_Par_5_Lg_Unknown_1"
+        }
+      ],
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_sotsiaalkindlustusamet"
@@ -130,20 +365,136 @@
       "estleg:competenceType": "general"
     },
     {
+      "@id": "estleg:RIIKLI_Par_5_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Sotsiaalkindlustusamet on lepitusorgan lepitusseaduse § 19 tähenduses ja tagab perelepitusteenuse osutamise.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIKLI_Par_5"
+      }
+    },
+    {
       "@id": "estleg:RIIKLI_Par_6",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIKLI"
+        "estleg:LegalProvision_riikliku_perelepitusteenuse_seadus"
       ],
       "estleg:paragrahv": "§ 6.",
       "rdfs:label": "§ 6. Perelepitajale esitatavad nõuded",
       "estleg:sourceAct": "Riikliku perelepitusteenuse seadus",
       "estleg:summary": "1 (1) Perelepitaja peab vastama vähemalt järgmistele nõuetele: 1 1) tal on kõrgharidus; 2 2) tal on lepitusmenetluse läbiviimiseks vajalikud isikuomadused; 3 3) ta vastab lastekaitseseaduse §-s 20 sätestatud nõuetele; 4 4) ta on läbinud Sotsiaalkindlustusameti korraldatud perelepitaja koolituse. Perelepitaja peab vastama vähemalt järgmistele nõuetele: tal on kõrgharidus; tal on lepitusmenetluse läbiviimiseks vajalikud isikuomadused; ta vastab lastekaitseseaduse §-s 20 sätestatud nõuetele; ta on ",
+      "estleg:legalText": "(1) Perelepitaja peab vastama vähemalt järgmistele nõuetele: tal on kõrgharidus; tal on lepitusmenetluse läbiviimiseks vajalikud isikuomadused; ta vastab lastekaitseseaduse §-s 20 sätestatud nõuetele; ta on läbinud Sotsiaalkindlustusameti korraldatud perelepitaja koolituse. (2) Kui perelepitajana tegutseda sooviv isik on läbinud mõne muu perelepitaja koolituse, mis oma sisult ja mahult vastab käesoleva paragrahvi lõike 4 alusel kehtestatud nõuetele, tuleb tal oma kvalifikatsiooni tõendamiseks sooritada eksam. Eksami korraldab Sotsiaalkindlustusamet. (3) Perelepitaja, kes tegeleb käesoleva seaduse § 11 lõike 1 punktides 1 ja 3 sätestatud erijuhtudega, peab lisaks käesoleva paragrahvi lõikes 1 sätestatud nõuete täitmisele olema läbinud lõike 4 alusel kehtestatud nõuetele vastava täienduskoolituse lähisuhtevägivalla ohvritega ja psüühilise erivajadusega inimestega töötamiseks. (4) Käesoleva paragrahvi lõike 1 punktis 4 ja lõikes 3 nimetatud koolituste tingimused ja korra, sealhulgas nõuded koolituste sisule ja mahule, kehtestab määrusega.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RIIKLI_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RIIKLI_Par_6_Lg_1"
+        },
+        {
+          "@id": "estleg:RIIKLI_Par_6_Lg_2"
+        },
+        {
+          "@id": "estleg:RIIKLI_Par_6_Lg_3"
+        },
+        {
+          "@id": "estleg:RIIKLI_Par_6_Lg_4"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "public_body"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
       "estleg:dutyHolder": "Perelepitaja",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_sotsiaalkindlustusamet"
+        }
+      ],
+      "estleg:competenceType": "general"
+    },
+    {
+      "@id": "estleg:RIIKLI_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Perelepitaja peab vastama vähemalt järgmistele nõuetele: tal on kõrgharidus; tal on lepitusmenetluse läbiviimiseks vajalikud isikuomadused; ta vastab lastekaitseseaduse §-s 20 sätestatud nõuetele; ta on läbinud Sotsiaalkindlustusameti korraldatud perelepitaja koolituse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIKLI_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1"
+    },
+    {
+      "@id": "estleg:RIIKLI_Par_6_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kui perelepitajana tegutseda sooviv isik on läbinud mõne muu perelepitaja koolituse, mis oma sisult ja mahult vastab käesoleva paragrahvi lõike 4 alusel kehtestatud nõuetele, tuleb tal oma kvalifikatsiooni tõendamiseks sooritada eksam. Eksami korraldab Sotsiaalkindlustusamet.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIKLI_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 2"
+    },
+    {
+      "@id": "estleg:RIIKLI_Par_6_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Perelepitaja, kes tegeleb käesoleva seaduse § 11 lõike 1 punktides 1 ja 3 sätestatud erijuhtudega, peab lisaks käesoleva paragrahvi lõikes 1 sätestatud nõuete täitmisele olema läbinud lõike 4 alusel kehtestatud nõuetele vastava täienduskoolituse lähisuhtevägivalla ohvritega ja psüühilise erivajadusega inimestega töötamiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIKLI_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 3"
+    },
+    {
+      "@id": "estleg:RIIKLI_Par_6_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Käesoleva paragrahvi lõike 1 punktis 4 ja lõikes 3 nimetatud koolituste tingimused ja korra, sealhulgas nõuded koolituste sisule ja mahule, kehtestab määrusega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIKLI_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 4"
+    },
+    {
+      "@id": "estleg:RIIKLI_Par_7",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_riikliku_perelepitusteenuse_seadus"
+      ],
+      "estleg:paragrahv": "§ 7.",
+      "rdfs:label": "§ 7. Perelepitusteenuse taotlemine",
+      "estleg:sourceAct": "Riikliku perelepitusteenuse seadus",
+      "estleg:summary": "1 (1) Perelepitusteenuse saamiseks esitatakse Sotsiaalkindlustusametile taotlus, kuhu on märgitud: 1 1) taotleja nimi, isikukood või sünniaeg, elukoha aadress ja kontaktandmed; 2 2) teise poole nimi, isikukood või sünniaeg, elukoha aadress ja kontaktandmed; 3 3) teise poole nõusolek perelepituses osaleda; 4 4) vaidluse aluseks olevad asjaolud; 5 5) kinnitus selle kohta, et teenust taotlevate isikute ja vaidlusest puudutatud lapse kohta ei ole lepitusmenetluse esemeks olevas nõudes käimas kohtuva",
+      "estleg:legalText": "(1) Perelepitusteenuse saamiseks esitatakse Sotsiaalkindlustusametile taotlus, kuhu on märgitud: taotleja nimi, isikukood või sünniaeg, elukoha aadress ja kontaktandmed; teise poole nimi, isikukood või sünniaeg, elukoha aadress ja kontaktandmed; teise poole nõusolek perelepituses osaleda; vaidluse aluseks olevad asjaolud; kinnitus selle kohta, et teenust taotlevate isikute ja vaidlusest puudutatud lapse kohta ei ole lepitusmenetluse esemeks olevas nõudes käimas kohtuvaidlust; muud olulised asjaolud. (2) Taotlust ei esitata, kui kohus on teinud tsiviilkohtumenetluse seadustiku § 5601 alusel perelepitusse suunamise määruse.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RIIKLI_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RIIKLI_Par_7_Lg_1"
+        },
+        {
+          "@id": "estleg:RIIKLI_Par_7_Lg_2"
+        }
+      ],
       "estleg:targetGroup": [
+        "citizen",
         "public_body"
       ],
       "estleg:competentAuthority": [
@@ -154,35 +505,56 @@
       "estleg:competenceType": "general"
     },
     {
-      "@id": "estleg:RIIKLI_Par_7",
+      "@id": "estleg:RIIKLI_Par_7_Lg_1",
       "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIKLI"
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Perelepitusteenuse taotlemine",
-      "estleg:sourceAct": "Riikliku perelepitusteenuse seadus",
-      "estleg:summary": "1 (1) Perelepitusteenuse saamiseks esitatakse Sotsiaalkindlustusametile taotlus, kuhu on märgitud: 1 1) taotleja nimi, isikukood või sünniaeg, elukoha aadress ja kontaktandmed; 2 2) teise poole nimi, isikukood või sünniaeg, elukoha aadress ja kontaktandmed; 3 3) teise poole nõusolek perelepituses osaleda; 4 4) vaidluse aluseks olevad asjaolud; 5 5) kinnitus selle kohta, et teenust taotlevate isikute ja vaidlusest puudutatud lapse kohta ei ole lepitusmenetluse esemeks olevas nõudes käimas kohtuva",
-      "estleg:targetGroup": [
-        "citizen"
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Perelepitusteenuse saamiseks esitatakse Sotsiaalkindlustusametile taotlus, kuhu on märgitud: taotleja nimi, isikukood või sünniaeg, elukoha aadress ja kontaktandmed; teise poole nimi, isikukood või sünniaeg, elukoha aadress ja kontaktandmed; teise poole nõusolek perelepituses osaleda; vaidluse aluseks olevad asjaolud; kinnitus selle kohta, et teenust taotlevate isikute ja vaidlusest puudutatud lapse kohta ei ole lepitusmenetluse esemeks olevas nõudes käimas kohtuvaidlust; muud olulised asjaolud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIKLI_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 1"
+    },
+    {
+      "@id": "estleg:RIIKLI_Par_7_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_sotsiaalkindlustusamet"
-        }
-      ],
-      "estleg:competenceType": "general"
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Taotlust ei esitata, kui kohus on teinud tsiviilkohtumenetluse seadustiku § 5601 alusel perelepitusse suunamise määruse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIKLI_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 2"
     },
     {
       "@id": "estleg:RIIKLI_Par_8",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIKLI"
+        "estleg:LegalProvision_riikliku_perelepitusteenuse_seadus"
       ],
       "estleg:paragrahv": "§ 8.",
       "rdfs:label": "§ 8. Perelepitusteenuse määramine",
       "estleg:sourceAct": "Riikliku perelepitusteenuse seadus",
       "estleg:summary": "1 (1) Sotsiaalkindlustusamet teeb otsuse teenuse saamise ja perelepitaja määramise kohta kümne tööpäeva jooksul taotluse esitamisest või tsiviilkohtumenetluse seadustiku § 5601 alusel perelepitusse suunamise määruse saamisest arvates. Sotsiaalkindlustusamet teeb otsuse teenuse saamise ja perelepitaja määramise kohta kümne tööpäeva jooksul taotluse esitamisest või tsiviilkohtumenetluse seadustiku § 5601 alusel perelepitusse suunamise määruse saamisest arvates. 2 (2) Sotsiaalkindlustusametil on õi",
+      "estleg:legalText": "(1) Sotsiaalkindlustusamet teeb otsuse teenuse saamise ja perelepitaja määramise kohta kümne tööpäeva jooksul taotluse esitamisest või tsiviilkohtumenetluse seadustiku § 5601 alusel perelepitusse suunamise määruse saamisest arvates. (2) Sotsiaalkindlustusametil on õigus otsuse tegemisel kontrollida, kas lepitusosaliste vahel on esinenud lähisuhtevägivalda või on esinenud vaidlusest puudutatud lapse väärkohtlemist või hooletusse jätmist ning kas ühel või mõlemal lepitusosalisel on psüühikahäire või intellektipuue, eesmärgiga selgitada välja, kas juhtum kuulub käesoleva seaduse § 11 lõikes 1 nimetatud perelepituse erijuhtude alla. (3) Käesoleva paragrahvi lõikes 2 nimetatud eesmärgi saavutamiseks töötleb Sotsiaalkindlustusamet andmeid sotsiaalteenuste ja -toetuste andmeregistris, sotsiaalkaitse infosüsteemis ja rahvastikuregistris.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RIIKLI_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RIIKLI_Par_8_Lg_1"
+        },
+        {
+          "@id": "estleg:RIIKLI_Par_8_Lg_2"
+        },
+        {
+          "@id": "estleg:RIIKLI_Par_8_Lg_3"
+        }
+      ],
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_sotsiaalkindlustusamet"
@@ -191,15 +563,63 @@
       "estleg:competenceType": "general"
     },
     {
+      "@id": "estleg:RIIKLI_Par_8_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Sotsiaalkindlustusamet teeb otsuse teenuse saamise ja perelepitaja määramise kohta kümne tööpäeva jooksul taotluse esitamisest või tsiviilkohtumenetluse seadustiku § 5601 alusel perelepitusse suunamise määruse saamisest arvates.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIKLI_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 1"
+    },
+    {
+      "@id": "estleg:RIIKLI_Par_8_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Sotsiaalkindlustusametil on õigus otsuse tegemisel kontrollida, kas lepitusosaliste vahel on esinenud lähisuhtevägivalda või on esinenud vaidlusest puudutatud lapse väärkohtlemist või hooletusse jätmist ning kas ühel või mõlemal lepitusosalisel on psüühikahäire või intellektipuue, eesmärgiga selgitada välja, kas juhtum kuulub käesoleva seaduse § 11 lõikes 1 nimetatud perelepituse erijuhtude alla.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIKLI_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 2"
+    },
+    {
+      "@id": "estleg:RIIKLI_Par_8_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Käesoleva paragrahvi lõikes 2 nimetatud eesmärgi saavutamiseks töötleb Sotsiaalkindlustusamet andmeid sotsiaalteenuste ja -toetuste andmeregistris, sotsiaalkaitse infosüsteemis ja rahvastikuregistris.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIKLI_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 3"
+    },
+    {
       "@id": "estleg:RIIKLI_Par_9",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIKLI"
+        "estleg:LegalProvision_riikliku_perelepitusteenuse_seadus"
       ],
       "estleg:paragrahv": "§ 9.",
       "rdfs:label": "§ 9. Perelepitusteenuse osutamisest keeldumine",
       "estleg:sourceAct": "Riikliku perelepitusteenuse seadus",
       "estleg:summary": "Sotsiaalkindlustusamet keeldub perelepitusteenuse osutamisest, kui: 1 1) isikul ei ole õigust perelepitusteenust saada; 2 2) taotluses nimetatud asjaolusid arvestades ei ole vaidlus perelepitusteenuse esemeks; 3 3) juhtum ei sobi olemuslikult lepitusmenetlusse; 4 4) teenust taotlevate isikute ja vaidlusest puudutatud lapse kohta on lepitusmenetluse esemeks olevas nõudes käimas kohtuvaidlus; 5 5) teenust taotlevate isikute ja puudutatud lapse kohta on olemas jõustunud kohtulahend või on Sotsiaalk",
+      "estleg:legalText": "Sotsiaalkindlustusamet keeldub perelepitusteenuse osutamisest, kui: isikul ei ole õigust perelepitusteenust saada; taotluses nimetatud asjaolusid arvestades ei ole vaidlus perelepitusteenuse esemeks; juhtum ei sobi olemuslikult lepitusmenetlusse; teenust taotlevate isikute ja vaidlusest puudutatud lapse kohta on lepitusmenetluse esemeks olevas nõudes käimas kohtuvaidlus; teenust taotlevate isikute ja puudutatud lapse kohta on olemas jõustunud kohtulahend või on Sotsiaalkindlustusamet kinnitanud kokkuleppe ja nende aluseks olevad asjaolud ei ole oluliselt muutunud.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RIIKLI_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RIIKLI_Par_9_Lg_Unknown_1"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen"
       ],
@@ -211,44 +631,207 @@
       "estleg:competenceType": "general"
     },
     {
+      "@id": "estleg:RIIKLI_Par_9_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Sotsiaalkindlustusamet keeldub perelepitusteenuse osutamisest, kui: isikul ei ole õigust perelepitusteenust saada; taotluses nimetatud asjaolusid arvestades ei ole vaidlus perelepitusteenuse esemeks; juhtum ei sobi olemuslikult lepitusmenetlusse; teenust taotlevate isikute ja vaidlusest puudutatud lapse kohta on lepitusmenetluse esemeks olevas nõudes käimas kohtuvaidlus; teenust taotlevate isikute ja puudutatud lapse kohta on olemas jõustunud kohtulahend või on Sotsiaalkindlustusamet kinnitanud kokkuleppe ja nende aluseks olevad asjaolud ei ole oluliselt muutunud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIKLI_Par_9"
+      }
+    },
+    {
       "@id": "estleg:RIIKLI_Par_10",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIKLI"
+        "estleg:LegalProvision_riikliku_perelepitusteenuse_seadus"
       ],
       "estleg:paragrahv": "§ 10.",
       "rdfs:label": "§ 10. Lapse ärakuulamine lepitusmenetluses",
       "estleg:sourceAct": "Riikliku perelepitusteenuse seadus",
       "estleg:summary": "1 (1) Lapse huvide väljaselgitamiseks tuleb vaidlusest puudutatud lapsele anda lepitusmenetluse käigus võimalus oma arvamust avaldada. Laps tuleb ära kuulata tema vanust ja arengutaset arvestades sobival viisil. Lapse huvide väljaselgitamiseks tuleb vaidlusest puudutatud lapsele anda lepitusmenetluse käigus võimalus oma arvamust avaldada. Laps tuleb ära kuulata tema vanust ja arengutaset arvestades sobival viisil. 2 (2) Lapse ärakuulamisest võib loobuda, kui vaidlusest puudutatud laps on lepitus",
+      "estleg:legalText": "(1) Lapse huvide väljaselgitamiseks tuleb vaidlusest puudutatud lapsele anda lepitusmenetluse käigus võimalus oma arvamust avaldada. Laps tuleb ära kuulata tema vanust ja arengutaset arvestades sobival viisil. (2) Lapse ärakuulamisest võib loobuda, kui vaidlusest puudutatud laps on lepitusmenetluse alustamisele eelneva kuue kuu jooksul lastekaitsetöötaja või mõne muu lapsega töötava isiku poolt lepitusmenetluse esemeks olevate asjaolude suhtes ära kuulatud või kui lapse vanust ja arengutaset arvestades ei ole lapse ärakuulamine võimalik. (3) Lapse korduva ärakuulamise vältimiseks teeb perelepitaja vajaduse korral koostööd lastekaitsetöötajaga või teiste lapsega töötavate isikutega. (4) Lapse korduva ärakuulamise vältimiseks on Sotsiaalkindlustusametil õigus sotsiaalteenuste ja -toetuste andmeregistri kaudu kontrollida, kas lepitusmenetluse alustamisele eelneva kuue kuu jooksul on vaidlusest puudutatud laps lastekaitsemenetluse käigus lepitusmenetluse esemeks olevate asjaolude suhtes ära kuulatud. Kui vaidlusest puudutatud laps on lastekaitsemenetluse käigus ära kuulatud, on Sotsiaalkindlustusametil õigus nende asjaoludega tutvuda. (5) Sotsiaalkindlustusamet edastab asjakohased andmed vaidlusest puudutatud lapse ärakuulamise kohta perelepitajale.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RIIKLI_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RIIKLI_Par_10_Lg_1"
+        },
+        {
+          "@id": "estleg:RIIKLI_Par_10_Lg_2"
+        },
+        {
+          "@id": "estleg:RIIKLI_Par_10_Lg_3"
+        },
+        {
+          "@id": "estleg:RIIKLI_Par_10_Lg_4"
+        },
+        {
+          "@id": "estleg:RIIKLI_Par_10_Lg_5"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:dutyHolder": "Lapse huvide väljaselgitamiseks"
+      "estleg:dutyHolder": "Laps"
+    },
+    {
+      "@id": "estleg:RIIKLI_Par_10_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Lapse huvide väljaselgitamiseks tuleb vaidlusest puudutatud lapsele anda lepitusmenetluse käigus võimalus oma arvamust avaldada. Laps tuleb ära kuulata tema vanust ja arengutaset arvestades sobival viisil.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIKLI_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 1"
+    },
+    {
+      "@id": "estleg:RIIKLI_Par_10_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Lapse ärakuulamisest võib loobuda, kui vaidlusest puudutatud laps on lepitusmenetluse alustamisele eelneva kuue kuu jooksul lastekaitsetöötaja või mõne muu lapsega töötava isiku poolt lepitusmenetluse esemeks olevate asjaolude suhtes ära kuulatud või kui lapse vanust ja arengutaset arvestades ei ole lapse ärakuulamine võimalik.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIKLI_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 2"
+    },
+    {
+      "@id": "estleg:RIIKLI_Par_10_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Lapse korduva ärakuulamise vältimiseks teeb perelepitaja vajaduse korral koostööd lastekaitsetöötajaga või teiste lapsega töötavate isikutega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIKLI_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 3"
+    },
+    {
+      "@id": "estleg:RIIKLI_Par_10_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Lapse korduva ärakuulamise vältimiseks on Sotsiaalkindlustusametil õigus sotsiaalteenuste ja -toetuste andmeregistri kaudu kontrollida, kas lepitusmenetluse alustamisele eelneva kuue kuu jooksul on vaidlusest puudutatud laps lastekaitsemenetluse käigus lepitusmenetluse esemeks olevate asjaolude suhtes ära kuulatud. Kui vaidlusest puudutatud laps on lastekaitsemenetluse käigus ära kuulatud, on Sotsiaalkindlustusametil õigus nende asjaoludega tutvuda.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIKLI_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 4"
+    },
+    {
+      "@id": "estleg:RIIKLI_Par_10_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Sotsiaalkindlustusamet edastab asjakohased andmed vaidlusest puudutatud lapse ärakuulamise kohta perelepitajale.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIKLI_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 5"
     },
     {
       "@id": "estleg:RIIKLI_Par_11",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIKLI"
+        "estleg:LegalProvision_riikliku_perelepitusteenuse_seadus"
       ],
       "estleg:paragrahv": "§ 11.",
       "rdfs:label": "§ 11. Perelepituse erijuhud",
       "estleg:sourceAct": "Riikliku perelepitusteenuse seadus",
       "estleg:summary": "1 (1) Perelepituse erijuhtude alla kuuluvad juhtumid, kus: 1 1) on esinenud lähisuhtevägivalda; 2 2) on esinenud lapse väärkohtlemist või hooletusse jätmist; 3 3) ühel või mõlemal lepitusosalisel on psüühikahäire või intellektipuue. Perelepituse erijuhtude alla kuuluvad juhtumid, kus: on esinenud lähisuhtevägivalda; on esinenud lapse väärkohtlemist või hooletusse jätmist; ühel või mõlemal lepitusosalisel on psüühikahäire või intellektipuue. 2 (2) Perelepituse erijuhtude korral võib perelepitaja ",
+      "estleg:legalText": "(1) Perelepituse erijuhtude alla kuuluvad juhtumid, kus: on esinenud lähisuhtevägivalda; on esinenud lapse väärkohtlemist või hooletusse jätmist; ühel või mõlemal lepitusosalisel on psüühikahäire või intellektipuue. (2) Perelepituse erijuhtude korral võib perelepitaja kaasata lepituskohtumistel osalema teise perelepitaja, kes toetab lepitusmenetluse läbiviimist.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RIIKLI_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RIIKLI_Par_11_Lg_1"
+        },
+        {
+          "@id": "estleg:RIIKLI_Par_11_Lg_2"
+        }
+      ],
       "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
+        "@id": "estleg:NormType_Permission"
       }
+    },
+    {
+      "@id": "estleg:RIIKLI_Par_11_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Perelepituse erijuhtude alla kuuluvad juhtumid, kus: on esinenud lähisuhtevägivalda; on esinenud lapse väärkohtlemist või hooletusse jätmist; ühel või mõlemal lepitusosalisel on psüühikahäire või intellektipuue.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIKLI_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 1"
+    },
+    {
+      "@id": "estleg:RIIKLI_Par_11_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Perelepituse erijuhtude korral võib perelepitaja kaasata lepituskohtumistel osalema teise perelepitaja, kes toetab lepitusmenetluse läbiviimist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIKLI_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 2"
     },
     {
       "@id": "estleg:RIIKLI_Par_12",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIKLI"
+        "estleg:LegalProvision_riikliku_perelepitusteenuse_seadus"
       ],
       "estleg:paragrahv": "§ 12.",
       "rdfs:label": "§ 12. Vanemluskokkuleppe sõlmimine ja kinnitamine",
       "estleg:sourceAct": "Riikliku perelepitusteenuse seadus",
       "estleg:summary": "1 (1) Kui lepitusosalised jõuavad kokkuleppele, loetakse lepituskohtumised lõppenuks ja sõlmitakse vanemluskokkulepe. Kui lepitusosalised jõuavad kokkuleppele, loetakse lepituskohtumised lõppenuks ja sõlmitakse vanemluskokkulepe. 2 (2) Lepitusosalised allkirjastavad vanemluskokkuleppe ja selle kinnitab Sotsiaalkindlustusamet. Lepitusosalised allkirjastavad vanemluskokkuleppe ja selle kinnitab Sotsiaalkindlustusamet. 3 (3) Sotsiaalkindlustusamet ei kinnita vanemluskokkulepet, kui on ilmne, et lep",
+      "estleg:legalText": "(1) Kui lepitusosalised jõuavad kokkuleppele, loetakse lepituskohtumised lõppenuks ja sõlmitakse vanemluskokkulepe. (2) Lepitusosalised allkirjastavad vanemluskokkuleppe ja selle kinnitab Sotsiaalkindlustusamet. (3) Sotsiaalkindlustusamet ei kinnita vanemluskokkulepet, kui on ilmne, et lepitusosaliste poolt kokku lepitu ei ole lapse huvidega kooskõlas või kui vanemluskokkulepe või selle osa ei ole täidetav. Sotsiaalkindlustusamet teeb lepitusosalistele ettepaneku jätkata lepituskohtumistega ja muuta vanemluskokkulepet selliselt, et see oleks lapse huvidega kooskõlas ja täidetav. (4) Sotsiaalkindlustusameti kinnitatud hilisem vanemluskokkulepe asendab varasemat sama lapse kohta tehtud kohtulahendit või kokkulepet. (5) Sotsiaalkindlustusameti kinnitatud vanemluskokkulepe on täitedokument täitemenetluse seadustiku § 2 lõike 1 punkti 25 tähenduses. (6) Alaealise lapse ülalpidamist puudutav Sotsiaalkindlustusameti kinnitatud vanemluskokkulepe on täitedokument juhul, kui see sisaldab kokkulepet elatise maksmise kohta.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RIIKLI_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RIIKLI_Par_12_Lg_1"
+        },
+        {
+          "@id": "estleg:RIIKLI_Par_12_Lg_2"
+        },
+        {
+          "@id": "estleg:RIIKLI_Par_12_Lg_3"
+        },
+        {
+          "@id": "estleg:RIIKLI_Par_12_Lg_4"
+        },
+        {
+          "@id": "estleg:RIIKLI_Par_12_Lg_5"
+        },
+        {
+          "@id": "estleg:RIIKLI_Par_12_Lg_6"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen"
       ],
@@ -265,22 +848,118 @@
       ]
     },
     {
+      "@id": "estleg:RIIKLI_Par_12_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kui lepitusosalised jõuavad kokkuleppele, loetakse lepituskohtumised lõppenuks ja sõlmitakse vanemluskokkulepe.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIKLI_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 1"
+    },
+    {
+      "@id": "estleg:RIIKLI_Par_12_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Lepitusosalised allkirjastavad vanemluskokkuleppe ja selle kinnitab Sotsiaalkindlustusamet.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIKLI_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 2"
+    },
+    {
+      "@id": "estleg:RIIKLI_Par_12_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Sotsiaalkindlustusamet ei kinnita vanemluskokkulepet, kui on ilmne, et lepitusosaliste poolt kokku lepitu ei ole lapse huvidega kooskõlas või kui vanemluskokkulepe või selle osa ei ole täidetav. Sotsiaalkindlustusamet teeb lepitusosalistele ettepaneku jätkata lepituskohtumistega ja muuta vanemluskokkulepet selliselt, et see oleks lapse huvidega kooskõlas ja täidetav.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIKLI_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 3"
+    },
+    {
+      "@id": "estleg:RIIKLI_Par_12_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Sotsiaalkindlustusameti kinnitatud hilisem vanemluskokkulepe asendab varasemat sama lapse kohta tehtud kohtulahendit või kokkulepet.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIKLI_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 4"
+    },
+    {
+      "@id": "estleg:RIIKLI_Par_12_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Sotsiaalkindlustusameti kinnitatud vanemluskokkulepe on täitedokument täitemenetluse seadustiku § 2 lõike 1 punkti 25 tähenduses.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIKLI_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 5"
+    },
+    {
+      "@id": "estleg:RIIKLI_Par_12_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Alaealise lapse ülalpidamist puudutav Sotsiaalkindlustusameti kinnitatud vanemluskokkulepe on täitedokument juhul, kui see sisaldab kokkulepet elatise maksmise kohta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIKLI_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 6"
+    },
+    {
       "@id": "estleg:RIIKLI_Par_13",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIKLI"
+        "estleg:LegalProvision_riikliku_perelepitusteenuse_seadus"
       ],
       "estleg:paragrahv": "§ 13.",
       "rdfs:label": "§ 13. Lepitusmenetluse lõppemise alused ja edutus",
       "estleg:sourceAct": "Riikliku perelepitusteenuse seadus",
       "estleg:summary": "1 (1) Lepitusmenetlus lõppeb, kui: 1 1) lepitusosalised sõlmivad vanemluskokkuleppe, mille kinnitab Sotsiaalkindlustusamet; 2 2) lepitusosalised ei jõua kokkuleppele; 3 3) üks pool soovib lepituskohtumised katkestada; 4 4) perelepitaja hinnangul on vanemluskokkuleppe sõlmimine ebatõenäoline; 5 5) lepitusosalised ei soovi muuta vanemluskokkulepet vastavalt käesoleva seaduse § 12 lõikele 3; 6 6) lepitusmenetluse jätkamine ei ole muutunud asjaolusid arvestades võimalik. Lepitusmenetlus lõppeb, kui:",
-      "estleg:references": [
+      "estleg:legalText": "(1) Lepitusmenetlus lõppeb, kui: lepitusosalised sõlmivad vanemluskokkuleppe, mille kinnitab Sotsiaalkindlustusamet; lepitusosalised ei jõua kokkuleppele; üks pool soovib lepituskohtumised katkestada; perelepitaja hinnangul on vanemluskokkuleppe sõlmimine ebatõenäoline; lepitusosalised ei soovi muuta vanemluskokkulepet vastavalt käesoleva seaduse § 12 lõikele 3; lepitusmenetluse jätkamine ei ole muutunud asjaolusid arvestades võimalik. (2) Lepitusmenetlus lõppeb ka juhul, kui vaidlusest puudutatud laps saab lepitusmenetluse ajal täisealiseks. Kui vaidlusest puudutatud lapsi on mitu, lõppeb lepitusmenetlus vaid täisealise lapse osas. (3) Kui lepitusmenetlus lõppeb käesoleva paragrahvi lõike 1 punktide 2–6 alusel, edastab Sotsiaalkindlustusamet pooltele edutuse tõendi. (4) Sotsiaalkindlustusamet edastab pooltele lepitusmenetluse edutuse tõendi ka juhul, kui üks osapool ei anna taotluse esitamisel nõusolekut perelepituses osaleda või kui lepitusosalised ei nõustu Sotsiaalkindlustusameti määratud perelepitajaga.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RIIKLI_default"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:RIIKLI_Par_12"
+          "@id": "estleg:RIIKLI_Par_13_Lg_1"
+        },
+        {
+          "@id": "estleg:RIIKLI_Par_13_Lg_2"
+        },
+        {
+          "@id": "estleg:RIIKLI_Par_13_Lg_3"
+        },
+        {
+          "@id": "estleg:RIIKLI_Par_13_Lg_4"
         }
       ],
       "estleg:targetGroup": [
         "citizen"
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:RIIKLI_Par_12"
+        }
       ],
       "estleg:competentAuthority": [
         {
@@ -290,15 +969,79 @@
       "estleg:competenceType": "general"
     },
     {
+      "@id": "estleg:RIIKLI_Par_13_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Lepitusmenetlus lõppeb, kui: lepitusosalised sõlmivad vanemluskokkuleppe, mille kinnitab Sotsiaalkindlustusamet; lepitusosalised ei jõua kokkuleppele; üks pool soovib lepituskohtumised katkestada; perelepitaja hinnangul on vanemluskokkuleppe sõlmimine ebatõenäoline; lepitusosalised ei soovi muuta vanemluskokkulepet vastavalt käesoleva seaduse § 12 lõikele 3; lepitusmenetluse jätkamine ei ole muutunud asjaolusid arvestades võimalik.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIKLI_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 1"
+    },
+    {
+      "@id": "estleg:RIIKLI_Par_13_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Lepitusmenetlus lõppeb ka juhul, kui vaidlusest puudutatud laps saab lepitusmenetluse ajal täisealiseks. Kui vaidlusest puudutatud lapsi on mitu, lõppeb lepitusmenetlus vaid täisealise lapse osas.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIKLI_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 2"
+    },
+    {
+      "@id": "estleg:RIIKLI_Par_13_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kui lepitusmenetlus lõppeb käesoleva paragrahvi lõike 1 punktide 2–6 alusel, edastab Sotsiaalkindlustusamet pooltele edutuse tõendi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIKLI_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 3"
+    },
+    {
+      "@id": "estleg:RIIKLI_Par_13_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Sotsiaalkindlustusamet edastab pooltele lepitusmenetluse edutuse tõendi ka juhul, kui üks osapool ei anna taotluse esitamisel nõusolekut perelepituses osaleda või kui lepitusosalised ei nõustu Sotsiaalkindlustusameti määratud perelepitajaga.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIKLI_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 4"
+    },
+    {
       "@id": "estleg:RIIKLI_Par_14",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIKLI"
+        "estleg:LegalProvision_riikliku_perelepitusteenuse_seadus"
       ],
       "estleg:paragrahv": "§ 14.",
       "rdfs:label": "§ 14. Kohtu teavitamine lepitusmenetluse tulemusest",
       "estleg:sourceAct": "Riikliku perelepitusteenuse seadus",
       "estleg:summary": "1 (1) Kui kohus tegi perelepitusse suunamise määruse ja lepitusmenetlus on lõppenud, edastab Sotsiaalkindlustusamet kümne tööpäeva jooksul lepitusmenetluse lõppemisest arvates kohtule teabe vanemluskokkuleppe kinnitamise kohta või edutuse tõendi lepitusmenetluse edutuse korral või teabe vaidlusest puudutatud lapse täisealiseks saamise kohta. Kui kohus tegi perelepitusse suunamise määruse ja lepitusmenetlus on lõppenud, edastab Sotsiaalkindlustusamet kümne tööpäeva jooksul lepitusmenetluse lõppem",
+      "estleg:legalText": "(1) Kui kohus tegi perelepitusse suunamise määruse ja lepitusmenetlus on lõppenud, edastab Sotsiaalkindlustusamet kümne tööpäeva jooksul lepitusmenetluse lõppemisest arvates kohtule teabe vanemluskokkuleppe kinnitamise kohta või edutuse tõendi lepitusmenetluse edutuse korral või teabe vaidlusest puudutatud lapse täisealiseks saamise kohta. (2) Kui vanemluskokkulepe asendab varasemat sama lapse kohta tehtud kohtulahendit, edastab Sotsiaalkindlustusamet kokkuleppe kümne tööpäeva jooksul selle kinnitamisest arvates kohtulahendi teinud kohtule.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RIIKLI_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RIIKLI_Par_14_Lg_1"
+        },
+        {
+          "@id": "estleg:RIIKLI_Par_14_Lg_2"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen",
         "public_body"
@@ -314,47 +1057,112 @@
       "estleg:competenceType": "general"
     },
     {
+      "@id": "estleg:RIIKLI_Par_14_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kui kohus tegi perelepitusse suunamise määruse ja lepitusmenetlus on lõppenud, edastab Sotsiaalkindlustusamet kümne tööpäeva jooksul lepitusmenetluse lõppemisest arvates kohtule teabe vanemluskokkuleppe kinnitamise kohta või edutuse tõendi lepitusmenetluse edutuse korral või teabe vaidlusest puudutatud lapse täisealiseks saamise kohta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIKLI_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 1"
+    },
+    {
+      "@id": "estleg:RIIKLI_Par_14_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kui vanemluskokkulepe asendab varasemat sama lapse kohta tehtud kohtulahendit, edastab Sotsiaalkindlustusamet kokkuleppe kümne tööpäeva jooksul selle kinnitamisest arvates kohtulahendi teinud kohtule.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIKLI_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 2"
+    },
+    {
       "@id": "estleg:RIIKLI_Par_15",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIKLI"
+        "estleg:LegalProvision_riikliku_perelepitusteenuse_seadus"
       ],
       "estleg:paragrahv": "§ 15.",
       "rdfs:label": "§ 15. Perelepituse rahastamine",
       "estleg:sourceAct": "Riikliku perelepitusteenuse seadus",
-      "estleg:summary": "1 (1) Perelepitust rahastatakse riigieelarvest. Perelepitust rahastatakse riigieelarvest. 2 (2) Riigieelarve vahenditest kaetavate lepituskohtumiste mahu ja maksumuse kehtestab valdkonna eest vastutav minister ./../vaheleht.html määrusega. Riigieelarve vahenditest kaetavate lepituskohtumiste mahu ja maksumuse kehtestab määrusega.",
-      "estleg:semanticallySimilarTo": [
+      "estleg:summary": "1 (1) Perelepitust rahastatakse riigieelarvest. Perelepitust rahastatakse riigieelarvest. 2 (2) Riigieelarve vahenditest kaetavate lepituskohtumiste mahu ja maksumuse kehtestab valdkonna eest vastutav minister ./dyn=131032022015&id=119082022006 määrusega. Riigieelarve vahenditest kaetavate lepituskohtumiste mahu ja maksumuse kehtestab määrusega.",
+      "estleg:legalText": "(1) Perelepitust rahastatakse riigieelarvest. (2) Riigieelarve vahenditest kaetavate lepituskohtumiste mahu ja maksumuse kehtestab määrusega.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RIIKLI_default"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:TULEOH_Par_28",
-          "estleg:similarityScore": {
-            "@value": "0.304",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
+          "@id": "estleg:RIIKLI_Par_15_Lg_1"
         },
         {
-          "@id": "estleg:TULEOH_Par_29",
-          "estleg:similarityScore": {
-            "@value": "0.333",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
+          "@id": "estleg:RIIKLI_Par_15_Lg_2"
         }
       ],
       "estleg:targetGroup": [
         "official"
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:SOTSIA_Par_130_8",
+          "estleg:similarityScore": {
+            "@value": "0.579",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
       ]
+    },
+    {
+      "@id": "estleg:RIIKLI_Par_15_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Perelepitust rahastatakse riigieelarvest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIKLI_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 1"
+    },
+    {
+      "@id": "estleg:RIIKLI_Par_15_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Riigieelarve vahenditest kaetavate lepituskohtumiste mahu ja maksumuse kehtestab määrusega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIKLI_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 2"
     },
     {
       "@id": "estleg:RIIKLI_Par_16",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIKLI"
+        "estleg:LegalProvision_riikliku_perelepitusteenuse_seadus"
       ],
       "estleg:paragrahv": "§ 16.",
       "rdfs:label": "§ 16. Vaidemenetlus",
       "estleg:sourceAct": "Riikliku perelepitusteenuse seadus",
       "estleg:summary": "Kui isik ei nõustu Sotsiaalkindlustusameti poolt käesoleva seaduse alusel tehtud haldusotsuse või sooritatud toiminguga, on tal õigus esitada vaie Sotsiaalkindlustusametile. Sotsiaalkindlustusamet lahendab vaide 30 päeva jooksul vaide esitamisest arvates. Kui isik ei nõustu Sotsiaalkindlustusameti poolt käesoleva seaduse alusel tehtud haldusotsuse või sooritatud toiminguga, on tal õigus esitada vaie Sotsiaalkindlustusametile. Sotsiaalkindlustusamet lahendab vaide 30 päeva jooksul vaide esitamise",
+      "estleg:legalText": "Kui isik ei nõustu Sotsiaalkindlustusameti poolt käesoleva seaduse alusel tehtud haldusotsuse või sooritatud toiminguga, on tal õigus esitada vaie Sotsiaalkindlustusametile. Sotsiaalkindlustusamet lahendab vaide 30 päeva jooksul vaide esitamisest arvates.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RIIKLI_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RIIKLI_Par_16_Lg_Unknown_1"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen"
       ],
@@ -366,291 +1174,129 @@
       "estleg:competenceType": "general"
     },
     {
+      "@id": "estleg:RIIKLI_Par_16_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Kui isik ei nõustu Sotsiaalkindlustusameti poolt käesoleva seaduse alusel tehtud haldusotsuse või sooritatud toiminguga, on tal õigus esitada vaie Sotsiaalkindlustusametile. Sotsiaalkindlustusamet lahendab vaide 30 päeva jooksul vaide esitamisest arvates.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIKLI_Par_16"
+      }
+    },
+    {
       "@id": "estleg:RIIKLI_Par_17",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIKLI"
+        "estleg:LegalProvision_riikliku_perelepitusteenuse_seadus"
       ],
       "estleg:paragrahv": "§ 17.",
       "rdfs:label": "§ 17. Lepitusseaduse muutmine",
       "estleg:sourceAct": "Riikliku perelepitusteenuse seadus",
-      "estleg:summary": "Lepitusseaduse § 4 täiendatakse lõikega 9 järgmises sõnastuses: „(9) Lepitaja vaikimiskohustus ei takista lepitajal lastekaitseseaduse § 27 lõike 1 alusel abivajavast lapsest ja § 31 lõike 1 alusel hädaohus olevast lapsest teatamast ka juhul, kui asjaolud, millest nähtuvalt vajab laps abi või on hädaohus, saavad lepitajale teatavaks lepitusmenetluse käigus.”."
+      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RIIKLI_default"
+      }
     },
     {
       "@id": "estleg:RIIKLI_Par_18",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIKLI"
+        "estleg:LegalProvision_riikliku_perelepitusteenuse_seadus"
       ],
       "estleg:paragrahv": "§ 18.",
       "rdfs:label": "§ 18. Perehüvitiste seaduse muutmine",
       "estleg:sourceAct": "Riikliku perelepitusteenuse seadus",
-      "estleg:summary": "Perehüvitiste seaduse § 50 lõike 1 esimene lause muudetakse ja sõnastatakse järgmiselt: „Täitemenetlusaegset elatisabi makstakse elatist väljamõistva kohtulahendi, kohtulahendiga võrdsustatud haldusorgani otsuse või riikliku perelepitusteenuse seaduse alusel kinnitatud vanemluskokkuleppe alusel.”.",
-      "estleg:targetGroup": [
-        "citizen"
-      ]
+      "estleg:summary": "Välja jäetud -",
+      "estleg:legalText": "Välja jäetud -",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RIIKLI_default"
+      }
     },
     {
       "@id": "estleg:RIIKLI_Par_19",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIKLI"
+        "estleg:LegalProvision_riikliku_perelepitusteenuse_seadus"
       ],
       "estleg:paragrahv": "§ 19.",
-      "rdfs:label": "§ 19. Perekonnaseaduse muutmine",
+      "rdfs:label": "§ 19.",
       "estleg:sourceAct": "Riikliku perelepitusteenuse seadus",
-      "estleg:summary": "Perekonnaseadust täiendatakse §-ga 1371 järgmises sõnastuses:",
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:TOOVOI_Par_64",
-          "estleg:similarityScore": {
-            "@value": "0.333",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:Tolliseadus_Par_104",
-          "estleg:similarityScore": {
-            "@value": "0.429",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        }
-      ]
-    },
-    {
-      "@id": "estleg:RIIKLI_Par_20",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIKLI"
-      ],
-      "estleg:paragrahv": "§ 20.",
-      "rdfs:label": "§ 20. Rahvastikuregistri seaduse muutmine",
-      "estleg:sourceAct": "Riikliku perelepitusteenuse seadus",
-      "estleg:summary": "Rahvastikuregistri seaduse § 22 lõiget 1 täiendatakse punktiga 10 järgmises sõnastuses: „10) muu eespool nimetamata dokument.”.",
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:TOOVOI_Par_64",
-          "estleg:similarityScore": {
-            "@value": "0.417",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:Tolliseadus_Par_104",
-          "estleg:similarityScore": {
-            "@value": "0.5",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        }
-      ]
-    },
-    {
-      "@id": "estleg:RIIKLI_Par_21",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIKLI"
-      ],
-      "estleg:paragrahv": "§ 21.",
-      "rdfs:label": "§ 21. Sotsiaalhoolekande seaduse muutmine",
-      "estleg:sourceAct": "Riikliku perelepitusteenuse seadus",
-      "estleg:summary": "Sotsiaalhoolekande seaduses tehakse järgmised muudatused:",
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:TAISKA_Par_24",
-          "estleg:similarityScore": {
-            "@value": "0.6",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:TAISKA_Par_26",
-          "estleg:similarityScore": {
-            "@value": "0.6",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:TAISKA_Par_27",
-          "estleg:similarityScore": {
-            "@value": "0.6",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:TAISKA_Par_28",
-          "estleg:similarityScore": {
-            "@value": "0.6",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:TOOVOI_Par_59",
-          "estleg:similarityScore": {
-            "@value": "1.0",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        }
-      ]
-    },
-    {
-      "@id": "estleg:RIIKLI_Par_22",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIKLI"
-      ],
-      "estleg:paragrahv": "§ 22.",
-      "rdfs:label": "§ 22. Tsiviilkohtumenetluse seadustiku muutmine",
-      "estleg:sourceAct": "Riikliku perelepitusteenuse seadus",
-      "estleg:summary": "Tsiviilkohtumenetluse seadustikus tehakse järgmised muudatused:",
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:TAISKA_Par_24",
-          "estleg:similarityScore": {
-            "@value": "0.5",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:TAISKA_Par_26",
-          "estleg:similarityScore": {
-            "@value": "0.5",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:TAISKA_Par_27",
-          "estleg:similarityScore": {
-            "@value": "0.5",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:TAISKA_Par_28",
-          "estleg:similarityScore": {
-            "@value": "0.5",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:TAISKA_Par_30",
-          "estleg:similarityScore": {
-            "@value": "0.5",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        }
-      ]
-    },
-    {
-      "@id": "estleg:RIIKLI_Par_23",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIKLI"
-      ],
-      "estleg:paragrahv": "§ 23.",
-      "rdfs:label": "§ 23. Tsiviilkohtumenetluse seadustiku ja täitemenetluse seadustiku rakendamise seaduse muutmine",
-      "estleg:sourceAct": "Riikliku perelepitusteenuse seadus",
-      "estleg:summary": "Tsiviilkohtumenetluse seadustiku ja täitemenetluse seadustiku rakendamise seadust täiendatakse §-ga 26 järgmises sõnastuses:",
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:TMS_Par_224",
-          "estleg:similarityScore": {
-            "@value": "0.364",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:TOOVOI_Par_64",
-          "estleg:similarityScore": {
-            "@value": "0.455",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        }
-      ]
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RIIKLI_default"
+      },
+      "estleg:summary": "Perekonnaseadust täiendatakse §-ga 1371 järgmises sõnastuses:"
     },
     {
       "@id": "estleg:RIIKLI_Par_24",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIKLI"
+        "estleg:LegalProvision_riikliku_perelepitusteenuse_seadus"
       ],
       "estleg:paragrahv": "§ 24.",
-      "rdfs:label": "§ 24. Täitemenetluse seadustiku muutmine",
+      "rdfs:label": "§ 24. [[Käesolevast tekstist välja jäetud.]]",
       "estleg:sourceAct": "Riikliku perelepitusteenuse seadus",
-      "estleg:summary": "Täitemenetluse seadustikus tehakse järgmised muudatused:",
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:TAISKA_Par_24",
-          "estleg:similarityScore": {
-            "@value": "0.5",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:TAISKA_Par_26",
-          "estleg:similarityScore": {
-            "@value": "0.5",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:TAISKA_Par_27",
-          "estleg:similarityScore": {
-            "@value": "0.5",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:TAISKA_Par_28",
-          "estleg:similarityScore": {
-            "@value": "0.5",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:TAISKA_Par_30",
-          "estleg:similarityScore": {
-            "@value": "0.5",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        }
-      ]
+      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RIIKLI_default"
+      }
     },
     {
       "@id": "estleg:RIIKLI_Par_25",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIKLI"
+        "estleg:LegalProvision_riikliku_perelepitusteenuse_seadus"
       ],
       "estleg:paragrahv": "§ 25.",
       "rdfs:label": "§ 25. Seaduse jõustumine",
       "estleg:sourceAct": "Riikliku perelepitusteenuse seadus",
       "estleg:summary": "1 (1) Käesolev seadus jõustub 2022. aasta 1. septembril. Käesolev seadus jõustub 2022. aasta 1. septembril. 2 (2) Käesoleva seaduse § 4 lõige 2, § 19 ja § 22 punkt 3 jõustuvad 2023. aasta 1. juulil. Käesoleva seaduse § 4 lõige 2, § 19 ja § 22 punkt 3 jõustuvad 2023. aasta 1. juulil.",
+      "estleg:legalText": "(1) Käesolev seadus jõustub 2022. aasta 1. septembril. (2) Käesoleva seaduse § 4 lõige 2, § 19 ja § 22 punkt 3 jõustuvad 2023. aasta 1. juulil.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RIIKLI_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RIIKLI_Par_25_Lg_1"
+        },
+        {
+          "@id": "estleg:RIIKLI_Par_25_Lg_2"
+        }
+      ],
       "estleg:references": [
         {
           "@id": "estleg:RIIKLI_Par_4"
         }
       ]
+    },
+    {
+      "@id": "estleg:RIIKLI_Par_25_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolev seadus jõustub 2022. aasta 1. septembril.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIKLI_Par_25"
+      },
+      "rdfs:label": "§ 25 lg 1"
+    },
+    {
+      "@id": "estleg:RIIKLI_Par_25_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Käesoleva seaduse § 4 lõige 2, § 19 ja § 22 punkt 3 jõustuvad 2023. aasta 1. juulil.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIKLI_Par_25"
+      },
+      "rdfs:label": "§ 25 lg 2"
     }
   ]
 }

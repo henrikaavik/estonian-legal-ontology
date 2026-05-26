@@ -6,20 +6,31 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
   },
   "@graph": [
     {
       "@id": "estleg:AVHVUKPALPH_Map_2026",
       "@type": [
+        "owl:Ontology",
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "rdfs:label": "Albaania Vabariigi ja Horvaatia Vabariigi ühinemist käsitlevate Põhja-Atlandi lepingu protokollide heakskiitmise seadus teemakaardistus",
       "dc:source": "Albaania Vabariigi ja Horvaatia Vabariigi ühinemist käsitlevate Põhja-Atlandi lepingu protokollide heakskiitmise seadus",
-      "estleg:temporalStatus": "unknown",
+      "dcterms:title": "Albaania Vabariigi ja Horvaatia Vabariigi ühinemist käsitlevate Põhja-Atlandi lepingu protokollide heakskiitmise seadus",
+      "estleg:contentStatus": "structuredBody",
+      "dcterms:source": {
+        "@id": "https://www.riigiteataja.ee/akt/13118567.xml"
+      },
+      "owl:sameAs": {
+        "@id": "https://www.riigiteataja.ee/akt/13118567.xml"
+      },
+      "estleg:kehtiv": {
+        "@value": "2026-05-24",
+        "@type": "xsd:date"
+      },
       "dcterms:subject": [
         {
           "@id": "http://eurovoc.europa.eu/2446"
@@ -30,10 +41,11 @@
         {
           "@id": "http://eurovoc.europa.eu/2431"
         }
-      ]
+      ],
+      "estleg:temporalStatus": "unknown"
     },
     {
-      "@id": "estleg:LegalProvision_AVHVUKPALPH",
+      "@id": "estleg:LegalProvision_albaania_vabariigi_ja_horvaatia_vabariigi_uhinemist_kasitlevate_pohja_atlandi_le",
       "@type": [
         "owl:Class"
       ],
@@ -43,28 +55,55 @@
       }
     },
     {
+      "@id": "estleg:AVHVUKPALPH_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": "Albaania Vabariigi ja Horvaatia Vabariigi ühinemist käsitlevate Põhja-Atlandi lepingu protokollide heakskiitmise seadus teemaskeem",
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_AVHVUKPALPH_default"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Cluster_AVHVUKPALPH_default",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": "§1–2 Albaania Vabariigi ja Horvaatia Vabariigi ühinemist käsitlevate Põhja-Atlandi lepingu protokollide heakskiitmise seadus",
+      "skos:prefLabel": "§1–2 Albaania Vabariigi ja Horvaatia Vabariigi ühinemist käsitlevate Põhja-Atlandi lepingu protokollide heakskiitmise seadus",
+      "skos:inScheme": {
+        "@id": "estleg:AVHVUKPALPH_TopicScheme"
+      },
+      "estleg:provisionCount": 2
+    },
+    {
       "@id": "estleg:AVHVUKPALPH_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_AVHVUKPALPH"
+        "estleg:LegalProvision_albaania_vabariigi_ja_horvaatia_vabariigi_uhinemist_kasitlevate_pohja_atlandi_le"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1.",
+      "rdfs:label": "§ 1. [Kiita heaks juurdelisatud Albaania Vabariigi ühinemist käsitlev Põhja-Atlandi le...]",
       "estleg:sourceAct": "Albaania Vabariigi ja Horvaatia Vabariigi ühinemist käsitlevate Põhja-Atlandi lepingu protokollide heakskiitmise seadus",
       "estleg:summary": "Kiita heaks juurdelisatud Albaania Vabariigi ühinemist käsitlev Põhja-Atlandi lepingu protokoll./13118577, millele Eesti Vabariik on alla kirjutanud 2008. aasta 9. juulil Brüsselis. Kiita heaks juurdelisatud , millele Eesti Vabariik on alla kirjutanud 2008. aasta 9. juulil Brüsselis.",
+      "estleg:legalText": "Kiita heaks juurdelisatud , millele Eesti Vabariik on alla kirjutanud 2008. aasta 9. juulil Brüsselis.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_AVHVUKPALPH_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:AVHVUKPALPH_Par_1_Lg_Unknown_1"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:ENFKKUR_Par_1",
           "estleg:similarityScore": {
             "@value": "0.4",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:PALOSLERPSKU_Par_1",
-          "estleg:similarityScore": {
-            "@value": "0.323",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
@@ -84,19 +123,66 @@
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:euroopa_stabiilsusmehhanismi_asutamislep_Par_1",
+          "estleg:similarityScore": {
+            "@value": "0.381",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:osamaksete_uhtsesse_kriisilahendusfondi__Par_1",
+          "estleg:similarityScore": {
+            "@value": "0.381",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
         }
       ]
+    },
+    {
+      "@id": "estleg:AVHVUKPALPH_Par_1_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Kiita heaks juurdelisatud , millele Eesti Vabariik on alla kirjutanud 2008. aasta 9. juulil Brüsselis.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AVHVUKPALPH_Par_1"
+      }
     },
     {
       "@id": "estleg:AVHVUKPALPH_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_AVHVUKPALPH"
+        "estleg:LegalProvision_albaania_vabariigi_ja_horvaatia_vabariigi_uhinemist_kasitlevate_pohja_atlandi_le"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2.",
+      "rdfs:label": "§ 2. [Kiita heaks juurdelisatud Horvaatia Vabariigi ühinemist käsitlev Põhja-Atlandi l...]",
       "estleg:sourceAct": "Albaania Vabariigi ja Horvaatia Vabariigi ühinemist käsitlevate Põhja-Atlandi lepingu protokollide heakskiitmise seadus",
       "estleg:summary": "Kiita heaks juurdelisatud Horvaatia Vabariigi ühinemist käsitlev Põhja-Atlandi lepingu protokoll./13188357, millele Eesti Vabariik on alla kirjutanud 2008. aasta 9. juulil Brüsselis.<table summary=\"allkiri\" width=\"100%\"> <tbody><tr valign=\"top\"> <td width=\"60%\"> </td> <td width=\"39%\"> <b><font size=\"-1\" style=\"font-size:-1px\">Riigikogu esimees Ene ERGMA</font></b> </td> </tr> </tbody></table> Kiita heaks juurdelisatud , millele Eesti Vabariik on alla kirjutanud 2008. aasta 9. juulil Brüsselis.",
+      "estleg:legalText": "Kiita heaks juurdelisatud , millele Eesti Vabariik on alla kirjutanud 2008. aasta 9. juulil Brüsselis.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_AVHVUKPALPH_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:AVHVUKPALPH_Par_2_Lg_Unknown_1"
+        }
+      ],
+      "estleg:targetGroup": [
+        "public_body",
+        "official"
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_riigikogu"
+        }
+      ],
+      "estleg:competenceType": "general",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:BPSVL_Par_3",
@@ -123,32 +209,34 @@
           "estleg:similarityStatus": "candidate"
         },
         {
-          "@id": "estleg:KMTLMKSPR_Par_3",
-          "estleg:similarityScore": {
-            "@value": "0.35",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
           "@id": "estleg:VOHMEKR_Par_2",
           "estleg:similarityScore": {
             "@value": "0.389",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
-        }
-      ],
-      "estleg:targetGroup": [
-        "public_body",
-        "official"
-      ],
-      "estleg:competentAuthority": [
+        },
         {
-          "@id": "estleg:Institution_riigikogu"
+          "@id": "estleg:eesti_vabariigi_ja_vene_foderatsiooni_vahelise_ees_Par_2",
+          "estleg:similarityScore": {
+            "@value": "0.362",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
         }
+      ]
+    },
+    {
+      "@id": "estleg:AVHVUKPALPH_Par_2_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:competenceType": "general"
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Kiita heaks juurdelisatud , millele Eesti Vabariik on alla kirjutanud 2008. aasta 9. juulil Brüsselis.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AVHVUKPALPH_Par_2"
+      }
     }
   ]
 }

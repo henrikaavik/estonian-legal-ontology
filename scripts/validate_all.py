@@ -74,7 +74,14 @@ EXCLUDE_SUFFIXES = (
     "_index.json",
     "_classification.json",
     "_coverage.json",
+    "_probe.json",
 )
+
+OPERATIONAL_STATE_FILES = {
+    ".regen_state.json",
+    "generation_manifest_laws.json",
+    "latest_pipeline_manifest.json",
+}
 
 
 def is_aggregate_index_file(filepath: Path) -> bool:
@@ -551,6 +558,7 @@ def discover_validation_files(krr_dir: Path = KRR_DIR) -> list[Path]:
         + list(krr_dir.glob("**/*.json"))
         + list(krr_dir.glob("**/*.jsonld"))
     ))
+    files = [f for f in files if f.name not in OPERATIONAL_STATE_FILES]
     files = [f for f in files if not any(f.name.endswith(s) for s in EXCLUDE_SUFFIXES)]
     files = [f for f in files if not is_combined_artifact_file(f)]
     files = [f for f in files if not is_aggregate_index_file(f)]
@@ -659,7 +667,7 @@ def validate_registry_index(krr_dir: Path = KRR_DIR):
 
             if act_count != 1 and exception not in CONCEPT_ONLY_REGISTRY_EXCEPTIONS:
                 error(f"{file_name}: indexed file has {act_count} act-level nodes (expected 1)")
-            if provision_count == 0 and not exception:
+            if provision_count == 0 and not exception and not _is_no_structured_body_doc(file_doc):
                 error(f"{file_name}: indexed file has no provision nodes and no registry exception")
 
     if isinstance(doc.get("total_laws"), int) and doc["total_laws"] != len(laws):
@@ -736,6 +744,13 @@ def _peep_ontology_node(doc: dict) -> dict | None:
         if "owl:Ontology" in types:
             return node
     return None
+
+
+def _is_no_structured_body_doc(doc: dict) -> bool:
+    ont = _peep_ontology_node(doc)
+    if not isinstance(ont, dict):
+        return False
+    return ont.get("estleg:contentStatus") == "noStructuredBody"
 
 
 def validate_act_coverage_reconciliation(krr_dir: Path = KRR_DIR):
@@ -823,11 +838,19 @@ def validate_act_coverage_reconciliation(krr_dir: Path = KRR_DIR):
                         f"{single}: manifest status=stub but contentStatus={marker!r}"
                     )
 
-    # Orphan peep files: on disk but not referenced by any manifest entry.
+    source_removed = manifest.get("run", {}).get("sourceRemovedFromSnapshot", [])
+    if not isinstance(source_removed, list):
+        source_removed = []
+    source_removed_files = {
+        name for name in source_removed if isinstance(name, str) and name.endswith("_peep.json")
+    }
+
+    # Orphan peep files: on disk but not referenced by any manifest entry
+    # and not explicitly reported as source-removed by the supervised run.
     referenced = set()
     for slug in manifest_slugs:
         referenced.update(slug_files.get(slug, set()))
-    orphans = sorted(disk_files - referenced)
+    orphans = sorted(disk_files - referenced - source_removed_files)
 
     if missing_for_acts:
         error(

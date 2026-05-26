@@ -6,20 +6,31 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
   },
   "@graph": [
     {
       "@id": "estleg:RVaS_Map_2026",
       "@type": [
+        "owl:Ontology",
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "rdfs:label": "Riigivapi seadus teemakaardistus",
       "dc:source": "Riigivapi seadus",
-      "estleg:temporalStatus": "unknown",
+      "dcterms:title": "Riigivapi seadus",
+      "estleg:contentStatus": "structuredBody",
+      "dcterms:source": {
+        "@id": "https://www.riigiteataja.ee/akt/130042024006.xml"
+      },
+      "owl:sameAs": {
+        "@id": "https://www.riigiteataja.ee/akt/130042024006.xml"
+      },
+      "estleg:kehtiv": {
+        "@value": "2026-05-24",
+        "@type": "xsd:date"
+      },
       "dcterms:subject": [
         {
           "@id": "http://eurovoc.europa.eu/2446"
@@ -36,10 +47,11 @@
         {
           "@id": "http://eurovoc.europa.eu/0431"
         }
-      ]
+      ],
+      "estleg:temporalStatus": "unknown"
     },
     {
-      "@id": "estleg:LegalProvision_RVaS",
+      "@id": "estleg:LegalProvision_riigivapi_seadus",
       "@type": [
         "owl:Class"
       ],
@@ -49,51 +61,199 @@
       }
     },
     {
+      "@id": "estleg:RVaS_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": "Riigivapi seadus teemaskeem",
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_RVaS_default"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Cluster_RVaS_default",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": "§1–27 Riigivapi seadus",
+      "skos:prefLabel": "§1–27 Riigivapi seadus",
+      "skos:inScheme": {
+        "@id": "estleg:RVaS_TopicScheme"
+      },
+      "estleg:provisionCount": 27
+    },
+    {
       "@id": "estleg:RVaS_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RVaS"
+        "estleg:LegalProvision_riigivapi_seadus"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. Seaduse reguleerimisala",
       "estleg:sourceAct": "Riigivapi seadus",
-      "estleg:summary": "Käesoleva seadusega kehtestatakse Eesti Vabariigi riigivapi heraldiline kirjeldus ja kuju ning riigivapi kasutamise tingimused ja kord. Käesoleva seadusega kehtestatakse Eesti Vabariigi riigivapi heraldiline kirjeldus ja kuju ning riigivapi kasutamise tingimused ja kord."
+      "estleg:summary": "Käesoleva seadusega kehtestatakse Eesti Vabariigi riigivapi heraldiline kirjeldus ja kuju ning riigivapi kasutamise tingimused ja kord. Käesoleva seadusega kehtestatakse Eesti Vabariigi riigivapi heraldiline kirjeldus ja kuju ning riigivapi kasutamise tingimused ja kord.",
+      "estleg:legalText": "Käesoleva seadusega kehtestatakse Eesti Vabariigi riigivapi heraldiline kirjeldus ja kuju ning riigivapi kasutamise tingimused ja kord.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RVaS_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RVaS_Par_1_Lg_Unknown_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:RVaS_Par_1_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Käesoleva seadusega kehtestatakse Eesti Vabariigi riigivapi heraldiline kirjeldus ja kuju ning riigivapi kasutamise tingimused ja kord.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVaS_Par_1"
+      }
     },
     {
       "@id": "estleg:RVaS_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RVaS"
+        "estleg:LegalProvision_riigivapi_seadus"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. Riigivapi tähendus",
       "estleg:sourceAct": "Riigivapi seadus",
-      "estleg:summary": "1 (1) Riigivapp on riigi sümbol. Riigivapp on riigi sümbol. 2 (2) Riigivapi kasutamise õigus on riigiasutustel ning riigivõimu teostavatel organitel ja isikutel. Riigivapi kasutamise õigus on riigiasutustel ning riigivõimu teostavatel organitel ja isikutel.",
+      "estleg:summary": "1 (1) Riigivapp on riigi sümbol. Riigivapp on riigi sümbol. 2 (2) Riigivapi kasutamise õigus on riigiasutustel, riigivõimu teostavatel organitel ja isikutel ning käesolevas seaduses sätestatud juhtudel teistel isikutel. RT I 2013-12-23 1 123122013001 2014-01-01 Riigivapi kasutamise õigus on riigiasutustel, riigivõimu teostavatel organitel ja isikutel ning käesolevas seaduses sätestatud juhtudel teistel isikutel.",
+      "estleg:legalText": "(1) Riigivapp on riigi sümbol. (2) Riigivapi kasutamise õigus on riigiasutustel, riigivõimu teostavatel organitel ja isikutel ning käesolevas seaduses sätestatud juhtudel teistel isikutel.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RVaS_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RVaS_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:RVaS_Par_2_Lg_2"
+        }
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Right"
       }
     },
     {
+      "@id": "estleg:RVaS_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Riigivapp on riigi sümbol.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVaS_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
+    },
+    {
+      "@id": "estleg:RVaS_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Riigivapi kasutamise õigus on riigiasutustel, riigivõimu teostavatel organitel ja isikutel ning käesolevas seaduses sätestatud juhtudel teistel isikutel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVaS_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2"
+    },
+    {
       "@id": "estleg:RVaS_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RVaS"
+        "estleg:LegalProvision_riigivapi_seadus"
       ],
       "estleg:paragrahv": "§ 3.",
       "rdfs:label": "§ 3. Riigivapi heraldiline kirjeldus",
       "estleg:sourceAct": "Riigivapi seadus",
-      "estleg:summary": "1 (1) Riigivapil on kaks kuju: suur riigivapp ja väike riigivapp. Riigivapil on kaks kuju: suur riigivapp ja väike riigivapp. 2 (2) Suurel riigivapil on kuldsel kilbil kolm sinist sammuvat otsavaatavat lõvi. Külgedelt ja alt ümbritsevad kilpi kaks kilbi allosas ristuvat kuldset tammeoksa. Suurel riigivapil on kuldsel kilbil kolm sinist sammuvat otsavaatavat lõvi. Külgedelt ja alt ümbritsevad kilpi kaks kilbi allosas ristuvat kuldset tammeoksa. 3 (3) Väike riigivapp on käesoleva paragrahvi lõikes"
+      "estleg:summary": "1 (1) Riigivapil on kaks kuju: suur riigivapp ja väike riigivapp. Riigivapil on kaks kuju: suur riigivapp ja väike riigivapp. 2 (2) Suurel riigivapil on kuldsel kilbil kolm sinist sammuvat otsavaatavat lõvi. Külgedelt ja alt ümbritsevad kilpi kaks kilbi allosas ristuvat kuldset tammeoksa. Suurel riigivapil on kuldsel kilbil kolm sinist sammuvat otsavaatavat lõvi. Külgedelt ja alt ümbritsevad kilpi kaks kilbi allosas ristuvat kuldset tammeoksa. 3 (3) Väike riigivapp on käesoleva paragrahvi lõikes",
+      "estleg:legalText": "(1) Riigivapil on kaks kuju: suur riigivapp ja väike riigivapp. (2) Suurel riigivapil on kuldsel kilbil kolm sinist sammuvat otsavaatavat lõvi. Külgedelt ja alt ümbritsevad kilpi kaks kilbi allosas ristuvat kuldset tammeoksa. (3) Väike riigivapp on käesoleva paragrahvi lõikes 2 kirjeldatud vapp ilma tammeoksteta.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RVaS_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RVaS_Par_3_Lg_1"
+        },
+        {
+          "@id": "estleg:RVaS_Par_3_Lg_2"
+        },
+        {
+          "@id": "estleg:RVaS_Par_3_Lg_3"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:RVaS_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Riigivapil on kaks kuju: suur riigivapp ja väike riigivapp.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVaS_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
+    },
+    {
+      "@id": "estleg:RVaS_Par_3_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Suurel riigivapil on kuldsel kilbil kolm sinist sammuvat otsavaatavat lõvi. Külgedelt ja alt ümbritsevad kilpi kaks kilbi allosas ristuvat kuldset tammeoksa.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVaS_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 2"
+    },
+    {
+      "@id": "estleg:RVaS_Par_3_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Väike riigivapp on käesoleva paragrahvi lõikes 2 kirjeldatud vapp ilma tammeoksteta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVaS_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 3"
     },
     {
       "@id": "estleg:RVaS_Par_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RVaS"
+        "estleg:LegalProvision_riigivapi_seadus"
       ],
       "estleg:paragrahv": "§ 4.",
       "rdfs:label": "§ 4. Riigivapi etalonkujutised",
       "estleg:sourceAct": "Riigivapi seadus",
-      "estleg:summary": "Käesolev seadus kinnitab: 1 1) Eesti Vabariigi suure riigivapi etalonkujutise koos sinise värvitooni määratlusega rahvusvahelise PANTONE värvitabeli järgi (Lisa 1); 2 2) Eesti Vabariigi väikese riigivapi etalonkujutise koos sinise värvitooni määratlusega rahvusvahelise PANTONE värvitabeli järgi (Lisa 2); 3 3) Eesti Vabariigi suure riigivapi mustvalge graafilise etalonkujutise (Lisa 3 ja 5); 4 4) Eesti Vabariigi väikese riigivapi mustvalge graafilise etalonkujutise (Lisa 4 ja 6). RT I 2005 20 126",
+      "estleg:summary": "Käesolev seadus kinnitab: 1 1) Eesti Vabariigi suure riigivapi etalonkujutise koos sinise värvitooni määratlusega rahvusvahelise PANTONE värvitabeli järgi (Lisa 1); RT I 2005 20 126 882755 2006-01-01 2 2) Eesti Vabariigi väikese riigivapi etalonkujutise koos sinise värvitooni määratlusega rahvusvahelise PANTONE värvitabeli järgi (Lisa 2); RT I 2005 20 126 882755 2006-01-01 3 3) Eesti Vabariigi suure riigivapi graafilise mustvalge etalonkujutise (Lisa 3) ja kontuurlahenduses etalonkujutise (Lisa ",
+      "estleg:legalText": "Käesolev seadus kinnitab: Eesti Vabariigi suure riigivapi etalonkujutise koos sinise värvitooni määratlusega rahvusvahelise PANTONE värvitabeli järgi (Lisa 1); Eesti Vabariigi väikese riigivapi etalonkujutise koos sinise värvitooni määratlusega rahvusvahelise PANTONE värvitabeli järgi (Lisa 2); Eesti Vabariigi suure riigivapi graafilise mustvalge etalonkujutise (Lisa 3) ja kontuurlahenduses etalonkujutise (Lisa 5); Eesti Vabariigi väikese riigivapi graafilise mustvalge etalonkujutise (Lisa 4) ja kontuurlahenduses etalonkujutise (Lisa 6).",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RVaS_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RVaS_Par_4_Lg_Unknown_1"
+        }
+      ],
       "estleg:referencedBy": [
         {
           "@id": "estleg:RVaS_Par_5"
@@ -101,65 +261,126 @@
       ]
     },
     {
+      "@id": "estleg:RVaS_Par_4_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Käesolev seadus kinnitab: Eesti Vabariigi suure riigivapi etalonkujutise koos sinise värvitooni määratlusega rahvusvahelise PANTONE värvitabeli järgi (Lisa 1); Eesti Vabariigi väikese riigivapi etalonkujutise koos sinise värvitooni määratlusega rahvusvahelise PANTONE värvitabeli järgi (Lisa 2); Eesti Vabariigi suure riigivapi graafilise mustvalge etalonkujutise (Lisa 3) ja kontuurlahenduses etalonkujutise (Lisa 5); Eesti Vabariigi väikese riigivapi graafilise mustvalge etalonkujutise (Lisa 4) ja kontuurlahenduses etalonkujutise (Lisa 6).",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVaS_Par_4"
+      }
+    },
+    {
       "@id": "estleg:RVaS_Par_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RVaS"
+        "estleg:LegalProvision_riigivapi_seadus"
       ],
       "estleg:paragrahv": "§ 5.",
       "rdfs:label": "§ 5. Riigivapi kasutamise viisid",
       "estleg:sourceAct": "Riigivapi seadus",
       "estleg:summary": "1 (1) Riigivappi kasutatakse käesolevas seaduses ettenähtud juhtudel: 1 1) kujunduselemendina; 2 2) turvaelemendina; 3 3) pitseri elemendina. Riigivappi kasutatakse käesolevas seaduses ettenähtud juhtudel: kujunduselemendina; turvaelemendina; pitseri elemendina. 2 (2) Riigivappi võib kasutada käesoleva seaduse §-s 4 sätestatud värvilise või mustvalge kujutisena. Musta võib asendada ka muu värv. Kujutise valmistamise materjalist sõltuvalt võib riigivapp olla ka ühevärviline ja reljeefne. Riigivap",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
+      "estleg:legalText": "(1) Riigivappi kasutatakse käesolevas seaduses ettenähtud juhtudel: kujunduselemendina; turvaelemendina; pitseri elemendina. (2) Riigivappi võib kasutada käesoleva seaduse §-s 4 sätestatud värvilise või mustvalge kujutisena. Musta võib asendada ka muu värv. Kujutise valmistamise materjalist sõltuvalt võib riigivapp olla ka ühevärviline ja reljeefne. (3) Riigivapi kasutamisel kujundus- või turvaelemendina isikut tõendavate dokumentide seaduse alusel väljaantavatel isikut tõendavatel dokumentidel võib kasutada käesoleva paragrahvi lõikes 2 sätestatust erinevat riigivapi stiliseeritud kujutist.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RVaS_default"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RVaS_Par_5_Lg_1"
+        },
+        {
+          "@id": "estleg:RVaS_Par_5_Lg_2"
+        },
+        {
+          "@id": "estleg:RVaS_Par_5_Lg_3"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen"
+      ],
       "estleg:references": [
         {
           "@id": "estleg:RVaS_Par_4"
         }
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:RVaS_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Riigivappi kasutatakse käesolevas seaduses ettenähtud juhtudel: kujunduselemendina; turvaelemendina; pitseri elemendina.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVaS_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1"
+    },
+    {
+      "@id": "estleg:RVaS_Par_5_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Riigivappi võib kasutada käesoleva seaduse §-s 4 sätestatud värvilise või mustvalge kujutisena. Musta võib asendada ka muu värv. Kujutise valmistamise materjalist sõltuvalt võib riigivapp olla ka ühevärviline ja reljeefne.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVaS_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 2"
+    },
+    {
+      "@id": "estleg:RVaS_Par_5_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Riigivapi kasutamisel kujundus- või turvaelemendina isikut tõendavate dokumentide seaduse alusel väljaantavatel isikut tõendavatel dokumentidel võib kasutada käesoleva paragrahvi lõikes 2 sätestatust erinevat riigivapi stiliseeritud kujutist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVaS_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 3"
     },
     {
       "@id": "estleg:RVaS_Par_6",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RVaS"
+        "estleg:LegalProvision_riigivapi_seadus"
       ],
       "estleg:paragrahv": "§ 6.",
       "rdfs:label": "§ 6. Suure riigivapi kasutamine",
       "estleg:sourceAct": "Riigivapi seadus",
-      "estleg:summary": "1 (1) Suurt riigivappi kasutatakse kujundus- või turvaelemendina: 1 1) seadustel, Riigikogu otsustel, avaldustel, deklaratsioonidel ja pöördumistel, Vabariigi Presidendi seadlustel, otsustel ja käskkirjadel ning tema antavatel teistel dokumentidel ja seda võib kasutada Vabariigi Presidendi poolt väljaantavatel muudel trükistel; 2 2) Riigikohtu lahenditel; 3 3) välislepingutega ühinemise ja nende denonsseerimise kirjadel, välislepingute ratifitseerimise kirjadel ja välislepingute kaantel; 4 4) Ee",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
+      "estleg:summary": "1 (1) Suurt riigivappi kasutatakse kujundus- või turvaelemendina: 1 1) seadustel, Riigikogu otsustel, avaldustel, deklaratsioonidel ja pöördumistel, Vabariigi Presidendi seadlustel, otsustel ja käskkirjadel ning tema antavatel teistel dokumentidel ja seda võib kasutada Vabariigi Presidendi poolt väljaantavatel muudel trükistel; 2 2) Riigikohtu lahenditel; 3 3) välislepingutega ühinemise ja nende denonsseerimise kirjadel, välislepingute ratifitseerimise kirjadel ja välislepingute kaantel; RT I 20",
+      "estleg:legalText": "(1) Suurt riigivappi kasutatakse kujundus- või turvaelemendina: seadustel, Riigikogu otsustel, avaldustel, deklaratsioonidel ja pöördumistel, Vabariigi Presidendi seadlustel, otsustel ja käskkirjadel ning tema antavatel teistel dokumentidel ja seda võib kasutada Vabariigi Presidendi poolt väljaantavatel muudel trükistel; Riigikohtu lahenditel; välislepingutega ühinemise ja nende denonsseerimise kirjadel, välislepingute ratifitseerimise kirjadel ja välislepingute kaantel; Eesti Vabariigi erakorraliste ja täievoliliste suursaadikute välissuhtluses kasutatavatel dokumentidel ja kutsetel; seadusega või seaduse alusel Vabariigi Valitsuse määratud juhtudel antavatel isikut ja kodakondsust, perekonnaseisu, haridust, ametit ja elukutset tõendavatel dokumentidel; väärtpaberitel, postimaksevahenditel ja rahamärkidel. (2) Suurt riigivappi kasutatakse kujunduselemendina: Vabariigi Presidendi residentsil, esindusruumides ja liiklusvahendil; Riigikogu ja Vabariigi Valitsuse alalise asukoha hoonetel ning nende asutuste istungisaalides, esindusruumides ja trükistel; Vabariigi Presidendi, Riigikogu ja Vabariigi Valitsuse veebilehel; Eesti Vabariigi välisesinduste ja aukonsuli juhitavate konsulaarasutuste asukohta tähistavatel siltidel; Riigikohtu ja kohtute hoonetel, siltidel ja kohtusaalides; perekonnaseisuasutuste saalides; Vabariigi Presidendi lipul ja vimplil; ajalooliste kahepoolsete väeosalippude riigilipu värvidega küljel; kaitseväelaste vormiriietusel ning ametnike ameti- ja vormiriietusel Vabariigi Valitsuse sätestatud juhtudel; kohtunike ja prokuröride ametiriietusel; Riigi Teatajal; riiklikel autasudel ja nende tunnistustel seadusega või seaduse alusel kehtestatud juhtudel; Eesti riigipiiri tähistavatel põhipiirimärkidel ja piiripunktides. (3) Suurt riigivappi kasutatakse pitseri elemendina: riigipitseris; Vabariigi Presidendi pitseris.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RVaS_default"
       },
-      "estleg:targetGroup": [
-        "public_body"
-      ],
-      "estleg:competentAuthority": [
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:Institution_riigikogu"
+          "@id": "estleg:RVaS_Par_6_Lg_1"
+        },
+        {
+          "@id": "estleg:RVaS_Par_6_Lg_2"
+        },
+        {
+          "@id": "estleg:RVaS_Par_6_Lg_3"
         }
       ],
-      "estleg:competenceType": "general"
-    },
-    {
-      "@id": "estleg:RVaS_Par_7",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_RVaS"
-      ],
-      "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Väikese riigivapi kasutamine",
-      "estleg:sourceAct": "Riigivapi seadus",
-      "estleg:summary": "1 (1) Väikest riigivappi kasutatakse kujundus- või turvaelemendina Riigikogu, peaministri, Vabariigi Valitsuse, Riigikohtu, kohtute, õiguskantsleri, Riigikogu Kantselei, Riigikantselei, Riigikontrolli, Vabariigi Presidendi Kantselei, Eesti Panga, kaitseväe juhataja või ülemjuhataja, ministeeriumide ja muude riigiasutuste või riigivõimu teostavate organite ja isikute väljaantavatel dokumentidel ning seda võib kasutada nende trükistel. Väikest riigivappi kasutatakse kujundus- või turvaelemendina R",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
       "estleg:targetGroup": [
         "citizen",
         "public_body",
         "official"
       ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_riigikogu"
@@ -168,68 +389,329 @@
       "estleg:competenceType": "general"
     },
     {
+      "@id": "estleg:RVaS_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Suurt riigivappi kasutatakse kujundus- või turvaelemendina: seadustel, Riigikogu otsustel, avaldustel, deklaratsioonidel ja pöördumistel, Vabariigi Presidendi seadlustel, otsustel ja käskkirjadel ning tema antavatel teistel dokumentidel ja seda võib kasutada Vabariigi Presidendi poolt väljaantavatel muudel trükistel; Riigikohtu lahenditel; välislepingutega ühinemise ja nende denonsseerimise kirjadel, välislepingute ratifitseerimise kirjadel ja välislepingute kaantel; Eesti Vabariigi erakorraliste ja täievoliliste suursaadikute välissuhtluses kasutatavatel dokumentidel ja kutsetel; seadusega või seaduse alusel Vabariigi Valitsuse määratud juhtudel antavatel isikut ja kodakondsust, perekonnaseisu, haridust, ametit ja elukutset tõendavatel dokumentidel; väärtpaberitel, postimaksevahenditel ja rahamärkidel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVaS_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1"
+    },
+    {
+      "@id": "estleg:RVaS_Par_6_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Suurt riigivappi kasutatakse kujunduselemendina: Vabariigi Presidendi residentsil, esindusruumides ja liiklusvahendil; Riigikogu ja Vabariigi Valitsuse alalise asukoha hoonetel ning nende asutuste istungisaalides, esindusruumides ja trükistel; Vabariigi Presidendi, Riigikogu ja Vabariigi Valitsuse veebilehel; Eesti Vabariigi välisesinduste ja aukonsuli juhitavate konsulaarasutuste asukohta tähistavatel siltidel; Riigikohtu ja kohtute hoonetel, siltidel ja kohtusaalides; perekonnaseisuasutuste saalides; Vabariigi Presidendi lipul ja vimplil; ajalooliste kahepoolsete väeosalippude riigilipu värvidega küljel; kaitseväelaste vormiriietusel ning ametnike ameti- ja vormiriietusel Vabariigi Valitsuse sätestatud juhtudel; kohtunike ja prokuröride ametiriietusel; Riigi Teatajal; riiklikel autasudel ja nende tunnistustel seadusega või seaduse alusel kehtestatud juhtudel; Eesti riigipiiri tähistavatel põhipiirimärkidel ja piiripunktides.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVaS_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 2"
+    },
+    {
+      "@id": "estleg:RVaS_Par_6_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Suurt riigivappi kasutatakse pitseri elemendina: riigipitseris; Vabariigi Presidendi pitseris.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVaS_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 3"
+    },
+    {
+      "@id": "estleg:RVaS_Par_7",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_riigivapi_seadus"
+      ],
+      "estleg:paragrahv": "§ 7.",
+      "rdfs:label": "§ 7. Väikese riigivapi kasutamine",
+      "estleg:sourceAct": "Riigivapi seadus",
+      "estleg:summary": "1 (1) Väikest riigivappi kasutatakse kujundus- või turvaelemendina Riigikogu, peaministri, Vabariigi Valitsuse, Riigikohtu, kohtute, õiguskantsleri, Riigikogu Kantselei, Riigikantselei, Riigikontrolli, Vabariigi Presidendi Kantselei, Eesti Panga, kaitseväe juhataja, ministeeriumide ja muude riigiasutuste või riigivõimu teostavate organite ja isikute väljaantavatel dokumentidel ning seda võib kasutada nende trükistel. RT I 2011-07-08 8 108072011008 2011-07-22 Väikest riigivappi kasutatakse kujund",
+      "estleg:legalText": "(1) Väikest riigivappi kasutatakse kujundus- või turvaelemendina Riigikogu, peaministri, Vabariigi Valitsuse, Riigikohtu, kohtute, õiguskantsleri, Riigikogu Kantselei, Riigikantselei, Riigikontrolli, Vabariigi Presidendi Kantselei, Eesti Panga, kaitseväe juhataja, ministeeriumide ja muude riigiasutuste või riigivõimu teostavate organite ja isikute väljaantavatel dokumentidel ning seda võib kasutada nende trükistel. (2) Väikest riigivappi kasutatakse kujunduselemendina: käesoleva paragrahvi lõikes 1 loetletud riigiasutuste, riigivõimu teostavate organite ja isikute alalise asukoha hoonetel, siltidel ja embleemidel ning seda võib kasutada muudel esemetel; kaitseväe juhataja ja Eesti mereväe lipul; Eesti rahvusvõistkonna riietusel; väärtpaberitel, postimaksevahenditel ja rahamärkidel; riiklikel autasudel ja nende tunnistustel seadusega või seaduse alusel kehtestatud juhtudel. (3) Väikest riigivappi kasutatakse pitseri elemendina: käesoleva paragrahvi lõikes 1 loetletud riigiasutuste, riigivõimu teostavate organite ja isikute pitseril; kohaliku omavalitsuse riigivapiga pitseril; vandetõlkidel ja vandeadvokaatidel. (4) Kaitseliit kasutab väikest riigivappi enda embleemi osana.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RVaS_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RVaS_Par_7_Lg_1"
+        },
+        {
+          "@id": "estleg:RVaS_Par_7_Lg_2"
+        },
+        {
+          "@id": "estleg:RVaS_Par_7_Lg_3"
+        },
+        {
+          "@id": "estleg:RVaS_Par_7_Lg_4"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "public_body",
+        "official"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_riigikogu"
+        }
+      ],
+      "estleg:competenceType": "general"
+    },
+    {
+      "@id": "estleg:RVaS_Par_7_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Väikest riigivappi kasutatakse kujundus- või turvaelemendina Riigikogu, peaministri, Vabariigi Valitsuse, Riigikohtu, kohtute, õiguskantsleri, Riigikogu Kantselei, Riigikantselei, Riigikontrolli, Vabariigi Presidendi Kantselei, Eesti Panga, kaitseväe juhataja, ministeeriumide ja muude riigiasutuste või riigivõimu teostavate organite ja isikute väljaantavatel dokumentidel ning seda võib kasutada nende trükistel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVaS_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 1"
+    },
+    {
+      "@id": "estleg:RVaS_Par_7_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Väikest riigivappi kasutatakse kujunduselemendina: käesoleva paragrahvi lõikes 1 loetletud riigiasutuste, riigivõimu teostavate organite ja isikute alalise asukoha hoonetel, siltidel ja embleemidel ning seda võib kasutada muudel esemetel; kaitseväe juhataja ja Eesti mereväe lipul; Eesti rahvusvõistkonna riietusel; väärtpaberitel, postimaksevahenditel ja rahamärkidel; riiklikel autasudel ja nende tunnistustel seadusega või seaduse alusel kehtestatud juhtudel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVaS_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 2"
+    },
+    {
+      "@id": "estleg:RVaS_Par_7_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Väikest riigivappi kasutatakse pitseri elemendina: käesoleva paragrahvi lõikes 1 loetletud riigiasutuste, riigivõimu teostavate organite ja isikute pitseril; kohaliku omavalitsuse riigivapiga pitseril; vandetõlkidel ja vandeadvokaatidel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVaS_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 3"
+    },
+    {
+      "@id": "estleg:RVaS_Par_7_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Kaitseliit kasutab väikest riigivappi enda embleemi osana.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVaS_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 4"
+    },
+    {
       "@id": "estleg:RVaS_Par_8",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RVaS"
+        "estleg:LegalProvision_riigivapi_seadus"
       ],
       "estleg:paragrahv": "§ 8.",
       "rdfs:label": "§ 8. Riigivapi vääritul moel kasutamise keeld",
       "estleg:sourceAct": "Riigivapi seadus",
       "estleg:summary": "Riigivappi ei tohi kasutada vääritul moel. Riigivappi ei tohi kasutada vääritul moel.",
+      "estleg:legalText": "Riigivappi ei tohi kasutada vääritul moel.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RVaS_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RVaS_Par_8_Lg_Unknown_1"
+        }
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Prohibition"
+      }
+    },
+    {
+      "@id": "estleg:RVaS_Par_8_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Riigivappi ei tohi kasutada vääritul moel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVaS_Par_8"
       }
     },
     {
       "@id": "estleg:RVaS_Par_9",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RVaS"
+        "estleg:LegalProvision_riigivapi_seadus"
       ],
       "estleg:paragrahv": "§ 9.",
       "rdfs:label": "§ 9. Riigivapi kauba- või teenindusmärgina registreerimise ja kasutamise keeld",
       "estleg:sourceAct": "Riigivapi seadus",
       "estleg:summary": "1 (1) Kauba- ega teenindusmärgina ei registreerita tähist, mis sisaldab riigivappi. Kauba- ega teenindusmärgina ei registreerita tähist, mis sisaldab riigivappi. 2 (2) Riigivappi sisaldavat tähist ei tohi kasutada kauba- või teenindusmärgina. Riigivappi sisaldavat tähist ei tohi kasutada kauba- või teenindusmärgina.",
+      "estleg:legalText": "(1) Kauba- ega teenindusmärgina ei registreerita tähist, mis sisaldab riigivappi. (2) Riigivappi sisaldavat tähist ei tohi kasutada kauba- või teenindusmärgina.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RVaS_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RVaS_Par_9_Lg_1"
+        },
+        {
+          "@id": "estleg:RVaS_Par_9_Lg_2"
+        }
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Prohibition"
       }
     },
     {
+      "@id": "estleg:RVaS_Par_9_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kauba- ega teenindusmärgina ei registreerita tähist, mis sisaldab riigivappi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVaS_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 1"
+    },
+    {
+      "@id": "estleg:RVaS_Par_9_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Riigivappi sisaldavat tähist ei tohi kasutada kauba- või teenindusmärgina.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVaS_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 2"
+    },
+    {
       "@id": "estleg:RVaS_Par_10",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RVaS"
+        "estleg:LegalProvision_riigivapi_seadus"
       ],
       "estleg:paragrahv": "§ 10.",
       "rdfs:label": "§ 10. Riigipitser",
       "estleg:sourceAct": "Riigivapi seadus",
       "estleg:summary": "1 (1) Riigipitser on sõõrikujuline. Sõõri läbimõõt on 70 millimeetrit ja selle keskel on suur riigivapp. Sõõri ülemisel äärel on sõnad «Eesti Vabariik». Riigipitser on sõõrikujuline. Sõõri läbimõõt on 70 millimeetrit ja selle keskel on suur riigivapp. Sõõri ülemisel äärel on sõnad «Eesti Vabariik». 2 (2) Riigipitserit kasutatakse: 1 1) erakorralise ja täievolilise suursaadiku ametisse nimetamise volikirjal või tagasikutsumise kirjal ning nende ümbrikutel; 2 2) konventsiooni ja välislepingu ratif",
+      "estleg:legalText": "(1) Riigipitser on sõõrikujuline. Sõõri läbimõõt on 70 millimeetrit ja selle keskel on suur riigivapp. Sõõri ülemisel äärel on sõnad «Eesti Vabariik». (2) Riigipitserit kasutatakse: erakorralise ja täievolilise suursaadiku ametisse nimetamise volikirjal või tagasikutsumise kirjal ning nende ümbrikutel; konventsiooni ja välislepingu ratifitseerimise või denonsseerimise kirjal.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RVaS_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RVaS_Par_10_Lg_1"
+        },
+        {
+          "@id": "estleg:RVaS_Par_10_Lg_2"
+        }
+      ],
       "estleg:targetGroup": [
         "official"
       ]
     },
     {
+      "@id": "estleg:RVaS_Par_10_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Riigipitser on sõõrikujuline. Sõõri läbimõõt on 70 millimeetrit ja selle keskel on suur riigivapp. Sõõri ülemisel äärel on sõnad «Eesti Vabariik».",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVaS_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 1"
+    },
+    {
+      "@id": "estleg:RVaS_Par_10_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Riigipitserit kasutatakse: erakorralise ja täievolilise suursaadiku ametisse nimetamise volikirjal või tagasikutsumise kirjal ning nende ümbrikutel; konventsiooni ja välislepingu ratifitseerimise või denonsseerimise kirjal.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVaS_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 2"
+    },
+    {
       "@id": "estleg:RVaS_Par_11",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RVaS"
+        "estleg:LegalProvision_riigivapi_seadus"
       ],
       "estleg:paragrahv": "§ 11.",
       "rdfs:label": "§ 11. Riigipitsati hoidmine",
       "estleg:sourceAct": "Riigivapi seadus",
-      "estleg:summary": "Riigipitsat on hoiul riigisekretäri juures. Riigipitsati kasutamine protokollitakse. Riigipitsat on hoiul riigisekretäri juures. Riigipitsati kasutamine protokollitakse."
+      "estleg:summary": "Riigipitsat on hoiul riigisekretäri juures. Riigipitsati kasutamine protokollitakse. Riigipitsat on hoiul riigisekretäri juures. Riigipitsati kasutamine protokollitakse.",
+      "estleg:legalText": "Riigipitsat on hoiul riigisekretäri juures. Riigipitsati kasutamine protokollitakse.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RVaS_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RVaS_Par_11_Lg_Unknown_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:RVaS_Par_11_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Riigipitsat on hoiul riigisekretäri juures. Riigipitsati kasutamine protokollitakse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVaS_Par_11"
+      }
     },
     {
       "@id": "estleg:RVaS_Par_12",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RVaS"
+        "estleg:LegalProvision_riigivapi_seadus"
       ],
       "estleg:paragrahv": "§ 12.",
       "rdfs:label": "§ 12. Vabariigi Presidendi pitser",
       "estleg:sourceAct": "Riigivapi seadus",
       "estleg:summary": "Vabariigi Presidendi pitser on sõõrikujuline. Sõõri läbimõõt on 50 millimeetrit ja selle keskel on suur riigivapp. Sõõri ülemisel äärel on sõnad «Vabariigi President». Vabariigi Presidendi pitser on sõõrikujuline. Sõõri läbimõõt on 50 millimeetrit ja selle keskel on suur riigivapp. Sõõri ülemisel äärel on sõnad «Vabariigi President».",
+      "estleg:legalText": "Vabariigi Presidendi pitser on sõõrikujuline. Sõõri läbimõõt on 50 millimeetrit ja selle keskel on suur riigivapp. Sõõri ülemisel äärel on sõnad «Vabariigi President».",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RVaS_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RVaS_Par_12_Lg_Unknown_1"
+        }
+      ],
       "estleg:targetGroup": [
         "official"
       ],
@@ -241,26 +723,74 @@
       "estleg:competenceType": "general"
     },
     {
+      "@id": "estleg:RVaS_Par_12_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Vabariigi Presidendi pitser on sõõrikujuline. Sõõri läbimõõt on 50 millimeetrit ja selle keskel on suur riigivapp. Sõõri ülemisel äärel on sõnad «Vabariigi President».",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVaS_Par_12"
+      }
+    },
+    {
       "@id": "estleg:RVaS_Par_13",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RVaS"
+        "estleg:LegalProvision_riigivapi_seadus"
       ],
       "estleg:paragrahv": "§ 13.",
       "rdfs:label": "§ 13. Vabariigi Presidendi pitsati hoidmine",
       "estleg:sourceAct": "Riigivapi seadus",
-      "estleg:summary": "Vabariigi Presidendi pitsat on hoiul Vabariigi Presidendi juures. Vabariigi Presidendi pitsati kasutamine protokollitakse. Vabariigi Presidendi pitsat on hoiul Vabariigi Presidendi juures. Vabariigi Presidendi pitsati kasutamine protokollitakse."
+      "estleg:summary": "Vabariigi Presidendi pitsat on hoiul Vabariigi Presidendi juures. Vabariigi Presidendi pitsati kasutamine protokollitakse. Vabariigi Presidendi pitsat on hoiul Vabariigi Presidendi juures. Vabariigi Presidendi pitsati kasutamine protokollitakse.",
+      "estleg:legalText": "Vabariigi Presidendi pitsat on hoiul Vabariigi Presidendi juures. Vabariigi Presidendi pitsati kasutamine protokollitakse.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RVaS_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RVaS_Par_13_Lg_Unknown_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:RVaS_Par_13_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Vabariigi Presidendi pitsat on hoiul Vabariigi Presidendi juures. Vabariigi Presidendi pitsati kasutamine protokollitakse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVaS_Par_13"
+      }
     },
     {
       "@id": "estleg:RVaS_Par_14",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RVaS"
+        "estleg:LegalProvision_riigivapi_seadus"
       ],
       "estleg:paragrahv": "§ 14.",
       "rdfs:label": "§ 14. Muude riigiasutuste, riigivõimu teostavate organite ja isikute pitserid",
       "estleg:sourceAct": "Riigivapi seadus",
-      "estleg:summary": "1 (1) Riigiasutuste, riigivõimu teostavate organite ja isikute pitserid on sõõrikujulised. Riigiasutuste, riigivõimu teostavate organite ja isikute pitserid on sõõrikujulised. 2 (2) Riigikogu, peaministri, Vabariigi Valitsuse, Riigikohtu, õiguskantsleri, Riigikogu Kantselei, Riigikantselei, Riigikontrolli, Vabariigi Presidendi Kantselei, Eesti Panga, kaitseväe juhataja või ülemjuhataja ja ministeeriumide pitseri sõõri läbimõõt on 50 millimeetrit ja selle keskel on väike riigivapp. Sõõri ülemisel",
+      "estleg:summary": "1 (1) Riigiasutuste, riigivõimu teostavate organite ja isikute pitserid on sõõrikujulised. Riigiasutuste, riigivõimu teostavate organite ja isikute pitserid on sõõrikujulised. 2 (2) Riigikogu, peaministri, Vabariigi Valitsuse, Riigikohtu, õiguskantsleri, Riigikogu Kantselei, Riigikantselei, Riigikontrolli, Vabariigi Presidendi Kantselei, Eesti Panga, kaitseväe juhataja ja ministeeriumide pitseri sõõri läbimõõt on 50 millimeetrit ja selle keskel on väike riigivapp. Sõõri ülemisel äärel on vastava",
+      "estleg:legalText": "(1) Riigiasutuste, riigivõimu teostavate organite ja isikute pitserid on sõõrikujulised. (2) Riigikogu, peaministri, Vabariigi Valitsuse, Riigikohtu, õiguskantsleri, Riigikogu Kantselei, Riigikantselei, Riigikontrolli, Vabariigi Presidendi Kantselei, Eesti Panga, kaitseväe juhataja ja ministeeriumide pitseri sõõri läbimõõt on 50 millimeetrit ja selle keskel on väike riigivapp. Sõõri ülemisel äärel on vastava riigiasutuse, riigivõimu teostava organi või isiku nimetus ning tunnus, mis võimaldab seda eristada kehtetuks tunnistatud või tulevikus registreeritavatest sama tekstiga pitseritest. (3) Käesoleva paragrahvi lõikes 2 nimetamata riigiasutuste, riigivõimu teostavate organite või isikute pitseri sõõri läbimõõt on 35 millimeetrit ja selle keskel on väike riigivapp. Sõõri ülemisel äärel on vastava riigiasutuse, riigivõimu teostava organi või isiku nimetus ning tunnus, mis võimaldab seda eristada kehtetuks tunnistatud või tulevikus registreeritavatest sama tekstiga pitseritest.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RVaS_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RVaS_Par_14_Lg_1"
+        },
+        {
+          "@id": "estleg:RVaS_Par_14_Lg_2"
+        },
+        {
+          "@id": "estleg:RVaS_Par_14_Lg_3"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen",
         "public_body",
@@ -274,15 +804,63 @@
       "estleg:competenceType": "general"
     },
     {
+      "@id": "estleg:RVaS_Par_14_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Riigiasutuste, riigivõimu teostavate organite ja isikute pitserid on sõõrikujulised.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVaS_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 1"
+    },
+    {
+      "@id": "estleg:RVaS_Par_14_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Riigikogu, peaministri, Vabariigi Valitsuse, Riigikohtu, õiguskantsleri, Riigikogu Kantselei, Riigikantselei, Riigikontrolli, Vabariigi Presidendi Kantselei, Eesti Panga, kaitseväe juhataja ja ministeeriumide pitseri sõõri läbimõõt on 50 millimeetrit ja selle keskel on väike riigivapp. Sõõri ülemisel äärel on vastava riigiasutuse, riigivõimu teostava organi või isiku nimetus ning tunnus, mis võimaldab seda eristada kehtetuks tunnistatud või tulevikus registreeritavatest sama tekstiga pitseritest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVaS_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 2"
+    },
+    {
+      "@id": "estleg:RVaS_Par_14_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Käesoleva paragrahvi lõikes 2 nimetamata riigiasutuste, riigivõimu teostavate organite või isikute pitseri sõõri läbimõõt on 35 millimeetrit ja selle keskel on väike riigivapp. Sõõri ülemisel äärel on vastava riigiasutuse, riigivõimu teostava organi või isiku nimetus ning tunnus, mis võimaldab seda eristada kehtetuks tunnistatud või tulevikus registreeritavatest sama tekstiga pitseritest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVaS_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 3"
+    },
+    {
       "@id": "estleg:RVaS_Par_15",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RVaS"
+        "estleg:LegalProvision_riigivapi_seadus"
       ],
       "estleg:paragrahv": "§ 15.",
       "rdfs:label": "§ 15. Riigivapiga pitsati kasutamine kohaliku omavalitsuse ning juriidilise ja füüsilise isiku poolt",
       "estleg:sourceAct": "Riigivapi seadus",
       "estleg:summary": "Kohaliku omavalitsuse organ ning juriidiline isik ja füüsiline isik võivad kasutada väikese riigivapiga pitsatit üksnes neile seadusega või seaduse alusel pandud riiklikku ülesannet täites. Kohaliku omavalitsuse organ ning juriidiline isik ja füüsiline isik võivad kasutada väikese riigivapiga pitsatit üksnes neile seadusega või seaduse alusel pandud riiklikku ülesannet täites.",
+      "estleg:legalText": "Kohaliku omavalitsuse organ ning juriidiline isik ja füüsiline isik võivad kasutada väikese riigivapiga pitsatit üksnes neile seadusega või seaduse alusel pandud riiklikku ülesannet täites.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RVaS_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RVaS_Par_15_Lg_Unknown_1"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen",
         "public_body"
@@ -295,47 +873,175 @@
       "estleg:competenceType": "general"
     },
     {
+      "@id": "estleg:RVaS_Par_15_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Kohaliku omavalitsuse organ ning juriidiline isik ja füüsiline isik võivad kasutada väikese riigivapiga pitsatit üksnes neile seadusega või seaduse alusel pandud riiklikku ülesannet täites.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVaS_Par_15"
+      }
+    },
+    {
       "@id": "estleg:RVaS_Par_16",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RVaS"
+        "estleg:LegalProvision_riigivapi_seadus"
       ],
       "estleg:paragrahv": "§ 16.",
       "rdfs:label": "§ 16. Riigivapiga pitsati valdamine",
       "estleg:sourceAct": "Riigivapi seadus",
       "estleg:summary": "1 (1) Riigiasutusel võib olla üks oma nimetuse ja riigivapiga pitsat. Riigiasutusel võib olla üks oma nimetuse ja riigivapiga pitsat. 2 (2) Kui asutuse tööst lähtuvalt on mitmel ametiisikul vaja kasutada asutuse nimetuse ja riigivapiga pitsatit ning selline õigus on sätestatud asutuse põhimääruses või asjaajamiskorras, võib asutusel olla rohkem kui üks asutuse nimetuse ja riigivapiga pitsat. Kui asutuse tööst lähtuvalt on mitmel ametiisikul vaja kasutada asutuse nimetuse ja riigivapiga pitsatit ",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
+      "estleg:legalText": "(1) Riigiasutusel võib olla üks oma nimetuse ja riigivapiga pitsat. (2) Kui asutuse tööst lähtuvalt on mitmel ametiisikul vaja kasutada asutuse nimetuse ja riigivapiga pitsatit ning selline õigus on sätestatud asutuse põhimääruses või asjaajamiskorras, võib asutusel olla rohkem kui üks asutuse nimetuse ja riigivapiga pitsat. (3) Riigiasutuse allüksusel või ametiisikul võib olla asutuse nimetuse ja allüksuse või ametniku nimega riigivapiga pitsat juhul, kui riigiasutuse allüksus või ametiisik täidab talle seadusega või seaduse alusel Vabariigi Valitsuse või ministri määrusega pandud haldusülesandeid.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RVaS_default"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RVaS_Par_16_Lg_1"
+        },
+        {
+          "@id": "estleg:RVaS_Par_16_Lg_2"
+        },
+        {
+          "@id": "estleg:RVaS_Par_16_Lg_3"
+        }
+      ],
       "estleg:targetGroup": [
         "public_body",
         "official"
-      ]
-    },
-    {
-      "@id": "estleg:RVaS_Par_17",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_RVaS"
       ],
-      "estleg:paragrahv": "§ 17.",
-      "rdfs:label": "§ 17. Riigivapiga pitseri keel",
-      "estleg:sourceAct": "Riigivapi seadus",
-      "estleg:summary": "1 (1) Riigivapiga pitseri tekst on eesti keeles. Riigivapiga pitseri tekst on eesti keeles. 2 (2) Välissuhtlusega seotud riigiasutuse või -organi pitser võib olla eesti- ja võõrkeelse tekstiga. Välissuhtlusega seotud riigiasutuse või -organi pitser võib olla eesti- ja võõrkeelse tekstiga.",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Right"
       }
     },
     {
+      "@id": "estleg:RVaS_Par_16_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Riigiasutusel võib olla üks oma nimetuse ja riigivapiga pitsat.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVaS_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 1"
+    },
+    {
+      "@id": "estleg:RVaS_Par_16_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kui asutuse tööst lähtuvalt on mitmel ametiisikul vaja kasutada asutuse nimetuse ja riigivapiga pitsatit ning selline õigus on sätestatud asutuse põhimääruses või asjaajamiskorras, võib asutusel olla rohkem kui üks asutuse nimetuse ja riigivapiga pitsat.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVaS_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 2"
+    },
+    {
+      "@id": "estleg:RVaS_Par_16_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Riigiasutuse allüksusel või ametiisikul võib olla asutuse nimetuse ja allüksuse või ametniku nimega riigivapiga pitsat juhul, kui riigiasutuse allüksus või ametiisik täidab talle seadusega või seaduse alusel Vabariigi Valitsuse või ministri määrusega pandud haldusülesandeid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVaS_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 3"
+    },
+    {
+      "@id": "estleg:RVaS_Par_17",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_riigivapi_seadus"
+      ],
+      "estleg:paragrahv": "§ 17.",
+      "rdfs:label": "§ 17. Riigivapiga pitseri keel",
+      "estleg:sourceAct": "Riigivapi seadus",
+      "estleg:summary": "1 (1) Riigivapiga pitseri tekst on eesti keeles. Riigivapiga pitseri tekst on eesti keeles. 2 (2) Välissuhtlusega seotud riigiasutuse või -organi pitser võib olla eesti- ja võõrkeelse tekstiga. Välissuhtlusega seotud riigiasutuse või -organi pitser võib olla eesti- ja võõrkeelse tekstiga.",
+      "estleg:legalText": "(1) Riigivapiga pitseri tekst on eesti keeles. (2) Välissuhtlusega seotud riigiasutuse või -organi pitser võib olla eesti- ja võõrkeelse tekstiga.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RVaS_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RVaS_Par_17_Lg_1"
+        },
+        {
+          "@id": "estleg:RVaS_Par_17_Lg_2"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:RVaS_Par_17_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Riigivapiga pitseri tekst on eesti keeles.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVaS_Par_17"
+      },
+      "rdfs:label": "§ 17 lg 1"
+    },
+    {
+      "@id": "estleg:RVaS_Par_17_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Välissuhtlusega seotud riigiasutuse või -organi pitser võib olla eesti- ja võõrkeelse tekstiga.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVaS_Par_17"
+      },
+      "rdfs:label": "§ 17 lg 2"
+    },
+    {
       "@id": "estleg:RVaS_Par_18",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RVaS"
+        "estleg:LegalProvision_riigivapi_seadus"
       ],
       "estleg:paragrahv": "§ 18.",
       "rdfs:label": "§ 18. Riigivapiga pitsatite ning dokumendiplankide registreerimine",
       "estleg:sourceAct": "Riigivapi seadus",
       "estleg:summary": "1 (1) Enne riigivapiga pitsati kasutuselevõttu registreeritakse see Riigikantseleis. Enne riigivapiga pitsati kasutuselevõttu registreeritakse see Riigikantseleis. 2 (2) Riigivapiga pitsati registreerimise taotlus vaadatakse läbi Riigikantseleisse saabumisest alates kümne tööpäeva jooksul. Riigivapiga pitsati registreerimise taotlus vaadatakse läbi Riigikantseleisse saabumisest alates kümne tööpäeva jooksul. 3 (3) Riigivapiga pitsati registreerimisest keeldutakse: 1 1) kui taotlejal ei ole käeso",
+      "estleg:legalText": "(1) Enne riigivapiga pitsati kasutuselevõttu registreeritakse see Riigikantseleis. (2) Riigivapiga pitsati registreerimise taotlus vaadatakse läbi Riigikantseleisse saabumisest alates kümne tööpäeva jooksul. (3) Riigivapiga pitsati registreerimisest keeldutakse: kui taotlejal ei ole käesoleva seaduse alusel õigust omada riigivapiga pitsatit; kui pitsat ei ole käesoleva seaduse ja Eesti Vabariigi seaduse «Eesti Vabariigi riigilipu ja riigivapi etalonkujutiste kinnitamise kohta» nõuete kohane. (4) Riigiasutused ja riigivapiga pitsati kasutamisõigust omavad isikud esitavad riigivapiga ja teiste riiklikult tähtsate turvaelementidega dokumentide ning riigivapiga pitserite näidised registreerimiseks riigivapiga ja teiste riiklikult tähtsate turvaelementidega dokumentide plankide ning riigivapiga pitserite näidiste registris (edaspidi ka register). (5) Registrisse koondatakse riigivapiga ja teiste riiklikult tähtsate turvaelementidega dokumentide ning riigivapiga pitserite kohta käivad andmed. (6) Riigivapiga ja teiste riiklikult tähtsate turvaelementidega dokumentide plankide ning riigivapiga pitserite näidiste registri asutab ja selle põhimääruse",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RVaS_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RVaS_Par_18_Lg_1"
+        },
+        {
+          "@id": "estleg:RVaS_Par_18_Lg_2"
+        },
+        {
+          "@id": "estleg:RVaS_Par_18_Lg_3"
+        },
+        {
+          "@id": "estleg:RVaS_Par_18_Lg_4"
+        },
+        {
+          "@id": "estleg:RVaS_Par_18_Lg_5"
+        },
+        {
+          "@id": "estleg:RVaS_Par_18_Lg_6"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen"
       ],
@@ -346,15 +1052,105 @@
       ]
     },
     {
+      "@id": "estleg:RVaS_Par_18_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Enne riigivapiga pitsati kasutuselevõttu registreeritakse see Riigikantseleis.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVaS_Par_18"
+      },
+      "rdfs:label": "§ 18 lg 1"
+    },
+    {
+      "@id": "estleg:RVaS_Par_18_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Riigivapiga pitsati registreerimise taotlus vaadatakse läbi Riigikantseleisse saabumisest alates kümne tööpäeva jooksul.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVaS_Par_18"
+      },
+      "rdfs:label": "§ 18 lg 2"
+    },
+    {
+      "@id": "estleg:RVaS_Par_18_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Riigivapiga pitsati registreerimisest keeldutakse: kui taotlejal ei ole käesoleva seaduse alusel õigust omada riigivapiga pitsatit; kui pitsat ei ole käesoleva seaduse ja Eesti Vabariigi seaduse «Eesti Vabariigi riigilipu ja riigivapi etalonkujutiste kinnitamise kohta» nõuete kohane.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVaS_Par_18"
+      },
+      "rdfs:label": "§ 18 lg 3"
+    },
+    {
+      "@id": "estleg:RVaS_Par_18_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Riigiasutused ja riigivapiga pitsati kasutamisõigust omavad isikud esitavad riigivapiga ja teiste riiklikult tähtsate turvaelementidega dokumentide ning riigivapiga pitserite näidised registreerimiseks riigivapiga ja teiste riiklikult tähtsate turvaelementidega dokumentide plankide ning riigivapiga pitserite näidiste registris (edaspidi ka register).",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVaS_Par_18"
+      },
+      "rdfs:label": "§ 18 lg 4"
+    },
+    {
+      "@id": "estleg:RVaS_Par_18_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Registrisse koondatakse riigivapiga ja teiste riiklikult tähtsate turvaelementidega dokumentide ning riigivapiga pitserite kohta käivad andmed.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVaS_Par_18"
+      },
+      "rdfs:label": "§ 18 lg 5"
+    },
+    {
+      "@id": "estleg:RVaS_Par_18_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Riigivapiga ja teiste riiklikult tähtsate turvaelementidega dokumentide plankide ning riigivapiga pitserite näidiste registri asutab ja selle põhimääruse",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVaS_Par_18"
+      },
+      "rdfs:label": "§ 18 lg 6"
+    },
+    {
       "@id": "estleg:RVaS_Par_19",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RVaS"
+        "estleg:LegalProvision_riigivapi_seadus"
       ],
       "estleg:paragrahv": "§ 19.",
       "rdfs:label": "§ 19. Riigivapiga pitsatite kehtetuks tunnistamine",
       "estleg:sourceAct": "Riigivapi seadus",
       "estleg:summary": "1 (1) Riigivapiga pitsat tunnistatakse pitsati seadusliku valdaja poolt kehtetuks, kui: 1 1) pitseri tekstis sisalduvad andmed on aegunud; 2 2) pitsat ei ole seadusliku valdaja valduses ja on oht, et ametiisiku, asutuse või organi pitsatit võidakse kasutada õigusvastaselt, tekitades sellega kahju riigile ja isikute õigustele; 3 3) asutuse või isiku tegevus lõpetatakse. Riigivapiga pitsat tunnistatakse pitsati seadusliku valdaja poolt kehtetuks, kui: pitseri tekstis sisalduvad andmed on aegunud; ",
+      "estleg:legalText": "(1) Riigivapiga pitsat tunnistatakse pitsati seadusliku valdaja poolt kehtetuks, kui: pitseri tekstis sisalduvad andmed on aegunud; pitsat ei ole seadusliku valdaja valduses ja on oht, et ametiisiku, asutuse või organi pitsatit võidakse kasutada õigusvastaselt, tekitades sellega kahju riigile ja isikute õigustele; asutuse või isiku tegevus lõpetatakse. (2) Riigivapiga pitsati kasutamise lõpetamisest teatatakse Riigikantseleile, kes teeb kolme tööpäeva jooksul registrisse vastava kande.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RVaS_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RVaS_Par_19_Lg_1"
+        },
+        {
+          "@id": "estleg:RVaS_Par_19_Lg_2"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen",
         "public_body",
@@ -362,151 +1158,470 @@
       ]
     },
     {
+      "@id": "estleg:RVaS_Par_19_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Riigivapiga pitsat tunnistatakse pitsati seadusliku valdaja poolt kehtetuks, kui: pitseri tekstis sisalduvad andmed on aegunud; pitsat ei ole seadusliku valdaja valduses ja on oht, et ametiisiku, asutuse või organi pitsatit võidakse kasutada õigusvastaselt, tekitades sellega kahju riigile ja isikute õigustele; asutuse või isiku tegevus lõpetatakse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVaS_Par_19"
+      },
+      "rdfs:label": "§ 19 lg 1"
+    },
+    {
+      "@id": "estleg:RVaS_Par_19_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Riigivapiga pitsati kasutamise lõpetamisest teatatakse Riigikantseleile, kes teeb kolme tööpäeva jooksul registrisse vastava kande.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVaS_Par_19"
+      },
+      "rdfs:label": "§ 19 lg 2"
+    },
+    {
       "@id": "estleg:RVaS_Par_20",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RVaS"
+        "estleg:LegalProvision_riigivapi_seadus"
       ],
       "estleg:paragrahv": "§ 20.",
       "rdfs:label": "§ 20. Riigivapiga pitsatite korduvkasutuse keeld",
       "estleg:sourceAct": "Riigivapi seadus",
-      "estleg:summary": "Riigivapiga pitsatit, mille pitser ei erine kehtetuks tunnistatud pitsati pitserist, kasutusele ei võeta. Riigivapiga pitsatit, mille pitser ei erine kehtetuks tunnistatud pitsati pitserist, kasutusele ei võeta."
+      "estleg:summary": "Riigivapiga pitsatit, mille pitser ei erine kehtetuks tunnistatud pitsati pitserist, kasutusele ei võeta. Riigivapiga pitsatit, mille pitser ei erine kehtetuks tunnistatud pitsati pitserist, kasutusele ei võeta.",
+      "estleg:legalText": "Riigivapiga pitsatit, mille pitser ei erine kehtetuks tunnistatud pitsati pitserist, kasutusele ei võeta.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RVaS_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RVaS_Par_20_Lg_Unknown_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:RVaS_Par_20_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Riigivapiga pitsatit, mille pitser ei erine kehtetuks tunnistatud pitsati pitserist, kasutusele ei võeta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVaS_Par_20"
+      }
     },
     {
       "@id": "estleg:RVaS_Par_21",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RVaS"
+        "estleg:LegalProvision_riigivapi_seadus"
       ],
       "estleg:paragrahv": "§ 21.",
       "rdfs:label": "§ 21. Riigivapiga pitsatite ning dokumendiplankide hoidmine ja hävitamine",
       "estleg:sourceAct": "Riigivapi seadus",
       "estleg:summary": "1 (1) Riigivapiga pitsateid hoitakse lukustatud tulekindlas hoiuruumis (tulekindlas kapis) ning nende hoidmise eest vastutab asutuse või organi juht ja tema määratud asutuse töötaja või isik, kelle kohta on käesoleva seaduse § 18 lõikes 4 sätestatud riiklikku registrisse kantud vastavad andmed. Riigivapiga pitsateid hoitakse lukustatud tulekindlas hoiuruumis (tulekindlas kapis) ning nende hoidmise eest vastutab asutuse või organi juht ja tema määratud asutuse töötaja või isik, kelle kohta on käe",
-      "estleg:references": [
+      "estleg:legalText": "(1) Riigivapiga pitsateid hoitakse lukustatud tulekindlas hoiuruumis (tulekindlas kapis) ning nende hoidmise eest vastutab asutuse või organi juht ja tema määratud asutuse töötaja või isik, kelle kohta on käesoleva seaduse § 18 lõikes 4 sätestatud riiklikku registrisse kantud vastavad andmed. (2) Riigivapi ja turvaelementidega dokumendiplanke hoitakse nii, et oleks välistatud nende hävimine ja sattumine asutuseväliste isikute kätte ning nende üle peetakse arvestust. Riigivapiga dokumendiplankide hoidmise täpsem kord sätestatakse asutuse asjaajamiskorras. (3) Riigiasutuse, riigivõimu teostava organi või isiku tegevuse lõpetamisel annab lõpetamist korraldav organ riigivapiga pitsati ja dokumendiplangid arhiivi või korraldab nende hävitamise. (4) Rikutud ja kehtetute riigivapiga pitsatite ning dokumendiplankide hävitamise viisi määrab riigiasutuse juht. Hävitamise kohta koostatakse akt.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RVaS_default"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:RVaS_Par_18"
+          "@id": "estleg:RVaS_Par_21_Lg_1"
+        },
+        {
+          "@id": "estleg:RVaS_Par_21_Lg_2"
+        },
+        {
+          "@id": "estleg:RVaS_Par_21_Lg_3"
+        },
+        {
+          "@id": "estleg:RVaS_Par_21_Lg_4"
         }
       ],
       "estleg:targetGroup": [
         "citizen",
         "public_body"
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:RVaS_Par_18"
+        }
       ]
+    },
+    {
+      "@id": "estleg:RVaS_Par_21_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Riigivapiga pitsateid hoitakse lukustatud tulekindlas hoiuruumis (tulekindlas kapis) ning nende hoidmise eest vastutab asutuse või organi juht ja tema määratud asutuse töötaja või isik, kelle kohta on käesoleva seaduse § 18 lõikes 4 sätestatud riiklikku registrisse kantud vastavad andmed.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVaS_Par_21"
+      },
+      "rdfs:label": "§ 21 lg 1"
+    },
+    {
+      "@id": "estleg:RVaS_Par_21_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Riigivapi ja turvaelementidega dokumendiplanke hoitakse nii, et oleks välistatud nende hävimine ja sattumine asutuseväliste isikute kätte ning nende üle peetakse arvestust. Riigivapiga dokumendiplankide hoidmise täpsem kord sätestatakse asutuse asjaajamiskorras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVaS_Par_21"
+      },
+      "rdfs:label": "§ 21 lg 2"
+    },
+    {
+      "@id": "estleg:RVaS_Par_21_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Riigiasutuse, riigivõimu teostava organi või isiku tegevuse lõpetamisel annab lõpetamist korraldav organ riigivapiga pitsati ja dokumendiplangid arhiivi või korraldab nende hävitamise.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVaS_Par_21"
+      },
+      "rdfs:label": "§ 21 lg 3"
+    },
+    {
+      "@id": "estleg:RVaS_Par_21_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Rikutud ja kehtetute riigivapiga pitsatite ning dokumendiplankide hävitamise viisi määrab riigiasutuse juht. Hävitamise kohta koostatakse akt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVaS_Par_21"
+      },
+      "rdfs:label": "§ 21 lg 4"
     },
     {
       "@id": "estleg:RVaS_Par_22",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RVaS"
+        "estleg:LegalProvision_riigivapi_seadus"
       ],
       "estleg:paragrahv": "§ 22.",
       "rdfs:label": "§ 22. Riigivapi kasutamise korra rikkumine",
       "estleg:sourceAct": "Riigivapi seadus",
-      "estleg:summary": "1 (1) Riigivapi kasutamise korra rikkumise eest – karistatakse rahatrahviga kuni 100 trahviühikut. Riigivapi kasutamise korra rikkumise eest – karistatakse rahatrahviga kuni 100 trahviühikut. 2 (2) Sama teo eest, kui selle on toime pannud juriidiline isik, – karistatakse rahatrahviga kuni 10 000 krooni. Sama teo eest, kui selle on toime pannud juriidiline isik, – karistatakse rahatrahviga kuni 10 000 krooni. 3 (3) Käesolevas paragrahvis sätestatud väärtegudele kohaldatakse karistusseadustiku (RT",
-      "estleg:semanticallySimilarTo": [
+      "estleg:summary": "1 (1) Riigivapi kasutamise korra rikkumise eest –karistatakse rahatrahviga kuni 100 trahviühikut. Riigivapi kasutamise korra rikkumise eest –karistatakse rahatrahviga kuni 100 trahviühikut. 2 (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 640 eurot. RT I 2010 22 108 13310847 2011-01-01 Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 640 eurot. 3 (3) Kehtetu - RT I 2014-07-12 1 112072014001 2015-01-01 Kehte",
+      "estleg:legalText": "(1) Riigivapi kasutamise korra rikkumise eest –karistatakse rahatrahviga kuni 100 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 640 eurot. (3) Kehtetu - (4) Käesolevas paragrahvis sätestatud väärtegude kohtuväline menetleja on politseiasutus.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RVaS_default"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:SOS_Par_47",
-          "estleg:similarityScore": {
-            "@value": "0.524",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
+          "@id": "estleg:RVaS_Par_22_Lg_1"
         },
         {
-          "@id": "estleg:TTOS_Par_27",
-          "estleg:similarityScore": {
-            "@value": "0.524",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
+          "@id": "estleg:RVaS_Par_22_Lg_2"
         },
         {
-          "@id": "estleg:TaimKS_Par_100",
-          "estleg:similarityScore": {
-            "@value": "0.524",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
+          "@id": "estleg:RVaS_Par_22_Lg_3"
         },
         {
-          "@id": "estleg:TurS_Par_31_32",
-          "estleg:similarityScore": {
-            "@value": "0.55",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:VKVS_Par_20",
-          "estleg:similarityScore": {
-            "@value": "0.55",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
+          "@id": "estleg:RVaS_Par_22_Lg_4"
         }
+      ],
+      "estleg:targetGroup": [
+        "citizen"
       ],
       "estleg:hasSanction": [
         {
           "@id": "estleg:Sanction_RVaS_Par_22_fine"
+        },
+        {
+          "@id": "estleg:Sanction_RVaS_Par_22_fine_2"
         }
       ],
       "estleg:enforcedAtLevel": "state",
-      "estleg:targetGroup": [
-        "citizen"
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Sdaseadus_Par_36_1",
+          "estleg:similarityScore": {
+            "@value": "0.647",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:TaimKS_Par_100_2",
+          "estleg:similarityScore": {
+            "@value": "0.632",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:VEE_Par_257",
+          "estleg:similarityScore": {
+            "@value": "0.6",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:VEE_Par_264",
+          "estleg:similarityScore": {
+            "@value": "0.611",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:tubakaseadus_Par_42",
+          "estleg:similarityScore": {
+            "@value": "0.647",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
       ]
+    },
+    {
+      "@id": "estleg:RVaS_Par_22_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Riigivapi kasutamise korra rikkumise eest –karistatakse rahatrahviga kuni 100 trahviühikut.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVaS_Par_22"
+      },
+      "rdfs:label": "§ 22 lg 1"
+    },
+    {
+      "@id": "estleg:RVaS_Par_22_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 640 eurot.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVaS_Par_22"
+      },
+      "rdfs:label": "§ 22 lg 2"
+    },
+    {
+      "@id": "estleg:RVaS_Par_22_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVaS_Par_22"
+      },
+      "rdfs:label": "§ 22 lg 3"
+    },
+    {
+      "@id": "estleg:RVaS_Par_22_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Käesolevas paragrahvis sätestatud väärtegude kohtuväline menetleja on politseiasutus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVaS_Par_22"
+      },
+      "rdfs:label": "§ 22 lg 4"
     },
     {
       "@id": "estleg:RVaS_Par_23",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RVaS"
+        "estleg:LegalProvision_riigivapi_seadus"
       ],
       "estleg:paragrahv": "§ 23.",
       "rdfs:label": "§ 23. Üleminekusätted",
       "estleg:sourceAct": "Riigivapi seadus",
       "estleg:summary": "1 (1) Kasutusel olevad töötõendid võivad sisaldada kujundus- või turvaelemendina suurt riigivappi neile märgitud kasutusaja lõpuni. Kasutusel olevad töötõendid võivad sisaldada kujundus- või turvaelemendina suurt riigivappi neile märgitud kasutusaja lõpuni. 2 (2) Andmed olemasolevate riigivapiga pitsatite kohta kantakse riiklikku registrisse 2003. aasta 1. jaanuariks. Andmed olemasolevate riigivapiga pitsatite kohta kantakse riiklikku registrisse 2003. aasta 1. jaanuariks. 3 (3) Pärast 2003. aas",
+      "estleg:legalText": "(1) Kasutusel olevad töötõendid võivad sisaldada kujundus- või turvaelemendina suurt riigivappi neile märgitud kasutusaja lõpuni. (2) Andmed olemasolevate riigivapiga pitsatite kohta kantakse riiklikku registrisse 2003. aasta 1. jaanuariks. (3) Pärast 2003. aasta 1. jaanuari on registrisse kandmata riigivapiga pitsatite kasutamine keelatud. (4) Riigivapid, mis on kasutusele võetud Eesti Vabariigi seaduse Eesti Vabariigi riigilipu ja riigivapi etalonkujutiste kinnitamise kohta alusel, kehtivad nende kasutusaja lõpuni.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RVaS_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RVaS_Par_23_Lg_1"
+        },
+        {
+          "@id": "estleg:RVaS_Par_23_Lg_2"
+        },
+        {
+          "@id": "estleg:RVaS_Par_23_Lg_3"
+        },
+        {
+          "@id": "estleg:RVaS_Par_23_Lg_4"
+        }
+      ],
       "estleg:targetGroup": [
         "official"
       ]
     },
     {
-      "@id": "estleg:RVaS_Par_2425",
+      "@id": "estleg:RVaS_Par_23_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kasutusel olevad töötõendid võivad sisaldada kujundus- või turvaelemendina suurt riigivappi neile märgitud kasutusaja lõpuni.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVaS_Par_23"
+      },
+      "rdfs:label": "§ 23 lg 1"
+    },
+    {
+      "@id": "estleg:RVaS_Par_23_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Andmed olemasolevate riigivapiga pitsatite kohta kantakse riiklikku registrisse 2003. aasta 1. jaanuariks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVaS_Par_23"
+      },
+      "rdfs:label": "§ 23 lg 2"
+    },
+    {
+      "@id": "estleg:RVaS_Par_23_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Pärast 2003. aasta 1. jaanuari on registrisse kandmata riigivapiga pitsatite kasutamine keelatud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVaS_Par_23"
+      },
+      "rdfs:label": "§ 23 lg 3"
+    },
+    {
+      "@id": "estleg:RVaS_Par_23_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Riigivapid, mis on kasutusele võetud Eesti Vabariigi seaduse Eesti Vabariigi riigilipu ja riigivapi etalonkujutiste kinnitamise kohta alusel, kehtivad nende kasutusaja lõpuni.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVaS_Par_23"
+      },
+      "rdfs:label": "§ 23 lg 4"
+    },
+    {
+      "@id": "estleg:RVaS_Par_24",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RVaS"
+        "estleg:LegalProvision_riigivapi_seadus"
       ],
-      "estleg:paragrahv": "§ 24-25.",
-      "rdfs:label": "§ 24-25.",
+      "estleg:paragrahv": "§ 24.",
+      "rdfs:label": "§ 24.",
       "estleg:sourceAct": "Riigivapi seadus",
-      "estleg:summary": "[Käesolevast tekstist välja jäetud]"
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RVaS_default"
+      },
+      "estleg:summary": "§ 24."
+    },
+    {
+      "@id": "estleg:RVaS_Par_25",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_riigivapi_seadus"
+      ],
+      "estleg:paragrahv": "§ 25.",
+      "rdfs:label": "§ 25. [[Käesolevast tekstist välja jäetud.]]",
+      "estleg:sourceAct": "Riigivapi seadus",
+      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RVaS_default"
+      }
     },
     {
       "@id": "estleg:RVaS_Par_26",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RVaS"
+        "estleg:LegalProvision_riigivapi_seadus"
       ],
       "estleg:paragrahv": "§ 26.",
       "rdfs:label": "§ 26. Seaduse rakendamine",
       "estleg:sourceAct": "Riigivapi seadus",
       "estleg:summary": "Vabariigi Valitsusel ja ministritel tuleb oma kehtivad õigusaktid viia käesoleva seadusega kooskõlla seaduse jõustumise tähtajaks. Vabariigi Valitsusel ja ministritel tuleb oma kehtivad õigusaktid viia käesoleva seadusega kooskõlla seaduse jõustumise tähtajaks.",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
+      "estleg:legalText": "Vabariigi Valitsusel ja ministritel tuleb oma kehtivad õigusaktid viia käesoleva seadusega kooskõlla seaduse jõustumise tähtajaks.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RVaS_default"
       },
-      "estleg:dutyHolder": "Valitsusel ja ministritel",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RVaS_Par_26_Lg_Unknown_1"
+        }
+      ],
       "estleg:targetGroup": [
         "public_body"
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
+    },
+    {
+      "@id": "estleg:RVaS_Par_26_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Vabariigi Valitsusel ja ministritel tuleb oma kehtivad õigusaktid viia käesoleva seadusega kooskõlla seaduse jõustumise tähtajaks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVaS_Par_26"
+      }
     },
     {
       "@id": "estleg:RVaS_Par_27",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RVaS"
+        "estleg:LegalProvision_riigivapi_seadus"
       ],
       "estleg:paragrahv": "§ 27.",
       "rdfs:label": "§ 27. Seaduse jõustumine",
       "estleg:sourceAct": "Riigivapi seadus",
-      "estleg:summary": "Käesolev seadus jõustub 2002. aasta 1. jaanuaril. <table border=\"0\" cellpadding=\"0\" class=\"MsoNormalTable\" style=\"width: 100%\" width=\"100%\"> <tbody><tr> <td style=\"padding-top: 0.75pt; padding-bottom: 0.75pt; width: 99.34%; padding-left: 0.75pt; padding-right: 0.75pt\" valign=\"top\" width=\"99%\"> <p align=\"right\" class=\"MsoNormal\"> <font face=\"Arial\" size=\"0\" style=\"font-size:8px\"><span> </span></font>Lisa 1<br/>riigivapi seaduse juurde<br/><font face=\"Arial\" size=\"0\" style=\"font-size:8px\"><span/><"
+      "estleg:summary": "Käesolev seadus jõustub 2002. aasta 1. jaanuaril. <table border=\"0\" cellpadding=\"0\" width=\"100%\"> <tbody><tr> <td valign=\"top\" width=\"60%\"> <p> </p> </td> <td valign=\"top\" width=\"39%\"> <p align=\"center\"> Lisa 1<br/>riigivapi seaduse juurde<br/>[<a href=\"./882755\">RT I 2005, 20, 126</a> - jõust. 01.01.2006] </p> </td> </tr> </tbody></table> <p align=\"center\"> </p> <p><b>Suur riigivapp</b></p> <p>Sinine toon rahvusvahelise PANTONE värvitabeli järgi on 285 C</p> <table border=\"0\" cellpadding=\"0\" wi",
+      "estleg:legalText": "Käesolev seadus jõustub 2002. aasta 1. jaanuaril.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RVaS_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RVaS_Par_27_Lg_Unknown_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:RVaS_Par_27_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Käesolev seadus jõustub 2002. aasta 1. jaanuaril.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVaS_Par_27"
+      }
     }
   ]
 }

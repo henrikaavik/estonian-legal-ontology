@@ -25,8 +25,8 @@ reference resolution at scale — that is the multi-hour follow-up run. Per the 
     deterministic, guaranteed well-formed output;
   * a ``--scrape`` mode that fetches the live ``/seisukohad-ja-algatused/seisukohad``
     listing for the ``--limit`` most-recent opinions and extracts law references from each
-    opinion *title* (Estonian titles cite laws by genitive name, e.g. "Karistusseadustiku §
-    381¹ …" → Karistusseadustik) — the basis the follow-up extends with PDF-body parsing.
+    opinion title plus usable PDF body text when available (Estonian texts cite laws by
+    genitive name, e.g. "Karistusseadustiku § 381¹ …" → Karistusseadustik).
 
 Either way the output is identical in shape: for each opinion we resolve every named law to
 its real act-level node IRI (the law peep's ``owl:Ontology`` ``@id``, e.g.
@@ -54,20 +54,21 @@ Usage::
 
     python3 scripts/generate_annotations.py --limit 5             # the seed sample
     python3 scripts/generate_annotations.py --seed path/to/seed.json
-    python3 scripts/generate_annotations.py --scrape --limit 5    # title-only live scrape
+    python3 scripts/generate_annotations.py --scrape --limit 5    # live scrape with PDF body text
     python3 scripts/generate_annotations.py --probe-pdfs --pdf-probe-sample-size 10
-    python3 scripts/generate_annotations.py --scrape --limit 0    # (the unbounded full run is the follow-up)
+    python3 scripts/generate_annotations.py --scrape --limit 0    # full live archive
 """
 
 from __future__ import annotations
 
 import argparse
+import hashlib
 import html
 import json
 import re
 import sys
 import time
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from datetime import date, datetime, timezone
 from io import BytesIO
 from pathlib import Path
@@ -133,6 +134,10 @@ _MAP_IRI_RE = re.compile(r"^estleg:[^\s]+_Map(?:_\d{4})?$")
 def _looks_like_pdf_url(url: str) -> bool:
     """Return whether ``url`` points directly at a PDF resource."""
     return url.split("?", 1)[0].lower().endswith(".pdf")
+
+
+def _short_hash(value: str, *, length: int = 8) -> str:
+    return hashlib.sha1(value.encode("utf-8")).hexdigest()[:length]
 
 
 # ---------------------------------------------------------------------------
@@ -347,7 +352,11 @@ def build_law_index(krr_dir: Path = KRR_DIR) -> _LawIndex:
         if target and target not in full_by_iri:
             full_by_iri[target] = abbr
     for iri in set(idx.by_name.values()):
-        idx.abbrev_by_iri[iri] = sanitize_id(full_by_iri.get(iri, "")) or _abbrev_from_iri(iri)
+        known_abbrev = full_by_iri.get(iri)
+        abbrev = sanitize_id(known_abbrev) if known_abbrev else ""
+        if not abbrev or abbrev == "Unknown":
+            abbrev = _abbrev_from_iri(iri)
+        idx.abbrev_by_iri[iri] = abbrev
 
     idx._ordered_names = sorted(idx.by_name, key=len, reverse=True)
     return idx
@@ -431,8 +440,8 @@ _TAG_RE = re.compile(r'<a[^>]+class="tag"[^>]*>(.*?)</a>', re.S)
 def parse_listing_html(html_text: str) -> list[Opinion]:
     """Parse one ``/seisukohad-ja-algatused/seisukohad`` page into :class:`Opinion` records.
 
-    Law references are extracted from each opinion's *title* by the caller (it has the law
-    index); here we just shape (title, url, date, tags). Rows with no usable title are skipped.
+    Law references are extracted after optional PDF-body enrichment by the caller (it has the
+    law index); here we just shape (title, url, date, tags). Rows with no usable title are skipped.
     """
     out: list[Opinion] = []
     for row in _OPINION_ROW_RE.findall(html_text):
@@ -477,7 +486,7 @@ def parse_listing_html(html_text: str) -> list[Opinion]:
                 url=url,
                 date_iso=date_iso,
                 law_names=(),  # filled by the caller via the law index (title scan)
-                summary="",    # body is in the PDF; the follow-up adds PDF text extraction
+                summary="",    # body is filled later from the PDF text layer when usable
                 tags=tags,
             )
         )
@@ -565,6 +574,33 @@ def _fetch_bytes(
     return body
 
 
+def disambiguate_duplicate_opinion_ids(opinions: list[Opinion]) -> list[Opinion]:
+    """Append a stable source hash when the live archive reuses a title/PDF slug."""
+    counts: dict[str, int] = {}
+    for op in opinions:
+        counts[op.opinion_id] = counts.get(op.opinion_id, 0) + 1
+    if not any(count > 1 for count in counts.values()):
+        return opinions
+
+    used: set[str] = set()
+    out: list[Opinion] = []
+    for index, op in enumerate(opinions):
+        opinion_id = op.opinion_id
+        if counts[op.opinion_id] > 1:
+            source_key = op.url or f"{op.date_iso or ''}|{op.title}|{index}"
+            opinion_id = f"{op.opinion_id}_{_short_hash(source_key)}"
+            if opinion_id in used:
+                suffix = 2
+                base = opinion_id
+                while f"{base}_{suffix}" in used:
+                    suffix += 1
+                opinion_id = f"{base}_{suffix}"
+            op = replace(op, opinion_id=opinion_id)
+        used.add(opinion_id)
+        out.append(op)
+    return out
+
+
 def _text_quality_ratio(text: str) -> float:
     visible = re.sub(r"\s+", "", text or "")
     if not visible:
@@ -583,6 +619,11 @@ def pdf_text_is_usable(text: str | None) -> tuple[bool, int, float]:
         length,
         ratio,
     )
+
+
+def _normalise_pdf_text(text: str) -> str:
+    """Collapse PDF text-layer whitespace into a body excerpt suitable for scanning."""
+    return re.sub(r"\s+", " ", text).strip()
 
 
 def extract_pdf_text_layer(pdf_bytes: bytes) -> tuple[str | None, str | None]:
@@ -673,6 +714,55 @@ def write_pdf_probe_report(report: dict, path: Path = PDF_PROBE_REPORT_PATH) -> 
     return path
 
 
+def attach_pdf_text_layers(
+    opinions: list[Opinion],
+    *,
+    fetcher=_fetch_bytes,
+    extractor=extract_pdf_text_layer,
+    cache_dir: Path | None = CACHE_DIR,
+    sleep: float = FETCH_SLEEP_SECONDS,
+) -> tuple[list[Opinion], dict]:
+    """Attach usable PDF text-layer body text to scraped opinions.
+
+    Returns the enriched opinions and lightweight extraction stats for operator output.
+    The original opinion is preserved when the URL is not a PDF, the fetch fails, or the
+    text layer fails quality checks.
+    """
+    enriched: list[Opinion] = []
+    stats = {
+        "pdf_urls": 0,
+        "usable_text_layers": 0,
+        "fetch_failed": 0,
+        "extraction_unavailable": 0,
+        "unusable_or_scanned": 0,
+        "non_pdf_urls": 0,
+    }
+    for op in opinions:
+        if not op.url or not _looks_like_pdf_url(op.url):
+            stats["non_pdf_urls"] += 1
+            enriched.append(op)
+            continue
+        stats["pdf_urls"] += 1
+        pdf_bytes = fetcher(op.url, cache_dir=cache_dir, sleep=sleep)
+        if not pdf_bytes:
+            stats["fetch_failed"] += 1
+            enriched.append(op)
+            continue
+        text, error = extractor(pdf_bytes)
+        if error:
+            stats["extraction_unavailable"] += 1
+            enriched.append(op)
+            continue
+        usable, _length, _ratio = pdf_text_is_usable(text)
+        if not usable:
+            stats["unusable_or_scanned"] += 1
+            enriched.append(op)
+            continue
+        stats["usable_text_layers"] += 1
+        enriched.append(replace(op, summary=_normalise_pdf_text(text or "")))
+    return enriched, stats
+
+
 def scrape_recent_opinions(
     limit: int,
     *,
@@ -680,16 +770,16 @@ def scrape_recent_opinions(
     cache_dir: Path | None = CACHE_DIR,
     sleep: float = FETCH_SLEEP_SECONDS,
 ) -> list[Opinion]:
-    """Fetch the ``limit`` most-recent opinions from the live seisukohad listing.
+    """Fetch live seisukohad listing opinions.
 
     Walks ``?page=0, 1, …`` until ``limit`` opinions are collected (or pages run out). Each
-    page yields ≈20 opinions. ``limit <= 0`` returns ``[]`` without hitting the network.
+    page yields ≈20 opinions. ``limit <= 0`` means unbounded archive mode, guarded by the
+    hard page cap below.
     """
-    if limit <= 0:
-        return []
     collected: list[Opinion] = []
     page = 0
-    while len(collected) < limit and page < 400:  # 400-page hard stop ⇒ ≈8000 opinions
+    target = None if limit <= 0 else limit
+    while (target is None or len(collected) < target) and page < 400:  # ≈8000 opinions max
         url = listing_url if page == 0 else f"{listing_url}?page={page}"
         body = _fetch_url(url, cache_dir=cache_dir, sleep=sleep)
         if not body:
@@ -699,7 +789,8 @@ def scrape_recent_opinions(
             break
         collected.extend(page_opinions)
         page += 1
-    return collected[:limit]
+    selected = collected if target is None else collected[:target]
+    return disambiguate_duplicate_opinion_ids(selected)
 
 
 # ---------------------------------------------------------------------------
@@ -727,7 +818,12 @@ def _xsd_anyuri(value: str) -> dict:
 
 _SENTENCE_BOUNDARY_RE = re.compile(r"[.!?]\s+")
 _TOKEN_RE = re.compile(r"[^\W_]+", re.UNICODE)
-_ESTONIAN_ABBREVIATION_TOKENS = frozenset({"lg", "p", "vt", "nt", "jt", "nn"})
+# Curated from Estonian legal citation/document text; expand when live annotation
+# runs surface another common token that precedes non-sentence ordinal periods.
+_ESTONIAN_ABBREVIATION_TOKENS = frozenset(
+    {"art", "jt", "lg", "lk", "nn", "nr", "nt", "p", "ptk", "vt"}
+)
+_ESTONIAN_ORDINAL_PREFIX_TOKENS = _ESTONIAN_ABBREVIATION_TOKENS | frozenset({"osa"})
 
 
 def _is_false_estonian_abbreviation_boundary(head: str, boundary: int) -> bool:
@@ -747,13 +843,13 @@ def _is_false_estonian_abbreviation_boundary(head: str, boundary: int) -> bool:
     if (
         before.isdigit()
         and len(before_tokens) >= 2
-        and before_tokens[-2].lower() in _ESTONIAN_ABBREVIATION_TOKENS
+        and before_tokens[-2].lower() in _ESTONIAN_ORDINAL_PREFIX_TOKENS
     ):
         return after[:1].islower()
     return False
 
 
-def _late_sentence_boundary(head: str, min_index: float) -> int | None:
+def _late_sentence_boundary(head: str, min_index: int) -> int | None:
     for match in reversed(list(_SENTENCE_BOUNDARY_RE.finditer(head))):
         boundary = match.start()
         if boundary <= min_index:
@@ -768,7 +864,7 @@ def _truncate_to_sentence(text: str, max_chars: int) -> str:
     if len(text) <= max_chars:
         return text.rstrip()
     head = text[:max_chars]
-    last_boundary = _late_sentence_boundary(head, max_chars * 0.7)
+    last_boundary = _late_sentence_boundary(head, int(max_chars * 0.7))
     if last_boundary is not None:
         return head[: last_boundary + 1].rstrip()
     last_space = head.rfind(" ")
@@ -778,9 +874,9 @@ def _truncate_to_sentence(text: str, max_chars: int) -> str:
 def _annotation_text(opinion: Opinion) -> str:
     """Build a substantive ``annotationText`` for the opinion.
 
-    Title + a paragraph of summary when we have one (the seed source); for the scrape
-    source we have title + topic tags only (the PDF body is the follow-up), so we surface
-    those as a short note. Never a 50 KB dump — at most ~2 000 chars.
+    Title + a paragraph of summary when we have one (seed source or scraped PDF text layer);
+    otherwise, scraped topic tags become a short note. Never a 50 KB dump — at most
+    ~2 000 chars.
     """
     parts = [opinion.title.strip()]
     if opinion.summary.strip():
@@ -813,12 +909,17 @@ def build_annotations_for_opinion(opinion: Opinion, law_index: _LawIndex) -> _Op
             else:
                 result.unresolved_names.append(name)
     else:
-        # 2) extract from the title (scrape source)
-        for iri in law_index.find_in_title(opinion.title):
+        # 2) extract from the title plus usable PDF body text (scrape source)
+        scan_text = opinion.title
+        if opinion.summary.strip():
+            scan_text = f"{opinion.title}\n{opinion.summary}"
+        for iri in law_index.find_in_title(scan_text):
             if iri not in iris:
                 iris.append(iri)
         if not iris:
-            result.unresolved_names.append(f"<no law name resolvable from title: {opinion.title!r}>")
+            result.unresolved_names.append(
+                f"<no law name resolvable from title/body: {opinion.title!r}>"
+            )
 
     result.resolved_iris = list(iris)
     if not iris:
@@ -826,8 +927,17 @@ def build_annotations_for_opinion(opinion: Opinion, law_index: _LawIndex) -> _Op
 
     text = _annotation_text(opinion)
     multi = len(iris) > 1
+    abbrevs = {iri: law_index.abbrev(iri) for iri in iris}
+    abbrev_counts: dict[str, int] = {}
+    for abbrev in abbrevs.values():
+        abbrev_counts[abbrev] = abbrev_counts.get(abbrev, 0) + 1
     for iri in iris:
-        suffix = f"_{law_index.abbrev(iri)}" if multi else ""
+        suffix = ""
+        if multi:
+            target_suffix = abbrevs[iri]
+            if abbrev_counts[target_suffix] > 1:
+                target_suffix = f"{target_suffix}_{_short_hash(iri, length=6)}"
+            suffix = f"_{target_suffix}"
         ann_iri = f"estleg:Annotation_OK_{sanitize_id(opinion.opinion_id)}{suffix}"
         node: dict = {
             "@id": ann_iri,
@@ -969,11 +1079,10 @@ def collect_opinions(
     cache_dir: Path | None = CACHE_DIR,
     sleep: float = FETCH_SLEEP_SECONDS,
 ) -> tuple[list[Opinion], str]:
-    """Return (opinions, source_label). ``limit <= 0`` ⇒ no opinions (and no network)."""
-    if limit <= 0:
-        return [], ("oiguskantsler.ee scrape" if scrape else f"seed file {_rel(seed_path)}")
     if scrape:
         return scrape_recent_opinions(limit, cache_dir=cache_dir, sleep=sleep), "oiguskantsler.ee scrape"
+    if limit <= 0:
+        return [], f"seed file {_rel(seed_path)}"
     opinions = load_seed_opinions(seed_path)[:limit]
     return opinions, f"seed file {_rel(seed_path)}"
 
@@ -989,6 +1098,7 @@ def run(
     coverage_path: Path | None = None,
     cache_dir: Path | None = CACHE_DIR,
     sleep: float = FETCH_SLEEP_SECONDS,
+    use_pdf_body: bool = False,
     start_perf: float | None = None,
 ) -> int:
     """Generate the annotations sidecar + coverage report; return a process exit code."""
@@ -1005,6 +1115,17 @@ def run(
         remove_sidecar(out_path)
         _write_coverage([], start_perf=start_perf, source_label=source_label, failures=[], path=coverage_path)
         return 0
+
+    if scrape and use_pdf_body:
+        opinions, pdf_stats = attach_pdf_text_layers(opinions, cache_dir=cache_dir, sleep=sleep)
+        print(
+            "PDF body extraction: "
+            f"{pdf_stats['usable_text_layers']}/{pdf_stats['pdf_urls']} usable text layer(s); "
+            f"{pdf_stats['fetch_failed']} fetch failed, "
+            f"{pdf_stats['extraction_unavailable']} unavailable, "
+            f"{pdf_stats['unusable_or_scanned']} unusable/scanned, "
+            f"{pdf_stats['non_pdf_urls']} non-PDF URL(s)"
+        )
 
     print("=" * 70)
     print(f"Õiguskantsler annotation ingestion — {len(opinions)} opinion(s), source: {source_label}")
@@ -1075,7 +1196,8 @@ def _parse_args(argv: list[str] | None) -> argparse.Namespace:
         default=DEFAULT_LIMIT,
         metavar="N",
         help=f"Process at most N opinions from the active source (default {DEFAULT_LIMIT}). "
-             "0 = none (writes a zeroed coverage report and no sidecar).",
+             "For --scrape, 0 = full archive. For seed mode, 0 = none "
+             "(writes a zeroed coverage report and no sidecar).",
     )
     parser.add_argument(
         "--seed",
@@ -1089,8 +1211,7 @@ def _parse_args(argv: list[str] | None) -> argparse.Namespace:
         "--scrape",
         action="store_true",
         help="Instead of the seed file, scrape the live oiguskantsler.ee seisukohad listing "
-             "for the --limit most-recent opinions (law refs extracted from titles only; the "
-             "full-archive run with PDF-body parsing is the #199 follow-up).",
+             "for the --limit most-recent opinions, or the full archive with --limit 0.",
     )
     parser.add_argument(
         "--probe-pdfs",
@@ -1153,6 +1274,7 @@ def main(argv: list[str] | None = None) -> int:
         allow_partial=args.allow_partial,
         cache_dir=cache_dir,
         sleep=sleep,
+        use_pdf_body=args.scrape,
     )
 
 

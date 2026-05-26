@@ -6,20 +6,31 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
   },
   "@graph": [
     {
       "@id": "estleg:ESMKSPR_Map_2026",
       "@type": [
+        "owl:Ontology",
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "rdfs:label": "Euroopa sotsiaal- ja meditsiiniabi konventsiooni ning selle protokolli ratifitseerimise seadus teemakaardistus",
       "dc:source": "Euroopa sotsiaal- ja meditsiiniabi konventsiooni ning selle protokolli ratifitseerimise seadus",
-      "estleg:temporalStatus": "unknown",
+      "dcterms:title": "Euroopa sotsiaal- ja meditsiiniabi konventsiooni ning selle protokolli ratifitseerimise seadus",
+      "estleg:contentStatus": "structuredBody",
+      "dcterms:source": {
+        "@id": "https://www.riigiteataja.ee/akt/735324.xml"
+      },
+      "owl:sameAs": {
+        "@id": "https://www.riigiteataja.ee/akt/735324.xml"
+      },
+      "estleg:kehtiv": {
+        "@value": "2026-05-24",
+        "@type": "xsd:date"
+      },
       "dcterms:subject": [
         {
           "@id": "http://eurovoc.europa.eu/0411"
@@ -28,12 +39,16 @@
           "@id": "http://eurovoc.europa.eu/3611"
         },
         {
+          "@id": "http://eurovoc.europa.eu/2431"
+        },
+        {
           "@id": "http://eurovoc.europa.eu/2446"
         }
-      ]
+      ],
+      "estleg:temporalStatus": "unknown"
     },
     {
-      "@id": "estleg:LegalProvision_ESMKSPR",
+      "@id": "estleg:LegalProvision_euroopa_sotsiaal_ja_meditsiiniabi_konventsiooni_ning_selle_protokolli_ratifitsee",
       "@type": [
         "owl:Class"
       ],
@@ -43,24 +58,51 @@
       }
     },
     {
+      "@id": "estleg:ESMKSPR_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": "Euroopa sotsiaal- ja meditsiiniabi konventsiooni ning selle protokolli ratifitseerimise seadus teemaskeem",
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_ESMKSPR_default"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Cluster_ESMKSPR_default",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": "§1–4 Lepingu sätted",
+      "skos:prefLabel": "§1–4 Lepingu sätted",
+      "skos:inScheme": {
+        "@id": "estleg:ESMKSPR_TopicScheme"
+      },
+      "estleg:provisionCount": 4
+    },
+    {
       "@id": "estleg:ESMKSPR_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ESMKSPR"
+        "estleg:LegalProvision_euroopa_sotsiaal_ja_meditsiiniabi_konventsiooni_ning_selle_protokolli_ratifitsee"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. Konventsiooni ratifitseerimine",
       "estleg:sourceAct": "Euroopa sotsiaal- ja meditsiiniabi konventsiooni ning selle protokolli ratifitseerimise seadus",
       "estleg:summary": "Ratifitseerida juurdelisatud Euroopa sotsiaal- ja meditsiiniabi konventsioon, mis on sõlmitud 1953. aasta 11. detsembril Pariisis ja millele Eesti Vabariik on alla kirjutanud 1999. aasta 1. detsembril Strasbourg’is. Ratifitseerida juurdelisatud Euroopa sotsiaal- ja meditsiiniabi konventsioon, mis on sõlmitud 1953. aasta 11. detsembril Pariisis ja millele Eesti Vabariik on alla kirjutanud 1999. aasta 1. detsembril Strasbourg’is.",
-      "estleg:semanticallySimilarTo": [
+      "estleg:legalText": "Ratifitseerida juurdelisatud Euroopa sotsiaal- ja meditsiiniabi konventsioon, mis on sõlmitud 1953. aasta 11. detsembril Pariisis ja millele Eesti Vabariik on alla kirjutanud 1999. aasta 1. detsembril Strasbourg’is.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_ESMKSPR_default"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:HSDVUEKR_Par_1",
-          "estleg:similarityScore": {
-            "@value": "0.4",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
+          "@id": "estleg:ESMKSPR_Par_1_Lg_Unknown_1"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:IENKR_Par_1",
           "estleg:similarityScore": {
@@ -78,17 +120,25 @@
           "estleg:similarityStatus": "candidate"
         },
         {
-          "@id": "estleg:PTEKSMPR_Par_1",
+          "@id": "estleg:PVKR_Par_1",
           "estleg:similarityScore": {
-            "@value": "0.44",
+            "@value": "0.455",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
         },
         {
-          "@id": "estleg:PVKR_Par_1",
+          "@id": "estleg:euroopa_sotsiaalkindlustuskoodeksi_ratif_Par_1",
           "estleg:similarityScore": {
             "@value": "0.455",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:euroopa_stabiilsusmehhanismi_asutamislep_Par_1",
+          "estleg:similarityScore": {
+            "@value": "0.444",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
@@ -96,40 +146,37 @@
       ]
     },
     {
+      "@id": "estleg:ESMKSPR_Par_1_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Ratifitseerida juurdelisatud Euroopa sotsiaal- ja meditsiiniabi konventsioon, mis on sõlmitud 1953. aasta 11. detsembril Pariisis ja millele Eesti Vabariik on alla kirjutanud 1999. aasta 1. detsembril Strasbourg’is.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ESMKSPR_Par_1"
+      }
+    },
+    {
       "@id": "estleg:ESMKSPR_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ESMKSPR"
+        "estleg:LegalProvision_euroopa_sotsiaal_ja_meditsiiniabi_konventsiooni_ning_selle_protokolli_ratifitsee"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. Protokolli ratifitseerimine",
       "estleg:sourceAct": "Euroopa sotsiaal- ja meditsiiniabi konventsiooni ning selle protokolli ratifitseerimise seadus",
       "estleg:summary": "Ratifitseerida juurdelisatud Euroopa sotsiaal- ja meditsiiniabi konventsiooni protokoll, mis on sõlmitud 1953. aasta 11. detsembril Pariisis ja millele Eesti Vabariik on alla kirjutanud 1999. aasta 1. detsembril Strasbourg’is. Ratifitseerida juurdelisatud Euroopa sotsiaal- ja meditsiiniabi konventsiooni protokoll, mis on sõlmitud 1953. aasta 11. detsembril Pariisis ja millele Eesti Vabariik on alla kirjutanud 1999. aasta 1. detsembril Strasbourg’is.",
+      "estleg:legalText": "Ratifitseerida juurdelisatud Euroopa sotsiaal- ja meditsiiniabi konventsiooni protokoll, mis on sõlmitud 1953. aasta 11. detsembril Pariisis ja millele Eesti Vabariik on alla kirjutanud 1999. aasta 1. detsembril Strasbourg’is.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_ESMKSPR_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ESMKSPR_Par_2_Lg_Unknown_1"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:IATIKKMPR_Par_1",
-          "estleg:similarityScore": {
-            "@value": "0.381",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:IENKR_Par_1",
-          "estleg:similarityScore": {
-            "@value": "0.409",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:LKSASKEKENKR_Par_1",
-          "estleg:similarityScore": {
-            "@value": "0.381",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
         {
           "@id": "estleg:OTEEKR_Par_1",
           "estleg:similarityScore": {
@@ -145,30 +192,109 @@
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:euroopa_sotsiaalkindlustuskoodeksi_ratif_Par_1",
+          "estleg:similarityScore": {
+            "@value": "0.435",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:euroopa_stabiilsusmehhanismi_asutamislep_Par_1",
+          "estleg:similarityScore": {
+            "@value": "0.421",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:osamaksete_uhtsesse_kriisilahendusfondi__Par_1",
+          "estleg:similarityScore": {
+            "@value": "0.421",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
         }
       ]
+    },
+    {
+      "@id": "estleg:ESMKSPR_Par_2_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Ratifitseerida juurdelisatud Euroopa sotsiaal- ja meditsiiniabi konventsiooni protokoll, mis on sõlmitud 1953. aasta 11. detsembril Pariisis ja millele Eesti Vabariik on alla kirjutanud 1999. aasta 1. detsembril Strasbourg’is.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ESMKSPR_Par_2"
+      }
     },
     {
       "@id": "estleg:ESMKSPR_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ESMKSPR"
+        "estleg:LegalProvision_euroopa_sotsiaal_ja_meditsiiniabi_konventsiooni_ning_selle_protokolli_ratifitsee"
       ],
       "estleg:paragrahv": "§ 3.",
       "rdfs:label": "§ 3. Reservatsioonid",
       "estleg:sourceAct": "Euroopa sotsiaal- ja meditsiiniabi konventsiooni ning selle protokolli ratifitseerimise seadus",
-      "estleg:summary": "Konventsiooni artikli 2 b alusel teeb Eesti Vabariik järgmised reservatsioonid:11)Eesti Vabariik kohaldab artiklites 6 a ja 11 a sätestatud riigis seadusliku elamise suhtes välismaalaste seadust (RT I 1993, 44, 637; 1999, 50, 548; 54, 582; 71, 686; 88, 808; 101, 900; 2000, 25, 148; 33, 197; 40, 254; 2001, 16, 68; RT III 2001, 7, 75; RT I 2001, 58, 352; 2002, 56, 351; 63, 387; 90, 521; 102, 599; 2003, 4, 20; 88, 594; 2004, 2, 2), pagulaste seadust (RT I 1997, 19, 306; 1999, 18, 301; 25, 365; 2001"
+      "estleg:summary": "Konventsiooni artikli 2 b alusel teeb Eesti Vabariik järgmised reservatsioonid:11)Eesti Vabariik kohaldab artiklites 6 a ja 11 a sätestatud riigis seadusliku elamise suhtes välismaalaste seadust (RT I 1993, 44, 637; 1999, 50, 548; 54, 582; 71, 686; 88, 808; 101, 900; 2000, 25, 148; 33, 197; 40, 254; 2001, 16, 68; RT III 2001, 7, 75; RT I 2001, 58, 352; 2002, 56, 351; 63, 387; 90, 521; 102, 599; 2003, 4, 20; 88, 594; 2004, 2, 2), pagulaste seadust (RT I 1997, 19, 306; 1999, 18, 301; 25, 365; 2001",
+      "estleg:legalText": "Konventsiooni artikli 2 b alusel teeb Eesti Vabariik järgmised reservatsioonid: Eesti Vabariik kohaldab artiklites 6 a ja 11 a sätestatud riigis seadusliku elamise suhtes välismaalaste seadust (RT I 1993, 44, 637; 1999, 50, 548; 54, 582; 71, 686; 88, 808; 101, 900; 2000, 25, 148; 33, 197; 40, 254; 2001, 16, 68; RT III 2001, 7, 75; RT I 2001, 58, 352; 2002, 56, 351; 63, 387; 90, 521; 102, 599; 2003, 4, 20; 88, 594; 2004, 2, 2), pagulaste seadust (RT I 1997, 19, 306; 1999, 18, 301; 25, 365; 2001, 16, 68; 2002, 42, 266; 61, 375; 2003, 13, 65) ja Euroopa Liidu kodaniku seadust (RT I 2002, 102, 599), mille kohaselt võib Eestis seaduslik elamine sõltuda püsiva legaalse sissetuleku olemasolust ning seaduslikku elamist tõendava dokumendi õigeaegselt pikendamiseks esitamisest; Eesti Vabariik kannab artiklis 8 a nimetatud kulutusi, lähtudes välismaalaste seadusest.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_ESMKSPR_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ESMKSPR_Par_3_Lg_Unknown_1"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen"
+      ]
+    },
+    {
+      "@id": "estleg:ESMKSPR_Par_3_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Konventsiooni artikli 2 b alusel teeb Eesti Vabariik järgmised reservatsioonid: Eesti Vabariik kohaldab artiklites 6 a ja 11 a sätestatud riigis seadusliku elamise suhtes välismaalaste seadust (RT I 1993, 44, 637; 1999, 50, 548; 54, 582; 71, 686; 88, 808; 101, 900; 2000, 25, 148; 33, 197; 40, 254; 2001, 16, 68; RT III 2001, 7, 75; RT I 2001, 58, 352; 2002, 56, 351; 63, 387; 90, 521; 102, 599; 2003, 4, 20; 88, 594; 2004, 2, 2), pagulaste seadust (RT I 1997, 19, 306; 1999, 18, 301; 25, 365; 2001, 16, 68; 2002, 42, 266; 61, 375; 2003, 13, 65) ja Euroopa Liidu kodaniku seadust (RT I 2002, 102, 599), mille kohaselt võib Eestis seaduslik elamine sõltuda püsiva legaalse sissetuleku olemasolust ning seaduslikku elamist tõendava dokumendi õigeaegselt pikendamiseks esitamisest; Eesti Vabariik kannab artiklis 8 a nimetatud kulutusi, lähtudes välismaalaste seadusest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ESMKSPR_Par_3"
+      }
     },
     {
       "@id": "estleg:ESMKSPR_Par_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ESMKSPR"
+        "estleg:LegalProvision_euroopa_sotsiaal_ja_meditsiiniabi_konventsiooni_ning_selle_protokolli_ratifitsee"
       ],
       "estleg:paragrahv": "§ 4.",
       "rdfs:label": "§ 4. Deklaratsioonid",
       "estleg:sourceAct": "Euroopa sotsiaal- ja meditsiiniabi konventsiooni ning selle protokolli ratifitseerimise seadus",
       "estleg:summary": "Konventsiooni artikli 2 a ii alusel deklareerib Eesti Vabariik, et mõiste «kodanik» käesoleva konventsiooni tähenduses hõlmab Eesti kodanikke ja mõiste «territoorium» hõlmab Eesti Vabariigi jurisdiktsiooni all olevat territooriumi.<table summary=\"allkiri\" width=\"100%\"> <tbody><tr valign=\"top\"> <td width=\"60%\"> </td> </tr> </tbody></table><table summary=\"allkiri\" width=\"100%\"> <tbody><tr valign=\"top\"> <td width=\"60%\"> </td> <td width=\"39%\"> <b><font size=\"-1\" style=\"font-size:-1px\">Riigikogu esim",
+      "estleg:legalText": "Konventsiooni artikli 2 a ii alusel deklareerib Eesti Vabariik, et mõiste «kodanik» käesoleva konventsiooni tähenduses hõlmab Eesti kodanikke ja mõiste «territoorium» hõlmab Eesti Vabariigi jurisdiktsiooni all olevat territooriumi.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_ESMKSPR_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ESMKSPR_Par_4_Lg_Unknown_1"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "public_body"
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_riigikogu"
+        }
+      ],
+      "estleg:competenceType": "general",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:KMTLMKSPR_Par_3",
@@ -210,17 +336,19 @@
           },
           "estleg:similarityStatus": "candidate"
         }
+      ]
+    },
+    {
+      "@id": "estleg:ESMKSPR_Par_4_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:targetGroup": [
-        "citizen",
-        "public_body"
-      ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_riigikogu"
-        }
-      ],
-      "estleg:competenceType": "general"
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Konventsiooni artikli 2 a ii alusel deklareerib Eesti Vabariik, et mõiste «kodanik» käesoleva konventsiooni tähenduses hõlmab Eesti kodanikke ja mõiste «territoorium» hõlmab Eesti Vabariigi jurisdiktsiooni all olevat territooriumi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ESMKSPR_Par_4"
+      }
     }
   ]
 }

@@ -1,20 +1,16 @@
 # Validation Report
 
-**Last updated:** 2026-05-24
+**Last updated:** 2026-05-26
 **Primary validator:** `scripts/validate_all.py`
 
 ## Summary
 
 | Metric | Count |
 |--------|-------|
-| Files validated | 21,932 |
+| Files validated | 23,069 |
 | Errors | 0 |
-| Warnings | 1 |
+| Warnings | 0 |
 | Result | **PASSED** |
-
-The remaining warning is the expected absence of
-`krr_outputs/generation_manifest_laws.json` in this checkout; it does not
-block the validation gate.
 
 ## Checks Performed
 
@@ -38,14 +34,16 @@ block the validation gate.
 
 | Category | Files | Indexed records |
 |----------|-------|-----------------|
-| Enacted law peep files | 637 | 608 law index entries / 637 indexed files |
+| Enacted law peep files | 1,190 | 1,145 law index entries / 1,190 indexed files |
 | State regulations | 3,812 | 3,812 in current regulation index |
 | KOV regulations | 11,059 | 11,059 |
 | Draft legislation | 3 phase files | 22,832 drafts |
 | Supreme Court decisions | 34 | 12,137 decisions |
 | EU legislation | 3 | 33,242 acts |
 | EU court decisions | 5 | 22,290 decisions |
-| Institutions | 126 | institution files |
+| ProvisionVersion sidecars | 742 | full-history sidecars generated after the Phase 3.3 live run |
+| Õiguskantsler annotation sidecars | 1 | 13,402 annotation nodes from 4,052 scraped opinions |
+| Institutions | 113 | institution files |
 | Controlled vocabulary | 1 | 134 vocabulary and fallback nodes |
 
 ## SHACL Bucket Checks
@@ -54,10 +52,12 @@ block the validation gate.
 |--------|-------|--------|
 | `riigikohus` | 35 | PASS |
 | `drafts` | 4 | PASS |
-| `eurlex` | 4 | PASS |
+| `eurlex` | 163 | PASS |
 | `curia` | 6 | PASS |
-| `laws` | 4,450 | PASS |
-| `kov` | 11,062 | PASS |
+| `laws` | 5,003 | PASS |
+| `kov` | 11,063 | PASS |
+| `sidecars` | 6,796 | PASS |
+| `--all` | 23,064 | PASS (`7,117,928` triples) |
 
 Every SHACL bucket includes the controlled vocabulary/fallback-node graph so cross-file references and shared classification nodes are validated consistently.
 
@@ -67,11 +67,36 @@ Every SHACL bucket includes the controlled vocabulary/fallback-node graph so cro
 
 | Type | Files | Provisions analyzed |
 |------|-------|---------------------|
-| Laws | 633 | 23,036 |
-| State regulations | 3,812 | 48,385 |
+| Laws | 1,186 | 36,165 |
+| State regulations | 3,812 | 48,362 |
 | KOV regulations | 0 | 0 |
 
-Similarity output now contains 71,421 analyzed provisions, 101,506 pairs, and updates 3,475 JSON-LD files.
+Similarity output now contains 84,527 analyzed provisions, 108,684 pairs, and updates 3,659 JSON-LD files.
+
+## Õiguskantsler Annotation Ingestion
+
+Phase 3.4 used `scripts/generate_annotations.py --probe-pdfs --pdf-probe-sample-size 10`
+as the go/no-go probe before the full live scrape. The probe found usable PDF
+text layers in 10 of 10 sampled opinions (`usable_text_layer_ratio = 1.0`,
+observed valid-character ratios `0.955`–`0.975`), so OCR was not introduced.
+
+The full cached scrape then processed the archive with PDF body text enabled:
+
+| Metric | Count |
+|--------|-------|
+| Opinions processed | 4,052 |
+| PDF text layers accepted | 4,045 |
+| PDF fetch failures | 1 |
+| Unusable/scanned PDFs | 6 |
+| Annotation nodes emitted | 13,402 |
+| Opinions with output | 3,727 |
+| Unresolved law references surfaced in coverage report | 325 |
+
+The retained `MIN_PDF_TEXT_VALID_CHAR_RATIO = 0.30` remains conservative for
+this corpus: clean sampled text was far above the threshold, and the full run
+identified only six unusable/scanned PDFs. The coverage report at
+`krr_outputs/reports/kov/extract_annotations_coverage.json` records the low
+recall/unresolved-reference surface for follow-up triage.
 
 ## Seadusloome Zero-Warning Gate
 
@@ -102,9 +127,9 @@ Similarity output now contains 71,421 analyzed provisions, 101,506 pairs, and up
 - **CI wiring:** the `Seadusloome zero-warning gate` job in
   `.github/workflows/validate.yml` runs on every pull request and `main`
   push. The job uploads the rdflib turtle SHACL report as
-  `seadusloome-shacl-report` on failure for offline triage. The 2026-05-24
-  local benchmark loaded 21,290 JSON-LD inputs / 4,845,510 data triples and
-  completed in 5:17 wall time; if corpus growth makes the gate too slow for
+  `seadusloome-shacl-report` on failure for offline triage. The 2026-05-26
+  local benchmark loaded 21,874 JSON-LD inputs / 7,127,720 data triples and
+  completed in 8:38 wall time (`real 518.46`); if corpus growth makes the gate too slow for
   per-PR execution, split the gate by bucket or demote it to release-only via
   `.github/workflows/validate.yml`.
 

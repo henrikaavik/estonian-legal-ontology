@@ -97,6 +97,44 @@ COMBINED_ALLOWED_JSONLD = (
     "tsus_osa7_138_169_owl.jsonld",
 )
 COMBINED_OUTPUT_NAME = "combined_ontology.jsonld"
+INDEX_ALLOWED_JSONLD = (
+    "karistusseadustik_eriosa_owl.jsonld",
+    "tsus_osa7_138_169_owl.jsonld",
+)
+INDEX_EXCLUDED_PEEPS = {
+    "fuusilise_isiku_maksejouetuse_peep.json",
+    "issuers_kov_peep.json",
+    "kohaliku_omavalitsuse_peep.json",
+    "municipalities_peep.json",
+}
+DEFAULT_REGISTRY_EXCEPTIONS = {
+    "kriminaalmenetluse_peep.json": {
+        "category": "procedure_map",
+        "reason": "procedure-stage concept map without provision nodes",
+    },
+    "tsiviilseadustik_osa1_peep.json": {
+        "category": "concept_map",
+        "reason": "legacy concept map without provision nodes",
+    },
+    "tsiviilseadustik_osa5_peep.json": {
+        "category": "concept_map",
+        "reason": "legacy concept map without provision nodes",
+    },
+    "tsiviilseadustik_osa6_peep.json": {
+        "category": "concept_map",
+        "reason": "legacy concept-only sidecar without act node",
+    },
+    "tsiviilseadustik_osa7_peep.json": {
+        "category": "concept_map",
+        "reason": "legacy concept-only sidecar without act node",
+    },
+}
+OPERATIONAL_STATE_FILES = {
+    ".regen_state.json",
+    "generation_manifest_laws.json",
+    "latest_pipeline_manifest.json",
+}
+
 
 # Multi-valued properties that should always be arrays
 MULTI_VALUED_PROPS = {
@@ -472,6 +510,8 @@ def fix_intra_file_duplicates():
     print("\n=== Fixing intra-file duplicate @id values ===")
 
     for filepath in sorted(KRR_DIR.glob("*.json")):
+        if filepath.name in OPERATIONAL_STATE_FILES:
+            continue
         if filepath.name.endswith("_summary.json"):
             continue
         try:
@@ -489,6 +529,8 @@ def process_all_json_files():
     print("\n=== Processing all JSON/JSONLD files ===")
 
     for filepath in sorted(KRR_DIR.glob("*.json")):
+        if filepath.name in OPERATIONAL_STATE_FILES:
+            continue
         if filepath.name.endswith("_summary.json"):
             # Still need namespace fix in summary files
             try:
@@ -510,6 +552,8 @@ def process_all_json_files():
 
     # Also process .jsonld files
     for filepath in sorted(KRR_DIR.glob("*.jsonld")):
+        if filepath.name in OPERATIONAL_STATE_FILES:
+            continue
         try:
             doc = process_json_file(filepath)
             save_json(filepath, doc)
@@ -548,7 +592,20 @@ def generate_index():
     print("\n=== Generating master registry ===")
 
     laws = {}
+    index_path = KRR_DIR / "INDEX.json"
+    registry_exceptions = dict(DEFAULT_REGISTRY_EXCEPTIONS)
+    if index_path.exists():
+        try:
+            with open(index_path, "r", encoding="utf-8") as f:
+                existing_index = json.load(f)
+            if isinstance(existing_index, dict) and isinstance(existing_index.get("registry_exceptions"), dict):
+                registry_exceptions.update(existing_index["registry_exceptions"])
+        except (json.JSONDecodeError, OSError, UnicodeDecodeError):
+            pass
+
     for filepath in sorted(KRR_DIR.glob("*_peep.json")):
+        if filepath.name in INDEX_EXCLUDED_PEEPS:
+            continue
         name = filepath.stem.replace("_peep", "")
 
         # Group by base law name (remove _osa* suffix)
@@ -572,8 +629,13 @@ def generate_index():
         if part_suffix:
             laws[base_name]["parts"].append(part_suffix.replace("_osa", ""))
 
-    # Also add .jsonld files
-    for filepath in sorted(KRR_DIR.glob("*.jsonld")):
+    # Also add standalone OWL JSON-LD files that are law-shaped index inputs.
+    # Derived combined/vocabulary artifacts are validated separately and must
+    # not be listed as enacted laws.
+    for name in INDEX_ALLOWED_JSONLD:
+        filepath = KRR_DIR / name
+        if not filepath.exists():
+            continue
         name = filepath.stem
         if name not in laws:
             laws[name] = {"base_name": name, "files": [], "parts": []}
@@ -586,8 +648,10 @@ def generate_index():
         "generated": _dt.date.today().isoformat(),
         "total_files": sum(len(law["files"]) for law in laws.values()),
         "total_laws": len(laws),
-        "laws": []
+        "laws": [],
     }
+    if registry_exceptions:
+        index["registry_exceptions"] = registry_exceptions
 
     for base_name, info in sorted(laws.items()):
         entry = {
@@ -598,7 +662,6 @@ def generate_index():
             entry["parts_mapped"] = sorted(info["parts"])
         index["laws"].append(entry)
 
-    index_path = KRR_DIR / "INDEX.json"
     save_json(index_path, index)
     print(f"  Generated {index_path.name} with {len(laws)} laws")
 

@@ -6,28 +6,31 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
   },
   "@graph": [
     {
       "@id": "estleg:LSTKRKU_Map_2026",
       "@type": [
+        "owl:Ontology",
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "rdfs:label": "Lapseröövi suhtes tsiviilõiguse kohaldamise rahvusvahelise konventsiooniga ühinemise seadus teemakaardistus",
       "dc:source": "Lapseröövi suhtes tsiviilõiguse kohaldamise rahvusvahelise konventsiooniga ühinemise seadus",
-      "estleg:affectedBy": [
-        {
-          "@id": "estleg:Draft_JDM24_0525"
-        },
-        {
-          "@id": "estleg:Draft_JDM25_0039"
-        }
-      ],
-      "estleg:temporalStatus": "unknown",
+      "dcterms:title": "Lapseröövi suhtes tsiviilõiguse kohaldamise rahvusvahelise konventsiooniga ühinemise seadus",
+      "estleg:contentStatus": "structuredBody",
+      "dcterms:source": {
+        "@id": "https://www.riigiteataja.ee/akt/26933.xml"
+      },
+      "owl:sameAs": {
+        "@id": "https://www.riigiteataja.ee/akt/26933.xml"
+      },
+      "estleg:kehtiv": {
+        "@value": "2026-05-24",
+        "@type": "xsd:date"
+      },
       "dcterms:subject": [
         {
           "@id": "http://eurovoc.europa.eu/0411"
@@ -35,10 +38,11 @@
         {
           "@id": "http://eurovoc.europa.eu/2431"
         }
-      ]
+      ],
+      "estleg:temporalStatus": "unknown"
     },
     {
-      "@id": "estleg:LegalProvision_LSTKRKU",
+      "@id": "estleg:LegalProvision_lapseroovi_suhtes_tsiviiloiguse_kohaldamise_rahvusvahelise_konventsiooniga_uhine",
       "@type": [
         "owl:Class"
       ],
@@ -48,15 +52,50 @@
       }
     },
     {
+      "@id": "estleg:LSTKRKU_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": "Lapseröövi suhtes tsiviilõiguse kohaldamise rahvusvahelise konventsiooniga ühinemise seadus teemaskeem",
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_LSTKRKU_default"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Cluster_LSTKRKU_default",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": "§1–2 Lepingu sätted",
+      "skos:prefLabel": "§1–2 Lepingu sätted",
+      "skos:inScheme": {
+        "@id": "estleg:LSTKRKU_TopicScheme"
+      },
+      "estleg:provisionCount": 2
+    },
+    {
       "@id": "estleg:LSTKRKU_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_LSTKRKU"
+        "estleg:LegalProvision_lapseroovi_suhtes_tsiviiloiguse_kohaldamise_rahvusvahelise_konventsiooniga_uhine"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1.",
+      "rdfs:label": "§ 1. [Ühineda juurdelisatud lapseröövi suhtes tsiviilõiguse kohaldamise rahvusvahelise...]",
       "estleg:sourceAct": "Lapseröövi suhtes tsiviilõiguse kohaldamise rahvusvahelise konventsiooniga ühinemise seadus",
       "estleg:summary": "Ühineda juurdelisatud lapseröövi suhtes tsiviilõiguse kohaldamise rahvusvahelise konventsiooniga./78339, mis on koostatud Haagis 1980. aasta 25. oktoobril. Ühineda juurdelisatud , mis on koostatud Haagis 1980. aasta 25. oktoobril.",
+      "estleg:legalText": "Ühineda juurdelisatud , mis on koostatud Haagis 1980. aasta 25. oktoobril.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_LSTKRKU_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:LSTKRKU_Par_1_Lg_Unknown_1"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:RORUKSPHPLNN_Par_1",
@@ -83,17 +122,17 @@
           "estleg:similarityStatus": "candidate"
         },
         {
-          "@id": "estleg:UKOTTKU_Par_1",
+          "@id": "estleg:VADLNTKU_Par_1",
           "estleg:similarityScore": {
-            "@value": "0.353",
+            "@value": "0.412",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
         },
         {
-          "@id": "estleg:VADLNTKU_Par_1",
+          "@id": "estleg:rahvusvahelise_kohtumenetluse_lihtsustam_Par_1",
           "estleg:similarityScore": {
-            "@value": "0.412",
+            "@value": "0.467",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
@@ -101,14 +140,29 @@
       ]
     },
     {
+      "@id": "estleg:LSTKRKU_Par_1_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Ühineda juurdelisatud , mis on koostatud Haagis 1980. aasta 25. oktoobril.",
+      "estleg:parentProvision": {
+        "@id": "estleg:LSTKRKU_Par_1"
+      }
+    },
+    {
       "@id": "estleg:LSTKRKU_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_LSTKRKU"
+        "estleg:LegalProvision_lapseroovi_suhtes_tsiviiloiguse_kohaldamise_rahvusvahelise_konventsiooniga_uhine"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. Ühinemisel teha järgmised deklaratsioonid ja reservatsioonid:",
       "estleg:sourceAct": "Lapseröövi suhtes tsiviilõiguse kohaldamise rahvusvahelise konventsiooniga ühinemise seadus",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_LSTKRKU_default"
+      },
       "estleg:summary": "§ 2. Ühinemisel teha järgmised deklaratsioonid ja reservatsioonid:",
       "estleg:semanticallySimilarTo": [
         {

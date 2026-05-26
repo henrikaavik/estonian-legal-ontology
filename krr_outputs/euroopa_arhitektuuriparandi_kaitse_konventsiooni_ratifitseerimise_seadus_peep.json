@@ -6,31 +6,46 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
   },
   "@graph": [
     {
       "@id": "estleg:EAKKR_Map_2026",
       "@type": [
+        "owl:Ontology",
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "rdfs:label": "Euroopa arhitektuuripärandi kaitse konventsiooni ratifitseerimise seadus teemakaardistus",
       "dc:source": "Euroopa arhitektuuripärandi kaitse konventsiooni ratifitseerimise seadus",
-      "estleg:temporalStatus": "unknown",
+      "dcterms:title": "Euroopa arhitektuuripärandi kaitse konventsiooni ratifitseerimise seadus",
+      "estleg:contentStatus": "structuredBody",
+      "dcterms:source": {
+        "@id": "https://www.riigiteataja.ee/akt/25176.xml"
+      },
+      "owl:sameAs": {
+        "@id": "https://www.riigiteataja.ee/akt/25176.xml"
+      },
+      "estleg:kehtiv": {
+        "@value": "2026-05-24",
+        "@type": "xsd:date"
+      },
       "dcterms:subject": [
         {
           "@id": "http://eurovoc.europa.eu/0411"
         },
         {
+          "@id": "http://eurovoc.europa.eu/2431"
+        },
+        {
           "@id": "http://eurovoc.europa.eu/2446"
         }
-      ]
+      ],
+      "estleg:temporalStatus": "unknown"
     },
     {
-      "@id": "estleg:LegalProvision_EAKKR",
+      "@id": "estleg:LegalProvision_euroopa_arhitektuuriparandi_kaitse_konventsiooni_ratifitseerimise_seadus",
       "@type": [
         "owl:Class"
       ],
@@ -40,15 +55,60 @@
       }
     },
     {
+      "@id": "estleg:EAKKR_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": "Euroopa arhitektuuripärandi kaitse konventsiooni ratifitseerimise seadus teemaskeem",
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_EAKKR_default"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Cluster_EAKKR_default",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": "§1–1 Lepingu sätted",
+      "skos:prefLabel": "§1–1 Lepingu sätted",
+      "skos:inScheme": {
+        "@id": "estleg:EAKKR_TopicScheme"
+      },
+      "estleg:provisionCount": 1
+    },
+    {
       "@id": "estleg:EAKKR_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_EAKKR"
+        "estleg:LegalProvision_euroopa_arhitektuuriparandi_kaitse_konventsiooni_ratifitseerimise_seadus"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1.",
+      "rdfs:label": "§ 1. [Ratifitseerida juurdelisatud Euroopa arhitektuuripärandi kaitse konventsioon./13...]",
       "estleg:sourceAct": "Euroopa arhitektuuripärandi kaitse konventsiooni ratifitseerimise seadus",
       "estleg:summary": "Ratifitseerida juurdelisatud Euroopa arhitektuuripärandi kaitse konventsioon./13089076, mis on sõlmitud 1985. aasta 3. oktoobril Granadas ja alla kirjutatud Eesti Vabariigi poolt 1996. aasta 3. mail Strasbourg'is .<table border=\"0\" width=\"85%\"> <tbody><tr> <td width=\"50%\"> </td> <td width=\"50%\"> <div align=\"right\"> <strong>Riigikogu esimees Toomas SAVI</strong> </div> </td> </tr> </tbody></table><p> Õiend<a name=\"o\"> </a><br/>Lisatud andmed väljakuulutamise kohta. </p> Ratifitseerida juurdelisat",
+      "estleg:legalText": "Ratifitseerida juurdelisatud , mis on sõlmitud 1985. aasta 3. oktoobril Granadas ja alla kirjutatud Eesti Vabariigi poolt 1996. aasta 3. mail Strasbourg'is .",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_EAKKR_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:EAKKR_Par_1_Lg_Unknown_1"
+        }
+      ],
+      "estleg:targetGroup": [
+        "public_body",
+        "official"
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_riigikogu"
+        }
+      ],
+      "estleg:competenceType": "general",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:PEVAKVKTEKSP_Par_4",
@@ -83,24 +143,26 @@
           "estleg:similarityStatus": "candidate"
         },
         {
-          "@id": "estleg:UPKLR_5_Par_4",
+          "@id": "estleg:VUTKU_Par_2",
           "estleg:similarityScore": {
-            "@value": "0.415",
+            "@value": "0.372",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
         }
+      ]
+    },
+    {
+      "@id": "estleg:EAKKR_Par_1_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:targetGroup": [
-        "public_body",
-        "official"
-      ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_riigikogu"
-        }
-      ],
-      "estleg:competenceType": "general"
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Ratifitseerida juurdelisatud , mis on sõlmitud 1985. aasta 3. oktoobril Granadas ja alla kirjutatud Eesti Vabariigi poolt 1996. aasta 3. mail Strasbourg'is .",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAKKR_Par_1"
+      }
     }
   ]
 }

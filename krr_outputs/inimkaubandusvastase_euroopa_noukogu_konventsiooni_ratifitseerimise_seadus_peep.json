@@ -6,28 +6,43 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
   },
   "@graph": [
     {
       "@id": "estleg:IENKR_Map_2026",
       "@type": [
+        "owl:Ontology",
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "rdfs:label": "Inimkaubandusvastase Euroopa Nõukogu konventsiooni ratifitseerimise seadus teemakaardistus",
       "dc:source": "Inimkaubandusvastase Euroopa Nõukogu konventsiooni ratifitseerimise seadus",
-      "estleg:temporalStatus": "unknown",
+      "dcterms:title": "Inimkaubandusvastase Euroopa Nõukogu konventsiooni ratifitseerimise seadus",
+      "estleg:contentStatus": "structuredBody",
+      "dcterms:source": {
+        "@id": "https://www.riigiteataja.ee/akt/223122014001.xml"
+      },
+      "owl:sameAs": {
+        "@id": "https://www.riigiteataja.ee/akt/223122014001.xml"
+      },
+      "estleg:kehtiv": {
+        "@value": "2026-05-24",
+        "@type": "xsd:date"
+      },
       "dcterms:subject": [
         {
           "@id": "http://eurovoc.europa.eu/0411"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2431"
         }
-      ]
+      ],
+      "estleg:temporalStatus": "unknown"
     },
     {
-      "@id": "estleg:LegalProvision_IENKR",
+      "@id": "estleg:LegalProvision_inimkaubandusvastase_euroopa_noukogu_konventsiooni_ratifitseerimise_seadus",
       "@type": [
         "owl:Class"
       ],
@@ -37,36 +52,55 @@
       }
     },
     {
+      "@id": "estleg:IENKR_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": "Inimkaubandusvastase Euroopa Nõukogu konventsiooni ratifitseerimise seadus teemaskeem",
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_IENKR_default"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Cluster_IENKR_default",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": "§1–2 Lepingu sätted",
+      "skos:prefLabel": "§1–2 Lepingu sätted",
+      "skos:inScheme": {
+        "@id": "estleg:IENKR_TopicScheme"
+      },
+      "estleg:provisionCount": 2
+    },
+    {
       "@id": "estleg:IENKR_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_IENKR"
+        "estleg:LegalProvision_inimkaubandusvastase_euroopa_noukogu_konventsiooni_ratifitseerimise_seadus"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. Konventsiooni ratifitseerimine",
       "estleg:sourceAct": "Inimkaubandusvastase Euroopa Nõukogu konventsiooni ratifitseerimise seadus",
       "estleg:summary": "Ratifitseerida juurdelisatud inimkaubandusvastane Euroopa Nõukogu konventsioon ./223122014002 , millele Eesti Vabariik on alla kirjutanud 2010. aasta 3. veebruaril Strasbourgis. Ratifitseerida juurdelisatud , millele Eesti Vabariik on alla kirjutanud 2010. aasta 3. veebruaril Strasbourgis.",
+      "estleg:legalText": "Ratifitseerida juurdelisatud , millele Eesti Vabariik on alla kirjutanud 2010. aasta 3. veebruaril Strasbourgis.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_IENKR_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:IENKR_Par_1_Lg_Unknown_1"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:IATIKKMPR_Par_1",
           "estleg:similarityScore": {
             "@value": "0.529",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:KKRKR_Par_1",
-          "estleg:similarityScore": {
-            "@value": "0.476",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:PTEKSMPR_Par_1",
-          "estleg:similarityScore": {
-            "@value": "0.478",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
@@ -80,9 +114,25 @@
           "estleg:similarityStatus": "candidate"
         },
         {
-          "@id": "estleg:VOHMEKR_Par_1",
+          "@id": "estleg:inimoiguste_ja_pohivabaduste_kaitse_konventsiooni_protokolli_nr_16_rat_Par_1",
           "estleg:similarityScore": {
-            "@value": "0.478",
+            "@value": "0.625",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:osamaksete_uhtsesse_kriisilahendusfondi__Par_1",
+          "estleg:similarityScore": {
+            "@value": "0.6",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:parandatud_ja_taiendatud_euroopa_sotsiaa_Par_1",
+          "estleg:similarityScore": {
+            "@value": "0.5",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
@@ -90,15 +140,36 @@
       ]
     },
     {
+      "@id": "estleg:IENKR_Par_1_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Ratifitseerida juurdelisatud , millele Eesti Vabariik on alla kirjutanud 2010. aasta 3. veebruaril Strasbourgis.",
+      "estleg:parentProvision": {
+        "@id": "estleg:IENKR_Par_1"
+      }
+    },
+    {
       "@id": "estleg:IENKR_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_IENKR"
+        "estleg:LegalProvision_inimkaubandusvastase_euroopa_noukogu_konventsiooni_ratifitseerimise_seadus"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. Deklaratsioon",
       "estleg:sourceAct": "Inimkaubandusvastase Euroopa Nõukogu konventsiooni ratifitseerimise seadus",
       "estleg:summary": "Kooskõlas konventsiooni artikli 31 lõikega 2 deklareerib Eesti Vabariik, et jätab endale õiguse mitte kohaldada konventsiooni artikli 31 lõike 1 punkte d ja e. Kooskõlas konventsiooni artikli 31 lõikega 2 deklareerib Eesti Vabariik, et jätab endale õiguse mitte kohaldada konventsiooni artikli 31 lõike 1 punkte d ja e.",
+      "estleg:legalText": "Kooskõlas konventsiooni artikli 31 lõikega 2 deklareerib Eesti Vabariik, et jätab endale õiguse mitte kohaldada konventsiooni artikli 31 lõike 1 punkte d ja e.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_IENKR_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:IENKR_Par_2_Lg_Unknown_1"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:LKSASKEKENKR_Par_2",
@@ -117,15 +188,15 @@
           "estleg:similarityStatus": "candidate"
         },
         {
-          "@id": "estleg:NRLEKR2007_Par_2",
+          "@id": "estleg:naistevastase_vagivalla_ja_perevagivalla_Par_2",
           "estleg:similarityScore": {
-            "@value": "0.312",
+            "@value": "0.438",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
         },
         {
-          "@id": "estleg:ROKVVUROKTPR_Par_2",
+          "@id": "estleg:rahvusvahelise_organiseeritud_kuritegevu_Par_2",
           "estleg:similarityScore": {
             "@value": "0.316",
             "@type": "xsd:decimal"
@@ -133,14 +204,26 @@
           "estleg:similarityStatus": "candidate"
         },
         {
-          "@id": "estleg:ROKVVUROKTPR_Par_3",
+          "@id": "estleg:vara_merepaaste_1989_aasta_rahvusvahelis_Par_3",
           "estleg:similarityScore": {
-            "@value": "0.3",
+            "@value": "0.4",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
         }
       ]
+    },
+    {
+      "@id": "estleg:IENKR_Par_2_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Kooskõlas konventsiooni artikli 31 lõikega 2 deklareerib Eesti Vabariik, et jätab endale õiguse mitte kohaldada konventsiooni artikli 31 lõike 1 punkte d ja e.",
+      "estleg:parentProvision": {
+        "@id": "estleg:IENKR_Par_2"
+      }
     }
   ]
 }

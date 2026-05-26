@@ -167,6 +167,29 @@ def load_law_files(*, failures: list[str] | None = None) -> dict[str, dict]:
     return laws
 
 
+def _amendment_chain_path(base_slug: str) -> Path:
+    return AMENDMENTS_DIR / f"amendments_{base_slug}.json"
+
+
+def _remove_amendment_chain_file(base_slug: str) -> int:
+    path = _amendment_chain_path(base_slug)
+    if not path.exists():
+        return 0
+    path.unlink()
+    return 1
+
+
+def _remove_obsolete_amendment_chain_files(current_base_slugs: set[str]) -> int:
+    removed = 0
+    prefix = "amendments_"
+    for path in sorted(AMENDMENTS_DIR.glob(f"{prefix}*.json")):
+        base_slug = path.stem[len(prefix):]
+        if base_slug not in current_base_slugs:
+            path.unlink()
+            removed += 1
+    return removed
+
+
 def extract_title(doc: dict) -> str:
     """Extract the law title from the ontology node's dc:source."""
     for node in doc.get("@graph", []):
@@ -734,6 +757,7 @@ def main() -> int:
     print("\n[4/5] Building amendment chains and enriching JSON-LD files...")
     enriched = 0
     amendment_chains: list[dict] = []
+    stale_chain_files_removed = 0
 
     # Coverage: every paired peep counts as processed regardless of
     # whether it ends up grouped under a base_slug.
@@ -749,6 +773,8 @@ def main() -> int:
     for slug, info in laws.items():
         base_slug = re.sub(r"_osa\d+$", "", slug)
         groups.setdefault(base_slug, []).append((slug, info))
+
+    stale_chain_files_removed += _remove_obsolete_amendment_chain_files(set(groups))
 
     for base_slug in sorted(groups):
         members = groups[base_slug]
@@ -785,6 +811,7 @@ def main() -> int:
                     _skip_reasons["no_amendments_found"] = (
                         _skip_reasons.get("no_amendments_found", 0) + 1
                     )
+            stale_chain_files_removed += _remove_amendment_chain_file(base_slug)
             continue
 
         # Sort xml_amendments chronologically (entry_into_force first,
@@ -966,6 +993,8 @@ def main() -> int:
 
     print(f"  Enriched {enriched} law files with amendment references")
     print(f"  Created {len(amendment_chains)} amendment chain files")
+    if stale_chain_files_removed:
+        print(f"  Removed {stale_chain_files_removed} stale amendment chain files")
 
     # Step 5: Generate report
     print("\n[5/5] Generating amendment_history_report.json...")
@@ -1016,6 +1045,7 @@ def main() -> int:
             "amendedBy_link_total": _amendedBy_link_total,
             "amendment_event_triples": _amendment_event_triples,
             "triples_total": total_triples,
+            "stale_chain_files_removed": stale_chain_files_removed,
             "failures": len(_failures),
         },
         "most_amended_laws": most_amended_list[:30],

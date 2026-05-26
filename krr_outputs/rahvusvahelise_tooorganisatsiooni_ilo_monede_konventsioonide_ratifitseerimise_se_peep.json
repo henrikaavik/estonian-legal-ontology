@@ -6,20 +6,31 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
   },
   "@graph": [
     {
       "@id": "estleg:RTIMKR_Map_2026",
       "@type": [
+        "owl:Ontology",
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "rdfs:label": "Rahvusvahelise tööorganisatsiooni (ILO) mõnede konventsioonide ratifitseerimise seadus teemakaardistus",
       "dc:source": "Rahvusvahelise tööorganisatsiooni (ILO) mõnede konventsioonide ratifitseerimise seadus",
-      "estleg:temporalStatus": "unknown",
+      "dcterms:title": "Rahvusvahelise tööorganisatsiooni (ILO) mõnede konventsioonide ratifitseerimise seadus",
+      "estleg:contentStatus": "structuredBody",
+      "dcterms:source": {
+        "@id": "https://www.riigiteataja.ee/akt/25034.xml"
+      },
+      "owl:sameAs": {
+        "@id": "https://www.riigiteataja.ee/akt/25034.xml"
+      },
+      "estleg:kehtiv": {
+        "@value": "2026-05-24",
+        "@type": "xsd:date"
+      },
       "dcterms:subject": [
         {
           "@id": "http://eurovoc.europa.eu/0411"
@@ -28,12 +39,16 @@
           "@id": "http://eurovoc.europa.eu/3606"
         },
         {
+          "@id": "http://eurovoc.europa.eu/2431"
+        },
+        {
           "@id": "http://eurovoc.europa.eu/2446"
         }
-      ]
+      ],
+      "estleg:temporalStatus": "unknown"
     },
     {
-      "@id": "estleg:LegalProvision_RTIMKR",
+      "@id": "estleg:LegalProvision_rahvusvahelise_tooorganisatsiooni_ilo_monede_konventsioonide_ratifitseerimise_se",
       "@type": [
         "owl:Class"
       ],
@@ -43,15 +58,50 @@
       }
     },
     {
+      "@id": "estleg:RTIMKR_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": "Rahvusvahelise tööorganisatsiooni (ILO) mõnede konventsioonide ratifitseerimise seadus teemaskeem",
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_RTIMKR_default"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Cluster_RTIMKR_default",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": "§1–3 Lepingu sätted",
+      "skos:prefLabel": "§1–3 Lepingu sätted",
+      "skos:inScheme": {
+        "@id": "estleg:RTIMKR_TopicScheme"
+      },
+      "estleg:provisionCount": 3
+    },
+    {
       "@id": "estleg:RTIMKR_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RTIMKR"
+        "estleg:LegalProvision_rahvusvahelise_tooorganisatsiooni_ilo_monede_konventsioonide_ratifitseerimise_se"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1.",
+      "rdfs:label": "§ 1. [Ratifitseerida juurdelisatud sunniviisilise või kohustusliku töö konventsioon (n...]",
       "estleg:sourceAct": "Rahvusvahelise tööorganisatsiooni (ILO) mõnede konventsioonide ratifitseerimise seadus",
       "estleg:summary": "Ratifitseerida juurdelisatud sunniviisilise või kohustusliku töö konventsioon (nr. 29)./dyn=25034&id=13120693, mis on vastu võetud 1930. aasta 28. juunil Genfis. Ratifitseerida juurdelisatud , mis on vastu võetud 1930. aasta 28. juunil Genfis.",
+      "estleg:legalText": "Ratifitseerida juurdelisatud , mis on vastu võetud 1930. aasta 28. juunil Genfis.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RTIMKR_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RTIMKR_Par_1_Lg_Unknown_1"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:RTITIVAKNR_Par_1",
@@ -60,22 +110,75 @@
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:rahvusvahelise_tooorganisatsiooni_ilo_na_Par_1",
+          "estleg:similarityScore": {
+            "@value": "0.3",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:toostuslike_suuronnetuste_arahoidmise_ko_Par_1",
+          "estleg:similarityScore": {
+            "@value": "0.5",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
         }
       ]
+    },
+    {
+      "@id": "estleg:RTIMKR_Par_1_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Ratifitseerida juurdelisatud , mis on vastu võetud 1930. aasta 28. juunil Genfis.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RTIMKR_Par_1"
+      }
     },
     {
       "@id": "estleg:RTIMKR_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RTIMKR"
+        "estleg:LegalProvision_rahvusvahelise_tooorganisatsiooni_ilo_monede_konventsioonide_ratifitseerimise_se"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2.",
+      "rdfs:label": "§ 2. [Ratifitseerida juurdelisatud sunniviisilise töö kaotamise konventsioon (nr. 105)...]",
       "estleg:sourceAct": "Rahvusvahelise tööorganisatsiooni (ILO) mõnede konventsioonide ratifitseerimise seadus",
       "estleg:summary": "Ratifitseerida juurdelisatud sunniviisilise töö kaotamise konventsioon (nr. 105)./dyn=25022&id=13120697, mis on vastu võetud 1957. aasta 25. juunil Genfis. Ratifitseerida juurdelisatud , mis on vastu võetud 1957. aasta 25. juunil Genfis.",
+      "estleg:legalText": "Ratifitseerida juurdelisatud , mis on vastu võetud 1957. aasta 25. juunil Genfis.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RTIMKR_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RTIMKR_Par_2_Lg_Unknown_1"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:RTITIVAKNR_Par_1",
+          "estleg:similarityScore": {
+            "@value": "0.5",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:rahvusvahelise_tooorganisatsiooni_ilo_na_Par_1",
+          "estleg:similarityScore": {
+            "@value": "0.3",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:toostuslike_suuronnetuste_arahoidmise_ko_Par_1",
           "estleg:similarityScore": {
             "@value": "0.5",
             "@type": "xsd:decimal"
@@ -85,23 +188,43 @@
       ]
     },
     {
+      "@id": "estleg:RTIMKR_Par_2_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Ratifitseerida juurdelisatud , mis on vastu võetud 1957. aasta 25. juunil Genfis.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RTIMKR_Par_2"
+      }
+    },
+    {
       "@id": "estleg:RTIMKR_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RTIMKR"
+        "estleg:LegalProvision_rahvusvahelise_tooorganisatsiooni_ilo_monede_konventsioonide_ratifitseerimise_se"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3.",
+      "rdfs:label": "§ 3. [Ratifitseerida juurdelisatud töötajate esindajatele ettevõttes võimaldatava kait...]",
       "estleg:sourceAct": "Rahvusvahelise tööorganisatsiooni (ILO) mõnede konventsioonide ratifitseerimise seadus",
       "estleg:summary": "Ratifitseerida juurdelisatud töötajate esindajatele ettevõttes võimaldatava kaitse ja soodustuste konventsioon (nr. 135)./dyn=25034&id=13120701, mis on vastu võetud 1971. aasta 23. juunil Genfis. Ratifitseerida juurdelisatud , mis on vastu võetud 1971. aasta 23. juunil Genfis. Riigikogu esimees Toomas SAVI Riigikogu esimees Toomas SAVI Õiend Õiend Lisatud avaldamisandmed. Lisatud avaldamisandmed.",
-      "estleg:semanticallySimilarTo": [
+      "estleg:legalText": "Ratifitseerida juurdelisatud , mis on vastu võetud 1971. aasta 23. juunil Genfis. Riigikogu esimees Toomas SAVI Õiend Lisatud avaldamisandmed.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RTIMKR_default"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:UKKKR_Par_2",
-          "estleg:similarityScore": {
-            "@value": "0.368",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
+          "@id": "estleg:RTIMKR_Par_3_Lg_Unknown_1"
+        },
+        {
+          "@id": "estleg:RTIMKR_Par_3_Lg_Unknown_2"
+        },
+        {
+          "@id": "estleg:RTIMKR_Par_3_Lg_Unknown_3"
+        },
+        {
+          "@id": "estleg:RTIMKR_Par_3_Lg_Unknown_4"
         }
       ],
       "estleg:targetGroup": [
@@ -114,7 +237,65 @@
           "@id": "estleg:Institution_riigikogu"
         }
       ],
-      "estleg:competenceType": "general"
+      "estleg:competenceType": "general",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:UKKKR_Par_2",
+          "estleg:similarityScore": {
+            "@value": "0.368",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:RTIMKR_Par_3_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Ratifitseerida juurdelisatud , mis on vastu võetud 1971. aasta 23. juunil Genfis.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RTIMKR_Par_3"
+      }
+    },
+    {
+      "@id": "estleg:RTIMKR_Par_3_Lg_Unknown_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_2",
+      "estleg:legalText": "Riigikogu esimees Toomas SAVI",
+      "estleg:parentProvision": {
+        "@id": "estleg:RTIMKR_Par_3"
+      }
+    },
+    {
+      "@id": "estleg:RTIMKR_Par_3_Lg_Unknown_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_3",
+      "estleg:legalText": "Õiend",
+      "estleg:parentProvision": {
+        "@id": "estleg:RTIMKR_Par_3"
+      }
+    },
+    {
+      "@id": "estleg:RTIMKR_Par_3_Lg_Unknown_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_4",
+      "estleg:legalText": "Lisatud avaldamisandmed.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RTIMKR_Par_3"
+      }
     }
   ]
 }

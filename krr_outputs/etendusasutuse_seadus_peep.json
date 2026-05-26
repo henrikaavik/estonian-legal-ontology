@@ -6,36 +6,31 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
   },
   "@graph": [
     {
       "@id": "estleg:EAS_Map_2026",
       "@type": [
+        "owl:Ontology",
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "rdfs:label": "Etendusasutuse seadus teemakaardistus",
       "dc:source": "Etendusasutuse seadus",
-      "estleg:affectedBy": [
-        {
-          "@id": "estleg:Draft_KUM16_0146"
-        },
-        {
-          "@id": "estleg:Draft_KUM14_0511"
-        }
-      ],
-      "estleg:amendedBy": [
-        {
-          "@id": "estleg:Draft_KUM16_0146"
-        },
-        {
-          "@id": "estleg:Draft_KUM14_0511"
-        }
-      ],
-      "estleg:temporalStatus": "unknown",
+      "dcterms:title": "Etendusasutuse seadus",
+      "estleg:contentStatus": "structuredBody",
+      "dcterms:source": {
+        "@id": "https://www.riigiteataja.ee/akt/106082022007.xml"
+      },
+      "owl:sameAs": {
+        "@id": "https://www.riigiteataja.ee/akt/106082022007.xml"
+      },
+      "estleg:kehtiv": {
+        "@value": "2026-05-24",
+        "@type": "xsd:date"
+      },
       "dcterms:subject": [
         {
           "@id": "http://eurovoc.europa.eu/3606"
@@ -44,18 +39,35 @@
           "@id": "http://eurovoc.europa.eu/5211"
         },
         {
-          "@id": "http://eurovoc.europa.eu/3221"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/6006"
-        },
-        {
           "@id": "http://eurovoc.europa.eu/3611"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2431"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5246"
+        }
+      ],
+      "estleg:temporalStatus": "unknown",
+      "estleg:amendedBy": [
+        {
+          "@id": "estleg:AmendmentLink_Draft_KUM16_0146_EAS"
+        },
+        {
+          "@id": "estleg:AmendmentLink_Draft_KUM14_0511_EAS"
+        }
+      ],
+      "estleg:affectedBy": [
+        {
+          "@id": "estleg:Draft_KUM16_0146"
+        },
+        {
+          "@id": "estleg:Draft_KUM14_0511"
         }
       ]
     },
     {
-      "@id": "estleg:LegalProvision_EAS",
+      "@id": "estleg:LegalProvision_etendusasutuse_seadus",
       "@type": [
         "owl:Class"
       ],
@@ -65,148 +77,187 @@
       }
     },
     {
+      "@id": "estleg:EAS_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": "Etendusasutuse seadus teemaskeem",
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_EAS_1"
+        },
+        {
+          "@id": "estleg:Cluster_EAS_2"
+        },
+        {
+          "@id": "estleg:Cluster_EAS_3"
+        },
+        {
+          "@id": "estleg:Cluster_EAS_4"
+        },
+        {
+          "@id": "estleg:Cluster_EAS_5"
+        }
+      ]
+    },
+    {
       "@id": "estleg:Cluster_EAS_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§1–2 ÜLDSÄTTED"
+      "rdfs:label": "§1–2 ÜLDSÄTTED",
+      "skos:prefLabel": "§1–2 ÜLDSÄTTED",
+      "skos:inScheme": {
+        "@id": "estleg:EAS_TopicScheme"
+      },
+      "estleg:provisionCount": 2
+    },
+    {
+      "@id": "estleg:Chapter_EAS_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "1. peatükk – ÜLDSÄTTED",
+      "estleg:chapterNumber": "1",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_EAS_1"
+      }
     },
     {
       "@id": "estleg:Cluster_EAS_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§3–14 ETENDUSASUTUSE TEGEVUSE KORRALDAMINE"
+      "rdfs:label": "§3–14 ETENDUSASUTUSE TEGEVUSE KORRALDAMINE",
+      "skos:prefLabel": "§3–14 ETENDUSASUTUSE TEGEVUSE KORRALDAMINE",
+      "skos:inScheme": {
+        "@id": "estleg:EAS_TopicScheme"
+      },
+      "estleg:provisionCount": 12
+    },
+    {
+      "@id": "estleg:Chapter_EAS_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "2. peatükk – ETENDUSASUTUSE TEGEVUSE KORRALDAMINE",
+      "estleg:chapterNumber": "2",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_EAS_2"
+      }
     },
     {
       "@id": "estleg:Cluster_EAS_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§15–20 ETENDUSASUTUSE EELARVE JA FINANTSEERIMINE, KOMISJONI MOODUSTAMINE NING TAOTLUSTE ESITAMINE"
+      "rdfs:label": "§15–20 ETENDUSASUTUSE EELARVE JA RAHASTAMINE NING KOMISJONI MOODUSTAMINE",
+      "skos:prefLabel": "§15–20 ETENDUSASUTUSE EELARVE JA RAHASTAMINE NING KOMISJONI MOODUSTAMINE",
+      "skos:inScheme": {
+        "@id": "estleg:EAS_TopicScheme"
+      },
+      "estleg:provisionCount": 6
+    },
+    {
+      "@id": "estleg:Chapter_EAS_3",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "3. peatükk – ETENDUSASUTUSE EELARVE JA RAHASTAMINE NING KOMISJONI MOODUSTAMINE",
+      "estleg:chapterNumber": "3",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_EAS_3"
+      }
     },
     {
       "@id": "estleg:Cluster_EAS_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§21–22 VARA JA ARUANDLUS"
+      "rdfs:label": "§21–22 ARUANDLUS",
+      "skos:prefLabel": "§21–22 ARUANDLUS",
+      "skos:inScheme": {
+        "@id": "estleg:EAS_TopicScheme"
+      },
+      "estleg:provisionCount": 2
+    },
+    {
+      "@id": "estleg:Chapter_EAS_4",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "4. peatükk – ARUANDLUS",
+      "estleg:chapterNumber": "4",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_EAS_4"
+      }
     },
     {
       "@id": "estleg:Cluster_EAS_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§23–24 RAKENDUSSÄTTED"
+      "rdfs:label": "§23–24 RAKENDUSSÄTTED",
+      "skos:prefLabel": "§23–24 RAKENDUSSÄTTED",
+      "skos:inScheme": {
+        "@id": "estleg:EAS_TopicScheme"
+      },
+      "estleg:provisionCount": 2
+    },
+    {
+      "@id": "estleg:Chapter_EAS_5",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "5. peatükk – RAKENDUSSÄTTED",
+      "estleg:chapterNumber": "5",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_EAS_5"
+      }
     },
     {
       "@id": "estleg:EAS_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_EAS"
+        "estleg:LegalProvision_etendusasutuse_seadus"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. Seaduse reguleerimisala",
       "estleg:sourceAct": "Etendusasutuse seadus",
-      "estleg:summary": "1(1)Käesolev seadus sätestab etendusasutuse mõiste ning etendusasutuse tegevuse korraldamise ja rahastamise ning etendusasutuse aruandluse alused. Käesolev seadus sätestab etendusasutuse mõiste ning etendusasutuse tegevuse korraldamise ja rahastamise ning etendusasutuse aruandluse alused. 2(2)Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seadust (RT I 2001, 58, 354; 2002, 53, 336; 61, 375; 2003, 20, 117), arvestades käesolevast seadusest tulenevaid erisusi. Käesol",
+      "estleg:summary": "1 (1) Käesolev seadus sätestab etendusasutuse mõiste ning etendusasutuse tegevuse korraldamise ja rahastamise ning etendusasutuse aruandluse alused. Käesolev seadus sätestab etendusasutuse mõiste ning etendusasutuse tegevuse korraldamise ja rahastamise ning etendusasutuse aruandluse alused. 2 (2) Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seadust, arvestades käesolevast seadusest tulenevaid erisusi. Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse ",
+      "estleg:legalText": "(1) Käesolev seadus sätestab etendusasutuse mõiste ning etendusasutuse tegevuse korraldamise ja rahastamise ning etendusasutuse aruandluse alused. (2) Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seadust, arvestades käesolevast seadusest tulenevaid erisusi.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EAS_1"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_EAS_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:EAS_Par_1_Lg_1"
+        },
+        {
+          "@id": "estleg:EAS_Par_1_Lg_2"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:ISIKUA_Par_3",
-          "estleg:similarityScore": {
-            "@value": "0.353",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:InfoTS_Par_1",
-          "estleg:similarityScore": {
-            "@value": "0.37",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:KINDLU_Par_15",
-          "estleg:similarityScore": {
-            "@value": "0.474",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:Reg_1032676_Par_1",
-          "estleg:similarityScore": {
-            "@value": "0.381",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:SOS_Par_2",
-          "estleg:similarityScore": {
-            "@value": "0.4",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        }
-      ]
-    },
-    {
-      "@id": "estleg:EAS_Par_2",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_EAS"
-      ],
-      "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Etendusasutus",
-      "estleg:sourceAct": "Etendusasutuse seadus",
-      "estleg:summary": "1(1)Etendusasutus käesoleva seaduse tähenduses on asutus:11)kes regulaarselt korraldab autorite ning esitajate loomingu avalikke esitusi etenduste ja kontsertide näol;22)kes on töösuhtes loominguliste töötajatega;33)kellel on loominguline juht ja loomenõukogu;44)kes teavitab avalikkust etenduse või kontserdi toimumisest. Etendusasutus käesoleva seaduse tähenduses on asutus: kes regulaarselt korraldab autorite ning esitajate loomingu avalikke esitusi etenduste ja kontsertide näol; kes on töösuhte",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_EAS_1"
-      },
-      "estleg:targetGroup": [
-        "citizen",
-        "public_body"
-      ],
-      "estleg:referencedBy": [
-        {
-          "@id": "estleg:EAS_Par_19"
-        }
-      ]
-    },
-    {
-      "@id": "estleg:EAS_Par_3",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_EAS"
-      ],
-      "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Etendusasutuse moodustamine, ümberkorraldamine, selle tegevuse lõpetamine ja nendest teatamine",
-      "estleg:sourceAct": "Etendusasutuse seadus",
-      "estleg:summary": "1(1)Riigietendusasutuse moodustab ja korraldab ümber ning selle tegevuse lõpetab kultuuriminister Vabariigi Valitsuse kehtestatud korras. Riigietendusasutuse moodustab ja korraldab ümber ning selle tegevuse lõpetab kultuuriminister Vabariigi Valitsuse kehtestatud korras. 2(2)Munitsipaaletendusasutuse moodustab ja korraldab ümber ning selle tegevuse lõpetab valla- või linnavalitsus volikogu otsuse alusel. Munitsipaaletendusasutuse moodustab ja korraldab ümber ning selle tegevuse lõpetab valla- võ",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_EAS_2"
-      },
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:Reg_1055483_Par_14",
-          "estleg:similarityScore": {
-            "@value": "0.353",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:Reg_1061038_Par_13",
           "estleg:similarityScore": {
             "@value": "0.375",
             "@type": "xsd:decimal"
@@ -214,396 +265,197 @@
           "estleg:similarityStatus": "candidate"
         },
         {
-          "@id": "estleg:TAKS_Par_6",
+          "@id": "estleg:KBFIS_Par_1_1",
           "estleg:similarityScore": {
-            "@value": "0.304",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        }
-      ],
-      "estleg:targetGroup": [
-        "public_body"
-      ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_kultuuriminister"
-        }
-      ],
-      "estleg:competenceType": "enforcement"
-    },
-    {
-      "@id": "estleg:EAS_Par_4",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_EAS"
-      ],
-      "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Etendusasutuse põhimäärus ja põhikiri",
-      "estleg:sourceAct": "Etendusasutuse seadus",
-      "estleg:summary": "1(1)Etendusasutusel on põhimäärus, milles nähakse ette etendusasutuse ülesanded, etendusasutuse juhi ja loomingulise juhi ülesanded, õigused ja kohustused, etendusasutuse struktuur ning muud etendusasutuse tegevuse korraldamiseks olulised sätted. Etendusasutusel on põhimäärus, milles nähakse ette etendusasutuse ülesanded, etendusasutuse juhi ja loomingulise juhi ülesanded, õigused ja kohustused, etendusasutuse struktuur ning muud etendusasutuse tegevuse korraldamiseks olulised sätted. 2(2)Riigie",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_EAS_2"
-      }
-    },
-    {
-      "@id": "estleg:EAS_Par_5",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_EAS"
-      ],
-      "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Etendusasutuse juht ja loominguline juht",
-      "estleg:sourceAct": "Etendusasutuse seadus",
-      "estleg:summary": "1(1)Etendusasutuse juht on direktor, kes tagab etendusasutuse ülesannete täitmise ning vastutab etendusasutuse üldseisundi ja arengu ning selle rahaliste vahendite sihipärase kasutamise eest. Loomingulise tegevusega seotud küsimusi otsustab direktor loomingulise juhi ettepanekul. Etendusasutuse juht on direktor, kes tagab etendusasutuse ülesannete täitmise ning vastutab etendusasutuse üldseisundi ja arengu ning selle rahaliste vahendite sihipärase kasutamise eest. Loomingulise tegevusega seotud ",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_EAS_2"
-      },
-      "estleg:targetGroup": [
-        "official"
-      ]
-    },
-    {
-      "@id": "estleg:EAS_Par_6",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_EAS"
-      ],
-      "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Direktori ja loomingulise juhi ametikoha täitmine",
-      "estleg:sourceAct": "Etendusasutuse seadus",
-      "estleg:summary": "1(1)Etendusasutuse direktori vaba ametikoha täitmiseks korraldatakse avalik konkurss. Konkursi läbiviimise tingimused ja korra kehtestab ning konkursi korraldab etendusasutuse moodustaja./dyn=606779&id=609456 . 2(2)Etendusasutuse moodustaja sõlmib direktoriga tähtajalise töölepingu kuni viieks aastaks. Etendusasutuse moodustaja sõlmib direktoriga tähtajalise töölepingu kuni viieks aastaks. 3(3)Etendusasutuse loomingulise juhi ametikoha täitmise kord sätestatakse etendusasutuse põhimääruses. Eten",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_EAS_2"
-      },
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:Reg_1015295_Par_5",
-          "estleg:similarityScore": {
-            "@value": "0.324",
+            "@value": "0.375",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
         },
         {
-          "@id": "estleg:Reg_1015312_Par_5",
+          "@id": "estleg:Reg_1032676_Par_1",
           "estleg:similarityScore": {
-            "@value": "0.324",
+            "@value": "0.4",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
-        }
-      ],
-      "estleg:targetGroup": [
-        "official"
-      ]
-    },
-    {
-      "@id": "estleg:EAS_Par_7",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_EAS"
-      ],
-      "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Etendusasutuse loominguline töötaja",
-      "estleg:sourceAct": "Etendusasutuse seadus",
-      "estleg:summary": "1(1)Etendusasutuse loominguliste töötajate ametikohtade loetelu kehtestab kultuuriminister määrusega./dyn=606779&id=609451;13187581 . Etendusasutuse loominguliste töötajate ametikohtade loetelu 2(2)Etendusasutuse loomingulise töötajaga võib sõlmida tähtajalise töölepingu kuni viieks aastaks. Etendusasutuse loomingulise töötajaga võib sõlmida tähtajalise töölepingu kuni viieks aastaks.",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_EAS_2"
-      },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
-      "estleg:targetGroup": [
-        "citizen"
-      ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_kultuuriminister"
-        }
-      ],
-      "estleg:competenceType": "regulation"
-    },
-    {
-      "@id": "estleg:EAS_Par_8",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_EAS"
-      ],
-      "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Loomenõukogu",
-      "estleg:sourceAct": "Etendusasutuse seadus",
-      "estleg:summary": "1(1)Etendusasutuse loomenõukogu kavandab ja hindab etendusasutuse loomingulist tegevust ning otsustab teose jäädvustamise. Etendusasutuse loomenõukogu kavandab ja hindab etendusasutuse loomingulist tegevust ning otsustab teose jäädvustamise. 2(2)Loomenõukogu moodustamise kord ja nõukogu pädevus sätestatakse etendusasutuse põhimääruses või põhikirjas. Loomenõukogu moodustamise kord ja nõukogu pädevus sätestatakse etendusasutuse põhimääruses või põhikirjas. 3(3)Loomenõukogusse kuuluvad etendusasut",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_EAS_2"
-      }
-    },
-    {
-      "@id": "estleg:EAS_Par_9",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_EAS"
-      ],
-      "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Etendusasutuse arengukava",
-      "estleg:sourceAct": "Etendusasutuse seadus",
-      "estleg:summary": "1(1)Etendusasutus koostab arengukava vähemalt neljaks aastaks. Etendusasutus koostab arengukava vähemalt neljaks aastaks. 2(2)Arengukavas nähakse ette etendusasutuse missioon ja eesmärgid ning nende täitmiseks kavandatav tegevus ja vahendid. Arengukavas nähakse ette etendusasutuse missioon ja eesmärgid ning nende täitmiseks kavandatav tegevus ja vahendid. 3(3)Arengukava koostamise ja muutmise kord sätestatakse etendusasutuse põhimääruses või põhikirjas. Arengukava koostamise ja muutmise kord sät",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_EAS_2"
-      }
-    },
-    {
-      "@id": "estleg:EAS_Par_10",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_EAS"
-      ],
-      "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Etendusasutuse töökorraldus",
-      "estleg:sourceAct": "Etendusasutuse seadus",
-      "estleg:summary": "1(1)Etendusasutus on repertuaari valikul iseseisev. Etendusasutus on repertuaari valikul iseseisev. 2(2)Etendused ja kontserdid planeeritakse kalendriaasta kaupa kuukava alusel. Etendused ja kontserdid planeeritakse kalendriaasta kaupa kuukava alusel. 3(3)Kuukava koostamise alus on repertuaariplaan. Kuukava koostamise alus on repertuaariplaan.",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_EAS_2"
-      }
-    },
-    {
-      "@id": "estleg:EAS_Par_11",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_EAS"
-      ],
-      "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Repertuaariplaan",
-      "estleg:sourceAct": "Etendusasutuse seadus",
-      "estleg:summary": "1(1)Repertuaariplaan koostatakse vähemalt üheks kalendriaastaks. Repertuaariplaan koostatakse vähemalt üheks kalendriaastaks. 2(2)Repertuaariplaani kehtestab etendusasutuse juht loomenõukogu ettepaneku alusel. Repertuaariplaani kehtestab etendusasutuse juht loomenõukogu ettepaneku alusel. 3(3)Repertuaariplaan saadetakse etendusasutuse moodustajale või asutajale teadmiseks. Repertuaariplaan saadetakse etendusasutuse moodustajale või asutajale teadmiseks. 4(4)Munitsipaaletendusasutus ja eraetendus",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_EAS_2"
-      }
-    },
-    {
-      "@id": "estleg:EAS_Par_12",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_EAS"
-      ],
-      "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Avalikkuse teavitamine",
-      "estleg:sourceAct": "Etendusasutuse seadus",
-      "estleg:summary": "1(1)Etendusasutus teavitab avalikkust etendusest või kontserdist, esitades järgmised andmed:11)etendusasutuse nimetus;22)esitatava teose või selle osa pealkiri;33)teose pealkiri originaalkeeles;44)tuletatud teose korral viide originaalteosele;55)teose autori nimi;66)teose põhiesitajad või esitajate kollektiiv;77)etenduse või kontserdi toimumise aeg ja koht;88)etendusasutuse loomingulise juhi nimi. Etendusasutus teavitab avalikkust etendusest või kontserdist, esitades järgmised andmed: etendusasu",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_EAS_2"
-      }
-    },
-    {
-      "@id": "estleg:EAS_Par_13",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_EAS"
-      ],
-      "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Teose jäädvustamine",
-      "estleg:sourceAct": "Etendusasutuse seadus",
-      "estleg:summary": "1(1)Etendusasutus korraldab oma repertuaaris olevate rahvuskultuuri seisukohalt oluliste teoste jäädvustamist, arvestades autoriõiguse seadusest (RT 1992, 49, 613; RT I 2000, 16, 109; 78, 497; 2001, 50, 289; 56, 335; 2002, 53, 336; 63, 387; 90, 521; 92, 527) tulenevaid nõudeid. Etendusasutus korraldab oma repertuaaris olevate rahvuskultuuri seisukohalt oluliste teoste jäädvustamist, arvestades autoriõiguse seadusest (RT 1992, 49, 613; RT I 2000, 16, 109; 78, 497; 2001, 50, 289; 56, 335; 2002, 53",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_EAS_2"
-      }
-    },
-    {
-      "@id": "estleg:EAS_Par_14",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_EAS"
-      ],
-      "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Teose toimik",
-      "estleg:sourceAct": "Etendusasutuse seadus",
-      "estleg:summary": "1(1)Etendusasutus koostab repertuaaris oleva teose kohta toimiku, kuhu kuuluvad tekstiraamat, kavaleht, reklaammaterjal, kujunduse kavandid või fotod ja väljavõtted meediakajastustest. Võimaluse korral lisatakse toimikusse teose salvestus. Etendusasutus koostab repertuaaris oleva teose kohta toimiku, kuhu kuuluvad tekstiraamat, kavaleht, reklaammaterjal, kujunduse kavandid või fotod ja väljavõtted meediakajastustest. Võimaluse korral lisatakse toimikusse teose salvestus. 2(2)Teose toimiku koosta",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_EAS_2"
-      }
-    },
-    {
-      "@id": "estleg:EAS_Par_15",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_EAS"
-      ],
-      "estleg:paragrahv": "§ 15.",
-      "rdfs:label": "§ 15. Eelarve ja finantseerimine",
-      "estleg:sourceAct": "Etendusasutuse seadus",
-      "estleg:summary": "1(1)Etendusasutusel on oma eelarve. Etendusasutuse eelarve koostamiseks kavandatakse kulud ja selgitatakse nende katteallikad. Etendusasutusel on oma eelarve. Etendusasutuse eelarve koostamiseks kavandatakse kulud ja selgitatakse nende katteallikad. 2(2)Etendusasutuse kulude katteallikad on:11)pääsmete müügist laekuv tulu;22)põhitegevusega kaasnevast ja seda toetavast majandustegevusest saadav tulu;33)laekumised sihtfondidest ja -kapitalidest;44)annetused ja muud tulud;55)toetus valla- või linna",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_EAS_3"
-      }
-    },
-    {
-      "@id": "estleg:EAS_Par_16",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_EAS"
-      ],
-      "estleg:paragrahv": "§ 16.",
-      "rdfs:label": "§ 16. Etendusasutusele riigieelarvest toetuse määramise põhimõtted",
-      "estleg:sourceAct": "Etendusasutuse seadus",
-      "estleg:summary": "1(1)Toetus määratakse etenduse või kontserdi külastaja toetusena. Sellega hüvitatakse etendusasutusele külastaja teenindamise tegeliku kulu ja arvestusliku piletihinna vahe. Toetuse määramise alus on Kultuuriministeeriumi poolt tellitav külastajate arv ja uute lavastuste või kontserdikavade arv ning nende teenindamiseks tehtavad kulutused, mis tulenevad töötajate tasustamisest ja vara haldamisest. Toetus määratakse etenduse või kontserdi külastaja toetusena. Sellega hüvitatakse etendusasutusele ",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_EAS_3"
-      },
-      "estleg:targetGroup": [
-        "citizen"
-      ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_kultuuriministeerium"
-        }
-      ],
-      "estleg:competenceType": "general",
-      "estleg:referencedBy": [
-        {
-          "@id": "estleg:EAS_Par_19"
-        }
-      ]
-    },
-    {
-      "@id": "estleg:EAS_Par_17",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_EAS"
-      ],
-      "estleg:paragrahv": "§ 17.",
-      "rdfs:label": "§ 17. Komisjoni moodustamine",
-      "estleg:sourceAct": "Etendusasutuse seadus",
-      "estleg:summary": "1(1)Etendusasutusele riigieelarves toetuse kavandamiseks ning jaotamiseks moodustab kultuuriminister nõuandva komisjoni (edaspidi komisjon). Komisjoni ülesannete täitmise tähtajad, komisjoni esimees ja liikmed ning teenindav struktuuriüksus määratakse kultuuriministri käskkirjaga. Etendusasutusele riigieelarves toetuse kavandamiseks ning jaotamiseks moodustab kultuuriminister nõuandva komisjoni (edaspidi komisjon). Komisjoni ülesannete täitmise tähtajad, komisjoni esimees ja liikmed ning teenind",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_EAS_3"
-      },
-      "estleg:targetGroup": [
-        "official"
-      ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_kultuuriminister"
-        }
-      ],
-      "estleg:competenceType": "general"
-    },
-    {
-      "@id": "estleg:EAS_Par_18",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_EAS"
-      ],
-      "estleg:paragrahv": "§ 18.",
-      "rdfs:label": "§ 18. Taotluste esitamine",
-      "estleg:sourceAct": "Etendusasutuse seadus",
-      "estleg:summary": "1(1)Etendusasutus esitab Kultuuriministeeriumile kirjaliku taotluse tähtpäevaks, mille kehtestab järgmiseks eelarveaastaks kultuuriminister. Taotluse esitamise tähtpäev avalikustatakse Kultuuriministeeriumi veebilehel. Etendusasutus esitab Kultuuriministeeriumile kirjaliku taotluse tähtpäevaks, mille kehtestab järgmiseks eelarveaastaks kultuuriminister. Taotluse esitamise tähtpäev avalikustatakse Kultuuriministeeriumi veebilehel. 2(2)Taotlusele lisatakse etendusasutuse kohta järgmised andmed ja ",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_EAS_3"
-      },
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_kultuuriministeerium"
         },
         {
-          "@id": "estleg:Institution_kultuuriminister"
-        }
-      ],
-      "estleg:competenceType": "regulation"
-    },
-    {
-      "@id": "estleg:EAS_Par_19",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_EAS"
-      ],
-      "estleg:paragrahv": "§ 19.",
-      "rdfs:label": "§ 19. Komisjoni pädevus",
-      "estleg:sourceAct": "Etendusasutuse seadus",
-      "estleg:summary": "1(1)Komisjon hindab etendusasutuse vastavust käesoleva seaduse § 2 lõikes 1 esitatud nõuetele ning teeb, lähtudes käesoleva seaduse §-s 16 sätestatud etendusasutusele riigieelarvest toetuse määramise põhimõtetest, kultuuriministrile ettepaneku:11)järgmise eelarveaasta toetuse saajate ja toetussummade kohta riigieelarve projekti koostamiseks;22)toetuse jaotamise kohta jooksvaks aastaks, lähtudes konkreetse aasta riigieelarvest etendusasutustele ettenähtud summast. Komisjon hindab etendusasutuse v",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_EAS_3"
-      },
-      "estleg:references": [
-        {
-          "@id": "estleg:EAS_Par_2"
+          "@id": "estleg:SOS_Par_2",
+          "estleg:similarityScore": {
+            "@value": "0.417",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
         },
         {
-          "@id": "estleg:EAS_Par_16"
+          "@id": "estleg:kohanimeseadus_Par_2",
+          "estleg:similarityScore": {
+            "@value": "0.625",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:EAS_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolev seadus sätestab etendusasutuse mõiste ning etendusasutuse tegevuse korraldamise ja rahastamise ning etendusasutuse aruandluse alused.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
+    },
+    {
+      "@id": "estleg:EAS_Par_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seadust, arvestades käesolevast seadusest tulenevaid erisusi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 2"
+    },
+    {
+      "@id": "estleg:EAS_Par_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_etendusasutuse_seadus"
+      ],
+      "estleg:paragrahv": "§ 2.",
+      "rdfs:label": "§ 2. Etendusasutus",
+      "estleg:sourceAct": "Etendusasutuse seadus",
+      "estleg:summary": "1 (1) Etendusasutus käesoleva seaduse tähenduses on juriidiline isik või asutus: 1 1) kelle põhitegevusala on teatri- ja tantsuetenduste või kontsertide lavastamine ja esitamine, muusikaline loometegevus või lavakunsti abitegevused; 2 2) kes korraldab regulaarselt autorite ja esitajate loomingu avalikke esitusi etenduste või kontsertidena; 3 3) kes on töösuhtes loominguliste töötajatega või võlaõiguslikus suhtes teenuse osutajatega loominguliste eesmärkide täitmiseks; 4 4) kellel on loominguline",
+      "estleg:legalText": "(1) Etendusasutus käesoleva seaduse tähenduses on juriidiline isik või asutus: kelle põhitegevusala on teatri- ja tantsuetenduste või kontsertide lavastamine ja esitamine, muusikaline loometegevus või lavakunsti abitegevused; kes korraldab regulaarselt autorite ja esitajate loomingu avalikke esitusi etenduste või kontsertidena; kes on töösuhtes loominguliste töötajatega või võlaõiguslikus suhtes teenuse osutajatega loominguliste eesmärkide täitmiseks; kellel on loominguline juht; kes teavitab avalikkust etenduse või kontserdi toimumisest. (2) Käesolev seadus reguleerib sellise etendusasutuse tegevust, kes toimib riigi sihtasutusena või riigi osalusel asutatud sihtasutusena (edaspidi riigi asutatud sihtasutusena tegutsev etendusasutus), kohaliku omavalitsuse sihtasutusena (edaspidi sihtasutusena tegutsev munitsipaaletendusasutus, koos riigi asutatud sihtasutusena tegutseva etendusasutusega sihtasutusena tegutsev etendusasutus) või kohaliku omavalitsuse asutusena (edaspidi munitsipaaletendusasutus). (2<sup>1</sup>) Sihtasutusena tegutseval etendusasutusel ja munitsipaaletendusasutusel on lisaks käesoleva paragrahvi lõikes 1 sätestatule ka loomenõukogu. (3) Käesoleva paragrahvi lõikes 2 nimetamata eraõiguslike juriidiliste isikute kohta käivate seaduste alusel tegutsevate etendusasutuste (edaspidi eraetendusasutus) tegevust reguleerib käesolev seadus niivõrd, kuivõrd see on seaduses nimetatud. (4) Kehtetu -",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_EAS_1"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_EAS_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:EAS_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:EAS_Par_2_Lg_2"
+        },
+        {
+          "@id": "estleg:EAS_Par_2_Lg_2_1"
+        },
+        {
+          "@id": "estleg:EAS_Par_2_Lg_3"
+        },
+        {
+          "@id": "estleg:EAS_Par_2_Lg_4"
         }
       ],
       "estleg:targetGroup": [
-        "citizen"
+        "citizen",
+        "business",
+        "public_body",
+        "ngo"
       ]
     },
     {
-      "@id": "estleg:EAS_Par_20",
+      "@id": "estleg:EAS_Par_2_Lg_1",
       "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_EAS"
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:paragrahv": "§ 20.",
-      "rdfs:label": "§ 20. Lepingu sõlmimine",
-      "estleg:sourceAct": "Etendusasutuse seadus",
-      "estleg:summary": "1(1)Kultuuriministeerium sõlmib ühe kuu jooksul pärast Kultuuriministeeriumi eelarve kinnitamist era- või munitsipaaletendusasutusega lepingu toetuse eraldamise kohta. Leping on toetuse kasutamise ja selle kohta aruande esitamise alus. Kultuuriministeerium sõlmib ühe kuu jooksul pärast Kultuuriministeeriumi eelarve kinnitamist era- või munitsipaaletendusasutusega lepingu toetuse eraldamise kohta. Leping on toetuse kasutamise ja selle kohta aruande esitamise alus. 2(2)Lepingus märgitakse:11)lepin",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_EAS_3"
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Etendusasutus käesoleva seaduse tähenduses on juriidiline isik või asutus: kelle põhitegevusala on teatri- ja tantsuetenduste või kontsertide lavastamine ja esitamine, muusikaline loometegevus või lavakunsti abitegevused; kes korraldab regulaarselt autorite ja esitajate loomingu avalikke esitusi etenduste või kontsertidena; kes on töösuhtes loominguliste töötajatega või võlaõiguslikus suhtes teenuse osutajatega loominguliste eesmärkide täitmiseks; kellel on loominguline juht; kes teavitab avalikkust etenduse või kontserdi toimumisest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_2"
       },
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_kultuuriministeerium"
-        }
-      ],
-      "estleg:competenceType": "general"
+      "rdfs:label": "§ 2 lg 1"
     },
     {
-      "@id": "estleg:EAS_Par_21",
+      "@id": "estleg:EAS_Par_2_Lg_2",
       "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_EAS"
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:paragrahv": "§ 21.",
-      "rdfs:label": "§ 21. Etendusasutuse valduses olev vara",
-      "estleg:sourceAct": "Etendusasutuse seadus",
-      "estleg:summary": "1(1)Riigietendusasutus valdab, kasutab ja käsutab tema valduses olevat vara riigivaraseaduses (RT I 1995, 22, 327; 1996, 36, 738; 40, 773; 48, 942; 81, 1446; 1997, 45, 724; 1998, 30, 409; 1999, 10, 155; 16, 271; 2000, 39, 239; 49, 306; 51, 319; 2001, 7, 17; 93, 565; 2002, 53, 336; 64, 393; 2003, 13, 69) sätestatud korras. Riigietendusasutus valdab, kasutab ja käsutab tema valduses olevat vara riigivaraseaduses (RT I 1995, 22, 327; 1996, 36, 738; 40, 773; 48, 942; 81, 1446; 1997, 45, 724; 1998, 3",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_EAS_4"
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Käesolev seadus reguleerib sellise etendusasutuse tegevust, kes toimib riigi sihtasutusena või riigi osalusel asutatud sihtasutusena (edaspidi riigi asutatud sihtasutusena tegutsev etendusasutus), kohaliku omavalitsuse sihtasutusena (edaspidi sihtasutusena tegutsev munitsipaaletendusasutus, koos riigi asutatud sihtasutusena tegutseva etendusasutusega sihtasutusena tegutsev etendusasutus) või kohaliku omavalitsuse asutusena (edaspidi munitsipaaletendusasutus).",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_2"
       },
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:TKS_Par_8",
-          "estleg:similarityScore": {
-            "@value": "0.308",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        }
-      ]
+      "rdfs:label": "§ 2 lg 2"
     },
     {
-      "@id": "estleg:EAS_Par_22",
+      "@id": "estleg:EAS_Par_2_Lg_2_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2<sup>1</sup>",
+      "estleg:legalText": "(2<sup>1</sup>) Sihtasutusena tegutseval etendusasutusel ja munitsipaaletendusasutusel on lisaks käesoleva paragrahvi lõikes 1 sätestatule ka loomenõukogu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2<sup>1</sup>"
+    },
+    {
+      "@id": "estleg:EAS_Par_2_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Käesoleva paragrahvi lõikes 2 nimetamata eraõiguslike juriidiliste isikute kohta käivate seaduste alusel tegutsevate etendusasutuste (edaspidi eraetendusasutus) tegevust reguleerib käesolev seadus niivõrd, kuivõrd see on seaduses nimetatud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 3"
+    },
+    {
+      "@id": "estleg:EAS_Par_2_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 4"
+    },
+    {
+      "@id": "estleg:EAS_Par_2_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_EAS"
+        "estleg:LegalProvision_etendusasutuse_seadus"
       ],
-      "estleg:paragrahv": "§ 22.",
-      "rdfs:label": "§ 22. Arvestus ja aruandlus",
+      "estleg:paragrahv": "§ 2<sup>1</sup>.",
+      "rdfs:label": "§ 2<sup>1</sup>. Kontserdiasutus",
       "estleg:sourceAct": "Etendusasutuse seadus",
-      "estleg:summary": "1(1)Etendusasutus korraldab raamatupidamist ja peab statistilist arvestust õigusaktides sätestatud korras. Etendusasutus korraldab raamatupidamist ja peab statistilist arvestust õigusaktides sätestatud korras. 2(2)Riigietendusasutus ja sihtasutusena tegutsev etendusasutus esitavad oma tegevuse statistilise aruande ja eelarve täitmise aruande õigusaktis sätestatud korras ja õigusaktis ettenähtud tähtaja jooksul. Riigietendusasutus ja sihtasutusena tegutsev etendusasutus esitavad oma tegevuse stat",
+      "estleg:summary": "1 (1) Kontserdiasutus käesoleva seaduse tähenduses on sihtasutusena tegutsev etendusasutus või munitsipaaletendusasutus, kes korraldab autorite ja esitajate loomingu avalikke esitusi valdavalt kontsertide või muusikalavastustena. Kontserdiasutus käesoleva seaduse tähenduses on sihtasutusena tegutsev etendusasutus või munitsipaaletendusasutus, kes korraldab autorite ja esitajate loomingu avalikke esitusi valdavalt kontsertide või muusikalavastustena. 2 (2) Kontserdiasutusele kohaldatakse käesolev",
+      "estleg:legalText": "(1) Kontserdiasutus käesoleva seaduse tähenduses on sihtasutusena tegutsev etendusasutus või munitsipaaletendusasutus, kes korraldab autorite ja esitajate loomingu avalikke esitusi valdavalt kontsertide või muusikalavastustena. (2) Kontserdiasutusele kohaldatakse käesolevas seaduses etendusasutuse kohta sätestatut niivõrd, kuivõrd käesolevast seadusest ei tulene teisiti. (3) Käesolevat seadust, välja arvatud § 12 lõiget 1, ei kohaldata eraetendusasutusele, kes korraldab autorite ja esitajate loomingu avalikke esitusi valdavalt kontsertide või muusikalavastustena.",
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_EAS_4"
+        "@id": "estleg:Cluster_EAS_1"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_EAS_1"
       },
-      "estleg:dutyHolder": "Etendusasutus korraldab raamatupidamist ja",
-      "estleg:semanticallySimilarTo": [
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:Reg_309377_Par_8",
-          "estleg:similarityScore": {
-            "@value": "0.652",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
+          "@id": "estleg:EAS_Par_2_1_Lg_1"
+        },
+        {
+          "@id": "estleg:EAS_Par_2_1_Lg_2"
+        },
+        {
+          "@id": "estleg:EAS_Par_2_1_Lg_3"
         }
       ],
       "estleg:targetGroup": [
@@ -611,23 +463,527 @@
       ]
     },
     {
-      "@id": "estleg:EAS_Par_23",
+      "@id": "estleg:EAS_Par_2_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kontserdiasutus käesoleva seaduse tähenduses on sihtasutusena tegutsev etendusasutus või munitsipaaletendusasutus, kes korraldab autorite ja esitajate loomingu avalikke esitusi valdavalt kontsertide või muusikalavastustena.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_2_1"
+      },
+      "rdfs:label": "§ 2<sup>1</sup> lg 1"
+    },
+    {
+      "@id": "estleg:EAS_Par_2_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kontserdiasutusele kohaldatakse käesolevas seaduses etendusasutuse kohta sätestatut niivõrd, kuivõrd käesolevast seadusest ei tulene teisiti.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_2_1"
+      },
+      "rdfs:label": "§ 2<sup>1</sup> lg 2"
+    },
+    {
+      "@id": "estleg:EAS_Par_2_1_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Käesolevat seadust, välja arvatud § 12 lõiget 1, ei kohaldata eraetendusasutusele, kes korraldab autorite ja esitajate loomingu avalikke esitusi valdavalt kontsertide või muusikalavastustena.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_2_1"
+      },
+      "rdfs:label": "§ 2<sup>1</sup> lg 3"
+    },
+    {
+      "@id": "estleg:EAS_Par_2_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_EAS"
+        "estleg:LegalProvision_etendusasutuse_seadus"
       ],
-      "estleg:paragrahv": "§ 23.",
-      "rdfs:label": "§ 23. Rahvusooperi seaduse muutmine",
+      "estleg:paragrahv": "§ 2<sup>2</sup>.",
+      "rdfs:label": "§ 2<sup>2</sup>. Seaduse kohaldamine avaliku etenduse või kontserdi korraldajale",
       "estleg:sourceAct": "Etendusasutuse seadus",
-      "estleg:summary": "Rahvusooperi seaduses (RT I 1997, 93, 1558; 2000, 47, 287; RT III 2002, 14, 157; RT I 2002, 21, 117; 53, 336; 57, 357; 90, 521) tehakse järgmised muudatused:11)paragrahvi 13 lõige 2 muudetakse ja sõnastatakse järgmiselt:« (2) Rahvusooperi repertuaarivalikule, etenduste ja kontsertide planeerimisele, repertuaariplaani koostamisele ning etendustest ja kontsertidest teavitamisele kohaldatakse etendusasutuse seaduse § 10, § 11 lõiget 1 ja § 12 lõiget 1.»;22)paragrahvi 13 lõike 3 viimane lause muudet",
+      "estleg:summary": "Käesoleva seaduse § 12 lõiget 1 kohaldatakse vajalike erisustega mistahes avaliku etenduse või kontserdi korraldajale. RT I 2022-08-06 3 106082022003 2022-11-01 Käesoleva seaduse § 12 lõiget 1 kohaldatakse vajalike erisustega mistahes avaliku etenduse või kontserdi korraldajale.",
+      "estleg:legalText": "Käesoleva seaduse § 12 lõiget 1 kohaldatakse vajalike erisustega mistahes avaliku etenduse või kontserdi korraldajale.",
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_EAS_5"
+        "@id": "estleg:Cluster_EAS_1"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_EAS_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:EAS_Par_2_2_Lg_Unknown_1"
+        }
+      ],
+      "estleg:targetGroup": [
+        "business"
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:EAS_Par_12"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:EAS_Par_2_2_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Käesoleva seaduse § 12 lõiget 1 kohaldatakse vajalike erisustega mistahes avaliku etenduse või kontserdi korraldajale.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_2_2"
+      }
+    },
+    {
+      "@id": "estleg:EAS_Par_3",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_etendusasutuse_seadus"
+      ],
+      "estleg:paragrahv": "§ 3.",
+      "rdfs:label": "§ 3. Etendusasutuse moodustamine, ümberkorraldamine, selle tegevuse lõpetamine ja nendest teatamine",
+      "estleg:sourceAct": "Etendusasutuse seadus",
+      "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_EAS_2"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_EAS_2"
+      }
+    },
+    {
+      "@id": "estleg:EAS_Par_4",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_etendusasutuse_seadus"
+      ],
+      "estleg:paragrahv": "§ 4.",
+      "rdfs:label": "§ 4. Etendusasutuse põhimäärus ja põhikiri",
+      "estleg:sourceAct": "Etendusasutuse seadus",
+      "estleg:summary": "1 (1) Etendusasutuse põhikirjas või põhimääruses nähakse ette etendusasutuse ülesanded, juhtimise korraldus, vara ja selle majandamise ning eelarvega seotud õigused ja kohustused, vajaduse korral aruandluse ja kontrolli korraldus, etendusasutuse juhi ja loomingulise juhi vaba ametikoha täitmise ja arengukava koostamise ja muutmise kord ning muud etendusasutuse tegevuse korraldamiseks olulised sätted. RT I 2022-08-06 3 106082022003 2022-11-01 Etendusasutuse põhikirjas või põhimääruses nähakse ett",
+      "estleg:legalText": "(1) Etendusasutuse põhikirjas või põhimääruses nähakse ette etendusasutuse ülesanded, juhtimise korraldus, vara ja selle majandamise ning eelarvega seotud õigused ja kohustused, vajaduse korral aruandluse ja kontrolli korraldus, etendusasutuse juhi ja loomingulise juhi vaba ametikoha täitmise ja arengukava koostamise ja muutmise kord ning muud etendusasutuse tegevuse korraldamiseks olulised sätted. (2) Kehtetu - (3) Kehtetu - (4) Käesoleva paragrahvi lõiget 1 kohaldatakse ka eraetendusasutusele.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_EAS_2"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_EAS_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:EAS_Par_4_Lg_1"
+        },
+        {
+          "@id": "estleg:EAS_Par_4_Lg_2"
+        },
+        {
+          "@id": "estleg:EAS_Par_4_Lg_3"
+        },
+        {
+          "@id": "estleg:EAS_Par_4_Lg_4"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:EAS_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Etendusasutuse põhikirjas või põhimääruses nähakse ette etendusasutuse ülesanded, juhtimise korraldus, vara ja selle majandamise ning eelarvega seotud õigused ja kohustused, vajaduse korral aruandluse ja kontrolli korraldus, etendusasutuse juhi ja loomingulise juhi vaba ametikoha täitmise ja arengukava koostamise ja muutmise kord ning muud etendusasutuse tegevuse korraldamiseks olulised sätted.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1"
+    },
+    {
+      "@id": "estleg:EAS_Par_4_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 2"
+    },
+    {
+      "@id": "estleg:EAS_Par_4_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 3"
+    },
+    {
+      "@id": "estleg:EAS_Par_4_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Käesoleva paragrahvi lõiget 1 kohaldatakse ka eraetendusasutusele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 4"
+    },
+    {
+      "@id": "estleg:EAS_Par_5",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_etendusasutuse_seadus"
+      ],
+      "estleg:paragrahv": "§ 5.",
+      "rdfs:label": "§ 5. Etendusasutuse juht ja loominguline juht",
+      "estleg:sourceAct": "Etendusasutuse seadus",
+      "estleg:summary": "1 (1) Etendusasutuse juht tagab etendusasutuse ülesannete täitmise ning vastutab etendusasutuse üldseisundi ja arengu ning selle rahaliste vahendite sihipärase kasutamise eest. Loomingulise tegevusega seotud küsimusi otsustab etendusasutuse juht loomingulise juhi ettepanekul. Etendusasutuse juht tagab etendusasutuse ülesannete täitmise ning vastutab etendusasutuse üldseisundi ja arengu ning selle rahaliste vahendite sihipärase kasutamise eest. Loomingulise tegevusega seotud küsimusi otsustab ete",
+      "estleg:legalText": "(1) Etendusasutuse juht tagab etendusasutuse ülesannete täitmise ning vastutab etendusasutuse üldseisundi ja arengu ning selle rahaliste vahendite sihipärase kasutamise eest. Loomingulise tegevusega seotud küsimusi otsustab etendusasutuse juht loomingulise juhi ettepanekul. (2) Etendusasutuse loomingulist tegevust kavandab ja koordineerib loominguline juht, kes: korraldab etendusasutuse repertuaarivalikut ning koostab repertuaariplaani või hooajakava ja esitab selle loomenõukogu olemasolu korral sellele arvamuse andmiseks; korraldab loominguliste töötajate valikut ja rakendamist; tagab etendusasutuse loominguliste eesmärkide täitmise. (3) Etendusasutuse loomingulise juhi ametinimetus nähakse ette etendusasutuse põhikirjas või põhimääruses. (4) Etendusasutuse juhi ja loomingulise juhi ülesandeid võib täita sama isik, kui selline võimalus on sätestatud etendusasutuse põhikirjas või põhimääruses. (5) Sihtasutusena tegutsevas etendusasutuses täidab etendusasutuse juhile pandud ülesandeid sihtasutuse juhatus põhikirjas ettenähtud korras. Etendusasutuse loomingulise juhi ülesandeid võib sihtasutuse nõukogu otsuse alusel täita juhatuse liige. (6) Käesoleva paragrahvi lõikeid 1–4 kohaldatakse ka eraetendusasutusele.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_EAS_2"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_EAS_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:EAS_Par_5_Lg_1"
+        },
+        {
+          "@id": "estleg:EAS_Par_5_Lg_2"
+        },
+        {
+          "@id": "estleg:EAS_Par_5_Lg_3"
+        },
+        {
+          "@id": "estleg:EAS_Par_5_Lg_4"
+        },
+        {
+          "@id": "estleg:EAS_Par_5_Lg_5"
+        },
+        {
+          "@id": "estleg:EAS_Par_5_Lg_6"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "business",
+        "ngo"
+      ]
+    },
+    {
+      "@id": "estleg:EAS_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Etendusasutuse juht tagab etendusasutuse ülesannete täitmise ning vastutab etendusasutuse üldseisundi ja arengu ning selle rahaliste vahendite sihipärase kasutamise eest. Loomingulise tegevusega seotud küsimusi otsustab etendusasutuse juht loomingulise juhi ettepanekul.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1"
+    },
+    {
+      "@id": "estleg:EAS_Par_5_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Etendusasutuse loomingulist tegevust kavandab ja koordineerib loominguline juht, kes: korraldab etendusasutuse repertuaarivalikut ning koostab repertuaariplaani või hooajakava ja esitab selle loomenõukogu olemasolu korral sellele arvamuse andmiseks; korraldab loominguliste töötajate valikut ja rakendamist; tagab etendusasutuse loominguliste eesmärkide täitmise.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 2"
+    },
+    {
+      "@id": "estleg:EAS_Par_5_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Etendusasutuse loomingulise juhi ametinimetus nähakse ette etendusasutuse põhikirjas või põhimääruses.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 3"
+    },
+    {
+      "@id": "estleg:EAS_Par_5_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Etendusasutuse juhi ja loomingulise juhi ülesandeid võib täita sama isik, kui selline võimalus on sätestatud etendusasutuse põhikirjas või põhimääruses.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 4"
+    },
+    {
+      "@id": "estleg:EAS_Par_5_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Sihtasutusena tegutsevas etendusasutuses täidab etendusasutuse juhile pandud ülesandeid sihtasutuse juhatus põhikirjas ettenähtud korras. Etendusasutuse loomingulise juhi ülesandeid võib sihtasutuse nõukogu otsuse alusel täita juhatuse liige.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 5"
+    },
+    {
+      "@id": "estleg:EAS_Par_5_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Käesoleva paragrahvi lõikeid 1–4 kohaldatakse ka eraetendusasutusele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 6"
+    },
+    {
+      "@id": "estleg:EAS_Par_6",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_etendusasutuse_seadus"
+      ],
+      "estleg:paragrahv": "§ 6.",
+      "rdfs:label": "§ 6. Etendusasutuse juhi ja loomingulise juhi vaba ametikoha täitmine",
+      "estleg:sourceAct": "Etendusasutuse seadus",
+      "estleg:summary": "1 (1) Etendusasutuse juhi ja riigi asutatud sihtasutusena tegutseva etendusasutuse, välja arvatud kontserdiasutuse loomingulise juhi vaba ametikoha täitmiseks korraldatakse avalik konkurss, mille korraldamise tingimused ja kord sätestatakse etendusasutuse põhikirjas või põhimääruses. Etendusasutuse juhi ja riigi asutatud sihtasutusena tegutseva etendusasutuse, välja arvatud kontserdiasutuse loomingulise juhi vaba ametikoha täitmiseks korraldatakse avalik konkurss, mille korraldamise tingimused j",
+      "estleg:legalText": "(1) Etendusasutuse juhi ja riigi asutatud sihtasutusena tegutseva etendusasutuse, välja arvatud kontserdiasutuse loomingulise juhi vaba ametikoha täitmiseks korraldatakse avalik konkurss, mille korraldamise tingimused ja kord sätestatakse etendusasutuse põhikirjas või põhimääruses. (2) Riigi asutatud sihtasutusena tegutseva kontserdiasutuse, munitsipaaletendusasutuse ja sihtasutusena tegutseva munitsipaaletendusasutuse loomingulise juhi vaba ametikoha täitmise kord sätestatakse etendusasutuse põhikirjas või põhimääruses. (3) Etendusasutuse juhi ja loomingulise juhiga sõlmitakse tähtajaline tööleping kuni viieks aastaks, kui nad ei ole sihtasutusena tegutseva etendusasutuse juhatuse liikmed. Tähtajalise töölepingu asemel võib kontserdiasutuse loomingulise juhi või tema esindajaga sõlmida teenuse osutamiseks muu võlaõigusliku lepingu tähtajaga kuni viis aastat. (4) Sihtasutusena tegutseva etendusasutuse nõukogu või munitsipaaletendusasutuse moodustaja otsusel võib etendusasutuse juhiga sõlmitud juhatuse liikme lepingut või tähtajalist töölepingut avalikku konkurssi korraldamata pikendada üks kord. (5) Käesoleva paragrahvi lõiget 4 kohaldatakse ka riigi asutatud sihtasutusena tegutseva etendusasutuse, välja arvatud kontserdiasutuse loomingulise juhiga sõlmitud lepingule. (6) Kui sihtasutusena tegutseva etendusasutuse juhi vaba ametikohta ei ole mõjuval põhjusel võimalik avaliku konkursi korras täita, määrab sihtasutusena tegutseva etendusasutuse nõukogu etendusasutuse juhi etendusasutuse asutajate nõusolekul kuni üheks aastaks avalikku konkurssi korraldamata.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_EAS_2"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_EAS_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:EAS_Par_6_Lg_1"
+        },
+        {
+          "@id": "estleg:EAS_Par_6_Lg_2"
+        },
+        {
+          "@id": "estleg:EAS_Par_6_Lg_3"
+        },
+        {
+          "@id": "estleg:EAS_Par_6_Lg_4"
+        },
+        {
+          "@id": "estleg:EAS_Par_6_Lg_5"
+        },
+        {
+          "@id": "estleg:EAS_Par_6_Lg_6"
+        }
+      ],
+      "estleg:targetGroup": [
+        "business",
+        "ngo"
+      ]
+    },
+    {
+      "@id": "estleg:EAS_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Etendusasutuse juhi ja riigi asutatud sihtasutusena tegutseva etendusasutuse, välja arvatud kontserdiasutuse loomingulise juhi vaba ametikoha täitmiseks korraldatakse avalik konkurss, mille korraldamise tingimused ja kord sätestatakse etendusasutuse põhikirjas või põhimääruses.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1"
+    },
+    {
+      "@id": "estleg:EAS_Par_6_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Riigi asutatud sihtasutusena tegutseva kontserdiasutuse, munitsipaaletendusasutuse ja sihtasutusena tegutseva munitsipaaletendusasutuse loomingulise juhi vaba ametikoha täitmise kord sätestatakse etendusasutuse põhikirjas või põhimääruses.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 2"
+    },
+    {
+      "@id": "estleg:EAS_Par_6_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Etendusasutuse juhi ja loomingulise juhiga sõlmitakse tähtajaline tööleping kuni viieks aastaks, kui nad ei ole sihtasutusena tegutseva etendusasutuse juhatuse liikmed. Tähtajalise töölepingu asemel võib kontserdiasutuse loomingulise juhi või tema esindajaga sõlmida teenuse osutamiseks muu võlaõigusliku lepingu tähtajaga kuni viis aastat.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 3"
+    },
+    {
+      "@id": "estleg:EAS_Par_6_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Sihtasutusena tegutseva etendusasutuse nõukogu või munitsipaaletendusasutuse moodustaja otsusel võib etendusasutuse juhiga sõlmitud juhatuse liikme lepingut või tähtajalist töölepingut avalikku konkurssi korraldamata pikendada üks kord.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 4"
+    },
+    {
+      "@id": "estleg:EAS_Par_6_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Käesoleva paragrahvi lõiget 4 kohaldatakse ka riigi asutatud sihtasutusena tegutseva etendusasutuse, välja arvatud kontserdiasutuse loomingulise juhiga sõlmitud lepingule.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 5"
+    },
+    {
+      "@id": "estleg:EAS_Par_6_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Kui sihtasutusena tegutseva etendusasutuse juhi vaba ametikohta ei ole mõjuval põhjusel võimalik avaliku konkursi korras täita, määrab sihtasutusena tegutseva etendusasutuse nõukogu etendusasutuse juhi etendusasutuse asutajate nõusolekul kuni üheks aastaks avalikku konkurssi korraldamata.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 6"
+    },
+    {
+      "@id": "estleg:EAS_Par_7",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_etendusasutuse_seadus"
+      ],
+      "estleg:paragrahv": "§ 7.",
+      "rdfs:label": "§ 7. Etendusasutuse loominguline töötaja",
+      "estleg:sourceAct": "Etendusasutuse seadus",
+      "estleg:summary": "1 (1) Etendusasutuse loominguline töötaja (edaspidi loominguline töötaja) on töötaja, kelle loomingulise tegevuse tulemusel kavandatakse, valmistatakse ette ning esitatakse avalikke etendusi ja kontserte. Etendusasutuse loominguline töötaja (edaspidi loominguline töötaja) on töötaja, kelle loomingulise tegevuse tulemusel kavandatakse, valmistatakse ette ning esitatakse avalikke etendusi ja kontserte. 2 (2) Loomingulise töötajaga võib sõlmida tähtajalise töölepingu kuni viieks aastaks, kui seda õ",
+      "estleg:legalText": "(1) Etendusasutuse loominguline töötaja (edaspidi loominguline töötaja) on töötaja, kelle loomingulise tegevuse tulemusel kavandatakse, valmistatakse ette ning esitatakse avalikke etendusi ja kontserte. (2) Loomingulise töötajaga võib sõlmida tähtajalise töölepingu kuni viieks aastaks, kui seda õigustab loomingulise töö eripära.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_EAS_2"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_EAS_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:EAS_Par_7_Lg_1"
+        },
+        {
+          "@id": "estleg:EAS_Par_7_Lg_2"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:EAS_Par_7_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Etendusasutuse loominguline töötaja (edaspidi loominguline töötaja) on töötaja, kelle loomingulise tegevuse tulemusel kavandatakse, valmistatakse ette ning esitatakse avalikke etendusi ja kontserte.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 1"
+    },
+    {
+      "@id": "estleg:EAS_Par_7_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Loomingulise töötajaga võib sõlmida tähtajalise töölepingu kuni viieks aastaks, kui seda õigustab loomingulise töö eripära.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 2"
+    },
+    {
+      "@id": "estleg:EAS_Par_7_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_etendusasutuse_seadus"
+      ],
+      "estleg:paragrahv": "§ 7<sup>1</sup>.",
+      "rdfs:label": "§ 7<sup>1</sup>. Tähtajalise töölepingu järjestikuse sõlmimise ja pikendamise piirang",
+      "estleg:sourceAct": "Etendusasutuse seadus",
+      "estleg:summary": "1 (1) Kui loomingulise töötajaga on sõlmitud tähtajaline tööleping samas töökohas samalaadse töö tegemiseks järjestikku rohkem kui kaks korda või tähtajalist lepingut on pikendatud rohkem kui üks kord viie aasta jooksul, loetakse tema töösuhe algusest peale tähtajatuks. Kui loomingulise töötajaga on sõlmitud tähtajaline tööleping samas töökohas samalaadse töö tegemiseks järjestikku rohkem kui kaks korda või tähtajalist lepingut on pikendatud rohkem kui üks kord viie aasta jooksul, loetakse tema ",
+      "estleg:legalText": "(1) Kui loomingulise töötajaga on sõlmitud tähtajaline tööleping samas töökohas samalaadse töö tegemiseks järjestikku rohkem kui kaks korda või tähtajalist lepingut on pikendatud rohkem kui üks kord viie aasta jooksul, loetakse tema töösuhe algusest peale tähtajatuks. (2) Loomingulise töötajaga on lubatud sõlmida tähtajaline järjestikune tööleping rohkem kui kaks järjestikust korda või pikendada seda rohkem kui üks kord viie aasta jooksul, kui sellises võimaluses on kokku lepitud kollektiivlepingus ning tingimusel, et see on vajalik loomingulise valdkonna töö eripära tõttu ning järjestikuste tähtajaliste töölepingute koguarv ei ületa viit töölepingut ja kogukestus kümmet aastat. (3) Tähtajalise töölepingu sõlmimine loetakse järjestikuseks, kui ühe töölepingu lõppemise ja järgmise töölepingu sõlmimise vaheline aeg ei ületa kahte kuud. (4) Etendusasutuse loomingulise juhiga tähtajalise töölepingu järjestikuse sõlmimise või pikendamise korral ei muutu tema töösuhe tähtajatuks.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_EAS_2"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_EAS_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:EAS_Par_7_1_Lg_1"
+        },
+        {
+          "@id": "estleg:EAS_Par_7_1_Lg_2"
+        },
+        {
+          "@id": "estleg:EAS_Par_7_1_Lg_3"
+        },
+        {
+          "@id": "estleg:EAS_Par_7_1_Lg_4"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen"
+      ],
       "estleg:semanticallySimilarTo": [
         {
-          "@id": "estleg:ROS_Par_13",
+          "@id": "estleg:TOOLEP_Par_10",
           "estleg:similarityScore": {
-            "@value": "0.4",
+            "@value": "0.381",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
@@ -635,18 +991,1285 @@
       ]
     },
     {
+      "@id": "estleg:EAS_Par_7_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kui loomingulise töötajaga on sõlmitud tähtajaline tööleping samas töökohas samalaadse töö tegemiseks järjestikku rohkem kui kaks korda või tähtajalist lepingut on pikendatud rohkem kui üks kord viie aasta jooksul, loetakse tema töösuhe algusest peale tähtajatuks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_7_1"
+      },
+      "rdfs:label": "§ 7<sup>1</sup> lg 1"
+    },
+    {
+      "@id": "estleg:EAS_Par_7_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Loomingulise töötajaga on lubatud sõlmida tähtajaline järjestikune tööleping rohkem kui kaks järjestikust korda või pikendada seda rohkem kui üks kord viie aasta jooksul, kui sellises võimaluses on kokku lepitud kollektiivlepingus ning tingimusel, et see on vajalik loomingulise valdkonna töö eripära tõttu ning järjestikuste tähtajaliste töölepingute koguarv ei ületa viit töölepingut ja kogukestus kümmet aastat.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_7_1"
+      },
+      "rdfs:label": "§ 7<sup>1</sup> lg 2"
+    },
+    {
+      "@id": "estleg:EAS_Par_7_1_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Tähtajalise töölepingu sõlmimine loetakse järjestikuseks, kui ühe töölepingu lõppemise ja järgmise töölepingu sõlmimise vaheline aeg ei ületa kahte kuud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_7_1"
+      },
+      "rdfs:label": "§ 7<sup>1</sup> lg 3"
+    },
+    {
+      "@id": "estleg:EAS_Par_7_1_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Etendusasutuse loomingulise juhiga tähtajalise töölepingu järjestikuse sõlmimise või pikendamise korral ei muutu tema töösuhe tähtajatuks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_7_1"
+      },
+      "rdfs:label": "§ 7<sup>1</sup> lg 4"
+    },
+    {
+      "@id": "estleg:EAS_Par_8",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_etendusasutuse_seadus"
+      ],
+      "estleg:paragrahv": "§ 8.",
+      "rdfs:label": "§ 8. Loomenõukogu",
+      "estleg:sourceAct": "Etendusasutuse seadus",
+      "estleg:summary": "1 (1) Etendusasutuse loomenõukogu kavandab ja hindab etendusasutuse loomingulist tegevust. RT I 2022-08-06 3 106082022003 2022-11-01 Etendusasutuse loomenõukogu kavandab ja hindab etendusasutuse loomingulist tegevust. 2 (2) Loomenõukogu moodustamise kord ja nõukogu pädevus sätestatakse etendusasutuse põhimääruses või põhikirjas. Loomenõukogu moodustamise kord ja nõukogu pädevus sätestatakse etendusasutuse põhimääruses või põhikirjas. 3 (3) Loomenõukogusse kuuluvad etendusasutuse loominguline juh",
+      "estleg:legalText": "(1) Etendusasutuse loomenõukogu kavandab ja hindab etendusasutuse loomingulist tegevust. (2) Loomenõukogu moodustamise kord ja nõukogu pädevus sätestatakse etendusasutuse põhimääruses või põhikirjas. (3) Loomenõukogusse kuuluvad etendusasutuse loominguline juht ja loominguliste töötajate esindajad. Loomenõukogusse võivad kuuluda ka etendusasutuse juht ja asjatundjatena teised isikud.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_EAS_2"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_EAS_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:EAS_Par_8_Lg_1"
+        },
+        {
+          "@id": "estleg:EAS_Par_8_Lg_2"
+        },
+        {
+          "@id": "estleg:EAS_Par_8_Lg_3"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen"
+      ]
+    },
+    {
+      "@id": "estleg:EAS_Par_8_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Etendusasutuse loomenõukogu kavandab ja hindab etendusasutuse loomingulist tegevust.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 1"
+    },
+    {
+      "@id": "estleg:EAS_Par_8_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Loomenõukogu moodustamise kord ja nõukogu pädevus sätestatakse etendusasutuse põhimääruses või põhikirjas.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 2"
+    },
+    {
+      "@id": "estleg:EAS_Par_8_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Loomenõukogusse kuuluvad etendusasutuse loominguline juht ja loominguliste töötajate esindajad. Loomenõukogusse võivad kuuluda ka etendusasutuse juht ja asjatundjatena teised isikud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 3"
+    },
+    {
+      "@id": "estleg:EAS_Par_9",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_etendusasutuse_seadus"
+      ],
+      "estleg:paragrahv": "§ 9.",
+      "rdfs:label": "§ 9. Etendusasutuse arengukava",
+      "estleg:sourceAct": "Etendusasutuse seadus",
+      "estleg:summary": "1 (1) Etendusasutus koostab arengukava vähemalt neljaks aastaks. Etendusasutus koostab arengukava vähemalt neljaks aastaks. 2 (2) Arengukavas nähakse ette etendusasutuse missioon ja eesmärgid ning nende täitmiseks kavandatav tegevus ja vahendid. Arengukavas nähakse ette etendusasutuse missioon ja eesmärgid ning nende täitmiseks kavandatav tegevus ja vahendid. 3 (3) Arengukava koostamise ja muutmise kord sätestatakse etendusasutuse põhimääruses või põhikirjas. Arengukava koostamise ja muutmise ko",
+      "estleg:legalText": "(1) Etendusasutus koostab arengukava vähemalt neljaks aastaks. (2) Arengukavas nähakse ette etendusasutuse missioon ja eesmärgid ning nende täitmiseks kavandatav tegevus ja vahendid. (3) Arengukava koostamise ja muutmise kord sätestatakse etendusasutuse põhimääruses või põhikirjas. (4) Kehtetu - (5) Munitsipaaletendusasutusele, sihtasutusena tegutsevale munitsipaaletendusasutusele ja eraetendusasutusele kohaldatakse käesoleva paragrahvi lõikeid 1–3, kui nad taotlevad toetust riigieelarvest käesolevas seaduses ja selle alusel kehtestatud korras.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_EAS_2"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_EAS_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:EAS_Par_9_Lg_1"
+        },
+        {
+          "@id": "estleg:EAS_Par_9_Lg_2"
+        },
+        {
+          "@id": "estleg:EAS_Par_9_Lg_3"
+        },
+        {
+          "@id": "estleg:EAS_Par_9_Lg_4"
+        },
+        {
+          "@id": "estleg:EAS_Par_9_Lg_5"
+        }
+      ],
+      "estleg:targetGroup": [
+        "ngo"
+      ]
+    },
+    {
+      "@id": "estleg:EAS_Par_9_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Etendusasutus koostab arengukava vähemalt neljaks aastaks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 1"
+    },
+    {
+      "@id": "estleg:EAS_Par_9_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Arengukavas nähakse ette etendusasutuse missioon ja eesmärgid ning nende täitmiseks kavandatav tegevus ja vahendid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 2"
+    },
+    {
+      "@id": "estleg:EAS_Par_9_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Arengukava koostamise ja muutmise kord sätestatakse etendusasutuse põhimääruses või põhikirjas.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 3"
+    },
+    {
+      "@id": "estleg:EAS_Par_9_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 4"
+    },
+    {
+      "@id": "estleg:EAS_Par_9_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Munitsipaaletendusasutusele, sihtasutusena tegutsevale munitsipaaletendusasutusele ja eraetendusasutusele kohaldatakse käesoleva paragrahvi lõikeid 1–3, kui nad taotlevad toetust riigieelarvest käesolevas seaduses ja selle alusel kehtestatud korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 5"
+    },
+    {
+      "@id": "estleg:EAS_Par_10",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_etendusasutuse_seadus"
+      ],
+      "estleg:paragrahv": "§ 10.",
+      "rdfs:label": "§ 10. Etendusasutuse töökorraldus",
+      "estleg:sourceAct": "Etendusasutuse seadus",
+      "estleg:summary": "1 (1) Etendusasutus on repertuaari valikul ja muudes kunstilistes otsustes sõltumatu. Etendusasutus on repertuaari valikul ja muudes kunstilistes otsustes sõltumatu. 2 (2) Etendused ja kontserdid planeeritakse repertuaariplaani või hooajakava ja selle põhjal koostatud kuukava alusel. RT I 2022-08-06 3 106082022003 2022-11-01 Etendused ja kontserdid planeeritakse repertuaariplaani või hooajakava ja selle põhjal koostatud kuukava alusel.",
+      "estleg:legalText": "(1) Etendusasutus on repertuaari valikul ja muudes kunstilistes otsustes sõltumatu. (2) Etendused ja kontserdid planeeritakse repertuaariplaani või hooajakava ja selle põhjal koostatud kuukava alusel.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_EAS_2"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_EAS_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:EAS_Par_10_Lg_1"
+        },
+        {
+          "@id": "estleg:EAS_Par_10_Lg_2"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:EAS_Par_10_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Etendusasutus on repertuaari valikul ja muudes kunstilistes otsustes sõltumatu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 1"
+    },
+    {
+      "@id": "estleg:EAS_Par_10_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Etendused ja kontserdid planeeritakse repertuaariplaani või hooajakava ja selle põhjal koostatud kuukava alusel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 2"
+    },
+    {
+      "@id": "estleg:EAS_Par_11",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_etendusasutuse_seadus"
+      ],
+      "estleg:paragrahv": "§ 11.",
+      "rdfs:label": "§ 11. Repertuaariplaan ja hooajakava",
+      "estleg:sourceAct": "Etendusasutuse seadus",
+      "estleg:summary": "1 (1) Repertuaariplaan või hooajakava koostatakse vähemalt üheks hooajaks. Repertuaariplaan või hooajakava koostatakse vähemalt üheks hooajaks. 2 (2) Repertuaariplaani või hooajakava kinnitab etendusasutuse juht loomingulise juhi ettepaneku alusel. 2022-11-07 20:45:00 Veaparandus. Parandatud ilmne ebatäpsus sõnas „alusel“ Riigi Teataja seaduse § 10 lõike 4 alusel. Repertuaariplaani või hooajakava kinnitab etendusasutuse juht loomingulise juhi ettepaneku alusel. 3 (3) Eraetendusasutusele kohaldat",
+      "estleg:legalText": "(1) Repertuaariplaan või hooajakava koostatakse vähemalt üheks hooajaks. (2) Repertuaariplaani või hooajakava kinnitab etendusasutuse juht loomingulise juhi ettepaneku alusel. (3) Eraetendusasutusele kohaldatakse käesoleva paragrahvi lõikeid 1 ja 2, kui ta taotleb toetust riigieelarvest käesolevas seaduses ja selle alusel kehtestatud korras.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_EAS_2"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_EAS_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:EAS_Par_11_Lg_1"
+        },
+        {
+          "@id": "estleg:EAS_Par_11_Lg_2"
+        },
+        {
+          "@id": "estleg:EAS_Par_11_Lg_3"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:EAS_Par_11_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Repertuaariplaan või hooajakava koostatakse vähemalt üheks hooajaks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 1"
+    },
+    {
+      "@id": "estleg:EAS_Par_11_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Repertuaariplaani või hooajakava kinnitab etendusasutuse juht loomingulise juhi ettepaneku alusel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 2"
+    },
+    {
+      "@id": "estleg:EAS_Par_11_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Eraetendusasutusele kohaldatakse käesoleva paragrahvi lõikeid 1 ja 2, kui ta taotleb toetust riigieelarvest käesolevas seaduses ja selle alusel kehtestatud korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 3"
+    },
+    {
+      "@id": "estleg:EAS_Par_12",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_etendusasutuse_seadus"
+      ],
+      "estleg:paragrahv": "§ 12.",
+      "rdfs:label": "§ 12. Avalikkuse teavitamine",
+      "estleg:sourceAct": "Etendusasutuse seadus",
+      "estleg:summary": "1 (1) Etendusasutus teeb etenduse ja kontserdi kohta avalikult kättesaadavaks järgmised andmed: RT I 2022-08-06 3 106082022003 2022-11-01 1 1) etendusasutuse nimetus; 2 2) esitatava teose või selle osa pealkiri; 3 3) teose pealkiri originaalkeeles; 4 4) tuletatud teose korral viide originaalteosele; 5 5) teose autori nimi; 6 6) teose põhiesitajad või esitajate kollektiiv; 7 7) etenduse või kontserdi toimumise aeg ja koht; 8 8) kehtetu - RT I 2022-08-06 3 106082022003 2022-11-01 9 9) etenduse või",
+      "estleg:legalText": "(1) Etendusasutus teeb etenduse ja kontserdi kohta avalikult kättesaadavaks järgmised andmed: etendusasutuse nimetus; esitatava teose või selle osa pealkiri; teose pealkiri originaalkeeles; tuletatud teose korral viide originaalteosele; teose autori nimi; teose põhiesitajad või esitajate kollektiiv; etenduse või kontserdi toimumise aeg ja koht; kehtetu - etenduse või kontserdi ja selle toimumise koha ligipääsetavuse kirjeldus. (2) Käesoleva paragrahvi lõiget 1 kohaldatakse ka eraetendusasutusele.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_EAS_2"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_EAS_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:EAS_Par_12_Lg_1"
+        },
+        {
+          "@id": "estleg:EAS_Par_12_Lg_2"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:EAS_Par_2_2"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:EAS_Par_12_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Etendusasutus teeb etenduse ja kontserdi kohta avalikult kättesaadavaks järgmised andmed: etendusasutuse nimetus; esitatava teose või selle osa pealkiri; teose pealkiri originaalkeeles; tuletatud teose korral viide originaalteosele; teose autori nimi; teose põhiesitajad või esitajate kollektiiv; etenduse või kontserdi toimumise aeg ja koht; kehtetu - etenduse või kontserdi ja selle toimumise koha ligipääsetavuse kirjeldus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 1"
+    },
+    {
+      "@id": "estleg:EAS_Par_12_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Käesoleva paragrahvi lõiget 1 kohaldatakse ka eraetendusasutusele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 2"
+    },
+    {
+      "@id": "estleg:EAS_Par_13",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_etendusasutuse_seadus"
+      ],
+      "estleg:paragrahv": "§ 13.",
+      "rdfs:label": "§ 13. Teose jäädvustamine",
+      "estleg:sourceAct": "Etendusasutuse seadus",
+      "estleg:summary": "1 (1) Etendusasutus korraldab oma repertuaaris olevate teoste jäädvustamist, arvestades autoriõiguse seadusest tulenevaid nõudeid. Etendusasutus korraldab oma repertuaaris olevate teoste jäädvustamist, arvestades autoriõiguse seadusest tulenevaid nõudeid. 2 (2) Jäädvustamine käesoleva seaduse tähenduses on teose esituse salvestamine mistahes andmekandjale. RT I 2022-08-06 3 106082022003 2022-11-01 Jäädvustamine käesoleva seaduse tähenduses on teose esituse salvestamine mistahes andmekandjale.",
+      "estleg:legalText": "(1) Etendusasutus korraldab oma repertuaaris olevate teoste jäädvustamist, arvestades autoriõiguse seadusest tulenevaid nõudeid. (2) Jäädvustamine käesoleva seaduse tähenduses on teose esituse salvestamine mistahes andmekandjale.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_EAS_2"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_EAS_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:EAS_Par_13_Lg_1"
+        },
+        {
+          "@id": "estleg:EAS_Par_13_Lg_2"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:EAS_Par_13_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Etendusasutus korraldab oma repertuaaris olevate teoste jäädvustamist, arvestades autoriõiguse seadusest tulenevaid nõudeid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 1"
+    },
+    {
+      "@id": "estleg:EAS_Par_13_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Jäädvustamine käesoleva seaduse tähenduses on teose esituse salvestamine mistahes andmekandjale.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 2"
+    },
+    {
+      "@id": "estleg:EAS_Par_14",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_etendusasutuse_seadus"
+      ],
+      "estleg:paragrahv": "§ 14.",
+      "rdfs:label": "§ 14. Teose toimik",
+      "estleg:sourceAct": "Etendusasutuse seadus",
+      "estleg:summary": "1 (1) Etendusasutus koostab repertuaaris oleva teose kohta toimiku, kuhu kuuluvad näiteks tekstiraamat, kavaleht, reklaammaterjal, kujunduse kavandid või fotod, väljavõtted meediakajastustest ja muud asjakohased materjalid. Võimaluse korral lisatakse toimikusse teose salvestis. Etendusasutus koostab repertuaaris oleva teose kohta toimiku, kuhu kuuluvad näiteks tekstiraamat, kavaleht, reklaammaterjal, kujunduse kavandid või fotod, väljavõtted meediakajastustest ja muud asjakohased materjalid. Või",
+      "estleg:legalText": "(1) Etendusasutus koostab repertuaaris oleva teose kohta toimiku, kuhu kuuluvad näiteks tekstiraamat, kavaleht, reklaammaterjal, kujunduse kavandid või fotod, väljavõtted meediakajastustest ja muud asjakohased materjalid. Võimaluse korral lisatakse toimikusse teose salvestis. (2) Teose toimiku koostamist ja säilitamist korraldab etendusasutuse juht, arvestades arhiiviseadusest ja autoriõiguse seadusest tulenevaid nõudeid. (3) Teose toimikut võib pidada digitaalselt.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_EAS_2"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_EAS_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:EAS_Par_14_Lg_1"
+        },
+        {
+          "@id": "estleg:EAS_Par_14_Lg_2"
+        },
+        {
+          "@id": "estleg:EAS_Par_14_Lg_3"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:EAS_Par_14_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Etendusasutus koostab repertuaaris oleva teose kohta toimiku, kuhu kuuluvad näiteks tekstiraamat, kavaleht, reklaammaterjal, kujunduse kavandid või fotod, väljavõtted meediakajastustest ja muud asjakohased materjalid. Võimaluse korral lisatakse toimikusse teose salvestis.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 1"
+    },
+    {
+      "@id": "estleg:EAS_Par_14_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Teose toimiku koostamist ja säilitamist korraldab etendusasutuse juht, arvestades arhiiviseadusest ja autoriõiguse seadusest tulenevaid nõudeid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 2"
+    },
+    {
+      "@id": "estleg:EAS_Par_14_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Teose toimikut võib pidada digitaalselt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 3"
+    },
+    {
+      "@id": "estleg:EAS_Par_15",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_etendusasutuse_seadus"
+      ],
+      "estleg:paragrahv": "§ 15.",
+      "rdfs:label": "§ 15. Eelarve ja rahastamine",
+      "estleg:sourceAct": "Etendusasutuse seadus",
+      "estleg:summary": "1 (1) Etendusasutusel on oma eelarve. Etendusasutuse eelarve koostamiseks kavandatakse kulud ja selgitatakse nende katteallikad. Etendusasutusel on oma eelarve. Etendusasutuse eelarve koostamiseks kavandatakse kulud ja selgitatakse nende katteallikad. 2 (2) Etendusasutuse kulude katteallikad on: 1 1) pääsmete müügist laekuv tulu; 2 2) põhitegevusega kaasnevast ja seda toetavast majandustegevusest saadav tulu; 3 3) laekumised sihtfondidest ja -kapitalidest; 4 4) annetused ja muud tulud; 5 5) toet",
+      "estleg:legalText": "(1) Etendusasutusel on oma eelarve. Etendusasutuse eelarve koostamiseks kavandatakse kulud ja selgitatakse nende katteallikad. (2) Etendusasutuse kulude katteallikad on: pääsmete müügist laekuv tulu; põhitegevusega kaasnevast ja seda toetavast majandustegevusest saadav tulu; laekumised sihtfondidest ja -kapitalidest; annetused ja muud tulud; toetus valla- või linnaeelarvest; toetus riigieelarvest. (3) Etendusasutustele antava toetuse suurus määratakse vastava aasta riigieelarves. (4) Kehtetu - (5) Etendusasutus võib saada riigieelarvest taotluse alusel toetust käesolevas seaduses ja selle alusel kehtestatud korras. (6) Käesoleva paragrahvi lõiget 5 ei kohaldata munitsipaalkontserdiasutusele ja sihtasutusena tegutsevale munitsipaalkontserdiasutusele. (7) Käesoleva paragrahvi lõige 5 ei välista etendusasutusele riigieelarvest muul õiguslikul alusel toetuse maksmist.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_EAS_3"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_EAS_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:EAS_Par_15_Lg_1"
+        },
+        {
+          "@id": "estleg:EAS_Par_15_Lg_2"
+        },
+        {
+          "@id": "estleg:EAS_Par_15_Lg_3"
+        },
+        {
+          "@id": "estleg:EAS_Par_15_Lg_4"
+        },
+        {
+          "@id": "estleg:EAS_Par_15_Lg_5"
+        },
+        {
+          "@id": "estleg:EAS_Par_15_Lg_6"
+        },
+        {
+          "@id": "estleg:EAS_Par_15_Lg_7"
+        }
+      ],
+      "estleg:targetGroup": [
+        "ngo"
+      ]
+    },
+    {
+      "@id": "estleg:EAS_Par_15_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Etendusasutusel on oma eelarve. Etendusasutuse eelarve koostamiseks kavandatakse kulud ja selgitatakse nende katteallikad.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 1"
+    },
+    {
+      "@id": "estleg:EAS_Par_15_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Etendusasutuse kulude katteallikad on: pääsmete müügist laekuv tulu; põhitegevusega kaasnevast ja seda toetavast majandustegevusest saadav tulu; laekumised sihtfondidest ja -kapitalidest; annetused ja muud tulud; toetus valla- või linnaeelarvest; toetus riigieelarvest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 2"
+    },
+    {
+      "@id": "estleg:EAS_Par_15_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Etendusasutustele antava toetuse suurus määratakse vastava aasta riigieelarves.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 3"
+    },
+    {
+      "@id": "estleg:EAS_Par_15_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 4"
+    },
+    {
+      "@id": "estleg:EAS_Par_15_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Etendusasutus võib saada riigieelarvest taotluse alusel toetust käesolevas seaduses ja selle alusel kehtestatud korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 5"
+    },
+    {
+      "@id": "estleg:EAS_Par_15_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Käesoleva paragrahvi lõiget 5 ei kohaldata munitsipaalkontserdiasutusele ja sihtasutusena tegutsevale munitsipaalkontserdiasutusele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 6"
+    },
+    {
+      "@id": "estleg:EAS_Par_15_Lg_7",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "7",
+      "estleg:legalText": "(7) Käesoleva paragrahvi lõige 5 ei välista etendusasutusele riigieelarvest muul õiguslikul alusel toetuse maksmist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 7"
+    },
+    {
+      "@id": "estleg:EAS_Par_16",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_etendusasutuse_seadus"
+      ],
+      "estleg:paragrahv": "§ 16.",
+      "rdfs:label": "§ 16. Etendusasutusele riigieelarvest toetuse määramise põhimõtted",
+      "estleg:sourceAct": "Etendusasutuse seadus",
+      "estleg:summary": "1 (1) Riigi asutatud sihtasutusena tegutsevale etendusasutusele määratakse riigieelarvest toetus etendusasutuse põhikirjaliste eesmärkide täitmise tagamiseks. Riigi asutatud sihtasutusena tegutsevale etendusasutusele määratakse riigieelarvest toetus etendusasutuse põhikirjaliste eesmärkide täitmise tagamiseks. 2 (2) Munitsipaaletendusasutusele, sihtasutusena tegutsevale munitsipaaletendusasutusele ja eraetendusasutusele võib määrata riigieelarvest toetuse rahvuskultuuri edendamiseks ning etendus",
+      "estleg:legalText": "(1) Riigi asutatud sihtasutusena tegutsevale etendusasutusele määratakse riigieelarvest toetus etendusasutuse põhikirjaliste eesmärkide täitmise tagamiseks. (2) Munitsipaaletendusasutusele, sihtasutusena tegutsevale munitsipaaletendusasutusele ja eraetendusasutusele võib määrata riigieelarvest toetuse rahvuskultuuri edendamiseks ning etenduskunstide valdkonna mitmekesisuse ja etenduste piirkondliku kättesaadavuse tagamiseks. (3) Lisaks käesoleva paragrahvi lõigetes 1 ja 2 nimetatud eesmärkidel antavale etendusasutuse põhitegevuse ja arengu terviklikuks edendamiseks ettenähtud toetusele võib etendusasutusele määrata riigieelarvest sihtotstarbelise toetuse üksikuteks valdkonna arengu, rahvuskultuuri, piirkondliku mõju või rahvusvahelistumise seisukohalt olulisteks tegevusteks. (4) Käesoleva paragrahvi lõigetes 1 ja 2 nimetatud eesmärkidel antavate toetuste määramisel kasutatakse võrreldava ühikuna etendusasutuse loomingulise tegevusega seotud töö mahtu. (5) Käesoleva paragrahvi lõikeid 2–4 ei kohaldata munitsipaalkontserdiasutusele ega sihtasutusena tegutsevale munitsipaalkontserdiasutusele. (6) Riigieelarvest etendusasutustele antavate toetuste liigid ning toetuse taotlemise, taotleja hindamise ja toetuse määramise täiendavad tingimused ja korra kehtestab määrusega.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_EAS_3"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_EAS_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:EAS_Par_16_Lg_1"
+        },
+        {
+          "@id": "estleg:EAS_Par_16_Lg_2"
+        },
+        {
+          "@id": "estleg:EAS_Par_16_Lg_3"
+        },
+        {
+          "@id": "estleg:EAS_Par_16_Lg_4"
+        },
+        {
+          "@id": "estleg:EAS_Par_16_Lg_5"
+        },
+        {
+          "@id": "estleg:EAS_Par_16_Lg_6"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "ngo"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:EAS_Par_16_1"
+        },
+        {
+          "@id": "estleg:EAS_Par_17"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:EAS_Par_16_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Riigi asutatud sihtasutusena tegutsevale etendusasutusele määratakse riigieelarvest toetus etendusasutuse põhikirjaliste eesmärkide täitmise tagamiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 1"
+    },
+    {
+      "@id": "estleg:EAS_Par_16_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Munitsipaaletendusasutusele, sihtasutusena tegutsevale munitsipaaletendusasutusele ja eraetendusasutusele võib määrata riigieelarvest toetuse rahvuskultuuri edendamiseks ning etenduskunstide valdkonna mitmekesisuse ja etenduste piirkondliku kättesaadavuse tagamiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 2"
+    },
+    {
+      "@id": "estleg:EAS_Par_16_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Lisaks käesoleva paragrahvi lõigetes 1 ja 2 nimetatud eesmärkidel antavale etendusasutuse põhitegevuse ja arengu terviklikuks edendamiseks ettenähtud toetusele võib etendusasutusele määrata riigieelarvest sihtotstarbelise toetuse üksikuteks valdkonna arengu, rahvuskultuuri, piirkondliku mõju või rahvusvahelistumise seisukohalt olulisteks tegevusteks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 3"
+    },
+    {
+      "@id": "estleg:EAS_Par_16_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Käesoleva paragrahvi lõigetes 1 ja 2 nimetatud eesmärkidel antavate toetuste määramisel kasutatakse võrreldava ühikuna etendusasutuse loomingulise tegevusega seotud töö mahtu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 4"
+    },
+    {
+      "@id": "estleg:EAS_Par_16_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Käesoleva paragrahvi lõikeid 2–4 ei kohaldata munitsipaalkontserdiasutusele ega sihtasutusena tegutsevale munitsipaalkontserdiasutusele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 5"
+    },
+    {
+      "@id": "estleg:EAS_Par_16_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Riigieelarvest etendusasutustele antavate toetuste liigid ning toetuse taotlemise, taotleja hindamise ja toetuse määramise täiendavad tingimused ja korra kehtestab määrusega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 6"
+    },
+    {
+      "@id": "estleg:EAS_Par_16_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_etendusasutuse_seadus"
+      ],
+      "estleg:paragrahv": "§ 16<sup>1</sup>.",
+      "rdfs:label": "§ 16<sup>1</sup>. Toetuse andja",
+      "estleg:sourceAct": "Etendusasutuse seadus",
+      "estleg:summary": "1 (1) Etendusasutustele riigieelarvest toetuse andja on valdkonna eest vastutav ministeerium. Etendusasutustele riigieelarvest toetuse andja on valdkonna eest vastutav ministeerium. 2 (2) Valdkonna eest vastutav minister võib volitada muu riigiasutuse tegutsema toetuse andjana käesoleva seaduse § 16 lõikes 3 nimetatud eesmärkidel antavate toetuste määramisel. RT I 2022-08-06 3 106082022003 2022-11-01 Valdkonna eest vastutav minister võib volitada muu riigiasutuse tegutsema toetuse andjana käesol",
+      "estleg:legalText": "(1) Etendusasutustele riigieelarvest toetuse andja on valdkonna eest vastutav ministeerium. (2) Valdkonna eest vastutav minister võib volitada muu riigiasutuse tegutsema toetuse andjana käesoleva seaduse § 16 lõikes 3 nimetatud eesmärkidel antavate toetuste määramisel.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_EAS_3"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_EAS_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:EAS_Par_16_1_Lg_1"
+        },
+        {
+          "@id": "estleg:EAS_Par_16_1_Lg_2"
+        }
+      ],
+      "estleg:targetGroup": [
+        "public_body",
+        "official"
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:EAS_Par_16"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:EAS_Par_16_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Etendusasutustele riigieelarvest toetuse andja on valdkonna eest vastutav ministeerium.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_16_1"
+      },
+      "rdfs:label": "§ 16<sup>1</sup> lg 1"
+    },
+    {
+      "@id": "estleg:EAS_Par_16_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Valdkonna eest vastutav minister võib volitada muu riigiasutuse tegutsema toetuse andjana käesoleva seaduse § 16 lõikes 3 nimetatud eesmärkidel antavate toetuste määramisel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_16_1"
+      },
+      "rdfs:label": "§ 16<sup>1</sup> lg 2"
+    },
+    {
+      "@id": "estleg:EAS_Par_17",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_etendusasutuse_seadus"
+      ],
+      "estleg:paragrahv": "§ 17.",
+      "rdfs:label": "§ 17. Komisjoni moodustamine",
+      "estleg:sourceAct": "Etendusasutuse seadus",
+      "estleg:summary": "1 (1) Etendusasutustele riigieelarvest antava toetuse jaotamiseks moodustab toetuse andja komisjoni. Etendusasutustele riigieelarvest antava toetuse jaotamiseks moodustab toetuse andja komisjoni. 2 (2) Eri liiki toetuste jaotamiseks võib moodustada eraldi komisjonid. Eri liiki toetuste jaotamiseks võib moodustada eraldi komisjonid. 3 (3) Käesoleva seaduse § 16 lõigetes 2 ja 3 nimetatud eesmärkidel antavate toetuste jaotamiseks moodustatud komisjoni kuuluvad valdkondlike esindusorganisatsioonide ",
+      "estleg:legalText": "(1) Etendusasutustele riigieelarvest antava toetuse jaotamiseks moodustab toetuse andja komisjoni. (2) Eri liiki toetuste jaotamiseks võib moodustada eraldi komisjonid. (3) Käesoleva seaduse § 16 lõigetes 2 ja 3 nimetatud eesmärkidel antavate toetuste jaotamiseks moodustatud komisjoni kuuluvad valdkondlike esindusorganisatsioonide ettepanekul nimetatud asjatundjatest liikmed ja valdkonna eest vastutava ministeeriumi esindajad. (4) Täpsemad nõuded komisjoni koosseisule ja komisjoni volituste tähtaja kehtestab määrusega. (5) Komisjoni koosseisu ja töökorra kinnitab toetuse andja.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_EAS_3"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_EAS_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:EAS_Par_17_Lg_1"
+        },
+        {
+          "@id": "estleg:EAS_Par_17_Lg_2"
+        },
+        {
+          "@id": "estleg:EAS_Par_17_Lg_3"
+        },
+        {
+          "@id": "estleg:EAS_Par_17_Lg_4"
+        },
+        {
+          "@id": "estleg:EAS_Par_17_Lg_5"
+        }
+      ],
+      "estleg:targetGroup": [
+        "public_body"
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:EAS_Par_16"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:EAS_Par_17_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Etendusasutustele riigieelarvest antava toetuse jaotamiseks moodustab toetuse andja komisjoni.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_17"
+      },
+      "rdfs:label": "§ 17 lg 1"
+    },
+    {
+      "@id": "estleg:EAS_Par_17_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Eri liiki toetuste jaotamiseks võib moodustada eraldi komisjonid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_17"
+      },
+      "rdfs:label": "§ 17 lg 2"
+    },
+    {
+      "@id": "estleg:EAS_Par_17_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Käesoleva seaduse § 16 lõigetes 2 ja 3 nimetatud eesmärkidel antavate toetuste jaotamiseks moodustatud komisjoni kuuluvad valdkondlike esindusorganisatsioonide ettepanekul nimetatud asjatundjatest liikmed ja valdkonna eest vastutava ministeeriumi esindajad.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_17"
+      },
+      "rdfs:label": "§ 17 lg 3"
+    },
+    {
+      "@id": "estleg:EAS_Par_17_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Täpsemad nõuded komisjoni koosseisule ja komisjoni volituste tähtaja kehtestab määrusega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_17"
+      },
+      "rdfs:label": "§ 17 lg 4"
+    },
+    {
+      "@id": "estleg:EAS_Par_17_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Komisjoni koosseisu ja töökorra kinnitab toetuse andja.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_17"
+      },
+      "rdfs:label": "§ 17 lg 5"
+    },
+    {
+      "@id": "estleg:EAS_Par_18",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_etendusasutuse_seadus"
+      ],
+      "estleg:paragrahv": "§ 18.",
+      "rdfs:label": "§ 18. Taotluste esitamine",
+      "estleg:sourceAct": "Etendusasutuse seadus",
+      "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_EAS_3"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_EAS_3"
+      }
+    },
+    {
+      "@id": "estleg:EAS_Par_19",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_etendusasutuse_seadus"
+      ],
+      "estleg:paragrahv": "§ 19.",
+      "rdfs:label": "§ 19. Komisjoni pädevus",
+      "estleg:sourceAct": "Etendusasutuse seadus",
+      "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_EAS_3"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_EAS_3"
+      }
+    },
+    {
+      "@id": "estleg:EAS_Par_20",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_etendusasutuse_seadus"
+      ],
+      "estleg:paragrahv": "§ 20.",
+      "rdfs:label": "§ 20. Lepingu sõlmimine",
+      "estleg:sourceAct": "Etendusasutuse seadus",
+      "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_EAS_3"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_EAS_3"
+      }
+    },
+    {
+      "@id": "estleg:EAS_Par_21",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_etendusasutuse_seadus"
+      ],
+      "estleg:paragrahv": "§ 21.",
+      "rdfs:label": "§ 21. Etendusasutuse valduses olev vara",
+      "estleg:sourceAct": "Etendusasutuse seadus",
+      "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_EAS_4"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_EAS_4"
+      }
+    },
+    {
+      "@id": "estleg:EAS_Par_22",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_etendusasutuse_seadus"
+      ],
+      "estleg:paragrahv": "§ 22.",
+      "rdfs:label": "§ 22. Aruandlus",
+      "estleg:sourceAct": "Etendusasutuse seadus",
+      "estleg:summary": "1 (1) Etendusasutus esitab statistilise aruande valdkondlikku statistika andmebaasi selle haldaja määratud tähtpäevaks. Etendusasutus esitab statistilise aruande valdkondlikku statistika andmebaasi selle haldaja määratud tähtpäevaks. 2 (2) Statistilise aruande esitamise tähtpäev avalikustatakse valdkondliku statistika andmebaasi haldaja ja valdkonna eest vastutava ministeeriumi veebilehel. Statistilise aruande esitamise tähtpäev avalikustatakse valdkondliku statistika andmebaasi haldaja ja valdk",
+      "estleg:legalText": "(1) Etendusasutus esitab statistilise aruande valdkondlikku statistika andmebaasi selle haldaja määratud tähtpäevaks. (2) Statistilise aruande esitamise tähtpäev avalikustatakse valdkondliku statistika andmebaasi haldaja ja valdkonna eest vastutava ministeeriumi veebilehel. (3) Käesoleva paragrahvi lõiget 1 kohaldatakse ka eraetendusasutusele. (4) Käesoleva paragrahvi lõiget 1 ei kohaldata kontserdiasutusele.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_EAS_4"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_EAS_4"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:EAS_Par_22_Lg_1"
+        },
+        {
+          "@id": "estleg:EAS_Par_22_Lg_2"
+        },
+        {
+          "@id": "estleg:EAS_Par_22_Lg_3"
+        },
+        {
+          "@id": "estleg:EAS_Par_22_Lg_4"
+        }
+      ],
+      "estleg:targetGroup": [
+        "public_body"
+      ]
+    },
+    {
+      "@id": "estleg:EAS_Par_22_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Etendusasutus esitab statistilise aruande valdkondlikku statistika andmebaasi selle haldaja määratud tähtpäevaks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_22"
+      },
+      "rdfs:label": "§ 22 lg 1"
+    },
+    {
+      "@id": "estleg:EAS_Par_22_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Statistilise aruande esitamise tähtpäev avalikustatakse valdkondliku statistika andmebaasi haldaja ja valdkonna eest vastutava ministeeriumi veebilehel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_22"
+      },
+      "rdfs:label": "§ 22 lg 2"
+    },
+    {
+      "@id": "estleg:EAS_Par_22_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Käesoleva paragrahvi lõiget 1 kohaldatakse ka eraetendusasutusele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_22"
+      },
+      "rdfs:label": "§ 22 lg 3"
+    },
+    {
+      "@id": "estleg:EAS_Par_22_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Käesoleva paragrahvi lõiget 1 ei kohaldata kontserdiasutusele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_22"
+      },
+      "rdfs:label": "§ 22 lg 4"
+    },
+    {
+      "@id": "estleg:EAS_Par_23",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_etendusasutuse_seadus"
+      ],
+      "estleg:paragrahv": "§ 23.",
+      "rdfs:label": "§ 23. [[Käesolevast tekstist välja jäetud.]]",
+      "estleg:sourceAct": "Etendusasutuse seadus",
+      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_EAS_5"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_EAS_5"
+      }
+    },
+    {
+      "@id": "estleg:EAS_Par_23_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_etendusasutuse_seadus"
+      ],
+      "estleg:paragrahv": "§ 23<sup>1</sup>.",
+      "rdfs:label": "§ 23<sup>1</sup>. Loominguliste töötajate töölepingud",
+      "estleg:sourceAct": "Etendusasutuse seadus",
+      "estleg:summary": "1 (1) Loomingulise töötajaga enne 2015. aasta 1. jaanuari sõlmitud tähtajaline tööleping kehtib selles sätestatud tingimustel kuni töölepingus sätestatud tähtaja lõpuni. Loomingulise töötajaga enne 2015. aasta 1. jaanuari sõlmitud tähtajaline tööleping kehtib selles sätestatud tingimustel kuni töölepingus sätestatud tähtaja lõpuni. 2 (2) Kui loomingulise töötajaga sõlmitakse pärast 2015. aasta 1. jaanuari tööleping ning sama isikuga on samal töökohal samalaadse töö tegemiseks sõlmitud varem vähe",
+      "estleg:legalText": "(1) Loomingulise töötajaga enne 2015. aasta 1. jaanuari sõlmitud tähtajaline tööleping kehtib selles sätestatud tingimustel kuni töölepingus sätestatud tähtaja lõpuni. (2) Kui loomingulise töötajaga sõlmitakse pärast 2015. aasta 1. jaanuari tööleping ning sama isikuga on samal töökohal samalaadse töö tegemiseks sõlmitud varem vähemalt kaks järjestikust tähtajalist töölepingut või varem sõlmitud tähtajalist töölepingut on pikendatud rohkem kui üks kord viie aasta jooksul või sõlmitud varem käesoleva seaduse § 71 lõikes 2 nimetatud kollektiivlepingus kokkulepitud arv tähtajalisi töölepinguid järjestikku, loetakse töösuhe algusest peale tähtajatuks. (3) Kui loomingulisel töötajal on 2015. aasta 1. jaanuari seisuga kehtiv tähtajaline tööleping ning temaga on eelnevalt samas töökohas samalaadse töö tegemiseks sõlmitud tähtajalisi töölepinguid järjestikku või töölepingut on pikendatud vähemalt kümme aastat, loetakse loomingulise töötaja tööleping sõlmituks määramata ajaks ja tema töösuhe loetakse algusest peale tähtajatuks. (4) Käesoleva paragrahvi lõikes 3 sätestatut ei kohaldata juhul, kui loominguline töötaja avaldab kirjalikku taasesitamist võimaldavas vormis selleks tööandjale soovi kuue kuu jooksul 2015. aasta 1. jaanuarist arvates. Kui loomingulise töötaja töölepingu tähtaeg lõpeb varem kui eelmises lauses sätestatud tähtaeg, teatab ta oma soovist esimesel võimalusel.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_EAS_5"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_EAS_5"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:EAS_Par_23_1_Lg_1"
+        },
+        {
+          "@id": "estleg:EAS_Par_23_1_Lg_2"
+        },
+        {
+          "@id": "estleg:EAS_Par_23_1_Lg_3"
+        },
+        {
+          "@id": "estleg:EAS_Par_23_1_Lg_4"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "business"
+      ]
+    },
+    {
+      "@id": "estleg:EAS_Par_23_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Loomingulise töötajaga enne 2015. aasta 1. jaanuari sõlmitud tähtajaline tööleping kehtib selles sätestatud tingimustel kuni töölepingus sätestatud tähtaja lõpuni.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_23_1"
+      },
+      "rdfs:label": "§ 23<sup>1</sup> lg 1"
+    },
+    {
+      "@id": "estleg:EAS_Par_23_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kui loomingulise töötajaga sõlmitakse pärast 2015. aasta 1. jaanuari tööleping ning sama isikuga on samal töökohal samalaadse töö tegemiseks sõlmitud varem vähemalt kaks järjestikust tähtajalist töölepingut või varem sõlmitud tähtajalist töölepingut on pikendatud rohkem kui üks kord viie aasta jooksul või sõlmitud varem käesoleva seaduse § 71 lõikes 2 nimetatud kollektiivlepingus kokkulepitud arv tähtajalisi töölepinguid järjestikku, loetakse töösuhe algusest peale tähtajatuks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_23_1"
+      },
+      "rdfs:label": "§ 23<sup>1</sup> lg 2"
+    },
+    {
+      "@id": "estleg:EAS_Par_23_1_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kui loomingulisel töötajal on 2015. aasta 1. jaanuari seisuga kehtiv tähtajaline tööleping ning temaga on eelnevalt samas töökohas samalaadse töö tegemiseks sõlmitud tähtajalisi töölepinguid järjestikku või töölepingut on pikendatud vähemalt kümme aastat, loetakse loomingulise töötaja tööleping sõlmituks määramata ajaks ja tema töösuhe loetakse algusest peale tähtajatuks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_23_1"
+      },
+      "rdfs:label": "§ 23<sup>1</sup> lg 3"
+    },
+    {
+      "@id": "estleg:EAS_Par_23_1_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Käesoleva paragrahvi lõikes 3 sätestatut ei kohaldata juhul, kui loominguline töötaja avaldab kirjalikku taasesitamist võimaldavas vormis selleks tööandjale soovi kuue kuu jooksul 2015. aasta 1. jaanuarist arvates. Kui loomingulise töötaja töölepingu tähtaeg lõpeb varem kui eelmises lauses sätestatud tähtaeg, teatab ta oma soovist esimesel võimalusel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_23_1"
+      },
+      "rdfs:label": "§ 23<sup>1</sup> lg 4"
+    },
+    {
       "@id": "estleg:EAS_Par_24",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_EAS"
+        "estleg:LegalProvision_etendusasutuse_seadus"
       ],
       "estleg:paragrahv": "§ 24.",
       "rdfs:label": "§ 24. Etendusasutuse seaduse kehtetuks tunnistamine",
       "estleg:sourceAct": "Etendusasutuse seadus",
-      "estleg:summary": "1(1)Etendusasutuse seadus (RT I 1997, 11, 94) tunnistatakse kehtetuks. Etendusasutuse seadus (RT I 1997, 11, 94) tunnistatakse kehtetuks. 2(2)Käesoleva paragrahvi lõikes 1 nimetatud seaduse alusel kultuuriministri määrusega kehtestatud riigietendusasutuste põhimäärused kehtivad nende muutmise või kehtetuks tunnistamiseni niivõrd, kuivõrd need ei ole vastuolus käesoleva seadusega.<table summary=\"allkiri\" width=\"100%\"> <tbody><tr valign=\"top\"> <td width=\"60%\"> </td> <td width=\"39%\"> <font size=\"-1",
+      "estleg:summary": "1 (1) Etendusasutuse seadus tunnistatakse kehtetuks. Etendusasutuse seadus tunnistatakse kehtetuks. 2 (2) Käesoleva paragrahvi lõikes 1 nimetatud seaduse alusel valdkonna eest vastutava ministri määrusega kehtestatud riigietendusasutuste põhimäärused kehtivad nende muutmise või kehtetuks tunnistamiseni niivõrd, kuivõrd need ei ole vastuolus käesoleva seadusega. Käesoleva paragrahvi lõikes 1 nimetatud seaduse alusel valdkonna eest vastutava ministri määrusega kehtestatud riigietendusasutuste põhi",
+      "estleg:legalText": "(1) Etendusasutuse seadus tunnistatakse kehtetuks. (2) Käesoleva paragrahvi lõikes 1 nimetatud seaduse alusel valdkonna eest vastutava ministri määrusega kehtestatud riigietendusasutuste põhimäärused kehtivad nende muutmise või kehtetuks tunnistamiseni niivõrd, kuivõrd need ei ole vastuolus käesoleva seadusega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EAS_5"
-      }
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_EAS_5"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:EAS_Par_24_Lg_1"
+        },
+        {
+          "@id": "estleg:EAS_Par_24_Lg_2"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:EAS_Par_24_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Etendusasutuse seadus tunnistatakse kehtetuks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_24"
+      },
+      "rdfs:label": "§ 24 lg 1"
+    },
+    {
+      "@id": "estleg:EAS_Par_24_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Käesoleva paragrahvi lõikes 1 nimetatud seaduse alusel valdkonna eest vastutava ministri määrusega kehtestatud riigietendusasutuste põhimäärused kehtivad nende muutmise või kehtetuks tunnistamiseni niivõrd, kuivõrd need ei ole vastuolus käesoleva seadusega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EAS_Par_24"
+      },
+      "rdfs:label": "§ 24 lg 2"
     }
   ]
 }

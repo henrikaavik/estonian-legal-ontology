@@ -6,40 +6,52 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
   },
   "@graph": [
     {
       "@id": "estleg:KORRUP_Map_2026",
       "@type": [
+        "owl:Ontology",
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "rdfs:label": "Korruptsioonivastane seadus teemakaardistus",
       "dc:source": "Korruptsioonivastane seadus",
-      "estleg:temporalStatus": "unknown",
+      "dcterms:title": "Korruptsioonivastane seadus",
+      "estleg:contentStatus": "structuredBody",
+      "dcterms:source": {
+        "@id": "https://www.riigiteataja.ee/akt/114032025012.xml"
+      },
+      "owl:sameAs": {
+        "@id": "https://www.riigiteataja.ee/akt/114032025012.xml"
+      },
+      "estleg:kehtiv": {
+        "@value": "2026-05-24",
+        "@type": "xsd:date"
+      },
       "dcterms:subject": [
-        {
-          "@id": "http://eurovoc.europa.eu/3606"
-        },
         {
           "@id": "http://eurovoc.europa.eu/2446"
         },
         {
-          "@id": "http://eurovoc.europa.eu/2431"
+          "@id": "http://eurovoc.europa.eu/1221"
         },
         {
-          "@id": "http://eurovoc.europa.eu/5231"
+          "@id": "http://eurovoc.europa.eu/0816"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2441"
         },
         {
           "@id": "http://eurovoc.europa.eu/2421"
         }
-      ]
+      ],
+      "estleg:temporalStatus": "unknown"
     },
     {
-      "@id": "estleg:LegalProvision_KORRUP",
+      "@id": "estleg:LegalProvision_korruptsioonivastane_seadus",
       "@type": [
         "owl:Class"
       ],
@@ -49,86 +61,308 @@
       }
     },
     {
+      "@id": "estleg:KORRUP_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": "Korruptsioonivastane seadus teemaskeem",
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_KORRUP_1"
+        },
+        {
+          "@id": "estleg:Cluster_KORRUP_2"
+        },
+        {
+          "@id": "estleg:Cluster_KORRUP_3"
+        },
+        {
+          "@id": "estleg:Cluster_KORRUP_4"
+        },
+        {
+          "@id": "estleg:Cluster_KORRUP_5"
+        }
+      ]
+    },
+    {
       "@id": "estleg:Cluster_KORRUP_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§1–6 ÜLDSÄTTED"
+      "rdfs:label": "§1–9 Üldsätted",
+      "skos:prefLabel": "§1–9 Üldsätted",
+      "skos:inScheme": {
+        "@id": "estleg:KORRUP_TopicScheme"
+      },
+      "estleg:provisionCount": 9
+    },
+    {
+      "@id": "estleg:Chapter_KORRUP_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "1. peatükk – Üldsätted",
+      "estleg:chapterNumber": "1",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_KORRUP_1"
+      }
     },
     {
       "@id": "estleg:Cluster_KORRUP_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§7–18 MAJANDUSLIKE HUVIDE DEKLAREERIMINE"
+      "rdfs:label": "§10–11 Tegevus- ja toimingupiirangud",
+      "skos:prefLabel": "§10–11 Tegevus- ja toimingupiirangud",
+      "skos:inScheme": {
+        "@id": "estleg:KORRUP_TopicScheme"
+      },
+      "estleg:provisionCount": 2
+    },
+    {
+      "@id": "estleg:Chapter_KORRUP_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "2. peatükk – Tegevus- ja toimingupiirangud",
+      "estleg:chapterNumber": "2",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_KORRUP_2"
+      }
     },
     {
       "@id": "estleg:Cluster_KORRUP_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§19–20 TÖÖKOHA- JA TEGEVUSPIIRANGUD"
+      "rdfs:label": "§12–16 Ametiisiku huvide avaldamine",
+      "skos:prefLabel": "§12–16 Ametiisiku huvide avaldamine",
+      "skos:inScheme": {
+        "@id": "estleg:KORRUP_TopicScheme"
+      },
+      "estleg:provisionCount": 5
+    },
+    {
+      "@id": "estleg:Chapter_KORRUP_3",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "3. peatükk – Ametiisiku huvide avaldamine",
+      "estleg:chapterNumber": "3",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_KORRUP_3"
+      }
     },
     {
       "@id": "estleg:Cluster_KORRUP_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§21–26 TOIMINGUPIIRANGUD"
+      "rdfs:label": "§17–21 Vastutus",
+      "skos:prefLabel": "§17–21 Vastutus",
+      "skos:inScheme": {
+        "@id": "estleg:KORRUP_TopicScheme"
+      },
+      "estleg:provisionCount": 5
+    },
+    {
+      "@id": "estleg:Chapter_KORRUP_4",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "4. peatükk – Vastutus",
+      "estleg:chapterNumber": "4",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_KORRUP_4"
+      }
     },
     {
       "@id": "estleg:Cluster_KORRUP_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "VASTUTUS"
+      "rdfs:label": "§22–39 Lõppsätted",
+      "skos:prefLabel": "§22–39 Lõppsätted",
+      "skos:inScheme": {
+        "@id": "estleg:KORRUP_TopicScheme"
+      },
+      "estleg:provisionCount": 4
     },
     {
-      "@id": "estleg:Cluster_KORRUP_6",
+      "@id": "estleg:Chapter_KORRUP_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:Chapter"
       ],
-      "rdfs:label": "§33–2832 RAKENDUSSÄTTED"
+      "rdfs:label": "5. peatükk – Lõppsätted",
+      "estleg:chapterNumber": "5",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_KORRUP_5"
+      }
     },
     {
       "@id": "estleg:KORRUP_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KORRUP"
+        "estleg:LegalProvision_korruptsioonivastane_seadus"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Seaduse reguleerimisala",
+      "rdfs:label": "§ 1. Seaduse reguleerimisala ja eesmärk",
       "estleg:sourceAct": "Korruptsioonivastane seadus",
-      "estleg:summary": "Seaduses sätestatakse korruptsiooni vältimise ja korruptsiooniga seotud ametiisikute vastutuselevõtmise õiguslikud alused. Seaduses sätestatakse korruptsiooni vältimise ja korruptsiooniga seotud ametiisikute vastutuselevõtmise õiguslikud alused.",
+      "estleg:summary": "1 (1) Seaduses sätestatakse avaliku ülesande täitmisel korruptsiooni ennetamise õiguslikud alused ja vastutus kehtestatud kohustuste rikkumise eest. Seadus reguleerib korruptsiooni ennetamist ja vastutust väljaspool avaliku ülesande täitmist üksnes juhul, kui nii on otsesõnu sätestatud. Seaduses sätestatakse avaliku ülesande täitmisel korruptsiooni ennetamise õiguslikud alused ja vastutus kehtestatud kohustuste rikkumise eest. Seadus reguleerib korruptsiooni ennetamist ja vastutust väljaspool av",
+      "estleg:legalText": "(1) Seaduses sätestatakse avaliku ülesande täitmisel korruptsiooni ennetamise õiguslikud alused ja vastutus kehtestatud kohustuste rikkumise eest. Seadus reguleerib korruptsiooni ennetamist ja vastutust väljaspool avaliku ülesande täitmist üksnes juhul, kui nii on otsesõnu sätestatud. (2) Seaduse eesmärk on tagada avaliku ülesande aus ja erapooletu täitmine. (3) Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse sätteid, arvestades käesoleva seaduse erisusi.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KORRUP_1"
       },
-      "estleg:targetGroup": [
-        "official"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KORRUP_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KORRUP_Par_1_Lg_1"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_1_Lg_2"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_1_Lg_3"
+        }
+      ],
+      "estleg:interpretedBy": [
+        {
+          "@id": "estleg:RK_3_2_1_101_00"
+        },
+        {
+          "@id": "estleg:RK_3_1_1_98_15"
+        },
+        {
+          "@id": "estleg:RK_4_18_616_54"
+        }
       ]
+    },
+    {
+      "@id": "estleg:KORRUP_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Seaduses sätestatakse avaliku ülesande täitmisel korruptsiooni ennetamise õiguslikud alused ja vastutus kehtestatud kohustuste rikkumise eest. Seadus reguleerib korruptsiooni ennetamist ja vastutust väljaspool avaliku ülesande täitmist üksnes juhul, kui nii on otsesõnu sätestatud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Seaduse eesmärk on tagada avaliku ülesande aus ja erapooletu täitmine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 2"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_1_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse sätteid, arvestades käesoleva seaduse erisusi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 3"
     },
     {
       "@id": "estleg:KORRUP_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KORRUP"
+        "estleg:LegalProvision_korruptsioonivastane_seadus"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Korruptsiooni vältimise vahendid",
+      "rdfs:label": "§ 2. Ametiisik ja ametiseisund",
       "estleg:sourceAct": "Korruptsioonivastane seadus",
-      "estleg:summary": "Korruptsiooni vältimise vahendid on:11)ametiisikute ja käesoleva seaduse paragrahvis 4 loetletud isikute majanduslike huvide deklareerimine ning seaduses ettenähtud juhtudel majanduslike huvide deklaratsiooni avalikustamine;22)käesoleva seaduse 3. peatükis määratletud töökoha- ja tegevuspiirangud;33)käesoleva seaduse 4. peatükis määratletud toimingupiirangud. Korruptsiooni vältimise vahendid on: ametiisikute ja käesoleva seaduse paragrahvis 4 loetletud isikute majanduslike huvide deklareerimine ",
+      "estleg:summary": "1 (1) Ametiisik käesoleva seaduse tähenduses on füüsiline isik, kellel on avaliku ülesande täitmiseks ametiseisund sõltumata sellest, kas ta täidab talle pandud ülesandeid alaliselt või ajutiselt, tasu eest või tasuta, teenistuses olles või vabakutselisena või lepingu, nimetamise või valimise alusel. Ametiisik käesoleva seaduse tähenduses on füüsiline isik, kellel on avaliku ülesande täitmiseks ametiseisund sõltumata sellest, kas ta täidab talle pandud ülesandeid alaliselt või ajutiselt, tasu ee",
+      "estleg:legalText": "(1) Ametiisik käesoleva seaduse tähenduses on füüsiline isik, kellel on avaliku ülesande täitmiseks ametiseisund sõltumata sellest, kas ta täidab talle pandud ülesandeid alaliselt või ajutiselt, tasu eest või tasuta, teenistuses olles või vabakutselisena või lepingu, nimetamise või valimise alusel. (2) Ametiseisund seisneb õigusaktist, tehingust või asutuse töökorraldusest tulenevas õiguses ja kohustuses avaliku ülesande täitmisel: teha otsus, sealhulgas osaleda selle tegemises või selle sisulises suunamises. Otsus on teise isiku, sealhulgas avalikku ülesannet täitva asutuse õiguse või kohustuse tekitamisele, muutmisele või lõpetamisele suunatud otsustus, millega reguleeritakse üksikjuhtumit või piiritlemata arvu juhtusid, sealhulgas õiguse üldakt, haldusakt haldusmenetluse seaduse tähenduses, kohtulahend, samuti asutuse siseakt; teha toiming, sealhulgas osaleda selles või selle sisulises suunamises. Toiming on teisele isikule, sealhulgas avalikku ülesannet täitvale asutusele õiguslikku või vältimatut faktilist tagajärge põhjustav tegevus, mis ei ole otsuse tegemine. Toiming võib seisneda ka menetlustoimingu tegemises, tegevusetuses või viivituses. (3) Käsutustehingu tegemise kohustust ei loeta otsuse tegemise pädevuseks juhul, kui isikul puudub õigus määrata tehingu asjaolusid. Toimingu sooritamise kohustust ei loeta toimingu tegemise pädevuseks juhul, kui isikul puudub õigus määrata toimingu tagajärge mõjutavaid asjaolusid.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KORRUP_1"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KORRUP_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KORRUP_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_2_Lg_2"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_2_Lg_3"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen",
+        "public_body",
         "official"
+      ],
+      "estleg:interpretedBy": [
+        {
+          "@id": "estleg:RK_3_4_1_1_12"
+        },
+        {
+          "@id": "estleg:RK_3_1_1_49_14"
+        },
+        {
+          "@id": "estleg:RK_3_1_1_12_14"
+        },
+        {
+          "@id": "estleg:RK_3_1_1_98_15"
+        },
+        {
+          "@id": "estleg:RK_3_1_1_37_16"
+        },
+        {
+          "@id": "estleg:RK_4_18_616_54"
+        },
+        {
+          "@id": "estleg:RK_1_16_9105_108"
+        },
+        {
+          "@id": "estleg:RK_4_20_1259_16"
+        },
+        {
+          "@id": "estleg:RK_1_19_10225_120"
+        },
+        {
+          "@id": "estleg:RK_1_21_8803_138"
+        },
+        {
+          "@id": "estleg:RK_1_22_2637_233"
+        },
+        {
+          "@id": "estleg:RK_1_22_3155_132"
+        }
       ],
       "estleg:referencedBy": [
         {
@@ -140,23 +374,110 @@
       ]
     },
     {
+      "@id": "estleg:KORRUP_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ametiisik käesoleva seaduse tähenduses on füüsiline isik, kellel on avaliku ülesande täitmiseks ametiseisund sõltumata sellest, kas ta täidab talle pandud ülesandeid alaliselt või ajutiselt, tasu eest või tasuta, teenistuses olles või vabakutselisena või lepingu, nimetamise või valimise alusel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Ametiseisund seisneb õigusaktist, tehingust või asutuse töökorraldusest tulenevas õiguses ja kohustuses avaliku ülesande täitmisel: teha otsus, sealhulgas osaleda selle tegemises või selle sisulises suunamises. Otsus on teise isiku, sealhulgas avalikku ülesannet täitva asutuse õiguse või kohustuse tekitamisele, muutmisele või lõpetamisele suunatud otsustus, millega reguleeritakse üksikjuhtumit või piiritlemata arvu juhtusid, sealhulgas õiguse üldakt, haldusakt haldusmenetluse seaduse tähenduses, kohtulahend, samuti asutuse siseakt; teha toiming, sealhulgas osaleda selles või selle sisulises suunamises. Toiming on teisele isikule, sealhulgas avalikku ülesannet täitvale asutusele õiguslikku või vältimatut faktilist tagajärge põhjustav tegevus, mis ei ole otsuse tegemine. Toiming võib seisneda ka menetlustoimingu tegemises, tegevusetuses või viivituses.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_2_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Käsutustehingu tegemise kohustust ei loeta otsuse tegemise pädevuseks juhul, kui isikul puudub õigus määrata tehingu asjaolusid. Toimingu sooritamise kohustust ei loeta toimingu tegemise pädevuseks juhul, kui isikul puudub õigus määrata toimingu tagajärge mõjutavaid asjaolusid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 3"
+    },
+    {
       "@id": "estleg:KORRUP_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KORRUP"
+        "estleg:LegalProvision_korruptsioonivastane_seadus"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Ametikoht ja ametiseisund",
+      "rdfs:label": "§ 3. Ametiisiku ja avalikku ülesannet täitva asutuse kohustused",
       "estleg:sourceAct": "Korruptsioonivastane seadus",
-      "estleg:summary": "1(1)Ametikoht käesoleva seaduse tähenduses on töö- või teenistuskoht, millele isik on valitud, nimetatud või töölepingu alusel tööle võetud. Ametikoht käesoleva seaduse tähenduses on töö- või teenistuskoht, millele isik on valitud, nimetatud või töölepingu alusel tööle võetud. 2(2)Ametiseisund on ametikohast tulenev ametiisiku õiguspädevus vastu võtta teistele isikutele kohustuslikke otsuseid, teha toiminguid, osaleda riigi- või munitsipaalvara erastamise, võõrandamise või kasutusse andmise otsu",
+      "estleg:summary": "1 (1) Ametiisikul on keelatud: 1 1) korruptiivse tulu nõudmine, vahendamine ja saamine; 2 2) ametiseisundi korruptiivne kasutamine; 3 3) avaliku vahendi korruptiivne kasutamine; 4 4) mõju korruptiivne kasutamine; 5 5) siseteabe korruptiivne kasutamine. Ametiisikul on keelatud: korruptiivse tulu nõudmine, vahendamine ja saamine; ametiseisundi korruptiivne kasutamine; avaliku vahendi korruptiivne kasutamine; mõju korruptiivne kasutamine; siseteabe korruptiivne kasutamine. 2 (2) Ametiisik peab sead",
+      "estleg:legalText": "(1) Ametiisikul on keelatud: korruptiivse tulu nõudmine, vahendamine ja saamine; ametiseisundi korruptiivne kasutamine; avaliku vahendi korruptiivne kasutamine; mõju korruptiivne kasutamine; siseteabe korruptiivne kasutamine. (2) Ametiisik peab seaduses sätestatud juhul ja tingimustel: pidama kinni tegevus- ja toimingupiirangutest; avaldama oma huvid huvide deklaratsioonis (edaspidi deklaratsioon). (3) Riigi- või kohaliku omavalitsuse üksuse asutus, avalik-õiguslik juriidiline isik, nende asutatud sihtasutus ja konkurentsiseaduse tähenduses avalik ettevõtja peavad tagama nende nimel, ülesandel või järelevalve all avalikku ülesannet täitva ametiisiku: korruptsiooni ennetamise alase teadlikkuse; kohustustest kinnipidamise kontrolli. (4) Riigi- või kohaliku omavalitsuse üksuse asutus peab tagama, et tema nimel, ülesandel või järelevalve all ei täida teenistuses olles või lepingu alusel avalikku ülesannet ametiisik, kellel on karistatus tahtlikult toimepandud kutse- või ametiõiguste kuritarvitamise või ametikohustuste rikkumisega seotud kuriteo, samuti kelmuse, usalduse kuritarvitamise, altkäemaksu andmise või vahendamise, mõjuvõimuga kauplemise, avaliku usalduse vastase kuriteo või majandusalase kuriteo eest.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KORRUP_1"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KORRUP_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KORRUP_Par_3_Lg_1"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_3_Lg_2"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_3_Lg_3"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_3_Lg_4"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen",
-        "official"
+        "business",
+        "public_body",
+        "official",
+        "ngo"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:dutyHolder": "Ametiisik",
+      "estleg:interpretedBy": [
+        {
+          "@id": "estleg:RK_3_1_1_115_09"
+        },
+        {
+          "@id": "estleg:RK_3_1_1_109_09"
+        },
+        {
+          "@id": "estleg:RK_3_4_1_1_12"
+        },
+        {
+          "@id": "estleg:RK_3_3_1_22_13"
+        },
+        {
+          "@id": "estleg:RK_3_1_1_89_15"
+        },
+        {
+          "@id": "estleg:RK_3_1_1_98_15"
+        }
       ],
       "estleg:referencedBy": [
+        {
+          "@id": "estleg:KORRUP_Par_6"
+        },
         {
           "@id": "estleg:Reg_1019698_Par_3"
         },
@@ -172,74 +493,326 @@
       ]
     },
     {
+      "@id": "estleg:KORRUP_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ametiisikul on keelatud: korruptiivse tulu nõudmine, vahendamine ja saamine; ametiseisundi korruptiivne kasutamine; avaliku vahendi korruptiivne kasutamine; mõju korruptiivne kasutamine; siseteabe korruptiivne kasutamine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_3_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Ametiisik peab seaduses sätestatud juhul ja tingimustel: pidama kinni tegevus- ja toimingupiirangutest; avaldama oma huvid huvide deklaratsioonis (edaspidi deklaratsioon).",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 2"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_3_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Riigi- või kohaliku omavalitsuse üksuse asutus, avalik-õiguslik juriidiline isik, nende asutatud sihtasutus ja konkurentsiseaduse tähenduses avalik ettevõtja peavad tagama nende nimel, ülesandel või järelevalve all avalikku ülesannet täitva ametiisiku: korruptsiooni ennetamise alase teadlikkuse; kohustustest kinnipidamise kontrolli.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 3"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_3_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Riigi- või kohaliku omavalitsuse üksuse asutus peab tagama, et tema nimel, ülesandel või järelevalve all ei täida teenistuses olles või lepingu alusel avalikku ülesannet ametiisik, kellel on karistatus tahtlikult toimepandud kutse- või ametiõiguste kuritarvitamise või ametikohustuste rikkumisega seotud kuriteo, samuti kelmuse, usalduse kuritarvitamise, altkäemaksu andmise või vahendamise, mõjuvõimuga kauplemise, avaliku usalduse vastase kuriteo või majandusalase kuriteo eest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 4"
+    },
+    {
       "@id": "estleg:KORRUP_Par_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KORRUP"
+        "estleg:LegalProvision_korruptsioonivastane_seadus"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Ametiisik",
+      "rdfs:label": "§ 4. Korruptiivne tulu",
       "estleg:sourceAct": "Korruptsioonivastane seadus",
-      "estleg:summary": "1(1)Käesoleva seaduse järgi on ametiisik paragrahv 3 lõikes 2 sätestatud ametiseisundit omav riigi- või kohaliku omavalitsuse ametnik, samuti tema ülesandeid täitev koosseisuväline teenistuja. Käesoleva seaduse järgi on ametiisik paragrahv 3 lõikes 2 sätestatud ametiseisundit omav riigi- või kohaliku omavalitsuse ametnik, samuti tema ülesandeid täitev koosseisuväline teenistuja. 2(2)Ametiisikud käesoleva seaduse tähenduses on ka:11)Riigikogu liige;22)Vabariigi President;33)Vabariigi Valitsuse li",
+      "estleg:summary": "1 (1) Korruptiivne tulu on ametiisikule endale või kolmandale isikule ametiisiku ametikohustuse tõttu pakutud või ametiisiku poolt nõutud varaline või muu soodustus, samuti ametiisiku kohustusi rikkudes saadud soodustus. Korruptiivseks ei loeta soodustust, mis ei ole seostatav ametikohustusega või mida saab üheselt mõista tavapärase viisakusavaldusena. Korruptiivne tulu on ametiisikule endale või kolmandale isikule ametiisiku ametikohustuse tõttu pakutud või ametiisiku poolt nõutud varaline või ",
+      "estleg:legalText": "(1) Korruptiivne tulu on ametiisikule endale või kolmandale isikule ametiisiku ametikohustuse tõttu pakutud või ametiisiku poolt nõutud varaline või muu soodustus, samuti ametiisiku kohustusi rikkudes saadud soodustus. Korruptiivseks ei loeta soodustust, mis ei ole seostatav ametikohustusega või mida saab üheselt mõista tavapärase viisakusavaldusena. (2) Ametiisik peab viivitamata teatama ametikohustusega seostatava soodustuse vastuvõtmisest oma asutusele või tema ametisse nimetamise õigusega isikule või organile. Ametiisik peab korruptiivse tuluna määratletava soodustuse vastuvõtmisest keelduma või, kui see ei ole võimalik, soodustuse viivituseta oma asutusele või tema ametisse nimetamise õigusega isikule või organile üle andma. Kui soodustuse üleandmine ei ole võimalik, peab ametiisik selle asemel tasuma soodustuse turuväärtuse. Üleantud soodustus või selle väärtus rahas antakse riigi omandisse või saadetakse tagasi, kui seadus nii sätestab.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KORRUP_1"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KORRUP_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KORRUP_Par_4_Lg_1"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_4_Lg_2"
+        }
+      ],
       "estleg:targetGroup": [
+        "citizen",
         "public_body",
         "official"
       ],
-      "estleg:competentAuthority": [
+      "estleg:interpretedBy": [
         {
-          "@id": "estleg:Institution_riigikogu"
+          "@id": "estleg:RK_3_2_1_101_00"
         },
         {
-          "@id": "estleg:Institution_vabariigipresident"
+          "@id": "estleg:RK_3_1_1_138_03"
         },
         {
-          "@id": "estleg:Institution_kohalik_omavalitsus"
+          "@id": "estleg:RK_3_1_1_43_03"
+        },
+        {
+          "@id": "estleg:RK_3_1_1_133_02"
+        },
+        {
+          "@id": "estleg:RK_3_1_1_27_05"
+        },
+        {
+          "@id": "estleg:RK_3_2_1_121_07"
+        },
+        {
+          "@id": "estleg:RK_3_1_1_63_07"
+        },
+        {
+          "@id": "estleg:RK_3_1_1_41_07"
+        },
+        {
+          "@id": "estleg:RK_3_4_1_15_07"
+        },
+        {
+          "@id": "estleg:RK_3_1_1_54_09"
+        },
+        {
+          "@id": "estleg:RK_3_1_1_115_09"
+        },
+        {
+          "@id": "estleg:RK_3_1_1_109_09"
+        },
+        {
+          "@id": "estleg:RK_3_4_1_1_12"
+        },
+        {
+          "@id": "estleg:RK_3_3_1_22_13"
+        },
+        {
+          "@id": "estleg:RK_3_1_1_49_14"
+        },
+        {
+          "@id": "estleg:RK_3_1_1_12_14"
         }
+      ]
+    },
+    {
+      "@id": "estleg:KORRUP_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:competenceType": "general"
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Korruptiivne tulu on ametiisikule endale või kolmandale isikule ametiisiku ametikohustuse tõttu pakutud või ametiisiku poolt nõutud varaline või muu soodustus, samuti ametiisiku kohustusi rikkudes saadud soodustus. Korruptiivseks ei loeta soodustust, mis ei ole seostatav ametikohustusega või mida saab üheselt mõista tavapärase viisakusavaldusena.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_4_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Ametiisik peab viivitamata teatama ametikohustusega seostatava soodustuse vastuvõtmisest oma asutusele või tema ametisse nimetamise õigusega isikule või organile. Ametiisik peab korruptiivse tuluna määratletava soodustuse vastuvõtmisest keelduma või, kui see ei ole võimalik, soodustuse viivituseta oma asutusele või tema ametisse nimetamise õigusega isikule või organile üle andma. Kui soodustuse üleandmine ei ole võimalik, peab ametiisik selle asemel tasuma soodustuse turuväärtuse. Üleantud soodustus või selle väärtus rahas antakse riigi omandisse või saadetakse tagasi, kui seadus nii sätestab.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 2"
     },
     {
       "@id": "estleg:KORRUP_Par_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KORRUP"
+        "estleg:LegalProvision_korruptsioonivastane_seadus"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Korruptiivse teo, korruptsiooniohtliku suhte ja korruptiivse tulu mõisted",
+      "rdfs:label": "§ 5. Ametiseisundi, avaliku vahendi, mõju ja siseteabe korruptiivne kasutamine",
       "estleg:sourceAct": "Korruptsioonivastane seadus",
-      "estleg:summary": "1(1)Korruptiivne tegu on ametiisiku poolt ametiseisundi kasutamine omakasu saamise eesmärgil, tehes põhjendamatuid või õigusvastaseid otsuseid või toiminguid või jättes tegemata õiguspärased otsused või toimingud. Korruptiivne tegu on ametiisiku poolt ametiseisundi kasutamine omakasu saamise eesmärgil, tehes põhjendamatuid või õigusvastaseid otsuseid või toiminguid või jättes tegemata õiguspärased otsused või toimingud. 2(2)Korruptsiooniohtlik suhe on ametiisiku suhe teise isikuga, mis on tekkin",
+      "estleg:summary": "1 (1) Ametiseisundi korruptiivne kasutamine on ametiisiku poolt ametikohustust rikkudes enda või kolmanda isiku huvides ametiisiku pädevuses oleva otsuse või toimingu tegemine, selles osalemine või selle sisuline suunamine, kui see toob kaasa avaliku huvi seisukohast ebavõrdse või põhjendamatu eelise ametiisikule või kolmandale isikule. Ametiseisundi korruptiivne kasutamine on ametiisiku poolt ametikohustust rikkudes enda või kolmanda isiku huvides ametiisiku pädevuses oleva otsuse või toimingu ",
+      "estleg:legalText": "(1) Ametiseisundi korruptiivne kasutamine on ametiisiku poolt ametikohustust rikkudes enda või kolmanda isiku huvides ametiisiku pädevuses oleva otsuse või toimingu tegemine, selles osalemine või selle sisuline suunamine, kui see toob kaasa avaliku huvi seisukohast ebavõrdse või põhjendamatu eelise ametiisikule või kolmandale isikule. (2) Avaliku vahendi korruptiivne kasutamine on ametiisiku poolt ametikohustust rikkudes avaliku ülesande täitmiseks mõeldud materiaalse või muu ressursi kasutamine ametiisiku enda või kolmanda isiku huvides, kui see toob kaasa avaliku huvi seisukohast ebavõrdse või põhjendamatu eelise ametiisikule või kolmandale isikule. (3) Mõju korruptiivne kasutamine on ametiisiku poolt ametikohustust rikkudes tema tegeliku või eeldatava mõju kasutamine eesmärgiga saavutada teise isiku poolt teo toimepanemist või toime panemata jätmist ametiisiku enda või kolmanda isiku huvides, kui see toob kaasa avaliku huvi seisukohast ebavõrdse või põhjendamatu eelise ametiisikule või kolmandale isikule. (4) Siseteabe korruptiivne kasutamine on ametiisiku poolt ametikohustust rikkudes talle avaliku võimu teostamisel teatavaks saanud avalikustamata teabe, mis mõjutab või võib tõenäoliselt oluliselt mõjutada kolmanda isiku õigusi või kohustusi, kasutamine ametiisiku enda või kolmanda isiku huvides, kui see toob kaasa avaliku huvi seisukohast ebavõrdse või põhjendamatu eelise ametiisikule või kolmandale isikule.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KORRUP_1"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KORRUP_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KORRUP_Par_5_Lg_1"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_5_Lg_2"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_5_Lg_3"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_5_Lg_4"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen",
         "official"
+      ],
+      "estleg:interpretedBy": [
+        {
+          "@id": "estleg:RK_3_1_1_87_00"
+        },
+        {
+          "@id": "estleg:RK_3_2_1_101_00"
+        },
+        {
+          "@id": "estleg:RK_3_1_1_87_01"
+        },
+        {
+          "@id": "estleg:RK_3_1_1_41_01"
+        },
+        {
+          "@id": "estleg:RK_3_1_1_54_09"
+        },
+        {
+          "@id": "estleg:RK_3_1_1_23_12"
+        }
       ]
+    },
+    {
+      "@id": "estleg:KORRUP_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ametiseisundi korruptiivne kasutamine on ametiisiku poolt ametikohustust rikkudes enda või kolmanda isiku huvides ametiisiku pädevuses oleva otsuse või toimingu tegemine, selles osalemine või selle sisuline suunamine, kui see toob kaasa avaliku huvi seisukohast ebavõrdse või põhjendamatu eelise ametiisikule või kolmandale isikule.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_5_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Avaliku vahendi korruptiivne kasutamine on ametiisiku poolt ametikohustust rikkudes avaliku ülesande täitmiseks mõeldud materiaalse või muu ressursi kasutamine ametiisiku enda või kolmanda isiku huvides, kui see toob kaasa avaliku huvi seisukohast ebavõrdse või põhjendamatu eelise ametiisikule või kolmandale isikule.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 2"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_5_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Mõju korruptiivne kasutamine on ametiisiku poolt ametikohustust rikkudes tema tegeliku või eeldatava mõju kasutamine eesmärgiga saavutada teise isiku poolt teo toimepanemist või toime panemata jätmist ametiisiku enda või kolmanda isiku huvides, kui see toob kaasa avaliku huvi seisukohast ebavõrdse või põhjendamatu eelise ametiisikule või kolmandale isikule.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 3"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_5_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Siseteabe korruptiivne kasutamine on ametiisiku poolt ametikohustust rikkudes talle avaliku võimu teostamisel teatavaks saanud avalikustamata teabe, mis mõjutab või võib tõenäoliselt oluliselt mõjutada kolmanda isiku õigusi või kohustusi, kasutamine ametiisiku enda või kolmanda isiku huvides, kui see toob kaasa avaliku huvi seisukohast ebavõrdse või põhjendamatu eelise ametiisikule või kolmandale isikule.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 4"
     },
     {
       "@id": "estleg:KORRUP_Par_6",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KORRUP"
+        "estleg:LegalProvision_korruptsioonivastane_seadus"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Korruptsiooniohtlike suhete keeld",
+      "rdfs:label": "§ 6. Avaliku või erasektori korruptsioonijuhtumist teatamine",
       "estleg:sourceAct": "Korruptsioonivastane seadus",
-      "estleg:summary": "1(1)Ametiisikul on keelatud korruptiivsete tegude toimepanemine, korruptsiooniohtlike suhete sõlmimine füüsiliste ja juriidiliste isikutega ning korruptiivse tulu saamine. Ametiisikul on keelatud korruptiivsete tegude toimepanemine, korruptsiooniohtlike suhete sõlmimine füüsiliste ja juriidiliste isikutega ning korruptiivse tulu saamine. 2(2)Asutuse juht on kohustatud tööandjana looma töökorralduse, kus ametiisikute tegevuse õiguspärasust ja neile kehtestatud töökoha-, tegevus- ja toimingupiiran",
+      "estleg:summary": "1 (1) Ametiisikul ei ole lubatud varjata talle teada olevat käesoleva seaduse § 3 lõikes 1 sätestatud keelu rikkumist või muud korruptsioonijuhtumit. Ametiisikul ei ole lubatud varjata talle teada olevat käesoleva seaduse § 3 lõikes 1 sätestatud keelu rikkumist või muud korruptsioonijuhtumit. 2 (2) Kui avalikku ülesannet täitvat asutust, selle ametiisikut, asutuse üle järelevalve teostajat, deklaratsioonide üle kontrolli teostajat või süüteo menetlejat teavitatakse korruptsioonijuhtumist, tagata",
+      "estleg:legalText": "(1) Ametiisikul ei ole lubatud varjata talle teada olevat käesoleva seaduse § 3 lõikes 1 sätestatud keelu rikkumist või muud korruptsioonijuhtumit. (2) Kui avalikku ülesannet täitvat asutust, selle ametiisikut, asutuse üle järelevalve teostajat, deklaratsioonide üle kontrolli teostajat või süüteo menetlejat teavitatakse korruptsioonijuhtumist, tagatakse teavitamise fakti konfidentsiaalsus. Teavet teavitamise fakti kohta võib avaldada ainult teavitaja kirjalikul nõusolekul. Kui teavitaja kaasatakse tunnistajana süüteomenetlusse, kohaldatakse süüteomenetluse sätteid korruptsioonijuhtumist teavitamise fakti konfidentsiaalsust rikkumata. (3) Kui teavitaja edastab teadvalt väära teavet, ei tagata teavitamise fakti konfidentsiaalsust. (4) Korruptsioonijuhtumist teatanud isiku kaitseks kohaldab kohus jagatud tõendamiskohustust. Kohtu poole pöörduv isik peab avalduses esitama faktilised asjaolud, mille alusel võib järeldada, et teda on ebavõrdselt koheldud. Kui isik, kelle vastu on avaldus esitatud, ei tõenda vastupidist, lähtutakse eeldusest, et ebavõrdne kohtlemine toimus korruptsioonijuhtumist teatamise tõttu. (5) Käesoleva paragrahvi lõigetes 2–4 sätestatud põhimõtteid kohaldatakse ka juhul, kui ametiisik või muu isik on teatanud avalikus või erasektoris aset leidnud korruptsioonijuhtumist.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KORRUP_1"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KORRUP_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KORRUP_Par_6_Lg_1"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_6_Lg_2"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_6_Lg_3"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_6_Lg_4"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_6_Lg_5"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "public_body",
+        "official"
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:KORRUP_Par_3"
+        }
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Prohibition"
       },
-      "estleg:dutyHolder": "Asutuse juht",
-      "estleg:targetGroup": [
-        "business",
-        "public_body",
-        "official"
+      "estleg:interpretedBy": [
+        {
+          "@id": "estleg:RK_3_1_1_23_12"
+        },
+        {
+          "@id": "estleg:RK_3_16_2348_21"
+        }
       ],
       "estleg:referencedBy": [
         {
@@ -323,20 +896,128 @@
       ]
     },
     {
+      "@id": "estleg:KORRUP_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ametiisikul ei ole lubatud varjata talle teada olevat käesoleva seaduse § 3 lõikes 1 sätestatud keelu rikkumist või muud korruptsioonijuhtumit.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_6_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kui avalikku ülesannet täitvat asutust, selle ametiisikut, asutuse üle järelevalve teostajat, deklaratsioonide üle kontrolli teostajat või süüteo menetlejat teavitatakse korruptsioonijuhtumist, tagatakse teavitamise fakti konfidentsiaalsus. Teavet teavitamise fakti kohta võib avaldada ainult teavitaja kirjalikul nõusolekul. Kui teavitaja kaasatakse tunnistajana süüteomenetlusse, kohaldatakse süüteomenetluse sätteid korruptsioonijuhtumist teavitamise fakti konfidentsiaalsust rikkumata.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 2"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_6_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kui teavitaja edastab teadvalt väära teavet, ei tagata teavitamise fakti konfidentsiaalsust.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 3"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_6_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Korruptsioonijuhtumist teatanud isiku kaitseks kohaldab kohus jagatud tõendamiskohustust. Kohtu poole pöörduv isik peab avalduses esitama faktilised asjaolud, mille alusel võib järeldada, et teda on ebavõrdselt koheldud. Kui isik, kelle vastu on avaldus esitatud, ei tõenda vastupidist, lähtutakse eeldusest, et ebavõrdne kohtlemine toimus korruptsioonijuhtumist teatamise tõttu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 4"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_6_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Käesoleva paragrahvi lõigetes 2–4 sätestatud põhimõtteid kohaldatakse ka juhul, kui ametiisik või muu isik on teatanud avalikus või erasektoris aset leidnud korruptsioonijuhtumist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 5"
+    },
+    {
       "@id": "estleg:KORRUP_Par_7",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KORRUP"
+        "estleg:LegalProvision_korruptsioonivastane_seadus"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Majanduslike huvide deklareerimise eesmärk",
+      "rdfs:label": "§ 7. Seotud isik",
       "estleg:sourceAct": "Korruptsioonivastane seadus",
-      "estleg:summary": "Majanduslike huvide deklareerimise eesmärgiks on ülevaate saamine ametiisiku majanduslikest huvidest, mis võivad soodustada või põhjustada era- ja avalike huvide konflikti ning korruptiivse teo toimepanemist või korruptsiooniohtliku suhte loomist. Majanduslike huvide deklareerimise eesmärgiks on ülevaate saamine ametiisiku majanduslikest huvidest, mis võivad soodustada või põhjustada era- ja avalike huvide konflikti ning korruptiivse teo toimepanemist või korruptsiooniohtliku suhte loomist.",
+      "estleg:summary": "1 (1) Seotud isik käesoleva seaduse tähenduses on: 1 1) ametiisiku abikaasa, registreeritud elukaaslane, vanavanem, ametiisiku või tema abikaasa või registreeritud elukaaslase vanem ning ametiisiku vanema alaneja sugulane, sealhulgas ametiisiku laps ja lapselaps. Vanemaks loetakse käesoleva seaduse tähenduses ka lapsendaja, vanema abikaasa või registreeritud elukaaslane ja kasuvanem ning alanejaks sugulaseks ka lapsendatu ja abikaasa või registreeritud elukaaslase laps; RT I 2023-07-06 6 1060720",
+      "estleg:legalText": "(1) Seotud isik käesoleva seaduse tähenduses on: ametiisiku abikaasa, registreeritud elukaaslane, vanavanem, ametiisiku või tema abikaasa või registreeritud elukaaslase vanem ning ametiisiku vanema alaneja sugulane, sealhulgas ametiisiku laps ja lapselaps. Vanemaks loetakse käesoleva seaduse tähenduses ka lapsendaja, vanema abikaasa või registreeritud elukaaslane ja kasuvanem ning alanejaks sugulaseks ka lapsendatu ja abikaasa või registreeritud elukaaslase laps; juriidiline isik, milles vähemalt 1/10 osalusest või osaluse omandamise õigusest kuulub ametiisikule endale või temaga seotud isikule; juriidiline isik, mille juhtimis- või kontrollorgani liige tulumaksuseaduse tähenduses on ametiisik ise või käesoleva lõike punktis 1 või 4 nimetatud isik; isik, keda seob ametiisikuga ühine majapidamine, samuti muu isik, kelle seisund või tegevus ametiisikut väljaspool ametiseisundit oluliselt ja vahetult mõjutab või keda ametiisiku seisund või tegevus väljaspool ametiseisundit oluliselt ja vahetult mõjutab või kes väljaspool ametiseisundit allub ametiisiku korraldustele või tegutseb ametiisiku huvides või arvel. (2) Juriidilist isikut ei loeta seotud isikuks juhul, kui ametiisiku ja juriidilise isiku seos tuleneb eranditult ametiisiku ametikohustusest. Riigi, kohaliku omavalitsuse üksuse või avalik-õigusliku juriidilise isiku esindamise pädevust juriidilise isiku juhtimis- või kontrollorganis loetakse ametikohustuseks käesoleva seaduse tähenduses. (3) Ametiisikul ei ole käesolevast seadusest tulenevat seotud isiku huvi puudutavat kohustust, kui ta ei tea ega peagi teadma käesoleva paragrahvi lõikes 1 nimetatud seosest või seotud isiku huvist.",
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KORRUP_2"
+        "@id": "estleg:Cluster_KORRUP_1"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KORRUP_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KORRUP_Par_7_Lg_1"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_7_Lg_2"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_7_Lg_3"
+        }
+      ],
       "estleg:targetGroup": [
+        "citizen",
+        "public_body",
         "official"
+      ],
+      "estleg:interpretedBy": [
+        {
+          "@id": "estleg:RK_3_4_1_15_07"
+        },
+        {
+          "@id": "estleg:RK_3_1_1_12_14"
+        },
+        {
+          "@id": "estleg:RK_3_1_1_98_15"
+        },
+        {
+          "@id": "estleg:RK_4_20_1259_16"
+        },
+        {
+          "@id": "estleg:RK_1_19_5367_144"
+        },
+        {
+          "@id": "estleg:RK_1_19_10225_120"
+        },
+        {
+          "@id": "estleg:RK_1_21_8803_138"
+        },
+        {
+          "@id": "estleg:RK_1_22_2637_233"
+        }
       ],
       "estleg:referencedBy": [
         {
@@ -351,70 +1032,392 @@
       ]
     },
     {
+      "@id": "estleg:KORRUP_Par_7_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Seotud isik käesoleva seaduse tähenduses on: ametiisiku abikaasa, registreeritud elukaaslane, vanavanem, ametiisiku või tema abikaasa või registreeritud elukaaslase vanem ning ametiisiku vanema alaneja sugulane, sealhulgas ametiisiku laps ja lapselaps. Vanemaks loetakse käesoleva seaduse tähenduses ka lapsendaja, vanema abikaasa või registreeritud elukaaslane ja kasuvanem ning alanejaks sugulaseks ka lapsendatu ja abikaasa või registreeritud elukaaslase laps; juriidiline isik, milles vähemalt 1/10 osalusest või osaluse omandamise õigusest kuulub ametiisikule endale või temaga seotud isikule; juriidiline isik, mille juhtimis- või kontrollorgani liige tulumaksuseaduse tähenduses on ametiisik ise või käesoleva lõike punktis 1 või 4 nimetatud isik; isik, keda seob ametiisikuga ühine majapidamine, samuti muu isik, kelle seisund või tegevus ametiisikut väljaspool ametiseisundit oluliselt ja vahetult mõjutab või keda ametiisiku seisund või tegevus väljaspool ametiseisundit oluliselt ja vahetult mõjutab või kes väljaspool ametiseisundit allub ametiisiku korraldustele või tegutseb ametiisiku huvides või arvel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 1"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_7_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Juriidilist isikut ei loeta seotud isikuks juhul, kui ametiisiku ja juriidilise isiku seos tuleneb eranditult ametiisiku ametikohustusest. Riigi, kohaliku omavalitsuse üksuse või avalik-õigusliku juriidilise isiku esindamise pädevust juriidilise isiku juhtimis- või kontrollorganis loetakse ametikohustuseks käesoleva seaduse tähenduses.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 2"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_7_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Ametiisikul ei ole käesolevast seadusest tulenevat seotud isiku huvi puudutavat kohustust, kui ta ei tea ega peagi teadma käesoleva paragrahvi lõikes 1 nimetatud seosest või seotud isiku huvist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 3"
+    },
+    {
       "@id": "estleg:KORRUP_Par_8",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KORRUP"
+        "estleg:LegalProvision_korruptsioonivastane_seadus"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Majanduslike huvide deklaratsiooni mõiste",
+      "rdfs:label": "§ 8. Korruptsioonivastase tegevuse koordineerimine",
       "estleg:sourceAct": "Korruptsioonivastane seadus",
-      "estleg:summary": "Majanduslike huvide deklaratsioon (edaspidi deklaratsioon) on dokument, millega ametiisik deklareerib andmed temale kuuluva vara, varaliste kohustuste ja muude asjaolude kohta, mis võimaldavad kindlaks määrata ametiisiku majanduslikud huvid ja varalise seisu. Majanduslike huvide deklaratsioon (edaspidi deklaratsioon) on dokument, millega ametiisik deklareerib andmed temale kuuluva vara, varaliste kohustuste ja muude asjaolude kohta, mis võimaldavad kindlaks määrata ametiisiku majanduslikud huvid",
+      "estleg:summary": "Korruptsioonivastase tegevuse koordineerija on Justiits- ja Digiministeerium. RT I 2024-12-30 1 130122024001 2025-01-01 , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes Korruptsioonivastase tegevuse koordineerija on Justiits- ja Digiministeerium. , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes",
+      "estleg:legalText": "Korruptsioonivastase tegevuse koordineerija on Justiits- ja Digiministeerium. , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes",
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KORRUP_2"
+        "@id": "estleg:Cluster_KORRUP_1"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KORRUP_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KORRUP_Par_8_Lg_Unknown_1"
+        }
+      ],
       "estleg:targetGroup": [
-        "official"
+        "public_body"
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_justiits_ja_digiministeerium"
+        },
+        {
+          "@id": "estleg:Institution_justiitsministeerium"
+        }
+      ],
+      "estleg:competenceType": "general",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Reg_1019029_Par_3",
+          "estleg:similarityScore": {
+            "@value": "0.611",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:Reg_1028298_Par_4",
+          "estleg:similarityScore": {
+            "@value": "0.611",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:Reg_1042331_Par_3",
+          "estleg:similarityScore": {
+            "@value": "0.647",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:Reg_1052190_Par_4",
+          "estleg:similarityScore": {
+            "@value": "0.647",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:Reg_1058871_Par_4",
+          "estleg:similarityScore": {
+            "@value": "0.647",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
+      ],
+      "estleg:interpretedBy": [
+        {
+          "@id": "estleg:RK_3_4_1_15_07"
+        }
       ]
+    },
+    {
+      "@id": "estleg:KORRUP_Par_8_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Korruptsioonivastase tegevuse koordineerija on Justiits- ja Digiministeerium. , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_8"
+      }
     },
     {
       "@id": "estleg:KORRUP_Par_9",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KORRUP"
+        "estleg:LegalProvision_korruptsioonivastane_seadus"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Deklaratsiooni sisu",
+      "rdfs:label": "§ 9. Riigikogu korruptsioonivastane erikomisjon",
       "estleg:sourceAct": "Korruptsioonivastane seadus",
-      "estleg:summary": "1(1)Deklaratsioon peab sisaldama järgmisi andmeid deklareerijale kuuluva(te):11)kinnisvara (kuni kinnistusraamatusse kandmiseni ka ehitised ja nende osad) kohta (otstarve, asukoht, kinnistuspiirkond ja kinnistu number);22)riiklikku registrisse kantud sõiduki kohta (sõiduki liik, mark ja väljalaske aasta);33)aktsiate ja muude väärtpaberite (investeerimisfondi osatäht, obligatsioon, vahetusvõlakiri, erastamisväärtpaber, ostu- või müügiõigust või -kohustust tõendav väärtpaber (optsioon) jms) ning o",
+      "estleg:summary": "1 (1) Riigikogu korruptsioonivastane erikomisjon (edaspidi erikomisjon) teostab parlamentaarset järelevalvet korruptsioonivastaste meetmete rakendamise üle, arutab omal algatusel käesoleva seaduse § 13 lõikes 1 nimetatud ametiisikute võimalikke korruptsioonijuhtumeid ja annab nende kohta hinnanguid, teostab järelevalvet Riigikogu liikmete tegevuspiirangutest kinnipidamise üle, kontrollib oma pädevuse piires huvide deklaratsioone, teavitab Riigikogu ja avalikkust tema pädevuses oleva korruptsioon",
+      "estleg:legalText": "(1) Riigikogu korruptsioonivastane erikomisjon (edaspidi erikomisjon) teostab parlamentaarset järelevalvet korruptsioonivastaste meetmete rakendamise üle, arutab omal algatusel käesoleva seaduse § 13 lõikes 1 nimetatud ametiisikute võimalikke korruptsioonijuhtumeid ja annab nende kohta hinnanguid, teostab järelevalvet Riigikogu liikmete tegevuspiirangutest kinnipidamise üle, kontrollib oma pädevuse piires huvide deklaratsioone, teavitab Riigikogu ja avalikkust tema pädevuses oleva korruptsioonivastase tegevuse tulemustest ning täidab muid seadusest tulenevaid ülesandeid. (2) Erikomisjonil on oma ülesannete täitmiseks õigus välja kutsuda isikuid ja nõuda tutvumiseks andmeid ja dokumente. (3) Süüteo tunnuste ilmnemisel edastab erikomisjon materjalid uurimisasutusele või väärteo kohtuvälisele menetlejale. (4) Erikomisjon esitab vähemalt üks kord aastas Riigikogule ülevaate komisjoni tegevusest ja tulemustest.",
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KORRUP_2"
+        "@id": "estleg:Cluster_KORRUP_1"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KORRUP_1"
       },
-      "estleg:dutyHolder": "Deklaratsioon"
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KORRUP_Par_9_Lg_1"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_9_Lg_2"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_9_Lg_3"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_9_Lg_4"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "public_body",
+        "official"
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:KORRUP_Par_13"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_riigikogu"
+        }
+      ],
+      "estleg:competenceType": "supervision",
+      "estleg:interpretedBy": [
+        {
+          "@id": "estleg:RK_3_4_1_15_07"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:KORRUP_Par_9_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Riigikogu korruptsioonivastane erikomisjon (edaspidi erikomisjon) teostab parlamentaarset järelevalvet korruptsioonivastaste meetmete rakendamise üle, arutab omal algatusel käesoleva seaduse § 13 lõikes 1 nimetatud ametiisikute võimalikke korruptsioonijuhtumeid ja annab nende kohta hinnanguid, teostab järelevalvet Riigikogu liikmete tegevuspiirangutest kinnipidamise üle, kontrollib oma pädevuse piires huvide deklaratsioone, teavitab Riigikogu ja avalikkust tema pädevuses oleva korruptsioonivastase tegevuse tulemustest ning täidab muid seadusest tulenevaid ülesandeid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 1"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_9_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Erikomisjonil on oma ülesannete täitmiseks õigus välja kutsuda isikuid ja nõuda tutvumiseks andmeid ja dokumente.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 2"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_9_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Süüteo tunnuste ilmnemisel edastab erikomisjon materjalid uurimisasutusele või väärteo kohtuvälisele menetlejale.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 3"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_9_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Erikomisjon esitab vähemalt üks kord aastas Riigikogule ülevaate komisjoni tegevusest ja tulemustest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 4"
     },
     {
       "@id": "estleg:KORRUP_Par_10",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KORRUP"
+        "estleg:LegalProvision_korruptsioonivastane_seadus"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Kaas- või ühisomandis oleva vara deklareerimine",
+      "rdfs:label": "§ 10. Tegevuse piiramise alused",
       "estleg:sourceAct": "Korruptsioonivastane seadus",
-      "estleg:summary": "1(1)Käesoleva seaduse paragrahvis 9 loetletud kaasomandis või ühisomandis (abikaasade ühisvara ja muu seaduses sätestatud ühisomand) olevad asjad, õigused ja kohustused deklareeritakse, näidates ära ametiisiku osa kaasomandist ja eeldatava osa ühisomandist, lisades vastava märke selles osas, mis puudutab ametiisiku abikaasale kuuluvat vara. Käesoleva seaduse paragrahvis 9 loetletud kaasomandis või ühisomandis (abikaasade ühisvara ja muu seaduses sätestatud ühisomand) olevad asjad, õigused ja koh",
+      "estleg:summary": "1 (1) Ametiisikul on õigus tegeleda väljaspool ametikohustusi mis tahes muu tegevusega (edaspidi kõrvaltegevus), kui see ei ole seadusega keelatud ja järgitakse toimingupiiranguid. Ametiisikul on õigus tegeleda väljaspool ametikohustusi mis tahes muu tegevusega (edaspidi kõrvaltegevus), kui see ei ole seadusega keelatud ja järgitakse toimingupiiranguid. 2 (2) Seadusega võib piirata teatud ametiisikute kõrvaltegevust. Seadusega võib piirata teatud ametiisikute kõrvaltegevust.",
+      "estleg:legalText": "(1) Ametiisikul on õigus tegeleda väljaspool ametikohustusi mis tahes muu tegevusega (edaspidi kõrvaltegevus), kui see ei ole seadusega keelatud ja järgitakse toimingupiiranguid. (2) Seadusega võib piirata teatud ametiisikute kõrvaltegevust.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KORRUP_2"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KORRUP_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KORRUP_Par_10_Lg_1"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_10_Lg_2"
+        }
+      ],
       "estleg:targetGroup": [
         "official"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      },
+      "estleg:interpretedBy": [
+        {
+          "@id": "estleg:RK_3_1_1_12_14"
+        }
       ]
+    },
+    {
+      "@id": "estleg:KORRUP_Par_10_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ametiisikul on õigus tegeleda väljaspool ametikohustusi mis tahes muu tegevusega (edaspidi kõrvaltegevus), kui see ei ole seadusega keelatud ja järgitakse toimingupiiranguid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 1"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_10_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Seadusega võib piirata teatud ametiisikute kõrvaltegevust.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 2"
     },
     {
       "@id": "estleg:KORRUP_Par_11",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KORRUP"
+        "estleg:LegalProvision_korruptsioonivastane_seadus"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Deklaratsiooni vorm",
+      "rdfs:label": "§ 11. Toimingupiirangud",
       "estleg:sourceAct": "Korruptsioonivastane seadus",
-      "estleg:summary": "1(1)Deklaratsioon esitatakse käesoleva seaduse lisas 1 toodud vormil. Deklaratsiooni esitamiseks annab või saadab deklaratsioonihoidja selle esitajale vormi vähemalt üks kuu enne deklaratsiooni esitamise tähtaega. Deklaratsioonihoidja teeb kande tema poolt peetavas registris, näidates ära deklaratsiooni esitaja, deklaratsiooni esitamise kuupäeva ja deklaratsiooni numbri. Deklaratsioon esitatakse käesoleva seaduse lisas 1 toodud vormil. Deklaratsiooni esitamiseks annab või saadab deklaratsiooniho",
+      "estleg:summary": "1 (1) Ametiisikul on keelatud toimingu või otsuse tegemine, kui esineb vähemalt üks järgmistest asjaoludest: RT I 2019-02-05 2 105022019002 2019-02-15 1 1) otsus või toiming tehakse ametiisiku enda või temaga seotud isiku suhtes; 2 2) ametiisik on teadlik tema enda või temaga seotud isiku majanduslikust või muust huvist, mis võib mõjutada toimingut või otsust; 3 3) ametiisik on teadlik korruptsiooniohust. Ametiisikul on keelatud toimingu või otsuse tegemine, kui esineb vähemalt üks järgmistest a",
+      "estleg:legalText": "(1) Ametiisikul on keelatud toimingu või otsuse tegemine, kui esineb vähemalt üks järgmistest asjaoludest: otsus või toiming tehakse ametiisiku enda või temaga seotud isiku suhtes; ametiisik on teadlik tema enda või temaga seotud isiku majanduslikust või muust huvist, mis võib mõjutada toimingut või otsust; ametiisik on teadlik korruptsiooniohust. (2) Käesoleva paragrahvi lõikes 1 nimetatud juhul on ametiisikul keelatud anda oma alluvale ülesandeks teha toimingut või otsust tema asemel. Ametiisik peab käesoleva paragrahvi lõikes 1 nimetatud asjaolust viivitamata teavitama oma vahetut juhti või ametiisiku ametisse nimetamise õigusega isikut või organit, kes teeb toimingu või otsuse ise või annab selle ülesande teisele ametiisikule. (2<sup>1</sup>) Kui toimingut või otsust ei saa teha ühise toimingu või otsuse tegemise pädevusega ametiisiku vahetu juht või ametiisiku ametisse nimetamise õigusega isik või organ või ametiisiku asendamine on võimatu, peab ametiisik käesoleva paragrahvi lõikes 1 nimetatud asjaolust viivitamata teavitama teisi ühise toimingu või otsuse tegemise ülesandega isikuid. Ühise toimingu või otsuse tegemiseks vajalik kvoorum on selle võrra väiksem, kui seadus ei näe ette muud taandamise korda. (3) Toimingupiiranguid ei kohaldata: õiguse üldakti vastuvõtmisel ja selle vastuvõtmises või ettevalmistamises osalemisel. Riigi ja kohaliku omavalitsuse eelarvet loetakse käesoleva seaduse tähenduses üldaktiks; pankrotihalduri poolt pankrotimenetluse läbiviimise korral selle büroo teenuste kasutamisel, mille kaudu ta tegutseb; hädaseisundis, samuti edasilükkamatu toimingu korral, kui on suurema kahju tekkimise oht; kui ametiisiku asendamine ei ole võimalik asendajale esitatavatele nõuetele vastava isiku puudumise tõttu. Käesolevas punktis sätestatud alusel toimingupiirangu kohaldamata jätmise kohta avaldatakse viivitamata ja alaliselt teade avalikku ülesannet täitva asutuse veebilehel; toimingute või otsuste puhul, millega avalikku ülesannet täitev asutus tagab oma töö korraldamise, välja arvatud teenistusalased otsused. Käesolevas punktis sätestatud alusel toimingupiirangu kohaldamata jätmise kohta avaldatakse viivitamata ja alaliselt teade asutuse veebilehel; kui rutiinse otsuse või toimingu tegemisel korruptsioonioht puudub, sealhulgas kui ametiisik teeb käsutustehingu või toimingu, omamata võimalust määrata selle asjaolusid; valla- või linnaasutuses, kui kohaliku omavalitsuse üksuse eripära arvestades oleks toimingupiirangu kohaldamine avaliku huvi seisukohast ebamõistlik. Käesolevas punktis sätestatud alusel toimingupiirangu kohaldamata jätmise kohta avaldatakse viivitamata ja alaliselt teade valla või linna veebilehel; organisiseste valimiste korral. (4) Ametiisiku taandamise aluseid ja korda, mis on ette nähtud muus seaduses, kohaldatakse täiendavalt toimingupiirangutele. (5) Avalikku ülesannet täitev asutus peab oma töö korraldamisel tagama, et ametiisik ei oleks kohustatud tegema otsust või toimingut iseenda või temaga seotud isiku suhtes. Kui asutus jätab selle kohustuse täitmata, ei vabasta see asjaolu ametiisikut kohustusest järgida toimingupiiranguid.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KORRUP_2"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KORRUP_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KORRUP_Par_11_Lg_1"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_11_Lg_2"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_11_Lg_2_1"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_11_Lg_3"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_11_Lg_4"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_11_Lg_5"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "public_body",
+        "official"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      },
+      "estleg:interpretedBy": [
+        {
+          "@id": "estleg:RK_3_1_1_49_14"
+        },
+        {
+          "@id": "estleg:RK_3_1_1_12_14"
+        },
+        {
+          "@id": "estleg:RK_3_1_1_98_15"
+        },
+        {
+          "@id": "estleg:RK_3_1_1_37_16"
+        },
+        {
+          "@id": "estleg:RK_4_18_616_54"
+        },
+        {
+          "@id": "estleg:RK_4_20_1259_16"
+        },
+        {
+          "@id": "estleg:RK_5_19_45_9"
+        },
+        {
+          "@id": "estleg:RK_3_18_1537_47"
+        },
+        {
+          "@id": "estleg:RK_1_19_5367_144"
+        },
+        {
+          "@id": "estleg:RK_1_19_10225_120"
+        },
+        {
+          "@id": "estleg:RK_1_21_8803_138"
+        },
+        {
+          "@id": "estleg:RK_4_23_3193_28"
+        },
+        {
+          "@id": "estleg:RK_1_22_2637_233"
+        }
+      ],
       "estleg:referencedBy": [
         {
           "@id": "estleg:Reg_1061230_Par_6"
@@ -428,61 +1431,240 @@
       ]
     },
     {
+      "@id": "estleg:KORRUP_Par_11_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ametiisikul on keelatud toimingu või otsuse tegemine, kui esineb vähemalt üks järgmistest asjaoludest: otsus või toiming tehakse ametiisiku enda või temaga seotud isiku suhtes; ametiisik on teadlik tema enda või temaga seotud isiku majanduslikust või muust huvist, mis võib mõjutada toimingut või otsust; ametiisik on teadlik korruptsiooniohust.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 1"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_11_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Käesoleva paragrahvi lõikes 1 nimetatud juhul on ametiisikul keelatud anda oma alluvale ülesandeks teha toimingut või otsust tema asemel. Ametiisik peab käesoleva paragrahvi lõikes 1 nimetatud asjaolust viivitamata teavitama oma vahetut juhti või ametiisiku ametisse nimetamise õigusega isikut või organit, kes teeb toimingu või otsuse ise või annab selle ülesande teisele ametiisikule.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 2"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_11_Lg_2_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2<sup>1</sup>",
+      "estleg:legalText": "(2<sup>1</sup>) Kui toimingut või otsust ei saa teha ühise toimingu või otsuse tegemise pädevusega ametiisiku vahetu juht või ametiisiku ametisse nimetamise õigusega isik või organ või ametiisiku asendamine on võimatu, peab ametiisik käesoleva paragrahvi lõikes 1 nimetatud asjaolust viivitamata teavitama teisi ühise toimingu või otsuse tegemise ülesandega isikuid. Ühise toimingu või otsuse tegemiseks vajalik kvoorum on selle võrra väiksem, kui seadus ei näe ette muud taandamise korda.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 2<sup>1</sup>"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_11_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Toimingupiiranguid ei kohaldata: õiguse üldakti vastuvõtmisel ja selle vastuvõtmises või ettevalmistamises osalemisel. Riigi ja kohaliku omavalitsuse eelarvet loetakse käesoleva seaduse tähenduses üldaktiks; pankrotihalduri poolt pankrotimenetluse läbiviimise korral selle büroo teenuste kasutamisel, mille kaudu ta tegutseb; hädaseisundis, samuti edasilükkamatu toimingu korral, kui on suurema kahju tekkimise oht; kui ametiisiku asendamine ei ole võimalik asendajale esitatavatele nõuetele vastava isiku puudumise tõttu. Käesolevas punktis sätestatud alusel toimingupiirangu kohaldamata jätmise kohta avaldatakse viivitamata ja alaliselt teade avalikku ülesannet täitva asutuse veebilehel; toimingute või otsuste puhul, millega avalikku ülesannet täitev asutus tagab oma töö korraldamise, välja arvatud teenistusalased otsused. Käesolevas punktis sätestatud alusel toimingupiirangu kohaldamata jätmise kohta avaldatakse viivitamata ja alaliselt teade asutuse veebilehel; kui rutiinse otsuse või toimingu tegemisel korruptsioonioht puudub, sealhulgas kui ametiisik teeb käsutustehingu või toimingu, omamata võimalust määrata selle asjaolusid; valla- või linnaasutuses, kui kohaliku omavalitsuse üksuse eripära arvestades oleks toimingupiirangu kohaldamine avaliku huvi seisukohast ebamõistlik. Käesolevas punktis sätestatud alusel toimingupiirangu kohaldamata jätmise kohta avaldatakse viivitamata ja alaliselt teade valla või linna veebilehel; organisiseste valimiste korral.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 3"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_11_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Ametiisiku taandamise aluseid ja korda, mis on ette nähtud muus seaduses, kohaldatakse täiendavalt toimingupiirangutele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 4"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_11_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Avalikku ülesannet täitev asutus peab oma töö korraldamisel tagama, et ametiisik ei oleks kohustatud tegema otsust või toimingut iseenda või temaga seotud isiku suhtes. Kui asutus jätab selle kohustuse täitmata, ei vabasta see asjaolu ametiisikut kohustusest järgida toimingupiiranguid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 5"
+    },
+    {
       "@id": "estleg:KORRUP_Par_12",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KORRUP"
+        "estleg:LegalProvision_korruptsioonivastane_seadus"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Deklaratsioonihoidja",
+      "rdfs:label": "§ 12. Huvide avaldamise kohustus",
       "estleg:sourceAct": "Korruptsioonivastane seadus",
-      "estleg:summary": "1(1)Deklaratsioonihoidja on ametiisik, kelle on määranud asutuse juht või selleks volitatud organ. Deklaratsioonihoidjaks on käesolevas seaduses sätestatud juhtudel selleks määratud komisjon või nõukogu. Deklaratsioonihoidja on ametiisik, kelle on määranud asutuse juht või selleks volitatud organ. Deklaratsioonihoidjaks on käesolevas seaduses sätestatud juhtudel selleks määratud komisjon või nõukogu. 2(2)Deklaratsioonihoidja korraldab deklaratsioonide õigeaegset kogumist, nende kontrollimist, nõ",
+      "estleg:summary": "1 (1) Deklaratsiooniga avaldab selleks kohustatud ametiisik (edaspidi deklarant) andmed temale kuuluva vara ja muude asjaolude kohta eesmärgiga teadvustada deklarandi ametikohustuste täitmist mõjutada võivad huvid ning muuta need kontrollitavaks. Deklaratsiooniga avaldab selleks kohustatud ametiisik (edaspidi deklarant) andmed temale kuuluva vara ja muude asjaolude kohta eesmärgiga teadvustada deklarandi ametikohustuste täitmist mõjutada võivad huvid ning muuta need kontrollitavaks. 2 (2) Deklar",
+      "estleg:legalText": "(1) Deklaratsiooniga avaldab selleks kohustatud ametiisik (edaspidi deklarant) andmed temale kuuluva vara ja muude asjaolude kohta eesmärgiga teadvustada deklarandi ametikohustuste täitmist mõjutada võivad huvid ning muuta need kontrollitavaks. (2) Deklaratsioon esitatakse nelja kuu jooksul ametisse asumisest või deklaratsiooni esitamise kohustuse tekkimisest arvates ning edaspidi iga aasta 31. maiks. Kalendriaasta jooksul ei pea deklarant esitama rohkem kui ühe deklaratsiooni ka juhul, kui ta asub uuele ametikohale. Ametikohaks loetakse käesoleva peatüki tähenduses seda positsiooni, millega kaasneb deklareerimise kohustus. (3) Deklaratsiooni esitamise kohustus lõpeb, kui deklarant on esitanud deklaratsiooni ametikohalt lahkumise aastale järgneval kalendriaastal. (4) Deklaratsiooni mõjuva põhjuseta tähtpäevaks esitamata jätmine, deklaratsioonis korruptsiooniohu hindamiseks oluliste andmete varjamine ja valeandmete esitamine on keelatud. Mõjuva põhjusena on käsitatav ametiisiku haigus või muu temast sõltumatu asjaolu, mis takistas deklaratsiooni tähtpäevaks esitamist. Takistava asjaolu kadumisel esitatakse deklaratsioon viivituseta.",
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KORRUP_2"
+        "@id": "estleg:Cluster_KORRUP_3"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KORRUP_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KORRUP_Par_12_Lg_1"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_12_Lg_2"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_12_Lg_3"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_12_Lg_4"
+        }
+      ],
       "estleg:targetGroup": [
-        "public_body",
         "official"
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Reg_1023137_Par_2",
+          "estleg:similarityScore": {
+            "@value": "0.3",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
+      ],
+      "estleg:interpretedBy": [
+        {
+          "@id": "estleg:RK_3_4_1_1_12"
+        },
+        {
+          "@id": "estleg:RK_3_1_1_49_14"
+        },
+        {
+          "@id": "estleg:RK_3_25_144_21"
+        }
       ]
+    },
+    {
+      "@id": "estleg:KORRUP_Par_12_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Deklaratsiooniga avaldab selleks kohustatud ametiisik (edaspidi deklarant) andmed temale kuuluva vara ja muude asjaolude kohta eesmärgiga teadvustada deklarandi ametikohustuste täitmist mõjutada võivad huvid ning muuta need kontrollitavaks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 1"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_12_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Deklaratsioon esitatakse nelja kuu jooksul ametisse asumisest või deklaratsiooni esitamise kohustuse tekkimisest arvates ning edaspidi iga aasta 31. maiks. Kalendriaasta jooksul ei pea deklarant esitama rohkem kui ühe deklaratsiooni ka juhul, kui ta asub uuele ametikohale. Ametikohaks loetakse käesoleva peatüki tähenduses seda positsiooni, millega kaasneb deklareerimise kohustus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 2"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_12_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Deklaratsiooni esitamise kohustus lõpeb, kui deklarant on esitanud deklaratsiooni ametikohalt lahkumise aastale järgneval kalendriaastal.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 3"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_12_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Deklaratsiooni mõjuva põhjuseta tähtpäevaks esitamata jätmine, deklaratsioonis korruptsiooniohu hindamiseks oluliste andmete varjamine ja valeandmete esitamine on keelatud. Mõjuva põhjusena on käsitatav ametiisiku haigus või muu temast sõltumatu asjaolu, mis takistas deklaratsiooni tähtpäevaks esitamist. Takistava asjaolu kadumisel esitatakse deklaratsioon viivituseta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 4"
     },
     {
       "@id": "estleg:KORRUP_Par_13",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KORRUP"
+        "estleg:LegalProvision_korruptsioonivastane_seadus"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Deklaratsiooni esitamise tähtaeg",
+      "rdfs:label": "§ 13. Deklaratsiooni esitamine ja haldamine",
       "estleg:sourceAct": "Korruptsioonivastane seadus",
-      "estleg:summary": "1(1)Deklaratsioon esitatakse igal aastal üks kuu pärast tuludeklaratsiooni esitamise tähtaega või ühe kuu jooksul, arvates ametikohale asumise päevast, kui käesolevast seadusest ei tulene teisiti. Deklaratsioon esitatakse igal aastal üks kuu pärast tuludeklaratsiooni esitamise tähtaega või ühe kuu jooksul, arvates ametikohale asumise päevast, kui käesolevast seadusest ei tulene teisiti. 2(2)Kui pärast deklaratsiooni esitamist käesoleva paragrahvi lõikes 1 nimetatud tähtajaks ametiisiku deklareer",
+      "estleg:summary": "1 (1) Deklaratsiooni peavad esitama: 1 1) Vabariigi President, Riigikogu liige, Vabariigi Valitsuse liige, kohtunik, riigikontrolör, õiguskantsler, Eesti Panga juhtorgani liige, Vabariigi Presidendi Kantselei direktor, Riigikogu Kantselei direktor, samuti isik, kes täidab Vabariigi Valitsuse liikme juures nõustavaid ülesandeid kuni Vabariigi Valitsuse liikme volituste lõppemiseni, valitsusasutuse juht, ministeeriumi kantsler ja asekantslerid, Riigikantselei direktor; RT I 2021-04-13 3 1130420210",
+      "estleg:legalText": "(1) Deklaratsiooni peavad esitama: Vabariigi President, Riigikogu liige, Vabariigi Valitsuse liige, kohtunik, riigikontrolör, õiguskantsler, Eesti Panga juhtorgani liige, Vabariigi Presidendi Kantselei direktor, Riigikogu Kantselei direktor, samuti isik, kes täidab Vabariigi Valitsuse liikme juures nõustavaid ülesandeid kuni Vabariigi Valitsuse liikme volituste lõppemiseni, valitsusasutuse juht, ministeeriumi kantsler ja asekantslerid, Riigikantselei direktor; kohaliku omavalitsuse volikogu liige, valla- või linnavalitsuse liige, osavalla või linnaosa vanem, valla või linna ametiasutuse juht; kohtu ametiisik, kui sellise kohustuse on kehtestanud kohtu esimees; Riigikogu Kantselei ametiisik, kui sellise kohustuse on kehtestanud Riigikogu Kantselei direktor; Vabariigi Presidendi Kantselei ametiisik, kui sellise kohustuse on kehtestanud Vabariigi Presidendi Kantselei direktor; Riigikontrolli ametiisik, kui sellise kohustuse on kehtestanud riigikontrolör; Õiguskantsleri Kantselei ametiisik, kui sellise kohustuse on kehtestanud õiguskantsler; Eesti Panga ametiisik, kui sellise kohustuse on kehtestanud Eesti Panga president; valitsusasutuse ametiisik, kui sellise kohustuse on kehtestanud valitsusasutuse juht või ministeeriumi kantsler. Kohustust ei kehtestata julgeolekuasutuse ametiisikule ja muu valitsusasutuse struktuuriüksuse ametiisikule, kui struktuuriüksuse koosseis on riigisaladus. Julgeolekuasutuse või muu valitsusasutuse, mille struktuuriüksuse koosseis on riigisaladus, juht võib nõuda deklaratsioonis nõutavate andmete esitamist asutuse sisekontrolli meetmena; valitsusasutuse hallatava asutuse või muu valitsusasutuse valitsemisalasse kuuluva riiki esindava asutuse ametiisik, kui sellise kohustuse on kehtestanud asutust haldava või selle üle järelevalvet teostava valitsusasutuse juht või ministeeriumi kantsler; valla või linna ametiisik, kui sellise kohustuse on kehtestanud kohaliku omavalitsuse volikogu; avalik-õigusliku juriidilise isiku ametiisik, kui sellise kohustuse on kehtestanud avalik-õigusliku juriidilise isiku üle järelevalvet teostav minister või avalik-õigusliku juriidilise isiku nõukogu või sellega võrreldav organ; konkurentsiseaduse tähenduses avaliku ettevõtja juhtorgani liige, kui sellise kohustuse on kehtestanud ettevõtjas riigi valitseva mõju korral seda teostav minister, kohaliku omavalitsuse valitseva mõju korral selle omavalitsuse volikogu või avalik-õigusliku juriidilise isiku valitseva mõju korral selle isiku nõukogu või sellega võrreldav organ; riigi, kohaliku omavalitsuse või avalik-õigusliku juriidilise isiku asutatud sihtasutuse juhtorgani liige, kui sellise kohustuse on kehtestanud riigi õigusi teostav minister, kohaliku omavalitsuse volikogu või avalik-õigusliku juriidilise isiku nõukogu või sellega võrreldav organ; isik, kellele on seadusega või halduslepinguga delegeeritud avaliku ülesande täitmise korral otsuse või toimingu tegemise pädevus, kui sellise kohustuse on kehtestanud isiku üle järelevalvet teostav minister, kohaliku omavalitsuse volikogu või avalik-õigusliku juriidilise isiku nõukogu või sellega võrreldav organ. (2) Deklarant esitab deklaratsiooni huvide deklaratsioonide registrile (edaspidi register). (3) Käesoleva paragrahvi lõike 1 punktides 3–15 nimetatud õigus kehtestada deklaratsiooni esitamise kohustus on ainult juhul, kui ametiisikul on pädevus käsutada avalikku vahendit või viia läbi süüteo- või haldusmenetlust ning puuduvad tõhusamad vahendid korruptsiooniohu vältimiseks. Kohustusel ei ole tagasiulatuvat jõudu. (4) Deklarantide deklaratsioonide elektroonilise esitamise, hoidmise, haldamise, kontrollimise ja avalikustamise võimaldamiseks asutab Vabariigi Valitsus määrusega registri, kehtestades (4<sup>1</sup>) Registri asutamise ja pidamise eesmärk on korruptsioonivastase seaduse alusel selleks kohustatud ametiisiku andmete töötlemine ametikohustuste täitmist mõjutada võivate huvide teadvustamise võimaldamiseks. (4<sup>2</sup>) Registri vastutav töötleja on Justiits- ja Digiministeerium. , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes (5) Registri põhimääruses määratakse pädevad asutused, kes esitavad registrile andmed deklarantide kohta ühe kuu jooksul deklarandi deklaratsiooni esitamise kohustuse algusest arvates ning teavitavad registrit viivituseta deklarandi deklaratsiooni esitamise kohustuse kehtetuks tunnistamisest ja deklarandi ametikohalt lahkumisest. Kui käesoleva paragrahvi lõike 1 punktides 3–15 nimetatud deklarant esitab deklaratsiooni registrile, on kohustuse kehtestajal pädeva asutuse õigused ja kohustused. (6) Registri pidajal on õigus saada käesoleva seaduse kohaldamiseks riigi andmekogust andmeid deklarandi ja tema deklareeritavate andmete kohta.",
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KORRUP_2"
+        "@id": "estleg:Cluster_KORRUP_3"
       },
-      "estleg:targetGroup": [
-        "official"
-      ],
-      "estleg:referencedBy": [
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KORRUP_3"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:KORRUP_Par_18"
+          "@id": "estleg:KORRUP_Par_13_Lg_1"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_13_Lg_2"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_13_Lg_3"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_13_Lg_4"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_13_Lg_4_1"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_13_Lg_4_2"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_13_Lg_5"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_13_Lg_6"
         }
-      ]
-    },
-    {
-      "@id": "estleg:KORRUP_Par_14",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_KORRUP"
       ],
-      "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Deklaratsiooni esitamine",
-      "estleg:sourceAct": "Korruptsioonivastane seadus",
-      "estleg:summary": "1(1)Asutuse juht määrab käesoleva seaduse alusel kindlaks ametiisikute kategooriad, kes deklaratsiooni esitavad. Ametiisik esitab deklaratsiooni asutuse juhi poolt määratud deklaratsioonihoidjale, selle puudumisel asutuse juhile. Asutuse juht määrab käesoleva seaduse alusel kindlaks ametiisikute kategooriad, kes deklaratsiooni esitavad. Ametiisik esitab deklaratsiooni asutuse juhi poolt määratud deklaratsioonihoidjale, selle puudumisel asutuse juhile. 2(2)Riigikogu liikmed, Vabariigi President, ",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KORRUP_2"
-      },
       "estleg:targetGroup": [
+        "citizen",
+        "business",
         "public_body",
-        "official"
+        "official",
+        "ngo"
       ],
       "estleg:competentAuthority": [
         {
@@ -493,6 +1675,198 @@
         }
       ],
       "estleg:competenceType": "general",
+      "estleg:interpretedBy": [
+        {
+          "@id": "estleg:RK_3_1_1_100_00"
+        },
+        {
+          "@id": "estleg:RK_3_1_1_87_00"
+        },
+        {
+          "@id": "estleg:RK_3_1_1_84_01"
+        },
+        {
+          "@id": "estleg:RK_3_1_1_41_01"
+        },
+        {
+          "@id": "estleg:RK_3_1_1_17_01"
+        },
+        {
+          "@id": "estleg:RK_3_1_1_98_15"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:KORRUP_Par_9"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_15"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_16"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_39"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:KORRUP_Par_13_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Deklaratsiooni peavad esitama: Vabariigi President, Riigikogu liige, Vabariigi Valitsuse liige, kohtunik, riigikontrolör, õiguskantsler, Eesti Panga juhtorgani liige, Vabariigi Presidendi Kantselei direktor, Riigikogu Kantselei direktor, samuti isik, kes täidab Vabariigi Valitsuse liikme juures nõustavaid ülesandeid kuni Vabariigi Valitsuse liikme volituste lõppemiseni, valitsusasutuse juht, ministeeriumi kantsler ja asekantslerid, Riigikantselei direktor; kohaliku omavalitsuse volikogu liige, valla- või linnavalitsuse liige, osavalla või linnaosa vanem, valla või linna ametiasutuse juht; kohtu ametiisik, kui sellise kohustuse on kehtestanud kohtu esimees; Riigikogu Kantselei ametiisik, kui sellise kohustuse on kehtestanud Riigikogu Kantselei direktor; Vabariigi Presidendi Kantselei ametiisik, kui sellise kohustuse on kehtestanud Vabariigi Presidendi Kantselei direktor; Riigikontrolli ametiisik, kui sellise kohustuse on kehtestanud riigikontrolör; Õiguskantsleri Kantselei ametiisik, kui sellise kohustuse on kehtestanud õiguskantsler; Eesti Panga ametiisik, kui sellise kohustuse on kehtestanud Eesti Panga president; valitsusasutuse ametiisik, kui sellise kohustuse on kehtestanud valitsusasutuse juht või ministeeriumi kantsler. Kohustust ei kehtestata julgeolekuasutuse ametiisikule ja muu valitsusasutuse struktuuriüksuse ametiisikule, kui struktuuriüksuse koosseis on riigisaladus. Julgeolekuasutuse või muu valitsusasutuse, mille struktuuriüksuse koosseis on riigisaladus, juht võib nõuda deklaratsioonis nõutavate andmete esitamist asutuse sisekontrolli meetmena; valitsusasutuse hallatava asutuse või muu valitsusasutuse valitsemisalasse kuuluva riiki esindava asutuse ametiisik, kui sellise kohustuse on kehtestanud asutust haldava või selle üle järelevalvet teostava valitsusasutuse juht või ministeeriumi kantsler; valla või linna ametiisik, kui sellise kohustuse on kehtestanud kohaliku omavalitsuse volikogu; avalik-õigusliku juriidilise isiku ametiisik, kui sellise kohustuse on kehtestanud avalik-õigusliku juriidilise isiku üle järelevalvet teostav minister või avalik-õigusliku juriidilise isiku nõukogu või sellega võrreldav organ; konkurentsiseaduse tähenduses avaliku ettevõtja juhtorgani liige, kui sellise kohustuse on kehtestanud ettevõtjas riigi valitseva mõju korral seda teostav minister, kohaliku omavalitsuse valitseva mõju korral selle omavalitsuse volikogu või avalik-õigusliku juriidilise isiku valitseva mõju korral selle isiku nõukogu või sellega võrreldav organ; riigi, kohaliku omavalitsuse või avalik-õigusliku juriidilise isiku asutatud sihtasutuse juhtorgani liige, kui sellise kohustuse on kehtestanud riigi õigusi teostav minister, kohaliku omavalitsuse volikogu või avalik-õigusliku juriidilise isiku nõukogu või sellega võrreldav organ; isik, kellele on seadusega või halduslepinguga delegeeritud avaliku ülesande täitmise korral otsuse või toimingu tegemise pädevus, kui sellise kohustuse on kehtestanud isiku üle järelevalvet teostav minister, kohaliku omavalitsuse volikogu või avalik-õigusliku juriidilise isiku nõukogu või sellega võrreldav organ.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 1"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_13_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Deklarant esitab deklaratsiooni huvide deklaratsioonide registrile (edaspidi register).",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 2"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_13_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Käesoleva paragrahvi lõike 1 punktides 3–15 nimetatud õigus kehtestada deklaratsiooni esitamise kohustus on ainult juhul, kui ametiisikul on pädevus käsutada avalikku vahendit või viia läbi süüteo- või haldusmenetlust ning puuduvad tõhusamad vahendid korruptsiooniohu vältimiseks. Kohustusel ei ole tagasiulatuvat jõudu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 3"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_13_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Deklarantide deklaratsioonide elektroonilise esitamise, hoidmise, haldamise, kontrollimise ja avalikustamise võimaldamiseks asutab Vabariigi Valitsus määrusega registri, kehtestades",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 4"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_13_Lg_4_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4<sup>1</sup>",
+      "estleg:legalText": "(4<sup>1</sup>) Registri asutamise ja pidamise eesmärk on korruptsioonivastase seaduse alusel selleks kohustatud ametiisiku andmete töötlemine ametikohustuste täitmist mõjutada võivate huvide teadvustamise võimaldamiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 4<sup>1</sup>"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_13_Lg_4_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4<sup>2</sup>",
+      "estleg:legalText": "(4<sup>2</sup>) Registri vastutav töötleja on Justiits- ja Digiministeerium. , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 4<sup>2</sup>"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_13_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Registri põhimääruses määratakse pädevad asutused, kes esitavad registrile andmed deklarantide kohta ühe kuu jooksul deklarandi deklaratsiooni esitamise kohustuse algusest arvates ning teavitavad registrit viivituseta deklarandi deklaratsiooni esitamise kohustuse kehtetuks tunnistamisest ja deklarandi ametikohalt lahkumisest. Kui käesoleva paragrahvi lõike 1 punktides 3–15 nimetatud deklarant esitab deklaratsiooni registrile, on kohustuse kehtestajal pädeva asutuse õigused ja kohustused.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 5"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_13_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Registri pidajal on õigus saada käesoleva seaduse kohaldamiseks riigi andmekogust andmeid deklarandi ja tema deklareeritavate andmete kohta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 6"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_14",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_korruptsioonivastane_seadus"
+      ],
+      "estleg:paragrahv": "§ 14.",
+      "rdfs:label": "§ 14. Deklaratsiooni sisu",
+      "estleg:sourceAct": "Korruptsioonivastane seadus",
+      "estleg:summary": "1 (1) Deklaratsioon peab sisaldama deklareerimise päeva seisuga andmeid deklarandi järgmise vara kohta: 1 1) kinnisomand ja kinnisasjale isiku kasuks kinnistusraamatusse seatud piiratud asjaõigused. Deklaratsioonis märgitakse kinnisasja asukoht, sihtotstarve ja õiguse liik; 2 2) riiklikusse registrisse kantud sõiduk. Deklaratsioonis märgitakse sõiduki liik, mark ja esmase registreerimise aasta; 3 3) väärtpaber väärtpaberituru seaduse tähenduses, välja arvatud kogumispensioni osak, osalus äriühin",
+      "estleg:legalText": "(1) Deklaratsioon peab sisaldama deklareerimise päeva seisuga andmeid deklarandi järgmise vara kohta: kinnisomand ja kinnisasjale isiku kasuks kinnistusraamatusse seatud piiratud asjaõigused. Deklaratsioonis märgitakse kinnisasja asukoht, sihtotstarve ja õiguse liik; riiklikusse registrisse kantud sõiduk. Deklaratsioonis märgitakse sõiduki liik, mark ja esmase registreerimise aasta; väärtpaber väärtpaberituru seaduse tähenduses, välja arvatud kogumispensioni osak, osalus äriühingus, samuti osalus äriühingus, milles vähemalt 1/10 osalusest kuulub ametiisikuga seotud äriühingule. Deklaratsioonis märgitakse väärtpaberi kohta emitendi nimi, väärtpaberite liik ja arv, osaluse kohta äriühingu nimi ja osaluse nimiväärtus; varaline nõue teise isiku vastu, välja arvatud krediidiasutus, mille väärtus ületab neljakordset kuu töötasu alammäära, mille Vabariigi Valitsus on kehtestanud töölepingu seaduse alusel, kusjuures nõuded ühe isiku vastu liidetakse. Deklaratsioonis märgitakse nõude väärtus, võlgniku nimi ja nõude alus; varaline kohustus teise isiku ees, mille väärtus ületab neljakordset kuu töötasu alammäära, mille Vabariigi Valitsus on kehtestanud töölepingu seaduse alusel, kusjuures kohustused ühe isiku ees liidetakse. Deklaratsioonis märgitakse kohustuse väärtus, võlausaldaja nimi ja kohustuse alus. (2) Deklaratsioon peab sisaldama andmeid deklaratsiooni esitamisele eelnenud kalendriaasta jooksul deklarandi saadud deklarandi ametikohustuste täitmist mõjutada võiva varalise ja muu soodustuse kohta, mille väärtus ületab eelnenud aastal kehtinud kõrgemate riigiteenijate ametipalka koefitsiendiga 1,0. Käesoleva paragrahvi lõike 6 punktis 3 nimetatud isikult ja deklarandi töökohalt saadud soodustust ei deklareerita. Deklaratsioonis märgitakse soodustuse tegija ja selle väärtus. (3) Deklaratsioon peab sisaldama andmeid deklarandi poolt deklaratsiooni esitamisele eelnenud kalendriaasta jooksul saadud tuludeklaratsioonis deklareeritava tulu ning samal perioodil deklarandile Eestis ja välisriigis väljamakstud dividenditulu kohta. (4) Deklaratsioon peab sisaldama käesoleva paragrahvi lõikes 1 nimetatud andmeid eelnenud aastal kokku vähemalt kahe kuu jooksul deklarandi valduses olnud kinnisasja ja riiklikusse registrisse kantud sõiduki kohta. Deklaratsioon ei pea sisaldama töökoha poolt deklarandi valdusesse antud kinnisasja ja riiklikusse registrisse kantud sõiduki andmeid. (5) Käesoleva paragrahvi lõigetes 1 ja 4 sätestatut kohaldatakse ka välisriigis asuva krediidiasutuse kontole ja äriühingu osalusele, samuti välisriigis asuvale maatükile, ehitisele ja sõidukile. (6) Deklaratsioonis peavad sisalduma: deklarandi nimi ja ametikoha andmed; deklarandi isikukood ja elukoha aadress; deklarandiga abielus või registreeritud kooselus oleva isiku ning deklarandi vanema ja alaneja sugulase ning isiku, keda seob deklarandiga ühine majapidamine, nimi ja isikukood või sünniaeg, samuti suhe deklarandiga. (7) Deklaratsioon peab sisaldama andmeid: selle kohta, millise kõrvaltegevusega on deklarant tegelenud deklaratsiooni esitamisele eelnenud kalendriaastal ja deklaratsiooni esitamise aastal väljaspool ametikohustusi töölepingu või teenuste osutamise lepingu alusel või valitaval või nimetataval ametikohal, ettevõtjana või täisosanikuna täis- või usaldusühingus või juriidilise isiku juhtimis- või kontrollorgani liikmena, samuti muu kõrvaltegevuse kohta, kui see on seotud tulu saamisega; muu asjaolu kohta, mis deklarandile teadaolevalt võib kaasa tuua ametikohustuse rikkumise, välistada deklarandi erapooletuse ja objektiivsuse või tuua kaasa korruptsiooniohu, tingimusel et nende andmete kogumine ei riku deklarandi õigusi. (8) Ühises omandis olevad asjad, õigused ja kohustused deklareeritakse, näidates võimaluse korral ära ametiisiku osa ühisest omandist. Kui ametiisik on sõlminud abieluvaralepingu või kooselulepingu, lisatakse selle identifitseerimise andmed deklaratsioonile.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_KORRUP_3"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KORRUP_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KORRUP_Par_14_Lg_1"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_14_Lg_2"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_14_Lg_3"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_14_Lg_4"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_14_Lg_5"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_14_Lg_6"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_14_Lg_7"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_14_Lg_8"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "business",
+        "public_body",
+        "official"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:dutyHolder": "Deklaratsioon",
       "estleg:referencedBy": [
         {
           "@id": "estleg:Reg_1061230_Par_9"
@@ -500,38 +1874,167 @@
       ]
     },
     {
+      "@id": "estleg:KORRUP_Par_14_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Deklaratsioon peab sisaldama deklareerimise päeva seisuga andmeid deklarandi järgmise vara kohta: kinnisomand ja kinnisasjale isiku kasuks kinnistusraamatusse seatud piiratud asjaõigused. Deklaratsioonis märgitakse kinnisasja asukoht, sihtotstarve ja õiguse liik; riiklikusse registrisse kantud sõiduk. Deklaratsioonis märgitakse sõiduki liik, mark ja esmase registreerimise aasta; väärtpaber väärtpaberituru seaduse tähenduses, välja arvatud kogumispensioni osak, osalus äriühingus, samuti osalus äriühingus, milles vähemalt 1/10 osalusest kuulub ametiisikuga seotud äriühingule. Deklaratsioonis märgitakse väärtpaberi kohta emitendi nimi, väärtpaberite liik ja arv, osaluse kohta äriühingu nimi ja osaluse nimiväärtus; varaline nõue teise isiku vastu, välja arvatud krediidiasutus, mille väärtus ületab neljakordset kuu töötasu alammäära, mille Vabariigi Valitsus on kehtestanud töölepingu seaduse alusel, kusjuures nõuded ühe isiku vastu liidetakse. Deklaratsioonis märgitakse nõude väärtus, võlgniku nimi ja nõude alus; varaline kohustus teise isiku ees, mille väärtus ületab neljakordset kuu töötasu alammäära, mille Vabariigi Valitsus on kehtestanud töölepingu seaduse alusel, kusjuures kohustused ühe isiku ees liidetakse. Deklaratsioonis märgitakse kohustuse väärtus, võlausaldaja nimi ja kohustuse alus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 1"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_14_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Deklaratsioon peab sisaldama andmeid deklaratsiooni esitamisele eelnenud kalendriaasta jooksul deklarandi saadud deklarandi ametikohustuste täitmist mõjutada võiva varalise ja muu soodustuse kohta, mille väärtus ületab eelnenud aastal kehtinud kõrgemate riigiteenijate ametipalka koefitsiendiga 1,0. Käesoleva paragrahvi lõike 6 punktis 3 nimetatud isikult ja deklarandi töökohalt saadud soodustust ei deklareerita. Deklaratsioonis märgitakse soodustuse tegija ja selle väärtus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 2"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_14_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Deklaratsioon peab sisaldama andmeid deklarandi poolt deklaratsiooni esitamisele eelnenud kalendriaasta jooksul saadud tuludeklaratsioonis deklareeritava tulu ning samal perioodil deklarandile Eestis ja välisriigis väljamakstud dividenditulu kohta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 3"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_14_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Deklaratsioon peab sisaldama käesoleva paragrahvi lõikes 1 nimetatud andmeid eelnenud aastal kokku vähemalt kahe kuu jooksul deklarandi valduses olnud kinnisasja ja riiklikusse registrisse kantud sõiduki kohta. Deklaratsioon ei pea sisaldama töökoha poolt deklarandi valdusesse antud kinnisasja ja riiklikusse registrisse kantud sõiduki andmeid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 4"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_14_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Käesoleva paragrahvi lõigetes 1 ja 4 sätestatut kohaldatakse ka välisriigis asuva krediidiasutuse kontole ja äriühingu osalusele, samuti välisriigis asuvale maatükile, ehitisele ja sõidukile.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 5"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_14_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Deklaratsioonis peavad sisalduma: deklarandi nimi ja ametikoha andmed; deklarandi isikukood ja elukoha aadress; deklarandiga abielus või registreeritud kooselus oleva isiku ning deklarandi vanema ja alaneja sugulase ning isiku, keda seob deklarandiga ühine majapidamine, nimi ja isikukood või sünniaeg, samuti suhe deklarandiga.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 6"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_14_Lg_7",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "7",
+      "estleg:legalText": "(7) Deklaratsioon peab sisaldama andmeid: selle kohta, millise kõrvaltegevusega on deklarant tegelenud deklaratsiooni esitamisele eelnenud kalendriaastal ja deklaratsiooni esitamise aastal väljaspool ametikohustusi töölepingu või teenuste osutamise lepingu alusel või valitaval või nimetataval ametikohal, ettevõtjana või täisosanikuna täis- või usaldusühingus või juriidilise isiku juhtimis- või kontrollorgani liikmena, samuti muu kõrvaltegevuse kohta, kui see on seotud tulu saamisega; muu asjaolu kohta, mis deklarandile teadaolevalt võib kaasa tuua ametikohustuse rikkumise, välistada deklarandi erapooletuse ja objektiivsuse või tuua kaasa korruptsiooniohu, tingimusel et nende andmete kogumine ei riku deklarandi õigusi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 7"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_14_Lg_8",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "8",
+      "estleg:legalText": "(8) Ühises omandis olevad asjad, õigused ja kohustused deklareeritakse, näidates võimaluse korral ära ametiisiku osa ühisest omandist. Kui ametiisik on sõlminud abieluvaralepingu või kooselulepingu, lisatakse selle identifitseerimise andmed deklaratsioonile.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 8"
+    },
+    {
       "@id": "estleg:KORRUP_Par_15",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KORRUP"
+        "estleg:LegalProvision_korruptsioonivastane_seadus"
       ],
       "estleg:paragrahv": "§ 15.",
-      "rdfs:label": "§ 15. Deklaratsiooni andmete avalikustamine",
+      "rdfs:label": "§ 15. Deklaratsiooni kontrollimine",
       "estleg:sourceAct": "Korruptsioonivastane seadus",
-      "estleg:summary": "1(1)Igaühel on õigus oma deklaratsiooni andmeid avalikustada. Igaühel on õigus oma deklaratsiooni andmeid avalikustada. 2(2)Riigikogu liikme, Vabariigi Presidendi, Vabariigi Valitsuse liikme, Eesti Panga Nõukogu esimehe ja liikme, Eesti Panga presidendi, kaitseväe juhataja ja ülemjuhataja, riigikontrolöri, õiguskantsleri, suursaadiku, riigi peaprokuröri, Riigikohtu esimehe ja liikme, riigisekretäri, ringkonnakohtu esimehe ja liikme, haldus-, linna- ja maakohtu esimehe ja kohtuniku ministeeriumi ",
+      "estleg:summary": "1 (1) Erikomisjonil või tema volitatud ametiisikul on: 1 1) ainuõigus kontrollida käesoleva seaduse § 13 lõike 1 punktis 1 nimetatud deklarantide deklaratsioone; 2 2) õigus kontrollida kõiki registrile esitatud deklaratsioone. Erikomisjonil või tema volitatud ametiisikul on: ainuõigus kontrollida käesoleva seaduse § 13 lõike 1 punktis 1 nimetatud deklarantide deklaratsioone; õigus kontrollida kõiki registrile esitatud deklaratsioone. 2 (2) Kohaliku omavalitsuse volikogu moodustatud komisjonil on",
+      "estleg:legalText": "(1) Erikomisjonil või tema volitatud ametiisikul on: ainuõigus kontrollida käesoleva seaduse § 13 lõike 1 punktis 1 nimetatud deklarantide deklaratsioone; õigus kontrollida kõiki registrile esitatud deklaratsioone. (2) Kohaliku omavalitsuse volikogu moodustatud komisjonil on õigus kontrollida: käesoleva seaduse § 13 lõike 1 punktides 2 ja 11 nimetatud deklarantide deklaratsioone; käesoleva seaduse § 13 lõike 1 punktides 13–15 nimetatud deklarantide deklaratsioone, kui kohalik omavalitsus omab avalikus ettevõtjas valitsevat mõju, on sihtasutuse asutaja või delegeeritud avalike ülesannete üle järelevalve teostaja. (3) Käesoleva seaduse § 13 lõike 1 punktides 3–12 nimetatud deklarantide deklaratsioonide kontrollimise õigus on deklaratsiooni esitamise kohustuse kehtestajal või tema volitatud ametiisikul. (4) Ministril või tema volitatud ametiisikul on õigus kontrollida: käesoleva seaduse § 13 lõike 1 punktis 12 nimetatud deklarantide deklaratsioone, kui ta teostab avalik-õigusliku juriidilise isiku üle järelevalvet; käesoleva seaduse § 13 lõike 1 punktis 13 nimetatud deklarantide deklaratsioone, kui ta teostab avalikus ettevõtjas riigi valitsevat mõju; käesoleva seaduse § 13 lõike 1 punktis 14 nimetatud deklarantide deklaratsioone, kui ta teostab sihtasutuses asutaja õigusi; käesoleva seaduse § 13 lõike 1 punktis 15 nimetatud deklarantide deklaratsioone, kui ta on delegeeritud avalike ülesannete üle järelevalve teostaja. (5) Avalik-õigusliku juriidilise isiku nõukogul, sellega võrreldaval organil või tema volitatud ametiisikul on õigus kontrollida käesoleva seaduse § 13 lõike 1 punktides 13–15 nimetatud deklarantide deklaratsioone, kui avalik-õiguslik juriidiline isik omab avalikus ettevõtjas valitsevat mõju, on sihtasutuse asutaja või delegeeritud avalike ülesannete üle järelevalve teostaja. (6) Käesoleva paragrahvi lõigetes 1–5 nimetatud kontrolli teostajal on õigus: nõuda deklarandilt ja kolmandalt isikult selgitusi deklaratsiooni sisu ning deklaratsiooni esitamise tähtaja eiramise või deklaratsiooni esitamata jätmise põhjuste kohta; esitada päringuid ja saada andmeid deklarandi kohta deklaratsiooni kontrollimiseks vajalikus ulatuses krediidiasutustelt ja riigi või kohaliku omavalitsuse andmekogudest. (7) Käesoleva paragrahvi lõigetes 1–5 nimetatud kontrolli teostaja: protokollib käesoleva paragrahvi lõikes 6 nimetatud kontrolltoimingud ning teavitab deklaranti ja registri pidajat deklaratsiooni kontrollimisest ja käesoleva paragrahvi lõikes 6 nimetatud kontrolltoimingutest; edastab deklaratsiooni kontrollimise materjalid prokuratuurile või kohtuvälisele menetlejale, kui ametiisiku deklaratsiooni kontrollimise tulemusel on tekkinud süüteokahtlus. (8) Käesoleva paragrahvi lõigetes 1–5 nimetatud kontrolli teostajal on õigus saada registri pidajalt andmeid tema kontrollitavate deklaratsioonide esitamise ja nende kontrollimise kohta. Justiits- ja Digiministeeriumil on õigus saada registri pidajalt deklaratsioonide esitamise ja kontrollimise kohta andmeid käesoleva seaduse §-s 8 nimetatud ülesande täitmiseks. , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes",
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KORRUP_2"
+        "@id": "estleg:Cluster_KORRUP_3"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KORRUP_3"
       },
-      "estleg:semanticallySimilarTo": [
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:RIIGIK_Par_46",
-          "estleg:similarityScore": {
-            "@value": "0.325",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
+          "@id": "estleg:KORRUP_Par_15_Lg_1"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_15_Lg_2"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_15_Lg_3"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_15_Lg_4"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_15_Lg_5"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_15_Lg_6"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_15_Lg_7"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_15_Lg_8"
         }
       ],
       "estleg:targetGroup": [
+        "citizen",
+        "business",
         "public_body",
-        "official"
+        "official",
+        "ngo"
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:KORRUP_Par_13"
+        }
       ],
       "estleg:competentAuthority": [
         {
-          "@id": "estleg:Institution_riigikogu"
+          "@id": "estleg:Institution_kohalik_omavalitsus"
         }
       ],
       "estleg:competenceType": "general",
@@ -542,248 +2045,281 @@
       ]
     },
     {
+      "@id": "estleg:KORRUP_Par_15_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Erikomisjonil või tema volitatud ametiisikul on: ainuõigus kontrollida käesoleva seaduse § 13 lõike 1 punktis 1 nimetatud deklarantide deklaratsioone; õigus kontrollida kõiki registrile esitatud deklaratsioone.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 1"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_15_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kohaliku omavalitsuse volikogu moodustatud komisjonil on õigus kontrollida: käesoleva seaduse § 13 lõike 1 punktides 2 ja 11 nimetatud deklarantide deklaratsioone; käesoleva seaduse § 13 lõike 1 punktides 13–15 nimetatud deklarantide deklaratsioone, kui kohalik omavalitsus omab avalikus ettevõtjas valitsevat mõju, on sihtasutuse asutaja või delegeeritud avalike ülesannete üle järelevalve teostaja.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 2"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_15_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Käesoleva seaduse § 13 lõike 1 punktides 3–12 nimetatud deklarantide deklaratsioonide kontrollimise õigus on deklaratsiooni esitamise kohustuse kehtestajal või tema volitatud ametiisikul.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 3"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_15_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Ministril või tema volitatud ametiisikul on õigus kontrollida: käesoleva seaduse § 13 lõike 1 punktis 12 nimetatud deklarantide deklaratsioone, kui ta teostab avalik-õigusliku juriidilise isiku üle järelevalvet; käesoleva seaduse § 13 lõike 1 punktis 13 nimetatud deklarantide deklaratsioone, kui ta teostab avalikus ettevõtjas riigi valitsevat mõju; käesoleva seaduse § 13 lõike 1 punktis 14 nimetatud deklarantide deklaratsioone, kui ta teostab sihtasutuses asutaja õigusi; käesoleva seaduse § 13 lõike 1 punktis 15 nimetatud deklarantide deklaratsioone, kui ta on delegeeritud avalike ülesannete üle järelevalve teostaja.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 4"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_15_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Avalik-õigusliku juriidilise isiku nõukogul, sellega võrreldaval organil või tema volitatud ametiisikul on õigus kontrollida käesoleva seaduse § 13 lõike 1 punktides 13–15 nimetatud deklarantide deklaratsioone, kui avalik-õiguslik juriidiline isik omab avalikus ettevõtjas valitsevat mõju, on sihtasutuse asutaja või delegeeritud avalike ülesannete üle järelevalve teostaja.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 5"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_15_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Käesoleva paragrahvi lõigetes 1–5 nimetatud kontrolli teostajal on õigus: nõuda deklarandilt ja kolmandalt isikult selgitusi deklaratsiooni sisu ning deklaratsiooni esitamise tähtaja eiramise või deklaratsiooni esitamata jätmise põhjuste kohta; esitada päringuid ja saada andmeid deklarandi kohta deklaratsiooni kontrollimiseks vajalikus ulatuses krediidiasutustelt ja riigi või kohaliku omavalitsuse andmekogudest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 6"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_15_Lg_7",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "7",
+      "estleg:legalText": "(7) Käesoleva paragrahvi lõigetes 1–5 nimetatud kontrolli teostaja: protokollib käesoleva paragrahvi lõikes 6 nimetatud kontrolltoimingud ning teavitab deklaranti ja registri pidajat deklaratsiooni kontrollimisest ja käesoleva paragrahvi lõikes 6 nimetatud kontrolltoimingutest; edastab deklaratsiooni kontrollimise materjalid prokuratuurile või kohtuvälisele menetlejale, kui ametiisiku deklaratsiooni kontrollimise tulemusel on tekkinud süüteokahtlus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 7"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_15_Lg_8",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "8",
+      "estleg:legalText": "(8) Käesoleva paragrahvi lõigetes 1–5 nimetatud kontrolli teostajal on õigus saada registri pidajalt andmeid tema kontrollitavate deklaratsioonide esitamise ja nende kontrollimise kohta. Justiits- ja Digiministeeriumil on õigus saada registri pidajalt deklaratsioonide esitamise ja kontrollimise kohta andmeid käesoleva seaduse §-s 8 nimetatud ülesande täitmiseks. , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 8"
+    },
+    {
       "@id": "estleg:KORRUP_Par_16",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KORRUP"
+        "estleg:LegalProvision_korruptsioonivastane_seadus"
       ],
       "estleg:paragrahv": "§ 16.",
-      "rdfs:label": "§ 16. Deklaratsiooni kontrollimine",
+      "rdfs:label": "§ 16. Deklaratsiooni avalikkus ja hoiuaeg",
       "estleg:sourceAct": "Korruptsioonivastane seadus",
-      "estleg:summary": "1(1)Deklaratsioonihoidja on kohustatud tutvuma temale esitatud deklaratsiooniga. Deklaratsioonihoidjal on õigus kontrollida deklaratsiooniandmete tegelikkusele vastavust ja kohustus seda teha, kui ametiisiku osas on tekkinud korruptsioonikahtlus. Deklaratsioonihoidja on kohustatud tutvuma temale esitatud deklaratsiooniga. Deklaratsioonihoidjal on õigus kontrollida deklaratsiooniandmete tegelikkusele vastavust ja kohustus seda teha, kui ametiisiku osas on tekkinud korruptsioonikahtlus. 2(2)Deklar",
+      "estleg:summary": "1 (1) Käesoleva seaduse § 13 lõikes 1 nimetatud deklarantide deklaratsioonid avalikustatakse registri põhimääruses sätestatud korra kohaselt. Deklaratsiooni andmetega tutvumiseks peab isik identifitseerima end digitaalse isikutunnistuse abil. Deklarandil on õigus saada registrist teavet selle kohta, kes on tema deklaratsiooniga tutvunud. Käesoleva seaduse § 13 lõikes 1 nimetatud deklarantide deklaratsioonid avalikustatakse registri põhimääruses sätestatud korra kohaselt. Deklaratsiooni andmetega",
+      "estleg:legalText": "(1) Käesoleva seaduse § 13 lõikes 1 nimetatud deklarantide deklaratsioonid avalikustatakse registri põhimääruses sätestatud korra kohaselt. Deklaratsiooni andmetega tutvumiseks peab isik identifitseerima end digitaalse isikutunnistuse abil. Deklarandil on õigus saada registrist teavet selle kohta, kes on tema deklaratsiooniga tutvunud. (1<sup>1</sup>) Julgeolekuasutuse juhi deklaratsiooni ei avalikustata. (2) Deklaratsioon avalikustatakse kolmeks aastaks. Deklaratsiooni ei avalikustata ja juba avalikustatud deklaratsiooni avalikustamine lõpetatakse, kui pädev asutus on teavitanud registrit deklarandi deklaratsiooni esitamise kohustuse kehtetuks tunnistamisest või kui deklarant on rahvastikuregistri andmetel surnud. (3) Ainult asutusesiseseks kasutamiseks on: avalikustatud deklaratsioonis käesoleva seaduse § 14 lõike 6 punktides 2 ja 3 nimetatud andmed ning abieluvaralepingu või kooselulepingu andmed, mida ei kanta abieluvararegistri kaardile; deklaratsioonid, mille avalikustamine on lõppenud; deklaratsioonid, mida ei avalikustata. (4) Õigus tutvuda kõigi deklaratsioonis sisalduvate andmetega on: deklarandil; kontrolli teostajal; selle avalikku ülesannet täitva asutuse juhil, mille nimel, ülesandel või järelevalve all deklarant ametiisiku kohustusi täidab või kes eraldab deklarandi tegevuseks avalikke vahendeid, või tema volitatud ametiisikul; krediidiasutusel ja finantseerimisasutusel ning notaril rahapesu ja terrorismi rahastamise tõkestamise seadusest tulenevate kohustuste täitmiseks. (5) Deklaratsiooni hoitakse seitse aastat deklaratsiooni esitamisest arvates. Seejärel deklaratsioon hävitatakse registri põhimäärusega sätestatud korras.",
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KORRUP_2"
+        "@id": "estleg:Cluster_KORRUP_3"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KORRUP_3"
       },
-      "estleg:dutyHolder": "Deklaratsioonihoidja",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KORRUP_Par_16_Lg_1"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_16_Lg_1_1"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_16_Lg_2"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_16_Lg_3"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_16_Lg_4"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_16_Lg_5"
+        }
+      ],
       "estleg:targetGroup": [
+        "citizen",
+        "business",
+        "public_body",
         "official"
-      ]
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:KORRUP_Par_13"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      }
+    },
+    {
+      "@id": "estleg:KORRUP_Par_16_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesoleva seaduse § 13 lõikes 1 nimetatud deklarantide deklaratsioonid avalikustatakse registri põhimääruses sätestatud korra kohaselt. Deklaratsiooni andmetega tutvumiseks peab isik identifitseerima end digitaalse isikutunnistuse abil. Deklarandil on õigus saada registrist teavet selle kohta, kes on tema deklaratsiooniga tutvunud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 1"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_16_Lg_1_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1<sup>1</sup>",
+      "estleg:legalText": "(1<sup>1</sup>) Julgeolekuasutuse juhi deklaratsiooni ei avalikustata.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 1<sup>1</sup>"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_16_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Deklaratsioon avalikustatakse kolmeks aastaks. Deklaratsiooni ei avalikustata ja juba avalikustatud deklaratsiooni avalikustamine lõpetatakse, kui pädev asutus on teavitanud registrit deklarandi deklaratsiooni esitamise kohustuse kehtetuks tunnistamisest või kui deklarant on rahvastikuregistri andmetel surnud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 2"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_16_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Ainult asutusesiseseks kasutamiseks on: avalikustatud deklaratsioonis käesoleva seaduse § 14 lõike 6 punktides 2 ja 3 nimetatud andmed ning abieluvaralepingu või kooselulepingu andmed, mida ei kanta abieluvararegistri kaardile; deklaratsioonid, mille avalikustamine on lõppenud; deklaratsioonid, mida ei avalikustata.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 3"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_16_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Õigus tutvuda kõigi deklaratsioonis sisalduvate andmetega on: deklarandil; kontrolli teostajal; selle avalikku ülesannet täitva asutuse juhil, mille nimel, ülesandel või järelevalve all deklarant ametiisiku kohustusi täidab või kes eraldab deklarandi tegevuseks avalikke vahendeid, või tema volitatud ametiisikul; krediidiasutusel ja finantseerimisasutusel ning notaril rahapesu ja terrorismi rahastamise tõkestamise seadusest tulenevate kohustuste täitmiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 4"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_16_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Deklaratsiooni hoitakse seitse aastat deklaratsiooni esitamisest arvates. Seejärel deklaratsioon hävitatakse registri põhimäärusega sätestatud korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 5"
     },
     {
       "@id": "estleg:KORRUP_Par_17",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KORRUP"
+        "estleg:LegalProvision_korruptsioonivastane_seadus"
       ],
       "estleg:paragrahv": "§ 17.",
-      "rdfs:label": "§ 17.",
+      "rdfs:label": "§ 17. Ametiseisundi, avaliku vahendi, mõju või siseteabe korruptiivne kasutamine",
       "estleg:sourceAct": "Korruptsioonivastane seadus",
-      "estleg:summary": "[Kehtetu]",
+      "estleg:summary": "Ametiisiku poolt omakasu eesmärgil ametiseisundi, avaliku vahendi, mõju või siseteabe korruptiivse kasutamise eest – karistatakse rahatrahviga kuni 300 trahviühikut. Ametiisiku poolt omakasu eesmärgil ametiseisundi, avaliku vahendi, mõju või siseteabe korruptiivse kasutamise eest – karistatakse rahatrahviga kuni 300 trahviühikut.",
+      "estleg:legalText": "Ametiisiku poolt omakasu eesmärgil ametiseisundi, avaliku vahendi, mõju või siseteabe korruptiivse kasutamise eest – karistatakse rahatrahviga kuni 300 trahviühikut.",
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KORRUP_2"
-      }
-    },
-    {
-      "@id": "estleg:KORRUP_Par_18",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_KORRUP"
-      ],
-      "estleg:paragrahv": "§ 18.",
-      "rdfs:label": "§ 18. Deklaratsiooni esitamata jätmine",
-      "estleg:sourceAct": "Korruptsioonivastane seadus",
-      "estleg:summary": "1(1)Käesoleva seaduse §-s 13 sätestatud tähtajaks deklaratsiooni mõjuva põhjuseta esitamata jätmine toob kaasa vastutuse seadusega sätestatud korras. Mõjuva põhjusena on käsitletavad deklaratsiooni esitaja haigus või muud temast sõltumatud asjaolud, mis takistasid deklaratsiooni tähtajaks esitamist. Käesoleva seaduse §-s 13 sätestatud tähtajaks deklaratsiooni mõjuva põhjuseta esitamata jätmine toob kaasa vastutuse seadusega sätestatud korras. Mõjuva põhjusena on käsitletavad deklaratsiooni esita",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KORRUP_2"
+        "@id": "estleg:Cluster_KORRUP_4"
       },
-      "estleg:references": [
-        {
-          "@id": "estleg:KORRUP_Par_13"
-        }
-      ]
-    },
-    {
-      "@id": "estleg:KORRUP_Par_19",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_KORRUP"
-      ],
-      "estleg:paragrahv": "§ 19.",
-      "rdfs:label": "§ 19. Töökoha- ja tegevuspiirangu mõiste",
-      "estleg:sourceAct": "Korruptsioonivastane seadus",
-      "estleg:summary": "1(1)Töökoha- ja tegevuspiiranguna käsitatakse käesolevas seaduses piirangut tegutseda avalikus teenistuses olles ettevõtjana, töötada kohakaasluskorras ja oma lähisugulase või -hõimlasega otseses alluvusvahekorras. Töökoha- ja tegevuspiiranguna käsitatakse käesolevas seaduses piirangut tegutseda avalikus teenistuses olles ettevõtjana, töötada kohakaasluskorras ja oma lähisugulase või -hõimlasega otseses alluvusvahekorras. 2(2)Käesoleva seaduse paragrahv 4 lõikes 1 nimetatud ametiisikutel on keel",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KORRUP_3"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KORRUP_4"
       },
-      "estleg:targetGroup": [
-        "business",
-        "official"
-      ]
-    },
-    {
-      "@id": "estleg:KORRUP_Par_20",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_KORRUP"
-      ],
-      "estleg:paragrahv": "§ 20.",
-      "rdfs:label": "§ 20. Ametiisikute töökoha- ja tegevuspiirangute erinormid",
-      "estleg:sourceAct": "Korruptsioonivastane seadus",
-      "estleg:summary": "1(1)Käesoleva seaduse paragrahv 4 lõike 2 punktides 1-16 nimetatud ametiisikute töökoha- ja tegevuspiiranguid ei reguleerita käesoleva seaduse paragrahvis 19, vaid need on sätestatud Eesti Vabariigi põhiseaduse paragrahvides 63 ja 84 ning Riigikogu, Vabariigi Valitsuse, õiguskantsleri, Riigikontrolli, Eesti Panga, prokuratuuri, kaitseväe ja piirivalve, kohtunike, politsei, notariaadi, kohtutäiturite ning kohaliku omavalitsuse tegevust käsitlevates seadustes, samuti muudes õigusaktides, mis erald",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KORRUP_3"
-      },
-      "estleg:targetGroup": [
-        "public_body",
-        "official"
-      ],
-      "estleg:competentAuthority": [
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:Institution_riigikogu"
-        },
-        {
-          "@id": "estleg:Institution_kohalik_omavalitsus"
+          "@id": "estleg:KORRUP_Par_17_Lg_Unknown_1"
         }
       ],
-      "estleg:competenceType": "general"
-    },
-    {
-      "@id": "estleg:KORRUP_Par_21",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_KORRUP"
-      ],
-      "estleg:paragrahv": "§ 21.",
-      "rdfs:label": "§ 21. Toimingupiirangu mõiste",
-      "estleg:sourceAct": "Korruptsioonivastane seadus",
-      "estleg:summary": "1(1)Toimingupiiranguna käsitatakse käesolevas seaduses keeldu teha korruptiivse tulu saamist võimaldavaid toiminguid. Toimingupiiranguna käsitatakse käesolevas seaduses keeldu teha korruptiivse tulu saamist võimaldavaid toiminguid. 2(2)Toimingupiirangut ei kohaldata tegevusele, mille tulemusel saadakse tulu aktsiatelt või äriühingu osadelt, kui seaduses ei ole sätestatud teisiti. Ametiisik võib saada tulu ka autoritasuna, patendituluna, intressidena hoiustelt, rendile või teiste isikute kasutuss",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KORRUP_4"
-      },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
-      "estleg:targetGroup": [
-        "citizen",
-        "business",
-        "official"
-      ]
-    },
-    {
-      "@id": "estleg:KORRUP_Par_22",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_KORRUP"
-      ],
-      "estleg:paragrahv": "§ 22.",
-      "rdfs:label": "§ 22. Tasu või suurema tasu võtmise keeld",
-      "estleg:sourceAct": "Korruptsioonivastane seadus",
-      "estleg:summary": "1(1)Ametiisikul, kes peab tasuta osutama teenuseid või langetama otsuseid, on keelatud nõuda või vastu võtta nende eest tasu rahas, loonustasu või mingi vastuteenena. Ametiisikul, kes peab tasuta osutama teenuseid või langetama otsuseid, on keelatud nõuda või vastu võtta nende eest tasu rahas, loonustasu või mingi vastuteenena. 2(2)Ametiisikul, kes peab osutama teenuseid ametlikus korras rahas kindlaksmääratud tasu eest, on keelatud nõuda või vastu võtta nende eest tariifides või hinnakirjades t",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KORRUP_4"
-      },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
-      },
       "estleg:targetGroup": [
         "official"
-      ]
-    },
-    {
-      "@id": "estleg:KORRUP_Par_23",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_KORRUP"
       ],
-      "estleg:paragrahv": "§ 23.",
-      "rdfs:label": "§ 23. Altkäemaksust teatamise kohustus",
-      "estleg:sourceAct": "Korruptsioonivastane seadus",
-      "estleg:summary": "1(1)Ametiisik on kohustatud igast talle teatavaks saanud altkäemaksu pakkumisest, andmisest või võtmisest kirjalikult teatama vahetule ülemusele või asutuse juhile ja politseile. Ametiisik on kohustatud igast talle teatavaks saanud altkäemaksu pakkumisest, andmisest või võtmisest kirjalikult teatama vahetule ülemusele või asutuse juhile ja politseile. 2(2)Altkäemaksu andmisest, võtmisest või pakkumisest käesolevas seaduses sätestatud korras teatamata jätmine on aluseks avalikus teenistuses oleva",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KORRUP_4"
-      },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
-      "estleg:dutyHolder": "Ametiisik",
-      "estleg:targetGroup": [
-        "public_body",
-        "official"
-      ]
-    },
-    {
-      "@id": "estleg:KORRUP_Par_24",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_KORRUP"
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_KORRUP_Par_17_fine"
+        }
       ],
-      "estleg:paragrahv": "§ 24.",
-      "rdfs:label": "§ 24. Keelatud tehingud",
-      "estleg:sourceAct": "Korruptsioonivastane seadus",
-      "estleg:summary": "1(1)Ametiisikul on keelatud sooritada tehinguid iseendaga või muid sarnase iseloomuga või huvide konfliktiga seotud tehinguid. Samuti ei või ta volitada oma alluvaid tegema vastavaid tehinguid tema asemel. Ametiisikul on keelatud sooritada tehinguid iseendaga või muid sarnase iseloomuga või huvide konfliktiga seotud tehinguid. Samuti ei või ta volitada oma alluvaid tegema vastavaid tehinguid tema asemel. 2(2)Tehingutena iseendaga, mis on keelatud, käsitatakse muuhulgas:11)ametiasutuse poolt tema",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KORRUP_4"
-      },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
-      },
-      "estleg:targetGroup": [
-        "public_body",
-        "official"
-      ]
-    },
-    {
-      "@id": "estleg:KORRUP_Par_25",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_KORRUP"
-      ],
-      "estleg:paragrahv": "§ 25.",
-      "rdfs:label": "§ 25. Huvide konflikt",
-      "estleg:sourceAct": "Korruptsioonivastane seadus",
-      "estleg:summary": "1(1)Huvide konfliktiga on tegemist juhul, kui ametiisik peab tegema oma töö- või teenistuskohustuste raames otsuse või osalema sellise otsuse tegemises, mis oluliselt mõjutab tema enda, tema lähisugulaste või -hõimlaste või juriidiliste isikute majandushuve, kui juriidiliseks isikuks on:11)täisühing, mille osanik on ametiisik või tema lähisugulane või -hõimlane;22)usaldusühing, mille täisosanik või usaldusosanik on ametiisik või tema lähisugulane või -hõimlane;33)osaühing, mille osanik või juhat",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KORRUP_4"
-      },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
-      "estleg:targetGroup": [
-        "citizen",
-        "business",
-        "official"
-      ]
-    },
-    {
-      "@id": "estleg:KORRUP_Par_26",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_KORRUP"
-      ],
-      "estleg:paragrahv": "§ 26.",
-      "rdfs:label": "§ 26. Kingituste vastuvõtmise piirang",
-      "estleg:sourceAct": "Korruptsioonivastane seadus",
-      "estleg:summary": "1(1)Ametiisikul on keelatud seoses oma töö- või teenistuskohustustega mõjutada isikuid tegema temale või tema lähisugulastele või -hõimlastele kingitusi või muid soodustusi. Ametiisikul on keelatud seoses oma töö- või teenistuskohustustega mõjutada isikuid tegema temale või tema lähisugulastele või -hõimlastele kingitusi või muid soodustusi. 2(2)Ametiisik ei või vastu võtta kingitusi ega nõustuda soodustustega, mis on määratud temale endale või tema lähisugulastele või -hõimlastele ning mille va",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KORRUP_4"
-      },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
-      },
-      "estleg:targetGroup": [
-        "citizen",
-        "official"
-      ]
-    },
-    {
-      "@id": "estleg:KORRUP_Par_26_26",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_KORRUP"
-      ],
-      "estleg:paragrahv": "§ 26<sup>1</sup>.",
-      "rdfs:label": "§ 26<sup>1</sup>. Avalikustamisele kuuluva majanduslike huvide deklaratsiooni tähtajaks esitamata jätmine või selles mittetäielike või valeandmete esitamine",
-      "estleg:sourceAct": "Korruptsioonivastane seadus",
-      "estleg:summary": "Avalikustamisele kuuluva majanduslike huvide deklaratsiooni tähtajaks mõjuva põhjuseta esitamata jätmise või selles teadvalt mittetäielike või valeandmete esitamise eest – karistatakse rahatrahviga kuni 300 trahviühikut. Avalikustamisele kuuluva majanduslike huvide deklaratsiooni tähtajaks mõjuva põhjuseta esitamata jätmise või selles teadvalt mittetäielike või valeandmete esitamise eest – karistatakse rahatrahviga kuni 300 trahviühikut. [Paragrahv 262jõustub 1. 09. 2002 - RT I 2002, 63, 387./21",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KORRUP_4"
-      },
+      "estleg:enforcedAtLevel": "state",
       "estleg:semanticallySimilarTo": [
         {
-          "@id": "estleg:PakS_Par_32",
+          "@id": "estleg:LIIKLU_2_Par_217_2",
+          "estleg:similarityScore": {
+            "@value": "0.316",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:LIIKLU_2_Par_239_1",
           "estleg:similarityScore": {
             "@value": "0.333",
             "@type": "xsd:decimal"
@@ -791,85 +2327,133 @@
           "estleg:similarityStatus": "candidate"
         },
         {
-          "@id": "estleg:VKVS_Par_21",
+          "@id": "estleg:LIIKLU_2_Par_245",
           "estleg:similarityScore": {
-            "@value": "0.312",
+            "@value": "0.333",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
         },
         {
-          "@id": "estleg:ÜLTS_Par_21",
+          "@id": "estleg:LIIKLU_2_Par_250",
           "estleg:similarityScore": {
-            "@value": "0.323",
+            "@value": "0.333",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:LIIKLU_2_Par_253",
+          "estleg:similarityScore": {
+            "@value": "0.333",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
         }
       ],
-      "estleg:hasSanction": [
+      "estleg:referencedBy": [
         {
-          "@id": "estleg:Sanction_KORRUP_Par_26_26_fine"
+          "@id": "estleg:KORRUP_Par_21"
         }
-      ],
-      "estleg:enforcedAtLevel": "state"
-    },
-    {
-      "@id": "estleg:KORRUP_Par_26_27",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_KORRUP"
-      ],
-      "estleg:paragrahv": "§ 26<sup>2</sup>.",
-      "rdfs:label": "§ 26<sup>2</sup>. Valeandmete esitamine majanduslike huvide deklaratsiooni kontrollivale isikule või asutusele või komisjonile",
-      "estleg:sourceAct": "Korruptsioonivastane seadus",
-      "estleg:summary": "Mittetäielike või valeandmete esitamise eest majanduslike huvide deklaratsiooni üle seaduslikku kontrolli teostavale isikule või asutusele või käesolevas seaduses nimetatud komisjonile – karistatakse rahatrahviga kuni 300 trahviühikut. Mittetäielike või valeandmete esitamise eest majanduslike huvide deklaratsiooni üle seaduslikku kontrolli teostavale isikule või asutusele või käesolevas seaduses nimetatud komisjonile – karistatakse rahatrahviga kuni 300 trahviühikut. [Paragrahv 263jõustub 1. 09.",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KORRUP_4"
-      },
-      "estleg:hasSanction": [
-        {
-          "@id": "estleg:Sanction_KORRUP_Par_26_27_fine"
-        }
-      ],
-      "estleg:enforcedAtLevel": "state",
-      "estleg:targetGroup": [
-        "citizen",
-        "public_body"
       ]
     },
     {
-      "@id": "estleg:KORRUP_Par_26_28",
+      "@id": "estleg:KORRUP_Par_17_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Ametiisiku poolt omakasu eesmärgil ametiseisundi, avaliku vahendi, mõju või siseteabe korruptiivse kasutamise eest – karistatakse rahatrahviga kuni 300 trahviühikut.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_17"
+      }
+    },
+    {
+      "@id": "estleg:KORRUP_Par_18",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KORRUP"
+        "estleg:LegalProvision_korruptsioonivastane_seadus"
       ],
-      "estleg:paragrahv": "§ 26<sup>3</sup>.",
-      "rdfs:label": "§ 26<sup>3</sup>. Seadusega kehtestatud töökoha-, tegevus- või toimingupiirangute rikkumine",
+      "estleg:paragrahv": "§ 18.",
+      "rdfs:label": "§ 18. Korruptiivse tulu saamisega seotud teatamise ja üleandmise kohustuse rikkumine",
       "estleg:sourceAct": "Korruptsioonivastane seadus",
-      "estleg:summary": "Seadusega kehtestatud töökoha-, tegevus- või toimingupiirangute rikkumise eest – karistatakse rahatrahviga kuni 300 trahviühikut. Seadusega kehtestatud töökoha-, tegevus- või toimingupiirangute rikkumise eest – karistatakse rahatrahviga kuni 300 trahviühikut. [Paragrahv 264jõustub 1. 09. 2002 - RT I 2002, 63, 387./212735 ] [Paragrahv 264jõustub 1. 09. 2002 -",
+      "estleg:summary": "Ametiisiku poolt tema saadud korruptiivsest tulust avalikku ülesannet täitvale asutusele või ametisse nimetamise õigusega isikule või organile teatamise kohustuse või korruptiivse tuluna saadu üleandmise kohustuse rikkumise eest – karistatakse rahatrahviga kuni 200 trahviühikut. Ametiisiku poolt tema saadud korruptiivsest tulust avalikku ülesannet täitvale asutusele või ametisse nimetamise õigusega isikule või organile teatamise kohustuse või korruptiivse tuluna saadu üleandmise kohustuse rikkum",
+      "estleg:legalText": "Ametiisiku poolt tema saadud korruptiivsest tulust avalikku ülesannet täitvale asutusele või ametisse nimetamise õigusega isikule või organile teatamise kohustuse või korruptiivse tuluna saadu üleandmise kohustuse rikkumise eest – karistatakse rahatrahviga kuni 200 trahviühikut.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KORRUP_4"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KORRUP_4"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KORRUP_Par_18_Lg_Unknown_1"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "public_body",
+        "official"
+      ],
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_KORRUP_Par_18_fine"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:KORRUP_Par_21"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:KORRUP_Par_18_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Ametiisiku poolt tema saadud korruptiivsest tulust avalikku ülesannet täitvale asutusele või ametisse nimetamise õigusega isikule või organile teatamise kohustuse või korruptiivse tuluna saadu üleandmise kohustuse rikkumise eest – karistatakse rahatrahviga kuni 200 trahviühikut.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_18"
+      }
+    },
+    {
+      "@id": "estleg:KORRUP_Par_19",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_korruptsioonivastane_seadus"
+      ],
+      "estleg:paragrahv": "§ 19.",
+      "rdfs:label": "§ 19. Toimingupiirangu rikkumine",
+      "estleg:sourceAct": "Korruptsioonivastane seadus",
+      "estleg:summary": "Ametiisiku poolt toimingupiirangu või toimingupiirangu kohaldamata jätmise tingimuste teadva rikkumise eest – karistatakse rahatrahviga kuni 200 trahviühikut. Ametiisiku poolt toimingupiirangu või toimingupiirangu kohaldamata jätmise tingimuste teadva rikkumise eest – karistatakse rahatrahviga kuni 200 trahviühikut.",
+      "estleg:legalText": "Ametiisiku poolt toimingupiirangu või toimingupiirangu kohaldamata jätmise tingimuste teadva rikkumise eest – karistatakse rahatrahviga kuni 200 trahviühikut.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_KORRUP_4"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KORRUP_4"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KORRUP_Par_19_Lg_Unknown_1"
+        }
+      ],
+      "estleg:targetGroup": [
+        "official"
+      ],
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_KORRUP_Par_19_fine"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state",
       "estleg:semanticallySimilarTo": [
         {
-          "@id": "estleg:LIIKLU_2_Par_74_112",
-          "estleg:similarityScore": {
-            "@value": "0.462",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:LIIKLU_2_Par_74_128",
-          "estleg:similarityScore": {
-            "@value": "0.462",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:LIIKLU_2_Par_74_140",
+          "@id": "estleg:LENN_Par_60_9",
           "estleg:similarityScore": {
             "@value": "0.4",
             "@type": "xsd:decimal"
@@ -877,61 +2461,23 @@
           "estleg:similarityStatus": "candidate"
         },
         {
-          "@id": "estleg:MSOS_Par_81",
+          "@id": "estleg:LIIKLU_2_Par_232",
           "estleg:similarityScore": {
-            "@value": "0.429",
+            "@value": "0.389",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
         },
         {
-          "@id": "estleg:RIIGIP_Par_17_36",
+          "@id": "estleg:LIIKLU_2_Par_238",
           "estleg:similarityScore": {
-            "@value": "0.545",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        }
-      ],
-      "estleg:hasSanction": [
-        {
-          "@id": "estleg:Sanction_KORRUP_Par_26_28_fine"
-        }
-      ],
-      "estleg:enforcedAtLevel": "state"
-    },
-    {
-      "@id": "estleg:KORRUP_Par_26_29",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_KORRUP"
-      ],
-      "estleg:paragrahv": "§ 26<sup>4</sup>.",
-      "rdfs:label": "§ 26<sup>4</sup>. Korruptsiooniohtlikust suhtest teatamata jätmine",
-      "estleg:sourceAct": "Korruptsioonivastane seadus",
-      "estleg:summary": "Korruptsiooniohtlikust suhtest teatamata jätmise eest – karistatakse rahatrahviga kuni 300 trahviühikut. Korruptsiooniohtlikust suhtest teatamata jätmise eest – karistatakse rahatrahviga kuni 300 trahviühikut. [Paragrahv 265jõustub 1. 09. 2002 - RT I 2002, 63, 387./212735 ] [Paragrahv 265jõustub 1. 09. 2002 -",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KORRUP_4"
-      },
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:RIIGIP_Par_17_36",
-          "estleg:similarityScore": {
-            "@value": "0.417",
+            "@value": "0.389",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
         },
         {
-          "@id": "estleg:RIIGIP_Par_17_39",
-          "estleg:similarityScore": {
-            "@value": "0.385",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:Sdaseadus_Par_51_50",
+          "@id": "estleg:LIIKLU_2_Par_254",
           "estleg:similarityScore": {
             "@value": "0.412",
             "@type": "xsd:decimal"
@@ -939,326 +2485,493 @@
           "estleg:similarityStatus": "candidate"
         },
         {
-          "@id": "estleg:TPSKS_Par_128",
+          "@id": "estleg:MSOS_Par_90_2",
           "estleg:similarityScore": {
             "@value": "0.4",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
+        }
+      ],
+      "estleg:interpretedBy": [
+        {
+          "@id": "estleg:RK_3_1_1_87_00"
         },
         {
-          "@id": "estleg:TPSKS_Par_129",
-          "estleg:similarityScore": {
-            "@value": "0.375",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        }
-      ],
-      "estleg:hasSanction": [
+          "@id": "estleg:RK_3_2_1_101_00"
+        },
         {
-          "@id": "estleg:Sanction_KORRUP_Par_26_29_fine"
+          "@id": "estleg:RK_3_1_1_65_00"
+        },
+        {
+          "@id": "estleg:RK_3_1_1_85_01"
+        },
+        {
+          "@id": "estleg:RK_3_1_1_41_01"
+        },
+        {
+          "@id": "estleg:RK_3_1_1_63_07"
+        },
+        {
+          "@id": "estleg:RK_3_1_1_115_09"
+        },
+        {
+          "@id": "estleg:RK_3_1_1_109_09"
+        },
+        {
+          "@id": "estleg:RK_3_4_1_1_12"
+        },
+        {
+          "@id": "estleg:RK_3_3_1_22_13"
+        },
+        {
+          "@id": "estleg:RK_3_1_1_49_14"
+        },
+        {
+          "@id": "estleg:RK_3_1_1_12_14"
+        },
+        {
+          "@id": "estleg:RK_3_1_1_37_16"
+        },
+        {
+          "@id": "estleg:RK_4_18_616_54"
+        },
+        {
+          "@id": "estleg:RK_4_20_1259_16"
+        },
+        {
+          "@id": "estleg:RK_1_18_7408_62"
+        },
+        {
+          "@id": "estleg:RK_4_23_3193_28"
         }
       ],
-      "estleg:enforcedAtLevel": "state"
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:KORRUP_Par_21"
+        }
+      ]
     },
     {
-      "@id": "estleg:KORRUP_Par_26_30",
+      "@id": "estleg:KORRUP_Par_19_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Ametiisiku poolt toimingupiirangu või toimingupiirangu kohaldamata jätmise tingimuste teadva rikkumise eest – karistatakse rahatrahviga kuni 200 trahviühikut.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_19"
+      }
+    },
+    {
+      "@id": "estleg:KORRUP_Par_20",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KORRUP"
+        "estleg:LegalProvision_korruptsioonivastane_seadus"
       ],
-      "estleg:paragrahv": "§ 26<sup>5</sup>.",
-      "rdfs:label": "§ 26<sup>5</sup>. Avalikustamisele mittekuuluva majanduslike huvide deklaratsiooni esitamata jätmine või selles valeandmete esitamine",
+      "estleg:paragrahv": "§ 20.",
+      "rdfs:label": "§ 20. Deklaratsioonis teadvalt valeandmete esitamine",
       "estleg:sourceAct": "Korruptsioonivastane seadus",
-      "estleg:summary": "Avalikustamisele mittekuuluva majanduslike huvide deklaratsiooni tähtajaks mõjuva põhjuseta esitamata jätmise või selles teadvalt mittetäielike või valeandmete esitamise eest – karistatakse rahatrahviga kuni 200 trahviühikut. Avalikustamisele mittekuuluva majanduslike huvide deklaratsiooni tähtajaks mõjuva põhjuseta esitamata jätmise või selles teadvalt mittetäielike või valeandmete esitamise eest – karistatakse rahatrahviga kuni 200 trahviühikut. [Paragrahv 266 jõustub 1. 09. 2002 - RT I 2002, ",
+      "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KORRUP_4"
       },
-      "estleg:semanticallySimilarTo": [
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KORRUP_4"
+      },
+      "estleg:interpretedBy": [
         {
-          "@id": "estleg:PakS_Par_32",
-          "estleg:similarityScore": {
-            "@value": "0.333",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
+          "@id": "estleg:RK_3_4_1_15_07"
         },
         {
-          "@id": "estleg:VKVS_Par_21",
-          "estleg:similarityScore": {
-            "@value": "0.312",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
+          "@id": "estleg:RK_3_1_1_115_09"
         },
         {
-          "@id": "estleg:ÜLTS_Par_21",
-          "estleg:similarityScore": {
-            "@value": "0.323",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        }
-      ],
-      "estleg:hasSanction": [
+          "@id": "estleg:RK_3_1_1_109_09"
+        },
         {
-          "@id": "estleg:Sanction_KORRUP_Par_26_30_fine"
+          "@id": "estleg:RK_3_1_1_49_14"
         }
-      ],
-      "estleg:enforcedAtLevel": "state"
+      ]
     },
     {
-      "@id": "estleg:KORRUP_Par_26_31",
+      "@id": "estleg:KORRUP_Par_21",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KORRUP"
+        "estleg:LegalProvision_korruptsioonivastane_seadus"
       ],
-      "estleg:paragrahv": "§ 26<sup>6</sup>.",
-      "rdfs:label": "§ 26<sup>6</sup>. Majanduslike huvide deklaratsioonide kogumise, hoidmise või kontrolliga seotud ülesannete täitmata jätmine",
+      "estleg:paragrahv": "§ 21.",
+      "rdfs:label": "§ 21. Menetlus",
       "estleg:sourceAct": "Korruptsioonivastane seadus",
-      "estleg:summary": "Asutuse juhi või muu majanduslike huvide deklaratsioonide kogumise, hoidmise või kontrolli eest vastutava isiku poolt majanduslike huvide deklaratsioonide kogumise, hoidmise või kontrolliga seotud ülesannete täitmata jätmise või mittenõuetekohase täitmise eest, – karistatakse rahatrahviga kuni 300 trahviühikut. Asutuse juhi või muu majanduslike huvide deklaratsioonide kogumise, hoidmise või kontrolli eest vastutava isiku poolt majanduslike huvide deklaratsioonide kogumise, hoidmise või kontrolli",
+      "estleg:summary": "1 (1) Kehtetu - 2014-06-19 RT I 2014-07-12 1 112072014001 2015-01-01 Kehtetu - 2 (2) Käesoleva seaduse §-des 17–19 nimetatud väärtegude kohtuväline menetleja on politseiasutus. Kui Kaitsepolitseiamet tuvastab käesoleva seaduse §-des 17–19 nimetatud väärteo süüteomenetluse käigus, on kohtuväline menetleja Kaitsepolitseiamet. 2014-06-19 RT I 2014-07-12 1 112072014001 2015-01-01 Käesoleva seaduse §-des 17–19 nimetatud väärtegude kohtuväline menetleja on politseiasutus. Kui Kaitsepolitseiamet tuvast",
+      "estleg:legalText": "(1) Kehtetu - (2) Käesoleva seaduse §-des 17–19 nimetatud väärtegude kohtuväline menetleja on politseiasutus. Kui Kaitsepolitseiamet tuvastab käesoleva seaduse §-des 17–19 nimetatud väärteo süüteomenetluse käigus, on kohtuväline menetleja Kaitsepolitseiamet. (3) Käesoleva seaduse §-des 17 ja 18 nimetatud väärtegusid arutab maakohus. (4) Käesoleva seaduse §-des 17 ja 18 nimetatud väärteo korral ebaseaduslikult saadu võib kohus konfiskeerida karistusseadustiku §-s 831 sätestatu kohaselt.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KORRUP_4"
       },
-      "estleg:semanticallySimilarTo": [
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KORRUP_4"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:MERA_Par_114",
-          "estleg:similarityScore": {
-            "@value": "0.323",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
+          "@id": "estleg:KORRUP_Par_21_Lg_1"
         },
         {
-          "@id": "estleg:RTRT_Par_26_39",
-          "estleg:similarityScore": {
-            "@value": "0.312",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
+          "@id": "estleg:KORRUP_Par_21_Lg_2"
         },
         {
-          "@id": "estleg:TPSKS_Par_128",
-          "estleg:similarityScore": {
-            "@value": "0.36",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
+          "@id": "estleg:KORRUP_Par_21_Lg_3"
         },
         {
-          "@id": "estleg:TPSKS_Par_129",
-          "estleg:similarityScore": {
-            "@value": "0.346",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
+          "@id": "estleg:KORRUP_Par_21_Lg_4"
         }
       ],
-      "estleg:hasSanction": [
-        {
-          "@id": "estleg:Sanction_KORRUP_Par_26_31_fine"
-        }
-      ],
-      "estleg:enforcedAtLevel": "state",
       "estleg:targetGroup": [
-        "citizen",
         "public_body"
-      ]
-    },
-    {
-      "@id": "estleg:KORRUP_Par_26_32",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_KORRUP"
       ],
-      "estleg:paragrahv": "§ 26<sup>7</sup>.",
-      "rdfs:label": "§ 26<sup>7</sup>. Majanduslike huvide deklaratsiooni sisu seadusvastane avalikustamine",
-      "estleg:sourceAct": "Korruptsioonivastane seadus",
-      "estleg:summary": "Majanduslike huvide deklaratsiooni sisu seadusvastase avalikustamise eest – karistatakse rahatrahviga kuni 200 trahviühikut. Majanduslike huvide deklaratsiooni sisu seadusvastase avalikustamise eest – karistatakse rahatrahviga kuni 200 trahviühikut. [Paragrahv 268 jõustub 1. 09. 2002 - RT I 2002, 63, 387./212735 ] [Paragrahv 268 jõustub 1. 09. 2002 -",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KORRUP_4"
-      },
+      "estleg:references": [
+        {
+          "@id": "estleg:KORRUP_Par_17"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_18"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_19"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kaitsepolitseiamet"
+        }
+      ],
+      "estleg:competenceType": "general",
       "estleg:semanticallySimilarTo": [
         {
-          "@id": "estleg:LIIKLU_2_Par_74_100",
+          "@id": "estleg:LaevaRS_Par_97_4",
           "estleg:similarityScore": {
-            "@value": "0.312",
+            "@value": "0.308",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
         },
         {
-          "@id": "estleg:LIIKLU_2_Par_74_112",
+          "@id": "estleg:MSOS_Par_94_26",
           "estleg:similarityScore": {
-            "@value": "0.312",
+            "@value": "0.308",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
         },
         {
-          "@id": "estleg:LIIKLU_2_Par_74_128",
-          "estleg:similarityScore": {
-            "@value": "0.312",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:RIIGIP_Par_17_36",
-          "estleg:similarityScore": {
-            "@value": "0.357",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:RIIGIP_Par_17_39",
+          "@id": "estleg:PakS_Par_33",
           "estleg:similarityScore": {
             "@value": "0.333",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:Sadamaseadus_Par_57",
+          "estleg:similarityScore": {
+            "@value": "0.333",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:TORTKS_Par_22",
+          "estleg:similarityScore": {
+            "@value": "0.643",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
         }
       ],
-      "estleg:hasSanction": [
+      "estleg:interpretedBy": [
         {
-          "@id": "estleg:Sanction_KORRUP_Par_26_32_fine"
-        }
-      ],
-      "estleg:enforcedAtLevel": "state"
-    },
-    {
-      "@id": "estleg:KORRUP_Par_26_33",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_KORRUP"
-      ],
-      "estleg:paragrahv": "§ 26<sup>8</sup>.",
-      "rdfs:label": "§ 26<sup>8</sup>. Menetlus",
-      "estleg:sourceAct": "Korruptsioonivastane seadus",
-      "estleg:summary": "1(1)Käesoleva seaduse §-des 261–267 sätestatud väärtegudele kohaldatakse karistusseadustiku (RT I 2001, 61, 364) üldosa ja väärteomenetluse seadustiku (RT I 2002, 50, 313) sätteid. Käesoleva seaduse §-des 261–267 sätestatud väärtegudele kohaldatakse karistusseadustiku (RT I 2001, 61, 364) üldosa ja väärteomenetluse seadustiku (RT I 2002, 50, 313) sätteid. 2(2)Käesoleva seaduse §-des 261–267 sätestatud väärtegude kohtuväline menetleja on politseiprefektuur. Käesoleva seaduse §-des 261–267 sätesta",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KORRUP_4"
-      },
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:KultVS_Par_23",
-          "estleg:similarityScore": {
-            "@value": "0.727",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
+          "@id": "estleg:RK_3_1_1_100_00"
         },
         {
-          "@id": "estleg:LLSKNIEV_Par_65",
-          "estleg:similarityScore": {
-            "@value": "0.727",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
+          "@id": "estleg:RK_3_1_1_87_01"
         },
         {
-          "@id": "estleg:RelvS_Par_89_98",
-          "estleg:similarityScore": {
-            "@value": "0.9",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
+          "@id": "estleg:RK_3_1_1_84_01"
         },
         {
-          "@id": "estleg:TeeS_Par_40_57",
-          "estleg:similarityScore": {
-            "@value": "0.818",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
+          "@id": "estleg:RK_3_1_1_48_03"
         },
         {
-          "@id": "estleg:UHISTR_Par_54_70",
-          "estleg:similarityScore": {
-            "@value": "0.818",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
+          "@id": "estleg:RK_3_1_1_27_05"
+        },
+        {
+          "@id": "estleg:RK_3_1_1_43_09"
         }
       ]
     },
     {
-      "@id": "estleg:KORRUP_Par_27",
+      "@id": "estleg:KORRUP_Par_21_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_21"
+      },
+      "rdfs:label": "§ 21 lg 1"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_21_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Käesoleva seaduse §-des 17–19 nimetatud väärtegude kohtuväline menetleja on politseiasutus. Kui Kaitsepolitseiamet tuvastab käesoleva seaduse §-des 17–19 nimetatud väärteo süüteomenetluse käigus, on kohtuväline menetleja Kaitsepolitseiamet.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_21"
+      },
+      "rdfs:label": "§ 21 lg 2"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_21_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Käesoleva seaduse §-des 17 ja 18 nimetatud väärtegusid arutab maakohus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_21"
+      },
+      "rdfs:label": "§ 21 lg 3"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_21_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Käesoleva seaduse §-des 17 ja 18 nimetatud väärteo korral ebaseaduslikult saadu võib kohus konfiskeerida karistusseadustiku §-s 831 sätestatu kohaselt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_21"
+      },
+      "rdfs:label": "§ 21 lg 4"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_22",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KORRUP"
+        "estleg:LegalProvision_korruptsioonivastane_seadus"
       ],
-      "estleg:paragrahv": "§ 27.",
-      "rdfs:label": "§ 27. Vastutus korruptsioonivastase seaduse rikkumise eest",
+      "estleg:paragrahv": "§ 22.",
+      "rdfs:label": "§ 22. Üleminekusätted",
       "estleg:sourceAct": "Korruptsioonivastane seadus",
-      "estleg:summary": "1(1)Ametiisik, kes on toime pannud korruptiivse teo või võtnud seadusevastast tasu või loonud korruptsiooniohtlikud suhted või rikkunud töökoha-, tegevus- või toimingupiiranguid või jätnud majanduslike huvide deklaratsiooni tähtpäevaks esitamata või esitanud deklaratsioonis mittetäielikke või valeandmeid, võetakse vastutusele seadusega sätestatud korras. Ametiisik, kes on toime pannud korruptiivse teo või võtnud seadusevastast tasu või loonud korruptsiooniohtlikud suhted või rikkunud töökoha-, t",
+      "estleg:summary": "1 (1) 2013. aastal kohaldatakse ametiisikute majanduslike huvide deklareerimisele enne käesoleva seaduse jõustumist kehtinud korruptsioonivastase seaduse (RT I 1999, 16, 276) §-des 7–15, 16 ja 18 sätestatut. 2013. aastal kohaldatakse ametiisikute majanduslike huvide deklareerimisele enne käesoleva seaduse jõustumist kehtinud korruptsioonivastase seaduse (RT I 1999, 16, 276) §-des 7–15, 16 ja 18 sätestatut. 2 (2) 2014. aasta 1. jaanuaril deklaratsioonihoidja asukohas hoitavat majanduslike huvide ",
+      "estleg:legalText": "(1) 2013. aastal kohaldatakse ametiisikute majanduslike huvide deklareerimisele enne käesoleva seaduse jõustumist kehtinud korruptsioonivastase seaduse (RT I 1999, 16, 276) §-des 7–15, 16 ja 18 sätestatut. (2) 2014. aasta 1. jaanuaril deklaratsioonihoidja asukohas hoitavat majanduslike huvide deklaratsiooni hoitakse alates selle esitamise kuupäevast viis aastat, seejärel see hävitatakse. Enne käesoleva seaduse jõustumist arhiivile üle antud majanduslike huvide deklaratsiooni hinnatakse arhiiviseaduses sätestatud korras ning seejärel see hävitatakse või sellele antakse arhiiviväärtus. (3) Enne 2014. aasta 1. jaanuari ametikohalt lahkunud ametiisik, kellel on enne käesoleva seaduse jõustumist kehtinud korruptsioonivastase seaduse kohaselt kohustus esitada deklaratsioon pärast ametikohalt lahkumist, ei pea esitama rohkem kui ühe deklaratsiooni pärast ametikohalt lahkumist. (4) Käesoleva seaduse § 13 lõikes 2 nimetatud huvide deklaratsioonide register võetakse kasutusele 2014. aasta 1. jaanuaril. (5) 2014. aasta 1. jaanuaril ametis olevad deklarandid esitavad esimese deklaratsiooni käesoleva seaduse kohaselt 2014. aasta 31. maiks.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_KORRUP_5"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KORRUP_5"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KORRUP_Par_22_Lg_1"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_22_Lg_2"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_22_Lg_3"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_22_Lg_4"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_22_Lg_5"
+        }
+      ],
       "estleg:targetGroup": [
         "official"
+      ],
+      "estleg:interpretedBy": [
+        {
+          "@id": "estleg:RK_3_1_1_138_03"
+        },
+        {
+          "@id": "estleg:RK_3_1_1_12_14"
+        }
       ]
     },
     {
-      "@id": "estleg:KORRUP_Par_27_35",
+      "@id": "estleg:KORRUP_Par_22_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) 2013. aastal kohaldatakse ametiisikute majanduslike huvide deklareerimisele enne käesoleva seaduse jõustumist kehtinud korruptsioonivastase seaduse (RT I 1999, 16, 276) §-des 7–15, 16 ja 18 sätestatut.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_22"
+      },
+      "rdfs:label": "§ 22 lg 1"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_22_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) 2014. aasta 1. jaanuaril deklaratsioonihoidja asukohas hoitavat majanduslike huvide deklaratsiooni hoitakse alates selle esitamise kuupäevast viis aastat, seejärel see hävitatakse. Enne käesoleva seaduse jõustumist arhiivile üle antud majanduslike huvide deklaratsiooni hinnatakse arhiiviseaduses sätestatud korras ning seejärel see hävitatakse või sellele antakse arhiiviväärtus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_22"
+      },
+      "rdfs:label": "§ 22 lg 2"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_22_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Enne 2014. aasta 1. jaanuari ametikohalt lahkunud ametiisik, kellel on enne käesoleva seaduse jõustumist kehtinud korruptsioonivastase seaduse kohaselt kohustus esitada deklaratsioon pärast ametikohalt lahkumist, ei pea esitama rohkem kui ühe deklaratsiooni pärast ametikohalt lahkumist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_22"
+      },
+      "rdfs:label": "§ 22 lg 3"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_22_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Käesoleva seaduse § 13 lõikes 2 nimetatud huvide deklaratsioonide register võetakse kasutusele 2014. aasta 1. jaanuaril.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_22"
+      },
+      "rdfs:label": "§ 22 lg 4"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_22_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) 2014. aasta 1. jaanuaril ametis olevad deklarandid esitavad esimese deklaratsiooni käesoleva seaduse kohaselt 2014. aasta 31. maiks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_22"
+      },
+      "rdfs:label": "§ 22 lg 5"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_23",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KORRUP"
+        "estleg:LegalProvision_korruptsioonivastane_seadus"
       ],
-      "estleg:paragrahv": "§ 27<sup>1</sup>.",
-      "rdfs:label": "§ 27<sup>1</sup>. Korruptiivse teoga tekitatud kahju hüvitamine",
+      "estleg:paragrahv": "§ 23.",
+      "rdfs:label": "§ 23.",
       "estleg:sourceAct": "Korruptsioonivastane seadus",
-      "estleg:summary": "1(1)Isikutel, kes on saanud kahju ametiisiku korruptiivse teo tagajärjel, on õigus nõuda kahju hüvitamist seadusega sätestatud alustel ja korras. Isikutel, kes on saanud kahju ametiisiku korruptiivse teo tagajärjel, on õigus nõuda kahju hüvitamist seadusega sätestatud alustel ja korras. 2(2)Ametiisikult nõutakse tekitatud kahju sisse regressi korras. Ametiisikult nõutakse tekitatud kahju sisse regressi korras.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_KORRUP_5"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KORRUP_5"
+      },
+      "estleg:summary": "1(1)Ametiisik on kohustatud igast talle teatavaks saanud altkäemaksu pakkumisest, andmisest või võtmisest kirjalikult teatama vahetule ülemusele või asutuse juhile ja politseile. Ametiisik on kohustatud igast talle teatavaks saanud altkäemaksu pakkumisest, andmisest või võtmisest kirjalikult teatama vahetule ülemusele või asutuse juhile ja politseile. 2(2)Altkäemaksu andmisest, võtmisest või pakkumisest käesolevas seaduses sätestatud korras teatamata jätmine on aluseks avalikus teenistuses oleva",
+      "estleg:targetGroup": [
+        "public_body",
+        "official"
+      ],
       "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
+        "@id": "estleg:NormType_Obligation"
       },
-      "estleg:targetGroup": [
-        "official"
-      ]
+      "estleg:dutyHolder": "Ametiisik"
     },
     {
-      "@id": "estleg:KORRUP_Par_2832",
+      "@id": "estleg:KORRUP_Par_38",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KORRUP"
+        "estleg:LegalProvision_korruptsioonivastane_seadus"
       ],
-      "estleg:paragrahv": "§ 28-32.",
-      "rdfs:label": "§ 28-32.",
+      "estleg:paragrahv": "§ 38.",
+      "rdfs:label": "§ 38. [[Käesolevast tekstist välja jäetud.]]",
       "estleg:sourceAct": "Korruptsioonivastane seadus",
-      "estleg:summary": "[Käesolevast tekstist välja jäetud]",
+      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KORRUP_6"
+        "@id": "estleg:Cluster_KORRUP_5"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KORRUP_5"
       }
     },
     {
-      "@id": "estleg:KORRUP_Par_33",
+      "@id": "estleg:KORRUP_Par_39",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KORRUP"
+        "estleg:LegalProvision_korruptsioonivastane_seadus"
       ],
-      "estleg:paragrahv": "§ 33.",
-      "rdfs:label": "§ 33. Seaduse rakendamine",
+      "estleg:paragrahv": "§ 39.",
+      "rdfs:label": "§ 39. Seaduse jõustumine",
       "estleg:sourceAct": "Korruptsioonivastane seadus",
-      "estleg:summary": "Käesoleva seaduse paragrahv 24 lõike 2 punkte 1, 4 ja 7 rikkudes alates 1988. aasta 16. novembrist sooritatud tehingud on tühised. Käesoleva seaduse paragrahv 24 lõike 2 punkte 1, 4 ja 7 rikkudes alates 1988. aasta 16. novembrist sooritatud tehingud on tühised.",
+      "estleg:summary": "1 (1) Käesolev seadus jõustub 2013. aasta 1. aprillil. Käesolev seadus jõustub 2013. aasta 1. aprillil. 2 (2) Käesoleva seaduse § 13 lõige 4 ning §-d 33 ja 34 jõustuvad 2014. aasta 1. jaanuaril. Käesoleva seaduse § 13 lõige 4 ning §-d 33 ja 34 jõustuvad 2014. aasta 1. jaanuaril.",
+      "estleg:legalText": "(1) Käesolev seadus jõustub 2013. aasta 1. aprillil. (2) Käesoleva seaduse § 13 lõige 4 ning §-d 33 ja 34 jõustuvad 2014. aasta 1. jaanuaril.",
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KORRUP_6"
-      }
+        "@id": "estleg:Cluster_KORRUP_5"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KORRUP_5"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KORRUP_Par_39_Lg_1"
+        },
+        {
+          "@id": "estleg:KORRUP_Par_39_Lg_2"
+        }
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:KORRUP_Par_13"
+        }
+      ]
     },
     {
-      "@id": "estleg:KORRUP_Par_34",
+      "@id": "estleg:KORRUP_Par_39_Lg_1",
       "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_KORRUP"
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:paragrahv": "§ 34.",
-      "rdfs:label": "§ 34.",
-      "estleg:sourceAct": "Korruptsioonivastane seadus",
-      "estleg:summary": "[Käesolevast tekstist välja jäetud] Korruptsioonivastase seaduse Korruptsioonivastase seaduse lisa 1 lisa 1 AMETIISIKU AMETIISIKU MAJANDUSLIKE HUVIDE DEKLARATSIOON MAJANDUSLIKE HUVIDE DEKLARATSIOON nr . . . . . nr . . . . .",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KORRUP_6"
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolev seadus jõustub 2013. aasta 1. aprillil.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_39"
       },
-      "estleg:targetGroup": [
-        "official"
-      ]
+      "rdfs:label": "§ 39 lg 1"
+    },
+    {
+      "@id": "estleg:KORRUP_Par_39_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Käesoleva seaduse § 13 lõige 4 ning §-d 33 ja 34 jõustuvad 2014. aasta 1. jaanuaril.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KORRUP_Par_39"
+      },
+      "rdfs:label": "§ 39 lg 2"
     }
   ]
 }

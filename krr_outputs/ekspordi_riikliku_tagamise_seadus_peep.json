@@ -6,42 +6,31 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
   },
   "@graph": [
     {
       "@id": "estleg:ERTS_Map_2026",
       "@type": [
+        "owl:Ontology",
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "rdfs:label": "Ekspordi riikliku tagamise seadus teemakaardistus",
       "dc:source": "Ekspordi riikliku tagamise seadus",
-      "estleg:affectedBy": [
-        {
-          "@id": "estleg:Draft_MKM21_0501"
-        },
-        {
-          "@id": "estleg:Draft_RAM14_1414"
-        },
-        {
-          "@id": "estleg:Draft_MKM13_0711"
-        }
-      ],
-      "estleg:amendedBy": [
-        {
-          "@id": "estleg:Draft_MKM21_0501"
-        },
-        {
-          "@id": "estleg:Draft_RAM14_1414"
-        },
-        {
-          "@id": "estleg:Draft_MKM13_0711"
-        }
-      ],
-      "estleg:temporalStatus": "unknown",
+      "dcterms:title": "Ekspordi riikliku tagamise seadus",
+      "estleg:contentStatus": "structuredBody",
+      "dcterms:source": {
+        "@id": "https://www.riigiteataja.ee/akt/128012022003.xml"
+      },
+      "owl:sameAs": {
+        "@id": "https://www.riigiteataja.ee/akt/128012022003.xml"
+      },
+      "estleg:kehtiv": {
+        "@value": "2026-05-24",
+        "@type": "xsd:date"
+      },
       "dcterms:subject": [
         {
           "@id": "http://eurovoc.europa.eu/5241"
@@ -58,10 +47,33 @@
         {
           "@id": "http://eurovoc.europa.eu/5226"
         }
+      ],
+      "estleg:temporalStatus": "unknown",
+      "estleg:amendedBy": [
+        {
+          "@id": "estleg:AmendmentLink_Draft_MKM21_0501_ERTS"
+        },
+        {
+          "@id": "estleg:AmendmentLink_Draft_RAM14_1414_ERTS"
+        },
+        {
+          "@id": "estleg:AmendmentLink_Draft_MKM13_0711_ERTS"
+        }
+      ],
+      "estleg:affectedBy": [
+        {
+          "@id": "estleg:Draft_MKM21_0501"
+        },
+        {
+          "@id": "estleg:Draft_RAM14_1414"
+        },
+        {
+          "@id": "estleg:Draft_MKM13_0711"
+        }
       ]
     },
     {
-      "@id": "estleg:LegalProvision_ERTS",
+      "@id": "estleg:LegalProvision_ekspordi_riikliku_tagamise_seadus",
       "@type": [
         "owl:Class"
       ],
@@ -71,59 +83,199 @@
       }
     },
     {
+      "@id": "estleg:ERTS_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": "Ekspordi riikliku tagamise seadus teemaskeem",
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_ERTS_1"
+        },
+        {
+          "@id": "estleg:Cluster_ERTS_2"
+        },
+        {
+          "@id": "estleg:Cluster_ERTS_3"
+        }
+      ]
+    },
+    {
       "@id": "estleg:Cluster_ERTS_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§1–7 ÜLDSÄTTED"
+      "rdfs:label": "§1–7 ÜLDSÄTTED",
+      "skos:prefLabel": "§1–7 ÜLDSÄTTED",
+      "skos:inScheme": {
+        "@id": "estleg:ERTS_TopicScheme"
+      },
+      "estleg:provisionCount": 7
+    },
+    {
+      "@id": "estleg:Chapter_ERTS_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "1. peatükk – ÜLDSÄTTED",
+      "estleg:chapterNumber": "1",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_ERTS_1"
+      }
     },
     {
       "@id": "estleg:Cluster_ERTS_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§8–16 EKSPORDI RIIKLIKU TAGAMISE ALUSED"
+      "rdfs:label": "§8–16 EKSPORDI RIIKLIKU TAGAMISE ALUSED",
+      "skos:prefLabel": "§8–16 EKSPORDI RIIKLIKU TAGAMISE ALUSED",
+      "skos:inScheme": {
+        "@id": "estleg:ERTS_TopicScheme"
+      },
+      "estleg:provisionCount": 9
+    },
+    {
+      "@id": "estleg:Chapter_ERTS_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "2. peatükk – EKSPORDI RIIKLIKU TAGAMISE ALUSED",
+      "estleg:chapterNumber": "2",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_ERTS_2"
+      }
     },
     {
       "@id": "estleg:Cluster_ERTS_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§17–21 RAKENDUSSÄTTED"
+      "rdfs:label": "§17–21 RAKENDUSSÄTTED",
+      "skos:prefLabel": "§17–21 RAKENDUSSÄTTED",
+      "skos:inScheme": {
+        "@id": "estleg:ERTS_TopicScheme"
+      },
+      "estleg:provisionCount": 5
+    },
+    {
+      "@id": "estleg:Chapter_ERTS_3",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "3. peatükk – RAKENDUSSÄTTED",
+      "estleg:chapterNumber": "3",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_ERTS_3"
+      }
     },
     {
       "@id": "estleg:ERTS_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ERTS"
+        "estleg:LegalProvision_ekspordi_riikliku_tagamise_seadus"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. Seaduse reguleerimisala ja eesmärk",
       "estleg:sourceAct": "Ekspordi riikliku tagamise seadus",
       "estleg:summary": "1 (1) Käesolev seadus sätestab ekspordi riikliku tagamise alused ja põhimõtted Eestis. Käesolev seadus sätestab ekspordi riikliku tagamise alused ja põhimõtted Eestis. 2 (2) Käesoleva seaduse eesmärk on luua ekspordi riikliku tagamise kaudu lisavõimalusi Eesti ekspordi arenguks ning kaitsta Eestis tegutsevaid ettevõtjaid eksporditehingutest tuleneva võimaliku kahju eest. Käesoleva seaduse eesmärk on luua ekspordi riikliku tagamise kaudu lisavõimalusi Eesti ekspordi arenguks ning kaitsta Eestis t",
+      "estleg:legalText": "(1) Käesolev seadus sätestab ekspordi riikliku tagamise alused ja põhimõtted Eestis. (2) Käesoleva seaduse eesmärk on luua ekspordi riikliku tagamise kaudu lisavõimalusi Eesti ekspordi arenguks ning kaitsta Eestis tegutsevaid ettevõtjaid eksporditehingutest tuleneva võimaliku kahju eest. (3) Ekspordi riikliku tagamisega seonduvatele lepingutele kohaldatakse võlaõigusseadust, arvestades käesoleva seaduse erisusi.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ERTS_1"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_ERTS_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ERTS_Par_1_Lg_1"
+        },
+        {
+          "@id": "estleg:ERTS_Par_1_Lg_2"
+        },
+        {
+          "@id": "estleg:ERTS_Par_1_Lg_3"
+        }
+      ],
       "estleg:targetGroup": [
         "business"
       ]
     },
     {
+      "@id": "estleg:ERTS_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolev seadus sätestab ekspordi riikliku tagamise alused ja põhimõtted Eestis.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
+    },
+    {
+      "@id": "estleg:ERTS_Par_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Käesoleva seaduse eesmärk on luua ekspordi riikliku tagamise kaudu lisavõimalusi Eesti ekspordi arenguks ning kaitsta Eestis tegutsevaid ettevõtjaid eksporditehingutest tuleneva võimaliku kahju eest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 2"
+    },
+    {
+      "@id": "estleg:ERTS_Par_1_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Ekspordi riikliku tagamisega seonduvatele lepingutele kohaldatakse võlaõigusseadust, arvestades käesoleva seaduse erisusi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 3"
+    },
+    {
       "@id": "estleg:ERTS_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ERTS"
+        "estleg:LegalProvision_ekspordi_riikliku_tagamise_seadus"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. Mõisted",
       "estleg:sourceAct": "Ekspordi riikliku tagamise seadus",
       "estleg:summary": "Käesolevas seaduses kasutatakse mõisteid järgmises tähenduses: 1 1) eksporditagatis – riikliku eksporditagatise andja ja tagatisevõtja vahel käesoleva seaduse § 11 lõikes 1 sätestatud tingimustele vastavast kirjalikust kindlustuslepingust tulenev riigi poolt tagatud kohustus hüvitada käesoleva seaduse alusel tagatavate riskide realiseerumisest tagatisevõtjale tulenev kahju; 2 2) eksporditehing – kaupade müük ja teenuste osutamine välisriiki või kaupade müügiks pakkumine välisriigis, samuti nende",
+      "estleg:legalText": "Käesolevas seaduses kasutatakse mõisteid järgmises tähenduses: eksporditagatis – riikliku eksporditagatise andja ja tagatisevõtja vahel käesoleva seaduse § 11 lõikes 1 sätestatud tingimustele vastavast kirjalikust kindlustuslepingust tulenev riigi poolt tagatud kohustus hüvitada käesoleva seaduse alusel tagatavate riskide realiseerumisest tagatisevõtjale tulenev kahju; eksporditehing – kaupade müük ja teenuste osutamine välisriiki või kaupade müügiks pakkumine välisriigis, samuti nende toimingutega seotud investeeringud ja finantseerimistehingud, muu hulgas otse- või kaudsed investeeringud välisriigis asuvasse ettevõtjasse, välisriigis asuva ettevõtja omakapitali suurendamine või sellisele ettevõtjale laenu andmine; tagatisevõtja – vähemalt ühe käesolevas seaduses loetletud riski realiseerumisest tekkiva kahju hüvitamiseks riikliku eksporditagatise andjaga käesoleva seaduse § 11 lõikes 1 sätestatud tingimustele vastava kindlustuslepingu sõlminud Eestis äriregistrisse kantud ettevõtja või Euroopa Majanduspiirkonna lepinguriigis registreeritud äriühing, kellel on Eestis äriregistrisse kantud filiaal ja kes tegutseb Eestis filiaali kaudu. Ostjakrediidi korral võib tagatisevõtja olla ka välisriigis registreeritud krediidi- või finantseerimisasutus või krediidi- või finantseerimisasutuse nimel tegutsev filiaal, kellel on õigus välisriigis osutada vähemalt ühte krediidiasutuste seaduse § 6 lõike 1 punktides 1–12 nimetatud finantsteenust ja mille asukohariigi finantsjärelevalve asutus tagab piisava järelevalve krediidi- või finantseerimisasutuse või selle filiaali üle ning välisriigi finantsjärelevalve asutusel on piisav õiguslik alus ja võimalus koostööks Finantsinspektsiooniga; kindlustatud isik – tagatisevõtja või muu nimeliselt määratletud juriidiline isik, kellega seotud riski käesoleva seaduse § 11 lõikes 1 sätestatud tingimustele vastava kindlustuslepingu alusel tagatakse; vahendaja – kindlustuslepingus kindlaks määratud tagatisevõtjast erinev kindlustatud isik, kellega seonduvat riski tagatisevõtja kindlustab; võlgnik – eksporditehingu osapooleks olev isik, kelle kohustuste tagamiseks on sõlmitud riikliku eksporditagatise andjaga käesoleva seaduse § 11 lõikes 1 sätestatud tingimustele vastav kindlustusleping. Võlgnikuna on käsitatav ka isik, kes käendab või muul viisil tagab võlgniku kohustusi tagatavas eksporditehingus. Riikliku eksporditagatise andja ja kindlustatud isik ei ole võlgnikud käesoleva seaduse tähenduses. Võlgnik võib olla avalik-õiguslik või eraõiguslik; avalik-õiguslik võlgnik – avaliku võimu ülesandeid täitev asutus või juriidiline isik, keda ei saa kohtu või halduskorras maksejõuetuks tunnistada. Kui avaliku võimu ülesandeid täitev asutus või juriidiline isik tagab täielikult ja tingimusteta eraõigusliku võlgniku eksporditagatisega kaetud kohustused, käsitatakse viimast avalik-õigusliku võlgnikuna; eraõiguslik võlgnik – võlgnik, kes ei ole avalik-õiguslik võlgnik.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ERTS_1"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_ERTS_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ERTS_Par_2_Lg_Unknown_1"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "business",
+        "public_body"
+      ],
       "estleg:references": [
         {
           "@id": "estleg:ERTS_Par_11"
@@ -131,38 +283,119 @@
       ]
     },
     {
+      "@id": "estleg:ERTS_Par_2_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Käesolevas seaduses kasutatakse mõisteid järgmises tähenduses: eksporditagatis – riikliku eksporditagatise andja ja tagatisevõtja vahel käesoleva seaduse § 11 lõikes 1 sätestatud tingimustele vastavast kirjalikust kindlustuslepingust tulenev riigi poolt tagatud kohustus hüvitada käesoleva seaduse alusel tagatavate riskide realiseerumisest tagatisevõtjale tulenev kahju; eksporditehing – kaupade müük ja teenuste osutamine välisriiki või kaupade müügiks pakkumine välisriigis, samuti nende toimingutega seotud investeeringud ja finantseerimistehingud, muu hulgas otse- või kaudsed investeeringud välisriigis asuvasse ettevõtjasse, välisriigis asuva ettevõtja omakapitali suurendamine või sellisele ettevõtjale laenu andmine; tagatisevõtja – vähemalt ühe käesolevas seaduses loetletud riski realiseerumisest tekkiva kahju hüvitamiseks riikliku eksporditagatise andjaga käesoleva seaduse § 11 lõikes 1 sätestatud tingimustele vastava kindlustuslepingu sõlminud Eestis äriregistrisse kantud ettevõtja või Euroopa Majanduspiirkonna lepinguriigis registreeritud äriühing, kellel on Eestis äriregistrisse kantud filiaal ja kes tegutseb Eestis filiaali kaudu. Ostjakrediidi korral võib tagatisevõtja olla ka välisriigis registreeritud krediidi- või finantseerimisasutus või krediidi- või finantseerimisasutuse nimel tegutsev filiaal, kellel on õigus välisriigis osutada vähemalt ühte krediidiasutuste seaduse § 6 lõike 1 punktides 1–12 nimetatud finantsteenust ja mille asukohariigi finantsjärelevalve asutus tagab piisava järelevalve krediidi- või finantseerimisasutuse või selle filiaali üle ning välisriigi finantsjärelevalve asutusel on piisav õiguslik alus ja võimalus koostööks Finantsinspektsiooniga; kindlustatud isik – tagatisevõtja või muu nimeliselt määratletud juriidiline isik, kellega seotud riski käesoleva seaduse § 11 lõikes 1 sätestatud tingimustele vastava kindlustuslepingu alusel tagatakse; vahendaja – kindlustuslepingus kindlaks määratud tagatisevõtjast erinev kindlustatud isik, kellega seonduvat riski tagatisevõtja kindlustab; võlgnik – eksporditehingu osapooleks olev isik, kelle kohustuste tagamiseks on sõlmitud riikliku eksporditagatise andjaga käesoleva seaduse § 11 lõikes 1 sätestatud tingimustele vastav kindlustusleping. Võlgnikuna on käsitatav ka isik, kes käendab või muul viisil tagab võlgniku kohustusi tagatavas eksporditehingus. Riikliku eksporditagatise andja ja kindlustatud isik ei ole võlgnikud käesoleva seaduse tähenduses. Võlgnik võib olla avalik-õiguslik või eraõiguslik; avalik-õiguslik võlgnik – avaliku võimu ülesandeid täitev asutus või juriidiline isik, keda ei saa kohtu või halduskorras maksejõuetuks tunnistada. Kui avaliku võimu ülesandeid täitev asutus või juriidiline isik tagab täielikult ja tingimusteta eraõigusliku võlgniku eksporditagatisega kaetud kohustused, käsitatakse viimast avalik-õigusliku võlgnikuna; eraõiguslik võlgnik – võlgnik, kes ei ole avalik-õiguslik võlgnik.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_2"
+      }
+    },
+    {
       "@id": "estleg:ERTS_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ERTS"
+        "estleg:LegalProvision_ekspordi_riikliku_tagamise_seadus"
       ],
       "estleg:paragrahv": "§ 3.",
       "rdfs:label": "§ 3. Tagatavad riskid",
       "estleg:sourceAct": "Ekspordi riikliku tagamise seadus",
       "estleg:summary": "1 (1) Käesoleva seaduse alusel sõlmitud kindlustuslepingus võib ette näha tagatisevõtjale eksporditehingust tekkiva kahju täieliku või osalise hüvitamise tagamise riigi poolt, kui kahju on tekkinud ühe või mitme alljärgnevalt nimetatud riski realiseerumisest: 1 1) tootmisrisk; 2 2) krediidirisk; 3 3) investeeringurisk. Käesoleva seaduse alusel sõlmitud kindlustuslepingus võib ette näha tagatisevõtjale eksporditehingust tekkiva kahju täieliku või osalise hüvitamise tagamise riigi poolt, kui kahju",
+      "estleg:legalText": "(1) Käesoleva seaduse alusel sõlmitud kindlustuslepingus võib ette näha tagatisevõtjale eksporditehingust tekkiva kahju täieliku või osalise hüvitamise tagamise riigi poolt, kui kahju on tekkinud ühe või mitme alljärgnevalt nimetatud riski realiseerumisest: tootmisrisk; krediidirisk; investeeringurisk. (2) Tootmisrisk ja krediidirisk määratletakse võlgnikust tuleneva kommertsriskina või eksporditehingu poliitilise riskina. Investeeringurisk määratletakse eksporditehingu poliitilise riskina. (3) Eraõiguslikust võlgnikust tulenev kommertsrisk on määratletud käesoleva seaduse § 4 punktides 1–3. Eraõigusliku võlgniku korral on eksporditehingu poliitiline risk määratletud § 4 punktides 4–9. Avalik-õigusliku võlgniku korral on eksporditehingu poliitiline risk määratletud § 4 punktides 2–9.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ERTS_1"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_ERTS_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ERTS_Par_3_Lg_1"
+        },
+        {
+          "@id": "estleg:ERTS_Par_3_Lg_2"
+        },
+        {
+          "@id": "estleg:ERTS_Par_3_Lg_3"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "business",
+        "public_body"
+      ],
       "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
+        "@id": "estleg:NormType_Permission"
       }
+    },
+    {
+      "@id": "estleg:ERTS_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesoleva seaduse alusel sõlmitud kindlustuslepingus võib ette näha tagatisevõtjale eksporditehingust tekkiva kahju täieliku või osalise hüvitamise tagamise riigi poolt, kui kahju on tekkinud ühe või mitme alljärgnevalt nimetatud riski realiseerumisest: tootmisrisk; krediidirisk; investeeringurisk.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
+    },
+    {
+      "@id": "estleg:ERTS_Par_3_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Tootmisrisk ja krediidirisk määratletakse võlgnikust tuleneva kommertsriskina või eksporditehingu poliitilise riskina. Investeeringurisk määratletakse eksporditehingu poliitilise riskina.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 2"
+    },
+    {
+      "@id": "estleg:ERTS_Par_3_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Eraõiguslikust võlgnikust tulenev kommertsrisk on määratletud käesoleva seaduse § 4 punktides 1–3. Eraõigusliku võlgniku korral on eksporditehingu poliitiline risk määratletud § 4 punktides 4–9. Avalik-õigusliku võlgniku korral on eksporditehingu poliitiline risk määratletud § 4 punktides 2–9.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 3"
     },
     {
       "@id": "estleg:ERTS_Par_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ERTS"
+        "estleg:LegalProvision_ekspordi_riikliku_tagamise_seadus"
       ],
       "estleg:paragrahv": "§ 4.",
       "rdfs:label": "§ 4. Tootmisrisk",
       "estleg:sourceAct": "Ekspordi riikliku tagamise seadus",
       "estleg:summary": "Tootmisrisk käesoleva seaduse tähenduses on kindlustusrisk, mis tuleneb tagatisevõtjale lepinguliste kohustuste täitmise või lepinguga tellitud kaupade tootmise peatumisest ja mis on põhjustatud vähemalt ühest alljärgnevalt nimetatud asjaolust: 1 1) eraõigusliku võlgniku ja tema kohustusi tagava isiku maksejõuetus; 2 2) võlgniku ja tema kohustusi tagava isiku lepinguliste kohustuste täitmata jätmine; 3 3) kaupade või teenuste ostja otsus tarnijakrediidi korral lõpetada või tühistada eksporditaga",
+      "estleg:legalText": "Tootmisrisk käesoleva seaduse tähenduses on kindlustusrisk, mis tuleneb tagatisevõtjale lepinguliste kohustuste täitmise või lepinguga tellitud kaupade tootmise peatumisest ja mis on põhjustatud vähemalt ühest alljärgnevalt nimetatud asjaolust: eraõigusliku võlgniku ja tema kohustusi tagava isiku maksejõuetus; võlgniku ja tema kohustusi tagava isiku lepinguliste kohustuste täitmata jätmine; kaupade või teenuste ostja otsus tarnijakrediidi korral lõpetada või tühistada eksporditagatisega seotud leping või keelduda kaupade või teenuste vastuvõtmisest, ilma et tal oleks õigus seda teha; välisriigi, mis ei ole tagatisevõtja asukohariik, valitsuse meede või otsus, mis takistab eksporditagatisega seotud lepingu täitmist; moratoorium, mille kuulutab välja võlgniku asukohariigi valitsus või sellise kolmanda riigi valitsus, mille kaudu tehakse eksporditagatisega seotud lepingus ettenähtud makseid; poliitilised sündmused, majandusraskused ning õigusaktidest tulenevad või halduskorralduslikud meetmed välisriigis, mis takistavad eksporditagatisega seotud lepingu alusel makstavate summade ülekandmist või põhjustavad sellega viivitamist; võlgniku asukohariigis vastuvõetud õigusaktid, mille kohaselt võlgniku poolt kohalikus vääringus tehtud makseid käsitatakse kohustuse täitmisena, olenemata sellest, kas need maksed katavad vahetuskursside muutumise tõttu eksporditagatisega seotud lepingu võlasummat selle ülekandmise päeval või ei kata; Eesti või tagatisevõtja asukohariigi valitsuse meede või otsus, samuti Euroopa Liidu meetmed ja otsused, mis on seotud Eesti ja teiste riikide vaheliste kaubandussuhetega, kui asjaomane valitsus ei kompenseeri selle meetme või otsuse tõttu tagatisevõtjale tekkinud kahjulikke tagajärgi muul viisil; välisriigis esinev vääramatu jõud, kui selle mõju ei ole kaetud mõne muu lepinguga.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ERTS_1"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_ERTS_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ERTS_Par_4_Lg_Unknown_1"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen",
-        "business"
+        "business",
+        "public_body"
       ],
       "estleg:referencedBy": [
         {
@@ -174,143 +407,633 @@
       ]
     },
     {
+      "@id": "estleg:ERTS_Par_4_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Tootmisrisk käesoleva seaduse tähenduses on kindlustusrisk, mis tuleneb tagatisevõtjale lepinguliste kohustuste täitmise või lepinguga tellitud kaupade tootmise peatumisest ja mis on põhjustatud vähemalt ühest alljärgnevalt nimetatud asjaolust: eraõigusliku võlgniku ja tema kohustusi tagava isiku maksejõuetus; võlgniku ja tema kohustusi tagava isiku lepinguliste kohustuste täitmata jätmine; kaupade või teenuste ostja otsus tarnijakrediidi korral lõpetada või tühistada eksporditagatisega seotud leping või keelduda kaupade või teenuste vastuvõtmisest, ilma et tal oleks õigus seda teha; välisriigi, mis ei ole tagatisevõtja asukohariik, valitsuse meede või otsus, mis takistab eksporditagatisega seotud lepingu täitmist; moratoorium, mille kuulutab välja võlgniku asukohariigi valitsus või sellise kolmanda riigi valitsus, mille kaudu tehakse eksporditagatisega seotud lepingus ettenähtud makseid; poliitilised sündmused, majandusraskused ning õigusaktidest tulenevad või halduskorralduslikud meetmed välisriigis, mis takistavad eksporditagatisega seotud lepingu alusel makstavate summade ülekandmist või põhjustavad sellega viivitamist; võlgniku asukohariigis vastuvõetud õigusaktid, mille kohaselt võlgniku poolt kohalikus vääringus tehtud makseid käsitatakse kohustuse täitmisena, olenemata sellest, kas need maksed katavad vahetuskursside muutumise tõttu eksporditagatisega seotud lepingu võlasummat selle ülekandmise päeval või ei kata; Eesti või tagatisevõtja asukohariigi valitsuse meede või otsus, samuti Euroopa Liidu meetmed ja otsused, mis on seotud Eesti ja teiste riikide vaheliste kaubandussuhetega, kui asjaomane valitsus ei kompenseeri selle meetme või otsuse tõttu tagatisevõtjale tekkinud kahjulikke tagajärgi muul viisil; välisriigis esinev vääramatu jõud, kui selle mõju ei ole kaetud mõne muu lepinguga.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_4"
+      }
+    },
+    {
       "@id": "estleg:ERTS_Par_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ERTS"
+        "estleg:LegalProvision_ekspordi_riikliku_tagamise_seadus"
       ],
       "estleg:paragrahv": "§ 5.",
       "rdfs:label": "§ 5. Krediidirisk",
       "estleg:sourceAct": "Ekspordi riikliku tagamise seadus",
       "estleg:summary": "Krediidirisk käesoleva seaduse tähenduses on kindlustusrisk, mis tuleneb eksporditagatisega seotud lepingu alusel tagatisevõtjale täitmisele kuuluva rahalise kohustuse täitmata jätmisest ja mis on põhjustatud käesoleva seaduse § 4 punktides 1–9 loetletud vähemalt ühe asjaolu tõttu. Krediidirisk käesoleva seaduse tähenduses on kindlustusrisk, mis tuleneb eksporditagatisega seotud lepingu alusel tagatisevõtjale täitmisele kuuluva rahalise kohustuse täitmata jätmisest ja mis on põhjustatud käesolev",
+      "estleg:legalText": "Krediidirisk käesoleva seaduse tähenduses on kindlustusrisk, mis tuleneb eksporditagatisega seotud lepingu alusel tagatisevõtjale täitmisele kuuluva rahalise kohustuse täitmata jätmisest ja mis on põhjustatud käesoleva seaduse § 4 punktides 1–9 loetletud vähemalt ühe asjaolu tõttu.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ERTS_1"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_ERTS_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ERTS_Par_5_Lg_Unknown_1"
+        }
+      ],
       "estleg:references": [
         {
           "@id": "estleg:ERTS_Par_4"
         }
       ]
+    },
+    {
+      "@id": "estleg:ERTS_Par_5_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Krediidirisk käesoleva seaduse tähenduses on kindlustusrisk, mis tuleneb eksporditagatisega seotud lepingu alusel tagatisevõtjale täitmisele kuuluva rahalise kohustuse täitmata jätmisest ja mis on põhjustatud käesoleva seaduse § 4 punktides 1–9 loetletud vähemalt ühe asjaolu tõttu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_5"
+      }
     },
     {
       "@id": "estleg:ERTS_Par_6",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ERTS"
+        "estleg:LegalProvision_ekspordi_riikliku_tagamise_seadus"
       ],
       "estleg:paragrahv": "§ 6.",
       "rdfs:label": "§ 6. Investeeringurisk",
       "estleg:sourceAct": "Ekspordi riikliku tagamise seadus",
       "estleg:summary": "1 (1) Investeeringurisk käesoleva seaduse tähenduses on kindlustusrisk, mis tekib tagatisevõtja võimetusest realiseerida oma investeeringuga seotud õigusi vähemalt ühe alljärgnevalt nimetatud asjaolu tõttu: 1 1) välisriigi ettevõtjasse tehtud investeeringuga seotud välisriigi ametivõimude tegevus või tegevusetus või muu ametivõimudega seotud, kuid tagatisevõtjast sõltumatu asjaolu, sealhulgas valuuta ülekande- ja konverteerimispiirangud; 2 2) investeeringuga seotud välisriigis toimuv natsionalis",
+      "estleg:legalText": "(1) Investeeringurisk käesoleva seaduse tähenduses on kindlustusrisk, mis tekib tagatisevõtja võimetusest realiseerida oma investeeringuga seotud õigusi vähemalt ühe alljärgnevalt nimetatud asjaolu tõttu: välisriigi ettevõtjasse tehtud investeeringuga seotud välisriigi ametivõimude tegevus või tegevusetus või muu ametivõimudega seotud, kuid tagatisevõtjast sõltumatu asjaolu, sealhulgas valuuta ülekande- ja konverteerimispiirangud; investeeringuga seotud välisriigis toimuv natsionaliseerimine ja sundvõõrandamine, sõjategevus, kodusõda, ülestõus või muud rahutused; lepingu rikkumine lepingu osapooleks oleva riigi ametivõimude poolt. (2) Käesoleva paragrahvi lõikes 1 nimetatud investeeringuga seotud õigusteks on eelkõige osalusest, finantseerimistehingust või tagamisest tulenevad õigused.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ERTS_1"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_ERTS_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ERTS_Par_6_Lg_1"
+        },
+        {
+          "@id": "estleg:ERTS_Par_6_Lg_2"
+        }
+      ],
       "estleg:targetGroup": [
         "business"
       ]
+    },
+    {
+      "@id": "estleg:ERTS_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Investeeringurisk käesoleva seaduse tähenduses on kindlustusrisk, mis tekib tagatisevõtja võimetusest realiseerida oma investeeringuga seotud õigusi vähemalt ühe alljärgnevalt nimetatud asjaolu tõttu: välisriigi ettevõtjasse tehtud investeeringuga seotud välisriigi ametivõimude tegevus või tegevusetus või muu ametivõimudega seotud, kuid tagatisevõtjast sõltumatu asjaolu, sealhulgas valuuta ülekande- ja konverteerimispiirangud; investeeringuga seotud välisriigis toimuv natsionaliseerimine ja sundvõõrandamine, sõjategevus, kodusõda, ülestõus või muud rahutused; lepingu rikkumine lepingu osapooleks oleva riigi ametivõimude poolt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1"
+    },
+    {
+      "@id": "estleg:ERTS_Par_6_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Käesoleva paragrahvi lõikes 1 nimetatud investeeringuga seotud õigusteks on eelkõige osalusest, finantseerimistehingust või tagamisest tulenevad õigused.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 2"
     },
     {
       "@id": "estleg:ERTS_Par_7",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ERTS"
+        "estleg:LegalProvision_ekspordi_riikliku_tagamise_seadus"
       ],
       "estleg:paragrahv": "§ 7.",
       "rdfs:label": "§ 7. Tarnijakrediidi ja ostjakrediidi erisused",
       "estleg:sourceAct": "Ekspordi riikliku tagamise seadus",
       "estleg:summary": "1 (1) Kui eksporditehingut käsitleva lepingu alusel on võlgnik kohustatud maksma tarnijale krediidilepingu tingimustel, on tegemist tarnijakrediidiga. Kui eksporditehingut käsitleva lepingu alusel on võlgnik kohustatud maksma tarnijale krediidilepingu tingimustel, on tegemist tarnijakrediidiga. 2 (2) Kui eksporditehingut käsitleva lepingu rahastamiseks on sõlmitud krediidileping, mille alusel krediidiandja kohustub maksma tarnijale võlgniku nimel ja võlgnik kohustub maksma krediidiandjale kredii",
+      "estleg:legalText": "(1) Kui eksporditehingut käsitleva lepingu alusel on võlgnik kohustatud maksma tarnijale krediidilepingu tingimustel, on tegemist tarnijakrediidiga. (2) Kui eksporditehingut käsitleva lepingu rahastamiseks on sõlmitud krediidileping, mille alusel krediidiandja kohustub maksma tarnijale võlgniku nimel ja võlgnik kohustub maksma krediidiandjale krediidilepingu tingimustel, on tegemist ostjakrediidiga.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ERTS_1"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_ERTS_1"
       },
-      "estleg:targetGroup": [
-        "citizen",
-        "business"
-      ]
-    },
-    {
-      "@id": "estleg:ERTS_Par_8",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ERTS"
-      ],
-      "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Ekspordi riiklik tagamine",
-      "estleg:sourceAct": "Ekspordi riikliku tagamise seadus",
-      "estleg:summary": "1 (1) Ekspordi riiklikku tagamist korraldab konkurentsiseaduse §-s 14 sätestatud eriõiguse alusel riikliku eksporditagatise andja, kelleks on riigi osalusega asutatud krediidikindlustusega tegelev kindlustusandja. Ekspordi riiklikku tagamist korraldab konkurentsiseaduse §-s 14 sätestatud eriõiguse alusel riikliku eksporditagatise andja, kelleks on riigi osalusega asutatud krediidikindlustusega tegelev kindlustusandja. 2 (2) Käesoleva paragrahvi lõikes 1 nimetatud kindlustusandja (edaspidi kindlu",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_ERTS_2"
-      },
-      "estleg:targetGroup": [
-        "business"
-      ]
-    },
-    {
-      "@id": "estleg:ERTS_Par_9",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ERTS"
-      ],
-      "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Eksporditagatise andmine",
-      "estleg:sourceAct": "Ekspordi riikliku tagamise seadus",
-      "estleg:summary": "1 (1) Eksporditagatis antakse tagatisevõtjale kindlustuslepingu sõlmimise avalduse ning sellele lisatud dokumentide alusel või kindlustusandja pakkumuse alusel. Eksporditagatis antakse tagatisevõtjale kindlustuslepingu sõlmimise avalduse ning sellele lisatud dokumentide alusel või kindlustusandja pakkumuse alusel. 2 (2) Enne eksporditagatisega seotud kindlustuslepingu sõlmimist hindab kindlustusandja eksporditehinguga seotud tagatavaid riske ning arvestab neid eksporditagatise andmisel. Enne eks",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_ERTS_2"
-      },
-      "estleg:targetGroup": [
-        "business"
-      ]
-    },
-    {
-      "@id": "estleg:ERTS_Par_10",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ERTS"
-      ],
-      "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Eksporditehingule eksporditagatise andmisest keeldumine",
-      "estleg:sourceAct": "Ekspordi riikliku tagamise seadus",
-      "estleg:summary": "1 (1) Kindlustusandja võib eksporditehingule eksporditagatise andmisest alati keelduda. Kindlustusandja võib eksporditehingule eksporditagatise andmisest alati keelduda. 2 (2) Kindlustusandja peab eksporditagatise andmisest keelduma, kui on ilmnenud, et tagatisevõtja on kindlustuslepingu sõlmimiseks esitatud dokumentides esitanud valeandmeid. Kindlustusandja peab eksporditagatise andmisest keelduma, kui on ilmnenud, et tagatisevõtja on kindlustuslepingu sõlmimiseks esitatud dokumentides esitanud",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_ERTS_2"
-      },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
-      "estleg:dutyHolder": "Kindlustusandja",
-      "estleg:targetGroup": [
-        "business"
-      ]
-    },
-    {
-      "@id": "estleg:ERTS_Par_11",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ERTS"
-      ],
-      "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Kindlustusleping",
-      "estleg:sourceAct": "Ekspordi riikliku tagamise seadus",
-      "estleg:summary": "1 (1) Kindlustusleping peab olema sõlmitud kirjalikult ja selles peavad sisalduma vähemalt: 1 1) tingimus, mille kohaselt kindlustusandja vastutab üksnes siis, kui tagatisevõtja ei saa käesoleva seaduse § 4 punktides 1–9 või §-s 5 loetletud asjaolude tõttu rahuldada oma nõuet võlgniku vastu või kui realiseerub vähemalt üks § 6 lõike 1 punktides 1–3 nimetatud asjaolu; 2 2) tagatisevõtja omavastutuse ulatus; 3 3) kindlustussumma; 4 4) kindlustuspreemia suurus ja selle maksmise tingimused; 5 5) tag",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_ERTS_2"
-      },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
-      "estleg:dutyHolder": "Kindlustusleping",
-      "estleg:references": [
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:ERTS_Par_4"
+          "@id": "estleg:ERTS_Par_7_Lg_1"
+        },
+        {
+          "@id": "estleg:ERTS_Par_7_Lg_2"
         }
       ],
       "estleg:targetGroup": [
         "citizen",
         "business"
       ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
+    },
+    {
+      "@id": "estleg:ERTS_Par_7_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kui eksporditehingut käsitleva lepingu alusel on võlgnik kohustatud maksma tarnijale krediidilepingu tingimustel, on tegemist tarnijakrediidiga.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 1"
+    },
+    {
+      "@id": "estleg:ERTS_Par_7_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kui eksporditehingut käsitleva lepingu rahastamiseks on sõlmitud krediidileping, mille alusel krediidiandja kohustub maksma tarnijale võlgniku nimel ja võlgnik kohustub maksma krediidiandjale krediidilepingu tingimustel, on tegemist ostjakrediidiga.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 2"
+    },
+    {
+      "@id": "estleg:ERTS_Par_8",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_ekspordi_riikliku_tagamise_seadus"
+      ],
+      "estleg:paragrahv": "§ 8.",
+      "rdfs:label": "§ 8. Ekspordi riiklik tagamine",
+      "estleg:sourceAct": "Ekspordi riikliku tagamise seadus",
+      "estleg:summary": "1 (1) Ekspordi riiklikku tagamist korraldab konkurentsiseaduse §-s 14 sätestatud eriõiguse alusel riikliku eksporditagatise andja, kelleks on riigi osalusega asutatud krediidikindlustusega tegelev kindlustusandja. Ekspordi riiklikku tagamist korraldab konkurentsiseaduse §-s 14 sätestatud eriõiguse alusel riikliku eksporditagatise andja, kelleks on riigi osalusega asutatud krediidikindlustusega tegelev kindlustusandja. 2 (2) Käesoleva paragrahvi lõikes 1 nimetatud kindlustusandja (edaspidi kindlu",
+      "estleg:legalText": "(1) Ekspordi riiklikku tagamist korraldab konkurentsiseaduse §-s 14 sätestatud eriõiguse alusel riikliku eksporditagatise andja, kelleks on riigi osalusega asutatud krediidikindlustusega tegelev kindlustusandja. (2) Käesoleva paragrahvi lõikes 1 nimetatud kindlustusandja (edaspidi kindlustusandja) suhtes rakendatakse äriseadustikus ja kindlustustegevuse seaduses sätestatut käesolevast seadusest tulenevate erisustega. (3) Eksporditagatisega seotud kindlustuslepingu sõlmimisega võtab kindlustusandja kohustuse täita tagatisevõtja nõue kindlustusandja kindlustustehniliste eraldiste ja omavahendite arvelt ning käesoleva paragrahvi lõikes 7 sätestatud määras edasikindlustusandja deposiidi arvelt, kui kindlustusandja ja riigi vahel sõlmitud edasikindlustuslepingus ei ole kokku lepitud edasikindlustusandja deposiidi arvelt täitmisele kuuluva tagatisevõtja nõude täitmise teistsuguses määras. (4) Eksporditagatisest tulenev vastutus laieneb üksnes võlgniku põhikohustusele ja kindlustusandja täidab eksporditagatisega seotud kindlustuslepingust tulenevad kohustused üksnes juhul, kui tagatisevõtja ei saa nõuet võlgniku vastu rahuldada. Kindlustuslepinguga võib ette näha eksporditagatisest tuleneva vastutuse laienemise võlgniku kohustusele tasuda intressi. Investeeringuriski realiseerumise korral katab vastutus lepinguvälise kahju. (5) Tagatisevõtja esitab kindlustuslepingust tulenevad nõuded kindlustusandja vastu, kui käesolevast seadusest ei tulene teisiti. Kui kindlustuslepingust tulenev eksporditagatise täitmisega seotud tagatisevõtja nõude õigsus on tuvastatud kohtulahendiga või nõude tunnustamisega kindlustusandja poolt ja kindlustusandjal puuduvad tagatisevõtja nõude täitmiseks vajalikud vahendid, võib tagatisevõtja esitada kindlustuslepingust tuleneva eksporditagatise täitmisega seotud nõude riigile kindlustusandja poolt tagatisevõtjale täitmata kohustuse ulatuses. Riigi vastutusele täita tagatisevõtjale kindlustusandja kohustus kohaldatakse võlaõigusseaduses käenduse kohta sätestatut, arvestades käesolevast seadusest tulenevaid erisusi. Käesoleva seaduse alusel tekkinud riigi ja tagatisevõtja vahelise vaidluse lahendamine kuulub maakohtu pädevusse. (6) Eksporditagatisega seotud kindlustuslepingute puhul on edasikindlustusandjaks riik, kelle suhtes ei kohaldata kindlustustegevuse seadust. (7) Eksporditagatisega seotud kindlustuslepingust tuleneva tagamise kohustuse võtmisel arvestatakse tagatisevõtja potentsiaalne nõue 50 protsendi ulatuses tagatuks kindlustusandja kindlustustehniliste eraldiste ja omavahendite arvelt, kuid mitte suuremas ulatuses kui 10 protsenti kindlustusandja omavahenditest, kui kindlustusandja ja riigi vahel sõlmitud edasikindlustuslepingus ei ole kokku lepitud teisiti. Kindlustusandja kohustused käesolevas lõikes nimetatud piirangut ületavas osas täidetakse edasikindlustusandja deposiidi arvelt. (8) Riigi nimel edasikindlustuslepingu sõlmimise otsustab ja riiki esindab edasikindlustuslepingu sõlmimisel Majandus- ja Kommunikatsiooniministeerium. Majandus- ja Kommunikatsiooniministeerium kooskõlastab edasikindlustuslepingu tingimused Rahandusministeeriumiga enne lepingu sõlmimist. (9) Kindlustusandja kindlustusriskide ülevõtmisest tulenevad riigi kohustused täidetakse edasikindlustusandja deposiidi arvelt. Kui edasikindlustusandja deposiidis olevad vahendid ei ole edasikindlustusandja deposiidi arvelt täitmisele kuuluva tagatisevõtja nõude täitmiseks piisavad, on kindlustusandjal õigus täita tagatisevõtja selline nõue kindlustusandja kindlustustehniliste eraldiste ja omavahendite arvelt. Sellisel juhul esitab kindlustusandja riigile nõude edasikindlustusandja deposiidi arvelt täitmisele kuulunud, kuid kindlustusandja kindlustustehniliste eraldiste ja omavahendite arvelt täidetud tagatisevõtja nõude ulatuses. (10) Kindlustusandja peab eraldi raamatupidamisarvestust eksporditagatistest ja kindlustusandja muust tegevusest tulenevate kohustuste ja varade kohta ning kindlustusandja tagab, et käesoleva seaduse alusel riiklikult toetatava tegevusega ei subsideerita kindlustusandja muid tegevusi. (11) Kui kindlustusandja on sõlminud kindlustuslepingu, mis ei ole kooskõlas käesoleva seaduse § 3 lõikega 1, § 9 lõigetega 1 ja 4, § 10 lõikega 2 või § 11 lõikega 2 või kindlustusleping ei sisalda § 11 lõikes 1 sätestatud tingimusi, ei ole lubatud sellisest kindlustuslepingust tulenevate kohustuste täitmine edasikindlustusandja deposiidi arvelt ning sellistele kohustustele riigi edasikindlustus ja käendus ei laiene. (12) Kindlustusandja on kohustatud esitama Majandus- ja Kommunikatsiooniministeeriumile üks kord kvartalis aruande käesoleva seaduse alusel antud eksporditagatiste, eksporditagatistega seotud kindlustuslepingute alusel väljamakstud summade ja arvestatud kindlustustehniliste eraldiste ning edasikindlustusandja deposiidi arvelt täidetavate kohustuste kohta. Valdkonna eest vastutaval ministril on õigus kindlustusandjalt saada lisainformatsiooni tõenäoliselt väljamaksmisele kuuluvate summade katteks kindlustustehnilistes eraldistes ja edasikindlustusandja deposiidis olevate varade kohta.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_ERTS_2"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_ERTS_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ERTS_Par_8_Lg_1"
+        },
+        {
+          "@id": "estleg:ERTS_Par_8_Lg_2"
+        },
+        {
+          "@id": "estleg:ERTS_Par_8_Lg_3"
+        },
+        {
+          "@id": "estleg:ERTS_Par_8_Lg_4"
+        },
+        {
+          "@id": "estleg:ERTS_Par_8_Lg_5"
+        },
+        {
+          "@id": "estleg:ERTS_Par_8_Lg_6"
+        },
+        {
+          "@id": "estleg:ERTS_Par_8_Lg_7"
+        },
+        {
+          "@id": "estleg:ERTS_Par_8_Lg_8"
+        },
+        {
+          "@id": "estleg:ERTS_Par_8_Lg_9"
+        },
+        {
+          "@id": "estleg:ERTS_Par_8_Lg_10"
+        },
+        {
+          "@id": "estleg:ERTS_Par_8_Lg_11"
+        },
+        {
+          "@id": "estleg:ERTS_Par_8_Lg_12"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "business"
+      ]
+    },
+    {
+      "@id": "estleg:ERTS_Par_8_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ekspordi riiklikku tagamist korraldab konkurentsiseaduse §-s 14 sätestatud eriõiguse alusel riikliku eksporditagatise andja, kelleks on riigi osalusega asutatud krediidikindlustusega tegelev kindlustusandja.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 1"
+    },
+    {
+      "@id": "estleg:ERTS_Par_8_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Käesoleva paragrahvi lõikes 1 nimetatud kindlustusandja (edaspidi kindlustusandja) suhtes rakendatakse äriseadustikus ja kindlustustegevuse seaduses sätestatut käesolevast seadusest tulenevate erisustega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 2"
+    },
+    {
+      "@id": "estleg:ERTS_Par_8_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Eksporditagatisega seotud kindlustuslepingu sõlmimisega võtab kindlustusandja kohustuse täita tagatisevõtja nõue kindlustusandja kindlustustehniliste eraldiste ja omavahendite arvelt ning käesoleva paragrahvi lõikes 7 sätestatud määras edasikindlustusandja deposiidi arvelt, kui kindlustusandja ja riigi vahel sõlmitud edasikindlustuslepingus ei ole kokku lepitud edasikindlustusandja deposiidi arvelt täitmisele kuuluva tagatisevõtja nõude täitmise teistsuguses määras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 3"
+    },
+    {
+      "@id": "estleg:ERTS_Par_8_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Eksporditagatisest tulenev vastutus laieneb üksnes võlgniku põhikohustusele ja kindlustusandja täidab eksporditagatisega seotud kindlustuslepingust tulenevad kohustused üksnes juhul, kui tagatisevõtja ei saa nõuet võlgniku vastu rahuldada. Kindlustuslepinguga võib ette näha eksporditagatisest tuleneva vastutuse laienemise võlgniku kohustusele tasuda intressi. Investeeringuriski realiseerumise korral katab vastutus lepinguvälise kahju.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 4"
+    },
+    {
+      "@id": "estleg:ERTS_Par_8_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Tagatisevõtja esitab kindlustuslepingust tulenevad nõuded kindlustusandja vastu, kui käesolevast seadusest ei tulene teisiti. Kui kindlustuslepingust tulenev eksporditagatise täitmisega seotud tagatisevõtja nõude õigsus on tuvastatud kohtulahendiga või nõude tunnustamisega kindlustusandja poolt ja kindlustusandjal puuduvad tagatisevõtja nõude täitmiseks vajalikud vahendid, võib tagatisevõtja esitada kindlustuslepingust tuleneva eksporditagatise täitmisega seotud nõude riigile kindlustusandja poolt tagatisevõtjale täitmata kohustuse ulatuses. Riigi vastutusele täita tagatisevõtjale kindlustusandja kohustus kohaldatakse võlaõigusseaduses käenduse kohta sätestatut, arvestades käesolevast seadusest tulenevaid erisusi. Käesoleva seaduse alusel tekkinud riigi ja tagatisevõtja vahelise vaidluse lahendamine kuulub maakohtu pädevusse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 5"
+    },
+    {
+      "@id": "estleg:ERTS_Par_8_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Eksporditagatisega seotud kindlustuslepingute puhul on edasikindlustusandjaks riik, kelle suhtes ei kohaldata kindlustustegevuse seadust.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 6"
+    },
+    {
+      "@id": "estleg:ERTS_Par_8_Lg_7",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "7",
+      "estleg:legalText": "(7) Eksporditagatisega seotud kindlustuslepingust tuleneva tagamise kohustuse võtmisel arvestatakse tagatisevõtja potentsiaalne nõue 50 protsendi ulatuses tagatuks kindlustusandja kindlustustehniliste eraldiste ja omavahendite arvelt, kuid mitte suuremas ulatuses kui 10 protsenti kindlustusandja omavahenditest, kui kindlustusandja ja riigi vahel sõlmitud edasikindlustuslepingus ei ole kokku lepitud teisiti. Kindlustusandja kohustused käesolevas lõikes nimetatud piirangut ületavas osas täidetakse edasikindlustusandja deposiidi arvelt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 7"
+    },
+    {
+      "@id": "estleg:ERTS_Par_8_Lg_8",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "8",
+      "estleg:legalText": "(8) Riigi nimel edasikindlustuslepingu sõlmimise otsustab ja riiki esindab edasikindlustuslepingu sõlmimisel Majandus- ja Kommunikatsiooniministeerium. Majandus- ja Kommunikatsiooniministeerium kooskõlastab edasikindlustuslepingu tingimused Rahandusministeeriumiga enne lepingu sõlmimist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 8"
+    },
+    {
+      "@id": "estleg:ERTS_Par_8_Lg_9",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "9",
+      "estleg:legalText": "(9) Kindlustusandja kindlustusriskide ülevõtmisest tulenevad riigi kohustused täidetakse edasikindlustusandja deposiidi arvelt. Kui edasikindlustusandja deposiidis olevad vahendid ei ole edasikindlustusandja deposiidi arvelt täitmisele kuuluva tagatisevõtja nõude täitmiseks piisavad, on kindlustusandjal õigus täita tagatisevõtja selline nõue kindlustusandja kindlustustehniliste eraldiste ja omavahendite arvelt. Sellisel juhul esitab kindlustusandja riigile nõude edasikindlustusandja deposiidi arvelt täitmisele kuulunud, kuid kindlustusandja kindlustustehniliste eraldiste ja omavahendite arvelt täidetud tagatisevõtja nõude ulatuses.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 9"
+    },
+    {
+      "@id": "estleg:ERTS_Par_8_Lg_10",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "10",
+      "estleg:legalText": "(10) Kindlustusandja peab eraldi raamatupidamisarvestust eksporditagatistest ja kindlustusandja muust tegevusest tulenevate kohustuste ja varade kohta ning kindlustusandja tagab, et käesoleva seaduse alusel riiklikult toetatava tegevusega ei subsideerita kindlustusandja muid tegevusi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 10"
+    },
+    {
+      "@id": "estleg:ERTS_Par_8_Lg_11",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "11",
+      "estleg:legalText": "(11) Kui kindlustusandja on sõlminud kindlustuslepingu, mis ei ole kooskõlas käesoleva seaduse § 3 lõikega 1, § 9 lõigetega 1 ja 4, § 10 lõikega 2 või § 11 lõikega 2 või kindlustusleping ei sisalda § 11 lõikes 1 sätestatud tingimusi, ei ole lubatud sellisest kindlustuslepingust tulenevate kohustuste täitmine edasikindlustusandja deposiidi arvelt ning sellistele kohustustele riigi edasikindlustus ja käendus ei laiene.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 11"
+    },
+    {
+      "@id": "estleg:ERTS_Par_8_Lg_12",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "12",
+      "estleg:legalText": "(12) Kindlustusandja on kohustatud esitama Majandus- ja Kommunikatsiooniministeeriumile üks kord kvartalis aruande käesoleva seaduse alusel antud eksporditagatiste, eksporditagatistega seotud kindlustuslepingute alusel väljamakstud summade ja arvestatud kindlustustehniliste eraldiste ning edasikindlustusandja deposiidi arvelt täidetavate kohustuste kohta. Valdkonna eest vastutaval ministril on õigus kindlustusandjalt saada lisainformatsiooni tõenäoliselt väljamaksmisele kuuluvate summade katteks kindlustustehnilistes eraldistes ja edasikindlustusandja deposiidis olevate varade kohta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 12"
+    },
+    {
+      "@id": "estleg:ERTS_Par_9",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_ekspordi_riikliku_tagamise_seadus"
+      ],
+      "estleg:paragrahv": "§ 9.",
+      "rdfs:label": "§ 9. Eksporditagatise andmine",
+      "estleg:sourceAct": "Ekspordi riikliku tagamise seadus",
+      "estleg:summary": "1 (1) Eksporditagatis antakse tagatisevõtjale kindlustuslepingu sõlmimise avalduse ning sellele lisatud dokumentide alusel või kindlustusandja pakkumuse alusel. Eksporditagatis antakse tagatisevõtjale kindlustuslepingu sõlmimise avalduse ning sellele lisatud dokumentide alusel või kindlustusandja pakkumuse alusel. 2 (2) Enne eksporditagatisega seotud kindlustuslepingu sõlmimist hindab kindlustusandja eksporditehinguga seotud tagatavaid riske ning arvestab neid eksporditagatise andmisel. Enne eks",
+      "estleg:legalText": "(1) Eksporditagatis antakse tagatisevõtjale kindlustuslepingu sõlmimise avalduse ning sellele lisatud dokumentide alusel või kindlustusandja pakkumuse alusel. (2) Enne eksporditagatisega seotud kindlustuslepingu sõlmimist hindab kindlustusandja eksporditehinguga seotud tagatavaid riske ning arvestab neid eksporditagatise andmisel. (3) Eksporditagatise andmise kohta sõlmib kindlustusandja tagatisevõtjaga kindlustuslepingu, mis peab sisaldama vähemalt käesoleva seaduse § 11 lõikes 1 nimetatud tingimusi. (3<sup>1</sup>) Kui eksporditagatise andmisega seotud tootmis- või krediidiperiood kestab või nimetatud perioodid koos kestavad vähem kui kaks aastat, võib eksporditagatise anda ka juhul, kui kindlustuslepingus on määratud tagatisevõtjast erinev kindlustatud isik. Vahendaja eksporditehingusse kaasamise korral on eksporditagatise andmine lubatud tingimusel, et kaup müüakse või teenus osutatakse võlgnikule ning kauba või teenuse eest maksmise kohustus tekib võlgnikul. Kui eksporditehingust tulenev nõue võlgniku vastu kuulub vahendajale, peab tagatisevõtjale kuuluma nõue vahendaja vastu. (3<sup>2</sup>) Käesoleva paragrahvi lõikes 31 sätestatud juhul mõistetakse tagatisevõtjale tekkinud kahjuna ka kahju, mille on põhjustanud tagatisevõtjast erinevale kindlustatud isikule eksporditehingust tuleneva nõude täitmata jätmine. Tagatisevõtjale eksporditehingust tuleneva nõude ja võlgniku poolt tagatisevõtja suhtes täitmisele kuuluva rahalise kohustuse kohta käesolevas seaduses sätestatut kohaldatakse käesoleva paragrahvi lõikes 31 sätestatud juhul vastavalt ka tagatisevõtjast erinevale kindlustatud isikule eksporditehingust tuleneva nõude ja võlgniku poolt sellise kindlustatud isiku suhtes täitmisele kuuluva kohustuse korral. (4) võib määrusega kehtestada, missuguste välisriikidega seotud eksporditehinguid eriti suure poliitilise või kommertsriski tõttu ei tagata. (5) kehtestab määrusega kohustuslikud lisatingimused lepingutele, mis käsitlevad eksporditehingute tagamist ühiselt teiste Euroopa Majandusühenduse liikmesriikide riiklike ekspordikrediidikindlustuse asutustega.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_ERTS_2"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_ERTS_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ERTS_Par_9_Lg_1"
+        },
+        {
+          "@id": "estleg:ERTS_Par_9_Lg_2"
+        },
+        {
+          "@id": "estleg:ERTS_Par_9_Lg_3"
+        },
+        {
+          "@id": "estleg:ERTS_Par_9_Lg_3_1"
+        },
+        {
+          "@id": "estleg:ERTS_Par_9_Lg_3_2"
+        },
+        {
+          "@id": "estleg:ERTS_Par_9_Lg_4"
+        },
+        {
+          "@id": "estleg:ERTS_Par_9_Lg_5"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "business",
+        "public_body"
+      ]
+    },
+    {
+      "@id": "estleg:ERTS_Par_9_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Eksporditagatis antakse tagatisevõtjale kindlustuslepingu sõlmimise avalduse ning sellele lisatud dokumentide alusel või kindlustusandja pakkumuse alusel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 1"
+    },
+    {
+      "@id": "estleg:ERTS_Par_9_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Enne eksporditagatisega seotud kindlustuslepingu sõlmimist hindab kindlustusandja eksporditehinguga seotud tagatavaid riske ning arvestab neid eksporditagatise andmisel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 2"
+    },
+    {
+      "@id": "estleg:ERTS_Par_9_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Eksporditagatise andmise kohta sõlmib kindlustusandja tagatisevõtjaga kindlustuslepingu, mis peab sisaldama vähemalt käesoleva seaduse § 11 lõikes 1 nimetatud tingimusi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 3"
+    },
+    {
+      "@id": "estleg:ERTS_Par_9_Lg_3_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3<sup>1</sup>",
+      "estleg:legalText": "(3<sup>1</sup>) Kui eksporditagatise andmisega seotud tootmis- või krediidiperiood kestab või nimetatud perioodid koos kestavad vähem kui kaks aastat, võib eksporditagatise anda ka juhul, kui kindlustuslepingus on määratud tagatisevõtjast erinev kindlustatud isik. Vahendaja eksporditehingusse kaasamise korral on eksporditagatise andmine lubatud tingimusel, et kaup müüakse või teenus osutatakse võlgnikule ning kauba või teenuse eest maksmise kohustus tekib võlgnikul. Kui eksporditehingust tulenev nõue võlgniku vastu kuulub vahendajale, peab tagatisevõtjale kuuluma nõue vahendaja vastu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 3<sup>1</sup>"
+    },
+    {
+      "@id": "estleg:ERTS_Par_9_Lg_3_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3<sup>2</sup>",
+      "estleg:legalText": "(3<sup>2</sup>) Käesoleva paragrahvi lõikes 31 sätestatud juhul mõistetakse tagatisevõtjale tekkinud kahjuna ka kahju, mille on põhjustanud tagatisevõtjast erinevale kindlustatud isikule eksporditehingust tuleneva nõude täitmata jätmine. Tagatisevõtjale eksporditehingust tuleneva nõude ja võlgniku poolt tagatisevõtja suhtes täitmisele kuuluva rahalise kohustuse kohta käesolevas seaduses sätestatut kohaldatakse käesoleva paragrahvi lõikes 31 sätestatud juhul vastavalt ka tagatisevõtjast erinevale kindlustatud isikule eksporditehingust tuleneva nõude ja võlgniku poolt sellise kindlustatud isiku suhtes täitmisele kuuluva kohustuse korral.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 3<sup>2</sup>"
+    },
+    {
+      "@id": "estleg:ERTS_Par_9_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) võib määrusega kehtestada, missuguste välisriikidega seotud eksporditehinguid eriti suure poliitilise või kommertsriski tõttu ei tagata.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 4"
+    },
+    {
+      "@id": "estleg:ERTS_Par_9_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) kehtestab määrusega kohustuslikud lisatingimused lepingutele, mis käsitlevad eksporditehingute tagamist ühiselt teiste Euroopa Majandusühenduse liikmesriikide riiklike ekspordikrediidikindlustuse asutustega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 5"
+    },
+    {
+      "@id": "estleg:ERTS_Par_10",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_ekspordi_riikliku_tagamise_seadus"
+      ],
+      "estleg:paragrahv": "§ 10.",
+      "rdfs:label": "§ 10. Eksporditehingule eksporditagatise andmisest keeldumine",
+      "estleg:sourceAct": "Ekspordi riikliku tagamise seadus",
+      "estleg:summary": "1 (1) Kindlustusandja võib eksporditehingule eksporditagatise andmisest alati keelduda. Kindlustusandja võib eksporditehingule eksporditagatise andmisest alati keelduda. 2 (2) Kindlustusandja peab eksporditagatise andmisest keelduma, kui on ilmnenud, et tagatisevõtja on kindlustuslepingu sõlmimiseks esitatud dokumentides esitanud valeandmeid. Kindlustusandja peab eksporditagatise andmisest keelduma, kui on ilmnenud, et tagatisevõtja on kindlustuslepingu sõlmimiseks esitatud dokumentides esitanud",
+      "estleg:legalText": "(1) Kindlustusandja võib eksporditehingule eksporditagatise andmisest alati keelduda. (2) Kindlustusandja peab eksporditagatise andmisest keelduma, kui on ilmnenud, et tagatisevõtja on kindlustuslepingu sõlmimiseks esitatud dokumentides esitanud valeandmeid.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_ERTS_2"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_ERTS_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ERTS_Par_10_Lg_1"
+        },
+        {
+          "@id": "estleg:ERTS_Par_10_Lg_2"
+        }
+      ],
+      "estleg:targetGroup": [
+        "business"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:dutyHolder": "Kindlustusandja"
+    },
+    {
+      "@id": "estleg:ERTS_Par_10_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kindlustusandja võib eksporditehingule eksporditagatise andmisest alati keelduda.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 1"
+    },
+    {
+      "@id": "estleg:ERTS_Par_10_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kindlustusandja peab eksporditagatise andmisest keelduma, kui on ilmnenud, et tagatisevõtja on kindlustuslepingu sõlmimiseks esitatud dokumentides esitanud valeandmeid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 2"
+    },
+    {
+      "@id": "estleg:ERTS_Par_11",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_ekspordi_riikliku_tagamise_seadus"
+      ],
+      "estleg:paragrahv": "§ 11.",
+      "rdfs:label": "§ 11. Kindlustusleping",
+      "estleg:sourceAct": "Ekspordi riikliku tagamise seadus",
+      "estleg:summary": "1 (1) Kindlustusleping peab olema sõlmitud kirjalikult ja selles peavad sisalduma vähemalt: 1 1) tingimus, mille kohaselt kindlustusandja vastutab üksnes siis, kui tagatisevõtja ei saa käesoleva seaduse § 4 punktides 1–9 või §-s 5 loetletud asjaolude tõttu rahuldada oma nõuet võlgniku vastu või kui realiseerub vähemalt üks § 6 lõike 1 punktides 1–3 nimetatud asjaolu; 2 2) tagatisevõtja omavastutuse ulatus; 3 3) kindlustussumma; 4 4) kindlustuspreemia suurus ja selle maksmise tingimused; 5 5) tag",
+      "estleg:legalText": "(1) Kindlustusleping peab olema sõlmitud kirjalikult ja selles peavad sisalduma vähemalt: tingimus, mille kohaselt kindlustusandja vastutab üksnes siis, kui tagatisevõtja ei saa käesoleva seaduse § 4 punktides 1–9 või §-s 5 loetletud asjaolude tõttu rahuldada oma nõuet võlgniku vastu või kui realiseerub vähemalt üks § 6 lõike 1 punktides 1–3 nimetatud asjaolu; tagatisevõtja omavastutuse ulatus; kindlustussumma; kindlustuspreemia suurus ja selle maksmise tingimused; tagatavad riskid; tagatisevõtja kohustus tasuda kindlustuspreemia; eksporditagatise jõustumise aeg; krediidiperiood ja tootmisriski korral ka tootmisperiood; viide, et kindlustuslepingust tulenevate kindlustusandja kohustuste täitmine on riigi poolt tagatud käesoleva seaduse alusel; käesoleva seaduse § 9 lõikes 31 sätestatud juhul tagatisevõtjast erineva kindlustatud isiku nimi ja registrikood. (2) Kindlustuslepinguga võib ette näha tagatisevõtjale eksporditehingust tekkiva kahju hüvitamise poliitilise riski realiseerumisel kuni 100 protsendi ulatuses ja kommertsriski realiseerumisel kuni 95 protsendi ulatuses. (3) Kindlustussumma võib olla väljendatud eurodes või Eestis konverteeritavas valuutas, mida Euroopa Keskpank noteerib. (4) Eksporditagatis ei laiene kindlustuslepingule, mis sisaldab tingimust, mille täitmine ei sõltu tagatisevõtjast ja mis annab kindlustusandjale õiguse: kindlustuslepingut või selles sisalduvaid tingimusi muuta või tühistada, eelkõige lühendada kindlustusperioodi või suurendada kindlustuspreemiat võlgniku majandusliku olukorra halvenemise korral; keelduda nõude täitmisest võlgniku makseraskuse korral. (5) Eksporditagatis ei laiene kindlustuslepingule, kui kindlustusriskiga seotud tootmis- või krediidiperiood kestab või nimetatud perioodid koos kestavad vähem kui kaks aastat, välja arvatud juhul, kui kindlustusrisk on kindlustuslepingu sõlmimise ajal riiklikku eksporditagatist reguleerivate Euroopa Liidu riigiabialaste õigusaktide kohaselt käsitatav kindlustusriskina, mis ei ole turukõlbulik. (6) Kindlustusandjal on õigus kohustada tagatisevõtjat peatama eksporditehingud võlgnikuga, kes ei täida tagatisevõtja ees võetud maksekohustust nõuetekohaselt või kelle suhtes ilmneb muu asjaolu, mis mõistlikult eeldades võib põhjustada selle, et tagatisevõtja ees võetud kohustusi ei täideta nõuetekohaselt. Eksporditagatis ei laiene kahjule, mis tekib eksporditehingute jätkamisest pärast eksporditehingute peatamise kohustuse tähtaja saabumist.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_ERTS_2"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_ERTS_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ERTS_Par_11_Lg_1"
+        },
+        {
+          "@id": "estleg:ERTS_Par_11_Lg_2"
+        },
+        {
+          "@id": "estleg:ERTS_Par_11_Lg_3"
+        },
+        {
+          "@id": "estleg:ERTS_Par_11_Lg_4"
+        },
+        {
+          "@id": "estleg:ERTS_Par_11_Lg_5"
+        },
+        {
+          "@id": "estleg:ERTS_Par_11_Lg_6"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "business"
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:ERTS_Par_4"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:dutyHolder": "Kindlustusleping",
       "estleg:referencedBy": [
         {
           "@id": "estleg:ERTS_Par_2"
@@ -318,140 +1041,492 @@
       ]
     },
     {
+      "@id": "estleg:ERTS_Par_11_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kindlustusleping peab olema sõlmitud kirjalikult ja selles peavad sisalduma vähemalt: tingimus, mille kohaselt kindlustusandja vastutab üksnes siis, kui tagatisevõtja ei saa käesoleva seaduse § 4 punktides 1–9 või §-s 5 loetletud asjaolude tõttu rahuldada oma nõuet võlgniku vastu või kui realiseerub vähemalt üks § 6 lõike 1 punktides 1–3 nimetatud asjaolu; tagatisevõtja omavastutuse ulatus; kindlustussumma; kindlustuspreemia suurus ja selle maksmise tingimused; tagatavad riskid; tagatisevõtja kohustus tasuda kindlustuspreemia; eksporditagatise jõustumise aeg; krediidiperiood ja tootmisriski korral ka tootmisperiood; viide, et kindlustuslepingust tulenevate kindlustusandja kohustuste täitmine on riigi poolt tagatud käesoleva seaduse alusel; käesoleva seaduse § 9 lõikes 31 sätestatud juhul tagatisevõtjast erineva kindlustatud isiku nimi ja registrikood.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 1"
+    },
+    {
+      "@id": "estleg:ERTS_Par_11_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kindlustuslepinguga võib ette näha tagatisevõtjale eksporditehingust tekkiva kahju hüvitamise poliitilise riski realiseerumisel kuni 100 protsendi ulatuses ja kommertsriski realiseerumisel kuni 95 protsendi ulatuses.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 2"
+    },
+    {
+      "@id": "estleg:ERTS_Par_11_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kindlustussumma võib olla väljendatud eurodes või Eestis konverteeritavas valuutas, mida Euroopa Keskpank noteerib.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 3"
+    },
+    {
+      "@id": "estleg:ERTS_Par_11_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Eksporditagatis ei laiene kindlustuslepingule, mis sisaldab tingimust, mille täitmine ei sõltu tagatisevõtjast ja mis annab kindlustusandjale õiguse: kindlustuslepingut või selles sisalduvaid tingimusi muuta või tühistada, eelkõige lühendada kindlustusperioodi või suurendada kindlustuspreemiat võlgniku majandusliku olukorra halvenemise korral; keelduda nõude täitmisest võlgniku makseraskuse korral.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 4"
+    },
+    {
+      "@id": "estleg:ERTS_Par_11_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Eksporditagatis ei laiene kindlustuslepingule, kui kindlustusriskiga seotud tootmis- või krediidiperiood kestab või nimetatud perioodid koos kestavad vähem kui kaks aastat, välja arvatud juhul, kui kindlustusrisk on kindlustuslepingu sõlmimise ajal riiklikku eksporditagatist reguleerivate Euroopa Liidu riigiabialaste õigusaktide kohaselt käsitatav kindlustusriskina, mis ei ole turukõlbulik.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 5"
+    },
+    {
+      "@id": "estleg:ERTS_Par_11_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Kindlustusandjal on õigus kohustada tagatisevõtjat peatama eksporditehingud võlgnikuga, kes ei täida tagatisevõtja ees võetud maksekohustust nõuetekohaselt või kelle suhtes ilmneb muu asjaolu, mis mõistlikult eeldades võib põhjustada selle, et tagatisevõtja ees võetud kohustusi ei täideta nõuetekohaselt. Eksporditagatis ei laiene kahjule, mis tekib eksporditehingute jätkamisest pärast eksporditehingute peatamise kohustuse tähtaja saabumist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 6"
+    },
+    {
       "@id": "estleg:ERTS_Par_12",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ERTS"
+        "estleg:LegalProvision_ekspordi_riikliku_tagamise_seadus"
       ],
       "estleg:paragrahv": "§ 12.",
       "rdfs:label": "§ 12. Eksporditagatise andmise piirangud",
       "estleg:sourceAct": "Ekspordi riikliku tagamise seadus",
-      "estleg:summary": "1 (1) Kindlustusandja poolt käesoleva seaduse alusel sõlmitud ja eksporditagatistega seotud samaaegselt kehtivate kindlustuslepingute järgsete kohustuste summa ei tohi ühelgi hetkel ületada 191 734 946 eurot. RT I 2010 22 108 13310847 2011-01-01 Kindlustusandja poolt käesoleva seaduse alusel sõlmitud ja eksporditagatistega seotud samaaegselt kehtivate kindlustuslepingute järgsete kohustuste summa ei tohi ühelgi hetkel ületada 191 734 946 eurot. 2 (2) Ühe eraõigusliku võlgnikuga sõlmitavate ekspo",
+      "estleg:summary": "1 (1) Kindlustusandja poolt käesoleva seaduse alusel sõlmitud ja eksporditagatistega seotud samaaegselt kehtivate kindlustuslepingute järgsete kohustuste summa ei tohi ühelgi hetkel ületada 400 000 000 eurot. RT I 2022-01-28 1 128012022001 2022-02-07 Kindlustusandja poolt käesoleva seaduse alusel sõlmitud ja eksporditagatistega seotud samaaegselt kehtivate kindlustuslepingute järgsete kohustuste summa ei tohi ühelgi hetkel ületada 400 000 000 eurot. 2 (2) Ühe eraõigusliku võlgnikuga sõlmitavate ",
+      "estleg:legalText": "(1) Kindlustusandja poolt käesoleva seaduse alusel sõlmitud ja eksporditagatistega seotud samaaegselt kehtivate kindlustuslepingute järgsete kohustuste summa ei tohi ühelgi hetkel ületada 400 000 000 eurot. (2) Ühe eraõigusliku võlgnikuga sõlmitavate eksporditagatistega seotud samaaegselt kehtivate kindlustuslepingute järgsete kohustuste kogusumma ei tohi ületada 10 protsenti käesoleva paragrahvi lõikes 1 nimetatud kindlustuslepingute järgsete kohustuste summast. Käesolevas lõikes nimetatud piirangut ei kohaldata võlgnikule, kelleks on krediidiasutus või krediidiasutuse konsolideerimisgruppi kuuluv ning riikliku finantsjärelevalve asutuse kontrollile alluv kehtivat tegevusluba omav finantseerimisasutus. (3) Valdkonna eest vastutava ministri otsusega võib lubada kindlustusandjal anda eksporditagatise, mis ületab käesoleva paragrahvi lõikes 2 nimetatud kogusummat, kui see on vajalik käesoleva seaduse eesmärgi saavutamiseks ning kui eksporditagatisega seotud riskid on piisavalt maandatud. Valdkonna eest vastutav minister kooskõlastab otsuse eelnevalt Rahandusministeeriumiga.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ERTS_2"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_ERTS_2"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ERTS_Par_12_Lg_1"
+        },
+        {
+          "@id": "estleg:ERTS_Par_12_Lg_2"
+        },
+        {
+          "@id": "estleg:ERTS_Par_12_Lg_3"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen",
-        "business"
-      ]
+        "business",
+        "public_body",
+        "official"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
+      }
+    },
+    {
+      "@id": "estleg:ERTS_Par_12_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kindlustusandja poolt käesoleva seaduse alusel sõlmitud ja eksporditagatistega seotud samaaegselt kehtivate kindlustuslepingute järgsete kohustuste summa ei tohi ühelgi hetkel ületada 400 000 000 eurot.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 1"
+    },
+    {
+      "@id": "estleg:ERTS_Par_12_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Ühe eraõigusliku võlgnikuga sõlmitavate eksporditagatistega seotud samaaegselt kehtivate kindlustuslepingute järgsete kohustuste kogusumma ei tohi ületada 10 protsenti käesoleva paragrahvi lõikes 1 nimetatud kindlustuslepingute järgsete kohustuste summast. Käesolevas lõikes nimetatud piirangut ei kohaldata võlgnikule, kelleks on krediidiasutus või krediidiasutuse konsolideerimisgruppi kuuluv ning riikliku finantsjärelevalve asutuse kontrollile alluv kehtivat tegevusluba omav finantseerimisasutus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 2"
+    },
+    {
+      "@id": "estleg:ERTS_Par_12_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Valdkonna eest vastutava ministri otsusega võib lubada kindlustusandjal anda eksporditagatise, mis ületab käesoleva paragrahvi lõikes 2 nimetatud kogusummat, kui see on vajalik käesoleva seaduse eesmärgi saavutamiseks ning kui eksporditagatisega seotud riskid on piisavalt maandatud. Valdkonna eest vastutav minister kooskõlastab otsuse eelnevalt Rahandusministeeriumiga.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 3"
     },
     {
       "@id": "estleg:ERTS_Par_13",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ERTS"
+        "estleg:LegalProvision_ekspordi_riikliku_tagamise_seadus"
       ],
       "estleg:paragrahv": "§ 13.",
       "rdfs:label": "§ 13. Kahju hüvitamisest keeldumine",
       "estleg:sourceAct": "Ekspordi riikliku tagamise seadus",
       "estleg:summary": "1 (1) Kindlustusandjal on õigus keelduda kahju hüvitamisest, kui kahju tekkimise on otseselt või kaudselt põhjustanud üks või mitu alljärgnevat asjaolu: 1 1) tagatisevõtja või tema nimel tegutseva isiku tegevus või tegevusetus; 2 2) eksporditagatisega seotud lepingus või lepinguga seotud dokumentides sisalduvad tagatisevõtja õigusi ebamõistlikult piiravad sätted, mis raskendavad tagatisevõtjal nõudeõiguse realiseerimist võlgniku vastu; 3 3) tagatisevõtja ja võlgniku vahel pärast eksporditagatise",
+      "estleg:legalText": "(1) Kindlustusandjal on õigus keelduda kahju hüvitamisest, kui kahju tekkimise on otseselt või kaudselt põhjustanud üks või mitu alljärgnevat asjaolu: tagatisevõtja või tema nimel tegutseva isiku tegevus või tegevusetus; eksporditagatisega seotud lepingus või lepinguga seotud dokumentides sisalduvad tagatisevõtja õigusi ebamõistlikult piiravad sätted, mis raskendavad tagatisevõtjal nõudeõiguse realiseerimist võlgniku vastu; tagatisevõtja ja võlgniku vahel pärast eksporditagatisega seotud lepingu sõlmimist sõlmitud kokkulepe, mis takistab võla tasumist või põhjustab sellega viivitamist; tarnijakrediidi puhul kohustuste täitmata jätmine alltöövõtjate, lepinguosaliste või muude tarnijate poolt, kui seda ei ole põhjustanud käesoleva seaduse § 4 punktides 4–9 nimetatud poliitilise riskiga seonduv. (2) Kindlustuslepingus võib ette näha ka käesoleva paragrahvi lõikes 1 nimetamata asjaolusid, mille puhul kindlustusandjal on õigus keelduda kahju hüvitamisest.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ERTS_2"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_ERTS_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ERTS_Par_13_Lg_1"
+        },
+        {
+          "@id": "estleg:ERTS_Par_13_Lg_2"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "business"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Right"
+      }
+    },
+    {
+      "@id": "estleg:ERTS_Par_13_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kindlustusandjal on õigus keelduda kahju hüvitamisest, kui kahju tekkimise on otseselt või kaudselt põhjustanud üks või mitu alljärgnevat asjaolu: tagatisevõtja või tema nimel tegutseva isiku tegevus või tegevusetus; eksporditagatisega seotud lepingus või lepinguga seotud dokumentides sisalduvad tagatisevõtja õigusi ebamõistlikult piiravad sätted, mis raskendavad tagatisevõtjal nõudeõiguse realiseerimist võlgniku vastu; tagatisevõtja ja võlgniku vahel pärast eksporditagatisega seotud lepingu sõlmimist sõlmitud kokkulepe, mis takistab võla tasumist või põhjustab sellega viivitamist; tarnijakrediidi puhul kohustuste täitmata jätmine alltöövõtjate, lepinguosaliste või muude tarnijate poolt, kui seda ei ole põhjustanud käesoleva seaduse § 4 punktides 4–9 nimetatud poliitilise riskiga seonduv.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_13"
       },
+      "rdfs:label": "§ 13 lg 1"
+    },
+    {
+      "@id": "estleg:ERTS_Par_13_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kindlustuslepingus võib ette näha ka käesoleva paragrahvi lõikes 1 nimetamata asjaolusid, mille puhul kindlustusandjal on õigus keelduda kahju hüvitamisest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 2"
+    },
+    {
+      "@id": "estleg:ERTS_Par_14",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_ekspordi_riikliku_tagamise_seadus"
+      ],
+      "estleg:paragrahv": "§ 14.",
+      "rdfs:label": "§ 14. Edasikindlustusandja deposiit",
+      "estleg:sourceAct": "Ekspordi riikliku tagamise seadus",
+      "estleg:summary": "1 (1) Riik avab sõlmitud kindlustuslepingute alusel eksporditagatistest tulenevate edasikindlustusandja kohustuste täitmiseks kindlustusandja juures edasikindlustusandja deposiidi. Riik avab sõlmitud kindlustuslepingute alusel eksporditagatistest tulenevate edasikindlustusandja kohustuste täitmiseks kindlustusandja juures edasikindlustusandja deposiidi. 2 (2) Edasikindlustusandja deposiidi summat suurendatakse järgmiste vahendite arvelt: 1 1) kindlustuslepingutest tekkivate kohustuste täitmiseks",
+      "estleg:legalText": "(1) Riik avab sõlmitud kindlustuslepingute alusel eksporditagatistest tulenevate edasikindlustusandja kohustuste täitmiseks kindlustusandja juures edasikindlustusandja deposiidi. (2) Edasikindlustusandja deposiidi summat suurendatakse järgmiste vahendite arvelt: kindlustuslepingutest tekkivate kohustuste täitmiseks riigi poolt eraldatud vahendid; kindlustusandja tasutud edasikindlustuspreemiad, mille suurus on arvestatud proportsionaalselt riigi poolt ülevõetud kindlustusriskiga, kui kindlustusandja ja riigi vahel sõlmitud edasikindlustuslepinguga ei ole kokku lepitud teistsugustes edasikindlustuspreemia arvestamise põhimõtetes; edasikindlustusandja deposiidi arvelt täidetud kohustuse tagasinõudest võlgnikult saadud vahendid; edasikindlustusandja deposiidile vastava vara investeerimistulu, millest on maha arvestatud investeerimisega seotud kulud. (3) Kindlustusandja võib edasikindlustusandja deposiidi arvelt täita ainult eksporditagatistest tulenevaid edasikindlustusandja kohustusi tingimusel, et käesoleva seaduse § 11 lõikes 1 sätestatud tingimustele vastava kindlustuslepinguga tagatud ja käesolevas seaduses nimetatud kindlustusriski realiseerumine ja sellest tulenev tagatisevõtja kahju on piisavalt tõendatud ning puuduvad kindlustusandja hüvituskohustuste täitmist välistavad asjaolud. Edasikindlustusandja deposiit ei kuulu kindlustusandja pankrotivarasse ja sellele ei saa pöörata sissenõuet täitemenetluses kindlustusandja vastu. (4) Edasikindlustusandja deposiidile vastava vara investeerimisel arvestatakse kindlustustegevuse seaduses kindlustusandja seotud vara investeerimisele kehtestatud nõudeid ja piiranguid.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_ERTS_2"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_ERTS_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ERTS_Par_14_Lg_1"
+        },
+        {
+          "@id": "estleg:ERTS_Par_14_Lg_2"
+        },
+        {
+          "@id": "estleg:ERTS_Par_14_Lg_3"
+        },
+        {
+          "@id": "estleg:ERTS_Par_14_Lg_4"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen",
         "business"
       ]
     },
     {
-      "@id": "estleg:ERTS_Par_14",
+      "@id": "estleg:ERTS_Par_14_Lg_1",
       "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ERTS"
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Edasikindlustusandja deposiit",
-      "estleg:sourceAct": "Ekspordi riikliku tagamise seadus",
-      "estleg:summary": "1 (1) Riik avab sõlmitud kindlustuslepingute alusel eksporditagatistest tulenevate edasikindlustusandja kohustuste täitmiseks kindlustusandja juures edasikindlustusandja deposiidi. Riik avab sõlmitud kindlustuslepingute alusel eksporditagatistest tulenevate edasikindlustusandja kohustuste täitmiseks kindlustusandja juures edasikindlustusandja deposiidi. 2 (2) Edasikindlustusandja deposiidi summat suurendatakse järgmiste vahendite arvelt: 1 1) kindlustuslepingutest tekkivate kohustuste täitmiseks",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_ERTS_2"
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Riik avab sõlmitud kindlustuslepingute alusel eksporditagatistest tulenevate edasikindlustusandja kohustuste täitmiseks kindlustusandja juures edasikindlustusandja deposiidi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_14"
       },
-      "estleg:targetGroup": [
-        "business"
-      ]
+      "rdfs:label": "§ 14 lg 1"
+    },
+    {
+      "@id": "estleg:ERTS_Par_14_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Edasikindlustusandja deposiidi summat suurendatakse järgmiste vahendite arvelt: kindlustuslepingutest tekkivate kohustuste täitmiseks riigi poolt eraldatud vahendid; kindlustusandja tasutud edasikindlustuspreemiad, mille suurus on arvestatud proportsionaalselt riigi poolt ülevõetud kindlustusriskiga, kui kindlustusandja ja riigi vahel sõlmitud edasikindlustuslepinguga ei ole kokku lepitud teistsugustes edasikindlustuspreemia arvestamise põhimõtetes; edasikindlustusandja deposiidi arvelt täidetud kohustuse tagasinõudest võlgnikult saadud vahendid; edasikindlustusandja deposiidile vastava vara investeerimistulu, millest on maha arvestatud investeerimisega seotud kulud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 2"
+    },
+    {
+      "@id": "estleg:ERTS_Par_14_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kindlustusandja võib edasikindlustusandja deposiidi arvelt täita ainult eksporditagatistest tulenevaid edasikindlustusandja kohustusi tingimusel, et käesoleva seaduse § 11 lõikes 1 sätestatud tingimustele vastava kindlustuslepinguga tagatud ja käesolevas seaduses nimetatud kindlustusriski realiseerumine ja sellest tulenev tagatisevõtja kahju on piisavalt tõendatud ning puuduvad kindlustusandja hüvituskohustuste täitmist välistavad asjaolud. Edasikindlustusandja deposiit ei kuulu kindlustusandja pankrotivarasse ja sellele ei saa pöörata sissenõuet täitemenetluses kindlustusandja vastu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 3"
+    },
+    {
+      "@id": "estleg:ERTS_Par_14_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Edasikindlustusandja deposiidile vastava vara investeerimisel arvestatakse kindlustustegevuse seaduses kindlustusandja seotud vara investeerimisele kehtestatud nõudeid ja piiranguid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 4"
     },
     {
       "@id": "estleg:ERTS_Par_15",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ERTS"
+        "estleg:LegalProvision_ekspordi_riikliku_tagamise_seadus"
       ],
       "estleg:paragrahv": "§ 15.",
       "rdfs:label": "§ 15. Kindlustuspreemia",
       "estleg:sourceAct": "Ekspordi riikliku tagamise seadus",
       "estleg:summary": "1 (1) Kindlustuspreemia käesoleva seaduse tähenduses on rahasumma, mille määrab kindlustusandja eksporditehingu riskitasemest ja tagatisevõtja omavastutusest lähtuvalt ning mille tagatisevõtja tasub kindlustusandjale kindlustuslepingus määratud suuruses ja tähtajal. Kindlustuspreemia käesoleva seaduse tähenduses on rahasumma, mille määrab kindlustusandja eksporditehingu riskitasemest ja tagatisevõtja omavastutusest lähtuvalt ning mille tagatisevõtja tasub kindlustusandjale kindlustuslepingus mää",
+      "estleg:legalText": "(1) Kindlustuspreemia käesoleva seaduse tähenduses on rahasumma, mille määrab kindlustusandja eksporditehingu riskitasemest ja tagatisevõtja omavastutusest lähtuvalt ning mille tagatisevõtja tasub kindlustusandjale kindlustuslepingus määratud suuruses ja tähtajal. (2) Eksporditagatise eest arvestatavad kindlustuspreemiad ning investeerimistulud eksporditagatisega seotud kindlustuslepingutelt arvestatud kindlustusandja seotud varalt ja edasikindlustusandja deposiidilt peavad katma ekspordi riikliku tagamise kulud ja võimaliku kahju pikema perioodi vältel, vastama tagatavatele riskidele, kindlustuslepingust tulenevale kindlustussummale ja tagatisevõtja omavastutuse ulatusele. (3) Lisaks kindlustuspreemiale võib kindlustusandja tagatisevõtjalt võtta kindlustusandja ja tagatisevõtja vahel kokku lepitud eksporditagatise andmisega seotud muid põhjendatud tasusid.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ERTS_2"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_ERTS_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ERTS_Par_15_Lg_1"
+        },
+        {
+          "@id": "estleg:ERTS_Par_15_Lg_2"
+        },
+        {
+          "@id": "estleg:ERTS_Par_15_Lg_3"
+        }
+      ],
       "estleg:targetGroup": [
         "business"
       ]
     },
     {
+      "@id": "estleg:ERTS_Par_15_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kindlustuspreemia käesoleva seaduse tähenduses on rahasumma, mille määrab kindlustusandja eksporditehingu riskitasemest ja tagatisevõtja omavastutusest lähtuvalt ning mille tagatisevõtja tasub kindlustusandjale kindlustuslepingus määratud suuruses ja tähtajal.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 1"
+    },
+    {
+      "@id": "estleg:ERTS_Par_15_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Eksporditagatise eest arvestatavad kindlustuspreemiad ning investeerimistulud eksporditagatisega seotud kindlustuslepingutelt arvestatud kindlustusandja seotud varalt ja edasikindlustusandja deposiidilt peavad katma ekspordi riikliku tagamise kulud ja võimaliku kahju pikema perioodi vältel, vastama tagatavatele riskidele, kindlustuslepingust tulenevale kindlustussummale ja tagatisevõtja omavastutuse ulatusele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 2"
+    },
+    {
+      "@id": "estleg:ERTS_Par_15_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Lisaks kindlustuspreemiale võib kindlustusandja tagatisevõtjalt võtta kindlustusandja ja tagatisevõtja vahel kokku lepitud eksporditagatise andmisega seotud muid põhjendatud tasusid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 3"
+    },
+    {
       "@id": "estleg:ERTS_Par_16",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ERTS"
+        "estleg:LegalProvision_ekspordi_riikliku_tagamise_seadus"
       ],
       "estleg:paragrahv": "§ 16.",
       "rdfs:label": "§ 16. Teavitamise kord",
       "estleg:sourceAct": "Ekspordi riikliku tagamise seadus",
-      "estleg:summary": "Kindlustusandja teavitab eksporditagatiste andmisest Euroopa Komisjoni ja Euroopa Liidu liikmesriikide riiklikke või riigi toetusel tegutsevaid ekspordikrediidikindlustusega tegelevaid kindlustusandjaid Vabariigi Valitsuse ./dyn=13315245&id=110062014011 määrusega kehtestatud korras. Kindlustusandja teavitab eksporditagatiste andmisest Euroopa Komisjoni ja Euroopa Liidu liikmesriikide riiklikke või riigi toetusel tegutsevaid ekspordikrediidikindlustusega tegelevaid kindlustusandjaid määrusega keh",
+      "estleg:summary": "Kindlustusandja teavitab eksporditagatiste andmisest Euroopa Komisjoni ja Euroopa Liidu liikmesriikide riiklikke või riigi toetusel tegutsevaid ekspordikrediidikindlustusega tegelevaid kindlustusandjaid Vabariigi Valitsuse ./dyn=128012022003&id=110062014011 määrusega kehtestatud korras. Kindlustusandja teavitab eksporditagatiste andmisest Euroopa Komisjoni ja Euroopa Liidu liikmesriikide riiklikke või riigi toetusel tegutsevaid ekspordikrediidikindlustusega tegelevaid kindlustusandjaid määrusega",
+      "estleg:legalText": "Kindlustusandja teavitab eksporditagatiste andmisest Euroopa Komisjoni ja Euroopa Liidu liikmesriikide riiklikke või riigi toetusel tegutsevaid ekspordikrediidikindlustusega tegelevaid kindlustusandjaid määrusega kehtestatud korras.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ERTS_2"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_ERTS_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ERTS_Par_16_Lg_Unknown_1"
+        }
+      ],
       "estleg:targetGroup": [
         "business",
         "public_body"
       ]
     },
     {
+      "@id": "estleg:ERTS_Par_16_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Kindlustusandja teavitab eksporditagatiste andmisest Euroopa Komisjoni ja Euroopa Liidu liikmesriikide riiklikke või riigi toetusel tegutsevaid ekspordikrediidikindlustusega tegelevaid kindlustusandjaid määrusega kehtestatud korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_16"
+      }
+    },
+    {
       "@id": "estleg:ERTS_Par_17",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ERTS"
+        "estleg:LegalProvision_ekspordi_riikliku_tagamise_seadus"
       ],
       "estleg:paragrahv": "§ 17.",
       "rdfs:label": "§ 17. Seaduse kehtetuks tunnistamine",
       "estleg:sourceAct": "Ekspordi riikliku tagamise seadus",
       "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ERTS_3"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_ERTS_3"
       }
     },
     {
       "@id": "estleg:ERTS_Par_18",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ERTS"
+        "estleg:LegalProvision_ekspordi_riikliku_tagamise_seadus"
       ],
       "estleg:paragrahv": "§ 18.",
       "rdfs:label": "§ 18. Varasemate ekspordigarantiide kehtivus",
       "estleg:sourceAct": "Ekspordi riikliku tagamise seadus",
       "estleg:summary": "Ekspordi riikliku garanteerimise seaduse alusel antud ekspordigarantiid jäävad kehtima ja neile kohaldatakse käesolevas seaduses sätestatut. Ekspordi riikliku garanteerimise seaduse alusel antud ekspordigarantiid jäävad kehtima ja neile kohaldatakse käesolevas seaduses sätestatut.",
+      "estleg:legalText": "Ekspordi riikliku garanteerimise seaduse alusel antud ekspordigarantiid jäävad kehtima ja neile kohaldatakse käesolevas seaduses sätestatut.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ERTS_3"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_ERTS_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ERTS_Par_18_Lg_Unknown_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:ERTS_Par_18_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Ekspordi riikliku garanteerimise seaduse alusel antud ekspordigarantiid jäävad kehtima ja neile kohaldatakse käesolevas seaduses sätestatut.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_18"
       }
     },
     {
       "@id": "estleg:ERTS_Par_19",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ERTS"
+        "estleg:LegalProvision_ekspordi_riikliku_tagamise_seadus"
       ],
       "estleg:paragrahv": "§ 19.",
       "rdfs:label": "§ 19. Kohustuste üleandmine kindlustusandjale",
       "estleg:sourceAct": "Ekspordi riikliku tagamise seadus",
       "estleg:summary": "Vabariigi Valitsus korraldab ühe aasta jooksul pärast käesoleva seaduse jõustumist ekspordi riikliku garanteerimise seaduse alusel riiklike ekspordigarantiide andmist korraldanud sihtasutuse (edaspidi sihtasutus) riiklike ekspordigarantiide andmisega seotud kohustuste ja sihtasutuse vastavate varade üleandmise kindlustusandjale. Ekspordigarantiide andmisega seotud sihtasutuse kohustuste ja vastavate varade kindlustusandjale üleandmisele ei kohaldata kindlustustegevuse seaduse §-des 87–94 sätesta",
+      "estleg:legalText": "Vabariigi Valitsus korraldab ühe aasta jooksul pärast käesoleva seaduse jõustumist ekspordi riikliku garanteerimise seaduse alusel riiklike ekspordigarantiide andmist korraldanud sihtasutuse (edaspidi sihtasutus) riiklike ekspordigarantiide andmisega seotud kohustuste ja sihtasutuse vastavate varade üleandmise kindlustusandjale. Ekspordigarantiide andmisega seotud sihtasutuse kohustuste ja vastavate varade kindlustusandjale üleandmisele ei kohaldata kindlustustegevuse seaduse §-des 87–94 sätestatut.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ERTS_3"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_ERTS_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ERTS_Par_19_Lg_Unknown_1"
+        }
+      ],
       "estleg:targetGroup": [
         "business",
         "public_body",
@@ -465,35 +1540,170 @@
       "estleg:competenceType": "enforcement"
     },
     {
+      "@id": "estleg:ERTS_Par_19_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Vabariigi Valitsus korraldab ühe aasta jooksul pärast käesoleva seaduse jõustumist ekspordi riikliku garanteerimise seaduse alusel riiklike ekspordigarantiide andmist korraldanud sihtasutuse (edaspidi sihtasutus) riiklike ekspordigarantiide andmisega seotud kohustuste ja sihtasutuse vastavate varade üleandmise kindlustusandjale. Ekspordigarantiide andmisega seotud sihtasutuse kohustuste ja vastavate varade kindlustusandjale üleandmisele ei kohaldata kindlustustegevuse seaduse §-des 87–94 sätestatut.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_19"
+      }
+    },
+    {
       "@id": "estleg:ERTS_Par_20",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ERTS"
+        "estleg:LegalProvision_ekspordi_riikliku_tagamise_seadus"
       ],
       "estleg:paragrahv": "§ 20.",
       "rdfs:label": "§ 20. Sihtasutuse tegevus kohustuste üleandmiseni kindlustusandjale",
       "estleg:sourceAct": "Ekspordi riikliku tagamise seadus",
       "estleg:summary": "1 (1) Kuni sihtasutuse riiklike ekspordigarantiide andmisega seotud kohustuste üleandmiseni kindlustusandjale korraldab riiklike eksporditagatiste andmist sihtasutus. Kuni sihtasutuse riiklike ekspordigarantiide andmisega seotud kohustuste üleandmiseni kindlustusandjale korraldab riiklike eksporditagatiste andmist sihtasutus. 2 (2) Kuni sihtasutuse riiklike ekspordigarantiide andmisega seotud kohustuste üleandmiseni kindlustusandjale esitab tagatisevõtja kindlustuslepingust tulenevad nõuded siht",
+      "estleg:legalText": "(1) Kuni sihtasutuse riiklike ekspordigarantiide andmisega seotud kohustuste üleandmiseni kindlustusandjale korraldab riiklike eksporditagatiste andmist sihtasutus. (2) Kuni sihtasutuse riiklike ekspordigarantiide andmisega seotud kohustuste üleandmiseni kindlustusandjale esitab tagatisevõtja kindlustuslepingust tulenevad nõuded sihtasutuse vastu. Kui sihtasutusel ei jätku kohustuste täitmiseks ekspordi tagamise tehnilistest eraldistest ja sihtfondi vahenditest, siis täidab kindlustuslepingust tulenevad sihtasutuse kohustused riik. (3) Sihtasutus juhindub riiklike eksporditagatiste andmise korraldamisel käesolevast seadusest. Sihtasutusele ei kohaldata käesoleva seaduse § 8 lõigetes 1–3, 5–12 ja §-s 14 sätestatut. (4) Sihtasutuse ekspordi riikliku tagamise tehniliste eraldiste moodustamise põhimõtted ja nende arvutamise korra kehtestab määrusega. (5) Ekspordi riiklikust tagamisest tulenevate valuuta-, krediidi- ja likviidsusriskide ning muude rahaliste vahendite haldamisega seonduvate sihtasutuse finantsriskide juhtimise põhimõtted ja üldised piirangud kehtestab määrusega. (6) Sihtasutus täidab käesoleva paragrahvi lõigetes 4 ja 5 nimetatud õigusaktidest tulenevaid nõudeid kuni sihtasutuse riiklike ekspordigarantiide andmisega seotud kohustuste üleandmiseni kindlustusandjale.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ERTS_3"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_ERTS_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ERTS_Par_20_Lg_1"
+        },
+        {
+          "@id": "estleg:ERTS_Par_20_Lg_2"
+        },
+        {
+          "@id": "estleg:ERTS_Par_20_Lg_3"
+        },
+        {
+          "@id": "estleg:ERTS_Par_20_Lg_4"
+        },
+        {
+          "@id": "estleg:ERTS_Par_20_Lg_5"
+        },
+        {
+          "@id": "estleg:ERTS_Par_20_Lg_6"
+        }
+      ],
       "estleg:targetGroup": [
         "business",
         "ngo"
       ]
     },
     {
+      "@id": "estleg:ERTS_Par_20_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kuni sihtasutuse riiklike ekspordigarantiide andmisega seotud kohustuste üleandmiseni kindlustusandjale korraldab riiklike eksporditagatiste andmist sihtasutus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_20"
+      },
+      "rdfs:label": "§ 20 lg 1"
+    },
+    {
+      "@id": "estleg:ERTS_Par_20_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kuni sihtasutuse riiklike ekspordigarantiide andmisega seotud kohustuste üleandmiseni kindlustusandjale esitab tagatisevõtja kindlustuslepingust tulenevad nõuded sihtasutuse vastu. Kui sihtasutusel ei jätku kohustuste täitmiseks ekspordi tagamise tehnilistest eraldistest ja sihtfondi vahenditest, siis täidab kindlustuslepingust tulenevad sihtasutuse kohustused riik.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_20"
+      },
+      "rdfs:label": "§ 20 lg 2"
+    },
+    {
+      "@id": "estleg:ERTS_Par_20_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Sihtasutus juhindub riiklike eksporditagatiste andmise korraldamisel käesolevast seadusest. Sihtasutusele ei kohaldata käesoleva seaduse § 8 lõigetes 1–3, 5–12 ja §-s 14 sätestatut.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_20"
+      },
+      "rdfs:label": "§ 20 lg 3"
+    },
+    {
+      "@id": "estleg:ERTS_Par_20_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Sihtasutuse ekspordi riikliku tagamise tehniliste eraldiste moodustamise põhimõtted ja nende arvutamise korra kehtestab määrusega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_20"
+      },
+      "rdfs:label": "§ 20 lg 4"
+    },
+    {
+      "@id": "estleg:ERTS_Par_20_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Ekspordi riiklikust tagamisest tulenevate valuuta-, krediidi- ja likviidsusriskide ning muude rahaliste vahendite haldamisega seonduvate sihtasutuse finantsriskide juhtimise põhimõtted ja üldised piirangud kehtestab määrusega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_20"
+      },
+      "rdfs:label": "§ 20 lg 5"
+    },
+    {
+      "@id": "estleg:ERTS_Par_20_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Sihtasutus täidab käesoleva paragrahvi lõigetes 4 ja 5 nimetatud õigusaktidest tulenevaid nõudeid kuni sihtasutuse riiklike ekspordigarantiide andmisega seotud kohustuste üleandmiseni kindlustusandjale.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_20"
+      },
+      "rdfs:label": "§ 20 lg 6"
+    },
+    {
       "@id": "estleg:ERTS_Par_21",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ERTS"
+        "estleg:LegalProvision_ekspordi_riikliku_tagamise_seadus"
       ],
       "estleg:paragrahv": "§ 21.",
       "rdfs:label": "§ 21. Seaduse jõustumine",
       "estleg:sourceAct": "Ekspordi riikliku tagamise seadus",
       "estleg:summary": "Käesolev seadus jõustub Riigi Teatajas avaldamisele järgneval päeval. Käesolev seadus jõustub Riigi Teatajas avaldamisele järgneval päeval.",
+      "estleg:legalText": "Käesolev seadus jõustub Riigi Teatajas avaldamisele järgneval päeval.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ERTS_3"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_ERTS_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ERTS_Par_21_Lg_Unknown_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:ERTS_Par_21_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Käesolev seadus jõustub Riigi Teatajas avaldamisele järgneval päeval.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ERTS_Par_21"
       }
     }
   ]

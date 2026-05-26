@@ -6,62 +6,71 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
   },
   "@graph": [
     {
       "@id": "estleg:KultKS_Map_2026",
       "@type": [
+        "owl:Ontology",
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "rdfs:label": "Eesti Kultuurkapitali seadus teemakaardistus",
       "dc:source": "Eesti Kultuurkapitali seadus",
-      "estleg:affectedBy": [
-        {
-          "@id": "estleg:Draft_RAM14_0525"
-        },
-        {
-          "@id": "estleg:Draft_RIIGIKOGU23_1443"
-        },
-        {
-          "@id": "estleg:Draft_RIIGIKOGU22_1232"
-        }
-      ],
-      "estleg:amendedBy": [
-        {
-          "@id": "estleg:Draft_RAM14_0525"
-        },
-        {
-          "@id": "estleg:Draft_RIIGIKOGU23_1443"
-        },
-        {
-          "@id": "estleg:Draft_RIIGIKOGU22_1232"
-        }
-      ],
-      "estleg:temporalStatus": "unknown",
+      "dcterms:title": "Eesti Kultuurkapitali seadus",
+      "estleg:contentStatus": "structuredBody",
+      "dcterms:source": {
+        "@id": "https://www.riigiteataja.ee/akt/130122025014.xml"
+      },
+      "owl:sameAs": {
+        "@id": "https://www.riigiteataja.ee/akt/130122025014.xml"
+      },
+      "estleg:kehtiv": {
+        "@value": "2026-05-24",
+        "@type": "xsd:date"
+      },
       "dcterms:subject": [
         {
           "@id": "http://eurovoc.europa.eu/3221"
         },
         {
-          "@id": "http://eurovoc.europa.eu/6006"
+          "@id": "http://eurovoc.europa.eu/2431"
         },
         {
-          "@id": "http://eurovoc.europa.eu/5206"
+          "@id": "http://eurovoc.europa.eu/5246"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/3606"
         },
         {
           "@id": "http://eurovoc.europa.eu/2446"
+        }
+      ],
+      "estleg:temporalStatus": "unknown",
+      "estleg:amendedBy": [
+        {
+          "@id": "estleg:AmendmentLink_Draft_RIIGIKOGU22_1232_KultKS"
+        }
+      ],
+      "estleg:affectedBy": [
+        {
+          "@id": "estleg:Draft_RAM14_0525"
         },
         {
-          "@id": "http://eurovoc.europa.eu/5231"
+          "@id": "estleg:Draft_JDM14_0481"
+        },
+        {
+          "@id": "estleg:Draft_RIIGIKOGU23_1443"
+        },
+        {
+          "@id": "estleg:Draft_RIIGIKOGU22_1232"
         }
       ]
     },
     {
-      "@id": "estleg:LegalProvision_KultKS",
+      "@id": "estleg:LegalProvision_eesti_kultuurkapitali_seadus",
       "@type": [
         "owl:Class"
       ],
@@ -71,96 +80,1139 @@
       }
     },
     {
+      "@id": "estleg:KultKS_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": "Eesti Kultuurkapitali seadus teemaskeem",
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_KultKS_I"
+        },
+        {
+          "@id": "estleg:Cluster_KultKS_II"
+        },
+        {
+          "@id": "estleg:Cluster_KultKS_III"
+        },
+        {
+          "@id": "estleg:Cluster_KultKS_IV"
+        }
+      ]
+    },
+    {
       "@id": "estleg:Cluster_KultKS_I",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§1–2 ÜLDSÄTTED"
+      "rdfs:label": "§1–2 ÜLDSÄTTED",
+      "skos:prefLabel": "§1–2 ÜLDSÄTTED",
+      "skos:inScheme": {
+        "@id": "estleg:KultKS_TopicScheme"
+      },
+      "estleg:provisionCount": 2
+    },
+    {
+      "@id": "estleg:Chapter_KultKS_I",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "I. peatükk – ÜLDSÄTTED",
+      "estleg:chapterNumber": "I",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_KultKS_I"
+      }
     },
     {
       "@id": "estleg:Cluster_KultKS_II",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§3–9 KULTUURKAPITALI VARA"
+      "rdfs:label": "§3–9 KULTUURKAPITALI VARA",
+      "skos:prefLabel": "§3–9 KULTUURKAPITALI VARA",
+      "skos:inScheme": {
+        "@id": "estleg:KultKS_TopicScheme"
+      },
+      "estleg:provisionCount": 7
+    },
+    {
+      "@id": "estleg:Chapter_KultKS_II",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "II. peatükk – KULTUURKAPITALI VARA",
+      "estleg:chapterNumber": "II",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_KultKS_II"
+      }
     },
     {
       "@id": "estleg:Cluster_KultKS_III",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§10–17 KULTUURKAPITALI STRUKTUUR JA JUHTIMINE"
+      "rdfs:label": "§10–17 KULTUURKAPITALI STRUKTUUR JA JUHTIMINE",
+      "skos:prefLabel": "§10–17 KULTUURKAPITALI STRUKTUUR JA JUHTIMINE",
+      "skos:inScheme": {
+        "@id": "estleg:KultKS_TopicScheme"
+      },
+      "estleg:provisionCount": 8
+    },
+    {
+      "@id": "estleg:Chapter_KultKS_III",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "III. peatükk – KULTUURKAPITALI STRUKTUUR JA JUHTIMINE",
+      "estleg:chapterNumber": "III",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_KultKS_III"
+      }
     },
     {
       "@id": "estleg:Cluster_KultKS_IV",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§18–20 RAKENDUSLIKUD SÄTTED"
+      "rdfs:label": "§18–20 RAKENDUSLIKUD SÄTTED",
+      "skos:prefLabel": "§18–20 RAKENDUSLIKUD SÄTTED",
+      "skos:inScheme": {
+        "@id": "estleg:KultKS_TopicScheme"
+      },
+      "estleg:provisionCount": 3
+    },
+    {
+      "@id": "estleg:Chapter_KultKS_IV",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "IV. peatükk – RAKENDUSLIKUD SÄTTED",
+      "estleg:chapterNumber": "IV",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_KultKS_IV"
+      }
     },
     {
       "@id": "estleg:KultKS_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KultKS"
+        "estleg:LegalProvision_eesti_kultuurkapitali_seadus"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. Eesti Kultuurkapital",
       "estleg:sourceAct": "Eesti Kultuurkapitali seadus",
-      "estleg:summary": "1(1)Eesti Kultuurkapital (edaspidi Kultuurkapital) on avalik-õiguslik juriidiline isik, kelle tegevuse eesmärk on kunstide, rahvakultuuri ning kehakultuuri ja spordi toetamine rahaliste vahendite sihipärase kogumise ja sihtotstarbelise jagamise kaudu stipendiumidena ning kes tegutseb käesoleva seaduse ja muude õigusaktide alusel. Kultuurkapitali stipendiumid võrdsustatakse riiklike stipendiumidega. Eesti Kultuurkapital (edaspidi Kultuurkapital) on avalik-õiguslik juriidiline isik, kelle tegevuse",
+      "estleg:summary": "1 (1) Eesti Kultuurkapital (edaspidi Kultuurkapital) on avalik-õiguslik juriidiline isik, kelle tegevuse eesmärk on kunstide, rahvakultuuri, kehakultuuri ja spordi ning kultuuri- ja spordiehitiste rajamise ja renoveerimise toetamine rahaliste vahendite sihipärase kogumise ja sihtotstarbelise jagamise kaudu. RT I 2025-12-30 2 130122025002 2026-01-01 Eesti Kultuurkapital (edaspidi Kultuurkapital) on avalik-õiguslik juriidiline isik, kelle tegevuse eesmärk on kunstide, rahvakultuuri, kehakultuuri j",
+      "estleg:legalText": "(1) Eesti Kultuurkapital (edaspidi Kultuurkapital) on avalik-õiguslik juriidiline isik, kelle tegevuse eesmärk on kunstide, rahvakultuuri, kehakultuuri ja spordi ning kultuuri- ja spordiehitiste rajamise ja renoveerimise toetamine rahaliste vahendite sihipärase kogumise ja sihtotstarbelise jagamise kaudu. (2) Rahvakultuur käesoleva seaduse mõttes hõlmab rahvakunsti, sealhulgas traditsioonilisi (folkloorseid) rahvakunstialasid, seltsielu ning vabaharidust. (3) Kultuurkapital juhindub käesolevast seadusest ning muudest õigusaktidest. (3<sup>1</sup>) Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse (RT I 2001, 58, 354) sätteid, arvestades käesoleva seaduse erisusi. (4) Kultuurkapitali tegevus lõpetatakse seadusega. (5) Kultuurkapital registreeritakse riigi- ja kohaliku omavalitsuse asutuste riiklikus registris selle registri põhimääruses sätestatud korras.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KultKS_I"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KultKS_I"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KultKS_Par_1_Lg_1"
+        },
+        {
+          "@id": "estleg:KultKS_Par_1_Lg_2"
+        },
+        {
+          "@id": "estleg:KultKS_Par_1_Lg_3"
+        },
+        {
+          "@id": "estleg:KultKS_Par_1_Lg_3_1"
+        },
+        {
+          "@id": "estleg:KultKS_Par_1_Lg_4"
+        },
+        {
+          "@id": "estleg:KultKS_Par_1_Lg_5"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen",
-        "public_body"
+        "public_body",
+        "ngo"
       ]
+    },
+    {
+      "@id": "estleg:KultKS_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Eesti Kultuurkapital (edaspidi Kultuurkapital) on avalik-õiguslik juriidiline isik, kelle tegevuse eesmärk on kunstide, rahvakultuuri, kehakultuuri ja spordi ning kultuuri- ja spordiehitiste rajamise ja renoveerimise toetamine rahaliste vahendite sihipärase kogumise ja sihtotstarbelise jagamise kaudu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
+    },
+    {
+      "@id": "estleg:KultKS_Par_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Rahvakultuur käesoleva seaduse mõttes hõlmab rahvakunsti, sealhulgas traditsioonilisi (folkloorseid) rahvakunstialasid, seltsielu ning vabaharidust.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 2"
+    },
+    {
+      "@id": "estleg:KultKS_Par_1_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kultuurkapital juhindub käesolevast seadusest ning muudest õigusaktidest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 3"
+    },
+    {
+      "@id": "estleg:KultKS_Par_1_Lg_3_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3<sup>1</sup>",
+      "estleg:legalText": "(3<sup>1</sup>) Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse (RT I 2001, 58, 354) sätteid, arvestades käesoleva seaduse erisusi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 3<sup>1</sup>"
+    },
+    {
+      "@id": "estleg:KultKS_Par_1_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Kultuurkapitali tegevus lõpetatakse seadusega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 4"
+    },
+    {
+      "@id": "estleg:KultKS_Par_1_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Kultuurkapital registreeritakse riigi- ja kohaliku omavalitsuse asutuste riiklikus registris selle registri põhimääruses sätestatud korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 5"
     },
     {
       "@id": "estleg:KultKS_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KultKS"
+        "estleg:LegalProvision_eesti_kultuurkapitali_seadus"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. Kultuurkapitali ülesanded",
       "estleg:sourceAct": "Eesti Kultuurkapitali seadus",
-      "estleg:summary": "Kultuurkapitali ülesanded on:11)toetada kunstide ja spordi edendamise, tutvustamise ja populariseerimise projekte, loomingulisi ühendusi, kultuuri- ja spordialaseid teadusuuringuid ning soodustada kunstide, rahvakultuuri ning kehakultuuri ja spordi arengut;22)toetada silmapaistnud kunsti- ja sporditegelasi, kunsti- ja sporditegelaste surma puhul nende perekondi;33)toetada mingil kultuuri- või spordialal andekaid ja arenguvõimelisi isikuid ning võimaldada neile enesetäiendamist;44)toetada kunsti-",
+      "estleg:summary": "1 (1) Kultuurkapitali ülesanded on: RT I 2014-07-11 5 111072014005 2015-01-01 1 1) toetada kunstide ja spordi edendamise, tutvustamise ja populariseerimise projekte, loomingulisi ühendusi, kultuuri- ja spordialaseid teadusuuringuid ning soodustada kunstide, rahvakultuuri ning kehakultuuri ja spordi arengut; 2 2) toetada silmapaistnud kunsti- ja sporditegelasi, kunsti- ja sporditegelaste surma puhul nende perekondi; 3 3) toetada mingil kultuuri- või spordialal andekaid ja arenguvõimelisi isikuid ",
+      "estleg:legalText": "(1) Kultuurkapitali ülesanded on: toetada kunstide ja spordi edendamise, tutvustamise ja populariseerimise projekte, loomingulisi ühendusi, kultuuri- ja spordialaseid teadusuuringuid ning soodustada kunstide, rahvakultuuri ning kehakultuuri ja spordi arengut; toetada silmapaistnud kunsti- ja sporditegelasi, kunsti- ja sporditegelaste surma puhul nende perekondi; toetada mingil kultuuri- või spordialal andekaid ja arenguvõimelisi isikuid ning võimaldada neile enesetäiendamist; toetada kunsti- ja sporditegelaste mälestuse jäädvustamist; toetada kultuuri- ja spordivaldkonna projekte, mille elluviimisesse on kaasatud eraraha; toetada riiklikult tähtsate kultuuri- ja spordiehitiste rajamist ja renoveerimist. (2) Käesoleva paragrahvi lõikes 1 nimetatud ülesannete täitmiseks maksab Kultuurkapital preemiaid ja stipendiume, mida käsitatakse riigipreemiate ja riigieelarvest makstavate stipendiumidena. (3) Käesoleva paragrahvi lõikes 1 nimetatud ülesannete täitmiseks maksab Kultuurkapital projekti-, tegevus-, investeeringu-, elutöö-, juubeli-, ravimi- ja matusetoetust ning loometöötasu. (3<sup>1</sup>) Loometöötasu, mille maksmise eesmärk on võimaldada käesolevas seaduses sätestatud kultuurivaldkondade erialaselt aktiivsel loomingulises tippvormis loomeinimesel pühenduda konkreetsele loomingulisele tegevusele või tööle, mille eesmärk on luua eesti kultuuri arenguks oluline autori- või esitajaõiguse alla kuuluv teos, maksmiseks sõlmitakse käsundusleping. (3<sup>2</sup>) Käesoleva paragrahvi lõike 31 alusel makstav loometöötasu jagatakse loomeperioodi kuude arvuga ja makstakse välja igas kuus. (3<sup>3</sup>) Hasartmängumaksu seaduse § 7 lõike 10 punkti 3 alusel eraraha kaasamise toetuseks sihtotstarbeliselt laekunud vahenditest võib toetust anda kultuuri- või spordivaldkonnas tegutsevale mittetulundusühingule ja sihtasutusele, kes on kantud tulumaksuseaduse §-s 11 sätestatud nimekirja. Toetusena määratakse kuni 50 protsenti toetuse taotlejale eelmisel kalendriaastal tehtud eraannetuste summast ning toetusvoor avatakse igal kalendriaastal eelmisel kalendriaastal sihtotstarbeliselt laekunud vahendite ulatuses. (4) Käesoleva paragrahvi lõigetes 2 ja 3 nimetatud preemiate, stipendiumide, toetuste ja lõigetes 31 ja 33 nimetatud loometöötasu ning eraraha kaasamise toetuse maksmise täpsemad alused, taotlemise ja taotluse menetlemise ning toetuse ja loometöötasu tagasinõudmise korra kinnitab Kultuurkapitali nõukogu.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KultKS_I"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KultKS_I"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KultKS_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:KultKS_Par_2_Lg_2"
+        },
+        {
+          "@id": "estleg:KultKS_Par_2_Lg_3"
+        },
+        {
+          "@id": "estleg:KultKS_Par_2_Lg_3_1"
+        },
+        {
+          "@id": "estleg:KultKS_Par_2_Lg_3_2"
+        },
+        {
+          "@id": "estleg:KultKS_Par_2_Lg_3_3"
+        },
+        {
+          "@id": "estleg:KultKS_Par_2_Lg_4"
+        }
+      ],
       "estleg:targetGroup": [
-        "citizen"
+        "citizen",
+        "ngo"
       ]
+    },
+    {
+      "@id": "estleg:KultKS_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kultuurkapitali ülesanded on: toetada kunstide ja spordi edendamise, tutvustamise ja populariseerimise projekte, loomingulisi ühendusi, kultuuri- ja spordialaseid teadusuuringuid ning soodustada kunstide, rahvakultuuri ning kehakultuuri ja spordi arengut; toetada silmapaistnud kunsti- ja sporditegelasi, kunsti- ja sporditegelaste surma puhul nende perekondi; toetada mingil kultuuri- või spordialal andekaid ja arenguvõimelisi isikuid ning võimaldada neile enesetäiendamist; toetada kunsti- ja sporditegelaste mälestuse jäädvustamist; toetada kultuuri- ja spordivaldkonna projekte, mille elluviimisesse on kaasatud eraraha; toetada riiklikult tähtsate kultuuri- ja spordiehitiste rajamist ja renoveerimist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
+    },
+    {
+      "@id": "estleg:KultKS_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Käesoleva paragrahvi lõikes 1 nimetatud ülesannete täitmiseks maksab Kultuurkapital preemiaid ja stipendiume, mida käsitatakse riigipreemiate ja riigieelarvest makstavate stipendiumidena.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2"
+    },
+    {
+      "@id": "estleg:KultKS_Par_2_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Käesoleva paragrahvi lõikes 1 nimetatud ülesannete täitmiseks maksab Kultuurkapital projekti-, tegevus-, investeeringu-, elutöö-, juubeli-, ravimi- ja matusetoetust ning loometöötasu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 3"
+    },
+    {
+      "@id": "estleg:KultKS_Par_2_Lg_3_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3<sup>1</sup>",
+      "estleg:legalText": "(3<sup>1</sup>) Loometöötasu, mille maksmise eesmärk on võimaldada käesolevas seaduses sätestatud kultuurivaldkondade erialaselt aktiivsel loomingulises tippvormis loomeinimesel pühenduda konkreetsele loomingulisele tegevusele või tööle, mille eesmärk on luua eesti kultuuri arenguks oluline autori- või esitajaõiguse alla kuuluv teos, maksmiseks sõlmitakse käsundusleping.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 3<sup>1</sup>"
+    },
+    {
+      "@id": "estleg:KultKS_Par_2_Lg_3_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3<sup>2</sup>",
+      "estleg:legalText": "(3<sup>2</sup>) Käesoleva paragrahvi lõike 31 alusel makstav loometöötasu jagatakse loomeperioodi kuude arvuga ja makstakse välja igas kuus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 3<sup>2</sup>"
+    },
+    {
+      "@id": "estleg:KultKS_Par_2_Lg_3_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3<sup>3</sup>",
+      "estleg:legalText": "(3<sup>3</sup>) Hasartmängumaksu seaduse § 7 lõike 10 punkti 3 alusel eraraha kaasamise toetuseks sihtotstarbeliselt laekunud vahenditest võib toetust anda kultuuri- või spordivaldkonnas tegutsevale mittetulundusühingule ja sihtasutusele, kes on kantud tulumaksuseaduse §-s 11 sätestatud nimekirja. Toetusena määratakse kuni 50 protsenti toetuse taotlejale eelmisel kalendriaastal tehtud eraannetuste summast ning toetusvoor avatakse igal kalendriaastal eelmisel kalendriaastal sihtotstarbeliselt laekunud vahendite ulatuses.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 3<sup>3</sup>"
+    },
+    {
+      "@id": "estleg:KultKS_Par_2_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Käesoleva paragrahvi lõigetes 2 ja 3 nimetatud preemiate, stipendiumide, toetuste ja lõigetes 31 ja 33 nimetatud loometöötasu ning eraraha kaasamise toetuse maksmise täpsemad alused, taotlemise ja taotluse menetlemise ning toetuse ja loometöötasu tagasinõudmise korra kinnitab Kultuurkapitali nõukogu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 4"
     },
     {
       "@id": "estleg:KultKS_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KultKS"
+        "estleg:LegalProvision_eesti_kultuurkapitali_seadus"
       ],
       "estleg:paragrahv": "§ 3.",
       "rdfs:label": "§ 3. Kultuurkapitali omand",
       "estleg:sourceAct": "Eesti Kultuurkapitali seadus",
       "estleg:summary": "Kultuurkapital valdab, kasutab ja käsutab oma vara käesolevas seaduses ja muudes õigusaktides sätestatud korras ja tingimustel. Kultuurkapital valdab, kasutab ja käsutab oma vara käesolevas seaduses ja muudes õigusaktides sätestatud korras ja tingimustel.",
+      "estleg:legalText": "Kultuurkapital valdab, kasutab ja käsutab oma vara käesolevas seaduses ja muudes õigusaktides sätestatud korras ja tingimustel.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KultKS_II"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KultKS_II"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KultKS_Par_3_Lg_Unknown_1"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
-          "@id": "estleg:EAS_Par_21",
+          "@id": "estleg:KAITSE_Par_76",
           "estleg:similarityScore": {
-            "@value": "0.308",
+            "@value": "0.417",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
         },
         {
-          "@id": "estleg:TKS_Par_8",
+          "@id": "estleg:TerKS_Par_34",
+          "estleg:similarityScore": {
+            "@value": "0.417",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:KultKS_Par_3_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Kultuurkapital valdab, kasutab ja käsutab oma vara käesolevas seaduses ja muudes õigusaktides sätestatud korras ja tingimustel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_3"
+      }
+    },
+    {
+      "@id": "estleg:KultKS_Par_4",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_eesti_kultuurkapitali_seadus"
+      ],
+      "estleg:paragrahv": "§ 4.",
+      "rdfs:label": "§ 4. Kultuurkapitali vara",
+      "estleg:sourceAct": "Eesti Kultuurkapitali seadus",
+      "estleg:summary": "1 (1) Kultuurkapitali vara moodustub: 1 1) laekumistest vastavalt alkoholiaktsiisi seadusele (RT I 2000, 58, 375; 102, 676; 2001, 88, 531; 2002, 90, 521; 2003, 2, 17) ja tubakaaktsiisi seadusele (RT I 1994, 54, 901; 2001, 51, 296; 87, 528; 88, 531; 2003, 2, 17); 2 2) laekumistest hasartmängumaksust vastavalt hasartmängumaksu seadusele (RT I 2002, 28, 158; 90, 521); 3 3) Kultuurkapitali heaks tehtavatest varalistest annetustest ja pärandustest; 4 4) Kultuurkapitali vara paigutamisest saadavast tu",
+      "estleg:legalText": "(1) Kultuurkapitali vara moodustub: laekumistest vastavalt alkoholiaktsiisi seadusele (RT I 2000, 58, 375; 102, 676; 2001, 88, 531; 2002, 90, 521; 2003, 2, 17) ja tubakaaktsiisi seadusele (RT I 1994, 54, 901; 2001, 51, 296; 87, 528; 88, 531; 2003, 2, 17); laekumistest hasartmängumaksust vastavalt hasartmängumaksu seadusele (RT I 2002, 28, 158; 90, 521); Kultuurkapitali heaks tehtavatest varalistest annetustest ja pärandustest; Kultuurkapitali vara paigutamisest saadavast tulust; muust majandustegevusest saadavast tulust; muudest laekumistest. (2) Kultuurkapitali tegevuse jätkusuutlikkuse tagamiseks eraldab nõukogu osa varast põhikapitali täiendamiseks. Põhikapitali vähendada ei tohi.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_KultKS_II"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KultKS_II"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KultKS_Par_4_Lg_1"
+        },
+        {
+          "@id": "estleg:KultKS_Par_4_Lg_2"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:KultKS_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kultuurkapitali vara moodustub: laekumistest vastavalt alkoholiaktsiisi seadusele (RT I 2000, 58, 375; 102, 676; 2001, 88, 531; 2002, 90, 521; 2003, 2, 17) ja tubakaaktsiisi seadusele (RT I 1994, 54, 901; 2001, 51, 296; 87, 528; 88, 531; 2003, 2, 17); laekumistest hasartmängumaksust vastavalt hasartmängumaksu seadusele (RT I 2002, 28, 158; 90, 521); Kultuurkapitali heaks tehtavatest varalistest annetustest ja pärandustest; Kultuurkapitali vara paigutamisest saadavast tulust; muust majandustegevusest saadavast tulust; muudest laekumistest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1"
+    },
+    {
+      "@id": "estleg:KultKS_Par_4_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kultuurkapitali tegevuse jätkusuutlikkuse tagamiseks eraldab nõukogu osa varast põhikapitali täiendamiseks. Põhikapitali vähendada ei tohi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 2"
+    },
+    {
+      "@id": "estleg:KultKS_Par_4_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_eesti_kultuurkapitali_seadus"
+      ],
+      "estleg:paragrahv": "§ 4<sup>1</sup>.",
+      "rdfs:label": "§ 4<sup>1</sup>. Kultuurkapitali vara kasutamine",
+      "estleg:sourceAct": "Eesti Kultuurkapitali seadus",
+      "estleg:summary": "1 (1) Kultuurkapital kasutab oma vara üksnes käesolevas seaduses sätestatud eesmärgil. Kultuurkapital kasutab oma vara üksnes käesolevas seaduses sätestatud eesmärgil. 2 (2) Sihtotstarbelisi annetusi ja pärandusi võib kasutada ainult annetaja või pärandaja näidatud eesmärgil. Sihtotstarbelisi annetusi ja pärandusi võib kasutada ainult annetaja või pärandaja näidatud eesmärgil. 3 (3) Kultuurkapitali aastatulust eraldab Kultuurkapitali nõukogu pärast põhikapitali täiendamist, halduskulude määramis",
+      "estleg:legalText": "(1) Kultuurkapital kasutab oma vara üksnes käesolevas seaduses sätestatud eesmärgil. (2) Sihtotstarbelisi annetusi ja pärandusi võib kasutada ainult annetaja või pärandaja näidatud eesmärgil. (3) Kultuurkapitali aastatulust eraldab Kultuurkapitali nõukogu pärast põhikapitali täiendamist, halduskulude määramist ja hasartmängumaksu seaduse alusel sihtotstarbeliselt laekunud summade eraldamist 75 protsenti sihtkapitalide käsutusse ning 25 protsenti maakondlike ekspertgruppide käsutusse maakonna kunstide, rahvakultuuri ning spordi ja kehakultuuri projektide finantseerimiseks ja Kultuurkapitali nõukogule kultuurivaldkondade vaheliste projektide finantseerimiseks. (4) Kultuurkapitali vara võib paigutada vastavalt käesolevas seaduses sätestatud nõuetele ja nõukogu otsustele, tagades Kultuurkapitali eesmärkide täitmiseks vajaliku varade säilimise, likviidsuse ja tootlikkuse ning riskide hajutamise.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_KultKS_II"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KultKS_II"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KultKS_Par_4_1_Lg_1"
+        },
+        {
+          "@id": "estleg:KultKS_Par_4_1_Lg_2"
+        },
+        {
+          "@id": "estleg:KultKS_Par_4_1_Lg_3"
+        },
+        {
+          "@id": "estleg:KultKS_Par_4_1_Lg_4"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:KultKS_Par_4_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kultuurkapital kasutab oma vara üksnes käesolevas seaduses sätestatud eesmärgil.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_4_1"
+      },
+      "rdfs:label": "§ 4<sup>1</sup> lg 1"
+    },
+    {
+      "@id": "estleg:KultKS_Par_4_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Sihtotstarbelisi annetusi ja pärandusi võib kasutada ainult annetaja või pärandaja näidatud eesmärgil.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_4_1"
+      },
+      "rdfs:label": "§ 4<sup>1</sup> lg 2"
+    },
+    {
+      "@id": "estleg:KultKS_Par_4_1_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kultuurkapitali aastatulust eraldab Kultuurkapitali nõukogu pärast põhikapitali täiendamist, halduskulude määramist ja hasartmängumaksu seaduse alusel sihtotstarbeliselt laekunud summade eraldamist 75 protsenti sihtkapitalide käsutusse ning 25 protsenti maakondlike ekspertgruppide käsutusse maakonna kunstide, rahvakultuuri ning spordi ja kehakultuuri projektide finantseerimiseks ja Kultuurkapitali nõukogule kultuurivaldkondade vaheliste projektide finantseerimiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_4_1"
+      },
+      "rdfs:label": "§ 4<sup>1</sup> lg 3"
+    },
+    {
+      "@id": "estleg:KultKS_Par_4_1_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Kultuurkapitali vara võib paigutada vastavalt käesolevas seaduses sätestatud nõuetele ja nõukogu otsustele, tagades Kultuurkapitali eesmärkide täitmiseks vajaliku varade säilimise, likviidsuse ja tootlikkuse ning riskide hajutamise.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_4_1"
+      },
+      "rdfs:label": "§ 4<sup>1</sup> lg 4"
+    },
+    {
+      "@id": "estleg:KultKS_Par_5",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_eesti_kultuurkapitali_seadus"
+      ],
+      "estleg:paragrahv": "§ 5.",
+      "rdfs:label": "§ 5. [Kehtetu -]",
+      "estleg:sourceAct": "Eesti Kultuurkapitali seadus",
+      "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_KultKS_II"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KultKS_II"
+      }
+    },
+    {
+      "@id": "estleg:KultKS_Par_6",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_eesti_kultuurkapitali_seadus"
+      ],
+      "estleg:paragrahv": "§ 6.",
+      "rdfs:label": "§ 6. Kultuurkapitali majandustegevus ja eelarve",
+      "estleg:sourceAct": "Eesti Kultuurkapitali seadus",
+      "estleg:summary": "1 (1) Kultuurkapitalil on õigus käesolevas seaduses ettenähtud ülesannete täitmiseks: 1 1) omandada ja võõrandada kinnis- ja vallasvara; 2 2) anda rendile kinnis- ja vallasasju; 3 3) korraldada tuluüritusi ja seaduses sätestatud alustel loteriisid; 4 4) levitada oma sümboolikaga tooteid. Kultuurkapitalil on õigus käesolevas seaduses ettenähtud ülesannete täitmiseks: omandada ja võõrandada kinnis- ja vallasvara; anda rendile kinnis- ja vallasasju; korraldada tuluüritusi ja seaduses sätestatud alu",
+      "estleg:legalText": "(1) Kultuurkapitalil on õigus käesolevas seaduses ettenähtud ülesannete täitmiseks: omandada ja võõrandada kinnis- ja vallasvara; anda rendile kinnis- ja vallasasju; korraldada tuluüritusi ja seaduses sätestatud alustel loteriisid; levitada oma sümboolikaga tooteid. (2) Kultuurkapital ei või võtta kohustusi, mis ei tulene käesolevast seadusest, sealhulgas ei või võtta laenu ega tagada teiste isikute võlakohustuste täitmist ega pantida vara. Kultuurkapital ei või anda laenu ega asutada eraõiguslikke juriidilisi isikuid ega neis osaleda. (3) Kultuurkapitali kõigi tulude ja kulude kohta koostatakse tasakaalus eelarve, mis peab vastama finantsplaanile, riigieelarve seaduse §-s 6 esitatud eelarvepositsiooni reeglitele, §-s 10 esitatud netovõlakoormuse reeglile ning § 11 alusel kehtestatud piirangutele.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_KultKS_II"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KultKS_II"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KultKS_Par_6_Lg_1"
+        },
+        {
+          "@id": "estleg:KultKS_Par_6_Lg_2"
+        },
+        {
+          "@id": "estleg:KultKS_Par_6_Lg_3"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      }
+    },
+    {
+      "@id": "estleg:KultKS_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kultuurkapitalil on õigus käesolevas seaduses ettenähtud ülesannete täitmiseks: omandada ja võõrandada kinnis- ja vallasvara; anda rendile kinnis- ja vallasasju; korraldada tuluüritusi ja seaduses sätestatud alustel loteriisid; levitada oma sümboolikaga tooteid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1"
+    },
+    {
+      "@id": "estleg:KultKS_Par_6_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kultuurkapital ei või võtta kohustusi, mis ei tulene käesolevast seadusest, sealhulgas ei või võtta laenu ega tagada teiste isikute võlakohustuste täitmist ega pantida vara. Kultuurkapital ei või anda laenu ega asutada eraõiguslikke juriidilisi isikuid ega neis osaleda.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 2"
+    },
+    {
+      "@id": "estleg:KultKS_Par_6_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kultuurkapitali kõigi tulude ja kulude kohta koostatakse tasakaalus eelarve, mis peab vastama finantsplaanile, riigieelarve seaduse §-s 6 esitatud eelarvepositsiooni reeglitele, §-s 10 esitatud netovõlakoormuse reeglile ning § 11 alusel kehtestatud piirangutele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 3"
+    },
+    {
+      "@id": "estleg:KultKS_Par_6_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_eesti_kultuurkapitali_seadus"
+      ],
+      "estleg:paragrahv": "§ 6<sup>1</sup>.",
+      "rdfs:label": "§ 6<sup>1</sup>. Kultuurkapitali vara paigutamine ja selle piirangud",
+      "estleg:sourceAct": "Eesti Kultuurkapitali seadus",
+      "estleg:summary": "1 (1) Kultuurkapital võib korraldada vara paigutamist vahetult või teha seda varahalduri kaudu. Varahalduri leidmisel ei pea kohaldama riigihangete seadust. RT I 2007 15 76 12791579 2007-05-01 Kultuurkapital võib korraldada vara paigutamist vahetult või teha seda varahalduri kaudu. Varahalduri leidmisel ei pea kohaldama riigihangete seadust. 2 (2) Varahalduriks võivad olla: 1 1) Eesti Pank; 2 2) Rahandusministeerium; 3 3) Eestis registreeritud äriühing või selle filiaal, kellel on õigus tegutsed",
+      "estleg:legalText": "(1) Kultuurkapital võib korraldada vara paigutamist vahetult või teha seda varahalduri kaudu. Varahalduri leidmisel ei pea kohaldama riigihangete seadust. (2) Varahalduriks võivad olla: Eesti Pank; Rahandusministeerium; Eestis registreeritud äriühing või selle filiaal, kellel on õigus tegutseda fondivalitseja, krediidiasutuse või investeerimisühinguna. (3) Kultuurkapitali vara võib paigutada krediidiasutuste hoiustesse, väärtpaberituru seaduse (RT I 2001, 89, 532; 2002, 23, 131; 63, 387; 102, 600; 105, 612) § 2 lõike 1 punktides 2, 4 ja 5 nimetatud väärtpaberitesse ning kinnisvarasse. Investeeringutest tulenevate riskide maandamiseks võib Kultuurkapital omandada väärtpaberituru seaduse § 2 lõike 1 punktis 6 nimetatud väärtpabereid ja teha tuletistehinguid. (4) Kultuurkapitalile kuuluvate käesoleva paragrahvi lõikes 3 nimetatud väärtpaberite ning kinnisvara väärtus ei või moodustada rohkem kui 100 protsenti Kultuurkapitali põhikapitalist. (5) Kultuurkapitalile kuuluvate investeerimisfondide osakute puhasväärtus ei või olla kokku suurem kui 35 protsenti Kultuurkapitali põhikapitalist, kusjuures osakuid võib omandada investeerimisfondidelt, mille vara võib vastavalt fondi tingimustele otseselt või läbi teiste investeerimisfondide investeerida väärtpaberituru seaduse § 2 lõike 1 punktides 1 ja 3 nimetatud väärtpaberitesse. (6) Kultuurkapital ei või omada kinnisvara soetusväärtuses rohkem kui 10 protsendi ulatuses Kultuurkapitali põhikapitalist. (7) Ühte krediidiasutusse paigutatud hoius ei või moodustada rohkem kui 40 protsenti Kultuurkapitali varast. (8) Ühe isiku ja selle isikuga ühte kontserni kuuluvate isikute poolt emiteeritud väärtpaberite väärtus ei või kokku moodustada rohkem kui 20 protsenti Kultuurkapitali põhikapitalist.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_KultKS_II"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KultKS_II"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KultKS_Par_6_1_Lg_1"
+        },
+        {
+          "@id": "estleg:KultKS_Par_6_1_Lg_2"
+        },
+        {
+          "@id": "estleg:KultKS_Par_6_1_Lg_3"
+        },
+        {
+          "@id": "estleg:KultKS_Par_6_1_Lg_4"
+        },
+        {
+          "@id": "estleg:KultKS_Par_6_1_Lg_5"
+        },
+        {
+          "@id": "estleg:KultKS_Par_6_1_Lg_6"
+        },
+        {
+          "@id": "estleg:KultKS_Par_6_1_Lg_7"
+        },
+        {
+          "@id": "estleg:KultKS_Par_6_1_Lg_8"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "business",
+        "ngo"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      },
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_rahandusministeerium"
+        }
+      ],
+      "estleg:competenceType": "general"
+    },
+    {
+      "@id": "estleg:KultKS_Par_6_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kultuurkapital võib korraldada vara paigutamist vahetult või teha seda varahalduri kaudu. Varahalduri leidmisel ei pea kohaldama riigihangete seadust.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_6_1"
+      },
+      "rdfs:label": "§ 6<sup>1</sup> lg 1"
+    },
+    {
+      "@id": "estleg:KultKS_Par_6_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Varahalduriks võivad olla: Eesti Pank; Rahandusministeerium; Eestis registreeritud äriühing või selle filiaal, kellel on õigus tegutseda fondivalitseja, krediidiasutuse või investeerimisühinguna.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_6_1"
+      },
+      "rdfs:label": "§ 6<sup>1</sup> lg 2"
+    },
+    {
+      "@id": "estleg:KultKS_Par_6_1_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kultuurkapitali vara võib paigutada krediidiasutuste hoiustesse, väärtpaberituru seaduse (RT I 2001, 89, 532; 2002, 23, 131; 63, 387; 102, 600; 105, 612) § 2 lõike 1 punktides 2, 4 ja 5 nimetatud väärtpaberitesse ning kinnisvarasse. Investeeringutest tulenevate riskide maandamiseks võib Kultuurkapital omandada väärtpaberituru seaduse § 2 lõike 1 punktis 6 nimetatud väärtpabereid ja teha tuletistehinguid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_6_1"
+      },
+      "rdfs:label": "§ 6<sup>1</sup> lg 3"
+    },
+    {
+      "@id": "estleg:KultKS_Par_6_1_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Kultuurkapitalile kuuluvate käesoleva paragrahvi lõikes 3 nimetatud väärtpaberite ning kinnisvara väärtus ei või moodustada rohkem kui 100 protsenti Kultuurkapitali põhikapitalist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_6_1"
+      },
+      "rdfs:label": "§ 6<sup>1</sup> lg 4"
+    },
+    {
+      "@id": "estleg:KultKS_Par_6_1_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Kultuurkapitalile kuuluvate investeerimisfondide osakute puhasväärtus ei või olla kokku suurem kui 35 protsenti Kultuurkapitali põhikapitalist, kusjuures osakuid võib omandada investeerimisfondidelt, mille vara võib vastavalt fondi tingimustele otseselt või läbi teiste investeerimisfondide investeerida väärtpaberituru seaduse § 2 lõike 1 punktides 1 ja 3 nimetatud väärtpaberitesse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_6_1"
+      },
+      "rdfs:label": "§ 6<sup>1</sup> lg 5"
+    },
+    {
+      "@id": "estleg:KultKS_Par_6_1_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Kultuurkapital ei või omada kinnisvara soetusväärtuses rohkem kui 10 protsendi ulatuses Kultuurkapitali põhikapitalist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_6_1"
+      },
+      "rdfs:label": "§ 6<sup>1</sup> lg 6"
+    },
+    {
+      "@id": "estleg:KultKS_Par_6_1_Lg_7",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "7",
+      "estleg:legalText": "(7) Ühte krediidiasutusse paigutatud hoius ei või moodustada rohkem kui 40 protsenti Kultuurkapitali varast.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_6_1"
+      },
+      "rdfs:label": "§ 6<sup>1</sup> lg 7"
+    },
+    {
+      "@id": "estleg:KultKS_Par_6_1_Lg_8",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "8",
+      "estleg:legalText": "(8) Ühe isiku ja selle isikuga ühte kontserni kuuluvate isikute poolt emiteeritud väärtpaberite väärtus ei või kokku moodustada rohkem kui 20 protsenti Kultuurkapitali põhikapitalist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_6_1"
+      },
+      "rdfs:label": "§ 6<sup>1</sup> lg 8"
+    },
+    {
+      "@id": "estleg:KultKS_Par_6_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_eesti_kultuurkapitali_seadus"
+      ],
+      "estleg:paragrahv": "§ 6<sup>2</sup>.",
+      "rdfs:label": "§ 6<sup>2</sup>. Piirangud tehingute tegemisel huvitatud isikutega",
+      "estleg:sourceAct": "Eesti Kultuurkapitali seadus",
+      "estleg:summary": "1 (1) Huvitatud isikud käesoleva seaduse tähenduses on: 1 1) Kultuurkapitali nõukogu liige, juhataja ja teised Kultuurkapitali töötajad ning Kultuurkapitali audiitor; 2 2) käesoleva lõike punktis 1 nimetatud isikuga seotud isik korruptsioonivastase seaduse tähenduses. RT I 2012-06-29 1 129062012001 2013-04-01 Huvitatud isikud käesoleva seaduse tähenduses on: Kultuurkapitali nõukogu liige, juhataja ja teised Kultuurkapitali töötajad ning Kultuurkapitali audiitor; käesoleva lõike punktis 1 nimetat",
+      "estleg:legalText": "(1) Huvitatud isikud käesoleva seaduse tähenduses on: Kultuurkapitali nõukogu liige, juhataja ja teised Kultuurkapitali töötajad ning Kultuurkapitali audiitor; käesoleva lõike punktis 1 nimetatud isikuga seotud isik korruptsioonivastase seaduse tähenduses. (2) Kultuurkapitalil on keelatud võõrandada Kultuurkapitali vara huvitatud isikutele või omandada neilt vara Kultuurkapitali vahendite arvel teisiti kui väärtpaberibörsi või muu organiseeritud avaliku väärtpaberituru vahendusel või avalikul enampakkumisel. (3) Kultuurkapitali nõukogu liige ei saa taotleda Kultuurkapitalilt toetust ega stipendiumi.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_KultKS_II"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KultKS_II"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KultKS_Par_6_2_Lg_1"
+        },
+        {
+          "@id": "estleg:KultKS_Par_6_2_Lg_2"
+        },
+        {
+          "@id": "estleg:KultKS_Par_6_2_Lg_3"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "official"
+      ]
+    },
+    {
+      "@id": "estleg:KultKS_Par_6_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Huvitatud isikud käesoleva seaduse tähenduses on: Kultuurkapitali nõukogu liige, juhataja ja teised Kultuurkapitali töötajad ning Kultuurkapitali audiitor; käesoleva lõike punktis 1 nimetatud isikuga seotud isik korruptsioonivastase seaduse tähenduses.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_6_2"
+      },
+      "rdfs:label": "§ 6<sup>2</sup> lg 1"
+    },
+    {
+      "@id": "estleg:KultKS_Par_6_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kultuurkapitalil on keelatud võõrandada Kultuurkapitali vara huvitatud isikutele või omandada neilt vara Kultuurkapitali vahendite arvel teisiti kui väärtpaberibörsi või muu organiseeritud avaliku väärtpaberituru vahendusel või avalikul enampakkumisel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_6_2"
+      },
+      "rdfs:label": "§ 6<sup>2</sup> lg 2"
+    },
+    {
+      "@id": "estleg:KultKS_Par_6_2_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kultuurkapitali nõukogu liige ei saa taotleda Kultuurkapitalilt toetust ega stipendiumi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_6_2"
+      },
+      "rdfs:label": "§ 6<sup>2</sup> lg 3"
+    },
+    {
+      "@id": "estleg:KultKS_Par_6_3",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_eesti_kultuurkapitali_seadus"
+      ],
+      "estleg:paragrahv": "§ 6<sup>3</sup>.",
+      "rdfs:label": "§ 6<sup>3</sup>. Kultuurkapitali finantsplaan",
+      "estleg:sourceAct": "Eesti Kultuurkapitali seadus",
+      "estleg:summary": "1 (1) Kultuurkapital koostab igal aastal finantsplaani, mis on aluseks Kultuurkapitali eelarve koostamisel. Kultuurkapital koostab igal aastal finantsplaani, mis on aluseks Kultuurkapitali eelarve koostamisel. 2 (2) Finantsplaan koostatakse ja esitatakse riigieelarve seaduse §-s 12 sätestatud nõuete kohaselt. RT I 2014-03-13 2 113032014002 2014-03-23 Finantsplaan koostatakse ja esitatakse riigieelarve seaduse §-s 12 sätestatud nõuete kohaselt.",
+      "estleg:legalText": "(1) Kultuurkapital koostab igal aastal finantsplaani, mis on aluseks Kultuurkapitali eelarve koostamisel. (2) Finantsplaan koostatakse ja esitatakse riigieelarve seaduse §-s 12 sätestatud nõuete kohaselt.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_KultKS_II"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KultKS_II"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KultKS_Par_6_3_Lg_1"
+        },
+        {
+          "@id": "estleg:KultKS_Par_6_3_Lg_2"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:EESTI_3_Par_20_1",
+          "estleg:similarityScore": {
+            "@value": "0.786",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:ERHS_Par_7_1",
+          "estleg:similarityScore": {
+            "@value": "0.733",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:KAITSE_Par_83_1",
+          "estleg:similarityScore": {
+            "@value": "0.733",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:KBFIS_Par_13_1",
+          "estleg:similarityScore": {
+            "@value": "0.786",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:TAS_Par_21_1",
+          "estleg:similarityScore": {
+            "@value": "0.786",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:KultKS_Par_6_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kultuurkapital koostab igal aastal finantsplaani, mis on aluseks Kultuurkapitali eelarve koostamisel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_6_3"
+      },
+      "rdfs:label": "§ 6<sup>3</sup> lg 1"
+    },
+    {
+      "@id": "estleg:KultKS_Par_6_3_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Finantsplaan koostatakse ja esitatakse riigieelarve seaduse §-s 12 sätestatud nõuete kohaselt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_6_3"
+      },
+      "rdfs:label": "§ 6<sup>3</sup> lg 2"
+    },
+    {
+      "@id": "estleg:KultKS_Par_7",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_eesti_kultuurkapitali_seadus"
+      ],
+      "estleg:paragrahv": "§ 7.",
+      "rdfs:label": "§ 7. [Kehtetu -]",
+      "estleg:sourceAct": "Eesti Kultuurkapitali seadus",
+      "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_KultKS_II"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KultKS_II"
+      }
+    },
+    {
+      "@id": "estleg:KultKS_Par_8",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_eesti_kultuurkapitali_seadus"
+      ],
+      "estleg:paragrahv": "§ 8.",
+      "rdfs:label": "§ 8. Kultuurkapitali tegevuse kontrollimine",
+      "estleg:sourceAct": "Eesti Kultuurkapitali seadus",
+      "estleg:summary": "1 (1) Kultuurkapitali tegevust kontrollib Riigikontroll vastavalt Riigikontrolli seadusele. Kultuurkapitali tegevust kontrollib Riigikontroll vastavalt Riigikontrolli seadusele. 2 (2) Kultuurkapitali nõukogu kutsub Kultuurkapitali tegevuse kontrollimiseks audiitori. RT I 2003 21 123 261409 2003-03-13 Kultuurkapitali nõukogu kutsub Kultuurkapitali tegevuse kontrollimiseks audiitori. 3 (3) Kultuurkapitali nõukogu esitab Riigikogule kirjalikult kord aastas aruande käesoleva seaduse § 11 lõike 2 pun",
+      "estleg:legalText": "(1) Kultuurkapitali tegevust kontrollib Riigikontroll vastavalt Riigikontrolli seadusele. (2) Kultuurkapitali nõukogu kutsub Kultuurkapitali tegevuse kontrollimiseks audiitori. (3) Kultuurkapitali nõukogu esitab Riigikogule kirjalikult kord aastas aruande käesoleva seaduse § 11 lõike 2 punkti 4 ja lõike 22 alusel otsustatud riiklikult tähtsate kultuuriehitiste ehitamise kohta.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_KultKS_II"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KultKS_II"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KultKS_Par_8_Lg_1"
+        },
+        {
+          "@id": "estleg:KultKS_Par_8_Lg_2"
+        },
+        {
+          "@id": "estleg:KultKS_Par_8_Lg_3"
+        }
+      ],
+      "estleg:targetGroup": [
+        "public_body"
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:KultKS_Par_11"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:EESTI_3_Par_22",
+          "estleg:similarityScore": {
+            "@value": "0.6",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:KultKS_Par_8_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kultuurkapitali tegevust kontrollib Riigikontroll vastavalt Riigikontrolli seadusele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 1"
+    },
+    {
+      "@id": "estleg:KultKS_Par_8_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kultuurkapitali nõukogu kutsub Kultuurkapitali tegevuse kontrollimiseks audiitori.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 2"
+    },
+    {
+      "@id": "estleg:KultKS_Par_8_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kultuurkapitali nõukogu esitab Riigikogule kirjalikult kord aastas aruande käesoleva seaduse § 11 lõike 2 punkti 4 ja lõike 22 alusel otsustatud riiklikult tähtsate kultuuriehitiste ehitamise kohta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 3"
+    },
+    {
+      "@id": "estleg:KultKS_Par_9",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_eesti_kultuurkapitali_seadus"
+      ],
+      "estleg:paragrahv": "§ 9.",
+      "rdfs:label": "§ 9. Raamatupidamine",
+      "estleg:sourceAct": "Eesti Kultuurkapitali seadus",
+      "estleg:summary": "1 (1) Kultuurkapital lähtub raamatupidamise korraldamisel raamatupidamise seadusest (RT I 2002, 102, 600) ja teistest õigusaktidest. Kultuurkapital lähtub raamatupidamise korraldamisel raamatupidamise seadusest (RT I 2002, 102, 600) ja teistest õigusaktidest. 2 (2) Kultuurkapitali majandusaasta algab 1. jaanuaril ja lõpeb 31. detsembril. RT I 2003 21 123 261409 2003-03-13 Kultuurkapitali majandusaasta algab 1. jaanuaril ja lõpeb 31. detsembril.",
+      "estleg:legalText": "(1) Kultuurkapital lähtub raamatupidamise korraldamisel raamatupidamise seadusest (RT I 2002, 102, 600) ja teistest õigusaktidest. (2) Kultuurkapitali majandusaasta algab 1. jaanuaril ja lõpeb 31. detsembril.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_KultKS_II"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KultKS_II"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KultKS_Par_9_Lg_1"
+        },
+        {
+          "@id": "estleg:KultKS_Par_9_Lg_2"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:TFS_Par_89",
+          "estleg:similarityScore": {
+            "@value": "0.385",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:TerKS_Par_42",
           "estleg:similarityScore": {
             "@value": "0.385",
             "@type": "xsd:decimal"
@@ -170,213 +1222,501 @@
       ]
     },
     {
-      "@id": "estleg:KultKS_Par_4",
+      "@id": "estleg:KultKS_Par_9_Lg_1",
       "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_KultKS"
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Kultuurkapitali vara moodustumine",
-      "estleg:sourceAct": "Eesti Kultuurkapitali seadus",
-      "estleg:summary": "1(1)Kultuurkapitali tulud on:11)laekumised alkohoolsete jookide ja tubakatoodete aktsiisist vastavalt Eesti Vabariigi alkoholiaktsiisi seadusele ja Eesti Vabariigi tubakaaktsiisi seadusele;22)laekumised hasartmängumaksust vastavalt hasartmängumaksu seadusele (RT I 1995, 95, 1630);33)Kultuurkapitali heaks tehtavad varalised annetused ja pärandused;44)tulud majandustegevusest;55)vastavalt kehtestatud korrale laekumised loteriituludest. Kultuurkapitali tulud on: laekumised alkohoolsete jookide ja t",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KultKS_II"
-      }
-    },
-    {
-      "@id": "estleg:KultKS_Par_5",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_KultKS"
-      ],
-      "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Varalised annetused ja pärandused",
-      "estleg:sourceAct": "Eesti Kultuurkapitali seadus",
-      "estleg:summary": "Sihtotstarbelisi annetusi ja pärandusi võib Kultuurkapital kasutada ainult annetaja või pärandaja näidatud eesmärgil. Sihtotstarbelisi annetusi ja pärandusi võib Kultuurkapital kasutada ainult annetaja või pärandaja näidatud eesmärgil.",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KultKS_II"
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kultuurkapital lähtub raamatupidamise korraldamisel raamatupidamise seadusest (RT I 2002, 102, 600) ja teistest õigusaktidest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_9"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      }
+      "rdfs:label": "§ 9 lg 1"
     },
     {
-      "@id": "estleg:KultKS_Par_6",
+      "@id": "estleg:KultKS_Par_9_Lg_2",
       "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_KultKS"
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Kultuurkapitali majandustegevus",
-      "estleg:sourceAct": "Eesti Kultuurkapitali seadus",
-      "estleg:summary": "1(1)Kultuurkapitali majandustegevus on piiratud käesoleva seadusega. Kultuurkapitali majandustegevus on piiratud käesoleva seadusega. 2(2)Kultuurkapitalil on õigus käesolevas seaduses ettenähtud ülesannete täitmiseks:11)hoiustada rahalisi vahendeid;22)osta ja müüa võlakirju, kuid mitte üle 30 protsendi oma põhikapitalist;33)osta ja müüa aktsiaid, kuid mitte üle 30 protsendi oma põhikapitalist;44)osta ja müüa investeerimisfondide osakuid, kuid mitte üle 20 protsendi oma põhikapitalist;55)osta kin",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KultKS_II"
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kultuurkapitali majandusaasta algab 1. jaanuaril ja lõpeb 31. detsembril.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_9"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      }
-    },
-    {
-      "@id": "estleg:KultKS_Par_7",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_KultKS"
-      ],
-      "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Kultuurkapitali tulu jaotamine",
-      "estleg:sourceAct": "Eesti Kultuurkapitali seadus",
-      "estleg:summary": "Kultuurkapitali iga-aastasest tulust eraldab Kultuurkapitali nõukogu pärast põhikapitali täiendamist 75 protsenti sihtkapitalide käsutusse ning 25 protsenti jääb Kultuurkapitali nõukogu käsutusse kultuurivaldkondade vaheliste projektide finantseerimiseks ning kantselei halduskuludeks. Kultuurkapitali iga-aastasest tulust eraldab Kultuurkapitali nõukogu pärast põhikapitali täiendamist 75 protsenti sihtkapitalide käsutusse ning 25 protsenti jääb Kultuurkapitali nõukogu käsutusse kultuurivaldkondad",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KultKS_II"
-      }
-    },
-    {
-      "@id": "estleg:KultKS_Par_8",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_KultKS"
-      ],
-      "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Kultuurkapitali tegevuse kontrollimine",
-      "estleg:sourceAct": "Eesti Kultuurkapitali seadus",
-      "estleg:summary": "1(1)Kultuurkapitali vahendite kasutamise üle teostab järelevalvet kontrollkomisjon, kelle koosseisu kinnitab kolmeks aastaks Kultuurkapitali nõukogu. Kultuurkapitali vahendite kasutamise üle teostab järelevalvet kontrollkomisjon, kelle koosseisu kinnitab kolmeks aastaks Kultuurkapitali nõukogu. 2(2)Riigikontroll kontrollib Kultuurkapitali tegevust vastavalt Riigikontrolli seadusele. Riigikontroll kontrollib Kultuurkapitali tegevust vastavalt Riigikontrolli seadusele. 3(3)Kultuurkapitali nõukogul",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KultKS_II"
-      }
-    },
-    {
-      "@id": "estleg:KultKS_Par_9",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_KultKS"
-      ],
-      "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Raamatupidamise arvestus",
-      "estleg:sourceAct": "Eesti Kultuurkapitali seadus",
-      "estleg:summary": "Kultuurkapital peab raamatupidamise arvestust ning tasub makse õigusaktidega kehtestatud korras. Kultuurkapital peab raamatupidamise arvestust ning tasub makse õigusaktidega kehtestatud korras.",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_KultKS_II"
-      },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
-      "estleg:dutyHolder": "Kultuurkapital",
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:Reg_1027738_Par_36",
-          "estleg:similarityScore": {
-            "@value": "0.3",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:Reg_1027739_Par_36",
-          "estleg:similarityScore": {
-            "@value": "0.3",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:Reg_1027740_Par_36",
-          "estleg:similarityScore": {
-            "@value": "0.3",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:Reg_1027741_Par_35",
-          "estleg:similarityScore": {
-            "@value": "0.3",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:Reg_1047543_Par_28",
-          "estleg:similarityScore": {
-            "@value": "0.3",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        }
-      ]
+      "rdfs:label": "§ 9 lg 2"
     },
     {
       "@id": "estleg:KultKS_Par_10",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KultKS"
+        "estleg:LegalProvision_eesti_kultuurkapitali_seadus"
       ],
       "estleg:paragrahv": "§ 10.",
       "rdfs:label": "§ 10. Sihtkapitalid",
       "estleg:sourceAct": "Eesti Kultuurkapitali seadus",
-      "estleg:summary": "1(1)Kultuurkapitali koosseisu kuuluvad sihtkapitalid järgmistele kultuurialadele:11)kirjandus;22)helikunst;33)kujutav ja rakenduskunst;44)arhitektuur;55)näitekunst;66)audio-visuaalne kunst;77)rahvakultuur;88)kehakultuur ja sport. Kultuurkapitali koosseisu kuuluvad sihtkapitalid järgmistele kultuurialadele: kirjandus; helikunst; kujutav ja rakenduskunst; arhitektuur; näitekunst; audio-visuaalne kunst; rahvakultuur; kehakultuur ja sport. 2(2)Sihtkapital on Kultuurkapitali struktuuriüksus, kelle ül",
+      "estleg:summary": "1 (1) Kultuurkapitali koosseisu kuuluvad sihtkapitalid järgmistele kultuurialadele: 1 1) kirjandus; 2 2) helikunst; 3 3) kujutav ja rakenduskunst; 4 4) arhitektuur; 5 5) näitekunst; 6 6) audio-visuaalne kunst; 7 7) rahvakultuur; 8 8) kehakultuur ja sport. Kultuurkapitali koosseisu kuuluvad sihtkapitalid järgmistele kultuurialadele: kirjandus; helikunst; kujutav ja rakenduskunst; arhitektuur; näitekunst; audio-visuaalne kunst; rahvakultuur; kehakultuur ja sport. 2 (2) Sihtkapital on Kultuurkapita",
+      "estleg:legalText": "(1) Kultuurkapitali koosseisu kuuluvad sihtkapitalid järgmistele kultuurialadele: kirjandus; helikunst; kujutav ja rakenduskunst; arhitektuur; näitekunst; audio-visuaalne kunst; rahvakultuur; kehakultuur ja sport. (2) Sihtkapital on Kultuurkapitali struktuuriüksus, kelle ülesanne on Kultuurkapitali nõukogu poolt konkreetsele kultuurivaldkonnale eraldatud raha jaotamine esitatud taotluste alusel ja omal algatusel.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KultKS_III"
-      }
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KultKS_III"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KultKS_Par_10_Lg_1"
+        },
+        {
+          "@id": "estleg:KultKS_Par_10_Lg_2"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:KultKS_Par_18"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:KultKS_Par_10_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kultuurkapitali koosseisu kuuluvad sihtkapitalid järgmistele kultuurialadele: kirjandus; helikunst; kujutav ja rakenduskunst; arhitektuur; näitekunst; audio-visuaalne kunst; rahvakultuur; kehakultuur ja sport.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 1"
+    },
+    {
+      "@id": "estleg:KultKS_Par_10_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Sihtkapital on Kultuurkapitali struktuuriüksus, kelle ülesanne on Kultuurkapitali nõukogu poolt konkreetsele kultuurivaldkonnale eraldatud raha jaotamine esitatud taotluste alusel ja omal algatusel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 2"
+    },
+    {
+      "@id": "estleg:KultKS_Par_10_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_eesti_kultuurkapitali_seadus"
+      ],
+      "estleg:paragrahv": "§ 10<sup>1</sup>.",
+      "rdfs:label": "§ 10<sup>1</sup>. Maakondlikud ekspertgrupid",
+      "estleg:sourceAct": "Eesti Kultuurkapitali seadus",
+      "estleg:summary": "1 (1) Maakondlik ekspertgrupp (edaspidi ekspertgrupp) on igas maakonnas tegutsev Kultuurkapitali struktuuriüksus, kelle ülesanne on Kultuurikapitali nõukogu poolt maakonna kultuurivaldkonnale eraldatud raha jaotamine esitatud taotluste alusel ja oma algatusel. Maakondlik ekspertgrupp (edaspidi ekspertgrupp) on igas maakonnas tegutsev Kultuurkapitali struktuuriüksus, kelle ülesanne on Kultuurikapitali nõukogu poolt maakonna kultuurivaldkonnale eraldatud raha jaotamine esitatud taotluste alusel ja",
+      "estleg:legalText": "(1) Maakondlik ekspertgrupp (edaspidi ekspertgrupp) on igas maakonnas tegutsev Kultuurkapitali struktuuriüksus, kelle ülesanne on Kultuurikapitali nõukogu poolt maakonna kultuurivaldkonnale eraldatud raha jaotamine esitatud taotluste alusel ja oma algatusel. (2) Ekspertgrupp: jaotab ekspertgrupi käsutusse eraldatud raha; esitab Kultuurkapitali nõukogule oma algatusel maakonna kultuurivaldkonna projekte toetuse määramiseks; koostab oma tegevusest aastaaruande Kultuurkapitali nõukogule.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_KultKS_III"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KultKS_III"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KultKS_Par_10_1_Lg_1"
+        },
+        {
+          "@id": "estleg:KultKS_Par_10_1_Lg_2"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:KultKS_Par_10_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Maakondlik ekspertgrupp (edaspidi ekspertgrupp) on igas maakonnas tegutsev Kultuurkapitali struktuuriüksus, kelle ülesanne on Kultuurikapitali nõukogu poolt maakonna kultuurivaldkonnale eraldatud raha jaotamine esitatud taotluste alusel ja oma algatusel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_10_1"
+      },
+      "rdfs:label": "§ 10<sup>1</sup> lg 1"
+    },
+    {
+      "@id": "estleg:KultKS_Par_10_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Ekspertgrupp: jaotab ekspertgrupi käsutusse eraldatud raha; esitab Kultuurkapitali nõukogule oma algatusel maakonna kultuurivaldkonna projekte toetuse määramiseks; koostab oma tegevusest aastaaruande Kultuurkapitali nõukogule.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_10_1"
+      },
+      "rdfs:label": "§ 10<sup>1</sup> lg 2"
     },
     {
       "@id": "estleg:KultKS_Par_11",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KultKS"
+        "estleg:LegalProvision_eesti_kultuurkapitali_seadus"
       ],
       "estleg:paragrahv": "§ 11.",
       "rdfs:label": "§ 11. Kultuurkapitali nõukogu",
       "estleg:sourceAct": "Eesti Kultuurkapitali seadus",
-      "estleg:summary": "1(1)Kultuurkapitali tegevust juhib kümneliikmeline nõukogu, kelle koosseisu kuuluvad:11)kultuuriminister esimehena;22)rahandusministri poolt määratud esindaja;33)iga sihtkapitali nõukogu poolt nimetatud esindaja. Kultuurkapitali tegevust juhib kümneliikmeline nõukogu, kelle koosseisu kuuluvad: kultuuriminister esimehena; rahandusministri poolt määratud esindaja; iga sihtkapitali nõukogu poolt nimetatud esindaja. 2(2)Kultuurkapitali nõukogu:11)määrab Kultuurkapitali vara investeeringute struktuur",
+      "estleg:summary": "1 (1) Kultuurkapitali tegevust juhib 11-liikmeline nõukogu, kelle koosseisu kuuluvad: 1 1) valdkonna eest vastutav minister esimehena; 2 2) valdkondade eest vastutavate ministrite nimetatud esindaja; 3 3) iga sihtkapitali nõukogu nimetatud esindaja. RT I 2014-06-29 109 129062014109 2014-07-01 , Vabariigi Valitsuse seaduse § 107³ lõike 4 alusel asendatud sõna „kultuuriminister” sõnadega „valdkonna eest vastutava minister” ja punktides 2 ja 3 sõnad „kultuuriministri” ja „rahandusministri” sõnadega",
+      "estleg:legalText": "(1) Kultuurkapitali tegevust juhib 11-liikmeline nõukogu, kelle koosseisu kuuluvad: valdkonna eest vastutav minister esimehena; valdkondade eest vastutavate ministrite nimetatud esindaja; iga sihtkapitali nõukogu nimetatud esindaja. , Vabariigi Valitsuse seaduse § 107³ lõike 4 alusel asendatud sõna „kultuuriminister” sõnadega „valdkonna eest vastutava minister” ja punktides 2 ja 3 sõnad „kultuuriministri” ja „rahandusministri” sõnadega „valdkondade eest vastutavad ministrid” ning ühendada punktid 2 ja 3 punktiks 2 ja muuta vastavalt punktide numeratsiooni. (2) Kultuurkapitali nõukogu: kehtestab Kultuurkapitali varade paigutamise ja muude tehingute tegemise korra, nähes ette finantsriskide juhtimise piirangud vara liikide, valuutade struktuuri, instrumentide ja investeeringute kestuse ning muude investeerimistunnuste lõikes; jaotab aastatulu vastavalt käesoleva seaduse § 41 lõikele 3; otsustab kultuurivaldkondade vaheliste projektide rahastamise, samuti sihtkapitalide ja ekspertgruppide algatatud projektide rahastamise; jaotab hasartmängumaksu seaduse alusel kultuuriehitistele sihtotstarbeliselt laekunud summad vastavalt Riigikogu otsusega kinnitatud riiklikult tähtsate kultuuriehitiste rajamise ja renoveerimise pingereale; otsustab hasartmängumaksu seaduse alusel spordiehitistele sihtotstarbeliselt laekunud summa eraldamise korraga ühele spordiehitisele rahvusliku olümpiakomitee ettepanekul; otsustab hasartmängumaksu seaduse alusel eraraha kaasamise toetamiseks sihtotstarbeliselt laekunud vahendite jaotamise; määrab kindlaks sihtkapitalide ja ekspertgruppide poolt jaotatavate toetuste ja loometöötasude piirmäärad aastas ja kvartalis; analüüsib ekspertgruppide, sihtkapitalide ja Kultuurkapitali tegevuse tulemusi; korraldab iga-aastaste ülevaadete avaldamist Kultuurkapitali tegevuse kohta; võtab tööle ja vabastab Kultuurkapitali siseaudiitori; võtab vastu Kultuurkapitali aastaeelarve, kinnitab finantsplaani ja auditeeritud majandusaasta aruande; määrab Kultuurkapitali halduskuludeks ettenähtud vahendite hulgas eraldi siseauditi jaoks ettenähtud eelarve ja kinnitab siseaudiitori tööplaani; määrab sihtkapitalide nõukogude liikmetele ja ekspertgruppide liikmetele makstava tasu suuruse ja maksmise korra; kinnitab Kultuurkapitali struktuuri; nimetab ja vabastab Kultuurkapitali juhataja; teostab järelevalvet juhataja, sihtkapitalide ja ekspertgruppide tegevuse üle; annab arvamusi ja teeb ettepanekuid muudes kunstide ja rahvakultuuri ning kehakultuuri ja spordi arendamist puudutavates küsimustes, mis seonduvad käesolevas seaduses sätestatud ülesannete täitmisega; valib käesoleva seaduse § 6 1 lõikes 1 mainitud varahalduri ja kinnitab temaga sõlmitava lepingu tingimused; otsustab juhataja ettepanekul kinnisvara omandamise ja võõrandamise. (2<sup>1</sup>) Kultuurkapitali nõukogu võib käesoleva paragrahvi lõike 2 punktis 4 nimetatud ülesannet täites toetada üheaegselt mitut objekti ja toetada pingereas tagapool asuvat objekti varem kui pingereas eespool asuvat objekti, kui see ei mõjuta pingereas eespool oleva objekti valmimist. Pingereas tagapool asuvat objekti võib toetada varem kui eespool asuvat objekti juhul, kui pingereas eespool oleva objekti ettevalmistus ei võimalda toetuse eraldamist. (2<sup>2</sup>) Kultuurkapitali nõukogu võib kultuuriministri ettepanekul piisavate rahaliste vahendite olemasolu korral lisaks käesoleva paragrahvi lõike 2 punktis 4 nimetatud kultuuriehitistele otsustada ühe riiklikult tähtsa kultuuriehitise rahastamise, kui see ei mõjuta Riigikogu otsusega kinnitatud riiklikult tähtsate kultuuriehitiste valmimist. (2<sup>3</sup>) Käesoleva paragrahvi lõikes 22 nimetatud kultuuriehitis peab olema kultuurivaldkonna strateegilisi eesmärke täitev riiklikult tähtis objekt. (2<sup>4</sup>) Enne käesoleva paragrahvi lõikes 22 nimetatud ettepaneku tegemist esitab kultuuriminister selle heakskiitmiseks Riigikogu kultuurikomisjonile. (2<sup>5</sup>) Käesoleva paragrahvi lõike 2 punktis 4 sätestatud Riigikogu otsuse ja lõikes 22 nimetatud Kultuurkapitali nõukogu otsuse tegemiseks esitab ettepaneku tegija eelnevalt võimalikult täpse ülevaate planeeritud ehitisest, selle funktsioonidest, kultuuripoliitilisest olulisusest, kavandatud tegevustest, kooskõlast muude õigusaktidega ja ehitamise ajagraafikust. (2<sup>6</sup>) Kultuurkapitali nõukogu võib käesoleva paragrahvi lõike 22 alusel uue otsuse teha juhul, kui sama lõike alusel otsustatud eelmise kultuuriehitise valmimiseks ettenähtud kõik väljamaksed on tehtud. (2<sup>7</sup>) Käesoleva paragrahvi lõike 2 punktis 41 nimetatud rahvusliku olümpiakomitee ettepanek peab sisaldama võimalikult täpset ülevaadet planeeritud spordiehitisest või renoveeritavast spordiehitisest, selle võimalikust omanikust, funktsioonidest, asukohast, spordipoliitilisest ja regionaalsest olulisusest, huvigruppide toetusest, kavandatud tegevustest, kooskõlast muude õigusaktidega ja ehitamise ajagraafikust. (2<sup>8</sup>) Kultuurkapitali nõukogu võib käesoleva paragrahvi lõike 2 punkti 41 alusel uue otsuse teha juhul, kui rahvuslik olümpiakomitee teeb ettepaneku täiendava spordiehitise toetamiseks ning samas punktis nimetatud sihtotstarbeliselt laekunud summa on selleks piisav. (3) Nõukogu volituste tähtaeg on kaks aastat. (4) Nõukogu koosseisu kinnitab Vabariigi Valitsus.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KultKS_III"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KultKS_III"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KultKS_Par_11_Lg_1"
+        },
+        {
+          "@id": "estleg:KultKS_Par_11_Lg_2"
+        },
+        {
+          "@id": "estleg:KultKS_Par_11_Lg_2_1"
+        },
+        {
+          "@id": "estleg:KultKS_Par_11_Lg_2_2"
+        },
+        {
+          "@id": "estleg:KultKS_Par_11_Lg_2_3"
+        },
+        {
+          "@id": "estleg:KultKS_Par_11_Lg_2_4"
+        },
+        {
+          "@id": "estleg:KultKS_Par_11_Lg_2_5"
+        },
+        {
+          "@id": "estleg:KultKS_Par_11_Lg_2_6"
+        },
+        {
+          "@id": "estleg:KultKS_Par_11_Lg_2_7"
+        },
+        {
+          "@id": "estleg:KultKS_Par_11_Lg_2_8"
+        },
+        {
+          "@id": "estleg:KultKS_Par_11_Lg_3"
+        },
+        {
+          "@id": "estleg:KultKS_Par_11_Lg_4"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "public_body",
+        "official"
+      ],
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_kultuuriminister"
         }
       ],
-      "estleg:competenceType": "general"
+      "estleg:competenceType": "general",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:KultKS_Par_8"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:KultKS_Par_11_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kultuurkapitali tegevust juhib 11-liikmeline nõukogu, kelle koosseisu kuuluvad: valdkonna eest vastutav minister esimehena; valdkondade eest vastutavate ministrite nimetatud esindaja; iga sihtkapitali nõukogu nimetatud esindaja. , Vabariigi Valitsuse seaduse § 107³ lõike 4 alusel asendatud sõna „kultuuriminister” sõnadega „valdkonna eest vastutava minister” ja punktides 2 ja 3 sõnad „kultuuriministri” ja „rahandusministri” sõnadega „valdkondade eest vastutavad ministrid” ning ühendada punktid 2 ja 3 punktiks 2 ja muuta vastavalt punktide numeratsiooni.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 1"
+    },
+    {
+      "@id": "estleg:KultKS_Par_11_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kultuurkapitali nõukogu: kehtestab Kultuurkapitali varade paigutamise ja muude tehingute tegemise korra, nähes ette finantsriskide juhtimise piirangud vara liikide, valuutade struktuuri, instrumentide ja investeeringute kestuse ning muude investeerimistunnuste lõikes; jaotab aastatulu vastavalt käesoleva seaduse § 41 lõikele 3; otsustab kultuurivaldkondade vaheliste projektide rahastamise, samuti sihtkapitalide ja ekspertgruppide algatatud projektide rahastamise; jaotab hasartmängumaksu seaduse alusel kultuuriehitistele sihtotstarbeliselt laekunud summad vastavalt Riigikogu otsusega kinnitatud riiklikult tähtsate kultuuriehitiste rajamise ja renoveerimise pingereale; otsustab hasartmängumaksu seaduse alusel spordiehitistele sihtotstarbeliselt laekunud summa eraldamise korraga ühele spordiehitisele rahvusliku olümpiakomitee ettepanekul; otsustab hasartmängumaksu seaduse alusel eraraha kaasamise toetamiseks sihtotstarbeliselt laekunud vahendite jaotamise; määrab kindlaks sihtkapitalide ja ekspertgruppide poolt jaotatavate toetuste ja loometöötasude piirmäärad aastas ja kvartalis; analüüsib ekspertgruppide, sihtkapitalide ja Kultuurkapitali tegevuse tulemusi; korraldab iga-aastaste ülevaadete avaldamist Kultuurkapitali tegevuse kohta; võtab tööle ja vabastab Kultuurkapitali siseaudiitori; võtab vastu Kultuurkapitali aastaeelarve, kinnitab finantsplaani ja auditeeritud majandusaasta aruande; määrab Kultuurkapitali halduskuludeks ettenähtud vahendite hulgas eraldi siseauditi jaoks ettenähtud eelarve ja kinnitab siseaudiitori tööplaani; määrab sihtkapitalide nõukogude liikmetele ja ekspertgruppide liikmetele makstava tasu suuruse ja maksmise korra; kinnitab Kultuurkapitali struktuuri; nimetab ja vabastab Kultuurkapitali juhataja; teostab järelevalvet juhataja, sihtkapitalide ja ekspertgruppide tegevuse üle; annab arvamusi ja teeb ettepanekuid muudes kunstide ja rahvakultuuri ning kehakultuuri ja spordi arendamist puudutavates küsimustes, mis seonduvad käesolevas seaduses sätestatud ülesannete täitmisega; valib käesoleva seaduse § 6 1 lõikes 1 mainitud varahalduri ja kinnitab temaga sõlmitava lepingu tingimused; otsustab juhataja ettepanekul kinnisvara omandamise ja võõrandamise.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 2"
+    },
+    {
+      "@id": "estleg:KultKS_Par_11_Lg_2_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2<sup>1</sup>",
+      "estleg:legalText": "(2<sup>1</sup>) Kultuurkapitali nõukogu võib käesoleva paragrahvi lõike 2 punktis 4 nimetatud ülesannet täites toetada üheaegselt mitut objekti ja toetada pingereas tagapool asuvat objekti varem kui pingereas eespool asuvat objekti, kui see ei mõjuta pingereas eespool oleva objekti valmimist. Pingereas tagapool asuvat objekti võib toetada varem kui eespool asuvat objekti juhul, kui pingereas eespool oleva objekti ettevalmistus ei võimalda toetuse eraldamist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 2<sup>1</sup>"
+    },
+    {
+      "@id": "estleg:KultKS_Par_11_Lg_2_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2<sup>2</sup>",
+      "estleg:legalText": "(2<sup>2</sup>) Kultuurkapitali nõukogu võib kultuuriministri ettepanekul piisavate rahaliste vahendite olemasolu korral lisaks käesoleva paragrahvi lõike 2 punktis 4 nimetatud kultuuriehitistele otsustada ühe riiklikult tähtsa kultuuriehitise rahastamise, kui see ei mõjuta Riigikogu otsusega kinnitatud riiklikult tähtsate kultuuriehitiste valmimist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 2<sup>2</sup>"
+    },
+    {
+      "@id": "estleg:KultKS_Par_11_Lg_2_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2<sup>3</sup>",
+      "estleg:legalText": "(2<sup>3</sup>) Käesoleva paragrahvi lõikes 22 nimetatud kultuuriehitis peab olema kultuurivaldkonna strateegilisi eesmärke täitev riiklikult tähtis objekt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 2<sup>3</sup>"
+    },
+    {
+      "@id": "estleg:KultKS_Par_11_Lg_2_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2<sup>4</sup>",
+      "estleg:legalText": "(2<sup>4</sup>) Enne käesoleva paragrahvi lõikes 22 nimetatud ettepaneku tegemist esitab kultuuriminister selle heakskiitmiseks Riigikogu kultuurikomisjonile.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 2<sup>4</sup>"
+    },
+    {
+      "@id": "estleg:KultKS_Par_11_Lg_2_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2<sup>5</sup>",
+      "estleg:legalText": "(2<sup>5</sup>) Käesoleva paragrahvi lõike 2 punktis 4 sätestatud Riigikogu otsuse ja lõikes 22 nimetatud Kultuurkapitali nõukogu otsuse tegemiseks esitab ettepaneku tegija eelnevalt võimalikult täpse ülevaate planeeritud ehitisest, selle funktsioonidest, kultuuripoliitilisest olulisusest, kavandatud tegevustest, kooskõlast muude õigusaktidega ja ehitamise ajagraafikust.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 2<sup>5</sup>"
+    },
+    {
+      "@id": "estleg:KultKS_Par_11_Lg_2_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2<sup>6</sup>",
+      "estleg:legalText": "(2<sup>6</sup>) Kultuurkapitali nõukogu võib käesoleva paragrahvi lõike 22 alusel uue otsuse teha juhul, kui sama lõike alusel otsustatud eelmise kultuuriehitise valmimiseks ettenähtud kõik väljamaksed on tehtud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 2<sup>6</sup>"
+    },
+    {
+      "@id": "estleg:KultKS_Par_11_Lg_2_7",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2<sup>7</sup>",
+      "estleg:legalText": "(2<sup>7</sup>) Käesoleva paragrahvi lõike 2 punktis 41 nimetatud rahvusliku olümpiakomitee ettepanek peab sisaldama võimalikult täpset ülevaadet planeeritud spordiehitisest või renoveeritavast spordiehitisest, selle võimalikust omanikust, funktsioonidest, asukohast, spordipoliitilisest ja regionaalsest olulisusest, huvigruppide toetusest, kavandatud tegevustest, kooskõlast muude õigusaktidega ja ehitamise ajagraafikust.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 2<sup>7</sup>"
+    },
+    {
+      "@id": "estleg:KultKS_Par_11_Lg_2_8",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2<sup>8</sup>",
+      "estleg:legalText": "(2<sup>8</sup>) Kultuurkapitali nõukogu võib käesoleva paragrahvi lõike 2 punkti 41 alusel uue otsuse teha juhul, kui rahvuslik olümpiakomitee teeb ettepaneku täiendava spordiehitise toetamiseks ning samas punktis nimetatud sihtotstarbeliselt laekunud summa on selleks piisav.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 2<sup>8</sup>"
+    },
+    {
+      "@id": "estleg:KultKS_Par_11_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Nõukogu volituste tähtaeg on kaks aastat.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 3"
+    },
+    {
+      "@id": "estleg:KultKS_Par_11_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Nõukogu koosseisu kinnitab Vabariigi Valitsus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 4"
     },
     {
       "@id": "estleg:KultKS_Par_12",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KultKS"
+        "estleg:LegalProvision_eesti_kultuurkapitali_seadus"
       ],
       "estleg:paragrahv": "§ 12.",
       "rdfs:label": "§ 12. Kultuurkapitali nõukogu liikmed",
       "estleg:sourceAct": "Eesti Kultuurkapitali seadus",
-      "estleg:summary": "1(1)Nõukogu liikmed täidavad oma ülesandeid kuni nõukogu uue koosseisu kinnitamiseni. Nõukogu liikmed, välja arvatud kultuuriminister, võivad osaleda ainult kahe järjestikuse nõukogu koosseisus. Nõukogu liikmed täidavad oma ülesandeid kuni nõukogu uue koosseisu kinnitamiseni. Nõukogu liikmed, välja arvatud kultuuriminister, võivad osaleda ainult kahe järjestikuse nõukogu koosseisus. 2(2)Nõukogu liige arvatakse nõukogu koosseisust välja tagasikutsumisel, tema avalduse alusel või surma korral. Nõu",
+      "estleg:summary": "1 (1) Nõukogu liikmed täidavad oma ülesandeid kuni nõukogu uue koosseisu kinnitamiseni. Nõukogu liikmed, välja arvatud valdkonna eest vastutav minister, võivad osaleda ainult kahe järjestikuse nõukogu koosseisus. Nõukogu liikmed täidavad oma ülesandeid kuni nõukogu uue koosseisu kinnitamiseni. Nõukogu liikmed, välja arvatud valdkonna eest vastutav minister, võivad osaleda ainult kahe järjestikuse nõukogu koosseisus. 2 (2) Nõukogu liige arvatakse nõukogu koosseisust välja tagasikutsumisel, tema a",
+      "estleg:legalText": "(1) Nõukogu liikmed täidavad oma ülesandeid kuni nõukogu uue koosseisu kinnitamiseni. Nõukogu liikmed, välja arvatud valdkonna eest vastutav minister, võivad osaleda ainult kahe järjestikuse nõukogu koosseisus. (2) Nõukogu liige arvatakse nõukogu koosseisust välja tagasikutsumisel, tema avalduse alusel või surma korral. (3) Kultuurkapitali nõukogu liige saab tasu nõukogu tööga seotud ülesannete täitmise eest. Tasu suuruse kinnitab Vabariigi Valitsus Kultuurkapitali nõukogu esimehe ettepanekul ning tasu makstakse Kultuurkapitali eelarvest halduskuludeks ettenähtud vahenditest. Tasu ei maksta Kultuurkapitali nõukogu esimehele. (4) Nõukogu liikmed valivad endi hulgast nõukogu aseesimehe.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KultKS_III"
       },
-      "estleg:competentAuthority": [
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KultKS_III"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:Institution_kultuuriminister"
+          "@id": "estleg:KultKS_Par_12_Lg_1"
+        },
+        {
+          "@id": "estleg:KultKS_Par_12_Lg_2"
+        },
+        {
+          "@id": "estleg:KultKS_Par_12_Lg_3"
+        },
+        {
+          "@id": "estleg:KultKS_Par_12_Lg_4"
         }
       ],
-      "estleg:competenceType": "general"
+      "estleg:targetGroup": [
+        "public_body",
+        "official"
+      ]
+    },
+    {
+      "@id": "estleg:KultKS_Par_12_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Nõukogu liikmed täidavad oma ülesandeid kuni nõukogu uue koosseisu kinnitamiseni. Nõukogu liikmed, välja arvatud valdkonna eest vastutav minister, võivad osaleda ainult kahe järjestikuse nõukogu koosseisus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 1"
+    },
+    {
+      "@id": "estleg:KultKS_Par_12_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Nõukogu liige arvatakse nõukogu koosseisust välja tagasikutsumisel, tema avalduse alusel või surma korral.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 2"
+    },
+    {
+      "@id": "estleg:KultKS_Par_12_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kultuurkapitali nõukogu liige saab tasu nõukogu tööga seotud ülesannete täitmise eest. Tasu suuruse kinnitab Vabariigi Valitsus Kultuurkapitali nõukogu esimehe ettepanekul ning tasu makstakse Kultuurkapitali eelarvest halduskuludeks ettenähtud vahenditest. Tasu ei maksta Kultuurkapitali nõukogu esimehele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 3"
+    },
+    {
+      "@id": "estleg:KultKS_Par_12_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Nõukogu liikmed valivad endi hulgast nõukogu aseesimehe.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 4"
     },
     {
       "@id": "estleg:KultKS_Par_13",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KultKS"
+        "estleg:LegalProvision_eesti_kultuurkapitali_seadus"
       ],
       "estleg:paragrahv": "§ 13.",
       "rdfs:label": "§ 13. Kultuurkapitali nõukogu töökord",
       "estleg:sourceAct": "Eesti Kultuurkapitali seadus",
-      "estleg:summary": "1(1)Nõukogu istungi kutsub kokku esimees vastavalt vajadusele, kuid mitte harvemini kui üks kord kvartalis. Nõukogu liikmeid informeeritakse istungist kirjalikult vähemalt 20 päeva ette. Nõukogu istungi kutsub kokku esimees vastavalt vajadusele, kuid mitte harvemini kui üks kord kvartalis. Nõukogu liikmeid informeeritakse istungist kirjalikult vähemalt 20 päeva ette. 2(2)Nõukogu erakorraline istung kutsutakse kokku kahe nädala jooksul, kui seda nõuab vähemalt kuus nõukogu liiget. Nõukogu erakorr",
+      "estleg:summary": "1 (1) Nõukogu istungi kutsub kokku esimees vastavalt vajadusele, kuid mitte harvemini kui üks kord kvartalis. Nõukogu liikmeid informeeritakse istungist kirjalikult vähemalt 20 päeva ette. Nõukogu istungi kutsub kokku esimees vastavalt vajadusele, kuid mitte harvemini kui üks kord kvartalis. Nõukogu liikmeid informeeritakse istungist kirjalikult vähemalt 20 päeva ette. 2 (2) Nõukogu erakorraline istung kutsutakse kokku kahe nädala jooksul, kui seda nõuab vähemalt kuus nõukogu liiget. Nõukogu era",
+      "estleg:legalText": "(1) Nõukogu istungi kutsub kokku esimees vastavalt vajadusele, kuid mitte harvemini kui üks kord kvartalis. Nõukogu liikmeid informeeritakse istungist kirjalikult vähemalt 20 päeva ette. (2) Nõukogu erakorraline istung kutsutakse kokku kahe nädala jooksul, kui seda nõuab vähemalt kuus nõukogu liiget. (3) Nõukogu on otsustusvõimeline, kui kohal viibib vähemalt kuus nõukogu liiget, sealhulgas esimees või aseesimees. (4) Nõukogu võtab vastu otsuseid istungil viibivate liikmete lihthäälteenamusega. Käesoleva seaduse § 11 2. lõike punktides 1–5, 8–13, 16 ja 17 toodud küsimuste puhul võetakse otsused vastu nõukogu koosseisu lihthäälteenamusega. (4<sup>1</sup>) Nõukogu võtab käesoleva seaduse § 11 lõikes 22 nimetatud otsuse vastu nõukogu koosseisu kolmeneljandikulise häälteenamusega. (5) Nõukogu otsused protokollitakse ning tehakse ühe nädala jooksul teatavaks sihtkapitalide nõukogudele.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KultKS_III"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KultKS_III"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KultKS_Par_13_Lg_1"
+        },
+        {
+          "@id": "estleg:KultKS_Par_13_Lg_2"
+        },
+        {
+          "@id": "estleg:KultKS_Par_13_Lg_3"
+        },
+        {
+          "@id": "estleg:KultKS_Par_13_Lg_4"
+        },
+        {
+          "@id": "estleg:KultKS_Par_13_Lg_4_1"
+        },
+        {
+          "@id": "estleg:KultKS_Par_13_Lg_5"
+        }
+      ],
+      "estleg:targetGroup": [
+        "official"
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:KBFIS_Par_9",
           "estleg:similarityScore": {
-            "@value": "0.3",
+            "@value": "0.308",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
@@ -384,7 +1724,15 @@
         {
           "@id": "estleg:ROS_Par_10",
           "estleg:similarityScore": {
-            "@value": "0.424",
+            "@value": "0.438",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:Reg_153710_Par_20",
+          "estleg:similarityScore": {
+            "@value": "0.303",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
@@ -392,121 +1740,994 @@
         {
           "@id": "estleg:Reg_154524_Par_4",
           "estleg:similarityScore": {
-            "@value": "0.333",
+            "@value": "0.341",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
         }
-      ],
-      "estleg:targetGroup": [
-        "official"
       ]
+    },
+    {
+      "@id": "estleg:KultKS_Par_13_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Nõukogu istungi kutsub kokku esimees vastavalt vajadusele, kuid mitte harvemini kui üks kord kvartalis. Nõukogu liikmeid informeeritakse istungist kirjalikult vähemalt 20 päeva ette.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 1"
+    },
+    {
+      "@id": "estleg:KultKS_Par_13_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Nõukogu erakorraline istung kutsutakse kokku kahe nädala jooksul, kui seda nõuab vähemalt kuus nõukogu liiget.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 2"
+    },
+    {
+      "@id": "estleg:KultKS_Par_13_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Nõukogu on otsustusvõimeline, kui kohal viibib vähemalt kuus nõukogu liiget, sealhulgas esimees või aseesimees.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 3"
+    },
+    {
+      "@id": "estleg:KultKS_Par_13_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Nõukogu võtab vastu otsuseid istungil viibivate liikmete lihthäälteenamusega. Käesoleva seaduse § 11 2. lõike punktides 1–5, 8–13, 16 ja 17 toodud küsimuste puhul võetakse otsused vastu nõukogu koosseisu lihthäälteenamusega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 4"
+    },
+    {
+      "@id": "estleg:KultKS_Par_13_Lg_4_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4<sup>1</sup>",
+      "estleg:legalText": "(4<sup>1</sup>) Nõukogu võtab käesoleva seaduse § 11 lõikes 22 nimetatud otsuse vastu nõukogu koosseisu kolmeneljandikulise häälteenamusega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 4<sup>1</sup>"
+    },
+    {
+      "@id": "estleg:KultKS_Par_13_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Nõukogu otsused protokollitakse ning tehakse ühe nädala jooksul teatavaks sihtkapitalide nõukogudele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 5"
+    },
+    {
+      "@id": "estleg:KultKS_Par_13_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_eesti_kultuurkapitali_seadus"
+      ],
+      "estleg:paragrahv": "§ 13<sup>1</sup>.",
+      "rdfs:label": "§ 13<sup>1</sup>. Nõukogu liikme vastutus",
+      "estleg:sourceAct": "Eesti Kultuurkapitali seadus",
+      "estleg:summary": "1 (1) Nõukogu liikmed vastutavad käesoleva seaduse nõuete rikkumise, samuti oma kohustuste täitmata jätmise tõttu Kultuurkapitalile süüliselt tekitatud kahju eest solidaarselt. Nõukogu liikmed vastutavad käesoleva seaduse nõuete rikkumise, samuti oma kohustuste täitmata jätmise tõttu Kultuurkapitalile süüliselt tekitatud kahju eest solidaarselt. 2 (2) Nõukogu liige vabaneb Kultuurkapitali ees vastutusest, kui ta on ebaseadusliku tegevuse aluseks oleva otsuse vastuvõtmisel jäänud eriarvamusele ni",
+      "estleg:legalText": "(1) Nõukogu liikmed vastutavad käesoleva seaduse nõuete rikkumise, samuti oma kohustuste täitmata jätmise tõttu Kultuurkapitalile süüliselt tekitatud kahju eest solidaarselt. (2) Nõukogu liige vabaneb Kultuurkapitali ees vastutusest, kui ta on ebaseadusliku tegevuse aluseks oleva otsuse vastuvõtmisel jäänud eriarvamusele ning eriarvamus on kantud protokolli või kui ta ei osalenud istungil, kus selline otsus vastu võeti. (3) Nõukogu liikme vastu esitatava nõude aegumistähtaeg on viis aastat kohustuse rikkumisest.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_KultKS_III"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KultKS_III"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KultKS_Par_13_1_Lg_1"
+        },
+        {
+          "@id": "estleg:KultKS_Par_13_1_Lg_2"
+        },
+        {
+          "@id": "estleg:KultKS_Par_13_1_Lg_3"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:RingHS_Par_32_43",
+          "estleg:similarityScore": {
+            "@value": "0.452",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:TKindlS_Par_31",
+          "estleg:similarityScore": {
+            "@value": "0.353",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:TerKS_Par_22",
+          "estleg:similarityScore": {
+            "@value": "0.361",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:TerKS_Par_32",
+          "estleg:similarityScore": {
+            "@value": "0.324",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:KultKS_Par_13_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Nõukogu liikmed vastutavad käesoleva seaduse nõuete rikkumise, samuti oma kohustuste täitmata jätmise tõttu Kultuurkapitalile süüliselt tekitatud kahju eest solidaarselt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_13_1"
+      },
+      "rdfs:label": "§ 13<sup>1</sup> lg 1"
+    },
+    {
+      "@id": "estleg:KultKS_Par_13_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Nõukogu liige vabaneb Kultuurkapitali ees vastutusest, kui ta on ebaseadusliku tegevuse aluseks oleva otsuse vastuvõtmisel jäänud eriarvamusele ning eriarvamus on kantud protokolli või kui ta ei osalenud istungil, kus selline otsus vastu võeti.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_13_1"
+      },
+      "rdfs:label": "§ 13<sup>1</sup> lg 2"
+    },
+    {
+      "@id": "estleg:KultKS_Par_13_1_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Nõukogu liikme vastu esitatava nõude aegumistähtaeg on viis aastat kohustuse rikkumisest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_13_1"
+      },
+      "rdfs:label": "§ 13<sup>1</sup> lg 3"
     },
     {
       "@id": "estleg:KultKS_Par_14",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KultKS"
+        "estleg:LegalProvision_eesti_kultuurkapitali_seadus"
       ],
       "estleg:paragrahv": "§ 14.",
       "rdfs:label": "§ 14. Sihtkapitali nõukogu",
       "estleg:sourceAct": "Eesti Kultuurkapitali seadus",
-      "estleg:summary": "1(1)Iga sihtkapitali tegevust korraldab selle sihtkapitali nõukogu, kuhu kuulub seitse vastaval kultuurialal tegutsevat isikut, kelle on esitanud selle kultuuriala ühendused. Iga sihtkapitali tegevust korraldab selle sihtkapitali nõukogu, kuhu kuulub seitse vastaval kultuurialal tegutsevat isikut, kelle on esitanud selle kultuuriala ühendused. 2(2)Sihtkapitali nõukogu koosseisu kinnitab kultuuriminister. Sihtkapitali nõukogu koosseisu kinnitab kultuuriminister. 3(3)Sihtkapitali nõukogu:11)nimeta",
+      "estleg:summary": "1 (1) Iga sihtkapitali tegevust korraldab selle sihtkapitali nõukogu, kuhu kuulub seitse vastaval kultuurialal tegutsevat isikut, kelle on esitanud selle kultuuriala ühendused. Iga sihtkapitali tegevust korraldab selle sihtkapitali nõukogu, kuhu kuulub seitse vastaval kultuurialal tegutsevat isikut, kelle on esitanud selle kultuuriala ühendused. 2 (2) Sihtkapitali nõukogu koosseisu kinnitab valdkonna eest vastutav minister. Sihtkapitali nõukogu koosseisu kinnitab valdkonna eest vastutav minister",
+      "estleg:legalText": "(1) Iga sihtkapitali tegevust korraldab selle sihtkapitali nõukogu, kuhu kuulub seitse vastaval kultuurialal tegutsevat isikut, kelle on esitanud selle kultuuriala ühendused. (2) Sihtkapitali nõukogu koosseisu kinnitab valdkonna eest vastutav minister. (3) Sihtkapitali nõukogu: nimetab sihtkapitali esindaja Kultuurkapitali nõukogusse; jaotab sihtkapitali käsutusse eraldatud raha; esitab Kultuurkapitali nõukogule kultuurivaldkondade vaheliste ürituste projekte toetuse määramiseks; jälgib sihtkapitali poolt määratud toetuste ja loometöötasude sihipärast kasutamist; koostab aastaaruande sihtkapitali tegevusest; teeb ettepanekuid Kultuurkapitali nõukogule; täidab muid Kultuurkapitali nõukogu poolt antud ülesandeid. (4) Nõukogul on õigus tagasi kutsuda oma esindaja Kultuurkapitali nõukogust. (5) Nõukogu volituste tähtaeg on kaks aastat.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KultKS_III"
       },
-      "estleg:targetGroup": [
-        "citizen"
-      ],
-      "estleg:competentAuthority": [
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KultKS_III"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:Institution_kultuuriminister"
+          "@id": "estleg:KultKS_Par_14_Lg_1"
+        },
+        {
+          "@id": "estleg:KultKS_Par_14_Lg_2"
+        },
+        {
+          "@id": "estleg:KultKS_Par_14_Lg_3"
+        },
+        {
+          "@id": "estleg:KultKS_Par_14_Lg_4"
+        },
+        {
+          "@id": "estleg:KultKS_Par_14_Lg_5"
         }
       ],
-      "estleg:competenceType": "enforcement"
+      "estleg:targetGroup": [
+        "citizen",
+        "official"
+      ]
+    },
+    {
+      "@id": "estleg:KultKS_Par_14_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Iga sihtkapitali tegevust korraldab selle sihtkapitali nõukogu, kuhu kuulub seitse vastaval kultuurialal tegutsevat isikut, kelle on esitanud selle kultuuriala ühendused.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 1"
+    },
+    {
+      "@id": "estleg:KultKS_Par_14_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Sihtkapitali nõukogu koosseisu kinnitab valdkonna eest vastutav minister.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 2"
+    },
+    {
+      "@id": "estleg:KultKS_Par_14_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Sihtkapitali nõukogu: nimetab sihtkapitali esindaja Kultuurkapitali nõukogusse; jaotab sihtkapitali käsutusse eraldatud raha; esitab Kultuurkapitali nõukogule kultuurivaldkondade vaheliste ürituste projekte toetuse määramiseks; jälgib sihtkapitali poolt määratud toetuste ja loometöötasude sihipärast kasutamist; koostab aastaaruande sihtkapitali tegevusest; teeb ettepanekuid Kultuurkapitali nõukogule; täidab muid Kultuurkapitali nõukogu poolt antud ülesandeid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 3"
+    },
+    {
+      "@id": "estleg:KultKS_Par_14_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Nõukogul on õigus tagasi kutsuda oma esindaja Kultuurkapitali nõukogust.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 4"
+    },
+    {
+      "@id": "estleg:KultKS_Par_14_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Nõukogu volituste tähtaeg on kaks aastat.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 5"
     },
     {
       "@id": "estleg:KultKS_Par_15",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KultKS"
+        "estleg:LegalProvision_eesti_kultuurkapitali_seadus"
       ],
       "estleg:paragrahv": "§ 15.",
       "rdfs:label": "§ 15. Sihtkapitali nõukogu liikmed",
       "estleg:sourceAct": "Eesti Kultuurkapitali seadus",
-      "estleg:summary": "1(1)Nõukogu liikmed täidavad oma ülesandeid kuni nõukogu uue koosseisu kinnitamiseni. Sama isik võib järjest kuuluda sihtkapitali nõukogu kahte koosseisu. Nõukogu liikmed täidavad oma ülesandeid kuni nõukogu uue koosseisu kinnitamiseni. Sama isik võib järjest kuuluda sihtkapitali nõukogu kahte koosseisu. 2(2)Nõukogu liige arvatakse nõukogu koosseisust välja tagasikutsumisel, tema avalduse alusel või surma korral. Vabanenud nõukogu liikme asemele kinnitatakse uus esindaja vastavalt käesoleva sead",
+      "estleg:summary": "1 (1) Nõukogu liikmed täidavad oma ülesandeid kuni nõukogu uue koosseisu kinnitamiseni. Sama isik võib järjest kuuluda sihtkapitali nõukogu kahte koosseisu. Nõukogu liikmed täidavad oma ülesandeid kuni nõukogu uue koosseisu kinnitamiseni. Sama isik võib järjest kuuluda sihtkapitali nõukogu kahte koosseisu. 2 (2) Nõukogu liige arvatakse nõukogu koosseisust välja tagasikutsumisel, tema avalduse alusel või surma korral. Vabanenud nõukogu liikme asemele kinnitatakse uus esindaja vastavalt käesoleva ",
+      "estleg:legalText": "(1) Nõukogu liikmed täidavad oma ülesandeid kuni nõukogu uue koosseisu kinnitamiseni. Sama isik võib järjest kuuluda sihtkapitali nõukogu kahte koosseisu. (2) Nõukogu liige arvatakse nõukogu koosseisust välja tagasikutsumisel, tema avalduse alusel või surma korral. Vabanenud nõukogu liikme asemele kinnitatakse uus esindaja vastavalt käesoleva seaduse § 14 1. lõikele. (3) Kehtetu - (4) Nõukogu liikmed valivad endi hulgast nõukogu esimehe ja aseesimehe.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KultKS_III"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KultKS_III"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KultKS_Par_15_Lg_1"
+        },
+        {
+          "@id": "estleg:KultKS_Par_15_Lg_2"
+        },
+        {
+          "@id": "estleg:KultKS_Par_15_Lg_3"
+        },
+        {
+          "@id": "estleg:KultKS_Par_15_Lg_4"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:KultKS_Par_16_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:KultKS_Par_15_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Nõukogu liikmed täidavad oma ülesandeid kuni nõukogu uue koosseisu kinnitamiseni. Sama isik võib järjest kuuluda sihtkapitali nõukogu kahte koosseisu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 1"
+    },
+    {
+      "@id": "estleg:KultKS_Par_15_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Nõukogu liige arvatakse nõukogu koosseisust välja tagasikutsumisel, tema avalduse alusel või surma korral. Vabanenud nõukogu liikme asemele kinnitatakse uus esindaja vastavalt käesoleva seaduse § 14 1. lõikele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 2"
+    },
+    {
+      "@id": "estleg:KultKS_Par_15_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 3"
+    },
+    {
+      "@id": "estleg:KultKS_Par_15_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Nõukogu liikmed valivad endi hulgast nõukogu esimehe ja aseesimehe.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 4"
     },
     {
       "@id": "estleg:KultKS_Par_16",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KultKS"
+        "estleg:LegalProvision_eesti_kultuurkapitali_seadus"
       ],
       "estleg:paragrahv": "§ 16.",
       "rdfs:label": "§ 16. Sihtkapitali nõukogu töökord",
       "estleg:sourceAct": "Eesti Kultuurkapitali seadus",
-      "estleg:summary": "1(1)Sihtkapitali nõukogu iga koosseisu esimese koosoleku kutsub kokku kultuuriminister, edaspidi sihtkapitali nõukogu esimees vastavalt vajadusele, kuid mitte harvem kui üks kord kvartalis. Nõukogu liikmeid informeeritakse istungist kirjalikult vähemalt 10 päeva ette. Sihtkapitali nõukogu iga koosseisu esimese koosoleku kutsub kokku kultuuriminister, edaspidi sihtkapitali nõukogu esimees vastavalt vajadusele, kuid mitte harvem kui üks kord kvartalis. Nõukogu liikmeid informeeritakse istungist ki",
+      "estleg:summary": "1 (1) Sihtkapitali nõukogu iga koosseisu esimese koosoleku kutsub kokku valdkonna eest vastutav minister, edaspidi sihtkapitali nõukogu esimees vastavalt vajadusele, kuid mitte harvem kui üks kord kvartalis. Nõukogu liikmeid informeeritakse istungist kirjalikult vähemalt 10 päeva ette. Sihtkapitali nõukogu iga koosseisu esimese koosoleku kutsub kokku valdkonna eest vastutav minister, edaspidi sihtkapitali nõukogu esimees vastavalt vajadusele, kuid mitte harvem kui üks kord kvartalis. Nõukogu lii",
+      "estleg:legalText": "(1) Sihtkapitali nõukogu iga koosseisu esimese koosoleku kutsub kokku valdkonna eest vastutav minister, edaspidi sihtkapitali nõukogu esimees vastavalt vajadusele, kuid mitte harvem kui üks kord kvartalis. Nõukogu liikmeid informeeritakse istungist kirjalikult vähemalt 10 päeva ette. (2) Erakorraline nõukogu koosolek kutsutakse kokku kahe nädala jooksul, kui seda nõuavad vähemalt neli tema liiget. (3) Nõukogu on otsustusvõimeline, kui kohal viibib vähemalt viis nõukogu liiget, sealhulgas esimees või aseesimees. (4) Nõukogu võtab vastu otsuseid istungil viibivate liikmete lihthäälteenamusega. (5) Nõukogu otsused protokollitakse ning tehakse teatavaks ühe nädala jooksul Kultuurkapitali juhatajale. (6) Nõukogu otsuseid ei vaidlustata, välja arvatud juhud, kui on rikutud käesoleva paragrahvi 3. ja 5. lõiget.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KultKS_III"
       },
-      "estleg:semanticallySimilarTo": [
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KultKS_III"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:ROS_Par_10",
-          "estleg:similarityScore": {
-            "@value": "0.355",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
+          "@id": "estleg:KultKS_Par_16_Lg_1"
+        },
+        {
+          "@id": "estleg:KultKS_Par_16_Lg_2"
+        },
+        {
+          "@id": "estleg:KultKS_Par_16_Lg_3"
+        },
+        {
+          "@id": "estleg:KultKS_Par_16_Lg_4"
+        },
+        {
+          "@id": "estleg:KultKS_Par_16_Lg_5"
+        },
+        {
+          "@id": "estleg:KultKS_Par_16_Lg_6"
         }
       ],
       "estleg:targetGroup": [
         "official"
       ],
-      "estleg:competentAuthority": [
+      "estleg:semanticallySimilarTo": [
         {
-          "@id": "estleg:Institution_kultuuriminister"
+          "@id": "estleg:ROS_Par_10",
+          "estleg:similarityScore": {
+            "@value": "0.324",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:KultKS_Par_16_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Sihtkapitali nõukogu iga koosseisu esimese koosoleku kutsub kokku valdkonna eest vastutav minister, edaspidi sihtkapitali nõukogu esimees vastavalt vajadusele, kuid mitte harvem kui üks kord kvartalis. Nõukogu liikmeid informeeritakse istungist kirjalikult vähemalt 10 päeva ette.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 1"
+    },
+    {
+      "@id": "estleg:KultKS_Par_16_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Erakorraline nõukogu koosolek kutsutakse kokku kahe nädala jooksul, kui seda nõuavad vähemalt neli tema liiget.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 2"
+    },
+    {
+      "@id": "estleg:KultKS_Par_16_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Nõukogu on otsustusvõimeline, kui kohal viibib vähemalt viis nõukogu liiget, sealhulgas esimees või aseesimees.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 3"
+    },
+    {
+      "@id": "estleg:KultKS_Par_16_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Nõukogu võtab vastu otsuseid istungil viibivate liikmete lihthäälteenamusega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 4"
+    },
+    {
+      "@id": "estleg:KultKS_Par_16_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Nõukogu otsused protokollitakse ning tehakse teatavaks ühe nädala jooksul Kultuurkapitali juhatajale.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 5"
+    },
+    {
+      "@id": "estleg:KultKS_Par_16_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Nõukogu otsuseid ei vaidlustata, välja arvatud juhud, kui on rikutud käesoleva paragrahvi 3. ja 5. lõiget.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 6"
+    },
+    {
+      "@id": "estleg:KultKS_Par_16_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_eesti_kultuurkapitali_seadus"
+      ],
+      "estleg:paragrahv": "§ 16<sup>1</sup>.",
+      "rdfs:label": "§ 16<sup>1</sup>. Ekspertgrupi liikmed ja töökord",
+      "estleg:sourceAct": "Eesti Kultuurkapitali seadus",
+      "estleg:summary": "1 (1) Ekspertgrupp koosneb viiest liikmest ja selle koosseisu kinnitab Kultuurkapitali nõukogu kaheks aastaks maakonna kultuurivaldkonnas tegutsevate isikute hulgast. Ekspertgrupp koosneb viiest liikmest ja selle koosseisu kinnitab Kultuurkapitali nõukogu kaheks aastaks maakonna kultuurivaldkonnas tegutsevate isikute hulgast. 2 (2) Ekspertgrupi liikmete ja töökorra kohta kohaldatakse käesoleva seaduse §-des 15 ja 16 sihtkapitali nõukogude kohta sätestatut, arvestades käesolevast paragrahvist tul",
+      "estleg:legalText": "(1) Ekspertgrupp koosneb viiest liikmest ja selle koosseisu kinnitab Kultuurkapitali nõukogu kaheks aastaks maakonna kultuurivaldkonnas tegutsevate isikute hulgast. (2) Ekspertgrupi liikmete ja töökorra kohta kohaldatakse käesoleva seaduse §-des 15 ja 16 sihtkapitali nõukogude kohta sätestatut, arvestades käesolevast paragrahvist tulenevaid erisusi. (3) Ekspertgrupi liikmed täidavad oma ülesandeid kuni uue koosseisu kinnitamiseni Kultuurkapitali nõukogu poolt. Liikme koosseisust väljaarvamisel nimetab nõukogu ekspertgrupi vabanenud kohale uue liikme vastava maakonna kultuurivaldkonnas tegutsevate isikute hulgast. (4) Ekspertgrupi iga koosseisu esimese koosoleku kutsub kokku Kultuurkapitali nõukogu esimees. (5) Ekspertgrupi koosolek on otsustusvõimeline, kui kohal viibib neli liiget, sealhulgas esimees või aseesimees. Erakorralise koosoleku kokkukutsumist võivad nõuda vähemalt kolm liiget.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_KultKS_III"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KultKS_III"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KultKS_Par_16_1_Lg_1"
+        },
+        {
+          "@id": "estleg:KultKS_Par_16_1_Lg_2"
+        },
+        {
+          "@id": "estleg:KultKS_Par_16_1_Lg_3"
+        },
+        {
+          "@id": "estleg:KultKS_Par_16_1_Lg_4"
+        },
+        {
+          "@id": "estleg:KultKS_Par_16_1_Lg_5"
         }
       ],
-      "estleg:competenceType": "general"
+      "estleg:targetGroup": [
+        "citizen",
+        "official"
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:KultKS_Par_15"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:KultKS_Par_16_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ekspertgrupp koosneb viiest liikmest ja selle koosseisu kinnitab Kultuurkapitali nõukogu kaheks aastaks maakonna kultuurivaldkonnas tegutsevate isikute hulgast.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_16_1"
+      },
+      "rdfs:label": "§ 16<sup>1</sup> lg 1"
+    },
+    {
+      "@id": "estleg:KultKS_Par_16_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Ekspertgrupi liikmete ja töökorra kohta kohaldatakse käesoleva seaduse §-des 15 ja 16 sihtkapitali nõukogude kohta sätestatut, arvestades käesolevast paragrahvist tulenevaid erisusi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_16_1"
+      },
+      "rdfs:label": "§ 16<sup>1</sup> lg 2"
+    },
+    {
+      "@id": "estleg:KultKS_Par_16_1_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Ekspertgrupi liikmed täidavad oma ülesandeid kuni uue koosseisu kinnitamiseni Kultuurkapitali nõukogu poolt. Liikme koosseisust väljaarvamisel nimetab nõukogu ekspertgrupi vabanenud kohale uue liikme vastava maakonna kultuurivaldkonnas tegutsevate isikute hulgast.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_16_1"
+      },
+      "rdfs:label": "§ 16<sup>1</sup> lg 3"
+    },
+    {
+      "@id": "estleg:KultKS_Par_16_1_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Ekspertgrupi iga koosseisu esimese koosoleku kutsub kokku Kultuurkapitali nõukogu esimees.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_16_1"
+      },
+      "rdfs:label": "§ 16<sup>1</sup> lg 4"
+    },
+    {
+      "@id": "estleg:KultKS_Par_16_1_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Ekspertgrupi koosolek on otsustusvõimeline, kui kohal viibib neli liiget, sealhulgas esimees või aseesimees. Erakorralise koosoleku kokkukutsumist võivad nõuda vähemalt kolm liiget.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_16_1"
+      },
+      "rdfs:label": "§ 16<sup>1</sup> lg 5"
+    },
+    {
+      "@id": "estleg:KultKS_Par_16_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_eesti_kultuurkapitali_seadus"
+      ],
+      "estleg:paragrahv": "§ 16<sup>2</sup>.",
+      "rdfs:label": "§ 16<sup>2</sup>. Juhataja",
+      "estleg:sourceAct": "Eesti Kultuurkapitali seadus",
+      "estleg:summary": "1 (1) Kultuurkapitali juhib ja esindab juhataja, kelle nimetab nõukogu. Kultuurkapitali juhib ja esindab juhataja, kelle nimetab nõukogu. 2 (2) Juhataja volituste tähtaeg on kuni neli aastat. Juhataja volituste tähtaeg on kuni neli aastat. 3 (3) Juhatajaga sõlmitakse leping, millega määratakse kindlaks juhataja õigused ja kohustused, temale makstava tasu suurus ning muud tegevuseks vajalikud tingimused. Lepingule kirjutab Kultuurkapitali poolt alla nõukogu esimees. Juhatajaga sõlmitakse leping, ",
+      "estleg:legalText": "(1) Kultuurkapitali juhib ja esindab juhataja, kelle nimetab nõukogu. (2) Juhataja volituste tähtaeg on kuni neli aastat. (3) Juhatajaga sõlmitakse leping, millega määratakse kindlaks juhataja õigused ja kohustused, temale makstava tasu suurus ning muud tegevuseks vajalikud tingimused. Lepingule kirjutab Kultuurkapitali poolt alla nõukogu esimees. (4) Nõukogul on õigus juhataja igal ajal tagasi kutsuda.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_KultKS_III"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KultKS_III"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KultKS_Par_16_2_Lg_1"
+        },
+        {
+          "@id": "estleg:KultKS_Par_16_2_Lg_2"
+        },
+        {
+          "@id": "estleg:KultKS_Par_16_2_Lg_3"
+        },
+        {
+          "@id": "estleg:KultKS_Par_16_2_Lg_4"
+        }
+      ],
+      "estleg:targetGroup": [
+        "official"
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:ROS_Par_11_1",
+          "estleg:similarityScore": {
+            "@value": "0.312",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:KultKS_Par_16_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kultuurkapitali juhib ja esindab juhataja, kelle nimetab nõukogu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_16_2"
+      },
+      "rdfs:label": "§ 16<sup>2</sup> lg 1"
+    },
+    {
+      "@id": "estleg:KultKS_Par_16_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Juhataja volituste tähtaeg on kuni neli aastat.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_16_2"
+      },
+      "rdfs:label": "§ 16<sup>2</sup> lg 2"
+    },
+    {
+      "@id": "estleg:KultKS_Par_16_2_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Juhatajaga sõlmitakse leping, millega määratakse kindlaks juhataja õigused ja kohustused, temale makstava tasu suurus ning muud tegevuseks vajalikud tingimused. Lepingule kirjutab Kultuurkapitali poolt alla nõukogu esimees.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_16_2"
+      },
+      "rdfs:label": "§ 16<sup>2</sup> lg 3"
+    },
+    {
+      "@id": "estleg:KultKS_Par_16_2_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Nõukogul on õigus juhataja igal ajal tagasi kutsuda.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_16_2"
+      },
+      "rdfs:label": "§ 16<sup>2</sup> lg 4"
+    },
+    {
+      "@id": "estleg:KultKS_Par_16_3",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_eesti_kultuurkapitali_seadus"
+      ],
+      "estleg:paragrahv": "§ 16<sup>3</sup>.",
+      "rdfs:label": "§ 16<sup>3</sup>. Juhataja pädevus",
+      "estleg:sourceAct": "Eesti Kultuurkapitali seadus",
+      "estleg:summary": "Juhataja: 1 1) käsutab Kultuurkapitali nõukogu otsuste alusel Kultuurkapitali vara; 2 2) korraldab Kultuurkapitali nõukogu otsuste täitmist ning vastutab nende õiguspärase täitmise eest; 3 3) annab Kultuurkapitali nõukogule aru oma tegevusest ja esitab ülevaate Kultuurkapitali majanduslikust olukorrast neli korda aastas; 4 4) teavitab nõukogu kohe Kultuurkapitali majandusliku seisundi olulisest halvenemisest või muudest majandustegevusega seotud olulistest asjaoludest; 5 5) esitab Kultuurkapital",
+      "estleg:legalText": "Juhataja: käsutab Kultuurkapitali nõukogu otsuste alusel Kultuurkapitali vara; korraldab Kultuurkapitali nõukogu otsuste täitmist ning vastutab nende õiguspärase täitmise eest; annab Kultuurkapitali nõukogule aru oma tegevusest ja esitab ülevaate Kultuurkapitali majanduslikust olukorrast neli korda aastas; teavitab nõukogu kohe Kultuurkapitali majandusliku seisundi olulisest halvenemisest või muudest majandustegevusega seotud olulistest asjaoludest; esitab Kultuurkapitali nõukogule Kultuurkapitali aastaeelarveprojekti ja auditeeritud majandusaasta aruande; võtab tööle ja vabastab töölt Kultuurkapitali töötajad, välja arvatud siseaudiitori; sõlmib lepingud Kultuurkapitalist toetuste saajatega vastavalt nõukogu, sihtkapitalide nõukogude ja ekspertgruppide otsustele; kinnitab Kultuurkapitali töösisekorraeeskirjad ja asjaajamisjuhendi; korraldab nõukogu koosolekute protokollimise ja tagab nõukogu, sihtkapitalide nõukogude ja ekspertgruppide otsuste üle arvestuse pidamise; otsustab teiste juhtimisküsimuste üle, mis käesoleva seadusega ei ole antud nõukogu pädevusse.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_KultKS_III"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KultKS_III"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KultKS_Par_16_3_Lg_Unknown_1"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "official"
+      ]
+    },
+    {
+      "@id": "estleg:KultKS_Par_16_3_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Juhataja: käsutab Kultuurkapitali nõukogu otsuste alusel Kultuurkapitali vara; korraldab Kultuurkapitali nõukogu otsuste täitmist ning vastutab nende õiguspärase täitmise eest; annab Kultuurkapitali nõukogule aru oma tegevusest ja esitab ülevaate Kultuurkapitali majanduslikust olukorrast neli korda aastas; teavitab nõukogu kohe Kultuurkapitali majandusliku seisundi olulisest halvenemisest või muudest majandustegevusega seotud olulistest asjaoludest; esitab Kultuurkapitali nõukogule Kultuurkapitali aastaeelarveprojekti ja auditeeritud majandusaasta aruande; võtab tööle ja vabastab töölt Kultuurkapitali töötajad, välja arvatud siseaudiitori; sõlmib lepingud Kultuurkapitalist toetuste saajatega vastavalt nõukogu, sihtkapitalide nõukogude ja ekspertgruppide otsustele; kinnitab Kultuurkapitali töösisekorraeeskirjad ja asjaajamisjuhendi; korraldab nõukogu koosolekute protokollimise ja tagab nõukogu, sihtkapitalide nõukogude ja ekspertgruppide otsuste üle arvestuse pidamise; otsustab teiste juhtimisküsimuste üle, mis käesoleva seadusega ei ole antud nõukogu pädevusse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_16_3"
+      }
+    },
+    {
+      "@id": "estleg:KultKS_Par_16_4",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_eesti_kultuurkapitali_seadus"
+      ],
+      "estleg:paragrahv": "§ 16<sup>4</sup>.",
+      "rdfs:label": "§ 16<sup>4</sup>. Juhataja vastutus",
+      "estleg:sourceAct": "Eesti Kultuurkapitali seadus",
+      "estleg:summary": "1 (1) Juhataja vastutab oma kohustuse rikkumisega Kultuurkapitalile tekitatud kahju eest. Juhataja vabaneb vastutusest juhul, kui ta on tegutsenud vastavalt Kultuurkapitali nõukogu õiguspärasele otsusele. Juhataja vastutab oma kohustuse rikkumisega Kultuurkapitalile tekitatud kahju eest. Juhataja vabaneb vastutusest juhul, kui ta on tegutsenud vastavalt Kultuurkapitali nõukogu õiguspärasele otsusele. 2 (2) Juhataja vastu esitatava nõude aegumistähtaeg on viis aastat kohustuse rikkumisest. RT I 2",
+      "estleg:legalText": "(1) Juhataja vastutab oma kohustuse rikkumisega Kultuurkapitalile tekitatud kahju eest. Juhataja vabaneb vastutusest juhul, kui ta on tegutsenud vastavalt Kultuurkapitali nõukogu õiguspärasele otsusele. (2) Juhataja vastu esitatava nõude aegumistähtaeg on viis aastat kohustuse rikkumisest.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_KultKS_III"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KultKS_III"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KultKS_Par_16_4_Lg_1"
+        },
+        {
+          "@id": "estleg:KultKS_Par_16_4_Lg_2"
+        }
+      ],
+      "estleg:targetGroup": [
+        "official"
+      ]
+    },
+    {
+      "@id": "estleg:KultKS_Par_16_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Juhataja vastutab oma kohustuse rikkumisega Kultuurkapitalile tekitatud kahju eest. Juhataja vabaneb vastutusest juhul, kui ta on tegutsenud vastavalt Kultuurkapitali nõukogu õiguspärasele otsusele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_16_4"
+      },
+      "rdfs:label": "§ 16<sup>4</sup> lg 1"
+    },
+    {
+      "@id": "estleg:KultKS_Par_16_4_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Juhataja vastu esitatava nõude aegumistähtaeg on viis aastat kohustuse rikkumisest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_16_4"
+      },
+      "rdfs:label": "§ 16<sup>4</sup> lg 2"
+    },
+    {
+      "@id": "estleg:KultKS_Par_16_5",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_eesti_kultuurkapitali_seadus"
+      ],
+      "estleg:paragrahv": "§ 16<sup>5</sup>.",
+      "rdfs:label": "§ 16<sup>5</sup>. Sisekontrolli süsteem ja siseaudit",
+      "estleg:sourceAct": "Eesti Kultuurkapitali seadus",
+      "estleg:summary": "1 (1) Kultuurkapitali sisekontrollisüsteem hõlmab kõiki juhtimis- ja tegevustasandeid ning see peab tagama Kultuurkapitali tegevuse otstarbekuse, eesmärgipärasuse ja vastavuse õigusaktidele. Kultuurkapitali sisekontrollisüsteem hõlmab kõiki juhtimis- ja tegevustasandeid ning see peab tagama Kultuurkapitali tegevuse otstarbekuse, eesmärgipärasuse ja vastavuse õigusaktidele. 2 (2) Kultuurkapitali siseauditi eest vastutab nõukogu poolt tööle võetud siseaudiitor. Vajadusel võib nõukogu luua vastava ",
+      "estleg:legalText": "(1) Kultuurkapitali sisekontrollisüsteem hõlmab kõiki juhtimis- ja tegevustasandeid ning see peab tagama Kultuurkapitali tegevuse otstarbekuse, eesmärgipärasuse ja vastavuse õigusaktidele. (2) Kultuurkapitali siseauditi eest vastutab nõukogu poolt tööle võetud siseaudiitor. Vajadusel võib nõukogu luua vastava struktuuriüksuse siseaudiitori juhtimisel. (3) Siseauditi käigus hinnatakse: Kultuurkapitali sisekontrollisüsteemi toimimist ja selle tõhusust; nõukogu, sihtkapitalide ning maakondlike ekspertgruppide rahaeraldusi ja nende kasutamist; juhtimismeetmete seaduslikkust, otstarbekust ja tõhusust; vara kasutamise otstarbekust; olemasolevate protseduurireeglite ja dokumenteerimise piisavust Kultuurkapitali õiguspärase tegevuse tagamiseks; Riigikontrolli ettekirjutuste ja audiitori ettepanekute täitmist. (4) Siseaudiitoril on õigus tutvuda Kultuurkapitali iga dokumendiga ning saada suulisi ja kirjalikke selgitusi Kultuurkapitali juhatajalt ja töötajatelt ning igalt nõukogu, sihtkapitali nõukogu ja maakondliku ekspertgrupi liikmelt. (5) Siseaudiitor annab nõukogule aru oma tööplaani täitmisest kaks korda aastas ning teeb jooksvalt ettepanekuid puuduste kõrvaldamiseks ja vigade vältimiseks vajalike abinõude kohta. (6) Siseaudiitor peab viivitamatult teatama juhatajale ja nõukogu esimehele asjaoludest, mis viitavad õigusaktide rikkumisele või võivad kahjustada Kultuurkapitali vara või mainet.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_KultKS_III"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KultKS_III"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KultKS_Par_16_5_Lg_1"
+        },
+        {
+          "@id": "estleg:KultKS_Par_16_5_Lg_2"
+        },
+        {
+          "@id": "estleg:KultKS_Par_16_5_Lg_3"
+        },
+        {
+          "@id": "estleg:KultKS_Par_16_5_Lg_4"
+        },
+        {
+          "@id": "estleg:KultKS_Par_16_5_Lg_5"
+        },
+        {
+          "@id": "estleg:KultKS_Par_16_5_Lg_6"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "official"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
+    },
+    {
+      "@id": "estleg:KultKS_Par_16_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kultuurkapitali sisekontrollisüsteem hõlmab kõiki juhtimis- ja tegevustasandeid ning see peab tagama Kultuurkapitali tegevuse otstarbekuse, eesmärgipärasuse ja vastavuse õigusaktidele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_16_5"
+      },
+      "rdfs:label": "§ 16<sup>5</sup> lg 1"
+    },
+    {
+      "@id": "estleg:KultKS_Par_16_5_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kultuurkapitali siseauditi eest vastutab nõukogu poolt tööle võetud siseaudiitor. Vajadusel võib nõukogu luua vastava struktuuriüksuse siseaudiitori juhtimisel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_16_5"
+      },
+      "rdfs:label": "§ 16<sup>5</sup> lg 2"
+    },
+    {
+      "@id": "estleg:KultKS_Par_16_5_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Siseauditi käigus hinnatakse: Kultuurkapitali sisekontrollisüsteemi toimimist ja selle tõhusust; nõukogu, sihtkapitalide ning maakondlike ekspertgruppide rahaeraldusi ja nende kasutamist; juhtimismeetmete seaduslikkust, otstarbekust ja tõhusust; vara kasutamise otstarbekust; olemasolevate protseduurireeglite ja dokumenteerimise piisavust Kultuurkapitali õiguspärase tegevuse tagamiseks; Riigikontrolli ettekirjutuste ja audiitori ettepanekute täitmist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_16_5"
+      },
+      "rdfs:label": "§ 16<sup>5</sup> lg 3"
+    },
+    {
+      "@id": "estleg:KultKS_Par_16_5_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Siseaudiitoril on õigus tutvuda Kultuurkapitali iga dokumendiga ning saada suulisi ja kirjalikke selgitusi Kultuurkapitali juhatajalt ja töötajatelt ning igalt nõukogu, sihtkapitali nõukogu ja maakondliku ekspertgrupi liikmelt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_16_5"
+      },
+      "rdfs:label": "§ 16<sup>5</sup> lg 4"
+    },
+    {
+      "@id": "estleg:KultKS_Par_16_5_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Siseaudiitor annab nõukogule aru oma tööplaani täitmisest kaks korda aastas ning teeb jooksvalt ettepanekuid puuduste kõrvaldamiseks ja vigade vältimiseks vajalike abinõude kohta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_16_5"
+      },
+      "rdfs:label": "§ 16<sup>5</sup> lg 5"
+    },
+    {
+      "@id": "estleg:KultKS_Par_16_5_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Siseaudiitor peab viivitamatult teatama juhatajale ja nõukogu esimehele asjaoludest, mis viitavad õigusaktide rikkumisele või võivad kahjustada Kultuurkapitali vara või mainet.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_16_5"
+      },
+      "rdfs:label": "§ 16<sup>5</sup> lg 6"
     },
     {
       "@id": "estleg:KultKS_Par_17",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KultKS"
+        "estleg:LegalProvision_eesti_kultuurkapitali_seadus"
       ],
       "estleg:paragrahv": "§ 17.",
-      "rdfs:label": "§ 17. Kultuurkapitali kantselei",
+      "rdfs:label": "§ 17. [Kehtetu -]",
       "estleg:sourceAct": "Eesti Kultuurkapitali seadus",
-      "estleg:summary": "1(1)Kultuurkapitali täitev-korraldavat tegevust teostab kantselei, kelle töö korra kinnitab Kultuurkapitali nõukogu. Kultuurkapitali täitev-korraldavat tegevust teostab kantselei, kelle töö korra kinnitab Kultuurkapitali nõukogu. 2(2)Kultuurkapitali tegevdirektor:11)esindab Kultuurkapitali erivolituseta;22)käsutab Kultuurkapitali nõukogu otsuste alusel Kultuurkapitali vara;33)täidab Kultuurkapitali nõukogu otsuseid;44)annab Kultuurkapitali nõukogule aru oma tegevusest;55)esitab Kultuurkapitali n",
+      "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KultKS_III"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KultKS_III"
       }
     },
     {
       "@id": "estleg:KultKS_Par_18",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KultKS"
+        "estleg:LegalProvision_eesti_kultuurkapitali_seadus"
       ],
       "estleg:paragrahv": "§ 18.",
-      "rdfs:label": "§ 18.",
+      "rdfs:label": "§ 18. Kultuurkapitali tegevuse alustamine",
       "estleg:sourceAct": "Eesti Kultuurkapitali seadus",
-      "estleg:summary": "1(1)Kultuuriminister kinnitab kolme kuu jooksul käesoleva seaduse jõustumisest arvates käesoleva seaduse paragrahvis 10 sätestatud sihtkapitalide nõukogude koosseisud. Kultuuriminister kinnitab kolme kuu jooksul käesoleva seaduse jõustumisest arvates käesoleva seaduse paragrahvis 10 sätestatud sihtkapitalide nõukogude koosseisud. 2(2)Vabariigi Valitsus kinnitab nelja kuu jooksul käesoleva seaduse jõustumisest arvates Kultuurkapitali nõukogu koosseisu. Vabariigi Valitsus kinnitab nelja kuu jooksu",
+      "estleg:summary": "1 (1) Kultuuriminister kinnitab kolme kuu jooksul käesoleva seaduse jõustumisest arvates käesoleva seaduse §-s 10 sätestatud sihtkapitalide nõukogude koosseisud. Kultuuriminister kinnitab kolme kuu jooksul käesoleva seaduse jõustumisest arvates käesoleva seaduse §-s 10 sätestatud sihtkapitalide nõukogude koosseisud. 2 (2) Vabariigi Valitsus kinnitab nelja kuu jooksul käesoleva seaduse jõustumisest arvates Kultuurkapitali nõukogu koosseisu. Vabariigi Valitsus kinnitab nelja kuu jooksul käesoleva ",
+      "estleg:legalText": "(1) Kultuuriminister kinnitab kolme kuu jooksul käesoleva seaduse jõustumisest arvates käesoleva seaduse §-s 10 sätestatud sihtkapitalide nõukogude koosseisud. (2) Vabariigi Valitsus kinnitab nelja kuu jooksul käesoleva seaduse jõustumisest arvates Kultuurkapitali nõukogu koosseisu.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KultKS_IV"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KultKS_IV"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KultKS_Par_18_Lg_1"
+        },
+        {
+          "@id": "estleg:KultKS_Par_18_Lg_2"
+        }
+      ],
       "estleg:targetGroup": [
         "public_body"
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:KultKS_Par_10"
+        }
       ],
       "estleg:competentAuthority": [
         {
@@ -519,32 +2740,110 @@
       "estleg:competenceType": "general"
     },
     {
+      "@id": "estleg:KultKS_Par_18_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kultuuriminister kinnitab kolme kuu jooksul käesoleva seaduse jõustumisest arvates käesoleva seaduse §-s 10 sätestatud sihtkapitalide nõukogude koosseisud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_18"
+      },
+      "rdfs:label": "§ 18 lg 1"
+    },
+    {
+      "@id": "estleg:KultKS_Par_18_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Vabariigi Valitsus kinnitab nelja kuu jooksul käesoleva seaduse jõustumisest arvates Kultuurkapitali nõukogu koosseisu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_18"
+      },
+      "rdfs:label": "§ 18 lg 2"
+    },
+    {
       "@id": "estleg:KultKS_Par_19",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KultKS"
+        "estleg:LegalProvision_eesti_kultuurkapitali_seadus"
       ],
       "estleg:paragrahv": "§ 19.",
-      "rdfs:label": "§ 19.",
+      "rdfs:label": "§ 19. Muudatused varasemates õigusaktides",
       "estleg:sourceAct": "Eesti Kultuurkapitali seadus",
-      "estleg:summary": "[Käesolevast tekstist välja jäetud]",
+      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KultKS_IV"
-      }
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KultKS_IV"
+      },
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:KultKS_Par_20"
+        }
+      ]
     },
     {
       "@id": "estleg:KultKS_Par_20",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KultKS"
+        "estleg:LegalProvision_eesti_kultuurkapitali_seadus"
       ],
       "estleg:paragrahv": "§ 20.",
       "rdfs:label": "§ 20. Seaduse jõustumine",
       "estleg:sourceAct": "Eesti Kultuurkapitali seadus",
-      "estleg:summary": "1(1)Käesolev seadus jõustub 1994. aasta 1. juulil. Käesolev seadus jõustub 1994. aasta 1. juulil. 2(2)Käesoleva seaduse paragrahv 19 3. lõige jõustub 1995. aasta 1. jaanuaril. Käesoleva seaduse paragrahv 19 3. lõige jõustub 1995. aasta 1. jaanuaril.",
+      "estleg:summary": "1 (1) Käesolev seadus jõustub 1994. aasta 1. juulil. Käesolev seadus jõustub 1994. aasta 1. juulil. 2 (2) Käesoleva seaduse § 19 3. lõige jõustub 1995. aasta 1. jaanuaril. Käesoleva seaduse § 19 3. lõige jõustub 1995. aasta 1. jaanuaril.",
+      "estleg:legalText": "(1) Käesolev seadus jõustub 1994. aasta 1. juulil. (2) Käesoleva seaduse § 19 3. lõige jõustub 1995. aasta 1. jaanuaril.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KultKS_IV"
-      }
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KultKS_IV"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KultKS_Par_20_Lg_1"
+        },
+        {
+          "@id": "estleg:KultKS_Par_20_Lg_2"
+        }
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:KultKS_Par_19"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:KultKS_Par_20_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolev seadus jõustub 1994. aasta 1. juulil.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_20"
+      },
+      "rdfs:label": "§ 20 lg 1"
+    },
+    {
+      "@id": "estleg:KultKS_Par_20_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Käesoleva seaduse § 19 3. lõige jõustub 1995. aasta 1. jaanuaril.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KultKS_Par_20"
+      },
+      "rdfs:label": "§ 20 lg 2"
     }
   ]
 }

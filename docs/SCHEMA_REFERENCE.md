@@ -105,6 +105,15 @@
 > note here serves as a forward-pointer so future readers know the
 > drift is intentional, not undocumented.
 
+#### Law Generation Resume State
+
+`scripts/generate_all_laws.py --regen-state [PATH]` persists per-law progress
+for long refreshes. The bare `--regen-state` form writes
+`krr_outputs/.regen_state.json`; an explicit path writes there instead. Use
+`--reset-regen-state` together with `--regen-state` when the prior ledger is
+known stale or intentionally should not drive resume skips. Reset failures are
+fatal so operators do not accidentally continue with an old state file.
+
 ### Draft Legislation Example
 
 ```json
@@ -197,6 +206,13 @@ Classifies the type of court case.
 * `estleg:rikObjectId`: Internal RIK database object ID — `xsd:string`
 * `estleg:referencedLaw`: Law abbreviation referenced in the decision — `xsd:string`
 * `estleg:interpretsLaw`: Object property linking to a `LegalProvision` (state-law provision) OR a `MunicipalRegulation` / `Act` (KOV act-level citation) interpreted by this decision — `owl:ObjectProperty`. Range is `owl:unionOf (LegalProvision Act)` since Layer 2c PR #3.
+
+`estleg:caseType` and `estleg:decisionType` intentionally point at controlled
+enum IRIs whose individuals are not always in the Seadusloome public load graph.
+When adding a new enum-like IRI predicate to SHACL, mark its property shape with
+`estleg:graphClosureExempt true` so
+`scripts/validate_seadusloome_sync.py` derives the graph-closure exemption from
+the shape instead of a hardcoded list.
 
 ### Court Decision Example
 

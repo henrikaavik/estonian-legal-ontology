@@ -6,36 +6,31 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
   },
   "@graph": [
     {
       "@id": "estleg:KiKoS_Map_2026",
       "@type": [
+        "owl:Ontology",
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "rdfs:label": "Kirikute ja koguduste seadus teemakaardistus",
       "dc:source": "Kirikute ja koguduste seadus",
-      "estleg:affectedBy": [
-        {
-          "@id": "estleg:Draft_SIM24_1065"
-        },
-        {
-          "@id": "estleg:Draft_SIM10_0727"
-        }
-      ],
-      "estleg:amendedBy": [
-        {
-          "@id": "estleg:Draft_SIM24_1065"
-        },
-        {
-          "@id": "estleg:Draft_SIM10_0727"
-        }
-      ],
-      "estleg:temporalStatus": "unknown",
+      "dcterms:title": "Kirikute ja koguduste seadus",
+      "estleg:contentStatus": "structuredBody",
+      "dcterms:source": {
+        "@id": "https://www.riigiteataja.ee/akt/120052025005.xml"
+      },
+      "owl:sameAs": {
+        "@id": "https://www.riigiteataja.ee/akt/120052025005.xml"
+      },
+      "estleg:kehtiv": {
+        "@value": "2026-05-24",
+        "@type": "xsd:date"
+      },
       "dcterms:subject": [
         {
           "@id": "http://eurovoc.europa.eu/2431"
@@ -44,18 +39,35 @@
           "@id": "http://eurovoc.europa.eu/5636"
         },
         {
-          "@id": "http://eurovoc.europa.eu/2446"
+          "@id": "http://eurovoc.europa.eu/2416"
         },
         {
           "@id": "http://eurovoc.europa.eu/5246"
         },
         {
-          "@id": "http://eurovoc.europa.eu/2016"
+          "@id": "http://eurovoc.europa.eu/2441"
+        }
+      ],
+      "estleg:temporalStatus": "unknown",
+      "estleg:amendedBy": [
+        {
+          "@id": "estleg:AmendmentLink_Draft_SIM24_1065_KiKoS"
+        },
+        {
+          "@id": "estleg:AmendmentLink_Draft_SIM10_0727_KiKoS"
+        }
+      ],
+      "estleg:affectedBy": [
+        {
+          "@id": "estleg:Draft_SIM24_1065"
+        },
+        {
+          "@id": "estleg:Draft_SIM10_0727"
         }
       ]
     },
     {
-      "@id": "estleg:LegalProvision_KiKoS",
+      "@id": "estleg:LegalProvision_kirikute_ja_koguduste_seadus",
       "@type": [
         "owl:Class"
       ],
@@ -65,165 +77,662 @@
       }
     },
     {
+      "@id": "estleg:KiKoS_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": "Kirikute ja koguduste seadus teemaskeem",
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_KiKoS_1"
+        },
+        {
+          "@id": "estleg:Cluster_KiKoS_2"
+        },
+        {
+          "@id": "estleg:Cluster_KiKoS_3"
+        },
+        {
+          "@id": "estleg:Cluster_KiKoS_4"
+        },
+        {
+          "@id": "estleg:Cluster_KiKoS_5"
+        },
+        {
+          "@id": "estleg:Cluster_KiKoS_6"
+        },
+        {
+          "@id": "estleg:Cluster_KiKoS_7"
+        }
+      ]
+    },
+    {
       "@id": "estleg:Cluster_KiKoS_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§1–7 ÜLDSÄTTED"
+      "rdfs:label": "§1–7 ÜLDSÄTTED",
+      "skos:prefLabel": "§1–7 ÜLDSÄTTED",
+      "skos:inScheme": {
+        "@id": "estleg:KiKoS_TopicScheme"
+      },
+      "estleg:provisionCount": 7
+    },
+    {
+      "@id": "estleg:Chapter_KiKoS_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "1. peatükk – ÜLDSÄTTED",
+      "estleg:chapterNumber": "1",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_KiKoS_1"
+      }
     },
     {
       "@id": "estleg:Cluster_KiKoS_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§8–10 ÜKSIKISIKU USUVABADUS"
+      "rdfs:label": "§8–10 ÜKSIKISIKU USUVABADUS",
+      "skos:prefLabel": "§8–10 ÜKSIKISIKU USUVABADUS",
+      "skos:inScheme": {
+        "@id": "estleg:KiKoS_TopicScheme"
+      },
+      "estleg:provisionCount": 3
+    },
+    {
+      "@id": "estleg:Chapter_KiKoS_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "2. peatükk – ÜKSIKISIKU USUVABADUS",
+      "estleg:chapterNumber": "2",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_KiKoS_2"
+      }
     },
     {
       "@id": "estleg:Cluster_KiKoS_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§11–16 USULISTE ÜHENDUSTE ASUTAMINE, REGISTRISSE KANDMINE NING ÜHINEMINE, JAGUNEMINE JA LÕPETAMINE"
+      "rdfs:label": "§11–16 USULISTE ÜHENDUSTE ASUTAMINE, REGISTRISSE KANDMINE NING ÜHINEMINE, JAGUNEMINE JA LÕPETAMINE",
+      "skos:prefLabel": "§11–16 USULISTE ÜHENDUSTE ASUTAMINE, REGISTRISSE KANDMINE NING ÜHINEMINE, JAGUNEMINE JA LÕPETAMINE",
+      "skos:inScheme": {
+        "@id": "estleg:KiKoS_TopicScheme"
+      },
+      "estleg:provisionCount": 6
+    },
+    {
+      "@id": "estleg:Chapter_KiKoS_3",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "3. peatükk – USULISTE ÜHENDUSTE ASUTAMINE, REGISTRISSE KANDMINE NING ÜHINEMINE, JAGUNEMINE JA LÕPETAMINE",
+      "estleg:chapterNumber": "3",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_KiKoS_3"
+      }
     },
     {
       "@id": "estleg:Cluster_KiKoS_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§17–19 USULISTE ÜHENDUSTE REGISTER"
+      "rdfs:label": "§17–19 USULISTE ÜHENDUSTE REGISTER",
+      "skos:prefLabel": "§17–19 USULISTE ÜHENDUSTE REGISTER",
+      "skos:inScheme": {
+        "@id": "estleg:KiKoS_TopicScheme"
+      },
+      "estleg:provisionCount": 3
+    },
+    {
+      "@id": "estleg:Chapter_KiKoS_4",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "4. peatükk – USULISTE ÜHENDUSTE REGISTER",
+      "estleg:chapterNumber": "4",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_KiKoS_4"
+      }
     },
     {
       "@id": "estleg:Cluster_KiKoS_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§20–24 VAIMULIK JA JUHATUS"
+      "rdfs:label": "§20–24 VAIMULIK JA JUHATUS",
+      "skos:prefLabel": "§20–24 VAIMULIK JA JUHATUS",
+      "skos:inScheme": {
+        "@id": "estleg:KiKoS_TopicScheme"
+      },
+      "estleg:provisionCount": 5
+    },
+    {
+      "@id": "estleg:Chapter_KiKoS_5",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "5. peatükk – VAIMULIK JA JUHATUS",
+      "estleg:chapterNumber": "5",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_KiKoS_5"
+      }
     },
     {
       "@id": "estleg:Cluster_KiKoS_6",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§25–27 USULISE ÜHENDUSE VARA"
+      "rdfs:label": "§25–27 USULISE ÜHENDUSE VARA",
+      "skos:prefLabel": "§25–27 USULISE ÜHENDUSE VARA",
+      "skos:inScheme": {
+        "@id": "estleg:KiKoS_TopicScheme"
+      },
+      "estleg:provisionCount": 3
+    },
+    {
+      "@id": "estleg:Chapter_KiKoS_6",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "6. peatükk – USULISE ÜHENDUSE VARA",
+      "estleg:chapterNumber": "6",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_KiKoS_6"
+      }
     },
     {
       "@id": "estleg:Cluster_KiKoS_7",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§28–3334 SEADUSE RAKENDAMINE"
+      "rdfs:label": "§28–35 SEADUSE RAKENDAMINE",
+      "skos:prefLabel": "§28–35 SEADUSE RAKENDAMINE",
+      "skos:inScheme": {
+        "@id": "estleg:KiKoS_TopicScheme"
+      },
+      "estleg:provisionCount": 8
+    },
+    {
+      "@id": "estleg:Chapter_KiKoS_7",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "7. peatükk – SEADUSE RAKENDAMINE",
+      "estleg:chapterNumber": "7",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_KiKoS_7"
+      }
     },
     {
       "@id": "estleg:KiKoS_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KiKoS"
+        "estleg:LegalProvision_kirikute_ja_koguduste_seadus"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. Seaduse reguleerimisala",
       "estleg:sourceAct": "Kirikute ja koguduste seadus",
-      "estleg:summary": "1(1)Käesoleva seaduse ülesanne on põhiseadusega igaühele tagatud usuvabaduse teostamiseks sätestada kirikute, koguduste, koguduste liitude, kloostrite ja usuühingute liikmeks astumise kord ning nende tegevuse reguleerimine. Käesoleva seaduse ülesanne on põhiseadusega igaühele tagatud usuvabaduse teostamiseks sätestada kirikute, koguduste, koguduste liitude, kloostrite ja usuühingute liikmeks astumise kord ning nende tegevuse reguleerimine. 2(2)Käesolevas seaduses ettenähtud haldusmenetlusele koh",
+      "estleg:summary": "1 (1) Käesoleva seaduse ülesanne on põhiseadusega igaühele tagatud usuvabaduse teostamiseks sätestada kirikute, koguduste, koguduste liitude, kloostrite ja usuühingute liikmeks astumise kord ning nende tegevuse reguleerimine. Käesoleva seaduse ülesanne on põhiseadusega igaühele tagatud usuvabaduse teostamiseks sätestada kirikute, koguduste, koguduste liitude, kloostrite ja usuühingute liikmeks astumise kord ning nende tegevuse reguleerimine. 2 (2) Käesolevas seaduses ettenähtud haldusmenetlusele",
+      "estleg:legalText": "(1) Käesoleva seaduse ülesanne on põhiseadusega igaühele tagatud usuvabaduse teostamiseks sätestada kirikute, koguduste, koguduste liitude, kloostrite ja usuühingute liikmeks astumise kord ning nende tegevuse reguleerimine. (2) Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse sätteid, arvestades käesoleva seaduse erisusi.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KiKoS_1"
-      }
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KiKoS_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KiKoS_Par_1_Lg_1"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_1_Lg_2"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:KiKoS_Par_28"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:KiKoS_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesoleva seaduse ülesanne on põhiseadusega igaühele tagatud usuvabaduse teostamiseks sätestada kirikute, koguduste, koguduste liitude, kloostrite ja usuühingute liikmeks astumise kord ning nende tegevuse reguleerimine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse sätteid, arvestades käesoleva seaduse erisusi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 2"
     },
     {
       "@id": "estleg:KiKoS_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KiKoS"
+        "estleg:LegalProvision_kirikute_ja_koguduste_seadus"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. Usulised ühendused",
       "estleg:sourceAct": "Kirikute ja koguduste seadus",
-      "estleg:summary": "1(1)Usulised ühendused on kirikud, kogudused, koguduste liidud ja kloostrid. Usulised ühendused on kirikud, kogudused, koguduste liidud ja kloostrid. 2(2)Kirik käesoleva seaduse mõistes on episkopaalse struktuuriga ja kolme üldkirikliku usutunnistusega õpetuslikult seotud vähemalt kolme vabatahtlikult liitunud koguduse ühendus või on jaotatud vähemalt kolmeks koguduseks ja kes tegutseb põhikirja alusel, valitud või nimetatud juhatuse juhtimisel ning kantakse registrisse käesoleva seadusega etten",
+      "estleg:summary": "1 (1) Usulised ühendused on kirikud, kogudused, koguduste liidud ja kloostrid ning välislepingu alusel tegutseva kiriku institutsioonid. RT I 2011-02-02 1 102022011001 2011-02-12 Usulised ühendused on kirikud, kogudused, koguduste liidud ja kloostrid ning välislepingu alusel tegutseva kiriku institutsioonid. 2 (2) Kirik käesoleva seaduse mõistes on episkopaalse struktuuriga ja kolme üldkirikliku usutunnistusega õpetuslikult seotud vähemalt kolme vabatahtlikult liitunud koguduse ühendus või on ja",
+      "estleg:legalText": "(1) Usulised ühendused on kirikud, kogudused, koguduste liidud ja kloostrid ning välislepingu alusel tegutseva kiriku institutsioonid. (2) Kirik käesoleva seaduse mõistes on episkopaalse struktuuriga ja kolme üldkirikliku usutunnistusega õpetuslikult seotud vähemalt kolme vabatahtlikult liitunud koguduse ühendus või on jaotatud vähemalt kolmeks koguduseks ja kes tegutseb põhikirja alusel, valitud või nimetatud juhatuse juhtimisel ning kantakse registrisse käesoleva seadusega ettenähtud juhtudel ja korras. (3) Kogudus käesoleva seaduse mõistes on ühte usku tunnistavate füüsiliste isikute vabatahtlik ühendus, kes tegutseb põhikirja alusel ja valitud või nimetatud juhatuse juhtimisel ning kantakse registrisse käesoleva seadusega ettenähtud juhtudel ja korras. (4) Koguduste liit käesoleva seaduse mõistes on vähemalt kolme vabatahtlikult liitunud ja ühte usku tunnistavate koguduste ühendus, kes tegutseb põhikirja alusel ja valitud või nimetatud juhatuse juhtimisel ning kantakse registrisse käesoleva seadusega ettenähtud korras. (5) Klooster käesoleva seaduse mõistes on ühte usku tunnistavate füüsiliste isikute vabatahtlik ühiseluline ühendus, kes tegutseb vastava kiriku või iseseisva põhikirja alusel ja valitud või nimetatud kloostriülema juhtimisel ning kantakse registrisse käesoleva seadusega ettenähtud juhtudel ja korras. (6) Välislepingu alusel tegutseva kiriku institutsiooni suhtes kohaldatakse käesolevat seadust sarnaselt kirikusse kuuluva koguduse kohta sätestatuga.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KiKoS_1"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KiKoS_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KiKoS_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_2_Lg_2"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_2_Lg_3"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_2_Lg_4"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_2_Lg_5"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_2_Lg_6"
+        }
+      ],
       "estleg:targetGroup": [
+        "citizen",
         "business"
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:KiKoS_Par_28"
+        }
       ]
+    },
+    {
+      "@id": "estleg:KiKoS_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Usulised ühendused on kirikud, kogudused, koguduste liidud ja kloostrid ning välislepingu alusel tegutseva kiriku institutsioonid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kirik käesoleva seaduse mõistes on episkopaalse struktuuriga ja kolme üldkirikliku usutunnistusega õpetuslikult seotud vähemalt kolme vabatahtlikult liitunud koguduse ühendus või on jaotatud vähemalt kolmeks koguduseks ja kes tegutseb põhikirja alusel, valitud või nimetatud juhatuse juhtimisel ning kantakse registrisse käesoleva seadusega ettenähtud juhtudel ja korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_2_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kogudus käesoleva seaduse mõistes on ühte usku tunnistavate füüsiliste isikute vabatahtlik ühendus, kes tegutseb põhikirja alusel ja valitud või nimetatud juhatuse juhtimisel ning kantakse registrisse käesoleva seadusega ettenähtud juhtudel ja korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 3"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_2_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Koguduste liit käesoleva seaduse mõistes on vähemalt kolme vabatahtlikult liitunud ja ühte usku tunnistavate koguduste ühendus, kes tegutseb põhikirja alusel ja valitud või nimetatud juhatuse juhtimisel ning kantakse registrisse käesoleva seadusega ettenähtud korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 4"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_2_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Klooster käesoleva seaduse mõistes on ühte usku tunnistavate füüsiliste isikute vabatahtlik ühiseluline ühendus, kes tegutseb vastava kiriku või iseseisva põhikirja alusel ja valitud või nimetatud kloostriülema juhtimisel ning kantakse registrisse käesoleva seadusega ettenähtud juhtudel ja korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 5"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_2_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Välislepingu alusel tegutseva kiriku institutsiooni suhtes kohaldatakse käesolevat seadust sarnaselt kirikusse kuuluva koguduse kohta sätestatuga.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 6"
     },
     {
       "@id": "estleg:KiKoS_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KiKoS"
+        "estleg:LegalProvision_kirikute_ja_koguduste_seadus"
       ],
       "estleg:paragrahv": "§ 3.",
       "rdfs:label": "§ 3. Usulise ühenduse põhitegevus",
       "estleg:sourceAct": "Kirikute ja koguduste seadus",
-      "estleg:summary": "1(1)Kiriku, koguduse, koguduste liidu ja kloostri põhitegevus on oma usu tunnistamine ja viljelemine, eeskätt jumalateenistuste, usuliste koosolekute ja talituste vormis, ning usutunnistusekohane või oikumeeniline moraali-, eetika-, haridus-, kultuuri-, diakoonia-, sotsiaalse rehabilitatsiooni alane või muu tegevus väljaspool kirikule või kogudusele iseloomulikke usuliste talituste ja teenistuste vorme. Kiriku, koguduse, koguduste liidu ja kloostri põhitegevus on oma usu tunnistamine ja viljelem",
+      "estleg:summary": "1 (1) Kiriku, koguduse, koguduste liidu ja kloostri põhitegevus on oma usu tunnistamine ja viljelemine, eeskätt jumalateenistuste, usuliste koosolekute ja talituste vormis, ning usutunnistusekohane või oikumeeniline moraali-, eetika-, haridus-, kultuuri-, diakoonia-, sotsiaalse rehabilitatsiooni alane või muu tegevus väljaspool kirikule või kogudusele iseloomulikke usuliste talituste ja teenistuste vorme. Kiriku, koguduse, koguduste liidu ja kloostri põhitegevus on oma usu tunnistamine ja viljel",
+      "estleg:legalText": "(1) Kiriku, koguduse, koguduste liidu ja kloostri põhitegevus on oma usu tunnistamine ja viljelemine, eeskätt jumalateenistuste, usuliste koosolekute ja talituste vormis, ning usutunnistusekohane või oikumeeniline moraali-, eetika-, haridus-, kultuuri-, diakoonia-, sotsiaalse rehabilitatsiooni alane või muu tegevus väljaspool kirikule või kogudusele iseloomulikke usuliste talituste ja teenistuste vorme. (2) Kiriku, koguduse, koguduste liidu ja kloostri eesmärk või põhitegevus ei või olla majandustegevuse kaudu tulu saamine. (3) Kiriku, koguduse, koguduste liidu ja nende asutuse juhatustel ning kloostriülemal on õigus anda usulise ühenduse tegevust puudutavaid akte vastavalt põhikirjas sätestatud korrale.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KiKoS_1"
-      }
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KiKoS_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KiKoS_Par_3_Lg_1"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_3_Lg_2"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_3_Lg_3"
+        }
+      ],
+      "estleg:targetGroup": [
+        "business",
+        "public_body"
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:KiKoS_Par_28"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:KiKoS_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kiriku, koguduse, koguduste liidu ja kloostri põhitegevus on oma usu tunnistamine ja viljelemine, eeskätt jumalateenistuste, usuliste koosolekute ja talituste vormis, ning usutunnistusekohane või oikumeeniline moraali-, eetika-, haridus-, kultuuri-, diakoonia-, sotsiaalse rehabilitatsiooni alane või muu tegevus väljaspool kirikule või kogudusele iseloomulikke usuliste talituste ja teenistuste vorme.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_3_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kiriku, koguduse, koguduste liidu ja kloostri eesmärk või põhitegevus ei või olla majandustegevuse kaudu tulu saamine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 2"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_3_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kiriku, koguduse, koguduste liidu ja nende asutuse juhatustel ning kloostriülemal on õigus anda usulise ühenduse tegevust puudutavaid akte vastavalt põhikirjas sätestatud korrale.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 3"
     },
     {
       "@id": "estleg:KiKoS_Par_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KiKoS"
+        "estleg:LegalProvision_kirikute_ja_koguduste_seadus"
       ],
       "estleg:paragrahv": "§ 4.",
       "rdfs:label": "§ 4. Usuühing",
       "estleg:sourceAct": "Kirikute ja koguduste seadus",
-      "estleg:summary": "1(1)Usuühing on füüsiliste või juriidiliste isikute vabatahtlik ühendus, kelle põhitegevus on usutunnistusekohane või oikumeeniline moraali-, eetika-, haridus-, kultuuri-, diakoonia-, sotsiaalse rehabilitatsiooni alane tegevus väljaspool kirikule või kogudusele iseloomulikke usuliste talituste vorme ning kes ei pea olema seotud konkreetse kiriku, koguduste liidu või kogudusega. Usuühing on füüsiliste või juriidiliste isikute vabatahtlik ühendus, kelle põhitegevus on usutunnistusekohane või oikum",
+      "estleg:summary": "1 (1) Usuühing on mittetulundusühing, kelle põhitegevus on usutunnistusekohane või oikumeeniline moraali-, eetika-, haridus-, kultuuri-, diakoonia-, sotsiaalse rehabilitatsiooni alane tegevus väljaspool kirikule või kogudusele iseloomulikke usuliste talituste vorme ning kes ei pea olema seotud konkreetse kiriku, koguduste liidu või kogudusega. RT I 2022-05-05 1 105052022001 2023-02-01 Usuühing on mittetulundusühing, kelle põhitegevus on usutunnistusekohane või oikumeeniline moraali-, eetika-, ha",
+      "estleg:legalText": "(1) Usuühing on mittetulundusühing, kelle põhitegevus on usutunnistusekohane või oikumeeniline moraali-, eetika-, haridus-, kultuuri-, diakoonia-, sotsiaalse rehabilitatsiooni alane tegevus väljaspool kirikule või kogudusele iseloomulikke usuliste talituste vorme ning kes ei pea olema seotud konkreetse kiriku, koguduste liidu või kogudusega. (2) Usuühing kantakse mittetulundusühingute ja sihtasutuste registrisse mittetulundusühingute seadusega ettenähtud korras. Usuühingu põhikirja seaduses sätestatud nõuetele vastavuse kindlakstegemiseks võib registrit pidava maakohus peatada registrisse kandmise menetluse kuni kaheks kuuks ning pöörduda seisukoha saamiseks ministeeriumi poole, kelle valitsemisalas on usuliste ühendustega seotud asjade korraldamine, või pädeva asutuse poole eksperdiarvamuse saamiseks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KiKoS_1"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KiKoS_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KiKoS_Par_4_Lg_1"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_4_Lg_2"
+        }
+      ],
       "estleg:targetGroup": [
-        "citizen"
+        "public_body",
+        "ngo"
       ]
+    },
+    {
+      "@id": "estleg:KiKoS_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Usuühing on mittetulundusühing, kelle põhitegevus on usutunnistusekohane või oikumeeniline moraali-, eetika-, haridus-, kultuuri-, diakoonia-, sotsiaalse rehabilitatsiooni alane tegevus väljaspool kirikule või kogudusele iseloomulikke usuliste talituste vorme ning kes ei pea olema seotud konkreetse kiriku, koguduste liidu või kogudusega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_4_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Usuühing kantakse mittetulundusühingute ja sihtasutuste registrisse mittetulundusühingute seadusega ettenähtud korras. Usuühingu põhikirja seaduses sätestatud nõuetele vastavuse kindlakstegemiseks võib registrit pidava maakohus peatada registrisse kandmise menetluse kuni kaheks kuuks ning pöörduda seisukoha saamiseks ministeeriumi poole, kelle valitsemisalas on usuliste ühendustega seotud asjade korraldamine, või pädeva asutuse poole eksperdiarvamuse saamiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 2"
     },
     {
       "@id": "estleg:KiKoS_Par_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KiKoS"
+        "estleg:LegalProvision_kirikute_ja_koguduste_seadus"
       ],
       "estleg:paragrahv": "§ 5.",
       "rdfs:label": "§ 5. Õigusvõime",
       "estleg:sourceAct": "Kirikute ja koguduste seadus",
-      "estleg:summary": "1(1)Usuline ühendus on eraõiguslik juriidiline isik, kelle suhtes kohaldatakse mittetulundusühingute seadust, kuivõrd käesolevast seadusest ei tulene teisiti. Usuline ühendus on eraõiguslik juriidiline isik, kelle suhtes kohaldatakse mittetulundusühingute seadust, kuivõrd käesolevast seadusest ei tulene teisiti. 2(2)Usulise ühenduse põhikirjas võib ette näha erisusi mittetulundusühingute seaduses liikmeskonna ja juhtimise kohta sätestatust, kui need tulenevad usulise ühenduse ajalooliselt väljak",
+      "estleg:summary": "1 (1) Usuline ühendus on eraõiguslik juriidiline isik, kelle suhtes kohaldatakse mittetulundusühingute seadust, kuivõrd käesolevast seadusest ei tulene teisiti. Usuline ühendus on eraõiguslik juriidiline isik, kelle suhtes kohaldatakse mittetulundusühingute seadust, kuivõrd käesolevast seadusest ei tulene teisiti. 2 (2) Usulise ühenduse põhikirjas võib ette näha erisusi mittetulundusühingute seaduses liikmeskonna ja juhtimise kohta sätestatust, kui need tulenevad usulise ühenduse ajalooliselt vä",
+      "estleg:legalText": "(1) Usuline ühendus on eraõiguslik juriidiline isik, kelle suhtes kohaldatakse mittetulundusühingute seadust, kuivõrd käesolevast seadusest ei tulene teisiti. (2) Usulise ühenduse põhikirjas võib ette näha erisusi mittetulundusühingute seaduses liikmeskonna ja juhtimise kohta sätestatust, kui need tulenevad usulise ühenduse ajalooliselt väljakujunenud õpetusest ja struktuurist. (3) Usulise ühenduse ümberkujundamine teist liiki juriidiliseks isikuks ei ole lubatud. (4) Usulise ühenduse õigusvõime tekib tema kandmisega usuliste ühenduste registrisse (edaspidi register) ning lõpeb tema kustutamisega registrist, kui usulisel ühendusel puudub vara. (5) Kehtetu -",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KiKoS_1"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KiKoS_1"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KiKoS_Par_5_Lg_1"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_5_Lg_2"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_5_Lg_3"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_5_Lg_4"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_5_Lg_5"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen",
         "ngo"
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:KiKoS_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Usuline ühendus on eraõiguslik juriidiline isik, kelle suhtes kohaldatakse mittetulundusühingute seadust, kuivõrd käesolevast seadusest ei tulene teisiti.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_5_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Usulise ühenduse põhikirjas võib ette näha erisusi mittetulundusühingute seaduses liikmeskonna ja juhtimise kohta sätestatust, kui need tulenevad usulise ühenduse ajalooliselt väljakujunenud õpetusest ja struktuurist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 2"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_5_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Usulise ühenduse ümberkujundamine teist liiki juriidiliseks isikuks ei ole lubatud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 3"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_5_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Usulise ühenduse õigusvõime tekib tema kandmisega usuliste ühenduste registrisse (edaspidi register) ning lõpeb tema kustutamisega registrist, kui usulisel ühendusel puudub vara.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 4"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_5_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 5"
     },
     {
       "@id": "estleg:KiKoS_Par_6",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KiKoS"
+        "estleg:LegalProvision_kirikute_ja_koguduste_seadus"
       ],
       "estleg:paragrahv": "§ 6.",
       "rdfs:label": "§ 6. Asukoht",
       "estleg:sourceAct": "Kirikute ja koguduste seadus",
-      "estleg:summary": "1(1)Kiriku, koguduse ja koguduste liidu asukohaks on koht, kus asub kiriku, koguduse ja koguduste liidu juhatus, kui põhikirjaga ei ole ette nähtud teisiti. Kloostri asukohaks on koht, kus asub kloostri hoone või hoonete kompleks. Kiriku, koguduse ja koguduste liidu asukohaks on koht, kus asub kiriku, koguduse ja koguduste liidu juhatus, kui põhikirjaga ei ole ette nähtud teisiti. Kloostri asukohaks on koht, kus asub kloostri hoone või hoonete kompleks. 2(2)Kiriku, koguduse ja koguduste liidu ju",
+      "estleg:summary": "1 (1) Kiriku, koguduse ja koguduste liidu asukohaks on koht, kus asub kiriku, koguduse ja koguduste liidu juhatus, kui põhikirjaga ei ole ette nähtud teisiti. Kloostri asukohaks on koht, kus asub kloostri hoone või hoonete kompleks. Kiriku, koguduse ja koguduste liidu asukohaks on koht, kus asub kiriku, koguduse ja koguduste liidu juhatus, kui põhikirjaga ei ole ette nähtud teisiti. Kloostri asukohaks on koht, kus asub kloostri hoone või hoonete kompleks. 2 (2) Kiriku, koguduse ja koguduste liid",
+      "estleg:legalText": "(1) Kiriku, koguduse ja koguduste liidu asukohaks on koht, kus asub kiriku, koguduse ja koguduste liidu juhatus, kui põhikirjaga ei ole ette nähtud teisiti. Kloostri asukohaks on koht, kus asub kloostri hoone või hoonete kompleks. (2) Kiriku, koguduse ja koguduste liidu juhatus asub Eestis, olenemata tema vaimuliku keskuse asukohast.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KiKoS_1"
       },
-      "estleg:semanticallySimilarTo": [
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KiKoS_1"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:mittetulundusuhingute_seadus_Par_3",
-          "estleg:similarityScore": {
-            "@value": "0.471",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
+          "@id": "estleg:KiKoS_Par_6_Lg_1"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_6_Lg_2"
         }
       ],
       "estleg:targetGroup": [
@@ -231,110 +740,436 @@
       ]
     },
     {
+      "@id": "estleg:KiKoS_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kiriku, koguduse ja koguduste liidu asukohaks on koht, kus asub kiriku, koguduse ja koguduste liidu juhatus, kui põhikirjaga ei ole ette nähtud teisiti. Kloostri asukohaks on koht, kus asub kloostri hoone või hoonete kompleks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_6_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kiriku, koguduse ja koguduste liidu juhatus asub Eestis, olenemata tema vaimuliku keskuse asukohast.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 2"
+    },
+    {
       "@id": "estleg:KiKoS_Par_7",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KiKoS"
+        "estleg:LegalProvision_kirikute_ja_koguduste_seadus"
       ],
       "estleg:paragrahv": "§ 7.",
       "rdfs:label": "§ 7. Nimi",
       "estleg:sourceAct": "Kirikute ja koguduste seadus",
-      "estleg:summary": "1(1)Usulise ühenduse nimi peab olema kirjutatud ladina tähtedega ja sisaldama vastavat sõna «kirik», «kogudus», «koguduste liit» või «klooster» ning selgelt erinema teistest mittetulundusühingute ja sihtasutuste registrisse kantud juriidiliste isikute nimedest ega või olla eksitav tegevuse eesmärgi, ulatuse ega õigusliku vormi osas. Usuline ühendus võib oma nimes kasutada sõnade «kogudus» või «koguduste liit» asemel vastavat omanimetust, kui see tuleneb usulise ühenduse ajalooliselt väljakujunen",
+      "estleg:summary": "1 (1) Usulise ühenduse nimi peab olema kirjutatud ladina tähtedega ja sisaldama vastavat sõna «kirik», «kogudus», «koguduste liit» või «klooster» ning selgelt erinema teistest mittetulundusühingute ja sihtasutuste registrisse kantud juriidiliste isikute nimedest ega või olla eksitav tegevuse eesmärgi, ulatuse ega õigusliku vormi osas. Usuline ühendus võib oma nimes kasutada sõnade «kogudus» või «koguduste liit» asemel vastavat omanimetust, kui see tuleneb usulise ühenduse ajalooliselt väljakujun",
+      "estleg:legalText": "(1) Usulise ühenduse nimi peab olema kirjutatud ladina tähtedega ja sisaldama vastavat sõna «kirik», «kogudus», «koguduste liit» või «klooster» ning selgelt erinema teistest mittetulundusühingute ja sihtasutuste registrisse kantud juriidiliste isikute nimedest ega või olla eksitav tegevuse eesmärgi, ulatuse ega õigusliku vormi osas. Usuline ühendus võib oma nimes kasutada sõnade «kogudus» või «koguduste liit» asemel vastavat omanimetust, kui see tuleneb usulise ühenduse ajalooliselt väljakujunenud nimekasutustavast. (2) Kehtetu - (3) Usuline ühendus, kelle huve on kahjustatud tema nime õigustamatu kasutamisega, võib nõuda selle õigustamatu kasutamise lõpetamist, samuti tekitatud kahju hüvitamist.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KiKoS_1"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KiKoS_1"
       },
-      "estleg:dutyHolder": "Usulise ühenduse nimi",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KiKoS_Par_7_Lg_1"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_7_Lg_2"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_7_Lg_3"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen",
         "ngo"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:MTÜS_Par_4",
+          "estleg:similarityScore": {
+            "@value": "0.326",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:SAS_Par_3",
+          "estleg:similarityScore": {
+            "@value": "0.356",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
       ]
+    },
+    {
+      "@id": "estleg:KiKoS_Par_7_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Usulise ühenduse nimi peab olema kirjutatud ladina tähtedega ja sisaldama vastavat sõna «kirik», «kogudus», «koguduste liit» või «klooster» ning selgelt erinema teistest mittetulundusühingute ja sihtasutuste registrisse kantud juriidiliste isikute nimedest ega või olla eksitav tegevuse eesmärgi, ulatuse ega õigusliku vormi osas. Usuline ühendus võib oma nimes kasutada sõnade «kogudus» või «koguduste liit» asemel vastavat omanimetust, kui see tuleneb usulise ühenduse ajalooliselt väljakujunenud nimekasutustavast.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 1"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_7_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 2"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_7_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Usuline ühendus, kelle huve on kahjustatud tema nime õigustamatu kasutamisega, võib nõuda selle õigustamatu kasutamise lõpetamist, samuti tekitatud kahju hüvitamist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 3"
     },
     {
       "@id": "estleg:KiKoS_Par_8",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KiKoS"
+        "estleg:LegalProvision_kirikute_ja_koguduste_seadus"
       ],
       "estleg:paragrahv": "§ 8.",
       "rdfs:label": "§ 8. Üksikisiku õigused",
       "estleg:sourceAct": "Kirikute ja koguduste seadus",
-      "estleg:summary": "1(1)Igal isikul on õigus vabalt valida, tunnistada ja kuulutada oma usulisi veendumusi, kui see ei kahjusta avalikku korda, tervist, kõlblust ega teiste inimeste õigusi ja vabadusi. Igal isikul on õigus vabalt valida, tunnistada ja kuulutada oma usulisi veendumusi, kui see ei kahjusta avalikku korda, tervist, kõlblust ega teiste inimeste õigusi ja vabadusi. 2(2)Keegi ei ole kohustatud andma andmeid oma usutunnistuse või kogudusse kuulumise kohta, välja arvatud kriminaalmenetluse käigus kahtlusta",
+      "estleg:summary": "1 (1) Igal isikul on õigus vabalt valida, tunnistada ja kuulutada oma usulisi veendumusi, kui see ei kahjusta avalikku korda, tervist, kõlblust ega teiste inimeste õigusi ja vabadusi. Igal isikul on õigus vabalt valida, tunnistada ja kuulutada oma usulisi veendumusi, kui see ei kahjusta avalikku korda, tervist, kõlblust ega teiste inimeste õigusi ja vabadusi. 2 (2) Keegi ei ole kohustatud andma andmeid oma usutunnistuse või kogudusse kuulumise kohta, välja arvatud kriminaalmenetluse käigus kahtl",
+      "estleg:legalText": "(1) Igal isikul on õigus vabalt valida, tunnistada ja kuulutada oma usulisi veendumusi, kui see ei kahjusta avalikku korda, tervist, kõlblust ega teiste inimeste õigusi ja vabadusi. (2) Keegi ei ole kohustatud andma andmeid oma usutunnistuse või kogudusse kuulumise kohta, välja arvatud kriminaalmenetluse käigus kahtlustatav, süüdistatav, kohtualune ja kannatanu. (3) Igal isikul on õigus lahkuda kogudusest, teatades enne oma otsusest koguduse juhatusele. Igal isikul on õigus lahkuda kloostrist, teatades enne oma otsusest kloostriülemale. (4) Piiratud teovõimega isiku usutunnistust või kuulumist kogudusse ei ole tema eestkostjal õigus muuta. (5) Õigus osaleda kiriku, koguduse või koguduste liidu juhatuse ja ametiisikute valimistel on vähemalt 18-aastastel teovõimelistel liikmetel, kui põhikiri ei sätesta teist vanusemäära. (6) Igale isikule on tagatud õigus saada maetud vastavalt oma usutunnistusele. (7) Sugulaste, eestkostjate või hooldajate puudumisel viib usutunnistusekohase matusetalituse läbi lahkunu kogudus, kui on teada surnu kuuluvus kogudusse.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KiKoS_2"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KiKoS_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KiKoS_Par_8_Lg_1"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_8_Lg_2"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_8_Lg_3"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_8_Lg_4"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_8_Lg_5"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_8_Lg_6"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_8_Lg_7"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "business",
+        "official"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Right"
+      }
+    },
+    {
+      "@id": "estleg:KiKoS_Par_8_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Igal isikul on õigus vabalt valida, tunnistada ja kuulutada oma usulisi veendumusi, kui see ei kahjusta avalikku korda, tervist, kõlblust ega teiste inimeste õigusi ja vabadusi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_8"
       },
-      "estleg:targetGroup": [
-        "citizen"
-      ]
+      "rdfs:label": "§ 8 lg 1"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_8_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Keegi ei ole kohustatud andma andmeid oma usutunnistuse või kogudusse kuulumise kohta, välja arvatud kriminaalmenetluse käigus kahtlustatav, süüdistatav, kohtualune ja kannatanu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 2"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_8_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Igal isikul on õigus lahkuda kogudusest, teatades enne oma otsusest koguduse juhatusele. Igal isikul on õigus lahkuda kloostrist, teatades enne oma otsusest kloostriülemale.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 3"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_8_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Piiratud teovõimega isiku usutunnistust või kuulumist kogudusse ei ole tema eestkostjal õigus muuta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 4"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_8_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Õigus osaleda kiriku, koguduse või koguduste liidu juhatuse ja ametiisikute valimistel on vähemalt 18-aastastel teovõimelistel liikmetel, kui põhikiri ei sätesta teist vanusemäära.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 5"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_8_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Igale isikule on tagatud õigus saada maetud vastavalt oma usutunnistusele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 6"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_8_Lg_7",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "7",
+      "estleg:legalText": "(7) Sugulaste, eestkostjate või hooldajate puudumisel viib usutunnistusekohase matusetalituse läbi lahkunu kogudus, kui on teada surnu kuuluvus kogudusse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 7"
     },
     {
       "@id": "estleg:KiKoS_Par_9",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KiKoS"
+        "estleg:LegalProvision_kirikute_ja_koguduste_seadus"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Usuliste talituste täitmine ravi-, õppe-, hoolekande- ja kinnipidamisasutustes ning väeosades",
+      "rdfs:label": "§ 9. Usuliste talituste täitmine ravi-, õppe-, hoolekande- ja kinnipidamisasutustes ning kaitseväe struktuuriüksustes",
       "estleg:sourceAct": "Kirikute ja koguduste seadus",
-      "estleg:summary": "1(1)Ravi-, õppe-, hoolekande- ja kinnipidamisasutustes viibijal ning kaitseväelasel on õigus täita usulisi talitusi vastavalt oma usutunnistusele, kui see ei kahjusta avalikku korda, tervist, kõlblust, nendes asutustes kehtestatud korda ega teiste seal viibivate isikute õigusi. Ravi-, õppe-, hoolekande- ja kinnipidamisasutustes viibijal ning kaitseväelasel on õigus täita usulisi talitusi vastavalt oma usutunnistusele, kui see ei kahjusta avalikku korda, tervist, kõlblust, nendes asutustes kehtes",
+      "estleg:summary": "1 (1) Ravi-, õppe-, hoolekande- ja kinnipidamisasutustes viibijal ning kaitseväelasel on õigus täita usulisi talitusi vastavalt oma usutunnistusele, kui see ei kahjusta avalikku korda, tervist, kõlblust, nendes asutustes kehtestatud korda ega teiste seal viibivate isikute õigusi. Ravi-, õppe-, hoolekande- ja kinnipidamisasutustes viibijal ning kaitseväelasel on õigus täita usulisi talitusi vastavalt oma usutunnistusele, kui see ei kahjusta avalikku korda, tervist, kõlblust, nendes asutustes keht",
+      "estleg:legalText": "(1) Ravi-, õppe-, hoolekande- ja kinnipidamisasutustes viibijal ning kaitseväelasel on õigus täita usulisi talitusi vastavalt oma usutunnistusele, kui see ei kahjusta avalikku korda, tervist, kõlblust, nendes asutustes kehtestatud korda ega teiste seal viibivate isikute õigusi. (2) Jumalateenistusi ja usulisi talitusi ravi-, õppe- ja hoolekandeasutustes korraldab usuline ühendus omaniku või asutuse juhi, kinnipidamisasutustes vangla direktori, kaitseväes struktuuriüksuse ülema ning Kaitseliidus maleva pealiku loal.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KiKoS_2"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KiKoS_2"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KiKoS_Par_9_Lg_1"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_9_Lg_2"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen",
-        "public_body"
-      ]
+        "public_body",
+        "official"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      }
+    },
+    {
+      "@id": "estleg:KiKoS_Par_9_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ravi-, õppe-, hoolekande- ja kinnipidamisasutustes viibijal ning kaitseväelasel on õigus täita usulisi talitusi vastavalt oma usutunnistusele, kui see ei kahjusta avalikku korda, tervist, kõlblust, nendes asutustes kehtestatud korda ega teiste seal viibivate isikute õigusi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 1"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_9_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Jumalateenistusi ja usulisi talitusi ravi-, õppe- ja hoolekandeasutustes korraldab usuline ühendus omaniku või asutuse juhi, kinnipidamisasutustes vangla direktori, kaitseväes struktuuriüksuse ülema ning Kaitseliidus maleva pealiku loal.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 2"
     },
     {
       "@id": "estleg:KiKoS_Par_10",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KiKoS"
+        "estleg:LegalProvision_kirikute_ja_koguduste_seadus"
       ],
       "estleg:paragrahv": "§ 10.",
       "rdfs:label": "§ 10. Lapse kuulumine kogudusse",
       "estleg:sourceAct": "Kirikute ja koguduste seadus",
-      "estleg:summary": "1(1)Iga isik, kes on vähemalt 15-aastane, võib iseseisvalt astuda koguduse liikmeks või lahkuda kogudusest vastavalt põhikirjas ettenähtud korrale. Iga isik, kes on vähemalt 15-aastane, võib iseseisvalt astuda koguduse liikmeks või lahkuda kogudusest vastavalt põhikirjas ettenähtud korrale. 2(2)Noorem kui 15-aastane laps võib kuuluda kogudusse oma vanemate või eestkostja loal. Noorem kui 15-aastane laps võib kuuluda kogudusse oma vanemate või eestkostja loal.",
+      "estleg:summary": "1 (1) Iga isik, kes on vähemalt 15-aastane, võib iseseisvalt astuda koguduse liikmeks või lahkuda kogudusest vastavalt põhikirjas ettenähtud korrale. Iga isik, kes on vähemalt 15-aastane, võib iseseisvalt astuda koguduse liikmeks või lahkuda kogudusest vastavalt põhikirjas ettenähtud korrale. 2 (2) Noorem kui 15-aastane laps võib kuuluda kogudusse oma vanemate või eestkostja loal. Noorem kui 15-aastane laps võib kuuluda kogudusse oma vanemate või eestkostja loal.",
+      "estleg:legalText": "(1) Iga isik, kes on vähemalt 15-aastane, võib iseseisvalt astuda koguduse liikmeks või lahkuda kogudusest vastavalt põhikirjas ettenähtud korrale. (2) Noorem kui 15-aastane laps võib kuuluda kogudusse oma vanemate või eestkostja loal.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KiKoS_2"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KiKoS_2"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KiKoS_Par_10_Lg_1"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_10_Lg_2"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen"
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:KiKoS_Par_10_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Iga isik, kes on vähemalt 15-aastane, võib iseseisvalt astuda koguduse liikmeks või lahkuda kogudusest vastavalt põhikirjas ettenähtud korrale.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 1"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_10_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Noorem kui 15-aastane laps võib kuuluda kogudusse oma vanemate või eestkostja loal.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 2"
     },
     {
       "@id": "estleg:KiKoS_Par_11",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KiKoS"
+        "estleg:LegalProvision_kirikute_ja_koguduste_seadus"
       ],
       "estleg:paragrahv": "§ 11.",
       "rdfs:label": "§ 11. Usulise ühenduse asutamine",
       "estleg:sourceAct": "Kirikute ja koguduste seadus",
-      "estleg:summary": "1(1)Kiriku, koguduste liidu, kirikusse või koguduste liitu mittekuuluva koguduse ning kirikusse mittekuuluva kloostri asutamiseks sõlmivad asutajad asutamislepingu. Kiriku, koguduste liidu, kirikusse või koguduste liitu mittekuuluva koguduse ning kirikusse mittekuuluva kloostri asutamiseks sõlmivad asutajad asutamislepingu. 2(2)Asutamislepingus tuleb märkida:11)asutatava kiriku, koguduse, koguduste liidu või kirikusse mittekuuluva kloostri nimi, asukoht, aadress ja tegevuse eesmärk;22)asutajate ",
+      "estleg:summary": "1 (1) Kiriku, koguduste liidu, kirikusse või koguduste liitu mittekuuluva koguduse ning kirikusse mittekuuluva kloostri asutamiseks sõlmivad asutajad asutamislepingu. Kiriku, koguduste liidu, kirikusse või koguduste liitu mittekuuluva koguduse ning kirikusse mittekuuluva kloostri asutamiseks sõlmivad asutajad asutamislepingu. 2 (2) Asutamislepingus tuleb märkida: 1 1) asutatava kiriku, koguduse, koguduste liidu või kirikusse mittekuuluva kloostri nimi, asukoht, aadress ja tegevuse eesmärk; 2 2) ",
+      "estleg:legalText": "(1) Kiriku, koguduste liidu, kirikusse või koguduste liitu mittekuuluva koguduse ning kirikusse mittekuuluva kloostri asutamiseks sõlmivad asutajad asutamislepingu. (2) Asutamislepingus tuleb märkida: asutatava kiriku, koguduse, koguduste liidu või kirikusse mittekuuluva kloostri nimi, asukoht, aadress ja tegevuse eesmärk; asutajate nimed ja elu- või asukohad, samuti asutajate isiku- või registrikoodid; asutajate kohustused; juhatuse liikmete nimed, isikukoodid ja elukohad. (3) Asutamislepingu sõlmimisega kinnitatakse selle lisana kiriku, koguduste liidu, koguduse või kirikusse mittekuuluva kloostri põhikiri. (4) Kirikusse või koguduste liitu kuuluda sooviv kogudus asutatakse ja tema juhatus valitakse vastava kiriku või koguduste liidu põhikirja alusel, kui nimetatud põhikiri ei näe ette koguduse iseseisva põhikirja vastuvõtmist. Asutamiskoosoleku käik protokollitakse. Protokollile lisatakse koguduse asutajate nimekiri, milles on näidatud nende elukohad ja isikukoodid, koos asutajate allkirjadega. (5) Kirikusse või koguduste liitu mittekuuluva koguduse või kirikusse mittekuuluva kloostri asutamislepingule kirjutavad alla kõik asutajad. (6) Kiriku või koguduste liidu asutamisleping ja sellega kinnitatud põhikiri peavad olema notariaalselt tõestatud, kinnitatud või digitaalselt allkirjastatud. Asutamislepingule võib alla kirjutada asutaja esindaja. (7) Kirikusse kuuluv klooster asutatakse vastava kiriku põhikirjaga ettenähtud korras, asutamiskoosoleku käik protokollitakse. Protokollile lisatakse kloostri asutajate nimekiri, milles on näidatud nende elukohad ja isikukoodid, koos asutajate allkirjadega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KiKoS_3"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KiKoS_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KiKoS_Par_11_Lg_1"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_11_Lg_2"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_11_Lg_3"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_11_Lg_4"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_11_Lg_5"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_11_Lg_6"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_11_Lg_7"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "business",
+        "official"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
       "estleg:dutyHolder": "Asutamislepingus",
       "estleg:semanticallySimilarTo": [
         {
-          "@id": "estleg:mittetulundusuhingute_seadus_Par_6",
+          "@id": "estleg:MTÜS_Par_6",
           "estleg:similarityScore": {
-            "@value": "0.371",
+            "@value": "0.324",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
@@ -342,39 +1177,246 @@
       ]
     },
     {
+      "@id": "estleg:KiKoS_Par_11_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kiriku, koguduste liidu, kirikusse või koguduste liitu mittekuuluva koguduse ning kirikusse mittekuuluva kloostri asutamiseks sõlmivad asutajad asutamislepingu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 1"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_11_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Asutamislepingus tuleb märkida: asutatava kiriku, koguduse, koguduste liidu või kirikusse mittekuuluva kloostri nimi, asukoht, aadress ja tegevuse eesmärk; asutajate nimed ja elu- või asukohad, samuti asutajate isiku- või registrikoodid; asutajate kohustused; juhatuse liikmete nimed, isikukoodid ja elukohad.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 2"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_11_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Asutamislepingu sõlmimisega kinnitatakse selle lisana kiriku, koguduste liidu, koguduse või kirikusse mittekuuluva kloostri põhikiri.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 3"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_11_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Kirikusse või koguduste liitu kuuluda sooviv kogudus asutatakse ja tema juhatus valitakse vastava kiriku või koguduste liidu põhikirja alusel, kui nimetatud põhikiri ei näe ette koguduse iseseisva põhikirja vastuvõtmist. Asutamiskoosoleku käik protokollitakse. Protokollile lisatakse koguduse asutajate nimekiri, milles on näidatud nende elukohad ja isikukoodid, koos asutajate allkirjadega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 4"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_11_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Kirikusse või koguduste liitu mittekuuluva koguduse või kirikusse mittekuuluva kloostri asutamislepingule kirjutavad alla kõik asutajad.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 5"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_11_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Kiriku või koguduste liidu asutamisleping ja sellega kinnitatud põhikiri peavad olema notariaalselt tõestatud, kinnitatud või digitaalselt allkirjastatud. Asutamislepingule võib alla kirjutada asutaja esindaja.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 6"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_11_Lg_7",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "7",
+      "estleg:legalText": "(7) Kirikusse kuuluv klooster asutatakse vastava kiriku põhikirjaga ettenähtud korras, asutamiskoosoleku käik protokollitakse. Protokollile lisatakse kloostri asutajate nimekiri, milles on näidatud nende elukohad ja isikukoodid, koos asutajate allkirjadega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 7"
+    },
+    {
       "@id": "estleg:KiKoS_Par_12",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KiKoS"
+        "estleg:LegalProvision_kirikute_ja_koguduste_seadus"
       ],
       "estleg:paragrahv": "§ 12.",
       "rdfs:label": "§ 12. Põhikiri",
       "estleg:sourceAct": "Kirikute ja koguduste seadus",
-      "estleg:summary": "1(1)Usulise ühenduse põhikiri peab sisaldama järgmisi andmeid:11)nimi ja asukoht;22)tegevuse eesmärk ja õpetuslik alus;33)kohustuslikud usulised talitused;44)juhtimis- ja järelevalveorganite struktuur, nende moodustamise kord, pädevus ja volituste tähtaeg;55)juhatuse liikmete valimise või nimetamise kord ja esindusõigusega seotud piirangud;66)vaimulike staatus, hierarhia, teenistussuhted ja teenistusriietus;77)vara moodustumise, kasutamise ja käsutamise kord;88)põhikirja vastuvõtmise, muutmise, ",
+      "estleg:summary": "1 (1) Usulise ühenduse põhikiri peab sisaldama järgmisi andmeid: 1 1) nimi ja asukoht; 2 2) tegevuse eesmärk ja õpetuslik alus; 3 3) kohustuslikud usulised talitused; 4 4) juhtimis- ja järelevalveorganite struktuur, nende moodustamise kord, pädevus ja volituste tähtaeg; 5 5) juhatuse liikmete valimise või nimetamise kord ja esindusõigusega seotud piirangud; 6 6) vaimulike staatus, hierarhia, teenistussuhted ja teenistusriietus; 7 7) vara moodustumise, kasutamise ja käsutamise kord; 8 8) põhikirj",
+      "estleg:legalText": "(1) Usulise ühenduse põhikiri peab sisaldama järgmisi andmeid: nimi ja asukoht; tegevuse eesmärk ja õpetuslik alus; kohustuslikud usulised talitused; juhtimis- ja järelevalveorganite struktuur, nende moodustamise kord, pädevus ja volituste tähtaeg; juhatuse liikmete valimise või nimetamise kord ja esindusõigusega seotud piirangud; vaimulike staatus, hierarhia, teenistussuhted ja teenistusriietus; vara moodustumise, kasutamise ja käsutamise kord; põhikirja vastuvõtmise, muutmise, täiendamise alused ja kord; tegevuse lõpetamise alused ja kord; usulise ühenduse liikmeks vastuvõtmise ning liikmeskonnast väljaastumise ja väljaarvamise tingimused ja kord; liikmete õigused ja kohustused või kord, kuidas võib liikmetele kohustusi kehtestada. (2) Kui kirik või koguduste liit muudab oma põhikirja, millega kaasneb kiriku muutumine koguduste liiduks või koguduste liidu muutumine kirikuks, peavad nimetatud otsuse poolt olema ja selle allkirjastama kõigi vastavasse kirikusse või koguduste liitu kuuluvate koguduste esindajad. Allkirjad otsusel peavad olema notariaalselt kinnitatud. (3) Usulise ühenduse põhikirja muudatus jõustub vastava kande tegemisel registrisse. (4) Usulisel ühendusel võivad olla osakonnad ja asutused, kui see on ette nähtud põhikirjaga. Osakonnad ja asutused ei ole juriidilised isikud. Osakonna või asutuse organid ja nende pädevus nähakse ette põhikirjas.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KiKoS_3"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KiKoS_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KiKoS_Par_12_Lg_1"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_12_Lg_2"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_12_Lg_3"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_12_Lg_4"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "business",
+        "public_body",
+        "official"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
+      }
+    },
+    {
+      "@id": "estleg:KiKoS_Par_12_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Usulise ühenduse põhikiri peab sisaldama järgmisi andmeid: nimi ja asukoht; tegevuse eesmärk ja õpetuslik alus; kohustuslikud usulised talitused; juhtimis- ja järelevalveorganite struktuur, nende moodustamise kord, pädevus ja volituste tähtaeg; juhatuse liikmete valimise või nimetamise kord ja esindusõigusega seotud piirangud; vaimulike staatus, hierarhia, teenistussuhted ja teenistusriietus; vara moodustumise, kasutamise ja käsutamise kord; põhikirja vastuvõtmise, muutmise, täiendamise alused ja kord; tegevuse lõpetamise alused ja kord; usulise ühenduse liikmeks vastuvõtmise ning liikmeskonnast väljaastumise ja väljaarvamise tingimused ja kord; liikmete õigused ja kohustused või kord, kuidas võib liikmetele kohustusi kehtestada.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_12"
       },
-      "estleg:dutyHolder": "Usulise ühenduse põhikiri",
-      "estleg:targetGroup": [
-        "business"
-      ]
+      "rdfs:label": "§ 12 lg 1"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_12_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kui kirik või koguduste liit muudab oma põhikirja, millega kaasneb kiriku muutumine koguduste liiduks või koguduste liidu muutumine kirikuks, peavad nimetatud otsuse poolt olema ja selle allkirjastama kõigi vastavasse kirikusse või koguduste liitu kuuluvate koguduste esindajad. Allkirjad otsusel peavad olema notariaalselt kinnitatud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 2"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_12_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Usulise ühenduse põhikirja muudatus jõustub vastava kande tegemisel registrisse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 3"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_12_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Usulisel ühendusel võivad olla osakonnad ja asutused, kui see on ette nähtud põhikirjaga. Osakonnad ja asutused ei ole juriidilised isikud. Osakonna või asutuse organid ja nende pädevus nähakse ette põhikirjas.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 4"
     },
     {
       "@id": "estleg:KiKoS_Par_13",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KiKoS"
+        "estleg:LegalProvision_kirikute_ja_koguduste_seadus"
       ],
       "estleg:paragrahv": "§ 13.",
       "rdfs:label": "§ 13. Registrisse kandmise avaldus",
       "estleg:sourceAct": "Kirikute ja koguduste seadus",
-      "estleg:summary": "1(1)Registrisse kantakse kogudus, kuhu kuulub vähemalt 12 täisealist teovõimelist liiget. Registrisse kantakse kogudus, kuhu kuulub vähemalt 12 täisealist teovõimelist liiget. 2(2)Usulise ühenduse kandmiseks registrisse esitab usulise ühenduse juhatus avalduse, milles näidatakse käesoleva seaduse § 15 lõikes 1 nimetatud andmed, ja sellele kirjutavad alla kõik juhatuse liikmed. Usulise ühenduse kandmiseks registrisse esitab usulise ühenduse juhatus avalduse, milles näidatakse käesoleva seaduse § ",
+      "estleg:summary": "1 (1) Registrisse kantakse kogudus, kuhu kuulub vähemalt 12 täisealist teovõimelist liiget. Registrisse kantakse kogudus, kuhu kuulub vähemalt 12 täisealist teovõimelist liiget. 2 (2) Usulise ühenduse kandmiseks registrisse esitab usulise ühenduse juhatus avalduse, milles näidatakse käesoleva seaduse § 15 lõikes 1 nimetatud andmed, ja sellele kirjutavad alla kõik juhatuse liikmed. Usulise ühenduse kandmiseks registrisse esitab usulise ühenduse juhatus avalduse, milles näidatakse käesoleva seadus",
+      "estleg:legalText": "(1) Registrisse kantakse kogudus, kuhu kuulub vähemalt 12 täisealist teovõimelist liiget. (2) Usulise ühenduse kandmiseks registrisse esitab usulise ühenduse juhatus avalduse, milles näidatakse käesoleva seaduse § 15 lõikes 1 nimetatud andmed, ja sellele kirjutavad alla kõik juhatuse liikmed. (3) Avaldusele lisatakse: asutamisleping ja sellega kinnitatud põhikiri või asutamiskoosoleku protokoll ja vastava kiriku või koguduste liidu juhatuse poolt kinnitatud põhikiri; kehtetu - sidevahendite (telefon, faks vms) numbrid; tõend riigilõivu tasumise kohta. (3<sup>1</sup>) Välislepingu alusel tegutseva usulise ühenduse puhul esitab registripidajale avalduse välislepingu alusel tegutseva kiriku juhatus, lisades avaldusele põhikirja ja asutamislepingu asemel välislepingu teksti. (4) Käesoleva paragrahvi lõigetes 2 ja 3 nimetatud dokumendid kirikusse kuuluva kloostri või kirikusse või koguduste liitu kuuluva koguduse kohta, kes on juriidiline isik vastavalt oma põhikirjale või kiriku või koguduste liidu põhikirjale, esitab registrile vastava kiriku või koguduste liidu juhatus. (5) Kehtetu - (6) Kehtetu - (7) Kehtetu - (8) Kehtetu - (9) Kehtetu - (10) Kehtetu -",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KiKoS_3"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KiKoS_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KiKoS_Par_13_Lg_1"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_13_Lg_2"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_13_Lg_3"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_13_Lg_3_1"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_13_Lg_4"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_13_Lg_5"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_13_Lg_6"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_13_Lg_7"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_13_Lg_8"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_13_Lg_9"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_13_Lg_10"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "business",
+        "public_body"
+      ],
       "estleg:references": [
         {
           "@id": "estleg:KiKoS_Par_15"
@@ -382,16 +1424,29 @@
       ],
       "estleg:semanticallySimilarTo": [
         {
-          "@id": "estleg:mittetulundusuhingute_seadus_Par_8",
+          "@id": "estleg:MTÜS_Par_8",
           "estleg:similarityScore": {
-            "@value": "0.325",
+            "@value": "0.406",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:SAS_Par_11",
+          "estleg:similarityScore": {
+            "@value": "0.371",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:TÜS_Par_7",
+          "estleg:similarityScore": {
+            "@value": "0.316",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
         }
-      ],
-      "estleg:targetGroup": [
-        "business"
       ],
       "estleg:referencedBy": [
         {
@@ -400,51 +1455,283 @@
       ]
     },
     {
+      "@id": "estleg:KiKoS_Par_13_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Registrisse kantakse kogudus, kuhu kuulub vähemalt 12 täisealist teovõimelist liiget.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 1"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_13_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Usulise ühenduse kandmiseks registrisse esitab usulise ühenduse juhatus avalduse, milles näidatakse käesoleva seaduse § 15 lõikes 1 nimetatud andmed, ja sellele kirjutavad alla kõik juhatuse liikmed.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 2"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_13_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Avaldusele lisatakse: asutamisleping ja sellega kinnitatud põhikiri või asutamiskoosoleku protokoll ja vastava kiriku või koguduste liidu juhatuse poolt kinnitatud põhikiri; kehtetu - sidevahendite (telefon, faks vms) numbrid; tõend riigilõivu tasumise kohta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 3"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_13_Lg_3_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3<sup>1</sup>",
+      "estleg:legalText": "(3<sup>1</sup>) Välislepingu alusel tegutseva usulise ühenduse puhul esitab registripidajale avalduse välislepingu alusel tegutseva kiriku juhatus, lisades avaldusele põhikirja ja asutamislepingu asemel välislepingu teksti.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 3<sup>1</sup>"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_13_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Käesoleva paragrahvi lõigetes 2 ja 3 nimetatud dokumendid kirikusse kuuluva kloostri või kirikusse või koguduste liitu kuuluva koguduse kohta, kes on juriidiline isik vastavalt oma põhikirjale või kiriku või koguduste liidu põhikirjale, esitab registrile vastava kiriku või koguduste liidu juhatus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 4"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_13_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 5"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_13_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 6"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_13_Lg_7",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "7",
+      "estleg:legalText": "(7) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 7"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_13_Lg_8",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "8",
+      "estleg:legalText": "(8) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 8"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_13_Lg_9",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "9",
+      "estleg:legalText": "(9) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 9"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_13_Lg_10",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "10",
+      "estleg:legalText": "(10) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 10"
+    },
+    {
       "@id": "estleg:KiKoS_Par_14",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KiKoS"
+        "estleg:LegalProvision_kirikute_ja_koguduste_seadus"
       ],
       "estleg:paragrahv": "§ 14.",
       "rdfs:label": "§ 14. Registrisse kandmise menetluse peatamine ja registrisse kandmata jätmine",
       "estleg:sourceAct": "Kirikute ja koguduste seadus",
-      "estleg:summary": "1(1)Usulise ühenduse seaduses sätestatud nõuetele vastavuse kindlakstegemiseks võib registrit pidava maakohtu esimees peatada registrisse kandmise menetluse kuni kaheks kuuks ning pöörduda seisukoha saamiseks ministeeriumi poole, kelle valitsemisalas on usuliste ühendustega seotud asjade korraldamine, või pädeva asutuse poole eksperdiarvamuse saamiseks. Usulise ühenduse seaduses sätestatud nõuetele vastavuse kindlakstegemiseks võib registrit pidava maakohtu esimees peatada registrisse kandmise m",
+      "estleg:summary": "1 (1) Usulise ühenduse seaduses sätestatud nõuetele vastavuse kindlakstegemiseks võib registrit pidava maakohtu esimees peatada registrisse kandmise menetluse kuni kaheks kuuks ning pöörduda seisukoha saamiseks ministeeriumi poole, kelle valitsemisalas on usuliste ühendustega seotud asjade korraldamine, või pädeva asutuse poole eksperdiarvamuse saamiseks. Usulise ühenduse seaduses sätestatud nõuetele vastavuse kindlakstegemiseks võib registrit pidava maakohtu esimees peatada registrisse kandmise",
+      "estleg:legalText": "(1) Usulise ühenduse seaduses sätestatud nõuetele vastavuse kindlakstegemiseks võib registrit pidava maakohtu esimees peatada registrisse kandmise menetluse kuni kaheks kuuks ning pöörduda seisukoha saamiseks ministeeriumi poole, kelle valitsemisalas on usuliste ühendustega seotud asjade korraldamine, või pädeva asutuse poole eksperdiarvamuse saamiseks. (2) Registripidaja ei kanna usulist ühendust registrisse, kui: usulise ühenduse põhikiri või muud dokumendid ei vasta seaduse nõuetele; usulise ühenduse tegevus kahjustab avalikku korda, tervist, kõlblust või teiste inimeste õigusi ja vabadusi. (3) Registrisse kandmise avalduse tagasilükkamisel peab registripidaja ära näitama tagasilükkamise põhjuse.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KiKoS_3"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KiKoS_3"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KiKoS_Par_14_Lg_1"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_14_Lg_2"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_14_Lg_3"
+        }
+      ],
       "estleg:targetGroup": [
         "public_body",
         "official"
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:KiKoS_Par_14_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Usulise ühenduse seaduses sätestatud nõuetele vastavuse kindlakstegemiseks võib registrit pidava maakohtu esimees peatada registrisse kandmise menetluse kuni kaheks kuuks ning pöörduda seisukoha saamiseks ministeeriumi poole, kelle valitsemisalas on usuliste ühendustega seotud asjade korraldamine, või pädeva asutuse poole eksperdiarvamuse saamiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 1"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_14_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Registripidaja ei kanna usulist ühendust registrisse, kui: usulise ühenduse põhikiri või muud dokumendid ei vasta seaduse nõuetele; usulise ühenduse tegevus kahjustab avalikku korda, tervist, kõlblust või teiste inimeste õigusi ja vabadusi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 2"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_14_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Registrisse kandmise avalduse tagasilükkamisel peab registripidaja ära näitama tagasilükkamise põhjuse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 3"
     },
     {
       "@id": "estleg:KiKoS_Par_15",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KiKoS"
+        "estleg:LegalProvision_kirikute_ja_koguduste_seadus"
       ],
       "estleg:paragrahv": "§ 15.",
       "rdfs:label": "§ 15. Registrisse andmete kandmine ja nende muutmine",
       "estleg:sourceAct": "Kirikute ja koguduste seadus",
-      "estleg:summary": "1(1)Registrisse kantakse:11)usulise ühenduse nimi;22)usulise ühenduse asukoht ja aadress;33)usulise ühenduse esmamainimise või asutamise aeg;44)põhikirja vastuvõtmise aeg;55)juhatuse liikmete nimed, isikukoodid ja elukohad;66)juhatuse esindusõiguse erisused vastavalt käesoleva seaduse § -s 24 sätestatule;77)muud seaduses sätestatud andmed. Registrisse kantakse: usulise ühenduse nimi; usulise ühenduse asukoht ja aadress; usulise ühenduse esmamainimise või asutamise aeg; põhikirja vastuvõtmise aeg",
+      "estleg:summary": "1 (1) Registrisse kantakse: 1 1) usulise ühenduse nimi; 2 2) usulise ühenduse asukoht ja aadress; 3 3) usulise ühenduse esmamainimise või asutamise aeg; 4 4) põhikirja jõustumise aeg; RT I 2022-05-05 1 105052022001 2023-02-01 5 5) juhatuse liikmete nimed ja isikukoodid; RT I 2006 61 456 12768172 2007-01-01 6 6) kehtetu - RT I 2022-05-05 1 105052022001 2023-02-01 7 7) muud seaduses sätestatud andmed. Registrisse kantakse: usulise ühenduse nimi; usulise ühenduse asukoht ja aadress; usulise ühendus",
+      "estleg:legalText": "(1) Registrisse kantakse: usulise ühenduse nimi; usulise ühenduse asukoht ja aadress; usulise ühenduse esmamainimise või asutamise aeg; põhikirja jõustumise aeg; juhatuse liikmete nimed ja isikukoodid; kehtetu - muud seaduses sätestatud andmed. (2) Kiriku, koguduste liidu, kirikusse kuuluva kloostri ja kirikusse või koguduste liitu kuuluva koguduse registrisse kantud andmete muutumisel esitab avalduse muudatuste registrisse kandmiseks vastava kiriku või koguduste liidu juhatus. (2<sup>1</sup>) Kirikusse mittekuuluva kloostri ja kirikusse või koguduste liitu mittekuuluva koguduse registrisse kantud andmete muutumisel esitab avalduse muudatuste registrisse kandmiseks vastava kloostri või koguduse juhatus. (2<sup>2</sup>) Kehtetu - (2<sup>3</sup>) Kehtetu - (3) Koguduse või kloostri liitumisel kiriku või koguduste liiduga ja koguduse või kloostri väljaastumisel või väljaarvamisel sealt esitab vastava kiriku või koguduste liidu juhatus registrile dokumendid käesoleva seaduse § 13 lõikes 4 toodud korras. (4) Avaldusele lisatavale protokolli väljavõttele ei pea lisama koosolekust osavõtnute nimekirja või muud dokumenti usulise ühenduse liikmeskonna kohta.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KiKoS_3"
       },
-      "estleg:semanticallySimilarTo": [
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KiKoS_3"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:mittetulundusuhingute_seadus_Par_10",
-          "estleg:similarityScore": {
-            "@value": "0.519",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
+          "@id": "estleg:KiKoS_Par_15_Lg_1"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_15_Lg_2"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_15_Lg_2_1"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_15_Lg_2_2"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_15_Lg_2_3"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_15_Lg_3"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_15_Lg_4"
         }
       ],
       "estleg:targetGroup": [
         "business"
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:MTÜS_Par_10",
+          "estleg:similarityScore": {
+            "@value": "0.545",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:TÜS_Par_8",
+          "estleg:similarityScore": {
+            "@value": "0.455",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
       ],
       "estleg:referencedBy": [
         {
@@ -453,40 +1740,209 @@
       ]
     },
     {
+      "@id": "estleg:KiKoS_Par_15_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Registrisse kantakse: usulise ühenduse nimi; usulise ühenduse asukoht ja aadress; usulise ühenduse esmamainimise või asutamise aeg; põhikirja jõustumise aeg; juhatuse liikmete nimed ja isikukoodid; kehtetu - muud seaduses sätestatud andmed.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 1"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_15_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kiriku, koguduste liidu, kirikusse kuuluva kloostri ja kirikusse või koguduste liitu kuuluva koguduse registrisse kantud andmete muutumisel esitab avalduse muudatuste registrisse kandmiseks vastava kiriku või koguduste liidu juhatus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 2"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_15_Lg_2_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2<sup>1</sup>",
+      "estleg:legalText": "(2<sup>1</sup>) Kirikusse mittekuuluva kloostri ja kirikusse või koguduste liitu mittekuuluva koguduse registrisse kantud andmete muutumisel esitab avalduse muudatuste registrisse kandmiseks vastava kloostri või koguduse juhatus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 2<sup>1</sup>"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_15_Lg_2_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2<sup>2</sup>",
+      "estleg:legalText": "(2<sup>2</sup>) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 2<sup>2</sup>"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_15_Lg_2_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2<sup>3</sup>",
+      "estleg:legalText": "(2<sup>3</sup>) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 2<sup>3</sup>"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_15_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Koguduse või kloostri liitumisel kiriku või koguduste liiduga ja koguduse või kloostri väljaastumisel või väljaarvamisel sealt esitab vastava kiriku või koguduste liidu juhatus registrile dokumendid käesoleva seaduse § 13 lõikes 4 toodud korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 3"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_15_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Avaldusele lisatavale protokolli väljavõttele ei pea lisama koosolekust osavõtnute nimekirja või muud dokumenti usulise ühenduse liikmeskonna kohta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 4"
+    },
+    {
       "@id": "estleg:KiKoS_Par_16",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KiKoS"
+        "estleg:LegalProvision_kirikute_ja_koguduste_seadus"
       ],
       "estleg:paragrahv": "§ 16.",
       "rdfs:label": "§ 16. Ühinemine, jagunemine ja lõpetamine",
       "estleg:sourceAct": "Kirikute ja koguduste seadus",
-      "estleg:summary": "1(1)Usulise ühenduse ühinemine, jagunemine ja lõpetamine toimub mittetulundusühingute seaduses mittetulundusühingute kohta ettenähtud korras, kui põhikiri või käesolev seadus ei sätesta teisiti, ning sellest teatatakse registrile vastavalt käesoleva seaduse § 13 lõigetele 4-7. Usulise ühenduse ühinemine, jagunemine ja lõpetamine toimub mittetulundusühingute seaduses mittetulundusühingute kohta ettenähtud korras, kui põhikiri või käesolev seadus ei sätesta teisiti, ning sellest teatatakse registr",
+      "estleg:summary": "1 (1) Usulise ühenduse ühinemine, jagunemine ja lõpetamine toimub mittetulundusühingute seaduses mittetulundusühingute kohta ettenähtud korras, kui põhikiri või käesolev seadus ei sätesta teisiti, ning sellest teatatakse registrile vastavalt käesoleva seaduse § 13 lõikele 4. RT I 2022-05-05 1 105052022001 2023-02-01 Usulise ühenduse ühinemine, jagunemine ja lõpetamine toimub mittetulundusühingute seaduses mittetulundusühingute kohta ettenähtud korras, kui põhikiri või käesolev seadus ei sätesta ",
+      "estleg:legalText": "(1) Usulise ühenduse ühinemine, jagunemine ja lõpetamine toimub mittetulundusühingute seaduses mittetulundusühingute kohta ettenähtud korras, kui põhikiri või käesolev seadus ei sätesta teisiti, ning sellest teatatakse registrile vastavalt käesoleva seaduse § 13 lõikele 4. (2) Usulise ühenduse lõpetamine ja likvideerimine toimub: põhikirjaga ettenähtud alusel ja korras; usulisse ühendusse kuuluvate koguduste või liikmete arvu vähenemisel alla seaduses või põhikirjas sätestatud suuruse; usulise ühenduse pankroti väljakuulutamisel; käesoleva paragrahvi lõikes 3 sätestatud alusel ja korras. (3) Minister, kelle valitsemisalas on usuliste ühendustega seotud asjade korraldamine, taotleb kohtult usulise ühenduse sundlõpetamist, kui: usulise ühenduse tegevus või põhikiri on vastuolus seaduse või põhiseadusega; usulise ühenduse tegevuses ilmnevad käesoleva seaduse § 14 lõike 2 punktis 2 nimetatud tunnused; usulise ühenduse tegevus ei vasta tema põhikirjalistele eesmärkidele; usulise ühenduse põhitegevuseks saab majandustegevus.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KiKoS_3"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KiKoS_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KiKoS_Par_16_Lg_1"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_16_Lg_2"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_16_Lg_3"
+        }
+      ],
+      "estleg:targetGroup": [
+        "public_body",
+        "official",
+        "ngo"
+      ],
       "estleg:references": [
         {
           "@id": "estleg:KiKoS_Par_13"
         }
-      ],
-      "estleg:targetGroup": [
-        "ngo"
       ]
+    },
+    {
+      "@id": "estleg:KiKoS_Par_16_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Usulise ühenduse ühinemine, jagunemine ja lõpetamine toimub mittetulundusühingute seaduses mittetulundusühingute kohta ettenähtud korras, kui põhikiri või käesolev seadus ei sätesta teisiti, ning sellest teatatakse registrile vastavalt käesoleva seaduse § 13 lõikele 4.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 1"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_16_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Usulise ühenduse lõpetamine ja likvideerimine toimub: põhikirjaga ettenähtud alusel ja korras; usulisse ühendusse kuuluvate koguduste või liikmete arvu vähenemisel alla seaduses või põhikirjas sätestatud suuruse; usulise ühenduse pankroti väljakuulutamisel; käesoleva paragrahvi lõikes 3 sätestatud alusel ja korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 2"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_16_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Minister, kelle valitsemisalas on usuliste ühendustega seotud asjade korraldamine, taotleb kohtult usulise ühenduse sundlõpetamist, kui: usulise ühenduse tegevus või põhikiri on vastuolus seaduse või põhiseadusega; usulise ühenduse tegevuses ilmnevad käesoleva seaduse § 14 lõike 2 punktis 2 nimetatud tunnused; usulise ühenduse tegevus ei vasta tema põhikirjalistele eesmärkidele; usulise ühenduse põhitegevuseks saab majandustegevus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 3"
     },
     {
       "@id": "estleg:KiKoS_Par_17",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KiKoS"
+        "estleg:LegalProvision_kirikute_ja_koguduste_seadus"
       ],
       "estleg:paragrahv": "§ 17.",
       "rdfs:label": "§ 17. Registri pidamine",
       "estleg:sourceAct": "Kirikute ja koguduste seadus",
-      "estleg:summary": "1(1)Usuliste ühenduste register on mittetulundusühingute ja sihtasutuste registri osa, mille suhtes kohaldatakse mittetulundusühingute ja sihtasutuste registri kohta õigusaktides sätestatut, kui käesolevast seadusest ei tulene teisiti. Usuliste ühenduste register on mittetulundusühingute ja sihtasutuste registri osa, mille suhtes kohaldatakse mittetulundusühingute ja sihtasutuste registri kohta õigusaktides sätestatut, kui käesolevast seadusest ei tulene teisiti. 2(2)Usuliste ühenduste registrit",
+      "estleg:summary": "1 (1) Usuliste ühenduste register on mittetulundusühingute ja sihtasutuste registri osa, mille suhtes kohaldatakse mittetulundusühingute ja sihtasutuste registri kohta õigusaktides sätestatut, kui käesolevast seadusest ei tulene teisiti. Usuliste ühenduste register on mittetulundusühingute ja sihtasutuste registri osa, mille suhtes kohaldatakse mittetulundusühingute ja sihtasutuste registri kohta õigusaktides sätestatut, kui käesolevast seadusest ei tulene teisiti. 2 (2) Usuliste ühenduste regis",
+      "estleg:legalText": "(1) Usuliste ühenduste register on mittetulundusühingute ja sihtasutuste registri osa, mille suhtes kohaldatakse mittetulundusühingute ja sihtasutuste registri kohta õigusaktides sätestatut, kui käesolevast seadusest ei tulene teisiti. (2) Usuliste ühenduste registrit peetakse Eestis asuvate usuliste ühenduste kohta. (3) Usuliste ühenduste registrit peab Tartu Maakohtu registriosakond (edaspidi registripidaja). (4) Kehtetu -",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KiKoS_4"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KiKoS_4"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KiKoS_Par_17_Lg_1"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_17_Lg_2"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_17_Lg_3"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_17_Lg_4"
+        }
+      ],
+      "estleg:targetGroup": [
+        "public_body",
+        "ngo"
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:KORTER_Par_63",
@@ -495,264 +1951,801 @@
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:MAAPAR_Par_82",
+          "estleg:similarityScore": {
+            "@value": "0.368",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
         }
-      ],
-      "estleg:targetGroup": [
-        "ngo"
       ]
+    },
+    {
+      "@id": "estleg:KiKoS_Par_17_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Usuliste ühenduste register on mittetulundusühingute ja sihtasutuste registri osa, mille suhtes kohaldatakse mittetulundusühingute ja sihtasutuste registri kohta õigusaktides sätestatut, kui käesolevast seadusest ei tulene teisiti.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_17"
+      },
+      "rdfs:label": "§ 17 lg 1"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_17_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Usuliste ühenduste registrit peetakse Eestis asuvate usuliste ühenduste kohta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_17"
+      },
+      "rdfs:label": "§ 17 lg 2"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_17_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Usuliste ühenduste registrit peab Tartu Maakohtu registriosakond (edaspidi registripidaja).",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_17"
+      },
+      "rdfs:label": "§ 17 lg 3"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_17_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_17"
+      },
+      "rdfs:label": "§ 17 lg 4"
     },
     {
       "@id": "estleg:KiKoS_Par_18",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KiKoS"
+        "estleg:LegalProvision_kirikute_ja_koguduste_seadus"
       ],
       "estleg:paragrahv": "§ 18.",
       "rdfs:label": "§ 18. Avaliku toimiku ja registritoimikuga seotud piirangud",
       "estleg:sourceAct": "Kirikute ja koguduste seadus",
-      "estleg:summary": "1(1)Usulise ühenduse avalikus toimikus säilitatakse dokumente, mille usuline ühendus on registripidajale seaduse kohaselt esitanud. Usulise ühenduse avalikus toimikus säilitatakse dokumente, mille usuline ühendus on registripidajale seaduse kohaselt esitanud. 2(2)Usulise ühenduse registritoimikuga võib tutvuda isik, kellel on selleks õigustatud huvi.RT I2005393089191782006-01-01+02:00 Usulise ühenduse registritoimikuga võib tutvuda isik, kellel on selleks õigustatud huvi.",
+      "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KiKoS_4"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
-      "estleg:targetGroup": [
-        "citizen",
-        "public_body"
-      ]
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KiKoS_4"
+      }
     },
     {
       "@id": "estleg:KiKoS_Par_19",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KiKoS"
+        "estleg:LegalProvision_kirikute_ja_koguduste_seadus"
       ],
       "estleg:paragrahv": "§ 19.",
       "rdfs:label": "§ 19. Usulise ühenduse registrikaardi andmed",
       "estleg:sourceAct": "Kirikute ja koguduste seadus",
-      "estleg:summary": "1(1)Usulise ühenduse registrikartoteegi registrikaardi vormi kehtestab justiitsminister oma määrusega./dyn=922728&id=926465 . 2(2)Registrikaardile kantakse järgmised andmed:11)registrikood ja registrikannete järjekorranumbrid;22)nimi;33)asukoht ja aadress;44)esmamainimise või asutamise aeg;55)põhikirja vastuvõtmise aeg ja põhikirja muutmise aeg;66)juhatuse liikmete andmed;77)juhatuse liikmete ja likvideerijate esindusõiguse kord, kui see erineb seaduses ettenähtud üldreeglist;88)ühinemine ja jag",
+      "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KiKoS_4"
       },
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:MTS_Par_89",
-          "estleg:similarityScore": {
-            "@value": "0.5",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        }
-      ],
-      "estleg:targetGroup": [
-        "business"
-      ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_justiitsminister"
-        }
-      ],
-      "estleg:competenceType": "regulation"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KiKoS_4"
+      }
     },
     {
       "@id": "estleg:KiKoS_Par_20",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KiKoS"
+        "estleg:LegalProvision_kirikute_ja_koguduste_seadus"
       ],
       "estleg:paragrahv": "§ 20.",
       "rdfs:label": "§ 20. Vaimulik",
       "estleg:sourceAct": "Kirikute ja koguduste seadus",
-      "estleg:summary": "1(1)Usulise ühenduse vaimulik võib olla isik, kellel on hääleõigus kohalike omavalitsuste valimistel. Vaimulikule esitatavad muud nõuded kehtestab usuline ühendus. Usulise ühenduse vaimulik võib olla isik, kellel on hääleõigus kohalike omavalitsuste valimistel. Vaimulikule esitatavad muud nõuded kehtestab usuline ühendus. 2(2)Usulise ühenduse juhatusel on õigus kutsuda vaimulikku väljastpoolt Eestit ning taotleda töö- ja elamisluba välismaalasest vaimulikule vastavalt välismaalaste seaduses (RT ",
+      "estleg:summary": "1 (1) Usulise ühenduse vaimulik võib olla täisealine teovõimeline isik, kellel on Eestis viibimiseks seaduslik alus. Eestis viibimiseks seadusliku aluse olemasolu nõuet ei kohaldata usulise ühenduse vaimuliku juhi või vaimuliku suhtes, kelle tegutsemiskoht asub selle usulise ühenduse põhikirjaga seonduvalt väljaspool Eestit. RT I 2025-05-20 1 120052025001 2025-05-30 Usulise ühenduse vaimulik võib olla täisealine teovõimeline isik, kellel on Eestis viibimiseks seaduslik alus. Eestis viibimiseks s",
+      "estleg:legalText": "(1) Usulise ühenduse vaimulik võib olla täisealine teovõimeline isik, kellel on Eestis viibimiseks seaduslik alus. Eestis viibimiseks seadusliku aluse olemasolu nõuet ei kohaldata usulise ühenduse vaimuliku juhi või vaimuliku suhtes, kelle tegutsemiskoht asub selle usulise ühenduse põhikirjaga seonduvalt väljaspool Eestit. (2) Vaimulikule esitatavad muud nõuded kehtestab usuline ühendus.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KiKoS_5"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KiKoS_5"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KiKoS_Par_20_Lg_1"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_20_Lg_2"
+        }
+      ],
       "estleg:targetGroup": [
-        "citizen",
-        "business",
-        "public_body"
-      ]
+        "citizen"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:KiKoS_Par_20_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Usulise ühenduse vaimulik võib olla täisealine teovõimeline isik, kellel on Eestis viibimiseks seaduslik alus. Eestis viibimiseks seadusliku aluse olemasolu nõuet ei kohaldata usulise ühenduse vaimuliku juhi või vaimuliku suhtes, kelle tegutsemiskoht asub selle usulise ühenduse põhikirjaga seonduvalt väljaspool Eestit.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_20"
+      },
+      "rdfs:label": "§ 20 lg 1"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_20_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Vaimulikule esitatavad muud nõuded kehtestab usuline ühendus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_20"
+      },
+      "rdfs:label": "§ 20 lg 2"
     },
     {
       "@id": "estleg:KiKoS_Par_21",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KiKoS"
+        "estleg:LegalProvision_kirikute_ja_koguduste_seadus"
       ],
       "estleg:paragrahv": "§ 21.",
       "rdfs:label": "§ 21. Vaimuliku teenistusriietus",
       "estleg:sourceAct": "Kirikute ja koguduste seadus",
-      "estleg:summary": "1(1)Usulise ühenduse põhikirjas ettenähtud vaimuliku teenistusriietust on õigus kanda ainult isikul, kellele usuline ühendus on selleks loa andnud. Nimetatud piirang ei laiene juhul, kui vaimuliku teenistusriietuseks on üldlevinud riietus. Usulise ühenduse põhikirjas ettenähtud vaimuliku teenistusriietust on õigus kanda ainult isikul, kellele usuline ühendus on selleks loa andnud. Nimetatud piirang ei laiene juhul, kui vaimuliku teenistusriietuseks on üldlevinud riietus. 2(2)Usuline ühendus, kel",
+      "estleg:summary": "1 (1) Usulise ühenduse põhikirjas ettenähtud vaimuliku teenistusriietust on õigus kanda ainult isikul, kellele usuline ühendus on selleks loa andnud. Nimetatud piirang ei laiene juhul, kui vaimuliku teenistusriietuseks on üldlevinud riietus. Usulise ühenduse põhikirjas ettenähtud vaimuliku teenistusriietust on õigus kanda ainult isikul, kellele usuline ühendus on selleks loa andnud. Nimetatud piirang ei laiene juhul, kui vaimuliku teenistusriietuseks on üldlevinud riietus. 2 (2) Usuline ühendus,",
+      "estleg:legalText": "(1) Usulise ühenduse põhikirjas ettenähtud vaimuliku teenistusriietust on õigus kanda ainult isikul, kellele usuline ühendus on selleks loa andnud. Nimetatud piirang ei laiene juhul, kui vaimuliku teenistusriietuseks on üldlevinud riietus. (2) Usuline ühendus, kelle huve on kahjustatud tema vaimuliku teenistusriietuse õigustamatu kasutamisega, võib nõuda vaimuliku teenistusriietuse õigustamatu kasutamise lõpetamist, samuti sellega tekitatud kahju hüvitamist.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KiKoS_5"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KiKoS_5"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KiKoS_Par_21_Lg_1"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_21_Lg_2"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen"
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      }
+    },
+    {
+      "@id": "estleg:KiKoS_Par_21_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Usulise ühenduse põhikirjas ettenähtud vaimuliku teenistusriietust on õigus kanda ainult isikul, kellele usuline ühendus on selleks loa andnud. Nimetatud piirang ei laiene juhul, kui vaimuliku teenistusriietuseks on üldlevinud riietus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_21"
+      },
+      "rdfs:label": "§ 21 lg 1"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_21_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Usuline ühendus, kelle huve on kahjustatud tema vaimuliku teenistusriietuse õigustamatu kasutamisega, võib nõuda vaimuliku teenistusriietuse õigustamatu kasutamise lõpetamist, samuti sellega tekitatud kahju hüvitamist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_21"
+      },
+      "rdfs:label": "§ 21 lg 2"
     },
     {
       "@id": "estleg:KiKoS_Par_22",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KiKoS"
+        "estleg:LegalProvision_kirikute_ja_koguduste_seadus"
       ],
       "estleg:paragrahv": "§ 22.",
       "rdfs:label": "§ 22. Pihisaladus",
       "estleg:sourceAct": "Kirikute ja koguduste seadus",
       "estleg:summary": "Vaimulik ei või avaldada temale erapihil või hingehoidlikul vestlusel usaldatut, samuti isikut, kes erapihil või hingehoidlikul vestlusel käis. Vaimulik ei või avaldada temale erapihil või hingehoidlikul vestlusel usaldatut, samuti isikut, kes erapihil või hingehoidlikul vestlusel käis.",
+      "estleg:legalText": "Vaimulik ei või avaldada temale erapihil või hingehoidlikul vestlusel usaldatut, samuti isikut, kes erapihil või hingehoidlikul vestlusel käis.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KiKoS_5"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KiKoS_5"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KiKoS_Par_22_Lg_Unknown_1"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen"
       ]
     },
     {
+      "@id": "estleg:KiKoS_Par_22_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Vaimulik ei või avaldada temale erapihil või hingehoidlikul vestlusel usaldatut, samuti isikut, kes erapihil või hingehoidlikul vestlusel käis.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_22"
+      }
+    },
+    {
       "@id": "estleg:KiKoS_Par_23",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KiKoS"
+        "estleg:LegalProvision_kirikute_ja_koguduste_seadus"
       ],
       "estleg:paragrahv": "§ 23.",
       "rdfs:label": "§ 23. Juhatus",
       "estleg:sourceAct": "Kirikute ja koguduste seadus",
-      "estleg:summary": "1(1)Kirikul, kogudusel ja koguduste liidul peab olema juhatus. Juhatuse liikmete minimaalne ja maksimaalne arv nähakse ette põhikirjas. Kirikul, kogudusel ja koguduste liidul peab olema juhatus. Juhatuse liikmete minimaalne ja maksimaalne arv nähakse ette põhikirjas. 2(2)Juhatuse liige võib olla isik, kellel on hääleõigus kohalike omavalitsuste valimistel. Juhatuse liige võib olla isik, kellel on hääleõigus kohalike omavalitsuste valimistel. 3(3)Kloostri puhul käsitatakse juhatusena käesoleva se",
+      "estleg:summary": "1 (1) Kirikul, kogudusel ja koguduste liidul peab olema juhatus. Juhatuse liikmete minimaalne ja maksimaalne arv nähakse ette põhikirjas. Kirikul, kogudusel ja koguduste liidul peab olema juhatus. Juhatuse liikmete minimaalne ja maksimaalne arv nähakse ette põhikirjas. 2 (2) Vähemalt poolte juhatuse liikmete elukoht peab olema Eestis, mõnes teises Euroopa Majanduspiirkonna liikmesriigis või Šveitsis. RT I 2012-12-18 3 118122012003 2012-12-19 Vähemalt poolte juhatuse liikmete elukoht peab olema E",
+      "estleg:legalText": "(1) Kirikul, kogudusel ja koguduste liidul peab olema juhatus. Juhatuse liikmete minimaalne ja maksimaalne arv nähakse ette põhikirjas. (2) Vähemalt poolte juhatuse liikmete elukoht peab olema Eestis, mõnes teises Euroopa Majanduspiirkonna liikmesriigis või Šveitsis. (3) Kloostri puhul käsitatakse juhatusena käesoleva seaduse mõttes kloostriülemat. (4) Usulise ühenduse põhikirja kohaselt ametikohajärgselt usulise ühenduse juhatusse kuuluva vaimuliku või kloostriülema suhtes ei kohaldata seaduses sätestatud juhatuse liikme ametiaja piirangut. Usuline ühendus esitab sellekohase informatsiooni registrile käesoleva seaduse § 13 lõikes 2 või 31 või § 15 lõikes 2 või 21 nimetatud avalduses. (5) Usulise ühenduse juhatusse kuuluva vaimuliku või kloostriülema puhul kantakse usulise ühenduse taotlusel registrisse ka tema kiriklik nimi. Usuline ühendus esitab kirikliku nime ja informatsiooni selle nime vaimulikule või kloostriülemale omistamise kohta registrile käesoleva seaduse § 13 lõigetes 2 ja 31 ning § 15 lõigetes 2 ja 21 nimetatud avalduses.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KiKoS_5"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KiKoS_5"
       },
-      "estleg:semanticallySimilarTo": [
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:mittetulundusuhingute_seadus_Par_26",
-          "estleg:similarityScore": {
-            "@value": "0.324",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
+          "@id": "estleg:KiKoS_Par_23_Lg_1"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_23_Lg_2"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_23_Lg_3"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_23_Lg_4"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_23_Lg_5"
         }
       ],
       "estleg:targetGroup": [
-        "citizen",
-        "business",
-        "public_body"
+        "business"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:KiKoS_Par_31_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:KiKoS_Par_23_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kirikul, kogudusel ja koguduste liidul peab olema juhatus. Juhatuse liikmete minimaalne ja maksimaalne arv nähakse ette põhikirjas.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_23"
+      },
+      "rdfs:label": "§ 23 lg 1"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_23_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Vähemalt poolte juhatuse liikmete elukoht peab olema Eestis, mõnes teises Euroopa Majanduspiirkonna liikmesriigis või Šveitsis.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_23"
+      },
+      "rdfs:label": "§ 23 lg 2"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_23_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kloostri puhul käsitatakse juhatusena käesoleva seaduse mõttes kloostriülemat.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_23"
+      },
+      "rdfs:label": "§ 23 lg 3"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_23_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Usulise ühenduse põhikirja kohaselt ametikohajärgselt usulise ühenduse juhatusse kuuluva vaimuliku või kloostriülema suhtes ei kohaldata seaduses sätestatud juhatuse liikme ametiaja piirangut. Usuline ühendus esitab sellekohase informatsiooni registrile käesoleva seaduse § 13 lõikes 2 või 31 või § 15 lõikes 2 või 21 nimetatud avalduses.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_23"
+      },
+      "rdfs:label": "§ 23 lg 4"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_23_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Usulise ühenduse juhatusse kuuluva vaimuliku või kloostriülema puhul kantakse usulise ühenduse taotlusel registrisse ka tema kiriklik nimi. Usuline ühendus esitab kirikliku nime ja informatsiooni selle nime vaimulikule või kloostriülemale omistamise kohta registrile käesoleva seaduse § 13 lõigetes 2 ja 31 ning § 15 lõigetes 2 ja 21 nimetatud avalduses.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_23"
+      },
+      "rdfs:label": "§ 23 lg 5"
     },
     {
       "@id": "estleg:KiKoS_Par_24",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KiKoS"
+        "estleg:LegalProvision_kirikute_ja_koguduste_seadus"
       ],
       "estleg:paragrahv": "§ 24.",
       "rdfs:label": "§ 24. Juhatuse esindusõigus ja juhatuse liikme vastutus",
       "estleg:sourceAct": "Kirikute ja koguduste seadus",
-      "estleg:summary": "Juhatuse esindusõiguse ja juhatuse liikme vastutuse suhtes kohaldatakse mittetulundusühingute seaduses sätestatut, kui põhikiri ei sätesta teisiti. Juhatuse esindusõiguse ja juhatuse liikme vastutuse suhtes kohaldatakse mittetulundusühingute seaduses sätestatut, kui põhikiri ei sätesta teisiti.",
+      "estleg:summary": "Juhatuse esindusõiguse ja juhatuse liikme vastutuse suhtes kohaldatakse mittetulundusühingute seaduses sätestatut. RT I 2022-05-05 1 105052022001 2024-03-01 Juhatuse esindusõiguse ja juhatuse liikme vastutuse suhtes kohaldatakse mittetulundusühingute seaduses sätestatut.",
+      "estleg:legalText": "Juhatuse esindusõiguse ja juhatuse liikme vastutuse suhtes kohaldatakse mittetulundusühingute seaduses sätestatut.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KiKoS_5"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KiKoS_5"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KiKoS_Par_24_Lg_Unknown_1"
+        }
+      ],
       "estleg:targetGroup": [
         "business",
         "ngo"
       ]
     },
     {
+      "@id": "estleg:KiKoS_Par_24_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Juhatuse esindusõiguse ja juhatuse liikme vastutuse suhtes kohaldatakse mittetulundusühingute seaduses sätestatut.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_24"
+      }
+    },
+    {
       "@id": "estleg:KiKoS_Par_25",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KiKoS"
+        "estleg:LegalProvision_kirikute_ja_koguduste_seadus"
       ],
       "estleg:paragrahv": "§ 25.",
       "rdfs:label": "§ 25. Varalised õigused ja kohustused",
       "estleg:sourceAct": "Kirikute ja koguduste seadus",
-      "estleg:summary": "1(1)Kirikul, kogudusel ja koguduste liidul on õigus võtta oma liikmetelt liikmemaksu põhikirjas ettenähtud korras. Kirikul, kogudusel ja koguduste liidul on õigus võtta oma liikmetelt liikmemaksu põhikirjas ettenähtud korras. 2(2)Usulisel ühendusel on õigus võtta tasu usuliste talituste eest, korraldada sihtotstarbelisi korjandusi, vastu võtta annetusi ja pärandvara ning saada sissetulekuid oma varadest. Usulisel ühendusel on õigus võtta tasu usuliste talituste eest, korraldada sihtotstarbelisi ",
+      "estleg:summary": "1 (1) Kirikul, kogudusel ja koguduste liidul on õigus võtta oma liikmetelt liikmemaksu põhikirjas ettenähtud korras. Kirikul, kogudusel ja koguduste liidul on õigus võtta oma liikmetelt liikmemaksu põhikirjas ettenähtud korras. 2 (2) Usulisel ühendusel on õigus võtta tasu usuliste talituste eest, korraldada sihtotstarbelisi korjandusi, vastu võtta annetusi ja pärandvara ning saada sissetulekuid oma varadest. Usulisel ühendusel on õigus võtta tasu usuliste talituste eest, korraldada sihtotstarbel",
+      "estleg:legalText": "(1) Kirikul, kogudusel ja koguduste liidul on õigus võtta oma liikmetelt liikmemaksu põhikirjas ettenähtud korras. (2) Usulisel ühendusel on õigus võtta tasu usuliste talituste eest, korraldada sihtotstarbelisi korjandusi, vastu võtta annetusi ja pärandvara ning saada sissetulekuid oma varadest. (3) Usulise ühenduse vara hulka kuuluvaid kultuurimälestisi võib usuline ühendus pantida, anda kasutusse või võõrandada juhatuse otsuse alusel, arvestades muinsuskaitseseadusega kehtestatud nõudeid. Kirikusse või koguduste liitu kuuluvad kogudused teostavad seda õigust kiriku või koguduste liidu juhatuse loal põhikirjas ettenähtud või põhikirja alusel kehtestatud korras. (4) Kiriku või koguduste liidu põhikiri võib sätestada, et kirikusse või koguduste liitu kuuluvad kogudused võivad kinnisasju anda kasutusse, koormata piiratud asjaõigustega või võõrandada kiriku või koguduste liidu juhatuse loal põhikirjas ettenähtud või põhikirja alusel kehtestatud korras. (5) Usuline ühendus korraldab raamatupidamise vastavalt raamatupidamise seaduses sätestatule ja oma põhikirjale.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KiKoS_6"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KiKoS_6"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KiKoS_Par_25_Lg_1"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_25_Lg_2"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_25_Lg_3"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_25_Lg_4"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_25_Lg_5"
+        }
+      ],
+      "estleg:targetGroup": [
+        "business"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Right"
+      }
+    },
+    {
+      "@id": "estleg:KiKoS_Par_25_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kirikul, kogudusel ja koguduste liidul on õigus võtta oma liikmetelt liikmemaksu põhikirjas ettenähtud korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_25"
+      },
+      "rdfs:label": "§ 25 lg 1"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_25_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Usulisel ühendusel on õigus võtta tasu usuliste talituste eest, korraldada sihtotstarbelisi korjandusi, vastu võtta annetusi ja pärandvara ning saada sissetulekuid oma varadest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_25"
+      },
+      "rdfs:label": "§ 25 lg 2"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_25_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Usulise ühenduse vara hulka kuuluvaid kultuurimälestisi võib usuline ühendus pantida, anda kasutusse või võõrandada juhatuse otsuse alusel, arvestades muinsuskaitseseadusega kehtestatud nõudeid. Kirikusse või koguduste liitu kuuluvad kogudused teostavad seda õigust kiriku või koguduste liidu juhatuse loal põhikirjas ettenähtud või põhikirja alusel kehtestatud korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_25"
+      },
+      "rdfs:label": "§ 25 lg 3"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_25_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Kiriku või koguduste liidu põhikiri võib sätestada, et kirikusse või koguduste liitu kuuluvad kogudused võivad kinnisasju anda kasutusse, koormata piiratud asjaõigustega või võõrandada kiriku või koguduste liidu juhatuse loal põhikirjas ettenähtud või põhikirja alusel kehtestatud korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_25"
+      },
+      "rdfs:label": "§ 25 lg 4"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_25_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Usuline ühendus korraldab raamatupidamise vastavalt raamatupidamise seaduses sätestatule ja oma põhikirjale.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_25"
+      },
+      "rdfs:label": "§ 25 lg 5"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_25_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_kirikute_ja_koguduste_seadus"
+      ],
+      "estleg:paragrahv": "§ 25<sup>1</sup>.",
+      "rdfs:label": "§ 25<sup>1</sup>. Majandusaasta aruanne",
+      "estleg:sourceAct": "Kirikute ja koguduste seadus",
+      "estleg:summary": "Registrisse kantud usuline ühendus ja usuühing esitab majandusaasta aruande mittetulundusühingute seaduse § 36 lõigete 5 ja 51 kohaselt ilma põhitegevusala andmeteta elektrooniliselt äriregistri seaduse § 7 lõike 2 punkti 1 alusel kehtestatud korras. RT I 2022-05-05 1 105052022001 2023-02-01 Registrisse kantud usuline ühendus ja usuühing esitab majandusaasta aruande mittetulundusühingute seaduse § 36 lõigete 5 ja 51 kohaselt ilma põhitegevusala andmeteta elektrooniliselt äriregistri seaduse § 7 ",
+      "estleg:legalText": "Registrisse kantud usuline ühendus ja usuühing esitab majandusaasta aruande mittetulundusühingute seaduse § 36 lõigete 5 ja 51 kohaselt ilma põhitegevusala andmeteta elektrooniliselt äriregistri seaduse § 7 lõike 2 punkti 1 alusel kehtestatud korras.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_KiKoS_6"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KiKoS_6"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KiKoS_Par_25_1_Lg_Unknown_1"
+        }
+      ],
+      "estleg:targetGroup": [
+        "ngo"
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:KOLS_Par_11_1",
+          "estleg:similarityScore": {
+            "@value": "0.444",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:MAAPAR_Par_74",
+          "estleg:similarityScore": {
+            "@value": "0.667",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:KiKoS_Par_25_1_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Registrisse kantud usuline ühendus ja usuühing esitab majandusaasta aruande mittetulundusühingute seaduse § 36 lõigete 5 ja 51 kohaselt ilma põhitegevusala andmeteta elektrooniliselt äriregistri seaduse § 7 lõike 2 punkti 1 alusel kehtestatud korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_25_1"
       }
     },
     {
       "@id": "estleg:KiKoS_Par_26",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KiKoS"
+        "estleg:LegalProvision_kirikute_ja_koguduste_seadus"
       ],
       "estleg:paragrahv": "§ 26.",
       "rdfs:label": "§ 26. Järelevalve",
       "estleg:sourceAct": "Kirikute ja koguduste seadus",
-      "estleg:summary": "1(1)Põhikirjas kehtestatud korra kohaselt määratakse revisjon või audiitorkontroll. Põhikirjas kehtestatud korra kohaselt määratakse revisjon või audiitorkontroll. 2(2)Juhatuse ja muu organi liikmed peavad võimaldama revidendil või audiitoril tutvuda kõigi revisjoni või audiitorkontrolli läbiviimiseks vajalike dokumentidega ning andma vajalikku teavet. Juhatuse ja muu organi liikmed peavad võimaldama revidendil või audiitoril tutvuda kõigi revisjoni või audiitorkontrolli läbiviimiseks vajalike d",
+      "estleg:summary": "1 (1) Põhikirjas kehtestatud korra kohaselt määratakse revisjon või audiitorkontroll. Põhikirjas kehtestatud korra kohaselt määratakse revisjon või audiitorkontroll. 2 (2) Juhatuse ja muu organi liikmed peavad võimaldama revidendil või audiitoril tutvuda kõigi revisjoni või audiitorkontrolli läbiviimiseks vajalike dokumentidega ning andma vajalikku teavet. Juhatuse ja muu organi liikmed peavad võimaldama revidendil või audiitoril tutvuda kõigi revisjoni või audiitorkontrolli läbiviimiseks vajali",
+      "estleg:legalText": "(1) Põhikirjas kehtestatud korra kohaselt määratakse revisjon või audiitorkontroll. (2) Juhatuse ja muu organi liikmed peavad võimaldama revidendil või audiitoril tutvuda kõigi revisjoni või audiitorkontrolli läbiviimiseks vajalike dokumentidega ning andma vajalikku teavet. (3) Revidendid või audiitorid koostavad revisjoni või audiitorkontrolli tulemuste kohta aruande, mille esitavad revisjoni või audiitorkontrolli määranud organile.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KiKoS_6"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KiKoS_6"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KiKoS_Par_26_Lg_1"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_26_Lg_2"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_26_Lg_3"
+        }
+      ],
       "estleg:targetGroup": [
         "business"
       ]
     },
     {
+      "@id": "estleg:KiKoS_Par_26_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Põhikirjas kehtestatud korra kohaselt määratakse revisjon või audiitorkontroll.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_26"
+      },
+      "rdfs:label": "§ 26 lg 1"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_26_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Juhatuse ja muu organi liikmed peavad võimaldama revidendil või audiitoril tutvuda kõigi revisjoni või audiitorkontrolli läbiviimiseks vajalike dokumentidega ning andma vajalikku teavet.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_26"
+      },
+      "rdfs:label": "§ 26 lg 2"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_26_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Revidendid või audiitorid koostavad revisjoni või audiitorkontrolli tulemuste kohta aruande, mille esitavad revisjoni või audiitorkontrolli määranud organile.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_26"
+      },
+      "rdfs:label": "§ 26 lg 3"
+    },
+    {
       "@id": "estleg:KiKoS_Par_27",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KiKoS"
+        "estleg:LegalProvision_kirikute_ja_koguduste_seadus"
       ],
       "estleg:paragrahv": "§ 27.",
       "rdfs:label": "§ 27. Usulise ühenduse tegevuse lõpetamisel järelejäänud vara kasutamine",
       "estleg:sourceAct": "Kirikute ja koguduste seadus",
-      "estleg:summary": "1(1)Kirikusse või koguduste liitu kuuluva koguduse või kloostri lõpetamisel läheb pärast võlausaldajate nõuete rahuldamist järelejäänud vara vastavale kirikule või koguduste liidule. Kirikusse või koguduste liitu kuuluva koguduse või kloostri lõpetamisel läheb pärast võlausaldajate nõuete rahuldamist järelejäänud vara vastavale kirikule või koguduste liidule. 2(2)Kiriku, koguduste liidu, kirikusse või koguduste liitu mittekuuluva koguduse või kloostri põhikirjalise tegevuse lõpetamisel läheb pär",
+      "estleg:summary": "1 (1) Kirikusse või koguduste liitu kuuluva koguduse või kloostri lõpetamisel läheb pärast võlausaldajate nõuete rahuldamist järelejäänud vara vastavale kirikule või koguduste liidule. Kirikusse või koguduste liitu kuuluva koguduse või kloostri lõpetamisel läheb pärast võlausaldajate nõuete rahuldamist järelejäänud vara vastavale kirikule või koguduste liidule. 2 (2) Kiriku, koguduste liidu, kirikusse või koguduste liitu mittekuuluva koguduse või kloostri põhikirjalise tegevuse lõpetamisel läheb",
+      "estleg:legalText": "(1) Kirikusse või koguduste liitu kuuluva koguduse või kloostri lõpetamisel läheb pärast võlausaldajate nõuete rahuldamist järelejäänud vara vastavale kirikule või koguduste liidule. (2) Kiriku, koguduste liidu, kirikusse või koguduste liitu mittekuuluva koguduse või kloostri põhikirjalise tegevuse lõpetamisel läheb pärast võlausaldajate nõuete rahuldamist järelejäänud vara üle riigile ning seda võib kasutada ainult heategeval või hariduslikul otstarbel.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KiKoS_6"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KiKoS_6"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KiKoS_Par_27_Lg_1"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_27_Lg_2"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen",
         "business"
       ]
     },
     {
+      "@id": "estleg:KiKoS_Par_27_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kirikusse või koguduste liitu kuuluva koguduse või kloostri lõpetamisel läheb pärast võlausaldajate nõuete rahuldamist järelejäänud vara vastavale kirikule või koguduste liidule.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_27"
+      },
+      "rdfs:label": "§ 27 lg 1"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_27_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kiriku, koguduste liidu, kirikusse või koguduste liitu mittekuuluva koguduse või kloostri põhikirjalise tegevuse lõpetamisel läheb pärast võlausaldajate nõuete rahuldamist järelejäänud vara üle riigile ning seda võib kasutada ainult heategeval või hariduslikul otstarbel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_27"
+      },
+      "rdfs:label": "§ 27 lg 2"
+    },
+    {
       "@id": "estleg:KiKoS_Par_28",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KiKoS"
+        "estleg:LegalProvision_kirikute_ja_koguduste_seadus"
       ],
       "estleg:paragrahv": "§ 28.",
       "rdfs:label": "§ 28. Käesoleva seaduse kohaldamine usulistele ühendustele",
       "estleg:sourceAct": "Kirikute ja koguduste seadus",
-      "estleg:summary": "1(1)Enne 2002. aasta 1. juulit asutatud usulistele ühendustele kohaldatakse nende usuliste ühenduste registrisse kandmiseni käesoleva seaduse § -des 1-3, 5-10, 16 ja 20-27 sätestatut. Enne 2002. aasta 1. juulit asutatud usulistele ühendustele kohaldatakse nende usuliste ühenduste registrisse kandmiseni käesoleva seaduse § -des 1-3, 5-10, 16 ja 20-27 sätestatut. 2(2)Siseministeeriumi juures peetavasse kirikute, koguduste ja koguduste liitude registrisse kantud usulised ühendused saavad registriss",
+      "estleg:summary": "1 (1) Enne 2002. aasta 1. juulit asutatud usulistele ühendustele kohaldatakse nende usuliste ühenduste registrisse kandmiseni käesoleva seaduse §-des 1–3, 5–10, 16 ja 20–27 sätestatut. Enne 2002. aasta 1. juulit asutatud usulistele ühendustele kohaldatakse nende usuliste ühenduste registrisse kandmiseni käesoleva seaduse §-des 1–3, 5–10, 16 ja 20–27 sätestatut. 2 (2) Siseministeeriumi juures peetavasse kirikute, koguduste ja koguduste liitude registrisse kantud usulised ühendused saavad registri",
+      "estleg:legalText": "(1) Enne 2002. aasta 1. juulit asutatud usulistele ühendustele kohaldatakse nende usuliste ühenduste registrisse kandmiseni käesoleva seaduse §-des 1–3, 5–10, 16 ja 20–27 sätestatut. (2) Siseministeeriumi juures peetavasse kirikute, koguduste ja koguduste liitude registrisse kantud usulised ühendused saavad registrisse kantud andmeid muuta, täiendada ja kustutada enne käesoleva seaduse jõustumist kehtinud korras kuni 2005. aasta 1. jaanuarini.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KiKoS_7"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KiKoS_7"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KiKoS_Par_28_Lg_1"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_28_Lg_2"
+        }
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:KiKoS_Par_1"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_2"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_3"
+        }
+      ],
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_siseministeerium"
         }
       ],
       "estleg:competenceType": "general"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_28_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Enne 2002. aasta 1. juulit asutatud usulistele ühendustele kohaldatakse nende usuliste ühenduste registrisse kandmiseni käesoleva seaduse §-des 1–3, 5–10, 16 ja 20–27 sätestatut.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_28"
+      },
+      "rdfs:label": "§ 28 lg 1"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_28_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Siseministeeriumi juures peetavasse kirikute, koguduste ja koguduste liitude registrisse kantud usulised ühendused saavad registrisse kantud andmeid muuta, täiendada ja kustutada enne käesoleva seaduse jõustumist kehtinud korras kuni 2005. aasta 1. jaanuarini.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_28"
+      },
+      "rdfs:label": "§ 28 lg 2"
     },
     {
       "@id": "estleg:KiKoS_Par_29",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KiKoS"
+        "estleg:LegalProvision_kirikute_ja_koguduste_seadus"
       ],
       "estleg:paragrahv": "§ 29.",
       "rdfs:label": "§ 29. Registrisse kandmise avaldus",
       "estleg:sourceAct": "Kirikute ja koguduste seadus",
-      "estleg:summary": "1(1)Enne 2002. aasta 1. juulit asutatud ning Siseministeeriumis registreeritud usuline ühendus, kes vastab käesoleva seaduse nõuetele, kantakse registrisse tema avalduse alusel. Enne 2002. aasta 1. juulit asutatud ning Siseministeeriumis registreeritud usuline ühendus, kes vastab käesoleva seaduse nõuetele, kantakse registrisse tema avalduse alusel. 2(2)Registrisse kandmise avalduses tuleb märkida käesolevas seaduses sätestatud andmed ning avaldusele tuleb lisada tema Siseministeeriumis registre",
+      "estleg:summary": "1 (1) Enne 2002. aasta 1. juulit asutatud ning Siseministeeriumis registreeritud usuline ühendus, kes vastab käesoleva seaduse nõuetele, kantakse registrisse tema avalduse alusel. Enne 2002. aasta 1. juulit asutatud ning Siseministeeriumis registreeritud usuline ühendus, kes vastab käesoleva seaduse nõuetele, kantakse registrisse tema avalduse alusel. 2 (2) Registrisse kandmise avalduses tuleb märkida käesolevas seaduses sätestatud andmed ning avaldusele tuleb lisada tema Siseministeeriumis regi",
+      "estleg:legalText": "(1) Enne 2002. aasta 1. juulit asutatud ning Siseministeeriumis registreeritud usuline ühendus, kes vastab käesoleva seaduse nõuetele, kantakse registrisse tema avalduse alusel. (2) Registrisse kandmise avalduses tuleb märkida käesolevas seaduses sätestatud andmed ning avaldusele tuleb lisada tema Siseministeeriumis registreerimise tunnistus ja seaduses sätestatud dokumendid, välja arvatud asutamisleping või asutamiskoosoleku protokoll. (3) Usulise ühenduse põhikiri peab registrisse kandmiseks olema viidud kooskõlla käesolevas seaduses sätestatuga. (4) Registrisse kandmise avaldus vaadatakse läbi kahe kuu jooksul, arvates avalduse ja kõigi muude ettenähtud dokumentide esitamisest.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KiKoS_7"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KiKoS_7"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KiKoS_Par_29_Lg_1"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_29_Lg_2"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_29_Lg_3"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_29_Lg_4"
+        }
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:dutyHolder": "Registrisse kandmise avalduses",
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_siseministeerium"
@@ -761,60 +2754,193 @@
       "estleg:competenceType": "general"
     },
     {
+      "@id": "estleg:KiKoS_Par_29_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Enne 2002. aasta 1. juulit asutatud ning Siseministeeriumis registreeritud usuline ühendus, kes vastab käesoleva seaduse nõuetele, kantakse registrisse tema avalduse alusel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_29"
+      },
+      "rdfs:label": "§ 29 lg 1"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_29_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Registrisse kandmise avalduses tuleb märkida käesolevas seaduses sätestatud andmed ning avaldusele tuleb lisada tema Siseministeeriumis registreerimise tunnistus ja seaduses sätestatud dokumendid, välja arvatud asutamisleping või asutamiskoosoleku protokoll.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_29"
+      },
+      "rdfs:label": "§ 29 lg 2"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_29_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Usulise ühenduse põhikiri peab registrisse kandmiseks olema viidud kooskõlla käesolevas seaduses sätestatuga.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_29"
+      },
+      "rdfs:label": "§ 29 lg 3"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_29_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Registrisse kandmise avaldus vaadatakse läbi kahe kuu jooksul, arvates avalduse ja kõigi muude ettenähtud dokumentide esitamisest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_29"
+      },
+      "rdfs:label": "§ 29 lg 4"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_29_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_kirikute_ja_koguduste_seadus"
+      ],
+      "estleg:paragrahv": "§ 29<sup>1</sup>.",
+      "rdfs:label": "§ 29<sup>1</sup>. Registripidajale esitatud dokumentide säilitamine",
+      "estleg:sourceAct": "Kirikute ja koguduste seadus",
+      "estleg:summary": "Registripidajale edastatud dokumendid, mis sisaldavad andmeid usulise ühenduse liikmeskonna kohta, viiakse avalikust toimikust registritoimikusse. Kui usuline ühendus on esitanud registripidajale avalduse, mis on ühiselt e-allkirjastatud koos dokumendiga, mis sisaldab andmeid usulise ühenduse liikmeskonna kohta, siis viiakse registritoimikusse kõik ühiselt e-allkirjastatud dokumendid. RT I 2017-12-30 1 130122017001 2018-01-01 Registripidajale edastatud dokumendid, mis sisaldavad andmeid usulise ",
+      "estleg:legalText": "Registripidajale edastatud dokumendid, mis sisaldavad andmeid usulise ühenduse liikmeskonna kohta, viiakse avalikust toimikust registritoimikusse. Kui usuline ühendus on esitanud registripidajale avalduse, mis on ühiselt e-allkirjastatud koos dokumendiga, mis sisaldab andmeid usulise ühenduse liikmeskonna kohta, siis viiakse registritoimikusse kõik ühiselt e-allkirjastatud dokumendid.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_KiKoS_7"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KiKoS_7"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KiKoS_Par_29_1_Lg_Unknown_1"
+        }
+      ],
+      "estleg:targetGroup": [
+        "public_body"
+      ]
+    },
+    {
+      "@id": "estleg:KiKoS_Par_29_1_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Registripidajale edastatud dokumendid, mis sisaldavad andmeid usulise ühenduse liikmeskonna kohta, viiakse avalikust toimikust registritoimikusse. Kui usuline ühendus on esitanud registripidajale avalduse, mis on ühiselt e-allkirjastatud koos dokumendiga, mis sisaldab andmeid usulise ühenduse liikmeskonna kohta, siis viiakse registritoimikusse kõik ühiselt e-allkirjastatud dokumendid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_29_1"
+      }
+    },
+    {
       "@id": "estleg:KiKoS_Par_30",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KiKoS"
+        "estleg:LegalProvision_kirikute_ja_koguduste_seadus"
       ],
       "estleg:paragrahv": "§ 30.",
       "rdfs:label": "§ 30. Märked registrites",
       "estleg:sourceAct": "Kirikute ja koguduste seadus",
-      "estleg:summary": "1(1)Siseministeeriumis registreeritud usulise ühenduse registrisse kandmisel tehakse registripidaja teate alusel kirikute, koguduste ja koguduste liitude registrisse sellekohane märge. Siseministeeriumis registreeritud usulise ühenduse registrisse kandmisel tehakse registripidaja teate alusel kirikute, koguduste ja koguduste liitude registrisse sellekohane märge. 2(2)Enne käesoleva seaduse jõustumist asutatud usulise ühenduse registrisse kandmisel tehakse registrisse märge varasema registreerimi",
+      "estleg:summary": "1 (1) Siseministeeriumis registreeritud usulise ühenduse registrisse kandmisel tehakse registripidaja teate alusel kirikute, koguduste ja koguduste liitude registrisse sellekohane märge. Siseministeeriumis registreeritud usulise ühenduse registrisse kandmisel tehakse registripidaja teate alusel kirikute, koguduste ja koguduste liitude registrisse sellekohane märge. 2 (2) Enne käesoleva seaduse jõustumist asutatud usulise ühenduse registrisse kandmisel tehakse registrisse märge varasema registree",
+      "estleg:legalText": "(1) Siseministeeriumis registreeritud usulise ühenduse registrisse kandmisel tehakse registripidaja teate alusel kirikute, koguduste ja koguduste liitude registrisse sellekohane märge. (2) Enne käesoleva seaduse jõustumist asutatud usulise ühenduse registrisse kandmisel tehakse registrisse märge varasema registreerimise kohta Siseministeeriumis, näidates ära endise registrinumbri.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KiKoS_7"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KiKoS_7"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KiKoS_Par_30_Lg_1"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_30_Lg_2"
+        }
+      ],
+      "estleg:targetGroup": [
+        "public_body"
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_siseministeerium"
+        }
+      ],
+      "estleg:competenceType": "general",
       "estleg:semanticallySimilarTo": [
         {
-          "@id": "estleg:MTS_Par_94",
+          "@id": "estleg:MTÜS_Par_94",
           "estleg:similarityScore": {
             "@value": "0.333",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
         }
+      ]
+    },
+    {
+      "@id": "estleg:KiKoS_Par_30_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:targetGroup": [
-        "public_body"
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Siseministeeriumis registreeritud usulise ühenduse registrisse kandmisel tehakse registripidaja teate alusel kirikute, koguduste ja koguduste liitude registrisse sellekohane märge.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_30"
+      },
+      "rdfs:label": "§ 30 lg 1"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_30_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_siseministeerium"
-        }
-      ],
-      "estleg:competenceType": "general"
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Enne käesoleva seaduse jõustumist asutatud usulise ühenduse registrisse kandmisel tehakse registrisse märge varasema registreerimise kohta Siseministeeriumis, näidates ära endise registrinumbri.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_30"
+      },
+      "rdfs:label": "§ 30 lg 2"
     },
     {
       "@id": "estleg:KiKoS_Par_31",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KiKoS"
+        "estleg:LegalProvision_kirikute_ja_koguduste_seadus"
       ],
       "estleg:paragrahv": "§ 31.",
       "rdfs:label": "§ 31. Lõpetamine",
       "estleg:sourceAct": "Kirikute ja koguduste seadus",
-      "estleg:summary": "1(1)Siseministeeriumis registreeritud usulised ühendused, kelle registrisse kandmiseks ei ole 2005. aasta 1. jaanuariks avaldust esitatud või kelle nimetatud tähtaja jooksul esitatud registrisse kandmise avaldus on jäetud rahuldamata, loetakse sundlõpetatuks. Siseministeeriumis registreeritud usulised ühendused, kelle registrisse kandmiseks ei ole 2005. aasta 1. jaanuariks avaldust esitatud või kelle nimetatud tähtaja jooksul esitatud registrisse kandmise avaldus on jäetud rahuldamata, loetakse ",
+      "estleg:summary": "1 (1) Siseministeeriumis registreeritud usulised ühendused, kelle registrisse kandmiseks ei ole 2005. aasta 1. jaanuariks avaldust esitatud või kelle nimetatud tähtaja jooksul esitatud registrisse kandmise avaldus on jäetud rahuldamata, loetakse sundlõpetatuks. Siseministeeriumis registreeritud usulised ühendused, kelle registrisse kandmiseks ei ole 2005. aasta 1. jaanuariks avaldust esitatud või kelle nimetatud tähtaja jooksul esitatud registrisse kandmise avaldus on jäetud rahuldamata, loetaks",
+      "estleg:legalText": "(1) Siseministeeriumis registreeritud usulised ühendused, kelle registrisse kandmiseks ei ole 2005. aasta 1. jaanuariks avaldust esitatud või kelle nimetatud tähtaja jooksul esitatud registrisse kandmise avaldus on jäetud rahuldamata, loetakse sundlõpetatuks. (2) Käesoleva paragrahvi lõikes 1 märgitud põhjustest tuleneval sundlõpetamisel kohaldatakse mittetulundusühingute seaduse §-s 95 sätestatud korda.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KiKoS_7"
       },
-      "estleg:semanticallySimilarTo": [
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KiKoS_7"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:MTS_Par_95",
-          "estleg:similarityScore": {
-            "@value": "0.3",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
+          "@id": "estleg:KiKoS_Par_31_Lg_1"
+        },
+        {
+          "@id": "estleg:KiKoS_Par_31_Lg_2"
         }
+      ],
+      "estleg:targetGroup": [
+        "ngo"
       ],
       "estleg:competentAuthority": [
         {
@@ -822,66 +2948,149 @@
         }
       ],
       "estleg:competenceType": "general"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_31_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Siseministeeriumis registreeritud usulised ühendused, kelle registrisse kandmiseks ei ole 2005. aasta 1. jaanuariks avaldust esitatud või kelle nimetatud tähtaja jooksul esitatud registrisse kandmise avaldus on jäetud rahuldamata, loetakse sundlõpetatuks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_31"
+      },
+      "rdfs:label": "§ 31 lg 1"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_31_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Käesoleva paragrahvi lõikes 1 märgitud põhjustest tuleneval sundlõpetamisel kohaldatakse mittetulundusühingute seaduse §-s 95 sätestatud korda.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_31"
+      },
+      "rdfs:label": "§ 31 lg 2"
+    },
+    {
+      "@id": "estleg:KiKoS_Par_31_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_kirikute_ja_koguduste_seadus"
+      ],
+      "estleg:paragrahv": "§ 31<sup>1</sup>.",
+      "rdfs:label": "§ 31<sup>1</sup>. Teate esitamine juhatusse kuuluva vaimuliku või kloostriülema kohta",
+      "estleg:sourceAct": "Kirikute ja koguduste seadus",
+      "estleg:summary": "Enne käesoleva seaduse § 23 lõike 4 jõustumist juhatuse liikmena registrisse kantud selle lõike esimeses lauses nimetatud vaimuliku või kloostriülema kohta võib usuline ühendus esitada registrile sellekohase teate § 15 lõikes 2 või 21 sätestatud korras. Enne käesoleva seaduse § 23 lõike 4 jõustumist juhatuse liikmena registrisse kantud selle lõike esimeses lauses nimetatud vaimuliku või kloostriülema kohta võib usuline ühendus esitada registrile sellekohase teate § 15 lõikes 2 või 21 sätestatud ",
+      "estleg:legalText": "Enne käesoleva seaduse § 23 lõike 4 jõustumist juhatuse liikmena registrisse kantud selle lõike esimeses lauses nimetatud vaimuliku või kloostriülema kohta võib usuline ühendus esitada registrile sellekohase teate § 15 lõikes 2 või 21 sätestatud korras.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_KiKoS_7"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KiKoS_7"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KiKoS_Par_31_1_Lg_Unknown_1"
+        }
+      ],
+      "estleg:targetGroup": [
+        "business"
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:KiKoS_Par_23"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:KiKoS_Par_31_1_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Enne käesoleva seaduse § 23 lõike 4 jõustumist juhatuse liikmena registrisse kantud selle lõike esimeses lauses nimetatud vaimuliku või kloostriülema kohta võib usuline ühendus esitada registrile sellekohase teate § 15 lõikes 2 või 21 sätestatud korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KiKoS_Par_31_1"
+      }
     },
     {
       "@id": "estleg:KiKoS_Par_32",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KiKoS"
+        "estleg:LegalProvision_kirikute_ja_koguduste_seadus"
       ],
       "estleg:paragrahv": "§ 32.",
       "rdfs:label": "§ 32. Usulise ühenduse nimi",
       "estleg:sourceAct": "Kirikute ja koguduste seadus",
-      "estleg:summary": "1(1)Usulise ühenduse kandmisel registrisse teeb registripidaja järelepärimise Siseministeeriumile kirikute, koguduste ja koguduste liitude registris sama või sarnase nime esinemise kohta. Usulise ühenduse kandmisel registrisse teeb registripidaja järelepärimise Siseministeeriumile kirikute, koguduste ja koguduste liitude registris sama või sarnase nime esinemise kohta. 2(2)Taotletavat nime ei kanta registrisse, kui selle nime või nimega eksitavalt sarnase nime all on registreeritud registris või",
+      "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KiKoS_7"
       },
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:MTS_Par_96",
-          "estleg:similarityScore": {
-            "@value": "0.481",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        }
-      ],
-      "estleg:targetGroup": [
-        "public_body"
-      ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_siseministeerium"
-        }
-      ],
-      "estleg:competenceType": "general"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KiKoS_7"
+      }
     },
     {
-      "@id": "estleg:KiKoS_Par_3334",
+      "@id": "estleg:KiKoS_Par_33",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KiKoS"
+        "estleg:LegalProvision_kirikute_ja_koguduste_seadus"
       ],
-      "estleg:paragrahv": "§ 33-34.",
-      "rdfs:label": "§ 33-34.",
+      "estleg:paragrahv": "§ 33.",
+      "rdfs:label": "§ 33. Riigilõivuseaduses tehtavad muudatused",
       "estleg:sourceAct": "Kirikute ja koguduste seadus",
-      "estleg:summary": "[Käesolevast tekstist välja jäetud]",
+      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KiKoS_7"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KiKoS_7"
+      }
+    },
+    {
+      "@id": "estleg:KiKoS_Par_34",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_kirikute_ja_koguduste_seadus"
+      ],
+      "estleg:paragrahv": "§ 34.",
+      "rdfs:label": "§ 34. Varasema kirikute ja koguduste seaduse kehtetuks tunnistamine",
+      "estleg:sourceAct": "Kirikute ja koguduste seadus",
+      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_KiKoS_7"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KiKoS_7"
       }
     },
     {
       "@id": "estleg:KiKoS_Par_35",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KiKoS"
+        "estleg:LegalProvision_kirikute_ja_koguduste_seadus"
       ],
       "estleg:paragrahv": "§ 35.",
       "rdfs:label": "§ 35. Seaduse jõustumine",
       "estleg:sourceAct": "Kirikute ja koguduste seadus",
-      "estleg:summary": "Käesolev seadus jõustub 2002. aasta 1. juulil. Käesolev seadus jõustub 2002. aasta 1. juulil.",
+      "estleg:summary": "Käesolev seadus jõustub 2002. aasta 1. juulil.",
+      "estleg:legalText": "Käesolev seadus jõustub 2002. aasta 1. juulil.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KiKoS_7"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KiKoS_7"
       }
     }
   ]

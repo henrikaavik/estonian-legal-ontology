@@ -6,63 +6,40 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
   },
   "@graph": [
     {
       "@id": "estleg:HasMMS_Map_2026",
       "@type": [
+        "owl:Ontology",
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "rdfs:label": "Hasartmängumaksu seadus teemakaardistus",
       "dc:source": "Hasartmängumaksu seadus",
-      "estleg:affectedBy": [
-        {
-          "@id": "estleg:Draft_RAM21_0951"
-        },
-        {
-          "@id": "estleg:Draft_RAM21_0008"
-        },
-        {
-          "@id": "estleg:Draft_RAM13_0183"
-        },
-        {
-          "@id": "estleg:Draft_RIIGIKOGU26_0067"
-        },
-        {
-          "@id": "estleg:Draft_RIIGIKOGU25_1065"
-        }
-      ],
-      "estleg:amendedBy": [
-        {
-          "@id": "estleg:Draft_RAM21_0951"
-        },
-        {
-          "@id": "estleg:Draft_RAM21_0008"
-        },
-        {
-          "@id": "estleg:Draft_RAM13_0183"
-        },
-        {
-          "@id": "estleg:Draft_RIIGIKOGU26_0067"
-        },
-        {
-          "@id": "estleg:Draft_RIIGIKOGU25_1065"
-        }
-      ],
-      "estleg:temporalStatus": "unknown",
+      "dcterms:title": "Hasartmängumaksu seadus",
+      "estleg:contentStatus": "structuredBody",
+      "dcterms:source": {
+        "@id": "https://www.riigiteataja.ee/akt/118022026002.xml"
+      },
+      "owl:sameAs": {
+        "@id": "https://www.riigiteataja.ee/akt/118022026002.xml"
+      },
+      "estleg:kehtiv": {
+        "@value": "2026-05-24",
+        "@type": "xsd:date"
+      },
       "dcterms:subject": [
         {
           "@id": "http://eurovoc.europa.eu/5211"
         },
         {
-          "@id": "http://eurovoc.europa.eu/5216"
+          "@id": "http://eurovoc.europa.eu/3221"
         },
         {
-          "@id": "http://eurovoc.europa.eu/3221"
+          "@id": "http://eurovoc.europa.eu/5216"
         },
         {
           "@id": "http://eurovoc.europa.eu/2451"
@@ -70,10 +47,39 @@
         {
           "@id": "http://eurovoc.europa.eu/6411"
         }
+      ],
+      "estleg:temporalStatus": "unknown",
+      "estleg:amendedBy": [
+        {
+          "@id": "estleg:AmendmentLink_Draft_RAM21_0008_HasMMS"
+        },
+        {
+          "@id": "estleg:AmendmentLink_Draft_RAM13_0183_HasMMS"
+        },
+        {
+          "@id": "estleg:AmendmentLink_Draft_RIIGIKOGU26_0067_HasMMS"
+        },
+        {
+          "@id": "estleg:AmendmentLink_Draft_RIIGIKOGU25_1065_HasMMS"
+        }
+      ],
+      "estleg:affectedBy": [
+        {
+          "@id": "estleg:Draft_RAM21_0008"
+        },
+        {
+          "@id": "estleg:Draft_RAM13_0183"
+        },
+        {
+          "@id": "estleg:Draft_RIIGIKOGU26_0067"
+        },
+        {
+          "@id": "estleg:Draft_RIIGIKOGU25_1065"
+        }
       ]
     },
     {
-      "@id": "estleg:LegalProvision_HasMMS",
+      "@id": "estleg:LegalProvision_hasartmangumaksu_seadus",
       "@type": [
         "owl:Class"
       ],
@@ -83,15 +89,53 @@
       }
     },
     {
+      "@id": "estleg:HasMMS_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": "Hasartmängumaksu seadus teemaskeem",
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_HasMMS_default"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Cluster_HasMMS_default",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": "§1–14 Hasartmängumaksu seadus",
+      "skos:prefLabel": "§1–14 Hasartmängumaksu seadus",
+      "skos:inScheme": {
+        "@id": "estleg:HasMMS_TopicScheme"
+      },
+      "estleg:provisionCount": 11
+    },
+    {
       "@id": "estleg:HasMMS_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_HasMMS"
+        "estleg:LegalProvision_hasartmangumaksu_seadus"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. Hasartmängumaksu objekt",
       "estleg:sourceAct": "Hasartmängumaksu seadus",
-      "estleg:summary": "1 (1) Hasartmängumaksuga maksustatakse: 1 1) õnnemängu korraldamiseks kasutatav mängulaud ja mänguautomaat ning osavusmängu korraldamiseks kasutatav mänguautomaat; 2 2) loterii korraldamisel loteriipiletite müügist saadud summa; 3 3) kaubandusliku loterii korraldamisel võidufond, kui võidufondi väärtus ületab 10 000 eurot; 4 4) toto korraldamisel tehtud panustest laekunud summa, millest on maha arvatud võidud; 5 5) õnnemängu ja osavusmängu kaughasartmänguna korraldamisel tehtud panustest laekunu",
+      "estleg:summary": "1 (1) Hasartmängumaksuga maksustatakse: 1 1) õnnemängu korraldamiseks kasutatav mängulaud, välja arvatud mängulaud, mida kasutatakse õnnemänguturniiri korraldamiseks, ning osavusmängu korraldamiseks kasutatav mänguautomaat; RT I 2014-07-08 1 108072014001 2015-02-01 1 1<sup>1</sup>) õnnemängu korraldamiseks kasutatavad hasartmängukorraldaja mänguautomaadid ning nendel tehtud panustest laekunud summa, millest on maha arvatud võidud; RT I 2014-07-08 1 108072014001 2015-02-01 2 2) loterii korraldami",
+      "estleg:legalText": "(1) Hasartmängumaksuga maksustatakse: õnnemängu korraldamiseks kasutatav mängulaud, välja arvatud mängulaud, mida kasutatakse õnnemänguturniiri korraldamiseks, ning osavusmängu korraldamiseks kasutatav mänguautomaat; õnnemängu korraldamiseks kasutatavad hasartmängukorraldaja mänguautomaadid ning nendel tehtud panustest laekunud summa, millest on maha arvatud võidud; loterii korraldamisel loteriipiletite müügist saadud summa; kaubandusliku loterii korraldamisel võidufond, kui võidufondi väärtus ületab 10 000 eurot; toto korraldamisel tehtud panustest laekunud summa, millest on maha arvatud võidud; õnnemängu ja osavusmängu kaughasartmänguna korraldamisel tehtud panustest laekunud summa, millest on maha arvatud võidud; hasartmänguseaduse § 7 lõike 1 punktis 1 nimetatud õnnemänguturniiri korraldamisel osalustasude summa, millest on maha arvatud võidufondi laekuv osa; hasartmänguseaduse § 7 lõike 1 punktis 1 nimetatud õnnemänguturniiri korraldamisel kaughasartmänguna osalustasude summa, millest on maha arvatud võidufondi laekuv osa; hasartmänguseaduse § 7 lõike 1 punktis 2 nimetatud õnnemänguturniiri korraldamisel osalustasude summa; hasartmänguseaduse § 7 lõike 1 punktis 2 nimetatud õnnemänguturniiri korraldamisel kaughasartmänguna osalustasude summa. (2) Käesolevas seaduses lähtutakse hasartmängude ja nende liikide määratlemisel hasartmänguseadusest.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_HasMMS_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:HasMMS_Par_1_Lg_1"
+        },
+        {
+          "@id": "estleg:HasMMS_Par_1_Lg_2"
+        }
+      ],
       "estleg:referencedBy": [
         {
           "@id": "estleg:HasMMS_Par_14"
@@ -99,71 +143,162 @@
       ]
     },
     {
+      "@id": "estleg:HasMMS_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Hasartmängumaksuga maksustatakse: õnnemängu korraldamiseks kasutatav mängulaud, välja arvatud mängulaud, mida kasutatakse õnnemänguturniiri korraldamiseks, ning osavusmängu korraldamiseks kasutatav mänguautomaat; õnnemängu korraldamiseks kasutatavad hasartmängukorraldaja mänguautomaadid ning nendel tehtud panustest laekunud summa, millest on maha arvatud võidud; loterii korraldamisel loteriipiletite müügist saadud summa; kaubandusliku loterii korraldamisel võidufond, kui võidufondi väärtus ületab 10 000 eurot; toto korraldamisel tehtud panustest laekunud summa, millest on maha arvatud võidud; õnnemängu ja osavusmängu kaughasartmänguna korraldamisel tehtud panustest laekunud summa, millest on maha arvatud võidud; hasartmänguseaduse § 7 lõike 1 punktis 1 nimetatud õnnemänguturniiri korraldamisel osalustasude summa, millest on maha arvatud võidufondi laekuv osa; hasartmänguseaduse § 7 lõike 1 punktis 1 nimetatud õnnemänguturniiri korraldamisel kaughasartmänguna osalustasude summa, millest on maha arvatud võidufondi laekuv osa; hasartmänguseaduse § 7 lõike 1 punktis 2 nimetatud õnnemänguturniiri korraldamisel osalustasude summa; hasartmänguseaduse § 7 lõike 1 punktis 2 nimetatud õnnemänguturniiri korraldamisel kaughasartmänguna osalustasude summa.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HasMMS_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
+    },
+    {
+      "@id": "estleg:HasMMS_Par_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Käesolevas seaduses lähtutakse hasartmängude ja nende liikide määratlemisel hasartmänguseadusest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HasMMS_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 2"
+    },
+    {
       "@id": "estleg:HasMMS_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_HasMMS"
+        "estleg:LegalProvision_hasartmangumaksu_seadus"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. Hasartmängumaksu maksja",
       "estleg:sourceAct": "Hasartmängumaksu seadus",
-      "estleg:summary": "Hasartmängumaksu maksab hasartmängukorraldaja. Hasartmängumaksu maksab hasartmängukorraldaja."
+      "estleg:summary": "Hasartmängumaksu maksab hasartmängukorraldaja. Hasartmängumaksu maksab hasartmängukorraldaja.",
+      "estleg:legalText": "Hasartmängumaksu maksab hasartmängukorraldaja.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_HasMMS_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:HasMMS_Par_2_Lg_Unknown_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:HasMMS_Par_2_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Hasartmängumaksu maksab hasartmängukorraldaja.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HasMMS_Par_2"
+      }
     },
     {
       "@id": "estleg:HasMMS_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_HasMMS"
+        "estleg:LegalProvision_hasartmangumaksu_seadus"
       ],
       "estleg:paragrahv": "§ 3.",
       "rdfs:label": "§ 3. Maksustamisperiood",
       "estleg:sourceAct": "Hasartmängumaksu seadus",
-      "estleg:summary": "1 (1) Hasartmängumaksuga maksustamise periood on kalendrikuu. Hasartmängumaksuga maksustamise periood on kalendrikuu. 2 (2) Kaubandusliku loterii korraldamisel on maksustamisperiood kaubandusliku loterii korraldamise periood, mis algab mängureeglites märgitud panuste tegemise esimesel päeval ja lõpeb mängureeglites märgitud võitude väljaandmise viimasel päeval. Kaubandusliku loterii korraldamisel on maksustamisperiood kaubandusliku loterii korraldamise periood, mis algab mängureeglites märgitud "
+      "estleg:summary": "1 (1) Hasartmängumaksuga maksustamise periood on kalendrikuu. Hasartmängumaksuga maksustamise periood on kalendrikuu. 2 (2) Kaubandusliku loterii korraldamisel on maksustamisperiood kaubandusliku loterii korraldamise periood, mis algab mängureeglites märgitud panuste tegemise esimesel päeval ja lõpeb mängureeglites märgitud võitude väljaandmise viimasel päeval. Kaubandusliku loterii korraldamisel on maksustamisperiood kaubandusliku loterii korraldamise periood, mis algab mängureeglites märgitud ",
+      "estleg:legalText": "(1) Hasartmängumaksuga maksustamise periood on kalendrikuu. (2) Kaubandusliku loterii korraldamisel on maksustamisperiood kaubandusliku loterii korraldamise periood, mis algab mängureeglites märgitud panuste tegemise esimesel päeval ja lõpeb mängureeglites märgitud võitude väljaandmise viimasel päeval. (3) Õnnemänguturniiri korraldamisel on maksustamisperiood ühe õnnemänguturniiri korraldamise periood, mis algab õnnemänguturniiri reeglites märgitud osavõtutasude vastuvõtmise esimesel päeval ja lõpeb õnnemänguturniiri reeglites märgitud osavõtutasude vastuvõtmise lõpetamise päeval.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_HasMMS_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:HasMMS_Par_3_Lg_1"
+        },
+        {
+          "@id": "estleg:HasMMS_Par_3_Lg_2"
+        },
+        {
+          "@id": "estleg:HasMMS_Par_3_Lg_3"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:HasMMS_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Hasartmängumaksuga maksustamise periood on kalendrikuu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HasMMS_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
+    },
+    {
+      "@id": "estleg:HasMMS_Par_3_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kaubandusliku loterii korraldamisel on maksustamisperiood kaubandusliku loterii korraldamise periood, mis algab mängureeglites märgitud panuste tegemise esimesel päeval ja lõpeb mängureeglites märgitud võitude väljaandmise viimasel päeval.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HasMMS_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 2"
+    },
+    {
+      "@id": "estleg:HasMMS_Par_3_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Õnnemänguturniiri korraldamisel on maksustamisperiood ühe õnnemänguturniiri korraldamise periood, mis algab õnnemänguturniiri reeglites märgitud osavõtutasude vastuvõtmise esimesel päeval ja lõpeb õnnemänguturniiri reeglites märgitud osavõtutasude vastuvõtmise lõpetamise päeval.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HasMMS_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 3"
     },
     {
       "@id": "estleg:HasMMS_Par_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_HasMMS"
+        "estleg:LegalProvision_hasartmangumaksu_seadus"
       ],
       "estleg:paragrahv": "§ 4.",
       "rdfs:label": "§ 4. Hasartmängumaksu deklareerimine ja tasumine",
       "estleg:sourceAct": "Hasartmängumaksu seadus",
-      "estleg:summary": "1 (1) Hasartmängukorraldaja, välja arvatud käesoleva paragrahvi lõikes 2 nimetatud hasartmängukorraldaja, esitab Maksu- ja Tolliametile hasartmängumaksu deklaratsiooni ja tasub hasartmängumaksu maksustamisperioodile järgneva kalendrikuu 15. kuupäevaks. Hasartmängukorraldaja, välja arvatud käesoleva paragrahvi lõikes 2 nimetatud hasartmängukorraldaja, esitab Maksu- ja Tolliametile hasartmängumaksu deklaratsiooni ja tasub hasartmängumaksu maksustamisperioodile järgneva kalendrikuu 15. kuupäevaks. ",
-      "estleg:targetGroup": [
-        "public_body"
-      ],
-      "estleg:competentAuthority": [
+      "estleg:summary": "1 (1) Hasartmängukorraldaja esitab Maksu- ja Tolliametile hasartmängumaksu deklaratsiooni ja tasub hasartmängumaksu maksustamisperioodile järgneva kalendrikuu 15. kuupäevaks. RT I 2014-07-08 1 108072014001 2015-02-01 Hasartmängukorraldaja esitab Maksu- ja Tolliametile hasartmängumaksu deklaratsiooni ja tasub hasartmängumaksu maksustamisperioodile järgneva kalendrikuu 15. kuupäevaks. 2 (2) Kehtetu - RT I 2014-07-08 1 108072014001 2015-02-01 Kehtetu - 3 (3) Hasartmängumaksu deklaratsioon tuleb esi",
+      "estleg:legalText": "(1) Hasartmängukorraldaja esitab Maksu- ja Tolliametile hasartmängumaksu deklaratsiooni ja tasub hasartmängumaksu maksustamisperioodile järgneva kalendrikuu 15. kuupäevaks. (2) Kehtetu - (3) Hasartmängumaksu deklaratsioon tuleb esitada ka käesoleva seaduse § 1 lõike 1 punktides 2 ja 4–9 sätestatud summade puudumisel. (4) Hasartmängumaksu deklaratsioonide vormid ja nende täitmise korra kehtestab määrusega.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_HasMMS_default"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:Institution_maksu_ja_tolliamet"
-        }
-      ],
-      "estleg:competenceType": "general",
-      "estleg:referencedBy": [
+          "@id": "estleg:HasMMS_Par_4_Lg_1"
+        },
         {
-          "@id": "estleg:HasMMS_Par_5"
-        }
-      ]
-    },
-    {
-      "@id": "estleg:HasMMS_Par_5",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_HasMMS"
-      ],
-      "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Otsus hasartmängumaksu tasumise kohta",
-      "estleg:sourceAct": "Hasartmängumaksu seadus",
-      "estleg:summary": "1 (1) Maksu- ja Tolliamet väljastab käesoleva seaduse § 4 lõikes 2 nimetatud hasartmängukorraldajale otsuse hasartmängumaksu tasumise kohta. Maksu- ja Tolliamet väljastab käesoleva seaduse § 4 lõikes 2 nimetatud hasartmängukorraldajale otsuse hasartmängumaksu tasumise kohta. 2 (2) Otsus sisaldab järgmisi andmeid: 1 1) korraldatava hasartmängu liik, korraldaja ärinimi, registrikood, aadress ja tegevusloa number; 2 2) õnnemängu või osavusmängu korraldajale kuuluvate mängukohtade nimetused ja aadre",
-      "estleg:references": [
+          "@id": "estleg:HasMMS_Par_4_Lg_2"
+        },
         {
-          "@id": "estleg:HasMMS_Par_4"
+          "@id": "estleg:HasMMS_Par_4_Lg_3"
+        },
+        {
+          "@id": "estleg:HasMMS_Par_4_Lg_4"
         }
       ],
       "estleg:targetGroup": [
-        "business",
         "public_body"
       ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_maksu_ja_tolliamet"
@@ -172,15 +307,91 @@
       "estleg:competenceType": "general"
     },
     {
+      "@id": "estleg:HasMMS_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Hasartmängukorraldaja esitab Maksu- ja Tolliametile hasartmängumaksu deklaratsiooni ja tasub hasartmängumaksu maksustamisperioodile järgneva kalendrikuu 15. kuupäevaks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HasMMS_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1"
+    },
+    {
+      "@id": "estleg:HasMMS_Par_4_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:HasMMS_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 2"
+    },
+    {
+      "@id": "estleg:HasMMS_Par_4_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Hasartmängumaksu deklaratsioon tuleb esitada ka käesoleva seaduse § 1 lõike 1 punktides 2 ja 4–9 sätestatud summade puudumisel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HasMMS_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 3"
+    },
+    {
+      "@id": "estleg:HasMMS_Par_4_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Hasartmängumaksu deklaratsioonide vormid ja nende täitmise korra kehtestab määrusega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HasMMS_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 4"
+    },
+    {
+      "@id": "estleg:HasMMS_Par_5",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_hasartmangumaksu_seadus"
+      ],
+      "estleg:paragrahv": "§ 5.",
+      "rdfs:label": "§ 5. Otsus hasartmängumaksu tasumise kohta",
+      "estleg:sourceAct": "Hasartmängumaksu seadus",
+      "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_HasMMS_default"
+      }
+    },
+    {
       "@id": "estleg:HasMMS_Par_6",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_HasMMS"
+        "estleg:LegalProvision_hasartmangumaksu_seadus"
       ],
       "estleg:paragrahv": "§ 6.",
       "rdfs:label": "§ 6. Maksumäär",
       "estleg:sourceAct": "Hasartmängumaksu seadus",
-      "estleg:summary": "Hasartmängumaksu määr on: 1 1) 1278,23 eurot ühe mängulaua kohta; RT I 2010 22 108 13310847 2011-01-01+02:00 2 2) 447,38 eurot ühe mänguautomaadi kohta; RT I 2010 22 108 13310847 2011-01-01+02:00 3 3) 31,95 eurot ühe osavusmängu mänguautomaadi kohta; RT I 2010 22 108 13310847 2011-01-01+02:00 4 4) 18 protsenti § 1 lõike 1 punktis 2 sätestatud summast; 5 5) 18 protsenti § 1 lõike 1 punktis 3 sätestatud summast; 6 6) 5 protsenti § 1 lõike 1 punktis 4 sätestatud summast; 7 7) 5 protsenti § 1 lõike ",
+      "estleg:summary": "Hasartmängumaksu määr on: 1 1) 1406 eurot ühe mängulaua kohta; RT I 2023-07-01 3 101072023003 2024-01-01 2 2) 300 eurot õnnemängu korraldamiseks kasutatava ühe mänguautomaadi kohta ja 10 protsenti hasartmängukorraldaja õnnemängu korraldamiseks kasutatavatel mänguautomaatidel tehtud panustest laekunud summast, millest on maha arvatud võidud; RT I 2014-07-08 1 108072014001 2015-02-01 3 3) 32 eurot ühe osavusmängu mänguautomaadi kohta; RT I 2023-07-01 3 101072023003 2024-01-01 4 4) 22 protsenti käe",
+      "estleg:legalText": "Hasartmängumaksu määr on: 1406 eurot ühe mängulaua kohta; 300 eurot õnnemängu korraldamiseks kasutatava ühe mänguautomaadi kohta ja 10 protsenti hasartmängukorraldaja õnnemängu korraldamiseks kasutatavatel mänguautomaatidel tehtud panustest laekunud summast, millest on maha arvatud võidud; 32 eurot ühe osavusmängu mänguautomaadi kohta; 22 protsenti käesoleva seaduse § 1 lõike 1 punktis 2 sätestatud summast; 22 protsenti käesoleva seaduse § 1 lõike 1 punktis 3 sätestatud summast; 5,5 protsenti käesoleva seaduse § 1 lõike 1 punktis 4 sätestatud summast; 5,5 protsenti käesoleva seaduse § 1 lõike 1 punktis 5 sätestatud summast; 5,5 protsenti käesoleva seaduse § 1 lõike 1 punktide 6–9 alusel arvestatud summast.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_HasMMS_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:HasMMS_Par_6_Lg_Unknown_1"
+        }
+      ],
       "estleg:referencedBy": [
         {
           "@id": "estleg:HasMMS_Par_8"
@@ -188,33 +399,273 @@
       ]
     },
     {
+      "@id": "estleg:HasMMS_Par_6_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Hasartmängumaksu määr on: 1406 eurot ühe mängulaua kohta; 300 eurot õnnemängu korraldamiseks kasutatava ühe mänguautomaadi kohta ja 10 protsenti hasartmängukorraldaja õnnemängu korraldamiseks kasutatavatel mänguautomaatidel tehtud panustest laekunud summast, millest on maha arvatud võidud; 32 eurot ühe osavusmängu mänguautomaadi kohta; 22 protsenti käesoleva seaduse § 1 lõike 1 punktis 2 sätestatud summast; 22 protsenti käesoleva seaduse § 1 lõike 1 punktis 3 sätestatud summast; 5,5 protsenti käesoleva seaduse § 1 lõike 1 punktis 4 sätestatud summast; 5,5 protsenti käesoleva seaduse § 1 lõike 1 punktis 5 sätestatud summast; 5,5 protsenti käesoleva seaduse § 1 lõike 1 punktide 6–9 alusel arvestatud summast.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HasMMS_Par_6"
+      }
+    },
+    {
       "@id": "estleg:HasMMS_Par_7",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_HasMMS"
+        "estleg:LegalProvision_hasartmangumaksu_seadus"
       ],
       "estleg:paragrahv": "§ 7.",
       "rdfs:label": "§ 7. Hasartmängumaksu laekumine ja kasutamine",
       "estleg:sourceAct": "Hasartmängumaksu seadus",
-      "estleg:summary": "1 (1) Hasartmängumaks laekub riigieelarvesse. Hasartmängumaks laekub riigieelarvesse. 2 (2) Riigieelarves nähakse ette järgmised kulud: 1 1) Eesti Kultuurkapitalile – summas, mille suurus vastab 46 protsendile hasartmängumaksu kavandatavast laekumisest ja millest 63 protsenti eraldatakse kultuuriehitistele; 2 2) Hasartmängumaksu Nõukogule (edaspidi nõukogu) – summas, mille suurus vastab 37,4 protsendile hasartmängumaksu kavandatavast laekumisest. Nimetatud summast eraldatakse 31,8 protsenti tead"
+      "estleg:summary": "1 (1) Hasartmängumaks laekub riigieelarvesse. Hasartmängumaks laekub riigieelarvesse. 2 (2) Riigieelarves nähakse ette järgmised kulud: 1 1) Eesti Kultuurkapitalile – summas, mille suurus vastab 47,8 protsendile hasartmängumaksu kavandatavast laekumisest ning millest 52 protsenti eraldatakse kultuuriehitistele ja 2 protsenti kunstide ja rahvakultuuri valdkondade õppejõudude loometöö edendamiseks. RT I 2025-01-02 1 102012025001 2026-01-01 2 2) kehtetu - RT I 2021-12-07 2 107122021002 2022-01-01 3",
+      "estleg:legalText": "(1) Hasartmängumaks laekub riigieelarvesse. (2) Riigieelarves nähakse ette järgmised kulud: Eesti Kultuurkapitalile – summas, mille suurus vastab 47,8 protsendile hasartmängumaksu kavandatavast laekumisest ning millest 52 protsenti eraldatakse kultuuriehitistele ja 2 protsenti kunstide ja rahvakultuuri valdkondade õppejõudude loometöö edendamiseks. kehtetu - kehtetu - kehtetu - kehtetu - (2<sup>1</sup>) Kehtetu - (3) Kehtetu - (3<sup>1</sup>) Kehtetu - (4) Kehtetu - (5) Kehtetu - (6) Kehtetu - (7) Kehtetu - (8) Kehtetu - (9) Kehtetu - (10) Kui käesoleva seaduse § 1 lõike 1 punktide 4–9 alusel laekunud hasartmängumaksu ühes kalendriaastas on rohkem kui 27 miljonit eurot, eraldatakse enam laekunud summast: 8 protsenti vastavalt käesoleva paragrahvi lõikele 1 riigieelarvesse; 12 protsenti Eesti Kultuurkapitalile, millest 60,6 protsenti eraldatakse kultuuriehitistele ning 2 protsenti kunstide ja rahvakultuuri valdkonda õppejõudude loometöö edendamiseks; 80 protsenti Eesti Kultuurkapitalile, millest 75 protsenti eraldatakse spordiehitiste fondile ning 25 protsenti kultuuri- ja spordivaldkondadele eraraha kaasamise fondile.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_HasMMS_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:HasMMS_Par_7_Lg_1"
+        },
+        {
+          "@id": "estleg:HasMMS_Par_7_Lg_2"
+        },
+        {
+          "@id": "estleg:HasMMS_Par_7_Lg_2_1"
+        },
+        {
+          "@id": "estleg:HasMMS_Par_7_Lg_3"
+        },
+        {
+          "@id": "estleg:HasMMS_Par_7_Lg_3_1"
+        },
+        {
+          "@id": "estleg:HasMMS_Par_7_Lg_4"
+        },
+        {
+          "@id": "estleg:HasMMS_Par_7_Lg_5"
+        },
+        {
+          "@id": "estleg:HasMMS_Par_7_Lg_6"
+        },
+        {
+          "@id": "estleg:HasMMS_Par_7_Lg_7"
+        },
+        {
+          "@id": "estleg:HasMMS_Par_7_Lg_8"
+        },
+        {
+          "@id": "estleg:HasMMS_Par_7_Lg_9"
+        },
+        {
+          "@id": "estleg:HasMMS_Par_7_Lg_10"
+        }
+      ],
+      "estleg:targetGroup": [
+        "ngo"
+      ]
+    },
+    {
+      "@id": "estleg:HasMMS_Par_7_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Hasartmängumaks laekub riigieelarvesse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HasMMS_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 1"
+    },
+    {
+      "@id": "estleg:HasMMS_Par_7_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Riigieelarves nähakse ette järgmised kulud: Eesti Kultuurkapitalile – summas, mille suurus vastab 47,8 protsendile hasartmängumaksu kavandatavast laekumisest ning millest 52 protsenti eraldatakse kultuuriehitistele ja 2 protsenti kunstide ja rahvakultuuri valdkondade õppejõudude loometöö edendamiseks. kehtetu - kehtetu - kehtetu - kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:HasMMS_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 2"
+    },
+    {
+      "@id": "estleg:HasMMS_Par_7_Lg_2_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2<sup>1</sup>",
+      "estleg:legalText": "(2<sup>1</sup>) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:HasMMS_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 2<sup>1</sup>"
+    },
+    {
+      "@id": "estleg:HasMMS_Par_7_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:HasMMS_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 3"
+    },
+    {
+      "@id": "estleg:HasMMS_Par_7_Lg_3_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3<sup>1</sup>",
+      "estleg:legalText": "(3<sup>1</sup>) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:HasMMS_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 3<sup>1</sup>"
+    },
+    {
+      "@id": "estleg:HasMMS_Par_7_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:HasMMS_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 4"
+    },
+    {
+      "@id": "estleg:HasMMS_Par_7_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:HasMMS_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 5"
+    },
+    {
+      "@id": "estleg:HasMMS_Par_7_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:HasMMS_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 6"
+    },
+    {
+      "@id": "estleg:HasMMS_Par_7_Lg_7",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "7",
+      "estleg:legalText": "(7) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:HasMMS_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 7"
+    },
+    {
+      "@id": "estleg:HasMMS_Par_7_Lg_8",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "8",
+      "estleg:legalText": "(8) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:HasMMS_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 8"
+    },
+    {
+      "@id": "estleg:HasMMS_Par_7_Lg_9",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "9",
+      "estleg:legalText": "(9) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:HasMMS_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 9"
+    },
+    {
+      "@id": "estleg:HasMMS_Par_7_Lg_10",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "10",
+      "estleg:legalText": "(10) Kui käesoleva seaduse § 1 lõike 1 punktide 4–9 alusel laekunud hasartmängumaksu ühes kalendriaastas on rohkem kui 27 miljonit eurot, eraldatakse enam laekunud summast: 8 protsenti vastavalt käesoleva paragrahvi lõikele 1 riigieelarvesse; 12 protsenti Eesti Kultuurkapitalile, millest 60,6 protsenti eraldatakse kultuuriehitistele ning 2 protsenti kunstide ja rahvakultuuri valdkonda õppejõudude loometöö edendamiseks; 80 protsenti Eesti Kultuurkapitalile, millest 75 protsenti eraldatakse spordiehitiste fondile ning 25 protsenti kultuuri- ja spordivaldkondadele eraraha kaasamise fondile.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HasMMS_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 10"
     },
     {
       "@id": "estleg:HasMMS_Par_8",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_HasMMS"
+        "estleg:LegalProvision_hasartmangumaksu_seadus"
       ],
       "estleg:paragrahv": "§ 8.",
       "rdfs:label": "§ 8. Rakendussätted",
       "estleg:sourceAct": "Hasartmängumaksu seadus",
       "estleg:summary": "1 (1) Enne käesoleva seaduse jõustumist Maksu- ja Tolliameti poolt hasartmängukorraldajale väljastatud maksumärgid kehtivad maksustamisperioodi lõpuni. Enne käesoleva seaduse jõustumist Maksu- ja Tolliameti poolt hasartmängukorraldajale väljastatud maksumärgid kehtivad maksustamisperioodi lõpuni. 2 (2) Kuni 2009. aasta 31. detsembrini on hasartmänguseaduse § 36 lõikes 6 nimetatud õnnemängu korraldamiseks kasutatava mänguautomaadi maksumäär 50 protsenti käesoleva seaduse § 6 punktis 2 sätestatud ",
-      "estleg:references": [
+      "estleg:legalText": "(1) Enne käesoleva seaduse jõustumist Maksu- ja Tolliameti poolt hasartmängukorraldajale väljastatud maksumärgid kehtivad maksustamisperioodi lõpuni. (2) Kuni 2009. aasta 31. detsembrini on hasartmänguseaduse § 36 lõikes 6 nimetatud õnnemängu korraldamiseks kasutatava mänguautomaadi maksumäär 50 protsenti käesoleva seaduse § 6 punktis 2 sätestatud määrast. (3) Hasartmängukorraldaja, kes korraldab osavusmänge mänguautomaadil, esitab Maksu- ja Tolliametile hasartmängumaksu deklaratsiooni ning tasub hasartmängumaksu käesoleva seaduse jõustumisele järgneva kalendrikuu 15. kuupäevaks. (4) Enne käesoleva seaduse jõustumist antud korraldusloa alusel korraldatava arvloterii hasartmängumaksu määr on kuni 2009. aasta 31. detsembrini 10 protsenti arvloterii loteriipiletite müügist saadud summast. (5) Kehtetu - (6) Käesoleva seaduse enne 2022. aasta 1. jaanuari kehtinud redaktsiooni § 7 lõike 2 punktides 2–5 nimetatud sihtotstarbeks ettenähtud ja laekunud vahendeid võib kasutada kuni nende vahendite lõppemiseni. (7) Rahandusministeerium analüüsib hiljemalt 2029. aasta 1. veebruariks 2026. aasta 1. jaanuaril jõustunud hasartmänguseaduse ja teiste seaduste muutmise seaduse rakendamise eesmärgi saavutamist, kaasnenud mõju ja regulatsiooni tulemuslikkust.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_HasMMS_default"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:HasMMS_Par_6"
+          "@id": "estleg:HasMMS_Par_8_Lg_1"
+        },
+        {
+          "@id": "estleg:HasMMS_Par_8_Lg_2"
+        },
+        {
+          "@id": "estleg:HasMMS_Par_8_Lg_3"
+        },
+        {
+          "@id": "estleg:HasMMS_Par_8_Lg_4"
+        },
+        {
+          "@id": "estleg:HasMMS_Par_8_Lg_5"
+        },
+        {
+          "@id": "estleg:HasMMS_Par_8_Lg_6"
+        },
+        {
+          "@id": "estleg:HasMMS_Par_8_Lg_7"
         }
       ],
       "estleg:targetGroup": [
         "public_body"
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:HasMMS_Par_6"
+        }
       ],
       "estleg:competentAuthority": [
         {
@@ -224,42 +675,178 @@
       "estleg:competenceType": "general"
     },
     {
+      "@id": "estleg:HasMMS_Par_8_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Enne käesoleva seaduse jõustumist Maksu- ja Tolliameti poolt hasartmängukorraldajale väljastatud maksumärgid kehtivad maksustamisperioodi lõpuni.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HasMMS_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 1"
+    },
+    {
+      "@id": "estleg:HasMMS_Par_8_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kuni 2009. aasta 31. detsembrini on hasartmänguseaduse § 36 lõikes 6 nimetatud õnnemängu korraldamiseks kasutatava mänguautomaadi maksumäär 50 protsenti käesoleva seaduse § 6 punktis 2 sätestatud määrast.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HasMMS_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 2"
+    },
+    {
+      "@id": "estleg:HasMMS_Par_8_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Hasartmängukorraldaja, kes korraldab osavusmänge mänguautomaadil, esitab Maksu- ja Tolliametile hasartmängumaksu deklaratsiooni ning tasub hasartmängumaksu käesoleva seaduse jõustumisele järgneva kalendrikuu 15. kuupäevaks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HasMMS_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 3"
+    },
+    {
+      "@id": "estleg:HasMMS_Par_8_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Enne käesoleva seaduse jõustumist antud korraldusloa alusel korraldatava arvloterii hasartmängumaksu määr on kuni 2009. aasta 31. detsembrini 10 protsenti arvloterii loteriipiletite müügist saadud summast.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HasMMS_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 4"
+    },
+    {
+      "@id": "estleg:HasMMS_Par_8_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:HasMMS_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 5"
+    },
+    {
+      "@id": "estleg:HasMMS_Par_8_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Käesoleva seaduse enne 2022. aasta 1. jaanuari kehtinud redaktsiooni § 7 lõike 2 punktides 2–5 nimetatud sihtotstarbeks ettenähtud ja laekunud vahendeid võib kasutada kuni nende vahendite lõppemiseni.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HasMMS_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 6"
+    },
+    {
+      "@id": "estleg:HasMMS_Par_8_Lg_7",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "7",
+      "estleg:legalText": "(7) Rahandusministeerium analüüsib hiljemalt 2029. aasta 1. veebruariks 2026. aasta 1. jaanuaril jõustunud hasartmänguseaduse ja teiste seaduste muutmise seaduse rakendamise eesmärgi saavutamist, kaasnenud mõju ja regulatsiooni tulemuslikkust.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HasMMS_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 7"
+    },
+    {
       "@id": "estleg:HasMMS_Par_9",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_HasMMS"
+        "estleg:LegalProvision_hasartmangumaksu_seadus"
       ],
       "estleg:paragrahv": "§ 9.",
       "rdfs:label": "§ 9.",
       "estleg:sourceAct": "Hasartmängumaksu seadus",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_HasMMS_default"
+      },
       "estleg:summary": "§ 9."
     },
     {
       "@id": "estleg:HasMMS_Par_13",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_HasMMS"
+        "estleg:LegalProvision_hasartmangumaksu_seadus"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13.",
+      "rdfs:label": "§ 13. [[Käesolevast tekstist välja jäetud.]]",
       "estleg:sourceAct": "Hasartmängumaksu seadus",
-      "estleg:summary": "[Käesolevast tekstist välja jäetud.]"
+      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_HasMMS_default"
+      }
     },
     {
       "@id": "estleg:HasMMS_Par_14",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_HasMMS"
+        "estleg:LegalProvision_hasartmangumaksu_seadus"
       ],
       "estleg:paragrahv": "§ 14.",
       "rdfs:label": "§ 14. Seaduse jõustumine",
       "estleg:sourceAct": "Hasartmängumaksu seadus",
       "estleg:summary": "1 (1) Käesolev seadus jõustub 2009. aasta 1. juunil. Käesolev seadus jõustub 2009. aasta 1. juunil. 2 (2) Käesoleva seaduse § 1 lõike 1 punkt 5 ning § 6 punkt 7 jõustuvad 2010. aasta 1. jaanuaril. Käesoleva seaduse § 1 lõike 1 punkt 5 ning § 6 punkt 7 jõustuvad 2010. aasta 1. jaanuaril.",
+      "estleg:legalText": "(1) Käesolev seadus jõustub 2009. aasta 1. juunil. (2) Käesoleva seaduse § 1 lõike 1 punkt 5 ning § 6 punkt 7 jõustuvad 2010. aasta 1. jaanuaril.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_HasMMS_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:HasMMS_Par_14_Lg_1"
+        },
+        {
+          "@id": "estleg:HasMMS_Par_14_Lg_2"
+        }
+      ],
       "estleg:references": [
         {
           "@id": "estleg:HasMMS_Par_1"
         }
       ]
+    },
+    {
+      "@id": "estleg:HasMMS_Par_14_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolev seadus jõustub 2009. aasta 1. juunil.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HasMMS_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 1"
+    },
+    {
+      "@id": "estleg:HasMMS_Par_14_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Käesoleva seaduse § 1 lõike 1 punkt 5 ning § 6 punkt 7 jõustuvad 2010. aasta 1. jaanuaril.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HasMMS_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 2"
     }
   ]
 }

@@ -6,45 +6,57 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
   },
   "@graph": [
     {
       "@id": "estleg:EESTI_3_Map_2026",
       "@type": [
+        "owl:Ontology",
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "rdfs:label": "Eesti Rahvusraamatukogu seadus teemakaardistus",
       "dc:source": "Eesti Rahvusraamatukogu seadus",
-      "estleg:affectedBy": [
-        {
-          "@id": "estleg:Draft_RIIGIKOGU13_0442"
-        }
-      ],
-      "estleg:temporalStatus": "unknown",
+      "dcterms:title": "Eesti Rahvusraamatukogu seadus",
+      "estleg:contentStatus": "structuredBody",
+      "dcterms:source": {
+        "@id": "https://www.riigiteataja.ee/akt/129062022015.xml"
+      },
+      "owl:sameAs": {
+        "@id": "https://www.riigiteataja.ee/akt/129062022015.xml"
+      },
+      "estleg:kehtiv": {
+        "@value": "2026-05-24",
+        "@type": "xsd:date"
+      },
       "dcterms:subject": [
         {
           "@id": "http://eurovoc.europa.eu/3221"
         },
         {
-          "@id": "http://eurovoc.europa.eu/2446"
-        },
-        {
           "@id": "http://eurovoc.europa.eu/5211"
         },
         {
-          "@id": "http://eurovoc.europa.eu/3606"
+          "@id": "http://eurovoc.europa.eu/5231"
         },
         {
-          "@id": "http://eurovoc.europa.eu/6006"
+          "@id": "http://eurovoc.europa.eu/2441"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/3606"
+        }
+      ],
+      "estleg:temporalStatus": "unknown",
+      "estleg:affectedBy": [
+        {
+          "@id": "estleg:Draft_KUM22_0002"
         }
       ]
     },
     {
-      "@id": "estleg:LegalProvision_EESTI_3",
+      "@id": "estleg:LegalProvision_eesti_rahvusraamatukogu_seadus",
       "@type": [
         "owl:Class"
       ],
@@ -54,63 +66,197 @@
       }
     },
     {
+      "@id": "estleg:EESTI_3_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": "Eesti Rahvusraamatukogu seadus teemaskeem",
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_EESTI_3_1"
+        },
+        {
+          "@id": "estleg:Cluster_EESTI_3_2"
+        },
+        {
+          "@id": "estleg:Cluster_EESTI_3_3"
+        },
+        {
+          "@id": "estleg:Cluster_EESTI_3_4"
+        },
+        {
+          "@id": "estleg:Cluster_EESTI_3_5"
+        }
+      ]
+    },
+    {
       "@id": "estleg:Cluster_EESTI_3_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§1–3 ÜLDSÄTTED"
+      "rdfs:label": "§1–7 Üldsätted",
+      "skos:prefLabel": "§1–7 Üldsätted",
+      "skos:inScheme": {
+        "@id": "estleg:EESTI_3_TopicScheme"
+      },
+      "estleg:provisionCount": 7
+    },
+    {
+      "@id": "estleg:Chapter_EESTI_3_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "1. peatükk – Üldsätted",
+      "estleg:chapterNumber": "1",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_EESTI_3_1"
+      }
     },
     {
       "@id": "estleg:Cluster_EESTI_3_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§4–8 ÜLESANDED"
+      "rdfs:label": "§8–17 Juhtimine",
+      "skos:prefLabel": "§8–17 Juhtimine",
+      "skos:inScheme": {
+        "@id": "estleg:EESTI_3_TopicScheme"
+      },
+      "estleg:provisionCount": 10
+    },
+    {
+      "@id": "estleg:Chapter_EESTI_3_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "2. peatükk – Juhtimine",
+      "estleg:chapterNumber": "2",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_EESTI_3_2"
+      }
     },
     {
       "@id": "estleg:Cluster_EESTI_3_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "JUHTIMINE"
+      "rdfs:label": "§18–20 Vara ja finantseerimine",
+      "skos:prefLabel": "§18–20 Vara ja finantseerimine",
+      "skos:inScheme": {
+        "@id": "estleg:EESTI_3_TopicScheme"
+      },
+      "estleg:provisionCount": 3
+    },
+    {
+      "@id": "estleg:Chapter_EESTI_3_3",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "3. peatükk – Vara ja finantseerimine",
+      "estleg:chapterNumber": "3",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_EESTI_3_3"
+      }
     },
     {
       "@id": "estleg:Cluster_EESTI_3_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§14–17 VARA JA FINANTSEERIMINE"
+      "rdfs:label": "§21–22 Aruandlus ja haldusjärelevalve",
+      "skos:prefLabel": "§21–22 Aruandlus ja haldusjärelevalve",
+      "skos:inScheme": {
+        "@id": "estleg:EESTI_3_TopicScheme"
+      },
+      "estleg:provisionCount": 2
+    },
+    {
+      "@id": "estleg:Chapter_EESTI_3_4",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "4. peatükk – Aruandlus ja haldusjärelevalve",
+      "estleg:chapterNumber": "4",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_EESTI_3_4"
+      }
     },
     {
       "@id": "estleg:Cluster_EESTI_3_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§18–19 SEADUSE RAKENDAMINE"
+      "rdfs:label": "§23–25 Seaduse rakendamine",
+      "skos:prefLabel": "§23–25 Seaduse rakendamine",
+      "skos:inScheme": {
+        "@id": "estleg:EESTI_3_TopicScheme"
+      },
+      "estleg:provisionCount": 3
+    },
+    {
+      "@id": "estleg:Chapter_EESTI_3_5",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "5. peatükk – Seaduse rakendamine",
+      "estleg:chapterNumber": "5",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_EESTI_3_5"
+      }
     },
     {
       "@id": "estleg:EESTI_3_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_EESTI_3"
+        "estleg:LegalProvision_eesti_rahvusraamatukogu_seadus"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. Seaduse reguleerimisala",
       "estleg:sourceAct": "Eesti Rahvusraamatukogu seadus",
-      "estleg:summary": "Käesolevas seaduses sätestatakse Eesti Rahvusraamatukogu (edaspidi Rahvusraamatukogu) õiguslik seisund, ülesanded rahvus- ja parlamendiraamatukoguna ning humanitaar- ja sotsiaalteaduste erialaraamatukoguna ning juhtimise korraldus ja riiklik järelevalve.RT I200235218952232002-05-04+03:00 Käesolevas seaduses sätestatakse Eesti Rahvusraamatukogu (edaspidi Rahvusraamatukogu) õiguslik seisund, ülesanded rahvus- ja parlamendiraamatukoguna ning humanitaar- ja sotsiaalteaduste erialaraamatukoguna ning ",
+      "estleg:summary": "1 (1) Käesolevas seaduses sätestatakse Eesti Rahvusraamatukogu (edaspidi Rahvusraamatukogu) õiguslik seisund, eesmärk, ülesanded, juhtimine, finantseerimine ja haldusjärelevalve tegevuse üle. RT I 2014-03-13 4 113032014004 2014-07-01 Käesolevas seaduses sätestatakse Eesti Rahvusraamatukogu (edaspidi Rahvusraamatukogu) õiguslik seisund, eesmärk, ülesanded, juhtimine, finantseerimine ja haldusjärelevalve tegevuse üle. 2 (2) Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetl",
+      "estleg:legalText": "(1) Käesolevas seaduses sätestatakse Eesti Rahvusraamatukogu (edaspidi Rahvusraamatukogu) õiguslik seisund, eesmärk, ülesanded, juhtimine, finantseerimine ja haldusjärelevalve tegevuse üle. (2) Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse sätteid, arvestades käesoleva seaduse erisusi.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EESTI_3_1"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_EESTI_3_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:EESTI_3_Par_1_Lg_1"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_1_Lg_2"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:ROS_Par_1",
           "estleg:similarityScore": {
-            "@value": "0.318",
+            "@value": "0.333",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:TalUKS_Par_1",
+          "estleg:similarityScore": {
+            "@value": "0.409",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
@@ -118,37 +264,71 @@
       ]
     },
     {
+      "@id": "estleg:EESTI_3_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolevas seaduses sätestatakse Eesti Rahvusraamatukogu (edaspidi Rahvusraamatukogu) õiguslik seisund, eesmärk, ülesanded, juhtimine, finantseerimine ja haldusjärelevalve tegevuse üle.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse sätteid, arvestades käesoleva seaduse erisusi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 2"
+    },
+    {
       "@id": "estleg:EESTI_3_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_EESTI_3"
+        "estleg:LegalProvision_eesti_rahvusraamatukogu_seadus"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Rahvusraamatukogu eesmärk",
+      "rdfs:label": "§ 2. Rahvusraamatukogu õiguslik seisund",
       "estleg:sourceAct": "Eesti Rahvusraamatukogu seadus",
-      "estleg:summary": "Rahvusraamatukogu eesmärk on rahvuslike kultuuriväärtuste ja inforessursside kogumine, säilitamine ja kättesaadavaks tegemine. Rahvusraamatukogu eesmärk on rahvuslike kultuuriväärtuste ja inforessursside kogumine, säilitamine ja kättesaadavaks tegemine.",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_EESTI_3_1"
-      }
-    },
-    {
-      "@id": "estleg:EESTI_3_Par_3",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_EESTI_3"
-      ],
-      "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Rahvusraamatukogu õiguslik seisund",
-      "estleg:sourceAct": "Eesti Rahvusraamatukogu seadus",
-      "estleg:summary": "1(1)Rahvusraamatukogu on avalik-õiguslik juriidiline isik, kes tegutseb käesoleva seaduse, teiste õigusaktide ja oma põhikirja alusel. Rahvusraamatukogu on avalik-õiguslik juriidiline isik, kes tegutseb käesoleva seaduse, teiste õigusaktide ja oma põhikirja alusel. 2(2)Rahvusraamatukogu põhikirja kinnitab Rahvusraamatukogu Nõukogu. Rahvusraamatukogu põhikirja kinnitab Rahvusraamatukogu Nõukogu. 3(3)Rahvusraamatukogu on käesoleva seadusega sätestatud ulatuses autonoomne ning juhindub oma eesmärgi",
+      "estleg:summary": "1 (1) Rahvusraamatukogu on avalik-õiguslik juriidiline isik, kes tegutseb käesoleva seaduse, teiste õigusaktide ja oma põhikirja alusel. Rahvusraamatukogu on avalik-õiguslik juriidiline isik, kes tegutseb käesoleva seaduse, teiste õigusaktide ja oma põhikirja alusel. 2 (2) Rahvusraamatukogu põhikirja kinnitab Rahvusraamatukogu nõukogu (edaspidi nõukogu). Rahvusraamatukogu põhikirja kinnitab Rahvusraamatukogu nõukogu (edaspidi nõukogu). 3 (3) Rahvusraamatukogu registreeritakse riigi- ja kohaliku ",
+      "estleg:legalText": "(1) Rahvusraamatukogu on avalik-õiguslik juriidiline isik, kes tegutseb käesoleva seaduse, teiste õigusaktide ja oma põhikirja alusel. (2) Rahvusraamatukogu põhikirja kinnitab Rahvusraamatukogu nõukogu (edaspidi nõukogu). (3) Rahvusraamatukogu registreeritakse riigi- ja kohaliku omavalitsuse asutuste riiklikus registris selle registri põhimääruses sätestatud korras. (4) Rahvusraamatukogu lõpetatakse seadusega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EESTI_3_1"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_EESTI_3_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:EESTI_3_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_2_Lg_2"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_2_Lg_3"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_2_Lg_4"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "public_body"
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:KBFIS_Par_2",
           "estleg:similarityScore": {
-            "@value": "0.333",
+            "@value": "0.348",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
@@ -162,9 +342,17 @@
           "estleg:similarityStatus": "candidate"
         },
         {
-          "@id": "estleg:eesti_teaduste_akadeemia_seadus_Par_3",
+          "@id": "estleg:TTUKS_Par_2",
           "estleg:similarityScore": {
-            "@value": "0.333",
+            "@value": "0.32",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:TÜKS_Par_2",
+          "estleg:similarityScore": {
+            "@value": "0.364",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
@@ -177,6 +365,151 @@
           },
           "estleg:similarityStatus": "candidate"
         }
+      ]
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Rahvusraamatukogu on avalik-õiguslik juriidiline isik, kes tegutseb käesoleva seaduse, teiste õigusaktide ja oma põhikirja alusel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Rahvusraamatukogu põhikirja kinnitab Rahvusraamatukogu nõukogu (edaspidi nõukogu).",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_2_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Rahvusraamatukogu registreeritakse riigi- ja kohaliku omavalitsuse asutuste riiklikus registris selle registri põhimääruses sätestatud korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 3"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_2_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Rahvusraamatukogu lõpetatakse seadusega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 4"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_3",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_eesti_rahvusraamatukogu_seadus"
+      ],
+      "estleg:paragrahv": "§ 3.",
+      "rdfs:label": "§ 3. Rahvusraamatukogu eesmärk",
+      "estleg:sourceAct": "Eesti Rahvusraamatukogu seadus",
+      "estleg:summary": "1 (1) Rahvusraamatukogu eesmärk on suurendada ühiskonnas teadmistele ja informeeritusele rajanevat algatusvõimet, teadlikkust ja vastutustunnet, edendada riiki, Euroopa ühisväärtusi, kultuuri ja demokraatiat. Rahvusraamatukogu eesmärk on suurendada ühiskonnas teadmistele ja informeeritusele rajanevat algatusvõimet, teadlikkust ja vastutustunnet, edendada riiki, Euroopa ühisväärtusi, kultuuri ja demokraatiat. 2 (2) Rahvusraamatukogu juhindub oma eesmärgi täitmisel UNESCO soovitustest rahvus- ja p",
+      "estleg:legalText": "(1) Rahvusraamatukogu eesmärk on suurendada ühiskonnas teadmistele ja informeeritusele rajanevat algatusvõimet, teadlikkust ja vastutustunnet, edendada riiki, Euroopa ühisväärtusi, kultuuri ja demokraatiat. (2) Rahvusraamatukogu juhindub oma eesmärgi täitmisel UNESCO soovitustest rahvus- ja parlamendiraamatukogudele ning puudega inimestele kavandatud teenustele.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_EESTI_3_1"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_EESTI_3_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:EESTI_3_Par_3_Lg_1"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_3_Lg_2"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Rahvusraamatukogu eesmärk on suurendada ühiskonnas teadmistele ja informeeritusele rajanevat algatusvõimet, teadlikkust ja vastutustunnet, edendada riiki, Euroopa ühisväärtusi, kultuuri ja demokraatiat.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_3_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Rahvusraamatukogu juhindub oma eesmärgi täitmisel UNESCO soovitustest rahvus- ja parlamendiraamatukogudele ning puudega inimestele kavandatud teenustele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 2"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_4",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_eesti_rahvusraamatukogu_seadus"
+      ],
+      "estleg:paragrahv": "§ 4.",
+      "rdfs:label": "§ 4. Rahvusraamatukogu ülesanded",
+      "estleg:sourceAct": "Eesti Rahvusraamatukogu seadus",
+      "estleg:summary": "1 (1) Rahvusraamatukogu ülesanded rahvusraamatukoguna on: 1 1) eesti keeles ja Eestis ilmunud ning Eestit käsitlevate või Eesti kohta informatsiooni sisaldavate teavikute kogumine, alaline säilitamine ja kättesaadavaks tegemine; 2 2) Eesti teavikute riiklik bibliograafiline registreerimine rahvusbibliograafia andmebaasis ja rahvusbibliograafia andmebaasi kättesaadavaks tegemine; 3 3) Eesti retrospektiivse rahvusbibliograafia alase koostöö koordineerimine; 4 4) trükitoodangu- ja raamatukogualaste",
+      "estleg:legalText": "(1) Rahvusraamatukogu ülesanded rahvusraamatukoguna on: eesti keeles ja Eestis ilmunud ning Eestit käsitlevate või Eesti kohta informatsiooni sisaldavate teavikute kogumine, alaline säilitamine ja kättesaadavaks tegemine; Eesti teavikute riiklik bibliograafiline registreerimine rahvusbibliograafia andmebaasis ja rahvusbibliograafia andmebaasi kättesaadavaks tegemine; Eesti retrospektiivse rahvusbibliograafia alase koostöö koordineerimine; trükitoodangu- ja raamatukogualaste riiklike statistiliste andmete kogumine ja esitamine; raamatute standardnumbri rahvusvahelise süsteemi (ISBN), jadaväljaannete standardnumbri rahvusvahelise süsteemi (ISSN) ja noodiväljaannete standardnumbri rahvusvahelise süsteemi (ISMN) rahvusliku agentuurina tegutsemine; osalemine rahvusvahelises koostöös. (2) Rahvusraamatukogu ülesanded parlamendiraamatukoguna on: Riigikogule, Riigikogu Kantseleile, Vabariigi Valitsusele, ministeeriumidele ja Riigikantseleile informatsiooni hankimine, säilitamine, töötlemine, analüüsimine, kättesaadavaks tegemine ning väljaannete koostamine; rahvusvaheliste organisatsioonide depooraamatukoguna tegutsemine rahvusvaheliste kokkulepete kohaselt; Eesti õigusbibliograafia koostamine ja kättesaadavaks tegemine. (3) Rahvusraamatukogu ülesanded humanitaar- ja sotsiaalteaduste raamatukoguna on humanitaar- ja sotsiaalteaduste informatsiooni kogumine, säilitamine, töötlemine, analüüsimine ja kättesaadavaks tegemine. (4) Rahvusraamatukogu ülesanded teadus- ja arendusasutusena on: raamatukogunduse, infoteaduse, raamatukoguteaduse, raamatuteaduse ja bibliograafia ning nendega seotud valdkondade teadus- ja arendustöö, Eesti raamatukogude asjakohane nõustamine, raamatukogutöötajate täienduskoolituse korraldamine ning osavõtt rahvusvahelistest ja riiklikest teadus-, arendus- ja koostööprogrammidest; raamatukogundust ja sellega seotud valdkondi reguleerivate standardite väljatöötamine ja kohandamine koostöös standardiorganisatsioonidega; infotehnoloogia arendamine Rahvusraamatukogu infovara üldkättesaadavaks tegemiseks; teavikute säilitustehnoloogia arendamine; raamatukoguvõrgu erialakoostöö koordineerimine oma haldusalas raamatukogusid omavate ministeeriumidega. (4<sup>1</sup>) Rahvusraamatukogu ülesanded hoiuraamatukoguna on: üleriigilise vähe kasutatavate trükiste hoiukogu moodustamine, et talletada Eesti teistest raamatukogudest üle antud säilitamist väärivat teaduslikku, tehnilist ja kultuurialast võõrkeelset kirjandust, ning selle raamatukogudele ja lugejatele kättesaadavaks tegemine; teistelt raamatukogudelt ning muudelt asutustelt ja isikutelt väljaannete vastuvõtmine vahetuskogusse ning nende vahendamine raamatukogudele ja teistele avalikke ülesandeid täitvatele asutustele oma kogude täiendamiseks või hävinud väljaannete asendamiseks. (4<sup>2</sup>) Rahvusraamatukogu ülesanded pimedate raamatukoguna on: pimedatele, vaegnägijatele või muu trükikirja lugemise puudega isikutele ligipääsetavas vormis väljaannete valmistamine, komplekteerimine, säilitamine ja kättesaadavaks tegemine; pimedate ja vaegnägijate tegevust, rehabilitatsiooni ja õpetamist käsitlevate tavakirjas väljaannete komplekteerimine, säilitamine ja kättesaadavaks tegemine. (5) Rahvusraamatukogu täidab ka teisi käesolevast seadusest, muudest õigusaktidest ja Rahvusraamatukogu põhikirjast tulenevaid ülesandeid.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_EESTI_3_1"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_EESTI_3_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:EESTI_3_Par_4_Lg_1"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_4_Lg_2"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_4_Lg_3"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_4_Lg_4"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_4_Lg_4_1"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_4_Lg_4_2"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_4_Lg_5"
+        }
       ],
       "estleg:targetGroup": [
         "citizen",
@@ -184,392 +517,2155 @@
       ]
     },
     {
-      "@id": "estleg:EESTI_3_Par_4",
+      "@id": "estleg:EESTI_3_Par_4_Lg_1",
       "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_EESTI_3"
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Rahvusraamatukogu ülesanded rahvusraamatukoguna",
-      "estleg:sourceAct": "Eesti Rahvusraamatukogu seadus",
-      "estleg:summary": "Rahvusraamatukogu ülesanded rahvusraamatukoguna on:11)eesti keeles ja Eestis ilmunud teavikute ning Eestit käsitlevate või Eesti kohta informatsiooni sisaldavate teavikute kogumine, alaline säilitamine ja kättesaadavaks tegemine;22)Eesti bibliograafilise normandmestiku koostamine ja haldamine ning autoriteetsuskontrolli koordineerimine raamatukoguvõrgus;33)Eesti teavikute riiklik bibliograafiline registreerimine rahvusbibliograafia andmebaasis ja rahvusbibliograafia andmebaasi kättesaadavaks teg",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_EESTI_3_2"
-      }
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Rahvusraamatukogu ülesanded rahvusraamatukoguna on: eesti keeles ja Eestis ilmunud ning Eestit käsitlevate või Eesti kohta informatsiooni sisaldavate teavikute kogumine, alaline säilitamine ja kättesaadavaks tegemine; Eesti teavikute riiklik bibliograafiline registreerimine rahvusbibliograafia andmebaasis ja rahvusbibliograafia andmebaasi kättesaadavaks tegemine; Eesti retrospektiivse rahvusbibliograafia alase koostöö koordineerimine; trükitoodangu- ja raamatukogualaste riiklike statistiliste andmete kogumine ja esitamine; raamatute standardnumbri rahvusvahelise süsteemi (ISBN), jadaväljaannete standardnumbri rahvusvahelise süsteemi (ISSN) ja noodiväljaannete standardnumbri rahvusvahelise süsteemi (ISMN) rahvusliku agentuurina tegutsemine; osalemine rahvusvahelises koostöös.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_4_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Rahvusraamatukogu ülesanded parlamendiraamatukoguna on: Riigikogule, Riigikogu Kantseleile, Vabariigi Valitsusele, ministeeriumidele ja Riigikantseleile informatsiooni hankimine, säilitamine, töötlemine, analüüsimine, kättesaadavaks tegemine ning väljaannete koostamine; rahvusvaheliste organisatsioonide depooraamatukoguna tegutsemine rahvusvaheliste kokkulepete kohaselt; Eesti õigusbibliograafia koostamine ja kättesaadavaks tegemine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 2"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_4_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Rahvusraamatukogu ülesanded humanitaar- ja sotsiaalteaduste raamatukoguna on humanitaar- ja sotsiaalteaduste informatsiooni kogumine, säilitamine, töötlemine, analüüsimine ja kättesaadavaks tegemine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 3"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_4_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Rahvusraamatukogu ülesanded teadus- ja arendusasutusena on: raamatukogunduse, infoteaduse, raamatukoguteaduse, raamatuteaduse ja bibliograafia ning nendega seotud valdkondade teadus- ja arendustöö, Eesti raamatukogude asjakohane nõustamine, raamatukogutöötajate täienduskoolituse korraldamine ning osavõtt rahvusvahelistest ja riiklikest teadus-, arendus- ja koostööprogrammidest; raamatukogundust ja sellega seotud valdkondi reguleerivate standardite väljatöötamine ja kohandamine koostöös standardiorganisatsioonidega; infotehnoloogia arendamine Rahvusraamatukogu infovara üldkättesaadavaks tegemiseks; teavikute säilitustehnoloogia arendamine; raamatukoguvõrgu erialakoostöö koordineerimine oma haldusalas raamatukogusid omavate ministeeriumidega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 4"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_4_Lg_4_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4<sup>1</sup>",
+      "estleg:legalText": "(4<sup>1</sup>) Rahvusraamatukogu ülesanded hoiuraamatukoguna on: üleriigilise vähe kasutatavate trükiste hoiukogu moodustamine, et talletada Eesti teistest raamatukogudest üle antud säilitamist väärivat teaduslikku, tehnilist ja kultuurialast võõrkeelset kirjandust, ning selle raamatukogudele ja lugejatele kättesaadavaks tegemine; teistelt raamatukogudelt ning muudelt asutustelt ja isikutelt väljaannete vastuvõtmine vahetuskogusse ning nende vahendamine raamatukogudele ja teistele avalikke ülesandeid täitvatele asutustele oma kogude täiendamiseks või hävinud väljaannete asendamiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 4<sup>1</sup>"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_4_Lg_4_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4<sup>2</sup>",
+      "estleg:legalText": "(4<sup>2</sup>) Rahvusraamatukogu ülesanded pimedate raamatukoguna on: pimedatele, vaegnägijatele või muu trükikirja lugemise puudega isikutele ligipääsetavas vormis väljaannete valmistamine, komplekteerimine, säilitamine ja kättesaadavaks tegemine; pimedate ja vaegnägijate tegevust, rehabilitatsiooni ja õpetamist käsitlevate tavakirjas väljaannete komplekteerimine, säilitamine ja kättesaadavaks tegemine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 4<sup>2</sup>"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_4_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Rahvusraamatukogu täidab ka teisi käesolevast seadusest, muudest õigusaktidest ja Rahvusraamatukogu põhikirjast tulenevaid ülesandeid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 5"
     },
     {
       "@id": "estleg:EESTI_3_Par_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_EESTI_3"
+        "estleg:LegalProvision_eesti_rahvusraamatukogu_seadus"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Rahvusraamatukogu ülesanded parlamendiraamatukoguna",
+      "rdfs:label": "§ 5. Kogud ja andmebaasid",
       "estleg:sourceAct": "Eesti Rahvusraamatukogu seadus",
-      "estleg:summary": "Rahvusraamatukogu ülesanded parlamendiraamatukoguna on:11)Riigikogule, Riigikogu Kantseleile, Vabariigi Valitsusele, ministeeriumidele ja Riigikantseleile informatsiooni hankimine, säilitamine, töötlemine, analüüsimine ja kättesaadavaks tegemine ning teavikute koostamine ja kirjastamine;22)Eesti Vabariigi ametlike väljaannete registreerimine ja nende vahetamine õigusaktides kehtestatud korras;33)rahvusvaheliste organisatsioonide hoiuraamatukoguna (depooraamatukoguna) tegutsemine vastavalt rahvus",
+      "estleg:summary": "1 (1) Rahvusraamatukogu kogud ja andmebaasid moodustavad terviku, on jagamatud ning need on osa Eesti avalikust inforessursist. Rahvusraamatukogu kogud ja andmebaasid moodustavad terviku, on jagamatud ning need on osa Eesti avalikust inforessursist. 2 (2) Kogude ja andmebaaside kasutamist reguleerib Rahvusraamatukogu kasutuseeskiri, mille kinnitab Rahvusraamatukogu nõukogu. Kogude ja andmebaaside kasutamist reguleerib Rahvusraamatukogu kasutuseeskiri, mille kinnitab Rahvusraamatukogu nõukogu. 3 ",
+      "estleg:legalText": "(1) Rahvusraamatukogu kogud ja andmebaasid moodustavad terviku, on jagamatud ning need on osa Eesti avalikust inforessursist. (2) Kogude ja andmebaaside kasutamist reguleerib Rahvusraamatukogu kasutuseeskiri, mille kinnitab Rahvusraamatukogu nõukogu. (3) Rahvusraamatukogu võib töödelda kogudes ja andmebaasides sisalduvaid isikuandmeid, sealhulgas eriliiki isikuandmeid, eelkõige käesoleva seaduse § 4 lõike 1 punktides 1–5, lõike 2 punktides 1 ja 3 ning lõikes 3 nimetatud avalike ülesannete täitmiseks, kogude digiteerimiseks, teksti- ja andmekaeveks ning orbteoste väljaselgitamise eesmärgil teostatava hoolika otsingu läbiviimiseks.",
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_EESTI_3_2"
+        "@id": "estleg:Cluster_EESTI_3_1"
       },
-      "estleg:targetGroup": [
-        "public_body"
-      ],
-      "estleg:competentAuthority": [
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_EESTI_3_1"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:Institution_riigikogu"
+          "@id": "estleg:EESTI_3_Par_5_Lg_1"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_5_Lg_2"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_5_Lg_3"
         }
-      ],
-      "estleg:competenceType": "general"
+      ]
     },
     {
-      "@id": "estleg:EESTI_3_Par_5_5",
+      "@id": "estleg:EESTI_3_Par_5_Lg_1",
       "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_EESTI_3"
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:paragrahv": "§ 5<sup>1</sup>.",
-      "rdfs:label": "§ 5<sup>1</sup>. Rahvusraamatukogu ülesanded humanitaar- ja sotsiaalteaduste erialaraamatukoguna",
-      "estleg:sourceAct": "Eesti Rahvusraamatukogu seadus",
-      "estleg:summary": "Rahvusraamatukogu ülesanded humanitaar- ja sotsiaalteaduste erialaraamatukoguna on:11)humanitaar- ja sotsiaalteaduste alase informatsiooni kogumine, säilitamine, töötlemine, analüüsimine, kättesaadavaks tegemine ning teavikute koostamine ja kirjastamine;22)humanitaar- ja sotsiaalteaduste alaste erialamärksõnastike koostamine Eesti teadusinformatsiooni elektroonilises süsteemis.RT I200235218952232002-05-04+03:00 Rahvusraamatukogu ülesanded humanitaar- ja sotsiaalteaduste erialaraamatukoguna on: h",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_EESTI_3_2"
-      }
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Rahvusraamatukogu kogud ja andmebaasid moodustavad terviku, on jagamatud ning need on osa Eesti avalikust inforessursist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_5_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kogude ja andmebaaside kasutamist reguleerib Rahvusraamatukogu kasutuseeskiri, mille kinnitab Rahvusraamatukogu nõukogu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 2"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_5_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Rahvusraamatukogu võib töödelda kogudes ja andmebaasides sisalduvaid isikuandmeid, sealhulgas eriliiki isikuandmeid, eelkõige käesoleva seaduse § 4 lõike 1 punktides 1–5, lõike 2 punktides 1 ja 3 ning lõikes 3 nimetatud avalike ülesannete täitmiseks, kogude digiteerimiseks, teksti- ja andmekaeveks ning orbteoste väljaselgitamise eesmärgil teostatava hoolika otsingu läbiviimiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 3"
     },
     {
       "@id": "estleg:EESTI_3_Par_6",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_EESTI_3"
+        "estleg:LegalProvision_eesti_rahvusraamatukogu_seadus"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Kogud, andmebaasid ja teenused",
+      "rdfs:label": "§ 6. Avalikud teenused",
       "estleg:sourceAct": "Eesti Rahvusraamatukogu seadus",
-      "estleg:summary": "1(1)Rahvusraamatukogu kogud ja andmebaasid moodustavad terviku ja on jagamatud ning nad on osa Eesti avalikust inforessursist. Rahvusraamatukogu kogud ja andmebaasid moodustavad terviku ja on jagamatud ning nad on osa Eesti avalikust inforessursist. 2(2)Rahvusraamatukogu avalikud teenused on käesolevast seadusest tulenevad üldkättesaadavad infoteenused, mida osutatakse võrguteenustena, teenustena teiste raamatukogude vahendusel ja teenustena lugemissaalides. Rahvusraamatukogu avalikud teenused o",
+      "estleg:summary": "1 (1) Rahvusraamatukogu avalikud teenused on käesolevast seadusest tulenevad üldkättesaadavad infoteenused, mida osutatakse lugemissaalides, võrguteenustena ja teiste raamatukogude vahendusel. Avalikud teenused ei tohi olla vastuolus Rahvusraamatukogu eesmärkide ja ülesannetega ning nad peavad teenima avalikku huvi. Rahvusraamatukogu avalikud teenused on käesolevast seadusest tulenevad üldkättesaadavad infoteenused, mida osutatakse lugemissaalides, võrguteenustena ja teiste raamatukogude vahendu",
+      "estleg:legalText": "(1) Rahvusraamatukogu avalikud teenused on käesolevast seadusest tulenevad üldkättesaadavad infoteenused, mida osutatakse lugemissaalides, võrguteenustena ja teiste raamatukogude vahendusel. Avalikud teenused ei tohi olla vastuolus Rahvusraamatukogu eesmärkide ja ülesannetega ning nad peavad teenima avalikku huvi. (1<sup>1</sup>) Digitaalne teavik, teaviku digitaalne kujutis ning digitaalset teavikut, teaviku digitaalset kujutist ja teavikut kirjeldavad andmed, mille autoriõigused või autoriõigusega kaasnevad õigused kuuluvad seaduse või tehingu alusel Rahvusraamatukogule, on taaskasutatavad avaliku teabe seaduses sätestatud tingimustel ja korras, arvestades käesoleva seaduse ja autoriõiguse seadusega ettenähtud erisusi. (2) Rahvusraamatukogu kogudesse kuuluvate teavikute kasutamine on tasuta, muud teenused võivad olla tasulised. Tasuliste teenuste loetelu kinnitab nõukogu. (3) Teenuste eest võetavate tasude suurused määratakse kulupõhise arvestuse põhimõttest lähtuvalt Rahvusraamatukogu peadirektori (edaspidi peadirektor) käskkirjaga. (4) Riigikogu liikmetele ja Riigikogu Kantseleile on tasuta järgmised teenused: Rahvusraamatukogu kogudes ja andmebaasides olevatest teavikutest koopiate tegemine kooskõlas autoriõiguse seadusega; raamatukogudevahelise laenutuse korraldamine; bibliograafilised ja infoanalüütilised teenused.",
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_EESTI_3_2"
+        "@id": "estleg:Cluster_EESTI_3_1"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_EESTI_3_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:EESTI_3_Par_6_Lg_1"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_6_Lg_1_1"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_6_Lg_2"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_6_Lg_3"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_6_Lg_4"
+        }
+      ],
+      "estleg:targetGroup": [
+        "public_body"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Prohibition"
       }
     },
     {
-      "@id": "estleg:EESTI_3_Par_6_7",
+      "@id": "estleg:EESTI_3_Par_6_Lg_1",
       "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_EESTI_3"
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:paragrahv": "§ 6<sup>1</sup>.",
-      "rdfs:label": "§ 6<sup>1</sup>. Kasutamiseeskiri",
-      "estleg:sourceAct": "Eesti Rahvusraamatukogu seadus",
-      "estleg:summary": "Rahvusraamatukogu lugejaks registreerimise alused ja kord, kogude ja andmebaaside kasutamise korraldus ning lugeja vastutus kehtestatakse Rahvusraamatukogu kasutamiseeskirjas, mis tehakse teatavaks igale lugejale.RT I200235218952232002-05-04+03:00 Rahvusraamatukogu lugejaks registreerimise alused ja kord, kogude ja andmebaaside kasutamise korraldus ning lugeja vastutus kehtestatakse Rahvusraamatukogu kasutamiseeskirjas, mis tehakse teatavaks igale lugejale.",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_EESTI_3_2"
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Rahvusraamatukogu avalikud teenused on käesolevast seadusest tulenevad üldkättesaadavad infoteenused, mida osutatakse lugemissaalides, võrguteenustena ja teiste raamatukogude vahendusel. Avalikud teenused ei tohi olla vastuolus Rahvusraamatukogu eesmärkide ja ülesannetega ning nad peavad teenima avalikku huvi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_6"
       },
-      "estleg:targetGroup": [
-        "citizen"
-      ]
+      "rdfs:label": "§ 6 lg 1"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_6_Lg_1_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1<sup>1</sup>",
+      "estleg:legalText": "(1<sup>1</sup>) Digitaalne teavik, teaviku digitaalne kujutis ning digitaalset teavikut, teaviku digitaalset kujutist ja teavikut kirjeldavad andmed, mille autoriõigused või autoriõigusega kaasnevad õigused kuuluvad seaduse või tehingu alusel Rahvusraamatukogule, on taaskasutatavad avaliku teabe seaduses sätestatud tingimustel ja korras, arvestades käesoleva seaduse ja autoriõiguse seadusega ettenähtud erisusi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1<sup>1</sup>"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_6_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Rahvusraamatukogu kogudesse kuuluvate teavikute kasutamine on tasuta, muud teenused võivad olla tasulised. Tasuliste teenuste loetelu kinnitab nõukogu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 2"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_6_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Teenuste eest võetavate tasude suurused määratakse kulupõhise arvestuse põhimõttest lähtuvalt Rahvusraamatukogu peadirektori (edaspidi peadirektor) käskkirjaga.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 3"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_6_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Riigikogu liikmetele ja Riigikogu Kantseleile on tasuta järgmised teenused: Rahvusraamatukogu kogudes ja andmebaasides olevatest teavikutest koopiate tegemine kooskõlas autoriõiguse seadusega; raamatukogudevahelise laenutuse korraldamine; bibliograafilised ja infoanalüütilised teenused.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 4"
     },
     {
       "@id": "estleg:EESTI_3_Par_7",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_EESTI_3"
+        "estleg:LegalProvision_eesti_rahvusraamatukogu_seadus"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7.",
+      "rdfs:label": "§ 7. Kasutuseeskiri ja isikuandmete töötlemine",
       "estleg:sourceAct": "Eesti Rahvusraamatukogu seadus",
-      "estleg:summary": "Kehtetu --",
+      "estleg:summary": "1 (1) Rahvusraamatukogu lugejaks registreerimise alused ja kord, kogude ja teenuste kasutamise korraldus, sisekord ning lugeja vastutus kehtestatakse Rahvusraamatukogu kasutuseeskirjas. Rahvusraamatukogu lugejaks registreerimise alused ja kord, kogude ja teenuste kasutamise korraldus, sisekord ning lugeja vastutus kehtestatakse Rahvusraamatukogu kasutuseeskirjas. 2 (2) Rahvusraamatukogu lugejaks registreeritakse isikut tõendava dokumendi või õpilaspileti alusel. Teaviku kojulaenutamise õiguse sa",
+      "estleg:legalText": "(1) Rahvusraamatukogu lugejaks registreerimise alused ja kord, kogude ja teenuste kasutamise korraldus, sisekord ning lugeja vastutus kehtestatakse Rahvusraamatukogu kasutuseeskirjas. (2) Rahvusraamatukogu lugejaks registreeritakse isikut tõendava dokumendi või õpilaspileti alusel. Teaviku kojulaenutamise õiguse saamiseks on kuni 18-aastase isiku puhul vajalik lapsevanema või seadusliku esindaja kirjalik nõusolek. Lugejate andmebaasi kantakse järgmised lugeja ja kuni 18-aastase isiku puhul kojulaenutamise õiguse saamiseks lapsevanema või seadusliku esindaja isikuandmed: ees- ja perekonnanimi; isikukood või isikukoodi puudumisel sünniaeg; elukoht (postiaadress); telefoninumber; elektronposti aadress, kui see on olemas. (3) Rahvusraamatukogul on õigus töödelda lugeja isikuandmeid avalike ülesannete täitmisega seotud teenuste analüüsiks. (4) Puudega isikule avalike teenuste osutamiseks võib Rahvusraamatukogu töödelda andmeid isiku puude liigi ja kestuse kohta, mis on tõendatud puudega isiku kaardi, pensionitunnistuse, Sotsiaalkindlustusameti tõendi, puude liiki ja kestust määrava arstitõendi või muu tõendi kohaselt, mis on määratletud muu seaduse, rahvusvahelise lepingu või Euroopa Liidu õigusaktiga. (5) Materiaalse vara säilimise ja turvalisuse tagamiseks on kasutuseeskirjas õigus näha ette: piirangud lugemisalasse kaasavõetavate esemete suhtes; külastaja kohustus esitada lugemisalasse sisenemisel ja sealt väljumisel kaasasolevad esemed läbivaatamiseks. (6) Rahvusraamatukogu lugejaks registreeritakse isik, kes nõustub täitma kasutuseeskirja tingimusi.",
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_EESTI_3_2"
-      }
-    },
-    {
-      "@id": "estleg:EESTI_3_Par_8",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_EESTI_3"
-      ],
-      "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Riigikogu arhiiv",
-      "estleg:sourceAct": "Eesti Rahvusraamatukogu seadus",
-      "estleg:summary": "1(1)Riigikogu arhiiv moodustub Riigikogu täiskogu, komisjonide, juhatuse, Riigikogu Kantselei ja Vabariigi Valimiskomisjoni dokumentidest. Riigikogu arhiiv moodustub Riigikogu täiskogu, komisjonide, juhatuse, Riigikogu Kantselei ja Vabariigi Valimiskomisjoni dokumentidest. 2(2)Riigikogu arhiivi pidamise korra kinnitab Riigikogu Kantselei direktor.RT I200235218952232002-05-04+03:00 Riigikogu arhiivi pidamise korra kinnitab Riigikogu Kantselei direktor.",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_EESTI_3_2"
+        "@id": "estleg:Cluster_EESTI_3_1"
       },
-      "estleg:semanticallySimilarTo": [
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_EESTI_3_1"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:RKT_Par_158_172",
-          "estleg:similarityScore": {
-            "@value": "0.824",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
+          "@id": "estleg:EESTI_3_Par_7_Lg_1"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_7_Lg_2"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_7_Lg_3"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_7_Lg_4"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_7_Lg_5"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_7_Lg_6"
         }
       ],
-      "estleg:targetGroup": [
-        "business",
-        "public_body",
-        "official"
-      ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_riigikogu"
-        }
-      ],
-      "estleg:competenceType": "general"
-    },
-    {
-      "@id": "estleg:EESTI_3_Par_9",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_EESTI_3"
-      ],
-      "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Nõukogu",
-      "estleg:sourceAct": "Eesti Rahvusraamatukogu seadus",
-      "estleg:summary": "1(1)Rahvusraamatukogu kollegiaalne otsustuskogu on Rahvusraamatukogu Nõukogu (edaspidi nõukogu). Rahvusraamatukogu kollegiaalne otsustuskogu on Rahvusraamatukogu Nõukogu (edaspidi nõukogu). 2(2)Nõukogusse kuuluvad:11)neli Riigikogu liiget Riigikogu kultuurikomisjoni otsusel;22)Riigikogu Kantselei direktor;33)kultuuriministri nimetatud esindaja;44)Tartu Ülikooli Raamatukogu esindaja;55)Riigiarhiivi esindaja;66)Riigikantselei Riigi Infosüsteemide osakonna juhataja;77)Eesti Akadeemilise Raamatukogu",
-      "estleg:targetGroup": [
-        "public_body",
-        "official"
-      ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_riigikogu"
-        }
-      ],
-      "estleg:competenceType": "general"
-    },
-    {
-      "@id": "estleg:EESTI_3_Par_9_11",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_EESTI_3"
-      ],
-      "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Nõukogu",
-      "estleg:sourceAct": "Eesti Rahvusraamatukogu seadus",
-      "estleg:summary": "1(1)Rahvusraamatukogu kõrgeim organ on Rahvusraamatukogu Nõukogu (edaspidi nõukogu), kuhu kuulub seitse liiget. Rahvusraamatukogu kõrgeim organ on Rahvusraamatukogu Nõukogu (edaspidi nõukogu), kuhu kuulub seitse liiget. 2(2)Riigikogu nimetab nõukogusse Riigikogu kultuurikomisjoni ettepanekul neli Riigikogu liiget ja kaks Rahvusraamatukogu töövaldkondade tunnustatud asjatundjat. Riigikogu nimetab nõukogusse Riigikogu kultuurikomisjoni ettepanekul neli Riigikogu liiget ja kaks Rahvusraamatukogu tö",
-      "estleg:targetGroup": [
-        "public_body"
-      ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_riigikogu"
-        }
-      ],
-      "estleg:competenceType": "general"
-    },
-    {
-      "@id": "estleg:EESTI_3_Par_10",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_EESTI_3"
-      ],
-      "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Nõukogu pädevus",
-      "estleg:sourceAct": "Eesti Rahvusraamatukogu seadus",
-      "estleg:summary": "1(1)Nõukogu:11)valib peadirektori avaliku konkursi korras;22)valib nõukogu esimehe ja aseesimehe;33)kinnitab Rahvusraamatukogu põhikirja ja Rahvusraamatukogu kasutamiseeskirja ning teeb nendes muudatusi;44)kinnitab Rahvusraamatukogu arengu- ja tegevussuunad ning tegevusaruanded;55)kinnitab Rahvusraamatukogu taotluse kulutuste finantseerimiseks riigieelarvest;66)kinnitab Rahvusraamatukogu struktuuri ja töötajate koosseisu ning töötasustamise alused;77)kinnitab Rahvusraamatukogu eelarve ja selle t",
       "estleg:targetGroup": [
         "citizen"
       ]
     },
     {
+      "@id": "estleg:EESTI_3_Par_7_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Rahvusraamatukogu lugejaks registreerimise alused ja kord, kogude ja teenuste kasutamise korraldus, sisekord ning lugeja vastutus kehtestatakse Rahvusraamatukogu kasutuseeskirjas.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 1"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_7_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Rahvusraamatukogu lugejaks registreeritakse isikut tõendava dokumendi või õpilaspileti alusel. Teaviku kojulaenutamise õiguse saamiseks on kuni 18-aastase isiku puhul vajalik lapsevanema või seadusliku esindaja kirjalik nõusolek. Lugejate andmebaasi kantakse järgmised lugeja ja kuni 18-aastase isiku puhul kojulaenutamise õiguse saamiseks lapsevanema või seadusliku esindaja isikuandmed: ees- ja perekonnanimi; isikukood või isikukoodi puudumisel sünniaeg; elukoht (postiaadress); telefoninumber; elektronposti aadress, kui see on olemas.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 2"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_7_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Rahvusraamatukogul on õigus töödelda lugeja isikuandmeid avalike ülesannete täitmisega seotud teenuste analüüsiks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 3"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_7_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Puudega isikule avalike teenuste osutamiseks võib Rahvusraamatukogu töödelda andmeid isiku puude liigi ja kestuse kohta, mis on tõendatud puudega isiku kaardi, pensionitunnistuse, Sotsiaalkindlustusameti tõendi, puude liiki ja kestust määrava arstitõendi või muu tõendi kohaselt, mis on määratletud muu seaduse, rahvusvahelise lepingu või Euroopa Liidu õigusaktiga.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 4"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_7_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Materiaalse vara säilimise ja turvalisuse tagamiseks on kasutuseeskirjas õigus näha ette: piirangud lugemisalasse kaasavõetavate esemete suhtes; külastaja kohustus esitada lugemisalasse sisenemisel ja sealt väljumisel kaasasolevad esemed läbivaatamiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 5"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_7_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Rahvusraamatukogu lugejaks registreeritakse isik, kes nõustub täitma kasutuseeskirja tingimusi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 6"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_8",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_eesti_rahvusraamatukogu_seadus"
+      ],
+      "estleg:paragrahv": "§ 8.",
+      "rdfs:label": "§ 8. Nõukogu",
+      "estleg:sourceAct": "Eesti Rahvusraamatukogu seadus",
+      "estleg:summary": "1 (1) Rahvusraamatukogu kõrgeim juhtimisorgan on nõukogu, kuhu kuulub seitse liiget. Rahvusraamatukogu kõrgeim juhtimisorgan on nõukogu, kuhu kuulub seitse liiget. 2 (2) Riigikogu nimetab Riigikogu kultuurikomisjoni ettepanekul nõukogusse kolm Riigikogu liiget ja kaks Rahvusraamatukogu töövaldkondade tunnustatud asjatundjat volituste tähtajaga neli aastat. Riigikogu nimetab Riigikogu kultuurikomisjoni ettepanekul nõukogusse kolm Riigikogu liiget ja kaks Rahvusraamatukogu töövaldkondade tunnustat",
+      "estleg:legalText": "(1) Rahvusraamatukogu kõrgeim juhtimisorgan on nõukogu, kuhu kuulub seitse liiget. (2) Riigikogu nimetab Riigikogu kultuurikomisjoni ettepanekul nõukogusse kolm Riigikogu liiget ja kaks Rahvusraamatukogu töövaldkondade tunnustatud asjatundjat volituste tähtajaga neli aastat. (3) Ühe liikme, volituste tähtajaga neli aastat, nimetab nõukogusse valdkonna eest vastutav minister. (4) Ametikoha järgi kuulub nõukogusse Riigikogu Kantselei direktor. (5) Nõukogu liikmete volituste tähtaja lõppemisel jätkavad nõukogu liikmed tegevust, kuni jõustub Riigikogu otsus nõukogu uute liikmete nimetamise kohta, hoidudes seejuures vältimatu vajaduseta käesoleva seaduse § 10 lõike 1 punktides 1–5, 7 ja 12–14 nimetatud otsuste tegemisest. (6) Riigikogu või valdkonna eest vastutav minister võib enda nimetatud nõukogu liikme põhjendatud juhul enne tema volituste lõppu tagasi kutsuda. (7) Nõukogu liikme tagasikutsumisel, omal soovil tagasiastumisel või väljalangemisel surma korral nimetatakse tema asemele viivitamata uus nõukogu liige ajani, mis on jäänud asendatava nõukogu liikme volituste lõpuni.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_EESTI_3_2"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_EESTI_3_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:EESTI_3_Par_8_Lg_1"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_8_Lg_2"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_8_Lg_3"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_8_Lg_4"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_8_Lg_5"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_8_Lg_6"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_8_Lg_7"
+        }
+      ],
+      "estleg:targetGroup": [
+        "public_body",
+        "official"
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_riigikogu"
+        }
+      ],
+      "estleg:competenceType": "general"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_8_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Rahvusraamatukogu kõrgeim juhtimisorgan on nõukogu, kuhu kuulub seitse liiget.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 1"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_8_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Riigikogu nimetab Riigikogu kultuurikomisjoni ettepanekul nõukogusse kolm Riigikogu liiget ja kaks Rahvusraamatukogu töövaldkondade tunnustatud asjatundjat volituste tähtajaga neli aastat.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 2"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_8_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Ühe liikme, volituste tähtajaga neli aastat, nimetab nõukogusse valdkonna eest vastutav minister.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 3"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_8_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Ametikoha järgi kuulub nõukogusse Riigikogu Kantselei direktor.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 4"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_8_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Nõukogu liikmete volituste tähtaja lõppemisel jätkavad nõukogu liikmed tegevust, kuni jõustub Riigikogu otsus nõukogu uute liikmete nimetamise kohta, hoidudes seejuures vältimatu vajaduseta käesoleva seaduse § 10 lõike 1 punktides 1–5, 7 ja 12–14 nimetatud otsuste tegemisest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 5"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_8_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Riigikogu või valdkonna eest vastutav minister võib enda nimetatud nõukogu liikme põhjendatud juhul enne tema volituste lõppu tagasi kutsuda.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 6"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_8_Lg_7",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "7",
+      "estleg:legalText": "(7) Nõukogu liikme tagasikutsumisel, omal soovil tagasiastumisel või väljalangemisel surma korral nimetatakse tema asemele viivitamata uus nõukogu liige ajani, mis on jäänud asendatava nõukogu liikme volituste lõpuni.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 7"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_9",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_eesti_rahvusraamatukogu_seadus"
+      ],
+      "estleg:paragrahv": "§ 9.",
+      "rdfs:label": "§ 9. Nõukogu esimees ja aseesimees",
+      "estleg:sourceAct": "Eesti Rahvusraamatukogu seadus",
+      "estleg:summary": "1 (1) Nõukogu esimees ja aseesimees valitakse nõukogu liikmete hulgast nõukogu uue koosseisu esimesel istungil. Nõukogu esimehe ja aseesimehe valimiseni täidab nõukogu esimehe ülesandeid nõukogu vanim liige. Nõukogu esimees ja aseesimees valitakse nõukogu liikmete hulgast nõukogu uue koosseisu esimesel istungil. Nõukogu esimehe ja aseesimehe valimiseni täidab nõukogu esimehe ülesandeid nõukogu vanim liige. 2 (2) Nõukogu esimees ja aseesimees valitakse nõukogu koosseisu häälteenamusega. Nõukogu e",
+      "estleg:legalText": "(1) Nõukogu esimees ja aseesimees valitakse nõukogu liikmete hulgast nõukogu uue koosseisu esimesel istungil. Nõukogu esimehe ja aseesimehe valimiseni täidab nõukogu esimehe ülesandeid nõukogu vanim liige. (2) Nõukogu esimees ja aseesimees valitakse nõukogu koosseisu häälteenamusega. Nõukogu esimehe ja aseesimehe võib nõukogu tagasi kutsuda oma koosseisu häälteenamusega. (3) Nõukogu esimees: korraldab nõukogu tööd; juhatab nõukogu istungeid; kontrollib nõukogu otsuste täitmist; sõlmib peadirektoriga lepingu; esindab nõukogu. (4) Nõukogu esimehe äraolekul täidab tema ülesandeid ja on esimehe õigustes nõukogu aseesimees.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_EESTI_3_2"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_EESTI_3_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:EESTI_3_Par_9_Lg_1"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_9_Lg_2"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_9_Lg_3"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_9_Lg_4"
+        }
+      ],
+      "estleg:targetGroup": [
+        "official"
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:FIS_Par_23",
+          "estleg:similarityScore": {
+            "@value": "0.375",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:ROS_Par_8",
+          "estleg:similarityScore": {
+            "@value": "0.667",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:Reg_153710_Par_8",
+          "estleg:similarityScore": {
+            "@value": "0.316",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:Reg_155288_Par_11",
+          "estleg:similarityScore": {
+            "@value": "0.31",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:Reg_156105_Par_8",
+          "estleg:similarityScore": {
+            "@value": "0.321",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_9_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Nõukogu esimees ja aseesimees valitakse nõukogu liikmete hulgast nõukogu uue koosseisu esimesel istungil. Nõukogu esimehe ja aseesimehe valimiseni täidab nõukogu esimehe ülesandeid nõukogu vanim liige.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 1"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_9_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Nõukogu esimees ja aseesimees valitakse nõukogu koosseisu häälteenamusega. Nõukogu esimehe ja aseesimehe võib nõukogu tagasi kutsuda oma koosseisu häälteenamusega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 2"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_9_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Nõukogu esimees: korraldab nõukogu tööd; juhatab nõukogu istungeid; kontrollib nõukogu otsuste täitmist; sõlmib peadirektoriga lepingu; esindab nõukogu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 3"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_9_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Nõukogu esimehe äraolekul täidab tema ülesandeid ja on esimehe õigustes nõukogu aseesimees.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 4"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_10",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_eesti_rahvusraamatukogu_seadus"
+      ],
+      "estleg:paragrahv": "§ 10.",
+      "rdfs:label": "§ 10. Nõukogu pädevus",
+      "estleg:sourceAct": "Eesti Rahvusraamatukogu seadus",
+      "estleg:summary": "Nõukogu: 1 1) kinnitab Rahvusraamatukogu põhikirja ja Rahvusraamatukogu kasutuseeskirja; 2 2) kinnitab Rahvusraamatukogu arengu- ja tegevussuunad ning tegevusaruanded; 3 3) kinnitab Rahvusraamatukogu finantsplaani ja võtab vastu eelarve; RT I 2014-03-13 2 113032014002 2014-03-23 4 4) valib avaliku konkursi korras peadirektori, kinnitab talle makstava tasu suuruse ja maksmise korra; 5 5) kinnitab Rahvusraamatukogu struktuuri ja töötajate töötasustamise alused; 6 6) kinnitab Rahvusraamatukogu taot",
+      "estleg:legalText": "Nõukogu: kinnitab Rahvusraamatukogu põhikirja ja Rahvusraamatukogu kasutuseeskirja; kinnitab Rahvusraamatukogu arengu- ja tegevussuunad ning tegevusaruanded; kinnitab Rahvusraamatukogu finantsplaani ja võtab vastu eelarve; valib avaliku konkursi korras peadirektori, kinnitab talle makstava tasu suuruse ja maksmise korra; kinnitab Rahvusraamatukogu struktuuri ja töötajate töötasustamise alused; kinnitab Rahvusraamatukogu taotluse kulutuste finantseerimiseks riigieelarvest; kinnitab Rahvusraamatukogu majandusaasta aruande; tagab sisekontrollisüsteemi rakendamise ja siseaudiitori kutsetegevuse korraldamise Rahvusraamatukogus; kinnitab Rahvusraamatukogu siseauditeerimise töökorra ja aasta tööplaani ning kuulab ära siseaudiitori aruande; kuulab ära peadirektori, direktorite ja struktuuriüksuste juhtide aruanded; annab hinnangu Rahvusraamatukogu tegevusele; kinnitab Rahvusraamatukogu vara valdamise, kasutamise ja käsutamise korra; otsustab sihtasutuste ja mittetulundusühingute asutamise või nende liikmeks oleku; otsustab laenu või muu võlakohustuse võtmise summas, mis on suurem kui 30 000 eurot; kinnitab rahvusbibliograafia andmebaasi pidamise, andmetele juurdepääsu ja andmete kasutamise korra; kinnitab Rahvusraamatukogu tasuliste teenuste loetelu; otsustab muid käesolevas paragrahvis nimetamata küsimusi, mida nõukogu liikmed või peadirektor on nõukogule seisukoha võtmiseks esitanud.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_EESTI_3_2"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_EESTI_3_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:EESTI_3_Par_10_Lg_Unknown_1"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "official",
+        "ngo"
+      ]
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_10_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Nõukogu: kinnitab Rahvusraamatukogu põhikirja ja Rahvusraamatukogu kasutuseeskirja; kinnitab Rahvusraamatukogu arengu- ja tegevussuunad ning tegevusaruanded; kinnitab Rahvusraamatukogu finantsplaani ja võtab vastu eelarve; valib avaliku konkursi korras peadirektori, kinnitab talle makstava tasu suuruse ja maksmise korra; kinnitab Rahvusraamatukogu struktuuri ja töötajate töötasustamise alused; kinnitab Rahvusraamatukogu taotluse kulutuste finantseerimiseks riigieelarvest; kinnitab Rahvusraamatukogu majandusaasta aruande; tagab sisekontrollisüsteemi rakendamise ja siseaudiitori kutsetegevuse korraldamise Rahvusraamatukogus; kinnitab Rahvusraamatukogu siseauditeerimise töökorra ja aasta tööplaani ning kuulab ära siseaudiitori aruande; kuulab ära peadirektori, direktorite ja struktuuriüksuste juhtide aruanded; annab hinnangu Rahvusraamatukogu tegevusele; kinnitab Rahvusraamatukogu vara valdamise, kasutamise ja käsutamise korra; otsustab sihtasutuste ja mittetulundusühingute asutamise või nende liikmeks oleku; otsustab laenu või muu võlakohustuse võtmise summas, mis on suurem kui 30 000 eurot; kinnitab rahvusbibliograafia andmebaasi pidamise, andmetele juurdepääsu ja andmete kasutamise korra; kinnitab Rahvusraamatukogu tasuliste teenuste loetelu; otsustab muid käesolevas paragrahvis nimetamata küsimusi, mida nõukogu liikmed või peadirektor on nõukogule seisukoha võtmiseks esitanud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_10"
+      }
+    },
+    {
       "@id": "estleg:EESTI_3_Par_11",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_EESTI_3"
+        "estleg:LegalProvision_eesti_rahvusraamatukogu_seadus"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Nõukogu esimees",
+      "rdfs:label": "§ 11. Nõukogu tegevuskulud ja nõukogu liikmete tasustamine",
       "estleg:sourceAct": "Eesti Rahvusraamatukogu seadus",
-      "estleg:summary": "1(1)Nõukogu esimees ja aseesimees valitakse nõukogu liikmete hulgast üheks aastaks iga kalendriaasta esimesel nõukogu istungil. Nõukogu esimees ja aseesimees valitakse nõukogu liikmete hulgast üheks aastaks iga kalendriaasta esimesel nõukogu istungil. 2(2)Nõukogu esimees:11)korraldab nõukogu tegevust;22)juhatab nõukogu istungeid;33)kontrollib nõukogu otsuste täitmist;44)sõlmib peadirektoriga töölepingu;55)esindab nõukogu. Nõukogu esimees: korraldab nõukogu tegevust; juhatab nõukogu istungeid; ko",
-      "estleg:targetGroup": [
-        "official"
+      "estleg:summary": "1 (1) Nõukogu tegevuskulud ja nõukogu liikmete tasu kaetakse Rahvusraamatukogu eelarvest. Nõukogu tegevuskulud ja nõukogu liikmete tasu kaetakse Rahvusraamatukogu eelarvest. 2 (2) Nõukogu liikmele makstakse tasu kuni kahe kuupalga alammäära ulatuses aastas vastavalt tema osavõtule koosolekutest. Nõukogu liikmele makstakse tasu kuni kahe kuupalga alammäära ulatuses aastas vastavalt tema osavõtule koosolekutest.",
+      "estleg:legalText": "(1) Nõukogu tegevuskulud ja nõukogu liikmete tasu kaetakse Rahvusraamatukogu eelarvest. (2) Nõukogu liikmele makstakse tasu kuni kahe kuupalga alammäära ulatuses aastas vastavalt tema osavõtule koosolekutest.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_EESTI_3_2"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_EESTI_3_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:EESTI_3_Par_11_Lg_1"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_11_Lg_2"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:ERHS_Par_20",
+          "estleg:similarityScore": {
+            "@value": "0.323",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:ROS_Par_10_1",
+          "estleg:similarityScore": {
+            "@value": "0.5",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
       ]
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_11_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Nõukogu tegevuskulud ja nõukogu liikmete tasu kaetakse Rahvusraamatukogu eelarvest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 1"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_11_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Nõukogu liikmele makstakse tasu kuni kahe kuupalga alammäära ulatuses aastas vastavalt tema osavõtule koosolekutest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 2"
     },
     {
       "@id": "estleg:EESTI_3_Par_12",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_EESTI_3"
+        "estleg:LegalProvision_eesti_rahvusraamatukogu_seadus"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Peadirektori valimine ja ametist vabastamine",
+      "rdfs:label": "§ 12. Nõukogu koosolek",
       "estleg:sourceAct": "Eesti Rahvusraamatukogu seadus",
-      "estleg:summary": "1(1)Peadirektori valib viieks aastaks nõukogu Rahvusraamatukogu põhikirjas ettenähtud korras. Peadirektori valib viieks aastaks nõukogu Rahvusraamatukogu põhikirjas ettenähtud korras. 2(2)Peadirektori valimiseks korraldatakse avalik konkurss mitte varem kui kaks kuud enne peadirektori ametiaja lõppu ja mitte hiljem kui kaks kuud pärast peadirektori töölepingu lõppemist. Peadirektori valimiseks korraldatakse avalik konkurss mitte varem kui kaks kuud enne peadirektori ametiaja lõppu ja mitte hilje",
+      "estleg:summary": "1 (1) Nõukogu koosolekud toimuvad vastavalt vajadusele, kuid mitte harvem kui neli korda aastas. Nõukogu koosolekud toimuvad vastavalt vajadusele, kuid mitte harvem kui neli korda aastas. 2 (2) Koosoleku kutsub kokku ja seda juhatab nõukogu esimees. Koosoleku kutsub kokku ja seda juhatab nõukogu esimees. 3 (3) Nõukogu on otsustusvõimeline, kui koosolekust võtab osa vähemalt neli liiget, sealhulgas nõukogu esimees. Nõukogu on otsustusvõimeline, kui koosolekust võtab osa vähemalt neli liiget, seal",
+      "estleg:legalText": "(1) Nõukogu koosolekud toimuvad vastavalt vajadusele, kuid mitte harvem kui neli korda aastas. (2) Koosoleku kutsub kokku ja seda juhatab nõukogu esimees. (3) Nõukogu on otsustusvõimeline, kui koosolekust võtab osa vähemalt neli liiget, sealhulgas nõukogu esimees. (4) Koosolekutest võtab sõnaõigusega osa peadirektor. (5) Nõukogu otsused võetakse vastu koosolekust osavõtvate nõukogu liikmete häälteenamusega. Häälte võrdse jaotumise korral on otsustav nõukogu esimehe hääl. (6) Nõukogu koosolekud protokollitakse. Protokollile kirjutavad alla kõik koosolekul osalenud nõukogu liikmed ja protokollija. Protokollile lisatakse koosolekul osalenud nõukogu liikmete nimekiri. (7) Nõukogu otsused vormistatakse haldusdokumendina ja neile kirjutab alla nõukogu esimees. (8) Nõukogu otsused avalikustatakse Rahvusraamatukogu kodulehel.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_EESTI_3_2"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_EESTI_3_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:EESTI_3_Par_12_Lg_1"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_12_Lg_2"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_12_Lg_3"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_12_Lg_4"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_12_Lg_5"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_12_Lg_6"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_12_Lg_7"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_12_Lg_8"
+        }
+      ],
       "estleg:targetGroup": [
-        "public_body"
+        "official"
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:ERHS_Par_17",
+          "estleg:similarityScore": {
+            "@value": "0.312",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:HLÜS_Par_30",
+          "estleg:similarityScore": {
+            "@value": "0.3",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:Reg_1001120_Par_7",
+          "estleg:similarityScore": {
+            "@value": "0.333",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:SAS_Par_29",
+          "estleg:similarityScore": {
+            "@value": "0.364",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:TerKS_Par_16",
+          "estleg:similarityScore": {
+            "@value": "0.312",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
       ]
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_12_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Nõukogu koosolekud toimuvad vastavalt vajadusele, kuid mitte harvem kui neli korda aastas.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 1"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_12_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Koosoleku kutsub kokku ja seda juhatab nõukogu esimees.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 2"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_12_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Nõukogu on otsustusvõimeline, kui koosolekust võtab osa vähemalt neli liiget, sealhulgas nõukogu esimees.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 3"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_12_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Koosolekutest võtab sõnaõigusega osa peadirektor.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 4"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_12_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Nõukogu otsused võetakse vastu koosolekust osavõtvate nõukogu liikmete häälteenamusega. Häälte võrdse jaotumise korral on otsustav nõukogu esimehe hääl.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 5"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_12_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Nõukogu koosolekud protokollitakse. Protokollile kirjutavad alla kõik koosolekul osalenud nõukogu liikmed ja protokollija. Protokollile lisatakse koosolekul osalenud nõukogu liikmete nimekiri.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 6"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_12_Lg_7",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "7",
+      "estleg:legalText": "(7) Nõukogu otsused vormistatakse haldusdokumendina ja neile kirjutab alla nõukogu esimees.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 7"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_12_Lg_8",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "8",
+      "estleg:legalText": "(8) Nõukogu otsused avalikustatakse Rahvusraamatukogu kodulehel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 8"
     },
     {
       "@id": "estleg:EESTI_3_Par_13",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_EESTI_3"
+        "estleg:LegalProvision_eesti_rahvusraamatukogu_seadus"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Peadirektori pädevus",
+      "rdfs:label": "§ 13. Nõukogu otsuse vastuvõtmine koosolekut kokku kutsumata",
       "estleg:sourceAct": "Eesti Rahvusraamatukogu seadus",
-      "estleg:summary": "1(1)Rahvusraamatukogu toimimise ja arengu eest vastutab peadirektor, kes täidab käesolevast seadusest, Rahvusraamatukogu põhikirjast ja nõukogu otsustest tulenevaid sidustus-, valitsemis-, haldamis- ja juhtimisalaseid ülesandeid. Rahvusraamatukogu toimimise ja arengu eest vastutab peadirektor, kes täidab käesolevast seadusest, Rahvusraamatukogu põhikirjast ja nõukogu otsustest tulenevaid sidustus-, valitsemis-, haldamis- ja juhtimisalaseid ülesandeid. 2(2)Peadirektor:11)teostab Rahvusraamatukogu"
+      "estleg:summary": "1 (1) Nõukogul on õigus otsust vastu võtta koosolekut kokku kutsumata, kui sellega on nõus vähemalt neli nõukogu liiget, sealhulgas nõukogu esimees. Nõukogul on õigus otsust vastu võtta koosolekut kokku kutsumata, kui sellega on nõus vähemalt neli nõukogu liiget, sealhulgas nõukogu esimees. 2 (2) Nõukogu esimees saadab käesoleva paragrahvi lõikes 1 nimetatud otsuse eelnõu kõigile nõukogu liikmetele, määrates tähtaja, mille jooksul nõukogu liige teatab kirjalikku taasesitamist võimaldavas vormis,",
+      "estleg:legalText": "(1) Nõukogul on õigus otsust vastu võtta koosolekut kokku kutsumata, kui sellega on nõus vähemalt neli nõukogu liiget, sealhulgas nõukogu esimees. (2) Nõukogu esimees saadab käesoleva paragrahvi lõikes 1 nimetatud otsuse eelnõu kõigile nõukogu liikmetele, määrates tähtaja, mille jooksul nõukogu liige teatab kirjalikku taasesitamist võimaldavas vormis, kas ta on otsuse poolt või vastu. Tähtaeg ei või olla lühem kui kaks päeva. Kui nõukogu liige ei teata määratud tähtaja jooksul, kas ta on otsuse poolt või vastu, loetakse, et ta ei osalenud hääletamisel. (3) Käesolevas paragrahvis sätestatud korras tehtud nõukogu otsus on vastu võetud, kui selle poolt annavad hääle üle poole nõukogu liikmetest ja seaduses ei ole ette nähtud suurema häälteenamuse nõuet. (4) Käesolevas paragrahvis sätestatud korras nõukogu otsuse vastuvõtmise kohta koostatakse protokoll, mille kinnitab nõukogu esimees. Protokolli kantakse hääletusel osalenud nõukogu liikmete nimed, vastuvõetud otsused koos hääletustulemustega ja muud olulist tähtsust omavad asjaolud. Protokollile lisatakse nõukogu liikmete nõusolekud võtta nõukogu otsus vastu koosolekut kokku kutsumata ning nõukogu liikmete kirjalikult esitatud seisukohad nõukogu otsuse kohta.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_EESTI_3_2"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_EESTI_3_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:EESTI_3_Par_13_Lg_1"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_13_Lg_2"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_13_Lg_3"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_13_Lg_4"
+        }
+      ],
+      "estleg:targetGroup": [
+        "official"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      },
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:ERHS_Par_19",
+          "estleg:similarityScore": {
+            "@value": "0.579",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:KORTER_Par_21",
+          "estleg:similarityScore": {
+            "@value": "0.419",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:MTÜS_Par_22_1",
+          "estleg:similarityScore": {
+            "@value": "0.465",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:SAS_Par_29_1",
+          "estleg:similarityScore": {
+            "@value": "0.585",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:SEPS_Par_25",
+          "estleg:similarityScore": {
+            "@value": "0.45",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_13_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Nõukogul on õigus otsust vastu võtta koosolekut kokku kutsumata, kui sellega on nõus vähemalt neli nõukogu liiget, sealhulgas nõukogu esimees.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 1"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_13_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Nõukogu esimees saadab käesoleva paragrahvi lõikes 1 nimetatud otsuse eelnõu kõigile nõukogu liikmetele, määrates tähtaja, mille jooksul nõukogu liige teatab kirjalikku taasesitamist võimaldavas vormis, kas ta on otsuse poolt või vastu. Tähtaeg ei või olla lühem kui kaks päeva. Kui nõukogu liige ei teata määratud tähtaja jooksul, kas ta on otsuse poolt või vastu, loetakse, et ta ei osalenud hääletamisel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 2"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_13_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Käesolevas paragrahvis sätestatud korras tehtud nõukogu otsus on vastu võetud, kui selle poolt annavad hääle üle poole nõukogu liikmetest ja seaduses ei ole ette nähtud suurema häälteenamuse nõuet.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 3"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_13_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Käesolevas paragrahvis sätestatud korras nõukogu otsuse vastuvõtmise kohta koostatakse protokoll, mille kinnitab nõukogu esimees. Protokolli kantakse hääletusel osalenud nõukogu liikmete nimed, vastuvõetud otsused koos hääletustulemustega ja muud olulist tähtsust omavad asjaolud. Protokollile lisatakse nõukogu liikmete nõusolekud võtta nõukogu otsus vastu koosolekut kokku kutsumata ning nõukogu liikmete kirjalikult esitatud seisukohad nõukogu otsuse kohta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 4"
     },
     {
       "@id": "estleg:EESTI_3_Par_14",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_EESTI_3"
+        "estleg:LegalProvision_eesti_rahvusraamatukogu_seadus"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14.",
+      "rdfs:label": "§ 14. Nõukogu liikme vastutus",
       "estleg:sourceAct": "Eesti Rahvusraamatukogu seadus",
-      "estleg:summary": "1(1)Rahvusraamatukogu valdab, kasutab ja käsutab oma vara käesoleva seaduse alusel kehtestatud korras oma põhikirjaliste ülesannete täitmiseks. Rahvusraamatukogu valdab, kasutab ja käsutab oma vara käesoleva seaduse alusel kehtestatud korras oma põhikirjaliste ülesannete täitmiseks. 2(2)Rahvusraamatukogu vara on:11)vara, mille riik annab seaduse alusel Rahvusraamatukogu omandisse;22)vara, mille teine isik võõrandab Rahvusraamatukogu kasuks;33)vara, mis on tekkinud Rahvusraamatukogu enda tegevuse",
+      "estleg:summary": "1 (1) Nõukogu liige peab oma kohustusi täitma Rahvusraamatukogule lojaalselt ja nõukogu liikmele vajaliku hoolega. Nõukogu liige peab oma kohustusi täitma Rahvusraamatukogule lojaalselt ja nõukogu liikmele vajaliku hoolega. 2 (2) Nõukogu liikmed, kes on oma kohustuste rikkumisega tekitanud kahju Rahvusraamatukogule, vastutavad tekitatud kahju hüvitamise eest solidaarselt. Nõukogu liikmed, kes on oma kohustuste rikkumisega tekitanud kahju Rahvusraamatukogule, vastutavad tekitatud kahju hüvitamise",
+      "estleg:legalText": "(1) Nõukogu liige peab oma kohustusi täitma Rahvusraamatukogule lojaalselt ja nõukogu liikmele vajaliku hoolega. (2) Nõukogu liikmed, kes on oma kohustuste rikkumisega tekitanud kahju Rahvusraamatukogule, vastutavad tekitatud kahju hüvitamise eest solidaarselt. (3) Nõukogu liige vabaneb vastutusest Rahvusraamatukogu ees, kui ta tõendab, et on oma kohustusi täitnud nõukogu liikmele vajaliku hoolega, või kui ta on ebaseadusliku tegevuse aluseks oleva nõukogu otsuse vastuvõtmisel jäänud eriarvamusele ning eriarvamus on kantud protokolli või kui ta mõjuval põhjusel ei osalenud nõukogu koosolekul, kus selline otsus vastu võeti. (4) Nõukogu liikme vastu esitatava nõude aegumistähtaeg on viis aastat.",
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_EESTI_3_4"
+        "@id": "estleg:Cluster_EESTI_3_2"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_EESTI_3_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:EESTI_3_Par_14_Lg_1"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_14_Lg_2"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_14_Lg_3"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_14_Lg_4"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
       },
       "estleg:semanticallySimilarTo": [
         {
-          "@id": "estleg:KBFIS_Par_11",
+          "@id": "estleg:ERHS_Par_22",
           "estleg:similarityScore": {
-            "@value": "0.625",
+            "@value": "0.704",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
         },
         {
-          "@id": "estleg:TKS_Par_9",
+          "@id": "estleg:MTÜS_Par_32",
           "estleg:similarityScore": {
-            "@value": "0.44",
+            "@value": "0.467",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
         },
         {
-          "@id": "estleg:eesti_teaduste_akadeemia_seadus_Par_19",
+          "@id": "estleg:SAS_Par_23",
           "estleg:similarityScore": {
-            "@value": "0.571",
+            "@value": "0.406",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
         },
         {
-          "@id": "estleg:ulikooliseadus_Par_44",
+          "@id": "estleg:SAS_Par_32",
+          "estleg:similarityScore": {
+            "@value": "0.5",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:TÜS_Par_63_1",
+          "estleg:similarityScore": {
+            "@value": "0.433",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_14_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Nõukogu liige peab oma kohustusi täitma Rahvusraamatukogule lojaalselt ja nõukogu liikmele vajaliku hoolega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 1"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_14_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Nõukogu liikmed, kes on oma kohustuste rikkumisega tekitanud kahju Rahvusraamatukogule, vastutavad tekitatud kahju hüvitamise eest solidaarselt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 2"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_14_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Nõukogu liige vabaneb vastutusest Rahvusraamatukogu ees, kui ta tõendab, et on oma kohustusi täitnud nõukogu liikmele vajaliku hoolega, või kui ta on ebaseadusliku tegevuse aluseks oleva nõukogu otsuse vastuvõtmisel jäänud eriarvamusele ning eriarvamus on kantud protokolli või kui ta mõjuval põhjusel ei osalenud nõukogu koosolekul, kus selline otsus vastu võeti.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 3"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_14_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Nõukogu liikme vastu esitatava nõude aegumistähtaeg on viis aastat.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 4"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_15",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_eesti_rahvusraamatukogu_seadus"
+      ],
+      "estleg:paragrahv": "§ 15.",
+      "rdfs:label": "§ 15. Peadirektor",
+      "estleg:sourceAct": "Eesti Rahvusraamatukogu seadus",
+      "estleg:summary": "1 (1) Rahvusraamatukogu juhib ja esindab peadirektor. Rahvusraamatukogu juhib ja esindab peadirektor. 2 (2) Peadirektor: 1 1) kinnitab Rahvusraamatukogu töökorralduse reeglid ja asjaajamiskorra; 2 2) sõlmib töölepingud Rahvusraamatukogu töötajatega; 3 3) tagab Rahvusraamatukogu eelarveprojekti ja finantseerimistaotluse koostamise; 4 4) tagab Rahvusraamatukogu eelarve täitmise ning majandusaasta aruande koostamise ja esitamise nõukogule; 5 5) teostab Rahvusraamatukogu nimel ja oma volituste piire",
+      "estleg:legalText": "(1) Rahvusraamatukogu juhib ja esindab peadirektor. (2) Peadirektor: kinnitab Rahvusraamatukogu töökorralduse reeglid ja asjaajamiskorra; sõlmib töölepingud Rahvusraamatukogu töötajatega; tagab Rahvusraamatukogu eelarveprojekti ja finantseerimistaotluse koostamise; tagab Rahvusraamatukogu eelarve täitmise ning majandusaasta aruande koostamise ja esitamise nõukogule; teostab Rahvusraamatukogu nimel ja oma volituste piires tehinguid kolmandate isikutega; esitab igal aastal Kultuuriministeeriumile Rahvusraamatukogu tegevuse aruande; lahendab teisi Rahvusraamatukogu põhikirjaga tema pädevusse antud küsimusi. (3) Peadirektor on aruandekohustuslik nõukogu ees.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_EESTI_3_2"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_EESTI_3_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:EESTI_3_Par_15_Lg_1"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_15_Lg_2"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_15_Lg_3"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen"
+      ]
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_15_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Rahvusraamatukogu juhib ja esindab peadirektor.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 1"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_15_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Peadirektor: kinnitab Rahvusraamatukogu töökorralduse reeglid ja asjaajamiskorra; sõlmib töölepingud Rahvusraamatukogu töötajatega; tagab Rahvusraamatukogu eelarveprojekti ja finantseerimistaotluse koostamise; tagab Rahvusraamatukogu eelarve täitmise ning majandusaasta aruande koostamise ja esitamise nõukogule; teostab Rahvusraamatukogu nimel ja oma volituste piires tehinguid kolmandate isikutega; esitab igal aastal Kultuuriministeeriumile Rahvusraamatukogu tegevuse aruande; lahendab teisi Rahvusraamatukogu põhikirjaga tema pädevusse antud küsimusi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 2"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_15_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Peadirektor on aruandekohustuslik nõukogu ees.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 3"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_16",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_eesti_rahvusraamatukogu_seadus"
+      ],
+      "estleg:paragrahv": "§ 16.",
+      "rdfs:label": "§ 16. Peadirektori valimine ja ametist vabastamine ning tasustamine",
+      "estleg:sourceAct": "Eesti Rahvusraamatukogu seadus",
+      "estleg:summary": "1 (1) Peadirektori valib nõukogu viieks aastaks koosolekust osavõtvate nõukogu liikmete häälteenamusega. Peadirektori valib nõukogu viieks aastaks koosolekust osavõtvate nõukogu liikmete häälteenamusega. 2 (2) Peadirektori valimiseks korraldatakse avalik konkurss Rahvusraamatukogu põhikirjas ettenähtud korras. Peadirektori valimiseks korraldatakse avalik konkurss Rahvusraamatukogu põhikirjas ettenähtud korras. 3 (3) Peadirektoriga sõlmitakse leping, millega määratakse kindlaks peadirektori õigus",
+      "estleg:legalText": "(1) Peadirektori valib nõukogu viieks aastaks koosolekust osavõtvate nõukogu liikmete häälteenamusega. (2) Peadirektori valimiseks korraldatakse avalik konkurss Rahvusraamatukogu põhikirjas ettenähtud korras. (3) Peadirektoriga sõlmitakse leping, millega määratakse kindlaks peadirektori õigused ja kohustused, temale makstava tasu suurus ning muud tegevuseks vajalikud tingimused. Lepingule kirjutavad alla peadirektor ja nõukogu esimees. (4) Tasu suuruse määramisel peab peadirektorile tehtavate maksete kogusumma olema mõistlikus vastavuses peadirektori ülesannetega. (5) Peadirektorile võib maksta täiendavat tasu, arvestades tema töö tulemuslikkust. Tasu suurus peab olema põhjendatud ega või majandusaasta jooksul kokku ületada peadirektori nelja kuu tasu. (6) Peadirektorile võib nõukogu otsusel maksta lahkumishüvitist, kui peadirektor kutsutakse tagasi enne käesoleva seaduse § 16 lõikes 1 nimetatud tähtaja lõppu. Hüvitise suurus kokku ei või ületada peadirektori nelja kuu tasu. Hüvitist ei maksta, kui peadirektor kutsutakse tagasi raske juhtimisvea ilmnemise tõttu või käesoleva seaduse või muu õigusakti rikkumise tõttu. (7) Peadirektor vabastatakse enne tähtaja möödumist ametist: kui nõukogu on avaldanud oma koosseisu kahekolmandikulise häälteenamusega peadirektorile umbusaldust; omal soovil.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_EESTI_3_2"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_EESTI_3_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:EESTI_3_Par_16_Lg_1"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_16_Lg_2"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_16_Lg_3"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_16_Lg_4"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_16_Lg_5"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_16_Lg_6"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_16_Lg_7"
+        }
+      ],
+      "estleg:targetGroup": [
+        "public_body",
+        "official"
+      ]
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_16_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Peadirektori valib nõukogu viieks aastaks koosolekust osavõtvate nõukogu liikmete häälteenamusega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 1"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_16_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Peadirektori valimiseks korraldatakse avalik konkurss Rahvusraamatukogu põhikirjas ettenähtud korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 2"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_16_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Peadirektoriga sõlmitakse leping, millega määratakse kindlaks peadirektori õigused ja kohustused, temale makstava tasu suurus ning muud tegevuseks vajalikud tingimused. Lepingule kirjutavad alla peadirektor ja nõukogu esimees.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 3"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_16_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Tasu suuruse määramisel peab peadirektorile tehtavate maksete kogusumma olema mõistlikus vastavuses peadirektori ülesannetega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 4"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_16_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Peadirektorile võib maksta täiendavat tasu, arvestades tema töö tulemuslikkust. Tasu suurus peab olema põhjendatud ega või majandusaasta jooksul kokku ületada peadirektori nelja kuu tasu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 5"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_16_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Peadirektorile võib nõukogu otsusel maksta lahkumishüvitist, kui peadirektor kutsutakse tagasi enne käesoleva seaduse § 16 lõikes 1 nimetatud tähtaja lõppu. Hüvitise suurus kokku ei või ületada peadirektori nelja kuu tasu. Hüvitist ei maksta, kui peadirektor kutsutakse tagasi raske juhtimisvea ilmnemise tõttu või käesoleva seaduse või muu õigusakti rikkumise tõttu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 6"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_16_Lg_7",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "7",
+      "estleg:legalText": "(7) Peadirektor vabastatakse enne tähtaja möödumist ametist: kui nõukogu on avaldanud oma koosseisu kahekolmandikulise häälteenamusega peadirektorile umbusaldust; omal soovil.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 7"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_17",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_eesti_rahvusraamatukogu_seadus"
+      ],
+      "estleg:paragrahv": "§ 17.",
+      "rdfs:label": "§ 17. Peadirektori vastutus",
+      "estleg:sourceAct": "Eesti Rahvusraamatukogu seadus",
+      "estleg:summary": "1 (1) Peadirektor peab oma kohustuste täitmisel tegutsema Rahvusraamatukogule lojaalselt, vajaliku hoolega ja parima kasuga ning ära hoidma kahju tekkimise Rahvusraamatukogu varale. Peadirektor peab oma kohustuste täitmisel tegutsema Rahvusraamatukogule lojaalselt, vajaliku hoolega ja parima kasuga ning ära hoidma kahju tekkimise Rahvusraamatukogu varale. 2 (2) Peadirektor vastutab oma kohustuse rikkumisega Rahvusraamatukogule tekitatud kahju eest. Peadirektor vabaneb vastutusest juhul, kui ta o",
+      "estleg:legalText": "(1) Peadirektor peab oma kohustuste täitmisel tegutsema Rahvusraamatukogule lojaalselt, vajaliku hoolega ja parima kasuga ning ära hoidma kahju tekkimise Rahvusraamatukogu varale. (2) Peadirektor vastutab oma kohustuse rikkumisega Rahvusraamatukogule tekitatud kahju eest. Peadirektor vabaneb vastutusest juhul, kui ta on tegutsenud vastavalt nõukogu õiguspärasele otsusele. (3) Peadirektori vastu esitatava nõude aegumistähtaeg on viis aastat kohustuse rikkumisest.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_EESTI_3_2"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_EESTI_3_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:EESTI_3_Par_17_Lg_1"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_17_Lg_2"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_17_Lg_3"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:dutyHolder": "Peadirektor",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:ERHS_Par_28",
+          "estleg:similarityScore": {
+            "@value": "0.353",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_17_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Peadirektor peab oma kohustuste täitmisel tegutsema Rahvusraamatukogule lojaalselt, vajaliku hoolega ja parima kasuga ning ära hoidma kahju tekkimise Rahvusraamatukogu varale.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_17"
+      },
+      "rdfs:label": "§ 17 lg 1"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_17_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Peadirektor vastutab oma kohustuse rikkumisega Rahvusraamatukogule tekitatud kahju eest. Peadirektor vabaneb vastutusest juhul, kui ta on tegutsenud vastavalt nõukogu õiguspärasele otsusele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_17"
+      },
+      "rdfs:label": "§ 17 lg 2"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_17_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Peadirektori vastu esitatava nõude aegumistähtaeg on viis aastat kohustuse rikkumisest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_17"
+      },
+      "rdfs:label": "§ 17 lg 3"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_18",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_eesti_rahvusraamatukogu_seadus"
+      ],
+      "estleg:paragrahv": "§ 18.",
+      "rdfs:label": "§ 18. Vara",
+      "estleg:sourceAct": "Eesti Rahvusraamatukogu seadus",
+      "estleg:summary": "1 (1) Rahvusraamatukogu valdab, kasutab ja käsutab oma vara käesoleva seaduse ja selle alusel kehtestatud vara valdamise, kasutamise ja käsutamise korra alusel ülesannete täitmiseks. Rahvusraamatukogu valdab, kasutab ja käsutab oma vara käesoleva seaduse ja selle alusel kehtestatud vara valdamise, kasutamise ja käsutamise korra alusel ülesannete täitmiseks. 2 (2) Rahvusraamatukogul ei ole õigust: 1 1) tagada oma varaga teise isiku kohustusi; 2 2) anda laenu, teha sponsor- ja muid rahalisi annetu",
+      "estleg:legalText": "(1) Rahvusraamatukogu valdab, kasutab ja käsutab oma vara käesoleva seaduse ja selle alusel kehtestatud vara valdamise, kasutamise ja käsutamise korra alusel ülesannete täitmiseks. (2) Rahvusraamatukogul ei ole õigust: tagada oma varaga teise isiku kohustusi; anda laenu, teha sponsor- ja muid rahalisi annetusi; olla äriühingu asutaja, osanik või aktsionär. (3) Rahvusraamatukogu võõrandab vara, mis ei ole vajalik Rahvusraamatukogu ülesannete täitmiseks, nõukogu otsuse alusel. (4) Rahvusraamatukogule kuuluva kinnisvara võõrandamiseks ja üle 60 000 euro suuruse kohustuse võtmiseks on vajalik Vabariigi Valitsuse nõusolek. (5) Rahvusraamatukogul on õigus asutada mittetulunduslikke juriidilisi isikuid ja astuda nende mittetulunduslike juriidiliste isikute liikmeks, kelle tegevus ei ole vastuolus Rahvusraamatukogu eesmärkidega.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_EESTI_3_3"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_EESTI_3_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:EESTI_3_Par_18_Lg_1"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_18_Lg_2"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_18_Lg_3"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_18_Lg_4"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_18_Lg_5"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "business",
+        "public_body"
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:ERHS_Par_8",
           "estleg:similarityScore": {
             "@value": "0.333",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
         }
-      ],
-      "estleg:targetGroup": [
-        "citizen"
       ]
     },
     {
-      "@id": "estleg:EESTI_3_Par_15",
+      "@id": "estleg:EESTI_3_Par_18_Lg_1",
       "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_EESTI_3"
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:paragrahv": "§ 15.",
-      "rdfs:label": "§ 15. Finantseerimine",
-      "estleg:sourceAct": "Eesti Rahvusraamatukogu seadus",
-      "estleg:summary": "1(1)Rahvusraamatukogu kasutab oma tegevuse finantseerimiseks riigieelarvest, tasulistest teenustest ja muudest allikatest saadud vahendeid. Rahvusraamatukogu kasutab oma tegevuse finantseerimiseks riigieelarvest, tasulistest teenustest ja muudest allikatest saadud vahendeid. 2(2)Rahvusraamatukogu finantseeritakse riigieelarvest vastavalt riigieelarve seaduses ( RT I 1993, 42, 614; 1994, 30, 464; 69, 1194; 1996, 22, 436; 49, 953) sätestatud korrale. Rahvusraamatukogu finantseeritakse riigieelarve",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_EESTI_3_4"
-      }
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Rahvusraamatukogu valdab, kasutab ja käsutab oma vara käesoleva seaduse ja selle alusel kehtestatud vara valdamise, kasutamise ja käsutamise korra alusel ülesannete täitmiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_18"
+      },
+      "rdfs:label": "§ 18 lg 1"
     },
     {
-      "@id": "estleg:EESTI_3_Par_16",
+      "@id": "estleg:EESTI_3_Par_18_Lg_2",
       "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_EESTI_3"
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:paragrahv": "§ 16.",
-      "rdfs:label": "§ 16. Eelarve",
-      "estleg:sourceAct": "Eesti Rahvusraamatukogu seadus",
-      "estleg:summary": "1(1)Rahvusraamatukogu kõigi tulude ja kulude kohta koostatakse eelarve. Rahvusraamatukogu kõigi tulude ja kulude kohta koostatakse eelarve. 2(2)Riigieelarveväliselt laekunud tulud jaotatakse Rahvusraamatukogu eelarve kaudu üldistel alustel, kui seda ei piira seadus või laekuvate tulude kohta seatud eritingimused. Riigieelarveväliselt laekunud tulud jaotatakse Rahvusraamatukogu eelarve kaudu üldistel alustel, kui seda ei piira seadus või laekuvate tulude kohta seatud eritingimused.",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_EESTI_3_4"
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Rahvusraamatukogul ei ole õigust: tagada oma varaga teise isiku kohustusi; anda laenu, teha sponsor- ja muid rahalisi annetusi; olla äriühingu asutaja, osanik või aktsionär.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_18"
       },
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:eesti_teaduste_akadeemia_seadus_Par_21",
-          "estleg:similarityScore": {
-            "@value": "0.778",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        }
-      ]
+      "rdfs:label": "§ 18 lg 2"
     },
     {
-      "@id": "estleg:EESTI_3_Par_17",
+      "@id": "estleg:EESTI_3_Par_18_Lg_3",
       "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_EESTI_3"
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:paragrahv": "§ 17.",
-      "rdfs:label": "§ 17. Kontroll, järelevalve ja aruandlus",
-      "estleg:sourceAct": "Eesti Rahvusraamatukogu seadus",
-      "estleg:summary": "1(1)Rahvusraamatukogu peab oma varade ja vahendite kasutamise kohta raamatupidamise ja statistilist arvestust seadusega kehtestatud korras. Rahvusraamatukogu peab oma varade ja vahendite kasutamise kohta raamatupidamise ja statistilist arvestust seadusega kehtestatud korras. 2(2)Riigikontroll kontrollib Rahvusraamatukogu tegevust vastavalt Riigikontrolli seadusele. Riigikontroll kontrollib Rahvusraamatukogu tegevust vastavalt Riigikontrolli seadusele. 3(3)Kehtetu --RT I200235218952232002-05-04+0",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_EESTI_3_4"
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Rahvusraamatukogu võõrandab vara, mis ei ole vajalik Rahvusraamatukogu ülesannete täitmiseks, nõukogu otsuse alusel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_18"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
-      "estleg:dutyHolder": "Rahvusraamatukogu",
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:KBFIS_Par_14",
-          "estleg:similarityScore": {
-            "@value": "0.545",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:ROS_Par_17",
-          "estleg:similarityScore": {
-            "@value": "0.6",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:eesti_teaduste_akadeemia_seadus_Par_22",
-          "estleg:similarityScore": {
-            "@value": "0.545",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        }
-      ]
+      "rdfs:label": "§ 18 lg 3"
     },
     {
-      "@id": "estleg:EESTI_3_Par_18",
+      "@id": "estleg:EESTI_3_Par_18_Lg_4",
       "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_EESTI_3"
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:paragrahv": "§ 18.",
-      "rdfs:label": "§ 18. Üleminekusätted",
-      "estleg:sourceAct": "Eesti Rahvusraamatukogu seadus",
-      "estleg:summary": "1(1)Peadirektor tagab Rahvusraamatukogu põhikirja vastavusse viimise käesoleva seadusega kolme kuu jooksul seaduse jõustumisest arvates. Peadirektor tagab Rahvusraamatukogu põhikirja vastavusse viimise käesoleva seadusega kolme kuu jooksul seaduse jõustumisest arvates. 2(2)Ühe kuu jooksul pärast põhikirja vastavusse viimist käesoleva seadusega korraldatakse konkurss peadirektori koha täitmiseks käesoleva seaduse paragrahvis 12 sätestatud korras. Ühe kuu jooksul pärast põhikirja vastavusse viimis",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_EESTI_3_5"
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Rahvusraamatukogule kuuluva kinnisvara võõrandamiseks ja üle 60 000 euro suuruse kohustuse võtmiseks on vajalik Vabariigi Valitsuse nõusolek.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_18"
       },
-      "estleg:targetGroup": [
-        "official"
-      ]
+      "rdfs:label": "§ 18 lg 4"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_18_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Rahvusraamatukogul on õigus asutada mittetulunduslikke juriidilisi isikuid ja astuda nende mittetulunduslike juriidiliste isikute liikmeks, kelle tegevus ei ole vastuolus Rahvusraamatukogu eesmärkidega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_18"
+      },
+      "rdfs:label": "§ 18 lg 5"
     },
     {
       "@id": "estleg:EESTI_3_Par_19",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_EESTI_3"
+        "estleg:LegalProvision_eesti_rahvusraamatukogu_seadus"
       ],
       "estleg:paragrahv": "§ 19.",
-      "rdfs:label": "§ 19.",
+      "rdfs:label": "§ 19. Finantseerimine",
       "estleg:sourceAct": "Eesti Rahvusraamatukogu seadus",
-      "estleg:summary": "[Käesolevast tekstist välja jäetud]",
+      "estleg:summary": "1 (1) Rahvusraamatukogu kasutab oma tegevuse finantseerimiseks riigieelarvest, toodete ja teenuste ning vara müügist, sihtotstarbelistest projektitoetustest ja muudest allikatest saadud vahendeid. Rahvusraamatukogu kasutab oma tegevuse finantseerimiseks riigieelarvest, toodete ja teenuste ning vara müügist, sihtotstarbelistest projektitoetustest ja muudest allikatest saadud vahendeid. 2 (2) Rahvusraamatukogu rahalisi vahendeid käsutab peadirektor vastavalt nõukogu kinnitatud Rahvusraamatukogu ee",
+      "estleg:legalText": "(1) Rahvusraamatukogu kasutab oma tegevuse finantseerimiseks riigieelarvest, toodete ja teenuste ning vara müügist, sihtotstarbelistest projektitoetustest ja muudest allikatest saadud vahendeid. (2) Rahvusraamatukogu rahalisi vahendeid käsutab peadirektor vastavalt nõukogu kinnitatud Rahvusraamatukogu eelarvele. (3) Käesolevast seadusest tulenevate ülesannete täitmise toetamiseks riigieelarvest sõlmitakse leping Rahvusraamatukogu ja Kultuuriministeeriumi vahel.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_EESTI_3_3"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_EESTI_3_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:EESTI_3_Par_19_Lg_1"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_19_Lg_2"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_19_Lg_3"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_19_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Rahvusraamatukogu kasutab oma tegevuse finantseerimiseks riigieelarvest, toodete ja teenuste ning vara müügist, sihtotstarbelistest projektitoetustest ja muudest allikatest saadud vahendeid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_19"
+      },
+      "rdfs:label": "§ 19 lg 1"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_19_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Rahvusraamatukogu rahalisi vahendeid käsutab peadirektor vastavalt nõukogu kinnitatud Rahvusraamatukogu eelarvele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_19"
+      },
+      "rdfs:label": "§ 19 lg 2"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_19_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Käesolevast seadusest tulenevate ülesannete täitmise toetamiseks riigieelarvest sõlmitakse leping Rahvusraamatukogu ja Kultuuriministeeriumi vahel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_19"
+      },
+      "rdfs:label": "§ 19 lg 3"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_20",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_eesti_rahvusraamatukogu_seadus"
+      ],
+      "estleg:paragrahv": "§ 20.",
+      "rdfs:label": "§ 20. Eelarve",
+      "estleg:sourceAct": "Eesti Rahvusraamatukogu seadus",
+      "estleg:summary": "1 (1) Rahvusraamatukogu kõigi tulude ja kulude kohta koostatakse tasakaalus eelarve, mis peab vastama finantsplaanile, riigieelarve seaduse §-s 6 esitatud eelarvepositsiooni reeglitele, §-s 10 esitatud netovõlakoormuse reeglile ning § 11 alusel kehtestatud piirangutele. Vajaduse korral võib majandusaasta jooksul vastu võtta Rahvusraamatukogu lisaeelarve, suurendades või vähendades Rahvusraamatukogu tulusid või kulusid. Lisaeelarvele kohaldatakse käesoleva lõike esimeses lauses sätestatut. RT I 2",
+      "estleg:legalText": "(1) Rahvusraamatukogu kõigi tulude ja kulude kohta koostatakse tasakaalus eelarve, mis peab vastama finantsplaanile, riigieelarve seaduse §-s 6 esitatud eelarvepositsiooni reeglitele, §-s 10 esitatud netovõlakoormuse reeglile ning § 11 alusel kehtestatud piirangutele. Vajaduse korral võib majandusaasta jooksul vastu võtta Rahvusraamatukogu lisaeelarve, suurendades või vähendades Rahvusraamatukogu tulusid või kulusid. Lisaeelarvele kohaldatakse käesoleva lõike esimeses lauses sätestatut. (2) Riigieelarveväliselt laekunud tulusid kasutatakse Rahvusraamatukogu eelarve kaudu kulude katmiseks, kui seda ei piira seadus või laekuvate tulude kohta seatud eritingimused.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_EESTI_3_3"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_EESTI_3_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:EESTI_3_Par_20_Lg_1"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_20_Lg_2"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:KAITSE_Par_83",
+          "estleg:similarityScore": {
+            "@value": "0.429",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:KBFIS_Par_13",
+          "estleg:similarityScore": {
+            "@value": "0.457",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:KHaS_Par_44",
+          "estleg:similarityScore": {
+            "@value": "0.444",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:TAS_Par_21",
+          "estleg:similarityScore": {
+            "@value": "0.471",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_20_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Rahvusraamatukogu kõigi tulude ja kulude kohta koostatakse tasakaalus eelarve, mis peab vastama finantsplaanile, riigieelarve seaduse §-s 6 esitatud eelarvepositsiooni reeglitele, §-s 10 esitatud netovõlakoormuse reeglile ning § 11 alusel kehtestatud piirangutele. Vajaduse korral võib majandusaasta jooksul vastu võtta Rahvusraamatukogu lisaeelarve, suurendades või vähendades Rahvusraamatukogu tulusid või kulusid. Lisaeelarvele kohaldatakse käesoleva lõike esimeses lauses sätestatut.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_20"
+      },
+      "rdfs:label": "§ 20 lg 1"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_20_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Riigieelarveväliselt laekunud tulusid kasutatakse Rahvusraamatukogu eelarve kaudu kulude katmiseks, kui seda ei piira seadus või laekuvate tulude kohta seatud eritingimused.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_20"
+      },
+      "rdfs:label": "§ 20 lg 2"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_20_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_eesti_rahvusraamatukogu_seadus"
+      ],
+      "estleg:paragrahv": "§ 20<sup>1</sup>.",
+      "rdfs:label": "§ 20<sup>1</sup>. Rahvusraamatukogu finantsplaan",
+      "estleg:sourceAct": "Eesti Rahvusraamatukogu seadus",
+      "estleg:summary": "1 (1) Rahvusraamatukogu koostab igal aastal finantsplaani, mis on aluseks Rahvusraamatukogu eelarve koostamisel. Rahvusraamatukogu koostab igal aastal finantsplaani, mis on aluseks Rahvusraamatukogu eelarve koostamisel. 2 (2) Finantsplaan koostatakse ja esitatakse riigieelarve seaduse §-s 12 sätestatud nõuete kohaselt. RT I 2014-03-13 2 113032014002 2014-03-23 Finantsplaan koostatakse ja esitatakse riigieelarve seaduse §-s 12 sätestatud nõuete kohaselt.",
+      "estleg:legalText": "(1) Rahvusraamatukogu koostab igal aastal finantsplaani, mis on aluseks Rahvusraamatukogu eelarve koostamisel. (2) Finantsplaan koostatakse ja esitatakse riigieelarve seaduse §-s 12 sätestatud nõuete kohaselt.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_EESTI_3_3"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_EESTI_3_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:EESTI_3_Par_20_1_Lg_1"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_20_1_Lg_2"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:ERHS_Par_7_1",
+          "estleg:similarityScore": {
+            "@value": "0.786",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:KAITSE_Par_83_1",
+          "estleg:similarityScore": {
+            "@value": "0.786",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:KBFIS_Par_13_1",
+          "estleg:similarityScore": {
+            "@value": "0.846",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:ROS_Par_16_1",
+          "estleg:similarityScore": {
+            "@value": "0.786",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:TAS_Par_21_1",
+          "estleg:similarityScore": {
+            "@value": "0.846",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_20_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Rahvusraamatukogu koostab igal aastal finantsplaani, mis on aluseks Rahvusraamatukogu eelarve koostamisel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_20_1"
+      },
+      "rdfs:label": "§ 20<sup>1</sup> lg 1"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_20_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Finantsplaan koostatakse ja esitatakse riigieelarve seaduse §-s 12 sätestatud nõuete kohaselt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_20_1"
+      },
+      "rdfs:label": "§ 20<sup>1</sup> lg 2"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_21",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_eesti_rahvusraamatukogu_seadus"
+      ],
+      "estleg:paragrahv": "§ 21.",
+      "rdfs:label": "§ 21. Aruandlus",
+      "estleg:sourceAct": "Eesti Rahvusraamatukogu seadus",
+      "estleg:summary": "1 (1) Rahvusraamatukogu peab oma varade ja vahendite kasutamise kohta raamatupidamise ja statistilist arvestust seadusega kehtestatud korras. Rahvusraamatukogu peab oma varade ja vahendite kasutamise kohta raamatupidamise ja statistilist arvestust seadusega kehtestatud korras. 2 (2) Pärast majandusaasta lõppu koostab Rahvusraamatukogu majandusaasta aruande seaduses sätestatud korras ja esitab selle viivitamata audiitorettevõtjale. Pärast majandusaasta lõppu koostab Rahvusraamatukogu majandusaast",
+      "estleg:legalText": "(1) Rahvusraamatukogu peab oma varade ja vahendite kasutamise kohta raamatupidamise ja statistilist arvestust seadusega kehtestatud korras. (2) Pärast majandusaasta lõppu koostab Rahvusraamatukogu majandusaasta aruande seaduses sätestatud korras ja esitab selle viivitamata audiitorettevõtjale. (3) Rahvusraamatukogu esitab majandusaasta aruande ja vandeaudiitori aruande nõukogule kinnitamiseks nelja kuu jooksul pärast majandusaasta lõppemist. (4) Rahvusraamatukogu majandusaasta aruanne avalikustatakse pärast selle kinnitamist nõukogu poolt Rahvusraamatukogu kodulehel.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_EESTI_3_4"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_EESTI_3_4"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:EESTI_3_Par_21_Lg_1"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_21_Lg_2"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_21_Lg_3"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_21_Lg_4"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:dutyHolder": "Rahvusraamatukogu"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_21_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Rahvusraamatukogu peab oma varade ja vahendite kasutamise kohta raamatupidamise ja statistilist arvestust seadusega kehtestatud korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_21"
+      },
+      "rdfs:label": "§ 21 lg 1"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_21_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Pärast majandusaasta lõppu koostab Rahvusraamatukogu majandusaasta aruande seaduses sätestatud korras ja esitab selle viivitamata audiitorettevõtjale.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_21"
+      },
+      "rdfs:label": "§ 21 lg 2"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_21_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Rahvusraamatukogu esitab majandusaasta aruande ja vandeaudiitori aruande nõukogule kinnitamiseks nelja kuu jooksul pärast majandusaasta lõppemist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_21"
+      },
+      "rdfs:label": "§ 21 lg 3"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_21_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Rahvusraamatukogu majandusaasta aruanne avalikustatakse pärast selle kinnitamist nõukogu poolt Rahvusraamatukogu kodulehel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_21"
+      },
+      "rdfs:label": "§ 21 lg 4"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_22",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_eesti_rahvusraamatukogu_seadus"
+      ],
+      "estleg:paragrahv": "§ 22.",
+      "rdfs:label": "§ 22. Haldusjärelevalve",
+      "estleg:sourceAct": "Eesti Rahvusraamatukogu seadus",
+      "estleg:summary": "1 (1) Riigikontroll kontrollib Rahvusraamatukogu tegevust vastavalt Riigikontrolli seadusele. Riigikontroll kontrollib Rahvusraamatukogu tegevust vastavalt Riigikontrolli seadusele. 2 (2) Nõukogu esitab Riigikogule kirjalikult kord aastas aruande oma tegevusest. Nõukogu esitab Riigikogule kirjalikult kord aastas aruande oma tegevusest.",
+      "estleg:legalText": "(1) Riigikontroll kontrollib Rahvusraamatukogu tegevust vastavalt Riigikontrolli seadusele. (2) Nõukogu esitab Riigikogule kirjalikult kord aastas aruande oma tegevusest.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_EESTI_3_4"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_EESTI_3_4"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:EESTI_3_Par_22_Lg_1"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_22_Lg_2"
+        }
+      ],
+      "estleg:targetGroup": [
+        "public_body"
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:ulikooliseadus_Par_52",
+          "estleg:similarityScore": {
+            "@value": "0.3",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_22_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Riigikontroll kontrollib Rahvusraamatukogu tegevust vastavalt Riigikontrolli seadusele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_22"
+      },
+      "rdfs:label": "§ 22 lg 1"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_22_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Nõukogu esitab Riigikogule kirjalikult kord aastas aruande oma tegevusest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_22"
+      },
+      "rdfs:label": "§ 22 lg 2"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_23",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_eesti_rahvusraamatukogu_seadus"
+      ],
+      "estleg:paragrahv": "§ 23.",
+      "rdfs:label": "§ 23. Üleminekusätted",
+      "estleg:sourceAct": "Eesti Rahvusraamatukogu seadus",
+      "estleg:summary": "1 (1) Peadirektor tagab Rahvusraamatukogu põhikirja vastavusse viimise käesoleva seadusega kolme kuu jooksul pärast käesoleva seaduse jõustumist. Peadirektor tagab Rahvusraamatukogu põhikirja vastavusse viimise käesoleva seadusega kolme kuu jooksul pärast käesoleva seaduse jõustumist. 2 (2) Enne käesoleva seaduse jõustumist nimetatud Rahvusraamatukogu nõukogu liikmete volitused lõppevad käesoleva seaduse jõustumisel. Nõukogu liikmed jätkavad nõukogu liikmete ülesannete täitmist, kuni jõustub Rii",
+      "estleg:legalText": "(1) Peadirektor tagab Rahvusraamatukogu põhikirja vastavusse viimise käesoleva seadusega kolme kuu jooksul pärast käesoleva seaduse jõustumist. (2) Enne käesoleva seaduse jõustumist nimetatud Rahvusraamatukogu nõukogu liikmete volitused lõppevad käesoleva seaduse jõustumisel. Nõukogu liikmed jätkavad nõukogu liikmete ülesannete täitmist, kuni jõustub Riigikogu otsus nõukogu uute liikmete nimetamise kohta. (3) Käesoleva seaduse jõustumisel ametis oleva peadirektoriga sõlmitud tööleping kehtib kuni töölepingus sätestatud tähtaja saabumiseni või töölepingu ennetähtaegse lõppemiseni.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_EESTI_3_5"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_EESTI_3_5"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:EESTI_3_Par_23_Lg_1"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_23_Lg_2"
+        },
+        {
+          "@id": "estleg:EESTI_3_Par_23_Lg_3"
+        }
+      ],
+      "estleg:targetGroup": [
+        "public_body",
+        "official"
+      ]
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_23_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Peadirektor tagab Rahvusraamatukogu põhikirja vastavusse viimise käesoleva seadusega kolme kuu jooksul pärast käesoleva seaduse jõustumist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_23"
+      },
+      "rdfs:label": "§ 23 lg 1"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_23_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Enne käesoleva seaduse jõustumist nimetatud Rahvusraamatukogu nõukogu liikmete volitused lõppevad käesoleva seaduse jõustumisel. Nõukogu liikmed jätkavad nõukogu liikmete ülesannete täitmist, kuni jõustub Riigikogu otsus nõukogu uute liikmete nimetamise kohta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_23"
+      },
+      "rdfs:label": "§ 23 lg 2"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_23_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Käesoleva seaduse jõustumisel ametis oleva peadirektoriga sõlmitud tööleping kehtib kuni töölepingus sätestatud tähtaja saabumiseni või töölepingu ennetähtaegse lõppemiseni.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_23"
+      },
+      "rdfs:label": "§ 23 lg 3"
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_24",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_eesti_rahvusraamatukogu_seadus"
+      ],
+      "estleg:paragrahv": "§ 24.",
+      "rdfs:label": "§ 24. Seaduse kehtetuks tunnistamine",
+      "estleg:sourceAct": "Eesti Rahvusraamatukogu seadus",
+      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_EESTI_3_5"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_EESTI_3_5"
+      }
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_25",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_eesti_rahvusraamatukogu_seadus"
+      ],
+      "estleg:paragrahv": "§ 25.",
+      "rdfs:label": "§ 25. Seaduse jõustumine",
+      "estleg:sourceAct": "Eesti Rahvusraamatukogu seadus",
+      "estleg:summary": "Käesolev seadus jõustub 2011. aasta 1. aprillil. Käesolev seadus jõustub 2011. aasta 1. aprillil.",
+      "estleg:legalText": "Käesolev seadus jõustub 2011. aasta 1. aprillil.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_EESTI_3_5"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_EESTI_3_5"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:EESTI_3_Par_25_Lg_Unknown_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:EESTI_3_Par_25_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Käesolev seadus jõustub 2011. aasta 1. aprillil.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EESTI_3_Par_25"
       }
     }
   ]

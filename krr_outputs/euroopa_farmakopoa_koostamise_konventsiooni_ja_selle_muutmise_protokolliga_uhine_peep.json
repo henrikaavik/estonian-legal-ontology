@@ -6,28 +6,31 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
   },
   "@graph": [
     {
       "@id": "estleg:EFKKSMPU_Map_2026",
       "@type": [
+        "owl:Ontology",
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "rdfs:label": "Euroopa farmakopöa koostamise konventsiooni ja selle muutmise protokolliga ühinemise seadus teemakaardistus",
       "dc:source": "Euroopa farmakopöa koostamise konventsiooni ja selle muutmise protokolliga ühinemise seadus",
-      "estleg:affectedBy": [
-        {
-          "@id": "estleg:Draft_JDM15_1407"
-        },
-        {
-          "@id": "estleg:Draft_JDM17_0459"
-        }
-      ],
-      "estleg:temporalStatus": "unknown",
+      "dcterms:title": "Euroopa farmakopöa koostamise konventsiooni ja selle muutmise protokolliga ühinemise seadus",
+      "estleg:contentStatus": "structuredBody",
+      "dcterms:source": {
+        "@id": "https://www.riigiteataja.ee/akt/27347.xml"
+      },
+      "owl:sameAs": {
+        "@id": "https://www.riigiteataja.ee/akt/27347.xml"
+      },
+      "estleg:kehtiv": {
+        "@value": "2026-05-24",
+        "@type": "xsd:date"
+      },
       "dcterms:subject": [
         {
           "@id": "http://eurovoc.europa.eu/0411"
@@ -36,12 +39,16 @@
           "@id": "http://eurovoc.europa.eu/2446"
         },
         {
+          "@id": "http://eurovoc.europa.eu/2431"
+        },
+        {
           "@id": "http://eurovoc.europa.eu/3611"
         }
-      ]
+      ],
+      "estleg:temporalStatus": "unknown"
     },
     {
-      "@id": "estleg:LegalProvision_EFKKSMPU",
+      "@id": "estleg:LegalProvision_euroopa_farmakopoa_koostamise_konventsiooni_ja_selle_muutmise_protokolliga_uhine",
       "@type": [
         "owl:Class"
       ],
@@ -51,15 +58,50 @@
       }
     },
     {
+      "@id": "estleg:EFKKSMPU_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": "Euroopa farmakopöa koostamise konventsiooni ja selle muutmise protokolliga ühinemise seadus teemaskeem",
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_EFKKSMPU_default"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Cluster_EFKKSMPU_default",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": "§1–4 Lepingu sätted",
+      "skos:prefLabel": "§1–4 Lepingu sätted",
+      "skos:inScheme": {
+        "@id": "estleg:EFKKSMPU_TopicScheme"
+      },
+      "estleg:provisionCount": 4
+    },
+    {
       "@id": "estleg:EFKKSMPU_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_EFKKSMPU"
+        "estleg:LegalProvision_euroopa_farmakopoa_koostamise_konventsiooni_ja_selle_muutmise_protokolliga_uhine"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1.",
+      "rdfs:label": "§ 1. [Ühineda juurdelisatud Euroopa farmakopöa koostamise konventsiooniga ./78546 , mi...]",
       "estleg:sourceAct": "Euroopa farmakopöa koostamise konventsiooni ja selle muutmise protokolliga ühinemise seadus",
       "estleg:summary": "Ühineda juurdelisatud Euroopa farmakopöa koostamise konventsiooniga ./78546 , mis on koostatud 1964. aasta 22. juulil Strasbourgis ning mida on muudetud 1989. aasta 16. novembri protokolliga. Ühineda juurdelisatud , mis on koostatud 1964. aasta 22. juulil Strasbourgis ning mida on muudetud 1989. aasta 16. novembri protokolliga.",
+      "estleg:legalText": "Ühineda juurdelisatud , mis on koostatud 1964. aasta 22. juulil Strasbourgis ning mida on muudetud 1989. aasta 16. novembri protokolliga.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_EFKKSMPU_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:EFKKSMPU_Par_1_Lg_Unknown_1"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:RNKU_Par_1",
@@ -76,32 +118,69 @@
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
-        }
-      ]
-    },
-    {
-      "@id": "estleg:EFKKSMPU_Par_2",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_EFKKSMPU"
-      ],
-      "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2.",
-      "estleg:sourceAct": "Euroopa farmakopöa koostamise konventsiooni ja selle muutmise protokolliga ühinemise seadus",
-      "estleg:summary": "Ühineda juurdelisatud Euroopa farmakopöa koostamise konventsiooni protokolliga ./78547 , mis on koostatud 1989. aasta 16. novembril Strasbourgis. Ühineda juurdelisatud , mis on koostatud 1989. aasta 16. novembril Strasbourgis.",
-      "estleg:semanticallySimilarTo": [
+        },
         {
-          "@id": "estleg:EMKAU_Par_1",
+          "@id": "estleg:euroopa_liidu_liikmesriikide_vahelise_va_Par_1",
           "estleg:similarityScore": {
-            "@value": "0.312",
+            "@value": "0.3",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
         },
         {
-          "@id": "estleg:POKKPOSP1979_Par_1",
+          "@id": "estleg:euroopa_tuumauuringute_organisatsiooni_a_Par_1",
           "estleg:similarityScore": {
-            "@value": "0.3",
+            "@value": "0.412",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:euroopa_ulikool_instituudi_asutamise_konventsiooni_Par_1",
+          "estleg:similarityScore": {
+            "@value": "0.316",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:EFKKSMPU_Par_1_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Ühineda juurdelisatud , mis on koostatud 1964. aasta 22. juulil Strasbourgis ning mida on muudetud 1989. aasta 16. novembri protokolliga.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EFKKSMPU_Par_1"
+      }
+    },
+    {
+      "@id": "estleg:EFKKSMPU_Par_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_euroopa_farmakopoa_koostamise_konventsiooni_ja_selle_muutmise_protokolliga_uhine"
+      ],
+      "estleg:paragrahv": "§ 2.",
+      "rdfs:label": "§ 2. [Ühineda juurdelisatud Euroopa farmakopöa koostamise konventsiooni protokolliga ....]",
+      "estleg:sourceAct": "Euroopa farmakopöa koostamise konventsiooni ja selle muutmise protokolliga ühinemise seadus",
+      "estleg:summary": "Ühineda juurdelisatud Euroopa farmakopöa koostamise konventsiooni protokolliga ./78547 , mis on koostatud 1989. aasta 16. novembril Strasbourgis. Ühineda juurdelisatud , mis on koostatud 1989. aasta 16. novembril Strasbourgis.",
+      "estleg:legalText": "Ühineda juurdelisatud , mis on koostatud 1989. aasta 16. novembril Strasbourgis.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_EFKKSMPU_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:EFKKSMPU_Par_2_Lg_Unknown_1"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:EMKAU_Par_1",
+          "estleg:similarityScore": {
+            "@value": "0.312",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
@@ -129,41 +208,81 @@
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:jaatmete_ja_muude_ainete_kaadamisest_poh_Par_1",
+          "estleg:similarityScore": {
+            "@value": "0.35",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
         }
       ]
+    },
+    {
+      "@id": "estleg:EFKKSMPU_Par_2_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Ühineda juurdelisatud , mis on koostatud 1989. aasta 16. novembril Strasbourgis.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EFKKSMPU_Par_2"
+      }
     },
     {
       "@id": "estleg:EFKKSMPU_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_EFKKSMPU"
+        "estleg:LegalProvision_euroopa_farmakopoa_koostamise_konventsiooni_ja_selle_muutmise_protokolliga_uhine"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3.",
+      "rdfs:label": "§ 3. [Konventsiooni rakendamisel näha ette siseriiklik üleminekuperiood kuni 2003. aas...]",
       "estleg:sourceAct": "Euroopa farmakopöa koostamise konventsiooni ja selle muutmise protokolliga ühinemise seadus",
       "estleg:summary": "Konventsiooni rakendamisel näha ette siseriiklik üleminekuperiood kuni 2003. aasta 1. jaanuarini. Konventsiooni rakendamisel näha ette siseriiklik üleminekuperiood kuni 2003. aasta 1. jaanuarini.",
+      "estleg:legalText": "Konventsiooni rakendamisel näha ette siseriiklik üleminekuperiood kuni 2003. aasta 1. jaanuarini.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_EFKKSMPU_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:EFKKSMPU_Par_3_Lg_Unknown_1"
+        }
+      ],
       "estleg:targetGroup": [
         "official"
       ]
     },
     {
+      "@id": "estleg:EFKKSMPU_Par_3_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Konventsiooni rakendamisel näha ette siseriiklik üleminekuperiood kuni 2003. aasta 1. jaanuarini.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EFKKSMPU_Par_3"
+      }
+    },
+    {
       "@id": "estleg:EFKKSMPU_Par_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_EFKKSMPU"
+        "estleg:LegalProvision_euroopa_farmakopoa_koostamise_konventsiooni_ja_selle_muutmise_protokolliga_uhine"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4.",
+      "rdfs:label": "§ 4. [Vabariigi Valitsus ./dyn=27347&id=27688 või tema volitusel valdkonna eest vastut...]",
       "estleg:sourceAct": "Euroopa farmakopöa koostamise konventsiooni ja selle muutmise protokolliga ühinemise seadus",
       "estleg:summary": "Vabariigi Valitsus ./dyn=27347&id=27688 või tema volitusel valdkonna eest vastutav minister kehtestab määrusega ./dyn=27347&id=163723 konventsiooni rakendamise korra, milles nähakse ette ravimeid tootvate ettevõtete kohustused üleminekuperioodi jooksul ning Ravimiameti kohustused konventsiooni rakendamisel. RT I 2014-06-29 109 129062014109 2014-07-01 , Vabariigi Valitsuse seaduse § 107³ lõike 4 alusel asendatud alates 2014. aasta 1. juulist \"sotsiaalminister\" sõnadega \"valdkonna eest vastutav mi",
-      "estleg:semanticallySimilarTo": [
+      "estleg:legalText": "või tema volitusel konventsiooni rakendamise korra, milles nähakse ette ravimeid tootvate ettevõtete kohustused üleminekuperioodi jooksul ning Ravimiameti kohustused konventsiooni rakendamisel. , Vabariigi Valitsuse seaduse § 107³ lõike 4 alusel asendatud alates 2014. aasta 1. juulist \"sotsiaalminister\" sõnadega \"valdkonna eest vastutav minister\".",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_EFKKSMPU_default"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:PRS_Par_30",
-          "estleg:similarityScore": {
-            "@value": "0.333",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
+          "@id": "estleg:EFKKSMPU_Par_4_Lg_Unknown_1"
         }
       ],
       "estleg:targetGroup": [
@@ -182,7 +301,61 @@
           "@id": "estleg:Institution_ravimiamet"
         }
       ],
-      "estleg:competenceType": "regulation"
+      "estleg:competenceType": "regulation",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:EUKKEEUEVSEV_Par_2_1",
+          "estleg:similarityScore": {
+            "@value": "0.333",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:PRS_Par_30",
+          "estleg:similarityScore": {
+            "@value": "0.333",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:RKPSS_Par_10",
+          "estleg:similarityScore": {
+            "@value": "0.324",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:RKPSS_Par_5",
+          "estleg:similarityScore": {
+            "@value": "0.31",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:euroopa_ulikool_instituudi_asutamise_konventsiooni_Par_2",
+          "estleg:similarityScore": {
+            "@value": "0.3",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:EFKKSMPU_Par_4_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "või tema volitusel konventsiooni rakendamise korra, milles nähakse ette ravimeid tootvate ettevõtete kohustused üleminekuperioodi jooksul ning Ravimiameti kohustused konventsiooni rakendamisel. , Vabariigi Valitsuse seaduse § 107³ lõike 4 alusel asendatud alates 2014. aasta 1. juulist \"sotsiaalminister\" sõnadega \"valdkonna eest vastutav minister\".",
+      "estleg:parentProvision": {
+        "@id": "estleg:EFKKSMPU_Par_4"
+      }
     }
   ]
 }

@@ -6,42 +6,31 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
   },
   "@graph": [
     {
       "@id": "estleg:VPA_Map_2026",
       "@type": [
+        "owl:Ontology",
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "rdfs:label": "Vabariigi Presidendi ametihüve seadus teemakaardistus",
       "dc:source": "Vabariigi Presidendi ametihüve seadus",
-      "estleg:affectedBy": [
-        {
-          "@id": "estleg:Draft_RIIGIKOGU22_0095"
-        },
-        {
-          "@id": "estleg:Draft_RIIGIKOGU17_0488"
-        },
-        {
-          "@id": "estleg:Draft_RIIGIKOGU16_0040"
-        }
-      ],
-      "estleg:amendedBy": [
-        {
-          "@id": "estleg:Draft_RIIGIKOGU22_0095"
-        },
-        {
-          "@id": "estleg:Draft_RIIGIKOGU17_0488"
-        },
-        {
-          "@id": "estleg:Draft_RIIGIKOGU16_0040"
-        }
-      ],
-      "estleg:temporalStatus": "unknown",
+      "dcterms:title": "Vabariigi Presidendi ametihüve seadus",
+      "estleg:contentStatus": "structuredBody",
+      "dcterms:source": {
+        "@id": "https://www.riigiteataja.ee/akt/106072023113.xml"
+      },
+      "owl:sameAs": {
+        "@id": "https://www.riigiteataja.ee/akt/106072023113.xml"
+      },
+      "estleg:kehtiv": {
+        "@value": "2026-05-24",
+        "@type": "xsd:date"
+      },
       "dcterms:subject": [
         {
           "@id": "http://eurovoc.europa.eu/2446"
@@ -58,10 +47,27 @@
         {
           "@id": "http://eurovoc.europa.eu/5211"
         }
+      ],
+      "estleg:temporalStatus": "unknown",
+      "estleg:amendedBy": [
+        {
+          "@id": "estleg:AmendmentLink_Draft_RIIGIKOGU22_0095_VPA"
+        },
+        {
+          "@id": "estleg:AmendmentLink_Draft_RIIGIKOGU16_0040_VPA"
+        }
+      ],
+      "estleg:affectedBy": [
+        {
+          "@id": "estleg:Draft_RIIGIKOGU22_0095"
+        },
+        {
+          "@id": "estleg:Draft_RIIGIKOGU16_0040"
+        }
       ]
     },
     {
-      "@id": "estleg:LegalProvision_VPA",
+      "@id": "estleg:LegalProvision_vabariigi_presidendi_ametihuve_seadus",
       "@type": [
         "owl:Class"
       ],
@@ -71,29 +77,111 @@
       }
     },
     {
+      "@id": "estleg:VPA_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": "Vabariigi Presidendi ametihüve seadus teemaskeem",
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_VPA_default"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Cluster_VPA_default",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": "§1–18 Vabariigi Presidendi ametihüve seadus",
+      "skos:prefLabel": "§1–18 Vabariigi Presidendi ametihüve seadus",
+      "skos:inScheme": {
+        "@id": "estleg:VPA_TopicScheme"
+      },
+      "estleg:provisionCount": 18
+    },
+    {
       "@id": "estleg:VPA_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VPA"
+        "estleg:LegalProvision_vabariigi_presidendi_ametihuve_seadus"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. Vabariigi Presidendi ametihüve",
       "estleg:sourceAct": "Vabariigi Presidendi ametihüve seadus",
-      "estleg:summary": "1(1)Vabariigi Presidendi (edaspidi president) ametihüve on ametipalk ja ametipension ning muu presidendiks valitud isiku riiklik soodustus. Vabariigi Presidendi (edaspidi president) ametihüve on ametipalk ja ametipension ning muu presidendiks valitud isiku riiklik soodustus. 2(2)President ei või oma ametivolituste kestel saada riigilt selles seaduses käsitlemata hüvesid. President ei või oma ametivolituste kestel saada riigilt selles seaduses käsitlemata hüvesid.",
+      "estleg:summary": "1 (1) Vabariigi Presidendi (edaspidi president) ametihüve on ametipalk ja ametipension ning muu presidendiks valitud isiku riiklik soodustus. Vabariigi Presidendi (edaspidi president) ametihüve on ametipalk ja ametipension ning muu presidendiks valitud isiku riiklik soodustus. 2 (2) President ei või oma ametivolituste kestel saada riigilt selles seaduses käsitlemata hüvesid. President ei või oma ametivolituste kestel saada riigilt selles seaduses käsitlemata hüvesid.",
+      "estleg:legalText": "(1) Vabariigi Presidendi (edaspidi president) ametihüve on ametipalk ja ametipension ning muu presidendiks valitud isiku riiklik soodustus. (2) President ei või oma ametivolituste kestel saada riigilt selles seaduses käsitlemata hüvesid.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VPA_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VPA_Par_1_Lg_1"
+        },
+        {
+          "@id": "estleg:VPA_Par_1_Lg_2"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen"
       ]
     },
     {
+      "@id": "estleg:VPA_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Vabariigi Presidendi (edaspidi president) ametihüve on ametipalk ja ametipension ning muu presidendiks valitud isiku riiklik soodustus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VPA_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
+    },
+    {
+      "@id": "estleg:VPA_Par_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) President ei või oma ametivolituste kestel saada riigilt selles seaduses käsitlemata hüvesid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VPA_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 2"
+    },
+    {
       "@id": "estleg:VPA_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VPA"
+        "estleg:LegalProvision_vabariigi_presidendi_ametihuve_seadus"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. Presidendi ametipalk",
       "estleg:sourceAct": "Vabariigi Presidendi ametihüve seadus",
-      "estleg:summary": "1(1)Presidendi ametipalk määratakse kõrgemate riigiteenijate ametipalkade seadusega.RT I20101213252719– jõust. Riigikogu XII koosseisu volituste alguspäeval Presidendi ametipalk määratakse kõrgemate riigiteenijate ametipalkade seadusega. – jõust. Riigikogu XII koosseisu volituste alguspäeval 1(1<sup>1</sup>)Kehtetu –RT I20101213252719– jõust. Riigikogu XII koosseisu volituste alguspäeval Kehtetu – – jõust. Riigikogu XII koosseisu volituste alguspäeval 2(2)Presidendi ametipalka makstakse ka Riigi",
+      "estleg:summary": "1 (1) Presidendi ametipalk määratakse kõrgemate riigiteenijate ametipalkade seadusega. RT I 2010 1 2 13252719 2014-01-01 (jõustumine muudetud - RT I, 29.12.2012, 1) Presidendi ametipalk määratakse kõrgemate riigiteenijate ametipalkade seadusega. (jõustumine muudetud - RT I, 29.12.2012, 1) 1 (1<sup>1</sup>) Kehtetu - RT I 2010 1 2 13252719 2014-01-01 (jõustumine muudetud - RT I, 29.12.2012, 1) Kehtetu - (jõustumine muudetud - RT I, 29.12.2012, 1) 2 (2) Presidendi ametipalka makstakse ka Riigikogu",
+      "estleg:legalText": "(1) Presidendi ametipalk määratakse kõrgemate riigiteenijate ametipalkade seadusega. (jõustumine muudetud - RT I, 29.12.2012, 1) (1<sup>1</sup>) Kehtetu - (jõustumine muudetud - RT I, 29.12.2012, 1) (2) Presidendi ametipalka makstakse ka Riigikogu esimehele presidendi ülesannetes. (3) Presidendi ametipalka makstakse presidendi volituste tekkimisest volituste lõppemiseni üks kord kuus.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VPA_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VPA_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:VPA_Par_2_Lg_1_1"
+        },
+        {
+          "@id": "estleg:VPA_Par_2_Lg_2"
+        },
+        {
+          "@id": "estleg:VPA_Par_2_Lg_3"
+        }
+      ],
       "estleg:targetGroup": [
         "public_body"
       ],
@@ -103,17 +191,84 @@
         }
       ],
       "estleg:competenceType": "general"
+    },
+    {
+      "@id": "estleg:VPA_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Presidendi ametipalk määratakse kõrgemate riigiteenijate ametipalkade seadusega. (jõustumine muudetud - RT I, 29.12.2012, 1)",
+      "estleg:parentProvision": {
+        "@id": "estleg:VPA_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
+    },
+    {
+      "@id": "estleg:VPA_Par_2_Lg_1_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1<sup>1</sup>",
+      "estleg:legalText": "(1<sup>1</sup>) Kehtetu - (jõustumine muudetud - RT I, 29.12.2012, 1)",
+      "estleg:parentProvision": {
+        "@id": "estleg:VPA_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1<sup>1</sup>"
+    },
+    {
+      "@id": "estleg:VPA_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Presidendi ametipalka makstakse ka Riigikogu esimehele presidendi ülesannetes.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VPA_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2"
+    },
+    {
+      "@id": "estleg:VPA_Par_2_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Presidendi ametipalka makstakse presidendi volituste tekkimisest volituste lõppemiseni üks kord kuus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VPA_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 3"
     },
     {
       "@id": "estleg:VPA_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VPA"
+        "estleg:LegalProvision_vabariigi_presidendi_ametihuve_seadus"
       ],
       "estleg:paragrahv": "§ 3.",
       "rdfs:label": "§ 3. Presidendi esindustasu",
       "estleg:sourceAct": "Vabariigi Presidendi ametihüve seadus",
-      "estleg:summary": "1(1)President saab esinduskulude katteks esindustasu, mille suurus on 20 protsenti ametipalgast. President saab esinduskulude katteks esindustasu, mille suurus on 20 protsenti ametipalgast. 2(2)[kehtetu] [kehtetu] 3(3)Esindustasu makstakse ka Riigikogu esimehele presidendi ülesannetes. Esindustasu makstakse ka Riigikogu esimehele presidendi ülesannetes.",
+      "estleg:summary": "1 (1) President saab esinduskulude katteks esindustasu, mille suurus on 20 protsenti ametipalgast. President saab esinduskulude katteks esindustasu, mille suurus on 20 protsenti ametipalgast. 2 (2) Kehtetu - RT I 2000 55 359 72145 2001-01-01 Kehtetu - 3 (3) Esindustasu makstakse ka Riigikogu esimehele presidendi ülesannetes. Esindustasu makstakse ka Riigikogu esimehele presidendi ülesannetes.",
+      "estleg:legalText": "(1) President saab esinduskulude katteks esindustasu, mille suurus on 20 protsenti ametipalgast. (2) Kehtetu - (3) Esindustasu makstakse ka Riigikogu esimehele presidendi ülesannetes.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VPA_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VPA_Par_3_Lg_1"
+        },
+        {
+          "@id": "estleg:VPA_Par_3_Lg_2"
+        },
+        {
+          "@id": "estleg:VPA_Par_3_Lg_3"
+        }
+      ],
       "estleg:targetGroup": [
         "public_body"
       ],
@@ -125,132 +280,639 @@
       "estleg:competenceType": "general"
     },
     {
+      "@id": "estleg:VPA_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) President saab esinduskulude katteks esindustasu, mille suurus on 20 protsenti ametipalgast.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VPA_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
+    },
+    {
+      "@id": "estleg:VPA_Par_3_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:VPA_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 2"
+    },
+    {
+      "@id": "estleg:VPA_Par_3_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Esindustasu makstakse ka Riigikogu esimehele presidendi ülesannetes.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VPA_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 3"
+    },
+    {
       "@id": "estleg:VPA_Par_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VPA"
+        "estleg:LegalProvision_vabariigi_presidendi_ametihuve_seadus"
       ],
       "estleg:paragrahv": "§ 4.",
       "rdfs:label": "§ 4. Presidendi töö-, elu- ja esindusruumid ning ametiauto",
       "estleg:sourceAct": "Vabariigi Presidendi ametihüve seadus",
-      "estleg:summary": "Ametivolituste ajal on presidendil õigus kasutada riigi kulul töö-, elu- ja esindusruume ning ametiautot koos nende korrashoiu ja kasutamisega seotud teenustega.RT I20067419895142006-02-13 Ametivolituste ajal on presidendil õigus kasutada riigi kulul töö-, elu- ja esindusruume ning ametiautot koos nende korrashoiu ja kasutamisega seotud teenustega."
+      "estleg:summary": "Ametivolituste ajal on presidendil õigus kasutada riigi kulul töö-, elu- ja esindusruume ning ametiautot koos nende korrashoiu ja kasutamisega seotud teenustega. RT I 2006 7 41 989514 2006-02-13 Ametivolituste ajal on presidendil õigus kasutada riigi kulul töö-, elu- ja esindusruume ning ametiautot koos nende korrashoiu ja kasutamisega seotud teenustega.",
+      "estleg:legalText": "Ametivolituste ajal on presidendil õigus kasutada riigi kulul töö-, elu- ja esindusruume ning ametiautot koos nende korrashoiu ja kasutamisega seotud teenustega.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VPA_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VPA_Par_4_Lg_Unknown_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:VPA_Par_4_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Ametivolituste ajal on presidendil õigus kasutada riigi kulul töö-, elu- ja esindusruume ning ametiautot koos nende korrashoiu ja kasutamisega seotud teenustega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VPA_Par_4"
+      }
     },
     {
       "@id": "estleg:VPA_Par_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VPA"
+        "estleg:LegalProvision_vabariigi_presidendi_ametihuve_seadus"
       ],
       "estleg:paragrahv": "§ 5.",
       "rdfs:label": "§ 5. Presidendi puhkus",
       "estleg:sourceAct": "Vabariigi Presidendi ametihüve seadus",
-      "estleg:summary": "1(1)Ametivolituste ajal on presidendil õigus saada aastas kuni 35 kalendripäeva puhkust. Ametivolituste ajal on presidendil õigus saada aastas kuni 35 kalendripäeva puhkust. 2(2)Puhkuse aja ja kestuse määrab president. Puhkuse aja ja kestuse määrab president. 3(3)President saab kasutatud puhkuseaja eest puhkusetasu, mis on võrdne ametipalgaga. President saab kasutatud puhkuseaja eest puhkusetasu, mis on võrdne ametipalgaga. 4(4)Ametivolituste lõppemise korral on presidendil õigus saada kasutamat"
+      "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VPA_default"
+      }
     },
     {
       "@id": "estleg:VPA_Par_6",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VPA"
+        "estleg:LegalProvision_vabariigi_presidendi_ametihuve_seadus"
       ],
       "estleg:paragrahv": "§ 6.",
       "rdfs:label": "§ 6. Presidendi lähetuskulud",
       "estleg:sourceAct": "Vabariigi Presidendi ametihüve seadus",
-      "estleg:summary": "Käesolevas seaduses sätestatud lähetuskulude hüvitamise kord kehtestatakse Vabariigi Valitsuse määrusega./dyn=13262536&id=74038 .RT I20067419895142006-02-13 Käesolevas seaduses sätestatud lähetuskulude hüvitamise kord",
+      "estleg:summary": "Käesolevas seaduses sätestatud lähetuskulude hüvitamise kord kehtestatakse Vabariigi Valitsuse ./dyn=106072023113&id=74038 määrusega. RT I 2006 7 41 989514 2006-02-13 Käesolevas seaduses sätestatud lähetuskulude hüvitamise kord kehtestatakse määrusega.",
+      "estleg:legalText": "Käesolevas seaduses sätestatud lähetuskulude hüvitamise kord kehtestatakse määrusega.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VPA_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VPA_Par_6_Lg_Unknown_1"
+        }
+      ],
       "estleg:targetGroup": [
         "public_body"
       ],
       "estleg:referencedBy": [
         {
-          "@id": "estleg:VPA_Par_8_8"
+          "@id": "estleg:VPA_Par_8_1"
         }
       ]
+    },
+    {
+      "@id": "estleg:VPA_Par_6_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Käesolevas seaduses sätestatud lähetuskulude hüvitamise kord kehtestatakse määrusega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VPA_Par_6"
+      }
     },
     {
       "@id": "estleg:VPA_Par_7",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VPA"
+        "estleg:LegalProvision_vabariigi_presidendi_ametihuve_seadus"
       ],
       "estleg:paragrahv": "§ 7.",
       "rdfs:label": "§ 7. Presidendi muude ametikulude hüvitamine",
       "estleg:sourceAct": "Vabariigi Presidendi ametihüve seadus",
-      "estleg:summary": "Presidendi ametivolituste ajal tekkivad muud ametikulud hüvitab Vabariigi Presidendi Kantselei. Presidendi ametivolituste ajal tekkivad muud ametikulud hüvitab Vabariigi Presidendi Kantselei."
+      "estleg:summary": "Presidendi ametivolituste ajal tekkivad muud ametikulud hüvitab Vabariigi Presidendi Kantselei. Presidendi ametivolituste ajal tekkivad muud ametikulud hüvitab Vabariigi Presidendi Kantselei.",
+      "estleg:legalText": "Presidendi ametivolituste ajal tekkivad muud ametikulud hüvitab Vabariigi Presidendi Kantselei.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VPA_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VPA_Par_7_Lg_Unknown_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:VPA_Par_7_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Presidendi ametivolituste ajal tekkivad muud ametikulud hüvitab Vabariigi Presidendi Kantselei.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VPA_Par_7"
+      }
     },
     {
       "@id": "estleg:VPA_Par_8",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VPA"
+        "estleg:LegalProvision_vabariigi_presidendi_ametihuve_seadus"
       ],
       "estleg:paragrahv": "§ 8.",
       "rdfs:label": "§ 8. Presidendi kaitse",
       "estleg:sourceAct": "Vabariigi Presidendi ametihüve seadus",
-      "estleg:summary": "Presidendi ametivolituste ajal kaitseb presidenti ning tagab tema perekonna ja elukoha turvalisuse vastav politseiasutus.RT I20067419895142006-02-13 Presidendi ametivolituste ajal kaitseb presidenti ning tagab tema perekonna ja elukoha turvalisuse vastav politseiasutus."
+      "estleg:summary": "Presidendi ametivolituste ajal kaitseb presidenti ning tagab tema perekonna ja elukoha turvalisuse Politsei- ja Piirivalveamet. RT I 2011-12-29 1 129122011001 2012-01-01 Presidendi ametivolituste ajal kaitseb presidenti ning tagab tema perekonna ja elukoha turvalisuse Politsei- ja Piirivalveamet.",
+      "estleg:legalText": "Presidendi ametivolituste ajal kaitseb presidenti ning tagab tema perekonna ja elukoha turvalisuse Politsei- ja Piirivalveamet.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VPA_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VPA_Par_8_Lg_Unknown_1"
+        }
+      ],
+      "estleg:targetGroup": [
+        "public_body"
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_politsei_ja_piirivalveamet"
+        }
+      ],
+      "estleg:competenceType": "general"
     },
     {
-      "@id": "estleg:VPA_Par_8_8",
+      "@id": "estleg:VPA_Par_8_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Presidendi ametivolituste ajal kaitseb presidenti ning tagab tema perekonna ja elukoha turvalisuse Politsei- ja Piirivalveamet.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VPA_Par_8"
+      }
+    },
+    {
+      "@id": "estleg:VPA_Par_8_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VPA"
+        "estleg:LegalProvision_vabariigi_presidendi_ametihuve_seadus"
       ],
       "estleg:paragrahv": "§ 8<sup>1</sup>.",
       "rdfs:label": "§ 8<sup>1</sup>. Presidendi abikaasaga seotud hüved",
       "estleg:sourceAct": "Vabariigi Presidendi ametihüve seadus",
-      "estleg:summary": "1(1)Presidendi abikaasal on õigus presidendi ametivolituste ajal:11)saada oma käsutusse sekretär, kes on Vabariigi Presidendi Kantselei teenistuja;22)kasutada riigi kulul ametiautot ning selle korrashoiu ja kasutamisega seotud teenuseid;33)saada esinduskulude katteks igakuist esindustasu, mille suurus on 30 protsenti presidendi ametipalgast;44)saada käesoleva seaduse §-s 6 nimetatud korras hüvitist lähetuskulude ja muude põhjendatud kulutuste eest. Presidendi abikaasal on õigus presidendi ametiv",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
+      "estleg:summary": "1 (1) Presidendi abikaasal on õigus presidendi ametivolituste ajal: 1 1) saada oma käsutusse sekretär, kes on Vabariigi Presidendi Kantselei teenistuja; 2 2) kasutada riigi kulul ametiautot ning selle korrashoiu ja kasutamisega seotud teenuseid; 3 3) saada esinduskulude katteks igakuist esindustasu, mille suurus on 30 protsenti presidendi ametipalgast; 4 4) saada käesoleva seaduse §-s 6 nimetatud korras hüvitist lähetuskulude ja muude põhjendatud kulutuste eest. Presidendi abikaasal on õigus pre",
+      "estleg:legalText": "(1) Presidendi abikaasal on õigus presidendi ametivolituste ajal: saada oma käsutusse sekretär, kes on Vabariigi Presidendi Kantselei teenistuja; kasutada riigi kulul ametiautot ning selle korrashoiu ja kasutamisega seotud teenuseid; saada esinduskulude katteks igakuist esindustasu, mille suurus on 30 protsenti presidendi ametipalgast; saada käesoleva seaduse §-s 6 nimetatud korras hüvitist lähetuskulude ja muude põhjendatud kulutuste eest. (1<sup>1</sup>) Presidendi abikaasa, kes on süüdi mõistetud karistusseadustiku 15. peatükis või 17. peatüki 2. jaos sätestatud süüteo eest, mille eest karistusseadustik näeb ette vähemalt kuni viieaastase vangistuse, kaotab õiguse käesoleva paragrahvi lõikes 1 sätestatud hüvedele. - kohaldatakse isikule, kelle suhtes jõustub süüdimõistev kohtuotsus pärast seaduse jõustumist. (2) Pärast presidendi ametivolituste lõppemist makstakse presidendi abikaasale käesoleva paragrahvi lõike 1 punktis 3 nimetatud tasu, mille suurus on 20 protsenti presidendi ametipalgast kuni abikaasa surmani. (2<sup>1</sup>) Presidendi abikaasa, kes on süüdi mõistetud karistusseadustiku 15. peatükis või 17. peatüki 2. jaos sätestatud süüteo eest, mille eest karistusseadustik näeb ette vähemalt kuni viieaastase vangistuse, kaotab õiguse käesoleva paragrahvi lõikes 2 nimetatud tasule. - kohaldatakse isikule, kelle suhtes jõustub süüdimõistev kohtuotsus pärast seaduse jõustumist. (3) Vabariigi Valitsus võib korraldusega pikendada presidendiks valitud isiku lese soovil riigi kulul ametiauto ning selle korrashoiu ja kasutamisega seotud teenuste kasutamise õigust. (4) Presidendi abikaasa võib saada riigilt muudes seadustes käsitletud hüvesid. (5) Käesolevas paragrahvis abikaasa kohta sätestatut kohaldatakse ka presidendi registreeritud elukaaslasele.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VPA_default"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VPA_Par_8_1_Lg_1"
+        },
+        {
+          "@id": "estleg:VPA_Par_8_1_Lg_1_1"
+        },
+        {
+          "@id": "estleg:VPA_Par_8_1_Lg_2"
+        },
+        {
+          "@id": "estleg:VPA_Par_8_1_Lg_2_1"
+        },
+        {
+          "@id": "estleg:VPA_Par_8_1_Lg_3"
+        },
+        {
+          "@id": "estleg:VPA_Par_8_1_Lg_4"
+        },
+        {
+          "@id": "estleg:VPA_Par_8_1_Lg_5"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "public_body",
+        "official"
+      ],
       "estleg:references": [
         {
           "@id": "estleg:VPA_Par_6"
         }
       ],
-      "estleg:targetGroup": [
-        "official"
-      ]
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      }
+    },
+    {
+      "@id": "estleg:VPA_Par_8_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Presidendi abikaasal on õigus presidendi ametivolituste ajal: saada oma käsutusse sekretär, kes on Vabariigi Presidendi Kantselei teenistuja; kasutada riigi kulul ametiautot ning selle korrashoiu ja kasutamisega seotud teenuseid; saada esinduskulude katteks igakuist esindustasu, mille suurus on 30 protsenti presidendi ametipalgast; saada käesoleva seaduse §-s 6 nimetatud korras hüvitist lähetuskulude ja muude põhjendatud kulutuste eest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VPA_Par_8_1"
+      },
+      "rdfs:label": "§ 8<sup>1</sup> lg 1"
+    },
+    {
+      "@id": "estleg:VPA_Par_8_1_Lg_1_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1<sup>1</sup>",
+      "estleg:legalText": "(1<sup>1</sup>) Presidendi abikaasa, kes on süüdi mõistetud karistusseadustiku 15. peatükis või 17. peatüki 2. jaos sätestatud süüteo eest, mille eest karistusseadustik näeb ette vähemalt kuni viieaastase vangistuse, kaotab õiguse käesoleva paragrahvi lõikes 1 sätestatud hüvedele. - kohaldatakse isikule, kelle suhtes jõustub süüdimõistev kohtuotsus pärast seaduse jõustumist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VPA_Par_8_1"
+      },
+      "rdfs:label": "§ 8<sup>1</sup> lg 1<sup>1</sup>"
+    },
+    {
+      "@id": "estleg:VPA_Par_8_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Pärast presidendi ametivolituste lõppemist makstakse presidendi abikaasale käesoleva paragrahvi lõike 1 punktis 3 nimetatud tasu, mille suurus on 20 protsenti presidendi ametipalgast kuni abikaasa surmani.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VPA_Par_8_1"
+      },
+      "rdfs:label": "§ 8<sup>1</sup> lg 2"
+    },
+    {
+      "@id": "estleg:VPA_Par_8_1_Lg_2_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2<sup>1</sup>",
+      "estleg:legalText": "(2<sup>1</sup>) Presidendi abikaasa, kes on süüdi mõistetud karistusseadustiku 15. peatükis või 17. peatüki 2. jaos sätestatud süüteo eest, mille eest karistusseadustik näeb ette vähemalt kuni viieaastase vangistuse, kaotab õiguse käesoleva paragrahvi lõikes 2 nimetatud tasule. - kohaldatakse isikule, kelle suhtes jõustub süüdimõistev kohtuotsus pärast seaduse jõustumist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VPA_Par_8_1"
+      },
+      "rdfs:label": "§ 8<sup>1</sup> lg 2<sup>1</sup>"
+    },
+    {
+      "@id": "estleg:VPA_Par_8_1_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Vabariigi Valitsus võib korraldusega pikendada presidendiks valitud isiku lese soovil riigi kulul ametiauto ning selle korrashoiu ja kasutamisega seotud teenuste kasutamise õigust.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VPA_Par_8_1"
+      },
+      "rdfs:label": "§ 8<sup>1</sup> lg 3"
+    },
+    {
+      "@id": "estleg:VPA_Par_8_1_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Presidendi abikaasa võib saada riigilt muudes seadustes käsitletud hüvesid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VPA_Par_8_1"
+      },
+      "rdfs:label": "§ 8<sup>1</sup> lg 4"
+    },
+    {
+      "@id": "estleg:VPA_Par_8_1_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Käesolevas paragrahvis abikaasa kohta sätestatut kohaldatakse ka presidendi registreeritud elukaaslasele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VPA_Par_8_1"
+      },
+      "rdfs:label": "§ 8<sup>1</sup> lg 5"
     },
     {
       "@id": "estleg:VPA_Par_9",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VPA"
+        "estleg:LegalProvision_vabariigi_presidendi_ametihuve_seadus"
       ],
       "estleg:paragrahv": "§ 9.",
       "rdfs:label": "§ 9. Presidendi ametipension",
       "estleg:sourceAct": "Vabariigi Presidendi ametihüve seadus",
-      "estleg:summary": "1(1)Pärast ametivolituste lõppemist makstakse presidendile ametipensioni, mille määr on 75 protsenti presidendi ametipalga määrast. Presidendil ei teki õigust ametipensionile, kui tema ametivolitused lõppevad kuriteo eest süüdimõistva kohtuotsuse jõustumise tõttu. Pärast ametivolituste lõppemist makstakse presidendile ametipensioni, mille määr on 75 protsenti presidendi ametipalga määrast. Presidendil ei teki õigust ametipensionile, kui tema ametivolitused lõppevad kuriteo eest süüdimõistva koht",
+      "estleg:summary": "1 (1) Pärast ametivolituste lõppemist makstakse presidendile ametipensioni, mille määr on 75 protsenti presidendi ametipalga määrast. Presidendil ei teki õigust ametipensionile, kui tema ametivolitused lõppevad kuriteo eest süüdimõistva kohtuotsuse jõustumise tõttu. RT I 2009 15 94 13153376 2009-03-10 - kohaldatakse isikule, kelle suhtes jõustub süüdimõistev kohtuotsus pärast seaduse jõustumist. Pärast ametivolituste lõppemist makstakse presidendile ametipensioni, mille määr on 75 protsenti pres",
+      "estleg:legalText": "(1) Pärast ametivolituste lõppemist makstakse presidendile ametipensioni, mille määr on 75 protsenti presidendi ametipalga määrast. Presidendil ei teki õigust ametipensionile, kui tema ametivolitused lõppevad kuriteo eest süüdimõistva kohtuotsuse jõustumise tõttu. - kohaldatakse isikule, kelle suhtes jõustub süüdimõistev kohtuotsus pärast seaduse jõustumist. (2) Kui presidendi ametivolitused on kestnud vähem kui viis aastat, vähendatakse pensioni määra 2 protsenti iga viieaastasest ametivolituste kestusest puudu jäänud kuu eest, kuid mitte alla poole käesoleva paragrahvi lõikes 1 nimetatud ametipensioni määra. (3) Kui presidendil on ametivolituste ajal tuvastatud osaline või puuduv töövõime, suurendatakse tema ametipensioni 25 protsendi võrra. (jõustumine muudetud - RT I, 17.12.2015, 1) (4) Muid riiklikke pensione presidendile ametipensioni saamise ajal ei maksta. - kohaldatakse isikule, kelle suhtes jõustub süüdimõistev kohtuotsus pärast seaduse jõustumist. (5) Pensioni maksmine lõpetatakse, kui president loobub ametipensionist, valitakse presidendi ametisse tagasi või sureb. (6) Pensioni maksmine presidendile peatatakse vabadusekaotuse kandmise või psühhiaatrilise sundravi kohaldamise ajaks. (7) Isik, kes on süüdi mõistetud karistusseadustiku 15. peatükis või 17. peatüki 2. jaos sätestatud süüteo eest, mille eest karistusseadustik näeb ette vähemalt kuni viieaastase vangistuse, kaotab õiguse presidendi ametipensionile. - kohaldatakse isikule, kelle suhtes jõustub süüdimõistev kohtuotsus pärast seaduse jõustumist. (8) Kui isikule maksti käesolevas paragrahvis sätestatud presidendi ametipensioni, siis lõpetatakse pensioni maksmine kohtuotsuse jõustumise kuule järgnevast kuust. Käesolevas paragrahvis sätestatud pensionile õiguse kaotamise korral säilib isikul õigus taotleda pensioni üldistel alustel. - kohaldatakse isikule, kelle suhtes jõustub süüdimõistev kohtuotsus pärast seaduse jõustumist.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VPA_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VPA_Par_9_Lg_1"
+        },
+        {
+          "@id": "estleg:VPA_Par_9_Lg_2"
+        },
+        {
+          "@id": "estleg:VPA_Par_9_Lg_3"
+        },
+        {
+          "@id": "estleg:VPA_Par_9_Lg_4"
+        },
+        {
+          "@id": "estleg:VPA_Par_9_Lg_5"
+        },
+        {
+          "@id": "estleg:VPA_Par_9_Lg_6"
+        },
+        {
+          "@id": "estleg:VPA_Par_9_Lg_7"
+        },
+        {
+          "@id": "estleg:VPA_Par_9_Lg_8"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen"
+      ],
       "estleg:referencedBy": [
         {
           "@id": "estleg:VPA_Par_15"
+        },
+        {
+          "@id": "estleg:VPA_Par_15_1"
         }
       ]
+    },
+    {
+      "@id": "estleg:VPA_Par_9_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Pärast ametivolituste lõppemist makstakse presidendile ametipensioni, mille määr on 75 protsenti presidendi ametipalga määrast. Presidendil ei teki õigust ametipensionile, kui tema ametivolitused lõppevad kuriteo eest süüdimõistva kohtuotsuse jõustumise tõttu. - kohaldatakse isikule, kelle suhtes jõustub süüdimõistev kohtuotsus pärast seaduse jõustumist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VPA_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 1"
+    },
+    {
+      "@id": "estleg:VPA_Par_9_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kui presidendi ametivolitused on kestnud vähem kui viis aastat, vähendatakse pensioni määra 2 protsenti iga viieaastasest ametivolituste kestusest puudu jäänud kuu eest, kuid mitte alla poole käesoleva paragrahvi lõikes 1 nimetatud ametipensioni määra.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VPA_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 2"
+    },
+    {
+      "@id": "estleg:VPA_Par_9_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kui presidendil on ametivolituste ajal tuvastatud osaline või puuduv töövõime, suurendatakse tema ametipensioni 25 protsendi võrra. (jõustumine muudetud - RT I, 17.12.2015, 1)",
+      "estleg:parentProvision": {
+        "@id": "estleg:VPA_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 3"
+    },
+    {
+      "@id": "estleg:VPA_Par_9_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Muid riiklikke pensione presidendile ametipensioni saamise ajal ei maksta. - kohaldatakse isikule, kelle suhtes jõustub süüdimõistev kohtuotsus pärast seaduse jõustumist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VPA_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 4"
+    },
+    {
+      "@id": "estleg:VPA_Par_9_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Pensioni maksmine lõpetatakse, kui president loobub ametipensionist, valitakse presidendi ametisse tagasi või sureb.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VPA_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 5"
+    },
+    {
+      "@id": "estleg:VPA_Par_9_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Pensioni maksmine presidendile peatatakse vabadusekaotuse kandmise või psühhiaatrilise sundravi kohaldamise ajaks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VPA_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 6"
+    },
+    {
+      "@id": "estleg:VPA_Par_9_Lg_7",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "7",
+      "estleg:legalText": "(7) Isik, kes on süüdi mõistetud karistusseadustiku 15. peatükis või 17. peatüki 2. jaos sätestatud süüteo eest, mille eest karistusseadustik näeb ette vähemalt kuni viieaastase vangistuse, kaotab õiguse presidendi ametipensionile. - kohaldatakse isikule, kelle suhtes jõustub süüdimõistev kohtuotsus pärast seaduse jõustumist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VPA_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 7"
+    },
+    {
+      "@id": "estleg:VPA_Par_9_Lg_8",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "8",
+      "estleg:legalText": "(8) Kui isikule maksti käesolevas paragrahvis sätestatud presidendi ametipensioni, siis lõpetatakse pensioni maksmine kohtuotsuse jõustumise kuule järgnevast kuust. Käesolevas paragrahvis sätestatud pensionile õiguse kaotamise korral säilib isikul õigus taotleda pensioni üldistel alustel. - kohaldatakse isikule, kelle suhtes jõustub süüdimõistev kohtuotsus pärast seaduse jõustumist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VPA_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 8"
     },
     {
       "@id": "estleg:VPA_Par_10",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VPA"
+        "estleg:LegalProvision_vabariigi_presidendi_ametihuve_seadus"
       ],
       "estleg:paragrahv": "§ 10.",
       "rdfs:label": "§ 10. Presidendi pereliikme pension",
       "estleg:sourceAct": "Vabariigi Presidendi ametihüve seadus",
-      "estleg:summary": "1(1)Presidendi surma korral makstakse igale presidendi töövõimetule pereliikmele toitjakaotuspensioni, mille suurus on pool presidendi ametipensionist. Presidendi surma korral makstakse igale presidendi töövõimetule pereliikmele toitjakaotuspensioni, mille suurus on pool presidendi ametipensionist. 2(2)Presidendi pereliikme pensionid ei tohi kogusummas ületada presidendi ametipensioni määra. Presidendi pereliikme pensionid ei tohi kogusummas ületada presidendi ametipensioni määra. 3(3)Toitjakaot",
+      "estleg:summary": "1 (1) Presidendi surma korral makstakse igale presidendi töövõimetule pereliikmele toitjakaotuspensioni, mille suurus on pool presidendi ametipensionist. Presidendi surma korral makstakse igale presidendi töövõimetule pereliikmele toitjakaotuspensioni, mille suurus on pool presidendi ametipensionist. 2 (2) Presidendi pereliikme pensionid ei tohi kogusummas ületada presidendi ametipensioni määra. Presidendi pereliikme pensionid ei tohi kogusummas ületada presidendi ametipensioni määra. 3 (3) Toit",
+      "estleg:legalText": "(1) Presidendi surma korral makstakse igale presidendi töövõimetule pereliikmele toitjakaotuspensioni, mille suurus on pool presidendi ametipensionist. (2) Presidendi pereliikme pensionid ei tohi kogusummas ületada presidendi ametipensioni määra. (3) Toitjakaotuspension määratakse riikliku pensionikindlustuse seaduse § 20 alusel. (4) Käesoleva paragrahvi lõigete 1 ja 3 piirangutest sõltumata on presidendi ametis olnud isiku lesel ja registreeritud elukaaslasel, kellega sõlmitud kooseluleping on lõppenud surma tõttu, õigus saada toitjakaotuspensioni, kui ta oli presidendi abikaasa või registreeritud elukaaslane presidendi ametivolituste ajal. (5) Toitjakaotuspensioni maksmine õigustatud isikule peatatakse vabadusekaotuse kandmise või meditsiinilise iseloomuga sunnivahendi kohaldamise ajaks.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VPA_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VPA_Par_10_Lg_1"
+        },
+        {
+          "@id": "estleg:VPA_Par_10_Lg_2"
+        },
+        {
+          "@id": "estleg:VPA_Par_10_Lg_3"
+        },
+        {
+          "@id": "estleg:VPA_Par_10_Lg_4"
+        },
+        {
+          "@id": "estleg:VPA_Par_10_Lg_5"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Prohibition"
       }
     },
     {
+      "@id": "estleg:VPA_Par_10_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Presidendi surma korral makstakse igale presidendi töövõimetule pereliikmele toitjakaotuspensioni, mille suurus on pool presidendi ametipensionist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VPA_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 1"
+    },
+    {
+      "@id": "estleg:VPA_Par_10_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Presidendi pereliikme pensionid ei tohi kogusummas ületada presidendi ametipensioni määra.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VPA_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 2"
+    },
+    {
+      "@id": "estleg:VPA_Par_10_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Toitjakaotuspension määratakse riikliku pensionikindlustuse seaduse § 20 alusel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VPA_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 3"
+    },
+    {
+      "@id": "estleg:VPA_Par_10_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Käesoleva paragrahvi lõigete 1 ja 3 piirangutest sõltumata on presidendi ametis olnud isiku lesel ja registreeritud elukaaslasel, kellega sõlmitud kooseluleping on lõppenud surma tõttu, õigus saada toitjakaotuspensioni, kui ta oli presidendi abikaasa või registreeritud elukaaslane presidendi ametivolituste ajal.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VPA_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 4"
+    },
+    {
+      "@id": "estleg:VPA_Par_10_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Toitjakaotuspensioni maksmine õigustatud isikule peatatakse vabadusekaotuse kandmise või meditsiinilise iseloomuga sunnivahendi kohaldamise ajaks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VPA_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 5"
+    },
+    {
       "@id": "estleg:VPA_Par_11",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VPA"
+        "estleg:LegalProvision_vabariigi_presidendi_ametihuve_seadus"
       ],
       "estleg:paragrahv": "§ 11.",
       "rdfs:label": "§ 11. Presidendi hüved pärast ametivolituste lõppemist",
       "estleg:sourceAct": "Vabariigi Presidendi ametihüve seadus",
-      "estleg:summary": "1(1)Pärast ametivolituste lõppemist on presidendil, kelle ametivolitused ei ole lõppenud ametist tagasiastumise või süüdimõistva kohtuotsuse jõustumise tõttu, õigus:RT I20067419895142006-02-1311)saada oma kasutusse elu-, esindus- ja tööruumid ruumide üüri- ja korrashoiukulude hüvitamisega riigi poolt või saada riigilt hüvitist presidendi elukoha korrashoiuga seotud mõistlike kulude eest;RT I20067419895142006-02-1322)saada oma käsutusse nõunik ja sekretär, kes on Vabariigi Presidendi Kantselei te",
+      "estleg:summary": "1 (1) Pärast ametivolituste lõppemist on presidendil, kelle ametivolitused ei ole lõppenud ametist tagasiastumise või süüdimõistva kohtuotsuse jõustumise tõttu, õigus: RT I 2006 7 41 989514 2006-02-13 1 1) saada oma kasutusse elu-, esindus- ja tööruumid ruumide üüri- ja korrashoiukulude hüvitamisega riigi poolt või saada riigilt hüvitist presidendi elukoha korrashoiuga seotud mõistlike kulude eest; RT I 2006 7 41 989514 2006-02-13 2 2) saada oma käsutusse nõunik ja sekretär, kes on Vabariigi Pre",
+      "estleg:legalText": "(1) Pärast ametivolituste lõppemist on presidendil, kelle ametivolitused ei ole lõppenud ametist tagasiastumise või süüdimõistva kohtuotsuse jõustumise tõttu, õigus: saada oma kasutusse elu-, esindus- ja tööruumid ruumide üüri- ja korrashoiukulude hüvitamisega riigi poolt või saada riigilt hüvitist presidendi elukoha korrashoiuga seotud mõistlike kulude eest; saada oma käsutusse nõunik ja sekretär, kes on Vabariigi Presidendi Kantselei teenistujad; saada ühekordset hüvitist ühe aasta ametipalga ulatuses; kasutada riigi kulul ametiautot ning selle korrashoiu ja kasutamisega seotud teenuseid; saada käesoleva seaduse §-s 6 nimetatud korras hüvitist lähetuskulude ja muude põhjendatud kulutuste eest. (2) Käesoleva paragrahvi lõike 1 punktis 1 nimetatud hüvede vahel otsustab Vabariigi Valitsus korraldusega ühe aasta jooksul alates presidendi ametivolituste lõppemisest, arvestades presidendi ühiskondlikku positsiooni ja funktsioone, mida president täidab pärast ametivolituste lõppemist, Eesti Vabariigi rahalisi võimalusi ning presidendi arvamust. Elu-, esindus- ja tööruumide kasutusse andmisel ei kohaldata riigivaraseaduse sätteid. (3) Presidendi surma korral ametivolituste või lõikes 2 sätestatud ajal otsustab Vabariigi Valitsus korraldusega elu-, esindus- ja tööruumide kasutusse andmise presidendi lesele või presidendi elukoha korrashoiuga seotud mõistlike kulude kandmise kuni lese surmani. (4) Pärast presidendi ametivolituste lõppemist võib valdkonna eest vastutav minister vajaduse korral määrata Vabariigi Presidendi Kantselei taotlusel presidendile kaitse lähtuvalt Politsei- ja Piirivalveameti koostatud ohuhinnangust. Sellisel juhul kaitseb presidenti Politsei- ja Piirivalveamet. (5) Presidendi lese elukoha valve määratakse käesoleva paragrahvi lõikes 4 toodud alustel ja korras.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VPA_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VPA_Par_11_Lg_1"
+        },
+        {
+          "@id": "estleg:VPA_Par_11_Lg_2"
+        },
+        {
+          "@id": "estleg:VPA_Par_11_Lg_3"
+        },
+        {
+          "@id": "estleg:VPA_Par_11_Lg_4"
+        },
+        {
+          "@id": "estleg:VPA_Par_11_Lg_5"
+        }
+      ],
       "estleg:targetGroup": [
-        "public_body"
+        "public_body",
+        "official"
       ],
       "estleg:referencedBy": [
         {
@@ -262,40 +924,209 @@
       ]
     },
     {
+      "@id": "estleg:VPA_Par_11_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Pärast ametivolituste lõppemist on presidendil, kelle ametivolitused ei ole lõppenud ametist tagasiastumise või süüdimõistva kohtuotsuse jõustumise tõttu, õigus: saada oma kasutusse elu-, esindus- ja tööruumid ruumide üüri- ja korrashoiukulude hüvitamisega riigi poolt või saada riigilt hüvitist presidendi elukoha korrashoiuga seotud mõistlike kulude eest; saada oma käsutusse nõunik ja sekretär, kes on Vabariigi Presidendi Kantselei teenistujad; saada ühekordset hüvitist ühe aasta ametipalga ulatuses; kasutada riigi kulul ametiautot ning selle korrashoiu ja kasutamisega seotud teenuseid; saada käesoleva seaduse §-s 6 nimetatud korras hüvitist lähetuskulude ja muude põhjendatud kulutuste eest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VPA_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 1"
+    },
+    {
+      "@id": "estleg:VPA_Par_11_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Käesoleva paragrahvi lõike 1 punktis 1 nimetatud hüvede vahel otsustab Vabariigi Valitsus korraldusega ühe aasta jooksul alates presidendi ametivolituste lõppemisest, arvestades presidendi ühiskondlikku positsiooni ja funktsioone, mida president täidab pärast ametivolituste lõppemist, Eesti Vabariigi rahalisi võimalusi ning presidendi arvamust. Elu-, esindus- ja tööruumide kasutusse andmisel ei kohaldata riigivaraseaduse sätteid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VPA_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 2"
+    },
+    {
+      "@id": "estleg:VPA_Par_11_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Presidendi surma korral ametivolituste või lõikes 2 sätestatud ajal otsustab Vabariigi Valitsus korraldusega elu-, esindus- ja tööruumide kasutusse andmise presidendi lesele või presidendi elukoha korrashoiuga seotud mõistlike kulude kandmise kuni lese surmani.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VPA_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 3"
+    },
+    {
+      "@id": "estleg:VPA_Par_11_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Pärast presidendi ametivolituste lõppemist võib valdkonna eest vastutav minister vajaduse korral määrata Vabariigi Presidendi Kantselei taotlusel presidendile kaitse lähtuvalt Politsei- ja Piirivalveameti koostatud ohuhinnangust. Sellisel juhul kaitseb presidenti Politsei- ja Piirivalveamet.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VPA_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 4"
+    },
+    {
+      "@id": "estleg:VPA_Par_11_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Presidendi lese elukoha valve määratakse käesoleva paragrahvi lõikes 4 toodud alustel ja korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VPA_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 5"
+    },
+    {
       "@id": "estleg:VPA_Par_12",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VPA"
+        "estleg:LegalProvision_vabariigi_presidendi_ametihuve_seadus"
       ],
       "estleg:paragrahv": "§ 12.",
       "rdfs:label": "§ 12. Presidendi matused",
       "estleg:sourceAct": "Vabariigi Presidendi ametihüve seadus",
       "estleg:summary": "Presidendiks valitud isikule korraldatakse riigi kulul austusavaldustega matused. Presidendiks valitud isikule korraldatakse riigi kulul austusavaldustega matused.",
+      "estleg:legalText": "Presidendiks valitud isikule korraldatakse riigi kulul austusavaldustega matused.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VPA_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VPA_Par_12_Lg_Unknown_1"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen"
       ]
     },
     {
+      "@id": "estleg:VPA_Par_12_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Presidendiks valitud isikule korraldatakse riigi kulul austusavaldustega matused.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VPA_Par_12"
+      }
+    },
+    {
       "@id": "estleg:VPA_Par_13",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VPA"
+        "estleg:LegalProvision_vabariigi_presidendi_ametihuve_seadus"
       ],
       "estleg:paragrahv": "§ 13.",
       "rdfs:label": "§ 13. Ametihüvede rakendamine",
       "estleg:sourceAct": "Vabariigi Presidendi ametihüve seadus",
-      "estleg:summary": "1(1)Käesolevast seadusest tulenevate presidendi ametihüvede rakendamist korraldab Vabariigi Presidendi Kantselei riigieelarve summadest. Käesolevast seadusest tulenevate presidendi ametihüvede rakendamist korraldab Vabariigi Presidendi Kantselei riigieelarve summadest. 1(1<sup>1</sup>)Ametihüvede rakendamist presidendi suhtes, kelle ametivolitused on lõppenud, korraldab Vabariigi Presidendi Kantselei selleks otstarbeks riigieelarves ettenähtud summadest. Paragrahvi 11 lõike 1 punktis 1 nimetatud"
+      "estleg:summary": "1 (1) Käesolevast seadusest tulenevate presidendi ametihüvede rakendamist korraldab Vabariigi Presidendi Kantselei riigieelarve summadest. Käesolevast seadusest tulenevate presidendi ametihüvede rakendamist korraldab Vabariigi Presidendi Kantselei riigieelarve summadest. 1 (1<sup>1</sup>) Ametihüvede rakendamist presidendi suhtes, kelle ametivolitused on lõppenud, korraldab Vabariigi Presidendi Kantselei selleks otstarbeks riigieelarves ettenähtud summadest. Paragrahvi 11 lõike 1 punktis 1 nimet",
+      "estleg:legalText": "(1) Käesolevast seadusest tulenevate presidendi ametihüvede rakendamist korraldab Vabariigi Presidendi Kantselei riigieelarve summadest. (1<sup>1</sup>) Ametihüvede rakendamist presidendi suhtes, kelle ametivolitused on lõppenud, korraldab Vabariigi Presidendi Kantselei selleks otstarbeks riigieelarves ettenähtud summadest. Paragrahvi 11 lõike 1 punktis 1 nimetatud ametihüve rakendamist korraldab Vabariigi Valitsus oma reservi summadest. (2) Presidendi ametipensionile ja presidendi pereliikme pensionile kohaldatakse riikliku pensionikindlustuse seaduse sätteid, arvestades käesoleva seaduse erisusi. (3) Kohus on kohustatud 10 tööpäeva jooksul kohtuotsuse jõustumisest arvates kirjalikult teatama Vabariigi Presidendi Kantseleile asjaolust, millega seoses kaob isikul õigus käesoleva seaduse §-s 81 sätestatud hüvedele või §-s 9 sätestatud presidendi ametipensionile. - kohaldatakse isikule, kelle suhtes jõustub süüdimõistev kohtuotsus pärast seaduse jõustumist.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VPA_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VPA_Par_13_Lg_1"
+        },
+        {
+          "@id": "estleg:VPA_Par_13_Lg_1_1"
+        },
+        {
+          "@id": "estleg:VPA_Par_13_Lg_2"
+        },
+        {
+          "@id": "estleg:VPA_Par_13_Lg_3"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "public_body"
+      ]
+    },
+    {
+      "@id": "estleg:VPA_Par_13_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolevast seadusest tulenevate presidendi ametihüvede rakendamist korraldab Vabariigi Presidendi Kantselei riigieelarve summadest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VPA_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 1"
+    },
+    {
+      "@id": "estleg:VPA_Par_13_Lg_1_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1<sup>1</sup>",
+      "estleg:legalText": "(1<sup>1</sup>) Ametihüvede rakendamist presidendi suhtes, kelle ametivolitused on lõppenud, korraldab Vabariigi Presidendi Kantselei selleks otstarbeks riigieelarves ettenähtud summadest. Paragrahvi 11 lõike 1 punktis 1 nimetatud ametihüve rakendamist korraldab Vabariigi Valitsus oma reservi summadest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VPA_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 1<sup>1</sup>"
+    },
+    {
+      "@id": "estleg:VPA_Par_13_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Presidendi ametipensionile ja presidendi pereliikme pensionile kohaldatakse riikliku pensionikindlustuse seaduse sätteid, arvestades käesoleva seaduse erisusi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VPA_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 2"
+    },
+    {
+      "@id": "estleg:VPA_Par_13_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kohus on kohustatud 10 tööpäeva jooksul kohtuotsuse jõustumisest arvates kirjalikult teatama Vabariigi Presidendi Kantseleile asjaolust, millega seoses kaob isikul õigus käesoleva seaduse §-s 81 sätestatud hüvedele või §-s 9 sätestatud presidendi ametipensionile. - kohaldatakse isikule, kelle suhtes jõustub süüdimõistev kohtuotsus pärast seaduse jõustumist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VPA_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 3"
     },
     {
       "@id": "estleg:VPA_Par_14",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VPA"
+        "estleg:LegalProvision_vabariigi_presidendi_ametihuve_seadus"
       ],
       "estleg:paragrahv": "§ 14.",
       "rdfs:label": "§ 14. Ametihüvede kaotamine",
       "estleg:sourceAct": "Vabariigi Presidendi ametihüve seadus",
-      "estleg:summary": "Kui presidendi ametivolitused on lõppenud teda kuriteos süüdimõistva kohtuotsuse jõustumise tõttu või kui pärast presidendi ametivolituste lõppemist on jõustunud tema kohta kuriteos süüdimõistev kohtuotsus, kaotab ta õiguse saada käesoleva seaduse §-des 11 ja 12 määratud ametihüvesid.RT I20067419895142006-02-13 Kui presidendi ametivolitused on lõppenud teda kuriteos süüdimõistva kohtuotsuse jõustumise tõttu või kui pärast presidendi ametivolituste lõppemist on jõustunud tema kohta kuriteos süüdi",
+      "estleg:summary": "Kui presidendi ametivolitused on lõppenud teda kuriteos süüdimõistva kohtuotsuse jõustumise tõttu või kui pärast presidendi ametivolituste lõppemist on jõustunud tema kohta kuriteos süüdimõistev kohtuotsus, kaotab ta õiguse saada käesoleva seaduse §-des 11 ja 12 määratud ametihüvesid. RT I 2006 7 41 989514 2006-02-13 Kui presidendi ametivolitused on lõppenud teda kuriteos süüdimõistva kohtuotsuse jõustumise tõttu või kui pärast presidendi ametivolituste lõppemist on jõustunud tema kohta kuriteos",
+      "estleg:legalText": "Kui presidendi ametivolitused on lõppenud teda kuriteos süüdimõistva kohtuotsuse jõustumise tõttu või kui pärast presidendi ametivolituste lõppemist on jõustunud tema kohta kuriteos süüdimõistev kohtuotsus, kaotab ta õiguse saada käesoleva seaduse §-des 11 ja 12 määratud ametihüvesid.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VPA_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VPA_Par_14_Lg_Unknown_1"
+        }
+      ],
       "estleg:references": [
         {
           "@id": "estleg:VPA_Par_11"
@@ -303,15 +1134,42 @@
       ]
     },
     {
+      "@id": "estleg:VPA_Par_14_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Kui presidendi ametivolitused on lõppenud teda kuriteos süüdimõistva kohtuotsuse jõustumise tõttu või kui pärast presidendi ametivolituste lõppemist on jõustunud tema kohta kuriteos süüdimõistev kohtuotsus, kaotab ta õiguse saada käesoleva seaduse §-des 11 ja 12 määratud ametihüvesid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VPA_Par_14"
+      }
+    },
+    {
       "@id": "estleg:VPA_Par_15",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VPA"
+        "estleg:LegalProvision_vabariigi_presidendi_ametihuve_seadus"
       ],
       "estleg:paragrahv": "§ 15.",
       "rdfs:label": "§ 15. Seaduse rakendamise erisused",
       "estleg:sourceAct": "Vabariigi Presidendi ametihüve seadus",
-      "estleg:summary": "1(1)Käesoleva seaduse § 9 lõiget 2 ei rakendata presidendi suhtes, kes on valitud vastavalt Eesti Vabariigi põhiseaduse rakendamise seaduse § 4 sätetele, ja Eesti Vabariigi Ülemnõukogu esimehe suhtes.RT I20067419895142006-02-13 Käesoleva seaduse § 9 lõiget 2 ei rakendata presidendi suhtes, kes on valitud vastavalt Eesti Vabariigi põhiseaduse rakendamise seaduse § 4 sätetele, ja Eesti Vabariigi Ülemnõukogu esimehe suhtes. 2(2)Käesoleva seaduse § 11 lõike 1 punkti 1 rakendatakse ka presidendi suht",
+      "estleg:summary": "1 (1) Käesoleva seaduse § 9 lõiget 2 ei rakendata presidendi suhtes, kes on valitud vastavalt Eesti Vabariigi põhiseaduse rakendamise seaduse § 4 sätetele, ja Eesti Vabariigi Ülemnõukogu esimehe suhtes. RT I 2006 7 41 989514 2006-02-13 Käesoleva seaduse § 9 lõiget 2 ei rakendata presidendi suhtes, kes on valitud vastavalt Eesti Vabariigi põhiseaduse rakendamise seaduse § 4 sätetele, ja Eesti Vabariigi Ülemnõukogu esimehe suhtes. 2 (2) Käesoleva seaduse § 11 lõike 1 punkti 1 rakendatakse ka presi",
+      "estleg:legalText": "(1) Käesoleva seaduse § 9 lõiget 2 ei rakendata presidendi suhtes, kes on valitud vastavalt Eesti Vabariigi põhiseaduse rakendamise seaduse § 4 sätetele, ja Eesti Vabariigi Ülemnõukogu esimehe suhtes. (2) Käesoleva seaduse § 11 lõike 1 punkti 1 rakendatakse ka presidendi suhtes, kelle ametivolitused on lõppenud käesoleva sätte jõustumise ajaks, ning tema lese suhtes.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VPA_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VPA_Par_15_Lg_1"
+        },
+        {
+          "@id": "estleg:VPA_Par_15_Lg_2"
+        }
+      ],
+      "estleg:targetGroup": [
+        "official"
+      ],
       "estleg:references": [
         {
           "@id": "estleg:VPA_Par_9"
@@ -319,46 +1177,165 @@
         {
           "@id": "estleg:VPA_Par_11"
         }
+      ]
+    },
+    {
+      "@id": "estleg:VPA_Par_15_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesoleva seaduse § 9 lõiget 2 ei rakendata presidendi suhtes, kes on valitud vastavalt Eesti Vabariigi põhiseaduse rakendamise seaduse § 4 sätetele, ja Eesti Vabariigi Ülemnõukogu esimehe suhtes.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VPA_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 1"
+    },
+    {
+      "@id": "estleg:VPA_Par_15_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Käesoleva seaduse § 11 lõike 1 punkti 1 rakendatakse ka presidendi suhtes, kelle ametivolitused on lõppenud käesoleva sätte jõustumise ajaks, ning tema lese suhtes.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VPA_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 2"
+    },
+    {
+      "@id": "estleg:VPA_Par_15_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_vabariigi_presidendi_ametihuve_seadus"
+      ],
+      "estleg:paragrahv": "§ 15<sup>1</sup>.",
+      "rdfs:label": "§ 15<sup>1</sup>. Püsiva töövõimetusega isik",
+      "estleg:sourceAct": "Vabariigi Presidendi ametihüve seadus",
+      "estleg:summary": "Presidendil, kellel on tuvastatud osaline töövõimetus riikliku pensionikindlustuse seaduse alusel, loetakse käesoleva seaduse §-s 9 sätestatud osalise töövõime tingimus täidetuks. Presidendil, kellel on tuvastatud täielik töövõimetus riikliku pensionikindlustuse seaduse alusel, loetakse käesoleva seaduse §-s 9 sätestatud puuduva töövõime tingimus täidetuks. RT I 2014-12-13 1 113122014001 2016-07-01 (jõustumine muudetud - RT I, 17.12.2015, 1) Presidendil, kellel on tuvastatud osaline töövõimetus ",
+      "estleg:legalText": "Presidendil, kellel on tuvastatud osaline töövõimetus riikliku pensionikindlustuse seaduse alusel, loetakse käesoleva seaduse §-s 9 sätestatud osalise töövõime tingimus täidetuks. Presidendil, kellel on tuvastatud täielik töövõimetus riikliku pensionikindlustuse seaduse alusel, loetakse käesoleva seaduse §-s 9 sätestatud puuduva töövõime tingimus täidetuks. (jõustumine muudetud - RT I, 17.12.2015, 1)",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VPA_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VPA_Par_15_1_Lg_Unknown_1"
+        }
       ],
       "estleg:targetGroup": [
-        "official"
+        "citizen"
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:VPA_Par_9"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:VANGIS_Par_172_6",
+          "estleg:similarityScore": {
+            "@value": "0.789",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
       ]
+    },
+    {
+      "@id": "estleg:VPA_Par_15_1_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Presidendil, kellel on tuvastatud osaline töövõimetus riikliku pensionikindlustuse seaduse alusel, loetakse käesoleva seaduse §-s 9 sätestatud osalise töövõime tingimus täidetuks. Presidendil, kellel on tuvastatud täielik töövõimetus riikliku pensionikindlustuse seaduse alusel, loetakse käesoleva seaduse §-s 9 sätestatud puuduva töövõime tingimus täidetuks. (jõustumine muudetud - RT I, 17.12.2015, 1)",
+      "estleg:parentProvision": {
+        "@id": "estleg:VPA_Par_15_1"
+      }
     },
     {
       "@id": "estleg:VPA_Par_16",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VPA"
+        "estleg:LegalProvision_vabariigi_presidendi_ametihuve_seadus"
       ],
       "estleg:paragrahv": "§ 16.",
-      "rdfs:label": "§ 16.",
+      "rdfs:label": "§ 16. Varasema õigusakti muutmine",
       "estleg:sourceAct": "Vabariigi Presidendi ametihüve seadus",
-      "estleg:summary": "[Käesolevast tekstist välja jäetud]"
+      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VPA_default"
+      }
     },
     {
       "@id": "estleg:VPA_Par_17",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VPA"
+        "estleg:LegalProvision_vabariigi_presidendi_ametihuve_seadus"
       ],
       "estleg:paragrahv": "§ 17.",
       "rdfs:label": "§ 17. Seaduse laienemine",
       "estleg:sourceAct": "Vabariigi Presidendi ametihüve seadus",
-      "estleg:summary": "Käesolev seadus laieneb §-de 9-14 osas Eesti Vabariigi ülemnõukogu esimehe suhtes.RT I200143240729182001-09-01 Käesolev seadus laieneb §-de 9-14 osas Eesti Vabariigi ülemnõukogu esimehe suhtes.",
+      "estleg:summary": "Käesolev seadus laieneb §-de 9-14 osas Eesti Vabariigi ülemnõukogu esimehe suhtes. RT I 2001 43 240 72918 2001-09-01 Käesolev seadus laieneb §-de 9-14 osas Eesti Vabariigi ülemnõukogu esimehe suhtes.",
+      "estleg:legalText": "Käesolev seadus laieneb §-de 9-14 osas Eesti Vabariigi ülemnõukogu esimehe suhtes.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VPA_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VPA_Par_17_Lg_Unknown_1"
+        }
+      ],
       "estleg:targetGroup": [
         "official"
       ]
     },
     {
+      "@id": "estleg:VPA_Par_17_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Käesolev seadus laieneb §-de 9-14 osas Eesti Vabariigi ülemnõukogu esimehe suhtes.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VPA_Par_17"
+      }
+    },
+    {
       "@id": "estleg:VPA_Par_18",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VPA"
+        "estleg:LegalProvision_vabariigi_presidendi_ametihuve_seadus"
       ],
       "estleg:paragrahv": "§ 18.",
       "rdfs:label": "§ 18. Seaduse jõustumine",
       "estleg:sourceAct": "Vabariigi Presidendi ametihüve seadus",
-      "estleg:summary": "Seadus jõustub 1996. aasta 1. oktoobril. Seadus jõustub 1996. aasta 1. oktoobril."
+      "estleg:summary": "Seadus jõustub 1996. aasta 1. oktoobril. Seadus jõustub 1996. aasta 1. oktoobril.",
+      "estleg:legalText": "Seadus jõustub 1996. aasta 1. oktoobril.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VPA_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VPA_Par_18_Lg_Unknown_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:VPA_Par_18_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Seadus jõustub 1996. aasta 1. oktoobril.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VPA_Par_18"
+      }
     }
   ]
 }

@@ -6,50 +6,52 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
   },
   "@graph": [
     {
       "@id": "estleg:MUUSEU_Map_2026",
       "@type": [
+        "owl:Ontology",
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "rdfs:label": "Muuseumiseadus teemakaardistus",
       "dc:source": "Muuseumiseadus",
-      "estleg:affectedBy": [
-        {
-          "@id": "estleg:Draft_KUM12_1583"
-        }
-      ],
-      "estleg:amendedBy": [
-        {
-          "@id": "estleg:Draft_KUM12_1583"
-        }
-      ],
-      "estleg:temporalStatus": "unknown",
+      "dcterms:title": "Muuseumiseadus",
+      "estleg:contentStatus": "structuredBody",
+      "dcterms:source": {
+        "@id": "https://www.riigiteataja.ee/akt/112072025021.xml"
+      },
+      "owl:sameAs": {
+        "@id": "https://www.riigiteataja.ee/akt/112072025021.xml"
+      },
+      "estleg:kehtiv": {
+        "@value": "2026-05-24",
+        "@type": "xsd:date"
+      },
       "dcterms:subject": [
         {
           "@id": "http://eurovoc.europa.eu/3221"
         },
         {
-          "@id": "http://eurovoc.europa.eu/1221"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/2446"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/6006"
-        },
-        {
           "@id": "http://eurovoc.europa.eu/2431"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/3611"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2441"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/0411"
         }
-      ]
+      ],
+      "estleg:temporalStatus": "unknown"
     },
     {
-      "@id": "estleg:LegalProvision_MUUSEU",
+      "@id": "estleg:LegalProvision_muuseumiseadus",
       "@type": [
         "owl:Class"
       ],
@@ -59,621 +61,626 @@
       }
     },
     {
+      "@id": "estleg:MUUSEU_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": "Muuseumiseadus teemaskeem",
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_MUUSEU_1"
+        },
+        {
+          "@id": "estleg:Cluster_MUUSEU_2"
+        },
+        {
+          "@id": "estleg:Cluster_MUUSEU_3"
+        },
+        {
+          "@id": "estleg:Cluster_MUUSEU_4"
+        },
+        {
+          "@id": "estleg:Cluster_MUUSEU_5"
+        }
+      ]
+    },
+    {
       "@id": "estleg:Cluster_MUUSEU_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§1–4 ÜLDSÄTTED"
+      "rdfs:label": "§1–4 Üldsätted",
+      "skos:prefLabel": "§1–4 Üldsätted",
+      "skos:inScheme": {
+        "@id": "estleg:MUUSEU_TopicScheme"
+      },
+      "estleg:provisionCount": 4
+    },
+    {
+      "@id": "estleg:Chapter_MUUSEU_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "1. peatükk – Üldsätted",
+      "estleg:chapterNumber": "1",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_MUUSEU_1"
+      }
     },
     {
       "@id": "estleg:Cluster_MUUSEU_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§5–13 MUUSEUMI TEGEVUSE KORRALDUS"
+      "rdfs:label": "§5–16 Muuseumikogu korraldus",
+      "skos:prefLabel": "§5–16 Muuseumikogu korraldus",
+      "skos:inScheme": {
+        "@id": "estleg:MUUSEU_TopicScheme"
+      },
+      "estleg:provisionCount": 12
+    },
+    {
+      "@id": "estleg:Chapter_MUUSEU_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "2. peatükk – Muuseumikogu korraldus",
+      "estleg:chapterNumber": "2",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_MUUSEU_2"
+      }
     },
     {
       "@id": "estleg:Cluster_MUUSEU_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§14–22 MUUSEUMIKOGUD"
+      "rdfs:label": "§17–23 Muuseumi tegevuse korraldus",
+      "skos:prefLabel": "§17–23 Muuseumi tegevuse korraldus",
+      "skos:inScheme": {
+        "@id": "estleg:MUUSEU_TopicScheme"
+      },
+      "estleg:provisionCount": 7
+    },
+    {
+      "@id": "estleg:Chapter_MUUSEU_3",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "3. peatükk – Muuseumi tegevuse korraldus",
+      "estleg:chapterNumber": "3",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_MUUSEU_3"
+      }
     },
     {
       "@id": "estleg:Cluster_MUUSEU_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§23–2627 SEADUSE RAKENDAMINE"
+      "rdfs:label": "§24–29 Museaali kindlustamine ja rahvusvahelise näituse omanikule tekkinud kahju riigi poolt hüvitamine",
+      "skos:prefLabel": "§24–29 Museaali kindlustamine ja rahvusvahelise näituse omanikule tekkinud kahju riigi poolt hüvitamine",
+      "skos:inScheme": {
+        "@id": "estleg:MUUSEU_TopicScheme"
+      },
+      "estleg:provisionCount": 6
+    },
+    {
+      "@id": "estleg:Chapter_MUUSEU_4",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "4. peatükk – Museaali kindlustamine ja rahvusvahelise näituse omanikule tekkinud kahju riigi poolt hüvitamine",
+      "estleg:chapterNumber": "4",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_MUUSEU_4"
+      }
+    },
+    {
+      "@id": "estleg:Cluster_MUUSEU_5",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": "§30–38 Rakendussätted",
+      "skos:prefLabel": "§30–38 Rakendussätted",
+      "skos:inScheme": {
+        "@id": "estleg:MUUSEU_TopicScheme"
+      },
+      "estleg:provisionCount": 6
+    },
+    {
+      "@id": "estleg:Chapter_MUUSEU_5",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "5. peatükk – Rakendussätted",
+      "estleg:chapterNumber": "5",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_MUUSEU_5"
+      }
     },
     {
       "@id": "estleg:MUUSEU_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_MUUSEU"
+        "estleg:LegalProvision_muuseumiseadus"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Seaduse ülesanne",
+      "rdfs:label": "§ 1. Seaduse reguleerimisala, eesmärk ja kohaldamisala",
       "estleg:sourceAct": "Muuseumiseadus",
-      "estleg:summary": "Käesolev seadus sätestab muuseumide tegevuse ja muuseumikogude korralduse alused. Käesolev seadus sätestab muuseumide tegevuse ja muuseumikogude korralduse alused.",
+      "estleg:summary": "1 (1) Käesolev seadus sätestab muuseumi mõiste, muuseumikogu korralduse ja muuseumi tegevuse alused ning museaali kindlustamise ja rahvusvahelise näituse omanikule tekkinud kahju riigi poolt hüvitamise tingimused. Käesolev seadus sätestab muuseumi mõiste, muuseumikogu korralduse ja muuseumi tegevuse alused ning museaali kindlustamise ja rahvusvahelise näituse omanikule tekkinud kahju riigi poolt hüvitamise tingimused. 2 (2) Seaduse eesmärk on luua tingimused kestlike, professionaalsete ja eetili",
+      "estleg:legalText": "(1) Käesolev seadus sätestab muuseumi mõiste, muuseumikogu korralduse ja muuseumi tegevuse alused ning museaali kindlustamise ja rahvusvahelise näituse omanikule tekkinud kahju riigi poolt hüvitamise tingimused. (2) Seaduse eesmärk on luua tingimused kestlike, professionaalsete ja eetiliste muuseumide arenguks, kes: tugevdavad üksikisikute ja kogukondade arusaama kultuurist, ajaloost ja keskkonnast; aitavad kaasa kriitilisele mõtlemisele mälust ja identiteedist; hoiavad kultuuri- ja loodusväärtusi tulevastele põlvkondadele; edendavad kogukonnatunnet ja kultuurilist mitmekesisust; loovad uusi teadmisi ja inspireerivad; edendavad haridust, heaolu, võrdseid võimalusi ja demokraatiat; arvestavad teenuste pakkumisel kasutajate vajadustega kogu nende elukaare ulatuses. (3) Käesolevat seadust kohaldatakse riigimuuseumile ja riigi sihtasutuse muuseumile. Avalik-õigusliku isiku muuseumile, munitsipaalmuuseumile ja eramuuseumile kohaldatakse käesolevat seadust niivõrd, kuivõrd see on sätestatud käesolevas seaduses. (4) Käesolevat seadust ei kohaldata teadus- ja arendustegevuse ning innovatsiooni korralduse seaduse § 3 lõigete 3–5 tähenduses ülikooli, evalveeritud rakenduskõrgkooli ning teadus- ja arendusasutuse hallatava teaduskollektsiooni suhtes. (5) Museaali väljaveole ja ekspordile kohaldatakse kultuuriväärtuste väljaveo, ekspordi ja sisseveo seadust. (6) Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse sätteid, arvestades käesoleva seaduse erisusi.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MUUSEU_1"
-      }
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_MUUSEU_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:MUUSEU_Par_1_Lg_1"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_1_Lg_2"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_1_Lg_3"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_1_Lg_4"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_1_Lg_5"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_1_Lg_6"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "business",
+        "public_body",
+        "ngo"
+      ]
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolev seadus sätestab muuseumi mõiste, muuseumikogu korralduse ja muuseumi tegevuse alused ning museaali kindlustamise ja rahvusvahelise näituse omanikule tekkinud kahju riigi poolt hüvitamise tingimused.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Seaduse eesmärk on luua tingimused kestlike, professionaalsete ja eetiliste muuseumide arenguks, kes: tugevdavad üksikisikute ja kogukondade arusaama kultuurist, ajaloost ja keskkonnast; aitavad kaasa kriitilisele mõtlemisele mälust ja identiteedist; hoiavad kultuuri- ja loodusväärtusi tulevastele põlvkondadele; edendavad kogukonnatunnet ja kultuurilist mitmekesisust; loovad uusi teadmisi ja inspireerivad; edendavad haridust, heaolu, võrdseid võimalusi ja demokraatiat; arvestavad teenuste pakkumisel kasutajate vajadustega kogu nende elukaare ulatuses.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 2"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_1_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Käesolevat seadust kohaldatakse riigimuuseumile ja riigi sihtasutuse muuseumile. Avalik-õigusliku isiku muuseumile, munitsipaalmuuseumile ja eramuuseumile kohaldatakse käesolevat seadust niivõrd, kuivõrd see on sätestatud käesolevas seaduses.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 3"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_1_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Käesolevat seadust ei kohaldata teadus- ja arendustegevuse ning innovatsiooni korralduse seaduse § 3 lõigete 3–5 tähenduses ülikooli, evalveeritud rakenduskõrgkooli ning teadus- ja arendusasutuse hallatava teaduskollektsiooni suhtes.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 4"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_1_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Museaali väljaveole ja ekspordile kohaldatakse kultuuriväärtuste väljaveo, ekspordi ja sisseveo seadust.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 5"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_1_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse sätteid, arvestades käesoleva seaduse erisusi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 6"
     },
     {
       "@id": "estleg:MUUSEU_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_MUUSEU"
+        "estleg:LegalProvision_muuseumiseadus"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Seaduse rakendusala",
+      "rdfs:label": "§ 2. Mõisted",
       "estleg:sourceAct": "Muuseumiseadus",
-      "estleg:summary": "1 (1) Muuseumiseadus reguleerib riigimuuseumide, munitsipaalmuuseumide ja avalik-õiguslike juriidiliste isikute muuseumide tegevust. Muuseumiseadus reguleerib riigimuuseumide, munitsipaalmuuseumide ja avalik-õiguslike juriidiliste isikute muuseumide tegevust. 2 (2) Eramuuseumide tegevust reguleerib käesolev seadus niivõrd, kuivõrd seda on seaduses otseselt nimetatud. Eramuuseumina käsitatakse käesolevas seaduses eraõigusliku juriidilise isiku või selle struktuuriüksusena tegutsevat muuseumi või ",
+      "estleg:summary": "1 (1) Muuseum käesoleva seaduse tähenduses on juriidiline isik või asutus: 1 1) kellel on muuseumikogu, mille museaalidest vähemalt poolte omanik on muuseum või vähemalt poolte kohta on sõlmitud vähemalt 50-aastane kasutusleping või riigile kuuluva muuseumikogu kasutamise tähtajatu leping; 2 2) kes kogub eesmärgipäraselt vaimset või materiaalset kultuuri- või looduspärandit; 3 3) kes peab museaalide üle arvestust, lähtudes muuseumide rahvusvahelistest dokumenteerimispõhimõtetest; 4 4) kes tagab ",
+      "estleg:legalText": "(1) Muuseum käesoleva seaduse tähenduses on juriidiline isik või asutus: kellel on muuseumikogu, mille museaalidest vähemalt poolte omanik on muuseum või vähemalt poolte kohta on sõlmitud vähemalt 50-aastane kasutusleping või riigile kuuluva muuseumikogu kasutamise tähtajatu leping; kes kogub eesmärgipäraselt vaimset või materiaalset kultuuri- või looduspärandit; kes peab museaalide üle arvestust, lähtudes muuseumide rahvusvahelistest dokumenteerimispõhimõtetest; kes tagab muuseumikogu pikaajalise säilimise; kelle muuseumikogu on huvilistele kättesaadav; kes teeb muuseumikoguga seotud uurimis- või teadustööd ja esitab regulaarselt selle tulemusi avalikkusele näituste, haridustegevuste või -sündmuste ja teaduslike või populaarteaduslike publikatsioonide vahendusel; kes ei jaota kasumit. (2) Museaal on muuseumis arvele võetud kultuuriväärtusega asi, mille üle peetakse arvestust muuseumide rahvusvahelistest dokumenteerimispõhimõtetest lähtudes. (3) Muuseumikogu on museaalide kogum, mis võib olla jaotatud alakogudeks museaalide rühmade või liikide järgi. (4) Kogumispõhimõtted on muuseumikogu eesmärgipärase täiendamise aluseks olevad suunised, mis annavad muuseumikogu täiendamiseks selged valikukriteeriumid. Kogumispõhimõtete koostamisel lähtutakse olemasoleva muuseumikogu ülevaatest ning juurdekasvuvõimaluste ja säilitustingimuste analüüsist, arvestades muu hulgas sama piirkonna või sarnase ainevaldkonna muuseumide ja teiste kultuuripärandiasutuste tegevust. (5) Abikogu on muuseumi ülesandeid toetaval eesmärgil moodustatud kogu, millesse arvatud asjad ei ole museaalid. (6) Hoiule võetud asi on asutuselt, juriidiliselt või füüsiliselt isikult muuseumisse hoiule võetud kultuuriväärtusega asi, mida ei arvata muuseumikogusse. Teiselt muuseumilt laenatud museaali või abikogusse arvatud asja ei loeta hoiule võetud asjaks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MUUSEU_1"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_MUUSEU_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:MUUSEU_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_2_Lg_2"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_2_Lg_3"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_2_Lg_4"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_2_Lg_5"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_2_Lg_6"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen",
         "public_body"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:MUUSEU_Par_9"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_20"
+        }
       ]
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Muuseum käesoleva seaduse tähenduses on juriidiline isik või asutus: kellel on muuseumikogu, mille museaalidest vähemalt poolte omanik on muuseum või vähemalt poolte kohta on sõlmitud vähemalt 50-aastane kasutusleping või riigile kuuluva muuseumikogu kasutamise tähtajatu leping; kes kogub eesmärgipäraselt vaimset või materiaalset kultuuri- või looduspärandit; kes peab museaalide üle arvestust, lähtudes muuseumide rahvusvahelistest dokumenteerimispõhimõtetest; kes tagab muuseumikogu pikaajalise säilimise; kelle muuseumikogu on huvilistele kättesaadav; kes teeb muuseumikoguga seotud uurimis- või teadustööd ja esitab regulaarselt selle tulemusi avalikkusele näituste, haridustegevuste või -sündmuste ja teaduslike või populaarteaduslike publikatsioonide vahendusel; kes ei jaota kasumit.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Museaal on muuseumis arvele võetud kultuuriväärtusega asi, mille üle peetakse arvestust muuseumide rahvusvahelistest dokumenteerimispõhimõtetest lähtudes.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_2_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Muuseumikogu on museaalide kogum, mis võib olla jaotatud alakogudeks museaalide rühmade või liikide järgi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 3"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_2_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Kogumispõhimõtted on muuseumikogu eesmärgipärase täiendamise aluseks olevad suunised, mis annavad muuseumikogu täiendamiseks selged valikukriteeriumid. Kogumispõhimõtete koostamisel lähtutakse olemasoleva muuseumikogu ülevaatest ning juurdekasvuvõimaluste ja säilitustingimuste analüüsist, arvestades muu hulgas sama piirkonna või sarnase ainevaldkonna muuseumide ja teiste kultuuripärandiasutuste tegevust.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 4"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_2_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Abikogu on muuseumi ülesandeid toetaval eesmärgil moodustatud kogu, millesse arvatud asjad ei ole museaalid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 5"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_2_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Hoiule võetud asi on asutuselt, juriidiliselt või füüsiliselt isikult muuseumisse hoiule võetud kultuuriväärtusega asi, mida ei arvata muuseumikogusse. Teiselt muuseumilt laenatud museaali või abikogusse arvatud asja ei loeta hoiule võetud asjaks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 6"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_2_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_muuseumiseadus"
+      ],
+      "estleg:paragrahv": "§ 2<sup>1</sup>.",
+      "rdfs:label": "§ 2<sup>1</sup>. Muuseumide jagunemine omandivormi järgi",
+      "estleg:sourceAct": "Muuseumiseadus",
+      "estleg:summary": "Omandivormi järgi jagunevad muuseumid järgmiselt: 1 1) riigimuuseum – ministeeriumi hallatav riigiasutus, ministeeriumi valitsemisalas tegutsev valitsusasutus või nimetatud asutuste struktuuriüksus; 2 2) riigi sihtasutuse muuseum – riigi sihtasutus, riigi osalusel asutatud sihtasutus või nimetatud isikute struktuuriüksus või nimetatud isikute asutatud sihtasutus; 3 3) munitsipaalmuuseum – kohaliku omavalitsuse üksuse asutus või kohaliku omavalitsuse üksuse asutatud juriidiline isik, mille kaasas",
+      "estleg:legalText": "Omandivormi järgi jagunevad muuseumid järgmiselt: riigimuuseum – ministeeriumi hallatav riigiasutus, ministeeriumi valitsemisalas tegutsev valitsusasutus või nimetatud asutuste struktuuriüksus; riigi sihtasutuse muuseum – riigi sihtasutus, riigi osalusel asutatud sihtasutus või nimetatud isikute struktuuriüksus või nimetatud isikute asutatud sihtasutus; munitsipaalmuuseum – kohaliku omavalitsuse üksuse asutus või kohaliku omavalitsuse üksuse asutatud juriidiline isik, mille kaasasutaja ei ole riik, või nimetatud asutuse või isiku struktuuriüksus; avalik-õigusliku isiku muuseum – avalik-õiguslik juriidiline isik või selle struktuuriüksus; eramuuseum – eraõiguslik juriidiline isik või selle struktuuriüksus, mis ei ole riigi sihtasutuse muuseum ega munitsipaalmuuseum.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_MUUSEU_1"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_MUUSEU_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:MUUSEU_Par_2_1_Lg_Unknown_1"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "public_body",
+        "ngo"
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        }
+      ],
+      "estleg:competenceType": "general"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_2_1_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Omandivormi järgi jagunevad muuseumid järgmiselt: riigimuuseum – ministeeriumi hallatav riigiasutus, ministeeriumi valitsemisalas tegutsev valitsusasutus või nimetatud asutuste struktuuriüksus; riigi sihtasutuse muuseum – riigi sihtasutus, riigi osalusel asutatud sihtasutus või nimetatud isikute struktuuriüksus või nimetatud isikute asutatud sihtasutus; munitsipaalmuuseum – kohaliku omavalitsuse üksuse asutus või kohaliku omavalitsuse üksuse asutatud juriidiline isik, mille kaasasutaja ei ole riik, või nimetatud asutuse või isiku struktuuriüksus; avalik-õigusliku isiku muuseum – avalik-õiguslik juriidiline isik või selle struktuuriüksus; eramuuseum – eraõiguslik juriidiline isik või selle struktuuriüksus, mis ei ole riigi sihtasutuse muuseum ega munitsipaalmuuseum.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_2_1"
+      }
     },
     {
       "@id": "estleg:MUUSEU_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_MUUSEU"
+        "estleg:LegalProvision_muuseumiseadus"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Muuseumi õiguslik seisund ja ülesanne",
+      "rdfs:label": "§ 3. Muuseumi nõustamine",
       "estleg:sourceAct": "Muuseumiseadus",
-      "estleg:summary": "1 (1) Riigimuuseum on ministeeriumi valitsemisalasse kuuluv ministeeriumi hallatav riigiasutus või maavalitsuse haldamisel olev riigiasutus. Riigimuuseum on ministeeriumi valitsemisalasse kuuluv ministeeriumi hallatav riigiasutus või maavalitsuse haldamisel olev riigiasutus. 2 (2) Munitsipaalmuuseum on kohaliku omavalitsuse asutus. Munitsipaalmuuseum on kohaliku omavalitsuse asutus. 3 (3) Avalik-õigusliku juriidilise isiku muuseum on selle isiku struktuuriüksus. Avalik-õigusliku juriidilise isik",
+      "estleg:summary": "1 (1) Riigimuuseum ja riigile kuuluvat muuseumikogu käesoleva seaduse § 9 kohaselt sõlmitud halduslepingu alusel kasutav muuseum (edaspidi riigile kuuluvat muuseumikogu kasutav muuseum) nõustab võimaluse korral inimesi vaimse ja materiaalse kultuuripärandi küsimustes. Riigimuuseum ja riigile kuuluvat muuseumikogu käesoleva seaduse § 9 kohaselt sõlmitud halduslepingu alusel kasutav muuseum (edaspidi riigile kuuluvat muuseumikogu kasutav muuseum) nõustab võimaluse korral inimesi vaimse ja materiaa",
+      "estleg:legalText": "(1) Riigimuuseum ja riigile kuuluvat muuseumikogu käesoleva seaduse § 9 kohaselt sõlmitud halduslepingu alusel kasutav muuseum (edaspidi riigile kuuluvat muuseumikogu kasutav muuseum) nõustab võimaluse korral inimesi vaimse ja materiaalse kultuuripärandi küsimustes. (2) Riigimuuseumil, riigile kuuluvat muuseumikogu kasutaval muuseumil ning käesoleva seaduse § 15 alusel asutatud muuseumide andmekoguga vabatahtlikult liitunud avalik-õigusliku isiku muuseumil, munitsipaalmuuseumil ja eramuuseumil (edaspidi koos muuseumide andmekoguga liitunud muuseum) on õigus saada Muinsuskaitseametilt nõustamist muuseumikogu korraldamisel ning muuseumi ülesannete täitmisel.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MUUSEU_1"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_MUUSEU_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:MUUSEU_Par_3_Lg_1"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_3_Lg_2"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen",
         "public_body"
       ],
-      "estleg:competentAuthority": [
+      "estleg:references": [
         {
-          "@id": "estleg:Institution_kohalik_omavalitsus"
-        }
-      ],
-      "estleg:competenceType": "general",
-      "estleg:referencedBy": [
-        {
-          "@id": "estleg:MUUSEU_Par_22_24"
+          "@id": "estleg:MUUSEU_Par_9"
         }
       ]
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Riigimuuseum ja riigile kuuluvat muuseumikogu käesoleva seaduse § 9 kohaselt sõlmitud halduslepingu alusel kasutav muuseum (edaspidi riigile kuuluvat muuseumikogu kasutav muuseum) nõustab võimaluse korral inimesi vaimse ja materiaalse kultuuripärandi küsimustes.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_3_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Riigimuuseumil, riigile kuuluvat muuseumikogu kasutaval muuseumil ning käesoleva seaduse § 15 alusel asutatud muuseumide andmekoguga vabatahtlikult liitunud avalik-õigusliku isiku muuseumil, munitsipaalmuuseumil ja eramuuseumil (edaspidi koos muuseumide andmekoguga liitunud muuseum) on õigus saada Muinsuskaitseametilt nõustamist muuseumikogu korraldamisel ning muuseumi ülesannete täitmisel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 2"
     },
     {
       "@id": "estleg:MUUSEU_Par_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_MUUSEU"
+        "estleg:LegalProvision_muuseumiseadus"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Museaali ja muuseumikogu mõiste",
+      "rdfs:label": "§ 4. Muuseumi valduses olev vara, selle kasutamine ja käsutamine",
       "estleg:sourceAct": "Muuseumiseadus",
-      "estleg:summary": "1 (1) Museaal on muuseumis arvele võetud kultuuriväärtusega asi. Museaal on muuseumis arvele võetud kultuuriväärtusega asi. 2 (2) Muuseumikogu on muuseumis asuvate museaalide kogum, mis võib olla jaotatud alakogudeks museaalide rühmade või liikide järgi. Muuseumikogu on muuseumis asuvate museaalide kogum, mis võib olla jaotatud alakogudeks museaalide rühmade või liikide järgi.",
+      "estleg:summary": "1 (1) Muuseumi valduses olev vara koosneb museaalidest ja muudest muuseumi ülesannete täitmiseks vajalikest rahaliselt hinnatavatest asjadest ning õigustest. Muuseumi valduses olev vara koosneb museaalidest ja muudest muuseumi ülesannete täitmiseks vajalikest rahaliselt hinnatavatest asjadest ning õigustest. 2 (2) Riigimuuseumi valduses oleva vara valdamine, kasutamine ja käsutamine toimub riigivaraseaduses sätestatud korras, arvestades käesoleva seaduse erisusi. Riigimuuseumi valduses oleva var",
+      "estleg:legalText": "(1) Muuseumi valduses olev vara koosneb museaalidest ja muudest muuseumi ülesannete täitmiseks vajalikest rahaliselt hinnatavatest asjadest ning õigustest. (2) Riigimuuseumi valduses oleva vara valdamine, kasutamine ja käsutamine toimub riigivaraseaduses sätestatud korras, arvestades käesoleva seaduse erisusi. (3) Riigi sihtasutuse muuseumi, avalik-õigusliku isiku muuseumi, munitsipaalmuuseumi ja eramuuseumi valduses oleva vara valdamine, kasutamine ja käsutamine toimub muuseumi asutaja kehtestatud korras, arvestades käesoleva seaduse erisusi.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MUUSEU_1"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      }
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_MUUSEU_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:MUUSEU_Par_4_Lg_1"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_4_Lg_2"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_4_Lg_3"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "public_body",
+        "ngo"
+      ]
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Muuseumi valduses olev vara koosneb museaalidest ja muudest muuseumi ülesannete täitmiseks vajalikest rahaliselt hinnatavatest asjadest ning õigustest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_4_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Riigimuuseumi valduses oleva vara valdamine, kasutamine ja käsutamine toimub riigivaraseaduses sätestatud korras, arvestades käesoleva seaduse erisusi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 2"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_4_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Riigi sihtasutuse muuseumi, avalik-õigusliku isiku muuseumi, munitsipaalmuuseumi ja eramuuseumi valduses oleva vara valdamine, kasutamine ja käsutamine toimub muuseumi asutaja kehtestatud korras, arvestades käesoleva seaduse erisusi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 3"
     },
     {
       "@id": "estleg:MUUSEU_Par_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_MUUSEU"
+        "estleg:LegalProvision_muuseumiseadus"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Muuseumi asutamine ja asutamisest teatamine",
+      "rdfs:label": "§ 5. Muuseumikogu täiendamise põhimõtted ning muuseumikogu täiendamise ja kultuuriväärtusega asja muuseumisse hoiule võtmise kord",
       "estleg:sourceAct": "Muuseumiseadus",
-      "estleg:summary": "1 (1) Riigimuuseumi asutab ministeerium või maavalitsus Vabariigi Valitsuse kehtestatud korras. ./dyn=742417&id=214298;949111 2 (2) Munitsipaalmuuseumi asutab valla- või linnavalitsus kohaliku omavalitsuse volikogu otsusel. Munitsipaalmuuseumi asutab valla- või linnavalitsus kohaliku omavalitsuse volikogu otsusel. 3 (3) Avalik-õigusliku juriidilise isiku muuseumi asutab see isik vastavalt oma pädevusele. Avalik-õigusliku juriidilise isiku muuseumi asutab see isik vastavalt oma pädevusele. 4 (4) ",
+      "estleg:summary": "1 (1) Muuseumide andmekoguga liitunud muuseumi kogu täiendatakse eesmärgipäraselt, lähtudes muuseumi koostatud kogumispõhimõtetest. Muuseumide andmekoguga liitunud muuseumi kogu täiendatakse eesmärgipäraselt, lähtudes muuseumi koostatud kogumispõhimõtetest. 2 (2) Muuseumide andmekoguga liitunud muuseumi kogumispõhimõtted kinnitab muuseumi juht, avalik-õigusliku isiku muuseumi asutaja määratud isik või otsustuskogu, arvestades muu hulgas Muinsuskaitseameti seisukohta. Muuseum avaldab kogumispõhim",
+      "estleg:legalText": "(1) Muuseumide andmekoguga liitunud muuseumi kogu täiendatakse eesmärgipäraselt, lähtudes muuseumi koostatud kogumispõhimõtetest. (2) Muuseumide andmekoguga liitunud muuseumi kogumispõhimõtted kinnitab muuseumi juht, avalik-õigusliku isiku muuseumi asutaja määratud isik või otsustuskogu, arvestades muu hulgas Muinsuskaitseameti seisukohta. Muuseum avaldab kogumispõhimõtted oma veebilehel. (3) Muuseumide andmekoguga liitunud muuseum ei võta kultuuriväärtusega asja museaalina arvele, kui: asi ei vasta muuseumi kogumispõhimõtetele; asja üleandja esitab eritingimusi, mis on vastuolus muuseumi ja selle külastajate pikaajaliste huvidega; asja üle arvestuse pidamiseks, selle säilitamiseks või eksponeerimiseks puuduvad tingimused või eelarvelised võimalused. (4) Muuseumikogu täiendamisel peab muuseumide andmekoguga liitunud muuseum: oma võimaluste piires välja selgitama kultuuriväärtusega asja päritolu, et vältida omaniku tahte vastaselt tema valdusest välja läinud või teisest riigist välja viidud asja museaalina arvele võtmist; arvestama teiste sama piirkonna või sarnase ainevaldkonna muuseumide ja teiste kultuuripärandiasutuste kogumispõhimõtteid. (5) Muuseumikogu täiendamise ja kultuuriväärtusega asja muuseumisse hoiule võtmise korra kehtestab määrusega. Määruses nähakse ette asja museaalina arvele võtmise ja muuseumisse hoiule võtmise toimingute vormistamise nõuded ning museaali ja muuseumisse hoiule võetud asja kasutamiseks andmise, muuseumikogust väljaarvamise ja õigustatud isikule tagastamise toimingute vormistamise nõuded.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MUUSEU_2"
       },
-      "estleg:targetGroup": [
-        "citizen",
-        "public_body"
-      ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_kohalik_omavalitsus"
-        }
-      ],
-      "estleg:competenceType": "general",
-      "estleg:referencedBy": [
-        {
-          "@id": "estleg:MUUSEU_Par_23"
-        }
-      ]
-    },
-    {
-      "@id": "estleg:MUUSEU_Par_6",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_MUUSEU"
-      ],
-      "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Muuseumi põhimäärus",
-      "estleg:sourceAct": "Muuseumiseadus",
-      "estleg:summary": "1 (1) Riigimuuseumi ja munitsipaalmuuseumi ülesanded, juhtimise korraldus, juhi õigused ja kohustused, muuseumi struktuur ning muud tegevuse korraldamise olulised küsimused sätestatakse põhimääruses. Riigimuuseumi põhimääruse kinnitab vastavalt minister või maavanem ./dyn=742417&id=214298;934348;871306;848110;805437;696853;625262;94825;25662;25661;25563;25315;949111;929405;827169;82313;25695;1031005;12811883;12915305;12920576;12920592;12920604;12920620;12920632;12920636;12920640;12920661;1292068",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_MUUSEU_2"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_MUUSEU_2"
       },
-      "estleg:semanticallySimilarTo": [
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:RaRS_Par_6",
-          "estleg:similarityScore": {
-            "@value": "0.519",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        }
-      ],
-      "estleg:targetGroup": [
-        "official"
-      ]
-    },
-    {
-      "@id": "estleg:MUUSEU_Par_6_6",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_MUUSEU"
-      ],
-      "estleg:paragrahv": "§ 6<sup>1</sup>.",
-      "rdfs:label": "§ 6<sup>1</sup>. Riigimuuseumi direktori ametikoha täitmine",
-      "estleg:sourceAct": "Muuseumiseadus",
-      "estleg:summary": "1 (1) Riigimuuseumi direktor valitakse ametisse avalikul konkursil kuni viieks aastaks. Riigimuuseumi direktor valitakse ametisse avalikul konkursil kuni viieks aastaks. 2 (2) Riigimuuseumi direktori kandidaadile esitatavad nõuded, avaliku konkursi tingimused ja läbiviimise korra kinnitab ning töölepingu direktoriga sõlmib minister, ./dyn=742417&id=83625;23072;12756713;26911 kelle juhitava ministeeriumi valitsemisalasse muuseum kuulub, või maavanem, kelle juhitava maavalitsuse haldamisel muuseum",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_MUUSEU_2"
-      },
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:RakKKS_Par_7",
-          "estleg:similarityScore": {
-            "@value": "0.35",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
+          "@id": "estleg:MUUSEU_Par_5_Lg_1"
         },
         {
-          "@id": "estleg:Reg_1009243_Par_7",
-          "estleg:similarityScore": {
-            "@value": "0.308",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        }
-      ],
-      "estleg:targetGroup": [
-        "public_body",
-        "official"
-      ]
-    },
-    {
-      "@id": "estleg:MUUSEU_Par_7",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_MUUSEU"
-      ],
-      "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Muuseuminõukogu",
-      "estleg:sourceAct": "Muuseumiseadus",
-      "estleg:summary": "1 (1) Muuseuminõukogu on Kultuuriministeeriumi juures tegutsev nõuandev kogu, kuhu kuuluvad muuseumide ja nende asutajate esindajad. Muuseuminõukogu on Kultuuriministeeriumi juures tegutsev nõuandev kogu, kuhu kuuluvad muuseumide ja nende asutajate esindajad. 2 (2) Muuseuminõukogu teeb ettepanekuid ja annab arvamusi käesolevast seadusest tulenevates küsimustes. Tal on õigus tutvuda muuseumi tegevuse ja muuseumikogude seisukorraga kohapeal. Muuseuminõukogu teeb ettepanekuid ja annab arvamusi käes",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_MUUSEU_2"
-      },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_kultuuriministeerium"
-        }
-      ],
-      "estleg:competenceType": "general"
-    },
-    {
-      "@id": "estleg:MUUSEU_Par_8",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_MUUSEU"
-      ],
-      "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Keskmuuseum ja maakonnamuuseum",
-      "estleg:sourceAct": "Muuseumiseadus",
-      "estleg:summary": "1 (1) Keskmuuseum on ministeeriumi valitsemisalas olev hallatav riigimuuseum, mille kogud esindavad mingit ainevaldkonda terviklikult ja mis juhendab muuseume metoodiliselt selles ainevaldkonnas. Keskmuuseum on ministeeriumi valitsemisalas olev hallatav riigimuuseum, mille kogud esindavad mingit ainevaldkonda terviklikult ja mis juhendab muuseume metoodiliselt selles ainevaldkonnas. 2 (2) Maakonnamuuseum on maavalitsuse haldamisel olev riigimuuseum, mille kogud esindavad terviklikult selle maako",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_MUUSEU_2"
-      },
-      "estleg:targetGroup": [
-        "public_body"
-      ],
-      "estleg:referencedBy": [
-        {
-          "@id": "estleg:MUUSEU_Par_22_24"
-        }
-      ]
-    },
-    {
-      "@id": "estleg:MUUSEU_Par_9",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_MUUSEU"
-      ],
-      "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Muuseumi finantseerimine",
-      "estleg:sourceAct": "Muuseumiseadus",
-      "estleg:summary": "1 (1) Muuseumi tegevust finantseeritakse vastavalt muuseumi kuuluvusele riigieelarvest, valla- või linnaeelarvest või avalik-õigusliku juriidilise isiku vahenditest. Muuseumi tegevust finantseeritakse vastavalt muuseumi kuuluvusele riigieelarvest, valla- või linnaeelarvest või avalik-õigusliku juriidilise isiku vahenditest. 2 (2) Munitsipaalmuuseumi finantseerimiseks võib Kultuuriministeeriumi ettepanekul teha kohalikule omavalitsusele eraldisi riigieelarvest. Munitsipaalmuuseumi finantseerimise",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_MUUSEU_2"
-      },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
-      "estleg:targetGroup": [
-        "citizen",
-        "public_body"
-      ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_kultuuriministeerium"
-        }
-      ],
-      "estleg:competenceType": "general"
-    },
-    {
-      "@id": "estleg:MUUSEU_Par_10",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_MUUSEU"
-      ],
-      "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Muuseumi valduses olev vara",
-      "estleg:sourceAct": "Muuseumiseadus",
-      "estleg:summary": "1 (1) Riigimuuseumi valduses oleva vara valdamine, kasutamine ja käsutamine toimub riigivaraseaduses (RT I 1995, 22, 327; 1996, 36, 738; 40, 773; 48, 942) sätestatud korras. Riigimuuseumi valduses oleva vara valdamine, kasutamine ja käsutamine toimub riigivaraseaduses (RT I 1995, 22, 327; 1996, 36, 738; 40, 773; 48, 942) sätestatud korras. 2 (2) Munitsipaalmuuseumi ja avalik-õigusliku juriidilise isiku muuseumi valduses oleva vara valdamine, kasutamine ja käsutamine toimub vastavalt kohaliku oma",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_MUUSEU_2"
-      },
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:RaRS_Par_9",
-          "estleg:similarityScore": {
-            "@value": "0.421",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
+          "@id": "estleg:MUUSEU_Par_5_Lg_2"
         },
         {
-          "@id": "estleg:Reg_1001926_Par_6",
-          "estleg:similarityScore": {
-            "@value": "0.308",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        }
-      ],
-      "estleg:targetGroup": [
-        "citizen",
-        "public_body"
-      ]
-    },
-    {
-      "@id": "estleg:MUUSEU_Par_11",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_MUUSEU"
-      ],
-      "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Aruandlus",
-      "estleg:sourceAct": "Muuseumiseadus",
-      "estleg:summary": "1 (1) Muuseum esitab oma tegevuse kohta õigusaktides ettenähtud aruandeid. Muuseum esitab oma tegevuse kohta õigusaktides ettenähtud aruandeid. 2 (2) Eramuuseum esitab statistilisi aruandeid riigimuuseumile, munitsipaalmuuseumile ja avalik-õigusliku juriidilise isiku muuseumile kehtestatud korra kohaselt. Eramuuseum esitab statistilisi aruandeid riigimuuseumile, munitsipaalmuuseumile ja avalik-õigusliku juriidilise isiku muuseumile kehtestatud korra kohaselt.",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_MUUSEU_2"
-      },
-      "estleg:targetGroup": [
-        "citizen",
-        "public_body"
-      ],
-      "estleg:referencedBy": [
-        {
-          "@id": "estleg:MUUSEU_Par_24"
-        }
-      ]
-    },
-    {
-      "@id": "estleg:MUUSEU_Par_12",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_MUUSEU"
-      ],
-      "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Järelevalve teostamine muuseumikogude üle",
-      "estleg:sourceAct": "Muuseumiseadus",
-      "estleg:summary": "1 (1) Järelevalvet riigimuuseumi, munitsipaalmuuseumi ja avalik-õigusliku juriidilise isiku muuseumi muuseumikogude, samuti sihtasutusena tegutseva eramuuseumi kasutuses olevate muuseumikogude üle teostavad Kultuuriministeeriumi ametnikud või kultuuriministri poolt moodustatud komisjon (edaspidi järelevalve teostaja ). Järelevalvet riigimuuseumi, munitsipaalmuuseumi ja avalik-õigusliku juriidilise isiku muuseumi muuseumikogude, samuti sihtasutusena tegutseva eramuuseumi kasutuses olevate muuseum",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_MUUSEU_2"
-      },
-      "estleg:targetGroup": [
-        "citizen",
-        "public_body",
-        "official",
-        "ngo"
-      ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_kultuuriministeerium"
-        }
-      ],
-      "estleg:competenceType": "supervision",
-      "estleg:referencedBy": [
-        {
-          "@id": "estleg:MUUSEU_Par_12_13"
-        }
-      ]
-    },
-    {
-      "@id": "estleg:MUUSEU_Par_12_13",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_MUUSEU"
-      ],
-      "estleg:paragrahv": "§ 12<sup>1</sup>.",
-      "rdfs:label": "§ 12<sup>1</sup>. Järelevalve teostaja õigused",
-      "estleg:sourceAct": "Muuseumiseadus",
-      "estleg:summary": "1 (1) Järelevalve teostajal on õigus teha muuseumile ettepanekuid muuseumikogude hoidmistingimuste ja muuseumikogude üle arvestuse pidamise kohta. Järelevalve teostajal on õigus teha muuseumile ettepanekuid muuseumikogude hoidmistingimuste ja muuseumikogude üle arvestuse pidamise kohta. 2 (2) Puuduste esinemisel käesoleva seaduse § 12 lõikes 2 nimetatud dokumentides või muuseumikogu või museaalide säilitamistingimustes on kultuuriministril õigus järelevalve teostaja ettepanekul teha ettekirjutus",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_MUUSEU_2"
-      },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
-      "estleg:references": [
-        {
-          "@id": "estleg:MUUSEU_Par_12"
-        }
-      ]
-    },
-    {
-      "@id": "estleg:MUUSEU_Par_13",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_MUUSEU"
-      ],
-      "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Muuseumi ümberkorraldamine või tegevuse lõpetamine ja sellest teatamine",
-      "estleg:sourceAct": "Muuseumiseadus",
-      "estleg:summary": "1 (1) Muuseumi korraldab ümber või tema tegevuse lõpetab asutaja, kes teatab sellest Kultuuriministeeriumile vähemalt kolm kuud enne kavandatavat tähtaega. Muuseumi korraldab ümber või tema tegevuse lõpetab asutaja, kes teatab sellest Kultuuriministeeriumile vähemalt kolm kuud enne kavandatavat tähtaega. 2 (2) Riigimuuseumi ümberkorraldamine või tegevuse lõpetamine toimub Vabariigi Valitsuse kehtestatud korras. Riigimuuseumi ümberkorraldamine või tegevuse lõpetamine toimub Vabariigi Valitsuse ke",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_MUUSEU_2"
-      },
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:RaRS_Par_12",
-          "estleg:similarityScore": {
-            "@value": "0.333",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
+          "@id": "estleg:MUUSEU_Par_5_Lg_3"
         },
         {
-          "@id": "estleg:Reg_1015295_Par_10",
-          "estleg:similarityScore": {
-            "@value": "0.35",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
+          "@id": "estleg:MUUSEU_Par_5_Lg_4"
         },
         {
-          "@id": "estleg:Reg_1015312_Par_10",
-          "estleg:similarityScore": {
-            "@value": "0.35",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
+          "@id": "estleg:MUUSEU_Par_5_Lg_5"
         }
       ],
-      "estleg:targetGroup": [
-        "public_body"
-      ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_kultuuriministeerium"
-        }
-      ],
-      "estleg:competenceType": "enforcement"
-    },
-    {
-      "@id": "estleg:MUUSEU_Par_14",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_MUUSEU"
-      ],
-      "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Museaali käsutamise kitsendused",
-      "estleg:sourceAct": "Muuseumiseadus",
-      "estleg:summary": "1 (1) Muuseumikogusse kuuluvaid museaale ei või võõrandada ega anda tagatiseks. Muuseumikogusse kuuluvaid museaale ei või võõrandada ega anda tagatiseks. 2 (2) Võõrandamiseks ei loeta museaali üleandmist teisele muuseumile käesoleva seaduse §-s 17 sätestatud tingimustel ja korras. Võõrandamiseks ei loeta museaali üleandmist teisele muuseumile käesoleva seaduse §-s 17 sätestatud tingimustel ja korras. 3 (3) Museaali võib muuseumikogust välja arvata ainult käesoleva seaduse §-s 19 nimetatud aluste",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_MUUSEU_3"
-      },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
-      "estleg:references": [
-        {
-          "@id": "estleg:MUUSEU_Par_17"
-        },
-        {
-          "@id": "estleg:MUUSEU_Par_19"
-        }
-      ],
-      "estleg:referencedBy": [
-        {
-          "@id": "estleg:MUUSEU_Par_25"
-        }
-      ]
-    },
-    {
-      "@id": "estleg:MUUSEU_Par_15",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_MUUSEU"
-      ],
-      "estleg:paragrahv": "§ 15.",
-      "rdfs:label": "§ 15. Sissenõude pööramise lubamatus",
-      "estleg:sourceAct": "Muuseumiseadus",
-      "estleg:summary": "Muuseumikogule ja sellesse kuuluvale museaalile ei pöörata sissenõuet. Muuseumikogule ja sellesse kuuluvale museaalile ei pöörata sissenõuet.",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_MUUSEU_3"
-      }
-    },
-    {
-      "@id": "estleg:MUUSEU_Par_16",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_MUUSEU"
-      ],
-      "estleg:paragrahv": "§ 16.",
-      "rdfs:label": "§ 16. Muuseumikogu täiendamise põhimõtted",
-      "estleg:sourceAct": "Muuseumiseadus",
-      "estleg:summary": "1 (1) Muuseumikogu täiendatakse eesmärgipäraselt selle terviklikkuse põhimõttest lähtudes. Muuseum on oma kogu täiendamisel iseseisev. Muuseumikogu täiendatakse eesmärgipäraselt selle terviklikkuse põhimõttest lähtudes. Muuseum on oma kogu täiendamisel iseseisev. 2 (2) Muuseumikogu täiendamisel peab muuseum oma võimaluste piires välja selgitama kultuuriväärtusega asja päritolu, vältimaks muuseumikogusse niisuguste asjade soetamist, mis on omandatud ebaseaduslikult Eestis või teises riigis või on",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_MUUSEU_3"
-      },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
-      "estleg:dutyHolder": "Muuseumikogu täiendamisel",
-      "estleg:referencedBy": [
-        {
-          "@id": "estleg:MUUSEU_Par_19"
-        }
-      ]
-    },
-    {
-      "@id": "estleg:MUUSEU_Par_17",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_MUUSEU"
-      ],
-      "estleg:paragrahv": "§ 17.",
-      "rdfs:label": "§ 17. Museaali üleandmine",
-      "estleg:sourceAct": "Muuseumiseadus",
-      "estleg:summary": "1 (1) Museaali võib üle anda teisele muuseumile, kui üleandmine ei kahjusta muuseumikogu terviklikkust ja museaal on vajalik teise muuseumi kogu täiendamiseks. Museaali võib üle anda teisele muuseumile, kui üleandmine ei kahjusta muuseumikogu terviklikkust ja museaal on vajalik teise muuseumi kogu täiendamiseks. 2 (2) Museaali üleandmise otsustab üleandva muuseumi nõusolekul asutaja. Munitsipaalmuuseumi puhul otsustatakse museaali üleandmine kohaliku omavalitsuse volikogu kehtestatud korras. Mus",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_MUUSEU_3"
-      },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
-      "estleg:targetGroup": [
-        "public_body"
-      ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_kohalik_omavalitsus"
-        }
-      ],
-      "estleg:competenceType": "general",
-      "estleg:referencedBy": [
-        {
-          "@id": "estleg:MUUSEU_Par_14"
-        }
-      ]
-    },
-    {
-      "@id": "estleg:MUUSEU_Par_18",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_MUUSEU"
-      ],
-      "estleg:paragrahv": "§ 18.",
-      "rdfs:label": "§ 18. Museaalide arvelevõtmine, säilitamine ja kindlustamine",
-      "estleg:sourceAct": "Muuseumiseadus",
-      "estleg:summary": "1 (1) Museaalide arvelevõtmise ja säilitamise korra kehtestab kultuuriminister ./dyn=742417&id=25663 . Eramuuseumile on nimetatud kord soovituslik. Museaalide arvelevõtmise ja säilitamise . Eramuuseumile on nimetatud kord soovituslik. 2 (2) Museaalide üle ei peeta rahalist arvestust. Vajadusel hinnatakse museaali erilise huvi alusel mis põhineb museaali iseärasustel, arvestamata selle kasulikkust. Museaalide üle ei peeta rahalist arvestust. Vajadusel hinnatakse museaali erilise huvi alusel mis p",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_MUUSEU_3"
-      },
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_kultuuriminister"
-        }
-      ],
-      "estleg:competenceType": "regulation"
-    },
-    {
-      "@id": "estleg:MUUSEU_Par_19",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_MUUSEU"
-      ],
-      "estleg:paragrahv": "§ 19.",
-      "rdfs:label": "§ 19. Museaali muuseumikogust väljaarvamise alused",
-      "estleg:sourceAct": "Muuseumiseadus",
-      "estleg:summary": "1 (1) Museaal arvatakse muuseumikogust välja, kui museaal: 1 1) on kahjustatud ja seda ei ole võimalik taastada; 2 2) on hävinud või kaotsi läinud; 3 3) [Kehtetu]; 4 4) antakse üle teisele muuseumile (§ 17); 5 5) on soetatud heauskselt käesoleva seaduse § 16 lõikes 2 sätestatu vastaselt ja antakse välja omanikule või teisele riigile. Museaal arvatakse muuseumikogust välja, kui museaal: on kahjustatud ja seda ei ole võimalik taastada; on hävinud või kaotsi läinud; [Kehtetu]; antakse üle teisele m",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_MUUSEU_3"
-      },
-      "estleg:references": [
-        {
-          "@id": "estleg:MUUSEU_Par_16"
-        }
-      ],
-      "estleg:targetGroup": [
-        "citizen"
-      ],
-      "estleg:referencedBy": [
-        {
-          "@id": "estleg:MUUSEU_Par_14"
-        },
-        {
-          "@id": "estleg:MUUSEU_Par_28"
-        }
-      ]
-    },
-    {
-      "@id": "estleg:MUUSEU_Par_20",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_MUUSEU"
-      ],
-      "estleg:paragrahv": "§ 20.",
-      "rdfs:label": "§ 20. Museaali kasutada andmine",
-      "estleg:sourceAct": "Muuseumiseadus",
-      "estleg:summary": "Museaali võib ajutiseks kasutamiseks anda teistele muuseumidele, asutustele, juriidilistele ja füüsilistele isikutele teadustöö, eksponeerimise ja muul eesmärgil juhul, kui muuseum on veendunud museaali nõuetekohases hoidmises ja säilitamises. Museaali võib ajutiseks kasutamiseks anda teistele muuseumidele, asutustele, juriidilistele ja füüsilistele isikutele teadustöö, eksponeerimise ja muul eesmärgil juhul, kui muuseum on veendunud museaali nõuetekohases hoidmises ja säilitamises.",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_MUUSEU_3"
-      },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
-      "estleg:targetGroup": [
-        "public_body"
-      ]
-    },
-    {
-      "@id": "estleg:MUUSEU_Par_21",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_MUUSEU"
-      ],
-      "estleg:paragrahv": "§ 21.",
-      "rdfs:label": "§ 21. Muuseumisse hoiule antud kultuuriväärtusega asjad",
-      "estleg:sourceAct": "Muuseumiseadus",
-      "estleg:summary": "1 (1) Asutuste, juriidiliste ja füüsiliste isikute poolt muuseumisse hoiule antud kultuuriväärtusega asju ei arvata muuseumikogusse ja nende üle peetakse arvestust kultuuriministri kehtestatud korras ./dyn=742417&id=25663 . Asutuste, juriidiliste ja füüsiliste isikute poolt muuseumisse hoiule antud kultuuriväärtusega asju ei arvata muuseumikogusse ja nende üle peetakse arvestust 2 (2) Kultuuriväärtusega asja hoiuleandjale tagastamisest teatab muuseum Muinsuskaitseametile. Kultuuriväärtusega asja",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_MUUSEU_3"
-      },
       "estleg:targetGroup": [
         "citizen",
         "public_body"
@@ -683,70 +690,2105 @@
           "@id": "estleg:Institution_muinsuskaitseamet"
         }
       ],
+      "estleg:competenceType": "general",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:MUUSEU_Par_22"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Muuseumide andmekoguga liitunud muuseumi kogu täiendatakse eesmärgipäraselt, lähtudes muuseumi koostatud kogumispõhimõtetest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_5_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Muuseumide andmekoguga liitunud muuseumi kogumispõhimõtted kinnitab muuseumi juht, avalik-õigusliku isiku muuseumi asutaja määratud isik või otsustuskogu, arvestades muu hulgas Muinsuskaitseameti seisukohta. Muuseum avaldab kogumispõhimõtted oma veebilehel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 2"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_5_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Muuseumide andmekoguga liitunud muuseum ei võta kultuuriväärtusega asja museaalina arvele, kui: asi ei vasta muuseumi kogumispõhimõtetele; asja üleandja esitab eritingimusi, mis on vastuolus muuseumi ja selle külastajate pikaajaliste huvidega; asja üle arvestuse pidamiseks, selle säilitamiseks või eksponeerimiseks puuduvad tingimused või eelarvelised võimalused.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 3"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_5_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Muuseumikogu täiendamisel peab muuseumide andmekoguga liitunud muuseum: oma võimaluste piires välja selgitama kultuuriväärtusega asja päritolu, et vältida omaniku tahte vastaselt tema valdusest välja läinud või teisest riigist välja viidud asja museaalina arvele võtmist; arvestama teiste sama piirkonna või sarnase ainevaldkonna muuseumide ja teiste kultuuripärandiasutuste kogumispõhimõtteid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 4"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_5_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Muuseumikogu täiendamise ja kultuuriväärtusega asja muuseumisse hoiule võtmise korra kehtestab määrusega. Määruses nähakse ette asja museaalina arvele võtmise ja muuseumisse hoiule võtmise toimingute vormistamise nõuded ning museaali ja muuseumisse hoiule võetud asja kasutamiseks andmise, muuseumikogust väljaarvamise ja õigustatud isikule tagastamise toimingute vormistamise nõuded.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 5"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_6",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_muuseumiseadus"
+      ],
+      "estleg:paragrahv": "§ 6.",
+      "rdfs:label": "§ 6. Museaali ja muuseumisse hoiule võetud asja märgistamine ning säilitamine",
+      "estleg:sourceAct": "Muuseumiseadus",
+      "estleg:summary": "1 (1) Muuseumide andmekoguga liitunud muuseum märgistab iga museaali ja muuseumisse hoiule võetud asja ning tagab selle säilimise. RT I 2023-03-11 6 111032023006 2023-05-01 Muuseumide andmekoguga liitunud muuseum märgistab iga museaali ja muuseumisse hoiule võetud asja ning tagab selle säilimise. 2 (2) Museaali ja muuseumisse hoiule võetud asja allesoleku ja seisundi kontrollimiseks viivad riigimuuseum ja riigile kuuluvat muuseumikogu kasutav muuseum läbi inventuure arvestusega, et kõik museaali",
+      "estleg:legalText": "(1) Muuseumide andmekoguga liitunud muuseum märgistab iga museaali ja muuseumisse hoiule võetud asja ning tagab selle säilimise. (2) Museaali ja muuseumisse hoiule võetud asja allesoleku ja seisundi kontrollimiseks viivad riigimuuseum ja riigile kuuluvat muuseumikogu kasutav muuseum läbi inventuure arvestusega, et kõik museaalid ja muuseumisse hoiule võetud asjad oleksid üle kontrollitud vähemalt üks kord iga viie aasta järel. Muuseumi põhjendatud taotluse korral võib Muinsuskaitseamet seda tähtaega käskkirjaga pikendada. (3) Museaali ja muuseumisse hoiule võetud asja märgistamise ja säilitamise korra kehtestab määrusega.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_MUUSEU_2"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_MUUSEU_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:MUUSEU_Par_6_Lg_1"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_6_Lg_2"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_6_Lg_3"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Reg_1057192_Par_16",
+          "estleg:similarityScore": {
+            "@value": "0.441",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Muuseumide andmekoguga liitunud muuseum märgistab iga museaali ja muuseumisse hoiule võetud asja ning tagab selle säilimise.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_6_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Museaali ja muuseumisse hoiule võetud asja allesoleku ja seisundi kontrollimiseks viivad riigimuuseum ja riigile kuuluvat muuseumikogu kasutav muuseum läbi inventuure arvestusega, et kõik museaalid ja muuseumisse hoiule võetud asjad oleksid üle kontrollitud vähemalt üks kord iga viie aasta järel. Muuseumi põhjendatud taotluse korral võib Muinsuskaitseamet seda tähtaega käskkirjaga pikendada.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 2"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_6_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Museaali ja muuseumisse hoiule võetud asja märgistamise ja säilitamise korra kehtestab määrusega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 3"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_7",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_muuseumiseadus"
+      ],
+      "estleg:paragrahv": "§ 7.",
+      "rdfs:label": "§ 7. Museaali üleandmine teisele muuseumile, raamatukogule ja Rahvusarhiivile",
+      "estleg:sourceAct": "Muuseumiseadus",
+      "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_MUUSEU_2"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_MUUSEU_2"
+      }
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_8",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_muuseumiseadus"
+      ],
+      "estleg:paragrahv": "§ 8.",
+      "rdfs:label": "§ 8. Museaali kasutamiseks andmine",
+      "estleg:sourceAct": "Muuseumiseadus",
+      "estleg:summary": "Riigile kuuluvasse muuseumikogussse arvatud museaali võib anda kasutamiseks teisele muuseumile, asutusele, juriidilisele ja füüsilisele isikule teadustöö, eksponeerimise ja muul eesmärgil, kui muuseum on veendunud museaali nõuetekohases säilitamises. Riigile kuuluvasse muuseumikogussse arvatud museaali võib anda kasutamiseks teisele muuseumile, asutusele, juriidilisele ja füüsilisele isikule teadustöö, eksponeerimise ja muul eesmärgil, kui muuseum on veendunud museaali nõuetekohases säilitamises",
+      "estleg:legalText": "Riigile kuuluvasse muuseumikogussse arvatud museaali võib anda kasutamiseks teisele muuseumile, asutusele, juriidilisele ja füüsilisele isikule teadustöö, eksponeerimise ja muul eesmärgil, kui muuseum on veendunud museaali nõuetekohases säilitamises.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_MUUSEU_2"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_MUUSEU_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:MUUSEU_Par_8_Lg_Unknown_1"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "public_body"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_8_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Riigile kuuluvasse muuseumikogussse arvatud museaali võib anda kasutamiseks teisele muuseumile, asutusele, juriidilisele ja füüsilisele isikule teadustöö, eksponeerimise ja muul eesmärgil, kui muuseum on veendunud museaali nõuetekohases säilitamises.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_8"
+      }
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_9",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_muuseumiseadus"
+      ],
+      "estleg:paragrahv": "§ 9.",
+      "rdfs:label": "§ 9. Riigile kuuluva muuseumikogu kasutamine",
+      "estleg:sourceAct": "Muuseumiseadus",
+      "estleg:summary": "1 (1) Riigile kuuluva muuseumikogu või selle alakogu (edaspidi käesolevas paragrahvis kogu) võib anda riigi sihtasutuse muuseumile, avalik-õigusliku isiku muuseumile, munitsipaalmuuseumile ja eramuuseumile tasuta kasutamiseks halduslepingu alusel juhul, kui tema tegevus vastab käesoleva seaduse § 2 lõikes 1 sätestatule. RT I 2023-03-11 6 111032023006 2023-05-01 Riigile kuuluva muuseumikogu või selle alakogu (edaspidi käesolevas paragrahvis kogu) võib anda riigi sihtasutuse muuseumile, avalik-õig",
+      "estleg:legalText": "(1) Riigile kuuluva muuseumikogu või selle alakogu (edaspidi käesolevas paragrahvis kogu) võib anda riigi sihtasutuse muuseumile, avalik-õigusliku isiku muuseumile, munitsipaalmuuseumile ja eramuuseumile tasuta kasutamiseks halduslepingu alusel juhul, kui tema tegevus vastab käesoleva seaduse § 2 lõikes 1 sätestatule. (2) Halduslepingu kogu kasutamiseks sõlmib minister, kelle juhitav ministeerium on kogu kui riigivara valitseja riigivaraseaduse tähenduses. (3) Halduslepingus nähakse ette ülesanded kogu säilitamisel ja kasutamisel, kogu täiendamise kohustus ja tingimused, nimetatud tegevuseks ettenähtud riigieelarvelise toetuse suurus, selle kasutamise sihtotstarve ja toetuse kasutamise aruande esitamise kord, kogu kasutamise tähtaeg, kui kogu antakse kasutamiseks tähtajaliselt, ning halduslepingu lõpetamise ja kogu tagasinõudmise alused. Halduslepingus võib ette näha kogu üldsusele vahendamisega seotud teenuste eest tasu võtmise tingimused, arvestades käesoleva seaduse § 20 lõikes 3 sätestatut. (4) Kogu tähtajaliselt kasutamiseks andmisel võib tähtaeg ületada kümmet aastat. (5) Halduslepingule lisatakse museaalide nimekiri, milles on ära märgitud iga museaali seisund ja arvestusdokumentide loetelu. (6) Kui muuseum, kes kasutab riigile kuuluvat kogu, lõpetab tegevuse, otsustab kogu üleandmise teisele käesoleva paragrahvi lõikes 1 nimetatud muuseumile halduslepingu sõlminud minister.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_MUUSEU_2"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_MUUSEU_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:MUUSEU_Par_9_Lg_1"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_9_Lg_2"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_9_Lg_3"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_9_Lg_4"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_9_Lg_5"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_9_Lg_6"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "public_body",
+        "official",
+        "ngo"
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:MUUSEU_Par_2"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:MUUSEU_Par_3"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_10"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_9_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Riigile kuuluva muuseumikogu või selle alakogu (edaspidi käesolevas paragrahvis kogu) võib anda riigi sihtasutuse muuseumile, avalik-õigusliku isiku muuseumile, munitsipaalmuuseumile ja eramuuseumile tasuta kasutamiseks halduslepingu alusel juhul, kui tema tegevus vastab käesoleva seaduse § 2 lõikes 1 sätestatule.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 1"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_9_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Halduslepingu kogu kasutamiseks sõlmib minister, kelle juhitav ministeerium on kogu kui riigivara valitseja riigivaraseaduse tähenduses.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 2"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_9_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Halduslepingus nähakse ette ülesanded kogu säilitamisel ja kasutamisel, kogu täiendamise kohustus ja tingimused, nimetatud tegevuseks ettenähtud riigieelarvelise toetuse suurus, selle kasutamise sihtotstarve ja toetuse kasutamise aruande esitamise kord, kogu kasutamise tähtaeg, kui kogu antakse kasutamiseks tähtajaliselt, ning halduslepingu lõpetamise ja kogu tagasinõudmise alused. Halduslepingus võib ette näha kogu üldsusele vahendamisega seotud teenuste eest tasu võtmise tingimused, arvestades käesoleva seaduse § 20 lõikes 3 sätestatut.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 3"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_9_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Kogu tähtajaliselt kasutamiseks andmisel võib tähtaeg ületada kümmet aastat.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 4"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_9_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Halduslepingule lisatakse museaalide nimekiri, milles on ära märgitud iga museaali seisund ja arvestusdokumentide loetelu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 5"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_9_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Kui muuseum, kes kasutab riigile kuuluvat kogu, lõpetab tegevuse, otsustab kogu üleandmise teisele käesoleva paragrahvi lõikes 1 nimetatud muuseumile halduslepingu sõlminud minister.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 6"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_10",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_muuseumiseadus"
+      ],
+      "estleg:paragrahv": "§ 10.",
+      "rdfs:label": "§ 10. Muuseumikogu üleandmine riigimuuseumi tegevuse lõpetamisel",
+      "estleg:sourceAct": "Muuseumiseadus",
+      "estleg:summary": "Riigimuuseumi tegevuse lõpetamisel antakse muuseumikogu koos arvestusdokumentatsiooniga üle teisele muuseumide andmekoguga liitunud muuseumile, raamatukogule, Rahvusarhiivile või kohaliku omavalitsuse arhiivile või kasutamiseks riigi sihtasutuse muuseumile, avalik-õigusliku isiku muuseumile, munitsipaalmuuseumile või eramuuseumile käesoleva seaduse §-s 9 sätestatud korras, säilitades võimaluse korral alakogudeta muuseumikogu või alakogu terviklikkuse. RT I 2023-03-11 6 111032023006 2023-05-01 Ri",
+      "estleg:legalText": "Riigimuuseumi tegevuse lõpetamisel antakse muuseumikogu koos arvestusdokumentatsiooniga üle teisele muuseumide andmekoguga liitunud muuseumile, raamatukogule, Rahvusarhiivile või kohaliku omavalitsuse arhiivile või kasutamiseks riigi sihtasutuse muuseumile, avalik-õigusliku isiku muuseumile, munitsipaalmuuseumile või eramuuseumile käesoleva seaduse §-s 9 sätestatud korras, säilitades võimaluse korral alakogudeta muuseumikogu või alakogu terviklikkuse.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_MUUSEU_2"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_MUUSEU_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:MUUSEU_Par_10_Lg_Unknown_1"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "public_body",
+        "ngo"
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:MUUSEU_Par_9"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        }
+      ],
       "estleg:competenceType": "general"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_10_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Riigimuuseumi tegevuse lõpetamisel antakse muuseumikogu koos arvestusdokumentatsiooniga üle teisele muuseumide andmekoguga liitunud muuseumile, raamatukogule, Rahvusarhiivile või kohaliku omavalitsuse arhiivile või kasutamiseks riigi sihtasutuse muuseumile, avalik-õigusliku isiku muuseumile, munitsipaalmuuseumile või eramuuseumile käesoleva seaduse §-s 9 sätestatud korras, säilitades võimaluse korral alakogudeta muuseumikogu või alakogu terviklikkuse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_10"
+      }
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_11",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_muuseumiseadus"
+      ],
+      "estleg:paragrahv": "§ 11.",
+      "rdfs:label": "§ 11. Museaali muuseumikogust väljaarvamine",
+      "estleg:sourceAct": "Muuseumiseadus",
+      "estleg:summary": "1 (1) Muuseumide andmekoguga liitunud muuseumi museaal arvatakse muuseumikogust välja, kui museaal: 1 1) on hävinud; 2 2) on enne muuseumikogusse arvamist omaniku tahte vastaselt tema valdusest välja läinud või teisest riigist välja viidud. Sellisel juhul antakse museaal üle omanikule või tagastatakse teisele riigile. Muuseumide andmekoguga liitunud muuseumi museaal arvatakse muuseumikogust välja, kui museaal: on hävinud; on enne muuseumikogusse arvamist omaniku tahte vastaselt tema valdusest vä",
+      "estleg:legalText": "(1) Muuseumide andmekoguga liitunud muuseumi museaal arvatakse muuseumikogust välja, kui museaal: on hävinud; on enne muuseumikogusse arvamist omaniku tahte vastaselt tema valdusest välja läinud või teisest riigist välja viidud. Sellisel juhul antakse museaal üle omanikule või tagastatakse teisele riigile. (2) Museaali võib muuseumikogust välja arvata, kui: museaali kuulumine muuseumikogusse ei ole kooskõlas muuseumi kogumispõhimõtetega; sama muuseumi muuseumikogus või mõnes teises riigile kuuluvas muuseumikogus leidub museaaliga olulisel määral sarnaseid museaale, mis on paremas seisukorras või mille kohta teadaolev kultuuriväärtuslik teave on täielikum; museaal ei ole leitav ega tuvastatav ja on piisav alus arvata, et see ei ole säilinud; museaal on kahjustatud ja seda ei ole võimalik või otstarbekas taastada. (3) Museaali väljaarvamise muuseumikogust käesoleva paragrahvi lõigetes 1 ja 2 sätestatud alustel ning museaali võõrandamise viisi valiku otsustab muuseumi juht, arvestades muuseumi juhi moodustatud, vähemalt kolmeliikmelise komisjoni põhjendatud ettepanekut. (4) Riigile kuuluvast muuseumikogust käesoleva paragrahvi lõike 2 punktides 1, 2 ja 4 sätestatud alusel välja arvatud asi võetakse samas muuseumis kasutusse muuseumi ülesandeid toetaval eesmärgil, antakse üle teisele muuseumile, sõltumata muuseumi omandivormist, või valitsusasutusele, sellisele kohaliku omavalitsuse üksuse asutusele või juriidilisele isikule, kes tegutseb avalikes huvides, või tagastatakse museaali muuseumile annetanud või müünud isikule. (5) Kui käesoleva paragrahvi lõikes 4 sätestatud tegevused ei ole võimalikud, võõrandatakse asi tasu eest avalikul enampakkumisel, sõltumata museaali harilikust väärtusest. (6) Avalik enampakkumine viiakse läbi elektrooniliselt ja selle läbiviija riigivaraseaduse tähenduses on Muinsuskaitseamet. (7) Kui võõrandamise kulud ületaksid riigivara valitseja hinnangul saadavat tulu või kui asja ei õnnestu võõrandada avalikul enampakkumisel, kantakse see maha ja hävitatakse riigivaraseaduse § 55 lõike 2 alusel riigivara valitseja kehtestatud riigivara kõlbmatuks tunnistamise, mahakandmise ja hävitamise korra kohaselt.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_MUUSEU_2"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_MUUSEU_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:MUUSEU_Par_11_Lg_1"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_11_Lg_2"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_11_Lg_3"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_11_Lg_4"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_11_Lg_5"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_11_Lg_6"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_11_Lg_7"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "public_body"
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:MUUSEU_Par_32"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_11_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Muuseumide andmekoguga liitunud muuseumi museaal arvatakse muuseumikogust välja, kui museaal: on hävinud; on enne muuseumikogusse arvamist omaniku tahte vastaselt tema valdusest välja läinud või teisest riigist välja viidud. Sellisel juhul antakse museaal üle omanikule või tagastatakse teisele riigile.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 1"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_11_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Museaali võib muuseumikogust välja arvata, kui: museaali kuulumine muuseumikogusse ei ole kooskõlas muuseumi kogumispõhimõtetega; sama muuseumi muuseumikogus või mõnes teises riigile kuuluvas muuseumikogus leidub museaaliga olulisel määral sarnaseid museaale, mis on paremas seisukorras või mille kohta teadaolev kultuuriväärtuslik teave on täielikum; museaal ei ole leitav ega tuvastatav ja on piisav alus arvata, et see ei ole säilinud; museaal on kahjustatud ja seda ei ole võimalik või otstarbekas taastada.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 2"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_11_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Museaali väljaarvamise muuseumikogust käesoleva paragrahvi lõigetes 1 ja 2 sätestatud alustel ning museaali võõrandamise viisi valiku otsustab muuseumi juht, arvestades muuseumi juhi moodustatud, vähemalt kolmeliikmelise komisjoni põhjendatud ettepanekut.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 3"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_11_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Riigile kuuluvast muuseumikogust käesoleva paragrahvi lõike 2 punktides 1, 2 ja 4 sätestatud alusel välja arvatud asi võetakse samas muuseumis kasutusse muuseumi ülesandeid toetaval eesmärgil, antakse üle teisele muuseumile, sõltumata muuseumi omandivormist, või valitsusasutusele, sellisele kohaliku omavalitsuse üksuse asutusele või juriidilisele isikule, kes tegutseb avalikes huvides, või tagastatakse museaali muuseumile annetanud või müünud isikule.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 4"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_11_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Kui käesoleva paragrahvi lõikes 4 sätestatud tegevused ei ole võimalikud, võõrandatakse asi tasu eest avalikul enampakkumisel, sõltumata museaali harilikust väärtusest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 5"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_11_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Avalik enampakkumine viiakse läbi elektrooniliselt ja selle läbiviija riigivaraseaduse tähenduses on Muinsuskaitseamet.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 6"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_11_Lg_7",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "7",
+      "estleg:legalText": "(7) Kui võõrandamise kulud ületaksid riigivara valitseja hinnangul saadavat tulu või kui asja ei õnnestu võõrandada avalikul enampakkumisel, kantakse see maha ja hävitatakse riigivaraseaduse § 55 lõike 2 alusel riigivara valitseja kehtestatud riigivara kõlbmatuks tunnistamise, mahakandmise ja hävitamise korra kohaselt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 7"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_12",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_muuseumiseadus"
+      ],
+      "estleg:paragrahv": "§ 12.",
+      "rdfs:label": "§ 12. Museaali käsutamise kitsendused",
+      "estleg:sourceAct": "Muuseumiseadus",
+      "estleg:summary": "1 (1) Museaali ei või võõrandada ega koormata pandiga, kui käesolevas seaduses ei ole sätestatud teisiti. Museaali ei või võõrandada ega koormata pandiga, kui käesolevas seaduses ei ole sätestatud teisiti. 2 (2) Kehtetu - RT I 2023-03-11 6 111032023006 2023-05-01 Kehtetu - 3 (3) Riigile kuuluvasse muuseumikogusse arvatud museaali võib kasutamiseks anda ja muuseumikogust välja arvata üksnes käesolevas seaduses sätestatud alustel. Riigile kuuluvasse muuseumikogusse arvatud museaali võib kasutamise",
+      "estleg:legalText": "(1) Museaali ei või võõrandada ega koormata pandiga, kui käesolevas seaduses ei ole sätestatud teisiti. (2) Kehtetu - (3) Riigile kuuluvasse muuseumikogusse arvatud museaali võib kasutamiseks anda ja muuseumikogust välja arvata üksnes käesolevas seaduses sätestatud alustel. (4) Avalik-õigusliku isiku muuseumi, munitsipaalmuuseumi või riigieelarvest tegevuse lõpetamisele eelnenud kümne aasta jooksul vähemalt ühel korral tegevustoetust saanud eramuuseumi tegevuse lõpetamisel on museaali tasuta võõrandamise korral muuseumikogu omanik kohustatud seda esmalt pakkuma riigile ning pärast riigi loobumist võib ta selle võõrandada muule isikule. Museaali tasu eest võõrandamise korral on ostueesõigus riigil. Museaali võõrandamisel kohaldatakse ostueesõigusele võlaõigusseaduses ostueesõiguse kohta sätestatut.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_MUUSEU_2"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_MUUSEU_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:MUUSEU_Par_12_Lg_1"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_12_Lg_2"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_12_Lg_3"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_12_Lg_4"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "public_body"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_12_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Museaali ei või võõrandada ega koormata pandiga, kui käesolevas seaduses ei ole sätestatud teisiti.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 1"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_12_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 2"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_12_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Riigile kuuluvasse muuseumikogusse arvatud museaali võib kasutamiseks anda ja muuseumikogust välja arvata üksnes käesolevas seaduses sätestatud alustel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 3"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_12_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Avalik-õigusliku isiku muuseumi, munitsipaalmuuseumi või riigieelarvest tegevuse lõpetamisele eelnenud kümne aasta jooksul vähemalt ühel korral tegevustoetust saanud eramuuseumi tegevuse lõpetamisel on museaali tasuta võõrandamise korral muuseumikogu omanik kohustatud seda esmalt pakkuma riigile ning pärast riigi loobumist võib ta selle võõrandada muule isikule. Museaali tasu eest võõrandamise korral on ostueesõigus riigil. Museaali võõrandamisel kohaldatakse ostueesõigusele võlaõigusseaduses ostueesõiguse kohta sätestatut.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 4"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_13",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_muuseumiseadus"
+      ],
+      "estleg:paragrahv": "§ 13.",
+      "rdfs:label": "§ 13. Muuseumikogule ja museaalile sissenõude pööramine",
+      "estleg:sourceAct": "Muuseumiseadus",
+      "estleg:summary": "Muuseumikogule ja sellesse kuuluvale museaalile sissenõude pööramisel kohaldatakse täitemenetluse seadustikus sätestatud piiranguid. Muuseumikogule ja sellesse kuuluvale museaalile sissenõude pööramisel kohaldatakse täitemenetluse seadustikus sätestatud piiranguid.",
+      "estleg:legalText": "Muuseumikogule ja sellesse kuuluvale museaalile sissenõude pööramisel kohaldatakse täitemenetluse seadustikus sätestatud piiranguid.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_MUUSEU_2"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_MUUSEU_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:MUUSEU_Par_13_Lg_Unknown_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_13_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Muuseumikogule ja sellesse kuuluvale museaalile sissenõude pööramisel kohaldatakse täitemenetluse seadustikus sätestatud piiranguid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_13"
+      }
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_14",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_muuseumiseadus"
+      ],
+      "estleg:paragrahv": "§ 14.",
+      "rdfs:label": "§ 14. Hoiule võetud vallasmälestise tagastamine",
+      "estleg:sourceAct": "Muuseumiseadus",
+      "estleg:summary": "Muuseumisse hoiule võetud vallasmälestise õigustatud isikule tagastamisest teatab muuseumide andmekoguga liitunud muuseum Muinsuskaitseametile. Muuseumisse hoiule võetud vallasmälestise õigustatud isikule tagastamisest teatab muuseumide andmekoguga liitunud muuseum Muinsuskaitseametile.",
+      "estleg:legalText": "Muuseumisse hoiule võetud vallasmälestise õigustatud isikule tagastamisest teatab muuseumide andmekoguga liitunud muuseum Muinsuskaitseametile.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_MUUSEU_2"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_MUUSEU_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:MUUSEU_Par_14_Lg_Unknown_1"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen"
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_muinsuskaitseamet"
+        }
+      ],
+      "estleg:competenceType": "general"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_14_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Muuseumisse hoiule võetud vallasmälestise õigustatud isikule tagastamisest teatab muuseumide andmekoguga liitunud muuseum Muinsuskaitseametile.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_14"
+      }
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_15",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_muuseumiseadus"
+      ],
+      "estleg:paragrahv": "§ 15.",
+      "rdfs:label": "§ 15. Muuseumide andmekogu",
+      "estleg:sourceAct": "Muuseumiseadus",
+      "estleg:summary": "1 (1) Kultuuriväärtusega asja museaalina arvele võtmiseks, museaali ja muuseumisse hoiule võetud asja kohta kogutud andmete säilitamiseks ning museaali ja muuseumisse hoiule võetud asjaga tehtavate toimingute registreerimiseks, samuti museaali ja muuseumisse hoiule võetud asja avalikkusele tasuta tutvustamiseks asutab valdkonna eest vastutav minister muuseumide andmekogu. Muuseumide andmekogu põhimääruse kehtestab valdkonna eest vastutav minister ./dyn=112072025021&id=110072013070;118072023002 .",
+      "estleg:legalText": "(1) Kultuuriväärtusega asja museaalina arvele võtmiseks, museaali ja muuseumisse hoiule võetud asja kohta kogutud andmete säilitamiseks ning museaali ja muuseumisse hoiule võetud asjaga tehtavate toimingute registreerimiseks, samuti museaali ja muuseumisse hoiule võetud asja avalikkusele tasuta tutvustamiseks asutab valdkonna eest vastutav minister muuseumide andmekogu. Muuseumide andmekogu põhimääruse kehtestab (2) Muuseumide andmekogus võib pidada arvestust abikogusse arvatud asja, selle kohta kogutud andmete ja abikogusse arvatud asjaga tehtavate toimingute kohta. (3) Muuseumide andmekogu vastutav töötleja on Muinsuskaitseamet. (4) Muuseumide andmekogu volitatud töötleja ülesandeid võib halduslepingu alusel täita eraõiguslik juriidiline isik vastutava töötleja poolt ettenähtud ulatuses. (5) Muuseumide andmekoguga liitumine on kohustuslik riigimuuseumile ja muuseumile, kellega sõlmitakse käesoleva seaduse § 9 kohaselt haldusleping riigile kuuluva muuseumikogu kasutamiseks, välja arvatud looduse ainevaldkonna muuseumile muuseumikogu puhul, mille kohta on andmed üldsusele kättesaadavad muul viisil. (6) Avalik-õigusliku isiku muuseumil, munitsipaalmuuseumil ja eramuuseumil on õigus muuseumide andmekoguga liituda, esitades selleks taotluse Muinsuskaitseametile. Muinsuskaitseamet otsustab muuseumi liitumise tingimusel, et muuseumi tegevus vastab käesoleva seaduse § 2 lõikes 1 sätestatule. Liitumine muuseumide andmekoguga toimub lepingu sõlmimisega muuseumi ja Muinsuskaitseameti vahel. (7) Muuseumide andmekoguga liitumine ja andmekogu kasutamine on muuseumidele tasuta. (8) Kehtetu -",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_MUUSEU_2"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_MUUSEU_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:MUUSEU_Par_15_Lg_1"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_15_Lg_2"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_15_Lg_3"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_15_Lg_4"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_15_Lg_5"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_15_Lg_6"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_15_Lg_7"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_15_Lg_8"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "business",
+        "public_body",
+        "official"
+      ]
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_15_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kultuuriväärtusega asja museaalina arvele võtmiseks, museaali ja muuseumisse hoiule võetud asja kohta kogutud andmete säilitamiseks ning museaali ja muuseumisse hoiule võetud asjaga tehtavate toimingute registreerimiseks, samuti museaali ja muuseumisse hoiule võetud asja avalikkusele tasuta tutvustamiseks asutab valdkonna eest vastutav minister muuseumide andmekogu. Muuseumide andmekogu põhimääruse kehtestab",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 1"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_15_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Muuseumide andmekogus võib pidada arvestust abikogusse arvatud asja, selle kohta kogutud andmete ja abikogusse arvatud asjaga tehtavate toimingute kohta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 2"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_15_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Muuseumide andmekogu vastutav töötleja on Muinsuskaitseamet.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 3"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_15_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Muuseumide andmekogu volitatud töötleja ülesandeid võib halduslepingu alusel täita eraõiguslik juriidiline isik vastutava töötleja poolt ettenähtud ulatuses.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 4"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_15_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Muuseumide andmekoguga liitumine on kohustuslik riigimuuseumile ja muuseumile, kellega sõlmitakse käesoleva seaduse § 9 kohaselt haldusleping riigile kuuluva muuseumikogu kasutamiseks, välja arvatud looduse ainevaldkonna muuseumile muuseumikogu puhul, mille kohta on andmed üldsusele kättesaadavad muul viisil.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 5"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_15_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Avalik-õigusliku isiku muuseumil, munitsipaalmuuseumil ja eramuuseumil on õigus muuseumide andmekoguga liituda, esitades selleks taotluse Muinsuskaitseametile. Muinsuskaitseamet otsustab muuseumi liitumise tingimusel, et muuseumi tegevus vastab käesoleva seaduse § 2 lõikes 1 sätestatule. Liitumine muuseumide andmekoguga toimub lepingu sõlmimisega muuseumi ja Muinsuskaitseameti vahel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 6"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_15_Lg_7",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "7",
+      "estleg:legalText": "(7) Muuseumide andmekoguga liitumine ja andmekogu kasutamine on muuseumidele tasuta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 7"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_15_Lg_8",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "8",
+      "estleg:legalText": "(8) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 8"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_16",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_muuseumiseadus"
+      ],
+      "estleg:paragrahv": "§ 16.",
+      "rdfs:label": "§ 16. Isikuandmete töötlemine ja autoriõiguse erisused",
+      "estleg:sourceAct": "Muuseumiseadus",
+      "estleg:summary": "1 (1) Museaali digitaalne kujutis, digitaalne museaal ning museaali ja digitaalset kujutist kirjeldavad andmed tehakse üldsusele juurdepääsupiiranguta kättesaadavaks muuseumide andmekogu kaudu. Museaali digitaalne kujutis, digitaalne museaal ning museaali ja digitaalset kujutist kirjeldavad andmed tehakse üldsusele juurdepääsupiiranguta kättesaadavaks muuseumide andmekogu kaudu. 2 (2) Kui museaal või seda kirjeldavad andmed muuseumi andmekogus sisaldavad isikuandmeid, sealhulgas eriliiki isikuan",
+      "estleg:legalText": "(1) Museaali digitaalne kujutis, digitaalne museaal ning museaali ja digitaalset kujutist kirjeldavad andmed tehakse üldsusele juurdepääsupiiranguta kättesaadavaks muuseumide andmekogu kaudu. (2) Kui museaal või seda kirjeldavad andmed muuseumi andmekogus sisaldavad isikuandmeid, sealhulgas eriliiki isikuandmeid, võib muuseum isikuandmeid töödelda käesoleva seaduse eesmärkide täitmiseks, arvestades käesolevas paragrahvis toodud tingimusi. Muuseumi all mõistetakse käesolevas paragrahvis käesoleva seaduse § 1 lõikes 2 nimetatud muuseumi, avalik-õigusliku isiku muuseumi, munitsipaalmuuseumi, muuseumide andmekoguga liitunud muuseumi ja § 21 alusel riigieelarvest tegevustoetust saanud muuseumi. (3) Museaali digitaalne kujutis, digitaalne museaal ning museaali, digitaalset museaali ja museaali digitaalset kujutist kirjeldavad andmed, mille autoriõigused või autoriõigusega kaasnevad õigused kuuluvad seaduse või tehingu alusel muuseumile, on taaskasutatavad avaliku teabe seaduses sätestatud tingimustel ja korras, arvestades käesoleva seaduse ja autoriõiguse seadusega ettenähtud erisusi ning viidates museaalile ja muuseumile, mille muuseumikogusse kasutatav digitaalne museaal või museaali digitaalne kujutis kuulub. (4) Andmesubjektil on õigus igal ajal nõuda museaalis või seda kirjeldavates andmetes sisalduvate isikuandmete üldsusele kättesaadavaks tegemise lõpetamist muuseumide andmekogus, välja arvatud juhul, kui isikuandmete jätkuv üldsusele kättesaadavaks tegemine ei kahjusta ülemäära andmesubjekti õigusi. (5) Kui otsustatakse lõpetada museaali levitamine või üldsusele kättesaadavaks tegemine, võib isik teadus- ja õppetöö eesmärgil taotleda juurdepääsu selle muuseumi kaudu, kelle muuseumikogusse museaal kuulub. Juurdepääsuõiguse andmise otsustab muuseumi juht või muuseumi juhi määratud isik, avalik-õigusliku isiku muuseumi asutaja määratud isik või otsustuskogu, kes hindab otsuse tegemisel taotluse põhjendatust, juurdepääsu vajadust ning üldsuse hulgas levitamise keelamise põhjust.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_MUUSEU_2"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_MUUSEU_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:MUUSEU_Par_16_Lg_1"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_16_Lg_2"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_16_Lg_3"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_16_Lg_4"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_16_Lg_5"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "public_body",
+        "official"
+      ]
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_16_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Museaali digitaalne kujutis, digitaalne museaal ning museaali ja digitaalset kujutist kirjeldavad andmed tehakse üldsusele juurdepääsupiiranguta kättesaadavaks muuseumide andmekogu kaudu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 1"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_16_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kui museaal või seda kirjeldavad andmed muuseumi andmekogus sisaldavad isikuandmeid, sealhulgas eriliiki isikuandmeid, võib muuseum isikuandmeid töödelda käesoleva seaduse eesmärkide täitmiseks, arvestades käesolevas paragrahvis toodud tingimusi. Muuseumi all mõistetakse käesolevas paragrahvis käesoleva seaduse § 1 lõikes 2 nimetatud muuseumi, avalik-õigusliku isiku muuseumi, munitsipaalmuuseumi, muuseumide andmekoguga liitunud muuseumi ja § 21 alusel riigieelarvest tegevustoetust saanud muuseumi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 2"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_16_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Museaali digitaalne kujutis, digitaalne museaal ning museaali, digitaalset museaali ja museaali digitaalset kujutist kirjeldavad andmed, mille autoriõigused või autoriõigusega kaasnevad õigused kuuluvad seaduse või tehingu alusel muuseumile, on taaskasutatavad avaliku teabe seaduses sätestatud tingimustel ja korras, arvestades käesoleva seaduse ja autoriõiguse seadusega ettenähtud erisusi ning viidates museaalile ja muuseumile, mille muuseumikogusse kasutatav digitaalne museaal või museaali digitaalne kujutis kuulub.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 3"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_16_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Andmesubjektil on õigus igal ajal nõuda museaalis või seda kirjeldavates andmetes sisalduvate isikuandmete üldsusele kättesaadavaks tegemise lõpetamist muuseumide andmekogus, välja arvatud juhul, kui isikuandmete jätkuv üldsusele kättesaadavaks tegemine ei kahjusta ülemäära andmesubjekti õigusi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 4"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_16_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Kui otsustatakse lõpetada museaali levitamine või üldsusele kättesaadavaks tegemine, võib isik teadus- ja õppetöö eesmärgil taotleda juurdepääsu selle muuseumi kaudu, kelle muuseumikogusse museaal kuulub. Juurdepääsuõiguse andmise otsustab muuseumi juht või muuseumi juhi määratud isik, avalik-õigusliku isiku muuseumi asutaja määratud isik või otsustuskogu, kes hindab otsuse tegemisel taotluse põhjendatust, juurdepääsu vajadust ning üldsuse hulgas levitamise keelamise põhjust.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 5"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_17",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_muuseumiseadus"
+      ],
+      "estleg:paragrahv": "§ 17.",
+      "rdfs:label": "§ 17. Riigimuuseumi põhimäärus",
+      "estleg:sourceAct": "Muuseumiseadus",
+      "estleg:summary": "Riigimuuseumi põhimääruse kehtestab minister ./dyn=112072025021&id=110072013044;110072013045;110072013048;110072013050;110072013051;110072013054;110072013061;110072013064;110072013067;112072013032 määrusega, kui riigimuuseum on ministeeriumi hallatav riigiasutus, ning ministeeriumi hallatava riigiasutuse või valitsusasutuse juht käskkirjaga, kui riigimuuseum on selle asutuse struktuuriüksus. Riigimuuseumi põhimääruse määrusega, kui riigimuuseum on ministeeriumi hallatav riigiasutus, ning ministe",
+      "estleg:legalText": "Riigimuuseumi põhimääruse määrusega, kui riigimuuseum on ministeeriumi hallatav riigiasutus, ning ministeeriumi hallatava riigiasutuse või valitsusasutuse juht käskkirjaga, kui riigimuuseum on selle asutuse struktuuriüksus.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_MUUSEU_3"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_MUUSEU_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:MUUSEU_Par_17_Lg_Unknown_1"
+        }
+      ],
+      "estleg:targetGroup": [
+        "public_body",
+        "official"
+      ]
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_17_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Riigimuuseumi põhimääruse määrusega, kui riigimuuseum on ministeeriumi hallatav riigiasutus, ning ministeeriumi hallatava riigiasutuse või valitsusasutuse juht käskkirjaga, kui riigimuuseum on selle asutuse struktuuriüksus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_17"
+      }
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_18",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_muuseumiseadus"
+      ],
+      "estleg:paragrahv": "§ 18.",
+      "rdfs:label": "§ 18. Riigimuuseumi ja riigi sihtasutuse muuseumi juhi vaba ametikoha täitmine",
+      "estleg:sourceAct": "Muuseumiseadus",
+      "estleg:summary": "1 (1) Riigimuuseumi ja riigi sihtasutuse muuseumi juhi vaba ametikoha täitmiseks korraldatakse avalik konkurss. Riigimuuseumi ja riigi sihtasutuse muuseumi juhi vaba ametikoha täitmiseks korraldatakse avalik konkurss. 2 (2) Kui riigimuuseum on ministeeriumi hallatav riigiasutus, kehtestab riigimuuseumi juhi kandidaadile esitatavad nõuded ja avaliku konkursi läbiviimise korra minister ./dyn=112072025021&id=110072013071;129072013003;115112016008 määrusega. Kui riigimuuseum on ministeeriumi hallata",
+      "estleg:legalText": "(1) Riigimuuseumi ja riigi sihtasutuse muuseumi juhi vaba ametikoha täitmiseks korraldatakse avalik konkurss. (2) Kui riigimuuseum on ministeeriumi hallatav riigiasutus, kehtestab riigimuuseumi juhi kandidaadile esitatavad nõuded ja avaliku konkursi läbiviimise korra määrusega. (3) Kui riigimuuseum on ministeeriumi hallatava riigiasutuse või valitsusasutuse struktuuriüksus, kehtestab riigimuuseumi juhi kandidaadile esitatavad nõuded ja avaliku konkursi läbiviimise korra selle riigiasutuse või valitsusasutuse juht käskkirjaga. (4) Riigi sihtasutuse muuseumi juhi avaliku konkursi korraldamise tingimused ja kord sätestatakse sihtasutuse põhikirjas. (5) Minister või ministeeriumi hallatava riigiasutuse või valitsusasutuse juht sõlmib riigimuuseumi juhiga tähtajalise töölepingu kuni viieks aastaks. (6) Riigi sihtasutuse nõukogu esimees sõlmib riigi sihtasutuse muuseumi juhiga juhatuse liikme lepingu kuni viieks aastaks. (7) Riigimuuseumi juhi tähtajalist töölepingut ja riigi sihtasutuse muuseumi juhatuse liikme lepingut võib avalikku konkurssi korraldamata pikendada üks kord. (8) Kui riigi sihtasutuse muuseumi juhi vaba ametikohta ei ole mõjuval põhjusel võimalik avaliku konkursi korras täita, määrab riigi sihtasutuse muuseumi nõukogu muuseumi juhi sihtasutuse asutaja või asutajate nõusolekul kuni üheks aastaks avalikku konkurssi korraldamata.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_MUUSEU_3"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_MUUSEU_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:MUUSEU_Par_18_Lg_1"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_18_Lg_2"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_18_Lg_3"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_18_Lg_4"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_18_Lg_5"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_18_Lg_6"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_18_Lg_7"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_18_Lg_8"
+        }
+      ],
+      "estleg:targetGroup": [
+        "business",
+        "public_body",
+        "official",
+        "ngo"
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Reg_1036559_Par_2",
+          "estleg:similarityScore": {
+            "@value": "0.324",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_18_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Riigimuuseumi ja riigi sihtasutuse muuseumi juhi vaba ametikoha täitmiseks korraldatakse avalik konkurss.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_18"
+      },
+      "rdfs:label": "§ 18 lg 1"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_18_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kui riigimuuseum on ministeeriumi hallatav riigiasutus, kehtestab riigimuuseumi juhi kandidaadile esitatavad nõuded ja avaliku konkursi läbiviimise korra määrusega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_18"
+      },
+      "rdfs:label": "§ 18 lg 2"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_18_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kui riigimuuseum on ministeeriumi hallatava riigiasutuse või valitsusasutuse struktuuriüksus, kehtestab riigimuuseumi juhi kandidaadile esitatavad nõuded ja avaliku konkursi läbiviimise korra selle riigiasutuse või valitsusasutuse juht käskkirjaga.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_18"
+      },
+      "rdfs:label": "§ 18 lg 3"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_18_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Riigi sihtasutuse muuseumi juhi avaliku konkursi korraldamise tingimused ja kord sätestatakse sihtasutuse põhikirjas.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_18"
+      },
+      "rdfs:label": "§ 18 lg 4"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_18_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Minister või ministeeriumi hallatava riigiasutuse või valitsusasutuse juht sõlmib riigimuuseumi juhiga tähtajalise töölepingu kuni viieks aastaks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_18"
+      },
+      "rdfs:label": "§ 18 lg 5"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_18_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Riigi sihtasutuse nõukogu esimees sõlmib riigi sihtasutuse muuseumi juhiga juhatuse liikme lepingu kuni viieks aastaks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_18"
+      },
+      "rdfs:label": "§ 18 lg 6"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_18_Lg_7",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "7",
+      "estleg:legalText": "(7) Riigimuuseumi juhi tähtajalist töölepingut ja riigi sihtasutuse muuseumi juhatuse liikme lepingut võib avalikku konkurssi korraldamata pikendada üks kord.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_18"
+      },
+      "rdfs:label": "§ 18 lg 7"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_18_Lg_8",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "8",
+      "estleg:legalText": "(8) Kui riigi sihtasutuse muuseumi juhi vaba ametikohta ei ole mõjuval põhjusel võimalik avaliku konkursi korras täita, määrab riigi sihtasutuse muuseumi nõukogu muuseumi juhi sihtasutuse asutaja või asutajate nõusolekul kuni üheks aastaks avalikku konkurssi korraldamata.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_18"
+      },
+      "rdfs:label": "§ 18 lg 8"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_19",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_muuseumiseadus"
+      ],
+      "estleg:paragrahv": "§ 19.",
+      "rdfs:label": "§ 19. Muuseuminõukogu",
+      "estleg:sourceAct": "Muuseumiseadus",
+      "estleg:summary": "1 (1) Muuseuminõukogu on valdkonna eest vastutava ministri nõuandev kogu, kuhu kuuluvad muuseumide ja nende asutajate esindajad ning muud muuseumide valdkonna asjatundjad. Muuseuminõukogu on valdkonna eest vastutava ministri nõuandev kogu, kuhu kuuluvad muuseumide ja nende asutajate esindajad ning muud muuseumide valdkonna asjatundjad. 2 (2) Muuseuminõukogu teeb ettepanekuid ja annab arvamusi käesolevast seadusest tulenevates küsimustes. Muuseuminõukogul on õigus tutvuda muuseumi tegevuse ja muu",
+      "estleg:legalText": "(1) Muuseuminõukogu on valdkonna eest vastutava ministri nõuandev kogu, kuhu kuuluvad muuseumide ja nende asutajate esindajad ning muud muuseumide valdkonna asjatundjad. (2) Muuseuminõukogu teeb ettepanekuid ja annab arvamusi käesolevast seadusest tulenevates küsimustes. Muuseuminõukogul on õigus tutvuda muuseumi tegevuse ja muuseumikogu seisukorraga kohapeal. (3) Muuseuminõukogu liikmele võib maksta tasu muuseuminõukogu töös osalemise eest. Tasu suuruse ja maksmise korra kehtestab valdkonna eest vastutav minister käskkirjaga.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_MUUSEU_3"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_MUUSEU_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:MUUSEU_Par_19_Lg_1"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_19_Lg_2"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_19_Lg_3"
+        }
+      ],
+      "estleg:targetGroup": [
+        "official"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      }
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_19_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Muuseuminõukogu on valdkonna eest vastutava ministri nõuandev kogu, kuhu kuuluvad muuseumide ja nende asutajate esindajad ning muud muuseumide valdkonna asjatundjad.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_19"
+      },
+      "rdfs:label": "§ 19 lg 1"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_19_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Muuseuminõukogu teeb ettepanekuid ja annab arvamusi käesolevast seadusest tulenevates küsimustes. Muuseuminõukogul on õigus tutvuda muuseumi tegevuse ja muuseumikogu seisukorraga kohapeal.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_19"
+      },
+      "rdfs:label": "§ 19 lg 2"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_19_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Muuseuminõukogu liikmele võib maksta tasu muuseuminõukogu töös osalemise eest. Tasu suuruse ja maksmise korra kehtestab valdkonna eest vastutav minister käskkirjaga.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_19"
+      },
+      "rdfs:label": "§ 19 lg 3"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_20",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_muuseumiseadus"
+      ],
+      "estleg:paragrahv": "§ 20.",
+      "rdfs:label": "§ 20. Riigimuuseumi rahastamine",
+      "estleg:sourceAct": "Muuseumiseadus",
+      "estleg:summary": "1 (1) Riigimuuseumi tegevust rahastatakse riigieelarvest muuseumi põhimääruses sätestatud eesmärkide täitmiseks. RT I 2023-03-11 6 111032023006 2023-05-01 Riigimuuseumi tegevust rahastatakse riigieelarvest muuseumi põhimääruses sätestatud eesmärkide täitmiseks. 2 (2) Riigimuuseum võib saada rahalisi vahendeid toetustest, annetustest ja oma põhitegevusega seotud tasuliste teenuste eest, mida võib osutada tingimusel, et need ei takista käesoleva seaduse § 2 lõikes 1 sätestatud muuseumi ülesannete ",
+      "estleg:legalText": "(1) Riigimuuseumi tegevust rahastatakse riigieelarvest muuseumi põhimääruses sätestatud eesmärkide täitmiseks. (2) Riigimuuseum võib saada rahalisi vahendeid toetustest, annetustest ja oma põhitegevusega seotud tasuliste teenuste eest, mida võib osutada tingimusel, et need ei takista käesoleva seaduse § 2 lõikes 1 sätestatud muuseumi ülesannete täitmist. (3) Riigimuuseumi osutatud teenuste eest tasu kehtestamisel tuleb arvestada, et: muuseumi külastamine on kaheksa-aastasele ja nooremale lapsele, puudega kuni 16-aastasele isikule ning tema saatjale ja sügava puudega 16-aastasele ja vanemale isikule ning tema saatjale tasuta; kehtetu - käesoleva seaduse § 15 alusel asutatud muuseumide andmekogus kättesaadavaks tehtud museaali digitaalse kujutise, digitaalse museaali ning museaali ja digitaalset kujutist kirjeldavate andmete kasutamine on tasuta; museaali ja museaali digitaalse kujutise riigimuuseumile või riigi sihtasutuse muuseumile kasutamiseks andmine on tasuta; digitaalsete kujutiste trükifailide müügi korral võetav tasu on kulupõhine, millele võib lisada mõistliku investeeringutulu. (4) Riigimuuseumi põhitegevusega seotud tasuliste teenuste loetelu määrusega, kui riigimuuseum on ministeeriumi hallatav riigiasutus, ning ministeeriumi hallatava riigiasutuse või valitsusasutuse juht käskkirjaga, kui riigimuuseum on selle asutuse struktuuriüksus. Tasu määrad kehtestab riigimuuseumi juht käskkirjaga. (5) Riigile kuuluva muuseumikogu täiendamise otsesed dokumentaalselt tõendatud kulud võib riigivara valitseja otsusel katta sama muuseumi muuseumikogust väljaarvatud ja käesoleva seaduse § 11 lõike 6 alusel avalikul enampakkumisel võõrandatud asjade müügist laekunud raha arvel.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_MUUSEU_3"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_MUUSEU_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:MUUSEU_Par_20_Lg_1"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_20_Lg_2"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_20_Lg_3"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_20_Lg_4"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_20_Lg_5"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "public_body",
+        "ngo"
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:MUUSEU_Par_2"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Reg_1015295_Par_8",
+          "estleg:similarityScore": {
+            "@value": "0.385",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:Reg_1015312_Par_8",
+          "estleg:similarityScore": {
+            "@value": "0.385",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:MUUSEU_Par_38"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_20_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Riigimuuseumi tegevust rahastatakse riigieelarvest muuseumi põhimääruses sätestatud eesmärkide täitmiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_20"
+      },
+      "rdfs:label": "§ 20 lg 1"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_20_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Riigimuuseum võib saada rahalisi vahendeid toetustest, annetustest ja oma põhitegevusega seotud tasuliste teenuste eest, mida võib osutada tingimusel, et need ei takista käesoleva seaduse § 2 lõikes 1 sätestatud muuseumi ülesannete täitmist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_20"
+      },
+      "rdfs:label": "§ 20 lg 2"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_20_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Riigimuuseumi osutatud teenuste eest tasu kehtestamisel tuleb arvestada, et: muuseumi külastamine on kaheksa-aastasele ja nooremale lapsele, puudega kuni 16-aastasele isikule ning tema saatjale ja sügava puudega 16-aastasele ja vanemale isikule ning tema saatjale tasuta; kehtetu - käesoleva seaduse § 15 alusel asutatud muuseumide andmekogus kättesaadavaks tehtud museaali digitaalse kujutise, digitaalse museaali ning museaali ja digitaalset kujutist kirjeldavate andmete kasutamine on tasuta; museaali ja museaali digitaalse kujutise riigimuuseumile või riigi sihtasutuse muuseumile kasutamiseks andmine on tasuta; digitaalsete kujutiste trükifailide müügi korral võetav tasu on kulupõhine, millele võib lisada mõistliku investeeringutulu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_20"
+      },
+      "rdfs:label": "§ 20 lg 3"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_20_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Riigimuuseumi põhitegevusega seotud tasuliste teenuste loetelu määrusega, kui riigimuuseum on ministeeriumi hallatav riigiasutus, ning ministeeriumi hallatava riigiasutuse või valitsusasutuse juht käskkirjaga, kui riigimuuseum on selle asutuse struktuuriüksus. Tasu määrad kehtestab riigimuuseumi juht käskkirjaga.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_20"
+      },
+      "rdfs:label": "§ 20 lg 4"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_20_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Riigile kuuluva muuseumikogu täiendamise otsesed dokumentaalselt tõendatud kulud võib riigivara valitseja otsusel katta sama muuseumi muuseumikogust väljaarvatud ja käesoleva seaduse § 11 lõike 6 alusel avalikul enampakkumisel võõrandatud asjade müügist laekunud raha arvel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_20"
+      },
+      "rdfs:label": "§ 20 lg 5"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_21",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_muuseumiseadus"
+      ],
+      "estleg:paragrahv": "§ 21.",
+      "rdfs:label": "§ 21. Muuseumile riigieelarvest toetuse määramise põhimõtted",
+      "estleg:sourceAct": "Muuseumiseadus",
+      "estleg:summary": "1 (1) Riigi sihtasutuse muuseumile määratakse riigieelarvest tegevustoetus muuseumi põhikirjaliste eesmärkide ja sihtasutuse asutaja või asutajate sõnastatud ootuste täitmiseks asutajaõigusi teostava ministeeriumi kaudu. Riigi sihtasutuse muuseumile määratakse riigieelarvest tegevustoetus muuseumi põhikirjaliste eesmärkide ja sihtasutuse asutaja või asutajate sõnastatud ootuste täitmiseks asutajaõigusi teostava ministeeriumi kaudu. 2 (2) Riigile kuuluvat muuseumikogu kasutavale muuseumile, mida ",
+      "estleg:legalText": "(1) Riigi sihtasutuse muuseumile määratakse riigieelarvest tegevustoetus muuseumi põhikirjaliste eesmärkide ja sihtasutuse asutaja või asutajate sõnastatud ootuste täitmiseks asutajaõigusi teostava ministeeriumi kaudu. (2) Riigile kuuluvat muuseumikogu kasutavale muuseumile, mida ei ole asutanud riik, määratakse halduslepingus ettenähtud ülesannete täitmiseks riigieelarvest tegevustoetus ministeeriumi kaudu, kes on muuseumikogu kui riigivara valitseja riigivaraseaduse tähenduses. (3) Avalik-õigusliku isiku muuseumile, munitsipaalmuuseumile ja eramuuseumile võib määrata riigieelarvest tegevustoetuse muuseumivaldkonna mitmekesisuse või muuseumiteenuste piirkondliku kättesaadavuse tagamiseks või seadusest tuleneva ülesande täitmiseks rahvusliku kultuuripärandi säilitamisel ja kättesaadavaks tegemisel. (4) Riigieelarvest tegevustoetuse taotlemise, taotleja hindamise ja toetuse määramise täiendavad tingimused ja korra kehtestab määrusega. (5) Lisaks tegevustoetusele võib muuseumile määrata riigieelarvest sihtotstarbelise toetuse üksikuks valdkonna või muuseumi arengu, rahvuskultuuri, piirkondliku mõju või rahvusvahelise koostöö seisukohalt oluliseks tegevuseks. (6) Riigieelarvest sihtotstarbelise toetuse taotlemise, taotleja hindamise ja toetuse määramise tingimused ja korra kehtestab määrusega.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_MUUSEU_3"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_MUUSEU_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:MUUSEU_Par_21_Lg_1"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_21_Lg_2"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_21_Lg_3"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_21_Lg_4"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_21_Lg_5"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_21_Lg_6"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "public_body",
+        "ngo"
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Reg_1057348_Par_4",
+          "estleg:similarityScore": {
+            "@value": "0.4",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_21_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Riigi sihtasutuse muuseumile määratakse riigieelarvest tegevustoetus muuseumi põhikirjaliste eesmärkide ja sihtasutuse asutaja või asutajate sõnastatud ootuste täitmiseks asutajaõigusi teostava ministeeriumi kaudu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_21"
+      },
+      "rdfs:label": "§ 21 lg 1"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_21_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Riigile kuuluvat muuseumikogu kasutavale muuseumile, mida ei ole asutanud riik, määratakse halduslepingus ettenähtud ülesannete täitmiseks riigieelarvest tegevustoetus ministeeriumi kaudu, kes on muuseumikogu kui riigivara valitseja riigivaraseaduse tähenduses.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_21"
+      },
+      "rdfs:label": "§ 21 lg 2"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_21_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Avalik-õigusliku isiku muuseumile, munitsipaalmuuseumile ja eramuuseumile võib määrata riigieelarvest tegevustoetuse muuseumivaldkonna mitmekesisuse või muuseumiteenuste piirkondliku kättesaadavuse tagamiseks või seadusest tuleneva ülesande täitmiseks rahvusliku kultuuripärandi säilitamisel ja kättesaadavaks tegemisel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_21"
+      },
+      "rdfs:label": "§ 21 lg 3"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_21_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Riigieelarvest tegevustoetuse taotlemise, taotleja hindamise ja toetuse määramise täiendavad tingimused ja korra kehtestab määrusega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_21"
+      },
+      "rdfs:label": "§ 21 lg 4"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_21_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Lisaks tegevustoetusele võib muuseumile määrata riigieelarvest sihtotstarbelise toetuse üksikuks valdkonna või muuseumi arengu, rahvuskultuuri, piirkondliku mõju või rahvusvahelise koostöö seisukohalt oluliseks tegevuseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_21"
+      },
+      "rdfs:label": "§ 21 lg 5"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_21_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Riigieelarvest sihtotstarbelise toetuse taotlemise, taotleja hindamise ja toetuse määramise tingimused ja korra kehtestab määrusega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_21"
+      },
+      "rdfs:label": "§ 21 lg 6"
     },
     {
       "@id": "estleg:MUUSEU_Par_22",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_MUUSEU"
+        "estleg:LegalProvision_muuseumiseadus"
       ],
       "estleg:paragrahv": "§ 22.",
-      "rdfs:label": "§ 22. Muuseumikogu üleandmine muuseumi tegevuse lõpetamisel",
+      "rdfs:label": "§ 22. Riiklik ja haldusjärelevalve",
       "estleg:sourceAct": "Muuseumiseadus",
-      "estleg:summary": "1 (1) Muuseumi tegevuse lõpetamisel antakse muuseumikogu koos arvestusdokumentatsiooniga üle teisele muuseumile. Muuseumi tegevuse lõpetamisel antakse muuseumikogu koos arvestusdokumentatsiooniga üle teisele muuseumile. 1 (1<sup>1</sup>) Kui muuseumi tegevuse lõpetamisel otsustab minister või maavanem anda muuseumikogu kasutamiseks sihtasutusena tegutsevale eramuuseumile käesoleva seaduse §-s 22 1 ettenähtud alusel, ei anta muuseumikogu ega arvestusdokumentatsiooni üle teisele muuseumile ega arv",
+      "estleg:summary": "1 (1) Riiklikku ja haldusjärelevalvet muuseumide andmekoguga liitunud muuseumikogu korralduse üle teostab Muinsuskaitseamet. RT I 2019-03-19 13 119032019013 2019-05-01 Riiklikku ja haldusjärelevalvet muuseumide andmekoguga liitunud muuseumikogu korralduse üle teostab Muinsuskaitseamet. 2 (2) Muinsuskaitseamet kontrollib: RT I 2019-03-19 13 119032019013 2019-05-01 1 1) kultuuriväärtusega asjade museaalina arvele võtmise ja muuseumisse hoiule võtmise otsustamise vastavust käesoleva seaduse § 5 lõi",
+      "estleg:legalText": "(1) Riiklikku ja haldusjärelevalvet muuseumide andmekoguga liitunud muuseumikogu korralduse üle teostab Muinsuskaitseamet. (2) Muinsuskaitseamet kontrollib: kultuuriväärtusega asjade museaalina arvele võtmise ja muuseumisse hoiule võtmise otsustamise vastavust käesoleva seaduse § 5 lõike 5 alusel kehtestatud muuseumikogu täiendamise ja kultuuriväärtusega asja muuseumisse hoiule võtmise korrale; kultuuriväärtusega asjade museaalina arvele võtmise ja muuseumisse hoiule võtmise, samuti museaalide ning muuseumisse hoiule võetud asjade üle arvestuse pidamise toimingute ja dokumentide vastavust käesoleva seaduse § 15 lõike 1 alusel kehtestatud muuseumide andmekogu põhimäärusele; muuseumikogu ja muuseumisse hoiule võetud asjade seisundi ning säilitamise ja eksponeerimise tingimuste, märgistamise ja inventuuri läbiviimise, samuti muuseumikogu korralduse põhimõtete vastavust käesoleva seaduse § 6 lõike 3 alusel kehtestatud museaali ja muuseumisse hoiule võetud asja märgistamise ja säilitamise korrale. (3) Lisaks käesoleva paragrahvi lõikes 2 nimetatule kontrollib Muinsuskaitseamet haldusjärelevalve käigus riigile kuuluvat muuseumikogu kasutava muuseumi puhul muuseumikogu kasutamise vastavust käesoleva seaduse § 9 lõike 2 alusel sõlmitud halduslepingule.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MUUSEU_3"
       },
-      "estleg:targetGroup": [
-        "official",
-        "ngo"
-      ]
-    },
-    {
-      "@id": "estleg:MUUSEU_Par_22_24",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_MUUSEU"
-      ],
-      "estleg:paragrahv": "§ 22<sup>1</sup>.",
-      "rdfs:label": "§ 22<sup>1</sup>. Muuseumikogu kasutamine sihtasutusena tegutseva eramuuseumi poolt",
-      "estleg:sourceAct": "Muuseumiseadus",
-      "estleg:summary": "1 (1) Muuseumikogu või selle alakogu võib anda sihtasutusena tegutsevale eramuuseumile tasuta kasutamiseks lepingu alusel juhul, kui tema tegevus vastab käesoleva seaduse § 3 lõikes 4 sätestatud eesmärgile või sihtasutusena tegutsev eramuuseum täidab keskmuuseumi või maakonnamuuseumi ülesandeid käesoleva seaduse § 8 lõikes 5 sätestatud alusel. Muuseumikogu või selle alakogu võib anda sihtasutusena tegutsevale eramuuseumile tasuta kasutamiseks lepingu alusel juhul, kui tema tegevus vastab käesole",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_MUUSEU_3"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_MUUSEU_3"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
-      "estleg:references": [
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:MUUSEU_Par_3"
+          "@id": "estleg:MUUSEU_Par_22_Lg_1"
         },
         {
-          "@id": "estleg:MUUSEU_Par_8"
+          "@id": "estleg:MUUSEU_Par_22_Lg_2"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_22_Lg_3"
         }
       ],
-      "estleg:targetGroup": [
-        "ngo"
-      ]
+      "estleg:references": [
+        {
+          "@id": "estleg:MUUSEU_Par_5"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_muinsuskaitseamet"
+        }
+      ],
+      "estleg:competenceType": "supervision"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_22_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Riiklikku ja haldusjärelevalvet muuseumide andmekoguga liitunud muuseumikogu korralduse üle teostab Muinsuskaitseamet.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_22"
+      },
+      "rdfs:label": "§ 22 lg 1"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_22_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Muinsuskaitseamet kontrollib: kultuuriväärtusega asjade museaalina arvele võtmise ja muuseumisse hoiule võtmise otsustamise vastavust käesoleva seaduse § 5 lõike 5 alusel kehtestatud muuseumikogu täiendamise ja kultuuriväärtusega asja muuseumisse hoiule võtmise korrale; kultuuriväärtusega asjade museaalina arvele võtmise ja muuseumisse hoiule võtmise, samuti museaalide ning muuseumisse hoiule võetud asjade üle arvestuse pidamise toimingute ja dokumentide vastavust käesoleva seaduse § 15 lõike 1 alusel kehtestatud muuseumide andmekogu põhimäärusele; muuseumikogu ja muuseumisse hoiule võetud asjade seisundi ning säilitamise ja eksponeerimise tingimuste, märgistamise ja inventuuri läbiviimise, samuti muuseumikogu korralduse põhimõtete vastavust käesoleva seaduse § 6 lõike 3 alusel kehtestatud museaali ja muuseumisse hoiule võetud asja märgistamise ja säilitamise korrale.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_22"
+      },
+      "rdfs:label": "§ 22 lg 2"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_22_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Lisaks käesoleva paragrahvi lõikes 2 nimetatule kontrollib Muinsuskaitseamet haldusjärelevalve käigus riigile kuuluvat muuseumikogu kasutava muuseumi puhul muuseumikogu kasutamise vastavust käesoleva seaduse § 9 lõike 2 alusel sõlmitud halduslepingule.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_22"
+      },
+      "rdfs:label": "§ 22 lg 3"
     },
     {
       "@id": "estleg:MUUSEU_Par_23",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_MUUSEU"
+        "estleg:LegalProvision_muuseumiseadus"
       ],
       "estleg:paragrahv": "§ 23.",
-      "rdfs:label": "§ 23. Muuseumist teatamine",
+      "rdfs:label": "§ 23. Riikliku järelevalve erimeetmed ja sunniraha määr",
       "estleg:sourceAct": "Muuseumiseadus",
-      "estleg:summary": "Enne käesoleva seaduse jõustumist asutatud munitsipaalmuuseumist, avalik-õigusliku juriidilise isiku muuseumist ja eramuuseumist teatatakse Kultuuriministeeriumile kahe kuu jooksul, seaduse jõustumisest arvates, käesoleva seaduse § 5 lõikes 4 sätestatud korras. Enne käesoleva seaduse jõustumist asutatud munitsipaalmuuseumist, avalik-õigusliku juriidilise isiku muuseumist ja eramuuseumist teatatakse Kultuuriministeeriumile kahe kuu jooksul, seaduse jõustumisest arvates, käesoleva seaduse § 5 lõik",
+      "estleg:summary": "1 (1) Muinsuskaitseamet võib käesolevas seaduses sätestatud järelevalve teostamiseks kohaldada korrakaitseseaduse §-des 30, 49, 50 ja 51 sätestatud riikliku järelevalve erimeetmeid korrakaitseseaduses sätestatud alusel ja korras. RT I 2019-03-19 13 119032019013 2019-05-01 Muinsuskaitseamet võib käesolevas seaduses sätestatud järelevalve teostamiseks kohaldada korrakaitseseaduse §-des 30, 49, 50 ja 51 sätestatud riikliku järelevalve erimeetmeid korrakaitseseaduses sätestatud alusel ja korras. 2 (",
+      "estleg:legalText": "(1) Muinsuskaitseamet võib käesolevas seaduses sätestatud järelevalve teostamiseks kohaldada korrakaitseseaduse §-des 30, 49, 50 ja 51 sätestatud riikliku järelevalve erimeetmeid korrakaitseseaduses sätestatud alusel ja korras. (2) Ettekirjutuse täitmata jätmise korral on asendustäitmise ja sunniraha seaduses sätestatud korras rakendatava sunniraha ülemmäär 7500 eurot, ettekirjutuse korduva täitmata jätmise korral 15 000 eurot.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_MUUSEU_3"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_MUUSEU_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:MUUSEU_Par_23_Lg_1"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_23_Lg_2"
+        }
+      ],
+      "estleg:targetGroup": [
+        "official"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_muinsuskaitseamet"
+        }
+      ],
+      "estleg:competenceType": "supervision",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:NETS_Par_45",
+          "estleg:similarityScore": {
+            "@value": "0.818",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:POLLUM_Par_13",
+          "estleg:similarityScore": {
+            "@value": "0.818",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:PSVVJPTLR_Par_13",
+          "estleg:similarityScore": {
+            "@value": "0.818",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:Postiseadus_Par_43_1",
+          "estleg:similarityScore": {
+            "@value": "0.818",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:Psteseadus_Par_13_1",
+          "estleg:similarityScore": {
+            "@value": "0.818",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_23_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Muinsuskaitseamet võib käesolevas seaduses sätestatud järelevalve teostamiseks kohaldada korrakaitseseaduse §-des 30, 49, 50 ja 51 sätestatud riikliku järelevalve erimeetmeid korrakaitseseaduses sätestatud alusel ja korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_23"
+      },
+      "rdfs:label": "§ 23 lg 1"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_23_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Ettekirjutuse täitmata jätmise korral on asendustäitmise ja sunniraha seaduses sätestatud korras rakendatava sunniraha ülemmäär 7500 eurot, ettekirjutuse korduva täitmata jätmise korral 15 000 eurot.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_23"
+      },
+      "rdfs:label": "§ 23 lg 2"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_24",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_muuseumiseadus"
+      ],
+      "estleg:paragrahv": "§ 24.",
+      "rdfs:label": "§ 24. Museaali kindlustamine",
+      "estleg:sourceAct": "Muuseumiseadus",
+      "estleg:summary": "Riigile kuuluvasse muuseumikogusse arvatud kultuurilooliselt oluline ainueksemplar, mis saadetakse ajutiselt välisriiki ning mille kahjuhüvitise tagamist ei ole otsustatud käesoleva seaduse § 27 lõike 2 kohaselt, tuleb kindlustada selle rahaliselt hinnatavas väärtuses ja § 26 lõikes 1 sätestatud kahju ulatuses. RT I 2018-12-21 5 121122018005 2019-01-01 Riigile kuuluvasse muuseumikogusse arvatud kultuurilooliselt oluline ainueksemplar, mis saadetakse ajutiselt välisriiki ning mille kahjuhüvitise ",
+      "estleg:legalText": "Riigile kuuluvasse muuseumikogusse arvatud kultuurilooliselt oluline ainueksemplar, mis saadetakse ajutiselt välisriiki ning mille kahjuhüvitise tagamist ei ole otsustatud käesoleva seaduse § 27 lõike 2 kohaselt, tuleb kindlustada selle rahaliselt hinnatavas väärtuses ja § 26 lõikes 1 sätestatud kahju ulatuses.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_MUUSEU_4"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_MUUSEU_4"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:MUUSEU_Par_24_Lg_Unknown_1"
+        }
+      ],
       "estleg:references": [
         {
-          "@id": "estleg:MUUSEU_Par_5"
+          "@id": "estleg:MUUSEU_Par_27"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_24_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Riigile kuuluvasse muuseumikogusse arvatud kultuurilooliselt oluline ainueksemplar, mis saadetakse ajutiselt välisriiki ning mille kahjuhüvitise tagamist ei ole otsustatud käesoleva seaduse § 27 lõike 2 kohaselt, tuleb kindlustada selle rahaliselt hinnatavas väärtuses ja § 26 lõikes 1 sätestatud kahju ulatuses.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_24"
+      }
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_25",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_muuseumiseadus"
+      ],
+      "estleg:paragrahv": "§ 25.",
+      "rdfs:label": "§ 25. Rahvusvaheline näitus ja selle omanikule tekkinud kahju",
+      "estleg:sourceAct": "Muuseumiseadus",
+      "estleg:summary": "1 (1) Olulise kunsti- või ajalooväärtusega asja või sellistest asjadest koosneva näitusekomplekti (edaspidi näitus) ajutise eksponeerimise kavandamisel võivad riigimuuseum ja riigile kuuluvat muuseumikogu kasutav muuseum taotleda riigilt näituse omanikule tekkinud otsese varalise kahju (edaspidi kahju) katmiseks hüvitise (edaspidi näituse kahjuhüvitis) maksmise tagamist käesolevas peatükis sätestatud tingimustel. Olulise kunsti- või ajalooväärtusega asja või sellistest asjadest koosneva näitusek",
+      "estleg:legalText": "(1) Olulise kunsti- või ajalooväärtusega asja või sellistest asjadest koosneva näitusekomplekti (edaspidi näitus) ajutise eksponeerimise kavandamisel võivad riigimuuseum ja riigile kuuluvat muuseumikogu kasutav muuseum taotleda riigilt näituse omanikule tekkinud otsese varalise kahju (edaspidi kahju) katmiseks hüvitise (edaspidi näituse kahjuhüvitis) maksmise tagamist käesolevas peatükis sätestatud tingimustel. (2) Näituse kahjuhüvitisega võib katta kahju, mis on tingitud järgmiste näituste kahjustumisest, hävimisest või kaotsiminekust: välisriigi asutuse või isiku näitus, mida eksponeeritakse Eestis riigimuuseumis või riigi asutatud sihtasutusena tegutsevas muuseumis (edaspidi sissetulev näitus); riigile kuuluvasse muuseumikogusse arvatud museaalist või museaalidest koosnev näitus, mida eksponeeritakse välisriigis (edaspidi väljaminev näitus).",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_MUUSEU_4"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_MUUSEU_4"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:MUUSEU_Par_25_Lg_1"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_25_Lg_2"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "public_body",
+        "ngo"
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Reg_1016616_Par_1",
+          "estleg:similarityScore": {
+            "@value": "0.304",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:Reg_1016616_Par_2",
+          "estleg:similarityScore": {
+            "@value": "0.39",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_25_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Olulise kunsti- või ajalooväärtusega asja või sellistest asjadest koosneva näitusekomplekti (edaspidi näitus) ajutise eksponeerimise kavandamisel võivad riigimuuseum ja riigile kuuluvat muuseumikogu kasutav muuseum taotleda riigilt näituse omanikule tekkinud otsese varalise kahju (edaspidi kahju) katmiseks hüvitise (edaspidi näituse kahjuhüvitis) maksmise tagamist käesolevas peatükis sätestatud tingimustel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_25"
+      },
+      "rdfs:label": "§ 25 lg 1"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_25_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Näituse kahjuhüvitisega võib katta kahju, mis on tingitud järgmiste näituste kahjustumisest, hävimisest või kaotsiminekust: välisriigi asutuse või isiku näitus, mida eksponeeritakse Eestis riigimuuseumis või riigi asutatud sihtasutusena tegutsevas muuseumis (edaspidi sissetulev näitus); riigile kuuluvasse muuseumikogusse arvatud museaalist või museaalidest koosnev näitus, mida eksponeeritakse välisriigis (edaspidi väljaminev näitus).",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_25"
+      },
+      "rdfs:label": "§ 25 lg 2"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_26",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_muuseumiseadus"
+      ],
+      "estleg:paragrahv": "§ 26.",
+      "rdfs:label": "§ 26. Näituse kahjuhüvitisega kaetav kahju",
+      "estleg:sourceAct": "Muuseumiseadus",
+      "estleg:summary": "1 (1) Näituse kahjuhüvitis võib katta järgmise kahju: 1 1) näituse taastamise või asendamise kulud juhul, kui näitust on võimalik taastada või asendada; 2 2) summa, mille ulatuses on näituse rahaliselt hinnatav koguväärtus (edaspidi näituse väärtus) vähenenud, juhul kui kahjustatud, hävinud või kaotsi läinud näituse taastamine või asendamine ei ole võimalik. Näituse kahjuhüvitis võib katta järgmise kahju: näituse taastamise või asendamise kulud juhul, kui näitust on võimalik taastada või asendad",
+      "estleg:legalText": "(1) Näituse kahjuhüvitis võib katta järgmise kahju: näituse taastamise või asendamise kulud juhul, kui näitust on võimalik taastada või asendada; summa, mille ulatuses on näituse rahaliselt hinnatav koguväärtus (edaspidi näituse väärtus) vähenenud, juhul kui kahjustatud, hävinud või kaotsi läinud näituse taastamine või asendamine ei ole võimalik. (2) Käesoleva paragrahvi lõike 1 punktis 2 nimetatud summa võib ulatuda kuni näituse väärtuseni. (3) Näituse kahjuhüvitis ei kata rahvusvaheliste näituste eksponeerimise praktikas tunnustatud riske, mida näituse eksponeerija ei saa mõjutada ja millega tagatise andmise ajal arvestada. (3<sup>1</sup>) Täpsustava loetelu riskidest, mida näituse kahjuhüvitis ei kata, kehtestab määrusega. (4) Näituse kahjuhüvitisega kaetakse üksnes kahju, mis on tekkinud pärast näituse kahjuhüvitise tagamise otsustamist.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_MUUSEU_4"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_MUUSEU_4"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:MUUSEU_Par_26_Lg_1"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_26_Lg_2"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_26_Lg_3"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_26_Lg_3_1"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_26_Lg_4"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:MUUSEU_Par_32_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_26_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Näituse kahjuhüvitis võib katta järgmise kahju: näituse taastamise või asendamise kulud juhul, kui näitust on võimalik taastada või asendada; summa, mille ulatuses on näituse rahaliselt hinnatav koguväärtus (edaspidi näituse väärtus) vähenenud, juhul kui kahjustatud, hävinud või kaotsi läinud näituse taastamine või asendamine ei ole võimalik.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_26"
+      },
+      "rdfs:label": "§ 26 lg 1"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_26_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Käesoleva paragrahvi lõike 1 punktis 2 nimetatud summa võib ulatuda kuni näituse väärtuseni.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_26"
+      },
+      "rdfs:label": "§ 26 lg 2"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_26_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Näituse kahjuhüvitis ei kata rahvusvaheliste näituste eksponeerimise praktikas tunnustatud riske, mida näituse eksponeerija ei saa mõjutada ja millega tagatise andmise ajal arvestada.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_26"
+      },
+      "rdfs:label": "§ 26 lg 3"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_26_Lg_3_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3<sup>1</sup>",
+      "estleg:legalText": "(3<sup>1</sup>) Täpsustava loetelu riskidest, mida näituse kahjuhüvitis ei kata, kehtestab määrusega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_26"
+      },
+      "rdfs:label": "§ 26 lg 3<sup>1</sup>"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_26_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Näituse kahjuhüvitisega kaetakse üksnes kahju, mis on tekkinud pärast näituse kahjuhüvitise tagamise otsustamist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_26"
+      },
+      "rdfs:label": "§ 26 lg 4"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_27",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_muuseumiseadus"
+      ],
+      "estleg:paragrahv": "§ 27.",
+      "rdfs:label": "§ 27. Näituse kahjuhüvitise tagamise taotlemine ja otsustamine",
+      "estleg:sourceAct": "Muuseumiseadus",
+      "estleg:summary": "1 (1) Näituse kahjuhüvitise tagamist võivad taotleda riigimuuseum ja riigile kuuluvat muuseumikogu kasutav muuseum, kes esitab dokumendid, mis tõendavad, et näituse vedaja ja eksponeerija töökorraldus ning eksponeerimisruum või -hoone tagavad näituse säilimise ning vastavad näituse eksponeerimise eesmärgil kasutamiseks andja esitatud tingimustele, sõltumata sellest, kas tegemist on sissetuleva või väljamineva näitusega. Näituse kahjuhüvitise tagamist võivad taotleda riigimuuseum ja riigile kuulu",
+      "estleg:legalText": "(1) Näituse kahjuhüvitise tagamist võivad taotleda riigimuuseum ja riigile kuuluvat muuseumikogu kasutav muuseum, kes esitab dokumendid, mis tõendavad, et näituse vedaja ja eksponeerija töökorraldus ning eksponeerimisruum või -hoone tagavad näituse säilimise ning vastavad näituse eksponeerimise eesmärgil kasutamiseks andja esitatud tingimustele, sõltumata sellest, kas tegemist on sissetuleva või väljamineva näitusega. (2) Näituse kahjuhüvitise tagamise või sellest keeldumise otsustab Vabariigi Valitsus või Vabariigi Valitsuse volituse alusel valdkonna eest vastutav minister käesoleva seaduse § 28 lõikes 3 nimetatud piirmäära ulatuses.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_MUUSEU_4"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_MUUSEU_4"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:MUUSEU_Par_27_Lg_1"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_27_Lg_2"
+        }
+      ],
+      "estleg:targetGroup": [
+        "business",
+        "public_body",
+        "official"
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:MUUSEU_Par_24"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_27_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Näituse kahjuhüvitise tagamist võivad taotleda riigimuuseum ja riigile kuuluvat muuseumikogu kasutav muuseum, kes esitab dokumendid, mis tõendavad, et näituse vedaja ja eksponeerija töökorraldus ning eksponeerimisruum või -hoone tagavad näituse säilimise ning vastavad näituse eksponeerimise eesmärgil kasutamiseks andja esitatud tingimustele, sõltumata sellest, kas tegemist on sissetuleva või väljamineva näitusega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_27"
+      },
+      "rdfs:label": "§ 27 lg 1"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_27_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Näituse kahjuhüvitise tagamise või sellest keeldumise otsustab Vabariigi Valitsus või Vabariigi Valitsuse volituse alusel valdkonna eest vastutav minister käesoleva seaduse § 28 lõikes 3 nimetatud piirmäära ulatuses.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_27"
+      },
+      "rdfs:label": "§ 27 lg 2"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_28",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_muuseumiseadus"
+      ],
+      "estleg:paragrahv": "§ 28.",
+      "rdfs:label": "§ 28. Näituse kahjuhüvitise ulatus ja piirmäär ning kahju hüvitamine",
+      "estleg:sourceAct": "Muuseumiseadus",
+      "estleg:summary": "1 (1) Näituse kahjuhüvitisega võib katta kahju, mis on tekkinud järgmisel ajavahemikul: 1 1) väljamineva näituse korral alates hetkest, kui näitus antakse Eestis üle vedajale, kuni hetkeni, kui vedaja annab Eestisse tagastatava näituse üle selle kasutamiseks andnud riigimuuseumile või riigi asutatud sihtasutusena tegutsevale muuseumile; 2 2) sissetuleva näituse korral alates hetkest, kui näitus antakse välisriigis üle vedajale, kuni hetkeni, kui vedaja annab välisriiki tagastatava näituse üle se",
+      "estleg:legalText": "(1) Näituse kahjuhüvitisega võib katta kahju, mis on tekkinud järgmisel ajavahemikul: väljamineva näituse korral alates hetkest, kui näitus antakse Eestis üle vedajale, kuni hetkeni, kui vedaja annab Eestisse tagastatava näituse üle selle kasutamiseks andnud riigimuuseumile või riigi asutatud sihtasutusena tegutsevale muuseumile; sissetuleva näituse korral alates hetkest, kui näitus antakse välisriigis üle vedajale, kuni hetkeni, kui vedaja annab välisriiki tagastatava näituse üle selle kasutamiseks andnud välisriigi asutusele või isikule. (2) Näituse kultuuriloolist olulisust, tagatava kahjuhüvitise tavapäratult suurt hinda või võlaõigusseaduse alusel sõlmitava kindlustuslepingu või välisriigi samaväärse õiguse kohaselt antava garantii olemasolu arvestades võib kahjuhüvitise tagamise otsustamisel määrata, et tagatava kahjuhüvitisega kaetakse üksnes osa näituse koosseisust, väärtusest, eksponeerimise või vedamise perioodist või territooriumist. Kui tagamata kahjuhüvitise osa ei ole kaetud välisriigi samaväärse õiguse kohaselt antava garantiiga, tuleb see tagada võlaõigusseaduse alusel sõlmitava kindlustuslepinguga. (3) Iga-aastases riigieelarve seaduses: määratakse kalendriaasta jooksul eksponeeritavate näituste riigi tagatava näituse kahjuhüvitise kogusumma piirmäär; määratakse kalendriaastal kehtiv omavastutuse summa, mis ei sõltu näituse väärtusest; esitatakse kümmet miljonit eurot ületava väärtusega näituste kavandatavad pealkirjad ning vedamise ja eksponeerimise kavandatav periood ja näituse omanik; esitatakse muud tagamisega seotud tingimused ja informatsioon. (4) Kui väljaminevat näitust ei ole võimalik taastada ega asendada, näituse kahjuhüvitist ei maksta.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_MUUSEU_4"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_MUUSEU_4"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:MUUSEU_Par_28_Lg_1"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_28_Lg_2"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_28_Lg_3"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_28_Lg_4"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "business",
+        "public_body",
+        "ngo"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_28_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Näituse kahjuhüvitisega võib katta kahju, mis on tekkinud järgmisel ajavahemikul: väljamineva näituse korral alates hetkest, kui näitus antakse Eestis üle vedajale, kuni hetkeni, kui vedaja annab Eestisse tagastatava näituse üle selle kasutamiseks andnud riigimuuseumile või riigi asutatud sihtasutusena tegutsevale muuseumile; sissetuleva näituse korral alates hetkest, kui näitus antakse välisriigis üle vedajale, kuni hetkeni, kui vedaja annab välisriiki tagastatava näituse üle selle kasutamiseks andnud välisriigi asutusele või isikule.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_28"
+      },
+      "rdfs:label": "§ 28 lg 1"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_28_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Näituse kultuuriloolist olulisust, tagatava kahjuhüvitise tavapäratult suurt hinda või võlaõigusseaduse alusel sõlmitava kindlustuslepingu või välisriigi samaväärse õiguse kohaselt antava garantii olemasolu arvestades võib kahjuhüvitise tagamise otsustamisel määrata, et tagatava kahjuhüvitisega kaetakse üksnes osa näituse koosseisust, väärtusest, eksponeerimise või vedamise perioodist või territooriumist. Kui tagamata kahjuhüvitise osa ei ole kaetud välisriigi samaväärse õiguse kohaselt antava garantiiga, tuleb see tagada võlaõigusseaduse alusel sõlmitava kindlustuslepinguga.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_28"
+      },
+      "rdfs:label": "§ 28 lg 2"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_28_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Iga-aastases riigieelarve seaduses: määratakse kalendriaasta jooksul eksponeeritavate näituste riigi tagatava näituse kahjuhüvitise kogusumma piirmäär; määratakse kalendriaastal kehtiv omavastutuse summa, mis ei sõltu näituse väärtusest; esitatakse kümmet miljonit eurot ületava väärtusega näituste kavandatavad pealkirjad ning vedamise ja eksponeerimise kavandatav periood ja näituse omanik; esitatakse muud tagamisega seotud tingimused ja informatsioon.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_28"
+      },
+      "rdfs:label": "§ 28 lg 3"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_28_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Kui väljaminevat näitust ei ole võimalik taastada ega asendada, näituse kahjuhüvitist ei maksta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_28"
+      },
+      "rdfs:label": "§ 28 lg 4"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_29",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_muuseumiseadus"
+      ],
+      "estleg:paragrahv": "§ 29.",
+      "rdfs:label": "§ 29. Rahvusvahelise näituse omanikule tekkinud kahju hüvitamise kord",
+      "estleg:sourceAct": "Muuseumiseadus",
+      "estleg:summary": "Rahvusvahelise näituse omanikule tekkinud kahju riigi poolt hüvitamise korra kehtestab Vabariigi Valitsus ./dyn=112072025021&id=128092013015 määrusega. Määruses nähakse ette näituse kahjuhüvitise tagamise otsustamise põhimõtted, taotluse esitamise ja taotluse läbivaatamise, näituse kahjuhüvitise tagamise otsustamise, kahju tekkimisel kahjust teavitamise, kahju läbivaatamise ja hindamise, näituse kahjuhüvitise väljamaksmise ning riigi poolt näituse kahjuhüvitise tagasinõudmise kord. Rahvusvahelis",
+      "estleg:legalText": "Rahvusvahelise näituse omanikule tekkinud kahju riigi poolt hüvitamise korra kehtestab määrusega. Määruses nähakse ette näituse kahjuhüvitise tagamise otsustamise põhimõtted, taotluse esitamise ja taotluse läbivaatamise, näituse kahjuhüvitise tagamise otsustamise, kahju tekkimisel kahjust teavitamise, kahju läbivaatamise ja hindamise, näituse kahjuhüvitise väljamaksmise ning riigi poolt näituse kahjuhüvitise tagasinõudmise kord.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_MUUSEU_4"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_MUUSEU_4"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:MUUSEU_Par_29_Lg_Unknown_1"
         }
       ],
       "estleg:targetGroup": [
@@ -755,24 +2797,121 @@
       ],
       "estleg:competentAuthority": [
         {
-          "@id": "estleg:Institution_kultuuriministeerium"
+          "@id": "estleg:Institution_vabariigivalitsus"
         }
       ],
-      "estleg:competenceType": "general"
+      "estleg:competenceType": "regulation"
     },
     {
-      "@id": "estleg:MUUSEU_Par_24",
+      "@id": "estleg:MUUSEU_Par_29_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Rahvusvahelise näituse omanikule tekkinud kahju riigi poolt hüvitamise korra kehtestab määrusega. Määruses nähakse ette näituse kahjuhüvitise tagamise otsustamise põhimõtted, taotluse esitamise ja taotluse läbivaatamise, näituse kahjuhüvitise tagamise otsustamise, kahju tekkimisel kahjust teavitamise, kahju läbivaatamise ja hindamise, näituse kahjuhüvitise väljamaksmise ning riigi poolt näituse kahjuhüvitise tagasinõudmise kord.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_29"
+      }
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_30",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_MUUSEU"
+        "estleg:LegalProvision_muuseumiseadus"
       ],
-      "estleg:paragrahv": "§ 24.",
-      "rdfs:label": "§ 24. Seaduse kohaldamine riigiettevõtte muuseumile",
+      "estleg:paragrahv": "§ 30.",
+      "rdfs:label": "§ 30. Üleminek museaali ja abikogusse arvatud asja rahalisele arvestusele",
       "estleg:sourceAct": "Muuseumiseadus",
-      "estleg:summary": "Kuni riigiettevõtte ümberkujundamiseni kohaldatakse riigiettevõtte muuseumile käesoleva seaduse § 11 lõikes 1; §-s 12; § 13 lõikes 1; § 14 lõigetes 1--3; §-s 15; §-s 16; § 17 lõikes 1, lõike 2 esimeses lauses ja lõikes 3; § 18 lõike 1 esimeses lauses ja lõigetes 2 ja 3; §-des 19-21; § 22 lõigetes 1--3 sätestatut. Kuni riigiettevõtte ümberkujundamiseni kohaldatakse riigiettevõtte muuseumile käesoleva seaduse § 11 lõikes 1; §-s 12; § 13 lõikes 1; § 14 lõigetes 1--3; §-s 15; §-s 16; § 17 lõikes 1, ",
+      "estleg:summary": "Rahalist arvestust peetakse alates käesoleva seaduse jõustumisest soetatavate museaalide ja abikogusse arvatud asjade üle. Rahalist arvestust peetakse alates käesoleva seaduse jõustumisest soetatavate museaalide ja abikogusse arvatud asjade üle.",
+      "estleg:legalText": "Rahalist arvestust peetakse alates käesoleva seaduse jõustumisest soetatavate museaalide ja abikogusse arvatud asjade üle.",
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_MUUSEU_4"
+        "@id": "estleg:Cluster_MUUSEU_5"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_MUUSEU_5"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:MUUSEU_Par_30_Lg_Unknown_1"
+        }
+      ],
+      "estleg:targetGroup": [
+        "official"
+      ]
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_30_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Rahalist arvestust peetakse alates käesoleva seaduse jõustumisest soetatavate museaalide ja abikogusse arvatud asjade üle.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_30"
+      }
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_31",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_muuseumiseadus"
+      ],
+      "estleg:paragrahv": "§ 31.",
+      "rdfs:label": "§ 31. Riigimuuseumi juhi tähtajatu töölepingu kehtivus",
+      "estleg:sourceAct": "Muuseumiseadus",
+      "estleg:summary": "Käesoleva seaduse jõustumisel kehtiv riigimuuseumi juhiga sõlmitud tähtajatu tööleping jääb kehtima. Käesoleva seaduse jõustumisel kehtiv riigimuuseumi juhiga sõlmitud tähtajatu tööleping jääb kehtima.",
+      "estleg:legalText": "Käesoleva seaduse jõustumisel kehtiv riigimuuseumi juhiga sõlmitud tähtajatu tööleping jääb kehtima.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_MUUSEU_5"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_MUUSEU_5"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:MUUSEU_Par_31_Lg_Unknown_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_31_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Käesoleva seaduse jõustumisel kehtiv riigimuuseumi juhiga sõlmitud tähtajatu tööleping jääb kehtima.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_31"
+      }
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_32",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_muuseumiseadus"
+      ],
+      "estleg:paragrahv": "§ 32.",
+      "rdfs:label": "§ 32. Muuseumikogust väljaarvamise erisus",
+      "estleg:sourceAct": "Muuseumiseadus",
+      "estleg:summary": "Käesoleva seaduse § 11 ja § 12 lõikes 3 sätestatut ei kohaldata asjadele, mis on võetud muuseumisse hoiule ja hiljem museaalina arvele enne 1996. aasta 14. detsembril jõustunud muuseumiseaduse kehtima hakkamist, ning nimetatud asjad tagastatakse hoiulevõtmist tõendava dokumendi alusel õigustatud isikule. Käesoleva seaduse § 11 ja § 12 lõikes 3 sätestatut ei kohaldata asjadele, mis on võetud muuseumisse hoiule ja hiljem museaalina arvele enne 1996. aasta 14. detsembril jõustunud muuseumiseaduse k",
+      "estleg:legalText": "Käesoleva seaduse § 11 ja § 12 lõikes 3 sätestatut ei kohaldata asjadele, mis on võetud muuseumisse hoiule ja hiljem museaalina arvele enne 1996. aasta 14. detsembril jõustunud muuseumiseaduse kehtima hakkamist, ning nimetatud asjad tagastatakse hoiulevõtmist tõendava dokumendi alusel õigustatud isikule.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_MUUSEU_5"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_MUUSEU_5"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:MUUSEU_Par_32_Lg_Unknown_1"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen"
+      ],
       "estleg:references": [
         {
           "@id": "estleg:MUUSEU_Par_11"
@@ -780,62 +2919,174 @@
       ]
     },
     {
-      "@id": "estleg:MUUSEU_Par_25",
+      "@id": "estleg:MUUSEU_Par_32_Lg_Unknown_1",
       "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_MUUSEU"
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:paragrahv": "§ 25.",
-      "rdfs:label": "§ 25. § 14 lõike 3 rakendamise erisus",
-      "estleg:sourceAct": "Muuseumiseadus",
-      "estleg:summary": "Käesoleva seaduse § 14 lõikes 3 sätestatut ei rakendata enne käesoleva seaduse jõustumist muuseumisse hoiule antud ja muuseumikogusse arvatud kultuuriväärtusega asja tagastamisel. Käesoleva seaduse § 14 lõikes 3 sätestatut ei rakendata enne käesoleva seaduse jõustumist muuseumisse hoiule antud ja muuseumikogusse arvatud kultuuriväärtusega asja tagastamisel.",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_MUUSEU_4"
-      },
-      "estleg:references": [
-        {
-          "@id": "estleg:MUUSEU_Par_14"
-        }
-      ]
-    },
-    {
-      "@id": "estleg:MUUSEU_Par_2627",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_MUUSEU"
-      ],
-      "estleg:paragrahv": "§ 26-27.",
-      "rdfs:label": "§ 26-27.",
-      "estleg:sourceAct": "Muuseumiseadus",
-      "estleg:summary": "[Käesolevast tekstist välja jäetud]",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_MUUSEU_4"
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Käesoleva seaduse § 11 ja § 12 lõikes 3 sätestatut ei kohaldata asjadele, mis on võetud muuseumisse hoiule ja hiljem museaalina arvele enne 1996. aasta 14. detsembril jõustunud muuseumiseaduse kehtima hakkamist, ning nimetatud asjad tagastatakse hoiulevõtmist tõendava dokumendi alusel õigustatud isikule.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_32"
       }
     },
     {
-      "@id": "estleg:MUUSEU_Par_28",
+      "@id": "estleg:MUUSEU_Par_32_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_MUUSEU"
+        "estleg:LegalProvision_muuseumiseadus"
       ],
-      "estleg:paragrahv": "§ 28.",
-      "rdfs:label": "§ 28. Museaali muuseumikogust väljaarvamise erisused",
+      "estleg:paragrahv": "§ 32<sup>1</sup>",
+      "rdfs:label": "§ 32<sup>1</sup> Käesoleva seaduse § 26 rakendamine",
       "estleg:sourceAct": "Muuseumiseadus",
-      "estleg:summary": "Museaalid, mis on muuseumikogusse arvatud enne 2003. aasta 1. jaanuari seoses teise muuseumi tegevuse lõpetamisel toimunud üleandmisega, võib muuseumikogust välja arvata, arvestamata käesoleva seaduse § 19 lõikes 1 sätestatud aluseid juhul, kui museaalid antakse kasutamiseks sihtasutusena tegutsevale eramuuseumile. RT I 2003 21 126 261448 2003-03-13+02:00 Museaalid, mis on muuseumikogusse arvatud enne 2003. aasta 1. jaanuari seoses teise muuseumi tegevuse lõpetamisel toimunud üleandmisega, võib ",
+      "estleg:summary": "Näitusele, mille kahjuhüvitise tagamine on otsustatud enne 2019. aasta 1. jaanuari, kohaldatakse käesoleva seaduse § 26 kuni 2018. aasta 31. detsembrini kehtinud redaktsiooni. RT I 2018-12-21 5 121122018005 2019-01-01 Näitusele, mille kahjuhüvitise tagamine on otsustatud enne 2019. aasta 1. jaanuari, kohaldatakse käesoleva seaduse § 26 kuni 2018. aasta 31. detsembrini kehtinud redaktsiooni.",
+      "estleg:legalText": "Näitusele, mille kahjuhüvitise tagamine on otsustatud enne 2019. aasta 1. jaanuari, kohaldatakse käesoleva seaduse § 26 kuni 2018. aasta 31. detsembrini kehtinud redaktsiooni.",
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_MUUSEU_4"
+        "@id": "estleg:Cluster_MUUSEU_5"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_MUUSEU_5"
       },
-      "estleg:references": [
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:MUUSEU_Par_19"
+          "@id": "estleg:MUUSEU_Par_32_1_Lg_Unknown_1"
         }
       ],
-      "estleg:targetGroup": [
-        "ngo"
+      "estleg:references": [
+        {
+          "@id": "estleg:MUUSEU_Par_26"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:SANS_Par_57",
+          "estleg:similarityScore": {
+            "@value": "0.312",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
       ]
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_32_1_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Näitusele, mille kahjuhüvitise tagamine on otsustatud enne 2019. aasta 1. jaanuari, kohaldatakse käesoleva seaduse § 26 kuni 2018. aasta 31. detsembrini kehtinud redaktsiooni.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_32_1"
+      }
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_33",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_muuseumiseadus"
+      ],
+      "estleg:paragrahv": "§ 33.",
+      "rdfs:label": "§ 33.",
+      "estleg:sourceAct": "Muuseumiseadus",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_MUUSEU_5"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_MUUSEU_5"
+      },
+      "estleg:summary": "§ 33."
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_37",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_muuseumiseadus"
+      ],
+      "estleg:paragrahv": "§ 37.",
+      "rdfs:label": "§ 37. [[Käesolevast tekstist välja jäetud.]]",
+      "estleg:sourceAct": "Muuseumiseadus",
+      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_MUUSEU_5"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_MUUSEU_5"
+      }
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_38",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_muuseumiseadus"
+      ],
+      "estleg:paragrahv": "§ 38.",
+      "rdfs:label": "§ 38. Seaduse jõustumine",
+      "estleg:sourceAct": "Muuseumiseadus",
+      "estleg:summary": "1 (1) Käesolev seadus jõustub 2013. aasta 15. juulil. Käesolev seadus jõustub 2013. aasta 15. juulil. 2 (2) Käesoleva seaduse § 20 lõike 3 punktid 1, 2, 4 ja 5 jõustuvad 2014. aasta 1. jaanuaril. RT I 2013-12-22 1 122122013001 2014-01-01 Käesoleva seaduse § 20 lõike 3 punktid 1, 2, 4 ja 5 jõustuvad 2014. aasta 1. jaanuaril. 3 (3) Käesoleva seaduse § 35 jõustub 2014. aasta 1. juulil. RT I 2013-12-22 1 122122013001 2014-01-01 Käesoleva seaduse § 35 jõustub 2014. aasta 1. juulil.",
+      "estleg:legalText": "(1) Käesolev seadus jõustub 2013. aasta 15. juulil. (2) Käesoleva seaduse § 20 lõike 3 punktid 1, 2, 4 ja 5 jõustuvad 2014. aasta 1. jaanuaril. (3) Käesoleva seaduse § 35 jõustub 2014. aasta 1. juulil.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_MUUSEU_5"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_MUUSEU_5"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:MUUSEU_Par_38_Lg_1"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_38_Lg_2"
+        },
+        {
+          "@id": "estleg:MUUSEU_Par_38_Lg_3"
+        }
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:MUUSEU_Par_20"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_38_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolev seadus jõustub 2013. aasta 15. juulil.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_38"
+      },
+      "rdfs:label": "§ 38 lg 1"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_38_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Käesoleva seaduse § 20 lõike 3 punktid 1, 2, 4 ja 5 jõustuvad 2014. aasta 1. jaanuaril.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_38"
+      },
+      "rdfs:label": "§ 38 lg 2"
+    },
+    {
+      "@id": "estleg:MUUSEU_Par_38_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Käesoleva seaduse § 35 jõustub 2014. aasta 1. juulil.",
+      "estleg:parentProvision": {
+        "@id": "estleg:MUUSEU_Par_38"
+      },
+      "rdfs:label": "§ 38 lg 3"
     }
   ]
 }

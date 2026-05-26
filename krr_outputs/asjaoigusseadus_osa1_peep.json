@@ -6,50 +6,32 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
   },
   "@graph": [
     {
-      "@id": "estleg:AOS_Osa1_Uldosa",
+      "@id": "estleg:AOS_Osa1_1_31",
       "@type": [
+        "owl:Ontology",
         "estleg:Act",
         "estleg:Law",
-        "owl:Ontology"
+        "estleg:Part"
       ],
-      "rdfs:label": "AÕS Osa 1 (Üldosa) kaardistus: omand, asjaõigused, kinnisvara",
-      "estleg:affectedBy": [
-        {
-          "@id": "estleg:Draft_JDM25_0711"
-        },
-        {
-          "@id": "estleg:Draft_KLIM22_0460"
-        },
-        {
-          "@id": "estleg:Draft_JDM18_0435"
-        },
-        {
-          "@id": "estleg:Draft_MKM13_1552"
-        }
-      ],
-      "estleg:temporalStatus": "unknown",
-      "dcterms:subject": [
-        {
-          "@id": "http://eurovoc.europa.eu/6016"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/2431"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/6411"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/0816"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/2451"
-        }
-      ],
+      "rdfs:label": "Asjaõigusseadus Osa 1 (ÜLDOSA) §1–31 kaardistus",
+      "dc:source": "Asjaõigusseadus",
+      "dcterms:title": "Asjaõigusseadus",
+      "estleg:contentStatus": "structuredBody",
+      "dcterms:source": {
+        "@id": "https://www.riigiteataja.ee/akt/128012026007.xml"
+      },
+      "owl:sameAs": {
+        "@id": "https://www.riigiteataja.ee/akt/128012026007.xml"
+      },
+      "estleg:kehtiv": {
+        "@value": "2026-05-24",
+        "@type": "xsd:date"
+      },
       "estleg:transposesDirective": [
         {
           "@id": "estleg:EU_32009L0044"
@@ -60,10 +42,22 @@
         {
           "@id": "estleg:Harmonisation_32009L0044"
         }
-      ]
+      ],
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/6411"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/0411"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2431"
+        }
+      ],
+      "estleg:temporalStatus": "unknown"
     },
     {
-      "@id": "estleg:LegalProvision_AOS_osa1",
+      "@id": "estleg:LegalProvision_asjaoigusseadus_osa1",
       "@type": [
         "owl:Class"
       ],
@@ -73,624 +67,354 @@
       }
     },
     {
-      "@id": "estleg:Cluster_Omand",
+      "@id": "estleg:AOS_Osa1_TopicScheme",
       "@type": [
-        "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "skos:ConceptScheme"
       ],
-      "rdfs:label": "Omand"
+      "rdfs:label": "Asjaõigusseadus Osa 1 (ÜLDOSA) teemaskeem",
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_AOS_1_Part"
+        }
+      ]
     },
     {
-      "@id": "estleg:Cluster_Asjaoigused",
+      "@id": "estleg:Cluster_AOS_1_Part",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "skos:Concept"
       ],
-      "rdfs:label": "Asjaõigused"
+      "rdfs:label": "Osa 1 (ÜLDOSA)",
+      "skos:prefLabel": "Osa 1 (ÜLDOSA)",
+      "skos:inScheme": {
+        "@id": "estleg:AOS_Osa1_TopicScheme"
+      },
+      "skos:narrower": [
+        {
+          "@id": "estleg:Cluster_AOS_1_1"
+        },
+        {
+          "@id": "estleg:Cluster_AOS_1_2"
+        }
+      ]
     },
     {
-      "@id": "estleg:Cluster_Kinnisvara",
+      "@id": "estleg:Cluster_AOS_1_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "Kinnisvara"
+      "rdfs:label": "§1–6 ÜLDSÄTTED",
+      "skos:prefLabel": "§1–6 ÜLDSÄTTED",
+      "skos:inScheme": {
+        "@id": "estleg:AOS_Osa1_TopicScheme"
+      },
+      "skos:broader": {
+        "@id": "estleg:Cluster_AOS_1_Part"
+      },
+      "estleg:provisionCount": 6
+    },
+    {
+      "@id": "estleg:Chapter_AOS_1_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "1. peatükk – ÜLDSÄTTED",
+      "estleg:chapterNumber": "1",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_AOS_1_1"
+      }
+    },
+    {
+      "@id": "estleg:Cluster_AOS_1_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": "ASJAD",
+      "skos:prefLabel": "ASJAD",
+      "skos:inScheme": {
+        "@id": "estleg:AOS_Osa1_TopicScheme"
+      },
+      "skos:broader": {
+        "@id": "estleg:Cluster_AOS_1_Part"
+      },
+      "estleg:provisionCount": 0
+    },
+    {
+      "@id": "estleg:Division_AOS_1_2_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Division"
+      ],
+      "rdfs:label": "1. jagu – MÕISTE JA LIIGID",
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_AOS_1_2"
+      }
+    },
+    {
+      "@id": "estleg:Chapter_AOS_1_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "2. peatükk – ASJAD",
+      "estleg:chapterNumber": "2",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_AOS_1_2"
+      },
+      "estleg:hasPart": [
+        {
+          "@id": "estleg:Division_AOS_1_2_1"
+        }
+      ]
     },
     {
       "@id": "estleg:AOS_Osa1_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa1"
+        "estleg:LegalProvision_asjaoigusseadus_osa1"
       ],
-      "estleg:paragrahv": "§ 1",
-      "rdfs:label": "Seaduse ülesanne",
+      "estleg:paragrahv": "§ 1.",
+      "rdfs:label": "§ 1. Seaduse ülesanne",
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:summary": "Asjaõigusseadus sätestab asjaõigused, nende sisu, tekkimise ja lõppemise ning on aluseks teistele asjaõigust reguleerivatele seadustele. Asjaõigusseadus sätestab asjaõigused, nende sisu, tekkimise ja lõppemise ning on aluseks teistele asjaõigust reguleerivatele seadustele.",
+      "estleg:legalText": "Asjaõigusseadus sätestab asjaõigused, nende sisu, tekkimise ja lõppemise ning on aluseks teistele asjaõigust reguleerivatele seadustele.",
       "estleg:requestedCluster": {
-        "@id": "asjaoigused"
+        "@id": "estleg:Cluster_AOS_1_1"
       },
-      "estleg:summary": "AÕS sätestab asjaõigused, nende sisu, tekkimise ja lõppemise ning on alus teistele asjaõigust reguleerivatele seadustele.",
-      "estleg:sourceAct": "Asjaõigusseadus"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_AOS_1_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:AOS_Osa1_Par_1_Lg_Unknown_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:AOS_Osa1_Par_1_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Asjaõigusseadus sätestab asjaõigused, nende sisu, tekkimise ja lõppemise ning on aluseks teistele asjaõigust reguleerivatele seadustele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa1_Par_1"
+      }
+    },
+    {
+      "@id": "estleg:AOS_Osa1_Par_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_asjaoigusseadus_osa1"
+      ],
+      "estleg:paragrahv": "§ 2.",
+      "rdfs:label": "§ 2. Seaduse kehtivus",
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_AOS_1_1"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_AOS_1_1"
+      }
+    },
+    {
+      "@id": "estleg:AOS_Osa1_Par_3",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_asjaoigusseadus_osa1"
+      ],
+      "estleg:paragrahv": "§ 3.",
+      "rdfs:label": "§ 3. Seaduse kohaldatavus",
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_AOS_1_1"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_AOS_1_1"
+      }
+    },
+    {
+      "@id": "estleg:AOS_Osa1_Par_4",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_asjaoigusseadus_osa1"
+      ],
+      "estleg:paragrahv": "§ 4.",
+      "rdfs:label": "§ 4. Välislepingu kohaldatavus",
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_AOS_1_1"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_AOS_1_1"
+      }
     },
     {
       "@id": "estleg:AOS_Osa1_Par_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa1"
+        "estleg:LegalProvision_asjaoigusseadus_osa1"
       ],
-      "estleg:paragrahv": "§ 5",
-      "rdfs:label": "Asjaõigused",
-      "estleg:requestedCluster": {
-        "@id": "asjaoigused"
-      },
-      "estleg:summary": "Asjaõigused on omand ja piiratud asjaõigused (sh servituudid, reaalkoormatised, hoonestusõigus, ostueesõigus, pandiõigus).",
-      "estleg:sourceAct": "Asjaõigusseadus"
-    },
-    {
-      "@id": "estleg:AOS_Osa1_Par_32",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa1"
-      ],
-      "estleg:paragrahv": "§ 32",
-      "rdfs:label": "Valduse mõiste",
-      "estleg:requestedCluster": {
-        "@id": "asjaoigused"
-      },
-      "estleg:summary": "Valdus on tegelik võim asja üle.",
-      "estleg:sourceAct": "Asjaõigusseadus"
-    },
-    {
-      "@id": "estleg:AOS_Osa1_Par_33",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa1"
-      ],
-      "estleg:paragrahv": "§ 33",
-      "rdfs:label": "Valdaja",
-      "estleg:requestedCluster": {
-        "@id": "asjaoigused"
-      },
-      "estleg:summary": "Eristatakse otsest ja kaudset valdajat; valdaja ei ole isik, kes teostab võimu üksnes teise isiku korralduste järgi tema majapidamises või ettevõttes.",
+      "estleg:paragrahv": "§ 5.",
+      "rdfs:label": "§ 5. Asjaõigused",
       "estleg:sourceAct": "Asjaõigusseadus",
-      "estleg:targetGroup": [
-        "citizen"
-      ]
-    },
-    {
-      "@id": "estleg:AOS_Osa1_Par_34",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa1"
-      ],
-      "estleg:paragrahv": "§ 34",
-      "rdfs:label": "Seaduslik ja ebaseaduslik valdus",
+      "estleg:summary": "1 (1) Asjaõigused on omand (omandiõigus) ja piiratud asjaõigused: servituudid, reaalkoormatised, hoonestusõigus, ostueesõigus ja pandiõigus. Asjaõigused on omand (omandiõigus) ja piiratud asjaõigused: servituudid, reaalkoormatised, hoonestusõigus, ostueesõigus ja pandiõigus. 2 (2) Seaduses võib lisaks käesoleva paragrahvi 1. lõikes nimetatule sätestada ka muid asjaõigusi. Seaduses võib lisaks käesoleva paragrahvi 1. lõikes nimetatule sätestada ka muid asjaõigusi.",
+      "estleg:legalText": "(1) Asjaõigused on omand (omandiõigus) ja piiratud asjaõigused: servituudid, reaalkoormatised, hoonestusõigus, ostueesõigus ja pandiõigus. (2) Seaduses võib lisaks käesoleva paragrahvi 1. lõikes nimetatule sätestada ka muid asjaõigusi.",
       "estleg:requestedCluster": {
-        "@id": "asjaoigused"
+        "@id": "estleg:Cluster_AOS_1_1"
       },
-      "estleg:summary": "Valdus on seaduslik, kui see põhineb õiguslikul alusel; eeldatakse valduse seaduslikkust kuni vastupidise tõendamiseni.",
-      "estleg:sourceAct": "Asjaõigusseadus"
-    },
-    {
-      "@id": "estleg:AOS_Osa1_Par_35",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa1"
-      ],
-      "estleg:paragrahv": "§ 35",
-      "rdfs:label": "Heauskne ja pahauskne valdus",
-      "estleg:requestedCluster": {
-        "@id": "asjaoigused"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_AOS_1_1"
       },
-      "estleg:summary": "Valduse hea- või pahausk sõltub teadmisest valduse õigusliku aluse puudumise või parema valdusõiguse olemasolu kohta; eeldatakse heausksust.",
-      "estleg:sourceAct": "Asjaõigusseadus"
-    },
-    {
-      "@id": "estleg:AOS_Osa1_Par_40",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa1"
-      ],
-      "estleg:paragrahv": "§ 40",
-      "rdfs:label": "Omavoli ja omavoliline valdus",
-      "estleg:requestedCluster": {
-        "@id": "asjaoigused"
-      },
-      "estleg:summary": "Valdus on kaitstud omavoli vastu; omavoli on valduse rikkumine või äravõtmine valdaja nõusolekuta ja seadusvastaselt.",
-      "estleg:sourceAct": "Asjaõigusseadus",
-      "estleg:targetGroup": [
-        "citizen"
-      ]
-    },
-    {
-      "@id": "estleg:AOS_Osa1_Par_41",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa1"
-      ],
-      "estleg:paragrahv": "§ 41",
-      "rdfs:label": "Omaabi",
-      "estleg:requestedCluster": {
-        "@id": "asjaoigused"
-      },
-      "estleg:summary": "Valdaja võib valdust omavoli vastu kaitsta jõuga hädakaitse piirides ning teatud juhtudel valduse kohe taastada.",
-      "estleg:sourceAct": "Asjaõigusseadus",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
-      "estleg:targetGroup": [
-        "citizen"
-      ]
-    },
-    {
-      "@id": "estleg:AOS_Osa1_Par_44",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa1"
-      ],
-      "estleg:paragrahv": "§ 44",
-      "rdfs:label": "Valduse rikkumisest tulenev nõue",
-      "estleg:requestedCluster": {
-        "@id": "asjaoigused"
-      },
-      "estleg:summary": "Valdajal on õigus nõuda rikkumise kõrvaldamist ja edasise rikkumise ärahoidmist.",
-      "estleg:sourceAct": "Asjaõigusseadus",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
-      "estleg:targetGroup": [
-        "citizen"
-      ]
-    },
-    {
-      "@id": "estleg:AOS_Osa1_Par_45",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa1"
-      ],
-      "estleg:paragrahv": "§ 45",
-      "rdfs:label": "Valduse äravõtmisest tulenev nõue",
-      "estleg:requestedCluster": {
-        "@id": "asjaoigused"
-      },
-      "estleg:summary": "Valduse äravõtmisel võib valdaja nõuda valduse taastamist omavoliliselt valdajalt.",
-      "estleg:sourceAct": "Asjaõigusseadus",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
-      "estleg:targetGroup": [
-        "citizen"
-      ]
-    },
-    {
-      "@id": "estleg:AOS_Osa1_Par_51",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa1"
-      ],
-      "estleg:paragrahv": "§ 51",
-      "rdfs:label": "Kinnistusraamatu mõiste",
-      "estleg:requestedCluster": {
-        "@id": "kinnisvara"
-      },
-      "estleg:summary": "Kinnistusraamatut peetakse kinnisasjade ja nendega seotud asjaõiguste kohta.",
-      "estleg:sourceAct": "Asjaõigusseadus"
-    },
-    {
-      "@id": "estleg:AOS_Osa1_Par_54",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa1"
-      ],
-      "estleg:paragrahv": "§ 54",
-      "rdfs:label": "Kinnisasjade ühendamine ja jagamine",
-      "estleg:requestedCluster": {
-        "@id": "kinnisvara"
-      },
-      "estleg:summary": "Kinnisasju saab ühendada ja jagada omaniku soovil; kinnistusraamatusse kantud õiguste kehtivus säilib seaduses ettenähtud korras.",
-      "estleg:sourceAct": "Asjaõigusseadus",
-      "estleg:targetGroup": [
-        "citizen"
-      ]
-    },
-    {
-      "@id": "estleg:AOS_Osa1_Par_55",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa1"
-      ],
-      "estleg:paragrahv": "§ 55",
-      "rdfs:label": "Kinnistusraamatu avalikkus",
-      "estleg:requestedCluster": {
-        "@id": "kinnisvara"
-      },
-      "estleg:summary": "Kinnistusraamat on avalik ja keegi ei või vabandada andmete mitteteadmisega.",
-      "estleg:sourceAct": "Asjaõigusseadus"
-    },
-    {
-      "@id": "estleg:AOS_Osa1_Par_56",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa1"
-      ],
-      "estleg:paragrahv": "§ 56",
-      "rdfs:label": "Kinnistusraamatu õigsuse eeldamine",
-      "estleg:requestedCluster": {
-        "@id": "kinnisvara"
-      },
-      "estleg:summary": "Kinnistusraamatusse kantud andmete õigsust eeldatakse; kustutatud õiguse puhul eeldatakse õiguse lõppemist.",
-      "estleg:sourceAct": "Asjaõigusseadus"
-    },
-    {
-      "@id": "estleg:AOS_Osa1_Par_56_1",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa1"
-      ],
-      "estleg:paragrahv": "§ 56¹",
-      "rdfs:label": "Heauskne omandamine kinnistusraamatu andmetele tuginedes",
-      "estleg:requestedCluster": {
-        "@id": "kinnisvara"
-      },
-      "estleg:summary": "Kinnistusraamatu andmetele tuginev omandamine kaitseb heauskset omandajat, kui puudub vastuväide ja omandaja ei teadnud andmete ebaõigsusest.",
-      "estleg:sourceAct": "Asjaõigusseadus"
-    },
-    {
-      "@id": "estleg:AOS_Osa1_Par_59",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa1"
-      ],
-      "estleg:paragrahv": "§ 59",
-      "rdfs:label": "Asjaõiguse järjekoht",
-      "estleg:requestedCluster": {
-        "@id": "kinnisvara"
-      },
-      "estleg:summary": "Asjaõigused saavad järjekoha kinnistusraamatusse kandmisega; kanded tehakse avalduste saabumise järjekorras.",
-      "estleg:sourceAct": "Asjaõigusseadus"
-    },
-    {
-      "@id": "estleg:AOS_Osa1_Par_63",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa1"
-      ],
-      "estleg:paragrahv": "§ 63",
-      "rdfs:label": "Märge kinnistusraamatus",
-      "estleg:requestedCluster": {
-        "@id": "kinnisvara"
-      },
-      "estleg:summary": "Kinnistusraamatusse saab kanda eelmärke, vastuväite, keelumärke ja märkuse; need teenivad nõuete tagamise ja käsutuste nähtavaks tegemise eesmärki.",
-      "estleg:sourceAct": "Asjaõigusseadus"
-    },
-    {
-      "@id": "estleg:AOS_Osa1_Par_64_1",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa1"
-      ],
-      "estleg:paragrahv": "§ 64¹",
-      "rdfs:label": "Kinnisomandi üleandmine ja koormamine",
-      "estleg:requestedCluster": {
-        "@id": "kinnisvara"
-      },
-      "estleg:summary": "Kinnisomandi üleandmiseks ja kinnisasja asjaõiguslikuks koormamiseks on nõutav notariaalne asjaõigusleping ja kanne kinnistusraamatusse.",
-      "estleg:sourceAct": "Asjaõigusseadus",
-      "estleg:targetGroup": [
-        "official"
-      ]
-    },
-    {
-      "@id": "estleg:AOS_Osa1_Par_65",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa1"
-      ],
-      "estleg:paragrahv": "§ 65",
-      "rdfs:label": "Ebaõige kande parandamine",
-      "estleg:requestedCluster": {
-        "@id": "kinnisvara"
-      },
-      "estleg:summary": "Õiguse rikkumise korral ebaõige kandega saab nõuda parandamiseks nõusolekut, arvestades heauskse kolmanda isiku kaitset.",
-      "estleg:sourceAct": "Asjaõigusseadus",
-      "estleg:targetGroup": [
-        "citizen"
-      ]
-    },
-    {
-      "@id": "estleg:AOS_Osa1_Par_68",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa1"
-      ],
-      "estleg:paragrahv": "§ 68",
-      "rdfs:label": "Omandi mõiste",
-      "estleg:requestedCluster": {
-        "@id": "omand"
-      },
-      "estleg:summary": "Omand on täielik õiguslik võim asja üle: valdamine, kasutamine, käsutamine ning nõudeõigus rikkumiste vältimiseks ja kõrvaldamiseks.",
-      "estleg:sourceAct": "Asjaõigusseadus"
-    },
-    {
-      "@id": "estleg:AOS_Osa1_Par_70",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa1"
-      ],
-      "estleg:paragrahv": "§ 70",
-      "rdfs:label": "Ühine omand",
-      "estleg:requestedCluster": {
-        "@id": "omand"
-      },
-      "estleg:summary": "Ühine omand on kaasomand või ühisomand; vaikimisi on ühine omand kaasomand, kui seadus ei sätesta teisiti.",
-      "estleg:sourceAct": "Asjaõigusseadus"
-    },
-    {
-      "@id": "estleg:AOS_Osa1_Par_71",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa1"
-      ],
-      "estleg:paragrahv": "§ 71",
-      "rdfs:label": "Kaasomandi ulatus",
-      "estleg:requestedCluster": {
-        "@id": "omand"
-      },
-      "estleg:summary": "Kaasomanike osad on võrdsed, kui pole kokku lepitud teisiti; kaasomanikul on osale vastavad õigused nii kaasomanike vahel kui kolmandate isikute suhtes.",
-      "estleg:sourceAct": "Asjaõigusseadus",
-      "estleg:targetGroup": [
-        "citizen"
-      ]
-    },
-    {
-      "@id": "estleg:AOS_Osa1_Par_72",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa1"
-      ],
-      "estleg:paragrahv": "§ 72",
-      "rdfs:label": "Kaasomandi valdamine ja kasutamine",
-      "estleg:requestedCluster": {
-        "@id": "omand"
-      },
-      "estleg:summary": "Kaasomanikud valdavad ja kasutavad asja kokkuleppel; tavakasutuse küsimusi saab lahendada häälteenamusega, järgides kõigi huve ja hea usu põhimõtet.",
-      "estleg:sourceAct": "Asjaõigusseadus"
-    },
-    {
-      "@id": "estleg:AOS_Osa1_Par_73",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa1"
-      ],
-      "estleg:paragrahv": "§ 73",
-      "rdfs:label": "Kaasomandi mõttelise osa käsutamine",
-      "estleg:requestedCluster": {
-        "@id": "omand"
-      },
-      "estleg:summary": "Kaasomanik võib oma mõttelist osa käsutada; kinnisasja osa müügil kolmandale võivad teistel kaasomanikel tekkida ostueesõigused.",
-      "estleg:sourceAct": "Asjaõigusseadus",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      }
-    },
-    {
-      "@id": "estleg:AOS_Osa1_Par_74",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa1"
-      ],
-      "estleg:paragrahv": "§ 74",
-      "rdfs:label": "Kaasomandi käsutamine tervikuna",
-      "estleg:requestedCluster": {
-        "@id": "omand"
-      },
-      "estleg:summary": "Kaasomandis oleva asja võõrandamine, koormamine või olulise otstarbe muutmine eeldab üldjuhul kõigi kaasomanike kokkulepet.",
-      "estleg:sourceAct": "Asjaõigusseadus"
-    },
-    {
-      "@id": "estleg:AOS_Osa1_Par_76",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa1"
-      ],
-      "estleg:paragrahv": "§ 76",
-      "rdfs:label": "Kaasomandi lõpetamise nõue",
-      "estleg:requestedCluster": {
-        "@id": "omand"
-      },
-      "estleg:summary": "Kaasomanikul on õigus nõuda kaasomandi lõpetamist; kokkuleppel saab nõudeõigust piirata üksnes seaduses lubatud piires.",
-      "estleg:sourceAct": "Asjaõigusseadus",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      }
-    },
-    {
-      "@id": "estleg:AOS_Osa1_Par_77",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa1"
-      ],
-      "estleg:paragrahv": "§ 77",
-      "rdfs:label": "Asja jagamine kaasomandi lõpetamisel",
-      "estleg:requestedCluster": {
-        "@id": "omand"
-      },
-      "estleg:summary": "Kokkuleppe puudumisel määrab kohus kaasomandi lõpetamise viisi (reaaljaotus, väljaost, enampakkumine, tasaarvestus, vajadusel servituudid).",
-      "estleg:sourceAct": "Asjaõigusseadus",
-      "estleg:targetGroup": [
-        "public_body"
-      ],
-      "estleg:competentAuthority": [
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:Institution_kohus"
+          "@id": "estleg:AOS_Osa1_Par_5_Lg_1"
+        },
+        {
+          "@id": "estleg:AOS_Osa1_Par_5_Lg_2"
         }
       ],
-      "estleg:competenceType": "general"
-    },
-    {
-      "@id": "estleg:AOS_Osa1_Par_80",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa1"
-      ],
-      "estleg:paragrahv": "§ 80",
-      "rdfs:label": "Asja väljanõudmine ebaseaduslikust valdusest",
-      "estleg:requestedCluster": {
-        "@id": "omand"
-      },
-      "estleg:summary": "Omanikul on vindikatsiooninõue õigusliku aluseta valdaja vastu omandi tunnustamiseks ja asja tagastamiseks.",
-      "estleg:sourceAct": "Asjaõigusseadus",
-      "estleg:targetGroup": [
-        "citizen"
-      ]
-    },
-    {
-      "@id": "estleg:AOS_Osa1_Par_83",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa1"
-      ],
-      "estleg:paragrahv": "§ 83",
-      "rdfs:label": "Valdaja vastuväited",
-      "estleg:requestedCluster": {
-        "@id": "omand"
-      },
-      "estleg:summary": "Valdaja võib keelduda asja väljaandmisest, kui tal või teatud juhtudel kaudsel valdajal on omaniku suhtes õigus asja vallata.",
-      "estleg:sourceAct": "Asjaõigusseadus",
       "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:AOS_Osa1_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Asjaõigused on omand (omandiõigus) ja piiratud asjaõigused: servituudid, reaalkoormatised, hoonestusõigus, ostueesõigus ja pandiõigus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa1_Par_5"
       },
+      "rdfs:label": "§ 5 lg 1"
+    },
+    {
+      "@id": "estleg:AOS_Osa1_Par_5_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Seaduses võib lisaks käesoleva paragrahvi 1. lõikes nimetatule sätestada ka muid asjaõigusi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa1_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 2"
+    },
+    {
+      "@id": "estleg:AOS_Osa1_Par_6",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_asjaoigusseadus_osa1"
+      ],
+      "estleg:paragrahv": "§ 6.",
+      "rdfs:label": "§ 6. Omanik",
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:summary": "1 (1) Kehtetu - RT I 2002 53 336 174795 2002-07-01 Kehtetu - 2 (2) Kõigil omanikel on võrdsed õigused, kui seaduses ei ole sätestatud teisiti. Juriidilise isiku vara ega juriidiline isik ei saa kuuluda teistele isikutele. Kõigil omanikel on võrdsed õigused, kui seaduses ei ole sätestatud teisiti. Juriidilise isiku vara ega juriidiline isik ei saa kuuluda teistele isikutele. 3 (3) Kehtetu - RT I 2002 53 336 174795 2002-07-01 Kehtetu -",
+      "estleg:legalText": "(1) Kehtetu - (2) Kõigil omanikel on võrdsed õigused, kui seaduses ei ole sätestatud teisiti. Juriidilise isiku vara ega juriidiline isik ei saa kuuluda teistele isikutele. (3) Kehtetu -",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_AOS_1_1"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_AOS_1_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:AOS_Osa1_Par_6_Lg_1"
+        },
+        {
+          "@id": "estleg:AOS_Osa1_Par_6_Lg_2"
+        },
+        {
+          "@id": "estleg:AOS_Osa1_Par_6_Lg_3"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen"
       ]
     },
     {
-      "@id": "estleg:AOS_Osa1_Par_84",
+      "@id": "estleg:AOS_Osa1_Par_6_Lg_1",
       "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa1"
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:paragrahv": "§ 84",
-      "rdfs:label": "Valdaja vastutus asja ja päraldiste eest",
-      "estleg:requestedCluster": {
-        "@id": "omand"
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa1_Par_6"
       },
-      "estleg:summary": "Pahauskne või omavoliline valdaja vastutab asja hävimise ja väärtuse vähenemise eest rangemalt kui heauskne valdaja.",
-      "estleg:sourceAct": "Asjaõigusseadus",
-      "estleg:targetGroup": [
-        "citizen"
-      ]
+      "rdfs:label": "§ 6 lg 1"
     },
     {
-      "@id": "estleg:AOS_Osa1_Par_88",
+      "@id": "estleg:AOS_Osa1_Par_6_Lg_2",
       "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa1"
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:paragrahv": "§ 88",
-      "rdfs:label": "Kulutuste hüvitamine valdajale",
-      "estleg:requestedCluster": {
-        "@id": "omand"
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kõigil omanikel on võrdsed õigused, kui seaduses ei ole sätestatud teisiti. Juriidilise isiku vara ega juriidiline isik ei saa kuuluda teistele isikutele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa1_Par_6"
       },
-      "estleg:summary": "Valdajal on õigus nõuda vajalike kulutuste hüvitamist ning teatud tingimustel parendused asjalt eemaldada.",
-      "estleg:sourceAct": "Asjaõigusseadus",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
-      "estleg:targetGroup": [
-        "citizen"
-      ]
+      "rdfs:label": "§ 6 lg 2"
     },
     {
-      "@id": "estleg:AOS_Osa1_Par_89",
+      "@id": "estleg:AOS_Osa1_Par_6_Lg_3",
       "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa1"
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:paragrahv": "§ 89",
-      "rdfs:label": "Omandi kaitse valduse kaotusega mitteseotud rikkumise korral",
-      "estleg:requestedCluster": {
-        "@id": "omand"
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa1_Par_6"
       },
-      "estleg:summary": "Omanik võib nõuda omandiõiguse rikkumise kõrvaldamist ja rikkumisest hoidumist ka siis, kui valdus ei ole kaotatud.",
-      "estleg:sourceAct": "Asjaõigusseadus",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
-      "estleg:targetGroup": [
-        "citizen"
-      ]
+      "rdfs:label": "§ 6 lg 3"
     },
     {
-      "@id": "estleg:AOS_Osa1_Par_90",
+      "@id": "estleg:AOS_Osa1_Par_7",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa1"
+        "estleg:LegalProvision_asjaoigusseadus_osa1"
       ],
-      "estleg:paragrahv": "§ 90",
-      "rdfs:label": "Valdaja omandi eeldus",
-      "estleg:requestedCluster": {
-        "@id": "omand"
-      },
-      "estleg:summary": "Vallasasja valdajat (ja varasemat valdajat tema valduse ajal) eeldatakse omanikuks kuni vastupidise tõendamiseni.",
+      "estleg:paragrahv": "§ 7.",
+      "rdfs:label": "§ 7.",
       "estleg:sourceAct": "Asjaõigusseadus",
-      "estleg:targetGroup": [
-        "citizen"
-      ]
+      "estleg:isPartOf": {
+        "@id": "estleg:Division_AOS_1_2_1"
+      },
+      "estleg:summary": "§ 7."
     },
     {
-      "@id": "estleg:AOS_Osa1_Par_92",
+      "@id": "estleg:AOS_Osa1_Par_31",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa1"
+        "estleg:LegalProvision_asjaoigusseadus_osa1"
       ],
-      "estleg:paragrahv": "§ 92",
-      "rdfs:label": "Vallasomandi tekkimine üleandmisega",
-      "estleg:requestedCluster": {
-        "@id": "omand"
-      },
-      "estleg:summary": "Vallasomand tekib valduse üleandmise ja omandi ülemineku kokkuleppega.",
+      "estleg:paragrahv": "§ 31.",
+      "rdfs:label": "§ 31. [Kehtetud -]",
       "estleg:sourceAct": "Asjaõigusseadus",
-      "estleg:targetGroup": [
-        "official"
-      ]
-    },
-    {
-      "@id": "estleg:AOS_Osa1_Par_95",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa1"
-      ],
-      "estleg:paragrahv": "§ 95",
-      "rdfs:label": "Heauskne omandamine",
-      "estleg:requestedCluster": {
-        "@id": "omand"
-      },
-      "estleg:summary": "Heauskne omandamine võimaldab omandi üleminekut ka mitteõigustatud võõrandajalt, kuid seadus kaitseb varastatud või omaniku tahte vastaselt välja läinud asja omanikku.",
-      "estleg:sourceAct": "Asjaõigusseadus",
-      "estleg:targetGroup": [
-        "citizen",
-        "official"
-      ]
-    },
-    {
-      "@id": "estleg:AOS_Osa1_Par_98",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa1"
-      ],
-      "estleg:paragrahv": "§ 98",
-      "rdfs:label": "Leiu teatamiskohustus",
-      "estleg:requestedCluster": {
-        "@id": "omand"
-      },
-      "estleg:summary": "Leitud asja valdusse võtja peab leiust teatama omanikule/kaotajale või politseile seaduses sätestatud tingimustel.",
-      "estleg:sourceAct": "Asjaõigusseadus",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
-      "estleg:dutyHolder": "Leitud asja valdusse võtja",
-      "estleg:targetGroup": [
-        "citizen"
-      ]
+      "estleg:summary": "Kehtetud -",
+      "estleg:legalText": "Kehtetud -",
+      "estleg:isPartOf": {
+        "@id": "estleg:Division_AOS_1_2_1"
+      }
     }
   ]
 }

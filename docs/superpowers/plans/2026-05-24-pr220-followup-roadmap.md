@@ -8,7 +8,7 @@ Related plan: [2026-05-24-open-issues-remediation.md](2026-05-24-open-issues-rem
 
 ## Status Summary
 
-Updated 2026-05-25 after PR #221 and PR #222.
+Updated 2026-05-26 after the Phase 3 live ingestion sequence and final sync.
 
 PR #220 review identified 5 blockers and ~15 majors. The fix commit
 `45a6bea59` closed all 5 blockers with code + test evidence and addressed most
@@ -23,19 +23,23 @@ Current delivery status:
 - Phase 2.1–2.7 were delivered in PR #222 (`c3becc72b`).
 - Phase 2.10/O5, O8, O9, and `jsonld_texts` test coverage were delivered in
   PR #222 follow-up commit `26960fb40`.
-- Phase 2.8 and 2.9 remain deferred until the first live PDF probe yields real
-  distribution data; tracked in #227.
-- Remaining follow-up before Phase 3.4 is tracked in #227.
+- Phase 2.8 and 2.9 / #227 were closed by the Phase 3.4 live probe and full
+  Õiguskantsler ingestion.
+- Phase 3.1–3.4 live ingestion is complete.
+- Phase 4.1 / #203 was re-evaluated after Subsection materialisation and is
+  deferred: no current consumer requires punkt-level `estleg:Item` nodes.
+- Phase 4.2 final sync updated public counts and validation docs.
 
-Baseline validation as of PR #222 follow-up commit `26960fb40`:
+Final local validation after Phase 4.2:
 
 - `python3 -m ruff check scripts/ tests/` — pass
-- `python3 -m pytest -q` — `1477 passed, 2 skipped`
-- `python3 scripts/validate_all.py` — pass (expected missing-manifest warning)
-- `python3 scripts/shacl_validate_all.py --all` — pass
-- `python3 scripts/validate_seadusloome_sync.py --report seadusloome-shacl-report.ttl` — pass
-
-PR #222 is ready to merge after this roadmap status update.
+- `python3 -m pytest -q` — `1541 passed, 2 skipped`
+- `python3 scripts/validate_all.py` — pass (`23,069` files, zero
+  errors/warnings)
+- `python3 scripts/shacl_validate_all.py --all` — pass (`23,064` files,
+  `7,117,928` triples)
+- `python3 scripts/validate_seadusloome_sync.py --report seadusloome-shacl-report.ttl`
+  — pass (`21,874` JSON-LD inputs, `7,127,720` data triples, `real 518.46`)
 
 ## Phase 1 — Pre-merge for PR #220
 
@@ -267,25 +271,35 @@ Implement: skip the write when `results` is empty AND the file already exists.
 
 ### 2.8 Stratified PDF probe sampling (O13)
 
-**Status:** Deferred until the first live PDF probe; tracked in #227.
+**Status:** Delivered by #227 / Phase 3.4. The initial recency probe was used
+only as a go/no-go check, then the full archive scrape measured the older PDF
+tail directly: 4,045 of 4,052 PDFs had usable text layers, with six unusable
+or scanned PDFs and one fetch failure. No stratified pre-sample or OCR path is
+needed for this release.
 
 `scripts/generate_annotations.py:115` `PDF_PROBE_SAMPLE_SIZE = 10` always picks
 the most-recent 10 opinions. 2003-era scanned PDFs are never sampled.
 
-Either implement page-stratified sampling (N from page 0, N from page 50, N
-from page 200) or document the recency bias explicitly. Decision can be
-deferred until after the first live probe — needs real data.
+Original options were to implement page-stratified sampling (N from page 0, N
+from page 50, N from page 200) or document the recency bias explicitly. The
+full archive scrape now covers the older tail directly, so no separate
+stratified pre-sample remains for this release.
 
 ### 2.9 PDF quality-ratio re-tune (O14)
 
-**Status:** Deferred until the first live PDF probe; tracked in #227.
+**Status:** Delivered by #227 / Phase 3.4. The 10-PDF probe's accepted text
+layers had valid-character ratios `0.955`–`0.975`, and the full run surfaced
+the few unusable PDFs without raising the threshold. Keep
+`MIN_PDF_TEXT_VALID_CHAR_RATIO = 0.30` for this release and treat the full
+coverage report as the recall-risk surface.
 
 `scripts/generate_annotations.py:117` `MIN_PDF_TEXT_VALID_CHAR_RATIO = 0.30`
 is too loose — accepts text with 70% punctuation. For PDF body-text reference
 resolution, 0.50–0.60 is closer to mojibake-vs-clean discrimination.
 
-Defer until the first live probe yields real distribution data, then pick from
-observed values.
+The first live probe and full archive run supplied the distribution data. The
+observed valid-character ratios support leaving the threshold unchanged for
+this release.
 
 ### 2.10 Other latent items
 
@@ -325,6 +339,10 @@ matters because of IRI churn — later phases consume identities established
 earlier.
 
 ### 3.1 #213 — Full law corpus refresh
+
+**Status:** Complete. Full corpus refresh emitted 1,190 root law files across
+1,145 indexed laws, materialised `estleg:Subsection` nodes, regenerated
+dependent enrichments, and passed the Phase 3 gate set.
 
 **Prerequisite:** Phase 1 complete (atomic state + tid checks landed).
 
@@ -367,6 +385,10 @@ python3 scripts/fix_all_issues.py  # regenerate combined_ontology.jsonld
 
 ### 3.2 #207 — Full Riigikohus full-text ingestion
 
+**Status:** Complete. The live run processed 12,137 decisions, populated usable
+full text for 10,941 decisions, regenerated court provision links and inverse
+references, and passed the Riigikohus bucket plus full release gates.
+
 **Prerequisite:** Phase 1.2 (cache-orphan cleanup) complete; Phase 3.1 done so
 IRI churn is settled.
 
@@ -389,6 +411,10 @@ python3 scripts/shacl_validate_all.py --bucket riigikohus
 - File counts stable; only file contents grow
 
 ### 3.3 #208 — Full ProvisionVersion ingestion
+
+**Status:** Complete. The full-history run generated 742 ProvisionVersion
+sidecars with `--all --max-redactions 0`; sidecar, full SHACL, `validate_all`,
+and Seadusloome sync gates passed.
 
 **Prerequisite:** Phase 2.1 resume hardening complete (#223 / PR #229); Phase
 3.1 done.
@@ -420,6 +446,12 @@ python3 scripts/validate_seadusloome_sync.py
 - Coverage report committed
 
 ### 3.4 #210 — Live Õiguskantsler probe + ingestion
+
+**Status:** Complete. The 10-PDF probe accepted 10/10 text layers, so OCR was
+not added. The full archive scrape processed 4,052 opinions, accepted PDF body
+text for 4,045, emitted 13,402 annotation nodes, surfaced 325 unresolved
+references in the coverage report, and passed `AnnotationShape` / full release
+gates. #227 is delivered by this run.
 
 **Prerequisite:** Phase 2.2 boundary-aware truncation complete in PR #230
 (#224). Use the probe output to close #227 before committing to the live PDF
@@ -455,6 +487,13 @@ python3 scripts/shacl_validate_all.py --bucket sidecars
 
 ### 4.1 #203 — Item / punkt modelling (soft-blocked on Phase 3.1)
 
+**Decision:** Deferred / close as not planned for this remediation series.
+Subsections now exist in the corpus, but a post-Phase 3 scan found no
+`estleg:Item` / `ItemShape` implementation and no current consumer requiring
+punkt-level nodes. Existing deontic and target-group classifiers operate at
+the provision level, while citation extraction records punkt text in citation
+metadata without needing materialised item nodes.
+
 Re-evaluate after Phase 3.1 lands. Per plan §#203 Decision:
 
 > Do not model `alapunkt` in this issue. Implement `estleg:Item` only after
@@ -480,15 +519,21 @@ If a consumer emerges:
    2× baseline, split Items into a separate validation bucket before full
    emission.
 
-If no consumer: close #203 as deferred.
+No consumer emerged, so #203 has been closed as not planned for this
+remediation series.
 
 ### 4.2 Final data-release sync
+
+**Status:** Complete. Final public counts are reconciled at 23,115
+JSON/JSON-LD files, 1,145 indexed enacted laws, and 1,190 enacted law files.
+`docs/VALIDATION_REPORT.md` records the final validator metrics and the
+Seadusloome sync benchmark (`real 518.46`).
 
 After Phases 3.1–3.4 land, designate one sync PR to update:
 
 - `krr_outputs/metadata.jsonld` totals (`estleg:fileCount`,
   `estleg:totalFiles`)
-- `README.md` corpus statistics (the `21,973` count and downstream numbers)
+- `README.md` corpus statistics (the final `23,115` count and downstream numbers)
 - `docs/VALIDATION_REPORT.md` metrics with one final benchmark run
 - `docs/RELEASE.md` cumulative changelog entry
 
@@ -497,6 +542,10 @@ a gate, record the expected delta so the final sync can reconcile it
 deliberately."
 
 ### 4.3 Process improvements
+
+**Status:** Recorded. The roadmap now marks #223–#228 delivery, #227 closeout,
+and the #203 deferred decision. Commit-splitting guidance remains documented
+for future remediation PRs.
 
 - **Commit hygiene.** Future remediation PRs split code-only from data-regen
   commits. This PR's 13,048-file size violated plan §"Release Strategy"; the
@@ -514,6 +563,7 @@ deliberately."
     (delivered in PR #231)
   - #226 — Roadmap status update after Phase 2 (delivered in PR #231)
   - #227 — Annotation PDF probe sampling and quality threshold tuning
+    (delivered by Phase 3.4 live probe and ingestion)
   - #228 — Lower-risk PR #222 code-hygiene/test-depth follow-ups
     (delivered in PR #231)
 
@@ -522,9 +572,9 @@ deliberately."
 | Phase | Items | Effort | Blocks |
 |---|---|---|---|
 | 1. Pre-merge | 1.1 tests, 1.2 cache cleanup, 1.3 warning, 1.4 doc table | Done (#220/#221) | Complete |
-| 2. Hardening | 2.1–2.7 + 2.10/O5/O8/O9 done; #223 delivered in PR #229; #224 delivered in PR #230; #225/#226/#228 delivered in PR #231; 2.8–2.9 deferred to #227 | Mostly done (#222/#229/#230/#231) | Phase 3 live runs |
-| 3. Live ingestion | #213, #207, #208, #210 (sequential, IRI-churn-ordered) | multi-day, network-bound | Phase 4 long-tail |
-| 4. Long-tail | #203 (conditional), final sync, process | ad-hoc | — |
+| 2. Hardening | 2.1–2.7 + 2.10/O5/O8/O9 done; #223 delivered in PR #229; #224 delivered in PR #230; #225/#226/#228 delivered in PR #231; 2.8–2.9 delivered by #227 / Phase 3.4 | Done (#222/#229/#230/#231 + Phase 3.4) | Complete |
+| 3. Live ingestion | #213, #207, #208, #210 (sequential, IRI-churn-ordered) | Done | Complete |
+| 4. Long-tail | #203 deferred, final sync, process | Done | Complete |
 
 ## Cross-Reference Index
 
@@ -539,12 +589,12 @@ deliberately."
 - **#203, #204, #207, #208, #210, #213, #217, #218, #219** — Original GitHub
   open-issues set from
   [2026-05-24-open-issues-remediation.md](2026-05-24-open-issues-remediation.md).
-  All except #203 and the deferred-data jobs (#207, #208, #210, #213) closed
-  in `45a6bea59` groundwork.
+  #204/#217/#218/#219 closed in `45a6bea59` groundwork. #213/#207/#208/#210
+  are complete via the Phase 3 live runs. #203 is deferred because no
+  punkt-level consumer emerged after Subsection materialisation.
 - **#223–#228** — Follow-up issues filed from PR #222 review. #223 is
-  delivered in PR #229, #224 in PR #230, and #225/#226/#228 in PR #231. #227
-  remains open for the live PDF probe sampling / threshold decision before
-  Phase 3.4.
+  delivered in PR #229, #224 in PR #230, #225/#226/#228 in PR #231, and #227
+  by the Phase 3.4 live PDF probe plus full annotation ingestion.
 
 ### Acceptance gates that must pass at end of each phase
 

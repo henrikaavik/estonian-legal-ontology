@@ -6,66 +6,46 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
   },
   "@graph": [
     {
       "@id": "estleg:ASKU_Map_2026",
       "@type": [
+        "owl:Ontology",
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "rdfs:label": "Ajutise sisseveo konventsiooniga ühinemise seadus teemakaardistus",
       "dc:source": "Ajutise sisseveo konventsiooniga ühinemise seadus",
-      "estleg:affectedBy": [
-        {
-          "@id": "estleg:Draft_SOM23_0398"
-        },
-        {
-          "@id": "estleg:Draft_RAM22_0987"
-        },
-        {
-          "@id": "estleg:Draft_MKM19_0775"
-        },
-        {
-          "@id": "estleg:Draft_SIM15_1108"
-        },
-        {
-          "@id": "estleg:Draft_MKM13_1233"
-        },
-        {
-          "@id": "estleg:Draft_RIIGIKOGU24_0773"
-        },
-        {
-          "@id": "estleg:Draft_RIIGIKOGU24_0488"
-        },
-        {
-          "@id": "estleg:Draft_SOM23_0762"
-        },
-        {
-          "@id": "estleg:Draft_RAM22_0431"
-        },
-        {
-          "@id": "estleg:Draft_RIIGIKOGU14_1498"
-        },
-        {
-          "@id": "estleg:Draft_RIIGIKOGU13_0414"
-        }
-      ],
-      "estleg:temporalStatus": "unknown",
+      "dcterms:title": "Ajutise sisseveo konventsiooniga ühinemise seadus",
+      "estleg:contentStatus": "structuredBody",
+      "dcterms:source": {
+        "@id": "https://www.riigiteataja.ee/akt/22339.xml"
+      },
+      "owl:sameAs": {
+        "@id": "https://www.riigiteataja.ee/akt/22339.xml"
+      },
+      "estleg:kehtiv": {
+        "@value": "2026-05-24",
+        "@type": "xsd:date"
+      },
       "dcterms:subject": [
         {
           "@id": "http://eurovoc.europa.eu/0411"
         },
         {
           "@id": "http://eurovoc.europa.eu/2446"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2431"
         }
-      ]
+      ],
+      "estleg:temporalStatus": "unknown"
     },
     {
-      "@id": "estleg:LegalProvision_ASKU",
+      "@id": "estleg:LegalProvision_ajutise_sisseveo_konventsiooniga_uhinemise_seadus",
       "@type": [
         "owl:Class"
       ],
@@ -75,15 +55,50 @@
       }
     },
     {
+      "@id": "estleg:ASKU_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": "Ajutise sisseveo konventsiooniga ühinemise seadus teemaskeem",
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_ASKU_default"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Cluster_ASKU_default",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": "§1–3 Lepingu sätted",
+      "skos:prefLabel": "§1–3 Lepingu sätted",
+      "skos:inScheme": {
+        "@id": "estleg:ASKU_TopicScheme"
+      },
+      "estleg:provisionCount": 3
+    },
+    {
       "@id": "estleg:ASKU_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ASKU"
+        "estleg:LegalProvision_ajutise_sisseveo_konventsiooniga_uhinemise_seadus"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1.",
+      "rdfs:label": "§ 1. [Ühineda juurdelisatud ajutise sisseveo konventsiooniga./12914432, mis on sõlmitu...]",
       "estleg:sourceAct": "Ajutise sisseveo konventsiooniga ühinemise seadus",
       "estleg:summary": "Ühineda juurdelisatud ajutise sisseveo konventsiooniga./12914432, mis on sõlmitud 1990. aasta 28. juunil Istanbulis. Ühineda juurdelisatud , mis on sõlmitud 1990. aasta 28. juunil Istanbulis.",
+      "estleg:legalText": "Ühineda juurdelisatud , mis on sõlmitud 1990. aasta 28. juunil Istanbulis.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_ASKU_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ASKU_Par_1_Lg_Unknown_1"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:OKVKOKAMPU_Par_1",
@@ -120,15 +135,36 @@
       ]
     },
     {
+      "@id": "estleg:ASKU_Par_1_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Ühineda juurdelisatud , mis on sõlmitud 1990. aasta 28. juunil Istanbulis.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ASKU_Par_1"
+      }
+    },
+    {
       "@id": "estleg:ASKU_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ASKU"
+        "estleg:LegalProvision_ajutise_sisseveo_konventsiooniga_uhinemise_seadus"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2.",
+      "rdfs:label": "§ 2. [Deklareerida, et vastavalt konventsiooni artiklile 24 nõustub Eesti Vabariik kon...]",
       "estleg:sourceAct": "Ajutise sisseveo konventsiooniga ühinemise seadus",
       "estleg:summary": "Deklareerida, et vastavalt konventsiooni artiklile 24 nõustub Eesti Vabariik konventsiooni lisadega A, B.1, B.2, B.3, B.5, B.6, B.9, C ja D. Deklareerida, et vastavalt konventsiooni artiklile 24 nõustub Eesti Vabariik konventsiooni lisadega A, B.1, B.2, B.3, B.5, B.6, B.9, C ja D.",
+      "estleg:legalText": "Deklareerida, et vastavalt konventsiooni artiklile 24 nõustub Eesti Vabariik konventsiooni lisadega A, B.1, B.2, B.3, B.5, B.6, B.9, C ja D.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_ASKU_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ASKU_Par_2_Lg_Unknown_1"
+        }
+      ],
       "estleg:referencedBy": [
         {
           "@id": "estleg:ASKU_Par_3"
@@ -136,23 +172,47 @@
       ]
     },
     {
+      "@id": "estleg:ASKU_Par_2_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Deklareerida, et vastavalt konventsiooni artiklile 24 nõustub Eesti Vabariik konventsiooni lisadega A, B.1, B.2, B.3, B.5, B.6, B.9, C ja D.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ASKU_Par_2"
+      }
+    },
+    {
       "@id": "estleg:ASKU_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ASKU"
+        "estleg:LegalProvision_ajutise_sisseveo_konventsiooniga_uhinemise_seadus"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3.",
+      "rdfs:label": "§ 3. [Vabariigi Valitsus kehtestab./dyn=22339&id=72812 ajutise sisseveo konventsiooni...]",
       "estleg:sourceAct": "Ajutise sisseveo konventsiooniga ühinemise seadus",
       "estleg:summary": "Vabariigi Valitsus kehtestab./dyn=22339&id=72812 ajutise sisseveo konventsiooni rakendamiseks määruse ning vajadusel viib vastavalt konventsiooni artiklile 29 sisse ja võtab tagasi lisatingimused käesoleva seaduse §-s 2 nimetatud lisade suhtes.RT II200111782972001-01-13+02:00 ajutise sisseveo konventsiooni rakendamiseks määruse ning vajadusel viib vastavalt konventsiooni artiklile 29 sisse ja võtab tagasi lisatingimused käesoleva seaduse §-s 2 nimetatud lisade suhtes. Riigikogu esimees Toomas SA",
-      "estleg:references": [
+      "estleg:legalText": "ajutise sisseveo konventsiooni rakendamiseks määruse ning vajadusel viib vastavalt konventsiooni artiklile 29 sisse ja võtab tagasi lisatingimused käesoleva seaduse §-s 2 nimetatud lisade suhtes. Riigikogu esimees Toomas SAVI",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_ASKU_default"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:ASKU_Par_2"
+          "@id": "estleg:ASKU_Par_3_Lg_Unknown_1"
+        },
+        {
+          "@id": "estleg:ASKU_Par_3_Lg_Unknown_2"
         }
       ],
       "estleg:targetGroup": [
         "public_body",
         "official"
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:ASKU_Par_2"
+        }
       ],
       "estleg:competentAuthority": [
         {
@@ -163,6 +223,30 @@
         }
       ],
       "estleg:competenceType": "regulation"
+    },
+    {
+      "@id": "estleg:ASKU_Par_3_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "ajutise sisseveo konventsiooni rakendamiseks määruse ning vajadusel viib vastavalt konventsiooni artiklile 29 sisse ja võtab tagasi lisatingimused käesoleva seaduse §-s 2 nimetatud lisade suhtes.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ASKU_Par_3"
+      }
+    },
+    {
+      "@id": "estleg:ASKU_Par_3_Lg_Unknown_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_2",
+      "estleg:legalText": "Riigikogu esimees Toomas SAVI",
+      "estleg:parentProvision": {
+        "@id": "estleg:ASKU_Par_3"
+      }
     }
   ]
 }

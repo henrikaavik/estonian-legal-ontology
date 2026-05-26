@@ -7,6 +7,12 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
 
+estleg:graphClosureExempt
+    a owl:AnnotationProperty ;
+    rdfs:domain sh:PropertyShape ;
+    rdfs:range xsd:boolean ;
+    rdfs:comment "Marker: this property shape's predicate carries enum-like controlled values that validate_seadusloome_sync.validate_graph_closure should skip." .
+
 # Shape for act-level metadata shared by laws and domestic regulations.
 #
 # Temporal enrichment currently describes the selected act snapshot, not
@@ -534,7 +540,10 @@ estleg:DraftTypeShape
         sh:description "Every DraftType must have a label" ;
     ] .
 
-# Shape for CourtDecision instances
+# Shape for CourtDecision instances.
+# Enum-like IRI predicates must mark their property shape with
+# estleg:graphClosureExempt true so the Seadusloome graph-closure gate
+# does not require controlled-value individuals in the public load graph.
 estleg:CourtDecisionShape
     a sh:NodeShape ;
     sh:targetClass estleg:CourtDecision ;

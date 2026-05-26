@@ -32,7 +32,6 @@ import argparse
 import json
 import sys
 from collections import Counter, defaultdict
-from functools import lru_cache
 from pathlib import Path
 from typing import Iterable
 
@@ -58,6 +57,7 @@ JSONLD_SUFFIXES: tuple[str, ...] = (".json", ".jsonld")
 # Shapes graph file extensions.
 SHAPES_SUFFIXES: tuple[str, ...] = (".ttl", ".jsonld")
 
+RDF_NS = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 SHACL_NS = "http://www.w3.org/ns/shacl#"
 
 
@@ -96,7 +96,6 @@ def _canonical_estleg_id(value: str) -> str | None:
     return None
 
 
-@lru_cache(maxsize=4)
 def graph_closure_exempt_predicates(
     shapes_dir: Path = DEFAULT_SHAPES,
 ) -> frozenset[str]:
@@ -104,16 +103,25 @@ def graph_closure_exempt_predicates(
     import rdflib
 
     graph = rdflib.Graph()
+    shapes_dir = Path(shapes_dir)
     for path in sorted(shapes_dir.iterdir()):
         if path.suffix not in SHAPES_SUFFIXES:
             continue
         graph.parse(str(path))
 
     marker = rdflib.URIRef(NS + "graphClosureExempt")
+    rdf_type = rdflib.URIRef(RDF_NS + "type")
+    sh_property = rdflib.URIRef(SHACL_NS + "property")
     sh_path = rdflib.URIRef(SHACL_NS + "path")
+    sh_property_shape = rdflib.URIRef(SHACL_NS + "PropertyShape")
     exempt: set[str] = set()
     for shape, _, value in graph.triples((None, marker, None)):
         if str(value).lower() not in {"true", "1"}:
+            continue
+        if (
+            (shape, rdf_type, sh_property_shape) not in graph
+            and (None, sh_property, shape) not in graph
+        ):
             continue
         predicate = graph.value(shape, sh_path)
         if not isinstance(predicate, rdflib.URIRef):
@@ -156,13 +164,18 @@ def _walk_jsonld_refs(value: object, predicate: str) -> Iterable[tuple[str, str]
             yield from _walk_jsonld_refs(item, predicate)
 
 
-def validate_graph_closure(paths: Iterable[Path]) -> dict:
+def validate_graph_closure(
+    paths: Iterable[Path],
+    *,
+    shapes_dir: Path = DEFAULT_SHAPES,
+) -> dict:
     """Validate internal ``estleg:`` object-reference closure.
 
     Returns a summary dict with ``total``, ``by_predicate``, ``samples``, and
     ``load_errors``. The check is intentionally JSON-LD-shape based rather than
     rdflib-based so it can report the source predicate as it appears in the
-    corpus files.
+    corpus files. SHACL is parsed only to derive explicit enum-like predicate
+    exemptions from ``shapes_dir``.
     """
     docs: list[tuple[Path, object]] = []
     load_errors: list[tuple[str, str]] = []
@@ -184,7 +197,7 @@ def validate_graph_closure(paths: Iterable[Path]) -> dict:
 
     by_predicate: Counter[str] = Counter()
     samples: dict[str, list[dict[str, str]]] = defaultdict(list)
-    exempt_predicates = graph_closure_exempt_predicates()
+    exempt_predicates = graph_closure_exempt_predicates(shapes_dir)
 
     for path, doc in docs:
         for node in _iter_graph_nodes(doc):
@@ -485,7 +498,7 @@ def main(argv: list[str] | None = None) -> int:
         print(f"ERROR: no JSON-LD inputs discovered under {args.krr_dir}.")
         return 2
 
-    closure_summary = validate_graph_closure(inputs)
+    closure_summary = validate_graph_closure(inputs, shapes_dir=args.shapes_dir)
     for line in _format_closure_summary(closure_summary):
         print(line)
     if closure_summary.get("load_errors"):

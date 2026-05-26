@@ -80,12 +80,18 @@ def _provision_node(
     return node
 
 
-def _run_validator(krr_dir: Path, capsys, *, max_warnings: int = 0) -> tuple[int, str]:
+def _run_validator(
+    krr_dir: Path,
+    capsys,
+    *,
+    max_warnings: int = 0,
+    shapes_dir: Path = SHAPES_DIR,
+) -> tuple[int, str]:
     argv = [
         "--krr-dir",
         str(krr_dir),
         "--shapes-dir",
-        str(SHAPES_DIR),
+        str(shapes_dir),
         "--max-warnings",
         str(max_warnings),
     ]
@@ -285,11 +291,128 @@ def test_graph_closure_passes_when_target_is_loaded_from_sidecar(tmp_path, capsy
 def test_graph_closure_exempt_predicates_are_loaded_from_shapes():
     exempt = validate_seadusloome_sync.graph_closure_exempt_predicates()
 
-    assert {
+    assert exempt == {
         "estleg:caseType",
         "estleg:decisionType",
         "estleg:euCourtDecisionType",
-    } <= exempt
+    }
+
+
+def test_graph_closure_exempt_predicates_ignore_malformed_markers(tmp_path):
+    shapes = tmp_path / "shapes"
+    shapes.mkdir()
+    (shapes / "shapes.ttl").write_text(
+        """
+@prefix estleg: <https://data.riik.ee/ontology/estleg#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+
+estleg:HostShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path estleg:stringTrue ;
+        estleg:graphClosureExempt "True" ;
+    ] ;
+    sh:property [
+        sh:path estleg:intTrue ;
+        estleg:graphClosureExempt 1 ;
+    ] ;
+    sh:property [
+        sh:path [ sh:alternativePath ( estleg:left estleg:right ) ] ;
+        estleg:graphClosureExempt true ;
+    ] ;
+    sh:property [
+        estleg:graphClosureExempt true ;
+    ] .
+
+estleg:LooseNodeShape
+    a sh:NodeShape ;
+    sh:path estleg:notAPropertyShape ;
+    estleg:graphClosureExempt true .
+""",
+        encoding="utf-8",
+    )
+
+    exempt = validate_seadusloome_sync.graph_closure_exempt_predicates(shapes)
+
+    assert exempt == {"estleg:stringTrue", "estleg:intTrue"}
+
+
+def test_graph_closure_uses_supplied_shapes_dir_for_exemptions(tmp_path):
+    shapes = tmp_path / "shapes"
+    shapes.mkdir()
+    (shapes / "custom.ttl").write_text(
+        """
+@prefix estleg: <https://data.riik.ee/ontology/estleg#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+estleg:CustomShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path estleg:customEnum ;
+        estleg:graphClosureExempt true ;
+    ] .
+""",
+        encoding="utf-8",
+    )
+    path = tmp_path / "data.jsonld"
+    path.write_text(
+        json.dumps(
+            {
+                "@context": CONTEXT,
+                "@graph": [
+                    {
+                        "@id": "estleg:Source_Node",
+                        "estleg:customEnum": {"@id": "estleg:EnumValue"},
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    summary = validate_seadusloome_sync.validate_graph_closure(
+        [path],
+        shapes_dir=shapes,
+    )
+
+    assert summary["total"] == 0
+
+
+def test_main_uses_cli_shapes_dir_for_graph_closure_exemptions(tmp_path, capsys):
+    krr = tmp_path / "krr_outputs"
+    _seed_seadusloome_subdirs(krr)
+    _write_combined(
+        krr,
+        [
+            {
+                "@id": "estleg:Source_Node",
+                "@type": ["owl:NamedIndividual"],
+                "estleg:customEnum": {"@id": "estleg:EnumValue"},
+            }
+        ],
+    )
+    shapes = tmp_path / "shapes"
+    shapes.mkdir()
+    (shapes / "custom.ttl").write_text(
+        """
+@prefix estleg: <https://data.riik.ee/ontology/estleg#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+estleg:CustomShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path estleg:customEnum ;
+        estleg:graphClosureExempt true ;
+    ] .
+""",
+        encoding="utf-8",
+    )
+
+    code, output = _run_validator(krr, capsys, shapes_dir=shapes)
+
+    assert code == 0, output
+    assert "Graph closure: PASS" in output
 
 
 def test_graph_closure_indexes_top_level_jsonld_nodes(tmp_path):

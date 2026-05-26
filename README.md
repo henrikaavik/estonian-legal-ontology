@@ -5,7 +5,7 @@ A comprehensive, machine-readable ontology of Estonian and EU legislation in JSO
 **Eestikeelne ülevaade:** [loe ontoloogia ülevaadet veebina](https://htmlpreview.github.io/?https://github.com/henrikaavik/estonian-legal-ontology/blob/main/docs/eesti-oigusontoloogia-ulevaade.html) — mis see on, kuidas see töötab, kust andmed pärinevad, kuidas seda uuendada ning kuidas ministeeriumid seda kasutada saaksid. PDF-versioon: [docs/eesti-oigusontoloogia-ulevaade.pdf](docs/eesti-oigusontoloogia-ulevaade.pdf).
 
 <!-- counts: keep in sync with metadata.jsonld estleg:statistics — validate_all.py::validate_metadata_catalog enforces metadata.jsonld vs the corpus, and tests/test_validate_all.py::test_readme_counts_match_metadata enforces README vs metadata.jsonld -->
-**Status: 608 enacted laws (637 law files) + 22,832 drafts + 3,812 state regulations + 11,059 municipal regulations (opt-in) + 12,137 court decisions + 33,242 EU acts + 22,290 EU court decisions** | **21,973 JSON/JSON-LD files** | **170,000+ semantic nodes**
+**Status: 1,145 enacted laws (1,190 law files) + 22,832 drafts + 3,812 state regulations + 11,059 municipal regulations (opt-in) + 12,137 court decisions + 33,242 EU acts + 22,290 EU court decisions** | **23,115 JSON/JSON-LD files** | **170,000+ semantic nodes**
 
 **Integration features:** Cross-law reference links | Court decision → provision links | EU directive transposition mapping | EuroVoc taxonomy | Amendment history | Legal concept graph | Deontic classification | Institutional competence | Sanction index | Semantic similarity | Temporal validity
 
@@ -414,7 +414,7 @@ python3 scripts/generate_similarity_index.py
 
 ```
 .
-├── krr_outputs/              # JSON/JSON-LD ontology files (21,973 files)
+├── krr_outputs/              # JSON/JSON-LD ontology files (23,115 files)
 │   ├── *_peep.json           # Individual enacted law mappings
 │   ├── combined_ontology.jsonld  # All enacted laws in one file
 │   ├── INDEX.json            # Enacted law registry

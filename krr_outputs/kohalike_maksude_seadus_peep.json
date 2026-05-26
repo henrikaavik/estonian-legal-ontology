@@ -6,30 +6,31 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
   },
   "@graph": [
     {
       "@id": "estleg:KoMS_Map_2026",
       "@type": [
+        "owl:Ontology",
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "rdfs:label": "Kohalike maksude seadus teemakaardistus",
       "dc:source": "Kohalike maksude seadus",
-      "estleg:affectedBy": [
-        {
-          "@id": "estleg:Draft_RAM11_0466"
-        }
-      ],
-      "estleg:amendedBy": [
-        {
-          "@id": "estleg:Draft_RAM11_0466"
-        }
-      ],
-      "estleg:temporalStatus": "unknown",
+      "dcterms:title": "Kohalike maksude seadus",
+      "estleg:contentStatus": "structuredBody",
+      "dcterms:source": {
+        "@id": "https://www.riigiteataja.ee/akt/117082024002.xml"
+      },
+      "owl:sameAs": {
+        "@id": "https://www.riigiteataja.ee/akt/117082024002.xml"
+      },
+      "estleg:kehtiv": {
+        "@value": "2026-05-24",
+        "@type": "xsd:date"
+      },
       "dcterms:subject": [
         {
           "@id": "http://eurovoc.europa.eu/5206"
@@ -44,12 +45,18 @@
           "@id": "http://eurovoc.europa.eu/2441"
         },
         {
-          "@id": "http://eurovoc.europa.eu/2836"
+          "@id": "http://eurovoc.europa.eu/0411"
+        }
+      ],
+      "estleg:temporalStatus": "unknown",
+      "estleg:affectedBy": [
+        {
+          "@id": "estleg:Draft_RAM11_0466"
         }
       ]
     },
     {
-      "@id": "estleg:LegalProvision_KoMS",
+      "@id": "estleg:LegalProvision_kohalike_maksude_seadus",
       "@type": [
         "owl:Class"
       ],
@@ -59,213 +66,933 @@
       }
     },
     {
+      "@id": "estleg:KoMS_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": "Kohalike maksude seadus teemaskeem",
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_KoMS_1"
+        },
+        {
+          "@id": "estleg:Cluster_KoMS_2"
+        },
+        {
+          "@id": "estleg:Cluster_KoMS_3"
+        }
+      ]
+    },
+    {
       "@id": "estleg:Cluster_KoMS_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§1–5 ÜLDSÄTTED"
+      "rdfs:label": "§1–5 ÜLDSÄTTED",
+      "skos:prefLabel": "§1–5 ÜLDSÄTTED",
+      "skos:inScheme": {
+        "@id": "estleg:KoMS_TopicScheme"
+      },
+      "estleg:provisionCount": 5
+    },
+    {
+      "@id": "estleg:Chapter_KoMS_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "1. peatükk – ÜLDSÄTTED",
+      "estleg:chapterNumber": "1",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_KoMS_1"
+      }
     },
     {
       "@id": "estleg:Cluster_KoMS_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "KOHALIKUD MAKSUD"
+      "rdfs:label": "§6–14 KOHALIKUD MAKSUD",
+      "skos:prefLabel": "§6–14 KOHALIKUD MAKSUD",
+      "skos:inScheme": {
+        "@id": "estleg:KoMS_TopicScheme"
+      },
+      "estleg:provisionCount": 9
+    },
+    {
+      "@id": "estleg:Chapter_KoMS_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "2. peatükk – KOHALIKUD MAKSUD",
+      "estleg:chapterNumber": "2",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_KoMS_2"
+      }
     },
     {
       "@id": "estleg:Cluster_KoMS_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§15–1718 LÕPPSÄTTED"
+      "rdfs:label": "§15–18 LÕPPSÄTTED",
+      "skos:prefLabel": "§15–18 LÕPPSÄTTED",
+      "skos:inScheme": {
+        "@id": "estleg:KoMS_TopicScheme"
+      },
+      "estleg:provisionCount": 4
+    },
+    {
+      "@id": "estleg:Chapter_KoMS_3",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "3. peatükk – LÕPPSÄTTED",
+      "estleg:chapterNumber": "3",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_KoMS_3"
+      }
     },
     {
       "@id": "estleg:KoMS_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KoMS"
+        "estleg:LegalProvision_kohalike_maksude_seadus"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. Seaduse ülesanne",
       "estleg:sourceAct": "Kohalike maksude seadus",
       "estleg:summary": "Käesoleva seadusega sätestatakse kohalikud maksud, kohalike maksude kehtestamise kord ja nendele esitatavad nõuded. Käesoleva seadusega sätestatakse kohalikud maksud, kohalike maksude kehtestamise kord ja nendele esitatavad nõuded.",
+      "estleg:legalText": "Käesoleva seadusega sätestatakse kohalikud maksud, kohalike maksude kehtestamise kord ja nendele esitatavad nõuded.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KoMS_1"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KoMS_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KoMS_Par_1_Lg_Unknown_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:KoMS_Par_1_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Käesoleva seadusega sätestatakse kohalikud maksud, kohalike maksude kehtestamise kord ja nendele esitatavad nõuded.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KoMS_Par_1"
       }
     },
     {
       "@id": "estleg:KoMS_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KoMS"
+        "estleg:LegalProvision_kohalike_maksude_seadus"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. Kohalike maksude kehtestamise kord",
       "estleg:sourceAct": "Kohalike maksude seadus",
-      "estleg:summary": "1(1)Valla- või linnavolikogul (edaspidi volikogu) on õigus käesoleva seaduse alusel anda määrusi kohalike maksude kehtestamiseks (edaspidi maksumäärus). Maksumäärusele rakendatakse maksukorralduse seaduses (RT I 2002, 26, 150) maksuseaduse kohta sätestatut.Maksumäärusega ei kehtestata maksukorralduse seaduses või käesolevas seaduses sätestatust erandeid. Valla- või linnavolikogul (edaspidi volikogu) on õigus käesoleva seaduse alusel anda määrusi kohalike maksude kehtestamiseks (edaspidi maksumää",
+      "estleg:summary": "1 (1) Valla- või linnavolikogul (edaspidi volikogu) on õigus käesoleva seaduse alusel anda määrusi kohalike maksude kehtestamiseks (edaspidi maksumäärus). Maksumäärusele rakendatakse maksukorralduse seaduses maksuseaduse kohta sätestatut. Maksumäärusega ei kehtestata maksukorralduse seaduses või käesolevas seaduses sätestatust erandeid. Valla- või linnavolikogul (edaspidi volikogu) on õigus käesoleva seaduse alusel anda määrusi kohalike maksude kehtestamiseks (edaspidi maksumäärus). Maksumääruse",
+      "estleg:legalText": "(1) Valla- või linnavolikogul (edaspidi volikogu) on õigus käesoleva seaduse alusel anda määrusi kohalike maksude kehtestamiseks (edaspidi maksumäärus). Maksumäärusele rakendatakse maksukorralduse seaduses maksuseaduse kohta sätestatut. Maksumäärusega ei kehtestata maksukorralduse seaduses või käesolevas seaduses sätestatust erandeid. (2) Maksumäärus jõustub ning avalikustatakse kohaliku omavalitsuse korralduse seaduses sätestatud korras. Vald või linn edastab maksumääruse elektroonilisel teel või elektroonilisel andmekandjal Maksu- ja Tolliametile. Maksumäärus avaldatakse Maksu- ja Tolliameti veebilehel.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KoMS_1"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KoMS_1"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KoMS_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:KoMS_Par_2_Lg_2"
+        }
+      ],
       "estleg:targetGroup": [
         "public_body"
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      }
+    },
+    {
+      "@id": "estleg:KoMS_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Valla- või linnavolikogul (edaspidi volikogu) on õigus käesoleva seaduse alusel anda määrusi kohalike maksude kehtestamiseks (edaspidi maksumäärus). Maksumäärusele rakendatakse maksukorralduse seaduses maksuseaduse kohta sätestatut. Maksumäärusega ei kehtestata maksukorralduse seaduses või käesolevas seaduses sätestatust erandeid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KoMS_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
+    },
+    {
+      "@id": "estleg:KoMS_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Maksumäärus jõustub ning avalikustatakse kohaliku omavalitsuse korralduse seaduses sätestatud korras. Vald või linn edastab maksumääruse elektroonilisel teel või elektroonilisel andmekandjal Maksu- ja Tolliametile. Maksumäärus avaldatakse Maksu- ja Tolliameti veebilehel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KoMS_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2"
     },
     {
       "@id": "estleg:KoMS_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KoMS"
+        "estleg:LegalProvision_kohalike_maksude_seadus"
       ],
       "estleg:paragrahv": "§ 3.",
       "rdfs:label": "§ 3. Kohalike maksude kogumine",
       "estleg:sourceAct": "Kohalike maksude seadus",
-      "estleg:summary": "1(1)Kohalike maksude maksuhalduriks oma haldusterritooriumil (edaspidi territoorium) on valla- või linnavalitsus või muu maksumääruses sätestatud valla või linna ametiasutus, kes korraldab kohalike maksude kogumist. Kohalike maksude maksuhalduriks oma haldusterritooriumil (edaspidi territoorium) on valla- või linnavalitsus või muu maksumääruses sätestatud valla või linna ametiasutus, kes korraldab kohalike maksude kogumist. 2(2)Volikogu poolt volitatud ametiisik rakendab kohalike maksude kogumis",
+      "estleg:summary": "1 (1) Kohalike maksude maksuhalduriks oma haldusterritooriumil (edaspidi territoorium) on valla- või linnavalitsus või muu maksumääruses sätestatud valla või linna ametiasutus, kes korraldab kohalike maksude kogumist. Kohalike maksude maksuhalduriks oma haldusterritooriumil (edaspidi territoorium) on valla- või linnavalitsus või muu maksumääruses sätestatud valla või linna ametiasutus, kes korraldab kohalike maksude kogumist. 2 (2) Volikogu poolt volitatud ametiisik rakendab kohalike maksude kog",
+      "estleg:legalText": "(1) Kohalike maksude maksuhalduriks oma haldusterritooriumil (edaspidi territoorium) on valla- või linnavalitsus või muu maksumääruses sätestatud valla või linna ametiasutus, kes korraldab kohalike maksude kogumist. (2) Volikogu poolt volitatud ametiisik rakendab kohalike maksude kogumisel maksukorralduse seaduses sätestatud maksuhalduri õigusi volikogu määrusega kehtestatud ulatuses. (3) Kehtetu - (4) Valdade ja linnade volikogud võivad sõlmida omavahel halduslepingu, millega antakse lepinguosalistes valdades ja linnades kehtestatud sama liiki kohalike maksude maksuhalduri ülesanded üle ühe lepinguosalise valla või linna ametiasutusele. (5) Käesoleva paragrahvi lõikes 4 nimetatud lepingu sõlmimise ja täitmisega seotud kulude katmise kord sätestatakse samas lepingus. (6) Volikogu ning Maksu- ja Tolliamet võivad sõlmida kohaliku maksu kogumiseks halduslepingu. Lepingu sõlmimise ja täitmisega seotud kulud kaetakse valla- või linnaeelarvest.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KoMS_1"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KoMS_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KoMS_Par_3_Lg_1"
+        },
+        {
+          "@id": "estleg:KoMS_Par_3_Lg_2"
+        },
+        {
+          "@id": "estleg:KoMS_Par_3_Lg_3"
+        },
+        {
+          "@id": "estleg:KoMS_Par_3_Lg_4"
+        },
+        {
+          "@id": "estleg:KoMS_Par_3_Lg_5"
+        },
+        {
+          "@id": "estleg:KoMS_Par_3_Lg_6"
+        }
+      ],
       "estleg:targetGroup": [
         "public_body",
         "official"
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:KoMS_Par_16_1"
+        }
       ]
+    },
+    {
+      "@id": "estleg:KoMS_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kohalike maksude maksuhalduriks oma haldusterritooriumil (edaspidi territoorium) on valla- või linnavalitsus või muu maksumääruses sätestatud valla või linna ametiasutus, kes korraldab kohalike maksude kogumist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KoMS_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
+    },
+    {
+      "@id": "estleg:KoMS_Par_3_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Volikogu poolt volitatud ametiisik rakendab kohalike maksude kogumisel maksukorralduse seaduses sätestatud maksuhalduri õigusi volikogu määrusega kehtestatud ulatuses.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KoMS_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 2"
+    },
+    {
+      "@id": "estleg:KoMS_Par_3_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:KoMS_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 3"
+    },
+    {
+      "@id": "estleg:KoMS_Par_3_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Valdade ja linnade volikogud võivad sõlmida omavahel halduslepingu, millega antakse lepinguosalistes valdades ja linnades kehtestatud sama liiki kohalike maksude maksuhalduri ülesanded üle ühe lepinguosalise valla või linna ametiasutusele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KoMS_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 4"
+    },
+    {
+      "@id": "estleg:KoMS_Par_3_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Käesoleva paragrahvi lõikes 4 nimetatud lepingu sõlmimise ja täitmisega seotud kulude katmise kord sätestatakse samas lepingus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KoMS_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 5"
+    },
+    {
+      "@id": "estleg:KoMS_Par_3_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Volikogu ning Maksu- ja Tolliamet võivad sõlmida kohaliku maksu kogumiseks halduslepingu. Lepingu sõlmimise ja täitmisega seotud kulud kaetakse valla- või linnaeelarvest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KoMS_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 6"
     },
     {
       "@id": "estleg:KoMS_Par_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KoMS"
+        "estleg:LegalProvision_kohalike_maksude_seadus"
       ],
       "estleg:paragrahv": "§ 4.",
       "rdfs:label": "§ 4. Kohalike maksude kehtestamise nõuded",
       "estleg:sourceAct": "Kohalike maksude seadus",
-      "estleg:summary": "1(1)Maksumääruses peavad olema järgmised andmed:11)maksu nimetus;22)maksuobjekt;33)maksumaksjad;44)maksumäärad;55)maksu tasumise kord;66)maksu tasumise tähtpäev või tähtaeg, maksusumma arvutamise või määramise kord;77)maksukohustuse tekkimise aeg;88)võimalikud maksusoodustused ja nende andmise kord;99)maksumääruse jõustumise aeg; Maksumääruses peavad olema järgmised andmed: maksu nimetus; maksuobjekt; maksumaksjad; maksumäärad; maksu tasumise kord; maksu tasumise tähtpäev või tähtaeg, maksusumma",
+      "estleg:summary": "1 (1) Maksumääruses peavad olema järgmised andmed: 1 1) maksu nimetus; 2 2) maksuobjekt; 3 3) maksumaksjad; 4 4) maksumäärad; 5 5) maksu tasumise kord; 6 6) maksu tasumise tähtpäev või tähtaeg, maksusumma arvutamise või määramise kord; 7 7) maksukohustuse tekkimise aeg; 8 8) võimalikud maksusoodustused ja nende andmise kord; 9 9) maksumääruse jõustumise aeg. Maksumääruses peavad olema järgmised andmed: maksu nimetus; maksuobjekt; maksumaksjad; maksumäärad; maksu tasumise kord; maksu tasumise täh",
+      "estleg:legalText": "(1) Maksumääruses peavad olema järgmised andmed: maksu nimetus; maksuobjekt; maksumaksjad; maksumäärad; maksu tasumise kord; maksu tasumise tähtpäev või tähtaeg, maksusumma arvutamise või määramise kord; maksukohustuse tekkimise aeg; võimalikud maksusoodustused ja nende andmise kord; maksumääruse jõustumise aeg. (2) Kohalik maks ei tohi takistada inimeste, kaupade ja teenuste vaba liikumist. (3) Maksuobjekti ei tohi maksustada rohkem kui ühe kohaliku maksuga.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KoMS_1"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KoMS_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KoMS_Par_4_Lg_1"
+        },
+        {
+          "@id": "estleg:KoMS_Par_4_Lg_2"
+        },
+        {
+          "@id": "estleg:KoMS_Par_4_Lg_3"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen",
         "business"
       ]
     },
     {
+      "@id": "estleg:KoMS_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Maksumääruses peavad olema järgmised andmed: maksu nimetus; maksuobjekt; maksumaksjad; maksumäärad; maksu tasumise kord; maksu tasumise tähtpäev või tähtaeg, maksusumma arvutamise või määramise kord; maksukohustuse tekkimise aeg; võimalikud maksusoodustused ja nende andmise kord; maksumääruse jõustumise aeg.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KoMS_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1"
+    },
+    {
+      "@id": "estleg:KoMS_Par_4_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kohalik maks ei tohi takistada inimeste, kaupade ja teenuste vaba liikumist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KoMS_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 2"
+    },
+    {
+      "@id": "estleg:KoMS_Par_4_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Maksuobjekti ei tohi maksustada rohkem kui ühe kohaliku maksuga.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KoMS_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 3"
+    },
+    {
       "@id": "estleg:KoMS_Par_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KoMS"
+        "estleg:LegalProvision_kohalike_maksude_seadus"
       ],
       "estleg:paragrahv": "§ 5.",
       "rdfs:label": "§ 5. Kohalike maksude loetelu",
       "estleg:sourceAct": "Kohalike maksude seadus",
-      "estleg:summary": "Kohalikud maksud on:11)--2) [kehtetud];33)müügimaks;44)paadimaks;55)reklaamimaks;66)teede ja tänavate sulgemise maks;77)mootorsõidukimaks;88)loomapidamismaks;99)lõbustusmaks;1010)parkimistasu.RT I20021106542341122003-02-01+02:00 Kohalikud maksud on: --2) [kehtetud]; müügimaks; paadimaks; reklaamimaks; teede ja tänavate sulgemise maks; mootorsõidukimaks; loomapidamismaks; lõbustusmaks; parkimistasu.",
+      "estleg:summary": "Kohalikud maksud on: 1 1) kehtetu - RT I 2002 44 284 110025 2002-07-01 2 2) kehtetu - RT I 1999 101 903 78069 2002-01-01 3 3) kehtetu - RT I 2010 72 544 13361503 2012-01-01 4 4) kehtetu - RT I 2010 72 544 13361503 2012-01-01 5 5) reklaamimaks; 6 6) teede ja tänavate sulgemise maks; 7 7) kehtetu - RT I 2024-08-17 1 117082024001 2025-01-01 8 8) loomapidamismaks; 9 9) lõbustusmaks; 10 10) parkimistasu. RT I 2002 110 654 234112 2003-02-01 Kohalikud maksud on: kehtetu - kehtetu - kehtetu - kehtetu - ",
+      "estleg:legalText": "Kohalikud maksud on: kehtetu - kehtetu - kehtetu - kehtetu - reklaamimaks; teede ja tänavate sulgemise maks; kehtetu - loomapidamismaks; lõbustusmaks; parkimistasu.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KoMS_1"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KoMS_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KoMS_Par_5_Lg_Unknown_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:KoMS_Par_5_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Kohalikud maksud on: kehtetu - kehtetu - kehtetu - kehtetu - reklaamimaks; teede ja tänavate sulgemise maks; kehtetu - loomapidamismaks; lõbustusmaks; parkimistasu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KoMS_Par_5"
+      }
+    },
+    {
+      "@id": "estleg:KoMS_Par_5_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_kohalike_maksude_seadus"
+      ],
+      "estleg:paragrahv": "§ 5<sup>1</sup>.",
+      "rdfs:label": "§ 5<sup>1</sup>. Rahvusvahelise sõjalise peakorteri vabastamine kohalike maksude tasumisest",
+      "estleg:sourceAct": "Kohalike maksude seadus",
+      "estleg:summary": "Rahvusvaheline sõjaline peakorter on vabastatud kohalike maksude tasumisest välislepingus sätestatud ulatuses. RT I 2013-06-01 1 101062013001 2013-07-01 Rahvusvaheline sõjaline peakorter on vabastatud kohalike maksude tasumisest välislepingus sätestatud ulatuses.",
+      "estleg:legalText": "Rahvusvaheline sõjaline peakorter on vabastatud kohalike maksude tasumisest välislepingus sätestatud ulatuses.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_KoMS_1"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KoMS_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KoMS_Par_5_1_Lg_Unknown_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:KoMS_Par_5_1_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Rahvusvaheline sõjaline peakorter on vabastatud kohalike maksude tasumisest välislepingus sätestatud ulatuses.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KoMS_Par_5_1"
+      }
+    },
+    {
+      "@id": "estleg:KoMS_Par_6",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_kohalike_maksude_seadus"
+      ],
+      "estleg:paragrahv": "§ 6.",
+      "rdfs:label": "§ 6. Isikumaks",
+      "estleg:sourceAct": "Kohalike maksude seadus",
+      "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_KoMS_2"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KoMS_2"
+      }
+    },
+    {
+      "@id": "estleg:KoMS_Par_7",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_kohalike_maksude_seadus"
+      ],
+      "estleg:paragrahv": "§ 7.",
+      "rdfs:label": "§ 7. Kohalik tulumaks",
+      "estleg:sourceAct": "Kohalike maksude seadus",
+      "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_KoMS_2"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KoMS_2"
       }
     },
     {
       "@id": "estleg:KoMS_Par_8",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KoMS"
+        "estleg:LegalProvision_kohalike_maksude_seadus"
       ],
       "estleg:paragrahv": "§ 8.",
       "rdfs:label": "§ 8. Müügimaks",
       "estleg:sourceAct": "Kohalike maksude seadus",
-      "estleg:summary": "[Lõike 1 sõnastus kuni 30. 06. 2004] [Lõike 1 sõnastus kuni 30. 06. 2004] 1(1)Müügimaksu maksavad valla või linna territooriumil kauplemis- või teenindusluba omavad füüsilisest isikust ettevõtjad ja juriidilised isikud. Müügimaksu maksavad valla või linna territooriumil kauplemis- või teenindusluba omavad füüsilisest isikust ettevõtjad ja juriidilised isikud. [Lõike 1 sõnastus alates 1. 07. 2004] [Lõike 1 sõnastus alates 1. 07. 2004] 1(1)Müügimaksu maksavad valla või linna territooriumil kauplem",
-      "estleg:targetGroup": [
-        "citizen",
-        "business"
-      ]
+      "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_KoMS_2"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KoMS_2"
+      }
     },
     {
       "@id": "estleg:KoMS_Par_9",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KoMS"
+        "estleg:LegalProvision_kohalike_maksude_seadus"
       ],
       "estleg:paragrahv": "§ 9.",
       "rdfs:label": "§ 9. Paadimaks",
       "estleg:sourceAct": "Kohalike maksude seadus",
-      "estleg:summary": "1(1)Paadimaksu maksavad tehnilisele ülevaatusele kuuluvate kuni 12 meetri pikkuste paatide, jahtide ja kaatrite (edaspidi väikelaevad) omanikud. Paadimaksu maksavad tehnilisele ülevaatusele kuuluvate kuni 12 meetri pikkuste paatide, jahtide ja kaatrite (edaspidi väikelaevad) omanikud. 2(2)Paadimaks tasutakse väikelaeva asukohajärgse omavalitsuse eelarvesse volikogu poolt kehtestatud tähtajaks. Paadimaks tasutakse väikelaeva asukohajärgse omavalitsuse eelarvesse volikogu poolt kehtestatud tähtaja",
-      "estleg:targetGroup": [
-        "citizen",
-        "public_body"
-      ]
+      "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_KoMS_2"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KoMS_2"
+      }
     },
     {
       "@id": "estleg:KoMS_Par_10",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KoMS"
+        "estleg:LegalProvision_kohalike_maksude_seadus"
       ],
       "estleg:paragrahv": "§ 10.",
       "rdfs:label": "§ 10. Reklaamimaks",
       "estleg:sourceAct": "Kohalike maksude seadus",
-      "estleg:summary": "1(1)Reklaamimaksu maksavad füüsilised ja juriidilised isikud omavalitsuse territooriumil paigaldatud, samuti omavalitsuse territooriumil elunevatele ja asuvatele füüsilistele ja juriidilistele isikutele kuuluvatena registreeritud ühissõidukitele paigaldatud kuulutustelt ja reklaamilt. Reklaamimaksu maksavad füüsilised ja juriidilised isikud omavalitsuse territooriumil paigaldatud, samuti omavalitsuse territooriumil elunevatele ja asuvatele füüsilistele ja juriidilistele isikutele kuuluvatena reg",
+      "estleg:summary": "1 (1) Reklaamimaksu maksavad füüsilised ja juriidilised isikud omavalitsuse territooriumil paigaldatud, samuti omavalitsuse territooriumil elunevatele ja asuvatele füüsilistele ja juriidilistele isikutele kuuluvatena registreeritud ühissõidukitele paigaldatud kuulutustelt ja reklaamilt. Reklaamimaksu maksavad füüsilised ja juriidilised isikud omavalitsuse territooriumil paigaldatud, samuti omavalitsuse territooriumil elunevatele ja asuvatele füüsilistele ja juriidilistele isikutele kuuluvatena r",
+      "estleg:legalText": "(1) Reklaamimaksu maksavad füüsilised ja juriidilised isikud omavalitsuse territooriumil paigaldatud, samuti omavalitsuse territooriumil elunevatele ja asuvatele füüsilistele ja juriidilistele isikutele kuuluvatena registreeritud ühissõidukitele paigaldatud kuulutustelt ja reklaamilt. (2) Maksustamisele kuuluvate kuulutuste ja reklaami ning nende paigutuskohtade loetelu kehtestab volikogu. (3) Reklaamimaksust on vabastatud riigi- ja omavalitsusasutuste kuulutused ning erakondade, valimisliitude ja üksikkandidaatide valimiskampaania kuulutused ja reklaam. (4) Reklaamimaksu määra või diferentseeritud määrad kehtestab volikogu. (5) Maksumaksja on kohustatud: esitama maksuhaldurile maksudeklaratsiooni, mille vormi ja esitamise tähtpäeva kehtestab volikogu; tasuma reklaamimaksu omavalitsuse eelarvesse volikogu poolt kehtestatud tähtajaks. (6) Valla- ja linnavalitsusel on õigus anda reklaamimaksu soodustusi ja vabastusi volikogu poolt kehtestatud tingimustel ja korras. (7) Volikogul on õigus nõuda reklaamimaksu deklaratsiooni esitamist elektrooniliselt, kui sellel deklareeritakse rohkem kui kümme maksuobjekti.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_KoMS_2"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KoMS_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KoMS_Par_10_Lg_1"
+        },
+        {
+          "@id": "estleg:KoMS_Par_10_Lg_2"
+        },
+        {
+          "@id": "estleg:KoMS_Par_10_Lg_3"
+        },
+        {
+          "@id": "estleg:KoMS_Par_10_Lg_4"
+        },
+        {
+          "@id": "estleg:KoMS_Par_10_Lg_5"
+        },
+        {
+          "@id": "estleg:KoMS_Par_10_Lg_6"
+        },
+        {
+          "@id": "estleg:KoMS_Par_10_Lg_7"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen",
+        "business",
         "public_body"
       ]
+    },
+    {
+      "@id": "estleg:KoMS_Par_10_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Reklaamimaksu maksavad füüsilised ja juriidilised isikud omavalitsuse territooriumil paigaldatud, samuti omavalitsuse territooriumil elunevatele ja asuvatele füüsilistele ja juriidilistele isikutele kuuluvatena registreeritud ühissõidukitele paigaldatud kuulutustelt ja reklaamilt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KoMS_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 1"
+    },
+    {
+      "@id": "estleg:KoMS_Par_10_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Maksustamisele kuuluvate kuulutuste ja reklaami ning nende paigutuskohtade loetelu kehtestab volikogu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KoMS_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 2"
+    },
+    {
+      "@id": "estleg:KoMS_Par_10_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Reklaamimaksust on vabastatud riigi- ja omavalitsusasutuste kuulutused ning erakondade, valimisliitude ja üksikkandidaatide valimiskampaania kuulutused ja reklaam.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KoMS_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 3"
+    },
+    {
+      "@id": "estleg:KoMS_Par_10_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Reklaamimaksu määra või diferentseeritud määrad kehtestab volikogu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KoMS_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 4"
+    },
+    {
+      "@id": "estleg:KoMS_Par_10_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Maksumaksja on kohustatud: esitama maksuhaldurile maksudeklaratsiooni, mille vormi ja esitamise tähtpäeva kehtestab volikogu; tasuma reklaamimaksu omavalitsuse eelarvesse volikogu poolt kehtestatud tähtajaks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KoMS_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 5"
+    },
+    {
+      "@id": "estleg:KoMS_Par_10_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Valla- ja linnavalitsusel on õigus anda reklaamimaksu soodustusi ja vabastusi volikogu poolt kehtestatud tingimustel ja korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KoMS_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 6"
+    },
+    {
+      "@id": "estleg:KoMS_Par_10_Lg_7",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "7",
+      "estleg:legalText": "(7) Volikogul on õigus nõuda reklaamimaksu deklaratsiooni esitamist elektrooniliselt, kui sellel deklareeritakse rohkem kui kümme maksuobjekti.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KoMS_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 7"
     },
     {
       "@id": "estleg:KoMS_Par_11",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KoMS"
+        "estleg:LegalProvision_kohalike_maksude_seadus"
       ],
       "estleg:paragrahv": "§ 11.",
       "rdfs:label": "§ 11. Teede ja tänavate sulgemise maks",
       "estleg:sourceAct": "Kohalike maksude seadus",
-      "estleg:summary": "1(1)Teede ja tänavate sulgemise maksu maksavad füüsilised ja juriidilised isikud demonstratsioonide, rongkäikude ja muude ürituste korraldamise, samuti ehitus- või remonttööde puhul, kui sellega kaasneb üldkasutatava tee, tänava, väljaku, pargi, puhkeaala või selle osa sulgemine. Teede ja tänavate sulgemise maksu maksavad füüsilised ja juriidilised isikud demonstratsioonide, rongkäikude ja muude ürituste korraldamise, samuti ehitus- või remonttööde puhul, kui sellega kaasneb üldkasutatava tee, t",
+      "estleg:summary": "1 (1) Teede ja tänavate sulgemise maksu maksavad füüsilised ja juriidilised isikud demonstratsioonide, rongkäikude ja muude ürituste korraldamise, samuti ehitus- või remonttööde puhul, kui sellega kaasneb üldkasutatava tee, tänava, väljaku, pargi, puhkeaala või selle osa sulgemine. Teede ja tänavate sulgemise maksu maksavad füüsilised ja juriidilised isikud demonstratsioonide, rongkäikude ja muude ürituste korraldamise, samuti ehitus- või remonttööde puhul, kui sellega kaasneb üldkasutatava tee,",
+      "estleg:legalText": "(1) Teede ja tänavate sulgemise maksu maksavad füüsilised ja juriidilised isikud demonstratsioonide, rongkäikude ja muude ürituste korraldamise, samuti ehitus- või remonttööde puhul, kui sellega kaasneb üldkasutatava tee, tänava, väljaku, pargi, puhkeaala või selle osa sulgemine. (2) Teede ja tänavate sulgemise maksu määra või diferentseeritud määrad kehtestab volikogu. (3) Teede ja tänavate sulgemise maks tasutakse omavalitsuse eelarvesse volikogu poolt kehtestatud tähtajaks. (4) Volikogul on õigus kehtestada teede ja tänavate sulgemise maksu deklaratsiooni vorm.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_KoMS_2"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KoMS_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KoMS_Par_11_Lg_1"
+        },
+        {
+          "@id": "estleg:KoMS_Par_11_Lg_2"
+        },
+        {
+          "@id": "estleg:KoMS_Par_11_Lg_3"
+        },
+        {
+          "@id": "estleg:KoMS_Par_11_Lg_4"
+        }
+      ],
       "estleg:targetGroup": [
-        "citizen"
+        "citizen",
+        "public_body"
       ]
+    },
+    {
+      "@id": "estleg:KoMS_Par_11_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Teede ja tänavate sulgemise maksu maksavad füüsilised ja juriidilised isikud demonstratsioonide, rongkäikude ja muude ürituste korraldamise, samuti ehitus- või remonttööde puhul, kui sellega kaasneb üldkasutatava tee, tänava, väljaku, pargi, puhkeaala või selle osa sulgemine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KoMS_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 1"
+    },
+    {
+      "@id": "estleg:KoMS_Par_11_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Teede ja tänavate sulgemise maksu määra või diferentseeritud määrad kehtestab volikogu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KoMS_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 2"
+    },
+    {
+      "@id": "estleg:KoMS_Par_11_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Teede ja tänavate sulgemise maks tasutakse omavalitsuse eelarvesse volikogu poolt kehtestatud tähtajaks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KoMS_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 3"
+    },
+    {
+      "@id": "estleg:KoMS_Par_11_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Volikogul on õigus kehtestada teede ja tänavate sulgemise maksu deklaratsiooni vorm.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KoMS_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 4"
     },
     {
       "@id": "estleg:KoMS_Par_12",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KoMS"
+        "estleg:LegalProvision_kohalike_maksude_seadus"
       ],
       "estleg:paragrahv": "§ 12.",
       "rdfs:label": "§ 12. Mootorsõidukimaks",
       "estleg:sourceAct": "Kohalike maksude seadus",
-      "estleg:summary": "1(1)Mootorsõidukimaksu maksavad liiklusregistris registreeritud mootorsõidukeid omavad või neid mootorsõidukeid kasutavad maksu kehtestanud kohaliku omavalitsusüksuse territooriumil elavad füüsilised ja asuvad juriidilised isikud. Sõiduki kasutaja on mootorsõidukimaksu maksja, kui ta kasutab mootorsõidukit kasutuslepingu või omandireservatsiooniga müügilepingu alusel ning mootorsõiduki eest vastutava kasutaja andmed on kantud liiklusregistrisse. Maksumäära kehtestab volikogu diferentseerituna sõ",
-      "estleg:targetGroup": [
-        "citizen",
-        "business",
-        "public_body"
-      ]
+      "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_KoMS_2"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KoMS_2"
+      }
     },
     {
       "@id": "estleg:KoMS_Par_13",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KoMS"
+        "estleg:LegalProvision_kohalike_maksude_seadus"
       ],
       "estleg:paragrahv": "§ 13.",
       "rdfs:label": "§ 13. Loomapidamismaks",
       "estleg:sourceAct": "Kohalike maksude seadus",
-      "estleg:summary": "1(1)Loomapidamismaksu maksavad loomade, kelle pidamine valla või linna territooriumil on maksustatud, omanikud. Nende loomade loetelu kehtestab volikogu. Loomapidamismaksu maksavad loomade, kelle pidamine valla või linna territooriumil on maksustatud, omanikud. Nende loomade loetelu kehtestab volikogu. 2(2)Loomapidamismaksust on vabastatud:11)politsei, kaitseväe, piirivalve, tolli, Kaitseliidu ning tuletõrje- ja päästeformeeringute teenistusloomade pidamine, kui neid kasutatakse teenistusülesann",
+      "estleg:summary": "1 (1) Loomapidamismaksu maksavad loomade, kelle pidamine valla või linna territooriumil on maksustatud, omanikud. Nende loomade loetelu kehtestab volikogu. Loomapidamismaksu maksavad loomade, kelle pidamine valla või linna territooriumil on maksustatud, omanikud. Nende loomade loetelu kehtestab volikogu. 2 (2) Loomapidamismaksust on vabastatud: 1 1) politsei, kaitseväe, tolli, Kaitseliidu ning Päästeameti ja vabatahtlike päästjate teenistusloomade pidamine, kui neid kasutatakse teenistusülesanne",
+      "estleg:legalText": "(1) Loomapidamismaksu maksavad loomade, kelle pidamine valla või linna territooriumil on maksustatud, omanikud. Nende loomade loetelu kehtestab volikogu. (2) Loomapidamismaksust on vabastatud: politsei, kaitseväe, tolli, Kaitseliidu ning Päästeameti ja vabatahtlike päästjate teenistusloomade pidamine, kui neid kasutatakse teenistusülesannete täitmiseks, samuti pimedate inimeste juhtkoerte pidamine; loomapidamine valla või linna territooriumil kuni ühe kuu jooksul. (3) Loomapidamismaksuga maksustamise periood on kalendriaasta. (4) Loomapidamismaksu määrad kehtestab volikogu. (5) Loomapidamismaks tasutakse omavalitsuse eelarvesse volikogu poolt kehtestatud tähtajaks. (6) Valla- ja linnavalitsusel on õigus anda loomapidamismaksu soodustusi ja vabastusi volikogu poolt kehtestatud tingimustel ja korras.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_KoMS_2"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KoMS_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KoMS_Par_13_Lg_1"
+        },
+        {
+          "@id": "estleg:KoMS_Par_13_Lg_2"
+        },
+        {
+          "@id": "estleg:KoMS_Par_13_Lg_3"
+        },
+        {
+          "@id": "estleg:KoMS_Par_13_Lg_4"
+        },
+        {
+          "@id": "estleg:KoMS_Par_13_Lg_5"
+        },
+        {
+          "@id": "estleg:KoMS_Par_13_Lg_6"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen",
         "public_body"
-      ]
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_paasteamet"
+        }
+      ],
+      "estleg:competenceType": "regulation"
+    },
+    {
+      "@id": "estleg:KoMS_Par_13_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Loomapidamismaksu maksavad loomade, kelle pidamine valla või linna territooriumil on maksustatud, omanikud. Nende loomade loetelu kehtestab volikogu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KoMS_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 1"
+    },
+    {
+      "@id": "estleg:KoMS_Par_13_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Loomapidamismaksust on vabastatud: politsei, kaitseväe, tolli, Kaitseliidu ning Päästeameti ja vabatahtlike päästjate teenistusloomade pidamine, kui neid kasutatakse teenistusülesannete täitmiseks, samuti pimedate inimeste juhtkoerte pidamine; loomapidamine valla või linna territooriumil kuni ühe kuu jooksul.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KoMS_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 2"
+    },
+    {
+      "@id": "estleg:KoMS_Par_13_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Loomapidamismaksuga maksustamise periood on kalendriaasta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KoMS_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 3"
+    },
+    {
+      "@id": "estleg:KoMS_Par_13_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Loomapidamismaksu määrad kehtestab volikogu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KoMS_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 4"
+    },
+    {
+      "@id": "estleg:KoMS_Par_13_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Loomapidamismaks tasutakse omavalitsuse eelarvesse volikogu poolt kehtestatud tähtajaks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KoMS_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 5"
+    },
+    {
+      "@id": "estleg:KoMS_Par_13_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Valla- ja linnavalitsusel on õigus anda loomapidamismaksu soodustusi ja vabastusi volikogu poolt kehtestatud tingimustel ja korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KoMS_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 6"
     },
     {
       "@id": "estleg:KoMS_Par_14",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KoMS"
+        "estleg:LegalProvision_kohalike_maksude_seadus"
       ],
       "estleg:paragrahv": "§ 14.",
       "rdfs:label": "§ 14. Lõbustusmaks",
       "estleg:sourceAct": "Kohalike maksude seadus",
-      "estleg:summary": "1(1)Lõbustusmaksu maksavad:11)valla või linna territooriumil tasuliste meelelahutusürituste korraldajad;22)valla või linna territooriumil asuvate meelelahutusasutuste omanikud. Lõbustusmaksu maksavad: valla või linna territooriumil tasuliste meelelahutusürituste korraldajad; valla või linna territooriumil asuvate meelelahutusasutuste omanikud. 2(2)Lõbustusmaks kehtestatakse müüdud pääsmetelt. Tasulise meelelahutusürituse pääsmed kuuluvad registreerimisele valla- või linnavalitsuses, mille territ",
+      "estleg:summary": "1 (1) Lõbustusmaksu maksavad: 1 1) valla või linna territooriumil tasuliste meelelahutusürituste korraldajad; 2 2) valla või linna territooriumil asuvate meelelahutusasutuste omanikud. Lõbustusmaksu maksavad: valla või linna territooriumil tasuliste meelelahutusürituste korraldajad; valla või linna territooriumil asuvate meelelahutusasutuste omanikud. 2 (2) Lõbustusmaks kehtestatakse müüdud pääsmetelt. Tasulise meelelahutusürituse pääsmed kuuluvad registreerimisele valla- või linnavalitsuses, mi",
+      "estleg:legalText": "(1) Lõbustusmaksu maksavad: valla või linna territooriumil tasuliste meelelahutusürituste korraldajad; valla või linna territooriumil asuvate meelelahutusasutuste omanikud. (2) Lõbustusmaks kehtestatakse müüdud pääsmetelt. Tasulise meelelahutusürituse pääsmed kuuluvad registreerimisele valla- või linnavalitsuses, mille territooriumil üritus toimub. (3) Lõbustusmaks tasutakse omavalitsuse eelarvesse volikogu poolt kehtestatud tähtajaks. (4) Valla- ja linnavalitsusel on õigus anda lõbustusmaksu soodustusi ja vabastusi volikogu poolt kehtestatud tingimustel ja korras.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_KoMS_2"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KoMS_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KoMS_Par_14_Lg_1"
+        },
+        {
+          "@id": "estleg:KoMS_Par_14_Lg_2"
+        },
+        {
+          "@id": "estleg:KoMS_Par_14_Lg_3"
+        },
+        {
+          "@id": "estleg:KoMS_Par_14_Lg_4"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen",
         "business",
@@ -273,69 +1000,332 @@
       ]
     },
     {
-      "@id": "estleg:KoMS_Par_14_12",
+      "@id": "estleg:KoMS_Par_14_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Lõbustusmaksu maksavad: valla või linna territooriumil tasuliste meelelahutusürituste korraldajad; valla või linna territooriumil asuvate meelelahutusasutuste omanikud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KoMS_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 1"
+    },
+    {
+      "@id": "estleg:KoMS_Par_14_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Lõbustusmaks kehtestatakse müüdud pääsmetelt. Tasulise meelelahutusürituse pääsmed kuuluvad registreerimisele valla- või linnavalitsuses, mille territooriumil üritus toimub.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KoMS_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 2"
+    },
+    {
+      "@id": "estleg:KoMS_Par_14_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Lõbustusmaks tasutakse omavalitsuse eelarvesse volikogu poolt kehtestatud tähtajaks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KoMS_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 3"
+    },
+    {
+      "@id": "estleg:KoMS_Par_14_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Valla- ja linnavalitsusel on õigus anda lõbustusmaksu soodustusi ja vabastusi volikogu poolt kehtestatud tingimustel ja korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KoMS_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 4"
+    },
+    {
+      "@id": "estleg:KoMS_Par_14_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KoMS"
+        "estleg:LegalProvision_kohalike_maksude_seadus"
       ],
       "estleg:paragrahv": "§ 14<sup>1</sup>.",
       "rdfs:label": "§ 14<sup>1</sup>. Parkimistasu",
       "estleg:sourceAct": "Kohalike maksude seadus",
-      "estleg:summary": "1(1)Parkimistasu kehtestatakse avalikul tasulisel parkimisalal parkimise korraldamise eesmärgil. Parkimistasu kehtestatakse avalikul tasulisel parkimisalal parkimise korraldamise eesmärgil. 2(2)Parkimistasu määramine ja sissenõudmine toimub liiklusseaduses (RT I 2001, 3, 6; 2002, 92, 531; 90, 521) sätestatud alustel ja korras. Parkimistasu suhtes kohaldatakse maksukorralduse seadust liiklusseaduses sätestatud ulatusesRT I20021106542341122003-02-01+02:00 Parkimistasu määramine ja sissenõudmine to"
+      "estleg:summary": "1 (1) Parkimistasu kehtestatakse avalikul tasulisel parkimisalal parkimise korraldamise eesmärgil. Parkimistasu kehtestatakse avalikul tasulisel parkimisalal parkimise korraldamise eesmärgil. 2 (2) Parkimistasu määramine ja sissenõudmine toimub liiklusseaduses sätestatud alustel ja korras. Parkimistasu suhtes kohaldatakse maksukorralduse seadust liiklusseaduses sätestatud ulatuses. RT I 2010 44 261 13335732 2011-07-01 Parkimistasu määramine ja sissenõudmine toimub liiklusseaduses sätestatud alus",
+      "estleg:legalText": "(1) Parkimistasu kehtestatakse avalikul tasulisel parkimisalal parkimise korraldamise eesmärgil. (2) Parkimistasu määramine ja sissenõudmine toimub liiklusseaduses sätestatud alustel ja korras. Parkimistasu suhtes kohaldatakse maksukorralduse seadust liiklusseaduses sätestatud ulatuses.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_KoMS_2"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KoMS_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KoMS_Par_14_1_Lg_1"
+        },
+        {
+          "@id": "estleg:KoMS_Par_14_1_Lg_2"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:KoMS_Par_14_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Parkimistasu kehtestatakse avalikul tasulisel parkimisalal parkimise korraldamise eesmärgil.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KoMS_Par_14_1"
+      },
+      "rdfs:label": "§ 14<sup>1</sup> lg 1"
+    },
+    {
+      "@id": "estleg:KoMS_Par_14_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Parkimistasu määramine ja sissenõudmine toimub liiklusseaduses sätestatud alustel ja korras. Parkimistasu suhtes kohaldatakse maksukorralduse seadust liiklusseaduses sätestatud ulatuses.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KoMS_Par_14_1"
+      },
+      "rdfs:label": "§ 14<sup>1</sup> lg 2"
     },
     {
       "@id": "estleg:KoMS_Par_15",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KoMS"
+        "estleg:LegalProvision_kohalike_maksude_seadus"
       ],
       "estleg:paragrahv": "§ 15.",
       "rdfs:label": "§ 15. Vastutus volikogu määruse rikkumise eest",
       "estleg:sourceAct": "Kohalike maksude seadus",
-      "estleg:summary": "1(1)Kehtestatud tähtajast hiljem omavalitsuse eelarvesse tasutud kohaliku maksu summalt ja maksumaksja poolt maksuhalduri kasuks enammakstud summalt arvutatakse intressi maksukorralduse seaduses sätestatud korras. Kehtestatud tähtajast hiljem omavalitsuse eelarvesse tasutud kohaliku maksu summalt ja maksumaksja poolt maksuhalduri kasuks enammakstud summalt arvutatakse intressi maksukorralduse seaduses sätestatud korras. 2(2)Vastutus maksumääruse rikkumise eest sätestatakse maksukorralduse seadus",
+      "estleg:summary": "1 (1) Kehtestatud tähtajast hiljem omavalitsuse eelarvesse tasutud kohaliku maksu summalt ja maksumaksja poolt maksuhalduri kasuks enammakstud summalt arvutatakse intressi maksukorralduse seaduses sätestatud korras. RT I 2002 44 284 110025 2002-07-01 Kehtestatud tähtajast hiljem omavalitsuse eelarvesse tasutud kohaliku maksu summalt ja maksumaksja poolt maksuhalduri kasuks enammakstud summalt arvutatakse intressi maksukorralduse seaduses sätestatud korras. 2 (2) Vastutus maksumääruse rikkumise e",
+      "estleg:legalText": "(1) Kehtestatud tähtajast hiljem omavalitsuse eelarvesse tasutud kohaliku maksu summalt ja maksumaksja poolt maksuhalduri kasuks enammakstud summalt arvutatakse intressi maksukorralduse seaduses sätestatud korras. (2) Vastutus maksumääruse rikkumise eest sätestatakse maksukorralduse seaduse alusel samas maksumääruses. (3) Täiendavalt maksmisele kuuluvad summad laekuvad omavalitsuse eelarvesse. (4) Kehtetu -",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KoMS_3"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KoMS_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KoMS_Par_15_Lg_1"
+        },
+        {
+          "@id": "estleg:KoMS_Par_15_Lg_2"
+        },
+        {
+          "@id": "estleg:KoMS_Par_15_Lg_3"
+        },
+        {
+          "@id": "estleg:KoMS_Par_15_Lg_4"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen",
         "business",
         "public_body"
       ]
+    },
+    {
+      "@id": "estleg:KoMS_Par_15_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kehtestatud tähtajast hiljem omavalitsuse eelarvesse tasutud kohaliku maksu summalt ja maksumaksja poolt maksuhalduri kasuks enammakstud summalt arvutatakse intressi maksukorralduse seaduses sätestatud korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KoMS_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 1"
+    },
+    {
+      "@id": "estleg:KoMS_Par_15_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Vastutus maksumääruse rikkumise eest sätestatakse maksukorralduse seaduse alusel samas maksumääruses.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KoMS_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 2"
+    },
+    {
+      "@id": "estleg:KoMS_Par_15_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Täiendavalt maksmisele kuuluvad summad laekuvad omavalitsuse eelarvesse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KoMS_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 3"
+    },
+    {
+      "@id": "estleg:KoMS_Par_15_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:KoMS_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 4"
     },
     {
       "@id": "estleg:KoMS_Par_16",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KoMS"
+        "estleg:LegalProvision_kohalike_maksude_seadus"
       ],
       "estleg:paragrahv": "§ 16.",
       "rdfs:label": "§ 16. Vaidluste lahendamine",
       "estleg:sourceAct": "Kohalike maksude seadus",
-      "estleg:summary": "1(1)Maksumaksjal on õigus esitada kohalike maksude maksuhalduri maksuteate, maksuotsuse, muu haldusakti või toimingu peale vaie. Vaie esitatakse kohalike maksude maksuhaldurile või muule maksumääruses sätestatud asutusele. Vaide menetlemisel rakendatakse maksukorralduse seaduse 14. peatükis sätestatut. Maksumaksjal on õigus esitada kohalike maksude maksuhalduri maksuteate, maksuotsuse, muu haldusakti või toimingu peale vaie. Vaie esitatakse kohalike maksude maksuhaldurile või muule maksumääruses",
+      "estleg:summary": "1 (1) Maksumaksjal on õigus esitada kohalike maksude maksuhalduri maksuteate, maksuotsuse, muu haldusakti või toimingu peale vaie. Vaie esitatakse kohalike maksude maksuhaldurile või muule maksumääruses sätestatud asutusele. Vaide menetlemisel rakendatakse maksukorralduse seaduse 14. peatükis sätestatut. Maksumaksjal on õigus esitada kohalike maksude maksuhalduri maksuteate, maksuotsuse, muu haldusakti või toimingu peale vaie. Vaie esitatakse kohalike maksude maksuhaldurile või muule maksumäärus",
+      "estleg:legalText": "(1) Maksumaksjal on õigus esitada kohalike maksude maksuhalduri maksuteate, maksuotsuse, muu haldusakti või toimingu peale vaie. Vaie esitatakse kohalike maksude maksuhaldurile või muule maksumääruses sätestatud asutusele. Vaide menetlemisel rakendatakse maksukorralduse seaduse 14. peatükis sätestatut. (2) Kohalike maksude maksuhaldur võib vaide maksukorralduse seaduses sätestatud juhtudel tagastada. Vaide tagastamise otsuse peale võib kohalike maksude maksuhaldurile esitada kaebuse.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KoMS_3"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KoMS_3"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KoMS_Par_16_Lg_1"
+        },
+        {
+          "@id": "estleg:KoMS_Par_16_Lg_2"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen",
         "business",
         "public_body"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      }
+    },
+    {
+      "@id": "estleg:KoMS_Par_16_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Maksumaksjal on õigus esitada kohalike maksude maksuhalduri maksuteate, maksuotsuse, muu haldusakti või toimingu peale vaie. Vaie esitatakse kohalike maksude maksuhaldurile või muule maksumääruses sätestatud asutusele. Vaide menetlemisel rakendatakse maksukorralduse seaduse 14. peatükis sätestatut.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KoMS_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 1"
+    },
+    {
+      "@id": "estleg:KoMS_Par_16_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kohalike maksude maksuhaldur võib vaide maksukorralduse seaduses sätestatud juhtudel tagastada. Vaide tagastamise otsuse peale võib kohalike maksude maksuhaldurile esitada kaebuse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KoMS_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 2"
+    },
+    {
+      "@id": "estleg:KoMS_Par_16_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_kohalike_maksude_seadus"
+      ],
+      "estleg:paragrahv": "§ 16<sup>1</sup>.",
+      "rdfs:label": "§ 16<sup>1</sup>. Rakendussäte",
+      "estleg:sourceAct": "Kohalike maksude seadus",
+      "estleg:summary": "Enne 2012. aasta 1. jaanuari tekkinud müügi- ja paadimaksukohustuse ning nende maksude tasumise ja sissenõudmise suhtes rakendatakse kuni nimetatud kuupäevani kehtinud käesoleva seaduse § 3 lõikeid 3 ja 5, § 5 punkte 3 ja 4 ning § 8 ja 9. RT I 2011-12-13 1 113122011001 2012-01-01 Enne 2012. aasta 1. jaanuari tekkinud müügi- ja paadimaksukohustuse ning nende maksude tasumise ja sissenõudmise suhtes rakendatakse kuni nimetatud kuupäevani kehtinud käesoleva seaduse § 3 lõikeid 3 ja 5, § 5 punkte 3 ",
+      "estleg:legalText": "Enne 2012. aasta 1. jaanuari tekkinud müügi- ja paadimaksukohustuse ning nende maksude tasumise ja sissenõudmise suhtes rakendatakse kuni nimetatud kuupäevani kehtinud käesoleva seaduse § 3 lõikeid 3 ja 5, § 5 punkte 3 ja 4 ning § 8 ja 9.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_KoMS_3"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KoMS_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:KoMS_Par_16_1_Lg_Unknown_1"
+        }
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:KoMS_Par_3"
+        }
       ]
     },
     {
-      "@id": "estleg:KoMS_Par_1718",
+      "@id": "estleg:KoMS_Par_16_1_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Enne 2012. aasta 1. jaanuari tekkinud müügi- ja paadimaksukohustuse ning nende maksude tasumise ja sissenõudmise suhtes rakendatakse kuni nimetatud kuupäevani kehtinud käesoleva seaduse § 3 lõikeid 3 ja 5, § 5 punkte 3 ja 4 ning § 8 ja 9.",
+      "estleg:parentProvision": {
+        "@id": "estleg:KoMS_Par_16_1"
+      }
+    },
+    {
+      "@id": "estleg:KoMS_Par_17",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_KoMS"
+        "estleg:LegalProvision_kohalike_maksude_seadus"
       ],
-      "estleg:paragrahv": "§ 17-18.",
-      "rdfs:label": "§ 17-18.",
+      "estleg:paragrahv": "§ 17.",
+      "rdfs:label": "§ 17. Muudatused maksukorralduse seaduses",
       "estleg:sourceAct": "Kohalike maksude seadus",
-      "estleg:summary": "[Käesolevast tekstist välja jäetud]",
+      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_KoMS_3"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KoMS_3"
+      }
+    },
+    {
+      "@id": "estleg:KoMS_Par_18",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_kohalike_maksude_seadus"
+      ],
+      "estleg:paragrahv": "§ 18.",
+      "rdfs:label": "§ 18. Haldusõiguserikkumiste seadustiku täiendamine",
+      "estleg:sourceAct": "Kohalike maksude seadus",
+      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_KoMS_3"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_KoMS_3"
       }
     }
   ]

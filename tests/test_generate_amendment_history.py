@@ -741,6 +741,38 @@ class TestLoadLawAbbreviations:
         assert any("load_law_abbreviations" in f for f in failures)
 
 
+class TestAmendmentChainCleanup:
+    def test_remove_obsolete_chain_files_keeps_current_bases(self, tmp_path, monkeypatch):
+        import generate_amendment_history as mod
+
+        amendments_dir = tmp_path / "amendments"
+        amendments_dir.mkdir()
+        stale = amendments_dir / "amendments_old_slug.json"
+        current = amendments_dir / "amendments_current_slug.json"
+        stale.write_text("{}", encoding="utf-8")
+        current.write_text("{}", encoding="utf-8")
+        monkeypatch.setattr(mod, "AMENDMENTS_DIR", amendments_dir)
+
+        removed = mod._remove_obsolete_amendment_chain_files({"current_slug"})
+
+        assert removed == 1
+        assert not stale.exists()
+        assert current.exists()
+
+    def test_remove_amendment_chain_file_is_idempotent(self, tmp_path, monkeypatch):
+        import generate_amendment_history as mod
+
+        amendments_dir = tmp_path / "amendments"
+        amendments_dir.mkdir()
+        chain = amendments_dir / "amendments_no_longer_amended.json"
+        chain.write_text("{}", encoding="utf-8")
+        monkeypatch.setattr(mod, "AMENDMENTS_DIR", amendments_dir)
+
+        assert mod._remove_amendment_chain_file("no_longer_amended") == 1
+        assert mod._remove_amendment_chain_file("no_longer_amended") == 0
+        assert not chain.exists()
+
+
 class TestGeneratorEmitsCompactAmendmentIris:
     """End-to-end: ``generate_amendment_history.main`` mints
     ``Amendment_<ABBREV>_…`` (registry hit) and degrades gracefully when the

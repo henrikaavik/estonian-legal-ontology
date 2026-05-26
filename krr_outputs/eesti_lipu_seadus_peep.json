@@ -6,19 +6,60 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
   },
   "@graph": [
     {
       "@id": "estleg:ELS_Map_2026",
       "@type": [
+        "owl:Ontology",
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "rdfs:label": "Eesti lipu seadus teemakaardistus",
       "dc:source": "Eesti lipu seadus",
+      "dcterms:title": "Eesti lipu seadus",
+      "estleg:contentStatus": "structuredBody",
+      "dcterms:source": {
+        "@id": "https://www.riigiteataja.ee/akt/120122022006.xml"
+      },
+      "owl:sameAs": {
+        "@id": "https://www.riigiteataja.ee/akt/120122022006.xml"
+      },
+      "estleg:kehtiv": {
+        "@value": "2026-05-24",
+        "@type": "xsd:date"
+      },
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/2446"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/1221"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/6411"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/4421"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/0411"
+        }
+      ],
+      "estleg:temporalStatus": "unknown",
+      "estleg:amendedBy": [
+        {
+          "@id": "estleg:AmendmentLink_Draft_MKM15_1806_ELS"
+        },
+        {
+          "@id": "estleg:AmendmentLink_Draft_RIIGIKOGU18_0231_ELS"
+        },
+        {
+          "@id": "estleg:AmendmentLink_Draft_MKM16_0364_ELS"
+        }
+      ],
       "estleg:affectedBy": [
         {
           "@id": "estleg:Draft_KUM21_1609"
@@ -41,48 +82,10 @@
         {
           "@id": "estleg:Draft_MKM16_0364"
         }
-      ],
-      "estleg:amendedBy": [
-        {
-          "@id": "estleg:Draft_KUM21_1609"
-        },
-        {
-          "@id": "estleg:Draft_SOM20_0170"
-        },
-        {
-          "@id": "estleg:Draft_MKM15_1806"
-        },
-        {
-          "@id": "estleg:Draft_RIIGIKOGU20_0047"
-        },
-        {
-          "@id": "estleg:Draft_RIIGIKOGU18_0231"
-        },
-        {
-          "@id": "estleg:Draft_MKM16_0364"
-        }
-      ],
-      "estleg:temporalStatus": "unknown",
-      "dcterms:subject": [
-        {
-          "@id": "http://eurovoc.europa.eu/2446"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/1221"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/6411"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/4421"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/0411"
-        }
       ]
     },
     {
-      "@id": "estleg:LegalProvision_ELS",
+      "@id": "estleg:LegalProvision_eesti_lipu_seadus",
       "@type": [
         "owl:Class"
       ],
@@ -92,26 +95,105 @@
       }
     },
     {
+      "@id": "estleg:ELS_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": "Eesti lipu seadus teemaskeem",
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_ELS_default"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Cluster_ELS_default",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": "§1–26 Eesti lipu seadus",
+      "skos:prefLabel": "§1–26 Eesti lipu seadus",
+      "skos:inScheme": {
+        "@id": "estleg:ELS_TopicScheme"
+      },
+      "estleg:provisionCount": 22
+    },
+    {
       "@id": "estleg:ELS_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ELS"
+        "estleg:LegalProvision_eesti_lipu_seadus"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. Eesti lipp",
       "estleg:sourceAct": "Eesti lipu seadus",
-      "estleg:summary": "1(1)Eesti lipp on sinimustvalge. Eesti lipp on sinimustvalge. 2(2)Eesti lippu kasutatakse rahvus- ja riigilipuna. Eesti lippu kasutatakse rahvus- ja riigilipuna."
+      "estleg:summary": "1 (1) Eesti lipp on sinimustvalge. Eesti lipp on sinimustvalge. 2 (2) Eesti lippu kasutatakse rahvus- ja riigilipuna. Eesti lippu kasutatakse rahvus- ja riigilipuna.",
+      "estleg:legalText": "(1) Eesti lipp on sinimustvalge. (2) Eesti lippu kasutatakse rahvus- ja riigilipuna.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_ELS_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ELS_Par_1_Lg_1"
+        },
+        {
+          "@id": "estleg:ELS_Par_1_Lg_2"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:ELS_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Eesti lipp on sinimustvalge.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ELS_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
+    },
+    {
+      "@id": "estleg:ELS_Par_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Eesti lippu kasutatakse rahvus- ja riigilipuna.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ELS_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 2"
     },
     {
       "@id": "estleg:ELS_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ELS"
+        "estleg:LegalProvision_eesti_lipu_seadus"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. Eesti lipu kirjeldus",
       "estleg:sourceAct": "Eesti lipu seadus",
-      "estleg:summary": "1(1)Eesti lipp koosneb kolmest võrdse laiusega horisontaalsest värvilaiust. Ülemine laid on sinine, keskmine must ja alumine valge. Lipu laiuse ja pikkuse vahekord on 7:11. Eesti lipp koosneb kolmest võrdse laiusega horisontaalsest värvilaiust. Ülemine laid on sinine, keskmine must ja alumine valge. Lipu laiuse ja pikkuse vahekord on 7:11. 2(2)Eesti lipu kujutis on lisatud käesolevale seadusele. Eesti lipu kujutis on lisatud käesolevale seadusele.",
+      "estleg:summary": "1 (1) Eesti lipp koosneb kolmest võrdse laiusega horisontaalsest värvilaiust. Ülemine laid on sinine, keskmine must ja alumine valge. Lipu laiuse ja pikkuse vahekord on 7:11. Eesti lipp koosneb kolmest võrdse laiusega horisontaalsest värvilaiust. Ülemine laid on sinine, keskmine must ja alumine valge. Lipu laiuse ja pikkuse vahekord on 7:11. 2 (2) Eesti lipu kujutis on lisatud käesolevale seadusele. Eesti lipu kujutis on lisatud käesolevale seadusele.",
+      "estleg:legalText": "(1) Eesti lipp koosneb kolmest võrdse laiusega horisontaalsest värvilaiust. Ülemine laid on sinine, keskmine must ja alumine valge. Lipu laiuse ja pikkuse vahekord on 7:11. (2) Eesti lipu kujutis on lisatud käesolevale seadusele.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_ELS_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ELS_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:ELS_Par_2_Lg_2"
+        }
+      ],
+      "estleg:targetGroup": [
+        "official"
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:RIIGIL_Par_2",
@@ -121,46 +203,166 @@
           },
           "estleg:similarityStatus": "candidate"
         }
-      ],
-      "estleg:targetGroup": [
-        "official"
       ]
+    },
+    {
+      "@id": "estleg:ELS_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Eesti lipp koosneb kolmest võrdse laiusega horisontaalsest värvilaiust. Ülemine laid on sinine, keskmine must ja alumine valge. Lipu laiuse ja pikkuse vahekord on 7:11.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ELS_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
+    },
+    {
+      "@id": "estleg:ELS_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Eesti lipu kujutis on lisatud käesolevale seadusele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ELS_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2"
     },
     {
       "@id": "estleg:ELS_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ELS"
+        "estleg:LegalProvision_eesti_lipu_seadus"
       ],
       "estleg:paragrahv": "§ 3.",
       "rdfs:label": "§ 3. Eesti lipu heiskamine Pika Hermanni torni",
       "estleg:sourceAct": "Eesti lipu seadus",
-      "estleg:summary": "1(1)Eesti lipp heisatakse Pika Hermanni torni Tallinnas iga päev päikesetõusul, kuid mitte varem kui kell 7.00, ja langetatakse päikeseloojangul. Eesti lipp heisatakse Pika Hermanni torni Tallinnas iga päev päikesetõusul, kuid mitte varem kui kell 7.00, ja langetatakse päikeseloojangul. 2(2)Eesti lipu heiskamisel Pika Hermanni torni kasutatakse muusikalise signatuurina Eesti Vabariigi hümni algusfraase ning langetamisel laulu «Mu isamaa armas» algusfraase. Eesti lipu heiskamisel Pika Hermanni to"
+      "estleg:summary": "1 (1) Eesti lipp heisatakse Pika Hermanni torni Tallinnas iga päev päikesetõusul, kuid mitte varem kui kell 7.00, ja langetatakse päikeseloojangul. Eesti lipp heisatakse Pika Hermanni torni Tallinnas iga päev päikesetõusul, kuid mitte varem kui kell 7.00, ja langetatakse päikeseloojangul. 2 (2) Eesti lipu heiskamisel Pika Hermanni torni kasutatakse muusikalise signatuurina Eesti Vabariigi hümni, Friedrich Paciuse ”Mu isamaa, mu õnn ja rõõm” (sõnad Johann Voldemar Jannsen) algusfraase ning langet",
+      "estleg:legalText": "(1) Eesti lipp heisatakse Pika Hermanni torni Tallinnas iga päev päikesetõusul, kuid mitte varem kui kell 7.00, ja langetatakse päikeseloojangul. (2) Eesti lipu heiskamisel Pika Hermanni torni kasutatakse muusikalise signatuurina Eesti Vabariigi hümni, Friedrich Paciuse ”Mu isamaa, mu õnn ja rõõm” (sõnad Johann Voldemar Jannsen) algusfraase ning langetamisel Gustav Ernesaksa ”Mu isamaa on minu arm” (sõnad Lydia Koidula) fragmendi baasil loodud signatuuri.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_ELS_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ELS_Par_3_Lg_1"
+        },
+        {
+          "@id": "estleg:ELS_Par_3_Lg_2"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:ELS_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Eesti lipp heisatakse Pika Hermanni torni Tallinnas iga päev päikesetõusul, kuid mitte varem kui kell 7.00, ja langetatakse päikeseloojangul.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ELS_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
+    },
+    {
+      "@id": "estleg:ELS_Par_3_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Eesti lipu heiskamisel Pika Hermanni torni kasutatakse muusikalise signatuurina Eesti Vabariigi hümni, Friedrich Paciuse ”Mu isamaa, mu õnn ja rõõm” (sõnad Johann Voldemar Jannsen) algusfraase ning langetamisel Gustav Ernesaksa ”Mu isamaa on minu arm” (sõnad Lydia Koidula) fragmendi baasil loodud signatuuri.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ELS_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 2"
     },
     {
       "@id": "estleg:ELS_Par_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ELS"
+        "estleg:LegalProvision_eesti_lipu_seadus"
       ],
       "estleg:paragrahv": "§ 4.",
       "rdfs:label": "§ 4. Eesti lipu heiskamise ja kasutamise õigus",
       "estleg:sourceAct": "Eesti lipu seadus",
-      "estleg:summary": "1(1)Igaühel on õigus heisata ja kasutada Eesti lippu, järgides käesoleva seaduse sätteid ja head tava. Igaühel on õigus heisata ja kasutada Eesti lippu, järgides käesoleva seaduse sätteid ja head tava. 2(2)Iseseisvuspäeval, võidupühal ja taasiseseisvumispäeval heisatakse Eesti lipp elu-, äri- ja büroohoonetel. Iseseisvuspäeval, võidupühal ja taasiseseisvumispäeval heisatakse Eesti lipp elu-, äri- ja büroohoonetel.",
+      "estleg:summary": "1 (1) Igaühel on õigus heisata ja kasutada Eesti lippu, järgides käesoleva seaduse sätteid ja head tava. Igaühel on õigus heisata ja kasutada Eesti lippu, järgides käesoleva seaduse sätteid ja head tava. 2 (2) Iseseisvuspäeval, võidupühal ja taasiseseisvumispäeval heisatakse Eesti lipp elu-, äri- ja büroohoonetel. Iseseisvuspäeval, võidupühal ja taasiseseisvumispäeval heisatakse Eesti lipp elu-, äri- ja büroohoonetel.",
+      "estleg:legalText": "(1) Igaühel on õigus heisata ja kasutada Eesti lippu, järgides käesoleva seaduse sätteid ja head tava. (2) Iseseisvuspäeval, võidupühal ja taasiseseisvumispäeval heisatakse Eesti lipp elu-, äri- ja büroohoonetel.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_ELS_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ELS_Par_4_Lg_1"
+        },
+        {
+          "@id": "estleg:ELS_Par_4_Lg_2"
+        }
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Right"
       }
     },
     {
+      "@id": "estleg:ELS_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Igaühel on õigus heisata ja kasutada Eesti lippu, järgides käesoleva seaduse sätteid ja head tava.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ELS_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1"
+    },
+    {
+      "@id": "estleg:ELS_Par_4_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Iseseisvuspäeval, võidupühal ja taasiseseisvumispäeval heisatakse Eesti lipp elu-, äri- ja büroohoonetel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ELS_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 2"
+    },
+    {
       "@id": "estleg:ELS_Par_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ELS"
+        "estleg:LegalProvision_eesti_lipu_seadus"
       ],
       "estleg:paragrahv": "§ 5.",
       "rdfs:label": "§ 5. Eesti lipu heiskamine alaliselt",
       "estleg:sourceAct": "Eesti lipu seadus",
-      "estleg:summary": "1(1)Eesti lippu ei langetata Riigikogu, Vabariigi Valitsuse, Riigikohtu, kohtu, Riigikontrolli, Õiguskantsleri, ministeeriumi, Eesti Panga, maavalitsuse, valla- ja linnavolikogu ning valla- ja linnavalitsuse hoonel ja piiripunktis. Eesti lippu ei langetata Riigikogu, Vabariigi Valitsuse, Riigikohtu, kohtu, Riigikontrolli, Õiguskantsleri, ministeeriumi, Eesti Panga, maavalitsuse, valla- ja linnavolikogu ning valla- ja linnavalitsuse hoonel ja piiripunktis. 2(2)Eesti lipp heisatakse Eesti välisesi",
+      "estleg:summary": "1 (1) Eesti lippu ei langetata Riigikogu, Vabariigi Valitsuse, Riigikohtu, kohtu, Riigikontrolli, Õiguskantsleri, Riigikantselei, ministeeriumi, Eesti Panga, valla- ja linnavolikogu ning valla- ja linnavalitsuse hoonel ning piiripunktis. RT I 2017-07-04 1 104072017001 2018-01-01 Eesti lippu ei langetata Riigikogu, Vabariigi Valitsuse, Riigikohtu, kohtu, Riigikontrolli, Õiguskantsleri, Riigikantselei, ministeeriumi, Eesti Panga, valla- ja linnavolikogu ning valla- ja linnavalitsuse hoonel ning pi",
+      "estleg:legalText": "(1) Eesti lippu ei langetata Riigikogu, Vabariigi Valitsuse, Riigikohtu, kohtu, Riigikontrolli, Õiguskantsleri, Riigikantselei, ministeeriumi, Eesti Panga, valla- ja linnavolikogu ning valla- ja linnavalitsuse hoonel ning piiripunktis. (2) Eesti lipp heisatakse Eesti välisesinduse hoonel, arvestades asukohamaa seadusi ja tavasid. (3) Põhikooli, gümnaasiumi, kutseõppeasutuse, rakenduskõrgkooli ja ülikooli hoonel heisatakse kõigil koolipäevadel Eesti lipp. (4) Kohaliku omavalitsuse volikogu võib määrata omavalitsuse territooriumil koha, kus Eesti lipp heisatakse alaliselt. (5) Alaliselt heisatud Eesti lippu valgustatakse pimedal ajal.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_ELS_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ELS_Par_5_Lg_1"
+        },
+        {
+          "@id": "estleg:ELS_Par_5_Lg_2"
+        },
+        {
+          "@id": "estleg:ELS_Par_5_Lg_3"
+        },
+        {
+          "@id": "estleg:ELS_Par_5_Lg_4"
+        },
+        {
+          "@id": "estleg:ELS_Par_5_Lg_5"
+        }
+      ],
       "estleg:targetGroup": [
         "public_body"
       ],
@@ -177,20 +379,110 @@
       ]
     },
     {
+      "@id": "estleg:ELS_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Eesti lippu ei langetata Riigikogu, Vabariigi Valitsuse, Riigikohtu, kohtu, Riigikontrolli, Õiguskantsleri, Riigikantselei, ministeeriumi, Eesti Panga, valla- ja linnavolikogu ning valla- ja linnavalitsuse hoonel ning piiripunktis.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ELS_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1"
+    },
+    {
+      "@id": "estleg:ELS_Par_5_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Eesti lipp heisatakse Eesti välisesinduse hoonel, arvestades asukohamaa seadusi ja tavasid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ELS_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 2"
+    },
+    {
+      "@id": "estleg:ELS_Par_5_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Põhikooli, gümnaasiumi, kutseõppeasutuse, rakenduskõrgkooli ja ülikooli hoonel heisatakse kõigil koolipäevadel Eesti lipp.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ELS_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 3"
+    },
+    {
+      "@id": "estleg:ELS_Par_5_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Kohaliku omavalitsuse volikogu võib määrata omavalitsuse territooriumil koha, kus Eesti lipp heisatakse alaliselt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ELS_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 4"
+    },
+    {
+      "@id": "estleg:ELS_Par_5_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Alaliselt heisatud Eesti lippu valgustatakse pimedal ajal.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ELS_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 5"
+    },
+    {
       "@id": "estleg:ELS_Par_6",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ELS"
+        "estleg:LegalProvision_eesti_lipu_seadus"
       ],
       "estleg:paragrahv": "§ 6.",
       "rdfs:label": "§ 6. Lipupäevad",
       "estleg:sourceAct": "Eesti lipu seadus",
-      "estleg:summary": "1(1)Lipupäevad on:11)3. jaanuar – Vabadussõjas võidelnute mälestuspäev;22)2. veebruar – Tartu rahulepingu aastapäev;33)24. veebruar – iseseisvuspäev, Eesti Vabariigi aastapäev;44)14. märts – emakeelepäev;55)maikuu teine pühapäev – emadepäev;66)9. mai – Euroopa päev;77)4. juuni – Eesti lipu päev;88)14. juuni – leinapäev (lipp heisatakse leinalipuna);99)23. juuni – võidupüha;1010)24. juuni – jaanipäev;1111)20. august – taasiseseisvumispäev;1212)1. september – teadmistepäev;1313)novembrikuu teine p",
+      "estleg:summary": "1 (1) Lipupäevad on: 1 1) 3. jaanuar – Vabadussõjas võidelnute mälestuspäev; 1 1<sup>1</sup>) 30. jaanuar – eesti kirjanduse päev; RT I 2022-12-20 1 120122022001 2022-12-30 2 2) 2. veebruar – Tartu rahulepingu aastapäev; 3 3) 24. veebruar – iseseisvuspäev, Eesti Vabariigi aastapäev; 4 4) 14. märts – emakeelepäev; 4 4<sup>1</sup>) 23. aprill – veteranipäev; RT I 2014-06-04 1 104062014001 2014-06-14 5 5) maikuu teine pühapäev – emadepäev; 6 6) 9. mai – Euroopa päev; 6 6<sup>1</sup>) 1. juuni – las",
+      "estleg:legalText": "(1) Lipupäevad on: 3. jaanuar – Vabadussõjas võidelnute mälestuspäev; 30. jaanuar – eesti kirjanduse päev; 2. veebruar – Tartu rahulepingu aastapäev; 24. veebruar – iseseisvuspäev, Eesti Vabariigi aastapäev; 14. märts – emakeelepäev; 23. aprill – veteranipäev; maikuu teine pühapäev – emadepäev; 9. mai – Euroopa päev; 1. juuni – lastekaitsepäev; 4. juuni – Eesti lipu päev; 14. juuni – leinapäev (lipp heisatakse leinalipuna); 23. juuni – võidupüha; 24. juuni – jaanipäev; üldlaulu- ja -tantsupeo ning noorte laulu- ja tantsupeo toimumise päevad; 20. august – taasiseseisvumispäev; 1. september – teadmistepäev; septembrikuu teine pühapäev – vanavanemate päev; oktoobrikuu kolmas laupäev – hõimupäev; ; alapunkti number muudetud [RT I, 24.11.2020, 3] novembrikuu teine pühapäev – isadepäev; Riigikogu või kohaliku omavalitsuse volikogu valimise päev, rahvahääletuse toimumise päev ja Euroopa Parlamendi valimise päev. (2) Lipupäevadel heiskavad Eesti lipu riigi- ja kohaliku omavalitsuse asutused ning avalik-õiguslikud juriidilised isikud. (3) Riigikogu või kohaliku omavalitsuse volikogu valimise päeval, rahvahääletuse toimumise päeval ja Euroopa Parlamendi valimise päeval heisatakse Eesti lipp ka valimisjaoskonna hoonele. (4) Riigikogu, Vabariigi Presidendi ja Vabariigi Valitsuse hoonele heisatakse koos Eesti lipuga 16. veebruaril, Leedu iseseisvuspäeval, Leedu riigilipp ja 18. novembril, Läti Vabariigi väljakuulutamise päeval, Läti riigilipp. (5) Vabariigi Valitsus võib ühekordselt otsustada Eesti lipu heiskamise riigi- ja kohaliku omavalitsuse asutustele ning avalik-õiguslikele juriidilistele isikutele ka muul ajal, et tähistada Eesti riigi ja rahva jaoks olulise tähtsusega sündmust.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_ELS_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ELS_Par_6_Lg_1"
+        },
+        {
+          "@id": "estleg:ELS_Par_6_Lg_2"
+        },
+        {
+          "@id": "estleg:ELS_Par_6_Lg_3"
+        },
+        {
+          "@id": "estleg:ELS_Par_6_Lg_4"
+        },
+        {
+          "@id": "estleg:ELS_Par_6_Lg_5"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "public_body"
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:PTS_Par_3",
           "estleg:similarityScore": {
-            "@value": "0.386",
+            "@value": "0.5",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
@@ -198,21 +490,101 @@
       ]
     },
     {
+      "@id": "estleg:ELS_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Lipupäevad on: 3. jaanuar – Vabadussõjas võidelnute mälestuspäev; 30. jaanuar – eesti kirjanduse päev; 2. veebruar – Tartu rahulepingu aastapäev; 24. veebruar – iseseisvuspäev, Eesti Vabariigi aastapäev; 14. märts – emakeelepäev; 23. aprill – veteranipäev; maikuu teine pühapäev – emadepäev; 9. mai – Euroopa päev; 1. juuni – lastekaitsepäev; 4. juuni – Eesti lipu päev; 14. juuni – leinapäev (lipp heisatakse leinalipuna); 23. juuni – võidupüha; 24. juuni – jaanipäev; üldlaulu- ja -tantsupeo ning noorte laulu- ja tantsupeo toimumise päevad; 20. august – taasiseseisvumispäev; 1. september – teadmistepäev; septembrikuu teine pühapäev – vanavanemate päev; oktoobrikuu kolmas laupäev – hõimupäev; ; alapunkti number muudetud [RT I, 24.11.2020, 3] novembrikuu teine pühapäev – isadepäev; Riigikogu või kohaliku omavalitsuse volikogu valimise päev, rahvahääletuse toimumise päev ja Euroopa Parlamendi valimise päev.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ELS_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1"
+    },
+    {
+      "@id": "estleg:ELS_Par_6_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Lipupäevadel heiskavad Eesti lipu riigi- ja kohaliku omavalitsuse asutused ning avalik-õiguslikud juriidilised isikud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ELS_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 2"
+    },
+    {
+      "@id": "estleg:ELS_Par_6_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Riigikogu või kohaliku omavalitsuse volikogu valimise päeval, rahvahääletuse toimumise päeval ja Euroopa Parlamendi valimise päeval heisatakse Eesti lipp ka valimisjaoskonna hoonele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ELS_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 3"
+    },
+    {
+      "@id": "estleg:ELS_Par_6_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Riigikogu, Vabariigi Presidendi ja Vabariigi Valitsuse hoonele heisatakse koos Eesti lipuga 16. veebruaril, Leedu iseseisvuspäeval, Leedu riigilipp ja 18. novembril, Läti Vabariigi väljakuulutamise päeval, Läti riigilipp.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ELS_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 4"
+    },
+    {
+      "@id": "estleg:ELS_Par_6_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Vabariigi Valitsus võib ühekordselt otsustada Eesti lipu heiskamise riigi- ja kohaliku omavalitsuse asutustele ning avalik-õiguslikele juriidilistele isikutele ka muul ajal, et tähistada Eesti riigi ja rahva jaoks olulise tähtsusega sündmust.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ELS_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 5"
+    },
+    {
       "@id": "estleg:ELS_Par_7",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ELS"
+        "estleg:LegalProvision_eesti_lipu_seadus"
       ],
       "estleg:paragrahv": "§ 7.",
       "rdfs:label": "§ 7. Lipu heiskamise ja langetamise aeg",
       "estleg:sourceAct": "Eesti lipu seadus",
-      "estleg:summary": "1(1)Eesti lipp heisatakse päikesetõusul, kuid mitte hiljem kui kell 8.00 ja langetatakse päikeseloojangul, kuid mitte hiljem kui kell 22.00. Eesti lipp heisatakse päikesetõusul, kuid mitte hiljem kui kell 8.00 ja langetatakse päikeseloojangul, kuid mitte hiljem kui kell 22.00. 2(2)Vabariigi Valitsus võib ühekordselt otsustada Eesti lipu heiskamise ja langetamise muu kellaaja. Vabariigi Valitsus võib ühekordselt otsustada Eesti lipu heiskamise ja langetamise muu kellaaja. 3(3)Eesti lippu ei lange",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
+      "estleg:summary": "1 (1) Eesti lipp heisatakse päikesetõusul, kuid mitte hiljem kui kell 8.00 ja langetatakse päikeseloojangul, kuid mitte hiljem kui kell 22.00. Eesti lipp heisatakse päikesetõusul, kuid mitte hiljem kui kell 8.00 ja langetatakse päikeseloojangul, kuid mitte hiljem kui kell 22.00. 2 (2) Vabariigi Valitsus võib ühekordselt otsustada Eesti lipu heiskamise ja langetamise muu kellaaja. Vabariigi Valitsus võib ühekordselt otsustada Eesti lipu heiskamise ja langetamise muu kellaaja. 3 (3) Eesti lippu ei",
+      "estleg:legalText": "(1) Eesti lipp heisatakse päikesetõusul, kuid mitte hiljem kui kell 8.00 ja langetatakse päikeseloojangul, kuid mitte hiljem kui kell 22.00. (2) Vabariigi Valitsus võib ühekordselt otsustada Eesti lipu heiskamise ja langetamise muu kellaaja. (3) Eesti lippu ei langetata jaaniööl.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_ELS_default"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ELS_Par_7_Lg_1"
+        },
+        {
+          "@id": "estleg:ELS_Par_7_Lg_2"
+        },
+        {
+          "@id": "estleg:ELS_Par_7_Lg_3"
+        }
+      ],
       "estleg:targetGroup": [
         "public_body"
       ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_vabariigivalitsus"
@@ -221,57 +593,304 @@
       "estleg:competenceType": "general"
     },
     {
+      "@id": "estleg:ELS_Par_7_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Eesti lipp heisatakse päikesetõusul, kuid mitte hiljem kui kell 8.00 ja langetatakse päikeseloojangul, kuid mitte hiljem kui kell 22.00.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ELS_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 1"
+    },
+    {
+      "@id": "estleg:ELS_Par_7_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Vabariigi Valitsus võib ühekordselt otsustada Eesti lipu heiskamise ja langetamise muu kellaaja.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ELS_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 2"
+    },
+    {
+      "@id": "estleg:ELS_Par_7_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Eesti lippu ei langetata jaaniööl.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ELS_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 3"
+    },
+    {
       "@id": "estleg:ELS_Par_8",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ELS"
+        "estleg:LegalProvision_eesti_lipu_seadus"
       ],
       "estleg:paragrahv": "§ 8.",
       "rdfs:label": "§ 8. Lipu heiskamise koht",
       "estleg:sourceAct": "Eesti lipu seadus",
-      "estleg:summary": "Lipp koos vardaga kinnitatakse hoonele või hoone katusele või heisatakse lipumasti. Lipp koos vardaga kinnitatakse hoonele või hoone katusele või heisatakse lipumasti."
+      "estleg:summary": "Lipp koos vardaga kinnitatakse hoonele või hoone katusele või heisatakse lipumasti. Lipp koos vardaga kinnitatakse hoonele või hoone katusele või heisatakse lipumasti.",
+      "estleg:legalText": "Lipp koos vardaga kinnitatakse hoonele või hoone katusele või heisatakse lipumasti.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_ELS_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ELS_Par_8_Lg_Unknown_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:ELS_Par_8_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Lipp koos vardaga kinnitatakse hoonele või hoone katusele või heisatakse lipumasti.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ELS_Par_8"
+      }
     },
     {
       "@id": "estleg:ELS_Par_9",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ELS"
+        "estleg:LegalProvision_eesti_lipu_seadus"
       ],
       "estleg:paragrahv": "§ 9.",
       "rdfs:label": "§ 9. Nõuded heisatavale lipule",
       "estleg:sourceAct": "Eesti lipu seadus",
-      "estleg:summary": "1(1)Heisatav lipp peab olema puhas ja terve. Heisatav lipp peab olema puhas ja terve. 2(2)Hoone küljes olevasse lipuvardasse või hoone katusel olevasse lipumasti heisatava lipu minimaalne suurus on 105×165 sentimeetrit. Hoone küljes olevasse lipuvardasse või hoone katusel olevasse lipumasti heisatava lipu minimaalne suurus on 105×165 sentimeetrit. 3(3)Eesti lipu heiskamisel vertikaalselt asub lipu sinine värvilaid vaataja poolt nähtuna vasakul. Eesti lipu heiskamisel vertikaalselt asub lipu sini",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
+      "estleg:summary": "1 (1) Heisatav lipp peab olema puhas ja terve. Heisatav lipp peab olema puhas ja terve. 2 (2) Hoone küljes olevasse lipuvardasse või hoone katusel olevasse lipumasti heisatava lipu minimaalne suurus on 105×165 sentimeetrit. Hoone küljes olevasse lipuvardasse või hoone katusel olevasse lipumasti heisatava lipu minimaalne suurus on 105×165 sentimeetrit. 3 (3) Eesti lipu heiskamisel vertikaalselt asub lipu sinine värvilaid vaataja poolt nähtuna vasakul. Eesti lipu heiskamisel vertikaalselt asub lip",
+      "estleg:legalText": "(1) Heisatav lipp peab olema puhas ja terve. (2) Hoone küljes olevasse lipuvardasse või hoone katusel olevasse lipumasti heisatava lipu minimaalne suurus on 105×165 sentimeetrit. (3) Eesti lipu heiskamisel vertikaalselt asub lipu sinine värvilaid vaataja poolt nähtuna vasakul. (4) Lipu heiskamisel lipumasti on mast ligikaudu kuus korda pikem lipu laiusest.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_ELS_default"
       },
-      "estleg:dutyHolder": "Heisatav lipp"
-    },
-    {
-      "@id": "estleg:ELS_Par_10",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ELS"
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ELS_Par_9_Lg_1"
+        },
+        {
+          "@id": "estleg:ELS_Par_9_Lg_2"
+        },
+        {
+          "@id": "estleg:ELS_Par_9_Lg_3"
+        },
+        {
+          "@id": "estleg:ELS_Par_9_Lg_4"
+        }
       ],
-      "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Eesti lipu heiskamine koos teiste lippudega",
-      "estleg:sourceAct": "Eesti lipu seadus",
-      "estleg:summary": "1(1)Kui Eesti lipp heisatakse koos teiste lippudega, peab Eesti lipp olema auväärsemal kohal. Kui Eesti lipp heisatakse koos teiste lippudega, peab Eesti lipp olema auväärsemal kohal. 2(2)Vabariigi Presidendi lipp paigutatakse Eesti lipust lipurivi tagant vaadatuna paremale ja välisriigi riigipea lipp vasakule. Vabariigi Presidendi lipp paigutatakse Eesti lipust lipurivi tagant vaadatuna paremale ja välisriigi riigipea lipp vasakule. 3(3)Teiste riikide lipud paigutatakse Eesti lipu järel prantsu",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       }
     },
     {
+      "@id": "estleg:ELS_Par_9_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Heisatav lipp peab olema puhas ja terve.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ELS_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 1"
+    },
+    {
+      "@id": "estleg:ELS_Par_9_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Hoone küljes olevasse lipuvardasse või hoone katusel olevasse lipumasti heisatava lipu minimaalne suurus on 105×165 sentimeetrit.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ELS_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 2"
+    },
+    {
+      "@id": "estleg:ELS_Par_9_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Eesti lipu heiskamisel vertikaalselt asub lipu sinine värvilaid vaataja poolt nähtuna vasakul.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ELS_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 3"
+    },
+    {
+      "@id": "estleg:ELS_Par_9_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Lipu heiskamisel lipumasti on mast ligikaudu kuus korda pikem lipu laiusest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ELS_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 4"
+    },
+    {
+      "@id": "estleg:ELS_Par_10",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_eesti_lipu_seadus"
+      ],
+      "estleg:paragrahv": "§ 10.",
+      "rdfs:label": "§ 10. Eesti lipu heiskamine koos teiste lippudega",
+      "estleg:sourceAct": "Eesti lipu seadus",
+      "estleg:summary": "1 (1) Kui Eesti lipp heisatakse koos teiste lippudega, peab Eesti lipp olema auväärsemal kohal. Kui Eesti lipp heisatakse koos teiste lippudega, peab Eesti lipp olema auväärsemal kohal. 2 (2) Vabariigi Presidendi lipp paigutatakse Eesti lipust lipurivi tagant vaadatuna paremale ja välisriigi riigipea lipp vasakule. Vabariigi Presidendi lipp paigutatakse Eesti lipust lipurivi tagant vaadatuna paremale ja välisriigi riigipea lipp vasakule. 3 (3) Teiste riikide lipud paigutatakse Eesti lipu järel p",
+      "estleg:legalText": "(1) Kui Eesti lipp heisatakse koos teiste lippudega, peab Eesti lipp olema auväärsemal kohal. (2) Vabariigi Presidendi lipp paigutatakse Eesti lipust lipurivi tagant vaadatuna paremale ja välisriigi riigipea lipp vasakule. (3) Teiste riikide lipud paigutatakse Eesti lipu järel prantsuskeelsete riiginimede tähestikulises järjekorras. Ainult Euroopa Liidu liikmesriikide lippude heiskamisel paigutatakse riigilipud omakeelsete riiginimede tähestikulises järjekorras. Prantsuskeelsete ja Euroopa Liidu omakeelsete riiginimede tähestikuline järjekord avaldatakse riigisekretäri teadaandena Riigikantselei veebilehel. (4) Kui Eesti lipp heisatakse koos teise riigi lipuga ning rahvusvahelise organisatsiooni lipuga ja Eesti maakonna, linna, valla või muu lipuga, paigutatakse Eesti maakonna, linna või valla lipp või muu lipp rahvusvahelise organisatsiooni lipust lipurivi tagant vaadatuna vasakule. (5) Sõltuvalt lipurivi asukohast ja lippude arvust võib lõigetes 2–4 ettenähtud lippude järjestust heiskamisel muuta, arvestades, et Eesti lipp oleks auväärsemal kohal. (6) Lipud heisatakse eraldi, ühesuguse pikkusega lipuvardasse või -masti ja Eesti lipuga samale kõrgusele. Heisatavad lipud on võrdse laiusega.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_ELS_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ELS_Par_10_Lg_1"
+        },
+        {
+          "@id": "estleg:ELS_Par_10_Lg_2"
+        },
+        {
+          "@id": "estleg:ELS_Par_10_Lg_3"
+        },
+        {
+          "@id": "estleg:ELS_Par_10_Lg_4"
+        },
+        {
+          "@id": "estleg:ELS_Par_10_Lg_5"
+        },
+        {
+          "@id": "estleg:ELS_Par_10_Lg_6"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
+    },
+    {
+      "@id": "estleg:ELS_Par_10_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kui Eesti lipp heisatakse koos teiste lippudega, peab Eesti lipp olema auväärsemal kohal.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ELS_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 1"
+    },
+    {
+      "@id": "estleg:ELS_Par_10_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Vabariigi Presidendi lipp paigutatakse Eesti lipust lipurivi tagant vaadatuna paremale ja välisriigi riigipea lipp vasakule.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ELS_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 2"
+    },
+    {
+      "@id": "estleg:ELS_Par_10_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Teiste riikide lipud paigutatakse Eesti lipu järel prantsuskeelsete riiginimede tähestikulises järjekorras. Ainult Euroopa Liidu liikmesriikide lippude heiskamisel paigutatakse riigilipud omakeelsete riiginimede tähestikulises järjekorras. Prantsuskeelsete ja Euroopa Liidu omakeelsete riiginimede tähestikuline järjekord avaldatakse riigisekretäri teadaandena Riigikantselei veebilehel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ELS_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 3"
+    },
+    {
+      "@id": "estleg:ELS_Par_10_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Kui Eesti lipp heisatakse koos teise riigi lipuga ning rahvusvahelise organisatsiooni lipuga ja Eesti maakonna, linna, valla või muu lipuga, paigutatakse Eesti maakonna, linna või valla lipp või muu lipp rahvusvahelise organisatsiooni lipust lipurivi tagant vaadatuna vasakule.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ELS_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 4"
+    },
+    {
+      "@id": "estleg:ELS_Par_10_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Sõltuvalt lipurivi asukohast ja lippude arvust võib lõigetes 2–4 ettenähtud lippude järjestust heiskamisel muuta, arvestades, et Eesti lipp oleks auväärsemal kohal.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ELS_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 5"
+    },
+    {
+      "@id": "estleg:ELS_Par_10_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Lipud heisatakse eraldi, ühesuguse pikkusega lipuvardasse või -masti ja Eesti lipuga samale kõrgusele. Heisatavad lipud on võrdse laiusega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ELS_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 6"
+    },
+    {
       "@id": "estleg:ELS_Par_11",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ELS"
+        "estleg:LegalProvision_eesti_lipu_seadus"
       ],
       "estleg:paragrahv": "§ 11.",
       "rdfs:label": "§ 11. Eesti lipu ja Euroopa Liidu lipu heiskamine",
       "estleg:sourceAct": "Eesti lipu seadus",
-      "estleg:summary": "1(1)Riigikogu, Vabariigi Presidendi, Vabariigi Valitsuse, Riigikohtu, Riigikontrolli, Õiguskantsleri, ministeeriumi, Eesti Panga, Kaitsejõudude Peastaabi, maavalitsuse, valla- ja linnavolikogu ning valla- ja linnavalitsuse hoonele või hoone juures asuvatesse lipumastidesse heisatakse koos Eesti lipuga Euroopa Liidu lipp Euroopa päeval ja Euroopa Parlamendi valimise päeval. Riigikogu, Vabariigi Presidendi, Vabariigi Valitsuse, Riigikohtu, Riigikontrolli, Õiguskantsleri, ministeeriumi, Eesti Panga",
+      "estleg:summary": "1 (1) Riigikogu, Vabariigi Presidendi, Vabariigi Valitsuse, Riigikohtu, Riigikontrolli, õiguskantsleri, ministeeriumi, Eesti Panga, Kaitseväe Peastaabi, valla- ja linnavolikogu ning valla- ja linnavalitsuse hoonele või hoone juures asuvatesse lipumastidesse heisatakse koos Eesti lipuga Euroopa Liidu lipp Euroopa päeval ja Euroopa Parlamendi valimise päeval. RT I 2017-07-04 1 104072017001 2018-01-01 Riigikogu, Vabariigi Presidendi, Vabariigi Valitsuse, Riigikohtu, Riigikontrolli, õiguskantsleri, ",
+      "estleg:legalText": "(1) Riigikogu, Vabariigi Presidendi, Vabariigi Valitsuse, Riigikohtu, Riigikontrolli, õiguskantsleri, ministeeriumi, Eesti Panga, Kaitseväe Peastaabi, valla- ja linnavolikogu ning valla- ja linnavalitsuse hoonele või hoone juures asuvatesse lipumastidesse heisatakse koos Eesti lipuga Euroopa Liidu lipp Euroopa päeval ja Euroopa Parlamendi valimise päeval. (2) määrab piiripunktid, kus koos Eesti lipuga heisatakse alaliselt Euroopa Liidu lipp. (3) Eesti välisesinduse hoonel Euroopa Liidu lipu heiskamise kohta annab juhised valdkonna eest vastutav minister. Euroopa Liidu lipp heisatakse koos Eesti riigilipuga. , Vabariigi Valitsuse seaduse § 107³ lõike 4 alusel asendatud alates 2014. aasta 1. juulist „välisminister” sõnadega „valdkonna eest vastutav minister”.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_ELS_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ELS_Par_11_Lg_1"
+        },
+        {
+          "@id": "estleg:ELS_Par_11_Lg_2"
+        },
+        {
+          "@id": "estleg:ELS_Par_11_Lg_3"
+        }
+      ],
       "estleg:targetGroup": [
-        "public_body"
+        "public_body",
+        "official"
       ],
       "estleg:competentAuthority": [
         {
@@ -281,36 +900,122 @@
       "estleg:competenceType": "general"
     },
     {
+      "@id": "estleg:ELS_Par_11_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Riigikogu, Vabariigi Presidendi, Vabariigi Valitsuse, Riigikohtu, Riigikontrolli, õiguskantsleri, ministeeriumi, Eesti Panga, Kaitseväe Peastaabi, valla- ja linnavolikogu ning valla- ja linnavalitsuse hoonele või hoone juures asuvatesse lipumastidesse heisatakse koos Eesti lipuga Euroopa Liidu lipp Euroopa päeval ja Euroopa Parlamendi valimise päeval.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ELS_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 1"
+    },
+    {
+      "@id": "estleg:ELS_Par_11_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) määrab piiripunktid, kus koos Eesti lipuga heisatakse alaliselt Euroopa Liidu lipp.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ELS_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 2"
+    },
+    {
+      "@id": "estleg:ELS_Par_11_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Eesti välisesinduse hoonel Euroopa Liidu lipu heiskamise kohta annab juhised valdkonna eest vastutav minister. Euroopa Liidu lipp heisatakse koos Eesti riigilipuga. , Vabariigi Valitsuse seaduse § 107³ lõike 4 alusel asendatud alates 2014. aasta 1. juulist „välisminister” sõnadega „valdkonna eest vastutav minister”.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ELS_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 3"
+    },
+    {
       "@id": "estleg:ELS_Par_12",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ELS"
+        "estleg:LegalProvision_eesti_lipu_seadus"
       ],
       "estleg:paragrahv": "§ 12.",
       "rdfs:label": "§ 12. Lipu heiskamine leinalipuna",
       "estleg:sourceAct": "Eesti lipu seadus",
-      "estleg:summary": "1(1)Üleriigilise leina tähistamiseks heisatakse Eesti lipp leinalipuna. Üleriigilise leina tähistamiseks heisatakse Eesti lipp leinalipuna. 2(2)Kui Eesti lipp heisatakse leinalipuna, kinnitatakse lipuvarda ülemisse otsa must lint või heisatakse lipp poolde masti. Kui Eesti lipp heisatakse leinalipuna, kinnitatakse lipuvarda ülemisse otsa must lint või heisatakse lipp poolde masti.",
+      "estleg:summary": "1 (1) Üleriigilise leina tähistamiseks heisatakse Eesti lipp leinalipuna. Üleriigilise leina tähistamiseks heisatakse Eesti lipp leinalipuna. 2 (2) Kui Eesti lipp heisatakse leinalipuna, kinnitatakse lipuvarda ülemisse otsa must lint või heisatakse lipp poolde masti. Kui Eesti lipp heisatakse leinalipuna, kinnitatakse lipuvarda ülemisse otsa must lint või heisatakse lipp poolde masti.",
+      "estleg:legalText": "(1) Üleriigilise leina tähistamiseks heisatakse Eesti lipp leinalipuna. (2) Kui Eesti lipp heisatakse leinalipuna, kinnitatakse lipuvarda ülemisse otsa must lint või heisatakse lipp poolde masti.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_ELS_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ELS_Par_12_Lg_1"
+        },
+        {
+          "@id": "estleg:ELS_Par_12_Lg_2"
+        }
+      ],
       "estleg:targetGroup": [
         "official"
       ]
     },
     {
+      "@id": "estleg:ELS_Par_12_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Üleriigilise leina tähistamiseks heisatakse Eesti lipp leinalipuna.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ELS_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 1"
+    },
+    {
+      "@id": "estleg:ELS_Par_12_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kui Eesti lipp heisatakse leinalipuna, kinnitatakse lipuvarda ülemisse otsa must lint või heisatakse lipp poolde masti.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ELS_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 2"
+    },
+    {
       "@id": "estleg:ELS_Par_13",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ELS"
+        "estleg:LegalProvision_eesti_lipu_seadus"
       ],
       "estleg:paragrahv": "§ 13.",
       "rdfs:label": "§ 13. Eesti lipu paigutamine ametiisiku liiklusvahendile",
       "estleg:sourceAct": "Eesti lipu seadus",
       "estleg:summary": "Eesti lippu võib paigutada diplomaatilise protokolli nõuete kohaselt Eesti välisesinduse juhi ja välisriigi esindaja Eesti-visiidil kasutatavale liiklusvahendile ning liiklusvahendile, mida kasutavad Riigikogu esimees, peaminister või Eesti Vabariigi muu ametlik esindaja oma teenistusülesandeid täites. Eesti lippu võib paigutada diplomaatilise protokolli nõuete kohaselt Eesti välisesinduse juhi ja välisriigi esindaja Eesti-visiidil kasutatavale liiklusvahendile ning liiklusvahendile, mida kasuta",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
+      "estleg:legalText": "Eesti lippu võib paigutada diplomaatilise protokolli nõuete kohaselt Eesti välisesinduse juhi ja välisriigi esindaja Eesti-visiidil kasutatavale liiklusvahendile ning liiklusvahendile, mida kasutavad Riigikogu esimees, peaminister või Eesti Vabariigi muu ametlik esindaja oma teenistusülesandeid täites.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_ELS_default"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ELS_Par_13_Lg_Unknown_1"
+        }
+      ],
       "estleg:targetGroup": [
         "public_body",
         "official"
       ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_riigikogu"
@@ -322,79 +1027,356 @@
       "estleg:competenceType": "general"
     },
     {
+      "@id": "estleg:ELS_Par_13_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Eesti lippu võib paigutada diplomaatilise protokolli nõuete kohaselt Eesti välisesinduse juhi ja välisriigi esindaja Eesti-visiidil kasutatavale liiklusvahendile ning liiklusvahendile, mida kasutavad Riigikogu esimees, peaminister või Eesti Vabariigi muu ametlik esindaja oma teenistusülesandeid täites.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ELS_Par_13"
+      }
+    },
+    {
       "@id": "estleg:ELS_Par_14",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ELS"
+        "estleg:LegalProvision_eesti_lipu_seadus"
       ],
       "estleg:paragrahv": "§ 14.",
       "rdfs:label": "§ 14. Eesti lipu heiskamine ja kasutamine laeval",
       "estleg:sourceAct": "Eesti lipu seadus",
-      "estleg:summary": "Eesti lipu heiskamist ja kasutamist laeval reguleerivad laeva lipuõiguse ja laevaregistrite seadus (RT I 1998, 23, 321; 59, 941; 1999, 10, 149; 2000, 55, 365; 2001, 56, 336; 93, 565; 2002, 61, 375; 63, 387; 2003, 13, 66; 88, 594; 2004, 30, 208) ning head rahvusvahelised meretavad ja -kombed. Eesti lipu heiskamist ja kasutamist laeval reguleerivad laeva lipuõiguse ja laevaregistrite seadus (RT I 1998, 23, 321; 59, 941; 1999, 10, 149; 2000, 55, 365; 2001, 56, 336; 93, 565; 2002, 61, 375; 63, 387; "
+      "estleg:summary": "Eesti lipu heiskamist ja kasutamist laeval reguleerivad laeva lipuõiguse ja laevaregistrite seadus ning head rahvusvahelised meretavad ja -kombed. Eesti lipu heiskamist ja kasutamist laeval reguleerivad laeva lipuõiguse ja laevaregistrite seadus ning head rahvusvahelised meretavad ja -kombed.",
+      "estleg:legalText": "Eesti lipu heiskamist ja kasutamist laeval reguleerivad laeva lipuõiguse ja laevaregistrite seadus ning head rahvusvahelised meretavad ja -kombed.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_ELS_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ELS_Par_14_Lg_Unknown_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:ELS_Par_14_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Eesti lipu heiskamist ja kasutamist laeval reguleerivad laeva lipuõiguse ja laevaregistrite seadus ning head rahvusvahelised meretavad ja -kombed.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ELS_Par_14"
+      }
     },
     {
       "@id": "estleg:ELS_Par_15",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ELS"
+        "estleg:LegalProvision_eesti_lipu_seadus"
       ],
       "estleg:paragrahv": "§ 15.",
       "rdfs:label": "§ 15. Eesti lipu ja selle värvikombinatsiooni kasutamine",
       "estleg:sourceAct": "Eesti lipu seadus",
-      "estleg:summary": "1(1)Eesti lippu või selle värvikombinatsiooni kasutatakse head tava järgides. Eesti lippu või selle värvikombinatsiooni kasutatakse head tava järgides. 2(2)Kaitseväe väeosa lipu üks külg võib olla Eesti lipu värvikombinatsioonis. Kaitseväe väeosa lipu üks külg võib olla Eesti lipu värvikombinatsioonis. 3(3)Igaühel on õigus kasutada Eesti lipu värvikombinatsioonis vimplit. Vimpel ei asenda Eesti lippu. Igaühel on õigus kasutada Eesti lipu värvikombinatsioonis vimplit. Vimpel ei asenda Eesti lippu",
+      "estleg:summary": "1 (1) Eesti lippu või selle värvikombinatsiooni kasutatakse head tava järgides. Eesti lippu või selle värvikombinatsiooni kasutatakse head tava järgides. 2 (2) Kaitseväe väeosa lipu üks külg võib olla Eesti lipu värvikombinatsioonis. Kaitseväe väeosa lipu üks külg võib olla Eesti lipu värvikombinatsioonis. 3 (3) Igaühel on õigus kasutada Eesti lipu värvikombinatsioonis vimplit. Vimpel ei asenda Eesti lippu. Igaühel on õigus kasutada Eesti lipu värvikombinatsioonis vimplit. Vimpel ei asenda Eesti",
+      "estleg:legalText": "(1) Eesti lippu või selle värvikombinatsiooni kasutatakse head tava järgides. (2) Kaitseväe väeosa lipu üks külg võib olla Eesti lipu värvikombinatsioonis. (3) Igaühel on õigus kasutada Eesti lipu värvikombinatsioonis vimplit. Vimpel ei asenda Eesti lippu. (4) Eesti lipu kujutist sisaldavat tähist ei kasutata kauba- või teenindusmärgina. (5) Füüsilise isiku või juriidilise isiku lipp (välja arvatud Eesti Üliõpilaste Seltsi lipp) ei tohi olla Eesti lipuga äravahetamiseni sarnane. (6) Eesti lipu ja selle värvikombinatsiooni kasutamise korra ja hea tava kohta annab selgitusi Riigikantselei. (7) Riigikantseleil on õigus juhtida tähelepanu Eesti lipu ja selle värvikombinatsiooni kasutamise korra ja hea tava järgimise vajadusele.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_ELS_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ELS_Par_15_Lg_1"
+        },
+        {
+          "@id": "estleg:ELS_Par_15_Lg_2"
+        },
+        {
+          "@id": "estleg:ELS_Par_15_Lg_3"
+        },
+        {
+          "@id": "estleg:ELS_Par_15_Lg_4"
+        },
+        {
+          "@id": "estleg:ELS_Par_15_Lg_5"
+        },
+        {
+          "@id": "estleg:ELS_Par_15_Lg_6"
+        },
+        {
+          "@id": "estleg:ELS_Par_15_Lg_7"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "ngo"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Right"
       }
     },
     {
+      "@id": "estleg:ELS_Par_15_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Eesti lippu või selle värvikombinatsiooni kasutatakse head tava järgides.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ELS_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 1"
+    },
+    {
+      "@id": "estleg:ELS_Par_15_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kaitseväe väeosa lipu üks külg võib olla Eesti lipu värvikombinatsioonis.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ELS_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 2"
+    },
+    {
+      "@id": "estleg:ELS_Par_15_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Igaühel on õigus kasutada Eesti lipu värvikombinatsioonis vimplit. Vimpel ei asenda Eesti lippu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ELS_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 3"
+    },
+    {
+      "@id": "estleg:ELS_Par_15_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Eesti lipu kujutist sisaldavat tähist ei kasutata kauba- või teenindusmärgina.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ELS_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 4"
+    },
+    {
+      "@id": "estleg:ELS_Par_15_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Füüsilise isiku või juriidilise isiku lipp (välja arvatud Eesti Üliõpilaste Seltsi lipp) ei tohi olla Eesti lipuga äravahetamiseni sarnane.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ELS_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 5"
+    },
+    {
+      "@id": "estleg:ELS_Par_15_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Eesti lipu ja selle värvikombinatsiooni kasutamise korra ja hea tava kohta annab selgitusi Riigikantselei.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ELS_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 6"
+    },
+    {
+      "@id": "estleg:ELS_Par_15_Lg_7",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "7",
+      "estleg:legalText": "(7) Riigikantseleil on õigus juhtida tähelepanu Eesti lipu ja selle värvikombinatsiooni kasutamise korra ja hea tava järgimise vajadusele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ELS_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 7"
+    },
+    {
       "@id": "estleg:ELS_Par_16",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ELS"
+        "estleg:LegalProvision_eesti_lipu_seadus"
       ],
       "estleg:paragrahv": "§ 16.",
       "rdfs:label": "§ 16. Kasutamiskõlbmatuks muutunud lipu hävitamine",
       "estleg:sourceAct": "Eesti lipu seadus",
-      "estleg:summary": "Kasutamiskõlbmatuks muutunud lippu hävitatakse sündsal viisil. Kasutamiskõlbmatuks muutunud lippu hävitatakse sündsal viisil."
+      "estleg:summary": "Kasutamiskõlbmatuks muutunud lippu hävitatakse sündsal viisil. Kasutamiskõlbmatuks muutunud lippu hävitatakse sündsal viisil.",
+      "estleg:legalText": "Kasutamiskõlbmatuks muutunud lippu hävitatakse sündsal viisil.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_ELS_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ELS_Par_16_Lg_Unknown_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:ELS_Par_16_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Kasutamiskõlbmatuks muutunud lippu hävitatakse sündsal viisil.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ELS_Par_16"
+      }
     },
     {
       "@id": "estleg:ELS_Par_17",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ELS"
+        "estleg:LegalProvision_eesti_lipu_seadus"
       ],
       "estleg:paragrahv": "§ 17.",
       "rdfs:label": "§ 17. Vabariigi Presidendi lipp",
       "estleg:sourceAct": "Eesti lipu seadus",
-      "estleg:summary": "1(1)Vabariigi Presidendi lipp on Eesti lipp, mille mõlemal küljel on keskel suur riigivapp. Vapilõvid lipu mõlemal küljel on suunatud lipuvarda poole. Vabariigi Presidendi lipu kujutis on lisatud käesolevale seadusele. Vabariigi Presidendi lipp on Eesti lipp, mille mõlemal küljel on keskel suur riigivapp. Vapilõvid lipu mõlemal küljel on suunatud lipuvarda poole. Vabariigi Presidendi lipu kujutis on lisatud käesolevale seadusele. 2(2)Vabariigi Presidendi lipp heisatakse tema residentsile ja liik"
+      "estleg:summary": "1 (1) Vabariigi Presidendi lipp on Eesti lipp, mille mõlemal küljel on keskel suur riigivapp. Vapilõvid lipu mõlemal küljel on suunatud lipuvarda poole. Vabariigi Presidendi lipu kujutis on lisatud käesolevale seadusele. Vabariigi Presidendi lipp on Eesti lipp, mille mõlemal küljel on keskel suur riigivapp. Vapilõvid lipu mõlemal küljel on suunatud lipuvarda poole. Vabariigi Presidendi lipu kujutis on lisatud käesolevale seadusele. 2 (2) Vabariigi Presidendi lipp heisatakse tema residentsile ja ",
+      "estleg:legalText": "(1) Vabariigi Presidendi lipp on Eesti lipp, mille mõlemal küljel on keskel suur riigivapp. Vapilõvid lipu mõlemal küljel on suunatud lipuvarda poole. Vabariigi Presidendi lipu kujutis on lisatud käesolevale seadusele. (2) Vabariigi Presidendi lipp heisatakse tema residentsile ja liiklusvahendile ning vajaduse korral tseremoonia toimumise kohas Vabariigi Presidendi osavõtu ajaks.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_ELS_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ELS_Par_17_Lg_1"
+        },
+        {
+          "@id": "estleg:ELS_Par_17_Lg_2"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:ELS_Par_17_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Vabariigi Presidendi lipp on Eesti lipp, mille mõlemal küljel on keskel suur riigivapp. Vapilõvid lipu mõlemal küljel on suunatud lipuvarda poole. Vabariigi Presidendi lipu kujutis on lisatud käesolevale seadusele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ELS_Par_17"
+      },
+      "rdfs:label": "§ 17 lg 1"
+    },
+    {
+      "@id": "estleg:ELS_Par_17_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Vabariigi Presidendi lipp heisatakse tema residentsile ja liiklusvahendile ning vajaduse korral tseremoonia toimumise kohas Vabariigi Presidendi osavõtu ajaks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ELS_Par_17"
+      },
+      "rdfs:label": "§ 17 lg 2"
     },
     {
       "@id": "estleg:ELS_Par_18",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ELS"
+        "estleg:LegalProvision_eesti_lipu_seadus"
       ],
       "estleg:paragrahv": "§ 18.",
       "rdfs:label": "§ 18. Erimärgiga Eesti lipp",
       "estleg:sourceAct": "Eesti lipu seadus",
-      "estleg:summary": "1(1)Erimärgiga Eesti lippu on õigus kasutada kaitseministril, piirivalve-, tolli- ja postiasutusel. Erimärgiga Eesti lippu on õigus kasutada kaitseministril, piirivalve-, tolli- ja postiasutusel. 2(2)Erimärgiga Eesti lipu kirjeldus kehtestatakse Vabariigi Valitsuse määrusega./dyn=882755&id=950535 . Erimärgiga Eesti lipu kirjeldus",
+      "estleg:summary": "1 (1) Erimärgiga Eesti lippu on õigus kasutada valdkonna eest vastutaval ministril, politsei-, tolli- ja postiasutusel. RT I 2014-06-29 109 129062014109 2014-07-01 , Vabariigi Valitsuse seaduse § 107³ lõike 4 alusel asendatud sõna „kaitseministril“ sõnadega „valdkonna eest vastutaval ministril“. Erimärgiga Eesti lippu on õigus kasutada valdkonna eest vastutaval ministril, politsei-, tolli- ja postiasutusel. , Vabariigi Valitsuse seaduse § 107³ lõike 4 alusel asendatud sõna „kaitseministril“ sõna",
+      "estleg:legalText": "(1) Erimärgiga Eesti lippu on õigus kasutada valdkonna eest vastutaval ministril, politsei-, tolli- ja postiasutusel. , Vabariigi Valitsuse seaduse § 107³ lõike 4 alusel asendatud sõna „kaitseministril“ sõnadega „valdkonna eest vastutaval ministril“. (2) Erimärgiga Eesti lipu kirjeldus kehtestatakse määrusega.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_ELS_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ELS_Par_18_Lg_1"
+        },
+        {
+          "@id": "estleg:ELS_Par_18_Lg_2"
+        }
+      ],
+      "estleg:targetGroup": [
+        "public_body"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Right"
       },
-      "estleg:targetGroup": [
-        "public_body"
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:NotDVS_Par_4",
+          "estleg:similarityScore": {
+            "@value": "0.324",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
       ]
+    },
+    {
+      "@id": "estleg:ELS_Par_18_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Erimärgiga Eesti lippu on õigus kasutada valdkonna eest vastutaval ministril, politsei-, tolli- ja postiasutusel. , Vabariigi Valitsuse seaduse § 107³ lõike 4 alusel asendatud sõna „kaitseministril“ sõnadega „valdkonna eest vastutaval ministril“.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ELS_Par_18"
+      },
+      "rdfs:label": "§ 18 lg 1"
+    },
+    {
+      "@id": "estleg:ELS_Par_18_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Erimärgiga Eesti lipu kirjeldus kehtestatakse määrusega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ELS_Par_18"
+      },
+      "rdfs:label": "§ 18 lg 2"
     },
     {
       "@id": "estleg:ELS_Par_19",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ELS"
+        "estleg:LegalProvision_eesti_lipu_seadus"
       ],
       "estleg:paragrahv": "§ 19.",
       "rdfs:label": "§ 19. Eesti mereväe lipp",
       "estleg:sourceAct": "Eesti lipu seadus",
-      "estleg:summary": "1(1)Eesti mereväe lipp on Eesti lipu värvikombinatsioonis ja selle mõlemal küljel on väike riigivapp. Vapilõvid lipu mõlemal küljel on suunatud lipuvarda poole. Eesti mereväe lipp on Eesti lipu värvikombinatsioonis ja selle mõlemal küljel on väike riigivapp. Vapilõvid lipu mõlemal küljel on suunatud lipuvarda poole. 2(2)Eesti mereväe lipu kirjeldus kehtestatakse Vabariigi Valitsuse määrusega./dyn=882755&id=950535 . Eesti mereväe lipu kirjeldus",
+      "estleg:summary": "1 (1) Eesti mereväe lipp on Eesti lipu värvikombinatsioonis ja selle mõlemal küljel on väike riigivapp. Vapilõvid lipu mõlemal küljel on suunatud lipuvarda poole. Eesti mereväe lipp on Eesti lipu värvikombinatsioonis ja selle mõlemal küljel on väike riigivapp. Vapilõvid lipu mõlemal küljel on suunatud lipuvarda poole. 2 (2) Eesti mereväe lipu kirjeldus kehtestatakse Vabariigi Valitsuse ./dyn=120122022006&id=950535 määrusega. Eesti mereväe lipu kirjeldus kehtestatakse määrusega.",
+      "estleg:legalText": "(1) Eesti mereväe lipp on Eesti lipu värvikombinatsioonis ja selle mõlemal küljel on väike riigivapp. Vapilõvid lipu mõlemal küljel on suunatud lipuvarda poole. (2) Eesti mereväe lipu kirjeldus kehtestatakse määrusega.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_ELS_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ELS_Par_19_Lg_1"
+        },
+        {
+          "@id": "estleg:ELS_Par_19_Lg_2"
+        }
+      ],
+      "estleg:targetGroup": [
+        "public_body"
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:Reg_159038_Par_1",
@@ -404,26 +1386,52 @@
           },
           "estleg:similarityStatus": "candidate"
         }
-      ],
-      "estleg:targetGroup": [
-        "public_body"
       ]
+    },
+    {
+      "@id": "estleg:ELS_Par_19_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Eesti mereväe lipp on Eesti lipu värvikombinatsioonis ja selle mõlemal küljel on väike riigivapp. Vapilõvid lipu mõlemal küljel on suunatud lipuvarda poole.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ELS_Par_19"
+      },
+      "rdfs:label": "§ 19 lg 1"
+    },
+    {
+      "@id": "estleg:ELS_Par_19_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Eesti mereväe lipu kirjeldus kehtestatakse määrusega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ELS_Par_19"
+      },
+      "rdfs:label": "§ 19 lg 2"
     },
     {
       "@id": "estleg:ELS_Par_20",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ELS"
+        "estleg:LegalProvision_eesti_lipu_seadus"
       ],
       "estleg:paragrahv": "§ 20.",
-      "rdfs:label": "§ 20. Riigivapi seaduse muutmine",
+      "rdfs:label": "§ 20.",
       "estleg:sourceAct": "Eesti lipu seadus",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_ELS_default"
+      },
       "estleg:summary": "Riigivapi seaduses (RT I 2001, 65, 376; 2002, 34, 206; 63, 387) tehakse järgmised muudatused:11)paragrahv 4 muudetakse ja sõnastatakse järgmiselt:«Käesolev seadus kinnitab:11)Eesti Vabariigi suure riigivapi etalonkujutise koos sinise värvitooni määratlusega rahvusvahelise PANTONE värvitabeli järgi (Lisa 1);22)Eesti Vabariigi väikese riigivapi etalonkujutise koos sinise värvitooni määratlusega rahvusvahelise PANTONE värvitabeli järgi (Lisa 2);33)Eesti Vabariigi suure riigivapi mustvalge graafilis",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:RVaS_Par_4",
           "estleg:similarityScore": {
-            "@value": "0.667",
+            "@value": "0.64",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
@@ -431,127 +1439,73 @@
       ]
     },
     {
-      "@id": "estleg:ELS_Par_21",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ELS"
-      ],
-      "estleg:paragrahv": "§ 21.",
-      "rdfs:label": "§ 21. Pühade ja tähtpäevade seaduse muutmine",
-      "estleg:sourceAct": "Eesti lipu seadus",
-      "estleg:summary": "Pühade ja tähtpäevade seadust (RT I 1998, 13, 162; 1999, 18, 299; 2004, 29, 193) täiendatakse §-ga 31 järgmises sõnastuses: Pühade ja tähtpäevade seadust (RT I 1998, 13, 162; 1999, 18, 299; 2004, 29, 193) täiendatakse §-ga 31 järgmises sõnastuses: «§31. Üleriigiline lein «§31. Üleriigiline lein 1(1)Vabariigi Valitsus võib välja kuulutada üleriigilise leina. Vabariigi Valitsus võib välja kuulutada üleriigilise leina. 2(2)Leinapäeval, 14. juunil, ei korraldata leinaga kokkusobimatuid avalikke ürit",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
-      "estleg:targetGroup": [
-        "public_body"
-      ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_vabariigivalitsus"
-        }
-      ],
-      "estleg:competenceType": "general"
-    },
-    {
-      "@id": "estleg:ELS_Par_22",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ELS"
-      ],
-      "estleg:paragrahv": "§ 22.",
-      "rdfs:label": "§ 22. Reklaamiseaduse muutmine",
-      "estleg:sourceAct": "Eesti lipu seadus",
-      "estleg:summary": "Reklaamiseaduse (RT I 1997, 52, 835; 1999, 27, 388; 30, 415; 2001, 23, 127; 50, 284; 2002, 53, 336; 61, 375; 63, 387; 2004, 27, 177; 45, 315; 75, 520; 2005, 2, 4) § 4 täiendatakse lõikega 31 järgmises sõnastuses: Reklaamiseaduse (RT I 1997, 52, 835; 1999, 27, 388; 30, 415; 2001, 23, 127; 50, 284; 2002, 53, 336; 61, 375; 63, 387; 2004, 27, 177; 45, 315; 75, 520; 2005, 2, 4) § 4 täiendatakse lõikega 31 järgmises sõnastuses: «(31) Reklaamis on keelatud kasutada riiklikke ja riigiasutuste sümboleid ",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
-      }
-    },
-    {
-      "@id": "estleg:ELS_Par_23",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ELS"
-      ],
-      "estleg:paragrahv": "§ 23.",
-      "rdfs:label": "§ 23. Karistusseadustiku muutmine",
-      "estleg:sourceAct": "Eesti lipu seadus",
-      "estleg:summary": "Karistusseadustikus (RT I 2001, 61, 364; 2002; 82, 480; 86, 504; 105, 612; 2003, 4, 22; 83, 557; 90, 601; 2004, 7, 40; 46, 329; 54, 387; 56, 401; 88, 600) tehakse järgmised muudatused:11)paragrahv 245 muudetakse ja sõnastatakse järgmiselt:«§245. Eesti Vabariigi ametliku sümboli teotamineEesti lipu, riigivapi või muu ametliku sümboli maharebimise, purustamise, rüvetamise või muul viisil teotamise, samuti riigihümni teotamise eest – karistatakse rahalise karistuse või kuni üheaastase vangistusega.",
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:KARIST_2_Osa2_Par_245",
-          "estleg:similarityScore": {
-            "@value": "0.69",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:KARIST_2_Osa2_Par_249",
-          "estleg:similarityScore": {
-            "@value": "0.545",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        }
-      ],
-      "estleg:hasSanction": [
-        {
-          "@id": "estleg:Sanction_ELS_Par_23_imprisonment"
-        },
-        {
-          "@id": "estleg:Sanction_ELS_Par_23_pecuniary_punishment"
-        }
-      ],
-      "estleg:enforcedAtLevel": "state"
-    },
-    {
-      "@id": "estleg:ELS_Par_24",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ELS"
-      ],
-      "estleg:paragrahv": "§ 24.",
-      "rdfs:label": "§ 24. Eesti Vabariigi seaduse Eesti Vabariigi riigilipu ja riigivapi etalonkujutiste kinnitamise kohta kehtetuks tunnistamine",
-      "estleg:sourceAct": "Eesti lipu seadus",
-      "estleg:summary": "Eesti Vabariigi seadus Eesti Vabariigi riigilipu ja riigivapi etalonkujutiste kinnitamise kohta (RT 1992, 43, 566) tunnistatakse kehtetuks. Eesti Vabariigi seadus Eesti Vabariigi riigilipu ja riigivapi etalonkujutiste kinnitamise kohta (RT 1992, 43, 566) tunnistatakse kehtetuks."
-    },
-    {
       "@id": "estleg:ELS_Par_25",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ELS"
+        "estleg:LegalProvision_eesti_lipu_seadus"
       ],
       "estleg:paragrahv": "§ 25.",
-      "rdfs:label": "§ 25. Riigilipu seaduse kehtetuks tunnistamine",
+      "rdfs:label": "§ 25. [[Käesolevast tekstist välja jäetud.]]",
       "estleg:sourceAct": "Eesti lipu seadus",
-      "estleg:summary": "Riigilipu seadus (RT I 1993, 17, 273) tunnistatakse kehtetuks. Riigilipu seadus (RT I 1993, 17, 273) tunnistatakse kehtetuks."
+      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_ELS_default"
+      }
     },
     {
       "@id": "estleg:ELS_Par_26",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ELS"
+        "estleg:LegalProvision_eesti_lipu_seadus"
       ],
       "estleg:paragrahv": "§ 26.",
       "rdfs:label": "§ 26. Seaduse jõustumine",
       "estleg:sourceAct": "Eesti lipu seadus",
-      "estleg:summary": "1(1)Käesolev seadus jõustub 2006. aasta 1. jaanuaril. Käesolev seadus jõustub 2006. aasta 1. jaanuaril. 2(2)Käesoleva seaduse § 5 lõige 3 jõustub 2005. aasta 1. septembril.<table summary=\"allkiri\" width=\"100%\"> <tbody><tr valign=\"top\"> <td width=\"60%\"> </td> <td width=\"39%\"> <b>Riigikogu esimees Ene ERGMA</b> </td> </tr> </tbody></table><table summary=\"seotud dokument\" width=\"100%\"> <tbody><tr valign=\"top\"> <td width=\"60%\"> </td> <td align=\"middle\" width=\"39%\"> Lisa 1<br/>Eesti lipu seaduse juur",
+      "estleg:summary": "1 (1) Käesolev seadus jõustub 2006. aasta 1. jaanuaril. Käesolev seadus jõustub 2006. aasta 1. jaanuaril. 2 (2) Käesoleva seaduse § 5 lõige 3 jõustub 2005. aasta 1. septembril. Käesoleva seaduse § 5 lõige 3 jõustub 2005. aasta 1. septembril.",
+      "estleg:legalText": "(1) Käesolev seadus jõustub 2006. aasta 1. jaanuaril. (2) Käesoleva seaduse § 5 lõige 3 jõustub 2005. aasta 1. septembril.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_ELS_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ELS_Par_26_Lg_1"
+        },
+        {
+          "@id": "estleg:ELS_Par_26_Lg_2"
+        }
+      ],
       "estleg:references": [
         {
           "@id": "estleg:ELS_Par_5"
         }
+      ]
+    },
+    {
+      "@id": "estleg:ELS_Par_26_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:targetGroup": [
-        "public_body",
-        "official"
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolev seadus jõustub 2006. aasta 1. jaanuaril.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ELS_Par_26"
+      },
+      "rdfs:label": "§ 26 lg 1"
+    },
+    {
+      "@id": "estleg:ELS_Par_26_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_riigikogu"
-        }
-      ],
-      "estleg:competenceType": "general"
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Käesoleva seaduse § 5 lõige 3 jõustub 2005. aasta 1. septembril.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ELS_Par_26"
+      },
+      "rdfs:label": "§ 26 lg 2"
     }
   ]
 }
