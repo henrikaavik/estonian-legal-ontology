@@ -25,7 +25,7 @@ full-text ingestion, full-history ProvisionVersion sidecars, and Õiguskantsler
 PDF-body annotation ingestion. Final local gates passed:
 
 - `python3 -m ruff check scripts/ tests/`
-- `python3 -m pytest -q` (`1559 passed, 2 skipped`)
+- `python3 -m pytest -q` (`1568 passed, 2 skipped`)
 - `python3 scripts/validate_all.py` (`23,069 files`, zero errors/warnings)
 - `python3 scripts/shacl_validate_all.py --all` (`23,064 files`,
   `7,117,928` triples, PASS)
@@ -385,6 +385,13 @@ The largest generated artifacts are committed through Git LFS:
 `eurovoc_classification.json`, `annotations/oiguskantsler_seisukohad.jsonld`,
 `curia/curia_combined.jsonld`, and `eurlex/eurlex_combined.jsonld`. Run
 `git lfs install` before cloning or validating the full release surface.
+
+This release introduces Git LFS for the repository; earlier commits still
+contain these artifacts as normal Git blobs. We are not planning a destructive
+`git lfs migrate import --everything` history rewrite for this release, so
+clone size for historical revisions is unchanged and operators checking out old
+commits should treat those files as regular Git-tracked JSON/JSON-LD rather than
+LFS-managed artifacts.
 
 The release `contentHash` in `release_manifest.json` is computed over the
 subset highlighted in the manifest (`combined_ontology.jsonld`,

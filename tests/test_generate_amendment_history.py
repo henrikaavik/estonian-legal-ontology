@@ -830,6 +830,104 @@ class TestAmendmentChainCleanup:
 
         assert chain.exists()
 
+    def test_per_chain_deletion_skipped_when_unsafe_failures_present(
+        self, tmp_path, monkeypatch
+    ):
+        import generate_amendment_history as mod
+
+        krr = tmp_path / "krr_outputs"
+        amendments_dir = krr / "amendments"
+        eelnoud_dir = krr / "eelnoud"
+        amendments_dir.mkdir(parents=True)
+        eelnoud_dir.mkdir()
+        chain = amendments_dir / "amendments_paired_law.json"
+        chain.write_text("{}", encoding="utf-8")
+        law_path = krr / "paired_law_peep.json"
+        law_path.write_text(
+            json.dumps({
+                "@graph": [
+                    {
+                        "@id": "estleg:PAIR_Map_2026",
+                        "@type": ["owl:Ontology", "estleg:Act"],
+                        "dc:source": "Paired law",
+                    }
+                ]
+            }),
+            encoding="utf-8",
+        )
+        xml_path = tmp_path / "paired_law.xml"
+        xml_path.write_text("<akt />", encoding="utf-8")
+
+        monkeypatch.setattr(mod, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "AMENDMENTS_DIR", amendments_dir)
+        monkeypatch.setattr(mod, "EELNOUD_DIR", eelnoud_dir)
+        monkeypatch.setattr(mod, "REPO_ROOT", tmp_path)
+        monkeypatch.setattr(mod, "iter_peep_files", lambda: [law_path])
+        monkeypatch.setattr(mod, "build_globalid_xml_lookup", lambda _data_dir: {})
+        monkeypatch.setattr(mod, "pair_peep_with_xml", lambda *_args, **_kwargs: xml_path)
+        monkeypatch.setattr(mod, "load_law_abbreviations", lambda *a, **kw: {})
+        monkeypatch.setattr(mod, "extract_rt_references_from_text", lambda *a, **kw: [])
+        monkeypatch.setattr(mod, "load_draft_amendments", lambda *a, **kw: [])
+
+        def unsafe_extract(_xml_path, *, failures=None):
+            if failures is not None:
+                failures.append("extract_amendments_from_xml | paired_law.xml | boom")
+            return []
+
+        monkeypatch.setattr(mod, "extract_amendments_from_xml", unsafe_extract)
+
+        assert mod.main() == 0
+
+        assert chain.exists()
+
+    def test_soft_failures_do_not_suppress_chain_cleanup(self, tmp_path, monkeypatch):
+        import generate_amendment_history as mod
+
+        krr = tmp_path / "krr_outputs"
+        amendments_dir = krr / "amendments"
+        eelnoud_dir = krr / "eelnoud"
+        amendments_dir.mkdir(parents=True)
+        eelnoud_dir.mkdir()
+        chain = amendments_dir / "amendments_paired_law.json"
+        chain.write_text("{}", encoding="utf-8")
+        law_path = krr / "paired_law_peep.json"
+        law_path.write_text(
+            json.dumps({
+                "@graph": [
+                    {
+                        "@id": "estleg:PAIR_Map_2026",
+                        "@type": ["owl:Ontology", "estleg:Act"],
+                        "dc:source": "Paired law",
+                    }
+                ]
+            }),
+            encoding="utf-8",
+        )
+        xml_path = tmp_path / "paired_law.xml"
+        xml_path.write_text("<akt />", encoding="utf-8")
+
+        monkeypatch.setattr(mod, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "AMENDMENTS_DIR", amendments_dir)
+        monkeypatch.setattr(mod, "EELNOUD_DIR", eelnoud_dir)
+        monkeypatch.setattr(mod, "REPO_ROOT", tmp_path)
+        monkeypatch.setattr(mod, "iter_peep_files", lambda: [law_path])
+        monkeypatch.setattr(mod, "build_globalid_xml_lookup", lambda _data_dir: {})
+        monkeypatch.setattr(mod, "pair_peep_with_xml", lambda *_args, **_kwargs: xml_path)
+        monkeypatch.setattr(mod, "extract_amendments_from_xml", lambda *a, **kw: [])
+        monkeypatch.setattr(mod, "extract_rt_references_from_text", lambda *a, **kw: [])
+        monkeypatch.setattr(mod, "load_draft_amendments", lambda *a, **kw: [])
+
+        def soft_abbreviations(*_args, failures=None, **_kwargs):
+            if failures is not None:
+                failures.append("load_law_abbreviations | law_abbreviations.json | boom")
+            return {}
+
+        monkeypatch.setattr(mod, "load_law_abbreviations", soft_abbreviations)
+
+        assert mod.main() == 0
+
+        assert not chain.exists()
+
 
 class TestGeneratorEmitsCompactAmendmentIris:
     """End-to-end: ``generate_amendment_history.main`` mints

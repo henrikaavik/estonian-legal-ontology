@@ -1351,6 +1351,7 @@ class TestEnrichmentPreservation:
                     "@id": "estleg:X_Par_1",
                     "@type": ["owl:NamedIndividual"],
                     "estleg:summary": "new summary",
+                    "estleg:legalText": "Fresh legal text.",
                 }
             ]
         }
@@ -1358,6 +1359,34 @@ class TestEnrichmentPreservation:
         assert status == "forceRewritten"
         prov = json.loads(p.read_text(encoding="utf-8"))["@graph"][0]
         assert prov["estleg:summary"] == "new summary"
+        assert prov["estleg:normativeType"] == "permission"
+
+    def test_curated_summary_survives_textless_fallback(self, tmp_path):
+        p = tmp_path / "x_peep.json"
+        existing = {
+            "@graph": [
+                {
+                    "@id": "estleg:X_Par_1",
+                    "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+                    "estleg:summary": "curated summary",
+                    "estleg:normativeType": "permission",
+                }
+            ]
+        }
+        p.write_text(json.dumps(existing), encoding="utf-8")
+        fresh = {
+            "@graph": [
+                {
+                    "@id": "estleg:X_Par_1",
+                    "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+                    "estleg:summary": "§ 1. Generator fallback",
+                }
+            ]
+        }
+        status = generate_all_laws.write_law_output(p, fresh, mode="force")
+        assert status == "forceRewritten"
+        prov = json.loads(p.read_text(encoding="utf-8"))["@graph"][0]
+        assert prov["estleg:summary"] == "curated summary"
         assert prov["estleg:normativeType"] == "permission"
 
     def test_new_node_in_fresh_doc_has_no_merge_source(self, tmp_path):
@@ -1452,6 +1481,7 @@ def test_obsolete_multipart_outputs_are_removed(tmp_path):
         "asjaoigusseadus_osa2_peep.json",
         "asjaoigusseadus_osa9_peep.json",
         "asjaoigusseadus_osa6-13_peep.json",
+        "asjaoigusseadus_osaline_test_peep.json",
         "muu_seadus_osa9_peep.json",
     ):
         (krr / name).write_text(json.dumps({"@graph": []}), encoding="utf-8")
@@ -1463,11 +1493,12 @@ def test_obsolete_multipart_outputs_are_removed(tmp_path):
     )
 
     assert [path.name for path in removed] == [
-        "asjaoigusseadus_osa6-13_peep.json",
         "asjaoigusseadus_osa9_peep.json",
     ]
     assert (krr / "asjaoigusseadus_osa1_peep.json").exists()
     assert (krr / "asjaoigusseadus_osa2_peep.json").exists()
+    assert (krr / "asjaoigusseadus_osa6-13_peep.json").exists()
+    assert (krr / "asjaoigusseadus_osaline_test_peep.json").exists()
     assert (krr / "muu_seadus_osa9_peep.json").exists()
 
 
@@ -1826,6 +1857,66 @@ class TestRegenState:
         assert "simulated second-part write failure" in failed_entry["reason"]
         assert slug not in state.get("completed", {})
         assert calls == [f"{slug}_osa1_peep.json", f"{slug}_osa2_peep.json"]
+
+    def test_multipart_cleanup_failure_does_not_mark_law_failed(
+        self, tmp_path, monkeypatch
+    ):
+        title = "Multipart seadus"
+        slug = generate_all_laws.slugify(title)
+        krr = tmp_path / "krr_outputs"
+        krr.mkdir()
+        data_dir = tmp_path / "data" / "riigiteataja"
+        data_dir.mkdir(parents=True)
+        monkeypatch.setattr(generate_all_laws, "KRR_DIR", krr)
+        monkeypatch.setattr(generate_all_laws, "DATA_DIR", data_dir)
+        monkeypatch.setattr(generate_all_laws, "MULTIPART_LAWS", {title})
+        monkeypatch.setattr(
+            generate_all_laws.requests,
+            "get",
+            lambda *a, **kw: pytest.fail("no network expected"),
+        )
+        (data_dir / f"{slug}__tid1001.xml").write_text(
+            _padded_multipart_law_xml(),
+            encoding="utf-8",
+        )
+        monkeypatch.setattr(
+            generate_all_laws,
+            "get_all_laws",
+            lambda **kwargs: (
+                {title: {"gid": "2001", "tid": "1001", "url": f"/akt/{slug}.xml", "lyhend": "MULT"}},
+                {"complete": True},
+            ),
+        )
+        monkeypatch.setattr(
+            generate_all_laws,
+            "remove_obsolete_multipart_outputs",
+            lambda *_args, **_kwargs: (_ for _ in ()).throw(
+                PermissionError("simulated cleanup lock")
+            ),
+        )
+        state_path = tmp_path / "regen_state.json"
+
+        class _Args(_RerunArgs):
+            refresh = True
+            missing_only = False
+            regen_state = str(state_path)
+
+        monkeypatch.setattr(generate_all_laws, "parse_args", lambda: _Args())
+        generate_all_laws._used_prefixes.clear()
+
+        generate_all_laws.main()
+
+        state = json.loads(state_path.read_text(encoding="utf-8"))
+        completed_entry = state["completed"][slug]
+        assert completed_entry["status"] == "full"
+        assert completed_entry["outputPaths"] == [
+            f"{slug}_osa1_peep.json",
+            f"{slug}_osa2_peep.json",
+        ]
+        assert slug not in state.get("failed", {})
+        assert completed_entry["warnings"] == [
+            "obsolete multipart cleanup failed: simulated cleanup lock"
+        ]
 
     def test_multipart_generation_failure_records_no_partial_outputs(
         self, tmp_path, monkeypatch

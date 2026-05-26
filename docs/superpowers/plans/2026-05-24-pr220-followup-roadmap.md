@@ -34,13 +34,18 @@ Current delivery status:
 Final local validation after Phase 4.2:
 
 - `python3 -m ruff check scripts/ tests/` — pass
-- `python3 -m pytest -q` — `1559 passed, 2 skipped`
+- `python3 -m pytest -q` — `1568 passed, 2 skipped`
 - `python3 scripts/validate_all.py` — pass (`23,069` files, zero
   errors/warnings)
 - `python3 scripts/shacl_validate_all.py --all` — pass (`23,064` files,
   `7,117,928` triples)
 - `python3 scripts/validate_seadusloome_sync.py --report seadusloome-shacl-report.ttl`
   — pass (`21,874` JSON-LD inputs, `7,127,720` data triples, `real 518.46`)
+
+Git LFS was introduced during the PR #232 release branch for the largest
+generated artifacts only. Historical commits remain unchanged and still carry
+their prior Git blobs; no destructive repository-wide LFS migration is planned
+for this remediation series.
 
 ## Phase 1 — Pre-merge for PR #220
 

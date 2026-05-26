@@ -644,20 +644,21 @@ def main() -> int:
     _amendment_event_triples_kov = 0
     _fallback_hits = 0
     _unresolved = 0
-    _failures: list[str] = []
+    _unsafe_cleanup_failures: list[str] = []
+    _soft_failures: list[str] = []
     _skip_reasons: dict[str, int] = {}
 
     # Step 0: Clear existing amendedBy references
     print("\n[0/5] Clearing existing estleg:amendedBy from all law files...")
     cleared_count = 0
     for peep_file in iter_peep_files():
-        if clear_amended_by_from_file(peep_file, failures=_failures):
+        if clear_amended_by_from_file(peep_file, failures=_soft_failures):
             cleared_count += 1
     print(f"  Cleared estleg:amendedBy from {cleared_count} files")
 
     # Step 1: Load all law files
     print("\n[1/5] Loading law JSON-LD files...")
-    laws = load_law_files(failures=_failures)
+    laws = load_law_files(failures=_unsafe_cleanup_failures)
     print(f"  Loaded {len(laws)} law files")
 
     title_map = build_title_to_slug_map(laws)
@@ -665,7 +666,7 @@ def main() -> int:
 
     # Compact-abbreviation registry (issue #192) — used so the amendment IRIs
     # carry the law's compact prefix instead of the long <base_slug> segment.
-    law_abbreviations = load_law_abbreviations(failures=_failures)
+    law_abbreviations = load_law_abbreviations(failures=_soft_failures)
     print(f"  Loaded {len(law_abbreviations)} law abbreviations")
 
     # Step 2: Extract amendments from XML files (paired per-peep via
@@ -701,11 +702,13 @@ def main() -> int:
         paired_slugs.add(slug)
         if str(xml_path) not in _lookup_paths:
             _fallback_hits += 1
-        amendments = extract_amendments_from_xml(xml_path, failures=_failures)
+        amendments = extract_amendments_from_xml(
+            xml_path, failures=_unsafe_cleanup_failures
+        )
         if amendments:
             amendments_by_slug[slug] = amendments
             total_amendments += len(amendments)
-        rt_refs = extract_rt_references_from_text(xml_path, failures=_failures)
+        rt_refs = extract_rt_references_from_text(xml_path, failures=_soft_failures)
         if rt_refs:
             rt_refs_by_slug[slug] = rt_refs
 
@@ -718,7 +721,7 @@ def main() -> int:
 
     # Step 3: Load draft amendments
     print("\n[3/5] Loading draft legislation amendment relationships...")
-    draft_amendments = load_draft_amendments(failures=_failures)
+    draft_amendments = load_draft_amendments(failures=_unsafe_cleanup_failures)
     print(f"  Found {len(draft_amendments)} amendment bill entries")
 
     # Match drafts to existing laws.
@@ -736,7 +739,7 @@ def main() -> int:
 
     for da in draft_amendments:
         target_slug = match_law_name_to_slug(
-            da["affected_law_name"], title_map, laws, failures=_failures
+            da["affected_law_name"], title_map, laws, failures=_soft_failures
         )
         if target_slug:
             seen = seen_per_target.setdefault(target_slug, set())
@@ -782,7 +785,7 @@ def main() -> int:
 
     stale_chain_files_removed += _remove_obsolete_amendment_chain_files(
         set(groups),
-        safe_to_delete=not _failures,
+        safe_to_delete=not _unsafe_cleanup_failures,
     )
 
     for base_slug in sorted(groups):
@@ -822,7 +825,7 @@ def main() -> int:
                     _skip_reasons["no_amendments_found"] = (
                         _skip_reasons.get("no_amendments_found", 0) + 1
                     )
-            if has_paired_member and not _failures:
+            if has_paired_member and not _unsafe_cleanup_failures:
                 stale_chain_files_removed += _remove_amendment_chain_file(base_slug)
             continue
 
@@ -1042,6 +1045,7 @@ def main() -> int:
 
     total_triples = _amendedBy_link_total + _amendment_event_triples
     total_triples_kov = _amendedBy_link_total_kov + _amendment_event_triples_kov
+    _failures = _unsafe_cleanup_failures + _soft_failures
 
     report = {
         "generated": date.today().isoformat(),

@@ -840,10 +840,23 @@ def validate_act_coverage_reconciliation(krr_dir: Path = KRR_DIR):
 
     run_info = manifest.get("run")
     if not isinstance(run_info, dict):
+        warn(
+            "generation_manifest_laws.json: malformed run block "
+            f"(type={type(run_info).__name__}), ignoring sourceRemovedFromSnapshot"
+        )
         run_info = {}
     source_removed = run_info.get("sourceRemovedFromSnapshot", [])
     if not isinstance(source_removed, list):
+        warn(
+            "generation_manifest_laws.json: malformed "
+            "run.sourceRemovedFromSnapshot, ignoring"
+        )
         source_removed = []
+    if any(not isinstance(name, str) for name in source_removed):
+        warn(
+            "generation_manifest_laws.json: ignoring non-string "
+            "run.sourceRemovedFromSnapshot entries"
+        )
     source_removed_files = {
         name for name in source_removed if isinstance(name, str) and name.endswith("_peep.json")
     }

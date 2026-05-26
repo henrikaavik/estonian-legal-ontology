@@ -1659,6 +1659,18 @@ _MERGE_BLOCKED_FIELDS = frozenset({
 })
 
 
+def _should_preserve_textless_summary(new_node: dict, existing_node: dict) -> bool:
+    """Return True when an existing curated summary should survive regen."""
+    if "estleg:summary" not in existing_node or "estleg:summary" not in new_node:
+        return False
+    types = new_node.get("@type", [])
+    if isinstance(types, str):
+        types = [types]
+    if "estleg:LegalProvision" not in types:
+        return False
+    return "estleg:legalText" not in new_node
+
+
 def merge_existing_enrichments(new_doc: dict, existing_path: Path) -> dict:
     """Additive-merge: copy enrichment fields from an existing law file onto
     matching nodes in ``new_doc``. Generator-emitted fields always win — only
@@ -1695,6 +1707,11 @@ def merge_existing_enrichments(new_doc: dict, existing_path: Path) -> dict:
         existing_node = existing_by_id[node_id]
         for key, value in existing_node.items():
             if key.startswith("@"):
+                continue
+            if key == "estleg:summary" and _should_preserve_textless_summary(
+                new_node, existing_node
+            ):
+                new_node[key] = value
                 continue
             if key in _MERGE_BLOCKED_FIELDS:
                 continue
@@ -1759,7 +1776,10 @@ def remove_obsolete_multipart_outputs(
 ) -> list[Path]:
     """Delete stale ``<slug>_osa*_peep.json`` files no longer generated."""
     removed: list[Path] = []
+    part_name_re = re.compile(rf"{re.escape(slug)}_osa\d+_peep\.json\Z")
     for path in sorted(krr_dir.glob(f"{slug}_osa*_peep.json")):
+        if not part_name_re.fullmatch(path.name):
+            continue
         if path.name in expected_filenames:
             continue
         path.unlink()
@@ -2478,12 +2498,6 @@ def main():
                     print(
                         f"    Saved: {filename} ({len(doc['@graph'])} nodes, {status})"
                     )
-                obsolete_paths = remove_obsolete_multipart_outputs(
-                    KRR_DIR, slug, {filename for filename, _doc in results}
-                )
-                run_counts["obsoleteMultipartRemoved"] += len(obsolete_paths)
-                for obsolete_path in obsolete_paths:
-                    print(f"    Removed obsolete part: {obsolete_path.name}")
             except Exception as exc:  # noqa: BLE001
                 failed += 1
                 reason = f"multipart output write failed: {exc}"
@@ -2503,6 +2517,17 @@ def main():
                 print(f"    FAIL: {reason}")
                 continue
             warnings = []
+            try:
+                obsolete_paths = remove_obsolete_multipart_outputs(
+                    KRR_DIR, slug, {filename for filename, _doc in results}
+                )
+                run_counts["obsoleteMultipartRemoved"] += len(obsolete_paths)
+                for obsolete_path in obsolete_paths:
+                    print(f"    Removed obsolete part: {obsolete_path.name}")
+            except Exception as exc:  # noqa: BLE001
+                warning = f"obsolete multipart cleanup failed: {exc}"
+                warnings.append(warning)
+                print(f"    WARN: {warning}")
             if subsection_count == 0 and any(
                 ln(el.tag) == "loige" for el in root.iter()
             ):
