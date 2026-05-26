@@ -2355,6 +2355,7 @@ def main():
         "unchanged": 0,
         "refreshed": 0,
         "forceRewritten": 0,
+        "obsoleteMultipartRemoved": 0,
     })
     generated = 0
     failed = 0

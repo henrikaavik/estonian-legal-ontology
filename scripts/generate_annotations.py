@@ -117,6 +117,7 @@ PDF_PROBE_SAMPLE_SIZE = 10
 MIN_PDF_TEXT_CHARS = 500
 MIN_PDF_TEXT_VALID_CHAR_RATIO = 0.30
 PDF_TEXT_LAYER_ACCEPTANCE_RATIO = 0.80
+PDF_BODY_SCAN_MAX_CHARS = 50_000
 _PDF_TEXT_CHAR_RE = re.compile(r"[0-9A-Za-zÕÄÖÜõäöüŠŽšž]")
 
 # Act-level @type values that legitimately represent the act node an annotation should
@@ -137,6 +138,7 @@ def _looks_like_pdf_url(url: str) -> bool:
 
 
 def _short_hash(value: str, *, length: int = 8) -> str:
+    # Stable disambiguator only; collisions are unlikely at the current archive scale.
     return hashlib.sha1(value.encode("utf-8")).hexdigest()[:length]
 
 
@@ -623,7 +625,7 @@ def pdf_text_is_usable(text: str | None) -> tuple[bool, int, float]:
 
 def _normalise_pdf_text(text: str) -> str:
     """Collapse PDF text-layer whitespace into a body excerpt suitable for scanning."""
-    return re.sub(r"\s+", " ", text).strip()
+    return re.sub(r"\s+", " ", text).strip()[:PDF_BODY_SCAN_MAX_CHARS]
 
 
 def extract_pdf_text_layer(pdf_bytes: bytes) -> tuple[str | None, str | None]:

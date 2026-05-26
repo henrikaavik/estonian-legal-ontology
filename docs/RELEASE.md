@@ -25,9 +25,9 @@ full-text ingestion, full-history ProvisionVersion sidecars, and Õiguskantsler
 PDF-body annotation ingestion. Final local gates passed:
 
 - `python3 -m ruff check scripts/ tests/`
-- `python3 -m pytest -q` (`1541 passed, 2 skipped`)
-- `python3 scripts/validate_all.py` (`23069 files`, zero errors/warnings)
-- `python3 scripts/shacl_validate_all.py --all` (`23064 files`,
+- `python3 -m pytest -q` (`1559 passed, 2 skipped`)
+- `python3 scripts/validate_all.py` (`23,069 files`, zero errors/warnings)
+- `python3 scripts/shacl_validate_all.py --all` (`23,064 files`,
   `7,117,928` triples, PASS)
 - `python3 scripts/validate_seadusloome_sync.py --report seadusloome-shacl-report.ttl`
   (`21,874` JSON-LD inputs, `7,127,720` data triples, PASS, `real 518.46`)
@@ -36,6 +36,13 @@ PDF-body annotation ingestion. Final local gates passed:
 probe accepted 10/10 text layers, and the full scrape accepted 4,045/4,052 PDF
 text layers with six unusable/scanned PDFs and one fetch failure. OCR is not
 part of the release dependency set.
+
+Operator-facing behavior changes in this refresh:
+
+- `scripts/generate_annotations.py --scrape --limit 0` now means full archive
+  scrape. Use a positive `--limit` for a bounded recent-opinion sample.
+- Repeated subsection suffixes are now emitted with stable `_DupN` IRIs instead
+  of aborting generation, so duplicated source lõige numbering stays citable.
 
 ---
 
@@ -372,6 +379,12 @@ delete and rebuild).
   coverage reports under `krr_outputs/reports/kov/*_coverage.json`, plus
   probe reports such as `krr_outputs/reports/annotations_pdf_probe.json`
 - the source-fetch manifests `krr_outputs/generation_manifest_*.json`
+
+The largest generated artifacts are committed through Git LFS:
+`combined_ontology.jsonld`, `similarity_index.json`,
+`eurovoc_classification.json`, `annotations/oiguskantsler_seisukohad.jsonld`,
+`curia/curia_combined.jsonld`, and `eurlex/eurlex_combined.jsonld`. Run
+`git lfs install` before cloning or validating the full release surface.
 
 The release `contentHash` in `release_manifest.json` is computed over the
 subset highlighted in the manifest (`combined_ontology.jsonld`,

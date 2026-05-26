@@ -759,6 +759,25 @@ class TestAmendmentChainCleanup:
         assert not stale.exists()
         assert current.exists()
 
+    def test_obsolete_chain_cleanup_disabled_when_pairing_is_not_trustworthy(
+        self, tmp_path, monkeypatch
+    ):
+        import generate_amendment_history as mod
+
+        amendments_dir = tmp_path / "amendments"
+        amendments_dir.mkdir()
+        stale = amendments_dir / "amendments_old_slug.json"
+        stale.write_text("{}", encoding="utf-8")
+        monkeypatch.setattr(mod, "AMENDMENTS_DIR", amendments_dir)
+
+        removed = mod._remove_obsolete_amendment_chain_files(
+            {"current_slug"},
+            safe_to_delete=False,
+        )
+
+        assert removed == 0
+        assert stale.exists()
+
     def test_remove_amendment_chain_file_is_idempotent(self, tmp_path, monkeypatch):
         import generate_amendment_history as mod
 
@@ -771,6 +790,45 @@ class TestAmendmentChainCleanup:
         assert mod._remove_amendment_chain_file("no_longer_amended") == 1
         assert mod._remove_amendment_chain_file("no_longer_amended") == 0
         assert not chain.exists()
+
+    def test_chain_file_preserved_when_pairing_fails(self, tmp_path, monkeypatch):
+        import generate_amendment_history as mod
+
+        krr = tmp_path / "krr_outputs"
+        amendments_dir = krr / "amendments"
+        eelnoud_dir = krr / "eelnoud"
+        amendments_dir.mkdir(parents=True)
+        eelnoud_dir.mkdir()
+        chain = amendments_dir / "amendments_unpaired_law.json"
+        chain.write_text("{}", encoding="utf-8")
+        law_path = krr / "unpaired_law_peep.json"
+        law_path.write_text(
+            json.dumps(
+                {
+                    "@graph": [
+                        {
+                            "@id": "estleg:UNP_Map_2026",
+                            "@type": ["owl:Ontology", "estleg:Act"],
+                            "dc:source": "Unpaired law",
+                        }
+                    ]
+                }
+            ),
+            encoding="utf-8",
+        )
+        monkeypatch.setattr(mod, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "AMENDMENTS_DIR", amendments_dir)
+        monkeypatch.setattr(mod, "EELNOUD_DIR", eelnoud_dir)
+        monkeypatch.setattr(mod, "REPO_ROOT", tmp_path)
+        monkeypatch.setattr(mod, "iter_peep_files", lambda: [law_path])
+        monkeypatch.setattr(mod, "build_globalid_xml_lookup", lambda _data_dir: {})
+        monkeypatch.setattr(mod, "pair_peep_with_xml", lambda *_args, **_kwargs: None)
+        monkeypatch.setattr(mod, "load_law_abbreviations", lambda *a, **kw: {})
+        monkeypatch.setattr(mod, "load_draft_amendments", lambda *a, **kw: [])
+
+        assert mod.main() == 0
+
+        assert chain.exists()
 
 
 class TestGeneratorEmitsCompactAmendmentIris:

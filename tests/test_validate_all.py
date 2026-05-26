@@ -671,6 +671,26 @@ def test_act_coverage_reconciliation_accepts_reported_source_removed_peep(tmp_pa
     assert validate_all.errors == [], validate_all.errors
 
 
+def test_act_coverage_reconciliation_ignores_malformed_run_block(tmp_path):
+    krr = tmp_path / "krr_outputs"
+    _full_peep(krr, "law_a")
+    import json as _json
+
+    (krr / "generation_manifest_laws.json").write_text(
+        _json.dumps({
+            "generated": "2026-05-11T00:00:00+00:00",
+            "mode": "missing-only",
+            "counts": {"sourceActs": 1},
+            "run": "not a dict",
+            "outputsAll": [{"title": "Law A", "slug": "law_a", "status": "full"}],
+        }),
+        encoding="utf-8",
+    )
+
+    validate_all.validate_act_coverage_reconciliation(krr)
+    assert validate_all.errors == [], validate_all.errors
+
+
 def test_act_coverage_reconciliation_flags_stub_without_marker(tmp_path):
     krr = tmp_path / "krr_outputs"
     # Manifest says law_b is a stub, but its peep file lacks the

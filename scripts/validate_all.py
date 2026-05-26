@@ -838,7 +838,10 @@ def validate_act_coverage_reconciliation(krr_dir: Path = KRR_DIR):
                         f"{single}: manifest status=stub but contentStatus={marker!r}"
                     )
 
-    source_removed = manifest.get("run", {}).get("sourceRemovedFromSnapshot", [])
+    run_info = manifest.get("run")
+    if not isinstance(run_info, dict):
+        run_info = {}
+    source_removed = run_info.get("sourceRemovedFromSnapshot", [])
     if not isinstance(source_removed, list):
         source_removed = []
     source_removed_files = {

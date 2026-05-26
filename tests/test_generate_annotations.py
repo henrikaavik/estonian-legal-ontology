@@ -656,6 +656,15 @@ def test_pdf_text_layer_probe_reports_ocr_recommendation():
     assert report["recommendation"] == "evaluate_ocr_before_full_ingestion"
 
 
+def test_normalise_pdf_text_bounds_scan_excerpt():
+    text = "Algus\n\n" + ("Õigus " * 20_000)
+
+    normalized = ga._normalise_pdf_text(text)
+
+    assert "\n" not in normalized
+    assert len(normalized) == ga.PDF_BODY_SCAN_MAX_CHARS
+
+
 def test_pdf_text_layer_probe_skips_non_pdf_urls():
     opinions = [
         ga.Opinion(

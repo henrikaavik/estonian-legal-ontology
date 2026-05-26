@@ -7,9 +7,25 @@ A comprehensive, machine-readable ontology of Estonian and EU legislation in JSO
 <!-- counts: keep in sync with metadata.jsonld estleg:statistics — validate_all.py::validate_metadata_catalog enforces metadata.jsonld vs the corpus, and tests/test_validate_all.py::test_readme_counts_match_metadata enforces README vs metadata.jsonld -->
 **Status: 1,145 enacted laws (1,190 law files) + 22,832 drafts + 3,812 state regulations + 11,059 municipal regulations (opt-in) + 12,137 court decisions + 33,242 EU acts + 22,290 EU court decisions** | **23,115 JSON/JSON-LD files** | **170,000+ semantic nodes**
 
+The headline file count includes generated reports, indexes, and metadata that
+release validators intentionally skip. `validate_all.py` currently validates
+23,069 corpus JSON/JSON-LD files; full SHACL loads 23,064 shape-relevant files.
+
 **Integration features:** Cross-law reference links | Court decision → provision links | EU directive transposition mapping | EuroVoc taxonomy | Amendment history | Legal concept graph | Deontic classification | Institutional competence | Sanction index | Semantic similarity | Temporal validity
 
 Domestic regulations participate in the same cross-reference, EuroVoc, deontic, sanction, and similarity passes as enacted laws — the integration scripts iterate via `iter_peep_files()` from `estleg_common`, so any pipeline that runs over `*_peep.json` automatically covers laws and regulations alike.
+
+## Prerequisites
+
+Install Git LFS before cloning or validating the full repository:
+
+```bash
+git lfs install
+```
+
+Large generated artifacts such as `krr_outputs/combined_ontology.jsonld` are
+stored through LFS; without it, validation commands will see pointer files
+instead of JSON-LD.
 
 ## Quick Start
 

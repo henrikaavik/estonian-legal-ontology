@@ -799,7 +799,10 @@ warm-cache or controlled runs where the polite inter-fetch delay is not needed.
 
 ### Annotations (practitioner layer)
 
-**Status:** model defined (issue #40); **population is future work** — see issue #199.
+**Status:** model defined (issue #40) and populated from the Õiguskantsler
+archive. The current sidecar contains 13,402 annotation nodes generated from
+the live listing plus usable PDF body text; see the Õiguskantsler ingestion
+section in `docs/VALIDATION_REPORT.md` for coverage and probe metrics.
 
 The corpus captures the law *as written*, not how it is applied or interpreted in practice.
 The `estleg:Annotation` model adds a separate layer of practitioner-facing notes — guidance,

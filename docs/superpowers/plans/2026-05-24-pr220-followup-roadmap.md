@@ -27,13 +27,14 @@ Current delivery status:
   Õiguskantsler ingestion.
 - Phase 3.1–3.4 live ingestion is complete.
 - Phase 4.1 / #203 was re-evaluated after Subsection materialisation and is
-  deferred: no current consumer requires punkt-level `estleg:Item` nodes.
+  closed as not planned for this remediation series: no current consumer
+  requires punkt-level `estleg:Item` nodes.
 - Phase 4.2 final sync updated public counts and validation docs.
 
 Final local validation after Phase 4.2:
 
 - `python3 -m ruff check scripts/ tests/` — pass
-- `python3 -m pytest -q` — `1541 passed, 2 skipped`
+- `python3 -m pytest -q` — `1559 passed, 2 skipped`
 - `python3 scripts/validate_all.py` — pass (`23,069` files, zero
   errors/warnings)
 - `python3 scripts/shacl_validate_all.py --all` — pass (`23,064` files,
@@ -574,7 +575,7 @@ for future remediation PRs.
 | 1. Pre-merge | 1.1 tests, 1.2 cache cleanup, 1.3 warning, 1.4 doc table | Done (#220/#221) | Complete |
 | 2. Hardening | 2.1–2.7 + 2.10/O5/O8/O9 done; #223 delivered in PR #229; #224 delivered in PR #230; #225/#226/#228 delivered in PR #231; 2.8–2.9 delivered by #227 / Phase 3.4 | Done (#222/#229/#230/#231 + Phase 3.4) | Complete |
 | 3. Live ingestion | #213, #207, #208, #210 (sequential, IRI-churn-ordered) | Done | Complete |
-| 4. Long-tail | #203 deferred, final sync, process | Done | Complete |
+| 4. Long-tail | #203 closed as not planned, final sync, process | Done | Complete |
 
 ## Cross-Reference Index
 

@@ -179,7 +179,13 @@ def _remove_amendment_chain_file(base_slug: str) -> int:
     return 1
 
 
-def _remove_obsolete_amendment_chain_files(current_base_slugs: set[str]) -> int:
+def _remove_obsolete_amendment_chain_files(
+    current_base_slugs: set[str],
+    *,
+    safe_to_delete: bool = True,
+) -> int:
+    if not safe_to_delete:
+        return 0
     removed = 0
     prefix = "amendments_"
     for path in sorted(AMENDMENTS_DIR.glob(f"{prefix}*.json")):
@@ -774,7 +780,10 @@ def main() -> int:
         base_slug = re.sub(r"_osa\d+$", "", slug)
         groups.setdefault(base_slug, []).append((slug, info))
 
-    stale_chain_files_removed += _remove_obsolete_amendment_chain_files(set(groups))
+    stale_chain_files_removed += _remove_obsolete_amendment_chain_files(
+        set(groups),
+        safe_to_delete=not _failures,
+    )
 
     for base_slug in sorted(groups):
         members = groups[base_slug]
@@ -806,12 +815,15 @@ def main() -> int:
             drafts.append(da)
 
         if not xml_amendments and not drafts:
+            has_paired_member = False
             for slug, _info in members:
                 if slug in paired_slugs:
+                    has_paired_member = True
                     _skip_reasons["no_amendments_found"] = (
                         _skip_reasons.get("no_amendments_found", 0) + 1
                     )
-            stale_chain_files_removed += _remove_amendment_chain_file(base_slug)
+            if has_paired_member and not _failures:
+                stale_chain_files_removed += _remove_amendment_chain_file(base_slug)
             continue
 
         # Sort xml_amendments chronologically (entry_into_force first,
