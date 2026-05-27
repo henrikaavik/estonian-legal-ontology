@@ -12,7 +12,7 @@
 | Warnings | 0 |
 | Result | **PASSED** |
 
-The repository advertises 23,115 generated JSON/JSON-LD files. `validate_all.py`
+The repository advertises 23,112 generated JSON/JSON-LD files. `validate_all.py`
 excludes generated reports, indexes, manifests, and probe outputs that are not
 corpus inputs; the full SHACL gate further narrows to 23,064 shape-relevant
 JSON-LD files.

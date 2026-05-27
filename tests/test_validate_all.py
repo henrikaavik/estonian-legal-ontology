@@ -1244,6 +1244,29 @@ def test_validate_transposition_mapping_missing_file_is_only_a_warning(tmp_path)
 # ---------------------------------------------------------------------------
 
 
+def test_jsonld_file_count_excludes_operational_state_files(tmp_path):
+    krr = tmp_path / "krr_outputs"
+    files = [
+        krr / "law_a_peep.json",
+        krr / "combined_ontology.jsonld",
+        krr / "sidecars" / "annotations.jsonld",
+        krr / ".regen_state.json",
+        krr / "generation_manifest_laws.json",
+        krr / "latest_pipeline_manifest.json",
+    ]
+    for path in files:
+        write_json(path, {"@graph": []})
+
+    expected = sum(
+        1
+        for path in files
+        if path.suffix in {".json", ".jsonld"}
+        and path.name not in validate_all.OPERATIONAL_STATE_FILES
+    )
+
+    assert validate_all.jsonld_file_count(krr) == expected
+
+
 def _minimal_corpus_for_metadata(krr: Path) -> None:
     """Stage a tiny corpus so `metadata_stats()` returns deterministic counts.
 

@@ -897,12 +897,13 @@ def validate_act_coverage_reconciliation(krr_dir: Path = KRR_DIR):
 
 
 def jsonld_file_count(krr_dir: Path = KRR_DIR) -> int:
-    return len(sorted(set(
+    files = sorted(set(
         list(krr_dir.glob("*.json"))
         + list(krr_dir.glob("*.jsonld"))
         + list(krr_dir.glob("**/*.json"))
         + list(krr_dir.glob("**/*.jsonld"))
-    )))
+    ))
+    return sum(1 for p in files if p.name not in OPERATIONAL_STATE_FILES)
 
 
 def metadata_stats(krr_dir: Path = KRR_DIR) -> dict[str, int]:
