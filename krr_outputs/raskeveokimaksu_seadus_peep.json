@@ -6,20 +6,31 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
   },
   "@graph": [
     {
       "@id": "estleg:RVMS_Map_2026",
       "@type": [
+        "owl:Ontology",
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "rdfs:label": "Raskeveokimaksu seadus teemakaardistus",
       "dc:source": "Raskeveokimaksu seadus",
-      "estleg:temporalStatus": "unknown",
+      "dcterms:title": "Raskeveokimaksu seadus",
+      "estleg:contentStatus": "structuredBody",
+      "dcterms:source": {
+        "@id": "https://www.riigiteataja.ee/akt/110122020026.xml"
+      },
+      "owl:sameAs": {
+        "@id": "https://www.riigiteataja.ee/akt/110122020026.xml"
+      },
+      "estleg:kehtiv": {
+        "@value": "2026-05-24",
+        "@type": "xsd:date"
+      },
       "dcterms:subject": [
         {
           "@id": "http://eurovoc.europa.eu/5206"
@@ -36,10 +47,11 @@
         {
           "@id": "http://eurovoc.europa.eu/5211"
         }
-      ]
+      ],
+      "estleg:temporalStatus": "unknown"
     },
     {
-      "@id": "estleg:LegalProvision_RVMS",
+      "@id": "estleg:LegalProvision_raskeveokimaksu_seadus",
       "@type": [
         "owl:Class"
       ],
@@ -49,119 +61,418 @@
       }
     },
     {
+      "@id": "estleg:RVMS_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": "Raskeveokimaksu seadus teemaskeem",
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_RVMS_default"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Cluster_RVMS_default",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": "§1–14 Raskeveokimaksu seadus",
+      "skos:prefLabel": "§1–14 Raskeveokimaksu seadus",
+      "skos:inScheme": {
+        "@id": "estleg:RVMS_TopicScheme"
+      },
+      "estleg:provisionCount": 13
+    },
+    {
       "@id": "estleg:RVMS_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RVMS"
+        "estleg:LegalProvision_raskeveokimaksu_seadus"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Maksuobjekt",
+      "rdfs:label": "§ 1. Maksu objekt",
       "estleg:sourceAct": "Raskeveokimaksu seadus",
-      "estleg:summary": "Raskeveokimaksugamaksustatakseveostevedamiseksettenähtud: 1 1) liiklusregistrisregistreeritud 12-tonnise võisuuremaregistri- võitäismassigaveoauto, väljaarvatudkäesolevaparagrahvipunktis 2 nimetatudveoauto; 2 2) veoautostjaühestvõienamasthaagisestkoostatud 12-tonnise võisuuremaregistri- võitäismassigaautorong, mille veoauto on registreeritudliiklusregistris. RT I 2002 110 655 234129 2003-01-01+02:00 Raskeveokimaksugamaksustatakseveostevedamiseksettenähtud: liiklusregistrisregistreeritud 12-tonni"
+      "estleg:summary": "Raskeveokimaksuga maksustatakse veoste vedamiseks ettenähtud: 1 1) liiklusregistris registreeritud 12-tonnise või suurema registri- või täismassiga veoauto, välja arvatud käesoleva paragrahvi punktis 2 nimetatud veoauto; 2 2) veoautost ja ühest või enamast haagisest koostatud 12-tonnise või suurema registri- või täismassiga autorong, mille veoauto on registreeritud liiklusregistris. RT I 2002 110 655 234129 2003-01-01 Raskeveokimaksuga maksustatakse veoste vedamiseks ettenähtud: liiklusregistris",
+      "estleg:legalText": "Raskeveokimaksuga maksustatakse veoste vedamiseks ettenähtud: liiklusregistris registreeritud 12-tonnise või suurema registri- või täismassiga veoauto, välja arvatud käesoleva paragrahvi punktis 2 nimetatud veoauto; veoautost ja ühest või enamast haagisest koostatud 12-tonnise või suurema registri- või täismassiga autorong, mille veoauto on registreeritud liiklusregistris.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RVMS_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RVMS_Par_1_Lg_Unknown_1"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:RVMS_Par_2"
+        },
+        {
+          "@id": "estleg:RVMS_Par_3"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:RVMS_Par_1_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Raskeveokimaksuga maksustatakse veoste vedamiseks ettenähtud: liiklusregistris registreeritud 12-tonnise või suurema registri- või täismassiga veoauto, välja arvatud käesoleva paragrahvi punktis 2 nimetatud veoauto; veoautost ja ühest või enamast haagisest koostatud 12-tonnise või suurema registri- või täismassiga autorong, mille veoauto on registreeritud liiklusregistris.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVMS_Par_1"
+      }
     },
     {
       "@id": "estleg:RVMS_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RVMS"
+        "estleg:LegalProvision_raskeveokimaksu_seadus"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. Maksumäärad",
       "estleg:sourceAct": "Raskeveokimaksu seadus",
-      "estleg:summary": "1 (1) Käesolevaseaduse §-s 1 nimetatudveoautojaautorong (edaspidi raskeveok ) maksustatakseseaduselisastoodudmäärajärgivastavalt: 1 1) veoautoregistrimassile, telgedearvulejaveoteljevedrustusetüübile. Sõidukiregistreerimistunnistuselveoautoregistrimassikohtamärkepuudumisekorraltoimubmaksustaminevastavaltveoautotäismassile, telgedearvulejaveoteljevedrustusetüübile; 2 2) autorongiregistrimassilevõitäismassile, võttesalusekskäesolevalõikepunktis 1 nimetatudveoautonäitajad, autorongikoosseisusüheaeg"
+      "estleg:summary": "1 (1) Käesoleva seaduse §-s 1 nimetatud veoauto ja autorong (edaspidi raskeveok) maksustatakse seaduse lisas toodud määra järgi vastavalt: 1 1) veoauto registrimassile, telgede arvule ja veotelje vedrustuse tüübile. Sõiduki registreerimistunnistusel veoauto registrimassi kohta märke puudumise korral toimub maksustamine vastavalt veoauto täismassile, telgede arvule ja veotelje vedrustuse tüübile; 2 2) autorongi registrimassile või täismassile, võttes aluseks käesoleva lõike punktis 1 nimetatud ve",
+      "estleg:legalText": "(1) Käesoleva seaduse §-s 1 nimetatud veoauto ja autorong (edaspidi raskeveok) maksustatakse seaduse lisas toodud määra järgi vastavalt: veoauto registrimassile, telgede arvule ja veotelje vedrustuse tüübile. Sõiduki registreerimistunnistusel veoauto registrimassi kohta märke puudumise korral toimub maksustamine vastavalt veoauto täismassile, telgede arvule ja veotelje vedrustuse tüübile; autorongi registrimassile või täismassile, võttes aluseks käesoleva lõike punktis 1 nimetatud veoauto näitajad, autorongi koosseisus üheaegselt kasutatavate haagiste telgede arvu ja nimetatud haagiste suurima massi, mille veoauto omanik või kasutaja on avaldanud Transpordiametile ning Transpordiameti kaudu Maksu- ja Tolliametile järelevalve teostamiseks. (1<sup>1</sup>) Autorongi, mille koosseisus kasutatakse üheaegselt mitut haagist, maksumäär leitakse lähtuvalt veoauto ja haagiste summaarsest suurimast massist ja telgede arvust. (2) Kehtetu - (3) Kui maksustamisperioodi jooksul liiklusregistris maksustamise aluseks olevaid andmeid muudetakse, arvutatakse samal maksustamisperioodil tasumisele kuuluv raskeveokimaks andmetest tuleneva suurima maksumäära järgi. Juurdemaksmisele kuuluv maksusumma arvutatakse proportsionaalselt tervete kalendrikuude arvuga, mis on jäänud muudetud andmete kandmisest liiklusregistrisse maksustamisperioodi lõpuni, ja tasutakse 15 kalendripäeva jooksul nende andmete liiklusregistrisse kandmise päevast arvates.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RVMS_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RVMS_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:RVMS_Par_2_Lg_1_1"
+        },
+        {
+          "@id": "estleg:RVMS_Par_2_Lg_2"
+        },
+        {
+          "@id": "estleg:RVMS_Par_2_Lg_3"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "business",
+        "public_body"
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:RVMS_Par_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:RVMS_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesoleva seaduse §-s 1 nimetatud veoauto ja autorong (edaspidi raskeveok) maksustatakse seaduse lisas toodud määra järgi vastavalt: veoauto registrimassile, telgede arvule ja veotelje vedrustuse tüübile. Sõiduki registreerimistunnistusel veoauto registrimassi kohta märke puudumise korral toimub maksustamine vastavalt veoauto täismassile, telgede arvule ja veotelje vedrustuse tüübile; autorongi registrimassile või täismassile, võttes aluseks käesoleva lõike punktis 1 nimetatud veoauto näitajad, autorongi koosseisus üheaegselt kasutatavate haagiste telgede arvu ja nimetatud haagiste suurima massi, mille veoauto omanik või kasutaja on avaldanud Transpordiametile ning Transpordiameti kaudu Maksu- ja Tolliametile järelevalve teostamiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVMS_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
+    },
+    {
+      "@id": "estleg:RVMS_Par_2_Lg_1_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1<sup>1</sup>",
+      "estleg:legalText": "(1<sup>1</sup>) Autorongi, mille koosseisus kasutatakse üheaegselt mitut haagist, maksumäär leitakse lähtuvalt veoauto ja haagiste summaarsest suurimast massist ja telgede arvust.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVMS_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1<sup>1</sup>"
+    },
+    {
+      "@id": "estleg:RVMS_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVMS_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2"
+    },
+    {
+      "@id": "estleg:RVMS_Par_2_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kui maksustamisperioodi jooksul liiklusregistris maksustamise aluseks olevaid andmeid muudetakse, arvutatakse samal maksustamisperioodil tasumisele kuuluv raskeveokimaks andmetest tuleneva suurima maksumäära järgi. Juurdemaksmisele kuuluv maksusumma arvutatakse proportsionaalselt tervete kalendrikuude arvuga, mis on jäänud muudetud andmete kandmisest liiklusregistrisse maksustamisperioodi lõpuni, ja tasutakse 15 kalendripäeva jooksul nende andmete liiklusregistrisse kandmise päevast arvates.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVMS_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 3"
     },
     {
       "@id": "estleg:RVMS_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RVMS"
+        "estleg:LegalProvision_raskeveokimaksu_seadus"
       ],
       "estleg:paragrahv": "§ 3.",
       "rdfs:label": "§ 3. Maksumaksja",
       "estleg:sourceAct": "Raskeveokimaksu seadus",
-      "estleg:summary": "1 (1) RaskeveokimaksumaksabEestisajutiseltvõialaliseltelavfüüsilineisik, Eestisregistreeritudjuriidilineisikningriigi- jakohalikuomavalitsuseasutus, kesomabkäesolevaseaduse §-s 1 nimetatudraskeveokit, väljaarvatudkäesolevaparagrahvilõigetes 1 1 ja 2 sätestatudjuhtudel. RaskeveokimaksumaksabEestisajutiseltvõialaliseltelavfüüsilineisik, Eestisregistreeritudjuriidilineisikningriigi- jakohalikuomavalitsuseasutus, kesomabkäesolevaseaduse §-s 1 nimetatudraskeveokit, väljaarvatudkäesolevaparagrahvilõig",
+      "estleg:summary": "1 (1) Raskeveokimaksu maksab Eestis ajutiselt või alaliselt elav füüsiline isik, Eestis registreeritud juriidiline isik ning riigi- ja kohaliku omavalitsuse asutus, kes omab käesoleva seaduse §-s 1 nimetatud raskeveokit, välja arvatud käesoleva paragrahvi lõigetes 11 ja 2 sätestatud juhtudel. Raskeveokimaksu maksab Eestis ajutiselt või alaliselt elav füüsiline isik, Eestis registreeritud juriidiline isik ning riigi- ja kohaliku omavalitsuse asutus, kes omab käesoleva seaduse §-s 1 nimetatud rask",
+      "estleg:legalText": "(1) Raskeveokimaksu maksab Eestis ajutiselt või alaliselt elav füüsiline isik, Eestis registreeritud juriidiline isik ning riigi- ja kohaliku omavalitsuse asutus, kes omab käesoleva seaduse §-s 1 nimetatud raskeveokit, välja arvatud käesoleva paragrahvi lõigetes 11 ja 2 sätestatud juhtudel. (1<sup>1</sup>) Raskeveoki kasutaja on raskeveokimaksu maksjaks, kui ta kasutab raskeveokit kasutuslepingu või omandireservatsiooniga müügilepingu alusel ja tema nimi või nimetus, isiku- või registrikood ning elu- või asukoha aadress on kantud liiklusregistrisse. Nimetatud kande puudumisel maksab raskeveokimaksu raskeveoki omanik. (2) Kui käesoleva seaduse §-s 1 nimetatud raskeveoki omanik ei ole käesoleva paragrahvi lõikes 1 nimetatud isik või asutus, maksab raskeveokimaksu raskeveoki valdaja, kes on kantud liiklusregistrisse. (3) Raskeveokimaksu maksja elu- või asukoht, raskeveoki registri- või täismass, telgede arv ja veoteljel õhkvedrustuse või sellega samaväärse vedrustuse olemasolu on määratud liiklusregistrisse kantud andmetega. Raskeveoki omanik või valdaja vastutab liiklusregistrile esitatud andmete õigsuse eest.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RVMS_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RVMS_Par_3_Lg_1"
+        },
+        {
+          "@id": "estleg:RVMS_Par_3_Lg_1_1"
+        },
+        {
+          "@id": "estleg:RVMS_Par_3_Lg_2"
+        },
+        {
+          "@id": "estleg:RVMS_Par_3_Lg_3"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen",
-        "business"
+        "business",
+        "public_body"
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:RVMS_Par_1"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        }
+      ],
+      "estleg:competenceType": "general",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:RVMS_Par_9"
+        }
       ]
+    },
+    {
+      "@id": "estleg:RVMS_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Raskeveokimaksu maksab Eestis ajutiselt või alaliselt elav füüsiline isik, Eestis registreeritud juriidiline isik ning riigi- ja kohaliku omavalitsuse asutus, kes omab käesoleva seaduse §-s 1 nimetatud raskeveokit, välja arvatud käesoleva paragrahvi lõigetes 11 ja 2 sätestatud juhtudel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVMS_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
+    },
+    {
+      "@id": "estleg:RVMS_Par_3_Lg_1_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1<sup>1</sup>",
+      "estleg:legalText": "(1<sup>1</sup>) Raskeveoki kasutaja on raskeveokimaksu maksjaks, kui ta kasutab raskeveokit kasutuslepingu või omandireservatsiooniga müügilepingu alusel ja tema nimi või nimetus, isiku- või registrikood ning elu- või asukoha aadress on kantud liiklusregistrisse. Nimetatud kande puudumisel maksab raskeveokimaksu raskeveoki omanik.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVMS_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1<sup>1</sup>"
+    },
+    {
+      "@id": "estleg:RVMS_Par_3_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kui käesoleva seaduse §-s 1 nimetatud raskeveoki omanik ei ole käesoleva paragrahvi lõikes 1 nimetatud isik või asutus, maksab raskeveokimaksu raskeveoki valdaja, kes on kantud liiklusregistrisse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVMS_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 2"
+    },
+    {
+      "@id": "estleg:RVMS_Par_3_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Raskeveokimaksu maksja elu- või asukoht, raskeveoki registri- või täismass, telgede arv ja veoteljel õhkvedrustuse või sellega samaväärse vedrustuse olemasolu on määratud liiklusregistrisse kantud andmetega. Raskeveoki omanik või valdaja vastutab liiklusregistrile esitatud andmete õigsuse eest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVMS_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 3"
     },
     {
       "@id": "estleg:RVMS_Par_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RVMS"
+        "estleg:LegalProvision_raskeveokimaksu_seadus"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Maksu laekumisekoht",
+      "rdfs:label": "§ 4. Maksu laekumise koht",
       "estleg:sourceAct": "Raskeveokimaksu seadus",
-      "estleg:summary": "Raskeveokimakslaekubriigieelarvesse. Raskeveokimakslaekubriigieelarvesse."
+      "estleg:summary": "Raskeveokimaks laekub riigieelarvesse. Raskeveokimaks laekub riigieelarvesse.",
+      "estleg:legalText": "Raskeveokimaks laekub riigieelarvesse.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RVMS_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RVMS_Par_4_Lg_Unknown_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:RVMS_Par_4_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Raskeveokimaks laekub riigieelarvesse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVMS_Par_4"
+      }
     },
     {
       "@id": "estleg:RVMS_Par_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RVMS"
+        "estleg:LegalProvision_raskeveokimaksu_seadus"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Maksustamisperiood ja maksu tasumisetähtaeg",
+      "rdfs:label": "§ 5. Maksustamisperiood ja maksu tasumise tähtaeg",
       "estleg:sourceAct": "Raskeveokimaksu seadus",
-      "estleg:summary": "1 (1) Raskeveokimaksumaksustamisperiood on kvartal. Raskeveokimaksumaksustamisperiood on kvartal. 2 (2) Maksumaksja on kohustatudarvutama ja tasumaraskeveokimaksu: 1 1) raskeveokilthiljemaltmaksustamisperioodiesimese kuu 15. kuupäevaks, väljaarvatudkäesolevalõikepunktides 2 ja 3 nimetatudjuhtudel; 2 2) maksustamisperioodilliiklusregistrisregistreeritudveoautolt 15 kalendripäevajooksulpärastveoautoregistreerimistliiklusregistris; 3 3) autorongilt, mille suurimmasskantiliiklusregistrissemaksustami",
-      "estleg:dutyHolder": "Maksumaksja",
+      "estleg:summary": "1 (1) Raskeveokimaksu maksustamisperiood on kvartal. Raskeveokimaksu maksustamisperiood on kvartal. 2 (2) Maksumaksja on kohustatud arvutama ja tasuma raskeveokimaksu: 1 1) raskeveokilt hiljemalt maksustamisperioodi esimese kuu 15. kuupäevaks, välja arvatud käesoleva lõike punktides 2 ja 3 nimetatud juhtudel; 2 2) maksustamisperioodil liiklusregistris registreeritud veoautolt 15 kalendripäeva jooksul pärast veoauto registreerimist liiklusregistris; 3 3) autorongilt, mille suurim mass kanti liikl",
+      "estleg:legalText": "(1) Raskeveokimaksu maksustamisperiood on kvartal. (2) Maksumaksja on kohustatud arvutama ja tasuma raskeveokimaksu: raskeveokilt hiljemalt maksustamisperioodi esimese kuu 15. kuupäevaks, välja arvatud käesoleva lõike punktides 2 ja 3 nimetatud juhtudel; maksustamisperioodil liiklusregistris registreeritud veoautolt 15 kalendripäeva jooksul pärast veoauto registreerimist liiklusregistris; autorongilt, mille suurim mass kanti liiklusregistrisse maksustamisperioodil, 15 kalendripäeva jooksul pärast autorongi koosseisus üheaegselt kasutatavate haagiste suurima massi kandmist Transpordiameti poolt liiklusregistrisse. (3) Käesoleva paragrahvi lõike 2 punktides 2 ja 3 nimetatud veoautolt ja autorongilt makstakse raskeveokimaksu proportsionaalselt tervete kalendrikuude arvuga, mis on jäänud veoauto registreerimisest liiklusregistris või haagiste suurima massi kandmisest liiklusregistrisse maksustamisperioodi lõpuni. (4) Raskeveoki võõrandamisel või kasutusõiguse üleminekul maksustamisperioodi kestel maksustamisperioodi eest tasutud raskeveokimaksu ei tagastata. Omaniku või kasutaja vahetuse vormistamisel liiklusregistri andmetes on raskeveoki soetanud või kasutusse saanud isik kohustatud tasuma raskeveokimaksu alates raskeveoki soetamisele või kasutusse saamisele järgnevast kvartalist.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RVMS_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RVMS_Par_5_Lg_1"
+        },
+        {
+          "@id": "estleg:RVMS_Par_5_Lg_2"
+        },
+        {
+          "@id": "estleg:RVMS_Par_5_Lg_3"
+        },
+        {
+          "@id": "estleg:RVMS_Par_5_Lg_4"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen",
-        "business"
-      ]
+        "business",
+        "public_body",
+        "official"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:dutyHolder": "Maksumaksja"
+    },
+    {
+      "@id": "estleg:RVMS_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Raskeveokimaksu maksustamisperiood on kvartal.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVMS_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1"
+    },
+    {
+      "@id": "estleg:RVMS_Par_5_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Maksumaksja on kohustatud arvutama ja tasuma raskeveokimaksu: raskeveokilt hiljemalt maksustamisperioodi esimese kuu 15. kuupäevaks, välja arvatud käesoleva lõike punktides 2 ja 3 nimetatud juhtudel; maksustamisperioodil liiklusregistris registreeritud veoautolt 15 kalendripäeva jooksul pärast veoauto registreerimist liiklusregistris; autorongilt, mille suurim mass kanti liiklusregistrisse maksustamisperioodil, 15 kalendripäeva jooksul pärast autorongi koosseisus üheaegselt kasutatavate haagiste suurima massi kandmist Transpordiameti poolt liiklusregistrisse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVMS_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 2"
+    },
+    {
+      "@id": "estleg:RVMS_Par_5_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Käesoleva paragrahvi lõike 2 punktides 2 ja 3 nimetatud veoautolt ja autorongilt makstakse raskeveokimaksu proportsionaalselt tervete kalendrikuude arvuga, mis on jäänud veoauto registreerimisest liiklusregistris või haagiste suurima massi kandmisest liiklusregistrisse maksustamisperioodi lõpuni.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVMS_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 3"
+    },
+    {
+      "@id": "estleg:RVMS_Par_5_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Raskeveoki võõrandamisel või kasutusõiguse üleminekul maksustamisperioodi kestel maksustamisperioodi eest tasutud raskeveokimaksu ei tagastata. Omaniku või kasutaja vahetuse vormistamisel liiklusregistri andmetes on raskeveoki soetanud või kasutusse saanud isik kohustatud tasuma raskeveokimaksu alates raskeveoki soetamisele või kasutusse saamisele järgnevast kvartalist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVMS_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 4"
     },
     {
       "@id": "estleg:RVMS_Par_6",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RVMS"
+        "estleg:LegalProvision_raskeveokimaksu_seadus"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Maksu tasumisekord",
+      "rdfs:label": "§ 6. Maksu tasumise kord",
       "estleg:sourceAct": "Raskeveokimaksu seadus",
-      "estleg:summary": "1 (1) Raskeveokimaksutasumiselkantaksesee Maksu- ja Tolliametipangakontole. Raskeveokimaksutasumiselkantaksesee Maksu- ja Tolliametipangakontole. 2 (2) Maksekorralduselpeab olema loetavaltmärgitudraskeveokimaksumaksja nimi (füüsiliseisikupuhulees- ja perekonnanimi), veoautoriiklikuregistreerimismärgiandmed (edaspidi registreerimismärgi andmed ), maksustatavaraskeveokiregistri-võitäismasskilogrammides, maksu summa ja periood, mille eestmakstasutakse. Kuimaksumaksjatasubraskeveokimaksukorragamitme",
+      "estleg:summary": "1 (1) Raskeveokimaksu tasumisel kantakse see Maksu- ja Tolliameti pangakontole. Raskeveokimaksu tasumisel kantakse see Maksu- ja Tolliameti pangakontole. 2 (2) Maksekorraldusel peab olema loetavalt märgitud raskeveokimaksu maksja nimi (füüsilise isiku puhul ees- ja perekonnanimi), veoauto riikliku registreerimismärgi andmed (edaspidi registreerimismärgi andmed), maksustatava raskeveoki registri- või täismass kilogrammides, maksu summa ja periood, mille eest maks tasutakse. Kui maksumaksja tasub ",
+      "estleg:legalText": "(1) Raskeveokimaksu tasumisel kantakse see Maksu- ja Tolliameti pangakontole. (2) Maksekorraldusel peab olema loetavalt märgitud raskeveokimaksu maksja nimi (füüsilise isiku puhul ees- ja perekonnanimi), veoauto riikliku registreerimismärgi andmed (edaspidi registreerimismärgi andmed), maksustatava raskeveoki registri- või täismass kilogrammides, maksu summa ja periood, mille eest maks tasutakse. Kui maksumaksja tasub raskeveokimaksu korraga mitme tema omandis või valduses oleva raskeveoki eest, peavad maksekorraldusel olema loetavalt eraldi märgitud kõigi veoautode registreerimismärkide andmed, maksustatavate raskeveokite registri- või täismassid ning tasutud maksusummad raskeveokite lõikes.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RVMS_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RVMS_Par_6_Lg_1"
+        },
+        {
+          "@id": "estleg:RVMS_Par_6_Lg_2"
+        }
+      ],
       "estleg:targetGroup": [
-        "public_body"
-      ]
-    },
-    {
-      "@id": "estleg:RVMS_Par_7",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_RVMS"
-      ],
-      "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7.",
-      "estleg:sourceAct": "Raskeveokimaksu seadus",
-      "estleg:summary": "Kehtetu -"
-    },
-    {
-      "@id": "estleg:RVMS_Par_8",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_RVMS"
-      ],
-      "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Maksuvabastused",
-      "estleg:sourceAct": "Raskeveokimaksu seadus",
-      "estleg:summary": "Raskeveokimaksust on vabastatudkaitseväe, Kaitseliidu, piirivalve, politseiasutusteningriigi ja kohalikuomavalitsusetuletõrje- ja päästeasutusteraskeveokid. Raskeveokimaksust on vabastatudkaitseväe, Kaitseliidu, piirivalve, politseiasutusteningriigi ja kohalikuomavalitsusetuletõrje- ja päästeasutusteraskeveokid."
-    },
-    {
-      "@id": "estleg:RVMS_Par_9",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_RVMS"
-      ],
-      "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Maksuhaldur",
-      "estleg:sourceAct": "Raskeveokimaksu seadus",
-      "estleg:summary": "1 (1) Raskeveokimaksumaksuhaldur on Maksu- ja Tolliamet. Raskeveokimaksumaksuhaldur on Maksu- ja Tolliamet. 2 (2) Autoregistrikeskus on kohustatudesitama Maksu- ja Tolliametileigamaksustamisperioodiesimese kuu 10. kuupäevakseelmiselmaksustamisperioodilliiklusregistrisregistreeritudvõisellestkustutatudraskeveokite kohta järgmisedandmed: 1 1) veoautoomanikuvõikäesolevaseaduse § 3 lõigetes 1 1 ja 2 nimetatudjuhtudelvaldaja nimi (füüsiliseisikupuhulees- ja perekonnanimi); 2 2) veoautoomanikuvõikäeso",
-      "estleg:dutyHolder": "Autoregistrikeskus",
-      "estleg:targetGroup": [
+        "citizen",
+        "business",
         "public_body"
       ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:dutyHolder": "Maksekorraldusel",
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_maksu_ja_tolliamet"
@@ -170,47 +481,452 @@
       "estleg:competenceType": "general"
     },
     {
-      "@id": "estleg:RVMS_Par_1012",
+      "@id": "estleg:RVMS_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Raskeveokimaksu tasumisel kantakse see Maksu- ja Tolliameti pangakontole.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVMS_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1"
+    },
+    {
+      "@id": "estleg:RVMS_Par_6_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Maksekorraldusel peab olema loetavalt märgitud raskeveokimaksu maksja nimi (füüsilise isiku puhul ees- ja perekonnanimi), veoauto riikliku registreerimismärgi andmed (edaspidi registreerimismärgi andmed), maksustatava raskeveoki registri- või täismass kilogrammides, maksu summa ja periood, mille eest maks tasutakse. Kui maksumaksja tasub raskeveokimaksu korraga mitme tema omandis või valduses oleva raskeveoki eest, peavad maksekorraldusel olema loetavalt eraldi märgitud kõigi veoautode registreerimismärkide andmed, maksustatavate raskeveokite registri- või täismassid ning tasutud maksusummad raskeveokite lõikes.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVMS_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 2"
+    },
+    {
+      "@id": "estleg:RVMS_Par_7",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RVMS"
+        "estleg:LegalProvision_raskeveokimaksu_seadus"
       ],
-      "estleg:paragrahv": "§ 10-12.",
-      "rdfs:label": "§ 10-12.",
+      "estleg:paragrahv": "§ 7.",
+      "rdfs:label": "§ 7. [Kehtetu -]",
       "estleg:sourceAct": "Raskeveokimaksu seadus",
-      "estleg:summary": "[Käesolevasttekstistväljajäetud]"
+      "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RVMS_default"
+      }
+    },
+    {
+      "@id": "estleg:RVMS_Par_8",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_raskeveokimaksu_seadus"
+      ],
+      "estleg:paragrahv": "§ 8.",
+      "rdfs:label": "§ 8. Maksuvabastused",
+      "estleg:sourceAct": "Raskeveokimaksu seadus",
+      "estleg:summary": "Raskeveokimaksust on vabastatud kaitseväe, Kaitseliidu, Politsei- ja Piirivalveameti ja päästeasutuste raskeveokid ning päästetöid tegeva kohaliku omavalitsuse, mittetulundusühingu, sihtasutuse või ettevõtja raskeveokid, mida kasutatakse peamiselt päästetööl. RT I 2011-12-29 1 129122011001 2012-01-01 Raskeveokimaksust on vabastatud kaitseväe, Kaitseliidu, Politsei- ja Piirivalveameti ja päästeasutuste raskeveokid ning päästetöid tegeva kohaliku omavalitsuse, mittetulundusühingu, sihtasutuse või ",
+      "estleg:legalText": "Raskeveokimaksust on vabastatud kaitseväe, Kaitseliidu, Politsei- ja Piirivalveameti ja päästeasutuste raskeveokid ning päästetöid tegeva kohaliku omavalitsuse, mittetulundusühingu, sihtasutuse või ettevõtja raskeveokid, mida kasutatakse peamiselt päästetööl.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RVMS_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RVMS_Par_8_Lg_Unknown_1"
+        }
+      ],
+      "estleg:targetGroup": [
+        "business",
+        "public_body",
+        "ngo"
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_politsei_ja_piirivalveamet"
+        },
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        }
+      ],
+      "estleg:competenceType": "general"
+    },
+    {
+      "@id": "estleg:RVMS_Par_8_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Raskeveokimaksust on vabastatud kaitseväe, Kaitseliidu, Politsei- ja Piirivalveameti ja päästeasutuste raskeveokid ning päästetöid tegeva kohaliku omavalitsuse, mittetulundusühingu, sihtasutuse või ettevõtja raskeveokid, mida kasutatakse peamiselt päästetööl.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVMS_Par_8"
+      }
+    },
+    {
+      "@id": "estleg:RVMS_Par_9",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_raskeveokimaksu_seadus"
+      ],
+      "estleg:paragrahv": "§ 9.",
+      "rdfs:label": "§ 9. Maksuhaldur",
+      "estleg:sourceAct": "Raskeveokimaksu seadus",
+      "estleg:summary": "1 (1) Raskeveokimaksu maksuhaldur on Maksu- ja Tolliamet. Raskeveokimaksu maksuhaldur on Maksu- ja Tolliamet. 2 (2) Transpordiamet on kohustatud esitama Maksu- ja Tolliametile iga maksustamisperioodi esimese kuu 10. kuupäevaks eelmisel maksustamisperioodil liiklusregistris registreeritud või sellest kustutatud raskeveokite kohta järgmised andmed: RT I 2020-12-10 1 110122020001 2021-01-01 1 1) veoauto omaniku või käesoleva seaduse § 3 lõigetes 11 ja 2 nimetatud juhtudel valdaja nimi (füüsilise is",
+      "estleg:legalText": "(1) Raskeveokimaksu maksuhaldur on Maksu- ja Tolliamet. (2) Transpordiamet on kohustatud esitama Maksu- ja Tolliametile iga maksustamisperioodi esimese kuu 10. kuupäevaks eelmisel maksustamisperioodil liiklusregistris registreeritud või sellest kustutatud raskeveokite kohta järgmised andmed: veoauto omaniku või käesoleva seaduse § 3 lõigetes 11 ja 2 nimetatud juhtudel valdaja nimi (füüsilise isiku puhul ees- ja perekonnanimi); veoauto omaniku või käesoleva seaduse § 3 lõigetes 11 ja 2 nimetatud juhtudel valdaja isikukood (selle puudumisel isiku sünnikuupäev, -kuu ja -aasta) või registrikood; veoauto omaniku või käesoleva seaduse § 3 lõigetes 11 ja 2 nimetatud juhtudel valdaja elu- või asukoha aadress; veoauto registreerimismärgi andmed; veoauto registri- või täismass; autorongi koosseisus üheaegselt kasutatavate haagiste telgede arv ja nimetatud haagiste suurim mass, mis on kantud liiklusregistrisse, samuti kande tegemise kuupäev; veoauto mark; veoauto veoteljel õhkvedrustuse või sellega samaväärse vedrustuse olemasolu või puudumine; veoauto telgede arv; veoauto registreerimise, registrikande muutmise või registrist kustutamise kuupäev. (3) Kui liiklusregistris maksustamise aluseks olevad raskeveoki või maksumaksja andmed maksustamisperioodi jooksul muutuvad, on Transpordiamet kohustatud sellest Maksu- ja Tolliametile teatama maksustamisperioodile järgneva kuu 10. kuupäevaks. (4) Maksu- ja Tolliametil on õigus nõuda raskeveoki omanikult või valdajalt Transpordiametile esitatud andmete korrigeerimist.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RVMS_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RVMS_Par_9_Lg_1"
+        },
+        {
+          "@id": "estleg:RVMS_Par_9_Lg_2"
+        },
+        {
+          "@id": "estleg:RVMS_Par_9_Lg_3"
+        },
+        {
+          "@id": "estleg:RVMS_Par_9_Lg_4"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "business",
+        "public_body"
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:RVMS_Par_3"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:dutyHolder": "Transpordiamet",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_maksu_ja_tolliamet"
+        },
+        {
+          "@id": "estleg:Institution_transpordiamet"
+        }
+      ],
+      "estleg:competenceType": "general",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:RVMS_Par_9_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:RVMS_Par_9_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Raskeveokimaksu maksuhaldur on Maksu- ja Tolliamet.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVMS_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 1"
+    },
+    {
+      "@id": "estleg:RVMS_Par_9_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Transpordiamet on kohustatud esitama Maksu- ja Tolliametile iga maksustamisperioodi esimese kuu 10. kuupäevaks eelmisel maksustamisperioodil liiklusregistris registreeritud või sellest kustutatud raskeveokite kohta järgmised andmed: veoauto omaniku või käesoleva seaduse § 3 lõigetes 11 ja 2 nimetatud juhtudel valdaja nimi (füüsilise isiku puhul ees- ja perekonnanimi); veoauto omaniku või käesoleva seaduse § 3 lõigetes 11 ja 2 nimetatud juhtudel valdaja isikukood (selle puudumisel isiku sünnikuupäev, -kuu ja -aasta) või registrikood; veoauto omaniku või käesoleva seaduse § 3 lõigetes 11 ja 2 nimetatud juhtudel valdaja elu- või asukoha aadress; veoauto registreerimismärgi andmed; veoauto registri- või täismass; autorongi koosseisus üheaegselt kasutatavate haagiste telgede arv ja nimetatud haagiste suurim mass, mis on kantud liiklusregistrisse, samuti kande tegemise kuupäev; veoauto mark; veoauto veoteljel õhkvedrustuse või sellega samaväärse vedrustuse olemasolu või puudumine; veoauto telgede arv; veoauto registreerimise, registrikande muutmise või registrist kustutamise kuupäev.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVMS_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 2"
+    },
+    {
+      "@id": "estleg:RVMS_Par_9_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kui liiklusregistris maksustamise aluseks olevad raskeveoki või maksumaksja andmed maksustamisperioodi jooksul muutuvad, on Transpordiamet kohustatud sellest Maksu- ja Tolliametile teatama maksustamisperioodile järgneva kuu 10. kuupäevaks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVMS_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 3"
+    },
+    {
+      "@id": "estleg:RVMS_Par_9_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Maksu- ja Tolliametil on õigus nõuda raskeveoki omanikult või valdajalt Transpordiametile esitatud andmete korrigeerimist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVMS_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 4"
+    },
+    {
+      "@id": "estleg:RVMS_Par_9_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_raskeveokimaksu_seadus"
+      ],
+      "estleg:paragrahv": "§ 9<sup>1</sup>.",
+      "rdfs:label": "§ 9<sup>1</sup>. Sunniraha rakendamine",
+      "estleg:sourceAct": "Raskeveokimaksu seadus",
+      "estleg:summary": "1 (1) Maksu- ja Tolliamet võib teha hoiatuse, et käesoleva seaduse § 9 lõikes 2 nimetatud andmete tähtajaks esitamata jätmise korral või valeandmete esitamise korral võidakse rakendada sunniraha. Maksu- ja Tolliamet võib teha hoiatuse, et käesoleva seaduse § 9 lõikes 2 nimetatud andmete tähtajaks esitamata jätmise korral või valeandmete esitamise korral võidakse rakendada sunniraha. 2 (2) Kui isik ei täida kohustust hoiatuses märgitud tähtajaks, peab ta tasuma hoiatuses märgitud sunniraha. Kui i",
+      "estleg:legalText": "(1) Maksu- ja Tolliamet võib teha hoiatuse, et käesoleva seaduse § 9 lõikes 2 nimetatud andmete tähtajaks esitamata jätmise korral või valeandmete esitamise korral võidakse rakendada sunniraha. (2) Kui isik ei täida kohustust hoiatuses märgitud tähtajaks, peab ta tasuma hoiatuses märgitud sunniraha. (3) Selle kohustuse täitmisele sundimiseks ei või sunniraha esimesel korral ületada 1300 eurot ja teisel korral 2000 eurot. Sellesama kohustuse täitmisele sundimiseks kasutatav sunniraha ei või ületada 3300 eurot.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RVMS_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RVMS_Par_9_1_Lg_1"
+        },
+        {
+          "@id": "estleg:RVMS_Par_9_1_Lg_2"
+        },
+        {
+          "@id": "estleg:RVMS_Par_9_1_Lg_3"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "public_body"
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:RVMS_Par_9"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_maksu_ja_tolliamet"
+        }
+      ],
+      "estleg:competenceType": "general",
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_RVMS_Par_9_1_coercive_payment"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state"
+    },
+    {
+      "@id": "estleg:RVMS_Par_9_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Maksu- ja Tolliamet võib teha hoiatuse, et käesoleva seaduse § 9 lõikes 2 nimetatud andmete tähtajaks esitamata jätmise korral või valeandmete esitamise korral võidakse rakendada sunniraha.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVMS_Par_9_1"
+      },
+      "rdfs:label": "§ 9<sup>1</sup> lg 1"
+    },
+    {
+      "@id": "estleg:RVMS_Par_9_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kui isik ei täida kohustust hoiatuses märgitud tähtajaks, peab ta tasuma hoiatuses märgitud sunniraha.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVMS_Par_9_1"
+      },
+      "rdfs:label": "§ 9<sup>1</sup> lg 2"
+    },
+    {
+      "@id": "estleg:RVMS_Par_9_1_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Selle kohustuse täitmisele sundimiseks ei või sunniraha esimesel korral ületada 1300 eurot ja teisel korral 2000 eurot. Sellesama kohustuse täitmisele sundimiseks kasutatav sunniraha ei või ületada 3300 eurot.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVMS_Par_9_1"
+      },
+      "rdfs:label": "§ 9<sup>1</sup> lg 3"
+    },
+    {
+      "@id": "estleg:RVMS_Par_10",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_raskeveokimaksu_seadus"
+      ],
+      "estleg:paragrahv": "§ 10.",
+      "rdfs:label": "§ 10.",
+      "estleg:sourceAct": "Raskeveokimaksu seadus",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RVMS_default"
+      },
+      "estleg:summary": "§ 10."
+    },
+    {
+      "@id": "estleg:RVMS_Par_12",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_raskeveokimaksu_seadus"
+      ],
+      "estleg:paragrahv": "§ 12.",
+      "rdfs:label": "§ 12. [[Käesolevast tekstist välja jäetud.]]",
+      "estleg:sourceAct": "Raskeveokimaksu seadus",
+      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RVMS_default"
+      }
     },
     {
       "@id": "estleg:RVMS_Par_13",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RVMS"
+        "estleg:LegalProvision_raskeveokimaksu_seadus"
       ],
       "estleg:paragrahv": "§ 13.",
       "rdfs:label": "§ 13. Rakendussätted",
       "estleg:sourceAct": "Raskeveokimaksu seadus",
-      "estleg:summary": "1 (1) Liiklusregistrispeavad olema raskeveoki kohta järgmisedandmed: 1 1) veoautoregistri-võitäismass; 2 2) veoautotelgedearv; 3 3) veoautoveoteljevedrustusetüüp (õhkvedrustusevõisellegasamaväärsevedrustuse olemasolu võipuudumine) ; 4 4) sihtotstarbeliseveoautopuhul kirje, kas sõiduk on ette nähtudveoseveoks; 5 5) autorongikoosseisusüheaegseltkasutatavatehaagistetelgedearv ja nimetatudhaagistesuurimmass. Liiklusregistrispeavad olema raskeveoki kohta järgmisedandmed: veoautoregistri-võitäismass; "
+      "estleg:summary": "1 (1) Liiklusregistris peavad olema raskeveoki kohta järgmised andmed: 1 1) veoauto registri- või täismass; 2 2) veoauto telgede arv; 3 3) veoauto veotelje vedrustuse tüüp (õhkvedrustuse või sellega samaväärse vedrustuse olemasolu või puudumine); 4 4) sihtotstarbelise veoauto puhul kirje, kas sõiduk on ette nähtud veose veoks; 5 5) autorongi koosseisus üheaegselt kasutatavate haagiste telgede arv ja nimetatud haagiste suurim mass. Liiklusregistris peavad olema raskeveoki kohta järgmised andmed: ",
+      "estleg:legalText": "(1) Liiklusregistris peavad olema raskeveoki kohta järgmised andmed: veoauto registri- või täismass; veoauto telgede arv; veoauto veotelje vedrustuse tüüp (õhkvedrustuse või sellega samaväärse vedrustuse olemasolu või puudumine); sihtotstarbelise veoauto puhul kirje, kas sõiduk on ette nähtud veose veoks; autorongi koosseisus üheaegselt kasutatavate haagiste telgede arv ja nimetatud haagiste suurim mass. (2) Kui osa käesoleva paragrahvi lõikes 1 nimetatud andmetest liiklusregistris puudub, on maksumaksja kohustatud nende registrisse kandmiseks pöörduma Maanteeameti kohalikku asutusse hiljemalt 2004. aasta 20. märtsiks. Eelnimetatud andmete liiklusregistrisse kandmisest tulenev registreerimistunnistuse vahetamine on kuni 2004. aasta 31. märtsini riigilõivuvaba. (3) Maanteeameti kohalik asutus on kohustatud esitama Maksu- ja Tolliametile hiljemalt 2004. aasta 10. aprilliks liiklusregistris registreeritud raskeveokite kohta käesoleva seaduse § 9 lõikes 2 loetletud andmed 2004. aasta 31. märtsi seisuga. (4) Maksumaksja on kohustatud arvutama ja tasuma 2004. aasta esimesel kvartalil tasumisele kuuluva raskeveokimaksu 2004. aasta 15. aprilliks, tasudes selle koos järgmisel maksustamisperioodil tasumisele kuuluva maksusummaga. Käesoleva seaduse § 2 lõiget 3 ei kohaldata 2004. aasta esimese kvartali eest tasumisele kuuluva raskeveokimaksu arvutamisel. (5) Käesoleva seadusega kehtestatavat raskeveokimaksu rakendatakse alates 2004. aasta 1. jaanuarist.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RVMS_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RVMS_Par_13_Lg_1"
+        },
+        {
+          "@id": "estleg:RVMS_Par_13_Lg_2"
+        },
+        {
+          "@id": "estleg:RVMS_Par_13_Lg_3"
+        },
+        {
+          "@id": "estleg:RVMS_Par_13_Lg_4"
+        },
+        {
+          "@id": "estleg:RVMS_Par_13_Lg_5"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "business",
+        "public_body"
+      ]
+    },
+    {
+      "@id": "estleg:RVMS_Par_13_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Liiklusregistris peavad olema raskeveoki kohta järgmised andmed: veoauto registri- või täismass; veoauto telgede arv; veoauto veotelje vedrustuse tüüp (õhkvedrustuse või sellega samaväärse vedrustuse olemasolu või puudumine); sihtotstarbelise veoauto puhul kirje, kas sõiduk on ette nähtud veose veoks; autorongi koosseisus üheaegselt kasutatavate haagiste telgede arv ja nimetatud haagiste suurim mass.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVMS_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 1"
+    },
+    {
+      "@id": "estleg:RVMS_Par_13_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kui osa käesoleva paragrahvi lõikes 1 nimetatud andmetest liiklusregistris puudub, on maksumaksja kohustatud nende registrisse kandmiseks pöörduma Maanteeameti kohalikku asutusse hiljemalt 2004. aasta 20. märtsiks. Eelnimetatud andmete liiklusregistrisse kandmisest tulenev registreerimistunnistuse vahetamine on kuni 2004. aasta 31. märtsini riigilõivuvaba.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVMS_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 2"
+    },
+    {
+      "@id": "estleg:RVMS_Par_13_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Maanteeameti kohalik asutus on kohustatud esitama Maksu- ja Tolliametile hiljemalt 2004. aasta 10. aprilliks liiklusregistris registreeritud raskeveokite kohta käesoleva seaduse § 9 lõikes 2 loetletud andmed 2004. aasta 31. märtsi seisuga.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVMS_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 3"
+    },
+    {
+      "@id": "estleg:RVMS_Par_13_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Maksumaksja on kohustatud arvutama ja tasuma 2004. aasta esimesel kvartalil tasumisele kuuluva raskeveokimaksu 2004. aasta 15. aprilliks, tasudes selle koos järgmisel maksustamisperioodil tasumisele kuuluva maksusummaga. Käesoleva seaduse § 2 lõiget 3 ei kohaldata 2004. aasta esimese kvartali eest tasumisele kuuluva raskeveokimaksu arvutamisel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVMS_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 4"
+    },
+    {
+      "@id": "estleg:RVMS_Par_13_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Käesoleva seadusega kehtestatavat raskeveokimaksu rakendatakse alates 2004. aasta 1. jaanuarist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVMS_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 5"
     },
     {
       "@id": "estleg:RVMS_Par_14",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RVMS"
+        "estleg:LegalProvision_raskeveokimaksu_seadus"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Seadusejõustumine",
+      "rdfs:label": "§ 14. Seaduse jõustumine",
       "estleg:sourceAct": "Raskeveokimaksu seadus",
-      "estleg:summary": "Käesolevseadusjõustub 2003. aasta 1. jaanuaril. Käesolevseadusjõustub 2003. aasta 1. jaanuaril. Lisa Lisa raskeveokimaksuseadusejuurde RT I 2002 110 655 234129 2003-01-01+02:00 raskeveokimaksuseadusejuurde RASKEVEOKIMAKSU MÄÄRAD <table class=\"data\" style=\"width:487.5pt; mso-cellspacing:1.5pt;mso-padding-alt:0cm 0cm 0cm 0cm\"> <tbody><tr style=\"mso-yfti-irow:0;mso-yfti-firstrow:yes\"> <td style=\"padding:.75pt .75pt .75pt .75pt\" valign=\"top\"> <p align=\"center\" class=\"MsoNormal\" style=\"mso-margin-top",
-      "estleg:semanticallySimilarTo": [
+      "estleg:summary": "Käesolev seadus jõustub 2003. aasta 1. jaanuaril. Käesolev seadus jõustub 2003. aasta 1. jaanuaril.",
+      "estleg:legalText": "Käesolev seadus jõustub 2003. aasta 1. jaanuaril.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RVMS_default"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:RPKS_Par_15",
-          "estleg:similarityScore": {
-            "@value": "0.317",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
+          "@id": "estleg:RVMS_Par_14_Lg_Unknown_1"
         }
       ]
+    },
+    {
+      "@id": "estleg:RVMS_Par_14_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Käesolev seadus jõustub 2003. aasta 1. jaanuaril.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RVMS_Par_14"
+      }
     }
   ]
 }

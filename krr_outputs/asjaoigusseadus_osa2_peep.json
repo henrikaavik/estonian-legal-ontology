@@ -6,33 +6,43 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
   },
   "@graph": [
     {
-      "@id": "estleg:AOS_Osa2_Omand",
+      "@id": "estleg:AOS_Osa2_32_67",
       "@type": [
+        "owl:Ontology",
         "estleg:Act",
         "estleg:Law",
-        "owl:Ontology"
+        "estleg:Part"
       ],
-      "rdfs:label": "AÕS Osa 2 (Omand) kaardistus: omandi omandamine, säilimine/kadumine, vallas- ja kinnisasja omand",
-      "estleg:affectedBy": [
+      "rdfs:label": "Asjaõigusseadus Osa 2 (VALDUS JA KINNISTUSRAAMAT) §32–67 kaardistus",
+      "dc:source": "Asjaõigusseadus",
+      "dcterms:title": "Asjaõigusseadus",
+      "estleg:contentStatus": "structuredBody",
+      "dcterms:source": {
+        "@id": "https://www.riigiteataja.ee/akt/128012026007.xml"
+      },
+      "owl:sameAs": {
+        "@id": "https://www.riigiteataja.ee/akt/128012026007.xml"
+      },
+      "estleg:kehtiv": {
+        "@value": "2026-05-24",
+        "@type": "xsd:date"
+      },
+      "estleg:transposesDirective": [
         {
-          "@id": "estleg:Draft_JDM25_0711"
-        },
-        {
-          "@id": "estleg:Draft_KLIM22_0460"
-        },
-        {
-          "@id": "estleg:Draft_JDM18_0435"
-        },
-        {
-          "@id": "estleg:Draft_MKM13_1552"
+          "@id": "estleg:EU_32009L0044"
         }
       ],
-      "estleg:temporalStatus": "unknown",
+      "estleg:transpositionStatus": "unknown",
+      "estleg:harmonisedWith": [
+        {
+          "@id": "estleg:Harmonisation_32009L0044"
+        }
+      ],
       "dcterms:subject": [
         {
           "@id": "http://eurovoc.europa.eu/6016"
@@ -44,20 +54,10 @@
           "@id": "http://eurovoc.europa.eu/2451"
         }
       ],
-      "estleg:transposesDirective": [
-        {
-          "@id": "estleg:EU_32009L0044"
-        }
-      ],
-      "estleg:transpositionStatus": "unknown",
-      "estleg:harmonisedWith": [
-        {
-          "@id": "estleg:Harmonisation_32009L0044"
-        }
-      ]
+      "estleg:temporalStatus": "unknown"
     },
     {
-      "@id": "estleg:LegalProvision_AOS_osa2",
+      "@id": "estleg:LegalProvision_asjaoigusseadus_osa2",
       "@type": [
         "owl:Class"
       ],
@@ -67,327 +67,1333 @@
       }
     },
     {
-      "@id": "estleg:Cluster_OmandiOmandamine",
+      "@id": "estleg:AOS_Osa2_TopicScheme",
       "@type": [
-        "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "skos:ConceptScheme"
       ],
-      "rdfs:label": "Omandi omandamine"
+      "rdfs:label": "Asjaõigusseadus Osa 2 (VALDUS JA KINNISTUSRAAMAT) teemaskeem",
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_AOS_2_Part"
+        }
+      ]
     },
     {
-      "@id": "estleg:Cluster_OmandiSailimineJaKadumine",
+      "@id": "estleg:Cluster_AOS_2_Part",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "skos:Concept"
       ],
-      "rdfs:label": "Omandi säilimine ja kadumine"
-    },
-    {
-      "@id": "estleg:Cluster_VallasJaKinnisasjaOmand",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:TopicCluster"
-      ],
-      "rdfs:label": "Vallas- ja kinnisasja omand"
-    },
-    {
-      "@id": "estleg:AOS_Par_92_asjaoigusseadus_osa2",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa2"
-      ],
-      "estleg:paragrahv": "§ 92",
-      "rdfs:label": "Vallasomandi tekkimine üleandmisega",
-      "estleg:requestedCluster": {
-        "@id": "omandi_omandamine"
+      "rdfs:label": "Osa 2 (VALDUS JA KINNISTUSRAAMAT)",
+      "skos:prefLabel": "Osa 2 (VALDUS JA KINNISTUSRAAMAT)",
+      "skos:inScheme": {
+        "@id": "estleg:AOS_Osa2_TopicScheme"
       },
-      "estleg:summary": "Vallasomand tekib valduse üleandmise ja omandi ülemineku kokkuleppe koosmõjul.",
+      "skos:narrower": [
+        {
+          "@id": "estleg:Cluster_AOS_2_1"
+        },
+        {
+          "@id": "estleg:Cluster_AOS_2_2"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Cluster_AOS_2_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": "VALDUS",
+      "skos:prefLabel": "VALDUS",
+      "skos:inScheme": {
+        "@id": "estleg:AOS_Osa2_TopicScheme"
+      },
+      "skos:broader": {
+        "@id": "estleg:Cluster_AOS_2_Part"
+      },
+      "estleg:provisionCount": 0
+    },
+    {
+      "@id": "estleg:Division_AOS_2_1_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Division"
+      ],
+      "rdfs:label": "1. jagu – ÜLDSÄTTED",
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_AOS_2_1"
+      }
+    },
+    {
+      "@id": "estleg:Division_AOS_2_1_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Division"
+      ],
+      "rdfs:label": "2. jagu – VALDUSE OMANDAMINE JA LÕPPEMINE",
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_AOS_2_1"
+      }
+    },
+    {
+      "@id": "estleg:Division_AOS_2_1_3",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Division"
+      ],
+      "rdfs:label": "3. jagu – VALDUSE KAITSE",
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_AOS_2_1"
+      }
+    },
+    {
+      "@id": "estleg:Chapter_AOS_2_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "1. peatükk – VALDUS",
+      "estleg:chapterNumber": "1",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_AOS_2_1"
+      },
+      "estleg:hasPart": [
+        {
+          "@id": "estleg:Division_AOS_2_1_1"
+        },
+        {
+          "@id": "estleg:Division_AOS_2_1_2"
+        },
+        {
+          "@id": "estleg:Division_AOS_2_1_3"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Cluster_AOS_2_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": "KINNISTUSRAAMAT",
+      "skos:prefLabel": "KINNISTUSRAAMAT",
+      "skos:inScheme": {
+        "@id": "estleg:AOS_Osa2_TopicScheme"
+      },
+      "skos:broader": {
+        "@id": "estleg:Cluster_AOS_2_Part"
+      },
+      "estleg:provisionCount": 0
+    },
+    {
+      "@id": "estleg:Division_AOS_2_2_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Division"
+      ],
+      "rdfs:label": "1. jagu – ÜLDSÄTTED",
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_AOS_2_2"
+      }
+    },
+    {
+      "@id": "estleg:Division_AOS_2_2_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Division"
+      ],
+      "rdfs:label": "2. jagu – KANNETE LIIGID",
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_AOS_2_2"
+      }
+    },
+    {
+      "@id": "estleg:Division_AOS_2_2_3",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Division"
+      ],
+      "rdfs:label": "3. jagu – ÜLDSÄTTED KINNISASJU PUUDUTAVATE ASJAÕIGUSTE KOHTA",
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_AOS_2_2"
+      }
+    },
+    {
+      "@id": "estleg:Chapter_AOS_2_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "2. peatükk – KINNISTUSRAAMAT",
+      "estleg:chapterNumber": "2",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_AOS_2_2"
+      },
+      "estleg:hasPart": [
+        {
+          "@id": "estleg:Division_AOS_2_2_1"
+        },
+        {
+          "@id": "estleg:Division_AOS_2_2_2"
+        },
+        {
+          "@id": "estleg:Division_AOS_2_2_3"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_32",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_asjaoigusseadus_osa2"
+      ],
+      "estleg:paragrahv": "§ 32.",
+      "rdfs:label": "§ 32. Valduse mõiste",
       "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:summary": "Valdus on tegelik võim asja üle. RT I 2003 13 64 252549 2003-07-01 Valdus on tegelik võim asja üle.",
+      "estleg:legalText": "Valdus on tegelik võim asja üle.",
+      "estleg:isPartOf": {
+        "@id": "estleg:Division_AOS_2_1_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:AOS_Osa2_Par_32_Lg_Unknown_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_32_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Valdus on tegelik võim asja üle.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_32"
+      }
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_33",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_asjaoigusseadus_osa2"
+      ],
+      "estleg:paragrahv": "§ 33.",
+      "rdfs:label": "§ 33. Valdaja",
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:summary": "1 (1) Valdaja on isik, kelle tegeliku võimu all asi on. Valdaja on isik, kelle tegeliku võimu all asi on. 2 (2) Isik, kes valdab asja rendi-, üüri-, hoiu-, pandi- või muu selletaolise suhte alusel, mis annab talle õiguse teise isiku asja ajutiselt vallata, on otsene, teine isik aga kaudne valdaja. Isik, kes valdab asja rendi-, üüri-, hoiu-, pandi- või muu selletaolise suhte alusel, mis annab talle õiguse teise isiku asja ajutiselt vallata, on otsene, teine isik aga kaudne valdaja. 3 (3) Valdajak",
+      "estleg:legalText": "(1) Valdaja on isik, kelle tegeliku võimu all asi on. (2) Isik, kes valdab asja rendi-, üüri-, hoiu-, pandi- või muu selletaolise suhte alusel, mis annab talle õiguse teise isiku asja ajutiselt vallata, on otsene, teine isik aga kaudne valdaja. (3) Valdajaks ei ole isik, kes teostab tegelikku võimu asja üle teise isiku korralduste kohaselt tema majapidamises või ettevõttes.",
+      "estleg:isPartOf": {
+        "@id": "estleg:Division_AOS_2_1_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:AOS_Osa2_Par_33_Lg_1"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_33_Lg_2"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_33_Lg_3"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen"
+      ]
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_33_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Valdaja on isik, kelle tegeliku võimu all asi on.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_33"
+      },
+      "rdfs:label": "§ 33 lg 1"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_33_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Isik, kes valdab asja rendi-, üüri-, hoiu-, pandi- või muu selletaolise suhte alusel, mis annab talle õiguse teise isiku asja ajutiselt vallata, on otsene, teine isik aga kaudne valdaja.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_33"
+      },
+      "rdfs:label": "§ 33 lg 2"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_33_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Valdajaks ei ole isik, kes teostab tegelikku võimu asja üle teise isiku korralduste kohaselt tema majapidamises või ettevõttes.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_33"
+      },
+      "rdfs:label": "§ 33 lg 3"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_34",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_asjaoigusseadus_osa2"
+      ],
+      "estleg:paragrahv": "§ 34.",
+      "rdfs:label": "§ 34. Seaduslik ja ebaseaduslik valdus",
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:summary": "1 (1) Valdus on seaduslik või ebaseaduslik sõltuvalt sellest, kas see põhineb õiguslikul alusel või mitte. Valdus on seaduslik või ebaseaduslik sõltuvalt sellest, kas see põhineb õiguslikul alusel või mitte. 2 (2) Valdus loetakse seaduslikuks, kuni ei ole tõendatud vastupidist. RT I 2003 13 64 252549 2003-07-01 Valdus loetakse seaduslikuks, kuni ei ole tõendatud vastupidist.",
+      "estleg:legalText": "(1) Valdus on seaduslik või ebaseaduslik sõltuvalt sellest, kas see põhineb õiguslikul alusel või mitte. (2) Valdus loetakse seaduslikuks, kuni ei ole tõendatud vastupidist.",
+      "estleg:isPartOf": {
+        "@id": "estleg:Division_AOS_2_1_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:AOS_Osa2_Par_34_Lg_1"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_34_Lg_2"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_34_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Valdus on seaduslik või ebaseaduslik sõltuvalt sellest, kas see põhineb õiguslikul alusel või mitte.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_34"
+      },
+      "rdfs:label": "§ 34 lg 1"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_34_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Valdus loetakse seaduslikuks, kuni ei ole tõendatud vastupidist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_34"
+      },
+      "rdfs:label": "§ 34 lg 2"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_35",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_asjaoigusseadus_osa2"
+      ],
+      "estleg:paragrahv": "§ 35.",
+      "rdfs:label": "§ 35. Heauskne ja pahauskne valdus",
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:summary": "1 (1) Valdus on heauskne, kui valdaja ei tea ega peagi teadma, et tema valdusel puudub õiguslik alus või et teisel isikul on suurem õigus asja vallata. Valdus on heauskne, kui valdaja ei tea ega peagi teadma, et tema valdusel puudub õiguslik alus või et teisel isikul on suurem õigus asja vallata. 2 (2) Valdus on pahauskne, kui valdaja teab või peab teadma, et tema valdusel puudub õiguslik alus või et teisel isikul on suurem õigus asja vallata. Valdus on pahauskne, kui valdaja teab või peab teadm",
+      "estleg:legalText": "(1) Valdus on heauskne, kui valdaja ei tea ega peagi teadma, et tema valdusel puudub õiguslik alus või et teisel isikul on suurem õigus asja vallata. (2) Valdus on pahauskne, kui valdaja teab või peab teadma, et tema valdusel puudub õiguslik alus või et teisel isikul on suurem õigus asja vallata. (3) Valdus loetakse heauskseks, kuni ei ole tõendatud vastupidist.",
+      "estleg:isPartOf": {
+        "@id": "estleg:Division_AOS_2_1_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:AOS_Osa2_Par_35_Lg_1"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_35_Lg_2"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_35_Lg_3"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_35_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Valdus on heauskne, kui valdaja ei tea ega peagi teadma, et tema valdusel puudub õiguslik alus või et teisel isikul on suurem õigus asja vallata.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_35"
+      },
+      "rdfs:label": "§ 35 lg 1"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_35_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Valdus on pahauskne, kui valdaja teab või peab teadma, et tema valdusel puudub õiguslik alus või et teisel isikul on suurem õigus asja vallata.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_35"
+      },
+      "rdfs:label": "§ 35 lg 2"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_35_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Valdus loetakse heauskseks, kuni ei ole tõendatud vastupidist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_35"
+      },
+      "rdfs:label": "§ 35 lg 3"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_36",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_asjaoigusseadus_osa2"
+      ],
+      "estleg:paragrahv": "§ 36.",
+      "rdfs:label": "§ 36. Valduse omandamine",
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:summary": "1 (1) Valdus omandatakse tegeliku võimu saamisega asja üle või abinõude üle, mis võimaldavad tegelikku võimu asja üle. RT I 2003 13 64 252549 2003-07-01 Valdus omandatakse tegeliku võimu saamisega asja üle või abinõude üle, mis võimaldavad tegelikku võimu asja üle. 2 (2) Valduse omandamiseks piisab senise valdaja ja omandaja kokkuleppest, kui omandaja suudab teostada tegelikku võimu asja üle. Valduse omandamiseks piisab senise valdaja ja omandaja kokkuleppest, kui omandaja suudab teostada tegeli",
+      "estleg:legalText": "(1) Valdus omandatakse tegeliku võimu saamisega asja üle või abinõude üle, mis võimaldavad tegelikku võimu asja üle. (2) Valduse omandamiseks piisab senise valdaja ja omandaja kokkuleppest, kui omandaja suudab teostada tegelikku võimu asja üle. (3) Kehtetu -",
+      "estleg:isPartOf": {
+        "@id": "estleg:Division_AOS_2_1_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:AOS_Osa2_Par_36_Lg_1"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_36_Lg_2"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_36_Lg_3"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen"
+      ]
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_36_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Valdus omandatakse tegeliku võimu saamisega asja üle või abinõude üle, mis võimaldavad tegelikku võimu asja üle.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_36"
+      },
+      "rdfs:label": "§ 36 lg 1"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_36_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Valduse omandamiseks piisab senise valdaja ja omandaja kokkuleppest, kui omandaja suudab teostada tegelikku võimu asja üle.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_36"
+      },
+      "rdfs:label": "§ 36 lg 2"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_36_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_36"
+      },
+      "rdfs:label": "§ 36 lg 3"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_37",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_asjaoigusseadus_osa2"
+      ],
+      "estleg:paragrahv": "§ 37.",
+      "rdfs:label": "§ 37. Kaudse valduse omandamine",
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:summary": "Kaudne valdus omandatakse asja väljanõudeõiguse loovutamisega omandajale, kui asja võõrandaja ise või kolmas isik jääb asja valdama. Kaudne valdus omandatakse asja väljanõudeõiguse loovutamisega omandajale, kui asja võõrandaja ise või kolmas isik jääb asja valdama.",
+      "estleg:legalText": "Kaudne valdus omandatakse asja väljanõudeõiguse loovutamisega omandajale, kui asja võõrandaja ise või kolmas isik jääb asja valdama.",
+      "estleg:isPartOf": {
+        "@id": "estleg:Division_AOS_2_1_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:AOS_Osa2_Par_37_Lg_Unknown_1"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen"
+      ]
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_37_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Kaudne valdus omandatakse asja väljanõudeõiguse loovutamisega omandajale, kui asja võõrandaja ise või kolmas isik jääb asja valdama.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_37"
+      }
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_38",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_asjaoigusseadus_osa2"
+      ],
+      "estleg:paragrahv": "§ 38.",
+      "rdfs:label": "§ 38. Valduse üleminek pärijale",
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:summary": "Valdus läheb üle pärijale. Valdus läheb üle pärijale.",
+      "estleg:legalText": "Valdus läheb üle pärijale.",
+      "estleg:isPartOf": {
+        "@id": "estleg:Division_AOS_2_1_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:AOS_Osa2_Par_38_Lg_Unknown_1"
+        }
+      ],
       "estleg:targetGroup": [
         "official"
       ]
     },
     {
-      "@id": "estleg:AOS_Osa2_Par_93",
+      "@id": "estleg:AOS_Osa2_Par_38_Lg_Unknown_1",
       "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa2"
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:paragrahv": "§ 93",
-      "rdfs:label": "Valduse üleandmise viisid",
-      "estleg:requestedCluster": {
-        "@id": "omandi_omandamine"
-      },
-      "estleg:summary": "Valdus saab üle minna nii asja tegeliku üleandmisega kui ka seaduses tunnustatud valduse asendamise viisidega.",
-      "estleg:sourceAct": "Asjaõigusseadus"
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Valdus läheb üle pärijale.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_38"
+      }
     },
     {
-      "@id": "estleg:AOS_Par_95_asjaoigusseadus_osa2",
+      "@id": "estleg:AOS_Osa2_Par_39",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa2"
+        "estleg:LegalProvision_asjaoigusseadus_osa2"
       ],
-      "estleg:paragrahv": "§ 95",
-      "rdfs:label": "Heauskne omandamine",
-      "estleg:requestedCluster": {
-        "@id": "omandi_omandamine"
-      },
-      "estleg:summary": "Vallasasi võib üle minna heausksele omandajale ka mitteomanikult, kui omandaja ei teadnud ega pidanudki teadma võõrandaja käsutusõiguse puudumisest.",
+      "estleg:paragrahv": "§ 39.",
+      "rdfs:label": "§ 39. Valduse lõppemine",
       "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:summary": "1 (1) Valdus lõpeb, kui valdaja loobub tegelikust võimust asja üle või kaotab selle muul viisil. RT I 2003 13 64 252549 2003-07-01 Valdus lõpeb, kui valdaja loobub tegelikust võimust asja üle või kaotab selle muul viisil. 2 (2) Mööduv takistus või katkestus tegeliku võimu teostamisel valdust ei lõpeta. Mööduv takistus või katkestus tegeliku võimu teostamisel valdust ei lõpeta. 3 (3) Kehtetu - RT I 2003 13 64 252549 2003-07-01 Kehtetu -",
+      "estleg:legalText": "(1) Valdus lõpeb, kui valdaja loobub tegelikust võimust asja üle või kaotab selle muul viisil. (2) Mööduv takistus või katkestus tegeliku võimu teostamisel valdust ei lõpeta. (3) Kehtetu -",
+      "estleg:isPartOf": {
+        "@id": "estleg:Division_AOS_2_1_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:AOS_Osa2_Par_39_Lg_1"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_39_Lg_2"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_39_Lg_3"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen"
+      ]
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_39_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Valdus lõpeb, kui valdaja loobub tegelikust võimust asja üle või kaotab selle muul viisil.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_39"
+      },
+      "rdfs:label": "§ 39 lg 1"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_39_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Mööduv takistus või katkestus tegeliku võimu teostamisel valdust ei lõpeta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_39"
+      },
+      "rdfs:label": "§ 39 lg 2"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_39_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_39"
+      },
+      "rdfs:label": "§ 39 lg 3"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_40",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_asjaoigusseadus_osa2"
+      ],
+      "estleg:paragrahv": "§ 40.",
+      "rdfs:label": "§ 40. Omavoli ja omavoliline valdus",
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:summary": "1 (1) Valdus on seadusega kaitstud omavoli vastu. Valdus on seadusega kaitstud omavoli vastu. 2 (2) Omavoli on valdaja nõusolekuta seadusvastaselt asja valduse rikkumine või valduse äravõtmine. Sel viisil saadud valdus on omavoliline. Omavoli on valdaja nõusolekuta seadusvastaselt asja valduse rikkumine või valduse äravõtmine. Sel viisil saadud valdus on omavoliline. 3 (3) Valduse rikkumine on valdaja takistamine asja üle tegeliku võimu teostamisel, samuti asja äravõtmise katse või ähvardus, kui",
+      "estleg:legalText": "(1) Valdus on seadusega kaitstud omavoli vastu. (2) Omavoli on valdaja nõusolekuta seadusvastaselt asja valduse rikkumine või valduse äravõtmine. Sel viisil saadud valdus on omavoliline. (3) Valduse rikkumine on valdaja takistamine asja üle tegeliku võimu teostamisel, samuti asja äravõtmise katse või ähvardus, kui on alust karta selle täideviimist. (4) Omavolilise valduse tagajärgede eest vastutab ka selle valduse pärija, samuti muu õigusjärglane, kui viimane valduse omandamisel eelkäija valduse omavolilisusest teadis.",
+      "estleg:isPartOf": {
+        "@id": "estleg:Division_AOS_2_1_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:AOS_Osa2_Par_40_Lg_1"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_40_Lg_2"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_40_Lg_3"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_40_Lg_4"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen"
+      ]
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_40_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Valdus on seadusega kaitstud omavoli vastu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_40"
+      },
+      "rdfs:label": "§ 40 lg 1"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_40_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Omavoli on valdaja nõusolekuta seadusvastaselt asja valduse rikkumine või valduse äravõtmine. Sel viisil saadud valdus on omavoliline.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_40"
+      },
+      "rdfs:label": "§ 40 lg 2"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_40_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Valduse rikkumine on valdaja takistamine asja üle tegeliku võimu teostamisel, samuti asja äravõtmise katse või ähvardus, kui on alust karta selle täideviimist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_40"
+      },
+      "rdfs:label": "§ 40 lg 3"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_40_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Omavolilise valduse tagajärgede eest vastutab ka selle valduse pärija, samuti muu õigusjärglane, kui viimane valduse omandamisel eelkäija valduse omavolilisusest teadis.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_40"
+      },
+      "rdfs:label": "§ 40 lg 4"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_41",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_asjaoigusseadus_osa2"
+      ],
+      "estleg:paragrahv": "§ 41.",
+      "rdfs:label": "§ 41. Omaabi",
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:summary": "1 (1) Valdaja võib oma valdust omavoli vastu jõuga kaitsta, ületamata seejuures hädakaitse piire. Valdaja võib oma valdust omavoli vastu jõuga kaitsta, ületamata seejuures hädakaitse piire. 2 (2) Kui vallasasi võetakse valdajalt ära omavoliliselt salaja või vägivallaga, on valdajal õigus teolt tabatud või jälitatud omavoli tarvitajalt vallasasi kohe ära võtta. Kui vallasasi võetakse valdajalt ära omavoliliselt salaja või vägivallaga, on valdajal õigus teolt tabatud või jälitatud omavoli tarvitaj",
+      "estleg:legalText": "(1) Valdaja võib oma valdust omavoli vastu jõuga kaitsta, ületamata seejuures hädakaitse piire. (2) Kui vallasasi võetakse valdajalt ära omavoliliselt salaja või vägivallaga, on valdajal õigus teolt tabatud või jälitatud omavoli tarvitajalt vallasasi kohe ära võtta. (3) Kui kinnisasja valdus võetakse valdajalt ära omavoliliselt salaja või vägivallaga, on valdajal õigus omavoli tarvitaja kinnisasjalt eemaldada ja kinnisasi oma võimu alla tagasi võtta. (4) Käesolevas paragrahvis sätestatud valdaja õigust omaabile võib kasutada ka § 33 3. lõikes nimetatud isik.",
+      "estleg:isPartOf": {
+        "@id": "estleg:Division_AOS_2_1_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:AOS_Osa2_Par_41_Lg_1"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_41_Lg_2"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_41_Lg_3"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_41_Lg_4"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_41_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Valdaja võib oma valdust omavoli vastu jõuga kaitsta, ületamata seejuures hädakaitse piire.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_41"
+      },
+      "rdfs:label": "§ 41 lg 1"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_41_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kui vallasasi võetakse valdajalt ära omavoliliselt salaja või vägivallaga, on valdajal õigus teolt tabatud või jälitatud omavoli tarvitajalt vallasasi kohe ära võtta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_41"
+      },
+      "rdfs:label": "§ 41 lg 2"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_41_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kui kinnisasja valdus võetakse valdajalt ära omavoliliselt salaja või vägivallaga, on valdajal õigus omavoli tarvitaja kinnisasjalt eemaldada ja kinnisasi oma võimu alla tagasi võtta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_41"
+      },
+      "rdfs:label": "§ 41 lg 3"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_41_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Käesolevas paragrahvis sätestatud valdaja õigust omaabile võib kasutada ka § 33 3. lõikes nimetatud isik.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_41"
+      },
+      "rdfs:label": "§ 41 lg 4"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_42",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_asjaoigusseadus_osa2"
+      ],
+      "estleg:paragrahv": "§ 42.",
+      "rdfs:label": "§ 42. Otsimisõigus",
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:summary": "1 (1) Kui vallasasi on valdaja võimu alt sattunud teise isiku valduses olevale kinnisasjale, on selle valdaja kohustatud lubama asja otsida ja ära viia, kui asi ei ole vahepeal kellegi valdusse võetud. Kui vallasasi on valdaja võimu alt sattunud teise isiku valduses olevale kinnisasjale, on selle valdaja kohustatud lubama asja otsida ja ära viia, kui asi ei ole vahepeal kellegi valdusse võetud. 2 (2) Kinnisasja valdajal on õigus nõuda asja otsimisest ja äraviimisest tekkinud kahju hüvitamist. Ku",
+      "estleg:legalText": "(1) Kui vallasasi on valdaja võimu alt sattunud teise isiku valduses olevale kinnisasjale, on selle valdaja kohustatud lubama asja otsida ja ära viia, kui asi ei ole vahepeal kellegi valdusse võetud. (2) Kinnisasja valdajal on õigus nõuda asja otsimisest ja äraviimisest tekkinud kahju hüvitamist. Kui on alust eeldada kahju tekkimist, on kinnisasja valdajal õigus tagatise saamiseni keelduda loa andmisest asja otsida või ära viia. Keeldumine ei ole lubatud, kui viivitamine on ohtlik.",
+      "estleg:isPartOf": {
+        "@id": "estleg:Division_AOS_2_1_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:AOS_Osa2_Par_42_Lg_1"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_42_Lg_2"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Right"
       }
     },
     {
-      "@id": "estleg:AOS_Par_98_asjaoigusseadus_osa2",
+      "@id": "estleg:AOS_Osa2_Par_42_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kui vallasasi on valdaja võimu alt sattunud teise isiku valduses olevale kinnisasjale, on selle valdaja kohustatud lubama asja otsida ja ära viia, kui asi ei ole vahepeal kellegi valdusse võetud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_42"
+      },
+      "rdfs:label": "§ 42 lg 1"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_42_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kinnisasja valdajal on õigus nõuda asja otsimisest ja äraviimisest tekkinud kahju hüvitamist. Kui on alust eeldada kahju tekkimist, on kinnisasja valdajal õigus tagatise saamiseni keelduda loa andmisest asja otsida või ära viia. Keeldumine ei ole lubatud, kui viivitamine on ohtlik.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_42"
+      },
+      "rdfs:label": "§ 42 lg 2"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_43",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa2"
+        "estleg:LegalProvision_asjaoigusseadus_osa2"
       ],
-      "estleg:paragrahv": "§ 98",
-      "rdfs:label": "Leiu teatamiskohustus",
-      "estleg:requestedCluster": {
-        "@id": "omandi_omandamine"
-      },
-      "estleg:summary": "Leitud asja valdusse võtja peab leiust teavitama omanikku, kaotajat või pädevat asutust seaduses sätestatud korras.",
+      "estleg:paragrahv": "§ 43.",
+      "rdfs:label": "§ 43. Valduse kohtulik kaitse",
       "estleg:sourceAct": "Asjaõigusseadus",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
+      "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
+      "estleg:isPartOf": {
+        "@id": "estleg:Division_AOS_2_1_3"
+      }
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_44",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_asjaoigusseadus_osa2"
+      ],
+      "estleg:paragrahv": "§ 44.",
+      "rdfs:label": "§ 44. Valduse rikkumisest tulenev nõue",
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:summary": "1 (1) Valduse rikkumise korral on valdajal õigus nõuda rikkumise kõrvaldamist ja edasise rikkumise ärahoidmist. RT I 2003 13 64 252549 2003-07-01 Valduse rikkumise korral on valdajal õigus nõuda rikkumise kõrvaldamist ja edasise rikkumise ärahoidmist. 2 (2) Nõuet ei rahuldata, kui nõudja valdus on rikkuja või tema eelkäija suhtes omavoliline ja omandatud ühe aasta jooksul enne rikkumist. Nõuet ei rahuldata, kui nõudja valdus on rikkuja või tema eelkäija suhtes omavoliline ja omandatud ühe aasta ",
+      "estleg:legalText": "(1) Valduse rikkumise korral on valdajal õigus nõuda rikkumise kõrvaldamist ja edasise rikkumise ärahoidmist. (2) Nõuet ei rahuldata, kui nõudja valdus on rikkuja või tema eelkäija suhtes omavoliline ja omandatud ühe aasta jooksul enne rikkumist.",
+      "estleg:isPartOf": {
+        "@id": "estleg:Division_AOS_2_1_3"
       },
-      "estleg:dutyHolder": "Leitud asja valdusse võtja",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:AOS_Osa2_Par_44_Lg_1"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_44_Lg_2"
+        }
+      ],
       "estleg:targetGroup": [
-        "citizen",
+        "citizen"
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:AOS_Osa2_Par_46"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_48"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_44_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Valduse rikkumise korral on valdajal õigus nõuda rikkumise kõrvaldamist ja edasise rikkumise ärahoidmist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_44"
+      },
+      "rdfs:label": "§ 44 lg 1"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_44_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Nõuet ei rahuldata, kui nõudja valdus on rikkuja või tema eelkäija suhtes omavoliline ja omandatud ühe aasta jooksul enne rikkumist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_44"
+      },
+      "rdfs:label": "§ 44 lg 2"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_45",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_asjaoigusseadus_osa2"
+      ],
+      "estleg:paragrahv": "§ 45.",
+      "rdfs:label": "§ 45. Valduse äravõtmisest tulenev nõue",
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:summary": "1 (1) Valduse äravõtmisel on valdajal õigus nõuda valduse taastamist isikult, kes on nõudja suhtes omavoliline valdaja. RT I 2003 13 64 252549 2003-07-01 Valduse äravõtmisel on valdajal õigus nõuda valduse taastamist isikult, kes on nõudja suhtes omavoliline valdaja. 2 (2) Nõuet ei rahuldata, kui nõudja valdus on äravõtja või tema eelkäija suhtes omavoliline ja on omandatud ühe aasta jooksul enne valduse äravõtmist. Nõuet ei rahuldata, kui nõudja valdus on äravõtja või tema eelkäija suhtes omavo",
+      "estleg:legalText": "(1) Valduse äravõtmisel on valdajal õigus nõuda valduse taastamist isikult, kes on nõudja suhtes omavoliline valdaja. (2) Nõuet ei rahuldata, kui nõudja valdus on äravõtja või tema eelkäija suhtes omavoliline ja on omandatud ühe aasta jooksul enne valduse äravõtmist.",
+      "estleg:isPartOf": {
+        "@id": "estleg:Division_AOS_2_1_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:AOS_Osa2_Par_45_Lg_1"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_45_Lg_2"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen"
+      ]
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_45_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Valduse äravõtmisel on valdajal õigus nõuda valduse taastamist isikult, kes on nõudja suhtes omavoliline valdaja.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_45"
+      },
+      "rdfs:label": "§ 45 lg 1"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_45_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Nõuet ei rahuldata, kui nõudja valdus on äravõtja või tema eelkäija suhtes omavoliline ja on omandatud ühe aasta jooksul enne valduse äravõtmist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_45"
+      },
+      "rdfs:label": "§ 45 lg 2"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_46",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_asjaoigusseadus_osa2"
+      ],
+      "estleg:paragrahv": "§ 46.",
+      "rdfs:label": "§ 46. Valdaja vastuväited",
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:summary": "Valdaja võib käesoleva seaduse §-des 44 ja 45 nimetatud nõuete rahuldamisest keelduda, kui ta tõendab, et valduse rikkumine või äravõtmine ei olnud omavoliline ja et tal oli õigus valdust rikkuda või asja vallata. RT I 2003 13 64 252549 2003-07-01 Valdaja võib käesoleva seaduse §-des 44 ja 45 nimetatud nõuete rahuldamisest keelduda, kui ta tõendab, et valduse rikkumine või äravõtmine ei olnud omavoliline ja et tal oli õigus valdust rikkuda või asja vallata.",
+      "estleg:legalText": "Valdaja võib käesoleva seaduse §-des 44 ja 45 nimetatud nõuete rahuldamisest keelduda, kui ta tõendab, et valduse rikkumine või äravõtmine ei olnud omavoliline ja et tal oli õigus valdust rikkuda või asja vallata.",
+      "estleg:isPartOf": {
+        "@id": "estleg:Division_AOS_2_1_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:AOS_Osa2_Par_46_Lg_Unknown_1"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen"
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:AOS_Osa2_Par_44"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_46_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Valdaja võib käesoleva seaduse §-des 44 ja 45 nimetatud nõuete rahuldamisest keelduda, kui ta tõendab, et valduse rikkumine või äravõtmine ei olnud omavoliline ja et tal oli õigus valdust rikkuda või asja vallata.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_46"
+      }
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_47",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_asjaoigusseadus_osa2"
+      ],
+      "estleg:paragrahv": "§ 47.",
+      "rdfs:label": "§ 47. Kaudse valdaja õigused",
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:summary": "1 (1) Paragrahvides 44 ja 45 nimetatud nõude võib esitada ka kaudne valdaja. Paragrahvides 44 ja 45 nimetatud nõude võib esitada ka kaudne valdaja. 2 (2) Valduse äravõtmisel võib kaudne valdaja nõuda otsese valdaja valduse taastamist. Kui otsene valdaja ei saa või ei taha valdust taastada, võib kaudne valdaja nõuda valduse üleandmist endale. Valduse äravõtmisel võib kaudne valdaja nõuda otsese valdaja valduse taastamist. Kui otsene valdaja ei saa või ei taha valdust taastada, võib kaudne valdaja",
+      "estleg:legalText": "(1) Paragrahvides 44 ja 45 nimetatud nõude võib esitada ka kaudne valdaja. (2) Valduse äravõtmisel võib kaudne valdaja nõuda otsese valdaja valduse taastamist. Kui otsene valdaja ei saa või ei taha valdust taastada, võib kaudne valdaja nõuda valduse üleandmist endale. (3) Kaudsel valdajal on käesoleva paragrahvi 2. lõikes nimetatud tingimustel otsimisõigus (§ 42).",
+      "estleg:isPartOf": {
+        "@id": "estleg:Division_AOS_2_1_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:AOS_Osa2_Par_47_Lg_1"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_47_Lg_2"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_47_Lg_3"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_47_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Paragrahvides 44 ja 45 nimetatud nõude võib esitada ka kaudne valdaja.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_47"
+      },
+      "rdfs:label": "§ 47 lg 1"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_47_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Valduse äravõtmisel võib kaudne valdaja nõuda otsese valdaja valduse taastamist. Kui otsene valdaja ei saa või ei taha valdust taastada, võib kaudne valdaja nõuda valduse üleandmist endale.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_47"
+      },
+      "rdfs:label": "§ 47 lg 2"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_47_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kaudsel valdajal on käesoleva paragrahvi 2. lõikes nimetatud tingimustel otsimisõigus (§ 42).",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_47"
+      },
+      "rdfs:label": "§ 47 lg 3"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_48",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_asjaoigusseadus_osa2"
+      ],
+      "estleg:paragrahv": "§ 48.",
+      "rdfs:label": "§ 48. Valduse kaitse nõude lõppemine",
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:summary": "1 (1) Käesoleva seaduse §-des 44 ja 45 nimetatud nõue lõpeb ühe aasta möödumisel valduse rikkumisest või äravõtmisest, kui nõuet ei panda maksma vastava hagi esitamisega kohtule. RT I 2003 13 64 252549 2003-07-01 Käesoleva seaduse §-des 44 ja 45 nimetatud nõue lõpeb ühe aasta möödumisel valduse rikkumisest või äravõtmisest, kui nõuet ei panda maksma vastava hagi esitamisega kohtule. 2 (2) Käesoleva seaduse §-des 44 ja 45 nimetatud nõue lõpeb ka siis, kui pärast omavoli toimepanemist tuvastatakse",
+      "estleg:legalText": "(1) Käesoleva seaduse §-des 44 ja 45 nimetatud nõue lõpeb ühe aasta möödumisel valduse rikkumisest või äravõtmisest, kui nõuet ei panda maksma vastava hagi esitamisega kohtule. (2) Käesoleva seaduse §-des 44 ja 45 nimetatud nõue lõpeb ka siis, kui pärast omavoli toimepanemist tuvastatakse jõustunud kohtulahendiga, et omavoli toimepanijal on asja suhtes selline õigus, mille alusel ta võib nõuda valdust asjale.",
+      "estleg:isPartOf": {
+        "@id": "estleg:Division_AOS_2_1_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:AOS_Osa2_Par_48_Lg_1"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_48_Lg_2"
+        }
+      ],
+      "estleg:targetGroup": [
         "public_body"
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:AOS_Osa2_Par_44"
+        }
       ]
     },
     {
-      "@id": "estleg:AOS_Osa2_Par_101",
+      "@id": "estleg:AOS_Osa2_Par_48_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesoleva seaduse §-des 44 ja 45 nimetatud nõue lõpeb ühe aasta möödumisel valduse rikkumisest või äravõtmisest, kui nõuet ei panda maksma vastava hagi esitamisega kohtule.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_48"
+      },
+      "rdfs:label": "§ 48 lg 1"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_48_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Käesoleva seaduse §-des 44 ja 45 nimetatud nõue lõpeb ka siis, kui pärast omavoli toimepanemist tuvastatakse jõustunud kohtulahendiga, et omavoli toimepanijal on asja suhtes selline õigus, mille alusel ta võib nõuda valdust asjale.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_48"
+      },
+      "rdfs:label": "§ 48 lg 2"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_49",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa2"
+        "estleg:LegalProvision_asjaoigusseadus_osa2"
       ],
-      "estleg:paragrahv": "§ 101",
-      "rdfs:label": "Leitud asja omandamine",
-      "estleg:requestedCluster": {
-        "@id": "omandi_omandamine"
-      },
-      "estleg:summary": "Kui omanik ettenähtud tähtaja jooksul välja ei ilmu, võib leitud asi minna seaduses ette nähtud tingimustel leidja või muu õigustatud isiku omandisse.",
+      "estleg:paragrahv": "§ 49.",
+      "rdfs:label": "§ 49. Osavalduse kaitse",
       "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:summary": "Isik, kes valdab asja reaalosa, võib selle osa valdust kaitsta §-des 40–48 sätestatud korras. Isik, kes valdab asja reaalosa, võib selle osa valdust kaitsta §-des 40–48 sätestatud korras.",
+      "estleg:legalText": "Isik, kes valdab asja reaalosa, võib selle osa valdust kaitsta §-des 40–48 sätestatud korras.",
+      "estleg:isPartOf": {
+        "@id": "estleg:Division_AOS_2_1_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:AOS_Osa2_Par_49_Lg_Unknown_1"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen"
+      ],
       "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_49_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Isik, kes valdab asja reaalosa, võib selle osa valdust kaitsta §-des 40–48 sätestatud korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_49"
+      }
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_50",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_asjaoigusseadus_osa2"
+      ],
+      "estleg:paragrahv": "§ 50.",
+      "rdfs:label": "§ 50. Kaasvalduse kaitse",
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:summary": "1 (1) Kui mitu isikut valdab asja ühiselt (kaasvaldus), võib iga kaasvaldaja või kaasvaldajad ühiselt kaitsta valdust §-des 40–48 sätestatud korras. Kui mitu isikut valdab asja ühiselt (kaasvaldus), võib iga kaasvaldaja või kaasvaldajad ühiselt kaitsta valdust §-des 40–48 sätestatud korras. 2 (2) Kaasvaldajate vahelises vaidluses valduse kasutamisõiguse ulatuse üle ei kohaldata valduse kaitse sätteid. Kaasvaldajate vahelises vaidluses valduse kasutamisõiguse ulatuse üle ei kohaldata valduse kait",
+      "estleg:legalText": "(1) Kui mitu isikut valdab asja ühiselt (kaasvaldus), võib iga kaasvaldaja või kaasvaldajad ühiselt kaitsta valdust §-des 40–48 sätestatud korras. (2) Kaasvaldajate vahelises vaidluses valduse kasutamisõiguse ulatuse üle ei kohaldata valduse kaitse sätteid.",
+      "estleg:isPartOf": {
+        "@id": "estleg:Division_AOS_2_1_3"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:AOS_Osa2_Par_50_Lg_1"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_50_Lg_2"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen"
-      ]
-    },
-    {
-      "@id": "estleg:AOS_Osa2_Par_102",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa2"
       ],
-      "estleg:paragrahv": "§ 102",
-      "rdfs:label": "Peremehetu asja hõivamine",
-      "estleg:requestedCluster": {
-        "@id": "omandi_omandamine"
-      },
-      "estleg:summary": "Peremehetu vallasasi omandatakse selle hõivamisega omandamise tahtega, kui seadus ei sätesta teisiti.",
-      "estleg:sourceAct": "Asjaõigusseadus"
-    },
-    {
-      "@id": "estleg:AOS_Osa2_Par_104",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa2"
-      ],
-      "estleg:paragrahv": "§ 104",
-      "rdfs:label": "Uue vallasasja valmistamine",
-      "estleg:requestedCluster": {
-        "@id": "omandi_omandamine"
-      },
-      "estleg:summary": "Uue asja valmistamisel võib omand tekkida valmistajale või materjali omanikule, sõltuvalt seaduses sätestatud eeldustest.",
-      "estleg:sourceAct": "Asjaõigusseadus",
       "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_50_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kui mitu isikut valdab asja ühiselt (kaasvaldus), võib iga kaasvaldaja või kaasvaldajad ühiselt kaitsta valdust §-des 40–48 sätestatud korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_50"
       },
-      "estleg:targetGroup": [
-        "citizen"
+      "rdfs:label": "§ 50 lg 1"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_50_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kaasvaldajate vahelises vaidluses valduse kasutamisõiguse ulatuse üle ei kohaldata valduse kaitse sätteid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_50"
+      },
+      "rdfs:label": "§ 50 lg 2"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_51",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_asjaoigusseadus_osa2"
+      ],
+      "estleg:paragrahv": "§ 51.",
+      "rdfs:label": "§ 51. Kinnistusraamatu mõiste",
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:summary": "1 (1) Kinnistusraamatut peetakse kinnisasjade ja nendega seotud asjaõiguste kohta. Kinnistusraamatut peetakse kinnisasjade ja nendega seotud asjaõiguste kohta. 2 (2) Kehtetu - RT I 2003 13 64 252549 2003-07-01 Kehtetu - 3 (3) Kehtetu - RT I 2003 13 64 252549 2003-07-01 Kehtetu -",
+      "estleg:legalText": "(1) Kinnistusraamatut peetakse kinnisasjade ja nendega seotud asjaõiguste kohta. (2) Kehtetu - (3) Kehtetu -",
+      "estleg:isPartOf": {
+        "@id": "estleg:Division_AOS_2_2_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:AOS_Osa2_Par_51_Lg_1"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_51_Lg_2"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_51_Lg_3"
+        }
       ]
     },
     {
-      "@id": "estleg:AOS_Par_68_asjaoigusseadus_osa2",
+      "@id": "estleg:AOS_Osa2_Par_51_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kinnistusraamatut peetakse kinnisasjade ja nendega seotud asjaõiguste kohta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_51"
+      },
+      "rdfs:label": "§ 51 lg 1"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_51_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_51"
+      },
+      "rdfs:label": "§ 51 lg 2"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_51_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_51"
+      },
+      "rdfs:label": "§ 51 lg 3"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_52",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa2"
+        "estleg:LegalProvision_asjaoigusseadus_osa2"
       ],
-      "estleg:paragrahv": "§ 68",
-      "rdfs:label": "Omandi mõiste ja kaitse",
-      "estleg:requestedCluster": {
-        "@id": "omandi_sailimine_ja_kadumine"
-      },
-      "estleg:summary": "Omanikul on täielik õiguslik võim asja üle ning õigus nõuda omandi rikkumise vältimist ja lõpetamist.",
+      "estleg:paragrahv": "§ 52.",
+      "rdfs:label": "§ 52. Kinnistu",
       "estleg:sourceAct": "Asjaõigusseadus",
-      "estleg:targetGroup": [
-        "citizen"
-      ]
+      "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
+      "estleg:isPartOf": {
+        "@id": "estleg:Division_AOS_2_2_1"
+      }
     },
     {
-      "@id": "estleg:AOS_Par_80_asjaoigusseadus_osa2",
+      "@id": "estleg:AOS_Osa2_Par_53",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa2"
+        "estleg:LegalProvision_asjaoigusseadus_osa2"
       ],
-      "estleg:paragrahv": "§ 80",
-      "rdfs:label": "Asja väljanõudmine ebaseaduslikust valdusest",
-      "estleg:requestedCluster": {
-        "@id": "omandi_sailimine_ja_kadumine"
-      },
-      "estleg:summary": "Omanik võib nõuda asja väljaandmist isikult, kes valdab asja õigusliku aluseta.",
+      "estleg:paragrahv": "§ 53.",
+      "rdfs:label": "§ 53. Kinnistusraamatusse kantavad andmed",
       "estleg:sourceAct": "Asjaõigusseadus",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
+      "estleg:summary": "1 (1) Kinnistusraamatusse kantakse ainult seaduses ettenähtud andmed. Kinnistusraamatusse kantakse ainult seaduses ettenähtud andmed. 2 (2) Kehtetu - RT I 1999 27 380 77268 1999-04-01 Kehtetu -",
+      "estleg:legalText": "(1) Kinnistusraamatusse kantakse ainult seaduses ettenähtud andmed. (2) Kehtetu -",
+      "estleg:isPartOf": {
+        "@id": "estleg:Division_AOS_2_2_1"
       },
-      "estleg:targetGroup": [
-        "citizen"
-      ]
-    },
-    {
-      "@id": "estleg:AOS_Par_89_asjaoigusseadus_osa2",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa2"
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:AOS_Osa2_Par_53_Lg_1"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_53_Lg_2"
+        }
       ],
-      "estleg:paragrahv": "§ 89",
-      "rdfs:label": "Omandi kaitse valduse kaotuseta rikkumise korral",
-      "estleg:requestedCluster": {
-        "@id": "omandi_sailimine_ja_kadumine"
-      },
-      "estleg:summary": "Omanik võib nõuda omandiõiguse rikkumise kõrvaldamist ja rikkumisest hoidumist ka siis, kui asi on tema valduses.",
-      "estleg:sourceAct": "Asjaõigusseadus",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
-      "estleg:targetGroup": [
-        "citizen"
-      ]
-    },
-    {
-      "@id": "estleg:AOS_Osa2_Par_110",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa2"
-      ],
-      "estleg:paragrahv": "§ 110",
-      "rdfs:label": "Omandi lõppemine asja hävimisel",
-      "estleg:requestedCluster": {
-        "@id": "omandi_sailimine_ja_kadumine"
-      },
-      "estleg:summary": "Omand lõpeb, kui asi hävib või kaotab asjaõigusliku eristatavuse viisil, mis välistab omandi jätkumise samale esemele.",
-      "estleg:sourceAct": "Asjaõigusseadus"
-    },
-    {
-      "@id": "estleg:AOS_Osa2_Par_111",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa2"
-      ],
-      "estleg:paragrahv": "§ 111",
-      "rdfs:label": "Omandi lõppemine hülgamisega",
-      "estleg:requestedCluster": {
-        "@id": "omandi_sailimine_ja_kadumine"
-      },
-      "estleg:summary": "Vallasomand võib lõppeda, kui omanik asja valdusest teadlikult loobub ja väljendab tahet omandiõigusest taganeda.",
-      "estleg:sourceAct": "Asjaõigusseadus",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
-      "estleg:targetGroup": [
-        "citizen"
-      ]
-    },
-    {
-      "@id": "estleg:AOS_Par_56_1_asjaoigusseadus_osa2",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa2"
-      ],
-      "estleg:paragrahv": "§ 56¹",
-      "rdfs:label": "Heauskne omandamine kinnistusraamatu andmetele tuginedes",
-      "estleg:requestedCluster": {
-        "@id": "vallas_ja_kinnisasja_omand"
-      },
-      "estleg:summary": "Kinnistusraamatu andmetele tuginev heauskne omandaja on kaitstud, kui andmete ebaõigsus ei olnud talle teada ega pidanud olema teada.",
-      "estleg:sourceAct": "Asjaõigusseadus"
-    },
-    {
-      "@id": "estleg:AOS_Par_64_1_asjaoigusseadus_osa2",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa2"
-      ],
-      "estleg:paragrahv": "§ 64¹",
-      "rdfs:label": "Kinnisomandi üleandmine ja koormamine",
-      "estleg:requestedCluster": {
-        "@id": "vallas_ja_kinnisasja_omand"
-      },
-      "estleg:summary": "Kinnisomandi üleandmiseks ja koormamiseks on vaja notariaalset asjaõiguslepingut ning kinnistusraamatu kannet.",
-      "estleg:sourceAct": "Asjaõigusseadus",
-      "estleg:targetGroup": [
-        "official"
-      ]
-    },
-    {
-      "@id": "estleg:AOS_Par_90_asjaoigusseadus_osa2",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa2"
-      ],
-      "estleg:paragrahv": "§ 90",
-      "rdfs:label": "Valdaja omandi eeldus",
-      "estleg:requestedCluster": {
-        "@id": "vallas_ja_kinnisasja_omand"
-      },
-      "estleg:summary": "Vallasasja valdajat eeldatakse omanikuks kuni vastupidise tõendamiseni, mis lihtsustab õiguskäivet.",
-      "estleg:sourceAct": "Asjaõigusseadus",
-      "estleg:targetGroup": [
-        "citizen"
-      ]
-    },
-    {
-      "@id": "estleg:AOS_Par_92_Vallas",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa2"
-      ],
-      "estleg:paragrahv": "§ 92",
-      "rdfs:label": "Vallasomandi ülemineku põhireegel",
-      "estleg:requestedCluster": {
-        "@id": "vallas_ja_kinnisasja_omand"
-      },
-      "estleg:summary": "Vallasomandi ülemineku keskne mehhanism on kokkulepe koos valduse üleandmisega.",
-      "estleg:sourceAct": "Asjaõigusseadus",
-      "estleg:targetGroup": [
-        "official"
-      ]
-    },
-    {
-      "@id": "estleg:AOS_Osa2_Par_119",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa2"
-      ],
-      "estleg:paragrahv": "§ 119",
-      "rdfs:label": "Kinnisomandi omandamine kande kaudu",
-      "estleg:requestedCluster": {
-        "@id": "vallas_ja_kinnisasja_omand"
-      },
-      "estleg:summary": "Kinnisasja omand tekib üldjuhul kinnistusraamatusse kande tegemisega ning kandel on asjaõiguslikult konstitutiivne tähendus.",
-      "estleg:sourceAct": "Asjaõigusseadus",
       "estleg:semanticallySimilarTo": [
         {
-          "@id": "estleg:TMS_Par_156",
+          "@id": "estleg:Reg_1058131_Par_14",
           "estleg:similarityScore": {
-            "@value": "0.333",
+            "@value": "0.3",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
@@ -395,18 +1401,1378 @@
       ]
     },
     {
-      "@id": "estleg:AOS_Osa2_Par_123",
+      "@id": "estleg:AOS_Osa2_Par_53_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kinnistusraamatusse kantakse ainult seaduses ettenähtud andmed.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_53"
+      },
+      "rdfs:label": "§ 53 lg 1"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_53_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_53"
+      },
+      "rdfs:label": "§ 53 lg 2"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_54",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa2"
+        "estleg:LegalProvision_asjaoigusseadus_osa2"
       ],
-      "estleg:paragrahv": "§ 123",
-      "rdfs:label": "Kinnisasja heauskne omandamine",
-      "estleg:requestedCluster": {
-        "@id": "vallas_ja_kinnisasja_omand"
+      "estleg:paragrahv": "§ 54.",
+      "rdfs:label": "§ 54. Kinnisasjade ühendamine ja jagamine",
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:summary": "1 (1) Kinnisasju võib ühendada üheks kinnisasjaks või ühte kinnisasja jagada mitmeks kinnisasjaks ainult omaniku soovil. Kinnisasju võib ühendada üheks kinnisasjaks või ühte kinnisasja jagada mitmeks kinnisasjaks ainult omaniku soovil. 2 (2) Kinnisasjade ühendamisel jäävad kinnistusraamatusse kantud õigused kehtima. Juhul kui õiguste endisel kujul kehtimajäämine ei ole võimalik, jäävad kinnistusraamatusse kantud õigused kehtima vastavalt kinnisasja omaniku ja puudutatud isikute notariaalselt tõe",
+      "estleg:legalText": "(1) Kinnisasju võib ühendada üheks kinnisasjaks või ühte kinnisasja jagada mitmeks kinnisasjaks ainult omaniku soovil. (2) Kinnisasjade ühendamisel jäävad kinnistusraamatusse kantud õigused kehtima. Juhul kui õiguste endisel kujul kehtimajäämine ei ole võimalik, jäävad kinnistusraamatusse kantud õigused kehtima vastavalt kinnisasja omaniku ja puudutatud isikute notariaalselt tõestatud kokkuleppele. (3) Kinnisasjade ühendamise korral laienevad ühendatud kinnisasju koormanud asjaõigused kogu tekkinud kinnisasjale. (4) Kinnisasja jagamise korral jääb kinnistusraamatusse kantud õigus, mille esemeks on kinnisasi tervikuna, koormama kõiki jagamise tulemusel tekkinud kinnisasju. (5) Kinnistusraamatusse kantud õigus, mille esemeks oli jagatava kinnisasja osa, jääb koormama vastavat jagamise tulemusel tekkinud kinnisasja.",
+      "estleg:isPartOf": {
+        "@id": "estleg:Division_AOS_2_2_1"
       },
-      "estleg:summary": "Kinnisasja heauskne omandamine tugineb kinnistusraamatu usaldatavusele ning kaitseb õiguskäivet seaduses sätestatud tingimustel.",
-      "estleg:sourceAct": "Asjaõigusseadus"
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:AOS_Osa2_Par_54_Lg_1"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_54_Lg_2"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_54_Lg_3"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_54_Lg_4"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_54_Lg_5"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "official"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_54_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kinnisasju võib ühendada üheks kinnisasjaks või ühte kinnisasja jagada mitmeks kinnisasjaks ainult omaniku soovil.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_54"
+      },
+      "rdfs:label": "§ 54 lg 1"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_54_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kinnisasjade ühendamisel jäävad kinnistusraamatusse kantud õigused kehtima. Juhul kui õiguste endisel kujul kehtimajäämine ei ole võimalik, jäävad kinnistusraamatusse kantud õigused kehtima vastavalt kinnisasja omaniku ja puudutatud isikute notariaalselt tõestatud kokkuleppele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_54"
+      },
+      "rdfs:label": "§ 54 lg 2"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_54_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kinnisasjade ühendamise korral laienevad ühendatud kinnisasju koormanud asjaõigused kogu tekkinud kinnisasjale.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_54"
+      },
+      "rdfs:label": "§ 54 lg 3"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_54_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Kinnisasja jagamise korral jääb kinnistusraamatusse kantud õigus, mille esemeks on kinnisasi tervikuna, koormama kõiki jagamise tulemusel tekkinud kinnisasju.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_54"
+      },
+      "rdfs:label": "§ 54 lg 4"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_54_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Kinnistusraamatusse kantud õigus, mille esemeks oli jagatava kinnisasja osa, jääb koormama vastavat jagamise tulemusel tekkinud kinnisasja.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_54"
+      },
+      "rdfs:label": "§ 54 lg 5"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_55",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_asjaoigusseadus_osa2"
+      ],
+      "estleg:paragrahv": "§ 55.",
+      "rdfs:label": "§ 55. Kinnistusraamatu avalikkus",
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:summary": "1 (1) Kinnistusraamat on avalik. Igaühel on õigus tutvuda kinnistusraamatu andmetega ja saada sellest väljavõtteid seaduses sätestatud korras. Kinnistusraamat on avalik. Igaühel on õigus tutvuda kinnistusraamatu andmetega ja saada sellest väljavõtteid seaduses sätestatud korras. 2 (2) Keegi ei või end vabandada kinnistusraamatu andmete mitteteadmisega. Keegi ei või end vabandada kinnistusraamatu andmete mitteteadmisega.",
+      "estleg:legalText": "(1) Kinnistusraamat on avalik. Igaühel on õigus tutvuda kinnistusraamatu andmetega ja saada sellest väljavõtteid seaduses sätestatud korras. (2) Keegi ei või end vabandada kinnistusraamatu andmete mitteteadmisega.",
+      "estleg:isPartOf": {
+        "@id": "estleg:Division_AOS_2_2_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:AOS_Osa2_Par_55_Lg_1"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_55_Lg_2"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      }
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_55_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kinnistusraamat on avalik. Igaühel on õigus tutvuda kinnistusraamatu andmetega ja saada sellest väljavõtteid seaduses sätestatud korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_55"
+      },
+      "rdfs:label": "§ 55 lg 1"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_55_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Keegi ei või end vabandada kinnistusraamatu andmete mitteteadmisega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_55"
+      },
+      "rdfs:label": "§ 55 lg 2"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_56",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_asjaoigusseadus_osa2"
+      ],
+      "estleg:paragrahv": "§ 56.",
+      "rdfs:label": "§ 56. Kinnistusraamatu õigsuse eeldamine",
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:summary": "1 (1) Kinnistusraamatusse kantud andmete õigsust eeldatakse. Kinnistusraamatusse kantud andmete õigsust eeldatakse. 2 (2) Kui kinnistusraamatusse kantud õigus kustutatakse, siis eeldatakse, et õigus on lõppenud. RT I 2003 13 64 252549 2003-07-01 Kui kinnistusraamatusse kantud õigus kustutatakse, siis eeldatakse, et õigus on lõppenud. 3 (3) Kehtetu - RT I 2004 37 255 745265 2004-05-01 Kehtetu - 4 (4) Kehtetu - RT I 2004 37 255 745265 2004-05-01 Kehtetu -",
+      "estleg:legalText": "(1) Kinnistusraamatusse kantud andmete õigsust eeldatakse. (2) Kui kinnistusraamatusse kantud õigus kustutatakse, siis eeldatakse, et õigus on lõppenud. (3) Kehtetu - (4) Kehtetu -",
+      "estleg:isPartOf": {
+        "@id": "estleg:Division_AOS_2_2_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:AOS_Osa2_Par_56_Lg_1"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_56_Lg_2"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_56_Lg_3"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_56_Lg_4"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      },
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:LENN_Par_19_3",
+          "estleg:similarityScore": {
+            "@value": "0.4",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:LIIKLU_2_Par_178",
+          "estleg:similarityScore": {
+            "@value": "0.429",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_56_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kinnistusraamatusse kantud andmete õigsust eeldatakse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_56"
+      },
+      "rdfs:label": "§ 56 lg 1"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_56_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kui kinnistusraamatusse kantud õigus kustutatakse, siis eeldatakse, et õigus on lõppenud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_56"
+      },
+      "rdfs:label": "§ 56 lg 2"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_56_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_56"
+      },
+      "rdfs:label": "§ 56 lg 3"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_56_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_56"
+      },
+      "rdfs:label": "§ 56 lg 4"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_56_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_asjaoigusseadus_osa2"
+      ],
+      "estleg:paragrahv": "§ 56<sup>1</sup>.",
+      "rdfs:label": "§ 56<sup>1</sup>. Heauskne omandamine",
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:summary": "1 (1) Kui isik tehinguga omandab kinnisomandi või piiratud asjaõiguse kinnistusraamatusse kantud andmetele tuginedes, loetakse kinnistusraamatusse kantud andmed tema suhtes õigeks, välja arvatud juhul, kui kinnistusraamatusse kantud andmete õigsuse vastu on kinnistusraamatusse kantud vastuväide või kui omandaja teadis või pidi teadma, et kinnistusraamatusse kantud andmed on ebaõiged. Kui isik tehinguga omandab kinnisomandi või piiratud asjaõiguse kinnistusraamatusse kantud andmetele tuginedes, l",
+      "estleg:legalText": "(1) Kui isik tehinguga omandab kinnisomandi või piiratud asjaõiguse kinnistusraamatusse kantud andmetele tuginedes, loetakse kinnistusraamatusse kantud andmed tema suhtes õigeks, välja arvatud juhul, kui kinnistusraamatusse kantud andmete õigsuse vastu on kinnistusraamatusse kantud vastuväide või kui omandaja teadis või pidi teadma, et kinnistusraamatusse kantud andmed on ebaõiged. (2) Kui isiku kinnistusraamatusse kantud õiguse käsutamise õigust on kindla isiku kasuks piiratud, on piirang omandaja suhtes kehtiv vaid juhul, kui see on kantud kinnistusraamatusse või kui omandaja on käsutuspiirangu olemasolust teadlik või peab sellest teadlik olema. (3) Kui kinnisomandi või piiratud asjaõiguse omandamiseks on nõutav kande tegemine kinnistusraamatusse, on omandaja heausksuse suhtes määrav kinnistamisavalduse esitamise aeg. (4) Käesolevas paragrahvis sätestatut kohaldatakse ka juhul, kui isikule tehakse kinnistusraamatusse kantud andmetele tuginedes sooritus või kui isikuga tehakse kinnistusraamatusse kantud andmetele tuginedes tehing, mis sisaldab käesolevas paragrahvis nimetamata käsutust kinnistusraamatusse kantud õiguse kohta.",
+      "estleg:isPartOf": {
+        "@id": "estleg:Division_AOS_2_2_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:AOS_Osa2_Par_56_1_Lg_1"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_56_1_Lg_2"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_56_1_Lg_3"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_56_1_Lg_4"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen"
+      ]
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_56_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kui isik tehinguga omandab kinnisomandi või piiratud asjaõiguse kinnistusraamatusse kantud andmetele tuginedes, loetakse kinnistusraamatusse kantud andmed tema suhtes õigeks, välja arvatud juhul, kui kinnistusraamatusse kantud andmete õigsuse vastu on kinnistusraamatusse kantud vastuväide või kui omandaja teadis või pidi teadma, et kinnistusraamatusse kantud andmed on ebaõiged.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_56_1"
+      },
+      "rdfs:label": "§ 56<sup>1</sup> lg 1"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_56_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kui isiku kinnistusraamatusse kantud õiguse käsutamise õigust on kindla isiku kasuks piiratud, on piirang omandaja suhtes kehtiv vaid juhul, kui see on kantud kinnistusraamatusse või kui omandaja on käsutuspiirangu olemasolust teadlik või peab sellest teadlik olema.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_56_1"
+      },
+      "rdfs:label": "§ 56<sup>1</sup> lg 2"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_56_1_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kui kinnisomandi või piiratud asjaõiguse omandamiseks on nõutav kande tegemine kinnistusraamatusse, on omandaja heausksuse suhtes määrav kinnistamisavalduse esitamise aeg.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_56_1"
+      },
+      "rdfs:label": "§ 56<sup>1</sup> lg 3"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_56_1_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Käesolevas paragrahvis sätestatut kohaldatakse ka juhul, kui isikule tehakse kinnistusraamatusse kantud andmetele tuginedes sooritus või kui isikuga tehakse kinnistusraamatusse kantud andmetele tuginedes tehing, mis sisaldab käesolevas paragrahvis nimetamata käsutust kinnistusraamatusse kantud õiguse kohta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_56_1"
+      },
+      "rdfs:label": "§ 56<sup>1</sup> lg 4"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_57",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_asjaoigusseadus_osa2"
+      ],
+      "estleg:paragrahv": "§ 57.",
+      "rdfs:label": "§ 57. Ebaõige kanne",
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
+      "estleg:isPartOf": {
+        "@id": "estleg:Division_AOS_2_2_1"
+      }
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_57_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_asjaoigusseadus_osa2"
+      ],
+      "estleg:paragrahv": "§ 57<sup>1</sup>.",
+      "rdfs:label": "§ 57<sup>1</sup>. Asjaõiguse sisu täpsustamine",
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:summary": "Asjaõiguse kinnistusraamatusse kandmisel võib õiguse sisu täpsustamiseks viidata kinnistusraamatu kande tegemise aluseks olevatele dokumentidele ja andmetele, kui seaduses ei ole sätestatud teisiti. RT I 2023-03-17 4 117032023004 2024-02-01 Asjaõiguse kinnistusraamatusse kandmisel võib õiguse sisu täpsustamiseks viidata kinnistusraamatu kande tegemise aluseks olevatele dokumentidele ja andmetele, kui seaduses ei ole sätestatud teisiti.",
+      "estleg:legalText": "Asjaõiguse kinnistusraamatusse kandmisel võib õiguse sisu täpsustamiseks viidata kinnistusraamatu kande tegemise aluseks olevatele dokumentidele ja andmetele, kui seaduses ei ole sätestatud teisiti.",
+      "estleg:isPartOf": {
+        "@id": "estleg:Division_AOS_2_2_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:AOS_Osa2_Par_57_1_Lg_Unknown_1"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_57_1_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Asjaõiguse kinnistusraamatusse kandmisel võib õiguse sisu täpsustamiseks viidata kinnistusraamatu kande tegemise aluseks olevatele dokumentidele ja andmetele, kui seaduses ei ole sätestatud teisiti.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_57_1"
+      }
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_58",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_asjaoigusseadus_osa2"
+      ],
+      "estleg:paragrahv": "§ 58.",
+      "rdfs:label": "§ 58. Asjaõiguse kehtivus",
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
+      "estleg:isPartOf": {
+        "@id": "estleg:Division_AOS_2_2_1"
+      }
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_59",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_asjaoigusseadus_osa2"
+      ],
+      "estleg:paragrahv": "§ 59.",
+      "rdfs:label": "§ 59. Asjaõiguse järjekoht",
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:summary": "1 (1) Asjaõigused saavad järjekoha kinnistusraamatusse kandmisega. Asjaõigused saavad järjekoha kinnistusraamatusse kandmisega. 2 (2) Kanded kinnistusraamatusse tehakse avalduste saabumise järjekorras. Kanded kinnistusraamatusse tehakse avalduste saabumise järjekorras.",
+      "estleg:legalText": "(1) Asjaõigused saavad järjekoha kinnistusraamatusse kandmisega. (2) Kanded kinnistusraamatusse tehakse avalduste saabumise järjekorras.",
+      "estleg:isPartOf": {
+        "@id": "estleg:Division_AOS_2_2_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:AOS_Osa2_Par_59_Lg_1"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_59_Lg_2"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_59_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Asjaõigused saavad järjekoha kinnistusraamatusse kandmisega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_59"
+      },
+      "rdfs:label": "§ 59 lg 1"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_59_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kanded kinnistusraamatusse tehakse avalduste saabumise järjekorras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_59"
+      },
+      "rdfs:label": "§ 59 lg 2"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_59_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_asjaoigusseadus_osa2"
+      ],
+      "estleg:paragrahv": "§ 59<sup>1</sup>.",
+      "rdfs:label": "§ 59<sup>1</sup>. Mitme õiguse järjekohasuhe",
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:summary": "1 (1) Kui kinnistusregistri ühte jakku tehakse mitu kannet, saavad need järjekoha, mis vastab registreerimise järjekohale kinnistuspäevikus. Kui avaldused on esitatud samaaegselt, antakse neile üks ja sama järjekoht ning see märgitakse ka vastavatesse kannetesse. Kui kinnistusregistri ühte jakku tehakse mitu kannet, saavad need järjekoha, mis vastab registreerimise järjekohale kinnistuspäevikus. Kui avaldused on esitatud samaaegselt, antakse neile üks ja sama järjekoht ning see märgitakse ka vas",
+      "estleg:legalText": "(1) Kui kinnistusregistri ühte jakku tehakse mitu kannet, saavad need järjekoha, mis vastab registreerimise järjekohale kinnistuspäevikus. Kui avaldused on esitatud samaaegselt, antakse neile üks ja sama järjekoht ning see märgitakse ka vastavatesse kannetesse. (2) Kui eri aegadel esitatud kinnistamisavalduste alusel tehakse kandeid eri jagudesse samal päeval, tuleb neis ära näidata, et hiljem taotletud kanne asub varem taotletud kandest järjekohas tagapool. (3) Käesoleva paragrahvi 1. ja 2. lõiget ei kohaldata, kui asjaosalised on kokku leppinud teistsuguses järjekohasuhtes ja niisuguse kokkuleppe kohta on tehtud kanne kinnistusraamatusse. (4) Hagi tagamise määruse alusel tehtav märge ja kohtulik hüpoteek kantakse kinnistusraamatusse üldises korras.",
+      "estleg:isPartOf": {
+        "@id": "estleg:Division_AOS_2_2_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:AOS_Osa2_Par_59_1_Lg_1"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_59_1_Lg_2"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_59_1_Lg_3"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_59_1_Lg_4"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:KINNIS_Par_30",
+          "estleg:similarityScore": {
+            "@value": "0.708",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:Reg_345013_Par_172",
+          "estleg:similarityScore": {
+            "@value": "0.387",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_59_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kui kinnistusregistri ühte jakku tehakse mitu kannet, saavad need järjekoha, mis vastab registreerimise järjekohale kinnistuspäevikus. Kui avaldused on esitatud samaaegselt, antakse neile üks ja sama järjekoht ning see märgitakse ka vastavatesse kannetesse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_59_1"
+      },
+      "rdfs:label": "§ 59<sup>1</sup> lg 1"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_59_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kui eri aegadel esitatud kinnistamisavalduste alusel tehakse kandeid eri jagudesse samal päeval, tuleb neis ära näidata, et hiljem taotletud kanne asub varem taotletud kandest järjekohas tagapool.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_59_1"
+      },
+      "rdfs:label": "§ 59<sup>1</sup> lg 2"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_59_1_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Käesoleva paragrahvi 1. ja 2. lõiget ei kohaldata, kui asjaosalised on kokku leppinud teistsuguses järjekohasuhtes ja niisuguse kokkuleppe kohta on tehtud kanne kinnistusraamatusse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_59_1"
+      },
+      "rdfs:label": "§ 59<sup>1</sup> lg 3"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_59_1_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Hagi tagamise määruse alusel tehtav märge ja kohtulik hüpoteek kantakse kinnistusraamatusse üldises korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_59_1"
+      },
+      "rdfs:label": "§ 59<sup>1</sup> lg 4"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_60",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_asjaoigusseadus_osa2"
+      ],
+      "estleg:paragrahv": "§ 60.",
+      "rdfs:label": "§ 60. Järjekoha muutmine",
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:summary": "1 (1) Kinnistusraamatusse kantud asjaõiguse järjekohta võib muuta, kui seaduses ei ole sätestatud teisiti. Kinnistusraamatusse kantud asjaõiguse järjekohta võib muuta, kui seaduses ei ole sätestatud teisiti. 2 (2) Järjekoha muutmiseks on nõutav nende isikute kokkulepe, kelle õiguste järjekoht muutub, ja vastava kande tegemine kinnistusraamatusse. Hüpoteegi järjekohas tagasiastumiseks on nõutav ka kinnisasja omaniku nõusolek. Nõusolek ei ole tagasivõetav. RT I 2003 13 64 252549 2003-07-01 Järjeko",
+      "estleg:legalText": "(1) Kinnistusraamatusse kantud asjaõiguse järjekohta võib muuta, kui seaduses ei ole sätestatud teisiti. (2) Järjekoha muutmiseks on nõutav nende isikute kokkulepe, kelle õiguste järjekoht muutub, ja vastava kande tegemine kinnistusraamatusse. Hüpoteegi järjekohas tagasiastumiseks on nõutav ka kinnisasja omaniku nõusolek. Nõusolek ei ole tagasivõetav. (3) Kui muutmisel tagasiastunud õigus lõpeb, siis etteastunud õigus ei kaota selle tagajärjel järjekoha muutmisega saadud kohta. (4) Järjekoha muutmine ei või kahjustada õigust, mille järjekoht on tagasiastuvate ja etteastuvate õiguste vahel.",
+      "estleg:isPartOf": {
+        "@id": "estleg:Division_AOS_2_2_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:AOS_Osa2_Par_60_Lg_1"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_60_Lg_2"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_60_Lg_3"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_60_Lg_4"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_60_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kinnistusraamatusse kantud asjaõiguse järjekohta võib muuta, kui seaduses ei ole sätestatud teisiti.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_60"
+      },
+      "rdfs:label": "§ 60 lg 1"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_60_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Järjekoha muutmiseks on nõutav nende isikute kokkulepe, kelle õiguste järjekoht muutub, ja vastava kande tegemine kinnistusraamatusse. Hüpoteegi järjekohas tagasiastumiseks on nõutav ka kinnisasja omaniku nõusolek. Nõusolek ei ole tagasivõetav.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_60"
+      },
+      "rdfs:label": "§ 60 lg 2"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_60_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kui muutmisel tagasiastunud õigus lõpeb, siis etteastunud õigus ei kaota selle tagajärjel järjekoha muutmisega saadud kohta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_60"
+      },
+      "rdfs:label": "§ 60 lg 3"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_60_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Järjekoha muutmine ei või kahjustada õigust, mille järjekoht on tagasiastuvate ja etteastuvate õiguste vahel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_60"
+      },
+      "rdfs:label": "§ 60 lg 4"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_61",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_asjaoigusseadus_osa2"
+      ],
+      "estleg:paragrahv": "§ 61.",
+      "rdfs:label": "§ 61. Eesõigus järjekohale",
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:summary": "1 (1) Omanik võib kinnisasja koormamisel mõne õigusega jätta endale eesõiguse teise ulatuselt kindlaksmääratud õiguse kandmiseks koormava õiguse ette. Omanik võib kinnisasja koormamisel mõne õigusega jätta endale eesõiguse teise ulatuselt kindlaksmääratud õiguse kandmiseks koormava õiguse ette. 2 (2) Eesõigus kantakse märkena kinnistusraamatusse selle õiguse juurde, mis eesõiguse kasutamisel peab tagasi astuma. Eesõigus kantakse märkena kinnistusraamatusse selle õiguse juurde, mis eesõiguse kasu",
+      "estleg:legalText": "(1) Omanik võib kinnisasja koormamisel mõne õigusega jätta endale eesõiguse teise ulatuselt kindlaksmääratud õiguse kandmiseks koormava õiguse ette. (2) Eesõigus kantakse märkena kinnistusraamatusse selle õiguse juurde, mis eesõiguse kasutamisel peab tagasi astuma. (3) Kinnisasja võõrandamisel, samuti pärimisel läheb käesoleva paragrahvi 1. lõikes nimetatud eesõigus üle igakordsele omandajale.",
+      "estleg:isPartOf": {
+        "@id": "estleg:Division_AOS_2_2_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:AOS_Osa2_Par_61_Lg_1"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_61_Lg_2"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_61_Lg_3"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_61_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Omanik võib kinnisasja koormamisel mõne õigusega jätta endale eesõiguse teise ulatuselt kindlaksmääratud õiguse kandmiseks koormava õiguse ette.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_61"
+      },
+      "rdfs:label": "§ 61 lg 1"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_61_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Eesõigus kantakse märkena kinnistusraamatusse selle õiguse juurde, mis eesõiguse kasutamisel peab tagasi astuma.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_61"
+      },
+      "rdfs:label": "§ 61 lg 2"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_61_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kinnisasja võõrandamisel, samuti pärimisel läheb käesoleva paragrahvi 1. lõikes nimetatud eesõigus üle igakordsele omandajale.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_61"
+      },
+      "rdfs:label": "§ 61 lg 3"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_62",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_asjaoigusseadus_osa2"
+      ],
+      "estleg:paragrahv": "§ 62.",
+      "rdfs:label": "§ 62. Kanded",
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:summary": "Kinnistusraamatusse kantakse asjaõigused ja märked. Kinnistusraamatusse kantakse asjaõigused ja märked.",
+      "estleg:legalText": "Kinnistusraamatusse kantakse asjaõigused ja märked.",
+      "estleg:isPartOf": {
+        "@id": "estleg:Division_AOS_2_2_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:AOS_Osa2_Par_62_Lg_Unknown_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_62_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Kinnistusraamatusse kantakse asjaõigused ja märked.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_62"
+      }
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_62_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_asjaoigusseadus_osa2"
+      ],
+      "estleg:paragrahv": "§ 62<sup>1</sup>.",
+      "rdfs:label": "§ 62<sup>1</sup>. Kande tegemine",
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
+      "estleg:isPartOf": {
+        "@id": "estleg:Division_AOS_2_2_2"
+      }
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_63",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_asjaoigusseadus_osa2"
+      ],
+      "estleg:paragrahv": "§ 63.",
+      "rdfs:label": "§ 63. Märge kinnistusraamatus",
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:summary": "1 (1) Kinnistusraamatusse võib kanda märke: 1 1) asjaõiguse omandamise või kustutamise või selle õiguse sisu või järjekoha muutmise nõude, sealhulgas tulevase või tingimusliku nõude tagamiseks (eelmärge); 2 2) kinnistusraamatu ebaõige kande muutmise või kustutamise nõude (§ 65) tagamiseks (vastuväide); 3 3) omandi või piiratud asjaõiguse käsutamise täielikuks või osaliseks keelamiseks (keelumärge); 4 4) muude seadusega kinnistusraamatusse kanda lubatud asjaolude nähtavakstegemiseks (märkus). Kin",
+      "estleg:legalText": "(1) Kinnistusraamatusse võib kanda märke: asjaõiguse omandamise või kustutamise või selle õiguse sisu või järjekoha muutmise nõude, sealhulgas tulevase või tingimusliku nõude tagamiseks (eelmärge); kinnistusraamatu ebaõige kande muutmise või kustutamise nõude (§ 65) tagamiseks (vastuväide); omandi või piiratud asjaõiguse käsutamise täielikuks või osaliseks keelamiseks (keelumärge); muude seadusega kinnistusraamatusse kanda lubatud asjaolude nähtavakstegemiseks (märkus). (2) Keelumärge keelab vastavalt märke sisule kannete tegemise kinnistusraamatusse kas täielikult või osaliselt. (3) Asjaõiguse käsutamine pärast eelmärke kandmist kinnistusraamatusse on tühine osas, milles see eelmärkega tagatud nõuet kahjustab või piirab. See ei takista kannete tegemist kinnistusraamatusse. (4) Käesoleva paragrahvi 3. lõiget rakendatakse ka sundtäitmise käigus, pankrotihalduri poolt või kohtulahendi alusel tehtava käsutuse suhtes. (5) Kui käsutamine on käesoleva paragrahvi 3. ja 4. lõikes sätestatud alustel tühine, võib isik, kelle kasuks eelmärge kinnistusraamatusse on kantud, nõuda isikult, kelle kasuks on kinnistatud asjaõigus või märked, nõusolekut eelmärkega tagatud nõude täitmiseks vajaliku kande tegemiseks või kustutamiseks. (6) Märke järgi määratakse selle õiguse järjekoht, mille kohta märge oli tehtud. (7) Kehtetu - (8) Isikul, kelle omandit või piiratud asjaõigust eelmärge või vastuväide puudutab, on õigus nõuda isikult, kelle kasuks märge on tehtud, märke kustutamist, kui märkega tagatud õiguse maksmapanek on välistatud, eelkõige juhul, kui nõue, mille tagamiseks märge tehti, on lõppenud.",
+      "estleg:isPartOf": {
+        "@id": "estleg:Division_AOS_2_2_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:AOS_Osa2_Par_63_Lg_1"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_63_Lg_2"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_63_Lg_3"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_63_Lg_4"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_63_Lg_5"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_63_Lg_6"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_63_Lg_7"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_63_Lg_8"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_63_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kinnistusraamatusse võib kanda märke: asjaõiguse omandamise või kustutamise või selle õiguse sisu või järjekoha muutmise nõude, sealhulgas tulevase või tingimusliku nõude tagamiseks (eelmärge); kinnistusraamatu ebaõige kande muutmise või kustutamise nõude (§ 65) tagamiseks (vastuväide); omandi või piiratud asjaõiguse käsutamise täielikuks või osaliseks keelamiseks (keelumärge); muude seadusega kinnistusraamatusse kanda lubatud asjaolude nähtavakstegemiseks (märkus).",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_63"
+      },
+      "rdfs:label": "§ 63 lg 1"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_63_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Keelumärge keelab vastavalt märke sisule kannete tegemise kinnistusraamatusse kas täielikult või osaliselt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_63"
+      },
+      "rdfs:label": "§ 63 lg 2"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_63_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Asjaõiguse käsutamine pärast eelmärke kandmist kinnistusraamatusse on tühine osas, milles see eelmärkega tagatud nõuet kahjustab või piirab. See ei takista kannete tegemist kinnistusraamatusse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_63"
+      },
+      "rdfs:label": "§ 63 lg 3"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_63_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Käesoleva paragrahvi 3. lõiget rakendatakse ka sundtäitmise käigus, pankrotihalduri poolt või kohtulahendi alusel tehtava käsutuse suhtes.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_63"
+      },
+      "rdfs:label": "§ 63 lg 4"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_63_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Kui käsutamine on käesoleva paragrahvi 3. ja 4. lõikes sätestatud alustel tühine, võib isik, kelle kasuks eelmärge kinnistusraamatusse on kantud, nõuda isikult, kelle kasuks on kinnistatud asjaõigus või märked, nõusolekut eelmärkega tagatud nõude täitmiseks vajaliku kande tegemiseks või kustutamiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_63"
+      },
+      "rdfs:label": "§ 63 lg 5"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_63_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Märke järgi määratakse selle õiguse järjekoht, mille kohta märge oli tehtud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_63"
+      },
+      "rdfs:label": "§ 63 lg 6"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_63_Lg_7",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "7",
+      "estleg:legalText": "(7) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_63"
+      },
+      "rdfs:label": "§ 63 lg 7"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_63_Lg_8",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "8",
+      "estleg:legalText": "(8) Isikul, kelle omandit või piiratud asjaõigust eelmärge või vastuväide puudutab, on õigus nõuda isikult, kelle kasuks märge on tehtud, märke kustutamist, kui märkega tagatud õiguse maksmapanek on välistatud, eelkõige juhul, kui nõue, mille tagamiseks märge tehti, on lõppenud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_63"
+      },
+      "rdfs:label": "§ 63 lg 8"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_63_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_asjaoigusseadus_osa2"
+      ],
+      "estleg:paragrahv": "§ 63<sup>1</sup>.",
+      "rdfs:label": "§ 63<sup>1</sup>. Märke kandmine kinnistusraamatusse",
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:summary": "1 (1) Eelmärge kantakse kinnistusraamatusse selle isiku avalduse alusel või nõusolekul, kelle omandit või piiratud asjaõigust eelmärge puudutab. Eelmärge kantakse kinnistusraamatusse selle isiku avalduse alusel või nõusolekul, kelle omandit või piiratud asjaõigust eelmärge puudutab. 2 (2) Eelmärke võib kinnistusraamatusse kanda ka hagi tagamise määruse alusel või muul seaduses sätestatud alusel. Hagi tagamise määruse alusel eelmärke kinnistusraamatusse kandmiseks ei ole nõutav, et eelmärke kinni",
+      "estleg:legalText": "(1) Eelmärge kantakse kinnistusraamatusse selle isiku avalduse alusel või nõusolekul, kelle omandit või piiratud asjaõigust eelmärge puudutab. (2) Eelmärke võib kinnistusraamatusse kanda ka hagi tagamise määruse alusel või muul seaduses sätestatud alusel. Hagi tagamise määruse alusel eelmärke kinnistusraamatusse kandmiseks ei ole nõutav, et eelmärke kinnistusraamatusse kandmist nõudev isik tõendaks eelmärkega tagatava nõude täitmise raskendamise või võimatuks muutumise ohtu. (3) Eelmärke kandmisel kinnistusraamatusse võib eelmärkega tagatava nõude täpsustamiseks viidata hagi tagamise määrusele või muule kinnistusraamatu kande tegemise aluseks olevale dokumendile. (4) Vastuväide kantakse kinnistusraamatusse selle isiku avalduse alusel või nõusolekul, kelle omandit või piiratud asjaõigust see puudutab. (5) Vastuväite võib kinnistusraamatusse kanda ka hagi tagamise määruse alusel või muul seaduses sätestatud alusel. Hagi tagamise määruse alusel vastuväite kinnistusraamatusse kandmiseks ei ole nõutav, et vastuväite kinnistusraamatusse kandmist nõudev isik tõendaks vastuväitega tagatava nõude täitmise raskendamise või võimatuks muutumise ohtu. (6) Keelumärge kantakse kinnistusraamatusse hagi tagamise määruse või muul seaduses sätestatud alusel. (7) Märkus kantakse kinnistusraamatusse seaduses sätestatud juhul. (8) Üüri- või rendilepingu kohta tehtavas märkes näidatakse ära tähtajalise üüri- või rendilepingu lõppemise tähtpäev või lepingu korralise ülesütlemise tähtaeg, kui see on pikem seaduses sätestatud ülesütlemistähtajast.",
+      "estleg:isPartOf": {
+        "@id": "estleg:Division_AOS_2_2_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:AOS_Osa2_Par_63_1_Lg_1"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_63_1_Lg_2"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_63_1_Lg_3"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_63_1_Lg_4"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_63_1_Lg_5"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_63_1_Lg_6"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_63_1_Lg_7"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_63_1_Lg_8"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_63_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Eelmärge kantakse kinnistusraamatusse selle isiku avalduse alusel või nõusolekul, kelle omandit või piiratud asjaõigust eelmärge puudutab.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_63_1"
+      },
+      "rdfs:label": "§ 63<sup>1</sup> lg 1"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_63_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Eelmärke võib kinnistusraamatusse kanda ka hagi tagamise määruse alusel või muul seaduses sätestatud alusel. Hagi tagamise määruse alusel eelmärke kinnistusraamatusse kandmiseks ei ole nõutav, et eelmärke kinnistusraamatusse kandmist nõudev isik tõendaks eelmärkega tagatava nõude täitmise raskendamise või võimatuks muutumise ohtu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_63_1"
+      },
+      "rdfs:label": "§ 63<sup>1</sup> lg 2"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_63_1_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Eelmärke kandmisel kinnistusraamatusse võib eelmärkega tagatava nõude täpsustamiseks viidata hagi tagamise määrusele või muule kinnistusraamatu kande tegemise aluseks olevale dokumendile.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_63_1"
+      },
+      "rdfs:label": "§ 63<sup>1</sup> lg 3"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_63_1_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Vastuväide kantakse kinnistusraamatusse selle isiku avalduse alusel või nõusolekul, kelle omandit või piiratud asjaõigust see puudutab.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_63_1"
+      },
+      "rdfs:label": "§ 63<sup>1</sup> lg 4"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_63_1_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Vastuväite võib kinnistusraamatusse kanda ka hagi tagamise määruse alusel või muul seaduses sätestatud alusel. Hagi tagamise määruse alusel vastuväite kinnistusraamatusse kandmiseks ei ole nõutav, et vastuväite kinnistusraamatusse kandmist nõudev isik tõendaks vastuväitega tagatava nõude täitmise raskendamise või võimatuks muutumise ohtu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_63_1"
+      },
+      "rdfs:label": "§ 63<sup>1</sup> lg 5"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_63_1_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Keelumärge kantakse kinnistusraamatusse hagi tagamise määruse või muul seaduses sätestatud alusel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_63_1"
+      },
+      "rdfs:label": "§ 63<sup>1</sup> lg 6"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_63_1_Lg_7",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "7",
+      "estleg:legalText": "(7) Märkus kantakse kinnistusraamatusse seaduses sätestatud juhul.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_63_1"
+      },
+      "rdfs:label": "§ 63<sup>1</sup> lg 7"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_63_1_Lg_8",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "8",
+      "estleg:legalText": "(8) Üüri- või rendilepingu kohta tehtavas märkes näidatakse ära tähtajalise üüri- või rendilepingu lõppemise tähtpäev või lepingu korralise ülesütlemise tähtaeg, kui see on pikem seaduses sätestatud ülesütlemistähtajast.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_63_1"
+      },
+      "rdfs:label": "§ 63<sup>1</sup> lg 8"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_63_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_asjaoigusseadus_osa2"
+      ],
+      "estleg:paragrahv": "§ 63<sup>2</sup>.",
+      "rdfs:label": "§ 63<sup>2</sup>. Eelmärke kustutamise nõue",
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:summary": "1 (1) Kui eelmärkega tagatud nõude võlausaldaja asukoht ei ole teada, võib koormatud kinnisasja omanik või asjaõiguse omaja nõuda eelmärke kustutamist, kui viimase eelmärget puudutava kande tegemisest kinnistusraamatusse on möödunud 10 aastat ja kui eelmärkega tagatud nõude võlgnik ei ole selle aja jooksul eelmärkega tagatud nõuet tunnustanud. RT I 2005 39 308 919178 2006-01-01 Kui eelmärkega tagatud nõude võlausaldaja asukoht ei ole teada, võib koormatud kinnisasja omanik või asjaõiguse omaja n",
+      "estleg:legalText": "(1) Kui eelmärkega tagatud nõude võlausaldaja asukoht ei ole teada, võib koormatud kinnisasja omanik või asjaõiguse omaja nõuda eelmärke kustutamist, kui viimase eelmärget puudutava kande tegemisest kinnistusraamatusse on möödunud 10 aastat ja kui eelmärkega tagatud nõude võlgnik ei ole selle aja jooksul eelmärkega tagatud nõuet tunnustanud. (2) Käesoleva paragrahvi 1. lõikes nimetatud nõude esitamise korral määrab kohus tähtaja vastuväidete esitamiseks ja avaldab vastava kuulutuse ametlikus väljaandes Ametlikud Teadaanded. Kui määratud tähtaja jooksul vastuväiteid ei esitata või need tagasi lükatakse, teeb kohus eelmärke kustutamise määruse. Muus osas kohaldatakse tsiviilkohtumenetluse seadustikus üleskutsemenetluse kohta sätestatut.",
+      "estleg:isPartOf": {
+        "@id": "estleg:Division_AOS_2_2_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:AOS_Osa2_Par_63_2_Lg_1"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_63_2_Lg_2"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "business",
+        "public_body"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_63_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kui eelmärkega tagatud nõude võlausaldaja asukoht ei ole teada, võib koormatud kinnisasja omanik või asjaõiguse omaja nõuda eelmärke kustutamist, kui viimase eelmärget puudutava kande tegemisest kinnistusraamatusse on möödunud 10 aastat ja kui eelmärkega tagatud nõude võlgnik ei ole selle aja jooksul eelmärkega tagatud nõuet tunnustanud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_63_2"
+      },
+      "rdfs:label": "§ 63<sup>2</sup> lg 1"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_63_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Käesoleva paragrahvi 1. lõikes nimetatud nõude esitamise korral määrab kohus tähtaja vastuväidete esitamiseks ja avaldab vastava kuulutuse ametlikus väljaandes Ametlikud Teadaanded. Kui määratud tähtaja jooksul vastuväiteid ei esitata või need tagasi lükatakse, teeb kohus eelmärke kustutamise määruse. Muus osas kohaldatakse tsiviilkohtumenetluse seadustikus üleskutsemenetluse kohta sätestatut.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_63_2"
+      },
+      "rdfs:label": "§ 63<sup>2</sup> lg 2"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_64",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_asjaoigusseadus_osa2"
+      ],
+      "estleg:paragrahv": "§ 64.",
+      "rdfs:label": "§ 64. Kande tegemine",
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
+      "estleg:isPartOf": {
+        "@id": "estleg:Division_AOS_2_2_3"
+      }
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_64_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_asjaoigusseadus_osa2"
+      ],
+      "estleg:paragrahv": "§ 64<sup>1</sup>.",
+      "rdfs:label": "§ 64<sup>1</sup>. Kinnisomandi üleandmine ja koormamine",
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:summary": "Kinnisomandi üleandmiseks ja kinnisasja koormamiseks asjaõigusega, samuti kinnisasja koormava asjaõiguse üleandmiseks, koormamiseks või selle sisu muutmiseks on nõutav õigustatud isiku ja teise poole notariaalselt tõestatud kokkulepe (asjaõigusleping) ja sellekohase kande tegemine kinnistusraamatusse, kui seadus ei sätesta teisiti. RT I 2003 13 64 252549 2003-07-01 Kinnisomandi üleandmiseks ja kinnisasja koormamiseks asjaõigusega, samuti kinnisasja koormava asjaõiguse üleandmiseks, koormamiseks ",
+      "estleg:legalText": "Kinnisomandi üleandmiseks ja kinnisasja koormamiseks asjaõigusega, samuti kinnisasja koormava asjaõiguse üleandmiseks, koormamiseks või selle sisu muutmiseks on nõutav õigustatud isiku ja teise poole notariaalselt tõestatud kokkulepe (asjaõigusleping) ja sellekohase kande tegemine kinnistusraamatusse, kui seadus ei sätesta teisiti.",
+      "estleg:isPartOf": {
+        "@id": "estleg:Division_AOS_2_2_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:AOS_Osa2_Par_64_1_Lg_Unknown_1"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "official"
+      ]
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_64_1_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Kinnisomandi üleandmiseks ja kinnisasja koormamiseks asjaõigusega, samuti kinnisasja koormava asjaõiguse üleandmiseks, koormamiseks või selle sisu muutmiseks on nõutav õigustatud isiku ja teise poole notariaalselt tõestatud kokkulepe (asjaõigusleping) ja sellekohase kande tegemine kinnistusraamatusse, kui seadus ei sätesta teisiti.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_64_1"
+      }
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_64_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_asjaoigusseadus_osa2"
+      ],
+      "estleg:paragrahv": "§ 64<sup>2</sup>.",
+      "rdfs:label": "§ 64<sup>2</sup>. Õiguse lõpetamine",
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:summary": "Kinnisasja koormava asjaõiguse lõpetamiseks on nõutav õigustatud isiku notariaalselt tõestatud avaldus õiguse lõpetamise kohta ja õiguse kustutamine kinnistusraamatust, kui seadus ei sätesta teisiti. Avaldus tuleb anda kinnistusosakonda või isikule, kelle kasuks õigus lõpetatakse. RT I 2022-12-23 1 123122022001 2023-02-01 Kinnisasja koormava asjaõiguse lõpetamiseks on nõutav õigustatud isiku notariaalselt tõestatud avaldus õiguse lõpetamise kohta ja õiguse kustutamine kinnistusraamatust, kui sea",
+      "estleg:legalText": "Kinnisasja koormava asjaõiguse lõpetamiseks on nõutav õigustatud isiku notariaalselt tõestatud avaldus õiguse lõpetamise kohta ja õiguse kustutamine kinnistusraamatust, kui seadus ei sätesta teisiti. Avaldus tuleb anda kinnistusosakonda või isikule, kelle kasuks õigus lõpetatakse.",
+      "estleg:isPartOf": {
+        "@id": "estleg:Division_AOS_2_2_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:AOS_Osa2_Par_64_2_Lg_Unknown_1"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "official"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:dutyHolder": "Avaldus"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_64_2_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Kinnisasja koormava asjaõiguse lõpetamiseks on nõutav õigustatud isiku notariaalselt tõestatud avaldus õiguse lõpetamise kohta ja õiguse kustutamine kinnistusraamatust, kui seadus ei sätesta teisiti. Avaldus tuleb anda kinnistusosakonda või isikule, kelle kasuks õigus lõpetatakse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_64_2"
+      }
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_65",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_asjaoigusseadus_osa2"
+      ],
+      "estleg:paragrahv": "§ 65.",
+      "rdfs:label": "§ 65. Ebaõige kande parandamine",
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:summary": "1 (1) Isik, kelle õigust on ebaõige kandega rikutud, võib nõuda ebaõige kande parandamiseks nõusolekut isikult, kelle õigusi parandamine puudutab. Isik, kelle õigust on ebaõige kandega rikutud, võib nõuda ebaõige kande parandamiseks nõusolekut isikult, kelle õigusi parandamine puudutab. 2 (2) Kehtetu - RT I 2010 38 231 13332386 2010-07-01 Kehtetu - 3 (3) Käesoleva paragrahvi 1. lõikes nimetatud nõuet ei saa esitada kolmanda heauskse isiku poolt omandatud asjaõiguste suhtes, mis on kinnistusraama",
+      "estleg:legalText": "(1) Isik, kelle õigust on ebaõige kandega rikutud, võib nõuda ebaõige kande parandamiseks nõusolekut isikult, kelle õigusi parandamine puudutab. (2) Kehtetu - (3) Käesoleva paragrahvi 1. lõikes nimetatud nõuet ei saa esitada kolmanda heauskse isiku poolt omandatud asjaõiguste suhtes, mis on kinnistusraamatusse kantud.",
+      "estleg:isPartOf": {
+        "@id": "estleg:Division_AOS_2_2_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:AOS_Osa2_Par_65_Lg_1"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_65_Lg_2"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_65_Lg_3"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_65_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Isik, kelle õigust on ebaõige kandega rikutud, võib nõuda ebaõige kande parandamiseks nõusolekut isikult, kelle õigusi parandamine puudutab.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_65"
+      },
+      "rdfs:label": "§ 65 lg 1"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_65_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_65"
+      },
+      "rdfs:label": "§ 65 lg 2"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_65_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Käesoleva paragrahvi 1. lõikes nimetatud nõuet ei saa esitada kolmanda heauskse isiku poolt omandatud asjaõiguste suhtes, mis on kinnistusraamatusse kantud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_65"
+      },
+      "rdfs:label": "§ 65 lg 3"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_66",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_asjaoigusseadus_osa2"
+      ],
+      "estleg:paragrahv": "§ 66.",
+      "rdfs:label": "§ 66. Kande kustutamine asjaõiguse lõppemisel",
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:summary": "1 (1) Kui kanne on asjaõiguse lõppemise tõttu kaotanud igasuguse õigusliku tähenduse, on koormatud kinnisasja omanikul õigus nõuda kande kustutamist. Kui kanne on asjaõiguse lõppemise tõttu kaotanud igasuguse õigusliku tähenduse, on koormatud kinnisasja omanikul õigus nõuda kande kustutamist. 2 (2) Kinnistusraamatusse kantud asjaõigus kinnisasjale ei lõpe ainuüksi seetõttu, et kinnisasja omanik omandab selle õiguse või selle õiguse omanik omandab kinnisasja. Kinnistusraamatusse kantud asjaõigus ",
+      "estleg:legalText": "(1) Kui kanne on asjaõiguse lõppemise tõttu kaotanud igasuguse õigusliku tähenduse, on koormatud kinnisasja omanikul õigus nõuda kande kustutamist. (2) Kinnistusraamatusse kantud asjaõigus kinnisasjale ei lõpe ainuüksi seetõttu, et kinnisasja omanik omandab selle õiguse või selle õiguse omanik omandab kinnisasja.",
+      "estleg:isPartOf": {
+        "@id": "estleg:Division_AOS_2_2_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:AOS_Osa2_Par_66_Lg_1"
+        },
+        {
+          "@id": "estleg:AOS_Osa2_Par_66_Lg_2"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen"
+      ]
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_66_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kui kanne on asjaõiguse lõppemise tõttu kaotanud igasuguse õigusliku tähenduse, on koormatud kinnisasja omanikul õigus nõuda kande kustutamist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_66"
+      },
+      "rdfs:label": "§ 66 lg 1"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_66_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kinnistusraamatusse kantud asjaõigus kinnisasjale ei lõpe ainuüksi seetõttu, et kinnisasja omanik omandab selle õiguse või selle õiguse omanik omandab kinnisasja.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa2_Par_66"
+      },
+      "rdfs:label": "§ 66 lg 2"
+    },
+    {
+      "@id": "estleg:AOS_Osa2_Par_67",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_asjaoigusseadus_osa2"
+      ],
+      "estleg:paragrahv": "§ 67.",
+      "rdfs:label": "§ 67. Kande parandamine",
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
+      "estleg:isPartOf": {
+        "@id": "estleg:Division_AOS_2_2_3"
+      }
     }
   ]
 }

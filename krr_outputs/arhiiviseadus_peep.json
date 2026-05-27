@@ -6,40 +6,52 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
   },
   "@graph": [
     {
       "@id": "estleg:ARHIIV_Map_2026",
       "@type": [
+        "owl:Ontology",
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "rdfs:label": "Arhiiviseadus teemakaardistus",
       "dc:source": "Arhiiviseadus",
-      "estleg:temporalStatus": "unknown",
+      "dcterms:title": "Arhiiviseadus",
+      "estleg:contentStatus": "structuredBody",
+      "dcterms:source": {
+        "@id": "https://www.riigiteataja.ee/akt/113032019033.xml"
+      },
+      "owl:sameAs": {
+        "@id": "https://www.riigiteataja.ee/akt/113032019033.xml"
+      },
+      "estleg:kehtiv": {
+        "@value": "2026-05-24",
+        "@type": "xsd:date"
+      },
       "dcterms:subject": [
         {
           "@id": "http://eurovoc.europa.eu/2446"
         },
         {
-          "@id": "http://eurovoc.europa.eu/2441"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/1221"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/3606"
+          "@id": "http://eurovoc.europa.eu/5636"
         },
         {
           "@id": "http://eurovoc.europa.eu/2431"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/3221"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/6006"
         }
-      ]
+      ],
+      "estleg:temporalStatus": "unknown"
     },
     {
-      "@id": "estleg:LegalProvision_ARHIIV",
+      "@id": "estleg:LegalProvision_arhiiviseadus",
       "@type": [
         "owl:Class"
       ],
@@ -49,187 +61,354 @@
       }
     },
     {
+      "@id": "estleg:ARHIIV_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": "Arhiiviseadus teemaskeem",
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_ARHIIV_default"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Cluster_ARHIIV_default",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": "§1–40 Arhiiviseadus",
+      "skos:prefLabel": "§1–40 Arhiiviseadus",
+      "skos:inScheme": {
+        "@id": "estleg:ARHIIV_TopicScheme"
+      },
+      "estleg:provisionCount": 21
+    },
+    {
       "@id": "estleg:ARHIIV_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ARHIIV"
+        "estleg:LegalProvision_arhiiviseadus"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1.",
+      "rdfs:label": "§ 1. Reguleerimisala",
       "estleg:sourceAct": "Arhiiviseadus",
-      "estleg:summary": "1 (1) Seadus sätestab arhivaalide kogumise, hindamise, arhiveerimise, säilitamise ja nendele juurdepääsu korraldamise ning arhiivide tegevuse alused. Seadus sätestab arhivaalide kogumise, hindamise, arhiveerimise, säilitamise ja nendele juurdepääsu korraldamise ning arhiivide tegevuse alused. 2 (2) Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse (RT I 2001, 58, 354) sätteid, arvestades käesoleva seaduse erisusi. RT I 2002 61 375 184811 2002-08-01+03:00 Käeso",
-      "estleg:semanticallySimilarTo": [
+      "estleg:summary": "1 (1) Käesolev seadus sätestab dokumentide hindamise, arhivaalide kogumise ja säilitamise, neile juurdepääsu võimaldamise, nende kasutamise korraldamise ja vastutuse nende kasutamiskõlbmatuks muutmise ja hävitamise eest, avalikke ülesandeid täitvate asutuste ja isikute dokumendihalduse aluste kehtestamise ning Rahvusarhiivi ja kohaliku omavalitsuse arhiivi (edaspidi koos avalik arhiiv) tegevuse alused. Käesolev seadus sätestab dokumentide hindamise, arhivaalide kogumise ja säilitamise, neile juu",
+      "estleg:legalText": "(1) Käesolev seadus sätestab dokumentide hindamise, arhivaalide kogumise ja säilitamise, neile juurdepääsu võimaldamise, nende kasutamise korraldamise ja vastutuse nende kasutamiskõlbmatuks muutmise ja hävitamise eest, avalikke ülesandeid täitvate asutuste ja isikute dokumendihalduse aluste kehtestamise ning Rahvusarhiivi ja kohaliku omavalitsuse arhiivi (edaspidi koos avalik arhiiv) tegevuse alused. (2) Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse sätteid, arvestades käesoleva seaduse erisusi.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_ARHIIV_default"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:EOS_Par_9_9",
-          "estleg:similarityScore": {
-            "@value": "0.353",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
+          "@id": "estleg:ARHIIV_Par_1_Lg_1"
         },
         {
-          "@id": "estleg:EVH_Par_1_1",
-          "estleg:similarityScore": {
-            "@value": "0.353",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:ISIKUA_Par_3",
-          "estleg:similarityScore": {
-            "@value": "0.353",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:KESKKO_Par_2",
-          "estleg:similarityScore": {
-            "@value": "0.353",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:KRHMS_Par_4_4",
-          "estleg:similarityScore": {
-            "@value": "0.353",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
+          "@id": "estleg:ARHIIV_Par_1_Lg_2"
         }
-      ]
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "public_body"
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        }
+      ],
+      "estleg:competenceType": "general"
+    },
+    {
+      "@id": "estleg:ARHIIV_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolev seadus sätestab dokumentide hindamise, arhivaalide kogumise ja säilitamise, neile juurdepääsu võimaldamise, nende kasutamise korraldamise ja vastutuse nende kasutamiskõlbmatuks muutmise ja hävitamise eest, avalikke ülesandeid täitvate asutuste ja isikute dokumendihalduse aluste kehtestamise ning Rahvusarhiivi ja kohaliku omavalitsuse arhiivi (edaspidi koos avalik arhiiv) tegevuse alused.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ARHIIV_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
+    },
+    {
+      "@id": "estleg:ARHIIV_Par_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse sätteid, arvestades käesoleva seaduse erisusi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ARHIIV_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 2"
     },
     {
       "@id": "estleg:ARHIIV_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ARHIIV"
+        "estleg:LegalProvision_arhiiviseadus"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2.",
+      "rdfs:label": "§ 2. Dokument ja arhivaal",
       "estleg:sourceAct": "Arhiiviseadus",
-      "estleg:summary": "1 (1) Asjaajamine käesoleva seaduse mõistes on dokumentide loomine, registreerimine, edastamine, süstematiseerimine, hoidmine ja kasutamine nende üleandmiseni arhiivi. Asjaajamine käesoleva seaduse mõistes on dokumentide loomine, registreerimine, edastamine, süstematiseerimine, hoidmine ja kasutamine nende üleandmiseni arhiivi. 2 (2) Arhiveerimine käesoleva seaduse mõistes on arhivaalide korrastamine, kirjeldamine ja nende üleandmine arhiivi. Arhiveerimine käesoleva seaduse mõistes on arhivaalid"
+      "estleg:summary": "1 (1) Dokument käesoleva seaduse tähenduses on mis tahes teabekandjale jäädvustatud teave, mis on loodud või saadud asutuse või isiku tegevuse käigus ning mille sisu, vorm ja struktuur on küllaldane faktide või tegevuse tõendamiseks. Dokument käesoleva seaduse tähenduses on mis tahes teabekandjale jäädvustatud teave, mis on loodud või saadud asutuse või isiku tegevuse käigus ning mille sisu, vorm ja struktuur on küllaldane faktide või tegevuse tõendamiseks. 2 (2) Arhivaal on dokument, millele av",
+      "estleg:legalText": "(1) Dokument käesoleva seaduse tähenduses on mis tahes teabekandjale jäädvustatud teave, mis on loodud või saadud asutuse või isiku tegevuse käigus ning mille sisu, vorm ja struktuur on küllaldane faktide või tegevuse tõendamiseks. (2) Arhivaal on dokument, millele avalik arhiiv on hindamise tulemusena andnud arhiiviväärtuse. (3) Arhivaal on osa rahvuslikust kultuuripärandist ning seda säilitatakse püsivalt. (4) Avaliku ülesande täitmise käigus loodud või saadud arhivaal antakse üle Rahvusarhiivile, kui seadus ei sätesta teisiti.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_ARHIIV_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ARHIIV_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:ARHIIV_Par_2_Lg_2"
+        },
+        {
+          "@id": "estleg:ARHIIV_Par_2_Lg_3"
+        },
+        {
+          "@id": "estleg:ARHIIV_Par_2_Lg_4"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "public_body"
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:ARHIIV_Par_12"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:ARHIIV_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Dokument käesoleva seaduse tähenduses on mis tahes teabekandjale jäädvustatud teave, mis on loodud või saadud asutuse või isiku tegevuse käigus ning mille sisu, vorm ja struktuur on küllaldane faktide või tegevuse tõendamiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ARHIIV_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
+    },
+    {
+      "@id": "estleg:ARHIIV_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Arhivaal on dokument, millele avalik arhiiv on hindamise tulemusena andnud arhiiviväärtuse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ARHIIV_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2"
+    },
+    {
+      "@id": "estleg:ARHIIV_Par_2_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Arhivaal on osa rahvuslikust kultuuripärandist ning seda säilitatakse püsivalt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ARHIIV_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 3"
+    },
+    {
+      "@id": "estleg:ARHIIV_Par_2_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Avaliku ülesande täitmise käigus loodud või saadud arhivaal antakse üle Rahvusarhiivile, kui seadus ei sätesta teisiti.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ARHIIV_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 4"
     },
     {
       "@id": "estleg:ARHIIV_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ARHIIV"
+        "estleg:LegalProvision_arhiiviseadus"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3.",
+      "rdfs:label": "§ 3. Rahvusarhiiv",
       "estleg:sourceAct": "Arhiiviseadus",
-      "estleg:summary": "1 (1) Arhiiv käesoleva seaduse mõistes on arhivaalide kogumise, säilitamise, korrastamise ja kasutamisega tegelev arhiiviasutus ning käesolevas seaduses sätestatud Rahvusarhiivi struktuuriüksus. Arhiiv käesoleva seaduse mõistes on arhivaalide kogumise, säilitamise, korrastamise ja kasutamisega tegelev arhiiviasutus ning käesolevas seaduses sätestatud Rahvusarhiivi struktuuriüksus. 2 (2) Asutuse või isiku arhiiv on asutuse või isiku tegevuse käigus loodud või saadud arhivaalide terviklik kogum. A",
+      "estleg:summary": "1 (1) Rahvusarhiiv on Haridus- ja Teadusministeeriumi valitsemisalas olev valitsusasutus, mille põhiülesanne on asutuse või isiku poolt avaliku ülesande täitmise käigus loodud või saadud dokumentide hindamine, arhivaalide kogumine ja säilitamine ning neile juurdepääsu võimaldamine ja nende kasutamise korraldamine. Rahvusarhiiv on Haridus- ja Teadusministeeriumi valitsemisalas olev valitsusasutus, mille põhiülesanne on asutuse või isiku poolt avaliku ülesande täitmise käigus loodud või saadud dok",
+      "estleg:legalText": "(1) Rahvusarhiiv on Haridus- ja Teadusministeeriumi valitsemisalas olev valitsusasutus, mille põhiülesanne on asutuse või isiku poolt avaliku ülesande täitmise käigus loodud või saadud dokumentide hindamine, arhivaalide kogumine ja säilitamine ning neile juurdepääsu võimaldamine ja nende kasutamise korraldamine. (2) Rahvusarhiiv kogub kokkuleppel omanikuga ning võimaluste olemasolul kultuuri- ja ajalooväärtusega eraõiguslikke dokumente, kui selleks on avalik huvi. (3) Rahvusarhiiv võib osutada arhivaalide kasutamisega seotud teenuseid, mis ei tulene käesolevast seadusest, ja saada selle eest tasu. Tasulise teenuse osutamine ei tohi takistada käesolevas seaduses sätestatud ülesannete täitmist ega väljuda Rahvusarhiivi pädevusest. Teenuse tasu määra kehtestamisel tuleb arvestada, et teenuse eest võetav tasu ei ületaks selle osutamisega kaasnevaid kulutusi. (4) Tasuliste teenuste loetelu ja tasu määrad kehtestab määrusega. (5) Rahvusarhiiv tegeleb arhiivinduslike teadusuuringute ja publitseerimisega. (6) Rahvusarhiiv osutab võimaluse korral ja kui selleks on avalik huvi, abi kultuuri- ja ajalooväärtusega eraõiguslike dokumentide omanikule dokumentide korrastamiseks, kirjeldamiseks ja säilitamiseks. (7) Rahvusarhiivi põhimääruse kehtestab",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_ARHIIV_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ARHIIV_Par_3_Lg_1"
+        },
+        {
+          "@id": "estleg:ARHIIV_Par_3_Lg_2"
+        },
+        {
+          "@id": "estleg:ARHIIV_Par_3_Lg_3"
+        },
+        {
+          "@id": "estleg:ARHIIV_Par_3_Lg_4"
+        },
+        {
+          "@id": "estleg:ARHIIV_Par_3_Lg_5"
+        },
+        {
+          "@id": "estleg:ARHIIV_Par_3_Lg_6"
+        },
+        {
+          "@id": "estleg:ARHIIV_Par_3_Lg_7"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen",
         "public_body"
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_haridus_ja_teadusministeerium"
+        }
+      ],
+      "estleg:competenceType": "general",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Reg_1001660_Par_9",
+          "estleg:similarityScore": {
+            "@value": "0.562",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
       ]
+    },
+    {
+      "@id": "estleg:ARHIIV_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Rahvusarhiiv on Haridus- ja Teadusministeeriumi valitsemisalas olev valitsusasutus, mille põhiülesanne on asutuse või isiku poolt avaliku ülesande täitmise käigus loodud või saadud dokumentide hindamine, arhivaalide kogumine ja säilitamine ning neile juurdepääsu võimaldamine ja nende kasutamise korraldamine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ARHIIV_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
+    },
+    {
+      "@id": "estleg:ARHIIV_Par_3_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Rahvusarhiiv kogub kokkuleppel omanikuga ning võimaluste olemasolul kultuuri- ja ajalooväärtusega eraõiguslikke dokumente, kui selleks on avalik huvi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ARHIIV_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 2"
+    },
+    {
+      "@id": "estleg:ARHIIV_Par_3_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Rahvusarhiiv võib osutada arhivaalide kasutamisega seotud teenuseid, mis ei tulene käesolevast seadusest, ja saada selle eest tasu. Tasulise teenuse osutamine ei tohi takistada käesolevas seaduses sätestatud ülesannete täitmist ega väljuda Rahvusarhiivi pädevusest. Teenuse tasu määra kehtestamisel tuleb arvestada, et teenuse eest võetav tasu ei ületaks selle osutamisega kaasnevaid kulutusi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ARHIIV_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 3"
+    },
+    {
+      "@id": "estleg:ARHIIV_Par_3_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Tasuliste teenuste loetelu ja tasu määrad kehtestab määrusega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ARHIIV_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 4"
+    },
+    {
+      "@id": "estleg:ARHIIV_Par_3_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Rahvusarhiiv tegeleb arhiivinduslike teadusuuringute ja publitseerimisega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ARHIIV_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 5"
+    },
+    {
+      "@id": "estleg:ARHIIV_Par_3_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Rahvusarhiiv osutab võimaluse korral ja kui selleks on avalik huvi, abi kultuuri- ja ajalooväärtusega eraõiguslike dokumentide omanikule dokumentide korrastamiseks, kirjeldamiseks ja säilitamiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ARHIIV_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 6"
+    },
+    {
+      "@id": "estleg:ARHIIV_Par_3_Lg_7",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "7",
+      "estleg:legalText": "(7) Rahvusarhiivi põhimääruse kehtestab",
+      "estleg:parentProvision": {
+        "@id": "estleg:ARHIIV_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 7"
     },
     {
       "@id": "estleg:ARHIIV_Par_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ARHIIV"
+        "estleg:LegalProvision_arhiiviseadus"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4.",
+      "rdfs:label": "§ 4. Riigiarhivaar",
       "estleg:sourceAct": "Arhiiviseadus",
-      "estleg:summary": "1 (1) Dokument käesoleva seaduse mõistes on mis tahes teabekandjale jäädvustatud teave, mis on loodud või saadud asutuse või isiku tegevuse käigus ning mille sisu, vorm ja struktuur on küllaldane faktide või tegevuse tõestamiseks. Dokument käesoleva seaduse mõistes on mis tahes teabekandjale jäädvustatud teave, mis on loodud või saadud asutuse või isiku tegevuse käigus ning mille sisu, vorm ja struktuur on küllaldane faktide või tegevuse tõestamiseks. 2 (2) Arhivaal käesoleva seaduse mõistes on ",
-      "estleg:targetGroup": [
-        "citizen",
-        "public_body"
-      ]
-    },
-    {
-      "@id": "estleg:ARHIIV_Par_5",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ARHIIV"
-      ],
-      "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5.",
-      "estleg:sourceAct": "Arhiiviseadus",
-      "estleg:summary": "1 (1) Avalikud arhivaalid on riigi- või kohaliku omavalitsuse organi või asutuse või avalik-õigusliku juriidilise isiku tegevuse tulemusena loodud või saadud arhivaalid või eraõigusliku juriidilise ja füüsilise isiku arhivaalid, mis on loodud või saadud seaduses või selle alusel sätestatud avalike ülesannete täitmise käigus. Avalikud arhivaalid on riigi- või kohaliku omavalitsuse organi või asutuse või avalik-õigusliku juriidilise isiku tegevuse tulemusena loodud või saadud arhivaalid või eraõig",
-      "estleg:targetGroup": [
-        "citizen",
-        "public_body"
-      ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_kohalik_omavalitsus"
-        }
-      ],
-      "estleg:competenceType": "general"
-    },
-    {
-      "@id": "estleg:ARHIIV_Par_6",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ARHIIV"
-      ],
-      "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6.",
-      "estleg:sourceAct": "Arhiiviseadus",
-      "estleg:summary": "Eraarhivaalid on eraõigusliku juriidilise isiku ja füüsilise isiku tegevuse tulemusena loodud või saadud arhivaalid. Eraarhivaalid on eraõigusliku juriidilise isiku ja füüsilise isiku tegevuse tulemusena loodud või saadud arhivaalid.",
-      "estleg:targetGroup": [
-        "citizen"
-      ]
-    },
-    {
-      "@id": "estleg:ARHIIV_Par_7",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ARHIIV"
-      ],
-      "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7.",
-      "estleg:sourceAct": "Arhiiviseadus",
-      "estleg:summary": "1 (1) Avaliku arhivaali omanik võib olla riik, kohalik omavalitsus või arhivaali üleandmiseni riigi arhiivi isik, kelle tegevuse tulemusena arhivaal on tekkinud, kui seadusega ei ole ette nähtud teisiti. Avaliku arhivaali omanik võib olla riik, kohalik omavalitsus või arhivaali üleandmiseni riigi arhiivi isik, kelle tegevuse tulemusena arhivaal on tekkinud, kui seadusega ei ole ette nähtud teisiti. 2 (2) Avalikke arhivaale võib võõrandada üksnes riigile. Riigile kuuluvad avalikud arhivaalid on v",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
+      "estleg:summary": "Rahvusarhiivi juhib riigiarhivaar, kelle valdkonna eest vastutav minister nimetab kooskõlas avaliku teenistuse seadusega ametisse viieks aastaks, kuulanud ära arhiivinõukogu arvamuse. Rahvusarhiivi juhib riigiarhivaar, kelle valdkonna eest vastutav minister nimetab kooskõlas avaliku teenistuse seadusega ametisse viieks aastaks, kuulanud ära arhiivinõukogu arvamuse.",
+      "estleg:legalText": "Rahvusarhiivi juhib riigiarhivaar, kelle valdkonna eest vastutav minister nimetab kooskõlas avaliku teenistuse seadusega ametisse viieks aastaks, kuulanud ära arhiivinõukogu arvamuse.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_ARHIIV_default"
       },
-      "estleg:targetGroup": [
-        "citizen",
-        "public_body"
-      ],
-      "estleg:competentAuthority": [
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:Institution_kohalik_omavalitsus"
+          "@id": "estleg:ARHIIV_Par_4_Lg_Unknown_1"
         }
       ],
-      "estleg:competenceType": "general"
-    },
-    {
-      "@id": "estleg:ARHIIV_Par_8",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ARHIIV"
+      "estleg:targetGroup": [
+        "official"
       ],
-      "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8.",
-      "estleg:sourceAct": "Arhiiviseadus",
-      "estleg:summary": "1 (1) Arhiiviregistri asutab ja selle pidamise põhimääruse kinnitab Vabariigi Valitsus ./dyn=742357&id=71941 andmekogude seadusega ( RT I 1997, 28, 423) ettenähtud korras. Arhiiviregistri asutab ja selle pidamise põhimääruse andmekogude seadusega ( RT I 1997, 28, 423) ettenähtud korras. 2 (2) Arhiiviregister on riiklik register, mille vastutav töötleja on Riigikantselei ja volitatud töötleja Rahvusarhiiv. Arhiiviregister on riiklik register, mille vastutav töötleja on Riigikantselei ja volitatud",
       "estleg:semanticallySimilarTo": [
         {
-          "@id": "estleg:GTKS_Par_21",
-          "estleg:similarityScore": {
-            "@value": "0.3",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:MAHEPO_Par_19",
-          "estleg:similarityScore": {
-            "@value": "0.345",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:Postiseadus_Par_37",
+          "@id": "estleg:PäästeTS_Par_8",
           "estleg:similarityScore": {
             "@value": "0.31",
             "@type": "xsd:decimal"
@@ -237,162 +416,718 @@
           "estleg:similarityStatus": "candidate"
         },
         {
-          "@id": "estleg:TPSKS_Par_57",
+          "@id": "estleg:Reg_1001660_Par_15",
+          "estleg:similarityScore": {
+            "@value": "0.696",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:Reg_315642_Par_15",
           "estleg:similarityScore": {
             "@value": "0.333",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:ARHIIV_Par_4_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Rahvusarhiivi juhib riigiarhivaar, kelle valdkonna eest vastutav minister nimetab kooskõlas avaliku teenistuse seadusega ametisse viieks aastaks, kuulanud ära arhiivinõukogu arvamuse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ARHIIV_Par_4"
+      }
+    },
+    {
+      "@id": "estleg:ARHIIV_Par_5",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_arhiiviseadus"
+      ],
+      "estleg:paragrahv": "§ 5.",
+      "rdfs:label": "§ 5. Arhiivinõukogu",
+      "estleg:sourceAct": "Arhiiviseadus",
+      "estleg:summary": "1 (1) Haridus- ja Teadusministeeriumi juures tegutseb nõuandva õigusega arhiivinõukogu, kelle ülesandeks on vaadata läbi arhiivinduse arengu põhisuunad ja teha ettepanekuid arhiivinduse arendamiseks. Haridus- ja Teadusministeeriumi juures tegutseb nõuandva õigusega arhiivinõukogu, kelle ülesandeks on vaadata läbi arhiivinduse arengu põhisuunad ja teha ettepanekuid arhiivinduse arendamiseks. 2 (2) Arhiivinõukogusse kuuluvad avalikke ülesandeid täitvate asutuste esindajad, sealhulgas ülikoolide ja",
+      "estleg:legalText": "(1) Haridus- ja Teadusministeeriumi juures tegutseb nõuandva õigusega arhiivinõukogu, kelle ülesandeks on vaadata läbi arhiivinduse arengu põhisuunad ja teha ettepanekuid arhiivinduse arendamiseks. (2) Arhiivinõukogusse kuuluvad avalikke ülesandeid täitvate asutuste esindajad, sealhulgas ülikoolide ja teadusasutuste esindajad ja kohaliku omavalitsuse arhiivi esindaja, ning erialaühenduste esindajad ja arhiivinduse asjatundjad. Arhiivinõukogu koosseisu ja töökorralduse kinnitab valdkonna eest vastutav minister käskkirjaga.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_ARHIIV_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ARHIIV_Par_5_Lg_1"
         },
         {
-          "@id": "estleg:TeleKS_Par_101",
+          "@id": "estleg:ARHIIV_Par_5_Lg_2"
+        }
+      ],
+      "estleg:targetGroup": [
+        "public_body",
+        "official"
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_haridus_ja_teadusministeerium"
+        }
+      ],
+      "estleg:competenceType": "general"
+    },
+    {
+      "@id": "estleg:ARHIIV_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Haridus- ja Teadusministeeriumi juures tegutseb nõuandva õigusega arhiivinõukogu, kelle ülesandeks on vaadata läbi arhiivinduse arengu põhisuunad ja teha ettepanekuid arhiivinduse arendamiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ARHIIV_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1"
+    },
+    {
+      "@id": "estleg:ARHIIV_Par_5_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Arhiivinõukogusse kuuluvad avalikke ülesandeid täitvate asutuste esindajad, sealhulgas ülikoolide ja teadusasutuste esindajad ja kohaliku omavalitsuse arhiivi esindaja, ning erialaühenduste esindajad ja arhiivinduse asjatundjad. Arhiivinõukogu koosseisu ja töökorralduse kinnitab valdkonna eest vastutav minister käskkirjaga.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ARHIIV_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 2"
+    },
+    {
+      "@id": "estleg:ARHIIV_Par_6",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_arhiiviseadus"
+      ],
+      "estleg:paragrahv": "§ 6.",
+      "rdfs:label": "§ 6. Dokumentide ja arhivaalide haldamine enne Rahvusarhiivile üleandmist",
+      "estleg:sourceAct": "Arhiiviseadus",
+      "estleg:summary": "1 (1) Avalikke ülesandeid täitev asutus või isik peab tagama avaliku ülesande täitmise käigus loodud või saadud dokumentide või arhivaalide säilimise ja kasutatavuse seadustega või nende alusel kehtestatud õigusaktidega sätestatud tähtaja jooksul või Rahvusarhiivile üleandmiseni. Avalikke ülesandeid täitev asutus või isik peab tagama avaliku ülesande täitmise käigus loodud või saadud dokumentide või arhivaalide säilimise ja kasutatavuse seadustega või nende alusel kehtestatud õigusaktidega sätes",
+      "estleg:legalText": "(1) Avalikke ülesandeid täitev asutus või isik peab tagama avaliku ülesande täitmise käigus loodud või saadud dokumentide või arhivaalide säilimise ja kasutatavuse seadustega või nende alusel kehtestatud õigusaktidega sätestatud tähtaja jooksul või Rahvusarhiivile üleandmiseni. (2) võib kehtestada määrusega avalikke ülesandeid täitvate asutuste ja isikute dokumendihalduse alused. (3) Rahvusarhiiv nõustab ja toetab avalikku ülesannet täitvat asutust ning isikut dokumentide ja arhivaalide haldamisel. (4) Rahvusarhiiv võib avalikku ülesannet täitvale asutusele ja isikule anda käesoleva seaduse ja selle alusel kehtestatud õigusaktide täitmiseks juhiseid dokumentide ja arhivaalide haldamiseks. (5) Rahvusarhiiv teostab haldusjärelevalvet arhivaalide haldamise ning arhiivieeskirja, Rahvusarhiivi juhiste ja oma ülesannete raames dokumendihalduse üldnõuete täitmise üle avalikku ülesannet täitva asutuse või isiku poolt ning teeb puuduse kõrvaldamiseks ettepanekuid. Kui puudust ei kõrvaldata, annab Rahvusarhiiv avalikku ülesannet täitvale asutusele või isikule puuduse kõrvaldamiseks korralduse, mille täitmine on kohustuslik.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_ARHIIV_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ARHIIV_Par_6_Lg_1"
+        },
+        {
+          "@id": "estleg:ARHIIV_Par_6_Lg_2"
+        },
+        {
+          "@id": "estleg:ARHIIV_Par_6_Lg_3"
+        },
+        {
+          "@id": "estleg:ARHIIV_Par_6_Lg_4"
+        },
+        {
+          "@id": "estleg:ARHIIV_Par_6_Lg_5"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "public_body"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
+    },
+    {
+      "@id": "estleg:ARHIIV_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Avalikke ülesandeid täitev asutus või isik peab tagama avaliku ülesande täitmise käigus loodud või saadud dokumentide või arhivaalide säilimise ja kasutatavuse seadustega või nende alusel kehtestatud õigusaktidega sätestatud tähtaja jooksul või Rahvusarhiivile üleandmiseni.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ARHIIV_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1"
+    },
+    {
+      "@id": "estleg:ARHIIV_Par_6_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) võib kehtestada määrusega avalikke ülesandeid täitvate asutuste ja isikute dokumendihalduse alused.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ARHIIV_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 2"
+    },
+    {
+      "@id": "estleg:ARHIIV_Par_6_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Rahvusarhiiv nõustab ja toetab avalikku ülesannet täitvat asutust ning isikut dokumentide ja arhivaalide haldamisel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ARHIIV_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 3"
+    },
+    {
+      "@id": "estleg:ARHIIV_Par_6_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Rahvusarhiiv võib avalikku ülesannet täitvale asutusele ja isikule anda käesoleva seaduse ja selle alusel kehtestatud õigusaktide täitmiseks juhiseid dokumentide ja arhivaalide haldamiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ARHIIV_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 4"
+    },
+    {
+      "@id": "estleg:ARHIIV_Par_6_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Rahvusarhiiv teostab haldusjärelevalvet arhivaalide haldamise ning arhiivieeskirja, Rahvusarhiivi juhiste ja oma ülesannete raames dokumendihalduse üldnõuete täitmise üle avalikku ülesannet täitva asutuse või isiku poolt ning teeb puuduse kõrvaldamiseks ettepanekuid. Kui puudust ei kõrvaldata, annab Rahvusarhiiv avalikku ülesannet täitvale asutusele või isikule puuduse kõrvaldamiseks korralduse, mille täitmine on kohustuslik.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ARHIIV_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 5"
+    },
+    {
+      "@id": "estleg:ARHIIV_Par_7",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_arhiiviseadus"
+      ],
+      "estleg:paragrahv": "§ 7.",
+      "rdfs:label": "§ 7. Dokumentide hindamine",
+      "estleg:sourceAct": "Arhiiviseadus",
+      "estleg:summary": "1 (1) Rahvusarhiiv selgitab välja avalikku ülesannet täitva asutuse või isiku, kelle tegevuse käigus võib tekkida arhivaale, lähtudes seejuures asutuse või isiku olulisusest ühiskonnas ning avaliku ülesande sisust. Rahvusarhiiv selgitab välja avalikku ülesannet täitva asutuse või isiku, kelle tegevuse käigus võib tekkida arhivaale, lähtudes seejuures asutuse või isiku olulisusest ühiskonnas ning avaliku ülesande sisust. 2 (2) Rahvusarhiiv selgitab käesoleva paragrahvi lõikes 1 nimetatud asutuse ",
+      "estleg:legalText": "(1) Rahvusarhiiv selgitab välja avalikku ülesannet täitva asutuse või isiku, kelle tegevuse käigus võib tekkida arhivaale, lähtudes seejuures asutuse või isiku olulisusest ühiskonnas ning avaliku ülesande sisust. (2) Rahvusarhiiv selgitab käesoleva paragrahvi lõikes 1 nimetatud asutuse või isiku dokumente hinnates välja arhivaalid, arvestades: avaliku võimu teostamise vajadust; isiku õiguste või tehingute tõendamise vajadust; teabe kultuuri- ja ajalooväärtust. (3) Enne arhivaalide väljaselgitamist ei tohi käesoleva paragrahvi lõikes 1 nimetatud asutus ega isik oma dokumente hävitada. (4) Arhivaalilt arhiiviväärtuse äravõtmise otsustab riigiarhivaar.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_ARHIIV_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ARHIIV_Par_7_Lg_1"
+        },
+        {
+          "@id": "estleg:ARHIIV_Par_7_Lg_2"
+        },
+        {
+          "@id": "estleg:ARHIIV_Par_7_Lg_3"
+        },
+        {
+          "@id": "estleg:ARHIIV_Par_7_Lg_4"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "public_body"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Reg_1001660_Par_10",
           "estleg:similarityScore": {
-            "@value": "0.364",
+            "@value": "0.579",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
         }
+      ]
+    },
+    {
+      "@id": "estleg:ARHIIV_Par_7_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:targetGroup": [
-        "business",
-        "public_body"
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Rahvusarhiiv selgitab välja avalikku ülesannet täitva asutuse või isiku, kelle tegevuse käigus võib tekkida arhivaale, lähtudes seejuures asutuse või isiku olulisusest ühiskonnas ning avaliku ülesande sisust.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ARHIIV_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 1"
+    },
+    {
+      "@id": "estleg:ARHIIV_Par_7_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:competentAuthority": [
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Rahvusarhiiv selgitab käesoleva paragrahvi lõikes 1 nimetatud asutuse või isiku dokumente hinnates välja arhivaalid, arvestades: avaliku võimu teostamise vajadust; isiku õiguste või tehingute tõendamise vajadust; teabe kultuuri- ja ajalooväärtust.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ARHIIV_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 2"
+    },
+    {
+      "@id": "estleg:ARHIIV_Par_7_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Enne arhivaalide väljaselgitamist ei tohi käesoleva paragrahvi lõikes 1 nimetatud asutus ega isik oma dokumente hävitada.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ARHIIV_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 3"
+    },
+    {
+      "@id": "estleg:ARHIIV_Par_7_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Arhivaalilt arhiiviväärtuse äravõtmise otsustab riigiarhivaar.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ARHIIV_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 4"
+    },
+    {
+      "@id": "estleg:ARHIIV_Par_8",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_arhiiviseadus"
+      ],
+      "estleg:paragrahv": "§ 8.",
+      "rdfs:label": "§ 8. Arhivaalide üleandmine",
+      "estleg:sourceAct": "Arhiiviseadus",
+      "estleg:summary": "1 (1) Avalikku ülesannet täitev asutus või isik annab arhivaalid üle Rahvusarhiivile, kui neid ei vajata enam oma ülesannete täitmiseks, kuid hiljemalt kümme aastat pärast dokumendi loomist või saamist ning kui seadusega ei ole sätestatud teisiti. Avalikku ülesannet täitev asutus või isik annab arhivaalid üle Rahvusarhiivile, kui neid ei vajata enam oma ülesannete täitmiseks, kuid hiljemalt kümme aastat pärast dokumendi loomist või saamist ning kui seadusega ei ole sätestatud teisiti. 2 (2) Riig",
+      "estleg:legalText": "(1) Avalikku ülesannet täitev asutus või isik annab arhivaalid üle Rahvusarhiivile, kui neid ei vajata enam oma ülesannete täitmiseks, kuid hiljemalt kümme aastat pärast dokumendi loomist või saamist ning kui seadusega ei ole sätestatud teisiti. (2) Riigiarhivaar võib põhjendatud juhtudel arhivaalide üleandmise tähtaega pikendada. (3) Avaliku ülesande täitmise käigus loodud või saadud arhivaalide Rahvusarhiivile üleandmisega seotud kulud, sealhulgas nende nõuetekohase korrastamise, kirjeldamise ning transpordi kulud, katab üleandja. (4) Peremehetu dokument, mille omanikku ei ole võimalik välja selgitada ja millele Rahvusarhiiv annab arhiiviväärtuse, on riigi omand ning seda säilitab Rahvusarhiiv.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_ARHIIV_default"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:Institution_vabariigivalitsus"
+          "@id": "estleg:ARHIIV_Par_8_Lg_1"
+        },
+        {
+          "@id": "estleg:ARHIIV_Par_8_Lg_2"
+        },
+        {
+          "@id": "estleg:ARHIIV_Par_8_Lg_3"
+        },
+        {
+          "@id": "estleg:ARHIIV_Par_8_Lg_4"
         }
       ],
-      "estleg:competenceType": "general"
+      "estleg:targetGroup": [
+        "citizen",
+        "public_body"
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:ARHIIV_Par_17"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:ARHIIV_Par_8_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Avalikku ülesannet täitev asutus või isik annab arhivaalid üle Rahvusarhiivile, kui neid ei vajata enam oma ülesannete täitmiseks, kuid hiljemalt kümme aastat pärast dokumendi loomist või saamist ning kui seadusega ei ole sätestatud teisiti.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ARHIIV_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 1"
+    },
+    {
+      "@id": "estleg:ARHIIV_Par_8_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Riigiarhivaar võib põhjendatud juhtudel arhivaalide üleandmise tähtaega pikendada.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ARHIIV_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 2"
+    },
+    {
+      "@id": "estleg:ARHIIV_Par_8_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Avaliku ülesande täitmise käigus loodud või saadud arhivaalide Rahvusarhiivile üleandmisega seotud kulud, sealhulgas nende nõuetekohase korrastamise, kirjeldamise ning transpordi kulud, katab üleandja.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ARHIIV_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 3"
+    },
+    {
+      "@id": "estleg:ARHIIV_Par_8_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Peremehetu dokument, mille omanikku ei ole võimalik välja selgitada ja millele Rahvusarhiiv annab arhiiviväärtuse, on riigi omand ning seda säilitab Rahvusarhiiv.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ARHIIV_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 4"
     },
     {
       "@id": "estleg:ARHIIV_Par_9",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ARHIIV"
+        "estleg:LegalProvision_arhiiviseadus"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9.",
+      "rdfs:label": "§ 9. Arhivaalide säilitamine ja kaitse",
       "estleg:sourceAct": "Arhiiviseadus",
-      "estleg:summary": "1 (1) Arhiiviregistrisse kantud eraarhivaalidele laienevad käesolevas seaduses avalike arhivaalide arhiveerimise, hävitamise ja kaitse kohta kehtestatud sätted. Arhiiviregistrisse kantud eraarhivaalidele laienevad käesolevas seaduses avalike arhivaalide arhiveerimise, hävitamise ja kaitse kohta kehtestatud sätted. 2 (2) Arhiiviregistrisse kantud eraarhivaali valduse või omandi üleminekul on võõrandaja või valduse üleandja kohustatud sellest teatama Rahvusarhiivile ning informeerima uut omanikku ",
-      "estleg:targetGroup": [
-        "citizen",
-        "official"
-      ]
+      "estleg:summary": "1 (1) Arhivaale tuleb hoida nõuetekohastes tingimustes, hoides ära nende lubamatu kasutamise, kahjustumise ja hävimise. Arhivaale tuleb hoida nõuetekohastes tingimustes, hoides ära nende lubamatu kasutamise, kahjustumise ja hävimise. 2 (2) Arhivaalis sisalduvat teavet võib üle kanda teisele teabekandjale, kui teabe hoidmine teisel teabekandjal on põhjendatud. Arhivaalis sisalduvat teavet võib üle kanda teisele teabekandjale, kui teabe hoidmine teisel teabekandjal on põhjendatud.",
+      "estleg:legalText": "(1) Arhivaale tuleb hoida nõuetekohastes tingimustes, hoides ära nende lubamatu kasutamise, kahjustumise ja hävimise. (2) Arhivaalis sisalduvat teavet võib üle kanda teisele teabekandjale, kui teabe hoidmine teisel teabekandjal on põhjendatud.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_ARHIIV_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ARHIIV_Par_9_Lg_1"
+        },
+        {
+          "@id": "estleg:ARHIIV_Par_9_Lg_2"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:dutyHolder": "Arhivaale"
+    },
+    {
+      "@id": "estleg:ARHIIV_Par_9_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Arhivaale tuleb hoida nõuetekohastes tingimustes, hoides ära nende lubamatu kasutamise, kahjustumise ja hävimise.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ARHIIV_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 1"
+    },
+    {
+      "@id": "estleg:ARHIIV_Par_9_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Arhivaalis sisalduvat teavet võib üle kanda teisele teabekandjale, kui teabe hoidmine teisel teabekandjal on põhjendatud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ARHIIV_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 2"
     },
     {
       "@id": "estleg:ARHIIV_Par_10",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ARHIIV"
+        "estleg:LegalProvision_arhiiviseadus"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10.",
+      "rdfs:label": "§ 10. Juurdepääs arhivaalile ja arhivaali kasutamine",
       "estleg:sourceAct": "Arhiiviseadus",
-      "estleg:summary": "1 (1) Arhiiviregistrisse kantud eraarhivaali võõrandamisel müümise teel on riigil selle ostueesõigus või eelneva kopeerimise õigus. Arhivaali omanik teatab arhiiviregistrisse kantud eraarhivaali müügi soovist kirjalikult Rahvusarhiivile. Arhiiviregistrisse kantud eraarhivaali võõrandamisel müümise teel on riigil selle ostueesõigus või eelneva kopeerimise õigus. Arhivaali omanik teatab arhiiviregistrisse kantud eraarhivaali müügi soovist kirjalikult Rahvusarhiivile. 2 (2) [Kehtetu]. [Kehtetu]. 3 ",
+      "estleg:summary": "1 (1) Rahvusarhiivis säilitatavale arhivaalile on juurdepääs vaba, kui sellele ei laiene Euroopa Parlamendi ja nõukogu määruses (EL) 2016/679 füüsiliste isikute kaitse kohta isikuandmete töötlemisel ja selliste andmete vaba liikumise ning direktiivi 95/46/EÜ kehtetuks tunnistamise kohta (isikuandmete kaitse üldmäärus) (ELT L 119, 04.05.2016, lk 1–88), avaliku teabe seaduses, isikuandmete kaitse seaduses, riigisaladuse ja salastatud välisteabe seaduses või muus seaduses kehtestatud piirangud. RT ",
+      "estleg:legalText": "(1) Rahvusarhiivis säilitatavale arhivaalile on juurdepääs vaba, kui sellele ei laiene Euroopa Parlamendi ja nõukogu määruses (EL) 2016/679 füüsiliste isikute kaitse kohta isikuandmete töötlemisel ja selliste andmete vaba liikumise ning direktiivi 95/46/EÜ kehtetuks tunnistamise kohta (isikuandmete kaitse üldmäärus) (ELT L 119, 04.05.2016, lk 1–88), avaliku teabe seaduses, isikuandmete kaitse seaduses, riigisaladuse ja salastatud välisteabe seaduses või muus seaduses kehtestatud piirangud. (1<sup>1</sup>) Arhivaali digitaalne kujutis, digitaalne arhivaal ning arhivaali, arhivaali digitaalset kujutist ja digitaalset arhivaali kirjeldavad andmed, mille autoriõigused või autoriõigusega kaasnevad õigused kuuluvad seaduse või tehingu alusel Rahvusarhiivile, on taaskasutatavad avaliku teabe seaduses sätestatud tingimustel ja korras, arvestades käesoleva seaduse ja autoriõiguse seadusega ettenähtud erisusi. (2) Rahvusarhiiv võimaldab arhivaaliga tutvuda. Arhiivis kohapeal arhivaaliga tutvumise eest Rahvusarhiiv tasu ei võta. (3) Rahvusarhiiv võib arhivaali kasutamist piirata teabekandja halva füüsilise seisundi tõttu või kui kasutamine võib arhivaali kahjustada, tagades võimaluse korral juurdepääsu arhivaalis sisalduvale teabele. (4) Rahvusarhiiv väljastab isiku õiguste või tehingute tõendamiseks arhiiviteatise. (5) Rahvusarhiivile üleantavale eraõiguslikule dokumendile juurdepääsu tingimused sätestatakse lepingus. Lepingus sätestatud juurdepääsupiirang ei tohi kehtida kauem kui 50 aastat alates dokumendi üleandmisest. (6) Arhivaalis sisalduvatele isikuandmetele on pärast andmesubjekti surma juurdepääs andmesubjekti pärijal, abikaasal, alanejal ja ülenejal sugulasel, õel ja vennal või nende nõusolekul kolmandal isikul. Mitme pärija või muu käesolevas lõikes nimetatud isiku olemasolul on andmesubjekti isikuandmeid sisaldavale arhivaalile juurdepääs lubatud nimetatuist ükskõik kelle nõusolekul, kuid igaühel neist on õigus nimetatud nõusolek tagasi võtta. Nõusolekut ei ole vaja juhul, kui isikuandmeid töödeldakse käesoleva paragrahvi lõikes 1 nimetatud õigusaktide alusel.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_ARHIIV_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ARHIIV_Par_10_Lg_1"
+        },
+        {
+          "@id": "estleg:ARHIIV_Par_10_Lg_1_1"
+        },
+        {
+          "@id": "estleg:ARHIIV_Par_10_Lg_2"
+        },
+        {
+          "@id": "estleg:ARHIIV_Par_10_Lg_3"
+        },
+        {
+          "@id": "estleg:ARHIIV_Par_10_Lg_4"
+        },
+        {
+          "@id": "estleg:ARHIIV_Par_10_Lg_5"
+        },
+        {
+          "@id": "estleg:ARHIIV_Par_10_Lg_6"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen"
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Reg_1032026_Par_3",
+          "estleg:similarityScore": {
+            "@value": "0.486",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:Reg_1032676_Par_13",
+          "estleg:similarityScore": {
+            "@value": "0.543",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:Reg_1039676_Par_41",
+          "estleg:similarityScore": {
+            "@value": "0.474",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:Reg_1039853_Par_20",
+          "estleg:similarityScore": {
+            "@value": "0.487",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:Reg_163512_Par_4",
+          "estleg:similarityScore": {
+            "@value": "0.5",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
       ]
+    },
+    {
+      "@id": "estleg:ARHIIV_Par_10_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Rahvusarhiivis säilitatavale arhivaalile on juurdepääs vaba, kui sellele ei laiene Euroopa Parlamendi ja nõukogu määruses (EL) 2016/679 füüsiliste isikute kaitse kohta isikuandmete töötlemisel ja selliste andmete vaba liikumise ning direktiivi 95/46/EÜ kehtetuks tunnistamise kohta (isikuandmete kaitse üldmäärus) (ELT L 119, 04.05.2016, lk 1–88), avaliku teabe seaduses, isikuandmete kaitse seaduses, riigisaladuse ja salastatud välisteabe seaduses või muus seaduses kehtestatud piirangud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ARHIIV_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 1"
+    },
+    {
+      "@id": "estleg:ARHIIV_Par_10_Lg_1_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1<sup>1</sup>",
+      "estleg:legalText": "(1<sup>1</sup>) Arhivaali digitaalne kujutis, digitaalne arhivaal ning arhivaali, arhivaali digitaalset kujutist ja digitaalset arhivaali kirjeldavad andmed, mille autoriõigused või autoriõigusega kaasnevad õigused kuuluvad seaduse või tehingu alusel Rahvusarhiivile, on taaskasutatavad avaliku teabe seaduses sätestatud tingimustel ja korras, arvestades käesoleva seaduse ja autoriõiguse seadusega ettenähtud erisusi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ARHIIV_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 1<sup>1</sup>"
+    },
+    {
+      "@id": "estleg:ARHIIV_Par_10_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Rahvusarhiiv võimaldab arhivaaliga tutvuda. Arhiivis kohapeal arhivaaliga tutvumise eest Rahvusarhiiv tasu ei võta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ARHIIV_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 2"
+    },
+    {
+      "@id": "estleg:ARHIIV_Par_10_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Rahvusarhiiv võib arhivaali kasutamist piirata teabekandja halva füüsilise seisundi tõttu või kui kasutamine võib arhivaali kahjustada, tagades võimaluse korral juurdepääsu arhivaalis sisalduvale teabele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ARHIIV_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 3"
+    },
+    {
+      "@id": "estleg:ARHIIV_Par_10_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Rahvusarhiiv väljastab isiku õiguste või tehingute tõendamiseks arhiiviteatise.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ARHIIV_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 4"
+    },
+    {
+      "@id": "estleg:ARHIIV_Par_10_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Rahvusarhiivile üleantavale eraõiguslikule dokumendile juurdepääsu tingimused sätestatakse lepingus. Lepingus sätestatud juurdepääsupiirang ei tohi kehtida kauem kui 50 aastat alates dokumendi üleandmisest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ARHIIV_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 5"
+    },
+    {
+      "@id": "estleg:ARHIIV_Par_10_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Arhivaalis sisalduvatele isikuandmetele on pärast andmesubjekti surma juurdepääs andmesubjekti pärijal, abikaasal, alanejal ja ülenejal sugulasel, õel ja vennal või nende nõusolekul kolmandal isikul. Mitme pärija või muu käesolevas lõikes nimetatud isiku olemasolul on andmesubjekti isikuandmeid sisaldavale arhivaalile juurdepääs lubatud nimetatuist ükskõik kelle nõusolekul, kuid igaühel neist on õigus nimetatud nõusolek tagasi võtta. Nõusolekut ei ole vaja juhul, kui isikuandmeid töödeldakse käesoleva paragrahvi lõikes 1 nimetatud õigusaktide alusel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ARHIIV_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 6"
     },
     {
       "@id": "estleg:ARHIIV_Par_11",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ARHIIV"
+        "estleg:LegalProvision_arhiiviseadus"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11.",
+      "rdfs:label": "§ 11. Kohaliku omavalitsuse arhiiv",
       "estleg:sourceAct": "Arhiiviseadus",
-      "estleg:summary": "Riigikantselei: 1 1) kavandab arhiivinduse arengut; 2 2) korraldab arhiivindust reguleerivate õigusaktide eelnõude väljatöötamist; 3 3) planeerib arhiivinduse eelarvelist finantseerimist; 4 4) on arhiiviregistri vastutav töötleja. Riigikantselei: kavandab arhiivinduse arengut; korraldab arhiivindust reguleerivate õigusaktide eelnõude väljatöötamist; planeerib arhiivinduse eelarvelist finantseerimist; on arhiiviregistri vastutav töötleja.",
+      "estleg:summary": "1 (1) Kui kohalik omavalitsus on moodustanud käesoleva seaduse jõustumise ajaks arhiivi, siis hindab dokumente, kogub ja säilitab kohaliku omavalitsuse organi või asutuse tegevuse tulemusena loodud või saadud arhivaale ning võimaldab neile juurdepääsu ja korraldab nende kasutamist kohaliku omavalitsuse arhiiv. Kui kohalik omavalitsus on moodustanud käesoleva seaduse jõustumise ajaks arhiivi, siis hindab dokumente, kogub ja säilitab kohaliku omavalitsuse organi või asutuse tegevuse tulemusena loo",
+      "estleg:legalText": "(1) Kui kohalik omavalitsus on moodustanud käesoleva seaduse jõustumise ajaks arhiivi, siis hindab dokumente, kogub ja säilitab kohaliku omavalitsuse organi või asutuse tegevuse tulemusena loodud või saadud arhivaale ning võimaldab neile juurdepääsu ja korraldab nende kasutamist kohaliku omavalitsuse arhiiv. (2) Kohaliku omavalitsuse arhiivile laienevad käesoleva seaduse §-des 9 ja 10 ning käesoleva seaduse alusel kehtestatud õigusaktides sätestatud nõuded arhivaalide säilitamise, kaitse ja kasutamise ning neile juurdepääsu kohta. Käesoleva seaduse § 6 lõiget 5 ei rakendata kohaliku omavalitsuse suhtes, kui kohalikus omavalitsuses on moodustatud kohaliku omavalitsuse arhiiv. (3) Kohaliku omavalitsuse arhiivi tegevuse lõpetamisel on omanik kohustatud tagama arhivaalide üleandmise Rahvusarhiivile ning kandma sellega seotud kulud.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_ARHIIV_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ARHIIV_Par_11_Lg_1"
+        },
+        {
+          "@id": "estleg:ARHIIV_Par_11_Lg_2"
+        },
+        {
+          "@id": "estleg:ARHIIV_Par_11_Lg_3"
+        }
+      ],
       "estleg:targetGroup": [
-        "business"
-      ]
+        "citizen",
+        "public_body"
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        }
+      ],
+      "estleg:competenceType": "enforcement"
+    },
+    {
+      "@id": "estleg:ARHIIV_Par_11_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kui kohalik omavalitsus on moodustanud käesoleva seaduse jõustumise ajaks arhiivi, siis hindab dokumente, kogub ja säilitab kohaliku omavalitsuse organi või asutuse tegevuse tulemusena loodud või saadud arhivaale ning võimaldab neile juurdepääsu ja korraldab nende kasutamist kohaliku omavalitsuse arhiiv.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ARHIIV_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 1"
+    },
+    {
+      "@id": "estleg:ARHIIV_Par_11_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kohaliku omavalitsuse arhiivile laienevad käesoleva seaduse §-des 9 ja 10 ning käesoleva seaduse alusel kehtestatud õigusaktides sätestatud nõuded arhivaalide säilitamise, kaitse ja kasutamise ning neile juurdepääsu kohta. Käesoleva seaduse § 6 lõiget 5 ei rakendata kohaliku omavalitsuse suhtes, kui kohalikus omavalitsuses on moodustatud kohaliku omavalitsuse arhiiv.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ARHIIV_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 2"
+    },
+    {
+      "@id": "estleg:ARHIIV_Par_11_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kohaliku omavalitsuse arhiivi tegevuse lõpetamisel on omanik kohustatud tagama arhivaalide üleandmise Rahvusarhiivile ning kandma sellega seotud kulud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ARHIIV_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 3"
     },
     {
       "@id": "estleg:ARHIIV_Par_12",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ARHIIV"
+        "estleg:LegalProvision_arhiiviseadus"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12.",
+      "rdfs:label": "§ 12. Kultuuri- ja ajalooväärtusega dokumendikogu",
       "estleg:sourceAct": "Arhiiviseadus",
-      "estleg:summary": "Rahvusarhiiv: 1 1) osaleb arhiivinduse arengu kavandamises; 2 2) osaleb arhiivindust reguleerivate õigusaktide eelnõude väljatöötamises; 3 3) korraldab arhiivijärelevalvet; 4 4) on arhiiviregistri volitatud töötleja; 5 5) vaatab läbi riigi arhiivide aastaeelarve eelnõud ja vajaduse korral lisaeelarve kohta käivad ettepanekud ning esitab nende alusel koostatud Rahvusarhiivi aastaeelarve eelnõu koos seletuskirjaga Riigikantseleile; 6 6) tegeleb arhiivinduse teaduslike ja metoodiliste küsimustega; ",
-      "estleg:targetGroup": [
-        "business"
-      ]
-    },
-    {
-      "@id": "estleg:ARHIIV_Par_13",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ARHIIV"
-      ],
-      "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13.",
-      "estleg:sourceAct": "Arhiiviseadus",
-      "estleg:summary": "Riigiarhivaar: 1 1) juhib ja esindab Rahvusarhiivi; 2 2) otsustab vajadusel arhivaalide jaotamise arhiivide vahel; 3 3) otsustab vajadusel arhivaalide arhiiviregistrisse kandmise ja sealt kustutamise seadusega ja arhiiviregistri pidamise põhimäärusega sätestatud korras; 4 4) annab tegevuslubasid arhiiviteenuse osutamiseks; 5 5) otsustab arhiiviväärtusega arhivaalide eraldamise hävitamiseks; 6 6) teostab oma pädevuse piires arhiivijärelevalvet; 7 7) teostab teisi käesolevas seaduses ettenähtud ül"
-    },
-    {
-      "@id": "estleg:ARHIIV_Par_14",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ARHIIV"
-      ],
-      "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14.",
-      "estleg:sourceAct": "Arhiiviseadus",
-      "estleg:summary": "1 (1) Arhiivinõukogu on riigisekretäri poolt juhitav kuni 15 liikmest koosnev nõuandev kogu arhiivindusealal. Arhiivinõukogu on riigisekretäri poolt juhitav kuni 15 liikmest koosnev nõuandev kogu arhiivindusealal. 2 (2) Arhiivinõukogusse kuuluvad: 1 1) riigisekretär - arhiivinõukogu esimees; 2 2) riigiarhivaar; 3 3) Justiitsministeeriumi, Kaitseministeeriumi, Kultuuriministeeriumi, Siseministeeriumi ja Välisministeeriumi kantslerid või nende poolt volitatud isikud; 4 4) Eesti Panga esindaja Eest",
-      "estleg:targetGroup": [
-        "citizen",
-        "official"
-      ],
-      "estleg:competentAuthority": [
+      "estleg:summary": "1 (1) Avalik-õiguslikule või riigi- või kohaliku omavalitsuse muuseumile ja raamatukogule, haridus-, teadus- ja arendusasutusele ning sihtasutusele, kes valdab kultuuri- ja ajalooväärtusega dokumendi- või teabekogu, ei laiene käesoleva seaduse § 2 lõikes 4 sätestatud arhivaali üleandmise kohustus ega § 8, kui nii on seaduses või asutuse põhimääruses või põhikirjas sätestatud. Avalik-õiguslikule või riigi- või kohaliku omavalitsuse muuseumile ja raamatukogule, haridus-, teadus- ja arendusasutusel",
+      "estleg:legalText": "(1) Avalik-õiguslikule või riigi- või kohaliku omavalitsuse muuseumile ja raamatukogule, haridus-, teadus- ja arendusasutusele ning sihtasutusele, kes valdab kultuuri- ja ajalooväärtusega dokumendi- või teabekogu, ei laiene käesoleva seaduse § 2 lõikes 4 sätestatud arhivaali üleandmise kohustus ega § 8, kui nii on seaduses või asutuse põhimääruses või põhikirjas sätestatud. (2) Käesoleva paragrahvi lõikes 1 nimetatud asutustele võib seaduse või asutuse põhimääruse või põhikirjaga laiendada käesolevas seaduses ja arhiivieeskirjas sätestatud dokumentide korrastamise, säilitamise ja neile juurdepääsu võimaldamise nõudeid.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_ARHIIV_default"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:Institution_justiitsministeerium"
+          "@id": "estleg:ARHIIV_Par_12_Lg_1"
         },
         {
-          "@id": "estleg:Institution_kaitseministeerium"
-        },
-        {
-          "@id": "estleg:Institution_kultuuriministeerium"
-        },
-        {
-          "@id": "estleg:Institution_siseministeerium"
-        },
-        {
-          "@id": "estleg:Institution_valisministeerium"
+          "@id": "estleg:ARHIIV_Par_12_Lg_2"
         }
       ],
-      "estleg:competenceType": "general"
-    },
-    {
-      "@id": "estleg:ARHIIV_Par_15",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ARHIIV"
-      ],
-      "estleg:paragrahv": "§ 15.",
-      "rdfs:label": "§ 15.",
-      "estleg:sourceAct": "Arhiiviseadus",
-      "estleg:summary": "Arhiivieeskiri reguleerib ja täpsustab dokumentide säilitustähtaegade kehtestamist, arhivaalide hindamist, eraldamist, arhiveerimist, säilitamist, kaitset ja kasutamist ning avalike arhiivide poolt arhivaalide kogumist. ./dyn=742357&id=544218",
-      "estleg:referencedBy": [
-        {
-          "@id": "estleg:ARHIIV_Par_55"
-        }
-      ]
-    },
-    {
-      "@id": "estleg:ARHIIV_Par_16",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ARHIIV"
-      ],
-      "estleg:paragrahv": "§ 16.",
-      "rdfs:label": "§ 16.",
-      "estleg:sourceAct": "Arhiiviseadus",
-      "estleg:summary": "1 (1) Avalikud arhiivid on vastavalt riigi või kohaliku omavalitsuse üksuste poolt finantseeritavad riigi või kohaliku omavalitsuse arhiivid. Avalikud arhiivid on vastavalt riigi või kohaliku omavalitsuse üksuste poolt finantseeritavad riigi või kohaliku omavalitsuse arhiivid. 2 (2) Riigi arhiivid on Rahvusarhiiv, maa-arhiivid ja eriarhiivid. Riigi arhiivid on Rahvusarhiiv, maa-arhiivid ja eriarhiivid. 3 (3) Kohaliku omavalitsuse arhiivid on linna- ja vallaarhiivid ning kohalike omavalitsuste üh",
       "estleg:targetGroup": [
-        "public_body"
+        "public_body",
+        "ngo"
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:ARHIIV_Par_2"
+        }
       ],
       "estleg:competentAuthority": [
         {
@@ -402,49 +1137,472 @@
       "estleg:competenceType": "general"
     },
     {
-      "@id": "estleg:ARHIIV_Par_17",
+      "@id": "estleg:ARHIIV_Par_12_Lg_1",
       "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ARHIIV"
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:paragrahv": "§ 17.",
-      "rdfs:label": "§ 17.",
-      "estleg:sourceAct": "Arhiiviseadus",
-      "estleg:summary": "1 (1) Avalik arhiiv: 1 1) kogub ja säilitab arhiiviväärtusega arhivaale; 2 2) teostab arhiivijärelevalvet; 3 3) viib läbi arhivaalide hindamist; 4 4) annab arvamuse järelevalvealuste riigi- ja kohalike omavalitsuste asutuste ja avalik-õiguslike juriidiliste isikute asjaajamiskorra kohta enne nende kehtestamist, muutmist ja täiendamist; 5 5) annab arvamuse järelevalvealuste asutuste dokumentide loetelude ja säilitustähtaegade kohta enne nende kehtestamist; 6 6) otsustab arhiiviväärtuseta avalike ",
-      "estleg:targetGroup": [
-        "citizen",
-        "public_body"
-      ]
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Avalik-õiguslikule või riigi- või kohaliku omavalitsuse muuseumile ja raamatukogule, haridus-, teadus- ja arendusasutusele ning sihtasutusele, kes valdab kultuuri- ja ajalooväärtusega dokumendi- või teabekogu, ei laiene käesoleva seaduse § 2 lõikes 4 sätestatud arhivaali üleandmise kohustus ega § 8, kui nii on seaduses või asutuse põhimääruses või põhikirjas sätestatud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ARHIIV_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 1"
     },
     {
-      "@id": "estleg:ARHIIV_Par_18",
+      "@id": "estleg:ARHIIV_Par_12_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Käesoleva paragrahvi lõikes 1 nimetatud asutustele võib seaduse või asutuse põhimääruse või põhikirjaga laiendada käesolevas seaduses ja arhiivieeskirjas sätestatud dokumentide korrastamise, säilitamise ja neile juurdepääsu võimaldamise nõudeid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ARHIIV_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 2"
+    },
+    {
+      "@id": "estleg:ARHIIV_Par_13",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ARHIIV"
+        "estleg:LegalProvision_arhiiviseadus"
       ],
-      "estleg:paragrahv": "§ 18.",
-      "rdfs:label": "§ 18.",
+      "estleg:paragrahv": "§ 13.",
+      "rdfs:label": "§ 13. Arhiivieeskiri",
       "estleg:sourceAct": "Arhiiviseadus",
-      "estleg:summary": "1 (1) Rahvusarhiiv on Riigikantselei halduses olev valitsusasutus. Rahvusarhiivi põhimääruse kinnitab Vabariigi Valitsus ./dyn=742357&id=686751 . Rahvusarhiiv on Riigikantselei halduses olev valitsusasutus. Rahvusarhiivi põhimääruse 2 (2) Rahvusarhiivi juhib riigiarhivaar, kelle nimetab ametisse Vabariigi Valitsus avaliku teenistuse seaduses ettenähtud korras viieks aastaks. Arhiivinõukogu väljavalitud riigiarhivaari kandidaadi nime teatab Vabariigi Valitsusele riigisekretär. Rahvusarhiivi juhib",
+      "estleg:summary": "Vabariigi Valitsus või tema volitatud minister ./dyn=113032019033&id=129122011229 kehtestab määrusega arhiivieeskirja, mis reguleerib ja täpsustab dokumentide hindamist ja arhivaalide säilitamist avalikku ülesannet täitva asutuse või isiku juures kuni üleandmiseni Rahvusarhiivile, arhivaalide Rahvusarhiivile üleandmise korda, nende säilitamist ja kaitset Rahvusarhiivis ning neile juurdepääsu korraldamist, sealhulgas arhiiviteatise väljastamist Rahvusarhiivi poolt. kehtestab määrusega arhiivieesk",
+      "estleg:legalText": "kehtestab määrusega arhiivieeskirja, mis reguleerib ja täpsustab dokumentide hindamist ja arhivaalide säilitamist avalikku ülesannet täitva asutuse või isiku juures kuni üleandmiseni Rahvusarhiivile, arhivaalide Rahvusarhiivile üleandmise korda, nende säilitamist ja kaitset Rahvusarhiivis ning neile juurdepääsu korraldamist, sealhulgas arhiiviteatise väljastamist Rahvusarhiivi poolt.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_ARHIIV_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ARHIIV_Par_13_Lg_Unknown_1"
+        }
+      ],
       "estleg:targetGroup": [
-        "public_body"
+        "citizen",
+        "public_body",
+        "official"
       ],
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_vabariigivalitsus"
         }
       ],
-      "estleg:competenceType": "general"
+      "estleg:competenceType": "regulation",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Reg_1002058_Par_1",
+          "estleg:similarityScore": {
+            "@value": "0.404",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:ARHIIV_Par_13_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "kehtestab määrusega arhiivieeskirja, mis reguleerib ja täpsustab dokumentide hindamist ja arhivaalide säilitamist avalikku ülesannet täitva asutuse või isiku juures kuni üleandmiseni Rahvusarhiivile, arhivaalide Rahvusarhiivile üleandmise korda, nende säilitamist ja kaitset Rahvusarhiivis ning neile juurdepääsu korraldamist, sealhulgas arhiiviteatise väljastamist Rahvusarhiivi poolt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ARHIIV_Par_13"
+      }
+    },
+    {
+      "@id": "estleg:ARHIIV_Par_14",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_arhiiviseadus"
+      ],
+      "estleg:paragrahv": "§ 14.",
+      "rdfs:label": "§ 14. Dokumendi ja arhivaali kasutamiskõlbmatuks muutmine",
+      "estleg:sourceAct": "Arhiiviseadus",
+      "estleg:summary": "1 (1) Dokumendi või arhivaali säilitusnõuete eiramise eest, kui see tõi kaasa dokumendi või arhivaali kasutamiskõlbmatuks muutumise, –karistatakse rahatrahviga kuni 100 trahviühikut. Dokumendi või arhivaali säilitusnõuete eiramise eest, kui see tõi kaasa dokumendi või arhivaali kasutamiskõlbmatuks muutumise, –karistatakse rahatrahviga kuni 100 trahviühikut. 2 (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 1300 eurot. Sama teo eest, kui selle on toi",
+      "estleg:legalText": "(1) Dokumendi või arhivaali säilitusnõuete eiramise eest, kui see tõi kaasa dokumendi või arhivaali kasutamiskõlbmatuks muutumise, –karistatakse rahatrahviga kuni 100 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 1300 eurot.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_ARHIIV_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ARHIIV_Par_14_Lg_1"
+        },
+        {
+          "@id": "estleg:ARHIIV_Par_14_Lg_2"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen"
+      ],
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_ARHIIV_Par_14_fine"
+        },
+        {
+          "@id": "estleg:Sanction_ARHIIV_Par_14_fine_2"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:ESS_Par_170_3",
+          "estleg:similarityScore": {
+            "@value": "0.526",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:KINDLU_Par_255",
+          "estleg:similarityScore": {
+            "@value": "0.526",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:KINDLU_Par_261",
+          "estleg:similarityScore": {
+            "@value": "0.526",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:Maapueseadus_Par_116",
+          "estleg:similarityScore": {
+            "@value": "0.579",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:STRATE_Par_94",
+          "estleg:similarityScore": {
+            "@value": "0.55",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:ARHIIV_Par_16"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:ARHIIV_Par_14_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Dokumendi või arhivaali säilitusnõuete eiramise eest, kui see tõi kaasa dokumendi või arhivaali kasutamiskõlbmatuks muutumise, –karistatakse rahatrahviga kuni 100 trahviühikut.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ARHIIV_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 1"
+    },
+    {
+      "@id": "estleg:ARHIIV_Par_14_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 1300 eurot.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ARHIIV_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 2"
+    },
+    {
+      "@id": "estleg:ARHIIV_Par_15",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_arhiiviseadus"
+      ],
+      "estleg:paragrahv": "§ 15.",
+      "rdfs:label": "§ 15. Dokumendi ja arhivaali ebaseaduslik hävitamine",
+      "estleg:sourceAct": "Arhiiviseadus",
+      "estleg:summary": "1 (1) Dokumendi või arhivaali ebaseadusliku hävitamise eest –karistatakse rahatrahviga kuni 150 trahviühikut. Dokumendi või arhivaali ebaseadusliku hävitamise eest –karistatakse rahatrahviga kuni 150 trahviühikut. 2 (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 1600 eurot. Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 1600 eurot.",
+      "estleg:legalText": "(1) Dokumendi või arhivaali ebaseadusliku hävitamise eest –karistatakse rahatrahviga kuni 150 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 1600 eurot.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_ARHIIV_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ARHIIV_Par_15_Lg_1"
+        },
+        {
+          "@id": "estleg:ARHIIV_Par_15_Lg_2"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen"
+      ],
+      "estleg:hasSanction": [
+        {
+          "@id": "estleg:Sanction_ARHIIV_Par_15_fine"
+        },
+        {
+          "@id": "estleg:Sanction_ARHIIV_Par_15_fine_2"
+        }
+      ],
+      "estleg:enforcedAtLevel": "state",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:ESS_Par_170_3",
+          "estleg:similarityScore": {
+            "@value": "0.625",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:KINDLU_Par_255",
+          "estleg:similarityScore": {
+            "@value": "0.625",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:KINDLU_Par_261",
+          "estleg:similarityScore": {
+            "@value": "0.625",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:RIIGIP_Par_17_4",
+          "estleg:similarityScore": {
+            "@value": "0.688",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:VEDELK_Par_6_2",
+          "estleg:similarityScore": {
+            "@value": "0.647",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:ARHIIV_Par_15_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Dokumendi või arhivaali ebaseadusliku hävitamise eest –karistatakse rahatrahviga kuni 150 trahviühikut.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ARHIIV_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 1"
+    },
+    {
+      "@id": "estleg:ARHIIV_Par_15_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 1600 eurot.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ARHIIV_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 2"
+    },
+    {
+      "@id": "estleg:ARHIIV_Par_16",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_arhiiviseadus"
+      ],
+      "estleg:paragrahv": "§ 16.",
+      "rdfs:label": "§ 16. Menetlus",
+      "estleg:sourceAct": "Arhiiviseadus",
+      "estleg:summary": "1 (1) Kehtetu - 2014-06-19 RT I 2014-07-12 1 112072014001 2015-01-01 Kehtetu - 2 (2) Käesoleva seaduse §-des 14 ja 15 sätestatud väärtegude kohtuväline menetleja on politseiasutus. Käesoleva seaduse §-des 14 ja 15 sätestatud väärtegude kohtuväline menetleja on politseiasutus.",
+      "estleg:legalText": "(1) Kehtetu - (2) Käesoleva seaduse §-des 14 ja 15 sätestatud väärtegude kohtuväline menetleja on politseiasutus.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_ARHIIV_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ARHIIV_Par_16_Lg_1"
+        },
+        {
+          "@id": "estleg:ARHIIV_Par_16_Lg_2"
+        }
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:ARHIIV_Par_14"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:ErSS_Par_35_1",
+          "estleg:similarityScore": {
+            "@value": "1.0",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:Jahiseadus_Par_65",
+          "estleg:similarityScore": {
+            "@value": "0.667",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:KeVS_Par_39",
+          "estleg:similarityScore": {
+            "@value": "0.667",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:Keeleseadus_Par_38",
+          "estleg:similarityScore": {
+            "@value": "0.667",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:LaevaRS_Par_97_4",
+          "estleg:similarityScore": {
+            "@value": "0.667",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:ARHIIV_Par_16_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:ARHIIV_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 1"
+    },
+    {
+      "@id": "estleg:ARHIIV_Par_16_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Käesoleva seaduse §-des 14 ja 15 sätestatud väärtegude kohtuväline menetleja on politseiasutus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ARHIIV_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 2"
+    },
+    {
+      "@id": "estleg:ARHIIV_Par_17",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_arhiiviseadus"
+      ],
+      "estleg:paragrahv": "§ 17.",
+      "rdfs:label": "§ 17. Käesoleva seaduse § 8 lõike 1 rakendamine",
+      "estleg:sourceAct": "Arhiiviseadus",
+      "estleg:summary": "Käesoleva seaduse § 8 lõiget 1 rakendatakse pärast käesoleva seaduse jõustumist loodud või saadud paberkandjal dokumentide puhul, millele Rahvusarhiiv on andnud arhiiviväärtuse. Kuni käesoleva seaduse jõustumiseni loodud arhiiviväärtusega paberkandjal dokumentide puhul rakendatakse üleandmistähtaega 20 aastat nende loomisest arvates. Käesoleva seaduse § 8 lõiget 1 rakendatakse pärast käesoleva seaduse jõustumist loodud või saadud paberkandjal dokumentide puhul, millele Rahvusarhiiv on andnud arh",
+      "estleg:legalText": "Käesoleva seaduse § 8 lõiget 1 rakendatakse pärast käesoleva seaduse jõustumist loodud või saadud paberkandjal dokumentide puhul, millele Rahvusarhiiv on andnud arhiiviväärtuse. Kuni käesoleva seaduse jõustumiseni loodud arhiiviväärtusega paberkandjal dokumentide puhul rakendatakse üleandmistähtaega 20 aastat nende loomisest arvates.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_ARHIIV_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ARHIIV_Par_17_Lg_Unknown_1"
+        }
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:ARHIIV_Par_8"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:ARHIIV_Par_17_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Käesoleva seaduse § 8 lõiget 1 rakendatakse pärast käesoleva seaduse jõustumist loodud või saadud paberkandjal dokumentide puhul, millele Rahvusarhiiv on andnud arhiiviväärtuse. Kuni käesoleva seaduse jõustumiseni loodud arhiiviväärtusega paberkandjal dokumentide puhul rakendatakse üleandmistähtaega 20 aastat nende loomisest arvates.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ARHIIV_Par_17"
+      }
+    },
+    {
+      "@id": "estleg:ARHIIV_Par_18",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_arhiiviseadus"
+      ],
+      "estleg:paragrahv": "§ 18.",
+      "rdfs:label": "§ 18. Arhiiviregistri likvideerimine",
+      "estleg:sourceAct": "Arhiiviseadus",
+      "estleg:summary": "Arhiiviregister likvideeritakse ja arhiiviväärtuslikuks hinnatud teavet säilitatakse edaspidi Rahvusarhiivis. Arhiiviregister likvideeritakse ja arhiiviväärtuslikuks hinnatud teavet säilitatakse edaspidi Rahvusarhiivis.",
+      "estleg:legalText": "Arhiiviregister likvideeritakse ja arhiiviväärtuslikuks hinnatud teavet säilitatakse edaspidi Rahvusarhiivis.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_ARHIIV_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ARHIIV_Par_18_Lg_Unknown_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:ARHIIV_Par_18_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Arhiiviregister likvideeritakse ja arhiiviväärtuslikuks hinnatud teavet säilitatakse edaspidi Rahvusarhiivis.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ARHIIV_Par_18"
+      }
     },
     {
       "@id": "estleg:ARHIIV_Par_19",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ARHIIV"
+        "estleg:LegalProvision_arhiiviseadus"
       ],
       "estleg:paragrahv": "§ 19.",
       "rdfs:label": "§ 19.",
       "estleg:sourceAct": "Arhiiviseadus",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_ARHIIV_default"
+      },
       "estleg:summary": "1 (1) Maa-arhiiv on Rahvusarhiivi regionaalne struktuuriüksus. Maa-arhiiv on Rahvusarhiivi regionaalne struktuuriüksus. 2 (2) Maa-arhiivi asutab ja tema tegevuse lõpetab Vabariigi Valitsus, määrates pärast arhiivinõukogu arvamuse ärakuulamist Rahvusarhiivi põhimääruses kindlaks maa-arhiivide arvu ja tegevuspiirkonna. Maa-arhiivi asutab ja tema tegevuse lõpetab Vabariigi Valitsus, määrates pärast arhiivinõukogu arvamuse ärakuulamist Rahvusarhiivi põhimääruses kindlaks maa-arhiivide arvu ja tegevu",
       "estleg:targetGroup": [
         "public_body"
@@ -457,766 +1615,51 @@
       "estleg:competenceType": "general"
     },
     {
-      "@id": "estleg:ARHIIV_Par_20",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ARHIIV"
-      ],
-      "estleg:paragrahv": "§ 20.",
-      "rdfs:label": "§ 20.",
-      "estleg:sourceAct": "Arhiiviseadus",
-      "estleg:summary": "1 (1) Eritüübilistele teabekandjatele jäädvustatud arhivaalide kogumiseks ja säilitamiseks võib moodustada eriarhiive. Eritüübilistele teabekandjatele jäädvustatud arhivaalide kogumiseks ja säilitamiseks võib moodustada eriarhiive. 2 (2) Eriarhiiv on Rahvusarhiivi struktuuriüksus, mille asutab ja tegevuse lõpetab Vabariigi Valitsus, määrates pärast arhiivinõukogu arvamuse ärakuulamist Rahvusarhiivi põhimääruses kindlaks eriarhiivi kogutavate teabekandjate liigid ja tegevuspiirkonna. Eriarhiiv on",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
-      "estleg:targetGroup": [
-        "public_body"
-      ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_vabariigivalitsus"
-        }
-      ],
-      "estleg:competenceType": "general"
-    },
-    {
-      "@id": "estleg:ARHIIV_Par_21",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ARHIIV"
-      ],
-      "estleg:paragrahv": "§ 21.",
-      "rdfs:label": "§ 21.",
-      "estleg:sourceAct": "Arhiiviseadus",
-      "estleg:summary": "1 (1) Linn või vald võib vastava kohaliku omavalitsuse volikogu otsuse alusel, kuulanud ära riigiarhivaari arvamuse, moodustada kohaliku omavalitsuse ametiasutusena linna- või vallaarhiivi, mille ülalpidamiskulud kaetakse linna- või vallaeelarvest. Linn või vald võib vastava kohaliku omavalitsuse volikogu otsuse alusel, kuulanud ära riigiarhivaari arvamuse, moodustada kohaliku omavalitsuse ametiasutusena linna- või vallaarhiivi, mille ülalpidamiskulud kaetakse linna- või vallaeelarvest. 2 (2) Li",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
-      "estleg:targetGroup": [
-        "public_body"
-      ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_kohalik_omavalitsus"
-        },
-        {
-          "@id": "estleg:Institution_linn"
-        },
-        {
-          "@id": "estleg:Institution_vald"
-        }
-      ],
-      "estleg:competenceType": "general"
-    },
-    {
-      "@id": "estleg:ARHIIV_Par_22",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ARHIIV"
-      ],
-      "estleg:paragrahv": "§ 22.",
-      "rdfs:label": "§ 22.",
-      "estleg:sourceAct": "Arhiiviseadus",
-      "estleg:summary": "Arhiiviteenuse liigid on: 1 1) asjaajamisteenus; 2 2) arhiveerimisteenus; 3 3) arhivaalide säilitamisteenus. Arhiiviteenuse liigid on: asjaajamisteenus; arhiveerimisteenus; arhivaalide säilitamisteenus."
-    },
-    {
-      "@id": "estleg:ARHIIV_Par_23",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ARHIIV"
-      ],
-      "estleg:paragrahv": "§ 23.",
-      "rdfs:label": "§ 23.",
-      "estleg:sourceAct": "Arhiiviseadus",
-      "estleg:summary": "1 (1) Arhiiviteenuse osutamiseks on vajalik tegevusluba. Arhiiviteenuse tegevusluba annab isikule õiguse selles märgitud arhiiviteenuse osutamiseks. Arhiiviteenuse osutamiseks on vajalik tegevusluba. Arhiiviteenuse tegevusluba annab isikule õiguse selles märgitud arhiiviteenuse osutamiseks. 2 (2) Tegevusloa vorm kehtestatakse arhiivieeskirjaga. RT I 2002 61 375 184811 2002-08-01+03:00 Tegevusloa vorm kehtestatakse arhiivieeskirjaga.",
-      "estleg:targetGroup": [
-        "citizen"
-      ]
-    },
-    {
-      "@id": "estleg:ARHIIV_Par_24",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ARHIIV"
-      ],
-      "estleg:paragrahv": "§ 24.",
-      "rdfs:label": "§ 24.",
-      "estleg:sourceAct": "Arhiiviseadus",
-      "estleg:summary": "1 (1) Tegevusloa taotlemise õigus on äriühingul ja äriregistrisse kantud füüsilisest isikust ettevõtjal. Tegevusloa taotlemise õigus on äriühingul ja äriregistrisse kantud füüsilisest isikust ettevõtjal. 2 (2) Tegevusloa taotlemiseks esitab taotleja riigiarhivaarile avalduse, milles märgitakse: 1 1) taotleja nimi ja aadress, telefoni ja faksi olemasolu korral nende numbrid; 2 2) milliste arhiiviteenuste osutamiseks luba taotletakse; 3 3) avalduse täitnud isiku nimi, ametikoht, esindaja korral vo",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
-      "estleg:targetGroup": [
-        "citizen",
-        "business"
-      ]
-    },
-    {
-      "@id": "estleg:ARHIIV_Par_25",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ARHIIV"
-      ],
-      "estleg:paragrahv": "§ 25.",
-      "rdfs:label": "§ 25.",
-      "estleg:sourceAct": "Arhiiviseadus",
-      "estleg:summary": "Tegevusloa väljaandmise või väljaandmisest keeldumise otsustab riigiarhivaar ühe kuu jooksul, arvates avalduse ja sellele lisatud dokumentide saamisest, ja teatab sellest kirjalikult taotlejale kümne päeva jooksul otsuse tegemisest arvates. RT I 2002 61 375 184811 2002-08-01+03:00 Tegevusloa väljaandmise või väljaandmisest keeldumise otsustab riigiarhivaar ühe kuu jooksul, arvates avalduse ja sellele lisatud dokumentide saamisest, ja teatab sellest kirjalikult taotlejale kümne päeva jooksul otsu",
-      "estleg:targetGroup": [
-        "citizen"
-      ]
-    },
-    {
-      "@id": "estleg:ARHIIV_Par_26",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ARHIIV"
-      ],
-      "estleg:paragrahv": "§ 26.",
-      "rdfs:label": "§ 26.",
-      "estleg:sourceAct": "Arhiiviseadus",
-      "estleg:summary": "1 (1) Tegevusluba ei anta, kui: 1 1) Kehtetu - RT I 2002 61 375 184811 2002-08-01+03:00 2 2) taotleja karistusandmed dokumentide või andmete võltsimise, hävitamise või andmetöötlusalaste kuritegude eest ei ole karistusregistrist kustutatud või teda on halduskorras korduvalt karistatud käesoleva seaduse või arhiivieeskirja rikkumise eest; 3 3) on teadvalt esitatud tegelikkusele mittevastavaid andmeid; 4 4) taotlejalt on ära võetud arhiiviteenuse osutamise õigus. Tegevusluba ei anta, kui: Kehtetu ",
-      "estleg:targetGroup": [
-        "citizen"
-      ]
-    },
-    {
-      "@id": "estleg:ARHIIV_Par_27",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ARHIIV"
-      ],
-      "estleg:paragrahv": "§ 27.",
-      "rdfs:label": "§ 27.",
-      "estleg:sourceAct": "Arhiiviseadus",
-      "estleg:summary": "1 (1) Tegevusluba antakse kolmeks aastaks, arhivaalide säilitamisteenuse osutamisel kümneks aastaks. Tegevusluba antakse kolmeks aastaks, arhivaalide säilitamisteenuse osutamisel kümneks aastaks. 2 (2) Tegevusluba kaotab kehtivuse ennetähtaegselt: 1 1) Kehtetu - RT I 2002 61 375 184811 2002-08-01+03:00 2 2) riigiarhivaari otsusel, kui taotleja suhtes on korduvalt kohaldatud halduskaristust käesoleva seaduse või arhiivieeskirja rikkumise eest. RT I 2002 61 375 184811 2002-08-01+03:00 Tegevusluba ",
-      "estleg:targetGroup": [
-        "citizen"
-      ]
-    },
-    {
-      "@id": "estleg:ARHIIV_Par_28",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ARHIIV"
-      ],
-      "estleg:paragrahv": "§ 28.",
-      "rdfs:label": "§ 28.",
-      "estleg:sourceAct": "Arhiiviseadus",
-      "estleg:summary": "Eraarhiiv käesoleva seaduse mõistes on arhiiviteenuse osutaja poolt asutatav arhivaalide säilitamisteenust pakkuv arhiiviasutus. Eraarhiiv käesoleva seaduse mõistes on arhiiviteenuse osutaja poolt asutatav arhivaalide säilitamisteenust pakkuv arhiiviasutus."
-    },
-    {
-      "@id": "estleg:ARHIIV_Par_29",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ARHIIV"
-      ],
-      "estleg:paragrahv": "§ 29.",
-      "rdfs:label": "§ 29.",
-      "estleg:sourceAct": "Arhiiviseadus",
-      "estleg:summary": "1 (1) Eraarhiiv lähtub oma tegevuses seadusest ja arhiivieeskirjast. Eraarhiiv lähtub oma tegevuses seadusest ja arhiivieeskirjast. 2 (2) Eraarhiiv on kohustatud tagama: 1 1) arhivaalide nõuetekohase säilitamise, kaitse ja nendele juurdepääsu; 2 2) isikuandmete ja ärisaladuse kaitse; 3 3) arhiiviruumi vastavuse kehtestatud nõuetele; 4 4) arhivaari kutsenõuetele vastava töötaja olemasolu; 5 5) arhiivi tegevuse lõpetamise korral arhivaalide edasise säilitamise, korraldades arhivaalide tagastamise ",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
-      "estleg:dutyHolder": "Eraarhiiv",
-      "estleg:targetGroup": [
-        "citizen"
-      ]
-    },
-    {
-      "@id": "estleg:ARHIIV_Par_30",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ARHIIV"
-      ],
-      "estleg:paragrahv": "§ 30.",
-      "rdfs:label": "§ 30.",
-      "estleg:sourceAct": "Arhiiviseadus",
-      "estleg:summary": "1 (1) Arhivaali hävitamiseks või arhiivi üleandmiseks eraldamise otsustamiseks ning arhivaali arhiiviväärtuse määramiseks viib avalik arhiiv läbi hindamise. Arhivaali hävitamiseks või arhiivi üleandmiseks eraldamise otsustamiseks ning arhivaali arhiiviväärtuse määramiseks viib avalik arhiiv läbi hindamise. 2 (2) Arhivaalide hindamine toimub: 1 1) arhivaali vastuvõtmisel arhiivi; 2 2) arhivaali säilitustähtaja möödumisel; 3 3) riigiarhivaari otsusel. Arhivaalide hindamine toimub: arhivaali vastuv"
-    },
-    {
-      "@id": "estleg:ARHIIV_Par_31",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ARHIIV"
-      ],
-      "estleg:paragrahv": "§ 31.",
-      "rdfs:label": "§ 31.",
-      "estleg:sourceAct": "Arhiiviseadus",
-      "estleg:summary": "1 (1) Riigi- ja kohaliku omavalitsuse asutused ning juriidilised isikud peavad tagama oma tegevuse käigus loodud või saadud dokumentide säilimise seadustega või nende alusel kehtestatud õigusaktidega sätestatud tähtaja jooksul või käesolevas seaduses ettenähtud korras arhiivi üleandmiseni ./dyn=742357&id=592327;970559 . ./dyn=742357&id=592327 2 (2) Riigi- ja kohaliku omavalitsuse asutused ning avalik-õiguslikud juriidilised isikud kehtestavad dokumentide loetelus säilitustähtaja oma tegevuse käi",
-      "estleg:targetGroup": [
-        "citizen",
-        "public_body"
-      ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_kohalik_omavalitsus"
-        }
-      ],
-      "estleg:competenceType": "general"
-    },
-    {
-      "@id": "estleg:ARHIIV_Par_32",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ARHIIV"
-      ],
-      "estleg:paragrahv": "§ 32.",
-      "rdfs:label": "§ 32.",
-      "estleg:sourceAct": "Arhiiviseadus",
-      "estleg:summary": "1 (1) Avalik arhiiv võib hindamise tulemusena anda avalikule arhivaalile arhiiviväärtuse. Avalik arhiiv võib hindamise tulemusena anda avalikule arhivaalile arhiiviväärtuse. 2 (2) Arhiiviväärtusega arhivaale säilitatakse alaliselt. Arhiiviväärtusega arhivaale säilitatakse alaliselt. 3 (3) Arhiiviväärtuse võib arhivaalilt ära võtta ainult hindamise tulemusel. Sellise hindamise tulemuse kinnitab riigiarhivaar. Arhiiviväärtuse võib arhivaalilt ära võtta ainult hindamise tulemusel. Sellise hindamise",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      }
-    },
-    {
-      "@id": "estleg:ARHIIV_Par_33",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ARHIIV"
-      ],
-      "estleg:paragrahv": "§ 33.",
-      "rdfs:label": "§ 33.",
-      "estleg:sourceAct": "Arhiiviseadus",
-      "estleg:summary": "1 (1) Arhivaali võib hävitada: 1 1) säilitustähtaja möödumisel; 2 2) teabekandja kõlbmatuks muutumisel. Arhivaali võib hävitada: säilitustähtaja möödumisel; teabekandja kõlbmatuks muutumisel. 2 (2) Arhivaali, millele on kehtestatud säilitustähtaeg, võib hävitada teabekandja kõlbmatuks muutumisel pärast teabe ülekandmist teisele teabekandjale arhivaali omaniku või valdaja poolt. Arhivaali, millele on kehtestatud säilitustähtaeg, võib hävitada teabekandja kõlbmatuks muutumisel pärast teabe ülekand",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
-      "estleg:targetGroup": [
-        "citizen"
-      ]
-    },
-    {
-      "@id": "estleg:ARHIIV_Par_34",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ARHIIV"
-      ],
-      "estleg:paragrahv": "§ 34.",
-      "rdfs:label": "§ 34.",
-      "estleg:sourceAct": "Arhiiviseadus",
-      "estleg:summary": "1 (1) Avalikke arhivaale võib üle anda ainult avalikku arhiivi. Avalikke arhivaale võib üle anda ainult avalikku arhiivi. 2 (2) Asutused ning isikud annavad nende tegevuse käigus loodud või saadud arhiiviväärtusega avalikud arhivaalid üle arhiivi, kelle pädevusse kuulub käesoleva seaduse 4. peatüki kohaselt nende kogumine ja säilitamine, või riigiarhivaari poolt määratud arhiivi. Asutused ning isikud annavad nende tegevuse käigus loodud või saadud arhiiviväärtusega avalikud arhivaalid üle arhiiv",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
-      "estleg:targetGroup": [
-        "citizen",
-        "public_body"
-      ]
-    },
-    {
-      "@id": "estleg:ARHIIV_Par_35",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ARHIIV"
-      ],
-      "estleg:paragrahv": "§ 35.",
-      "rdfs:label": "§ 35.",
-      "estleg:sourceAct": "Arhiiviseadus",
-      "estleg:summary": "1 (1) Avalike arhivaalide ettevalmistamisel üleandmiseks arhiivi arhivaali üleandja korrastab ja kirjeldab arhivaalid, sealhulgas: 1 1) süstematiseerib arhivaalid; 2 2) koostab üleantavate arhivaalide loetelud; 3 3) korrastab arhivaalid arhiivieeskirja kohaselt. Avalike arhivaalide ettevalmistamisel üleandmiseks arhiivi arhivaali üleandja korrastab ja kirjeldab arhivaalid, sealhulgas: süstematiseerib arhivaalid; koostab üleantavate arhivaalide loetelud; korrastab arhivaalid arhiivieeskirja kohas"
-    },
-    {
-      "@id": "estleg:ARHIIV_Par_36",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ARHIIV"
-      ],
-      "estleg:paragrahv": "§ 36.",
-      "rdfs:label": "§ 36.",
-      "estleg:sourceAct": "Arhiiviseadus",
-      "estleg:summary": "1 (1) Avalikud arhivaalid antakse arhiivi üleandmis-vastuvõtmisakti alusel. Akti märgitakse vähemalt üleandja nimetus, vastuvõtva arhiivi nimetus, arhivaalide päritolu ja kogus. Avalikud arhivaalid antakse arhiivi üleandmis-vastuvõtmisakti alusel. Akti märgitakse vähemalt üleandja nimetus, vastuvõtva arhiivi nimetus, arhivaalide päritolu ja kogus. 2 (2) Eraarhivaalid antakse arhiivi säilitamiseks lepingu alusel üleandmis-vastuvõtmisaktiga. Eraarhivaalid antakse arhiivi säilitamiseks lepingu alus"
-    },
-    {
-      "@id": "estleg:ARHIIV_Par_37",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ARHIIV"
-      ],
-      "estleg:paragrahv": "§ 37.",
-      "rdfs:label": "§ 37.",
-      "estleg:sourceAct": "Arhiiviseadus",
-      "estleg:summary": "1 (1) Avalik arhiiv võib keelduda arhivaalide vastuvõtmisest, kui: 1 1) arhivaalid ei ole ette valmistatud arhiivi üleandmiseks vastavalt seadusele ja arhiivieeskirjale; 2 2) arhivaalidel ei ole arhiiviväärtust; 3 3) arhivaalide säilitustähtaeg on möödunud; 4 4) arhivaalid kuuluvad üleandmisele teise arhiivi. Avalik arhiiv võib keelduda arhivaalide vastuvõtmisest, kui: arhivaalid ei ole ette valmistatud arhiivi üleandmiseks vastavalt seadusele ja arhiivieeskirjale; arhivaalidel ei ole arhiivivää",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      }
-    },
-    {
-      "@id": "estleg:ARHIIV_Par_38",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ARHIIV"
-      ],
-      "estleg:paragrahv": "§ 38.",
-      "rdfs:label": "§ 38.",
-      "estleg:sourceAct": "Arhiiviseadus",
-      "estleg:summary": "1 (1) Arhivaalide loomisel peab kasutama säilimist tagavaid materjale ja meetodeid. Arhivaalide loomisel peab kasutama säilimist tagavaid materjale ja meetodeid. 2 (2) Arhivaale tuleb hoida säilimist soodustavas, kahjustumise ja hävimise vastu kindlustatud ruumis. Täpsemad nõuded arhivaalide säilitustingimustele ja arhiivihoidlatele sätestatakse arhiivieeskirjas. Arhivaale tuleb hoida säilimist soodustavas, kahjustumise ja hävimise vastu kindlustatud ruumis. Täpsemad nõuded arhivaalide säilitust",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
-      "estleg:dutyHolder": "Arhivaalide loomisel"
-    },
-    {
       "@id": "estleg:ARHIIV_Par_39",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ARHIIV"
+        "estleg:LegalProvision_arhiiviseadus"
       ],
       "estleg:paragrahv": "§ 39.",
-      "rdfs:label": "§ 39.",
+      "rdfs:label": "§ 39. [[Käesolevast tekstist välja jäetud.]]",
       "estleg:sourceAct": "Arhiiviseadus",
-      "estleg:summary": "1 (1) Avaliku arhivaali jäädavalt riigist väljaviimine on keelatud. Avaliku arhivaali jäädavalt riigist väljaviimine on keelatud. 2 (2) Arhiiviväärtusega avaliku arhivaali võib tähtajaliselt riigist välja viia ainult riigiarhivaari kirjalikul loal. Arhiiviväärtusega avaliku arhivaali võib tähtajaliselt riigist välja viia ainult riigiarhivaari kirjalikul loal. 3 (3) Enne avaliku arhivaali riigist väljaviimist tuleb arhivaal kopeerida. Kopeerimise korraldab arhivaali valdaja või arhiiv, kus arhiva",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
-      },
-      "estleg:targetGroup": [
-        "citizen"
-      ]
+      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_ARHIIV_default"
+      }
     },
     {
       "@id": "estleg:ARHIIV_Par_40",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ARHIIV"
+        "estleg:LegalProvision_arhiiviseadus"
       ],
       "estleg:paragrahv": "§ 40.",
-      "rdfs:label": "§ 40.",
+      "rdfs:label": "§ 40. Seaduse jõustumine",
       "estleg:sourceAct": "Arhiiviseadus",
-      "estleg:summary": "1 (1) Juurdepääs arhivaalile on õigus tutvuda arhivaali või selles sisalduva teabega. Juurdepääs arhivaalile on õigus tutvuda arhivaali või selles sisalduva teabega. 2 (2) Riigi- ja kohaliku omavalitsuse asutused ja organid, avalik-õiguslikud asutused ning arhiivid on kohustatud tagama nende valduses olevatele arhivaalidele juurdepääsu kooskõlas käesoleva seaduse, avaliku teabe seaduse ja arhiivieeskirjaga. Riigi- ja kohaliku omavalitsuse asutused ja organid, avalik-õiguslikud asutused ning arhi",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
+      "estleg:summary": "Käesolev seadus jõustub 2012. aasta 1. jaanuaril. Käesolev seadus jõustub 2012. aasta 1. jaanuaril.",
+      "estleg:legalText": "Käesolev seadus jõustub 2012. aasta 1. jaanuaril.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_ARHIIV_default"
       },
-      "estleg:targetGroup": [
-        "public_body"
-      ],
-      "estleg:competentAuthority": [
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:Institution_kohalik_omavalitsus"
-        }
-      ],
-      "estleg:competenceType": "general"
-    },
-    {
-      "@id": "estleg:ARHIIV_Par_41",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ARHIIV"
-      ],
-      "estleg:paragrahv": "§ 41.",
-      "rdfs:label": "§ 41.",
-      "estleg:sourceAct": "Arhiiviseadus",
-      "estleg:summary": "1 (1) Arhivaalidele juurdepääsu võimaldamisel on arhiiv või asutus, kus arhivaal asub, asutuse või isiku taotluse alusel kohustatud: 1 1) väljastama arhivaalidest väljavõtteid ja ärakirju; 2 2) võimaldama tutvuda arhivaalidega arhiivis; 3 3) väljastama arhiiviteatisi. Arhivaalidele juurdepääsu võimaldamisel on arhiiv või asutus, kus arhivaal asub, asutuse või isiku taotluse alusel kohustatud: väljastama arhivaalidest väljavõtteid ja ärakirju; võimaldama tutvuda arhivaalidega arhiivis; väljastama",
-      "estleg:targetGroup": [
-        "citizen",
-        "public_body"
-      ]
-    },
-    {
-      "@id": "estleg:ARHIIV_Par_42",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ARHIIV"
-      ],
-      "estleg:paragrahv": "§ 42.",
-      "rdfs:label": "§ 42.",
-      "estleg:sourceAct": "Arhiiviseadus",
-      "estleg:summary": "1 (1) Riigisaladust sisaldavale arhivaalile juurdepääsu korra sätestab riigisaladuse seadus ja selle alusel antud õigusaktid. Riigisaladust sisaldavale arhivaalile juurdepääsu korra sätestab riigisaladuse seadus ja selle alusel antud õigusaktid. 2 (2) Delikaatseid isikuandmeid sisaldavale arhivaalile on juurdepääs võimalik kohtu nõudmisel või juurdlus- või eeluurimisorgani või asjaomase isiku kirjalikul loal või pärast tema surma tema abikaasal, vanematel, lastel, lastelastel, vendadel ja õdedel",
-      "estleg:targetGroup": [
-        "citizen",
-        "public_body"
-      ]
-    },
-    {
-      "@id": "estleg:ARHIIV_Par_43",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ARHIIV"
-      ],
-      "estleg:paragrahv": "§ 43.",
-      "rdfs:label": "§ 43.",
-      "estleg:sourceAct": "Arhiiviseadus",
-      "estleg:summary": "1 (1) Isiku õiguste või tehingute tuvastamiseks vajalike arhivaalide olemasolu ja nendes sisalduva teabe vahendamiseks väljastab avalik arhiiv arhiiviteatisi ning ärakirju ja väljavõtteid. Isiku õiguste või tehingute tuvastamiseks vajalike arhivaalide olemasolu ja nendes sisalduva teabe vahendamiseks väljastab avalik arhiiv arhiiviteatisi ning ärakirju ja väljavõtteid. 2 (2) Arhiiviteatis, ärakiri ja väljavõte vormistatakse vastavalt arhiivieeskirjale. Arhiiviteatis, ärakiri ja väljavõte vormist",
-      "estleg:targetGroup": [
-        "citizen"
-      ]
-    },
-    {
-      "@id": "estleg:ARHIIV_Par_44",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ARHIIV"
-      ],
-      "estleg:paragrahv": "§ 44.",
-      "rdfs:label": "§ 44.",
-      "estleg:sourceAct": "Arhiiviseadus",
-      "estleg:summary": "1 (1) Arhiivijärelevalve on meetmete süsteem, mis tagab kontrolli avalike arhivaalide kogumise, arhiveerimise, säilitamise, kaitse, juurdepääsu korraldamise, arhivaalide kohta andmete arhiiviregistrisse kandmise ning hävitamise üle ja asutuste asjaajamise vastavuse seadusele, arhiivieeskirjale ja asjaajamist reguleerivatele õigusaktidele. Arhiivijärelevalve on meetmete süsteem, mis tagab kontrolli avalike arhivaalide kogumise, arhiveerimise, säilitamise, kaitse, juurdepääsu korraldamise, arhivaa",
-      "estleg:targetGroup": [
-        "public_body"
-      ]
-    },
-    {
-      "@id": "estleg:ARHIIV_Par_45",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ARHIIV"
-      ],
-      "estleg:paragrahv": "§ 45.",
-      "rdfs:label": "§ 45.",
-      "estleg:sourceAct": "Arhiiviseadus",
-      "estleg:summary": "1 (1) Arhiivijärelevalve teostamisel riigiarhivaar: 1 1) teeb riigi- ja kohaliku omavalitsuse asutustele ja isikutele ettekirjutusi käesoleva seaduse ja selle alusel Vabariigi Valitsuse kehtestatud õigusaktide, samuti teiste asjaajamist, arhiveerimist ja dokumentide säilitamist puudutavate õigusaktide sätete rikkumise kõrvaldamiseks; 2 2) teeb juurdlus- või eeluurimisorganile ettekandeid käesoleva seaduse ning selle alusel kehtestatud õigusaktide sätete, samuti teiste arhiivindust ja asjaajamist",
-      "estleg:targetGroup": [
-        "public_body"
-      ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_kohalik_omavalitsus"
-        }
-      ],
-      "estleg:competenceType": "supervision"
-    },
-    {
-      "@id": "estleg:ARHIIV_Par_46",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ARHIIV"
-      ],
-      "estleg:paragrahv": "§ 46.",
-      "rdfs:label": "§ 46.",
-      "estleg:sourceAct": "Arhiiviseadus",
-      "estleg:summary": "1 (1) Rahvusarhiivi üleriikliku arhiivijärelevalvega tegeleva struktuuriüksuse järelevalve alla kuuluvad Riigikogu Kantselei, Riigikohus, Presidendi Kantselei, Õiguskantsleri Kantselei, Riigikontroll ja teised üleriigiliselt tegutsevad ameti- ja valitsusasutused ning avalik-õiguslikud juriidilised isikud ja üleriigiliselt tegutsevad valitsusasutuste hallatavad riigiasutused. Rahvusarhiivi üleriikliku arhiivijärelevalvega tegeleva struktuuriüksuse järelevalve alla kuuluvad Riigikogu Kantselei, Ri",
-      "estleg:targetGroup": [
-        "citizen",
-        "public_body"
-      ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_riigikogu"
-        },
-        {
-          "@id": "estleg:Institution_riigikohus"
-        }
-      ],
-      "estleg:competenceType": "supervision"
-    },
-    {
-      "@id": "estleg:ARHIIV_Par_47",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ARHIIV"
-      ],
-      "estleg:paragrahv": "§ 47.",
-      "rdfs:label": "§ 47.",
-      "estleg:sourceAct": "Arhiiviseadus",
-      "estleg:summary": "1 (1) Maa-arhiivi arhiivijärelevalve alla kuuluvad Rahvusarhiivi üleriikliku arhiivijärelevalvega tegeleva struktuuriüksuse järelevalve alla mittekuuluvad, maa-arhiivi tegevuspiirkonnas tegutsevad ametiasutused, valitsusasutused ja valitsusasutuste hallatavad riigiasutused, seaduse ja selle alusel avalikke ülesandeid teostavad eraõiguslikud juriidilised ja füüsilised isikud ning kohaliku omavalitsuse asutused juhul, kui kohalik omavalitsus ei ole moodustanud avalikku arhiivi. Maa-arhiivi arhiivi",
-      "estleg:targetGroup": [
-        "citizen",
-        "public_body"
-      ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_kohalik_omavalitsus"
-        }
-      ],
-      "estleg:competenceType": "supervision"
-    },
-    {
-      "@id": "estleg:ARHIIV_Par_48",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ARHIIV"
-      ],
-      "estleg:paragrahv": "§ 48.",
-      "rdfs:label": "§ 48.",
-      "estleg:sourceAct": "Arhiiviseadus",
-      "estleg:summary": "1 (1) Eriarhiivi arhiivijärelevalve alla kuuluvad asutused, kelle eritüübilistele teabekandjatele jäädvustatud arhivaale on eriarhiiv määratud koguma. Eriarhiivi arhiivijärelevalve alla kuuluvad asutused, kelle eritüübilistele teabekandjatele jäädvustatud arhivaale on eriarhiiv määratud koguma. 2 (2) Eriarhiivi poolt teostab arhiivijärelevalvet eriarhiivi direktor. Eriarhiivi poolt teostab arhiivijärelevalvet eriarhiivi direktor. 3 (3) Eriarhiivi direktoril on õigus volitada eriarhiivi koosseisu",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
-      "estleg:targetGroup": [
-        "public_body",
-        "official"
-      ]
-    },
-    {
-      "@id": "estleg:ARHIIV_Par_49",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ARHIIV"
-      ],
-      "estleg:paragrahv": "§ 49.",
-      "rdfs:label": "§ 49.",
-      "estleg:sourceAct": "Arhiiviseadus",
-      "estleg:summary": "1 (1) Kohaliku omavalitsuse arhiivi arhiivijärelevalve alla kuuluvad kohaliku omavalitsuse organid ja asutused. Kohaliku omavalitsuse arhiivi arhiivijärelevalve alla kuuluvad kohaliku omavalitsuse organid ja asutused. 2 (2) Kohaliku omavalitsuse arhiivi poolt teostab arhiivijärelevalvet kohaliku omavalitsuse arhiivi direktor. Kohaliku omavalitsuse arhiivi poolt teostab arhiivijärelevalvet kohaliku omavalitsuse arhiivi direktor. 3 (3) Kohaliku omavalitsuse arhiivi direktoril on õigus oma käskkirj",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
-      "estleg:targetGroup": [
-        "public_body",
-        "official"
-      ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_kohalik_omavalitsus"
-        }
-      ],
-      "estleg:competenceType": "supervision"
-    },
-    {
-      "@id": "estleg:ARHIIV_Par_50",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ARHIIV"
-      ],
-      "estleg:paragrahv": "§ 50.",
-      "rdfs:label": "§ 50.",
-      "estleg:sourceAct": "Arhiiviseadus",
-      "estleg:summary": "Kehtetu -"
-    },
-    {
-      "@id": "estleg:ARHIIV_Par_50_50",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ARHIIV"
-      ],
-      "estleg:paragrahv": "§ 50<sup>1</sup>.",
-      "rdfs:label": "§ 50<sup>1</sup>.",
-      "estleg:sourceAct": "Arhiiviseadus",
-      "estleg:summary": "1 (1) Arhiiviseaduse või arhiivieeskirja nõuete rikkumise eest – karistatakse rahatrahviga kuni 100 trahviühikut. Arhiiviseaduse või arhiivieeskirja nõuete rikkumise eest – karistatakse rahatrahviga kuni 100 trahviühikut. 2 (2) Sama teo eest, kui selle on toime pannud juriidiline isik, – karistatakse rahatrahviga kuni 20 000 krooni. Sama teo eest, kui selle on toime pannud juriidiline isik, – karistatakse rahatrahviga kuni 20 000 krooni. 3 (3) Käesolevas paragrahvis sätestatud väärteole kohaldat",
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:ELEKTR_Par_46",
-          "estleg:similarityScore": {
-            "@value": "0.6",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:ESS_Par_164",
-          "estleg:similarityScore": {
-            "@value": "0.6",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:ESS_Par_167",
-          "estleg:similarityScore": {
-            "@value": "0.6",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:MaaKatS_Par_19_25",
-          "estleg:similarityScore": {
-            "@value": "0.667",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:TurS_Par_31_32",
-          "estleg:similarityScore": {
-            "@value": "0.632",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        }
-      ],
-      "estleg:hasSanction": [
-        {
-          "@id": "estleg:Sanction_ARHIIV_Par_50_50_fine"
-        }
-      ],
-      "estleg:enforcedAtLevel": "state",
-      "estleg:targetGroup": [
-        "citizen"
-      ]
-    },
-    {
-      "@id": "estleg:ARHIIV_Par_51",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ARHIIV"
-      ],
-      "estleg:paragrahv": "§ 51.",
-      "rdfs:label": "§ 51.",
-      "estleg:sourceAct": "Arhiiviseadus",
-      "estleg:summary": "1 (1) Arhivaarina ja arhiiviinspektorina võib avalikus arhiivis töötada arhivaari kutsenõuetele vastav isik. Arhivaarina ja arhiiviinspektorina võib avalikus arhiivis töötada arhivaari kutsenõuetele vastav isik. 2 (2) Vastavust arhivaari kutsenõuetele tõendab kehtiv kutsetunnistus. Vastavust arhivaari kutsenõuetele tõendab kehtiv kutsetunnistus. 3 (3) Arhivaari kutsenõuded ja kutseeksami sooritamise korra kehtestab Vabariigi Valitsus ./dyn=742357&id=257947;76431 . Arhivaari kutsenõuded ja kutsee",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
-      "estleg:targetGroup": [
-        "citizen",
-        "public_body"
-      ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_vabariigivalitsus"
-        }
-      ],
-      "estleg:competenceType": "regulation",
-      "estleg:referencedBy": [
-        {
-          "@id": "estleg:ARHIIV_Par_56"
+          "@id": "estleg:ARHIIV_Par_40_Lg_Unknown_1"
         }
       ]
     },
     {
-      "@id": "estleg:ARHIIV_Par_52",
+      "@id": "estleg:ARHIIV_Par_40_Lg_Unknown_1",
       "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ARHIIV"
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:paragrahv": "§ 52.",
-      "rdfs:label": "§ 52.",
-      "estleg:sourceAct": "Arhiiviseadus",
-      "estleg:summary": "1 (1) Vabariigi Valitsus korraldab riigi kesk- ja maakonnaarhiivid ning kohalike omavalitsuste volikogude nõusolekul kohalike omavalitsuste arhiivid ümber Rahvusarhiiviks 1999. aasta 1. jaanuarist. Vabariigi Valitsus korraldab riigi kesk- ja maakonnaarhiivid ning kohalike omavalitsuste volikogude nõusolekul kohalike omavalitsuste arhiivid ümber Rahvusarhiiviks 1999. aasta 1. jaanuarist. 2 (2) Kuni riigi arhiivide ümberkorraldamiseni Rahvusarhiiviks täidavad riigi arhiivid oma seniseid ülesandeid",
-      "estleg:targetGroup": [
-        "public_body"
-      ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_vabariigivalitsus"
-        }
-      ],
-      "estleg:competenceType": "enforcement",
-      "estleg:referencedBy": [
-        {
-          "@id": "estleg:ARHIIV_Par_53"
-        }
-      ]
-    },
-    {
-      "@id": "estleg:ARHIIV_Par_53",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ARHIIV"
-      ],
-      "estleg:paragrahv": "§ 53.",
-      "rdfs:label": "§ 53.",
-      "estleg:sourceAct": "Arhiiviseadus",
-      "estleg:summary": "1 (1) Käesoleva seaduse §-s 52 sätestatud Rahvusarhiiviks ümberkorraldatavate arhiivide töötajate töölepingud antakse kahe nädala jooksul Rahvusarhiivi moodustamisest arvates üle Rahvusarhiivile. Tööandja kohustused lähevad üle Rahvusarhiivile. Käesoleva seaduse §-s 52 sätestatud Rahvusarhiiviks ümberkorraldatavate arhiivide töötajate töölepingud antakse kahe nädala jooksul Rahvusarhiivi moodustamisest arvates üle Rahvusarhiivile. Tööandja kohustused lähevad üle Rahvusarhiivile. 2 (2) Kahe kuu j",
-      "estleg:references": [
-        {
-          "@id": "estleg:ARHIIV_Par_52"
-        }
-      ],
-      "estleg:targetGroup": [
-        "citizen",
-        "business"
-      ]
-    },
-    {
-      "@id": "estleg:ARHIIV_Par_54",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ARHIIV"
-      ],
-      "estleg:paragrahv": "§ 54.",
-      "rdfs:label": "§ 54.",
-      "estleg:sourceAct": "Arhiiviseadus",
-      "estleg:summary": "Käesoleva seaduse jõustumisel avalikes arhiivides säilitatavad arhivaalid kuuluvad riigile või kohalikule omavalitsusele ja kantakse arhiiviregistrisse kahe aasta jooksul, alates käesoleva seaduse jõustumisest. Käesoleva seaduse jõustumisel avalikes arhiivides säilitatavad arhivaalid kuuluvad riigile või kohalikule omavalitsusele ja kantakse arhiiviregistrisse kahe aasta jooksul, alates käesoleva seaduse jõustumisest.",
-      "estleg:targetGroup": [
-        "public_body"
-      ]
-    },
-    {
-      "@id": "estleg:ARHIIV_Par_55",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ARHIIV"
-      ],
-      "estleg:paragrahv": "§ 55.",
-      "rdfs:label": "§ 55.",
-      "estleg:sourceAct": "Arhiiviseadus",
-      "estleg:summary": "Käesoleva seaduse §-s 15 nimetatud arhiivieeskirja kehtestab Vabariigi Valitsus ./dyn=742357&id=544218 1999. aasta 1. jaanuariks. Käesoleva seaduse §-s 15 nimetatud arhiivieeskirja 1999. aasta 1. jaanuariks.",
-      "estleg:references": [
-        {
-          "@id": "estleg:ARHIIV_Par_15"
-        }
-      ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:KAITSE_3_Par_217",
-          "estleg:similarityScore": {
-            "@value": "0.3",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:RIIGIL_Par_5",
-          "estleg:similarityScore": {
-            "@value": "0.3",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:Reg_1000533_Par_29",
-          "estleg:similarityScore": {
-            "@value": "0.308",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        }
-      ],
-      "estleg:targetGroup": [
-        "public_body"
-      ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_vabariigivalitsus"
-        }
-      ],
-      "estleg:competenceType": "regulation"
-    },
-    {
-      "@id": "estleg:ARHIIV_Par_56",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ARHIIV"
-      ],
-      "estleg:paragrahv": "§ 56.",
-      "rdfs:label": "§ 56.",
-      "estleg:sourceAct": "Arhiiviseadus",
-      "estleg:summary": "1 (1) Käesoleva seaduse §-s 51 nimetatud kutsenõuded ja kutseeksami sooritamise korra kehtestab Vabariigi Valitsus 1999. aasta 1. jaanuariks. Käesoleva seaduse §-s 51 nimetatud kutsenõuded ja kutseeksami sooritamise korra kehtestab Vabariigi Valitsus 1999. aasta 1. jaanuariks. 2 (2) Arhivaarid peavad vastama kehtestatud kutsenõuetele 2001. aasta 1. jaanuariks. Arhivaarid peavad vastama kehtestatud kutsenõuetele 2001. aasta 1. jaanuariks.",
-      "estleg:references": [
-        {
-          "@id": "estleg:ARHIIV_Par_51"
-        }
-      ],
-      "estleg:targetGroup": [
-        "public_body"
-      ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_vabariigivalitsus"
-        }
-      ],
-      "estleg:competenceType": "regulation"
-    },
-    {
-      "@id": "estleg:ARHIIV_Par_5769",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ARHIIV"
-      ],
-      "estleg:paragrahv": "§ 57-69.",
-      "rdfs:label": "§ 57-69.",
-      "estleg:sourceAct": "Arhiiviseadus",
-      "estleg:summary": "[Käesolevast tekstist välja jäetud]"
-    },
-    {
-      "@id": "estleg:ARHIIV_Par_70",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ARHIIV"
-      ],
-      "estleg:paragrahv": "§ 70.",
-      "rdfs:label": "§ 70.",
-      "estleg:sourceAct": "Arhiiviseadus",
-      "estleg:summary": "1 (1) Käesolev seadus jõustub 1998. aasta 1. mail. Käesolev seadus jõustub 1998. aasta 1. mail. 2 (2) Seaduse 5. ja 10. peatükk jõustuvad 1999. aasta 1. juunil. Seaduse 5. ja 10. peatükk jõustuvad 1999. aasta 1. juunil."
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Käesolev seadus jõustub 2012. aasta 1. jaanuaril.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ARHIIV_Par_40"
+      }
     }
   ]
 }

@@ -6,25 +6,31 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
   },
   "@graph": [
     {
       "@id": "estleg:TRTRKR_Map_2026",
       "@type": [
+        "owl:Ontology",
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "rdfs:label": "Terrorismi rahastamise tõkestamise rahvusvahelise konventsiooni ratifitseerimise seadus teemakaardistus",
       "dc:source": "Terrorismi rahastamise tõkestamise rahvusvahelise konventsiooni ratifitseerimise seadus",
-      "estleg:affectedBy": [
-        {
-          "@id": "estleg:Draft_RAM19_0975"
-        }
-      ],
-      "estleg:temporalStatus": "unknown",
+      "dcterms:title": "Terrorismi rahastamise tõkestamise rahvusvahelise konventsiooni ratifitseerimise seadus",
+      "estleg:contentStatus": "structuredBody",
+      "dcterms:source": {
+        "@id": "https://www.riigiteataja.ee/akt/687967.xml"
+      },
+      "owl:sameAs": {
+        "@id": "https://www.riigiteataja.ee/akt/687967.xml"
+      },
+      "estleg:kehtiv": {
+        "@value": "2026-05-24",
+        "@type": "xsd:date"
+      },
       "dcterms:subject": [
         {
           "@id": "http://eurovoc.europa.eu/0411"
@@ -33,12 +39,13 @@
           "@id": "http://eurovoc.europa.eu/2421"
         },
         {
-          "@id": "http://eurovoc.europa.eu/2446"
+          "@id": "http://eurovoc.europa.eu/2431"
         }
-      ]
+      ],
+      "estleg:temporalStatus": "unknown"
     },
     {
-      "@id": "estleg:LegalProvision_TRTRKR",
+      "@id": "estleg:LegalProvision_terrorismi_rahastamise_tokestamise_rahvusvahelise_konventsiooni_ratifitseerimise",
       "@type": [
         "owl:Class"
       ],
@@ -48,28 +55,55 @@
       }
     },
     {
+      "@id": "estleg:TRTRKR_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": "Terrorismi rahastamise tõkestamise rahvusvahelise konventsiooni ratifitseerimise seadus teemaskeem",
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_TRTRKR_default"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Cluster_TRTRKR_default",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": "§1–3 Lepingu sätted",
+      "skos:prefLabel": "§1–3 Lepingu sätted",
+      "skos:inScheme": {
+        "@id": "estleg:TRTRKR_TopicScheme"
+      },
+      "estleg:provisionCount": 3
+    },
+    {
       "@id": "estleg:TRTRKR_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TRTRKR"
+        "estleg:LegalProvision_terrorismi_rahastamise_tokestamise_rahvusvahelise_konventsiooni_ratifitseerimise"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1.",
+      "rdfs:label": "§ 1. [Ratifitseerida juurdelisatud terrorismi rahastamise tõkestamise rahvusvaheline k...]",
       "estleg:sourceAct": "Terrorismi rahastamise tõkestamise rahvusvahelise konventsiooni ratifitseerimise seadus",
       "estleg:summary": "Ratifitseerida juurdelisatud terrorismi rahastamise tõkestamise rahvusvaheline konventsioon./94698, mis on ÜRO Peaassamblee poolt vastu võetud 1999. aasta 9. detsembril ning millele Eesti Vabariik on alla kirjutanud 2000. aasta 6. septembril. Ratifitseerida juurdelisatud , mis on ÜRO Peaassamblee poolt vastu võetud 1999. aasta 9. detsembril ning millele Eesti Vabariik on alla kirjutanud 2000. aasta 6. septembril.",
+      "estleg:legalText": "Ratifitseerida juurdelisatud , mis on ÜRO Peaassamblee poolt vastu võetud 1999. aasta 9. detsembril ning millele Eesti Vabariik on alla kirjutanud 2000. aasta 6. septembril.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TRTRKR_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:TRTRKR_Par_1_Lg_Unknown_1"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:TLKR_Par_1",
           "estleg:similarityScore": {
-            "@value": "0.462",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:UPKLR_2_Par_1",
-          "estleg:similarityScore": {
-            "@value": "0.348",
+            "@value": "0.458",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
@@ -97,66 +131,90 @@
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:uhinenud_rahvaste_organisatsiooni_kliima_Par_1",
+          "estleg:similarityScore": {
+            "@value": "0.407",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
         }
       ]
+    },
+    {
+      "@id": "estleg:TRTRKR_Par_1_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Ratifitseerida juurdelisatud , mis on ÜRO Peaassamblee poolt vastu võetud 1999. aasta 9. detsembril ning millele Eesti Vabariik on alla kirjutanud 2000. aasta 6. septembril.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TRTRKR_Par_1"
+      }
     },
     {
       "@id": "estleg:TRTRKR_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TRTRKR"
+        "estleg:LegalProvision_terrorismi_rahastamise_tokestamise_rahvusvahelise_konventsiooni_ratifitseerimise"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2.",
+      "rdfs:label": "§ 2. [Kehtetu –]",
       "estleg:sourceAct": "Terrorismi rahastamise tõkestamise rahvusvahelise konventsiooni ratifitseerimise seadus",
-      "estleg:summary": "Konventsiooni artikli 2 lõike 2 alusel Eesti Vabariik deklareerib, et ta ei kohalda enda suhtes konventsiooni lisas toodud protokolli mandrilaval asuvate püsiplatvormide ohutuse vastu suunatud ebaseaduslike tegude tõkestamise kohta, mis on koostatud 1988. aasta 10. märtsil Roomas. Konventsiooni artikli 2 lõike 2 alusel Eesti Vabariik deklareerib, et ta ei kohalda enda suhtes konventsiooni lisas toodud protokolli mandrilaval asuvate püsiplatvormide ohutuse vastu suunatud ebaseaduslike tegude tõke"
+      "estleg:summary": "Kehtetu –",
+      "estleg:legalText": "Kehtetu –",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TRTRKR_default"
+      }
     },
     {
       "@id": "estleg:TRTRKR_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TRTRKR"
+        "estleg:LegalProvision_terrorismi_rahastamise_tokestamise_rahvusvahelise_konventsiooni_ratifitseerimise"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3.",
+      "rdfs:label": "§ 3. [Konventsiooni artikli 7 lõike 3 alusel Eesti Vabariik deklareerib, et ta kohalda...]",
       "estleg:sourceAct": "Terrorismi rahastamise tõkestamise rahvusvahelise konventsiooni ratifitseerimise seadus",
-      "estleg:summary": "Konventsiooni artikli 7 lõike 3 alusel Eesti Vabariik deklareerib, et ta kohaldab artiklis 2 nimetatud kuritegude suhtes artikli 7 lõikes 2 käsitletud jurisdiktsiooni oma siseriiklikus õiguses.<table summary=\"allkiri\" width=\"90%\"> <tbody><tr valign=\"top\"> <td width=\"39%\"> </td> <td align=\"right\" width=\"60%\"> <b>Riigikogu esimees Toomas SAVI</b> </td> </tr> </tbody></table> Konventsiooni artikli 7 lõike 3 alusel Eesti Vabariik deklareerib, et ta kohaldab artiklis 2 nimetatud kuritegude suhtes art",
-      "estleg:semanticallySimilarTo": [
+      "estleg:summary": "Konventsiooni artikli 7 lõike 3 alusel Eesti Vabariik deklareerib, et ta kohaldab artiklis 2 nimetatud kuritegude suhtes artikli 7 lõikes 2 käsitletud jurisdiktsiooni oma siseriiklikus õiguses. Konventsiooni artikli 7 lõike 3 alusel Eesti Vabariik deklareerib, et ta kohaldab artiklis 2 nimetatud kuritegude suhtes artikli 7 lõikes 2 käsitletud jurisdiktsiooni oma siseriiklikus õiguses. Õiend 9.12.09Parandatud seaduse jõustumise aeg. Õiend 9.12.09Parandatud seaduse jõustumise aeg.",
+      "estleg:legalText": "Konventsiooni artikli 7 lõike 3 alusel Eesti Vabariik deklareerib, et ta kohaldab artiklis 2 nimetatud kuritegude suhtes artikli 7 lõikes 2 käsitletud jurisdiktsiooni oma siseriiklikus õiguses. Õiend 9.12.09Parandatud seaduse jõustumise aeg.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TRTRKR_default"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:TKVTETVVIKKE_Par_3",
-          "estleg:similarityScore": {
-            "@value": "0.316",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
+          "@id": "estleg:TRTRKR_Par_3_Lg_Unknown_1"
         },
         {
-          "@id": "estleg:VOHMEKR_Par_2",
-          "estleg:similarityScore": {
-            "@value": "0.353",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:VUTKU_Par_2",
-          "estleg:similarityScore": {
-            "@value": "0.3",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
+          "@id": "estleg:TRTRKR_Par_3_Lg_Unknown_2"
         }
+      ]
+    },
+    {
+      "@id": "estleg:TRTRKR_Par_3_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:targetGroup": [
-        "public_body",
-        "official"
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Konventsiooni artikli 7 lõike 3 alusel Eesti Vabariik deklareerib, et ta kohaldab artiklis 2 nimetatud kuritegude suhtes artikli 7 lõikes 2 käsitletud jurisdiktsiooni oma siseriiklikus õiguses.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TRTRKR_Par_3"
+      }
+    },
+    {
+      "@id": "estleg:TRTRKR_Par_3_Lg_Unknown_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_riigikogu"
-        }
-      ],
-      "estleg:competenceType": "general"
+      "estleg:subsectionNumber": "Unknown_2",
+      "estleg:legalText": "Õiend 9.12.09Parandatud seaduse jõustumise aeg.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TRTRKR_Par_3"
+      }
     }
   ]
 }

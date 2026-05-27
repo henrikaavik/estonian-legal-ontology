@@ -324,7 +324,11 @@ def build_law_index(index_data: dict) -> dict[str, dict]:
 
     for law in index_data.get("laws", []):
         name = law.get("name", "")
-        files = law.get("files", [])
+        files = [
+            file
+            for file in law.get("files", [])
+            if isinstance(file, str) and (KRR_DIR / file).exists()
+        ]
         if not name or not files:
             continue
 

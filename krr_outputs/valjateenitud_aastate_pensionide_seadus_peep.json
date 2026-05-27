@@ -6,20 +6,31 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
   },
   "@graph": [
     {
       "@id": "estleg:VAP_Map_2026",
       "@type": [
+        "owl:Ontology",
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "rdfs:label": "Väljateenitud aastate pensionide seadus teemakaardistus",
       "dc:source": "Väljateenitud aastate pensionide seadus",
-      "estleg:temporalStatus": "unknown",
+      "dcterms:title": "Väljateenitud aastate pensionide seadus",
+      "estleg:contentStatus": "structuredBody",
+      "dcterms:source": {
+        "@id": "https://www.riigiteataja.ee/akt/122022023015.xml"
+      },
+      "owl:sameAs": {
+        "@id": "https://www.riigiteataja.ee/akt/122022023015.xml"
+      },
+      "estleg:kehtiv": {
+        "@value": "2026-05-24",
+        "@type": "xsd:date"
+      },
       "dcterms:subject": [
         {
           "@id": "http://eurovoc.europa.eu/3611"
@@ -28,18 +39,19 @@
           "@id": "http://eurovoc.europa.eu/3606"
         },
         {
-          "@id": "http://eurovoc.europa.eu/2441"
-        },
-        {
           "@id": "http://eurovoc.europa.eu/4416"
         },
         {
           "@id": "http://eurovoc.europa.eu/0816"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5241"
         }
-      ]
+      ],
+      "estleg:temporalStatus": "unknown"
     },
     {
-      "@id": "estleg:LegalProvision_VAP",
+      "@id": "estleg:LegalProvision_valjateenitud_aastate_pensionide_seadus",
       "@type": [
         "owl:Class"
       ],
@@ -49,81 +61,271 @@
       }
     },
     {
+      "@id": "estleg:VAP_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": "Väljateenitud aastate pensionide seadus teemaskeem",
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_VAP_default"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Cluster_VAP_default",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": "§1–33 Väljateenitud aastate pensionide seadus",
+      "skos:prefLabel": "§1–33 Väljateenitud aastate pensionide seadus",
+      "skos:inScheme": {
+        "@id": "estleg:VAP_TopicScheme"
+      },
+      "estleg:provisionCount": 33
+    },
+    {
       "@id": "estleg:VAP_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VAP"
+        "estleg:LegalProvision_valjateenitud_aastate_pensionide_seadus"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1.",
+      "rdfs:label": "§ 1. [Väljateenitud aastate pension määratakse nende kutsealade töötajatele ja spetsia...]",
       "estleg:sourceAct": "Väljateenitud aastate pensionide seadus",
       "estleg:summary": "Väljateenitud aastate pension määratakse nende kutsealade töötajatele ja spetsialistidele, kes teevad sellist tööd, millega kaasneb enne vanaduspensioni ikka jõudmist kutsealase töövõime kaotus või vähenemine, mis takistab sellel kutsealal või ametikohal töötamise jätkamist. Väljateenitud aastate pension määratakse nende kutsealade töötajatele ja spetsialistidele, kes teevad sellist tööd, millega kaasneb enne vanaduspensioni ikka jõudmist kutsealase töövõime kaotus või vähenemine, mis takistab s",
+      "estleg:legalText": "Väljateenitud aastate pension määratakse nende kutsealade töötajatele ja spetsialistidele, kes teevad sellist tööd, millega kaasneb enne vanaduspensioni ikka jõudmist kutsealase töövõime kaotus või vähenemine, mis takistab sellel kutsealal või ametikohal töötamise jätkamist. Väljateenitud aastate pensionile õigust andva staaži hulka ei arvata käesoleva seadusega ettenähtud kutsealadel või ametikohtadel osalise tööajaga töötamise aeg.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VAP_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VAP_Par_1_Lg_Unknown_1"
+        },
+        {
+          "@id": "estleg:VAP_Par_1_Lg_Unknown_2"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen"
       ]
+    },
+    {
+      "@id": "estleg:VAP_Par_1_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Väljateenitud aastate pension määratakse nende kutsealade töötajatele ja spetsialistidele, kes teevad sellist tööd, millega kaasneb enne vanaduspensioni ikka jõudmist kutsealase töövõime kaotus või vähenemine, mis takistab sellel kutsealal või ametikohal töötamise jätkamist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VAP_Par_1"
+      }
+    },
+    {
+      "@id": "estleg:VAP_Par_1_Lg_Unknown_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_2",
+      "estleg:legalText": "Väljateenitud aastate pensionile õigust andva staaži hulka ei arvata käesoleva seadusega ettenähtud kutsealadel või ametikohtadel osalise tööajaga töötamise aeg.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VAP_Par_1"
+      }
     },
     {
       "@id": "estleg:VAP_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VAP"
+        "estleg:LegalProvision_valjateenitud_aastate_pensionide_seadus"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2.",
+      "rdfs:label": "§ 2. [Õigus saada väljateenitud aastate pensioni on: 1 1) kehtetu - RT I 2000 28 167 7...]",
       "estleg:sourceAct": "Väljateenitud aastate pensionide seadus",
       "estleg:summary": "Õigus saada väljateenitud aastate pensioni on: 1 1) kehtetu - RT I 2000 28 167 71902 2000-04-16 2 2) politseiametnikel, päästeteenistujatel ning vanglaametnikel (§ 12); 3 3) mõne kategooria tsiviillennundustöötajatel ja katselenduritel (§ 13); 4 4) allmaa- ja pealmaamäetöödel – mõne kutseala töötajatel (§ 14 punkt 1); 5 5) mere- ja jõelaevastiku ning kalalaevastiku laevade ujuvkoosseisu mõnedel kutsealadel ja ametikohtadel töötajatel (§ 14 punkt 2); 6 6) tekstiilitööstuse töötajatel (§ 14 punkt ",
+      "estleg:legalText": "Õigus saada väljateenitud aastate pensioni on: kehtetu - politseiametnikel, päästeteenistujatel ning vanglaametnikel (§ 12); mõne kategooria tsiviillennundustöötajatel ja katselenduritel (§ 13); allmaa- ja pealmaamäetöödel – mõne kutseala töötajatel (§ 14 punkt 1); mere- ja jõelaevastiku ning kalalaevastiku laevade ujuvkoosseisu mõnedel kutsealadel ja ametikohtadel töötajatel (§ 14 punkt 2); tekstiilitööstuse töötajatel (§ 14 punkt 3); asenduskodude, erivajadusega inimeste õppeasutuste ja haigete laste asutuste õpetajatel (§ 14 punkt 4); riigi-, munitsipaal- ja eraetendusasutuse, sihtasutusena tegutseva etendusasutuse ja rahvusooperi teatud kategooria artistidel (§ 14 punkt 5); inimese immuunpuudulikkuse (AIDS-i) viirusega nakatunud meditsiinitöötajatel (§ 14 punkt 6); linnasiseste regulaarliinide ühissõidukijuhtidel (§ 14 punkt 7). Käesoleva paragrahvi punktides 1–8 märgitud isikute kutsealad ja ametikohad, kus töötamine annab õiguse saada väljateenitud aastate pensioni, samuti töötajatele selle pensioni määramiseks vajaliku väljateenitud aastate arvutamise korra",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VAP_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VAP_Par_2_Lg_Unknown_1"
+        },
+        {
+          "@id": "estleg:VAP_Par_2_Lg_Unknown_2"
+        }
+      ],
       "estleg:targetGroup": [
-        "citizen"
+        "citizen",
+        "public_body",
+        "ngo"
       ]
+    },
+    {
+      "@id": "estleg:VAP_Par_2_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Õigus saada väljateenitud aastate pensioni on: kehtetu - politseiametnikel, päästeteenistujatel ning vanglaametnikel (§ 12); mõne kategooria tsiviillennundustöötajatel ja katselenduritel (§ 13); allmaa- ja pealmaamäetöödel – mõne kutseala töötajatel (§ 14 punkt 1); mere- ja jõelaevastiku ning kalalaevastiku laevade ujuvkoosseisu mõnedel kutsealadel ja ametikohtadel töötajatel (§ 14 punkt 2); tekstiilitööstuse töötajatel (§ 14 punkt 3); asenduskodude, erivajadusega inimeste õppeasutuste ja haigete laste asutuste õpetajatel (§ 14 punkt 4); riigi-, munitsipaal- ja eraetendusasutuse, sihtasutusena tegutseva etendusasutuse ja rahvusooperi teatud kategooria artistidel (§ 14 punkt 5); inimese immuunpuudulikkuse (AIDS-i) viirusega nakatunud meditsiinitöötajatel (§ 14 punkt 6); linnasiseste regulaarliinide ühissõidukijuhtidel (§ 14 punkt 7).",
+      "estleg:parentProvision": {
+        "@id": "estleg:VAP_Par_2"
+      }
+    },
+    {
+      "@id": "estleg:VAP_Par_2_Lg_Unknown_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_2",
+      "estleg:legalText": "Käesoleva paragrahvi punktides 1–8 märgitud isikute kutsealad ja ametikohad, kus töötamine annab õiguse saada väljateenitud aastate pensioni, samuti töötajatele selle pensioni määramiseks vajaliku väljateenitud aastate arvutamise korra",
+      "estleg:parentProvision": {
+        "@id": "estleg:VAP_Par_2"
+      }
     },
     {
       "@id": "estleg:VAP_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VAP"
+        "estleg:LegalProvision_valjateenitud_aastate_pensionide_seadus"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3.",
+      "rdfs:label": "§ 3. [Väljateenitud aastate pensioni arvutamise aluseks on pensioni baasosa, millele l...]",
       "estleg:sourceAct": "Väljateenitud aastate pensionide seadus",
       "estleg:summary": "Väljateenitud aastate pensioni arvutamise aluseks on pensioni baasosa, millele liidetakse iga sellele pensionile õigust andva staaži aasta eest 90,6 protsenti staažiaasta hindest ning käesoleva seaduse §-s 6 nimetatud isikutel iga ülejäänud pensionistaaži aasta eest 100 protsenti staažiaasta hindest. Väljateenitud aastate pensioni arvutamise aluseks on pensioni baasosa, millele liidetakse iga sellele pensionile õigust andva staaži aasta eest 90,6 protsenti staažiaasta hindest ning käesoleva sead",
+      "estleg:legalText": "Väljateenitud aastate pensioni arvutamise aluseks on pensioni baasosa, millele liidetakse iga sellele pensionile õigust andva staaži aasta eest 90,6 protsenti staažiaasta hindest ning käesoleva seaduse §-s 6 nimetatud isikutel iga ülejäänud pensionistaaži aasta eest 100 protsenti staažiaasta hindest. Käesoleva seaduse § 2 punktis 2 loetletud isikute ning punktis 3 nimetatud katselendurite pensionile arvutatakse täiendavalt juurde 20 protsenti pensioni baasosast.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VAP_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VAP_Par_3_Lg_Unknown_1"
+        },
+        {
+          "@id": "estleg:VAP_Par_3_Lg_Unknown_2"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen"
+      ],
       "estleg:references": [
         {
           "@id": "estleg:VAP_Par_6"
         }
       ]
+    },
+    {
+      "@id": "estleg:VAP_Par_3_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Väljateenitud aastate pensioni arvutamise aluseks on pensioni baasosa, millele liidetakse iga sellele pensionile õigust andva staaži aasta eest 90,6 protsenti staažiaasta hindest ning käesoleva seaduse §-s 6 nimetatud isikutel iga ülejäänud pensionistaaži aasta eest 100 protsenti staažiaasta hindest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VAP_Par_3"
+      }
+    },
+    {
+      "@id": "estleg:VAP_Par_3_Lg_Unknown_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_2",
+      "estleg:legalText": "Käesoleva seaduse § 2 punktis 2 loetletud isikute ning punktis 3 nimetatud katselendurite pensionile arvutatakse täiendavalt juurde 20 protsenti pensioni baasosast.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VAP_Par_3"
+      }
     },
     {
       "@id": "estleg:VAP_Par_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VAP"
+        "estleg:LegalProvision_valjateenitud_aastate_pensionide_seadus"
       ],
       "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4.",
+      "rdfs:label": "§ 4. [Kehtetu - RT I 1993 40 596 29563 1993-07-01 Kehtetu -]",
       "estleg:sourceAct": "Väljateenitud aastate pensionide seadus",
-      "estleg:summary": "Kehtetu - RT I 1993 40 596 29563 1993-07-01 Kehtetu -"
+      "estleg:summary": "Kehtetu - RT I 1993 40 596 29563 1993-07-01 Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VAP_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VAP_Par_4_Lg_Unknown_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:VAP_Par_4_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:VAP_Par_4"
+      }
     },
     {
       "@id": "estleg:VAP_Par_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VAP"
+        "estleg:LegalProvision_valjateenitud_aastate_pensionide_seadus"
       ],
       "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5.",
+      "rdfs:label": "§ 5. [Kehtetu - RT I 2000 25 147 71875 2000-04-01 Kehtetu -]",
       "estleg:sourceAct": "Väljateenitud aastate pensionide seadus",
-      "estleg:summary": "Kehtetu - RT I 2000 25 147 71875 2000-04-01 Kehtetu -"
+      "estleg:summary": "Kehtetu - RT I 2000 25 147 71875 2000-04-01 Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VAP_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VAP_Par_5_Lg_Unknown_1"
+        }
+      ]
     },
     {
-      "@id": "estleg:VAP_Par_5_5",
+      "@id": "estleg:VAP_Par_5_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:VAP_Par_5"
+      }
+    },
+    {
+      "@id": "estleg:VAP_Par_5_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VAP"
+        "estleg:LegalProvision_valjateenitud_aastate_pensionide_seadus"
       ],
       "estleg:paragrahv": "§ 5<sup>1</sup>.",
-      "rdfs:label": "§ 5<sup>1</sup>.",
+      "rdfs:label": "§ 5<sup>1</sup>. [Väljateenitud aastate pensionile õigust andvat staaži, välja arvatud käesoleva s...]",
       "estleg:sourceAct": "Väljateenitud aastate pensionide seadus",
       "estleg:summary": "Väljateenitud aastate pensionile õigust andvat staaži, välja arvatud käesoleva seaduse §-s 6 sätestatud pensionistaaži, arvestatakse tööperioodide summana. RT I 2001 100 648 27442 2002-01-01 Väljateenitud aastate pensionile õigust andvat staaži, välja arvatud käesoleva seaduse §-s 6 sätestatud pensionistaaži, arvestatakse tööperioodide summana.",
+      "estleg:legalText": "Väljateenitud aastate pensionile õigust andvat staaži, välja arvatud käesoleva seaduse §-s 6 sätestatud pensionistaaži, arvestatakse tööperioodide summana.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VAP_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VAP_Par_5_1_Lg_Unknown_1"
+        }
+      ],
       "estleg:references": [
         {
           "@id": "estleg:VAP_Par_6"
@@ -131,26 +333,68 @@
       ]
     },
     {
-      "@id": "estleg:VAP_Par_5_6",
+      "@id": "estleg:VAP_Par_5_1_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Väljateenitud aastate pensionile õigust andvat staaži, välja arvatud käesoleva seaduse §-s 6 sätestatud pensionistaaži, arvestatakse tööperioodide summana.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VAP_Par_5_1"
+      }
+    },
+    {
+      "@id": "estleg:VAP_Par_5_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VAP"
+        "estleg:LegalProvision_valjateenitud_aastate_pensionide_seadus"
       ],
       "estleg:paragrahv": "§ 5<sup>2</sup>.",
-      "rdfs:label": "§ 5<sup>2</sup>.",
+      "rdfs:label": "§ 5<sup>2</sup>. [Väljateenitud aastate pensionile õigust andva staaži kindlaksmääramisel lähtutak...]",
       "estleg:sourceAct": "Väljateenitud aastate pensionide seadus",
-      "estleg:summary": "Väljateenitud aastate pensionile õigust andva staaži kindlaksmääramisel lähtutakse ümardamata staažist. RT I 2000 25 147 71875 2000-04-01 Väljateenitud aastate pensionile õigust andva staaži kindlaksmääramisel lähtutakse ümardamata staažist."
+      "estleg:summary": "Väljateenitud aastate pensionile õigust andva staaži kindlaksmääramisel lähtutakse ümardamata staažist. RT I 2000 25 147 71875 2000-04-01 Väljateenitud aastate pensionile õigust andva staaži kindlaksmääramisel lähtutakse ümardamata staažist.",
+      "estleg:legalText": "Väljateenitud aastate pensionile õigust andva staaži kindlaksmääramisel lähtutakse ümardamata staažist.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VAP_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VAP_Par_5_2_Lg_Unknown_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:VAP_Par_5_2_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Väljateenitud aastate pensionile õigust andva staaži kindlaksmääramisel lähtutakse ümardamata staažist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VAP_Par_5_2"
+      }
     },
     {
       "@id": "estleg:VAP_Par_6",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VAP"
+        "estleg:LegalProvision_valjateenitud_aastate_pensionide_seadus"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6.",
+      "rdfs:label": "§ 6. [Mõne kutseala spetsialistidele (§ 12 teine lõik ja § 13 punktid 2–4) väljateenit...]",
       "estleg:sourceAct": "Väljateenitud aastate pensionide seadus",
       "estleg:summary": "Mõne kutseala spetsialistidele (§ 12 teine lõik ja § 13 punktid 2–4) väljateenitud aastate pensioni määramiseks vajalik pensionistaaž tehakse kindlaks riikliku pensionikindlustuse seaduse ja okupatsioonirežiimide poolt represseeritud isiku seaduse alusel. RT I 2005 38 295 917038 2006-01-01 Mõne kutseala spetsialistidele (§ 12 teine lõik ja § 13 punktid 2–4) väljateenitud aastate pensioni määramiseks vajalik pensionistaaž tehakse kindlaks riikliku pensionikindlustuse seaduse ja okupatsioonirežiim",
+      "estleg:legalText": "Mõne kutseala spetsialistidele (§ 12 teine lõik ja § 13 punktid 2–4) väljateenitud aastate pensioni määramiseks vajalik pensionistaaž tehakse kindlaks riikliku pensionikindlustuse seaduse ja okupatsioonirežiimide poolt represseeritud isiku seaduse alusel.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VAP_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VAP_Par_6_Lg_Unknown_1"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen"
       ],
@@ -159,114 +403,370 @@
           "@id": "estleg:VAP_Par_3"
         },
         {
-          "@id": "estleg:VAP_Par_5_5"
+          "@id": "estleg:VAP_Par_5_1"
         }
       ]
     },
     {
-      "@id": "estleg:VAP_Par_6_8",
+      "@id": "estleg:VAP_Par_6_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Mõne kutseala spetsialistidele (§ 12 teine lõik ja § 13 punktid 2–4) väljateenitud aastate pensioni määramiseks vajalik pensionistaaž tehakse kindlaks riikliku pensionikindlustuse seaduse ja okupatsioonirežiimide poolt represseeritud isiku seaduse alusel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VAP_Par_6"
+      }
+    },
+    {
+      "@id": "estleg:VAP_Par_6_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VAP"
+        "estleg:LegalProvision_valjateenitud_aastate_pensionide_seadus"
       ],
       "estleg:paragrahv": "§ 6<sup>1</sup>.",
-      "rdfs:label": "§ 6<sup>1</sup>.",
+      "rdfs:label": "§ 6<sup>1</sup>. [Väljateenitud aastate pension määratakse käesoleva seadusega sätestatud tingimus...]",
       "estleg:sourceAct": "Väljateenitud aastate pensionide seadus",
       "estleg:summary": "Väljateenitud aastate pension määratakse käesoleva seadusega sätestatud tingimuste olemasolul isikule, kellel on vähemalt 15-aastane Eestis omandatud pensionistaaž. RT I 2001 100 648 27442 2002-01-01 Väljateenitud aastate pension määratakse käesoleva seadusega sätestatud tingimuste olemasolul isikule, kellel on vähemalt 15-aastane Eestis omandatud pensionistaaž.",
+      "estleg:legalText": "Väljateenitud aastate pension määratakse käesoleva seadusega sätestatud tingimuste olemasolul isikule, kellel on vähemalt 15-aastane Eestis omandatud pensionistaaž.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VAP_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VAP_Par_6_1_Lg_Unknown_1"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen"
       ]
     },
     {
-      "@id": "estleg:VAP_Par_6_9",
+      "@id": "estleg:VAP_Par_6_1_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Väljateenitud aastate pension määratakse käesoleva seadusega sätestatud tingimuste olemasolul isikule, kellel on vähemalt 15-aastane Eestis omandatud pensionistaaž.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VAP_Par_6_1"
+      }
+    },
+    {
+      "@id": "estleg:VAP_Par_6_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VAP"
+        "estleg:LegalProvision_valjateenitud_aastate_pensionide_seadus"
       ],
       "estleg:paragrahv": "§ 6<sup>2</sup>.",
-      "rdfs:label": "§ 6<sup>2</sup>.",
+      "rdfs:label": "§ 6<sup>2</sup>. [Väljateenitud aastate pensionile õigust andva staaži hulka arvatakse ka enne käe...]",
       "estleg:sourceAct": "Väljateenitud aastate pensionide seadus",
-      "estleg:summary": "Väljateenitud aastate pensionile õigust andva staaži hulka arvatakse ka enne käesoleva seaduse jõustumist käesolevas seaduses nimetatud kutsealal või ametikohal töötatud aeg. RT I 2018-07-06 3 106072018003 2020-01-01 Väljateenitud aastate pensionile õigust andva staaži hulka arvatakse ka enne käesoleva seaduse jõustumist käesolevas seaduses nimetatud kutsealal või ametikohal töötatud aeg."
+      "estleg:summary": "Väljateenitud aastate pensionile õigust andva staaži hulka arvatakse ka enne käesoleva seaduse jõustumist käesolevas seaduses nimetatud kutsealal või ametikohal töötatud aeg. RT I 2018-07-06 3 106072018003 2020-01-01 Väljateenitud aastate pensionile õigust andva staaži hulka arvatakse ka enne käesoleva seaduse jõustumist käesolevas seaduses nimetatud kutsealal või ametikohal töötatud aeg.",
+      "estleg:legalText": "Väljateenitud aastate pensionile õigust andva staaži hulka arvatakse ka enne käesoleva seaduse jõustumist käesolevas seaduses nimetatud kutsealal või ametikohal töötatud aeg.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VAP_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VAP_Par_6_2_Lg_Unknown_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:VAP_Par_6_2_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Väljateenitud aastate pensionile õigust andva staaži hulka arvatakse ka enne käesoleva seaduse jõustumist käesolevas seaduses nimetatud kutsealal või ametikohal töötatud aeg.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VAP_Par_6_2"
+      }
     },
     {
       "@id": "estleg:VAP_Par_7",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VAP"
+        "estleg:LegalProvision_valjateenitud_aastate_pensionide_seadus"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7.",
+      "rdfs:label": "§ 7. [Väljateenitud aastate pension määratakse pensionitaotluse esitamise päevast. Väl...]",
       "estleg:sourceAct": "Väljateenitud aastate pensionide seadus",
       "estleg:summary": "Väljateenitud aastate pension määratakse pensionitaotluse esitamise päevast. Väljateenitud aastate pension määratakse pensionitaotluse esitamise päevast. Väljateenitud aastate pension määratakse eluajaks. Väljateenitud aastate pension määratakse eluajaks. Väljateenitud aastate pensioni saajal, kellel on õigus pensionile riikliku pensionikindlustuse seaduse alusel, on õigus taotleda nimetatud seaduse alusel pensioni määramist mis tahes ajal pärast pensioni saamise õiguse tekkimist. RT I 2000 25 1",
+      "estleg:legalText": "Väljateenitud aastate pension määratakse pensionitaotluse esitamise päevast. Väljateenitud aastate pension määratakse eluajaks. Väljateenitud aastate pensioni saajal, kellel on õigus pensionile riikliku pensionikindlustuse seaduse alusel, on õigus taotleda nimetatud seaduse alusel pensioni määramist mis tahes ajal pärast pensioni saamise õiguse tekkimist.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VAP_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VAP_Par_7_Lg_Unknown_1"
+        },
+        {
+          "@id": "estleg:VAP_Par_7_Lg_Unknown_2"
+        },
+        {
+          "@id": "estleg:VAP_Par_7_Lg_Unknown_3"
+        }
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Right"
+      }
+    },
+    {
+      "@id": "estleg:VAP_Par_7_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Väljateenitud aastate pension määratakse pensionitaotluse esitamise päevast.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VAP_Par_7"
+      }
+    },
+    {
+      "@id": "estleg:VAP_Par_7_Lg_Unknown_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_2",
+      "estleg:legalText": "Väljateenitud aastate pension määratakse eluajaks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VAP_Par_7"
+      }
+    },
+    {
+      "@id": "estleg:VAP_Par_7_Lg_Unknown_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_3",
+      "estleg:legalText": "Väljateenitud aastate pensioni saajal, kellel on õigus pensionile riikliku pensionikindlustuse seaduse alusel, on õigus taotleda nimetatud seaduse alusel pensioni määramist mis tahes ajal pärast pensioni saamise õiguse tekkimist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VAP_Par_7"
       }
     },
     {
       "@id": "estleg:VAP_Par_8",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VAP"
+        "estleg:LegalProvision_valjateenitud_aastate_pensionide_seadus"
       ],
       "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8.",
+      "rdfs:label": "§ 8. [Kehtetu - RT I 1993 40 596 29563 1993-07-01 Kehtetu -]",
       "estleg:sourceAct": "Väljateenitud aastate pensionide seadus",
-      "estleg:summary": "Kehtetu - RT I 1993 40 596 29563 1993-07-01 Kehtetu -"
+      "estleg:summary": "Kehtetu - RT I 1993 40 596 29563 1993-07-01 Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VAP_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VAP_Par_8_Lg_Unknown_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:VAP_Par_8_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:VAP_Par_8"
+      }
     },
     {
       "@id": "estleg:VAP_Par_9",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VAP"
+        "estleg:LegalProvision_valjateenitud_aastate_pensionide_seadus"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9.",
+      "rdfs:label": "§ 9. [Kehtetu - RT I 1996 22 437 31159 1996-04-01 Kehtetu -]",
       "estleg:sourceAct": "Väljateenitud aastate pensionide seadus",
-      "estleg:summary": "Kehtetu - RT I 1996 22 437 31159 1996-04-01 Kehtetu -"
+      "estleg:summary": "Kehtetu - RT I 1996 22 437 31159 1996-04-01 Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VAP_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VAP_Par_9_Lg_Unknown_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:VAP_Par_9_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:VAP_Par_9"
+      }
     },
     {
       "@id": "estleg:VAP_Par_10",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VAP"
+        "estleg:LegalProvision_valjateenitud_aastate_pensionide_seadus"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10.",
+      "rdfs:label": "§ 10. [Väljateenitud aastate pensioni määratakse ja makstakse pärast töötamise lõpetami...]",
       "estleg:sourceAct": "Väljateenitud aastate pensionide seadus",
-      "estleg:summary": "Väljateenitud aastate pensioni määratakse ja makstakse pärast töötamise lõpetamist käesoleva seaduse alusel pensioni saamise õigust andval kutsealal või ametikohal. Väljateenitud aastate pensioni määratakse ja makstakse pärast töötamise lõpetamist käesoleva seaduse alusel pensioni saamise õigust andval kutsealal või ametikohal. Sellele kutsealale või ametikohale tagasipöördumisel väljateenitud aastate pensioni maksmine peatatakse. Sellele kutsealale või ametikohale tagasipöördumisel väljateenitu"
+      "estleg:summary": "Väljateenitud aastate pensioni määratakse ja makstakse pärast töötamise lõpetamist käesoleva seaduse alusel pensioni saamise õigust andval kutsealal või ametikohal. Väljateenitud aastate pensioni määratakse ja makstakse pärast töötamise lõpetamist käesoleva seaduse alusel pensioni saamise õigust andval kutsealal või ametikohal. Sellele kutsealale või ametikohale tagasipöördumisel väljateenitud aastate pensioni maksmine peatatakse. Sellele kutsealale või ametikohale tagasipöördumisel väljateenitu",
+      "estleg:legalText": "Väljateenitud aastate pensioni määratakse ja makstakse pärast töötamise lõpetamist käesoleva seaduse alusel pensioni saamise õigust andval kutsealal või ametikohal. Sellele kutsealale või ametikohale tagasipöördumisel väljateenitud aastate pensioni maksmine peatatakse. Isikule, kes jätkab töötamist kutsealal või ametikohal, mis ei anna õigust saada pensioni käesoleva seaduse alusel, makstakse väljateenitud aastate pensioni täies ulatuses. Lõiked 4–5 [Kehtetud - - jõust. 01.04.2000]",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VAP_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VAP_Par_10_Lg_Unknown_1"
+        },
+        {
+          "@id": "estleg:VAP_Par_10_Lg_Unknown_2"
+        },
+        {
+          "@id": "estleg:VAP_Par_10_Lg_Unknown_3"
+        },
+        {
+          "@id": "estleg:VAP_Par_10_Lg_Unknown_4"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen"
+      ]
+    },
+    {
+      "@id": "estleg:VAP_Par_10_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Väljateenitud aastate pensioni määratakse ja makstakse pärast töötamise lõpetamist käesoleva seaduse alusel pensioni saamise õigust andval kutsealal või ametikohal.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VAP_Par_10"
+      }
+    },
+    {
+      "@id": "estleg:VAP_Par_10_Lg_Unknown_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_2",
+      "estleg:legalText": "Sellele kutsealale või ametikohale tagasipöördumisel väljateenitud aastate pensioni maksmine peatatakse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VAP_Par_10"
+      }
+    },
+    {
+      "@id": "estleg:VAP_Par_10_Lg_Unknown_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_3",
+      "estleg:legalText": "Isikule, kes jätkab töötamist kutsealal või ametikohal, mis ei anna õigust saada pensioni käesoleva seaduse alusel, makstakse väljateenitud aastate pensioni täies ulatuses.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VAP_Par_10"
+      }
+    },
+    {
+      "@id": "estleg:VAP_Par_10_Lg_Unknown_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_4",
+      "estleg:legalText": "Lõiked 4–5 [Kehtetud - - jõust. 01.04.2000]",
+      "estleg:parentProvision": {
+        "@id": "estleg:VAP_Par_10"
+      }
     },
     {
       "@id": "estleg:VAP_Par_11",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VAP"
+        "estleg:LegalProvision_valjateenitud_aastate_pensionide_seadus"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11.",
+      "rdfs:label": "§ 11. [Väljateenitud aastate pensionile kohaldatakse riikliku pensionikindlustuse seadu...]",
       "estleg:sourceAct": "Väljateenitud aastate pensionide seadus",
-      "estleg:summary": "Väljateenitud aastate pensionile kohaldatakse riikliku pensionikindlustuse seaduse sätteid, arvestades käesoleva seaduse erisusi. RT I 2016-06-22 1 122062016001 2018-01-01 Väljateenitud aastate pensionile kohaldatakse riikliku pensionikindlustuse seaduse sätteid, arvestades käesoleva seaduse erisusi."
+      "estleg:summary": "Väljateenitud aastate pensionile kohaldatakse riikliku pensionikindlustuse seaduse sätteid, arvestades käesoleva seaduse erisusi. RT I 2016-06-22 1 122062016001 2018-01-01 Väljateenitud aastate pensionile kohaldatakse riikliku pensionikindlustuse seaduse sätteid, arvestades käesoleva seaduse erisusi.",
+      "estleg:legalText": "Väljateenitud aastate pensionile kohaldatakse riikliku pensionikindlustuse seaduse sätteid, arvestades käesoleva seaduse erisusi.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VAP_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VAP_Par_11_Lg_Unknown_1"
+        }
+      ]
     },
     {
-      "@id": "estleg:VAP_Par_11_15",
+      "@id": "estleg:VAP_Par_11_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Väljateenitud aastate pensionile kohaldatakse riikliku pensionikindlustuse seaduse sätteid, arvestades käesoleva seaduse erisusi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VAP_Par_11"
+      }
+    },
+    {
+      "@id": "estleg:VAP_Par_11_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VAP"
+        "estleg:LegalProvision_valjateenitud_aastate_pensionide_seadus"
       ],
       "estleg:paragrahv": "§ 11<sup>1</sup>.",
-      "rdfs:label": "§ 11<sup>1</sup>.",
+      "rdfs:label": "§ 11<sup>1</sup>. [Kehtetu -]",
       "estleg:sourceAct": "Väljateenitud aastate pensionide seadus",
-      "estleg:summary": "Väljateenitud aastate pensioni määramisel ja maksmisel läbiviidavale haldusmenetlusele ja tehtavatele otsustele kohaldatakse haldusmenetluse seaduse sätteid, arvestades käesoleva seaduse erisusi. RT I 2002 61 375 184811 2002-08-01 Väljateenitud aastate pensioni määramisel ja maksmisel läbiviidavale haldusmenetlusele ja tehtavatele otsustele kohaldatakse haldusmenetluse seaduse sätteid, arvestades käesoleva seaduse erisusi."
+      "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VAP_default"
+      }
     },
     {
       "@id": "estleg:VAP_Par_12",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VAP"
+        "estleg:LegalProvision_valjateenitud_aastate_pensionide_seadus"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12.",
+      "rdfs:label": "§ 12. [Õigus saada väljateenitud aastate pensioni on politseiametnikel, päästeteenistuj...]",
       "estleg:sourceAct": "Väljateenitud aastate pensionide seadus",
       "estleg:summary": "Õigus saada väljateenitud aastate pensioni on politseiametnikel, päästeteenistujatel ja vanglaametnikel, kes on töötanud politseis, päästeteenistuses või vanglas sellele pensionile õigust andvatel kutsealadel või ametikohtadel vähemalt 25 aastat. RT I 2005 38 295 917038 2006-01-01 Õigus saada väljateenitud aastate pensioni on politseiametnikel, päästeteenistujatel ja vanglaametnikel, kes on töötanud politseis, päästeteenistuses või vanglas sellele pensionile õigust andvatel kutsealadel või ameti",
+      "estleg:legalText": "Õigus saada väljateenitud aastate pensioni on politseiametnikel, päästeteenistujatel ja vanglaametnikel, kes on töötanud politseis, päästeteenistuses või vanglas sellele pensionile õigust andvatel kutsealadel või ametikohtadel vähemalt 25 aastat. Käesoleva paragrahvi esimeses lõigus nimetatud isikutel, kes on teenistusest vabastatud vanuse, pikaajalise töövõimetuse või koondamise tõttu, on õigus saada väljateenitud aastate pensioni, kui neil teenistusest vabastamise päevaks puudub riikliku pensionikindlustuse seaduse §-s 7 sätestatud või § 71 lõike 6 alusel kehtestatud vanusesse jõudmisest kuni 5 aastat ning nende üldine pensionistaaž on vähemalt 25 aastat, millest vähemalt 12 aastat ja kuus kuud on teenitud selle pensioni saamise õigust andvatel kutsealadel või ametikohtadel. Käesoleva seaduse § 10 lõike 1 ja 2 ning § 26 ei kohaldata päästeteenistujatele.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VAP_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VAP_Par_12_Lg_Unknown_1"
+        },
+        {
+          "@id": "estleg:VAP_Par_12_Lg_Unknown_2"
+        },
+        {
+          "@id": "estleg:VAP_Par_12_Lg_Unknown_3"
+        }
+      ],
       "estleg:targetGroup": [
         "public_body"
       ],
@@ -276,25 +776,85 @@
         },
         {
           "@id": "estleg:VAP_Par_26"
+        },
+        {
+          "@id": "estleg:VAP_Par_27"
+        },
+        {
+          "@id": "estleg:VAP_Par_28"
+        },
+        {
+          "@id": "estleg:VAP_Par_29"
+        },
+        {
+          "@id": "estleg:VAP_Par_30"
         }
       ]
+    },
+    {
+      "@id": "estleg:VAP_Par_12_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Õigus saada väljateenitud aastate pensioni on politseiametnikel, päästeteenistujatel ja vanglaametnikel, kes on töötanud politseis, päästeteenistuses või vanglas sellele pensionile õigust andvatel kutsealadel või ametikohtadel vähemalt 25 aastat.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VAP_Par_12"
+      }
+    },
+    {
+      "@id": "estleg:VAP_Par_12_Lg_Unknown_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_2",
+      "estleg:legalText": "Käesoleva paragrahvi esimeses lõigus nimetatud isikutel, kes on teenistusest vabastatud vanuse, pikaajalise töövõimetuse või koondamise tõttu, on õigus saada väljateenitud aastate pensioni, kui neil teenistusest vabastamise päevaks puudub riikliku pensionikindlustuse seaduse §-s 7 sätestatud või § 71 lõike 6 alusel kehtestatud vanusesse jõudmisest kuni 5 aastat ning nende üldine pensionistaaž on vähemalt 25 aastat, millest vähemalt 12 aastat ja kuus kuud on teenitud selle pensioni saamise õigust andvatel kutsealadel või ametikohtadel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VAP_Par_12"
+      }
+    },
+    {
+      "@id": "estleg:VAP_Par_12_Lg_Unknown_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_3",
+      "estleg:legalText": "Käesoleva seaduse § 10 lõike 1 ja 2 ning § 26 ei kohaldata päästeteenistujatele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VAP_Par_12"
+      }
     },
     {
       "@id": "estleg:VAP_Par_13",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VAP"
+        "estleg:LegalProvision_valjateenitud_aastate_pensionide_seadus"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13.",
+      "rdfs:label": "§ 13. [Õigus saada väljateenitud aastate pensioni on järgmiste kategooriate lennundustö...]",
       "estleg:sourceAct": "Väljateenitud aastate pensionide seadus",
       "estleg:summary": "Õigus saada väljateenitud aastate pensioni on järgmiste kategooriate lennundustöötajatel: 1 1) lennukoosseisu töötajatel ja katselenduritel, kellel on välja teenitud vähemalt 25-aastane staaž lennukoosseisu töötajana või katselendurina.Nimetatud töötajatel, kes on lennukoosseisust või katselenduri ametikohalt vabastatud tervisliku seisundi tõttu, on õigus saada pensioni proportsionaalselt väljateenitud aastatega, kui see staaž on vähemalt 20 aastat; RT I 2005 38 295 917038 2006-01-01 2 2) lennul",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
+      "estleg:legalText": "Õigus saada väljateenitud aastate pensioni on järgmiste kategooriate lennundustöötajatel: lennukoosseisu töötajatel ja katselenduritel, kellel on välja teenitud vähemalt 25-aastane staaž lennukoosseisu töötajana või katselendurina.Nimetatud töötajatel, kes on lennukoosseisust või katselenduri ametikohalt vabastatud tervisliku seisundi tõttu, on õigus saada pensioni proportsionaalselt väljateenitud aastatega, kui see staaž on vähemalt 20 aastat; lennuliikluse lennujuhtidel ja lennuinformaatoritel (dispetšeritel) 10 aastat enne riikliku pensionikindlustuse seaduse §-s 7 sätestatud või § 71 lõike 6 alusel kehtestatud vanusesse jõudmist, kui neil on vähemalt 20-aastane pensionistaaž, millest vähemalt 10 aastat on töötatud lennuliikluse vahetul juhtimisel.Lennuliikluse juhtimisega seotud töötajatel arvatakse väljateenitud aastate staaži hulka ka töötamine käesoleva paragrahvi punktis 1 märgitud kutsealadel; insener-tehnilise teenistuse töötajatel 5 aastat enne riikliku pensionikindlustuse seaduse §-s 7 sätestatud või § 71 lõike 6 alusel kehtestatud vanusesse jõudmist, kui neil on vähemalt 25-aastane pensionistaaž, millest vähemalt 20 aastat on töötatud käesolevas punktis märgitud teenistuses.Insener-tehnilise teenistuse töötajate väljateenitud aastate staaži hulka arvatakse ka töötamine käesoleva paragrahvi punktides 1 ja 2 märgitud kutsealadel; stjuuarditel, instruktor-stjuuarditel, stjuardessidel ja instruktor-stjuardessidel 10 aastat enne riikliku pensionikindlustuse seaduse §-s 7 sätestatud või § 71 lõike 6 alusel kehtestatud vanusesse jõudmist, kui neil on vähemalt 20-aastane pensionistaaž, millest vähemalt 10 aastat on töötatud käesolevas punktis nimetatud kutsealadel.Käesolevas punktis ettenähtud tingimustel määratakse pension vaid neile stjuuarditele (instruktor-stjuuarditele) ja stjuardessidele (instruktor-stjuardessidele), kelle aastane lennutundide arv on vähemalt 500. Väiksema lennutundide arvu korral suurendatakse proportsionaalselt nõutavat staaži väljateenitud aastate pensioni õigust andval tööl.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VAP_default"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VAP_Par_13_Lg_Unknown_1"
+        },
+        {
+          "@id": "estleg:VAP_Par_13_Lg_Unknown_2"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen"
       ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      },
       "estleg:referencedBy": [
         {
           "@id": "estleg:VAP_Par_19"
@@ -307,150 +867,342 @@
         },
         {
           "@id": "estleg:VAP_Par_22"
+        },
+        {
+          "@id": "estleg:VAP_Par_31"
+        },
+        {
+          "@id": "estleg:VAP_Par_32"
         }
       ]
+    },
+    {
+      "@id": "estleg:VAP_Par_13_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Õigus saada väljateenitud aastate pensioni on järgmiste kategooriate lennundustöötajatel: lennukoosseisu töötajatel ja katselenduritel, kellel on välja teenitud vähemalt 25-aastane staaž lennukoosseisu töötajana või katselendurina.Nimetatud töötajatel, kes on lennukoosseisust või katselenduri ametikohalt vabastatud tervisliku seisundi tõttu, on õigus saada pensioni proportsionaalselt väljateenitud aastatega, kui see staaž on vähemalt 20 aastat; lennuliikluse lennujuhtidel ja lennuinformaatoritel (dispetšeritel) 10 aastat enne riikliku pensionikindlustuse seaduse §-s 7 sätestatud või § 71 lõike 6 alusel kehtestatud vanusesse jõudmist, kui neil on vähemalt 20-aastane pensionistaaž, millest vähemalt 10 aastat on töötatud lennuliikluse vahetul juhtimisel.Lennuliikluse juhtimisega seotud töötajatel arvatakse väljateenitud aastate staaži hulka ka töötamine käesoleva paragrahvi punktis 1 märgitud kutsealadel; insener-tehnilise teenistuse töötajatel 5 aastat enne riikliku pensionikindlustuse seaduse §-s 7 sätestatud või § 71 lõike 6 alusel kehtestatud vanusesse jõudmist, kui neil on vähemalt 25-aastane pensionistaaž, millest vähemalt 20 aastat on töötatud käesolevas punktis märgitud teenistuses.Insener-tehnilise teenistuse töötajate väljateenitud aastate staaži hulka arvatakse ka töötamine käesoleva paragrahvi punktides 1 ja 2 märgitud kutsealadel; stjuuarditel, instruktor-stjuuarditel, stjuardessidel ja instruktor-stjuardessidel 10 aastat enne riikliku pensionikindlustuse seaduse §-s 7 sätestatud või § 71 lõike 6 alusel kehtestatud vanusesse jõudmist, kui neil on vähemalt 20-aastane pensionistaaž, millest vähemalt 10 aastat on töötatud käesolevas punktis nimetatud kutsealadel.Käesolevas punktis ettenähtud tingimustel määratakse pension vaid neile stjuuarditele (instruktor-stjuuarditele) ja stjuardessidele (instruktor-stjuardessidele), kelle aastane lennutundide arv on vähemalt 500.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VAP_Par_13"
+      }
+    },
+    {
+      "@id": "estleg:VAP_Par_13_Lg_Unknown_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_2",
+      "estleg:legalText": "Väiksema lennutundide arvu korral suurendatakse proportsionaalselt nõutavat staaži väljateenitud aastate pensioni õigust andval tööl.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VAP_Par_13"
+      }
     },
     {
       "@id": "estleg:VAP_Par_14",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VAP"
+        "estleg:LegalProvision_valjateenitud_aastate_pensionide_seadus"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14.",
+      "rdfs:label": "§ 14. [Õigus saada väljateenitud aastate pensioni on: 1 1) töötajatel, kes vahetult töö...]",
       "estleg:sourceAct": "Väljateenitud aastate pensionide seadus",
       "estleg:summary": "Õigus saada väljateenitud aastate pensioni on: 1 1) töötajatel, kes vahetult töötavad kogu tööpäeva allmaa- ja pealmaamäetöödel (kaasa arvatud mäepäästeüksuste isikkoosseis) põlevkivi ja muude maavarade kaevandamisel ning kaevanduste ehitamisel, olenemata vanusest, kui nad on nendel kutsealadel töötanud vähemalt 25 aastat, nende tööde põhikutsealade töötajatel – koristusetöölistel, läbindajatel ja väljamismasinate juhtidel, kui nad on töötanud nendel kutsealadel vähemalt 20 aastat; 2 2) mere- ja",
+      "estleg:legalText": "Õigus saada väljateenitud aastate pensioni on: töötajatel, kes vahetult töötavad kogu tööpäeva allmaa- ja pealmaamäetöödel (kaasa arvatud mäepäästeüksuste isikkoosseis) põlevkivi ja muude maavarade kaevandamisel ning kaevanduste ehitamisel, olenemata vanusest, kui nad on nendel kutsealadel töötanud vähemalt 25 aastat, nende tööde põhikutsealade töötajatel – koristusetöölistel, läbindajatel ja väljamismasinate juhtidel, kui nad on töötanud nendel kutsealadel vähemalt 20 aastat; mere- ja jõelaevastiku ning kalalaevastiku mõnd tüüpi laevade ujuvkoosseisu mõnedel kutsealadel ja ametikohtadel töötajatel, olenemata vanusest, kui nad on nimetatud kutsealadel ja ametikohtadel töötanud vähemalt 25 aastat; tekstiilitööstuses telgedel ja masinatel töötavatel töötajatel 5 aastat enne riikliku pensionikindlustuse seaduse §-s 7 sätestatud või § 71 lõike 6 alusel kehtestatud vanusesse jõudmist, kui nad on töötanud sellel kutsealal vähemalt 20 aastat; õpetajatel, olenemata vanusest, kellel on vähemalt 25-aastane pedagoogilise töö staaž, millest vähemalt 15 aastat on töötatud asenduskodudes ning erivajadustega inimeste õppeasutuses ja haigete laste asutustes, samuti kinnipidamiskohtade koolides; teatud kategooria artistidel, olenemata vanusest, 20–25-aastase loomingulise töö staaži korral riigi-, munitsipaal- või eraetendusasutuses, sihtasutusena tegutsevas etendusasutuses või rahvusooperis, sealhulgas vokaalsolistidel, kellel on vähemalt 25-aastane loomingulise töö staaž; inimese immuunpuudulikkuse (AIDS-i) viirusega nakatunud meditsiinitöötajatel, kes on saanud nakkuse oma töökohustuste täitmisel, olenemata vanusest ja pensionistaažist; linnasisestel regulaarliinidel töötavatel autobussi- (v.a mikrobuss), trammi- ja trollijuhtidel rohkem kui 40 000 elanikuga linnades 5 aastat enne riikliku pensionikindlustuse seaduse §-s 7 sätestatud või § 71 lõike 6 alusel kehtestatud vanusesse jõudmist, kui nad on töötanud sellel kutsealal vähemalt 25 aastat.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VAP_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VAP_Par_14_Lg_Unknown_1"
+        }
+      ],
       "estleg:targetGroup": [
-        "citizen"
+        "citizen",
+        "public_body",
+        "ngo"
       ],
       "estleg:referencedBy": [
         {
           "@id": "estleg:VAP_Par_23"
         },
         {
-          "@id": "estleg:VAP_Par_23_28"
+          "@id": "estleg:VAP_Par_23_1"
         },
         {
           "@id": "estleg:VAP_Par_25"
+        },
+        {
+          "@id": "estleg:VAP_Par_33"
         }
       ]
+    },
+    {
+      "@id": "estleg:VAP_Par_14_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Õigus saada väljateenitud aastate pensioni on: töötajatel, kes vahetult töötavad kogu tööpäeva allmaa- ja pealmaamäetöödel (kaasa arvatud mäepäästeüksuste isikkoosseis) põlevkivi ja muude maavarade kaevandamisel ning kaevanduste ehitamisel, olenemata vanusest, kui nad on nendel kutsealadel töötanud vähemalt 25 aastat, nende tööde põhikutsealade töötajatel – koristusetöölistel, läbindajatel ja väljamismasinate juhtidel, kui nad on töötanud nendel kutsealadel vähemalt 20 aastat; mere- ja jõelaevastiku ning kalalaevastiku mõnd tüüpi laevade ujuvkoosseisu mõnedel kutsealadel ja ametikohtadel töötajatel, olenemata vanusest, kui nad on nimetatud kutsealadel ja ametikohtadel töötanud vähemalt 25 aastat; tekstiilitööstuses telgedel ja masinatel töötavatel töötajatel 5 aastat enne riikliku pensionikindlustuse seaduse §-s 7 sätestatud või § 71 lõike 6 alusel kehtestatud vanusesse jõudmist, kui nad on töötanud sellel kutsealal vähemalt 20 aastat; õpetajatel, olenemata vanusest, kellel on vähemalt 25-aastane pedagoogilise töö staaž, millest vähemalt 15 aastat on töötatud asenduskodudes ning erivajadustega inimeste õppeasutuses ja haigete laste asutustes, samuti kinnipidamiskohtade koolides; teatud kategooria artistidel, olenemata vanusest, 20–25-aastase loomingulise töö staaži korral riigi-, munitsipaal- või eraetendusasutuses, sihtasutusena tegutsevas etendusasutuses või rahvusooperis, sealhulgas vokaalsolistidel, kellel on vähemalt 25-aastane loomingulise töö staaž; inimese immuunpuudulikkuse (AIDS-i) viirusega nakatunud meditsiinitöötajatel, kes on saanud nakkuse oma töökohustuste täitmisel, olenemata vanusest ja pensionistaažist; linnasisestel regulaarliinidel töötavatel autobussi- (v.a mikrobuss), trammi- ja trollijuhtidel rohkem kui 40 000 elanikuga linnades 5 aastat enne riikliku pensionikindlustuse seaduse §-s 7 sätestatud või § 71 lõike 6 alusel kehtestatud vanusesse jõudmist, kui nad on töötanud sellel kutsealal vähemalt 25 aastat.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VAP_Par_14"
+      }
     },
     {
       "@id": "estleg:VAP_Par_15",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VAP"
+        "estleg:LegalProvision_valjateenitud_aastate_pensionide_seadus"
       ],
       "estleg:paragrahv": "§ 15.",
-      "rdfs:label": "§ 15.",
+      "rdfs:label": "§ 15. [Kehtetu -]",
       "estleg:sourceAct": "Väljateenitud aastate pensionide seadus",
-      "estleg:summary": "Selgitusi väljateenitud aastate pensioni õigust andvate kutsealade ja ametikohtade loetelude rakendamise kohta antakse Eesti Vabariigi Valitsuse poolt kehtestatud korras ./dyn=103012019016&id=13300128 . Selgitusi väljateenitud aastate pensioni õigust andvate kutsealade ja ametikohtade loetelude rakendamise kohta antakse",
-      "estleg:targetGroup": [
-        "public_body"
-      ]
+      "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VAP_default"
+      }
     },
     {
       "@id": "estleg:VAP_Par_16",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VAP"
+        "estleg:LegalProvision_valjateenitud_aastate_pensionide_seadus"
       ],
       "estleg:paragrahv": "§ 16.",
-      "rdfs:label": "§ 16.",
+      "rdfs:label": "§ 16. [Kehtetu - RT I 2005 38 295 917038 2006-01-01 Kehtetu -]",
       "estleg:sourceAct": "Väljateenitud aastate pensionide seadus",
-      "estleg:summary": "Kehtetu - RT I 2005 38 295 917038 2006-01-01 Kehtetu -"
+      "estleg:summary": "Kehtetu - RT I 2005 38 295 917038 2006-01-01 Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VAP_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VAP_Par_16_Lg_Unknown_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:VAP_Par_16_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:VAP_Par_16"
+      }
     },
     {
       "@id": "estleg:VAP_Par_17",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VAP"
+        "estleg:LegalProvision_valjateenitud_aastate_pensionide_seadus"
       ],
       "estleg:paragrahv": "§ 17.",
-      "rdfs:label": "§ 17.",
+      "rdfs:label": "§ 17. [Isikule, kellele oli määratud või kellele määratakse väljateenitud aastate pensi...]",
       "estleg:sourceAct": "Väljateenitud aastate pensionide seadus",
       "estleg:summary": "Isikule, kellele oli määratud või kellele määratakse väljateenitud aastate pension algtähtajaga enne 2000. aasta 1. aprilli, arvutatakse pension ümber ning kui ümberarvutatud pension osutub väiksemaks makstud pensionist, jätkatakse pensioni maksmist endises suuruses kuni määratud tähtajani. RT I 2000 25 147 71875 2000-04-01 Isikule, kellele oli määratud või kellele määratakse väljateenitud aastate pension algtähtajaga enne 2000. aasta 1. aprilli, arvutatakse pension ümber ning kui ümberarvutatud",
+      "estleg:legalText": "Isikule, kellele oli määratud või kellele määratakse väljateenitud aastate pension algtähtajaga enne 2000. aasta 1. aprilli, arvutatakse pension ümber ning kui ümberarvutatud pension osutub väiksemaks makstud pensionist, jätkatakse pensioni maksmist endises suuruses kuni määratud tähtajani.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VAP_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VAP_Par_17_Lg_Unknown_1"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen"
       ]
+    },
+    {
+      "@id": "estleg:VAP_Par_17_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Isikule, kellele oli määratud või kellele määratakse väljateenitud aastate pension algtähtajaga enne 2000. aasta 1. aprilli, arvutatakse pension ümber ning kui ümberarvutatud pension osutub väiksemaks makstud pensionist, jätkatakse pensioni maksmist endises suuruses kuni määratud tähtajani.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VAP_Par_17"
+      }
     },
     {
       "@id": "estleg:VAP_Par_18",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VAP"
+        "estleg:LegalProvision_valjateenitud_aastate_pensionide_seadus"
       ],
       "estleg:paragrahv": "§ 18.",
-      "rdfs:label": "§ 18.",
+      "rdfs:label": "§ 18. [Meestel on kuni 2015. aastani õigus käesoleva seaduse § 12 teises lõigus sätesta...]",
       "estleg:sourceAct": "Väljateenitud aastate pensionide seadus",
       "estleg:summary": "Meestel on kuni 2015. aastani õigus käesoleva seaduse § 12 teises lõigus sätestatud väljateenitud aastate pensionile, kui nad teenistusest vabastamise päevaks on jõudnud järgmisse vanusesse: <table class=\"data\"> <tbody> <tr> <td width=\"50%\"> <p align=\"center\">Aasta</p></td> <td> <p align=\"center\">Vanus</p></td></tr> <tr> <td> <p align=\"center\">2005–2006</p></td> <td> <p align=\"center\">53</p></td></tr> <tr> <td> <p align=\"center\">2007</p></td> <td> <p align=\"center\">54</p></td></tr> <tr> <td> <p ",
+      "estleg:legalText": "Meestel on kuni 2015. aastani õigus käesoleva seaduse § 12 teises lõigus sätestatud väljateenitud aastate pensionile, kui nad teenistusest vabastamise päevaks on jõudnud järgmisse vanusesse:",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VAP_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VAP_Par_18_Lg_Unknown_1"
+        }
+      ],
       "estleg:references": [
         {
           "@id": "estleg:VAP_Par_12"
         }
       ]
+    },
+    {
+      "@id": "estleg:VAP_Par_18_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Meestel on kuni 2015. aastani õigus käesoleva seaduse § 12 teises lõigus sätestatud väljateenitud aastate pensionile, kui nad teenistusest vabastamise päevaks on jõudnud järgmisse vanusesse:",
+      "estleg:parentProvision": {
+        "@id": "estleg:VAP_Par_18"
+      }
     },
     {
       "@id": "estleg:VAP_Par_19",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VAP"
+        "estleg:LegalProvision_valjateenitud_aastate_pensionide_seadus"
       ],
       "estleg:paragrahv": "§ 19.",
-      "rdfs:label": "§ 19.",
+      "rdfs:label": "§ 19. [Naistel on kuni 2015. aastani õigus käesoleva seaduse § 13 punktis 1 sätestatud...]",
       "estleg:sourceAct": "Väljateenitud aastate pensionide seadus",
       "estleg:summary": "Naistel on kuni 2015. aastani õigus käesoleva seaduse § 13 punktis 1 sätestatud väljateenitud aastate pensionile järgmise väljateenitud aastate staaži olemasolul: <table class=\"data\"> <tbody> <tr> <td> <p align=\"center\">Aasta</p></td> <td width=\"35%\"> <p align=\"center\">Staaž lennukoosseisu töötajana<br/>või katselendurina (aastat)</p></td> <td width=\"35%\"> <p align=\"center\">Lennukoosseisust või katselenduri<br/>ametikohalt tervisliku seisundi tõttu<br/>vabastatud töötajate staaž (aastat)</p></td",
-      "estleg:references": [
+      "estleg:legalText": "Naistel on kuni 2015. aastani õigus käesoleva seaduse § 13 punktis 1 sätestatud väljateenitud aastate pensionile järgmise väljateenitud aastate staaži olemasolul:",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VAP_default"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:VAP_Par_13"
+          "@id": "estleg:VAP_Par_19_Lg_Unknown_1"
         }
       ],
       "estleg:targetGroup": [
         "citizen"
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:VAP_Par_13"
+        }
       ]
+    },
+    {
+      "@id": "estleg:VAP_Par_19_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Naistel on kuni 2015. aastani õigus käesoleva seaduse § 13 punktis 1 sätestatud väljateenitud aastate pensionile järgmise väljateenitud aastate staaži olemasolul:",
+      "estleg:parentProvision": {
+        "@id": "estleg:VAP_Par_19"
+      }
     },
     {
       "@id": "estleg:VAP_Par_20",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VAP"
+        "estleg:LegalProvision_valjateenitud_aastate_pensionide_seadus"
       ],
       "estleg:paragrahv": "§ 20.",
-      "rdfs:label": "§ 20.",
+      "rdfs:label": "§ 20. [Naistel on kuni 2015. aastani õigus käesoleva seaduse § 13 punktis 2 sätestatud...]",
       "estleg:sourceAct": "Väljateenitud aastate pensionide seadus",
       "estleg:summary": "Naistel on kuni 2015. aastani õigus käesoleva seaduse § 13 punktis 2 sätestatud väljateenitud aastate pensionile järgmise pensionistaaži olemasolul: <table class=\"data\"> <tbody> <tr> <td> <p align=\"center\">Aasta</p></td> <td width=\"35%\"> <p align=\"center\">Pensionistaaž (aastat)</p></td> <td width=\"35%\"> <p align=\"center\">Sellest töötatud lennuliikluse<br/>vahetul juhtimisel (aastat)</p></td></tr> <tr> <td> <p align=\"center\">Kuni 31. dets. 2006</p></td> <td> <p align=\"center\">15</p></td> <td> <p ",
+      "estleg:legalText": "Naistel on kuni 2015. aastani õigus käesoleva seaduse § 13 punktis 2 sätestatud väljateenitud aastate pensionile järgmise pensionistaaži olemasolul:",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VAP_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VAP_Par_20_Lg_Unknown_1"
+        }
+      ],
       "estleg:references": [
         {
           "@id": "estleg:VAP_Par_13"
         }
       ]
+    },
+    {
+      "@id": "estleg:VAP_Par_20_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Naistel on kuni 2015. aastani õigus käesoleva seaduse § 13 punktis 2 sätestatud väljateenitud aastate pensionile järgmise pensionistaaži olemasolul:",
+      "estleg:parentProvision": {
+        "@id": "estleg:VAP_Par_20"
+      }
     },
     {
       "@id": "estleg:VAP_Par_21",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VAP"
+        "estleg:LegalProvision_valjateenitud_aastate_pensionide_seadus"
       ],
       "estleg:paragrahv": "§ 21.",
-      "rdfs:label": "§ 21.",
+      "rdfs:label": "§ 21. [Naistel on kuni 2015. aastani õigus käesoleva seaduse § 13 punktis 3 sätestatud...]",
       "estleg:sourceAct": "Väljateenitud aastate pensionide seadus",
       "estleg:summary": "Naistel on kuni 2015. aastani õigus käesoleva seaduse § 13 punktis 3 sätestatud väljateenitud aastate pensionile järgmise pensionistaaži olemasolul: <table class=\"data\"> <tbody> <tr> <td> <p align=\"center\">Aasta</p></td> <td width=\"35%\"> <p align=\"center\">Pensionistaaž (aastat)</p></td> <td width=\"35%\"> <p align=\"center\">Sellest töötatud insener-tehnilises<br/>teenistuses (aastat)</p></td></tr> <tr> <td> <p align=\"center\">Kuni 31. dets. 2006</p></td> <td> <p align=\"center\">20</p></td> <td> <p al",
+      "estleg:legalText": "Naistel on kuni 2015. aastani õigus käesoleva seaduse § 13 punktis 3 sätestatud väljateenitud aastate pensionile järgmise pensionistaaži olemasolul:",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VAP_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VAP_Par_21_Lg_Unknown_1"
+        }
+      ],
       "estleg:references": [
         {
           "@id": "estleg:VAP_Par_13"
         }
       ]
+    },
+    {
+      "@id": "estleg:VAP_Par_21_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Naistel on kuni 2015. aastani õigus käesoleva seaduse § 13 punktis 3 sätestatud väljateenitud aastate pensionile järgmise pensionistaaži olemasolul:",
+      "estleg:parentProvision": {
+        "@id": "estleg:VAP_Par_21"
+      }
     },
     {
       "@id": "estleg:VAP_Par_22",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VAP"
+        "estleg:LegalProvision_valjateenitud_aastate_pensionide_seadus"
       ],
       "estleg:paragrahv": "§ 22.",
-      "rdfs:label": "§ 22.",
+      "rdfs:label": "§ 22. [Stjuardessil ja instruktor-stjuardessil on kuni 2015. aastani õigus käesoleva se...]",
       "estleg:sourceAct": "Väljateenitud aastate pensionide seadus",
       "estleg:summary": "Stjuardessil ja instruktor-stjuardessil on kuni 2015. aastani õigus käesoleva seaduse § 13 punktis 4 sätestatud väljateenitud aastate pensionile järgmise pensionistaaži olemasolul: <table class=\"data\"> <tbody> <tr> <td> <p align=\"center\">Aasta</p></td> <td width=\"35%\"> <p align=\"center\">Pensionistaaž (aastat)</p></td> <td width=\"35%\"> <p align=\"center\">sellest töötatud stjuardessina või<br/>instruktor-stjuardessina (aastat)</p></td></tr> <tr> <td> <p align=\"center\">Kuni 31. dets. 2006</p></td> <",
+      "estleg:legalText": "Stjuardessil ja instruktor-stjuardessil on kuni 2015. aastani õigus käesoleva seaduse § 13 punktis 4 sätestatud väljateenitud aastate pensionile järgmise pensionistaaži olemasolul:",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VAP_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VAP_Par_22_Lg_Unknown_1"
+        }
+      ],
       "estleg:references": [
         {
           "@id": "estleg:VAP_Par_13"
@@ -458,15 +1210,36 @@
       ]
     },
     {
+      "@id": "estleg:VAP_Par_22_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Stjuardessil ja instruktor-stjuardessil on kuni 2015. aastani õigus käesoleva seaduse § 13 punktis 4 sätestatud väljateenitud aastate pensionile järgmise pensionistaaži olemasolul:",
+      "estleg:parentProvision": {
+        "@id": "estleg:VAP_Par_22"
+      }
+    },
+    {
       "@id": "estleg:VAP_Par_23",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VAP"
+        "estleg:LegalProvision_valjateenitud_aastate_pensionide_seadus"
       ],
       "estleg:paragrahv": "§ 23.",
-      "rdfs:label": "§ 23.",
+      "rdfs:label": "§ 23. [Naistel on kuni 2015. aastani käesoleva seaduse § 14 punktides 2 ja 7 sätestatud...]",
       "estleg:sourceAct": "Väljateenitud aastate pensionide seadus",
       "estleg:summary": "Naistel on kuni 2015. aastani käesoleva seaduse § 14 punktides 2 ja 7 sätestatud kutsealadel ja ametikohtadel ning tingimustel töötamisel õigus väljateenitud aastate pensionile, kui neil on nimetatud kutsealadel või ametikohtadel vähemalt järgmine pensionistaaž: <table class=\"data\"> <tbody> <tr> <td width=\"50%\"> <p align=\"center\">Aasta</p></td> <td> <p align=\"center\">Pensionistaaž (aastat)</p></td></tr> <tr> <td> <p align=\"center\">Kuni 31. dets. 2006</p></td> <td> <p align=\"center\">20</p></td></",
+      "estleg:legalText": "Naistel on kuni 2015. aastani käesoleva seaduse § 14 punktides 2 ja 7 sätestatud kutsealadel ja ametikohtadel ning tingimustel töötamisel õigus väljateenitud aastate pensionile, kui neil on nimetatud kutsealadel või ametikohtadel vähemalt järgmine pensionistaaž:",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VAP_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VAP_Par_23_Lg_Unknown_1"
+        }
+      ],
       "estleg:references": [
         {
           "@id": "estleg:VAP_Par_14"
@@ -474,42 +1247,105 @@
       ]
     },
     {
-      "@id": "estleg:VAP_Par_23_28",
+      "@id": "estleg:VAP_Par_23_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Naistel on kuni 2015. aastani käesoleva seaduse § 14 punktides 2 ja 7 sätestatud kutsealadel ja ametikohtadel ning tingimustel töötamisel õigus väljateenitud aastate pensionile, kui neil on nimetatud kutsealadel või ametikohtadel vähemalt järgmine pensionistaaž:",
+      "estleg:parentProvision": {
+        "@id": "estleg:VAP_Par_23"
+      }
+    },
+    {
+      "@id": "estleg:VAP_Par_23_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VAP"
+        "estleg:LegalProvision_valjateenitud_aastate_pensionide_seadus"
       ],
       "estleg:paragrahv": "§ 23<sup>1</sup>.",
-      "rdfs:label": "§ 23<sup>1</sup>.",
+      "rdfs:label": "§ 23<sup>1</sup>. [Käesoleva seaduse § 14 punktis 5 nimetatud vokaalsolistidest on naistel kuni 201...]",
       "estleg:sourceAct": "Väljateenitud aastate pensionide seadus",
       "estleg:summary": "Käesoleva seaduse § 14 punktis 5 nimetatud vokaalsolistidest on naistel kuni 2015. aastani õigus väljateenitud aastate pensionile järgmise loomingulise töö staaži olemasolul: <table class=\"data\"> <tr> <td width=\"50%\"><p align=\"center\">Aasta</p></td> <td><p align=\"center\">Loomingulise töö staaž (aastat)</p></td> </tr> <tr> <td><p align=\"center\">Kuni 31.12.2006</p></td> <td><p align=\"center\">20</p></td> </tr> <tr> <td><p align=\"center\">2007</p></td> <td><p align=\"center\">21</p></td> </tr> <tr> <td",
+      "estleg:legalText": "Käesoleva seaduse § 14 punktis 5 nimetatud vokaalsolistidest on naistel kuni 2015. aastani õigus väljateenitud aastate pensionile järgmise loomingulise töö staaži olemasolul:",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VAP_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VAP_Par_23_1_Lg_Unknown_1"
+        }
+      ],
       "estleg:references": [
         {
           "@id": "estleg:VAP_Par_14"
         }
       ]
+    },
+    {
+      "@id": "estleg:VAP_Par_23_1_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Käesoleva seaduse § 14 punktis 5 nimetatud vokaalsolistidest on naistel kuni 2015. aastani õigus väljateenitud aastate pensionile järgmise loomingulise töö staaži olemasolul:",
+      "estleg:parentProvision": {
+        "@id": "estleg:VAP_Par_23_1"
+      }
     },
     {
       "@id": "estleg:VAP_Par_24",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VAP"
+        "estleg:LegalProvision_valjateenitud_aastate_pensionide_seadus"
       ],
       "estleg:paragrahv": "§ 24.",
-      "rdfs:label": "§ 24.",
+      "rdfs:label": "§ 24. [Isikutel, kellel on 2007. aasta 1. jaanuariks väljateenitud aastate pensioni saa...]",
       "estleg:sourceAct": "Väljateenitud aastate pensionide seadus",
-      "estleg:summary": "Isikutel, kellel on 2007. aasta 1. jaanuariks väljateenitud aastate pensioni saamiseks nõutud pensionistaaž, tekib õigus väljateenitud aastate pensionile kuni 2006. aasta 31. detsembrini kehtinud pensionistaaži nõuete alusel. RT I 2005 38 295 917038 2006-01-01 Isikutel, kellel on 2007. aasta 1. jaanuariks väljateenitud aastate pensioni saamiseks nõutud pensionistaaž, tekib õigus väljateenitud aastate pensionile kuni 2006. aasta 31. detsembrini kehtinud pensionistaaži nõuete alusel."
+      "estleg:summary": "Isikutel, kellel on 2007. aasta 1. jaanuariks väljateenitud aastate pensioni saamiseks nõutud pensionistaaž, tekib õigus väljateenitud aastate pensionile kuni 2006. aasta 31. detsembrini kehtinud pensionistaaži nõuete alusel. RT I 2005 38 295 917038 2006-01-01 Isikutel, kellel on 2007. aasta 1. jaanuariks väljateenitud aastate pensioni saamiseks nõutud pensionistaaž, tekib õigus väljateenitud aastate pensionile kuni 2006. aasta 31. detsembrini kehtinud pensionistaaži nõuete alusel.",
+      "estleg:legalText": "Isikutel, kellel on 2007. aasta 1. jaanuariks väljateenitud aastate pensioni saamiseks nõutud pensionistaaž, tekib õigus väljateenitud aastate pensionile kuni 2006. aasta 31. detsembrini kehtinud pensionistaaži nõuete alusel.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VAP_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VAP_Par_24_Lg_Unknown_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:VAP_Par_24_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Isikutel, kellel on 2007. aasta 1. jaanuariks väljateenitud aastate pensioni saamiseks nõutud pensionistaaž, tekib õigus väljateenitud aastate pensionile kuni 2006. aasta 31. detsembrini kehtinud pensionistaaži nõuete alusel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VAP_Par_24"
+      }
     },
     {
       "@id": "estleg:VAP_Par_25",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VAP"
+        "estleg:LegalProvision_valjateenitud_aastate_pensionide_seadus"
       ],
       "estleg:paragrahv": "§ 25.",
-      "rdfs:label": "§ 25.",
+      "rdfs:label": "§ 25. [Käesoleva seaduse § 14 punktis 4 nimetatud staaži hulka arvestatakse ka pedagoog...]",
       "estleg:sourceAct": "Väljateenitud aastate pensionide seadus",
       "estleg:summary": "Käesoleva seaduse § 14 punktis 4 nimetatud staaži hulka arvestatakse ka pedagoogina töötatud aeg. RT I 2013-07-11 1 111072013001 2013-09-01 Käesoleva seaduse § 14 punktis 4 nimetatud staaži hulka arvestatakse ka pedagoogina töötatud aeg.",
+      "estleg:legalText": "Käesoleva seaduse § 14 punktis 4 nimetatud staaži hulka arvestatakse ka pedagoogina töötatud aeg.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VAP_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VAP_Par_25_Lg_Unknown_1"
+        }
+      ],
       "estleg:references": [
         {
           "@id": "estleg:VAP_Par_14"
@@ -517,20 +1353,315 @@
       ]
     },
     {
+      "@id": "estleg:VAP_Par_25_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Käesoleva seaduse § 14 punktis 4 nimetatud staaži hulka arvestatakse ka pedagoogina töötatud aeg.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VAP_Par_25"
+      }
+    },
+    {
       "@id": "estleg:VAP_Par_26",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VAP"
+        "estleg:LegalProvision_valjateenitud_aastate_pensionide_seadus"
       ],
       "estleg:paragrahv": "§ 26.",
-      "rdfs:label": "§ 26.",
+      "rdfs:label": "§ 26. [Käesoleva seaduse § 12 lõikes 1 nimetatud isikutel, kellel on enne 2020. aasta 1...]",
       "estleg:sourceAct": "Väljateenitud aastate pensionide seadus",
       "estleg:summary": "Käesoleva seaduse § 12 lõikes 1 nimetatud isikutel, kellel on enne 2020. aasta 1. jaanuari tekkinud õigus väljateenitud aastate pensionile ning kes 2020. aasta 1. jaanuaril töötavad §-s 12 nimetatud kutsealal või ametikohal või kes on töötanud §-s 12 nimetatud kutsealal või ametikohal vähemalt 20 aastat ja jätkavad sellel töötamist kuni väljateenitud aastate pensioni õiguse tekkeni, säilib õigus saada väljateenitud aastate pensioni sel kutsealal või ametikohal töötamise korral üksnes juhul, kui ",
+      "estleg:legalText": "Käesoleva seaduse § 12 lõikes 1 nimetatud isikutel, kellel on enne 2020. aasta 1. jaanuari tekkinud õigus väljateenitud aastate pensionile ning kes 2020. aasta 1. jaanuaril töötavad §-s 12 nimetatud kutsealal või ametikohal või kes on töötanud §-s 12 nimetatud kutsealal või ametikohal vähemalt 20 aastat ja jätkavad sellel töötamist kuni väljateenitud aastate pensioni õiguse tekkeni, säilib õigus saada väljateenitud aastate pensioni sel kutsealal või ametikohal töötamise korral üksnes juhul, kui nad töötavad katkematult õigust andval kutsealal või ametikohal või jätkavad ühelt õigust andvalt kutsealalt või ametikohalt vabastamise korral töötamist samal või teisel õigust andval kutsealal või ametikohal hiljemalt 90 kalendripäeva möödumisel endiselt kutsealalt või ametikohalt vabastamisest arvates.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VAP_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VAP_Par_26_Lg_Unknown_1"
+        }
+      ],
       "estleg:references": [
         {
           "@id": "estleg:VAP_Par_12"
         }
       ]
+    },
+    {
+      "@id": "estleg:VAP_Par_26_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Käesoleva seaduse § 12 lõikes 1 nimetatud isikutel, kellel on enne 2020. aasta 1. jaanuari tekkinud õigus väljateenitud aastate pensionile ning kes 2020. aasta 1. jaanuaril töötavad §-s 12 nimetatud kutsealal või ametikohal või kes on töötanud §-s 12 nimetatud kutsealal või ametikohal vähemalt 20 aastat ja jätkavad sellel töötamist kuni väljateenitud aastate pensioni õiguse tekkeni, säilib õigus saada väljateenitud aastate pensioni sel kutsealal või ametikohal töötamise korral üksnes juhul, kui nad töötavad katkematult õigust andval kutsealal või ametikohal või jätkavad ühelt õigust andvalt kutsealalt või ametikohalt vabastamise korral töötamist samal või teisel õigust andval kutsealal või ametikohal hiljemalt 90 kalendripäeva möödumisel endiselt kutsealalt või ametikohalt vabastamisest arvates.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VAP_Par_26"
+      }
+    },
+    {
+      "@id": "estleg:VAP_Par_27",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_valjateenitud_aastate_pensionide_seadus"
+      ],
+      "estleg:paragrahv": "§ 27.",
+      "rdfs:label": "§ 27. [Käesoleva seaduse §-s 12 nimetatud isikutele, kes ei ole 2022. aasta 30. juunil...]",
+      "estleg:sourceAct": "Väljateenitud aastate pensionide seadus",
+      "estleg:summary": "Käesoleva seaduse §-s 12 nimetatud isikutele, kes ei ole 2022. aasta 30. juunil teenistuses või kes asuvad teenistusse alates 2022. aasta 1. juulist, ei arvestata alates 2022. aasta 1. juulist väljateenitud aastate pensionile õigust andvat staaži. RT I 2022-05-27 2 127052022002 2022-07-01 Käesoleva seaduse §-s 12 nimetatud isikutele, kes ei ole 2022. aasta 30. juunil teenistuses või kes asuvad teenistusse alates 2022. aasta 1. juulist, ei arvestata alates 2022. aasta 1. juulist väljateenitud aas",
+      "estleg:legalText": "Käesoleva seaduse §-s 12 nimetatud isikutele, kes ei ole 2022. aasta 30. juunil teenistuses või kes asuvad teenistusse alates 2022. aasta 1. juulist, ei arvestata alates 2022. aasta 1. juulist väljateenitud aastate pensionile õigust andvat staaži.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VAP_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VAP_Par_27_Lg_Unknown_1"
+        }
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:VAP_Par_12"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:VAP_Par_27_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Käesoleva seaduse §-s 12 nimetatud isikutele, kes ei ole 2022. aasta 30. juunil teenistuses või kes asuvad teenistusse alates 2022. aasta 1. juulist, ei arvestata alates 2022. aasta 1. juulist väljateenitud aastate pensionile õigust andvat staaži.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VAP_Par_27"
+      }
+    },
+    {
+      "@id": "estleg:VAP_Par_28",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_valjateenitud_aastate_pensionide_seadus"
+      ],
+      "estleg:paragrahv": "§ 28.",
+      "rdfs:label": "§ 28. [Käesoleva seaduse § 12 lõikes 1 nimetatud isikutele, kes töötavad 2022. aasta 30...]",
+      "estleg:sourceAct": "Väljateenitud aastate pensionide seadus",
+      "estleg:summary": "Käesoleva seaduse § 12 lõikes 1 nimetatud isikutele, kes töötavad 2022. aasta 30. juunil §-s 12 nimetatud kutsealal või ametikohal, arvestatakse väljateenitud aastate pensionile õigust andvat staaži kuni 2036. aasta 31. detsembrini. RT I 2022-05-27 2 127052022002 2022-07-01 Käesoleva seaduse § 12 lõikes 1 nimetatud isikutele, kes töötavad 2022. aasta 30. juunil §-s 12 nimetatud kutsealal või ametikohal, arvestatakse väljateenitud aastate pensionile õigust andvat staaži kuni 2036. aasta 31. detse",
+      "estleg:legalText": "Käesoleva seaduse § 12 lõikes 1 nimetatud isikutele, kes töötavad 2022. aasta 30. juunil §-s 12 nimetatud kutsealal või ametikohal, arvestatakse väljateenitud aastate pensionile õigust andvat staaži kuni 2036. aasta 31. detsembrini.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VAP_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VAP_Par_28_Lg_Unknown_1"
+        }
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:VAP_Par_12"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:VAP_Par_28_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Käesoleva seaduse § 12 lõikes 1 nimetatud isikutele, kes töötavad 2022. aasta 30. juunil §-s 12 nimetatud kutsealal või ametikohal, arvestatakse väljateenitud aastate pensionile õigust andvat staaži kuni 2036. aasta 31. detsembrini.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VAP_Par_28"
+      }
+    },
+    {
+      "@id": "estleg:VAP_Par_29",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_valjateenitud_aastate_pensionide_seadus"
+      ],
+      "estleg:paragrahv": "§ 29.",
+      "rdfs:label": "§ 29. [Käesoleva seaduse § 12 lõikes 2 nimetatud isikutele, kes töötavad 2022. aasta 30...]",
+      "estleg:sourceAct": "Väljateenitud aastate pensionide seadus",
+      "estleg:summary": "Käesoleva seaduse § 12 lõikes 2 nimetatud isikutele, kes töötavad 2022. aasta 30. juunil §-s 12 nimetatud kutsealal või ametikohal, arvestatakse väljateenitud aastate pensionile õigust andvat staaži kuni 2030. aasta 31. detsembrini. RT I 2022-05-27 2 127052022002 2022-07-01 Käesoleva seaduse § 12 lõikes 2 nimetatud isikutele, kes töötavad 2022. aasta 30. juunil §-s 12 nimetatud kutsealal või ametikohal, arvestatakse väljateenitud aastate pensionile õigust andvat staaži kuni 2030. aasta 31. detse",
+      "estleg:legalText": "Käesoleva seaduse § 12 lõikes 2 nimetatud isikutele, kes töötavad 2022. aasta 30. juunil §-s 12 nimetatud kutsealal või ametikohal, arvestatakse väljateenitud aastate pensionile õigust andvat staaži kuni 2030. aasta 31. detsembrini.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VAP_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VAP_Par_29_Lg_Unknown_1"
+        }
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:VAP_Par_12"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:VAP_Par_29_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Käesoleva seaduse § 12 lõikes 2 nimetatud isikutele, kes töötavad 2022. aasta 30. juunil §-s 12 nimetatud kutsealal või ametikohal, arvestatakse väljateenitud aastate pensionile õigust andvat staaži kuni 2030. aasta 31. detsembrini.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VAP_Par_29"
+      }
+    },
+    {
+      "@id": "estleg:VAP_Par_30",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_valjateenitud_aastate_pensionide_seadus"
+      ],
+      "estleg:paragrahv": "§ 30.",
+      "rdfs:label": "§ 30. [Käesoleva seaduse § 12 lõikes 2 nimetatud isikutel, kes on jõudnud väljateenitud...]",
+      "estleg:sourceAct": "Väljateenitud aastate pensionide seadus",
+      "estleg:summary": "Käesoleva seaduse § 12 lõikes 2 nimetatud isikutel, kes on jõudnud väljateenitud aastate pensionile õigust andvasse vanusesse, kellel on täitunud pensionistaaž ning kes on vabastatud teenistusest enne 2031. aasta 1. jaanuari, on õigus väljateenitud aastate pensionile. RT I 2022-05-27 2 127052022002 2022-07-01 Käesoleva seaduse § 12 lõikes 2 nimetatud isikutel, kes on jõudnud väljateenitud aastate pensionile õigust andvasse vanusesse, kellel on täitunud pensionistaaž ning kes on vabastatud teenis",
+      "estleg:legalText": "Käesoleva seaduse § 12 lõikes 2 nimetatud isikutel, kes on jõudnud väljateenitud aastate pensionile õigust andvasse vanusesse, kellel on täitunud pensionistaaž ning kes on vabastatud teenistusest enne 2031. aasta 1. jaanuari, on õigus väljateenitud aastate pensionile.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VAP_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VAP_Par_30_Lg_Unknown_1"
+        }
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:VAP_Par_12"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      }
+    },
+    {
+      "@id": "estleg:VAP_Par_30_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Käesoleva seaduse § 12 lõikes 2 nimetatud isikutel, kes on jõudnud väljateenitud aastate pensionile õigust andvasse vanusesse, kellel on täitunud pensionistaaž ning kes on vabastatud teenistusest enne 2031. aasta 1. jaanuari, on õigus väljateenitud aastate pensionile.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VAP_Par_30"
+      }
+    },
+    {
+      "@id": "estleg:VAP_Par_31",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_valjateenitud_aastate_pensionide_seadus"
+      ],
+      "estleg:paragrahv": "§ 31.",
+      "rdfs:label": "§ 31. [Käesoleva seaduse § 13 punktides 1 ja 3 ning §-s 14 nimetatud isikutele arvestat...]",
+      "estleg:sourceAct": "Väljateenitud aastate pensionide seadus",
+      "estleg:summary": "Käesoleva seaduse § 13 punktides 1 ja 3 ning §-s 14 nimetatud isikutele arvestatakse väljateenitud aastate pensionile õigust andvat staaži kuni 2036. aasta 31. detsembrini. Alates 2037. aasta 1. jaanuarist ei arvata käesolevas seaduses nimetatud kutsealal või ametikohal töötamist väljateenitud aastate pensionile õigust andva staaži hulka. RT I 2023-02-22 1 122022023001 2024-01-01 Käesoleva seaduse § 13 punktides 1 ja 3 ning §-s 14 nimetatud isikutele arvestatakse väljateenitud aastate pensionile",
+      "estleg:legalText": "Käesoleva seaduse § 13 punktides 1 ja 3 ning §-s 14 nimetatud isikutele arvestatakse väljateenitud aastate pensionile õigust andvat staaži kuni 2036. aasta 31. detsembrini. Alates 2037. aasta 1. jaanuarist ei arvata käesolevas seaduses nimetatud kutsealal või ametikohal töötamist väljateenitud aastate pensionile õigust andva staaži hulka.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VAP_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VAP_Par_31_Lg_Unknown_1"
+        }
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:VAP_Par_13"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:VAP_Par_31_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Käesoleva seaduse § 13 punktides 1 ja 3 ning §-s 14 nimetatud isikutele arvestatakse väljateenitud aastate pensionile õigust andvat staaži kuni 2036. aasta 31. detsembrini. Alates 2037. aasta 1. jaanuarist ei arvata käesolevas seaduses nimetatud kutsealal või ametikohal töötamist väljateenitud aastate pensionile õigust andva staaži hulka.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VAP_Par_31"
+      }
+    },
+    {
+      "@id": "estleg:VAP_Par_32",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_valjateenitud_aastate_pensionide_seadus"
+      ],
+      "estleg:paragrahv": "§ 32.",
+      "rdfs:label": "§ 32. [Käesoleva seaduse § 13 punktides 2 ja 4 nimetatud isikutele arvestatakse väljate...]",
+      "estleg:sourceAct": "Väljateenitud aastate pensionide seadus",
+      "estleg:summary": "Käesoleva seaduse § 13 punktides 2 ja 4 nimetatud isikutele arvestatakse väljateenitud aastate pensionile õigust andvat staaži kuni 2030. aasta 31. detsembrini. Alates 2031. aasta 1. jaanuarist ei arvata käesolevas seaduses nimetatud kutsealal või ametikohal töötamist väljateenitud aastate pensionile õigust andva staaži hulka. RT I 2023-02-22 1 122022023001 2024-01-01 Käesoleva seaduse § 13 punktides 2 ja 4 nimetatud isikutele arvestatakse väljateenitud aastate pensionile õigust andvat staaži ku",
+      "estleg:legalText": "Käesoleva seaduse § 13 punktides 2 ja 4 nimetatud isikutele arvestatakse väljateenitud aastate pensionile õigust andvat staaži kuni 2030. aasta 31. detsembrini. Alates 2031. aasta 1. jaanuarist ei arvata käesolevas seaduses nimetatud kutsealal või ametikohal töötamist väljateenitud aastate pensionile õigust andva staaži hulka.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VAP_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VAP_Par_32_Lg_Unknown_1"
+        }
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:VAP_Par_13"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:VAP_Par_32_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Käesoleva seaduse § 13 punktides 2 ja 4 nimetatud isikutele arvestatakse väljateenitud aastate pensionile õigust andvat staaži kuni 2030. aasta 31. detsembrini. Alates 2031. aasta 1. jaanuarist ei arvata käesolevas seaduses nimetatud kutsealal või ametikohal töötamist väljateenitud aastate pensionile õigust andva staaži hulka.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VAP_Par_32"
+      }
+    },
+    {
+      "@id": "estleg:VAP_Par_33",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_valjateenitud_aastate_pensionide_seadus"
+      ],
+      "estleg:paragrahv": "§ 33.",
+      "rdfs:label": "§ 33. [Käesoleva seaduse § 14 punktis 1 nimetatud isikutele, kes töötavad all- ja pealm...]",
+      "estleg:sourceAct": "Väljateenitud aastate pensionide seadus",
+      "estleg:summary": "Käesoleva seaduse § 14 punktis 1 nimetatud isikutele, kes töötavad all- ja pealmaa mäetöödel põlevkivi kaevandamise, töötlemise või rikastamise alal, arvestatakse väljateenitud aastate pensionile õigust andvat staaži kuni 2049. aasta 31. detsembrini. Alates 2050. aasta 1. jaanuarist ei arvata all- ja pealmaa mäetöödel põlevkivi kaevandamise, töötlemise või rikastamise alal töötamist väljateenitud aastate pensionile õigust andva staaži hulka. RT I 2023-02-22 1 122022023001 2024-01-01 Käesoleva se",
+      "estleg:legalText": "Käesoleva seaduse § 14 punktis 1 nimetatud isikutele, kes töötavad all- ja pealmaa mäetöödel põlevkivi kaevandamise, töötlemise või rikastamise alal, arvestatakse väljateenitud aastate pensionile õigust andvat staaži kuni 2049. aasta 31. detsembrini. Alates 2050. aasta 1. jaanuarist ei arvata all- ja pealmaa mäetöödel põlevkivi kaevandamise, töötlemise või rikastamise alal töötamist väljateenitud aastate pensionile õigust andva staaži hulka.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VAP_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VAP_Par_33_Lg_Unknown_1"
+        }
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:VAP_Par_14"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:VAP_Par_33_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Käesoleva seaduse § 14 punktis 1 nimetatud isikutele, kes töötavad all- ja pealmaa mäetöödel põlevkivi kaevandamise, töötlemise või rikastamise alal, arvestatakse väljateenitud aastate pensionile õigust andvat staaži kuni 2049. aasta 31. detsembrini. Alates 2050. aasta 1. jaanuarist ei arvata all- ja pealmaa mäetöödel põlevkivi kaevandamise, töötlemise või rikastamise alal töötamist väljateenitud aastate pensionile õigust andva staaži hulka.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VAP_Par_33"
+      }
     }
   ]
 }

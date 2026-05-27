@@ -142,6 +142,25 @@ def test_validate_registry_index_allows_documented_zero_provision_exception(tmp_
     assert validate_all.errors == []
 
 
+def test_validate_registry_index_allows_no_structured_body_stub(tmp_path):
+    krr = tmp_path / "krr_outputs"
+    doc = act_doc(provisions=False)
+    doc["@graph"][0]["estleg:contentStatus"] = "noStructuredBody"
+    write_json(krr / "stub_law_peep.json", doc)
+    write_json(
+        krr / "INDEX.json",
+        {
+            "total_laws": 1,
+            "total_files": 1,
+            "laws": [{"name": "stub_law", "files": ["stub_law_peep.json"]}],
+        },
+    )
+
+    validate_all.validate_registry_index(krr)
+
+    assert validate_all.errors == []
+
+
 def test_validate_registry_index_reports_malformed_entries(tmp_path):
     validate_all.errors.clear()
     krr = tmp_path / "krr_outputs"
@@ -528,6 +547,27 @@ def test_applies_to_provision_count_in_controlled_vocabulary():
     assert "estleg:appliesToProvisionCount" in defined
 
 
+@pytest.mark.parametrize(
+    "term",
+    [
+        "estleg:LegalProvision",
+        "estleg:LegalConcept",
+        "estleg:Part",
+        "estleg:TopicCluster",
+        "estleg:chapterNumber",
+        "estleg:contentStatus",
+        "estleg:contentStatusReason",
+        "estleg:hasPart",
+        "estleg:isPartOf",
+        "estleg:kehtiv",
+        "estleg:provisionCount",
+    ],
+)
+def test_generated_law_terms_are_declared_in_controlled_vocabulary(term):
+    defined = validate_all.collect_defined_vocabulary_terms()
+    assert term in defined
+
+
 # ---------------------------------------------------------------------------
 # Issue #119 — validate_act_coverage_reconciliation
 # ---------------------------------------------------------------------------
@@ -608,6 +648,87 @@ def test_act_coverage_reconciliation_flags_orphan_peep(tmp_path):
     _laws_manifest(krr, [{"title": "Law A", "slug": "law_a", "status": "full"}])
     validate_all.validate_act_coverage_reconciliation(krr)
     assert any("not listed in" in e for e in validate_all.errors), validate_all.errors
+
+
+def test_act_coverage_reconciliation_accepts_reported_source_removed_peep(tmp_path):
+    krr = tmp_path / "krr_outputs"
+    _full_peep(krr, "law_a")
+    _full_peep(krr, "old_law")  # on disk, explicitly reported as removed from source snapshot.
+    import json as _json
+
+    (krr / "generation_manifest_laws.json").write_text(
+        _json.dumps({
+            "generated": "2026-05-11T00:00:00+00:00",
+            "mode": "missing-only",
+            "counts": {"sourceActs": 1},
+            "run": {"sourceRemovedFromSnapshot": ["old_law_peep.json"]},
+            "outputsAll": [{"title": "Law A", "slug": "law_a", "status": "full"}],
+        }),
+        encoding="utf-8",
+    )
+
+    validate_all.validate_act_coverage_reconciliation(krr)
+    assert validate_all.errors == [], validate_all.errors
+
+
+@pytest.mark.parametrize("run_block", [None, [], 42, "not a dict"])
+def test_act_coverage_reconciliation_warns_on_malformed_run_block(
+    tmp_path, run_block
+):
+    krr = tmp_path / "krr_outputs"
+    _full_peep(krr, "law_a")
+    import json as _json
+
+    (krr / "generation_manifest_laws.json").write_text(
+        _json.dumps({
+            "generated": "2026-05-11T00:00:00+00:00",
+            "mode": "missing-only",
+            "counts": {"sourceActs": 1},
+            "run": run_block,
+            "outputsAll": [{"title": "Law A", "slug": "law_a", "status": "full"}],
+        }),
+        encoding="utf-8",
+    )
+
+    validate_all.validate_act_coverage_reconciliation(krr)
+    assert validate_all.errors == [], validate_all.errors
+    assert any("malformed run block" in w for w in validate_all.warnings)
+
+
+@pytest.mark.parametrize(
+    "run_block, expected_warning",
+    [
+        (
+            {"sourceRemovedFromSnapshot": "not-a-list"},
+            "malformed run.sourceRemovedFromSnapshot",
+        ),
+        (
+            {"sourceRemovedFromSnapshot": [42, None]},
+            "ignoring non-string run.sourceRemovedFromSnapshot entries",
+        ),
+    ],
+)
+def test_act_coverage_reconciliation_warns_on_malformed_source_removed(
+    tmp_path, run_block, expected_warning
+):
+    krr = tmp_path / "krr_outputs"
+    _full_peep(krr, "law_a")
+    import json as _json
+
+    (krr / "generation_manifest_laws.json").write_text(
+        _json.dumps({
+            "generated": "2026-05-11T00:00:00+00:00",
+            "mode": "missing-only",
+            "counts": {"sourceActs": 1},
+            "run": run_block,
+            "outputsAll": [{"title": "Law A", "slug": "law_a", "status": "full"}],
+        }),
+        encoding="utf-8",
+    )
+
+    validate_all.validate_act_coverage_reconciliation(krr)
+    assert validate_all.errors == [], validate_all.errors
+    assert any(expected_warning in w for w in validate_all.warnings)
 
 
 def test_act_coverage_reconciliation_flags_stub_without_marker(tmp_path):
@@ -1123,6 +1244,29 @@ def test_validate_transposition_mapping_missing_file_is_only_a_warning(tmp_path)
 # ---------------------------------------------------------------------------
 
 
+def test_jsonld_file_count_excludes_operational_state_files(tmp_path):
+    krr = tmp_path / "krr_outputs"
+    files = [
+        krr / "law_a_peep.json",
+        krr / "combined_ontology.jsonld",
+        krr / "sidecars" / "annotations.jsonld",
+        krr / ".regen_state.json",
+        krr / "generation_manifest_laws.json",
+        krr / "latest_pipeline_manifest.json",
+    ]
+    for path in files:
+        write_json(path, {"@graph": []})
+
+    expected = sum(
+        1
+        for path in files
+        if path.suffix in {".json", ".jsonld"}
+        and path.name not in validate_all.OPERATIONAL_STATE_FILES
+    )
+
+    assert validate_all.jsonld_file_count(krr) == expected
+
+
 def _minimal_corpus_for_metadata(krr: Path) -> None:
     """Stage a tiny corpus so `metadata_stats()` returns deterministic counts.
 
@@ -1262,6 +1406,10 @@ def test_discover_validation_files_skips_combined_and_index_files(tmp_path):
     write_json(krr / "eurlex" / "eurlex_combined.jsonld", {"@graph": [{"@id": "estleg:EU_1"}]})
     write_json(krr / "REGULATIONS_RIIK_INDEX.json", {"kov": False, "totalRegulations": 0})
     write_json(krr / "draft_impact_report.json", {"@graph": []})
+    write_json(krr / "annotations_pdf_probe.json", {"recommendation": "pdf_text_layer_ok"})
+    write_json(krr / ".regen_state.json", {"completed": {}})
+    write_json(krr / "generation_manifest_laws.json", {"outputsAll": []})
+    write_json(krr / "reports" / "integration" / "latest_pipeline_manifest.json", {"phases": []})
 
     files = {p.name for p in validate_all.discover_validation_files(krr)}
 
@@ -1271,3 +1419,7 @@ def test_discover_validation_files_skips_combined_and_index_files(tmp_path):
     assert "eurlex_combined.jsonld" not in files
     assert "REGULATIONS_RIIK_INDEX.json" not in files
     assert "draft_impact_report.json" not in files
+    assert "annotations_pdf_probe.json" not in files
+    assert ".regen_state.json" not in files
+    assert "generation_manifest_laws.json" not in files
+    assert "latest_pipeline_manifest.json" not in files

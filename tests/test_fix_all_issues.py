@@ -308,6 +308,52 @@ def test_generate_index_uses_today_date(tmp_path, monkeypatch):
     assert index["generated"] != "2026-03-02"
 
 
+def test_generate_index_excludes_derived_jsonld_and_preserves_exceptions(tmp_path, monkeypatch):
+    monkeypatch.setattr(fix_all_issues, "KRR_DIR", tmp_path)
+    write_json(
+        tmp_path / "INDEX.json",
+        {
+            "registry_exceptions": {
+                "legacy_map_peep.json": {
+                    "category": "concept_map",
+                    "reason": "legacy concept map",
+                }
+            }
+        },
+    )
+    write_json(tmp_path / "law_a_peep.json", make_source_doc(["estleg:A_1"]))
+    write_json(tmp_path / "municipalities_peep.json", make_source_doc(["estleg:Municipalities"]))
+    write_json(tmp_path / "issuers_kov_peep.json", make_source_doc(["estleg:Issuers"]))
+    write_json(
+        tmp_path / "fuusilise_isiku_maksejouetuse_peep.json",
+        make_source_doc(["estleg:FIMS_Map_2026"]),
+    )
+    write_json(tmp_path / "controlled_vocabulary.jsonld", {"@graph": [{"@id": "estleg:Vocab"}]})
+    write_json(tmp_path / "combined_ontology.jsonld", {"@graph": [{"@id": "estleg:Combined"}]})
+    write_json(tmp_path / "karistusseadustik_eriosa_owl.jsonld", {"@graph": [{"@id": "estleg:KarS_Owl"}]})
+
+    fix_all_issues.generate_index()
+
+    index = read_json(tmp_path / "INDEX.json")
+    indexed_files = {
+        file_name
+        for law in index["laws"]
+        for file_name in law.get("files", [])
+    }
+    assert "law_a_peep.json" in indexed_files
+    assert "karistusseadustik_eriosa_owl.jsonld" in indexed_files
+    assert "municipalities_peep.json" not in indexed_files
+    assert "issuers_kov_peep.json" not in indexed_files
+    assert "fuusilise_isiku_maksejouetuse_peep.json" not in indexed_files
+    assert "controlled_vocabulary.jsonld" not in indexed_files
+    assert "combined_ontology.jsonld" not in indexed_files
+    assert index["registry_exceptions"]["legacy_map_peep.json"]["category"] == "concept_map"
+    assert (
+        index["registry_exceptions"]["kriminaalmenetluse_peep.json"]["category"]
+        == "procedure_map"
+    )
+
+
 def test_audit_duplicate_ids_walks_subdirectories(tmp_path, monkeypatch):
     """Audit covers JSON-LD + subdirs (#159).
 

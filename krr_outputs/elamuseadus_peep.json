@@ -6,20 +6,31 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
   },
   "@graph": [
     {
       "@id": "estleg:ES_Map_2026",
       "@type": [
+        "owl:Ontology",
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "rdfs:label": "Elamuseadus teemakaardistus",
       "dc:source": "Elamuseadus",
-      "estleg:temporalStatus": "unknown",
+      "dcterms:title": "Elamuseadus",
+      "estleg:contentStatus": "structuredBody",
+      "dcterms:source": {
+        "@id": "https://www.riigiteataja.ee/akt/123032015098.xml"
+      },
+      "owl:sameAs": {
+        "@id": "https://www.riigiteataja.ee/akt/123032015098.xml"
+      },
+      "estleg:kehtiv": {
+        "@value": "2026-05-24",
+        "@type": "xsd:date"
+      },
       "dcterms:subject": [
         {
           "@id": "http://eurovoc.europa.eu/2431"
@@ -37,6 +48,7 @@
           "@id": "http://eurovoc.europa.eu/2441"
         }
       ],
+      "estleg:temporalStatus": "unknown",
       "estleg:implementedBy": [
         {
           "@id": "estleg:Reg_1009471_Map_2026"
@@ -183,7 +195,7 @@
       "estleg:implementedByCount": 47
     },
     {
-      "@id": "estleg:LegalProvision_ES",
+      "@id": "estleg:LegalProvision_elamuseadus",
       "@type": [
         "owl:Class"
       ],
@@ -193,53 +205,122 @@
       }
     },
     {
+      "@id": "estleg:ES_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": "Elamuseadus teemaskeem",
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_ES_1"
+        },
+        {
+          "@id": "estleg:Cluster_ES_2"
+        }
+      ]
+    },
+    {
       "@id": "estleg:Cluster_ES_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§28–34 Üldsätted"
+      "rdfs:label": "§28–34 Üldsätted",
+      "skos:prefLabel": "§28–34 Üldsätted",
+      "skos:inScheme": {
+        "@id": "estleg:ES_TopicScheme"
+      },
+      "estleg:provisionCount": 7
+    },
+    {
+      "@id": "estleg:Chapter_ES_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "1. peatükk – Üldsätted",
+      "estleg:chapterNumber": "1",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_ES_1"
+      }
     },
     {
       "@id": "estleg:Cluster_ES_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§35–61 Poolte õigused ja kohustused eluruumi üürilepingu järgi"
+      "rdfs:label": "§35–61 Poolte õigused ja kohustused eluruumi üürilepingu järgi",
+      "skos:prefLabel": "§35–61 Poolte õigused ja kohustused eluruumi üürilepingu järgi",
+      "skos:inScheme": {
+        "@id": "estleg:ES_TopicScheme"
+      },
+      "estleg:provisionCount": 4
+    },
+    {
+      "@id": "estleg:Chapter_ES_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "2. peatükk – Poolte õigused ja kohustused eluruumi üürilepingu järgi",
+      "estleg:chapterNumber": "2",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_ES_2"
+      }
     },
     {
       "@id": "estleg:ES_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ES"
+        "estleg:LegalProvision_elamuseadus"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1.",
       "estleg:sourceAct": "Elamuseadus",
-      "estleg:summary": "§ 1."
+      "estleg:summary": "§ 1.",
+      "estleg:interpretedBy": [
+        {
+          "@id": "estleg:RK_3_2_1_136_96"
+        },
+        {
+          "@id": "estleg:RK_3_2_1_120_97"
+        }
+      ]
     },
     {
       "@id": "estleg:ES_Par_6",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ES"
+        "estleg:LegalProvision_elamuseadus"
       ],
       "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6.",
+      "rdfs:label": "§ 6. [Kehtetud -]",
       "estleg:sourceAct": "Elamuseadus",
-      "estleg:summary": "Kehtetud -"
+      "estleg:summary": "Kehtetud -",
+      "estleg:legalText": "Kehtetud -"
     },
     {
       "@id": "estleg:ES_Par_7",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ES"
+        "estleg:LegalProvision_elamuseadus"
       ],
       "estleg:paragrahv": "§ 7.",
       "rdfs:label": "§ 7. Vabariigi Valitsuse võimkond elamusuhete reguleerimisel",
       "estleg:sourceAct": "Elamuseadus",
-      "estleg:summary": "1 (1) Valitsuse võimkonda elamusuhete reguleerimisel kuulub: 1 1) eluruumidele esitatavate nõuete kehtestamine ./dyn=829085&id=846015 ; 2 2) eluruumi sotsiaalselt põhjendatud normi ja selle rakendamise erisuste kindlaksmääramine ./dyn=829085&id=846015 ; 3 3) kehtetu - RT I 2004 85 577 826401 2004-12-26 4 4) kehtetu - RT I 1998 60 953 75677 1998-07-16 5 5) muude küsimuste otsustamine, mis on seadusega antud valitsuse võimkonda. Valitsuse võimkonda elamusuhete reguleerimisel kuulub: kehtetu - keht",
+      "estleg:summary": "1 (1) Valitsuse võimkonda elamusuhete reguleerimisel kuulub: 1 1) kehtetu - RT I 2015-03-23 3 123032015003 2015-07-01 2 2) eluruumi sotsiaalselt põhjendatud normi ja selle rakendamise erisuste kindlaksmääramine ./dyn=123032015098&id=846015 ; 3 3) kehtetu - RT I 2004 85 577 826401 2004-12-26 4 4) kehtetu - RT I 1998 60 953 75677 1998-07-16 5 5) muude küsimuste otsustamine, mis on seadusega antud valitsuse võimkonda. Valitsuse võimkonda elamusuhete reguleerimisel kuulub: kehtetu - kehtetu - kehtet",
+      "estleg:legalText": "(1) Valitsuse võimkonda elamusuhete reguleerimisel kuulub: kehtetu - kehtetu - kehtetu - muude küsimuste otsustamine, mis on seadusega antud valitsuse võimkonda. (2) Valitsuse võimkonda kuulub riigi omanduses olevate",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ES_Par_7_Lg_1"
+        },
+        {
+          "@id": "estleg:ES_Par_7_Lg_2"
+        }
+      ],
       "estleg:targetGroup": [
         "public_body"
       ],
@@ -307,15 +388,47 @@
       "estleg:implementedByCount": 1
     },
     {
+      "@id": "estleg:ES_Par_7_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Valitsuse võimkonda elamusuhete reguleerimisel kuulub: kehtetu - kehtetu - kehtetu - muude küsimuste otsustamine, mis on seadusega antud valitsuse võimkonda.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ES_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 1"
+    },
+    {
+      "@id": "estleg:ES_Par_7_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Valitsuse võimkonda kuulub riigi omanduses olevate",
+      "estleg:parentProvision": {
+        "@id": "estleg:ES_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 2"
+    },
+    {
       "@id": "estleg:ES_Par_8",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ES"
+        "estleg:LegalProvision_elamuseadus"
       ],
       "estleg:paragrahv": "§ 8.",
       "rdfs:label": "§ 8. Kohaliku omavalitsuse volikogu võimkond elamusuhete reguleerimisel",
       "estleg:sourceAct": "Elamuseadus",
       "estleg:summary": "Kohaliku omavalitsuse volikogu võimkonda elamusuhete reguleerimisel tema haldusterritooriumil kuulub: 1 1) eluruumi või selle kasutusõigust mitteomavate, samuti elamistingimuste parandamisel abi vajavate isikute arvestuse korra kehtestamine; 2 2) munitsipaalomandis olevate eluruumide valdamise, kasutamise ja käsutamise korra, sealhulgas hooldus- ja remondieeskirjade kehtestamine; 3 3) kehtetu - RT I 2002 53 336 174795 2002-07-01 4 4) muude küsimuste otsustamine, mis on seadusega antud kohaliku o",
+      "estleg:legalText": "Kohaliku omavalitsuse volikogu võimkonda elamusuhete reguleerimisel tema haldusterritooriumil kuulub: eluruumi või selle kasutusõigust mitteomavate, samuti elamistingimuste parandamisel abi vajavate isikute arvestuse korra kehtestamine; munitsipaalomandis olevate eluruumide valdamise, kasutamise ja käsutamise korra, sealhulgas hooldus- ja remondieeskirjade kehtestamine; kehtetu - muude küsimuste otsustamine, mis on seadusega antud kohaliku omavalitsuse volikogu võimkonda.",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ES_Par_8_Lg_Unknown_1"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen",
         "public_body"
@@ -326,12 +439,20 @@
         }
       ],
       "estleg:competenceType": "general",
+      "estleg:interpretedBy": [
+        {
+          "@id": "estleg:RK_3_3_1_42_04"
+        },
+        {
+          "@id": "estleg:RK_3_2_4_1_04"
+        },
+        {
+          "@id": "estleg:RK_3_3_1_91_13"
+        }
+      ],
       "estleg:referencedBy": [
         {
           "@id": "estleg:ES_Par_71"
-        },
-        {
-          "@id": "estleg:SOTSIA_Par_14"
         }
       ],
       "estleg:implementedBy": [
@@ -441,10 +562,22 @@
       "estleg:implementedByCount": 34
     },
     {
+      "@id": "estleg:ES_Par_8_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Kohaliku omavalitsuse volikogu võimkonda elamusuhete reguleerimisel tema haldusterritooriumil kuulub: eluruumi või selle kasutusõigust mitteomavate, samuti elamistingimuste parandamisel abi vajavate isikute arvestuse korra kehtestamine; munitsipaalomandis olevate eluruumide valdamise, kasutamise ja käsutamise korra, sealhulgas hooldus- ja remondieeskirjade kehtestamine; kehtetu - muude küsimuste otsustamine, mis on seadusega antud kohaliku omavalitsuse volikogu võimkonda.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ES_Par_8"
+      }
+    },
+    {
       "@id": "estleg:ES_Par_9",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ES"
+        "estleg:LegalProvision_elamuseadus"
       ],
       "estleg:paragrahv": "§ 9.",
       "rdfs:label": "§ 9.",
@@ -455,89 +588,27 @@
       "@id": "estleg:ES_Par_13",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ES"
+        "estleg:LegalProvision_elamuseadus"
       ],
       "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13.",
+      "rdfs:label": "§ 13. [Kehtetud -]",
       "estleg:sourceAct": "Elamuseadus",
-      "estleg:summary": "Kehtetud -"
+      "estleg:summary": "Kehtetud -",
+      "estleg:legalText": "Kehtetud -"
     },
     {
       "@id": "estleg:ES_Par_14",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ES"
+        "estleg:LegalProvision_elamuseadus"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Elamuühistu (-kooperatiivi) mõiste",
+      "rdfs:label": "§ 14.",
       "estleg:sourceAct": "Elamuseadus",
-      "estleg:summary": "1 (1) Elamuühistu (-kooperatiiv) on mittetulundusühistu, mille eesmärgiks on liikme valdusesse anda liikmelisuse alusel kasutamiseks eluruum omaette korterina elamuühistule (-kooperatiivile) kuuluvas elamus ning korraldada elamu, elamualuse ja elamu teenindamiseks vajaliku maa majandamist. Elamuühistu (-kooperatiiv) on mittetulundusühistu, mille eesmärgiks on liikme valdusesse anda liikmelisuse alusel kasutamiseks eluruum omaette korterina elamuühistule (-kooperatiivile) kuuluvas elamus ning kor"
-    },
-    {
-      "@id": "estleg:ES_Par_15",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ES"
-      ],
-      "estleg:paragrahv": "§ 15.",
-      "rdfs:label": "§ 15. Elamuühistu (-kooperatiivi) tegevuse õiguslikud alused",
-      "estleg:sourceAct": "Elamuseadus",
-      "estleg:summary": "Elamuühistu (-kooperatiiv) lähtub oma tegevuses käesolevast seadusest, Eesti Vabariigi ühistuseadusest, mittetulundusühingute seadusest ja oma põhikirjast. <p>[Paragrahv 16 kehtetu alates 01.01.2005 - <a href=\"./776055\">RT I 2004, 53, 368</a>]</p> Elamuühistu (-kooperatiiv) lähtub oma tegevuses käesolevast seadusest, Eesti Vabariigi ühistuseadusest, mittetulundusühingute seadusest ja oma põhikirjast.",
-      "estleg:semanticallySimilarTo": [
+      "estleg:summary": "1 (1) Elamuühistu (-kooperatiiv) on mittetulundusühistu, mille eesmärgiks on liikme valdusesse anda liikmelisuse alusel kasutamiseks eluruum omaette korterina elamuühistule (-kooperatiivile) kuuluvas elamus ning korraldada elamu, elamualuse ja elamu teenindamiseks vajaliku maa majandamist. Elamuühistu (-kooperatiiv) on mittetulundusühistu, mille eesmärgiks on liikme valdusesse anda liikmelisuse alusel kasutamiseks eluruum omaette korterina elamuühistule (-kooperatiivile) kuuluvas elamus ning kor",
+      "estleg:interpretedBy": [
         {
-          "@id": "estleg:Reg_153136_Par_3",
-          "estleg:similarityScore": {
-            "@value": "0.316",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        }
-      ],
-      "estleg:targetGroup": [
-        "ngo"
-      ]
-    },
-    {
-      "@id": "estleg:ES_Par_16",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ES"
-      ],
-      "estleg:paragrahv": "§ 16.",
-      "rdfs:label": "§ 16. Elamuühistu (-kooperatiivi) liikme õiguste ja kohustuste kindlaksmääramine",
-      "estleg:sourceAct": "Elamuseadus",
-      "estleg:summary": "Elamuühistu (-kooperatiivi) liikme õigused ja kohustused tema valduses oleva eluruumi kasutamisel sätestatakse käesolevas seaduses ja elamuühistu (-kooperatiivi) põhikirjas. <p>[Paragrahv 17 kehtetu alates 01.01.2005 - <a href=\"./776055\">RT I 2004, 53, 368</a>]</p> Elamuühistu (-kooperatiivi) liikme õigused ja kohustused tema valduses oleva eluruumi kasutamisel sätestatakse käesolevas seaduses ja elamuühistu (-kooperatiivi) põhikirjas."
-    },
-    {
-      "@id": "estleg:ES_Par_17",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ES"
-      ],
-      "estleg:paragrahv": "§ 17.",
-      "rdfs:label": "§ 17. Elamuühistu (-kooperatiivi) liikme perekonnaliikmed",
-      "estleg:sourceAct": "Elamuseadus",
-      "estleg:summary": "1 (1) Kehtetu - RT I 2002 53 336 174795 2002-07-01 Kehtetu - 2 (2) Elamuühistu (-kooperatiivi) liikme perekonnaliikme õigused ja kohustused määratakse kindlaks käesolevas seaduses ja elamuühistu (-kooperatiivi) põhikirjas. Elamuühistu (-kooperatiivi) liikme perekonnaliikme õigused ja kohustused määratakse kindlaks käesolevas seaduses ja elamuühistu (-kooperatiivi) põhikirjas. 3 (3) Elamuühistu (-kooperatiivi) liikme elamuühistust (-kooperatiivist) väljaastumisel või väljaarvamisel on temaga koos"
-    },
-    {
-      "@id": "estleg:ES_Par_18",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ES"
-      ],
-      "estleg:paragrahv": "§ 18.",
-      "rdfs:label": "§ 18. Eluruumi üürileandmine elamuühistu (-kooperatiivi) majas",
-      "estleg:sourceAct": "Elamuseadus",
-      "estleg:summary": "1 (1) Elamuühistust (-kooperatiivist) väljaastunud või väljaarvatud liikme valduses olnud vabanenud eluruumi võib elamuühistu (-kooperatiiv) kuni uue liikme vastuvõtmiseni või selle eluruumi tööandja eluruumiks tunnistamiseni anda üürile vabanemisest arvates mitte kauemaks kui üheks aastaks kohustusega vabastada eluruum pärast selle tähtaja möödumist. Elamuühistust (-kooperatiivist) väljaastunud või väljaarvatud liikme valduses olnud vabanenud eluruumi võib elamuühistu (-kooperatiiv) kuni uue li",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
-      "estleg:targetGroup": [
-        "business"
-      ],
-      "estleg:referencedBy": [
-        {
-          "@id": "estleg:ES_Par_19"
+          "@id": "estleg:RK_3_2_1_20_97"
         }
       ]
     },
@@ -545,244 +616,239 @@
       "@id": "estleg:ES_Par_19",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ES"
+        "estleg:LegalProvision_elamuseadus"
       ],
       "estleg:paragrahv": "§ 19.",
-      "rdfs:label": "§ 19. Ajutised elanikud elamuühistu (-kooperatiivi) majas",
+      "rdfs:label": "§ 19. [Kehtetud -]",
       "estleg:sourceAct": "Elamuseadus",
-      "estleg:summary": "Elamuühistu (-kooperatiivi) liige, samuti käesoleva seaduse § 18 1. lõikes nimetatud eluruumi üürnik võib temaga koos elavate täisealiste perekonnaliikmete vastastikusel kokkuleppel lubada tema kasutuses olevas eluruumis ajutiselt elada teistel isikutel (ajutistel elanikel). RT I 2002 53 336 174795 2002-07-01 Elamuühistu (-kooperatiivi) liige, samuti käesoleva seaduse § 18 1. lõikes nimetatud eluruumi üürnik võib temaga koos elavate täisealiste perekonnaliikmete vastastikusel kokkuleppel lubada ",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
-      "estleg:references": [
-        {
-          "@id": "estleg:ES_Par_18"
-        }
-      ],
-      "estleg:targetGroup": [
-        "citizen"
-      ]
+      "estleg:summary": "Kehtetud -",
+      "estleg:legalText": "Kehtetud -"
     },
     {
       "@id": "estleg:ES_Par_20",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ES"
+        "estleg:LegalProvision_elamuseadus"
       ],
       "estleg:paragrahv": "§ 20.",
-      "rdfs:label": "§ 20.",
+      "rdfs:label": "§ 20. [Kehtetu -]",
       "estleg:sourceAct": "Elamuseadus",
-      "estleg:summary": "Kehtetu -"
+      "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -"
     },
     {
       "@id": "estleg:ES_Par_21",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ES"
+        "estleg:LegalProvision_elamuseadus"
       ],
       "estleg:paragrahv": "§ 21.",
-      "rdfs:label": "§ 21. Osamaksu võõrandamine",
+      "rdfs:label": "§ 21.",
       "estleg:sourceAct": "Elamuseadus",
       "estleg:summary": "1 (1) Elamuühistu (-kooperatiivi) liikmel on õigus talle kuuluv osamaks võõrandada isikule, kes käesoleva seaduse ja elamuühistu (-kooperatiivi) põhikirja kohaselt vastab liikme kohta sätestatud tingimustele. Abikaasade ühisomandisse kuuluva osamaksu võib elamuühistu (-kooperatiivi) liige võõrandada üksnes abikaasa eelneval kirjalikul nõusolekul. Elamuühistu (-kooperatiivi) liikmel on õigus talle kuuluv osamaks võõrandada isikule, kes käesoleva seaduse ja elamuühistu (-kooperatiivi) põhikirja ko",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
       "estleg:targetGroup": [
         "citizen"
-      ]
-    },
-    {
-      "@id": "estleg:ES_Par_22",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ES"
       ],
-      "estleg:paragrahv": "§ 22.",
-      "rdfs:label": "§ 22. Elamuühistu (-kooperatiivi) liikmeks astumise eelisõigus osamaksu pärimise korral",
-      "estleg:sourceAct": "Elamuseadus",
-      "estleg:summary": "1 (1) Elamuühistu (-kooperatiivi) liikmega koos elanud abikaasal on liikme surma korral eelisõigus elamuühistu (-kooperatiivi) liikmeks astumisel juhul, kui tal on õigus osale osamaksust. Elamuühistu (-kooperatiivi) liikmega koos elanud abikaasal on liikme surma korral eelisõigus elamuühistu (-kooperatiivi) liikmeks astumisel juhul, kui tal on õigus osale osamaksust. 2 (2) Pärandajaga koos elanud osamaksu või selle osa pärijal on eelisõigus astuda elamuühistu (-kooperatiivi) liikmeks juhul, kui ",
       "estleg:normativeType": {
         "@id": "estleg:NormType_Right"
       }
     },
     {
-      "@id": "estleg:ES_Par_23",
+      "@id": "estleg:ES_Par_26_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ES"
-      ],
-      "estleg:paragrahv": "§ 23.",
-      "rdfs:label": "§ 23. Elamuühistu (-kooperatiivi) liikme elamuühistust (-kooperatiivist) väljaarvamine",
-      "estleg:sourceAct": "Elamuseadus",
-      "estleg:summary": "1 (1) Elamuühistu (-kooperatiivi) liige arvatakse elamuühistust (-kooperatiivist) välja tema surma korral. Samuti võidakse liige elamuühistust (-kooperatiivist) välja arvata, kui ta: 1 1) ei tasu kindlaksmääratud ajaks ettenähtud osamaksu või majandamiskulude eest; 2 2) korduvalt rikub elamuühistu (-kooperatiivi) põhikirja; 3 3) korduvalt rikub või lõhub eluruumi või ei kasuta seda sihipäraselt või oma süülise käitumisega teeb võimatuks teiste elanike kooselu temaga ühes korteris või majas; 4 4)",
-      "estleg:targetGroup": [
-        "citizen"
-      ],
-      "estleg:referencedBy": [
-        {
-          "@id": "estleg:ES_Par_24"
-        },
-        {
-          "@id": "estleg:ES_Par_25"
-        }
-      ]
-    },
-    {
-      "@id": "estleg:ES_Par_24",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ES"
-      ],
-      "estleg:paragrahv": "§ 24.",
-      "rdfs:label": "§ 24. Elamuühistu (-kooperatiivi) endise liikme väljatõstmine tema valduses olevast korterist",
-      "estleg:sourceAct": "Elamuseadus",
-      "estleg:summary": "1 (1) Elamuühistu (-kooperatiivi) liige, kes arvati elamuühistust (-kooperatiivist) välja käesoleva seaduse § 23 1. lõike punktides 1, 4 ja 5 ettenähtud alustel, on kohustatud vabastama tema valduses oleva eluruumi. Keeldumise korral kuulub ta ühes kõigi temaga koos elavate isikutega kohtu korras väljatõstmisele teist eluruumi vastu andmata. Elamuühistu (-kooperatiivi) liige, kes arvati elamuühistust (-kooperatiivist) välja käesoleva seaduse § 23 1. lõike punktides 1, 4 ja 5 ettenähtud alustel, ",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
-      "estleg:references": [
-        {
-          "@id": "estleg:ES_Par_23"
-        }
-      ],
-      "estleg:targetGroup": [
-        "public_body"
-      ]
-    },
-    {
-      "@id": "estleg:ES_Par_25",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ES"
-      ],
-      "estleg:paragrahv": "§ 25.",
-      "rdfs:label": "§ 25. Elamuühistu (-kooperatiivi) liikme perekonnaliikme väljatõstmine",
-      "estleg:sourceAct": "Elamuseadus",
-      "estleg:summary": "Elamuühistu (-kooperatiivi) liikme perekonnaliikme võib kohtu korras teist eluruumi vastu andmata korterist välja tõsta käesoleva seaduse § 23 1. lõike punktis 3 märgitud alustel. <p>[Paragrahv 26 kehtetu alates 01.01.2005 - <a href=\"./776055\">RT I 2004, 53, 368</a>]</p> Elamuühistu (-kooperatiivi) liikme perekonnaliikme võib kohtu korras teist eluruumi vastu andmata korterist välja tõsta käesoleva seaduse § 23 1. lõike punktis 3 märgitud alustel.",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
-      "estleg:references": [
-        {
-          "@id": "estleg:ES_Par_23"
-        }
-      ],
-      "estleg:targetGroup": [
-        "public_body"
-      ]
-    },
-    {
-      "@id": "estleg:ES_Par_26",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ES"
-      ],
-      "estleg:paragrahv": "§ 26.",
-      "rdfs:label": "§ 26. Elamuühistu (-kooperatiivi) liikmete kindlustamine eluruumiga seoses elamu lammutamisega",
-      "estleg:sourceAct": "Elamuseadus",
-      "estleg:summary": "Elamu lammutamise korral seoses maa sundvõõrandamisega üldistes huvides antakse seal elavatele elamuühistu (-kooperatiivi) liikmetele koos nendega elavate perekonnaliikmetega nende soovil lisaks tekitatud kahju hüvitamisele kasutada teine eluruum käesoleva seaduse § 55 2. lõikes sätestatud korras. <p>[Paragrahv 26<sup>1</sup> kehtetu alates 01.01.2005 - <a href=\"./776055\">RT I 2004, 53, 368</a>]</p> Elamu lammutamise korral seoses maa sundvõõrandamisega üldistes huvides antakse seal elavatele el"
-    },
-    {
-      "@id": "estleg:ES_Par_26_19",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_ES"
+        "estleg:LegalProvision_elamuseadus"
       ],
       "estleg:paragrahv": "§ 26<sup>1</sup>.",
-      "rdfs:label": "§ 26<sup>1</sup>. Elamuühistu (-kooperatiivi) vara jaotamine",
+      "rdfs:label": "§ 26<sup>1</sup>. [Kehtetud -]",
       "estleg:sourceAct": "Elamuseadus",
-      "estleg:summary": "Elamuühistu (-kooperatiivi) lõpetamisel jaotatakse elamuühistu (-kooperatiivi) vara selle liikmete vahel vastavalt liikme kasutuses oleva eluruumi suurusele notariaalselt tõestatud jaotusplaani alusel. Elamuühistu (-kooperatiivi) lõpetamisel jaotatakse elamuühistu (-kooperatiivi) vara selle liikmete vahel vastavalt liikme kasutuses oleva eluruumi suurusele notariaalselt tõestatud jaotusplaani alusel.",
-      "estleg:targetGroup": [
-        "official"
-      ]
+      "estleg:summary": "Kehtetud -",
+      "estleg:legalText": "Kehtetud -"
     },
     {
       "@id": "estleg:ES_Par_27",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ES"
+        "estleg:LegalProvision_elamuseadus"
       ],
       "estleg:paragrahv": "§ 27.",
-      "rdfs:label": "§ 27.",
+      "rdfs:label": "§ 27. [Kehtetu -]",
       "estleg:sourceAct": "Elamuseadus",
-      "estleg:summary": "Kehtetu -"
+      "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -"
     },
     {
       "@id": "estleg:ES_Par_28",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ES"
+        "estleg:LegalProvision_elamuseadus"
       ],
       "estleg:paragrahv": "§ 28.",
-      "rdfs:label": "§ 28.",
+      "rdfs:label": "§ 28. [Kehtetu -]",
       "estleg:sourceAct": "Elamuseadus",
       "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ES_1"
-      }
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_ES_1"
+      },
+      "estleg:interpretedBy": [
+        {
+          "@id": "estleg:RK_3_3_1_19_96"
+        },
+        {
+          "@id": "estleg:RK_3_2_1_118_04"
+        },
+        {
+          "@id": "estleg:RK_3_3_1_13_08"
+        }
+      ]
     },
     {
       "@id": "estleg:ES_Par_29",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ES"
+        "estleg:LegalProvision_elamuseadus"
       ],
       "estleg:paragrahv": "§ 29.",
-      "rdfs:label": "§ 29.",
+      "rdfs:label": "§ 29. [Kehtetu -]",
       "estleg:sourceAct": "Elamuseadus",
       "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ES_1"
-      }
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_ES_1"
+      },
+      "estleg:interpretedBy": [
+        {
+          "@id": "estleg:RK_3_4_1_2_03"
+        },
+        {
+          "@id": "estleg:RK_3_4_1_7_03"
+        }
+      ]
     },
     {
       "@id": "estleg:ES_Par_30",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ES"
+        "estleg:LegalProvision_elamuseadus"
       ],
       "estleg:paragrahv": "§ 30.",
-      "rdfs:label": "§ 30.",
+      "rdfs:label": "§ 30. [Kehtetu -]",
       "estleg:sourceAct": "Elamuseadus",
       "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ES_1"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_ES_1"
       }
     },
     {
       "@id": "estleg:ES_Par_31",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ES"
+        "estleg:LegalProvision_elamuseadus"
       ],
       "estleg:paragrahv": "§ 31.",
-      "rdfs:label": "§ 31.",
+      "rdfs:label": "§ 31. [Kehtetu -]",
       "estleg:sourceAct": "Elamuseadus",
       "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ES_1"
-      }
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_ES_1"
+      },
+      "estleg:interpretedBy": [
+        {
+          "@id": "estleg:RK_3_2_1_111_98"
+        },
+        {
+          "@id": "estleg:RK_3_2_1_76_99"
+        },
+        {
+          "@id": "estleg:RK_3_4_1_20_04"
+        },
+        {
+          "@id": "estleg:RK_3_2_1_94_04"
+        }
+      ]
     },
     {
       "@id": "estleg:ES_Par_32",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ES"
+        "estleg:LegalProvision_elamuseadus"
       ],
       "estleg:paragrahv": "§ 32.",
       "rdfs:label": "§ 32. Üürniku eesõigus uue üürilepingu sõlmimiseks",
       "estleg:sourceAct": "Elamuseadus",
       "estleg:summary": "1 (1) Lepingujärgseid kohustusi nõuetekohaselt täitnud üürnikul on lepingu tähtaja möödumisel eesõigus uue üürilepingu sõlmimiseks, välja arvatud käesoleva seaduse §-s 33 sätestatud juhtudel. Lepingujärgseid kohustusi nõuetekohaselt täitnud üürnikul on lepingu tähtaja möödumisel eesõigus uue üürilepingu sõlmimiseks, välja arvatud käesoleva seaduse §-s 33 sätestatud juhtudel. 2 (2) Kui enne üürilepingu tähtaja möödumist kumbki pool ei teavita teist poolt kirjalikult üürilepingu lõpetamisest või u",
+      "estleg:legalText": "(1) Lepingujärgseid kohustusi nõuetekohaselt täitnud üürnikul on lepingu tähtaja möödumisel eesõigus uue üürilepingu sõlmimiseks, välja arvatud käesoleva seaduse §-s 33 sätestatud juhtudel. (2) Kui enne üürilepingu tähtaja möödumist kumbki pool ei teavita teist poolt kirjalikult üürilepingu lõpetamisest või uue üürilepingu sõlmimisest, loetakse see pikenenuks viieks aastaks, kui lepingus ei ole ette nähtud teisiti. (3) Kui üürnik, vaatamata üürileandja poolt enne lepingutähtaja möödumist tehtud ettepanekule, hoiab kõrvale uue lepingu sõlmimisest, kuid jätkab eluruumi kasutamist, on üürileandjal õigus kolme kuu möödumisel pärast kirjaliku teate väljastamist pöörduda kohtusse uue üürilepingu sõlmimiseks või selle lõpetamiseks. Selle õiguse mittekasutamise korral loetakse üürileping pikenenuks esialgses lepingus näidatud tähtajaks. Pikenenud lepingule ei kohaldata käesoleva paragrahvi 1. lõike sätteid. (4) Käesolevat paragrahvi kohaldatakse omandireformi aluste seaduse § 121 lõikes 3 sätestatud eluruumi üürilepingu viieaastase tähtaja möödumisel selle üürilepingu ühekordseks pikendamiseks või uue üürilepingu sõlmimiseks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ES_1"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_ES_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ES_Par_32_Lg_1"
+        },
+        {
+          "@id": "estleg:ES_Par_32_Lg_2"
+        },
+        {
+          "@id": "estleg:ES_Par_32_Lg_3"
+        },
+        {
+          "@id": "estleg:ES_Par_32_Lg_4"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen"
+      ],
       "estleg:references": [
         {
           "@id": "estleg:ES_Par_33"
         }
       ],
-      "estleg:targetGroup": [
-        "citizen"
+      "estleg:interpretedBy": [
+        {
+          "@id": "estleg:RK_3_2_1_140_03"
+        },
+        {
+          "@id": "estleg:RK_3_2_1_102_03"
+        },
+        {
+          "@id": "estleg:RK_3_2_1_25_03"
+        },
+        {
+          "@id": "estleg:RK_3_4_1_20_04"
+        },
+        {
+          "@id": "estleg:RK_3_2_1_100_04"
+        },
+        {
+          "@id": "estleg:RK_3_2_1_47_04"
+        },
+        {
+          "@id": "estleg:RK_3_2_1_150_05"
+        },
+        {
+          "@id": "estleg:RK_3_2_1_89_05"
+        },
+        {
+          "@id": "estleg:RK_3_2_1_27_05"
+        }
       ],
       "estleg:referencedBy": [
         {
@@ -794,24 +860,121 @@
       ]
     },
     {
+      "@id": "estleg:ES_Par_32_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Lepingujärgseid kohustusi nõuetekohaselt täitnud üürnikul on lepingu tähtaja möödumisel eesõigus uue üürilepingu sõlmimiseks, välja arvatud käesoleva seaduse §-s 33 sätestatud juhtudel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ES_Par_32"
+      },
+      "rdfs:label": "§ 32 lg 1"
+    },
+    {
+      "@id": "estleg:ES_Par_32_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kui enne üürilepingu tähtaja möödumist kumbki pool ei teavita teist poolt kirjalikult üürilepingu lõpetamisest või uue üürilepingu sõlmimisest, loetakse see pikenenuks viieks aastaks, kui lepingus ei ole ette nähtud teisiti.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ES_Par_32"
+      },
+      "rdfs:label": "§ 32 lg 2"
+    },
+    {
+      "@id": "estleg:ES_Par_32_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kui üürnik, vaatamata üürileandja poolt enne lepingutähtaja möödumist tehtud ettepanekule, hoiab kõrvale uue lepingu sõlmimisest, kuid jätkab eluruumi kasutamist, on üürileandjal õigus kolme kuu möödumisel pärast kirjaliku teate väljastamist pöörduda kohtusse uue üürilepingu sõlmimiseks või selle lõpetamiseks. Selle õiguse mittekasutamise korral loetakse üürileping pikenenuks esialgses lepingus näidatud tähtajaks. Pikenenud lepingule ei kohaldata käesoleva paragrahvi 1. lõike sätteid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ES_Par_32"
+      },
+      "rdfs:label": "§ 32 lg 3"
+    },
+    {
+      "@id": "estleg:ES_Par_32_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Käesolevat paragrahvi kohaldatakse omandireformi aluste seaduse § 121 lõikes 3 sätestatud eluruumi üürilepingu viieaastase tähtaja möödumisel selle üürilepingu ühekordseks pikendamiseks või uue üürilepingu sõlmimiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ES_Par_32"
+      },
+      "rdfs:label": "§ 32 lg 4"
+    },
+    {
       "@id": "estleg:ES_Par_33",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ES"
+        "estleg:LegalProvision_elamuseadus"
       ],
       "estleg:paragrahv": "§ 33.",
       "rdfs:label": "§ 33. Uue lepingu sõlmimisest keeldumine üürilepingu lõppemisel",
       "estleg:sourceAct": "Elamuseadus",
       "estleg:summary": "1 (1) Üürniku eesõigust uue lepingu sõlmimisele (§ 32 1. lõige) võib üürileandja lepingu tähtaja möödumisel kohtus vaidlustada, kui: 1 1) üürnik korduvalt jättis täitmata oma lepingujärgsed kohustused või rikkus lepingu tingimusi; 2 2) üüritud eluruum on elamiseks vajalik üürileandjale endale või tema perekonnaliikmetele; 3 3) üürilepingu ese on välja arvatud eluruumide hulgast seoses ümberehitamisega mitteeluruumiks või füüsilise kulumise tõttu või kui see remondi käigus ei jäänud alles, olulis",
+      "estleg:legalText": "(1) Üürniku eesõigust uue lepingu sõlmimisele (§ 32 1. lõige) võib üürileandja lepingu tähtaja möödumisel kohtus vaidlustada, kui: üürnik korduvalt jättis täitmata oma lepingujärgsed kohustused või rikkus lepingu tingimusi; üüritud eluruum on elamiseks vajalik üürileandjale endale või tema perekonnaliikmetele; üürilepingu ese on välja arvatud eluruumide hulgast seoses ümberehitamisega mitteeluruumiks või füüsilise kulumise tõttu või kui see remondi käigus ei jäänud alles, oluliselt vähenes või suurenes; üürileping oli sõlmitud tähtajaga mitte üle ühe aasta koos kohustusega vabastada eluruum pärast selle tähtaja möödumist. üürnikul puudub kehtiv elamisluba. (2) Kui kohus teeb käesoleva paragrahvi 1. lõikes ettenähtud alustel otsuse uue üürilepingu sõlmimisest keeldumise kohta, kuuluvad üürnik ja temaga koos elavad isikud väljakolimisest keeldumise korral väljatõstmisele teist eluruumi vastu andmata. Väljatõstmisel käesoleva paragrahvi 1. lõike punkti 3 alusel lasub kohalikul omavalitsusüksusel samaväärse eluruumi vastuandmise kohustus juhul, kui eluruum, millest välja tõstetakse, on riigi või munitsipaalomandis. (3) Kohus võib üürilepingu tähtaja möödumisel üürnikku, kellel oli eluruumi tagastamisel kehtiv üürileping, ja temaga koos elavaid isikuid välja tõsta käesoleva paragrahvi 1. lõike punktide 2 ja 3 alusel ainult juhul, kui on täidetud üks alljärgnevatest tingimustest: riigiasutus või valla- või linnavalitsus annab üürnikule ja temaga koos elavatele isikutele vastu teise, samaväärse eluruumi; riigiasutus, valla- või linnavalitsus või üürileandja saavutavad üürniku ja temaga koos elavate isikutega kokkuleppe neile sobiva eluruumi andmiseks. Kokkuleppeks võib olla ka senise eluruumi vabastamise eest rahalise kompensatsiooni maksmine. Kokkulepe peab olema notariaalselt kinnitatud. (4) Üürnik ja temaga koos elavad isikud on kohustatud üürileandja nõudel nende kasutuses oleva eluruumi vabastama, kui on täidetud üks käesoleva paragrahvi 3. lõike punktis 1 või 2 sätestatud tingimustest. (5) Kui kohalikul omavalitsusüksusel ei ole võimalik eluruumi vastu anda, eraldab vahendid vastavate eluruumide ehitamiseks või ostmiseks riik. Vahendite taotlemise ja eraldamise korra (6) Käesolevat paragrahvi kohaldatakse omandireformi aluste seaduse § 121 lõikes 3 sätestatud eluruumi üürilepingute viieaastase tähtaja möödumisel.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ES_1"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_ES_1"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ES_Par_33_Lg_1"
+        },
+        {
+          "@id": "estleg:ES_Par_33_Lg_2"
+        },
+        {
+          "@id": "estleg:ES_Par_33_Lg_3"
+        },
+        {
+          "@id": "estleg:ES_Par_33_Lg_4"
+        },
+        {
+          "@id": "estleg:ES_Par_33_Lg_5"
+        },
+        {
+          "@id": "estleg:ES_Par_33_Lg_6"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen",
-        "public_body"
+        "public_body",
+        "official"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:interpretedBy": [
+        {
+          "@id": "estleg:RK_3_2_1_102_03"
+        },
+        {
+          "@id": "estleg:RK_3_2_1_25_03"
+        },
+        {
+          "@id": "estleg:RK_3_4_1_20_04"
+        },
+        {
+          "@id": "estleg:RK_3_2_1_100_04"
+        },
+        {
+          "@id": "estleg:RK_3_2_1_89_05"
+        },
+        {
+          "@id": "estleg:RK_3_2_1_27_05"
+        }
       ],
       "estleg:referencedBy": [
         {
@@ -826,24 +989,106 @@
       "estleg:implementedByCount": 1
     },
     {
+      "@id": "estleg:ES_Par_33_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Üürniku eesõigust uue lepingu sõlmimisele (§ 32 1. lõige) võib üürileandja lepingu tähtaja möödumisel kohtus vaidlustada, kui: üürnik korduvalt jättis täitmata oma lepingujärgsed kohustused või rikkus lepingu tingimusi; üüritud eluruum on elamiseks vajalik üürileandjale endale või tema perekonnaliikmetele; üürilepingu ese on välja arvatud eluruumide hulgast seoses ümberehitamisega mitteeluruumiks või füüsilise kulumise tõttu või kui see remondi käigus ei jäänud alles, oluliselt vähenes või suurenes; üürileping oli sõlmitud tähtajaga mitte üle ühe aasta koos kohustusega vabastada eluruum pärast selle tähtaja möödumist. üürnikul puudub kehtiv elamisluba.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ES_Par_33"
+      },
+      "rdfs:label": "§ 33 lg 1"
+    },
+    {
+      "@id": "estleg:ES_Par_33_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kui kohus teeb käesoleva paragrahvi 1. lõikes ettenähtud alustel otsuse uue üürilepingu sõlmimisest keeldumise kohta, kuuluvad üürnik ja temaga koos elavad isikud väljakolimisest keeldumise korral väljatõstmisele teist eluruumi vastu andmata. Väljatõstmisel käesoleva paragrahvi 1. lõike punkti 3 alusel lasub kohalikul omavalitsusüksusel samaväärse eluruumi vastuandmise kohustus juhul, kui eluruum, millest välja tõstetakse, on riigi või munitsipaalomandis.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ES_Par_33"
+      },
+      "rdfs:label": "§ 33 lg 2"
+    },
+    {
+      "@id": "estleg:ES_Par_33_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kohus võib üürilepingu tähtaja möödumisel üürnikku, kellel oli eluruumi tagastamisel kehtiv üürileping, ja temaga koos elavaid isikuid välja tõsta käesoleva paragrahvi 1. lõike punktide 2 ja 3 alusel ainult juhul, kui on täidetud üks alljärgnevatest tingimustest: riigiasutus või valla- või linnavalitsus annab üürnikule ja temaga koos elavatele isikutele vastu teise, samaväärse eluruumi; riigiasutus, valla- või linnavalitsus või üürileandja saavutavad üürniku ja temaga koos elavate isikutega kokkuleppe neile sobiva eluruumi andmiseks. Kokkuleppeks võib olla ka senise eluruumi vabastamise eest rahalise kompensatsiooni maksmine. Kokkulepe peab olema notariaalselt kinnitatud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ES_Par_33"
+      },
+      "rdfs:label": "§ 33 lg 3"
+    },
+    {
+      "@id": "estleg:ES_Par_33_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Üürnik ja temaga koos elavad isikud on kohustatud üürileandja nõudel nende kasutuses oleva eluruumi vabastama, kui on täidetud üks käesoleva paragrahvi 3. lõike punktis 1 või 2 sätestatud tingimustest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ES_Par_33"
+      },
+      "rdfs:label": "§ 33 lg 4"
+    },
+    {
+      "@id": "estleg:ES_Par_33_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Kui kohalikul omavalitsusüksusel ei ole võimalik eluruumi vastu anda, eraldab vahendid vastavate eluruumide ehitamiseks või ostmiseks riik. Vahendite taotlemise ja eraldamise korra",
+      "estleg:parentProvision": {
+        "@id": "estleg:ES_Par_33"
+      },
+      "rdfs:label": "§ 33 lg 5"
+    },
+    {
+      "@id": "estleg:ES_Par_33_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Käesolevat paragrahvi kohaldatakse omandireformi aluste seaduse § 121 lõikes 3 sätestatud eluruumi üürilepingute viieaastase tähtaja möödumisel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ES_Par_33"
+      },
+      "rdfs:label": "§ 33 lg 6"
+    },
+    {
       "@id": "estleg:ES_Par_34",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ES"
+        "estleg:LegalProvision_elamuseadus"
       ],
       "estleg:paragrahv": "§ 34.",
-      "rdfs:label": "§ 34.",
+      "rdfs:label": "§ 34. [Kehtetu -]",
       "estleg:sourceAct": "Elamuseadus",
       "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ES_1"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_ES_1"
       }
     },
     {
       "@id": "estleg:ES_Par_35",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ES"
+        "estleg:LegalProvision_elamuseadus"
       ],
       "estleg:paragrahv": "§ 35.",
       "rdfs:label": "§ 35.",
@@ -851,21 +1096,68 @@
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ES_2"
       },
-      "estleg:summary": "§ 35."
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_ES_2"
+      },
+      "estleg:summary": "§ 35.",
+      "estleg:interpretedBy": [
+        {
+          "@id": "estleg:RK_III_2_1_29_94"
+        },
+        {
+          "@id": "estleg:RK_3_2_3_16_97"
+        },
+        {
+          "@id": "estleg:RK_3_2_1_7_99"
+        },
+        {
+          "@id": "estleg:RK_3_2_1_6_00"
+        },
+        {
+          "@id": "estleg:RK_3_3_1_13_08"
+        }
+      ]
     },
     {
       "@id": "estleg:ES_Par_37",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ES"
+        "estleg:LegalProvision_elamuseadus"
       ],
       "estleg:paragrahv": "§ 37.",
-      "rdfs:label": "§ 37.",
+      "rdfs:label": "§ 37. [Kehtetud -]",
       "estleg:sourceAct": "Elamuseadus",
       "estleg:summary": "Kehtetud -",
+      "estleg:legalText": "Kehtetud -",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ES_2"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_ES_2"
+      },
+      "estleg:interpretedBy": [
+        {
+          "@id": "estleg:RK_3_2_1_136_96"
+        },
+        {
+          "@id": "estleg:RK_3_2_1_148_03"
+        },
+        {
+          "@id": "estleg:RK_3_2_1_138_03"
+        },
+        {
+          "@id": "estleg:RK_3_2_1_140_03"
+        },
+        {
+          "@id": "estleg:RK_3_4_1_20_04"
+        },
+        {
+          "@id": "estleg:RK_3_2_1_23_06"
+        },
+        {
+          "@id": "estleg:RK_3_2_1_47_10"
+        }
+      ],
       "estleg:implementedBy": [
         {
           "@id": "estleg:Reg_1021809_Map_2026"
@@ -919,24 +1211,36 @@
       "estleg:implementedByCount": 16
     },
     {
-      "@id": "estleg:ES_Par_37_30",
+      "@id": "estleg:ES_Par_37_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ES"
+        "estleg:LegalProvision_elamuseadus"
       ],
       "estleg:paragrahv": "§ 37<sup>1</sup>.",
       "rdfs:label": "§ 37<sup>1</sup>. Üüri piirmäär",
       "estleg:sourceAct": "Elamuseadus",
       "estleg:summary": "1 (1) Kohaliku omavalitsuse volikogul on õigus kehtestada oma haldusterritooriumil asuvatele munitsipaalomandis olevatele eluruumidele üüri piirmäärad. Kohaliku omavalitsuse volikogu muudab üüri piirmäärasid üks kord 12 kuu jooksul, kui üüri mõjutavad hinnad on viimasest piirmäärade kehtestamisest arvates muutunud. Kohaliku omavalitsuse volikogul on õigus kehtestada oma haldusterritooriumil asuvatele munitsipaalomandis olevatele eluruumidele üüri piirmäärad. Kohaliku omavalitsuse volikogu muudab",
+      "estleg:legalText": "(1) Kohaliku omavalitsuse volikogul on õigus kehtestada oma haldusterritooriumil asuvatele munitsipaalomandis olevatele eluruumidele üüri piirmäärad. Kohaliku omavalitsuse volikogu muudab üüri piirmäärasid üks kord 12 kuu jooksul, kui üüri mõjutavad hinnad on viimasest piirmäärade kehtestamisest arvates muutunud. (2) Kehtetu -",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ES_2"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_ES_2"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ES_Par_37_1_Lg_1"
+        },
+        {
+          "@id": "estleg:ES_Par_37_1_Lg_2"
+        }
+      ],
       "estleg:targetGroup": [
         "public_body"
       ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      },
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_kohalik_omavalitsus"
@@ -945,10 +1249,36 @@
       "estleg:competenceType": "general"
     },
     {
-      "@id": "estleg:ES_Par_38",
+      "@id": "estleg:ES_Par_37_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kohaliku omavalitsuse volikogul on õigus kehtestada oma haldusterritooriumil asuvatele munitsipaalomandis olevatele eluruumidele üüri piirmäärad. Kohaliku omavalitsuse volikogu muudab üüri piirmäärasid üks kord 12 kuu jooksul, kui üüri mõjutavad hinnad on viimasest piirmäärade kehtestamisest arvates muutunud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ES_Par_37_1"
+      },
+      "rdfs:label": "§ 37<sup>1</sup> lg 1"
+    },
+    {
+      "@id": "estleg:ES_Par_37_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:ES_Par_37_1"
+      },
+      "rdfs:label": "§ 37<sup>1</sup> lg 2"
+    },
+    {
+      "@id": "estleg:ES_Par_38_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ES"
+        "estleg:LegalProvision_elamuseadus"
       ],
       "estleg:paragrahv": "§ 37<sup>2</sup>.",
       "rdfs:label": "§ 37<sup>2</sup>.",
@@ -956,46 +1286,69 @@
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ES_2"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_ES_2"
+      },
       "estleg:summary": "§ 37<sup>2</sup>."
     },
     {
       "@id": "estleg:ES_Par_61",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ES"
+        "estleg:LegalProvision_elamuseadus"
       ],
       "estleg:paragrahv": "§ 61.",
-      "rdfs:label": "§ 61.",
+      "rdfs:label": "§ 61. [Kehtetud -]",
       "estleg:sourceAct": "Elamuseadus",
       "estleg:summary": "Kehtetud -",
+      "estleg:legalText": "Kehtetud -",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_ES_2"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_ES_2"
       }
     },
     {
       "@id": "estleg:ES_Par_62",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ES"
+        "estleg:LegalProvision_elamuseadus"
       ],
       "estleg:paragrahv": "§ 62.",
-      "rdfs:label": "§ 62.",
+      "rdfs:label": "§ 62. [Kehtetu -]",
       "estleg:sourceAct": "Elamuseadus",
-      "estleg:summary": "Kehtetu -"
+      "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -"
     },
     {
       "@id": "estleg:ES_Par_63",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ES"
+        "estleg:LegalProvision_elamuseadus"
       ],
       "estleg:paragrahv": "§ 63.",
-      "rdfs:label": "§ 63.",
+      "rdfs:label": "§ 63. [Kehtetu -]",
       "estleg:sourceAct": "Elamuseadus",
       "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
+      "estleg:interpretedBy": [
+        {
+          "@id": "estleg:RK_3_1_1_82_97"
+        },
+        {
+          "@id": "estleg:RK_3_1_1_29_99"
+        },
+        {
+          "@id": "estleg:RK_3_1_1_77_03"
+        }
+      ],
       "estleg:referencedBy": [
         {
           "@id": "estleg:ÜVLS_Par_26"
+        },
+        {
+          "@id": "estleg:VOSRS_Par_15"
         }
       ]
     },
@@ -1003,72 +1356,94 @@
       "@id": "estleg:ES_Par_64",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ES"
+        "estleg:LegalProvision_elamuseadus"
       ],
       "estleg:paragrahv": "§ 64.",
-      "rdfs:label": "§ 64.",
+      "rdfs:label": "§ 64. [Kehtetu -]",
       "estleg:sourceAct": "Elamuseadus",
-      "estleg:summary": "Kehtetu -"
+      "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -"
     },
     {
       "@id": "estleg:ES_Par_65",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ES"
+        "estleg:LegalProvision_elamuseadus"
       ],
       "estleg:paragrahv": "§ 65.",
-      "rdfs:label": "§ 65.",
+      "rdfs:label": "§ 65. [Käesolev seadus jõustub 1992. aasta 1. juulist. Seaduse jõustumise hetkest kaota...]",
       "estleg:sourceAct": "Elamuseadus",
-      "estleg:summary": "Käesolev seadus jõustub 1992. aasta 1. juulist. Seaduse jõustumise hetkest kaotab kehtivuse «Eesti NSV elamukoodeks»."
+      "estleg:summary": "Käesolev seadus jõustub 1992. aasta 1. juulist. Seaduse jõustumise hetkest kaotab kehtivuse «Eesti NSV elamukoodeks».",
+      "estleg:legalText": "Käesolev seadus jõustub 1992. aasta 1. juulist. Seaduse jõustumise hetkest kaotab kehtivuse «Eesti NSV elamukoodeks».",
+      "estleg:interpretedBy": [
+        {
+          "@id": "estleg:RK_III_2_1_80_95"
+        }
+      ]
     },
     {
       "@id": "estleg:ES_Par_66",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ES"
+        "estleg:LegalProvision_elamuseadus"
       ],
       "estleg:paragrahv": "§ 66.",
-      "rdfs:label": "§ 66.",
+      "rdfs:label": "§ 66. [Kehtetu -]",
       "estleg:sourceAct": "Elamuseadus",
-      "estleg:summary": "Kehtetu -"
+      "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -"
     },
     {
       "@id": "estleg:ES_Par_67",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ES"
+        "estleg:LegalProvision_elamuseadus"
       ],
       "estleg:paragrahv": "§ 67.",
-      "rdfs:label": "§ 67.",
+      "rdfs:label": "§ 67. [Kehtetu -]",
       "estleg:sourceAct": "Elamuseadus",
-      "estleg:summary": "Kehtetu -"
+      "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -"
     },
     {
       "@id": "estleg:ES_Par_68",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ES"
+        "estleg:LegalProvision_elamuseadus"
       ],
       "estleg:paragrahv": "§ 68.",
-      "rdfs:label": "§ 68.",
+      "rdfs:label": "§ 68. [Teenistuslikke eluruume ja ühiselamuid omavatel või kasutavatel juriidilistel is...]",
       "estleg:sourceAct": "Elamuseadus",
       "estleg:summary": "Teenistuslikke eluruume ja ühiselamuid omavatel või kasutavatel juriidilistel isikutel esitada hiljemalt 1992. aasta 1. juuniks asukohajärgsele valla- või linnavalitsusele ettepanekud nende tunnistamiseks tööandja eluruumideks vastavalt käesoleva seaduse §-le 58. Teenistuslikele eluruumidele ja ühiselamutele, mida ei ole arvatud tööandja eluruumide hulka, kohaldatakse alates 1992. aasta 1. juulist käesoleva seaduse IV osa 2. peatüki sätteid ning neis elavate üürnikega loetakse eluruumi üürilepin",
+      "estleg:legalText": "Teenistuslikke eluruume ja ühiselamuid omavatel või kasutavatel juriidilistel isikutel esitada hiljemalt 1992. aasta 1. juuniks asukohajärgsele valla- või linnavalitsusele ettepanekud nende tunnistamiseks tööandja eluruumideks vastavalt käesoleva seaduse §-le 58. Teenistuslikele eluruumidele ja ühiselamutele, mida ei ole arvatud tööandja eluruumide hulka, kohaldatakse alates 1992. aasta 1. juulist käesoleva seaduse IV osa 2. peatüki sätteid ning neis elavate üürnikega loetakse eluruumi üürileping sõlmituks viieks aastaks.",
       "estleg:targetGroup": [
         "citizen",
         "business",
         "public_body"
+      ],
+      "estleg:interpretedBy": [
+        {
+          "@id": "estleg:RK_III_3_1_20_95"
+        },
+        {
+          "@id": "estleg:RK_III_3_1_2_95"
+        },
+        {
+          "@id": "estleg:RK_3_3_1_28_97"
+        }
       ]
     },
     {
       "@id": "estleg:ES_Par_69",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ES"
+        "estleg:LegalProvision_elamuseadus"
       ],
       "estleg:paragrahv": "§ 69.",
-      "rdfs:label": "§ 69.",
+      "rdfs:label": "§ 69. [Käesoleva seaduse vastuvõtmisest alates lõpetada: 1) vabanenud eluruumide asusta...]",
       "estleg:sourceAct": "Elamuseadus",
       "estleg:summary": "Käesoleva seaduse vastuvõtmisest alates lõpetada: 1) vabanenud eluruumide asustamine vastavalt «Eesti NSV elamukoodeksi» §-le 43. Nimetatud eluruumide asustamise otsustavad nende omanikud ja valdajad; 2) kohtumenetlus eluruumi üürilepingu muutmise nõudes «Eesti NSV elamukoodeksi» § 44 ja 86 alusel. Kohtuotsused neis asjades, mida ei ole selleks ajaks täidetud, täitmisele ei kuulu; 3) kohtumenetlus eluruumist väljatõstmise asjades «Eesti NSV elamukoodeksi» § 92 1. lõike punktide 1 ja 3 ning § 96 ",
+      "estleg:legalText": "Käesoleva seaduse vastuvõtmisest alates lõpetada: 1) vabanenud eluruumide asustamine vastavalt «Eesti NSV elamukoodeksi» §-le 43. Nimetatud eluruumide asustamise otsustavad nende omanikud ja valdajad; 2) kohtumenetlus eluruumi üürilepingu muutmise nõudes «Eesti NSV elamukoodeksi» § 44 ja 86 alusel. Kohtuotsused neis asjades, mida ei ole selleks ajaks täidetud, täitmisele ei kuulu; 3) kohtumenetlus eluruumist väljatõstmise asjades «Eesti NSV elamukoodeksi» § 92 1. lõike punktide 1 ja 3 ning § 96 alusel. Kohtuotsused neis asjades, mida ei ole selleks ajaks täidetud, täitmisele ei kuulu.",
       "estleg:targetGroup": [
         "citizen"
       ]
@@ -1077,12 +1452,13 @@
       "@id": "estleg:ES_Par_70",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ES"
+        "estleg:LegalProvision_elamuseadus"
       ],
       "estleg:paragrahv": "§ 70.",
-      "rdfs:label": "§ 70.",
+      "rdfs:label": "§ 70. [Vabariigi Valitsusel: 1) kehtestada alates 1992. aasta 1. juulist riigile kuuluv...]",
       "estleg:sourceAct": "Elamuseadus",
       "estleg:summary": "Vabariigi Valitsusel: 1) kehtestada alates 1992. aasta 1. juulist riigile kuuluvate elamute ja eluruumide üürile andmise kord; 2) esitada Eesti Vabariigi kõrgeimale riigivõimuorganile 1992. aasta 1. juuniks ettepanekud Eesti Vabariigis kehtivate seaduste kooskõlla viimiseks käesoleva seadusega; 3) viia oma normatiivaktid kooskõlla käesoleva seadusega.",
+      "estleg:legalText": "Vabariigi Valitsusel: 1) kehtestada alates 1992. aasta 1. juulist riigile kuuluvate elamute ja eluruumide üürile andmise kord; 2) esitada Eesti Vabariigi kõrgeimale riigivõimuorganile 1992. aasta 1. juuniks ettepanekud Eesti Vabariigis kehtivate seaduste kooskõlla viimiseks käesoleva seadusega; 3) viia oma normatiivaktid kooskõlla käesoleva seadusega.",
       "estleg:targetGroup": [
         "public_body"
       ]
@@ -1091,67 +1467,91 @@
       "@id": "estleg:ES_Par_71",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ES"
+        "estleg:LegalProvision_elamuseadus"
       ],
       "estleg:paragrahv": "§ 71.",
-      "rdfs:label": "§ 71.",
+      "rdfs:label": "§ 71. [Kohalike omavalitsuste volikogudel määrata 1992. aasta 1. juuliks kindlaks käeso...]",
       "estleg:sourceAct": "Elamuseadus",
       "estleg:summary": "Kohalike omavalitsuste volikogudel määrata 1992. aasta 1. juuliks kindlaks käesoleva seaduse § 8 alusel nende võimkonda kuuluvate küsimuste lahendamise ning nende omandisse kuuluvate eluruumide üürile andmise kord.",
+      "estleg:legalText": "Kohalike omavalitsuste volikogudel määrata 1992. aasta 1. juuliks kindlaks käesoleva seaduse § 8 alusel nende võimkonda kuuluvate küsimuste lahendamise ning nende omandisse kuuluvate eluruumide üürile andmise kord.",
+      "estleg:targetGroup": [
+        "public_body"
+      ],
       "estleg:references": [
         {
           "@id": "estleg:ES_Par_8"
         }
       ],
-      "estleg:targetGroup": [
-        "public_body"
+      "estleg:interpretedBy": [
+        {
+          "@id": "estleg:RK_III_3_1_2_95"
+        }
       ]
     },
     {
       "@id": "estleg:ES_Par_72",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ES"
+        "estleg:LegalProvision_elamuseadus"
       ],
       "estleg:paragrahv": "§ 72.",
-      "rdfs:label": "§ 72.",
+      "rdfs:label": "§ 72. [Kehtetu -]",
       "estleg:sourceAct": "Elamuseadus",
-      "estleg:summary": "Kehtetu -"
+      "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -"
     },
     {
       "@id": "estleg:ES_Par_73",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ES"
+        "estleg:LegalProvision_elamuseadus"
       ],
       "estleg:paragrahv": "§ 73.",
-      "rdfs:label": "§ 73.",
+      "rdfs:label": "§ 73. [Omandireformi käigus tagastatud eluruumides tagastamise hetkel elanud üürnike õi...]",
       "estleg:sourceAct": "Elamuseadus",
       "estleg:summary": "Omandireformi käigus tagastatud eluruumides tagastamise hetkel elanud üürnike õigusi reguleerib käesolev seadus Eesti Vabariigi omandireformi aluste seaduse §-s 121 sätestatud erisustega. Erisusi rakendatakse kuni nimetatud seaduse § 121 3. lõikes sätestatud tähtaja lõpuni.",
+      "estleg:legalText": "Omandireformi käigus tagastatud eluruumides tagastamise hetkel elanud üürnike õigusi reguleerib käesolev seadus Eesti Vabariigi omandireformi aluste seaduse §-s 121 sätestatud erisustega. Erisusi rakendatakse kuni nimetatud seaduse § 121 3. lõikes sätestatud tähtaja lõpuni.",
       "estleg:targetGroup": [
         "citizen"
+      ],
+      "estleg:interpretedBy": [
+        {
+          "@id": "estleg:RK_3_2_1_55_99"
+        },
+        {
+          "@id": "estleg:RK_3_2_1_35_99"
+        },
+        {
+          "@id": "estleg:RK_3_2_1_136_00"
+        },
+        {
+          "@id": "estleg:RK_3_2_1_100_04"
+        }
       ]
     },
     {
       "@id": "estleg:ES_Par_74",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ES"
+        "estleg:LegalProvision_elamuseadus"
       ],
       "estleg:paragrahv": "§ 74.",
-      "rdfs:label": "§ 74.",
+      "rdfs:label": "§ 74. [Kehtetu -]",
       "estleg:sourceAct": "Elamuseadus",
-      "estleg:summary": "Kehtetu -"
+      "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -"
     },
     {
       "@id": "estleg:ES_Par_75",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ES"
+        "estleg:LegalProvision_elamuseadus"
       ],
       "estleg:paragrahv": "§ 75.",
-      "rdfs:label": "§ 75.",
+      "rdfs:label": "§ 75. [Kehtetu -]",
       "estleg:sourceAct": "Elamuseadus",
-      "estleg:summary": "Kehtetu -"
+      "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -"
     }
   ]
 }

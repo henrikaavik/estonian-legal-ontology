@@ -6,50 +6,52 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
   },
   "@graph": [
     {
       "@id": "estleg:VäetS_Map_2026",
       "@type": [
+        "owl:Ontology",
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "rdfs:label": "Väetiseseadus teemakaardistus",
       "dc:source": "Väetiseseadus",
-      "estleg:affectedBy": [
-        {
-          "@id": "estleg:Draft_REM15_0996"
-        }
-      ],
-      "estleg:amendedBy": [
-        {
-          "@id": "estleg:Draft_REM15_0996"
-        }
-      ],
-      "estleg:temporalStatus": "unknown",
+      "dcterms:title": "Väetiseseadus",
+      "estleg:contentStatus": "structuredBody",
+      "dcterms:source": {
+        "@id": "https://www.riigiteataja.ee/akt/127092023008.xml"
+      },
+      "owl:sameAs": {
+        "@id": "https://www.riigiteataja.ee/akt/127092023008.xml"
+      },
+      "estleg:kehtiv": {
+        "@value": "2026-05-24",
+        "@type": "xsd:date"
+      },
       "dcterms:subject": [
-        {
-          "@id": "http://eurovoc.europa.eu/2441"
-        },
         {
           "@id": "http://eurovoc.europa.eu/2431"
         },
         {
+          "@id": "http://eurovoc.europa.eu/2441"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/5621"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/1011"
+        },
+        {
           "@id": "http://eurovoc.europa.eu/2806"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/2446"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/5216"
         }
-      ]
+      ],
+      "estleg:temporalStatus": "unknown"
     },
     {
-      "@id": "estleg:LegalProvision_VäetS",
+      "@id": "estleg:LegalProvision_vaetiseseadus",
       "@type": [
         "owl:Class"
       ],
@@ -59,110 +61,536 @@
       }
     },
     {
+      "@id": "estleg:VäetS_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": "Väetiseseadus teemaskeem",
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_VäetS_1"
+        },
+        {
+          "@id": "estleg:Cluster_VäetS_2"
+        },
+        {
+          "@id": "estleg:Cluster_VäetS_3"
+        },
+        {
+          "@id": "estleg:Cluster_VäetS_4"
+        },
+        {
+          "@id": "estleg:Cluster_VäetS_5"
+        },
+        {
+          "@id": "estleg:Cluster_VäetS_6"
+        },
+        {
+          "@id": "estleg:Cluster_VäetS_7"
+        }
+      ]
+    },
+    {
       "@id": "estleg:Cluster_VäetS_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§1–5 ÜLDSÄTTED"
+      "rdfs:label": "§1–5 ÜLDSÄTTED",
+      "skos:prefLabel": "§1–5 ÜLDSÄTTED",
+      "skos:inScheme": {
+        "@id": "estleg:VäetS_TopicScheme"
+      },
+      "estleg:provisionCount": 5
+    },
+    {
+      "@id": "estleg:Chapter_VäetS_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "1. peatükk – ÜLDSÄTTED",
+      "estleg:chapterNumber": "1",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_VäetS_1"
+      }
     },
     {
       "@id": "estleg:Cluster_VäetS_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§6–7 VÄETISELE ESITATAVAD NÕUDED"
+      "rdfs:label": "§6–7 VÄETISELE ESITATAVAD NÕUDED",
+      "skos:prefLabel": "§6–7 VÄETISELE ESITATAVAD NÕUDED",
+      "skos:inScheme": {
+        "@id": "estleg:VäetS_TopicScheme"
+      },
+      "estleg:provisionCount": 2
+    },
+    {
+      "@id": "estleg:Chapter_VäetS_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "2. peatükk – VÄETISELE ESITATAVAD NÕUDED",
+      "estleg:chapterNumber": "2",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_VäetS_2"
+      }
     },
     {
       "@id": "estleg:Cluster_VäetS_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§8–18 VÄETISE KÄITLEMINE"
+      "rdfs:label": "§8–18 VÄETISE KÄITLEMINE",
+      "skos:prefLabel": "§8–18 VÄETISE KÄITLEMINE",
+      "skos:inScheme": {
+        "@id": "estleg:VäetS_TopicScheme"
+      },
+      "estleg:provisionCount": 11
+    },
+    {
+      "@id": "estleg:Chapter_VäetS_3",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "3. peatükk – VÄETISE KÄITLEMINE",
+      "estleg:chapterNumber": "3",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_VäetS_3"
+      }
     },
     {
       "@id": "estleg:Cluster_VäetS_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§19–28 VÄETISEREGISTER"
+      "rdfs:label": "§19–28 VÄETISEREGISTER",
+      "skos:prefLabel": "§19–28 VÄETISEREGISTER",
+      "skos:inScheme": {
+        "@id": "estleg:VäetS_TopicScheme"
+      },
+      "estleg:provisionCount": 8
+    },
+    {
+      "@id": "estleg:Chapter_VäetS_4",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "4. peatükk – VÄETISEREGISTER",
+      "estleg:chapterNumber": "4",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_VäetS_4"
+      }
     },
     {
       "@id": "estleg:Cluster_VäetS_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§29–36 JÄRELEVALVE"
+      "rdfs:label": "§29–36 RIIKLIK JÄRELEVALVE",
+      "skos:prefLabel": "§29–36 RIIKLIK JÄRELEVALVE",
+      "skos:inScheme": {
+        "@id": "estleg:VäetS_TopicScheme"
+      },
+      "estleg:provisionCount": 8
+    },
+    {
+      "@id": "estleg:Chapter_VäetS_5",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "5. peatükk – RIIKLIK JÄRELEVALVE",
+      "estleg:chapterNumber": "5",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_VäetS_5"
+      }
     },
     {
       "@id": "estleg:Cluster_VäetS_6",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§37–40 VASTUTUS"
+      "rdfs:label": "§37–40 VASTUTUS",
+      "skos:prefLabel": "§37–40 VASTUTUS",
+      "skos:inScheme": {
+        "@id": "estleg:VäetS_TopicScheme"
+      },
+      "estleg:provisionCount": 4
+    },
+    {
+      "@id": "estleg:Chapter_VäetS_6",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "6. peatükk – VASTUTUS",
+      "estleg:chapterNumber": "6",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_VäetS_6"
+      }
     },
     {
       "@id": "estleg:Cluster_VäetS_7",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§41–47 RAKENDUSSÄTTED"
+      "rdfs:label": "§41–47 RAKENDUSSÄTTED",
+      "skos:prefLabel": "§41–47 RAKENDUSSÄTTED",
+      "skos:inScheme": {
+        "@id": "estleg:VäetS_TopicScheme"
+      },
+      "estleg:provisionCount": 4
+    },
+    {
+      "@id": "estleg:Chapter_VäetS_7",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "7. peatükk – RAKENDUSSÄTTED",
+      "estleg:chapterNumber": "7",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_VäetS_7"
+      }
     },
     {
       "@id": "estleg:VäetS_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VäetS"
+        "estleg:LegalProvision_vaetiseseadus"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. Seaduse reguleerimisala",
       "estleg:sourceAct": "Väetiseseadus",
       "estleg:summary": "1 (1) Käesolev seadus sätestab väetisele ja selle käitlemisele esitatavad nõuded, mis tagavad väetise ohutuse inimese ja looma elule ja tervisele, varale ja keskkonnale ning väetise soodsa mõju taimele ja taimekasvatussaadusele. Käesolev seadus sätestab väetisele ja selle käitlemisele esitatavad nõuded, mis tagavad väetise ohutuse inimese ja looma elule ja tervisele, varale ja keskkonnale ning väetise soodsa mõju taimele ja taimekasvatussaadusele. 2 (2) Käesolevat seadust ei kohaldata: 1 1) tööt",
+      "estleg:legalText": "(1) Käesolev seadus sätestab väetisele ja selle käitlemisele esitatavad nõuded, mis tagavad väetise ohutuse inimese ja looma elule ja tervisele, varale ja keskkonnale ning väetise soodsa mõju taimele ja taimekasvatussaadusele. (2) Käesolevat seadust ei kohaldata: töötlemata orgaanilisele väetisele; töötlemata looduslikule väetisele; reo- ja heitvee settele ning sellest valmistatud kompostile. (3) Kehtetu - (4) Käesolevat seadust ei kohaldata väetise Eestist väljaspool Euroopa Liidu tolliterritooriumi asuvatesse riikidesse ega territooriumidele (edaspidi liiduväline riik) ning Euroopa Liidu liikmesriiki toimetamise korral, kui välislepingust ei tulene teisiti. (5) Euroopa Liidu õigusaktides ja käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse sätteid, arvestades Euroopa Parlamendi ja nõukogu määruse (EL) 2019/1009, millega kehtestatakse ELi väetisetoodete turul kättesaadavaks tegemise nõuded ning muudetakse määrusi (EÜ) nr 1069/2009 ja (EÜ) nr 1107/2009 ning tunnistatakse kehtetuks määrus (EÜ) nr 2003/2003 (ELT L 170, 25.06.2019, lk 1‒114), muude Euroopa Liidu õigusaktide ja käesoleva seaduse erisusi. (6) ELi väetisetootele ja selle käitlemisele kohaldatakse käesolevat seadust ning Euroopa Parlamendi ja nõukogu määrust (EL) 2019/1009. (7) Kemikaali sisaldavale väetisele kohaldatakse käesoleva seaduse nõudeid, arvestades kemikaaliseaduses sätestatut. (8) Käesoleva seadusega ning Euroopa Parlamendi ja nõukogu määrusega (EL) 2019/1009 reguleerimata osas kohaldatakse ELi väetisetoote suhtes toote nõuetele vastavuse seadust.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VäetS_1"
-      }
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_VäetS_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VäetS_Par_1_Lg_1"
+        },
+        {
+          "@id": "estleg:VäetS_Par_1_Lg_2"
+        },
+        {
+          "@id": "estleg:VäetS_Par_1_Lg_3"
+        },
+        {
+          "@id": "estleg:VäetS_Par_1_Lg_4"
+        },
+        {
+          "@id": "estleg:VäetS_Par_1_Lg_5"
+        },
+        {
+          "@id": "estleg:VäetS_Par_1_Lg_6"
+        },
+        {
+          "@id": "estleg:VäetS_Par_1_Lg_7"
+        },
+        {
+          "@id": "estleg:VäetS_Par_1_Lg_8"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:VäetS_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolev seadus sätestab väetisele ja selle käitlemisele esitatavad nõuded, mis tagavad väetise ohutuse inimese ja looma elule ja tervisele, varale ja keskkonnale ning väetise soodsa mõju taimele ja taimekasvatussaadusele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
+    },
+    {
+      "@id": "estleg:VäetS_Par_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Käesolevat seadust ei kohaldata: töötlemata orgaanilisele väetisele; töötlemata looduslikule väetisele; reo- ja heitvee settele ning sellest valmistatud kompostile.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 2"
+    },
+    {
+      "@id": "estleg:VäetS_Par_1_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 3"
+    },
+    {
+      "@id": "estleg:VäetS_Par_1_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Käesolevat seadust ei kohaldata väetise Eestist väljaspool Euroopa Liidu tolliterritooriumi asuvatesse riikidesse ega territooriumidele (edaspidi liiduväline riik) ning Euroopa Liidu liikmesriiki toimetamise korral, kui välislepingust ei tulene teisiti.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 4"
+    },
+    {
+      "@id": "estleg:VäetS_Par_1_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Euroopa Liidu õigusaktides ja käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse sätteid, arvestades Euroopa Parlamendi ja nõukogu määruse (EL) 2019/1009, millega kehtestatakse ELi väetisetoodete turul kättesaadavaks tegemise nõuded ning muudetakse määrusi (EÜ) nr 1069/2009 ja (EÜ) nr 1107/2009 ning tunnistatakse kehtetuks määrus (EÜ) nr 2003/2003 (ELT L 170, 25.06.2019, lk 1‒114), muude Euroopa Liidu õigusaktide ja käesoleva seaduse erisusi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 5"
+    },
+    {
+      "@id": "estleg:VäetS_Par_1_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) ELi väetisetootele ja selle käitlemisele kohaldatakse käesolevat seadust ning Euroopa Parlamendi ja nõukogu määrust (EL) 2019/1009.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 6"
+    },
+    {
+      "@id": "estleg:VäetS_Par_1_Lg_7",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "7",
+      "estleg:legalText": "(7) Kemikaali sisaldavale väetisele kohaldatakse käesoleva seaduse nõudeid, arvestades kemikaaliseaduses sätestatut.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 7"
+    },
+    {
+      "@id": "estleg:VäetS_Par_1_Lg_8",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "8",
+      "estleg:legalText": "(8) Käesoleva seadusega ning Euroopa Parlamendi ja nõukogu määrusega (EL) 2019/1009 reguleerimata osas kohaldatakse ELi väetisetoote suhtes toote nõuetele vastavuse seadust.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 8"
     },
     {
       "@id": "estleg:VäetS_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VäetS"
+        "estleg:LegalProvision_vaetiseseadus"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. Väetis",
       "estleg:sourceAct": "Väetiseseadus",
-      "estleg:summary": "1 (1) Väetis on aine või valmistis, mille kasutamise eesmärk on taimede varustamine toitainetega. Käesoleva seaduse tähenduses on väetis ka lubiväetis, mille kasutamise eesmärk on mulla happesuse vähendamine. Väetis on aine või valmistis, mille kasutamise eesmärk on taimede varustamine toitainetega. Käesoleva seaduse tähenduses on väetis ka lubiväetis, mille kasutamise eesmärk on mulla happesuse vähendamine. 2 (2) Käesoleva seaduse tähenduses on väetis ka käesoleva seaduse kohaselt töödeldud org",
+      "estleg:summary": "1 (1) Väetis on aine või valmistis, mille kasutamise eesmärk on taimede varustamine toitainetega. Käesoleva seaduse tähenduses on väetis ka lubiväetis, mille kasutamise eesmärk on mulla happesuse vähendamine. RT I 2004 32 228 745294 2004-05-01 Väetis on aine või valmistis, mille kasutamise eesmärk on taimede varustamine toitainetega. Käesoleva seaduse tähenduses on väetis ka lubiväetis, mille kasutamise eesmärk on mulla happesuse vähendamine. 1 (1<sup>1</sup>) Käesoleva seaduse tähenduses on väe",
+      "estleg:legalText": "(1) Väetis on aine või valmistis, mille kasutamise eesmärk on taimede varustamine toitainetega. Käesoleva seaduse tähenduses on väetis ka lubiväetis, mille kasutamise eesmärk on mulla happesuse vähendamine. (1<sup>1</sup>) Käesoleva seaduse tähenduses on väetis ka väetisetoode Euroopa Parlamendi ja nõukogu määruse (EL) 2019/1009 artikli 2 punkti 1 tähenduses. (2) Käesoleva seaduse tähenduses on väetis ka käesoleva seaduse kohaselt töödeldud orgaaniline väetis, mis vastab väetisele kehtestatud nõuetele. Orgaaniline väetis on valdavalt taimse või loomse päritoluga orgaanilisest ainest koosnev väetis. (3) Käesoleva seaduse tähenduses on väetis ka käesoleva seaduse kohaselt töödeldud looduslik väetis, mis vastab väetisele kehtestatud nõuetele. Looduslik väetis on looduslikust leiukohast kaevandatud ja väetamiseks kasutatav kivim, mineraal või muu maa-aines. (4) Bakterväetis käesoleva seaduse tähenduses on aine, mis sisaldab kindlale taimeliigile sobivaid mikroorganisme-bakterkultuure, mis parandavad seda liiki taimede toitumistingimusi. (5) Väetisepartii on sama nimetuse, koostise ja samade omadustega ning samadel tingimustel toodetud väetisekogus, mida peab olema võimalik tuvastada ja teistest väetisepartiidest eristada, et tagada väetisepartii jälgitavus. (6) Pädev asutus Euroopa Parlamendi ja nõukogu määruse (EL) 2019/1009 artiklite 6‒9 tähenduses on Põllumajandus- ja Toiduamet.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VäetS_1"
-      }
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_VäetS_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VäetS_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:VäetS_Par_2_Lg_1_1"
+        },
+        {
+          "@id": "estleg:VäetS_Par_2_Lg_2"
+        },
+        {
+          "@id": "estleg:VäetS_Par_2_Lg_3"
+        },
+        {
+          "@id": "estleg:VäetS_Par_2_Lg_4"
+        },
+        {
+          "@id": "estleg:VäetS_Par_2_Lg_5"
+        },
+        {
+          "@id": "estleg:VäetS_Par_2_Lg_6"
+        }
+      ],
+      "estleg:targetGroup": [
+        "public_body"
+      ]
+    },
+    {
+      "@id": "estleg:VäetS_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Väetis on aine või valmistis, mille kasutamise eesmärk on taimede varustamine toitainetega. Käesoleva seaduse tähenduses on väetis ka lubiväetis, mille kasutamise eesmärk on mulla happesuse vähendamine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
+    },
+    {
+      "@id": "estleg:VäetS_Par_2_Lg_1_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1<sup>1</sup>",
+      "estleg:legalText": "(1<sup>1</sup>) Käesoleva seaduse tähenduses on väetis ka väetisetoode Euroopa Parlamendi ja nõukogu määruse (EL) 2019/1009 artikli 2 punkti 1 tähenduses.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1<sup>1</sup>"
+    },
+    {
+      "@id": "estleg:VäetS_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Käesoleva seaduse tähenduses on väetis ka käesoleva seaduse kohaselt töödeldud orgaaniline väetis, mis vastab väetisele kehtestatud nõuetele. Orgaaniline väetis on valdavalt taimse või loomse päritoluga orgaanilisest ainest koosnev väetis.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2"
+    },
+    {
+      "@id": "estleg:VäetS_Par_2_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Käesoleva seaduse tähenduses on väetis ka käesoleva seaduse kohaselt töödeldud looduslik väetis, mis vastab väetisele kehtestatud nõuetele. Looduslik väetis on looduslikust leiukohast kaevandatud ja väetamiseks kasutatav kivim, mineraal või muu maa-aines.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 3"
+    },
+    {
+      "@id": "estleg:VäetS_Par_2_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Bakterväetis käesoleva seaduse tähenduses on aine, mis sisaldab kindlale taimeliigile sobivaid mikroorganisme-bakterkultuure, mis parandavad seda liiki taimede toitumistingimusi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 4"
+    },
+    {
+      "@id": "estleg:VäetS_Par_2_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Väetisepartii on sama nimetuse, koostise ja samade omadustega ning samadel tingimustel toodetud väetisekogus, mida peab olema võimalik tuvastada ja teistest väetisepartiidest eristada, et tagada väetisepartii jälgitavus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 5"
+    },
+    {
+      "@id": "estleg:VäetS_Par_2_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Pädev asutus Euroopa Parlamendi ja nõukogu määruse (EL) 2019/1009 artiklite 6‒9 tähenduses on Põllumajandus- ja Toiduamet.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 6"
     },
     {
       "@id": "estleg:VäetS_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VäetS"
+        "estleg:LegalProvision_vaetiseseadus"
       ],
       "estleg:paragrahv": "§ 3.",
       "rdfs:label": "§ 3. Väetise käitlemine ja käitleja",
       "estleg:sourceAct": "Väetiseseadus",
-      "estleg:summary": "1 (1) Väetise käitlemine käesoleva seaduse tähenduses on väetise turustamisotstarbeline tootmine, pakendamine, märgistamine, Eestisse toimetamine ja turustamine. Väetise käitlemine käesoleva seaduse tähenduses on väetise turustamisotstarbeline tootmine, pakendamine, märgistamine, Eestisse toimetamine ja turustamine. 2 (2) Väetise käitleja võib olla juriidiline isik, füüsilisest isikust ettevõtja või riigi- või kohaliku omavalitsuse asutus. RT I 2004 32 228 745294 2004-05-01+03:00 Väetise käitlej",
+      "estleg:summary": "1 (1) Väetise käitlemine käesoleva seaduse tähenduses on väetise turustamisotstarbeline tootmine, pakendamine, märgistamine, Eestisse toimetamine ja turustamine. Väetise käitlemine käesoleva seaduse tähenduses on väetise turustamisotstarbeline tootmine, pakendamine, märgistamine, Eestisse toimetamine ja turustamine. 2 (2) Väetise käitleja võib olla juriidiline isik, füüsilisest isikust ettevõtja või riigi- või kohaliku omavalitsuse asutus. RT I 2004 32 228 745294 2004-05-01 Väetise käitleja võib",
+      "estleg:legalText": "(1) Väetise käitlemine käesoleva seaduse tähenduses on väetise turustamisotstarbeline tootmine, pakendamine, märgistamine, Eestisse toimetamine ja turustamine. (2) Väetise käitleja võib olla juriidiline isik, füüsilisest isikust ettevõtja või riigi- või kohaliku omavalitsuse asutus. (3) Juriidilisest isikust väetise käitleja seaduslik esindaja korraldab käesolevast seadusest juriidilisele isikule tulenevate kohustuste täitmise.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VäetS_1"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_VäetS_1"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VäetS_Par_3_Lg_1"
+        },
+        {
+          "@id": "estleg:VäetS_Par_3_Lg_2"
+        },
+        {
+          "@id": "estleg:VäetS_Par_3_Lg_3"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen",
         "business",
         "public_body"
       ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_kohalik_omavalitsus"
@@ -171,296 +599,1335 @@
       "estleg:competenceType": "general"
     },
     {
+      "@id": "estleg:VäetS_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Väetise käitlemine käesoleva seaduse tähenduses on väetise turustamisotstarbeline tootmine, pakendamine, märgistamine, Eestisse toimetamine ja turustamine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
+    },
+    {
+      "@id": "estleg:VäetS_Par_3_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Väetise käitleja võib olla juriidiline isik, füüsilisest isikust ettevõtja või riigi- või kohaliku omavalitsuse asutus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 2"
+    },
+    {
+      "@id": "estleg:VäetS_Par_3_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Juriidilisest isikust väetise käitleja seaduslik esindaja korraldab käesolevast seadusest juriidilisele isikule tulenevate kohustuste täitmise.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 3"
+    },
+    {
       "@id": "estleg:VäetS_Par_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VäetS"
+        "estleg:LegalProvision_vaetiseseadus"
       ],
       "estleg:paragrahv": "§ 4.",
       "rdfs:label": "§ 4. Väetise tootmine",
       "estleg:sourceAct": "Väetiseseadus",
-      "estleg:summary": "1 (1) Väetise tootmine käesoleva seaduse tähenduses on väetise valmistamine või töötlemine. Väetise tootmine käesoleva seaduse tähenduses on väetise valmistamine või töötlemine. 2 (2) Väetise tootmiseks on keelatud kasutada loomatauditõrje seadusest (RT I 1999, 57, 598; 2002, 13, 80; 61, 375; 63, 387; 96, 566) tulenevalt määratud eri riskiastmega loomseid saadusi ja eri riskiastmega loomseid jäätmeid. Väetise tootmiseks on keelatud kasutada loomatauditõrje seadusest (RT I 1999, 57, 598; 2002, 13",
+      "estleg:summary": "1 (1) Väetise tootmine käesoleva seaduse tähenduses on väetise valmistamine või töötlemine. Väetise tootmine käesoleva seaduse tähenduses on väetise valmistamine või töötlemine. 2 (2) Väetise tootmiseks on lubatud kasutada Euroopa Parlamendi ja nõukogu määruse (EÜ) nr 1069/2009, milles sätestatakse muuks otstarbeks kui inimtoiduks ettenähtud loomsete kõrvalsaaduste ja nendest saadud toodete tervise-eeskirjad ning tunnistatakse kehtetuks määrus (EÜ) nr 1774/2002 (ELT L 300, 14.11.2009, lk 1–33), ",
+      "estleg:legalText": "(1) Väetise tootmine käesoleva seaduse tähenduses on väetise valmistamine või töötlemine. (2) Väetise tootmiseks on lubatud kasutada Euroopa Parlamendi ja nõukogu määruse (EÜ) nr 1069/2009, milles sätestatakse muuks otstarbeks kui inimtoiduks ettenähtud loomsete kõrvalsaaduste ja nendest saadud toodete tervise-eeskirjad ning tunnistatakse kehtetuks määrus (EÜ) nr 1774/2002 (ELT L 300, 14.11.2009, lk 1–33), artikli 3 punktides 1 ja 2 sätestatud loomseid kõrvalsaadusi ja nendest saadud tooteid üksnes nimetatud määruses sätestatud nõuete kohaselt. (3) Väetise töötlemine käesoleva seaduse tähenduses on väetise bioloogiline, füüsikaline või keemiline töötlemine, mille eesmärk on saada püsiva koostisega ohutu väetis.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VäetS_1"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_VäetS_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VäetS_Par_4_Lg_1"
+        },
+        {
+          "@id": "estleg:VäetS_Par_4_Lg_2"
+        },
+        {
+          "@id": "estleg:VäetS_Par_4_Lg_3"
+        }
+      ],
       "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
+        "@id": "estleg:NormType_Permission"
       }
+    },
+    {
+      "@id": "estleg:VäetS_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Väetise tootmine käesoleva seaduse tähenduses on väetise valmistamine või töötlemine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1"
+    },
+    {
+      "@id": "estleg:VäetS_Par_4_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Väetise tootmiseks on lubatud kasutada Euroopa Parlamendi ja nõukogu määruse (EÜ) nr 1069/2009, milles sätestatakse muuks otstarbeks kui inimtoiduks ettenähtud loomsete kõrvalsaaduste ja nendest saadud toodete tervise-eeskirjad ning tunnistatakse kehtetuks määrus (EÜ) nr 1774/2002 (ELT L 300, 14.11.2009, lk 1–33), artikli 3 punktides 1 ja 2 sätestatud loomseid kõrvalsaadusi ja nendest saadud tooteid üksnes nimetatud määruses sätestatud nõuete kohaselt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 2"
+    },
+    {
+      "@id": "estleg:VäetS_Par_4_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Väetise töötlemine käesoleva seaduse tähenduses on väetise bioloogiline, füüsikaline või keemiline töötlemine, mille eesmärk on saada püsiva koostisega ohutu väetis.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 3"
     },
     {
       "@id": "estleg:VäetS_Par_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VäetS"
+        "estleg:LegalProvision_vaetiseseadus"
       ],
       "estleg:paragrahv": "§ 5.",
       "rdfs:label": "§ 5. Väetise turustamine",
       "estleg:sourceAct": "Väetiseseadus",
       "estleg:summary": "Väetise turustamine käesoleva seaduse tähenduses on nii väetise müügiks pakkumine, müümine kui ka muul viisil tasuta või tasu eest tarbijale või teisele käitlejale üleandmine. Väetise turustamine käesoleva seaduse tähenduses on nii väetise müügiks pakkumine, müümine kui ka muul viisil tasuta või tasu eest tarbijale või teisele käitlejale üleandmine.",
+      "estleg:legalText": "Väetise turustamine käesoleva seaduse tähenduses on nii väetise müügiks pakkumine, müümine kui ka muul viisil tasuta või tasu eest tarbijale või teisele käitlejale üleandmine.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VäetS_1"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_VäetS_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VäetS_Par_5_Lg_Unknown_1"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen",
         "business"
       ]
+    },
+    {
+      "@id": "estleg:VäetS_Par_5_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Väetise turustamine käesoleva seaduse tähenduses on nii väetise müügiks pakkumine, müümine kui ka muul viisil tasuta või tasu eest tarbijale või teisele käitlejale üleandmine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_5"
+      }
+    },
+    {
+      "@id": "estleg:VäetS_Par_5_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_vaetiseseadus"
+      ],
+      "estleg:paragrahv": "§ 5<sup>1</sup>.",
+      "rdfs:label": "§ 5<sup>1</sup>. Otsuse kättetoimetamine",
+      "estleg:sourceAct": "Väetiseseadus",
+      "estleg:summary": "Käesoleva seaduse alusel tehtud Põllumajandus- ja Toiduameti otsus toimetatakse isikule kätte viie tööpäeva jooksul otsuse tegemisest arvates. Kui otsus toimetatakse kätte posti teel, võib selle kätte toimetada lihtkirjaga, tähtkirjaga või väljastusteatega tähtkirjaga. RT I 2017-12-28 2 128122017002 2018-02-01 Käesoleva seaduse alusel tehtud Põllumajandus- ja Toiduameti otsus toimetatakse isikule kätte viie tööpäeva jooksul otsuse tegemisest arvates. Kui otsus toimetatakse kätte posti teel, võib",
+      "estleg:legalText": "Käesoleva seaduse alusel tehtud Põllumajandus- ja Toiduameti otsus toimetatakse isikule kätte viie tööpäeva jooksul otsuse tegemisest arvates. Kui otsus toimetatakse kätte posti teel, võib selle kätte toimetada lihtkirjaga, tähtkirjaga või väljastusteatega tähtkirjaga.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VäetS_1"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_VäetS_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VäetS_Par_5_1_Lg_Unknown_1"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "public_body"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_pollumajandus_ja_toiduamet"
+        }
+      ],
+      "estleg:competenceType": "general",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:veterinaarseadus_Par_10",
+          "estleg:similarityScore": {
+            "@value": "0.5",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:VäetS_Par_5_1_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Käesoleva seaduse alusel tehtud Põllumajandus- ja Toiduameti otsus toimetatakse isikule kätte viie tööpäeva jooksul otsuse tegemisest arvates. Kui otsus toimetatakse kätte posti teel, võib selle kätte toimetada lihtkirjaga, tähtkirjaga või väljastusteatega tähtkirjaga.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_5_1"
+      }
     },
     {
       "@id": "estleg:VäetS_Par_6",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VäetS"
+        "estleg:LegalProvision_vaetiseseadus"
       ],
       "estleg:paragrahv": "§ 6.",
       "rdfs:label": "§ 6. Üldnõuded",
       "estleg:sourceAct": "Väetiseseadus",
-      "estleg:summary": "1 (1) Väetis peab olema: 1 1) nõuetekohase kasutamise korral ohutu inimese ja looma elule ja tervisele, samuti varale ja keskkonnale; 2 2) vastavuses väetise koostisele kehtestatud nõuetega; 3 3) nõuetekohaselt märgistatud; 4 4) registreeritud väetiseregistris. Väetis peab olema: nõuetekohase kasutamise korral ohutu inimese ja looma elule ja tervisele, samuti varale ja keskkonnale; vastavuses väetise koostisele kehtestatud nõuetega; nõuetekohaselt märgistatud; registreeritud väetiseregistris. 2 ",
+      "estleg:summary": "1 (1) Väetis peab olema: 1 1) nõuetekohase kasutamise korral ohutu inimese ja looma elule ja tervisele, samuti varale ja keskkonnale; 2 2) vastavuses väetise koostisele kehtestatud nõuetega; 3 3) nõuetekohaselt märgistatud; 4 4) kantud väetiseregistrisse, välja arvatud ELi väetisetoode. RT I 2022-07-15 4 115072022004 2022-07-16 Väetis peab olema: nõuetekohase kasutamise korral ohutu inimese ja looma elule ja tervisele, samuti varale ja keskkonnale; vastavuses väetise koostisele kehtestatud nõuet",
+      "estleg:legalText": "(1) Väetis peab olema: nõuetekohase kasutamise korral ohutu inimese ja looma elule ja tervisele, samuti varale ja keskkonnale; vastavuses väetise koostisele kehtestatud nõuetega; nõuetekohaselt märgistatud; kantud väetiseregistrisse, välja arvatud ELi väetisetoode. (2) Nõuded väetise koostisele väetise liikide kaupa kehtestab",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VäetS_2"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_VäetS_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VäetS_Par_6_Lg_1"
+        },
+        {
+          "@id": "estleg:VäetS_Par_6_Lg_2"
+        }
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:dutyHolder": "Väetis"
+      "estleg:dutyHolder": "Väetis",
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:VäetS_Par_41"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:VäetS_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Väetis peab olema: nõuetekohase kasutamise korral ohutu inimese ja looma elule ja tervisele, samuti varale ja keskkonnale; vastavuses väetise koostisele kehtestatud nõuetega; nõuetekohaselt märgistatud; kantud väetiseregistrisse, välja arvatud ELi väetisetoode.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1"
+    },
+    {
+      "@id": "estleg:VäetS_Par_6_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Nõuded väetise koostisele väetise liikide kaupa kehtestab",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 2"
     },
     {
       "@id": "estleg:VäetS_Par_7",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VäetS"
+        "estleg:LegalProvision_vaetiseseadus"
       ],
       "estleg:paragrahv": "§ 7.",
       "rdfs:label": "§ 7. Väetise nõuetekohasuse tõendamine väetise turustamise korral",
       "estleg:sourceAct": "Väetiseseadus",
-      "estleg:summary": "1 (1) Väetise nõuetekohasuse tõendamine on väetise turustamise korral kohustuslik. Väetise nõuetekohasuse tõendamine on väetise turustamise korral kohustuslik. 2 (2) Väetise nõuetekohasuse tõendamise eest vastutab : 1 1) väetise Eestisse toimetamise puhul – isik, kelle nimele väetis on väetiseregistris registreeritud; 2 2) Eestis pakendatud väetise puhul – pakendaja; 3 3) pakendamata väetise (edaspidi puisteväetis ) puhul – turustaja. Väetise nõuetekohasuse tõendamise eest vastutab : väetise Ees",
+      "estleg:summary": "1 (1) Väetise nõuetekohasuse tõendamine on väetise turustamise korral kohustuslik. Väetise nõuetekohasuse tõendamine on väetise turustamise korral kohustuslik. 2 (2) Väetise nõuetekohasuse tõendamise eest vastutab: 1 1) väetise Eestisse toimetamise puhul – isik, kelle nimele väetis on väetiseregistrisse kantud; RT I 2014-06-29 1 129062014001 2014-07-01 2 2) Eestis pakendatud väetise puhul – pakendaja; 3 3) pakendamata väetise (edaspidi puisteväetis) puhul – turustaja. Väetise nõuetekohasuse tõen",
+      "estleg:legalText": "(1) Väetise nõuetekohasuse tõendamine on väetise turustamise korral kohustuslik. (2) Väetise nõuetekohasuse tõendamise eest vastutab: väetise Eestisse toimetamise puhul – isik, kelle nimele väetis on väetiseregistrisse kantud; Eestis pakendatud väetise puhul – pakendaja; pakendamata väetise (edaspidi puisteväetis) puhul – turustaja. (3) Väetise koostise nõuetekohasust tõendavaks dokumendiks on kohaste analüüsimeetodite rakendamiseks akrediteeritud laboratooriumi (edaspidi akrediteeritud laboratoorium) katseprotokoll proovi analüüsi tulemuste kohta või tootja väljastatud asjakohane dokument väetise koostise kohta. (4) Väetise koostise nõuetekohasust tõendava dokumendi või selle ärakirja peab väetise turustaja esitama väetise ostjale, väetise muul viisil vastuvõtjale või korrakaitseorganile tema esimesel nõudmisel. (5) Väetise koostise nõuetekohasuse tõendamise kulud kannab käesoleva paragrahvi lõikes 2 nimetatud käitleja.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VäetS_2"
       },
-      "estleg:targetGroup": [
-        "citizen"
-      ]
-    },
-    {
-      "@id": "estleg:VäetS_Par_8",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_VäetS"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_VäetS_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VäetS_Par_7_Lg_1"
+        },
+        {
+          "@id": "estleg:VäetS_Par_7_Lg_2"
+        },
+        {
+          "@id": "estleg:VäetS_Par_7_Lg_3"
+        },
+        {
+          "@id": "estleg:VäetS_Par_7_Lg_4"
+        },
+        {
+          "@id": "estleg:VäetS_Par_7_Lg_5"
+        }
       ],
-      "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Väetise pakendi ja selle märgistuse nõuded",
-      "estleg:sourceAct": "Väetiseseadus",
-      "estleg:summary": "1 (1) Väetise pakendi materjal ja konstruktsioon peavad tagama, et säiliksidtootja garanteeritud väetise omadused ning et väetise käsitsemine oleks ohutu väetise tootjalt tarbijani liikumise kestel. Väetise pakend peab vastama pakendiseaduse (RT I 1995, 47, 739; 1997, 53, 836; 2002, 53, 336; 61, 375; 63, 387) ja käesoleva seaduse nõuetele. Väetise pakendi materjal ja konstruktsioon peavad tagama, et säiliksidtootja garanteeritud väetise omadused ning et väetise käsitsemine oleks ohutu väetise to",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_VäetS_3"
-      },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
-      "estleg:dutyHolder": "Väetise pakend",
       "estleg:targetGroup": [
         "citizen",
         "business"
       ]
     },
     {
+      "@id": "estleg:VäetS_Par_7_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Väetise nõuetekohasuse tõendamine on väetise turustamise korral kohustuslik.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 1"
+    },
+    {
+      "@id": "estleg:VäetS_Par_7_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Väetise nõuetekohasuse tõendamise eest vastutab: väetise Eestisse toimetamise puhul – isik, kelle nimele väetis on väetiseregistrisse kantud; Eestis pakendatud väetise puhul – pakendaja; pakendamata väetise (edaspidi puisteväetis) puhul – turustaja.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 2"
+    },
+    {
+      "@id": "estleg:VäetS_Par_7_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Väetise koostise nõuetekohasust tõendavaks dokumendiks on kohaste analüüsimeetodite rakendamiseks akrediteeritud laboratooriumi (edaspidi akrediteeritud laboratoorium) katseprotokoll proovi analüüsi tulemuste kohta või tootja väljastatud asjakohane dokument väetise koostise kohta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 3"
+    },
+    {
+      "@id": "estleg:VäetS_Par_7_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Väetise koostise nõuetekohasust tõendava dokumendi või selle ärakirja peab väetise turustaja esitama väetise ostjale, väetise muul viisil vastuvõtjale või korrakaitseorganile tema esimesel nõudmisel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 4"
+    },
+    {
+      "@id": "estleg:VäetS_Par_7_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Väetise koostise nõuetekohasuse tõendamise kulud kannab käesoleva paragrahvi lõikes 2 nimetatud käitleja.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 5"
+    },
+    {
+      "@id": "estleg:VäetS_Par_8",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_vaetiseseadus"
+      ],
+      "estleg:paragrahv": "§ 8.",
+      "rdfs:label": "§ 8. Väetise pakendi ja selle märgistuse nõuded",
+      "estleg:sourceAct": "Väetiseseadus",
+      "estleg:summary": "1 (1) Väetise pakendi materjal ja konstruktsioon peavad tagama, et säiliksid tootja garanteeritud väetise omadused ning et väetise käsitsemine oleks ohutu väetise tootjalt tarbijani liikumise kestel. Väetise pakend peab vastama pakendiseaduse ja käesoleva seaduse nõuetele. Väetise pakendi materjal ja konstruktsioon peavad tagama, et säiliksid tootja garanteeritud väetise omadused ning et väetise käsitsemine oleks ohutu väetise tootjalt tarbijani liikumise kestel. Väetise pakend peab vastama pake",
+      "estleg:legalText": "(1) Väetise pakendi materjal ja konstruktsioon peavad tagama, et säiliksid tootja garanteeritud väetise omadused ning et väetise käsitsemine oleks ohutu väetise tootjalt tarbijani liikumise kestel. Väetise pakend peab vastama pakendiseaduse ja käesoleva seaduse nõuetele. (2) Tarbijale turustatakse väetist suletud müügipakendis, mida ei saa pärast avamist enam esialgsel viisil sulgeda. (3) Väetise müügipakendil peab olema selgesti nähtav, loetav ja kustumatu eestikeelne märgistus, mis üheselt mõistetavalt kirjeldab väetise koostist ning väetise kasutamise otstarvet ja tingimusi. (4) Puisteväetise puhul või juhul, kui teavet ei ole võimalik kanda väetise pakendile selle kuju või mõõtmete tõttu, kantakse käesoleva paragrahvi lõikes 3 kirjeldatud märgistus kaasasolevale teabelehele. (5) Nõuded väetise pakendi ja teabelehe märgistusele kehtestab",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VäetS_3"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_VäetS_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VäetS_Par_8_Lg_1"
+        },
+        {
+          "@id": "estleg:VäetS_Par_8_Lg_2"
+        },
+        {
+          "@id": "estleg:VäetS_Par_8_Lg_3"
+        },
+        {
+          "@id": "estleg:VäetS_Par_8_Lg_4"
+        },
+        {
+          "@id": "estleg:VäetS_Par_8_Lg_5"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "business"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
+    },
+    {
+      "@id": "estleg:VäetS_Par_8_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Väetise pakendi materjal ja konstruktsioon peavad tagama, et säiliksid tootja garanteeritud väetise omadused ning et väetise käsitsemine oleks ohutu väetise tootjalt tarbijani liikumise kestel. Väetise pakend peab vastama pakendiseaduse ja käesoleva seaduse nõuetele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 1"
+    },
+    {
+      "@id": "estleg:VäetS_Par_8_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Tarbijale turustatakse väetist suletud müügipakendis, mida ei saa pärast avamist enam esialgsel viisil sulgeda.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 2"
+    },
+    {
+      "@id": "estleg:VäetS_Par_8_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Väetise müügipakendil peab olema selgesti nähtav, loetav ja kustumatu eestikeelne märgistus, mis üheselt mõistetavalt kirjeldab väetise koostist ning väetise kasutamise otstarvet ja tingimusi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 3"
+    },
+    {
+      "@id": "estleg:VäetS_Par_8_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Puisteväetise puhul või juhul, kui teavet ei ole võimalik kanda väetise pakendile selle kuju või mõõtmete tõttu, kantakse käesoleva paragrahvi lõikes 3 kirjeldatud märgistus kaasasolevale teabelehele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 4"
+    },
+    {
+      "@id": "estleg:VäetS_Par_8_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Nõuded väetise pakendi ja teabelehe märgistusele kehtestab",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 5"
+    },
+    {
       "@id": "estleg:VäetS_Par_9",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VäetS"
+        "estleg:LegalProvision_vaetiseseadus"
       ],
       "estleg:paragrahv": "§ 9.",
       "rdfs:label": "§ 9. Enesekontroll",
       "estleg:sourceAct": "Väetiseseadus",
       "estleg:summary": "1 (1) Nii tootja kui ka pakendaja kontrollivad enda toodetud või pakendatud väetise koostise nõuetekohasust vähemalt kord kuue kuu jooksul. Rakendatavaid abinõusid kirjeldatakse enesekontrolliplaanis. Nii tootja kui ka pakendaja kontrollivad enda toodetud või pakendatud väetise koostise nõuetekohasust vähemalt kord kuue kuu jooksul. Rakendatavaid abinõusid kirjeldatakse enesekontrolliplaanis. 2 (2) Tootja ja pakendaja on kohustatud pidama enesekontrollitoimingute käigus väetise koostise nõueteko",
+      "estleg:legalText": "(1) Nii tootja kui ka pakendaja kontrollivad enda toodetud või pakendatud väetise koostise nõuetekohasust vähemalt kord kuue kuu jooksul. Rakendatavaid abinõusid kirjeldatakse enesekontrolliplaanis. (2) Tootja ja pakendaja on kohustatud pidama enesekontrollitoimingute käigus väetise koostise nõuetekohasuse kontrollimiseks võetud proovide arvestust, milles on järgmised andmed: väetise nimetus; proovivõtu kuupäev; proovivõtja nimi ja allkiri; analüüsi teinud laboratooriumi nimi; proovi analüüsi tulemused. (3) Tootja ja pakendaja peavad säilitama käesoleva paragrahvi lõikes 2 nimetatud arvestust proovide võtmisest arvates seitsme aasta jooksul.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VäetS_3"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_VäetS_3"
       },
-      "estleg:dutyHolder": "Tootja ja pakendaja",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VäetS_Par_9_Lg_1"
+        },
+        {
+          "@id": "estleg:VäetS_Par_9_Lg_2"
+        },
+        {
+          "@id": "estleg:VäetS_Par_9_Lg_3"
+        }
+      ],
       "estleg:targetGroup": [
         "business"
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
+    },
+    {
+      "@id": "estleg:VäetS_Par_9_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Nii tootja kui ka pakendaja kontrollivad enda toodetud või pakendatud väetise koostise nõuetekohasust vähemalt kord kuue kuu jooksul. Rakendatavaid abinõusid kirjeldatakse enesekontrolliplaanis.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 1"
+    },
+    {
+      "@id": "estleg:VäetS_Par_9_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Tootja ja pakendaja on kohustatud pidama enesekontrollitoimingute käigus väetise koostise nõuetekohasuse kontrollimiseks võetud proovide arvestust, milles on järgmised andmed: väetise nimetus; proovivõtu kuupäev; proovivõtja nimi ja allkiri; analüüsi teinud laboratooriumi nimi; proovi analüüsi tulemused.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 2"
+    },
+    {
+      "@id": "estleg:VäetS_Par_9_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Tootja ja pakendaja peavad säilitama käesoleva paragrahvi lõikes 2 nimetatud arvestust proovide võtmisest arvates seitsme aasta jooksul.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 3"
     },
     {
       "@id": "estleg:VäetS_Par_10",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VäetS"
+        "estleg:LegalProvision_vaetiseseadus"
       ],
       "estleg:paragrahv": "§ 10.",
       "rdfs:label": "§ 10. Teavitamiskohustus",
       "estleg:sourceAct": "Väetiseseadus",
-      "estleg:summary": "1 (1) Kui enesekontrollitoimingute käigus võetud proovide analüüsi tulemuste alusel tuvastatakse, et väetise koostis ei ole nõuetekohane, peab tootja või pakendaja viivitamata : 1 1) teavitama sellest kirjalikult Taimetoodangu Inspektsiooni (edaspidi järelevalveasutus ) ja saatma talle akrediteeritud laboratooriumi katseprotokolli proovi analüüsi tulemuste kohta; 2 2) peatama mittenõuetekohase koostisega väetise turustamise. Kui enesekontrollitoimingute käigus võetud proovide analüüsi tulemuste ",
+      "estleg:summary": "1 (1) Kui enesekontrollitoimingute käigus võetud proovide analüüsi tulemuste alusel tuvastatakse, et väetise koostis ei ole nõuetekohane, peab tootja või pakendaja viivitamata: 1 1) teavitama sellest kirjalikult Põllumajandus- ja Toiduametit ja saatma talle akrediteeritud laboratooriumi katseprotokolli proovi analüüsi tulemuste kohta; RT I 2014-03-13 4 113032014004 2014-07-01 2 2) peatama mittenõuetekohase koostisega väetise turustamise. Kui enesekontrollitoimingute käigus võetud proovide analüü",
+      "estleg:legalText": "(1) Kui enesekontrollitoimingute käigus võetud proovide analüüsi tulemuste alusel tuvastatakse, et väetise koostis ei ole nõuetekohane, peab tootja või pakendaja viivitamata: teavitama sellest kirjalikult Põllumajandus- ja Toiduametit ja saatma talle akrediteeritud laboratooriumi katseprotokolli proovi analüüsi tulemuste kohta; peatama mittenõuetekohase koostisega väetise turustamise. (2) Põllumajandus- ja Toiduamet otsustab käesoleva paragrahvi lõike 1 punktis 2 nimetatud väetise edasise turustamise lubamise või keelamise asjakohase teatise ja katseprotokolli saamisest arvates kümne tööpäeva jooksul. (3) Kui käitleja soovib väetise valmistamisel kasutada senisest erinevat tooret või tootmistehnoloogiat või kui ilmnevad asjaolud, mis võivad mõjutada väetise koostise nõuetekohasust, teavitab väetise käitleja sellest viivitamata kirjalikult Põllumajandus- ja Toiduametit, kes otsustab senisest erineva toorme või tootmistehnoloogia kasutamise lubamise või keelamise käitlejalt kirjaliku teate saamisest arvates 30 päeva jooksul. (4) Kehtetu -",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VäetS_3"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_VäetS_3"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VäetS_Par_10_Lg_1"
+        },
+        {
+          "@id": "estleg:VäetS_Par_10_Lg_2"
+        },
+        {
+          "@id": "estleg:VäetS_Par_10_Lg_3"
+        },
+        {
+          "@id": "estleg:VäetS_Par_10_Lg_4"
+        }
+      ],
       "estleg:targetGroup": [
         "business",
         "public_body"
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_pollumajandus_ja_toiduamet"
+        }
+      ],
+      "estleg:competenceType": "general"
+    },
+    {
+      "@id": "estleg:VäetS_Par_10_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kui enesekontrollitoimingute käigus võetud proovide analüüsi tulemuste alusel tuvastatakse, et väetise koostis ei ole nõuetekohane, peab tootja või pakendaja viivitamata: teavitama sellest kirjalikult Põllumajandus- ja Toiduametit ja saatma talle akrediteeritud laboratooriumi katseprotokolli proovi analüüsi tulemuste kohta; peatama mittenõuetekohase koostisega väetise turustamise.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 1"
+    },
+    {
+      "@id": "estleg:VäetS_Par_10_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Põllumajandus- ja Toiduamet otsustab käesoleva paragrahvi lõike 1 punktis 2 nimetatud väetise edasise turustamise lubamise või keelamise asjakohase teatise ja katseprotokolli saamisest arvates kümne tööpäeva jooksul.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 2"
+    },
+    {
+      "@id": "estleg:VäetS_Par_10_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kui käitleja soovib väetise valmistamisel kasutada senisest erinevat tooret või tootmistehnoloogiat või kui ilmnevad asjaolud, mis võivad mõjutada väetise koostise nõuetekohasust, teavitab väetise käitleja sellest viivitamata kirjalikult Põllumajandus- ja Toiduametit, kes otsustab senisest erineva toorme või tootmistehnoloogia kasutamise lubamise või keelamise käitlejalt kirjaliku teate saamisest arvates 30 päeva jooksul.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 3"
+    },
+    {
+      "@id": "estleg:VäetS_Par_10_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 4"
     },
     {
       "@id": "estleg:VäetS_Par_11",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VäetS"
+        "estleg:LegalProvision_vaetiseseadus"
       ],
       "estleg:paragrahv": "§ 11.",
       "rdfs:label": "§ 11. Väetise Eestisse toimetamine",
       "estleg:sourceAct": "Väetiseseadus",
-      "estleg:summary": "1 (1) Väetise Eestisse toimetamine käesoleva seaduse tähenduses on väetisele vabasse ringlusse lubamise tolliprotseduuri rakendamine ja selle Euroopa Liidu liikmesriigist Eestisse toimetamine. Väetise Eestisse toimetamine käesoleva seaduse tähenduses on väetisele vabasse ringlusse lubamise tolliprotseduuri rakendamine ja selle Euroopa Liidu liikmesriigist Eestisse toimetamine. 2 (2) Eestisse võib toimetada väetist, mis on registreeritud väetiseregistris. Eestisse võib toimetada väetist, mis on r",
+      "estleg:summary": "1 (1) Väetise Eestisse toimetamine käesoleva seaduse tähenduses on väetisele vabasse ringlusse lubamise tolliprotseduuri rakendamine ja selle Euroopa Liidu liikmesriigist Eestisse toimetamine. Väetise Eestisse toimetamine käesoleva seaduse tähenduses on väetisele vabasse ringlusse lubamise tolliprotseduuri rakendamine ja selle Euroopa Liidu liikmesriigist Eestisse toimetamine. 2 (2) Väetiste nomenklatuuri kehtestab valdkonna eest vastutav minister ./dyn=127092023008&id=112082014002 . Väetiste no",
+      "estleg:legalText": "(1) Väetise Eestisse toimetamine käesoleva seaduse tähenduses on väetisele vabasse ringlusse lubamise tolliprotseduuri rakendamine ja selle Euroopa Liidu liikmesriigist Eestisse toimetamine. (2) Väetiste nomenklatuuri kehtestab (3) Eestisse võib toimetada ELi väetisetoodet ja väetist, mis on kantud väetiseregistrisse. (4) Väetise liiduvälisest riigist Eestisse toimetamise korral esitab deklarant koos tollideklaratsiooniga tollile tootja väljastatud asjakohase dokumendi väetise koostise kohta. (5) Töödeldud loomse päritoluga orgaanilise väetise liiduvälisest riigist Eestisse toimetamise korral esitab deklarant koos tollideklaratsiooniga tollile Põllumajandus- ja Toiduameti väljastatud loa. (6) Käesolevas paragrahvis sätestatud nõudeid ei kohaldata, kui Eestisse toimetatava väetise kogus on kuni 50 kilogrammi või 10 liitrit, mikroväetise puhul kuni 0,5 kilogrammi või 0,5 liitrit ning bakterväetise puhul kuni 0,05 kilogrammi. (7) Käesoleva paragrahvi lõikes 6 sätestatut ei kohaldata kõrge lämmastikusisaldusega ammooniumnitraatväetise puhul.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VäetS_3"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      }
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_VäetS_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VäetS_Par_11_Lg_1"
+        },
+        {
+          "@id": "estleg:VäetS_Par_11_Lg_2"
+        },
+        {
+          "@id": "estleg:VäetS_Par_11_Lg_3"
+        },
+        {
+          "@id": "estleg:VäetS_Par_11_Lg_4"
+        },
+        {
+          "@id": "estleg:VäetS_Par_11_Lg_5"
+        },
+        {
+          "@id": "estleg:VäetS_Par_11_Lg_6"
+        },
+        {
+          "@id": "estleg:VäetS_Par_11_Lg_7"
+        }
+      ],
+      "estleg:targetGroup": [
+        "business",
+        "public_body",
+        "official"
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:VäetS_Par_12"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:VäetS_Par_11_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Väetise Eestisse toimetamine käesoleva seaduse tähenduses on väetisele vabasse ringlusse lubamise tolliprotseduuri rakendamine ja selle Euroopa Liidu liikmesriigist Eestisse toimetamine.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 1"
+    },
+    {
+      "@id": "estleg:VäetS_Par_11_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Väetiste nomenklatuuri kehtestab",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 2"
+    },
+    {
+      "@id": "estleg:VäetS_Par_11_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Eestisse võib toimetada ELi väetisetoodet ja väetist, mis on kantud väetiseregistrisse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 3"
+    },
+    {
+      "@id": "estleg:VäetS_Par_11_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Väetise liiduvälisest riigist Eestisse toimetamise korral esitab deklarant koos tollideklaratsiooniga tollile tootja väljastatud asjakohase dokumendi väetise koostise kohta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 4"
+    },
+    {
+      "@id": "estleg:VäetS_Par_11_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Töödeldud loomse päritoluga orgaanilise väetise liiduvälisest riigist Eestisse toimetamise korral esitab deklarant koos tollideklaratsiooniga tollile Põllumajandus- ja Toiduameti väljastatud loa.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 5"
+    },
+    {
+      "@id": "estleg:VäetS_Par_11_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Käesolevas paragrahvis sätestatud nõudeid ei kohaldata, kui Eestisse toimetatava väetise kogus on kuni 50 kilogrammi või 10 liitrit, mikroväetise puhul kuni 0,5 kilogrammi või 0,5 liitrit ning bakterväetise puhul kuni 0,05 kilogrammi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 6"
+    },
+    {
+      "@id": "estleg:VäetS_Par_11_Lg_7",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "7",
+      "estleg:legalText": "(7) Käesoleva paragrahvi lõikes 6 sätestatut ei kohaldata kõrge lämmastikusisaldusega ammooniumnitraatväetise puhul.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 7"
     },
     {
       "@id": "estleg:VäetS_Par_12",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VäetS"
+        "estleg:LegalProvision_vaetiseseadus"
       ],
       "estleg:paragrahv": "§ 12.",
       "rdfs:label": "§ 12. Teadustöös ja väetise esitlemiseks kasutatava väetise Eestisse toimetamise nõuded",
       "estleg:sourceAct": "Väetiseseadus",
-      "estleg:summary": "1 (1) Teadustöös kasutatavat väetiseregistris registreerimata väetist võib sisse vedada järelevalveasutuse kirjalikul loal. Teadustöös kasutatavat väetiseregistris registreerimata väetist võib sisse vedada järelevalveasutuse kirjalikul loal. 2 (2) Järelevalveasutus võib loa andmisest keelduda, kui väetise koostis ei vasta käesoleva seaduse ja selle alusel kehtestatud õigusaktide nõuetele. Järelevalveasutus võib loa andmisest keelduda, kui väetise koostis ei vasta käesoleva seaduse ja selle aluse",
+      "estleg:summary": "1 (1) Teadustöös kasutatavat käesoleva seaduse § 11 lõikes 3 nimetamata väetist võib sisse vedada Põllumajandus- ja Toiduameti kirjalikul loal. RT I 2014-03-13 4 113032014004 2014-07-01 Teadustöös kasutatavat käesoleva seaduse § 11 lõikes 3 nimetamata väetist võib sisse vedada Põllumajandus- ja Toiduameti kirjalikul loal. 2 (2) Põllumajandus- ja Toiduamet võib loa andmisest keelduda, kui väetise koostis ei vasta käesoleva seaduse ja selle alusel kehtestatud õigusaktide nõuetele. RT I 2014-03-13 ",
+      "estleg:legalText": "(1) Teadustöös kasutatavat käesoleva seaduse § 11 lõikes 3 nimetamata väetist võib sisse vedada Põllumajandus- ja Toiduameti kirjalikul loal. (2) Põllumajandus- ja Toiduamet võib loa andmisest keelduda, kui väetise koostis ei vasta käesoleva seaduse ja selle alusel kehtestatud õigusaktide nõuetele. (3) Väetise Eestisse toimetamiseks loa andmise või sellest keeldumise otsuse teeb Põllumajandus- ja Toiduamet taotluse ja muude otsuse tegemiseks vajalike dokumentide saamisest arvates 15 tööpäeva jooksul. (4) Teadustöös kasutatava väetise Eestisse toimetamiseks loa saamiseks esitatava taotluse vormi, esitatavate dokumentide loetelu ja taotluse menetlemise korra kehtestab (5) Esitlemiseks kasutatava väetise Eestisse toimetamise korral rakendatakse ajutise importimise tolliprotseduuri. Esitlemiseks on keelatud sisse vedada puisteväetist.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VäetS_3"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_VäetS_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VäetS_Par_12_Lg_1"
+        },
+        {
+          "@id": "estleg:VäetS_Par_12_Lg_2"
+        },
+        {
+          "@id": "estleg:VäetS_Par_12_Lg_3"
+        },
+        {
+          "@id": "estleg:VäetS_Par_12_Lg_4"
+        },
+        {
+          "@id": "estleg:VäetS_Par_12_Lg_5"
+        }
+      ],
+      "estleg:targetGroup": [
+        "public_body"
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:VäetS_Par_11"
+        }
+      ],
       "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      }
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_pollumajandus_ja_toiduamet"
+        }
+      ],
+      "estleg:competenceType": "general"
+    },
+    {
+      "@id": "estleg:VäetS_Par_12_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Teadustöös kasutatavat käesoleva seaduse § 11 lõikes 3 nimetamata väetist võib sisse vedada Põllumajandus- ja Toiduameti kirjalikul loal.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 1"
+    },
+    {
+      "@id": "estleg:VäetS_Par_12_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Põllumajandus- ja Toiduamet võib loa andmisest keelduda, kui väetise koostis ei vasta käesoleva seaduse ja selle alusel kehtestatud õigusaktide nõuetele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 2"
+    },
+    {
+      "@id": "estleg:VäetS_Par_12_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Väetise Eestisse toimetamiseks loa andmise või sellest keeldumise otsuse teeb Põllumajandus- ja Toiduamet taotluse ja muude otsuse tegemiseks vajalike dokumentide saamisest arvates 15 tööpäeva jooksul.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 3"
+    },
+    {
+      "@id": "estleg:VäetS_Par_12_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Teadustöös kasutatava väetise Eestisse toimetamiseks loa saamiseks esitatava taotluse vormi, esitatavate dokumentide loetelu ja taotluse menetlemise korra kehtestab",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 4"
+    },
+    {
+      "@id": "estleg:VäetS_Par_12_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Esitlemiseks kasutatava väetise Eestisse toimetamise korral rakendatakse ajutise importimise tolliprotseduuri. Esitlemiseks on keelatud sisse vedada puisteväetist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 5"
     },
     {
       "@id": "estleg:VäetS_Par_13",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VäetS"
+        "estleg:LegalProvision_vaetiseseadus"
       ],
       "estleg:paragrahv": "§ 13.",
       "rdfs:label": "§ 13. Kõrge lämmastikusisaldusega ammooniumnitraatväetise käitlemise nõuded",
       "estleg:sourceAct": "Väetiseseadus",
-      "estleg:summary": "1 (1) Kõrge lämmastikusisaldusega ammooniumnitraatväetist käideldakse käesoleva seaduse ja kemikaaliseaduse (RT I 1998, 47, 697; 1999, 45, 512; 2002, 53, 336; 61, 375; 63, 387; 2003, 23, 144; 51, 352; 75, 499; 88, 591) nõuete kohaselt. Kõrge lämmastikusisaldusega ammooniumnitraatväetist käideldakse käesoleva seaduse ja kemikaaliseaduse (RT I 1998, 47, 697; 1999, 45, 512; 2002, 53, 336; 61, 375; 63, 387; 2003, 23, 144; 51, 352; 75, 499; 88, 591) nõuete kohaselt. 2 (2) Kõrge lämmastikusisaldusega ",
+      "estleg:summary": "1 (1) Kõrge lämmastikusisaldusega ammooniumnitraatväetist käideldakse käesoleva seaduse ja kemikaaliseaduse nõuete kohaselt. RT I 2004 32 228 745294 2004-05-01 Kõrge lämmastikusisaldusega ammooniumnitraatväetist käideldakse käesoleva seaduse ja kemikaaliseaduse nõuete kohaselt. 2 (2) Kõrge lämmastikusisaldusega ammooniumnitraatväetis käesoleva seaduse tähenduses on ammooniumnitraat või ammooniumnitraati sisaldav väetis, mille kuivaine kogumassist üle 28 protsendi moodustab lämmastik ja mis võib ",
+      "estleg:legalText": "(1) Kõrge lämmastikusisaldusega ammooniumnitraatväetist käideldakse käesoleva seaduse ja kemikaaliseaduse nõuete kohaselt. (2) Kõrge lämmastikusisaldusega ammooniumnitraatväetis käesoleva seaduse tähenduses on ammooniumnitraat või ammooniumnitraati sisaldav väetis, mille kuivaine kogumassist üle 28 protsendi moodustab lämmastik ja mis võib sisaldada anorgaanilisi lisandeid või inertseid aineid, mis ei suurenda väetise tule- ega plahvatusohtlikkust. (3) Kõrge lämmastikusisaldusega ammooniumnitraatväetise partii peab olema läbinud Euroopa Parlamendi ja nõukogu määruse (EL) 2019/1009 IV lisas kirjeldatud detonatsioonikindluse katse. (4) Käesoleva paragrahvi lõikes 3 nimetatud katse tehakse asjakohast pädevust omavas akrediteeritud või Euroopa Parlamendi ja nõukogu määruse (EL) 2019/1009 artiklis 24 sätestatud nõuetele vastavas asutuses. (5) Väetise käitleja esitab vähemalt viis tööpäeva enne kõrge lämmastikusisaldusega ammooniumnitraatväetise partii eeldatavat Eestisse toimetamist Põllumajandus- ja Toiduametile väetisepartii detonatsioonikindlust tõendava dokumendi.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VäetS_3"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_VäetS_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VäetS_Par_13_Lg_1"
+        },
+        {
+          "@id": "estleg:VäetS_Par_13_Lg_2"
+        },
+        {
+          "@id": "estleg:VäetS_Par_13_Lg_3"
+        },
+        {
+          "@id": "estleg:VäetS_Par_13_Lg_4"
+        },
+        {
+          "@id": "estleg:VäetS_Par_13_Lg_5"
+        }
+      ],
+      "estleg:targetGroup": [
+        "business",
+        "public_body"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
+    },
+    {
+      "@id": "estleg:VäetS_Par_13_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kõrge lämmastikusisaldusega ammooniumnitraatväetist käideldakse käesoleva seaduse ja kemikaaliseaduse nõuete kohaselt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 1"
+    },
+    {
+      "@id": "estleg:VäetS_Par_13_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kõrge lämmastikusisaldusega ammooniumnitraatväetis käesoleva seaduse tähenduses on ammooniumnitraat või ammooniumnitraati sisaldav väetis, mille kuivaine kogumassist üle 28 protsendi moodustab lämmastik ja mis võib sisaldada anorgaanilisi lisandeid või inertseid aineid, mis ei suurenda väetise tule- ega plahvatusohtlikkust.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 2"
+    },
+    {
+      "@id": "estleg:VäetS_Par_13_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kõrge lämmastikusisaldusega ammooniumnitraatväetise partii peab olema läbinud Euroopa Parlamendi ja nõukogu määruse (EL) 2019/1009 IV lisas kirjeldatud detonatsioonikindluse katse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 3"
+    },
+    {
+      "@id": "estleg:VäetS_Par_13_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Käesoleva paragrahvi lõikes 3 nimetatud katse tehakse asjakohast pädevust omavas akrediteeritud või Euroopa Parlamendi ja nõukogu määruse (EL) 2019/1009 artiklis 24 sätestatud nõuetele vastavas asutuses.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 4"
+    },
+    {
+      "@id": "estleg:VäetS_Par_13_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Väetise käitleja esitab vähemalt viis tööpäeva enne kõrge lämmastikusisaldusega ammooniumnitraatväetise partii eeldatavat Eestisse toimetamist Põllumajandus- ja Toiduametile väetisepartii detonatsioonikindlust tõendava dokumendi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 5"
     },
     {
       "@id": "estleg:VäetS_Par_14",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VäetS"
+        "estleg:LegalProvision_vaetiseseadus"
       ],
       "estleg:paragrahv": "§ 14.",
       "rdfs:label": "§ 14. Geneetiliselt muundatud organisme sisaldava väetise käitlemise nõuded",
       "estleg:sourceAct": "Väetiseseadus",
-      "estleg:summary": "Geneetiliselt muundatud organisme sisaldavat väetist käideldakse käesoleva seaduse nõuete kohaselt, arvestades geneetiliselt muundatud organismide keskkonda viimise seaduses (RT I 1999, 10, 151; 2001, 23, 130; 97, 603; 2002, 63, 387) sätestatut. Geneetiliselt muundatud organisme sisaldavat väetist käideldakse käesoleva seaduse nõuete kohaselt, arvestades geneetiliselt muundatud organismide keskkonda viimise seaduses (RT I 1999, 10, 151; 2001, 23, 130; 97, 603; 2002, 63, 387) sätestatut.",
+      "estleg:summary": "Geneetiliselt muundatud organisme sisaldavat väetist käideldakse käesoleva seaduse nõuete kohaselt, arvestades geneetiliselt muundatud organismide keskkonda viimise seaduses sätestatut. Geneetiliselt muundatud organisme sisaldavat väetist käideldakse käesoleva seaduse nõuete kohaselt, arvestades geneetiliselt muundatud organismide keskkonda viimise seaduses sätestatut.",
+      "estleg:legalText": "Geneetiliselt muundatud organisme sisaldavat väetist käideldakse käesoleva seaduse nõuete kohaselt, arvestades geneetiliselt muundatud organismide keskkonda viimise seaduses sätestatut.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VäetS_3"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_VäetS_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VäetS_Par_14_Lg_Unknown_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:VäetS_Par_14_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Geneetiliselt muundatud organisme sisaldavat väetist käideldakse käesoleva seaduse nõuete kohaselt, arvestades geneetiliselt muundatud organismide keskkonda viimise seaduses sätestatut.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_14"
       }
     },
     {
       "@id": "estleg:VäetS_Par_15",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VäetS"
+        "estleg:LegalProvision_vaetiseseadus"
       ],
       "estleg:paragrahv": "§ 15.",
       "rdfs:label": "§ 15. Väetise hoidmise nõuded",
       "estleg:sourceAct": "Väetiseseadus",
-      "estleg:summary": "1 (1) Väetist peab hoidma tingimustes, mis tagavad väetise ohutuse inimese ja looma elule ja tervisele. Väetist peab hoidma tingimustes, mis tagavad väetise ohutuse inimese ja looma elule ja tervisele. 2 (2) Väetist hoitakse veeseaduses (RT I 1994, 40, 655; 1996, 13, 241; 1998, 2, 47; 61, 987; 1999, 10, 155; 54, 583; 95, 843; 2001, 7, 19; 42, 234; 50, 283; 94, 577; 2002, 1, 1; 61, 375; 63, 387; 2003, 13, 64; 26, 156) põhja- ja pinnavee kaitseks kehtestatud nõuete kohaselt. Väetist hoitakse veese",
+      "estleg:summary": "1 (1) Väetist peab hoidma tingimustes, mis tagavad väetise ohutuse inimese ja looma elule ja tervisele. Väetist peab hoidma tingimustes, mis tagavad väetise ohutuse inimese ja looma elule ja tervisele. 2 (2) Väetist hoitakse veeseaduses põhja- ja pinnavee kaitseks kehtestatud nõuete kohaselt. Väetist hoitakse veeseaduses põhja- ja pinnavee kaitseks kehtestatud nõuete kohaselt.",
+      "estleg:legalText": "(1) Väetist peab hoidma tingimustes, mis tagavad väetise ohutuse inimese ja looma elule ja tervisele. (2) Väetist hoitakse veeseaduses põhja- ja pinnavee kaitseks kehtestatud nõuete kohaselt.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VäetS_3"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_VäetS_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VäetS_Par_15_Lg_1"
+        },
+        {
+          "@id": "estleg:VäetS_Par_15_Lg_2"
+        }
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
       "estleg:dutyHolder": "Väetist"
     },
     {
+      "@id": "estleg:VäetS_Par_15_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Väetist peab hoidma tingimustes, mis tagavad väetise ohutuse inimese ja looma elule ja tervisele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 1"
+    },
+    {
+      "@id": "estleg:VäetS_Par_15_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Väetist hoitakse veeseaduses põhja- ja pinnavee kaitseks kehtestatud nõuete kohaselt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 2"
+    },
+    {
       "@id": "estleg:VäetS_Par_16",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VäetS"
+        "estleg:LegalProvision_vaetiseseadus"
       ],
       "estleg:paragrahv": "§ 16.",
-      "rdfs:label": "§ 16. Väetise turustamise nõuded",
+      "rdfs:label": "§ 16. Väetise turustamise ja jälgitavuse tagamise nõuded",
       "estleg:sourceAct": "Väetiseseadus",
-      "estleg:summary": "Turustada võib üksnes väetist: 1 1) mis on registreeritud väetiseregistris ja mille registreerimisotsus ei ole peatatud ning 2 2) mis vastab käesoleva seaduse ja selle alusel kehtestatud õigusaktide nõuetele. Turustada võib üksnes väetist: mis on registreeritud väetiseregistris ja mille registreerimisotsus ei ole peatatud ning mis vastab käesoleva seaduse ja selle alusel kehtestatud õigusaktide nõuetele.",
+      "estleg:summary": "1 (1) Turustada võib üksnes asjakohaste Euroopa Liidu õigusaktide, käesoleva seaduse ja selle alusel kehtestatud õigusaktide nõuetele vastavat väetist, mis on: 1 1) ELi väetisetoode või RT I 2022-07-15 4 115072022004 2022-07-16 2 2) kantud väetiseregistrisse. RT I 2014-06-29 1 129062014001 2014-07-01 Turustada võib üksnes asjakohaste Euroopa Liidu õigusaktide, käesoleva seaduse ja selle alusel kehtestatud õigusaktide nõuetele vastavat väetist, mis on: ELi väetisetoode või kantud väetiseregistris",
+      "estleg:legalText": "(1) Turustada võib üksnes asjakohaste Euroopa Liidu õigusaktide, käesoleva seaduse ja selle alusel kehtestatud õigusaktide nõuetele vastavat väetist, mis on: ELi väetisetoode või kantud väetiseregistrisse. (2) Väetise jälgitavuse tagamiseks säilitab väetise käitleja andmeid väetisepartii päritolu kohta kaks aastat turustamise lõpetamisest arvates.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VäetS_3"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_VäetS_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VäetS_Par_16_Lg_1"
+        },
+        {
+          "@id": "estleg:VäetS_Par_16_Lg_2"
+        }
+      ],
+      "estleg:targetGroup": [
+        "business"
+      ],
       "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
+        "@id": "estleg:NormType_Permission"
       }
+    },
+    {
+      "@id": "estleg:VäetS_Par_16_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Turustada võib üksnes asjakohaste Euroopa Liidu õigusaktide, käesoleva seaduse ja selle alusel kehtestatud õigusaktide nõuetele vastavat väetist, mis on: ELi väetisetoode või kantud väetiseregistrisse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 1"
+    },
+    {
+      "@id": "estleg:VäetS_Par_16_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Väetise jälgitavuse tagamiseks säilitab väetise käitleja andmeid väetisepartii päritolu kohta kaks aastat turustamise lõpetamisest arvates.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 2"
     },
     {
       "@id": "estleg:VäetS_Par_17",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VäetS"
+        "estleg:LegalProvision_vaetiseseadus"
       ],
       "estleg:paragrahv": "§ 17.",
       "rdfs:label": "§ 17. Mittenõuetekohase koostisega, kuid ohutu väetise turustamine",
       "estleg:sourceAct": "Väetiseseadus",
-      "estleg:summary": "1 (1) Mittenõuetekohase koostisega, kuid ohutu väetise ohutuse, turujärelevalve korralduse ja käitleja kohustuste kindlaksmääramisel juhindutakse toote ohutuse seadusest (RT I 1998, 40, 613; 1999, 82, 753; 2000, 86, 546; 2002, 47, 297; 61, 375; 63, 387; 2003, 20, 120; 26, 156; 32, õiend). Mittenõuetekohase koostisega, kuid ohutu väetise ohutuse, turujärelevalve korralduse ja käitleja kohustuste kindlaksmääramisel juhindutakse toote ohutuse seadusest (RT I 1998, 40, 613; 1999, 82, 753; 2000, 86, ",
+      "estleg:summary": "1 (1) Mittenõuetekohase koostisega, kuid ohutu väetise ohutuse, turujärelevalve korraldamise ja käitleja kohustuste kindlaksmääramisel juhindutakse toote nõuetele vastavuse seadusest. RT I 2010 31 158 13324370 2010-10-01 Mittenõuetekohase koostisega, kuid ohutu väetise ohutuse, turujärelevalve korraldamise ja käitleja kohustuste kindlaksmääramisel juhindutakse toote nõuetele vastavuse seadusest. 2 (2) Põllumajandus- ja Toiduameti loal võib mittenõuetekohase koostisega, kuid ohutut väetist turust",
+      "estleg:legalText": "(1) Mittenõuetekohase koostisega, kuid ohutu väetise ohutuse, turujärelevalve korraldamise ja käitleja kohustuste kindlaksmääramisel juhindutakse toote nõuetele vastavuse seadusest. (2) Põllumajandus- ja Toiduameti loal võib mittenõuetekohase koostisega, kuid ohutut väetist turustada juhul, kui teave väetise tegeliku koostise kohta on märgitud väetise pakendile või teabelehele senist märgistust rikkumata. Põllumajandus- ja Toiduamet otsustab väetise turustamise lubamise või keelamise loa taotlemisest arvates 30 päeva jooksul.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VäetS_3"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_VäetS_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VäetS_Par_17_Lg_1"
+        },
+        {
+          "@id": "estleg:VäetS_Par_17_Lg_2"
+        }
+      ],
       "estleg:targetGroup": [
-        "business"
-      ]
+        "business",
+        "public_body"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_pollumajandus_ja_toiduamet"
+        }
+      ],
+      "estleg:competenceType": "supervision"
+    },
+    {
+      "@id": "estleg:VäetS_Par_17_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Mittenõuetekohase koostisega, kuid ohutu väetise ohutuse, turujärelevalve korraldamise ja käitleja kohustuste kindlaksmääramisel juhindutakse toote nõuetele vastavuse seadusest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_17"
+      },
+      "rdfs:label": "§ 17 lg 1"
+    },
+    {
+      "@id": "estleg:VäetS_Par_17_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Põllumajandus- ja Toiduameti loal võib mittenõuetekohase koostisega, kuid ohutut väetist turustada juhul, kui teave väetise tegeliku koostise kohta on märgitud väetise pakendile või teabelehele senist märgistust rikkumata. Põllumajandus- ja Toiduamet otsustab väetise turustamise lubamise või keelamise loa taotlemisest arvates 30 päeva jooksul.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_17"
+      },
+      "rdfs:label": "§ 17 lg 2"
     },
     {
       "@id": "estleg:VäetS_Par_18",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VäetS"
+        "estleg:LegalProvision_vaetiseseadus"
       ],
       "estleg:paragrahv": "§ 18.",
       "rdfs:label": "§ 18. Mittenõuetekohase koostisega ohtliku väetise turustamise lõpetamine",
       "estleg:sourceAct": "Väetiseseadus",
-      "estleg:summary": "1 (1) Mittenõuetekohase koostisega ohtlik väetis, mida ei ole võimalik töötlemisega muuta ohutuks inimese ja looma elule ja tervisele, samuti varale ja keskkonnale, tuleb käitleja kulul müügilt kõrvaldada ja käidelda jäätmeseaduse (RT I 1998, 57, 861; 1999, 10, 155; 23, 353; 95, 843; 2001, 16, 72; 43, 239; 50, 283; 56, 340; 93, 565; 2002, 61, 375; 63, 387) nõuete kohaselt. Mittenõuetekohase koostisega ohtlik väetis, mida ei ole võimalik töötlemisega muuta ohutuks inimese ja looma elule ja tervis",
+      "estleg:summary": "1 (1) Mittenõuetekohase koostisega ohtlik väetis, mida ei ole võimalik töötlemisega muuta ohutuks inimese ja looma elule ja tervisele, samuti varale ja keskkonnale, tuleb käitleja kulul müügilt kõrvaldada ja käidelda jäätmeseaduse nõuete kohaselt. Mittenõuetekohase koostisega ohtlik väetis, mida ei ole võimalik töötlemisega muuta ohutuks inimese ja looma elule ja tervisele, samuti varale ja keskkonnale, tuleb käitleja kulul müügilt kõrvaldada ja käidelda jäätmeseaduse nõuete kohaselt. 2 (2) Mitt",
+      "estleg:legalText": "(1) Mittenõuetekohase koostisega ohtlik väetis, mida ei ole võimalik töötlemisega muuta ohutuks inimese ja looma elule ja tervisele, samuti varale ja keskkonnale, tuleb käitleja kulul müügilt kõrvaldada ja käidelda jäätmeseaduse nõuete kohaselt. (2) Mittenõuetekohase koostisega ohtliku väetisena käsitatakse väetist, mis oma mürgisuse, tule- ja plahvatusohu, kiirgusohu või muu ohuteguri tõttu võib kahjustada inimese ja looma elu ja tervist või vara või keskkonda.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VäetS_3"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_VäetS_3"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VäetS_Par_18_Lg_1"
+        },
+        {
+          "@id": "estleg:VäetS_Par_18_Lg_2"
+        }
+      ],
       "estleg:targetGroup": [
         "business"
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
+    },
+    {
+      "@id": "estleg:VäetS_Par_18_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Mittenõuetekohase koostisega ohtlik väetis, mida ei ole võimalik töötlemisega muuta ohutuks inimese ja looma elule ja tervisele, samuti varale ja keskkonnale, tuleb käitleja kulul müügilt kõrvaldada ja käidelda jäätmeseaduse nõuete kohaselt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_18"
+      },
+      "rdfs:label": "§ 18 lg 1"
+    },
+    {
+      "@id": "estleg:VäetS_Par_18_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Mittenõuetekohase koostisega ohtliku väetisena käsitatakse väetist, mis oma mürgisuse, tule- ja plahvatusohu, kiirgusohu või muu ohuteguri tõttu võib kahjustada inimese ja looma elu ja tervist või vara või keskkonda.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_18"
+      },
+      "rdfs:label": "§ 18 lg 2"
     },
     {
       "@id": "estleg:VäetS_Par_19",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VäetS"
+        "estleg:LegalProvision_vaetiseseadus"
       ],
       "estleg:paragrahv": "§ 19.",
       "rdfs:label": "§ 19. Väetiseregistri asutamine ja selle tegevuse korraldamine",
       "estleg:sourceAct": "Väetiseseadus",
-      "estleg:summary": "1 (1) Väetiseregister (edaspidi register) on riiklik register, mille asutab Vabariigi Valitsus põllumajandusministri ettepanekul. Registri pidamise põhimääruse kehtestab Vabariigi Valitsus. ./dyn=750350&id=751544 2 (2) Registri vastutavaks töötlejaks on Põllumajandusministeerium ja volitatud töötlejaks Taimetoodangu Inspektsioon (pädev asutus). RT I 2004 32 228 745294 2004-05-01+03:00 Registri vastutavaks töötlejaks on Põllumajandusministeerium ja volitatud töötlejaks Taimetoodangu Inspektsioon ",
+      "estleg:summary": "1 (1) Väetiseregistri (edaspidi register) asutab ja selle põhimääruse kehtestab valdkonna eest vastutav minister ./dyn=127092023008&id=112032019060 määrusega. Väetiseregistri (edaspidi register) asutab ja selle põhimääruse kehtestab määrusega. 2 (2) Registri vastutav töötleja on Regionaal- ja Põllumajandusministeerium ja volitatud töötleja määratakse registri põhimääruses. RT I 2023-06-30 1 130062023001 2023-07-01 ; Vabariigi Valitsuse seaduse § 105.19 lõike 7 alusel asendatud sõna „Maaeluminist",
+      "estleg:legalText": "(1) Väetiseregistri (edaspidi register) asutab ja selle põhimääruse kehtestab määrusega. (2) Registri vastutav töötleja on Regionaal- ja Põllumajandusministeerium ja volitatud töötleja määratakse registri põhimääruses. ; Vabariigi Valitsuse seaduse § 105.19 lõike 7 alusel asendatud sõna „Maaeluministeerium” sõnadega „Regionaal- ja Põllumajandusministeerium” (3) Registri eesmärk on tagada väetise ohutus ning tõhus järelevalve väetiste ja nende käitlemise nõuetekohasuse üle. (4) Registrisse kantakse majandustegevuse seadustiku üldosa seaduse § 51 lõikes 1 nimetatud andmed majandustegevusteate esitanud väetiste käitlejate ja turustamisotstarbeliste väetiste kohta. (5) Registrile kohaldatakse majandustegevuse seadustiku üldosa seaduses registri kohta sätestatut, arvestades käesolevas seaduses sätestatud erisusi.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VäetS_4"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_VäetS_4"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VäetS_Par_19_Lg_1"
+        },
+        {
+          "@id": "estleg:VäetS_Par_19_Lg_2"
+        },
+        {
+          "@id": "estleg:VäetS_Par_19_Lg_3"
+        },
+        {
+          "@id": "estleg:VäetS_Par_19_Lg_4"
+        },
+        {
+          "@id": "estleg:VäetS_Par_19_Lg_5"
+        }
+      ],
       "estleg:targetGroup": [
         "business",
-        "public_body"
+        "public_body",
+        "official"
       ],
       "estleg:competentAuthority": [
         {
-          "@id": "estleg:Institution_vabariigivalitsus"
-        },
-        {
-          "@id": "estleg:Institution_pollumajandusministeerium"
+          "@id": "estleg:Institution_regionaal_ja_pollumajandusministeerium"
         }
       ],
       "estleg:competenceType": "regulation",
@@ -471,35 +1938,141 @@
       ]
     },
     {
+      "@id": "estleg:VäetS_Par_19_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Väetiseregistri (edaspidi register) asutab ja selle põhimääruse kehtestab määrusega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_19"
+      },
+      "rdfs:label": "§ 19 lg 1"
+    },
+    {
+      "@id": "estleg:VäetS_Par_19_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Registri vastutav töötleja on Regionaal- ja Põllumajandusministeerium ja volitatud töötleja määratakse registri põhimääruses. ; Vabariigi Valitsuse seaduse § 105.19 lõike 7 alusel asendatud sõna „Maaeluministeerium” sõnadega „Regionaal- ja Põllumajandusministeerium”",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_19"
+      },
+      "rdfs:label": "§ 19 lg 2"
+    },
+    {
+      "@id": "estleg:VäetS_Par_19_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Registri eesmärk on tagada väetise ohutus ning tõhus järelevalve väetiste ja nende käitlemise nõuetekohasuse üle.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_19"
+      },
+      "rdfs:label": "§ 19 lg 3"
+    },
+    {
+      "@id": "estleg:VäetS_Par_19_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Registrisse kantakse majandustegevuse seadustiku üldosa seaduse § 51 lõikes 1 nimetatud andmed majandustegevusteate esitanud väetiste käitlejate ja turustamisotstarbeliste väetiste kohta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_19"
+      },
+      "rdfs:label": "§ 19 lg 4"
+    },
+    {
+      "@id": "estleg:VäetS_Par_19_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Registrile kohaldatakse majandustegevuse seadustiku üldosa seaduses registri kohta sätestatut, arvestades käesolevas seaduses sätestatud erisusi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_19"
+      },
+      "rdfs:label": "§ 19 lg 5"
+    },
+    {
       "@id": "estleg:VäetS_Par_20",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VäetS"
+        "estleg:LegalProvision_vaetiseseadus"
       ],
       "estleg:paragrahv": "§ 20.",
-      "rdfs:label": "§ 20.",
+      "rdfs:label": "§ 20. Väetise eelregistreerimine",
       "estleg:sourceAct": "Väetiseseadus",
       "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VäetS_4"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_VäetS_4"
       }
     },
     {
       "@id": "estleg:VäetS_Par_21",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VäetS"
+        "estleg:LegalProvision_vaetiseseadus"
       ],
       "estleg:paragrahv": "§ 21.",
-      "rdfs:label": "§ 21. Väetise registreerimine",
+      "rdfs:label": "§ 21. Teatamiskohustus",
       "estleg:sourceAct": "Väetiseseadus",
-      "estleg:summary": "1 (1) Väetis registreeritakse käitleja nimele vormikohase taotluse ning väetise kohta esitatud andmete ja dokumentide alusel. Väetis registreeritakse käitleja nimele vormikohase taotluse ning väetise kohta esitatud andmete ja dokumentide alusel. 2 (2) «EÜ VÄETIS» märgistusega väetise käitleja registreeritakse tema kirjaliku avalduse alusel. «EÜ VÄETIS» märgistusega väetise käitleja registreeritakse tema kirjaliku avalduse alusel. 3 (3) Taimekaitsevahendit sisaldav väetis registreeritakse väetise",
+      "estleg:summary": "(jõustumine muudetud - RT I, 22.12.2013, 1) 1 (1) Väetise käitlemiseks peab esitama majandustegevusteate Põllumajandus- ja Toiduametile. RT I 2014-06-29 1 129062014001 2014-07-01 Väetise käitlemiseks peab esitama majandustegevusteate Põllumajandus- ja Toiduametile. 2 (2) Lisaks majandustegevuse seadustiku üldosa seaduses sätestatud andmetele märgitakse teates: 1 1) väetise nimetus koos kauba kombineeritud nomenklatuuri koodiga (KN-kood); 2 2) väetise koostis ja valmistamise viis. Lisaks majandus",
+      "estleg:legalText": "(1) Väetise käitlemiseks peab esitama majandustegevusteate Põllumajandus- ja Toiduametile. (2) Lisaks majandustegevuse seadustiku üldosa seaduses sätestatud andmetele märgitakse teates: väetise nimetus koos kauba kombineeritud nomenklatuuri koodiga (KN-kood); väetise koostis ja valmistamise viis. (2<sup>1</sup>) ELi väetisetoote puhul märgitakse majandustegevusteates lisaks majandustegevuse seadustiku üldosa seaduses sätestatud andmetele Euroopa Parlamendi ja nõukogu määruse (EL) 2019/1009 I lisa 1. osas kehtestatud ELi väetisetoodete toimekategooria. (3) Majandustegevusteadet ei pea esitama käitleja, kes ostab väetise või saab väetise muul viisil teiselt käitlejalt, kes on selle väetise kohta majandustegevusteate juba esitanud. (jõustumine muudetud - RT I, 22.12.2013, 1) (4) Käitleja, kelle esitatud majandustegevusteate alusel kantakse väetiseregistrisse käesoleva paragrahvi lõikes 2 nimetatud andmed, tasub selle väetise nõuetekohasuse järelevalvetoimingute eest riigilõivu väetise käitlemisega alustamise aastal majandustegevusteate esitamisel ja igal sellele järgneval kalendriaastal 10. jaanuariks kuni sama väetise käitlemise lõpetamiseni. (5) Kui käesoleva paragrahvi lõikes 4 nimetatud käitleja ei ole tasunud tema majandustegevusteate alusel väetiseregistrisse kantud väetise nõuetekohasuse järelevalvetoimingute eest riigilõivu jooksva aasta 10. jaanuariks, loetakse selle väetise käitlemine lõpetatuks ja väetise kohta väetiseregistrisse kantud andmed tunnistatakse kehtetuks. (6) Väetist, mille kohta väetiseregistrisse kantud andmed on käesoleva paragrahvi lõike 5 alusel tunnistatud kehtetuks, võib turustada kuni selle lõppemiseni.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VäetS_4"
       },
-      "estleg:targetGroup": [
-        "business"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_VäetS_4"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VäetS_Par_21_Lg_1"
+        },
+        {
+          "@id": "estleg:VäetS_Par_21_Lg_2"
+        },
+        {
+          "@id": "estleg:VäetS_Par_21_Lg_2_1"
+        },
+        {
+          "@id": "estleg:VäetS_Par_21_Lg_3"
+        },
+        {
+          "@id": "estleg:VäetS_Par_21_Lg_4"
+        },
+        {
+          "@id": "estleg:VäetS_Par_21_Lg_5"
+        },
+        {
+          "@id": "estleg:VäetS_Par_21_Lg_6"
+        }
       ],
+      "estleg:targetGroup": [
+        "business",
+        "public_body"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_pollumajandus_ja_toiduamet"
+        }
+      ],
+      "estleg:competenceType": "general",
       "estleg:referencedBy": [
         {
           "@id": "estleg:VäetS_Par_22"
@@ -510,624 +2083,1046 @@
       ]
     },
     {
+      "@id": "estleg:VäetS_Par_21_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Väetise käitlemiseks peab esitama majandustegevusteate Põllumajandus- ja Toiduametile.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_21"
+      },
+      "rdfs:label": "§ 21 lg 1"
+    },
+    {
+      "@id": "estleg:VäetS_Par_21_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Lisaks majandustegevuse seadustiku üldosa seaduses sätestatud andmetele märgitakse teates: väetise nimetus koos kauba kombineeritud nomenklatuuri koodiga (KN-kood); väetise koostis ja valmistamise viis.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_21"
+      },
+      "rdfs:label": "§ 21 lg 2"
+    },
+    {
+      "@id": "estleg:VäetS_Par_21_Lg_2_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2<sup>1</sup>",
+      "estleg:legalText": "(2<sup>1</sup>) ELi väetisetoote puhul märgitakse majandustegevusteates lisaks majandustegevuse seadustiku üldosa seaduses sätestatud andmetele Euroopa Parlamendi ja nõukogu määruse (EL) 2019/1009 I lisa 1. osas kehtestatud ELi väetisetoodete toimekategooria.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_21"
+      },
+      "rdfs:label": "§ 21 lg 2<sup>1</sup>"
+    },
+    {
+      "@id": "estleg:VäetS_Par_21_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Majandustegevusteadet ei pea esitama käitleja, kes ostab väetise või saab väetise muul viisil teiselt käitlejalt, kes on selle väetise kohta majandustegevusteate juba esitanud. (jõustumine muudetud - RT I, 22.12.2013, 1)",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_21"
+      },
+      "rdfs:label": "§ 21 lg 3"
+    },
+    {
+      "@id": "estleg:VäetS_Par_21_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Käitleja, kelle esitatud majandustegevusteate alusel kantakse väetiseregistrisse käesoleva paragrahvi lõikes 2 nimetatud andmed, tasub selle väetise nõuetekohasuse järelevalvetoimingute eest riigilõivu väetise käitlemisega alustamise aastal majandustegevusteate esitamisel ja igal sellele järgneval kalendriaastal 10. jaanuariks kuni sama väetise käitlemise lõpetamiseni.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_21"
+      },
+      "rdfs:label": "§ 21 lg 4"
+    },
+    {
+      "@id": "estleg:VäetS_Par_21_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Kui käesoleva paragrahvi lõikes 4 nimetatud käitleja ei ole tasunud tema majandustegevusteate alusel väetiseregistrisse kantud väetise nõuetekohasuse järelevalvetoimingute eest riigilõivu jooksva aasta 10. jaanuariks, loetakse selle väetise käitlemine lõpetatuks ja väetise kohta väetiseregistrisse kantud andmed tunnistatakse kehtetuks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_21"
+      },
+      "rdfs:label": "§ 21 lg 5"
+    },
+    {
+      "@id": "estleg:VäetS_Par_21_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Väetist, mille kohta väetiseregistrisse kantud andmed on käesoleva paragrahvi lõike 5 alusel tunnistatud kehtetuks, võib turustada kuni selle lõppemiseni.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_21"
+      },
+      "rdfs:label": "§ 21 lg 6"
+    },
+    {
       "@id": "estleg:VäetS_Par_22",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VäetS"
+        "estleg:LegalProvision_vaetiseseadus"
       ],
       "estleg:paragrahv": "§ 22.",
-      "rdfs:label": "§ 22. Väetise registreerimise alused",
+      "rdfs:label": "§ 22.",
       "estleg:sourceAct": "Väetiseseadus",
-      "estleg:summary": "1 (1) Väetise registreerimiseks esitab käitleja volitatud töötlejale vormikohase taotluse või käesoleva seaduse § 21 lõikes 2 nimetatud avalduse ning vajaduse korral registri pidamise põhimääruses sätestatud andmed ja dokumendid väetise kohta ning tasub riigilõivu. Väetise registreerimiseks esitab käitleja volitatud töötlejale vormikohase taotluse või käesoleva seaduse § 21 lõikes 2 nimetatud avalduse ning vajaduse korral registri pidamise põhimääruses sätestatud andmed ja dokumendid väetise koh",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VäetS_4"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_VäetS_4"
+      },
+      "estleg:summary": "1 (1) Väetise registreerimiseks esitab käitleja volitatud töötlejale vormikohase taotluse või käesoleva seaduse § 21 lõikes 2 nimetatud avalduse ning vajaduse korral registri pidamise põhimääruses sätestatud andmed ja dokumendid väetise kohta ning tasub riigilõivu. Väetise registreerimiseks esitab käitleja volitatud töötlejale vormikohase taotluse või käesoleva seaduse § 21 lõikes 2 nimetatud avalduse ning vajaduse korral registri pidamise põhimääruses sätestatud andmed ja dokumendid väetise koh",
+      "estleg:targetGroup": [
+        "business"
+      ],
       "estleg:references": [
         {
           "@id": "estleg:VäetS_Par_21"
         }
-      ],
-      "estleg:targetGroup": [
-        "business"
       ]
     },
     {
       "@id": "estleg:VäetS_Par_23",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VäetS"
+        "estleg:LegalProvision_vaetiseseadus"
       ],
       "estleg:paragrahv": "§ 23.",
-      "rdfs:label": "§ 23. Väetise registreerimisest keeldumine",
+      "rdfs:label": "§ 23. [Kehtetud -]",
       "estleg:sourceAct": "Väetiseseadus",
-      "estleg:summary": "Volitatud töötleja keeldub väetise registreerimisest, kui: 1 1) esitatud dokumentidest nähtub, et väetis ei ole nõuetekohane; 2 2) esitatud katseprotokolli on väljastanud akrediteerimata laboratoorium; 3 3) taotleja on esitanud volitatud töötlejale või järelevalveametnikule teadvalt valeandmeid või on mõjutanud volitatud töötlejat või järelevalveametnikku õigusvastasel viisil; 4 4) riigilõiv on tasumata. Volitatud töötleja keeldub väetise registreerimisest, kui: esitatud dokumentidest nähtub, et",
+      "estleg:summary": "Kehtetud -",
+      "estleg:legalText": "Kehtetud -",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VäetS_4"
       },
-      "estleg:targetGroup": [
-        "citizen",
-        "business",
-        "official"
-      ]
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_VäetS_4"
+      }
     },
     {
       "@id": "estleg:VäetS_Par_24",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VäetS"
+        "estleg:LegalProvision_vaetiseseadus"
       ],
       "estleg:paragrahv": "§ 24.",
       "rdfs:label": "§ 24. Registreerimistunnistus",
       "estleg:sourceAct": "Väetiseseadus",
-      "estleg:summary": "Registreerimistunnistuse väljastab volitatud töötleja registrisse kantud käitlejale tema nõudel väetise registreerimise otsuse alusel, kui käitleja on tasunud riigilõivu. Registreerimistunnistuse väljastab volitatud töötleja registrisse kantud käitlejale tema nõudel väetise registreerimise otsuse alusel, kui käitleja on tasunud riigilõivu.",
+      "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VäetS_4"
       },
-      "estleg:targetGroup": [
-        "business"
-      ]
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_VäetS_4"
+      }
     },
     {
       "@id": "estleg:VäetS_Par_25",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VäetS"
+        "estleg:LegalProvision_vaetiseseadus"
       ],
       "estleg:paragrahv": "§ 25.",
-      "rdfs:label": "§ 25. Registrikande muutmine",
+      "rdfs:label": "§ 25.",
       "estleg:sourceAct": "Väetiseseadus",
-      "estleg:summary": "1 (1) Registrikande tegemise aluseks olnud andmete muutumise korral peab käitleja sellest kirjalikult teatama volitatud töötlejale andmete muutumise päevast arvates kümne tööpäeva jooksul. Registrikande tegemise aluseks olnud andmete muutumise korral peab käitleja sellest kirjalikult teatama volitatud töötlejale andmete muutumise päevast arvates kümne tööpäeva jooksul. 2 (2) Volitatud töötleja teeb registrikande muutmise otsuse asjakohase teatise saamisest ja taotleja poolt riigilõivu tasumisest",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VäetS_4"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_VäetS_4"
       },
+      "estleg:summary": "1 (1) Registrikande tegemise aluseks olnud andmete muutumise korral peab käitleja sellest kirjalikult teatama volitatud töötlejale andmete muutumise päevast arvates kümne tööpäeva jooksul. Registrikande tegemise aluseks olnud andmete muutumise korral peab käitleja sellest kirjalikult teatama volitatud töötlejale andmete muutumise päevast arvates kümne tööpäeva jooksul. 2 (2) Volitatud töötleja teeb registrikande muutmise otsuse asjakohase teatise saamisest ja taotleja poolt riigilõivu tasumisest",
       "estleg:targetGroup": [
         "citizen",
         "business"
-      ]
-    },
-    {
-      "@id": "estleg:VäetS_Par_26",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_VäetS"
       ],
-      "estleg:paragrahv": "§ 26.",
-      "rdfs:label": "§ 26. Registreerimise otsuse kehtivuse peatamine",
-      "estleg:sourceAct": "Väetiseseadus",
-      "estleg:summary": "1 (1) Registreerimise otsuse kehtivus peatatakse, kui : 1 1) väetise edasine käitlemine võib olla ohtlik inimese ja looma elule ja tervisele või varale või keskkonnale; 2 2) käitleja on esitanud sellekohase kirjaliku avalduse; 3 3) järelevalve ajal on avastatud, et väetisekoostis ei ole nõuetekohane; 4 4) käitleja on rikkunud väetise pakendi ja selle märgistuse kohta kehtestatud nõudeid; 5 5) käitleja ei ole volitatud töötlejat kirjalikult teavitanud registrisse kantud andmete muutumisest. Regis",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_VäetS_4"
-      },
       "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
-      "estleg:targetGroup": [
-        "business"
-      ]
-    },
-    {
-      "@id": "estleg:VäetS_Par_27",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_VäetS"
-      ],
-      "estleg:paragrahv": "§ 27.",
-      "rdfs:label": "§ 27. Registrikande kehtetuks tunnistamine ja kustutamine",
-      "estleg:sourceAct": "Väetiseseadus",
-      "estleg:summary": "1 (1) Registrikanne tunnistatakse kehtetuks, kui käitleja: 1 1) on esitanud sellekohase kirjaliku avalduse; 2 2) on esitanud volitatud töötlejale või järelevalveametnikule teadvalt valeandmeid või on mõjutanud volitatud töötlejat või järelevalveametnikku õigusvastasel viisil; 3 3) on korduvalt jätnud järelevalve ajal avastatud puudused ettekirjutuses määratud tähtajaks kõrvaldamata; 4 4) ei suuda ettevõttes valitsevate püsiolude tõttu täita käesolevast seadusest tulenevaid nõudeid. Registrikanne",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_VäetS_4"
-      },
-      "estleg:targetGroup": [
-        "business",
-        "official"
-      ]
+        "@id": "estleg:NormType_Obligation"
+      }
     },
     {
       "@id": "estleg:VäetS_Par_28",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VäetS"
+        "estleg:LegalProvision_vaetiseseadus"
       ],
       "estleg:paragrahv": "§ 28.",
-      "rdfs:label": "§ 28. Registrisse kantud andmete kaitse ja avalikustamine",
+      "rdfs:label": "§ 28. [Kehtetud -]",
       "estleg:sourceAct": "Väetiseseadus",
-      "estleg:summary": "1 (1) Registrisse kantud andmed, välja arvatud ärisaladuseks arvatud andmed, on avalikud ja need avaldatakse Taimetoodangu Inspektsiooni veebilehel, samuti võib neid avaldada paberkandjal, arvestades mõlemal juhul isikuandmete kaitse seaduse (RT I 1996, 48, 944; 1998, 59, 941; 111, 1833; 2000, 50, 317; 92, 597; 104, 685; 2001, 50, 283; 2002, 61, 375; 63, 387; 2003, 26, 158) ja avaliku teabe seaduse (RT I 2000, 92, 597; 2002, 61, 375; 63, 387; 2003, 25, 153; 26, 158) nõudeid. Registrisse kantud a",
+      "estleg:summary": "Kehtetud -",
+      "estleg:legalText": "Kehtetud -",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VäetS_4"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
-      "estleg:targetGroup": [
-        "public_body"
-      ]
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_VäetS_4"
+      }
     },
     {
       "@id": "estleg:VäetS_Par_29",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VäetS"
+        "estleg:LegalProvision_vaetiseseadus"
       ],
       "estleg:paragrahv": "§ 29.",
-      "rdfs:label": "§ 29. Järelevalve teostajad",
+      "rdfs:label": "§ 29. Riiklik järelevalve",
       "estleg:sourceAct": "Väetiseseadus",
-      "estleg:summary": "1 (1) Riiklikku järelevalvet väetise käitlemise nõuetele vastavuse üle teostavad: 1 1) Taimetoodangu Inspektsioon; 2 2) Maksu- ja Tolliamet ulatuses, mis on sätestatud tollieeskirjadega tolliseaduse tähenduses; 3 3) Tarbijakaitseamet tarbijakaitseseaduses (RT I 1994, 2, 13; 1999, 35, 450; 102, 907; 2000, 40, 252; 59, 379; 2001, 50, 283 ja 289; 56, 332; 2002, 18, 97; 35, 214; 53, 336; 61, 375; 63, 387) sätestatud ulatuses. Riiklikku järelevalvet väetise käitlemise nõuetele vastavuse üle teostavad",
+      "estleg:summary": "1 (1) Riiklikku järelevalvet Euroopa Liidu õigusaktides, käesolevas seaduses ja selle alusel kehtestatud õigusaktides väetise käitlemise kohta sätestatud nõuete täitmise üle teostab Põllumajandus- ja Toiduamet. RT I 2014-03-13 4 113032014004 2014-07-01 Riiklikku järelevalvet Euroopa Liidu õigusaktides, käesolevas seaduses ja selle alusel kehtestatud õigusaktides väetise käitlemise kohta sätestatud nõuete täitmise üle teostab Põllumajandus- ja Toiduamet. 2 (2) Riiklikku järelevalvet väetise käitl",
+      "estleg:legalText": "(1) Riiklikku järelevalvet Euroopa Liidu õigusaktides, käesolevas seaduses ja selle alusel kehtestatud õigusaktides väetise käitlemise kohta sätestatud nõuete täitmise üle teostab Põllumajandus- ja Toiduamet. (2) Riiklikku järelevalvet väetise käitlemise nõuete vastavuse üle tollialastes õigusaktides Euroopa Parlamendi ja nõukogu määruse (EL) nr 952/2013, millega kehtestatakse liidu tolliseadustik (ELT L 269, 10.10.2013, lk 1–101), tähenduses teostab Maksu- ja Tolliamet. (3) Kehtetu -",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VäetS_5"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_VäetS_5"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VäetS_Par_29_Lg_1"
+        },
+        {
+          "@id": "estleg:VäetS_Par_29_Lg_2"
+        },
+        {
+          "@id": "estleg:VäetS_Par_29_Lg_3"
+        }
+      ],
+      "estleg:targetGroup": [
+        "public_body"
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_pollumajandus_ja_toiduamet"
+        }
+      ],
+      "estleg:competenceType": "supervision",
       "estleg:semanticallySimilarTo": [
         {
-          "@id": "estleg:vedelkutuse_seadus_Par_20",
+          "@id": "estleg:VEE_Par_250",
           "estleg:similarityScore": {
             "@value": "0.333",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
         }
+      ]
+    },
+    {
+      "@id": "estleg:VäetS_Par_29_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:targetGroup": [
-        "citizen",
-        "public_body"
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Riiklikku järelevalvet Euroopa Liidu õigusaktides, käesolevas seaduses ja selle alusel kehtestatud õigusaktides väetise käitlemise kohta sätestatud nõuete täitmise üle teostab Põllumajandus- ja Toiduamet.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_29"
+      },
+      "rdfs:label": "§ 29 lg 1"
+    },
+    {
+      "@id": "estleg:VäetS_Par_29_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_maksu_ja_tolliamet"
-        },
-        {
-          "@id": "estleg:Institution_tarbijakaitse_ja_tehnilise_jarelevalve_amet"
-        }
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Riiklikku järelevalvet väetise käitlemise nõuete vastavuse üle tollialastes õigusaktides Euroopa Parlamendi ja nõukogu määruse (EL) nr 952/2013, millega kehtestatakse liidu tolliseadustik (ELT L 269, 10.10.2013, lk 1–101), tähenduses teostab Maksu- ja Tolliamet.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_29"
+      },
+      "rdfs:label": "§ 29 lg 2"
+    },
+    {
+      "@id": "estleg:VäetS_Par_29_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:competenceType": "supervision"
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_29"
+      },
+      "rdfs:label": "§ 29 lg 3"
     },
     {
       "@id": "estleg:VäetS_Par_30",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VäetS"
+        "estleg:LegalProvision_vaetiseseadus"
       ],
       "estleg:paragrahv": "§ 30.",
-      "rdfs:label": "§ 30. Järelevalveametniku õigused",
+      "rdfs:label": "§ 30. Riikliku järelevalve erimeetmed",
       "estleg:sourceAct": "Väetiseseadus",
-      "estleg:summary": "1 (1) Järelevalveametnik on järelevalveasutuse ametiisik, kes oma pädevuse piires teostab riiklikku järelevalvet käesoleva seaduse ja selle alusel kehtestatud õigusaktide nõuete täitmise üle. Üldjuhul tehakse järelevalvetoiming sellest käitlejale ette teatamata. Järelevalveametnik on järelevalveasutuse ametiisik, kes oma pädevuse piires teostab riiklikku järelevalvet käesoleva seaduse ja selle alusel kehtestatud õigusaktide nõuete täitmise üle. Üldjuhul tehakse järelevalvetoiming sellest käitlej",
+      "estleg:summary": "Korrakaitseorgan võib käesolevas seaduses sätestatud riikliku järelevalve teostamiseks kohaldada korrakaitseseaduse §-des 30, 32, 49 ja 50 sätestatud riikliku järelevalve erimeetmeid korrakaitseseaduses sätestatud alusel ja korras. RT I 2014-03-13 4 113032014004 2014-07-01 Korrakaitseorgan võib käesolevas seaduses sätestatud riikliku järelevalve teostamiseks kohaldada korrakaitseseaduse §-des 30, 32, 49 ja 50 sätestatud riikliku järelevalve erimeetmeid korrakaitseseaduses sätestatud alusel ja ko",
+      "estleg:legalText": "Korrakaitseorgan võib käesolevas seaduses sätestatud riikliku järelevalve teostamiseks kohaldada korrakaitseseaduse §-des 30, 32, 49 ja 50 sätestatud riikliku järelevalve erimeetmeid korrakaitseseaduses sätestatud alusel ja korras.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VäetS_5"
       },
-      "estleg:targetGroup": [
-        "business",
-        "official"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_VäetS_5"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VäetS_Par_30_Lg_Unknown_1"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:VEDELK_Par_4_1",
+          "estleg:similarityScore": {
+            "@value": "1.0",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:VEE_Par_251",
+          "estleg:similarityScore": {
+            "@value": "0.818",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:VKS_Par_24",
+          "estleg:similarityScore": {
+            "@value": "1.0",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:VereS_Par_20_1",
+          "estleg:similarityScore": {
+            "@value": "1.0",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:veterinaarseadus_Par_75",
+          "estleg:similarityScore": {
+            "@value": "0.692",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
       ]
+    },
+    {
+      "@id": "estleg:VäetS_Par_30_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Korrakaitseorgan võib käesolevas seaduses sätestatud riikliku järelevalve teostamiseks kohaldada korrakaitseseaduse §-des 30, 32, 49 ja 50 sätestatud riikliku järelevalve erimeetmeid korrakaitseseaduses sätestatud alusel ja korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_30"
+      }
     },
     {
       "@id": "estleg:VäetS_Par_31",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VäetS"
+        "estleg:LegalProvision_vaetiseseadus"
       ],
       "estleg:paragrahv": "§ 31.",
-      "rdfs:label": "§ 31. Käitleja tegevuse peatamine",
+      "rdfs:label": "§ 31. Riikliku järelevalve erisused",
       "estleg:sourceAct": "Väetiseseadus",
-      "estleg:summary": "1 (1) Järelevalveasutuse juht peatab väetise käitlemise Euroopa Parlamendi ja EL Nõukogu määruse 2003/2003/EÜ artiklis 15 toodud alustel või kui tal on alust arvata, et väetis on ohtlik inimese ja looma elule ja tervisele, varale ja keskkonnale. Otsus vormistatakse järelevalveasutuse juhi käskkirjaga, milles näidatakse ära väetise nimetus, andmed väetisepartii ja väetise ohtliku koostise kohta, käitlemisvaldkonnad, milles käitlemine peatatakse, käitleja kohustused ning ohu kõrvaldamise viis. Jär",
+      "estleg:summary": "1 (1) Korrakaitseorgan võib korrakaitseseaduse §-s 50 sätestatud tingimustel siseneda ettevõtte territooriumile ja ehitistesse käitleja või tema esindaja juuresolekul. Korrakaitseorgan võib korrakaitseseaduse §-s 50 sätestatud tingimustel siseneda ettevõtte territooriumile ja ehitistesse käitleja või tema esindaja juuresolekul. 2 (2) Korrakaitseorgan võib võtta vallasasja läbivaatusel isiku kulul proove. Kui läbi vaadatud vallasasja ei ole võimalik pärast läbivaatust tavapäraselt kasutada, ei hü",
+      "estleg:legalText": "(1) Korrakaitseorgan võib korrakaitseseaduse §-s 50 sätestatud tingimustel siseneda ettevõtte territooriumile ja ehitistesse käitleja või tema esindaja juuresolekul. (2) Korrakaitseorgan võib võtta vallasasja läbivaatusel isiku kulul proove. Kui läbi vaadatud vallasasja ei ole võimalik pärast läbivaatust tavapäraselt kasutada, ei hüvitata isikule vallasasja või vallasasja tavapäraseks kasutamiseks taastamise maksumust. (3) Väetise koostise nõuetekohasuse kontrollimiseks vajaliku proovi analüüsi teeb ning selle kohta katseprotokolli koostab ja väljastab akrediteeritud laboratoorium. Riikliku järelevalve meetme kohaldamise käigus võetud proovi analüüsi kulud kaetakse riigieelarvest. (4) Korrakaitseorganil on õigus peatada väetise käitlemine kuni proovi analüüsi tulemuste selgumiseni, kui on küllaldaselt alust arvata, et väetis ohustab inimese või looma elu või tervist või vara või keskkonda. Väetise käitlemise peatamise otsustab Põllumajandus- ja Toiduamet. (5) Pärast ohu kõrvaldamist otsustab Põllumajandus- ja Toiduamet käesoleva paragrahvi lõike 4 alusel tehtud otsuse kehtetuks tunnistamise. (6) Katseprotokolli põhjal teeb korrakaitseorgan väetise edasise käitlemise lubamise või keelamise otsuse kümne tööpäeva jooksul katseprotokolli saamise päevast arvates. (7) Korrakaitseorgan teavitab käesoleva paragrahvi lõigetes 4 ja 5 nimetatud käskkirjast viivitamata avalikkust, avaldades selle Põllumajandus- ja Toiduameti veebilehel. (8) Kui käitleja ei nõustu analüüsi tulemustega, on tal õigus valida kordusanalüüsi tegemiseks teine akrediteeritud laboratoorium, kus ta laseb kordusproove analüüsida omal kulul. (9) Väetisest proovide võtmise korra ja proovide analüüsi meetodid kehtestab määrusega. (10) Riikliku järelevalve toimingute tegemise ajal kannab Põllumajandus- ja Toiduameti ametiisik ametiriietust.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VäetS_5"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_VäetS_5"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VäetS_Par_31_Lg_1"
+        },
+        {
+          "@id": "estleg:VäetS_Par_31_Lg_2"
+        },
+        {
+          "@id": "estleg:VäetS_Par_31_Lg_3"
+        },
+        {
+          "@id": "estleg:VäetS_Par_31_Lg_4"
+        },
+        {
+          "@id": "estleg:VäetS_Par_31_Lg_5"
+        },
+        {
+          "@id": "estleg:VäetS_Par_31_Lg_6"
+        },
+        {
+          "@id": "estleg:VäetS_Par_31_Lg_7"
+        },
+        {
+          "@id": "estleg:VäetS_Par_31_Lg_8"
+        },
+        {
+          "@id": "estleg:VäetS_Par_31_Lg_9"
+        },
+        {
+          "@id": "estleg:VäetS_Par_31_Lg_10"
+        }
+      ],
       "estleg:targetGroup": [
-        "business"
+        "citizen",
+        "business",
+        "public_body",
+        "official"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:veterinaarseadus_Par_90",
+          "estleg:similarityScore": {
+            "@value": "0.324",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
       ]
+    },
+    {
+      "@id": "estleg:VäetS_Par_31_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Korrakaitseorgan võib korrakaitseseaduse §-s 50 sätestatud tingimustel siseneda ettevõtte territooriumile ja ehitistesse käitleja või tema esindaja juuresolekul.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_31"
+      },
+      "rdfs:label": "§ 31 lg 1"
+    },
+    {
+      "@id": "estleg:VäetS_Par_31_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Korrakaitseorgan võib võtta vallasasja läbivaatusel isiku kulul proove. Kui läbi vaadatud vallasasja ei ole võimalik pärast läbivaatust tavapäraselt kasutada, ei hüvitata isikule vallasasja või vallasasja tavapäraseks kasutamiseks taastamise maksumust.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_31"
+      },
+      "rdfs:label": "§ 31 lg 2"
+    },
+    {
+      "@id": "estleg:VäetS_Par_31_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Väetise koostise nõuetekohasuse kontrollimiseks vajaliku proovi analüüsi teeb ning selle kohta katseprotokolli koostab ja väljastab akrediteeritud laboratoorium. Riikliku järelevalve meetme kohaldamise käigus võetud proovi analüüsi kulud kaetakse riigieelarvest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_31"
+      },
+      "rdfs:label": "§ 31 lg 3"
+    },
+    {
+      "@id": "estleg:VäetS_Par_31_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Korrakaitseorganil on õigus peatada väetise käitlemine kuni proovi analüüsi tulemuste selgumiseni, kui on küllaldaselt alust arvata, et väetis ohustab inimese või looma elu või tervist või vara või keskkonda. Väetise käitlemise peatamise otsustab Põllumajandus- ja Toiduamet.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_31"
+      },
+      "rdfs:label": "§ 31 lg 4"
+    },
+    {
+      "@id": "estleg:VäetS_Par_31_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Pärast ohu kõrvaldamist otsustab Põllumajandus- ja Toiduamet käesoleva paragrahvi lõike 4 alusel tehtud otsuse kehtetuks tunnistamise.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_31"
+      },
+      "rdfs:label": "§ 31 lg 5"
+    },
+    {
+      "@id": "estleg:VäetS_Par_31_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Katseprotokolli põhjal teeb korrakaitseorgan väetise edasise käitlemise lubamise või keelamise otsuse kümne tööpäeva jooksul katseprotokolli saamise päevast arvates.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_31"
+      },
+      "rdfs:label": "§ 31 lg 6"
+    },
+    {
+      "@id": "estleg:VäetS_Par_31_Lg_7",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "7",
+      "estleg:legalText": "(7) Korrakaitseorgan teavitab käesoleva paragrahvi lõigetes 4 ja 5 nimetatud käskkirjast viivitamata avalikkust, avaldades selle Põllumajandus- ja Toiduameti veebilehel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_31"
+      },
+      "rdfs:label": "§ 31 lg 7"
+    },
+    {
+      "@id": "estleg:VäetS_Par_31_Lg_8",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "8",
+      "estleg:legalText": "(8) Kui käitleja ei nõustu analüüsi tulemustega, on tal õigus valida kordusanalüüsi tegemiseks teine akrediteeritud laboratoorium, kus ta laseb kordusproove analüüsida omal kulul.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_31"
+      },
+      "rdfs:label": "§ 31 lg 8"
+    },
+    {
+      "@id": "estleg:VäetS_Par_31_Lg_9",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "9",
+      "estleg:legalText": "(9) Väetisest proovide võtmise korra ja proovide analüüsi meetodid kehtestab määrusega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_31"
+      },
+      "rdfs:label": "§ 31 lg 9"
+    },
+    {
+      "@id": "estleg:VäetS_Par_31_Lg_10",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "10",
+      "estleg:legalText": "(10) Riikliku järelevalve toimingute tegemise ajal kannab Põllumajandus- ja Toiduameti ametiisik ametiriietust.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_31"
+      },
+      "rdfs:label": "§ 31 lg 10"
     },
     {
       "@id": "estleg:VäetS_Par_32",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VäetS"
+        "estleg:LegalProvision_vaetiseseadus"
       ],
       "estleg:paragrahv": "§ 32.",
-      "rdfs:label": "§ 32. Andmete esitamise kord",
+      "rdfs:label": "§ 32. Aruandlus",
       "estleg:sourceAct": "Väetiseseadus",
-      "estleg:summary": "Isik, kes tegeleb väetise tootmise või Eestisse toimetamisega, esitab Taimetoodangu Inspektsioonile iga aasta 10. jaanuariks ja 10. juuliks andmed eelnenud poolaastal turustatud väetisekoguse kohta ning tasub riigilõivu. RT I 2004 32 228 745294 2004-05-01+03:00 Isik, kes tegeleb väetise tootmise või Eestisse toimetamisega, esitab Taimetoodangu Inspektsioonile iga aasta 10. jaanuariks ja 10. juuliks andmed eelnenud poolaastal turustatud väetisekoguse kohta ning tasub riigilõivu.",
+      "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VäetS_5"
       },
-      "estleg:targetGroup": [
-        "citizen",
-        "public_body"
-      ]
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_VäetS_5"
+      }
     },
     {
       "@id": "estleg:VäetS_Par_33",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VäetS"
+        "estleg:LegalProvision_vaetiseseadus"
       ],
       "estleg:paragrahv": "§ 33.",
       "rdfs:label": "§ 33. Järelevalve korraldamine",
       "estleg:sourceAct": "Väetiseseadus",
-      "estleg:summary": "1 (1) Järelevalveametnik peab enne järelevalvetoimingu tegemist esitama ametitõendi ning selgitama kontrollimise eesmärki ja viisi. Järelevalveametnik peab enne järelevalvetoimingu tegemist esitama ametitõendi ning selgitama kontrollimise eesmärki ja viisi. 2 (2) Järelevalvetoimingute tegemise ajal peab Taimetoodangu Inspektsiooni järelevalveametnik kandma ametiriietust. Järelevalvetoimingute tegemise ajal peab Taimetoodangu Inspektsiooni järelevalveametnik kandma ametiriietust. 3 (3) Järelevalv",
+      "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VäetS_5"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
-      "estleg:dutyHolder": "Järelevalveametnik",
-      "estleg:targetGroup": [
-        "public_body",
-        "official"
-      ]
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_VäetS_5"
+      }
     },
     {
       "@id": "estleg:VäetS_Par_34",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VäetS"
+        "estleg:LegalProvision_vaetiseseadus"
       ],
       "estleg:paragrahv": "§ 34.",
       "rdfs:label": "§ 34. Proovide võtmine",
       "estleg:sourceAct": "Väetiseseadus",
-      "estleg:summary": "1 (1) Järelevalvetoimingu ajal on järelevalveametnikul õigus võtta käitleja kulul proove käesoleva seaduse ja selle alusel kehtestatud õigusaktide nõuete täitmise kontrollimiseks. Järelevalvetoimingu ajal on järelevalveametnikul õigus võtta käitleja kulul proove käesoleva seaduse ja selle alusel kehtestatud õigusaktide nõuete täitmise kontrollimiseks. 2 (2) Väetise koostise nõuetekohasuse kontrollimiseks vajaliku proovi analüüsi teeb ja selle kohta katseprotokolli koostab ning protokolli väljast",
+      "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VäetS_5"
       },
-      "estleg:targetGroup": [
-        "business",
-        "official"
-      ]
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_VäetS_5"
+      }
     },
     {
       "@id": "estleg:VäetS_Par_35",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VäetS"
+        "estleg:LegalProvision_vaetiseseadus"
       ],
       "estleg:paragrahv": "§ 35.",
       "rdfs:label": "§ 35. Ettekirjutus",
       "estleg:sourceAct": "Väetiseseadus",
-      "estleg:summary": "1 (1) Õigusrikkumise tuvastamise korral teeb järelevalveametnik ettekirjutuse, milles: 1 1) juhib tähelepanu õigusrikkumisele; 2 2) esitab nõude õigusrikkumise lõpetamiseks; 3 3) kohustab tegema toiminguid õigusrikkumise lõpetamiseks ja edasiste õigusrikkumiste ärahoidmiseks; 4 4) määrab ettekirjutuse täitmise tähtaja. Õigusrikkumise tuvastamise korral teeb järelevalveametnik ettekirjutuse, milles: juhib tähelepanu õigusrikkumisele; esitab nõude õigusrikkumise lõpetamiseks; kohustab tegema toimi",
+      "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VäetS_5"
       },
-      "estleg:targetGroup": [
-        "official"
-      ]
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_VäetS_5"
+      }
     },
     {
       "@id": "estleg:VäetS_Par_36",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VäetS"
+        "estleg:LegalProvision_vaetiseseadus"
       ],
       "estleg:paragrahv": "§ 36.",
-      "rdfs:label": "§ 36. Järelevalveametniku ettekirjutuse, otsuse või toimingu vaidlustamine",
+      "rdfs:label": "§ 36. Sunniraha määr",
       "estleg:sourceAct": "Väetiseseadus",
-      "estleg:summary": "1 (1) Kui käitleja ei nõustu järelevalveametniku ettekirjutuse, otsuse või toiminguga, võib ta esitada vaide järelevalveasutuse juhile või vaidlustada ettekirjutuse, otsuse või toimingu halduskohtus halduskohtumenetluse seadustikuga (RT I 1999, 31, 425; 33, õiend; 40, õiend; 96, 846; 2000, 51, 321; 2001, 53, 313; 58, 355; 2002, 29, 174; 50, 313; 53, 336; 62, 376; 2003, 13, 67; 23, 140) sätestatud tingimustel ja korras. Kui käitleja ei nõustu järelevalveametniku ettekirjutuse, otsuse või toimingu",
+      "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VäetS_5"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
-      "estleg:targetGroup": [
-        "business",
-        "official"
-      ]
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_VäetS_5"
+      }
     },
     {
       "@id": "estleg:VäetS_Par_37",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VäetS"
+        "estleg:LegalProvision_vaetiseseadus"
       ],
       "estleg:paragrahv": "§ 37.",
       "rdfs:label": "§ 37. Väetise koostise nõuete rikkumine ja mittenõuetekohase väetise käitlemine",
       "estleg:sourceAct": "Väetiseseadus",
-      "estleg:summary": "1 (1) Väetisele esitatud nõuete rikkumise, mittenõuetekohase väetise käitlemise või väetise turustamise peatamise kohustuse täitmata jätmise eest – karistatakse rahatrahviga kuni 200 trahviühikut. Väetisele esitatud nõuete rikkumise, mittenõuetekohase väetise käitlemise või väetise turustamise peatamise kohustuse täitmata jätmise eest – karistatakse rahatrahviga kuni 200 trahviühikut. 2 (2) Sama teo eest, kui selle on toime pannud juriidiline isik, – karistatakse rahatrahviga kuni 50 000 krooni.",
+      "estleg:summary": "1 (1) Väetisele esitatud nõuete rikkumise, mittenõuetekohase väetise käitlemise või väetise turustamise peatamise kohustuse täitmata jätmise eest –karistatakse rahatrahviga kuni 200 trahviühikut. Väetisele esitatud nõuete rikkumise, mittenõuetekohase väetise käitlemise või väetise turustamise peatamise kohustuse täitmata jätmise eest –karistatakse rahatrahviga kuni 200 trahviühikut. 2 (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 3200 eurot. RT I ",
+      "estleg:legalText": "(1) Väetisele esitatud nõuete rikkumise, mittenõuetekohase väetise käitlemise või väetise turustamise peatamise kohustuse täitmata jätmise eest –karistatakse rahatrahviga kuni 200 trahviühikut. (2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 3200 eurot.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VäetS_6"
       },
-      "estleg:semanticallySimilarTo": [
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_VäetS_6"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:VALISM_Par_306",
-          "estleg:similarityScore": {
-            "@value": "0.44",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
+          "@id": "estleg:VäetS_Par_37_Lg_1"
         },
         {
-          "@id": "estleg:VKS_Par_139",
-          "estleg:similarityScore": {
-            "@value": "0.444",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:VKVS_Par_20",
-          "estleg:similarityScore": {
-            "@value": "0.4",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:VetKS_Par_39_54",
-          "estleg:similarityScore": {
-            "@value": "0.433",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:vedelkutuse_seadus_Par_30",
-          "estleg:similarityScore": {
-            "@value": "0.407",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
+          "@id": "estleg:VäetS_Par_37_Lg_2"
         }
+      ],
+      "estleg:targetGroup": [
+        "citizen"
       ],
       "estleg:hasSanction": [
         {
           "@id": "estleg:Sanction_VäetS_Par_37_fine"
+        },
+        {
+          "@id": "estleg:Sanction_VäetS_Par_37_fine_2"
         }
       ],
       "estleg:enforcedAtLevel": "state",
-      "estleg:targetGroup": [
-        "citizen"
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:VEDELK_Par_6_5",
+          "estleg:similarityScore": {
+            "@value": "0.52",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:VEE_Par_264",
+          "estleg:similarityScore": {
+            "@value": "0.522",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:VKS_Par_33_2",
+          "estleg:similarityScore": {
+            "@value": "0.56",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:veterinaarseadus_Par_103",
+          "estleg:similarityScore": {
+            "@value": "0.481",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:veterinaarseadus_Par_98",
+          "estleg:similarityScore": {
+            "@value": "0.519",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
       ],
       "estleg:referencedBy": [
         {
           "@id": "estleg:VäetS_Par_40"
         }
       ]
+    },
+    {
+      "@id": "estleg:VäetS_Par_37_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Väetisele esitatud nõuete rikkumise, mittenõuetekohase väetise käitlemise või väetise turustamise peatamise kohustuse täitmata jätmise eest –karistatakse rahatrahviga kuni 200 trahviühikut.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_37"
+      },
+      "rdfs:label": "§ 37 lg 1"
+    },
+    {
+      "@id": "estleg:VäetS_Par_37_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Sama teo eest, kui selle on toime pannud juriidiline isik, –karistatakse rahatrahviga kuni 3200 eurot.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_37"
+      },
+      "rdfs:label": "§ 37 lg 2"
+    },
+    {
+      "@id": "estleg:VäetS_Par_37_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_vaetiseseadus"
+      ],
+      "estleg:paragrahv": "§ 37<sup>1</sup>.",
+      "rdfs:label": "§ 37<sup>1</sup>. Kõrge lämmastikusisaldusega ammooniumnitraatväetise detonatsioonikindlust tõendava dokumendi esitamata jätmine",
+      "estleg:sourceAct": "Väetiseseadus",
+      "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VäetS_6"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_VäetS_6"
+      }
     },
     {
       "@id": "estleg:VäetS_Par_38",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VäetS"
+        "estleg:LegalProvision_vaetiseseadus"
       ],
       "estleg:paragrahv": "§ 38.",
       "rdfs:label": "§ 38. Väetise pakendi või pakendi märgistuse nõuete rikkumine",
       "estleg:sourceAct": "Väetiseseadus",
-      "estleg:summary": "1 (1) Väetise pakendile või pakendi märgistusele käesolevas seaduses kehtestatud nõuete rikkumise eest – karistatakse rahatrahviga kuni 100 trahviühikut. Väetise pakendile või pakendi märgistusele käesolevas seaduses kehtestatud nõuete rikkumise eest – karistatakse rahatrahviga kuni 100 trahviühikut. 2 (2) Sama teo eest, kui selle on toime pannud juriidiline isik, – karistatakse rahatrahviga kuni 20 000 krooni. Sama teo eest, kui selle on toime pannud juriidiline isik, – karistatakse rahatrahvig",
+      "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VäetS_6"
       },
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:VALISM_Par_306",
-          "estleg:similarityScore": {
-            "@value": "0.455",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:VKS_Par_139",
-          "estleg:similarityScore": {
-            "@value": "0.522",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:VKS_Par_142",
-          "estleg:similarityScore": {
-            "@value": "0.444",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:VKVS_Par_20",
-          "estleg:similarityScore": {
-            "@value": "0.476",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:vedelkutuse_seadus_Par_34",
-          "estleg:similarityScore": {
-            "@value": "0.455",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        }
-      ],
-      "estleg:hasSanction": [
-        {
-          "@id": "estleg:Sanction_VäetS_Par_38_fine"
-        }
-      ],
-      "estleg:enforcedAtLevel": "state",
-      "estleg:targetGroup": [
-        "citizen"
-      ],
-      "estleg:referencedBy": [
-        {
-          "@id": "estleg:VäetS_Par_40"
-        }
-      ]
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_VäetS_6"
+      }
     },
     {
       "@id": "estleg:VäetS_Par_39",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VäetS"
+        "estleg:LegalProvision_vaetiseseadus"
       ],
       "estleg:paragrahv": "§ 39.",
       "rdfs:label": "§ 39. Enesekontrollikohustuse või teavitamiskohustuse täitmata jätmine",
       "estleg:sourceAct": "Väetiseseadus",
-      "estleg:summary": "1 (1) Enesekontrollikohustuse või teavitamiskohustuse täitmata jätmise eest – karistatakse rahatrahviga kuni 200 trahviühikut. Enesekontrollikohustuse või teavitamiskohustuse täitmata jätmise eest – karistatakse rahatrahviga kuni 200 trahviühikut. 2 (2) Sama teo eest, kui selle on toime pannud juriidiline isik, – karistatakse rahatrahviga kuni 50 000 krooni. Sama teo eest, kui selle on toime pannud juriidiline isik, – karistatakse rahatrahviga kuni 50 000 krooni.",
+      "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VäetS_6"
       },
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:VALISM_Par_306",
-          "estleg:similarityScore": {
-            "@value": "0.75",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:VKVS_Par_20",
-          "estleg:similarityScore": {
-            "@value": "0.588",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:VetKS_Par_39_54",
-          "estleg:similarityScore": {
-            "@value": "0.522",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:vedelkutuse_seadus_Par_30",
-          "estleg:similarityScore": {
-            "@value": "0.5",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:vedelkutuse_seadus_Par_34",
-          "estleg:similarityScore": {
-            "@value": "0.556",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        }
-      ],
-      "estleg:hasSanction": [
-        {
-          "@id": "estleg:Sanction_VäetS_Par_39_fine"
-        }
-      ],
-      "estleg:enforcedAtLevel": "state",
-      "estleg:targetGroup": [
-        "citizen"
-      ],
-      "estleg:referencedBy": [
-        {
-          "@id": "estleg:VäetS_Par_40"
-        }
-      ]
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_VäetS_6"
+      }
     },
     {
       "@id": "estleg:VäetS_Par_40",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VäetS"
+        "estleg:LegalProvision_vaetiseseadus"
       ],
       "estleg:paragrahv": "§ 40.",
       "rdfs:label": "§ 40. Menetlus",
       "estleg:sourceAct": "Väetiseseadus",
-      "estleg:summary": "1 (1) Käesoleva seaduse §-des 37–39 sätestatud väärtegudele kohaldatakse karistusseadustiku (RT I 2001, 61, 364; 2002, 86, 504; 105, 612; 2003, 4, 22) üldosa ja väärteomenetluse seadustiku (RT I 2002, 50, 313; 110, 654; 2003, 26, 156) sätteid. Käesoleva seaduse §-des 37–39 sätestatud väärtegudele kohaldatakse karistusseadustiku (RT I 2001, 61, 364; 2002, 86, 504; 105, 612; 2003, 4, 22) üldosa ja väärteomenetluse seadustiku (RT I 2002, 50, 313; 110, 654; 2003, 26, 156) sätteid. 2 (2) Käesoleva se",
+      "estleg:summary": "Käesoleva seaduse §-s 37 sätestatud väärteo kohtuväline menetleja on Põllumajandus- ja Toiduamet. RT I 2022-07-15 4 115072022004 2022-07-16 Käesoleva seaduse §-s 37 sätestatud väärteo kohtuväline menetleja on Põllumajandus- ja Toiduamet.",
+      "estleg:legalText": "Käesoleva seaduse §-s 37 sätestatud väärteo kohtuväline menetleja on Põllumajandus- ja Toiduamet.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VäetS_6"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_VäetS_6"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VäetS_Par_40_Lg_Unknown_1"
+        }
+      ],
+      "estleg:targetGroup": [
+        "public_body"
+      ],
       "estleg:references": [
         {
           "@id": "estleg:VäetS_Par_37"
-        },
-        {
-          "@id": "estleg:VäetS_Par_38"
-        },
-        {
-          "@id": "estleg:VäetS_Par_39"
         }
       ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_pollumajandus_ja_toiduamet"
+        }
+      ],
+      "estleg:competenceType": "general",
       "estleg:semanticallySimilarTo": [
         {
-          "@id": "estleg:VALISM_Par_307",
+          "@id": "estleg:VetKS_Par_39_55",
           "estleg:similarityScore": {
-            "@value": "0.556",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:VEDELK_Par_6_11",
-          "estleg:similarityScore": {
-            "@value": "0.417",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:VKS_Par_143",
-          "estleg:similarityScore": {
-            "@value": "0.571",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:VKVS_Par_22",
-          "estleg:similarityScore": {
-            "@value": "1.0",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:vedelkutuse_seadus_Par_35",
-          "estleg:similarityScore": {
-            "@value": "1.0",
+            "@value": "0.364",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
         }
       ]
+    },
+    {
+      "@id": "estleg:VäetS_Par_40_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Käesoleva seaduse §-s 37 sätestatud väärteo kohtuväline menetleja on Põllumajandus- ja Toiduamet.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_40"
+      }
     },
     {
       "@id": "estleg:VäetS_Par_41",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VäetS"
+        "estleg:LegalProvision_vaetiseseadus"
       ],
       "estleg:paragrahv": "§ 41.",
       "rdfs:label": "§ 41. Seaduse kohaldamine",
       "estleg:sourceAct": "Väetiseseadus",
-      "estleg:summary": "Käesoleva seaduse §-s 19 nimetatud väetiseregistrina käsitatakse väetiseseaduse (RT I 1997, 93, 1563; 2001, 50, 283; 2002, 63, 387) § 3 lõike 1 alusel asutatud väetiste registrit. Käesoleva seaduse §-s 19 nimetatud väetiseregistrina käsitatakse väetiseseaduse (RT I 1997, 93, 1563; 2001, 50, 283; 2002, 63, 387) § 3 lõike 1 alusel asutatud väetiste registrit. §-d 42--46. [Käesolevast tekstist välja jäetud] §-d 42--46. [Käesolevast tekstist välja jäetud]",
+      "estleg:summary": "1 (1) Käesoleva seaduse §-s 19 nimetatud väetiseregistrina käsitatakse väetiseseaduse (RT I 1997, 93, 1563; 2001, 50, 283; 2002, 63, 387) § 3 lõike 1 alusel asutatud väetiste registrit. Käesoleva seaduse §-s 19 nimetatud väetiseregistrina käsitatakse väetiseseaduse (RT I 1997, 93, 1563; 2001, 50, 283; 2002, 63, 387) § 3 lõike 1 alusel asutatud väetiste registrit. 2 (2) Käesoleva seaduse § 6 lõike 1 punkti 4 kohaldatakse „EÜ VÄETIS” märgistusega väetisele alates 2020. aasta 1. aprillist. RT I 201",
+      "estleg:legalText": "(1) Käesoleva seaduse §-s 19 nimetatud väetiseregistrina käsitatakse väetiseseaduse (RT I 1997, 93, 1563; 2001, 50, 283; 2002, 63, 387) § 3 lõike 1 alusel asutatud väetiste registrit. (2) Käesoleva seaduse § 6 lõike 1 punkti 4 kohaldatakse „EÜ VÄETIS” märgistusega väetisele alates 2020. aasta 1. aprillist. (3) Enne 2022. aasta 16. juulit kehtinud nõuete kohaselt märgistatud „EÜ VÄETIS” märgistusega väetist võib turustada kuni laovarude lõppemiseni.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VäetS_7"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_VäetS_7"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VäetS_Par_41_Lg_1"
+        },
+        {
+          "@id": "estleg:VäetS_Par_41_Lg_2"
+        },
+        {
+          "@id": "estleg:VäetS_Par_41_Lg_3"
+        }
+      ],
       "estleg:references": [
         {
           "@id": "estleg:VäetS_Par_19"
+        },
+        {
+          "@id": "estleg:VäetS_Par_6"
         }
       ]
+    },
+    {
+      "@id": "estleg:VäetS_Par_41_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesoleva seaduse §-s 19 nimetatud väetiseregistrina käsitatakse väetiseseaduse (RT I 1997, 93, 1563; 2001, 50, 283; 2002, 63, 387) § 3 lõike 1 alusel asutatud väetiste registrit.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_41"
+      },
+      "rdfs:label": "§ 41 lg 1"
+    },
+    {
+      "@id": "estleg:VäetS_Par_41_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Käesoleva seaduse § 6 lõike 1 punkti 4 kohaldatakse „EÜ VÄETIS” märgistusega väetisele alates 2020. aasta 1. aprillist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_41"
+      },
+      "rdfs:label": "§ 41 lg 2"
+    },
+    {
+      "@id": "estleg:VäetS_Par_41_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Enne 2022. aasta 16. juulit kehtinud nõuete kohaselt märgistatud „EÜ VÄETIS” märgistusega väetist võib turustada kuni laovarude lõppemiseni.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_41"
+      },
+      "rdfs:label": "§ 41 lg 3"
+    },
+    {
+      "@id": "estleg:VäetS_Par_42",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_vaetiseseadus"
+      ],
+      "estleg:paragrahv": "§ 42.",
+      "rdfs:label": "§ 42.",
+      "estleg:sourceAct": "Väetiseseadus",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VäetS_7"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_VäetS_7"
+      },
+      "estleg:summary": "§ 42."
+    },
+    {
+      "@id": "estleg:VäetS_Par_46",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_vaetiseseadus"
+      ],
+      "estleg:paragrahv": "§ 46.",
+      "rdfs:label": "§ 46. [[Käesolevast tekstist välja jäetud.]]",
+      "estleg:sourceAct": "Väetiseseadus",
+      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_VäetS_7"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_VäetS_7"
+      }
     },
     {
       "@id": "estleg:VäetS_Par_47",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_VäetS"
+        "estleg:LegalProvision_vaetiseseadus"
       ],
       "estleg:paragrahv": "§ 47.",
       "rdfs:label": "§ 47. Seaduse jõustumine",
       "estleg:sourceAct": "Väetiseseadus",
       "estleg:summary": "1 (1) Käesolev seadus jõustub 2003. aasta 1. septembril. Käesolev seadus jõustub 2003. aasta 1. septembril. 2 (2) Käesoleva seaduse § 21 lõige 2 jõustub Eesti liitumisel Euroopa Liiduga. Käesoleva seaduse § 21 lõige 2 jõustub Eesti liitumisel Euroopa Liiduga.",
+      "estleg:legalText": "(1) Käesolev seadus jõustub 2003. aasta 1. septembril. (2) Käesoleva seaduse § 21 lõige 2 jõustub Eesti liitumisel Euroopa Liiduga.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_VäetS_7"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_VäetS_7"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:VäetS_Par_47_Lg_1"
+        },
+        {
+          "@id": "estleg:VäetS_Par_47_Lg_2"
+        }
+      ],
       "estleg:references": [
         {
           "@id": "estleg:VäetS_Par_21"
         }
       ]
+    },
+    {
+      "@id": "estleg:VäetS_Par_47_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolev seadus jõustub 2003. aasta 1. septembril.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_47"
+      },
+      "rdfs:label": "§ 47 lg 1"
+    },
+    {
+      "@id": "estleg:VäetS_Par_47_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Käesoleva seaduse § 21 lõige 2 jõustub Eesti liitumisel Euroopa Liiduga.",
+      "estleg:parentProvision": {
+        "@id": "estleg:VäetS_Par_47"
+      },
+      "rdfs:label": "§ 47 lg 2"
     }
   ]
 }

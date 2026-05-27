@@ -6,28 +6,31 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
   },
   "@graph": [
     {
       "@id": "estleg:LKKSKRKU_Map_2026",
       "@type": [
+        "owl:Ontology",
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "rdfs:label": "Laevade kahjulike kattumisvastaste süsteemide kontrolli rahvusvahelise konventsiooniga ühinemise seadus teemakaardistus",
       "dc:source": "Laevade kahjulike kattumisvastaste süsteemide kontrolli rahvusvahelise konventsiooniga ühinemise seadus",
-      "estleg:affectedBy": [
-        {
-          "@id": "estleg:Draft_KLIM16_1434"
-        },
-        {
-          "@id": "estleg:Draft_KLIM14_1598"
-        }
-      ],
-      "estleg:temporalStatus": "unknown",
+      "dcterms:title": "Laevade kahjulike kattumisvastaste süsteemide kontrolli rahvusvahelise konventsiooniga ühinemise seadus",
+      "estleg:contentStatus": "structuredBody",
+      "dcterms:source": {
+        "@id": "https://www.riigiteataja.ee/akt/216012024010.xml"
+      },
+      "owl:sameAs": {
+        "@id": "https://www.riigiteataja.ee/akt/216012024010.xml"
+      },
+      "estleg:kehtiv": {
+        "@value": "2026-05-24",
+        "@type": "xsd:date"
+      },
       "dcterms:subject": [
         {
           "@id": "http://eurovoc.europa.eu/0411"
@@ -44,10 +47,11 @@
         {
           "@id": "http://eurovoc.europa.eu/2446"
         }
-      ]
+      ],
+      "estleg:temporalStatus": "unknown"
     },
     {
-      "@id": "estleg:LegalProvision_LKKSKRKU",
+      "@id": "estleg:LegalProvision_laevade_kahjulike_kattumisvastaste_susteemide_kontrolli_rahvusvahelise_konventsi",
       "@type": [
         "owl:Class"
       ],
@@ -57,15 +61,50 @@
       }
     },
     {
+      "@id": "estleg:LKKSKRKU_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": "Laevade kahjulike kattumisvastaste süsteemide kontrolli rahvusvahelise konventsiooniga ühinemise seadus teemaskeem",
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_LKKSKRKU_default"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Cluster_LKKSKRKU_default",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": "§1–4 Laevade kahjulike kattumisvastaste süsteemide kontrolli rahvusvahelise konventsiooniga ühinemise seadus",
+      "skos:prefLabel": "§1–4 Laevade kahjulike kattumisvastaste süsteemide kontrolli rahvusvahelise konventsiooniga ühinemise seadus",
+      "skos:inScheme": {
+        "@id": "estleg:LKKSKRKU_TopicScheme"
+      },
+      "estleg:provisionCount": 4
+    },
+    {
       "@id": "estleg:LKKSKRKU_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_LKKSKRKU"
+        "estleg:LegalProvision_laevade_kahjulike_kattumisvastaste_susteemide_kontrolli_rahvusvahelise_konventsi"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. Konventsiooniga ühinemine",
       "estleg:sourceAct": "Laevade kahjulike kattumisvastaste süsteemide kontrolli rahvusvahelise konventsiooniga ühinemise seadus",
-      "estleg:summary": "Ühineda juurdelisatud laevade kahjulike kattumisvastaste süsteemide kontrolli rahvusvahelise konventsiooniga (edaspidi AFS-konventsioon)./13091497, mis on sõlmitud 2001. aasta 5. oktoobril Londonis. Ühineda juurdelisatud , mis on sõlmitud 2001. aasta 5. oktoobril Londonis.",
+      "estleg:summary": "Ühineda juurdelisatud laevade kahjulike kattumisvastaste süsteemide kontrolli rahvusvahelise konventsiooniga (edaspidi AFS-konventsioon) ./13091497 , mis on sõlmitud 2001. aasta 5. oktoobril Londonis. Ühineda juurdelisatud , mis on sõlmitud 2001. aasta 5. oktoobril Londonis.",
+      "estleg:legalText": "Ühineda juurdelisatud , mis on sõlmitud 2001. aasta 5. oktoobril Londonis.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_LKKSKRKU_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:LKKSKRKU_Par_1_Lg_Unknown_1"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:LSTKRKU_Par_1",
@@ -82,24 +121,73 @@
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:rahvusvahelise_kohtumenetluse_lihtsustam_Par_1",
+          "estleg:similarityScore": {
+            "@value": "0.3",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:vara_merepaaste_1989_aasta_rahvusvahelis_Par_1",
+          "estleg:similarityScore": {
+            "@value": "0.421",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
         }
       ]
+    },
+    {
+      "@id": "estleg:LKKSKRKU_Par_1_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Ühineda juurdelisatud , mis on sõlmitud 2001. aasta 5. oktoobril Londonis.",
+      "estleg:parentProvision": {
+        "@id": "estleg:LKKSKRKU_Par_1"
+      }
     },
     {
       "@id": "estleg:LKKSKRKU_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_LKKSKRKU"
+        "estleg:LegalProvision_laevade_kahjulike_kattumisvastaste_susteemide_kontrolli_rahvusvahelise_konventsi"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. Rahvusvahelisele Mereorganisatsioonile andmete esitamine",
       "estleg:sourceAct": "Laevade kahjulike kattumisvastaste süsteemide kontrolli rahvusvahelise konventsiooniga ühinemise seadus",
-      "estleg:summary": "AFS-konventsiooni artikli 9 lõikes 1 nimetatud andmed esitab Rahvusvahelisele Mereorganisatsioonile ning artikli 9 lõikes 3 nimetatud andmed asjaomasele konventsiooniosalisele Keskkonnaministeerium. AFS-konventsiooni artikli 9 lõikes 1 nimetatud andmed esitab Rahvusvahelisele Mereorganisatsioonile ning artikli 9 lõikes 3 nimetatud andmed asjaomasele konventsiooniosalisele Keskkonnaministeerium.",
+      "estleg:summary": "AFS-konventsiooni artikli 9 lõikes 1 nimetatud andmed esitab Rahvusvahelisele Mereorganisatsioonile ning artikli 9 lõikes 3 nimetatud andmed asjaomasele konventsiooniosalisele Kliimaministeerium. RT I 2023-06-30 1 130062023001 2023-07-01 ; Vabariigi Valitsuse seaduse § 105.19 lõike 6 alusel asendatud sõna „Keskkonnaministeerium” sõnaga „Kliimaministeerium”. AFS-konventsiooni artikli 9 lõikes 1 nimetatud andmed esitab Rahvusvahelisele Mereorganisatsioonile ning artikli 9 lõikes 3 nimetatud andmed",
+      "estleg:legalText": "AFS-konventsiooni artikli 9 lõikes 1 nimetatud andmed esitab Rahvusvahelisele Mereorganisatsioonile ning artikli 9 lõikes 3 nimetatud andmed asjaomasele konventsiooniosalisele Kliimaministeerium. ; Vabariigi Valitsuse seaduse § 105.19 lõike 6 alusel asendatud sõna „Keskkonnaministeerium” sõnaga „Kliimaministeerium”.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_LKKSKRKU_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:LKKSKRKU_Par_2_Lg_Unknown_1"
+        }
+      ],
+      "estleg:targetGroup": [
+        "public_body"
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kliimaministeerium"
+        },
+        {
+          "@id": "estleg:Institution_keskkonnaministeerium"
+        }
+      ],
+      "estleg:competenceType": "general",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:NPKKKTRKNPKK_Par_4",
           "estleg:similarityScore": {
-            "@value": "0.333",
+            "@value": "0.5",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
@@ -107,18 +195,12 @@
         {
           "@id": "estleg:NRLEKR2007_Par_3",
           "estleg:similarityScore": {
-            "@value": "0.538",
+            "@value": "0.444",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
         }
       ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_keskkonnaministeerium"
-        }
-      ],
-      "estleg:competenceType": "general",
       "estleg:referencedBy": [
         {
           "@id": "estleg:LKKSKRKU_Par_4"
@@ -126,29 +208,95 @@
       ]
     },
     {
+      "@id": "estleg:LKKSKRKU_Par_2_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "AFS-konventsiooni artikli 9 lõikes 1 nimetatud andmed esitab Rahvusvahelisele Mereorganisatsioonile ning artikli 9 lõikes 3 nimetatud andmed asjaomasele konventsiooniosalisele Kliimaministeerium. ; Vabariigi Valitsuse seaduse § 105.19 lõike 6 alusel asendatud sõna „Keskkonnaministeerium” sõnaga „Kliimaministeerium”.",
+      "estleg:parentProvision": {
+        "@id": "estleg:LKKSKRKU_Par_2"
+      }
+    },
+    {
       "@id": "estleg:LKKSKRKU_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_LKKSKRKU"
+        "estleg:LegalProvision_laevade_kahjulike_kattumisvastaste_susteemide_kontrolli_rahvusvahelise_konventsi"
       ],
       "estleg:paragrahv": "§ 3.",
       "rdfs:label": "§ 3. Järelevalve",
       "estleg:sourceAct": "Laevade kahjulike kattumisvastaste süsteemide kontrolli rahvusvahelise konventsiooniga ühinemise seadus",
-      "estleg:summary": "AFS-konventsiooni artiklis 11 nimetatud järelevalve toiminguid sadamasse saabuvatel ja sadamast lahkuvatel laevadel ning territoriaalmeres asuvatesse terminalidesse saabuvatel ja nendest lahkuvatel laevadel teostab Veeteede Amet. Laevadel teostatakse järelevalvet kooskõlas sadamariigi kontrolli reguleerivate õigusaktidega. AFS-konventsiooni artiklis 11 nimetatud järelevalve toiminguid sadamasse saabuvatel ja sadamast lahkuvatel laevadel ning territoriaalmeres asuvatesse terminalidesse saabuvatel",
+      "estleg:summary": "AFS-konventsiooni artiklis 11 nimetatud järelevalve toiminguid sadamasse saabuvatel ja sadamast lahkuvatel laevadel ning territoriaalmeres asuvatesse terminalidesse saabuvatel ja nendest lahkuvatel laevadel teostab Transpordiamet. Laevadel teostatakse järelevalvet kooskõlas sadamariigi kontrolli reguleerivate õigusaktidega. RT I 2020-12-10 1 110122020001 2021-01-01 AFS-konventsiooni artiklis 11 nimetatud järelevalve toiminguid sadamasse saabuvatel ja sadamast lahkuvatel laevadel ning territoriaa",
+      "estleg:legalText": "AFS-konventsiooni artiklis 11 nimetatud järelevalve toiminguid sadamasse saabuvatel ja sadamast lahkuvatel laevadel ning territoriaalmeres asuvatesse terminalidesse saabuvatel ja nendest lahkuvatel laevadel teostab Transpordiamet. Laevadel teostatakse järelevalvet kooskõlas sadamariigi kontrolli reguleerivate õigusaktidega.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_LKKSKRKU_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:LKKSKRKU_Par_3_Lg_Unknown_1"
+        }
+      ],
       "estleg:targetGroup": [
         "public_body"
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_transpordiamet"
+        }
+      ],
+      "estleg:competenceType": "supervision",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:NPKKKTRKNPKK_Par_6",
+          "estleg:similarityScore": {
+            "@value": "0.357",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:punkrikutusereostusest_pohjustatud_kahju_Par_4",
+          "estleg:similarityScore": {
+            "@value": "0.303",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
       ]
+    },
+    {
+      "@id": "estleg:LKKSKRKU_Par_3_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "AFS-konventsiooni artiklis 11 nimetatud järelevalve toiminguid sadamasse saabuvatel ja sadamast lahkuvatel laevadel ning territoriaalmeres asuvatesse terminalidesse saabuvatel ja nendest lahkuvatel laevadel teostab Transpordiamet. Laevadel teostatakse järelevalvet kooskõlas sadamariigi kontrolli reguleerivate õigusaktidega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:LKKSKRKU_Par_3"
+      }
     },
     {
       "@id": "estleg:LKKSKRKU_Par_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_LKKSKRKU"
+        "estleg:LegalProvision_laevade_kahjulike_kattumisvastaste_susteemide_kontrolli_rahvusvahelise_konventsi"
       ],
       "estleg:paragrahv": "§ 4.",
       "rdfs:label": "§ 4. Seaduse jõustumine",
       "estleg:sourceAct": "Laevade kahjulike kattumisvastaste süsteemide kontrolli rahvusvahelise konventsiooniga ühinemise seadus",
-      "estleg:summary": "Käesoleva seaduse §-d 2 ja 3 jõustuvad AFS-konventsiooni Eesti suhtes jõustumise päeval.<table summary=\"allkiri\" width=\"100%\"> <tbody><tr valign=\"top\"> <td width=\"60%\"> </td> <td width=\"39%\"> <b>Riigikogu esimees Ene ERGMA</b> </td> </tr> </tbody></table> Käesoleva seaduse §-d 2 ja 3 jõustuvad AFS-konventsiooni Eesti suhtes jõustumise päeval.",
+      "estleg:summary": "Käesoleva seaduse §-d 2 ja 3 jõustuvad AFS-konventsiooni Eesti suhtes jõustumise päeval. Käesoleva seaduse §-d 2 ja 3 jõustuvad AFS-konventsiooni Eesti suhtes jõustumise päeval.",
+      "estleg:legalText": "Käesoleva seaduse §-d 2 ja 3 jõustuvad AFS-konventsiooni Eesti suhtes jõustumise päeval.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_LKKSKRKU_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:LKKSKRKU_Par_4_Lg_Unknown_1"
+        }
+      ],
       "estleg:references": [
         {
           "@id": "estleg:LKKSKRKU_Par_2"
@@ -156,56 +304,34 @@
       ],
       "estleg:semanticallySimilarTo": [
         {
-          "@id": "estleg:MTWTTLVRR_Par_3",
+          "@id": "estleg:Reg_324208_Par_8",
           "estleg:similarityScore": {
-            "@value": "0.455",
+            "@value": "0.3",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
         },
         {
-          "@id": "estleg:POKKVHEV1979_Par_3",
-          "estleg:similarityScore": {
-            "@value": "0.375",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:ROKVVUROKTPR_Par_5",
+          "@id": "estleg:punkrikutusereostusest_pohjustatud_kahju_Par_5",
           "estleg:similarityScore": {
             "@value": "0.4",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:Reg_158167_Par_4",
-          "estleg:similarityScore": {
-            "@value": "0.368",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:VOHMEKR_Par_2",
-          "estleg:similarityScore": {
-            "@value": "0.478",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
         }
+      ]
+    },
+    {
+      "@id": "estleg:LKKSKRKU_Par_4_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:targetGroup": [
-        "public_body",
-        "official"
-      ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_riigikogu"
-        }
-      ],
-      "estleg:competenceType": "general"
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Käesoleva seaduse §-d 2 ja 3 jõustuvad AFS-konventsiooni Eesti suhtes jõustumise päeval.",
+      "estleg:parentProvision": {
+        "@id": "estleg:LKKSKRKU_Par_4"
+      }
     }
   ]
 }

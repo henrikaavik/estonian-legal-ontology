@@ -57,6 +57,45 @@ def test_law_target_iri_uses_real_ontology_node(tmp_path: Path) -> None:
     assert mod.get_law_transposition_target_iri(law_path) == "estleg:AS_Map_2026"
 
 
+def test_build_law_index_filters_missing_files_from_stale_index(
+    tmp_path: Path, monkeypatch
+) -> None:
+    krr = tmp_path / "krr_outputs"
+    krr.mkdir()
+    _write_json(
+        krr / "asjaoigusseadus_osa1_peep.json",
+        {
+            "@context": mod.CONTEXT,
+            "@graph": [
+                {
+                    "@id": "estleg:AOS_Osa1_1_31",
+                    "@type": ["owl:Ontology", "estleg:Act"],
+                    "estleg:sourceAct": "Asjaõigusseadus",
+                }
+            ],
+        },
+    )
+    monkeypatch.setattr(mod, "KRR_DIR", krr)
+
+    index = mod.build_law_index(
+        {
+            "laws": [
+                {
+                    "name": "asjaoigusseadus",
+                    "files": [
+                        "asjaoigusseadus_osa10_peep.json",
+                        "asjaoigusseadus_osa1_peep.json",
+                    ],
+                }
+            ]
+        }
+    )
+
+    entry = index[mod.normalize_text("Asjaõigusseadus")]
+    assert entry["files"] == ["asjaoigusseadus_osa1_peep.json"]
+    assert entry["source_act"] == "Asjaõigusseadus"
+
+
 def test_inverse_transposed_by_links_to_real_law_node(
     tmp_path: Path, monkeypatch
 ) -> None:

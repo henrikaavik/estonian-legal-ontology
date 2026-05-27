@@ -6,23 +6,37 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
   },
   "@graph": [
     {
       "@id": "estleg:PTEKSMPR_Map_2026",
       "@type": [
+        "owl:Ontology",
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "rdfs:label": "Piiriülese televisiooni Euroopa konventsiooni ja selle muutmise protokolli ratifitseerimise seadus teemakaardistus",
       "dc:source": "Piiriülese televisiooni Euroopa konventsiooni ja selle muutmise protokolli ratifitseerimise seadus",
-      "estleg:temporalStatus": "unknown",
+      "dcterms:title": "Piiriülese televisiooni Euroopa konventsiooni ja selle muutmise protokolli ratifitseerimise seadus",
+      "estleg:contentStatus": "structuredBody",
+      "dcterms:source": {
+        "@id": "https://www.riigiteataja.ee/akt/26144.xml"
+      },
+      "owl:sameAs": {
+        "@id": "https://www.riigiteataja.ee/akt/26144.xml"
+      },
+      "estleg:kehtiv": {
+        "@value": "2026-05-24",
+        "@type": "xsd:date"
+      },
       "dcterms:subject": [
         {
           "@id": "http://eurovoc.europa.eu/0411"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2431"
         },
         {
           "@id": "http://eurovoc.europa.eu/3221"
@@ -31,15 +45,13 @@
           "@id": "http://eurovoc.europa.eu/6006"
         },
         {
-          "@id": "http://eurovoc.europa.eu/2431"
-        },
-        {
           "@id": "http://eurovoc.europa.eu/2446"
         }
-      ]
+      ],
+      "estleg:temporalStatus": "unknown"
     },
     {
-      "@id": "estleg:LegalProvision_PTEKSMPR",
+      "@id": "estleg:LegalProvision_piiriulese_televisiooni_euroopa_konventsiooni_ja_selle_muutmise_protokolli_ratif",
       "@type": [
         "owl:Class"
       ],
@@ -49,28 +61,55 @@
       }
     },
     {
+      "@id": "estleg:PTEKSMPR_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": "Piiriülese televisiooni Euroopa konventsiooni ja selle muutmise protokolli ratifitseerimise seadus teemaskeem",
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_PTEKSMPR_default"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Cluster_PTEKSMPR_default",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": "§1–2 Lepingu sätted",
+      "skos:prefLabel": "§1–2 Lepingu sätted",
+      "skos:inScheme": {
+        "@id": "estleg:PTEKSMPR_TopicScheme"
+      },
+      "estleg:provisionCount": 2
+    },
+    {
       "@id": "estleg:PTEKSMPR_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_PTEKSMPR"
+        "estleg:LegalProvision_piiriulese_televisiooni_euroopa_konventsiooni_ja_selle_muutmise_protokolli_ratif"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1.",
+      "rdfs:label": "§ 1. [Ratifitseerida juurdelisatud piiriülese televisiooni Euroopa konventsioon ./7938...]",
       "estleg:sourceAct": "Piiriülese televisiooni Euroopa konventsiooni ja selle muutmise protokolli ratifitseerimise seadus",
       "estleg:summary": "Ratifitseerida juurdelisatud piiriülese televisiooni Euroopa konventsioon ./79389 , mis on koostatud 1989. aasta 5. mail Strasbourg'is ja millele Eesti Vabariik on alla kirjutanud 1999. aasta 9. veebruaril, ning piiriülese televisiooni Euroopa konventsiooni muutmise protokoll ./79390 , mis on koostatud 1998. aasta 9. septembril Strasbourg'is. Ratifitseerida juurdelisatud , mis on koostatud 1989. aasta 5. mail Strasbourg'is ja millele Eesti Vabariik on alla kirjutanud 1999. aasta 9. veebruaril, n",
+      "estleg:legalText": "Ratifitseerida juurdelisatud , mis on koostatud 1989. aasta 5. mail Strasbourg'is ja millele Eesti Vabariik on alla kirjutanud 1999. aasta 9. veebruaril, ning , mis on koostatud 1998. aasta 9. septembril Strasbourg'is.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_PTEKSMPR_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:PTEKSMPR_Par_1_Lg_Unknown_1"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:RONUKR_Par_1",
           "estleg:similarityScore": {
             "@value": "0.48",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:TLKR_Par_1",
-          "estleg:similarityScore": {
-            "@value": "0.393",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
@@ -84,17 +123,25 @@
           "estleg:similarityStatus": "candidate"
         },
         {
-          "@id": "estleg:UPKLR_2_Par_2",
+          "@id": "estleg:piiriulese_toimega_toostusonnetuste_konv_Par_1",
           "estleg:similarityScore": {
-            "@value": "0.391",
+            "@value": "0.4",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
         },
         {
-          "@id": "estleg:UPKLR_2_Par_3",
+          "@id": "estleg:ulemaailmse_postiliidu_ar_riy_i_erakorra_Par_1",
           "estleg:similarityScore": {
-            "@value": "0.391",
+            "@value": "0.409",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:ulemaailmse_postiliidu_ar_riy_i_erakorra_Par_2",
+          "estleg:similarityScore": {
+            "@value": "0.409",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
@@ -102,47 +149,34 @@
       ]
     },
     {
+      "@id": "estleg:PTEKSMPR_Par_1_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Ratifitseerida juurdelisatud , mis on koostatud 1989. aasta 5. mail Strasbourg'is ja millele Eesti Vabariik on alla kirjutanud 1999. aasta 9. veebruaril, ning , mis on koostatud 1998. aasta 9. septembril Strasbourg'is.",
+      "estleg:parentProvision": {
+        "@id": "estleg:PTEKSMPR_Par_1"
+      }
+    },
+    {
       "@id": "estleg:PTEKSMPR_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_PTEKSMPR"
+        "estleg:LegalProvision_piiriulese_televisiooni_euroopa_konventsiooni_ja_selle_muutmise_protokolli_ratif"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2.",
+      "rdfs:label": "§ 2. [Nimetada Kultuuriministeerium pädevaks astutuseks piiriülese televisiooni Euroop...]",
       "estleg:sourceAct": "Piiriülese televisiooni Euroopa konventsiooni ja selle muutmise protokolli ratifitseerimise seadus",
       "estleg:summary": "Nimetada Kultuuriministeerium pädevaks astutuseks piiriülese televisiooni Euroopa konventsiooni artikli 19 lõike 2 tähenduses. <table border=\"0\" width=\"90%\"> <tbody><tr> <td width=\"60%\"> </td> <td width=\"40%\"> <strong>Riigikogu esimees Toomas SAVI</strong> </td> </tr> </tbody></table> <p> <a name=\"o\"> </a>Õiend<br/>Akt tehniliselt korrastatud, juurdelisatud leping asendatud lingiga. </p> Nimetada Kultuuriministeerium pädevaks astutuseks piiriülese televisiooni Euroopa konventsiooni artikli 19 lõ",
-      "estleg:semanticallySimilarTo": [
+      "estleg:legalText": "Nimetada Kultuuriministeerium pädevaks astutuseks piiriülese televisiooni Euroopa konventsiooni artikli 19 lõike 2 tähenduses.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_PTEKSMPR_default"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:PRJKKKR_Par_2",
-          "estleg:similarityScore": {
-            "@value": "0.3",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:UKOTTKU_Par_3",
-          "estleg:similarityScore": {
-            "@value": "0.357",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:UNAUKPAK1961_Par_2",
-          "estleg:similarityScore": {
-            "@value": "0.3",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:VUTKU_Par_2",
-          "estleg:similarityScore": {
-            "@value": "0.368",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
+          "@id": "estleg:PTEKSMPR_Par_2_Lg_Unknown_1"
         }
       ],
       "estleg:targetGroup": [
@@ -157,7 +191,61 @@
           "@id": "estleg:Institution_kultuuriministeerium"
         }
       ],
-      "estleg:competenceType": "general"
+      "estleg:competenceType": "general",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:UKOTTKU_Par_3",
+          "estleg:similarityScore": {
+            "@value": "0.357",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:VUTKU_Par_2",
+          "estleg:similarityScore": {
+            "@value": "0.368",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:rahvusvahelise_kohtumenetluse_lihtsustam_Par_3",
+          "estleg:similarityScore": {
+            "@value": "0.333",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:rahvusvahelise_uute_taimesortide_kaitse__Par_2",
+          "estleg:similarityScore": {
+            "@value": "0.429",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:ulemaarase_kahjustava_voi_purustava_toimega_tavare_Par_5",
+          "estleg:similarityScore": {
+            "@value": "0.348",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:PTEKSMPR_Par_2_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Nimetada Kultuuriministeerium pädevaks astutuseks piiriülese televisiooni Euroopa konventsiooni artikli 19 lõike 2 tähenduses.",
+      "estleg:parentProvision": {
+        "@id": "estleg:PTEKSMPR_Par_2"
+      }
     }
   ]
 }

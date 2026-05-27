@@ -6,6 +6,7 @@ explains which fix it locks down.
 
 from __future__ import annotations
 
+import copy
 import json
 import re
 import xml.etree.ElementTree as ET
@@ -68,6 +69,31 @@ def test_law_stub_preserves_no_body_act():
     assert "estleg:Act" in ontology["@type"]
     assert "estleg:Law" in ontology["@type"]
     assert ontology["dcterms:source"]["@id"].endswith("/akt/123.xml")
+
+
+def test_merge_existing_enrichments_skips_stale_requested_cluster(tmp_path):
+    existing_path = tmp_path / "law_peep.json"
+    existing_path.write_text(
+        json.dumps({
+            "@graph": [
+                {
+                    "@id": "estleg:TEST_Par_1",
+                    "estleg:requestedCluster": {
+                        "@id": "estleg:Cluster_TEST_Old"
+                    },
+                    "estleg:normativeType": "kohustus",
+                }
+            ]
+        }),
+        encoding="utf-8",
+    )
+    new_doc = {"@graph": [{"@id": "estleg:TEST_Par_1"}]}
+
+    merged = generate_all_laws.merge_existing_enrichments(new_doc, existing_path)
+    node = merged["@graph"][0]
+
+    assert "estleg:requestedCluster" not in node
+    assert node["estleg:normativeType"] == "kohustus"
 
 
 class _FailingResponse:
@@ -142,6 +168,46 @@ class TestPrefixAllocatorOrderIndependence:
         alloc.allocate("", "law_one", "One")
         with pytest.raises(generate_all_laws.PrefixCollisionError):
             alloc.allocate("", "law_two", "Two")
+
+    def test_non_registry_law_cannot_claim_reserved_registry_abbrev(self):
+        registered_title = "Registered long treaty"
+        other_title = "Other long treaty"
+        registry = {
+            "shared_long_treaty_slug": {
+                "abbrev": "RESERVED",
+                "title": registered_title,
+            },
+        }
+        alloc = generate_all_laws.PrefixAllocator(registry=registry)
+
+        other_prefix = alloc.allocate(
+            "RESERVED", "shared_long_treaty_slug_2", other_title
+        )
+        registered_prefix = alloc.allocate(
+            "", "shared_long_treaty_slug", registered_title
+        )
+
+        assert other_prefix != "RESERVED"
+        assert registered_prefix == "RESERVED"
+
+    def test_duplicate_title_slugs_keep_registry_owner_on_base_slug(self):
+        base = "a" * 80
+        registered_title = f"{base} registered"
+        other_title = f"{base} other"
+        registry = {
+            base: {
+                "abbrev": "ALONG",
+                "title": registered_title,
+            },
+        }
+
+        slugs = generate_all_laws.build_law_slug_map(
+            {other_title: {}, registered_title: {}},
+            registry=registry,
+        )
+
+        assert slugs[registered_title] == base
+        assert slugs[other_title] == f"{base}_2"
 
     def test_module_level_proxy_clear_resets_default_allocator(self):
         """Legacy ``generate_all_laws._used_prefixes.clear()`` must
@@ -248,6 +314,147 @@ class TestParagraphIdSuperscript:
         assert "estleg:TSTAB_Par_22_1" in ids
         # And no positional disambiguation was used:
         assert not any(i.endswith("_22_22") for i in ids)
+
+    def test_repeated_superscript_paragraphs_get_stable_duplicate_suffixes(self):
+        """Some RT snapshots contain two identical paragrahvNr/ylaIndeks
+        pairs. Keep both citable without reusing the same IRI.
+        """
+        xml = """
+        <akt>
+          <sisu>
+            <paragrahv>
+              <paragrahvNr ylaIndeks="1">26</paragrahvNr>
+              <kuvatavNr>S 26.</kuvatavNr>
+              <loige><loigeNr>1</loigeNr><tavatekst>Esimene tekst.</tavatekst></loige>
+            </paragrahv>
+            <paragrahv>
+              <paragrahvNr ylaIndeks="1">26</paragrahvNr>
+              <kuvatavNr>S 26 sup1.</kuvatavNr>
+              <loige><loigeNr>1</loigeNr><tavatekst>Teine tekst.</tavatekst></loige>
+            </paragrahv>
+          </sisu>
+        </akt>
+        """
+        root = ET.fromstring(xml)
+        doc = generate_all_laws.generate_law_jsonld(
+            "Korduv seadus",
+            "korduv_seadus",
+            root,
+            abbreviation="KORD",
+            allocator=generate_all_laws.PrefixAllocator(registry={}),
+        )
+
+        graph = doc["@graph"]
+        assert any(node.get("@id") == "estleg:KORD_Par_26_1" for node in graph)
+        assert any(
+            node.get("@id") == "estleg:KORD_Par_26_1_Dup2" for node in graph
+        )
+        assert any(
+            node.get("@id") == "estleg:KORD_Par_26_1_Dup2_Lg_1"
+            and node["estleg:parentProvision"] == {
+                "@id": "estleg:KORD_Par_26_1_Dup2"
+            }
+            for node in graph
+        )
+
+    def test_repeated_chapter_numbers_get_resolving_structural_ids(self):
+        """Repeated RT chapter numbers must not rely on fix_all duplicate repair."""
+        xml = """
+        <akt>
+          <sisu>
+            <peatykk>
+              <peatykkNr>6</peatykkNr>
+              <peatykkPealkiri>Esimene peatükk</peatykkPealkiri>
+              <paragrahv>
+                <paragrahvNr>16</paragrahvNr>
+                <kuvatavNr>S 16.</kuvatavNr>
+                <loige><loigeNr>1</loigeNr><tavatekst>Esimene tekst.</tavatekst></loige>
+              </paragrahv>
+            </peatykk>
+            <peatykk>
+              <peatykkNr>6</peatykkNr>
+              <peatykkPealkiri>Teine peatükk</peatykkPealkiri>
+              <paragrahv>
+                <paragrahvNr>17</paragrahvNr>
+                <kuvatavNr>S 17.</kuvatavNr>
+                <loige><loigeNr>1</loigeNr><tavatekst>Teine tekst.</tavatekst></loige>
+              </paragrahv>
+            </peatykk>
+          </sisu>
+        </akt>
+        """
+        doc = generate_all_laws.generate_law_jsonld(
+            "Korduv peatükk seadus",
+            "korduv_peatukk_seadus",
+            ET.fromstring(xml),
+            abbreviation="KPSA",
+            allocator=generate_all_laws.PrefixAllocator(registry={}),
+        )
+
+        ids = [node["@id"] for node in doc["@graph"] if "@id" in node]
+        assert len(ids) == len(set(ids))
+        id_set = set(ids)
+        assert "estleg:Cluster_KPSA_6" in id_set
+        assert "estleg:Cluster_KPSA_6_Dup2" in id_set
+        for node in doc["@graph"]:
+            ref = node.get("estleg:requestedCluster")
+            if isinstance(ref, dict):
+                assert ref["@id"] in id_set
+
+
+class TestProvisionSummaryFallback:
+    def test_title_only_full_law_paragraph_gets_summary(self):
+        xml = """
+        <akt><sisu>
+          <paragrahv>
+            <paragrahvNr>1</paragrahvNr>
+            <kuvatavNr>§ 1.</kuvatavNr>
+            <paragrahvPealkiri>Rakendussäte</paragrahvPealkiri>
+          </paragrahv>
+        </sisu></akt>
+        """
+        doc = generate_all_laws.generate_law_jsonld(
+            "Kokkuvõtte test",
+            "kokkuvotte_test",
+            ET.fromstring(xml),
+            abbreviation="KTEST",
+            allocator=generate_all_laws.PrefixAllocator(registry={}),
+        )
+
+        provision = next(
+            node for node in doc["@graph"]
+            if node.get("@id") == "estleg:KTEST_Par_1"
+        )
+        assert provision["estleg:summary"] == "§ 1. Rakendussäte"
+        assert "estleg:legalText" not in provision
+
+    def test_title_only_multipart_paragraph_gets_summary(self):
+        xml = """
+        <akt><sisu>
+          <osa><osaNr>1</osaNr><osaPealkiri>Üldosa</osaPealkiri>
+            <paragrahv>
+              <paragrahvNr>2</paragrahvNr>
+              <kuvatavNr>§ 2.</kuvatavNr>
+              <paragrahvPealkiri>Mõiste</paragrahvPealkiri>
+            </paragrahv>
+          </osa>
+        </sisu></akt>
+        """
+        results = generate_all_laws.generate_multipart_law(
+            "Kokkuvõtte multi",
+            "kokkuvotte_multi",
+            ET.fromstring(xml),
+            abbreviation="KMULT",
+            allocator=generate_all_laws.PrefixAllocator(registry={}),
+        )
+        by_file = dict(results)
+
+        provision = next(
+            node for node in by_file["kokkuvotte_multi_osa1_peep.json"]["@graph"]
+            if node.get("@id") == "estleg:KMULT_Osa1_Par_2"
+        )
+        assert provision["estleg:summary"] == "§ 2. Mõiste"
+        assert "estleg:legalText" not in provision
 
 
 # ---------------------------------------------------------------------------
@@ -1144,6 +1351,7 @@ class TestEnrichmentPreservation:
                     "@id": "estleg:X_Par_1",
                     "@type": ["owl:NamedIndividual"],
                     "estleg:summary": "new summary",
+                    "estleg:legalText": "Fresh legal text.",
                 }
             ]
         }
@@ -1151,6 +1359,34 @@ class TestEnrichmentPreservation:
         assert status == "forceRewritten"
         prov = json.loads(p.read_text(encoding="utf-8"))["@graph"][0]
         assert prov["estleg:summary"] == "new summary"
+        assert prov["estleg:normativeType"] == "permission"
+
+    def test_curated_summary_survives_textless_fallback(self, tmp_path):
+        p = tmp_path / "x_peep.json"
+        existing = {
+            "@graph": [
+                {
+                    "@id": "estleg:X_Par_1",
+                    "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+                    "estleg:summary": "curated summary",
+                    "estleg:normativeType": "permission",
+                }
+            ]
+        }
+        p.write_text(json.dumps(existing), encoding="utf-8")
+        fresh = {
+            "@graph": [
+                {
+                    "@id": "estleg:X_Par_1",
+                    "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+                    "estleg:summary": "§ 1. Generator fallback",
+                }
+            ]
+        }
+        status = generate_all_laws.write_law_output(p, fresh, mode="force")
+        assert status == "forceRewritten"
+        prov = json.loads(p.read_text(encoding="utf-8"))["@graph"][0]
+        assert prov["estleg:summary"] == "curated summary"
         assert prov["estleg:normativeType"] == "permission"
 
     def test_new_node_in_fresh_doc_has_no_merge_source(self, tmp_path):
@@ -1235,6 +1471,35 @@ class TestSourceRemovedLawFiles:
     def test_law_file_base_slug_strips_osa_and_peep(self):
         assert generate_all_laws._law_file_base_slug("advokatuuriseadus_peep.json") == "advokatuuriseadus"
         assert generate_all_laws._law_file_base_slug("volaigusseadus_osa10_peep.json") == "volaigusseadus"
+
+
+def test_obsolete_multipart_outputs_are_removed(tmp_path):
+    krr = tmp_path / "krr_outputs"
+    krr.mkdir()
+    for name in (
+        "asjaoigusseadus_osa1_peep.json",
+        "asjaoigusseadus_osa2_peep.json",
+        "asjaoigusseadus_osa9_peep.json",
+        "asjaoigusseadus_osa6-13_peep.json",
+        "asjaoigusseadus_osaline_test_peep.json",
+        "muu_seadus_osa9_peep.json",
+    ):
+        (krr / name).write_text(json.dumps({"@graph": []}), encoding="utf-8")
+
+    removed = generate_all_laws.remove_obsolete_multipart_outputs(
+        krr,
+        "asjaoigusseadus",
+        {"asjaoigusseadus_osa1_peep.json", "asjaoigusseadus_osa2_peep.json"},
+    )
+
+    assert [path.name for path in removed] == [
+        "asjaoigusseadus_osa9_peep.json",
+    ]
+    assert (krr / "asjaoigusseadus_osa1_peep.json").exists()
+    assert (krr / "asjaoigusseadus_osa2_peep.json").exists()
+    assert (krr / "asjaoigusseadus_osa6-13_peep.json").exists()
+    assert (krr / "asjaoigusseadus_osaline_test_peep.json").exists()
+    assert (krr / "muu_seadus_osa9_peep.json").exists()
 
 
 class TestLoadLawListFromManifest:
@@ -1593,6 +1858,66 @@ class TestRegenState:
         assert slug not in state.get("completed", {})
         assert calls == [f"{slug}_osa1_peep.json", f"{slug}_osa2_peep.json"]
 
+    def test_multipart_cleanup_failure_does_not_mark_law_failed(
+        self, tmp_path, monkeypatch
+    ):
+        title = "Multipart seadus"
+        slug = generate_all_laws.slugify(title)
+        krr = tmp_path / "krr_outputs"
+        krr.mkdir()
+        data_dir = tmp_path / "data" / "riigiteataja"
+        data_dir.mkdir(parents=True)
+        monkeypatch.setattr(generate_all_laws, "KRR_DIR", krr)
+        monkeypatch.setattr(generate_all_laws, "DATA_DIR", data_dir)
+        monkeypatch.setattr(generate_all_laws, "MULTIPART_LAWS", {title})
+        monkeypatch.setattr(
+            generate_all_laws.requests,
+            "get",
+            lambda *a, **kw: pytest.fail("no network expected"),
+        )
+        (data_dir / f"{slug}__tid1001.xml").write_text(
+            _padded_multipart_law_xml(),
+            encoding="utf-8",
+        )
+        monkeypatch.setattr(
+            generate_all_laws,
+            "get_all_laws",
+            lambda **kwargs: (
+                {title: {"gid": "2001", "tid": "1001", "url": f"/akt/{slug}.xml", "lyhend": "MULT"}},
+                {"complete": True},
+            ),
+        )
+        monkeypatch.setattr(
+            generate_all_laws,
+            "remove_obsolete_multipart_outputs",
+            lambda *_args, **_kwargs: (_ for _ in ()).throw(
+                PermissionError("simulated cleanup lock")
+            ),
+        )
+        state_path = tmp_path / "regen_state.json"
+
+        class _Args(_RerunArgs):
+            refresh = True
+            missing_only = False
+            regen_state = str(state_path)
+
+        monkeypatch.setattr(generate_all_laws, "parse_args", lambda: _Args())
+        generate_all_laws._used_prefixes.clear()
+
+        generate_all_laws.main()
+
+        state = json.loads(state_path.read_text(encoding="utf-8"))
+        completed_entry = state["completed"][slug]
+        assert completed_entry["status"] == "full"
+        assert completed_entry["outputPaths"] == [
+            f"{slug}_osa1_peep.json",
+            f"{slug}_osa2_peep.json",
+        ]
+        assert slug not in state.get("failed", {})
+        assert completed_entry["warnings"] == [
+            "obsolete multipart cleanup failed: simulated cleanup lock"
+        ]
+
     def test_multipart_generation_failure_records_no_partial_outputs(
         self, tmp_path, monkeypatch
     ):
@@ -1766,6 +2091,110 @@ class TestRegenState:
             stale_tid_slug: "terviktekstId changed",
         }
 
+    def test_completed_regen_slugs_is_pure_getter(self):
+        slug = generate_all_laws.slugify("Kehtiv seadus")
+        state = {
+            "schemaVersion": generate_all_laws.REGEN_STATE_SCHEMA_VERSION,
+            "completed": {
+                slug: {
+                    "title": "Kehtiv seadus",
+                    "kehtiv": "2027-01-01",
+                    "terviktekstId": "333",
+                    "status": "full",
+                },
+                "stale": {
+                    "title": "Stale seadus",
+                    "kehtiv": "2026-01-01",
+                    "terviktekstId": "111",
+                    "status": "full",
+                },
+            },
+            "failed": {},
+        }
+        before = copy.deepcopy(state)
+
+        assert generate_all_laws.completed_regen_slugs(
+            state,
+            {"Kehtiv seadus": {"tid": "333"}},
+            kehtiv="2027-01-01",
+        ) == {slug}
+        assert state == before
+
+    def test_invalid_completed_entry_records_stale_reason(self):
+        state = {
+            "schemaVersion": generate_all_laws.REGEN_STATE_SCHEMA_VERSION,
+            "completed": {"katki": "not a row"},
+            "failed": {},
+        }
+
+        assert generate_all_laws.prune_completed_regen_state(
+            state,
+            {"Kehtiv seadus": {"tid": "333"}},
+            kehtiv="2027-01-01",
+        ) == set()
+
+        assert state["completed"] == {}
+        assert state["droppedCompleted"][-1]["entries"] == {
+            "katki": "invalid completed entry"
+        }
+
+    def test_completed_state_rejects_slug_collision_title_mismatch(self):
+        base = "b" * 80
+        registered_title = f"{base} registered"
+        other_title = f"{base} other"
+        slug_by_title = generate_all_laws.build_law_slug_map(
+            {
+                other_title: {"tid": "222"},
+                registered_title: {"tid": "111"},
+            },
+            registry={
+                base: {
+                    "abbrev": "BLONG",
+                    "title": registered_title,
+                }
+            },
+        )
+        state = {
+            "schemaVersion": generate_all_laws.REGEN_STATE_SCHEMA_VERSION,
+            "completed": {
+                base: {
+                    "title": other_title,
+                    "kehtiv": "2027-01-01",
+                    "terviktekstId": "222",
+                    "status": "full",
+                },
+                f"{base}_2": {
+                    "title": other_title,
+                    "kehtiv": "2027-01-01",
+                    "terviktekstId": "222",
+                    "status": "full",
+                },
+            },
+            "failed": {},
+        }
+        all_laws = {
+            other_title: {"tid": "222"},
+            registered_title: {"tid": "111"},
+        }
+
+        assert generate_all_laws.completed_regen_slugs(
+            state,
+            all_laws,
+            kehtiv="2027-01-01",
+            slug_by_title=slug_by_title,
+        ) == {f"{base}_2"}
+
+        assert generate_all_laws.prune_completed_regen_state(
+            state,
+            all_laws,
+            kehtiv="2027-01-01",
+            slug_by_title=slug_by_title,
+        ) == {f"{base}_2"}
+        assert set(state["completed"]) == {f"{base}_2"}
+        assert state["droppedCompleted"][-1]["entries"] == {
+            base: "title changed"
+        }
+
     def test_dropped_completed_history_is_appended(self):
         old_slug = generate_all_laws.slugify("Vana seadus")
         stale_tid_slug = generate_all_laws.slugify("Uuenenud seadus")
@@ -1808,6 +2237,65 @@ class TestRegenState:
         assert state["droppedCompleted"][1]["entries"] == {
             old_slug: "kehtiv changed",
             stale_tid_slug: "terviktekstId changed",
+        }
+
+    def test_legacy_dropped_completed_dict_is_normalized_before_append(self):
+        old_slug = generate_all_laws.slugify("Vana seadus")
+        state = {
+            "schemaVersion": generate_all_laws.REGEN_STATE_SCHEMA_VERSION,
+            "completed": {
+                old_slug: {
+                    "kehtiv": "2026-05-01",
+                    "terviktekstId": "111",
+                    "status": "full",
+                },
+            },
+            "failed": {},
+            "droppedCompleted": {
+                "at": "2026-05-24T00:00:00+00:00",
+                "entries": {"eelmine": "kehtiv changed"},
+            },
+        }
+
+        generate_all_laws.prune_completed_regen_state(
+            state,
+            {"Vana seadus": {"tid": "111"}},
+            kehtiv="2027-01-01",
+        )
+
+        assert isinstance(state["droppedCompleted"], list)
+        assert len(state["droppedCompleted"]) == 2
+        assert state["droppedCompleted"][0]["entries"] == {
+            "eelmine": "kehtiv changed"
+        }
+        assert state["droppedCompleted"][1]["entries"] == {
+            old_slug: "kehtiv changed"
+        }
+
+    def test_malformed_legacy_dropped_completed_dict_is_not_preserved(self):
+        old_slug = generate_all_laws.slugify("Vana seadus")
+        state = {
+            "schemaVersion": generate_all_laws.REGEN_STATE_SCHEMA_VERSION,
+            "completed": {
+                old_slug: {
+                    "kehtiv": "2026-05-01",
+                    "terviktekstId": "111",
+                    "status": "full",
+                },
+            },
+            "failed": {},
+            "droppedCompleted": {"note": "user edited"},
+        }
+
+        generate_all_laws.prune_completed_regen_state(
+            state,
+            {"Vana seadus": {"tid": "111"}},
+            kehtiv="2027-01-01",
+        )
+
+        assert len(state["droppedCompleted"]) == 1
+        assert state["droppedCompleted"][0]["entries"] == {
+            old_slug: "kehtiv changed"
         }
 
     def test_default_regen_state_path_resolves_after_krr_monkeypatch(
@@ -1876,6 +2364,31 @@ class TestRegenState:
             generate_all_laws.main()
 
         assert excinfo.value.code == 2
+
+    def test_reset_regen_state_reports_unlink_errors(self, monkeypatch, capsys):
+        class _Args(_RerunArgs):
+            regen_state = "ignored.json"
+            reset_regen_state = True
+
+        class _UnlinkFails:
+            def unlink(self):
+                raise PermissionError("denied")
+
+            def __str__(self):
+                return "/tmp/regen_state.json"
+
+        monkeypatch.setattr(generate_all_laws, "parse_args", lambda: _Args())
+        monkeypatch.setattr(
+            generate_all_laws,
+            "_regen_state_path",
+            lambda _value: _UnlinkFails(),
+        )
+
+        with pytest.raises(SystemExit) as excinfo:
+            generate_all_laws.main()
+
+        assert excinfo.value.code == 2
+        assert "FATAL: cannot reset regen state: denied" in capsys.readouterr().err
 
 
 class TestActStatusInManifest:
@@ -2130,9 +2643,9 @@ class TestSubsectionEmission:
         sub_ids = [s["@id"] for s in _subsection_nodes(doc["@graph"])]
         assert len(sub_ids) == len(set(sub_ids))
 
-    def test_duplicate_subsection_iri_raises(self):
-        """If the source XML produces two lõiked with the same canonical
-        IRI suffix (malformed input), the generator fails fast."""
+    def test_repeated_subsection_suffixes_get_stable_duplicate_ids(self):
+        """If the source XML repeats the same lõige number, keep both
+        citable by suffixing the later duplicate."""
         # Two lõiked both resolving to suffix "2": one plain loigeNr=2,
         # one loigeNr=2 again (no ylaIndeks) — same id.
         xml = """
@@ -2150,10 +2663,53 @@ class TestSubsectionEmission:
         """
         root = ET.fromstring(xml)
         alloc = generate_all_laws.PrefixAllocator(registry={})
-        with pytest.raises(ValueError):
-            generate_all_laws.generate_law_jsonld(
-                "Test", "test_dup", root, abbreviation="TDUPX", allocator=alloc,
-            )
+        doc = generate_all_laws.generate_law_jsonld(
+            "Test", "test_dup", root, abbreviation="TDUPX", allocator=alloc,
+        )
+
+        subs = _subsection_nodes(doc["@graph"])
+        assert [s["@id"] for s in subs] == [
+            "estleg:TDUPX_Par_1_Lg_2",
+            "estleg:TDUPX_Par_1_Lg_2_Dup2",
+        ]
+        par1 = next(
+            node for node in doc["@graph"] if node.get("@id") == "estleg:TDUPX_Par_1"
+        )
+        assert par1["estleg:hasSubsection"] == [
+            {"@id": "estleg:TDUPX_Par_1_Lg_2"},
+            {"@id": "estleg:TDUPX_Par_1_Lg_2_Dup2"},
+        ]
+
+    def test_missing_loige_numbers_get_ordered_fallback_ids(self):
+        """Some RT treaty acts contain textual lõiked with blank loigeNr and
+        kuvatavNr fields. Keep them citable without colliding on Lg_Unknown."""
+        xml = """
+        <akt><sisu><peatykk>
+          <peatykkNr>1</peatykkNr><peatykkPealkiri>P</peatykkPealkiri>
+          <paragrahv>
+            <paragrahvNr>2</paragrahvNr><kuvatavNr>§ 2. </kuvatavNr>
+            <paragrahvPealkiri>T</paragrahvPealkiri>
+            <loige><loigeNr></loigeNr><kuvatavNr></kuvatavNr>
+              <tavatekst>Esimene tekst.</tavatekst></loige>
+            <loige><tavatekst>Teine tekst.</tavatekst></loige>
+          </paragrahv>
+        </peatykk></sisu></akt>
+        """
+        root = ET.fromstring(xml)
+        alloc = generate_all_laws.PrefixAllocator(registry={})
+        doc = generate_all_laws.generate_law_jsonld(
+            "Test", "test_unknown", root, abbreviation="TUNKX", allocator=alloc,
+        )
+
+        subs = _subsection_nodes(doc["@graph"])
+        assert [s["@id"] for s in subs] == [
+            "estleg:TUNKX_Par_2_Lg_Unknown_1",
+            "estleg:TUNKX_Par_2_Lg_Unknown_2",
+        ]
+        assert [s["estleg:subsectionNumber"] for s in subs] == [
+            "Unknown_1",
+            "Unknown_2",
+        ]
 
     def test_multipart_subsection_ids_are_osa_scoped(self):
         """In a multipart law each Subsection IRI is namespaced by osa:

@@ -38,6 +38,7 @@ GENERATION_MODES = ("missing-only", "refresh", "force")
 MANIFEST_NAME = "generation_manifest_laws.json"
 DEFAULT_REGEN_STATE_NAME = ".regen_state.json"
 REGEN_STATE_SCHEMA_VERSION = 1
+# Argparse sentinel for bare ``--regen-state``; resolved after KRR_DIR is configured.
 DEFAULT_REGEN_STATE_SENTINEL = "__default_regen_state__"
 
 CONTEXT = {
@@ -79,6 +80,39 @@ def slugify(text: str) -> str:
     return text[:80]
 
 
+def build_law_slug_map(
+    all_laws: dict[str, dict], *, registry: dict | None = None
+) -> dict[str, str]:
+    """Return deterministic, unique output slugs for a law title mapping.
+
+    ``slugify(title)`` truncates long treaty titles, so distinct source
+    laws can collide on the same 80-character filename stem. When the
+    abbreviation registry already assigns that base slug to one title,
+    that title keeps the base stem and the remaining colliders receive
+    stable numeric suffixes.
+    """
+    registry = _load_registry() if registry is None else registry
+    by_base: dict[str, list[str]] = {}
+    for title in all_laws:
+        if isinstance(title, str):
+            by_base.setdefault(slugify(title), []).append(title)
+
+    slugs: dict[str, str] = {}
+    for base_slug, titles in sorted(by_base.items()):
+        ordered = sorted(titles)
+        entry = registry.get(base_slug) if isinstance(registry, dict) else None
+        registered_title = (
+            entry.get("title")
+            if isinstance(entry, dict) and isinstance(entry.get("title"), str)
+            else None
+        )
+        if registered_title in ordered:
+            ordered = [registered_title, *[title for title in ordered if title != registered_title]]
+        for index, title in enumerate(ordered):
+            slugs[title] = base_slug if index == 0 else f"{base_slug}_{index + 1}"
+    return slugs
+
+
 _ESTONIAN_TRANSLITERATION: dict[str, str] = {
     "ö": "o", "ä": "a", "ü": "u", "õ": "o",
     "Ö": "O", "Ä": "A", "Ü": "U", "Õ": "O",
@@ -108,6 +142,16 @@ def collect_text(el: ET.Element, max_len: int = 500) -> str:
             break
     joined = " ".join(parts)
     return joined[:max_len] if joined else ""
+
+
+def provision_summary(text: str, title: str, display: str) -> str:
+    """Return the SHACL-required summary for a provision node."""
+    summary = text.strip()
+    if summary:
+        return summary
+    if title.strip():
+        return f"{display.strip()} {title.strip()}".strip()
+    return display.strip() or "Sisukokkuvõte puudub"
 
 
 # Mapping of Unicode superscript digits to plain digits.
@@ -180,6 +224,36 @@ def _paragraph_id_suffix(par_el: ET.Element) -> str:
     if sup:
         return f"{base}_{sanitize_id(sup)}"
     return base
+
+
+def _dedupe_paragraph_suffix(raw_suffix: str, counts: Counter[str]) -> str:
+    counts[raw_suffix] += 1
+    if counts[raw_suffix] == 1:
+        return raw_suffix
+    return f"{raw_suffix}_Dup{counts[raw_suffix]}"
+
+
+def _dedupe_subsection_suffix(raw_suffix: str, counts: Counter[str]) -> str:
+    counts[raw_suffix] += 1
+    if raw_suffix == "Unknown":
+        return f"Unknown_{counts[raw_suffix]}"
+    if counts[raw_suffix] == 1:
+        return raw_suffix
+    return f"{raw_suffix}_Dup{counts[raw_suffix]}"
+
+
+def _dedupe_structural_id(base_id: str, counts: Counter[str]) -> str:
+    """Return a stable, file-local unique structural node IRI.
+
+    RT occasionally repeats chapter or division numbers inside a law. Keep
+    the first IRI unchanged for backwards compatibility and suffix later
+    duplicates deterministically so downstream references resolve without
+    relying on the aggregate duplicate-id fixer.
+    """
+    counts[base_id] += 1
+    if counts[base_id] == 1:
+        return base_id
+    return f"{base_id}_Dup{counts[base_id]}"
 
 
 def _walk_paragraphs_direct(
@@ -365,10 +439,10 @@ def build_subsections(
 
     Subsections whose lõige carries no usable text are skipped (an empty
     lõige is a structural artefact, not a citable unit, and SHACL requires
-    ``estleg:legalText``). Returns the nodes in document order. ``seen_ids``,
-    when supplied, accumulates the emitted Subsection IRIs and is checked
-    for collisions (a duplicate raises ``ValueError`` — the same fail-fast
-    contract the paragraph IRIs use).
+    ``estleg:legalText``). Returns the nodes in document order. Repeated
+    source suffixes are disambiguated with stable ``_DupN`` suffixes;
+    ``seen_ids``, when supplied, accumulates the emitted Subsection IRIs
+    and still catches impossible post-disambiguation collisions.
     """
     if seen_ids is None:
         seen_ids = set()
@@ -380,6 +454,7 @@ def build_subsections(
         cleaned = re.sub(r"\s+", " ", paragraph_display).strip().rstrip(".").strip()
         par_label_base = cleaned or None
     subsection_nodes: list[dict] = []
+    suffix_counts: Counter[str] = Counter()
     for loige_el in _iter_loiked(par_el):
         display_nr, suffix = _loige_numbers(loige_el)
         body = _loige_body_text(loige_el)
@@ -387,13 +462,13 @@ def build_subsections(
             # Empty lõige (e.g. a repealed-marker placeholder) — no
             # citable text, so no Subsection node.
             continue
+        suffix = _dedupe_subsection_suffix(suffix, suffix_counts)
         osa_segment = f"_Osa{osa_nr}" if osa_nr else ""
         sub_id = f"estleg:{abbrev_prefix}{osa_segment}_Par_{par_suffix}_Lg_{suffix}"
         if sub_id in seen_ids:
             raise ValueError(
                 f"Duplicate subsection IRI {sub_id!r} produced for prefix "
-                f"{abbrev_prefix!r}; check loigeNr / ylaIndeks / kuvatavNr "
-                f"in the source XML."
+                f"{abbrev_prefix!r} after duplicate suffix disambiguation."
             )
         seen_ids.add(sub_id)
 
@@ -620,6 +695,13 @@ class PrefixAllocator:
     def __init__(self, registry: dict | None = None) -> None:
         # registry: {slug: {"abbrev": str, ...}}
         self._registry: dict = registry if registry is not None else _load_registry()
+        self._registry_abbrev_owners: dict[str, str] = {
+            entry["abbrev"]: entry["title"]
+            for entry in self._registry.values()
+            if isinstance(entry, dict)
+            and isinstance(entry.get("abbrev"), str)
+            and isinstance(entry.get("title"), str)
+        }
         # used_prefixes: {prefix: title} — the law that currently owns this prefix
         self._used_prefixes: dict[str, str] = {}
 
@@ -669,6 +751,9 @@ class PrefixAllocator:
             candidate = sanitize_id(slug[:40])
 
         owner = self._used_prefixes.get(candidate)
+        registry_owner = self._registry_abbrev_owners.get(candidate)
+        if registry_owner is not None and registry_owner != title:
+            owner = registry_owner
         if owner is None or owner == title:
             self._used_prefixes[candidate] = title
             return candidate
@@ -677,6 +762,9 @@ class PrefixAllocator:
         for length in (40, 50, 60, 70, 80, len(slug)):
             attempt = sanitize_id(slug[:length])
             attempt_owner = self._used_prefixes.get(attempt)
+            registry_attempt_owner = self._registry_abbrev_owners.get(attempt)
+            if registry_attempt_owner is not None and registry_attempt_owner != title:
+                attempt_owner = registry_attempt_owner
             if attempt_owner is None or attempt_owner == title:
                 self._used_prefixes[attempt] = title
                 return attempt
@@ -853,6 +941,7 @@ def generate_law_jsonld(
     # Maps paragrahv number -> containing chapter/division IRI for isPartOf links
     par_to_container: dict[int, str] = {}
     clusters = []
+    structural_id_counts: Counter[str] = Counter()
     # Issue #166: walk peatykks at any depth, but mapping each paragrahv
     # only to its IMMEDIATE enclosing peatykk/jagu. ``root.iter()`` on
     # its own — combined with ``ch.iter()`` for paragrahvs below — would
@@ -884,8 +973,15 @@ def generate_law_jsonld(
                         except ValueError:
                             pass
 
-                cluster_id = f"estleg:Cluster_{prefix}_{sanitize_id(ch_nr or ch_title[:20])}"
-                chapter_id = f"estleg:Chapter_{prefix}_{sanitize_id(ch_nr or ch_title[:20])}"
+                structural_suffix = sanitize_id(ch_nr or ch_title[:20])
+                cluster_id = _dedupe_structural_id(
+                    f"estleg:Cluster_{prefix}_{structural_suffix}",
+                    structural_id_counts,
+                )
+                chapter_id = _dedupe_structural_id(
+                    f"estleg:Chapter_{prefix}_{structural_suffix}",
+                    structural_id_counts,
+                )
                 par_range = f"§{min(ch_par_nrs)}–{max(ch_par_nrs)}" if ch_par_nrs else ""
                 clusters.append({
                     "id": cluster_id,
@@ -918,7 +1014,11 @@ def generate_law_jsonld(
                     j_nr = ct(jagu_el, "jaguNr") or ""
                     j_title = ct(jagu_el, "jaguPealkiri") or ""
                     if j_title or j_nr:
-                        div_id = f"estleg:Division_{prefix}_{sanitize_id(ch_nr)}_{sanitize_id(j_nr or j_title[:20])}"
+                        div_id = _dedupe_structural_id(
+                            f"estleg:Division_{prefix}_{sanitize_id(ch_nr)}_"
+                            f"{sanitize_id(j_nr or j_title[:20])}",
+                            structural_id_counts,
+                        )
                         division_ids.append(div_id)
                         graph.append({
                             "@id": div_id,
@@ -990,6 +1090,7 @@ def generate_law_jsonld(
 
     # Add paragraph nodes
     seen_ids: set[str] = set()
+    paragraph_suffix_counts: Counter[str] = Counter()
     # Issue #132: every estleg:Subsection IRI emitted in this file —
     # a collision (loigeNr/ylaIndeks/kuvatavNr clash) fails fast.
     seen_subsection_ids: set[str] = set()
@@ -1004,13 +1105,16 @@ def generate_law_jsonld(
         # plus any superscript index (ylaIndeks="N" or §X¹). This is
         # order-independent so partial regenerations no longer drift
         # IRIs based on insertion order.
-        par_suffix = _paragraph_id_suffix(p)
+        raw_par_suffix = _paragraph_id_suffix(p)
+        par_suffix = _dedupe_paragraph_suffix(
+            raw_par_suffix, paragraph_suffix_counts
+        )
         p_id = f"estleg:{prefix}_Par_{par_suffix}"
 
         if p_id in seen_ids:
             raise ValueError(
-                f"Duplicate paragraph IRI {p_id!r} produced for prefix "
-                f"{prefix!r}; check ylaIndeks or kuvatavNr in the source XML."
+                f"Duplicate paragraph IRI {p_id!r} produced for prefix {prefix!r} "
+                "after duplicate suffix disambiguation."
             )
         seen_ids.add(p_id)
 
@@ -1036,6 +1140,7 @@ def generate_law_jsonld(
             label = f"{p_display} [{excerpt}]"
         else:
             label = p_display
+        summary = provision_summary(text, p_title, p_display)
 
         node: dict = {
             "@id": p_id,
@@ -1043,10 +1148,8 @@ def generate_law_jsonld(
             "estleg:paragrahv": p_display,
             "rdfs:label": label,
             "estleg:sourceAct": title,
+            "estleg:summary": summary,
         }
-
-        if text:
-            node["estleg:summary"] = text
 
         # Issue #88: Add full legal text without truncation
         if full_text:
@@ -1208,6 +1311,7 @@ def generate_multipart_law(
         # Issue #89: Build hierarchy — Chapter and Division nodes within this osa
         par_to_container: dict[int, str] = {}
         clusters = []
+        structural_id_counts: Counter[str] = Counter()
         part_concept_id = f"estleg:Cluster_{prefix}_{osa_nr}_Part"
         scheme_id = f"estleg:{prefix}_Osa{osa_nr}_TopicScheme"
         # Issue #166: walk peatykk children directly so paragrahvs that
@@ -1241,8 +1345,15 @@ def generate_multipart_law(
                                 ch_par_nrs.add(int(re.sub(r"[^\d]", "", nr)))
                             except ValueError:
                                 pass
-                    cluster_id = f"estleg:Cluster_{prefix}_{osa_nr}_{sanitize_id(ch_nr or ch_title[:20])}"
-                    chapter_id = f"estleg:Chapter_{prefix}_{osa_nr}_{sanitize_id(ch_nr or ch_title[:20])}"
+                    structural_suffix = sanitize_id(ch_nr or ch_title[:20])
+                    cluster_id = _dedupe_structural_id(
+                        f"estleg:Cluster_{prefix}_{osa_nr}_{structural_suffix}",
+                        structural_id_counts,
+                    )
+                    chapter_id = _dedupe_structural_id(
+                        f"estleg:Chapter_{prefix}_{osa_nr}_{structural_suffix}",
+                        structural_id_counts,
+                    )
                     par_range = f"§{min(ch_par_nrs)}–{max(ch_par_nrs)}" if ch_par_nrs else ""
                     clusters.append({"id": cluster_id, "label": f"{par_range} {ch_title}".strip(), "par_nrs": ch_par_nrs})
 
@@ -1272,7 +1383,11 @@ def generate_multipart_law(
                         j_nr = ct(jagu_el, "jaguNr") or ""
                         j_title = ct(jagu_el, "jaguPealkiri") or ""
                         if j_title or j_nr:
-                            div_id = f"estleg:Division_{prefix}_{osa_nr}_{sanitize_id(ch_nr)}_{sanitize_id(j_nr or j_title[:20])}"
+                            div_id = _dedupe_structural_id(
+                                f"estleg:Division_{prefix}_{osa_nr}_{sanitize_id(ch_nr)}_"
+                                f"{sanitize_id(j_nr or j_title[:20])}",
+                                structural_id_counts,
+                            )
                             division_ids.append(div_id)
                             graph.append({
                                 "@id": div_id,
@@ -1368,6 +1483,7 @@ def generate_multipart_law(
             graph.insert(2, scheme_node)
 
         seen_ids: set[str] = set()
+        paragraph_suffix_counts: Counter[str] = Counter()
         # Issue #132: Subsection IRIs emitted within this osa file.
         seen_subsection_ids: set[str] = set()
         for p in paragrahvid:
@@ -1377,13 +1493,16 @@ def generate_multipart_law(
             text = collect_text(p)
             full_text = collect_full_text(p)
             # Issue #156/#165 fix 2: superscript-aware paragraph IRI suffix.
-            par_suffix = _paragraph_id_suffix(p)
+            raw_par_suffix = _paragraph_id_suffix(p)
+            par_suffix = _dedupe_paragraph_suffix(
+                raw_par_suffix, paragraph_suffix_counts
+            )
             p_id = f"estleg:{prefix}_Osa{osa_nr}_Par_{par_suffix}"
             if p_id in seen_ids:
                 raise ValueError(
                     f"Duplicate paragraph IRI {p_id!r} produced for prefix "
-                    f"{prefix!r} osa {osa_nr!r}; check ylaIndeks or kuvatavNr "
-                    f"in the source XML."
+                    f"{prefix!r} osa {osa_nr!r} after duplicate suffix "
+                    "disambiguation."
                 )
             seen_ids.add(p_id)
 
@@ -1408,6 +1527,7 @@ def generate_multipart_law(
                 label = f"{p_display} [{excerpt}]"
             else:
                 label = p_display
+            summary = provision_summary(text, p_title, p_display)
 
             node: dict = {
                 "@id": p_id,
@@ -1415,9 +1535,8 @@ def generate_multipart_law(
                 "estleg:paragrahv": p_display,
                 "rdfs:label": label,
                 "estleg:sourceAct": title,
+                "estleg:summary": summary,
             }
-            if text:
-                node["estleg:summary"] = text
             # Issue #88: Add full legal text without truncation
             if full_text:
                 node["estleg:legalText"] = full_text
@@ -1533,6 +1652,25 @@ def existing_doc_matches(path: Path, doc: dict) -> bool:
     return existing == doc
 
 
+_MERGE_BLOCKED_FIELDS = frozenset({
+    # Generator-owned structural link. Keeping a stale value here can point
+    # provisions at clusters that no longer exist after RT structure changes.
+    "estleg:requestedCluster",
+})
+
+
+def _should_preserve_textless_summary(new_node: dict, existing_node: dict) -> bool:
+    """Return True when an existing curated summary should survive regen."""
+    if "estleg:summary" not in existing_node or "estleg:summary" not in new_node:
+        return False
+    types = new_node.get("@type", [])
+    if isinstance(types, str):
+        types = [types]
+    if "estleg:LegalProvision" not in types:
+        return False
+    return "estleg:legalText" not in new_node
+
+
 def merge_existing_enrichments(new_doc: dict, existing_path: Path) -> dict:
     """Additive-merge: copy enrichment fields from an existing law file onto
     matching nodes in ``new_doc``. Generator-emitted fields always win — only
@@ -1541,7 +1679,7 @@ def merge_existing_enrichments(new_doc: dict, existing_path: Path) -> dict:
     The generator owns structural fields (``@type``, ``rdfs:label``,
     ``estleg:paragrahv``, ``estleg:summary``, ``estleg:legalText``,
     ``estleg:sourceAct``, ``estleg:contentStatus``, ``estleg:kehtiv``,
-    ``estleg:hasSubsection`` …). Everything else on an act or provision node
+    ``estleg:hasSubsection``, ``estleg:requestedCluster`` …). Everything else on an act or provision node
     — EuroVoc ``dcterms:subject`` (#123/#126), ``estleg:transposesDirective``
     (#129/#96), ``estleg:harmonisedWith`` (#197), ``estleg:affectedBy``
     (drafts), ``estleg:normativeType``, ``estleg:hasVersion`` (#198),
@@ -1569,6 +1707,13 @@ def merge_existing_enrichments(new_doc: dict, existing_path: Path) -> dict:
         existing_node = existing_by_id[node_id]
         for key, value in existing_node.items():
             if key.startswith("@"):
+                continue
+            if key == "estleg:summary" and _should_preserve_textless_summary(
+                new_node, existing_node
+            ):
+                new_node[key] = value
+                continue
+            if key in _MERGE_BLOCKED_FIELDS:
                 continue
             if key not in new_node:
                 new_node[key] = value
@@ -1626,6 +1771,22 @@ def write_law_output(
     return "refreshed"
 
 
+def remove_obsolete_multipart_outputs(
+    krr_dir: Path, slug: str, expected_filenames: set[str]
+) -> list[Path]:
+    """Delete stale ``<slug>_osa*_peep.json`` files no longer generated."""
+    removed: list[Path] = []
+    part_name_re = re.compile(rf"{re.escape(slug)}_osa\d+_peep\.json\Z")
+    for path in sorted(krr_dir.glob(f"{slug}_osa*_peep.json")):
+        if not part_name_re.fullmatch(path.name):
+            continue
+        if path.name in expected_filenames:
+            continue
+        path.unlink()
+        removed.append(path)
+    return removed
+
+
 def _law_file_base_slug(name: str) -> str:
     """Return the law slug for a peep filename.
 
@@ -1642,19 +1803,21 @@ def source_removed_law_files(
     krr_dir: Path,
     current_titles: set[str],
     *,
+    current_slugs: set[str] | None = None,
     multipart_titles: set[str] | None = None,
 ) -> list[str]:
     """List root ``*_peep.json`` files whose law is no longer in the source.
 
-    Identity is slug-based (``slugify(title)``) rather than ``dc:source``
-    text, so the check is robust to historical drift in the ``dc:source``
-    literal format. A file is reported when the slug derived from its
-    filename (with any ``_osaN`` suffix stripped) does not match the
-    slug of any title in ``current_titles`` (the titles the live search
-    returned this run). Reported, NOT deleted — mirrors
+    Identity is slug-based rather than ``dc:source`` text, so the check
+    is robust to historical drift in the ``dc:source`` literal format.
+    A file is reported when the slug derived from its filename (with any
+    ``_osaN`` suffix stripped) does not match the slug of any title in
+    ``current_titles`` (the titles the live search returned this run).
+    Reported, NOT deleted — mirrors
     ``generate_regulations.source_removed_files``.
     """
-    current_slugs = {slugify(t) for t in current_titles}
+    if current_slugs is None:
+        current_slugs = {slugify(t) for t in current_titles}
     # A multipart law also "owns" its per-osa slug shape; nothing extra to
     # add to the set because ``_law_file_base_slug`` already collapses
     # ``_osaN`` back to the parent slug.
@@ -1861,25 +2024,50 @@ def load_regen_state(path: Path | None) -> dict:
     return state
 
 
+def _current_laws_by_slug(
+    all_laws: dict[str, dict],
+    *,
+    slug_by_title: dict[str, str] | None = None,
+) -> dict[str, tuple[str, dict]]:
+    if slug_by_title is None:
+        slug_by_title = build_law_slug_map(all_laws)
+    return {
+        slug_by_title.get(title, slugify(title)): (title, info)
+        for title, info in all_laws.items()
+        if isinstance(title, str)
+    }
+
+
 def completed_regen_slugs(
-    state: dict, all_laws: dict[str, dict], *, kehtiv: str
+    state: dict,
+    all_laws: dict[str, dict],
+    *,
+    kehtiv: str,
+    slug_by_title: dict[str, str] | None = None,
 ) -> set[str]:
-    """Return completed slugs that are still compatible with the current run."""
+    """Return compatible completed slugs without mutating state.
+
+    This read-only helper is kept for diagnostics and tests; production resume
+    state cleanup uses ``prune_completed_regen_state`` so stale entries are
+    recorded before the run proceeds.
+    """
     completed = state.get("completed")
     if not isinstance(completed, dict):
         return set()
     if state.get("schemaVersion") != REGEN_STATE_SCHEMA_VERSION:
         return set()
 
-    current_by_slug = {
-        slugify(title): info for title, info in all_laws.items() if isinstance(title, str)
-    }
+    current_by_slug = _current_laws_by_slug(all_laws, slug_by_title=slug_by_title)
     valid: set[str] = set()
     for slug, entry in list(completed.items()):
         if not isinstance(slug, str) or not isinstance(entry, dict):
             continue
-        info = current_by_slug.get(slug)
-        if info is None:
+        current = current_by_slug.get(slug)
+        if current is None:
+            continue
+        title, info = current
+        entry_title = entry.get("title")
+        if isinstance(entry_title, str) and entry_title != title:
             continue
         expected_tid = info.get("tid")
         if entry.get("kehtiv") != kehtiv:
@@ -1888,6 +2076,28 @@ def completed_regen_slugs(
             continue
         valid.add(slug)
     return valid
+
+
+def _normalize_dropped_completed_record(value: object) -> dict | None:
+    if not isinstance(value, dict):
+        return None
+    entries = value.get("entries")
+    if not isinstance(entries, dict):
+        return None
+    normalized_entries = {
+        key: str(reason)
+        for key, reason in entries.items()
+        if isinstance(key, str)
+    }
+    if not normalized_entries:
+        return None
+    at = value.get("at")
+    if not isinstance(at, str) or not at:
+        at = datetime.now(timezone.utc).isoformat()
+    return {
+        "at": at,
+        "entries": normalized_entries,
+    }
 
 
 def _append_dropped_completed(state: dict, entries: dict[str, str]) -> None:
@@ -1901,13 +2111,18 @@ def _append_dropped_completed(state: dict, entries: dict[str, str]) -> None:
     if isinstance(history, list):
         history.append(record)
     elif isinstance(history, dict):
-        state["droppedCompleted"] = [history, record]
+        legacy = _normalize_dropped_completed_record(history)
+        state["droppedCompleted"] = ([legacy] if legacy else []) + [record]
     else:
         state["droppedCompleted"] = [record]
 
 
 def prune_completed_regen_state(
-    state: dict, all_laws: dict[str, dict], *, kehtiv: str
+    state: dict,
+    all_laws: dict[str, dict],
+    *,
+    kehtiv: str,
+    slug_by_title: dict[str, str] | None = None,
 ) -> set[str]:
     """Drop stale completed entries from regen state and return valid slugs."""
     completed = state.get("completed")
@@ -1927,9 +2142,7 @@ def prune_completed_regen_state(
         _append_dropped_completed(state, stale)
         return set()
 
-    current_by_slug = {
-        slugify(title): info for title, info in all_laws.items() if isinstance(title, str)
-    }
+    current_by_slug = _current_laws_by_slug(all_laws, slug_by_title=slug_by_title)
     valid: set[str] = set()
     stale: dict[str, str] = {}
     for slug, entry in list(completed.items()):
@@ -1938,9 +2151,15 @@ def prune_completed_regen_state(
                 stale[slug] = "invalid completed entry"
             completed.pop(slug, None)
             continue
-        info = current_by_slug.get(slug)
-        if info is None:
+        current = current_by_slug.get(slug)
+        if current is None:
             stale[slug] = "not in current source list"
+            completed.pop(slug, None)
+            continue
+        title, info = current
+        entry_title = entry.get("title")
+        if isinstance(entry_title, str) and entry_title != title:
+            stale[slug] = "title changed"
             completed.pop(slug, None)
             continue
         expected_tid = info.get("tid")
@@ -2043,6 +2262,9 @@ def main():
             print(f"Reset regen state: {regen_state_path}")
         except FileNotFoundError:
             pass
+        except OSError as exc:
+            print(f"FATAL: cannot reset regen state: {exc}", file=sys.stderr)
+            sys.exit(2)
     regen_state = load_regen_state(regen_state_path)
     if regen_state_path is not None:
         regen_state.setdefault("startedAt", datetime.now(timezone.utc).isoformat())
@@ -2092,8 +2314,9 @@ def main():
         source_manifest["limited"] = True
         source_manifest["limit"] = args.limit
     print(f"  Found {len(all_laws)} unique law titles")
+    slug_by_title = build_law_slug_map(all_laws)
     completed_slugs = prune_completed_regen_state(
-        regen_state, all_laws, kehtiv=args.kehtiv
+        regen_state, all_laws, kehtiv=args.kehtiv, slug_by_title=slug_by_title
     )
     if regen_state_path is not None:
         save_regen_state(regen_state_path, regen_state)
@@ -2122,7 +2345,7 @@ def main():
     already_mapped = 0
     resumed_completed_titles: set[str] = set()
     for title, info in sorted(all_laws.items()):
-        slug = slugify(title)
+        slug = slug_by_title[title]
         if slug in completed_slugs:
             resumed_completed_titles.add(title)
             continue
@@ -2152,6 +2375,7 @@ def main():
         "unchanged": 0,
         "refreshed": 0,
         "forceRewritten": 0,
+        "obsoleteMultipartRemoved": 0,
     })
     generated = 0
     failed = 0
@@ -2293,6 +2517,17 @@ def main():
                 print(f"    FAIL: {reason}")
                 continue
             warnings = []
+            try:
+                obsolete_paths = remove_obsolete_multipart_outputs(
+                    KRR_DIR, slug, {filename for filename, _doc in results}
+                )
+                run_counts["obsoleteMultipartRemoved"] += len(obsolete_paths)
+                for obsolete_path in obsolete_paths:
+                    print(f"    Removed obsolete part: {obsolete_path.name}")
+            except Exception as exc:  # noqa: BLE001
+                warning = f"obsolete multipart cleanup failed: {exc}"
+                warnings.append(warning)
+                print(f"    WARN: {warning}")
             if subsection_count == 0 and any(
                 ln(el.tag) == "loige" for el in root.iter()
             ):
@@ -2355,7 +2590,10 @@ def main():
     # Source-removed detection (#108): existing peep files whose law title
     # no longer appears in the current source list. Reported, not deleted.
     source_removed = source_removed_law_files(
-        KRR_DIR, set(all_laws), multipart_titles=MULTIPART_LAWS
+        KRR_DIR,
+        set(all_laws),
+        current_slugs=set(slug_by_title.values()),
+        multipart_titles=MULTIPART_LAWS,
     )
 
     # Step 4: Summary
@@ -2369,6 +2607,7 @@ def main():
     print(f"  Refreshed stale (missing-only): {run_counts['refreshedStale']}")
     print(f"  Refreshed (refresh):         {run_counts['refreshed']}")
     print(f"  Force rewritten:             {run_counts['forceRewritten']}")
+    print(f"  Obsolete multipart files removed: {run_counts['obsoleteMultipartRemoved']}")
     print(f"  Stub acts (no paragraphs):   {skipped}")
     print(f"  Failed (fetch errors):       {failed}")
     print(f"  Source-removed peep files:   {len(source_removed)}")
@@ -2391,7 +2630,15 @@ def main():
     outputs_all = []
     for title, info in sorted(all_laws.items()):
         status, reason = _status_for(title)
-        outputs_all.append(_manifest_entry(title, info, status=status, reason=reason))
+        outputs_all.append(
+            _manifest_entry(
+                title,
+                info,
+                slug_override=slug_by_title.get(title),
+                status=status,
+                reason=reason,
+            )
+        )
     outputs_generated = []
     for title, info in sorted(to_generate.items()):
         status, reason = _status_for(title)
@@ -2429,6 +2676,7 @@ def main():
             "unchanged": run_counts["unchanged"],
             "refreshed": run_counts["refreshed"],
             "forceRewritten": run_counts["forceRewritten"],
+            "obsoleteMultipartRemoved": run_counts["obsoleteMultipartRemoved"],
             "failedFetches": failed,
             "partialAllowed": args.allow_partial,
             "sourceRemovedFromSnapshotCount": len(source_removed),

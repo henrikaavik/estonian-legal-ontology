@@ -6,53 +6,31 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
   },
   "@graph": [
     {
       "@id": "estleg:RIIGI_Map_2026",
       "@type": [
+        "owl:Ontology",
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "rdfs:label": "Riigi Teataja seadus teemakaardistus",
       "dc:source": "Riigi Teataja seadus",
-      "estleg:affectedBy": [
-        {
-          "@id": "estleg:Draft_JDM26_0214"
-        },
-        {
-          "@id": "estleg:Draft_JDM18_0002"
-        }
-      ],
-      "estleg:amendedBy": [
-        {
-          "@id": "estleg:Draft_JDM26_0214"
-        },
-        {
-          "@id": "estleg:Draft_JDM18_0002"
-        }
-      ],
-      "estleg:temporalStatus": "unknown",
-      "dcterms:subject": [
-        {
-          "@id": "http://eurovoc.europa.eu/2446"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/2431"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/0411"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/2016"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/2811"
-        }
-      ],
+      "dcterms:title": "Riigi Teataja seadus",
+      "estleg:contentStatus": "structuredBody",
+      "dcterms:source": {
+        "@id": "https://www.riigiteataja.ee/akt/107052025007.xml"
+      },
+      "owl:sameAs": {
+        "@id": "https://www.riigiteataja.ee/akt/107052025007.xml"
+      },
+      "estleg:kehtiv": {
+        "@value": "2026-05-24",
+        "@type": "xsd:date"
+      },
       "estleg:transposesDirective": [
         {
           "@id": "estleg:EU_32009L0071"
@@ -63,10 +41,44 @@
         {
           "@id": "estleg:Harmonisation_32009L0071"
         }
+      ],
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/1221"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2446"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/3221"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/1011"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/2016"
+        }
+      ],
+      "estleg:temporalStatus": "unknown",
+      "estleg:amendedBy": [
+        {
+          "@id": "estleg:AmendmentLink_Draft_JDM26_0214_RIIGI"
+        },
+        {
+          "@id": "estleg:AmendmentLink_Draft_JDM18_0002_RIIGI"
+        }
+      ],
+      "estleg:affectedBy": [
+        {
+          "@id": "estleg:Draft_JDM26_0214"
+        },
+        {
+          "@id": "estleg:Draft_JDM18_0002"
+        }
       ]
     },
     {
-      "@id": "estleg:LegalProvision_RIIGI",
+      "@id": "estleg:LegalProvision_riigi_teataja_seadus",
       "@type": [
         "owl:Class"
       ],
@@ -76,681 +88,1591 @@
       }
     },
     {
-      "@id": "estleg:Cluster_RIIGI_1",
+      "@id": "estleg:RIIGI_TopicScheme",
       "@type": [
-        "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "skos:ConceptScheme"
       ],
-      "rdfs:label": "§1–7 ÜLDSÄTTED"
+      "rdfs:label": "Riigi Teataja seadus teemaskeem",
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_RIIGI_default"
+        }
+      ]
     },
     {
-      "@id": "estleg:Cluster_RIIGI_2",
+      "@id": "estleg:Cluster_RIIGI_default",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§8–14 RIIGI TEATAJA VÄLJAANDE SISU JA VORM"
-    },
-    {
-      "@id": "estleg:Cluster_RIIGI_3",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:TopicCluster"
-      ],
-      "rdfs:label": "§15–22 ÕIGUSAKTIDE, TEADAANNETE JA MUUDE DOKUMENTIDE AVALDAMISE KORRALDUS"
-    },
-    {
-      "@id": "estleg:Cluster_RIIGI_4",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:TopicCluster"
-      ],
-      "rdfs:label": "§23–23 LEVITAMINE"
-    },
-    {
-      "@id": "estleg:Cluster_RIIGI_5",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:TopicCluster"
-      ],
-      "rdfs:label": "§24–24 AMETLIKUD TEADAANDED"
-    },
-    {
-      "@id": "estleg:Cluster_RIIGI_6",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:TopicCluster"
-      ],
-      "rdfs:label": "RAKENDUSSÄTTED"
+      "rdfs:label": "§1–42 Riigi Teataja seadus",
+      "skos:prefLabel": "§1–42 Riigi Teataja seadus",
+      "skos:inScheme": {
+        "@id": "estleg:RIIGI_TopicScheme"
+      },
+      "estleg:provisionCount": 17
     },
     {
       "@id": "estleg:RIIGI_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIGI"
+        "estleg:LegalProvision_riigi_teataja_seadus"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1. Seaduse reguleerimisala",
+      "rdfs:label": "§ 1. Riigi Teataja",
       "estleg:sourceAct": "Riigi Teataja seadus",
-      "estleg:summary": "1(1)Käesolev seadus sätestab Eesti Vabariigi õigusaktide, välislepingute, Riigikohtu põhistatud lahendite, teadaannete ja muude dokumentide Riigi Teatajas avaldamise ja kättesaadavuse korra. Käesolev seadus sätestab Eesti Vabariigi õigusaktide, välislepingute, Riigikohtu põhistatud lahendite, teadaannete ja muude dokumentide Riigi Teatajas avaldamise ja kättesaadavuse korra. 2(2)Euroopa Liidu Teatajas avaldamisele kuuluvaid õigusakte Riigi Teatajas ei avaldata.RT I2005322379098252005-07-01+03:00",
+      "estleg:summary": "1 (1) Riigi Teataja on Eesti Vabariigi ametlik võrguväljaanne, milles avaldatakse õigusaktid ja muud dokumendid (edaspidi akt). Riigi Teataja on Eesti Vabariigi ametlik võrguväljaanne, milles avaldatakse õigusaktid ja muud dokumendid (edaspidi akt). 2 (2) Riigi Teataja on ühtlasi riigi infosüsteemi kuuluv andmekogu. Riigi Teataja on ühtlasi riigi infosüsteemi kuuluv andmekogu.",
+      "estleg:legalText": "(1) Riigi Teataja on Eesti Vabariigi ametlik võrguväljaanne, milles avaldatakse õigusaktid ja muud dokumendid (edaspidi akt). (2) Riigi Teataja on ühtlasi riigi infosüsteemi kuuluv andmekogu.",
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_RIIGI_1"
-      }
+        "@id": "estleg:Cluster_RIIGI_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RIIGI_Par_1_Lg_1"
+        },
+        {
+          "@id": "estleg:RIIGI_Par_1_Lg_2"
+        }
+      ]
     },
     {
-      "@id": "estleg:RIIGI_Par_1_1",
+      "@id": "estleg:RIIGI_Par_1_Lg_1",
       "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIGI"
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:paragrahv": "§ 1<sup>1</sup>.",
-      "rdfs:label": "§ 1<sup>1</sup>. Riigi Teataja",
-      "estleg:sourceAct": "Riigi Teataja seadus",
-      "estleg:summary": "1(1)Riigi Teataja on Eesti Vabariigi ametlik väljaanne. Riigi Teatajat antakse välja paberkandjal trükisena ja elektrooniliselt Internetis. Riigi Teataja on Eesti Vabariigi ametlik väljaanne. Riigi Teatajat antakse välja paberkandjal trükisena ja elektrooniliselt Internetis. 2(2)Paberkandjal väljaantavas ja elektroonilises Riigi Teatajas avaldatud õigusaktidel, teadaannetel ja muudel dokumentidel on võrdne õiguslik jõud, kui käesolevas seaduses ei sätestata teisiti. Paberkandjal väljaantavas ja ",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_RIIGI_1"
-      }
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Riigi Teataja on Eesti Vabariigi ametlik võrguväljaanne, milles avaldatakse õigusaktid ja muud dokumendid (edaspidi akt).",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Riigi Teataja on ühtlasi riigi infosüsteemi kuuluv andmekogu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 2"
     },
     {
       "@id": "estleg:RIIGI_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIGI"
+        "estleg:LegalProvision_riigi_teataja_seadus"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Riigi Teatajas avaldatavad õigusaktid ja muud dokumendid",
+      "rdfs:label": "§ 2. Algtekstide avaldamine",
       "estleg:sourceAct": "Riigi Teataja seadus",
-      "estleg:summary": "Riigi Teatajas avaldatakse:11)rahvahääletusel ja Riigikogus vastuvõetud ning Vabariigi Presidendi poolt väljakuulutatud seadused ja rahvahääletuse otsused riigielu küsimustes;22)rahvahääletusele pandud seaduseelnõud ja otsuste eelnõud riigielu küsimustes;33)Riigikogus ratifitseeritud välislepingud ja Vabariigi Valitsuse sõlmitud välislepingud, välja arvatud välislepingud, mis on sõlmitud Euroopa Liidu lepingu, Euroopa Ühenduse asutamislepingu või EURATOMi asutamislepingu alusel ja kuuluvad avald",
+      "estleg:summary": "1 (1) Riigi Teatajas avaldatakse aktid ametlike algtekstidena neljas osas. Riigi Teatajas avaldatakse aktid ametlike algtekstidena neljas osas. 2 (2) Riigi Teataja esimeses osas «Õigustloovad aktid» avaldatakse järgmised aktid: 1 1) seadus koos viitega Vabariigi Presidendi otsusele seaduse väljakuulutamise kohta; 2 2) rahvahääletuse otsus; 3 3) Vabariigi Presidendi seadlus; 4 4) rahvahääletusele pandud seaduseelnõu ja otsuse eelnõu; 5 5) Vabariigi Valitsuse, ministri ja Eesti Panga presidendi mä",
+      "estleg:legalText": "(1) Riigi Teatajas avaldatakse aktid ametlike algtekstidena neljas osas. (2) Riigi Teataja esimeses osas «Õigustloovad aktid» avaldatakse järgmised aktid: seadus koos viitega Vabariigi Presidendi otsusele seaduse väljakuulutamise kohta; rahvahääletuse otsus; Vabariigi Presidendi seadlus; rahvahääletusele pandud seaduseelnõu ja otsuse eelnõu; Vabariigi Valitsuse, ministri ja Eesti Panga presidendi määrus; ministeeriumi, Riigikantselei ja teiste riigiasutuste sõlmitud piiritlemata arvu juhtumeid reguleeriv haldusleping; Riigikohtu põhiseaduslikkuse järelevalve kolleegiumi või üldkogu lahend, mis sisaldab otsust Riigi Teatajas avaldatud õigustloova akti põhiseadusega kooskõla kohta. (3) Riigi Teataja teises osas «Välislepingud ja muud välissuhtlemisalased aktid» avaldatakse järgmised aktid: välislepingu sõlmimist või lõpetamist käsitlev seadus koos viitega Vabariigi Presidendi otsusele seaduse väljakuulutamise kohta; sõlmitud välisleping eesti keeles või selle tõlge eesti keelde, kui välislepingu tekst on ainult võõrkeeltes, ja vähemalt ühes tõlgendamise aluseks olevas võõrkeeles. Välisleping avaldatakse koos välislepingu sõlmimist käsitleva seadusega või, kui see on avaldatud Euroopa Liidu Teatajas, siis esitatakse viide ja link eesti keeles avaldatud välislepingule või Vabariigi Valitsuse korraldusele, millega otsustati välisleping sõlmida; välislepingu konsolideeritud tekst, mis sisaldab kõiki seni jõustunud muudatusi, koos viimaste muudatuste jõustumise kuupäevaga, kui selline tekst on koostatud; Välisministeeriumi teadaanne välislepingu jõustumise ja kehtivuse lõppemise kohta ning vajaduse korral muu välislepingut puudutav teadaanne; Vabariigi Valitsuse välissuhtlemisalane korraldus; välissuhtlemisalane ministri määrus; Vabariigi Presidendi otsus diplomaatilise esindaja nimetamise ja tagasikutsumise kohta. (4) Riigi Teataja kolmandas osas «Riigikogu, Vabariigi Presidendi ja Vabariigi Valitsuse üksikaktid ning muud dokumendid» avaldatakse järgmised aktid: Riigikogu otsus, avaldus, deklaratsioon ja pöördumine; Vabariigi Presidendi otsus ja käskkiri, välja arvatud otsus seaduse väljakuulutamise ja süüdimõistetu armuandmispalve läbivaatamise kohta; Vabariigi Valitsuse korraldus; peaministri korraldus, mille avaldamine Riigi Teatajas on Vabariigi Valitsuse seadusega ette nähtud; ministri käskkiri, kui selle avaldamine Riigi Teatajas on seadusega ette nähtud; Kaitseväe juhataja või Kaitseväe juhataja volitatud ülema, samuti Kaitseväe juhataja volitatud rahvusvahelise organisatsiooni või välisriigi relvajõudude ülema otsus, kui selle avaldamine Riigi Teatajas on seadusega ette nähtud; Eesti Panga Nõukogu otsus ja aruanne Eesti Panga tegevuse kohta; Riigikogu juhatuse otsus Riigikogu asendusliikme Riigikogu liikmeks asumise ja Riigikogu liikme volituste lõppemise, Riigikogu alatise komisjoni koosseisu kinnitamise ning Riigikogu fraktsiooni registreerimise ja koosseisu kinnitamise kohta; Vabariigi Valimiskomisjoni otsus; Vabariigi Valimiskomisjoni teadaanne rahvahääletuse edasilükkumise või rahvahääletuse ärajäämise kohta; teadaanne Vabariigi Valitsuse või ministri ametisse astumise kohta; Riigikohtu esimehe, riigikontrolöri ja õiguskantsleri ülevaade Riigikogule; Tervisekassa eelarve, tegevusaruanne ja auditeeritud aastaaruanne; Raamatupidamise Toimkonna juhend; Eestit okupeerinud riikide julgeolekuorganite või relvajõudude luure- või vastuluureorganite teenistuses olnud või nendega koostööd teinud isikute arvelevõtmise ja avalikustamise korra seaduse alusel Riigi Teatajas avaldatav Kaitsepolitseiameti teadaanne. kehtetu - (5) Riigi Teataja neljandas osas «Kohaliku omavalitsuse määrused», mille kohta võib kasutada lühendtähist KO, avaldatakse valla- ja linnavolikogu ning valla- ja linnavalitsuse määrused. (6) Käesoleva paragrahvi lõigetes 2 kuni 5 nimetamata akti võib Riigi Teatajas avaldada Riigikogu, Vabariigi Valitsuse või Riigi Teataja väljaandja otsusel.",
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_RIIGI_1"
+        "@id": "estleg:Cluster_RIIGI_default"
       },
-      "estleg:targetGroup": [
-        "public_body"
-      ],
-      "estleg:referencedBy": [
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:RIIGI_Par_7_8"
+          "@id": "estleg:RIIGI_Par_2_Lg_1"
         },
         {
-          "@id": "estleg:RIIGI_Par_49_33"
+          "@id": "estleg:RIIGI_Par_2_Lg_2"
+        },
+        {
+          "@id": "estleg:RIIGI_Par_2_Lg_3"
+        },
+        {
+          "@id": "estleg:RIIGI_Par_2_Lg_4"
+        },
+        {
+          "@id": "estleg:RIIGI_Par_2_Lg_5"
+        },
+        {
+          "@id": "estleg:RIIGI_Par_2_Lg_6"
         }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "business",
+        "public_body",
+        "official"
       ]
+    },
+    {
+      "@id": "estleg:RIIGI_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Riigi Teatajas avaldatakse aktid ametlike algtekstidena neljas osas.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Riigi Teataja esimeses osas «Õigustloovad aktid» avaldatakse järgmised aktid: seadus koos viitega Vabariigi Presidendi otsusele seaduse väljakuulutamise kohta; rahvahääletuse otsus; Vabariigi Presidendi seadlus; rahvahääletusele pandud seaduseelnõu ja otsuse eelnõu; Vabariigi Valitsuse, ministri ja Eesti Panga presidendi määrus; ministeeriumi, Riigikantselei ja teiste riigiasutuste sõlmitud piiritlemata arvu juhtumeid reguleeriv haldusleping; Riigikohtu põhiseaduslikkuse järelevalve kolleegiumi või üldkogu lahend, mis sisaldab otsust Riigi Teatajas avaldatud õigustloova akti põhiseadusega kooskõla kohta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_2_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Riigi Teataja teises osas «Välislepingud ja muud välissuhtlemisalased aktid» avaldatakse järgmised aktid: välislepingu sõlmimist või lõpetamist käsitlev seadus koos viitega Vabariigi Presidendi otsusele seaduse väljakuulutamise kohta; sõlmitud välisleping eesti keeles või selle tõlge eesti keelde, kui välislepingu tekst on ainult võõrkeeltes, ja vähemalt ühes tõlgendamise aluseks olevas võõrkeeles. Välisleping avaldatakse koos välislepingu sõlmimist käsitleva seadusega või, kui see on avaldatud Euroopa Liidu Teatajas, siis esitatakse viide ja link eesti keeles avaldatud välislepingule või Vabariigi Valitsuse korraldusele, millega otsustati välisleping sõlmida; välislepingu konsolideeritud tekst, mis sisaldab kõiki seni jõustunud muudatusi, koos viimaste muudatuste jõustumise kuupäevaga, kui selline tekst on koostatud; Välisministeeriumi teadaanne välislepingu jõustumise ja kehtivuse lõppemise kohta ning vajaduse korral muu välislepingut puudutav teadaanne; Vabariigi Valitsuse välissuhtlemisalane korraldus; välissuhtlemisalane ministri määrus; Vabariigi Presidendi otsus diplomaatilise esindaja nimetamise ja tagasikutsumise kohta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 3"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_2_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Riigi Teataja kolmandas osas «Riigikogu, Vabariigi Presidendi ja Vabariigi Valitsuse üksikaktid ning muud dokumendid» avaldatakse järgmised aktid: Riigikogu otsus, avaldus, deklaratsioon ja pöördumine; Vabariigi Presidendi otsus ja käskkiri, välja arvatud otsus seaduse väljakuulutamise ja süüdimõistetu armuandmispalve läbivaatamise kohta; Vabariigi Valitsuse korraldus; peaministri korraldus, mille avaldamine Riigi Teatajas on Vabariigi Valitsuse seadusega ette nähtud; ministri käskkiri, kui selle avaldamine Riigi Teatajas on seadusega ette nähtud; Kaitseväe juhataja või Kaitseväe juhataja volitatud ülema, samuti Kaitseväe juhataja volitatud rahvusvahelise organisatsiooni või välisriigi relvajõudude ülema otsus, kui selle avaldamine Riigi Teatajas on seadusega ette nähtud; Eesti Panga Nõukogu otsus ja aruanne Eesti Panga tegevuse kohta; Riigikogu juhatuse otsus Riigikogu asendusliikme Riigikogu liikmeks asumise ja Riigikogu liikme volituste lõppemise, Riigikogu alatise komisjoni koosseisu kinnitamise ning Riigikogu fraktsiooni registreerimise ja koosseisu kinnitamise kohta; Vabariigi Valimiskomisjoni otsus; Vabariigi Valimiskomisjoni teadaanne rahvahääletuse edasilükkumise või rahvahääletuse ärajäämise kohta; teadaanne Vabariigi Valitsuse või ministri ametisse astumise kohta; Riigikohtu esimehe, riigikontrolöri ja õiguskantsleri ülevaade Riigikogule; Tervisekassa eelarve, tegevusaruanne ja auditeeritud aastaaruanne; Raamatupidamise Toimkonna juhend; Eestit okupeerinud riikide julgeolekuorganite või relvajõudude luure- või vastuluureorganite teenistuses olnud või nendega koostööd teinud isikute arvelevõtmise ja avalikustamise korra seaduse alusel Riigi Teatajas avaldatav Kaitsepolitseiameti teadaanne. kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 4"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_2_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Riigi Teataja neljandas osas «Kohaliku omavalitsuse määrused», mille kohta võib kasutada lühendtähist KO, avaldatakse valla- ja linnavolikogu ning valla- ja linnavalitsuse määrused.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 5"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_2_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Käesoleva paragrahvi lõigetes 2 kuni 5 nimetamata akti võib Riigi Teatajas avaldada Riigikogu, Vabariigi Valitsuse või Riigi Teataja väljaandja otsusel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 6"
     },
     {
       "@id": "estleg:RIIGI_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIGI"
+        "estleg:LegalProvision_riigi_teataja_seadus"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3. Riigi Teatajas avaldatavad teadaanded",
+      "rdfs:label": "§ 3. Terviktekstide avaldamine",
       "estleg:sourceAct": "Riigi Teataja seadus",
-      "estleg:summary": "1(1)Riigi Teatajas avaldatakse seaduste alusel järgmised teadaanded:11)korruptsioonivastase seaduse (RT I 1999, 16, 276; 87, 791; 2000, 25, 145) § 15 lõikes 2 nimetatud ametiisikute majanduslike huvide deklaratsioonid ja § 18 lõikes 3 nimetatud ametlikud teated;22)Eestit okupeerinud riikide julgeolekuorganite või relvajõudude luure- või vastuluureorganite teenistuses olnud või nendega koostööd teinud isikute arvelevõtmise ja avalikustamise korra seaduse (RT I 1995, 17, 233; 1999, 16, 271) § 8 lõ",
+      "estleg:summary": "1 (1) Riigi Teatajas avaldatakse koos algtekstiga selle alusel koostatud kõiki muudatusi sisaldavad järgmiste õigusaktide ametlikud terviktekstid: 1 1) seadus; 2 2) Vabariigi Presidendi seadlus; 3 3) Vabariigi Valitsuse, ministri ja Eesti Panga presidendi määrus; RT I 2016-05-06 1 106052016001 2017-01-01 4 4) Riigikogu otsus; 5 5) Vabariigi Valitsuse korraldus; 6 6) valla- ja linnavolikogu ning valla- ja linnavalitsuse (edaspidi kohaliku omavalitsuse üksus) määrus. Riigi Teatajas avaldatakse koo",
+      "estleg:legalText": "(1) Riigi Teatajas avaldatakse koos algtekstiga selle alusel koostatud kõiki muudatusi sisaldavad järgmiste õigusaktide ametlikud terviktekstid: seadus; Vabariigi Presidendi seadlus; Vabariigi Valitsuse, ministri ja Eesti Panga presidendi määrus; Riigikogu otsus; Vabariigi Valitsuse korraldus; valla- ja linnavolikogu ning valla- ja linnavalitsuse (edaspidi kohaliku omavalitsuse üksus) määrus. (2) Avaldamisel lisab Riigi Teataja väljaandja terviktekstile kehtivusaja andmed.",
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_RIIGI_1"
+        "@id": "estleg:Cluster_RIIGI_default"
       },
-      "estleg:targetGroup": [
-        "citizen",
-        "official"
-      ],
-      "estleg:referencedBy": [
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:RIIGI_Par_50"
-        }
-      ]
-    },
-    {
-      "@id": "estleg:RIIGI_Par_4",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIGI"
-      ],
-      "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Mõnede õigusaktide ja muude dokumentide avaldamise piirangud",
-      "estleg:sourceAct": "Riigi Teataja seadus",
-      "estleg:summary": "1(1)Vabariigi Presidendi, Vabariigi Valitsuse ja ministrite üksikaktid, milles käsitletakse riigi julgeolekut, riigikaitset või jälitustegevust ning millega ei piirata teenistusväliste isikute õigusi ja vabadusi ega panda neile kohustusi, avaldatakse neis õigusaktides ettenähtud korras. Riigisaladust sisaldavaid õigusakte Riigi Teatajas ei avaldata. Vabariigi Presidendi, Vabariigi Valitsuse ja ministrite üksikaktid, milles käsitletakse riigi julgeolekut, riigikaitset või jälitustegevust ning mil",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_RIIGI_1"
-      },
-      "estleg:targetGroup": [
-        "citizen",
-        "public_body"
-      ],
-      "estleg:referencedBy": [
+          "@id": "estleg:RIIGI_Par_3_Lg_1"
+        },
         {
-          "@id": "estleg:RIIGI_Par_19"
-        }
-      ]
-    },
-    {
-      "@id": "estleg:RIIGI_Par_5",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIGI"
-      ],
-      "estleg:paragrahv": "§ 5.",
-      "rdfs:label": "§ 5. Riigi Teatajas avaldatavate õigusaktide jõustumine",
-      "estleg:sourceAct": "Riigi Teataja seadus",
-      "estleg:summary": "1(1)Põhiseaduse muutmise seadus jõustub seaduses eneses sätestatud tähtpäeval, kuid mitte varem kui kolm kuud pärast väljakuulutamist. Põhiseaduse muutmise seadus jõustub seaduses eneses sätestatud tähtpäeval, kuid mitte varem kui kolm kuud pärast väljakuulutamist. 2(2)Rahvahääletusel või Riigikogus vastuvõetud ja Vabariigi Presidendi poolt väljakuulutatud seadus ja Vabariigi Presidendi seadlus jõustuvad 10. päeval pärast Riigi Teatajas avaldamist, kui seaduses eneses ei sätestata teist tähtpäev",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_RIIGI_1"
-      },
-      "estleg:targetGroup": [
-        "public_body"
-      ]
-    },
-    {
-      "@id": "estleg:RIIGI_Par_6",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIGI"
-      ],
-      "estleg:paragrahv": "§ 6.",
-      "rdfs:label": "§ 6. Volitusnormi jõustumine",
-      "estleg:sourceAct": "Riigi Teataja seadus",
-      "estleg:summary": "Volitusnorm Vabariigi Valitsuse või ministri määruse andmiseks jõustub 10. päeval pärast seaduse Riigi Teatajas avaldamist, kui seaduses ei ole sätestatud volitusnormi jõustumise teist tähtpäeva. Sellise volitusnormi alusel antav määrus ei jõustu enne seaduse jõustumist, kui seaduses ei sätestata teisiti. Volitusnorm Vabariigi Valitsuse või ministri määruse andmiseks jõustub 10. päeval pärast seaduse Riigi Teatajas avaldamist, kui seaduses ei ole sätestatud volitusnormi jõustumise teist tähtpäev",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_RIIGI_1"
-      },
-      "estleg:targetGroup": [
-        "public_body"
-      ]
-    },
-    {
-      "@id": "estleg:RIIGI_Par_7",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIGI"
-      ],
-      "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Riigi Teataja väljaandja",
-      "estleg:sourceAct": "Riigi Teataja seadus",
-      "estleg:summary": "Riigi Teatajat annab välja Riigikantselei. Riigi Teatajat annab välja Riigikantselei.",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_RIIGI_1"
-      }
-    },
-    {
-      "@id": "estleg:RIIGI_Par_7_8",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIGI"
-      ],
-      "estleg:paragrahv": "§ 7<sup>1</sup>.",
-      "rdfs:label": "§ 7<sup>1</sup>. Elektrooniline Riigi Teataja",
-      "estleg:sourceAct": "Riigi Teataja seadus",
-      "estleg:summary": "1(1)Elektrooniline Riigi Teataja on riigi põhiregister. Elektrooniline Riigi Teataja on riigi põhiregister. 2(2)Elektrooniline Riigi Teataja kuulub riigile. Elektrooniline Riigi Teataja kuulub riigile. 3(3)Elektroonilises Riigi Teatajas avaldatakse käesoleva seaduse §-des 2 ja 3 loetletud õigusaktid ja muud dokumendid ning selles seaduses ettenähtud juhtudel õigusaktide terviktekstid, samuti kohalike omavalitsuse üksuste avaldamiseks esitatud määrused. Kõik Riigi Teatajas avaldamiseks saadetud d",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_RIIGI_1"
-      },
-      "estleg:references": [
-        {
-          "@id": "estleg:RIIGI_Par_2"
+          "@id": "estleg:RIIGI_Par_3_Lg_2"
         }
       ],
-      "estleg:targetGroup": [
-        "public_body"
-      ]
-    },
-    {
-      "@id": "estleg:RIIGI_Par_7_9",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIGI"
-      ],
-      "estleg:paragrahv": "§ 7<sup>2</sup>.",
-      "rdfs:label": "§ 7<sup>2</sup>. Elektroonilise Riigi Teataja vastutav töötleja",
-      "estleg:sourceAct": "Riigi Teataja seadus",
-      "estleg:summary": "1(1)Elektroonilise Riigi Teataja vastutav töötleja on Riigikantselei. Elektroonilise Riigi Teataja vastutav töötleja on Riigikantselei. 2(2)Riigikantselei juhib ja korraldab elektroonilise Riigi Teataja pidamist ning juhendab volitatud töötlejat ja andmeesitajaid, samuti kontrollib, kuidas nad oma ülesandeid täidavad. Riigikantselei juhib ja korraldab elektroonilise Riigi Teataja pidamist ning juhendab volitatud töötlejat ja andmeesitajaid, samuti kontrollib, kuidas nad oma ülesandeid täidavad. ",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_RIIGI_1"
-      },
-      "estleg:targetGroup": [
-        "business"
-      ]
-    },
-    {
-      "@id": "estleg:RIIGI_Par_7_10",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIGI"
-      ],
-      "estleg:paragrahv": "§ 7<sup>3</sup>.",
-      "rdfs:label": "§ 7<sup>3</sup>. Elektroonilise Riigi Teataja volitatud töötleja",
-      "estleg:sourceAct": "Riigi Teataja seadus",
-      "estleg:summary": "1(1)Elektroonilise Riigi Teataja volitatud töötleja määrab riigisekretär. Elektroonilise Riigi Teataja volitatud töötleja määrab riigisekretär. 2(2)Elektroonilise Riigi Teataja volitatud töötleja ülesandeid võib täita Riigikantselei või muu riigiasutus või halduslepingu alusel eraõiguslik juriidiline isik. Elektroonilise Riigi Teataja volitatud töötleja ülesandeid võib täita Riigikantselei või muu riigiasutus või halduslepingu alusel eraõiguslik juriidiline isik. 3(3)—(5)Kehtetud -RT I2005322379",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_RIIGI_1"
-      },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
-      "estleg:targetGroup": [
-        "citizen",
-        "business"
-      ]
-    },
-    {
-      "@id": "estleg:RIIGI_Par_7_11",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIGI"
-      ],
-      "estleg:paragrahv": "§ 7<sup>4</sup>.",
-      "rdfs:label": "§ 7<sup>4</sup>. Volitatud töötleja pädevus",
-      "estleg:sourceAct": "Riigi Teataja seadus",
-      "estleg:summary": "1(1)Volitatud töötleja tagab elektroonilise Riigi Teataja väljaandmiseks vajaliku infosüsteemi töökorras oleku ning elektroonilise Riigi Teataja kättesaadavuse arvutisidevõrgu kaudu. Volitatud töötleja tagab elektroonilise Riigi Teataja väljaandmiseks vajaliku infosüsteemi töökorras oleku ning elektroonilise Riigi Teataja kättesaadavuse arvutisidevõrgu kaudu. 2(2)Volitatud töötleja ei tohi muuta elektroonilisse Riigi Teatajasse kantud andmeid.RT I2005322379098252005-07-01+03:00 Volitatud töötlej",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_RIIGI_1"
-      },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Prohibition"
-      },
-      "estleg:targetGroup": [
-        "business"
-      ]
-    },
-    {
-      "@id": "estleg:RIIGI_Par_8",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIGI"
-      ],
-      "estleg:paragrahv": "§ 8.",
-      "rdfs:label": "§ 8. Paberkandjal väljaantava Riigi Teataja osade pealkirjad ja kujundus",
-      "estleg:sourceAct": "Riigi Teataja seadus",
-      "estleg:summary": "1(1)Riigi Teatajat antakse välja neljas osas mitteperioodiliste annetena. Riigi Teatajat antakse välja neljas osas mitteperioodiliste annetena. 2(2)Riigi Teataja ande esimesel leheküljel on ülal keskel suure riigivapi kujutis, mille all esimese, teise ja kolmanda osa andel on pealkiri «Riigi Teataja», neljanda osa andel «Riigi Teataja Lisa». Riigi Teataja ande esimesel leheküljel on ülal keskel suure riigivapi kujutis, mille all esimese, teise ja kolmanda osa andel on pealkiri «Riigi Teataja», n",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_RIIGI_2"
-      }
-    },
-    {
-      "@id": "estleg:RIIGI_Par_9",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIGI"
-      ],
-      "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Õigusaktide ja teadaannete jaotus osade vahel",
-      "estleg:sourceAct": "Riigi Teataja seadus",
-      "estleg:summary": "1(1)Riigi Teataja I osas avaldatakse:11)esimeses jaos - rahvahääletusel vastuvõetud ning Vabariigi Presidendi poolt väljakuulutatud seadused ja rahvahääletuse otsused riigielu küsimustes, rahvahääletusele pandud seaduseelnõud ja muud otsuste eelnõud riigielu küsimustes, Riigikogus vastuvõetud ning Vabariigi Presidendi poolt väljakuulutatud seadused, nende terviktekstid ja Vabariigi Presidendi seadlused;22)teises jaos - Riigikogu otsused, avaldused, deklaratsioonid ja pöördumised;33)kolmandas jao",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_RIIGI_2"
-      },
       "estleg:targetGroup": [
         "public_body"
       ],
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_riigikogu"
+        },
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
         }
       ],
       "estleg:competenceType": "general"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Riigi Teatajas avaldatakse koos algtekstiga selle alusel koostatud kõiki muudatusi sisaldavad järgmiste õigusaktide ametlikud terviktekstid: seadus; Vabariigi Presidendi seadlus; Vabariigi Valitsuse, ministri ja Eesti Panga presidendi määrus; Riigikogu otsus; Vabariigi Valitsuse korraldus; valla- ja linnavolikogu ning valla- ja linnavalitsuse (edaspidi kohaliku omavalitsuse üksus) määrus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_3_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Avaldamisel lisab Riigi Teataja väljaandja terviktekstile kehtivusaja andmed.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 2"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_4",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_riigi_teataja_seadus"
+      ],
+      "estleg:paragrahv": "§ 4.",
+      "rdfs:label": "§ 4. Avaldamise piirangud",
+      "estleg:sourceAct": "Riigi Teataja seadus",
+      "estleg:summary": "1 (1) Riigi Teatajas ei avaldata: 1 1) Euroopa Liidu Teatajas avaldamisele kuuluvat õigusakti, sealhulgas välislepingut; 2 2) riigisaladust ja juurdepääsupiirangut sisaldavat akti; 3 3) Vabariigi Valitsuse korraldust, mis toimetatakse isikule kätte haldusmenetluse seadusega sätestatud korras, kui selline kättetoimetamise kohustus on korralduses märgitud ja puudub avalik huvi selle avaldamiseks Riigi Teatajas. Riigi Teatajas ei avaldata: Euroopa Liidu Teatajas avaldamisele kuuluvat õigusakti, sea",
+      "estleg:legalText": "(1) Riigi Teatajas ei avaldata: Euroopa Liidu Teatajas avaldamisele kuuluvat õigusakti, sealhulgas välislepingut; riigisaladust ja juurdepääsupiirangut sisaldavat akti; Vabariigi Valitsuse korraldust, mis toimetatakse isikule kätte haldusmenetluse seadusega sätestatud korras, kui selline kättetoimetamise kohustus on korralduses märgitud ja puudub avalik huvi selle avaldamiseks Riigi Teatajas. (2) Riigisaladust sisaldava määruse kohta avaldatakse Riigi Teatajas määruse osa, millele riigisaladus ei laiene, või teadaanne, mis sisaldab vähemalt määruse pealkirja, vastuvõtmise kuupäeva ja numbrit. (3) Riigi Teataja väljaandja võib avaldatud aktides isiku taotlusel, akti andja või esitaja ettepanekul või kooskõlastatult akti esitajaga asendada isiku eraelu kaitse eesmärgil isikunimed initsiaalide või tähemärkidega, kui puudub avalik huvi isikuandmete jätkuvaks avaldamiseks Riigi Teatajas.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RIIGI_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RIIGI_Par_4_Lg_1"
+        },
+        {
+          "@id": "estleg:RIIGI_Par_4_Lg_2"
+        },
+        {
+          "@id": "estleg:RIIGI_Par_4_Lg_3"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "public_body"
+      ]
+    },
+    {
+      "@id": "estleg:RIIGI_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Riigi Teatajas ei avaldata: Euroopa Liidu Teatajas avaldamisele kuuluvat õigusakti, sealhulgas välislepingut; riigisaladust ja juurdepääsupiirangut sisaldavat akti; Vabariigi Valitsuse korraldust, mis toimetatakse isikule kätte haldusmenetluse seadusega sätestatud korras, kui selline kättetoimetamise kohustus on korralduses märgitud ja puudub avalik huvi selle avaldamiseks Riigi Teatajas.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_4_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Riigisaladust sisaldava määruse kohta avaldatakse Riigi Teatajas määruse osa, millele riigisaladus ei laiene, või teadaanne, mis sisaldab vähemalt määruse pealkirja, vastuvõtmise kuupäeva ja numbrit.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 2"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_4_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Riigi Teataja väljaandja võib avaldatud aktides isiku taotlusel, akti andja või esitaja ettepanekul või kooskõlastatult akti esitajaga asendada isiku eraelu kaitse eesmärgil isikunimed initsiaalide või tähemärkidega, kui puudub avalik huvi isikuandmete jätkuvaks avaldamiseks Riigi Teatajas.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 3"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_5",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_riigi_teataja_seadus"
+      ],
+      "estleg:paragrahv": "§ 5.",
+      "rdfs:label": "§ 5. Riigi Teatajas avaldatav muu teave",
+      "estleg:sourceAct": "Riigi Teataja seadus",
+      "estleg:summary": "Riigi Teatajas avaldatud aktidele võib lisada seoseid teiste aktide ja õigusteavet sisaldavate andmekogudega ning teha kättesaadavaks riigi poolt väljaantud õigustloovate aktide eelnõude seletuskirju ja muud menetlusteavet ning aktidega seotud andmeid. Riigi Teatajas avaldatud aktidele võib lisada seoseid teiste aktide ja õigusteavet sisaldavate andmekogudega ning teha kättesaadavaks riigi poolt väljaantud õigustloovate aktide eelnõude seletuskirju ja muud menetlusteavet ning aktidega seotud and",
+      "estleg:legalText": "Riigi Teatajas avaldatud aktidele võib lisada seoseid teiste aktide ja õigusteavet sisaldavate andmekogudega ning teha kättesaadavaks riigi poolt väljaantud õigustloovate aktide eelnõude seletuskirju ja muud menetlusteavet ning aktidega seotud andmeid.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RIIGI_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RIIGI_Par_5_Lg_Unknown_1"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:RIIGI_Par_5_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Riigi Teatajas avaldatud aktidele võib lisada seoseid teiste aktide ja õigusteavet sisaldavate andmekogudega ning teha kättesaadavaks riigi poolt väljaantud õigustloovate aktide eelnõude seletuskirju ja muud menetlusteavet ning aktidega seotud andmeid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_5"
+      }
+    },
+    {
+      "@id": "estleg:RIIGI_Par_6",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_riigi_teataja_seadus"
+      ],
+      "estleg:paragrahv": "§ 6.",
+      "rdfs:label": "§ 6. Riigi Teatajas avaldatavate aktide tõlkimine",
+      "estleg:sourceAct": "Riigi Teataja seadus",
+      "estleg:summary": "1 (1) Riigi Teatajas avaldatud õigusaktide tõlkimist ja tõlgete avaldamist korraldab Justiits- ja Digiministeerium valdkonna eest vastutava ministri määratud mahus. RT I 2024-12-30 1 130122024001 2025-01-01 , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes Riigi Teatajas avaldatud õigusaktide tõlkimist ja tõlgete avaldamist korraldab Justiits- ja Digiministeerium valdkonna eest vastutava ministri",
+      "estleg:legalText": "(1) Riigi Teatajas avaldatud õigusaktide tõlkimist ja tõlgete avaldamist korraldab Justiits- ja Digiministeerium valdkonna eest vastutava ministri määratud mahus. , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes (2) Tõlked tehakse kättesaadavaks Riigi Teatajas. (3) Vandetõlgi pädevuses on: seaduse tõlkimine võõrkeelde; Riigi Teatajas avaldatava välislepingu tõlkimine eesti keelde. (4) Käesoleva paragrahvi lõikes 3 nimetamata, Riigi Teatajas avaldatavate aktide tõlked edastab tõlkimist korraldanud ministeerium Justiits- ja Digiministeeriumile, kes otsustab nende avaldamise. , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RIIGI_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RIIGI_Par_6_Lg_1"
+        },
+        {
+          "@id": "estleg:RIIGI_Par_6_Lg_2"
+        },
+        {
+          "@id": "estleg:RIIGI_Par_6_Lg_3"
+        },
+        {
+          "@id": "estleg:RIIGI_Par_6_Lg_4"
+        }
+      ],
+      "estleg:targetGroup": [
+        "public_body"
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_justiits_ja_digiministeerium"
+        },
+        {
+          "@id": "estleg:Institution_justiitsministeerium"
+        }
+      ],
+      "estleg:competenceType": "enforcement",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:VANDET_Par_21",
+          "estleg:similarityScore": {
+            "@value": "0.306",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:VANDET_Par_28",
+          "estleg:similarityScore": {
+            "@value": "0.379",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:RIIGI_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Riigi Teatajas avaldatud õigusaktide tõlkimist ja tõlgete avaldamist korraldab Justiits- ja Digiministeerium valdkonna eest vastutava ministri määratud mahus. , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_6_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Tõlked tehakse kättesaadavaks Riigi Teatajas.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 2"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_6_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Vandetõlgi pädevuses on: seaduse tõlkimine võõrkeelde; Riigi Teatajas avaldatava välislepingu tõlkimine eesti keelde.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 3"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_6_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Käesoleva paragrahvi lõikes 3 nimetamata, Riigi Teatajas avaldatavate aktide tõlked edastab tõlkimist korraldanud ministeerium Justiits- ja Digiministeeriumile, kes otsustab nende avaldamise. , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 4"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_7",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_riigi_teataja_seadus"
+      ],
+      "estleg:paragrahv": "§ 7.",
+      "rdfs:label": "§ 7. Riigi Teataja kättesaadavus ja kasutamine",
+      "estleg:sourceAct": "Riigi Teataja seadus",
+      "estleg:summary": "1 (1) Riigi Teataja on Internetis tasuta kättesaadav. Riigi Teataja on Internetis tasuta kättesaadav. 2 (2) Eesti Rahvusraamatukogus, rahvaraamatukogudes ning valla- ja linnavalitsustes võimaldatakse Riigi Teatajale tasuta juurdepääs. Eesti Rahvusraamatukogus, rahvaraamatukogudes ning valla- ja linnavalitsustes võimaldatakse Riigi Teatajale tasuta juurdepääs. 3 (3) Riigi Teatajas avaldatud akte on võimalik leida avaldamise aja, valdkondliku liigituse ning muude andmete alusel, samuti ületekstiot",
+      "estleg:legalText": "(1) Riigi Teataja on Internetis tasuta kättesaadav. (2) Eesti Rahvusraamatukogus, rahvaraamatukogudes ning valla- ja linnavalitsustes võimaldatakse Riigi Teatajale tasuta juurdepääs. (3) Riigi Teatajas avaldatud akte on võimalik leida avaldamise aja, valdkondliku liigituse ning muude andmete alusel, samuti ületekstiotsinguga. (4) Väljaandja abistab kasutajaid Riigi Teatajas avaldatud aktide otsimisel.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RIIGI_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RIIGI_Par_7_Lg_1"
+        },
+        {
+          "@id": "estleg:RIIGI_Par_7_Lg_2"
+        },
+        {
+          "@id": "estleg:RIIGI_Par_7_Lg_3"
+        },
+        {
+          "@id": "estleg:RIIGI_Par_7_Lg_4"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "business",
+        "public_body"
+      ]
+    },
+    {
+      "@id": "estleg:RIIGI_Par_7_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Riigi Teataja on Internetis tasuta kättesaadav.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 1"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_7_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Eesti Rahvusraamatukogus, rahvaraamatukogudes ning valla- ja linnavalitsustes võimaldatakse Riigi Teatajale tasuta juurdepääs.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 2"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_7_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Riigi Teatajas avaldatud akte on võimalik leida avaldamise aja, valdkondliku liigituse ning muude andmete alusel, samuti ületekstiotsinguga.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 3"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_7_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Väljaandja abistab kasutajaid Riigi Teatajas avaldatud aktide otsimisel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 4"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_8",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_riigi_teataja_seadus"
+      ],
+      "estleg:paragrahv": "§ 8.",
+      "rdfs:label": "§ 8. Riigi Teataja väljaandja",
+      "estleg:sourceAct": "Riigi Teataja seadus",
+      "estleg:summary": "1 (1) Riigi Teatajat annab välja Justiits- ja Digiministeerium. RT I 2024-12-30 1 130122024001 2025-01-01 , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes Riigi Teatajat annab välja Justiits- ja Digiministeerium. , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes 2 (2) Riigi Teataja väljaandja kor",
+      "estleg:legalText": "(1) Riigi Teatajat annab välja Justiits- ja Digiministeerium. , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes (2) Riigi Teataja väljaandja korraldab aktide avaldamise ning tagab Riigi Teataja kättesaadavuse, usaldusväärsuse ja kasutusmugavuse.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RIIGI_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RIIGI_Par_8_Lg_1"
+        },
+        {
+          "@id": "estleg:RIIGI_Par_8_Lg_2"
+        }
+      ],
+      "estleg:targetGroup": [
+        "public_body"
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_justiits_ja_digiministeerium"
+        },
+        {
+          "@id": "estleg:Institution_justiitsministeerium"
+        }
+      ],
+      "estleg:competenceType": "general",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:VANDET_Par_12",
+          "estleg:similarityScore": {
+            "@value": "0.333",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:VANDET_Par_21",
+          "estleg:similarityScore": {
+            "@value": "0.379",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:VANDET_Par_28",
+          "estleg:similarityScore": {
+            "@value": "0.5",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:RIIGI_Par_8_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Riigi Teatajat annab välja Justiits- ja Digiministeerium. , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 1"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_8_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Riigi Teataja väljaandja korraldab aktide avaldamise ning tagab Riigi Teataja kättesaadavuse, usaldusväärsuse ja kasutusmugavuse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 2"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_9",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_riigi_teataja_seadus"
+      ],
+      "estleg:paragrahv": "§ 9.",
+      "rdfs:label": "§ 9. Aktide esitamine avaldamiseks, avaldamise tähtajad ja säilitamine",
+      "estleg:sourceAct": "Riigi Teataja seadus",
+      "estleg:summary": "1 (1) Akti esitab Riigi Teatajas avaldamiseks akti andja volitatud esindaja, arvestades Riigi Teataja väljaandja antud juhiseid. Akti andja volitatud esindaja vastutab esitatud akti vastavuse eest allakirjutatud aktile. Akti esitab Riigi Teatajas avaldamiseks akti andja volitatud esindaja, arvestades Riigi Teataja väljaandja antud juhiseid. Akti andja volitatud esindaja vastutab esitatud akti vastavuse eest allakirjutatud aktile. 2 (2) Akt esitatakse avaldamiseks hiljemalt allakirjutamisele või ",
+      "estleg:legalText": "(1) Akti esitab Riigi Teatajas avaldamiseks akti andja volitatud esindaja, arvestades Riigi Teataja väljaandja antud juhiseid. Akti andja volitatud esindaja vastutab esitatud akti vastavuse eest allakirjutatud aktile. (2) Akt esitatakse avaldamiseks hiljemalt allakirjutamisele või seaduse väljakuulutamisele järgneval tööpäeval. Kohaliku omavalitsuse üksuse määrus esitatakse avaldamiseks hiljemalt kolmandal tööpäeval pärast allakirjutamist. (2<sup>1</sup>) Vabariigi Valitsuse kaitsevalmiduse kõrgendamise korraldus, Riigikogu sõjaseisukorra, mobilisatsiooni ja demobilisatsiooni väljakuulutamise ning kaitsevalmiduse kõrgendamise heaks kiitmise ja heakskiidu lõpetamise otsus, Vabariigi Presidendi sõjaseisukorra ning mobilisatsiooni väljakuulutamise otsus, samuti Vabariigi Valitsuse, peaministri, sisekaitseülema ja Kaitseväe juhataja või Kaitseväe juhataja volitatud ülema, samuti Kaitseväe juhataja volitatud rahvusvahelise organisatsiooni või välisriigi relvajõudude ülema kõrgendatud kaitsevalmiduse korraldamiseks ja sõjaseisukorra lahendamiseks ning mobilisatsiooni ja demobilisatsiooni eesmärgi saavutamiseks antud haldusakt esitatakse avaldamiseks viivitamata. (2<sup>2</sup>) Vabariigi Valitsuse eriolukorra väljakuulutamise ja lõpetamise, eriolukorra asjaolude muutmise ning eriolukorra väljakuulutamise põhjustanud hädaolukorra lahendamisega seotud korraldus esitatakse avaldamiseks viivitamata. (3) Terviktekstid koostab ja esitab avaldamiseks: Justiits- ja Digiministeerium – seadused, Vabariigi Presidendi seadlused, Riigikogu otsused, Vabariigi Valitsuse määrused ja korraldused ning ministrite määrused; , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes kehtetu - Eesti Pank – Eesti Panga presidendi määrused; kehtetu - kohaliku omavalitsuse üksus – kohaliku omavalitsuse üksuse määrused. (4) Terviktekst koostatakse ja esitatakse avaldamiseks Riigi Teataja väljaandja teatatud tähtpäevaks, kuid hiljemalt algteksti avaldamisele eelneval päeval. (5) Välisministeeriumi teadaande välislepingu kehtivust mõjutava sündmuse kohta esitab Välisministeerium avaldamiseks enne sündmuse saabumist või kui see ei ole võimalik, siis viivitamata sündmuse kohta teabe saamisel. (6) Akt avaldatakse seitsme tööpäeva jooksul avaldamiseks esitamisest. Terviktekstid avaldatakse samal päeval algtekstiga, mille alusel terviktekstid koostati. (6<sup>1</sup>) Käesoleva paragrahvi lõikes 21 nimetatud akt avaldatakse hiljemalt akti esitamisele järgneval päeval. (6<sup>2</sup>) Käesoleva paragrahvi lõikes 22 nimetatud korraldus avaldatakse hiljemalt korralduse esitamisele järgneval päeval. (7) Vigadega või nõuetele mittevastava akti avaldamise võib Riigi Teataja väljaandja peatada ja nõuda uue akti esitamist. Sel juhul peatub avaldamise tähtaeg kuni nõuetekohase akti saamiseni. (8) Riigi Teataja väljaandja säilitab alatiselt: avaldamiseks esitatud ja avaldatud aktid elektrooniliselt; avaldatud seaduste algtekstid paberil. (9) võib kehtestada määrusega aktide avaldamiseks esitamise, algtekstide paberil säilitamise ja terviktekstide koostamise korra.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RIIGI_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RIIGI_Par_9_Lg_1"
+        },
+        {
+          "@id": "estleg:RIIGI_Par_9_Lg_2"
+        },
+        {
+          "@id": "estleg:RIIGI_Par_9_Lg_2_1"
+        },
+        {
+          "@id": "estleg:RIIGI_Par_9_Lg_2_2"
+        },
+        {
+          "@id": "estleg:RIIGI_Par_9_Lg_3"
+        },
+        {
+          "@id": "estleg:RIIGI_Par_9_Lg_4"
+        },
+        {
+          "@id": "estleg:RIIGI_Par_9_Lg_5"
+        },
+        {
+          "@id": "estleg:RIIGI_Par_9_Lg_6"
+        },
+        {
+          "@id": "estleg:RIIGI_Par_9_Lg_6_1"
+        },
+        {
+          "@id": "estleg:RIIGI_Par_9_Lg_6_2"
+        },
+        {
+          "@id": "estleg:RIIGI_Par_9_Lg_7"
+        },
+        {
+          "@id": "estleg:RIIGI_Par_9_Lg_8"
+        },
+        {
+          "@id": "estleg:RIIGI_Par_9_Lg_9"
+        }
+      ],
+      "estleg:targetGroup": [
+        "public_body",
+        "official"
+      ],
+      "estleg:referencedBy": [
+        {
+          "@id": "estleg:RIIGI_Par_14"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:RIIGI_Par_9_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Akti esitab Riigi Teatajas avaldamiseks akti andja volitatud esindaja, arvestades Riigi Teataja väljaandja antud juhiseid. Akti andja volitatud esindaja vastutab esitatud akti vastavuse eest allakirjutatud aktile.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 1"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_9_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Akt esitatakse avaldamiseks hiljemalt allakirjutamisele või seaduse väljakuulutamisele järgneval tööpäeval. Kohaliku omavalitsuse üksuse määrus esitatakse avaldamiseks hiljemalt kolmandal tööpäeval pärast allakirjutamist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 2"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_9_Lg_2_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2<sup>1</sup>",
+      "estleg:legalText": "(2<sup>1</sup>) Vabariigi Valitsuse kaitsevalmiduse kõrgendamise korraldus, Riigikogu sõjaseisukorra, mobilisatsiooni ja demobilisatsiooni väljakuulutamise ning kaitsevalmiduse kõrgendamise heaks kiitmise ja heakskiidu lõpetamise otsus, Vabariigi Presidendi sõjaseisukorra ning mobilisatsiooni väljakuulutamise otsus, samuti Vabariigi Valitsuse, peaministri, sisekaitseülema ja Kaitseväe juhataja või Kaitseväe juhataja volitatud ülema, samuti Kaitseväe juhataja volitatud rahvusvahelise organisatsiooni või välisriigi relvajõudude ülema kõrgendatud kaitsevalmiduse korraldamiseks ja sõjaseisukorra lahendamiseks ning mobilisatsiooni ja demobilisatsiooni eesmärgi saavutamiseks antud haldusakt esitatakse avaldamiseks viivitamata.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 2<sup>1</sup>"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_9_Lg_2_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2<sup>2</sup>",
+      "estleg:legalText": "(2<sup>2</sup>) Vabariigi Valitsuse eriolukorra väljakuulutamise ja lõpetamise, eriolukorra asjaolude muutmise ning eriolukorra väljakuulutamise põhjustanud hädaolukorra lahendamisega seotud korraldus esitatakse avaldamiseks viivitamata.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 2<sup>2</sup>"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_9_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Terviktekstid koostab ja esitab avaldamiseks: Justiits- ja Digiministeerium – seadused, Vabariigi Presidendi seadlused, Riigikogu otsused, Vabariigi Valitsuse määrused ja korraldused ning ministrite määrused; , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes kehtetu - Eesti Pank – Eesti Panga presidendi määrused; kehtetu - kohaliku omavalitsuse üksus – kohaliku omavalitsuse üksuse määrused.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 3"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_9_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Terviktekst koostatakse ja esitatakse avaldamiseks Riigi Teataja väljaandja teatatud tähtpäevaks, kuid hiljemalt algteksti avaldamisele eelneval päeval.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 4"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_9_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Välisministeeriumi teadaande välislepingu kehtivust mõjutava sündmuse kohta esitab Välisministeerium avaldamiseks enne sündmuse saabumist või kui see ei ole võimalik, siis viivitamata sündmuse kohta teabe saamisel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 5"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_9_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Akt avaldatakse seitsme tööpäeva jooksul avaldamiseks esitamisest. Terviktekstid avaldatakse samal päeval algtekstiga, mille alusel terviktekstid koostati.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 6"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_9_Lg_6_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6<sup>1</sup>",
+      "estleg:legalText": "(6<sup>1</sup>) Käesoleva paragrahvi lõikes 21 nimetatud akt avaldatakse hiljemalt akti esitamisele järgneval päeval.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 6<sup>1</sup>"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_9_Lg_6_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6<sup>2</sup>",
+      "estleg:legalText": "(6<sup>2</sup>) Käesoleva paragrahvi lõikes 22 nimetatud korraldus avaldatakse hiljemalt korralduse esitamisele järgneval päeval.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 6<sup>2</sup>"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_9_Lg_7",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "7",
+      "estleg:legalText": "(7) Vigadega või nõuetele mittevastava akti avaldamise võib Riigi Teataja väljaandja peatada ja nõuda uue akti esitamist. Sel juhul peatub avaldamise tähtaeg kuni nõuetekohase akti saamiseni.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 7"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_9_Lg_8",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "8",
+      "estleg:legalText": "(8) Riigi Teataja väljaandja säilitab alatiselt: avaldamiseks esitatud ja avaldatud aktid elektrooniliselt; avaldatud seaduste algtekstid paberil.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 8"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_9_Lg_9",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "9",
+      "estleg:legalText": "(9) võib kehtestada määrusega aktide avaldamiseks esitamise, algtekstide paberil säilitamise ja terviktekstide koostamise korra.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 9"
     },
     {
       "@id": "estleg:RIIGI_Par_10",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIGI"
+        "estleg:LegalProvision_riigi_teataja_seadus"
       ],
       "estleg:paragrahv": "§ 10.",
-      "rdfs:label": "§ 10. Välislepingute avaldamine",
+      "rdfs:label": "§ 10. Vigade parandamine",
       "estleg:sourceAct": "Riigi Teataja seadus",
-      "estleg:summary": "1(1)Kui välislepingu eesti- ja võõrkeelne tekst on autentsed, avaldatakse lepingu tekst ainult eesti keeles. Kui välislepingu eesti- ja võõrkeelne tekst on autentsed, avaldatakse lepingu tekst ainult eesti keeles. 2(2)Kui välislepingu autentne tekst on ainult võõrkeeles või -keeltes, avaldatakse välislepingu tõlge eesti keelde ja tõlke aluseks olnud autentne võõrkeelne tekst. Kui välislepingu autentne tekst on ainult võõrkeeles või -keeltes, avaldatakse välislepingu tõlge eesti keelde ja tõlke a",
+      "estleg:summary": "1 (1) Riigi Teataja väljaandja võib avaldamiseks esitatud või avaldatud aktis või andmetes parandada ilmse ebatäpsuse. Riigi Teataja väljaandja võib avaldamiseks esitatud või avaldatud aktis või andmetes parandada ilmse ebatäpsuse. 2 (2) Kui avaldatud akt ei vasta avaldamiseks esitatule, parandab Riigi Teataja väljaandja ilmse ebatäpsuse, teatades sellest akti esitajale. Kui avaldatud akt ei vasta avaldamiseks esitatule, parandab Riigi Teataja väljaandja ilmse ebatäpsuse, teatades sellest akti e",
+      "estleg:legalText": "(1) Riigi Teataja väljaandja võib avaldamiseks esitatud või avaldatud aktis või andmetes parandada ilmse ebatäpsuse. (2) Kui avaldatud akt ei vasta avaldamiseks esitatule, parandab Riigi Teataja väljaandja ilmse ebatäpsuse, teatades sellest akti esitajale. (3) Kui avaldatud akt vastab avaldamiseks esitatule, parandab Riigi Teataja väljaandja ilmse ebatäpsuse omal algatusel või akti andja taotlusel tingimusel, et vea parandamine ei mõjuta isikute õigusi ega kohustusi. Tehtud parandusest teavitab Riigi Teataja väljaandja akti andjat. Vajaduse korral küsib Riigi Teataja väljaandja paranduse tegemiseks akti andja nõusolekut. (4) Kui avaldatud terviktekst ei vasta koostamise aluseks olevale algtekstile, teatatakse veast Riigi Teataja väljaandjale, kes kontrollib vea olemasolu ja parandab selle või teatab vea puudumisest. (5) Avaldatud akti parandamisel lisatakse dokumendile märge parandamise kuupäeva ja kellaajaga.",
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_RIIGI_2"
+        "@id": "estleg:Cluster_RIIGI_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RIIGI_Par_10_Lg_1"
+        },
+        {
+          "@id": "estleg:RIIGI_Par_10_Lg_2"
+        },
+        {
+          "@id": "estleg:RIIGI_Par_10_Lg_3"
+        },
+        {
+          "@id": "estleg:RIIGI_Par_10_Lg_4"
+        },
+        {
+          "@id": "estleg:RIIGI_Par_10_Lg_5"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
+    },
+    {
+      "@id": "estleg:RIIGI_Par_10_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Riigi Teataja väljaandja võib avaldamiseks esitatud või avaldatud aktis või andmetes parandada ilmse ebatäpsuse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 1"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_10_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kui avaldatud akt ei vasta avaldamiseks esitatule, parandab Riigi Teataja väljaandja ilmse ebatäpsuse, teatades sellest akti esitajale.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 2"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_10_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kui avaldatud akt vastab avaldamiseks esitatule, parandab Riigi Teataja väljaandja ilmse ebatäpsuse omal algatusel või akti andja taotlusel tingimusel, et vea parandamine ei mõjuta isikute õigusi ega kohustusi. Tehtud parandusest teavitab Riigi Teataja väljaandja akti andjat. Vajaduse korral küsib Riigi Teataja väljaandja paranduse tegemiseks akti andja nõusolekut.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 3"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_10_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Kui avaldatud terviktekst ei vasta koostamise aluseks olevale algtekstile, teatatakse veast Riigi Teataja väljaandjale, kes kontrollib vea olemasolu ja parandab selle või teatab vea puudumisest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 4"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_10_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Avaldatud akti parandamisel lisatakse dokumendile märge parandamise kuupäeva ja kellaajaga.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 5"
     },
     {
       "@id": "estleg:RIIGI_Par_11",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIGI"
+        "estleg:LegalProvision_riigi_teataja_seadus"
       ],
       "estleg:paragrahv": "§ 11.",
-      "rdfs:label": "§ 11. Õigusaktide avaldamise vorminõuded",
+      "rdfs:label": "§ 11. Riigi Teataja väljaandmine paberil",
       "estleg:sourceAct": "Riigi Teataja seadus",
-      "estleg:summary": "1(1)Seadus avaldatakse koos viitega Vabariigi Presidendi otsusele seaduse väljakuulutamise kohta, milles tuuakse ära otsuse number ja kuupäev. Sellele järgneb väljakuulutatud seaduse pealkiri, vastuvõtmise kuupäev ja seaduse tekst, teksti järel seadusele allakirjutanu ametinimetus ja nimi. Seadus avaldatakse koos viitega Vabariigi Presidendi otsusele seaduse väljakuulutamise kohta, milles tuuakse ära otsuse number ja kuupäev. Sellele järgneb väljakuulutatud seaduse pealkiri, vastuvõtmise kuupäev",
+      "estleg:summary": "1 (1) Kui Riigi Teataja levitamine võrguväljaandena või aktide avaldamine võrguväljaandes on takistatud, võib Riigi Teatajat välja anda paberil. Kui takistused on kõrvaldatud, avaldatakse paberil avaldatud aktid võrguväljaandes. Kui Riigi Teataja levitamine võrguväljaandena või aktide avaldamine võrguväljaandes on takistatud, võib Riigi Teatajat välja anda paberil. Kui takistused on kõrvaldatud, avaldatakse paberil avaldatud aktid võrguväljaandes. 2 (2) Riigi Teatajat võib välja anda paberil eri",
+      "estleg:legalText": "(1) Kui Riigi Teataja levitamine võrguväljaandena või aktide avaldamine võrguväljaandes on takistatud, võib Riigi Teatajat välja anda paberil. Kui takistused on kõrvaldatud, avaldatakse paberil avaldatud aktid võrguväljaandes. (2) Riigi Teatajat võib välja anda paberil eriväljaandena, kui riigiasutused, üleriigilised kohaliku omavalitsuse üksuste liidud või avalik-õiguslikud juriidilised isikud on tellinud tervikteksti või terviktekstidest koosneva kogumiku. Eriväljaande väljaandmisega kaasnevad kulud tasub tellija.",
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_RIIGI_2"
+        "@id": "estleg:Cluster_RIIGI_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RIIGI_Par_11_Lg_1"
+        },
+        {
+          "@id": "estleg:RIIGI_Par_11_Lg_2"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "public_body"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
       }
+    },
+    {
+      "@id": "estleg:RIIGI_Par_11_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kui Riigi Teataja levitamine võrguväljaandena või aktide avaldamine võrguväljaandes on takistatud, võib Riigi Teatajat välja anda paberil. Kui takistused on kõrvaldatud, avaldatakse paberil avaldatud aktid võrguväljaandes.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 1"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_11_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Riigi Teatajat võib välja anda paberil eriväljaandena, kui riigiasutused, üleriigilised kohaliku omavalitsuse üksuste liidud või avalik-õiguslikud juriidilised isikud on tellinud tervikteksti või terviktekstidest koosneva kogumiku. Eriväljaande väljaandmisega kaasnevad kulud tasub tellija.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 2"
     },
     {
       "@id": "estleg:RIIGI_Par_12",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIGI"
+        "estleg:LegalProvision_riigi_teataja_seadus"
       ],
       "estleg:paragrahv": "§ 12.",
-      "rdfs:label": "§ 12. Riigi Teataja annete ja artiklite numeratsioon",
+      "rdfs:label": "§ 12. Aktide avaldamine muudes väljaannetes ja veebilehtedel",
       "estleg:sourceAct": "Riigi Teataja seadus",
-      "estleg:summary": "1(1)Riigi Teataja iga osa annete nummerdamine algab igal aastal number ühest. Riigi Teataja iga osa annete nummerdamine algab igal aastal number ühest. 2(2)Riigi Teataja kõigis osades avaldatakse õigusaktid, välislepingud ja Riigikohtu põhistatud lahendid eraldi artiklite järjekorranumbrite all, igal aastal alustatakse number ühest. Riigi Teataja kõigis osades avaldatakse õigusaktid, välislepingud ja Riigikohtu põhistatud lahendid eraldi artiklite järjekorranumbrite all, igal aastal alustatakse ",
+      "estleg:summary": "1 (1) Riigi Teatajas avaldatud akte võib avaldada muudes väljaannetes ja veebilehtedel märkusega, et ametlik tekst on avaldatud Riigi Teatajas, lisades sellele viite või lingi Riigi Teataja veebiaadressile. Riigi Teatajas avaldatud akte võib avaldada muudes väljaannetes ja veebilehtedel märkusega, et ametlik tekst on avaldatud Riigi Teatajas, lisades sellele viite või lingi Riigi Teataja veebiaadressile. 2 (2) Riigiasutuste ja kohaliku omavalitsuse üksuste veebilehtedel Riigi Teatajas avaldatud ",
+      "estleg:legalText": "(1) Riigi Teatajas avaldatud akte võib avaldada muudes väljaannetes ja veebilehtedel märkusega, et ametlik tekst on avaldatud Riigi Teatajas, lisades sellele viite või lingi Riigi Teataja veebiaadressile. (2) Riigiasutuste ja kohaliku omavalitsuse üksuste veebilehtedel Riigi Teatajas avaldatud õigusakte ei avaldata, vaid lisatakse lingid, mille kaudu on aktid Riigi Teatajast kättesaadavad.",
       "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_RIIGI_2"
-      }
-    },
-    {
-      "@id": "estleg:RIIGI_Par_13",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIGI"
-      ],
-      "estleg:paragrahv": "§ 13.",
-      "rdfs:label": "§ 13. Avaldamismärke kasutamine",
-      "estleg:sourceAct": "Riigi Teataja seadus",
-      "estleg:summary": "1(1)Riigi Teatajas avaldatud õigusakti muutmisel või kehtetuks tunnistamisel esitatakse muutvas või kehtetuks tunnistavas õigusaktis muudetava või kehtetuks tunnistatava õigusakti esimese algteksti ja viimase muudatuse avaldamismärge. Riigi Teatajas avaldatud õigusakti muutmisel või kehtetuks tunnistamisel esitatakse muutvas või kehtetuks tunnistavas õigusaktis muudetava või kehtetuks tunnistatava õigusakti esimese algteksti ja viimase muudatuse avaldamismärge. 2(2)Käesoleva paragrahvi lõikes 1 ",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_RIIGI_2"
-      }
-    },
-    {
-      "@id": "estleg:RIIGI_Par_14",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIGI"
-      ],
-      "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Riigi Teataja otsingusüsteem",
-      "estleg:sourceAct": "Riigi Teataja seadus",
-      "estleg:summary": "1(1)Kehtetu -RT I2005322379098252005-07-01+03:00 Kehtetu - 2(2)Elektroonilise Riigi Teataja kasutamiseks infotehnoloogilise otsingusüsteemi abil tagatakse õigusaktide ja muude dokumentide leidmine märksõna, kronoloogia, akti andja, akti liigi, akti nimetuse, akti avaldamismärgete, akti viidete, kehtestamise ja jõustumise aja ning muude akti või dokumendi andmete alusel, samuti ületekstiotsinguga.RT I2005322379098252005-07-01+03:00 Elektroonilise Riigi Teataja kasutamiseks infotehnoloogilise otsi",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_RIIGI_2"
-      }
-    },
-    {
-      "@id": "estleg:RIIGI_Par_15",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIGI"
-      ],
-      "estleg:paragrahv": "§ 15.",
-      "rdfs:label": "§ 15. Õigusaktide ja muude dokumentide esitamine avaldamiseks",
-      "estleg:sourceAct": "Riigi Teataja seadus",
-      "estleg:summary": "1(1)Õigusakt või muu dokument esitatakse Riigi Teatajas avaldamiseks Riigikantselei antud juhiste kohaselt elektroonilisel kujul hiljemalt õigusakti või muu dokumendi väljakuulutamisele või allakirjutamisele järgneval tööpäeval. Erandina võib kooskõlastatult Riigikantseleiga esitada õigusakti või muu dokumendi avaldamiseks paberkandjal. Õigusakt või muu dokument esitatakse Riigi Teatajas avaldamiseks Riigikantselei antud juhiste kohaselt elektroonilisel kujul hiljemalt õigusakti või muu dokumend",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_RIIGI_3"
+        "@id": "estleg:Cluster_RIIGI_default"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      }
-    },
-    {
-      "@id": "estleg:RIIGI_Par_16",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIGI"
-      ],
-      "estleg:paragrahv": "§ 16.",
-      "rdfs:label": "§ 16. Õigusaktide avaldamise tähtajad",
-      "estleg:sourceAct": "Riigi Teataja seadus",
-      "estleg:summary": "1(1)Seadused avaldatakse Riigi Teatajas seitsme tööpäeva jooksul nende Riigikantseleisse saabumise päevast arvates. Välislepingutega ühinemise, nende vastuvõtmise, kinnitamise ja ratifitseerimise seadused ning neile lisatud välislepingud avaldatakse 20 tööpäeva jooksul nende Riigikantseleisse saabumise päevast arvates. Seadused avaldatakse Riigi Teatajas seitsme tööpäeva jooksul nende Riigikantseleisse saabumise päevast arvates. Välislepingutega ühinemise, nende vastuvõtmise, kinnitamise ja rati",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_RIIGI_3"
-      }
-    },
-    {
-      "@id": "estleg:RIIGI_Par_17",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIGI"
-      ],
-      "estleg:paragrahv": "§ 17.",
-      "rdfs:label": "§ 17. Õigusaktides ja muudes dokumentides vormi-, keele- ja trükivigade parandamine",
-      "estleg:sourceAct": "Riigi Teataja seadus",
-      "estleg:summary": "1(1)Avaldatavates õigusaktides ja muudes dokumentides võib Riigikantselei avaldamise käigus teha parandusi ja täiendusi avaldamismärgetes ning parandada trükivigu, millest teatatakse õigusakti andjale või selle avaldamiseks esitanud asutusele. Keele- ja vormivigade korral esitab õigusakti või muu dokumendi esitanud asutus avaldamiseks selle keeleliselt ja vormiliselt korrektse teksti või selle osa vastutava ametniku poolt allkirjastatuna. Avaldatavates õigusaktides ja muudes dokumentides võib Ri",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_RIIGI_3"
-      },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      },
-      "estleg:targetGroup": [
-        "public_body",
-        "official"
-      ]
-    },
-    {
-      "@id": "estleg:RIIGI_Par_18",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIGI"
-      ],
-      "estleg:paragrahv": "§ 18.",
-      "rdfs:label": "§ 18. Õigusakti tervikteksti koostamine ja avaldamine",
-      "estleg:sourceAct": "Riigi Teataja seadus",
-      "estleg:summary": "1(1)Terviktekst on õigusakti redaktsioon, milles esitatakse läbivalt kõik õigusaktis tehtud muudatused. Esimene algtekst on ühtlasi ka tervikteksti esimeseks redaktsiooniks. Terviktekst on õigusakti redaktsioon, milles esitatakse läbivalt kõik õigusaktis tehtud muudatused. Esimene algtekst on ühtlasi ka tervikteksti esimeseks redaktsiooniks. 2(2)Terviktekst koostatakse ja avaldatakse elektrooniliselt pärast õigusakti iga muudatuse kehtestamist ja pärast õigusakti kehtetuks tunnistamist. Tervikte",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_RIIGI_3"
-      }
-    },
-    {
-      "@id": "estleg:RIIGI_Par_19",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIGI"
-      ],
-      "estleg:paragrahv": "§ 19.",
-      "rdfs:label": "§ 19. Avaldatud dokumentide kohaldamine nende mittevastavuse korral",
-      "estleg:sourceAct": "Riigi Teataja seadus",
-      "estleg:summary": "1(1)Kui elektroonilises Riigi Teatajas ja paberkandjal väljaantavas Riigi Teatajas või käesoleva seaduse § 4 lõikes 2 sätestatud korras avaldatud sama õigusakti või muu dokumendi tekst on omavahel vastuolus, kohaldatakse paberkandjal avaldatud teksti ning vastuolust teatatakse Riigikantseleile. Kui elektroonilises Riigi Teatajas ja paberkandjal väljaantavas Riigi Teatajas või käesoleva seaduse § 4 lõikes 2 sätestatud korras avaldatud sama õigusakti või muu dokumendi tekst on omavahel vastuolus, ",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_RIIGI_3"
-      },
-      "estleg:references": [
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:RIIGI_Par_4"
-        }
-      ]
-    },
-    {
-      "@id": "estleg:RIIGI_Par_20",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIGI"
-      ],
-      "estleg:paragrahv": "§ 20.",
-      "rdfs:label": "§ 20. Riigi Teatajas avaldatud õigusaktide võõrkeeltesse tõlkimise korraldamine",
-      "estleg:sourceAct": "Riigi Teataja seadus",
-      "estleg:summary": "1(1)Riigikantselei korraldab Riigi Teatajas avaldatud õigusaktide valikulise tõlkimise võõrkeeltesse ning tõlgitud tekstide avaldamise. Riigikantselei korraldab Riigi Teatajas avaldatud õigusaktide valikulise tõlkimise võõrkeeltesse ning tõlgitud tekstide avaldamise. 2(2)Õigusaktide võõrkeelsete väljaannete nimetused on:11)inglise keeles Legal Acts of Estonia;22)vene keeles Правовые акты Эстонии Õigusaktide võõrkeelsete väljaannete nimetused on: inglise keeles Legal Acts of Estonia; vene keeles ",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_RIIGI_3"
-      }
-    },
-    {
-      "@id": "estleg:RIIGI_Par_20_25",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIGI"
-      ],
-      "estleg:paragrahv": "§ 20.",
-      "rdfs:label": "§ 20. Riigi Teatajas avaldatud õigusaktide võõrkeeltesse tõlkimise korraldamine",
-      "estleg:sourceAct": "Riigi Teataja seadus",
-      "estleg:summary": "Riigi Teatajas avaldatud õigusaktide võõrkeeltesse tõlkimist korraldab Justiitsministeerium.RT I2005322379098252006-01-01+02:00 Riigi Teatajas avaldatud õigusaktide võõrkeeltesse tõlkimist korraldab Justiitsministeerium.",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_RIIGI_3"
-      },
-      "estleg:competentAuthority": [
+          "@id": "estleg:RIIGI_Par_12_Lg_1"
+        },
         {
-          "@id": "estleg:Institution_justiitsministeerium"
+          "@id": "estleg:RIIGI_Par_12_Lg_2"
         }
       ],
-      "estleg:competenceType": "enforcement"
-    },
-    {
-      "@id": "estleg:RIIGI_Par_21",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIGI"
-      ],
-      "estleg:paragrahv": "§ 21.",
-      "rdfs:label": "§ 21. Õigusaktide, muude dokumentide ja teadaannete avaldamine muudes väljaannetes",
-      "estleg:sourceAct": "Riigi Teataja seadus",
-      "estleg:summary": "1(1)Riigi Teatajas avaldatud õigusakte ja õigusaktide terviktekste võib avaldada muudes väljaannetes ja veebilehtedel üksnes märkusega, et ametlik tekst on avaldatud Riigi Teatajas, lisades sellele viite või lingi elektroonilise Riigi Teataja veebiaadressile. Riigi Teatajas avaldatud õigusakte ja õigusaktide terviktekste võib avaldada muudes väljaannetes ja veebilehtedel üksnes märkusega, et ametlik tekst on avaldatud Riigi Teatajas, lisades sellele viite või lingi elektroonilise Riigi Teataja v",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_RIIGI_3"
-      },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      }
-    },
-    {
-      "@id": "estleg:RIIGI_Par_22",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIGI"
-      ],
-      "estleg:paragrahv": "§ 22.",
-      "rdfs:label": "§ 22. Avaldamiskulude katmine",
-      "estleg:sourceAct": "Riigi Teataja seadus",
-      "estleg:summary": "1(1)Õigusaktide, muude dokumentide ja teadaannete avaldamise eest Riigi Teatajas tasu ei võeta. Nende avaldamise ja levitamise kulud tasub Riigi Teataja tellija või ostja. Õigusaktide, muude dokumentide ja teadaannete avaldamise eest Riigi Teatajas tasu ei võeta. Nende avaldamise ja levitamise kulud tasub Riigi Teataja tellija või ostja. 2(2)Elektroonilise Riigi Teataja pidamise kulud kaetakse riigieelarvest. Elektroonilise Riigi Teataja pidamise kulud kaetakse riigieelarvest.",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_RIIGI_3"
-      }
-    },
-    {
-      "@id": "estleg:RIIGI_Par_23",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIGI"
-      ],
-      "estleg:paragrahv": "§ 23.",
-      "rdfs:label": "§ 23. Riigi Teataja levitamine",
-      "estleg:sourceAct": "Riigi Teataja seadus",
-      "estleg:summary": ", 1. 01. 2006, 1. 01. 2007 [Lõike 1 sõnastus kuni 31. 12. 2006] [Lõike 1 sõnastus kuni 31. 12. 2006] 1(1)Riigi Teataja annete levitamist korraldab Riigi Teataja kirjastaja tellimuste alusel ja üksiknumbrite müügina ajakirjandust levitavate asutuste kaudu. Riigi Teataja annete levitamist korraldab Riigi Teataja kirjastaja tellimuste alusel ja üksiknumbrite müügina ajakirjandust levitavate asutuste kaudu. [Lõike 1 sõnastus alates 1. 01. 2007] [Lõike 1 sõnastus alates 1. 01. 2007] 1(1)Riigi Teataja",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_RIIGI_4"
-      },
       "estleg:targetGroup": [
         "public_body"
-      ]
-    },
-    {
-      "@id": "estleg:RIIGI_Par_24",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIGI"
       ],
-      "estleg:paragrahv": "§ 24.",
-      "rdfs:label": "§ 24. Ametlik väljaanne Ametlikud Teadaanded",
-      "estleg:sourceAct": "Riigi Teataja seadus",
-      "estleg:summary": "1(1)Ametlikud Teadaanded on elektroonilisel kujul Internetis ilmuv ja Riigikantselei väljaantav ametlik väljaanne. Riigikantselei võib Ametlike Teadaannete väljaandmise korraldamise teha ülesandeks hallatavale riigiasutusele või sõlmida vastava lepingu eraõigusliku juriidilise isikuga kooskõlas riigihangete seadusega (RT I 2000, 84, 534; 2001, 40, 224; 50, 284; 2002, 23, 131; 47, 297; 61, 375; 63, 387; 87, 505; 99, 577). Ametlikud Teadaanded on elektroonilisel kujul Internetis ilmuv ja Riigikant",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_RIIGI_5"
-      },
       "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
+        "@id": "estleg:NormType_Permission"
       },
-      "estleg:targetGroup": [
-        "citizen"
-      ]
-    },
-    {
-      "@id": "estleg:RIIGI_Par_24_30",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIGI"
-      ],
-      "estleg:paragrahv": "§ 24<sup>1</sup>.",
-      "rdfs:label": "§ 24<sup>1</sup>. Teadaande esitamine ja avaldamine",
-      "estleg:sourceAct": "Riigi Teataja seadus",
-      "estleg:summary": "1(1)Teadaanne esitatakse avaldamiseks paberkandjal või väljaandja juhiste kohaselt elektroonilisel kujul. Teadaanne esitatakse avaldamiseks paberkandjal või väljaandja juhiste kohaselt elektroonilisel kujul. 2(2)Teadaanne avaldatakse muutmata kujul. Avaldamiseks esitatud teadaande õigsuse eest vastutab teadaande esitaja. Teadaanne avaldatakse muutmata kujul. Avaldamiseks esitatud teadaande õigsuse eest vastutab teadaande esitaja. 3(3)Kui avaldatud teadaande tekstis esineb vormi-, keele- või trük",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_RIIGI_5"
-      }
-    },
-    {
-      "@id": "estleg:RIIGI_Par_24_31",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIGI"
-      ],
-      "estleg:paragrahv": "§ 24<sup>2</sup>.",
-      "rdfs:label": "§ 24<sup>2</sup>. Andmevahetus",
-      "estleg:sourceAct": "Riigi Teataja seadus",
-      "estleg:summary": "Ametlike Teadaannete infosüsteemi ja teiste andmekogude andmete kasutamine võib toimuda ristkasutuse korras.RT I2005322379098252005-07-01+03:00 Ametlike Teadaannete infosüsteemi ja teiste andmekogude andmete kasutamine võib toimuda ristkasutuse korras.",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_RIIGI_5"
-      },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
-      }
-    },
-    {
-      "@id": "estleg:RIIGI_Par_49",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIGI"
-      ],
-      "estleg:paragrahv": "§ 49.",
-      "rdfs:label": "§ 49.",
-      "estleg:sourceAct": "Riigi Teataja seadus",
-      "estleg:summary": "Teadaannete avaldamise piirang Riigi Teatajas 1999. aastal Teadaannete avaldamise piirang Riigi Teatajas 1999. aastal 1(1)Teadaandeid ja muid dokumente, mida avaldatakse 1999. aastal üleriigilise levikuga ajalehes Justiitsministeeriumi poolt sõlmitud lepingu alusel, Riigi Teataja Lisas alates 1999. aasta 1. aprillist ei avaldata. Teadaandeid ja muid dokumente, mida avaldatakse 1999. aastal üleriigilise levikuga ajalehes Justiitsministeeriumi poolt sõlmitud lepingu alusel, Riigi Teataja Lisas ala",
       "estleg:competentAuthority": [
         {
-          "@id": "estleg:Institution_justiitsministeerium"
+          "@id": "estleg:Institution_kohalik_omavalitsus"
         }
       ],
       "estleg:competenceType": "general"
     },
     {
-      "@id": "estleg:RIIGI_Par_49_33",
+      "@id": "estleg:RIIGI_Par_12_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Riigi Teatajas avaldatud akte võib avaldada muudes väljaannetes ja veebilehtedel märkusega, et ametlik tekst on avaldatud Riigi Teatajas, lisades sellele viite või lingi Riigi Teataja veebiaadressile.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 1"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_12_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Riigiasutuste ja kohaliku omavalitsuse üksuste veebilehtedel Riigi Teatajas avaldatud õigusakte ei avaldata, vaid lisatakse lingid, mille kaudu on aktid Riigi Teatajast kättesaadavad.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 2"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_13",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIGI"
+        "estleg:LegalProvision_riigi_teataja_seadus"
       ],
-      "estleg:paragrahv": "§ 49<sup>1</sup>.",
-      "rdfs:label": "§ 49<sup>1</sup>. Varasemates seadustes sisalduvate teadaannete avaldamine",
+      "estleg:paragrahv": "§ 13.",
+      "rdfs:label": "§ 13. Ametlikud Teadaanded",
       "estleg:sourceAct": "Riigi Teataja seadus",
-      "estleg:summary": "Teadaanded, mille avaldamine Riigi Teataja Lisas on ette nähtud varasema seadusega, kuid mis ei sisaldu käesoleva seaduse § 2 või § 3 lõikes 1 esitatud loetelus, avaldatakse ametlikus väljaandes Ametlikud Teadaanded. Teadaanded, mille avaldamine Riigi Teataja Lisas on ette nähtud varasema seadusega, kuid mis ei sisaldu käesoleva seaduse § 2 või § 3 lõikes 1 esitatud loetelus, avaldatakse ametlikus väljaandes Ametlikud Teadaanded.",
-      "estleg:references": [
+      "estleg:summary": "1 (1) Ametlikud Teadaanded on Eesti Vabariigi ametlik võrguväljaanne ja andmekogu, mille väljaandja on Justiits- ja Digiministeerium. RT I 2024-12-30 1 130122024001 2025-01-01 , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes Ametlikud Teadaanded on Eesti Vabariigi ametlik võrguväljaanne ja andmekogu, mille väljaandja on Justiits- ja Digiministeerium. , Vabariigi Valitsuse seaduse § 105.19 lõike ",
+      "estleg:legalText": "(1) Ametlikud Teadaanded on Eesti Vabariigi ametlik võrguväljaanne ja andmekogu, mille väljaandja on Justiits- ja Digiministeerium. , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes (2) Ametlikes Teadaannetes avaldatakse teated, kutsed ja kuulutused (edaspidi teadaanne), mille avaldamise kohustus tuleneb seadusest või Vabariigi Valitsuse või ministri määrusest ja mille avaldamist muus väljaandes ei ole ette nähtud. (3) Ametlikes Teadaannetes avaldatud teadaannete lugemine Internetis kättesaadava avaliku kasutajaliidese kaudu on tasuta, muud teenused võivad olla tasulised. (4) kehtestab määrusega Ametlike Teadaannete põhimääruse, sealhulgas: andmekogu pidamise ning teadaannete esitamise korra; avaldamise lõpetamise ja kustutamise tähtajad teadaande liikide kaupa, kui need ei tulene seadusest; nende teadaannetega tutvumise korra, mille avaldamine on lõpetatud; võib kehtestada Ametlike Teadaannete nende tasuliste teenuste loetelu, millega võimaldatakse automaatsete teavituste, päringute või automaatselt töödeldavate andmete edastamist, teenuste osutamise tingimused ja tasumäärad kuni 6 eurot ühe teavituse või päringu kohta. (5) Teadaanne, mis on esitatud kehtestatud korras ja mille eest on tasutud riigilõiv, kui see on riigilõivu seaduses ette nähtud, avaldatakse ühe tööpäeva jooksul teadaande avaldamiseks esitamisest või teadaandes märgitud hilisemal kuupäeval. (6) Teadaanne avaldatakse muutmata kujul, näidates ära teadaande avaldamise kuupäeva. Avaldamiseks esitatud teadaande õigsuse eest vastutab teadaande esitaja. (7) Ametlike Teadaannete väljaandja võib parandada teadaandes ilmse ebatäpsuse. (8) Ametlike Teadaannete väljaandja võib jätta teadaande avaldamata või avaldatud teadaande kustutada, kui teadaande avaldamise eest ei ole tasutud ettenähtud riigilõivu või selle avaldamiseks puudub õiguslik alus. (9) Teadaande esitaja määrab esitamisel teadaande avaldamise lõpetamise tähtaja, arvestades avaldamise eesmärgi saavutamise vajadust, kui see on teadaande esitamisel teada ja kui see on lühem käesoleva paragrahvi lõike 4 punkti 2 alusel kehtestatud tähtajast. Teadaande avaldamine lõpetatakse tähtaja saabumisel automaatselt. (10) Kui avaldamise lõpetamise tähtaeg ei ole teadaande esitamisel teada, teatab esitaja tähtaja saabumisel sellest Ametlike Teadaannete väljaandjale. (11) Puudutatud isik võib teadaande esitajalt nõuda selle teadaande avaldamise lõpetamist, mille avaldamise eesmärk on täidetud. Teadaande esitaja teatab avaldamise lõpetamisest Ametlike Teadaannete väljaandjale. (12) Teadaande esitaja võib taotleda teadaande parandamist või kustutamist, näidates ära selle põhjuse. Ametlike Teadaannete väljaandja võib parandamisest või kustutamisest põhjendatult keelduda. Parandamise või kustutamise korral lisatakse sellele väljaandja õiend. (13) Teadaannetega, mille avaldamine on lõpetatud, on õigus tutvuda pädeval asutusel ja õigustatud huviga isikul.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RIIGI_default"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:RIIGI_Par_2"
+          "@id": "estleg:RIIGI_Par_13_Lg_1"
+        },
+        {
+          "@id": "estleg:RIIGI_Par_13_Lg_2"
+        },
+        {
+          "@id": "estleg:RIIGI_Par_13_Lg_3"
+        },
+        {
+          "@id": "estleg:RIIGI_Par_13_Lg_4"
+        },
+        {
+          "@id": "estleg:RIIGI_Par_13_Lg_5"
+        },
+        {
+          "@id": "estleg:RIIGI_Par_13_Lg_6"
+        },
+        {
+          "@id": "estleg:RIIGI_Par_13_Lg_7"
+        },
+        {
+          "@id": "estleg:RIIGI_Par_13_Lg_8"
+        },
+        {
+          "@id": "estleg:RIIGI_Par_13_Lg_9"
+        },
+        {
+          "@id": "estleg:RIIGI_Par_13_Lg_10"
+        },
+        {
+          "@id": "estleg:RIIGI_Par_13_Lg_11"
+        },
+        {
+          "@id": "estleg:RIIGI_Par_13_Lg_12"
+        },
+        {
+          "@id": "estleg:RIIGI_Par_13_Lg_13"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "business",
+        "public_body"
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_justiits_ja_digiministeerium"
+        },
+        {
+          "@id": "estleg:Institution_justiitsministeerium"
+        }
+      ],
+      "estleg:competenceType": "general",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:VANDET_Par_12",
+          "estleg:similarityScore": {
+            "@value": "0.324",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:VANDET_Par_21",
+          "estleg:similarityScore": {
+            "@value": "0.367",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:VANDET_Par_28",
+          "estleg:similarityScore": {
+            "@value": "0.478",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
         }
       ]
     },
     {
-      "@id": "estleg:RIIGI_Par_49_34",
+      "@id": "estleg:RIIGI_Par_13_Lg_1",
       "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIGI"
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:paragrahv": "§ 49<sup>2</sup>.",
-      "rdfs:label": "§ 49<sup>2</sup>. Käesoleva seaduse § 7",
-      "estleg:sourceAct": "Riigi Teataja seadus",
-      "estleg:summary": "Üleminek muutva õigusaktiga samaaegselt uue tervikteksti esitamisele toimub hiljemalt 2006. aasta 1. juunil.RT I2005322379098252005-07-01+03:00 Üleminek muutva õigusaktiga samaaegselt uue tervikteksti esitamisele toimub hiljemalt 2006. aasta 1. juunil.",
-      "estleg:targetGroup": [
-        "official"
-      ]
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ametlikud Teadaanded on Eesti Vabariigi ametlik võrguväljaanne ja andmekogu, mille väljaandja on Justiits- ja Digiministeerium. , Vabariigi Valitsuse seaduse § 105.19 lõike 12 alusel asendatud sõna „Justiitsministeerium” sõnadega „Justiits- ja Digiministeerium” vastavas käändes",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 1"
     },
     {
-      "@id": "estleg:RIIGI_Par_49_35",
+      "@id": "estleg:RIIGI_Par_13_Lg_2",
       "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIGI"
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:paragrahv": "§ 49<sup>3</sup>.",
-      "rdfs:label": "§ 49<sup>3</sup>. Käesoleva seaduse § 15 lõike 1 kohaldamine dokumentide elektroonilisel esitamisel",
-      "estleg:sourceAct": "Riigi Teataja seadus",
-      "estleg:summary": "Õigusaktide ja muude dokumentide elektroonilisele esitamisele üleminek toimub hiljemalt 2006. aasta 1. juunil.RT I2005322379098252005-07-01+03:00 Õigusaktide ja muude dokumentide elektroonilisele esitamisele üleminek toimub hiljemalt 2006. aasta 1. juunil.",
-      "estleg:targetGroup": [
-        "official"
-      ]
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Ametlikes Teadaannetes avaldatakse teated, kutsed ja kuulutused (edaspidi teadaanne), mille avaldamise kohustus tuleneb seadusest või Vabariigi Valitsuse või ministri määrusest ja mille avaldamist muus väljaandes ei ole ette nähtud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 2"
     },
     {
-      "@id": "estleg:RIIGI_Par_50",
+      "@id": "estleg:RIIGI_Par_13_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Ametlikes Teadaannetes avaldatud teadaannete lugemine Internetis kättesaadava avaliku kasutajaliidese kaudu on tasuta, muud teenused võivad olla tasulised.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 3"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_13_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) kehtestab määrusega Ametlike Teadaannete põhimääruse, sealhulgas: andmekogu pidamise ning teadaannete esitamise korra; avaldamise lõpetamise ja kustutamise tähtajad teadaande liikide kaupa, kui need ei tulene seadusest; nende teadaannetega tutvumise korra, mille avaldamine on lõpetatud; võib kehtestada Ametlike Teadaannete nende tasuliste teenuste loetelu, millega võimaldatakse automaatsete teavituste, päringute või automaatselt töödeldavate andmete edastamist, teenuste osutamise tingimused ja tasumäärad kuni 6 eurot ühe teavituse või päringu kohta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 4"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_13_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Teadaanne, mis on esitatud kehtestatud korras ja mille eest on tasutud riigilõiv, kui see on riigilõivu seaduses ette nähtud, avaldatakse ühe tööpäeva jooksul teadaande avaldamiseks esitamisest või teadaandes märgitud hilisemal kuupäeval.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 5"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_13_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Teadaanne avaldatakse muutmata kujul, näidates ära teadaande avaldamise kuupäeva. Avaldamiseks esitatud teadaande õigsuse eest vastutab teadaande esitaja.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 6"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_13_Lg_7",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "7",
+      "estleg:legalText": "(7) Ametlike Teadaannete väljaandja võib parandada teadaandes ilmse ebatäpsuse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 7"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_13_Lg_8",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "8",
+      "estleg:legalText": "(8) Ametlike Teadaannete väljaandja võib jätta teadaande avaldamata või avaldatud teadaande kustutada, kui teadaande avaldamise eest ei ole tasutud ettenähtud riigilõivu või selle avaldamiseks puudub õiguslik alus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 8"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_13_Lg_9",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "9",
+      "estleg:legalText": "(9) Teadaande esitaja määrab esitamisel teadaande avaldamise lõpetamise tähtaja, arvestades avaldamise eesmärgi saavutamise vajadust, kui see on teadaande esitamisel teada ja kui see on lühem käesoleva paragrahvi lõike 4 punkti 2 alusel kehtestatud tähtajast. Teadaande avaldamine lõpetatakse tähtaja saabumisel automaatselt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 9"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_13_Lg_10",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "10",
+      "estleg:legalText": "(10) Kui avaldamise lõpetamise tähtaeg ei ole teadaande esitamisel teada, teatab esitaja tähtaja saabumisel sellest Ametlike Teadaannete väljaandjale.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 10"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_13_Lg_11",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "11",
+      "estleg:legalText": "(11) Puudutatud isik võib teadaande esitajalt nõuda selle teadaande avaldamise lõpetamist, mille avaldamise eesmärk on täidetud. Teadaande esitaja teatab avaldamise lõpetamisest Ametlike Teadaannete väljaandjale.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 11"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_13_Lg_12",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "12",
+      "estleg:legalText": "(12) Teadaande esitaja võib taotleda teadaande parandamist või kustutamist, näidates ära selle põhjuse. Ametlike Teadaannete väljaandja võib parandamisest või kustutamisest põhjendatult keelduda. Parandamise või kustutamise korral lisatakse sellele väljaandja õiend.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 12"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_13_Lg_13",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "13",
+      "estleg:legalText": "(13) Teadaannetega, mille avaldamine on lõpetatud, on õigus tutvuda pädeval asutusel ja õigustatud huviga isikul.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 13"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_14",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RIIGI"
+        "estleg:LegalProvision_riigi_teataja_seadus"
       ],
-      "estleg:paragrahv": "§ 50.",
-      "rdfs:label": "§ 50. Seaduse jõustumine",
+      "estleg:paragrahv": "§ 14.",
+      "rdfs:label": "§ 14. Üleminekusätted",
       "estleg:sourceAct": "Riigi Teataja seadus",
-      "estleg:summary": "1(1)Käesolev seadus jõustub 1999. aasta 1. märtsil. Käesolev seadus jõustub 1999. aasta 1. märtsil. 2(2)Käesoleva seaduse § 3, § 24 lõiked 1-3, §-d 25-27, §-d 29-40 ja §-d 42-47 jõustuvad 2000. aasta 1. jaanuaril. Käesoleva seaduse § 3, § 24 lõiked 1-3, §-d 25-27, §-d 29-40 ja §-d 42-47 jõustuvad 2000. aasta 1. jaanuaril. 3(3)Käesoleva seaduse § 41 jõustub 1999. aasta 15. juulil. Käesoleva seaduse § 41 jõustub 1999. aasta 15. juulil.",
+      "estleg:summary": "1 (1) Kohaliku omavalitsuse üksuste kõikide määruste ja nende terviktekstide avaldamist Riigi Teatajas alustatakse hiljemalt 2013. aasta 1. jaanuaril. Kohaliku omavalitsuse üksuste kõikide määruste ja nende terviktekstide avaldamist Riigi Teatajas alustatakse hiljemalt 2013. aasta 1. jaanuaril. 2 (2) Kuni 2010. aasta 31. detsembrini annab Riigi Teatajat välja Riigikantselei ja korraldab käesoleva seaduse § 9 lõike 3 punktis 1 sätestatud Vabariigi Valitsuse määruste ja korralduste terviktekstide ",
+      "estleg:legalText": "(1) Kohaliku omavalitsuse üksuste kõikide määruste ja nende terviktekstide avaldamist Riigi Teatajas alustatakse hiljemalt 2013. aasta 1. jaanuaril. (2) Kuni 2010. aasta 31. detsembrini annab Riigi Teatajat välja Riigikantselei ja korraldab käesoleva seaduse § 9 lõike 3 punktis 1 sätestatud Vabariigi Valitsuse määruste ja korralduste terviktekstide avaldamise. (3) Riigi Teataja väljaandmise ülesanded antakse Riigikantseleilt koos eelarvega üle Justiitsministeeriumile 2011. aasta 1. jaanuaril. Riigi Teataja väljaandmist korraldava Riigikantselei struktuuriüksuse ametnikud jätkavad alates 2011. aasta 1. jaanuarist teenistust Justiitsministeeriumi koosseisus. (4) Kuni päevani, mis on kindlaks määratud Euroopa Liidu Nõukogu otsuses Eesti Vabariigi suhtes kehtestatud erandi kehtetuks tunnistamise kohta Euroopa Liidu toimimise lepingu artikli 140 lõikes 2 sätestatud alusel, võib käesoleva seaduse § 13 lõike 4 punkti 4 alusel kehtestatav tasumäär olla kuni 100 krooni.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RIIGI_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RIIGI_Par_14_Lg_1"
+        },
+        {
+          "@id": "estleg:RIIGI_Par_14_Lg_2"
+        },
+        {
+          "@id": "estleg:RIIGI_Par_14_Lg_3"
+        },
+        {
+          "@id": "estleg:RIIGI_Par_14_Lg_4"
+        }
+      ],
+      "estleg:targetGroup": [
+        "public_body",
+        "official"
+      ],
       "estleg:references": [
         {
-          "@id": "estleg:RIIGI_Par_3"
+          "@id": "estleg:RIIGI_Par_9"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        }
+      ],
+      "estleg:competenceType": "enforcement"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_14_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kohaliku omavalitsuse üksuste kõikide määruste ja nende terviktekstide avaldamist Riigi Teatajas alustatakse hiljemalt 2013. aasta 1. jaanuaril.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 1"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_14_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kuni 2010. aasta 31. detsembrini annab Riigi Teatajat välja Riigikantselei ja korraldab käesoleva seaduse § 9 lõike 3 punktis 1 sätestatud Vabariigi Valitsuse määruste ja korralduste terviktekstide avaldamise.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 2"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_14_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Riigi Teataja väljaandmise ülesanded antakse Riigikantseleilt koos eelarvega üle Justiitsministeeriumile 2011. aasta 1. jaanuaril. Riigi Teataja väljaandmist korraldava Riigikantselei struktuuriüksuse ametnikud jätkavad alates 2011. aasta 1. jaanuarist teenistust Justiitsministeeriumi koosseisus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 3"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_14_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Kuni päevani, mis on kindlaks määratud Euroopa Liidu Nõukogu otsuses Eesti Vabariigi suhtes kehtestatud erandi kehtetuks tunnistamise kohta Euroopa Liidu toimimise lepingu artikli 140 lõikes 2 sätestatud alusel, võib käesoleva seaduse § 13 lõike 4 punkti 4 alusel kehtestatav tasumäär olla kuni 100 krooni.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 4"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_15",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_riigi_teataja_seadus"
+      ],
+      "estleg:paragrahv": "§ 15.",
+      "rdfs:label": "§ 15.",
+      "estleg:sourceAct": "Riigi Teataja seadus",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RIIGI_default"
+      },
+      "estleg:summary": "1(1)Õigusakt või muu dokument esitatakse Riigi Teatajas avaldamiseks Riigikantselei antud juhiste kohaselt elektroonilisel kujul hiljemalt õigusakti või muu dokumendi väljakuulutamisele või allakirjutamisele järgneval tööpäeval. Erandina võib kooskõlastatult Riigikantseleiga esitada õigusakti või muu dokumendi avaldamiseks paberkandjal. Õigusakt või muu dokument esitatakse Riigi Teatajas avaldamiseks Riigikantselei antud juhiste kohaselt elektroonilisel kujul hiljemalt õigusakti või muu dokumend",
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:RIIGI_Par_41",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_riigi_teataja_seadus"
+      ],
+      "estleg:paragrahv": "§ 41.",
+      "rdfs:label": "§ 41. [[Käesolevast tekstist välja jäetud.]]",
+      "estleg:sourceAct": "Riigi Teataja seadus",
+      "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RIIGI_default"
+      }
+    },
+    {
+      "@id": "estleg:RIIGI_Par_42",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_riigi_teataja_seadus"
+      ],
+      "estleg:paragrahv": "§ 42.",
+      "rdfs:label": "§ 42. Jõustumine",
+      "estleg:sourceAct": "Riigi Teataja seadus",
+      "estleg:summary": "1 (1) Seadus jõustub 2010. aasta 1. juunil. Seadus jõustub 2010. aasta 1. juunil. 2 (2) Seaduse § 22 punktid 3 ja 5, § 36 punktid 1 ja 2 ning § 40 jõustuvad järgmisel päeval pärast seaduse Riigi Teatajas avaldamist. Seaduse § 22 punktid 3 ja 5, § 36 punktid 1 ja 2 ning § 40 jõustuvad järgmisel päeval pärast seaduse Riigi Teatajas avaldamist. 3 (3) Seaduse § 6 lõike 3 punkt 2 ja § 38 jõustuvad 2014. aasta 1. jaanuaril. Seaduse § 6 lõike 3 punkt 2 ja § 38 jõustuvad 2014. aasta 1. jaanuaril. 4 (4) ",
+      "estleg:legalText": "(1) Seadus jõustub 2010. aasta 1. juunil. (2) Seaduse § 22 punktid 3 ja 5, § 36 punktid 1 ja 2 ning § 40 jõustuvad järgmisel päeval pärast seaduse Riigi Teatajas avaldamist. (3) Seaduse § 6 lõike 3 punkt 2 ja § 38 jõustuvad 2014. aasta 1. jaanuaril. (4) Seaduse § 22, välja arvatud punktid 3 ja 5, jõustub 2013. aasta 1. jaanuaril. (5) Seaduse § 6 lõige 2 ja lõike 3 punkt 1, § 13 lõiked 4, 9 ja 10 ning § 36 punktid 3 ja 4 jõustuvad 2011. aasta 1. jaanuaril.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RIIGI_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RIIGI_Par_42_Lg_1"
+        },
+        {
+          "@id": "estleg:RIIGI_Par_42_Lg_2"
+        },
+        {
+          "@id": "estleg:RIIGI_Par_42_Lg_3"
+        },
+        {
+          "@id": "estleg:RIIGI_Par_42_Lg_4"
+        },
+        {
+          "@id": "estleg:RIIGI_Par_42_Lg_5"
         }
       ]
+    },
+    {
+      "@id": "estleg:RIIGI_Par_42_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Seadus jõustub 2010. aasta 1. juunil.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_42"
+      },
+      "rdfs:label": "§ 42 lg 1"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_42_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Seaduse § 22 punktid 3 ja 5, § 36 punktid 1 ja 2 ning § 40 jõustuvad järgmisel päeval pärast seaduse Riigi Teatajas avaldamist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_42"
+      },
+      "rdfs:label": "§ 42 lg 2"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_42_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Seaduse § 6 lõike 3 punkt 2 ja § 38 jõustuvad 2014. aasta 1. jaanuaril.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_42"
+      },
+      "rdfs:label": "§ 42 lg 3"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_42_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Seaduse § 22, välja arvatud punktid 3 ja 5, jõustub 2013. aasta 1. jaanuaril.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_42"
+      },
+      "rdfs:label": "§ 42 lg 4"
+    },
+    {
+      "@id": "estleg:RIIGI_Par_42_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Seaduse § 6 lõige 2 ja lõike 3 punkt 1, § 13 lõiked 4, 9 ja 10 ning § 36 punktid 3 ja 4 jõustuvad 2011. aasta 1. jaanuaril.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RIIGI_Par_42"
+      },
+      "rdfs:label": "§ 42 lg 5"
     }
   ]
 }

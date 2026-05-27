@@ -6,30 +6,31 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
   },
   "@graph": [
     {
       "@id": "estleg:TAS_Map_2026",
       "@type": [
+        "owl:Ontology",
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "rdfs:label": "Eesti Teaduste Akadeemia seadus teemakaardistus",
       "dc:source": "Eesti Teaduste Akadeemia seadus",
-      "estleg:affectedBy": [
-        {
-          "@id": "estleg:Draft_RIIGIKOGU24_0971"
-        }
-      ],
-      "estleg:amendedBy": [
-        {
-          "@id": "estleg:Draft_RIIGIKOGU24_0971"
-        }
-      ],
-      "estleg:temporalStatus": "unknown",
+      "dcterms:title": "Eesti Teaduste Akadeemia seadus",
+      "estleg:contentStatus": "structuredBody",
+      "dcterms:source": {
+        "@id": "https://www.riigiteataja.ee/akt/112072025013.xml"
+      },
+      "owl:sameAs": {
+        "@id": "https://www.riigiteataja.ee/akt/112072025013.xml"
+      },
+      "estleg:kehtiv": {
+        "@value": "2026-05-24",
+        "@type": "xsd:date"
+      },
       "dcterms:subject": [
         {
           "@id": "http://eurovoc.europa.eu/6006"
@@ -38,18 +39,29 @@
           "@id": "http://eurovoc.europa.eu/5211"
         },
         {
+          "@id": "http://eurovoc.europa.eu/5231"
+        },
+        {
           "@id": "http://eurovoc.europa.eu/2446"
         },
         {
           "@id": "http://eurovoc.europa.eu/3606"
-        },
+        }
+      ],
+      "estleg:temporalStatus": "unknown",
+      "estleg:amendedBy": [
         {
-          "@id": "http://eurovoc.europa.eu/2016"
+          "@id": "estleg:AmendmentLink_Draft_RIIGIKOGU24_0971_TAS"
+        }
+      ],
+      "estleg:affectedBy": [
+        {
+          "@id": "estleg:Draft_RIIGIKOGU24_0971"
         }
       ]
     },
     {
-      "@id": "estleg:LegalProvision_TAS",
+      "@id": "estleg:LegalProvision_eesti_teaduste_akadeemia_seadus",
       "@type": [
         "owl:Class"
       ],
@@ -59,222 +71,975 @@
       }
     },
     {
+      "@id": "estleg:TAS_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": "Eesti Teaduste Akadeemia seadus teemaskeem",
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_TAS_1"
+        },
+        {
+          "@id": "estleg:Cluster_TAS_2"
+        },
+        {
+          "@id": "estleg:Cluster_TAS_3"
+        },
+        {
+          "@id": "estleg:Cluster_TAS_4"
+        },
+        {
+          "@id": "estleg:Cluster_TAS_5"
+        },
+        {
+          "@id": "estleg:Cluster_TAS_6"
+        }
+      ]
+    },
+    {
       "@id": "estleg:Cluster_TAS_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§1–3 ÜLDSÄTTED"
+      "rdfs:label": "§1–3 ÜLDSÄTTED",
+      "skos:prefLabel": "§1–3 ÜLDSÄTTED",
+      "skos:inScheme": {
+        "@id": "estleg:TAS_TopicScheme"
+      },
+      "estleg:provisionCount": 3
+    },
+    {
+      "@id": "estleg:Chapter_TAS_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "1. peatükk – ÜLDSÄTTED",
+      "estleg:chapterNumber": "1",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_TAS_1"
+      }
     },
     {
       "@id": "estleg:Cluster_TAS_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§4–6 AKADEEMIA LIIKMESKOND"
+      "rdfs:label": "§4–6 AKADEEMIA LIIKMESKOND",
+      "skos:prefLabel": "§4–6 AKADEEMIA LIIKMESKOND",
+      "skos:inScheme": {
+        "@id": "estleg:TAS_TopicScheme"
+      },
+      "estleg:provisionCount": 3
+    },
+    {
+      "@id": "estleg:Chapter_TAS_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "2. peatükk – AKADEEMIA LIIKMESKOND",
+      "estleg:chapterNumber": "2",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_TAS_2"
+      }
     },
     {
       "@id": "estleg:Cluster_TAS_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§7–12 JUHTIMINE"
+      "rdfs:label": "§7–12 JUHTIMINE",
+      "skos:prefLabel": "§7–12 JUHTIMINE",
+      "skos:inScheme": {
+        "@id": "estleg:TAS_TopicScheme"
+      },
+      "estleg:provisionCount": 6
+    },
+    {
+      "@id": "estleg:Chapter_TAS_3",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "3. peatükk – JUHTIMINE",
+      "estleg:chapterNumber": "3",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_TAS_3"
+      }
     },
     {
       "@id": "estleg:Cluster_TAS_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§13–18 STRUKTUUR"
+      "rdfs:label": "§13–18 STRUKTUUR",
+      "skos:prefLabel": "§13–18 STRUKTUUR",
+      "skos:inScheme": {
+        "@id": "estleg:TAS_TopicScheme"
+      },
+      "estleg:provisionCount": 6
+    },
+    {
+      "@id": "estleg:Chapter_TAS_4",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "4. peatükk – STRUKTUUR",
+      "estleg:chapterNumber": "4",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_TAS_4"
+      }
     },
     {
       "@id": "estleg:Cluster_TAS_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§19–22 VARA JA FINANTSEERIMINE"
+      "rdfs:label": "§19–22 VARA JA FINANTSEERIMINE",
+      "skos:prefLabel": "§19–22 VARA JA FINANTSEERIMINE",
+      "skos:inScheme": {
+        "@id": "estleg:TAS_TopicScheme"
+      },
+      "estleg:provisionCount": 4
+    },
+    {
+      "@id": "estleg:Chapter_TAS_5",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "5. peatükk – VARA JA FINANTSEERIMINE",
+      "estleg:chapterNumber": "5",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_TAS_5"
+      }
     },
     {
       "@id": "estleg:Cluster_TAS_6",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§23–23 SEADUSE RAKENDAMINE"
+      "rdfs:label": "§23–23 SEADUSE RAKENDAMINE",
+      "skos:prefLabel": "§23–23 SEADUSE RAKENDAMINE",
+      "skos:inScheme": {
+        "@id": "estleg:TAS_TopicScheme"
+      },
+      "estleg:provisionCount": 1
     },
     {
-      "@id": "estleg:eesti_teaduste_akadeemia_seadus_Par_1",
+      "@id": "estleg:Chapter_TAS_6",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TAS"
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "6. peatükk – SEADUSE RAKENDAMINE",
+      "estleg:chapterNumber": "6",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_TAS_6"
+      }
+    },
+    {
+      "@id": "estleg:TAS_Par_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_eesti_teaduste_akadeemia_seadus"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. Seaduse ülesanne",
       "estleg:sourceAct": "Eesti Teaduste Akadeemia seadus",
       "estleg:summary": "Käesolev seadus sätestab Eesti Teaduste Akadeemia õigusliku seisundi, liikmete staatuse, juhtimise korralduse ja ülesanded. Käesolev seadus sätestab Eesti Teaduste Akadeemia õigusliku seisundi, liikmete staatuse, juhtimise korralduse ja ülesanded.",
+      "estleg:legalText": "Käesolev seadus sätestab Eesti Teaduste Akadeemia õigusliku seisundi, liikmete staatuse, juhtimise korralduse ja ülesanded.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAS_1"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_TAS_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:TAS_Par_1_Lg_Unknown_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:TAS_Par_1_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Käesolev seadus sätestab Eesti Teaduste Akadeemia õigusliku seisundi, liikmete staatuse, juhtimise korralduse ja ülesanded.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_1"
       }
     },
     {
-      "@id": "estleg:eesti_teaduste_akadeemia_seadus_Par_2",
+      "@id": "estleg:TAS_Par_1_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TAS"
+        "estleg:LegalProvision_eesti_teaduste_akadeemia_seadus"
+      ],
+      "estleg:paragrahv": "§ 1<sup>1</sup>.",
+      "rdfs:label": "§ 1<sup>1</sup>. Haldusmenetluse seaduse kohaldamine",
+      "estleg:sourceAct": "Eesti Teaduste Akadeemia seadus",
+      "estleg:summary": "Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse sätteid, arvestades käesoleva seaduse erisusi. RT I 2002 61 375 184811 2002-08-01 Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse sätteid, arvestades käesoleva seaduse erisusi.",
+      "estleg:legalText": "Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse sätteid, arvestades käesoleva seaduse erisusi.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TAS_1"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_TAS_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:TAS_Par_1_1_Lg_Unknown_1"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:EOS_Par_9_9",
+          "estleg:similarityScore": {
+            "@value": "1.0",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:EVH_Par_1_1",
+          "estleg:similarityScore": {
+            "@value": "1.0",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:ErSS_Par_6_1",
+          "estleg:similarityScore": {
+            "@value": "1.0",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:ISIKUA_Par_3",
+          "estleg:similarityScore": {
+            "@value": "1.0",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:KBFIS_Par_1_1",
+          "estleg:similarityScore": {
+            "@value": "1.0",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:TAS_Par_1_1_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Käesolevas seaduses ettenähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse sätteid, arvestades käesoleva seaduse erisusi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_1_1"
+      }
+    },
+    {
+      "@id": "estleg:TAS_Par_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_eesti_teaduste_akadeemia_seadus"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. Akadeemia ülesanded",
       "estleg:sourceAct": "Eesti Teaduste Akadeemia seadus",
       "estleg:summary": "1 (1) Eesti Teaduste Akadeemia (edaspidi Akadeemia), tuginedes oma liikmeskonna intellektuaalsele jõule, arendab ja esindab Eesti teadust. Akadeemia põhiline missioon on teadlaste ühendusena sõltumatult ja kõrge teadusliku professionaalsusega aidata kaasa Eesti teaduse ning riigi sotsiaalse ja majandusliku arengu küsimuste lahendamisele. Eesti Teaduste Akadeemia (edaspidi Akadeemia), tuginedes oma liikmeskonna intellektuaalsele jõule, arendab ja esindab Eesti teadust. Akadeemia põhiline missioon",
+      "estleg:legalText": "(1) Eesti Teaduste Akadeemia (edaspidi Akadeemia), tuginedes oma liikmeskonna intellektuaalsele jõule, arendab ja esindab Eesti teadust. Akadeemia põhiline missioon on teadlaste ühendusena sõltumatult ja kõrge teadusliku professionaalsusega aidata kaasa Eesti teaduse ning riigi sotsiaalse ja majandusliku arengu küsimuste lahendamisele. (2) Oma ülesannete täitmiseks Akadeemia: algatab, korraldab ja koordineerib teadusuuringuid; arendab rahvusvahelist teaduslikku koostööd; kirjastab teaduslikke, populaarteaduslikke ja muid temaatilisi väljaandeid; aitab kaasa uute teadlaspõlvkondade ettevalmistamisele; korraldab teaduslikke nõupidamisi ja konverentse; viib läbi teadustööde konkursse ja määrab auhindu; annab välja stipendiume ja uurimistoetusi teadlastele, üliõpilastele ja õpilastele; nõustab Riigikogu, Vabariigi Valitsust ja riigiasutusi ning annab neile soovitusi; osaleb teadus- ja arendustegevust puudutavate õigusaktide ettevalmistamises; osaleb oma esindajate kaudu teiste teadus- ja arendusasutuste ning sihtasutuste töös kooskõlas nende tegevust reguleerivate õigusaktidega; esitab arvamusi Eesti teaduse korralduse ning teadus- ja arendustegevuse finantseerimise kohta; aitab kaasa teadlaste loomingulise potentsiaali realiseerimisele ja kaitseb nende õigusi; arendab muid tegevusi, mis on vajalikud Akadeemia missiooni täitmiseks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAS_1"
-      }
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_TAS_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:TAS_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:TAS_Par_2_Lg_2"
+        }
+      ],
+      "estleg:targetGroup": [
+        "public_body",
+        "ngo"
+      ]
     },
     {
-      "@id": "estleg:eesti_teaduste_akadeemia_seadus_Par_3",
+      "@id": "estleg:TAS_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Eesti Teaduste Akadeemia (edaspidi Akadeemia), tuginedes oma liikmeskonna intellektuaalsele jõule, arendab ja esindab Eesti teadust. Akadeemia põhiline missioon on teadlaste ühendusena sõltumatult ja kõrge teadusliku professionaalsusega aidata kaasa Eesti teaduse ning riigi sotsiaalse ja majandusliku arengu küsimuste lahendamisele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
+    },
+    {
+      "@id": "estleg:TAS_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Oma ülesannete täitmiseks Akadeemia: algatab, korraldab ja koordineerib teadusuuringuid; arendab rahvusvahelist teaduslikku koostööd; kirjastab teaduslikke, populaarteaduslikke ja muid temaatilisi väljaandeid; aitab kaasa uute teadlaspõlvkondade ettevalmistamisele; korraldab teaduslikke nõupidamisi ja konverentse; viib läbi teadustööde konkursse ja määrab auhindu; annab välja stipendiume ja uurimistoetusi teadlastele, üliõpilastele ja õpilastele; nõustab Riigikogu, Vabariigi Valitsust ja riigiasutusi ning annab neile soovitusi; osaleb teadus- ja arendustegevust puudutavate õigusaktide ettevalmistamises; osaleb oma esindajate kaudu teiste teadus- ja arendusasutuste ning sihtasutuste töös kooskõlas nende tegevust reguleerivate õigusaktidega; esitab arvamusi Eesti teaduse korralduse ning teadus- ja arendustegevuse finantseerimise kohta; aitab kaasa teadlaste loomingulise potentsiaali realiseerimisele ja kaitseb nende õigusi; arendab muid tegevusi, mis on vajalikud Akadeemia missiooni täitmiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2"
+    },
+    {
+      "@id": "estleg:TAS_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TAS"
+        "estleg:LegalProvision_eesti_teaduste_akadeemia_seadus"
       ],
       "estleg:paragrahv": "§ 3.",
       "rdfs:label": "§ 3. Akadeemia õiguslik seisund",
       "estleg:sourceAct": "Eesti Teaduste Akadeemia seadus",
-      "estleg:summary": "1 (1) Akadeemia on avalik-õiguslik juriidiline isik, kes tegutseb käesoleva seaduse, teadus- ja arendustegevuse korralduse seaduse (RT I 1997, 30, 471), oma põhikirja ja teiste õigusaktide alusel. Akadeemia on avalik-õiguslik juriidiline isik, kes tegutseb käesoleva seaduse, teadus- ja arendustegevuse korralduse seaduse (RT I 1997, 30, 471), oma põhikirja ja teiste õigusaktide alusel. 2 (2) Akadeemia on autonoomne, mis seisneb õiguses iseseisvalt: 1 1) kehtestada oma põhikiri; 2 2) valida oma li",
+      "estleg:summary": "1 (1) Akadeemia on avalik-õiguslik juriidiline isik, kes tegutseb käesoleva seaduse, teadus- ja arendustegevuse ning innovatsiooni korralduse seaduse, oma põhikirja ja teiste õigusaktide alusel. RT I 2025-07-12 1 112072025001 2025-10-01 Akadeemia on avalik-õiguslik juriidiline isik, kes tegutseb käesoleva seaduse, teadus- ja arendustegevuse ning innovatsiooni korralduse seaduse, oma põhikirja ja teiste õigusaktide alusel. 2 (2) Akadeemia on autonoomne, mis seisneb õiguses iseseisvalt: 1 1) kehte",
+      "estleg:legalText": "(1) Akadeemia on avalik-õiguslik juriidiline isik, kes tegutseb käesoleva seaduse, teadus- ja arendustegevuse ning innovatsiooni korralduse seaduse, oma põhikirja ja teiste õigusaktide alusel. (2) Akadeemia on autonoomne, mis seisneb õiguses iseseisvalt: kehtestada oma põhikiri; valida oma liikmed; määrata oma organisatsiooniline struktuur niivõrd, kuivõrd see ei ole reguleeritud käesoleva seadusega; valida oma tegevuse suunad, viisid ja koostööpartnerid; otsustada oma vara ja vahendite kasutamise ja käsutamise üle kooskõlas seadusega; otsustada oma tegevuse tulemuste kasutamise üle, kui seda ei piira seadus või leping. (3) Akadeemia põhikirja ja selles tehtavad muudatused kinnitab üldkogu. Põhikiri ja selle muudatused jõustuvad hetkel, kui üldkogu on need kinnitanud. (4) Akadeemia lõpetatakse seadusega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAS_1"
       },
-      "estleg:semanticallySimilarTo": [
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_TAS_1"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:KBFIS_Par_2",
-          "estleg:similarityScore": {
-            "@value": "0.385",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
+          "@id": "estleg:TAS_Par_3_Lg_1"
+        },
+        {
+          "@id": "estleg:TAS_Par_3_Lg_2"
+        },
+        {
+          "@id": "estleg:TAS_Par_3_Lg_3"
+        },
+        {
+          "@id": "estleg:TAS_Par_3_Lg_4"
         }
       ],
       "estleg:targetGroup": [
         "citizen",
         "public_body"
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:KBFIS_Par_2",
+          "estleg:similarityScore": {
+            "@value": "0.478",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:ROS_Par_4",
+          "estleg:similarityScore": {
+            "@value": "0.304",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
       ]
     },
     {
-      "@id": "estleg:eesti_teaduste_akadeemia_seadus_Par_4",
+      "@id": "estleg:TAS_Par_3_Lg_1",
       "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_TAS"
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:paragrahv": "§ 4.",
-      "rdfs:label": "§ 4. Liikmeskonna koosseis",
-      "estleg:sourceAct": "Eesti Teaduste Akadeemia seadus",
-      "estleg:summary": "Akadeemia liikmeskonna moodustavad akadeemikud, kelle piirarvuks on 60, ja välisliikmed, kelle arvu määrab üldkogu. Kuuluvus Akadeemia liikmeskonda on eluaegne. Akadeemia liikmeskonna moodustavad akadeemikud, kelle piirarvuks on 60, ja välisliikmed, kelle arvu määrab üldkogu. Kuuluvus Akadeemia liikmeskonda on eluaegne.",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_TAS_2"
-      }
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Akadeemia on avalik-õiguslik juriidiline isik, kes tegutseb käesoleva seaduse, teadus- ja arendustegevuse ning innovatsiooni korralduse seaduse, oma põhikirja ja teiste õigusaktide alusel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
     },
     {
-      "@id": "estleg:eesti_teaduste_akadeemia_seadus_Par_5",
+      "@id": "estleg:TAS_Par_3_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Akadeemia on autonoomne, mis seisneb õiguses iseseisvalt: kehtestada oma põhikiri; valida oma liikmed; määrata oma organisatsiooniline struktuur niivõrd, kuivõrd see ei ole reguleeritud käesoleva seadusega; valida oma tegevuse suunad, viisid ja koostööpartnerid; otsustada oma vara ja vahendite kasutamise ja käsutamise üle kooskõlas seadusega; otsustada oma tegevuse tulemuste kasutamise üle, kui seda ei piira seadus või leping.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 2"
+    },
+    {
+      "@id": "estleg:TAS_Par_3_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Akadeemia põhikirja ja selles tehtavad muudatused kinnitab üldkogu. Põhikiri ja selle muudatused jõustuvad hetkel, kui üldkogu on need kinnitanud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 3"
+    },
+    {
+      "@id": "estleg:TAS_Par_3_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Akadeemia lõpetatakse seadusega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 4"
+    },
+    {
+      "@id": "estleg:TAS_Par_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TAS"
+        "estleg:LegalProvision_eesti_teaduste_akadeemia_seadus"
+      ],
+      "estleg:paragrahv": "§ 4.",
+      "rdfs:label": "§ 4. Akadeemia koosseis",
+      "estleg:sourceAct": "Eesti Teaduste Akadeemia seadus",
+      "estleg:summary": "1 (1) Akadeemia liikmeskonna moodustavad akadeemikud ja välisliikmed. Kuuluvus Akadeemia liikmeskonda on eluaegne. Akadeemia liikmeskonna moodustavad akadeemikud ja välisliikmed. Kuuluvus Akadeemia liikmeskonda on eluaegne. 2 (2) Akadeemikute piirarv on 60, kusjuures piirarvu sisse ei arvata üle seitsmekümne viie aasta vanuseid akadeemikuid. Akadeemia välisliikmete arvu määrab üldkogu. RT I 2009 64 421 13245833 2010-01-01 Akadeemikute piirarv on 60, kusjuures piirarvu sisse ei arvata üle seitsme",
+      "estleg:legalText": "(1) Akadeemia liikmeskonna moodustavad akadeemikud ja välisliikmed. Kuuluvus Akadeemia liikmeskonda on eluaegne. (2) Akadeemikute piirarv on 60, kusjuures piirarvu sisse ei arvata üle seitsmekümne viie aasta vanuseid akadeemikuid. Akadeemia välisliikmete arvu määrab üldkogu.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TAS_2"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_TAS_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:TAS_Par_4_Lg_1"
+        },
+        {
+          "@id": "estleg:TAS_Par_4_Lg_2"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:TAS_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Akadeemia liikmeskonna moodustavad akadeemikud ja välisliikmed. Kuuluvus Akadeemia liikmeskonda on eluaegne.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1"
+    },
+    {
+      "@id": "estleg:TAS_Par_4_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Akadeemikute piirarv on 60, kusjuures piirarvu sisse ei arvata üle seitsmekümne viie aasta vanuseid akadeemikuid. Akadeemia välisliikmete arvu määrab üldkogu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 2"
+    },
+    {
+      "@id": "estleg:TAS_Par_5",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_eesti_teaduste_akadeemia_seadus"
       ],
       "estleg:paragrahv": "§ 5.",
       "rdfs:label": "§ 5. Akadeemikud",
       "estleg:sourceAct": "Eesti Teaduste Akadeemia seadus",
       "estleg:summary": "1 (1) Akadeemikuks valitakse Eesti kodanikest teadlasi, kes on oluliselt arendanud teadust oma valdkonnas. Akadeemikuks võib valida ka väljapaistvaid kirjandus- ja kunstitegelasi, kes on andnud olulise panuse Eesti vaimukultuuri. Akadeemikuks valitakse Eesti kodanikest teadlasi, kes on oluliselt arendanud teadust oma valdkonnas. Akadeemikuks võib valida ka väljapaistvaid kirjandus- ja kunstitegelasi, kes on andnud olulise panuse Eesti vaimukultuuri. 2 (2) Akadeemikud valib üldkogu kandidaatide s",
+      "estleg:legalText": "(1) Akadeemikuks valitakse Eesti kodanikest teadlasi, kes on oluliselt arendanud teadust oma valdkonnas. Akadeemikuks võib valida ka väljapaistvaid kirjandus- ja kunstitegelasi, kes on andnud olulise panuse Eesti vaimukultuuri. (2) Akadeemikud valib üldkogu kandidaatide seast, kelle esitamise õigus on akadeemikutel, Eesti teadusasutustel ja -seltsidel ning loomeliitudel ja -ühendustel. Valimise protseduur ja tingimused sätestatakse Akadeemia põhikirjas. (3) Akadeemiku ülesandeks on: edendada isikliku loova töö kaudu teadust, tehnikat, kirjandust või kunsti oma valdkonnas; võtta osa teaduse, kultuuri ja sotsiaal-majanduslike arengukavade kujundamisest Eestis; osaleda haritlaste ettevalmistamisel; aidata kaasa teaduse, kultuuri ja hariduse väärtustamisele Eestis; võtta osa üldkogu istungitest ja käesoleva seaduse § 2 lõikes 2 nimetatud ülesannete täitmisest; osaleda Akadeemia seisukohtade ja arvamuste kujundamises. (4) Akadeemikul on õigus: võtta osa Akadeemia eestseisuse koosolekutest; esitada Akadeemia üldkogule ja eestseisusele arutamiseks teaduslikke ja teaduskorralduslikke küsimusi; saada teavet Akadeemia üldkogu ja eestseisuse otsuste kohta ning Akadeemia poolt Riigikogule, Vabariigi Valitsusele ning teadus- ja arendusasutustele ametlikult esitatud seisukohtadest, samuti saada teavet muudest Akadeemia tegevust puudutavatest olulistest küsimustest; olla valitud mis tahes juhtivale ametikohale Akadeemias; tutvustada ning esitada üldsusele ja riigiasutustele oma seisukohti teadust ja ühiskonda puudutavates küsimustes. (5) Akadeemia ja oma ülesannete täitmisega seotud kulude katteks saavad akadeemikud Akadeemia rahalistest vahenditest makstavat eluaegset akadeemikutasu üldkogu kehtestatud alustel ja korras. Akadeemikutasu maksmist toetatakse riigieelarves sihtotstarbeliselt eraldatud vahenditest Haridus- ja Teadusministeeriumi eelarve kaudu. (6) Akadeemikutasude maksmiseks riigieelarvest eraldatava toetuse piirmäära",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAS_2"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_TAS_2"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:TAS_Par_5_Lg_1"
+        },
+        {
+          "@id": "estleg:TAS_Par_5_Lg_2"
+        },
+        {
+          "@id": "estleg:TAS_Par_5_Lg_3"
+        },
+        {
+          "@id": "estleg:TAS_Par_5_Lg_4"
+        },
+        {
+          "@id": "estleg:TAS_Par_5_Lg_5"
+        },
+        {
+          "@id": "estleg:TAS_Par_5_Lg_6"
+        }
+      ],
       "estleg:targetGroup": [
-        "citizen"
-      ]
+        "citizen",
+        "public_body",
+        "ngo"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
     },
     {
-      "@id": "estleg:eesti_teaduste_akadeemia_seadus_Par_6",
+      "@id": "estleg:TAS_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Akadeemikuks valitakse Eesti kodanikest teadlasi, kes on oluliselt arendanud teadust oma valdkonnas. Akadeemikuks võib valida ka väljapaistvaid kirjandus- ja kunstitegelasi, kes on andnud olulise panuse Eesti vaimukultuuri.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1"
+    },
+    {
+      "@id": "estleg:TAS_Par_5_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Akadeemikud valib üldkogu kandidaatide seast, kelle esitamise õigus on akadeemikutel, Eesti teadusasutustel ja -seltsidel ning loomeliitudel ja -ühendustel. Valimise protseduur ja tingimused sätestatakse Akadeemia põhikirjas.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 2"
+    },
+    {
+      "@id": "estleg:TAS_Par_5_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Akadeemiku ülesandeks on: edendada isikliku loova töö kaudu teadust, tehnikat, kirjandust või kunsti oma valdkonnas; võtta osa teaduse, kultuuri ja sotsiaal-majanduslike arengukavade kujundamisest Eestis; osaleda haritlaste ettevalmistamisel; aidata kaasa teaduse, kultuuri ja hariduse väärtustamisele Eestis; võtta osa üldkogu istungitest ja käesoleva seaduse § 2 lõikes 2 nimetatud ülesannete täitmisest; osaleda Akadeemia seisukohtade ja arvamuste kujundamises.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 3"
+    },
+    {
+      "@id": "estleg:TAS_Par_5_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Akadeemikul on õigus: võtta osa Akadeemia eestseisuse koosolekutest; esitada Akadeemia üldkogule ja eestseisusele arutamiseks teaduslikke ja teaduskorralduslikke küsimusi; saada teavet Akadeemia üldkogu ja eestseisuse otsuste kohta ning Akadeemia poolt Riigikogule, Vabariigi Valitsusele ning teadus- ja arendusasutustele ametlikult esitatud seisukohtadest, samuti saada teavet muudest Akadeemia tegevust puudutavatest olulistest küsimustest; olla valitud mis tahes juhtivale ametikohale Akadeemias; tutvustada ning esitada üldsusele ja riigiasutustele oma seisukohti teadust ja ühiskonda puudutavates küsimustes.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 4"
+    },
+    {
+      "@id": "estleg:TAS_Par_5_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Akadeemia ja oma ülesannete täitmisega seotud kulude katteks saavad akadeemikud Akadeemia rahalistest vahenditest makstavat eluaegset akadeemikutasu üldkogu kehtestatud alustel ja korras. Akadeemikutasu maksmist toetatakse riigieelarves sihtotstarbeliselt eraldatud vahenditest Haridus- ja Teadusministeeriumi eelarve kaudu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 5"
+    },
+    {
+      "@id": "estleg:TAS_Par_5_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Akadeemikutasude maksmiseks riigieelarvest eraldatava toetuse piirmäära",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 6"
+    },
+    {
+      "@id": "estleg:TAS_Par_6",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TAS"
+        "estleg:LegalProvision_eesti_teaduste_akadeemia_seadus"
       ],
       "estleg:paragrahv": "§ 6.",
       "rdfs:label": "§ 6. Välisliikmed",
       "estleg:sourceAct": "Eesti Teaduste Akadeemia seadus",
       "estleg:summary": "Akadeemia välisliikmeteks valitakse välismaa teadlasi, kellel on väljapaistvaid saavutusi oma valdkonnas ja kes on oma teadustöö kaudu seotud Eestiga. Välisliikmete valimise protseduur ja kandidaatide esitamise kord ning välisliikmete õigused ja ülesanded sätestatakse Akadeemia põhikirjas. Akadeemia välisliikmeteks valitakse välismaa teadlasi, kellel on väljapaistvaid saavutusi oma valdkonnas ja kes on oma teadustöö kaudu seotud Eestiga. Välisliikmete valimise protseduur ja kandidaatide esitamis",
+      "estleg:legalText": "Akadeemia välisliikmeteks valitakse välismaa teadlasi, kellel on väljapaistvaid saavutusi oma valdkonnas ja kes on oma teadustöö kaudu seotud Eestiga. Välisliikmete valimise protseduur ja kandidaatide esitamise kord ning välisliikmete õigused ja ülesanded sätestatakse Akadeemia põhikirjas.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAS_2"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_TAS_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:TAS_Par_6_Lg_Unknown_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:TAS_Par_6_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Akadeemia välisliikmeteks valitakse välismaa teadlasi, kellel on väljapaistvaid saavutusi oma valdkonnas ja kes on oma teadustöö kaudu seotud Eestiga. Välisliikmete valimise protseduur ja kandidaatide esitamise kord ning välisliikmete õigused ja ülesanded sätestatakse Akadeemia põhikirjas.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_6"
       }
     },
     {
-      "@id": "estleg:eesti_teaduste_akadeemia_seadus_Par_7",
+      "@id": "estleg:TAS_Par_7",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TAS"
+        "estleg:LegalProvision_eesti_teaduste_akadeemia_seadus"
       ],
       "estleg:paragrahv": "§ 7.",
       "rdfs:label": "§ 7. Juhtimise korraldus",
       "estleg:sourceAct": "Eesti Teaduste Akadeemia seadus",
-      "estleg:summary": "1 (1) Akadeemial on kollegiaalsed juhtimisorganid ja liikmeskonna seast valitud juhid. Akadeemial on kollegiaalsed juhtimisorganid ja liikmeskonna seast valitud juhid. 2 (2) Akadeemia kollegiaalsed juhtimisorganid on üldkogu ja juhatus. Akadeemia kollegiaalsed juhtimisorganid on üldkogu ja juhatus. 3 (3) Akadeemia liikmeskonnast valitud juhid on president, asepresidendid ja peasekretär, kes juhivad Akadeemia tegevust vastavalt käesolevas seaduses ja Akadeemia põhikirjas sätestatud pädevusele ja ",
+      "estleg:summary": "1 (1) Akadeemial on kollegiaalsed juhtimisorganid ja valitud juhid. RT I 2025-02-14 1 114022025001 2025-02-24 Akadeemial on kollegiaalsed juhtimisorganid ja valitud juhid. 2 (2) Akadeemia kollegiaalsed juhtimisorganid on üldkogu ja eestseisus. RT I 2025-02-14 1 114022025001 2025-02-24 Akadeemia kollegiaalsed juhtimisorganid on üldkogu ja eestseisus. 3 (3) Akadeemia valitud juhid on president, asepresidendid ja peasekretär, kes juhivad Akadeemia tegevust vastavalt käesolevas seaduses ja Akadeemia",
+      "estleg:legalText": "(1) Akadeemial on kollegiaalsed juhtimisorganid ja valitud juhid. (2) Akadeemia kollegiaalsed juhtimisorganid on üldkogu ja eestseisus. (3) Akadeemia valitud juhid on president, asepresidendid ja peasekretär, kes juhivad Akadeemia tegevust vastavalt käesolevas seaduses ja Akadeemia põhikirjas sätestatud pädevusele ja tööjaotusele.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAS_3"
       },
-      "estleg:targetGroup": [
-        "business"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_TAS_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:TAS_Par_7_Lg_1"
+        },
+        {
+          "@id": "estleg:TAS_Par_7_Lg_2"
+        },
+        {
+          "@id": "estleg:TAS_Par_7_Lg_3"
+        }
       ]
     },
     {
-      "@id": "estleg:eesti_teaduste_akadeemia_seadus_Par_8",
+      "@id": "estleg:TAS_Par_7_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Akadeemial on kollegiaalsed juhtimisorganid ja valitud juhid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 1"
+    },
+    {
+      "@id": "estleg:TAS_Par_7_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Akadeemia kollegiaalsed juhtimisorganid on üldkogu ja eestseisus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 2"
+    },
+    {
+      "@id": "estleg:TAS_Par_7_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Akadeemia valitud juhid on president, asepresidendid ja peasekretär, kes juhivad Akadeemia tegevust vastavalt käesolevas seaduses ja Akadeemia põhikirjas sätestatud pädevusele ja tööjaotusele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 3"
+    },
+    {
+      "@id": "estleg:TAS_Par_8",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TAS"
+        "estleg:LegalProvision_eesti_teaduste_akadeemia_seadus"
       ],
       "estleg:paragrahv": "§ 8.",
       "rdfs:label": "§ 8. Üldkogu",
       "estleg:sourceAct": "Eesti Teaduste Akadeemia seadus",
-      "estleg:summary": "1 (1) Akadeemia kõrgeim juhtimisorgan on üldkogu, mille moodustavad kõik Eesti Teaduste Akadeemia akadeemikud. Akadeemia kõrgeim juhtimisorgan on üldkogu, mille moodustavad kõik Eesti Teaduste Akadeemia akadeemikud. 2 (2) Üldkogu: 1 1) kinnitab Akadeemia põhikirja ja teeb selles muudatusi; 2 2) kinnitab muud Akadeemia tegevust reguleerivad alusdokumendid ja neis tehtavad muudatused; 3 3) kinnitab Akadeemia struktuuri ning Akadeemia asutuste põhimäärused; 4 4) valib akadeemikud ja Akadeemia välis",
+      "estleg:summary": "1 (1) Akadeemia kõrgeim juhtimisorgan on üldkogu, mille moodustavad kõik Eesti Teaduste Akadeemia akadeemikud. Akadeemia kõrgeim juhtimisorgan on üldkogu, mille moodustavad kõik Eesti Teaduste Akadeemia akadeemikud. 2 (2) Üldkogu: 1 1) kinnitab Akadeemia põhikirja ja teeb selles muudatusi; 2 2) kinnitab muud Akadeemia tegevust reguleerivad alusdokumendid ja neis tehtavad muudatused; 2 2<sup>1</sup>) otsustab Akadeemia asutuse loomise; RT I 2009 64 421 13245833 2010-01-01 3 3) kinnitab Akadeemia ",
+      "estleg:legalText": "(1) Akadeemia kõrgeim juhtimisorgan on üldkogu, mille moodustavad kõik Eesti Teaduste Akadeemia akadeemikud. (2) Üldkogu: kinnitab Akadeemia põhikirja ja teeb selles muudatusi; kinnitab muud Akadeemia tegevust reguleerivad alusdokumendid ja neis tehtavad muudatused; otsustab Akadeemia asutuse loomise; kinnitab Akadeemia struktuuri ning Akadeemia asutuste põhimäärused; valib akadeemikud ja Akadeemia välisliikmed; valib Akadeemia presidendi, asepresidendid, peasekretäri ja teised eestseisuse liikmed; kuulab ära ja kinnitab Akadeemia tegevuse aastaaruande ja eelarve täitmise aruande; võtab vastu Akadeemia eelarve ja finantsplaani; annab hinnanguid teadussuundade olukorrale Eestis ning teeb ettepanekuid nende arendamise kohta; võtab vastu seisukohti Eesti riigi sotsiaalset ja majanduslikku arengut puudutavates küsimustes, edastades need Riigikogule ja Vabariigi Valitsusele; kehtetu - kehtestab akadeemikutasu maksmise alused ja korra; otsustab presidendi või eestseisuse poolt läbiarutamiseks ja seisukoha võtmiseks esitatud teisi küsimusi, mis käesoleva seaduse ja Akadeemia põhikirja alusel kuuluvad üldkogu pädevusse. (3) Üldkogu istungid on korralised ja erakorralised. Istungid kutsub kokku president, tema äraolekul asepresident. Üldkogu korraline istung kutsutakse kokku vähemalt kaks korda aastas. Üldkogu erakorraline istung kutsutakse kokku, kui seda peab vajalikuks president või kui seda nõuab eestseisuse enamus või vähemalt üks viiendik kõigist akadeemikuist. (4) Üldkogu istungi kokkukutsumis- ja töökord kehtestatakse Akadeemia põhikirjaga.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAS_3"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_TAS_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:TAS_Par_8_Lg_1"
+        },
+        {
+          "@id": "estleg:TAS_Par_8_Lg_2"
+        },
+        {
+          "@id": "estleg:TAS_Par_8_Lg_3"
+        },
+        {
+          "@id": "estleg:TAS_Par_8_Lg_4"
+        }
+      ],
       "estleg:targetGroup": [
         "public_body"
       ]
     },
     {
-      "@id": "estleg:eesti_teaduste_akadeemia_seadus_Par_9",
+      "@id": "estleg:TAS_Par_8_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Akadeemia kõrgeim juhtimisorgan on üldkogu, mille moodustavad kõik Eesti Teaduste Akadeemia akadeemikud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 1"
+    },
+    {
+      "@id": "estleg:TAS_Par_8_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Üldkogu: kinnitab Akadeemia põhikirja ja teeb selles muudatusi; kinnitab muud Akadeemia tegevust reguleerivad alusdokumendid ja neis tehtavad muudatused; otsustab Akadeemia asutuse loomise; kinnitab Akadeemia struktuuri ning Akadeemia asutuste põhimäärused; valib akadeemikud ja Akadeemia välisliikmed; valib Akadeemia presidendi, asepresidendid, peasekretäri ja teised eestseisuse liikmed; kuulab ära ja kinnitab Akadeemia tegevuse aastaaruande ja eelarve täitmise aruande; võtab vastu Akadeemia eelarve ja finantsplaani; annab hinnanguid teadussuundade olukorrale Eestis ning teeb ettepanekuid nende arendamise kohta; võtab vastu seisukohti Eesti riigi sotsiaalset ja majanduslikku arengut puudutavates küsimustes, edastades need Riigikogule ja Vabariigi Valitsusele; kehtetu - kehtestab akadeemikutasu maksmise alused ja korra; otsustab presidendi või eestseisuse poolt läbiarutamiseks ja seisukoha võtmiseks esitatud teisi küsimusi, mis käesoleva seaduse ja Akadeemia põhikirja alusel kuuluvad üldkogu pädevusse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 2"
+    },
+    {
+      "@id": "estleg:TAS_Par_8_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Üldkogu istungid on korralised ja erakorralised. Istungid kutsub kokku president, tema äraolekul asepresident. Üldkogu korraline istung kutsutakse kokku vähemalt kaks korda aastas. Üldkogu erakorraline istung kutsutakse kokku, kui seda peab vajalikuks president või kui seda nõuab eestseisuse enamus või vähemalt üks viiendik kõigist akadeemikuist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 3"
+    },
+    {
+      "@id": "estleg:TAS_Par_8_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Üldkogu istungi kokkukutsumis- ja töökord kehtestatakse Akadeemia põhikirjaga.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 4"
+    },
+    {
+      "@id": "estleg:TAS_Par_9",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TAS"
+        "estleg:LegalProvision_eesti_teaduste_akadeemia_seadus"
       ],
       "estleg:paragrahv": "§ 9.",
-      "rdfs:label": "§ 9. Juhatus",
+      "rdfs:label": "§ 9. Eestseisus",
       "estleg:sourceAct": "Eesti Teaduste Akadeemia seadus",
-      "estleg:summary": "1 (1) Juhatus on Akadeemia kollegiaalne juhtimisorgan üldkogu istungite vaheaegadel. Juhatus on Akadeemia kollegiaalne juhtimisorgan üldkogu istungite vaheaegadel. 2 (2) Juhatusse kuuluvad president, asepresidendid, peasekretär, osakonnajuhatajad ja üldkogu poolt akadeemikute hulgast valitud liikmed. Juhatusse kuuluvad president, asepresidendid, peasekretär, osakonnajuhatajad ja üldkogu poolt akadeemikute hulgast valitud liikmed. 3 (3) Juhatus: 1 1) tagab üldkogu otsuste elluviimise; 2 2) valmis",
+      "estleg:summary": "1 (1) Eestseisus on Akadeemia kollegiaalne juhtimisorgan üldkogu istungite vaheaegadel. RT I 2025-02-14 1 114022025001 2025-02-24 Eestseisus on Akadeemia kollegiaalne juhtimisorgan üldkogu istungite vaheaegadel. 2 (2) Eestseisusesse kuuluvad president, asepresidendid, peasekretär ja üldkogu poolt akadeemikute hulgast valitud liikmed. RT I 2025-02-14 1 114022025001 2025-02-24 Eestseisusesse kuuluvad president, asepresidendid, peasekretär ja üldkogu poolt akadeemikute hulgast valitud liikmed. 3 (3",
+      "estleg:legalText": "(1) Eestseisus on Akadeemia kollegiaalne juhtimisorgan üldkogu istungite vaheaegadel. (2) Eestseisusesse kuuluvad president, asepresidendid, peasekretär ja üldkogu poolt akadeemikute hulgast valitud liikmed. (3) Eestseisus: tagab üldkogu otsuste elluviimise; valmistab ette üldkogule esitatavad küsimused; kuulutab välja teadustööde konkursse ja määrab auhindu; kuulutab välja ja määrab uurimistoetusi ning stipendiume teadlastele ja üliõpilastele; kehtestab uurija-professorite valimiste läbiviimise korra, kuulutab välja uurija-professori valimise konkursi ja valib uurija-professorid; otsustab Akadeemia astumise rahvusvahelistesse organisatsioonidesse ja käesoleva seaduse §-s 18 nimetatud assotsiatsioonilepingute sõlmimise; kehtetu - otsustab Akadeemia vara kasutamise seadusega sätestatud piires; kinnitab Akadeemia struktuuriüksuste põhimäärused ning nende aruanded; moodustab alalisi või ajutisi komisjone küsimuste lahendamiseks konkreetsetes teadusvaldkondades; täidab muid Akadeemia tegevuseks vajalikke ülesandeid. (4) Eestsisuse istungid toimuvad vastavalt vajadusele, kuid mitte harvem kui kord kvartalis. Istungite töökord määratakse reglemendiga, mille kinnitab üldkogu. (5) Eestseisuse otsus jõustub pärast presidendi poolt allakirjutamist. Kui president keeldub eestseisuse otsusele alla kirjutamast, antakse küsimus üldkogu otsustada. (6) Eestseisus on aruandekohustuslik üldkogu ees.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAS_3"
       },
-      "estleg:targetGroup": [
-        "business",
-        "official"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_TAS_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:TAS_Par_9_Lg_1"
+        },
+        {
+          "@id": "estleg:TAS_Par_9_Lg_2"
+        },
+        {
+          "@id": "estleg:TAS_Par_9_Lg_3"
+        },
+        {
+          "@id": "estleg:TAS_Par_9_Lg_4"
+        },
+        {
+          "@id": "estleg:TAS_Par_9_Lg_5"
+        },
+        {
+          "@id": "estleg:TAS_Par_9_Lg_6"
+        }
       ]
     },
     {
-      "@id": "estleg:eesti_teaduste_akadeemia_seadus_Par_10",
+      "@id": "estleg:TAS_Par_9_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Eestseisus on Akadeemia kollegiaalne juhtimisorgan üldkogu istungite vaheaegadel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 1"
+    },
+    {
+      "@id": "estleg:TAS_Par_9_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Eestseisusesse kuuluvad president, asepresidendid, peasekretär ja üldkogu poolt akadeemikute hulgast valitud liikmed.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 2"
+    },
+    {
+      "@id": "estleg:TAS_Par_9_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Eestseisus: tagab üldkogu otsuste elluviimise; valmistab ette üldkogule esitatavad küsimused; kuulutab välja teadustööde konkursse ja määrab auhindu; kuulutab välja ja määrab uurimistoetusi ning stipendiume teadlastele ja üliõpilastele; kehtestab uurija-professorite valimiste läbiviimise korra, kuulutab välja uurija-professori valimise konkursi ja valib uurija-professorid; otsustab Akadeemia astumise rahvusvahelistesse organisatsioonidesse ja käesoleva seaduse §-s 18 nimetatud assotsiatsioonilepingute sõlmimise; kehtetu - otsustab Akadeemia vara kasutamise seadusega sätestatud piires; kinnitab Akadeemia struktuuriüksuste põhimäärused ning nende aruanded; moodustab alalisi või ajutisi komisjone küsimuste lahendamiseks konkreetsetes teadusvaldkondades; täidab muid Akadeemia tegevuseks vajalikke ülesandeid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 3"
+    },
+    {
+      "@id": "estleg:TAS_Par_9_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Eestsisuse istungid toimuvad vastavalt vajadusele, kuid mitte harvem kui kord kvartalis. Istungite töökord määratakse reglemendiga, mille kinnitab üldkogu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 4"
+    },
+    {
+      "@id": "estleg:TAS_Par_9_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Eestseisuse otsus jõustub pärast presidendi poolt allakirjutamist. Kui president keeldub eestseisuse otsusele alla kirjutamast, antakse küsimus üldkogu otsustada.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 5"
+    },
+    {
+      "@id": "estleg:TAS_Par_9_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Eestseisus on aruandekohustuslik üldkogu ees.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 6"
+    },
+    {
+      "@id": "estleg:TAS_Par_10",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TAS"
+        "estleg:LegalProvision_eesti_teaduste_akadeemia_seadus"
       ],
       "estleg:paragrahv": "§ 10.",
       "rdfs:label": "§ 10. President",
       "estleg:sourceAct": "Eesti Teaduste Akadeemia seadus",
       "estleg:summary": "1 (1) President on Akadeemia üldjuht, kes esindab Akadeemiat suhetes teiste isikutega. Ta kannab vastutust Akadeemia üldise arengu, tema põhikirjajärgse tegevuse ning Akadeemia vara ja vahendite õiguspärase ja otstarbeka kasutamise eest. President on aruandekohustuslik üldkogu ees. President on Akadeemia üldjuht, kes esindab Akadeemiat suhetes teiste isikutega. Ta kannab vastutust Akadeemia üldise arengu, tema põhikirjajärgse tegevuse ning Akadeemia vara ja vahendite õiguspärase ja otstarbeka ka",
+      "estleg:legalText": "(1) President on Akadeemia üldjuht, kes esindab Akadeemiat suhetes teiste isikutega. Ta kannab vastutust Akadeemia üldise arengu, tema põhikirjajärgse tegevuse ning Akadeemia vara ja vahendite õiguspärase ja otstarbeka kasutamise eest. President on aruandekohustuslik üldkogu ees. (2) Presidendi valib üldkogu akadeemikute hulgast salajasel hääletamisel viieks aastaks. Valimise kord sätestatakse Akadeemia põhikirjas. Sama akadeemikut ei saa presidendiks valida järjestikku rohkem kui kaheks ametiajaks. (3) Presidendiga sõlmib ja lõpetab Akadeemia nimel tähtajalise töölepingu üldkogu poolt volitatud akadeemik. (4) Presidenti asendab asepresident põhikirjas sätestatud korras.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAS_3"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_TAS_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:TAS_Par_10_Lg_1"
+        },
+        {
+          "@id": "estleg:TAS_Par_10_Lg_2"
+        },
+        {
+          "@id": "estleg:TAS_Par_10_Lg_3"
+        },
+        {
+          "@id": "estleg:TAS_Par_10_Lg_4"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:ROS_Par_11",
@@ -295,245 +1060,939 @@
       ]
     },
     {
-      "@id": "estleg:eesti_teaduste_akadeemia_seadus_Par_11",
+      "@id": "estleg:TAS_Par_10_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) President on Akadeemia üldjuht, kes esindab Akadeemiat suhetes teiste isikutega. Ta kannab vastutust Akadeemia üldise arengu, tema põhikirjajärgse tegevuse ning Akadeemia vara ja vahendite õiguspärase ja otstarbeka kasutamise eest. President on aruandekohustuslik üldkogu ees.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 1"
+    },
+    {
+      "@id": "estleg:TAS_Par_10_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Presidendi valib üldkogu akadeemikute hulgast salajasel hääletamisel viieks aastaks. Valimise kord sätestatakse Akadeemia põhikirjas. Sama akadeemikut ei saa presidendiks valida järjestikku rohkem kui kaheks ametiajaks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 2"
+    },
+    {
+      "@id": "estleg:TAS_Par_10_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Presidendiga sõlmib ja lõpetab Akadeemia nimel tähtajalise töölepingu üldkogu poolt volitatud akadeemik.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 3"
+    },
+    {
+      "@id": "estleg:TAS_Par_10_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Presidenti asendab asepresident põhikirjas sätestatud korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 4"
+    },
+    {
+      "@id": "estleg:TAS_Par_11",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TAS"
+        "estleg:LegalProvision_eesti_teaduste_akadeemia_seadus"
       ],
       "estleg:paragrahv": "§ 11.",
       "rdfs:label": "§ 11. Asepresidendid",
       "estleg:sourceAct": "Eesti Teaduste Akadeemia seadus",
-      "estleg:summary": "1 (1) Asepresident juhib presidendi määratud töövaldkonda. Asepresident võib ühtlasi täita osakonnajuhataja ülesandeid. Asepresident juhib presidendi määratud töövaldkonda. Asepresident võib ühtlasi täita osakonnajuhataja ülesandeid. 2 (2) Asepresidentide arvu määrab üldkogu. Asepresidentide arvu määrab üldkogu. 3 (3) Asepresidendi valib üldkogu akadeemikute hulgast salajasel hääletamisel viieks aastaks. Valimise kord sätestatakse Akadeemia põhikirjas. Sama akadeemikut ei saa asepresidendiks val",
+      "estleg:summary": "1 (1) Asepresident juhib presidendi määratud töövaldkonda. RT I 2025-02-14 1 114022025001 2025-02-24 Asepresident juhib presidendi määratud töövaldkonda. 2 (2) Asepresidentide arvu määrab üldkogu. Asepresidentide arvu määrab üldkogu. 3 (3) Asepresidendi valib üldkogu akadeemikute hulgast salajasel hääletamisel viieks aastaks. Valimise kord sätestatakse Akadeemia põhikirjas. Sama akadeemikut ei saa asepresidendiks valida järjestikku rohkem kui kaheks ametiajaks. Asepresidendi valib üldkogu akadee",
+      "estleg:legalText": "(1) Asepresident juhib presidendi määratud töövaldkonda. (2) Asepresidentide arvu määrab üldkogu. (3) Asepresidendi valib üldkogu akadeemikute hulgast salajasel hääletamisel viieks aastaks. Valimise kord sätestatakse Akadeemia põhikirjas. Sama akadeemikut ei saa asepresidendiks valida järjestikku rohkem kui kaheks ametiajaks. (4) Akadeemia asepresidendiga sõlmib ja lõpetab Akadeemia nimel tähtajalise töölepingu president. (5) Asepresident on aruandekohustuslik üldkogu ja presidendi ees.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAS_3"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_TAS_3"
       },
-      "estleg:targetGroup": [
-        "official"
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:TAS_Par_11_Lg_1"
+        },
+        {
+          "@id": "estleg:TAS_Par_11_Lg_2"
+        },
+        {
+          "@id": "estleg:TAS_Par_11_Lg_3"
+        },
+        {
+          "@id": "estleg:TAS_Par_11_Lg_4"
+        },
+        {
+          "@id": "estleg:TAS_Par_11_Lg_5"
+        }
       ]
     },
     {
-      "@id": "estleg:eesti_teaduste_akadeemia_seadus_Par_12",
+      "@id": "estleg:TAS_Par_11_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Asepresident juhib presidendi määratud töövaldkonda.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 1"
+    },
+    {
+      "@id": "estleg:TAS_Par_11_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Asepresidentide arvu määrab üldkogu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 2"
+    },
+    {
+      "@id": "estleg:TAS_Par_11_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Asepresidendi valib üldkogu akadeemikute hulgast salajasel hääletamisel viieks aastaks. Valimise kord sätestatakse Akadeemia põhikirjas. Sama akadeemikut ei saa asepresidendiks valida järjestikku rohkem kui kaheks ametiajaks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 3"
+    },
+    {
+      "@id": "estleg:TAS_Par_11_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Akadeemia asepresidendiga sõlmib ja lõpetab Akadeemia nimel tähtajalise töölepingu president.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 4"
+    },
+    {
+      "@id": "estleg:TAS_Par_11_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Asepresident on aruandekohustuslik üldkogu ja presidendi ees.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 5"
+    },
+    {
+      "@id": "estleg:TAS_Par_12",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TAS"
+        "estleg:LegalProvision_eesti_teaduste_akadeemia_seadus"
       ],
       "estleg:paragrahv": "§ 12.",
       "rdfs:label": "§ 12. Peasekretär",
       "estleg:sourceAct": "Eesti Teaduste Akadeemia seadus",
-      "estleg:summary": "1 (1) Peasekretär korraldab Akadeemia kantselei kaudu Akadeemia asjaajamist ja finantstegevust, sõlmib ja lõpetab Akadeemia nimel töölepingud osakondade ja Akadeemia kantselei töötajate ning Akadeemia asutuste juhtidega, samuti täidab teisi ülesandeid vastavalt üldkogu ja juhatuse otsustele. Peasekretär korraldab Akadeemia kantselei kaudu Akadeemia asjaajamist ja finantstegevust, sõlmib ja lõpetab Akadeemia nimel töölepingud osakondade ja Akadeemia kantselei töötajate ning Akadeemia asutuste juh",
+      "estleg:summary": "1 (1) Peasekretär korraldab Akadeemia asjaajamist ja finantstegevust, sõlmib ja lõpetab Akadeemia nimel töölepingud Akadeemia töötajatega ning Akadeemia asutuste juhtidega, samuti täidab teisi ülesandeid vastavalt üldkogu ja eestseisuse otsustele. RT I 2025-02-14 1 114022025001 2025-02-24 Peasekretär korraldab Akadeemia asjaajamist ja finantstegevust, sõlmib ja lõpetab Akadeemia nimel töölepingud Akadeemia töötajatega ning Akadeemia asutuste juhtidega, samuti täidab teisi ülesandeid vastavalt ül",
+      "estleg:legalText": "(1) Peasekretär korraldab Akadeemia asjaajamist ja finantstegevust, sõlmib ja lõpetab Akadeemia nimel töölepingud Akadeemia töötajatega ning Akadeemia asutuste juhtidega, samuti täidab teisi ülesandeid vastavalt üldkogu ja eestseisuse otsustele. (2) Peasekretäri valib üldkogu salajasel hääletamisel viieks aastaks. Valimise kord ja peasekretäri kvalifikatsiooninõuded sätestatakse Akadeemia põhikirjas. Sama isikut ei saa peasekretäriks valida järjestikku rohkem kui kaheks ametiajaks. (3) Peasekretäriga sõlmib ja lõpetab Akadeemia nimel tähtajalise töölepingu president. (4) Peasekretär on aruandekohustuslik üldkogu ja presidendi ees.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAS_3"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_TAS_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:TAS_Par_12_Lg_1"
+        },
+        {
+          "@id": "estleg:TAS_Par_12_Lg_2"
+        },
+        {
+          "@id": "estleg:TAS_Par_12_Lg_3"
+        },
+        {
+          "@id": "estleg:TAS_Par_12_Lg_4"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen",
-        "business",
         "public_body"
       ]
     },
     {
-      "@id": "estleg:eesti_teaduste_akadeemia_seadus_Par_13",
+      "@id": "estleg:TAS_Par_12_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Peasekretär korraldab Akadeemia asjaajamist ja finantstegevust, sõlmib ja lõpetab Akadeemia nimel töölepingud Akadeemia töötajatega ning Akadeemia asutuste juhtidega, samuti täidab teisi ülesandeid vastavalt üldkogu ja eestseisuse otsustele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 1"
+    },
+    {
+      "@id": "estleg:TAS_Par_12_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Peasekretäri valib üldkogu salajasel hääletamisel viieks aastaks. Valimise kord ja peasekretäri kvalifikatsiooninõuded sätestatakse Akadeemia põhikirjas. Sama isikut ei saa peasekretäriks valida järjestikku rohkem kui kaheks ametiajaks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 2"
+    },
+    {
+      "@id": "estleg:TAS_Par_12_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Peasekretäriga sõlmib ja lõpetab Akadeemia nimel tähtajalise töölepingu president.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 3"
+    },
+    {
+      "@id": "estleg:TAS_Par_12_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Peasekretär on aruandekohustuslik üldkogu ja presidendi ees.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 4"
+    },
+    {
+      "@id": "estleg:TAS_Par_13",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TAS"
+        "estleg:LegalProvision_eesti_teaduste_akadeemia_seadus"
       ],
       "estleg:paragrahv": "§ 13.",
       "rdfs:label": "§ 13. Struktuur",
       "estleg:sourceAct": "Eesti Teaduste Akadeemia seadus",
-      "estleg:summary": "Akadeemia struktuuri moodustavad: 1 1) osakonnad; 2 2) kantselei; 3 3) asutused. Akadeemia struktuuri moodustavad: osakonnad; kantselei; asutused.",
+      "estleg:summary": "Akadeemia struktuur kehtestatakse Akadeemia põhikirjas. RT I 2025-02-14 1 114022025001 2025-02-24 Akadeemia struktuur kehtestatakse Akadeemia põhikirjas.",
+      "estleg:legalText": "Akadeemia struktuur kehtestatakse Akadeemia põhikirjas.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAS_4"
       },
-      "estleg:targetGroup": [
-        "public_body"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_TAS_4"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:TAS_Par_13_Lg_Unknown_1"
+        }
       ]
     },
     {
-      "@id": "estleg:eesti_teaduste_akadeemia_seadus_Par_14",
+      "@id": "estleg:TAS_Par_13_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Akadeemia struktuur kehtestatakse Akadeemia põhikirjas.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_13"
+      }
+    },
+    {
+      "@id": "estleg:TAS_Par_14",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TAS"
+        "estleg:LegalProvision_eesti_teaduste_akadeemia_seadus"
       ],
       "estleg:paragrahv": "§ 14.",
       "rdfs:label": "§ 14. Osakonnad",
       "estleg:sourceAct": "Eesti Teaduste Akadeemia seadus",
-      "estleg:summary": "1 (1) Osakond ühendab vastava teadusvaldkonna akadeemikuid, välisliikmeid ja Akadeemia asutusi koostöös teiste sama valdkonna teadus- ja arendusasutuste ning teadusseltsidega. Osakond ühendab vastava teadusvaldkonna akadeemikuid, välisliikmeid ja Akadeemia asutusi koostöös teiste sama valdkonna teadus- ja arendusasutuste ning teadusseltsidega. 2 (2) Teadusvaldkonnad, kus osakonnad moodustatakse, otsustab üldkogu. Teadusvaldkonnad, kus osakonnad moodustatakse, otsustab üldkogu. 3 (3) Akadeemikute",
+      "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAS_4"
       },
-      "estleg:targetGroup": [
-        "public_body"
-      ]
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_TAS_4"
+      }
     },
     {
-      "@id": "estleg:eesti_teaduste_akadeemia_seadus_Par_15",
+      "@id": "estleg:TAS_Par_15",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TAS"
+        "estleg:LegalProvision_eesti_teaduste_akadeemia_seadus"
       ],
       "estleg:paragrahv": "§ 15.",
       "rdfs:label": "§ 15. Osakonna juhtimine",
       "estleg:sourceAct": "Eesti Teaduste Akadeemia seadus",
-      "estleg:summary": "1 (1) Osakonna tegevust juhivad osakonnakogu ja osakonnajuhataja. Osakonna tegevust juhivad osakonnakogu ja osakonnajuhataja. 2 (2) Osakonnakogu moodustavad kõik osakonda kuuluvad akadeemikud. Osakonnakogu ülesanded ja tegutsemise kord sätestatakse osakonna põhimäärusega. Osakonnakogu moodustavad kõik osakonda kuuluvad akadeemikud. Osakonnakogu ülesanded ja tegutsemise kord sätestatakse osakonna põhimäärusega. 3 (3) Osakonnakogu valib osakonnajuhataja osakonda kuuluvate akadeemikute hulgast sala",
+      "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAS_4"
       },
-      "estleg:targetGroup": [
-        "official"
-      ]
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_TAS_4"
+      }
     },
     {
-      "@id": "estleg:eesti_teaduste_akadeemia_seadus_Par_16",
+      "@id": "estleg:TAS_Par_16",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TAS"
+        "estleg:LegalProvision_eesti_teaduste_akadeemia_seadus"
       ],
       "estleg:paragrahv": "§ 16.",
       "rdfs:label": "§ 16. Akadeemia kantselei",
       "estleg:sourceAct": "Eesti Teaduste Akadeemia seadus",
-      "estleg:summary": "1 (1) Akadeemia asjaajamist ja finantstegevust, samuti muud tegevust vastavalt üldkogu ja juhatuse otsustele korraldab Akadeemia kantselei, mis töötab peasekretäri juhtimisel juhatuse kinnitatud põhimääruse järgi. Akadeemia asjaajamist ja finantstegevust, samuti muud tegevust vastavalt üldkogu ja juhatuse otsustele korraldab Akadeemia kantselei, mis töötab peasekretäri juhtimisel juhatuse kinnitatud põhimääruse järgi. 2 (2) Akadeemia kantselei struktuuri ja ametikohad kinnitab juhatus. Akadeemia",
+      "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAS_4"
       },
-      "estleg:targetGroup": [
-        "business"
-      ]
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_TAS_4"
+      }
     },
     {
-      "@id": "estleg:eesti_teaduste_akadeemia_seadus_Par_17",
+      "@id": "estleg:TAS_Par_17",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TAS"
+        "estleg:LegalProvision_eesti_teaduste_akadeemia_seadus"
       ],
       "estleg:paragrahv": "§ 17.",
       "rdfs:label": "§ 17. Akadeemia asutused",
       "estleg:sourceAct": "Eesti Teaduste Akadeemia seadus",
-      "estleg:summary": "1 (1) Riigikogu otsuse alusel, tulenevalt Akadeemia üldkogu taotlusest, võib Akadeemia luua asutusi, millel on oma eelarve ja pangaarve ning mille funktsioonid ja tegutsemise alused kehtestatakse asutuse põhimääruses. Riigikogu otsuse alusel, tulenevalt Akadeemia üldkogu taotlusest, võib Akadeemia luua asutusi, millel on oma eelarve ja pangaarve ning mille funktsioonid ja tegutsemise alused kehtestatakse asutuse põhimääruses. 2 (2) Akadeemia asutuse põhimääruse kinnitab Akadeemia üldkogu ja see ",
+      "estleg:summary": "1 (1) Akadeemia võib üldkogu otsusel moodustada asutusi, millel on oma eelarve ja pangaarve ning mille funktsioonid ja tegutsemise alused kehtestatakse asutuse põhimääruses. RT I 2009 64 421 13245833 2010-01-01 Akadeemia võib üldkogu otsusel moodustada asutusi, millel on oma eelarve ja pangaarve ning mille funktsioonid ja tegutsemise alused kehtestatakse asutuse põhimääruses. 2 (2) Akadeemia asutuse põhimääruse kinnitab Akadeemia üldkogu. RT I 2025-02-14 1 114022025001 2025-02-24 Akadeemia asutu",
+      "estleg:legalText": "(1) Akadeemia võib üldkogu otsusel moodustada asutusi, millel on oma eelarve ja pangaarve ning mille funktsioonid ja tegutsemise alused kehtestatakse asutuse põhimääruses. (2) Akadeemia asutuse põhimääruse kinnitab Akadeemia üldkogu. (3) Akadeemia asutust juhib direktor. Teaduslikke funktsioone täitva asutuse direktor valitakse kuni viieks aastaks ning tema nõuandva organina moodustatakse asutuse nõukogu. Direktori valimise ning nõukogu moodustamise kord sätestatakse Akadeemia põhikirjas. (4) Akadeemia asutus annab oma tegevusest aru Akadeemia presidendile, kes teostab järelevalvet asutuse tegevuse üle. (5) Akadeemia ja akadeemia asutused registreeritakse riigi- ja kohaliku omavalitsuse asutuste riiklikus registris selle registri põhimääruses sätestatud korras.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAS_4"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_TAS_4"
       },
-      "estleg:targetGroup": [
-        "public_body"
-      ],
-      "estleg:competentAuthority": [
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:Institution_riigikogu"
+          "@id": "estleg:TAS_Par_17_Lg_1"
+        },
+        {
+          "@id": "estleg:TAS_Par_17_Lg_2"
+        },
+        {
+          "@id": "estleg:TAS_Par_17_Lg_3"
+        },
+        {
+          "@id": "estleg:TAS_Par_17_Lg_4"
+        },
+        {
+          "@id": "estleg:TAS_Par_17_Lg_5"
         }
       ],
-      "estleg:competenceType": "general"
+      "estleg:targetGroup": [
+        "public_body",
+        "official"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
     },
     {
-      "@id": "estleg:eesti_teaduste_akadeemia_seadus_Par_18",
+      "@id": "estleg:TAS_Par_17_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Akadeemia võib üldkogu otsusel moodustada asutusi, millel on oma eelarve ja pangaarve ning mille funktsioonid ja tegutsemise alused kehtestatakse asutuse põhimääruses.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_17"
+      },
+      "rdfs:label": "§ 17 lg 1"
+    },
+    {
+      "@id": "estleg:TAS_Par_17_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Akadeemia asutuse põhimääruse kinnitab Akadeemia üldkogu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_17"
+      },
+      "rdfs:label": "§ 17 lg 2"
+    },
+    {
+      "@id": "estleg:TAS_Par_17_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Akadeemia asutust juhib direktor. Teaduslikke funktsioone täitva asutuse direktor valitakse kuni viieks aastaks ning tema nõuandva organina moodustatakse asutuse nõukogu. Direktori valimise ning nõukogu moodustamise kord sätestatakse Akadeemia põhikirjas.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_17"
+      },
+      "rdfs:label": "§ 17 lg 3"
+    },
+    {
+      "@id": "estleg:TAS_Par_17_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Akadeemia asutus annab oma tegevusest aru Akadeemia presidendile, kes teostab järelevalvet asutuse tegevuse üle.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_17"
+      },
+      "rdfs:label": "§ 17 lg 4"
+    },
+    {
+      "@id": "estleg:TAS_Par_17_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Akadeemia ja akadeemia asutused registreeritakse riigi- ja kohaliku omavalitsuse asutuste riiklikus registris selle registri põhimääruses sätestatud korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_17"
+      },
+      "rdfs:label": "§ 17 lg 5"
+    },
+    {
+      "@id": "estleg:TAS_Par_18",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TAS"
+        "estleg:LegalProvision_eesti_teaduste_akadeemia_seadus"
       ],
       "estleg:paragrahv": "§ 18.",
-      "rdfs:label": "§ 18. Akadeemiaga assotsieerunud asutused ja seltsid",
+      "rdfs:label": "§ 18. Akadeemiaga assotsieerunud asutused, seltsid ja ühendused",
       "estleg:sourceAct": "Eesti Teaduste Akadeemia seadus",
-      "estleg:summary": "Akadeemiaga võivad assotsieeruda tema struktuuri mittekuuluvad teadus-, arendus- ja kultuuriasutused ning teadusseltsid, kelle tegevus ja eesmärgid on kooskõlas Akadeemia tegevuse ja eesmärkidega. Assotsieerunud asutuse või seltsi ja Akadeemia suhted, vastastikused õigused ja kohustused sätestatakse Akadeemia põhikirjas ja assotsiatsioonilepingus. Akadeemiaga võivad assotsieeruda tema struktuuri mittekuuluvad teadus-, arendus- ja kultuuriasutused ning teadusseltsid, kelle tegevus ja eesmärgid on",
+      "estleg:summary": "Akadeemiaga võivad assotsieeruda tema struktuuri mittekuuluvad sellised teadus-, arendus- ja kultuuriasutused, teadusseltsid ning ühendused, kelle tegevus ja eesmärgid on kooskõlas Akadeemia tegevuse ja eesmärkidega. Assotsieerunud asutuse, seltsi või ühenduse ja Akadeemia suhted ning vastastikused õigused ja kohustused sätestatakse assotsiatsioonilepingus. RT I 2025-02-14 1 114022025001 2025-02-24 Akadeemiaga võivad assotsieeruda tema struktuuri mittekuuluvad sellised teadus-, arendus- ja kultu",
+      "estleg:legalText": "Akadeemiaga võivad assotsieeruda tema struktuuri mittekuuluvad sellised teadus-, arendus- ja kultuuriasutused, teadusseltsid ning ühendused, kelle tegevus ja eesmärgid on kooskõlas Akadeemia tegevuse ja eesmärkidega. Assotsieerunud asutuse, seltsi või ühenduse ja Akadeemia suhted ning vastastikused õigused ja kohustused sätestatakse assotsiatsioonilepingus.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAS_4"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_TAS_4"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:TAS_Par_18_Lg_Unknown_1"
+        }
+      ],
       "estleg:targetGroup": [
         "public_body",
         "ngo"
       ]
     },
     {
-      "@id": "estleg:eesti_teaduste_akadeemia_seadus_Par_19",
+      "@id": "estleg:TAS_Par_18_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Akadeemiaga võivad assotsieeruda tema struktuuri mittekuuluvad sellised teadus-, arendus- ja kultuuriasutused, teadusseltsid ning ühendused, kelle tegevus ja eesmärgid on kooskõlas Akadeemia tegevuse ja eesmärkidega. Assotsieerunud asutuse, seltsi või ühenduse ja Akadeemia suhted ning vastastikused õigused ja kohustused sätestatakse assotsiatsioonilepingus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_18"
+      }
+    },
+    {
+      "@id": "estleg:TAS_Par_19",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TAS"
+        "estleg:LegalProvision_eesti_teaduste_akadeemia_seadus"
       ],
       "estleg:paragrahv": "§ 19.",
       "rdfs:label": "§ 19. Akadeemia vara",
       "estleg:sourceAct": "Eesti Teaduste Akadeemia seadus",
-      "estleg:summary": "1 (1) Akadeemia valdab, kasutab ja käsutab oma vara käesolevas seaduses sätestatud korras oma põhikirjaliste ülesannete täitmiseks. Akadeemia valdab, kasutab ja käsutab oma vara käesolevas seaduses sätestatud korras oma põhikirjaliste ülesannete täitmiseks. 2 (2) Akadeemia vara on: 1 1) vara, mis antakse seaduse alusel Akadeemia taotlusel Akadeemia omandisse; 2 2) vara, mille teine isik võõrandab Akadeemia kasuks. Akadeemia vara on: vara, mis antakse seaduse alusel Akadeemia taotlusel Akadeemia ",
+      "estleg:summary": "1 (1) Kehtetu - RT I 2002 53 336 174795 2002-07-01 Kehtetu - 2 (2) Kehtetu - RT I 2002 53 336 174795 2002-07-01 Kehtetu - 3 (3) Akadeemial on õigus omada vara, mis oli Akadeemia omandis enne 1940. aasta 16. juunit. Akadeemial on õigus omada vara, mis oli Akadeemia omandis enne 1940. aasta 16. juunit. 4 (4) Kehtetu - RT I 2002 53 336 174795 2002-07-01 Kehtetu - 5 (5) Akadeemiale kuuluvat kinnisvara võõrandada ja laenu võtta on Akadeemial õigus Vabariigi Valitsuse loal. Akadeemiale kuuluvat kinnis",
+      "estleg:legalText": "(1) Kehtetu - (2) Kehtetu - (3) Akadeemial on õigus omada vara, mis oli Akadeemia omandis enne 1940. aasta 16. juunit. (4) Kehtetu - (5) Akadeemiale kuuluvat kinnisvara võõrandada ja laenu võtta on Akadeemial õigus Vabariigi Valitsuse loal. (6) Akadeemial ei ole õigust anda laenu, osutada sponsortoetust või olla äriühingu aktsionär või osanik. (7) Akadeemial on õigus anda uurimistoetusi ja stipendiume ning toetada käesoleva seaduse §-s 18 nimetatud asutusi, ühendusi ja seltse nende põhikirjalises tegevuses. (8) Käesolevas paragrahvis sätestatu ei piira Akadeemia õigusvõimet.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAS_5"
       },
-      "estleg:semanticallySimilarTo": [
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_TAS_5"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:KBFIS_Par_11",
-          "estleg:similarityScore": {
-            "@value": "0.52",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
+          "@id": "estleg:TAS_Par_19_Lg_1"
         },
         {
-          "@id": "estleg:TKS_Par_9",
+          "@id": "estleg:TAS_Par_19_Lg_2"
+        },
+        {
+          "@id": "estleg:TAS_Par_19_Lg_3"
+        },
+        {
+          "@id": "estleg:TAS_Par_19_Lg_4"
+        },
+        {
+          "@id": "estleg:TAS_Par_19_Lg_5"
+        },
+        {
+          "@id": "estleg:TAS_Par_19_Lg_6"
+        },
+        {
+          "@id": "estleg:TAS_Par_19_Lg_7"
+        },
+        {
+          "@id": "estleg:TAS_Par_19_Lg_8"
+        }
+      ],
+      "estleg:targetGroup": [
+        "business",
+        "public_body",
+        "ngo"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Right"
+      },
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:ROS_Par_15",
           "estleg:similarityScore": {
-            "@value": "0.458",
+            "@value": "0.3",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
         }
-      ],
-      "estleg:targetGroup": [
-        "citizen"
       ]
     },
     {
-      "@id": "estleg:eesti_teaduste_akadeemia_seadus_Par_20",
+      "@id": "estleg:TAS_Par_19_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_19"
+      },
+      "rdfs:label": "§ 19 lg 1"
+    },
+    {
+      "@id": "estleg:TAS_Par_19_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_19"
+      },
+      "rdfs:label": "§ 19 lg 2"
+    },
+    {
+      "@id": "estleg:TAS_Par_19_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Akadeemial on õigus omada vara, mis oli Akadeemia omandis enne 1940. aasta 16. juunit.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_19"
+      },
+      "rdfs:label": "§ 19 lg 3"
+    },
+    {
+      "@id": "estleg:TAS_Par_19_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_19"
+      },
+      "rdfs:label": "§ 19 lg 4"
+    },
+    {
+      "@id": "estleg:TAS_Par_19_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Akadeemiale kuuluvat kinnisvara võõrandada ja laenu võtta on Akadeemial õigus Vabariigi Valitsuse loal.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_19"
+      },
+      "rdfs:label": "§ 19 lg 5"
+    },
+    {
+      "@id": "estleg:TAS_Par_19_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Akadeemial ei ole õigust anda laenu, osutada sponsortoetust või olla äriühingu aktsionär või osanik.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_19"
+      },
+      "rdfs:label": "§ 19 lg 6"
+    },
+    {
+      "@id": "estleg:TAS_Par_19_Lg_7",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "7",
+      "estleg:legalText": "(7) Akadeemial on õigus anda uurimistoetusi ja stipendiume ning toetada käesoleva seaduse §-s 18 nimetatud asutusi, ühendusi ja seltse nende põhikirjalises tegevuses.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_19"
+      },
+      "rdfs:label": "§ 19 lg 7"
+    },
+    {
+      "@id": "estleg:TAS_Par_19_Lg_8",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "8",
+      "estleg:legalText": "(8) Käesolevas paragrahvis sätestatu ei piira Akadeemia õigusvõimet.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_19"
+      },
+      "rdfs:label": "§ 19 lg 8"
+    },
+    {
+      "@id": "estleg:TAS_Par_20",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TAS"
+        "estleg:LegalProvision_eesti_teaduste_akadeemia_seadus"
       ],
       "estleg:paragrahv": "§ 20.",
       "rdfs:label": "§ 20. Finantseerimine",
       "estleg:sourceAct": "Eesti Teaduste Akadeemia seadus",
-      "estleg:summary": "1 (1) Akadeemia tegevust finantseeritakse riigieelarvest ja muudest allikatest. Akadeemia riigieelarvelise finantseerimise maht määratakse vastava aasta riigieelarves Haridusministeeriumi valitsemisala kuludes. Akadeemia tegevust finantseeritakse riigieelarvest ja muudest allikatest. Akadeemia riigieelarvelise finantseerimise maht määratakse vastava aasta riigieelarves Haridusministeeriumi valitsemisala kuludes. 2 (2) Akadeemial on õigus osutada teistele isikutele oma põhikirjalisest tegevusest ",
+      "estleg:summary": "1 (1) Akadeemia tegevust finantseeritakse riigieelarvest ja muudest allikatest. Akadeemia riigieelarvelise finantseerimise maht määratakse vastava aasta riigieelarves Haridus- ja Teadusministeeriumi valitsemisala kuludes. Akadeemia tegevust finantseeritakse riigieelarvest ja muudest allikatest. Akadeemia riigieelarvelise finantseerimise maht määratakse vastava aasta riigieelarves Haridus- ja Teadusministeeriumi valitsemisala kuludes. 2 (2) Akadeemial on õigus osutada teistele isikutele oma põhik",
+      "estleg:legalText": "(1) Akadeemia tegevust finantseeritakse riigieelarvest ja muudest allikatest. Akadeemia riigieelarvelise finantseerimise maht määratakse vastava aasta riigieelarves Haridus- ja Teadusministeeriumi valitsemisala kuludes. (2) Akadeemial on õigus osutada teistele isikutele oma põhikirjalisest tegevusest tulenevaid tasulisi teenuseid, millest saadud tulu läheb Akadeemia eelarvesse. (3) Akadeemia rahalisi vahendeid käsutavad president ja peasekretär Akadeemia üldkogu kehtestatud tingimustel ja korras. (4) Akadeemia teadus- ja arendusasutuse infrastruktuuri kulud kaetakse riigieelarvest selleks Akadeemiale sihtotstarbeliselt ettenähtud vahenditest.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAS_5"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_TAS_5"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:TAS_Par_20_Lg_1"
+        },
+        {
+          "@id": "estleg:TAS_Par_20_Lg_2"
+        },
+        {
+          "@id": "estleg:TAS_Par_20_Lg_3"
+        },
+        {
+          "@id": "estleg:TAS_Par_20_Lg_4"
+        }
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Right"
       },
       "estleg:competentAuthority": [
         {
-          "@id": "estleg:Institution_haridusministeerium"
+          "@id": "estleg:Institution_haridus_ja_teadusministeerium"
         }
       ],
       "estleg:competenceType": "general"
     },
     {
-      "@id": "estleg:eesti_teaduste_akadeemia_seadus_Par_21",
+      "@id": "estleg:TAS_Par_20_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Akadeemia tegevust finantseeritakse riigieelarvest ja muudest allikatest. Akadeemia riigieelarvelise finantseerimise maht määratakse vastava aasta riigieelarves Haridus- ja Teadusministeeriumi valitsemisala kuludes.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_20"
+      },
+      "rdfs:label": "§ 20 lg 1"
+    },
+    {
+      "@id": "estleg:TAS_Par_20_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Akadeemial on õigus osutada teistele isikutele oma põhikirjalisest tegevusest tulenevaid tasulisi teenuseid, millest saadud tulu läheb Akadeemia eelarvesse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_20"
+      },
+      "rdfs:label": "§ 20 lg 2"
+    },
+    {
+      "@id": "estleg:TAS_Par_20_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Akadeemia rahalisi vahendeid käsutavad president ja peasekretär Akadeemia üldkogu kehtestatud tingimustel ja korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_20"
+      },
+      "rdfs:label": "§ 20 lg 3"
+    },
+    {
+      "@id": "estleg:TAS_Par_20_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Akadeemia teadus- ja arendusasutuse infrastruktuuri kulud kaetakse riigieelarvest selleks Akadeemiale sihtotstarbeliselt ettenähtud vahenditest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_20"
+      },
+      "rdfs:label": "§ 20 lg 4"
+    },
+    {
+      "@id": "estleg:TAS_Par_21",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TAS"
+        "estleg:LegalProvision_eesti_teaduste_akadeemia_seadus"
       ],
       "estleg:paragrahv": "§ 21.",
       "rdfs:label": "§ 21. Eelarve",
       "estleg:sourceAct": "Eesti Teaduste Akadeemia seadus",
-      "estleg:summary": "1 (1) Akadeemia kõigi tulude ja kulude kohta koostatakse eelarve. Akadeemia kõigi tulude ja kulude kohta koostatakse eelarve. 2 (2) Riigieelarveväliselt laekunud tulud jaotatakse Akadeemia eelarve järgi üldistel alustel, kui seda ei piira seadus või laekuvate tulude kasutamise kohta seatud eritingimused. Riigieelarveväliselt laekunud tulud jaotatakse Akadeemia eelarve järgi üldistel alustel, kui seda ei piira seadus või laekuvate tulude kasutamise kohta seatud eritingimused.",
+      "estleg:summary": "1 (1) Akadeemia kõigi tulude ja kulude kohta koostatakse tasakaalus eelarve, mis peab vastama Akadeemia finantsplaanile, riigieelarve seaduse §-s 6 esitatud eelarvepositsiooni reeglitele, §-s 10 esitatud netovõlakoormuse reeglile ning § 11 alusel kehtestatud piirangutele. RT I 2014-03-13 2 113032014002 2014-03-23 Akadeemia kõigi tulude ja kulude kohta koostatakse tasakaalus eelarve, mis peab vastama Akadeemia finantsplaanile, riigieelarve seaduse §-s 6 esitatud eelarvepositsiooni reeglitele, §-s",
+      "estleg:legalText": "(1) Akadeemia kõigi tulude ja kulude kohta koostatakse tasakaalus eelarve, mis peab vastama Akadeemia finantsplaanile, riigieelarve seaduse §-s 6 esitatud eelarvepositsiooni reeglitele, §-s 10 esitatud netovõlakoormuse reeglile ning § 11 alusel kehtestatud piirangutele. (2) Riigieelarveväliselt laekunud tulud jaotatakse Akadeemia eelarve järgi üldistel alustel, kui seda ei piira seadus või laekuvate tulude kasutamise kohta seatud eritingimused.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAS_5"
-      }
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_TAS_5"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:TAS_Par_21_Lg_1"
+        },
+        {
+          "@id": "estleg:TAS_Par_21_Lg_2"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:KAITSE_Par_83",
+          "estleg:similarityScore": {
+            "@value": "0.789",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:KBFIS_Par_13",
+          "estleg:similarityScore": {
+            "@value": "0.842",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:KHaS_Par_44",
+          "estleg:similarityScore": {
+            "@value": "0.8",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
+      ]
     },
     {
-      "@id": "estleg:eesti_teaduste_akadeemia_seadus_Par_22",
+      "@id": "estleg:TAS_Par_21_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Akadeemia kõigi tulude ja kulude kohta koostatakse tasakaalus eelarve, mis peab vastama Akadeemia finantsplaanile, riigieelarve seaduse §-s 6 esitatud eelarvepositsiooni reeglitele, §-s 10 esitatud netovõlakoormuse reeglile ning § 11 alusel kehtestatud piirangutele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_21"
+      },
+      "rdfs:label": "§ 21 lg 1"
+    },
+    {
+      "@id": "estleg:TAS_Par_21_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Riigieelarveväliselt laekunud tulud jaotatakse Akadeemia eelarve järgi üldistel alustel, kui seda ei piira seadus või laekuvate tulude kasutamise kohta seatud eritingimused.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_21"
+      },
+      "rdfs:label": "§ 21 lg 2"
+    },
+    {
+      "@id": "estleg:TAS_Par_21_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TAS"
+        "estleg:LegalProvision_eesti_teaduste_akadeemia_seadus"
+      ],
+      "estleg:paragrahv": "§ 21<sup>1</sup>.",
+      "rdfs:label": "§ 21<sup>1</sup>. Akadeemia finantsplaan",
+      "estleg:sourceAct": "Eesti Teaduste Akadeemia seadus",
+      "estleg:summary": "1 (1) Akadeemia koostab igal aastal finantsplaani, mis on aluseks Akadeemia eelarve koostamisel. Akadeemia koostab igal aastal finantsplaani, mis on aluseks Akadeemia eelarve koostamisel. 2 (2) Finantsplaan koostatakse ja esitatakse riigieelarve seaduse §-s 12 sätestatud nõuete kohaselt. RT I 2014-03-13 2 113032014002 2014-03-23 Finantsplaan koostatakse ja esitatakse riigieelarve seaduse §-s 12 sätestatud nõuete kohaselt.",
+      "estleg:legalText": "(1) Akadeemia koostab igal aastal finantsplaani, mis on aluseks Akadeemia eelarve koostamisel. (2) Finantsplaan koostatakse ja esitatakse riigieelarve seaduse §-s 12 sätestatud nõuete kohaselt.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TAS_5"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_TAS_5"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:TAS_Par_21_1_Lg_1"
+        },
+        {
+          "@id": "estleg:TAS_Par_21_1_Lg_2"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:KAITSE_Par_83_1",
+          "estleg:similarityScore": {
+            "@value": "0.786",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:KBFIS_Par_13_1",
+          "estleg:similarityScore": {
+            "@value": "0.846",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:ROS_Par_16_1",
+          "estleg:similarityScore": {
+            "@value": "0.786",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:TAS_Par_21_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Akadeemia koostab igal aastal finantsplaani, mis on aluseks Akadeemia eelarve koostamisel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_21_1"
+      },
+      "rdfs:label": "§ 21<sup>1</sup> lg 1"
+    },
+    {
+      "@id": "estleg:TAS_Par_21_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Finantsplaan koostatakse ja esitatakse riigieelarve seaduse §-s 12 sätestatud nõuete kohaselt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_21_1"
+      },
+      "rdfs:label": "§ 21<sup>1</sup> lg 2"
+    },
+    {
+      "@id": "estleg:TAS_Par_22",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_eesti_teaduste_akadeemia_seadus"
       ],
       "estleg:paragrahv": "§ 22.",
       "rdfs:label": "§ 22. Kontroll ja aruandlus",
       "estleg:sourceAct": "Eesti Teaduste Akadeemia seadus",
       "estleg:summary": "1 (1) Akadeemia peab oma varade ja vahendite kasutamise kohta raamatupidamise ja statistilist arvestust seadusega kehtestatud korras. Akadeemia peab oma varade ja vahendite kasutamise kohta raamatupidamise ja statistilist arvestust seadusega kehtestatud korras. 2 (2) Akadeemiale eraldatud riigieelarveliste vahendite kasutamist kontrollib Rahandusministeerium. Riigikontroll kontrollib Eesti Teaduste Akadeemia tegevust vastavalt Riigikontrolli seadusele. Akadeemiale eraldatud riigieelarveliste vah",
+      "estleg:legalText": "(1) Akadeemia peab oma varade ja vahendite kasutamise kohta raamatupidamise ja statistilist arvestust seadusega kehtestatud korras. (2) Akadeemiale eraldatud riigieelarveliste vahendite kasutamist kontrollib Rahandusministeerium. Riigikontroll kontrollib Eesti Teaduste Akadeemia tegevust vastavalt Riigikontrolli seadusele. (3) Riiklikku järelevalvet Akadeemia tegevuse üle teostab Haridus- ja Teadusministeerium. (4) Akadeemia annab oma tegevusest aru seaduses või seaduse alusel sätestatud mahus ja korras.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAS_5"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_TAS_5"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:TAS_Par_22_Lg_1"
+        },
+        {
+          "@id": "estleg:TAS_Par_22_Lg_2"
+        },
+        {
+          "@id": "estleg:TAS_Par_22_Lg_3"
+        },
+        {
+          "@id": "estleg:TAS_Par_22_Lg_4"
+        }
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
       "estleg:dutyHolder": "Akadeemia",
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_rahandusministeerium"
+        }
+      ],
+      "estleg:competenceType": "enforcement",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:KBFIS_Par_14",
@@ -546,32 +2005,104 @@
         {
           "@id": "estleg:ROS_Par_17",
           "estleg:similarityScore": {
-            "@value": "0.462",
+            "@value": "0.48",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
         }
-      ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_rahandusministeerium"
-        }
-      ],
-      "estleg:competenceType": "enforcement"
+      ]
     },
     {
-      "@id": "estleg:eesti_teaduste_akadeemia_seadus_Par_23",
+      "@id": "estleg:TAS_Par_22_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Akadeemia peab oma varade ja vahendite kasutamise kohta raamatupidamise ja statistilist arvestust seadusega kehtestatud korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_22"
+      },
+      "rdfs:label": "§ 22 lg 1"
+    },
+    {
+      "@id": "estleg:TAS_Par_22_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Akadeemiale eraldatud riigieelarveliste vahendite kasutamist kontrollib Rahandusministeerium. Riigikontroll kontrollib Eesti Teaduste Akadeemia tegevust vastavalt Riigikontrolli seadusele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_22"
+      },
+      "rdfs:label": "§ 22 lg 2"
+    },
+    {
+      "@id": "estleg:TAS_Par_22_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Riiklikku järelevalvet Akadeemia tegevuse üle teostab Haridus- ja Teadusministeerium.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_22"
+      },
+      "rdfs:label": "§ 22 lg 3"
+    },
+    {
+      "@id": "estleg:TAS_Par_22_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Akadeemia annab oma tegevusest aru seaduses või seaduse alusel sätestatud mahus ja korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_22"
+      },
+      "rdfs:label": "§ 22 lg 4"
+    },
+    {
+      "@id": "estleg:TAS_Par_23",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TAS"
+        "estleg:LegalProvision_eesti_teaduste_akadeemia_seadus"
       ],
       "estleg:paragrahv": "§ 23.",
       "rdfs:label": "§ 23. Üleminek",
       "estleg:sourceAct": "Eesti Teaduste Akadeemia seadus",
       "estleg:summary": "1 (1) Akadeemia president tagab Akadeemia põhikirja vastavusse viimise käesoleva seadusega kuue kuu jooksul käesoleva seaduse jõustumisest. Akadeemia president tagab Akadeemia põhikirja vastavusse viimise käesoleva seadusega kuue kuu jooksul käesoleva seaduse jõustumisest. 2 (2) Enne käesoleva seaduse jõustumist Akadeemias moodustatud otsustuskogud ja valitud isikud tegutsevad valimisperioodi lõpuni, kui vahepeal jõustunud põhikiri ei näe ette teisiti. Enne käesoleva seaduse jõustumist Akadeemia",
+      "estleg:legalText": "(1) Akadeemia president tagab Akadeemia põhikirja vastavusse viimise käesoleva seadusega kuue kuu jooksul käesoleva seaduse jõustumisest. (2) Enne käesoleva seaduse jõustumist Akadeemias moodustatud otsustuskogud ja valitud isikud tegutsevad valimisperioodi lõpuni, kui vahepeal jõustunud põhikiri ei näe ette teisiti. (3) Olemasolevate riigi teadus- ja arendusasutuste ühinemisel ja ümberkujundamisel Teaduste Akadeemia asutusteks lähtutakse teadus- ja arendustegevuse korralduse seaduse § 21 lõikest 2. (4) Vabariigi Valitsus annab Akadeemia valduses ja kasutuses oleva vara Akadeemia omandisse kuue kuu jooksul käesoleva seaduse jõustumisest. (5) Vabariigi Valitsus annab oma määrusega hiljemalt ühe aasta jooksul pärast käesoleva seaduse jõustumist Akadeemiale tasuta üle sellise enne 1940. aasta 16. juunit Akadeemia omandis olnud vara, mida Akadeemia taotleb ja mida on Akadeemia omandisse võimalik üle anda ning mis on Akadeemiale vajalik tema põhikirjas sätestatud ülesannete täitmiseks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_TAS_6"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_TAS_6"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:TAS_Par_23_Lg_1"
+        },
+        {
+          "@id": "estleg:TAS_Par_23_Lg_2"
+        },
+        {
+          "@id": "estleg:TAS_Par_23_Lg_3"
+        },
+        {
+          "@id": "estleg:TAS_Par_23_Lg_4"
+        },
+        {
+          "@id": "estleg:TAS_Par_23_Lg_5"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "public_body",
+        "official"
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:RakKKS_Par_32",
@@ -589,11 +2120,72 @@
           },
           "estleg:similarityStatus": "candidate"
         }
-      ],
-      "estleg:targetGroup": [
-        "citizen",
-        "official"
       ]
+    },
+    {
+      "@id": "estleg:TAS_Par_23_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Akadeemia president tagab Akadeemia põhikirja vastavusse viimise käesoleva seadusega kuue kuu jooksul käesoleva seaduse jõustumisest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_23"
+      },
+      "rdfs:label": "§ 23 lg 1"
+    },
+    {
+      "@id": "estleg:TAS_Par_23_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Enne käesoleva seaduse jõustumist Akadeemias moodustatud otsustuskogud ja valitud isikud tegutsevad valimisperioodi lõpuni, kui vahepeal jõustunud põhikiri ei näe ette teisiti.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_23"
+      },
+      "rdfs:label": "§ 23 lg 2"
+    },
+    {
+      "@id": "estleg:TAS_Par_23_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Olemasolevate riigi teadus- ja arendusasutuste ühinemisel ja ümberkujundamisel Teaduste Akadeemia asutusteks lähtutakse teadus- ja arendustegevuse korralduse seaduse § 21 lõikest 2.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_23"
+      },
+      "rdfs:label": "§ 23 lg 3"
+    },
+    {
+      "@id": "estleg:TAS_Par_23_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Vabariigi Valitsus annab Akadeemia valduses ja kasutuses oleva vara Akadeemia omandisse kuue kuu jooksul käesoleva seaduse jõustumisest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_23"
+      },
+      "rdfs:label": "§ 23 lg 4"
+    },
+    {
+      "@id": "estleg:TAS_Par_23_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Vabariigi Valitsus annab oma määrusega hiljemalt ühe aasta jooksul pärast käesoleva seaduse jõustumist Akadeemiale tasuta üle sellise enne 1940. aasta 16. juunit Akadeemia omandis olnud vara, mida Akadeemia taotleb ja mida on Akadeemia omandisse võimalik üle anda ning mis on Akadeemiale vajalik tema põhikirjas sätestatud ülesannete täitmiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TAS_Par_23"
+      },
+      "rdfs:label": "§ 23 lg 5"
     }
   ]
 }

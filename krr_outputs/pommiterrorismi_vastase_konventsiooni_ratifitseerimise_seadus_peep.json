@@ -6,20 +6,31 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
   },
   "@graph": [
     {
       "@id": "estleg:PVKR_Map_2026",
       "@type": [
+        "owl:Ontology",
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "rdfs:label": "Pommiterrorismi vastase konventsiooni ratifitseerimise seadus teemakaardistus",
       "dc:source": "Pommiterrorismi vastase konventsiooni ratifitseerimise seadus",
-      "estleg:temporalStatus": "unknown",
+      "dcterms:title": "Pommiterrorismi vastase konventsiooni ratifitseerimise seadus",
+      "estleg:contentStatus": "structuredBody",
+      "dcterms:source": {
+        "@id": "https://www.riigiteataja.ee/akt/163094.xml"
+      },
+      "owl:sameAs": {
+        "@id": "https://www.riigiteataja.ee/akt/163094.xml"
+      },
+      "estleg:kehtiv": {
+        "@value": "2026-05-24",
+        "@type": "xsd:date"
+      },
       "dcterms:subject": [
         {
           "@id": "http://eurovoc.europa.eu/0411"
@@ -28,12 +39,21 @@
           "@id": "http://eurovoc.europa.eu/2421"
         },
         {
+          "@id": "http://eurovoc.europa.eu/2431"
+        },
+        {
           "@id": "http://eurovoc.europa.eu/2446"
+        }
+      ],
+      "estleg:temporalStatus": "unknown",
+      "estleg:affectedBy": [
+        {
+          "@id": "estleg:Draft_RAM11_0654"
         }
       ]
     },
     {
-      "@id": "estleg:LegalProvision_PVKR",
+      "@id": "estleg:LegalProvision_pommiterrorismi_vastase_konventsiooni_ratifitseerimise_seadus",
       "@type": [
         "owl:Class"
       ],
@@ -43,28 +63,55 @@
       }
     },
     {
+      "@id": "estleg:PVKR_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": "Pommiterrorismi vastase konventsiooni ratifitseerimise seadus teemaskeem",
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_PVKR_default"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Cluster_PVKR_default",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": "§1–2 Lepingu sätted",
+      "skos:prefLabel": "§1–2 Lepingu sätted",
+      "skos:inScheme": {
+        "@id": "estleg:PVKR_TopicScheme"
+      },
+      "estleg:provisionCount": 2
+    },
+    {
       "@id": "estleg:PVKR_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_PVKR"
+        "estleg:LegalProvision_pommiterrorismi_vastase_konventsiooni_ratifitseerimise_seadus"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1.",
+      "rdfs:label": "§ 1. [Ratifitseerida juurdelisatud pommiterrorismi vastane konventsioon./163093, mis o...]",
       "estleg:sourceAct": "Pommiterrorismi vastase konventsiooni ratifitseerimise seadus",
       "estleg:summary": "Ratifitseerida juurdelisatud pommiterrorismi vastane konventsioon./163093, mis on ÜRO Peaassamblee poolt vastu võetud 1997. aasta 15. detsembril ning millele Eesti Vabariik on alla kirjutanud 1999. aasta 27. detsembril. Ratifitseerida juurdelisatud , mis on ÜRO Peaassamblee poolt vastu võetud 1997. aasta 15. detsembril ning millele Eesti Vabariik on alla kirjutanud 1999. aasta 27. detsembril.",
-      "estleg:semanticallySimilarTo": [
+      "estleg:legalText": "Ratifitseerida juurdelisatud , mis on ÜRO Peaassamblee poolt vastu võetud 1997. aasta 15. detsembril ning millele Eesti Vabariik on alla kirjutanud 1999. aasta 27. detsembril.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_PVKR_default"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:ROKVVUROKTPR_Par_1",
-          "estleg:similarityScore": {
-            "@value": "0.56",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
+          "@id": "estleg:PVKR_Par_1_Lg_Unknown_1"
+        }
+      ],
+      "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:TLKR_Par_1",
           "estleg:similarityScore": {
-            "@value": "0.522",
+            "@value": "0.524",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
@@ -92,59 +139,46 @@
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:rahvusvahelise_organiseeritud_kuritegevu_Par_1",
+          "estleg:similarityScore": {
+            "@value": "0.56",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
         }
       ]
+    },
+    {
+      "@id": "estleg:PVKR_Par_1_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Ratifitseerida juurdelisatud , mis on ÜRO Peaassamblee poolt vastu võetud 1997. aasta 15. detsembril ning millele Eesti Vabariik on alla kirjutanud 1999. aasta 27. detsembril.",
+      "estleg:parentProvision": {
+        "@id": "estleg:PVKR_Par_1"
+      }
     },
     {
       "@id": "estleg:PVKR_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_PVKR"
+        "estleg:LegalProvision_pommiterrorismi_vastase_konventsiooni_ratifitseerimise_seadus"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2.",
+      "rdfs:label": "§ 2. [Konventsiooni artikli 6 lõike 3 alusel Eesti Vabariik deklareerib, et ta kohalda...]",
       "estleg:sourceAct": "Pommiterrorismi vastase konventsiooni ratifitseerimise seadus",
       "estleg:summary": "Konventsiooni artikli 6 lõike 3 alusel Eesti Vabariik deklareerib, et ta kohaldab artiklis 2 nimetatud kuritegude suhtes artikli 6 lõikes 2 käsitletud jurisdiktsiooni oma siseriiklikus õiguses.<table summary=\"allkiri\" width=\"90%\"> <tbody><tr valign=\"top\"> <td width=\"39%\"> </td> <td align=\"right\" width=\"60%\"> <b>Riigikogu esimees Toomas SAVI</b> </td> </tr> </tbody></table> Konventsiooni artikli 6 lõike 3 alusel Eesti Vabariik deklareerib, et ta kohaldab artiklis 2 nimetatud kuritegude suhtes art",
-      "estleg:semanticallySimilarTo": [
+      "estleg:legalText": "Konventsiooni artikli 6 lõike 3 alusel Eesti Vabariik deklareerib, et ta kohaldab artiklis 2 nimetatud kuritegude suhtes artikli 6 lõikes 2 käsitletud jurisdiktsiooni oma siseriiklikus õiguses.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_PVKR_default"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:ROKVVUROKTPR_Par_5",
-          "estleg:similarityScore": {
-            "@value": "0.516",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:RTITIVAKNR_Par_2",
-          "estleg:similarityScore": {
-            "@value": "0.349",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:TKVTETVVIKKE_Par_3",
-          "estleg:similarityScore": {
-            "@value": "0.316",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:TRTRKR_Par_3",
-          "estleg:similarityScore": {
-            "@value": "1.0",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:VOHMEKR_Par_2",
-          "estleg:similarityScore": {
-            "@value": "0.353",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
+          "@id": "estleg:PVKR_Par_2_Lg_Unknown_1"
         }
       ],
       "estleg:targetGroup": [
@@ -156,7 +190,61 @@
           "@id": "estleg:Institution_riigikogu"
         }
       ],
-      "estleg:competenceType": "general"
+      "estleg:competenceType": "general",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:RTITIVAKNR_Par_2",
+          "estleg:similarityScore": {
+            "@value": "0.349",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:TRTRKR_Par_3",
+          "estleg:similarityScore": {
+            "@value": "0.5",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:VOHMEKR_Par_2",
+          "estleg:similarityScore": {
+            "@value": "0.353",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:rahvusvahelise_organiseeritud_kuritegevu_Par_5",
+          "estleg:similarityScore": {
+            "@value": "0.516",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:uhinenud_rahvaste_organisatsiooni_ja_tem_Par_2",
+          "estleg:similarityScore": {
+            "@value": "0.4",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:PVKR_Par_2_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Konventsiooni artikli 6 lõike 3 alusel Eesti Vabariik deklareerib, et ta kohaldab artiklis 2 nimetatud kuritegude suhtes artikli 6 lõikes 2 käsitletud jurisdiktsiooni oma siseriiklikus õiguses.",
+      "estleg:parentProvision": {
+        "@id": "estleg:PVKR_Par_2"
+      }
     }
   ]
 }

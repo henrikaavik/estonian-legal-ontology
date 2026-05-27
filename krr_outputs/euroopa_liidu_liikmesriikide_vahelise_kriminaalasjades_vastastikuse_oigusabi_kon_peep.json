@@ -6,26 +6,34 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
   },
   "@graph": [
     {
       "@id": "estleg:ELLKVOKU_Map_2026",
       "@type": [
+        "owl:Ontology",
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "rdfs:label": "Euroopa Liidu liikmesriikide vahelise kriminaalasjades vastastikuse õigusabi konventsiooniga ühinemise seadus teemakaardistus",
       "dc:source": "Euroopa Liidu liikmesriikide vahelise kriminaalasjades vastastikuse õigusabi konventsiooniga ühinemise seadus",
-      "estleg:temporalStatus": "unknown",
+      "dcterms:title": "Euroopa Liidu liikmesriikide vahelise kriminaalasjades vastastikuse õigusabi konventsiooniga ühinemise seadus",
+      "estleg:contentStatus": "structuredBody",
+      "dcterms:source": {
+        "@id": "https://www.riigiteataja.ee/akt/229122011002.xml"
+      },
+      "owl:sameAs": {
+        "@id": "https://www.riigiteataja.ee/akt/229122011002.xml"
+      },
+      "estleg:kehtiv": {
+        "@value": "2026-05-24",
+        "@type": "xsd:date"
+      },
       "dcterms:subject": [
         {
           "@id": "http://eurovoc.europa.eu/0411"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/2421"
         },
         {
           "@id": "http://eurovoc.europa.eu/2451"
@@ -34,12 +42,16 @@
           "@id": "http://eurovoc.europa.eu/1011"
         },
         {
+          "@id": "http://eurovoc.europa.eu/2421"
+        },
+        {
           "@id": "http://eurovoc.europa.eu/0816"
         }
-      ]
+      ],
+      "estleg:temporalStatus": "unknown"
     },
     {
-      "@id": "estleg:LegalProvision_ELLKVOKU",
+      "@id": "estleg:LegalProvision_euroopa_liidu_liikmesriikide_vahelise_kriminaalasjades_vastastikuse_oigusabi_kon",
       "@type": [
         "owl:Class"
       ],
@@ -49,15 +61,50 @@
       }
     },
     {
+      "@id": "estleg:ELLKVOKU_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": "Euroopa Liidu liikmesriikide vahelise kriminaalasjades vastastikuse õigusabi konventsiooniga ühinemise seadus teemaskeem",
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_ELLKVOKU_default"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Cluster_ELLKVOKU_default",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": "§1–4 Euroopa Liidu liikmesriikide vahelise kriminaalasjades vastastikuse õigusabi konventsiooniga ühinemise seadus",
+      "skos:prefLabel": "§1–4 Euroopa Liidu liikmesriikide vahelise kriminaalasjades vastastikuse õigusabi konventsiooniga ühinemise seadus",
+      "skos:inScheme": {
+        "@id": "estleg:ELLKVOKU_TopicScheme"
+      },
+      "estleg:provisionCount": 4
+    },
+    {
       "@id": "estleg:ELLKVOKU_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ELLKVOKU"
+        "estleg:LegalProvision_euroopa_liidu_liikmesriikide_vahelise_kriminaalasjades_vastastikuse_oigusabi_kon"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. Konventsiooniga ühinemine",
       "estleg:sourceAct": "Euroopa Liidu liikmesriikide vahelise kriminaalasjades vastastikuse õigusabi konventsiooniga ühinemise seadus",
-      "estleg:summary": "Ühineda juurdelisatud Euroopa Liidu liikmesriikide vahelise kriminaalasjades vastastikuse õigusabi konventsiooniga./766150, mis on sõlmitud 2000. aasta 29. mail Brüsselis. Ühineda juurdelisatud , mis on sõlmitud 2000. aasta 29. mail Brüsselis.",
+      "estleg:summary": "Ühineda juurdelisatud Euroopa Liidu liikmesriikide vahelise kriminaalasjades vastastikuse õigusabi konventsiooniga ./766150 , mis on sõlmitud 2000. aasta 29. mail Brüsselis. Ühineda juurdelisatud , mis on sõlmitud 2000. aasta 29. mail Brüsselis.",
+      "estleg:legalText": "Ühineda juurdelisatud , mis on sõlmitud 2000. aasta 29. mail Brüsselis.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_ELLKVOKU_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ELLKVOKU_Par_1_Lg_Unknown_1"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:TVAKKU_Par_1",
@@ -66,19 +113,56 @@
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:euroopa_liidu_liikmesriikide_vahelise_va_Par_1",
+          "estleg:similarityScore": {
+            "@value": "0.529",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:euroopa_liidu_liikmesriikide_vahelise_valjaandmise_Par_1",
+          "estleg:similarityScore": {
+            "@value": "0.474",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
         }
       ]
+    },
+    {
+      "@id": "estleg:ELLKVOKU_Par_1_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Ühineda juurdelisatud , mis on sõlmitud 2000. aasta 29. mail Brüsselis.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ELLKVOKU_Par_1"
+      }
     },
     {
       "@id": "estleg:ELLKVOKU_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ELLKVOKU"
+        "estleg:LegalProvision_euroopa_liidu_liikmesriikide_vahelise_kriminaalasjades_vastastikuse_oigusabi_kon"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. Deklaratsioonid",
       "estleg:sourceAct": "Euroopa Liidu liikmesriikide vahelise kriminaalasjades vastastikuse õigusabi konventsiooniga ühinemise seadus",
-      "estleg:summary": "Konventsiooni artikli 24 lõike 1 kohaselt deklareerib Eesti Vabariik:11)konventsiooni artikli 6 lõikes 8 nimetatud õigusabi keskasutuseks on Justiitsministeerium;22)konventsiooni artikli 6 lõike 5 ning artiklite 18 ja 19 ning artikli 20 lõigete 1–5 kohaldamisel on pädevateks asutusteks Politseiamet, politseiprefektuurid, Kaitsepolitseiamet, Keskkriminaalpolitsei, Maksu- ja Tolliamet ja Piirivalveamet;33)konventsiooni artikli 20 lõike 4 punktis d nimetatud ööpäevaringselt töötav kontaktpunkt on K",
+      "estleg:summary": "Konventsiooni artikli 24 lõike 1 kohaselt deklareerib Eesti Vabariik: 1 1) konventsiooni artikli 6 lõikes 8 nimetatud õigusabi keskasutuseks on Justiitsministeerium; 2 2) konventsiooni artikli 6 lõike 5 ning artiklite 18 ja 19 ning artikli 20 lõigete 1–5 kohaldamisel on pädevateks asutusteks Politsei- ja Piirivalveamet, Kaitsepolitseiamet ning Maksu- ja Tolliamet; RT I 2011-12-29 1 129122011001 2012-01-01 3 3) konventsiooni artikli 20 lõike 4 punktis d nimetatud ööpäevaringselt töötav kontaktpun",
+      "estleg:legalText": "Konventsiooni artikli 24 lõike 1 kohaselt deklareerib Eesti Vabariik: konventsiooni artikli 6 lõikes 8 nimetatud õigusabi keskasutuseks on Justiitsministeerium; konventsiooni artikli 6 lõike 5 ning artiklite 18 ja 19 ning artikli 20 lõigete 1–5 kohaldamisel on pädevateks asutusteks Politsei- ja Piirivalveamet, Kaitsepolitseiamet ning Maksu- ja Tolliamet; konventsiooni artikli 20 lõike 4 punktis d nimetatud ööpäevaringselt töötav kontaktpunkt on Politsei- ja Piirivalveamet.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_ELLKVOKU_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ELLKVOKU_Par_2_Lg_Unknown_1"
+        }
+      ],
       "estleg:targetGroup": [
         "public_body"
       ],
@@ -87,10 +171,10 @@
           "@id": "estleg:Institution_maksu_ja_tolliamet"
         },
         {
-          "@id": "estleg:Institution_justiitsministeerium"
+          "@id": "estleg:Institution_politsei_ja_piirivalveamet"
         },
         {
-          "@id": "estleg:Institution_politsei_ja_piirivalveamet"
+          "@id": "estleg:Institution_justiitsministeerium"
         },
         {
           "@id": "estleg:Institution_kaitsepolitseiamet"
@@ -99,38 +183,83 @@
       "estleg:competenceType": "general"
     },
     {
+      "@id": "estleg:ELLKVOKU_Par_2_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Konventsiooni artikli 24 lõike 1 kohaselt deklareerib Eesti Vabariik: konventsiooni artikli 6 lõikes 8 nimetatud õigusabi keskasutuseks on Justiitsministeerium; konventsiooni artikli 6 lõike 5 ning artiklite 18 ja 19 ning artikli 20 lõigete 1–5 kohaldamisel on pädevateks asutusteks Politsei- ja Piirivalveamet, Kaitsepolitseiamet ning Maksu- ja Tolliamet; konventsiooni artikli 20 lõike 4 punktis d nimetatud ööpäevaringselt töötav kontaktpunkt on Politsei- ja Piirivalveamet.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ELLKVOKU_Par_2"
+      }
+    },
+    {
       "@id": "estleg:ELLKVOKU_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ELLKVOKU"
+        "estleg:LegalProvision_euroopa_liidu_liikmesriikide_vahelise_kriminaalasjades_vastastikuse_oigusabi_kon"
       ],
       "estleg:paragrahv": "§ 3.",
       "rdfs:label": "§ 3. Teade",
       "estleg:sourceAct": "Euroopa Liidu liikmesriikide vahelise kriminaalasjades vastastikuse õigusabi konventsiooniga ühinemise seadus",
-      "estleg:summary": "Konventsiooni artikli 27 lõike 2 kohast teadet edastades deklareerib Eesti Vabariik:11)konventsiooni artikli 9 lõike 6 kohaselt, et enne vahi all viibiva isiku ajutist üleviimist käsitleva kokkuleppe sõlmimist artikli 9 lõike 1 alusel on igal juhul nõutav artikli 9 lõikes 3 nimetatud kirjalik nõusolek tema üleviimiseks;22)konventsiooni artikli 14 lõike 4 kohaselt, et artikkel 14 ei ole Eesti suhtes siduv. Konventsiooni artikli 27 lõike 2 kohast teadet edastades deklareerib Eesti Vabariik: konven",
+      "estleg:summary": "Konventsiooni artikli 27 lõike 2 kohast teadet edastades deklareerib Eesti Vabariik: 1 1) konventsiooni artikli 9 lõike 6 kohaselt, et enne vahi all viibiva isiku ajutist üleviimist käsitleva kokkuleppe sõlmimist artikli 9 lõike 1 alusel on igal juhul nõutav artikli 9 lõikes 3 nimetatud kirjalik nõusolek tema üleviimiseks; 2 2) konventsiooni artikli 14 lõike 4 kohaselt, et artikkel 14 ei ole Eesti suhtes siduv. Konventsiooni artikli 27 lõike 2 kohast teadet edastades deklareerib Eesti Vabariik: ",
+      "estleg:legalText": "Konventsiooni artikli 27 lõike 2 kohast teadet edastades deklareerib Eesti Vabariik: konventsiooni artikli 9 lõike 6 kohaselt, et enne vahi all viibiva isiku ajutist üleviimist käsitleva kokkuleppe sõlmimist artikli 9 lõike 1 alusel on igal juhul nõutav artikli 9 lõikes 3 nimetatud kirjalik nõusolek tema üleviimiseks; konventsiooni artikli 14 lõike 4 kohaselt, et artikkel 14 ei ole Eesti suhtes siduv.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_ELLKVOKU_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:ELLKVOKU_Par_3_Lg_Unknown_1"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen"
       ]
     },
     {
+      "@id": "estleg:ELLKVOKU_Par_3_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Konventsiooni artikli 27 lõike 2 kohast teadet edastades deklareerib Eesti Vabariik: konventsiooni artikli 9 lõike 6 kohaselt, et enne vahi all viibiva isiku ajutist üleviimist käsitleva kokkuleppe sõlmimist artikli 9 lõike 1 alusel on igal juhul nõutav artikli 9 lõikes 3 nimetatud kirjalik nõusolek tema üleviimiseks; konventsiooni artikli 14 lõike 4 kohaselt, et artikkel 14 ei ole Eesti suhtes siduv.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ELLKVOKU_Par_3"
+      }
+    },
+    {
       "@id": "estleg:ELLKVOKU_Par_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_ELLKVOKU"
+        "estleg:LegalProvision_euroopa_liidu_liikmesriikide_vahelise_kriminaalasjades_vastastikuse_oigusabi_kon"
       ],
       "estleg:paragrahv": "§ 4.",
       "rdfs:label": "§ 4. Seaduse jõustumine",
       "estleg:sourceAct": "Euroopa Liidu liikmesriikide vahelise kriminaalasjades vastastikuse õigusabi konventsiooniga ühinemise seadus",
-      "estleg:summary": "Käesolev seadus jõustub Riigi Teatajas avaldamisele järgneval päeval.<table summary=\"allkiri\" width=\"100%\"> <tbody><tr valign=\"top\"> <td width=\"60%\"> </td> <td width=\"39%\"> <b><font size=\"-1\" style=\"font-size:-1px\">Riigikogu aseesimees Peeter KREITZBERG</font></b> </td> </tr> </tbody></table> Käesolev seadus jõustub Riigi Teatajas avaldamisele järgneval päeval.",
-      "estleg:targetGroup": [
-        "public_body"
-      ],
-      "estleg:competentAuthority": [
+      "estleg:summary": "Käesolev seadus jõustub Riigi Teatajas avaldamisele järgneval päeval. Käesolev seadus jõustub Riigi Teatajas avaldamisele järgneval päeval.",
+      "estleg:legalText": "Käesolev seadus jõustub Riigi Teatajas avaldamisele järgneval päeval.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_ELLKVOKU_default"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:Institution_riigikogu"
+          "@id": "estleg:ELLKVOKU_Par_4_Lg_Unknown_1"
         }
+      ]
+    },
+    {
+      "@id": "estleg:ELLKVOKU_Par_4_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:competenceType": "general"
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Käesolev seadus jõustub Riigi Teatajas avaldamisele järgneval päeval.",
+      "estleg:parentProvision": {
+        "@id": "estleg:ELLKVOKU_Par_4"
+      }
     }
   ]
 }

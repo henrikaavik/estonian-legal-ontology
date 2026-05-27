@@ -6,45 +6,31 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
   },
   "@graph": [
     {
       "@id": "estleg:HALDUS_2_Map_2026",
       "@type": [
+        "owl:Ontology",
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "rdfs:label": "Haldusreformi seadus teemakaardistus",
       "dc:source": "Haldusreformi seadus",
-      "estleg:affectedBy": [
-        {
-          "@id": "estleg:Draft_RAM15_1824"
-        },
-        {
-          "@id": "estleg:Draft_RIIGIKOGU17_0274"
-        },
-        {
-          "@id": "estleg:Draft_RIIGIKOGU17_0128"
-        },
-        {
-          "@id": "estleg:Draft_RIIGIKOGU16_0985"
-        }
-      ],
-      "estleg:amendedBy": [
-        {
-          "@id": "estleg:Draft_RIIGIKOGU17_0274"
-        },
-        {
-          "@id": "estleg:Draft_RIIGIKOGU17_0128"
-        },
-        {
-          "@id": "estleg:Draft_RIIGIKOGU16_0985"
-        }
-      ],
-      "estleg:temporalStatus": "unknown",
+      "dcterms:title": "Haldusreformi seadus",
+      "estleg:contentStatus": "structuredBody",
+      "dcterms:source": {
+        "@id": "https://www.riigiteataja.ee/akt/121122016034.xml"
+      },
+      "owl:sameAs": {
+        "@id": "https://www.riigiteataja.ee/akt/121122016034.xml"
+      },
+      "estleg:kehtiv": {
+        "@value": "2026-05-24",
+        "@type": "xsd:date"
+      },
       "dcterms:subject": [
         {
           "@id": "http://eurovoc.europa.eu/2446"
@@ -61,10 +47,36 @@
         {
           "@id": "http://eurovoc.europa.eu/5206"
         }
+      ],
+      "estleg:temporalStatus": "unknown",
+      "estleg:amendedBy": [
+        {
+          "@id": "estleg:AmendmentLink_Draft_RIIGIKOGU17_0274_HALDUS_2"
+        },
+        {
+          "@id": "estleg:AmendmentLink_Draft_RIIGIKOGU17_0128_HALDUS_2"
+        },
+        {
+          "@id": "estleg:AmendmentLink_Draft_RIIGIKOGU16_0985_HALDUS_2"
+        }
+      ],
+      "estleg:affectedBy": [
+        {
+          "@id": "estleg:Draft_RAM15_1824"
+        },
+        {
+          "@id": "estleg:Draft_RIIGIKOGU17_0274"
+        },
+        {
+          "@id": "estleg:Draft_RIIGIKOGU17_0128"
+        },
+        {
+          "@id": "estleg:Draft_RIIGIKOGU16_0985"
+        }
       ]
     },
     {
-      "@id": "estleg:LegalProvision_HALDUS_2",
+      "@id": "estleg:LegalProvision_haldusreformi_seadus",
       "@type": [
         "owl:Class"
       ],
@@ -74,58 +86,193 @@
       }
     },
     {
+      "@id": "estleg:HALDUS_2_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": "Haldusreformi seadus teemaskeem",
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_HALDUS_2_1"
+        },
+        {
+          "@id": "estleg:Cluster_HALDUS_2_2"
+        },
+        {
+          "@id": "estleg:Cluster_HALDUS_2_3"
+        },
+        {
+          "@id": "estleg:Cluster_HALDUS_2_4"
+        },
+        {
+          "@id": "estleg:Cluster_HALDUS_2_5"
+        }
+      ]
+    },
+    {
       "@id": "estleg:Cluster_HALDUS_2_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§1–3 Üldsätted"
+      "rdfs:label": "§1–3 Üldsätted",
+      "skos:prefLabel": "§1–3 Üldsätted",
+      "skos:inScheme": {
+        "@id": "estleg:HALDUS_2_TopicScheme"
+      },
+      "estleg:provisionCount": 3
+    },
+    {
+      "@id": "estleg:Chapter_HALDUS_2_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "1. peatükk – Üldsätted",
+      "estleg:chapterNumber": "1",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_HALDUS_2_1"
+      }
     },
     {
       "@id": "estleg:Cluster_HALDUS_2_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§4–8 Valdade ja linnade haldusterritoriaalse korralduse muutmine volikogu algatusel"
+      "rdfs:label": "§4–8 Valdade ja linnade haldusterritoriaalse korralduse muutmine volikogu algatusel",
+      "skos:prefLabel": "§4–8 Valdade ja linnade haldusterritoriaalse korralduse muutmine volikogu algatusel",
+      "skos:inScheme": {
+        "@id": "estleg:HALDUS_2_TopicScheme"
+      },
+      "estleg:provisionCount": 5
+    },
+    {
+      "@id": "estleg:Chapter_HALDUS_2_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "2. peatükk – Valdade ja linnade haldusterritoriaalse korralduse muutmine volikogu algatusel",
+      "estleg:chapterNumber": "2",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_HALDUS_2_2"
+      }
     },
     {
       "@id": "estleg:Cluster_HALDUS_2_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§9–13 Valdade ja linnade haldusterritoriaalse korralduse muutmine Vabariigi Valitsuse algatusel"
+      "rdfs:label": "§9–13 Valdade ja linnade haldusterritoriaalse korralduse muutmine Vabariigi Valitsuse algatusel",
+      "skos:prefLabel": "§9–13 Valdade ja linnade haldusterritoriaalse korralduse muutmine Vabariigi Valitsuse algatusel",
+      "skos:inScheme": {
+        "@id": "estleg:HALDUS_2_TopicScheme"
+      },
+      "estleg:provisionCount": 5
+    },
+    {
+      "@id": "estleg:Chapter_HALDUS_2_3",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "3. peatükk – Valdade ja linnade haldusterritoriaalse korralduse muutmine Vabariigi Valitsuse algatusel",
+      "estleg:chapterNumber": "3",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_HALDUS_2_3"
+      }
     },
     {
       "@id": "estleg:Cluster_HALDUS_2_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§14–26 Valdade ja linnade haldusterritoriaalse korralduse muutmisega kaasnevad muud kohaliku omavalitsuse üksuste õigused ja kohustused"
+      "rdfs:label": "§14–26 Valdade ja linnade haldusterritoriaalse korralduse muutmisega kaasnevad muud kohaliku omavalitsuse üksuste õigused ja kohustused",
+      "skos:prefLabel": "§14–26 Valdade ja linnade haldusterritoriaalse korralduse muutmisega kaasnevad muud kohaliku omavalitsuse üksuste õigused ja kohustused",
+      "skos:inScheme": {
+        "@id": "estleg:HALDUS_2_TopicScheme"
+      },
+      "estleg:provisionCount": 13
+    },
+    {
+      "@id": "estleg:Chapter_HALDUS_2_4",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "4. peatükk – Valdade ja linnade haldusterritoriaalse korralduse muutmisega kaasnevad muud kohaliku omavalitsuse üksuste õigused ja kohustused",
+      "estleg:chapterNumber": "4",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_HALDUS_2_4"
+      }
     },
     {
       "@id": "estleg:Cluster_HALDUS_2_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§27–39 Rakendussätted"
+      "rdfs:label": "§27–39 Rakendussätted",
+      "skos:prefLabel": "§27–39 Rakendussätted",
+      "skos:inScheme": {
+        "@id": "estleg:HALDUS_2_TopicScheme"
+      },
+      "estleg:provisionCount": 6
+    },
+    {
+      "@id": "estleg:Chapter_HALDUS_2_5",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "5. peatükk – Rakendussätted",
+      "estleg:chapterNumber": "5",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_HALDUS_2_5"
+      }
     },
     {
       "@id": "estleg:HALDUS_2_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_HALDUS_2"
+        "estleg:LegalProvision_haldusreformi_seadus"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. Seaduse reguleerimisala ja haldusreformi eesmärk",
       "estleg:sourceAct": "Haldusreformi seadus",
       "estleg:summary": "1 (1) Käesolev seadus sätestab haldusreformi eesmärgi saavutamiseks valdade ja linnade haldusterritoriaalse korralduse muutmise alused ja korra, sealhulgas haldusterritoriaalse korralduse muutmiseks vajalike otsuste ja toimingute tegemise tähtajad, reformi aluseks oleva kohaliku omavalitsuse üksuse elanike arvust lähtuva omavalitsusüksuse miinimumsuuruse kriteeriumi, erandite kohaldamise tingimused selle kriteeriumi rakendamisel ning kohaliku omavalitsuse üksuste haldusterritoriaalse korralduse ",
+      "estleg:legalText": "(1) Käesolev seadus sätestab haldusreformi eesmärgi saavutamiseks valdade ja linnade haldusterritoriaalse korralduse muutmise alused ja korra, sealhulgas haldusterritoriaalse korralduse muutmiseks vajalike otsuste ja toimingute tegemise tähtajad, reformi aluseks oleva kohaliku omavalitsuse üksuse elanike arvust lähtuva omavalitsusüksuse miinimumsuuruse kriteeriumi, erandite kohaldamise tingimused selle kriteeriumi rakendamisel ning kohaliku omavalitsuse üksuste haldusterritoriaalse korralduse muutmisega kaasnevad üldised õigused ja kohustused. (2) Haldusreformi eesmärk on toetada kohaliku omavalitsuse üksuste võimekuse kasvu kvaliteetsete avalike teenuste pakkumisel, piirkondade arengueelduste kasutamisel, konkurentsivõime suurendamisel ja ühtlasema piirkondliku arengu tagamisel. Selle eesmärgi elluviimiseks nähakse käesoleva seadusega ette valdade ja linnade haldusterritoriaalse korralduse muutmine, mille tulemusena peavad kohaliku omavalitsuse üksused olema võimelised iseseisvalt korraldama ja juhtima kohalikku elu ning täitma seadusest tulenevaid ülesandeid. Haldusreformi rakendamisel lähtutakse ka riigivalitsemise reformi eesmärkidest riigihalduse korrastamisel, milleks on avalike teenuste hea kvaliteedi ja kättesaadavuse tagamine ning kulude kokkuhoid. (3) Käesoleva paragrahvi lõikes 2 nimetatud haldusreformi eesmärgi saavutamiseks tuleb haldusterritoriaalse korralduse muutmisel eelistada kohaliku omavalitsuse üksuste moodustamist, kus elab vähemalt 11 000 elanikku (edaspidi omavalitsusüksuse soovitusliku suuruse kriteerium). (4) Käesolevas seaduses sätestatud haldusterritoriaalse korralduse ning kohaliku omavalitsuse üksuste piiride ja nime muutmisele kohaldatakse Eesti territooriumi haldusjaotuse seaduse ja kohaliku omavalitsuse üksuste ühinemise soodustamise seaduse sätteid, arvestades käesolevast seadusest tulenevaid erisusi. (5) Käesolevas seaduses ette nähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse sätteid, arvestades käesoleva seaduse erisusi.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_HALDUS_2_1"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_HALDUS_2_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:HALDUS_2_Par_1_Lg_1"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_1_Lg_2"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_1_Lg_3"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_1_Lg_4"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_1_Lg_5"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen",
         "public_body"
@@ -146,18 +293,104 @@
       ]
     },
     {
+      "@id": "estleg:HALDUS_2_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolev seadus sätestab haldusreformi eesmärgi saavutamiseks valdade ja linnade haldusterritoriaalse korralduse muutmise alused ja korra, sealhulgas haldusterritoriaalse korralduse muutmiseks vajalike otsuste ja toimingute tegemise tähtajad, reformi aluseks oleva kohaliku omavalitsuse üksuse elanike arvust lähtuva omavalitsusüksuse miinimumsuuruse kriteeriumi, erandite kohaldamise tingimused selle kriteeriumi rakendamisel ning kohaliku omavalitsuse üksuste haldusterritoriaalse korralduse muutmisega kaasnevad üldised õigused ja kohustused.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Haldusreformi eesmärk on toetada kohaliku omavalitsuse üksuste võimekuse kasvu kvaliteetsete avalike teenuste pakkumisel, piirkondade arengueelduste kasutamisel, konkurentsivõime suurendamisel ja ühtlasema piirkondliku arengu tagamisel. Selle eesmärgi elluviimiseks nähakse käesoleva seadusega ette valdade ja linnade haldusterritoriaalse korralduse muutmine, mille tulemusena peavad kohaliku omavalitsuse üksused olema võimelised iseseisvalt korraldama ja juhtima kohalikku elu ning täitma seadusest tulenevaid ülesandeid. Haldusreformi rakendamisel lähtutakse ka riigivalitsemise reformi eesmärkidest riigihalduse korrastamisel, milleks on avalike teenuste hea kvaliteedi ja kättesaadavuse tagamine ning kulude kokkuhoid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 2"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_1_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Käesoleva paragrahvi lõikes 2 nimetatud haldusreformi eesmärgi saavutamiseks tuleb haldusterritoriaalse korralduse muutmisel eelistada kohaliku omavalitsuse üksuste moodustamist, kus elab vähemalt 11 000 elanikku (edaspidi omavalitsusüksuse soovitusliku suuruse kriteerium).",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 3"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_1_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Käesolevas seaduses sätestatud haldusterritoriaalse korralduse ning kohaliku omavalitsuse üksuste piiride ja nime muutmisele kohaldatakse Eesti territooriumi haldusjaotuse seaduse ja kohaliku omavalitsuse üksuste ühinemise soodustamise seaduse sätteid, arvestades käesolevast seadusest tulenevaid erisusi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 4"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_1_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Käesolevas seaduses ette nähtud haldusmenetlusele kohaldatakse haldusmenetluse seaduse sätteid, arvestades käesoleva seaduse erisusi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 5"
+    },
+    {
       "@id": "estleg:HALDUS_2_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_HALDUS_2"
+        "estleg:LegalProvision_haldusreformi_seadus"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. Haldusterritoriaalse korralduse muutmise viisid ja rakendamine",
       "estleg:sourceAct": "Haldusreformi seadus",
       "estleg:summary": "1 (1) Haldusterritoriaalse korralduse muutmise viisid käesoleva seaduse tähenduses on: 1 1) kahe või enama kohaliku omavalitsuse üksuse ühinemise tulemusena uue kohaliku omavalitsuse üksuse moodustamine; 2 2) ühe kohaliku omavalitsuse üksuse suurenemine selle liitumise teel ühe või mitme piirneva kohaliku omavalitsuse üksusega. Haldusterritoriaalse korralduse muutmise viisid käesoleva seaduse tähenduses on: kahe või enama kohaliku omavalitsuse üksuse ühinemise tulemusena uue kohaliku omavalitsus",
+      "estleg:legalText": "(1) Haldusterritoriaalse korralduse muutmise viisid käesoleva seaduse tähenduses on: kahe või enama kohaliku omavalitsuse üksuse ühinemise tulemusena uue kohaliku omavalitsuse üksuse moodustamine; ühe kohaliku omavalitsuse üksuse suurenemine selle liitumise teel ühe või mitme piirneva kohaliku omavalitsuse üksusega. (2) Haldusterritoriaalse korralduse muutmise käigus võib muuta ka ühinevate või liituvate kohaliku omavalitsuse üksuste (edaspidi koos ka ühinevad kohaliku omavalitsuse üksused) piire ühe või mitme asustusüksuse või muu territooriumiosa (edaspidi koos territooriumiosa) ühest kohaliku omavalitsuse üksuse koosseisust teise kohaliku omavalitsuse üksuse koosseisu arvamisega Eesti territooriumi haldusjaotuse seaduses sätestatud korras, arvestades käesolevas seaduses sätestatud erisusi. (3) Valdade ja linnade haldusterritoriaalset korraldust muudetakse haldusreformi rakendamisel kohaliku omavalitsuse üksuse volikogu või Vabariigi Valitsuse algatusel. (4) Valdade ja linnade haldusterritoriaalset korraldust muudetakse haldusreformi rakendades käesoleva seaduse §-de 1‒25 alusel selliselt, et nii kohaliku omavalitsuse üksuse volikogu valimised kui ka Vabariigi Valitsuse algatatud haldusterritoriaalse korralduse muutmisel toimuvad volikogu valimised korraldatakse 2017. aastal kohaliku omavalitsuse üksuse volikogu korraliste valimiste ajal kohaliku omavalitsuse volikogu valimise seaduse § 2 kohaselt. (5) Haldusreformi elluviimise korraldamise eest vastutab Rahandusministeerium.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_HALDUS_2_1"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_HALDUS_2_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:HALDUS_2_Par_2_Lg_1"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_2_Lg_2"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_2_Lg_3"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_2_Lg_4"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_2_Lg_5"
+        }
+      ],
       "estleg:targetGroup": [
         "public_body"
       ],
@@ -167,49 +400,147 @@
         }
       ],
       "estleg:competenceType": "general"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_2_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Haldusterritoriaalse korralduse muutmise viisid käesoleva seaduse tähenduses on: kahe või enama kohaliku omavalitsuse üksuse ühinemise tulemusena uue kohaliku omavalitsuse üksuse moodustamine; ühe kohaliku omavalitsuse üksuse suurenemine selle liitumise teel ühe või mitme piirneva kohaliku omavalitsuse üksusega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 1"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_2_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Haldusterritoriaalse korralduse muutmise käigus võib muuta ka ühinevate või liituvate kohaliku omavalitsuse üksuste (edaspidi koos ka ühinevad kohaliku omavalitsuse üksused) piire ühe või mitme asustusüksuse või muu territooriumiosa (edaspidi koos territooriumiosa) ühest kohaliku omavalitsuse üksuse koosseisust teise kohaliku omavalitsuse üksuse koosseisu arvamisega Eesti territooriumi haldusjaotuse seaduses sätestatud korras, arvestades käesolevas seaduses sätestatud erisusi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 2"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_2_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Valdade ja linnade haldusterritoriaalset korraldust muudetakse haldusreformi rakendamisel kohaliku omavalitsuse üksuse volikogu või Vabariigi Valitsuse algatusel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 3"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_2_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Valdade ja linnade haldusterritoriaalset korraldust muudetakse haldusreformi rakendades käesoleva seaduse §-de 1‒25 alusel selliselt, et nii kohaliku omavalitsuse üksuse volikogu valimised kui ka Vabariigi Valitsuse algatatud haldusterritoriaalse korralduse muutmisel toimuvad volikogu valimised korraldatakse 2017. aastal kohaliku omavalitsuse üksuse volikogu korraliste valimiste ajal kohaliku omavalitsuse volikogu valimise seaduse § 2 kohaselt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 4"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_2_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Haldusreformi elluviimise korraldamise eest vastutab Rahandusministeerium.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_2"
+      },
+      "rdfs:label": "§ 2 lg 5"
     },
     {
       "@id": "estleg:HALDUS_2_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_HALDUS_2"
+        "estleg:LegalProvision_haldusreformi_seadus"
       ],
       "estleg:paragrahv": "§ 3.",
       "rdfs:label": "§ 3. Omavalitsusüksuse miinimumsuuruse kriteerium",
       "estleg:sourceAct": "Haldusreformi seadus",
       "estleg:summary": "Kohaliku omavalitsuse üksus on võimeline tagama seadusest tulenevate ülesannete korraldamiseks vajaliku professionaalse võimekuse ja osutama kõigile kohaliku omavalitsuse üksuse elanikele kvaliteetseid avalikke teenuseid kooskõlas käesoleva seaduse § 1 lõikes 2 nimetatud haldusreformi eesmärgiga juhul, kui kohaliku omavalitsuse üksuses elab vähemalt 5000 elanikku (edaspidi omavalitsusüksuse miinimumsuuruse kriteerium). Kohaliku omavalitsuse üksus on võimeline tagama seadusest tulenevate ülesanne",
+      "estleg:legalText": "Kohaliku omavalitsuse üksus on võimeline tagama seadusest tulenevate ülesannete korraldamiseks vajaliku professionaalse võimekuse ja osutama kõigile kohaliku omavalitsuse üksuse elanikele kvaliteetseid avalikke teenuseid kooskõlas käesoleva seaduse § 1 lõikes 2 nimetatud haldusreformi eesmärgiga juhul, kui kohaliku omavalitsuse üksuses elab vähemalt 5000 elanikku (edaspidi omavalitsusüksuse miinimumsuuruse kriteerium).",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_HALDUS_2_1"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_HALDUS_2_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:HALDUS_2_Par_3_Lg_Unknown_1"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "public_body"
+      ],
       "estleg:references": [
         {
           "@id": "estleg:HALDUS_2_Par_1"
         }
       ],
-      "estleg:targetGroup": [
-        "citizen",
-        "public_body"
-      ],
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_kohalik_omavalitsus"
         }
       ],
       "estleg:competenceType": "general"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_3_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Kohaliku omavalitsuse üksus on võimeline tagama seadusest tulenevate ülesannete korraldamiseks vajaliku professionaalse võimekuse ja osutama kõigile kohaliku omavalitsuse üksuse elanikele kvaliteetseid avalikke teenuseid kooskõlas käesoleva seaduse § 1 lõikes 2 nimetatud haldusreformi eesmärgiga juhul, kui kohaliku omavalitsuse üksuses elab vähemalt 5000 elanikku (edaspidi omavalitsusüksuse miinimumsuuruse kriteerium).",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_3"
+      }
     },
     {
       "@id": "estleg:HALDUS_2_Par_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_HALDUS_2"
+        "estleg:LegalProvision_haldusreformi_seadus"
       ],
       "estleg:paragrahv": "§ 4.",
       "rdfs:label": "§ 4. Valdade ja linnade haldusterritoriaalse korralduse muutmise algatamine volikogu poolt",
       "estleg:sourceAct": "Haldusreformi seadus",
       "estleg:summary": "1 (1) Kohaliku omavalitsuse üksus, mis ei vasta rahvastikuregistri andmete kohaselt käesolevas seaduses sätestatud omavalitsusüksuse miinimumsuuruse kriteeriumile ega ole Eesti territooriumi haldusjaotuse seaduse § 9 lõigete 1 ja 2 alusel esitanud asjaomastele volikogudele ettepanekut alustada läbirääkimisi haldusterritoriaalse korralduse muutmiseks, ei ole saanud teise kohaliku omavalitsuse üksuse volikogu vastavat ettepanekut või on seni keeldunud läbirääkimiste alustamisest teise kohaliku oma",
+      "estleg:legalText": "(1) Kohaliku omavalitsuse üksus, mis ei vasta rahvastikuregistri andmete kohaselt käesolevas seaduses sätestatud omavalitsusüksuse miinimumsuuruse kriteeriumile ega ole Eesti territooriumi haldusjaotuse seaduse § 9 lõigete 1 ja 2 alusel esitanud asjaomastele volikogudele ettepanekut alustada läbirääkimisi haldusterritoriaalse korralduse muutmiseks, ei ole saanud teise kohaliku omavalitsuse üksuse volikogu vastavat ettepanekut või on seni keeldunud läbirääkimiste alustamisest teise kohaliku omavalitsuse üksuse volikoguga, esitab hiljemalt 2016. aasta 1. oktoobriks teistele kohaliku omavalitsuse üksuste volikogudele ettepaneku läbirääkimiste alustamiseks. (2) Kohaliku omavalitsuse üksused ühinevad volikogu algatusel Eesti territooriumi haldusjaotuse seaduse §-s 9 sätestatud korras, arvestades käesolevas peatükis sätestatud erisusi. Nimetatud juhul ei kohaldata Eesti territooriumi haldusjaotuse seaduse § 9 lõikes 31, lõike 8 teises lauses, lõike 9 punktis 2 ja lõikes 13 ning § 91 lõike 1 punktides 3, 4, 5, 6 ja 7 sätestatut ning kohaliku omavalitsuse volikogu valimise seaduse § 11 lõikes 4 ja § 17 lõikes 3 sätestatut.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_HALDUS_2_2"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_HALDUS_2_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:HALDUS_2_Par_4_Lg_1"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_4_Lg_2"
+        }
+      ],
       "estleg:targetGroup": [
         "public_body"
       ],
@@ -219,20 +550,64 @@
         }
       ],
       "estleg:competenceType": "general"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kohaliku omavalitsuse üksus, mis ei vasta rahvastikuregistri andmete kohaselt käesolevas seaduses sätestatud omavalitsusüksuse miinimumsuuruse kriteeriumile ega ole Eesti territooriumi haldusjaotuse seaduse § 9 lõigete 1 ja 2 alusel esitanud asjaomastele volikogudele ettepanekut alustada läbirääkimisi haldusterritoriaalse korralduse muutmiseks, ei ole saanud teise kohaliku omavalitsuse üksuse volikogu vastavat ettepanekut või on seni keeldunud läbirääkimiste alustamisest teise kohaliku omavalitsuse üksuse volikoguga, esitab hiljemalt 2016. aasta 1. oktoobriks teistele kohaliku omavalitsuse üksuste volikogudele ettepaneku läbirääkimiste alustamiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_4_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kohaliku omavalitsuse üksused ühinevad volikogu algatusel Eesti territooriumi haldusjaotuse seaduse §-s 9 sätestatud korras, arvestades käesolevas peatükis sätestatud erisusi. Nimetatud juhul ei kohaldata Eesti territooriumi haldusjaotuse seaduse § 9 lõikes 31, lõike 8 teises lauses, lõike 9 punktis 2 ja lõikes 13 ning § 91 lõike 1 punktides 3, 4, 5, 6 ja 7 sätestatut ning kohaliku omavalitsuse volikogu valimise seaduse § 11 lõikes 4 ja § 17 lõikes 3 sätestatut.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 2"
     },
     {
       "@id": "estleg:HALDUS_2_Par_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_HALDUS_2"
+        "estleg:LegalProvision_haldusreformi_seadus"
       ],
       "estleg:paragrahv": "§ 5.",
       "rdfs:label": "§ 5. Piirkondlike komisjonide tegevus volikogu algatatud haldusterritoriaalse korralduse muutmisel",
       "estleg:sourceAct": "Haldusreformi seadus",
       "estleg:summary": "1 (1) Kohaliku omavalitsuse üksustele annab haldusterritoriaalse korralduse muutmiseks soovitusi Vabariigi Valitsuse moodustatud piirkondlik komisjon (edaspidi piirkondlik komisjon). Lisaks nõustab piirkondlik komisjon asjaomaseid volikogusid kokkulepete sõlmimisel ja haldusterritoriaalse korralduse muutmisega seonduvate vaidlusaluste küsimuste lahendamisel. Kohaliku omavalitsuse üksustele annab haldusterritoriaalse korralduse muutmiseks soovitusi Vabariigi Valitsuse moodustatud piirkondlik komi",
+      "estleg:legalText": "(1) Kohaliku omavalitsuse üksustele annab haldusterritoriaalse korralduse muutmiseks soovitusi Vabariigi Valitsuse moodustatud piirkondlik komisjon (edaspidi piirkondlik komisjon). Lisaks nõustab piirkondlik komisjon asjaomaseid volikogusid kokkulepete sõlmimisel ja haldusterritoriaalse korralduse muutmisega seonduvate vaidlusaluste küsimuste lahendamisel. (2) Piirkondliku komisjoni ülesanne on anda: piirkonna kohaliku omavalitsuse üksustele soovitusi, arvamusi ja hinnanguid haldusterritoriaalse korralduse muutmiseks, et tagada käesoleva seaduse § 1 lõikes 2 sätestatud haldusreformi eesmärgi saavutamine ja vastavus omavalitsusüksuse miinimumsuuruse või soovitusliku suuruse kriteeriumile; piirkonna kohaliku omavalitsuse üksustele ja Rahandusministeeriumile arvamus haldusterritoriaalse korralduse muutmise tulemusena moodustuva kohaliku omavalitsuse üksuse Eesti territooriumi haldusjaotuse seaduse § 7 lõikes 5 nimetatud mõjude ja asjaolude arvestamise kohta; hinnang piirkonna kohaliku omavalitsuse üksustele ja Rahandusministeeriumile kohaliku omavalitsuse üksuse moodustamisel piirkonna eripära, asustussüsteemi kooskõla ja territoriaalse terviklikkuse arvestamise kohta. (3) Piirkondliku komisjoni ülesanne on käesoleva paragrahvi lõikes 2 nimetatud soovituste, arvamuste ja hinnangute andmisel kaaluda esmalt haldusterritoriaalse korralduse muutmise tulemusena moodustuva kohaliku omavalitsuse üksuse vastavust omavalitsusüksuse soovitusliku suuruse kriteeriumile. (4) Vabariigi Valitsus moodustab korraldusega kuni neli piirkondlikku nõuandvat komisjoni. Korralduses määratakse piirkondliku komisjoni koosseis, tegevuspiirkond, täpsemad ülesanded, kohaliku omavalitsuse üksustele haldusterritoriaalse korralduse muutmisel arvamuste ja soovituste andmise ning nõustamise kord ja komisjoni teenindamise eest vastutav maavalitsus. Iga piirkondliku komisjoni koosseisu kuuluvad piirkondliku komisjoni tegevuspiirkonna maavanemad, Rahandusministeeriumi esindajad ja Vabariigi Valitsuse nimetatud eksperdid.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_HALDUS_2_2"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_HALDUS_2_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:HALDUS_2_Par_5_Lg_1"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_5_Lg_2"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_5_Lg_3"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_5_Lg_4"
+        }
+      ],
       "estleg:targetGroup": [
         "public_body"
       ],
@@ -242,23 +617,95 @@
         }
       ],
       "estleg:competenceType": "general"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kohaliku omavalitsuse üksustele annab haldusterritoriaalse korralduse muutmiseks soovitusi Vabariigi Valitsuse moodustatud piirkondlik komisjon (edaspidi piirkondlik komisjon). Lisaks nõustab piirkondlik komisjon asjaomaseid volikogusid kokkulepete sõlmimisel ja haldusterritoriaalse korralduse muutmisega seonduvate vaidlusaluste küsimuste lahendamisel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_5_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Piirkondliku komisjoni ülesanne on anda: piirkonna kohaliku omavalitsuse üksustele soovitusi, arvamusi ja hinnanguid haldusterritoriaalse korralduse muutmiseks, et tagada käesoleva seaduse § 1 lõikes 2 sätestatud haldusreformi eesmärgi saavutamine ja vastavus omavalitsusüksuse miinimumsuuruse või soovitusliku suuruse kriteeriumile; piirkonna kohaliku omavalitsuse üksustele ja Rahandusministeeriumile arvamus haldusterritoriaalse korralduse muutmise tulemusena moodustuva kohaliku omavalitsuse üksuse Eesti territooriumi haldusjaotuse seaduse § 7 lõikes 5 nimetatud mõjude ja asjaolude arvestamise kohta; hinnang piirkonna kohaliku omavalitsuse üksustele ja Rahandusministeeriumile kohaliku omavalitsuse üksuse moodustamisel piirkonna eripära, asustussüsteemi kooskõla ja territoriaalse terviklikkuse arvestamise kohta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 2"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_5_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Piirkondliku komisjoni ülesanne on käesoleva paragrahvi lõikes 2 nimetatud soovituste, arvamuste ja hinnangute andmisel kaaluda esmalt haldusterritoriaalse korralduse muutmise tulemusena moodustuva kohaliku omavalitsuse üksuse vastavust omavalitsusüksuse soovitusliku suuruse kriteeriumile.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 3"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_5_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Vabariigi Valitsus moodustab korraldusega kuni neli piirkondlikku nõuandvat komisjoni. Korralduses määratakse piirkondliku komisjoni koosseis, tegevuspiirkond, täpsemad ülesanded, kohaliku omavalitsuse üksustele haldusterritoriaalse korralduse muutmisel arvamuste ja soovituste andmise ning nõustamise kord ja komisjoni teenindamise eest vastutav maavalitsus. Iga piirkondliku komisjoni koosseisu kuuluvad piirkondliku komisjoni tegevuspiirkonna maavanemad, Rahandusministeeriumi esindajad ja Vabariigi Valitsuse nimetatud eksperdid.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 4"
     },
     {
       "@id": "estleg:HALDUS_2_Par_6",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_HALDUS_2"
+        "estleg:LegalProvision_haldusreformi_seadus"
       ],
       "estleg:paragrahv": "§ 6.",
       "rdfs:label": "§ 6. Elanike arvamuse väljaselgitamine",
       "estleg:sourceAct": "Haldusreformi seadus",
       "estleg:summary": "1 (1) Elanike arvamus selgitatakse välja Eesti territooriumi haldusjaotuse seaduse § 7 lõike 8 alusel kehtestatud korra kohaselt. Elanike arvamus selgitatakse välja Eesti territooriumi haldusjaotuse seaduse § 7 lõike 8 alusel kehtestatud korra kohaselt. 2 (2) Kui piirkonna elanikud on esitanud kohaliku omavalitsuse üksusele taotluse territooriumiosa arvamise kohta teise kohaliku omavalitsuse üksuse koosseisu kohaliku omavalitsuse korralduse seaduse § 32 lõike 1 alusel, eristatakse elanike arvamu",
+      "estleg:legalText": "(1) Elanike arvamus selgitatakse välja Eesti territooriumi haldusjaotuse seaduse § 7 lõike 8 alusel kehtestatud korra kohaselt. (2) Kui piirkonna elanikud on esitanud kohaliku omavalitsuse üksusele taotluse territooriumiosa arvamise kohta teise kohaliku omavalitsuse üksuse koosseisu kohaliku omavalitsuse korralduse seaduse § 32 lõike 1 alusel, eristatakse elanike arvamuse väljaselgitamisel küsitluse tulemused asustusüksuste või asustusüksuste gruppide kaupa selliselt, et sellest nähtuks, kas territooriumiosa elanikud toetavad ühinemist ühinemisläbirääkimistes osalevate või mõne muu valla või linnaga ühist piiri omava kohaliku omavalitsuse üksusega. (3) Kui elanike küsitluse tulemusena selgub, et soovitakse mõne territooriumiosa arvamist ühe kohaliku omavalitsuse üksuse koosseisust teise kohaliku omavalitsuse üksuse koosseisu ning asjaomased kohaliku omavalitsuse üksuste volikogud nõustuvad sellega, siis muudetakse valdade ja linnade haldusterritoriaalse korralduse muutmise menetluse käigus ka vastavate haldusüksuste piire Eesti territooriumi haldusjaotuse seaduse § 71 lõike 3 alusel.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_HALDUS_2_2"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_HALDUS_2_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:HALDUS_2_Par_6_Lg_1"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_6_Lg_2"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_6_Lg_3"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen",
         "public_body"
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:KOKS_Par_32"
+        }
       ],
       "estleg:competentAuthority": [
         {
@@ -268,24 +715,87 @@
       "estleg:competenceType": "general"
     },
     {
+      "@id": "estleg:HALDUS_2_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Elanike arvamus selgitatakse välja Eesti territooriumi haldusjaotuse seaduse § 7 lõike 8 alusel kehtestatud korra kohaselt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_6_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kui piirkonna elanikud on esitanud kohaliku omavalitsuse üksusele taotluse territooriumiosa arvamise kohta teise kohaliku omavalitsuse üksuse koosseisu kohaliku omavalitsuse korralduse seaduse § 32 lõike 1 alusel, eristatakse elanike arvamuse väljaselgitamisel küsitluse tulemused asustusüksuste või asustusüksuste gruppide kaupa selliselt, et sellest nähtuks, kas territooriumiosa elanikud toetavad ühinemist ühinemisläbirääkimistes osalevate või mõne muu valla või linnaga ühist piiri omava kohaliku omavalitsuse üksusega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 2"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_6_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kui elanike küsitluse tulemusena selgub, et soovitakse mõne territooriumiosa arvamist ühe kohaliku omavalitsuse üksuse koosseisust teise kohaliku omavalitsuse üksuse koosseisu ning asjaomased kohaliku omavalitsuse üksuste volikogud nõustuvad sellega, siis muudetakse valdade ja linnade haldusterritoriaalse korralduse muutmise menetluse käigus ka vastavate haldusüksuste piire Eesti territooriumi haldusjaotuse seaduse § 71 lõike 3 alusel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 3"
+    },
+    {
       "@id": "estleg:HALDUS_2_Par_7",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_HALDUS_2"
+        "estleg:LegalProvision_haldusreformi_seadus"
       ],
       "estleg:paragrahv": "§ 7.",
       "rdfs:label": "§ 7. Volikogu algatatud valdade ja linnade haldusterritoriaalse korralduse muutmise taotlemine",
       "estleg:sourceAct": "Haldusreformi seadus",
       "estleg:summary": "1 (1) Haldusterritoriaalse korralduse muutmist taotletakse Eesti territooriumi haldusjaotuse seaduse § 9 lõigetes 9‒12 sätestatud korras. Taotlusele lisatakse seletuskiri, mis peab sisaldama selgitusi sama seaduse § 7 lõikes 5 nimetatud mõjude ja asjaolude arvestamise kohta. Haldusterritoriaalse korralduse muutmist taotletakse Eesti territooriumi haldusjaotuse seaduse § 9 lõigetes 9‒12 sätestatud korras. Taotlusele lisatakse seletuskiri, mis peab sisaldama selgitusi sama seaduse § 7 lõikes 5 nim",
+      "estleg:legalText": "(1) Haldusterritoriaalse korralduse muutmist taotletakse Eesti territooriumi haldusjaotuse seaduse § 9 lõigetes 9‒12 sätestatud korras. Taotlusele lisatakse seletuskiri, mis peab sisaldama selgitusi sama seaduse § 7 lõikes 5 nimetatud mõjude ja asjaolude arvestamise kohta. (2) Kui taotletava haldusterritoriaalse korralduse muutmise tulemusena moodustuv kohaliku omavalitsuse üksus ei vasta omavalitsusüksuse miinimumsuuruse kriteeriumile, kuid tema puhul on täidetud vähemalt üks käesoleva seaduse § 9 lõike 3 punktides 1, 2 ja 4 sätestatud tingimustest, tuleb käesoleva paragrahvi lõikes 1 nimetatud seletuskirja lisada ka § 9 lõikes 4 nimetatud põhjendatud ettepanek erandi kohaldamiseks. (3) Haldusterritoriaalse korralduse muutmist võivad piirkondliku komisjoni soovitusel taotleda ka ühise piirita kohaliku omavalitsuse üksused tingimusel, et ühinemist taotlevate kohaliku omavalitsuse üksuste haldusterritooriumite vahele jääv kohaliku omavalitsuse üksus ei vasta omavalitsusüksuse miinimumsuuruse kriteeriumile ning tervikuna vastaks moodustuv kohaliku omavalitsuse üksus koos ühinemist taotlevate ja nende vahele jääva kohaliku omavalitsuse üksusega omavalitsusüksuse miinimumsuuruse kriteeriumile. (4) Haldusterritoriaalse korralduse muutmise taotlemiseks esitab asjaomane volikogu Eesti territooriumi haldusjaotuse seaduse § 9 lõike 9 punktides 1, 3, 5 ja 6 nimetatud otsused ning andmed maavanemale hiljemalt 2017. aasta 1. jaanuaril. (5) Asjaomased omavalitsusorganid on kohustatud valimisringkondade ja -jaoskondade, samuti valimiskomisjonide moodustamist ning volikogu liikmete arvu käsitlevad otsused vastu võtma hiljemalt 2017. aasta 15. juuniks. (6) Maavanem edastab haldusterritoriaalse korralduse muutmise taotluse ja nõutava dokumentatsiooni Rahandusministeeriumile viie tööpäeva jooksul nende laekumisest arvates.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_HALDUS_2_2"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_HALDUS_2_2"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:HALDUS_2_Par_7_Lg_1"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_7_Lg_2"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_7_Lg_3"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_7_Lg_4"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_7_Lg_5"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_7_Lg_6"
+        }
+      ],
       "estleg:targetGroup": [
         "public_body"
       ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
       "estleg:referencedBy": [
         {
           "@id": "estleg:HALDUS_2_Par_8"
@@ -296,25 +806,112 @@
       ]
     },
     {
+      "@id": "estleg:HALDUS_2_Par_7_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Haldusterritoriaalse korralduse muutmist taotletakse Eesti territooriumi haldusjaotuse seaduse § 9 lõigetes 9‒12 sätestatud korras. Taotlusele lisatakse seletuskiri, mis peab sisaldama selgitusi sama seaduse § 7 lõikes 5 nimetatud mõjude ja asjaolude arvestamise kohta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 1"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_7_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kui taotletava haldusterritoriaalse korralduse muutmise tulemusena moodustuv kohaliku omavalitsuse üksus ei vasta omavalitsusüksuse miinimumsuuruse kriteeriumile, kuid tema puhul on täidetud vähemalt üks käesoleva seaduse § 9 lõike 3 punktides 1, 2 ja 4 sätestatud tingimustest, tuleb käesoleva paragrahvi lõikes 1 nimetatud seletuskirja lisada ka § 9 lõikes 4 nimetatud põhjendatud ettepanek erandi kohaldamiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 2"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_7_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Haldusterritoriaalse korralduse muutmist võivad piirkondliku komisjoni soovitusel taotleda ka ühise piirita kohaliku omavalitsuse üksused tingimusel, et ühinemist taotlevate kohaliku omavalitsuse üksuste haldusterritooriumite vahele jääv kohaliku omavalitsuse üksus ei vasta omavalitsusüksuse miinimumsuuruse kriteeriumile ning tervikuna vastaks moodustuv kohaliku omavalitsuse üksus koos ühinemist taotlevate ja nende vahele jääva kohaliku omavalitsuse üksusega omavalitsusüksuse miinimumsuuruse kriteeriumile.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 3"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_7_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Haldusterritoriaalse korralduse muutmise taotlemiseks esitab asjaomane volikogu Eesti territooriumi haldusjaotuse seaduse § 9 lõike 9 punktides 1, 3, 5 ja 6 nimetatud otsused ning andmed maavanemale hiljemalt 2017. aasta 1. jaanuaril.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 4"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_7_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Asjaomased omavalitsusorganid on kohustatud valimisringkondade ja -jaoskondade, samuti valimiskomisjonide moodustamist ning volikogu liikmete arvu käsitlevad otsused vastu võtma hiljemalt 2017. aasta 15. juuniks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 5"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_7_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Maavanem edastab haldusterritoriaalse korralduse muutmise taotluse ja nõutava dokumentatsiooni Rahandusministeeriumile viie tööpäeva jooksul nende laekumisest arvates.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 6"
+    },
+    {
       "@id": "estleg:HALDUS_2_Par_8",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_HALDUS_2"
+        "estleg:LegalProvision_haldusreformi_seadus"
       ],
       "estleg:paragrahv": "§ 8.",
       "rdfs:label": "§ 8. Volikogu algatatud valdade ja linnade haldusterritoriaalse korralduse muutmise otsustamine",
       "estleg:sourceAct": "Haldusreformi seadus",
       "estleg:summary": "Vabariigi Valitsuse määrus kohaliku omavalitsuse volikogu algatatud haldusterritoriaalse korralduse muutmise kohta, välja arvatud käesoleva seaduse § 7 lõikes 3 sätestatud juhul, võetakse Eesti territooriumi haldusjaotuse seaduse § 3 lõike 1 ning § 71 lõigete 2 ja 3 alusel vastu hiljemalt 2017. aasta 1. veebruariks. Vabariigi Valitsuse määrus kohaliku omavalitsuse volikogu algatatud haldusterritoriaalse korralduse muutmise kohta, välja arvatud käesoleva seaduse § 7 lõikes 3 sätestatud juhul, võe",
+      "estleg:legalText": "Vabariigi Valitsuse määrus kohaliku omavalitsuse volikogu algatatud haldusterritoriaalse korralduse muutmise kohta, välja arvatud käesoleva seaduse § 7 lõikes 3 sätestatud juhul, võetakse Eesti territooriumi haldusjaotuse seaduse § 3 lõike 1 ning § 71 lõigete 2 ja 3 alusel vastu hiljemalt 2017. aasta 1. veebruariks.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_HALDUS_2_2"
       },
-      "estleg:references": [
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_HALDUS_2_2"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:HALDUS_2_Par_7"
+          "@id": "estleg:HALDUS_2_Par_8_Lg_Unknown_1"
         }
       ],
       "estleg:targetGroup": [
         "public_body"
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:HALDUS_2_Par_7"
+        }
       ],
       "estleg:competentAuthority": [
         {
@@ -329,19 +926,68 @@
       ]
     },
     {
+      "@id": "estleg:HALDUS_2_Par_8_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Vabariigi Valitsuse määrus kohaliku omavalitsuse volikogu algatatud haldusterritoriaalse korralduse muutmise kohta, välja arvatud käesoleva seaduse § 7 lõikes 3 sätestatud juhul, võetakse Eesti territooriumi haldusjaotuse seaduse § 3 lõike 1 ning § 71 lõigete 2 ja 3 alusel vastu hiljemalt 2017. aasta 1. veebruariks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_8"
+      }
+    },
+    {
       "@id": "estleg:HALDUS_2_Par_9",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_HALDUS_2"
+        "estleg:LegalProvision_haldusreformi_seadus"
       ],
       "estleg:paragrahv": "§ 9.",
       "rdfs:label": "§ 9. Haldusterritoriaalse korralduse muutmise algatamine Vabariigi Valitsuse poolt",
       "estleg:sourceAct": "Haldusreformi seadus",
       "estleg:summary": "1 (1) Vabariigi Valitsus algatab valla või linna haldusterritoriaalse korralduse muutmise Eesti territooriumi haldusjaotuse seaduse §-s 8 sätestatud korras, arvestades käesolevas paragrahvis sätestatud erisusi. Nimetatud juhul ei kohaldata Eesti territooriumi haldusjaotuse seaduse § 8 lõikes 1, lõike 3 punktis 3 ega lõikes 4 sätestatut. Vabariigi Valitsus algatab valla või linna haldusterritoriaalse korralduse muutmise Eesti territooriumi haldusjaotuse seaduse §-s 8 sätestatud korras, arvestades",
+      "estleg:legalText": "(1) Vabariigi Valitsus algatab valla või linna haldusterritoriaalse korralduse muutmise Eesti territooriumi haldusjaotuse seaduse §-s 8 sätestatud korras, arvestades käesolevas paragrahvis sätestatud erisusi. Nimetatud juhul ei kohaldata Eesti territooriumi haldusjaotuse seaduse § 8 lõikes 1, lõike 3 punktis 3 ega lõikes 4 sätestatut. (2) Vabariigi Valitsus algatab hiljemalt 2017. aasta 15. veebruaril nende kohaliku omavalitsuse üksuste haldusterritoriaalse korralduse ja haldusüksuse piiride muutmise, mis ei vasta rahvastikuregistri andmete kohaselt 2017. aasta 1. jaanuari seisuga omavalitsusüksuse miinimumsuuruse kriteeriumile ja mille suhtes ei ole Vabariigi Valitsus võtnud vastu käesoleva seaduse §-s 8 nimetatud haldusterritoriaalse korralduse muutmise määrust ning millele Vabariigi Valitsus ei kohalda käesoleva paragrahvi lõikes 3 sätestatud erandit. Rahandusministeerium esitab asjaomastele kohaliku omavalitsuse üksuste volikogudele arvamuse avaldamiseks Vabariigi Valitsuse määruse eelnõu haldusterritoriaalse korralduse ja haldusüksuse piiride muutmise kohta Eesti territooriumi haldusjaotuse seaduse § 3 lõike 1 ning § 71 lõigete 2 ja 3 alusel (edaspidi Vabariigi Valitsuse ettepanek), mille kohta tuleb arvamus esitada hiljemalt 2017. aasta 15. mail. Vabariigi Valitsuse ettepanek võib hõlmata ka omavalitsusüksuse miinimumsuuruse kriteeriumile vastavaid või kriteeriumile mittevastavaid kohaliku omavalitsuse üksusi, kelle suhtes on Vabariigi Valitsus võtnud vastu käesoleva seaduse §-s 8 nimetatud haldusterritoriaalse korralduse muutmise määruse ja kelle haldusterritoriaalse korralduse muutmisel oleks positiivne mõju, lähtudes Eesti territooriumi haldusjaotuse seaduse § 7 lõikes 5 nimetatud asjaoludest, ning muutmine on vajalik ja otstarbekas omavalitsusüksuse miinimumsuuruse kriteeriumile mittevastava kohaliku omavalitsuse üksuse võimekuse tagamiseks tulenevalt käesoleva seaduse § 1 lõikest 2 ja §-st 3. (3) Vabariigi Valitsus võib omavalitsusüksuse miinimumsuuruse kriteeriumile mittevastava kohaliku omavalitsuse üksuse puhul kohaldada erandit, jättes kohaliku omavalitsuse üksuse suhtes käesoleva paragrahvi lõikes 2 nimetatud haldusterritoriaalse korralduse muutmise algatamata juhul, kui kohaliku omavalitsuse üksuse erandiks jäämisega ei kaasne negatiivset mõju Eesti territooriumi haldusjaotuse seaduse § 7 lõikes 5 nimetatud asjaoludele ning täidetud on vähemalt üks järgmistest tingimustest: ühinevad vähemalt kaks kohaliku omavalitsuse üksust, mis moodustavad haldusterritoriaalselt loogilise terviku, mille pindala on kokku vähemalt 900 km2 ja milles elab rahvastikuregistri andmete kohaselt 2017. aasta 1. jaanuari seisuga kokku vähemalt 3500 elanikku; moodustatakse vähemalt nelja ajalooliselt, kultuuriliselt ja geograafiliselt seotud kohaliku omavalitsuse üksuse haldusterritooriumidest või nende osadest riigipiiri seaduse § 22 lõike 1 tähenduses Eesti Vabariigi ajutise kontrolljoonega maismaal piirnev kohaliku omavalitsuse üksus, milles elab rahvastikuregistri andmete kohaselt 2017. aasta 1. jaanuari seisuga kokku vähemalt 3500 elanikku; kohaliku omavalitsuse üksus on mereline saarvald ehk vald, mis asub Eesti territoriaalmeres paikneval saarel, mille territooriumi vald tervikuna hõlmab ja kus teostatakse iseseisvat omavalitsuslikku haldamist; käesoleva seaduse §-s 8 nimetatud määruses sätestatud haldusterritoriaalse korralduse muutmise tulemusena moodustamisel oleva kohaliku omavalitsuse üksuse elanike arv vastas rahvastikuregistri andmete kohaselt 2016. aasta 1. jaanuari seisuga omavalitsusüksuse miinimumsuuruse kriteeriumile, kuid elanike arvu vähenemise tõttu ei vasta 2017. aasta 1. jaanuari seisuga enam sellele kriteeriumile. (4) Kohaliku omavalitsuse üksus esitab ettepaneku erandi kohaldamiseks käesoleva paragrahvi lõike 3 punktides 1, 2 ja 4 nimetatud tingimustel käesoleva seaduse § 7 alusel esitatavas taotluses. Erandi taotlemist põhjendatakse käesoleva seaduse § 7 lõikes 1 nimetatud seletuskirjas, selgitades lisaks Eesti territooriumi haldusjaotuse seaduse § 7 lõikes 5 nimetatud mõjude ja asjaolude arvestamisele, kuidas suudetakse erandi kohaldamisel tagada käesoleva seaduse § 1 lõikest 2 ja §-st 3 tulenevate nõuete täitmine. Käesoleva paragrahvi lõike 3 punktis 3 nimetatud kohaliku omavalitsuse üksus peab erandi saamiseks esitama hiljemalt 2017. aasta 1. jaanuaril Rahandusministeeriumile taotluse ja selgitama selles käesolevas lõikes nimetatud nõuete arvestamist. (5) Vabariigi Valitsus võib käesoleva paragrahvi lõike 3 punktis 2 nimetatud erandi puhul kohaliku omavalitsuse üksuste põhjendatud taotlusel ja piirkondliku komisjoni soovitusel moodustada kohaliku omavalitsuse üksuste haldusterritoriaalse korralduse muutmisel ühise piirita haldusterritooriumidest koosneva kohaliku omavalitsuse üksuse. (6) Vabariigi Valitsus algatab käesoleva paragrahvi lõikes 2 sätestatud korras ka käesoleva seaduse § 7 lõikes 3 nimetatud ühise piirita ühinemist taotlevate omavalitsusüksuste ühendamise omavalitsusüksuse miinimumsuuruse kriteeriumile mittevastava kohaliku omavalitsuse üksuse või selle territooriumiosaga, kes jääb volikogude algatatud valla või linna haldusterritoriaalse korralduse muutmise taotluse kohaselt ühise piirita haldusterritooriumidest koosnevate kohaliku omavalitsuse üksuste vahele. (7) Vabariigi Valitsus võib enda algatatud haldusterritoriaalse korralduse muutmise käigus arvata ka territooriumiosa ühe kohaliku omavalitsuse üksuse koosseisust teise kohaliku omavalitsuse üksuse koosseisu Eesti territooriumi haldusjaotuse seaduse § 71 lõike 3 alusel kohaliku omavalitsuse üksuste suhtes siis, kui asjaomased volikogud ei ole kohaliku omavalitsuse üksuste volikogude algatatud ühinemisel käesoleva seaduse § 6 lõikes 3 sätestatud korras selles kokku leppinud, või muul põhjendatud juhul, kui territooriumiosa üleandmisega tagatakse omavalitsusüksuse haldusterritoriaalne terviklikkus tingimusel, et territooriumiosa üleandmine on vajalik ja otstarbekas omavalitsusüksuse miinimumsuuruse kriteeriumile mittevastava kohaliku omavalitsuse üksuse haldusterritoriaalse korralduse muutmiseks. (8) Kui kohaliku omavalitsuse üksus ei esita Vabariigi Valitsuse ettepaneku kohta 2017. aasta 15. maiks arvamust, loetakse nimetatud ettepanek vastuvõetuks. (9) Kui Vabariigi Valitsuse ettepaneku saanud kohaliku omavalitsuse üksus esitab ettepaneku kohta, arvestades käesoleva paragrahvi lõigetes 2 ja 3 sätestatud asjaolusid, negatiivse põhjendatud arvamuse, siis: võib Vabariigi Valitsus kohaliku omavalitsuse üksuse arvamuses esitatud põhjenduste hindamise tulemusena, arvestades käesoleva paragrahvi lõigetes 2 ja 3 sätestatud asjaolusid, lõpetada selle kohaliku omavalitsuse üksuse puhul haldusterritoriaalse korralduse muutmise menetluse, misjärel Rahandusministeerium teavitab sellest viivitamata kohaliku omavalitsuse üksust; hindab Vabariigi Valitsus kohaliku omavalitsuse üksuse arvamuses esitatud põhjendusi ning kui tema hinnangul ei ole esitatud põhjendused käesoleva paragrahvi lõigetes 2 ja 3 sätestatud ajaolusid arvestades piisavalt kaalukad, otsustab omavalitsusüksuste haldusterritoriaalse korralduse muutmise oma määrusega käesoleva seaduse § 13 lõike 1 kohaselt. (10) Käesoleva paragrahvi lõike 9 punktis 2 nimetatud juhul teavitab Rahandusministeerium enne nimetatud määruse vastuvõtmist sellest viivitamata asjaomaseid kohaliku omavalitsuse üksusi.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_HALDUS_2_3"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_HALDUS_2_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:HALDUS_2_Par_9_Lg_1"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_9_Lg_2"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_9_Lg_3"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_9_Lg_4"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_9_Lg_5"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_9_Lg_6"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_9_Lg_7"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_9_Lg_8"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_9_Lg_9"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_9_Lg_10"
+        }
+      ],
       "estleg:targetGroup": [
+        "citizen",
         "public_body"
       ],
       "estleg:competentAuthority": [
@@ -350,6 +996,16 @@
         }
       ],
       "estleg:competenceType": "general",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:KOVVS_Par_70_3",
+          "estleg:similarityScore": {
+            "@value": "0.37",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
+      ],
       "estleg:referencedBy": [
         {
           "@id": "estleg:HALDUS_2_Par_10"
@@ -357,25 +1013,164 @@
       ]
     },
     {
+      "@id": "estleg:HALDUS_2_Par_9_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Vabariigi Valitsus algatab valla või linna haldusterritoriaalse korralduse muutmise Eesti territooriumi haldusjaotuse seaduse §-s 8 sätestatud korras, arvestades käesolevas paragrahvis sätestatud erisusi. Nimetatud juhul ei kohaldata Eesti territooriumi haldusjaotuse seaduse § 8 lõikes 1, lõike 3 punktis 3 ega lõikes 4 sätestatut.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 1"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_9_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Vabariigi Valitsus algatab hiljemalt 2017. aasta 15. veebruaril nende kohaliku omavalitsuse üksuste haldusterritoriaalse korralduse ja haldusüksuse piiride muutmise, mis ei vasta rahvastikuregistri andmete kohaselt 2017. aasta 1. jaanuari seisuga omavalitsusüksuse miinimumsuuruse kriteeriumile ja mille suhtes ei ole Vabariigi Valitsus võtnud vastu käesoleva seaduse §-s 8 nimetatud haldusterritoriaalse korralduse muutmise määrust ning millele Vabariigi Valitsus ei kohalda käesoleva paragrahvi lõikes 3 sätestatud erandit. Rahandusministeerium esitab asjaomastele kohaliku omavalitsuse üksuste volikogudele arvamuse avaldamiseks Vabariigi Valitsuse määruse eelnõu haldusterritoriaalse korralduse ja haldusüksuse piiride muutmise kohta Eesti territooriumi haldusjaotuse seaduse § 3 lõike 1 ning § 71 lõigete 2 ja 3 alusel (edaspidi Vabariigi Valitsuse ettepanek), mille kohta tuleb arvamus esitada hiljemalt 2017. aasta 15. mail. Vabariigi Valitsuse ettepanek võib hõlmata ka omavalitsusüksuse miinimumsuuruse kriteeriumile vastavaid või kriteeriumile mittevastavaid kohaliku omavalitsuse üksusi, kelle suhtes on Vabariigi Valitsus võtnud vastu käesoleva seaduse §-s 8 nimetatud haldusterritoriaalse korralduse muutmise määruse ja kelle haldusterritoriaalse korralduse muutmisel oleks positiivne mõju, lähtudes Eesti territooriumi haldusjaotuse seaduse § 7 lõikes 5 nimetatud asjaoludest, ning muutmine on vajalik ja otstarbekas omavalitsusüksuse miinimumsuuruse kriteeriumile mittevastava kohaliku omavalitsuse üksuse võimekuse tagamiseks tulenevalt käesoleva seaduse § 1 lõikest 2 ja §-st 3.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 2"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_9_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Vabariigi Valitsus võib omavalitsusüksuse miinimumsuuruse kriteeriumile mittevastava kohaliku omavalitsuse üksuse puhul kohaldada erandit, jättes kohaliku omavalitsuse üksuse suhtes käesoleva paragrahvi lõikes 2 nimetatud haldusterritoriaalse korralduse muutmise algatamata juhul, kui kohaliku omavalitsuse üksuse erandiks jäämisega ei kaasne negatiivset mõju Eesti territooriumi haldusjaotuse seaduse § 7 lõikes 5 nimetatud asjaoludele ning täidetud on vähemalt üks järgmistest tingimustest: ühinevad vähemalt kaks kohaliku omavalitsuse üksust, mis moodustavad haldusterritoriaalselt loogilise terviku, mille pindala on kokku vähemalt 900 km2 ja milles elab rahvastikuregistri andmete kohaselt 2017. aasta 1. jaanuari seisuga kokku vähemalt 3500 elanikku; moodustatakse vähemalt nelja ajalooliselt, kultuuriliselt ja geograafiliselt seotud kohaliku omavalitsuse üksuse haldusterritooriumidest või nende osadest riigipiiri seaduse § 22 lõike 1 tähenduses Eesti Vabariigi ajutise kontrolljoonega maismaal piirnev kohaliku omavalitsuse üksus, milles elab rahvastikuregistri andmete kohaselt 2017. aasta 1. jaanuari seisuga kokku vähemalt 3500 elanikku; kohaliku omavalitsuse üksus on mereline saarvald ehk vald, mis asub Eesti territoriaalmeres paikneval saarel, mille territooriumi vald tervikuna hõlmab ja kus teostatakse iseseisvat omavalitsuslikku haldamist; käesoleva seaduse §-s 8 nimetatud määruses sätestatud haldusterritoriaalse korralduse muutmise tulemusena moodustamisel oleva kohaliku omavalitsuse üksuse elanike arv vastas rahvastikuregistri andmete kohaselt 2016. aasta 1. jaanuari seisuga omavalitsusüksuse miinimumsuuruse kriteeriumile, kuid elanike arvu vähenemise tõttu ei vasta 2017. aasta 1. jaanuari seisuga enam sellele kriteeriumile.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 3"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_9_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Kohaliku omavalitsuse üksus esitab ettepaneku erandi kohaldamiseks käesoleva paragrahvi lõike 3 punktides 1, 2 ja 4 nimetatud tingimustel käesoleva seaduse § 7 alusel esitatavas taotluses. Erandi taotlemist põhjendatakse käesoleva seaduse § 7 lõikes 1 nimetatud seletuskirjas, selgitades lisaks Eesti territooriumi haldusjaotuse seaduse § 7 lõikes 5 nimetatud mõjude ja asjaolude arvestamisele, kuidas suudetakse erandi kohaldamisel tagada käesoleva seaduse § 1 lõikest 2 ja §-st 3 tulenevate nõuete täitmine. Käesoleva paragrahvi lõike 3 punktis 3 nimetatud kohaliku omavalitsuse üksus peab erandi saamiseks esitama hiljemalt 2017. aasta 1. jaanuaril Rahandusministeeriumile taotluse ja selgitama selles käesolevas lõikes nimetatud nõuete arvestamist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 4"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_9_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Vabariigi Valitsus võib käesoleva paragrahvi lõike 3 punktis 2 nimetatud erandi puhul kohaliku omavalitsuse üksuste põhjendatud taotlusel ja piirkondliku komisjoni soovitusel moodustada kohaliku omavalitsuse üksuste haldusterritoriaalse korralduse muutmisel ühise piirita haldusterritooriumidest koosneva kohaliku omavalitsuse üksuse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 5"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_9_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Vabariigi Valitsus algatab käesoleva paragrahvi lõikes 2 sätestatud korras ka käesoleva seaduse § 7 lõikes 3 nimetatud ühise piirita ühinemist taotlevate omavalitsusüksuste ühendamise omavalitsusüksuse miinimumsuuruse kriteeriumile mittevastava kohaliku omavalitsuse üksuse või selle territooriumiosaga, kes jääb volikogude algatatud valla või linna haldusterritoriaalse korralduse muutmise taotluse kohaselt ühise piirita haldusterritooriumidest koosnevate kohaliku omavalitsuse üksuste vahele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 6"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_9_Lg_7",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "7",
+      "estleg:legalText": "(7) Vabariigi Valitsus võib enda algatatud haldusterritoriaalse korralduse muutmise käigus arvata ka territooriumiosa ühe kohaliku omavalitsuse üksuse koosseisust teise kohaliku omavalitsuse üksuse koosseisu Eesti territooriumi haldusjaotuse seaduse § 71 lõike 3 alusel kohaliku omavalitsuse üksuste suhtes siis, kui asjaomased volikogud ei ole kohaliku omavalitsuse üksuste volikogude algatatud ühinemisel käesoleva seaduse § 6 lõikes 3 sätestatud korras selles kokku leppinud, või muul põhjendatud juhul, kui territooriumiosa üleandmisega tagatakse omavalitsusüksuse haldusterritoriaalne terviklikkus tingimusel, et territooriumiosa üleandmine on vajalik ja otstarbekas omavalitsusüksuse miinimumsuuruse kriteeriumile mittevastava kohaliku omavalitsuse üksuse haldusterritoriaalse korralduse muutmiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 7"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_9_Lg_8",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "8",
+      "estleg:legalText": "(8) Kui kohaliku omavalitsuse üksus ei esita Vabariigi Valitsuse ettepaneku kohta 2017. aasta 15. maiks arvamust, loetakse nimetatud ettepanek vastuvõetuks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 8"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_9_Lg_9",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "9",
+      "estleg:legalText": "(9) Kui Vabariigi Valitsuse ettepaneku saanud kohaliku omavalitsuse üksus esitab ettepaneku kohta, arvestades käesoleva paragrahvi lõigetes 2 ja 3 sätestatud asjaolusid, negatiivse põhjendatud arvamuse, siis: võib Vabariigi Valitsus kohaliku omavalitsuse üksuse arvamuses esitatud põhjenduste hindamise tulemusena, arvestades käesoleva paragrahvi lõigetes 2 ja 3 sätestatud asjaolusid, lõpetada selle kohaliku omavalitsuse üksuse puhul haldusterritoriaalse korralduse muutmise menetluse, misjärel Rahandusministeerium teavitab sellest viivitamata kohaliku omavalitsuse üksust; hindab Vabariigi Valitsus kohaliku omavalitsuse üksuse arvamuses esitatud põhjendusi ning kui tema hinnangul ei ole esitatud põhjendused käesoleva paragrahvi lõigetes 2 ja 3 sätestatud ajaolusid arvestades piisavalt kaalukad, otsustab omavalitsusüksuste haldusterritoriaalse korralduse muutmise oma määrusega käesoleva seaduse § 13 lõike 1 kohaselt.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 9"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_9_Lg_10",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "10",
+      "estleg:legalText": "(10) Käesoleva paragrahvi lõike 9 punktis 2 nimetatud juhul teavitab Rahandusministeerium enne nimetatud määruse vastuvõtmist sellest viivitamata asjaomaseid kohaliku omavalitsuse üksusi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 10"
+    },
+    {
       "@id": "estleg:HALDUS_2_Par_10",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_HALDUS_2"
+        "estleg:LegalProvision_haldusreformi_seadus"
       ],
       "estleg:paragrahv": "§ 10.",
       "rdfs:label": "§ 10. Piirkondlike komisjonide tegevus Vabariigi Valitsuse algatatud haldusterritoriaalse korralduse muutmisel",
       "estleg:sourceAct": "Haldusreformi seadus",
       "estleg:summary": "Haldusterritoriaalse korralduse muutmise algatamise ettevalmistamisse ning käesoleva seaduse § 9 lõikes 2 ja § 13 lõikes 1 nimetatud Vabariigi Valitsuse määruse eelnõu väljatöötamisse kaasab Rahandusministeerium piirkondlikud komisjonid, kelle ülesanne on anda Rahandusministeeriumile lisaks § 5 lõikes 2 nimetatule arvamus § 9 lõigetes 2 ja 3 sätestatud Vabariigi Valitsuse ettepaneku tegemise ja erandi kohaldamise põhjendatuse kohta. Haldusterritoriaalse korralduse muutmise algatamise ettevalmist",
+      "estleg:legalText": "Haldusterritoriaalse korralduse muutmise algatamise ettevalmistamisse ning käesoleva seaduse § 9 lõikes 2 ja § 13 lõikes 1 nimetatud Vabariigi Valitsuse määruse eelnõu väljatöötamisse kaasab Rahandusministeerium piirkondlikud komisjonid, kelle ülesanne on anda Rahandusministeeriumile lisaks § 5 lõikes 2 nimetatule arvamus § 9 lõigetes 2 ja 3 sätestatud Vabariigi Valitsuse ettepaneku tegemise ja erandi kohaldamise põhjendatuse kohta.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_HALDUS_2_3"
       },
-      "estleg:references": [
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_HALDUS_2_3"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:HALDUS_2_Par_9"
+          "@id": "estleg:HALDUS_2_Par_10_Lg_Unknown_1"
         }
       ],
       "estleg:targetGroup": [
         "public_body"
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:HALDUS_2_Par_9"
+        }
       ],
       "estleg:competentAuthority": [
         {
@@ -385,18 +1180,39 @@
       "estleg:competenceType": "general"
     },
     {
+      "@id": "estleg:HALDUS_2_Par_10_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Haldusterritoriaalse korralduse muutmise algatamise ettevalmistamisse ning käesoleva seaduse § 9 lõikes 2 ja § 13 lõikes 1 nimetatud Vabariigi Valitsuse määruse eelnõu väljatöötamisse kaasab Rahandusministeerium piirkondlikud komisjonid, kelle ülesanne on anda Rahandusministeeriumile lisaks § 5 lõikes 2 nimetatule arvamus § 9 lõigetes 2 ja 3 sätestatud Vabariigi Valitsuse ettepaneku tegemise ja erandi kohaldamise põhjendatuse kohta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_10"
+      }
+    },
+    {
       "@id": "estleg:HALDUS_2_Par_11",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_HALDUS_2"
+        "estleg:LegalProvision_haldusreformi_seadus"
       ],
       "estleg:paragrahv": "§ 11.",
       "rdfs:label": "§ 11. Maavanema tegevus Vabariigi Valitsuse algatatud haldusterritoriaalse korralduse muutmisel",
       "estleg:sourceAct": "Haldusreformi seadus",
       "estleg:summary": "Maavanem esitab kohaliku omavalitsuse üksuste volikogude arvamused Vabariigi Valitsuse ettepaneku kohta koos Eesti territooriumi haldusjaotuse seaduse § 8 lõike 3 punktidest 1 ja 2 tuleneva dokumentatsiooniga Rahandusministeeriumile hiljemalt kolmandal tööpäeval asjaomaste volikogude otsuste saamisest arvates. Maavanem esitab kohaliku omavalitsuse üksuste volikogude arvamused Vabariigi Valitsuse ettepaneku kohta koos Eesti territooriumi haldusjaotuse seaduse § 8 lõike 3 punktidest 1 ja 2 tulenev",
+      "estleg:legalText": "Maavanem esitab kohaliku omavalitsuse üksuste volikogude arvamused Vabariigi Valitsuse ettepaneku kohta koos Eesti territooriumi haldusjaotuse seaduse § 8 lõike 3 punktidest 1 ja 2 tuleneva dokumentatsiooniga Rahandusministeeriumile hiljemalt kolmandal tööpäeval asjaomaste volikogude otsuste saamisest arvates.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_HALDUS_2_3"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_HALDUS_2_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:HALDUS_2_Par_11_Lg_Unknown_1"
+        }
+      ],
       "estleg:targetGroup": [
         "public_body"
       ],
@@ -411,19 +1227,85 @@
       "estleg:competenceType": "general"
     },
     {
+      "@id": "estleg:HALDUS_2_Par_11_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Maavanem esitab kohaliku omavalitsuse üksuste volikogude arvamused Vabariigi Valitsuse ettepaneku kohta koos Eesti territooriumi haldusjaotuse seaduse § 8 lõike 3 punktidest 1 ja 2 tuleneva dokumentatsiooniga Rahandusministeeriumile hiljemalt kolmandal tööpäeval asjaomaste volikogude otsuste saamisest arvates.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_11"
+      }
+    },
+    {
       "@id": "estleg:HALDUS_2_Par_12",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_HALDUS_2"
+        "estleg:LegalProvision_haldusreformi_seadus"
       ],
       "estleg:paragrahv": "§ 12.",
       "rdfs:label": "§ 12. Kohaliku omavalitsuse üksuse tegevus Vabariigi Valitsuse ettepaneku saamisel",
       "estleg:sourceAct": "Haldusreformi seadus",
       "estleg:summary": "1 (1) Vabariigi Valitsuse algatatud haldusterritoriaalse korralduse muutmine toimub Eesti territooriumi haldusjaotuse seaduse §-s 8 sätestatud korras, arvestades käesolevas paragrahvis sätestatud erisusi. Eesti territooriumi haldusjaotuse seaduse § 8 lõikes 1, lõike 3 punktis 3 ja lõikes 4 ning kohaliku omavalitsuse volikogu valimise seaduse § 11 lõikes 4 ja § 17 lõikes 3 sätestatut käesolevas seaduses sätestatud Vabariigi Valitsuse algatatud haldusterritoriaalse korralduse muutmise puhul ei koh",
+      "estleg:legalText": "(1) Vabariigi Valitsuse algatatud haldusterritoriaalse korralduse muutmine toimub Eesti territooriumi haldusjaotuse seaduse §-s 8 sätestatud korras, arvestades käesolevas paragrahvis sätestatud erisusi. Eesti territooriumi haldusjaotuse seaduse § 8 lõikes 1, lõike 3 punktis 3 ja lõikes 4 ning kohaliku omavalitsuse volikogu valimise seaduse § 11 lõikes 4 ja § 17 lõikes 3 sätestatut käesolevas seaduses sätestatud Vabariigi Valitsuse algatatud haldusterritoriaalse korralduse muutmise puhul ei kohaldata. (2) Kohaliku omavalitsuse üksus teeb pärast Vabariigi Valitsuse ettepaneku saamist järgmised toimingud: selgitab välja elanike arvamuse haldusterritoriaalse korralduse muutmise kohta Eesti territooriumi haldusjaotuse seaduse § 7 lõike 8 alusel kehtestatud Vabariigi Valitsuse määrusega sätestatud korras; esitab hiljemalt 2017. aasta 15. maiks maavanemale otsuse vormis põhjendatud arvamuse Vabariigi Valitsuse ettepaneku kohta; lepib hiljemalt 2017. aasta 15. juuniks teiste asjaomaste volikogudega kokku omavalitsusüksuse nime, haldusüksuse liigi ja sümboolika, haldusterritoriaalse korralduse või piiride muutmisega kaasnevate võimalike organisatsiooniliste, eelarveliste ja muude varalisi kohustusi ja õigusi käsitlevate küsimuste lahendamise ning uue omavalitsusüksuse põhimääruse ja teiste õigusaktide vajalike muudatuste ettevalmistamise, lähtudes käesoleva paragrahvi lõigetest 5 ja 6, käesoleva seaduse §-dest 14‒18 ning Eesti territooriumi haldusjaotuse seaduse §-st 92 (edaspidi ühinemiskokkulepe); teeb hiljemalt 2017. aasta 15. juuniks koostöös asjaomaste volikogudega kohaliku omavalitsuse volikogu valimise seaduses sätestatud valimistoimingud. (3) Elanike arvamus selgitatakse asjaomastes kohaliku omavalitsuse üksustes välja kooskõlas käesoleva seaduse §-ga 6. Elanike küsitluse läbiviimise aeg määratakse Eesti territooriumi haldusjaotuse seaduse § 7 lõike 8 alusel kehtestatud korras. Kui kohaliku omavalitsuse üksus ei ole hiljemalt 2017. aasta 15. maiks elanike arvamust välja selgitanud, siis korraldab elanike arvamuse väljaselgitamise asjaomane maavalitsus. Kui Vabariigi Valitsuse ettepaneku saanud kohaliku omavalitsuse üksused kuuluvad eri maakondadesse, korraldab elanike arvamuse väljaselgitamise maavalitsus, kelle maakonna territooriumile jääb suurem osa haldusterritoriaalse korralduse muutmisel moodustuva kohaliku omavalitsuse üksuse elanikest. (4) Käesoleva paragrahvi lõike 2 punktis 3 nimetatud kohaliku omavalitsuse üksuse nime ja haldusüksuse liigi valikul tuleb kohaliku omavalitsuse üksustel küsida enne arvamust kohanimeseaduse § 20 lõike 1 alusel moodustatud kohanimenõukogult. Käesoleva paragrahvi lõike 2 punktis 3 nimetatud sümboolika tuleb kokku leppida teiste asjaomaste volikogudega kohaliku omavalitsuse korralduse seaduse § 14 lõikes 3 sätestatud tingimuste kohaselt, olles enne sümboolika kokkuleppimist küsinud Riigikantselei arvamust, millega tuleb sümboolika kasutamisel arvestada. (5) Ühinemiskokkuleppe eelnõu pannakse avalikkusele tutvumiseks välja ning määratakse ettepanekute ja vastuväidete esitamise tähtaeg, mis ei või olla lühem kui 15 kalendripäeva eelnõu avalikustamisest arvates. Ühinemiskokkuleppe kinnitavad oma otsusega kõik Vabariigi Valitsuse ettepaneku saanud asjaomased volikogud ja see avaldatakse valla või linna veebilehel. (6) Kui Vabariigi Valitsuse ettepaneku on saanud kohaliku omavalitsuse üksused, kellest vähemalt kaks on Eesti territooriumi haldusjaotuse seaduse § 91 alusel kinnitanud ühinemislepingu ja kelle suhtes on Vabariigi Valitsus võtnud vastu käesoleva seaduse §-s 8 nimetatud määruse, vormistatakse Vabariigi Valitsuse algatatud haldusterritoriaalse korralduse muutmisega seonduvad ühinemiskokkulepped ühinemislepingu muudatusena, mille kinnitavad kõik asjaomased volikogud. (7) Kui kõik asjaomased volikogud ühinemiskokkulepet ei kinnita ning tegemist on kohaliku omavalitsuse üksustega, kellest vähemalt kaks on Eesti territooriumi haldusjaotuse seaduse § 91 alusel kinnitanud ühinemislepingu ja kelle suhtes on Vabariigi Valitsus võtnud vastu käesoleva seaduse §-s 8 nimetatud määruse, lähtutakse käesoleva paragrahvi lõike 2 punktis 3 nimetatud küsimuste lahendamisel ühinemislepingus kokkulepitust. Kui ühinemiskokkulepet ei kinnitata ja ühinemislepingut kinnitatud ei ole, siis lähtutakse käesoleva seaduse §-dest 14‒18. Kohaliku omavalitsuse üksuse nime, liigi ja sümboolika kasutamisel võetakse kooskõlas käesoleva paragrahvi lõikega 4 aluseks selle kohaliku omavalitsuse üksuse nimi, haldusüksuse liik ja sümboolika, kellega omavalitsusüksuse miinimumsuuruse kriteeriumile mittevastav kohaliku omavalitsuse üksus ühendatakse või liidetakse. (8) Kui Vabariigi Valitsus on algatanud sellise kahe või enama omavalitsusüksuse miinimumsuuruse kriteeriumile mittevastava kohaliku omavalitsuse üksuse ühendamise, kes ei ole ühinemiskokkulepet kinnitanud, siis võetakse kooskõlas käesoleva paragrahvi lõikega 4 kasutusele elanike arvult suurima kriteeriumile mittevastava kohaliku omavalitsuse üksuse nimi, haldusüksuse liik ja sümboolika. Kohanimenõukogu ettepanekul võib Vabariigi Valitsus määrata kohaliku omavalitsuse üksusele ka muu nime. (9) Kui asjaomased volikogud ei ole käesoleva paragrahvi lõike 2 punktis 4 sätestatud toiminguid ja otsuseid teinud hiljemalt 2017. aasta 15. juuniks või kui volikogude otsused ei ole samased, teeb kohaliku omavalitsuse üksuse asukoha järgne maavanem koostöös asjaomaste volikogudega kohaliku omavalitsuse volikogu valimise seaduse §-s 703 sätestatud valimistoimingud ja kinnitab otsused oma korraldusega hiljemalt 2017. aasta 19. juuliks. (10) Kui Vabariigi Valitsuse ettepaneku saanud kohaliku omavalitsuse üksused, kellest ühe territooriumiosa on Vabariigi Valitsus arvanud teise kohaliku omavalitsuse üksuse koosseisu, ei lepi ühinemiskokkuleppes haldusterritoriaalse korralduse muutmisega kaasnevate eelarveliste ja muude varalisi kohustusi ja õigusi käsitlevate küsimuste lahendamises kokku, antakse sellele kohaliku omavalitsuse üksusele, kelle koosseisu territooriumiosa haldusterritoriaalse korralduse muutmise tulemusena arvatakse, üle järgmised varad: territooriumiosal olevad kohaliku omavalitsuse üksuse kinnisasjad; territooriumiosal oleva kohaliku omavalitsuse üksuse kinnisasjaga otseselt seotud kohaliku omavalitsuse üksuse finantsjuhtimise seaduse § 34 lõigetes 2 ja 7 nimetatud võlakohustused; proportsioonis kohaliku omavalitsuse üksuse elanike arvu osakaaluga territooriumiosal oleva kohaliku omavalitsuse üksuse kinnisasjaga mitteseostatavad kohaliku omavalitsuse üksuse finantsjuhtimise seaduse § 34 lõigetes 2 ja 7 nimetatud võlakohustused, välja arvatud juhul, kui nimetatud võlakohustuste summa on alla 1000 euro.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_HALDUS_2_3"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_HALDUS_2_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:HALDUS_2_Par_12_Lg_1"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_12_Lg_2"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_12_Lg_3"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_12_Lg_4"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_12_Lg_5"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_12_Lg_6"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_12_Lg_7"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_12_Lg_8"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_12_Lg_9"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_12_Lg_10"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "public_body"
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        }
+      ],
+      "estleg:competenceType": "general",
       "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:KOVVS_Par_70_3",
+          "estleg:similarityScore": {
+            "@value": "0.444",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
         {
           "@id": "estleg:Reg_1035616_Par_17",
           "estleg:similarityScore": {
@@ -432,53 +1314,224 @@
           },
           "estleg:similarityStatus": "candidate"
         }
+      ]
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_12_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:targetGroup": [
-        "public_body"
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Vabariigi Valitsuse algatatud haldusterritoriaalse korralduse muutmine toimub Eesti territooriumi haldusjaotuse seaduse §-s 8 sätestatud korras, arvestades käesolevas paragrahvis sätestatud erisusi. Eesti territooriumi haldusjaotuse seaduse § 8 lõikes 1, lõike 3 punktis 3 ja lõikes 4 ning kohaliku omavalitsuse volikogu valimise seaduse § 11 lõikes 4 ja § 17 lõikes 3 sätestatut käesolevas seaduses sätestatud Vabariigi Valitsuse algatatud haldusterritoriaalse korralduse muutmise puhul ei kohaldata.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 1"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_12_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_kohalik_omavalitsus"
-        }
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kohaliku omavalitsuse üksus teeb pärast Vabariigi Valitsuse ettepaneku saamist järgmised toimingud: selgitab välja elanike arvamuse haldusterritoriaalse korralduse muutmise kohta Eesti territooriumi haldusjaotuse seaduse § 7 lõike 8 alusel kehtestatud Vabariigi Valitsuse määrusega sätestatud korras; esitab hiljemalt 2017. aasta 15. maiks maavanemale otsuse vormis põhjendatud arvamuse Vabariigi Valitsuse ettepaneku kohta; lepib hiljemalt 2017. aasta 15. juuniks teiste asjaomaste volikogudega kokku omavalitsusüksuse nime, haldusüksuse liigi ja sümboolika, haldusterritoriaalse korralduse või piiride muutmisega kaasnevate võimalike organisatsiooniliste, eelarveliste ja muude varalisi kohustusi ja õigusi käsitlevate küsimuste lahendamise ning uue omavalitsusüksuse põhimääruse ja teiste õigusaktide vajalike muudatuste ettevalmistamise, lähtudes käesoleva paragrahvi lõigetest 5 ja 6, käesoleva seaduse §-dest 14‒18 ning Eesti territooriumi haldusjaotuse seaduse §-st 92 (edaspidi ühinemiskokkulepe); teeb hiljemalt 2017. aasta 15. juuniks koostöös asjaomaste volikogudega kohaliku omavalitsuse volikogu valimise seaduses sätestatud valimistoimingud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 2"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_12_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:competenceType": "general"
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Elanike arvamus selgitatakse asjaomastes kohaliku omavalitsuse üksustes välja kooskõlas käesoleva seaduse §-ga 6. Elanike küsitluse läbiviimise aeg määratakse Eesti territooriumi haldusjaotuse seaduse § 7 lõike 8 alusel kehtestatud korras. Kui kohaliku omavalitsuse üksus ei ole hiljemalt 2017. aasta 15. maiks elanike arvamust välja selgitanud, siis korraldab elanike arvamuse väljaselgitamise asjaomane maavalitsus. Kui Vabariigi Valitsuse ettepaneku saanud kohaliku omavalitsuse üksused kuuluvad eri maakondadesse, korraldab elanike arvamuse väljaselgitamise maavalitsus, kelle maakonna territooriumile jääb suurem osa haldusterritoriaalse korralduse muutmisel moodustuva kohaliku omavalitsuse üksuse elanikest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 3"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_12_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Käesoleva paragrahvi lõike 2 punktis 3 nimetatud kohaliku omavalitsuse üksuse nime ja haldusüksuse liigi valikul tuleb kohaliku omavalitsuse üksustel küsida enne arvamust kohanimeseaduse § 20 lõike 1 alusel moodustatud kohanimenõukogult. Käesoleva paragrahvi lõike 2 punktis 3 nimetatud sümboolika tuleb kokku leppida teiste asjaomaste volikogudega kohaliku omavalitsuse korralduse seaduse § 14 lõikes 3 sätestatud tingimuste kohaselt, olles enne sümboolika kokkuleppimist küsinud Riigikantselei arvamust, millega tuleb sümboolika kasutamisel arvestada.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 4"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_12_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Ühinemiskokkuleppe eelnõu pannakse avalikkusele tutvumiseks välja ning määratakse ettepanekute ja vastuväidete esitamise tähtaeg, mis ei või olla lühem kui 15 kalendripäeva eelnõu avalikustamisest arvates. Ühinemiskokkuleppe kinnitavad oma otsusega kõik Vabariigi Valitsuse ettepaneku saanud asjaomased volikogud ja see avaldatakse valla või linna veebilehel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 5"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_12_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Kui Vabariigi Valitsuse ettepaneku on saanud kohaliku omavalitsuse üksused, kellest vähemalt kaks on Eesti territooriumi haldusjaotuse seaduse § 91 alusel kinnitanud ühinemislepingu ja kelle suhtes on Vabariigi Valitsus võtnud vastu käesoleva seaduse §-s 8 nimetatud määruse, vormistatakse Vabariigi Valitsuse algatatud haldusterritoriaalse korralduse muutmisega seonduvad ühinemiskokkulepped ühinemislepingu muudatusena, mille kinnitavad kõik asjaomased volikogud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 6"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_12_Lg_7",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "7",
+      "estleg:legalText": "(7) Kui kõik asjaomased volikogud ühinemiskokkulepet ei kinnita ning tegemist on kohaliku omavalitsuse üksustega, kellest vähemalt kaks on Eesti territooriumi haldusjaotuse seaduse § 91 alusel kinnitanud ühinemislepingu ja kelle suhtes on Vabariigi Valitsus võtnud vastu käesoleva seaduse §-s 8 nimetatud määruse, lähtutakse käesoleva paragrahvi lõike 2 punktis 3 nimetatud küsimuste lahendamisel ühinemislepingus kokkulepitust. Kui ühinemiskokkulepet ei kinnitata ja ühinemislepingut kinnitatud ei ole, siis lähtutakse käesoleva seaduse §-dest 14‒18. Kohaliku omavalitsuse üksuse nime, liigi ja sümboolika kasutamisel võetakse kooskõlas käesoleva paragrahvi lõikega 4 aluseks selle kohaliku omavalitsuse üksuse nimi, haldusüksuse liik ja sümboolika, kellega omavalitsusüksuse miinimumsuuruse kriteeriumile mittevastav kohaliku omavalitsuse üksus ühendatakse või liidetakse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 7"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_12_Lg_8",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "8",
+      "estleg:legalText": "(8) Kui Vabariigi Valitsus on algatanud sellise kahe või enama omavalitsusüksuse miinimumsuuruse kriteeriumile mittevastava kohaliku omavalitsuse üksuse ühendamise, kes ei ole ühinemiskokkulepet kinnitanud, siis võetakse kooskõlas käesoleva paragrahvi lõikega 4 kasutusele elanike arvult suurima kriteeriumile mittevastava kohaliku omavalitsuse üksuse nimi, haldusüksuse liik ja sümboolika. Kohanimenõukogu ettepanekul võib Vabariigi Valitsus määrata kohaliku omavalitsuse üksusele ka muu nime.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 8"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_12_Lg_9",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "9",
+      "estleg:legalText": "(9) Kui asjaomased volikogud ei ole käesoleva paragrahvi lõike 2 punktis 4 sätestatud toiminguid ja otsuseid teinud hiljemalt 2017. aasta 15. juuniks või kui volikogude otsused ei ole samased, teeb kohaliku omavalitsuse üksuse asukoha järgne maavanem koostöös asjaomaste volikogudega kohaliku omavalitsuse volikogu valimise seaduse §-s 703 sätestatud valimistoimingud ja kinnitab otsused oma korraldusega hiljemalt 2017. aasta 19. juuliks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 9"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_12_Lg_10",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "10",
+      "estleg:legalText": "(10) Kui Vabariigi Valitsuse ettepaneku saanud kohaliku omavalitsuse üksused, kellest ühe territooriumiosa on Vabariigi Valitsus arvanud teise kohaliku omavalitsuse üksuse koosseisu, ei lepi ühinemiskokkuleppes haldusterritoriaalse korralduse muutmisega kaasnevate eelarveliste ja muude varalisi kohustusi ja õigusi käsitlevate küsimuste lahendamises kokku, antakse sellele kohaliku omavalitsuse üksusele, kelle koosseisu territooriumiosa haldusterritoriaalse korralduse muutmise tulemusena arvatakse, üle järgmised varad: territooriumiosal olevad kohaliku omavalitsuse üksuse kinnisasjad; territooriumiosal oleva kohaliku omavalitsuse üksuse kinnisasjaga otseselt seotud kohaliku omavalitsuse üksuse finantsjuhtimise seaduse § 34 lõigetes 2 ja 7 nimetatud võlakohustused; proportsioonis kohaliku omavalitsuse üksuse elanike arvu osakaaluga territooriumiosal oleva kohaliku omavalitsuse üksuse kinnisasjaga mitteseostatavad kohaliku omavalitsuse üksuse finantsjuhtimise seaduse § 34 lõigetes 2 ja 7 nimetatud võlakohustused, välja arvatud juhul, kui nimetatud võlakohustuste summa on alla 1000 euro.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 10"
     },
     {
       "@id": "estleg:HALDUS_2_Par_13",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_HALDUS_2"
+        "estleg:LegalProvision_haldusreformi_seadus"
       ],
       "estleg:paragrahv": "§ 13.",
       "rdfs:label": "§ 13. Vabariigi Valitsuse algatatud valdade ja linnade haldusterritoriaalse korralduse muutmise otsustamine",
       "estleg:sourceAct": "Haldusreformi seadus",
       "estleg:summary": "1 (1) Vabariigi Valitsuse määrus Vabariigi Valitsuse algatatud valdade ja linnade haldusterritoriaalse korralduse muutmise kohta võetakse Eesti territooriumi haldusjaotuse seaduse § 3 lõike 1 ning § 71 lõigete 2 ja 3 alusel vastu hiljemalt 2017. aasta 15. juuliks. Vabariigi Valitsuse määrus Vabariigi Valitsuse algatatud valdade ja linnade haldusterritoriaalse korralduse muutmise kohta võetakse Eesti territooriumi haldusjaotuse seaduse § 3 lõike 1 ning § 71 lõigete 2 ja 3 alusel vastu hiljemalt 2",
+      "estleg:legalText": "(1) Vabariigi Valitsuse määrus Vabariigi Valitsuse algatatud valdade ja linnade haldusterritoriaalse korralduse muutmise kohta võetakse Eesti territooriumi haldusjaotuse seaduse § 3 lõike 1 ning § 71 lõigete 2 ja 3 alusel vastu hiljemalt 2017. aasta 15. juuliks. (2) Vabariigi Valitsuse algatatud haldusterritoriaalse korralduse muudatus ning sellest tulenev haldusüksuste nimistu muudatus valdade ja linnade kohta jõustub 2017. aastal kohaliku omavalitsuse volikogu korraliste valimiste tulemuste väljakuulutamise päeval.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_HALDUS_2_3"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_HALDUS_2_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:HALDUS_2_Par_13_Lg_1"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_13_Lg_2"
+        }
+      ],
       "estleg:targetGroup": [
         "public_body"
       ]
     },
     {
+      "@id": "estleg:HALDUS_2_Par_13_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Vabariigi Valitsuse määrus Vabariigi Valitsuse algatatud valdade ja linnade haldusterritoriaalse korralduse muutmise kohta võetakse Eesti territooriumi haldusjaotuse seaduse § 3 lõike 1 ning § 71 lõigete 2 ja 3 alusel vastu hiljemalt 2017. aasta 15. juuliks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 1"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_13_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Vabariigi Valitsuse algatatud haldusterritoriaalse korralduse muudatus ning sellest tulenev haldusüksuste nimistu muudatus valdade ja linnade kohta jõustub 2017. aastal kohaliku omavalitsuse volikogu korraliste valimiste tulemuste väljakuulutamise päeval.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 2"
+    },
+    {
       "@id": "estleg:HALDUS_2_Par_14",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_HALDUS_2"
+        "estleg:LegalProvision_haldusreformi_seadus"
       ],
       "estleg:paragrahv": "§ 14.",
       "rdfs:label": "§ 14. Haldusüksuse liigi säilitamine",
       "estleg:sourceAct": "Haldusreformi seadus",
       "estleg:summary": "1 (1) Linn võib säilitada ühinemise tulemusena moodustuva haldusüksuse liigi „linn”, kui ühinevad kohaliku omavalitsuse üksused on ühinemislepingus või -kokkuleppes linna kui haldusüksuse liigi säilitamises kokku leppinud. Linn võib säilitada ühinemise tulemusena moodustuva haldusüksuse liigi „linn”, kui ühinevad kohaliku omavalitsuse üksused on ühinemislepingus või -kokkuleppes linna kui haldusüksuse liigi säilitamises kokku leppinud. 2 (2) Enne 2017. aastat ühinenud kohaliku omavalitsuse üksus",
+      "estleg:legalText": "(1) Linn võib säilitada ühinemise tulemusena moodustuva haldusüksuse liigi „linn”, kui ühinevad kohaliku omavalitsuse üksused on ühinemislepingus või -kokkuleppes linna kui haldusüksuse liigi säilitamises kokku leppinud. (2) Enne 2017. aastat ühinenud kohaliku omavalitsuse üksused, millest ühe omavalitsusüksuse liik enne ühinemist oli „linn”, võivad taotleda haldusterritoriaalse korralduse muutmise käigus haldusüksuse liigi „linn” taastamist, kui ühinevad kohaliku omavalitsuse üksused on ühinemislepingus või -kokkuleppes linna kui haldusüksuse liigi taastamises kokku leppinud.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_HALDUS_2_4"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_HALDUS_2_4"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:HALDUS_2_Par_14_Lg_1"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_14_Lg_2"
+        }
+      ],
       "estleg:targetGroup": [
         "public_body"
       ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_kohalik_omavalitsus"
@@ -490,44 +1543,150 @@
       "estleg:competenceType": "general"
     },
     {
+      "@id": "estleg:HALDUS_2_Par_14_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Linn võib säilitada ühinemise tulemusena moodustuva haldusüksuse liigi „linn”, kui ühinevad kohaliku omavalitsuse üksused on ühinemislepingus või -kokkuleppes linna kui haldusüksuse liigi säilitamises kokku leppinud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 1"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_14_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Enne 2017. aastat ühinenud kohaliku omavalitsuse üksused, millest ühe omavalitsusüksuse liik enne ühinemist oli „linn”, võivad taotleda haldusterritoriaalse korralduse muutmise käigus haldusüksuse liigi „linn” taastamist, kui ühinevad kohaliku omavalitsuse üksused on ühinemislepingus või -kokkuleppes linna kui haldusüksuse liigi taastamises kokku leppinud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 2"
+    },
+    {
       "@id": "estleg:HALDUS_2_Par_15",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_HALDUS_2"
+        "estleg:LegalProvision_haldusreformi_seadus"
       ],
       "estleg:paragrahv": "§ 15.",
       "rdfs:label": "§ 15. Osavalla ja linnaosa moodustamine haldusterritoriaalse korralduse muutmisel",
       "estleg:sourceAct": "Haldusreformi seadus",
       "estleg:summary": "1 (1) Kohaliku omavalitsuse üksuste haldusterritoriaalse korralduse muutmisel võib ühineva kohaliku omavalitsuse üksuse volikogu otsuse alusel moodustada ühinemise tulemusena moodustunud kohaliku omavalitsuse üksuse maa-alal ja piires osavalla või linnaosa koos selle osavalla- või linnaosakoguga. Nimetatud juhul ei ole osavalla või linnaosa moodustamiseks teiste ühinevate kohaliku omavalitsuse üksuste volikogude nõusoleku saamine vajalik. Kohaliku omavalitsuse korralduse seaduse § 57 lõike 2 koh",
+      "estleg:legalText": "(1) Kohaliku omavalitsuse üksuste haldusterritoriaalse korralduse muutmisel võib ühineva kohaliku omavalitsuse üksuse volikogu otsuse alusel moodustada ühinemise tulemusena moodustunud kohaliku omavalitsuse üksuse maa-alal ja piires osavalla või linnaosa koos selle osavalla- või linnaosakoguga. Nimetatud juhul ei ole osavalla või linnaosa moodustamiseks teiste ühinevate kohaliku omavalitsuse üksuste volikogude nõusoleku saamine vajalik. Kohaliku omavalitsuse korralduse seaduse § 57 lõike 2 kohase osavalla või linnaosa põhimääruse kinnitab käesoleva lõike ja kohaliku omavalitsuse korralduse seaduse § 22 lõike 1 punkti 11 alusel haldusterritoriaalse korralduse muutmise tulemusena moodustunud kohaliku omavalitsuse üksuse volikogu, kes sätestab selles ka osavalla- või linnaosakogu ülesanded. (2) Ühinenud kohaliku omavalitsuse üksuse maa-alal moodustatud osavalda või linnaosa ei või haldusterritoriaalse korralduse muutmise tulemusena moodustunud kohaliku omavalitsuse üksus lõpetada esimese ühinemisjärgse valimisperioodi jooksul, välja arvatud osavalla- või linnaosakogu taotlusel. (3) Ühinemislepingus või ühinemiskokkuleppes kokku lepitud osavalla või linnaosa õiguste ja täidetavate ülesannete muutmisel esimese ühinemisjärgse valimisperioodi jooksul on vajalik volikogu koosseisu vähemalt kahekolmandikuline häälteenamus.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_HALDUS_2_4"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_HALDUS_2_4"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:HALDUS_2_Par_15_Lg_1"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_15_Lg_2"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_15_Lg_3"
+        }
+      ],
       "estleg:targetGroup": [
         "public_body"
       ],
+      "estleg:references": [
+        {
+          "@id": "estleg:KOKS_Par_57"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_kohalik_omavalitsus"
         }
       ],
       "estleg:competenceType": "general"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_15_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kohaliku omavalitsuse üksuste haldusterritoriaalse korralduse muutmisel võib ühineva kohaliku omavalitsuse üksuse volikogu otsuse alusel moodustada ühinemise tulemusena moodustunud kohaliku omavalitsuse üksuse maa-alal ja piires osavalla või linnaosa koos selle osavalla- või linnaosakoguga. Nimetatud juhul ei ole osavalla või linnaosa moodustamiseks teiste ühinevate kohaliku omavalitsuse üksuste volikogude nõusoleku saamine vajalik. Kohaliku omavalitsuse korralduse seaduse § 57 lõike 2 kohase osavalla või linnaosa põhimääruse kinnitab käesoleva lõike ja kohaliku omavalitsuse korralduse seaduse § 22 lõike 1 punkti 11 alusel haldusterritoriaalse korralduse muutmise tulemusena moodustunud kohaliku omavalitsuse üksuse volikogu, kes sätestab selles ka osavalla- või linnaosakogu ülesanded.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 1"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_15_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Ühinenud kohaliku omavalitsuse üksuse maa-alal moodustatud osavalda või linnaosa ei või haldusterritoriaalse korralduse muutmise tulemusena moodustunud kohaliku omavalitsuse üksus lõpetada esimese ühinemisjärgse valimisperioodi jooksul, välja arvatud osavalla- või linnaosakogu taotlusel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 2"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_15_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Ühinemislepingus või ühinemiskokkuleppes kokku lepitud osavalla või linnaosa õiguste ja täidetavate ülesannete muutmisel esimese ühinemisjärgse valimisperioodi jooksul on vajalik volikogu koosseisu vähemalt kahekolmandikuline häälteenamus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 3"
     },
     {
       "@id": "estleg:HALDUS_2_Par_16",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_HALDUS_2"
+        "estleg:LegalProvision_haldusreformi_seadus"
       ],
       "estleg:paragrahv": "§ 16.",
       "rdfs:label": "§ 16. Õigusaktide kehtestamine ja kehtivus",
       "estleg:sourceAct": "Haldusreformi seadus",
       "estleg:summary": "1 (1) Haldusterritoriaalse korralduse muutmisel lähtutakse õigusaktide kehtestamisel ja kohaldamisel Eesti territooriumi haldusjaotuse seaduse § 141 lõigetest 41‒45. Haldusterritoriaalse korralduse muutmisel lähtutakse õigusaktide kehtestamisel ja kohaldamisel Eesti territooriumi haldusjaotuse seaduse § 141 lõigetest 41‒45. 2 (2) Haldusterritoriaalse korralduse muutmise tulemusena moodustunud kohaliku omavalitsuse üksuse volikogu kehtestab valla või linna põhimääruse kuue kuu jooksul volikogu va",
+      "estleg:legalText": "(1) Haldusterritoriaalse korralduse muutmisel lähtutakse õigusaktide kehtestamisel ja kohaldamisel Eesti territooriumi haldusjaotuse seaduse § 141 lõigetest 41‒45. (2) Haldusterritoriaalse korralduse muutmise tulemusena moodustunud kohaliku omavalitsuse üksuse volikogu kehtestab valla või linna põhimääruse kuue kuu jooksul volikogu valimiste tulemuste väljakuulutamise päevast arvates ning uue põhimääruse kehtestamiseni lähtutakse ühinemislepingus või ühinemiskokkuleppes kokku lepitud ühinenud kohaliku omavalitsuse üksuse põhimäärusest. Kui ühinemislepingut või ühinemiskokkulepet ei ole kinnitatud, võetakse aluseks selle kohaliku omavalitsuse üksuse põhimäärus, kellega omavalitsusüksuse miinimumsuuruse kriteeriumile mittevastav kohaliku omavalitsuse üksus liidetakse või ühendatakse. (3) Kuni haldusterritoriaalse korralduse muutmise tulemusena moodustunud kohaliku omavalitsuse üksuse põhimääruse kehtestamiseni võib moodustunud kohaliku omavalitsuse üksus kasutada ühinemislepingus või ühinemiskokkuleppes kokku lepitud ühineva valla või linna sümboolikat. (4) Ühinemisleping ja ühinemiskokkulepe jõustuvad volikogude valimiste tulemuste väljakuulutamise päeval ning need kehtivad järgmise kohaliku omavalitsuse volikogu valimiste tulemuste väljakuulutamiseni. (5) Ühinemislepingu ja ühinemiskokkuleppe muutmiseks esimese valimisperioodi jooksul pärast haldusterritoriaalse korralduse muudatuse jõustumist on vajalik volikogu koosseisu vähemalt kahekolmandikuline häälteenamus.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_HALDUS_2_4"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_HALDUS_2_4"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:HALDUS_2_Par_16_Lg_1"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_16_Lg_2"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_16_Lg_3"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_16_Lg_4"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_16_Lg_5"
+        }
+      ],
       "estleg:targetGroup": [
         "public_body"
       ],
@@ -536,21 +1695,108 @@
           "@id": "estleg:Institution_kohalik_omavalitsus"
         }
       ],
-      "estleg:competenceType": "regulation"
+      "estleg:competenceType": "regulation",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:KOKS_Par_52",
+          "estleg:similarityScore": {
+            "@value": "0.342",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_16_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Haldusterritoriaalse korralduse muutmisel lähtutakse õigusaktide kehtestamisel ja kohaldamisel Eesti territooriumi haldusjaotuse seaduse § 141 lõigetest 41‒45.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 1"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_16_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Haldusterritoriaalse korralduse muutmise tulemusena moodustunud kohaliku omavalitsuse üksuse volikogu kehtestab valla või linna põhimääruse kuue kuu jooksul volikogu valimiste tulemuste väljakuulutamise päevast arvates ning uue põhimääruse kehtestamiseni lähtutakse ühinemislepingus või ühinemiskokkuleppes kokku lepitud ühinenud kohaliku omavalitsuse üksuse põhimäärusest. Kui ühinemislepingut või ühinemiskokkulepet ei ole kinnitatud, võetakse aluseks selle kohaliku omavalitsuse üksuse põhimäärus, kellega omavalitsusüksuse miinimumsuuruse kriteeriumile mittevastav kohaliku omavalitsuse üksus liidetakse või ühendatakse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 2"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_16_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kuni haldusterritoriaalse korralduse muutmise tulemusena moodustunud kohaliku omavalitsuse üksuse põhimääruse kehtestamiseni võib moodustunud kohaliku omavalitsuse üksus kasutada ühinemislepingus või ühinemiskokkuleppes kokku lepitud ühineva valla või linna sümboolikat.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 3"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_16_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Ühinemisleping ja ühinemiskokkulepe jõustuvad volikogude valimiste tulemuste väljakuulutamise päeval ning need kehtivad järgmise kohaliku omavalitsuse volikogu valimiste tulemuste väljakuulutamiseni.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 4"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_16_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Ühinemislepingu ja ühinemiskokkuleppe muutmiseks esimese valimisperioodi jooksul pärast haldusterritoriaalse korralduse muudatuse jõustumist on vajalik volikogu koosseisu vähemalt kahekolmandikuline häälteenamus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 5"
     },
     {
       "@id": "estleg:HALDUS_2_Par_17",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_HALDUS_2"
+        "estleg:LegalProvision_haldusreformi_seadus"
       ],
       "estleg:paragrahv": "§ 17.",
       "rdfs:label": "§ 17. Kohaliku omavalitsuse üksuse organite, ametiasutuste ja nende hallatavate asutuste struktuur",
       "estleg:sourceAct": "Haldusreformi seadus",
       "estleg:summary": "1 (1) Kohaliku omavalitsuse üksuse organite ja ametiasutuste ning nende hallatavate asutuste struktuur kehtestatakse Eesti territooriumi haldusjaotuse seaduse § 141 lõigetes 12 ja 13 sätestatud korras. Kohaliku omavalitsuse üksuse organite ja ametiasutuste ning nende hallatavate asutuste struktuur kehtestatakse Eesti territooriumi haldusjaotuse seaduse § 141 lõigetes 12 ja 13 sätestatud korras. 2 (2) Haldusterritoriaalse korralduse muutmise tulemusena moodustunud kohaliku omavalitsuse üksuse ame",
+      "estleg:legalText": "(1) Kohaliku omavalitsuse üksuse organite ja ametiasutuste ning nende hallatavate asutuste struktuur kehtestatakse Eesti territooriumi haldusjaotuse seaduse § 141 lõigetes 12 ja 13 sätestatud korras. (2) Haldusterritoriaalse korralduse muutmise tulemusena moodustunud kohaliku omavalitsuse üksuse ametiasutused alustavad tööd 2018. aasta 1. jaanuaril.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_HALDUS_2_4"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_HALDUS_2_4"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:HALDUS_2_Par_17_Lg_1"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_17_Lg_2"
+        }
+      ],
       "estleg:targetGroup": [
         "public_body"
       ],
@@ -562,21 +1808,66 @@
       "estleg:competenceType": "general"
     },
     {
+      "@id": "estleg:HALDUS_2_Par_17_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kohaliku omavalitsuse üksuse organite ja ametiasutuste ning nende hallatavate asutuste struktuur kehtestatakse Eesti territooriumi haldusjaotuse seaduse § 141 lõigetes 12 ja 13 sätestatud korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_17"
+      },
+      "rdfs:label": "§ 17 lg 1"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_17_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Haldusterritoriaalse korralduse muutmise tulemusena moodustunud kohaliku omavalitsuse üksuse ametiasutused alustavad tööd 2018. aasta 1. jaanuaril.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_17"
+      },
+      "rdfs:label": "§ 17 lg 2"
+    },
+    {
       "@id": "estleg:HALDUS_2_Par_18",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_HALDUS_2"
+        "estleg:LegalProvision_haldusreformi_seadus"
       ],
       "estleg:paragrahv": "§ 18.",
       "rdfs:label": "§ 18. Töötajate ja ametnikega seotud küsimused",
       "estleg:sourceAct": "Haldusreformi seadus",
       "estleg:summary": "1 (1) Ühinenud kohaliku omavalitsuse üksuse ametiasutuse ja hallatava asutuse ametnikud ja töötajad viiakse vastavalt avaliku teenistuse seaduse § 98 lõike 1 punktide 1 ja 2 ning töölepingu seaduse § 112 lõike 1 alusel üle haldusterritoriaalse korralduse muutmise tulemusena moodustunud kohaliku omavalitsuse üksuse moodustatava uue ametiasutuse koosseisu. Ühinenud kohaliku omavalitsuse üksuse ametiasutuse ja hallatava asutuse ametnikud ja töötajad viiakse vastavalt avaliku teenistuse seaduse § 98",
+      "estleg:legalText": "(1) Ühinenud kohaliku omavalitsuse üksuse ametiasutuse ja hallatava asutuse ametnikud ja töötajad viiakse vastavalt avaliku teenistuse seaduse § 98 lõike 1 punktide 1 ja 2 ning töölepingu seaduse § 112 lõike 1 alusel üle haldusterritoriaalse korralduse muutmise tulemusena moodustunud kohaliku omavalitsuse üksuse moodustatava uue ametiasutuse koosseisu. (2) Ühinenud kohaliku omavalitsuse üksuse ametnik, kelle ametikoht ja teenistusülesanded kohaliku omavalitsuse üksuste haldusterritoriaalse korralduse muutmise tulemusena moodustatava uue ametiasutuse koosseisus ei muutu selliselt, et see eeldaks ametnikult uuel ametikohal teistsugust haridust või töökogemust või teistsuguseid teadmisi või oskusi, jätkab teenistust haldusterritoriaalse korralduse muutmise käigus moodustunud kohaliku omavalitsuse üksuse moodustatava uue ametiasutuse koosseisus. (3) Ühinenud kohaliku omavalitsuse üksuse töötaja, kelle töökoht ja -ülesanded kohaliku omavalitsuse üksuste haldusterritoriaalse korralduse muutmise tulemusena moodustatava uue ametiasutuse koosseisus ei muutu selliselt, et see eeldaks töötajalt uuel töökohal teistsugust haridust, töökogemust, teadmisi või oskusi, jätkab tööd haldusterritoriaalse korralduse muutmise käigus moodustunud kohaliku omavalitsuse üksuse moodustatava uue ametiasutuse koosseisus. (4) Haldusterritoriaalse korralduse muutmise tulemusena moodustunud kohaliku omavalitsuse üksuse moodustatava uue ametiasutuse ametikohtade täitmisel võib avaliku teenistuse seaduse § 16 lõike 2 kohaselt loobuda avaliku konkursi korraldamisest ja korraldada sisekonkursi. (5) Kui ametniku senine ametikoht haldusterritoriaalse korralduse muutmise tulemusena moodustatava uue ametiasutuse koosseisus koondatakse, pakutakse ametnikule avaliku teenistuse seaduse § 90 lõike 7 alusel võimaluse korral muud tema haridusele, töökogemusele, teadmistele ja oskustele vastavat ning eelmise ametikohaga sarnaste teenistusülesannetega töö- või ametikohta haldusterritoriaalse korralduse muutmise tulemusena moodustunud kohaliku omavalitsuse üksuse ametiasutuse koosseisus. Kui ametniku senine ametikoht koondatakse ja talle pakutakse töökohta, tuleb ametnikule teenistusest vabastamisel maksta avaliku teenistuse seaduse § 102 lõigetes 1 ja 2 sätestatud tingimustel koondamishüvitist. (6) Kui töötaja senine töökoht haldusterritoriaalse korralduse muutmise tulemusena moodustatava uue ametiasutuse koosseisus koondatakse, pakutakse töötajale töölepingu seaduse § 89 lõike 3 alusel võimaluse korral muud tema haridusele, töökogemusele, teadmistele ja oskustele vastavat ning eelmise töökohaga sarnaste tööülesannetega töökohta haldusterritoriaalse korralduse muutmise tulemusena moodustunud kohaliku omavalitsuse üksuse ametiasutuse koosseisus.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_HALDUS_2_4"
       },
-      "estleg:references": [
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_HALDUS_2_4"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:AVALIK_Par_98"
+          "@id": "estleg:HALDUS_2_Par_18_Lg_1"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_18_Lg_2"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_18_Lg_3"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_18_Lg_4"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_18_Lg_5"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_18_Lg_6"
         }
       ],
       "estleg:targetGroup": [
@@ -584,27 +1875,129 @@
         "public_body",
         "official"
       ],
+      "estleg:references": [
+        {
+          "@id": "estleg:AVALIK_Par_98"
+        }
+      ],
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_kohalik_omavalitsus"
         }
       ],
       "estleg:competenceType": "general"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_18_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ühinenud kohaliku omavalitsuse üksuse ametiasutuse ja hallatava asutuse ametnikud ja töötajad viiakse vastavalt avaliku teenistuse seaduse § 98 lõike 1 punktide 1 ja 2 ning töölepingu seaduse § 112 lõike 1 alusel üle haldusterritoriaalse korralduse muutmise tulemusena moodustunud kohaliku omavalitsuse üksuse moodustatava uue ametiasutuse koosseisu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_18"
+      },
+      "rdfs:label": "§ 18 lg 1"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_18_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Ühinenud kohaliku omavalitsuse üksuse ametnik, kelle ametikoht ja teenistusülesanded kohaliku omavalitsuse üksuste haldusterritoriaalse korralduse muutmise tulemusena moodustatava uue ametiasutuse koosseisus ei muutu selliselt, et see eeldaks ametnikult uuel ametikohal teistsugust haridust või töökogemust või teistsuguseid teadmisi või oskusi, jätkab teenistust haldusterritoriaalse korralduse muutmise käigus moodustunud kohaliku omavalitsuse üksuse moodustatava uue ametiasutuse koosseisus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_18"
+      },
+      "rdfs:label": "§ 18 lg 2"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_18_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Ühinenud kohaliku omavalitsuse üksuse töötaja, kelle töökoht ja -ülesanded kohaliku omavalitsuse üksuste haldusterritoriaalse korralduse muutmise tulemusena moodustatava uue ametiasutuse koosseisus ei muutu selliselt, et see eeldaks töötajalt uuel töökohal teistsugust haridust, töökogemust, teadmisi või oskusi, jätkab tööd haldusterritoriaalse korralduse muutmise käigus moodustunud kohaliku omavalitsuse üksuse moodustatava uue ametiasutuse koosseisus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_18"
+      },
+      "rdfs:label": "§ 18 lg 3"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_18_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Haldusterritoriaalse korralduse muutmise tulemusena moodustunud kohaliku omavalitsuse üksuse moodustatava uue ametiasutuse ametikohtade täitmisel võib avaliku teenistuse seaduse § 16 lõike 2 kohaselt loobuda avaliku konkursi korraldamisest ja korraldada sisekonkursi.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_18"
+      },
+      "rdfs:label": "§ 18 lg 4"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_18_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Kui ametniku senine ametikoht haldusterritoriaalse korralduse muutmise tulemusena moodustatava uue ametiasutuse koosseisus koondatakse, pakutakse ametnikule avaliku teenistuse seaduse § 90 lõike 7 alusel võimaluse korral muud tema haridusele, töökogemusele, teadmistele ja oskustele vastavat ning eelmise ametikohaga sarnaste teenistusülesannetega töö- või ametikohta haldusterritoriaalse korralduse muutmise tulemusena moodustunud kohaliku omavalitsuse üksuse ametiasutuse koosseisus. Kui ametniku senine ametikoht koondatakse ja talle pakutakse töökohta, tuleb ametnikule teenistusest vabastamisel maksta avaliku teenistuse seaduse § 102 lõigetes 1 ja 2 sätestatud tingimustel koondamishüvitist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_18"
+      },
+      "rdfs:label": "§ 18 lg 5"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_18_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Kui töötaja senine töökoht haldusterritoriaalse korralduse muutmise tulemusena moodustatava uue ametiasutuse koosseisus koondatakse, pakutakse töötajale töölepingu seaduse § 89 lõike 3 alusel võimaluse korral muud tema haridusele, töökogemusele, teadmistele ja oskustele vastavat ning eelmise töökohaga sarnaste tööülesannetega töökohta haldusterritoriaalse korralduse muutmise tulemusena moodustunud kohaliku omavalitsuse üksuse ametiasutuse koosseisus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_18"
+      },
+      "rdfs:label": "§ 18 lg 6"
     },
     {
       "@id": "estleg:HALDUS_2_Par_19",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_HALDUS_2"
+        "estleg:LegalProvision_haldusreformi_seadus"
       ],
       "estleg:paragrahv": "§ 19.",
       "rdfs:label": "§ 19. Kohaliku omavalitsuse üksuse juhtide sotsiaalsed garantiid",
       "estleg:sourceAct": "Haldusreformi seadus",
       "estleg:summary": "1 (1) Kohaliku omavalitsuse üksuse volikogu esimehele, vallavanemale ja linnapeale makstakse tema volituste tähtajalisel lõppemisel ühekordset hüvitist järgmiselt: 1 1) kui vallavanema või linnapea volitused on lõppenud seoses volikogude algatusel toimuva valdade või linnade haldusterritoriaalse korralduse muudatuse jõustumise tulemusena uue valitsuse ametisse nimetamisega või volikogu esimehel valdade või linnade haldusterritoriaalse korralduse muutmise käigus kohaliku omavalitsuse volikogu val",
+      "estleg:legalText": "(1) Kohaliku omavalitsuse üksuse volikogu esimehele, vallavanemale ja linnapeale makstakse tema volituste tähtajalisel lõppemisel ühekordset hüvitist järgmiselt: kui vallavanema või linnapea volitused on lõppenud seoses volikogude algatusel toimuva valdade või linnade haldusterritoriaalse korralduse muudatuse jõustumise tulemusena uue valitsuse ametisse nimetamisega või volikogu esimehel valdade või linnade haldusterritoriaalse korralduse muutmise käigus kohaliku omavalitsuse volikogu valimiste tulemuste väljakuulutamisega ja isik on vallavanema, linnapea või volikogu esimehena töötanud vähem kui ühe aasta enne ühinemise käigus moodustunud uue kohaliku omavalitsuse üksuse volikogu valimiste tulemuste väljakuulutamise päeva, makstakse volikogu otsusega hüvitist kohaliku omavalitsuse volikogu valimiste tulemuste väljakuulutamise päevale eelnenud kahe aasta vastava ametikoha kuu keskmise ametipalga, töötasu või hüvituse kuuekordses ulatuses; kui vallavanema või linnapea volitused on lõppenud seoses volikogude algatusel toimuva valdade või linnade haldusterritoriaalse korralduse muudatuse jõustumise tulemusena uue valitsuse ametisse nimetamisega või volikogu esimehel valdade või linnade haldusterritoriaalse korralduse muutmise käigus kohaliku omavalitsuse volikogu valimiste tulemuste väljakuulutamisega ja isik on vallavanema, linnapea või volikogu esimehena töötanud vähemalt ühe aasta enne ühinemise käigus moodustunud uue kohaliku omavalitsuse üksuse volikogu valimiste tulemuste väljakuulutamise päeva, makstakse volikogu otsusega hüvitist kohaliku omavalitsuse volikogu valimiste tulemuste väljakuulutamise päevale eelnenud kahe aasta vastava ametikoha kuu keskmise ametipalga, töötasu või hüvituse 12-kordses ulatuses. (2) Käesoleva paragrahvi lõikes 1 sätestatud hüvitist ei maksta, kui volikogu valib lõikes 1 nimetatud isiku vallavanema, linnapea või volikogu esimehe samale ametikohale uueks tähtajaks. (3) Käesoleva paragrahvi lõikes 1 nimetatud juhul ei kohaldata kohaliku omavalitsuse korralduse seaduse §-s 541 sätestatut. (4) Vabariigi Valitsuse algatatud valdade ja linnade haldusterritoriaalse korralduse muutmisel kohaldatakse kohaliku omavalitsuse korralduse seaduse § 541 lõigetes 3–5 sätestatud kohaliku omavalitsuse üksuste juhtidele hüvitise maksmise korda, millega kaasnevad kulud kaetakse käesoleva seaduse §-s 24 sätestatud korras, välja arvatud juhul, kui Vabariigi Valitsuse algatatud haldusterritoriaalse korralduse muutmise käigus ühendatakse omavalitsusüksuse miinimumsuuruse kriteeriumile mittevastav kohaliku omavalitsuse üksus §-s 8 nimetatud määruse kohaselt ühineva kohaliku omavalitsuse üksusega või § 7 lõikes 3 nimetatud kohaliku omavalitsuse üksuste puhul, kelle volikogud on ühinemist taotlenud ja kelle haldusterritoriaalse korralduse muutmiseks on Vabariigi Valitsus kehtestanud § 13 lõikes 1 nimetatud määruse. Sellisel juhul makstakse §-s 8 nimetatud Vabariigi Valitsuse määruses sätestatud või § 7 lõikes 3 nimetatud kohaliku omavalitsuse üksuse juhtidele hüvitist käesoleva paragrahvi lõikes 1 sätestatud määras.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_HALDUS_2_4"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_HALDUS_2_4"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:HALDUS_2_Par_19_Lg_1"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_19_Lg_2"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_19_Lg_3"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_19_Lg_4"
+        }
+      ],
       "estleg:targetGroup": [
+        "citizen",
         "public_body"
       ],
       "estleg:competentAuthority": [
@@ -613,21 +2006,86 @@
         }
       ],
       "estleg:competenceType": "general"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_19_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kohaliku omavalitsuse üksuse volikogu esimehele, vallavanemale ja linnapeale makstakse tema volituste tähtajalisel lõppemisel ühekordset hüvitist järgmiselt: kui vallavanema või linnapea volitused on lõppenud seoses volikogude algatusel toimuva valdade või linnade haldusterritoriaalse korralduse muudatuse jõustumise tulemusena uue valitsuse ametisse nimetamisega või volikogu esimehel valdade või linnade haldusterritoriaalse korralduse muutmise käigus kohaliku omavalitsuse volikogu valimiste tulemuste väljakuulutamisega ja isik on vallavanema, linnapea või volikogu esimehena töötanud vähem kui ühe aasta enne ühinemise käigus moodustunud uue kohaliku omavalitsuse üksuse volikogu valimiste tulemuste väljakuulutamise päeva, makstakse volikogu otsusega hüvitist kohaliku omavalitsuse volikogu valimiste tulemuste väljakuulutamise päevale eelnenud kahe aasta vastava ametikoha kuu keskmise ametipalga, töötasu või hüvituse kuuekordses ulatuses; kui vallavanema või linnapea volitused on lõppenud seoses volikogude algatusel toimuva valdade või linnade haldusterritoriaalse korralduse muudatuse jõustumise tulemusena uue valitsuse ametisse nimetamisega või volikogu esimehel valdade või linnade haldusterritoriaalse korralduse muutmise käigus kohaliku omavalitsuse volikogu valimiste tulemuste väljakuulutamisega ja isik on vallavanema, linnapea või volikogu esimehena töötanud vähemalt ühe aasta enne ühinemise käigus moodustunud uue kohaliku omavalitsuse üksuse volikogu valimiste tulemuste väljakuulutamise päeva, makstakse volikogu otsusega hüvitist kohaliku omavalitsuse volikogu valimiste tulemuste väljakuulutamise päevale eelnenud kahe aasta vastava ametikoha kuu keskmise ametipalga, töötasu või hüvituse 12-kordses ulatuses.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_19"
+      },
+      "rdfs:label": "§ 19 lg 1"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_19_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Käesoleva paragrahvi lõikes 1 sätestatud hüvitist ei maksta, kui volikogu valib lõikes 1 nimetatud isiku vallavanema, linnapea või volikogu esimehe samale ametikohale uueks tähtajaks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_19"
+      },
+      "rdfs:label": "§ 19 lg 2"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_19_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Käesoleva paragrahvi lõikes 1 nimetatud juhul ei kohaldata kohaliku omavalitsuse korralduse seaduse §-s 541 sätestatut.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_19"
+      },
+      "rdfs:label": "§ 19 lg 3"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_19_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Vabariigi Valitsuse algatatud valdade ja linnade haldusterritoriaalse korralduse muutmisel kohaldatakse kohaliku omavalitsuse korralduse seaduse § 541 lõigetes 3–5 sätestatud kohaliku omavalitsuse üksuste juhtidele hüvitise maksmise korda, millega kaasnevad kulud kaetakse käesoleva seaduse §-s 24 sätestatud korras, välja arvatud juhul, kui Vabariigi Valitsuse algatatud haldusterritoriaalse korralduse muutmise käigus ühendatakse omavalitsusüksuse miinimumsuuruse kriteeriumile mittevastav kohaliku omavalitsuse üksus §-s 8 nimetatud määruse kohaselt ühineva kohaliku omavalitsuse üksusega või § 7 lõikes 3 nimetatud kohaliku omavalitsuse üksuste puhul, kelle volikogud on ühinemist taotlenud ja kelle haldusterritoriaalse korralduse muutmiseks on Vabariigi Valitsus kehtestanud § 13 lõikes 1 nimetatud määruse. Sellisel juhul makstakse §-s 8 nimetatud Vabariigi Valitsuse määruses sätestatud või § 7 lõikes 3 nimetatud kohaliku omavalitsuse üksuse juhtidele hüvitist käesoleva paragrahvi lõikes 1 sätestatud määras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_19"
+      },
+      "rdfs:label": "§ 19 lg 4"
     },
     {
       "@id": "estleg:HALDUS_2_Par_20",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_HALDUS_2"
+        "estleg:LegalProvision_haldusreformi_seadus"
       ],
       "estleg:paragrahv": "§ 20.",
       "rdfs:label": "§ 20. Ühinemistoetuse maksmise alus ja määrad",
       "estleg:sourceAct": "Haldusreformi seadus",
       "estleg:summary": "1 (1) Kohaliku omavalitsuse üksuste volikogude algatatud haldusterritoriaalse korralduse muutmise tulemusena moodustunud kohaliku omavalitsuse üksustele makstakse ühinemistoetust, lähtudes käesolevas paragrahvis sätestatule lisaks käesoleva seaduse §-dest 21‒23. Kohaliku omavalitsuse üksuste ühinemise soodustamise seaduses sätestatut, välja arvatud selle § 6 lõikes 2 nimetatud kulude loetelu ja sama paragrahvi lõikeid 3, 6, 7, 8 ja 9, ei kohaldata. Kohaliku omavalitsuse üksuste volikogude algata",
+      "estleg:legalText": "(1) Kohaliku omavalitsuse üksuste volikogude algatatud haldusterritoriaalse korralduse muutmise tulemusena moodustunud kohaliku omavalitsuse üksustele makstakse ühinemistoetust, lähtudes käesolevas paragrahvis sätestatule lisaks käesoleva seaduse §-dest 21‒23. Kohaliku omavalitsuse üksuste ühinemise soodustamise seaduses sätestatut, välja arvatud selle § 6 lõikes 2 nimetatud kulude loetelu ja sama paragrahvi lõikeid 3, 6, 7, 8 ja 9, ei kohaldata. (2) Ühinemistoetuse määr on 50 eurot ühinenud kohaliku omavalitsuse üksuse elaniku kohta. Ühinenud kohaliku omavalitsuse üksuse kohta on ühinemistoetuse minimaalne suurus 150 000 eurot ja maksimaalne suurus 400 000 eurot.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_HALDUS_2_4"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_HALDUS_2_4"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:HALDUS_2_Par_20_Lg_1"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_20_Lg_2"
+        }
+      ],
       "estleg:targetGroup": [
+        "citizen",
         "public_body"
       ],
       "estleg:competentAuthority": [
@@ -638,18 +2096,86 @@
       "estleg:competenceType": "general"
     },
     {
+      "@id": "estleg:HALDUS_2_Par_20_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kohaliku omavalitsuse üksuste volikogude algatatud haldusterritoriaalse korralduse muutmise tulemusena moodustunud kohaliku omavalitsuse üksustele makstakse ühinemistoetust, lähtudes käesolevas paragrahvis sätestatule lisaks käesoleva seaduse §-dest 21‒23. Kohaliku omavalitsuse üksuste ühinemise soodustamise seaduses sätestatut, välja arvatud selle § 6 lõikes 2 nimetatud kulude loetelu ja sama paragrahvi lõikeid 3, 6, 7, 8 ja 9, ei kohaldata.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_20"
+      },
+      "rdfs:label": "§ 20 lg 1"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_20_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Ühinemistoetuse määr on 50 eurot ühinenud kohaliku omavalitsuse üksuse elaniku kohta. Ühinenud kohaliku omavalitsuse üksuse kohta on ühinemistoetuse minimaalne suurus 150 000 eurot ja maksimaalne suurus 400 000 eurot.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_20"
+      },
+      "rdfs:label": "§ 20 lg 2"
+    },
+    {
       "@id": "estleg:HALDUS_2_Par_21",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_HALDUS_2"
+        "estleg:LegalProvision_haldusreformi_seadus"
       ],
       "estleg:paragrahv": "§ 21.",
       "rdfs:label": "§ 21. Ühinemistoetuse arvutamise alused",
       "estleg:sourceAct": "Haldusreformi seadus",
       "estleg:summary": "1 (1) Ühinenud kohaliku omavalitsuse üksusele arvutatakse ühinemistoetust minimaalses suuruses, kui elaniku kohta arvutatud ühinemistoetuse määra ja kohaliku omavalitsuse üksuse elanike arvu alusel arvutatud toetuse suurus on väiksem kui ühinemistoetuse minimaalne suurus. Ühinenud kohaliku omavalitsuse üksusele arvutatakse ühinemistoetust minimaalses suuruses, kui elaniku kohta arvutatud ühinemistoetuse määra ja kohaliku omavalitsuse üksuse elanike arvu alusel arvutatud toetuse suurus on väiksem",
+      "estleg:legalText": "(1) Ühinenud kohaliku omavalitsuse üksusele arvutatakse ühinemistoetust minimaalses suuruses, kui elaniku kohta arvutatud ühinemistoetuse määra ja kohaliku omavalitsuse üksuse elanike arvu alusel arvutatud toetuse suurus on väiksem kui ühinemistoetuse minimaalne suurus. (2) Ühinenud kohaliku omavalitsuse üksusele arvutatakse ühinemistoetust maksimaalses suuruses, kui elaniku kohta arvutatud ühinemistoetuse määra ja kohaliku omavalitsuse üksuse elanike arvu alusel arvutatud toetuse suurus on suurem kui ühinemistoetuse maksimaalne suurus. (3) Kui ühinemise tulemusena moodustunud kohaliku omavalitsuse üksuse elanike arv on väiksem kui 3000, arvutatakse iga ühinenud kohaliku omavalitsuse üksuse kohta ühinemistoetust vastavalt toetuse minimaalsele suurusele. (4) Kui ühinemise tulemusena moodustunud kohaliku omavalitsuse üksuse elanike arv on võrdne 5000-ga või sellest suurem, arvutatakse iga ühinenud kohaliku omavalitsuse üksuse kohta ühinemistoetust elaniku kohta kahekordses määras või ühinemistoetuse kahekordses minimaalses või maksimaalses suuruses. (5) Kui ühinemise tulemusena moodustunud kohaliku omavalitsuse üksuse elanike arv on võrdne 3000-ga või sellest suurem, kuid väiksem kui 5000, arvutatakse iga ühinenud kohaliku omavalitsuse üksuse kohta ühinemistoetust sõltuvalt ühinemise tulemusena moodustunud kohaliku omavalitsuse üksuse elanike arvust vastavalt käesoleva paragrahvi lõikele 6. (6) Lineaarselt kasvava ühinemistoetuse arvutamise aluseks on toetuse määr elaniku kohta, mida suurendatakse alates ühinemise tulemusena moodustunud kohaliku omavalitsuse üksuse 3000. elanikust iga järgneva elaniku kohta 2,5 sendi võrra, kuid mitte suuremaks kui toetuse kahekordne määr elaniku kohta. Ühinenud kohaliku omavalitsuse üksuse kohta arvutatud ühinemistoetuse minimaalne suurus suureneb lineaarselt samas proportsioonis elaniku kohta arvutatud ühinemistoetuse määra kasvuga, kuid mitte suuremaks kui toetuse kahekordne minimaalne suurus. (7) Kui ühinemise tulemusena moodustunud kohaliku omavalitsuse üksuse elanike arv on võrdne 11 000-ga või sellest suurem või kui moodustub maakonnasuurune kohaliku omavalitsuse üksus, mille elanike arv võib olla ka väiksem kui 11 000, arvestatakse ühinemise tulemusena moodustunud kohaliku omavalitsuse üksusele 500 000 eurot täiendavat toetust. (8) Territooriumiosa arvamisel ühe kohaliku omavalitsuse üksuse koosseisust teise kohaliku omavalitsuse üksuse koosseisu arvutatakse selle elaniku kohta ühinemistoetust, kui: ühinemise tulemusena moodustunud kohaliku omavalitsuse üksuse koosseisu on arvatud teise kohaliku omavalitsuse üksuse territooriumiosa; omavalitsusüksuse miinimumsuuruse kriteeriumile vastava ja ühinemises mitteosalenud kohaliku omavalitsuse üksuse koosseisu on arvatud teise kohaliku omavalitsuse üksuse territooriumiosa tingimusel, et kohaliku omavalitsuse üksus, kelle koosseisust territooriumiosa välja arvati, on ühinenud mõne kohaliku omavalitsuse üksusega. (9) Kui ühinemise tulemusena moodustunud kohaliku omavalitsuse üksuse koosseisu on arvatud territooriumiosa, võetakse käesoleva paragrahvi lõigetes 3–5 sätestatud alustel iga ühinenud kohaliku omavalitsuse üksuse ja selle koosseisu arvatud territooriumiosa kohta ühinemistoetuse arvutamisel aluseks ühinemise tulemusena moodustunud kohaliku omavalitsuse üksuse elanike arv koos ülevõetud territooriumiosa elanike arvuga. (10) Käesoleva paragrahvi lõike 8 punktis 2 nimetatud juhul on ühinemistoetuse määr elaniku kohta kahekordne. (11) Käesoleva paragrahvi lõikes 8 sätestatud tingimustel territooriumiosa teise kohaliku omavalitsuse üksuse koosseisu arvamisel ei vähendata ühinemistoetuse arvutamisel ühinenud kohaliku omavalitsuse üksuse elanike arvu üle antud territooriumiosa elanike arvu võrra. (12) Ühinemistoetuse arvutamisel võetakse aluseks elanike arv rahvastikuregistri andmete kohaselt 2017. aasta 1. jaanuari seisuga. Ühinemistoetus arvutatakse kümne euro täpsusega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_HALDUS_2_4"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_HALDUS_2_4"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:HALDUS_2_Par_21_Lg_1"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_21_Lg_2"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_21_Lg_3"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_21_Lg_4"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_21_Lg_5"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_21_Lg_6"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_21_Lg_7"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_21_Lg_8"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_21_Lg_9"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_21_Lg_10"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_21_Lg_11"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_21_Lg_12"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen",
         "public_body"
@@ -667,46 +2193,332 @@
       ]
     },
     {
+      "@id": "estleg:HALDUS_2_Par_21_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ühinenud kohaliku omavalitsuse üksusele arvutatakse ühinemistoetust minimaalses suuruses, kui elaniku kohta arvutatud ühinemistoetuse määra ja kohaliku omavalitsuse üksuse elanike arvu alusel arvutatud toetuse suurus on väiksem kui ühinemistoetuse minimaalne suurus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_21"
+      },
+      "rdfs:label": "§ 21 lg 1"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_21_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Ühinenud kohaliku omavalitsuse üksusele arvutatakse ühinemistoetust maksimaalses suuruses, kui elaniku kohta arvutatud ühinemistoetuse määra ja kohaliku omavalitsuse üksuse elanike arvu alusel arvutatud toetuse suurus on suurem kui ühinemistoetuse maksimaalne suurus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_21"
+      },
+      "rdfs:label": "§ 21 lg 2"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_21_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kui ühinemise tulemusena moodustunud kohaliku omavalitsuse üksuse elanike arv on väiksem kui 3000, arvutatakse iga ühinenud kohaliku omavalitsuse üksuse kohta ühinemistoetust vastavalt toetuse minimaalsele suurusele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_21"
+      },
+      "rdfs:label": "§ 21 lg 3"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_21_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Kui ühinemise tulemusena moodustunud kohaliku omavalitsuse üksuse elanike arv on võrdne 5000-ga või sellest suurem, arvutatakse iga ühinenud kohaliku omavalitsuse üksuse kohta ühinemistoetust elaniku kohta kahekordses määras või ühinemistoetuse kahekordses minimaalses või maksimaalses suuruses.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_21"
+      },
+      "rdfs:label": "§ 21 lg 4"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_21_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Kui ühinemise tulemusena moodustunud kohaliku omavalitsuse üksuse elanike arv on võrdne 3000-ga või sellest suurem, kuid väiksem kui 5000, arvutatakse iga ühinenud kohaliku omavalitsuse üksuse kohta ühinemistoetust sõltuvalt ühinemise tulemusena moodustunud kohaliku omavalitsuse üksuse elanike arvust vastavalt käesoleva paragrahvi lõikele 6.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_21"
+      },
+      "rdfs:label": "§ 21 lg 5"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_21_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Lineaarselt kasvava ühinemistoetuse arvutamise aluseks on toetuse määr elaniku kohta, mida suurendatakse alates ühinemise tulemusena moodustunud kohaliku omavalitsuse üksuse 3000. elanikust iga järgneva elaniku kohta 2,5 sendi võrra, kuid mitte suuremaks kui toetuse kahekordne määr elaniku kohta. Ühinenud kohaliku omavalitsuse üksuse kohta arvutatud ühinemistoetuse minimaalne suurus suureneb lineaarselt samas proportsioonis elaniku kohta arvutatud ühinemistoetuse määra kasvuga, kuid mitte suuremaks kui toetuse kahekordne minimaalne suurus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_21"
+      },
+      "rdfs:label": "§ 21 lg 6"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_21_Lg_7",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "7",
+      "estleg:legalText": "(7) Kui ühinemise tulemusena moodustunud kohaliku omavalitsuse üksuse elanike arv on võrdne 11 000-ga või sellest suurem või kui moodustub maakonnasuurune kohaliku omavalitsuse üksus, mille elanike arv võib olla ka väiksem kui 11 000, arvestatakse ühinemise tulemusena moodustunud kohaliku omavalitsuse üksusele 500 000 eurot täiendavat toetust.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_21"
+      },
+      "rdfs:label": "§ 21 lg 7"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_21_Lg_8",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "8",
+      "estleg:legalText": "(8) Territooriumiosa arvamisel ühe kohaliku omavalitsuse üksuse koosseisust teise kohaliku omavalitsuse üksuse koosseisu arvutatakse selle elaniku kohta ühinemistoetust, kui: ühinemise tulemusena moodustunud kohaliku omavalitsuse üksuse koosseisu on arvatud teise kohaliku omavalitsuse üksuse territooriumiosa; omavalitsusüksuse miinimumsuuruse kriteeriumile vastava ja ühinemises mitteosalenud kohaliku omavalitsuse üksuse koosseisu on arvatud teise kohaliku omavalitsuse üksuse territooriumiosa tingimusel, et kohaliku omavalitsuse üksus, kelle koosseisust territooriumiosa välja arvati, on ühinenud mõne kohaliku omavalitsuse üksusega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_21"
+      },
+      "rdfs:label": "§ 21 lg 8"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_21_Lg_9",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "9",
+      "estleg:legalText": "(9) Kui ühinemise tulemusena moodustunud kohaliku omavalitsuse üksuse koosseisu on arvatud territooriumiosa, võetakse käesoleva paragrahvi lõigetes 3–5 sätestatud alustel iga ühinenud kohaliku omavalitsuse üksuse ja selle koosseisu arvatud territooriumiosa kohta ühinemistoetuse arvutamisel aluseks ühinemise tulemusena moodustunud kohaliku omavalitsuse üksuse elanike arv koos ülevõetud territooriumiosa elanike arvuga.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_21"
+      },
+      "rdfs:label": "§ 21 lg 9"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_21_Lg_10",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "10",
+      "estleg:legalText": "(10) Käesoleva paragrahvi lõike 8 punktis 2 nimetatud juhul on ühinemistoetuse määr elaniku kohta kahekordne.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_21"
+      },
+      "rdfs:label": "§ 21 lg 10"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_21_Lg_11",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "11",
+      "estleg:legalText": "(11) Käesoleva paragrahvi lõikes 8 sätestatud tingimustel territooriumiosa teise kohaliku omavalitsuse üksuse koosseisu arvamisel ei vähendata ühinemistoetuse arvutamisel ühinenud kohaliku omavalitsuse üksuse elanike arvu üle antud territooriumiosa elanike arvu võrra.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_21"
+      },
+      "rdfs:label": "§ 21 lg 11"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_21_Lg_12",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "12",
+      "estleg:legalText": "(12) Ühinemistoetuse arvutamisel võetakse aluseks elanike arv rahvastikuregistri andmete kohaselt 2017. aasta 1. jaanuari seisuga. Ühinemistoetus arvutatakse kümne euro täpsusega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_21"
+      },
+      "rdfs:label": "§ 21 lg 12"
+    },
+    {
       "@id": "estleg:HALDUS_2_Par_22",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_HALDUS_2"
+        "estleg:LegalProvision_haldusreformi_seadus"
       ],
       "estleg:paragrahv": "§ 22.",
       "rdfs:label": "§ 22. Ühinemistoetuse maksmise kord",
       "estleg:sourceAct": "Haldusreformi seadus",
       "estleg:summary": "1 (1) Iga ühinenud kohaliku omavalitsuse üksuse ja selle koosseisu arvatud territooriumiosa kohta käesoleva seaduse § 21 lõigetes 1‒6 ja 9 sätestatud alustel arvutatud ühinemistoetus summeeritakse ja makstakse ühinemise käigus moodustunud kohaliku omavalitsuse üksusele. Iga ühinenud kohaliku omavalitsuse üksuse ja selle koosseisu arvatud territooriumiosa kohta käesoleva seaduse § 21 lõigetes 1‒6 ja 9 sätestatud alustel arvutatud ühinemistoetus summeeritakse ja makstakse ühinemise käigus moodustu",
+      "estleg:legalText": "(1) Iga ühinenud kohaliku omavalitsuse üksuse ja selle koosseisu arvatud territooriumiosa kohta käesoleva seaduse § 21 lõigetes 1‒6 ja 9 sätestatud alustel arvutatud ühinemistoetus summeeritakse ja makstakse ühinemise käigus moodustunud kohaliku omavalitsuse üksusele. (2) Käesoleva paragrahvi lõike 1 alusel välja makstavast ühinemistoetusest vähemalt üks neljandik kantakse ühinemise käigus moodustunud kohaliku omavalitsuse üksusele üle hiljemalt 2017. aasta lõpuks, pool toetusest 2018. aasta esimesel poolaastal ning ülejäänud summa hiljemalt 2019. aasta esimeses kvartalis. (3) Käesoleva seaduse § 21 lõikes 7 nimetatud täiendav toetus kantakse ühinemise käigus moodustunud kohaliku omavalitsuse üksusele üle hiljemalt 2019. aasta esimeses kvartalis. (4) Käesoleva seaduse § 21 lõike 8 punktis 2 nimetatud juhul kantakse kohaliku omavalitsuse üksusele, kelle koosseisu arvati territooriumiosa, ühinemistoetus üle hiljemalt 2017. aasta lõpuks. (5) Käesoleva paragrahvi lõigete 1–4 alusel välja makstava ühinemistoetuse vahendid nähakse ette riigieelarves. Ühinemise tulemusena moodustunud kohaliku omavalitsuse üksuse ühinemistoetuse suuruse kinnitab Vabariigi Valitsus korraldusega. (6) Valla- või linnavalitsus esitab ühe kuu jooksul pärast ühinemise käigus moodustunud kohaliku omavalitsuse üksuse volikogu valimiste tulemuste väljakuulutamist Rahandusministeeriumile ühinemistoetuse eraldamise taotluse, milles selgitab ühinemistoetuse kasutamise vastavust kohaliku omavalitsuse üksuste ühinemise soodustamise seaduse § 6 lõikele 2. (7) Valla- või linnavalitsus ei pea 2018. aasta ja 2019. aasta ühinemistoetuse väljamakse saamiseks täiendavat käesoleva paragrahvi lõike 6 kohast taotlust esitama.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_HALDUS_2_4"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_HALDUS_2_4"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:HALDUS_2_Par_22_Lg_1"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_22_Lg_2"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_22_Lg_3"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_22_Lg_4"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_22_Lg_5"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_22_Lg_6"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_22_Lg_7"
+        }
+      ],
+      "estleg:targetGroup": [
+        "public_body"
+      ],
       "estleg:references": [
         {
           "@id": "estleg:HALDUS_2_Par_21"
         }
       ],
-      "estleg:targetGroup": [
-        "public_body"
-      ],
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_kohalik_omavalitsus"
         }
       ],
       "estleg:competenceType": "general"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_22_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Iga ühinenud kohaliku omavalitsuse üksuse ja selle koosseisu arvatud territooriumiosa kohta käesoleva seaduse § 21 lõigetes 1‒6 ja 9 sätestatud alustel arvutatud ühinemistoetus summeeritakse ja makstakse ühinemise käigus moodustunud kohaliku omavalitsuse üksusele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_22"
+      },
+      "rdfs:label": "§ 22 lg 1"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_22_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Käesoleva paragrahvi lõike 1 alusel välja makstavast ühinemistoetusest vähemalt üks neljandik kantakse ühinemise käigus moodustunud kohaliku omavalitsuse üksusele üle hiljemalt 2017. aasta lõpuks, pool toetusest 2018. aasta esimesel poolaastal ning ülejäänud summa hiljemalt 2019. aasta esimeses kvartalis.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_22"
+      },
+      "rdfs:label": "§ 22 lg 2"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_22_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Käesoleva seaduse § 21 lõikes 7 nimetatud täiendav toetus kantakse ühinemise käigus moodustunud kohaliku omavalitsuse üksusele üle hiljemalt 2019. aasta esimeses kvartalis.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_22"
+      },
+      "rdfs:label": "§ 22 lg 3"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_22_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Käesoleva seaduse § 21 lõike 8 punktis 2 nimetatud juhul kantakse kohaliku omavalitsuse üksusele, kelle koosseisu arvati territooriumiosa, ühinemistoetus üle hiljemalt 2017. aasta lõpuks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_22"
+      },
+      "rdfs:label": "§ 22 lg 4"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_22_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Käesoleva paragrahvi lõigete 1–4 alusel välja makstava ühinemistoetuse vahendid nähakse ette riigieelarves. Ühinemise tulemusena moodustunud kohaliku omavalitsuse üksuse ühinemistoetuse suuruse kinnitab Vabariigi Valitsus korraldusega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_22"
+      },
+      "rdfs:label": "§ 22 lg 5"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_22_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Valla- või linnavalitsus esitab ühe kuu jooksul pärast ühinemise käigus moodustunud kohaliku omavalitsuse üksuse volikogu valimiste tulemuste väljakuulutamist Rahandusministeeriumile ühinemistoetuse eraldamise taotluse, milles selgitab ühinemistoetuse kasutamise vastavust kohaliku omavalitsuse üksuste ühinemise soodustamise seaduse § 6 lõikele 2.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_22"
+      },
+      "rdfs:label": "§ 22 lg 6"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_22_Lg_7",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "7",
+      "estleg:legalText": "(7) Valla- või linnavalitsus ei pea 2018. aasta ja 2019. aasta ühinemistoetuse väljamakse saamiseks täiendavat käesoleva paragrahvi lõike 6 kohast taotlust esitama.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_22"
+      },
+      "rdfs:label": "§ 22 lg 7"
     },
     {
       "@id": "estleg:HALDUS_2_Par_23",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_HALDUS_2"
+        "estleg:LegalProvision_haldusreformi_seadus"
       ],
       "estleg:paragrahv": "§ 23.",
       "rdfs:label": "§ 23. Ühinemistoetuse kasutamine",
       "estleg:sourceAct": "Haldusreformi seadus",
       "estleg:summary": "1 (1) Volikogu algatatud kohaliku omavalitsuse üksuste haldusterritoriaalse korralduse muutmise tulemusena moodustunud kohaliku omavalitsuse üksusele riigieelarvest eraldatavat ühinemistoetust saab kasutada kohaliku omavalitsuse üksuste ühinemise soodustamise seaduse § 6 lõikes 2 nimetatud toimingute kulude katteks. Volikogu algatatud kohaliku omavalitsuse üksuste haldusterritoriaalse korralduse muutmise tulemusena moodustunud kohaliku omavalitsuse üksusele riigieelarvest eraldatavat ühinemistoe",
+      "estleg:legalText": "(1) Volikogu algatatud kohaliku omavalitsuse üksuste haldusterritoriaalse korralduse muutmise tulemusena moodustunud kohaliku omavalitsuse üksusele riigieelarvest eraldatavat ühinemistoetust saab kasutada kohaliku omavalitsuse üksuste ühinemise soodustamise seaduse § 6 lõikes 2 nimetatud toimingute kulude katteks. (2) Käesoleva seaduse § 19 lõikes 1 nimetatud ühekordset hüvitist makstakse asjaomase kohaliku omavalitsuse üksuse volikogu esimehele, vallavanemale ja linnapeale nende volituste lõppemisel kohaliku omavalitsuse üksusele eraldatud ühinemistoetusest.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_HALDUS_2_4"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_HALDUS_2_4"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:HALDUS_2_Par_23_Lg_1"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_23_Lg_2"
+        }
+      ],
       "estleg:targetGroup": [
         "public_body"
       ],
@@ -718,18 +2530,62 @@
       "estleg:competenceType": "general"
     },
     {
+      "@id": "estleg:HALDUS_2_Par_23_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Volikogu algatatud kohaliku omavalitsuse üksuste haldusterritoriaalse korralduse muutmise tulemusena moodustunud kohaliku omavalitsuse üksusele riigieelarvest eraldatavat ühinemistoetust saab kasutada kohaliku omavalitsuse üksuste ühinemise soodustamise seaduse § 6 lõikes 2 nimetatud toimingute kulude katteks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_23"
+      },
+      "rdfs:label": "§ 23 lg 1"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_23_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Käesoleva seaduse § 19 lõikes 1 nimetatud ühekordset hüvitist makstakse asjaomase kohaliku omavalitsuse üksuse volikogu esimehele, vallavanemale ja linnapeale nende volituste lõppemisel kohaliku omavalitsuse üksusele eraldatud ühinemistoetusest.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_23"
+      },
+      "rdfs:label": "§ 23 lg 2"
+    },
+    {
       "@id": "estleg:HALDUS_2_Par_24",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_HALDUS_2"
+        "estleg:LegalProvision_haldusreformi_seadus"
       ],
       "estleg:paragrahv": "§ 24.",
       "rdfs:label": "§ 24. Vabariigi Valitsuse algatatud valdade ja linnade haldusterritoriaalse korralduse muutmisega seonduvate kulude katmine",
       "estleg:sourceAct": "Haldusreformi seadus",
       "estleg:summary": "1 (1) Vabariigi Valitsuse algatatud kohaliku omavalitsuse üksuste haldusterritoriaalse korralduse muutmise tulemusena moodustunud kohaliku omavalitsuse üksusele ühinemistoetusi ei maksta, välja arvatud nende kohaliku omavalitsuse üksuste eest, kelle haldusterritoriaalse korralduse muutmiseks on Vabariigi Valitsus kehtestanud käesoleva seaduse §-s 8 nimetatud määruse või kes on käesoleva seaduse § 7 lõikes 3 nimetatud tingimustel ühinemist taotlenud ja kelle haldusterritoriaalse korralduse muutmi",
+      "estleg:legalText": "(1) Vabariigi Valitsuse algatatud kohaliku omavalitsuse üksuste haldusterritoriaalse korralduse muutmise tulemusena moodustunud kohaliku omavalitsuse üksusele ühinemistoetusi ei maksta, välja arvatud nende kohaliku omavalitsuse üksuste eest, kelle haldusterritoriaalse korralduse muutmiseks on Vabariigi Valitsus kehtestanud käesoleva seaduse §-s 8 nimetatud määruse või kes on käesoleva seaduse § 7 lõikes 3 nimetatud tingimustel ühinemist taotlenud ja kelle haldusterritoriaalse korralduse muutmiseks on Vabariigi Valitsus kehtestanud käesoleva seaduse § 13 lõikes 1 nimetatud määruse. Vabariigi Valitsuse algatatud haldusterritoriaalse korralduse muutmise tulemusena moodustunud kohaliku omavalitsuse üksusele hüvitatakse riigieelarvest kohaliku omavalitsuse üksuste ühinemise soodustamise seaduse § 6 lõike 2 punktides 1–41 või käesoleva seaduse § 12 lõike 2 punktis 4 nimetatud tegelikud tehtud kulud kuludokumentide alusel. - Riigikohtu põhiseaduslikkuse järelevalve kolleegiumi 20.12.2016 otsuse nr 3-4-1-3-16 punkt 2 tunnistab haldusreformi seaduse § 24 lõike 1 teise lause osa „kuid mitte rohkem kui 100 000 euro ulatuses“ põhiseaduse vastaseks ja kehtetuks (2) võib kehtestada käesoleva paragrahvi lõikes 1 nimetatud kulude hüvitamise täpsemad tingimused ja korra. Ühinemise tulemusena moodustunud kohaliku omavalitsuse üksuse ühinemiskulude hüvitise suuruse kinnitab Vabariigi Valitsus korraldusega. (3) Käesoleva seaduse § 12 lõigetes 3 ja 9 sätestatu täitmisest tulenevad maavanema kulud kaetakse riigieelarve seaduse § 58 lõike 3 alusel kehtestatud korras.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_HALDUS_2_4"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_HALDUS_2_4"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:HALDUS_2_Par_24_Lg_1"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_24_Lg_2"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_24_Lg_3"
+        }
+      ],
+      "estleg:targetGroup": [
+        "public_body"
+      ],
       "estleg:references": [
         {
           "@id": "estleg:HALDUS_2_Par_8"
@@ -737,19 +2593,6 @@
         {
           "@id": "estleg:HALDUS_2_Par_7"
         }
-      ],
-      "estleg:semanticallySimilarTo": [
-        {
-          "@id": "estleg:Reg_1038136_Par_1",
-          "estleg:similarityScore": {
-            "@value": "0.342",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        }
-      ],
-      "estleg:targetGroup": [
-        "public_body"
       ],
       "estleg:competentAuthority": [
         {
@@ -759,21 +2602,79 @@
           "@id": "estleg:Institution_kohalik_omavalitsus"
         }
       ],
-      "estleg:competenceType": "general"
+      "estleg:competenceType": "general",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Reg_1038136_Par_1",
+          "estleg:similarityScore": {
+            "@value": "0.342",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_24_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Vabariigi Valitsuse algatatud kohaliku omavalitsuse üksuste haldusterritoriaalse korralduse muutmise tulemusena moodustunud kohaliku omavalitsuse üksusele ühinemistoetusi ei maksta, välja arvatud nende kohaliku omavalitsuse üksuste eest, kelle haldusterritoriaalse korralduse muutmiseks on Vabariigi Valitsus kehtestanud käesoleva seaduse §-s 8 nimetatud määruse või kes on käesoleva seaduse § 7 lõikes 3 nimetatud tingimustel ühinemist taotlenud ja kelle haldusterritoriaalse korralduse muutmiseks on Vabariigi Valitsus kehtestanud käesoleva seaduse § 13 lõikes 1 nimetatud määruse. Vabariigi Valitsuse algatatud haldusterritoriaalse korralduse muutmise tulemusena moodustunud kohaliku omavalitsuse üksusele hüvitatakse riigieelarvest kohaliku omavalitsuse üksuste ühinemise soodustamise seaduse § 6 lõike 2 punktides 1–41 või käesoleva seaduse § 12 lõike 2 punktis 4 nimetatud tegelikud tehtud kulud kuludokumentide alusel. - Riigikohtu põhiseaduslikkuse järelevalve kolleegiumi 20.12.2016 otsuse nr 3-4-1-3-16 punkt 2 tunnistab haldusreformi seaduse § 24 lõike 1 teise lause osa „kuid mitte rohkem kui 100 000 euro ulatuses“ põhiseaduse vastaseks ja kehtetuks",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_24"
+      },
+      "rdfs:label": "§ 24 lg 1"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_24_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) võib kehtestada käesoleva paragrahvi lõikes 1 nimetatud kulude hüvitamise täpsemad tingimused ja korra. Ühinemise tulemusena moodustunud kohaliku omavalitsuse üksuse ühinemiskulude hüvitise suuruse kinnitab Vabariigi Valitsus korraldusega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_24"
+      },
+      "rdfs:label": "§ 24 lg 2"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_24_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Käesoleva seaduse § 12 lõigetes 3 ja 9 sätestatu täitmisest tulenevad maavanema kulud kaetakse riigieelarve seaduse § 58 lõike 3 alusel kehtestatud korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_24"
+      },
+      "rdfs:label": "§ 24 lg 3"
     },
     {
       "@id": "estleg:HALDUS_2_Par_25",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_HALDUS_2"
+        "estleg:LegalProvision_haldusreformi_seadus"
       ],
       "estleg:paragrahv": "§ 25.",
       "rdfs:label": "§ 25. Kohaliku omavalitsuse üksuse võlakohustuste võtmine enne haldusterritoriaalse korralduse muudatuse jõustumist",
       "estleg:sourceAct": "Haldusreformi seadus",
       "estleg:summary": "Enne haldusterritoriaalse korralduse muudatuse jõustumist peavad asjaomased volikogud võlakohustuste võtmisel kuni valimistulemuste väljakuulutamise päevani konsensuslikult heaks kiitma kohaliku omavalitsuse üksuse finantsjuhtimise seaduse § 34 lõike 2 punktides 1‒3, 52 ja 7 ning lõikes 7 nimetatud võlakohustuse ja muude tulevastel eelarveaastatel raha väljamaksmist nõudvate pikaajaliste kohustuste võtmise: 1 1) Eesti territooriumi haldusjaotuse seaduse § 91 kohase ühinemislepingu või käesoleva ",
+      "estleg:legalText": "Enne haldusterritoriaalse korralduse muudatuse jõustumist peavad asjaomased volikogud võlakohustuste võtmisel kuni valimistulemuste väljakuulutamise päevani konsensuslikult heaks kiitma kohaliku omavalitsuse üksuse finantsjuhtimise seaduse § 34 lõike 2 punktides 1‒3, 52 ja 7 ning lõikes 7 nimetatud võlakohustuse ja muude tulevastel eelarveaastatel raha väljamaksmist nõudvate pikaajaliste kohustuste võtmise: Eesti territooriumi haldusjaotuse seaduse § 91 kohase ühinemislepingu või käesoleva seaduse § 12 lõike 2 punktis 3 nimetatud ühinemiskokkuleppe kõigi volikogude poolt kinnitamise päevast alates; Vabariigi Valitsuse algatatud haldusterritoriaalse korralduse muutmise ettepanekuga mittenõustumise korral käesoleva seaduse § 13 lõikes 1 nimetatud määruse vastuvõtmise päevast alates.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_HALDUS_2_4"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_HALDUS_2_4"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:HALDUS_2_Par_25_Lg_Unknown_1"
+        }
+      ],
       "estleg:targetGroup": [
         "public_body"
       ],
@@ -785,18 +2686,45 @@
       "estleg:competenceType": "general"
     },
     {
+      "@id": "estleg:HALDUS_2_Par_25_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Enne haldusterritoriaalse korralduse muudatuse jõustumist peavad asjaomased volikogud võlakohustuste võtmisel kuni valimistulemuste väljakuulutamise päevani konsensuslikult heaks kiitma kohaliku omavalitsuse üksuse finantsjuhtimise seaduse § 34 lõike 2 punktides 1‒3, 52 ja 7 ning lõikes 7 nimetatud võlakohustuse ja muude tulevastel eelarveaastatel raha väljamaksmist nõudvate pikaajaliste kohustuste võtmise: Eesti territooriumi haldusjaotuse seaduse § 91 kohase ühinemislepingu või käesoleva seaduse § 12 lõike 2 punktis 3 nimetatud ühinemiskokkuleppe kõigi volikogude poolt kinnitamise päevast alates; Vabariigi Valitsuse algatatud haldusterritoriaalse korralduse muutmise ettepanekuga mittenõustumise korral käesoleva seaduse § 13 lõikes 1 nimetatud määruse vastuvõtmise päevast alates.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_25"
+      }
+    },
+    {
       "@id": "estleg:HALDUS_2_Par_26",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_HALDUS_2"
+        "estleg:LegalProvision_haldusreformi_seadus"
       ],
       "estleg:paragrahv": "§ 26.",
       "rdfs:label": "§ 26. Enne ühinemist tekkinud maksukohustuste laekumine",
       "estleg:sourceAct": "Haldusreformi seadus",
       "estleg:summary": "1 (1) Kui residendist füüsilise isiku elukoht oli enne kohaliku omavalitsuse üksuste ühinemist territooriumiosal, mis arvati teise kohaliku omavalitsuse üksuse koosseisu, laekub tema enne ühinemist tekkinud maksukohustuselt tasumisele kuuluv tulumaks selle kohaliku omavalitsuse üksuse eelarvesse, kelle koosseisust territooriumiosa välja arvati. Kui residendist füüsilise isiku elukoht oli enne kohaliku omavalitsuse üksuste ühinemist territooriumiosal, mis arvati teise kohaliku omavalitsuse üksuse",
+      "estleg:legalText": "(1) Kui residendist füüsilise isiku elukoht oli enne kohaliku omavalitsuse üksuste ühinemist territooriumiosal, mis arvati teise kohaliku omavalitsuse üksuse koosseisu, laekub tema enne ühinemist tekkinud maksukohustuselt tasumisele kuuluv tulumaks selle kohaliku omavalitsuse üksuse eelarvesse, kelle koosseisust territooriumiosa välja arvati. (2) Territooriumiosal, mis arvati kohaliku omavalitsuse üksuste ühinemisel teise kohaliku omavalitsuse üksuse koosseisu, asuvalt maalt enne ühinemist tasumisele kuuluv maamaks laekub selle kohaliku omavalitsuse üksuse eelarvesse, kelle koosseisust territooriumiosa välja arvati. (3) Territooriumiosal, mis arvati kohaliku omavalitsuse üksuste ühinemisel teise kohaliku omavalitsuse üksuse koosseisu, enne ühinemist toimunud keskkonnakasutuse eest tasumisele kuuluv keskkonnatasu laekub selle kohaliku omavalitsuse üksuse eelarvesse, kelle koosseisust territooriumiosa välja arvati.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_HALDUS_2_4"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_HALDUS_2_4"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:HALDUS_2_Par_26_Lg_1"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_26_Lg_2"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_26_Lg_3"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen",
         "public_body"
@@ -809,25 +2737,76 @@
       "estleg:competenceType": "general"
     },
     {
+      "@id": "estleg:HALDUS_2_Par_26_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kui residendist füüsilise isiku elukoht oli enne kohaliku omavalitsuse üksuste ühinemist territooriumiosal, mis arvati teise kohaliku omavalitsuse üksuse koosseisu, laekub tema enne ühinemist tekkinud maksukohustuselt tasumisele kuuluv tulumaks selle kohaliku omavalitsuse üksuse eelarvesse, kelle koosseisust territooriumiosa välja arvati.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_26"
+      },
+      "rdfs:label": "§ 26 lg 1"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_26_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Territooriumiosal, mis arvati kohaliku omavalitsuse üksuste ühinemisel teise kohaliku omavalitsuse üksuse koosseisu, asuvalt maalt enne ühinemist tasumisele kuuluv maamaks laekub selle kohaliku omavalitsuse üksuse eelarvesse, kelle koosseisust territooriumiosa välja arvati.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_26"
+      },
+      "rdfs:label": "§ 26 lg 2"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_26_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Territooriumiosal, mis arvati kohaliku omavalitsuse üksuste ühinemisel teise kohaliku omavalitsuse üksuse koosseisu, enne ühinemist toimunud keskkonnakasutuse eest tasumisele kuuluv keskkonnatasu laekub selle kohaliku omavalitsuse üksuse eelarvesse, kelle koosseisust territooriumiosa välja arvati.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_26"
+      },
+      "rdfs:label": "§ 26 lg 3"
+    },
+    {
       "@id": "estleg:HALDUS_2_Par_27",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_HALDUS_2"
+        "estleg:LegalProvision_haldusreformi_seadus"
       ],
       "estleg:paragrahv": "§ 27.",
       "rdfs:label": "§ 27. Seaduse rakendamine",
       "estleg:sourceAct": "Haldusreformi seadus",
       "estleg:summary": "1 (1) Käesoleva seaduse §-des 1‒26 sätestatut kohaldatakse aastatel 2016‒2018 haldusreformi rakendamise käigus valdade ja linnade haldusterritoriaalse korralduse muudatuste ettevalmistamisel ja elluviimisel. Käesoleva seaduse §-des 1‒26 sätestatut kohaldatakse aastatel 2016‒2018 haldusreformi rakendamise käigus valdade ja linnade haldusterritoriaalse korralduse muudatuste ettevalmistamisel ja elluviimisel. 2 (2) Kohaliku omavalitsuse üksustele, kes on maavanemale esitanud Eesti territooriumi hal",
+      "estleg:legalText": "(1) Käesoleva seaduse §-des 1‒26 sätestatut kohaldatakse aastatel 2016‒2018 haldusreformi rakendamise käigus valdade ja linnade haldusterritoriaalse korralduse muudatuste ettevalmistamisel ja elluviimisel. (2) Kohaliku omavalitsuse üksustele, kes on maavanemale esitanud Eesti territooriumi haldusjaotuse seaduse § 9 lõike 9 kohase taotluse enne 2016. aasta 1. augustit, ei kohaldata käesoleva seaduse §-des 4‒6 ning § 7 lõikes 4 sätestatut.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_HALDUS_2_5"
       },
-      "estleg:references": [
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_HALDUS_2_5"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:HALDUS_2_Par_1"
+          "@id": "estleg:HALDUS_2_Par_27_Lg_1"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_27_Lg_2"
         }
       ],
       "estleg:targetGroup": [
         "public_body"
+      ],
+      "estleg:references": [
+        {
+          "@id": "estleg:HALDUS_2_Par_1"
+        }
       ],
       "estleg:competentAuthority": [
         {
@@ -837,17 +2816,47 @@
       "estleg:competenceType": "general"
     },
     {
+      "@id": "estleg:HALDUS_2_Par_27_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesoleva seaduse §-des 1‒26 sätestatut kohaldatakse aastatel 2016‒2018 haldusreformi rakendamise käigus valdade ja linnade haldusterritoriaalse korralduse muudatuste ettevalmistamisel ja elluviimisel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_27"
+      },
+      "rdfs:label": "§ 27 lg 1"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_27_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kohaliku omavalitsuse üksustele, kes on maavanemale esitanud Eesti territooriumi haldusjaotuse seaduse § 9 lõike 9 kohase taotluse enne 2016. aasta 1. augustit, ei kohaldata käesoleva seaduse §-des 4‒6 ning § 7 lõikes 4 sätestatut.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_27"
+      },
+      "rdfs:label": "§ 27 lg 2"
+    },
+    {
       "@id": "estleg:HALDUS_2_Par_28",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_HALDUS_2"
+        "estleg:LegalProvision_haldusreformi_seadus"
       ],
       "estleg:paragrahv": "§ 28.",
       "rdfs:label": "§ 28. Haldusreformi seaduse muutmine",
       "estleg:sourceAct": "Haldusreformi seadus",
       "estleg:summary": "Haldusreformi seaduses tehakse järgmised muudatused:",
+      "estleg:legalText": "Haldusreformi seaduses tehakse järgmised muudatused:",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_HALDUS_2_5"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_HALDUS_2_5"
       },
       "estleg:semanticallySimilarTo": [
         {
@@ -859,7 +2868,7 @@
           "estleg:similarityStatus": "candidate"
         },
         {
-          "@id": "estleg:KAITSE_4_Par_43",
+          "@id": "estleg:OHVRIA_Par_65",
           "estleg:similarityScore": {
             "@value": "0.6",
             "@type": "xsd:decimal"
@@ -867,7 +2876,7 @@
           "estleg:similarityStatus": "candidate"
         },
         {
-          "@id": "estleg:KAITSE_4_Par_46",
+          "@id": "estleg:OHVRIA_Par_68",
           "estleg:similarityScore": {
             "@value": "0.6",
             "@type": "xsd:decimal"
@@ -875,7 +2884,7 @@
           "estleg:similarityStatus": "candidate"
         },
         {
-          "@id": "estleg:KAITSE_4_Par_50",
+          "@id": "estleg:PEREHU_Par_73",
           "estleg:similarityScore": {
             "@value": "0.6",
             "@type": "xsd:decimal"
@@ -883,7 +2892,7 @@
           "estleg:similarityStatus": "candidate"
         },
         {
-          "@id": "estleg:KAITSE_4_Par_53",
+          "@id": "estleg:SOTSIA_Par_176",
           "estleg:similarityScore": {
             "@value": "0.6",
             "@type": "xsd:decimal"
@@ -901,13 +2910,16 @@
       "@id": "estleg:HALDUS_2_Par_29",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_HALDUS_2"
+        "estleg:LegalProvision_haldusreformi_seadus"
       ],
       "estleg:paragrahv": "§ 29.",
       "rdfs:label": "§ 29.",
       "estleg:sourceAct": "Haldusreformi seadus",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_HALDUS_2_5"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_HALDUS_2_5"
       },
       "estleg:summary": "§ 29.",
       "estleg:referencedBy": [
@@ -920,29 +2932,42 @@
       "@id": "estleg:HALDUS_2_Par_37",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_HALDUS_2"
+        "estleg:LegalProvision_haldusreformi_seadus"
       ],
       "estleg:paragrahv": "§ 37.",
-      "rdfs:label": "§ 37.",
+      "rdfs:label": "§ 37. [[Käesolevast tekstist välja jäetud.]]",
       "estleg:sourceAct": "Haldusreformi seadus",
       "estleg:summary": "[Käesolevast tekstist välja jäetud.]",
+      "estleg:legalText": "[Käesolevast tekstist välja jäetud.]",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_HALDUS_2_5"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_HALDUS_2_5"
       }
     },
     {
       "@id": "estleg:HALDUS_2_Par_38",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_HALDUS_2"
+        "estleg:LegalProvision_haldusreformi_seadus"
       ],
       "estleg:paragrahv": "§ 38.",
       "rdfs:label": "§ 38. Valdkonnaseaduste muutmine haldusreformi rakendamiseks",
       "estleg:sourceAct": "Haldusreformi seadus",
       "estleg:summary": "Valdkonna eest vastutav minister analüüsib koostöös ministeeriumidega haldusreformi rakendamiseks ministeeriumide valitsemisalast tuleneva vastutusvaldkonna seadusi, et selgitada välja riigi täidetavad, kuid olemuselt omavalitsuslikud ülesanded, mille saaks anda täitmiseks haldusreformi tulemusena moodustuvatele kohaliku omavalitsuse üksustele. Haldusreformiga seonduvate valdkonnaseaduste muutmise ettepanekud esitatakse Vabariigi Valitsusele heakskiitmiseks pärast käesoleva seaduse jõustumist. V",
+      "estleg:legalText": "Valdkonna eest vastutav minister analüüsib koostöös ministeeriumidega haldusreformi rakendamiseks ministeeriumide valitsemisalast tuleneva vastutusvaldkonna seadusi, et selgitada välja riigi täidetavad, kuid olemuselt omavalitsuslikud ülesanded, mille saaks anda täitmiseks haldusreformi tulemusena moodustuvatele kohaliku omavalitsuse üksustele. Haldusreformiga seonduvate valdkonnaseaduste muutmise ettepanekud esitatakse Vabariigi Valitsusele heakskiitmiseks pärast käesoleva seaduse jõustumist.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_HALDUS_2_5"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_HALDUS_2_5"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:HALDUS_2_Par_38_Lg_Unknown_1"
+        }
+      ],
       "estleg:targetGroup": [
         "public_body",
         "official"
@@ -955,18 +2980,48 @@
       "estleg:competenceType": "general"
     },
     {
+      "@id": "estleg:HALDUS_2_Par_38_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Valdkonna eest vastutav minister analüüsib koostöös ministeeriumidega haldusreformi rakendamiseks ministeeriumide valitsemisalast tuleneva vastutusvaldkonna seadusi, et selgitada välja riigi täidetavad, kuid olemuselt omavalitsuslikud ülesanded, mille saaks anda täitmiseks haldusreformi tulemusena moodustuvatele kohaliku omavalitsuse üksustele. Haldusreformiga seonduvate valdkonnaseaduste muutmise ettepanekud esitatakse Vabariigi Valitsusele heakskiitmiseks pärast käesoleva seaduse jõustumist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_38"
+      }
+    },
+    {
       "@id": "estleg:HALDUS_2_Par_39",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_HALDUS_2"
+        "estleg:LegalProvision_haldusreformi_seadus"
       ],
       "estleg:paragrahv": "§ 39.",
       "rdfs:label": "§ 39. Seaduse jõustumine",
       "estleg:sourceAct": "Haldusreformi seadus",
       "estleg:summary": "1 (1) Käesoleva seaduse § 28, § 30 punkt 8 ning § 31 punktid 5 ja 15 jõustuvad 2017. aasta 1. jaanuaril. Käesoleva seaduse § 28, § 30 punkt 8 ning § 31 punktid 5 ja 15 jõustuvad 2017. aasta 1. jaanuaril. 2 (2) Käesoleva seaduse § 29 punktid 2‒4, §-d 34 ja 35 jõustuvad 2017. aastal kohaliku omavalitsuse volikogu valimiste tulemuste väljakuulutamise päeval. Käesoleva seaduse § 29 punktid 2‒4, §-d 34 ja 35 jõustuvad 2017. aastal kohaliku omavalitsuse volikogu valimiste tulemuste väljakuulutamise pä",
+      "estleg:legalText": "(1) Käesoleva seaduse § 28, § 30 punkt 8 ning § 31 punktid 5 ja 15 jõustuvad 2017. aasta 1. jaanuaril. (2) Käesoleva seaduse § 29 punktid 2‒4, §-d 34 ja 35 jõustuvad 2017. aastal kohaliku omavalitsuse volikogu valimiste tulemuste väljakuulutamise päeval. (3) Käesoleva seaduse § 29 punkt 18 ja § 33 punkt 1 jõustuvad 2018. aasta 1. jaanuaril.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_HALDUS_2_5"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_HALDUS_2_5"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:HALDUS_2_Par_39_Lg_1"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_39_Lg_2"
+        },
+        {
+          "@id": "estleg:HALDUS_2_Par_39_Lg_3"
+        }
+      ],
+      "estleg:targetGroup": [
+        "public_body"
+      ],
       "estleg:references": [
         {
           "@id": "estleg:HALDUS_2_Par_28"
@@ -975,7 +3030,21 @@
           "@id": "estleg:HALDUS_2_Par_29"
         }
       ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kohalik_omavalitsus"
+        }
+      ],
+      "estleg:competenceType": "general",
       "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:KOKS_Par_70_5",
+          "estleg:similarityScore": {
+            "@value": "0.353",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
         {
           "@id": "estleg:TAKS_Par_25",
           "estleg:similarityScore": {
@@ -984,16 +3053,46 @@
           },
           "estleg:similarityStatus": "candidate"
         }
+      ]
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_39_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:targetGroup": [
-        "public_body"
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesoleva seaduse § 28, § 30 punkt 8 ning § 31 punktid 5 ja 15 jõustuvad 2017. aasta 1. jaanuaril.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_39"
+      },
+      "rdfs:label": "§ 39 lg 1"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_39_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_kohalik_omavalitsus"
-        }
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Käesoleva seaduse § 29 punktid 2‒4, §-d 34 ja 35 jõustuvad 2017. aastal kohaliku omavalitsuse volikogu valimiste tulemuste väljakuulutamise päeval.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_39"
+      },
+      "rdfs:label": "§ 39 lg 2"
+    },
+    {
+      "@id": "estleg:HALDUS_2_Par_39_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:competenceType": "general"
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Käesoleva seaduse § 29 punkt 18 ja § 33 punkt 1 jõustuvad 2018. aasta 1. jaanuaril.",
+      "estleg:parentProvision": {
+        "@id": "estleg:HALDUS_2_Par_39"
+      },
+      "rdfs:label": "§ 39 lg 3"
     }
   ]
 }

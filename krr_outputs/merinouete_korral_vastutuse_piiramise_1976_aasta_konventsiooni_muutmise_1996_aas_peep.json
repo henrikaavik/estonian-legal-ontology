@@ -6,25 +6,31 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
   },
   "@graph": [
     {
       "@id": "estleg:MKVPKMPU1976_Map_2026",
       "@type": [
+        "owl:Ontology",
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "rdfs:label": "Merinõuete korral vastutuse piiramise 1976. aasta konventsiooni muutmise 1996. aasta protokolliga ühinemise seadus teemakaardistus",
       "dc:source": "Merinõuete korral vastutuse piiramise 1976. aasta konventsiooni muutmise 1996. aasta protokolliga ühinemise seadus",
-      "estleg:affectedBy": [
-        {
-          "@id": "estleg:Draft_RAM20_0371"
-        }
-      ],
-      "estleg:temporalStatus": "unknown",
+      "dcterms:title": "Merinõuete korral vastutuse piiramise 1976. aasta konventsiooni muutmise 1996. aasta protokolliga ühinemise seadus",
+      "estleg:contentStatus": "structuredBody",
+      "dcterms:source": {
+        "@id": "https://www.riigiteataja.ee/akt/231012011005.xml"
+      },
+      "owl:sameAs": {
+        "@id": "https://www.riigiteataja.ee/akt/231012011005.xml"
+      },
+      "estleg:kehtiv": {
+        "@value": "2026-05-24",
+        "@type": "xsd:date"
+      },
       "dcterms:subject": [
         {
           "@id": "http://eurovoc.europa.eu/0411"
@@ -32,10 +38,16 @@
         {
           "@id": "http://eurovoc.europa.eu/2431"
         }
+      ],
+      "estleg:temporalStatus": "unknown",
+      "estleg:affectedBy": [
+        {
+          "@id": "estleg:Draft_RAM20_0371"
+        }
       ]
     },
     {
-      "@id": "estleg:LegalProvision_MKVPKMPU1976",
+      "@id": "estleg:LegalProvision_merinouete_korral_vastutuse_piiramise_1976_aasta_konventsiooni_muutmise_1996_aas",
       "@type": [
         "owl:Class"
       ],
@@ -45,15 +57,45 @@
       }
     },
     {
+      "@id": "estleg:MKVPKMPU1976_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": "Merinõuete korral vastutuse piiramise 1976. aasta konventsiooni muutmise 1996. aasta protokolliga ühinemise seadus teemaskeem",
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_MKVPKMPU1976_default"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Cluster_MKVPKMPU1976_default",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": "§1–2 Lepingu sätted",
+      "skos:prefLabel": "§1–2 Lepingu sätted",
+      "skos:inScheme": {
+        "@id": "estleg:MKVPKMPU1976_TopicScheme"
+      },
+      "estleg:provisionCount": 2
+    },
+    {
       "@id": "estleg:MKVPKMPU1976_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_MKVPKMPU1976"
+        "estleg:LegalProvision_merinouete_korral_vastutuse_piiramise_1976_aasta_konventsiooni_muutmise_1996_aas"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1.",
+      "rdfs:label": "§ 1. [Ühineda juurdelisatud , mis on vastu võetud 1996. aasta 2. mail Londonis.]",
       "estleg:sourceAct": "Merinõuete korral vastutuse piiramise 1976. aasta konventsiooni muutmise 1996. aasta protokolliga ühinemise seadus",
       "estleg:summary": "Ühineda juurdelisatud , mis on vastu võetud 1996. aasta 2. mail Londonis.",
+      "estleg:legalText": "Ühineda juurdelisatud , mis on vastu võetud 1996. aasta 2. mail Londonis.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_MKVPKMPU1976_default"
+      },
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:NRLEKR2007_Par_1",
@@ -72,25 +114,25 @@
           "estleg:similarityStatus": "candidate"
         },
         {
-          "@id": "estleg:RTIMKR_Par_1",
-          "estleg:similarityScore": {
-            "@value": "0.308",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:RTIMKR_Par_2",
-          "estleg:similarityScore": {
-            "@value": "0.308",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
           "@id": "estleg:UROKKU_Par_1",
           "estleg:similarityScore": {
             "@value": "0.333",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:naiste_diskrimineerimise_koigi_vormide_l_Par_1",
+          "estleg:similarityScore": {
+            "@value": "0.5",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:puuetega_inimeste_oiguste_konventsiooni__Par_3",
+          "estleg:similarityScore": {
+            "@value": "0.455",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
@@ -101,12 +143,16 @@
       "@id": "estleg:MKVPKMPU1976_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_MKVPKMPU1976"
+        "estleg:LegalProvision_merinouete_korral_vastutuse_piiramise_1976_aasta_konventsiooni_muutmise_1996_aas"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2.",
+      "rdfs:label": "§ 2. [Ühinemisel teha järgmine reservatsioon: ”Eesti Vabariik jätab endale konventsioo...]",
       "estleg:sourceAct": "Merinõuete korral vastutuse piiramise 1976. aasta konventsiooni muutmise 1996. aasta protokolliga ühinemise seadus",
-      "estleg:summary": "Ühinemisel teha järgmine reservatsioon: ”Eesti Vabariik jätab endale konventsiooni artikli 18 lõike 1 punkti b alusel õiguse mitte kohaldada konventsiooni kahjunõuete suhtes, mis on määratud ohtlike ja kahjulike ainete mereveol vastutuse ja kahju hüvitamise 1996. aasta rahvusvahelises konventsioonis või selle muudatustes või protokollides.”"
+      "estleg:summary": "Ühinemisel teha järgmine reservatsioon: ”Eesti Vabariik jätab endale konventsiooni artikli 18 lõike 1 punkti b alusel õiguse mitte kohaldada konventsiooni kahjunõuete suhtes, mis on määratud ohtlike ja kahjulike ainete mereveol vastutuse ja kahju hüvitamise 1996. aasta rahvusvahelises konventsioonis või selle muudatustes või protokollides.”",
+      "estleg:legalText": "Ühinemisel teha järgmine reservatsioon: ”Eesti Vabariik jätab endale konventsiooni artikli 18 lõike 1 punkti b alusel õiguse mitte kohaldada konventsiooni kahjunõuete suhtes, mis on määratud ohtlike ja kahjulike ainete mereveol vastutuse ja kahju hüvitamise 1996. aasta rahvusvahelises konventsioonis või selle muudatustes või protokollides.”",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_MKVPKMPU1976_default"
+      }
     }
   ]
 }

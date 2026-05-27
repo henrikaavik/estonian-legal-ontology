@@ -167,6 +167,35 @@ def load_law_files(*, failures: list[str] | None = None) -> dict[str, dict]:
     return laws
 
 
+def _amendment_chain_path(base_slug: str) -> Path:
+    return AMENDMENTS_DIR / f"amendments_{base_slug}.json"
+
+
+def _remove_amendment_chain_file(base_slug: str) -> int:
+    path = _amendment_chain_path(base_slug)
+    if not path.exists():
+        return 0
+    path.unlink()
+    return 1
+
+
+def _remove_obsolete_amendment_chain_files(
+    current_base_slugs: set[str],
+    *,
+    safe_to_delete: bool = True,
+) -> int:
+    if not safe_to_delete:
+        return 0
+    removed = 0
+    prefix = "amendments_"
+    for path in sorted(AMENDMENTS_DIR.glob(f"{prefix}*.json")):
+        base_slug = path.stem[len(prefix):]
+        if base_slug not in current_base_slugs:
+            path.unlink()
+            removed += 1
+    return removed
+
+
 def extract_title(doc: dict) -> str:
     """Extract the law title from the ontology node's dc:source."""
     for node in doc.get("@graph", []):
@@ -615,20 +644,21 @@ def main() -> int:
     _amendment_event_triples_kov = 0
     _fallback_hits = 0
     _unresolved = 0
-    _failures: list[str] = []
+    _unsafe_cleanup_failures: list[str] = []
+    _soft_failures: list[str] = []
     _skip_reasons: dict[str, int] = {}
 
     # Step 0: Clear existing amendedBy references
     print("\n[0/5] Clearing existing estleg:amendedBy from all law files...")
     cleared_count = 0
     for peep_file in iter_peep_files():
-        if clear_amended_by_from_file(peep_file, failures=_failures):
+        if clear_amended_by_from_file(peep_file, failures=_soft_failures):
             cleared_count += 1
     print(f"  Cleared estleg:amendedBy from {cleared_count} files")
 
     # Step 1: Load all law files
     print("\n[1/5] Loading law JSON-LD files...")
-    laws = load_law_files(failures=_failures)
+    laws = load_law_files(failures=_unsafe_cleanup_failures)
     print(f"  Loaded {len(laws)} law files")
 
     title_map = build_title_to_slug_map(laws)
@@ -636,7 +666,7 @@ def main() -> int:
 
     # Compact-abbreviation registry (issue #192) — used so the amendment IRIs
     # carry the law's compact prefix instead of the long <base_slug> segment.
-    law_abbreviations = load_law_abbreviations(failures=_failures)
+    law_abbreviations = load_law_abbreviations(failures=_soft_failures)
     print(f"  Loaded {len(law_abbreviations)} law abbreviations")
 
     # Step 2: Extract amendments from XML files (paired per-peep via
@@ -672,11 +702,13 @@ def main() -> int:
         paired_slugs.add(slug)
         if str(xml_path) not in _lookup_paths:
             _fallback_hits += 1
-        amendments = extract_amendments_from_xml(xml_path, failures=_failures)
+        amendments = extract_amendments_from_xml(
+            xml_path, failures=_unsafe_cleanup_failures
+        )
         if amendments:
             amendments_by_slug[slug] = amendments
             total_amendments += len(amendments)
-        rt_refs = extract_rt_references_from_text(xml_path, failures=_failures)
+        rt_refs = extract_rt_references_from_text(xml_path, failures=_soft_failures)
         if rt_refs:
             rt_refs_by_slug[slug] = rt_refs
 
@@ -689,7 +721,7 @@ def main() -> int:
 
     # Step 3: Load draft amendments
     print("\n[3/5] Loading draft legislation amendment relationships...")
-    draft_amendments = load_draft_amendments(failures=_failures)
+    draft_amendments = load_draft_amendments(failures=_unsafe_cleanup_failures)
     print(f"  Found {len(draft_amendments)} amendment bill entries")
 
     # Match drafts to existing laws.
@@ -707,7 +739,7 @@ def main() -> int:
 
     for da in draft_amendments:
         target_slug = match_law_name_to_slug(
-            da["affected_law_name"], title_map, laws, failures=_failures
+            da["affected_law_name"], title_map, laws, failures=_soft_failures
         )
         if target_slug:
             seen = seen_per_target.setdefault(target_slug, set())
@@ -734,6 +766,7 @@ def main() -> int:
     print("\n[4/5] Building amendment chains and enriching JSON-LD files...")
     enriched = 0
     amendment_chains: list[dict] = []
+    stale_chain_files_removed = 0
 
     # Coverage: every paired peep counts as processed regardless of
     # whether it ends up grouped under a base_slug.
@@ -749,6 +782,11 @@ def main() -> int:
     for slug, info in laws.items():
         base_slug = re.sub(r"_osa\d+$", "", slug)
         groups.setdefault(base_slug, []).append((slug, info))
+
+    stale_chain_files_removed += _remove_obsolete_amendment_chain_files(
+        set(groups),
+        safe_to_delete=not _unsafe_cleanup_failures,
+    )
 
     for base_slug in sorted(groups):
         members = groups[base_slug]
@@ -780,11 +818,15 @@ def main() -> int:
             drafts.append(da)
 
         if not xml_amendments and not drafts:
+            has_paired_member = False
             for slug, _info in members:
                 if slug in paired_slugs:
+                    has_paired_member = True
                     _skip_reasons["no_amendments_found"] = (
                         _skip_reasons.get("no_amendments_found", 0) + 1
                     )
+            if has_paired_member and not _unsafe_cleanup_failures:
+                stale_chain_files_removed += _remove_amendment_chain_file(base_slug)
             continue
 
         # Sort xml_amendments chronologically (entry_into_force first,
@@ -966,6 +1008,8 @@ def main() -> int:
 
     print(f"  Enriched {enriched} law files with amendment references")
     print(f"  Created {len(amendment_chains)} amendment chain files")
+    if stale_chain_files_removed:
+        print(f"  Removed {stale_chain_files_removed} stale amendment chain files")
 
     # Step 5: Generate report
     print("\n[5/5] Generating amendment_history_report.json...")
@@ -1001,6 +1045,7 @@ def main() -> int:
 
     total_triples = _amendedBy_link_total + _amendment_event_triples
     total_triples_kov = _amendedBy_link_total_kov + _amendment_event_triples_kov
+    _failures = _unsafe_cleanup_failures + _soft_failures
 
     report = {
         "generated": date.today().isoformat(),
@@ -1016,6 +1061,7 @@ def main() -> int:
             "amendedBy_link_total": _amendedBy_link_total,
             "amendment_event_triples": _amendment_event_triples,
             "triples_total": total_triples,
+            "stale_chain_files_removed": stale_chain_files_removed,
             "failures": len(_failures),
         },
         "most_amended_laws": most_amended_list[:30],

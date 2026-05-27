@@ -6,41 +6,32 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
   },
   "@graph": [
     {
-      "@id": "estleg:AOS_Osa7_Servituudid",
+      "@id": "estleg:AOS_Osa7_256_275",
       "@type": [
+        "owl:Ontology",
         "estleg:Act",
         "estleg:Law",
-        "owl:Ontology"
+        "estleg:Part"
       ],
-      "rdfs:label": "AÕS Osa 7 kaardistus: servituudid, kasutusõigused, reaalservituudid",
-      "estleg:affectedBy": [
-        {
-          "@id": "estleg:Draft_JDM25_0711"
-        },
-        {
-          "@id": "estleg:Draft_KLIM22_0460"
-        },
-        {
-          "@id": "estleg:Draft_JDM18_0435"
-        },
-        {
-          "@id": "estleg:Draft_MKM13_1552"
-        }
-      ],
-      "estleg:temporalStatus": "unknown",
-      "dcterms:subject": [
-        {
-          "@id": "http://eurovoc.europa.eu/2431"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/6016"
-        }
-      ],
+      "rdfs:label": "Asjaõigusseadus Osa 7 (OSTUEESÕIGUS) §256–275 kaardistus",
+      "dc:source": "Asjaõigusseadus",
+      "dcterms:title": "Asjaõigusseadus",
+      "estleg:contentStatus": "structuredBody",
+      "dcterms:source": {
+        "@id": "https://www.riigiteataja.ee/akt/128012026007.xml"
+      },
+      "owl:sameAs": {
+        "@id": "https://www.riigiteataja.ee/akt/128012026007.xml"
+      },
+      "estleg:kehtiv": {
+        "@value": "2026-05-24",
+        "@type": "xsd:date"
+      },
       "estleg:transposesDirective": [
         {
           "@id": "estleg:EU_32009L0044"
@@ -51,10 +42,19 @@
         {
           "@id": "estleg:Harmonisation_32009L0044"
         }
-      ]
+      ],
+      "dcterms:subject": [
+        {
+          "@id": "http://eurovoc.europa.eu/2431"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/6016"
+        }
+      ],
+      "estleg:temporalStatus": "unknown"
     },
     {
-      "@id": "estleg:LegalProvision_AOS_osa7",
+      "@id": "estleg:LegalProvision_asjaoigusseadus_osa7",
       "@type": [
         "owl:Class"
       ],
@@ -64,162 +64,341 @@
       }
     },
     {
-      "@id": "estleg:Cluster_Servituut",
+      "@id": "estleg:AOS_Osa7_TopicScheme",
       "@type": [
-        "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "skos:ConceptScheme"
       ],
-      "rdfs:label": "Servituut"
-    },
-    {
-      "@id": "estleg:Cluster_Reaalservituut",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:TopicCluster"
-      ],
-      "rdfs:label": "Reaalservituut"
-    },
-    {
-      "@id": "estleg:Cluster_Kasutusoigus",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:TopicCluster"
-      ],
-      "rdfs:label": "Kasutusõigus"
-    },
-    {
-      "@id": "estleg:AOS_Par_172_osa7",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa7"
-      ],
-      "estleg:paragrahv": "§ 172",
-      "rdfs:label": "Reaalservituudi mõiste",
-      "estleg:requestedCluster": {
-        "@id": "reaalservituut"
-      },
-      "estleg:summary": "Reaalservituut koormab teenivat kinnisasja valitseva kinnisasja kasuks, andes õiguse kinnisasja kindlal viisil kasutada või piirates teeniva kinnisasja omaniku tegevusi.",
-      "estleg:sourceAct": "Asjaõigusseadus",
-      "estleg:targetGroup": [
-        "citizen"
+      "rdfs:label": "Asjaõigusseadus Osa 7 (OSTUEESÕIGUS) teemaskeem",
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_AOS_7_Part"
+        }
       ]
     },
     {
-      "@id": "estleg:AOS_Par_173_osa7",
+      "@id": "estleg:Cluster_AOS_7_Part",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa7"
+        "skos:Concept"
       ],
-      "estleg:paragrahv": "§ 173",
-      "rdfs:label": "Reaalservituudi tekkimine",
-      "estleg:requestedCluster": {
-        "@id": "reaalservituut"
+      "rdfs:label": "Osa 7 (OSTUEESÕIGUS)",
+      "skos:prefLabel": "Osa 7 (OSTUEESÕIGUS)",
+      "skos:inScheme": {
+        "@id": "estleg:AOS_Osa7_TopicScheme"
       },
-      "estleg:summary": "Reaalservituut tekib asjaõiguslepingu alusel ja kinnistusraamatu kandega, kui seadus ei näe ette muud tekkimise viisi.",
-      "estleg:sourceAct": "Asjaõigusseadus"
+      "skos:narrower": [
+        {
+          "@id": "estleg:Cluster_AOS_7_1"
+        },
+        {
+          "@id": "estleg:Cluster_AOS_7_2"
+        }
+      ]
     },
     {
-      "@id": "estleg:AOS_Par_174_osa7",
+      "@id": "estleg:Cluster_AOS_7_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa7"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "estleg:paragrahv": "§ 174",
-      "rdfs:label": "Reaalservituudi sisu ja ulatus",
-      "estleg:requestedCluster": {
-        "@id": "servituut"
+      "rdfs:label": "§256–260 MÕISTE, TEKKIMINE JA LÕPPEMINE",
+      "skos:prefLabel": "§256–260 MÕISTE, TEKKIMINE JA LÕPPEMINE",
+      "skos:inScheme": {
+        "@id": "estleg:AOS_Osa7_TopicScheme"
       },
-      "estleg:summary": "Reaalservituudi ulatus määratakse eelkõige kande, tehingu sisu ja senise teostusviisi järgi; kahtluse korral tuleb arvestada mõistlikku koormust teenivale kinnisasjale.",
+      "skos:broader": {
+        "@id": "estleg:Cluster_AOS_7_Part"
+      },
+      "estleg:provisionCount": 5
+    },
+    {
+      "@id": "estleg:Chapter_AOS_7_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "1. peatükk – MÕISTE, TEKKIMINE JA LÕPPEMINE",
+      "estleg:chapterNumber": "1",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_AOS_7_1"
+      }
+    },
+    {
+      "@id": "estleg:Cluster_AOS_7_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": "§261–275 SISU",
+      "skos:prefLabel": "§261–275 SISU",
+      "skos:inScheme": {
+        "@id": "estleg:AOS_Osa7_TopicScheme"
+      },
+      "skos:broader": {
+        "@id": "estleg:Cluster_AOS_7_Part"
+      },
+      "estleg:provisionCount": 3
+    },
+    {
+      "@id": "estleg:Chapter_AOS_7_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "2. peatükk – SISU",
+      "estleg:chapterNumber": "2",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_AOS_7_2"
+      }
+    },
+    {
+      "@id": "estleg:AOS_Osa7_Par_256",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_asjaoigusseadus_osa7"
+      ],
+      "estleg:paragrahv": "§ 256.",
+      "rdfs:label": "§ 256. Ostueesõiguse mõiste",
       "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:summary": "1 (1) Kinnisasja võib koormata asjaõigusliku ostueesõigusega. Kinnisasja võib koormata asjaõigusliku ostueesõigusega. 2 (2) Ostueesõiguse võib seada teatud isiku või teise kinnisasja igakordse omaniku kasuks. Ostueesõiguse võib seada teatud isiku või teise kinnisasja igakordse omaniku kasuks. 3 (3) Kinnisasja mõttelist osa võib ostueesõigusega koormata ainult siis, kui see on kaasomaniku osa. RT I 2003 78 523 685541 2003-12-27 Kinnisasja mõttelist osa võib ostueesõigusega koormata ainult siis, k",
+      "estleg:legalText": "(1) Kinnisasja võib koormata asjaõigusliku ostueesõigusega. (2) Ostueesõiguse võib seada teatud isiku või teise kinnisasja igakordse omaniku kasuks. (3) Kinnisasja mõttelist osa võib ostueesõigusega koormata ainult siis, kui see on kaasomaniku osa.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_AOS_7_1"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_AOS_7_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:AOS_Osa7_Par_256_Lg_1"
+        },
+        {
+          "@id": "estleg:AOS_Osa7_Par_256_Lg_2"
+        },
+        {
+          "@id": "estleg:AOS_Osa7_Par_256_Lg_3"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:AOS_Osa7_Par_256_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kinnisasja võib koormata asjaõigusliku ostueesõigusega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa7_Par_256"
+      },
+      "rdfs:label": "§ 256 lg 1"
+    },
+    {
+      "@id": "estleg:AOS_Osa7_Par_256_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Ostueesõiguse võib seada teatud isiku või teise kinnisasja igakordse omaniku kasuks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa7_Par_256"
+      },
+      "rdfs:label": "§ 256 lg 2"
+    },
+    {
+      "@id": "estleg:AOS_Osa7_Par_256_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kinnisasja mõttelist osa võib ostueesõigusega koormata ainult siis, kui see on kaasomaniku osa.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa7_Par_256"
+      },
+      "rdfs:label": "§ 256 lg 3"
+    },
+    {
+      "@id": "estleg:AOS_Osa7_Par_257",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_asjaoigusseadus_osa7"
+      ],
+      "estleg:paragrahv": "§ 257.",
+      "rdfs:label": "§ 257. Ostueesõiguse seadmine ja tähendus",
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:summary": "1 (1) Ostueesõiguse seadmiseks kohustav tehing peab olema notariaalselt tõestatud. RT I 2003 13 64 252549 2003-07-01 Ostueesõiguse seadmiseks kohustav tehing peab olema notariaalselt tõestatud. 2 (2) Ostueesõiguse seadmiseks nõutav asjaõigusleping peab olema notariaalselt tõestatud. Ostueesõiguse seadmiseks nõutav asjaõigusleping peab olema notariaalselt tõestatud. 3 (3) Kinnistusraamatusse kantud ostueesõigus omab kolmandate isikute suhtes samasugust tähendust nagu eelmärge omandi üleandmise nõ",
+      "estleg:legalText": "(1) Ostueesõiguse seadmiseks kohustav tehing peab olema notariaalselt tõestatud. (2) Ostueesõiguse seadmiseks nõutav asjaõigusleping peab olema notariaalselt tõestatud. (3) Kinnistusraamatusse kantud ostueesõigus omab kolmandate isikute suhtes samasugust tähendust nagu eelmärge omandi üleandmise nõude tagamiseks. Sama tähendust omab ka seaduse alusel tekkinud kinnisasja ostueesõigus, mille kohta on kinnistusraamatusse kantud märkus, samuti kinnisasja kaasomaniku ostueesõigus. (4) Omaniku ning ostueesõigusega isiku vahelisele suhtele kohaldatakse võlaõigusseaduses ostueesõiguse kohta sätestatut, kui käesolevas seaduses ei ole sätestatud teisiti. (5) Kehtetu -",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_AOS_7_1"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_AOS_7_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:AOS_Osa7_Par_257_Lg_1"
+        },
+        {
+          "@id": "estleg:AOS_Osa7_Par_257_Lg_2"
+        },
+        {
+          "@id": "estleg:AOS_Osa7_Par_257_Lg_3"
+        },
+        {
+          "@id": "estleg:AOS_Osa7_Par_257_Lg_4"
+        },
+        {
+          "@id": "estleg:AOS_Osa7_Par_257_Lg_5"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "official"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       }
     },
     {
-      "@id": "estleg:AOS_Par_175_osa7",
+      "@id": "estleg:AOS_Osa7_Par_257_Lg_1",
       "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa7"
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:paragrahv": "§ 175",
-      "rdfs:label": "Reaalservituudi teostamine",
-      "estleg:requestedCluster": {
-        "@id": "servituut"
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ostueesõiguse seadmiseks kohustav tehing peab olema notariaalselt tõestatud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa7_Par_257"
       },
-      "estleg:summary": "Servituuti tuleb teostada viisil, mis võimaldab valitseva kinnisasja mõistlikku kasutamist, kahjustades teenivat kinnisasja võimalikult vähe.",
-      "estleg:sourceAct": "Asjaõigusseadus",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
-      },
-      "estleg:dutyHolder": "Servituuti"
+      "rdfs:label": "§ 257 lg 1"
     },
     {
-      "@id": "estleg:AOS_Par_180_osa7",
+      "@id": "estleg:AOS_Osa7_Par_257_Lg_2",
       "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa7"
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:paragrahv": "§ 180",
-      "rdfs:label": "Reaalservituudi teostamise viisi muutmine",
-      "estleg:requestedCluster": {
-        "@id": "servituut"
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Ostueesõiguse seadmiseks nõutav asjaõigusleping peab olema notariaalselt tõestatud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa7_Par_257"
       },
-      "estleg:summary": "Servituudi teostamise viisi saab muuta, kui see on vajalik kinnisasjade sihipäraseks kasutamiseks ja ei moonuta õiguse põhilist eesmärki.",
-      "estleg:sourceAct": "Asjaõigusseadus"
+      "rdfs:label": "§ 257 lg 2"
     },
     {
-      "@id": "estleg:AOS_Par_181_osa7",
+      "@id": "estleg:AOS_Osa7_Par_257_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kinnistusraamatusse kantud ostueesõigus omab kolmandate isikute suhtes samasugust tähendust nagu eelmärge omandi üleandmise nõude tagamiseks. Sama tähendust omab ka seaduse alusel tekkinud kinnisasja ostueesõigus, mille kohta on kinnistusraamatusse kantud märkus, samuti kinnisasja kaasomaniku ostueesõigus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa7_Par_257"
+      },
+      "rdfs:label": "§ 257 lg 3"
+    },
+    {
+      "@id": "estleg:AOS_Osa7_Par_257_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Omaniku ning ostueesõigusega isiku vahelisele suhtele kohaldatakse võlaõigusseaduses ostueesõiguse kohta sätestatut, kui käesolevas seaduses ei ole sätestatud teisiti.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa7_Par_257"
+      },
+      "rdfs:label": "§ 257 lg 4"
+    },
+    {
+      "@id": "estleg:AOS_Osa7_Par_257_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa7_Par_257"
+      },
+      "rdfs:label": "§ 257 lg 5"
+    },
+    {
+      "@id": "estleg:AOS_Osa7_Par_258",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa7"
+        "estleg:LegalProvision_asjaoigusseadus_osa7"
       ],
-      "estleg:paragrahv": "§ 181",
-      "rdfs:label": "Reaalservituudi kaitse",
-      "estleg:requestedCluster": {
-        "@id": "servituut"
-      },
-      "estleg:summary": "Reaalservituudi rikkumise korral saab õigustatud isik nõuda rikkumise lõpetamist, takistuste kõrvaldamist ja edasisest rikkumisest hoidumist.",
+      "estleg:paragrahv": "§ 258.",
+      "rdfs:label": "§ 258. Ostueesõiguse lõppemine",
       "estleg:sourceAct": "Asjaõigusseadus",
-      "estleg:semanticallySimilarTo": [
+      "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_AOS_7_1"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_AOS_7_1"
+      }
+    },
+    {
+      "@id": "estleg:AOS_Osa7_Par_259",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_asjaoigusseadus_osa7"
+      ],
+      "estleg:paragrahv": "§ 259.",
+      "rdfs:label": "§ 259. Kohustatud isiku õigus ostueesõiguse lõpetamisele",
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_AOS_7_1"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_AOS_7_1"
+      },
+      "estleg:targetGroup": [
+        "citizen"
+      ]
+    },
+    {
+      "@id": "estleg:AOS_Osa7_Par_260",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_asjaoigusseadus_osa7"
+      ],
+      "estleg:paragrahv": "§ 260.",
+      "rdfs:label": "§ 260. Ostueesõiguse üleandmise piirangud",
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:summary": "1 (1) Kinnisasja igakordse omaniku kasuks seatud ostueesõigust ei või lahutada sellest kinnisasjast. Kinnisasja igakordse omaniku kasuks seatud ostueesõigust ei või lahutada sellest kinnisasjast. 2 (2) Teatud isiku kasuks seatud ostueesõigust ei või siduda mingi teise kinnisasjaga. Teatud isiku kasuks seatud ostueesõigust ei või siduda mingi teise kinnisasjaga. 3 (3) Teatud isiku kasuks seatud ostueesõigus ei ole võõrandatav ega pärandatav. Teatud isiku kasuks seatud ostueesõigus ei ole võõranda",
+      "estleg:legalText": "(1) Kinnisasja igakordse omaniku kasuks seatud ostueesõigust ei või lahutada sellest kinnisasjast. (2) Teatud isiku kasuks seatud ostueesõigust ei või siduda mingi teise kinnisasjaga. (3) Teatud isiku kasuks seatud ostueesõigus ei ole võõrandatav ega pärandatav.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_AOS_7_1"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_AOS_7_1"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:VOS_Osa1_Par_50",
-          "estleg:similarityScore": {
-            "@value": "0.333",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
+          "@id": "estleg:AOS_Osa7_Par_260_Lg_1"
         },
         {
-          "@id": "estleg:VOS_Osa1_Par_61",
-          "estleg:similarityScore": {
-            "@value": "0.333",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
+          "@id": "estleg:AOS_Osa7_Par_260_Lg_2"
         },
         {
-          "@id": "estleg:VOS_Osa1_Par_62",
-          "estleg:similarityScore": {
-            "@value": "0.333",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:VOS_Osa1_Par_62_10",
-          "estleg:similarityScore": {
-            "@value": "0.333",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:VOS_Osa1_Par_62_21",
-          "estleg:similarityScore": {
-            "@value": "0.333",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
+          "@id": "estleg:AOS_Osa7_Par_260_Lg_3"
         }
       ],
       "estleg:targetGroup": [
@@ -227,83 +406,268 @@
       ]
     },
     {
-      "@id": "estleg:AOS_Par_182_osa7",
+      "@id": "estleg:AOS_Osa7_Par_260_Lg_1",
       "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa7"
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:paragrahv": "§ 182",
-      "rdfs:label": "Reaalservituudi üleandmine",
-      "estleg:requestedCluster": {
-        "@id": "reaalservituut"
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kinnisasja igakordse omaniku kasuks seatud ostueesõigust ei või lahutada sellest kinnisasjast.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa7_Par_260"
       },
-      "estleg:summary": "Reaalservituut ei ole valitsevast kinnisasjast iseseisvalt võõrandatav ning järgib valitseva kinnisasja omandi üleminekut.",
-      "estleg:sourceAct": "Asjaõigusseadus",
-      "estleg:targetGroup": [
-        "official"
-      ]
+      "rdfs:label": "§ 260 lg 1"
     },
     {
-      "@id": "estleg:AOS_Par_183_osa7",
+      "@id": "estleg:AOS_Osa7_Par_260_Lg_2",
       "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa7"
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:paragrahv": "§ 183",
-      "rdfs:label": "Reaalservituudi lõppemine",
-      "estleg:requestedCluster": {
-        "@id": "reaalservituut"
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Teatud isiku kasuks seatud ostueesõigust ei või siduda mingi teise kinnisasjaga.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa7_Par_260"
       },
-      "estleg:summary": "Reaalservituut lõpeb seaduses ette nähtud alustel, sealhulgas õiguse kustutamisel kinnistusraamatust või koormatud ja valitseva kinnisasja ühinemisel.",
-      "estleg:sourceAct": "Asjaõigusseadus"
+      "rdfs:label": "§ 260 lg 2"
     },
     {
-      "@id": "estleg:AOS_Par_225_osa7",
+      "@id": "estleg:AOS_Osa7_Par_260_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Teatud isiku kasuks seatud ostueesõigus ei ole võõrandatav ega pärandatav.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa7_Par_260"
+      },
+      "rdfs:label": "§ 260 lg 3"
+    },
+    {
+      "@id": "estleg:AOS_Osa7_Par_261",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa7"
+        "estleg:LegalProvision_asjaoigusseadus_osa7"
       ],
-      "estleg:paragrahv": "§ 225",
-      "rdfs:label": "Isikliku kasutusõiguse mõiste",
-      "estleg:requestedCluster": {
-        "@id": "kasutusoigus"
-      },
-      "estleg:summary": "Isiklik kasutusõigus annab õigustatud isikule õiguse kasutada kinnisasja kokkulepitud ulatuses; õigus on seotud õigustatud isikuga.",
+      "estleg:paragrahv": "§ 261.",
+      "rdfs:label": "§ 261. Ostueesõiguse teostamine",
       "estleg:sourceAct": "Asjaõigusseadus",
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
+      "estleg:summary": "Kehtetu -",
+      "estleg:legalText": "Kehtetu -",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_AOS_7_2"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_AOS_7_2"
+      }
+    },
+    {
+      "@id": "estleg:AOS_Osa7_Par_261_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_asjaoigusseadus_osa7"
+      ],
+      "estleg:paragrahv": "§ 261<sup>1</sup>.",
+      "rdfs:label": "§ 261<sup>1</sup>. Ostja õigused",
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:summary": "1 (1) Ostja või ostja õigusjärglane võib keelduda ostueesõigusega isiku omanikuna kinnistusraamatusse kandmiseks nõusoleku andmisest ja kinnisasja üleandmisest, kuni talle hüvitatakse tasutud ostuhind. Ostja või ostja õigusjärglane võib keelduda ostueesõigusega isiku omanikuna kinnistusraamatusse kandmiseks nõusoleku andmisest ja kinnisasja üleandmisest, kuni talle hüvitatakse tasutud ostuhind. 2 (2) Pärast ostueesõigusega isiku omanikuna kinnistusraamatusse kandmist võib ostja keelduda kinnisas",
+      "estleg:legalText": "(1) Ostja või ostja õigusjärglane võib keelduda ostueesõigusega isiku omanikuna kinnistusraamatusse kandmiseks nõusoleku andmisest ja kinnisasja üleandmisest, kuni talle hüvitatakse tasutud ostuhind. (2) Pärast ostueesõigusega isiku omanikuna kinnistusraamatusse kandmist võib ostja keelduda kinnisasja üleandmisest, kuni talle hüvitatakse tema poolt tasutud ostuhind.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_AOS_7_2"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_AOS_7_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:AOS_Osa7_Par_261_1_Lg_1"
+        },
+        {
+          "@id": "estleg:AOS_Osa7_Par_261_1_Lg_2"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:AOS_Osa7_Par_261_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Ostja või ostja õigusjärglane võib keelduda ostueesõigusega isiku omanikuna kinnistusraamatusse kandmiseks nõusoleku andmisest ja kinnisasja üleandmisest, kuni talle hüvitatakse tasutud ostuhind.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa7_Par_261_1"
+      },
+      "rdfs:label": "§ 261<sup>1</sup> lg 1"
+    },
+    {
+      "@id": "estleg:AOS_Osa7_Par_261_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Pärast ostueesõigusega isiku omanikuna kinnistusraamatusse kandmist võib ostja keelduda kinnisasja üleandmisest, kuni talle hüvitatakse tema poolt tasutud ostuhind.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa7_Par_261_1"
+      },
+      "rdfs:label": "§ 261<sup>1</sup> lg 2"
+    },
+    {
+      "@id": "estleg:AOS_Osa7_Par_261_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_asjaoigusseadus_osa7"
+      ],
+      "estleg:paragrahv": "§ 261<sup>2</sup>.",
+      "rdfs:label": "§ 261<sup>2</sup>. Ostuhinna tasumine",
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:summary": "Kui ostueesõigusega isikul tuleb vastavalt käesoleva seaduse §-le 2611 tasuda ostuhind ostjale või ostja õigusjärglasele, vabaneb ta kohustusest tasuda ostuhind müüjale. RT I 2002 53 336 174795 2002-07-01 Kui ostueesõigusega isikul tuleb vastavalt käesoleva seaduse §-le 2611 tasuda ostuhind ostjale või ostja õigusjärglasele, vabaneb ta kohustusest tasuda ostuhind müüjale.",
+      "estleg:legalText": "Kui ostueesõigusega isikul tuleb vastavalt käesoleva seaduse §-le 2611 tasuda ostuhind ostjale või ostja õigusjärglasele, vabaneb ta kohustusest tasuda ostuhind müüjale.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_AOS_7_2"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_AOS_7_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:AOS_Osa7_Par_261_2_Lg_Unknown_1"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
+    },
+    {
+      "@id": "estleg:AOS_Osa7_Par_261_2_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Kui ostueesõigusega isikul tuleb vastavalt käesoleva seaduse §-le 2611 tasuda ostuhind ostjale või ostja õigusjärglasele, vabaneb ta kohustusest tasuda ostuhind müüjale.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa7_Par_261_2"
+      }
+    },
+    {
+      "@id": "estleg:AOS_Osa7_Par_261_3",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_asjaoigusseadus_osa7"
+      ],
+      "estleg:paragrahv": "§ 261<sup>3</sup>.",
+      "rdfs:label": "§ 261<sup>3</sup>. Ostja vabanemine ostuhinna tasumise kohustusest",
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:summary": "Kui ostja või tema õigusjärglane kaotab ostueesõiguse teostamise tõttu kinnisomandi, vabaneb ta ostuhinna tasumise kohustusest. Juba tasutud ostuhinna võib ostja müüjalt tagasi nõuda üksnes juhul, kui ta taganeb müügilepingust. RT I 2002 53 336 174795 2002-07-01 Kui ostja või tema õigusjärglane kaotab ostueesõiguse teostamise tõttu kinnisomandi, vabaneb ta ostuhinna tasumise kohustusest. Juba tasutud ostuhinna võib ostja müüjalt tagasi nõuda üksnes juhul, kui ta taganeb müügilepingust.",
+      "estleg:legalText": "Kui ostja või tema õigusjärglane kaotab ostueesõiguse teostamise tõttu kinnisomandi, vabaneb ta ostuhinna tasumise kohustusest. Juba tasutud ostuhinna võib ostja müüjalt tagasi nõuda üksnes juhul, kui ta taganeb müügilepingust.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_AOS_7_2"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_AOS_7_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:AOS_Osa7_Par_261_3_Lg_Unknown_1"
+        }
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:AOS_Osa7_Par_261_3_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Kui ostja või tema õigusjärglane kaotab ostueesõiguse teostamise tõttu kinnisomandi, vabaneb ta ostuhinna tasumise kohustusest. Juba tasutud ostuhinna võib ostja müüjalt tagasi nõuda üksnes juhul, kui ta taganeb müügilepingust.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa7_Par_261_3"
+      }
+    },
+    {
+      "@id": "estleg:AOS_Osa7_Par_261_4",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_asjaoigusseadus_osa7"
+      ],
+      "estleg:paragrahv": "§ 261<sup>4</sup>.",
+      "rdfs:label": "§ 261<sup>4</sup>. Ostueesõigus kinnisasja jagamisel",
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:summary": "Kinnisasja jagamisel jääb ostueesõigus püsima iga jagamise teel tekkinud kinnisasja suhtes. RT I 2002 53 336 174795 2002-07-01 Kinnisasja jagamisel jääb ostueesõigus püsima iga jagamise teel tekkinud kinnisasja suhtes.",
+      "estleg:legalText": "Kinnisasja jagamisel jääb ostueesõigus püsima iga jagamise teel tekkinud kinnisasja suhtes.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_AOS_7_2"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_AOS_7_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:AOS_Osa7_Par_261_4_Lg_Unknown_1"
+        }
       ]
     },
     {
-      "@id": "estleg:AOS_Par_226_osa7",
+      "@id": "estleg:AOS_Osa7_Par_261_4_Lg_Unknown_1",
       "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa7"
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:paragrahv": "§ 226",
-      "rdfs:label": "Isikliku kasutusõiguse üleandmine",
-      "estleg:requestedCluster": {
-        "@id": "kasutusoigus"
-      },
-      "estleg:summary": "Isiklik kasutusõigus ei ole üldjuhul üleantav ega päritav, kui seadusest või kokkuleppest ei tulene teisiti.",
-      "estleg:sourceAct": "Asjaõigusseadus"
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Kinnisasja jagamisel jääb ostueesõigus püsima iga jagamise teel tekkinud kinnisasja suhtes.",
+      "estleg:parentProvision": {
+        "@id": "estleg:AOS_Osa7_Par_261_4"
+      }
     },
     {
-      "@id": "estleg:AOS_Par_228_osa7",
+      "@id": "estleg:AOS_Osa7_Par_262",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_AOS_osa7"
+        "estleg:LegalProvision_asjaoigusseadus_osa7"
       ],
-      "estleg:paragrahv": "§ 228",
-      "rdfs:label": "Reaalservituudi ja kasutusvalduse sätete kohaldamine",
+      "estleg:paragrahv": "§ 262.",
+      "rdfs:label": "§ 262.",
+      "estleg:sourceAct": "Asjaõigusseadus",
       "estleg:requestedCluster": {
-        "@id": "kasutusoigus"
+        "@id": "estleg:Cluster_AOS_7_2"
       },
-      "estleg:summary": "Isiklikule kasutusõigusele kohaldatakse vastavalt reaalservituudi ja kasutusvalduse norme ulatuses, milles need sobivad õiguse olemusega.",
-      "estleg:sourceAct": "Asjaõigusseadus"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_AOS_7_2"
+      },
+      "estleg:summary": "§ 262."
+    },
+    {
+      "@id": "estleg:AOS_Osa7_Par_275",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_asjaoigusseadus_osa7"
+      ],
+      "estleg:paragrahv": "§ 275.",
+      "rdfs:label": "§ 275. [Kehtetud -]",
+      "estleg:sourceAct": "Asjaõigusseadus",
+      "estleg:summary": "Kehtetud -",
+      "estleg:legalText": "Kehtetud -",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_AOS_7_2"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_AOS_7_2"
+      }
     }
   ]
 }

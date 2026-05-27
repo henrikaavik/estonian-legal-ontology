@@ -6,20 +6,31 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
   },
   "@graph": [
     {
       "@id": "estleg:EMKAU_Map_2026",
       "@type": [
+        "owl:Ontology",
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "rdfs:label": "Euroopa Molekulaarbioloogia Konverentsi asutamislepinguga ühinemise seadus teemakaardistus",
       "dc:source": "Euroopa Molekulaarbioloogia Konverentsi asutamislepinguga ühinemise seadus",
-      "estleg:temporalStatus": "unknown",
+      "dcterms:title": "Euroopa Molekulaarbioloogia Konverentsi asutamislepinguga ühinemise seadus",
+      "estleg:contentStatus": "structuredBody",
+      "dcterms:source": {
+        "@id": "https://www.riigiteataja.ee/akt/966248.xml"
+      },
+      "owl:sameAs": {
+        "@id": "https://www.riigiteataja.ee/akt/966248.xml"
+      },
+      "estleg:kehtiv": {
+        "@value": "2026-05-24",
+        "@type": "xsd:date"
+      },
       "dcterms:subject": [
         {
           "@id": "http://eurovoc.europa.eu/2431"
@@ -30,10 +41,11 @@
         {
           "@id": "http://eurovoc.europa.eu/6006"
         }
-      ]
+      ],
+      "estleg:temporalStatus": "unknown"
     },
     {
-      "@id": "estleg:LegalProvision_EMKAU",
+      "@id": "estleg:LegalProvision_euroopa_molekulaarbioloogia_konverentsi_asutamislepinguga_uhinemise_seadus",
       "@type": [
         "owl:Class"
       ],
@@ -43,15 +55,50 @@
       }
     },
     {
+      "@id": "estleg:EMKAU_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": "Euroopa Molekulaarbioloogia Konverentsi asutamislepinguga ühinemise seadus teemaskeem",
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_EMKAU_default"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Cluster_EMKAU_default",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": "§1–3 Lepingu sätted",
+      "skos:prefLabel": "§1–3 Lepingu sätted",
+      "skos:inScheme": {
+        "@id": "estleg:EMKAU_TopicScheme"
+      },
+      "estleg:provisionCount": 3
+    },
+    {
       "@id": "estleg:EMKAU_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_EMKAU"
+        "estleg:LegalProvision_euroopa_molekulaarbioloogia_konverentsi_asutamislepinguga_uhinemise_seadus"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1.",
+      "rdfs:label": "§ 1. [Ühineda juurdelisatud Euroopa Molekulaarbioloogia Konverentsi asutamislepinguga...]",
       "estleg:sourceAct": "Euroopa Molekulaarbioloogia Konverentsi asutamislepinguga ühinemise seadus",
       "estleg:summary": "Ühineda juurdelisatud Euroopa Molekulaarbioloogia Konverentsi asutamislepinguga ./966265 , mis on koostatud 1969. aasta 13. veebruaril Genfis. Ühineda juurdelisatud , mis on koostatud 1969. aasta 13. veebruaril Genfis.",
+      "estleg:legalText": "Ühineda juurdelisatud , mis on koostatud 1969. aasta 13. veebruaril Genfis.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_EMKAU_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:EMKAU_Par_1_Lg_Unknown_1"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:POKKSPU_Par_1",
@@ -60,30 +107,101 @@
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:euroopa_tuumauuringute_organisatsiooni_a_Par_2",
+          "estleg:similarityScore": {
+            "@value": "0.455",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:euroopa_ulikool_instituudi_asutamise_konventsiooni_Par_1",
+          "estleg:similarityScore": {
+            "@value": "0.312",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
         }
       ]
+    },
+    {
+      "@id": "estleg:EMKAU_Par_1_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Ühineda juurdelisatud , mis on koostatud 1969. aasta 13. veebruaril Genfis.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EMKAU_Par_1"
+      }
     },
     {
       "@id": "estleg:EMKAU_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_EMKAU"
+        "estleg:LegalProvision_euroopa_molekulaarbioloogia_konverentsi_asutamislepinguga_uhinemise_seadus"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2.",
+      "rdfs:label": "§ 2. [Ühineda Euroopa Molekulaarbioloogia Konverentsiga. Ühineda Euroopa Molekulaarbio...]",
       "estleg:sourceAct": "Euroopa Molekulaarbioloogia Konverentsi asutamislepinguga ühinemise seadus",
-      "estleg:summary": "Ühineda Euroopa Molekulaarbioloogia Konverentsiga. Ühineda Euroopa Molekulaarbioloogia Konverentsiga."
+      "estleg:summary": "Ühineda Euroopa Molekulaarbioloogia Konverentsiga. Ühineda Euroopa Molekulaarbioloogia Konverentsiga.",
+      "estleg:legalText": "Ühineda Euroopa Molekulaarbioloogia Konverentsiga.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_EMKAU_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:EMKAU_Par_2_Lg_Unknown_1"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:EMKAU_Par_2_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Ühineda Euroopa Molekulaarbioloogia Konverentsiga.",
+      "estleg:parentProvision": {
+        "@id": "estleg:EMKAU_Par_2"
+      }
     },
     {
       "@id": "estleg:EMKAU_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_EMKAU"
+        "estleg:LegalProvision_euroopa_molekulaarbioloogia_konverentsi_asutamislepinguga_uhinemise_seadus"
       ],
       "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3.",
+      "rdfs:label": "§ 3. [Eesti esindajad Euroopa Molekulaarbioloogia Konverentsile nimetab valdkonna eest...]",
       "estleg:sourceAct": "Euroopa Molekulaarbioloogia Konverentsi asutamislepinguga ühinemise seadus",
       "estleg:summary": "Eesti esindajad Euroopa Molekulaarbioloogia Konverentsile nimetab valdkonna eest vastutav minister. RT I 2014-06-29 109 129062014109 2014-07-01 , Vabariigi Valitsuse seaduse § 107³ lõike 4 alusel asendatud alates 2014. aasta 1. juulist \"haridus- ja teadusminister\" sõnadega \"valdkonna eest vastutav minister\". <table summary=\"allkiri\" width=\"100%\"> <tbody><tr valign=\"top\"> <td width=\"60%\"> </td> <td width=\"39%\"> <b><font size=\"-1\" style=\"font-size:-1px\">Riigikogu esimees Ene ERGMA</font></b> </td>",
+      "estleg:legalText": "Eesti esindajad Euroopa Molekulaarbioloogia Konverentsile nimetab valdkonna eest vastutav minister. , Vabariigi Valitsuse seaduse § 107³ lõike 4 alusel asendatud alates 2014. aasta 1. juulist \"haridus- ja teadusminister\" sõnadega \"valdkonna eest vastutav minister\".",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_EMKAU_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:EMKAU_Par_3_Lg_Unknown_1"
+        }
+      ],
+      "estleg:targetGroup": [
+        "public_body",
+        "official"
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_riigikogu"
+        },
+        {
+          "@id": "estleg:Institution_teadusminister"
+        }
+      ],
+      "estleg:competenceType": "general",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:FMAKLTAETEOL_Par_2",
@@ -97,14 +215,6 @@
           "@id": "estleg:KMTLMKSPR_Par_3",
           "estleg:similarityScore": {
             "@value": "0.341",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:POKKPOSP1979_Par_3",
-          "estleg:similarityScore": {
-            "@value": "0.325",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
@@ -124,21 +234,28 @@
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
-        }
-      ],
-      "estleg:targetGroup": [
-        "public_body",
-        "official"
-      ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_riigikogu"
         },
         {
-          "@id": "estleg:Institution_teadusminister"
+          "@id": "estleg:euroopa_ulikool_instituudi_asutamise_konventsiooni_Par_2",
+          "estleg:similarityScore": {
+            "@value": "0.5",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
         }
+      ]
+    },
+    {
+      "@id": "estleg:EMKAU_Par_3_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:competenceType": "general"
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Eesti esindajad Euroopa Molekulaarbioloogia Konverentsile nimetab valdkonna eest vastutav minister. , Vabariigi Valitsuse seaduse § 107³ lõike 4 alusel asendatud alates 2014. aasta 1. juulist \"haridus- ja teadusminister\" sõnadega \"valdkonna eest vastutav minister\".",
+      "estleg:parentProvision": {
+        "@id": "estleg:EMKAU_Par_3"
+      }
     }
   ]
 }

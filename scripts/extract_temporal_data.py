@@ -352,11 +352,10 @@ TEMPORAL_KEYS_TO_CLEAR = [
 # Act-level type markers. Temporal validity is an *act-level* property
 # in this ontology (#128) — temporal triples are only ever written onto
 # a node whose ``@type`` includes ``estleg:Act`` (covers laws, state
-# regulations, and KOV regulations) or the standalone ``owl:Ontology``
-# act-metadata node that every peep file carries. If neither can be
-# located in a peep file we skip enrichment for that file rather than
-# falling back to ``graph[0]`` (which previously stamped temporal props
-# onto ``estleg:LegalConcept`` nodes).
+# regulations, and KOV regulations). Some non-law catalogues also carry
+# ``owl:Ontology`` nodes, so owl:Ontology alone is not a safe target. If
+# no act node can be located we skip enrichment for that file rather than
+# falling back to ``graph[0]``.
 ACT_TYPE_MARKERS = {"estleg:Act"}
 
 
@@ -373,23 +372,23 @@ def is_act_level_node(node: dict) -> bool:
     """Return True if this node is a legitimate target for temporal props.
 
     True when the node is an ``estleg:Act`` (any subclass, since the
-    KOV layer-1 enrichment stamps ``estleg:Act`` onto every act node) or
-    the ``owl:Ontology`` act-metadata node a peep file carries.
+    KOV layer-1 enrichment stamps ``estleg:Act`` onto every act node).
     """
     types = _node_types(node)
-    return bool(types & ACT_TYPE_MARKERS) or "owl:Ontology" in types
+    return bool(types & ACT_TYPE_MARKERS)
 
 
 def find_act_node(graph: list[dict]) -> dict | None:
     """Return the act node a peep file's temporal triples belong on.
 
-    Preference order: the ``owl:Ontology`` act-metadata node (the
-    historical write site), then any ``estleg:Act``-typed node. Returns
-    ``None`` when neither exists — the caller must then skip enrichment
-    for that file (no ``graph[0]`` fallback, see #128).
+    Preference order: the ``owl:Ontology`` act-metadata node when it is
+    also typed as ``estleg:Act`` (the historical write site), then any
+    ``estleg:Act``-typed node. Returns ``None`` when neither exists — the
+    caller must then skip enrichment for that file.
     """
     for node in graph:
-        if "owl:Ontology" in _node_types(node):
+        types = _node_types(node)
+        if "owl:Ontology" in types and types & ACT_TYPE_MARKERS:
             return node
     for node in graph:
         if _node_types(node) & ACT_TYPE_MARKERS:

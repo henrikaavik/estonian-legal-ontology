@@ -6,31 +6,46 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
   },
   "@graph": [
     {
       "@id": "estleg:PVRKU_Map_2026",
       "@type": [
+        "owl:Ontology",
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "rdfs:label": "Pantvangivõtmise vastase rahvusvahelise konventsiooniga ühinemise seadus teemakaardistus",
       "dc:source": "Pantvangivõtmise vastase rahvusvahelise konventsiooniga ühinemise seadus",
-      "estleg:temporalStatus": "unknown",
+      "dcterms:title": "Pantvangivõtmise vastase rahvusvahelise konventsiooniga ühinemise seadus",
+      "estleg:contentStatus": "structuredBody",
+      "dcterms:source": {
+        "@id": "https://www.riigiteataja.ee/akt/27360.xml"
+      },
+      "owl:sameAs": {
+        "@id": "https://www.riigiteataja.ee/akt/27360.xml"
+      },
+      "estleg:kehtiv": {
+        "@value": "2026-05-24",
+        "@type": "xsd:date"
+      },
       "dcterms:subject": [
         {
           "@id": "http://eurovoc.europa.eu/0411"
         },
         {
+          "@id": "http://eurovoc.europa.eu/2431"
+        },
+        {
           "@id": "http://eurovoc.europa.eu/2446"
         }
-      ]
+      ],
+      "estleg:temporalStatus": "unknown"
     },
     {
-      "@id": "estleg:LegalProvision_PVRKU",
+      "@id": "estleg:LegalProvision_pantvangivotmise_vastase_rahvusvahelise_konventsiooniga_uhinemise_seadus",
       "@type": [
         "owl:Class"
       ],
@@ -40,28 +55,65 @@
       }
     },
     {
+      "@id": "estleg:PVRKU_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": "Pantvangivõtmise vastase rahvusvahelise konventsiooniga ühinemise seadus teemaskeem",
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_PVRKU_default"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Cluster_PVRKU_default",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": "§1–1 Lepingu sätted",
+      "skos:prefLabel": "§1–1 Lepingu sätted",
+      "skos:inScheme": {
+        "@id": "estleg:PVRKU_TopicScheme"
+      },
+      "estleg:provisionCount": 1
+    },
+    {
       "@id": "estleg:PVRKU_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_PVRKU"
+        "estleg:LegalProvision_pantvangivotmise_vastase_rahvusvahelise_konventsiooniga_uhinemise_seadus"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1.",
+      "rdfs:label": "§ 1. [Ühineda juurdelisatud pantvangivõtmise vastase rahvusvahelise konventsiooniga./7...]",
       "estleg:sourceAct": "Pantvangivõtmise vastase rahvusvahelise konventsiooniga ühinemise seadus",
       "estleg:summary": "Ühineda juurdelisatud pantvangivõtmise vastase rahvusvahelise konventsiooniga./78551, mis on sõlmitud 1979. aasta 17. detsembril New Yorgis.<table border=\"0\" width=\"90%\"> <tbody><tr> <td width=\"60%\"> </td> <td width=\"40%\"> <strong>Riigikogu esimees Toomas SAVI</strong> </td> </tr> </tbody></table> Ühineda juurdelisatud , mis on sõlmitud 1979. aasta 17. detsembril New Yorgis.",
+      "estleg:legalText": "Ühineda juurdelisatud , mis on sõlmitud 1979. aasta 17. detsembril New Yorgis.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_PVRKU_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:PVRKU_Par_1_Lg_Unknown_1"
+        }
+      ],
+      "estleg:targetGroup": [
+        "public_body",
+        "official"
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_riigikogu"
+        }
+      ],
+      "estleg:competenceType": "general",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:RTKMPR_Par_3",
           "estleg:similarityScore": {
             "@value": "0.4",
-            "@type": "xsd:decimal"
-          },
-          "estleg:similarityStatus": "candidate"
-        },
-        {
-          "@id": "estleg:RTU_Par_2",
-          "estleg:similarityScore": {
-            "@value": "0.36",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
@@ -83,24 +135,34 @@
           "estleg:similarityStatus": "candidate"
         },
         {
-          "@id": "estleg:UPKLR_5_Par_4",
+          "@id": "estleg:rahvusvahelise_uute_taimesortide_kaitse__Par_2",
           "estleg:similarityScore": {
-            "@value": "0.344",
+            "@value": "0.4",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:toostuslike_suuronnetuste_arahoidmise_ko_Par_2",
+          "estleg:similarityScore": {
+            "@value": "0.333",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
         }
+      ]
+    },
+    {
+      "@id": "estleg:PVRKU_Par_1_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:targetGroup": [
-        "public_body",
-        "official"
-      ],
-      "estleg:competentAuthority": [
-        {
-          "@id": "estleg:Institution_riigikogu"
-        }
-      ],
-      "estleg:competenceType": "general"
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Ühineda juurdelisatud , mis on sõlmitud 1979. aasta 17. detsembril New Yorgis.",
+      "estleg:parentProvision": {
+        "@id": "estleg:PVRKU_Par_1"
+      }
     }
   ]
 }

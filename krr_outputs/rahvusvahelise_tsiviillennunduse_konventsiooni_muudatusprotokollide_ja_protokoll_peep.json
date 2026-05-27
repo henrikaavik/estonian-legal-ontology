@@ -6,20 +6,31 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
   },
   "@graph": [
     {
       "@id": "estleg:RTKMPR_Map_2026",
       "@type": [
+        "owl:Ontology",
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "rdfs:label": "Rahvusvahelise tsiviillennunduse konventsiooni muudatusprotokollide ja protokolli ratifitseerimise seadus teemakaardistus",
       "dc:source": "Rahvusvahelise tsiviillennunduse konventsiooni muudatusprotokollide ja protokolli ratifitseerimise seadus",
-      "estleg:temporalStatus": "unknown",
+      "dcterms:title": "Rahvusvahelise tsiviillennunduse konventsiooni muudatusprotokollide ja protokolli ratifitseerimise seadus",
+      "estleg:contentStatus": "structuredBody",
+      "dcterms:source": {
+        "@id": "https://www.riigiteataja.ee/akt/26592.xml"
+      },
+      "owl:sameAs": {
+        "@id": "https://www.riigiteataja.ee/akt/26592.xml"
+      },
+      "estleg:kehtiv": {
+        "@value": "2026-05-24",
+        "@type": "xsd:date"
+      },
       "dcterms:subject": [
         {
           "@id": "http://eurovoc.europa.eu/0411"
@@ -36,10 +47,11 @@
         {
           "@id": "http://eurovoc.europa.eu/2446"
         }
-      ]
+      ],
+      "estleg:temporalStatus": "unknown"
     },
     {
-      "@id": "estleg:LegalProvision_RTKMPR",
+      "@id": "estleg:LegalProvision_rahvusvahelise_tsiviillennunduse_konventsiooni_muudatusprotokollide_ja_protokoll",
       "@type": [
         "owl:Class"
       ],
@@ -49,20 +61,87 @@
       }
     },
     {
+      "@id": "estleg:RTKMPR_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": "Rahvusvahelise tsiviillennunduse konventsiooni muudatusprotokollide ja protokolli ratifitseerimise seadus teemaskeem",
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_RTKMPR_default"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Cluster_RTKMPR_default",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": "§1–3 Lepingu sätted",
+      "skos:prefLabel": "§1–3 Lepingu sätted",
+      "skos:inScheme": {
+        "@id": "estleg:RTKMPR_TopicScheme"
+      },
+      "estleg:provisionCount": 3
+    },
+    {
       "@id": "estleg:RTKMPR_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RTKMPR"
+        "estleg:LegalProvision_rahvusvahelise_tsiviillennunduse_konventsiooni_muudatusprotokollide_ja_protokoll"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1.",
+      "rdfs:label": "§ 1. [Ratifitseerida juurdelisatud rahvusvahelise tsiviillennunduse konventsiooni muud...]",
       "estleg:sourceAct": "Rahvusvahelise tsiviillennunduse konventsiooni muudatusprotokollide ja protokolli ratifitseerimise seadus",
       "estleg:summary": "Ratifitseerida juurdelisatud rahvusvahelise tsiviillennunduse konventsiooni muudatusprotokoll, mis on koostatud 1995. aasta 29. septembril Montrealis./78283 . Ratifitseerida juurdelisatud",
+      "estleg:legalText": "Ratifitseerida juurdelisatud",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RTKMPR_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RTKMPR_Par_1_Lg_Unknown_1"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
-          "@id": "estleg:Rahvusvaheliste_huvedude_reeg_Par_3",
+          "@id": "estleg:RORUKSPHPLNN_Par_3",
           "estleg:similarityScore": {
             "@value": "0.316",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:rahvusvahelise_tsiviillennunduse_konvent_Par_1",
+          "estleg:similarityScore": {
+            "@value": "0.308",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:rahvusvahelise_tsiviillennunduse_konvent_Par_2",
+          "estleg:similarityScore": {
+            "@value": "0.308",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:ulemaailmse_postiliidu_addis_abeba_erako_Par_1",
+          "estleg:similarityScore": {
+            "@value": "0.308",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:ulemaailmse_postiliidu_addis_abeba_erako_Par_2",
+          "estleg:similarityScore": {
+            "@value": "0.308",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
@@ -70,42 +149,100 @@
       ]
     },
     {
+      "@id": "estleg:RTKMPR_Par_1_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Ratifitseerida juurdelisatud",
+      "estleg:parentProvision": {
+        "@id": "estleg:RTKMPR_Par_1"
+      }
+    },
+    {
       "@id": "estleg:RTKMPR_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_RTKMPR"
+        "estleg:LegalProvision_rahvusvahelise_tsiviillennunduse_konventsiooni_muudatusprotokollide_ja_protokoll"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2.",
+      "rdfs:label": "§ 2. [Ratifitseerida juurdelisatud rahvusvahelise tsiviillennunduse konventsiooni muud...]",
       "estleg:sourceAct": "Rahvusvahelise tsiviillennunduse konventsiooni muudatusprotokollide ja protokolli ratifitseerimise seadus",
-      "estleg:summary": "Ratifitseerida juurdelisatud rahvusvahelise tsiviillennunduse konventsiooni muudatusprotokoll, mis on koostatud 1998. aasta 1. oktoobril Montrealis./78284 . Ratifitseerida juurdelisatud"
-    },
-    {
-      "@id": "estleg:RTKMPR_Par_3",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_RTKMPR"
+      "estleg:summary": "Ratifitseerida juurdelisatud rahvusvahelise tsiviillennunduse konventsiooni muudatusprotokoll, mis on koostatud 1998. aasta 1. oktoobril Montrealis./78284 . Ratifitseerida juurdelisatud",
+      "estleg:legalText": "Ratifitseerida juurdelisatud",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RTKMPR_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RTKMPR_Par_2_Lg_Unknown_1"
+        }
       ],
-      "estleg:paragrahv": "§ 3.",
-      "rdfs:label": "§ 3.",
-      "estleg:sourceAct": "Rahvusvahelise tsiviillennunduse konventsiooni muudatusprotokollide ja protokolli ratifitseerimise seadus",
-      "estleg:summary": "Ratifitseerida juurdelisatud protokoll Chicago 1944. aasta rahvusvahelise tsiviillennunduse konventsiooni autentsete kuuekeelsete tekstide kohta./78285, mis on koostatud 1998. aasta 1. oktoobril Montrealis.<table border=\"0\" width=\"90%\"> <tbody><tr> <td width=\"60%\"> </td> <td width=\"40%\"> <br/> <strong>Riigikogu esimees Toomas SAVI</strong> </td> </tr> </tbody></table> Ratifitseerida juurdelisatud , mis on koostatud 1998. aasta 1. oktoobril Montrealis.",
       "estleg:semanticallySimilarTo": [
         {
-          "@id": "estleg:Reisipraam_Estonia_katastroo_Par_4",
+          "@id": "estleg:rahvusvahelise_tsiviillennunduse_konvent_Par_1",
           "estleg:similarityScore": {
-            "@value": "0.321",
+            "@value": "0.417",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
         },
         {
-          "@id": "estleg:UPKLR_5_Par_4",
+          "@id": "estleg:rahvusvahelise_tsiviillennunduse_konvent_Par_2",
           "estleg:similarityScore": {
-            "@value": "0.382",
+            "@value": "0.417",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:ulemaailmse_postiliidu_ar_riy_i_erakorra_Par_1",
+          "estleg:similarityScore": {
+            "@value": "0.312",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:ulemaailmse_postiliidu_ar_riy_i_erakorra_Par_2",
+          "estleg:similarityScore": {
+            "@value": "0.312",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:RTKMPR_Par_2_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Ratifitseerida juurdelisatud",
+      "estleg:parentProvision": {
+        "@id": "estleg:RTKMPR_Par_2"
+      }
+    },
+    {
+      "@id": "estleg:RTKMPR_Par_3",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_rahvusvahelise_tsiviillennunduse_konventsiooni_muudatusprotokollide_ja_protokoll"
+      ],
+      "estleg:paragrahv": "§ 3.",
+      "rdfs:label": "§ 3. [Ratifitseerida juurdelisatud protokoll Chicago 1944. aasta rahvusvahelise tsivii...]",
+      "estleg:sourceAct": "Rahvusvahelise tsiviillennunduse konventsiooni muudatusprotokollide ja protokolli ratifitseerimise seadus",
+      "estleg:summary": "Ratifitseerida juurdelisatud protokoll Chicago 1944. aasta rahvusvahelise tsiviillennunduse konventsiooni autentsete kuuekeelsete tekstide kohta./78285, mis on koostatud 1998. aasta 1. oktoobril Montrealis.<table border=\"0\" width=\"90%\"> <tbody><tr> <td width=\"60%\"> </td> <td width=\"40%\"> <br/> <strong>Riigikogu esimees Toomas SAVI</strong> </td> </tr> </tbody></table> Ratifitseerida juurdelisatud , mis on koostatud 1998. aasta 1. oktoobril Montrealis.",
+      "estleg:legalText": "Ratifitseerida juurdelisatud , mis on koostatud 1998. aasta 1. oktoobril Montrealis.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_RTKMPR_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:RTKMPR_Par_3_Lg_Unknown_1"
         }
       ],
       "estleg:targetGroup": [
@@ -117,7 +254,53 @@
           "@id": "estleg:Institution_riigikogu"
         }
       ],
-      "estleg:competenceType": "general"
+      "estleg:competenceType": "general",
+      "estleg:semanticallySimilarTo": [
+        {
+          "@id": "estleg:Reisipraam_Estonia_katastroo_Par_4",
+          "estleg:similarityScore": {
+            "@value": "0.321",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:rahvusvahelise_uute_taimesortide_kaitse__Par_2",
+          "estleg:similarityScore": {
+            "@value": "0.314",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:toostuslike_suuronnetuste_arahoidmise_ko_Par_2",
+          "estleg:similarityScore": {
+            "@value": "0.333",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        },
+        {
+          "@id": "estleg:ulemaarase_kahjustava_voi_purustava_toimega_tavare_Par_5",
+          "estleg:similarityScore": {
+            "@value": "0.318",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:RTKMPR_Par_3_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Ratifitseerida juurdelisatud , mis on koostatud 1998. aasta 1. oktoobril Montrealis.",
+      "estleg:parentProvision": {
+        "@id": "estleg:RTKMPR_Par_3"
+      }
     }
   ]
 }

@@ -120,6 +120,25 @@ jobs:
       - name: Install dependencies
         run: python3 -m pip install -e ".[dev]"
 
+      - name: Pull required LFS artifacts
+        run: |
+          paths=(
+            krr_outputs/combined_ontology.jsonld
+            krr_outputs/similarity_index.json
+            krr_outputs/eurovoc_classification.json
+            krr_outputs/annotations/oiguskantsler_seisukohad.jsonld
+            krr_outputs/curia/curia_combined.jsonld
+            krr_outputs/eurlex/eurlex_combined.jsonld
+          )
+          include=$(IFS=,; echo "${paths[*]}")
+          git lfs pull --include="$include" --exclude=""
+          for path in "${paths[@]}"; do
+            if head -n 1 "$path" | grep -qx 'version https://git-lfs.github.com/spec/v1'; then
+              echo "::error file=$path::Git LFS artifact is still a pointer; check LFS bandwidth/quota"
+              exit 1
+            fi
+          done
+
       - name: Validate JSON-LD hygiene
         run: python3 scripts/validate_all.py
 
@@ -159,6 +178,16 @@ jobs:
       - name: Install dependencies
         run: python3 -m pip install -e ".[dev]"
 
+      - name: Pull sidecar LFS artifacts
+        if: matrix.bucket == 'sidecars'
+        run: |
+          path=krr_outputs/annotations/oiguskantsler_seisukohad.jsonld
+          git lfs pull --include="$path" --exclude=""
+          if head -n 1 "$path" | grep -qx 'version https://git-lfs.github.com/spec/v1'; then
+            echo "::error file=$path::Git LFS artifact is still a pointer; check LFS bandwidth/quota"
+            exit 1
+          fi
+
       - name: Run targeted SHACL validation
         env:
           BUCKET: ${{ matrix.bucket }}
@@ -179,6 +208,23 @@ jobs:
 
       - name: Install dependencies
         run: python3 -m pip install -e ".[dev]"
+
+      - name: Pull public-load LFS artifacts
+        run: |
+          paths=(
+            krr_outputs/combined_ontology.jsonld
+            krr_outputs/annotations/oiguskantsler_seisukohad.jsonld
+            krr_outputs/curia/curia_combined.jsonld
+            krr_outputs/eurlex/eurlex_combined.jsonld
+          )
+          include=$(IFS=,; echo "${paths[*]}")
+          git lfs pull --include="$include" --exclude=""
+          for path in "${paths[@]}"; do
+            if head -n 1 "$path" | grep -qx 'version https://git-lfs.github.com/spec/v1'; then
+              echo "::error file=$path::Git LFS artifact is still a pointer; check LFS bandwidth/quota"
+              exit 1
+            fi
+          done
 
       - name: Run Seadusloome zero-warning SHACL gate
         run: python3 scripts/validate_seadusloome_sync.py --report seadusloome-shacl-report.ttl

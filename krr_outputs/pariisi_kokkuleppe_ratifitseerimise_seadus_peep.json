@@ -6,23 +6,49 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
   },
   "@graph": [
     {
       "@id": "estleg:PKR_Map_2026",
       "@type": [
+        "owl:Ontology",
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "rdfs:label": "Pariisi kokkuleppe ratifitseerimise seadus teemakaardistus",
       "dc:source": "Pariisi kokkuleppe ratifitseerimise seadus",
-      "estleg:temporalStatus": "unknown"
+      "dcterms:title": "Pariisi kokkuleppe ratifitseerimise seadus",
+      "estleg:contentStatus": "structuredBody",
+      "dcterms:source": {
+        "@id": "https://www.riigiteataja.ee/akt/201112016002.xml"
+      },
+      "owl:sameAs": {
+        "@id": "https://www.riigiteataja.ee/akt/201112016002.xml"
+      },
+      "estleg:kehtiv": {
+        "@value": "2026-05-24",
+        "@type": "xsd:date"
+      },
+      "estleg:temporalStatus": "unknown",
+      "estleg:affectedBy": [
+        {
+          "@id": "estleg:Draft_HTM22_0715"
+        },
+        {
+          "@id": "estleg:Draft_SIM18_0016"
+        },
+        {
+          "@id": "estleg:Draft_MKM17_0424"
+        },
+        {
+          "@id": "estleg:Draft_MKM14_0847"
+        }
+      ]
     },
     {
-      "@id": "estleg:LegalProvision_PKR",
+      "@id": "estleg:LegalProvision_pariisi_kokkuleppe_ratifitseerimise_seadus",
       "@type": [
         "owl:Class"
       ],
@@ -32,15 +58,45 @@
       }
     },
     {
+      "@id": "estleg:PKR_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": "Pariisi kokkuleppe ratifitseerimise seadus teemaskeem",
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_PKR_default"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Cluster_PKR_default",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": "§1–2 Pariisi kokkuleppe ratifitseerimise seadus",
+      "skos:prefLabel": "§1–2 Pariisi kokkuleppe ratifitseerimise seadus",
+      "skos:inScheme": {
+        "@id": "estleg:PKR_TopicScheme"
+      },
+      "estleg:provisionCount": 2
+    },
+    {
       "@id": "estleg:PKR_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_PKR"
+        "estleg:LegalProvision_pariisi_kokkuleppe_ratifitseerimise_seadus"
       ],
       "estleg:paragrahv": "§ 1.",
-      "rdfs:label": "§ 1.",
+      "rdfs:label": "§ 1. [Ratifitseerida juurdelisatud , mis on koostatud 2015. aasta 12. detsembril Parii...]",
       "estleg:sourceAct": "Pariisi kokkuleppe ratifitseerimise seadus",
       "estleg:summary": "Ratifitseerida juurdelisatud , mis on koostatud 2015. aasta 12. detsembril Pariisis.",
+      "estleg:legalText": "Ratifitseerida juurdelisatud , mis on koostatud 2015. aasta 12. detsembril Pariisis.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_PKR_default"
+      },
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:PLR_Par_1",
@@ -59,25 +115,25 @@
           "estleg:similarityStatus": "candidate"
         },
         {
-          "@id": "estleg:RTKMPR_Par_1",
+          "@id": "estleg:rahvusvahelise_tsiviillennunduse_konvent_Par_1",
           "estleg:similarityScore": {
-            "@value": "0.333",
+            "@value": "0.444",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
         },
         {
-          "@id": "estleg:RTKMPR_Par_2",
+          "@id": "estleg:rahvusvahelise_tsiviillennunduse_konvent_Par_2",
           "estleg:similarityScore": {
-            "@value": "0.333",
+            "@value": "0.444",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
         },
         {
-          "@id": "estleg:TVAKKU_Par_1",
+          "@id": "estleg:ukraina_kahjunouete_rahvusvahelise_komis_Par_1",
           "estleg:similarityScore": {
-            "@value": "0.308",
+            "@value": "0.444",
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
@@ -88,12 +144,16 @@
       "@id": "estleg:PKR_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_PKR"
+        "estleg:LegalProvision_pariisi_kokkuleppe_ratifitseerimise_seadus"
       ],
       "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2.",
+      "rdfs:label": "§ 2. [Seadus jõustub Riigi Teatajas avaldamisele järgneval päeval.]",
       "estleg:sourceAct": "Pariisi kokkuleppe ratifitseerimise seadus",
-      "estleg:summary": "Seadus jõustub Riigi Teatajas avaldamisele järgneval päeval."
+      "estleg:summary": "Seadus jõustub Riigi Teatajas avaldamisele järgneval päeval.",
+      "estleg:legalText": "Seadus jõustub Riigi Teatajas avaldamisele järgneval päeval.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_PKR_default"
+      }
     }
   ]
 }

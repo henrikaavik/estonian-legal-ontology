@@ -6,31 +6,46 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
   },
   "@graph": [
     {
       "@id": "estleg:TRKKU_Map_2026",
       "@type": [
+        "owl:Ontology",
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "rdfs:label": "Täiskasvanute rahvusvahelise kaitse konventsiooniga ühinemise seadus teemakaardistus",
       "dc:source": "Täiskasvanute rahvusvahelise kaitse konventsiooniga ühinemise seadus",
-      "estleg:temporalStatus": "unknown",
+      "dcterms:title": "Täiskasvanute rahvusvahelise kaitse konventsiooniga ühinemise seadus",
+      "estleg:contentStatus": "structuredBody",
+      "dcterms:source": {
+        "@id": "https://www.riigiteataja.ee/akt/215112010001.xml"
+      },
+      "owl:sameAs": {
+        "@id": "https://www.riigiteataja.ee/akt/215112010001.xml"
+      },
+      "estleg:kehtiv": {
+        "@value": "2026-05-24",
+        "@type": "xsd:date"
+      },
       "dcterms:subject": [
         {
           "@id": "http://eurovoc.europa.eu/0411"
         },
         {
+          "@id": "http://eurovoc.europa.eu/2431"
+        },
+        {
           "@id": "http://eurovoc.europa.eu/2446"
         }
-      ]
+      ],
+      "estleg:temporalStatus": "unknown"
     },
     {
-      "@id": "estleg:LegalProvision_TRKKU",
+      "@id": "estleg:LegalProvision_taiskasvanute_rahvusvahelise_kaitse_konventsiooniga_uhinemise_seadus",
       "@type": [
         "owl:Class"
       ],
@@ -40,15 +55,50 @@
       }
     },
     {
+      "@id": "estleg:TRKKU_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": "Täiskasvanute rahvusvahelise kaitse konventsiooniga ühinemise seadus teemaskeem",
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_TRKKU_default"
+        }
+      ]
+    },
+    {
+      "@id": "estleg:Cluster_TRKKU_default",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:TopicCluster",
+        "skos:Concept"
+      ],
+      "rdfs:label": "§1–4 Lepingu sätted",
+      "skos:prefLabel": "§1–4 Lepingu sätted",
+      "skos:inScheme": {
+        "@id": "estleg:TRKKU_TopicScheme"
+      },
+      "estleg:provisionCount": 4
+    },
+    {
       "@id": "estleg:TRKKU_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TRKKU"
+        "estleg:LegalProvision_taiskasvanute_rahvusvahelise_kaitse_konventsiooniga_uhinemise_seadus"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. Konventsiooniga ühinemine",
       "estleg:sourceAct": "Täiskasvanute rahvusvahelise kaitse konventsiooniga ühinemise seadus",
       "estleg:summary": "Ühineda juurdelisatud täiskasvanute rahvusvahelise kaitse konventsiooniga215112010002, mille Haagi Rahvusvahelise Eraõiguse Konverents on vastu võtnud 2000. aasta 13. jaanuaril Haagis. Ühineda juurdelisatud , mille Haagi Rahvusvahelise Eraõiguse Konverents on vastu võtnud 2000. aasta 13. jaanuaril Haagis.",
+      "estleg:legalText": "Ühineda juurdelisatud , mille Haagi Rahvusvahelise Eraõiguse Konverents on vastu võtnud 2000. aasta 13. jaanuaril Haagis.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TRKKU_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:TRKKU_Par_1_Lg_Unknown_1"
+        }
+      ],
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:VKKLKAPKOATK_Par_1",
@@ -61,15 +111,42 @@
       ]
     },
     {
+      "@id": "estleg:TRKKU_Par_1_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Ühineda juurdelisatud , mille Haagi Rahvusvahelise Eraõiguse Konverents on vastu võtnud 2000. aasta 13. jaanuaril Haagis.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TRKKU_Par_1"
+      }
+    },
+    {
       "@id": "estleg:TRKKU_Par_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TRKKU"
+        "estleg:LegalProvision_taiskasvanute_rahvusvahelise_kaitse_konventsiooniga_uhinemise_seadus"
       ],
       "estleg:paragrahv": "§ 2.",
       "rdfs:label": "§ 2. Keskasutus",
       "estleg:sourceAct": "Täiskasvanute rahvusvahelise kaitse konventsiooniga ühinemise seadus",
       "estleg:summary": "Konventsiooni artikli 28 lõike 1 alusel määratakse keskasutuseks Justiitsministeerium. Konventsiooni artikli 28 lõike 1 alusel määratakse keskasutuseks Justiitsministeerium.",
+      "estleg:legalText": "Konventsiooni artikli 28 lõike 1 alusel määratakse keskasutuseks Justiitsministeerium.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TRKKU_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:TRKKU_Par_2_Lg_Unknown_1"
+        }
+      ],
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_justiitsministeerium"
+        }
+      ],
+      "estleg:competenceType": "general",
       "estleg:semanticallySimilarTo": [
         {
           "@id": "estleg:TKKKDVKKU_Par_2",
@@ -94,25 +171,51 @@
             "@type": "xsd:decimal"
           },
           "estleg:similarityStatus": "candidate"
-        }
-      ],
-      "estleg:competentAuthority": [
+        },
         {
-          "@id": "estleg:Institution_justiitsministeerium"
+          "@id": "estleg:tsiviil_ja_kaubandusasjades_valisriigis__Par_2",
+          "estleg:similarityScore": {
+            "@value": "0.375",
+            "@type": "xsd:decimal"
+          },
+          "estleg:similarityStatus": "candidate"
         }
+      ]
+    },
+    {
+      "@id": "estleg:TRKKU_Par_2_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:competenceType": "general"
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Konventsiooni artikli 28 lõike 1 alusel määratakse keskasutuseks Justiitsministeerium.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TRKKU_Par_2"
+      }
     },
     {
       "@id": "estleg:TRKKU_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TRKKU"
+        "estleg:LegalProvision_taiskasvanute_rahvusvahelise_kaitse_konventsiooniga_uhinemise_seadus"
       ],
       "estleg:paragrahv": "§ 3.",
       "rdfs:label": "§ 3. Reservatsioon",
       "estleg:sourceAct": "Täiskasvanute rahvusvahelise kaitse konventsiooniga ühinemise seadus",
       "estleg:summary": "Ühinemisel teha artikli 56 alusel artikli 51 lõike 2 suhtes reservatsioon, et Eesti Vabariigi keskasutusele või muule ametiasutusele originaalkeeles saadetud materjalidele peab olema lisatud tõlge inglise keelde, kui tõlge eesti keelde ei ole võimalik. Ühinemisel teha artikli 56 alusel artikli 51 lõike 2 suhtes reservatsioon, et Eesti Vabariigi keskasutusele või muule ametiasutusele originaalkeeles saadetud materjalidele peab olema lisatud tõlge inglise keelde, kui tõlge eesti keelde ei ole võim",
+      "estleg:legalText": "Ühinemisel teha artikli 56 alusel artikli 51 lõike 2 suhtes reservatsioon, et Eesti Vabariigi keskasutusele või muule ametiasutusele originaalkeeles saadetud materjalidele peab olema lisatud tõlge inglise keelde, kui tõlge eesti keelde ei ole võimalik.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TRKKU_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:TRKKU_Par_3_Lg_Unknown_1"
+        }
+      ],
+      "estleg:targetGroup": [
+        "public_body"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
@@ -125,23 +228,53 @@
           },
           "estleg:similarityStatus": "candidate"
         }
-      ],
-      "estleg:targetGroup": [
-        "public_body"
       ]
+    },
+    {
+      "@id": "estleg:TRKKU_Par_3_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Ühinemisel teha artikli 56 alusel artikli 51 lõike 2 suhtes reservatsioon, et Eesti Vabariigi keskasutusele või muule ametiasutusele originaalkeeles saadetud materjalidele peab olema lisatud tõlge inglise keelde, kui tõlge eesti keelde ei ole võimalik.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TRKKU_Par_3"
+      }
     },
     {
       "@id": "estleg:TRKKU_Par_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_TRKKU"
+        "estleg:LegalProvision_taiskasvanute_rahvusvahelise_kaitse_konventsiooniga_uhinemise_seadus"
       ],
       "estleg:paragrahv": "§ 4.",
       "rdfs:label": "§ 4. Deklaratsioon",
       "estleg:sourceAct": "Täiskasvanute rahvusvahelise kaitse konventsiooniga ühinemise seadus",
       "estleg:summary": "Deklareerida konventsiooni artikli 32 lõike 2 alusel, et sama artikli lõike 1 alusel esitatud teabetaotlused tuleb edastada keskasutuse kaudu. Deklareerida konventsiooni artikli 32 lõike 2 alusel, et sama artikli lõike 1 alusel esitatud teabetaotlused tuleb edastada keskasutuse kaudu.",
+      "estleg:legalText": "Deklareerida konventsiooni artikli 32 lõike 2 alusel, et sama artikli lõike 1 alusel esitatud teabetaotlused tuleb edastada keskasutuse kaudu.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_TRKKU_default"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:TRKKU_Par_4_Lg_Unknown_1"
+        }
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
+      }
+    },
+    {
+      "@id": "estleg:TRKKU_Par_4_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Deklareerida konventsiooni artikli 32 lõike 2 alusel, et sama artikli lõike 1 alusel esitatud teabetaotlused tuleb edastada keskasutuse kaudu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:TRKKU_Par_4"
       }
     }
   ]

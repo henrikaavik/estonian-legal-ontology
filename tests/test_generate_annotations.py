@@ -151,6 +151,13 @@ class TestLawIndex:
         idx = build_law_index(krr)
         assert idx.find_in_title("Karistusseadustiku § 381 ülaindeksiga 1 põhiseaduspärasus") == []
 
+    def test_unmapped_law_abbrev_falls_back_to_iri_prefix(self, tmp_path: Path):
+        krr = tmp_path / "krr_outputs"
+        krr.mkdir(parents=True, exist_ok=True)
+        _write_peep(krr, "testiseadus", "estleg:TEST_Map_2026", title="Testiseadus")
+        idx = build_law_index(krr)
+        assert idx.abbrev("estleg:TEST_Map_2026") == "TEST"
+
 
 # ---------------------------------------------------------------------------
 # Curated-seed source parsing
@@ -206,6 +213,19 @@ class TestListingParser:
         assert "%20" not in second.opinion_id and "20" not in second.opinion_id.split("_")
         assert second.date_iso == "2024-02-04"
 
+    def test_duplicate_scrape_ids_get_stable_source_hash_suffix(self):
+        ops = [
+            Opinion("same", "Same title", "https://www.oiguskantsler.ee/2026/same.pdf", None, (), ""),
+            Opinion("same", "Same title", "https://www.oiguskantsler.ee/2025/same.pdf", None, (), ""),
+            Opinion("unique", "Unique title", "https://www.oiguskantsler.ee/unique.pdf", None, (), ""),
+        ]
+        out = ga.disambiguate_duplicate_opinion_ids(ops)
+        assert len({op.opinion_id for op in out}) == 3
+        assert out[0].opinion_id.startswith("same_")
+        assert out[1].opinion_id.startswith("same_")
+        assert out[0].opinion_id != out[1].opinion_id
+        assert out[2].opinion_id == "unique"
+
 
 # ---------------------------------------------------------------------------
 # Annotation synthesis (one per (opinion, resolved law); skip + record otherwise)
@@ -236,6 +256,11 @@ class TestAnnotationTextTruncation:
             ("nt. avalduse läbivaatamist", "hiljem"),
             ("jt. menetlusosalisi", "eraldi"),
             ("nn. halduspraktikat", "edaspidi"),
+            ("määruse nr 12. järgi", "kohaldatakse"),
+            ("dokumendi lk 5. alapunkt", "selgitab"),
+            ("ELTL art 12. lõige", "täpsustab"),
+            ("seaduse ptk 3. jagu", "reguleerib"),
+            ("seaduse osa 2. punkt", "sätestab"),
         ],
     )
     def test_estonian_citation_abbreviation_boundary_is_not_used(
@@ -252,6 +277,14 @@ class TestAnnotationTextTruncation:
 
         assert f"{fragment} {continuation}" in result
         assert result.endswith(f"{continuation}…")
+
+    def test_uppercase_continuation_after_ordinal_is_real_boundary(self):
+        text = ("A" * 70) + " § 47 lg 1. P 3 alustab uut lauset " + ("B" * 80)
+        max_chars = text.index("alustab") + len("alustab")
+
+        result = ga._truncate_to_sentence(text, max_chars)
+
+        assert result.endswith("lg 1.")
 
     def test_falls_back_to_prior_valid_sentence_before_false_citation_boundary(self):
         text = (
@@ -297,6 +330,25 @@ class TestBuildAnnotations:
         # Distinct @ids (the per-law abbrev suffix).
         assert len({n["@id"] for n in res.annotations}) == 2
 
+    def test_multi_law_opinion_disambiguates_reused_abbrev_suffixes(self, tmp_path: Path):
+        krr = tmp_path / "krr_outputs"
+        krr.mkdir(parents=True, exist_ok=True)
+        _write_peep(krr, "esimene_seadus", "estleg:SAME_Map_2026", title="Esimene seadus")
+        _write_peep(krr, "teine_seadus", "estleg:SAME_2_Map_2026", title="Teine seadus")
+        idx = build_law_index(krr)
+        op = Opinion(
+            "same-prefix-laws",
+            "Esimese seaduse ja teise seaduse koostoime",
+            "https://x/same",
+            "2024-05-01",
+            ("Esimene seadus", "Teine seadus"),
+            "Tõlgenduslik seisukoht.",
+        )
+        res = build_annotations_for_opinion(op, idx)
+        assert len(res.annotations) == 2
+        assert len({n["@id"] for n in res.annotations}) == 2
+        assert all("_SAME_" in n["@id"] for n in res.annotations)
+
     def test_single_law_opinion_iri_has_no_abbrev_suffix(self, tmp_path: Path):
         krr = tmp_path / "krr_outputs"
         _fixture_corpus(krr)
@@ -341,6 +393,23 @@ class TestBuildAnnotations:
         assert res.annotations == []
         assert res.resolved_iris == []
         assert res.unresolved_names  # records "no law name resolvable from title"
+
+    def test_scrape_opinion_resolves_law_from_pdf_body_text(self, tmp_path: Path):
+        krr = tmp_path / "krr_outputs"
+        _fixture_corpus(krr)
+        idx = build_law_index(krr)
+        op = Opinion(
+            "body-only",
+            "Üldine õiguskantsleri seisukoht",
+            "https://x/body-only.pdf",
+            "2024-02-04",
+            (),
+            "Selgituses käsitletakse võlaõigusseaduse § 40 kohaldamist tarbijale.",
+        )
+        res = build_annotations_for_opinion(op, idx)
+        assert len(res.annotations) == 1
+        assert res.annotations[0]["estleg:annotates"] == {"@id": "estleg:VOS_Map_2026"}
+        assert "võlaõigusseaduse § 40" in res.annotations[0]["estleg:annotationText"]
 
     def test_annotates_targets_resolve_to_corpus_nodes(self, tmp_path: Path):
         # Every estleg:annotates target must be a real node @id somewhere in the fixture corpus.
@@ -495,19 +564,30 @@ def test_run_limit_zero_writes_zeroed_coverage_and_no_sidecar(tmp_path: Path):
     assert cov["files_processed"] == 0 and cov["triples_emitted"] == 0
 
 
-def test_run_scrape_does_not_hit_network_with_limit_zero(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
+def test_run_scrape_limit_zero_fetches_until_listing_exhausted(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
     krr = tmp_path / "krr_outputs"
     _fixture_corpus(krr)
+    pages = {ga.SEISUKOHAD_LISTING_URL: _LISTING_HTML}
+    seen: list[str] = []
 
-    def _boom(*a, **k):  # noqa: ANN001
-        raise AssertionError("--limit 0 must not hit the network")
+    def _fake_fetch(url, **k):  # noqa: ANN001
+        seen.append(url)
+        return pages.get(url)  # page 0 only; page 1 returns None -> stop
 
-    monkeypatch.setattr(ga, "_fetch_url", _boom)
+    monkeypatch.setattr(ga, "_fetch_url", _fake_fetch)
+    out_path = krr / "annotations" / "oiguskantsler_seisukohad.jsonld"
+    cov_path = krr / "reports" / "kov" / "extract_annotations_coverage.json"
     rc = ga.run(scrape=True, limit=0, krr_dir=krr,
-                out_path=krr / "annotations" / "oiguskantsler_seisukohad.jsonld",
-                coverage_path=krr / "reports" / "kov" / "extract_annotations_coverage.json",
+                out_path=out_path,
+                coverage_path=cov_path,
                 cache_dir=None)
     assert rc == 0
+    assert seen == [ga.SEISUKOHAD_LISTING_URL, f"{ga.SEISUKOHAD_LISTING_URL}?page=1"]
+    doc = json.loads(out_path.read_text(encoding="utf-8"))
+    ann_nodes = [n for n in doc["@graph"] if "estleg:Annotation" in n.get("@type", [])]
+    assert len(ann_nodes) == 1
+    cov = json.loads(cov_path.read_text(encoding="utf-8"))
+    assert cov["files_processed"] == 2
 
 
 def test_run_scrape_with_mocked_listing(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
@@ -574,6 +654,15 @@ def test_pdf_text_layer_probe_reports_ocr_recommendation():
     assert report["usable_text_layer_count"] == 1
     assert report["usable_text_layer_ratio"] == 0.5
     assert report["recommendation"] == "evaluate_ocr_before_full_ingestion"
+
+
+def test_normalise_pdf_text_bounds_scan_excerpt():
+    text = "Algus\n\n" + ("Õigus " * 20_000)
+
+    normalized = ga._normalise_pdf_text(text)
+
+    assert "\n" not in normalized
+    assert len(normalized) == ga.PDF_BODY_SCAN_MAX_CHARS
 
 
 def test_pdf_text_layer_probe_skips_non_pdf_urls():

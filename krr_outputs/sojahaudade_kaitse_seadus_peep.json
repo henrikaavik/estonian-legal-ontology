@@ -6,40 +6,52 @@
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "skos": "http://www.w3.org/2004/02/skos/core#"
   },
   "@graph": [
     {
       "@id": "estleg:SHKS_Map_2026",
       "@type": [
+        "owl:Ontology",
         "estleg:Act",
-        "estleg:Law",
-        "owl:Ontology"
+        "estleg:Law"
       ],
       "rdfs:label": "Sõjahaudade kaitse seadus teemakaardistus",
       "dc:source": "Sõjahaudade kaitse seadus",
-      "estleg:temporalStatus": "unknown",
+      "dcterms:title": "Sõjahaudade kaitse seadus",
+      "estleg:contentStatus": "structuredBody",
+      "dcterms:source": {
+        "@id": "https://www.riigiteataja.ee/akt/102012025076.xml"
+      },
+      "owl:sameAs": {
+        "@id": "https://www.riigiteataja.ee/akt/102012025076.xml"
+      },
+      "estleg:kehtiv": {
+        "@value": "2026-05-24",
+        "@type": "xsd:date"
+      },
       "dcterms:subject": [
         {
           "@id": "http://eurovoc.europa.eu/2431"
         },
         {
-          "@id": "http://eurovoc.europa.eu/3221"
-        },
-        {
-          "@id": "http://eurovoc.europa.eu/6006"
+          "@id": "http://eurovoc.europa.eu/2441"
         },
         {
           "@id": "http://eurovoc.europa.eu/0411"
         },
         {
           "@id": "http://eurovoc.europa.eu/5611"
+        },
+        {
+          "@id": "http://eurovoc.europa.eu/0431"
         }
-      ]
+      ],
+      "estleg:temporalStatus": "unknown"
     },
     {
-      "@id": "estleg:LegalProvision_SHKS",
+      "@id": "estleg:LegalProvision_sojahaudade_kaitse_seadus",
       "@type": [
         "owl:Class"
       ],
@@ -49,95 +61,418 @@
       }
     },
     {
+      "@id": "estleg:SHKS_TopicScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": "Sõjahaudade kaitse seadus teemaskeem",
+      "skos:hasTopConcept": [
+        {
+          "@id": "estleg:Cluster_SHKS_1"
+        },
+        {
+          "@id": "estleg:Cluster_SHKS_2"
+        },
+        {
+          "@id": "estleg:Cluster_SHKS_3"
+        },
+        {
+          "@id": "estleg:Cluster_SHKS_4"
+        },
+        {
+          "@id": "estleg:Cluster_SHKS_5"
+        }
+      ]
+    },
+    {
       "@id": "estleg:Cluster_SHKS_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§1–2 ÜLDSÄTTED"
+      "rdfs:label": "§1–2 ÜLDSÄTTED",
+      "skos:prefLabel": "§1–2 ÜLDSÄTTED",
+      "skos:inScheme": {
+        "@id": "estleg:SHKS_TopicScheme"
+      },
+      "estleg:provisionCount": 2
+    },
+    {
+      "@id": "estleg:Chapter_SHKS_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "1. peatükk – ÜLDSÄTTED",
+      "estleg:chapterNumber": "1",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_SHKS_1"
+      }
     },
     {
       "@id": "estleg:Cluster_SHKS_2",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§3–7 SÕJAHAUDADE KAITSE"
+      "rdfs:label": "§3–7 SÕJAHAUDADE KAITSE",
+      "skos:prefLabel": "§3–7 SÕJAHAUDADE KAITSE",
+      "skos:inScheme": {
+        "@id": "estleg:SHKS_TopicScheme"
+      },
+      "estleg:provisionCount": 5
+    },
+    {
+      "@id": "estleg:Chapter_SHKS_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "2. peatükk – SÕJAHAUDADE KAITSE",
+      "estleg:chapterNumber": "2",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_SHKS_2"
+      }
     },
     {
       "@id": "estleg:Cluster_SHKS_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§8–12 ÜMBERMATMISELE KUULUVAD SÄILMED, ÜMBERMATMISE OTSUSTAMINE JA KORRALDAMINE"
+      "rdfs:label": "§8–12 ÜMBERMATMISELE KUULUVAD SÄILMED, ÜMBERMATMISE OTSUSTAMINE JA KORRALDAMINE",
+      "skos:prefLabel": "§8–12 ÜMBERMATMISELE KUULUVAD SÄILMED, ÜMBERMATMISE OTSUSTAMINE JA KORRALDAMINE",
+      "skos:inScheme": {
+        "@id": "estleg:SHKS_TopicScheme"
+      },
+      "estleg:provisionCount": 5
+    },
+    {
+      "@id": "estleg:Chapter_SHKS_3",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "3. peatükk – ÜMBERMATMISELE KUULUVAD SÄILMED, ÜMBERMATMISE OTSUSTAMINE JA KORRALDAMINE",
+      "estleg:chapterNumber": "3",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_SHKS_3"
+      }
     },
     {
       "@id": "estleg:Cluster_SHKS_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§13–14 MÄLESTISEKS TUNNISTATUD HAUAGA SEOTUD ERISUSED"
+      "rdfs:label": "§13–14 MÄLESTISEKS TUNNISTATUD HAUAGA SEOTUD ERISUSED",
+      "skos:prefLabel": "§13–14 MÄLESTISEKS TUNNISTATUD HAUAGA SEOTUD ERISUSED",
+      "skos:inScheme": {
+        "@id": "estleg:SHKS_TopicScheme"
+      },
+      "estleg:provisionCount": 2
+    },
+    {
+      "@id": "estleg:Chapter_SHKS_4",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "4. peatükk – MÄLESTISEKS TUNNISTATUD HAUAGA SEOTUD ERISUSED",
+      "estleg:chapterNumber": "4",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_SHKS_4"
+      }
     },
     {
       "@id": "estleg:Cluster_SHKS_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:TopicCluster"
+        "estleg:TopicCluster",
+        "skos:Concept"
       ],
-      "rdfs:label": "§15–18 SEADUSE RAKENDAMINE"
+      "rdfs:label": "§15–18 SEADUSE RAKENDAMINE",
+      "skos:prefLabel": "§15–18 SEADUSE RAKENDAMINE",
+      "skos:inScheme": {
+        "@id": "estleg:SHKS_TopicScheme"
+      },
+      "estleg:provisionCount": 4
+    },
+    {
+      "@id": "estleg:Chapter_SHKS_5",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:Chapter"
+      ],
+      "rdfs:label": "5. peatükk – SEADUSE RAKENDAMINE",
+      "estleg:chapterNumber": "5",
+      "owl:sameAs": {
+        "@id": "estleg:Cluster_SHKS_5"
+      }
     },
     {
       "@id": "estleg:SHKS_Par_1",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_SHKS"
+        "estleg:LegalProvision_sojahaudade_kaitse_seadus"
       ],
       "estleg:paragrahv": "§ 1.",
       "rdfs:label": "§ 1. Seaduse reguleerimisala",
       "estleg:sourceAct": "Sõjahaudade kaitse seadus",
       "estleg:summary": "1 (1) Käesoleva seadusega määratakse kindlaks Eestis asuvate sõjahaudade õiguslik kaitse, korrashoid, avalik ligipääs sõjahaudadele ning sõjahaudade tähistamise kord, samuti käesolevas seaduses sätestatud kaitse eesmärgil Eestis asuvatest sõjahaudadest säilmete kalmistule ümbermatmise alused ja kord. Käesoleva seadusega määratakse kindlaks Eestis asuvate sõjahaudade õiguslik kaitse, korrashoid, avalik ligipääs sõjahaudadele ning sõjahaudade tähistamise kord, samuti käesolevas seaduses sätestatud",
-      "estleg:requestedCluster": {
-        "@id": "estleg:Cluster_SHKS_1"
-      }
-    },
-    {
-      "@id": "estleg:SHKS_Par_2",
-      "@type": [
-        "owl:NamedIndividual",
-        "estleg:LegalProvision_SHKS"
-      ],
-      "estleg:paragrahv": "§ 2.",
-      "rdfs:label": "§ 2. Mõisted",
-      "estleg:sourceAct": "Sõjahaudade kaitse seadus",
-      "estleg:summary": "Käesolevas seaduses kasutatakse mõisteid järgmises tähenduses: 1 1) sõjaohver on: – isik, kes langes relvastatud võitluses või suri selles saadud haavadesse või haigustesse ühe aasta jooksul pärast võitluses osalemist; – isik, kes hukkus okupatsioonirežiimile relvastatud vastupanu osutamisel või suri relvastatud vastupanuliikumises saadud tervisekahjustuse tõttu ühe aasta jooksul pärast vastupanuliikumises osalemist; – isik, kes langes või hukkus sõjaväeteenistuses või sellega sarnases teenistus",
+      "estleg:legalText": "(1) Käesoleva seadusega määratakse kindlaks Eestis asuvate sõjahaudade õiguslik kaitse, korrashoid, avalik ligipääs sõjahaudadele ning sõjahaudade tähistamise kord, samuti käesolevas seaduses sätestatud kaitse eesmärgil Eestis asuvatest sõjahaudadest säilmete kalmistule ümbermatmise alused ja kord. (2) Käesolevat seadust kohaldatakse Eesti Vabadussõjas langenud Eesti sõjameeste säilmete ja sõjahaudade ning Eesti iseseisvuse eest relvastatud võitluses, sealhulgas relvastatud vastupanuliikumises (metsavendluses), langenud isikute säilmete ja sõjahaudade suhtes. Teiste riikide relvajõududesse kuulunud isikute ja teiste riikide kodanike säilmete ja sõjahaudade suhtes kohaldatakse käesolevat seadust niivõrd, kuivõrd välislepingus ei ole ette nähtud teisiti. (3) Välisriikides asuvate Eesti kodanike sõjahaudadega seonduv õiguslik korraldus ja haudade korrashoid tagatakse välislepingutega.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SHKS_1"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_SHKS_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:SHKS_Par_1_Lg_1"
+        },
+        {
+          "@id": "estleg:SHKS_Par_1_Lg_2"
+        },
+        {
+          "@id": "estleg:SHKS_Par_1_Lg_3"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen"
       ]
     },
     {
+      "@id": "estleg:SHKS_Par_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesoleva seadusega määratakse kindlaks Eestis asuvate sõjahaudade õiguslik kaitse, korrashoid, avalik ligipääs sõjahaudadele ning sõjahaudade tähistamise kord, samuti käesolevas seaduses sätestatud kaitse eesmärgil Eestis asuvatest sõjahaudadest säilmete kalmistule ümbermatmise alused ja kord.",
+      "estleg:parentProvision": {
+        "@id": "estleg:SHKS_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 1"
+    },
+    {
+      "@id": "estleg:SHKS_Par_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Käesolevat seadust kohaldatakse Eesti Vabadussõjas langenud Eesti sõjameeste säilmete ja sõjahaudade ning Eesti iseseisvuse eest relvastatud võitluses, sealhulgas relvastatud vastupanuliikumises (metsavendluses), langenud isikute säilmete ja sõjahaudade suhtes. Teiste riikide relvajõududesse kuulunud isikute ja teiste riikide kodanike säilmete ja sõjahaudade suhtes kohaldatakse käesolevat seadust niivõrd, kuivõrd välislepingus ei ole ette nähtud teisiti.",
+      "estleg:parentProvision": {
+        "@id": "estleg:SHKS_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 2"
+    },
+    {
+      "@id": "estleg:SHKS_Par_1_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Välisriikides asuvate Eesti kodanike sõjahaudadega seonduv õiguslik korraldus ja haudade korrashoid tagatakse välislepingutega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:SHKS_Par_1"
+      },
+      "rdfs:label": "§ 1 lg 3"
+    },
+    {
+      "@id": "estleg:SHKS_Par_2",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_sojahaudade_kaitse_seadus"
+      ],
+      "estleg:paragrahv": "§ 2.",
+      "rdfs:label": "§ 2. Mõisted",
+      "estleg:sourceAct": "Sõjahaudade kaitse seadus",
+      "estleg:summary": "Käesolevas seaduses kasutatakse mõisteid järgmises tähenduses: 1 1) sõjaohver on:– isik, kes langes relvastatud võitluses või suri selles saadud haavadesse või haigustesse ühe aasta jooksul pärast võitluses osalemist;– isik, kes hukkus okupatsioonirežiimile relvastatud vastupanu osutamisel või suri relvastatud vastupanuliikumises saadud tervisekahjustuse tõttu ühe aasta jooksul pärast vastupanuliikumises osalemist;– isik, kes langes või hukkus sõjaväeteenistuses või sellega sarnases teenistuses ",
+      "estleg:legalText": "Käesolevas seaduses kasutatakse mõisteid järgmises tähenduses: sõjaohver on:– isik, kes langes relvastatud võitluses või suri selles saadud haavadesse või haigustesse ühe aasta jooksul pärast võitluses osalemist;– isik, kes hukkus okupatsioonirežiimile relvastatud vastupanu osutamisel või suri relvastatud vastupanuliikumises saadud tervisekahjustuse tõttu ühe aasta jooksul pärast vastupanuliikumises osalemist;– isik, kes langes või hukkus sõjaväeteenistuses või sellega sarnases teenistuses sõjategevuse ajal või suri nimetatud teenistuses sõjategevuse ajal saadud tervisekahjustuse tõttu ühe aasta jooksul pärast tervisekahjustuse tekkimist;– isik, kes suri otseses sõjategevuses või otsese sõjategevuse ajal saadud vigastusse ühe aasta jooksul pärast vigastuse saamist;– isik, kes suri interneerimislaagris või interneerimislaagris saadud tervisekahjustuse tõttu ühe aasta jooksul pärast sealt vabanemist;– isik, kes suri sõjavangis või sõjavangis olles saadud tervisekahjustuse tõttu ühe aasta jooksul pärast sõjavangistuse lõppu; sõjahaud on käesoleva paragrahvi punktis 1 nimetatud isikute säilmete matmispaik; kalmistu on inimsäilmete, surnukehade või tuhastatud surnukehade matmiseks ettenähtud, planeeritud ja vajalike ehitistega maa-ala; kaitseväe kalmistu on sõjaohvrite ja kaitseväelaste matmiseks ettenähtud kalmistu, mis on riigi omanduses ja mille haldamine kuulub Kaitseministeeriumi valitsemisalasse. Kaitseväe kalmistute haldamise korra kehtestab",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_SHKS_1"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_SHKS_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:SHKS_Par_2_Lg_Unknown_1"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen"
+      ]
+    },
+    {
+      "@id": "estleg:SHKS_Par_2_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Käesolevas seaduses kasutatakse mõisteid järgmises tähenduses: sõjaohver on:– isik, kes langes relvastatud võitluses või suri selles saadud haavadesse või haigustesse ühe aasta jooksul pärast võitluses osalemist;– isik, kes hukkus okupatsioonirežiimile relvastatud vastupanu osutamisel või suri relvastatud vastupanuliikumises saadud tervisekahjustuse tõttu ühe aasta jooksul pärast vastupanuliikumises osalemist;– isik, kes langes või hukkus sõjaväeteenistuses või sellega sarnases teenistuses sõjategevuse ajal või suri nimetatud teenistuses sõjategevuse ajal saadud tervisekahjustuse tõttu ühe aasta jooksul pärast tervisekahjustuse tekkimist;– isik, kes suri otseses sõjategevuses või otsese sõjategevuse ajal saadud vigastusse ühe aasta jooksul pärast vigastuse saamist;– isik, kes suri interneerimislaagris või interneerimislaagris saadud tervisekahjustuse tõttu ühe aasta jooksul pärast sealt vabanemist;– isik, kes suri sõjavangis või sõjavangis olles saadud tervisekahjustuse tõttu ühe aasta jooksul pärast sõjavangistuse lõppu; sõjahaud on käesoleva paragrahvi punktis 1 nimetatud isikute säilmete matmispaik; kalmistu on inimsäilmete, surnukehade või tuhastatud surnukehade matmiseks ettenähtud, planeeritud ja vajalike ehitistega maa-ala; kaitseväe kalmistu on sõjaohvrite ja kaitseväelaste matmiseks ettenähtud kalmistu, mis on riigi omanduses ja mille haldamine kuulub Kaitseministeeriumi valitsemisalasse. Kaitseväe kalmistute haldamise korra kehtestab",
+      "estleg:parentProvision": {
+        "@id": "estleg:SHKS_Par_2"
+      }
+    },
+    {
+      "@id": "estleg:SHKS_Par_2_1",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegalProvision_sojahaudade_kaitse_seadus"
+      ],
+      "estleg:paragrahv": "§ 2<sup>1</sup>.",
+      "rdfs:label": "§ 2<sup>1</sup>. Pädevus ja halduskoostöö",
+      "estleg:sourceAct": "Sõjahaudade kaitse seadus",
+      "estleg:summary": "1 (1) Käesolevas seaduses sätestatud toimingute tegemist korraldab ja haldusjärelevalvet toimingute teostamise üle teeb Kaitseministeerium. Käesolevas seaduses sätestatud toimingute tegemist korraldab ja haldusjärelevalvet toimingute teostamise üle teeb Kaitseministeerium. 2 (2) Kaitseministeerium võib määrata käesolevas seaduses sätestatud toiminguid tegema teise asutuse (edaspidi määratud asutus) või volitada selleks juriidilist isikut või füüsilist isikut (edaspidi volitatud isik). Kaitsemini",
+      "estleg:legalText": "(1) Käesolevas seaduses sätestatud toimingute tegemist korraldab ja haldusjärelevalvet toimingute teostamise üle teeb Kaitseministeerium. (2) Kaitseministeerium võib määrata käesolevas seaduses sätestatud toiminguid tegema teise asutuse (edaspidi määratud asutus) või volitada selleks juriidilist isikut või füüsilist isikut (edaspidi volitatud isik). (3) Volitatud isiku volitamisel sõlmitakse isikuga haldusleping või tsiviilõiguslik leping. (4) Käesoleva seaduse § 5 lõikes 1 sätestatud kaitsekohustuse teatise väljastamise volitamise korral sõlmitakse volitatud isikuga haldusleping. (5) Käesolevas seaduses sätestatud toimingute tegemiseks sõlmitud halduslepingu lõppemisel või kui esineb muu põhjus, mis takistab volitatud isikul jätkata haldusülesande edasist täitmist, võtab haldusülesande täitmise üle Kaitseministeerium.",
+      "estleg:requestedCluster": {
+        "@id": "estleg:Cluster_SHKS_1"
+      },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_SHKS_1"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:SHKS_Par_2_1_Lg_1"
+        },
+        {
+          "@id": "estleg:SHKS_Par_2_1_Lg_2"
+        },
+        {
+          "@id": "estleg:SHKS_Par_2_1_Lg_3"
+        },
+        {
+          "@id": "estleg:SHKS_Par_2_1_Lg_4"
+        },
+        {
+          "@id": "estleg:SHKS_Par_2_1_Lg_5"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "public_body"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      },
+      "estleg:competentAuthority": [
+        {
+          "@id": "estleg:Institution_kaitseministeerium"
+        }
+      ],
+      "estleg:competenceType": "supervision"
+    },
+    {
+      "@id": "estleg:SHKS_Par_2_1_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesolevas seaduses sätestatud toimingute tegemist korraldab ja haldusjärelevalvet toimingute teostamise üle teeb Kaitseministeerium.",
+      "estleg:parentProvision": {
+        "@id": "estleg:SHKS_Par_2_1"
+      },
+      "rdfs:label": "§ 2<sup>1</sup> lg 1"
+    },
+    {
+      "@id": "estleg:SHKS_Par_2_1_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kaitseministeerium võib määrata käesolevas seaduses sätestatud toiminguid tegema teise asutuse (edaspidi määratud asutus) või volitada selleks juriidilist isikut või füüsilist isikut (edaspidi volitatud isik).",
+      "estleg:parentProvision": {
+        "@id": "estleg:SHKS_Par_2_1"
+      },
+      "rdfs:label": "§ 2<sup>1</sup> lg 2"
+    },
+    {
+      "@id": "estleg:SHKS_Par_2_1_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Volitatud isiku volitamisel sõlmitakse isikuga haldusleping või tsiviilõiguslik leping.",
+      "estleg:parentProvision": {
+        "@id": "estleg:SHKS_Par_2_1"
+      },
+      "rdfs:label": "§ 2<sup>1</sup> lg 3"
+    },
+    {
+      "@id": "estleg:SHKS_Par_2_1_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Käesoleva seaduse § 5 lõikes 1 sätestatud kaitsekohustuse teatise väljastamise volitamise korral sõlmitakse volitatud isikuga haldusleping.",
+      "estleg:parentProvision": {
+        "@id": "estleg:SHKS_Par_2_1"
+      },
+      "rdfs:label": "§ 2<sup>1</sup> lg 4"
+    },
+    {
+      "@id": "estleg:SHKS_Par_2_1_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Käesolevas seaduses sätestatud toimingute tegemiseks sõlmitud halduslepingu lõppemisel või kui esineb muu põhjus, mis takistab volitatud isikul jätkata haldusülesande edasist täitmist, võtab haldusülesande täitmise üle Kaitseministeerium.",
+      "estleg:parentProvision": {
+        "@id": "estleg:SHKS_Par_2_1"
+      },
+      "rdfs:label": "§ 2<sup>1</sup> lg 5"
+    },
+    {
       "@id": "estleg:SHKS_Par_3",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_SHKS"
+        "estleg:LegalProvision_sojahaudade_kaitse_seadus"
       ],
       "estleg:paragrahv": "§ 3.",
       "rdfs:label": "§ 3. Sõjahaua säilimisõigus",
       "estleg:sourceAct": "Sõjahaudade kaitse seadus",
       "estleg:summary": "1 (1) Sõjahaud tähistatakse ja selle õiguslik kaitse kestab käesolevas peatükis sätestatud korras tähtajatult või välislepinguga sätestatud tähtajani. Sõjahaud tähistatakse ja selle õiguslik kaitse kestab käesolevas peatükis sätestatud korras tähtajatult või välislepinguga sätestatud tähtajani. 2 (2) Selle kinnisasja omanik, millel on sõjahaud, on kohustatud tagama sõjahaua ja selle tähistuse säilimise. Sõjahaua juurde viivad teed ja rajad on päikesetõusust päikeseloojanguni avalikuks kasutamise",
+      "estleg:legalText": "(1) Sõjahaud tähistatakse ja selle õiguslik kaitse kestab käesolevas peatükis sätestatud korras tähtajatult või välislepinguga sätestatud tähtajani. (2) Selle kinnisasja omanik, millel on sõjahaud, on kohustatud tagama sõjahaua ja selle tähistuse säilimise. Sõjahaua juurde viivad teed ja rajad on päikesetõusust päikeseloojanguni avalikuks kasutamiseks ning kinnisasja valdaja ei tohi nimetatud ajal takistada inimeste juurdepääsu kaitstavale sõjahauale. (3) Kinnisasja omanik on kohustatud lubama käesolevas seaduses ettenähtud kohustuste täitmiseks vajalike tööde tegemist oma kinnisasjal. (4) Väljaspool kalmistuid asuvate sõjahaudade kaitseks kehtestatakse kaitsevöönd kuni 25 meetri ulatuses sõjahaua väliskontuurist või piirist arvates.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SHKS_2"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_SHKS_2"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:SHKS_Par_3_Lg_1"
+        },
+        {
+          "@id": "estleg:SHKS_Par_3_Lg_2"
+        },
+        {
+          "@id": "estleg:SHKS_Par_3_Lg_3"
+        },
+        {
+          "@id": "estleg:SHKS_Par_3_Lg_4"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen"
       ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
       "estleg:referencedBy": [
         {
           "@id": "estleg:SHKS_Par_7"
@@ -145,116 +480,426 @@
       ]
     },
     {
+      "@id": "estleg:SHKS_Par_3_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Sõjahaud tähistatakse ja selle õiguslik kaitse kestab käesolevas peatükis sätestatud korras tähtajatult või välislepinguga sätestatud tähtajani.",
+      "estleg:parentProvision": {
+        "@id": "estleg:SHKS_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 1"
+    },
+    {
+      "@id": "estleg:SHKS_Par_3_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Selle kinnisasja omanik, millel on sõjahaud, on kohustatud tagama sõjahaua ja selle tähistuse säilimise. Sõjahaua juurde viivad teed ja rajad on päikesetõusust päikeseloojanguni avalikuks kasutamiseks ning kinnisasja valdaja ei tohi nimetatud ajal takistada inimeste juurdepääsu kaitstavale sõjahauale.",
+      "estleg:parentProvision": {
+        "@id": "estleg:SHKS_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 2"
+    },
+    {
+      "@id": "estleg:SHKS_Par_3_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kinnisasja omanik on kohustatud lubama käesolevas seaduses ettenähtud kohustuste täitmiseks vajalike tööde tegemist oma kinnisasjal.",
+      "estleg:parentProvision": {
+        "@id": "estleg:SHKS_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 3"
+    },
+    {
+      "@id": "estleg:SHKS_Par_3_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Väljaspool kalmistuid asuvate sõjahaudade kaitseks kehtestatakse kaitsevöönd kuni 25 meetri ulatuses sõjahaua väliskontuurist või piirist arvates.",
+      "estleg:parentProvision": {
+        "@id": "estleg:SHKS_Par_3"
+      },
+      "rdfs:label": "§ 3 lg 4"
+    },
+    {
       "@id": "estleg:SHKS_Par_4",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_SHKS"
+        "estleg:LegalProvision_sojahaudade_kaitse_seadus"
       ],
       "estleg:paragrahv": "§ 4.",
       "rdfs:label": "§ 4. Sõjahaudade arvestuse pidamine",
       "estleg:sourceAct": "Sõjahaudade kaitse seadus",
-      "estleg:summary": "1 (1) Eestis ja välisriikides asuvate sõjahaudade arvestust peab Kaitseministeerium. Kaitseminister kehtestab määrusega ./dyn=12777064&id=12857924 sõjahaudade nimekirja pidamise korra, milles nähakse ette nimekirja kantavad andmed, sõjahaua nimekirjast kustutamise kord ja sõjahaudade kohta andmete väljastamise kord. Kaitseministeeriumil on õigus volitada sõjahaudade arvestust pidama teist juriidilist isikut. Eestis ja välisriikides asuvate sõjahaudade arvestust peab Kaitseministeerium. sõjahauda",
+      "estleg:summary": "1 (1) Eestis ja välisriikides asuvate sõjahaudade arvestust peab Kaitseministeerium või tema määratud asutus või volitatud isik. Valdkonna eest vastutav minister ./dyn=102012025076&id=12857924 kehtestab määrusega sõjahaudade nimekirja pidamise korra, milles nähakse ette nimekirja kantavad andmed, sõjahaua nimekirjast kustutamise kord ja sõjahaudade kohta andmete väljastamise kord. RT I 2023-03-07 7 107032023007 2023-04-01 Eestis ja välisriikides asuvate sõjahaudade arvestust peab Kaitseministeer",
+      "estleg:legalText": "(1) Eestis ja välisriikides asuvate sõjahaudade arvestust peab Kaitseministeerium või tema määratud asutus või volitatud isik. kehtestab määrusega sõjahaudade nimekirja pidamise korra, milles nähakse ette nimekirja kantavad andmed, sõjahaua nimekirjast kustutamise kord ja sõjahaudade kohta andmete väljastamise kord. (2) Kinnisasja omanik on kohustatud tema maalt leitud sõjahauast, samuti hauast, mille puhul on põhjendatud kahtlus, et tegemist on sõjahauaga, informeerima Kaitseministeeriumi viivitamata pärast sõjahaua leidmist. (3) Igaüks, kelle valduses on teavet sõjahaudade kohta, on kohustatud selle tasuta edastama Kaitseministeeriumile ühe aasta jooksul alates käesoleva seaduse jõustumisest või kohe pärast sõjahaua leidmist või vastava uue teabe saamist.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SHKS_2"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_SHKS_2"
       },
-      "estleg:targetGroup": [
-        "citizen"
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:SHKS_Par_4_Lg_1"
+        },
+        {
+          "@id": "estleg:SHKS_Par_4_Lg_2"
+        },
+        {
+          "@id": "estleg:SHKS_Par_4_Lg_3"
+        }
       ],
+      "estleg:targetGroup": [
+        "citizen",
+        "public_body",
+        "official"
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_kaitseministeerium"
-        },
-        {
-          "@id": "estleg:Institution_kaitseminister"
         }
       ],
       "estleg:competenceType": "regulation"
     },
     {
+      "@id": "estleg:SHKS_Par_4_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Eestis ja välisriikides asuvate sõjahaudade arvestust peab Kaitseministeerium või tema määratud asutus või volitatud isik. kehtestab määrusega sõjahaudade nimekirja pidamise korra, milles nähakse ette nimekirja kantavad andmed, sõjahaua nimekirjast kustutamise kord ja sõjahaudade kohta andmete väljastamise kord.",
+      "estleg:parentProvision": {
+        "@id": "estleg:SHKS_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 1"
+    },
+    {
+      "@id": "estleg:SHKS_Par_4_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kinnisasja omanik on kohustatud tema maalt leitud sõjahauast, samuti hauast, mille puhul on põhjendatud kahtlus, et tegemist on sõjahauaga, informeerima Kaitseministeeriumi viivitamata pärast sõjahaua leidmist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:SHKS_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 2"
+    },
+    {
+      "@id": "estleg:SHKS_Par_4_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Igaüks, kelle valduses on teavet sõjahaudade kohta, on kohustatud selle tasuta edastama Kaitseministeeriumile ühe aasta jooksul alates käesoleva seaduse jõustumisest või kohe pärast sõjahaua leidmist või vastava uue teabe saamist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:SHKS_Par_4"
+      },
+      "rdfs:label": "§ 4 lg 3"
+    },
+    {
       "@id": "estleg:SHKS_Par_5",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_SHKS"
+        "estleg:LegalProvision_sojahaudade_kaitse_seadus"
       ],
       "estleg:paragrahv": "§ 5.",
       "rdfs:label": "§ 5. Sõjahaua kaitse ja kaitsekohustuse teatis",
       "estleg:sourceAct": "Sõjahaudade kaitse seadus",
-      "estleg:summary": "1 (1) Kaitseminister otsustab sõjahaua kandmise sõjahaudade nimekirja. Isikule, kelle kinnisasjal asub sõjahaud, väljastab kaitseminister kaitsekohustuse teatise. Enne sõjahaua kandmist sõjahaudade nimekirja annab sõjahaudade komisjon käesoleva seaduse alusel oma arvamuse, kas selles sõjahauas olevad säilmed tuleb ümber matta või mitte. Kui sõjahauas olevad säilmed tuleb ümber matta käesolevas seaduses sätestatu alusel, ei kanta sõjahauda sõjahaudade nimekirja ega väljastata selle kohta kaitseko",
+      "estleg:summary": "1 (1) Kaitseministeerium või tema määratud asutus või volitatud isik otsustab sõjahaua kandmise sõjahaudade nimekirja. Isikule, kelle kinnisasjal asub sõjahaud, väljastab Kaitseministeerium või tema määratud asutus või volitatud isik kaitsekohustuse teatise. Enne sõjahaua kandmist sõjahaudade nimekirja annab sõjahaudade komisjon vajaduse korral arvamuse, kas selles sõjahauas olevad säilmed tuleb ümber matta või mitte. Kui sõjahauas olevad säilmed tuleb ümber matta käesolevas seaduses sätestatu a",
+      "estleg:legalText": "(1) Kaitseministeerium või tema määratud asutus või volitatud isik otsustab sõjahaua kandmise sõjahaudade nimekirja. Isikule, kelle kinnisasjal asub sõjahaud, väljastab Kaitseministeerium või tema määratud asutus või volitatud isik kaitsekohustuse teatise. Enne sõjahaua kandmist sõjahaudade nimekirja annab sõjahaudade komisjon vajaduse korral arvamuse, kas selles sõjahauas olevad säilmed tuleb ümber matta või mitte. Kui sõjahauas olevad säilmed tuleb ümber matta käesolevas seaduses sätestatu alusel, ei kanta sõjahauda sõjahaudade nimekirja ega väljastata selle kohta kaitsekohustuse teatist. Pärast säilmete ümbermatmist otsustab Kaitseministeerium või tema määratud asutus või volitatud isik uue matmispaiga kandmise sõjahaudade nimekirja ja väljastab kaitsekohustuse teatise. (2) Kaitsekohustuse teatis on sõjahauda sisaldava või selle piiresse jääva kinnisasja omanikule, kinnistusraamatusse kantud riigivara valitsejale, riigivara valitseja volitatud isikule või asutusele (edaspidi valdaja) väljastatav teabedokument, milles sisalduvad piirangud kantakse maakatastrisse. (3) Kaitsekohustuse teatis sisaldab: andmeid sõjahaua ja selle sõjahaudade nimekirja kandmise aja kohta; sõjahaua kaitse tagamiseks vajalike kitsenduste loetelu. (4) Kaitsekohustuse teatise väljastab Kaitseministeerium või tema määratud asutus või volitatud isik kolmekümne päeva jooksul, arvates sõjahaua kandmisest sõjahaudade nimekirja. (5) Kaitsekohustuse teatis antakse üle allkirja vastu või saadetakse posti teel tähtkirjaga.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SHKS_2"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_SHKS_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:SHKS_Par_5_Lg_1"
+        },
+        {
+          "@id": "estleg:SHKS_Par_5_Lg_2"
+        },
+        {
+          "@id": "estleg:SHKS_Par_5_Lg_3"
+        },
+        {
+          "@id": "estleg:SHKS_Par_5_Lg_4"
+        },
+        {
+          "@id": "estleg:SHKS_Par_5_Lg_5"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "public_body"
+      ],
       "estleg:normativeType": {
         "@id": "estleg:NormType_Obligation"
       },
-      "estleg:dutyHolder": "Kui sõjahauas olevad säilmed",
-      "estleg:targetGroup": [
-        "citizen"
-      ],
       "estleg:competentAuthority": [
         {
-          "@id": "estleg:Institution_kaitseminister"
+          "@id": "estleg:Institution_kaitseministeerium"
         }
       ],
       "estleg:competenceType": "general"
     },
     {
+      "@id": "estleg:SHKS_Par_5_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kaitseministeerium või tema määratud asutus või volitatud isik otsustab sõjahaua kandmise sõjahaudade nimekirja. Isikule, kelle kinnisasjal asub sõjahaud, väljastab Kaitseministeerium või tema määratud asutus või volitatud isik kaitsekohustuse teatise. Enne sõjahaua kandmist sõjahaudade nimekirja annab sõjahaudade komisjon vajaduse korral arvamuse, kas selles sõjahauas olevad säilmed tuleb ümber matta või mitte. Kui sõjahauas olevad säilmed tuleb ümber matta käesolevas seaduses sätestatu alusel, ei kanta sõjahauda sõjahaudade nimekirja ega väljastata selle kohta kaitsekohustuse teatist. Pärast säilmete ümbermatmist otsustab Kaitseministeerium või tema määratud asutus või volitatud isik uue matmispaiga kandmise sõjahaudade nimekirja ja väljastab kaitsekohustuse teatise.",
+      "estleg:parentProvision": {
+        "@id": "estleg:SHKS_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 1"
+    },
+    {
+      "@id": "estleg:SHKS_Par_5_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kaitsekohustuse teatis on sõjahauda sisaldava või selle piiresse jääva kinnisasja omanikule, kinnistusraamatusse kantud riigivara valitsejale, riigivara valitseja volitatud isikule või asutusele (edaspidi valdaja) väljastatav teabedokument, milles sisalduvad piirangud kantakse maakatastrisse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:SHKS_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 2"
+    },
+    {
+      "@id": "estleg:SHKS_Par_5_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kaitsekohustuse teatis sisaldab: andmeid sõjahaua ja selle sõjahaudade nimekirja kandmise aja kohta; sõjahaua kaitse tagamiseks vajalike kitsenduste loetelu.",
+      "estleg:parentProvision": {
+        "@id": "estleg:SHKS_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 3"
+    },
+    {
+      "@id": "estleg:SHKS_Par_5_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Kaitsekohustuse teatise väljastab Kaitseministeerium või tema määratud asutus või volitatud isik kolmekümne päeva jooksul, arvates sõjahaua kandmisest sõjahaudade nimekirja.",
+      "estleg:parentProvision": {
+        "@id": "estleg:SHKS_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 4"
+    },
+    {
+      "@id": "estleg:SHKS_Par_5_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Kaitsekohustuse teatis antakse üle allkirja vastu või saadetakse posti teel tähtkirjaga.",
+      "estleg:parentProvision": {
+        "@id": "estleg:SHKS_Par_5"
+      },
+      "rdfs:label": "§ 5 lg 5"
+    },
+    {
       "@id": "estleg:SHKS_Par_6",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_SHKS"
+        "estleg:LegalProvision_sojahaudade_kaitse_seadus"
       ],
       "estleg:paragrahv": "§ 6.",
       "rdfs:label": "§ 6. Sõjahaua tähistamine ja hooldamine",
       "estleg:sourceAct": "Sõjahaudade kaitse seadus",
       "estleg:summary": "1 (1) Sõjahaud tähistatakse sõjaohvrite säilmete austamist ja väärikat kohtlemist tagaval viisil nii, et sõjahaua asukohta looduses oleks võimalik märgata. Sõjahaua tähisele kantakse võimaluse korral sinna maetud isikute nimed. Sõjahaud tähistatakse sõjaohvrite säilmete austamist ja väärikat kohtlemist tagaval viisil nii, et sõjahaua asukohta looduses oleks võimalik märgata. Sõjahaua tähisele kantakse võimaluse korral sinna maetud isikute nimed. 2 (2) Sõjahaudade tähistamist ja hooldamist korral",
+      "estleg:legalText": "(1) Sõjahaud tähistatakse sõjaohvrite säilmete austamist ja väärikat kohtlemist tagaval viisil nii, et sõjahaua asukohta looduses oleks võimalik märgata. Sõjahaua tähisele kantakse võimaluse korral sinna maetud isikute nimed. (2) Sõjahaudade tähistamist ja hooldamist korraldab Kaitseministeerium või tema määratud asutus või volitatud isik. Avalikul kalmistul ja kaitseväe kalmistul asuvaid sõjahaudu korrastab, teeb remondi- ja restaureerimistöid ning hooldab kalmistu haldaja või valdkonna eest vastutava ministri määratud asutus või volitatud isik. (3) Eraisiku hooldatav sõjahaud on haud, mida hooldavad sõjahauda maetud isiku omaksed või maaomanik. Kaitseministeeriumil on õigus eraisiku hooldatava sõjahaua hooldamise kohustus senise hooldaja nõusolekul üle võtta.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SHKS_2"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_SHKS_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:SHKS_Par_6_Lg_1"
+        },
+        {
+          "@id": "estleg:SHKS_Par_6_Lg_2"
+        },
+        {
+          "@id": "estleg:SHKS_Par_6_Lg_3"
+        }
+      ],
       "estleg:targetGroup": [
-        "citizen"
+        "citizen",
+        "public_body"
       ]
+    },
+    {
+      "@id": "estleg:SHKS_Par_6_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Sõjahaud tähistatakse sõjaohvrite säilmete austamist ja väärikat kohtlemist tagaval viisil nii, et sõjahaua asukohta looduses oleks võimalik märgata. Sõjahaua tähisele kantakse võimaluse korral sinna maetud isikute nimed.",
+      "estleg:parentProvision": {
+        "@id": "estleg:SHKS_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 1"
+    },
+    {
+      "@id": "estleg:SHKS_Par_6_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Sõjahaudade tähistamist ja hooldamist korraldab Kaitseministeerium või tema määratud asutus või volitatud isik. Avalikul kalmistul ja kaitseväe kalmistul asuvaid sõjahaudu korrastab, teeb remondi- ja restaureerimistöid ning hooldab kalmistu haldaja või valdkonna eest vastutava ministri määratud asutus või volitatud isik.",
+      "estleg:parentProvision": {
+        "@id": "estleg:SHKS_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 2"
+    },
+    {
+      "@id": "estleg:SHKS_Par_6_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Eraisiku hooldatav sõjahaud on haud, mida hooldavad sõjahauda maetud isiku omaksed või maaomanik. Kaitseministeeriumil on õigus eraisiku hooldatava sõjahaua hooldamise kohustus senise hooldaja nõusolekul üle võtta.",
+      "estleg:parentProvision": {
+        "@id": "estleg:SHKS_Par_6"
+      },
+      "rdfs:label": "§ 6 lg 3"
     },
     {
       "@id": "estleg:SHKS_Par_7",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_SHKS"
+        "estleg:LegalProvision_sojahaudade_kaitse_seadus"
       ],
       "estleg:paragrahv": "§ 7.",
-      "rdfs:label": "§ 7. Maa võõrandamine",
+      "rdfs:label": "§ 7. Kinnisasja avalikes huvides omandamine",
       "estleg:sourceAct": "Sõjahaudade kaitse seadus",
-      "estleg:summary": "1 (1) Kui käesoleva seaduse §-s 3 ettenähtud sõjahaua säilimisõiguse tagamine raskendab oluliselt maatüki sihtotstarbelist kasutamist omaniku poolt, rakendatakse kinnisasja sundvõõrandamise seaduse § 3 lõikes 2 sätestatud kinnisasja sundvõõrandamist omaniku taotlusel. Kui käesoleva seaduse §-s 3 ettenähtud sõjahaua säilimisõiguse tagamine raskendab oluliselt maatüki sihtotstarbelist kasutamist omaniku poolt, rakendatakse kinnisasja sundvõõrandamise seaduse § 3 lõikes 2 sätestatud kinnisasja sund",
+      "estleg:summary": "1 (1) Kui käesoleva seaduse §-s 3 sätestatud sõjahaua säilimisõiguse tagamine raskendab oluliselt maatüki sihtotstarbelist kasutamist omaniku poolt, võib kinnisasja omaniku taotlusel kinnisasja, millel sõjahaud asub, avalikes huvides omandada kinnisasja avalikes huvides omandamise seaduses sätestatud korras. Kui käesoleva seaduse §-s 3 sätestatud sõjahaua säilimisõiguse tagamine raskendab oluliselt maatüki sihtotstarbelist kasutamist omaniku poolt, võib kinnisasja omaniku taotlusel kinnisasja, m",
+      "estleg:legalText": "(1) Kui käesoleva seaduse §-s 3 sätestatud sõjahaua säilimisõiguse tagamine raskendab oluliselt maatüki sihtotstarbelist kasutamist omaniku poolt, võib kinnisasja omaniku taotlusel kinnisasja, millel sõjahaud asub, avalikes huvides omandada kinnisasja avalikes huvides omandamise seaduses sätestatud korras. (2) Kohaliku omavalitsuse üksus ei saa riigilt taotleda maatüki avalikes huvides omandamist käesoleva paragrahvi lõike 1 alusel.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SHKS_2"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_SHKS_2"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:SHKS_Par_7_Lg_1"
+        },
+        {
+          "@id": "estleg:SHKS_Par_7_Lg_2"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "public_body"
+      ],
       "estleg:references": [
         {
           "@id": "estleg:SHKS_Par_3"
         }
       ],
-      "estleg:targetGroup": [
-        "citizen"
-      ]
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Permission"
+      }
+    },
+    {
+      "@id": "estleg:SHKS_Par_7_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kui käesoleva seaduse §-s 3 sätestatud sõjahaua säilimisõiguse tagamine raskendab oluliselt maatüki sihtotstarbelist kasutamist omaniku poolt, võib kinnisasja omaniku taotlusel kinnisasja, millel sõjahaud asub, avalikes huvides omandada kinnisasja avalikes huvides omandamise seaduses sätestatud korras.",
+      "estleg:parentProvision": {
+        "@id": "estleg:SHKS_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 1"
+    },
+    {
+      "@id": "estleg:SHKS_Par_7_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kohaliku omavalitsuse üksus ei saa riigilt taotleda maatüki avalikes huvides omandamist käesoleva paragrahvi lõike 1 alusel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:SHKS_Par_7"
+      },
+      "rdfs:label": "§ 7 lg 2"
     },
     {
       "@id": "estleg:SHKS_Par_8",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_SHKS"
+        "estleg:LegalProvision_sojahaudade_kaitse_seadus"
       ],
       "estleg:paragrahv": "§ 8.",
       "rdfs:label": "§ 8. Ümbermatmisele kuuluvad säilmed ja ümbermatmise otsustamine",
       "estleg:sourceAct": "Sõjahaudade kaitse seadus",
-      "estleg:summary": "1 (1) Käesoleva seaduse alusel kuuluvad säilmed ümbermatmisele, kui sõjahaud asub ebasobivas kohas. Sõjahauale ebasobivaks kohaks on eelkõige pargid, muud haljasalad ja hooned tiheasustusaladel väljaspool kalmistuid, samuti kohad, kus toimuvad massiüritused või asuvad haudadega mitteseotud rajatised, ning muud kohad, mis ei võimalda sõjahaua väärikat kohtlemist. Sõjahaua asukoha ebasobivuse määrab sõjahaudade komisjon. Kaitseminister otsustab sõjahaudade komisjoni ettepanekul, millised säilmed m",
+      "estleg:summary": "1 (1) Käesoleva seaduse alusel kuuluvad säilmed ümbermatmisele, kui sõjahaud asub ebasobivas kohas. Sõjahauale on ebasobiv koht, mis ei võimalda sõjahaua väärikat kohtlemist. Kaitseministeerium või tema määratud asutus või volitatud isik otsustab säilmete ümbermatmise, küsides sõjahaua koha sobivuse kahtluse korral sõjahaudade komisjoni arvamuse. RT I 2023-03-07 7 107032023007 2023-04-01 Käesoleva seaduse alusel kuuluvad säilmed ümbermatmisele, kui sõjahaud asub ebasobivas kohas. Sõjahauale on e",
+      "estleg:legalText": "(1) Käesoleva seaduse alusel kuuluvad säilmed ümbermatmisele, kui sõjahaud asub ebasobivas kohas. Sõjahauale on ebasobiv koht, mis ei võimalda sõjahaua väärikat kohtlemist. Kaitseministeerium või tema määratud asutus või volitatud isik otsustab säilmete ümbermatmise, küsides sõjahaua koha sobivuse kahtluse korral sõjahaudade komisjoni arvamuse. (2) Kehtetu - (3) Sõjahaua kandmine sõjahaudade nimekirja ei ole takistuseks selles sõjahauas olevate säilmete ümbermatmisele käesoleva seaduse alusel. (4) Kehtetu -",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SHKS_3"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_SHKS_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:SHKS_Par_8_Lg_1"
+        },
+        {
+          "@id": "estleg:SHKS_Par_8_Lg_2"
+        },
+        {
+          "@id": "estleg:SHKS_Par_8_Lg_3"
+        },
+        {
+          "@id": "estleg:SHKS_Par_8_Lg_4"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "public_body"
+      ],
       "estleg:competentAuthority": [
         {
-          "@id": "estleg:Institution_kaitseminister"
+          "@id": "estleg:Institution_kaitseministeerium"
         }
       ],
       "estleg:competenceType": "general",
@@ -268,120 +913,501 @@
       ]
     },
     {
+      "@id": "estleg:SHKS_Par_8_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesoleva seaduse alusel kuuluvad säilmed ümbermatmisele, kui sõjahaud asub ebasobivas kohas. Sõjahauale on ebasobiv koht, mis ei võimalda sõjahaua väärikat kohtlemist. Kaitseministeerium või tema määratud asutus või volitatud isik otsustab säilmete ümbermatmise, küsides sõjahaua koha sobivuse kahtluse korral sõjahaudade komisjoni arvamuse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:SHKS_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 1"
+    },
+    {
+      "@id": "estleg:SHKS_Par_8_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:SHKS_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 2"
+    },
+    {
+      "@id": "estleg:SHKS_Par_8_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Sõjahaua kandmine sõjahaudade nimekirja ei ole takistuseks selles sõjahauas olevate säilmete ümbermatmisele käesoleva seaduse alusel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:SHKS_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 3"
+    },
+    {
+      "@id": "estleg:SHKS_Par_8_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:SHKS_Par_8"
+      },
+      "rdfs:label": "§ 8 lg 4"
+    },
+    {
       "@id": "estleg:SHKS_Par_9",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_SHKS"
+        "estleg:LegalProvision_sojahaudade_kaitse_seadus"
       ],
       "estleg:paragrahv": "§ 9.",
       "rdfs:label": "§ 9. Identifitseerimine",
       "estleg:sourceAct": "Sõjahaudade kaitse seadus",
-      "estleg:summary": "1 (1) Kaitseminister võib otsustada tundmatute surnute säilmete väljakaevamise ja identifitseerimise korraldamise juhul, kui on põhjendatud kahtlus, et matmispaik on sõjahaud, kuid selles asuvate säilmete olemasolu kindlakstegemine, nende arvu tuvastamine või säilmete identifitseerimine ei ole muul viisil võimalik. Kaitseminister võib otsustada tundmatute surnute säilmete väljakaevamise ja identifitseerimise korraldamise juhul, kui on põhjendatud kahtlus, et matmispaik on sõjahaud, kuid selles a",
+      "estleg:summary": "1 (1) Kaitseministeerium või tema määratud asutus või volitatud isik võib otsustada tundmatute surnute säilmete väljakaevamise ja identifitseerimise korraldamise juhul, kui on põhjendatud kahtlus, et matmispaik on sõjahaud, kuid selles asuvate säilmete olemasolu kindlakstegemine, nende arvu tuvastamine või säilmete identifitseerimine ei ole muul viisil võimalik. RT I 2023-03-07 7 107032023007 2023-04-01 Kaitseministeerium või tema määratud asutus või volitatud isik võib otsustada tundmatute surn",
+      "estleg:legalText": "(1) Kaitseministeerium või tema määratud asutus või volitatud isik võib otsustada tundmatute surnute säilmete väljakaevamise ja identifitseerimise korraldamise juhul, kui on põhjendatud kahtlus, et matmispaik on sõjahaud, kuid selles asuvate säilmete olemasolu kindlakstegemine, nende arvu tuvastamine või säilmete identifitseerimine ei ole muul viisil võimalik. (2) Kui on tuvastatud, et matmispaik on sõjahaud, otsustatakse säilmete võimalik ümbermatmine vastavalt käesoleva seaduse §-le 8. Võimaluse korral informeerib Kaitseministeerium või tema volitatud isik identifitseeritud sõjaohvri sugulasi või välisriikide vastavaid asutusi. Taotluse korral antakse sõjaohvri säilmed ümbermatmiseks sugulastele. (3) Isikud, kelle valduses on säilmete identifitseerimisele kaasaaitavaid dokumente ja esemeid, on kohustatud need andma Kaitseministeeriumi käsutusse sõjaohvrite tuvastamiseks. Dokumendid ja esemed tagastatakse omanikule. (4) Kui haua puhul on olnud põhjendatud kahtlus, et see on sõjahaud, kuid on selgunud, et sõjahauaga siiski tegemist ei ole, otsustatakse säilmete ümbermatmine ning hauamonumendi või -tähise teisaldamine, kohandamine ja lammutamine ning mälestise staatuse äravõtmine käesoleva seaduse alusel samas korras nagu sõjahaua puhul. Kui selgub, et arvatavas sõjahauas kellegi säilmeid ei ole, otsustab Kaitseministeerium või tema määratud asutus või volitatud isik hauamonumendi või -tähise või muu hauarajatise kohandamise mälestussambaks, selle teisaldamise muuseumi või mõnda teise sobivasse kohta või osalise või täieliku demonteerimise. Mälestisega seotud piirangute osas kohaldatakse sellisel juhul käesoleva seaduse § 13 ning mälestise staatuse äravõtmisele kohaldatakse käesoleva seaduse § 14.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SHKS_3"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_SHKS_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:SHKS_Par_9_Lg_1"
+        },
+        {
+          "@id": "estleg:SHKS_Par_9_Lg_2"
+        },
+        {
+          "@id": "estleg:SHKS_Par_9_Lg_3"
+        },
+        {
+          "@id": "estleg:SHKS_Par_9_Lg_4"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "public_body"
+      ],
       "estleg:normativeType": {
-        "@id": "estleg:NormType_Right"
+        "@id": "estleg:NormType_Permission"
       },
       "estleg:competentAuthority": [
         {
-          "@id": "estleg:Institution_kaitseminister"
+          "@id": "estleg:Institution_kaitseministeerium"
         }
       ],
-      "estleg:competenceType": "general",
-      "estleg:referencedBy": [
-        {
-          "@id": "estleg:SHKS_Par_15"
-        }
-      ]
+      "estleg:competenceType": "general"
+    },
+    {
+      "@id": "estleg:SHKS_Par_9_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kaitseministeerium või tema määratud asutus või volitatud isik võib otsustada tundmatute surnute säilmete väljakaevamise ja identifitseerimise korraldamise juhul, kui on põhjendatud kahtlus, et matmispaik on sõjahaud, kuid selles asuvate säilmete olemasolu kindlakstegemine, nende arvu tuvastamine või säilmete identifitseerimine ei ole muul viisil võimalik.",
+      "estleg:parentProvision": {
+        "@id": "estleg:SHKS_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 1"
+    },
+    {
+      "@id": "estleg:SHKS_Par_9_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kui on tuvastatud, et matmispaik on sõjahaud, otsustatakse säilmete võimalik ümbermatmine vastavalt käesoleva seaduse §-le 8. Võimaluse korral informeerib Kaitseministeerium või tema volitatud isik identifitseeritud sõjaohvri sugulasi või välisriikide vastavaid asutusi. Taotluse korral antakse sõjaohvri säilmed ümbermatmiseks sugulastele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:SHKS_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 2"
+    },
+    {
+      "@id": "estleg:SHKS_Par_9_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Isikud, kelle valduses on säilmete identifitseerimisele kaasaaitavaid dokumente ja esemeid, on kohustatud need andma Kaitseministeeriumi käsutusse sõjaohvrite tuvastamiseks. Dokumendid ja esemed tagastatakse omanikule.",
+      "estleg:parentProvision": {
+        "@id": "estleg:SHKS_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 3"
+    },
+    {
+      "@id": "estleg:SHKS_Par_9_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Kui haua puhul on olnud põhjendatud kahtlus, et see on sõjahaud, kuid on selgunud, et sõjahauaga siiski tegemist ei ole, otsustatakse säilmete ümbermatmine ning hauamonumendi või -tähise teisaldamine, kohandamine ja lammutamine ning mälestise staatuse äravõtmine käesoleva seaduse alusel samas korras nagu sõjahaua puhul. Kui selgub, et arvatavas sõjahauas kellegi säilmeid ei ole, otsustab Kaitseministeerium või tema määratud asutus või volitatud isik hauamonumendi või -tähise või muu hauarajatise kohandamise mälestussambaks, selle teisaldamise muuseumi või mõnda teise sobivasse kohta või osalise või täieliku demonteerimise. Mälestisega seotud piirangute osas kohaldatakse sellisel juhul käesoleva seaduse § 13 ning mälestise staatuse äravõtmisele kohaldatakse käesoleva seaduse § 14.",
+      "estleg:parentProvision": {
+        "@id": "estleg:SHKS_Par_9"
+      },
+      "rdfs:label": "§ 9 lg 4"
     },
     {
       "@id": "estleg:SHKS_Par_10",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_SHKS"
+        "estleg:LegalProvision_sojahaudade_kaitse_seadus"
       ],
       "estleg:paragrahv": "§ 10.",
       "rdfs:label": "§ 10. Ümbermatmise korraldamine",
       "estleg:sourceAct": "Sõjahaudade kaitse seadus",
-      "estleg:summary": "1 (1) Käesoleva seaduse §-s 8 nimetatud säilmete ümbermatmise korraldab Kaitseministeerium või tema volitatud isik. Ümbermatmise nõuded kehtestab kaitseminister määrusega ./dyn=12777064&id=12820930 . Käesoleva seaduse §-s 8 nimetatud säilmete ümbermatmise korraldab Kaitseministeerium või tema volitatud isik. Ümbermatmise nõuded 2 (2) Käesoleva seaduse alusel ümbermatmisele kuuluvad säilmed maetakse sobivale kalmistule. Käesoleva seaduse alusel ümbermatmisele kuuluvad säilmed maetakse sobivale ka",
+      "estleg:summary": "1 (1) Käesoleva seaduse §-s 8 nimetatud säilmete ümbermatmise korraldab Kaitseministeerium või tema määratud asutus või volitatud isik. Ümbermatmise nõuded kehtestab valdkonna eest vastutav minister ./dyn=102012025076&id=13269213 määrusega. RT I 2023-03-07 7 107032023007 2023-04-01 Käesoleva seaduse §-s 8 nimetatud säilmete ümbermatmise korraldab Kaitseministeerium või tema määratud asutus või volitatud isik. Ümbermatmise nõuded kehtestab määrusega. 2 (2) Käesoleva seaduse alusel ümbermatmisele ",
+      "estleg:legalText": "(1) Käesoleva seaduse §-s 8 nimetatud säilmete ümbermatmise korraldab Kaitseministeerium või tema määratud asutus või volitatud isik. Ümbermatmise nõuded kehtestab määrusega. (2) Käesoleva seaduse alusel ümbermatmisele kuuluvad säilmed maetakse sobivale kalmistule. (3) Ümbermaetavate säilmete senisest asupaigast teisaldatakse hauamonument või muu hauatähis, nagu hauaplaat ja rist, säilmete uude matmispaika. Kui monument on suuruse tõttu uude matmispaika sobimatu või kui monumendi teisaldamine uude matmispaika ei ole muul põhjusel võimalik, otsustab Kaitseministeerium või tema määratud asutus või volitatud isik hauamonumendi kohandamise, hauamonumendi põhiliste elementide paigaldamise uude matmispaika või uue hauamonumendi rajamise uude matmispaika ja senises asupaigas oleva hauamonumendi demonteerimise, küsides uue matmispaiga või hauamonumendi põhiliste elementide uude matmispaika sobivuse kahtluse korral sõjahaudade komisjoni arvamuse. (4) Ümbermatmisel järgitakse võimaluse korral ümbermaetava religioonile või kultuurile vastavaid matusetavasid. Ümbermatmise ajal tagatakse säilmete väärikas kohtlemine. Kaitseministeerium või tema määratud asutus või volitatud isik tähistab haua, sealhulgas paigaldab hauamonumendi või mälestustahvli. Haua tähise avalikku ruumi sobivuse kahtluse korral küsitakse sõjahaudade komisjoni arvamus. (5) Hauamonumendi ja muu hauatähise endisest asukohast eemaldamiseks ning selle paigaldamiseks säilmete uude matmispaika ei ole vaja ehitusluba ega kohaliku omavalitsuse nõusolekut. Käesolevas lõikes nimetatud luba või nõusolek on vajalik seaduses sätestatud juhtudel, kui hauamonument, -tähis või muu hauarajatis soovitakse paigaldada mujale kui säilmete uude matmispaika. (6) Ümbermatmiseks vajalikest töödest teavitatakse selle kinnistu omanikku, millel säilmed asuvad, vähemalt seitse päeva ette. Seda ei ole vaja teha nende säilmete ümbermatmisel, mis asuvad riigimaal. (7) Ümbermatmiseks ei ole vaja Terviseameti luba, kui lähtuvalt säilmete vanusest ei kujuta nende ümbermatmine rahvastiku tervisele ohtu. Esimese ja Teise maailmasõja ning Eesti Vabadussõja ajal surnud isikute säilmete ümbermatmiseks ei ole säilmete vanuse tõttu Terviseameti luba vaja. (8) Ümbermatmistöid teinud isik koostab tehtud tööde aruande.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SHKS_3"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_SHKS_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:SHKS_Par_10_Lg_1"
+        },
+        {
+          "@id": "estleg:SHKS_Par_10_Lg_2"
+        },
+        {
+          "@id": "estleg:SHKS_Par_10_Lg_3"
+        },
+        {
+          "@id": "estleg:SHKS_Par_10_Lg_4"
+        },
+        {
+          "@id": "estleg:SHKS_Par_10_Lg_5"
+        },
+        {
+          "@id": "estleg:SHKS_Par_10_Lg_6"
+        },
+        {
+          "@id": "estleg:SHKS_Par_10_Lg_7"
+        },
+        {
+          "@id": "estleg:SHKS_Par_10_Lg_8"
+        }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "public_body",
+        "official"
+      ],
       "estleg:references": [
         {
           "@id": "estleg:SHKS_Par_8"
         }
       ],
-      "estleg:targetGroup": [
-        "citizen"
-      ],
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_kaitseministeerium"
-        },
-        {
-          "@id": "estleg:Institution_kaitseminister"
         }
       ],
       "estleg:competenceType": "regulation"
     },
     {
+      "@id": "estleg:SHKS_Par_10_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Käesoleva seaduse §-s 8 nimetatud säilmete ümbermatmise korraldab Kaitseministeerium või tema määratud asutus või volitatud isik. Ümbermatmise nõuded kehtestab määrusega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:SHKS_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 1"
+    },
+    {
+      "@id": "estleg:SHKS_Par_10_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Käesoleva seaduse alusel ümbermatmisele kuuluvad säilmed maetakse sobivale kalmistule.",
+      "estleg:parentProvision": {
+        "@id": "estleg:SHKS_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 2"
+    },
+    {
+      "@id": "estleg:SHKS_Par_10_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Ümbermaetavate säilmete senisest asupaigast teisaldatakse hauamonument või muu hauatähis, nagu hauaplaat ja rist, säilmete uude matmispaika. Kui monument on suuruse tõttu uude matmispaika sobimatu või kui monumendi teisaldamine uude matmispaika ei ole muul põhjusel võimalik, otsustab Kaitseministeerium või tema määratud asutus või volitatud isik hauamonumendi kohandamise, hauamonumendi põhiliste elementide paigaldamise uude matmispaika või uue hauamonumendi rajamise uude matmispaika ja senises asupaigas oleva hauamonumendi demonteerimise, küsides uue matmispaiga või hauamonumendi põhiliste elementide uude matmispaika sobivuse kahtluse korral sõjahaudade komisjoni arvamuse.",
+      "estleg:parentProvision": {
+        "@id": "estleg:SHKS_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 3"
+    },
+    {
+      "@id": "estleg:SHKS_Par_10_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Ümbermatmisel järgitakse võimaluse korral ümbermaetava religioonile või kultuurile vastavaid matusetavasid. Ümbermatmise ajal tagatakse säilmete väärikas kohtlemine. Kaitseministeerium või tema määratud asutus või volitatud isik tähistab haua, sealhulgas paigaldab hauamonumendi või mälestustahvli. Haua tähise avalikku ruumi sobivuse kahtluse korral küsitakse sõjahaudade komisjoni arvamus.",
+      "estleg:parentProvision": {
+        "@id": "estleg:SHKS_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 4"
+    },
+    {
+      "@id": "estleg:SHKS_Par_10_Lg_5",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "5",
+      "estleg:legalText": "(5) Hauamonumendi ja muu hauatähise endisest asukohast eemaldamiseks ning selle paigaldamiseks säilmete uude matmispaika ei ole vaja ehitusluba ega kohaliku omavalitsuse nõusolekut. Käesolevas lõikes nimetatud luba või nõusolek on vajalik seaduses sätestatud juhtudel, kui hauamonument, -tähis või muu hauarajatis soovitakse paigaldada mujale kui säilmete uude matmispaika.",
+      "estleg:parentProvision": {
+        "@id": "estleg:SHKS_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 5"
+    },
+    {
+      "@id": "estleg:SHKS_Par_10_Lg_6",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "6",
+      "estleg:legalText": "(6) Ümbermatmiseks vajalikest töödest teavitatakse selle kinnistu omanikku, millel säilmed asuvad, vähemalt seitse päeva ette. Seda ei ole vaja teha nende säilmete ümbermatmisel, mis asuvad riigimaal.",
+      "estleg:parentProvision": {
+        "@id": "estleg:SHKS_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 6"
+    },
+    {
+      "@id": "estleg:SHKS_Par_10_Lg_7",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "7",
+      "estleg:legalText": "(7) Ümbermatmiseks ei ole vaja Terviseameti luba, kui lähtuvalt säilmete vanusest ei kujuta nende ümbermatmine rahvastiku tervisele ohtu. Esimese ja Teise maailmasõja ning Eesti Vabadussõja ajal surnud isikute säilmete ümbermatmiseks ei ole säilmete vanuse tõttu Terviseameti luba vaja.",
+      "estleg:parentProvision": {
+        "@id": "estleg:SHKS_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 7"
+    },
+    {
+      "@id": "estleg:SHKS_Par_10_Lg_8",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "8",
+      "estleg:legalText": "(8) Ümbermatmistöid teinud isik koostab tehtud tööde aruande.",
+      "estleg:parentProvision": {
+        "@id": "estleg:SHKS_Par_10"
+      },
+      "rdfs:label": "§ 10 lg 8"
+    },
+    {
       "@id": "estleg:SHKS_Par_11",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_SHKS"
+        "estleg:LegalProvision_sojahaudade_kaitse_seadus"
       ],
       "estleg:paragrahv": "§ 11.",
       "rdfs:label": "§ 11. Kinnisomandi ulatus ja kinnisasja omaniku õigused ning kohustused",
       "estleg:sourceAct": "Sõjahaudade kaitse seadus",
       "estleg:summary": "1 (1) Kinnisasja omanikul ei ole õigust keelata tema kinnistul asuvas sõjahauas olevate säilmete ümbermatmist ning sellega koos haua juurde kuulunud hauamonumendi või -tähise teisaldamist. Kinnisasja omanikul ei ole õigust keelata tema kinnistul asuvas sõjahauas olevate säilmete ümbermatmist ning sellega koos haua juurde kuulunud hauamonumendi või -tähise teisaldamist. 2 (2) Kinnisasja omanik, kelle kinnistul on sõjahaud, on kohustatud võimaldama sellele hauale vaba juurdepääsu säilmete ümbermat",
+      "estleg:legalText": "(1) Kinnisasja omanikul ei ole õigust keelata tema kinnistul asuvas sõjahauas olevate säilmete ümbermatmist ning sellega koos haua juurde kuulunud hauamonumendi või -tähise teisaldamist. (2) Kinnisasja omanik, kelle kinnistul on sõjahaud, on kohustatud võimaldama sellele hauale vaba juurdepääsu säilmete ümbermatmiseks, hauamonumendi või -tähise teisaldamiseks ning säilmete identifitseerimiseks. (3) Kaitseministeerium tagab, et pärast käesoleva paragrahvi lõikes 1 nimetatud tööde tegemist taastatakse kinnistul kolme kuu jooksul nende tööde eelsele seisundile võimalikult lähedane olukord, välja arvatud haua juurde kuulunud tähised ja rajatised. Selle kohustuse täitmata jätmisel on kinnistu omanikul õigus nõuda haljastuse või kinnistu muul viisil kahjustamisega tekitatud kahju hüvitamist vastavalt riigivastutuse seadusele. (4) Kui hauamonumendi või -tähise või muu hauaga seotud rajatise omanik on kandnud kulutusi hauamonumendi või -tähise või muu hauaga seotud rajatise ehitamiseks ja ta kannab kahju seoses hauamonumendi või -tähise või muu hauaga seotud rajatise teisaldamise, kohandamise või demonteerimisega, hüvitab tekkinud kahju riik riigivastutuse seaduse alusel.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SHKS_3"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_SHKS_3"
       },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:SHKS_Par_11_Lg_1"
+        },
+        {
+          "@id": "estleg:SHKS_Par_11_Lg_2"
+        },
+        {
+          "@id": "estleg:SHKS_Par_11_Lg_3"
+        },
+        {
+          "@id": "estleg:SHKS_Par_11_Lg_4"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen"
-      ]
+      ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      }
+    },
+    {
+      "@id": "estleg:SHKS_Par_11_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kinnisasja omanikul ei ole õigust keelata tema kinnistul asuvas sõjahauas olevate säilmete ümbermatmist ning sellega koos haua juurde kuulunud hauamonumendi või -tähise teisaldamist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:SHKS_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 1"
+    },
+    {
+      "@id": "estleg:SHKS_Par_11_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kinnisasja omanik, kelle kinnistul on sõjahaud, on kohustatud võimaldama sellele hauale vaba juurdepääsu säilmete ümbermatmiseks, hauamonumendi või -tähise teisaldamiseks ning säilmete identifitseerimiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:SHKS_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 2"
+    },
+    {
+      "@id": "estleg:SHKS_Par_11_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kaitseministeerium tagab, et pärast käesoleva paragrahvi lõikes 1 nimetatud tööde tegemist taastatakse kinnistul kolme kuu jooksul nende tööde eelsele seisundile võimalikult lähedane olukord, välja arvatud haua juurde kuulunud tähised ja rajatised. Selle kohustuse täitmata jätmisel on kinnistu omanikul õigus nõuda haljastuse või kinnistu muul viisil kahjustamisega tekitatud kahju hüvitamist vastavalt riigivastutuse seadusele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:SHKS_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 3"
+    },
+    {
+      "@id": "estleg:SHKS_Par_11_Lg_4",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "4",
+      "estleg:legalText": "(4) Kui hauamonumendi või -tähise või muu hauaga seotud rajatise omanik on kandnud kulutusi hauamonumendi või -tähise või muu hauaga seotud rajatise ehitamiseks ja ta kannab kahju seoses hauamonumendi või -tähise või muu hauaga seotud rajatise teisaldamise, kohandamise või demonteerimisega, hüvitab tekkinud kahju riik riigivastutuse seaduse alusel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:SHKS_Par_11"
+      },
+      "rdfs:label": "§ 11 lg 4"
     },
     {
       "@id": "estleg:SHKS_Par_12",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_SHKS"
+        "estleg:LegalProvision_sojahaudade_kaitse_seadus"
       ],
       "estleg:paragrahv": "§ 12.",
       "rdfs:label": "§ 12. Sõjahaudade komisjon",
       "estleg:sourceAct": "Sõjahaudade kaitse seadus",
-      "estleg:summary": "1 (1) Sõjahaudade komisjoni moodustab, tema töökorra kinnitab ja komisjoni esimehe nimetab kaitseminister. Sõjahaudade komisjon on seitsmeliikmeline. Sõjahaudade komisjoni kuuluvad siseministri, välisministri, justiitsministri, kultuuriministri ja Eesti Sõjahaudade Hoolde Liidu nimetatud isikud ja kaks kaitseministri nimetatud isikut. Sõjahaudade komisjoni moodustab, tema töökorra kinnitab ja komisjoni esimehe nimetab kaitseminister. Sõjahaudade komisjon on seitsmeliikmeline. Sõjahaudade komisjo",
+      "estleg:summary": "1 (1) Sõjahaudade komisjoni moodustab ja selle töökorra kehtestab Kaitseministeerium või tema määratud asutus või volitatud isik. Sõjahaudade komisjon on vähemalt viieliikmeline. RT I 2023-03-07 7 107032023007 2023-04-01 Sõjahaudade komisjoni moodustab ja selle töökorra kehtestab Kaitseministeerium või tema määratud asutus või volitatud isik. Sõjahaudade komisjon on vähemalt viieliikmeline. 2 (2) Kehtetu - RT I 2023-03-07 7 107032023007 2023-04-01 Kehtetu -",
+      "estleg:legalText": "(1) Sõjahaudade komisjoni moodustab ja selle töökorra kehtestab Kaitseministeerium või tema määratud asutus või volitatud isik. Sõjahaudade komisjon on vähemalt viieliikmeline. (2) Kehtetu -",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SHKS_3"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_SHKS_3"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:SHKS_Par_12_Lg_1"
+        },
+        {
+          "@id": "estleg:SHKS_Par_12_Lg_2"
+        }
+      ],
       "estleg:targetGroup": [
-        "citizen"
+        "citizen",
+        "public_body"
       ],
       "estleg:competentAuthority": [
         {
-          "@id": "estleg:Institution_kaitseminister"
+          "@id": "estleg:Institution_kaitseministeerium"
         }
       ],
-      "estleg:competenceType": "general"
+      "estleg:competenceType": "regulation"
+    },
+    {
+      "@id": "estleg:SHKS_Par_12_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Sõjahaudade komisjoni moodustab ja selle töökorra kehtestab Kaitseministeerium või tema määratud asutus või volitatud isik. Sõjahaudade komisjon on vähemalt viieliikmeline.",
+      "estleg:parentProvision": {
+        "@id": "estleg:SHKS_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 1"
+    },
+    {
+      "@id": "estleg:SHKS_Par_12_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kehtetu -",
+      "estleg:parentProvision": {
+        "@id": "estleg:SHKS_Par_12"
+      },
+      "rdfs:label": "§ 12 lg 2"
     },
     {
       "@id": "estleg:SHKS_Par_13",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_SHKS"
+        "estleg:LegalProvision_sojahaudade_kaitse_seadus"
       ],
       "estleg:paragrahv": "§ 13.",
       "rdfs:label": "§ 13. Mälestisega seotud piirangud",
       "estleg:sourceAct": "Sõjahaudade kaitse seadus",
       "estleg:summary": "1 (1) Kui sõjahaud on tunnistatud mälestiseks või see asub muinsuskaitsealal, kohaldatakse sõjahauale mälestise ja muinsuskaitseala kohta sätestatut käesolevast seadusest tulenevate erisustega. Kui sõjahaud on tunnistatud mälestiseks või see asub muinsuskaitsealal, kohaldatakse sõjahauale mälestise ja muinsuskaitseala kohta sätestatut käesolevast seadusest tulenevate erisustega. 2 (2) Kui käesoleva seaduse § 8 või § 9 lõike 4 alusel kuuluvad ümbermatmisele säilmed, mis on maetud mälestiseks tunn",
+      "estleg:legalText": "(1) Kui sõjahaud on tunnistatud mälestiseks või see asub muinsuskaitsealal, kohaldatakse sõjahauale mälestise ja muinsuskaitseala kohta sätestatut käesolevast seadusest tulenevate erisustega. (2) Kui käesoleva seaduse § 8 või § 9 lõike 4 alusel kuuluvad ümbermatmisele säilmed, mis on maetud mälestiseks tunnistatud haudadesse või muinsuskaitsealale, ei ole nende mälestiseks olek või muinsuskaitsealal asumine takistuseks säilmete ümbermatmisele. (3) Kui käesoleva seaduse § 8 või § 9 lõike 4 alusel kuuluvad ümbermatmisele säilmed, mis on maetud mälestiseks tunnistatud haudadesse või muinsuskaitsealale, kohaldatakse ümbermatmiseks vajalikele töödele muinsuskaitseseadusest ja vastava muinsuskaitseala põhimäärusest tulenevaid kitsendusi järgmiste erisustega: ümbermatmisega ning hauamonumendi või -tähise teisaldamisega seotud tööde tegemiseks ei ole vaja Muinsuskaitseameti luba; ümbermatmisega ning hauamonumendi või -tähise teisaldamisega seotud tööde tegemisest teavitatakse Muinsuskaitseametit ja kohalikku omavalitsust, mille territooriumil töid tehakse, seitse päeva ette; Muinsuskaitseametit ja kohalikku omavalitsust, mille territooriumil töid tehakse, teavitatakse kirjalikult ümbermatmise ning hauamonumendi või -tähise teisaldamisega seotud tööde lõpetamisest seitsme päeva jooksul tööde lõpetamisest arvates.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SHKS_4"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_SHKS_4"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:SHKS_Par_13_Lg_1"
+        },
+        {
+          "@id": "estleg:SHKS_Par_13_Lg_2"
+        },
+        {
+          "@id": "estleg:SHKS_Par_13_Lg_3"
+        }
+      ],
+      "estleg:targetGroup": [
+        "public_body"
+      ],
       "estleg:references": [
         {
           "@id": "estleg:SHKS_Par_8"
@@ -389,70 +1415,192 @@
       ]
     },
     {
+      "@id": "estleg:SHKS_Par_13_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kui sõjahaud on tunnistatud mälestiseks või see asub muinsuskaitsealal, kohaldatakse sõjahauale mälestise ja muinsuskaitseala kohta sätestatut käesolevast seadusest tulenevate erisustega.",
+      "estleg:parentProvision": {
+        "@id": "estleg:SHKS_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 1"
+    },
+    {
+      "@id": "estleg:SHKS_Par_13_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Kui käesoleva seaduse § 8 või § 9 lõike 4 alusel kuuluvad ümbermatmisele säilmed, mis on maetud mälestiseks tunnistatud haudadesse või muinsuskaitsealale, ei ole nende mälestiseks olek või muinsuskaitsealal asumine takistuseks säilmete ümbermatmisele.",
+      "estleg:parentProvision": {
+        "@id": "estleg:SHKS_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 2"
+    },
+    {
+      "@id": "estleg:SHKS_Par_13_Lg_3",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "3",
+      "estleg:legalText": "(3) Kui käesoleva seaduse § 8 või § 9 lõike 4 alusel kuuluvad ümbermatmisele säilmed, mis on maetud mälestiseks tunnistatud haudadesse või muinsuskaitsealale, kohaldatakse ümbermatmiseks vajalikele töödele muinsuskaitseseadusest ja vastava muinsuskaitseala põhimäärusest tulenevaid kitsendusi järgmiste erisustega: ümbermatmisega ning hauamonumendi või -tähise teisaldamisega seotud tööde tegemiseks ei ole vaja Muinsuskaitseameti luba; ümbermatmisega ning hauamonumendi või -tähise teisaldamisega seotud tööde tegemisest teavitatakse Muinsuskaitseametit ja kohalikku omavalitsust, mille territooriumil töid tehakse, seitse päeva ette; Muinsuskaitseametit ja kohalikku omavalitsust, mille territooriumil töid tehakse, teavitatakse kirjalikult ümbermatmise ning hauamonumendi või -tähise teisaldamisega seotud tööde lõpetamisest seitsme päeva jooksul tööde lõpetamisest arvates.",
+      "estleg:parentProvision": {
+        "@id": "estleg:SHKS_Par_13"
+      },
+      "rdfs:label": "§ 13 lg 3"
+    },
+    {
       "@id": "estleg:SHKS_Par_14",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_SHKS"
+        "estleg:LegalProvision_sojahaudade_kaitse_seadus"
       ],
       "estleg:paragrahv": "§ 14.",
-      "rdfs:label": "§ 14. Mälestiseks tunnistatud haualt ja matmispaigalt mälestise staatuse äravõtmine",
+      "rdfs:label": "§ 14. Haua ja matmispaiga mälestiseks olemise lõppemine",
       "estleg:sourceAct": "Sõjahaudade kaitse seadus",
-      "estleg:summary": "1 (1) Käesoleva seaduse alusel lõpetatakse haua ja matmispaiga mälestiseks olemine, kui selles olnud säilmed on käesoleva seaduse alusel ümber maetud. Haua ja matmispaiga mälestiseks olemise lõpetab kultuuriminister käskkirjaga. Käesoleva seaduse alusel lõpetatakse haua ja matmispaiga mälestiseks olemine, kui selles olnud säilmed on käesoleva seaduse alusel ümber maetud. Haua ja matmispaiga mälestiseks olemise lõpetab kultuuriminister käskkirjaga. 2 (2) Käesoleva paragrahvi lõikes 1 nimetatud kä",
+      "estleg:summary": "1 (1) Haua või matmispaiga mälestiseks olemine lõpeb käesoleva seaduse alusel, kui hauas või matmispaigas olnud säilmed on käesoleva seaduse alusel ümber maetud. Haua või matmispaiga mälestiseks olemine lõpeb käesoleva seaduse alusel, kui hauas või matmispaigas olnud säilmed on käesoleva seaduse alusel ümber maetud. 2 (2) Käesoleva paragrahvi lõikes 1 nimetatud lõppemise aluseks on ümbermatmistöid teinud isiku aruanne ümbermatmise ning hauamonumendi või -tähise teisaldamisega seotud tööde lõpeta",
+      "estleg:legalText": "(1) Haua või matmispaiga mälestiseks olemine lõpeb käesoleva seaduse alusel, kui hauas või matmispaigas olnud säilmed on käesoleva seaduse alusel ümber maetud. (2) Käesoleva paragrahvi lõikes 1 nimetatud lõppemise aluseks on ümbermatmistöid teinud isiku aruanne ümbermatmise ning hauamonumendi või -tähise teisaldamisega seotud tööde lõpetamise kohta mälestisel.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SHKS_4"
       },
-      "estleg:competentAuthority": [
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_SHKS_4"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:Institution_kultuuriminister"
+          "@id": "estleg:SHKS_Par_14_Lg_1"
+        },
+        {
+          "@id": "estleg:SHKS_Par_14_Lg_2"
         }
       ],
-      "estleg:competenceType": "general"
+      "estleg:targetGroup": [
+        "citizen"
+      ]
+    },
+    {
+      "@id": "estleg:SHKS_Par_14_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Haua või matmispaiga mälestiseks olemine lõpeb käesoleva seaduse alusel, kui hauas või matmispaigas olnud säilmed on käesoleva seaduse alusel ümber maetud.",
+      "estleg:parentProvision": {
+        "@id": "estleg:SHKS_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 1"
+    },
+    {
+      "@id": "estleg:SHKS_Par_14_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Käesoleva paragrahvi lõikes 1 nimetatud lõppemise aluseks on ümbermatmistöid teinud isiku aruanne ümbermatmise ning hauamonumendi või -tähise teisaldamisega seotud tööde lõpetamise kohta mälestisel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:SHKS_Par_14"
+      },
+      "rdfs:label": "§ 14 lg 2"
     },
     {
       "@id": "estleg:SHKS_Par_15",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_SHKS"
+        "estleg:LegalProvision_sojahaudade_kaitse_seadus"
       ],
       "estleg:paragrahv": "§ 15.",
       "rdfs:label": "§ 15. Sõjahaudade komisjoni moodustamine",
       "estleg:sourceAct": "Sõjahaudade kaitse seadus",
-      "estleg:summary": "1 (1) Sõjahaudade komisjoni moodustab kaitseminister kolmekümne päeva jooksul käesoleva seaduse jõustumisest arvates. Sõjahaudade komisjoni moodustab kaitseminister kolmekümne päeva jooksul käesoleva seaduse jõustumisest arvates. 2 (2) Sõjahaudade komisjon korraldab seaduse jõustumise ajaks teadaolevate sõjahaudade asupaiga sobivuse hindamise ja käesoleva seaduse §-s 9 sätestatud identifitseerimisvajaduse hindamise ning teeb ettepaneku säilmete ümbermatmiseks ning hauamonumentide ja -tähiste tei",
+      "estleg:summary": "1 (1) Sõjahaudade komisjoni moodustab Kaitseministeerium või tema määratud asutus või volitatud isik kolmekümne päeva jooksul käesoleva seaduse jõustumisest arvates. RT I 2023-03-07 7 107032023007 2023-04-01 Sõjahaudade komisjoni moodustab Kaitseministeerium või tema määratud asutus või volitatud isik kolmekümne päeva jooksul käesoleva seaduse jõustumisest arvates. 2 (2) Sõjahaudade komisjon korraldab seaduse jõustumise ajaks teadaolevate sõjahaudade asupaiga sobivuse hindamise ja käesoleva sead",
+      "estleg:legalText": "(1) Sõjahaudade komisjoni moodustab Kaitseministeerium või tema määratud asutus või volitatud isik kolmekümne päeva jooksul käesoleva seaduse jõustumisest arvates. (2) Sõjahaudade komisjon korraldab seaduse jõustumise ajaks teadaolevate sõjahaudade asupaiga sobivuse hindamise ja käesoleva seaduse §-s 9 sätestatud identifitseerimisvajaduse hindamise ning teeb ettepaneku säilmete ümbermatmiseks ning hauamonumentide ja -tähiste teisaldamiseks, kohandamiseks, demonteerimiseks või uute rajatiste paigaldamiseks ühe aasta jooksul käesoleva seaduse jõustumisest arvates.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SHKS_5"
       },
-      "estleg:references": [
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_SHKS_5"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:SHKS_Par_9"
+          "@id": "estleg:SHKS_Par_15_Lg_1"
+        },
+        {
+          "@id": "estleg:SHKS_Par_15_Lg_2"
         }
+      ],
+      "estleg:targetGroup": [
+        "citizen",
+        "public_body"
       ],
       "estleg:competentAuthority": [
         {
-          "@id": "estleg:Institution_kaitseminister"
+          "@id": "estleg:Institution_kaitseministeerium"
         }
       ],
       "estleg:competenceType": "enforcement"
     },
     {
+      "@id": "estleg:SHKS_Par_15_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Sõjahaudade komisjoni moodustab Kaitseministeerium või tema määratud asutus või volitatud isik kolmekümne päeva jooksul käesoleva seaduse jõustumisest arvates.",
+      "estleg:parentProvision": {
+        "@id": "estleg:SHKS_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 1"
+    },
+    {
+      "@id": "estleg:SHKS_Par_15_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Sõjahaudade komisjon korraldab seaduse jõustumise ajaks teadaolevate sõjahaudade asupaiga sobivuse hindamise ja käesoleva seaduse §-s 9 sätestatud identifitseerimisvajaduse hindamise ning teeb ettepaneku säilmete ümbermatmiseks ning hauamonumentide ja -tähiste teisaldamiseks, kohandamiseks, demonteerimiseks või uute rajatiste paigaldamiseks ühe aasta jooksul käesoleva seaduse jõustumisest arvates.",
+      "estleg:parentProvision": {
+        "@id": "estleg:SHKS_Par_15"
+      },
+      "rdfs:label": "§ 15 lg 2"
+    },
+    {
       "@id": "estleg:SHKS_Par_16",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_SHKS"
+        "estleg:LegalProvision_sojahaudade_kaitse_seadus"
       ],
       "estleg:paragrahv": "§ 16.",
       "rdfs:label": "§ 16. Teadaolevad sõjahauad",
       "estleg:sourceAct": "Sõjahaudade kaitse seadus",
       "estleg:summary": "1 (1) Kinnisasja omanik on kohustatud tema maal asuvast ja käesoleva seaduse jõustumise ajal talle teadaolevast sõjahauast informeerima Kaitseministeeriumi kolme kuu jooksul käesoleva seaduse jõustumisest arvates. Nimetatud kohustust ei ole kinnisasja omanikul juhul, kui sõjahaud on tunnistatud mälestiseks. Kinnisasja omanik on kohustatud tema maal asuvast ja käesoleva seaduse jõustumise ajal talle teadaolevast sõjahauast informeerima Kaitseministeeriumi kolme kuu jooksul käesoleva seaduse jõust",
+      "estleg:legalText": "(1) Kinnisasja omanik on kohustatud tema maal asuvast ja käesoleva seaduse jõustumise ajal talle teadaolevast sõjahauast informeerima Kaitseministeeriumi kolme kuu jooksul käesoleva seaduse jõustumisest arvates. Nimetatud kohustust ei ole kinnisasja omanikul juhul, kui sõjahaud on tunnistatud mälestiseks. (2) Sõjahauale, milles olevad säilmed kuuluvad ümbermatmisele, võidakse rakendada ajutist kaitset kuni ümbermatmiseni.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SHKS_5"
       },
-      "estleg:normativeType": {
-        "@id": "estleg:NormType_Obligation"
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_SHKS_5"
       },
-      "estleg:dutyHolder": "Kinnisasja omanik",
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:SHKS_Par_16_Lg_1"
+        },
+        {
+          "@id": "estleg:SHKS_Par_16_Lg_2"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen"
       ],
+      "estleg:normativeType": {
+        "@id": "estleg:NormType_Obligation"
+      },
       "estleg:competentAuthority": [
         {
           "@id": "estleg:Institution_kaitseministeerium"
@@ -461,45 +1609,103 @@
       "estleg:competenceType": "general"
     },
     {
+      "@id": "estleg:SHKS_Par_16_Lg_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "1",
+      "estleg:legalText": "(1) Kinnisasja omanik on kohustatud tema maal asuvast ja käesoleva seaduse jõustumise ajal talle teadaolevast sõjahauast informeerima Kaitseministeeriumi kolme kuu jooksul käesoleva seaduse jõustumisest arvates. Nimetatud kohustust ei ole kinnisasja omanikul juhul, kui sõjahaud on tunnistatud mälestiseks.",
+      "estleg:parentProvision": {
+        "@id": "estleg:SHKS_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 1"
+    },
+    {
+      "@id": "estleg:SHKS_Par_16_Lg_2",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "2",
+      "estleg:legalText": "(2) Sõjahauale, milles olevad säilmed kuuluvad ümbermatmisele, võidakse rakendada ajutist kaitset kuni ümbermatmiseni.",
+      "estleg:parentProvision": {
+        "@id": "estleg:SHKS_Par_16"
+      },
+      "rdfs:label": "§ 16 lg 2"
+    },
+    {
       "@id": "estleg:SHKS_Par_17",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_SHKS"
+        "estleg:LegalProvision_sojahaudade_kaitse_seadus"
       ],
       "estleg:paragrahv": "§ 17.",
       "rdfs:label": "§ 17. Olemasoleva hauarajatisega seotud hüvitamiskohustus",
       "estleg:sourceAct": "Sõjahaudade kaitse seadus",
       "estleg:summary": "Kui käesoleva seaduse jõustumise ajal olemasoleva hauamonumendi või -tähise või muu hauaga seotud rajatise aluse kinnisasja omanik on kandnud kulutusi hauamonumendi või -tähise või muu hauaga seotud rajatise ehitamiseks ja ta kannab kahju seoses hauamonumendi või -tähise või muu hauaga seotud rajatise teisaldamise, kohandamise või demonteerimisega, hüvitab tekkinud kahju riik riigivastutuse seaduse alusel. Kui käesoleva seaduse jõustumise ajal olemasoleva hauamonumendi või -tähise või muu hauaga",
+      "estleg:legalText": "Kui käesoleva seaduse jõustumise ajal olemasoleva hauamonumendi või -tähise või muu hauaga seotud rajatise aluse kinnisasja omanik on kandnud kulutusi hauamonumendi või -tähise või muu hauaga seotud rajatise ehitamiseks ja ta kannab kahju seoses hauamonumendi või -tähise või muu hauaga seotud rajatise teisaldamise, kohandamise või demonteerimisega, hüvitab tekkinud kahju riik riigivastutuse seaduse alusel.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SHKS_5"
       },
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_SHKS_5"
+      },
+      "estleg:hasSubsection": [
+        {
+          "@id": "estleg:SHKS_Par_17_Lg_Unknown_1"
+        }
+      ],
       "estleg:targetGroup": [
         "citizen"
       ]
     },
     {
+      "@id": "estleg:SHKS_Par_17_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
+      ],
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Kui käesoleva seaduse jõustumise ajal olemasoleva hauamonumendi või -tähise või muu hauaga seotud rajatise aluse kinnisasja omanik on kandnud kulutusi hauamonumendi või -tähise või muu hauaga seotud rajatise ehitamiseks ja ta kannab kahju seoses hauamonumendi või -tähise või muu hauaga seotud rajatise teisaldamise, kohandamise või demonteerimisega, hüvitab tekkinud kahju riik riigivastutuse seaduse alusel.",
+      "estleg:parentProvision": {
+        "@id": "estleg:SHKS_Par_17"
+      }
+    },
+    {
       "@id": "estleg:SHKS_Par_18",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:LegalProvision_SHKS"
+        "estleg:LegalProvision_sojahaudade_kaitse_seadus"
       ],
       "estleg:paragrahv": "§ 18.",
       "rdfs:label": "§ 18. Seaduse jõustumine",
       "estleg:sourceAct": "Sõjahaudade kaitse seadus",
-      "estleg:summary": "Käesolev seadus jõustub järgmisel päeval pärast Riigi Teatajas avaldamist. <table summary=\"allkiri\" width=\"100%\"> <tbody><tr valign=\"top\"> <td width=\"60%\"> </td> <td width=\"39%\"> <font size=\"-1\" style=\"font-size:-1px\"><b>Riigikogu esimees Toomas VAREK</b></font> </td> </tr> </tbody></table> Käesolev seadus jõustub järgmisel päeval pärast Riigi Teatajas avaldamist.",
+      "estleg:summary": "Käesolev seadus jõustub järgmisel päeval pärast Riigi Teatajas avaldamist. Käesolev seadus jõustub järgmisel päeval pärast Riigi Teatajas avaldamist.",
+      "estleg:legalText": "Käesolev seadus jõustub järgmisel päeval pärast Riigi Teatajas avaldamist.",
       "estleg:requestedCluster": {
         "@id": "estleg:Cluster_SHKS_5"
       },
-      "estleg:targetGroup": [
-        "public_body",
-        "official"
-      ],
-      "estleg:competentAuthority": [
+      "estleg:isPartOf": {
+        "@id": "estleg:Chapter_SHKS_5"
+      },
+      "estleg:hasSubsection": [
         {
-          "@id": "estleg:Institution_riigikogu"
+          "@id": "estleg:SHKS_Par_18_Lg_Unknown_1"
         }
+      ]
+    },
+    {
+      "@id": "estleg:SHKS_Par_18_Lg_Unknown_1",
+      "@type": [
+        "estleg:Subsection",
+        "owl:NamedIndividual"
       ],
-      "estleg:competenceType": "general"
+      "estleg:subsectionNumber": "Unknown_1",
+      "estleg:legalText": "Käesolev seadus jõustub järgmisel päeval pärast Riigi Teatajas avaldamist.",
+      "estleg:parentProvision": {
+        "@id": "estleg:SHKS_Par_18"
+      }
     }
   ]
 }
