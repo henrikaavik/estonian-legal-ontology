@@ -225,6 +225,160 @@ class TestPrefixAllocatorOrderIndependence:
 
 
 # ---------------------------------------------------------------------------
+# Issue #238 — deterministic, zero-churn slug collision suffixes
+# (Option B: freeze committed slugs + gid-ordered assignment for new colliders)
+# ---------------------------------------------------------------------------
+
+
+class TestCollisionSuffixFreeze:
+    """``build_law_slug_map`` collision suffixes must be deterministic and
+    forward-stable: committed slugs are frozen verbatim, and brand-new
+    colliders are ordered by ``(globaalId, title)`` rather than by list
+    position, so a title rename/reorder never drifts another act's slug.
+    """
+
+    # Three titles whose 80-char slug stems are identical (a long treaty
+    # base) but whose full titles and gids differ.
+    _BASE_PHRASE = (
+        "Eesti Vabariigi valitsuse ja teise riigi vaheline pikk leping "
+        "investeeringute kaitse kohta "
+    )
+
+    def _colliding_titles(self) -> tuple[str, str, str]:
+        t1 = self._BASE_PHRASE + "A esimene"
+        t2 = self._BASE_PHRASE + "B teine"
+        t3 = self._BASE_PHRASE + "C kolmas"
+        # Sanity: all three collide on the same truncated base slug.
+        assert (
+            generate_all_laws.slugify(t1)
+            == generate_all_laws.slugify(t2)
+            == generate_all_laws.slugify(t3)
+        )
+        return t1, t2, t3
+
+    def test_collision_suffixes_stable_across_reordered_inputs(self):
+        """No freeze map: the smallest-gid title takes the bare base slug
+        and the assignment is identical regardless of dict insertion order.
+        """
+        t1, t2, t3 = self._colliding_titles()
+        base = generate_all_laws.slugify(t1)
+        assert len(base) > 80 - 1  # long treaty stem
+
+        # gids chosen so the smallest-as-string is t2 ("100..." < "27..." <
+        # "9..."), proving string (not int) ordering drives the base slug.
+        laws_a = {
+            t1: {"gid": "27546"},
+            t2: {"gid": "100200300400"},
+            t3: {"gid": "9001"},
+        }
+        laws_b = {
+            t3: {"gid": "9001"},
+            t1: {"gid": "27546"},
+            t2: {"gid": "100200300400"},
+        }
+
+        m1 = generate_all_laws.build_law_slug_map(laws_a, registry={})
+        m2 = generate_all_laws.build_law_slug_map(laws_b, registry={})
+
+        assert m1 == m2
+        # String compare: "100200300400" < "27546" < "9001".
+        assert m1[t2] == base
+        assert {m1[t1], m1[t3]} == {f"{base}_2", f"{base}_3"}
+        # Stable, distinct, non-base suffixes for the other two.
+        assert m1[t1] != m1[t3]
+
+    def test_existing_collision_assignments_are_frozen(self):
+        """Two of three colliders carry committed slugs; those stay verbatim
+        across reordered inputs, and the new third collider takes the next
+        free suffix deterministically.
+        """
+        t1, t2, t3 = self._colliding_titles()
+        base = generate_all_laws.slugify(t1)
+
+        # Committed corpus assigned t1 -> base, t3 -> base_2 (whatever the
+        # historical order produced). t2 is brand new this snapshot.
+        freeze = {t1: base, t3: f"{base}_2"}
+
+        laws_a = {
+            t1: {"gid": "27546"},
+            t2: {"gid": "100"},  # smallest gid, but must NOT steal the base
+            t3: {"gid": "9001"},
+        }
+        laws_b = {
+            t2: {"gid": "100"},
+            t3: {"gid": "9001"},
+            t1: {"gid": "27546"},
+        }
+
+        m1 = generate_all_laws.build_law_slug_map(
+            laws_a, registry={}, existing_slug_by_title=freeze
+        )
+        m2 = generate_all_laws.build_law_slug_map(
+            laws_b, registry={}, existing_slug_by_title=freeze
+        )
+
+        assert m1 == m2
+        # Frozen titles keep their committed slug despite t2's smaller gid.
+        assert m1[t1] == base
+        assert m1[t3] == f"{base}_2"
+        # The new collider gets the lowest UNUSED suffix (base and base_2 are
+        # reserved -> base_3), and it is reorder-independent.
+        assert m1[t2] == f"{base}_3"
+
+    def test_collision_suffix_unaffected_by_title_amendment(self):
+        """Same gids, but one title's text is amended between two calls (no
+        freeze map). Each gid's slug must be unchanged — identity is the gid,
+        not the raw title string.
+        """
+        t1, t2, t3 = self._colliding_titles()
+        base = generate_all_laws.slugify(t1)
+
+        laws_before = {
+            t1: {"gid": "27546"},
+            t2: {"gid": "100200300400"},
+            t3: {"gid": "9001"},
+        }
+        m_before = generate_all_laws.build_law_slug_map(
+            laws_before, registry={}
+        )
+
+        # Amend t3's title text while keeping its gid; it still collides on
+        # the same base slug (tail differs only after the 80-char cutoff).
+        t3_amended = self._BASE_PHRASE + "C kolmas (muudetud redaktsioon)"
+        assert generate_all_laws.slugify(t3_amended) == base
+        laws_after = {
+            t1: {"gid": "27546"},
+            t2: {"gid": "100200300400"},
+            t3_amended: {"gid": "9001"},
+        }
+        m_after = generate_all_laws.build_law_slug_map(laws_after, registry={})
+
+        # gid 100200300400 keeps the base slug; gid 27546 and gid 9001 keep
+        # their respective suffixes across the amendment.
+        assert m_before[t2] == m_after[t2] == base
+        assert m_before[t1] == m_after[t1]
+        assert m_before[t3] == m_after[t3_amended]
+
+    def test_fresh_checkout_no_manifest_uses_gid_order(self):
+        """``existing_slug_by_title=None`` (fresh checkout) is the default
+        gid-ordered path: the smallest-gid collider takes the base slug.
+        """
+        t1, t2, t3 = self._colliding_titles()
+        base = generate_all_laws.slugify(t1)
+        laws = {
+            t1: {"gid": "27546"},
+            t2: {"gid": "100200300400"},
+            t3: {"gid": "9001"},
+        }
+        m_default = generate_all_laws.build_law_slug_map(laws, registry={})
+        m_explicit_none = generate_all_laws.build_law_slug_map(
+            laws, registry={}, existing_slug_by_title=None
+        )
+        assert m_default == m_explicit_none
+        assert m_default[t2] == base
+
+
+# ---------------------------------------------------------------------------
 # Issue #156 + #165 fix 2 — paragraph IRI suffix from ylaIndeks
 # ---------------------------------------------------------------------------
 
@@ -735,6 +889,279 @@ class TestMultipartRefreshMode:
         assert any(
             (n.get("@id") or "").endswith("Par_1") for n in saved["@graph"]
         ), "refresh mode must overwrite stale multipart osa peep files"
+
+
+# ---------------------------------------------------------------------------
+# Issue #237 — reconcile stale/orphan multipart osa outputs OUTSIDE to_generate
+# ---------------------------------------------------------------------------
+
+
+class TestStaleOsaReconciledOutsideToGenerate:
+    """The in-loop ``remove_obsolete_multipart_outputs`` only runs for laws
+    selected into ``to_generate``. A multipart law that is skipped from the
+    generation loop (resumed via regen state, or because its single-file
+    output is already fresh) must still have its stale / orphan
+    ``<slug>_osaN_peep.json`` parts reconciled by the post-generation pass.
+    """
+
+    _KEHTIV = "2026-05-01"
+    _TID = "100"
+
+    def _osa_doc(self, osa_nr: int, kehtiv: str, tid: str) -> dict:
+        return {
+            "@context": generate_all_laws.CONTEXT,
+            "@graph": [
+                {
+                    "@id": "x",
+                    "@type": ["owl:Ontology"],
+                    "estleg:kehtiv": {"@value": kehtiv, "@type": "xsd:date"},
+                    "estleg:terviktekstId": {
+                        "@value": tid,
+                        "@type": "xsd:string",
+                    },
+                },
+                {"@id": f"Par_{osa_nr}", "@type": ["owl:NamedIndividual"]},
+            ],
+        }
+
+    def _two_osa_xml(self) -> str:
+        pad = "<!-- " + ("x" * 1500) + " -->"
+        return f"""<?xml version='1.0' encoding='utf-8'?>
+        {pad}
+        <akt><sisu>
+          <osa><osaNr>1</osaNr><osaPealkiri>One</osaPealkiri>
+            <paragrahv><paragrahvNr>1</paragrahvNr><kuvatavNr>S 1.</kuvatavNr>
+              <loige><loigeNr>1</loigeNr><tavatekst>Esimene.</tavatekst></loige>
+            </paragrahv></osa>
+          <osa><osaNr>2</osaNr><osaPealkiri>Two</osaPealkiri>
+            <paragrahv><paragrahvNr>2</paragrahvNr><kuvatavNr>S 2.</kuvatavNr>
+              <loige><loigeNr>1</loigeNr><tavatekst>Teine.</tavatekst></loige>
+            </paragrahv></osa>
+        </sisu></akt>
+        """
+
+    def _single_xml(self) -> str:
+        pad = "<!-- " + ("x" * 1500) + " -->"
+        return f"""<?xml version='1.0' encoding='utf-8'?>
+        {pad}
+        <akt><sisu>
+          <paragrahv><paragrahvNr>1</paragrahvNr><kuvatavNr>S 1.</kuvatavNr>
+            <loige><loigeNr>1</loigeNr><tavatekst>Esimene.</tavatekst></loige>
+          </paragrahv>
+        </sisu></akt>
+        """
+
+    def _write_xml(self, data_dir, xml: str) -> None:
+        (data_dir / "test_law.xml").write_text(xml, encoding="utf-8")
+        (data_dir / "test_law__tid100.xml").write_text(xml, encoding="utf-8")
+
+    def _patch_common(self, monkeypatch, krr, data_dir, multipart):
+        monkeypatch.setattr(generate_all_laws, "KRR_DIR", krr)
+        monkeypatch.setattr(generate_all_laws, "DATA_DIR", data_dir)
+        monkeypatch.setattr(generate_all_laws, "MULTIPART_LAWS", multipart)
+        monkeypatch.setattr(
+            generate_all_laws,
+            "get_all_laws",
+            lambda **kw: (
+                {
+                    "Test Law": {
+                        "gid": "1",
+                        "tid": self._TID,
+                        "url": "/akt/test.xml",
+                        "lyhend": "TLAW",
+                    }
+                },
+                {"complete": True},
+            ),
+        )
+
+    def _args(self, regen_state=None):
+        class _Args:
+            refresh = False
+            force = False
+            missing_only = True
+            kehtiv = TestStaleOsaReconciledOutsideToGenerate._KEHTIV
+            allow_partial = False
+            limit = None
+            from_manifest = None
+
+        _Args.regen_state = regen_state
+        return _Args()
+
+    def test_stale_osa_outside_to_generate_is_reconciled(
+        self, tmp_path, monkeypatch
+    ):
+        """Multipart law resumed via regen state (so it never enters the
+        generation loop): fresh osa parts survive, the stale orphan osa9 is
+        deleted by the post-generation pass, and the counter records it.
+
+        ``selectedForGeneration == 0`` proves the in-loop cleanup could not
+        have done this — only the new reconciliation pass runs here.
+        """
+        krr = tmp_path / "krr_outputs"
+        krr.mkdir()
+        data_dir = tmp_path / "data" / "riigiteataja"
+        data_dir.mkdir(parents=True)
+
+        # Two FRESH osa parts (current kehtiv + matching tid) and one STALE
+        # orphan part for an osa the current XML no longer produces.
+        generate_all_laws.save_json(
+            krr / "test_law_osa1_peep.json",
+            self._osa_doc(1, self._KEHTIV, self._TID),
+        )
+        generate_all_laws.save_json(
+            krr / "test_law_osa2_peep.json",
+            self._osa_doc(2, self._KEHTIV, self._TID),
+        )
+        generate_all_laws.save_json(
+            krr / "test_law_osa9_peep.json",
+            self._osa_doc(9, "2020-01-01", self._TID),
+        )
+
+        # Mark the slug completed so it is skipped BEFORE the staleness scan,
+        # i.e. excluded from to_generate (the #237 trigger).
+        regen_path = krr / ".regen_state.json"
+        generate_all_laws.save_json(
+            regen_path,
+            {
+                "schemaVersion": generate_all_laws.REGEN_STATE_SCHEMA_VERSION,
+                "completed": {
+                    "test_law": {
+                        "title": "Test Law",
+                        "kehtiv": self._KEHTIV,
+                        "terviktekstId": self._TID,
+                    }
+                },
+                "failed": {},
+            },
+        )
+
+        self._write_xml(data_dir, self._two_osa_xml())
+        self._patch_common(monkeypatch, krr, data_dir, {"Test Law"})
+        monkeypatch.setattr(
+            generate_all_laws,
+            "parse_args",
+            lambda: self._args(regen_state=str(regen_path)),
+        )
+
+        generate_all_laws._used_prefixes.clear()
+        generate_all_laws.main()
+
+        assert (krr / "test_law_osa1_peep.json").exists()
+        assert (krr / "test_law_osa2_peep.json").exists()
+        assert not (krr / "test_law_osa9_peep.json").exists()
+
+        manifest = json.loads(
+            (krr / generate_all_laws.MANIFEST_NAME).read_text(encoding="utf-8")
+        )
+        assert manifest["counts"]["selectedForGeneration"] == 0
+        assert manifest["run"]["obsoleteMultipartRemoved"] >= 1
+
+    def test_orphan_osa_when_law_no_longer_multipart_is_removed(
+        self, tmp_path, monkeypatch
+    ):
+        """A law that is in the snapshot but no longer in MULTIPART_LAWS,
+        whose single-file output is already fresh (so it is skipped from
+        to_generate), keeps its ``<slug>_peep.json`` but has a leftover
+        ``<slug>_osa1_peep.json`` swept by the reconciliation pass.
+        """
+        krr = tmp_path / "krr_outputs"
+        krr.mkdir()
+        data_dir = tmp_path / "data" / "riigiteataja"
+        data_dir.mkdir(parents=True)
+
+        # Fresh single-file output -> law is skipped from to_generate.
+        generate_all_laws.save_json(
+            krr / "test_law_peep.json",
+            self._osa_doc(1, self._KEHTIV, self._TID),
+        )
+        # Orphan part left over from when the law used to be multipart.
+        generate_all_laws.save_json(
+            krr / "test_law_osa1_peep.json",
+            self._osa_doc(1, self._KEHTIV, self._TID),
+        )
+
+        self._write_xml(data_dir, self._single_xml())
+        # Law is NOT multipart any more.
+        self._patch_common(monkeypatch, krr, data_dir, set())
+        monkeypatch.setattr(
+            generate_all_laws, "parse_args", lambda: self._args()
+        )
+
+        generate_all_laws._used_prefixes.clear()
+        generate_all_laws.main()
+
+        assert (krr / "test_law_peep.json").exists()
+        assert not (krr / "test_law_osa1_peep.json").exists()
+
+        manifest = json.loads(
+            (krr / generate_all_laws.MANIFEST_NAME).read_text(encoding="utf-8")
+        )
+        assert manifest["counts"]["selectedForGeneration"] == 0
+        assert manifest["run"]["obsoleteMultipartRemoved"] >= 1
+
+    def test_fresh_osa_for_out_of_scope_law_is_not_deleted(
+        self, tmp_path, monkeypatch
+    ):
+        """Negative guard: a FRESH osa file whose slug belongs to no current
+        source title is left untouched, and an in-scope multipart law's fresh
+        parts are likewise preserved (no spurious deletions).
+        """
+        krr = tmp_path / "krr_outputs"
+        krr.mkdir()
+        data_dir = tmp_path / "data" / "riigiteataja"
+        data_dir.mkdir(parents=True)
+
+        # Out-of-scope law (no such title returned this run) — fresh part.
+        generate_all_laws.save_json(
+            krr / "other_law_osa1_peep.json",
+            self._osa_doc(1, self._KEHTIV, self._TID),
+        )
+        # In-scope multipart law — fresh parts, resumed via regen state.
+        generate_all_laws.save_json(
+            krr / "test_law_osa1_peep.json",
+            self._osa_doc(1, self._KEHTIV, self._TID),
+        )
+        generate_all_laws.save_json(
+            krr / "test_law_osa2_peep.json",
+            self._osa_doc(2, self._KEHTIV, self._TID),
+        )
+        regen_path = krr / ".regen_state.json"
+        generate_all_laws.save_json(
+            regen_path,
+            {
+                "schemaVersion": generate_all_laws.REGEN_STATE_SCHEMA_VERSION,
+                "completed": {
+                    "test_law": {
+                        "title": "Test Law",
+                        "kehtiv": self._KEHTIV,
+                        "terviktekstId": self._TID,
+                    }
+                },
+                "failed": {},
+            },
+        )
+
+        self._write_xml(data_dir, self._two_osa_xml())
+        self._patch_common(monkeypatch, krr, data_dir, {"Test Law"})
+        monkeypatch.setattr(
+            generate_all_laws,
+            "parse_args",
+            lambda: self._args(regen_state=str(regen_path)),
+        )
+
+        generate_all_laws._used_prefixes.clear()
+        generate_all_laws.main()
+
+        # Nothing deleted: out-of-scope orphan and in-scope fresh parts stay.
+        assert (krr / "other_law_osa1_peep.json").exists()
+        assert (krr / "test_law_osa1_peep.json").exists()
+        assert (krr / "test_law_osa2_peep.json").exists()
+
+        manifest = json.loads(
+            (krr / generate_all_laws.MANIFEST_NAME).read_text(encoding="utf-8")
+        )
+        assert manifest["run"]["obsoleteMultipartRemoved"] == 0
 
 
 # ---------------------------------------------------------------------------

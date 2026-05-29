@@ -81,7 +81,10 @@ def slugify(text: str) -> str:
 
 
 def build_law_slug_map(
-    all_laws: dict[str, dict], *, registry: dict | None = None
+    all_laws: dict[str, dict],
+    *,
+    registry: dict | None = None,
+    existing_slug_by_title: dict[str, str] | None = None,
 ) -> dict[str, str]:
     """Return deterministic, unique output slugs for a law title mapping.
 
@@ -90,8 +93,30 @@ def build_law_slug_map(
     abbreviation registry already assigns that base slug to one title,
     that title keeps the base stem and the remaining colliders receive
     stable numeric suffixes.
+
+    Suffix assignment is "freeze + forward-stable" (#238):
+
+    * ``existing_slug_by_title`` maps a ``title`` to the slug already
+      committed for it (loaded from the manifest's ``outputsAll`` block).
+      Any title present there keeps its committed slug verbatim — its slug
+      is reserved first so it never drifts when sibling titles change or
+      reorder across snapshots.
+    * Titles not in the freeze map ("new" colliders) are ordered
+      deterministically by ``(globaalId, title)`` — the globaalId is the
+      stable per-act identity, with the title as a final fallback. The gid
+      is compared as a string (opaque RT identifiers like ``"27546"`` and
+      ``"201062022004"`` reorder differently under int compare). Each new
+      title is assigned the lowest still-unused slug from the sequence
+      ``base_slug, base_slug_2, base_slug_3, …`` (skipping any slug a
+      frozen title already reserved). A registered title prefers the bare
+      ``base_slug`` when it is still free.
+
+    When ``existing_slug_by_title`` is empty/None (a fresh checkout with no
+    manifest) every title is "new", giving a pure gid-ordered, snapshot
+    order-independent assignment.
     """
     registry = _load_registry() if registry is None else registry
+    freeze = existing_slug_by_title or {}
     by_base: dict[str, list[str]] = {}
     for title in all_laws:
         if isinstance(title, str):
@@ -99,17 +124,46 @@ def build_law_slug_map(
 
     slugs: dict[str, str] = {}
     for base_slug, titles in sorted(by_base.items()):
-        ordered = sorted(titles)
         entry = registry.get(base_slug) if isinstance(registry, dict) else None
         registered_title = (
             entry.get("title")
             if isinstance(entry, dict) and isinstance(entry.get("title"), str)
             else None
         )
-        if registered_title in ordered:
-            ordered = [registered_title, *[title for title in ordered if title != registered_title]]
-        for index, title in enumerate(ordered):
-            slugs[title] = base_slug if index == 0 else f"{base_slug}_{index + 1}"
+
+        reserved: set[str] = set()
+        frozen_titles: list[str] = []
+        new_titles: list[str] = []
+        for title in titles:
+            committed = freeze.get(title)
+            if isinstance(committed, str) and committed:
+                slugs[title] = committed
+                reserved.add(committed)
+                frozen_titles.append(title)
+            else:
+                new_titles.append(title)
+
+        # New colliders are ordered by stable identity (gid, then title).
+        # The registry owner is preferred for the bare ``base_slug`` only
+        # among the new titles and only when that slug is still free.
+        new_titles.sort(
+            key=lambda t: (str((all_laws.get(t) or {}).get("gid") or ""), t)
+        )
+        if registered_title in new_titles and base_slug not in reserved:
+            new_titles = [
+                registered_title,
+                *[t for t in new_titles if t != registered_title],
+            ]
+
+        next_index = 0
+        for title in new_titles:
+            while True:
+                candidate = base_slug if next_index == 0 else f"{base_slug}_{next_index + 1}"
+                next_index += 1
+                if candidate not in reserved:
+                    break
+            slugs[title] = candidate
+            reserved.add(candidate)
     return slugs
 
 
@@ -1893,6 +1947,37 @@ def load_law_list_from_manifest(manifest_path: Path) -> dict[str, dict]:
     return all_laws
 
 
+def load_committed_slug_map(manifest_path: Path) -> dict[str, str]:
+    """Return ``{title: slug}`` from a manifest's ``outputsAll`` block.
+
+    Feeds the freeze map for ``build_law_slug_map`` (#238) so already-committed
+    collision suffixes never drift across snapshots. Missing/unreadable/empty
+    manifests yield an empty map (never raises) — a fresh checkout then gets a
+    pure gid-ordered, forward-stable assignment.
+    """
+    if not manifest_path.exists():
+        return {}
+    try:
+        with open(manifest_path, "r", encoding="utf-8") as f:
+            manifest = json.load(f)
+    except (json.JSONDecodeError, OSError):
+        return {}
+    if not isinstance(manifest, dict):
+        return {}
+    entries = manifest.get("outputsAll")
+    if not isinstance(entries, list):
+        return {}
+    mapping: dict[str, str] = {}
+    for entry in entries:
+        if not isinstance(entry, dict):
+            continue
+        title = entry.get("title")
+        slug = entry.get("slug")
+        if isinstance(title, str) and title and isinstance(slug, str) and slug:
+            mapping[title] = slug
+    return mapping
+
+
 # Laws that should be split by osa (large multi-part laws)
 MULTIPART_LAWS = {
     "Võlaõigusseadus",
@@ -2314,7 +2399,13 @@ def main():
         source_manifest["limited"] = True
         source_manifest["limit"] = args.limit
     print(f"  Found {len(all_laws)} unique law titles")
-    slug_by_title = build_law_slug_map(all_laws)
+    # Freeze already-committed collision suffixes so a snapshot refresh never
+    # drifts an existing output filename / IRI (#238). New colliders fall back
+    # to a deterministic gid-ordered assignment inside build_law_slug_map.
+    committed_slug_by_title = load_committed_slug_map(KRR_DIR / MANIFEST_NAME)
+    slug_by_title = build_law_slug_map(
+        all_laws, existing_slug_by_title=committed_slug_by_title
+    )
     completed_slugs = prune_completed_regen_state(
         regen_state, all_laws, kehtiv=args.kehtiv, slug_by_title=slug_by_title
     )
@@ -2586,6 +2677,39 @@ def main():
 
         # Rate limit - be polite to Riigi Teataja
         time.sleep(0.3)
+
+    # Stale multipart reconciliation (#237): the in-loop cleanup only runs
+    # for laws selected into ``to_generate``. In missing-only mode a fresh
+    # multipart law is excluded from ``to_generate`` (its osa snapshots are
+    # current), so a left-over ``<slug>_osaN_peep.json`` for an osa that no
+    # longer exists upstream would never be reconciled. Sweep every source
+    # law once more here, AFTER generation. Files already unlinked inside the
+    # main loop are gone from disk, so this pass cannot double-count them.
+    for title, info in sorted(all_laws.items()):
+        if title in to_generate:
+            # Already reconciled (multipart) or rewritten (single) this run.
+            continue
+        slug = slug_by_title[title]
+        try:
+            if title in MULTIPART_LAWS:
+                for part_path in sorted(KRR_DIR.glob(f"{slug}_osa*_peep.json")):
+                    existing_doc = _load_existing_doc(part_path)
+                    if existing_doc is not None and existing_law_is_stale(
+                        existing_doc, args.kehtiv, info.get("tid")
+                    ):
+                        part_path.unlink()
+                        run_counts["obsoleteMultipartRemoved"] += 1
+                        print(f"    Removed stale multipart part: {part_path.name}")
+            else:
+                # Law is no longer multipart: any ``_osaN`` part is orphaned.
+                obsolete_paths = remove_obsolete_multipart_outputs(
+                    KRR_DIR, slug, set()
+                )
+                run_counts["obsoleteMultipartRemoved"] += len(obsolete_paths)
+                for obsolete_path in obsolete_paths:
+                    print(f"    Removed orphan multipart part: {obsolete_path.name}")
+        except Exception as exc:  # noqa: BLE001
+            print(f"    WARN: multipart reconciliation failed for {slug}: {exc}")
 
     # Source-removed detection (#108): existing peep files whose law title
     # no longer appears in the current source list. Reported, not deleted.
