@@ -332,19 +332,22 @@ def build_law_index(index_data: dict) -> dict[str, dict]:
         if not name or not files:
             continue
 
-        # Load the first file to get the sourceAct name
+        # Load the first file to get the sourceAct name. The file is
+        # guaranteed to exist (the comprehension above filtered on
+        # ``.exists()``), but the read can still fail on malformed/unreadable
+        # JSON or an absent ``@graph``/``sourceAct`` — in which case we fall
+        # back to the filename-derived key below.
         first_file = KRR_DIR / files[0]
         source_act = ""
-        if first_file.exists():
-            try:
-                data = load_json(first_file)
-                for node in data.get("@graph", []):
-                    sa = node.get("estleg:sourceAct", "")
-                    if sa:
-                        source_act = sa
-                        break
-            except Exception:
-                pass
+        try:
+            data = load_json(first_file)
+            for node in data.get("@graph", []):
+                sa = node.get("estleg:sourceAct", "")
+                if sa:
+                    source_act = sa
+                    break
+        except Exception:
+            pass
 
         # Index by several normalized forms
         if source_act:

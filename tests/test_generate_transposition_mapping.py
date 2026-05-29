@@ -96,6 +96,30 @@ def test_build_law_index_filters_missing_files_from_stale_index(
     assert entry["source_act"] == "Asjaõigusseadus"
 
 
+def test_build_law_index_handles_unreadable_first_file_gracefully(
+    tmp_path: Path, monkeypatch
+) -> None:
+    """A first file that exists but is unreadable/malformed (no parseable
+    ``@graph``/``sourceAct``) must not crash ``build_law_index`` — it falls
+    back to the filename-derived key with ``source_act`` set to the spaced
+    name (covers the try/except in the now-unguarded read)."""
+    krr = tmp_path / "krr_outputs"
+    krr.mkdir()
+    # First file exists but is invalid JSON, so load_json raises.
+    (krr / "tubakaseadus_peep.json").write_text("{ not valid json", encoding="utf-8")
+    monkeypatch.setattr(mod, "KRR_DIR", krr)
+
+    index = mod.build_law_index(
+        {"laws": [{"name": "tubakaseadus", "files": ["tubakaseadus_peep.json"]}]}
+    )
+
+    entry = index[mod.normalize_text("tubakaseadus")]
+    assert entry["name"] == "tubakaseadus"
+    assert entry["files"] == ["tubakaseadus_peep.json"]
+    # No sourceAct could be read; the key falls back to the spaced name.
+    assert entry["source_act"] == "tubakaseadus"
+
+
 def test_inverse_transposed_by_links_to_real_law_node(
     tmp_path: Path, monkeypatch
 ) -> None:
