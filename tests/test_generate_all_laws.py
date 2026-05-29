@@ -1100,6 +1100,48 @@ class TestStaleOsaReconciledOutsideToGenerate:
         assert manifest["counts"]["selectedForGeneration"] == 0
         assert manifest["run"]["obsoleteMultipartRemoved"] >= 1
 
+    def test_formerly_multipart_regenerated_single_file_sweeps_orphan_osa(
+        self, tmp_path, monkeypatch
+    ):
+        """#246: a formerly-multipart law regenerated as a SINGLE file this
+        run (so it enters ``to_generate`` and goes through the single-file
+        branch, which has no in-loop osa cleanup) must still have its leftover
+        ``<slug>_osaN_peep.json`` parts swept by the reconciliation pass.
+        ``selectedForGeneration >= 1`` proves the law was regenerated (not
+        skipped), distinguishing this from the out-of-``to_generate`` cases.
+        """
+        krr = tmp_path / "krr_outputs"
+        krr.mkdir()
+        data_dir = tmp_path / "data" / "riigiteataja"
+        data_dir.mkdir(parents=True)
+
+        # Orphan part left over from when the law used to be multipart. No
+        # single-file output exists, so the law is missing -> regenerated.
+        generate_all_laws.save_json(
+            krr / "test_law_osa1_peep.json",
+            self._osa_doc(1, self._KEHTIV, self._TID),
+        )
+
+        self._write_xml(data_dir, self._single_xml())
+        # Law is NOT multipart any more.
+        self._patch_common(monkeypatch, krr, data_dir, set())
+        monkeypatch.setattr(
+            generate_all_laws, "parse_args", lambda: self._args()
+        )
+
+        generate_all_laws._used_prefixes.clear()
+        generate_all_laws.main()
+
+        # Regenerated single file present; orphan osa part swept.
+        assert (krr / "test_law_peep.json").exists()
+        assert not (krr / "test_law_osa1_peep.json").exists()
+
+        manifest = json.loads(
+            (krr / generate_all_laws.MANIFEST_NAME).read_text(encoding="utf-8")
+        )
+        assert manifest["counts"]["selectedForGeneration"] >= 1
+        assert manifest["run"]["obsoleteMultipartRemoved"] >= 1
+
     def test_fresh_osa_for_out_of_scope_law_is_not_deleted(
         self, tmp_path, monkeypatch
     ):

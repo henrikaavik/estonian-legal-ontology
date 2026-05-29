@@ -2468,6 +2468,11 @@ def main():
         "forceRewritten": 0,
         "obsoleteMultipartRemoved": 0,
     })
+    # Slugs whose osa parts were (re)generated via the multipart branch this
+    # run; their obsolete-osa cleanup already ran in-loop with the
+    # authoritative expected set, so the post-generation reconciliation pass
+    # must not re-sweep them (#237/#246).
+    multipart_generated_slugs: set[str] = set()
     generated = 0
     failed = 0
     skipped = 0  # stub acts (no structured body)
@@ -2619,6 +2624,7 @@ def main():
                 warning = f"obsolete multipart cleanup failed: {exc}"
                 warnings.append(warning)
                 print(f"    WARN: {warning}")
+            multipart_generated_slugs.add(slug)
             if subsection_count == 0 and any(
                 ln(el.tag) == "loige" for el in root.iter()
             ):
@@ -2678,18 +2684,20 @@ def main():
         # Rate limit - be polite to Riigi Teataja
         time.sleep(0.3)
 
-    # Stale multipart reconciliation (#237): the in-loop cleanup only runs
-    # for laws selected into ``to_generate``. In missing-only mode a fresh
-    # multipart law is excluded from ``to_generate`` (its osa snapshots are
-    # current), so a left-over ``<slug>_osaN_peep.json`` for an osa that no
-    # longer exists upstream would never be reconciled. Sweep every source
-    # law once more here, AFTER generation. Files already unlinked inside the
-    # main loop are gone from disk, so this pass cannot double-count them.
+    # Stale multipart reconciliation (#237, #246): the in-loop osa cleanup
+    # only runs in the multipart branch. Laws skipped from ``to_generate``
+    # (fresh in missing-only mode) AND laws regenerated via the single-file /
+    # stub branch (e.g. a formerly-multipart law that is no longer multipart)
+    # would otherwise keep stale ``<slug>_osaN_peep.json`` parts. Sweep every
+    # source law NOT handled by the multipart branch here, AFTER generation.
+    # Files already unlinked inside the main loop are gone from disk, so this
+    # pass cannot double-count them.
     for title, info in sorted(all_laws.items()):
-        if title in to_generate:
-            # Already reconciled (multipart) or rewritten (single) this run.
-            continue
         slug = slug_by_title[title]
+        if slug in multipart_generated_slugs:
+            # Multipart parts (re)generated this run already had their
+            # obsolete-osa cleanup with the authoritative expected set.
+            continue
         try:
             if title in MULTIPART_LAWS:
                 for part_path in sorted(KRR_DIR.glob(f"{slug}_osa*_peep.json")):
