@@ -14,6 +14,7 @@ import re
 import sys
 import tempfile
 import xml.etree.ElementTree as ET
+from collections.abc import Iterator
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -481,6 +482,89 @@ PAR_SUFFIX = r"§§?(?:[\-\u2011](?:de(?:s)?|d|s|st|le|i|ga))?"
 # ---------------------------------------------------------------------------
 REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
+
+
+# ---------------------------------------------------------------------------
+# Operational state files — the SINGLE SOURCE OF TRUTH (#240).
+#
+# These are pipeline bookkeeping artifacts written under ``krr_outputs/``
+# that are NOT corpus data and must never be counted by any file-counter
+# or fed to the validators. Both ``validate_all`` and ``fix_all_issues``
+# import these three names (and re-export ``OPERATIONAL_STATE_FILES`` as a
+# module-level alias for backward compatibility); a literal copy must
+# never be reintroduced in either module. ``is_operational_state_file``
+# is the classifier and ``iter_krr_jsonld_files`` is the ONE shared
+# enumerator every counter routes through — this is the anti-drift
+# mechanism that keeps local and CI file counts identical.
+#
+# The corpus count this exclusion currently yields is 23112 (matches
+# ``metadata.jsonld`` ``estleg:totalFiles`` / ``estleg:fileCount``).
+# Any change here that moves that number means the classifier was
+# broadened or narrowed incorrectly.
+# ---------------------------------------------------------------------------
+OPERATIONAL_STATE_FILES: frozenset[str] = frozenset(
+    {
+        ".regen_state.json",
+        "generation_manifest_laws.json",
+        "latest_pipeline_manifest.json",
+    }
+)
+
+# Operational directories whose generated ``*.json`` state manifests should
+# also be excluded even when they don't match a basename in
+# ``OPERATIONAL_STATE_FILES``. Kept deliberately conservative (a single
+# known integration-report directory) so the current 23112 count is
+# unchanged: the only ``*.json`` currently living under
+# ``reports/integration`` is ``latest_pipeline_manifest.json``, which is
+# already excluded by basename. The pattern guard is forward-looking — it
+# stops a *new* generated state manifest dropped into that directory from
+# silently inflating counts (the PR #232 drift bug).
+_OPERATIONAL_STATE_DIR_SUFFIXES: tuple[tuple[str, ...], ...] = (
+    ("reports", "integration"),
+)
+
+
+def is_operational_state_file(path: Path) -> bool:
+    """Return True if ``path`` is a pipeline state file, not corpus data.
+
+    Two ways a path qualifies:
+
+    1. **Basename match** — ``path.name`` is one of
+       ``OPERATIONAL_STATE_FILES``.
+    2. **Generated-state-manifest pattern** — a ``*.json`` whose parent
+       directory ends with a known operational subpath (currently only
+       ``reports/integration``). This conservative guard keeps the corpus
+       count stable today while preventing future generated manifests in
+       that directory from drifting the count.
+    """
+    if path.name in OPERATIONAL_STATE_FILES:
+        return True
+    if path.suffix.lower() == ".json":
+        parent_parts = path.parent.parts
+        for suffix in _OPERATIONAL_STATE_DIR_SUFFIXES:
+            if len(parent_parts) >= len(suffix) and parent_parts[-len(suffix):] == suffix:
+                return True
+    return False
+
+
+def iter_krr_jsonld_files(krr_dir: Path) -> Iterator[Path]:
+    """Yield every corpus JSON/JSON-LD file under ``krr_dir``.
+
+    This is the ONE shared enumerator that every file-counter must go
+    through (the anti-drift mechanism for #240). It recursively globs
+    ``**/*.json`` and ``**/*.jsonld`` and yields only files that are not
+    operational state files (per ``is_operational_state_file``). Results
+    are de-duplicated and sorted so callers get a stable order.
+    """
+    seen: set[Path] = set()
+    for pattern in ("**/*.json", "**/*.jsonld"):
+        for path in krr_dir.glob(pattern):
+            if path in seen:
+                continue
+            seen.add(path)
+    for path in sorted(seen):
+        if not is_operational_state_file(path):
+            yield path
 
 
 # ---------------------------------------------------------------------------

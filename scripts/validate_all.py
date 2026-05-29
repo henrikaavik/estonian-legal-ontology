@@ -22,6 +22,16 @@ from dataclasses import dataclass, field
 from datetime import date
 from pathlib import Path
 
+# Make sibling scripts importable regardless of cwd so `estleg_common`
+# (the single source of truth for operational-state-file exclusion)
+# resolves whether this module is run as a script or imported by tests.
+_SCRIPTS_DIR = Path(__file__).resolve().parent
+if str(_SCRIPTS_DIR) not in sys.path:
+    sys.path.insert(0, str(_SCRIPTS_DIR))
+
+import estleg_common  # noqa: E402
+from estleg_common import iter_krr_jsonld_files  # noqa: E402
+
 REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
 EXPECTED_NS = "https://data.riik.ee/ontology/estleg#"
@@ -77,11 +87,12 @@ EXCLUDE_SUFFIXES = (
     "_probe.json",
 )
 
-OPERATIONAL_STATE_FILES = {
-    ".regen_state.json",
-    "generation_manifest_laws.json",
-    "latest_pipeline_manifest.json",
-}
+# Re-export alias of the single source of truth (#240). Kept as a
+# module-level name so `tests/test_validate_all.py` and external importers
+# of `validate_all.OPERATIONAL_STATE_FILES` keep working. Do NOT replace
+# this with a literal copy — the literal would drift from
+# `fix_all_issues` and reintroduce the PR #232 count bug.
+OPERATIONAL_STATE_FILES = estleg_common.OPERATIONAL_STATE_FILES
 
 
 def is_aggregate_index_file(filepath: Path) -> bool:
@@ -552,13 +563,9 @@ def discover_validation_files(krr_dir: Path = KRR_DIR) -> list[Path]:
     * registry / catalogue files identified by content signature in
       `is_aggregate_index_file()`.
     """
-    files = sorted(set(
-        list(krr_dir.glob("*.json"))
-        + list(krr_dir.glob("*.jsonld"))
-        + list(krr_dir.glob("**/*.json"))
-        + list(krr_dir.glob("**/*.jsonld"))
-    ))
-    files = [f for f in files if f.name not in OPERATIONAL_STATE_FILES]
+    # Route through the shared enumerator so operational-state-file
+    # exclusion can never drift between counters (#240).
+    files = list(iter_krr_jsonld_files(krr_dir))
     files = [f for f in files if not any(f.name.endswith(s) for s in EXCLUDE_SUFFIXES)]
     files = [f for f in files if not is_combined_artifact_file(f)]
     files = [f for f in files if not is_aggregate_index_file(f)]
@@ -897,13 +904,10 @@ def validate_act_coverage_reconciliation(krr_dir: Path = KRR_DIR):
 
 
 def jsonld_file_count(krr_dir: Path = KRR_DIR) -> int:
-    files = sorted(set(
-        list(krr_dir.glob("*.json"))
-        + list(krr_dir.glob("*.jsonld"))
-        + list(krr_dir.glob("**/*.json"))
-        + list(krr_dir.glob("**/*.jsonld"))
-    ))
-    return sum(1 for p in files if p.name not in OPERATIONAL_STATE_FILES)
+    # Route through the shared enumerator so this count and
+    # `discover_validation_files` apply the exact same operational-state
+    # exclusion (#240 anti-drift mechanism).
+    return sum(1 for _ in iter_krr_jsonld_files(krr_dir))
 
 
 def metadata_stats(krr_dir: Path = KRR_DIR) -> dict[str, int]:

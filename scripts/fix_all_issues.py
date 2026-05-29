@@ -84,6 +84,8 @@ _SCRIPTS_DIR = Path(__file__).resolve().parent
 if str(_SCRIPTS_DIR) not in sys.path:
     sys.path.insert(0, str(_SCRIPTS_DIR))
 
+import estleg_common  # noqa: E402
+
 OLD_NS = "https://example.org/estonian-legal#"
 NEW_NS = "https://data.riik.ee/ontology/estleg#"
 
@@ -101,10 +103,12 @@ INDEX_ALLOWED_JSONLD = (
     "karistusseadustik_eriosa_owl.jsonld",
     "tsus_osa7_138_169_owl.jsonld",
 )
+# Non-law registry peeps (issuer/municipality registries) excluded from
+# the law index. The two formerly-listed maksejõuetus/KOV concept-map
+# peeps were renamed in PR #232; their successors are now real indexed
+# laws under new names, so the dead entries were removed (#243).
 INDEX_EXCLUDED_PEEPS = {
-    "fuusilise_isiku_maksejouetuse_peep.json",
     "issuers_kov_peep.json",
-    "kohaliku_omavalitsuse_peep.json",
     "municipalities_peep.json",
 }
 DEFAULT_REGISTRY_EXCEPTIONS = {
@@ -129,11 +133,11 @@ DEFAULT_REGISTRY_EXCEPTIONS = {
         "reason": "legacy concept-only sidecar without act node",
     },
 }
-OPERATIONAL_STATE_FILES = {
-    ".regen_state.json",
-    "generation_manifest_laws.json",
-    "latest_pipeline_manifest.json",
-}
+# Re-export alias of the single source of truth (#240). Imported from
+# `estleg_common` so this module and `validate_all` share one definition;
+# never reintroduce a literal copy here — that is exactly the drift that
+# caused the PR #232 count bug.
+OPERATIONAL_STATE_FILES = estleg_common.OPERATIONAL_STATE_FILES
 
 
 # Multi-valued properties that should always be arrays

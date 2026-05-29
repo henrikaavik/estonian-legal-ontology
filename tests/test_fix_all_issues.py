@@ -324,10 +324,6 @@ def test_generate_index_excludes_derived_jsonld_and_preserves_exceptions(tmp_pat
     write_json(tmp_path / "law_a_peep.json", make_source_doc(["estleg:A_1"]))
     write_json(tmp_path / "municipalities_peep.json", make_source_doc(["estleg:Municipalities"]))
     write_json(tmp_path / "issuers_kov_peep.json", make_source_doc(["estleg:Issuers"]))
-    write_json(
-        tmp_path / "fuusilise_isiku_maksejouetuse_peep.json",
-        make_source_doc(["estleg:FIMS_Map_2026"]),
-    )
     write_json(tmp_path / "controlled_vocabulary.jsonld", {"@graph": [{"@id": "estleg:Vocab"}]})
     write_json(tmp_path / "combined_ontology.jsonld", {"@graph": [{"@id": "estleg:Combined"}]})
     write_json(tmp_path / "karistusseadustik_eriosa_owl.jsonld", {"@graph": [{"@id": "estleg:KarS_Owl"}]})
@@ -344,7 +340,6 @@ def test_generate_index_excludes_derived_jsonld_and_preserves_exceptions(tmp_pat
     assert "karistusseadustik_eriosa_owl.jsonld" in indexed_files
     assert "municipalities_peep.json" not in indexed_files
     assert "issuers_kov_peep.json" not in indexed_files
-    assert "fuusilise_isiku_maksejouetuse_peep.json" not in indexed_files
     assert "controlled_vocabulary.jsonld" not in indexed_files
     assert "combined_ontology.jsonld" not in indexed_files
     assert index["registry_exceptions"]["legacy_map_peep.json"]["category"] == "concept_map"
@@ -352,6 +347,39 @@ def test_generate_index_excludes_derived_jsonld_and_preserves_exceptions(tmp_pat
         index["registry_exceptions"]["kriminaalmenetluse_peep.json"]["category"]
         == "procedure_map"
     )
+
+
+def test_active_exception_peeps_excluded_dead_ones_indexed(tmp_path, monkeypatch):
+    """Only the active non-law registry peeps are excluded from the law index.
+
+    After PR #232 the maksejõuetus/KOV concept-map peeps were renamed; their
+    successors are now real laws and must be indexed (#243). The two dead
+    `INDEX_EXCLUDED_PEEPS` entries were removed, so a renamed successor like
+    `fuusilise_isiku_maksejouetuse_seadus_peep.json` is no longer filtered,
+    while the still-active `municipalities_peep.json` and
+    `issuers_kov_peep.json` registries stay excluded.
+    """
+    monkeypatch.setattr(fix_all_issues, "KRR_DIR", tmp_path)
+    write_json(tmp_path / "municipalities_peep.json", make_source_doc(["estleg:Municipalities"]))
+    write_json(tmp_path / "issuers_kov_peep.json", make_source_doc(["estleg:Issuers"]))
+    write_json(
+        tmp_path / "fuusilise_isiku_maksejouetuse_seadus_peep.json",
+        make_source_doc(["estleg:FIMS_1"]),
+    )
+
+    fix_all_issues.generate_index()
+
+    index = read_json(tmp_path / "INDEX.json")
+    indexed_files = {
+        file_name
+        for law in index["laws"]
+        for file_name in law.get("files", [])
+    }
+    # Active non-law registry peeps stay excluded.
+    assert "municipalities_peep.json" not in indexed_files
+    assert "issuers_kov_peep.json" not in indexed_files
+    # The renamed successor is a real law and IS indexed.
+    assert "fuusilise_isiku_maksejouetuse_seadus_peep.json" in indexed_files
 
 
 def test_audit_duplicate_ids_walks_subdirectories(tmp_path, monkeypatch):
