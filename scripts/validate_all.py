@@ -201,6 +201,7 @@ MULTI_VALUED_PROPS = {
     "estleg:affectedBy",
     "estleg:harmonisedWith",
     "estleg:semanticallySimilarTo",
+    "estleg:similarAct",
     "estleg:definesTerm",
     "estleg:definedIn",
     "dcterms:subject",

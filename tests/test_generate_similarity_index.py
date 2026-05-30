@@ -457,3 +457,643 @@ def test_emit_sample_is_deterministic(tmp_path, monkeypatch):
     # Sorted by (source, target) for stable diffs.
     keys = [(r["source_provision"], r["target_provision"]) for r in payload["samples"]]
     assert keys == sorted(keys)
+
+
+# ===========================================================================
+# KOV act-level similarity (Layer 3)
+# ===========================================================================
+
+# Distinct, content-rich token pools so two acts can be made either highly
+# similar (same pool) or dissimilar (different pools) under TF-IDF cosine.
+_WASTE_TEXT = (
+    "jaatmevedu konteiner pakend prugi sortimine kogumine vedu olmejaatmed "
+    "jaatmejaam korraldatud biolagunev pakendijaatmed"
+)
+_WATER_TEXT = (
+    "veevark kanalisatsioon reovesi joogivesi pumpla puhasti liitumine "
+    "torustik veemoot heitvesi sademevesi"
+)
+
+
+def _kov_act_doc(
+    reg_id: str,
+    title_normalized: str,
+    provision_summaries: list[str],
+    *,
+    issued_under: list[str] | None = None,
+    preamble: str = "kohaliku omavalitsuse korralduse seaduse alusel",
+) -> dict:
+    """Build a KOV peep doc whose act node is an estleg:MunicipalRegulation.
+
+    Mirrors the real Layer-1 shape: the act node carries
+    ``estleg:titleNormalized`` (municipality prefix already stripped) and
+    optional ``estleg:issuedUnder`` enabling-act links; child provisions use
+    ``Reg_<id>_Par_<n>`` ids with ``estleg:summary`` + ``estleg:legalText``.
+    """
+    act_id = f"estleg:Reg_{reg_id}_Map_2026"
+    act_node = {
+        "@id": act_id,
+        "@type": ["owl:Ontology", "estleg:Act", "estleg:MunicipalRegulation"],
+        "rdfs:label": title_normalized,
+        "estleg:titleNormalized": title_normalized,
+        "estleg:preambleText": preamble,
+    }
+    if issued_under:
+        act_node["estleg:issuedUnder"] = [{"@id": iri} for iri in issued_under]
+    graph = [act_node]
+    for i, summary in enumerate(provision_summaries, 1):
+        graph.append({
+            "@id": f"estleg:Reg_{reg_id}_Par_{i}",
+            "@type": ["owl:NamedIndividual", f"estleg:Regulation_{reg_id}"],
+            "estleg:summary": summary,
+            "estleg:legalText": summary,
+        })
+    return {"@graph": graph}
+
+
+def _state_act_doc(act_id: str, provision_summaries: list[str]) -> dict:
+    """Build a state-law peep doc (for the cross-layer issuedUnder target)."""
+    graph = [{
+        "@id": f"estleg:{act_id}",
+        "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
+        "rdfs:label": act_id,
+    }]
+    for i, summary in enumerate(provision_summaries, 1):
+        graph.append({
+            "@id": f"estleg:{act_id}_Par_{i}",
+            "@type": ["owl:NamedIndividual", "estleg:LegalProvision_X"],
+            "estleg:summary": summary,
+        })
+    return {"@graph": graph}
+
+
+def _wire_kov(monkeypatch, krr: Path, peep_files: list[Path]) -> None:
+    """Point the KOV pass at ``krr`` / ``peep_files`` with a dir-creating save.
+
+    The KOV pass discovers files through the module-level ``iter_peep_files``
+    name and filters to the ``regulations/kov/`` subtree, so both the KOV
+    file list and the corpus act index resolve from ``peep_files``. ``KRR_DIR``
+    is redirected so the consolidated index is written under ``krr``.
+    """
+    monkeypatch.setattr(similarity, "KRR_DIR", krr)
+    monkeypatch.setattr(similarity, "REPORTS_DIR", krr / "reports")
+    monkeypatch.setattr(
+        similarity, "iter_peep_files", lambda include_kov=True: list(peep_files)
+    )
+
+    def _save(path, payload):
+        p = Path(path)
+        p.parent.mkdir(parents=True, exist_ok=True)
+        p.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    monkeypatch.setattr(similarity, "save_json", _save)
+
+
+def _write_kov(krr: Path, slug: str, reg_id: str, doc: dict) -> Path:
+    path = krr / "regulations" / "kov" / slug / f"{slug}_t{reg_id}_peep.json"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(doc), encoding="utf-8")
+    return path
+
+
+def _kov_index(krr: Path) -> dict:
+    return json.loads(
+        (krr / "similarity" / "kov_similarity_index.json").read_text(encoding="utf-8")
+    )
+
+
+def _act_node(path: Path, act_id: str) -> dict:
+    doc = json.loads(path.read_text(encoding="utf-8"))
+    return next(n for n in doc["@graph"] if n["@id"] == act_id)
+
+
+# ---------------------------------------------------------------------------
+# bucket_key algorithm
+# ---------------------------------------------------------------------------
+
+def test_bucket_key_two_token_tail():
+    """The bucket is the two trailing content tokens ``"{qualifier} {head}"``."""
+    assert similarity.bucket_key("opetajate tunnustamise kord") == "tunnustamise kord"
+    assert similarity.bucket_key("kooli arengukava") == "kooli arengukava"
+
+
+def test_bucket_key_single_token_tail():
+    """A title with one content token buckets as that bare head."""
+    assert similarity.bucket_key("jaatmehoolduseeskiri") == "jaatmehoolduseeskiri"
+
+
+def test_bucket_key_strips_trailing_action_noun():
+    """Trailing action nouns (muutmine/kinnitamine/...) are stripped first."""
+    # "pohimaarus" survives once the trailing "muutmine" is stripped (one
+    # content token left -> bare head).
+    assert similarity.bucket_key("pohimaaruse muutmine") == "pohimaaruse"
+    # A repeated trailing action noun is stripped down to the content tail.
+    assert (
+        similarity.bucket_key("hankekorra kehtestamine")
+        == "hankekorra"
+    )
+    # The two trailing content tokens survive once the action noun is gone.
+    assert (
+        similarity.bucket_key("toetuse andmise kord kinnitamine")
+        == "andmise kord"
+    )
+
+
+def test_bucket_key_strips_connectives_and_year_words():
+    """Trailing connectives / year-words and <3-char tokens are dropped."""
+    assert (
+        similarity.bucket_key("kooli arengukava aastateks 2024 2028")
+        == "kooli arengukava"
+    )
+    # Trailing connective "ja" is stripped; the remaining tail is the two
+    # trailing content tokens (the action-noun strip ran on the trailing
+    # edge first, so an action noun NOT at the very end is kept — this is the
+    # documented single-pass trailing-strip behaviour).
+    assert similarity.bucket_key("jaatmevaldkonna eeskirja ja") == "jaatmevaldkonna eeskirja"
+
+
+def test_bucket_key_uncategorized_on_empty_or_no_content():
+    """Empty / all-connective / all-short titles fall to _uncategorized."""
+    assert similarity.bucket_key("") == similarity.UNCATEGORIZED_BUCKET
+    assert similarity.bucket_key("ja ning voi") == similarity.UNCATEGORIZED_BUCKET
+    assert similarity.bucket_key("a bc") == similarity.UNCATEGORIZED_BUCKET
+    # An only-action-noun title strips to nothing -> uncategorized.
+    assert similarity.bucket_key("muutmine") == similarity.UNCATEGORIZED_BUCKET
+
+
+# ---------------------------------------------------------------------------
+# Bucketing behaviour
+# ---------------------------------------------------------------------------
+
+def test_two_municipalities_same_type_share_bucket_and_pair(tmp_path, monkeypatch):
+    """Two municipalities' same-type acts bucket together and pair."""
+    krr = tmp_path / "krr_outputs"
+    files = [
+        _write_kov(krr, "tallinna_vv", "1001",
+                   _kov_act_doc("1001", "jaatmehoolduseeskiri", [_WASTE_TEXT])),
+        _write_kov(krr, "tartu_vv", "1002",
+                   _kov_act_doc("1002", "jaatmehoolduseeskiri", [_WASTE_TEXT])),
+    ]
+    _wire_kov(monkeypatch, krr, files)
+
+    summary = similarity.run_kov_similarity_pass()
+
+    assert summary["comparedBuckets"] == 1
+    bucket = summary["buckets"]["jaatmehoolduseeskiri"]
+    assert bucket["regulationCount"] == 2
+    # Symmetric: both acts list the other as a peer.
+    sources = {p["source"] for p in bucket["pairs"]}
+    assert sources == {"estleg:Reg_1001_Map_2026", "estleg:Reg_1002_Map_2026"}
+    peer = bucket["pairs"][0]["peers"][0]
+    assert peer["score"] >= similarity.KOV_SIMILARITY_THRESHOLD
+
+
+def test_no_cross_bucket_pairs(tmp_path, monkeypatch):
+    """Acts in different buckets never pair, even with similar text."""
+    krr = tmp_path / "krr_outputs"
+    # Identical waste text but different regulation-type buckets.
+    files = [
+        _write_kov(krr, "a_vv", "2001",
+                   _kov_act_doc("2001", "jaatmehoolduseeskiri", [_WASTE_TEXT])),
+        _write_kov(krr, "b_vv", "2002",
+                   _kov_act_doc("2002", "kasutamise eeskiri", [_WASTE_TEXT])),
+    ]
+    _wire_kov(monkeypatch, krr, files)
+
+    summary = similarity.run_kov_similarity_pass()
+
+    # Two singleton buckets, nothing compared, no pairs.
+    assert summary["comparedBuckets"] == 0
+    assert summary["totalPairs"] == 0
+    for act_id, path in (
+        ("estleg:Reg_2001_Map_2026", files[0]),
+        ("estleg:Reg_2002_Map_2026", files[1]),
+    ):
+        node = _act_node(path, act_id)
+        assert "estleg:similarAct" not in node
+
+
+def test_singleton_and_uncategorized_get_bucket_but_no_pairs(tmp_path, monkeypatch):
+    """Singletons + _uncategorized acts get the bucket stamp but no pairs."""
+    krr = tmp_path / "krr_outputs"
+    singleton = _write_kov(krr, "c_vv", "3001",
+                           _kov_act_doc("3001", "pohimaarus", [_WATER_TEXT]))
+    uncategorized = _write_kov(krr, "d_vv", "3002",
+                               _kov_act_doc("3002", "ja ning", [_WASTE_TEXT]))
+    _wire_kov(monkeypatch, krr, [singleton, uncategorized])
+
+    summary = similarity.run_kov_similarity_pass()
+
+    assert summary["totalPairs"] == 0
+    assert summary["uncategorizedCount"] == 1
+
+    s_node = _act_node(singleton, "estleg:Reg_3001_Map_2026")
+    assert s_node["estleg:regulationTypeBucket"] == "pohimaarus"
+    assert "estleg:similarAct" not in s_node
+
+    u_node = _act_node(uncategorized, "estleg:Reg_3002_Map_2026")
+    assert u_node["estleg:regulationTypeBucket"] == similarity.UNCATEGORIZED_BUCKET
+    assert "estleg:similarAct" not in u_node
+
+
+def test_bucket_coverage_at_least_80_percent(tmp_path, monkeypatch):
+    """A mixed fixture lands >=80% of acts in a non-uncategorized bucket."""
+    krr = tmp_path / "krr_outputs"
+    titles = [
+        "jaatmehoolduseeskiri",
+        "kasutamise eeskiri",
+        "tunnustamise kord",
+        "kooli arengukava",
+        "andmise kord",
+        "hankekord",
+        "lasteaia pohimaarus",
+        "kohanime maaramine",
+        "registri pohimaarus",
+        # one genuinely uncategorized (all connectives) -> 1/10 = 10% uncat
+        "ja ning voi",
+    ]
+    files = []
+    for i, title in enumerate(titles):
+        files.append(
+            _write_kov(krr, f"m{i}_vv", f"40{i:02d}",
+                       _kov_act_doc(f"40{i:02d}", title, [_WATER_TEXT]))
+        )
+    _wire_kov(monkeypatch, krr, files)
+
+    summary = similarity.run_kov_similarity_pass()
+
+    coverage = (summary["totalActs"] - summary["uncategorizedCount"]) / summary["totalActs"]
+    assert coverage >= 0.80
+
+
+# ---------------------------------------------------------------------------
+# TF-IDF cosine, top-K, output schema, IRIs
+# ---------------------------------------------------------------------------
+
+def test_dissimilar_acts_in_same_bucket_do_not_pair(tmp_path, monkeypatch):
+    """Same bucket but disjoint vocabulary -> cosine below threshold, no pair."""
+    krr = tmp_path / "krr_outputs"
+    files = [
+        _write_kov(krr, "e_vv", "5001",
+                   _kov_act_doc("5001", "jaatmehoolduseeskiri", [_WASTE_TEXT])),
+        _write_kov(krr, "f_vv", "5002",
+                   _kov_act_doc("5002", "jaatmehoolduseeskiri", [_WATER_TEXT])),
+    ]
+    _wire_kov(monkeypatch, krr, files)
+
+    summary = similarity.run_kov_similarity_pass()
+
+    # Bucket is comparable (2 members) but disjoint vocab -> no pair survives.
+    assert summary["buckets"]["jaatmehoolduseeskiri"]["regulationCount"] == 2
+    assert summary["totalPairs"] == 0
+
+
+def test_output_ids_are_act_iris_not_provisions(tmp_path, monkeypatch):
+    """Every source/target/Similarity id is an act IRI (Map_), never _Par_."""
+    krr = tmp_path / "krr_outputs"
+    files = [
+        _write_kov(krr, "g_vv", "6001",
+                   _kov_act_doc("6001", "jaatmehoolduseeskiri", [_WASTE_TEXT])),
+        _write_kov(krr, "h_vv", "6002",
+                   _kov_act_doc("6002", "jaatmehoolduseeskiri", [_WASTE_TEXT])),
+    ]
+    _wire_kov(monkeypatch, krr, files)
+
+    summary = similarity.run_kov_similarity_pass()
+
+    for bucket in summary["buckets"].values():
+        for pair in bucket["pairs"]:
+            assert "_Par_" not in pair["source"]
+            assert pair["source"].endswith("_Map_2026")
+            for peer in pair["peers"]:
+                assert "_Par_" not in peer["target"]
+                assert peer["target"].endswith("_Map_2026")
+
+    # Reified Similarity nodes in the source peep also use act IRIs.
+    doc = json.loads(files[0].read_text(encoding="utf-8"))
+    sim_nodes = [
+        n for n in doc["@graph"]
+        if isinstance(n.get("@id"), str) and n["@id"].startswith("estleg:Similarity_")
+    ]
+    assert sim_nodes
+    for node in sim_nodes:
+        assert "_Par_" not in node["@id"]
+        assert "_Par_" not in node["estleg:similarTarget"]["@id"]
+
+
+def test_reified_similarity_node_schema(tmp_path, monkeypatch):
+    """Back-links are reified estleg:Similarity nodes with the documented shape."""
+    krr = tmp_path / "krr_outputs"
+    files = [
+        _write_kov(krr, "i_vv", "7001",
+                   _kov_act_doc("7001", "jaatmehoolduseeskiri", [_WASTE_TEXT])),
+        _write_kov(krr, "j_vv", "7002",
+                   _kov_act_doc("7002", "jaatmehoolduseeskiri", [_WASTE_TEXT])),
+    ]
+    _wire_kov(monkeypatch, krr, files)
+
+    similarity.run_kov_similarity_pass()
+
+    doc = json.loads(files[0].read_text(encoding="utf-8"))
+    act = next(n for n in doc["@graph"] if n["@id"] == "estleg:Reg_7001_Map_2026")
+    # similarAct is a list of IRI references into the same graph.
+    refs = act["estleg:similarAct"]
+    assert isinstance(refs, list) and refs
+    ref_id = refs[0]["@id"]
+    assert ref_id.startswith("estleg:Similarity_")
+
+    node = next(n for n in doc["@graph"] if n.get("@id") == ref_id)
+    assert node["@type"] == ["owl:NamedIndividual", "estleg:Similarity"]
+    assert node["estleg:similarTarget"] == {"@id": "estleg:Reg_7002_Map_2026"}
+    assert node["estleg:similarityScore"]["@type"] == "xsd:float"
+    assert float(node["estleg:similarityScore"]["@value"]) >= similarity.KOV_SIMILARITY_THRESHOLD
+    assert node["estleg:similarityModel"] == "tfidf-cosine"
+
+
+def test_kov_similarity_link_value_builder():
+    """The reified-node builder produces the documented shape."""
+    value = similarity.kov_similarity_link_value(
+        "Reg_1_Map_2026", "Reg_2_Map_2026", 0.873123
+    )
+    assert value == {
+        "@id": "estleg:Similarity_Reg_1_Map_2026_Reg_2_Map_2026",
+        "@type": ["owl:NamedIndividual", "estleg:Similarity"],
+        "estleg:similarTarget": {"@id": "estleg:Reg_2_Map_2026"},
+        "estleg:similarityScore": {"@value": "0.873", "@type": "xsd:float"},
+        "estleg:similarityModel": "tfidf-cosine",
+    }
+
+
+def test_top_k_bound_respected(tmp_path, monkeypatch):
+    """No source keeps more than KOV_TOP_K peers."""
+    krr = tmp_path / "krr_outputs"
+    monkeypatch.setattr(similarity, "KOV_TOP_K", 3)
+    # Six identical-text acts in one bucket -> each has 5 candidate peers,
+    # capped to 3.
+    files = []
+    for i in range(6):
+        files.append(
+            _write_kov(krr, f"k{i}_vv", f"80{i:02d}",
+                       _kov_act_doc(f"80{i:02d}", "jaatmehoolduseeskiri", [_WASTE_TEXT]))
+        )
+    _wire_kov(monkeypatch, krr, files)
+
+    summary = similarity.run_kov_similarity_pass()
+
+    bucket = summary["buckets"]["jaatmehoolduseeskiri"]
+    for pair in bucket["pairs"]:
+        assert len(pair["peers"]) <= 3
+    # The reified back-links are likewise capped.
+    doc = json.loads(files[0].read_text(encoding="utf-8"))
+    act = next(n for n in doc["@graph"] if n["@id"] == "estleg:Reg_8000_Map_2026")
+    assert len(act["estleg:similarAct"]) <= 3
+
+
+def test_consolidated_index_schema(tmp_path, monkeypatch):
+    """The single index file carries every documented top-level field."""
+    krr = tmp_path / "krr_outputs"
+    files = [
+        _write_kov(krr, "l_vv", "9001",
+                   _kov_act_doc("9001", "jaatmehoolduseeskiri", [_WASTE_TEXT])),
+        _write_kov(krr, "n_vv", "9002",
+                   _kov_act_doc("9002", "jaatmehoolduseeskiri", [_WASTE_TEXT])),
+    ]
+    _wire_kov(monkeypatch, krr, files)
+
+    similarity.run_kov_similarity_pass()
+    index = _kov_index(krr)
+
+    for key in (
+        "generated", "scoreModel", "topK", "threshold", "totalActs",
+        "totalBuckets", "comparedBuckets", "uncategorizedCount", "totalPairs",
+        "largestBucket", "crossLayerPairs", "buckets",
+    ):
+        assert key in index, key
+    assert index["scoreModel"] == "tfidf-cosine"
+    assert index["topK"] == similarity.KOV_TOP_K
+    assert index["threshold"] == similarity.KOV_SIMILARITY_THRESHOLD
+    assert set(index["largestBucket"]) == {"key", "size"}
+    # Only ONE consolidated file under similarity/ (no per-bucket files).
+    sim_dir = krr / "similarity"
+    assert [p.name for p in sim_dir.glob("*.json")] == ["kov_similarity_index.json"]
+
+
+# ---------------------------------------------------------------------------
+# Cross-layer KOV -> state via issuedUnder
+# ---------------------------------------------------------------------------
+
+def test_cross_layer_via_issued_under(tmp_path, monkeypatch):
+    """A KOV act similar to its issuedUnder state act gets a cross-layer peer."""
+    krr = tmp_path / "krr_outputs"
+    krr.mkdir(parents=True, exist_ok=True)
+    state = krr / "jaatmeseadus_peep.json"
+    state.write_text(
+        json.dumps(_state_act_doc("JAATS_Map_2026", [_WASTE_TEXT])),
+        encoding="utf-8",
+    )
+    kov = _write_kov(
+        krr, "o_vv", "10001",
+        _kov_act_doc("10001", "jaatmehoolduseeskiri", [_WASTE_TEXT],
+                     issued_under=["estleg:JAATS_Map_2026"]),
+    )
+    _wire_kov(monkeypatch, krr, [state, kov])
+
+    summary = similarity.run_kov_similarity_pass()
+
+    assert summary["crossLayerPairs"] >= 1
+    node = _act_node(kov, "estleg:Reg_10001_Map_2026")
+    targets = {r["@id"] for r in node["estleg:similarAct"]}
+    assert "estleg:Similarity_Reg_10001_Map_2026_JAATS_Map_2026" in targets
+    # The cross-layer Similarity node points at the state act IRI.
+    doc = json.loads(kov.read_text(encoding="utf-8"))
+    cl = next(
+        n for n in doc["@graph"]
+        if n.get("@id") == "estleg:Similarity_Reg_10001_Map_2026_JAATS_Map_2026"
+    )
+    assert cl["estleg:similarTarget"] == {"@id": "estleg:JAATS_Map_2026"}
+
+
+def test_cross_layer_skips_kov_to_kov_issued_under(tmp_path, monkeypatch):
+    """issuedUnder pointing at another KOV act is not a cross-layer peer."""
+    krr = tmp_path / "krr_outputs"
+    # Two KOV acts in DIFFERENT buckets; one issuedUnder the other.
+    enabling = _write_kov(krr, "p_vv", "11001",
+                          _kov_act_doc("11001", "pohimaarus", [_WASTE_TEXT]))
+    dependent = _write_kov(
+        krr, "q_vv", "11002",
+        _kov_act_doc("11002", "kasutamise eeskiri", [_WASTE_TEXT],
+                     issued_under=["estleg:Reg_11001_Map_2026"]),
+    )
+    _wire_kov(monkeypatch, krr, [enabling, dependent])
+
+    summary = similarity.run_kov_similarity_pass()
+
+    # KOV->KOV issuedUnder is skipped; different buckets => no pairs at all.
+    assert summary["crossLayerPairs"] == 0
+    assert summary["totalPairs"] == 0
+    dep_node = _act_node(dependent, "estleg:Reg_11002_Map_2026")
+    assert "estleg:similarAct" not in dep_node
+
+
+# ---------------------------------------------------------------------------
+# Determinism + idempotency
+# ---------------------------------------------------------------------------
+
+def test_kov_pass_is_deterministic(tmp_path, monkeypatch):
+    """Two runs over the same corpus produce byte-identical index + peeps."""
+    krr = tmp_path / "krr_outputs"
+    files = []
+    for i in range(4):
+        files.append(
+            _write_kov(krr, f"r{i}_vv", f"120{i:02d}",
+                       _kov_act_doc(f"120{i:02d}", "jaatmehoolduseeskiri", [_WASTE_TEXT]))
+        )
+    _wire_kov(monkeypatch, krr, files)
+
+    similarity.run_kov_similarity_pass()
+    index_1 = _kov_index(krr)
+    peep_1 = files[0].read_text(encoding="utf-8")
+
+    similarity.run_kov_similarity_pass()
+    index_2 = _kov_index(krr)
+    peep_2 = files[0].read_text(encoding="utf-8")
+
+    # The only volatile field is the generated date; everything else is stable.
+    index_1.pop("generated")
+    index_2.pop("generated")
+    assert index_1 == index_2
+    assert peep_1 == peep_2
+    # Bucket keys, sources, and peers are all deterministically ordered.
+    assert list(index_1["buckets"]) == sorted(index_1["buckets"])
+    for bucket in index_1["buckets"].values():
+        sources = [p["source"] for p in bucket["pairs"]]
+        assert sources == sorted(sources)
+        for pair in bucket["pairs"]:
+            peers = [(-p["score"], p["target"]) for p in pair["peers"]]
+            assert peers == sorted(peers)
+
+
+def test_kov_rerun_does_not_duplicate_backlinks(tmp_path, monkeypatch):
+    """Idempotent: a second run leaves exactly one similarAct + Similarity set."""
+    krr = tmp_path / "krr_outputs"
+    files = [
+        _write_kov(krr, "s_vv", "13001",
+                   _kov_act_doc("13001", "jaatmehoolduseeskiri", [_WASTE_TEXT])),
+        _write_kov(krr, "t_vv", "13002",
+                   _kov_act_doc("13002", "jaatmehoolduseeskiri", [_WASTE_TEXT])),
+    ]
+    _wire_kov(monkeypatch, krr, files)
+
+    similarity.run_kov_similarity_pass()
+    similarity.run_kov_similarity_pass()
+    similarity.run_kov_similarity_pass()
+
+    doc = json.loads(files[0].read_text(encoding="utf-8"))
+    act = next(n for n in doc["@graph"] if n["@id"] == "estleg:Reg_13001_Map_2026")
+    # Exactly one peer, one ref, one reified node — no accumulation.
+    assert len(act["estleg:similarAct"]) == 1
+    sim_nodes = [
+        n for n in doc["@graph"]
+        if isinstance(n.get("@id"), str) and n["@id"].startswith("estleg:Similarity_")
+    ]
+    assert len(sim_nodes) == 1
+    sim_ids = [n["@id"] for n in sim_nodes]
+    assert len(sim_ids) == len(set(sim_ids))
+    # The act node still appears exactly once.
+    act_nodes = [n for n in doc["@graph"] if n["@id"] == "estleg:Reg_13001_Map_2026"]
+    assert len(act_nodes) == 1
+
+
+def test_oversize_bucket_subsplit_or_skipped(tmp_path, monkeypatch):
+    """A bucket over the size cap is sub-split (or recorded + skipped)."""
+    krr = tmp_path / "krr_outputs"
+    monkeypatch.setattr(similarity, "_BUCKET_MAX_SIZE", 3)
+    # Five acts share the base bucket "kasutamise kord" but split on the
+    # preceding token (vee/tee) -> two sub-buckets, both under the cap.
+    files = []
+    files.append(_write_kov(krr, "u0", "1401",
+                            _kov_act_doc("1401", "vee kasutamise kord", [_WATER_TEXT])))
+    files.append(_write_kov(krr, "u1", "1402",
+                            _kov_act_doc("1402", "vee kasutamise kord", [_WATER_TEXT])))
+    files.append(_write_kov(krr, "u2", "1403",
+                            _kov_act_doc("1403", "vee kasutamise kord", [_WATER_TEXT])))
+    files.append(_write_kov(krr, "u3", "1404",
+                            _kov_act_doc("1404", "tee kasutamise kord", [_WASTE_TEXT])))
+    files.append(_write_kov(krr, "u4", "1405",
+                            _kov_act_doc("1405", "tee kasutamise kord", [_WASTE_TEXT])))
+    _wire_kov(monkeypatch, krr, files)
+
+    summary = similarity.run_kov_similarity_pass()
+
+    # The base "kasutamise kord" bucket was sub-split, so no single bucket
+    # exceeds the cap.
+    for bucket_key_, bucket in summary["buckets"].items():
+        assert bucket["regulationCount"] <= 3
+    # The sub-split keys carry the preceding qualifier token.
+    assert "vee kasutamise kord" in summary["buckets"]
+    assert "tee kasutamise kord" in summary["buckets"]
+
+
+# ---------------------------------------------------------------------------
+# --no-kov leaves the provision-level pass untouched
+# ---------------------------------------------------------------------------
+
+def test_no_kov_flag_skips_kov_pass(tmp_path, monkeypatch):
+    """--no-kov produces no KOV index and writes no KOV back-links."""
+    krr = tmp_path / "krr_outputs"
+    files = [
+        _write_kov(krr, "v_vv", "15001",
+                   _kov_act_doc("15001", "jaatmehoolduseeskiri", [_WASTE_TEXT])),
+        _write_kov(krr, "w_vv", "15002",
+                   _kov_act_doc("15002", "jaatmehoolduseeskiri", [_WASTE_TEXT])),
+    ]
+    _wire_kov(monkeypatch, krr, files)
+
+    similarity.main(["--no-kov"])
+
+    # No consolidated KOV index file.
+    assert not (krr / "similarity" / "kov_similarity_index.json").exists()
+    # No KOV back-links stamped onto act nodes.
+    node = _act_node(files[0], "estleg:Reg_15001_Map_2026")
+    assert "estleg:regulationTypeBucket" not in node
+    assert "estleg:similarAct" not in node
+
+
+def test_no_kov_leaves_provision_index_unchanged(tmp_path, monkeypatch):
+    """--no-kov vs default: provision similarity_index.json is byte-identical.
+
+    The provision-level pass runs over laws+state only and must be wholly
+    unaffected by the KOV act-level pass running (or not). Here the only
+    inputs are KOV acts, so the provision index is empty either way — the
+    point is that the KOV pass never touches similarity_index.json.
+    """
+    def _run(include_kov_flag: list[str]) -> str:
+        krr = tmp_path / ("with_kov" if include_kov_flag == [] else "no_kov")
+        files = [
+            _write_kov(krr, "x_vv", "16001",
+                       _kov_act_doc("16001", "jaatmehoolduseeskiri", [_WASTE_TEXT])),
+            _write_kov(krr, "y_vv", "16002",
+                       _kov_act_doc("16002", "jaatmehoolduseeskiri", [_WASTE_TEXT])),
+        ]
+        with monkeypatch.context() as m:
+            m.setattr(similarity, "KRR_DIR", krr)
+            m.setattr(similarity, "REPORTS_DIR", krr / "reports")
+            m.setattr(
+                similarity, "iter_peep_files", lambda include_kov=True: list(files)
+            )
+
+            def _save(path, payload):
+                p = Path(path)
+                p.parent.mkdir(parents=True, exist_ok=True)
+                p.write_text(
+                    json.dumps(payload, ensure_ascii=False, indent=2),
+                    encoding="utf-8",
+                )
+
+            m.setattr(similarity, "save_json", _save)
+            similarity.main(include_kov_flag)
+        return (krr / "similarity_index.json").read_text(encoding="utf-8")
+
+    with_kov = _run([])
+    no_kov = _run(["--no-kov"])
+    assert with_kov == no_kov

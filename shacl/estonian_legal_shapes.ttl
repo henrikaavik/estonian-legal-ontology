@@ -1208,6 +1208,19 @@ estleg:MunicipalRegulationShape
         sh:nodeKind sh:IRI ;
         sh:name "interpretedBy" ;
         sh:description """Court decisions that interpret this municipal act (act-level KOV citation).""" ;
+    ] ;
+    sh:property [
+        sh:path estleg:regulationTypeBucket ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "regulationTypeBucket" ;
+        sh:description """Optional Layer 3 regulation-type bucket label (e.g. "jaatmehoolduseeskiri" or "_uncategorized"), stamped by the KOV act-level similarity pass.""" ;
+    ] ;
+    sh:property [
+        sh:path estleg:similarAct ;
+        sh:nodeKind sh:IRI ;
+        sh:name "similarAct" ;
+        sh:description """Optional Layer 3 back-links to reified estleg:Similarity nodes for peer municipal acts.""" ;
     ] .
 
 # Shape for Annex instances (regulation lisa).
@@ -1461,6 +1474,43 @@ estleg:CitationShape
         sh:maxCount 1 ;
         sh:datatype xsd:string ;
         sh:name "citationText" ;
+    ] .
+
+# SimilarityShape — Layer 3 reified KOV act-level similarity link.
+#
+# Each estleg:Similarity node is emitted by the KOV act-level similarity
+# pass (generate_similarity_index.py) and pointed at by an
+# estleg:similarAct reference on the source MunicipalRegulation act node.
+# similarTarget is validated only as an IRI (sh:nodeKind sh:IRI), mirroring
+# CitationShape's note: peer targets may be KOV acts (typed
+# estleg:MunicipalRegulation) or state acts (estleg:Act) and the Act range
+# is documented via rdfs:range rather than enforced with sh:class to avoid
+# requiring subclass inference in the data graph.
+estleg:SimilarityShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:Similarity ;
+    sh:nodeKind sh:IRI ;
+    sh:pattern "^https://data\\.riik\\.ee/ontology/estleg#Similarity_" ;
+    sh:property [
+        sh:path estleg:similarTarget ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:nodeKind sh:IRI ;
+        sh:name "similarTarget" ;
+    ] ;
+    sh:property [
+        sh:path estleg:similarityScore ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:float ;
+        sh:name "similarityScore" ;
+    ] ;
+    sh:property [
+        sh:path estleg:similarityModel ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "similarityModel" ;
     ] .
 
 # ============================================================
