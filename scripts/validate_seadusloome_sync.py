@@ -96,6 +96,9 @@ def _canonical_estleg_id(value: str) -> str | None:
     return None
 
 
+# Called once per run (single validate_graph_closure call); intentionally
+# uncached because shapes_dir varies across tests and a process-lifetime cache
+# keyed on a path would leak stale results between cases.
 def graph_closure_exempt_predicates(
     shapes_dir: Path = DEFAULT_SHAPES,
 ) -> frozenset[str]:

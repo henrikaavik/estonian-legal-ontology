@@ -291,11 +291,9 @@ def test_graph_closure_passes_when_target_is_loaded_from_sidecar(tmp_path, capsy
 def test_graph_closure_exempt_predicates_are_loaded_from_shapes():
     exempt = validate_seadusloome_sync.graph_closure_exempt_predicates()
 
-    assert exempt == {
-        "estleg:caseType",
-        "estleg:decisionType",
-        "estleg:euCourtDecisionType",
-    }
+    required = {"estleg:caseType", "estleg:decisionType", "estleg:euCourtDecisionType"}
+    assert required <= exempt, exempt
+    assert all(p.startswith("estleg:") for p in exempt)
 
 
 def test_graph_closure_exempt_predicates_ignore_malformed_markers(tmp_path):

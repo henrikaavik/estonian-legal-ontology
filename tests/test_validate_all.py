@@ -5,6 +5,8 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 
+import estleg_common
+import fix_all_issues
 import validate_all
 
 
@@ -1265,6 +1267,68 @@ def test_jsonld_file_count_excludes_operational_state_files(tmp_path):
     )
 
     assert validate_all.jsonld_file_count(krr) == expected
+
+
+def test_operational_state_files_single_source():
+    """`OPERATIONAL_STATE_FILES` has exactly one definition (#240).
+
+    Both `validate_all` and `fix_all_issues` must re-export the
+    `estleg_common` frozenset by identity. If anyone reintroduces a
+    literal copy in either module this identity check fails — which is
+    the regression guard against the PR #232 count drift.
+    """
+    assert (
+        validate_all.OPERATIONAL_STATE_FILES is estleg_common.OPERATIONAL_STATE_FILES
+    )
+    assert (
+        fix_all_issues.OPERATIONAL_STATE_FILES is estleg_common.OPERATIONAL_STATE_FILES
+    )
+
+
+def test_file_counters_share_operational_exclusion(tmp_path):
+    """`jsonld_file_count` and `discover_validation_files` exclude the same
+    operational-state files, so adding one drops both counts equally (#240).
+    """
+    krr = tmp_path / "krr_outputs"
+    # A baseline corpus of plain data files that both counters keep.
+    write_json(krr / "law_a_peep.json", {"@graph": [{"@id": "estleg:A_1"}]})
+    write_json(krr / "law_b_peep.json", {"@graph": [{"@id": "estleg:B_1"}]})
+    write_json(krr / "sidecars" / "annotations.jsonld", {"@graph": []})
+
+    count_before = validate_all.jsonld_file_count(krr)
+    discover_before = len(validate_all.discover_validation_files(krr))
+
+    # Add one operational-named state file — both counters must ignore it.
+    write_json(krr / "generation_manifest_laws.json", {"outputsAll": []})
+
+    count_after = validate_all.jsonld_file_count(krr)
+    discover_after = len(validate_all.discover_validation_files(krr))
+
+    assert count_after == count_before
+    assert discover_after == discover_before
+
+
+def test_nested_state_manifest_excluded(tmp_path):
+    """A generated state manifest under `reports/integration/` is excluded
+    even when its basename is not in `OPERATIONAL_STATE_FILES` (#240).
+
+    The conservative directory pattern-guard stops a *new* manifest
+    dropped into that operational directory from silently inflating the
+    corpus count.
+    """
+    krr = tmp_path / "krr_outputs"
+    write_json(krr / "law_a_peep.json", {"@graph": [{"@id": "estleg:A_1"}]})
+
+    nested = krr / "reports" / "integration" / "phase3_manifest.json"
+    write_json(nested, {"phases": []})
+
+    # The classifier and the shared enumerator both exclude it.
+    assert estleg_common.is_operational_state_file(nested)
+    enumerated = set(estleg_common.iter_krr_jsonld_files(krr))
+    assert nested not in enumerated
+
+    # And the count reflects the exclusion (only the one law peep remains).
+    assert validate_all.jsonld_file_count(krr) == 1
 
 
 def _minimal_corpus_for_metadata(krr: Path) -> None:
