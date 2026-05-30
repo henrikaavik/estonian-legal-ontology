@@ -35,6 +35,18 @@
 > court-provision-links) remains. See
 > `docs/superpowers/plans/2026-05-03-kov-integration-layer2b.md`.
 
+> **Status (2026-05-30):** KOV integration **complete**. Layer 2c sanctions
+> and competence shipped earlier (KOV runs by default; `include_kov=False`
+> pins removed on those pipelines). Layer 2c court-provision-links is live
+> (`build_kov_act_index` / `resolve_kov_citation`, municipality-scoped) and
+> gained a `--no-kov` opt-out (#248). Layer 3 KOV-aware similarity shipped
+> (#249): act-level TF-IDF cosine bucketed by regulation type (intra-bucket
+> pairwise + KOV→state cross-layer via `estleg:issuedUnder`), emitting reified
+> `estleg:Similarity` nodes + `estleg:regulationTypeBucket`/`estleg:similarAct`
+> back-links and `krr_outputs/similarity/kov_similarity_index.json`, gated
+> behind `--no-kov`. The `generate_similarity_index` provision pass stays
+> laws+state only by design. Gate B + Layer 3 closed via PR #250.
+
 ### Gate B — Layer 2b: Cross-references + Inverse (COMPLETE)
 
 - **Date completed:** 2026-05-04
