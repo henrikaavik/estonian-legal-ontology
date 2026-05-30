@@ -117,7 +117,12 @@ PDF_PROBE_SAMPLE_SIZE = 10
 MIN_PDF_TEXT_CHARS = 500
 MIN_PDF_TEXT_VALID_CHAR_RATIO = 0.30
 PDF_TEXT_LAYER_ACCEPTANCE_RATIO = 0.80
-PDF_BODY_SCAN_MAX_CHARS = 50_000
+# Sanity cap only. ``find_in_body`` now does a single cheap leftmost-longest regex pass over
+# the WHOLE normalised body, so there is no 50K match-surface truncation hiding beyond-cap
+# references (issue #233 — a citation past the old 50K is now found). The cap is kept solely
+# to bound peak memory against a pathological multi-MB text layer; legitimate Õiguskantsler
+# opinion bodies are far below it, so it never elides a real citation.
+PDF_BODY_SCAN_MAX_CHARS = 2_000_000
 _PDF_TEXT_CHAR_RE = re.compile(r"[0-9A-Za-zÕÄÖÜõäöüŠŽšž]")
 
 # Act-level @type values that legitimately represent the act node an annotation should
@@ -176,6 +181,9 @@ class _LawIndex:
     abbrev_by_iri: dict[str, str] = field(default_factory=dict)  # IRI -> short abbrev
     # Names sorted longest-first, for greedy substring matching against opinion titles.
     _ordered_names: list[str] = field(default_factory=list)
+    # One compiled, token-bounded, longest-first alternation over every registered name
+    # variant (built lazily on first body scan, then reused across every opinion).
+    _body_re: re.Pattern[str] | None = field(default=None, repr=False)
 
     def resolve(self, name: str) -> str | None:
         return self.by_name.get(_norm_name(name)) or self.by_slug.get(name.strip())
@@ -183,11 +191,37 @@ class _LawIndex:
     def abbrev(self, iri: str) -> str:
         return self.abbrev_by_iri.get(iri, "LAW")
 
+    def _ensure_body_re(self) -> re.Pattern[str]:
+        """Build (once) the token-bounded leftmost-longest law-name alternation.
+
+        Every key in :attr:`by_name` — the normalised nominative title plus the
+        :func:`_genitive_variants` forms registered alongside it — becomes one alternative,
+        ordered LONGEST-FIRST so Python ``re``'s leftmost-first alternation yields the longest
+        law name at each position (a shorter law name that is a substring of a longer matched
+        one is consumed by the longer span, never separately matched). The whole alternation
+        is wrapped in word-character lookarounds (:data:`_BODY_WORD`) so a name matches only as
+        a standalone token, never embedded in a larger word. The map is already normalised, so
+        each matched span maps straight back to its IRI via :attr:`by_name`.
+        """
+        if self._body_re is None:
+            ordered = self._ordered_names or sorted(self.by_name, key=len, reverse=True)
+            alternation = "|".join(re.escape(name) for name in ordered)
+            pattern = (
+                rf"(?<!{_BODY_WORD})(?:{alternation})(?!{_BODY_WORD})"
+                if alternation
+                else r"(?!x)x"  # matches nothing when the index is empty
+            )
+            self._body_re = re.compile(pattern)
+        return self._body_re
+
     def find_in_title(self, title: str) -> list[str]:
         """Return the act-IRIs whose (genitive-aware) name occurs in ``title``.
 
-        Greedy longest-name-first scan over the normalised title so "kohaliku omavalitsuse
-        korralduse seaduse" wins over a stray "seaduse"; deduped, in first-occurrence order.
+        Title evidence is authoritative: a greedy longest-name-first substring scan over the
+        normalised title so "kohaliku omavalitsuse korralduse seaduse" wins over a stray
+        "seaduse"; deduped, in first-occurrence order. Use :meth:`find_in_body` for PDF body
+        text — it adds token boundaries so a bare prose mention only counts as a standalone
+        whole-token match (titles are short and authoritative, so this scan stays substring).
         """
         hay = _norm_name(title)
         found: list[str] = []
@@ -198,6 +232,35 @@ class _LawIndex:
                     found.append(iri)
         return found
 
+    def find_in_body(self, text: str) -> list[str]:
+        """Return act-IRIs whose name occurs in ``text`` as a standalone token.
+
+        A single leftmost-longest, token-bounded regex pass (see :meth:`_ensure_body_re`) over
+        the FULL normalised body. Estonian legal opinions legitimately reference laws by bare
+        name ("vastavalt võlaõigusseadusele", "põhiseadusega vastuolus") with no adjacent
+        ``§``/number, so — unlike the earlier citation-cue gating — every standalone whole-token
+        match counts; no ``§``/citation cue is required. Because matches are non-overlapping and
+        longest-first, a shorter law name that is a substring of a longer matched law name at
+        the same position is naturally NOT separately matched (the longer span consumes it),
+        which drops the "substring of a longer law title" false positive; and the word-boundary
+        lookarounds drop names embedded inside a larger word. IRIs are returned deduped, in
+        first-occurrence order, mirroring :meth:`find_in_title`. Genitive forms keep working
+        because each genitive variant (e.g. "võlaõigusseaduse") is itself a registered token
+        that matches whole, while the nominative ("võlaõigusseadus") simply does not match
+        inside it (the trailing "e" trips the trailing-word-char lookahead) — which is correct.
+        """
+        if not text:
+            return []
+        hay = _norm_name(text)
+        found: list[str] = []
+        seen: set[str] = set()
+        for match in self._ensure_body_re().finditer(hay):
+            iri = self.by_name[match.group(0)]
+            if iri not in seen:
+                seen.add(iri)
+                found.append(iri)
+        return found
+
 
 # ---------------------------------------------------------------------------
 # Name normalisation + genitive handling
@@ -205,6 +268,12 @@ class _LawIndex:
 
 
 _DIACRITIC_MAP = {"õ": "o", "ä": "a", "ö": "o", "ü": "u", "š": "s", "ž": "z"}
+
+# A "word" character for the token-boundary lookarounds in ``_LawIndex._ensure_body_re``:
+# digits plus ASCII and Estonian letters. ``_norm_name`` transliterates the diacritics out of
+# the haystack before matching, so in practice only the ASCII subset can ever appear at a
+# boundary; the Estonian letters are kept for defensiveness against any un-normalised input.
+_BODY_WORD = r"[0-9A-Za-zÀ-ÿõäöüšžÕÄÖÜŠŽ]"
 
 
 def _norm_name(value: str) -> str:
@@ -226,25 +295,66 @@ def _clean_dc_source(value: object) -> str | None:
     return cleaned or None
 
 
-def _genitive_variants(norm_name: str) -> list[str]:
-    """Return genitive forms of a normalised law name's trailing word, if applicable.
+# Productive Estonian singular oblique-case endings attached to a ``…seadus`` / ``…seadustik``
+# genitive stem, in the order they appear in legal prose. The genitive stem is the nominative
+# plus the genitive marker (``seadus`` -> ``seaduse``, ``seadustik`` -> ``seadustiku``); each
+# of these endings then attaches to that stem. Registering every form as its own standalone
+# token lets the word-bounded body scan keep genuine bare-name references in any common case —
+# "vastavalt võlaõigusseaduse**le**" (allative), "põhiseadusega vastuolus" (comitative),
+# "võlaõigusseadus**est** tulenevalt" (elative) — without ever matching a name embedded in a
+# larger word. (Mirrors the case-ending handling in extract_institutional_competence.py.)
+_SEADUS_CASE_ENDINGS: tuple[str, ...] = (
+    "",     # genitive itself (the bare stem: seaduse / seadustiku)
+    "sse",  # illative   (seadusesse / seadustikusse)
+    "s",    # inessive   (seaduses)
+    "st",   # elative    (seadusest)
+    "le",   # allative   (seadusele)
+    "l",    # adessive   (seadusel)
+    "lt",   # ablative   (seaduselt)
+    "ks",   # translative(seaduseks)
+    "ni",   # terminative(seaduseni)
+    "na",   # essive     (seadusena)
+    "ta",   # abessive   (seaduseta)
+    "ga",   # comitative (seadusega)
+)
 
-    Estonian opinion titles cite laws in the genitive: "…seaduse §…", "…seadustiku §…",
-    "…seadustiku muutmine". The corpus stores nominative titles. We register the obvious
-    genitive of the last token so title scanning matches; only the productive ``seadus`` /
-    ``seadustik`` / ``seadustikku`` endings (which cover the overwhelming majority of act
-    names) are handled — anything else just won't get a genitive alias (the nominative is
-    still indexed).
+
+def _genitive_variants(norm_name: str) -> list[str]:
+    """Return inflected (genitive-stem + case-ending) forms of a normalised law name.
+
+    Estonian opinions cite laws by an inflected trailing word — most often the genitive
+    ("…seaduse §…", "…seadustiku muutmine"), but also the allative ("…seadusele"), comitative
+    ("…seadusega"), elative ("…seadusest") and the other oblique cases. The corpus stores the
+    nominative title, so we register the genitive *stem* of the productive ``…seadus`` /
+    ``…seadustik`` endings plus every common singular case suffix (:data:`_SEADUS_CASE_ENDINGS`)
+    as standalone tokens. Any other ending gets no alias (only the nominative is indexed). The
+    partitive ("…seadust") is deliberately NOT registered: it is a prefix of "…seadustik" and
+    would create cross-law ambiguity, and the word-bounded body scan already keeps the common
+    genitive/allative/comitative prose forms.
     """
-    out: list[str] = []
     if norm_name.endswith("seadustik"):
-        out.append(norm_name + "u")        # seadustik -> seadustiku
+        stem = norm_name + "u"             # seadustik -> seadustiku
     elif norm_name.endswith("seadus"):
-        out.append(norm_name + "e")        # seadus -> seaduse
-    elif norm_name.endswith("seaduste"):
-        # already plural-genitive-ish; leave alone
-        pass
-    return out
+        stem = norm_name + "e"             # seadus -> seaduse
+    else:
+        # e.g. an already-plural "…seaduste" name: no productive singular stem to inflect.
+        return []
+    return [stem + ending for ending in _SEADUS_CASE_ENDINGS]
+
+
+# ---------------------------------------------------------------------------
+# Estonian abbreviation tokens (used by the annotationText sentence-trimmer)
+# ---------------------------------------------------------------------------
+
+# Curated from Estonian legal citation/document text; expand when live annotation runs
+# surface another common token that precedes non-sentence ordinal periods. Consumed by the
+# ``annotationText`` sentence-boundary trimmer (``_is_false_estonian_abbreviation_boundary``)
+# so an ordinal/abbreviation period ("§ 47 lg 1." , "nr 12.") is not mistaken for a real
+# sentence end.
+_ESTONIAN_ABBREVIATION_TOKENS = frozenset(
+    {"art", "jt", "lg", "lk", "nn", "nr", "nt", "p", "ptk", "vt"}
+)
+_ESTONIAN_ORDINAL_PREFIX_TOKENS = _ESTONIAN_ABBREVIATION_TOKENS | frozenset({"osa"})
 
 
 # ---------------------------------------------------------------------------
@@ -577,30 +687,58 @@ def _fetch_bytes(
 
 
 def disambiguate_duplicate_opinion_ids(opinions: list[Opinion]) -> list[Opinion]:
-    """Append a stable source hash when the live archive reuses a title/PDF slug."""
+    """Append a stable source hash when the live archive reuses a title/PDF slug.
+
+    Deterministic and input-order independent: the per-opinion source hash is derived from
+    content (url, or date/title) with no list position, and residual ``_2``/``_3`` ordinals
+    for truly identical url/date/title rows are assigned by a STABLE sort of the colliding
+    group, not by arrival order. Equivalent inputs in any order yield identical IRIs.
+    """
     counts: dict[str, int] = {}
     for op in opinions:
         counts[op.opinion_id] = counts.get(op.opinion_id, 0) + 1
     if not any(count > 1 for count in counts.values()):
         return opinions
 
-    used: set[str] = set()
-    out: list[Opinion] = []
-    for index, op in enumerate(opinions):
-        opinion_id = op.opinion_id
+    # First pass: assign each colliding opinion a content-derived (position-independent) id,
+    # bucketing any residual collisions so we can break ties by a stable sorted rank below.
+    interim_ids: list[str] = []
+    collisions: dict[str, list[int]] = {}
+    for pos, op in enumerate(opinions):
         if counts[op.opinion_id] > 1:
-            source_key = op.url or f"{op.date_iso or ''}|{op.title}|{index}"
-            opinion_id = f"{op.opinion_id}_{_short_hash(source_key)}"
-            if opinion_id in used:
-                suffix = 2
-                base = opinion_id
-                while f"{base}_{suffix}" in used:
-                    suffix += 1
-                opinion_id = f"{base}_{suffix}"
-            op = replace(op, opinion_id=opinion_id)
-        used.add(opinion_id)
-        out.append(op)
-    return out
+            source_key = op.url or f"{op.date_iso or ''}|{op.title}"
+            interim_id = f"{op.opinion_id}_{_short_hash(source_key)}"
+        else:
+            interim_id = op.opinion_id
+        interim_ids.append(interim_id)
+        collisions.setdefault(interim_id, []).append(pos)
+
+    # Second pass: for any interim id shared by >1 row (identical url, or identical
+    # date+title), sort the colliding rows by a stable composite key and append the ordinal
+    # by sorted rank so the same set of inputs always maps the same row to the same suffix.
+    final_ids: list[str] = list(interim_ids)
+    for interim_id, positions in collisions.items():
+        if len(positions) <= 1:
+            continue
+        ordered = sorted(
+            positions,
+            key=lambda p: (
+                opinions[p].url,
+                opinions[p].date_iso or "",
+                opinions[p].title,
+                _short_hash(
+                    f"{opinions[p].url}|{opinions[p].date_iso or ''}|"
+                    f"{opinions[p].title}|{opinions[p].summary}"
+                ),
+            ),
+        )
+        for rank, pos in enumerate(ordered):
+            final_ids[pos] = interim_id if rank == 0 else f"{interim_id}_{rank + 1}"
+
+    return [
+        op if final_ids[pos] == op.opinion_id else replace(op, opinion_id=final_ids[pos])
+        for pos, op in enumerate(opinions)
+    ]
 
 
 def _text_quality_ratio(text: str) -> float:
@@ -624,8 +762,18 @@ def pdf_text_is_usable(text: str | None) -> tuple[bool, int, float]:
 
 
 def _normalise_pdf_text(text: str) -> str:
-    """Collapse PDF text-layer whitespace into a body excerpt suitable for scanning."""
-    return re.sub(r"\s+", " ", text).strip()[:PDF_BODY_SCAN_MAX_CHARS]
+    """Collapse PDF text-layer whitespace and return the FULL normalised body.
+
+    ``find_in_body`` now does one cheap leftmost-longest regex pass over whatever this returns,
+    so the whole document is scanned and a law cited anywhere in it — including past the old
+    50K match-surface limit (issue #233) — is found. No prefix-slice / citation-window
+    truncation is performed; only the :data:`PDF_BODY_SCAN_MAX_CHARS` *sanity* cap is applied,
+    to bound peak memory against a pathological multi-MB text layer. Real Õiguskantsler bodies
+    are far below it, so it never elides a genuine citation. (The unrelated ~2000-char
+    ``annotationText`` display truncation lives in :func:`_truncate_to_sentence`.)
+    """
+    normalised = re.sub(r"\s+", " ", text).strip()
+    return normalised[:PDF_BODY_SCAN_MAX_CHARS]
 
 
 def extract_pdf_text_layer(pdf_bytes: bytes) -> tuple[str | None, str | None]:
@@ -820,12 +968,6 @@ def _xsd_anyuri(value: str) -> dict:
 
 _SENTENCE_BOUNDARY_RE = re.compile(r"[.!?]\s+")
 _TOKEN_RE = re.compile(r"[^\W_]+", re.UNICODE)
-# Curated from Estonian legal citation/document text; expand when live annotation
-# runs surface another common token that precedes non-sentence ordinal periods.
-_ESTONIAN_ABBREVIATION_TOKENS = frozenset(
-    {"art", "jt", "lg", "lk", "nn", "nr", "nt", "p", "ptk", "vt"}
-)
-_ESTONIAN_ORDINAL_PREFIX_TOKENS = _ESTONIAN_ABBREVIATION_TOKENS | frozenset({"osa"})
 
 
 def _is_false_estonian_abbreviation_boundary(head: str, boundary: int) -> bool:
@@ -911,11 +1053,15 @@ def build_annotations_for_opinion(opinion: Opinion, law_index: _LawIndex) -> _Op
             else:
                 result.unresolved_names.append(name)
     else:
-        # 2) extract from the title plus usable PDF body text (scrape source)
-        scan_text = opinion.title
-        if opinion.summary.strip():
-            scan_text = f"{opinion.title}\n{opinion.summary}"
-        for iri in law_index.find_in_title(scan_text):
+        # 2) extract from the title (authoritative) unioned with body evidence (scrape
+        # source). Both accept a standalone whole-token law-name match: a leftmost-longest,
+        # word-bounded scan (see find_in_body) keeps genuine bare-name references — Estonian
+        # opinions cite laws by bare name ("vastavalt võlaõigusseadusele") with no adjacent
+        # § — while dropping substring-of-a-longer-title and embedded-in-a-word false hits.
+        for iri in law_index.find_in_title(opinion.title):
+            if iri not in iris:
+                iris.append(iri)
+        for iri in law_index.find_in_body(opinion.summary):
             if iri not in iris:
                 iris.append(iri)
         if not iris:
@@ -933,6 +1079,7 @@ def build_annotations_for_opinion(opinion: Opinion, law_index: _LawIndex) -> _Op
     abbrev_counts: dict[str, int] = {}
     for abbrev in abbrevs.values():
         abbrev_counts[abbrev] = abbrev_counts.get(abbrev, 0) + 1
+    used_ann_iris: set[str] = set()
     for iri in iris:
         suffix = ""
         if multi:
@@ -941,6 +1088,16 @@ def build_annotations_for_opinion(opinion: Opinion, law_index: _LawIndex) -> _Op
                 target_suffix = f"{target_suffix}_{_short_hash(iri, length=6)}"
             suffix = f"_{target_suffix}"
         ann_iri = f"estleg:Annotation_OK_{sanitize_id(opinion.opinion_id)}{suffix}"
+        # Post-hash collision guard: a 24-bit abbrev-hash clash within one opinion's law set
+        # would otherwise silently overwrite a node. Append a deterministic _2/_3 tail
+        # (mirrors the opinion-id disambiguation pattern) so every @id stays distinct.
+        if ann_iri in used_ann_iris:
+            base = ann_iri
+            ordinal = 2
+            while f"{base}_{ordinal}" in used_ann_iris:
+                ordinal += 1
+            ann_iri = f"{base}_{ordinal}"
+        used_ann_iris.add(ann_iri)
         node: dict = {
             "@id": ann_iri,
             "@type": ["owl:NamedIndividual", "estleg:Annotation"],
@@ -1245,6 +1402,15 @@ def _parse_args(argv: list[str] | None) -> argparse.Namespace:
         action="store_true",
         help="Disable the polite inter-fetch delay (use only against a warm cache). --scrape only.",
     )
+    parser.add_argument(
+        "--no-pdf-body",
+        dest="use_pdf_body",
+        action="store_false",
+        default=True,
+        help="Skip PDF body-text extraction during --scrape (resolve laws from titles only). "
+             "Body extraction is ON by default under --scrape; this turns it off. Ignored "
+             "without --scrape (a title-only seed source has no PDF body to extract).",
+    )
     return parser.parse_args(argv)
 
 
@@ -1276,7 +1442,7 @@ def main(argv: list[str] | None = None) -> int:
         allow_partial=args.allow_partial,
         cache_dir=cache_dir,
         sleep=sleep,
-        use_pdf_body=args.scrape,
+        use_pdf_body=args.use_pdf_body,
     )
 
 

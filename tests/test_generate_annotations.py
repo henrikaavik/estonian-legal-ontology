@@ -10,6 +10,7 @@ emitted ``estleg:Annotation`` nodes against ``estleg:AnnotationShape``.
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 
 import pytest
@@ -142,6 +143,32 @@ class TestLawIndex:
         found = idx.find_in_title("Tsiviilseadustiku üldosa seaduse ja võlaõigusseaduse koostoime")
         assert found == ["estleg:TSYS_Map_2026", "estleg:VOS_Map_2026"]
 
+    def test_find_in_body_matches_standalone_tokens(self, tmp_path: Path):
+        # Body evidence is a leftmost-longest, word-bounded token scan over the FULL text:
+        # genuine bare-name references count (Estonian opinions cite laws by bare name with no
+        # adjacent §), while a name embedded in a larger word does not (reworked H4 — keep
+        # genuine references, drop only true greedy noise).
+        krr = tmp_path / "krr_outputs"
+        _fixture_corpus(krr)
+        idx = build_law_index(krr)
+        # § form is still a genuine occurrence -> accepted.
+        assert idx.find_in_body("Käsitletakse võlaõigusseaduse § 40 kohaldamist.") == [
+            "estleg:VOS_Map_2026"
+        ]
+        # Bare-name genitive reference with NO § -> still accepted (the genitive variant is a
+        # registered standalone token).
+        assert idx.find_in_body("vastavalt võlaõigusseadusele tuleb hüvitada kahju.") == [
+            "estleg:VOS_Map_2026"
+        ]
+        # Bare nominative mention with NO § -> accepted (standalone whole token).
+        assert idx.find_in_body(
+            "Õiguskantsler arutles, kuidas võlaõigusseadus kaitseb tarbijat."
+        ) == ["estleg:VOS_Map_2026"]
+        # Both laws named -> both, in first-occurrence order, no duplicates.
+        assert idx.find_in_body(
+            "tsiviilseadustiku üldosa seaduse § 1 ja võlaõigusseaduse § 40 koostoime"
+        ) == ["estleg:TSYS_Map_2026", "estleg:VOS_Map_2026"]
+
     def test_no_spurious_substring_match_from_short_abbreviation(self, tmp_path: Path):
         # A short token like "EKS" must not substring-match inside "ülaindEKSiga": only full
         # law names are title-scan keys (regression — see the #199 implementation note).
@@ -225,6 +252,38 @@ class TestListingParser:
         assert out[1].opinion_id.startswith("same_")
         assert out[0].opinion_id != out[1].opinion_id
         assert out[2].opinion_id == "unique"
+
+    def test_disambiguation_is_order_independent(self):
+        # The same set of opinions in any input order must yield the same title/url ->
+        # opinion_id mapping (regression for #236: the disambiguator must not depend on
+        # list position).
+        ops = [
+            Opinion("same", "Same title", "https://www.oiguskantsler.ee/2026/same.pdf", None, (), ""),
+            Opinion("same", "Same title", "https://www.oiguskantsler.ee/2025/same.pdf", None, (), ""),
+            Opinion("unique", "Unique title", "https://www.oiguskantsler.ee/unique.pdf", None, (), ""),
+        ]
+
+        def _mapping(seq: list[Opinion]) -> dict[tuple[str, str], str]:
+            return {
+                (src.title, src.url): out.opinion_id
+                for src, out in zip(seq, ga.disambiguate_duplicate_opinion_ids(seq))
+            }
+
+        forward = _mapping(ops)
+        reversed_map = _mapping(list(reversed(ops)))
+        shuffled_map = _mapping([ops[1], ops[2], ops[0]])
+        assert forward == reversed_map == shuffled_map
+        assert len(set(forward.values())) == 3
+
+    def test_disambiguation_identical_records_stable(self):
+        # Two rows with identical url+date+title (a residual collision after the source
+        # hash) must get distinct, order-stable IRIs: the same set of @ids in either order.
+        a = Opinion("dup", "Sama", "https://www.oiguskantsler.ee/same.pdf", "2024-01-01", (), "sisuA")
+        b = Opinion("dup", "Sama", "https://www.oiguskantsler.ee/same.pdf", "2024-01-01", (), "sisuB")
+        ids_ab = [op.opinion_id for op in ga.disambiguate_duplicate_opinion_ids([a, b])]
+        ids_ba = [op.opinion_id for op in ga.disambiguate_duplicate_opinion_ids([b, a])]
+        assert len(set(ids_ab)) == 2          # distinct
+        assert set(ids_ab) == set(ids_ba)      # order-independent set of IRIs
 
 
 # ---------------------------------------------------------------------------
@@ -349,6 +408,34 @@ class TestBuildAnnotations:
         assert len({n["@id"] for n in res.annotations}) == 2
         assert all("_SAME_" in n["@id"] for n in res.annotations)
 
+    def test_multi_law_abbrev_hash_collision_gets_disambig_suffix(
+        self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ):
+        # Guard the multi-law abbreviated-IRI path: if the 24-bit abbrev hash clashes within
+        # one opinion's law set, both @ids must remain distinct (regression for #239 Site 2).
+        # Force the clash by pinning _short_hash to a constant so the two SAME-prefix laws
+        # produce identical abbrev hashes.
+        krr = tmp_path / "krr_outputs"
+        krr.mkdir(parents=True, exist_ok=True)
+        _write_peep(krr, "esimene_seadus", "estleg:SAME_Map_2026", title="Esimene seadus")
+        _write_peep(krr, "teine_seadus", "estleg:SAME_2_Map_2026", title="Teine seadus")
+        idx = build_law_index(krr)
+        monkeypatch.setattr(ga, "_short_hash", lambda value, *, length=8: "deadbe")
+        op = Opinion(
+            "abbrev-hash-clash",
+            "Esimese seaduse ja teise seaduse koostoime",
+            "https://x/clash",
+            "2024-05-01",
+            ("Esimene seadus", "Teine seadus"),
+            "Tõlgenduslik seisukoht.",
+        )
+        res = build_annotations_for_opinion(op, idx)
+        assert len(res.annotations) == 2
+        ids = [n["@id"] for n in res.annotations]
+        assert len(set(ids)) == 2  # both distinct despite the forced hash collision
+        # The disambiguation appends a deterministic _2 tail to the colliding @id.
+        assert any(i.endswith("_2") for i in ids)
+
     def test_single_law_opinion_iri_has_no_abbrev_suffix(self, tmp_path: Path):
         krr = tmp_path / "krr_outputs"
         _fixture_corpus(krr)
@@ -410,6 +497,115 @@ class TestBuildAnnotations:
         assert len(res.annotations) == 1
         assert res.annotations[0]["estleg:annotates"] == {"@id": "estleg:VOS_Map_2026"}
         assert "võlaõigusseaduse § 40" in res.annotations[0]["estleg:annotationText"]
+
+    def test_genuine_bare_name_body_reference_is_annotated(self, tmp_path: Path):
+        # Estonian opinions legitimately reference laws by bare name with NO adjacent § (e.g.
+        # the allative "vastavalt võlaõigusseadusele"). Under the reworked H4 such a genuine
+        # bare-name reference IS annotated (regression: the earlier §-requirement zeroed real
+        # references).
+        krr = tmp_path / "krr_outputs"
+        _fixture_corpus(krr)
+        idx = build_law_index(krr)
+        op = Opinion(
+            "bare-name",
+            "Üldine õiguskantsleri seisukoht",
+            "https://x/bare-name.pdf",
+            "2024-02-04",
+            (),
+            "Õiguskantsler leidis, et vastavalt võlaõigusseadusele tuleb kahju hüvitada.",
+        )
+        res = build_annotations_for_opinion(op, idx)
+        assert res.resolved_iris == ["estleg:VOS_Map_2026"]
+        assert len(res.annotations) == 1
+        assert res.annotations[0]["estleg:annotates"] == {"@id": "estleg:VOS_Map_2026"}
+
+    def test_body_citation_with_section_is_accepted(self, tmp_path: Path):
+        # A body law-name hit followed by a § section reference is a genuine occurrence -> it
+        # still resolves (the § form is one of the many accepted standalone-token forms).
+        krr = tmp_path / "krr_outputs"
+        _fixture_corpus(krr)
+        idx = build_law_index(krr)
+        op = Opinion(
+            "body-section",
+            "Üldine õiguskantsleri seisukoht",
+            "https://x/body-section.pdf",
+            "2024-02-04",
+            (),
+            "Selgituses viidatakse võlaõigusseaduse § 40 kohaldamisele.",
+        )
+        res = build_annotations_for_opinion(op, idx)
+        assert len(res.annotations) == 1
+        assert res.annotations[0]["estleg:annotates"] == {"@id": "estleg:VOS_Map_2026"}
+
+    def test_substring_law_name_not_double_annotated(self, tmp_path: Path):
+        # When the body names ONLY a longer law whose title contains a shorter law's title as
+        # a substring (Ravimiseadus ⊂ Veterinaarravimiseadus), the leftmost-longest body scan
+        # must annotate ONLY the longer law — the longer span consumes the shorter so the
+        # substring law is never separately matched.
+        krr = tmp_path / "krr_outputs"
+        krr.mkdir(parents=True, exist_ok=True)
+        _write_peep(krr, "ravimiseadus", "estleg:RAVIM_Map_2026", title="Ravimiseadus")
+        _write_peep(
+            krr, "veterinaarravimiseadus", "estleg:VETRAVIM_Map_2026",
+            title="Veterinaarravimiseadus",
+        )
+        idx = build_law_index(krr)
+        op = Opinion(
+            "substring-only",
+            "Üldine õiguskantsleri seisukoht",
+            "https://x/substring.pdf",
+            "2024-02-04",
+            (),
+            "Õiguskantsler hindas, kas vastavalt veterinaarravimiseadusele on nõuded täidetud.",
+        )
+        res = build_annotations_for_opinion(op, idx)
+        assert res.resolved_iris == ["estleg:VETRAVIM_Map_2026"]
+        assert "estleg:RAVIM_Map_2026" not in res.resolved_iris
+        assert len(res.annotations) == 1
+        assert res.annotations[0]["estleg:annotates"] == {"@id": "estleg:VETRAVIM_Map_2026"}
+
+    def test_law_name_embedded_in_word_not_matched(self, tmp_path: Path):
+        # A law name embedded inside a larger token (no word boundary on either side) is NOT a
+        # standalone reference and must not be matched: the token-boundary lookarounds drop it.
+        krr = tmp_path / "krr_outputs"
+        _fixture_corpus(krr)
+        idx = build_law_index(krr)
+        op = Opinion(
+            "embedded",
+            "Üldine õiguskantsleri seisukoht",
+            "https://x/embedded.pdf",
+            "2024-02-04",
+            (),
+            # "võlaõigusseaduslik" is not a registered case form: the trailing "lik" keeps the
+            # registered "võlaõigusseadus" token from matching inside the larger word.
+            "Tegu on puhtalt võlaõigusseadusliku küsimusega.",
+        )
+        res = build_annotations_for_opinion(op, idx)
+        assert res.resolved_iris == []
+        assert res.annotations == []
+        assert res.unresolved_names  # records the no-resolvable-law note
+
+    def test_title_evidence_independent_of_body(self, tmp_path: Path):
+        # Title names law A (authoritative); the body's only mention of a different law B is a
+        # NON-match (B's name embedded inside a larger word, no token boundary) -> only A is
+        # annotated. (Bare *genuine* B mentions are now kept by find_in_body, so the body must
+        # use a true non-match here to isolate title evidence.)
+        krr = tmp_path / "krr_outputs"
+        _fixture_corpus(krr)
+        idx = build_law_index(krr)
+        op = Opinion(
+            "title-a-body-b",
+            "Võlaõigusseaduse § 40 tõlgendamine",  # title names VOS
+            "https://x/title-a-body-b.pdf",
+            "2024-02-04",
+            (),
+            # body mentions TSYS only embedded in a larger word ("…seaduslikust") -> non-match
+            "Küsimus on olemuselt tsiviilseadustiku üldosa seaduslikust regulatsioonist.",
+        )
+        res = build_annotations_for_opinion(op, idx)
+        assert res.resolved_iris == ["estleg:VOS_Map_2026"]
+        assert len(res.annotations) == 1
+        assert res.annotations[0]["estleg:annotates"] == {"@id": "estleg:VOS_Map_2026"}
 
     def test_annotates_targets_resolve_to_corpus_nodes(self, tmp_path: Path):
         # Every estleg:annotates target must be a real node @id somewhere in the fixture corpus.
@@ -613,6 +809,67 @@ def test_run_scrape_with_mocked_listing(tmp_path: Path, monkeypatch: pytest.Monk
     assert cov["files_processed"] == 2 and cov["files_with_output"] == 1 and cov["triples_emitted"] == 1
 
 
+def test_run_scrape_no_pdf_body_skips_extraction(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
+    # use_pdf_body=False under --scrape must NOT invoke PDF body extraction, while the
+    # title-resolved annotation is still produced (regression for #234: wire use_pdf_body).
+    krr = tmp_path / "krr_outputs"
+    _fixture_corpus(krr)
+    pages = {ga.SEISUKOHAD_LISTING_URL: _LISTING_HTML}
+    monkeypatch.setattr(ga, "_fetch_url", lambda url, **k: pages.get(url))
+
+    def _boom(*_args, **_kwargs):  # noqa: ANN002, ANN003
+        raise AssertionError("attach_pdf_text_layers must not be called when use_pdf_body=False")
+
+    monkeypatch.setattr(ga, "attach_pdf_text_layers", _boom)
+    out_path = krr / "annotations" / "oiguskantsler_seisukohad.jsonld"
+    cov_path = krr / "reports" / "kov" / "extract_annotations_coverage.json"
+    rc = ga.run(
+        scrape=True, limit=5, use_pdf_body=False, krr_dir=krr,
+        out_path=out_path, coverage_path=cov_path, cache_dir=None,
+    )
+    assert rc == 0
+    doc = json.loads(out_path.read_text(encoding="utf-8"))
+    ann_nodes = [n for n in doc["@graph"] if "estleg:Annotation" in n.get("@type", [])]
+    # Title-resolved annotation still present (only the § 40 opinion resolves from its title).
+    assert len(ann_nodes) == 1
+    assert ann_nodes[0]["estleg:annotates"] == {"@id": "estleg:VOS_Map_2026"}
+
+
+def test_run_scrape_pdf_body_on_invokes_extraction(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
+    # use_pdf_body=True under --scrape must invoke PDF body extraction exactly once.
+    krr = tmp_path / "krr_outputs"
+    _fixture_corpus(krr)
+    pages = {ga.SEISUKOHAD_LISTING_URL: _LISTING_HTML}
+    monkeypatch.setattr(ga, "_fetch_url", lambda url, **k: pages.get(url))
+    calls: list[int] = []
+    _empty_stats = {
+        "pdf_urls": 0, "usable_text_layers": 0, "fetch_failed": 0,
+        "extraction_unavailable": 0, "unusable_or_scanned": 0, "non_pdf_urls": 0,
+    }
+
+    def _record(opinions, **_kwargs):  # noqa: ANN001, ANN003
+        calls.append(1)
+        return opinions, dict(_empty_stats)
+
+    monkeypatch.setattr(ga, "attach_pdf_text_layers", _record)
+    out_path = krr / "annotations" / "oiguskantsler_seisukohad.jsonld"
+    cov_path = krr / "reports" / "kov" / "extract_annotations_coverage.json"
+    rc = ga.run(
+        scrape=True, limit=5, use_pdf_body=True, krr_dir=krr,
+        out_path=out_path, coverage_path=cov_path, cache_dir=None,
+    )
+    assert rc == 0
+    assert calls == [1]  # extraction invoked exactly once
+
+
+def test_cli_no_pdf_body_flag_parsing():
+    # --scrape defaults use_pdf_body ON; --no-pdf-body turns it off; ignored sense holds
+    # without --scrape (the run() guard skips extraction when not scraping).
+    assert ga._parse_args(["--scrape"]).use_pdf_body is True
+    assert ga._parse_args(["--scrape", "--no-pdf-body"]).use_pdf_body is False
+    assert ga._parse_args([]).use_pdf_body is True
+
+
 def test_pdf_text_layer_probe_reports_ocr_recommendation():
     opinions = [
         ga.Opinion(
@@ -656,13 +913,79 @@ def test_pdf_text_layer_probe_reports_ocr_recommendation():
     assert report["recommendation"] == "evaluate_ocr_before_full_ingestion"
 
 
-def test_normalise_pdf_text_bounds_scan_excerpt():
+# The former 50K match-surface limit, kept as a test literal so the "scanned beyond the old
+# cap" regression stays pinned even though the live constant is now only a 2M sanity cap.
+_OLD_PDF_BODY_SCAN_CAP = 50_000
+
+
+def test_normalise_pdf_text_collapses_whitespace_and_keeps_full_text():
+    # Whitespace is collapsed and the WHOLE body is returned (no 50K truncation): a ~120K text
+    # well above the old cap but below the sanity cap is preserved in full.
     text = "Algus\n\n" + ("Õigus " * 20_000)
+    assert len(text) > _OLD_PDF_BODY_SCAN_CAP
 
     normalized = ga._normalise_pdf_text(text)
 
     assert "\n" not in normalized
+    # No 50K truncation any more: the whole normalised body is kept, and it is well above the
+    # old cap yet below the sanity cap (so nothing is sliced off).
+    assert len(normalized) > _OLD_PDF_BODY_SCAN_CAP
+    assert len(normalized) < ga.PDF_BODY_SCAN_MAX_CHARS
+    assert normalized == re.sub(r"\s+", " ", text).strip()
+
+
+def test_normalise_pdf_text_applies_only_the_sanity_cap():
+    # A pathological multi-char text above the sanity cap is truncated only at that cap.
+    text = "x" * (ga.PDF_BODY_SCAN_MAX_CHARS + 5000)
+    normalized = ga._normalise_pdf_text(text)
     assert len(normalized) == ga.PDF_BODY_SCAN_MAX_CHARS
+
+
+def test_full_pdf_text_scanned_beyond_50k(tmp_path: Path):
+    # >50K of filler with NO law name, then a genuine bare-name reference past char 50K. The
+    # old 50K prefix slice would have lost it; full-text scanning now finds it (regression for
+    # #233), and _normalise_pdf_text no longer truncates at 50K.
+    krr = tmp_path / "krr_outputs"
+    _fixture_corpus(krr)
+    idx = build_law_index(krr)
+    filler = "Lorem ipsum dolor sit amet. " * 3000  # ~84K chars, contains no "seadus"
+    assert len(filler) > _OLD_PDF_BODY_SCAN_CAP
+    text = filler + "vastavalt võlaõigusseadusele tuleb hüvitada kahju"
+
+    normalized = ga._normalise_pdf_text(text)
+
+    # _normalise_pdf_text no longer truncates at 50K: the beyond-50K reference is still present.
+    assert len(normalized) > _OLD_PDF_BODY_SCAN_CAP
+    assert "volaoigusseadusele" in ga._norm_name(normalized)
+
+    # And find_in_body resolves the beyond-cap bare-name reference from the full scanned text.
+    assert idx.find_in_body(normalized) == ["estleg:VOS_Map_2026"]
+
+
+def test_scrape_opinion_resolves_law_cited_after_cap(tmp_path: Path):
+    # End-to-end: a PDF whose only law mention is past the old 50K cap must still resolve when
+    # routed through attach_pdf_text_layers -> _normalise_pdf_text -> find_in_body (#233).
+    krr = tmp_path / "krr_outputs"
+    _fixture_corpus(krr)
+    idx = build_law_index(krr)
+    big = ("Lorem ipsum dolor sit. " * 3000) + "edaspidi võlaõigusseaduse § 40 kohaldamine"
+    assert len(big) > _OLD_PDF_BODY_SCAN_CAP
+    op = ga.Opinion("after-cap", "Üldine seisukoht", "https://x/after-cap.pdf", "2024-02-04", (), "")
+
+    def _fetcher(url, **_kwargs):  # noqa: ANN001
+        return b"%PDF-1.7 fake"
+
+    def _extractor(_pdf_bytes):  # noqa: ANN001
+        return big, None
+
+    enriched, stats = ga.attach_pdf_text_layers(
+        [op], fetcher=_fetcher, extractor=_extractor, cache_dir=None, sleep=0
+    )
+    assert stats["usable_text_layers"] == 1
+    res = build_annotations_for_opinion(enriched[0], idx)
+    assert res.resolved_iris == ["estleg:VOS_Map_2026"]
+    assert len(res.annotations) == 1
+    assert res.annotations[0]["estleg:annotates"] == {"@id": "estleg:VOS_Map_2026"}
 
 
 def test_pdf_text_layer_probe_skips_non_pdf_urls():
