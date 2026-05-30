@@ -223,7 +223,7 @@ def build_provision_index(
     source_act_to_prefix: dict[str, str] = {}
     iri_to_file: dict[str, Path] = {}
 
-    for json_file in iter_peep_files(include_kov=False):  # DEFERRED to Layer 2c
+    for json_file in iter_peep_files(include_kov=False):  # state-law §-index only; KOV is act-level via build_kov_act_index
         # Skip court decision files
         if json_file.name.startswith("riigikohus"):
             continue
@@ -812,7 +812,7 @@ def clear_existing_court_links(counters: "_RunCounters") -> int:
 
     # Pre-compute the KOV file set so walk 3 can iterate KOV-only without
     # re-loading every state-law peep just to filter on @type.
-    state_files = set(iter_peep_files(include_kov=False))   # DEFERRED to Layer 2c
+    state_files = set(iter_peep_files(include_kov=False))   # state-law set; KOV handled by walk 3 below
     kov_files = [f for f in iter_peep_files() if f not in state_files]
 
     # Walk 1: court files
@@ -872,7 +872,7 @@ def clear_existing_court_links(counters: "_RunCounters") -> int:
     return cleaned
 
 
-def main() -> None:
+def main(enable_kov: bool = True) -> None:
     from kov_pipeline_coverage import (
         CoverageReport,
         measure_runtime,
@@ -916,15 +916,27 @@ def main() -> None:
         print(f"    {abbrev} -> {prefix} ({prov_count} provisions)")
 
     # Step 4 (NEW): Build KOV act index.
-    print("\n[4/6] Building KOV act index...")
-    kov_index, kov_collision_keys, kov_iri_to_file, known_issuer_norms = (
-        build_kov_act_index(counters)
-    )
-    print(
-        f"  KOV acts in index: {len(kov_index)} "
-        f"(collisions excluded: {len(kov_collision_keys)}); "
-        f"known issuers: {len(known_issuer_norms)}"
-    )
+    if enable_kov:
+        print("\n[4/6] Building KOV act index...")
+        kov_index, kov_collision_keys, kov_iri_to_file, known_issuer_norms = (
+            build_kov_act_index(counters)
+        )
+        print(
+            f"  KOV acts in index: {len(kov_index)} "
+            f"(collisions excluded: {len(kov_collision_keys)}); "
+            f"known issuers: {len(known_issuer_norms)}"
+        )
+    else:
+        # --no-kov: empty index -> resolve_kov_citation reports unknown_issuer
+        # for every KOV match, so no KOV interpretsLaw arc is written. Walk 3 of
+        # clear_existing_court_links still strips any stale KOV interpretedBy.
+        print("\n[4/6] KOV act index DISABLED (--no-kov)")
+        kov_index, kov_collision_keys, kov_iri_to_file, known_issuer_norms = (
+            {},
+            set(),
+            {},
+            set(),
+        )
 
     # Step 5: Process court decision files.
     print("\n[5/6] Processing court decision files...")
@@ -1130,4 +1142,18 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    import argparse
+
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--no-kov",
+        dest="enable_kov",
+        action="store_false",
+        help=(
+            "Skip KOV (municipal) act-level court-provision resolution. "
+            "State-law resolution and reports are unchanged. Operational "
+            "switch only; the committed corpus is generated KOV-on."
+        ),
+    )
+    args = parser.parse_args()
+    main(enable_kov=args.enable_kov)
