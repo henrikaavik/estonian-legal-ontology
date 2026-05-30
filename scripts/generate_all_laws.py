@@ -1841,6 +1841,47 @@ def remove_obsolete_multipart_outputs(
     return removed
 
 
+def _cached_xml_root(cache_name: str, tid: str | None = None) -> ET.Element | None:
+    """Return a parsed law XML root from the local cache, or None.
+
+    Mirrors ``fetch_xml``'s cache lookup (tid-qualified path then legacy
+    slug-only path) but NEVER falls back to the network — used by the
+    post-generation reconciliation so a cleanup pass cannot trigger HTTP.
+    """
+    candidates: list[Path] = []
+    if tid:
+        candidates.append(DATA_DIR / f"{cache_name}__tid{sanitize_id(tid)}.xml")
+    candidates.append(DATA_DIR / f"{cache_name}.xml")
+    for cache_path in candidates:
+        if cache_path.exists() and cache_path.stat().st_size > 1000:
+            try:
+                return ET.parse(str(cache_path)).getroot()
+            except ET.ParseError:
+                pass
+    return None
+
+
+def _expected_osa_filenames(slug: str, root: ET.Element) -> set[str]:
+    """The ``<slug>_osaN_peep.json`` files ``generate_multipart_law`` would emit.
+
+    Mirrors that function's osa selection exactly (an ``osa`` element with a
+    non-empty ``osaNr`` and at least one ``paragrahv``), so the reconciliation
+    pass can delete fresh-but-orphaned parts that are no longer in the law's
+    current structure, not only snapshot-stale ones.
+    """
+    names: set[str] = set()
+    for osa_el in root.iter():
+        if ln(osa_el.tag) != "osa":
+            continue
+        osa_nr = ct(osa_el, "osaNr")
+        if not osa_nr:
+            continue
+        if not any(ln(el.tag) == "paragrahv" for el in osa_el.iter()):
+            continue
+        names.add(f"{slug}_osa{osa_nr}_peep.json")
+    return names
+
+
 def _law_file_base_slug(name: str) -> str:
     """Return the law slug for a peep filename.
 
@@ -2688,8 +2729,9 @@ def main():
     # only runs in the multipart branch. Laws skipped from ``to_generate``
     # (fresh in missing-only mode) AND laws regenerated via the single-file /
     # stub branch (e.g. a formerly-multipart law that is no longer multipart)
-    # would otherwise keep stale ``<slug>_osaN_peep.json`` parts. Sweep every
-    # source law NOT handled by the multipart branch here, AFTER generation.
+    # would otherwise keep stale or structurally-orphaned ``<slug>_osaN_peep.json``
+    # parts. Sweep every source law NOT handled by the multipart branch here,
+    # AFTER generation.
     # Files already unlinked inside the main loop are gone from disk, so this
     # pass cannot double-count them.
     for title, info in sorted(all_laws.items()):
@@ -2700,14 +2742,29 @@ def main():
             continue
         try:
             if title in MULTIPART_LAWS:
-                for part_path in sorted(KRR_DIR.glob(f"{slug}_osa*_peep.json")):
-                    existing_doc = _load_existing_doc(part_path)
-                    if existing_doc is not None and existing_law_is_stale(
-                        existing_doc, args.kehtiv, info.get("tid")
-                    ):
-                        part_path.unlink()
-                        run_counts["obsoleteMultipartRemoved"] += 1
-                        print(f"    Removed stale multipart part: {part_path.name}")
+                # Skipped multipart law: reconcile against the osa set its
+                # cached XML would currently produce, so a fresh-but-orphaned
+                # part (current kehtiv/tid yet no longer in the structure) is
+                # removed too, not only snapshot-stale parts (#246). Fall back
+                # to a stale-only sweep when the XML is not cached — never fetch
+                # from the network during cleanup.
+                cached_root = _cached_xml_root(slug, info.get("tid"))
+                if cached_root is not None:
+                    obsolete_paths = remove_obsolete_multipart_outputs(
+                        KRR_DIR, slug, _expected_osa_filenames(slug, cached_root)
+                    )
+                    run_counts["obsoleteMultipartRemoved"] += len(obsolete_paths)
+                    for obsolete_path in obsolete_paths:
+                        print(f"    Removed orphan multipart part: {obsolete_path.name}")
+                else:
+                    for part_path in sorted(KRR_DIR.glob(f"{slug}_osa*_peep.json")):
+                        existing_doc = _load_existing_doc(part_path)
+                        if existing_doc is not None and existing_law_is_stale(
+                            existing_doc, args.kehtiv, info.get("tid")
+                        ):
+                            part_path.unlink()
+                            run_counts["obsoleteMultipartRemoved"] += 1
+                            print(f"    Removed stale multipart part: {part_path.name}")
             else:
                 # Law is no longer multipart: any ``_osaN`` part is orphaned.
                 obsolete_paths = remove_obsolete_multipart_outputs(

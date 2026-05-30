@@ -1057,6 +1057,66 @@ class TestStaleOsaReconciledOutsideToGenerate:
         assert manifest["counts"]["selectedForGeneration"] == 0
         assert manifest["run"]["obsoleteMultipartRemoved"] >= 1
 
+    def test_fresh_orphan_osa_outside_to_generate_is_reconciled(
+        self, tmp_path, monkeypatch
+    ):
+        """#246 follow-up: a multipart law skipped from to_generate must also
+        lose a FRESH orphan part — an osa carrying the current kehtiv/tid that
+        is no longer in the law's structure. Staleness alone can't catch it;
+        the pass compares against the osa set the cached XML would produce.
+        ``selectedForGeneration == 0`` proves the law was not regenerated.
+        """
+        krr = tmp_path / "krr_outputs"
+        krr.mkdir()
+        data_dir = tmp_path / "data" / "riigiteataja"
+        data_dir.mkdir(parents=True)
+
+        # osa1+osa2 are the real parts; osa9 is a FRESH orphan (current kehtiv
+        # + tid) left from a structure that no longer contains osa9.
+        for nr in (1, 2, 9):
+            generate_all_laws.save_json(
+                krr / f"test_law_osa{nr}_peep.json",
+                self._osa_doc(nr, self._KEHTIV, self._TID),
+            )
+
+        regen_path = krr / ".regen_state.json"
+        generate_all_laws.save_json(
+            regen_path,
+            {
+                "schemaVersion": generate_all_laws.REGEN_STATE_SCHEMA_VERSION,
+                "completed": {
+                    "test_law": {
+                        "title": "Test Law",
+                        "kehtiv": self._KEHTIV,
+                        "terviktekstId": self._TID,
+                    }
+                },
+                "failed": {},
+            },
+        )
+
+        # Cached XML produces only osa1 + osa2.
+        self._write_xml(data_dir, self._two_osa_xml())
+        self._patch_common(monkeypatch, krr, data_dir, {"Test Law"})
+        monkeypatch.setattr(
+            generate_all_laws,
+            "parse_args",
+            lambda: self._args(regen_state=str(regen_path)),
+        )
+
+        generate_all_laws._used_prefixes.clear()
+        generate_all_laws.main()
+
+        assert (krr / "test_law_osa1_peep.json").exists()
+        assert (krr / "test_law_osa2_peep.json").exists()
+        assert not (krr / "test_law_osa9_peep.json").exists()
+
+        manifest = json.loads(
+            (krr / generate_all_laws.MANIFEST_NAME).read_text(encoding="utf-8")
+        )
+        assert manifest["counts"]["selectedForGeneration"] == 0
+        assert manifest["run"]["obsoleteMultipartRemoved"] >= 1
+
     def test_orphan_osa_when_law_no_longer_multipart_is_removed(
         self, tmp_path, monkeypatch
     ):
