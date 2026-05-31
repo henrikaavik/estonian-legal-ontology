@@ -1097,3 +1097,84 @@ def test_no_kov_leaves_provision_index_unchanged(tmp_path, monkeypatch):
     with_kov = _run([])
     no_kov = _run(["--no-kov"])
     assert with_kov == no_kov
+
+
+def test_no_kov_clears_existing_kov_output(tmp_path, monkeypatch):
+    """--no-kov is effective on an ALREADY-generated tree (#250 review): a
+    prior default run's back-links, reified Similarity nodes, and consolidated
+    index are all removed, not left stale."""
+    krr = tmp_path / "krr_outputs"
+    files = [
+        _write_kov(krr, "v_vv", "17001",
+                   _kov_act_doc("17001", "jaatmehoolduseeskiri", [_WASTE_TEXT])),
+        _write_kov(krr, "w_vv", "17002",
+                   _kov_act_doc("17002", "jaatmehoolduseeskiri", [_WASTE_TEXT])),
+    ]
+    _wire_kov(monkeypatch, krr, files)
+
+    # Default run generates KOV output.
+    similarity.main([])
+    assert (krr / "similarity" / "kov_similarity_index.json").exists()
+    node = _act_node(files[0], "estleg:Reg_17001_Map_2026")
+    assert "estleg:regulationTypeBucket" in node
+    assert "estleg:similarAct" in node
+    doc = json.loads(files[0].read_text(encoding="utf-8"))
+    assert any(
+        n.get("@id", "").startswith("estleg:Similarity_") for n in doc["@graph"]
+    )
+
+    # --no-kov clears all of it.
+    similarity.main(["--no-kov"])
+    assert not (krr / "similarity" / "kov_similarity_index.json").exists()
+    node = _act_node(files[0], "estleg:Reg_17001_Map_2026")
+    assert "estleg:regulationTypeBucket" not in node
+    assert "estleg:similarAct" not in node
+    doc = json.loads(files[0].read_text(encoding="utf-8"))
+    assert not any(
+        n.get("@id", "").startswith("estleg:Similarity_") for n in doc["@graph"]
+    )
+
+
+def test_cross_layer_pairs_count_is_post_cap(tmp_path, monkeypatch):
+    """crossLayerPairs counts EMITTED (post-top-K) cross-layer peers, not
+    pre-cap candidates (#250 review). With top-K=2, the lower-scored
+    cross-layer peer is evicted by the two identical intra-bucket peers, so
+    the emitted cross-layer count — and crossLayerPairs — is 0 even though one
+    cross-layer candidate existed pre-cap."""
+    monkeypatch.setattr(similarity, "KOV_TOP_K", 2)
+    krr = tmp_path / "krr_outputs"
+    krr.mkdir(parents=True, exist_ok=True)
+    # State act shares the waste tokens (+1 extra) so cosine with a pure-waste
+    # KOV act is a candidate (>=0.3) yet below the identical intra peers (1.0).
+    state = krr / "jaatmeseadus_peep.json"
+    state.write_text(
+        json.dumps(_state_act_doc("JAATS_Map_2026", [_WASTE_TEXT + " reovesi"])),
+        encoding="utf-8",
+    )
+    files = [state]
+    # Three identical-text KOV acts in one bucket (pairwise cosine 1.0); only
+    # the first is issuedUnder the state act.
+    for n in (1, 2, 3):
+        files.append(_write_kov(
+            krr, f"c{n}_vv", f"3000{n}",
+            _kov_act_doc(f"3000{n}", "jaatmehoolduseeskiri", [_WASTE_TEXT],
+                         issued_under=["estleg:JAATS_Map_2026"] if n == 1 else None),
+        ))
+    _wire_kov(monkeypatch, krr, files)
+
+    summary = similarity.run_kov_similarity_pass()
+    index = _kov_index(krr)
+
+    # act 30001 is capped at top-K=2 intra peers; its cross-layer candidate
+    # is evicted, so no cross-layer (non-Reg target) peer is emitted anywhere.
+    node = _act_node(files[1], "estleg:Reg_30001_Map_2026")
+    assert len(node.get("estleg:similarAct", [])) == 2
+    emitted_cross = sum(
+        1
+        for bucket in index["buckets"].values()
+        for pair in bucket["pairs"]
+        for peer in pair["peers"]
+        if not peer["target"].startswith("estleg:Reg_")
+    )
+    assert emitted_cross == 0
+    assert summary["crossLayerPairs"] == 0

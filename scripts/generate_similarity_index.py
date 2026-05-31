@@ -1011,6 +1011,51 @@ def _write_kov_backlinks(act: dict, peer_iris_scores: list[dict]) -> None:
     save_json(act["file"], doc)
 
 
+def clear_kov_similarity_output() -> int:
+    """Strip all KOV Layer-3 similarity output so ``--no-kov`` is effective.
+
+    Removes ``estleg:similarAct`` + ``estleg:regulationTypeBucket`` and the
+    reified ``estleg:Similarity_*`` nodes from every KOV act peep, and deletes
+    the consolidated ``krr_outputs/similarity/kov_similarity_index.json``.
+    Mirrors the always-clear idempotency of the court-links pipeline so an
+    opt-out run does not leave stale Layer-3 artifacts on an already-generated
+    tree (#250 review). Returns the number of peep files changed.
+    """
+    cleaned = 0
+    for path in _iter_kov_peep_files():
+        try:
+            doc = json.loads(path.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, OSError):
+            continue
+        graph = doc.get("@graph")
+        if not isinstance(graph, list):
+            continue
+        new_graph = [
+            node
+            for node in graph
+            if not (
+                isinstance(node, dict)
+                and isinstance(node.get("@id"), str)
+                and node["@id"].startswith("estleg:Similarity_")
+            )
+        ]
+        changed = len(new_graph) != len(graph)
+        doc["@graph"] = new_graph
+        act_node = find_kov_act_node(doc)
+        if act_node is not None:
+            for prop in ("estleg:similarAct", "estleg:regulationTypeBucket"):
+                if prop in act_node:
+                    act_node.pop(prop, None)
+                    changed = True
+        if changed:
+            save_json(path, doc)
+            cleaned += 1
+    index_path = KRR_DIR / "similarity" / "kov_similarity_index.json"
+    if index_path.exists():
+        index_path.unlink()
+    return cleaned
+
+
 def run_kov_similarity_pass() -> dict:
     """Run the KOV act-level bucketed TF-IDF similarity pass.
 
@@ -1052,7 +1097,6 @@ def run_kov_similarity_pass() -> dict:
     # source act IRI. Cross-layer peers are appended then re-capped so a
     # source never exceeds KOV_TOP_K across both peer sources.
     peers_by_source: dict[str, list[dict]] = defaultdict(list)
-    cross_layer_pairs = 0
 
     for key, members in buckets.items():
         comparable = (
@@ -1070,13 +1114,23 @@ def run_kov_similarity_pass() -> dict:
             act, idf, state_vector_cache, act_iri_to_file
         )
         if cl_peers:
-            cross_layer_pairs += len(cl_peers)
             peers_by_source[act["iri"]].extend(cl_peers)
 
     # Final per-source sort + top-K cap across both peer kinds.
     for src_iri in peers_by_source:
         peers_by_source[src_iri].sort(key=lambda p: (-p["score"], p["target"]))
         del peers_by_source[src_iri][KOV_TOP_K:]
+
+    # Count cross-layer (KOV->state) pairs that SURVIVE the top-K cap. The
+    # earlier pre-cap tally overreported emitted links (#250 review): an act's
+    # intra-bucket peers can evict cross-layer ones during the cap. Cross-layer
+    # peers are exactly those whose target is not itself a KOV act.
+    cross_layer_pairs = sum(
+        1
+        for peers in peers_by_source.values()
+        for peer in peers
+        if peer["target"] not in _KOV_ACT_IRIS
+    )
 
     # Write back-links into every KOV act node (idempotent), then build the
     # consolidated index.
@@ -1417,6 +1471,12 @@ def main(argv: list[str] | None = None):
         print("KOV act-level similarity (bucketed TF-IDF cosine)")
         print("=" * 60)
         run_kov_similarity_pass()
+    else:
+        # --no-kov: clear any previously-emitted KOV similarity so the opt-out
+        # is effective on an already-generated tree (not just a fresh one).
+        print("\n[KOV] --no-kov: clearing existing KOV similarity output...")
+        cleared = clear_kov_similarity_output()
+        print(f"  Cleared KOV similarity back-links from {cleared} act file(s)")
 
     # Optional: human precision-review sample.
     sample_written = None
