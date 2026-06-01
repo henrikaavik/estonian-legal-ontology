@@ -326,7 +326,7 @@ def _stage_fixture(tmp_path: Path) -> tuple[Path, Path, Path]:
     return krr, rk, kov
 
 
-def _run_script_against(krr: Path, monkeypatch) -> dict:
+def _run_script_against(krr: Path, monkeypatch, *, enable_kov: bool = True) -> dict:
     """Run main() with the fixture as the active KRR root; return coverage dict."""
     import extract_court_provision_links as ecpl
 
@@ -342,9 +342,41 @@ def _run_script_against(krr: Path, monkeypatch) -> dict:
 
     monkeypatch.setattr(ecpl, "iter_peep_files", fake_iter)
 
-    ecpl.main()
+    ecpl.main(enable_kov=enable_kov)
     cov_path = krr / "reports" / "kov" / "court_provision_links_coverage.json"
     return json.loads(cov_path.read_text(encoding="utf-8"))
+
+
+def test_no_kov_flag_skips_kov_resolution(tmp_path, monkeypatch) -> None:
+    """--no-kov: KOV act resolution is skipped (triples_emitted_kov == 0) while
+    state-law interpretsLaw/interpretedBy is unchanged."""
+    krr, rk, kov = _stage_fixture(tmp_path)
+    cov = _run_script_against(krr, monkeypatch, enable_kov=False)
+
+    # No KOV links emitted.
+    assert cov["triples_emitted_kov"] == 0
+    assert cov["files_with_output_kov"] == 0
+
+    # State-law resolution unchanged: the court decision still interprets the
+    # TsMS state provision; the Viimsi KOV act IRI is NOT linked.
+    rk_doc = json.loads((rk / "riigikohus_2009_peep.json").read_text(encoding="utf-8"))
+    decision = next(
+        n for n in rk_doc["@graph"] if n["@id"] == "estleg:RK_FIXT_VIIMSI_2009"
+    )
+    iris = [v["@id"] for v in decision.get("estleg:interpretsLaw", [])]
+    assert "estleg:Tsiviilkohtumenetluse_seadustik_Par_208" in iris  # state link kept
+    assert "estleg:Reg_1024484_Map_2026" not in iris                 # KOV link skipped
+
+    # KOV act file carries no interpretedBy.
+    viimsi_doc = json.loads(
+        (kov / "viimsi_vallavolikogu" / "maarus_22_t1024484_peep.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    viimsi_act = next(
+        n for n in viimsi_doc["@graph"] if n["@id"] == "estleg:Reg_1024484_Map_2026"
+    )
+    assert not viimsi_act.get("estleg:interpretedBy")
 
 
 def test_end_to_end_resolves_viimsi_unresolved_keila(tmp_path, monkeypatch) -> None:

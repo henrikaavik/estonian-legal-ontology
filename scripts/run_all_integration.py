@@ -293,7 +293,12 @@ STEPS: list[dict] = [
         ],
         "reads": ["*_peep.json", "regulations/**/*_peep.json",
                   "eelnoud/*_peep.json", "riigikohus/*_peep.json"],
-        "writes": ["similarity_index.json", "similarity_report.json"],
+        # similarity_index.json + report are the provision-level pass; the
+        # KOV act-level pass writes one consolidated kov_similarity_index.json
+        # plus idempotent back-links into the KOV act nodes themselves.
+        "writes": ["similarity_index.json", "similarity_report.json",
+                   "similarity/kov_similarity_index.json",
+                   "regulations/**/*_peep.json"],
     },
 ]
 

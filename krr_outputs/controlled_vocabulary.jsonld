@@ -2085,6 +2085,58 @@
       }
     },
     {
+      "@id": "estleg:Similarity",
+      "@type": [
+        "owl:Class"
+      ],
+      "rdfs:label": "Similarity",
+      "rdfs:comment": "Reified act-to-act similarity link (Layer 3 KOV-aware similarity): carries estleg:similarTarget, estleg:similarityScore, and estleg:similarityModel."
+    },
+    {
+      "@id": "estleg:similarAct",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:label": "Similar Act",
+      "rdfs:comment": "Links an act to a reified estleg:Similarity node describing a similar act (Layer 3 KOV similarity).",
+      "rdfs:range": {
+        "@id": "estleg:Similarity"
+      }
+    },
+    {
+      "@id": "estleg:similarTarget",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:label": "Similar Target",
+      "rdfs:comment": "The target act of a reified estleg:Similarity link.",
+      "rdfs:range": {
+        "@id": "estleg:Act"
+      }
+    },
+    {
+      "@id": "estleg:similarityModel",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": "Similarity Model",
+      "rdfs:comment": "Scoring model behind an estleg:Similarity link (e.g. \"tfidf-cosine\").",
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "estleg:regulationTypeBucket",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": "Regulation Type Bucket",
+      "rdfs:comment": "Regulation-type bucket key (from the normalized title) used to scope KOV act-level similarity comparisons.",
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
       "@id": "estleg:ProvisionVersion",
       "@type": [
         "owl:Class"

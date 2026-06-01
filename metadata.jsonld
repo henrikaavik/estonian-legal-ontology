@@ -274,7 +274,7 @@
       },
       "dcat:byteSize": null,
       "dcterms:description": "All JSON/JSON-LD files across enacted laws, domestic regulations, draft legislation, court decisions, EU legislation, EU court decisions, cross-border harmonisation links, practitioner annotations, controlled vocabularies, reports, and indexes. File count is the validated estleg:fileCount below.",
-      "estleg:fileCount": 23112
+      "estleg:fileCount": 23113
     },
     {
       "@type": "dcat:Distribution",
@@ -337,7 +337,7 @@
     "estleg:courtDecisionCount": 12137,
     "estleg:euLegislationCount": 33242,
     "estleg:euCourtDecisionCount": 22290,
-    "estleg:totalFiles": 23112,
+    "estleg:totalFiles": 23113,
     "estleg:semanticNodeCount": 170000,
     "estleg:integrationLayerCount": 14,
     "estleg:courtDecisionYearRange": "1993-2026",
@@ -566,6 +566,42 @@
       "rdfs:comment": "Act → reified Citation node carrying the resolved target plus original detail. Layer 2b populates.",
       "rdfs:range": {
         "@id": "estleg:Citation"
+      }
+    },
+    {
+      "@id": "estleg:similarAct",
+      "@type": "owl:ObjectProperty",
+      "rdfs:label": "similarAct",
+      "rdfs:comment": "MunicipalRegulation act → reified Similarity node pointing at a peer act. Layer 3 (KOV act-level similarity) populates.",
+      "rdfs:range": {
+        "@id": "estleg:Similarity"
+      }
+    },
+    {
+      "@id": "estleg:similarTarget",
+      "@type": "owl:ObjectProperty",
+      "rdfs:label": "similarTarget",
+      "rdfs:comment": "Peer act IRI on a reified Similarity node. Range: Act (a KOV MunicipalRegulation peer, or a state Act for cross-layer pairs). Layer 3 populates.",
+      "rdfs:range": {
+        "@id": "estleg:Act"
+      }
+    },
+    {
+      "@id": "estleg:similarityModel",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "similarityModel",
+      "rdfs:comment": "Scoring model used for a Similarity node, e.g. 'tfidf-cosine' (Layer 3 v1). Recorded so a later switch (e.g. embeddings) is identifiable from the node alone.",
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "estleg:regulationTypeBucket",
+      "@type": "owl:DatatypeProperty",
+      "rdfs:label": "regulationTypeBucket",
+      "rdfs:comment": "Layer 3 regulation-type bucket label stamped on a MunicipalRegulation act, e.g. 'jaatmehoolduseeskiri' or '_uncategorized'.",
+      "rdfs:range": {
+        "@id": "xsd:string"
       }
     },
     {
