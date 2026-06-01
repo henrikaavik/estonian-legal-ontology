@@ -1140,8 +1140,8 @@ requiring RDFS subclass inference at validation time.
 
 `shacl/estonian_legal_shapes.ttl` enforces required fields and IRI
 patterns on `Municipality`, `Issuer`, `MunicipalRegulation` (Layer-1
-fields), and `KovProvision`. Layer 2 will add a `Citation` shape;
-Layer 3 will add a `Similarity` shape.
+fields), and `KovProvision`. Layer 2 added a `Citation` shape;
+Layer 3 added a `Similarity` shape.
 
 ### Example queries
 

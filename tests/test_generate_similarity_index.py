@@ -805,7 +805,7 @@ def test_reified_similarity_node_schema(tmp_path, monkeypatch):
     node = next(n for n in doc["@graph"] if n.get("@id") == ref_id)
     assert node["@type"] == ["owl:NamedIndividual", "estleg:Similarity"]
     assert node["estleg:similarTarget"] == {"@id": "estleg:Reg_7002_Map_2026"}
-    assert node["estleg:similarityScore"]["@type"] == "xsd:float"
+    assert node["estleg:similarityScore"]["@type"] == "xsd:decimal"
     assert float(node["estleg:similarityScore"]["@value"]) >= similarity.KOV_SIMILARITY_THRESHOLD
     assert node["estleg:similarityModel"] == "tfidf-cosine"
 
@@ -819,7 +819,7 @@ def test_kov_similarity_link_value_builder():
         "@id": "estleg:Similarity_Reg_1_Map_2026_Reg_2_Map_2026",
         "@type": ["owl:NamedIndividual", "estleg:Similarity"],
         "estleg:similarTarget": {"@id": "estleg:Reg_2_Map_2026"},
-        "estleg:similarityScore": {"@value": "0.873", "@type": "xsd:float"},
+        "estleg:similarityScore": {"@value": "0.873", "@type": "xsd:decimal"},
         "estleg:similarityModel": "tfidf-cosine",
     }
 

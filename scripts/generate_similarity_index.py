@@ -549,7 +549,7 @@ def kov_similarity_link_value(source_id: str, target_id: str, score: float) -> d
 
     ``source_id`` / ``target_id`` are the bare id components of the two act
     IRIs (the part after ``estleg:``), e.g. ``"Reg_1014955_Map_2026"``. The
-    score is serialized as an ``xsd:float`` typed literal rounded to 3 dp.
+    score is serialized as an ``xsd:decimal`` typed literal rounded to 3 dp.
     """
     return {
         "@id": f"estleg:Similarity_{source_id}_{target_id}",
@@ -557,7 +557,7 @@ def kov_similarity_link_value(source_id: str, target_id: str, score: float) -> d
         "estleg:similarTarget": {"@id": f"estleg:{target_id}"},
         "estleg:similarityScore": {
             "@value": f"{round(score, 3)}",
-            "@type": "xsd:float",
+            "@type": "xsd:decimal",
         },
         "estleg:similarityModel": KOV_SCORE_MODEL,
     }
