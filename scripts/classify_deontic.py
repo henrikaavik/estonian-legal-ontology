@@ -46,37 +46,65 @@ CONTEXT = {
 
 # ---------- deontic pattern definitions ----------
 
-# Each entry: (compiled regex, weight)
+# A cue's *kind* controls extra disambiguation in ``_cue_hits`` (#276):
+#   * "plain"   — an ordinary affirmative cue. It is skipped when negated
+#                 (preceded by ei/pole/ega within a small token window).
+#   * "modal"   — the polysemous modals ``peab`` / ``tuleb``. ``peab`` is also
+#                 3sg of *pidama* ("keeps", e.g. "peab registrit"); ``tuleb``
+#                 is also "comes". They only count as obligation when a nearby
+#                 infinitive (-ma / -da / -ta, e.g. "peab … esitama",
+#                 "tuleb … tasuda") confirms the deontic reading. They are also
+#                 negation-guarded like "plain" cues.
+#   * "negative"— a cue that *already* encodes negation (``ei tohi`` etc.). The
+#                 negation guard must NOT cancel these, so they are exempt.
+KIND_PLAIN = "plain"
+KIND_MODAL = "modal"
+KIND_NEGATIVE = "negative"
+
+# Negation particles. A "plain"/"modal" cue occurrence is ignored when one of
+# these appears within ``_NEGATION_WINDOW`` tokens immediately before the cue.
+_NEGATION_WORDS = {"ei", "pole", "ega"}
+_NEGATION_WINDOW = 3
+# How many tokens after a "modal" cue to scan for a confirming infinitive.
+_INFINITIVE_WINDOW = 6
+# An Estonian -ma / -da / -ta infinitive: a multi-letter word ending in one of
+# those suffixes (e.g. esitama, tagama, maksma; tasuda, esitada; maksta).
+_INFINITIVE_RE = re.compile(
+    r"[A-Za-zÄÖÜÕŠŽäöüõšž]{2,}(?:ma|da|ta)\b", re.IGNORECASE | re.UNICODE
+)
+_TOKEN_RE = re.compile(r"[A-Za-zÄÖÜÕŠŽäöüõšž]+", re.UNICODE)
+
+# Each entry: (compiled regex, weight, kind)
 # Higher weight = stronger signal for that normative type.
 OBLIGATION_PATTERNS = [
-    (re.compile(r"\bon kohustatud\b", re.IGNORECASE), 3),
-    (re.compile(r"\bpeab\b", re.IGNORECASE), 2),
-    (re.compile(r"\btuleb\b", re.IGNORECASE), 2),
-    (re.compile(r"\bon kohustus\b", re.IGNORECASE), 3),
-    (re.compile(r"\bkohustub\b", re.IGNORECASE), 3),
-    (re.compile(r"\bon sunnitud\b", re.IGNORECASE), 2),
+    (re.compile(r"\bon kohustatud\b", re.IGNORECASE), 3, KIND_PLAIN),
+    (re.compile(r"\bpeab\b", re.IGNORECASE), 2, KIND_MODAL),
+    (re.compile(r"\btuleb\b", re.IGNORECASE), 2, KIND_MODAL),
+    (re.compile(r"\bon kohustus\b", re.IGNORECASE), 3, KIND_PLAIN),
+    (re.compile(r"\bkohustub\b", re.IGNORECASE), 3, KIND_PLAIN),
+    (re.compile(r"\bon sunnitud\b", re.IGNORECASE), 2, KIND_PLAIN),
 ]
 
 RIGHT_PATTERNS = [
-    (re.compile(r"\bon õigus\b", re.IGNORECASE), 3),
-    (re.compile(r"\bõigus on\b", re.IGNORECASE), 3),
-    (re.compile(r"\bon õigustatud\b", re.IGNORECASE), 3),
-    (re.compile(r"\bon lubatud nõuda\b", re.IGNORECASE), 3),
+    (re.compile(r"\bon õigus\b", re.IGNORECASE), 3, KIND_PLAIN),
+    (re.compile(r"\bõigus on\b", re.IGNORECASE), 3, KIND_PLAIN),
+    (re.compile(r"\bon õigustatud\b", re.IGNORECASE), 3, KIND_PLAIN),
+    (re.compile(r"\bon lubatud nõuda\b", re.IGNORECASE), 3, KIND_PLAIN),
 ]
 
 PERMISSION_PATTERNS = [
-    (re.compile(r"\bon lubatud\b", re.IGNORECASE), 3),
-    (re.compile(r"\btohib\b", re.IGNORECASE), 3),
-    (re.compile(r"\bon vaba\b", re.IGNORECASE), 2),
-    (re.compile(r"\bvõib\b", re.IGNORECASE), 1),  # permissive context
+    (re.compile(r"\bon lubatud\b", re.IGNORECASE), 3, KIND_PLAIN),
+    (re.compile(r"\btohib\b", re.IGNORECASE), 3, KIND_PLAIN),
+    (re.compile(r"\bon vaba\b", re.IGNORECASE), 2, KIND_PLAIN),
+    (re.compile(r"\bvõib\b", re.IGNORECASE), 1, KIND_PLAIN),  # permissive context
 ]
 
 PROHIBITION_PATTERNS = [
-    (re.compile(r"\bon keelatud\b", re.IGNORECASE), 4),
-    (re.compile(r"\bei tohi\b", re.IGNORECASE), 4),
-    (re.compile(r"\bei ole lubatud\b", re.IGNORECASE), 3),
-    (re.compile(r"\bpole lubatud\b", re.IGNORECASE), 3),
-    (re.compile(r"\bon karistatav\b", re.IGNORECASE), 3),
+    (re.compile(r"\bon keelatud\b", re.IGNORECASE), 4, KIND_PLAIN),
+    (re.compile(r"\bei tohi\b", re.IGNORECASE), 4, KIND_NEGATIVE),
+    (re.compile(r"\bei ole lubatud\b", re.IGNORECASE), 3, KIND_NEGATIVE),
+    (re.compile(r"\bpole lubatud\b", re.IGNORECASE), 3, KIND_NEGATIVE),
+    (re.compile(r"\bon karistatav\b", re.IGNORECASE), 3, KIND_PLAIN),
 ]
 
 NORM_TYPES = {
@@ -130,11 +158,56 @@ def load_json(filepath: Path) -> dict | None:
         return None
 
 
-def score_text(text: str, patterns: list[tuple[re.Pattern, int]]) -> int:
-    """Sum weights of all matching patterns in *text*."""
+def _preceding_tokens(text: str, start: int, window: int) -> list[str]:
+    """Lower-cased word tokens in the ``window`` slots before offset ``start``."""
+    return [m.group(0).lower() for m in _TOKEN_RE.finditer(text[:start])][-window:]
+
+
+def _is_negated(text: str, start: int) -> bool:
+    """True when a negation particle sits just before the cue at ``start``."""
+    return any(
+        tok in _NEGATION_WORDS
+        for tok in _preceding_tokens(text, start, _NEGATION_WINDOW)
+    )
+
+
+def _has_following_infinitive(text: str, end: int) -> bool:
+    """True when a -ma/-da/-ta infinitive appears within the forward window."""
+    tail = text[end:]
+    cutoff = 0
+    for _ in range(_INFINITIVE_WINDOW):
+        nxt = _TOKEN_RE.search(tail, cutoff)
+        if nxt is None:
+            break
+        cutoff = nxt.end()
+    return _INFINITIVE_RE.search(tail[:cutoff]) is not None
+
+
+def _cue_hits(text: str, pat: re.Pattern, kind: str) -> bool:
+    """Whether ``pat`` has at least one *valid* occurrence in ``text``.
+
+    "negative" cues (which already encode negation, e.g. ``ei tohi``) are taken
+    verbatim. "plain"/"modal" cues skip any occurrence that is negated by a
+    preceding ei/pole/ega; "modal" cues (``peab``/``tuleb``) additionally
+    require a nearby infinitive so the polysemous "keeps"/"comes" readings do
+    not score as obligations.
+    """
+    if kind == KIND_NEGATIVE:
+        return pat.search(text) is not None
+    for m in pat.finditer(text):
+        if _is_negated(text, m.start()):
+            continue
+        if kind == KIND_MODAL and not _has_following_infinitive(text, m.end()):
+            continue
+        return True
+    return False
+
+
+def score_text(text: str, patterns: list[tuple[re.Pattern, int, str]]) -> int:
+    """Sum weights of all patterns with a valid match in *text*."""
     total = 0
-    for pat, weight in patterns:
-        if pat.search(text):
+    for pat, weight, kind in patterns:
+        if _cue_hits(text, pat, kind):
             total += weight
     return total
 

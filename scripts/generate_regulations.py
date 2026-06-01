@@ -58,14 +58,22 @@ GENERATION_MODES = ("missing-only", "refresh", "force")
 def classify_issuer(issuer: str | None, is_kov: bool) -> list[str]:
     """Return the list of regulation classes to attach to an act node.
 
+    State-level regulations carry ``estleg:NationalRegulation`` (plus a more
+    specific issuer subclass). Municipal regulations are NOT national
+    legislation — a KOV määrus is enacted by a local council, not by a
+    state organ — so a KOV act gets ``estleg:MunicipalRegulation`` only and
+    must never also be typed ``estleg:NationalRegulation`` (issue #267: the
+    two are contradictory at the instance level — a municipal reg is not a
+    national reg).
+
     Examples:
       Vabariigi Valitsus            -> [NationalRegulation, GovernmentRegulation]
       Sotsiaalminister              -> [NationalRegulation, MinisterialRegulation]
       Eesti Pank                    -> [NationalRegulation]
-      <KOV name>, is_kov=True       -> [NationalRegulation, MunicipalRegulation]
+      <KOV name>, is_kov=True       -> [MunicipalRegulation]
     """
     if is_kov:
-        return ["estleg:NationalRegulation", "estleg:MunicipalRegulation"]
+        return ["estleg:MunicipalRegulation"]
 
     classes = ["estleg:NationalRegulation"]
     if not issuer:

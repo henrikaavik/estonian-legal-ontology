@@ -870,6 +870,193 @@ def test_cli_no_pdf_body_flag_parsing():
     assert ga._parse_args([]).use_pdf_body is True
 
 
+# ---------------------------------------------------------------------------
+# #282 — pdfminer entirely unavailable must not silently produce a degraded
+# title-only sidecar with exit 0.
+# ---------------------------------------------------------------------------
+
+
+def _block_pdfminer_import(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Simulate pdfminer.six being uninstalled by failing its import.
+
+    This drives the real ``extract_pdf_text_layer`` (the default-bound extractor used by
+    ``attach_pdf_text_layers``) down its ImportError branch, so the whole live
+    ``run`` -> ``attach_pdf_text_layers`` -> ``extract_pdf_text_layer`` path is exercised
+    exactly as it would be in an env without the ``pdf`` extra.
+    """
+    import builtins
+
+    real_import = builtins.__import__
+
+    def _fake_import(name, *args, **kwargs):  # noqa: ANN001, ANN002, ANN003
+        if name == "pdfminer" or name.startswith("pdfminer."):
+            raise ImportError("simulated: pdfminer.six not installed")
+        return real_import(name, *args, **kwargs)
+
+    monkeypatch.setattr(builtins, "__import__", _fake_import)
+
+
+def _patch_scrape_with_pdfminer_unavailable(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Wire a scrape run so PDF fetch succeeds but pdfminer is entirely unavailable.
+
+    ``run`` calls ``attach_pdf_text_layers(opinions, ...)`` with no ``fetcher``/``extractor``,
+    so those def-time-bound defaults can't be reached by patching the module attrs. We patch
+    ``attach_pdf_text_layers`` with a thin wrapper that delegates to the REAL implementation
+    (so its stats/opinion-preservation logic is genuinely exercised) while injecting a stub
+    fetcher (fake PDF bytes) and the REAL extractor — which, with pdfminer's import blocked,
+    returns the "unavailable" error for every PDF. The net effect: every PDF opinion lands in
+    ``extraction_unavailable``, the exact "pdfminer entirely absent" condition #282 guards.
+    """
+    pages = {ga.SEISUKOHAD_LISTING_URL: _LISTING_HTML}
+    monkeypatch.setattr(ga, "_fetch_url", lambda url, **k: pages.get(url))
+    _block_pdfminer_import(monkeypatch)
+    real_attach = ga.attach_pdf_text_layers
+
+    def _attach_with_fake_fetch(opinions, **_kwargs):  # noqa: ANN001, ANN003
+        return real_attach(
+            opinions,
+            fetcher=lambda url, **k: b"%PDF-1.7 fake",
+            extractor=ga.extract_pdf_text_layer,
+            cache_dir=None,
+            sleep=0,
+        )
+
+    monkeypatch.setattr(ga, "attach_pdf_text_layers", _attach_with_fake_fetch)
+
+
+def test_extract_pdf_text_layer_reports_unavailable_when_pdfminer_missing(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    # Unit-level: the extractor returns (None, error) — never raises — when pdfminer is absent.
+    _block_pdfminer_import(monkeypatch)
+    text, error = ga.extract_pdf_text_layer(b"%PDF-1.7 fake")
+    assert text is None
+    assert error and "pdfminer" in error
+
+
+def test_attach_pdf_text_layers_counts_every_pdf_as_unavailable_when_pdfminer_missing():
+    # The stats expose the "entirely unavailable" condition run() keys off:
+    # extraction_unavailable == pdf_urls (and pdf_urls > 0).
+    op = ga.Opinion("x", "Üldine seisukoht", "https://x/x.pdf", "2024-02-04", (), "")
+
+    def _fetcher(url, **_kwargs):  # noqa: ANN001
+        return b"%PDF-1.7 fake"
+
+    def _unavailable_extractor(_pdf_bytes):  # noqa: ANN001
+        return None, 'pdfminer.six not installed; run pip install -e ".[pdf]"'
+
+    enriched, stats = ga.attach_pdf_text_layers(
+        [op], fetcher=_fetcher, extractor=_unavailable_extractor, cache_dir=None, sleep=0
+    )
+    assert stats["pdf_urls"] == 1
+    assert stats["extraction_unavailable"] == 1
+    assert stats["usable_text_layers"] == 0
+    # The opinion is preserved untouched (empty summary -> title-only body).
+    assert enriched[0].summary == ""
+
+
+def test_run_scrape_refuses_when_pdfminer_entirely_unavailable(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    # #282: scrape + PDF body, pdfminer entirely absent (every PDF body fails to extract) ->
+    # run must exit NON-ZERO, NOT write/overwrite the sidecar, and record the gap as a
+    # skip reason in the coverage report. The default-bound real extractor is exercised.
+    krr = tmp_path / "krr_outputs"
+    _fixture_corpus(krr)
+    _patch_scrape_with_pdfminer_unavailable(monkeypatch)
+
+    out_path = krr / "annotations" / "oiguskantsler_seisukohad.jsonld"
+    cov_path = krr / "reports" / "kov" / "extract_annotations_coverage.json"
+    rc = ga.run(
+        scrape=True, limit=5, use_pdf_body=True, allow_partial=False, krr_dir=krr,
+        out_path=out_path, coverage_path=cov_path, cache_dir=None, sleep=0,
+    )
+    assert rc != 0
+    # The sidecar was NOT written (a degraded title-only corpus is never committed silently).
+    assert not out_path.exists()
+    # The coverage report records the extraction-unavailability as a skip reason + failure.
+    cov = json.loads(cov_path.read_text(encoding="utf-8"))
+    assert cov["skip_reasons"].get("pdf_text_extraction_unavailable") == 1
+    assert cov["error_count"] >= 1
+    assert any("pdf_text_extraction_unavailable" in s for s in cov["failure_samples"])
+
+
+def test_run_scrape_refusal_preserves_existing_sidecar(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    # #282: a pre-existing (good) sidecar must be left byte-for-byte untouched when the run
+    # refuses — refusing must never clobber the committed corpus.
+    krr = tmp_path / "krr_outputs"
+    _fixture_corpus(krr)
+    _patch_scrape_with_pdfminer_unavailable(monkeypatch)
+
+    out_path = krr / "annotations" / "oiguskantsler_seisukohad.jsonld"
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    sentinel = '{"@graph": ["pre-existing good sidecar"]}\n'
+    out_path.write_text(sentinel, encoding="utf-8")
+    cov_path = krr / "reports" / "kov" / "extract_annotations_coverage.json"
+
+    rc = ga.run(
+        scrape=True, limit=5, use_pdf_body=True, allow_partial=False, krr_dir=krr,
+        out_path=out_path, coverage_path=cov_path, cache_dir=None, sleep=0,
+    )
+    assert rc != 0
+    assert out_path.read_text(encoding="utf-8") == sentinel
+
+
+def test_run_scrape_allow_partial_proceeds_when_pdfminer_unavailable(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    # #282: with --allow-partial the same pdfminer-absent run PROCEEDS (exit 0), writing the
+    # title-resolved annotation (body lost), and STILL records the unavailability skip reason.
+    krr = tmp_path / "krr_outputs"
+    _fixture_corpus(krr)
+    _patch_scrape_with_pdfminer_unavailable(monkeypatch)
+
+    out_path = krr / "annotations" / "oiguskantsler_seisukohad.jsonld"
+    cov_path = krr / "reports" / "kov" / "extract_annotations_coverage.json"
+    rc = ga.run(
+        scrape=True, limit=5, use_pdf_body=True, allow_partial=True, krr_dir=krr,
+        out_path=out_path, coverage_path=cov_path, cache_dir=None, sleep=0,
+    )
+    assert rc == 0
+    # The title-resolved annotation (VOS from the § 40 opinion title) is still produced.
+    doc = json.loads(out_path.read_text(encoding="utf-8"))
+    ann_nodes = [n for n in doc["@graph"] if "estleg:Annotation" in n.get("@type", [])]
+    assert len(ann_nodes) == 1
+    assert ann_nodes[0]["estleg:annotates"] == {"@id": "estleg:VOS_Map_2026"}
+    # The degraded-body extraction is still recorded for the operator.
+    cov = json.loads(cov_path.read_text(encoding="utf-8"))
+    assert cov["skip_reasons"].get("pdf_text_extraction_unavailable") == 1
+
+
+def test_run_scrape_no_pdf_body_does_not_trigger_unavailable_refusal(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    # The refusal is gated on use_pdf_body: --no-pdf-body never invokes extraction, so a
+    # missing pdfminer cannot block a title-only scrape (and no skip reason is recorded).
+    krr = tmp_path / "krr_outputs"
+    _fixture_corpus(krr)
+    pages = {ga.SEISUKOHAD_LISTING_URL: _LISTING_HTML}
+    monkeypatch.setattr(ga, "_fetch_url", lambda url, **k: pages.get(url))
+    _block_pdfminer_import(monkeypatch)
+
+    out_path = krr / "annotations" / "oiguskantsler_seisukohad.jsonld"
+    cov_path = krr / "reports" / "kov" / "extract_annotations_coverage.json"
+    rc = ga.run(
+        scrape=True, limit=5, use_pdf_body=False, allow_partial=False, krr_dir=krr,
+        out_path=out_path, coverage_path=cov_path, cache_dir=None, sleep=0,
+    )
+    assert rc == 0
+    cov = json.loads(cov_path.read_text(encoding="utf-8"))
+    assert "pdf_text_extraction_unavailable" not in cov["skip_reasons"]
+
+
+def test_cli_allow_partial_flag_parsing():
+    assert ga._parse_args([]).allow_partial is False
+    assert ga._parse_args(["--allow-partial"]).allow_partial is True
+
+
 def test_pdf_text_layer_probe_reports_ocr_recommendation():
     opinions = [
         ga.Opinion(
@@ -1039,3 +1226,51 @@ def test_pdf_text_layer_probe_skips_non_pdf_urls():
         "https://www.oiguskantsler.ee/one.pdf",
         "https://www.oiguskantsler.ee/two.pdf?download=1",
     ]
+
+
+# ---------------------------------------------------------------------------
+# #295 — byte-stable tracked coverage report: no wall-clock run_timestamp.
+# ---------------------------------------------------------------------------
+
+
+def _run_seed_for_coverage(krr_root: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
+    """Run seed-mode annotation generation into a fresh krr dir; return the coverage path."""
+    krr = krr_root / "krr_outputs"
+    _fixture_corpus(krr)
+    seed = _seed_file(
+        krr_root,
+        [
+            {"id": "vos-40", "title": "Võlaõigusseaduse § 40 tõlgendamine", "date": "2024-03-15",
+             "url": "https://www.oiguskantsler.ee/x/vos-40", "laws": ["Võlaõigusseadus"],
+             "summary": "Tahteavalduse tõlgendamine."},
+        ],
+    )
+    # Pin the git-SHA pipeline_version and the inherently runtime-variable metrics
+    # (wall_time/items_per_second/peak_memory) so the only thing that *could* still churn
+    # the tracked report byte-for-byte is the run_timestamp — which is what #295 pins.
+    monkeypatch.setattr(ga, "resolve_pipeline_version", lambda: "testsha")
+    monkeypatch.setattr(ga, "measure_runtime", lambda *_a, **_k: (0.0, 0.0, 0.0))
+    out_path = krr / "annotations" / "oiguskantsler_seisukohad.jsonld"
+    cov_path = krr / "reports" / "kov" / "extract_annotations_coverage.json"
+    rc = ga.run(scrape=False, limit=10, seed_path=seed, krr_dir=krr,
+                out_path=out_path, coverage_path=cov_path, cache_dir=None)
+    assert rc == 0
+    return cov_path
+
+
+def test_coverage_run_timestamp_is_pinned(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
+    # #295: the tracked coverage report must carry the pinned sentinel, not a wall clock.
+    cov_path = _run_seed_for_coverage(tmp_path, monkeypatch)
+    cov = json.loads(cov_path.read_text(encoding="utf-8"))
+    assert cov["run_timestamp"] == ga.PINNED_RUN_TIMESTAMP
+    assert ga.PINNED_RUN_TIMESTAMP == "1970-01-01T00:00:00+00:00"
+
+
+def test_coverage_report_is_byte_stable_across_reruns(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    # #295: two runs over identical inputs must produce byte-identical coverage reports
+    # (no timestamp-only churn re-diffing the tracked file on every run).
+    first = _run_seed_for_coverage(tmp_path / "a", monkeypatch).read_bytes()
+    second = _run_seed_for_coverage(tmp_path / "b", monkeypatch).read_bytes()
+    assert first == second

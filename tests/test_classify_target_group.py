@@ -46,6 +46,78 @@ def test_classify_node_uses_deontic_text_when_duty_holder_missing():
     assert groups == ["citizen", "business"]
 
 
+# ---------------------------------------------------------------------------
+# Regression for #277:
+#   (a) cues that used to live in BOTH citizen and business no longer force
+#       a [citizen, business] result;
+#   (b) "juriidiline isik" (a legal entity) is business, not citizen;
+#   (c) when a dutyHolder classifies, body cues are not unioned in.
+# ---------------------------------------------------------------------------
+
+def test_shared_cue_kasutaja_is_single_valued():
+    from classify_target_group import classify_text
+
+    # ``kasutaja`` ("user") used to be in both lists → always [citizen, business].
+    assert classify_text("Kasutaja peab maksma teenuse eest.") == ["citizen"]
+
+
+def test_shared_cue_volgnik_is_single_valued():
+    from classify_target_group import classify_text
+
+    assert classify_text("Võlgnik peab tasuma võla.") == ["citizen"]
+
+
+def test_shared_cue_maksumaksja_is_business_only():
+    from classify_target_group import classify_text
+
+    # ``maksumaksja`` / ``maksukohustuslane`` resolve to business only now.
+    assert classify_text("Maksumaksja peab esitama deklaratsiooni.") == ["business"]
+    assert classify_text("Maksukohustuslane peab tasuma maksu.") == ["business"]
+
+
+def test_juriidiline_isik_is_business_not_citizen():
+    from classify_target_group import classify_text
+
+    assert classify_text("Juriidiline isik peab esitama aruande.") == ["business"]
+    assert classify_text("Juriidilise isiku kohustus on esitada andmed.") == [
+        "business"
+    ]
+
+
+def test_fuusiline_and_bare_isik_remain_citizen():
+    from classify_target_group import classify_text
+
+    assert classify_text("Füüsiline isik peab esitama taotluse.") == ["citizen"]
+    assert classify_text("Isik peab esitama taotluse.") == ["citizen"]
+
+
+def test_duty_holder_group_preferred_over_body_cues():
+    from classify_target_group import classify_node
+
+    # The dutyHolder (Tööandja = business) classifies, so the body mention of
+    # ``töötaja`` (citizen) must NOT be unioned in — result is business only.
+    node = {
+        "estleg:dutyHolder": "Tööandja",
+        "estleg:summary": "Töötaja peab täitma tööandja korraldusi.",
+    }
+    groups, used_duty_holder = classify_node(node)
+    assert used_duty_holder is True
+    assert groups == ["business"]
+
+
+def test_unmapped_duty_holder_falls_back_to_body_cues():
+    from classify_target_group import classify_node
+
+    # When the dutyHolder literal does not classify, the body cues are used.
+    node = {
+        "estleg:dutyHolder": "Tundmatu roll",
+        "estleg:summary": "Tarbija peab esitama kaebuse.",
+    }
+    groups, used_duty_holder = classify_node(node)
+    assert used_duty_holder is True
+    assert groups == ["citizen"]
+
+
 def test_classify_files_writes_target_groups_and_report(tmp_path):
     from classify_target_group import classify_files
 

@@ -8,6 +8,7 @@ from __future__ import annotations
 import csv
 import json
 import re
+import sys
 from pathlib import Path
 from typing import Literal, TypedDict
 
@@ -305,6 +306,30 @@ def _slug_to_display_name(slug: str) -> str:
     return " ".join(part.capitalize() for part in slug.split("_"))
 
 
+def _historical_municipality_name(
+    parts: IssuerSlugParts, mapping_source: str,
+) -> str:
+    """Historical (pre-merger) KOV unit name for an issuer, or "".
+
+    Finding #284: ``historicalMunicipalityName`` is meaningful ONLY for
+    issuers that have a real predecessor — i.e. bodies of a municipality
+    abolished by territorial reform (``mappingSource != "auto-match"``).
+    For the ~158 ``auto-match`` issuers the slug root names a
+    *still-current* municipality (Alutaguse vald, Tallinn, ...), so
+    emitting it as a "historical" name falsely asserts a present-day unit
+    is a former one. We return "" for those; the JSON-LD builder
+    (`enrich_kov_layer1.build_issuer_doc`) already omits the property when
+    the value is empty, so an auto-match issuer node simply carries no
+    ``estleg:historicalMunicipalityName`` — which is type-accurate.
+
+    The derivation for predecessor issuers is unchanged: title-case the
+    slug root (a display-only literal — see the IssuerEntry note above).
+    """
+    if mapping_source == "auto-match":
+        return ""
+    return parts["root"].replace("_", " ").title()
+
+
 _ALLOWED_MAPPING_SOURCES = {
     "auto-match",
     "haldusreform-2017",
@@ -329,12 +354,27 @@ def build_issuer_registry(
 ) -> dict[str, IssuerEntry]:
     """Build the combined issuer registry.
 
-    Auto-match wins where (root, municipalityType) is unique. Curated
-    CSV covers the rest. Unmapped issuers raise ValueError listing every
-    failure (sorted alphabetically — Finding #12 — so the message is
-    reproducible across runs). Curated rows are also validated against
-    the municipalities registry (EHAK code must exist) and the allowed
-    mapping_source set, so typos surface here rather than at SHACL time.
+    Curated CSV rows win wherever they exist; auto-match
+    ((root, municipalityType) unique) covers everything else. Unmapped
+    issuers raise ValueError listing every failure (sorted
+    alphabetically — Finding #12 — so the message is reproducible across
+    runs). Curated rows are also validated against the municipalities
+    registry (EHAK code must exist) and the allowed mapping_source set,
+    so typos surface here rather than at SHACL time.
+
+    Curated-vs-auto precedence (Finding #283): a curated row is an
+    explicit human correction, so it MUST take precedence over the
+    auto-match heuristic — the curated CSV is exactly the documented
+    `overrides` channel (`auto_match_municipality`'s docstring). The
+    previous implementation consulted auto-match first and only fell to
+    the curated row on `None`, which meant a curator could never correct
+    a slug that *also* happened to auto-match: the correction was
+    silently discarded. We now feed the curated map straight into
+    `auto_match_municipality(..., overrides=...)` so curated rows win
+    unconditionally. When a curated row *diverges* from what auto-match
+    would have produced we emit a `WARN:` line to stderr so the shadowed
+    auto-match value is visible in the build log rather than vanishing
+    without a trace.
 
     Input ordering: `slugs` may be in any order — we sort the iteration
     only via the explicit `sorted(unmapped)` in the error path so the
@@ -342,28 +382,51 @@ def build_issuer_registry(
     input order; callers that care about output ordering should iterate
     `sorted(out)` themselves (`build_kov_registry.py` does exactly that).
     """
+    # Curated rows feed the `overrides` channel so they win over the
+    # auto-match heuristic (Finding #283). Validate every curated row up
+    # front — `auto_match_municipality` raises on an override pointing at
+    # an unknown EHAK code, but we still want the allowed-source check and
+    # a curated-specific error message for the unknown-code case.
+    overrides: dict[str, str] = {}
+    for slug, row in curated.items():
+        _validate_mapping_source(row["mappingSource"])
+        code = row["currentMunicipalityCode"]
+        if code not in municipalities:
+            raise ValueError(
+                f"curated row for {slug!r} references unknown EHAK "
+                f"code {code!r}; not present in municipalities.json"
+            )
+        overrides[slug] = code
+
     out: dict[str, IssuerEntry] = {}
     unmapped: list[str] = []
     for slug in slugs:
         parts = parse_issuer_slug(slug)
-        ehak = auto_match_municipality(parts, municipalities)
-        if ehak is not None:
-            mapping_source = "auto-match"
-            mapping_evidence = ""
-        elif slug in curated:
+        if slug in curated:
+            # Curated row wins. Surface the shadowed auto-match value (if
+            # any) so a divergence between the curator's correction and
+            # the heuristic is auditable rather than silent.
             row = curated[slug]
             ehak = row["currentMunicipalityCode"]
             mapping_source = row["mappingSource"]
             mapping_evidence = row["mappingEvidence"]
-            _validate_mapping_source(mapping_source)
-            if ehak not in municipalities:
-                raise ValueError(
-                    f"curated row for {slug!r} references unknown EHAK "
-                    f"code {ehak!r}; not present in municipalities.json"
+            auto = auto_match_municipality(parts, municipalities)
+            if auto is not None and auto != ehak:
+                print(
+                    f"WARN: curated row for {slug!r} maps to EHAK {ehak!r} "
+                    f"(source={mapping_source!r}), overriding the auto-match "
+                    f"value EHAK {auto!r}.",
+                    file=sys.stderr,
                 )
         else:
-            unmapped.append(slug)
-            continue
+            ehak = auto_match_municipality(
+                parts, municipalities, overrides=overrides,
+            )
+            if ehak is None:
+                unmapped.append(slug)
+                continue
+            mapping_source = "auto-match"
+            mapping_evidence = ""
 
         out[slug] = {
             "slug": slug,
@@ -372,7 +435,9 @@ def build_issuer_registry(
             "currentMunicipalityCode": ehak,
             "mappingSource": mapping_source,
             "mappingEvidence": mapping_evidence,
-            "historicalMunicipalityName": parts["root"].replace("_", " ").title(),
+            "historicalMunicipalityName": _historical_municipality_name(
+                parts, mapping_source,
+            ),
         }
 
     if unmapped:

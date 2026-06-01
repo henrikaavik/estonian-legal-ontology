@@ -159,6 +159,15 @@ def classify_draft_type(title: str) -> tuple[str, str]:
         return "Other", "Muu eelnõu"
 
 
+# Change-verb stems that mark a candidate as (part of) the *bill's own*
+# title rather than the existing law it targets. A draft titled
+# "X seaduse muutmise seadus" must yield only "X seaduse" — the trailing
+# "...muutmise seadus" matches the bare ``...seadus`` pattern and would
+# otherwise be returned as a phantom affected law that resolves to the
+# very same IRI (issue #266: duplicate ``amendsLaw`` IRIs downstream).
+_CHANGE_VERB_STEMS = ("muutmi", "täiendami", "kehtetuks", "kehtestami")
+
+
 def detect_affected_laws(title: str) -> list[str]:
     """
     Try to detect which existing laws this draft would amend.
@@ -176,9 +185,16 @@ def detect_affected_laws(title: str) -> list[str]:
         matches = re.findall(pattern, title, re.IGNORECASE)
         for m in matches:
             cleaned = m.strip()
-            # Skip the draft itself references
-            if "eelnõu" not in cleaned.lower() and len(cleaned) > 5:
-                affected.append(cleaned)
+            cleaned_lower = cleaned.lower()
+            # Skip the draft itself references.
+            if "eelnõu" in cleaned_lower or len(cleaned) <= 5:
+                continue
+            # Skip candidates that still carry a change-verb stem: those
+            # are the bill's own title (e.g. "X seaduse muutmise seadus"),
+            # not the existing law being amended (issue #266).
+            if any(stem in cleaned_lower for stem in _CHANGE_VERB_STEMS):
+                continue
+            affected.append(cleaned)
     return list(dict.fromkeys(affected))  # deduplicate preserving order
 
 
@@ -573,8 +589,12 @@ def main():
 
     # Generate index
     print("\n--- Generating drafts index ---")
+    # NOTE (issue #295): no wall-clock ``generated`` field. EELNOUD_INDEX.json
+    # is git-tracked; embedding ``datetime.now()`` made it re-diff on every run
+    # regardless of data changes (timestamp-only churn, banned by AGENTS.md).
+    # Every value below is fully determined by the fetched corpus, so the index
+    # is byte-stable across reruns of the same inputs.
     index = {
-        "generated": datetime.now().strftime("%Y-%m-%d"),
         "total_drafts": len(all_drafts),
         "source": "https://eelnoud.valitsus.ee",
         "phases": {},

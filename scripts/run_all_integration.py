@@ -103,6 +103,9 @@ MANIFEST_DIR = KRR_DIR / "reports" / "integration"
 #                 is filled in lazily via ``step_command()`` so the literal
 #                 stays a pure data structure)
 #   script      — the script filename under ``scripts/``
+#   args        — optional extra argv appended after the script path (e.g.
+#                 ``["--evaluation-date", BUILD_EVALUATION_DATE]``); ignored
+#                 when an explicit ``command`` is supplied
 #   depends_on  — list of step names that must finish first
 #   writes      — glob patterns (relative to ``krr_outputs/``) the step
 #                 produces / mutates
@@ -132,6 +135,27 @@ COMMITTED_INPUTS: tuple[str, ...] = (
     "curia/CURIA_INDEX.json",
     "eurlex/*_peep.json",
     "eurlex/EURLEX_INDEX.json",
+)
+
+# ---------------------------------------------------------------------------
+# Declared build evaluation date (issue #262).
+#
+# ``extract_temporal_data.py`` derives ``estleg:temporalStatus`` (and gates
+# the repealDate / entryIntoForce writes) relative to an evaluation date.
+# Left unset it falls back to ``date.today()``, which makes the committed
+# ``*_peep.json`` corpus nondeterministic: any law whose entry/repeal date
+# straddles the run date flips status between runs with no underlying data
+# change, so two CI runs on different days diff. AGENTS.md forbids exactly
+# this kind of timestamp churn / nondeterministic output.
+#
+# The orchestrator therefore pins a fixed, declared evaluation date and
+# passes it explicitly (``--evaluation-date``) to the temporal step. The
+# value can be overridden per-run via the ``ESTLEG_BUILD_EVALUATION_DATE``
+# environment variable (YYYY-MM-DD) when a release is cut for a specific
+# effective date; the default below is the committed-corpus baseline and
+# MUST stay in sync with the date the corpus was last regenerated.
+BUILD_EVALUATION_DATE: str = os.environ.get(
+    "ESTLEG_BUILD_EVALUATION_DATE", "2026-06-01"
 )
 
 STEPS: list[dict] = [
@@ -200,6 +224,10 @@ STEPS: list[dict] = [
         "name": "extract_temporal_data.py",
         "description": "Temporal validity data",
         "script": "extract_temporal_data.py",
+        # Pin a declared evaluation date so temporalStatus is deterministic
+        # across runs/dates (issue #262); without this the script falls back
+        # to date.today() and the committed corpus churns at date boundaries.
+        "args": ["--evaluation-date", BUILD_EVALUATION_DATE],
         "depends_on": [],
         "reads": ["*_peep.json", "regulations/**/*_peep.json"],
         "writes": ["*_peep.json", "regulations/**/*_peep.json",
@@ -300,6 +328,47 @@ STEPS: list[dict] = [
                    "similarity/kov_similarity_index.json",
                    "regulations/**/*_peep.json"],
     },
+
+    # -- Phase 5: Combined-ontology rebuild (issue #252) ------------------
+    # Every enrichment step above rewrites the source ``*_peep.json`` files.
+    # ``combined_ontology.jsonld`` (the most-consumed release artifact and the
+    # one the Seadusloome SHACL sync gate parses) and ``INDEX.json`` are
+    # *derived* from those peeps by ``scripts/fix_all_issues.py``
+    # (``generate_combined_jsonld`` / ``generate_index``) — nothing else
+    # builds them. This step MUST run after all enrichment and BEFORE the
+    # release validators, otherwise the artifact reflects the pre-enrichment
+    # corpus and ``validate_seadusloome_sync`` validates stale data while
+    # reporting PASS. ``depends_on`` lists every enrichment step so topo-sort
+    # always places this node strictly last; ``main()`` runs the full DAG
+    # before invoking the release validators, so the rebuild is guaranteed to
+    # precede them and a failure here blocks the validators automatically.
+    {
+        "name": "fix_all_issues.py",
+        "description": "Rebuild combined_ontology.jsonld + INDEX.json",
+        "script": "fix_all_issues.py",
+        "depends_on": [
+            "extract_cross_references.py",
+            "generate_inverse_references.py",
+            "generate_transposition_mapping.py",
+            "generate_harmonisation_links.py",
+            "extract_court_provision_links.py",
+            "classify_eurovoc.py",
+            "extract_temporal_data.py",
+            "generate_amendment_history.py",
+            "extract_legal_concepts.py",
+            "classify_deontic.py",
+            "classify_target_group.py",
+            "extract_institutional_competence.py",
+            "extract_sanctions.py",
+            "extract_draft_impact.py",
+            "generate_similarity_index.py",
+        ],
+        # Reads every root *_peep.json + the allowlisted JSON-LD inputs (the
+        # canonical combined inputs) and the existing INDEX.json it refreshes.
+        "reads": ["*_peep.json", "controlled_vocabulary.jsonld",
+                  "*_owl.jsonld", "INDEX.json"],
+        "writes": ["combined_ontology.jsonld", "INDEX.json"],
+    },
 ]
 
 # Back-compat alias: external callers (and the historical tests) imported
@@ -364,11 +433,20 @@ class DAGError(ValueError):
 
 
 def step_command(step: dict) -> list[str]:
-    """Resolve the argv list for a step (filled lazily so STEPS stays data)."""
+    """Resolve the argv list for a step (filled lazily so STEPS stays data).
+
+    An explicit ``command`` wins outright. Otherwise the command is
+    ``[sys.executable, <script path>, *args]`` where ``args`` is the
+    step's optional declarative extra argv (e.g. ``--evaluation-date``).
+    """
     cmd = step.get("command")
     if cmd:
         return list(cmd)
-    return [sys.executable, str(SCRIPTS_DIR / step["script"])]
+    return [
+        sys.executable,
+        str(SCRIPTS_DIR / step["script"]),
+        *step.get("args", []),
+    ]
 
 
 def validate_dag(

@@ -73,6 +73,65 @@ def test_voib_is_permission_not_right() -> None:
     assert classify_provision("Asutus võib taotluse läbi vaadata.") == "estleg:NormType_Permission"
 
 
+# ---------------------------------------------------------------------------
+# Regression for #276: negation handling + peab/tuleb polysemy.
+#   * ``peab`` is also 3sg of *pidama* ("keeps"): "peab registrit" is NOT an
+#     obligation.
+#   * ``tuleb`` is also "comes".
+#   * Both only count as obligation with a nearby -ma/-da/-ta infinitive.
+#   * A cue negated by ei/pole/ega within a small window is skipped.
+# ---------------------------------------------------------------------------
+
+def test_peab_keeps_register_is_not_obligation() -> None:
+    # "peab raamatupidamise registrit" = "keeps a register" — no infinitive
+    # follows ``peab``, so it must NOT be classified as an obligation.
+    assert (
+        classify_provision("Ettevõtja peab raamatupidamise registrit.") is None
+    )
+
+
+def test_peab_with_infinitive_is_obligation() -> None:
+    # "peab esitama" — ``peab`` + -ma infinitive — IS an obligation.
+    assert (
+        classify_provision("Isik peab esitama aruande.")
+        == "estleg:NormType_Obligation"
+    )
+
+
+def test_tuleb_with_infinitive_is_obligation() -> None:
+    # "tuleb tasuda" — ``tuleb`` + -da infinitive — IS an obligation.
+    assert (
+        classify_provision("Maks tuleb tasuda tähtajaks.")
+        == "estleg:NormType_Obligation"
+    )
+
+
+def test_tuleb_comes_without_infinitive_is_not_obligation() -> None:
+    # "tuleb" meaning "comes", with no infinitive nearby — not an obligation.
+    assert classify_provision("Otsus tuleb järgmisel nädalal.") is None
+
+
+def test_negated_modal_is_not_obligation() -> None:
+    # "ei pea esitama": even though an infinitive follows, the cue is negated
+    # (and ``pea`` is not even the obligation literal) — not an obligation.
+    assert classify_provision("Isik ei pea esitama aruannet.") is None
+
+
+def test_negation_window_skips_negated_cue() -> None:
+    # A "plain" cue negated within the small preceding window is skipped, so a
+    # provision that ONLY carries a negated obligation cue is unclassified.
+    assert classify_provision("Isik ei ole kohustatud seda tegema.") is None
+
+
+def test_prohibition_ei_tohi_still_classifies_under_negation_guard() -> None:
+    # Prohibition cues that *encode* negation (e.g. ``ei tohi``) are exempt
+    # from the negation guard and must still classify as prohibition.
+    assert (
+        classify_provision("Sellist tegevust ei tohi teha.")
+        == "estleg:NormType_Prohibition"
+    )
+
+
 def test_duty_holder_accepts_multiple_capitalized_words() -> None:
     assert extract_duty_holder("Vastutav Töötleja peab andmed kustutama.") == "Vastutav Töötleja"
 

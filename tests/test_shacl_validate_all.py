@@ -141,3 +141,103 @@ def test_sidecars_bucket_resolves_against_live_corpus():
     assert any(p.name == "concepts_combined.jsonld" for p in files)
     assert all(not p.name.endswith("_report.json") for p in files)
     assert all(p.suffix in {".json", ".jsonld"} for p in files)
+
+
+def test_kov_bucket_includes_historical_municipalities_live_corpus():
+    # The kov bucket is the live validation path for HistoricalMunicipalityShape
+    # (issue #285): the source file lives under data/ehak/ rather than
+    # krr_outputs/, so the bucket must list it explicitly.
+    files = shacl_validate_all.collect_files("kov")
+
+    assert any(
+        p.name == "historical_municipalities.jsonld" and p.parent.name == "ehak"
+        for p in files
+    ), [str(p) for p in files if "ehak" in str(p)]
+
+
+# ---------------------------------------------------------------------------
+# SHACL string-enum closure + uniform graphClosureExempt (issue #290)
+# ---------------------------------------------------------------------------
+
+SHAPES_TTL = Path(__file__).resolve().parent.parent / "shacl" / "estonian_legal_shapes.ttl"
+_NS = "https://data.riik.ee/ontology/estleg#"
+_SH = "http://www.w3.org/ns/shacl#"
+
+
+def _load_shapes_graph():
+    import rdflib
+
+    return rdflib.Graph().parse(str(SHAPES_TTL), format="turtle")
+
+
+def _sh_in_values_for_path(graph, predicate_local: str) -> set[str]:
+    """Collect every literal in any ``sh:in`` list on a property shape whose
+    ``sh:path`` is ``estleg:<predicate_local>``."""
+    import rdflib
+    from rdflib.collection import Collection
+
+    sh_path = rdflib.URIRef(_SH + "path")
+    sh_in = rdflib.URIRef(_SH + "in")
+    target = rdflib.URIRef(_NS + predicate_local)
+
+    values: set[str] = set()
+    for shape in graph.subjects(sh_path, target):
+        for list_head in graph.objects(shape, sh_in):
+            for item in Collection(graph, list_head):
+                values.add(str(item))
+    return values
+
+
+def test_sanction_type_has_closed_value_set():
+    graph = _load_shapes_graph()
+    values = _sh_in_values_for_path(graph, "sanctionType")
+    assert values == {
+        "imprisonment",
+        "fine",
+        "pecuniary_punishment",
+        "arrest",
+        "coercive_payment",
+    }, values
+
+
+def test_competence_type_has_closed_value_set_including_general():
+    graph = _load_shapes_graph()
+    values = _sh_in_values_for_path(graph, "competenceType")
+    # InstitutionShape.competenceType and CompetenceShape.competenceType must
+    # both close the set and both must admit "general".
+    assert {
+        "supervision",
+        "licensing",
+        "enforcement",
+        "regulation",
+        "general",
+    } <= values, values
+
+
+def test_enum_iri_predicates_marked_graph_closure_exempt_in_shapes():
+    import rdflib
+
+    graph = _load_shapes_graph()
+    sh_path = rdflib.URIRef(_SH + "path")
+    marker = rdflib.URIRef(_NS + "graphClosureExempt")
+
+    exempt_predicates: set[str] = set()
+    for shape, _, value in graph.triples((None, marker, None)):
+        if str(value).lower() not in {"true", "1"}:
+            continue
+        predicate = graph.value(shape, sh_path)
+        if isinstance(predicate, rdflib.URIRef) and str(predicate).startswith(_NS):
+            exempt_predicates.add(str(predicate)[len(_NS):])
+
+    required = {
+        "normativeType",
+        "legislativePhase",
+        "draftType",
+        "euDocumentType",
+        "euInstitution",
+        "euCourt",
+        "caseType",
+        "decisionType",
+        "euCourtDecisionType",
+    }
+    assert required <= exempt_predicates, sorted(required - exempt_predicates)

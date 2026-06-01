@@ -730,6 +730,322 @@ class TestActLevelPlacement:
         assert "estleg:entryIntoForce" not in provision
 
 
+# --------------------------------------------------------------------- #
+# Regression tests for issue #287:
+#   (a) symmetric repealDate emission for valid_until AND invalidation_date
+#       (both sources emit it; future dates are emitted too)
+#   (b) repeal/invalidation/valid_until < entry_into_force -> ``unknown``
+# --------------------------------------------------------------------- #
+
+
+class TestRepealBeforeEntrySanityGuard:
+    """#287(b): a repeal/invalidation/valid_until date that precedes
+    entry_into_force is contradictory source data and must classify
+    ``unknown`` (a law cannot be repealed before it ever took force),
+    not ``repealed``.
+    """
+
+    def test_invalidation_before_entry_yields_unknown(self):
+        from extract_temporal_data import determine_temporal_status
+        temporal = {
+            "entry_into_force": "2025-01-01",
+            "invalidation_date": "2020-12-31",
+        }
+        # Without the guard this was classified ``repealed`` (invalidation
+        # in the past relative to the 2026 evaluation date).
+        assert determine_temporal_status(
+            temporal, evaluation_date="2026-01-01"
+        ) == "unknown"
+
+    def test_valid_until_before_entry_yields_unknown(self):
+        from extract_temporal_data import determine_temporal_status
+        temporal = {
+            "entry_into_force": "2025-01-01",
+            "valid_until": "2020-12-31",
+        }
+        assert determine_temporal_status(
+            temporal, evaluation_date="2026-01-01"
+        ) == "unknown"
+
+    def test_equal_dates_are_not_contradictory(self):
+        """entry == end is a same-day open/close, not a contradiction;
+        the guard uses strict ``<`` so this falls through to the normal
+        repealed/in-force logic (repealed here, as end <= today)."""
+        from extract_temporal_data import determine_temporal_status
+        temporal = {
+            "entry_into_force": "2025-01-01",
+            "invalidation_date": "2025-01-01",
+        }
+        assert determine_temporal_status(
+            temporal, evaluation_date="2026-01-01"
+        ) == "repealed"
+
+    def test_end_after_entry_classifies_normally(self):
+        """Sanity: a well-ordered law (entry < end) is unaffected by the
+        guard and classifies on the usual past/future logic."""
+        from extract_temporal_data import determine_temporal_status
+        temporal = {
+            "entry_into_force": "2010-01-01",
+            "invalidation_date": "2020-12-31",
+        }
+        # End in the past -> repealed.
+        assert determine_temporal_status(
+            temporal, evaluation_date="2024-01-01"
+        ) == "repealed"
+        # End in the future -> in force.
+        assert determine_temporal_status(
+            temporal, evaluation_date="2015-01-01"
+        ) == "inForce"
+
+    def test_no_entry_into_force_skips_guard(self):
+        """When there is no entry_into_force the guard cannot fire; a
+        past valid_until still classifies ``repealed`` as before."""
+        from extract_temporal_data import determine_temporal_status
+        temporal = {"valid_until": "2020-12-31"}
+        assert determine_temporal_status(
+            temporal, evaluation_date="2024-01-01"
+        ) == "repealed"
+
+
+def _run_main_over_single_peep(tmp_path, monkeypatch, temporal_kehtivus,
+                               evaluation_date="2026-01-01"):
+    """Helper: stage one law peep whose temporal data comes from an
+    INDEX.json ``kehtivus`` block, run main(), and return the act node.
+    Keeps the #287 enrichment tests free of XML-pairing boilerplate.
+    """
+    import extract_temporal_data as mod
+    import estleg_common
+
+    krr = tmp_path / "krr_outputs"
+    rt = tmp_path / "data" / "riigiteataja"
+    krr.mkdir()
+    rt.mkdir(parents=True)
+    (krr / "reports" / "kov").mkdir(parents=True)
+    (krr / "INDEX.json").write_text(json.dumps({
+        "laws": [{
+            "name": "guard_law",
+            "files": ["guard_law_peep.json"],
+            "kehtivus": temporal_kehtivus,
+        }],
+    }), encoding="utf-8")
+    peep = krr / "guard_law_peep.json"
+    peep.write_text(json.dumps({
+        "@context": {
+            "estleg": "https://data.riik.ee/ontology/estleg#",
+            "owl": "http://www.w3.org/2002/07/owl#",
+        },
+        "@graph": [
+            {"@id": "estleg:GuardLaw_Map_2026",
+             "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
+             "rdfs:label": "Guard Law"},
+        ],
+    }), encoding="utf-8")
+
+    monkeypatch.setattr(mod, "KRR_DIR", krr)
+    monkeypatch.setattr(mod, "DATA_DIR", rt)
+    monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+    if hasattr(mod, "REPO_ROOT"):
+        monkeypatch.setattr(mod, "REPO_ROOT", tmp_path)
+
+    rc = mod.main(evaluation_date=evaluation_date)
+    assert rc in (None, 0)
+    doc = json.loads(peep.read_text(encoding="utf-8"))
+    act = next(n for n in doc["@graph"] if "owl:Ontology" in n["@type"])
+    report = json.loads(
+        (krr / "temporal_data_report.json").read_text(encoding="utf-8")
+    )
+    return act, report
+
+
+class TestRepealDateSymmetricEmission:
+    """#287(a): ``repealDate`` is emitted whenever a repeal/invalidation/
+    valid_until date is present, from EITHER source, regardless of
+    past/future. Previously ``valid_until`` only wrote ``repealDate``
+    when status was ``repealed`` while ``invalidation_date`` wrote it
+    unconditionally — an asymmetry that made the field's meaning depend
+    on which source populated it.
+    """
+
+    def test_valid_until_emits_repeal_date_even_when_in_force(
+        self, tmp_path, monkeypatch
+    ):
+        """A FUTURE valid_until (scheduled repeal): status is ``inForce``
+        but ``repealDate`` must still be emitted (the old code skipped it
+        because status != 'repealed')."""
+        act, _ = _run_main_over_single_peep(
+            tmp_path, monkeypatch,
+            {"joustumine": "2010-01-01", "kehtivKuni": "2030-12-31"},
+            evaluation_date="2026-01-01",
+        )
+        assert act.get("estleg:temporalStatus") == "inForce"
+        assert act.get("estleg:repealDate") == {
+            "@value": "2030-12-31", "@type": "xsd:date"
+        }
+
+    def test_invalidation_date_emits_repeal_date_when_future(
+        self, tmp_path, monkeypatch
+    ):
+        """Symmetric companion: a FUTURE invalidation_date with status
+        ``inForce`` also emits ``repealDate`` (this path always did, and
+        must keep doing so after the refactor)."""
+        act, _ = _run_main_over_single_peep(
+            tmp_path, monkeypatch,
+            {"joustumine": "2010-01-01", "kehtetuKuupaev": "2030-12-31"},
+            evaluation_date="2026-01-01",
+        )
+        assert act.get("estleg:temporalStatus") == "inForce"
+        assert act.get("estleg:repealDate") == {
+            "@value": "2030-12-31", "@type": "xsd:date"
+        }
+
+    def test_invalidation_date_takes_precedence_over_valid_until(
+        self, tmp_path, monkeypatch
+    ):
+        """When both sources are present, invalidation_date wins (the
+        more specific field), matching the prior precedence."""
+        act, _ = _run_main_over_single_peep(
+            tmp_path, monkeypatch,
+            {"joustumine": "2010-01-01",
+             "kehtivKuni": "2030-12-31",
+             "kehtetuKuupaev": "2028-06-30"},
+            evaluation_date="2026-01-01",
+        )
+        assert act.get("estleg:repealDate") == {
+            "@value": "2028-06-30", "@type": "xsd:date"
+        }
+
+    def test_past_repeal_still_emits_repeal_date(
+        self, tmp_path, monkeypatch
+    ):
+        """A genuinely repealed law (past invalidation) still gets
+        ``repealDate`` plus ``temporalStatus == repealed``."""
+        act, _ = _run_main_over_single_peep(
+            tmp_path, monkeypatch,
+            {"joustumine": "2010-01-01", "kehtetuKuupaev": "2020-12-31"},
+            evaluation_date="2026-01-01",
+        )
+        assert act.get("estleg:temporalStatus") == "repealed"
+        assert act.get("estleg:repealDate") == {
+            "@value": "2020-12-31", "@type": "xsd:date"
+        }
+
+    def test_repeal_before_entry_records_unknown_with_repeal_date(
+        self, tmp_path, monkeypatch
+    ):
+        """#287(b) end-to-end: a law whose invalidation precedes its
+        entry_into_force is classified ``unknown`` in both the act node
+        and the report, while ``repealDate`` is still emitted so the
+        contradictory date remains visible to consumers."""
+        act, report = _run_main_over_single_peep(
+            tmp_path, monkeypatch,
+            {"joustumine": "2025-01-01", "kehtetuKuupaev": "2020-12-31"},
+            evaluation_date="2026-01-01",
+        )
+        assert act.get("estleg:temporalStatus") == "unknown"
+        # repealDate still emitted (presence no longer implies repealed).
+        assert act.get("estleg:repealDate") == {
+            "@value": "2020-12-31", "@type": "xsd:date"
+        }
+        # The contradictory file is recorded in the report with its
+        # dates, so the data-quality signal is preserved.
+        entry = next(
+            e for e in report["laws"]
+            if e["file"] == "guard_law_peep.json"
+        )
+        assert entry["status"] == "unknown"
+        assert entry["temporal"].get("entry_into_force") == "2025-01-01"
+        assert entry["temporal"].get("invalidation_date") == "2020-12-31"
+
+
+class TestReportDeterminism:
+    """#295: the git-tracked ``temporal_data_report.json`` must not embed
+    a wall-clock ``generated`` timestamp, and the coverage report's
+    ``run_timestamp`` must be pinned to the declared evaluation date so
+    reruns are byte-stable when the data is unchanged.
+    """
+
+    def test_report_has_no_wallclock_generated_field(
+        self, tmp_path, monkeypatch
+    ):
+        _, report = _run_main_over_single_peep(
+            tmp_path, monkeypatch,
+            {"joustumine": "2010-01-01"},
+            evaluation_date="2026-01-01",
+        )
+        assert "generated" not in report, (
+            "temporal_data_report.json must not embed a wall-clock "
+            "'generated' timestamp (#295 churn)"
+        )
+        # The declared evaluation date is retained (it is deterministic).
+        assert report["evaluationDate"] == "2026-01-01"
+
+    def test_report_body_is_byte_stable_across_reruns(
+        self, tmp_path, monkeypatch
+    ):
+        """Two runs with identical inputs and the same evaluation date
+        must produce byte-identical report bytes (no timestamp churn)."""
+        import extract_temporal_data as mod
+        import estleg_common
+
+        krr = tmp_path / "krr_outputs"
+        rt = tmp_path / "data" / "riigiteataja"
+        krr.mkdir()
+        rt.mkdir(parents=True)
+        (krr / "reports" / "kov").mkdir(parents=True)
+        (krr / "INDEX.json").write_text(json.dumps({
+            "laws": [{
+                "name": "stable_law",
+                "files": ["stable_law_peep.json"],
+                "kehtivus": {"joustumine": "2010-01-01"},
+            }],
+        }), encoding="utf-8")
+        peep = krr / "stable_law_peep.json"
+        peep.write_text(json.dumps({
+            "@context": {
+                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "owl": "http://www.w3.org/2002/07/owl#",
+            },
+            "@graph": [
+                {"@id": "estleg:StableLaw_Map_2026",
+                 "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
+                 "rdfs:label": "Stable Law"},
+            ],
+        }), encoding="utf-8")
+
+        monkeypatch.setattr(mod, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "DATA_DIR", rt)
+        monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+        if hasattr(mod, "REPO_ROOT"):
+            monkeypatch.setattr(mod, "REPO_ROOT", tmp_path)
+
+        report_path = krr / "temporal_data_report.json"
+        mod.main(evaluation_date="2026-01-01")
+        first = report_path.read_bytes()
+        mod.main(evaluation_date="2026-01-01")
+        second = report_path.read_bytes()
+        assert first == second, (
+            "report bytes changed across identical reruns -> "
+            "timestamp-only churn was reintroduced"
+        )
+
+    def test_coverage_run_timestamp_pinned_to_evaluation_date(
+        self, tmp_path, monkeypatch
+    ):
+        """The coverage report's run_timestamp is derived from the
+        declared evaluation date (midnight UTC), not wall-clock now()."""
+        _run_main_over_single_peep(
+            tmp_path, monkeypatch,
+            {"joustumine": "2010-01-01"},
+            evaluation_date="2026-01-01",
+        )
+        cov = json.loads(
+            (tmp_path / "krr_outputs" / "reports" / "kov"
+             / "extract_temporal_data_coverage.json").read_text(
+                encoding="utf-8")
+        )
+        assert cov["run_timestamp"] == "2026-01-01T00:00:00+00:00"
+
+
 class TestSinglePassClearAndEnrich:
     """The merged single-pass pattern: open + clear + enrich + save in
     one iteration. The previous double-pass pattern saved the same

@@ -351,9 +351,15 @@ def _parse_with_regex(html_text: str) -> list[dict]:
             )
             continue
 
-        tds_text = [re.sub(r"<[^>]+>", "", td) for td in tds]
+        # Strip tags, then collapse whitespace exactly like the bs4 path's
+        # ``get_text(" ", strip=True)`` so inline tags inside a cell (e.g.
+        # ``3<wbr>-1-1``) yield identical ``case_nr``/``object_id`` — and
+        # therefore identical ``@id``/``caseNumber`` — across both parsers.
+        tds_text = [re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", td)).strip() for td in tds]
         link = ""
-        link_match = re.search(r'href="([^"]+)"', tds[1])
+        # Accept both double- and single-quoted hrefs; the bs4 path extracts
+        # either, so the regex fallback must too or single-quoted links drop.
+        link_match = re.search(r'href=["\']([^"\']+)["\']', tds[1])
         if link_match:
             link = link_match.group(1)
             if link and not link.startswith("http"):

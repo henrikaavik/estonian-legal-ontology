@@ -224,6 +224,27 @@ def _parse_number(s: str) -> int | None:
     return _estonian_word_to_int(s)
 
 
+def _ordered_year_range(lo_raw: int, hi_raw: int) -> tuple[str, str]:
+    """Issue #273: return ``(min_penalty, max_penalty)`` year strings with
+    ``min <= max`` guaranteed.
+
+    The range parsers read group 1 as the lower and group 2 as the upper
+    bound, but a source range can be written high-to-low (e.g. "kümne kuni
+    viieaastase vangistusega" = ten down to five years). Without sorting,
+    that yielded ``min 10 years / max 5 years``, propagating an inverted
+    ``minPenaltyAmount > maxPenaltyAmount`` into the structured fields. We
+    sort the two bounds and log when a swap was required, since a high-to-
+    low range usually signals an OCR/source anomaly worth inspecting.
+    """
+    lo, hi = sorted((lo_raw, hi_raw))
+    if (lo_raw, hi_raw) != (lo, hi):
+        print(
+            f"  WARN: imprisonment range written high-to-low "
+            f"({lo_raw}–{hi_raw} years); swapped to min {lo} / max {hi}"
+        )
+    return f"{lo} years", f"{hi} years"
+
+
 def extract_imprisonment(text: str) -> list[dict]:
     """Detect imprisonment sentences.
 
@@ -262,10 +283,12 @@ def extract_imprisonment(text: str) -> list[dict]:
         min_val = _parse_number(m.group(1))
         max_val = _parse_number(m.group(2))
         if min_val is not None and max_val is not None:
+            # Issue #273: enforce min <= max (source range may be high-to-low).
+            min_pen, max_pen = _ordered_year_range(min_val, max_val)
             results.append({
                 "sanction_type": "imprisonment",
-                "min_penalty": f"{min_val} years",
-                "max_penalty": f"{max_val} years",
+                "min_penalty": min_pen,
+                "max_penalty": max_pen,
             })
 
     # Max only (word): "kuni viieaastase vangistusega"
@@ -285,8 +308,8 @@ def extract_imprisonment(text: str) -> list[dict]:
         r"(\d+)\s*[\-\u2013\u2014]?\s*kuni\s+(\d+)\s*[\-\s]*aasta(?:se)?\s+vangistus",
         text, re.IGNORECASE,
     ):
-        min_s = f"{m.group(1)} years"
-        max_s = f"{m.group(2)} years"
+        # Issue #273: enforce min <= max (source range may be high-to-low).
+        min_s, max_s = _ordered_year_range(int(m.group(1)), int(m.group(2)))
         if not _already(max_s):
             results.append({
                 "sanction_type": "imprisonment",

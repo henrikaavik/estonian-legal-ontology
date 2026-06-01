@@ -1487,3 +1487,89 @@ def test_discover_validation_files_skips_combined_and_index_files(tmp_path):
     assert ".regen_state.json" not in files
     assert "generation_manifest_laws.json" not in files
     assert "latest_pipeline_manifest.json" not in files
+
+
+# ---------------------------------------------------------------------------
+# validate_context — namespace check across @context shapes (issue #286)
+# ---------------------------------------------------------------------------
+
+_GOOD_NS = validate_all.EXPECTED_NS
+_BAD_NS = "https://WRONG.example/ontology/estleg#"
+
+
+def test_validate_context_dict_form_correct_passes(tmp_path):
+    doc = {"@context": {"estleg": _GOOD_NS}, "@graph": []}
+
+    validate_all.validate_context(tmp_path / "good.jsonld", doc)
+
+    assert validate_all.errors == []
+    assert validate_all.warnings == []
+
+
+def test_validate_context_dict_form_wrong_namespace_errors(tmp_path):
+    doc = {"@context": {"estleg": _BAD_NS}, "@graph": []}
+
+    validate_all.validate_context(tmp_path / "bad.jsonld", doc)
+
+    assert len(validate_all.errors) == 1
+    assert _BAD_NS in validate_all.errors[0]
+
+
+def test_validate_context_dict_form_expanded_term_definition(tmp_path):
+    """``estleg`` declared via an expanded ``{"@id": …}`` term definition."""
+    good = {"@context": {"estleg": {"@id": _GOOD_NS}}, "@graph": []}
+    validate_all.validate_context(tmp_path / "expanded_good.jsonld", good)
+    assert validate_all.errors == []
+
+    validate_all.reset()
+    bad = {"@context": {"estleg": {"@id": _BAD_NS}}, "@graph": []}
+    validate_all.validate_context(tmp_path / "expanded_bad.jsonld", bad)
+    assert len(validate_all.errors) == 1
+    assert _BAD_NS in validate_all.errors[0]
+
+
+def test_validate_context_list_form_wrong_namespace_is_caught(tmp_path):
+    """Regression for issue #286: list-form context must not bypass the check."""
+    doc = {
+        "@context": ["https://example.com/remote/context.jsonld", {"estleg": _BAD_NS}],
+        "@graph": [],
+    }
+
+    validate_all.validate_context(tmp_path / "list_bad.jsonld", doc)
+
+    assert any(_BAD_NS in e for e in validate_all.errors), validate_all.errors
+
+
+def test_validate_context_list_form_correct_namespace_passes(tmp_path):
+    doc = {
+        "@context": [{"owl": "http://www.w3.org/2002/07/owl#"}, {"estleg": _GOOD_NS}],
+        "@graph": [],
+    }
+
+    validate_all.validate_context(tmp_path / "list_good.jsonld", doc)
+
+    assert validate_all.errors == []
+
+
+def test_validate_context_list_form_remote_member_warns(tmp_path):
+    """A remote-IRI member of a list context is surfaced as a warning."""
+    doc = {
+        "@context": ["https://example.com/remote/context.jsonld", {"estleg": _GOOD_NS}],
+        "@graph": [],
+    }
+
+    validate_all.validate_context(tmp_path / "list_remote.jsonld", doc)
+
+    assert validate_all.errors == []
+    assert any("remote @context" in w for w in validate_all.warnings), validate_all.warnings
+
+
+def test_validate_context_string_form_warns_not_silent(tmp_path):
+    """A bare remote-string context cannot be inspected — warn, never pass silently."""
+    doc = {"@context": "https://example.com/remote/context.jsonld", "@graph": []}
+
+    validate_all.validate_context(tmp_path / "string_ctx.jsonld", doc)
+
+    assert validate_all.errors == []
+    assert len(validate_all.warnings) == 1
+    assert "remote @context" in validate_all.warnings[0]

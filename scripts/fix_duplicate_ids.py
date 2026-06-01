@@ -20,18 +20,77 @@ Strategy:
 from __future__ import annotations
 
 import json
+import os
 import re
 import sys
+import tempfile
 from collections import defaultdict
 from pathlib import Path
 
 KRR_DIR = Path(__file__).resolve().parents[1] / "krr_outputs"
+
+
+def _atomic_write_json(filepath: str | Path, doc: object) -> None:
+    """Write ``doc`` to ``filepath`` as UTF-8 JSON atomically (#280).
+
+    Serialises to a sibling tempfile in the destination directory and then
+    ``os.replace``s it into place. A crash, ``KeyboardInterrupt``, or
+    disk-full mid-write therefore leaves the original file fully intact (or
+    the new file fully written) — never a truncated/empty hybrid. The
+    tempfile shares the destination directory so the rename stays on one
+    filesystem; on failure it is unlinked best-effort before the original
+    exception propagates.
+    """
+    path = Path(filepath)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp = tempfile.NamedTemporaryFile(
+        "w",
+        encoding="utf-8",
+        dir=path.parent,
+        prefix=f".{path.name}.",
+        suffix=".tmp",
+        delete=False,
+    )
+    tmp_name = tmp.name
+    try:
+        with tmp as f:
+            json.dump(doc, f, ensure_ascii=False, indent=2)
+            f.write("\n")
+        os.replace(tmp_name, path)
+    except BaseException:
+        try:
+            os.unlink(tmp_name)
+        except FileNotFoundError:
+            pass
+        raise
 
 _ESTONIAN_TRANSLITERATION = {
     "ö": "o", "ä": "a", "ü": "u", "õ": "o",
     "Ö": "O", "Ä": "A", "Ü": "U", "Õ": "O",
     "š": "s", "ž": "z", "Š": "S", "Ž": "Z",
 }
+
+# Single-integer osa extractor from a peep filename (#279). Matches ONLY a
+# single integer terminated by ``_`` or end-of-stem — i.e. ``..._osa11_peep``
+# yields ``11`` but range-form ``..._osa6-13_peep`` does NOT match, because
+# ``Osa6-13`` would produce a hyphenated local name that fails the canonical
+# ``estleg:`` IRI grammar (no hyphen allowed). This mirrors
+# ``migrate_multipart_iri_scheme.OSA_FILENAME_RE``'s single-integer policy.
+SINGLE_OSA_RE = re.compile(r"_osa(\d+)(?:_|$)")
+# Detects a range-form osa segment (``osa6-13``) anywhere in a filename so the
+# same-law branch can skip it and surface it for human review rather than
+# minting a malformed ``estleg:..._Osa6-13_Par_n`` IRI.
+RANGE_OSA_RE = re.compile(r"_osa\d+-\d+(?:_|$|\.)")
+
+
+def _is_range_osa_file(fname: str) -> bool:
+    """Return True if ``fname`` carries a range-form osa segment (``osa6-13``).
+
+    Range-form osa files cannot be disambiguated into a single ``Osa<N>``
+    component, so the same-law dedup branch skips them (#279), matching the
+    policy in ``migrate_multipart_iri_scheme``.
+    """
+    return RANGE_OSA_RE.search(fname) is not None
 
 
 def sanitize_id(value: str) -> str:
@@ -76,8 +135,20 @@ def get_file_prefix(filepath: str) -> str | None:
     return None
 
 
-def build_remap_table(dupes: dict[str, list[str]]) -> dict[str, dict[str, str]]:
-    """Build a per-file ID remap table: {filename: {old_id: new_id}}."""
+def build_remap_table(
+    dupes: dict[str, list[str]],
+    skipped_range_files: set[str] | None = None,
+) -> dict[str, dict[str, str]]:
+    """Build a per-file ID remap table: {filename: {old_id: new_id}}.
+
+    When ``skipped_range_files`` is provided, the names of any range-form
+    osa files (``..._osa6-13_peep.json``) encountered in the same-law
+    branch are recorded into it. Such files are intentionally NOT remapped
+    (#279): a range osa cannot be collapsed to a single ``Osa<N>`` segment
+    without minting a hyphenated — and therefore invalid — IRI, so they are
+    surfaced for human review instead (matching the policy in
+    ``migrate_multipart_iri_scheme``).
+    """
     remap: dict[str, dict[str, str]] = defaultdict(dict)
 
     # ─── Categorize duplicates ───────────────────────────────────────────
@@ -117,26 +188,37 @@ def build_remap_table(dupes: dict[str, list[str]]) -> dict[str, dict[str, str]]:
             # For these, add osa number to the IDs in the file that doesn't already have it
             for dupe_id in dupe_ids:
                 for fname in file_group:
-                    # Extract osa number from filename
-                    osa_match = re.search(r"_osa(\d+(-\d+)?)", fname)
+                    # Range-form osa files (``osa6-13``) cannot be collapsed
+                    # to a single ``Osa<N>`` component without producing a
+                    # hyphenated, invalid IRI — skip and record them (#279).
+                    if _is_range_osa_file(fname):
+                        if skipped_range_files is not None:
+                            skipped_range_files.add(fname)
+                        continue
+                    # Extract a SINGLE-integer osa number from the filename.
+                    # The trailing ``(?:_|$)`` boundary rejects range forms
+                    # so ``osa6-13`` never yields ``6-13`` here (#279).
+                    osa_match = SINGLE_OSA_RE.search(fname)
                     if not osa_match:
                         continue
                     osa_nr = osa_match.group(1)
 
                     # Check if this ID already has osa disambiguation
-                    if f"_osa{osa_nr}" in dupe_id or f"osa{osa_nr}" in dupe_id:
+                    if f"_Osa{osa_nr}_" in dupe_id or f"Osa{osa_nr}_" in dupe_id:
                         continue
 
                     if "_Par_" in dupe_id:
                         # estleg:AOS_Par_70 -> estleg:AOS_Osa11_Par_70
                         prefix, par_part = dupe_id.split("_Par_", 1)
                         new_id = f"{prefix}_Osa{osa_nr}_Par_{par_part}"
-                        remap[fname][dupe_id] = new_id
+                        if new_id != dupe_id:
+                            remap[fname][dupe_id] = new_id
                     elif "Cluster_" in dupe_id:
-                        # estleg:Cluster_AsjaoigusteKaitse -> estleg:Cluster_AOS_Osa5_AsjaoigusteKaitse
+                        # estleg:Cluster_AsjaoigusteKaitse -> estleg:Cluster_Osa5_AsjaoigusteKaitse
                         # Need to insert osa number
                         new_id = dupe_id.replace("estleg:Cluster_", f"estleg:Cluster_Osa{osa_nr}_")
-                        remap[fname][dupe_id] = new_id
+                        if new_id != dupe_id:
+                            remap[fname][dupe_id] = new_id
         else:
             # ─── Different-law abbreviation collisions ───────────────────
             # Each file gets a unique prefix based on its filename slug
@@ -182,14 +264,31 @@ def build_remap_table(dupes: dict[str, list[str]]) -> dict[str, dict[str, str]]:
                     elif dupe_id.startswith("estleg:Cluster_"):
                         # estleg:Cluster_Muugipiirangud -> estleg:Cluster_{new_prefix}_Muugipiirangud
                         rest = dupe_id.replace("estleg:Cluster_", "")
-                        # Remove old prefix if present
-                        old_prefix_candidates = set()
+                        # Idempotency no-op guard (#279): if the cluster id
+                        # already carries THIS file's new prefix (e.g. it was
+                        # disambiguated on a prior run), re-prepending it would
+                        # double the slug
+                        # (``Cluster_alpha_seadus_alpha_seadus_X``). Skip.
+                        if rest == new_prefix or rest.startswith(new_prefix + "_"):
+                            continue
+                        # Remove an old prefix if present so the slug isn't
+                        # stacked on top of a stale one. Strippable prefixes
+                        # are derived structurally from (a) the ``_Par_``
+                        # siblings in this collision group and (b) every other
+                        # file's assigned slug-prefix — the latter covers a
+                        # cluster that already embeds a sibling file's slug
+                        # from an earlier run.
+                        old_prefix_candidates: set[str] = set()
                         for other_dupe in dupe_ids:
                             if "_Par_" in other_dupe:
                                 old_prefix_candidates.add(
                                     other_dupe.replace("estleg:", "").split("_Par_")[0]
                                 )
-                        for old_p in old_prefix_candidates:
+                        old_prefix_candidates.update(file_prefixes.values())
+                        old_prefix_candidates.discard(new_prefix)
+                        # Strip the LONGEST matching prefix first so a short
+                        # candidate doesn't shadow a longer, more specific one.
+                        for old_p in sorted(old_prefix_candidates, key=len, reverse=True):
                             if rest.startswith(old_p + "_"):
                                 rest = rest[len(old_p) + 1:]
                                 break
@@ -238,9 +337,7 @@ def apply_remap_to_file(filepath: str, id_map: dict[str, str]) -> int:
                         item["@id"] = id_map[item["@id"]]
                         count += 1
 
-    with open(filepath, "w", encoding="utf-8") as f:
-        json.dump(doc, f, ensure_ascii=False, indent=2)
-        f.write("\n")
+    _atomic_write_json(filepath, doc)
 
     return count
 
@@ -366,9 +463,7 @@ def update_cross_references(remap: dict[str, dict[str, str]]) -> int:
                                 total_updated += 1
 
         if changed:
-            with open(filepath, "w", encoding="utf-8") as f:
-                json.dump(doc, f, ensure_ascii=False, indent=2)
-                f.write("\n")
+            _atomic_write_json(filepath, doc)
 
     return total_updated
 
@@ -404,10 +499,18 @@ def main():
 
     # Step 3: Build remap
     print("\n[2/5] Building remap table...")
-    remap = build_remap_table(dupes)
+    skipped_range_files: set[str] = set()
+    remap = build_remap_table(dupes, skipped_range_files=skipped_range_files)
     total_remaps = sum(len(m) for m in remap.values())
     print(f"  Files to modify: {len(remap)}")
     print(f"  Total ID remappings: {total_remaps}")
+    if skipped_range_files:
+        print(
+            "  Skipped range-form osa files (cannot mint single Osa<N> IRI; "
+            "needs manual review):"
+        )
+        for fname in sorted(skipped_range_files):
+            print(f"    {fname}")
 
     if not remap:
         print("\n  No remappings needed!")

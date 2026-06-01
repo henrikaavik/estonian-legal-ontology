@@ -797,6 +797,71 @@ def resolve_kov_internal_act_ref(
     return unique[0] if len(unique) == 1 else None
 
 
+# ----------------------------------------------------------------------
+# Superscript-aware paragraph numbers (#254)
+# ----------------------------------------------------------------------
+#
+# Estonian law freely superscripts amended section numbers: ``AÕS § 158²``
+# (Unicode glyph) or ``AÕS § 158<sup>2</sup>`` (RT markup). The generator
+# (``generate_all_laws._paragraph_id_suffix``) encodes those into distinct
+# IRIs — ``§ 158`` → ``_Par_158`` and ``§ 158²`` → ``_Par_158_2``. The
+# citation parser must capture the superscript and normalise it into the
+# same ``<base>_<m>`` key, or citations silently resolve to the wrong
+# (non-superscript) provision and superscript provisions go un-scanned.
+
+# Mirror of generate_all_laws._SUPERSCRIPT_DIGIT_MAP — kept local so this
+# module has no import dependency on the generator.
+_SUPERSCRIPT_DIGIT_MAP: dict[str, str] = {
+    "¹": "1", "²": "2", "³": "3", "⁰": "0", "⁴": "4",
+    "⁵": "5", "⁶": "6", "⁷": "7", "⁸": "8", "⁹": "9",
+}
+
+# A trailing superscript index on a paragraph number: either a run of
+# Unicode superscript glyphs or ``<sup>N</sup>`` markup.
+_SUP_TOKEN = r"(?:<sup>\s*\d+\s*</sup>|[¹²³⁰⁴-⁹]+)"
+
+# Section-number capture: digits, an OPTIONAL trailing superscript, then an
+# OPTIONAL ``-`` range tail. The superscript binds to the first number only
+# (ranges across superscripts do not occur in the corpus). Used by every
+# ``§``-anchored citation pattern below so all of them resolve superscripts.
+_PAR_NUMBER = rf"\d+(?:\s*{_SUP_TOKEN})?(?:\s*[\-–]\s*\d+)?"
+
+
+def _superscript_suffix_from_token(token: str) -> str:
+    """Return the plain-digit index encoded by a superscript ``token``.
+
+    ``token`` is the matched ``_SUP_TOKEN`` text — ``"²"``, ``"²³"`` or
+    ``"<sup>2</sup>"``. Returns ``"2"`` / ``"23"`` / ``"2"``, or ``""`` when
+    nothing decodes.
+    """
+    if not token:
+        return ""
+    m = re.search(r"<sup>\s*(\d+)\s*</sup>", token)
+    if m:
+        return m.group(1).strip()
+    return "".join(_SUPERSCRIPT_DIGIT_MAP.get(ch, "") for ch in token)
+
+
+def _normalize_par_number(raw: str) -> str:
+    """Normalise a single captured section number into an IRI-key shape.
+
+    Strips a trailing superscript glyph/markup and folds it into a
+    ``<digits>_<index>`` suffix, matching
+    ``generate_all_laws._paragraph_id_suffix`` (``§ 158²`` → ``158_2``).
+    A plain number returns its digits unchanged (``"158"`` → ``"158"``).
+    Returns ``""`` when no leading digits are present.
+    """
+    m = re.match(rf"(\d+)\s*({_SUP_TOKEN})?\s*$", raw.strip())
+    if not m:
+        # No clean single-number match (e.g. leftover punctuation); fall
+        # back to bare digits so callers never regress on plain numbers.
+        digits = re.sub(r"[^\d]", "", raw)
+        return digits
+    base = m.group(1)
+    sup = _superscript_suffix_from_token(m.group(2) or "")
+    return f"{base}_{sup}" if sup else base
+
+
 def extract_citations_from_text(text: str) -> list[dict]:
     """
     Parse text for Estonian legal citation patterns.
@@ -817,7 +882,7 @@ def extract_citations_from_text(text: str) -> list[dict]:
     # KarS § 121, KarS §-s 121, KarS § 121 lg 2 p 3
     # Also handles: KarS §-de 208-210, KarS §§ 1-10
     pat_abbrev = re.compile(
-        rf"({abbrevs})\s*{PAR_SUFFIX}\s*(\d+(?:\s*[\-–]\s*\d+)?)",
+        rf"({abbrevs})\s*{PAR_SUFFIX}\s*({_PAR_NUMBER})",
         re.UNICODE,
     )
 
@@ -833,7 +898,7 @@ def extract_citations_from_text(text: str) -> list[dict]:
 
     # Pattern 2: käesoleva seaduse § N (self-reference)
     pat_self = re.compile(
-        rf"k[äa]esoleva\s+seadus(?:e|tiku)?\s*{PAR_SUFFIX}\s*(\d+(?:\s*[\-–]\s*\d+)?)",
+        rf"k[äa]esoleva\s+seadus(?:e|tiku)?\s*{PAR_SUFFIX}\s*({_PAR_NUMBER})",
         re.UNICODE | re.IGNORECASE,
     )
     for m in pat_self.finditer(text):
@@ -852,7 +917,7 @@ def extract_citations_from_text(text: str) -> list[dict]:
     )
     if genitive_names:
         pat_fullname = re.compile(
-            rf"({genitive_names})\s*{PAR_SUFFIX}\s*(\d+(?:\s*[\-–]\s*\d+)?)",
+            rf"({genitive_names})\s*{PAR_SUFFIX}\s*({_PAR_NUMBER})",
             re.UNICODE | re.IGNORECASE,
         )
         for m in pat_fullname.finditer(text):
@@ -1255,20 +1320,29 @@ def extract_preamble_citations(text: str) -> list[dict]:
 
 
 def _expand_par_range(par_range: str) -> list[str]:
-    """Expand '208-210' into ['208', '209', '210']. Single numbers return as-is."""
+    """Expand '208-210' into ['208', '209', '210'].
+
+    Single numbers normalise to their IRI-key shape, folding a trailing
+    superscript into a ``<base>_<m>`` suffix (``'158²'`` → ``'158_2'``,
+    ``'22<sup>1</sup>'`` → ``'22_1'``) so the resolver finds the
+    superscript provision (#254). Ranges stay digit-only — superscripted
+    range endpoints do not occur in the corpus.
+    """
     par_range = par_range.replace("–", "-").replace("‑", "-")
     if "-" in par_range:
         parts = par_range.split("-", 1)
-        try:
+        # Only treat as a range when BOTH endpoints are bare ASCII digits;
+        # a superscript glyph/markup means this is a single number whose
+        # superscript merely contained a hyphen-adjacent token.
+        if parts[0].strip().isdigit() and parts[1].strip().isdigit():
             start = int(parts[0].strip())
             end = int(parts[1].strip())
             if end - start <= 50:  # sanity limit
                 return [str(n) for n in range(start, end + 1)]
-        except ValueError:
-            pass
-    # Single number or failed range
-    clean = re.sub(r"[^\d]", "", par_range)
-    return [clean] if clean else []
+    # Single number (possibly superscripted) or a range that failed the
+    # bare-digit guard.
+    norm = _normalize_par_number(par_range)
+    return [norm] if norm else []
 
 
 def resolve_citation(
@@ -1310,11 +1384,53 @@ def resolve_citation(
     return resolved
 
 
+def _xml_paragraph_key(par_el: ET.Element) -> str:
+    """Return the IRI-suffix key for a ``paragrahv`` element.
+
+    Mirrors ``generate_all_laws._paragraph_id_suffix`` so the key matches
+    the ``_Par_<suffix>`` segment of the provision @id: base digits plus an
+    optional superscript index folded into a ``_<m>`` suffix. Reads the
+    superscript from the ``paragrahvNr@ylaIndeks`` attribute first (the
+    canonical, machine form), then falls back to a Unicode/``<sup>`` glyph
+    in ``kuvatavNr``. Returns ``""`` when no paragraph number is present.
+
+    Without this, ``re.sub(r"[^\\d]", "", par_nr)`` collapsed ``§ 158`` and
+    ``§ 158²`` to the same key ``158`` (last-write-wins), so the superscript
+    provision's body text was lost and ``_load_provision_text`` could not
+    find it (#254).
+    """
+    par_nr = None
+    sup = ""
+    for child in par_el:
+        if ln(child.tag) == "paragrahvNr" and child.text and par_nr is None:
+            par_nr = child.text.strip()
+            ya = (child.attrib.get("ylaIndeks") or "").strip()
+            if ya:
+                sup = ya
+    if not par_nr:
+        return ""
+    base = re.sub(r"[^\d]", "", par_nr)
+    if not base:
+        return ""
+    if not sup:
+        # No machine ylaIndeks — recover a superscript glyph from kuvatavNr.
+        for child in par_el:
+            if ln(child.tag) == "kuvatavNr":
+                kuv = "".join(child.itertext())
+                m = re.search(rf"\d+\s*({_SUP_TOKEN})", kuv)
+                if m:
+                    sup = _superscript_suffix_from_token(m.group(1))
+                break
+    return f"{base}_{sup}" if sup else base
+
+
 def collect_text_from_xml(xml_path: Path) -> dict[str, str]:
     """
     Parse a Riigi Teataja XML and extract text content per paragraph.
 
-    Returns: {paragraph_number: full_text}
+    Returns: {paragraph_key: full_text} where ``paragraph_key`` matches the
+    ``_Par_<suffix>`` IRI segment (e.g. ``"158"`` or ``"158_2"``). Plain and
+    superscript paragraphs therefore stay distinct (#254).
     """
     par_texts: dict[str, str] = {}
     try:
@@ -1325,20 +1441,13 @@ def collect_text_from_xml(xml_path: Path) -> dict[str, str]:
 
     for el in root.iter():
         if ln(el.tag) == "paragrahv":
-            # Find paragraph number
-            par_nr = None
-            for child in el:
-                if ln(child.tag) == "paragrahvNr" and child.text:
-                    par_nr = child.text.strip()
-                    break
-            if not par_nr:
+            key = _xml_paragraph_key(el)
+            if not key:
                 continue
             # Collect all text within this paragraph
             full_text = " ".join(el.itertext())
             full_text = re.sub(r"\s+", " ", full_text).strip()
-            par_nr_clean = re.sub(r"[^\d]", "", par_nr)
-            if par_nr_clean:
-                par_texts[par_nr_clean] = full_text
+            par_texts[key] = full_text
 
     return par_texts
 
@@ -1349,10 +1458,15 @@ def _load_provision_text(
 ) -> str:
     """Compose the scannable text for a provision node.
 
-    Prefers the XML paragraph body keyed by paragraph number (parsed
-    out of the @id), then concatenates the JSON-LD ``estleg:summary``
-    when present. Returns an empty string when neither source carries
-    text.
+    Prefers the XML paragraph body keyed by the ``_Par_<suffix>`` segment
+    of the @id, then concatenates the JSON-LD ``estleg:summary`` when
+    present. Returns an empty string when neither source carries text.
+
+    The lookup key is the full IRI suffix (``158`` or ``158_2``), which
+    matches the key shape produced by ``_xml_paragraph_key`` /
+    ``collect_text_from_xml``. This keeps a superscript provision
+    (``_Par_158_2``) reading its OWN body instead of colliding with the
+    plain provision (``_Par_158``) (#254).
     """
     node_id = node.get("@id", "")
     if not isinstance(node_id, str) or "_Par_" not in node_id:

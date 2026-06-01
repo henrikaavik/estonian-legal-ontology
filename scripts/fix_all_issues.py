@@ -69,7 +69,9 @@ Originally fixed GitHub issues: #2/#17 (namespace), #3/#21 (AÕS naming),
 import datetime as _dt
 import hashlib
 import json
+import os
 import sys
+import tempfile
 from pathlib import Path
 from collections import defaultdict
 
@@ -262,10 +264,39 @@ def process_json_file(filepath: Path) -> dict:
 
 
 def save_json(filepath: Path, doc: dict):
-    """Save JSON with consistent formatting."""
-    with open(filepath, "w", encoding="utf-8") as f:
-        json.dump(doc, f, ensure_ascii=False, indent=2)
-        f.write("\n")
+    """Save JSON with consistent formatting, atomically (#280).
+
+    Delegates to ``estleg_common.save_json`` (tempfile + ``os.replace``) so a
+    crash / ``KeyboardInterrupt`` / disk-full mid-write never leaves a
+    truncated or empty JSON file at ``filepath``. Every JSON write in this
+    module funnels through here.
+    """
+    estleg_common.save_json(Path(filepath), doc)
+
+
+def _atomic_write_text(path: Path, content: str) -> None:
+    """Write ``content`` to ``path`` atomically (#280).
+
+    Used for the non-JSON text writes (generator-script / docs namespace
+    fixes). Writes to a sibling tempfile then ``os.replace``s it into place
+    so a partial write never appears at ``path``.
+    """
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp_fd, tmp_name = tempfile.mkstemp(
+        dir=str(path.parent),
+        prefix=f".{path.name}.",
+        suffix=".tmp",
+    )
+    try:
+        with os.fdopen(tmp_fd, "w", encoding="utf-8") as f:
+            f.write(content)
+        os.replace(tmp_name, path)
+    except BaseException:
+        try:
+            os.unlink(tmp_name)
+        except FileNotFoundError:
+            pass
+        raise
 
 
 def fix_aos_naming():
@@ -574,7 +605,7 @@ def fix_generator_script():
         content = script_path.read_text(encoding="utf-8")
         if OLD_NS in content:
             content = content.replace(OLD_NS, NEW_NS)
-            script_path.write_text(content, encoding="utf-8")
+            _atomic_write_text(script_path, content)
             print(f"  Fixed namespace in {script_path.name}")
         else:
             print(f"  Namespace already correct in {script_path.name}")
@@ -587,7 +618,7 @@ def fix_docs_namespace():
         content = doc_file.read_text(encoding="utf-8")
         if OLD_NS in content:
             content = content.replace(OLD_NS, NEW_NS)
-            doc_file.write_text(content, encoding="utf-8")
+            _atomic_write_text(doc_file, content)
             print(f"  Fixed namespace in docs/{doc_file.name}")
 
 
@@ -690,6 +721,70 @@ def canonical_combined_inputs(krr_dir: Path = KRR_DIR) -> list[Path]:
     return inputs
 
 
+def _value_key(value: object) -> str:
+    """Return a stable de-duplication key for a JSON-LD property value.
+
+    Used by :func:`_merge_node_properties` to union list-valued properties
+    without introducing duplicates. The key is the canonical-JSON encoding
+    of the value, so two structurally identical ``{"@id": ...}`` objects (or
+    two equal scalars) collapse to one.
+    """
+    return json.dumps(value, sort_keys=True, ensure_ascii=False, default=str)
+
+
+def _as_value_list(value: object) -> list:
+    """Coerce a property value to a list of values (a bare value → ``[value]``)."""
+    return list(value) if isinstance(value, list) else [value]
+
+
+def _merge_node_properties(existing: dict, incoming: dict) -> None:
+    """Merge ``incoming``'s properties into ``existing`` in place (#281).
+
+    When two input files contribute a node sharing the same ``@id``, the
+    combined artifact must retain BOTH files' properties rather than
+    silently dropping the later node (the old first-write-wins behaviour).
+    Merge rules:
+
+    * A key present only in ``incoming`` is copied over verbatim.
+    * A key present in both whose value is list-valued on either side is
+      UNIONed (order-preserving, de-duplicated by canonical-JSON value) —
+      the normal JSON-LD multi-valued-property pattern.
+    * A key present in both with scalar/object values that are EQUAL is
+      kept as-is.
+    * A key present in both with DIVERGENT scalar/object values keeps the
+      first file's value and emits a warning (the combined build can't
+      decide which scalar wins, so it stays deterministic and flags it).
+
+    ``@id`` is never merged (it is the merge key and identical by
+    construction).
+    """
+    for key, inc_val in incoming.items():
+        if key == "@id":
+            continue
+        if key not in existing:
+            existing[key] = inc_val
+            continue
+        cur_val = existing[key]
+        if cur_val == inc_val:
+            continue
+        if isinstance(cur_val, list) or isinstance(inc_val, list):
+            merged = _as_value_list(cur_val)
+            seen = {_value_key(v) for v in merged}
+            for item in _as_value_list(inc_val):
+                k = _value_key(item)
+                if k not in seen:
+                    merged.append(item)
+                    seen.add(k)
+            existing[key] = merged
+        else:
+            # Divergent scalars/objects: keep first, warn on divergence.
+            print(
+                f"  WARNING: divergent value for {existing.get('@id', '?')!r} "
+                f"property {key!r}: keeping {cur_val!r}, ignoring {inc_val!r}"
+            )
+    return None
+
+
 def generate_combined_jsonld(krr_dir: Path = KRR_DIR):
     """Generate combined JSON-LD file (Issue #26, DQ-1)."""
     print("\n=== Generating combined JSON-LD ===")
@@ -706,8 +801,13 @@ def generate_combined_jsonld(krr_dir: Path = KRR_DIR):
         "schema": "http://schema.org/",
     }
 
+    # First-occurrence-ordered list of merged nodes, plus an index by @id so a
+    # recurring @id MERGES into the existing node instead of being dropped
+    # wholesale (#281). `all_nodes` preserves insertion order for a stable,
+    # diff-friendly artifact; `node_by_id` maps @id -> the live node object in
+    # `all_nodes` (same object, mutated in place on merge).
     all_nodes: list[dict] = []
-    seen_ids: set[str] = set()
+    node_by_id: dict[str, dict] = {}
     out_path = krr_dir / COMBINED_OUTPUT_NAME
 
     for filepath in canonical_combined_inputs(krr_dir):
@@ -728,10 +828,19 @@ def generate_combined_jsonld(krr_dir: Path = KRR_DIR):
             if not isinstance(node, dict):
                 continue
             nid = node.get("@id", "")
-            if not nid or nid in seen_ids:
+            if not nid:
                 continue
-            all_nodes.append(node)
-            seen_ids.add(nid)
+            existing = node_by_id.get(nid)
+            if existing is None:
+                # First time we see this @id — keep a fresh copy so a later
+                # merge never mutates the source document's node object.
+                new_node = dict(node)
+                all_nodes.append(new_node)
+                node_by_id[nid] = new_node
+            else:
+                # Same @id from a later file — union complementary
+                # properties into the node we already kept (#281).
+                _merge_node_properties(existing, node)
 
     combined = {
         "@context": combined_context,
@@ -741,7 +850,7 @@ def generate_combined_jsonld(krr_dir: Path = KRR_DIR):
     save_json(out_path, combined)
     print(
         f"  Generated {out_path.name} with {len(all_nodes)} nodes "
-        f"from {len(seen_ids)} unique IDs"
+        f"from {len(node_by_id)} unique IDs"
     )
 
 

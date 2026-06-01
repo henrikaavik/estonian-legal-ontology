@@ -126,6 +126,157 @@ def test_combined_builder_skips_unallowed_root_jsonld(tmp_path):
     assert "estleg:A_1" in graph_ids(rebuilt)
 
 
+def test_combined_builder_merges_nodes_sharing_an_id(tmp_path):
+    """Two input nodes sharing an @id are MERGED, not first-write-wins (#281).
+
+    The old builder dropped the second file's node wholesale once its @id had
+    been seen. Now complementary properties from both files are retained:
+    list-valued props are unioned, scalars present in only one file are kept,
+    and the node survives exactly once in the combined graph.
+    """
+    # File A: node with one reference + a scalar only it carries.
+    write_json(
+        tmp_path / "law_a_peep.json",
+        {
+            "@graph": [
+                {
+                    "@id": "estleg:Shared_1",
+                    "@type": ["estleg:LegalProvision"],
+                    "estleg:paragrahv": "§ 1.",
+                    "estleg:references": [{"@id": "estleg:Target_A"}],
+                    "estleg:onlyInA": "alpha",
+                }
+            ]
+        },
+    )
+    # File B: same @id with a DIFFERENT reference + a scalar only it carries.
+    write_json(
+        tmp_path / "law_b_peep.json",
+        {
+            "@graph": [
+                {
+                    "@id": "estleg:Shared_1",
+                    "@type": ["estleg:LegalProvision"],
+                    "estleg:references": [{"@id": "estleg:Target_B"}],
+                    "estleg:onlyInB": "beta",
+                }
+            ]
+        },
+    )
+
+    fix_all_issues.generate_combined_jsonld(tmp_path)
+    combined = read_json(tmp_path / "combined_ontology.jsonld")
+    graph = combined["@graph"]
+
+    # The shared id appears exactly once.
+    shared_nodes = [n for n in graph if n.get("@id") == "estleg:Shared_1"]
+    assert len(shared_nodes) == 1
+    node = shared_nodes[0]
+
+    # Both files' complementary scalars are retained.
+    assert node["estleg:onlyInA"] == "alpha"
+    assert node["estleg:onlyInB"] == "beta"
+    assert node["estleg:paragrahv"] == "§ 1."
+
+    # List-valued `estleg:references` is the UNION of both files' references.
+    ref_ids = {r["@id"] for r in node["estleg:references"]}
+    assert ref_ids == {"estleg:Target_A", "estleg:Target_B"}
+
+
+def test_combined_builder_unions_without_duplicating_shared_values(tmp_path):
+    """Union de-duplicates list values shared by both files (#281)."""
+    common_ref = {"@id": "estleg:Common"}
+    write_json(
+        tmp_path / "law_a_peep.json",
+        {"@graph": [{"@id": "estleg:N", "estleg:references": [common_ref, {"@id": "estleg:A"}]}]},
+    )
+    write_json(
+        tmp_path / "law_b_peep.json",
+        {"@graph": [{"@id": "estleg:N", "estleg:references": [common_ref, {"@id": "estleg:B"}]}]},
+    )
+
+    fix_all_issues.generate_combined_jsonld(tmp_path)
+    node = next(
+        n for n in read_json(tmp_path / "combined_ontology.jsonld")["@graph"]
+        if n["@id"] == "estleg:N"
+    )
+    ref_ids = [r["@id"] for r in node["estleg:references"]]
+    # Common appears once; A and B both present.
+    assert ref_ids.count("estleg:Common") == 1
+    assert set(ref_ids) == {"estleg:Common", "estleg:A", "estleg:B"}
+
+
+def test_combined_builder_keeps_first_on_divergent_scalar(tmp_path, capsys):
+    """Divergent scalar values keep the first file's value and warn (#281)."""
+    write_json(
+        tmp_path / "law_a_peep.json",
+        {"@graph": [{"@id": "estleg:N", "estleg:paragrahv": "§ 1."}]},
+    )
+    write_json(
+        tmp_path / "law_b_peep.json",
+        {"@graph": [{"@id": "estleg:N", "estleg:paragrahv": "§ 999."}]},
+    )
+
+    fix_all_issues.generate_combined_jsonld(tmp_path)
+    node = next(
+        n for n in read_json(tmp_path / "combined_ontology.jsonld")["@graph"]
+        if n["@id"] == "estleg:N"
+    )
+    # First file wins; a warning is surfaced on stdout.
+    assert node["estleg:paragrahv"] == "§ 1."
+    out = capsys.readouterr().out
+    assert "WARNING" in out and "estleg:paragrahv" in out
+
+
+def test_combined_builder_does_not_mutate_source_node(tmp_path):
+    """Merging must not mutate the source document's node object (#281).
+
+    The builder keeps a copy of the first node, so a later merge can't bleed
+    back into the on-disk source file's in-memory representation. We assert
+    the source file on disk is byte-unchanged after the build.
+    """
+    src_a = tmp_path / "law_a_peep.json"
+    write_json(src_a, {"@graph": [{"@id": "estleg:N", "estleg:references": [{"@id": "estleg:A"}]}]})
+    before = src_a.read_text(encoding="utf-8")
+    write_json(
+        tmp_path / "law_b_peep.json",
+        {"@graph": [{"@id": "estleg:N", "estleg:references": [{"@id": "estleg:B"}]}]},
+    )
+
+    fix_all_issues.generate_combined_jsonld(tmp_path)
+    assert src_a.read_text(encoding="utf-8") == before
+
+
+def test_save_json_is_atomic(tmp_path):
+    """`fix_all_issues.save_json` writes atomically and leaves no tempfile (#280)."""
+    target = tmp_path / "out.json"
+    fix_all_issues.save_json(target, {"@graph": [{"@id": "estleg:X"}]})
+    text = target.read_text(encoding="utf-8")
+    assert text.endswith("\n")
+    assert read_json(target) == {"@graph": [{"@id": "estleg:X"}]}
+    assert list(tmp_path.glob(".*tmp")) == []
+
+
+def test_atomic_write_text_leaves_original_on_failure(tmp_path, monkeypatch):
+    """`_atomic_write_text` preserves the original file if the write fails (#280)."""
+    import pytest
+
+    target = tmp_path / "doc.md"
+    target.write_text("original\n", encoding="utf-8")
+
+    # Force os.replace to fail AFTER the tempfile is written.
+    def boom(*_args, **_kwargs):
+        raise OSError("simulated rename failure")
+
+    monkeypatch.setattr(fix_all_issues.os, "replace", boom)
+    with pytest.raises(OSError):
+        fix_all_issues._atomic_write_text(target, "new content")
+
+    # Original intact, no tempfile dropping survives.
+    assert target.read_text(encoding="utf-8") == "original\n"
+    assert list(tmp_path.glob(".*tmp")) == []
+
+
 def test_combined_context_binds_dcterms(tmp_path):
     """Regression for issue #139/#138.
 

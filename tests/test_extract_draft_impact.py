@@ -377,3 +377,269 @@ class TestGeneratedDraftValueObjects:
             "Rahandusministeerium": 1,
         }
         assert report["summary"]["affected_law_names_unresolved"] == 0
+
+
+# --------------------------------------------------------------------- #
+# Issue #289 — act-node resolution. ``estleg:affectedBy`` must land on the
+# act node (mirroring extract_temporal_data.find_act_node), never on a
+# blind ``graph[0]`` that might be a LegalConcept.
+# --------------------------------------------------------------------- #
+
+
+class TestFindActNode:
+    def test_prefers_ontology_act_then_any_act_then_none(self):
+        from extract_draft_impact import find_act_node
+        concept = {"@id": "estleg:C1", "@type": ["estleg:LegalConcept"]}
+        plain_act = {"@id": "estleg:A1", "@type": ["estleg:Act"]}
+        onto_act = {
+            "@id": "estleg:M1",
+            "@type": ["owl:Ontology", "estleg:Act"],
+        }
+        # owl:Ontology+Act wins even when it is not first.
+        assert find_act_node([concept, plain_act, onto_act]) is onto_act
+        # Falls back to any estleg:Act node.
+        assert find_act_node([concept, plain_act]) is plain_act
+        # No act node → None (caller must skip, not stamp graph[0]).
+        assert find_act_node([concept]) is None
+        assert find_act_node([]) is None
+        # A bare owl:Ontology (catalogue) without estleg:Act is NOT an act.
+        assert find_act_node(
+            [{"@id": "estleg:Cat", "@type": ["owl:Ontology"]}]
+        ) is None
+
+    def test_string_type_node_handled(self):
+        from extract_draft_impact import find_act_node
+        assert find_act_node([{"@id": "estleg:A", "@type": "estleg:Act"}]) == {
+            "@id": "estleg:A",
+            "@type": "estleg:Act",
+        }
+
+
+class TestInverseLinkSkipsNonActGraph0:
+    """A law peep whose ``graph[0]`` is a ``LegalConcept`` (no act node)
+    must be SKIPPED — ``estleg:affectedBy`` must never be written onto the
+    concept node (issue #289 / the #128 corruption pattern).
+    """
+
+    def _run(self, tmp_path, monkeypatch, law_graph):
+        import extract_draft_impact as mod
+        import estleg_common
+
+        krr = tmp_path / "krr_outputs"
+        eelnoud = krr / "eelnoud"
+        eelnoud.mkdir(parents=True)
+
+        law_file = krr / "concept_only_peep.json"
+        law_file.write_text(
+            json.dumps({
+                "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+                "@graph": law_graph,
+            }),
+            encoding="utf-8",
+        )
+
+        (krr / "INDEX.json").write_text(
+            json.dumps({
+                "total_laws": 1,
+                "laws": [{"name": "mingi_seadus", "files": [law_file.name]}],
+            }),
+            encoding="utf-8",
+        )
+
+        combined = eelnoud / "eelnoud_combined.jsonld"
+        combined.write_text(
+            json.dumps({
+                "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+                "@graph": [
+                    {
+                        "@id": "estleg:Draft_X",
+                        "@type": ["estleg:DraftLegislation", "owl:NamedIndividual"],
+                        "rdfs:label": {
+                            "@value": "Mingi seaduse muutmise seadus",
+                            "@language": "et",
+                        },
+                        "estleg:affectedLawName": [
+                            {"@value": "Mingi seaduse", "@language": "et"}
+                        ],
+                    }
+                ],
+            }),
+            encoding="utf-8",
+        )
+
+        monkeypatch.setattr(mod, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "EELNOUD_DIR", eelnoud)
+        monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+
+        mod.main()
+        return law_file
+
+    def test_graph0_legalconcept_no_act_node_is_skipped(self, tmp_path, monkeypatch):
+        # graph[0] is a LegalConcept; there is NO act node anywhere.
+        law_file = self._run(
+            tmp_path,
+            monkeypatch,
+            [
+                {"@id": "estleg:Concept_1", "@type": ["estleg:LegalConcept"]},
+                {"@id": "estleg:Prov_1", "@type": ["estleg:LegalProvision"]},
+            ],
+        )
+        doc = json.loads(law_file.read_text(encoding="utf-8"))
+        # No node may have gained estleg:affectedBy — the concept-node
+        # graph[0] fallback would have corrupted it.
+        for node in doc["@graph"]:
+            assert "estleg:affectedBy" not in node, node
+
+    def test_affectedby_lands_on_act_node_not_graph0(self, tmp_path, monkeypatch):
+        # graph[0] is a LegalConcept but a real estleg:Act node follows —
+        # the link must land on the Act node, never graph[0].
+        law_file = self._run(
+            tmp_path,
+            monkeypatch,
+            [
+                {"@id": "estleg:Concept_1", "@type": ["estleg:LegalConcept"]},
+                {
+                    "@id": "estleg:Act_1",
+                    "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
+                },
+            ],
+        )
+        doc = json.loads(law_file.read_text(encoding="utf-8"))
+        concept = doc["@graph"][0]
+        act = doc["@graph"][1]
+        assert "estleg:affectedBy" not in concept, concept
+        assert act["estleg:affectedBy"] == [{"@id": "estleg:Draft_X"}]
+
+
+# --------------------------------------------------------------------- #
+# Issue #266 — duplicate amendsLaw IRIs. Two affected-name strings that
+# resolve to the SAME act IRI must produce a single amendsLaw IRI and be
+# counted once in ``affected_law_names_resolved``.
+# --------------------------------------------------------------------- #
+
+
+class TestAmendsLawDedup:
+    def test_duplicate_resolution_dedups_iri_and_count(self, tmp_path, monkeypatch):
+        import extract_draft_impact as mod
+        import estleg_common
+
+        krr = tmp_path / "krr_outputs"
+        eelnoud = krr / "eelnoud"
+        eelnoud.mkdir(parents=True)
+
+        law_file = krr / "riigi_teataja_seadus_peep.json"
+        law_file.write_text(
+            json.dumps({
+                "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+                "@graph": [
+                    {
+                        "@id": "estleg:RTS_Map_2026",
+                        "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
+                    }
+                ],
+            }),
+            encoding="utf-8",
+        )
+
+        (krr / "INDEX.json").write_text(
+            json.dumps({
+                "total_laws": 1,
+                "laws": [
+                    {"name": "riigi_teataja_seadus", "files": [law_file.name]}
+                ],
+            }),
+            encoding="utf-8",
+        )
+
+        combined = eelnoud / "eelnoud_combined.jsonld"
+        combined.write_text(
+            json.dumps({
+                "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+                "@graph": [
+                    {
+                        "@id": "estleg:Draft_DUP",
+                        "@type": ["estleg:DraftLegislation", "owl:NamedIndividual"],
+                        "rdfs:label": {
+                            "@value": "Riigi Teataja seaduse muutmise seadus",
+                            "@language": "et",
+                        },
+                        # Two distinct strings that BOTH resolve to the same
+                        # act IRI (the real target + the phantom bill title
+                        # that #266 used to leak through detect_affected_laws).
+                        "estleg:affectedLawName": [
+                            {"@value": "Riigi Teataja seaduse", "@language": "et"},
+                            {
+                                "@value": "Riigi Teataja seaduse muutmise seaduse",
+                                "@language": "et",
+                            },
+                        ],
+                    }
+                ],
+            }),
+            encoding="utf-8",
+        )
+
+        monkeypatch.setattr(mod, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "EELNOUD_DIR", eelnoud)
+        monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+
+        mod.main()
+
+        enriched = json.loads(combined.read_text(encoding="utf-8"))
+        draft = enriched["@graph"][0]
+        amends = draft["estleg:amendsLaw"]
+        # Single object (deduped), NOT a 2-element list of identical IRIs.
+        assert amends == {"@id": "estleg:RTS_Map_2026"}, amends
+
+        # The act node's inverse link is deduped to a single draft ref.
+        law_doc = json.loads(law_file.read_text(encoding="utf-8"))
+        assert law_doc["@graph"][0]["estleg:affectedBy"] == [
+            {"@id": "estleg:Draft_DUP"}
+        ]
+
+        report = json.loads(
+            (krr / "draft_impact_report.json").read_text(encoding="utf-8")
+        )
+        # Resolved counted ONCE per distinct IRI, not once per name string.
+        assert report["summary"]["affected_law_names_resolved"] == 1
+
+
+# --------------------------------------------------------------------- #
+# Issue #295 — no wall-clock ``generated`` field in the tracked report.
+# --------------------------------------------------------------------- #
+
+
+class TestReportIsByteStable:
+    def test_report_has_no_generated_timestamp(self, tmp_path, monkeypatch):
+        import extract_draft_impact as mod
+        import estleg_common
+
+        krr = tmp_path / "krr_outputs"
+        eelnoud = krr / "eelnoud"
+        eelnoud.mkdir(parents=True)
+
+        combined = eelnoud / "eelnoud_combined.jsonld"
+        combined.write_text(
+            json.dumps({
+                "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+                "@graph": [],
+            }),
+            encoding="utf-8",
+        )
+        (krr / "INDEX.json").write_text(
+            json.dumps({"laws": []}), encoding="utf-8"
+        )
+
+        monkeypatch.setattr(mod, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "EELNOUD_DIR", eelnoud)
+        monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+
+        mod.main()
+
+        report = json.loads(
+            (krr / "draft_impact_report.json").read_text(encoding="utf-8")
+        )
+        assert "generated" not in report, (
+            "draft_impact_report.json must not embed a wall-clock "
+            "'generated' timestamp (#295 churn)"
+        )

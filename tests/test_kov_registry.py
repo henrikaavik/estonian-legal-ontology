@@ -412,6 +412,130 @@ class TestBuildIssuerRegistry:
         z_pos = msg.index("zzz_vallavolikogu")
         assert a_pos < m_pos < z_pos
 
+    def test_curated_row_overrides_successful_auto_match(self, tmp_path, capsys):
+        # Regression test for Finding #283: a slug that BOTH auto-matches
+        # AND has a curated row must take the curated value — the curated
+        # CSV is an explicit human correction and must win. The previous
+        # implementation consulted auto-match first and silently discarded
+        # the correction. `tallinna_linnavolikogu` auto-matches to 0784;
+        # a curated row pins it to 0793 (Tartu linn, present in the min
+        # fixture) and the curated value must survive.
+        kov_root = tmp_path / "regulations" / "kov"
+        (kov_root / "tallinna_linnavolikogu").mkdir(parents=True)
+
+        muns = load_municipalities(MIN_MUNICIPALITIES)
+        slugs = discover_issuer_slugs(kov_root)
+        curated = {
+            "tallinna_linnavolikogu": {
+                "currentMunicipalityCode": "0793",
+                "mappingSource": "manual-review",
+                "mappingEvidence": "curator correction overriding auto-match",
+            }
+        }
+        issuers = build_issuer_registry(slugs, muns, curated)
+        entry = issuers["tallinna_linnavolikogu"]
+        # Curated value wins over the auto-match 0784.
+        assert entry["currentMunicipalityCode"] == "0793"
+        assert entry["mappingSource"] == "manual-review"
+        assert entry["mappingEvidence"] == (
+            "curator correction overriding auto-match"
+        )
+        # The divergence is surfaced as a WARN naming the shadowed
+        # auto-match value so it is auditable, not silent.
+        err = capsys.readouterr().err
+        assert "WARN" in err
+        assert "tallinna_linnavolikogu" in err
+        assert "0784" in err  # the shadowed auto-match value
+        assert "0793" in err  # the curated value that won
+
+    def test_curated_row_agreeing_with_auto_match_does_not_warn(
+        self, tmp_path, capsys,
+    ):
+        # When a curated row maps to the SAME code auto-match would have
+        # produced there is no divergence — no WARN, but the curated
+        # source/evidence still wins (so the audit trail is preserved).
+        kov_root = tmp_path / "regulations" / "kov"
+        (kov_root / "tallinna_linnavolikogu").mkdir(parents=True)
+
+        muns = load_municipalities(MIN_MUNICIPALITIES)
+        slugs = discover_issuer_slugs(kov_root)
+        curated = {
+            "tallinna_linnavolikogu": {
+                "currentMunicipalityCode": "0784",  # == auto-match result
+                "mappingSource": "manual-review",
+                "mappingEvidence": "confirmed against EHAK",
+            }
+        }
+        issuers = build_issuer_registry(slugs, muns, curated)
+        entry = issuers["tallinna_linnavolikogu"]
+        assert entry["currentMunicipalityCode"] == "0784"
+        # Curated source still recorded (not silently relabelled auto-match).
+        assert entry["mappingSource"] == "manual-review"
+        assert "WARN" not in capsys.readouterr().err
+
+    def test_curated_override_unknown_ehak_raises(self, tmp_path):
+        # A curated override that points at a code not in the
+        # municipalities registry must still surface loudly — the
+        # override path validates the same way the old fall-through did.
+        kov_root = tmp_path / "regulations" / "kov"
+        (kov_root / "tallinna_linnavolikogu").mkdir(parents=True)
+
+        muns = load_municipalities(MIN_MUNICIPALITIES)
+        slugs = discover_issuer_slugs(kov_root)
+        curated = {
+            "tallinna_linnavolikogu": {
+                "currentMunicipalityCode": "9999",
+                "mappingSource": "manual-review",
+                "mappingEvidence": "bad code",
+            }
+        }
+        with pytest.raises(ValueError, match="9999"):
+            build_issuer_registry(slugs, muns, curated)
+
+
+class TestHistoricalMunicipalityNameField:
+    """Regression tests for Finding #284: `historicalMunicipalityName`
+    must only be populated for issuers with a real predecessor
+    (`mappingSource != "auto-match"`). Auto-match issuers map to a
+    still-current municipality, so naming it as a "historical" unit is
+    misleading — the field stays empty (and the JSON-LD builder omits
+    the property entirely).
+    """
+
+    def test_auto_match_issuer_has_no_historical_name(self, tmp_path):
+        kov_root = tmp_path / "regulations" / "kov"
+        (kov_root / "tallinna_linnavolikogu").mkdir(parents=True)
+
+        muns = load_municipalities(MIN_MUNICIPALITIES)
+        slugs = discover_issuer_slugs(kov_root)
+        issuers = build_issuer_registry(slugs, muns, curated={})
+
+        tallinn = issuers["tallinna_linnavolikogu"]
+        # Sanity: this issuer IS an auto-match (current municipality).
+        assert tallinn["mappingSource"] == "auto-match"
+        # And so it carries NO (misleading) historical name.
+        assert tallinn["historicalMunicipalityName"] == ""
+
+    def test_predecessor_issuer_keeps_historical_name(self, tmp_path):
+        # A curated (haldusreform-2017) issuer maps to a former unit, so
+        # the historical name IS populated from the slug root.
+        kov_root = tmp_path / "regulations" / "kov"
+        (kov_root / "abja_vallavolikogu").mkdir(parents=True)
+
+        muns = load_municipalities(MIN_MUNICIPALITIES)
+        slugs = discover_issuer_slugs(kov_root)
+        curated = {
+            "abja_vallavolikogu": {
+                "currentMunicipalityCode": "0480",
+                "mappingSource": "haldusreform-2017",
+                "mappingEvidence": "RT I 21.06.2017 1",
+            }
+        }
+        issuers = build_issuer_registry(slugs, muns, curated)
+        abja = issuers["abja_vallavolikogu"]
+        assert abja["mappingSource"] == "haldusreform-2017"
+        assert abja["historicalMunicipalityName"] == "Abja"
+
 
 class TestNormalizeTitle:
     """`normalize_title` takes a parts-dict (from `parse_issuer_slug`)

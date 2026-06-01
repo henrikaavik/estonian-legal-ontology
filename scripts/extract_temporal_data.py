@@ -18,7 +18,7 @@ import json
 import re
 import time
 import xml.etree.ElementTree as ET
-from datetime import date, datetime, timezone
+from datetime import date, datetime
 from pathlib import Path
 
 from estleg_common import (
@@ -303,6 +303,12 @@ def determine_temporal_status(temporal: dict, evaluation_date: str | None = None
     "inForce" which mass-misclassified repealed/not-yet-effective laws
     that lacked XML metadata. ``date`` objects (not ISO strings) drive
     all comparisons to avoid lexicographic-ordering surprises.
+
+    Cross-field sanity guard (#287): a repeal/invalidation/valid_until
+    date that precedes the entry_into_force date is contradictory
+    source data (a law cannot be repealed before it ever takes force).
+    Rather than silently classifying such a law ``repealed`` we return
+    ``unknown`` so the data-quality signal is preserved.
     """
     today_iso = evaluation_date or date.today().isoformat()
     today = _coerce_iso_date(today_iso)
@@ -318,6 +324,18 @@ def determine_temporal_status(temporal: dict, evaluation_date: str | None = None
     )
     if not any(temporal.get(k) for k in actionable_keys):
         return "unknown"
+
+    # Cross-field sanity guard (#287): if any repeal/invalidation/
+    # valid_until date is strictly before entry_into_force, the source
+    # dates contradict each other. Classify ``unknown`` instead of
+    # ``repealed`` (a law repealed before it ever took force is a data
+    # error, not a genuinely repealed law).
+    if temporal.get("entry_into_force"):
+        entry = _coerce_iso_date(temporal["entry_into_force"])
+        for end_key in ("invalidation_date", "valid_until"):
+            if temporal.get(end_key):
+                if _coerce_iso_date(temporal[end_key]) < entry:
+                    return "unknown"
 
     # If there is an invalidation date or valid_until in the past, it is repealed
     if temporal.get("invalidation_date"):
@@ -738,12 +756,19 @@ def main(evaluation_date: str | None = None):
             dirty = True
             _file_triples += 1
 
-        if temporal.get("valid_until") and status == "repealed":
-            ontology_node["estleg:repealDate"] = make_xsd_date(temporal["valid_until"])
-            dirty = True
-            _file_triples += 1
-        elif temporal.get("invalidation_date"):
-            ontology_node["estleg:repealDate"] = make_xsd_date(temporal["invalidation_date"])
+        # repealDate semantics (#287): emit whenever a repeal/
+        # invalidation/valid_until date is present, regardless of
+        # whether it is in the past or scheduled for the future — a
+        # scheduled future repeal is informative. The two date sources
+        # are now treated symmetrically (previously ``valid_until`` only
+        # wrote ``repealDate`` when ``status == "repealed"`` while
+        # ``invalidation_date`` wrote it unconditionally, so the field's
+        # meaning differed by source). ``invalidation_date`` takes
+        # precedence when both are present (it is the more specific
+        # field), mirroring the prior precedence.
+        repeal_date = temporal.get("invalidation_date") or temporal.get("valid_until")
+        if repeal_date:
+            ontology_node["estleg:repealDate"] = make_xsd_date(repeal_date)
             dirty = True
             _file_triples += 1
 
@@ -781,8 +806,13 @@ def main(evaluation_date: str | None = None):
 
     # Generate report
     print("\n  Generating temporal_data_report.json...")
+    # Determinism (#295): the report body must NOT embed a wall-clock
+    # ``generated`` timestamp (``date.today()``) — that re-diffs the
+    # git-tracked report on every run regardless of whether the
+    # underlying data changed (timestamp-only churn). The declared
+    # ``evaluationDate`` below already records the date this run was
+    # evaluated against and is deterministic when the caller pins it.
     report = {
-        "generated": date.today().isoformat(),
         "evaluationDate": evaluation_date,
         "summary": {
             "total_xml_files": len(unique_xml_paths),
@@ -818,10 +848,16 @@ def main(evaluation_date: str | None = None):
 
     # ---------- coverage report ----------
     _wall, _rate, _peak_mb = measure_runtime(_start, _files_processed)
+    # Determinism (#295): pin the coverage report's ``run_timestamp``
+    # to the declared evaluation date (at midnight UTC) instead of the
+    # wall-clock ``datetime.now()`` so the timestamp field stops
+    # contributing wall-clock churn. ``validate_run_timestamp`` requires
+    # a UTC ISO-8601 string, which this satisfies.
+    _run_timestamp = f"{evaluation_date}T00:00:00+00:00"
     write_coverage_report(
         CoverageReport(
             pipeline="extract_temporal_data",
-            run_timestamp=datetime.now(timezone.utc).isoformat(),
+            run_timestamp=_run_timestamp,
             pipeline_version=resolve_pipeline_version(),
             input_files_total=len(all_peep_files),
             input_files_kov=len(_kov_files),

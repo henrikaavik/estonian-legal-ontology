@@ -17,12 +17,17 @@ Output placement (issue #198 iteration — "infra + sample, full run is a follow
     ``krr_outputs/amendments/``; ``shacl_validate_all.py``'s ``sidecars`` bucket validates
     the directory against ``estleg:ProvisionVersionShape``;
   * each ProvisionVersion links *into* the law via ``estleg:versionOf`` (a one-directional
-    edge to the existing ``estleg:LegalProvision`` IRI). The ``estleg:hasVersion`` /
-    ``estleg:currentVersion`` back-links onto the law peep are **deferred** — wiring them
-    today would create a dangling ``hasVersion -> estleg:..._v<rid>`` reference inside
-    ``combined_ontology.jsonld`` (the sidecar is not a combined input). They are added once
-    ``provision_versions/`` is either a combined input or the back-links are emitted into
-    the same sidecar (see the #198 follow-up).
+    edge to the existing ``estleg:LegalProvision`` IRI). To make the *head* version of
+    each chain forward-reachable (issue #271 — ``versionOf`` alone leaves the current
+    version with zero inbound edges), the sidecar **also** carries one back-link stub per
+    versioned provision: a node keyed on the stable ``estleg:LegalProvision`` IRI with
+    ``estleg:currentVersion`` -> head ``ProvisionVersion`` and ``estleg:hasVersion`` ->
+    every ``ProvisionVersion`` of that provision. Both objects are version nodes emitted
+    into *this same sidecar*, so the edges resolve locally and never dangle (the original
+    #198 objection was specifically that emitting these into the *law peep* would point at
+    sidecar-only ids). The stubs carry no ``estleg:paragrahv`` / ``@type``, so neither
+    ``LegalProvisionShape`` (``sh:targetSubjectsOf estleg:paragrahv``) nor
+    ``ProvisionVersionShape`` (``sh:targetClass estleg:ProvisionVersion``) fires on them.
   * a coverage report goes to ``krr_outputs/reports/kov/extract_provision_versions_coverage.json``
     (the same place the other pipeline coverage reports live).
 
@@ -216,10 +221,54 @@ def build_law_target(slug: str, krr_dir: Path = KRR_DIR) -> LawTarget | None:
 # ---------------------------------------------------------------------------
 
 
+_ISO_DATE_RE = re.compile(r"(?P<date>\d{4}-\d{2}-\d{2})")
+
+
 def _strip_offset(value: str | None) -> str | None:
+    """Normalise an RT timestamp to a bare ``YYYY-MM-DD`` calendar date.
+
+    RT ``kehtivus`` endpoints arrive in several shapes — ``2020-01-01``,
+    ``2020-01-01T00:00:00``, ``2020-01-01 00:00:00+02:00``, ``2020-01-01T...Z``
+    and (defensively) negative offsets like ``...-05:00``. The downstream chain
+    logic compares these against a ``YYYY-MM-DD`` ``today``, so we must drop any
+    ``T``/space-separated time component *and* any signed (``+``/``-``) or ``Z``
+    timezone offset uniformly, leaving only the date. We prefer the strict
+    ``datetime`` parse (which understands all of the above) and fall back to a
+    leading-date regex for anything it cannot parse, returning ``None`` only when
+    no calendar date is present at all.
+    """
     if not value:
         return None
-    return value.split("+", 1)[0].split("Z", 1)[0].strip() or None
+    text = value.strip()
+    if not text:
+        return None
+    candidate = text.replace("Z", "+00:00") if text.endswith("Z") else text
+    try:
+        return datetime.fromisoformat(candidate).date().isoformat()
+    except ValueError:
+        pass
+    match = _ISO_DATE_RE.match(text)
+    if match:
+        try:
+            return date.fromisoformat(match.group("date")).isoformat()
+        except ValueError:
+            return None
+    return None
+
+
+def _date_before(left: str, right: str, *, inclusive: bool) -> bool:
+    """Return ``left <= right`` (``inclusive``) / ``left < right`` as calendar dates.
+
+    Both arguments are expected to be ``_strip_offset``-normalised ``YYYY-MM-DD``
+    strings; if either cannot be parsed as a date we fall back to a lexicographic
+    comparison (which is order-preserving for fixed-width ISO dates).
+    """
+    try:
+        left_d = date.fromisoformat(left)
+        right_d = date.fromisoformat(right)
+    except (TypeError, ValueError):
+        return left <= right if inclusive else left < right
+    return left_d <= right_d if inclusive else left_d < right_d
 
 
 def _search(params: dict[str, object], *, timeout: int = 30) -> list[dict]:
@@ -273,6 +322,12 @@ def fetch_redaction_chain(
     (entry into force after ``today``) are excluded — they are not yet in force.
     """
     today = today or date.today().isoformat()
+    # Compare validity-interval endpoints as calendar dates (not as raw strings):
+    # ``_strip_offset`` already normalises each endpoint to ``YYYY-MM-DD``, and we
+    # normalise ``today`` the same way so a caller passing a ``T``-time/offset
+    # ``today`` is handled too. Fall back to the original string compare only if
+    # ``today`` is somehow unparseable.
+    today_date = _strip_offset(today) or today
     aktid = _search(
         {
             "leht": 1,
@@ -295,7 +350,13 @@ def fetch_redaction_chain(
         lopp = _strip_offset(keh.get("lopp"))
         if not algus or not lopp:
             continue
-        if algus > today or lopp >= today:
+        # Keep iff the edition started on/before today (algus <= today) AND it had
+        # already ended before today (lopp < today). Equivalent to the original
+        # ``algus > today or lopp >= today`` skip, but compared as dates.
+        if not (
+            _date_before(algus, today_date, inclusive=True)
+            and _date_before(lopp, today_date, inclusive=False)
+        ):
             continue
         existing = by_from.get(algus)
         if existing is None or (a.get("muudetud") or 0) > (existing.get("muudetud") or 0):
@@ -430,6 +491,12 @@ def synthesise_versions(
     nodes: list[dict] = []
     # Group emitted version IRIs per provision so we can chain afterwards.
     per_provision: dict[str, list[dict]] = {}
+    # Guard ProvisionVersion @id uniqueness across the whole sidecar. The id is
+    # ``<provision IRI>_v<globalId>``; an empty/duplicate ``globalId`` would
+    # otherwise collide (e.g. two redactions both missing a ``globaalID`` for the
+    # same provision -> identical ``..._v`` id). Mirror the amendment generator's
+    # disambiguation so re-runs stay idempotent.
+    seen_version_ids: set[str] = set()
 
     for suffix, provision_iri in sorted(target.provisions.items()):
         current_norm: str | None = None
@@ -449,7 +516,20 @@ def synthesise_versions(
                 # version a (required) ``versionValidFrom``. Treat the text as carried
                 # forward rather than emit an invalid node.
                 continue
+            if not redaction.global_id:
+                # No redaction id ⇒ no stable, non-colliding version identity and no
+                # ``versionRedactionId``. Carry the text forward (advance current_norm
+                # above) rather than emit a node with an ambiguous ``..._v`` @id.
+                continue
             version_iri = f"{provision_iri}_v{redaction.global_id}"
+            # Disambiguate any residual collision (belt-and-braces; empty ids are
+            # already skipped above) so the sidecar never carries a duplicate @id.
+            base_version_iri = version_iri
+            disambig = 1
+            while version_iri in seen_version_ids:
+                disambig += 1
+                version_iri = f"{base_version_iri}_{disambig}"
+            seen_version_ids.add(version_iri)
             node = {
                 "@id": version_iri,
                 "@type": ["owl:NamedIndividual", "estleg:ProvisionVersion"],
@@ -477,6 +557,64 @@ def synthesise_versions(
             node["estleg:supersededByVersion"] = {"@id": nxt["@id"]}
             node["estleg:versionValidTo"] = _xsd_date(nxt["estleg:versionValidFrom"]["@value"])
     return nodes
+
+
+def build_provision_backlinks(version_nodes: list[dict]) -> list[dict]:
+    """Derive ``LegalProvision`` forward-link nodes from a list of version nodes.
+
+    Issue #271: ``versionOf`` is one-directional, so the *head* version of each
+    chain (the one nothing supersedes) is unreachable by forward traversal — a
+    consumer cannot navigate ``LegalProvision -> current ProvisionVersion``. We
+    materialise that edge by emitting, per provision, a node keyed on the stable
+    ``estleg:LegalProvision`` IRI carrying:
+
+    * ``estleg:currentVersion`` -> the head ``ProvisionVersion`` (the node with no
+      ``estleg:supersededByVersion``), and
+    * ``estleg:hasVersion`` -> every ``ProvisionVersion`` of that provision (the
+      inverse of ``versionOf``; safe to emit now that all version nodes exist in
+      the same sidecar).
+
+    Every referenced version IRI is present in ``version_nodes`` (same sidecar), so
+    no edge dangles. These back-link nodes deliberately carry **no**
+    ``estleg:paragrahv`` and **no** ``@type``: ``estleg:LegalProvisionShape`` targets
+    ``sh:targetSubjectsOf estleg:paragrahv`` and ``estleg:ProvisionVersionShape``
+    targets ``estleg:ProvisionVersion``, so neither shape fires on these merge
+    stubs — they only contribute the (optional, ``sh:nodeKind sh:IRI``)
+    ``currentVersion`` / ``hasVersion`` edges onto the existing provision node.
+    """
+    # Preserve first-seen provision order; collect versions and detect the head.
+    order: list[str] = []
+    versions_by_provision: dict[str, list[str]] = {}
+    head_by_provision: dict[str, str] = {}
+    for node in version_nodes:
+        vof = node.get("estleg:versionOf")
+        vid = node.get("@id")
+        if not isinstance(vof, dict) or not isinstance(vid, str):
+            continue
+        provision_iri = vof.get("@id")
+        if not isinstance(provision_iri, str) or not provision_iri:
+            continue
+        if provision_iri not in versions_by_provision:
+            versions_by_provision[provision_iri] = []
+            order.append(provision_iri)
+        versions_by_provision[provision_iri].append(vid)
+        # The head is the (unique) version with no successor. Last-writer-wins is
+        # fine: a well-formed chain has exactly one such node.
+        if "estleg:supersededByVersion" not in node:
+            head_by_provision[provision_iri] = vid
+
+    backlinks: list[dict] = []
+    for provision_iri in order:
+        version_ids = versions_by_provision[provision_iri]
+        node: dict = {
+            "@id": provision_iri,
+            "estleg:hasVersion": [{"@id": vid} for vid in version_ids],
+        }
+        head = head_by_provision.get(provision_iri)
+        if head is not None:
+            node["estleg:currentVersion"] = {"@id": head}
+        backlinks.append(node)
+    return backlinks
 
 
 def _rel(path: Path) -> str:
@@ -508,7 +646,13 @@ def write_sidecar(target: LawTarget, version_nodes: list[dict], *, out_dir: Path
         },
         "dc:source": target.title,
     }
-    doc = {"@context": dict(CONTEXT), "@graph": [map_node, *version_nodes]}
+    # Issue #271: append LegalProvision back-link stubs (estleg:currentVersion /
+    # estleg:hasVersion) so the head version of every chain is forward-reachable.
+    # Every referenced version IRI is one of ``version_nodes`` above, so the
+    # ``currentVersion`` / ``hasVersion`` objects resolve within this sidecar and
+    # do not dangle.
+    backlink_nodes = build_provision_backlinks(version_nodes)
+    doc = {"@context": dict(CONTEXT), "@graph": [map_node, *version_nodes, *backlink_nodes]}
     out_path = out_dir / f"{target.slug}.jsonld"
     tmp = out_path.with_suffix(out_path.suffix + ".tmp")
     with open(tmp, "w", encoding="utf-8") as fh:

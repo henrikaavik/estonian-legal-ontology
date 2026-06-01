@@ -760,6 +760,70 @@ class TestVerifyLayer1:
         # The path of the offending file appears in the sample list.
         assert "no_id_peep.json" in detail
 
+    def _write_kov_act(
+        self, tmp_path: Path, name: str, extra_types: list[str],
+    ) -> None:
+        """Stage one fully-enriched KOV act file with the given extra
+        @type entries (so the presence-check passes and only the
+        Finding #267 absence-warning varies)."""
+        kov = (
+            tmp_path / "krr_outputs" / "regulations" / "kov"
+            / "x_vallavolikogu"
+        )
+        kov.mkdir(parents=True, exist_ok=True)
+        (kov / name).write_text(json.dumps({
+            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+                         "owl": "http://www.w3.org/2002/07/owl#"},
+            "@graph": [
+                {"@id": "estleg:Reg_x_Map_2026",
+                 "@type": ["owl:Ontology", "estleg:MunicipalRegulation",
+                           "estleg:Act", *extra_types],
+                 "estleg:enactedBy": {"@id": "estleg:Issuer_x"},
+                 "estleg:enactedByMunicipality": {
+                     "@id": "estleg:Municipality_EHAK_0001"},
+                 "estleg:titleNormalized": "hankekord"},
+            ],
+        }), encoding="utf-8")
+
+    def test_kov_act_dual_typed_as_state_regulation_warns_not_fails(
+        self, tmp_path, monkeypatch,
+    ):
+        # Finding #267 absence-assertion (synthetic, in-isolation): a KOV
+        # act node that ALSO carries a state-regulation type must be
+        # surfaced as a WARN in the detail string — but must NOT flip the
+        # check to FAIL, because the committed corpus is still dual-typed
+        # pre-regen and a hard gate would break the green build.
+        self._stage(tmp_path)
+        self._write_kov_act(
+            tmp_path, "dual_peep.json",
+            extra_types=["estleg:NationalRegulation"],
+        )
+        self._patch_paths(monkeypatch, tmp_path)
+        import verify_layer1 as mod
+        ok, detail = mod.check_kov_acts()
+        # Non-fatal: the file is fully enriched, so the check passes.
+        assert ok is True
+        # ...but the contradictory state-regulation type is reported.
+        assert "WARN" in detail
+        assert "state-regulation" in detail
+        assert "estleg:NationalRegulation" in detail
+        assert "dual_peep.json" in detail
+
+    def test_clean_kov_act_emits_no_state_regulation_warning(
+        self, tmp_path, monkeypatch,
+    ):
+        # The complement: a correctly-typed KOV act (MunicipalRegulation
+        # + Act only) produces NO Finding #267 warning. This is the shape
+        # the corpus will have post-regen.
+        self._stage(tmp_path)
+        self._write_kov_act(tmp_path, "clean_peep.json", extra_types=[])
+        self._patch_paths(monkeypatch, tmp_path)
+        import verify_layer1 as mod
+        ok, detail = mod.check_kov_acts()
+        assert ok is True
+        assert "WARN" not in detail
+        assert "state-regulation" not in detail
+
 
 class TestLoadLawPathsFailThreshold:
     """Regression test for Finding #4: the orchestrator must hard-

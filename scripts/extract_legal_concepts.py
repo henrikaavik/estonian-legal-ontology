@@ -71,19 +71,50 @@ DEFINITION_INTRO_PATTERNS = [
 ]
 
 # Pattern for extracting numbered definitions: "1) term – definition;".
+#
 # Finding 1 (#171): the previous body fragment ``(.+?)(?:;|$)`` truncated
 # multi-clause definitions at the FIRST semicolon, which silently
 # discarded long-form definitions like
 # ``KMS § 2 1) imporditud kaup — kaup, mille kohta on koostatud
-# ekspordideklaratsioon; sealhulgas...``.
-# Anchor on the next ``\d+\)`` numbered marker (lookahead) instead, then
-# strip a trailing ``;`` in extract_definitions_from_text. End-of-string
-# is preserved so the last definition in a list still terminates cleanly.
+# ekspordideklaratsioon; sealhulgas...``. The body now anchors on the
+# next *definition-item* marker (lookahead) instead, then strips a
+# trailing ``;`` in extract_definitions_from_text. End-of-string is
+# preserved so the last definition in a list still terminates cleanly.
+#
+# #260: hyphenated first-token terms (``tee-ehitus``, ``e-arve``) were
+# corrupted/dropped because the first term word excluded ``-`` *and* the
+# separator allowed an un-spaced dash, so ``tee-ehitus`` parsed as
+# term=``tee`` / sep=``-``. The term's words now permit internal hyphens
+# (``tee-ehitus``, ``e-arve``) and the separator dash is required to be
+# space-surrounded so an in-term hyphen is never mistaken for it.
+#
+# #261: the body lookahead stopped at the FIRST inline ``\d+\)`` even
+# when that paren was a cross-reference (``käesoleva seaduse 2) punktis``)
+# rather than a real list item, truncating the definition. The stop is
+# now anchored on the next *definition-item start* — a ``\d+\)`` that is
+# itself followed by ``term <space-dash-space>`` — so inline numbered
+# cross-references no longer cut the definition short.
+
+# A term word: letters (incl. Estonian diacritics / digits via \w) with
+# optional internal hyphens (``tee-ehitus``, ``e-arve``).
+_TERM_WORD = r"[\wäöüõšžÄÖÜÕŠŽ]+(?:-[\wäöüõšžÄÖÜÕŠŽ]+)*"
+# The full term: one or more such words, lazily (``imporditud kaup``).
+_TERM = rf"{_TERM_WORD}(?:\s+{_TERM_WORD})*?"
+# Separator dash: space-surrounded en/em/hyphen dash. The mandatory
+# surrounding whitespace is what keeps an in-term hyphen out of the
+# separator role (#260).
+_DEF_SEP = r"\s+[–—-]\s+"
+# A definition-item start (used only in the stop lookahead, #261): a
+# numbered marker that actually introduces ``term – definition``. An
+# inline cross-reference like ``2) punktis`` is NOT followed by a
+# space-surrounded dash, so it does not match and does not truncate.
+_ITEM_START = rf"\d+\)\s*{_TERM}{_DEF_SEP}"
+
 DEFINITION_PATTERN = re.compile(
     r"(\d+)\)\s*"                     # number and closing paren
-    r"([\wäöüõšžÄÖÜÕŠŽ]+(?:\s+[\wäöüõšžÄÖÜÕŠŽ-]+)*?)"  # term (one or more words)
-    r"\s*[–\-—]\s*"                   # dash separator
-    r"(.+?)(?=\s*\d+\)|$)",           # definition text until next numbered marker or end
+    rf"({_TERM})"                     # term (one or more hyphen-aware words)
+    rf"{_DEF_SEP}"                    # space-surrounded dash separator
+    rf"(.+?)(?=\s*{_ITEM_START}|$)",  # definition until next item start or end
     re.UNICODE | re.DOTALL,
 )
 
@@ -465,12 +496,23 @@ def _bucketed_close_match_pairs(
     distance ``0 < d < 3``.
 
     Finding 5 (#171): the previous all-pairs O(N²) loop with a 5000
-    cap was the dominant runtime cost on growing corpora. We now bucket
-    candidate terms by ``(first_2_chars, length)`` and only compare
-    within each bucket and its (length ± 1, length ± 2) neighbours —
-    the per-bucket quadratic is dramatically smaller on real corpora
-    because a vocabulary spread across thousands of bucket cells
-    flattens the input cardinality of every inner Levenshtein call.
+    cap was the dominant runtime cost on growing corpora, so candidate
+    pairs are co-located by a bucketing signature and Levenshtein is
+    only computed within each bucket.
+
+    #278: the old signature was ``(first_2_chars, length)``, which only
+    ever compared terms sharing their leading two characters. Every
+    edit-distance ≤ 2 pair that differs in a *leading* character
+    (``tasu``/``kasu``) or transposes the first two characters
+    (``liige``/``ilige``) landed in different buckets and was silently
+    missed. We now index each term under its set of *deletion variants*
+    — every string obtained by deleting up to ``MAX_DIST`` characters
+    (SymSpell-style). Two strings within Levenshtein distance ``d`` share
+    a common subsequence reachable by deleting ≤ ``d`` characters from
+    each, so any pair with ``d ≤ MAX_DIST`` is guaranteed to collide in
+    at least one variant bucket regardless of *where* the edits fall.
+    Generating the variants is O(n · L^MAX_DIST) in the (small, bounded)
+    term length ``L`` — i.e. O(n · k), never O(n²) across the corpus.
 
     Pairs are emitted with the term order canonicalised (``a < b``) and
     deduped, so the result is stable across runs.
@@ -478,29 +520,37 @@ def _bucketed_close_match_pairs(
     if not unique_terms:
         return []
 
-    # Bucket by (first two chars, length). Lower-bound length at min_len
-    # so we don't burn time on terms that are already excluded.
-    buckets: dict[tuple[str, int], list[str]] = {}
+    # Edit-distance threshold: we keep pairs with 0 < d < 3, i.e. d ≤ 2.
+    MAX_DIST = 2
+
+    def _deletion_variants(word: str) -> set[str]:
+        """All strings reachable by deleting 0..MAX_DIST chars from ``word``."""
+        variants = {word}
+        frontier = {word}
+        for _ in range(MAX_DIST):
+            nxt: set[str] = set()
+            for w in frontier:
+                for i in range(len(w)):
+                    nxt.add(w[:i] + w[i + 1:])
+            variants |= nxt
+            frontier = nxt
+        return variants
+
+    # Index every (sufficiently long) term under each of its deletion
+    # variants. Terms that collide under a shared variant are the only
+    # candidates that can be within MAX_DIST edits of each other.
+    index: dict[str, list[str]] = {}
     for term in unique_terms:
         if len(term) < min_len:
             continue
-        prefix = term[:2]
-        buckets.setdefault((prefix, len(term)), []).append(term)
+        for variant in _deletion_variants(term):
+            index.setdefault(variant, []).append(term)
 
     seen_pairs: set[tuple[str, str]] = set()
     results: list[tuple[str, str, int]] = []
-    for (prefix, length), bucket in buckets.items():
-        # Build the candidate set: this bucket's terms plus its (length
-        # ±1, ±2) neighbours sharing the prefix. Two terms with edit
-        # distance ≤ 2 differ in length by ≤ 2 and share at least their
-        # leading 2-character prefix in the very common case where the
-        # difference is on a trailing case suffix.
-        candidates: list[str] = list(bucket)
-        for delta in (-2, -1, 1, 2):
-            adj = buckets.get((prefix, length + delta))
-            if adj:
-                candidates.extend(adj)
-        # Pairwise loop within this candidate cluster only.
+    for candidates in index.values():
+        if len(candidates) < 2:
+            continue
         for i, t1 in enumerate(candidates):
             for t2 in candidates[i + 1:]:
                 if t1 == t2:
@@ -509,10 +559,10 @@ def _bucketed_close_match_pairs(
                 if pair in seen_pairs:
                     continue
                 seen_pairs.add(pair)
-                if abs(len(pair[0]) - len(pair[1])) >= 3:
+                if abs(len(pair[0]) - len(pair[1])) > MAX_DIST:
                     continue
                 dist = edit_distance(pair[0], pair[1])
-                if 0 < dist < 3:
+                if 0 < dist <= MAX_DIST:
                     results.append((pair[0], pair[1], dist))
     return results
 

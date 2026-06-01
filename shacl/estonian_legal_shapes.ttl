@@ -183,6 +183,7 @@ estleg:LegalProvisionShape
     ] ;
     sh:property [
         sh:path estleg:normativeType ;
+        estleg:graphClosureExempt true ;
         sh:nodeKind sh:IRI ;
         sh:name "normativeType" ;
         sh:description "Deontic classification: obligation, right, permission, prohibition" ;
@@ -459,6 +460,7 @@ estleg:DraftLegislationShape
     ] ;
     sh:property [
         sh:path estleg:legislativePhase ;
+        estleg:graphClosureExempt true ;
         sh:minCount 1 ;
         sh:nodeKind sh:IRI ;
         sh:name "legislativePhase" ;
@@ -466,6 +468,7 @@ estleg:DraftLegislationShape
     ] ;
     sh:property [
         sh:path estleg:draftType ;
+        estleg:graphClosureExempt true ;
         sh:minCount 1 ;
         sh:nodeKind sh:IRI ;
         sh:name "draftType" ;
@@ -656,6 +659,7 @@ estleg:EULegislationShape
     ] ;
     sh:property [
         sh:path estleg:euDocumentType ;
+        estleg:graphClosureExempt true ;
         sh:minCount 1 ;
         sh:nodeKind sh:IRI ;
         sh:name "euDocumentType" ;
@@ -698,6 +702,7 @@ estleg:EULegislationShape
     ] ;
     sh:property [
         sh:path estleg:euInstitution ;
+        estleg:graphClosureExempt true ;
         sh:nodeKind sh:IRI ;
         sh:name "euInstitution" ;
         sh:description "EU institution that authored the act" ;
@@ -812,6 +817,7 @@ estleg:EUCourtDecisionShape
     ] ;
     sh:property [
         sh:path estleg:euCourt ;
+        estleg:graphClosureExempt true ;
         sh:minCount 1 ;
         sh:nodeKind sh:IRI ;
         sh:name "euCourt" ;
@@ -894,8 +900,9 @@ estleg:SanctionShape
         sh:path estleg:sanctionType ;
         sh:minCount 1 ;
         sh:datatype xsd:string ;
+        sh:in ( "imprisonment" "fine" "pecuniary_punishment" "arrest" "coercive_payment" ) ;
         sh:name "sanctionType" ;
-        sh:description "Type of sanction: imprisonment, fine, pecuniary_punishment, arrest" ;
+        sh:description "Type of sanction: imprisonment, fine, pecuniary_punishment, arrest, coercive_payment" ;
     ] ;
     sh:property [
         sh:path estleg:maxPenalty ;
@@ -992,8 +999,9 @@ estleg:InstitutionShape
     sh:property [
         sh:path estleg:competenceType ;
         sh:datatype xsd:string ;
+        sh:in ( "supervision" "licensing" "enforcement" "regulation" "advisory" "general" ) ;
         sh:name "competenceType" ;
-        sh:description "Type of competence: supervision, licensing, enforcement, regulation" ;
+        sh:description "Type of competence: supervision, licensing, enforcement, regulation, advisory, general" ;
     ] .
 
 # Shape for reified institutional competence instances

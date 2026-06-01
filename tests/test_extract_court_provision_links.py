@@ -23,6 +23,7 @@ from extract_court_provision_links import (
     expand_two_digit_year,
     extract_citations_from_text,
     process_court_files,
+    resolve_citations,
     resolve_kov_citation,
 )
 
@@ -918,7 +919,10 @@ def _write_provision_peep(path: Path, source_act_value) -> None:
 
 def test_build_provision_index_handles_value_object_source_act(tmp_path, monkeypatch):
     """estleg:sourceAct as a {@value,@language} object keys
-    source_act_to_prefix by the unwrapped string, same as a plain string."""
+    source_act_to_prefixes by the unwrapped string, same as a plain string.
+
+    Issue #256: source_act_to_prefixes is now one-to-many — a single-Part
+    act still maps to a one-element SET ``{"Karistusseadustik"}``."""
     plain_peep = tmp_path / "kars_plain_peep.json"
     _write_provision_peep(plain_peep, "Karistusseadustik")
     vo_peep = tmp_path / "kars_vo_peep.json"
@@ -935,10 +939,10 @@ def test_build_provision_index_handles_value_object_source_act(tmp_path, monkeyp
     _, plain_map, _ = run(plain_peep)
     _, vo_map, _ = run(vo_peep)
 
-    assert plain_map == {"Karistusseadustik": "Karistusseadustik"}
+    assert plain_map == {"Karistusseadustik": {"Karistusseadustik"}}
     assert vo_map == plain_map
-    # And the abbreviation bridge still resolves KarS → the prefix.
-    assert build_abbreviation_to_prefix(vo_map).get("KarS") == "Karistusseadustik"
+    # And the abbreviation bridge still resolves KarS → the prefix set.
+    assert build_abbreviation_to_prefix(vo_map).get("KarS") == {"Karistusseadustik"}
 
 
 def test_process_court_files_handles_value_object_summary(tmp_path, monkeypatch):
@@ -1166,3 +1170,235 @@ def test_process_court_files_splits_mixed_full_text_and_summary_only(
     assert stats["summary_baseline_citations_resolved"] == 2
     assert stats["state_citations_resolved"] == 4
     assert stats["full_text_recall_lift"] == 2
+
+
+# ---------------------------------------------------------------------------
+# Issue #256 regression: multi-Part laws must not collapse to one prefix.
+#
+# Large codes are split across per-Part peep files that SHARE one
+# estleg:sourceAct but use DIFFERENT IRI prefixes (e.g. KARIST_2_Osa1
+# General Part vs KARIST_2_Osa2 Special Part, both sourceAct
+# "Karistusseadustik"). The old last-writer-wins
+# ``source_act_to_prefix[source_act] = file_prefix`` kept only the
+# last-iterated Part, so resolve_citations could only reach provisions in
+# that one Part and silently dropped citations to every other Part.
+#
+# These fixtures use prefix != source-act name (UNLIKE
+# _write_provision_peep, where prefix == full name) so they actually
+# reproduce the collapse.
+# ---------------------------------------------------------------------------
+
+
+def _write_part_peep(
+    path: Path,
+    prefix: str,
+    source_act,
+    par_numbers: list[str],
+) -> None:
+    """Write a single-Part peep: IRI prefix ``prefix`` (deliberately NOT the
+    source-act name) with one LegalProvision node per § in ``par_numbers``,
+    each carrying ``estleg:sourceAct`` so several Parts share one act."""
+    graph: list[dict] = [
+        {"@id": f"estleg:{prefix}_Map_2026",
+         "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]},
+    ]
+    for par in par_numbers:
+        graph.append({
+            "@id": f"estleg:{prefix}_Par_{par}",
+            "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+            "estleg:sourceAct": source_act,
+        })
+    path.write_text(json.dumps({
+        "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+                     "owl": "http://www.w3.org/2002/07/owl#"},
+        "@graph": graph,
+    }), encoding="utf-8")
+
+
+class TestIssue256MultiPartLaws:
+    """Two peep fixtures share one sourceAct but use distinct prefixes
+    (X_Osa1 / X_Osa2). A citation to a § living in the NON-LAST Part must
+    still resolve — the headline regression."""
+
+    def _stage_two_parts(self, tmp_path):
+        """KarS split into General Part (Osa1, §§ 1/121) and Special Part
+        (Osa2, §§ 200/263), both sourceAct 'Karistusseadustik'. Returns the
+        files in [Osa1, Osa2] order so Osa2 is the 'last writer' — under
+        the old code Osa1's §§ would be the ones dropped."""
+        osa1 = tmp_path / "karist_2_osa1_peep.json"
+        osa2 = tmp_path / "karist_2_osa2_peep.json"
+        _write_part_peep(osa1, "KARIST_2_Osa1", "Karistusseadustik", ["1", "121"])
+        _write_part_peep(osa2, "KARIST_2_Osa2", "Karistusseadustik", ["200", "263"])
+        return [osa1, osa2]
+
+    def test_index_retains_both_part_prefixes(self, tmp_path, monkeypatch):
+        files = self._stage_two_parts(tmp_path)
+        monkeypatch.setattr(
+            "extract_court_provision_links.iter_peep_files",
+            lambda *, include_kov=True: iter(files),
+        )
+        counters = _RunCounters()
+        prefix_to_provisions, source_act_to_prefixes, _ = build_provision_index(
+            counters
+        )
+
+        # One-to-many: BOTH Part prefixes are retained (old code kept one).
+        assert source_act_to_prefixes == {
+            "Karistusseadustik": {"KARIST_2_Osa1", "KARIST_2_Osa2"}
+        }
+        assert set(prefix_to_provisions["KARIST_2_Osa1"]) == {"1", "121"}
+        assert set(prefix_to_provisions["KARIST_2_Osa2"]) == {"200", "263"}
+
+    def test_abbrev_maps_to_union_of_prefixes(self, tmp_path, monkeypatch):
+        files = self._stage_two_parts(tmp_path)
+        monkeypatch.setattr(
+            "extract_court_provision_links.iter_peep_files",
+            lambda *, include_kov=True: iter(files),
+        )
+        _, source_act_to_prefixes, _ = build_provision_index(_RunCounters())
+        abbrev_to_prefixes = build_abbreviation_to_prefix(source_act_to_prefixes)
+        assert abbrev_to_prefixes["KarS"] == {"KARIST_2_Osa1", "KARIST_2_Osa2"}
+
+    def test_citation_to_non_last_part_resolves(self, tmp_path, monkeypatch):
+        """THE bug: § 121 lives in Osa1 (the NON-last Part). Under the old
+        last-writer-wins map KarS pointed only at Osa2, so § 121 silently
+        dropped. It must now resolve to the Osa1 IRI."""
+        files = self._stage_two_parts(tmp_path)
+        monkeypatch.setattr(
+            "extract_court_provision_links.iter_peep_files",
+            lambda *, include_kov=True: iter(files),
+        )
+        prefix_to_provisions, source_act_to_prefixes, _ = build_provision_index(
+            _RunCounters()
+        )
+        abbrev_to_prefixes = build_abbreviation_to_prefix(source_act_to_prefixes)
+
+        # § 121 (General Part, non-last) resolves.
+        resolved_general = resolve_citations(
+            [{"law_ref": "KarS", "paragraphs": ["121"]}],
+            abbrev_to_prefixes,
+            prefix_to_provisions,
+        )
+        assert resolved_general == ["estleg:KARIST_2_Osa1_Par_121"]
+
+        # § 200 (Special Part, last) still resolves too.
+        resolved_special = resolve_citations(
+            [{"law_ref": "KarS", "paragraphs": ["200"]}],
+            abbrev_to_prefixes,
+            prefix_to_provisions,
+        )
+        assert resolved_special == ["estleg:KARIST_2_Osa2_Par_200"]
+
+        # A citation spanning both Parts resolves to both IRIs.
+        resolved_both = resolve_citations(
+            [{"law_ref": "KarS", "paragraphs": ["121", "200"]}],
+            abbrev_to_prefixes,
+            prefix_to_provisions,
+        )
+        assert resolved_both == [
+            "estleg:KARIST_2_Osa1_Par_121",
+            "estleg:KARIST_2_Osa2_Par_200",
+        ]
+
+    def test_end_to_end_court_decision_links_general_part(
+        self, tmp_path, monkeypatch
+    ):
+        """A court decision citing KarS § 121 (General Part) gets an
+        interpretsLaw arc to the Osa1 provision — end-to-end through
+        process_court_files, not just the resolver."""
+        import extract_court_provision_links as ecpl
+
+        files = self._stage_two_parts(tmp_path)
+        monkeypatch.setattr(
+            ecpl, "iter_peep_files",
+            lambda *, include_kov=True: iter(files),
+        )
+        prefix_to_provisions, source_act_to_prefixes, _ = build_provision_index(
+            _RunCounters()
+        )
+        abbrev_to_prefixes = build_abbreviation_to_prefix(source_act_to_prefixes)
+
+        rk_dir = tmp_path / "rk"
+        rk_dir.mkdir()
+        (rk_dir / "riigikohus_2026_peep.json").write_text(json.dumps({
+            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+                         "owl": "http://www.w3.org/2002/07/owl#"},
+            "@graph": [
+                {"@id": "estleg:RK_FIXT_KARS_GENERAL",
+                 "@type": ["owl:NamedIndividual", "estleg:CourtDecision"],
+                 "estleg:legalText": "Süüpõhimõte tuleneb KarS § 121 sättest."},
+            ],
+        }), encoding="utf-8")
+        monkeypatch.setattr(ecpl, "RK_DIR", rk_dir)
+
+        result = process_court_files(
+            abbrev_to_prefixes,
+            prefix_to_provisions,
+            kov_index={},
+            kov_collision_keys=set(),
+            known_issuer_norms=set(),
+            counters=_RunCounters(),
+        )
+
+        assert result.state_link_count == 1
+        doc = json.loads(
+            (rk_dir / "riigikohus_2026_peep.json").read_text(encoding="utf-8")
+        )
+        decision = doc["@graph"][0]
+        iris = [v["@id"] for v in decision.get("estleg:interpretsLaw", [])]
+        assert iris == ["estleg:KARIST_2_Osa1_Par_121"]
+        # And the inverse map points the General-Part provision back.
+        assert result.interpreted_by["estleg:KARIST_2_Osa1_Par_121"] == [
+            "estleg:RK_FIXT_KARS_GENERAL"
+        ]
+
+    def test_cross_part_same_par_resolves_deterministically(
+        self, tmp_path, monkeypatch
+    ):
+        """When the SAME § exists in two Parts (distinct IRIs) the resolver
+        picks deterministically (smallest IRI) and surfaces the anomaly via
+        the cross_part_par_collision counter rather than dropping it."""
+        osa1 = tmp_path / "karist_2_osa1_peep.json"
+        osa2 = tmp_path / "karist_2_osa2_peep.json"
+        # § 5 deliberately present in BOTH Parts.
+        _write_part_peep(osa1, "KARIST_2_Osa1", "Karistusseadustik", ["5"])
+        _write_part_peep(osa2, "KARIST_2_Osa2", "Karistusseadustik", ["5"])
+        files = [osa1, osa2]
+        monkeypatch.setattr(
+            "extract_court_provision_links.iter_peep_files",
+            lambda *, include_kov=True: iter(files),
+        )
+        prefix_to_provisions, source_act_to_prefixes, _ = build_provision_index(
+            _RunCounters()
+        )
+        abbrev_to_prefixes = build_abbreviation_to_prefix(source_act_to_prefixes)
+
+        counters = _RunCounters()
+        resolved = resolve_citations(
+            [{"law_ref": "KarS", "paragraphs": ["5"]}],
+            abbrev_to_prefixes,
+            prefix_to_provisions,
+            counters=counters,
+        )
+        # Deterministic: min() of the two candidate IRIs.
+        assert resolved == [
+            min(
+                "estleg:KARIST_2_Osa1_Par_5",
+                "estleg:KARIST_2_Osa2_Par_5",
+            )
+        ]
+        # Anomaly surfaced (not silently dropped).
+        assert counters.skip_reasons.get("cross_part_par_collision", 0) == 1
+
+    def test_resolve_citations_accepts_plain_str_mapping(self):
+        """Backward compatibility: resolve_citations still accepts a plain
+        ``dict[str, str]`` (single prefix) value, not only a set."""
+        prefix_to_provisions = {
+            "Karistusseadustik": {"121": "estleg:Karistusseadustik_Par_121"},
+        }
+        resolved = resolve_citations(
+            [{"law_ref": "KarS", "paragraphs": ["121"]}],
+            {"KarS": "Karistusseadustik"},   # plain str value, legacy shape
+            prefix_to_provisions,
+        )
+        assert resolved == ["estleg:Karistusseadustik_Par_121"]

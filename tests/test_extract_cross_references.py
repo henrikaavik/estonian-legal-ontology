@@ -1364,3 +1364,266 @@ class TestValueObjectTextReads:
         assert label_norm == "tallinna linnavolikogu"
         assert "@value" not in label_norm
         assert muni == "estleg:Municipality_tallinn"
+
+
+class TestSuperscriptParagraphCitations:
+    """Regression for #254: the § citation parser dropped superscripts, so
+    ``AÕS § 158²`` resolved to the WRONG provision (``_Par_158`` instead of
+    ``_Par_158_2``), and the XML paragraph-text key collapsed ``§ 158`` and
+    ``§ 158²`` to the same dict key (last-write-wins). These tests lock in
+    superscript-aware capture (Unicode glyph AND ``<sup>`` markup),
+    normalisation into the ``_<m>`` IRI suffix, and distinct XML keys."""
+
+    # -- parser: capture + normalise the superscript ------------------
+
+    def test_unicode_superscript_captured_as_suffix_key(self):
+        from extract_cross_references import extract_citations_from_text
+
+        cits = extract_citations_from_text("AÕS § 158² kohaselt kohaldatakse.")
+        assert len(cits) == 1
+        assert cits[0]["law_ref"] == "AÕS"
+        # Folded into the generator's IRI-key shape, NOT bare "158".
+        assert cits[0]["paragraphs"] == ["158_2"]
+
+    def test_sup_markup_superscript_captured_as_suffix_key(self):
+        from extract_cross_references import extract_citations_from_text
+
+        cits = extract_citations_from_text(
+            "AÕS § 158<sup>2</sup> kohaselt kohaldatakse."
+        )
+        assert len(cits) == 1
+        assert cits[0]["paragraphs"] == ["158_2"]
+
+    def test_plain_number_unaffected_by_superscript_handling(self):
+        from extract_cross_references import extract_citations_from_text
+
+        cits = extract_citations_from_text("AÕS § 158 kohaselt kohaldatakse.")
+        assert len(cits) == 1
+        assert cits[0]["paragraphs"] == ["158"]
+
+    def test_range_still_digit_only(self):
+        from extract_cross_references import extract_citations_from_text
+
+        cits = extract_citations_from_text("VÕS §-de 208-210 alusel.")
+        assert len(cits) == 1
+        assert cits[0]["paragraphs"] == ["208", "209", "210"]
+
+    def test_self_reference_superscript_captured(self):
+        from extract_cross_references import extract_citations_from_text
+
+        cits = extract_citations_from_text("Käesoleva seaduse § 22¹ kohaselt.")
+        assert len(cits) == 1
+        assert cits[0]["is_self_ref"] is True
+        assert cits[0]["paragraphs"] == ["22_1"]
+
+    # -- _expand_par_range / _normalize_par_number --------------------
+
+    def test_expand_par_range_normalizes_unicode_superscript(self):
+        from extract_cross_references import _expand_par_range
+
+        assert _expand_par_range("158²") == ["158_2"]
+
+    def test_expand_par_range_normalizes_sup_markup(self):
+        from extract_cross_references import _expand_par_range
+
+        assert _expand_par_range("22<sup>1</sup>") == ["22_1"]
+
+    def test_expand_par_range_plain_and_range_unchanged(self):
+        from extract_cross_references import _expand_par_range
+
+        assert _expand_par_range("158") == ["158"]
+        assert _expand_par_range("208-210") == ["208", "209", "210"]
+
+    def test_normalize_par_number_forms(self):
+        from extract_cross_references import _normalize_par_number
+
+        assert _normalize_par_number("158²") == "158_2"
+        assert _normalize_par_number("158<sup>2</sup>") == "158_2"
+        assert _normalize_par_number("158") == "158"
+        # Multi-glyph superscript (rare but well-formed).
+        assert _normalize_par_number("3¹²") == "3_12"
+        assert _normalize_par_number("") == ""
+
+    # -- resolution path: superscript citation -> _Par_158_2 ----------
+
+    def test_resolve_citation_superscript_hits_correct_iri(self):
+        from extract_cross_references import resolve_citation
+
+        prefix_to_provisions = {
+            "AOS_Osa3": {
+                "158": "estleg:AOS_Osa3_Par_158",
+                "158_2": "estleg:AOS_Osa3_Par_158_2",
+            }
+        }
+        abbrev = {"AÕS": "AOS_Osa3"}
+        sup = {"law_ref": "AÕS", "paragraphs": ["158_2"], "is_self_ref": False}
+        plain = {"law_ref": "AÕS", "paragraphs": ["158"], "is_self_ref": False}
+        assert resolve_citation(sup, "", abbrev, prefix_to_provisions) == [
+            "estleg:AOS_Osa3_Par_158_2"
+        ]
+        # The plain citation must NOT bleed into the superscript provision.
+        assert resolve_citation(plain, "", abbrev, prefix_to_provisions) == [
+            "estleg:AOS_Osa3_Par_158"
+        ]
+
+    def test_end_to_end_unicode_superscript_resolves_to_158_2(self):
+        """Full parse + resolve: ``§ 158²`` in real body text lands on
+        ``_Par_158_2``, the superscript IRI that exists on disk."""
+        from extract_cross_references import (
+            extract_citations_from_text,
+            resolve_citation,
+        )
+
+        prefix_to_provisions = {
+            "AOS_Osa3": {
+                "158": "estleg:AOS_Osa3_Par_158",
+                "158_2": "estleg:AOS_Osa3_Par_158_2",
+            }
+        }
+        abbrev = {"AÕS": "AOS_Osa3"}
+        for text in ("AÕS § 158² kohaselt", "AÕS § 158<sup>2</sup> kohaselt"):
+            cits = extract_citations_from_text(text)
+            resolved = [
+                iri
+                for c in cits
+                for iri in resolve_citation(c, "", abbrev, prefix_to_provisions)
+            ]
+            assert resolved == ["estleg:AOS_Osa3_Par_158_2"], text
+
+
+class TestSuperscriptXmlKeyBuilder:
+    """Regression for #254: ``collect_text_from_xml`` keyed paragraphs with
+    ``re.sub(r"[^\\d]", "", par_nr)`` so ``§ 158`` and ``§ 158²`` collided.
+    The key must now mirror ``_paragraph_id_suffix`` — ``158`` vs ``158_2`` —
+    so plain and superscript provisions keep their own body text."""
+
+    def _write_xml(self, tmp_path, body: str):
+        p = tmp_path / "law.xml"
+        p.write_text(body, encoding="utf-8")
+        return p
+
+    def test_xml_key_builder_keeps_158_and_158_2_distinct_via_ylaindeks(
+        self, tmp_path
+    ):
+        from extract_cross_references import collect_text_from_xml
+
+        xml = (
+            '<akt xmlns="x">'
+            "<paragrahv><paragrahvNr>158</paragrahvNr>"
+            "<sisu>plain body</sisu></paragrahv>"
+            '<paragrahv><paragrahvNr ylaIndeks="2">158</paragrahvNr>'
+            "<sisu>superscript body</sisu></paragrahv>"
+            "</akt>"
+        )
+        keys = collect_text_from_xml(self._write_xml(tmp_path, xml))
+        assert set(keys) == {"158", "158_2"}
+        assert "plain body" in keys["158"]
+        assert "superscript body" in keys["158_2"]
+        # No collision: the two bodies are different.
+        assert keys["158"] != keys["158_2"]
+
+    def test_xml_key_builder_recovers_superscript_from_kuvatavnr_glyph(
+        self, tmp_path
+    ):
+        from extract_cross_references import collect_text_from_xml
+
+        xml = (
+            '<akt xmlns="x">'
+            "<paragrahv><paragrahvNr>158</paragrahvNr>"
+            "<sisu>plain body</sisu></paragrahv>"
+            "<paragrahv><paragrahvNr>158</paragrahvNr>"
+            "<kuvatavNr>158²</kuvatavNr>"
+            "<sisu>superscript body</sisu></paragrahv>"
+            "</akt>"
+        )
+        keys = collect_text_from_xml(self._write_xml(tmp_path, xml))
+        assert set(keys) == {"158", "158_2"}
+        assert "superscript body" in keys["158_2"]
+
+    def test_xml_key_builder_plain_number_unchanged(self, tmp_path):
+        from extract_cross_references import collect_text_from_xml
+
+        xml = (
+            '<akt xmlns="x">'
+            "<paragrahv><paragrahvNr>22</paragrahvNr>"
+            "<sisu>plain body</sisu></paragrahv>"
+            "</akt>"
+        )
+        keys = collect_text_from_xml(self._write_xml(tmp_path, xml))
+        assert set(keys) == {"22"}
+
+    def test_xml_key_matches_load_provision_text_lookup(self, tmp_path):
+        """The key collect_text_from_xml emits must be the same shape
+        _load_provision_text derives from the ``_Par_<suffix>`` IRI, so the
+        superscript provision reads its OWN body."""
+        from extract_cross_references import (
+            collect_text_from_xml,
+            _load_provision_text,
+        )
+
+        xml = (
+            '<akt xmlns="x">'
+            "<paragrahv><paragrahvNr>158</paragrahvNr>"
+            "<sisu>plain body 158</sisu></paragrahv>"
+            '<paragrahv><paragrahvNr ylaIndeks="2">158</paragrahvNr>'
+            "<sisu>superscript body 158 2</sisu></paragrahv>"
+            "</akt>"
+        )
+        xml_par_texts = collect_text_from_xml(self._write_xml(tmp_path, xml))
+
+        plain_node = {"@id": "estleg:AOS_Osa3_Par_158"}
+        sup_node = {"@id": "estleg:AOS_Osa3_Par_158_2"}
+        assert "plain body 158" in _load_provision_text(plain_node, xml_par_texts)
+        assert "superscript body 158 2" in _load_provision_text(
+            sup_node, xml_par_texts
+        )
+
+    def test_inlaw_pass_superscript_provision_reads_own_body(self, tmp_path):
+        """End-to-end: with distinct XML keys, the superscript provision
+        (_Par_158_2) scans its OWN body and the plain provision (_Par_158)
+        scans its own — no last-write-wins collision (#254)."""
+        from extract_cross_references import (
+            collect_text_from_xml,
+            _run_inlaw_citation_pass,
+        )
+
+        # The superscript provision body self-cites § 158 (the plain one);
+        # the plain provision body has no citation. Pre-fix, both keyed to
+        # "158" so the plain provision would have wrongly scanned the
+        # superscript body.
+        xml = (
+            '<akt xmlns="x">'
+            "<paragrahv><paragrahvNr>158</paragrahvNr>"
+            "<sisu>Tavaline paragrahv ilma viideteta.</sisu></paragrahv>"
+            '<paragrahv><paragrahvNr ylaIndeks="2">158</paragrahvNr>'
+            "<sisu>Käesoleva seaduse § 158 kohaldatakse.</sisu></paragrahv>"
+            "</akt>"
+        )
+        xml_par_texts = collect_text_from_xml(self._write_xml(tmp_path, xml))
+        graph = [
+            {"@id": "estleg:AOS_Osa3_Par_158",
+             "@type": ["owl:NamedIndividual", "estleg:LegalProvision"]},
+            {"@id": "estleg:AOS_Osa3_Par_158_2",
+             "@type": ["owl:NamedIndividual", "estleg:LegalProvision"]},
+        ]
+        prefix_to_provisions = {
+            "AOS_Osa3": {
+                "158": "estleg:AOS_Osa3_Par_158",
+                "158_2": "estleg:AOS_Osa3_Par_158_2",
+            }
+        }
+        _run_inlaw_citation_pass(
+            graph,
+            self_prefix="AOS_Osa3",
+            abbrev_to_prefix={},
+            prefix_to_provisions=prefix_to_provisions,
+            xml_par_texts=xml_par_texts,
+        )
+        plain = next(n for n in graph if n["@id"] == "estleg:AOS_Osa3_Par_158")
+        sup = next(n for n in graph if n["@id"] == "estleg:AOS_Osa3_Par_158_2")
+        # Superscript provision emits the self-cite to _Par_158.
+        assert [r["@id"] for r in sup.get("estleg:references", [])] == [
+            "estleg:AOS_Osa3_Par_158"
+        ]
+        # Plain provision scanned its OWN (citation-free) body: no refs.
+        assert "estleg:references" not in plain

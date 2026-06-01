@@ -20,6 +20,7 @@ from generate_provision_versions import (
     LawTarget,
     Redaction,
     build_law_target,
+    build_provision_backlinks,
     extract_provision_texts,
     fetch_redaction_chain,
     select_law_slugs,
@@ -180,6 +181,126 @@ class TestSynthesiseVersions:
 
 
 # ---------------------------------------------------------------------------
+# ProvisionVersion @id collision / empty-globalID guard (issue #296a)
+# ---------------------------------------------------------------------------
+
+
+class TestVersionIdCollisionGuard:
+    """`synthesise_versions` must never emit two ProvisionVersions with one @id."""
+
+    def test_empty_global_id_redaction_emits_no_version(self):
+        # A redaction with no globaalID has no stable, non-colliding version @id
+        # (and no versionRedactionId), so its text is carried forward rather than
+        # emitted as ``estleg:FIX_Par_1_v`` (which would collide across two such
+        # redactions).
+        target = _make_target(par_suffixes=("1",))
+        chain = [
+            (Redaction("", "2010-01-01", "2014-12-31", "/akt/.xml"), {"1": "Esimene tekst."}),
+            (Redaction("", "2015-01-01", None, "/akt/.xml"), {"1": "Teine tekst."}),
+        ]
+        nodes = synthesise_versions(target, chain)
+        assert nodes == []
+
+    def test_empty_global_id_does_not_break_a_later_real_redaction(self):
+        # The empty-id redaction advances the tracked text; a later real redaction
+        # whose text differs still emits exactly one (well-identified) version.
+        target = _make_target(par_suffixes=("1",))
+        chain = [
+            (Redaction("", "2010-01-01", "2014-12-31", "/akt/.xml"), {"1": "Algtekst."}),
+            (_R3, {"1": "Uus tekst."}),
+        ]
+        nodes = synthesise_versions(target, chain)
+        assert [n["@id"] for n in nodes] == ["estleg:FIX_Par_1_v333"]
+        assert nodes[0]["estleg:versionValidFrom"] == {"@value": "2020-01-01", "@type": "xsd:date"}
+
+    def test_duplicate_global_id_for_same_provision_is_disambiguated(self):
+        # Data quirk: two distinct redactions reporting the same globaalID but
+        # different text for one provision. The @id must be disambiguated so the
+        # sidecar never carries a duplicate @id (mirrors the amendment generator).
+        target = _make_target(par_suffixes=("1",))
+        chain = [
+            (Redaction("777", "2010-01-01", "2014-12-31", "/akt/777.xml"), {"1": "Alfa."}),
+            (Redaction("777", "2015-01-01", None, "/akt/777.xml"), {"1": "Beeta."}),
+        ]
+        nodes = synthesise_versions(target, chain)
+        ids = [n["@id"] for n in nodes]
+        assert ids == ["estleg:FIX_Par_1_v777", "estleg:FIX_Par_1_v777_2"]
+        assert len(ids) == len(set(ids))
+        # The chain still wires up across the disambiguated id.
+        assert nodes[0]["estleg:supersededByVersion"] == {"@id": "estleg:FIX_Par_1_v777_2"}
+
+
+# ---------------------------------------------------------------------------
+# currentVersion / hasVersion back-links (issue #271)
+# ---------------------------------------------------------------------------
+
+
+class TestProvisionBacklinks:
+    """`build_provision_backlinks` materialises the forward-reachable head edge."""
+
+    def test_currentversion_points_at_head_and_haversion_lists_all(self):
+        target = _make_target(par_suffixes=("1", "2"))
+        nodes = synthesise_versions(target, _three_redaction_chain())
+        backlinks = build_provision_backlinks(nodes)
+
+        by_id = {n["@id"]: n for n in backlinks}
+        assert set(by_id) == {"estleg:FIX_Par_1", "estleg:FIX_Par_2"}
+        # § 1 head is v222 (changed at r2, unchanged at r3); § 2 head is v333.
+        assert by_id["estleg:FIX_Par_1"]["estleg:currentVersion"] == {"@id": "estleg:FIX_Par_1_v222"}
+        assert by_id["estleg:FIX_Par_2"]["estleg:currentVersion"] == {"@id": "estleg:FIX_Par_2_v333"}
+        # hasVersion enumerates every emitted version of the provision, in order.
+        assert by_id["estleg:FIX_Par_1"]["estleg:hasVersion"] == [
+            {"@id": "estleg:FIX_Par_1_v111"}, {"@id": "estleg:FIX_Par_1_v222"},
+        ]
+        assert by_id["estleg:FIX_Par_2"]["estleg:hasVersion"] == [
+            {"@id": "estleg:FIX_Par_2_v111"}, {"@id": "estleg:FIX_Par_2_v333"},
+        ]
+
+    def test_head_version_is_forward_reachable_from_provision(self):
+        # The whole point of #271: the head version (no supersededByVersion) had
+        # zero inbound edges; currentVersion now makes it forward-reachable, and
+        # every back-link target exists among the version nodes (no dangle).
+        target = _make_target(par_suffixes=("1", "2"))
+        nodes = synthesise_versions(target, _three_redaction_chain())
+        emitted_ids = {n["@id"] for n in nodes}
+        heads = {n["@id"] for n in nodes if "estleg:supersededByVersion" not in n}
+
+        backlinks = build_provision_backlinks(nodes)
+        reached_currents = {bl["estleg:currentVersion"]["@id"] for bl in backlinks}
+        # currentVersion reaches exactly the head versions...
+        assert reached_currents == heads == {"estleg:FIX_Par_1_v222", "estleg:FIX_Par_2_v333"}
+        # ...and no back-link edge dangles outside the version nodes.
+        for bl in backlinks:
+            assert bl["estleg:currentVersion"]["@id"] in emitted_ids
+            for v in bl["estleg:hasVersion"]:
+                assert v["@id"] in emitted_ids
+
+    def test_single_unchanging_provision_currentversion_is_the_only_version(self):
+        target = _make_target(par_suffixes=("1",))
+        chain = [
+            (_R1, {"1": "Sama tekst."}),
+            (_R2, {"1": "Sama tekst."}),
+            (_R3, {"1": "Sama tekst."}),
+        ]
+        nodes = synthesise_versions(target, chain)
+        backlinks = build_provision_backlinks(nodes)
+        assert len(backlinks) == 1
+        assert backlinks[0]["@id"] == "estleg:FIX_Par_1"
+        assert backlinks[0]["estleg:currentVersion"] == {"@id": "estleg:FIX_Par_1_v111"}
+        assert backlinks[0]["estleg:hasVersion"] == [{"@id": "estleg:FIX_Par_1_v111"}]
+
+    def test_no_versions_yields_no_backlinks(self):
+        assert build_provision_backlinks([]) == []
+
+    def test_backlink_stubs_carry_no_paragrahv_or_type(self):
+        target = _make_target(par_suffixes=("1", "2"))
+        nodes = synthesise_versions(target, _three_redaction_chain())
+        for bl in build_provision_backlinks(nodes):
+            assert "@type" not in bl
+            assert "estleg:paragrahv" not in bl
+
+
+# ---------------------------------------------------------------------------
 # XML extraction
 # ---------------------------------------------------------------------------
 
@@ -205,6 +326,53 @@ class TestExtractProvisionTexts:
         )
         texts = extract_provision_texts(ET.fromstring(xml))
         assert set(texts) == {"22_1"}
+
+
+# ---------------------------------------------------------------------------
+# Date/offset normalisation (issue #296b)
+# ---------------------------------------------------------------------------
+
+
+class TestStripOffset:
+    """`_strip_offset` must normalise any RT timestamp to a bare YYYY-MM-DD."""
+
+    @pytest.mark.parametrize(
+        ("raw", "expected"),
+        [
+            ("2020-01-01", "2020-01-01"),
+            ("  2019-12-31  ", "2019-12-31"),  # surrounding whitespace
+            ("2020-01-01T00:00:00", "2020-01-01"),  # T-time, no offset
+            ("2020-01-01 00:00:00", "2020-01-01"),  # space-time, no offset
+            ("2020-01-01T10:30:00+02:00", "2020-01-01"),  # positive offset
+            ("2020-01-01 10:30:00+02:00", "2020-01-01"),  # space + positive offset
+            ("2020-01-01T23:59:59Z", "2020-01-01"),  # Zulu
+            ("2020-01-01T01:00:00-05:00", "2020-01-01"),  # NEGATIVE offset + T-time
+            ("2020-01-01-05:00", "2020-01-01"),  # negative offset, date-only base
+            ("", None),
+            (None, None),
+            ("not-a-date", None),
+        ],
+    )
+    def test_normalises_to_date_only(self, raw, expected):
+        assert gpv._strip_offset(raw) == expected
+
+
+class TestDateBefore:
+    @pytest.mark.parametrize(
+        ("left", "right", "inclusive", "expected"),
+        [
+            ("2020-01-01", "2026-05-12", False, True),
+            ("2026-05-12", "2026-05-12", True, True),
+            ("2026-05-12", "2026-05-12", False, False),
+            ("2026-05-13", "2026-05-12", False, False),
+            # Unparseable operand ⇒ deterministic lexicographic fallback. Here
+            # "garbage" > "2026-05-12" lexicographically, so it is NOT <=.
+            ("garbage", "2026-05-12", True, False),
+            ("0000", "2026-05-12", True, True),  # "0000" < "2026..." lexicographically
+        ],
+    )
+    def test_date_comparison(self, left, right, inclusive, expected):
+        assert gpv._date_before(left, right, inclusive=inclusive) is expected
 
 
 # ---------------------------------------------------------------------------
@@ -263,6 +431,59 @@ def test_fetch_redaction_chain_sorted_oldest_to_newest_with_dates(monkeypatch: p
     # The last (current) one is open-ended; the rest carry their closing date.
     assert chain[-1].valid_to is None
     assert chain[0].valid_to == "2014-12-31"
+
+
+def test_fetch_redaction_chain_handles_t_time_and_negative_offsets(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    """Issue #296b: endpoints with T-time / signed offsets normalise + compare as dates.
+
+    Endpoints arrive with mixed shapes (``T``-time, positive AND negative tz
+    offsets, ``Z``). They must normalise to ``YYYY-MM-DD`` and be compared as
+    calendar dates against ``today`` — including the boundary where an edition's
+    ``lopp`` falls on ``today`` (still current, must be excluded) and where
+    ``algus`` equals ``today`` (kept by the ``<=`` start rule).
+    """
+    title = "Ajatempliseadus"
+    today = "2026-05-12"
+    full_payload = {
+        "aktid": [
+            # Superseded, T-time + Zulu — kept (ended 2014-12-31 < today).
+            {"globaalID": 10, "pealkiri": title,
+             "kehtivus": {"algus": "2010-01-01T00:00:00Z", "lopp": "2014-12-31T23:59:59Z"},
+             "muudetud": 1, "url": "/akt/10.xml"},
+            # Superseded, space-time + NEGATIVE offset — kept. Previously the raw
+            # string "2019-12-31 23:59:59-05:00" mis-compared against today.
+            {"globaalID": 20, "pealkiri": title,
+             "kehtivus": {"algus": "2015-01-01T00:00:00+02:00", "lopp": "2019-12-31 23:59:59-05:00"},
+             "muudetud": 2, "url": "/akt/20.xml"},
+            # lopp falls ON today (T-time) ⇒ still current ⇒ MUST be excluded
+            # from the superseded set (lopp < today is false at date granularity).
+            {"globaalID": 30, "pealkiri": title,
+             "kehtivus": {"algus": "2020-01-01T00:00:00+03:00", "lopp": "2026-05-12T08:00:00+03:00"},
+             "muudetud": 3, "url": "/akt/30.xml"},
+        ]
+    }
+    # Current edition whose algus == today (boundary: kept), with a T-time offset.
+    current_payload = {
+        "aktid": [
+            {"globaalID": 40, "pealkiri": title,
+             "kehtivus": {"algus": "2026-05-12T00:00:00+03:00", "lopp": None},
+             "muudetud": 4, "url": "/akt/40.xml"},
+        ]
+    }
+
+    def fake_get(url, params=None, timeout=None):  # noqa: ANN001
+        if params and params.get("kehtiv"):
+            return _FakeResponse(current_payload)
+        return _FakeResponse(full_payload)
+
+    monkeypatch.setattr(gpv.requests, "get", fake_get)
+    chain = fetch_redaction_chain(title, today=today)
+    # g30 excluded (lopp on today); g10/g20 kept and normalised; g40 current.
+    assert [r.global_id for r in chain] == ["10", "20", "40"]
+    assert [r.valid_from for r in chain] == ["2010-01-01", "2015-01-01", "2026-05-12"]
+    assert [r.valid_to for r in chain] == ["2014-12-31", "2019-12-31", None]
 
 
 # ---------------------------------------------------------------------------
@@ -674,13 +895,37 @@ def test_write_sidecar_shape_and_context(tmp_path: Path):
     doc = json.loads(out_path.read_text(encoding="utf-8"))
     assert doc["@context"]["estleg"] == gpv.CONTEXT["estleg"]
     graph = doc["@graph"]
-    # First node is the owl:Ontology map header; the rest are ProvisionVersions.
+    # First node is the owl:Ontology map header.
     assert graph[0]["@type"] == ["owl:Ontology"]
     assert graph[0]["@id"] == "estleg:ProvisionVersions_fixture_law_Map"
     assert graph[0]["dc:source"] == "Fikseeritud seadus"
-    assert all("estleg:ProvisionVersion" in n["@type"] for n in graph[1:])
+    # The map label still counts only the ProvisionVersion nodes (4), not the
+    # back-link stubs.
+    assert "(4 versiooni)" in graph[0]["rdfs:label"]["@value"]
     # No undefined estleg:total* count predicate leaked onto the map node.
     assert not any(k.startswith("estleg:total") for k in graph[0])
+
+    # The body splits into ProvisionVersion nodes and issue #271 back-link stubs.
+    pv_nodes = [n for n in graph[1:] if "estleg:ProvisionVersion" in n.get("@type", [])]
+    backlink_nodes = [n for n in graph[1:] if n["@id"] in set(target.provisions.values())]
+    assert {n["@id"] for n in pv_nodes} == {
+        "estleg:FIX_Par_1_v111", "estleg:FIX_Par_1_v222",
+        "estleg:FIX_Par_2_v111", "estleg:FIX_Par_2_v333",
+    }
+    # Exactly one back-link stub per versioned provision, each pointing
+    # currentVersion at its head version and hasVersion at every version.
+    assert {n["@id"] for n in backlink_nodes} == {"estleg:FIX_Par_1", "estleg:FIX_Par_2"}
+    bl_by_id = {n["@id"]: n for n in backlink_nodes}
+    assert bl_by_id["estleg:FIX_Par_1"]["estleg:currentVersion"] == {"@id": "estleg:FIX_Par_1_v222"}
+    assert bl_by_id["estleg:FIX_Par_2"]["estleg:currentVersion"] == {"@id": "estleg:FIX_Par_2_v333"}
+    assert bl_by_id["estleg:FIX_Par_1"]["estleg:hasVersion"] == [
+        {"@id": "estleg:FIX_Par_1_v111"}, {"@id": "estleg:FIX_Par_1_v222"},
+    ]
+    # Back-link stubs deliberately carry no paragrahv / @type so neither
+    # LegalProvisionShape nor ProvisionVersionShape targets them.
+    for n in backlink_nodes:
+        assert "@type" not in n
+        assert "estleg:paragrahv" not in n
 
 
 # ---------------------------------------------------------------------------
@@ -692,6 +937,19 @@ def test_shacl_accepts_well_formed_provision_versions():
     target = _make_target(par_suffixes=("1", "2"))
     nodes = synthesise_versions(target, _three_redaction_chain())
     graph_json = {"@context": dict(gpv.CONTEXT), "@graph": nodes}
+    conforms, msg = _shacl_conforms(graph_json)
+    assert conforms, msg
+
+
+def test_shacl_accepts_sidecar_with_currentversion_backlinks():
+    # Issue #271: the full sidecar graph — version nodes PLUS the LegalProvision
+    # back-link stubs (estleg:currentVersion / estleg:hasVersion) — must still
+    # conform. The stubs carry no estleg:paragrahv, so LegalProvisionShape's
+    # required paragrahv/summary do not fire on them.
+    target = _make_target(par_suffixes=("1", "2"))
+    nodes = synthesise_versions(target, _three_redaction_chain())
+    backlinks = build_provision_backlinks(nodes)
+    graph_json = {"@context": dict(gpv.CONTEXT), "@graph": [*nodes, *backlinks]}
     conforms, msg = _shacl_conforms(graph_json)
     assert conforms, msg
 
@@ -755,6 +1013,20 @@ def test_main_processes_law_with_mocked_fetches(tmp_path: Path, monkeypatch: pyt
     peep_ids = {n["@id"] for n in peep["@graph"]}
     for n in pv_nodes:
         assert n["estleg:versionOf"]["@id"] in peep_ids
+
+    # Issue #271: the sidecar also carries currentVersion / hasVersion back-link
+    # stubs onto the stable provision IRIs, and every target resolves within the
+    # sidecar (the head version is now forward-reachable, no dangle).
+    pv_ids = {n["@id"] for n in pv_nodes}
+    backlink_nodes = [n for n in doc["@graph"] if n["@id"] in peep_ids and "estleg:currentVersion" in n]
+    bl_by_id = {n["@id"]: n for n in backlink_nodes}
+    assert set(bl_by_id) == {"estleg:FIX_Par_1", "estleg:FIX_Par_2"}
+    assert bl_by_id["estleg:FIX_Par_1"]["estleg:currentVersion"] == {"@id": "estleg:FIX_Par_1_v222"}
+    assert bl_by_id["estleg:FIX_Par_2"]["estleg:currentVersion"] == {"@id": "estleg:FIX_Par_2_v333"}
+    for n in backlink_nodes:
+        assert n["estleg:currentVersion"]["@id"] in pv_ids
+        for v in n["estleg:hasVersion"]:
+            assert v["@id"] in pv_ids
 
     cov = json.loads((krr / "reports" / "kov" / "extract_provision_versions_coverage.json").read_text("utf-8"))
     assert cov["pipeline"] == "extract_provision_versions"

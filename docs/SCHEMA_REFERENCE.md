@@ -4,6 +4,8 @@
 
 > **Note on terminology.** "Regulation" is overloaded across legal systems. In this ontology **domestic regulations** (Estonian *määrused*, modelled as `estleg:NationalRegulation` and its subclasses) are kept strictly separate from **EU regulations** (modelled as `estleg:EULegislation` with `estleg:euDocumentType estleg:EUDocType_Regulation`). Domestic regulations are issued under an enabling Estonian law by Vabariigi Valitsus, a minister, or a municipal council; EU regulations are EU-level legal acts. Use the dedicated classes for each — see "Domestic Regulation Classes" and "EU Legislation Classes" below.
 
+> **Canonical vocabulary (T-Box).** `krr_outputs/controlled_vocabulary.jsonld` is the intended canonical home for the reusable `estleg:` classes and properties (including the `owl:inverseOf` axioms for the inverse pairs `references`/`referencedBy`, `amendedBy`/`amends`, `interpretsLaw`/`interpretedBy`, `hasVersion`/`versionOf`, and `hasSubsection`/`parentProvision`). Subcorpus schema files (e.g. `riigikohus/riigikohus_schema.json`, `eurlex/eurlex_schema.json`, `eelnoud/eelnoud_schema.json`, `curia/curia_schema.json`) still carry some corpus-specific terms and enum individuals (notably the court-decision `estleg:CaseType_*` / `estleg:DecisionType_*` individuals, which live in `riigikohus_schema.json` and must be loaded alongside the court-decision peeps to resolve `estleg:caseType` / `estleg:decisionType` targets). Consolidating every reusable term into the canonical file is an ongoing effort (issue #291); new reusable terms SHOULD be defined in `controlled_vocabulary.jsonld`.
+
 ### Classes
 
 #### Enacted Law Classes
@@ -23,12 +25,11 @@
    - Phases: `Phase_PublicConsultation`, `Phase_Review`, `Phase_Submission`
 6. **DraftType (`estleg:DraftType`)**
    - Classifies the type of draft: bill, regulation, order, etc.
-   - Types: `Bill`, `AmendmentBill`, `GovernmentRegulation`, `MinisterialRegulation`, `GovernmentOrder`, `EUPosition`, `DraftIntent`, `ActionPlan`, `Other`
+   - Types: `Bill`, `AmendmentBill`, `GovernmentRegulation`, `MinisterialRegulation`, `Regulation`, `GovernmentOrder`, `EUPosition`, `DraftIntent`, `ActionPlan`, `CitizenshipDecision`, `Report`, `Other`
 
 ### Properties
 
 #### Enacted Law Properties
-* `estleg:identifier`: A unique identifier for the provision.
 * `rdfs:label`: The title or heading of the provision (language-tagged Estonian/English literal). Replaces the legacy `schema:name`; current generators emit `rdfs:label` and SHACL validates it via `LegalProvisionShape`.
 * `estleg:summary`: Free-text summary of the provision (language-tagged Estonian/English literal). Replaces the legacy `schema:text`; current generators emit `estleg:summary`.
 * `estleg:topicCluster`: Associates a provision with a TopicCluster.
@@ -63,10 +64,13 @@
 | `DraftType_AmendmentBill` | Seaduse muutmise eelnõu | Amendment Bill |
 | `DraftType_GovernmentRegulation` | VV määruse eelnõu | Government Regulation Draft |
 | `DraftType_MinisterialRegulation` | Ministri määruse eelnõu | Ministerial Regulation Draft |
+| `DraftType_Regulation` | Määruse eelnõu | Regulation Draft |
 | `DraftType_GovernmentOrder` | Korralduse eelnõu | Government Order Draft |
 | `DraftType_EUPosition` | EL seisukoha eelnõu | EU Position Draft |
 | `DraftType_DraftIntent` | Väljatöötamiskavatsus | Draft Intent / Pre-draft |
 | `DraftType_ActionPlan` | Tegevuskava | Action Plan |
+| `DraftType_CitizenshipDecision` | Kodakondsuse otsus | Citizenship Decision |
+| `DraftType_Report` | Ülevaade | Report |
 | `DraftType_Other` | Muu eelnõu | Other Draft |
 
 ## JSON-LD Structure Examples
@@ -187,6 +191,7 @@ Classifies the type of court case.
 | `CaseType_Administrative` | Haldusasi | 3-XX-NNNN |
 | `CaseType_Misdemeanor` | Väärteoasi | 4-XX-NNNN |
 | `CaseType_ConstitutionalReview` | Põhiseaduslikkuse järelevalve | 5-XX-NNNN |
+| `CaseType_Other` | Muu / määramata | (fallback for decisions with no recognised case-type prefix) |
 
 ### DecisionType (`estleg:DecisionType`)
 
@@ -438,6 +443,8 @@ EU institution or body that authored the legal act.
 | `EUInst_EuropeanParliament` | Euroopa Parlament | EP |
 | `EUInst_EuropeanCentralBank` | Euroopa Keskpank | ECB |
 
+The four rows above are the most common institutions; `estleg:EUInst_*` is an **open set**. The corpus materialises one `estleg:EUInstitution` individual per authoring body actually seen in EUR-Lex (currently ~66 distinct `EUInst_*` IRIs, e.g. agencies, joint bodies, and committees), so consumers should treat any `estleg:EUInst_*` IRI as a valid institution rather than filtering to a fixed list.
+
 ### EU Legislation Properties
 
 * `estleg:celexNumber`: CELEX identifier (e.g., "32016R0679") -- `xsd:string`
@@ -512,6 +519,7 @@ Represents a CJEU decision available in Estonian. Source: [EUR-Lex](https://eur-
 | `EUDecType_Order` | Kohtumaarus | Order |
 | `EUDecType_AGOpinion` | Kohtujuristi ettepanek | Advocate General Opinion |
 | `EUDecType_CourtOpinion` | Kohtu arvamus | Court Opinion |
+| `EUDecType_Other` | Muu / määramata | Other (fallback for decisions with no recognised CURIA document type) |
 
 ### EUCourt (`estleg:EUCourt`)
 
@@ -581,7 +589,11 @@ Represents a state institution with legal competences.
 | Property | Type | Description |
 |----------|------|-------------|
 | `estleg:competenceType` | `xsd:string` | Type: supervision, licensing, enforcement, regulation |
-| `estleg:hasCompetence` | `owl:ObjectProperty` | Provisions assigning competence to this institution |
+
+Institution → provision competence links are not modelled with a `hasCompetence`
+property; they are reified as `estleg:Competence` nodes (see below) that carry
+`estleg:grantedBy` / `estleg:appliesToProvision`, and individual provisions point
+back to the institution via `estleg:competentAuthority`.
 
 ### Competence (`estleg:Competence`)
 Reified institutional competence sidecar node generated under
@@ -800,9 +812,10 @@ warm-cache or controlled runs where the polite inter-fetch delay is not needed.
 ### Annotations (practitioner layer)
 
 **Status:** model defined (issue #40) and populated from the Õiguskantsler
-archive. The current sidecar contains 13,402 annotation nodes generated from
-the live listing plus usable PDF body text; see the Õiguskantsler ingestion
-section in `docs/VALIDATION_REPORT.md` for coverage and probe metrics.
+archive (issue #199). The annotation sidecar is generated from the live listing
+plus usable PDF body text; see the Õiguskantsler ingestion section in
+`docs/VALIDATION_REPORT.md` for the current node count, coverage, and probe
+metrics.
 
 The corpus captures the law *as written*, not how it is applied or interpreted in practice.
 The `estleg:Annotation` model adds a separate layer of practitioner-facing notes — guidance,
@@ -855,11 +868,6 @@ SELECT ?text ?type ?source WHERE {
   OPTIONAL { ?ann estleg:annotationSource ?source . }
 }
 ```
-
-> **Population is future work.** No `estleg:Annotation` instances exist today. Ingestion needs
-> a source-data decision first (Õiguskantsleri opinions? Riigi Teataja commentaries? ministry
-> guidelines?), then a parser that emits `estleg:Annotation` nodes linked to the annotated
-> entities; that work is tracked in issue #199.
 
 ### Normative Classification
 | Property | Domain | Range | Description |

@@ -270,6 +270,72 @@ class TestIssue171DefinitionPattern:
         assert defs[1][2].startswith("pakutav abi")
 
 
+class TestIssue260HyphenatedFirstTerm:
+    """#260: a hyphen inside the FIRST term word was excluded from the
+    term class while the separator dash allowed an un-spaced hyphen, so
+    ``tee-ehitus`` parsed as term=``tee`` and ``e-arve`` was dropped
+    (term ``e`` too short). The first word now permits internal hyphens
+    and the separator dash must be space-surrounded."""
+
+    def test_multichar_hyphenated_first_term_kept_whole(self):
+        from extract_legal_concepts import extract_definitions_from_text
+        text = "1) tee-ehitus – teede rajamine ja korrashoid;"
+        defs = extract_definitions_from_text(text)
+        assert len(defs) == 1, defs
+        # Term must be the full hyphenated compound, not just "tee".
+        assert defs[0][1] == "tee-ehitus", defs[0]
+        # The definition must NOT have swallowed "ehitus".
+        assert defs[0][2].startswith("teede rajamine"), defs[0]
+
+    def test_single_letter_prefix_hyphenated_term_not_dropped(self):
+        from extract_legal_concepts import extract_definitions_from_text
+        text = "1) e-arve – elektrooniline arve;"
+        defs = extract_definitions_from_text(text)
+        # Previously dropped entirely (parsed term "e" failed len < 2).
+        assert len(defs) == 1, defs
+        assert defs[0][1] == "e-arve", defs[0]
+        assert defs[0][2] == "elektrooniline arve", defs[0]
+
+    def test_hyphenated_term_in_multi_item_list(self):
+        from extract_legal_concepts import extract_definitions_from_text
+        text = "1) e-arve – elektrooniline arve; 2) tee-ehitus – teede rajamine;"
+        defs = extract_definitions_from_text(text)
+        terms = [t for _n, t, _d in defs]
+        assert terms == ["e-arve", "tee-ehitus"], defs
+
+
+class TestIssue261InlineCrossReference:
+    """#261: the definition-body lookahead stopped at the FIRST inline
+    ``\\d+\\)`` even when it was a cross-reference rather than a list
+    item, truncating the definition. The stop now only fires on a real
+    definition-item start (``\\d+\\) term <space-dash-space>``)."""
+
+    def test_inline_numbered_reference_does_not_truncate(self):
+        from extract_legal_concepts import extract_definitions_from_text
+        text = "1) tulu – käesoleva seaduse 2) punktis nimetatud summa kokku;"
+        defs = extract_definitions_from_text(text)
+        assert len(defs) == 1, defs
+        assert defs[0][1] == "tulu", defs[0]
+        # The inline "2)" cross-reference must remain inside the body.
+        assert defs[0][2] == (
+            "käesoleva seaduse 2) punktis nimetatud summa kokku"
+        ), defs[0]
+
+    def test_real_item_after_inline_reference_still_splits(self):
+        from extract_legal_concepts import extract_definitions_from_text
+        # An inline "2)" reference inside item 1, then a genuine item 2.
+        text = (
+            "1) tulu – käesoleva seaduse 2) punktis nimetatud summa; "
+            "2) kulu – tehtud väljaminek;"
+        )
+        defs = extract_definitions_from_text(text)
+        assert len(defs) == 2, defs
+        assert defs[0][1] == "tulu"
+        assert "2) punktis nimetatud summa" in defs[0][2], defs[0]
+        assert defs[1][1] == "kulu"
+        assert defs[1][2] == "tehtud väljaminek", defs[1]
+
+
 class TestIssue171ConceptIdDisambiguation:
     """Finding 2 (#171): collision disambiguation uses (law_slug, par_nr,
     def_number); collisions append _2/_3/... rather than silently
@@ -460,6 +526,57 @@ class TestIssue171BucketingPerformance:
         pair_set = {(t1, t2) for t1, t2, _d in pairs}
         assert ("isiku", "isikud") in pair_set
         assert ("auto", "auts") in pair_set
+
+
+class TestIssue278LeadingEditBuckets:
+    """#278: the old ``(first_2_chars, length)`` signature only ever
+    compared terms sharing their leading two characters, so every
+    edit-distance ≤ 2 pair differing in a *leading* character or
+    transposing the first two characters was silently missed. The
+    deletion-variant index must co-locate those pairs."""
+
+    @staticmethod
+    def _linked(pairs, a, b):
+        s = {(t1, t2) for t1, t2, _d in pairs}
+        return (a, b) in s or (b, a) in s
+
+    def test_leading_char_substitution_linked(self):
+        from extract_legal_concepts import _bucketed_close_match_pairs
+        # d=1, differs only in the FIRST character — never shared a bucket
+        # under the old prefix signature.
+        pairs = _bucketed_close_match_pairs(["tasu", "kasu"])
+        assert self._linked(pairs, "tasu", "kasu"), pairs
+        # Distance is reported as 1.
+        assert any(d == 1 for *_p, d in pairs), pairs
+
+    def test_transposed_first_two_chars_linked(self):
+        from extract_legal_concepts import _bucketed_close_match_pairs
+        # Transposing the first two characters is a distance-2 edit and
+        # changes the leading 2-char prefix, so the old bucketing missed it.
+        pairs = _bucketed_close_match_pairs(["liige", "ilige"])
+        assert self._linked(pairs, "liige", "ilige"), pairs
+
+    def test_double_leading_substitution_linked(self):
+        from extract_legal_concepts import _bucketed_close_match_pairs
+        # Both leading chars differ (d=2) — the hardest case for any
+        # prefix-keyed scheme.
+        pairs = _bucketed_close_match_pairs(["xxabc", "yyabc"])
+        assert self._linked(pairs, "xxabc", "yyabc"), pairs
+
+    def test_distance_three_not_linked(self):
+        from extract_legal_concepts import _bucketed_close_match_pairs
+        # Guard: pairs at edit distance >= 3 must still be excluded.
+        pairs = _bucketed_close_match_pairs(["abcd", "wxyz"])
+        assert not self._linked(pairs, "abcd", "wxyz"), pairs
+
+    def test_leading_edit_found_in_large_corpus(self):
+        from extract_legal_concepts import _bucketed_close_match_pairs
+        # The leading-char pair must surface even buried in a large,
+        # otherwise-unrelated vocabulary.
+        terms = [f"word{i:03d}" for i in range(200)]
+        terms.extend(["tasu", "kasu"])
+        pairs = _bucketed_close_match_pairs(terms)
+        assert self._linked(pairs, "tasu", "kasu"), "leading pair lost in corpus"
 
 
 def _expected_pipeline_triples(graph: list[dict]) -> int:

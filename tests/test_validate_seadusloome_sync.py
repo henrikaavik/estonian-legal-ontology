@@ -228,6 +228,9 @@ def test_collect_inputs_loads_public_sidecars_recursively_and_skips_reports(tmp_
     krr = tmp_path / "krr_outputs"
     _seed_seadusloome_subdirs(krr)
     _write_combined(krr, [])
+    # Present so the historical-municipalities special case (issue #285a) does
+    # not emit its missing-input warning — this test asserts a clean warning set.
+    _write_historical_municipalities(krr, [])
 
     data_file = krr / "harmonisation" / "harmonisation_by_directive" / "harm_1.json"
     data_file.parent.mkdir(parents=True, exist_ok=True)
@@ -497,3 +500,133 @@ def test_grouped_summary_includes_focus_nodes(tmp_path, capsys):
     assert iri_a_full in output or iri_b_full in output, output
     # Group should aggregate both failures under one row.
     assert "2x LegalProvisionShape" in output or "2x  LegalProvisionShape" in output
+
+
+# ---------------------------------------------------------------------------
+# Historical municipalities loaded into the gate (issue #285a)
+# ---------------------------------------------------------------------------
+
+
+def _write_historical_municipalities(krr_dir: Path, nodes: list[dict]) -> Path:
+    """Write ``<repo>/data/ehak/historical_municipalities.jsonld``.
+
+    The file deliberately lives a sibling of ``krr_outputs`` (``krr_dir.parent``)
+    to mirror the real source-registry layout the loader special-cases.
+    """
+    path = krr_dir.parent / "data" / "ehak" / "historical_municipalities.jsonld"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(
+        json.dumps({"@context": CONTEXT, "@graph": nodes}), encoding="utf-8"
+    )
+    return path
+
+
+def test_collect_inputs_includes_historical_municipalities(tmp_path):
+    krr = tmp_path / "krr_outputs"
+    _seed_seadusloome_subdirs(krr)
+    _write_combined(krr, [])
+    hist = _write_historical_municipalities(krr, [])
+
+    inputs, warnings, errors = validate_seadusloome_sync.collect_inputs(krr)
+
+    assert errors == []
+    assert hist in inputs, inputs
+    # Must not warn when the file is present.
+    assert all("historical municipalities" not in w for w in warnings), warnings
+
+
+def test_collect_inputs_warns_when_historical_municipalities_missing(tmp_path):
+    krr = tmp_path / "krr_outputs"
+    _seed_seadusloome_subdirs(krr)
+    _write_combined(krr, [])
+    # Intentionally do not write data/ehak/historical_municipalities.jsonld.
+
+    inputs, warnings, errors = validate_seadusloome_sync.collect_inputs(krr)
+
+    assert errors == []
+    assert any("historical municipalities" in w for w in warnings), warnings
+
+
+def test_historical_municipality_nodes_are_validated_by_the_gate(tmp_path, capsys):
+    """A malformed HistoricalMunicipality must now fail the Seadusloome gate.
+
+    Before issue #285a the shape validated zero nodes here, so this would
+    have passed vacuously. The successor target is defined in the combined
+    artifact to keep graph-closure green; only the shape constraint fires.
+    """
+    krr = tmp_path / "krr_outputs"
+    _seed_seadusloome_subdirs(krr)
+    _write_combined(
+        krr,
+        [{"@id": "estleg:Municipality_EHAK_0480", "@type": ["owl:NamedIndividual"]}],
+    )
+    # formerEhakCode violates sh:pattern "^[0-9]{4}$" (too short).
+    _write_historical_municipalities(
+        krr,
+        [
+            {
+                "@id": "estleg:HistoricalMunicipality_0105",
+                "@type": ["owl:NamedIndividual", "estleg:HistoricalMunicipality"],
+                "rdfs:label": "Abja vald",
+                "estleg:formerEhakCode": "10",
+                "estleg:formerName": "Abja vald",
+                "estleg:succeededBy": {"@id": "estleg:Municipality_EHAK_0480"},
+            }
+        ],
+    )
+
+    code, output = _run_validator(krr, capsys)
+
+    assert code != 0, output
+    assert "HistoricalMunicipalityShape" in output, output
+
+
+def test_well_formed_historical_municipality_passes_the_gate(tmp_path, capsys):
+    krr = tmp_path / "krr_outputs"
+    _seed_seadusloome_subdirs(krr)
+    _write_combined(
+        krr,
+        [{"@id": "estleg:Municipality_EHAK_0480", "@type": ["owl:NamedIndividual"]}],
+    )
+    _write_historical_municipalities(
+        krr,
+        [
+            {
+                "@id": "estleg:HistoricalMunicipality_0105",
+                "@type": ["owl:NamedIndividual", "estleg:HistoricalMunicipality"],
+                "rdfs:label": "Abja vald",
+                "estleg:formerEhakCode": "0105",
+                "estleg:formerName": "Abja vald",
+                "estleg:succeededBy": {"@id": "estleg:Municipality_EHAK_0480"},
+                "estleg:municipalityType": "vald",
+            }
+        ],
+    )
+
+    code, output = _run_validator(krr, capsys)
+
+    assert code == 0, output
+
+
+# ---------------------------------------------------------------------------
+# Enum-like IRI predicates carry graphClosureExempt uniformly (issue #290)
+# ---------------------------------------------------------------------------
+
+
+def test_enum_iri_predicates_are_graph_closure_exempt():
+    """All enum-like IRI predicates must be exempt so they never break closure."""
+    exempt = validate_seadusloome_sync.graph_closure_exempt_predicates()
+
+    expected = {
+        "estleg:normativeType",
+        "estleg:legislativePhase",
+        "estleg:draftType",
+        "estleg:euDocumentType",
+        "estleg:euInstitution",
+        "estleg:euCourt",
+        # Pre-existing markers must remain in place.
+        "estleg:caseType",
+        "estleg:decisionType",
+        "estleg:euCourtDecisionType",
+    }
+    assert expected <= exempt, sorted(expected - exempt)

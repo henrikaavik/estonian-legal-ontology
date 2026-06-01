@@ -84,7 +84,30 @@ def collect_inputs(krr_dir: Path) -> tuple[list[Path], list[str], list[str]]:
         if not subdir.is_dir():
             warnings.append(f"WARNING: missing input subdirectory {subdir}")
 
-    return iter_public_load_files(krr_dir), warnings, errors
+    inputs = iter_public_load_files(krr_dir)
+
+    # ``data/ehak/historical_municipalities.jsonld`` (issue #130) holds the 150
+    # estleg:HistoricalMunicipality individuals consumed via estleg:succeededBy.
+    # It lives under the source registry directory rather than ``krr_outputs/``
+    # (to keep it out of the krr file-count statistics), so iter_public_load_files
+    # — which only walks ``krr_dir`` — never reaches it. Without it the
+    # HistoricalMunicipalityShape validates zero nodes in this gate (issue #285).
+    # Its succeededBy / dcterms:source targets resolve from combined_ontology.jsonld,
+    # so adding it keeps the graph-closure check green.
+    historical_municipalities = (
+        krr_dir.parent / "data" / "ehak" / "historical_municipalities.jsonld"
+    )
+    if historical_municipalities.is_file():
+        if historical_municipalities not in inputs:
+            inputs.append(historical_municipalities)
+            inputs.sort()
+    else:
+        warnings.append(
+            f"WARNING: missing historical municipalities input "
+            f"{historical_municipalities}"
+        )
+
+    return inputs, warnings, errors
 
 
 def _canonical_estleg_id(value: str) -> str | None:

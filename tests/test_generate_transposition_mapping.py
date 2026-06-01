@@ -576,3 +576,191 @@ def test_controlled_vocabulary_declares_transposition_deadline():
     assert "estleg:transpositionDeadline" in nodes
     assert "owl:DatatypeProperty" in nodes["estleg:transpositionDeadline"]["@type"]
     assert nodes["estleg:transpositionDeadline"]["rdfs:range"] == {"@id": "xsd:date"}
+
+
+# ---------------------------------------------------------------------------
+# #265 — whole-word, floored, deterministic fuzzy matching in
+# match_title_to_law / match_all_titles_to_laws.
+# ---------------------------------------------------------------------------
+
+
+def _law_index_with(*names: str) -> dict[str, dict]:
+    """Build a minimal law_index keyed by normalized name, like build_law_index.
+
+    Each ``name`` is treated as both the law's display ``name`` and its
+    ``source_act``; the key is the normalized source_act (the first form
+    ``build_law_index`` emits).
+    """
+    index: dict[str, dict] = {}
+    for name in names:
+        key = mod.normalize_text(name)
+        index[key] = {
+            "name": name,
+            "files": [f"{key.replace(' ', '_')}_peep.json"],
+            "source_act": name,
+        }
+    return index
+
+
+def test_raudteeseadus_does_not_match_teeseadus() -> None:
+    """The embedded-substring false positive (#265): ``Teeseadus`` must NOT be
+    matched inside ``Raudteeseadus`` — word boundaries close the gap.
+    """
+    index = _law_index_with("Teeseadus", "Raudteeseadus")
+    match = mod.match_title_to_law("Raudteeseadus", index)
+    assert match is not None
+    assert match["name"] == "Raudteeseadus"
+
+    # And a title that really is the Teeseadus still matches it.
+    assert mod.match_title_to_law("Teeseadus", index)["name"] == "Teeseadus"
+
+
+def test_teeseadus_not_matched_when_only_raudteeseadus_in_title() -> None:
+    """If the title contains only the longer compound, the shorter embedded
+    name must not be returned via the fuzzy fallback (#265)."""
+    # Only the shorter, embeddable name is in the index.
+    index = _law_index_with("Teeseadus")
+    # A title built so no direct/extract match fires, only fuzzy fallback.
+    match = mod.match_title_to_law(
+        "Raudteeseadus ja muu seadus", index
+    )
+    assert match is None
+
+
+def test_match_is_independent_of_dict_order() -> None:
+    """The fuzzy match must not depend on law_index iteration order (#265)."""
+    # Two laws, one whose name is a whole-word substring scenario. Title
+    # references the more specific one as a whole word.
+    title = "Liiklusseaduse ja teeseaduse muutmise seadus"
+    a = _law_index_with("Teeseadus", "Liiklusseadus")
+    b: dict[str, dict] = {}
+    for key in reversed(list(a.keys())):  # reversed insertion order
+        b[key] = a[key]
+
+    m_a = mod.match_title_to_law(title, a)
+    m_b = mod.match_title_to_law(title, b)
+    assert m_a is not None and m_b is not None
+    # Same deterministic winner regardless of dict order.
+    assert m_a["name"] == m_b["name"]
+    # The longest whole-word match wins ("Liiklusseadus" > "Teeseadus").
+    assert m_a["name"] == "Liiklusseadus"
+
+
+def test_short_names_below_floor_do_not_match() -> None:
+    """A law name shorter than the fuzzy floor must not anchor a match (#265)."""
+    index = _law_index_with("Maaseadus")  # 9 chars normalized, < 10 floor
+    # No direct/extract full match; fuzzy fallback must reject the short name.
+    assert mod.match_title_to_law("Mingi pikem maaseadus tekst siin", index) is None
+
+
+def test_match_all_titles_to_laws_returns_both_laws() -> None:
+    """A combined amending-act title referencing two laws yields BOTH (#288)."""
+    index = _law_index_with(
+        "Liiklusseadus", "Raudteeseadus", "Lennundusseadus"
+    )
+    title = "Liiklusseaduse ja raudteeseaduse muutmise seadus"
+    matches = mod.match_all_titles_to_laws(title, index)
+    names = {m["name"] for m in matches}
+    assert names == {"Liiklusseadus", "Raudteeseadus"}
+    # Lennundusseadus is not in the title and must not appear.
+    assert "Lennundusseadus" not in names
+
+
+def test_match_all_titles_to_laws_is_deterministic() -> None:
+    """match_all_titles_to_laws returns a stable order regardless of dict
+    iteration order, so emitted links/report are byte-stable (#288)."""
+    title = "Liiklusseaduse ja raudteeseaduse muutmise seadus"
+    a = _law_index_with("Liiklusseadus", "Raudteeseadus")
+    b: dict[str, dict] = {key: a[key] for key in reversed(list(a.keys()))}
+
+    names_a = [m["name"] for m in mod.match_all_titles_to_laws(title, a)]
+    names_b = [m["name"] for m in mod.match_all_titles_to_laws(title, b)]
+    assert names_a == names_b
+
+
+def test_match_all_titles_single_law_title_returns_one() -> None:
+    """A plain single-law title returns exactly that one law (no spurious
+    embedded matches)."""
+    index = _law_index_with("Raudteeseadus", "Teeseadus")
+    matches = mod.match_all_titles_to_laws("Raudteeseadus", index)
+    assert [m["name"] for m in matches] == ["Raudteeseadus"]
+
+
+def test_main_emits_links_for_both_laws_in_combined_title(tmp_path, monkeypatch):
+    """End-to-end (mocked SPARQL): a combined amending-act title transposes
+    the directive into BOTH referenced laws, not just one (#288)."""
+    krr = tmp_path / "krr_outputs"
+    eurlex = krr / "eurlex"
+    krr.mkdir()
+    eurlex.mkdir()
+
+    # Two matchable Estonian laws.
+    liiklus = krr / "liiklusseadus_peep.json"
+    _write_json(
+        liiklus,
+        {
+            "@context": mod.CONTEXT,
+            "@graph": [
+                {"@id": "estleg:LIIKLUS_Map_2026", "@type": ["owl:Ontology", "estleg:Act"],
+                 "estleg:sourceAct": "Liiklusseadus"},
+            ],
+        },
+    )
+    raudtee = krr / "raudteeseadus_peep.json"
+    _write_json(
+        raudtee,
+        {
+            "@context": mod.CONTEXT,
+            "@graph": [
+                {"@id": "estleg:RAUDTEE_Map_2026", "@type": ["owl:Ontology", "estleg:Act"],
+                 "estleg:sourceAct": "Raudteeseadus"},
+            ],
+        },
+    )
+    _write_json(
+        krr / "INDEX.json",
+        {"total_laws": 2, "laws": [
+            {"name": "liiklusseadus", "files": ["liiklusseadus_peep.json"]},
+            {"name": "raudteeseadus", "files": ["raudteeseadus_peep.json"]},
+        ]},
+    )
+    _write_json(
+        eurlex / "eurlex_directives_peep.json",
+        {
+            "@context": mod.CONTEXT,
+            "@graph": [
+                {"@id": "estleg:EU_32016L0798", "@type": ["owl:NamedIndividual", "estleg:EULegislation"],
+                 "estleg:celexNumber": "32016L0798"},
+            ],
+        },
+    )
+
+    monkeypatch.setattr(mod, "KRR_DIR", krr)
+    monkeypatch.setattr(mod, "EURLEX_DIR", eurlex)
+    monkeypatch.setattr(mod, "REPO_ROOT", tmp_path)
+    monkeypatch.setattr(
+        mod, "fetch_transposition_measures",
+        lambda **_k: ([{"celex_dir": "32016L0798", "directive_uri": "http://x/dir",
+                        "title_nat": "Liiklusseaduse ja raudteeseaduse muutmise seadus"}], False),
+    )
+    monkeypatch.setattr(mod, "fetch_directive_deadlines", lambda **_k: ({}, False))
+    monkeypatch.setattr(sys, "argv", ["generate_transposition_mapping.py"])
+
+    rc = mod.main()
+    assert rc in (0, None)
+
+    # Both law peeps got the directive link.
+    liiklus_doc = json.loads(liiklus.read_text(encoding="utf-8"))
+    raudtee_doc = json.loads(raudtee.read_text(encoding="utf-8"))
+    assert {"@id": "estleg:EU_32016L0798"} in liiklus_doc["@graph"][0]["estleg:transposesDirective"]
+    assert {"@id": "estleg:EU_32016L0798"} in raudtee_doc["@graph"][0]["estleg:transposesDirective"]
+
+    # The directive node is transposedBy BOTH law nodes.
+    dir_doc = json.loads((eurlex / "eurlex_directives_peep.json").read_text(encoding="utf-8"))
+    transposed_by = {ref["@id"] for ref in dir_doc["@graph"][0]["estleg:transposedBy"]}
+    assert transposed_by == {"estleg:LIIKLUS_Map_2026", "estleg:RAUDTEE_Map_2026"}
+
+    # Report records both law-directive pairs.
+    report = json.loads((krr / "transposition_mapping.json").read_text(encoding="utf-8"))
+    matched_laws = {m["matched_law_name"] for m in report["mappings"]}
+    assert matched_laws == {"liiklusseadus", "raudteeseadus"}

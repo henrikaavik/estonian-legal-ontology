@@ -374,7 +374,7 @@ class TestMultipartLawAggregation:
             "@graph": [
                 {
                     "@id": f"estleg:{slug.upper()}_Map",
-                    "@type": ["owl:Ontology", "estleg:Law"],
+                    "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
                     "rdfs:label": title,
                     "dc:source": title,
                     "estleg:globalId": gid,
@@ -529,7 +529,8 @@ class TestCoverageTriplesSplit:
             "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
-                {"@id": "estleg:Alfa_Map", "@type": ["owl:Ontology"],
+                {"@id": "estleg:Alfa_Map",
+                 "@type": ["owl:Ontology", "estleg:Act"],
                  "rdfs:label": "Alfa seadus", "dc:source": "Alfa seadus",
                  "estleg:globalId": "5000"}
             ],
@@ -966,7 +967,7 @@ class TestGeneratorEmitsCompactAmendmentIris:
                          "owl": "http://www.w3.org/2002/07/owl#"},
             "@graph": [
                 {"@id": f"estleg:{slug.upper()}_Map",
-                 "@type": ["owl:Ontology", "estleg:Law"],
+                 "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
                  "rdfs:label": title, "dc:source": title,
                  "estleg:globalId": gid}],
         }), encoding="utf-8")
@@ -1072,3 +1073,395 @@ class TestGeneratorEmitsCompactAmendmentIris:
         assert rc in (None, 0)
         chain_files = sorted((krr / "amendments").glob("amendments_*.json"))
         assert chain_files
+
+
+# ---------------------------------------------------------------------------
+# Issue #263 — amendment over-count: dedup repeated muutmismarge markers
+# ---------------------------------------------------------------------------
+
+
+class TestExtractAmendmentsDedup:
+    """``extract_amendments_from_xml`` must collapse the SAME amending act
+    repeated across many ``<muutmismarge>`` markers into ONE record (issue
+    #263), and must not emit degenerate RT references."""
+
+    def _write_xml(self, tmp_path: Path, markers: list[str]) -> Path:
+        p = tmp_path / "act.xml"
+        p.write_text(
+            '<akt globaalID="1"><metaandmed>'
+            + "".join(markers)
+            + "</metaandmed></akt>",
+            encoding="utf-8",
+        )
+        return p
+
+    def test_same_rt_reference_across_three_markers_collapses_to_one(
+        self, tmp_path
+    ):
+        from generate_amendment_history import extract_amendments_from_xml
+
+        # Three markers all citing RT I, 2024, 10 — the classic RT-repeat
+        # pattern. One marker is the "complete" one (date + EIF); the other
+        # two are sparser (the duplicate often carries less data, e.g. no
+        # date). All three must collapse to a SINGLE record.
+        complete = (
+            "<muutmismarge>"
+            "<aktikuupaev>2024-03-01</aktikuupaev>"
+            "<joustumine>2024-06-01</joustumine>"
+            "<avaldamismarge>"
+            "<RTosa>I</RTosa><RTaasta>2024</RTaasta><RTnr>10</RTnr>"
+            "</avaldamismarge></muutmismarge>"
+        )
+        sparse = (
+            "<muutmismarge>"
+            "<avaldamismarge>"
+            "<RTosa>I</RTosa><RTaasta>2024</RTaasta><RTnr>10</RTnr>"
+            "</avaldamismarge></muutmismarge>"
+        )
+        xml_path = self._write_xml(tmp_path, [sparse, complete, sparse])
+        out = extract_amendments_from_xml(xml_path)
+        assert len(out) == 1, out
+        # The merged record keeps the most-complete fields (date + EIF
+        # survive even though the FIRST marker seen had neither).
+        assert out[0]["rt_reference"] == "I, 2024, 10"
+        assert out[0]["date"] == "2024-03-01"
+        assert out[0]["entry_into_force"] == "2024-06-01"
+
+    def test_distinct_rt_references_are_kept(self, tmp_path):
+        from generate_amendment_history import extract_amendments_from_xml
+
+        m1 = (
+            "<muutmismarge><avaldamismarge>"
+            "<RTosa>I</RTosa><RTaasta>2024</RTaasta><RTnr>10</RTnr>"
+            "</avaldamismarge></muutmismarge>"
+        )
+        m2 = (
+            "<muutmismarge><avaldamismarge>"
+            "<RTosa>I</RTosa><RTaasta>2024</RTaasta><RTnr>11</RTnr>"
+            "</avaldamismarge></muutmismarge>"
+        )
+        out = extract_amendments_from_xml(self._write_xml(tmp_path, [m1, m2]))
+        refs = sorted(a["rt_reference"] for a in out)
+        assert refs == ["I, 2024, 10", "I, 2024, 11"]
+
+    def test_degenerate_reference_with_empty_year_not_produced(self, tmp_path):
+        from generate_amendment_history import extract_amendments_from_xml
+
+        # avaldamismarge with RTosa + RTartikkel but NO RTaasta — the old
+        # code emitted ``"I, , , 13"`` (the degenerate "RT I, , , 13" from
+        # issue #263). Now rt_reference must be None; a date keeps the record.
+        marker = (
+            "<muutmismarge>"
+            "<aktikuupaev>2024-03-01</aktikuupaev>"
+            "<avaldamismarge>"
+            "<RTosa>I</RTosa><RTaasta></RTaasta><RTnr></RTnr>"
+            "<RTartikkel>13</RTartikkel>"
+            "</avaldamismarge></muutmismarge>"
+        )
+        out = extract_amendments_from_xml(self._write_xml(tmp_path, [marker]))
+        assert len(out) == 1
+        assert out[0]["rt_reference"] is None, out[0]
+        # No record anywhere carries the degenerate stub.
+        assert all(
+            (a.get("rt_reference") or "") not in ("I, , , 13", "RT I, , , 13")
+            for a in out
+        )
+
+    def test_year_only_without_number_or_article_is_not_a_reference(
+        self, tmp_path
+    ):
+        from generate_amendment_history import extract_amendments_from_xml
+
+        # RTaasta present but neither RTnr nor RTartikkel — not unique enough
+        # to be a real citation, so no rt_reference (falls back to the tuple).
+        marker = (
+            "<muutmismarge>"
+            "<aktikuupaev>2024-03-01</aktikuupaev>"
+            "<avaldamismarge>"
+            "<RTosa>I</RTosa><RTaasta>2024</RTaasta>"
+            "</avaldamismarge></muutmismarge>"
+        )
+        out = extract_amendments_from_xml(self._write_xml(tmp_path, [marker]))
+        assert len(out) == 1
+        assert out[0]["rt_reference"] is None, out[0]
+
+    def test_no_reference_dedups_by_date_eif_aktviide_tuple(self, tmp_path):
+        from generate_amendment_history import extract_amendments_from_xml
+
+        # Two markers, no avaldamismarge at all, identical date+EIF — must
+        # collapse via the (date, entry_into_force, akt_viide) tuple key.
+        marker = (
+            "<muutmismarge>"
+            "<aktikuupaev>2024-03-01</aktikuupaev>"
+            "<joustumine>2024-06-01</joustumine>"
+            "</muutmismarge>"
+        )
+        out = extract_amendments_from_xml(
+            self._write_xml(tmp_path, [marker, marker])
+        )
+        assert len(out) == 1, out
+        assert out[0]["date"] == "2024-03-01"
+
+
+class TestTotalAmendmentsCountsUniques:
+    """End-to-end: a law whose XML repeats one act across 3 markers reports
+    ``totalAmendments == 1`` and ``total_amendment_references == 1`` — no
+    spurious ``_2``/``_3`` Amendment nodes (issue #263)."""
+
+    def _setup(self, tmp_path: Path, monkeypatch):
+        import generate_amendment_history as mod
+        import estleg_common
+
+        krr = tmp_path / "krr_outputs"
+        rt = tmp_path / "data" / "riigiteataja"
+        krr.mkdir(parents=True)
+        rt.mkdir(parents=True)
+        (krr / "amendments").mkdir()
+        (krr / "eelnoud").mkdir()
+        (krr / "regulations" / "riik").mkdir(parents=True)
+        (krr / "regulations" / "kov").mkdir(parents=True)
+        monkeypatch.setattr(mod, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "DATA_DIR", rt)
+        monkeypatch.setattr(mod, "AMENDMENTS_DIR", krr / "amendments")
+        monkeypatch.setattr(mod, "EELNOUD_DIR", krr / "eelnoud")
+        monkeypatch.setattr(mod, "REPO_ROOT", tmp_path)
+        monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+        return krr, rt, mod
+
+    def test_three_repeated_markers_yield_one_amendment(
+        self, tmp_path, monkeypatch
+    ):
+        krr, rt, mod = self._setup(tmp_path, monkeypatch)
+        peep = krr / "beeta_seadus_peep.json"
+        peep.write_text(json.dumps({
+            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+                         "owl": "http://www.w3.org/2002/07/owl#"},
+            "@graph": [
+                {"@id": "estleg:Beeta_Map",
+                 "@type": ["owl:Ontology", "estleg:Act"],
+                 "rdfs:label": "Beeta seadus", "dc:source": "Beeta seadus",
+                 "estleg:globalId": "6000"}
+            ],
+        }), encoding="utf-8")
+        # Same RT I, 2024, 10 repeated 3x; two markers also lack a date.
+        one = (
+            "<muutmismarge>"
+            "<aktikuupaev>2024-03-01</aktikuupaev>"
+            "<joustumine>2024-06-01</joustumine>"
+            "<avaldamismarge>"
+            "<RTosa>I</RTosa><RTaasta>2024</RTaasta><RTnr>10</RTnr>"
+            "</avaldamismarge></muutmismarge>"
+        )
+        nodate = (
+            "<muutmismarge>"
+            "<avaldamismarge>"
+            "<RTosa>I</RTosa><RTaasta>2024</RTaasta><RTnr>10</RTnr>"
+            "</avaldamismarge></muutmismarge>"
+        )
+        (rt / "reg_6000.xml").write_text(
+            '<akt globaalID="6000"><metaandmed>'
+            + one + nodate + nodate
+            + "</metaandmed></akt>",
+            encoding="utf-8",
+        )
+
+        rc = mod.main()
+        assert rc in (None, 0)
+
+        chain_doc = json.loads(
+            (krr / "amendments" / "amendments_beeta_seadus.json").read_text("utf-8")
+        )
+        events = [
+            n for n in chain_doc["@graph"]
+            if "estleg:AmendmentEvent" in (n.get("@type") or [])
+        ]
+        assert len(events) == 1, [e["@id"] for e in events]
+        # No spurious _2/_3 disambiguated IRI.
+        assert not re.search(r"_\d+$", events[0]["@id"]), events[0]["@id"]
+
+        # Per-chain totalAmendments counts the unique.
+        onto = next(
+            n for n in chain_doc["@graph"]
+            if n["@id"].startswith("estleg:AmendmentChain_")
+        )
+        assert onto["estleg:totalAmendments"]["@value"] == "1"
+
+        # Report-level reference count is the unique count too.
+        report = json.loads(
+            (krr / "amendment_history_report.json").read_text("utf-8")
+        )
+        assert report["summary"]["total_amendment_references"] == 1
+
+
+# ---------------------------------------------------------------------------
+# Issue #289 — never stamp estleg:amendedBy onto a non-Act graph[0] node
+# ---------------------------------------------------------------------------
+
+
+class TestAmendedByRequiresActNode:
+    """``find_act_node``: ``estleg:amendedBy`` is act-level. A peep whose
+    ``graph[0]`` is a non-Act node (e.g. ``estleg:LegalConcept``) must be
+    SKIPPED, not stamped via the old ``graph[0]`` fallback (issue #289)."""
+
+    def test_find_act_node_prefers_ontology_act_then_any_act(self):
+        from generate_amendment_history import find_act_node
+
+        concept = {"@id": "estleg:C", "@type": ["estleg:LegalConcept"]}
+        plain_act = {"@id": "estleg:A2", "@type": ["estleg:Act"]}
+        onto_act = {"@id": "estleg:A1", "@type": ["owl:Ontology", "estleg:Act"]}
+        assert find_act_node([concept, plain_act, onto_act]) is onto_act
+        assert find_act_node([concept, plain_act]) is plain_act
+        assert find_act_node([concept]) is None
+        assert find_act_node([]) is None
+
+    def test_graph0_non_act_node_is_not_stamped(self, tmp_path, monkeypatch):
+        import generate_amendment_history as mod
+        import estleg_common
+
+        krr = tmp_path / "krr_outputs"
+        rt = tmp_path / "data" / "riigiteataja"
+        krr.mkdir(parents=True)
+        rt.mkdir(parents=True)
+        (krr / "amendments").mkdir()
+        (krr / "eelnoud").mkdir()
+        (krr / "regulations" / "riik").mkdir(parents=True)
+        (krr / "regulations" / "kov").mkdir(parents=True)
+        monkeypatch.setattr(mod, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "DATA_DIR", rt)
+        monkeypatch.setattr(mod, "AMENDMENTS_DIR", krr / "amendments")
+        monkeypatch.setattr(mod, "EELNOUD_DIR", krr / "eelnoud")
+        monkeypatch.setattr(mod, "REPO_ROOT", tmp_path)
+        monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+
+        # A peep with NO act node, mirroring the real tsiviilseadustik_osa6/
+        # osa7 shape (issue #289): graph[0] is an owl:Ontology *catalogue*
+        # node that is NOT typed estleg:Act, plus a LegalConcept. The
+        # owl:Ontology node carries the globalId so XML pairing succeeds and
+        # the chain IS built — but find_act_node returns None, so the
+        # per-member amendedBy stamp must be withheld (the old graph[0]
+        # fallback would have written it onto this non-Act node).
+        peep = krr / "gamma_seadus_peep.json"
+        peep.write_text(json.dumps({
+            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+                         "owl": "http://www.w3.org/2002/07/owl#"},
+            "@graph": [
+                {"@id": "estleg:Gamma_Catalogue",
+                 "@type": ["owl:Ontology", "estleg:LegalConcept"],
+                 "rdfs:label": "Gamma catalogue", "dc:source": "Gamma",
+                 "estleg:globalId": "7000"},
+                {"@id": "estleg:Gamma_Concept_2",
+                 "@type": ["owl:NamedIndividual", "estleg:LegalConcept"],
+                 "rdfs:label": "Another concept"},
+            ],
+        }), encoding="utf-8")
+        (rt / "maarus_kov").mkdir(parents=True, exist_ok=True)
+        (rt / "maarus_kov" / "reg_7000.xml").write_text(
+            '<akt globaalID="7000"><metaandmed>'
+            '<muutmismarge>'
+            '<aktikuupaev>2024-03-01</aktikuupaev>'
+            '<avaldamismarge>'
+            '<RTosa>I</RTosa><RTaasta>2024</RTaasta><RTnr>10</RTnr>'
+            '</avaldamismarge></muutmismarge>'
+            '</metaandmed></akt>',
+            encoding="utf-8",
+        )
+
+        rc = mod.main()
+        assert rc in (None, 0)
+
+        # The chain WAS built (pairing succeeded) — proving we reached the
+        # per-member stamp loop and skipped it, not that there was nothing
+        # to stamp.
+        assert sorted((krr / "amendments").glob("amendments_*.json")), (
+            "expected the amendment chain to be built so the skip path is "
+            "actually exercised"
+        )
+        doc = json.loads(peep.read_text("utf-8"))
+        # No node — least of all the owl:Ontology graph[0] — may have gained
+        # amendedBy.
+        assert all(
+            "estleg:amendedBy" not in n for n in doc["@graph"]
+        ), doc["@graph"]
+
+
+# ---------------------------------------------------------------------------
+# Issue #295 — byte-stable report: no wall-clock generated/run_timestamp
+# ---------------------------------------------------------------------------
+
+
+class TestReportIsByteStable:
+    """The git-tracked ``amendment_history_report.json`` carries no
+    wall-clock ``generated`` field and the coverage ``run_timestamp`` is
+    pinned, so reruns over the same inputs are byte-identical (issue #295)."""
+
+    def _run(self, tmp_path: Path, monkeypatch):
+        import generate_amendment_history as mod
+        import estleg_common
+
+        krr = tmp_path / "krr_outputs"
+        rt = tmp_path / "data" / "riigiteataja"
+        krr.mkdir(parents=True)
+        rt.mkdir(parents=True)
+        (krr / "amendments").mkdir()
+        (krr / "eelnoud").mkdir()
+        (krr / "regulations" / "riik").mkdir(parents=True)
+        (krr / "regulations" / "kov").mkdir(parents=True)
+        (krr / "reports" / "kov").mkdir(parents=True)
+        monkeypatch.setattr(mod, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "DATA_DIR", rt)
+        monkeypatch.setattr(mod, "AMENDMENTS_DIR", krr / "amendments")
+        monkeypatch.setattr(mod, "EELNOUD_DIR", krr / "eelnoud")
+        monkeypatch.setattr(mod, "REPO_ROOT", tmp_path)
+        monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+
+        peep = krr / "delta_seadus_peep.json"
+        peep.write_text(json.dumps({
+            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+                         "owl": "http://www.w3.org/2002/07/owl#"},
+            "@graph": [
+                {"@id": "estleg:Delta_Map",
+                 "@type": ["owl:Ontology", "estleg:Act"],
+                 "rdfs:label": "Delta seadus", "dc:source": "Delta seadus",
+                 "estleg:globalId": "8000"}
+            ],
+        }), encoding="utf-8")
+        (rt / "reg_8000.xml").write_text(
+            '<akt globaalID="8000"><metaandmed>'
+            '<muutmismarge>'
+            '<aktikuupaev>2024-03-01</aktikuupaev>'
+            '<avaldamismarge>'
+            '<RTosa>I</RTosa><RTaasta>2024</RTaasta><RTnr>10</RTnr>'
+            '</avaldamismarge></muutmismarge>'
+            '</metaandmed></akt>',
+            encoding="utf-8",
+        )
+        rc = mod.main()
+        assert rc in (None, 0)
+        return krr
+
+    def test_report_has_no_generated_field(self, tmp_path, monkeypatch):
+        krr = self._run(tmp_path, monkeypatch)
+        report = json.loads(
+            (krr / "amendment_history_report.json").read_text("utf-8")
+        )
+        assert "generated" not in report
+        # Sanity: the analytical content is still present.
+        assert "summary" in report and "amendment_chains" in report
+
+    def test_report_byte_identical_across_reruns(self, tmp_path, monkeypatch):
+        krr = self._run(tmp_path, monkeypatch)
+        first = (krr / "amendment_history_report.json").read_bytes()
+        # Re-run over a fresh tree with the SAME inputs; report must match.
+        krr2 = self._run(tmp_path / "again", monkeypatch)
+        second = (krr2 / "amendment_history_report.json").read_bytes()
+        assert first == second
+
+    def test_coverage_run_timestamp_is_pinned(self, tmp_path, monkeypatch):
+        import generate_amendment_history as mod
+
+        krr = self._run(tmp_path, monkeypatch)
+        cov = json.loads(
+            (krr / "reports" / "kov"
+             / "generate_amendment_history_coverage.json").read_text("utf-8")
+        )
+        assert cov["run_timestamp"] == mod.PINNED_RUN_TIMESTAMP
