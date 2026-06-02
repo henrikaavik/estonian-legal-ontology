@@ -1520,29 +1520,38 @@ def _expand_par_range(par_range: str) -> list[str]:
     Single numbers normalise to their IRI-key shape, folding a trailing
     superscript into a ``<base>_<m>`` suffix (``'158²'`` → ``'158_2'``,
     ``'22<sup>1</sup>'`` → ``'22_1'``) so the resolver finds the
-    superscript provision (#254). Ranges stay digit-only — superscripted
-    range endpoints do not occur in the corpus.
+    superscript provision (#254). A range expands only when BOTH endpoints
+    are bare decimal digits; a superscripted range endpoint ('62¹-65') is
+    not expandable and yields [] rather than a fabricated key.
     """
     par_range = par_range.replace("–", "-").replace("‑", "-")
     if "-" in par_range:
         parts = par_range.split("-", 1)
-        # Only treat as a range when BOTH endpoints are bare ASCII digits;
-        # a superscript glyph/markup means this is a single number whose
-        # superscript merely contained a hyphen-adjacent token.
-        if parts[0].strip().isdigit() and parts[1].strip().isdigit():
+        # Only treat as a range when BOTH endpoints are bare decimal digits.
+        # NB: use ``str.isdecimal()``, NOT ``str.isdigit()`` — the latter is
+        # True for superscript glyphs ('62¹'.isdigit() is True) but int()
+        # rejects them (ValueError), so an isdigit() guard lets a superscripted
+        # endpoint like '62¹-65' reach int() and crashes the whole run.
+        # isdecimal() is True exactly for the chars int() accepts.
+        if parts[0].strip().isdecimal() and parts[1].strip().isdecimal():
             start = int(parts[0].strip())
             end = int(parts[1].strip())
-            # This IS a numeric range. A reversed ('200-100') or
-            # over-wide ('4-59', '100-200') range is malformed, NOT a
-            # single number — return [] rather than falling through to
+            # A reversed ('200-100') or over-wide ('4-59', '100-200') range is
+            # malformed → [] rather than falling through to
             # _normalize_par_number, which would strip the hyphen and
-            # CONCATENATE the digits ('4-59' -> '459') into a false
-            # provision key that can collide with a real § (#341).
+            # CONCATENATE the digits ('4-59' -> '459') into a false provision
+            # key that can collide with a real § (#341).
             if end < start or end - start > 50:
                 return []
             return [str(n) for n in range(start, end + 1)]
-    # Single number (possibly superscripted) or a hyphenated token whose
-    # endpoints are not both bare digits (e.g. a superscript artifact).
+        # Hyphen present but the endpoints are not both decimal — e.g. a
+        # superscripted range endpoint ('62¹-65'). Cannot expand, and must NOT
+        # fall through to _normalize_par_number: it strips the hyphen+superscript
+        # and CONCATENATES '62¹-65' -> '6265', a false key. Same anti-fabrication
+        # rule as the #341 numeric case above.
+        return []
+    # Single number (possibly superscripted): fold the trailing superscript
+    # into the IRI-key suffix ('158²' -> '158_2', '22<sup>1</sup>' -> '22_1').
     norm = _normalize_par_number(par_range)
     return [norm] if norm else []
 

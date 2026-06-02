@@ -1434,6 +1434,23 @@ class TestSuperscriptParagraphCitations:
         assert _expand_par_range("158") == ["158"]
         assert _expand_par_range("208-210") == ["208", "209", "210"]
 
+    def test_expand_par_range_superscript_range_endpoint_does_not_crash(self):
+        """A range whose endpoint carries a superscript ('62¹-65') must not
+        crash. str.isdigit() is True for superscript glyphs ('62¹'.isdigit()
+        is True) but int('62¹') raises ValueError — an isdigit() guard let
+        such a token reach int() and aborted the whole 16k-file extraction
+        run. The guard uses str.isdecimal() (True only for chars int() accepts),
+        so a superscripted range endpoint is NOT expanded and — crucially —
+        is NOT concatenated into a fabricated key ('62¹-65' must not become
+        '6265', the #341 anti-fabrication rule). Returns []."""
+        from extract_cross_references import _expand_par_range
+
+        assert _expand_par_range("62¹-65") == []   # superscript start endpoint
+        assert _expand_par_range("65-62¹") == []   # superscript end endpoint
+        assert _expand_par_range("158²-160") == []
+        # Single superscripted numbers (no hyphen) still normalise correctly.
+        assert _expand_par_range("62¹") == ["62_1"]
+
     def test_normalize_par_number_forms(self):
         from extract_cross_references import _normalize_par_number
 
