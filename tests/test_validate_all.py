@@ -1573,3 +1573,212 @@ def test_validate_context_string_form_warns_not_silent(tmp_path):
     assert validate_all.errors == []
     assert len(validate_all.warnings) == 1
     assert "remote @context" in validate_all.warnings[0]
+
+
+# ---------------------------------------------------------------------------
+# Regen-pending staleness guards (#366, #348, #384).
+#
+# All three are WARNING-only gates: they make stale artifacts visible but
+# must never push an error (which would fail CI before the deferred regen
+# runs). Each pair of tests asserts (a) a crafted stale fixture emits the
+# warning and pushes NO error, and (b) a clean fixture is silent.
+# ---------------------------------------------------------------------------
+
+
+def _vocab_with_inverses(krr: Path) -> None:
+    """Write a controlled_vocabulary declaring the 3 PR #297 inverse axioms."""
+    write_json(
+        krr / "controlled_vocabulary.jsonld",
+        {
+            "@graph": [
+                {"@id": "estleg:amendedBy", "@type": ["owl:ObjectProperty"],
+                 "owl:inverseOf": {"@id": "estleg:amends"}},
+                {"@id": "estleg:interpretedBy", "@type": ["owl:ObjectProperty"],
+                 "owl:inverseOf": {"@id": "estleg:interpretsLaw"}},
+                {"@id": "estleg:references", "@type": ["owl:ObjectProperty"],
+                 "owl:inverseOf": {"@id": "estleg:referencedBy"}},
+            ]
+        },
+    )
+
+
+def test_validate_tbox_inverse_parity_warns_on_stale_combined(tmp_path):
+    """#366: a combined lacking the vocabulary's inverse axioms warns, not errors."""
+    krr = tmp_path / "krr_outputs"
+    _vocab_with_inverses(krr)
+    # Combined re-declares the forward properties but drops owl:inverseOf
+    # (the exact stale-artifact shape PR #297 left behind).
+    write_json(
+        krr / "combined_ontology.jsonld",
+        {
+            "@graph": [
+                {"@id": "estleg:amendedBy", "@type": ["owl:ObjectProperty"]},
+                {"@id": "estleg:interpretedBy", "@type": ["owl:ObjectProperty"]},
+                {"@id": "estleg:references", "@type": ["owl:ObjectProperty"]},
+            ]
+        },
+    )
+
+    validate_all.validate_tbox_inverse_parity(krr)
+
+    assert validate_all.errors == [], validate_all.errors
+    assert any(
+        "missing 3 owl:inverseOf" in w for w in validate_all.warnings
+    ), validate_all.warnings
+    # Each missing axiom is named in the warning.
+    joined = " ".join(validate_all.warnings)
+    assert "estleg:amendedBy owl:inverseOf estleg:amends" in joined
+    assert "estleg:interpretedBy owl:inverseOf estleg:interpretsLaw" in joined
+    assert "estleg:references owl:inverseOf estleg:referencedBy" in joined
+
+
+def test_validate_tbox_inverse_parity_silent_when_combined_has_axioms(tmp_path):
+    """#366: a combined that propagated all inverse axioms is silent."""
+    krr = tmp_path / "krr_outputs"
+    _vocab_with_inverses(krr)
+    write_json(
+        krr / "combined_ontology.jsonld",
+        {
+            "@graph": [
+                {"@id": "estleg:amendedBy", "@type": ["owl:ObjectProperty"],
+                 "owl:inverseOf": {"@id": "estleg:amends"}},
+                {"@id": "estleg:interpretedBy", "@type": ["owl:ObjectProperty"],
+                 "owl:inverseOf": {"@id": "estleg:interpretsLaw"}},
+                {"@id": "estleg:references", "@type": ["owl:ObjectProperty"],
+                 "owl:inverseOf": {"@id": "estleg:referencedBy"}},
+            ]
+        },
+    )
+
+    validate_all.validate_tbox_inverse_parity(krr)
+
+    assert validate_all.errors == [], validate_all.errors
+    assert validate_all.warnings == [], validate_all.warnings
+
+
+def _eu_node(nid: str, *, with_provenance: bool) -> dict:
+    node = {
+        "@id": nid,
+        "@type": ["owl:NamedIndividual", "estleg:EULegislation"],
+        "estleg:celexNumber": nid.removeprefix("estleg:EU_"),
+    }
+    if with_provenance:
+        node["owl:sameAs"] = {"@id": "http://data.europa.eu/eli/dir/2000/1/oj"}
+        node["dcterms:source"] = {"@id": "https://eur-lex.europa.eu/"}
+        node["eli:id_local"] = "32000L0001"
+    return node
+
+
+def test_validate_eu_provenance_fields_warns_on_stale_artifact(tmp_path):
+    """#348: EULegislation nodes lacking provenance fields warn, not error."""
+    krr = tmp_path / "krr_outputs"
+    write_json(
+        krr / "eurlex" / "eurlex_directives_peep.json",
+        {
+            "@graph": [
+                _eu_node(f"estleg:EU_3200{i}L0001", with_provenance=False)
+                for i in range(5)
+            ]
+        },
+    )
+
+    validate_all.validate_eu_provenance_fields(krr)
+
+    assert validate_all.errors == [], validate_all.errors
+    assert any("lack" in w and "provenance" in w for w in validate_all.warnings), (
+        validate_all.warnings
+    )
+    joined = " ".join(validate_all.warnings)
+    assert "owl:sameAs missing on 5/5" in joined
+    assert "dcterms:source missing on 5/5" in joined
+    assert "eli:id_local missing on 5/5" in joined
+
+
+def test_validate_eu_provenance_fields_silent_when_present(tmp_path):
+    """#348: nodes carrying all provenance fields are silent."""
+    krr = tmp_path / "krr_outputs"
+    write_json(
+        krr / "eurlex" / "eurlex_directives_peep.json",
+        {
+            "@graph": [
+                _eu_node(f"estleg:EU_3200{i}L0001", with_provenance=True)
+                for i in range(5)
+            ]
+        },
+    )
+
+    validate_all.validate_eu_provenance_fields(krr)
+
+    assert validate_all.errors == [], validate_all.errors
+    assert validate_all.warnings == [], validate_all.warnings
+
+
+def _amendment_event(nid: str, rt: str, eif: str) -> dict:
+    return {
+        "@id": nid,
+        "@type": ["owl:NamedIndividual", "estleg:AmendmentEvent"],
+        "estleg:rtReference": rt,
+        "estleg:entryIntoForce": {"@value": eif, "@type": "xsd:date"},
+    }
+
+
+def test_validate_amendment_duplicate_bloat_warns_on_duplicates(tmp_path):
+    """#384: a chain with many events but few unique pairs warns, not errors."""
+    krr = tmp_path / "krr_outputs"
+    # 6 events but only 1 unique (rtReference, entryIntoForce) pair.
+    write_json(
+        krr / "amendments" / "amendments_bloated.json",
+        {
+            "@graph": [
+                _amendment_event(f"estleg:Amendment_X_{i}", "RT I, 2007, 13, 69", "2007-07-01")
+                for i in range(6)
+            ]
+        },
+    )
+
+    validate_all.validate_amendment_duplicate_bloat(krr)
+
+    assert validate_all.errors == [], validate_all.errors
+    assert any(
+        "more" in w and "AmendmentEvent" in w for w in validate_all.warnings
+    ), validate_all.warnings
+    # The offending chain is listed with its ratio.
+    printed = " ".join(validate_all.warnings)
+    assert "6 events vs 1 unique" in printed
+
+
+def test_validate_amendment_duplicate_bloat_silent_on_clean_chain(tmp_path):
+    """#384: a chain with one event per unique pair is silent."""
+    krr = tmp_path / "krr_outputs"
+    write_json(
+        krr / "amendments" / "amendments_clean.json",
+        {
+            "@graph": [
+                _amendment_event("estleg:Amendment_Y_1", "RT I, 2010, 1, 1", "2010-01-01"),
+                _amendment_event("estleg:Amendment_Y_2", "RT I, 2011, 2, 2", "2011-02-02"),
+                _amendment_event("estleg:Amendment_Y_3", "RT I, 2012, 3, 3", "2012-03-03"),
+            ]
+        },
+    )
+
+    validate_all.validate_amendment_duplicate_bloat(krr)
+
+    assert validate_all.errors == [], validate_all.errors
+    assert validate_all.warnings == [], validate_all.warnings
+
+
+def test_regen_pending_guards_never_error_on_missing_artifacts(tmp_path):
+    """All three guards degrade to a warning (never error) when inputs absent.
+
+    Mirrors the missing-file handling of the other gates so an empty tree
+    cannot fail CI through these checks.
+    """
+    krr = tmp_path / "krr_outputs"
+    krr.mkdir()
+
+    validate_all.validate_tbox_inverse_parity(krr)
+    validate_all.validate_eu_provenance_fields(krr)
+    validate_all.validate_amendment_duplicate_bloat(krr)
+
+    assert validate_all.errors == [], validate_all.errors
+    assert len(validate_all.warnings) == 3, validate_all.warnings

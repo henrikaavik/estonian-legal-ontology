@@ -536,6 +536,59 @@ class TestHistoricalMunicipalityNameField:
         assert abja["mappingSource"] == "haldusreform-2017"
         assert abja["historicalMunicipalityName"] == "Abja"
 
+    def test_live_issuers_json_has_no_auto_match_historical_name(self):
+        # Issue #307 round-trip guard: the *committed* artifact must match
+        # the (correct) generator output. PR #297 fixed
+        # `_historical_municipality_name` to return "" for auto-match
+        # issuers, but `data/ehak/issuers.json` was not regenerated, so 158
+        # auto-match entries (Tallinn, Tartu, Narva, all post-2017-reform
+        # bodies) still carried a spurious predecessor name. Neither SHACL
+        # nor verify_layer1 caught it. This test fails on the *live* file
+        # whenever it drifts from the generator contract — i.e. whenever a
+        # future change repopulates an auto-match historical name without
+        # regenerating, the stale artifact is caught in the same PR.
+        issuers = json.loads(
+            (REPO_ROOT / "data" / "ehak" / "issuers.json").read_text(
+                encoding="utf-8",
+            )
+        )
+        auto_match = [
+            e for e in issuers if e["mappingSource"] == "auto-match"
+        ]
+        # Guard against a vacuous pass: the real registry has ~158
+        # auto-match issuers; if this list is empty the file is malformed
+        # or the loader silently broke.
+        assert auto_match, (
+            "expected auto-match issuers in the live issuers.json; "
+            "none found — file malformed or empty?"
+        )
+        offenders = [
+            e["slug"]
+            for e in auto_match
+            if e["historicalMunicipalityName"] != ""
+        ]
+        assert not offenders, (
+            f"{len(offenders)} auto-match issuer(s) in the committed "
+            "data/ehak/issuers.json carry a non-empty "
+            "historicalMunicipalityName (issue #307). Re-run "
+            "scripts/build_kov_registry.py to regenerate the artifact. "
+            f"First offenders: {offenders[:10]}"
+        )
+        # Conversely, issuers WITH a real predecessor (the reform/manual
+        # mappings) must still keep their historical name — so the guard
+        # above cannot be satisfied by blanket-clearing the field.
+        predecessors = [
+            e for e in issuers if e["mappingSource"] != "auto-match"
+        ]
+        assert predecessors, "expected non-auto-match issuers in the registry"
+        assert all(
+            e["historicalMunicipalityName"] != "" for e in predecessors
+        ), (
+            "every non-auto-match issuer must retain a "
+            "historicalMunicipalityName; a predecessor mapping with a "
+            "blank historical name indicates over-clearing."
+        )
+
 
 class TestNormalizeTitle:
     """`normalize_title` takes a parts-dict (from `parse_issuer_slug`)
