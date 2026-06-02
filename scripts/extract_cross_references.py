@@ -316,6 +316,31 @@ def _iter_prefixes(value: list[str] | str | None) -> list[str]:
     return [value] if isinstance(value, str) else list(value)
 
 
+def build_abbreviation_mapping_report(
+    abbrev_to_prefix: "dict[str, list[str] | str]",
+    prefix_to_provisions: "dict[str, dict[str, str]]",
+) -> "dict[str, dict[str, object]]":
+    """Build the ``abbreviation_mapping`` section of cross_references_report.json.
+
+    ``abbrev_to_prefix`` is list-valued since #299 (a multi-osa law maps to
+    several provision prefixes), so every value is normalised through
+    ``_iter_prefixes`` and the per-abbrev provision count is summed across all
+    of its prefixes. The value is NEVER used as a ``prefix_to_provisions`` key
+    directly — doing so raised ``TypeError: unhashable type: 'list'``. Output is
+    sorted for deterministic report content.
+    """
+    return {
+        abbrev: {
+            "iri_prefixes": sorted(_iter_prefixes(prefixes)),
+            "provision_count": sum(
+                len(prefix_to_provisions.get(p, {}))
+                for p in _iter_prefixes(prefixes)
+            ),
+        }
+        for abbrev, prefixes in sorted(abbrev_to_prefix.items())
+    }
+
+
 # Estonian law-marker words in their genitive form mapped back to the
 # nominative form that appears in a corpus title. Only the FINAL
 # law-marker word changes case in an act title — the leading
@@ -2270,9 +2295,14 @@ def main() -> int:
     print("\n[3/5] Building abbreviation-to-prefix mapping...")
     abbrev_to_prefix = build_abbreviation_to_prefix(source_act_to_prefix)
     print(f"  Mapped {len(abbrev_to_prefix)} abbreviations to IRI prefixes")
-    for abbrev, prefix in sorted(abbrev_to_prefix.items()):
-        provisions = prefix_to_provisions.get(prefix, {})
-        print(f"    {abbrev} -> {prefix} ({len(provisions)} provisions)")
+    # Built once and reused for the cross_references_report.json mapping below
+    # so the diagnostic print and the report can never diverge or regress
+    # independently on the list-valued #299 contract.
+    abbreviation_mapping_report = build_abbreviation_mapping_report(
+        abbrev_to_prefix, prefix_to_provisions
+    )
+    for abbrev, info in abbreviation_mapping_report.items():
+        print(f"    {abbrev} -> {info['iri_prefixes']} ({info['provision_count']} provisions)")
 
     # Step 4: Process each law file
     print("\n[4/5] Processing law files for cross-references...")
@@ -2414,13 +2444,7 @@ def main() -> int:
             "law_prefixes_indexed": len(prefix_to_provisions),
             "total_provisions_indexed": total_provisions,
         },
-        "abbreviation_mapping": {
-            abbrev: {
-                "iri_prefix": prefix,
-                "provision_count": len(prefix_to_provisions.get(prefix, {})),
-            }
-            for abbrev, prefix in sorted(abbrev_to_prefix.items())
-        },
+        "abbreviation_mapping": abbreviation_mapping_report,
         "per_file_stats": all_stats,
     }
 
