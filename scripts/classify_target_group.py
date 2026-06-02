@@ -148,7 +148,10 @@ TARGET_GROUP_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
             r"\briigikogu\w*\b",
             r"\bregistripidaja\w*\b",
             r"\bavalik-?õiguslik\w*\b",
-            r"\bkool\w*\b",
+            # School (kool) and its case inflections, enumerated so that this
+            # cue does NOT swallow ``koolitus*`` ("training") — a non-public-body
+            # obligation context that the bare ``kool\w*`` over-matched (#330).
+            r"\bkool(?:i(?:s|le|lt|st|ks|ga|d|de)?)?\b",
             r"\brakendusüksus\w*\b",
             r"\b(?:valla|linna)valitsus\w*\b",
             r"\bkalmistu\s+haldaja\w*\b",

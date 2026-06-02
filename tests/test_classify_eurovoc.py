@@ -362,3 +362,200 @@ def test_emit_sample_writes_well_formed_file(tmp_path, monkeypatch):
         assert "min_distinct_keywords" in stat
         assert "min_total_hits" in stat
         assert "keyword_count" in stat
+
+
+# ---------------------------------------------------------------------------
+# Regression for #331 + #360: the 0411 (international-affairs) gate is raised
+# to >=2 distinct keywords so a lone context-ambiguous term no longer tags a
+# domestic act. #331 covers 'protokoll' (matches domestic 'protokollitakse',
+# meeting minutes / court transcript); #360 covers 'rahvusvaheli' (234 domestic
+# functional laws that merely cite an international standard once). Both vectors
+# are reconciled into the single >=2 gate.
+# ---------------------------------------------------------------------------
+
+
+def test_protokoll_substring_does_not_assign_international_affairs():
+    """A domestic procedural act whose only 0411 signal is 'protokoll' inside
+    'protokollitakse' ("is recorded in minutes") must NOT be tagged 0411
+    (#331)."""
+    from classify_eurovoc import classify_text, extract_text_from_law
+
+    text = extract_text_from_law({"@graph": [{
+        "estleg:summary": "Menetlustoiming protokollitakse ja allkirjastatakse.",
+    }]})
+    results = classify_text(text)
+    assert all(code != "0411" for code, *_ in results), (
+        f"international-affairs (0411) must not fire on a lone 'protokoll' "
+        f"substring; got {results}"
+    )
+
+
+def test_lone_rahvusvaheli_does_not_assign_international_affairs():
+    """A purely domestic law that mentions an international standard once
+    ('rahvusvaheline') but carries no second 0411 keyword must NOT be tagged
+    0411 (#360)."""
+    from classify_eurovoc import classify_text, extract_text_from_law
+
+    text = extract_text_from_law({"@graph": [{
+        "estleg:summary": (
+            "Toetuse arvestamisel kohaldatakse rahvusvahelist arvestusstandardit."
+        ),
+    }]})
+    results = classify_text(text)
+    assert all(code != "0411" for code, *_ in results), (
+        f"international-affairs (0411) must not fire on a lone 'rahvusvaheli' "
+        f"hit; got {results}"
+    )
+
+
+def test_international_affairs_assigned_with_two_distinct_keywords():
+    """A genuine international-affairs act ('rahvusvaheline' + 'konventsioon')
+    still clears the raised >=2 distinct-keyword gate (#331/#360)."""
+    from classify_eurovoc import classify_text, extract_text_from_law
+
+    text = extract_text_from_law({"@graph": [{
+        "estleg:summary": (
+            "Rahvusvahelise konventsiooni ratifitseerimise seadus."
+        ),
+    }]})
+    results = classify_text(text)
+    assert any(code == "0411" for code, *_ in results), (
+        f"international-affairs (0411) should be assigned on "
+        f"'rahvusvaheli'+'konventsioon'+'ratifitseerimise'; got {results}"
+    )
+
+
+# ---------------------------------------------------------------------------
+# Regression for #383: 'ratifitseerimise' is a 0411 keyword (treaty-ratification
+# recall) and 'topeltmaksustamise' is a 5206 keyword (double-taxation treaties).
+# ---------------------------------------------------------------------------
+
+
+def test_ratifitseerimise_is_an_international_affairs_keyword():
+    """'ratifitseerimise' must be in the 0411 keyword list so ratification acts
+    that mention it plus one more 0411 term are recalled (#383)."""
+    import classify_eurovoc
+
+    keywords = classify_eurovoc.EUROVOC_DOMAINS["0411"][3]
+    assert "ratifitseerimise" in keywords
+    # The 0411 gate is >=2 but the list now has 5 keywords, so it is reachable.
+    assert len(keywords) >= classify_eurovoc.MIN_DISTINCT_KEYWORDS_OVERRIDES["0411"]
+
+
+def test_topeltmaksustamise_is_a_taxation_keyword():
+    """'topeltmaksustamise' must be in the 5206 keyword list (#383). 5206 is
+    gated at >=2 distinct keywords; a double-taxation treaty co-mentions a
+    'maks'-family stem, so the gate stays reachable."""
+    import classify_eurovoc
+
+    keywords = classify_eurovoc.EUROVOC_DOMAINS["5206"][3]
+    assert "topeltmaksustamise" in keywords
+
+    # A double-taxation-avoidance act co-mentions 'topeltmaksustamise' and the
+    # 'maks'/'tulumaks' stems, clearing the >=2 gate.
+    text = classify_eurovoc.extract_text_from_law({"@graph": [{
+        "estleg:summary": (
+            "Tulumaksuga topeltmaksustamise vältimise lepingu "
+            "ratifitseerimise seadus."
+        ),
+    }]})
+    results = classify_eurovoc.classify_text(text)
+    assert any(code == "5206" for code, *_ in results), (
+        f"taxation (5206) should be assigned on "
+        f"'topeltmaksustamise'+'maks'/'tulumaks'; got {results}"
+    )
+
+
+# ---------------------------------------------------------------------------
+# Regression for #360: the 2806 (consumer-protection) gate is raised to >=2 so
+# district-heating ('kaugkütt') ordinances whose only 2806 signal is 'tarbija'
+# (meaning "heat-subscriber", not consumer-protection) are no longer tagged.
+# ---------------------------------------------------------------------------
+
+
+def test_lone_tarbija_does_not_assign_consumer_protection():
+    """A district-heating ordinance whose only 2806 signal is 'tarbija'
+    (heat-subscriber) must NOT be tagged consumer-protection (#360)."""
+    from classify_eurovoc import classify_text, extract_text_from_law
+
+    text = extract_text_from_law({"@graph": [{
+        "estleg:summary": (
+            "Ala küla kaugküttepiirkonna kehtestamine ja tarbija liitumine."
+        ),
+    }]})
+    results = classify_text(text)
+    assert all(code != "2806" for code, *_ in results), (
+        f"consumer-protection (2806) must not fire on a lone 'tarbija' hit in "
+        f"a district-heating ordinance; got {results}"
+    )
+
+
+def test_consumer_protection_assigned_with_two_distinct_keywords():
+    """A genuine consumer-protection act ('tarbija' + 'garantii') still clears
+    the raised >=2 distinct-keyword gate (#360)."""
+    from classify_eurovoc import classify_text, extract_text_from_law
+
+    text = extract_text_from_law({"@graph": [{
+        "estleg:summary": (
+            "Tarbija võib esitada nõude müüjale toote garantii alusel."
+        ),
+    }]})
+    results = classify_text(text)
+    assert any(code == "2806" for code, *_ in results), (
+        f"consumer-protection (2806) should be assigned on "
+        f"'tarbija'+'garantii'; got {results}"
+    )
+
+
+def test_0411_and_2806_gates_are_two_and_reachable():
+    """The reconciled #331/#360 change gates 0411 and 2806 at >=2 distinct
+    keywords, and both keyword lists are long enough to reach the gate."""
+    import classify_eurovoc
+
+    for code in ("0411", "2806"):
+        assert classify_eurovoc.MIN_DISTINCT_KEYWORDS_OVERRIDES[code] == 2
+        keyword_count = len(classify_eurovoc.EUROVOC_DOMAINS[code][3])
+        assert keyword_count >= 2, f"{code} has only {keyword_count} keyword(s)"
+
+
+# ---------------------------------------------------------------------------
+# Regression for #392: three EUROVOC_DOMAINS descriptors were corrected to the
+# official EuroVoc descriptors (4421 maritime-transport, 3611 social-protection,
+# 2416 fundamental-rights). Only slug + labels change; IRIs (the dict key) and
+# keyword lists are untouched.
+# ---------------------------------------------------------------------------
+
+
+def test_eurovoc_descriptors_match_official_labels():
+    """The 4421/3611/2416 slugs and labels are the corrected official EuroVoc
+    descriptors (#392)."""
+    import classify_eurovoc
+
+    expected = {
+        "4421": ("maritime-transport", "meretransport", "Maritime transport"),
+        "3611": ("social-protection", "sotsiaalne kaitse", "Social protection"),
+        "2416": ("fundamental-rights", "põhiõigused", "Fundamental rights"),
+    }
+    for code, (slug, label_et, label_en) in expected.items():
+        actual_slug, actual_et, actual_en, _kws = classify_eurovoc.EUROVOC_DOMAINS[code]
+        assert actual_slug == slug, f"{code} slug: {actual_slug!r} != {slug!r}"
+        assert actual_et == label_et, f"{code} label_et: {actual_et!r} != {label_et!r}"
+        assert actual_en == label_en, f"{code} label_en: {actual_en!r} != {label_en!r}"
+
+
+def test_eurovoc_descriptor_fix_preserves_keywords():
+    """#392 corrected labels only — the keyword lists (and therefore the
+    matching behaviour) for 4421/3611/2416 are unchanged."""
+    import classify_eurovoc
+
+    assert classify_eurovoc.EUROVOC_DOMAINS["4421"][3] == [
+        "meresõit", "laev", "sadam", "merendus",
+    ]
+    assert classify_eurovoc.EUROVOC_DOMAINS["3611"][3] == [
+        "sotsiaal", "pension", "toetus", "hüvitis", "ravikindlust",
+        "töötuskindlust", "puue", "hooldus",
+    ]
+    assert classify_eurovoc.EUROVOC_DOMAINS["2416"][3] == [
+        "inimõig", "põhiõig", "vabadus", "võrdsus", "diskrimineeri",
+        "soolise võrdõiguslikkuse",
+    ]
