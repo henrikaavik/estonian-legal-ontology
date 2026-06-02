@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import shutil
 import sys
 import time
@@ -57,6 +58,16 @@ MAPPING_FRESHNESS_DAYS = 30
 NS = "https://data.riik.ee/ontology/estleg#"
 
 RATE_DELAY = 1.5  # seconds between SPARQL requests
+
+# #356 (SPARQL injection): ``celex_dir`` is interpolated verbatim into the
+# SPARQL ``FILTER(STR(?celex_dir) = "...")`` string literal and is the seed
+# for ``nim_prefix`` in another FILTER. CELEX numbers are an extremely
+# narrow alphabet (digits, latin letters, and the ``()``/``/`` that appear
+# in corrigenda/consolidated identifiers), so we reject anything outside it
+# before building the query. ``sanitize_celex`` only protects IRIs/paths —
+# it silently *strips* offending characters, which would mask a tampered
+# value rather than refuse it — so it is NOT a substitute for this check.
+_CELEX_ALLOWED = re.compile(r"[0-9A-Za-z()/]+")
 
 CONTEXT = {
     "estleg": NS,
@@ -179,7 +190,21 @@ def fetch_other_transpositions(
     TTL. Cache hits skip both the SPARQL call and the rate-limit sleep
     that follows it in the main loop, so reruns within the TTL are
     near-instant. Pass ``use_cache=False`` to force a network round-trip.
+
+    Raises ``ValueError`` if ``celex_dir`` contains any character outside
+    the strict CELEX allowlist (#356) — guarding the two SPARQL FILTER
+    string literals it feeds against injection from a tampered EUR-Lex
+    response or a hand-edited report value.
     """
+    # #356: validate BEFORE the cache lookup — sanitize_celex (used by
+    # _cache_path_for) strips disallowed characters, so a malicious value
+    # could otherwise collide with / poison a legitimate cache entry.
+    if not isinstance(celex_dir, str) or not _CELEX_ALLOWED.fullmatch(celex_dir):
+        raise ValueError(
+            f"Refusing to build SPARQL query: celex_dir={celex_dir!r} "
+            r"contains characters outside the CELEX allowlist [0-9A-Za-z()/]."
+        )
+
     cache_path = _cache_path_for(celex_dir)
     if use_cache and _cache_is_fresh(cache_path):
         try:
@@ -278,7 +303,12 @@ def generate_schema() -> dict:
                 "Links an Estonian law to a harmonisation record showing "
                 "parallel implementations of the same EU directive in other member states."
             ),
-            "rdfs:domain": {"@id": "estleg:LegalProvision"},
+            # #335: every instance of estleg:harmonisedWith is emitted on an
+            # act-level node (estleg:Act / Law / owl:Ontology), never on a
+            # provision — so the domain must be estleg:Act. Under rdfs
+            # inference a LegalProvision domain would mis-type every
+            # harmonised statute as a single provision.
+            "rdfs:domain": {"@id": "estleg:Act"},
             "rdfs:range": {"@id": "estleg:HarmonisationLink"},
         },
         # ObjectProperty: sharedDirective
@@ -317,13 +347,29 @@ def build_directive_node(
     celex_dir: str,
     directive_iri: str,
     estonian_law_name: str,
-    estonian_law_iri: str,
+    estonian_laws: list[dict],
     other_measures: list[dict],
 ) -> dict:
     """
     Build a JSON-LD document for harmonisation data around one directive.
+
+    ``estonian_laws`` is the full list of Estonian transposing-law records
+    for this directive (each a dict that may carry an ``iri`` key). #334:
+    when several Estonian laws transpose one directive, the aggregate
+    ``Harmonisation_<celex>`` node must back-link to *all* of them via
+    ``estleg:harmonisedWith`` — previously only the first law was listed.
     """
     safe_celex = sanitize_celex(celex_dir)
+    # Preserve order, drop laws whose act-level IRI couldn't be resolved,
+    # and de-duplicate so a law mapped twice to the same directive yields a
+    # single back-link.
+    harmonised_refs: list[dict] = []
+    seen_iris: set[str] = set()
+    for law in estonian_laws:
+        iri = law.get("iri")
+        if iri and iri not in seen_iris:
+            seen_iris.add(iri)
+            harmonised_refs.append({"@id": iri})
     graph: list[dict] = [
         {
             "@id": f"estleg:Harmonisation_{safe_celex}",
@@ -337,7 +383,9 @@ def build_directive_node(
             "estleg:sharedDirective": {"@id": directive_iri},
             # estleg:harmonisedWith is a multi-valued property (see
             # validate_all.MULTI_VALUED_PROPS) — always emit it as an array.
-            "estleg:harmonisedWith": [{"@id": estonian_law_iri}],
+            # #334: list every Estonian law that transposes this directive,
+            # not just the first.
+            "estleg:harmonisedWith": harmonised_refs,
         },
     ]
 
@@ -769,7 +817,10 @@ def main():
                 celex_dir=celex_dir,
                 directive_iri=directive_iri,
                 estonian_law_name=primary_law.get("source_act", primary_law["name"]),
-                estonian_law_iri=law_iri,
+                # #334: pass every transposing law so the aggregate node
+                # back-links to all of them (build_directive_node filters
+                # out any whose IRI is unresolved).
+                estonian_laws=estonian_laws,
                 other_measures=other_measures,
             )
 

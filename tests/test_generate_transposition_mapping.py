@@ -764,3 +764,343 @@ def test_main_emits_links_for_both_laws_in_combined_title(tmp_path, monkeypatch)
     report = json.loads((krr / "transposition_mapping.json").read_text(encoding="utf-8"))
     matched_laws = {m["matched_law_name"] for m in report["mappings"]}
     assert matched_laws == {"liiklusseadus", "raudteeseadus"}
+
+
+# ---------------------------------------------------------------------------
+# #318 — the cdm:work_title fetch must be language-filtered so a single NIM
+# carried in several CELLAR languages is not processed once per language
+# (inflating counts / risking a false fuzzy link from a short foreign title).
+# ---------------------------------------------------------------------------
+
+
+def test_transposition_query_filters_title_language():
+    """The pagination query restricts ``?title_nat`` to Estonian/untagged
+    literals so multi-language CELLAR titles don't inflate the sweep (#318)."""
+    import inspect
+
+    src = inspect.getsource(mod.fetch_transposition_measures)
+    # The OPTIONAL keeps only et / untagged titles.
+    assert "lang(?title_nat) = 'et'" in src
+    assert "lang(?title_nat) = ''" in src
+
+
+def _title_binding(celex: str, title: str, lang: str | None) -> dict:
+    """One SPARQL result row for the transposition query.
+
+    ``lang=None`` emits an *untagged* literal (no ``xml:lang`` key), matching
+    how CELLAR returns plain Estonian NIM titles.
+    """
+    title_val: dict[str, str] = {"type": "literal", "value": title}
+    if lang is not None:
+        title_val["xml:lang"] = lang
+    return {
+        "nim": {"type": "uri", "value": f"http://nim/{celex}/{lang or 'none'}"},
+        "directive": {"type": "uri", "value": f"http://dir/{celex}"},
+        "celex_dir": {"type": "literal", "value": celex},
+        "title_nat": title_val,
+    }
+
+
+def test_fetch_drops_non_estonian_titles(monkeypatch):
+    """A French/English-tagged title is filtered out post-fetch; the Estonian
+    (and untagged) titles for the same NIM are kept exactly once (#318)."""
+    # One logical NIM/title delivered in fr, en, et, and untagged form. Without
+    # the guard the per-language dedup key would admit all four.
+    rows = [
+        _title_binding("32016L0798", "Commentaire en francais", "fr"),
+        _title_binding("32016L0798", "Some English comment", "en"),
+        _title_binding("32016L0798", "Raudteeseadus", "et"),
+        _title_binding("32016L0798", "Liiklusseadus", None),  # untagged -> kept
+    ]
+
+    def _one_page(_query, **_kwargs):
+        # Return the rows once, then an empty page to end pagination.
+        if not getattr(_one_page, "served", False):
+            _one_page.served = True
+            return rows
+        return []
+
+    monkeypatch.setattr(mod, "sparql_query_with_retry", _one_page)
+
+    items, partial = mod.fetch_transposition_measures(allow_partial=False)
+    assert partial is False
+    titles = sorted(i["title_nat"] for i in items)
+    # FR/EN dropped; ET + untagged kept.
+    assert titles == ["Liiklusseadus", "Raudteeseadus"]
+    assert "Commentaire en francais" not in titles
+    assert "Some English comment" not in titles
+
+
+def test_fetch_keeps_estonian_case_insensitive_lang(monkeypatch):
+    """An ``ET`` (upper-case) language tag is still recognised as Estonian and
+    kept — the guard is case-insensitive (#318)."""
+    rows = [_title_binding("32016L0798", "Raudteeseadus", "ET")]
+
+    def _one_page(_query, **_kwargs):
+        if not getattr(_one_page, "served", False):
+            _one_page.served = True
+            return rows
+        return []
+
+    monkeypatch.setattr(mod, "sparql_query_with_retry", _one_page)
+    items, _partial = mod.fetch_transposition_measures(allow_partial=False)
+    assert [i["title_nat"] for i in items] == ["Raudteeseadus"]
+
+
+# ---------------------------------------------------------------------------
+# #388 — match_all_titles_to_laws must not give a law that is merely
+# co-amended in a combined omnibus bill a spurious transposesDirective link;
+# only the primary-clause law or a law whose domain matches the directive
+# subject is linked.
+# ---------------------------------------------------------------------------
+
+
+# Real CELLAR directive titles (rdfs:label), so the domain-keyword guard is
+# exercised against the same text the pipeline sees.
+_RAILWAY_SUBJECT = mod.normalize_text(
+    "Euroopa Parlamendi ja nõukogu direktiiv 2004/49/EÜ, ühenduse raudteede "
+    "ohutuse kohta, millega muudetakse nõukogu direktiivi 95/18/EÜ"
+)
+_TIMESHARE_SUBJECT = mod.normalize_text(
+    "Euroopa Parlamendi ja nõukogu direktiiv 2008/122/EÜ, tarbijate kaitse "
+    "kohta seoses osaajalise kasutamise õiguse"
+)
+
+
+def test_co_amended_secondary_law_not_linked_primary_is() -> None:
+    """The headline #388 false positive: a railway-led omnibus bill that also
+    amends the Maritime Safety and State Fees acts, against the Railway Safety
+    directive, links ONLY the railway law; Maritime Safety and State Fees —
+    secondary, off-subject co-amendments — must NOT be linked.
+
+    (In the live corpus the offending NIM title is
+    ``"Lennunduseaduse, meresõiduohutuse seaduse ja raudteeseaduse muutmise
+    seadus"``; the railway law sits in a trailing clause but is rescued by the
+    domain-keyword arm, while Maritime stays pruned.)"""
+    index = _law_index_with(
+        "Meresõiduohutuse seadus", "Raudteeseadus", "Riigilõivuseadus"
+    )
+    # Railway is the primary clause; Maritime + Fees are co-amended secondaries.
+    title = (
+        "Raudteeseaduse, meresõiduohutuse seaduse "
+        "ja riigilõivuseaduse muutmise seadus"
+    )
+    matches = mod.match_all_titles_to_laws(
+        title, index, directive_subject=_RAILWAY_SUBJECT
+    )
+    names = {m["name"] for m in matches}
+    # Railway law (primary clause AND domain root ``raudtee`` ⊂ subject) kept.
+    assert "Raudteeseadus" in names
+    # Maritime Safety is co-amended (secondary, off-subject) -> dropped.
+    assert "Meresõiduohutuse seadus" not in names
+    # State Fees is co-amended (secondary, off-subject) -> dropped.
+    assert "Riigilõivuseadus" not in names
+
+
+def test_co_amended_railway_rescued_from_trailing_clause() -> None:
+    """The exact live title: Maritime Safety leads the bill (primary clause) but
+    is OFF the railway subject, while the railway law sits in a trailing clause
+    yet is ON subject. The domain-keyword arm rescues railway and the
+    primary-clause arm would have (wrongly) kept Maritime were it matchable —
+    so this asserts the railway link survives and Maritime/Fees are still
+    pruned via the subject arm (#388)."""
+    index = _law_index_with(
+        "Meresõiduohutuse seadus", "Raudteeseadus", "Riigilõivuseadus"
+    )
+    # Maritime is primary here; railway is a trailing (secondary) clause.
+    title = (
+        "Meresõiduohutuse seaduse ja riigilõivuseaduse "
+        "ning raudteeseaduse muutmise seadus"
+    )
+    names = {
+        m["name"]
+        for m in mod.match_all_titles_to_laws(
+            title, index, directive_subject=_RAILWAY_SUBJECT
+        )
+    }
+    # Railway (trailing clause, but ``raudtee`` ⊂ subject) is rescued.
+    assert "Raudteeseadus" in names
+    # State Fees (secondary, off-subject) is dropped.
+    assert "Riigilõivuseadus" not in names
+
+
+def test_primary_clause_law_kept_even_if_off_subject() -> None:
+    """The law in the PRIMARY clause (before the first ``ja``/``ning``/comma)
+    is the one the bill is named for and is kept even when its domain root is
+    not in the directive subject — only the trailing co-amended laws are
+    pruned (#388)."""
+    # Timeshare directive: Law of Obligations (võlaõigus) is primary and stays;
+    # the co-amended non-profit-associations act is dropped.
+    index = _law_index_with("Võlaõigusseadus", "Mittetulundusühingute seadus")
+    title = (
+        "Võlaõigusseaduse ja mittetulundusühingute seaduse muutmise seadus"
+    )
+    matches = mod.match_all_titles_to_laws(
+        title, index, directive_subject=_TIMESHARE_SUBJECT
+    )
+    names = {m["name"] for m in matches}
+    assert "Võlaõigusseadus" in names  # primary clause -> kept
+    assert "Mittetulundusühingute seadus" not in names  # co-amended -> dropped
+
+
+def test_no_directive_subject_fails_open_keeps_all() -> None:
+    """With no directive subject to discriminate on, the function preserves the
+    #288 behaviour and returns every matched law (fail open)."""
+    index = _law_index_with("Liiklusseadus", "Raudteeseadus")
+    title = "Liiklusseaduse ja raudteeseaduse muutmise seadus"
+    # No directive_subject (and explicit empty string) both fail open.
+    for subject in (None, ""):
+        names = {
+            m["name"]
+            for m in mod.match_all_titles_to_laws(
+                title, index, directive_subject=subject
+            )
+        }
+        assert names == {"Liiklusseadus", "Raudteeseadus"}
+
+
+def test_both_on_subject_laws_are_kept() -> None:
+    """When two co-amended laws BOTH belong to the directive subject they are
+    both kept — the guard prunes only off-subject secondaries (#388 does not
+    over-correct the legitimate #288 multi-law case)."""
+    # A (hypothetical) directive whose subject mentions both rail and road.
+    subject = mod.normalize_text(
+        "direktiiv liiklusohutuse ja raudteede ohutuse kohta"
+    )
+    index = _law_index_with("Liiklusseadus", "Raudteeseadus")
+    title = "Liiklusseaduse ja raudteeseaduse muutmise seadus"
+    names = {
+        m["name"]
+        for m in mod.match_all_titles_to_laws(
+            title, index, directive_subject=subject
+        )
+    }
+    assert names == {"Liiklusseadus", "Raudteeseadus"}
+
+
+def test_single_law_title_ignores_subject_guard() -> None:
+    """A single-law title short-circuits before the co-amendment guard, so an
+    unrelated directive subject never suppresses a direct match (#388)."""
+    index = _law_index_with("Raudteeseadus")
+    matches = mod.match_all_titles_to_laws(
+        "Raudteeseadus", index, directive_subject=_TIMESHARE_SUBJECT
+    )
+    assert [m["name"] for m in matches] == ["Raudteeseadus"]
+
+
+def test_build_directive_subject_index_reads_rdfs_label(tmp_path, monkeypatch):
+    """``build_directive_subject_index`` maps CELEX → normalized rdfs:label and
+    leaves a label-less directive with an empty (fail-open) subject (#388)."""
+    eurlex = tmp_path / "eurlex"
+    eurlex.mkdir()
+    _write_json(
+        eurlex / "eurlex_directives_peep.json",
+        {
+            "@context": mod.CONTEXT,
+            "@graph": [
+                {
+                    "@id": "estleg:EU_32004L0049",
+                    "estleg:celexNumber": "32004L0049",
+                    "rdfs:label": "... ühenduse raudteede ohutuse kohta ...",
+                },
+                {
+                    "@id": "estleg:EU_99999L9999",
+                    "estleg:celexNumber": "99999L9999",
+                    # No rdfs:label.
+                },
+            ],
+        },
+    )
+    monkeypatch.setattr(mod, "EURLEX_DIR", eurlex)
+
+    subjects = mod.build_directive_subject_index()
+    assert "raudteede ohutuse" in subjects["32004L0049"]
+    assert subjects["32004L0049"] == subjects["32004L0049"].lower()  # normalized
+    assert subjects["99999L9999"] == ""  # label-less -> fail-open marker
+
+
+def test_main_does_not_link_co_amended_secondary_law(tmp_path, monkeypatch):
+    """End-to-end (mocked SPARQL): a combined NIM title co-amending a railway
+    law and a fee law, against the Railway Safety directive, links ONLY the
+    railway law — the co-amended fee law gets no transposesDirective and the
+    directive is not transposedBy it (#388)."""
+    krr = tmp_path / "krr_outputs"
+    eurlex = krr / "eurlex"
+    krr.mkdir()
+    eurlex.mkdir()
+
+    # Primary (on-subject) railway law and a co-amended off-subject fee law.
+    raudtee = krr / "raudteeseadus_peep.json"
+    _write_json(
+        raudtee,
+        {
+            "@context": mod.CONTEXT,
+            "@graph": [
+                {"@id": "estleg:RAUDTEE_Map_2026", "@type": ["owl:Ontology", "estleg:Act"],
+                 "estleg:sourceAct": "Raudteeseadus"},
+            ],
+        },
+    )
+    riigiloiv = krr / "riigiloivuseadus_peep.json"
+    _write_json(
+        riigiloiv,
+        {
+            "@context": mod.CONTEXT,
+            "@graph": [
+                {"@id": "estleg:RIIGIL_Map_2026", "@type": ["owl:Ontology", "estleg:Act"],
+                 "estleg:sourceAct": "Riigilõivuseadus"},
+            ],
+        },
+    )
+    _write_json(
+        krr / "INDEX.json",
+        {"total_laws": 2, "laws": [
+            {"name": "raudteeseadus", "files": ["raudteeseadus_peep.json"]},
+            {"name": "riigiloivuseadus", "files": ["riigiloivuseadus_peep.json"]},
+        ]},
+    )
+    # Directive carries an rdfs:label whose subject contains only ``raudtee``.
+    _write_json(
+        eurlex / "eurlex_directives_peep.json",
+        {
+            "@context": mod.CONTEXT,
+            "@graph": [
+                {"@id": "estleg:EU_32004L0049",
+                 "@type": ["owl:NamedIndividual", "estleg:EULegislation"],
+                 "estleg:celexNumber": "32004L0049",
+                 "rdfs:label": "Direktiiv 2004/49/EÜ ühenduse raudteede ohutuse kohta"},
+            ],
+        },
+    )
+
+    monkeypatch.setattr(mod, "KRR_DIR", krr)
+    monkeypatch.setattr(mod, "EURLEX_DIR", eurlex)
+    monkeypatch.setattr(mod, "REPO_ROOT", tmp_path)
+    monkeypatch.setattr(
+        mod, "fetch_transposition_measures",
+        lambda **_k: ([{"celex_dir": "32004L0049", "directive_uri": "http://x/dir",
+                        "title_nat": "Raudteeseaduse ja riigilõivuseaduse muutmise seadus"}], False),
+    )
+    monkeypatch.setattr(mod, "fetch_directive_deadlines", lambda **_k: ({}, False))
+    monkeypatch.setattr(sys, "argv", ["generate_transposition_mapping.py"])
+
+    rc = mod.main()
+    assert rc in (0, None)
+
+    raudtee_doc = json.loads(raudtee.read_text(encoding="utf-8"))
+    riigiloiv_doc = json.loads(riigiloiv.read_text(encoding="utf-8"))
+
+    # Railway law transposes the directive.
+    assert {"@id": "estleg:EU_32004L0049"} in raudtee_doc["@graph"][0]["estleg:transposesDirective"]
+    # Co-amended fee law does NOT (no transposesDirective key at all, or empty).
+    assert "estleg:transposesDirective" not in riigiloiv_doc["@graph"][0]
+
+    # Directive is transposedBy ONLY the railway law node.
+    dir_doc = json.loads((eurlex / "eurlex_directives_peep.json").read_text(encoding="utf-8"))
+    transposed_by = {ref["@id"] for ref in dir_doc["@graph"][0].get("estleg:transposedBy", [])}
+    assert transposed_by == {"estleg:RAUDTEE_Map_2026"}
+
+    # The report records only the railway pairing.
+    report = json.loads((krr / "transposition_mapping.json").read_text(encoding="utf-8"))
+    matched_laws = {m["matched_law_name"] for m in report["mappings"]}
+    assert matched_laws == {"raudteeseadus"}

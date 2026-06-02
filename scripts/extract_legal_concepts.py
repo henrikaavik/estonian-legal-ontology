@@ -20,7 +20,12 @@ import traceback
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
-from estleg_common import BUILD_EVALUATION_DATE, iter_peep_files, jsonld_text
+from estleg_common import (
+    BUILD_EVALUATION_DATE,
+    iter_peep_files,
+    jsonld_text,
+    save_json,
+)
 from kov_pipeline_coverage import (
     CoverageReport,
     PINNED_RUN_TIMESTAMP,
@@ -132,9 +137,78 @@ def ct(el: ET.Element, name: str) -> str | None:
     return None
 
 
+# #303: pure-numbering elements whose text is a bare subsection/item
+# COUNTER (``<loigeNr>1</loigeNr>``, ``<alampunktNr>2</alampunktNr>``,
+# ``<paragrahvNr>2</paragrahvNr>``). The Riigi Teataja serialiser emits
+# these as their own text nodes, so ``itertext()`` joins a bare ``2``
+# between the end of one definition and the start of the next — which the
+# DEFINITION_PATTERN lookahead then consumes as a trailing ``; 2`` (or the
+# ``(N)`` header bleeds in). They carry no definitional content (the human-
+# readable marker lives in ``<kuvatavNr>``), so we drop them at the source.
+_NUMBERING_ONLY_TAGS = frozenset({
+    "paragrahvNr",
+    "loigeNr",
+    "alampunktNr",
+    "punktNr",
+    "lisaNr",
+})
+
+# A ``<kuvatavNr>`` text that is a real list-item marker — ``1)``, ``2)`` —
+# (digit(s) + close paren, no leading paren). These DRIVE the
+# DEFINITION_PATTERN and must be kept. The header forms (``(1)``, ``§ 2.``)
+# carry no item boundary and are dropped so they cannot bleed into a
+# neighbouring definition.
+_LIST_ITEM_MARKER = re.compile(r"^\d+\)$")
+
+
+def _itertext_filtered(el: ET.Element) -> list[str]:
+    """Yield text fragments of ``el`` and its descendants, but:
+
+    * skip pure-numbering counter elements (``_NUMBERING_ONLY_TAGS``)
+      entirely — both their text and their tail; and
+    * for ``<kuvatavNr>``, keep only real ``N)`` list-item markers,
+      dropping ``(N)`` / ``§ N.`` header forms.
+
+    This removes the #303 inline-counter contamination at the structural
+    source, so digits that are genuine definitional content (``§ 4 lõikes
+    3``, ``kakskümmend (20) meetrit``) are never touched.
+    """
+    parts: list[str] = []
+    tag = ln(el.tag)
+    if tag in _NUMBERING_ONLY_TAGS:
+        # Drop the counter's own text; preserve the tail so surrounding
+        # running text is not glued together.
+        if el.tail:
+            parts.append(el.tail)
+        return parts
+    if tag == "kuvatavNr":
+        marker = (el.text or "").strip()
+        if _LIST_ITEM_MARKER.match(marker):
+            parts.append(el.text or "")
+        # else: header form (``(1)`` / ``§ 2.``) — dropped.
+        if el.tail:
+            parts.append(el.tail)
+        return parts
+    if el.text:
+        parts.append(el.text)
+    for child in el:
+        parts.extend(_itertext_filtered(child))
+    if el.tail:
+        parts.append(el.tail)
+    return parts
+
+
 def collect_full_text(el: ET.Element) -> str:
-    """Collect all text content from an element and its children."""
-    text = " ".join(el.itertext())
+    """Collect all text content from an element and its children.
+
+    #303: pure-numbering counter elements (``loigeNr`` / ``alampunktNr`` /
+    ``paragrahvNr``) and ``(N)`` / ``§ N.`` header ``kuvatavNr`` forms are
+    dropped at the structural source via ``_itertext_filtered`` so the
+    inline subsection-prefix digit can no longer bleed into a definition as
+    ``; N``. Real ``N)`` list-item markers are preserved so the
+    DEFINITION_PATTERN still sees its items.
+    """
+    text = " ".join(_itertext_filtered(el))
     return re.sub(r"\s+", " ", text).strip()
 
 
@@ -191,12 +265,6 @@ def edit_distance(a: str, b: str) -> int:
     return prev_row[len(b)]
 
 
-def save_json(filepath: Path, doc: dict):
-    with open(filepath, "w", encoding="utf-8") as f:
-        json.dump(doc, f, ensure_ascii=False, indent=2)
-        f.write("\n")
-
-
 def is_definition_paragraph(par_el: ET.Element) -> bool:
     """Check if a paragraph is a definition section based on its title."""
     title = ct(par_el, "paragrahvPealkiri")
@@ -236,6 +304,17 @@ def extract_definitions_from_text(text: str) -> list[tuple[str, str, str]]:
         # terminated the clause.
         definition = re.sub(r"\s+", " ", definition)
         definition = definition.rstrip("; \t\r\n")
+        # #303 (defensive): collect_full_text now drops the standalone
+        # subsection-prefix counters at the source, but a direct caller of
+        # extract_definitions_from_text (or an unforeseen serialiser quirk)
+        # may still leave a trailing ``; N`` artefact (the bare counter of
+        # the NEXT list item that bled past the lookahead). Strip it. The
+        # ``(N) header`` bleed is removed at source by collect_full_text;
+        # we deliberately do NOT strip a trailing ``(N)`` here because it
+        # occurs legitimately inside definitions (``kakskümmend (20)
+        # meetrit``).
+        definition = re.sub(r";\s*\d+\s*$", "", definition)
+        definition = definition.rstrip("; \t\r\n").strip()
 
         # Skip overly short terms or definitions
         if len(term) < 2 or len(definition) < 5:
@@ -643,14 +722,35 @@ def _strip_term_brackets(term_lower: str) -> str:
     return t
 
 
-def is_noise_term(term_lower: str) -> bool:
+# #323: copula / definitional-intro markers that indicate the lazy _TERM
+# regex over-captured a multi-word intro phrase (``avalik koht on määratlemata
+# isikute ringile …``) as the term instead of stopping at the term boundary.
+# A real legal term never contains these connective phrases, so their presence
+# is a reliable signal that the "term" is actually term+copula+definition glued
+# together. Matched as space-surrounded substrings of the lowercased term.
+_COPULA_INTRO_MARKERS = (
+    " on ",
+    " tähendab ",
+    " mõistetakse ",
+)
+
+
+def is_noise_term(term_lower: str, original_term: str | None = None) -> bool:
     """Return True if ``term_lower`` is junk that should not become a
     canonical Concept node.
 
     Filtered: empty / single-character "terms"; "terms" that are entirely
     digits or punctuation; repealed-marker placeholders (``kehtetu`` and
-    variants, with or without surrounding brackets); and "terms" composed
-    solely of stopwords.
+    variants, with or without surrounding brackets); "terms" composed solely
+    of stopwords; and (``#323``) multi-word intro phrases the lazy ``_TERM``
+    regex over-captured via a copula (`` on ``/`` tähendab ``/
+    `` mõistetakse ``).
+
+    ``original_term`` (``#392``): the surface form before case-folding. When
+    it is supplied AND is entirely uppercase, the single-token stopword test
+    is skipped — uppercase legal abbreviations like ``TA``
+    (teadus-arendustöötaja) and ``ET`` (elutähtis teenus) case-fold onto the
+    stopwords ``ta``/``et`` and would otherwise be wrongly dropped.
     """
     t = _strip_term_brackets(term_lower)
     if len(t) < 2:
@@ -660,11 +760,26 @@ def is_noise_term(term_lower: str) -> bool:
         return True
     if t in _NOISE_TERM_TOKENS:
         return True
-    if t in _STOPWORD_TERMS:
+    # #323: a term carrying a copula / definitional-intro connective is an
+    # over-captured intro phrase, not a real term.
+    padded = f" {t} "
+    if any(marker in padded for marker in _COPULA_INTRO_MARKERS):
         return True
-    words = [w for w in re.split(r"\s+", t) if w]
-    if words and all(w in _STOPWORD_TERMS for w in words):
-        return True
+    # #392: uppercase abbreviations (``TA``, ``ET``) collide with the
+    # stopwords ``ta``/``et`` after case-folding. When the ORIGINAL surface
+    # form is all-uppercase, skip the stopword tests so the abbreviation
+    # survives and gets its canonical concept node.
+    is_uppercase_abbrev = bool(
+        original_term is not None
+        and original_term.strip()
+        and original_term.strip().isupper()
+    )
+    if not is_uppercase_abbrev:
+        if t in _STOPWORD_TERMS:
+            return True
+        words = [w for w in re.split(r"\s+", t) if w]
+        if words and all(w in _STOPWORD_TERMS for w in words):
+            return True
     return False
 
 
@@ -683,8 +798,25 @@ def is_noise_definition(definition: str) -> bool:
 
 def _normalize_definition_for_dedup(definition: str) -> str:
     """Normalise a definition string for near-duplicate detection: collapse
-    whitespace, lowercase, strip trailing punctuation."""
+    whitespace, lowercase, strip trailing punctuation.
+
+    #391: this dedup-normalisation path is SEPARATE from the emission-layer
+    cleanup (#303). The inline subsection-number contamination (``…vesi;
+    17``, ``…vesi; 22 (``) is not removed by the plain ``rstrip`` below —
+    the trailing ``(`` isn't in the strip set and the number survives — so
+    one underlying definition is counted as N near-duplicate variants (one
+    per subsection number), inflating ``definitionVariantCount`` ~2× and
+    filling the 5-slot ``skos:definition`` cap with near-duplicates. Pre-
+    strip the ``; N (…`` / ``; N`` suffix BEFORE the rstrip so the variants
+    collapse to the one true wording.
+    """
     d = re.sub(r"\s+", " ", definition).strip().lower()
+    # Strip a trailing ``; N`` subsection counter, optionally followed by the
+    # start of the next ``(N) …`` header (``…vesi; 17`` and ``…vesi; 22 (``).
+    # The ``\(?.*`` tail also absorbs the case where the counter bled a
+    # partial header in, so all per-subsection variants collapse to the one
+    # true wording (#391; matches the issue's own evidence pattern).
+    d = re.sub(r";\s*\d+\s*\(?.*$", "", d)
     return d.rstrip(".;,…- \t\r\n–—")
 
 
@@ -876,7 +1008,11 @@ def main():
     noise_terms: list[str] = []
     for term_norm in unique_terms:
         entries = term_index[term_norm]
-        if is_noise_term(term_norm) or all(
+        # #392: pass the most common ORIGINAL surface form so is_noise_term
+        # can recognise all-uppercase abbreviations (``TA``/``ET``) and skip
+        # the stopword test for them.
+        original_term = _most_common([e["term"] for e in entries])
+        if is_noise_term(term_norm, original_term) or all(
             is_noise_definition(e["definition"]) for e in entries
         ):
             noise_terms.append(term_norm)
@@ -1071,8 +1207,15 @@ def main():
         node: dict = {
             "@id": cid,
             "@type": ["owl:NamedIndividual", "estleg:LegalConcept"],
-            "skos:prefLabel": concept["term"],
-            "skos:definition": concept["definition"],
+            # #325: emit language-tagged literals (Estonian) for the
+            # provision-local label/definition, matching the canonical
+            # Concept nodes. Bare strings were untagged xsd:string, so
+            # FILTER(lang(?label)='et') silently missed every provision-
+            # local concept and SKOS per-language prefLabel uniqueness broke.
+            "skos:prefLabel": {"@value": concept["term"], "@language": "et"},
+            "skos:definition": {
+                "@value": concept["definition"], "@language": "et",
+            },
             "estleg:definedIn": [{"@id": concept["provision_id"]}],
             "estleg:sourceAct": concept["law_title"],
             "rdfs:label": f"{concept['term']} ({concept['law_slug']})",
@@ -1152,9 +1295,16 @@ def main():
         _triples += _n_tr
 
     # ---- Hub links: provision-local definition node → canonical Concept ----
-    # ``estleg:definesConcept`` (hub, O(k) total) PLUS a single
-    # ``skos:exactMatch`` to the canonical node (the proper SKOS relation).
-    # This replaces the O(k²) exactMatch clique between provision-local nodes.
+    # ``estleg:definesConcept`` (hub, O(k) total) is the sole link from each
+    # provision-local definition node to its canonical Concept. This replaces
+    # the O(k²) exactMatch clique between provision-local nodes.
+    #
+    # #326: the previous ``skos:exactMatch LegalConcept → Concept`` arc was
+    # removed. SKOS ``exactMatch`` is for interchangeable PEER concepts across
+    # schemes, not an instance→aggregator membership relation — and the
+    # ``definesConcept`` / ``hasDefinitionNode`` pair already encodes that
+    # membership. The bogus arc also let SKOS closure propagate the canonical
+    # node's labels/definitions back onto every provision-local node.
     graph_node_by_id: dict[str, dict] = {}
     for node in graph:
         nid = node.get("@id", "")
@@ -1170,10 +1320,9 @@ def main():
             if lc_node is None:
                 continue
             lc_node["estleg:definesConcept"] = {"@id": cc_id}
-            lc_node["skos:exactMatch"] = [{"@id": cc_id}]
-            _triples += 2
+            _triples += 1
             if lc_id in kov_legal_concept_ids:
-                _triples_kov += 2
+                _triples_kov += 1
 
     # ---- skos:closeMatch: Concept ↔ Concept (#134) ----
     # The fuzzy near-match relation now connects canonical Concept nodes to

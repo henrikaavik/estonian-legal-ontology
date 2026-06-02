@@ -20,6 +20,7 @@ import time
 import xml.etree.ElementTree as ET
 from pathlib import Path
 from typing import Iterator
+from urllib.parse import urlsplit, urlunsplit
 
 import requests
 
@@ -76,8 +77,44 @@ def ct(el: ET.Element, name: str) -> str | None:
     return None
 
 
+# Sentence terminator followed by whitespace — the preferred summary cut
+# point. Matches the boundary heuristic used by the other generators'
+# truncation (see ``generate_annotations._truncate_to_sentence``).
+_SENTENCE_BOUNDARY_RE = re.compile(r"[.!?]\s")
+
+
+def _truncate_on_boundary(text: str, max_len: int) -> str:
+    """Cut ``text`` to at most ``max_len`` chars on a sentence/word boundary.
+
+    Prefers the last sentence terminator (``.``/``!``/``?`` + space) that
+    falls in the back ~30% of the window; failing that, falls back to the
+    last word boundary (space) so a token is never split mid-word (issue
+    #368 — the old raw ``text[:max_len]`` cut ``…kohustatud arvut``). A
+    trimmed result is marked with an ellipsis so truncation stays visible.
+    """
+    if len(text) <= max_len:
+        return text
+    head = text[:max_len]
+    # Last sentence boundary not earlier than 70% in, to avoid a stub summary.
+    floor = int(max_len * 0.7)
+    last_sentence = -1
+    for match in _SENTENCE_BOUNDARY_RE.finditer(head):
+        if match.start() >= floor:
+            last_sentence = match.start()
+    if last_sentence >= 0:
+        return head[: last_sentence + 1]
+    last_space = head.rfind(" ")
+    cut = head[:last_space] if last_space > 0 else head
+    return cut.rstrip() + "…"
+
+
 def collect_text(el: ET.Element, max_len: int = 500) -> str:
-    """Concatenate provision text up to `max_len` characters (for summaries)."""
+    """Concatenate provision text up to `max_len` characters (for summaries).
+
+    The final cut lands on a sentence/word boundary (``_truncate_on_boundary``)
+    rather than a raw character slice, so summaries are never split mid-token
+    (issue #368).
+    """
     parts: list[str] = []
     for child in el.iter():
         tag = ln(child.tag)
@@ -89,7 +126,7 @@ def collect_text(el: ET.Element, max_len: int = 500) -> str:
         if len(" ".join(parts)) >= max_len:
             break
     joined = " ".join(parts)
-    return joined[:max_len] if joined else ""
+    return _truncate_on_boundary(joined, max_len) if joined else ""
 
 
 def collect_full_text(el: ET.Element) -> str:
@@ -195,6 +232,26 @@ def fetch_acts(
         page += 1
 
 
+def build_xml_url(url: str) -> str:
+    """Build the absolute Riigi Teataja XML URL for an act path/URL.
+
+    Relative paths (``/akt/123``) are resolved against ``BASE_URL``; absolute
+    URLs are used as-is. A ``.xml`` suffix is appended only to the URL *path*
+    component when the path does not already end in ``.xml``.
+
+    The suffix is applied via ``urlsplit``/``urlunsplit`` so it lands on the
+    path and never on a query string (issue #389): a raw ``url + ".xml"`` on
+    ``/akt/123?version=3`` would have produced ``/akt/123?version=3.xml``,
+    corrupting the query parameter. Operating on the parsed path yields the
+    correct ``/akt/123.xml?version=3``.
+    """
+    full_url = BASE_URL + url if url.startswith("/") else url
+    parts = urlsplit(full_url)
+    if not parts.path.endswith(".xml"):
+        parts = parts._replace(path=parts.path + ".xml")
+    return urlunsplit(parts)
+
+
 def fetch_xml(
     url: str,
     cache_name: str,
@@ -221,9 +278,7 @@ def fetch_xml(
         except ET.ParseError:
             pass
 
-    full_url = BASE_URL + url if url.startswith("/") else url
-    if not full_url.endswith(".xml"):
-        full_url = full_url + ".xml"
+    full_url = build_xml_url(url)
 
     try:
         resp = requests.get(full_url, timeout=timeout)
@@ -270,8 +325,16 @@ def parse_html_konteiner(html_text: str) -> tuple[str, list[dict]]:
     # the LAST closing </p> before the next heading as the section boundary.
     # We match the bold-§ form because plain text mentions of `§ 1` inside
     # a sentence should NOT be treated as a new section.
+    #
+    # The title group has NO trailing ``\s*`` before ``</b>`` (issue #347):
+    # a lazy ``[^<]{0,200}?`` plus a trailing ``\s*`` both match whitespace,
+    # so an unclosed ``<b>§ N. ` + many spaces (malformed pre-2010
+    # HTMLKonteiner) forces the engine to try every whitespace partition —
+    # catastrophic backtracking, O(N²). Dropping the trailing ``\s*`` removes
+    # the ambiguity; the captured title is ``.strip()``-ed downstream (:296),
+    # so trailing whitespace before ``</b>`` is discarded regardless.
     heading_re = re.compile(
-        r"<b[^>]*>\s*§\s*(\d+(?:[′'·]\d+)?)\s*\.?\s*([^<]{0,200}?)\s*</b>",
+        r"<b[^>]*>\s*§\s*(\d+(?:[′'·]\d+)?)\s*\.?\s*([^<]{0,200}?)</b>",
         re.IGNORECASE,
     )
     matches = list(heading_re.finditer(html_text))

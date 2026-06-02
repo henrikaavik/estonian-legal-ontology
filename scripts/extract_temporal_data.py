@@ -25,6 +25,7 @@ from estleg_common import (
     build_globalid_xml_lookup,
     iter_peep_files,
     pair_peep_with_xml,
+    save_json,
 )
 from kov_pipeline_coverage import (
     CoverageReport,
@@ -106,9 +107,18 @@ def parse_date(value: str) -> str | None:
     # accidentally consuming date separators.
     try:
         parsed = datetime.fromisoformat(value)
-        return parsed.strftime("%Y-%m-%d")
     except ValueError:
         pass
+    else:
+        # Plausibility guard (#352): reject well-formed but logically
+        # impossible years — source digit-transpositions (2918→2018,
+        # 3006→2006, 0218→2018) and EUR-Lex null-sentinels (1001-01-01,
+        # 1002-02-02). These pass fromisoformat but break every
+        # as-of-date / ordering query, so we drop them rather than emit
+        # a poisoned xsd:date.
+        if parsed.year < 1900 or parsed.year > 2100:
+            return None
+        return parsed.strftime("%Y-%m-%d")
 
     # Step 2: regex fallback for legacy/malformed inputs. Strip embedded
     # offsets first ("2011+02:00-01-01" → "2011-01-01"), then trailing
@@ -119,9 +129,15 @@ def parse_date(value: str) -> str | None:
 
     for fmt in ("%Y-%m-%d", "%d.%m.%Y", "%Y-%m-%dT%H:%M:%S"):
         try:
-            return datetime.strptime(cleaned, fmt).strftime("%Y-%m-%d")
+            parsed = datetime.strptime(cleaned, fmt)
         except ValueError:
             continue
+        # Plausibility guard (#352): same year-range bound as the
+        # fromisoformat path above — reject implausible years here too so
+        # the fallback can't reintroduce a sentinel/typo date.
+        if parsed.year < 1900 or parsed.year > 2100:
+            return None
+        return parsed.strftime("%Y-%m-%d")
     return None
 
 
@@ -508,12 +524,6 @@ def load_index_metadata() -> dict[str, dict]:
         if name:
             result[name] = law
     return result
-
-
-def save_json(filepath: Path, doc: dict):
-    with open(filepath, "w", encoding="utf-8") as f:
-        json.dump(doc, f, ensure_ascii=False, indent=2)
-        f.write("\n")
 
 
 def main(evaluation_date: str | None = None):
