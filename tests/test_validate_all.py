@@ -1413,6 +1413,37 @@ def test_validate_metadata_catalog_passes_when_distribution_counts_agree(tmp_pat
     assert va.errors == [], va.errors
 
 
+def test_distribution_count_keys_cover_riigikohus_and_kov():
+    """Riigikohus + KOV distributions are cross-checked (#400).
+
+    `metadata.jsonld` carries structured counts on the
+    "Combined Supreme Court decisions ontology (Riigikohus)" and
+    "Municipal regulations ontology (KOV)" distributions. Without a
+    `DISTRIBUTION_COUNT_KEYS` mapping their `estleg:*Count` keys drift
+    unnoticed while the catalog validator stays green. Pin that both
+    titles are covered and map to real `metadata_stats()` keys.
+    """
+    import sys
+
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
+    import validate_all as va
+
+    stats_keys = set(va.metadata_stats(va.KRR_DIR).keys())
+    expected = {
+        "Combined Supreme Court decisions ontology (Riigikohus)": {
+            "estleg:courtDecisionCount": "estleg:courtDecisionCount",
+        },
+        "Municipal regulations ontology (KOV)": {
+            "estleg:municipalRegulationCount": "estleg:municipalRegulationCount",
+        },
+    }
+    for title, mapping in expected.items():
+        assert title in va.DISTRIBUTION_COUNT_KEYS, title
+        assert va.DISTRIBUTION_COUNT_KEYS[title] == mapping
+        for stats_key in mapping.values():
+            assert stats_key in stats_keys, stats_key
+
+
 def test_readme_counts_match_metadata():
     """README's status line agrees with metadata.jsonld's estleg:statistics (#110).
 

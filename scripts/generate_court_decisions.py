@@ -1267,8 +1267,6 @@ def main(argv: list[str] | None = None):
             print("  No decisions found")
             continue
 
-        year_stats[year] = len(decisions)
-
         # Generate per-year file
         graph: list[dict] = [
             {
@@ -1286,12 +1284,21 @@ def main(argv: list[str] | None = None):
         # object_id, i.e. the same real document returned twice (#392).
         seen_keys: set[tuple[str, str, str]] = set()
         skipped_in_year = 0
+        # Track only the decisions that actually produced a node. Rows that
+        # decision_to_node drops as duplicates (seen_ids / seen_keys) or as
+        # unbuildable (no stable IRI) must NOT feed the index counts, or the
+        # index would advertise more decisions than the emitted graph holds
+        # (#398). The index total + case_type_counts + per-year breakdown are
+        # tallied from this emitted set below, matching the de-duplicated peep
+        # graph (the same invariant rederive_court_case_types enforces).
+        emitted_in_year: list[dict] = []
         for dec in decisions:
             node = decision_to_node(dec, year, seen_ids, seen_keys)
             if node is None:
                 skipped_in_year += 1
                 continue
             graph.append(node)
+            emitted_in_year.append(dec)
         if skipped_in_year:
             print(f"  Skipped {skipped_in_year} unsalvageable decisions for {year}")
 
@@ -1300,7 +1307,9 @@ def main(argv: list[str] | None = None):
         save_json(out_path, doc)
         print(f"  Saved: {out_path.name} ({len(graph)} nodes)")
 
-        all_decisions.extend(decisions)
+        # Count emitted decisions (post-dedup), not the raw rikos rows (#398).
+        year_stats[year] = len(emitted_in_year)
+        all_decisions.extend(emitted_in_year)
         time.sleep(RATE_DELAY)
 
     # Generate index

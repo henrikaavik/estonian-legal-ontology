@@ -321,3 +321,106 @@ def test_derived_provenance_matches_routed_celex() -> None:
     assert node["owl:sameAs"] == {"@id": expected_cellar}
     assert node["dcterms:source"] == {"@id": expected_cellar}
     assert node["eli:id_local"] == celex
+
+
+# ---------------------------------------------------------------------------
+# #398 — EURLEX_INDEX.json by_type/in_force/total counts must be derived from
+# the EMITTED nodes' effective euDocumentType + inForce, NOT from raw
+# fetched-row tallies. A dropped (None) row must not be counted; a retyped
+# row must count under its effective type, never the query's nominal type.
+# ---------------------------------------------------------------------------
+
+
+def _emit(raw_rows: list[dict]) -> list[dict]:
+    """Emit JSON-LD nodes from raw regulations-query rows exactly as ``main``
+    does: call ``legislation_to_node`` with the nominal ``Regulation`` query
+    type and drop ``None`` results (#394/#398). No network."""
+    return [
+        node
+        for row in raw_rows
+        if (node := mod.legislation_to_node(row, "Regulation")) is not None
+    ]
+
+
+def test_count_emitted_by_doc_type_uses_effective_type_not_query_type() -> None:
+    """Build the index tally from a small list of EMITTED nodes that includes
+    (a) a DROPPED row (legislation_to_node -> None, never appended) and
+    (b) a RETYPED InternationalAgreement row routed through the regulations
+    query. Counts must follow the emitted effective types: the dropped row is
+    absent, and the sector-4 record counts under InternationalAgreement — NOT
+    under Regulation (#398).
+    """
+    # Raw rows as they would arrive from the cdm:regulation query, all bearing
+    # the nominal "Regulation" query type. in_force payloads are mixed.
+    raw_regulation_rows = [
+        # Genuine sector-3-R regulation, in force.
+        {"celex": "32016R0679", "title": "GDPR", "authors": [], "in_force": "true"},
+        # Genuine sector-3-R regulation, repealed (not in force).
+        {"celex": "31999R0001", "title": "Old reg", "authors": [], "in_force": "false"},
+        # Sector-4 UN-ECE record -> RETYPED to InternationalAgreement, in force.
+        {"celex": "42024X0211", "title": "UN-ECE rule", "authors": [], "in_force": "true"},
+        # Unmapped non-sector-3-R CELEX -> DROPPED (node is None).
+        {"celex": "62024A0001", "title": "to be dropped", "authors": []},
+    ]
+
+    emitted = _emit(raw_regulation_rows)
+    # The droppable row really produced no node (4 raw rows -> 3 emitted nodes).
+    assert len(emitted) == 3
+
+    counts = mod.count_emitted_by_doc_type(emitted)
+
+    # Two genuine sector-3-R regulations: one in force, one not. The dropped
+    # row and the retyped row do NOT inflate this bucket.
+    assert counts["Regulation"] == {"total": 2, "in_force": 1, "not_in_force": 1}
+
+
+def test_count_emitted_by_doc_type_retyped_counts_under_effective_type() -> None:
+    """A retyped sector-4 record counts under InternationalAgreement (its
+    effective emitted type), and never inflates the Regulation bucket; the
+    dropped row contributes nothing, so sum(totals) == emitted node count (#398)."""
+    raw_regulation_rows = [
+        {"celex": "32016R0679", "title": "GDPR", "authors": [], "in_force": "true"},
+        {"celex": "31999R0001", "title": "Old reg", "authors": [], "in_force": "false"},
+        {"celex": "42024X0211", "title": "UN-ECE rule", "authors": [], "in_force": "true"},
+        {"celex": "62024A0001", "title": "dropped", "authors": []},  # -> None
+    ]
+    counts = mod.count_emitted_by_doc_type(_emit(raw_regulation_rows))
+
+    # The retyped record lands under InternationalAgreement, in force.
+    assert counts["InternationalAgreement"] == {
+        "total": 1,
+        "in_force": 1,
+        "not_in_force": 0,
+    }
+    # It is NOT folded into Regulation.
+    assert counts["Regulation"]["total"] == 2
+    # The dropped row contributed nothing: 3 emitted nodes total.
+    assert sum(b["total"] for b in counts.values()) == 3
+
+
+def test_count_emitted_skips_non_legislation_nodes() -> None:
+    """Nodes without an estleg:euDocumentType (e.g. the owl:Ontology header
+    node prepended to every graph) are not counted (#398)."""
+    header = {
+        "@id": "estleg:EURlex_Combined_Map_2026",
+        "@type": ["owl:Ontology"],
+    }
+    reg = mod.legislation_to_node(
+        {"celex": "32016R0679", "title": "GDPR", "authors": [], "in_force": "true"},
+        "Regulation",
+    )
+    counts = mod.count_emitted_by_doc_type([header, reg])
+    assert set(counts) == {"Regulation"}
+    assert counts["Regulation"]["total"] == 1
+
+
+def test_count_emitted_absent_inforce_counts_as_not_in_force() -> None:
+    """A node with no estleg:inForce property (upstream in_force was falsy/absent)
+    counts as not-in-force, mirroring the raw is_in_force_value semantics (#398)."""
+    # No in_force key -> legislation_to_node emits no estleg:inForce property.
+    node = mod.legislation_to_node(
+        {"celex": "32016R0679", "title": "GDPR", "authors": []}, "Regulation"
+    )
+    assert "estleg:inForce" not in node
+    counts = mod.count_emitted_by_doc_type([node])
+    assert counts["Regulation"] == {"total": 1, "in_force": 0, "not_in_force": 1}

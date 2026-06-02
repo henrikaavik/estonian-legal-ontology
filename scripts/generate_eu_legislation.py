@@ -20,6 +20,7 @@ import argparse
 import re
 import sys
 import time
+from collections.abc import Iterable
 from datetime import datetime
 from pathlib import Path
 
@@ -556,6 +557,68 @@ def legislation_to_node(item: dict, type_id: str) -> dict | None:
     return node
 
 
+def _node_doc_type_id(node: dict) -> str | None:
+    """Extract the effective ``EUDocType`` id suffix from an emitted node.
+
+    Returns e.g. ``"Regulation"`` / ``"InternationalAgreement"`` from a node's
+    ``estleg:euDocumentType`` ``{"@id": "estleg:EUDocType_<Type>"}`` reference,
+    or ``None`` if the property is missing/malformed.
+    """
+    ref = node.get("estleg:euDocumentType")
+    if not isinstance(ref, dict):
+        return None
+    doc_id = ref.get("@id")
+    prefix = "estleg:EUDocType_"
+    if isinstance(doc_id, str) and doc_id.startswith(prefix):
+        return doc_id[len(prefix):]
+    return None
+
+
+def _node_in_force(node: dict) -> bool:
+    """Return whether an emitted node's ``estleg:inForce`` literal is ``"true"``.
+
+    Nodes only carry ``estleg:inForce`` when the upstream ``in_force`` payload
+    was truthy (see ``legislation_to_node``); an absent property therefore
+    counts as not-in-force, mirroring the in-force test on the raw row.
+    """
+    ref = node.get("estleg:inForce")
+    if not isinstance(ref, dict):
+        return False
+    return str(ref.get("@value")).strip().casefold() == "true"
+
+
+def count_emitted_by_doc_type(nodes: Iterable[dict]) -> dict[str, dict[str, int]]:
+    """Tally EMITTED legislation nodes by their effective ``euDocumentType``.
+
+    The ``EURLEX_INDEX.json`` ``by_type`` counts MUST be derived from what the
+    graph actually contains, not from the raw fetched-row ``type_counts``:
+    a regulations-query row can be DROPPED (``legislation_to_node`` returns
+    ``None``, so no node is emitted) or RETYPED (e.g. a sector-4 record →
+    ``InternationalAgreement``). Counting raw rows under the query's nominal
+    type would advertise more/mistyped legislation than is emitted (#398).
+
+    Only legislation individuals are counted — nodes carrying an
+    ``estleg:euDocumentType`` ref. The ``owl:Ontology`` header node and any
+    other metadata nodes are skipped. Returns
+    ``{type_id: {"total", "in_force", "not_in_force"}}`` keyed by the effective
+    document-type id suffix (``"Regulation"``, ``"InternationalAgreement"``, …).
+    """
+    counts: dict[str, dict[str, int]] = {}
+    for node in nodes:
+        type_id = _node_doc_type_id(node)
+        if type_id is None:
+            continue
+        bucket = counts.setdefault(
+            type_id, {"total": 0, "in_force": 0, "not_in_force": 0}
+        )
+        bucket["total"] += 1
+        if _node_in_force(node):
+            bucket["in_force"] += 1
+        else:
+            bucket["not_in_force"] += 1
+    return counts
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -601,7 +664,6 @@ def main():
     print(f"  Saved: {schema_path.name} ({len(schema_doc['@graph'])} nodes)")
 
     all_legislation: dict[str, list[dict]] = {}
-    type_counts: dict[str, int] = {}
     partial_types: dict[str, bool] = {}
 
     for doc_key, doc_info in EU_DOC_TYPES.items():
@@ -609,10 +671,9 @@ def main():
         items, was_partial = fetch_legislation_type(
             doc_info["cdm_class"], allow_partial=args.allow_partial
         )
-        print(f"  Total unique: {len(items)}")
+        print(f"  Total unique: {len(items)} fetched (index counts the emitted subset)")
 
         all_legislation[doc_key] = items
-        type_counts[doc_key] = len(items)
         partial_types[doc_key] = was_partial
 
         # Generate per-type file
@@ -672,9 +733,14 @@ def main():
 
     # Generate index
     print("\n--- Generating index ---")
-    in_force_counts: dict[str, int] = {}
-    for doc_key, items in all_legislation.items():
-        in_force_counts[doc_key] = sum(1 for i in items if is_in_force_value(i.get("in_force")))
+    # #398: derive by_type/total/in_force from the EMITTED nodes' effective
+    # ``estleg:euDocumentType`` + ``estleg:inForce``, NOT from raw fetched-row
+    # ``type_counts``. ``combined_graph`` is exactly the emitted legislation
+    # nodes (plus the owl:Ontology header, which carries no euDocumentType and
+    # is skipped by the tally). A dropped (None) row contributes nothing; a
+    # retyped row (e.g. sector-4 → InternationalAgreement) counts under its
+    # effective type, never the regulations query's nominal ``Regulation``.
+    emitted_counts = count_emitted_by_doc_type(combined_graph)
 
     any_partial = any(partial_types.values())
     index = {
@@ -686,33 +752,70 @@ def main():
         "by_type": {},
     }
 
+    # The regulations query is the one that yields retyped (override) records,
+    # so override-typed nodes physically live in the regulations peep file and
+    # inherit its partial flag.
+    reg_doc_key = next(
+        (k for k, v in EU_DOC_TYPES.items() if v["type_id"] == "Regulation"), None
+    )
+    reg_file = f"eurlex_{reg_doc_key}s_peep.json" if reg_doc_key else None
+    reg_partial = partial_types.get(reg_doc_key, False) if reg_doc_key else False
+
+    # Canonical types first, in their declared order — always present (even at
+    # zero) so the index shape is stable across regenerations.
+    canonical_type_ids: set[str] = set()
     for doc_key, doc_info in EU_DOC_TYPES.items():
-        count = type_counts.get(doc_key, 0)
-        in_force = in_force_counts.get(doc_key, 0)
-        index["by_type"][doc_info["type_id"]] = {
+        type_id = doc_info["type_id"]
+        canonical_type_ids.add(type_id)
+        c = emitted_counts.get(type_id, {"total": 0, "in_force": 0, "not_in_force": 0})
+        index["by_type"][type_id] = {
             "label_et": doc_info["label_et"],
             "label_en": doc_info["label_en"],
-            "total": count,
-            "in_force": in_force,
-            "not_in_force": count - in_force,
+            "total": c["total"],
+            "in_force": c["in_force"],
+            "not_in_force": c["not_in_force"],
             "file": f"eurlex_{doc_key}s_peep.json",
             "partial": partial_types.get(doc_key, False),
+        }
+
+    # Override types (e.g. InternationalAgreement / ParliamentPosition): emitted
+    # only when such nodes actually survive. Counting them under their effective
+    # type — rather than folding them into Regulation — keeps the index honest
+    # and ensures sum(by_type totals) == total_acts (#398). Sorted for stable
+    # output.
+    override_labels = {
+        o["type_id"]: o for o in EU_DOC_TYPE_OVERRIDES.values()
+    }
+    for type_id in sorted(set(emitted_counts) - canonical_type_ids):
+        c = emitted_counts[type_id]
+        meta = override_labels.get(type_id, {})
+        index["by_type"][type_id] = {
+            "label_et": meta.get("label_et", type_id),
+            "label_en": meta.get("label_en", type_id),
+            "total": c["total"],
+            "in_force": c["in_force"],
+            "not_in_force": c["not_in_force"],
+            "file": reg_file,
+            "partial": reg_partial,
         }
 
     index_path = EURLEX_DIR / "EURLEX_INDEX.json"
     save_json(index_path, index)
     print(f"  Saved: {index_path.name}")
 
-    # Summary
+    # Summary — report the same EMITTED-node counts the index advertises (#398),
+    # so the console total and per-type breakdown agree with EURLEX_INDEX.json
+    # rather than the raw fetched-row tallies.
     print("\n" + "=" * 60)
-    print(f"Done! Fetched {total} EU legal acts in Estonian.")
+    print(f"Done! Emitted {total} EU legal acts in Estonian.")
     print(f"Files saved to: {EURLEX_DIR.relative_to(REPO_ROOT)}")
     print()
-    for doc_key, doc_info in EU_DOC_TYPES.items():
-        count = type_counts.get(doc_key, 0)
-        in_force = in_force_counts.get(doc_key, 0)
-        flag = " [PARTIAL]" if partial_types.get(doc_key) else ""
-        print(f"  {doc_info['label_en']:25s}: {count:6d} total ({in_force} in force){flag}")
+    for entry in index["by_type"].values():
+        flag = " [PARTIAL]" if entry["partial"] else ""
+        print(
+            f"  {entry['label_en']:25s}: {entry['total']:6d} total "
+            f"({entry['in_force']} in force){flag}"
+        )
     print("=" * 60)
     if any_partial:
         # ``--allow-partial`` was set (otherwise the run would have raised

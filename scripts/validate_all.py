@@ -1050,6 +1050,12 @@ DISTRIBUTION_COUNT_KEYS: dict[str, dict[str, str]] = {
     "Combined EU court decisions ontology": {
         "estleg:euCourtDecisionCount": "estleg:euCourtDecisionCount",
     },
+    "Combined Supreme Court decisions ontology (Riigikohus)": {
+        "estleg:courtDecisionCount": "estleg:courtDecisionCount",
+    },
+    "Municipal regulations ontology (KOV)": {
+        "estleg:municipalRegulationCount": "estleg:municipalRegulationCount",
+    },
 }
 
 
