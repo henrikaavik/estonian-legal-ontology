@@ -3850,3 +3850,583 @@ class TestSubsectionShaclConformance:
         }
         ok, msg = _shacl_conforms(_doc(provision))
         assert ok, msg
+
+
+# ---------------------------------------------------------------------------
+# Issue #298 — collect_text must not duplicate lõige body text or leak
+# <HTMLKonteiner> CDATA into estleg:summary (drop "loige" from the tag list).
+# ---------------------------------------------------------------------------
+
+
+class TestCollectTextNoLoigeDuplication:
+    def test_multi_loige_body_appears_once(self):
+        """A provision with several lõiked must list each body sentence
+        exactly once — previously the ``loige`` container AND its leaf
+        ``tavatekst`` both matched, doubling every sentence."""
+        xml = """
+        <paragrahv>
+          <paragrahvNr>1</paragrahvNr>
+          <kuvatavNr>§ 1.</kuvatavNr>
+          <loige><loigeNr>1</loigeNr><kuvatavNr>(1)</kuvatavNr>
+            <tavatekst>Alpha kohaldatakse siin.</tavatekst></loige>
+          <loige><loigeNr>2</loigeNr><kuvatavNr>(2)</kuvatavNr>
+            <tavatekst>Beeta kohaldatakse seal.</tavatekst></loige>
+        </paragrahv>
+        """
+        summary = generate_all_laws.collect_text(ET.fromstring(xml))
+        assert summary.count("Alpha kohaldatakse siin.") == 1, summary
+        assert summary.count("Beeta kohaldatakse seal.") == 1, summary
+
+    def test_htmlkonteiner_cdata_does_not_leak(self):
+        """Raw signature-table / <a href> CDATA carried in an
+        <HTMLKonteiner> sibling of the body must never reach the summary."""
+        xml = """
+        <paragrahv>
+          <paragrahvNr>2</paragrahvNr>
+          <kuvatavNr>§ 2.</kuvatavNr>
+          <loige>
+            <loigeNr>1</loigeNr>
+            <tavatekst>Pärisõiguslik tekst kehtib.</tavatekst>
+            <HTMLKonteiner><![CDATA[<a href="x">allkirjastatud tabel</a>]]></HTMLKonteiner>
+          </loige>
+        </paragrahv>
+        """
+        summary = generate_all_laws.collect_text(ET.fromstring(xml))
+        assert "Pärisõiguslik tekst kehtib." in summary
+        assert "allkirjastatud tabel" not in summary, summary
+        assert "href" not in summary, summary
+
+    def test_loige_text_still_captured_via_leaves(self):
+        """Dropping ``loige`` from the match list must not lose the body —
+        the leaf ``tavatekst`` descendants still carry it."""
+        xml = """
+        <paragrahv>
+          <paragrahvNr>3</paragrahvNr>
+          <loige><loigeNr>1</loigeNr><tavatekst>Säte on olemas.</tavatekst></loige>
+        </paragrahv>
+        """
+        summary = generate_all_laws.collect_text(ET.fromstring(xml))
+        assert "Säte on olemas." in summary
+
+    def test_end_to_end_summary_has_no_repeat(self):
+        generate_all_laws._used_prefixes.clear()
+        xml = """
+        <akt><sisu>
+          <paragrahv>
+            <paragrahvNr>1</paragrahvNr>
+            <kuvatavNr>§ 1.</kuvatavNr>
+            <loige><loigeNr>1</loigeNr><kuvatavNr>(1)</kuvatavNr>
+              <tavatekst>Esimene siduv lause.</tavatekst></loige>
+            <loige><loigeNr>2</loigeNr><kuvatavNr>(2)</kuvatavNr>
+              <tavatekst>Teine siduv lause.</tavatekst></loige>
+          </paragrahv>
+        </sisu></akt>
+        """
+        doc = generate_all_laws.generate_law_jsonld(
+            "Kordus", "kordus", ET.fromstring(xml), abbreviation="DUPX",
+            allocator=generate_all_laws.PrefixAllocator(registry={}),
+        )
+        prov = next(
+            n for n in doc["@graph"] if n.get("@id") == "estleg:DUPX_Par_1"
+        )
+        assert prov["estleg:summary"].count("Esimene siduv lause.") == 1
+        assert prov["estleg:summary"].count("Teine siduv lause.") == 1
+
+
+# ---------------------------------------------------------------------------
+# Issue #368 — estleg:summary must be cut on a sentence/word boundary, never
+# mid-token, while still honouring the hard cap.
+# ---------------------------------------------------------------------------
+
+
+class TestSummaryBoundaryTruncation:
+    def test_short_text_is_unchanged(self):
+        assert generate_all_laws._truncate_at_boundary("Lühike.", 500) == "Lühike."
+
+    def test_cut_prefers_sentence_boundary(self):
+        body = "".join(f"Lause number {i} siin. " for i in range(1, 80))
+        out = generate_all_laws._truncate_at_boundary(body, 500)
+        assert len(out) <= 500
+        # Ends on a sentence terminator, not mid-word.
+        assert out.rstrip()[-1] in ".!?…", repr(out[-30:])
+
+    def test_cut_falls_back_to_word_boundary(self):
+        # No sentence terminator anywhere: must cut at the last space.
+        body = "woord " * 200  # 1200 chars, spaces but no '.'
+        out = generate_all_laws._truncate_at_boundary(body, 500)
+        assert len(out) <= 500
+        # Not severed mid-token: the char after the cut in the source is a space.
+        assert not out.endswith("woor"), repr(out[-10:])
+        assert out.endswith("woord"), repr(out[-10:])
+
+    def test_no_boundary_in_window_honours_cap(self):
+        body = "x" * 600  # no spaces, no terminators
+        out = generate_all_laws._truncate_at_boundary(body, 500)
+        assert len(out) == 500
+
+    def test_collect_text_applies_boundary_cut(self):
+        body = "".join(f"Pikk lause nummer {i}. " for i in range(1, 90))
+        xml = (
+            "<paragrahv><paragrahvNr>1</paragrahvNr>"
+            f"<tavatekst>{body}</tavatekst></paragrahv>"
+        )
+        summary = generate_all_laws.collect_text(ET.fromstring(xml))
+        assert len(summary) <= 500
+        # A raw slice would sever a word; the boundary cut ends cleanly.
+        assert summary.rstrip()[-1] in ".!?…", repr(summary[-30:])
+        assert summary != body[:500]
+
+
+# ---------------------------------------------------------------------------
+# Issue #346 — slugify must strip a trailing '_' produced by the 80-char cut.
+# ---------------------------------------------------------------------------
+
+
+class TestSlugifyTrailingUnderscore:
+    def test_eighty_char_cut_on_underscore_is_stripped(self):
+        # 79 'a's then a separator then a new word -> slug[:80] ends with '_'.
+        slug = generate_all_laws.slugify("a" * 79 + " bcd")
+        assert not slug.endswith("_"), slug
+        assert slug == "a" * 79
+
+    def test_no_double_underscore_when_suffix_appended(self):
+        slug = generate_all_laws.slugify("x" * 79 + " more text here")
+        iri = f"estleg:{slug}_Map_2026"
+        assert "__" not in iri, iri
+
+    def test_short_slug_unaffected(self):
+        assert generate_all_laws.slugify("Karistusseadustik") == "karistusseadustik"
+
+
+# ---------------------------------------------------------------------------
+# Issue #354 — §-range canonicalisation + Division/Chapter trailing underscore.
+# ---------------------------------------------------------------------------
+
+
+class TestSanitizeIdRangeCanonicalisation:
+    def test_en_dash_range_becomes_to(self):
+        assert generate_all_laws.sanitize_id("1–94") == "1_to_94"
+
+    def test_em_dash_and_minus_also_canonicalised(self):
+        assert generate_all_laws.sanitize_id("1—94") == "1_to_94"
+        assert generate_all_laws.sanitize_id("1−94") == "1_to_94"
+
+    def test_ascii_hyphen_unchanged_behaviour(self):
+        # ASCII hyphen is NOT a §-range separator; preserve the prior
+        # strip-to-nothing behaviour so unrelated ids do not shift.
+        assert generate_all_laws.sanitize_id("a-b") == "ab"
+
+    def test_plain_number_unchanged(self):
+        assert generate_all_laws.sanitize_id("194") == "194"
+
+    def test_range_provision_iri_is_distinct_from_real_section(self):
+        """``§ 1–94`` must mint ``Par_1_to_94`` — not ``Par_194`` which would
+        collide with a real §194."""
+        generate_all_laws._used_prefixes.clear()
+        xml = """
+        <akt><sisu>
+          <paragrahv>
+            <paragrahvNr>1–94</paragrahvNr>
+            <kuvatavNr>§ 1–94.</kuvatavNr>
+            <loige><loigeNr>1</loigeNr><tavatekst>Käesolev seadustik kehtib.</tavatekst></loige>
+          </paragrahv>
+        </sisu></akt>
+        """
+        doc = generate_all_laws.generate_law_jsonld(
+            "Tsiviilkoodeks", "tsk", ET.fromstring(xml), abbreviation="TSKZ",
+            allocator=generate_all_laws.PrefixAllocator(registry={}),
+        )
+        ids = {n["@id"] for n in doc["@graph"]}
+        assert "estleg:TSKZ_Par_1_to_94" in ids, ids
+        assert "estleg:TSKZ_Par_194" not in ids
+
+
+class TestStructuralSuffixTrailingUnderscore:
+    def test_chapter_title_suffix_strips_trailing_underscore(self):
+        ch = ET.fromstring("<peatykk><peatykkPealkiri>x</peatykkPealkiri></peatykk>")
+        # 19 chars + a separator at index 20 of the title -> trailing '_'.
+        suffix = generate_all_laws._chapter_id_suffix(
+            ch, "", "ABCDEFGHIJKLMNOPQRS more"
+        )
+        assert not suffix.endswith("_"), suffix
+        assert suffix == "ABCDEFGHIJKLMNOPQRS"
+
+    def test_division_title_suffix_strips_trailing_underscore(self):
+        jagu = ET.fromstring("<jagu><jaguPealkiri>x</jaguPealkiri></jagu>")
+        suffix = generate_all_laws._division_id_suffix(
+            jagu, "", "ABCDEFGHIJKLMNOPQRS more"
+        )
+        assert not suffix.endswith("_"), suffix
+        assert suffix == "ABCDEFGHIJKLMNOPQRS"
+
+    def test_title_only_division_does_not_collide_with_sibling(self):
+        """A title that truncates onto an underscore must not near-collide
+        with a sibling whose first 20 chars match exactly."""
+        jagu_a = ET.fromstring("<jagu><jaguPealkiri>x</jaguPealkiri></jagu>")
+        a = generate_all_laws._chapter_id_suffix(
+            jagu_a, "", "TEOSE KASUTAMINE OSA toode"
+        )
+        b = generate_all_laws._chapter_id_suffix(
+            jagu_a, "", "TEOSE KASUTAMINE OSA"
+        )
+        # Both collapse to the same canonical suffix (no spurious '_' tail on a).
+        assert a == b
+        assert not a.endswith("_")
+
+
+# ---------------------------------------------------------------------------
+# Issue #309 — multipart act @id must be snapshot-stable (no §-range).
+# ---------------------------------------------------------------------------
+
+
+class TestMultipartActIdStable:
+    def _osa_xml(self, par_lo: int, par_hi: int) -> str:
+        return f"""
+        <akt><sisu>
+          <osa><osaNr>1</osaNr><osaPealkiri>Üldosa</osaPealkiri>
+            <paragrahv><paragrahvNr>{par_lo}</paragrahvNr><kuvatavNr>§ {par_lo}.</kuvatavNr>
+              <loige><loigeNr>1</loigeNr><tavatekst>Esimene säte.</tavatekst></loige></paragrahv>
+            <paragrahv><paragrahvNr>{par_hi}</paragrahvNr><kuvatavNr>§ {par_hi}.</kuvatavNr>
+              <loige><loigeNr>1</loigeNr><tavatekst>Viimane säte.</tavatekst></loige></paragrahv>
+          </osa>
+        </sisu></akt>
+        """
+
+    def test_act_id_has_no_par_range(self):
+        generate_all_laws._used_prefixes.clear()
+        results = dict(generate_all_laws.generate_multipart_law(
+            "Karistusseadustik", "kars",
+            ET.fromstring(self._osa_xml(1, 87)),
+            abbreviation="KARSY",
+            allocator=generate_all_laws.PrefixAllocator(registry={}),
+        ))
+        act = results["kars_osa1_peep.json"]["@graph"][0]
+        assert act["@id"] == "estleg:KARSY_Osa1", act["@id"]
+        # The §-range survives only in the human-readable label.
+        assert "1–87" in act["rdfs:label"], act["rdfs:label"]
+
+    def test_act_id_stable_when_par_range_shifts(self):
+        """Inserting/removing a paragraph shifts the §-range but must NOT
+        change the act @id (the whole point of #309)."""
+        generate_all_laws._used_prefixes.clear()
+        a = dict(generate_all_laws.generate_multipart_law(
+            "Karistusseadustik", "kars",
+            ET.fromstring(self._osa_xml(1, 87)),
+            abbreviation="KARSY",
+            allocator=generate_all_laws.PrefixAllocator(registry={}),
+        ))
+        generate_all_laws._used_prefixes.clear()
+        b = dict(generate_all_laws.generate_multipart_law(
+            "Karistusseadustik", "kars",
+            ET.fromstring(self._osa_xml(1, 90)),  # §-range now 1–90
+            abbreviation="KARSY",
+            allocator=generate_all_laws.PrefixAllocator(registry={}),
+        ))
+        id_a = a["kars_osa1_peep.json"]["@graph"][0]["@id"]
+        id_b = b["kars_osa1_peep.json"]["@graph"][0]["@id"]
+        assert id_a == id_b == "estleg:KARSY_Osa1"
+
+
+# ---------------------------------------------------------------------------
+# Issue #371 — unnamed <jagu> and pre-<peatykk> preamble paragraphs must get
+# a container (and cluster). Both single-file and multipart code paths.
+# ---------------------------------------------------------------------------
+
+
+class TestUnnamedJaguAndPreambleContainer:
+    def test_single_unnamed_jagu_paragraph_gets_chapter_container(self):
+        generate_all_laws._used_prefixes.clear()
+        xml = """
+        <akt><sisu>
+          <peatykk><peatykkNr>1</peatykkNr><peatykkPealkiri>Üldsätted</peatykkPealkiri>
+            <jagu>
+              <paragrahv><paragrahvNr>5</paragrahvNr><kuvatavNr>§ 5.</kuvatavNr>
+                <loige><loigeNr>1</loigeNr><tavatekst>Nimetu jao säte.</tavatekst></loige></paragrahv>
+            </jagu>
+          </peatykk>
+        </sisu></akt>
+        """
+        doc = generate_all_laws.generate_law_jsonld(
+            "Seadus", "seadus", ET.fromstring(xml), abbreviation="UNJX",
+            allocator=generate_all_laws.PrefixAllocator(registry={}),
+        )
+        p5 = next(n for n in doc["@graph"] if n.get("@id") == "estleg:UNJX_Par_5")
+        assert p5["estleg:isPartOf"]["@id"].startswith("estleg:Chapter_UNJX_1"), p5
+        assert p5.get("estleg:requestedCluster") is not None, p5
+
+    def test_single_preamble_paragraph_gets_fallback_container(self):
+        generate_all_laws._used_prefixes.clear()
+        xml = """
+        <akt><sisu>
+          <paragrahv><paragrahvNr>1</paragrahvNr><kuvatavNr>§ 1.</kuvatavNr>
+            <loige><loigeNr>1</loigeNr><tavatekst>Preambuli säte.</tavatekst></loige></paragrahv>
+          <paragrahv><paragrahvNr>2</paragrahvNr><kuvatavNr>§ 2.</kuvatavNr>
+            <loige><loigeNr>1</loigeNr><tavatekst>Teine preambuli säte.</tavatekst></loige></paragrahv>
+          <peatykk><peatykkNr>1</peatykkNr><peatykkPealkiri>Põhisätted</peatykkPealkiri>
+            <paragrahv><paragrahvNr>3</paragrahvNr><kuvatavNr>§ 3.</kuvatavNr>
+              <loige><loigeNr>1</loigeNr><tavatekst>Peatüki säte.</tavatekst></loige></paragrahv>
+          </peatykk>
+        </sisu></akt>
+        """
+        doc = generate_all_laws.generate_law_jsonld(
+            "Eriõiguse seadus", "reos", ET.fromstring(xml), abbreviation="PRMB",
+            allocator=generate_all_laws.PrefixAllocator(registry={}),
+        )
+        graph = doc["@graph"]
+        p1 = next(n for n in graph if n.get("@id") == "estleg:PRMB_Par_1")
+        p2 = next(n for n in graph if n.get("@id") == "estleg:PRMB_Par_2")
+        p3 = next(n for n in graph if n.get("@id") == "estleg:PRMB_Par_3")
+        assert p1["estleg:isPartOf"]["@id"] == "estleg:Chapter_PRMB_Preamble"
+        assert p2["estleg:isPartOf"]["@id"] == "estleg:Chapter_PRMB_Preamble"
+        assert p1["estleg:requestedCluster"]["@id"] == "estleg:Cluster_PRMB_Preamble"
+        # Real-chapter paragraph is untouched.
+        assert p3["estleg:isPartOf"]["@id"] != "estleg:Chapter_PRMB_Preamble"
+        assert p3["estleg:isPartOf"]["@id"].startswith("estleg:Chapter_PRMB_")
+
+    def test_preamble_cluster_counted_and_is_top_concept(self):
+        generate_all_laws._used_prefixes.clear()
+        xml = """
+        <akt><sisu>
+          <paragrahv><paragrahvNr>1</paragrahvNr><kuvatavNr>§ 1.</kuvatavNr>
+            <loige><loigeNr>1</loigeNr><tavatekst>Preambul üks.</tavatekst></loige></paragrahv>
+          <peatykk><peatykkNr>1</peatykkNr><peatykkPealkiri>Sätted</peatykkPealkiri>
+            <paragrahv><paragrahvNr>2</paragrahvNr><kuvatavNr>§ 2.</kuvatavNr>
+              <loige><loigeNr>1</loigeNr><tavatekst>Säte.</tavatekst></loige></paragrahv>
+          </peatykk>
+        </sisu></akt>
+        """
+        doc = generate_all_laws.generate_law_jsonld(
+            "Seadus", "seadus", ET.fromstring(xml), abbreviation="PTOP",
+            allocator=generate_all_laws.PrefixAllocator(registry={}),
+        )
+        graph = doc["@graph"]
+        cluster = next(
+            n for n in graph if n.get("@id") == "estleg:Cluster_PTOP_Preamble"
+        )
+        assert cluster["estleg:provisionCount"] == 1
+        scheme = next(
+            n for n in graph if n.get("@type") == ["skos:ConceptScheme"]
+        )
+        top_ids = {t["@id"] for t in scheme["skos:hasTopConcept"]}
+        assert "estleg:Cluster_PTOP_Preamble" in top_ids, top_ids
+
+    def test_no_preamble_node_when_every_paragraph_has_a_chapter(self):
+        """A clean structuredBody law (all paragraphs inside chapters) must
+        NOT sprout a spurious preamble container."""
+        generate_all_laws._used_prefixes.clear()
+        xml = """
+        <akt><sisu>
+          <peatykk><peatykkNr>1</peatykkNr><peatykkPealkiri>Sätted</peatykkPealkiri>
+            <paragrahv><paragrahvNr>1</paragrahvNr><kuvatavNr>§ 1.</kuvatavNr>
+              <loige><loigeNr>1</loigeNr><tavatekst>Ainus.</tavatekst></loige></paragrahv>
+          </peatykk>
+        </sisu></akt>
+        """
+        doc = generate_all_laws.generate_law_jsonld(
+            "Seadus", "seadus", ET.fromstring(xml), abbreviation="NOPR",
+            allocator=generate_all_laws.PrefixAllocator(registry={}),
+        )
+        ids = {n["@id"] for n in doc["@graph"]}
+        assert "estleg:Chapter_NOPR_Preamble" not in ids
+        assert "estleg:Cluster_NOPR_Preamble" not in ids
+
+    def test_multipart_unnamed_jagu_paragraph_gets_chapter_container(self):
+        generate_all_laws._used_prefixes.clear()
+        xml = """
+        <akt><sisu>
+          <osa><osaNr>1</osaNr><osaPealkiri>Üldosa</osaPealkiri>
+            <peatykk><peatykkNr>1</peatykkNr><peatykkPealkiri>Üldsätted</peatykkPealkiri>
+              <jagu>
+                <paragrahv><paragrahvNr>5</paragrahvNr><kuvatavNr>§ 5.</kuvatavNr>
+                  <loige><loigeNr>1</loigeNr><tavatekst>Nimetu jagu.</tavatekst></loige></paragrahv>
+              </jagu>
+            </peatykk>
+          </osa>
+        </sisu></akt>
+        """
+        results = dict(generate_all_laws.generate_multipart_law(
+            "Multi", "multi_unj", ET.fromstring(xml), abbreviation="MUNJ",
+            allocator=generate_all_laws.PrefixAllocator(registry={}),
+        ))
+        graph = results["multi_unj_osa1_peep.json"]["@graph"]
+        prefix = graph[0]["@id"].split("estleg:")[1].rsplit("_Osa", 1)[0]
+        p5 = next(
+            n for n in graph if n.get("@id") == f"estleg:{prefix}_Osa1_Par_5"
+        )
+        assert p5["estleg:isPartOf"]["@id"].startswith(
+            f"estleg:Chapter_{prefix}_1"
+        ), p5
+        assert p5.get("estleg:requestedCluster") is not None, p5
+
+    def test_multipart_preamble_paragraph_gets_fallback_container(self):
+        generate_all_laws._used_prefixes.clear()
+        xml = """
+        <akt><sisu>
+          <osa><osaNr>2</osaNr><osaPealkiri>Eriosa</osaPealkiri>
+            <paragrahv><paragrahvNr>208</paragrahvNr><kuvatavNr>§ 208.</kuvatavNr>
+              <loige><loigeNr>1</loigeNr><tavatekst>Osa preambul.</tavatekst></loige></paragrahv>
+            <peatykk><peatykkNr>20</peatykkNr><peatykkPealkiri>Lepingud</peatykkPealkiri>
+              <paragrahv><paragrahvNr>209</paragrahvNr><kuvatavNr>§ 209.</kuvatavNr>
+                <loige><loigeNr>1</loigeNr><tavatekst>Peatüki säte.</tavatekst></loige></paragrahv>
+            </peatykk>
+          </osa>
+        </sisu></akt>
+        """
+        results = dict(generate_all_laws.generate_multipart_law(
+            "Võlaõigusseadus", "vos_pre", ET.fromstring(xml), abbreviation="VOSP",
+            allocator=generate_all_laws.PrefixAllocator(registry={}),
+        ))
+        graph = results["vos_pre_osa2_peep.json"]["@graph"]
+        prefix = graph[0]["@id"].split("estleg:")[1].rsplit("_Osa", 1)[0]
+        p208 = next(
+            n for n in graph if n.get("@id") == f"estleg:{prefix}_Osa2_Par_208"
+        )
+        # Multipart cluster/chapter IRIs use the bare osa number, not "Osa<n>".
+        assert p208["estleg:isPartOf"]["@id"] == f"estleg:Chapter_{prefix}_2_Preamble"
+        assert (
+            p208["estleg:requestedCluster"]["@id"]
+            == f"estleg:Cluster_{prefix}_2_Preamble"
+        )
+        # The preamble cluster joins the part-level grouping.
+        part = next(
+            n for n in graph if n.get("@id") == f"estleg:Cluster_{prefix}_2_Part"
+        )
+        narrower = {x["@id"] for x in part.get("skos:narrower", [])}
+        assert f"estleg:Cluster_{prefix}_2_Preamble" in narrower, narrower
+
+
+# ---------------------------------------------------------------------------
+# Issue #375 — a Chapter with BOTH direct-child provisions and Divisions must
+# list both the Division ids and the direct provision ids in estleg:hasPart.
+# ---------------------------------------------------------------------------
+
+
+class TestChapterHasPartIncludesDirectProvisions:
+    _XML = """
+    <akt><sisu>
+      <peatykk><peatykkNr>5</peatykkNr><peatykkPealkiri>Ravimid</peatykkPealkiri>
+        <paragrahv><paragrahvNr>87</paragrahvNr><kuvatavNr>§ 87.</kuvatavNr>
+          <loige><loigeNr>1</loigeNr><tavatekst>Otse peatüki all.</tavatekst></loige></paragrahv>
+        <jagu><jaguNr>1</jaguNr><jaguPealkiri>Esimene jagu</jaguPealkiri>
+          <paragrahv><paragrahvNr>88</paragrahvNr><kuvatavNr>§ 88.</kuvatavNr>
+            <loige><loigeNr>1</loigeNr><tavatekst>Jaos.</tavatekst></loige></paragrahv>
+        </jagu>
+      </peatykk>
+    </sisu></akt>
+    """
+
+    def test_single_path_haspart_lists_division_and_direct_provision(self):
+        generate_all_laws._used_prefixes.clear()
+        doc = generate_all_laws.generate_law_jsonld(
+            "Ravimiseadus", "ravs", ET.fromstring(self._XML), abbreviation="RVSX",
+            allocator=generate_all_laws.PrefixAllocator(registry={}),
+        )
+        graph = doc["@graph"]
+        chapter = next(
+            n for n in graph
+            if n.get("@id", "").startswith("estleg:Chapter_RVSX_5")
+            and "Preamble" not in n["@id"]
+        )
+        haspart = {x["@id"] for x in chapter.get("estleg:hasPart", [])}
+        division = next(
+            n for n in graph if n.get("@id", "").startswith("estleg:Division_RVSX_")
+        )
+        assert division["@id"] in haspart, haspart
+        assert "estleg:RVSX_Par_87" in haspart, haspart
+        # The division's own provision is NOT a direct child of the chapter.
+        assert "estleg:RVSX_Par_88" not in haspart, haspart
+        # Symmetry with isPartOf.
+        p87 = next(n for n in graph if n.get("@id") == "estleg:RVSX_Par_87")
+        assert p87["estleg:isPartOf"]["@id"] == chapter["@id"]
+
+    def test_chapter_with_only_direct_provisions_keeps_no_haspart(self):
+        """Scope guard for #375: a chapter with NO divisions still emits no
+        hasPart (unchanged behaviour)."""
+        generate_all_laws._used_prefixes.clear()
+        xml = """
+        <akt><sisu>
+          <peatykk><peatykkNr>1</peatykkNr><peatykkPealkiri>Üld</peatykkPealkiri>
+            <paragrahv><paragrahvNr>1</paragrahvNr><kuvatavNr>§ 1.</kuvatavNr>
+              <loige><loigeNr>1</loigeNr><tavatekst>Ainus.</tavatekst></loige></paragrahv>
+          </peatykk>
+        </sisu></akt>
+        """
+        doc = generate_all_laws.generate_law_jsonld(
+            "X", "x", ET.fromstring(xml), abbreviation="ONLY",
+            allocator=generate_all_laws.PrefixAllocator(registry={}),
+        )
+        chapter = next(
+            n for n in doc["@graph"]
+            if n.get("@id", "").startswith("estleg:Chapter_ONLY_")
+        )
+        assert "estleg:hasPart" not in chapter
+
+    def test_multipart_path_haspart_lists_division_and_direct_provision(self):
+        generate_all_laws._used_prefixes.clear()
+        xml = """
+        <akt><sisu>
+          <osa><osaNr>1</osaNr><osaPealkiri>Üldosa</osaPealkiri>
+            <peatykk><peatykkNr>3</peatykkNr><peatykkPealkiri>Sätted</peatykkPealkiri>
+              <paragrahv><paragrahvNr>141</paragrahvNr><kuvatavNr>§ 141.</kuvatavNr>
+                <loige><loigeNr>1</loigeNr><tavatekst>Otse.</tavatekst></loige></paragrahv>
+              <jagu><jaguNr>1</jaguNr><jaguPealkiri>Esimene</jaguPealkiri>
+                <paragrahv><paragrahvNr>142</paragrahvNr><kuvatavNr>§ 142.</kuvatavNr>
+                  <loige><loigeNr>1</loigeNr><tavatekst>Jaos.</tavatekst></loige></paragrahv>
+              </jagu>
+            </peatykk>
+          </osa>
+        </sisu></akt>
+        """
+        results = dict(generate_all_laws.generate_multipart_law(
+            "VÕS", "vos_hp", ET.fromstring(xml), abbreviation="VHPX",
+            allocator=generate_all_laws.PrefixAllocator(registry={}),
+        ))
+        graph = results["vos_hp_osa1_peep.json"]["@graph"]
+        prefix = graph[0]["@id"].split("estleg:")[1].rsplit("_Osa", 1)[0]
+        chapter = next(
+            n for n in graph
+            if n.get("@id", "").startswith(f"estleg:Chapter_{prefix}_1")
+            and "Preamble" not in n["@id"]
+        )
+        haspart = {x["@id"] for x in chapter.get("estleg:hasPart", [])}
+        assert any(
+            x.startswith(f"estleg:Division_{prefix}_1") for x in haspart
+        ), haspart
+        assert f"estleg:{prefix}_Osa1_Par_141" in haspart, haspart
+        assert f"estleg:{prefix}_Osa1_Par_142" not in haspart, haspart
+
+
+# ---------------------------------------------------------------------------
+# Combined SHACL conformance: a structuredBody law exercising the preamble
+# container (#371), unnamed-jagu attribution (#371) and direct-child hasPart
+# (#375) at once must still conform to the shapes.
+# ---------------------------------------------------------------------------
+
+
+class TestGeneratorFixesShaclConformance:
+    def test_generated_structuredbody_with_all_fixes_conforms(self):
+        generate_all_laws._used_prefixes.clear()
+        xml = """
+        <akt><sisu>
+          <paragrahv><paragrahvNr>1</paragrahvNr><kuvatavNr>§ 1.</kuvatavNr>
+            <loige><loigeNr>1</loigeNr><tavatekst>Preambuli säte enne peatükke.</tavatekst></loige></paragrahv>
+          <peatykk><peatykkNr>5</peatykkNr><peatykkPealkiri>Ravimid</peatykkPealkiri>
+            <paragrahv><paragrahvNr>87</paragrahvNr><kuvatavNr>§ 87.</kuvatavNr>
+              <loige><loigeNr>1</loigeNr><tavatekst>Otse peatüki all.</tavatekst></loige></paragrahv>
+            <jagu><jaguNr>1</jaguNr><jaguPealkiri>Esimene jagu</jaguPealkiri>
+              <paragrahv><paragrahvNr>88</paragrahvNr><kuvatavNr>§ 88.</kuvatavNr>
+                <loige><loigeNr>1</loigeNr><tavatekst>Jaos olev säte.</tavatekst></loige></paragrahv>
+            </jagu>
+            <jagu>
+              <paragrahv><paragrahvNr>89</paragrahvNr><kuvatavNr>§ 89.</kuvatavNr>
+                <loige><loigeNr>1</loigeNr><tavatekst>Nimetu jaos säte.</tavatekst></loige></paragrahv>
+            </jagu>
+          </peatykk>
+        </sisu></akt>
+        """
+        doc = generate_all_laws.generate_law_jsonld(
+            "Ravimiseadus", "ravs", ET.fromstring(xml), abbreviation="SHXX",
+            allocator=generate_all_laws.PrefixAllocator(registry={}),
+        )
+        ok, msg = _shacl_conforms(doc)
+        assert ok, msg

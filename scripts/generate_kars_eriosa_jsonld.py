@@ -14,6 +14,31 @@ SEARCH_URL = "https://www.riigiteataja.ee/api/oigusakt_otsing/1/otsi"
 BASE_URL = "https://www.riigiteataja.ee"
 LAW_TITLE = "Karistusseadustik"
 
+# ``estleg`` namespace IRI (the ontology base). Module-level so the
+# JSON-LD ``@context`` can be built and unit-tested without the
+# network-fetching ``main()`` shell.
+ESTLEG_BASE = "https://data.riik.ee/ontology/estleg#"
+
+
+def build_context() -> dict[str, str]:
+    """Return the JSON-LD ``@context`` prefix map for the Eriosa artifact.
+
+    ``dc`` is Dublin Core *elements/1.1* (matching estleg_common.py and
+    generate_all_laws.py), ``dcterms`` is the distinct /dc/terms/
+    namespace; conflating them breaks corpus-wide RDF joins on
+    ``dc:source``/``dc:references`` (#308).
+    """
+    return {
+        "owl": "http://www.w3.org/2002/07/owl#",
+        "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+        "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+        "xsd": "http://www.w3.org/2001/XMLSchema#",
+        "dc": "http://purl.org/dc/elements/1.1/",
+        "skos": "http://www.w3.org/2004/02/skos/core#",
+        "estleg": ESTLEG_BASE,
+        "dcterms": "http://purl.org/dc/terms/",
+    }
+
 
 LEGAL_DEFINITIONS = [
     {
@@ -219,6 +244,43 @@ def _join_label(*parts: str | None, sep: str = " – ") -> str:
     return sep.join(cleaned)
 
 
+_SENTENCE_BOUNDARY_RE = re.compile(r"[.!?]\s+")
+
+
+def _truncate_on_boundary(text: str, max_len: int) -> str:
+    """Trim ``text`` to ``max_len`` chars at a sentence/word boundary.
+
+    A raw ``text[:max_len]`` slice cuts mid-token (``…kohustatud arvut``),
+    which corrupts the downstream summary that every classifier reads
+    (#368). Mirrors the boundary-aware approach in
+    ``generate_annotations._truncate_to_sentence``:
+
+    1. Prefer the LAST sentence boundary (``.``/``!``/``?`` + space) that
+       falls within the budget, provided it keeps at least ~70 % of the
+       text (so a single short leading sentence does not gut the preview).
+    2. Otherwise fall back to the last whole word and append ``…`` to
+       signal the cut.
+
+    Returns the (possibly trimmed) text with surrounding whitespace
+    stripped; short inputs are returned unchanged apart from an
+    ``rstrip``.
+    """
+    if len(text) <= max_len:
+        return text.rstrip()
+    head = text[:max_len]
+    min_index = int(max_len * 0.7)
+    # The LAST sentence stop inside the budget, if it keeps >= ~70 % of the
+    # text (otherwise a short leading sentence would gut the preview).
+    boundaries = [m.start() for m in _SENTENCE_BOUNDARY_RE.finditer(head)]
+    if boundaries and boundaries[-1] > min_index:
+        # Keep the sentence-ending punctuation, drop the trailing space.
+        return head[: boundaries[-1] + 1].rstrip()
+    # Word-boundary fallback: trim to the last whole word, mark the cut.
+    last_space = head.rfind(" ")
+    trimmed = head[:last_space] if last_space > 0 else head
+    return trimmed.rstrip() + "…"
+
+
 def collect_loige_preview(paragrahv: ET.Element, max_len: int = 500) -> str:
     previews: list[str] = []
     for el in paragrahv.iter():
@@ -230,7 +292,7 @@ def collect_loige_preview(paragrahv: ET.Element, max_len: int = 500) -> str:
         if len(" ".join(previews)) >= max_len:
             break
     joined = " ".join(previews)
-    return joined[:max_len]
+    return _truncate_on_boundary(joined, max_len)
 
 
 def main() -> None:
@@ -280,7 +342,7 @@ def main() -> None:
     if osa2 is None:
         raise RuntimeError("Could not find Eriosa (osaNr=2)")
 
-    base = "https://data.riik.ee/ontology/estleg#"
+    base = ESTLEG_BASE
     par_range = section_range(osa2)
     ontology_id = "estleg:KarS_Eriosa_v1"
     if par_range is None:
@@ -500,16 +562,7 @@ def main() -> None:
         )
 
     doc = {
-        "@context": {
-            "owl": "http://www.w3.org/2002/07/owl#",
-            "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-            "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
-            "xsd": "http://www.w3.org/2001/XMLSchema#",
-            "dc": "http://purl.org/dc/terms/",
-            "skos": "http://www.w3.org/2004/02/skos/core#",
-            "estleg": base,
-            "dcterms": "http://purl.org/dc/terms/",
-        },
+        "@context": build_context(),
         "@graph": graph,
     }
 
