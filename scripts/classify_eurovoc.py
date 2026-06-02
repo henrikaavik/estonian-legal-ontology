@@ -92,14 +92,14 @@ EUROVOC_DOMAINS: dict[str, tuple[str, str, str, list[str]]] = {
          "tööaeg", "töötasu", "koondami"],
     ),
     "3611": (
-        "social-security", "sotsiaalkindlustus", "Social security",
+        "social-protection", "sotsiaalne kaitse", "Social protection",
         ["sotsiaal", "pension", "toetus", "hüvitis", "ravikindlust", "töötuskindlust",
          "puue", "hooldus"],
     ),
     "5206": (
         "taxation", "maksundus", "Taxation",
         ["maks", "tulumaks", "käibemaks", "aktsiis", "maksuhaldu", "maksukohust",
-         "sotsiaalmaks"],
+         "sotsiaalmaks", "topeltmaksustamise"],
     ),
     "5211": (
         "budget", "eelarve", "Budget",
@@ -143,7 +143,7 @@ EUROVOC_DOMAINS: dict[str, tuple[str, str, str, list[str]]] = {
         ["kauband", "müük", "ost", "jaekauband", "hulgikauband"],
     ),
     "2416": (
-        "human-rights", "inimõigused", "Human rights",
+        "fundamental-rights", "põhiõigused", "Fundamental rights",
         ["inimõig", "põhiõig", "vabadus", "võrdsus", "diskrimineeri", "soolise võrdõiguslikkuse"],
     ),
     "5606": (
@@ -193,7 +193,8 @@ EUROVOC_DOMAINS: dict[str, tuple[str, str, str, list[str]]] = {
     ),
     "0411": (
         "international-affairs", "välissuhted", "International affairs",
-        ["rahvusvaheli", "välislepingu", "konventsioon", "protokoll"],
+        ["rahvusvaheli", "välislepingu", "konventsioon", "protokoll",
+         "ratifitseerimise"],
     ),
     "1011": (
         "EU-law", "Euroopa Liidu õigus", "EU law",
@@ -205,7 +206,7 @@ EUROVOC_DOMAINS: dict[str, tuple[str, str, str, list[str]]] = {
          "vallavalitsus", "omavalitsusüksus"],
     ),
     "4421": (
-        "maritime-law", "mereõigus", "Maritime and inland waterway transport",
+        "maritime-transport", "meretransport", "Maritime transport",
         ["meresõit", "laev", "sadam", "merendus"],
     ),
     "2031": (
@@ -283,7 +284,7 @@ MIN_DISTINCT_KEYWORDS_DEFAULT = 1
 # ("requirements", ubiquitous in technical acts); 'kunst' (culture 3221)
 # inside 'kunstlik' ("artificial"); 'vesi' (environment 5611) inside
 # 'vesinik' ("hydrogen"); and 'hagi'/'võlg' (2431), 'toll' (5216), 'laev'
-# (maritime 4421), 'ehit' (building 6411), 'puue' (social-security 3611) are
+# (maritime 4421), 'ehit' (building 6411), 'puue' (social-protection 3611) are
 # all short substring-prone stems. Bumping these domains to a distinct-gate of
 # 2 forces a second, corroborating keyword before the domain is assigned, so a
 # lone mid-word substring hit no longer tags the act. Every listed domain has
@@ -305,9 +306,21 @@ MIN_DISTINCT_KEYWORDS_OVERRIDES: dict[str, int] = {
     "3221": 2,  # culture — 'kunst' (→ 'kunstlik')
     "5216": 2,  # customs — 'toll'
     "5611": 2,  # environment — 'vesi' (→ 'vesinik')
-    "4421": 2,  # maritime-law — 'laev'
+    "4421": 2,  # maritime-transport — 'laev'
     "6411": 2,  # building — 'ehit'
-    "3611": 2,  # social-security — 'puue'
+    "3611": 2,  # social-protection — 'puue'
+    # --- #331 / #360: single-keyword over-matches on long but
+    # context-ambiguous terms (not short stems). 0411 (international-affairs)
+    # fires on a lone 'protokoll' inside domestic 'protokollitakse' (meeting
+    # minutes / court transcript, #331) and on a lone 'rahvusvaheli' in 234
+    # purely domestic functional laws that merely cite an international
+    # standard once (#360); 2806 (consumer-protection) fires on a lone
+    # 'tarbija' in 93 district-heating (kaugkütt) ordinances where it means
+    # "heat-subscriber" (#360). Requiring a second corroborating keyword
+    # reconciles both 0411 vectors into one gate and clears the 2806 noise.
+    # 0411 has 5 keywords and 2806 has 4, so the gate is reachable.
+    "0411": 2,  # international-affairs — 'protokoll' (#331), 'rahvusvaheli' (#360)
+    "2806": 2,  # consumer-protection — 'tarbija' on kaugkütt regs (#360)
 }
 
 

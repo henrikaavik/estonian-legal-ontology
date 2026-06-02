@@ -74,6 +74,114 @@ def test_voib_is_permission_not_right() -> None:
 
 
 # ---------------------------------------------------------------------------
+# Regression for #351: ``karistatakse`` (canonical Penal Code passive) is a
+# prohibition, and the polysemous judicial-discretion ``võib`` is suppressed in
+# penal provisions so they are not mislabelled Permission.
+# ---------------------------------------------------------------------------
+
+def test_karistatakse_is_prohibition() -> None:
+    # "… eest karistatakse … vangistusega" — the standard penal passive.
+    assert (
+        classify_provision("Sellise teo eest karistatakse rahatrahviga.")
+        == "estleg:NormType_Prohibition"
+    )
+
+
+def test_karistatakse_with_voib_is_prohibition_not_permission() -> None:
+    # A penal provision carrying a judicial-discretion ``võib``
+    # ("kohus võib määrata") must classify as Prohibition, not Permission:
+    # the weight-1 ``võib`` cue is suppressed when ``karistatakse`` is present.
+    assert (
+        classify_provision(
+            "Ruumi kasutada andmise eest karistatakse vangistusega. "
+            "Kohus võib määrata lisakaristuse."
+        )
+        == "estleg:NormType_Prohibition"
+    )
+
+
+def test_voib_alone_still_permission_without_karistatakse() -> None:
+    # The ``võib`` suppression is scoped to penal provisions; a plain
+    # discretionary ``võib`` with no ``karistatakse`` stays Permission.
+    assert (
+        classify_provision("Asutus võib taotluse läbi vaadata.")
+        == "estleg:NormType_Permission"
+    )
+
+
+# ---------------------------------------------------------------------------
+# Regression for #381: predicative mandatory cues with no modal polysemy —
+# ``on kohustuslik`` / ``on nõutav`` / ``on nõutud``.
+# ---------------------------------------------------------------------------
+
+def test_on_kohustuslik_is_obligation() -> None:
+    assert (
+        classify_provision("Audiitorkontroll on kohustuslik.")
+        == "estleg:NormType_Obligation"
+    )
+
+
+def test_on_noutav_is_obligation() -> None:
+    assert (
+        classify_provision("Tegevusluba on nõutav kõikidele ettevõtjatele.")
+        == "estleg:NormType_Obligation"
+    )
+
+
+def test_on_noutud_is_obligation() -> None:
+    assert (
+        classify_provision("Kirjalik nõusolek on nõutud enne andmete edastamist.")
+        == "estleg:NormType_Obligation"
+    )
+
+
+# ---------------------------------------------------------------------------
+# Regression for #329: obligation recognised when the infinitive precedes the
+# modal cue (SOV order) and when it is pushed back by intervening citations.
+# ---------------------------------------------------------------------------
+
+def test_sov_infinitive_before_peab_is_obligation() -> None:
+    # "Tasuda peab töötaja." — infinitive ``Tasuda`` precedes ``peab``.
+    assert (
+        classify_provision("Tasuda peab töötaja.")
+        == "estleg:NormType_Obligation"
+    )
+
+
+def test_sov_infinitive_before_tuleb_is_obligation() -> None:
+    # "Esitada tuleb dokument." — infinitive ``Esitada`` precedes ``tuleb``.
+    assert (
+        classify_provision("Esitada tuleb dokument.")
+        == "estleg:NormType_Obligation"
+    )
+
+
+def test_trailing_infinitive_past_citation_is_obligation() -> None:
+    # The confirming infinitive ``määrata`` is pushed past the old 6-token
+    # window by an intervening "§-s 951 …" citation; the widened window
+    # (10) still recognises the obligation.
+    assert (
+        classify_provision(
+            "Toetus tuleb käesoleva seaduse §-s 951 sätestatud korras määrata."
+        )
+        == "estleg:NormType_Obligation"
+    )
+
+
+def test_preceding_infinitive_beyond_window_is_not_obligation() -> None:
+    # The backward scan is bounded by _INFINITIVE_WINDOW (10): an infinitive
+    # that sits further back than the window must NOT confirm the modal, so a
+    # bare "comes" reading of ``tuleb`` stays unclassified.
+    assert (
+        classify_provision(
+            "Esitada üks kaks kolm neli viis kuus seitse kaheksa "
+            "üheksa kümme tuleb otsus."
+        )
+        is None
+    )
+
+
+# ---------------------------------------------------------------------------
 # Regression for #276: negation handling + peab/tuleb polysemy.
 #   * ``peab`` is also 3sg of *pidama* ("keeps"): "peab registrit" is NOT an
 #     obligation.

@@ -19,7 +19,12 @@ import time
 from collections import Counter, defaultdict
 from pathlib import Path
 
-from estleg_common import BUILD_EVALUATION_DATE, iter_peep_files, jsonld_text
+from estleg_common import (
+    BUILD_EVALUATION_DATE,
+    iter_peep_files,
+    jsonld_text,
+    save_json,
+)
 from extract_sanctions import _find_act_node
 from extract_cross_references import build_issuer_registry
 from kov_pipeline_coverage import (
@@ -81,10 +86,13 @@ CONTEXT = {
 }
 
 
-def save_json(filepath: Path, doc: dict) -> None:
-    with open(filepath, "w", encoding="utf-8") as f:
-        json.dump(doc, f, ensure_ascii=False, indent=2)
-        f.write("\n")
+# Issue #376: ``save_json`` is imported from ``estleg_common`` (tempfile +
+# atomic ``os.replace``) instead of a local non-atomic ``open(filepath, "w")``
+# that truncated to 0 bytes before writing — a SIGINT/OOM/disk-full mid-write
+# left a zero-byte/partial JSON that ``load_json`` then silently swallowed on
+# the next run, permanently dropping enrichment. Re-exported as a module
+# global so tests can monkeypatch ``mod.save_json`` and the production call
+# sites pick up the override.
 
 
 def load_json(filepath: Path) -> dict | None:
@@ -237,6 +245,39 @@ _INSTITUTION_ROOTS: tuple[str, ...] = (
 )
 
 
+# Issue #321: ``minister`` is a stem-changing noun — its genitive elides the
+# stressed ``e`` and appends ``i`` (nominative ``minister`` → genitive
+# ``ministri``), so every oblique form layers a case ending on the genitive
+# stem ``ministri`` (``ministril``/``ministrile``/``ministrit``/...). The
+# generic ``<root> + i`` genitive rule in _strip_estonian_case can't reach
+# this because ``ministri`` is NOT ``minister`` + ``i``. This pattern matches
+# a trailing ``ministri`` genitive stem plus an optional Estonian case suffix
+# (the partitive ``ministrit`` is handled explicitly) so all forms collapse
+# to the nominative ``...minister`` slug instead of spawning inflated siblings
+# (``Institution_sotsiaalministril`` etc.) — the same de-inflection guarantee
+# Issue #170 Finding 5 gives ``*amet``.
+_MINISTER_CASE_ALT: str = "|".join(
+    re.escape(s)
+    for s in sorted(set(_CASE_SUFFIXES_LONGEST_FIRST), key=len, reverse=True)
+    if s != "i"  # the bare genitive marker is already part of "ministri"
+)
+_MINISTER_GENITIVE_STEM_RE: re.Pattern[str] = re.compile(
+    rf"^(.*minist)ri(?:t|{_MINISTER_CASE_ALT})?$"
+)
+
+
+def _collapse_minister_stem(stem: str) -> str | None:
+    """Issue #321: collapse a ``*ministri`` genitive-stem form (with an
+    optional trailing case suffix, or the partitive ``*ministrit``) to its
+    nominative ``*minister`` slug. Returns None when ``stem`` is not a
+    minister oblique form so the caller can fall through to the generic
+    case-suffix stripper."""
+    m = _MINISTER_GENITIVE_STEM_RE.match(stem)
+    if m is None:
+        return None
+    return m.group(1) + "er"
+
+
 def _strip_estonian_case(stem: str) -> str:
     """Strip a single Estonian case suffix from the trailing component of
     ``stem`` and return the bare nominative stem.
@@ -257,6 +298,13 @@ def _strip_estonian_case(stem: str) -> str:
     # Already nominative — nothing to do.
     if _ends_in_root(stem):
         return stem
+
+    # Issue #321: handle the stem-changing ``minister`` genitive (``ministri``
+    # + optional case ending / partitive ``ministrit``) before the generic
+    # loop, which can't reach it via the ``<root> + i`` rule.
+    collapsed = _collapse_minister_stem(stem)
+    if collapsed is not None:
+        return collapsed
 
     for suffix in _CASE_SUFFIXES_LONGEST_FIRST:
         if not stem.endswith(suffix):
@@ -515,7 +563,14 @@ GENERIC_PATTERNS: list[tuple[re.Pattern, str, str]] = [
     (re.compile(r"\b([a-zäöüõšž]+(?:\s*-\s*ja\s+[a-zäöüõšž]+)*ministeerium\w*)\b",
                 re.IGNORECASE | re.UNICODE),
      "ministry", "ministry"),
-    (re.compile(r"\b([a-zäöüõšž]+minister\w*)\b", re.IGNORECASE | re.UNICODE),
+    # Issue #321: also match the genitive stem ``ministri`` so inflected
+    # (oblique) forms — the most common in competence clauses
+    # (``sotsiaalministril on õigus kehtestada``, ``haridusministri
+    # käskkiri``) — are detected, not just the nominative ``minister``.
+    # normalize_iri_suffix() (via _collapse_minister_stem) de-inflects the
+    # match back to the nominative ``*minister`` slug.
+    (re.compile(r"\b([a-zäöüõšž]+(?:minister|ministri)\w*)\b",
+                re.IGNORECASE | re.UNICODE),
      "ministry", "ministry"),
     # Agencies: "Xamet", "Xinspektsioon". Issue #259: the trailing token
     # is constrained to a case-suffix alternation (see _root_inflection_group)
@@ -545,35 +600,63 @@ GENERIC_PATTERNS: list[tuple[re.Pattern, str, str]] = [
 
 # ---------- competence-assigning patterns ----------
 
-# Issue #258: detect_competence_type returns the FIRST matching pattern, so
-# the most SPECIFIC patterns must come first. The bare-noun "järelevalve"
-# used to sit at idx 2, ahead of the real action verbs — so any provision
-# whose operative verb was licensing/regulation/enforcement but that merely
-# mentioned the ubiquitous noun "järelevalve" collapsed to "supervision".
+# Issue #322 (+ #258, #373): a provision can match SEVERAL competence
+# patterns at once (e.g. it both "annab loa" AND "teostab järelevalvet").
+# The old logic returned the FIRST list match, so the more specific type was
+# silently discarded — a licensing+supervision provision collapsed to
+# `supervision` only because the supervision phrase sat above the licensing
+# verb. detect_competence_type now collects EVERY match and returns the
+# highest-SPECIFICITY type instead of depending on list order.
 #
-# Two-part fix:
-#   1. Keep the *verb-adjacent* supervision phrases at the top
-#      ("järelevalvet teostab" / "teostab järelevalvet" / "teeb
-#      järelevalvet") — these genuinely assign a supervision competence.
-#   2. Demote the bare "järelevalve" noun BELOW the explicit action verbs
-#      (licensing / regulation / enforcement) so e.g. "Minister kehtestab
-#      järelevalve korra" is classified as `regulation`, not `supervision`.
-COMPETENCE_PATTERNS: list[tuple[re.Pattern, str]] = [
-    # Verb-adjacent supervision phrases — unambiguous, kept first.
-    (re.compile(r"järelevalvet\s+teostab", re.IGNORECASE), "supervision"),
-    (re.compile(r"teostab\s+järelevalvet", re.IGNORECASE), "supervision"),
-    (re.compile(r"teeb\s+järelevalvet", re.IGNORECASE), "supervision"),
-    (re.compile(r"\bon\s+pädev\b", re.IGNORECASE), "general"),
-    # Explicit action verbs — must outrank the bare "järelevalve" noun.
-    (re.compile(r"\bannab\s+loa\b", re.IGNORECASE), "licensing"),
-    (re.compile(r"\bväljastab\s+luba\b", re.IGNORECASE), "licensing"),
-    (re.compile(r"\bkehtestab\b", re.IGNORECASE), "regulation"),
-    (re.compile(r"\bkontrollib\b", re.IGNORECASE), "enforcement"),
-    (re.compile(r"\bkorraldab\b", re.IGNORECASE), "enforcement"),
-    (re.compile(r"\bteostab\b", re.IGNORECASE), "enforcement"),
-    # Bare "järelevalve" noun — weakest signal, tried LAST. Only reached
-    # when none of the operative verbs above matched.
-    (re.compile(r"järelevalve", re.IGNORECASE), "supervision"),
+# Specificity ladder (highest wins; #322 mandate: licensing > enforcement >
+# regulation > supervision > general):
+#   5  licensing            — an explicit grant verb ("annab loa",
+#                             "annab tegevusloa", ...). Outranks everything,
+#                             including the verb-adjacent supervision phrase,
+#                             so "annab loa ja teostab järelevalvet" is
+#                             licensing (the #322 headline case).
+#   4  supervision (phrase) — a verb-ADJACENT supervision phrase
+#                             ("teostab järelevalvet" / "teeb järelevalvet").
+#                             A genuine supervision assignment, so it must
+#                             beat the bare enforcement verb "teostab" that
+#                             the same phrase also contains (otherwise
+#                             "teostab järelevalvet" would mis-type as
+#                             enforcement).
+#   3  enforcement          — "kontrollib" / "korraldab" / bare "teostab".
+#   2  regulation           — "kehtestab".
+#   1  supervision (noun)    — the bare ubiquitous noun "järelevalve"; the
+#                             weakest signal, only decisive when nothing
+#                             operative matched.
+#   0  general              — "on pädev"; also the no-match default.
+#
+# Issue #373: "annab tegevusloa" / "väljastab tegevusloa" are added as
+# licensing verbs. The bare \bloa\b / \bluba\b patterns can't match inside
+# the compound "tegevusloa"/"tegevusluba" (no internal word boundary), so 6
+# licensing-grant provisions previously fell through to the default
+# `general`.
+COMPETENCE_PATTERNS: list[tuple[re.Pattern, str, int]] = [
+    # Licensing grant verbs — highest specificity.
+    (re.compile(r"\bannab\s+loa\b", re.IGNORECASE), "licensing", 5),
+    (re.compile(r"\bväljastab\s+luba\b", re.IGNORECASE), "licensing", 5),
+    # Issue #373: compound "tegevusluba" forms (the \bloa\b/\bluba\b word
+    # boundary fails inside the compound).
+    (re.compile(r"\bannab\s+tegevusloa\b", re.IGNORECASE), "licensing", 5),
+    (re.compile(r"\bväljastab\s+tegevusloa\b", re.IGNORECASE), "licensing", 5),
+    # Verb-adjacent supervision phrases — genuine supervision assignment,
+    # ranked above the bare enforcement verb "teostab" they also contain.
+    (re.compile(r"järelevalvet\s+teostab", re.IGNORECASE), "supervision", 4),
+    (re.compile(r"teostab\s+järelevalvet", re.IGNORECASE), "supervision", 4),
+    (re.compile(r"teeb\s+järelevalvet", re.IGNORECASE), "supervision", 4),
+    # Explicit enforcement / regulation verbs.
+    (re.compile(r"\bkontrollib\b", re.IGNORECASE), "enforcement", 3),
+    (re.compile(r"\bkorraldab\b", re.IGNORECASE), "enforcement", 3),
+    (re.compile(r"\bteostab\b", re.IGNORECASE), "enforcement", 3),
+    (re.compile(r"\bkehtestab\b", re.IGNORECASE), "regulation", 2),
+    # Bare "järelevalve" noun — weakest signal.
+    (re.compile(r"järelevalve", re.IGNORECASE), "supervision", 1),
+    # "on pädev" — non-specific competence assertion; lowest, tied with the
+    # no-match default.
+    (re.compile(r"\bon\s+pädev\b", re.IGNORECASE), "general", 0),
 ]
 
 
@@ -661,11 +744,22 @@ def detect_institutions(text: str) -> list[tuple[str, str, str]]:
 
 
 def detect_competence_type(text: str) -> str:
-    """Return the most specific competence type found in *text*."""
-    for pat, ctype in COMPETENCE_PATTERNS:
-        if pat.search(text):
-            return ctype
-    return "general"
+    """Return the most specific competence type found in *text*.
+
+    Issue #322: a provision may match several patterns at once (e.g. a
+    licensing grant that also mentions supervision). We collect EVERY
+    matching pattern and return the type with the highest specificity
+    (licensing > supervision-phrase > enforcement > regulation >
+    supervision-noun > general) instead of returning the first list match,
+    which silently discarded the more specific type.
+    """
+    best_type = "general"
+    best_specificity = -1
+    for pat, ctype, specificity in COMPETENCE_PATTERNS:
+        if specificity > best_specificity and pat.search(text):
+            best_type = ctype
+            best_specificity = specificity
+    return best_type
 
 
 def _fold_area_text(value: str) -> str:

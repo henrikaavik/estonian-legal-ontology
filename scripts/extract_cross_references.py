@@ -120,7 +120,7 @@ def _prefix_from_act_iri(act_iri: str) -> str | None:
 
 def build_provision_index() -> tuple[
     dict[str, dict[str, str]],
-    dict[str, str],
+    dict[str, list[str]],
     dict[str, Path],
     dict[str, str],   # prefix → act @id
     dict[str, str],   # act @id → prefix (reverse, for resolver use)
@@ -128,7 +128,13 @@ def build_provision_index() -> tuple[
     """
     Scan all *_peep.json files to build:
     1. prefix_to_provisions: {prefix: {par_number: full_iri}} e.g. {"Karistusseadustik": {"121": "estleg:KARIST_2_Par_121"}}
-    2. source_act_to_prefix: {source_act_name: prefix} e.g. {"Karistusseadustik": "Karistusseadustik"}
+    2. source_act_to_prefix: {source_act_name: [prefix, ...]} e.g.
+       {"Asjaõigusseadus": ["AOS_Osa1", ..., "AOS_Osa8"]}. A multi-osa
+       law shares one ``estleg:sourceAct`` across many osa peep files,
+       each with its OWN provision prefix; the value is therefore a
+       LIST so every osa's provisions stay reachable. A plain dict here
+       was last-writer-wins and silently dropped every osa but the
+       alphabetically-last one (#299).
     3. iri_to_file: {iri: filepath} mapping each provision IRI to its containing file
     4. prefix_to_act_iri: {prefix: act_@id} e.g. {"KOKS": "estleg:KOKS_Map_2026"}
     5. act_iri_to_prefix: {act_@id: prefix} (reverse — required by Task 5
@@ -136,7 +142,7 @@ def build_provision_index() -> tuple[
        acts with multi-segment prefixes like ``KARIST_2_Map_2026``).
     """
     prefix_to_provisions: dict[str, dict[str, str]] = {}
-    source_act_to_prefix: dict[str, str] = {}
+    source_act_to_prefix: dict[str, list[str]] = {}
     iri_to_file: dict[str, Path] = {}
     prefix_to_act_iri: dict[str, str] = {}
     act_iri_to_prefix: dict[str, str] = {}
@@ -155,23 +161,33 @@ def build_provision_index() -> tuple[
         if not graph:
             continue
 
-        # Detect the prefix used in this file by scanning provision nodes
+        # Track the prefixes actually used in this file. ``file_prefix``
+        # (the FIRST provision's prefix) only seeds the sourceAct map;
+        # every provision is keyed under its OWN prefix so files that
+        # mix prefix families (e.g. erigi_seadus_peep.json: ERIIGI_DI /
+        # ERIIGI_ES / ERIIGI_DE) don't route non-first-prefix paragraphs
+        # to the wrong-law IRI (#312).
         file_prefix = None
+        file_prefixes: list[str] = []
+        seen_prefixes: set[str] = set()
         source_act = None
         for node in graph:
             node_id = node.get("@id", "")
             if "_Par_" in node_id and node_id.startswith("estleg:"):
-                # Extract prefix: "estleg:KARIST_2_Par_121" -> "Karistusseadustik"
+                # Extract prefix: "estleg:KARIST_2_Par_121" -> "KARIST_2"
                 local = node_id[len("estleg:"):]
                 prefix_part = local.split("_Par_")[0]
                 if file_prefix is None:
                     file_prefix = prefix_part
+                if prefix_part not in seen_prefixes:
+                    seen_prefixes.add(prefix_part)
+                    file_prefixes.append(prefix_part)
                 # Extract paragraph number
                 par_part = local.split("_Par_")[1]
-                # Store the provision
-                if file_prefix not in prefix_to_provisions:
-                    prefix_to_provisions[file_prefix] = {}
-                prefix_to_provisions[file_prefix][par_part] = node_id
+                # Store the provision under ITS OWN prefix (#312).
+                if prefix_part not in prefix_to_provisions:
+                    prefix_to_provisions[prefix_part] = {}
+                prefix_to_provisions[prefix_part][par_part] = node_id
                 iri_to_file[node_id] = json_file
 
                 # Get sourceAct — generators may emit it as a plain string
@@ -180,8 +196,14 @@ def build_provision_index() -> tuple[
                 if source_act is None:
                     source_act = jsonld_text(node.get("estleg:sourceAct", ""))
 
-        if file_prefix and source_act:
-            source_act_to_prefix[source_act] = file_prefix
+        if source_act and file_prefixes:
+            # Accumulate every prefix this sourceAct contributes across
+            # all its osa files (#299). De-dup so re-scanning a file (or
+            # a file mixing prefixes) doesn't add a prefix twice.
+            bucket = source_act_to_prefix.setdefault(source_act, [])
+            for prefix_part in file_prefixes:
+                if prefix_part not in bucket:
+                    bucket.append(prefix_part)
 
         # Layer 2b: bind act_iri ↔ prefix maps. Reuse file_prefix when
         # available (provisions are the ground truth for prefix
@@ -223,18 +245,28 @@ def build_provision_index() -> tuple[
 
 
 def build_abbreviation_to_prefix(
-    source_act_to_prefix: dict[str, str],
-) -> dict[str, str]:
+    source_act_to_prefix: dict[str, list[str]],
+) -> dict[str, list[str]]:
     """
-    Map law abbreviations (KarS, VÕS, etc.) to the prefix used in provision IRIs.
+    Map law abbreviations (KarS, VÕS, etc.) to the prefixes used in
+    provision IRIs.
 
-    Returns: {abbreviation: iri_prefix} e.g. {"KarS": "Karistusseadustik"}
+    Returns: {abbreviation: [iri_prefix, ...]} e.g.
+    {"KarS": ["KARIST_2"], "AÕS": ["AOS_Osa1", ..., "AOS_Osa8"]}.
+
+    The value is a LIST because a multi-osa law (one ``estleg:sourceAct``
+    spread across many osa peep files) contributes several provision
+    prefixes; ``resolve_citation`` searches all of them so §§ in every
+    osa stay reachable (#299).
     """
-    abbrev_to_prefix: dict[str, str] = {}
+    abbrev_to_prefix: dict[str, list[str]] = {}
 
     for abbrev, full_name in KNOWN_ABBREVIATIONS.items():
-        if full_name in source_act_to_prefix:
-            abbrev_to_prefix[abbrev] = source_act_to_prefix[full_name]
+        # _iter_prefixes copies/normalises so callers can't mutate the
+        # shared sourceAct bucket and a stray string value is tolerated.
+        prefixes = _iter_prefixes(source_act_to_prefix.get(full_name))
+        if prefixes:
+            abbrev_to_prefix[abbrev] = prefixes
 
     return abbrev_to_prefix
 
@@ -271,8 +303,80 @@ def _normalize_issuer_label(label: str) -> str:
     return s.lower()
 
 
+def _iter_prefixes(value: list[str] | str | None) -> list[str]:
+    """Normalise a ``source_act_to_prefix`` value into a list of prefixes.
+
+    ``source_act_to_prefix`` is list-valued since #299 (a multi-osa law
+    contributes several prefixes), but a bare string is tolerated for
+    older callers / tests that still pass the pre-#299 single-prefix
+    shape. ``None`` / empty yields ``[]``.
+    """
+    if not value:
+        return []
+    return [value] if isinstance(value, str) else list(value)
+
+
+# Estonian law-marker words in their genitive form mapped back to the
+# nominative form that appears in a corpus title. Only the FINAL
+# law-marker word changes case in an act title — the leading
+# attributive words ('kaitseliidu', 'avaliku teabe') are already stored
+# in their citation form. Used to fold a preamble genitive law_ref
+# ('kaitseliidu seaduse') onto the corpus title key ('kaitseliidu
+# seadus') for the #390 corpus-title fallback.
+_GENITIVE_MARKER_TO_NOMINATIVE: tuple[tuple[str, str], ...] = (
+    ("seadustiku", "seadustik"),
+    ("seaduse", "seadus"),
+    ("koodeksi", "koodeks"),
+)
+
+
+def _genitive_law_ref_to_title(genitive: str) -> str | None:
+    """Fold a genitive law name onto its nominative corpus-title form.
+
+    ``'kaitseliidu seaduse'`` → ``'kaitseliidu seadus'``;
+    ``'karistusseadustiku'`` → ``'karistusseadustik'``. Returns ``None``
+    when the trailing word is not a recognised law marker (so the caller
+    skips the fallback rather than emitting a garbage key).
+    """
+    g = genitive.strip().lower()
+    for gen_marker, nom_marker in _GENITIVE_MARKER_TO_NOMINATIVE:
+        if g.endswith(gen_marker):
+            return g[: -len(gen_marker)] + nom_marker
+    return None
+
+
+def build_law_title_to_iri(
+    source_act_to_prefix: dict[str, list[str]],
+    prefix_to_act_iri: dict[str, str],
+) -> dict[str, str]:
+    """Build a {normalized_nominative_law_title → act @id} lookup.
+
+    The corpus stamps every provision's ``estleg:sourceAct`` with the
+    law's nominative title (e.g. ``"Kaitseliidu seadus"``), and
+    ``build_provision_index`` already aggregates those into
+    ``source_act_to_prefix``. Lower-casing each sourceAct yields a
+    direct title→act_iri map that resolves ~236 more law genitives than
+    the 40-entry ``FULLNAME_GENITIVE`` chain alone (#390).
+
+    The act_iri for a multi-osa law is taken from the FIRST of its
+    prefixes that ``prefix_to_act_iri`` knows — issuedUnder is act-level,
+    so any one of the law's act IRIs is an acceptable enabling-act target.
+    """
+    out: dict[str, str] = {}
+    for source_act, prefixes in source_act_to_prefix.items():
+        act_iri = None
+        for prefix in _iter_prefixes(prefixes):
+            act_iri = prefix_to_act_iri.get(prefix)
+            if act_iri is not None:
+                break
+        if act_iri is None:
+            continue
+        out[source_act.strip().lower()] = act_iri
+    return out
+
+
 def build_genitive_to_act_iri(
-    source_act_to_prefix: dict[str, str],
+    source_act_to_prefix: dict[str, list[str]],
     prefix_to_act_iri: dict[str, str],
 ) -> dict[str, str]:
     """Build a {genitive_law_name (lowercased) → act @id} lookup by
@@ -283,20 +387,24 @@ def build_genitive_to_act_iri(
     output ('Kohaliku omavalitsuse korralduse seaduse' or 'kohaliku
     omavalitsuse korralduse seaduse') resolves uniformly via .lower().
 
-    Entries that fail at any link in the chain (genitive → abbrev →
-    full_name → prefix → act_iri) are silently skipped — Layer 2b
-    accepts that some genitive forms recognise laws without a corpus
-    peep file.
+    ``source_act_to_prefix`` values are LISTS of prefixes (multi-osa
+    laws contribute several); the act_iri is taken from the first
+    prefix ``prefix_to_act_iri`` knows. Entries that fail at any link
+    in the chain are silently skipped.
     """
     out: dict[str, str] = {}
     for genitive, abbrev in FULLNAME_GENITIVE.items():
         full_name = KNOWN_ABBREVIATIONS.get(abbrev)
         if full_name is None:
             continue
-        prefix = source_act_to_prefix.get(full_name)
-        if prefix is None:
+        prefixes = _iter_prefixes(source_act_to_prefix.get(full_name))
+        if not prefixes:
             continue
-        act_iri = prefix_to_act_iri.get(prefix)
+        act_iri = None
+        for prefix in prefixes:
+            act_iri = prefix_to_act_iri.get(prefix)
+            if act_iri is not None:
+                break
         if act_iri is None:
             continue
         out[genitive.lower()] = act_iri
@@ -594,6 +702,7 @@ def resolve_preamble_citation(
     act_iri_to_prefix: dict[str, str],
     state_reg_lookup: dict[tuple[str, str, str], str],
     kov_act_lookup: dict[tuple[str, str, str], str],
+    law_title_to_iri: dict[str, str] | None = None,
 ) -> tuple[str, str] | None:
     """Resolve a preamble citation to (citation_target_iri, enabling_act_iri).
 
@@ -605,6 +714,12 @@ def resolve_preamble_citation(
         - ALWAYS act-level. Layer 2b's issuedUnder semantic is "act
           enacted under THIS act" — the range is Act, not LegalProvision.
 
+    ``law_title_to_iri`` is the optional #390 corpus-title fallback:
+    when a genitive law_ref is absent from the 40-entry
+    ``genitive_to_act_iri`` chain, the genitive is folded to its
+    nominative title form and looked up here (the corpus has ~236 more
+    law titles than FULLNAME_GENITIVE covers).
+
     Returns None when the citation can't be resolved against any lookup.
     """
     form = cit.get("form")
@@ -612,6 +727,13 @@ def resolve_preamble_citation(
     if form == "law-genitive":
         genitive = cit.get("law_ref", "").lower()
         act_iri = genitive_to_act_iri.get(genitive)
+        if act_iri is None and law_title_to_iri:
+            # #390 corpus-title fallback: fold the genitive to its
+            # nominative title form ('kaitseliidu seaduse' ->
+            # 'kaitseliidu seadus') and consult the corpus-title map.
+            title = _genitive_law_ref_to_title(genitive)
+            if title is not None:
+                act_iri = law_title_to_iri.get(title)
         if act_iri is None:
             return None
         # If no paragraph, both target and enabling_act are act-level.
@@ -863,6 +985,55 @@ def _normalize_par_number(raw: str) -> str:
     return f"{base}_{sup}" if sup else base
 
 
+# ----------------------------------------------------------------------
+# Module-level compiled citation patterns (#386)
+#
+# KNOWN_ABBREVIATIONS / FULLNAME_GENITIVE are static for the life of the
+# process, so the ``sorted() + re.escape() + '|'.join()`` alternation and
+# the resulting ``re.compile`` were pure waste when rebuilt on every one
+# of the ~142k per-provision ``extract_citations_from_text`` calls (the
+# interpolated join string is NOT covered by re's internal compile
+# cache). Hoisting them to module-level constants does the work once at
+# import. The alternations sort by length descending so a longer
+# abbreviation/name wins over a prefix of it.
+# ----------------------------------------------------------------------
+_ABBREV_ALTERNATION = "|".join(
+    re.escape(a) for a in sorted(KNOWN_ABBREVIATIONS.keys(), key=len, reverse=True)
+)
+_GENITIVE_ALTERNATION = "|".join(
+    re.escape(g) for g in sorted(FULLNAME_GENITIVE.keys(), key=len, reverse=True)
+)
+
+# Pattern 1: Abbreviation + § + number(s)
+#   KarS § 121, KarS §-s 121, KarS § 121 lg 2 p 3, KarS §-de 208-210
+_PAT_ABBREV = re.compile(
+    rf"({_ABBREV_ALTERNATION})\s*{PAR_SUFFIX}\s*({_PAR_NUMBER})",
+    re.UNICODE,
+)
+
+# Pattern 2: käesoleva seaduse/seadustiku/koodeksi § N (self-reference).
+# The ``koodeksi?`` alternative captures intra-code self-references
+# ("käesoleva koodeksi §") in the maritime / criminal-procedure codes
+# that the bare ``seadus(?:e|tiku)?`` form silently dropped (#363).
+_PAT_SELF = re.compile(
+    rf"k[äa]esoleva\s+(?:seadus(?:e|tiku)?|koodeksi?)\s*"
+    rf"{PAR_SUFFIX}\s*({_PAR_NUMBER})",
+    re.UNICODE | re.IGNORECASE,
+)
+
+# Pattern 3: Full law name in genitive form + § + number
+#   "tsiviilseadustiku üldosa seaduse § 67". Compiled only when the
+#   genitive table is non-empty (it always is in practice).
+_PAT_FULLNAME = (
+    re.compile(
+        rf"({_GENITIVE_ALTERNATION})\s*{PAR_SUFFIX}\s*({_PAR_NUMBER})",
+        re.UNICODE | re.IGNORECASE,
+    )
+    if _GENITIVE_ALTERNATION
+    else None
+)
+
+
 def extract_citations_from_text(text: str) -> list[dict]:
     """
     Parse text for Estonian legal citation patterns.
@@ -871,23 +1042,17 @@ def extract_citations_from_text(text: str) -> list[dict]:
       - law_ref: abbreviation or full name reference
       - paragraphs: list of paragraph numbers (strings)
       - is_self_ref: True if "käesoleva seaduse" pattern
+
+    Uses the module-level compiled patterns ``_PAT_ABBREV`` /
+    ``_PAT_SELF`` / ``_PAT_FULLNAME`` (#386) rather than rebuilding the
+    abbrev/genitive alternations on every call.
     """
     citations: list[dict] = []
     if not text:
         return citations
 
-    # Known abbreviation list for regex alternation
-    abbrevs = "|".join(re.escape(a) for a in sorted(KNOWN_ABBREVIATIONS.keys(), key=len, reverse=True))
-
     # Pattern 1: Abbreviation + § + number(s)
-    # KarS § 121, KarS §-s 121, KarS § 121 lg 2 p 3
-    # Also handles: KarS §-de 208-210, KarS §§ 1-10
-    pat_abbrev = re.compile(
-        rf"({abbrevs})\s*{PAR_SUFFIX}\s*({_PAR_NUMBER})",
-        re.UNICODE,
-    )
-
-    for m in pat_abbrev.finditer(text):
+    for m in _PAT_ABBREV.finditer(text):
         abbrev = m.group(1)
         par_range = m.group(2).strip()
         paragraphs = _expand_par_range(par_range)
@@ -897,12 +1062,8 @@ def extract_citations_from_text(text: str) -> list[dict]:
             "is_self_ref": False,
         })
 
-    # Pattern 2: käesoleva seaduse § N (self-reference)
-    pat_self = re.compile(
-        rf"k[äa]esoleva\s+seadus(?:e|tiku)?\s*{PAR_SUFFIX}\s*({_PAR_NUMBER})",
-        re.UNICODE | re.IGNORECASE,
-    )
-    for m in pat_self.finditer(text):
+    # Pattern 2: käesoleva seaduse/seadustiku/koodeksi § N (self-reference)
+    for m in _PAT_SELF.finditer(text):
         par_range = m.group(1).strip()
         paragraphs = _expand_par_range(par_range)
         citations.append({
@@ -912,16 +1073,8 @@ def extract_citations_from_text(text: str) -> list[dict]:
         })
 
     # Pattern 3: Full name in genitive form + § + number
-    # "tsiviilseadustiku üldosa seaduse § 67"
-    genitive_names = "|".join(
-        re.escape(g) for g in sorted(FULLNAME_GENITIVE.keys(), key=len, reverse=True)
-    )
-    if genitive_names:
-        pat_fullname = re.compile(
-            rf"({genitive_names})\s*{PAR_SUFFIX}\s*({_PAR_NUMBER})",
-            re.UNICODE | re.IGNORECASE,
-        )
-        for m in pat_fullname.finditer(text):
+    if _PAT_FULLNAME is not None:
+        for m in _PAT_FULLNAME.finditer(text):
             gen_name = m.group(1).lower()
             par_range = m.group(2).strip()
             paragraphs = _expand_par_range(par_range)
@@ -1065,10 +1218,26 @@ def _trim_preamble_prefix(law: str) -> str:
 
     Trailing punctuation (',', '.', etc.) is stripped before
     membership check so 'Lähtudes,' is recognised as 'lähtudes'.
+
+    A leading connector ``ning`` / ``ja`` is stripped ONLY when the
+    remainder still ends in ``seaduse`` / ``seadustiku`` (#390). A
+    chained second enabling law surfaces as ``'ning avaliku teenistuse
+    seaduse'`` where ``ning`` is a connector, not part of the name —
+    but ``ja`` / ``ning`` also appear INSIDE multiword law names
+    ('põhikooli- ja gümnaasiumiseaduse', 'ühisveevärgi ja
+    -kanalisatsiooni seaduse'), so they are NOT in
+    ``_PREAMBLE_LICENSE_PREFIXES``. The end-marker guard distinguishes
+    the two: a genuine connector leaves a law name behind, whereas an
+    internal ``ja`` is never the FIRST token.
     """
     words = law.split()
     while words and words[0].lower().rstrip(",.;:") in _PREAMBLE_LICENSE_PREFIXES:
         words.pop(0)
+    if len(words) >= 2 and words[0].lower().rstrip(",.;:") in {"ja", "ning"}:
+        rest = words[1:]
+        last = rest[-1].lower().rstrip(",.;:")
+        if last.endswith("seaduse") or last.endswith("seadustiku"):
+            words = rest
     return " ".join(words)
 
 # Pattern B — state regulation: "Vabariigi Valitsuse <date> määruse(ga) nr N"
@@ -1338,10 +1507,17 @@ def _expand_par_range(par_range: str) -> list[str]:
         if parts[0].strip().isdigit() and parts[1].strip().isdigit():
             start = int(parts[0].strip())
             end = int(parts[1].strip())
-            if end - start <= 50:  # sanity limit
-                return [str(n) for n in range(start, end + 1)]
-    # Single number (possibly superscripted) or a range that failed the
-    # bare-digit guard.
+            # This IS a numeric range. A reversed ('200-100') or
+            # over-wide ('4-59', '100-200') range is malformed, NOT a
+            # single number — return [] rather than falling through to
+            # _normalize_par_number, which would strip the hyphen and
+            # CONCATENATE the digits ('4-59' -> '459') into a false
+            # provision key that can collide with a real § (#341).
+            if end < start or end - start > 50:
+                return []
+            return [str(n) for n in range(start, end + 1)]
+    # Single number (possibly superscripted) or a hyphenated token whose
+    # endpoints are not both bare digits (e.g. a superscript artifact).
     norm = _normalize_par_number(par_range)
     return [norm] if norm else []
 
@@ -1349,38 +1525,54 @@ def _expand_par_range(par_range: str) -> list[str]:
 def resolve_citation(
     citation: dict,
     self_prefix: str,
-    abbrev_to_prefix: dict[str, str],
+    abbrev_to_prefix: dict[str, list[str] | str],
     prefix_to_provisions: dict[str, dict[str, str]],
 ) -> list[str]:
     """
     Resolve a citation dict to a list of existing provision IRIs.
 
     Returns list of IRI strings (e.g. ["estleg:KARIST_2_Par_121"]).
+
+    A law abbreviation may map to SEVERAL provision prefixes when the
+    law is split across osa files (one ``estleg:sourceAct`` → many osa
+    prefixes, #299). Each requested paragraph is searched across ALL of
+    the law's prefixes and the FIRST hit wins, so §§ that live in
+    different osa (e.g. ``AÕS § 1`` in osa1 and ``AÕS § 200`` in osa5)
+    both resolve. ``abbrev_to_prefix`` values may be a list (new
+    contract) or a bare string (tolerated for older callers/tests).
     """
     resolved: list[str] = []
 
-    # Determine the IRI prefix for this law reference
+    # Determine the candidate IRI prefixes for this law reference. The
+    # self-reference prefix is always a single string (the file's own
+    # prefix); cross-law abbreviations carry a list of osa prefixes.
     if citation["is_self_ref"]:
-        prefix = self_prefix
+        prefixes: list[str] = [self_prefix] if self_prefix else []
     else:
         law_ref = citation["law_ref"]
-        prefix = abbrev_to_prefix.get(law_ref)
-        if not prefix:
+        mapped = abbrev_to_prefix.get(law_ref)
+        if not mapped:
             return []
+        prefixes = [mapped] if isinstance(mapped, str) else list(mapped)
 
-    provisions = prefix_to_provisions.get(prefix, {})
-    if not provisions:
+    if not prefixes:
         return []
 
     for par_num in citation["paragraphs"]:
-        # Try exact match first
-        if par_num in provisions:
-            resolved.append(provisions[par_num])
-        else:
-            # Try stripping leading zeros
-            stripped = par_num.lstrip("0") or "0"
+        # Search every candidate prefix; take the first prefix whose
+        # provision index carries this paragraph (exact match, then
+        # leading-zero-stripped).
+        stripped = par_num.lstrip("0") or "0"
+        for prefix in prefixes:
+            provisions = prefix_to_provisions.get(prefix)
+            if not provisions:
+                continue
+            if par_num in provisions:
+                resolved.append(provisions[par_num])
+                break
             if stripped in provisions:
                 resolved.append(provisions[stripped])
+                break
 
     return resolved
 
@@ -1461,7 +1653,17 @@ def _load_provision_text(
 
     Prefers the XML paragraph body keyed by the ``_Par_<suffix>`` segment
     of the @id, then concatenates the JSON-LD ``estleg:summary`` when
-    present. Returns an empty string when neither source carries text.
+    present. When NEITHER carries text, falls back to
+    ``estleg:legalText``.
+
+    The legalText fallback is what makes subsection (``_Lg_``) nodes
+    scannable: a lõige node's @id suffix (e.g. ``3_Lg_3``) is never an
+    XML paragraph key and its ``estleg:summary`` is always empty, so the
+    XML+summary composition yields "" and the node would be skipped —
+    yet the actual subsection text (often carrying a ``§`` citation)
+    lives in ``estleg:legalText`` (#362). Using legalText only as a
+    fallback keeps paragraph-level nodes (which carry both summary and
+    legalText) from double-counting the same citation.
 
     The lookup key is the full IRI suffix (``158`` or ``158_2``), which
     matches the key shape produced by ``_xml_paragraph_key`` /
@@ -1483,6 +1685,10 @@ def _load_provision_text(
         text_to_scan = (
             text_to_scan + " " + summary if text_to_scan else summary
         )
+    # Fallback: subsection (_Lg_) nodes have no XML key and no summary —
+    # their citable body is in estleg:legalText (#362).
+    if not text_to_scan:
+        text_to_scan = jsonld_text(node.get("estleg:legalText", ""))
     return text_to_scan
 
 
@@ -1542,7 +1748,7 @@ def _run_inlaw_citation_pass(
     graph: list[dict],
     *,
     self_prefix: str,
-    abbrev_to_prefix: dict[str, str],
+    abbrev_to_prefix: dict[str, list[str]],
     prefix_to_provisions: dict[str, dict[str, str]],
     xml_par_texts: dict[str, str],
 ) -> dict:
@@ -1733,7 +1939,7 @@ def _merge_pass_stats(base: dict, *passes: dict) -> bool:
 
 def process_law_file(
     json_file: Path,
-    abbrev_to_prefix: dict[str, str],
+    abbrev_to_prefix: dict[str, list[str]],
     prefix_to_provisions: dict[str, dict[str, str]],
     iri_to_file: dict[str, Path],
     *,
@@ -1846,6 +2052,7 @@ def _process_preamble_for_act(
     act_iri_to_prefix: dict[str, str],
     state_reg_lookup: dict,
     kov_act_lookup: dict,
+    law_title_to_iri: dict[str, str] | None = None,
 ) -> dict | None:
     """Run the Layer 2b preamble pass on a single peep file's @graph.
 
@@ -1944,13 +2151,21 @@ def _process_preamble_for_act(
             act_iri_to_prefix=act_iri_to_prefix,
             state_reg_lookup=state_reg_lookup,
             kov_act_lookup=kov_act_lookup,
+            law_title_to_iri=law_title_to_iri,
         )
         if resolved is None:
             citations_unresolved += 1
             continue
         citations_resolved += 1
         target_iri, enabling_act_iri = resolved
-        issued_under_set.add(enabling_act_iri)
+        # Guard against an act citing ITSELF as its own enabling law
+        # (#390): a few pre-1994 regs whose preamble names their own
+        # title would otherwise emit issuedUnder -> self. The reified
+        # Citation node below is still allowed — a self-citation to a
+        # specific provision is meaningful — only the act-level
+        # issuedUnder edge is suppressed.
+        if enabling_act_iri != source_act_iri:
+            issued_under_set.add(enabling_act_iri)
 
         # Emit a reified Citation node only when the citation has
         # paragraph or detail granularity.
@@ -2032,6 +2247,13 @@ def main() -> int:
         source_act_to_prefix=source_act_to_prefix,
         prefix_to_act_iri=prefix_to_act_iri,
     )
+    # #390 corpus-title fallback: every law's nominative sourceAct → act
+    # IRI, resolving ~236 more law genitives than FULLNAME_GENITIVE alone.
+    law_title_to_iri = build_law_title_to_iri(
+        source_act_to_prefix=source_act_to_prefix,
+        prefix_to_act_iri=prefix_to_act_iri,
+    )
+    print(f"  law-title fallback: {len(law_title_to_iri)} titles")
 
     riik_root = KRR_DIR / "regulations" / "riik"
     kov_root = KRR_DIR / "regulations" / "kov"
@@ -2128,6 +2350,7 @@ def main() -> int:
             act_iri_to_prefix=act_iri_to_prefix,
             state_reg_lookup=state_reg_lookup,
             kov_act_lookup=kov_act_lookup,
+            law_title_to_iri=law_title_to_iri,
         )
         if result is None:
             # Peep had no @graph, no act_node, or no preambleText —

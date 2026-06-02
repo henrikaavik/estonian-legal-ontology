@@ -19,7 +19,12 @@ import time
 from collections import defaultdict
 from pathlib import Path
 
-from estleg_common import BUILD_EVALUATION_DATE, iter_peep_files, jsonld_text
+from estleg_common import (
+    BUILD_EVALUATION_DATE,
+    iter_peep_files,
+    jsonld_text,
+    save_json,  # #376: atomic tempfile+os.replace writer (replaces local non-atomic def)
+)
 from kov_pipeline_coverage import (
     PINNED_RUN_TIMESTAMP,
     CoverageReport,
@@ -65,8 +70,12 @@ KIND_NEGATIVE = "negative"
 # these appears within ``_NEGATION_WINDOW`` tokens immediately before the cue.
 _NEGATION_WORDS = {"ei", "pole", "ega"}
 _NEGATION_WINDOW = 3
-# How many tokens after a "modal" cue to scan for a confirming infinitive.
-_INFINITIVE_WINDOW = 6
+# How many tokens on EITHER side of a "modal" cue to scan for a confirming
+# infinitive. The window is widened (was 6) so that (a) SOV order, where the
+# infinitive precedes the modal ("Esitada tuleb dokument"), and (b) trailing
+# infinitives pushed back by intervening citations ("tuleb … §-s 951 …
+# määrata") are both still recognised as obligations (#329).
+_INFINITIVE_WINDOW = 10
 # An Estonian -ma / -da / -ta infinitive: a multi-letter word ending in one of
 # those suffixes (e.g. esitama, tagama, maksma; tasuda, esitada; maksta).
 _INFINITIVE_RE = re.compile(
@@ -83,6 +92,12 @@ OBLIGATION_PATTERNS = [
     (re.compile(r"\bon kohustus\b", re.IGNORECASE), 3, KIND_PLAIN),
     (re.compile(r"\bkohustub\b", re.IGNORECASE), 3, KIND_PLAIN),
     (re.compile(r"\bon sunnitud\b", re.IGNORECASE), 2, KIND_PLAIN),
+    # #381: predicative mandatory cues with no modal polysemy.
+    # "X on kohustuslik" ("is mandatory"); "on nõutav"/"on nõutud" ("is
+    # required").
+    (re.compile(r"\bon kohustuslik\b", re.IGNORECASE), 3, KIND_PLAIN),
+    (re.compile(r"\bon nõutav\b", re.IGNORECASE), 2, KIND_PLAIN),
+    (re.compile(r"\bon nõutud\b", re.IGNORECASE), 2, KIND_PLAIN),
 ]
 
 RIGHT_PATTERNS = [
@@ -92,11 +107,16 @@ RIGHT_PATTERNS = [
     (re.compile(r"\bon lubatud nõuda\b", re.IGNORECASE), 3, KIND_PLAIN),
 ]
 
+# #351: the weight-1 ``võib`` permissive cue is suppressed in penal
+# provisions (see ``_KARISTATAKSE_RE`` below), so it is captured as a named
+# constant to identify it precisely in ``score_text``.
+_VOIB_RE = re.compile(r"\bvõib\b", re.IGNORECASE)
+
 PERMISSION_PATTERNS = [
     (re.compile(r"\bon lubatud\b", re.IGNORECASE), 3, KIND_PLAIN),
     (re.compile(r"\btohib\b", re.IGNORECASE), 3, KIND_PLAIN),
     (re.compile(r"\bon vaba\b", re.IGNORECASE), 2, KIND_PLAIN),
-    (re.compile(r"\bvõib\b", re.IGNORECASE), 1, KIND_PLAIN),  # permissive context
+    (_VOIB_RE, 1, KIND_PLAIN),  # permissive context
 ]
 
 PROHIBITION_PATTERNS = [
@@ -105,7 +125,18 @@ PROHIBITION_PATTERNS = [
     (re.compile(r"\bei ole lubatud\b", re.IGNORECASE), 3, KIND_NEGATIVE),
     (re.compile(r"\bpole lubatud\b", re.IGNORECASE), 3, KIND_NEGATIVE),
     (re.compile(r"\bon karistatav\b", re.IGNORECASE), 3, KIND_PLAIN),
+    # #351: the canonical Penal Code passive ("… eest karistatakse …
+    # vangistusega"). Strong prohibition signal; outweighs the polysemous
+    # judicial-discretion ``võib`` that otherwise mislabels penal provisions
+    # as Permission.
+    (re.compile(r"\bkaristatakse\b", re.IGNORECASE), 4, KIND_PLAIN),
 ]
+
+# #351: ``karistatakse`` (penal passive) frequently co-occurs with a
+# judicial-discretion ``võib`` ("kohus võib määrata …"). That weight-1
+# Permission cue must be suppressed in penal provisions so they are not
+# mislabelled NormType_Permission instead of NormType_Prohibition.
+_KARISTATAKSE_RE = re.compile(r"\bkaristatakse\b", re.IGNORECASE)
 
 NORM_TYPES = {
     "obligation": ("estleg:NormType_Obligation", OBLIGATION_PATTERNS),
@@ -143,12 +174,6 @@ DUTY_HOLDER_RE = re.compile(
 GENERIC_DUTY_HOLDER_STARTS = {"Käesolev", "Käesoleva", "Paragrahv", "Seadus", "Lõige", "Punkt"}
 
 
-def save_json(filepath: Path, doc: dict) -> None:
-    with open(filepath, "w", encoding="utf-8") as f:
-        json.dump(doc, f, ensure_ascii=False, indent=2)
-        f.write("\n")
-
-
 def load_json(filepath: Path) -> dict | None:
     try:
         with open(filepath, "r", encoding="utf-8") as f:
@@ -183,21 +208,49 @@ def _has_following_infinitive(text: str, end: int) -> bool:
     return _INFINITIVE_RE.search(tail[:cutoff]) is not None
 
 
+def _has_preceding_infinitive(text: str, start: int) -> bool:
+    """True when a -ma/-da/-ta infinitive appears within the backward window.
+
+    Covers SOV order where the infinitive comes *before* the modal cue
+    ("Esitada tuleb dokument", "Tasuda peab töötaja") — #329.
+    """
+    head = text[:start]
+    cutoff = len(head)
+    for _ in range(_INFINITIVE_WINDOW):
+        prev = None
+        for m in _TOKEN_RE.finditer(head, 0, cutoff):
+            prev = m
+        if prev is None:
+            break
+        cutoff = prev.start()
+    return _INFINITIVE_RE.search(head[cutoff:]) is not None
+
+
+def _has_nearby_infinitive(text: str, start: int, end: int) -> bool:
+    """True when a confirming infinitive sits in the window on either side of
+    the modal cue spanning ``[start, end)`` (forward OR backward) — #329."""
+    return _has_following_infinitive(text, end) or _has_preceding_infinitive(
+        text, start
+    )
+
+
 def _cue_hits(text: str, pat: re.Pattern, kind: str) -> bool:
     """Whether ``pat`` has at least one *valid* occurrence in ``text``.
 
     "negative" cues (which already encode negation, e.g. ``ei tohi``) are taken
     verbatim. "plain"/"modal" cues skip any occurrence that is negated by a
     preceding ei/pole/ega; "modal" cues (``peab``/``tuleb``) additionally
-    require a nearby infinitive so the polysemous "keeps"/"comes" readings do
-    not score as obligations.
+    require a nearby infinitive — in EITHER direction (#329) — so the
+    polysemous "keeps"/"comes" readings do not score as obligations.
     """
     if kind == KIND_NEGATIVE:
         return pat.search(text) is not None
     for m in pat.finditer(text):
         if _is_negated(text, m.start()):
             continue
-        if kind == KIND_MODAL and not _has_following_infinitive(text, m.end()):
+        if kind == KIND_MODAL and not _has_nearby_infinitive(
+            text, m.start(), m.end()
+        ):
             continue
         return True
     return False
@@ -205,8 +258,15 @@ def _cue_hits(text: str, pat: re.Pattern, kind: str) -> bool:
 
 def score_text(text: str, patterns: list[tuple[re.Pattern, int, str]]) -> int:
     """Sum weights of all patterns with a valid match in *text*."""
+    # #351: in penal provisions ("… karistatakse …") the weight-1 ``võib``
+    # permissive cue is a judicial-discretion phrase ("kohus võib määrata"),
+    # not a grant of permission. Suppress it so penal provisions classify as
+    # Prohibition rather than Permission.
+    suppress_voib = _KARISTATAKSE_RE.search(text) is not None
     total = 0
     for pat, weight, kind in patterns:
+        if suppress_voib and pat is _VOIB_RE:
+            continue
         if _cue_hits(text, pat, kind):
             total += weight
     return total
