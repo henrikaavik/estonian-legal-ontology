@@ -19,7 +19,7 @@ import re
 from collections import defaultdict
 from pathlib import Path
 
-from estleg_common import iter_peep_files, jsonld_text, jsonld_texts
+from estleg_common import iter_peep_files, jsonld_text, jsonld_texts, save_json
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
@@ -37,12 +37,6 @@ CONTEXT = {
     "skos": "http://www.w3.org/2004/02/skos/core#",
     "dcterms": "http://purl.org/dc/terms/",
 }
-
-
-def save_json(filepath: Path, doc: dict) -> None:
-    with open(filepath, "w", encoding="utf-8") as f:
-        json.dump(doc, f, ensure_ascii=False, indent=2)
-        f.write("\n")
 
 
 def load_json(filepath: Path) -> dict | None:
@@ -598,7 +592,11 @@ def main() -> None:
         "summary": {
             "total_draft_nodes": len(draft_nodes),
             "affected_law_names_resolved": resolved_count,
-            "affected_law_names_unresolved": len(unresolved),
+            # issue #394: report the DEDUPED count so the summary matches its
+            # own companion list ``unresolved_law_names`` (== sorted(set(...))).
+            # The prior ``len(unresolved)`` was the raw occurrence count and
+            # disagreed with the list length (1414 vs 845 in the live corpus).
+            "affected_law_names_unresolved": len(set(unresolved)),
             "law_files_with_inverse_links": inverse_count,
         },
         "by_change_type": dict(sorted(change_type_counts.items(), key=lambda x: -x[1])),

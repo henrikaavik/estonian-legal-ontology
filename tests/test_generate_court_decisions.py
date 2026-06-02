@@ -93,6 +93,125 @@ class TestClassifyCase:
         assert type_id == "Other"
         assert any("no leading digit" in r.message for r in caplog.records)
 
+    # --- #342: old-format ``3-<chamber>-…`` numbers (1996–2017) -------------
+    # The leading ``3`` is the Supreme Court, NOT the case type; the type
+    # lives in the chamber (2nd) segment. Reading the first digit mis-stamped
+    # every legacy decision as ``Administrative``.
+
+    @pytest.mark.parametrize(
+        "case_nr,expected",
+        [
+            ("3-1-1-100-15", "Criminal"),          # chamber 1 → criminal
+            ("3-1-3-20-96", "Criminal"),
+            ("3-2-1-136-96", "Civil"),             # chamber 2 → civil
+            ("3-3-1-5-02", "Administrative"),      # chamber 3 → administrative
+            ("3-4-1-27-15", "ConstitutionalReview"),  # chamber 4 → const. review
+        ],
+    )
+    def test_old_format_classified_by_chamber_digit(
+        self, case_nr: str, expected: str
+    ) -> None:
+        """Old format derives the type from the 2nd segment, not the first."""
+        type_id, _, _ = gcd.classify_case(case_nr)
+        assert type_id == expected, case_nr
+
+    def test_old_format_chamber_overrides_first_digit_administrative(self) -> None:
+        """Regression: ``3-1-1-100-15`` (criminal) and ``3-4-1-27-15``
+        (constitutional) must NOT collapse to ``Administrative`` just
+        because the court digit is ``3`` (issue #342)."""
+        assert gcd.classify_case("3-1-1-100-15")[0] == "Criminal"
+        assert gcd.classify_case("3-4-1-27-15")[0] == "ConstitutionalReview"
+        # Only a genuine ``3-3-*`` is administrative.
+        assert gcd.classify_case("3-3-1-5-02")[0] == "Administrative"
+
+    @pytest.mark.parametrize(
+        "case_nr,expected",
+        [
+            ("1-17-1234", "Criminal"),       # 2018+ first-digit path
+            ("3-21-2176/52", "Administrative"),  # first digit 3 → administrative
+            ("2-22-5678", "Civil"),
+            ("5-21-1", "ConstitutionalReview"),
+            ("4-21-001", "Misdemeanor"),
+        ],
+    )
+    def test_new_format_keeps_first_digit_path(
+        self, case_nr: str, expected: str
+    ) -> None:
+        """Modern (2018+) numbers carry the type in the first digit; the
+        two-digit second segment is the filing year, not a chamber, so the
+        old-format branch must NOT intercept them."""
+        type_id, _, _ = gcd.classify_case(case_nr)
+        assert type_id == expected, case_nr
+
+    def test_old_format_unknown_chamber_falls_through_to_first_digit(
+        self,
+    ) -> None:
+        """An out-of-range chamber digit (no chamber 9) is a data anomaly;
+        it falls through to the first-digit path rather than being dropped."""
+        # First digit is ``3`` → Administrative via the fallback path.
+        assert gcd.classify_case("3-9-1-1-99")[0] == "Administrative"
+
+
+# ---------------------------------------------------------------------------
+# _decision_year_key (issue #341 — per_year_type_counts year derivation)
+# ---------------------------------------------------------------------------
+
+class TestDecisionYearKey:
+    @pytest.mark.parametrize(
+        "case_nr,expected",
+        [
+            ("3-21-2176/52", "2021"),  # modern: 2nd segment yy=21 → 2021
+            ("1-17-9999", "2017"),     # modern: yy=17 → 2017
+            ("5-25-80/23", "2025"),
+        ],
+    )
+    def test_modern_case_number_uses_second_segment_year(
+        self, case_nr: str, expected: str
+    ) -> None:
+        assert gcd._decision_year_key({"case_nr": case_nr, "date": ""}) == expected
+
+    def test_old_format_does_not_misread_third_segment_as_year(self) -> None:
+        """Pre-fix bug: unanchored ``\\d-(\\d{2})-`` matched the THIRD segment
+        of ``3-2-2-15-96`` (``15`` → bogus 2015). The anchored regex must not
+        match old-format numbers at all — it falls back to the ``date`` field.
+        """
+        dec = {"case_nr": "3-2-2-15-96", "date": "05.05.1996"}
+        assert gcd._decision_year_key(dec) == "1996"
+
+    @pytest.mark.parametrize(
+        "case_nr,date,expected",
+        [
+            ("3-2-1-136-96", "10.10.1996", "1996"),  # old format → date year
+            ("3-1-1-100-15", "03.03.2015", "2015"),
+            ("not-a-case-number", "07.07.2009", "2009"),  # unparseable cn
+        ],
+    )
+    def test_falls_back_to_validated_date_year(
+        self, case_nr: str, date: str, expected: str
+    ) -> None:
+        """When the case number is not modern-format, the year comes from the
+        validated ``DD.MM.YYYY`` ``date`` field's 4-digit calendar year — never
+        a blind ``2000+yy`` guess."""
+        assert gcd._decision_year_key({"case_nr": case_nr, "date": date}) == expected
+
+    def test_no_blind_2000_plus_yy_for_pre_2001_decisions(self) -> None:
+        """A 1996 decision must land in the 1996 bucket, not 2015/2096."""
+        dec = {"case_nr": "3-2-2-15-96", "date": "05.05.1996"}
+        year = gcd._decision_year_key(dec)
+        assert year == "1996"
+        assert year != "2015"  # the specific pre-fix corruption
+
+    @pytest.mark.parametrize(
+        "dec",
+        [
+            {"case_nr": "garbage", "date": "bad-date"},
+            {"case_nr": "", "date": ""},
+            {},
+        ],
+    )
+    def test_unknown_when_neither_source_yields_a_year(self, dec: dict) -> None:
+        assert gcd._decision_year_key(dec) == "unknown"
+
 
 # ---------------------------------------------------------------------------
 # detect_referenced_laws
@@ -399,6 +518,117 @@ class TestDecisionToNode:
         assert refs is not None
         # KarS appears once in canonical form, not twice as 'KarS' + 'Kars'.
         assert refs.count("KarS") == 1
+
+    # --- #392: true-duplicate decision dedup (same case+date+type) ----------
+
+    def test_duplicate_case_date_type_distinct_object_id_is_skipped(
+        self, caplog: pytest.LogCaptureFixture
+    ) -> None:
+        """The rikos API returns the same real document under several
+        object_ids; with a ``seen_keys`` set, the second row (matching
+        case_nr/date/decision_type) is dropped so one document is not
+        emitted as two nodes (issue #392)."""
+        dec_a = {
+            "case_nr": "3-1-3-20-96",
+            "date": "10.10.1996",
+            "decision_type": "Kohtuotsus",
+            "object_id": "206088025",
+            "summary": "",
+            "link": "",
+        }
+        dec_b = {**dec_a, "object_id": "999999999"}  # same doc, different id
+        seen_ids: set[str] = set()
+        seen_keys: set[tuple[str, str, str]] = set()
+        first = gcd.decision_to_node(dec_a, 1996, seen_ids, seen_keys)
+        assert first is not None
+        with caplog.at_level(logging.WARNING, logger=gcd.logger.name):
+            dup = gcd.decision_to_node(dec_b, 1996, seen_ids, seen_keys)
+        assert dup is None
+        assert any(
+            "duplicate decision" in r.message for r in caplog.records
+        )
+
+    def test_distinct_decisions_same_case_nr_not_deduped(self) -> None:
+        """Two genuinely different decisions on the same case (different
+        dates) must BOTH be emitted — the dedup key includes the date."""
+        dec_a = {
+            "case_nr": "3-1-3-20-96",
+            "date": "10.10.1996",
+            "decision_type": "Kohtuotsus",
+            "object_id": "111",
+            "summary": "",
+            "link": "",
+        }
+        dec_b = {**dec_a, "date": "11.11.1996", "object_id": "222"}
+        seen_ids: set[str] = set()
+        seen_keys: set[tuple[str, str, str]] = set()
+        a = gcd.decision_to_node(dec_a, 1996, seen_ids, seen_keys)
+        b = gcd.decision_to_node(dec_b, 1996, seen_ids, seen_keys)
+        assert a is not None and b is not None
+        assert a["@id"] != b["@id"]
+
+    def test_distinct_decision_type_same_case_and_date_not_deduped(self) -> None:
+        """Same case + date but a different decision_type (e.g. a judgment
+        and a separate ruling) are distinct documents — keep both."""
+        dec_a = {
+            "case_nr": "3-1-3-20-96",
+            "date": "10.10.1996",
+            "decision_type": "Kohtuotsus",
+            "object_id": "111",
+            "summary": "",
+            "link": "",
+        }
+        dec_b = {**dec_a, "decision_type": "Kohtumäärus", "object_id": "222"}
+        seen_ids: set[str] = set()
+        seen_keys: set[tuple[str, str, str]] = set()
+        a = gcd.decision_to_node(dec_a, 1996, seen_ids, seen_keys)
+        b = gcd.decision_to_node(dec_b, 1996, seen_ids, seen_keys)
+        assert a is not None and b is not None
+        assert a["@id"] != b["@id"]
+
+    def test_content_dedup_disabled_without_seen_keys(self) -> None:
+        """Backward compat: when ``seen_keys`` is omitted (None), the legacy
+        per-``@id`` behaviour stands — distinct object_ids yield two nodes."""
+        dec_a = {
+            "case_nr": "3-1-3-20-96",
+            "date": "10.10.1996",
+            "decision_type": "Kohtuotsus",
+            "object_id": "111",
+            "summary": "",
+            "link": "",
+        }
+        dec_b = {**dec_a, "object_id": "222"}
+        seen_ids: set[str] = set()
+        a = gcd.decision_to_node(dec_a, 1996, seen_ids)
+        b = gcd.decision_to_node(dec_b, 1996, seen_ids)
+        assert a is not None and b is not None
+        assert a["@id"] != b["@id"]
+
+    def test_dedup_key_strips_incidental_whitespace(self) -> None:
+        """A genuine duplicate must collapse even if one row carries stray
+        surrounding whitespace in case_nr/date/decision_type."""
+        dec_a = {
+            "case_nr": "3-1-3-20-96",
+            "date": "10.10.1996",
+            "decision_type": "Kohtuotsus",
+            "object_id": "111",
+            "summary": "",
+            "link": "",
+        }
+        dec_b = {
+            "case_nr": " 3-1-3-20-96 ",
+            "date": " 10.10.1996 ",
+            "decision_type": " Kohtuotsus ",
+            "object_id": "222",
+            "summary": "",
+            "link": "",
+        }
+        seen_ids: set[str] = set()
+        seen_keys: set[tuple[str, str, str]] = set()
+        a = gcd.decision_to_node(dec_a, 1996, seen_ids, seen_keys)
+        b = gcd.decision_to_node(dec_b, 1996, seen_ids, seen_keys)
+        assert a is not None
+        assert b is None  # whitespace-only difference → same document
 
 
 # ---------------------------------------------------------------------------

@@ -127,3 +127,197 @@ def test_directive_query_includes_deadline_optional() -> None:
 
     src = inspect.getsource(mod.fetch_legislation_type)
     assert "cdm:directive_date_transposition" in src
+
+
+# ---------------------------------------------------------------------------
+# #394 — non-Regulation CELEX returned by the regulations query must NOT be
+# typed EUDocType_Regulation. Sector-4 type-X (UN-ECE) -> InternationalAgreement,
+# sector-5 type-AP (EP positions) -> ParliamentPosition; unknown sectors drop.
+# ---------------------------------------------------------------------------
+
+
+def test_classify_sector3_regulation_is_regulation() -> None:
+    """A genuine sector-3 type-R CELEX classifies as a Regulation."""
+    assert mod.classify_eu_doc_type("32016R0679", "Regulation") == "Regulation"
+
+
+def test_classify_sector4_unece_is_international_agreement() -> None:
+    """A sector-4 type-X UN-ECE CELEX routes to InternationalAgreement (#394)."""
+    assert (
+        mod.classify_eu_doc_type("42024X0211", "Regulation")
+        == "InternationalAgreement"
+    )
+
+
+def test_classify_sector5_ep_position_is_parliament_position() -> None:
+    """A sector-5 type-AP EP-position CELEX routes to ParliamentPosition (#394)."""
+    assert (
+        mod.classify_eu_doc_type("52025AP0047", "Regulation")
+        == "ParliamentPosition"
+    )
+
+
+def test_classify_directive_and_decision_pass_through_unchanged() -> None:
+    """Only the regulations query is reclassified; directive/decision queries
+    pass their nominal type through unchanged (#394)."""
+    assert mod.classify_eu_doc_type("32011L0083", "Directive") == "Directive"
+    assert mod.classify_eu_doc_type("32016D0001", "Decision") == "Decision"
+
+
+def test_classify_unknown_nonsector3_celex_returns_none() -> None:
+    """A non-sector-3-R CELEX from the regulations query with no override
+    mapping returns None so the caller drops it rather than mistyping it (#394)."""
+    assert mod.classify_eu_doc_type("62024A0001", "Regulation") is None
+    assert mod.classify_eu_doc_type("not-a-celex", "Regulation") is None
+
+
+def test_sector4_node_typed_international_agreement_not_regulation() -> None:
+    """A sector-4 record emitted via the regulations query must carry
+    EUDocType_InternationalAgreement, never EUDocType_Regulation (#394)."""
+    item = {"celex": "42024X0211", "title": "UN-ECE rule", "authors": []}
+    node = mod.legislation_to_node(item, "Regulation")
+    assert node is not None
+    assert node["estleg:euDocumentType"] == {
+        "@id": "estleg:EUDocType_InternationalAgreement"
+    }
+
+
+def test_sector5_node_typed_parliament_position_not_regulation() -> None:
+    """A sector-5 type-AP record must carry EUDocType_ParliamentPosition (#394)."""
+    item = {"celex": "52025AP0047", "title": "EP position", "authors": []}
+    node = mod.legislation_to_node(item, "Regulation")
+    assert node is not None
+    assert node["estleg:euDocumentType"] == {
+        "@id": "estleg:EUDocType_ParliamentPosition"
+    }
+
+
+def test_sector3_regulation_node_keeps_regulation_type() -> None:
+    """A genuine sector-3 regulation still gets EUDocType_Regulation (#394)."""
+    item = {"celex": "32016R0679", "title": "GDPR", "authors": []}
+    node = mod.legislation_to_node(item, "Regulation")
+    assert node is not None
+    assert node["estleg:euDocumentType"] == {"@id": "estleg:EUDocType_Regulation"}
+
+
+def test_undroppable_celex_returns_none_node() -> None:
+    """An unmapped non-sector-3-R CELEX yields a dropped (None) node (#394)."""
+    item = {"celex": "62024A0001", "title": "x", "authors": []}
+    assert mod.legislation_to_node(item, "Regulation") is None
+
+
+def test_override_doc_type_individuals_declared_in_schema() -> None:
+    """The InternationalAgreement / ParliamentPosition individuals referenced by
+    routed nodes must be declared in the schema so the @id refs resolve (#394)."""
+    ids = {n.get("@id") for n in mod.generate_schema_nodes()}
+    assert "estleg:EUDocType_InternationalAgreement" in ids
+    assert "estleg:EUDocType_ParliamentPosition" in ids
+
+
+# ---------------------------------------------------------------------------
+# #394 — documentDate / transpositionDeadline must be strptime-validated;
+# malformed values are skipped (+warned), the rest of the node is preserved.
+# ---------------------------------------------------------------------------
+
+
+def test_valid_document_date_is_emitted() -> None:
+    """A well-formed YYYY-MM-DD documentDate is emitted as xsd:date (#394)."""
+    item = {
+        "celex": "32016R0679",
+        "title": "GDPR",
+        "authors": [],
+        "date": "2016-04-27",
+    }
+    node = mod.legislation_to_node(item, "Regulation")
+    assert node["estleg:documentDate"] == {"@value": "2016-04-27", "@type": "xsd:date"}
+
+
+def test_malformed_document_date_is_skipped_node_preserved() -> None:
+    """A malformed documentDate is skipped, but the rest of the node survives (#394)."""
+    item = {
+        "celex": "32016R0679",
+        "title": "GDPR",
+        "authors": [],
+        "date": "2016-13-99",  # month 13 / day 99 — invalid
+    }
+    node = mod.legislation_to_node(item, "Regulation")
+    assert "estleg:documentDate" not in node
+    # The rest of the node is still emitted.
+    assert node["estleg:celexNumber"] == "32016R0679"
+
+
+def test_partial_document_date_is_skipped() -> None:
+    """A partial (year-only) documentDate is not a valid xsd:date and is skipped (#394)."""
+    item = {"celex": "32016R0679", "title": "x", "authors": [], "date": "2016"}
+    node = mod.legislation_to_node(item, "Regulation")
+    assert "estleg:documentDate" not in node
+
+
+def test_malformed_transposition_deadline_is_skipped() -> None:
+    """A malformed directive transpositionDeadline is skipped (+warned) (#394)."""
+    item = {
+        "celex": "32011L0083",
+        "title": "Consumer rights directive",
+        "authors": [],
+        "transposition_deadline": "2013-99-99",  # invalid
+    }
+    node = mod.legislation_to_node(item, "Directive")
+    assert "estleg:transpositionDeadline" not in node
+
+
+def test_valid_transposition_deadline_still_emitted() -> None:
+    """A well-formed directive deadline is still emitted after validation (#394)."""
+    item = {
+        "celex": "32011L0083",
+        "title": "Consumer rights directive",
+        "authors": [],
+        "transposition_deadline": "2013-12-13",
+    }
+    node = mod.legislation_to_node(item, "Directive")
+    assert node["estleg:transpositionDeadline"] == {
+        "@value": "2013-12-13",
+        "@type": "xsd:date",
+    }
+
+
+def test_is_valid_iso_date_helper() -> None:
+    """The shared date guard accepts strict YYYY-MM-DD and rejects everything else."""
+    assert mod._is_valid_iso_date("2016-04-27") is True
+    assert mod._is_valid_iso_date("2016-13-01") is False
+    assert mod._is_valid_iso_date("2016/04/27") is False
+    assert mod._is_valid_iso_date("2016") is False
+    assert mod._is_valid_iso_date("") is False
+    assert mod._is_valid_iso_date(None) is False
+    assert mod._is_valid_iso_date(20160427) is False
+
+
+# ---------------------------------------------------------------------------
+# #348 — derivable provenance (owl:sameAs / dcterms:source / eli:id_local) is
+# formulaic from the CELEX and must be emitted by the generator.
+# ---------------------------------------------------------------------------
+
+
+def test_derived_provenance_fields_present_and_correct() -> None:
+    """owl:sameAs, dcterms:source, and eli:id_local are derived from the CELEX
+    and emitted on every node (#348)."""
+    celex = "32016R0679"
+    item = {"celex": celex, "title": "GDPR", "authors": []}
+    node = mod.legislation_to_node(item, "Regulation")
+
+    expected_cellar = f"http://publications.europa.eu/resource/celex/{celex}"
+    assert node["owl:sameAs"] == {"@id": expected_cellar}
+    assert node["dcterms:source"] == {"@id": expected_cellar}
+    assert node["eli:id_local"] == celex
+
+
+def test_derived_provenance_matches_routed_celex() -> None:
+    """The CELEX-derived provenance is correct even for a routed (non-Regulation)
+    record — it follows the CELEX, not the document type (#348/#394)."""
+    celex = "42024X0211"
+    item = {"celex": celex, "title": "UN-ECE rule", "authors": []}
+    node = mod.legislation_to_node(item, "Regulation")
+
+    expected_cellar = f"http://publications.europa.eu/resource/celex/{celex}"
+    assert node["owl:sameAs"] == {"@id": expected_cellar}
+    assert node["dcterms:source"] == {"@id": expected_cellar}
+    assert node["eli:id_local"] == celex

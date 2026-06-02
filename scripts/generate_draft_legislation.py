@@ -133,7 +133,14 @@ def classify_draft_type(title: str) -> tuple[str, str]:
     """
     title_lower = title.lower()
 
-    if "seaduse eelnõu" in title_lower or "seadus" in title_lower:
+    # A väljatöötamiskavatsus (pre-draft intention) is checked FIRST: its
+    # title routinely embeds a law name, e.g.
+    # "Kliimaseaduse eelnõu väljatöötamise kavatsus", which would otherwise
+    # match the broader ``seadus`` arm below and be mis-typed as a Bill
+    # (issue #304). Keep this guard above the ``seadus`` check.
+    if "kavatsus" in title_lower or "väljatöötamis" in title_lower:
+        return "DraftIntent", "Väljatöötamiskavatsus"
+    elif "seaduse eelnõu" in title_lower or "seadus" in title_lower:
         if "muutmi" in title_lower:
             return "AmendmentBill", "Seaduse muutmise eelnõu"
         return "Bill", "Seaduseelnõu"
@@ -151,8 +158,6 @@ def classify_draft_type(title: str) -> tuple[str, str]:
         return "Report", "Ülevaade"
     elif "kodakondsus" in title_lower:
         return "CitizenshipDecision", "Kodakondsuse otsus"
-    elif "kavatsus" in title_lower or "väljatöötamis" in title_lower:
-        return "DraftIntent", "Väljatöötamiskavatsus"
     elif "tegevuskava" in title_lower or "strateegia" in title_lower:
         return "ActionPlan", "Tegevuskava"
     else:
@@ -174,12 +179,17 @@ def detect_affected_laws(title: str) -> list[str]:
     Returns list of law names mentioned in the title.
     """
     affected = []
-    # Common patterns: "X seaduse muutmine", "X seadustiku muutmine"
+    # Common patterns: "X seaduse muutmine", "X seadustiku muutmine".
+    # The leading token is [\w.]+ (not \w+) so a year prefix like "2016."
+    # is captured as part of the law name (issue #380). Without it the
+    # match starts at "aasta", dropping the year, and the year-less
+    # "aasta riigieelarve seaduse" mis-resolves to the only budget law in
+    # the corpus (the 2026 one).
     patterns = [
-        r"(\w+(?:\s+\w+)*?\s+seaduse)\s+(?:muutmi|täiendami)",
-        r"(\w+(?:\s+\w+)*?\s+seadustiku)\s+(?:muutmi|täiendami)",
-        r"(\w+(?:\s+\w+)*?\s+seadus)\b",
-        r"(\w+(?:\s+\w+)*?\s+seadustik)\b",
+        r"([\w.]+(?:\s+\w+)*?\s+seaduse)\s+(?:muutmi|täiendami)",
+        r"([\w.]+(?:\s+\w+)*?\s+seadustiku)\s+(?:muutmi|täiendami)",
+        r"([\w.]+(?:\s+\w+)*?\s+seadus)\b",
+        r"([\w.]+(?:\s+\w+)*?\s+seadustik)\b",
     ]
     for pattern in patterns:
         matches = re.findall(pattern, title, re.IGNORECASE)
@@ -464,7 +474,11 @@ def generate_draft_node(
 
     ministry_name = MINISTRY_CODES.get(ministry_code, ministry_code)
     if ministry_name:
-        node["estleg:initiator"] = {"@value": ministry_name, "@language": "et"}
+        # Plain xsd:string (issue #382): estleg:initiator has rdfs:range
+        # xsd:string and the SHACL DraftLegislationShape constrains it to
+        # sh:datatype xsd:string. A {@value,@language} value-object is an
+        # rdf:langString and would fail SHACL conformance.
+        node["estleg:initiator"] = ministry_name
 
     if date_str:
         try:
@@ -529,6 +543,13 @@ def main():
             })
 
     print(f"\n--- Total unique drafts: {len(all_drafts)} ---")
+
+    # Sort drafts by node @id so every downstream artifact (per-phase peeps,
+    # the combined .jsonld, and EELNOUD_INDEX.json) is written in a stable,
+    # deterministic order. RSS feeds return items in arrival order, which
+    # churns the whole output between runs even when content is unchanged
+    # (issue #341; AGENTS.md no-nondeterministic-ordering rule).
+    all_drafts.sort(key=lambda d: d["node"]["@id"])
 
     # Generate schema file
     print("\n--- Generating schema file ---")

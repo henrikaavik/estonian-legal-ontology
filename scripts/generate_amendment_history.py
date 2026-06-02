@@ -24,7 +24,9 @@ from pathlib import Path
 from estleg_common import (
     build_globalid_xml_lookup,
     iter_peep_files,
+    jsonld_text,
     pair_peep_with_xml,
+    save_json,
 )
 from kov_pipeline_coverage import (
     CoverageReport,
@@ -139,12 +141,6 @@ def parse_date(value: str) -> str | None:
 def make_xsd_date(iso_date: str) -> dict:
     """Create an xsd:date typed value for JSON-LD."""
     return {"@value": iso_date, "@type": "xsd:date"}
-
-
-def save_json(filepath: Path, doc: dict):
-    with open(filepath, "w", encoding="utf-8") as f:
-        json.dump(doc, f, ensure_ascii=False, indent=2)
-        f.write("\n")
 
 
 def load_law_files(*, failures: list[str] | None = None) -> dict[str, dict]:
@@ -297,7 +293,34 @@ def extract_amendments_from_xml(
         if amendment["date"] or amendment["rt_reference"]:
             amendments.append(amendment)
 
-    return _dedupe_amendments(amendments)
+    return _dedupe_amendments(amendments, failures=failures)
+
+
+# A merged record whose entry-into-force precedes its adoption date by more
+# than this many days is physically impossible (a law cannot take effect ~a
+# year before it was adopted). It is the tell-tale of a cross-marker blend
+# where ``entry_into_force`` was backfilled from a *different* amending act
+# than the one that supplied ``date`` (issue #353). 90 days tolerates the
+# rare legitimate retro-active clause while catching the 285–356-day inversions
+# the dedup merge produced.
+_MAX_EIF_BEFORE_DATE_DAYS = 90
+
+
+def _days_between(earlier: str | None, later: str | None) -> int | None:
+    """Return ``(later - earlier)`` in whole days, or ``None`` if unparseable.
+
+    Both arguments are ``YYYY-MM-DD`` strings (the shape ``parse_date`` emits).
+    A negative result means ``later`` is chronologically BEFORE ``earlier``.
+    """
+    if not earlier or not later:
+        return None
+    from datetime import datetime
+    try:
+        d_earlier = datetime.strptime(earlier, "%Y-%m-%d")
+        d_later = datetime.strptime(later, "%Y-%m-%d")
+    except ValueError:
+        return None
+    return (d_later - d_earlier).days
 
 
 def _amend_dedup_key(amend: dict) -> tuple:
@@ -333,7 +356,51 @@ def _amend_completeness(amend: dict) -> int:
     )
 
 
-def _dedupe_amendments(amendments: list[dict]) -> list[dict]:
+def _sanitize_merged_amendment(
+    amend: dict,
+    *,
+    failures: list[str] | None = None,
+) -> dict:
+    """Drop a physically-impossible ``entry_into_force`` from a merged record.
+
+    A merge can backfill ``entry_into_force`` from a different marker than the
+    one that supplied ``date`` (issue #353). When the result has
+    ``entry_into_force`` more than ``_MAX_EIF_BEFORE_DATE_DAYS`` days BEFORE
+    ``date`` the pair is impossible (a law in force ~a year before adoption),
+    so we null the conflicting ``entry_into_force`` and log a warning rather
+    than emit the bad pair. ``date`` is kept because the adoption date is the
+    more trustworthy anchor (an act always exists before it takes effect).
+    """
+    delta = _days_between(amend.get("date"), amend.get("entry_into_force"))
+    if delta is not None and delta < -_MAX_EIF_BEFORE_DATE_DAYS:
+        bad_eif = amend.get("entry_into_force")
+        amend["entry_into_force"] = None
+        if failures is not None:
+            failures.append(
+                "dedupe_amendments | impossible_eif_before_date | "
+                f"date={amend.get('date')} eif={bad_eif} "
+                f"({-delta}d before adoption) | rt={amend.get('rt_reference')} "
+                f"akt_viide={amend.get('akt_viide')} | nulled entry_into_force"
+            )
+    return amend
+
+
+def _would_invert(date: str | None, eif: str | None) -> bool:
+    """True when ``eif`` precedes ``date`` by more than the allowed window.
+
+    Guards the cross-marker backfill (issue #353): we must not adopt a
+    ``date``/``entry_into_force`` value from another marker if the resulting
+    pair would be physically impossible (a law in force long before adoption).
+    """
+    delta = _days_between(date, eif)
+    return delta is not None and delta < -_MAX_EIF_BEFORE_DATE_DAYS
+
+
+def _dedupe_amendments(
+    amendments: list[dict],
+    *,
+    failures: list[str] | None = None,
+) -> list[dict]:
     """Collapse duplicate amendment records emitted from one XML.
 
     Duplicates (same RT reference, or — when no reference — same
@@ -341,9 +408,24 @@ def _dedupe_amendments(amendments: list[dict]) -> list[dict]:
     record. The most-complete record wins outright; remaining records then
     backfill any field the winner is still missing. Insertion order of the
     first occurrence is preserved so chain IDs stay stable across reruns.
+
+    Two date-coherence guards prevent the impossible-pair bug from issue #353:
+
+    * The ``date``/``entry_into_force`` backfill is REFUSED when adopting the
+      loser's value would make ``entry_into_force`` precede ``date`` by more
+      than ``_MAX_EIF_BEFORE_DATE_DAYS`` days — i.e. when two genuinely-distinct
+      markers (one carrying only an adoption date, the other only an
+      effective date) would otherwise blend into one impossible event.
+    * As a backstop, any record that actually absorbed a duplicate is run
+      through ``_sanitize_merged_amendment`` so a surviving inversion is nulled
+      and logged rather than emitted.
+
+    The dedup key itself is unchanged (issue #263): identical repeated markers
+    still collapse — only the cross-marker *date blend* is constrained.
     """
     merged: dict[tuple, dict] = {}
     order: list[tuple] = []
+    did_merge: set[tuple] = set()
     for amend in amendments:
         key = _amend_dedup_key(amend)
         existing = merged.get(key)
@@ -351,16 +433,34 @@ def _dedupe_amendments(amendments: list[dict]) -> list[dict]:
             merged[key] = dict(amend)
             order.append(key)
             continue
+        did_merge.add(key)
         # Pick the more-complete record as the base, then backfill.
         if _amend_completeness(amend) > _amend_completeness(existing):
             winner, loser = dict(amend), existing
         else:
             winner, loser = existing, amend
         for field_name in ("date", "rt_reference", "entry_into_force", "akt_viide"):
-            if not winner.get(field_name) and loser.get(field_name):
-                winner[field_name] = loser[field_name]
+            if winner.get(field_name) or not loser.get(field_name):
+                continue
+            candidate = loser[field_name]
+            # Date-coherence guard: don't pull in a date/eif from the loser
+            # if it would make the merged pair an impossible inversion.
+            if field_name == "entry_into_force" and _would_invert(
+                winner.get("date"), candidate
+            ):
+                continue
+            if field_name == "date" and _would_invert(
+                candidate, winner.get("entry_into_force")
+            ):
+                continue
+            winner[field_name] = candidate
         merged[key] = winner
-    return [merged[k] for k in order]
+    return [
+        _sanitize_merged_amendment(merged[k], failures=failures)
+        if k in did_merge
+        else merged[k]
+        for k in order
+    ]
 
 
 def extract_rt_references_from_text(
@@ -452,7 +552,11 @@ def load_draft_amendments(*, failures: list[str] | None = None) -> list[dict]:
             affected = [affected]
 
         draft_id = node.get("@id", "")
-        label = node.get("rdfs:label", "")
+        # ``rdfs:label`` is a language-tagged value-object since PR #297
+        # (``{"@value": title, "@language": "et"}``). Unwrap to the plain
+        # title (issue #385) so the AmendmentLink label embeds the title
+        # text, not a stringified Python dict.
+        label = jsonld_text(node.get("rdfs:label", ""))
         pub_date = node.get("estleg:publicationDate")
         if isinstance(pub_date, dict):
             pub_date = pub_date.get("@value")
@@ -957,17 +1061,38 @@ def main() -> int:
         # estleg:amendedBy — see the per-member loop below.)
         canonical_ontology_id = ""
         canonical_title = members[0][1]["title"]
+        # Collect EVERY part's ontology IRI (issue #327). A multipart law's
+        # AmendmentEvents must declare ``estleg:amends`` against ALL parts, not
+        # just the first osa — otherwise a bare-SPARQL forward query
+        # "laws amended by act X" returns only osa1 and silently drops
+        # osa2..N. Order-preserving + de-duplicated so the list is stable and
+        # carries no repeats when two parts share an ontology node.
+        member_ontology_ids: list[str] = []
         for _slug, _info in members:
             for node in _info["doc"].get("@graph", []):
                 if "owl:Ontology" in (node.get("@type") or []):
-                    canonical_ontology_id = node.get("@id", "")
-                    if canonical_title is None or not canonical_title:
-                        canonical_title = (
-                            node.get("dc:source") or node.get("rdfs:label") or ""
-                        )
+                    onto_id = node.get("@id", "")
+                    if onto_id and onto_id not in member_ontology_ids:
+                        member_ontology_ids.append(onto_id)
+                    if not canonical_ontology_id:
+                        canonical_ontology_id = onto_id
+                        if canonical_title is None or not canonical_title:
+                            canonical_title = (
+                                node.get("dc:source")
+                                or node.get("rdfs:label")
+                                or ""
+                            )
                     break
-            if canonical_ontology_id:
-                break
+
+        # ``estleg:amends`` payload: a single ``{"@id": ...}`` for a
+        # single-part law, or a LIST of ``{"@id": ...}`` (one per part) for a
+        # multipart law so each AmendmentEvent points at every amended part.
+        def _amends_value() -> dict | list[dict] | None:
+            if not member_ontology_ids:
+                return None
+            if len(member_ontology_ids) == 1:
+                return {"@id": member_ontology_ids[0]}
+            return [{"@id": oid} for oid in member_ontology_ids]
 
         # Compact prefix for the Amendment_/AmendmentChain_/AmendmentLink_
         # IRIs minted below — the law's registered abbreviation, the
@@ -993,8 +1118,9 @@ def main() -> int:
                 "@id": amend_id,
                 "@type": ["owl:NamedIndividual", "estleg:AmendmentEvent"],
             }
-            if canonical_ontology_id:
-                amend_node["estleg:amends"] = {"@id": canonical_ontology_id}
+            amends_value = _amends_value()
+            if amends_value is not None:
+                amend_node["estleg:amends"] = amends_value
 
             if amend.get("date"):
                 amend_node["estleg:amendmentDate"] = make_xsd_date(amend["date"])
@@ -1007,10 +1133,28 @@ def main() -> int:
                 amend_node["rdfs:label"] = f"Muudatus {amend.get('date', 'unknown')}"
             chain_entries.append(amend_node)
 
-        # Build draft entries (no chronological ordering — drafts use
-        # publication_date if available; we keep their input order so
-        # IDs remain stable across reruns of the same input set).
-        for da in drafts:
+        # Mark the LATEST XML-derived amendment as the current one (issue
+        # #389). xml_amendments_sorted is ascending by legal-effect date, so
+        # the last node appended above is the most recent. Without this flag a
+        # consumer must load+sort every event to find the in-force tip.
+        # SHACL note for the shapes team: this property warrants
+        # ``sh:maxCount 1`` per amended act on AmendmentEventShape (see report).
+        if chain_entries:
+            chain_entries[-1]["estleg:isCurrentAmendment"] = {
+                "@value": "true",
+                "@type": "xsd:boolean",
+            }
+
+        # Build draft entries. IRIs are id-based
+        # (``AmendmentLink_{sanitize_id(draft_id)}_{amend_prefix}``) and so are
+        # position-independent — sorting by publication_date therefore fixes
+        # the chain order (issue #387: 119 chains were non-monotonic) WITHOUT
+        # disturbing any @id. Undated drafts sort last via a high sentinel.
+        drafts_sorted = sorted(
+            drafts, key=lambda d: d.get("publication_date") or "9999-99-99"
+        )
+        draft_link_nodes: list[dict] = []
+        for da in drafts_sorted:
             draft_id = da["draft_id"]
             link_node: dict = {
                 "@id": (
@@ -1022,11 +1166,22 @@ def main() -> int:
                 "rdfs:label": f"Eelnõu muudatus: {da['draft_label']}",
                 "estleg:amendingDraft": {"@id": draft_id},
             }
-            if canonical_ontology_id:
-                link_node["estleg:amends"] = {"@id": canonical_ontology_id}
+            amends_value = _amends_value()
+            if amends_value is not None:
+                link_node["estleg:amends"] = amends_value
             if da.get("publication_date"):
                 link_node["estleg:amendmentDate"] = make_xsd_date(da["publication_date"])
             chain_entries.append(link_node)
+            draft_link_nodes.append(link_node)
+
+        # Mark the LATEST draft event as current too (issue #389). Drafts are
+        # now sorted by publication_date, so the last appended draft link is
+        # the most recent proposed amendment.
+        if draft_link_nodes:
+            draft_link_nodes[-1]["estleg:isCurrentAmendment"] = {
+                "@value": "true",
+                "@type": "xsd:boolean",
+            }
 
         # Stamp estleg:amendedBy on every member's ontology node so
         # each part's peep file references the shared chain. Track

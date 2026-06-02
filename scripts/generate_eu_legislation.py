@@ -17,8 +17,10 @@ Generates:
 from __future__ import annotations
 
 import argparse
+import re
 import sys
 import time
+from datetime import datetime
 from pathlib import Path
 
 from estleg_common import BUILD_EVALUATION_DATE, save_json
@@ -75,6 +77,72 @@ EU_DOC_TYPES = {
         "description": "Euroopa Liidu otsus – konkreetsele adressaadile suunatud siduv akt.",
     },
 }
+
+# CELEX sector/document-type override table (#394).
+#
+# The ``cdm:regulation`` query returns a small tail of records whose CELEX
+# is NOT a sector-3 type-R regulation: sector-4 type-X (UN-ECE vehicle
+# type-approval rules, e.g. ``42024X0211``) and sector-5 type-AP (European
+# Parliament legislative positions, e.g. ``52025AP0047``). Typing these as
+# ``EUDocType_Regulation`` is semantically wrong, so we route them to a
+# distinct document-type individual keyed on ``(sector, type_letters)``.
+#
+# A CELEX is ``S YYYY T NNNN`` (sector digit, 4-digit year, 1–2 type
+# letters, running number). Only the regulations query is reclassified —
+# directives (all sector-3 L) and decisions (all sector-3 D) are clean.
+EU_DOC_TYPE_OVERRIDES: dict[tuple[str, str], dict] = {
+    ("4", "X"): {
+        "type_id": "InternationalAgreement",
+        "label_et": "rahvusvaheline kokkulepe",
+        "label_en": "International Agreement",
+        "description": (
+            "Rahvusvaheline kokkulepe (CELEX-i sektor 4) — nt ÜRO Euroopa "
+            "Majanduskomisjoni (UN-ECE) sõidukite tüübikinnituse eeskirjad."
+        ),
+    },
+    ("5", "AP"): {
+        "type_id": "ParliamentPosition",
+        "label_et": "Euroopa Parlamendi seisukoht",
+        "label_en": "European Parliament Position",
+        "description": (
+            "Euroopa Parlamendi seadusandlik seisukoht (CELEX-i sektor 5, "
+            "tüüp AP) — ei ole jõustunud määrus."
+        ),
+    },
+}
+
+_CELEX_RE = re.compile(r"^(?P<sector>\d)\d{4}(?P<type>[A-Z]+)\d+")
+
+
+def classify_eu_doc_type(celex: str, nominal_type_id: str) -> str | None:
+    """Resolve the effective ``EUDocType`` id for a CELEX from the regulations query.
+
+    Returns the document-type id (``"Regulation"``, ``"InternationalAgreement"``,
+    ``"ParliamentPosition"``, …) to use for ``estleg:euDocumentType``, or
+    ``None`` when the record is a non-Regulation CELEX with no override mapping
+    (caller should drop it rather than mistype it as a Regulation).
+
+    Only the regulations query (``nominal_type_id == "Regulation"``) is
+    reclassified; directives/decisions pass through unchanged because the
+    upstream ``cdm:directive``/``cdm:decision`` queries are sector-3-clean
+    (#394). A regulations record is only typed ``Regulation`` when its CELEX
+    actually matches a sector-3 type-R pattern (``^3\\d{4}R``).
+    """
+    if nominal_type_id != "Regulation":
+        return nominal_type_id
+
+    m = _CELEX_RE.match(celex or "")
+    if m is not None and m.group("sector") == "3" and m.group("type") == "R":
+        return "Regulation"
+
+    # Non-sector-3-R record routed through the regulations query: map it to a
+    # distinct type if known, else signal the caller to drop it.
+    if m is not None:
+        override = EU_DOC_TYPE_OVERRIDES.get((m.group("sector"), m.group("type")))
+        if override is not None:
+            return override["type_id"]
+
+    return None
 
 # EU institution mapping (corporate-body authority code → labels)
 EU_INSTITUTIONS = {
@@ -245,6 +313,22 @@ def generate_schema_nodes() -> list[dict]:
             "rdfs:comment": {"@value": doc_info["description"], "@language": "et"},
         })
 
+    # Override document-type individuals (#394): distinct types for the
+    # sector-4/sector-5 records that arrive through the regulations query but
+    # are NOT sector-3 type-R regulations. Declared here so the
+    # ``estleg:euDocumentType`` references emitted by ``legislation_to_node``
+    # resolve to a defined individual. Sorted by type_id for byte-stable output.
+    for override in sorted(
+        EU_DOC_TYPE_OVERRIDES.values(), key=lambda o: o["type_id"]
+    ):
+        nodes.append({
+            "@id": f"estleg:EUDocType_{override['type_id']}",
+            "@type": ["owl:NamedIndividual", "estleg:EUDocumentType"],
+            "rdfs:label": {"@value": override["label_et"], "@language": "et"},
+            "skos:prefLabel": {"@value": override["label_en"], "@language": "en"},
+            "rdfs:comment": {"@value": override["description"], "@language": "et"},
+        })
+
     # Institution individuals
     for code, (inst_id, label_et, label_en) in EU_INSTITUTIONS.items():
         nodes.append({
@@ -344,15 +428,52 @@ def is_in_force_value(value: object) -> bool:
     return str(value).strip().casefold() in {"1", "true", "yes", "y"}
 
 
-def legislation_to_node(item: dict, type_id: str) -> dict:
-    """Convert a legislation dict to a JSON-LD node."""
+def _is_valid_iso_date(value: object) -> bool:
+    """Return ``True`` iff ``value`` is a strict ``YYYY-MM-DD`` date string.
+
+    Guards ``estleg:documentDate``/``estleg:transpositionDeadline`` against
+    the malformed/partial dates CELLAR occasionally serves; an unchecked
+    value would emit a syntactically invalid ``xsd:date`` literal and break
+    downstream SHACL. Mirrors the court-decision generator's ``decisionDate``
+    guard (#394).
+    """
+    if not isinstance(value, str):
+        return False
+    try:
+        datetime.strptime(value, "%Y-%m-%d")
+    except ValueError:
+        return False
+    return True
+
+
+def legislation_to_node(item: dict, type_id: str) -> dict | None:
+    """Convert a legislation dict to a JSON-LD node.
+
+    Returns ``None`` when the record must be dropped — specifically, a
+    non-sector-3-R CELEX that arrived through the regulations query with no
+    override mapping (#394). Callers skip ``None`` rather than emitting a
+    mistyped Regulation node.
+    """
+    # #394: resolve the effective document type from the CELEX sector/type
+    # rather than blindly trusting the query's nominal ``type_id``. The
+    # regulations query returns sector-4 (UN-ECE type-X) and sector-5 (EP
+    # type-AP) records that must not be typed ``EUDocType_Regulation``.
+    effective_type_id = classify_eu_doc_type(item["celex"], type_id)
+    if effective_type_id is None:
+        print(
+            f"  WARNING: dropping non-Regulation CELEX {item['celex']!r} "
+            f"returned by the {type_id} query (no override mapping)",
+            file=sys.stderr,
+        )
+        return None
+
     safe_celex = sanitize_celex(item["celex"])
     node: dict = {
         "@id": f"estleg:EU_{safe_celex}",
         "@type": ["owl:NamedIndividual", "estleg:EULegislation"],
         "rdfs:label": {"@value": item["title"][:500], "@language": "et"},
         "estleg:celexNumber": item["celex"],
-        "estleg:euDocumentType": {"@id": f"estleg:EUDocType_{type_id}"},
+        "estleg:euDocumentType": {"@id": f"estleg:EUDocType_{effective_type_id}"},
     }
 
     # EUR-Lex link (Estonian)
@@ -372,21 +493,42 @@ def legislation_to_node(item: dict, type_id: str) -> dict:
     if item.get("eli"):
         node["estleg:eliIdentifier"] = {"@value": item["eli"], "@type": "xsd:anyURI"}
 
-    # Date
-    if item.get("date"):
-        node["estleg:documentDate"] = {"@value": item["date"], "@type": "xsd:date"}
+    # Date — validate before emitting an ``xsd:date`` literal. CELLAR has
+    # served malformed/partial dates; an unchecked value breaks downstream
+    # SHACL. Mirrors the ``documentDate`` guard in
+    # ``generate_eu_court_decisions.py`` (skip + log, keep the rest of the
+    # node).
+    raw_date = item.get("date")
+    if raw_date:
+        if _is_valid_iso_date(raw_date):
+            node["estleg:documentDate"] = {"@value": raw_date, "@type": "xsd:date"}
+        else:
+            print(
+                f"  WARNING: skipping non-YYYY-MM-DD documentDate "
+                f"{raw_date!r} for CELEX {item['celex']}",
+                file=sys.stderr,
+            )
 
     # Transposition deadline (directives ONLY). The SPARQL
     # ``cdm:directive_date_transposition`` predicate only binds on directive
-    # works, but we guard on ``type_id`` rather than trusting that CELLAR
-    # modelling assumption: a stray deadline on a regulation/decision node is
-    # semantically wrong, so a non-directive never gets one (#288). Many
-    # directives also have none, so emit only when present (#96).
-    if type_id == "Directive" and item.get("transposition_deadline"):
-        node["estleg:transpositionDeadline"] = {
-            "@value": item["transposition_deadline"],
-            "@type": "xsd:date",
-        }
+    # works, but we guard on the document type rather than trusting that
+    # CELLAR modelling assumption: a stray deadline on a regulation/decision
+    # node is semantically wrong, so a non-directive never gets one (#288).
+    # Many directives also have none, so emit only when present (#96). The
+    # value is validated the same way as ``documentDate`` (skip + log).
+    if effective_type_id == "Directive" and item.get("transposition_deadline"):
+        raw_deadline = item["transposition_deadline"]
+        if _is_valid_iso_date(raw_deadline):
+            node["estleg:transpositionDeadline"] = {
+                "@value": raw_deadline,
+                "@type": "xsd:date",
+            }
+        else:
+            print(
+                f"  WARNING: skipping non-YYYY-MM-DD transpositionDeadline "
+                f"{raw_deadline!r} for CELEX {item['celex']}",
+                file=sys.stderr,
+            )
 
     # In-force status
     if item.get("in_force"):
@@ -485,7 +627,9 @@ def main():
         ]
 
         for item in items:
-            graph.append(legislation_to_node(item, doc_info["type_id"]))
+            node = legislation_to_node(item, doc_info["type_id"])
+            if node is not None:  # #394: skip dropped non-Regulation CELEX
+                graph.append(node)
 
         doc = {"@context": CONTEXT, "@graph": graph}
         out_path = EURLEX_DIR / f"eurlex_{doc_key}s_peep.json"
@@ -515,7 +659,10 @@ def main():
     total = 0
     for doc_key, doc_info in EU_DOC_TYPES.items():
         for item in all_legislation.get(doc_key, []):
-            combined_graph.append(legislation_to_node(item, doc_info["type_id"]))
+            node = legislation_to_node(item, doc_info["type_id"])
+            if node is None:  # #394: skip dropped non-Regulation CELEX
+                continue
+            combined_graph.append(node)
             total += 1
 
     combined_doc = {"@context": CONTEXT, "@graph": combined_graph}

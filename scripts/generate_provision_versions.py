@@ -63,7 +63,7 @@ import sys
 import time
 import xml.etree.ElementTree as ET
 from dataclasses import dataclass
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from pathlib import Path
 
 import requests
@@ -342,7 +342,7 @@ def fetch_redaction_chain(
     matches = [a for a in aktid if (a.get("pealkiri") or "").strip() == title]
 
     # Superseded editions: closed interval, both endpoints present, and the edition
-    # ended strictly before today (so it is genuinely historical). Dedupe by entry-
+    # ended on/before today (so it is genuinely historical). Dedupe by entry-
     # into-force date keeping the most-recently-touched metadata record.
     by_from: dict[str, dict] = {}
     for a in matches:
@@ -352,11 +352,16 @@ def fetch_redaction_chain(
         if not algus or not lopp:
             continue
         # Keep iff the edition started on/before today (algus <= today) AND it had
-        # already ended before today (lopp < today). Equivalent to the original
-        # ``algus > today or lopp >= today`` skip, but compared as dates.
+        # ended on/before today (lopp <= today). Issue #328: an edition ending
+        # exactly on the run date (``lopp == today``, i.e. the day a new redaction
+        # enters force) was previously dropped by a strict ``lopp < today`` test —
+        # it appeared in neither the superseded list nor ``fetch_current_redaction``
+        # (which returns the new edition), silently losing that edition's history.
+        # Using an inclusive ``lopp <= today`` retains it; the ``global_id`` dedup
+        # against the current edition below absorbs any coincidental overlap.
         if not (
             _date_before(algus, today_date, inclusive=True)
-            and _date_before(lopp, today_date, inclusive=False)
+            and _date_before(lopp, today_date, inclusive=True)
         ):
             continue
         existing = by_from.get(algus)
@@ -468,9 +473,61 @@ def _xsd_date(value: str) -> dict:
     return {"@value": value, "@type": "xsd:date"}
 
 
+def _day_before(iso_date: str) -> str:
+    """Return the ISO ``YYYY-MM-DD`` calendar day immediately before ``iso_date``.
+
+    Used to derive a version's *exclusive* ``versionValidTo`` from its successor's
+    ``versionValidFrom`` (issue #306). Falls back to the input unchanged if it is
+    not a parseable ISO date (defensive — upstream values are ``_strip_offset``
+    normalised, so this should not occur).
+    """
+    try:
+        return (date.fromisoformat(iso_date) - timedelta(days=1)).isoformat()
+    except (TypeError, ValueError):
+        return iso_date
+
+
 def _normalise_text(text: str) -> str:
     """Collapse insignificant whitespace differences before diffing."""
     return re.sub(r"\s+", " ", text or "").strip()
+
+
+def _dedup_same_valid_from(
+    redaction_texts: list[tuple[Redaction, dict[str, str]]],
+) -> list[tuple[Redaction, dict[str, str]]]:
+    """Collapse redactions that share an entry-into-force date, keeping the last.
+
+    Issue #393: when two Riigi Teataja redactions report the same
+    ``versionValidFrom`` (entry-into-force date), chaining them produces a
+    superseded version whose ``versionValidTo`` (the successor's
+    ``versionValidFrom``) equals its own ``versionValidFrom`` — a zero-duration
+    (``from == to``) node that an as-of-date query on that boundary returns
+    *alongside* its successor. Two versions of one provision cannot both take
+    effect on the same calendar day, so we keep only the **last** redaction in
+    each same-date group (the most recent edition for that date, mirroring the
+    ``by_from`` dedup in :func:`fetch_redaction_chain` which keeps the
+    most-recently-touched record). Redactions with no usable ``valid_from`` are
+    never collapsed — they cannot be emitted anyway and must not swallow a
+    neighbouring valid redaction.
+
+    The chain is assumed oldest -> newest; relative order of the surviving
+    entries is preserved.
+    """
+    last_index_by_from: dict[str, int] = {}
+    for index, (redaction, _texts) in enumerate(redaction_texts):
+        valid_from = redaction.valid_from
+        if not valid_from:
+            continue
+        last_index_by_from[valid_from] = index
+
+    deduped: list[tuple[Redaction, dict[str, str]]] = []
+    for index, entry in enumerate(redaction_texts):
+        valid_from = entry[0].valid_from
+        if valid_from and last_index_by_from.get(valid_from) != index:
+            # A later redaction shares this entry-into-force date; drop this one.
+            continue
+        deduped.append(entry)
+    return deduped
 
 
 def synthesise_versions(
@@ -486,9 +543,17 @@ def synthesise_versions(
     current text; each time the text changes (or first appears) we emit a new
     ``estleg:ProvisionVersion`` (``<provision IRI>_v<globalId>``). Consecutive versions
     of the same provision are chained with ``estleg:supersededByVersion``; ``versionValidTo``
-    of version *k* is set to ``versionValidFrom`` of version *k+1* (the next change);
-    the last version stays open (no ``versionValidTo`` / ``supersededByVersion``).
+    of version *k* is set to the day *before* ``versionValidFrom`` of version *k+1*
+    (an exclusive end, so an as-of-date query matches exactly one version on the
+    transition day — issue #306); the last version stays open (no ``versionValidTo``
+    / ``supersededByVersion``).
+
+    Redactions sharing an entry-into-force date are collapsed first (issue #393)
+    so no zero-duration (``versionValidFrom == versionValidTo``) version is emitted.
     """
+    # Issue #393: collapse same-``valid_from`` redactions before diffing/chaining so
+    # two editions taking effect on one calendar day cannot yield a zero-day version.
+    redaction_texts = _dedup_same_valid_from(redaction_texts)
     nodes: list[dict] = []
     # Group emitted version IRIs per provision so we can chain afterwards.
     per_provision: dict[str, list[dict]] = {}
@@ -556,13 +621,16 @@ def synthesise_versions(
             nodes.extend(versions_here)
 
     # Chain consecutive versions: supersededByVersion + close validity intervals.
-    # ``versionValidTo`` of version k == ``versionValidFrom`` of version k+1 (the next
-    # *change*); the last version stays open (still current).
+    # Issue #306: ``versionValidTo`` of version k is the day *before* version k+1's
+    # ``versionValidFrom`` (an *exclusive* end), so the canonical inclusive as-of-date
+    # query (``?from <= D && ?to >= D``) returns exactly one version on the transition
+    # day instead of both k and k+1. The last version stays open (still current).
     for versions_here in per_provision.values():
         for i, node in enumerate(versions_here[:-1]):
             nxt = versions_here[i + 1]
             node["estleg:supersededByVersion"] = {"@id": nxt["@id"]}
-            node["estleg:versionValidTo"] = _xsd_date(nxt["estleg:versionValidFrom"]["@value"])
+            next_from = nxt["estleg:versionValidFrom"]["@value"]
+            node["estleg:versionValidTo"] = _xsd_date(_day_before(next_from))
     return nodes
 
 

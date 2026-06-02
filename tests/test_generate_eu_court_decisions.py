@@ -1,0 +1,234 @@
+"""Tests for ``scripts/generate_eu_court_decisions.py``.
+
+Covers the classification / encoding regressions tracked in:
+
+* #343 — EFTA Court (CELEX sector ``E``) single-letter type codes
+  (``E2014J0018``) must classify as ``EUCourt_EFTACourt`` (the regex used
+  to require two letters, so the EFTA branch was dead code); and the
+  ``cdm:case-law`` SPARQL branch must exclude national-court (CELEX
+  sector ``8``) works so they are never emitted as
+  ``EUCourt_CourtOfJustice``.
+* #355 — non-breaking spaces (U+00A0) in curia titles must be normalized
+  to a regular space in ``clean_title`` / ``truncate_label`` so emitted
+  ``rdfs:label`` values are not NBSP-bearing.
+* #383 — CELEX type code ``TT`` (General Court tierce-opposition order,
+  e.g. ``62016TT0624``) must map to a General Court ``Order`` rather than
+  fall through to ``CourtOfJustice``/``Other``.
+"""
+
+from __future__ import annotations
+
+import inspect
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
+
+import generate_eu_court_decisions as mod  # noqa: E402
+
+NBSP = "\u00a0"  # non-breaking space (U+00A0)
+
+
+# ---------------------------------------------------------------------------
+# #343 (a) — EFTA Court single-letter CELEX type codes
+# ---------------------------------------------------------------------------
+
+
+def test_efta_judgment_classifies_as_efta_court() -> None:
+    """``E2014J0018`` (EFTA Court judgment) → EFTACourt / Judgment.
+
+    The old regex ``([6E])\\d{4}([A-Z]{2})`` required two letters, so the
+    single-letter ``J`` never matched and the EFTA branch was unreachable
+    (#343). The widened ``[A-Z]{1,2}`` must now resolve it.
+    """
+    type_id, type_label, court_id, category = mod.classify_from_celex("E2014J0018")
+    assert court_id == "EFTACourt"
+    assert type_id == "Judgment"
+    assert type_label == "Kohtuotsus"
+    assert category == "judgments"
+
+
+def test_efta_order_and_ag_opinion_single_letter_codes() -> None:
+    """EFTA single-letter ``O``/``P`` → Order, ``A`` → AGOpinion (#343)."""
+    assert mod.classify_from_celex("E2020O0001")[:3] == (
+        "Order",
+        "Kohtumäärus",
+        "EFTACourt",
+    )
+    assert mod.classify_from_celex("E2021P0001")[:3] == (
+        "Order",
+        "Kohtumäärus",
+        "EFTACourt",
+    )
+    assert mod.classify_from_celex("E2019A0001")[:3] == (
+        "AGOpinion",
+        "Kohtujuristi ettepanek",
+        "EFTACourt",
+    )
+
+
+def test_efta_two_letter_code_falls_back_to_shared_map() -> None:
+    """A two-letter EFTA work (``E2024CB0001``) still resolves via the shared
+    ``CELEX_TYPE_MAP`` (``CB`` → Order) while keeping the EFTACourt bucket so
+    EFTA jurisprudence stays out of CJEU statistics (#343)."""
+    type_id, _, court_id, category = mod.classify_from_celex("E2024CB0001")
+    assert court_id == "EFTACourt"
+    assert type_id == "Order"
+    assert category == "orders"
+
+
+def test_efta_decision_to_node_emits_efta_court_individual() -> None:
+    """End-to-end: an EFTA item must point at ``estleg:EUCourt_EFTACourt``
+    (previously every EFTA decision was stamped CourtOfJustice) (#343)."""
+    item = {
+        "celex": "E2014J0018",
+        "title": "Kohtuasi E-18/14",
+        "date": "2014-05-01",
+        "ecli": "",
+        "authors": [],
+    }
+    node = mod.decision_to_node(item)
+    assert node["estleg:euCourt"] == {"@id": "estleg:EUCourt_EFTACourt"}
+    assert node["estleg:euCourtDecisionType"] == {"@id": "estleg:EUDecType_Judgment"}
+
+
+def test_efta_single_letter_code_not_recorded_as_unknown() -> None:
+    """EFTA single-letter codes are *known* — they must not leak into the
+    ``unknown_celex_type_codes`` index field (#343)."""
+    mod.UNKNOWN_CELEX_CODES.clear()
+    try:
+        mod.classify_from_celex("E2014J0018")
+        mod.classify_from_celex("E2020O0001")
+        assert mod.UNKNOWN_CELEX_CODES == set()
+    finally:
+        mod.UNKNOWN_CELEX_CODES.clear()
+
+
+# ---------------------------------------------------------------------------
+# #343 (b) — national-court (CELEX sector 8) works must not be emitted as
+# EUCourt_CourtOfJustice.
+# ---------------------------------------------------------------------------
+
+
+def test_case_law_query_filters_to_sector_6_and_e() -> None:
+    """The case-law SPARQL must restrict CELEX to the CJEU (``6``) and EFTA
+    (``E``) sectors so national-court (sector ``8``) works are never
+    ingested and mis-stamped as CourtOfJustice (#343)."""
+    src = inspect.getsource(mod.fetch_all_case_law)
+    assert 'STRSTARTS(?celex, "6")' in src
+    assert 'STRSTARTS(?celex, "E")' in src
+    # Both arms in a single FILTER OR — the union, not just one sector.
+    assert 'STRSTARTS(?celex, "6") || STRSTARTS(?celex, "E")' in src
+
+
+def test_sector_8_celex_not_classified_as_court_of_justice_judgment() -> None:
+    """A sector-8 national-court CELEX does not match the ``[6E]`` regex, so it
+    falls through to the ``Other`` default rather than being positively
+    classified as a CourtOfJustice judgment/order (#343).
+
+    The real defense is the SPARQL FILTER above (such rows never enter the
+    pipeline); this guards the classifier so a stray sector-8 value can never
+    be typed as a genuine CJEU decision.
+    """
+    type_id, type_label, court_id, category = mod.classify_from_celex("82016CJ0001")
+    # Not a matched CJEU type — the default fallthrough.
+    assert (type_id, type_label, category) == ("Other", "Muu", "other")
+    # It must NOT be classified as a Judgment/Order/AGOpinion of any court.
+    assert type_id != "Judgment"
+
+
+# ---------------------------------------------------------------------------
+# #383 — CELEX type code TT (General Court tierce-opposition order)
+# ---------------------------------------------------------------------------
+
+
+def test_tt_code_maps_to_general_court_order() -> None:
+    """``62016TT0624`` (ECLI:EU:T:2019:47, case T-624/16) → General Court /
+    Order, not the CourtOfJustice/Other default (#383)."""
+    type_id, type_label, court_id, category = mod.classify_from_celex("62016TT0624")
+    assert court_id == "GeneralCourt"
+    assert type_id == "Order"
+    assert type_label == "Kohtumäärus"
+    assert category == "orders"
+
+
+def test_tt_present_in_celex_maps() -> None:
+    """The ``TT`` entry is registered in both lookup tables (#383)."""
+    assert mod.CELEX_TYPE_MAP["TT"] == ("Order", "Kohtumäärus", "Order")
+    assert mod.CELEX_COURT_MAP["TT"] == "GeneralCourt"
+
+
+def test_tt_decision_to_node_emits_general_court_order() -> None:
+    """End-to-end node for a ``TT`` work points at the General Court order
+    individuals (#383)."""
+    item = {
+        "celex": "62016TT0624",
+        "title": "Kohtuasi T-624/16",
+        "date": "2019-01-31",
+        "ecli": "ECLI:EU:T:2019:47",
+        "authors": [],
+    }
+    node = mod.decision_to_node(item)
+    assert node["estleg:euCourt"] == {"@id": "estleg:EUCourt_GeneralCourt"}
+    assert node["estleg:euCourtDecisionType"] == {"@id": "estleg:EUDecType_Order"}
+
+
+# ---------------------------------------------------------------------------
+# #355 — non-breaking space (U+00A0) normalization
+# ---------------------------------------------------------------------------
+
+
+def test_clean_title_normalizes_nbsp() -> None:
+    """``clean_title`` collapses U+00A0 to a regular space (#355)."""
+    out = mod.clean_title("C-534/11#M." + NBSP + "Wathelet")
+    assert NBSP not in out
+    assert "M. Wathelet" in out
+
+
+def test_truncate_label_normalizes_nbsp() -> None:
+    """``truncate_label`` normalizes NBSP even when called directly on a
+    not-yet-cleaned string, and even for short (untruncated) input (#355)."""
+    out = mod.truncate_label("M." + NBSP + "Wathelet")
+    assert NBSP not in out
+    assert out == "M. Wathelet"
+
+
+def test_truncate_label_normalizes_nbsp_when_truncating() -> None:
+    """NBSP normalization also applies on the truncation path (#355)."""
+    long_title = ("Liidetud kohtuasjad" + NBSP) * 60  # > 500 chars
+    out = mod.truncate_label(long_title, max_len=500)
+    assert NBSP not in out
+    assert out.endswith("...")
+    assert len(out) <= 500
+
+
+def test_decision_node_label_has_no_nbsp() -> None:
+    """The emitted ``rdfs:label`` and ``dcterms:title`` must be NBSP-free for
+    a title carrying non-breaking spaces (#355)."""
+    item = {
+        "celex": "62011CC0534",
+        "title": "Kohtuasi C-534/11#M." + NBSP + "Wathelet#Kohtujuristi ettepanek",
+        "date": "2012-06-21",
+        "ecli": "",
+        "authors": [],
+    }
+    node = mod.decision_to_node(item)
+    assert NBSP not in node["rdfs:label"]["@value"]
+    assert NBSP not in node["dcterms:title"]["@value"]
+
+
+# ---------------------------------------------------------------------------
+# Regression guards — widened regex must not break existing CJEU codes.
+# ---------------------------------------------------------------------------
+
+
+def test_two_letter_cjeu_codes_still_classify() -> None:
+    """Greedy ``[A-Z]{1,2}`` must keep preferring two-letter CJEU codes so
+    the existing classification is unchanged (#343)."""
+    assert mod.classify_from_celex("62016CJ0438")[:3] == (
+        "Judgment",
+        "Kohtuotsus",
+        "CourtOfJustice",
+    )
+    assert mod.classify_from_celex("62011CC0534")[2] == "CourtOfJustice"
+    assert mod.classify_from_celex("62016TO0123")[2:] == ("GeneralCourt", "orders")
