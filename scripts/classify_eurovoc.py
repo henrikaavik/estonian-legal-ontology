@@ -18,16 +18,18 @@ import random
 import re
 import time
 import unicodedata
-from datetime import datetime, timezone
+from datetime import datetime
 from pathlib import Path
 
 from estleg_common import (
     AGGREGATE_REGISTRY_PREFIXES,
+    BUILD_EVALUATION_DATE,
     iter_peep_files,
     jsonld_text,
     save_json as _save_json,
 )
 from kov_pipeline_coverage import (
+    PINNED_RUN_TIMESTAMP,
     CoverageReport,
     measure_runtime,
     resolve_pipeline_version,
@@ -850,7 +852,7 @@ def main(argv: list[str] | None = None):
     # --- Step 4: Generate report ---
     print("\n--- Generating classification report ---")
     report = {
-        "generated": datetime.now().strftime("%Y-%m-%d"),
+        "generated": BUILD_EVALUATION_DATE,  # #295: pinned deterministic stamp (no wall-clock churn in tracked artifact)
         "method": "keyword-matching",
         "classification_level": "act",
         "quality_evaluation": {
@@ -908,7 +910,7 @@ def main(argv: list[str] | None = None):
     write_coverage_report(
         CoverageReport(
             pipeline="classify_eurovoc",
-            run_timestamp=datetime.now(timezone.utc).isoformat(),
+            run_timestamp=PINNED_RUN_TIMESTAMP,  # #295: pinned deterministic stamp (no wall-clock churn in tracked artifact)
             pipeline_version=resolve_pipeline_version(),
             input_files_total=len(peep_files),
             input_files_kov=len(_kov_files),

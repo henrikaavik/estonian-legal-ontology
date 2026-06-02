@@ -13,10 +13,14 @@ import argparse
 import json
 import re
 from collections import Counter
-from datetime import datetime, timezone
 from pathlib import Path
 
-from estleg_common import KRR_DIR, iter_peep_files, jsonld_text
+from estleg_common import (
+    BUILD_EVALUATION_DATE,
+    KRR_DIR,
+    iter_peep_files,
+    jsonld_text,
+)
 
 TARGET_GROUP_ORDER: tuple[str, ...] = (
     "citizen",
@@ -311,7 +315,7 @@ def classify_files(
 
     duty_total = counts["provisions_with_dutyHolder"]
     report = {
-        "generated": datetime.now(timezone.utc).isoformat(),
+        "generated": f"{BUILD_EVALUATION_DATE}T00:00:00+00:00",  # #295: pinned deterministic stamp (no wall-clock churn in tracked artifact)
         "summary": {
             **dict(counts),
             "files_changed": changed_files,

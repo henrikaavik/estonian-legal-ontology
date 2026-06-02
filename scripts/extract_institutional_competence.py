@@ -17,13 +17,13 @@ import json
 import re
 import time
 from collections import Counter, defaultdict
-from datetime import datetime, timezone
 from pathlib import Path
 
-from estleg_common import iter_peep_files, jsonld_text
+from estleg_common import BUILD_EVALUATION_DATE, iter_peep_files, jsonld_text
 from extract_sanctions import _find_act_node
 from extract_cross_references import build_issuer_registry
 from kov_pipeline_coverage import (
+    PINNED_RUN_TIMESTAMP,
     CoverageReport,
     measure_runtime,
     resolve_pipeline_version,
@@ -1341,7 +1341,7 @@ def write_report(state: _PipelineState, total_law_files: int) -> Path:
         inst_law_counts[state.inst_data[inst_iri]["name"]] = len(laws)
 
     report = {
-        "generated": datetime.now().strftime("%Y-%m-%d"),
+        "generated": BUILD_EVALUATION_DATE,  # #295: pinned deterministic stamp (no wall-clock churn in tracked artifact)
         "summary": {
             "total_law_files": total_law_files,
             "total_provisions_with_text": state.total_provisions,
@@ -1393,7 +1393,7 @@ def write_coverage(state: _PipelineState, start_time: float) -> tuple[Path, list
     write_coverage_report(
         CoverageReport(
             pipeline="extract_institutional_competence",
-            run_timestamp=datetime.now(timezone.utc).isoformat(),
+            run_timestamp=PINNED_RUN_TIMESTAMP,  # #295: pinned deterministic stamp (no wall-clock churn in tracked artifact)
             pipeline_version=resolve_pipeline_version(),
             input_files_total=len(all_input_files),
             input_files_kov=len(kov_files),

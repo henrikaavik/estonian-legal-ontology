@@ -22,12 +22,12 @@ from __future__ import annotations
 import json
 import time
 from collections import defaultdict
-from datetime import datetime, timezone
 from pathlib import Path
 
-from estleg_common import iter_peep_files
+from estleg_common import BUILD_EVALUATION_DATE, iter_peep_files
 from kov_pipeline_coverage import (
     CoverageReport,
+    PINNED_RUN_TIMESTAMP,
     measure_runtime,
     resolve_pipeline_version,
     write_coverage_report,
@@ -820,7 +820,7 @@ def main() -> int:
     # Step 5: Generate report
     print("\n[5/5] Generating inverse references report...")
     report = {
-        "generated": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "generated": f"{BUILD_EVALUATION_DATE}T00:00:00+00:00",  # #295: pinned deterministic stamp (no wall-clock churn in tracked artifact)
         "summary": {
             "target_iris_with_inverse_links": len(inverse_map),
             "total_inverse_links": total_inverse_links,
@@ -903,7 +903,7 @@ def main() -> int:
     write_coverage_report(
         CoverageReport(
             pipeline="generate_inverse_references",
-            run_timestamp=datetime.now(timezone.utc).isoformat(),
+            run_timestamp=PINNED_RUN_TIMESTAMP,  # #295: pinned deterministic stamp (no wall-clock churn in tracked artifact)
             pipeline_version=resolve_pipeline_version(),
             input_files_total=len(all_input_files),
             input_files_kov=len(_kov_files),

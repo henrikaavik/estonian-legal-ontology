@@ -26,10 +26,10 @@ import argparse
 import re
 import sys
 import time
-from datetime import datetime, timezone
+from datetime import datetime
 from pathlib import Path
 
-from estleg_common import save_json
+from estleg_common import BUILD_EVALUATION_DATE, save_json
 from eurlex_common import (
     SPARQL_ENDPOINT,
     sanitize_celex,
@@ -560,7 +560,7 @@ def main():
     # Generate index
     print("\n--- Generating index ---")
     index = {
-        "generated": datetime.now(timezone.utc).date().isoformat(),
+        "generated": BUILD_EVALUATION_DATE,  # #295: pinned deterministic stamp (no wall-clock churn in tracked artifact)
         "source": "https://eur-lex.europa.eu",
         "sparql_endpoint": SPARQL_ENDPOINT,
         "total_decisions": len(all_items),

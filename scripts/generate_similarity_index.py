@@ -73,10 +73,14 @@ import math
 import random
 import re
 from collections import Counter, defaultdict
-from datetime import datetime, timezone
 from pathlib import Path
 
-from estleg_common import iter_peep_files, jsonld_text, save_json
+from estleg_common import (
+    BUILD_EVALUATION_DATE,
+    iter_peep_files,
+    jsonld_text,
+    save_json,
+)
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
@@ -724,7 +728,7 @@ def emit_precision_sample(pairs: list[dict], sample_size: int, out_path: Path) -
     chosen = rng.sample(pairs, n) if n else []
     chosen.sort(key=lambda p: (p["source"], p["target"]))
     payload = {
-        "generated": datetime.now(timezone.utc).date().isoformat(),
+        "generated": BUILD_EVALUATION_DATE,  # #295: pinned deterministic stamp (no wall-clock churn in tracked artifact)
         "relation": "estleg:semanticallySimilarTo",
         "relation_semantics": "candidate",
         "purpose": (
@@ -1215,7 +1219,7 @@ def run_kov_similarity_pass() -> dict:
     )
 
     summary = {
-        "generated": datetime.now(timezone.utc).date().isoformat(),
+        "generated": BUILD_EVALUATION_DATE,  # #295: pinned deterministic stamp (no wall-clock churn in tracked artifact)
         "scoreModel": KOV_SCORE_MODEL,
         "topK": KOV_TOP_K,
         "threshold": KOV_SIMILARITY_THRESHOLD,
@@ -1440,7 +1444,7 @@ def main(argv: list[str] | None = None):
     print("\n[4/4] Saving outputs...")
     index_path = KRR_DIR / "similarity_index.json"
     save_json(index_path, {
-        "generated": datetime.now(timezone.utc).date().isoformat(),
+        "generated": BUILD_EVALUATION_DATE,  # #295: pinned deterministic stamp (no wall-clock churn in tracked artifact)
         "relation_semantics": "candidate",
         "algorithm": {
             "name": "keyword_jaccard",
@@ -1561,7 +1565,7 @@ def main(argv: list[str] | None = None):
 
     # Generate report
     report = {
-        "generated": datetime.now(timezone.utc).date().isoformat(),
+        "generated": BUILD_EVALUATION_DATE,  # #295: pinned deterministic stamp (no wall-clock churn in tracked artifact)
         "relation_semantics": "candidate",
         "algorithm": {
             "name": "keyword_jaccard",

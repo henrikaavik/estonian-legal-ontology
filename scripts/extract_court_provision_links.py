@@ -18,7 +18,6 @@ from __future__ import annotations
 import re
 import time
 from collections import defaultdict
-from datetime import datetime, timezone
 from pathlib import Path
 from typing import NamedTuple
 
@@ -983,6 +982,7 @@ def clear_existing_court_links(counters: "_RunCounters") -> int:
 
 def main(enable_kov: bool = True) -> None:
     from kov_pipeline_coverage import (
+        PINNED_RUN_TIMESTAMP,
         CoverageReport,
         measure_runtime,
         resolve_pipeline_version,
@@ -1210,7 +1210,7 @@ def main(enable_kov: bool = True) -> None:
     wall, rate, peak_mb = measure_runtime(start, total_decisions)
     cov = CoverageReport(
         pipeline="extract_court_provision_links",
-        run_timestamp=datetime.now(timezone.utc).isoformat(),
+        run_timestamp=PINNED_RUN_TIMESTAMP,  # #295: pinned deterministic stamp (no wall-clock churn in tracked artifact)
         pipeline_version=resolve_pipeline_version(),
         input_files_total=rk_file_count + state_peep_count + kov_peep_count,
         input_files_kov=kov_peep_count,

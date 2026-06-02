@@ -20,10 +20,9 @@ import re
 import sys
 import time
 import unicodedata
-from datetime import datetime
 from pathlib import Path
 
-from estleg_common import iter_peep_files, save_json as _save_json
+from estleg_common import BUILD_EVALUATION_DATE, iter_peep_files, save_json as _save_json
 from eurlex_common import (
     SPARQL_ENDPOINT,
     sparql_query,
@@ -767,7 +766,7 @@ def parse_args() -> argparse.Namespace:
 def _write_documented_empty_report(*, partial: bool, reason: str) -> Path:
     """Write the current-shape report for an intentionally empty layer."""
     report = {
-        "generated": datetime.now().strftime("%Y-%m-%d"),
+        "generated": BUILD_EVALUATION_DATE,  # #295: pinned deterministic stamp (no wall-clock churn in tracked artifact)
         "source": SPARQL_ENDPOINT,
         "country": "EST",
         "documented_empty": True,
@@ -1016,7 +1015,7 @@ def main():
     unique_laws = set(m["matched_law_name"] for m in matched_mappings)
 
     report = {
-        "generated": datetime.now().strftime("%Y-%m-%d"),
+        "generated": BUILD_EVALUATION_DATE,  # #295: pinned deterministic stamp (no wall-clock churn in tracked artifact)
         "source": SPARQL_ENDPOINT,
         "country": "EST",
         "documented_empty": False,

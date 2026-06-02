@@ -153,7 +153,11 @@ COMMITTED_INPUTS: tuple[str, ...] = (
 # value can be overridden per-run via the ``ESTLEG_BUILD_EVALUATION_DATE``
 # environment variable (YYYY-MM-DD) when a release is cut for a specific
 # effective date; the default below is the committed-corpus baseline and
-# MUST stay in sync with the date the corpus was last regenerated.
+# MUST stay in sync with the date the corpus was last regenerated. Keep this
+# default identical to ``estleg_common.BUILD_EVALUATION_DATE`` (#295), which
+# generators stamp into git-tracked ``generated`` fields for the same
+# determinism reason — the two are a matched pair, and drift between them
+# desynchronises the corpus from its report/index dates.
 BUILD_EVALUATION_DATE: str = os.environ.get(
     "ESTLEG_BUILD_EVALUATION_DATE", "2026-06-01"
 )

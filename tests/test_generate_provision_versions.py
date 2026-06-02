@@ -190,9 +190,9 @@ class TestVersionIdCollisionGuard:
 
     def test_empty_global_id_redaction_emits_no_version(self):
         # A redaction with no globaalID has no stable, non-colliding version @id
-        # (and no versionRedactionId), so its text is carried forward rather than
-        # emitted as ``estleg:FIX_Par_1_v`` (which would collide across two such
-        # redactions).
+        # (and no versionRedactionId), so it is skipped rather than emitted as
+        # ``estleg:FIX_Par_1_v`` (which would collide across two such redactions).
+        # Two un-emittable redactions in a row therefore yield nothing.
         target = _make_target(par_suffixes=("1",))
         chain = [
             (Redaction("", "2010-01-01", "2014-12-31", "/akt/.xml"), {"1": "Esimene tekst."}),
@@ -202,8 +202,8 @@ class TestVersionIdCollisionGuard:
         assert nodes == []
 
     def test_empty_global_id_does_not_break_a_later_real_redaction(self):
-        # The empty-id redaction advances the tracked text; a later real redaction
-        # whose text differs still emits exactly one (well-identified) version.
+        # The empty-id redaction cannot be emitted; a later real redaction whose
+        # text differs still emits exactly one (well-identified) version.
         target = _make_target(par_suffixes=("1",))
         chain = [
             (Redaction("", "2010-01-01", "2014-12-31", "/akt/.xml"), {"1": "Algtekst."}),
@@ -228,6 +228,39 @@ class TestVersionIdCollisionGuard:
         assert len(ids) == len(set(ids))
         # The chain still wires up across the disambiguated id.
         assert nodes[0]["estleg:supersededByVersion"] == {"@id": "estleg:FIX_Par_1_v777_2"}
+
+
+class TestUnemittableRedactionDoesNotSuppressLaterVersion:
+    """Regression: a redaction we cannot emit (no globaalID, or no
+    entry-into-force date) must NOT advance the tracked text. Otherwise a later
+    *valid* redaction carrying the same text looks "unchanged", and the first
+    real ProvisionVersion is silently suppressed (``synthesise_versions``
+    returns ``[]``)."""
+
+    def test_empty_global_id_then_valid_redaction_with_same_text(self):
+        # Malformed redaction (no globaalID) followed by a well-formed one with
+        # IDENTICAL text. The valid redaction must still produce a version.
+        target = _make_target(par_suffixes=("1",))
+        chain = [
+            (Redaction("", "2010-01-01", "2014-12-31", "/akt/.xml"), {"1": "Sama tekst."}),
+            (_R3, {"1": "Sama tekst."}),
+        ]
+        nodes = synthesise_versions(target, chain)
+        assert [n["@id"] for n in nodes] == ["estleg:FIX_Par_1_v333"]
+        assert nodes[0]["estleg:versionText"] == "Sama tekst."
+        assert nodes[0]["estleg:versionValidFrom"] == {"@value": "2020-01-01", "@type": "xsd:date"}
+
+    def test_missing_valid_from_then_valid_redaction_with_same_text(self):
+        # Same hazard via the other guard: a globaalID but no valid_from cannot
+        # be emitted and must not hide a later valid redaction with identical text.
+        target = _make_target(par_suffixes=("1",))
+        chain = [
+            (Redaction("111", "", "2014-12-31", "/akt/111.xml"), {"1": "Sama tekst."}),
+            (_R3, {"1": "Sama tekst."}),
+        ]
+        nodes = synthesise_versions(target, chain)
+        assert [n["@id"] for n in nodes] == ["estleg:FIX_Par_1_v333"]
+        assert nodes[0]["estleg:versionValidFrom"] == {"@value": "2020-01-01", "@type": "xsd:date"}
 
 
 # ---------------------------------------------------------------------------

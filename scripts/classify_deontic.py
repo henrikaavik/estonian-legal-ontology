@@ -17,11 +17,11 @@ import json
 import re
 import time
 from collections import defaultdict
-from datetime import datetime, timezone
 from pathlib import Path
 
-from estleg_common import iter_peep_files, jsonld_text
+from estleg_common import BUILD_EVALUATION_DATE, iter_peep_files, jsonld_text
 from kov_pipeline_coverage import (
+    PINNED_RUN_TIMESTAMP,
     CoverageReport,
     measure_runtime,
     resolve_pipeline_version,
@@ -362,7 +362,7 @@ def main() -> None:
     print("\n[2/3] Generating report...")
 
     report = {
-        "generated": datetime.now().strftime("%Y-%m-%d"),
+        "generated": BUILD_EVALUATION_DATE,  # #295: pinned deterministic stamp (no wall-clock churn in tracked artifact)
         "summary": {
             "total_law_files": len(law_files),
             "files_modified": files_modified,
@@ -398,7 +398,7 @@ def main() -> None:
     write_coverage_report(
         CoverageReport(
             pipeline="classify_deontic",
-            run_timestamp=datetime.now(timezone.utc).isoformat(),
+            run_timestamp=PINNED_RUN_TIMESTAMP,  # #295: pinned deterministic stamp (no wall-clock churn in tracked artifact)
             pipeline_version=resolve_pipeline_version(),
             input_files_total=len(law_files),
             input_files_kov=len(_kov_files),

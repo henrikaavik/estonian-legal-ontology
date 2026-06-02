@@ -485,6 +485,24 @@ KRR_DIR = REPO_ROOT / "krr_outputs"
 
 
 # ---------------------------------------------------------------------------
+# Declared build / evaluation date (#295).
+#
+# Git-tracked report and index artifacts must be byte-stable across reruns over
+# the same corpus: embedding a wall-clock ``datetime.now()`` in a ``generated``
+# field re-diffs the artifact on every run (timestamp-only churn). Generators
+# therefore stamp this pinned date instead of the wall clock. It is the
+# committed-corpus baseline and can be overridden per-release via the
+# ``ESTLEG_BUILD_EVALUATION_DATE`` environment variable (YYYY-MM-DD); it MUST
+# stay in sync with the date the corpus was last regenerated. The orchestrator
+# (``run_all_integration``) declares the same value (overridable via the same
+# ``ESTLEG_BUILD_EVALUATION_DATE`` env var) and passes it to the temporal step
+# via ``--evaluation-date``.
+BUILD_EVALUATION_DATE: str = os.environ.get(
+    "ESTLEG_BUILD_EVALUATION_DATE", "2026-06-01"
+)
+
+
+# ---------------------------------------------------------------------------
 # Operational state files — the SINGLE SOURCE OF TRUTH (#240).
 #
 # These are pipeline bookkeeping artifacts written under ``krr_outputs/``

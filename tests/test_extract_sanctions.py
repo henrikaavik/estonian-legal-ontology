@@ -1107,7 +1107,7 @@ class TestDatetimeNowUTC:
     ):
         import extract_sanctions as mod
         import estleg_common
-        from datetime import datetime, timezone
+        from estleg_common import BUILD_EVALUATION_DATE
 
         krr = tmp_path / "krr_outputs"
         sanctions_dir = krr / "sanctions"
@@ -1124,11 +1124,11 @@ class TestDatetimeNowUTC:
         assert report_path.exists()
         with open(report_path, "r", encoding="utf-8") as fh:
             report = json.load(fh)
-        # The 'generated' field must be the UTC date in ISO form.
-        expected = datetime.now(timezone.utc).date().isoformat()
-        assert report["generated"] == expected, (
-            f"report 'generated' should match UTC date; "
-            f"expected={expected} got={report['generated']}"
+        # #295: 'generated' must be the pinned deterministic build date
+        # (no wall-clock churn in the git-tracked sanctions_report.json).
+        assert report["generated"] == BUILD_EVALUATION_DATE, (
+            f"report 'generated' should match pinned BUILD_EVALUATION_DATE; "
+            f"expected={BUILD_EVALUATION_DATE} got={report['generated']}"
         )
 
 

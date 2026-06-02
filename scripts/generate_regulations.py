@@ -19,13 +19,13 @@ import sys
 import time
 import urllib.parse
 from collections import Counter
-from datetime import datetime, timezone
 from pathlib import Path
 import xml.etree.ElementTree as ET
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT / "scripts"))
 
+from estleg_common import BUILD_EVALUATION_DATE  # noqa: E402
 from riigiteataja_common import (  # noqa: E402
     BASE_URL,
     CONTEXT,
@@ -619,7 +619,7 @@ def build_regulation_index(
         act_entries.append(entry)
 
     return {
-        "generated": datetime.now(timezone.utc).isoformat(),
+        "generated": f"{BUILD_EVALUATION_DATE}T00:00:00+00:00",  # #295: pinned deterministic stamp (no wall-clock churn in tracked artifact)
         "kehtiv": kehtiv,
         "kov": is_kov,
         "totalRegulations": len(files),

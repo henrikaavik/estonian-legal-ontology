@@ -63,7 +63,7 @@ import sys
 import time
 import xml.etree.ElementTree as ET
 from dataclasses import dataclass
-from datetime import date, datetime, timezone
+from datetime import date, datetime
 from pathlib import Path
 
 import requests
@@ -77,6 +77,7 @@ from estleg_common import CONTEXT, KRR_DIR, iter_peep_files  # noqa: E402
 from generate_all_laws import _paragraph_id_suffix, collect_full_text  # noqa: E402
 from kov_pipeline_coverage import (  # noqa: E402
     CoverageReport,
+    PINNED_RUN_TIMESTAMP,
     measure_runtime,
     resolve_pipeline_version,
     write_coverage_report,
@@ -509,18 +510,24 @@ def synthesise_versions(
                 continue
             norm = _normalise_text(text)
             if norm == current_norm:
-                continue  # unchanged at this redaction — no new version
-            current_norm = norm
+                continue  # unchanged vs the last *emitted* version — no new version
             if not redaction.valid_from:
                 # No entry-into-force date for this redaction — we cannot give the
-                # version a (required) ``versionValidFrom``. Treat the text as carried
-                # forward rather than emit an invalid node.
+                # version a (required) ``versionValidFrom``. Skip WITHOUT advancing
+                # ``current_norm``: a redaction we cannot emit must not become the new
+                # baseline, or it would suppress a later *valid* redaction that carries
+                # the same text (a malformed redaction followed by a good one with
+                # identical text would otherwise emit nothing at all).
                 continue
             if not redaction.global_id:
                 # No redaction id ⇒ no stable, non-colliding version identity and no
-                # ``versionRedactionId``. Carry the text forward (advance current_norm
-                # above) rather than emit a node with an ambiguous ``..._v`` @id.
+                # ``versionRedactionId``. Skip WITHOUT advancing ``current_norm`` (same
+                # reasoning as the ``valid_from`` guard above) so the next emittable
+                # redaction carrying this text still produces a version.
                 continue
+            # Commit to emitting this redaction as a new version: only now does its
+            # text become the baseline that subsequent redactions are diffed against.
+            current_norm = norm
             version_iri = f"{provision_iri}_v{redaction.global_id}"
             # Disambiguate any residual collision (belt-and-braces; empty ids are
             # already skipped above) so the sidecar never carries a duplicate @id.
@@ -1014,7 +1021,7 @@ def _write_coverage(results: list[LawResult], *, start_perf: float, path: Path =
     wall, rate, peak_mb = measure_runtime(start_perf, len(results))
     report = CoverageReport(
         pipeline="extract_provision_versions",
-        run_timestamp=datetime.now(timezone.utc).isoformat(),
+        run_timestamp=PINNED_RUN_TIMESTAMP,  # #295: pinned deterministic stamp (no wall-clock churn in tracked artifact)
         pipeline_version=resolve_pipeline_version(),
         input_files_total=len(all_input_files),
         input_files_kov=len(kov_files),
