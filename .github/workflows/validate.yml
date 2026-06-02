@@ -9,6 +9,7 @@ on:
   push:
     branches: [main]
     paths:
+      - 'data/**'
       - 'krr_outputs/**'
       - 'scripts/**'
       - 'tests/**'
@@ -21,6 +22,7 @@ on:
   pull_request:
     branches: [main]
     paths:
+      - 'data/**'
       - 'krr_outputs/**'
       - 'scripts/**'
       - 'tests/**'
@@ -152,10 +154,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # ``laws`` covers root-level ``*_peep.json`` enacted-law files PLUS
-        # the ``combined_ontology.jsonld`` artifact (the most-consumed
-        # file). Issue #164: combined drift is a real failure mode that
-        # would otherwise slip past the per-bucket gates.
+        # ``laws`` covers root-level ``*_peep.json`` enacted-law files
+        # (indexed laws + controlled_vocabulary + ``regulations/riik/*``).
+        # The ``combined_ontology.jsonld`` artifact is NOT in this bucket;
+        # it is SHACL-validated by the ``seadusloome-zero-warning`` job.
+        # Issue #164: combined drift is a real failure mode that would
+        # otherwise slip past the per-bucket gates.
         # ``kov`` covers the municipal (KOV) regulation corpus under
         # ``krr_outputs/regulations/kov/**/*_peep.json`` plus the KOV
         # issuer/municipality registries (issue #105).
