@@ -33,7 +33,7 @@ KNOWN_ABBREVIATIONS: dict[str, str] = {
     "KrMS": "Kriminaalmenetluse seadustik",
     "TMS": "Täitemenetluse seadustik",
     "KOKS": "Kohaliku omavalitsuse korralduse seadus",
-    "PS": "Põhiseadus",
+    "PS": "Eesti Vabariigi põhiseadus",
     "PankrS": "Pankrotiseadus",
     "MKS": "Maksukorralduse seadus",
     "TLS": "Töölepingu seadus",
@@ -485,6 +485,24 @@ KRR_DIR = REPO_ROOT / "krr_outputs"
 
 
 # ---------------------------------------------------------------------------
+# Declared build / evaluation date (#295).
+#
+# Git-tracked report and index artifacts must be byte-stable across reruns over
+# the same corpus: embedding a wall-clock ``datetime.now()`` in a ``generated``
+# field re-diffs the artifact on every run (timestamp-only churn). Generators
+# therefore stamp this pinned date instead of the wall clock. It is the
+# committed-corpus baseline and can be overridden per-release via the
+# ``ESTLEG_BUILD_EVALUATION_DATE`` environment variable (YYYY-MM-DD); it MUST
+# stay in sync with the date the corpus was last regenerated. The orchestrator
+# (``run_all_integration``) declares the same value (overridable via the same
+# ``ESTLEG_BUILD_EVALUATION_DATE`` env var) and passes it to the temporal step
+# via ``--evaluation-date``.
+BUILD_EVALUATION_DATE: str = os.environ.get(
+    "ESTLEG_BUILD_EVALUATION_DATE", "2026-06-01"
+)
+
+
+# ---------------------------------------------------------------------------
 # Operational state files — the SINGLE SOURCE OF TRUTH (#240).
 #
 # These are pipeline bookkeeping artifacts written under ``krr_outputs/``
@@ -497,10 +515,11 @@ KRR_DIR = REPO_ROOT / "krr_outputs"
 # enumerator every counter routes through — this is the anti-drift
 # mechanism that keeps local and CI file counts identical.
 #
-# The corpus count this exclusion currently yields is 23112 (matches
-# ``metadata.jsonld`` ``estleg:totalFiles`` / ``estleg:fileCount``).
-# Any change here that moves that number means the classifier was
-# broadened or narrowed incorrectly.
+# The corpus count this exclusion yields is pinned by ``metadata.jsonld``
+# ``estleg:totalFiles`` / ``estleg:fileCount`` (currently 23113), which
+# ``validate_metadata_catalog`` enforces — treat that file as the source of
+# truth rather than this prose. Any change here that moves that number means
+# the classifier was broadened or narrowed incorrectly.
 # ---------------------------------------------------------------------------
 OPERATIONAL_STATE_FILES: frozenset[str] = frozenset(
     {
@@ -513,8 +532,8 @@ OPERATIONAL_STATE_FILES: frozenset[str] = frozenset(
 # Operational directories whose generated ``*.json`` state manifests should
 # also be excluded even when they don't match a basename in
 # ``OPERATIONAL_STATE_FILES``. Kept deliberately conservative (a single
-# known integration-report directory) so the current 23112 count is
-# unchanged: the only ``*.json`` currently living under
+# known integration-report directory) so the pinned ``metadata.jsonld``
+# count (currently 23113) is unchanged: the only ``*.json`` currently living under
 # ``reports/integration`` is ``latest_pipeline_manifest.json``, which is
 # already excluded by basename. The pattern guard is forward-looking — it
 # stops a *new* generated state manifest dropped into that directory from

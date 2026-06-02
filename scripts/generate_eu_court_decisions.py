@@ -26,10 +26,10 @@ import argparse
 import re
 import sys
 import time
-from datetime import datetime, timezone
+from datetime import datetime
 from pathlib import Path
 
-from estleg_common import save_json
+from estleg_common import BUILD_EVALUATION_DATE, save_json
 from eurlex_common import (
     SPARQL_ENDPOINT,
     sanitize_celex,
@@ -167,12 +167,18 @@ def classify_from_celex(celex: str) -> tuple[str, str, str, str]:
 
 
 def extract_case_number(title: str) -> str:
-    """Extract case number from title (e.g., 'C-438/14' from 'Kohtuasi C-438/14')."""
-    match = re.search(r"(?:Kohtuasi\s+|Liidetud kohtuasjad\s+)?((?:[CTFP]-\d+/\d+)(?:\s+ja\s+[CTFP]-\d+/\d+)*)", title)
+    """Extract case number from title (e.g., 'C-438/14' from 'Kohtuasi C-438/14').
+
+    The prefix class includes ``E`` for EFTA Court cases (e.g. ``E-1/20``):
+    ``classify_from_celex`` maps CELEX sector ``E`` to ``EFTACourt``, so an
+    EFTA decision would otherwise classify correctly yet carry an empty
+    ``euCaseNumber``.
+    """
+    match = re.search(r"(?:Kohtuasi\s+|Liidetud kohtuasjad\s+)?((?:[CTFPE]-\d+/\d+)(?:\s+ja\s+[CTFPE]-\d+/\d+)*)", title)
     if match:
         return match.group(1)
     # Try simple pattern
-    match = re.search(r"([CTFP]-\d+/\d+)", title)
+    match = re.search(r"([CTFPE]-\d+/\d+)", title)
     return match.group(1) if match else ""
 
 
@@ -425,9 +431,22 @@ def decision_to_node(item: dict) -> dict:
     if case_number:
         node["estleg:euCaseNumber"] = case_number
 
-    # Date
-    if item.get("date"):
-        node["estleg:documentDate"] = {"@value": item["date"], "@type": "xsd:date"}
+    # Date — validate before emitting an ``xsd:date`` literal. CELLAR has
+    # served malformed/partial dates; an unchecked value breaks downstream
+    # SHACL. Mirrors the RK ``decisionDate`` guard in
+    # ``generate_court_decisions.py`` (skip + log, keep the rest of the node).
+    raw_date = item.get("date")
+    if raw_date:
+        try:
+            datetime.strptime(raw_date, "%Y-%m-%d")
+        except (ValueError, TypeError):
+            print(
+                f"  WARNING: skipping non-YYYY-MM-DD documentDate "
+                f"{raw_date!r} for CELEX {item['celex']}",
+                file=sys.stderr,
+            )
+        else:
+            node["estleg:documentDate"] = {"@value": raw_date, "@type": "xsd:date"}
 
     return node
 
@@ -541,7 +560,7 @@ def main():
     # Generate index
     print("\n--- Generating index ---")
     index = {
-        "generated": datetime.now(timezone.utc).date().isoformat(),
+        "generated": BUILD_EVALUATION_DATE,  # #295: pinned deterministic stamp (no wall-clock churn in tracked artifact)
         "source": "https://eur-lex.europa.eu",
         "sparql_endpoint": SPARQL_ENDPOINT,
         "total_decisions": len(all_items),

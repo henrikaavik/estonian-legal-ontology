@@ -20,10 +20,9 @@ import re
 import sys
 import time
 import unicodedata
-from datetime import datetime
 from pathlib import Path
 
-from estleg_common import iter_peep_files, save_json as _save_json
+from estleg_common import BUILD_EVALUATION_DATE, iter_peep_files, save_json as _save_json
 from eurlex_common import (
     SPARQL_ENDPOINT,
     sparql_query,
@@ -398,10 +397,144 @@ def resolve_directive_iri(celex: str, directive_index: dict[str, str]) -> str | 
     return directive_index.get(celex) or None
 
 
+# Minimum length for a fuzzy substring/word-boundary match. A law name
+# shorter than this is too generic to safely anchor a directive↔act link.
+_MIN_FUZZY_MATCH_LEN = 10
+
+
+def _contains_whole(needle: str, haystack: str) -> bool:
+    """Return ``True`` iff ``needle`` starts a word in ``haystack``.
+
+    Both arguments are already ``normalize_text``-ed (lowercased, ASCII-folded,
+    whitespace-collapsed). The match is anchored on a LEFT word boundary only:
+    ``needle`` must begin at a word start (preceded by a non-word char or the
+    string start) but MAY be followed by more word characters.
+
+    Why left-anchored, not both sides: Estonian law names are concatenated
+    nouns inflected by case, so two things are true at once —
+      * The killer false-positive class is a short name being the *suffix* of a
+        longer compound: ``teeseadus`` sits at the tail of ``raudteeseadus``,
+        which a left boundary correctly rejects (the char before ``teeseadus``
+        is the word char ``d``) — fixing the #265 ``Raudteeseadus``→``Teeseadus``
+        bug.
+      * Legitimate references appear in the genitive, where the nominative key
+        ``liiklusseadus`` is a *prefix* of the inflected ``liiklusseaduse`` in
+        the title. Anchoring the right side too (``(?!\\w)``) would wrongly
+        reject these, so we only require the left boundary.
+    """
+    if not needle or not haystack:
+        return False
+    return re.search(rf"(?<!\w){re.escape(needle)}", haystack) is not None
+
+
+def _best_fuzzy_match(
+    title_norm: str, law_index: dict[str, dict]
+) -> dict | None:
+    """Pick the single best whole-word match for ``title_norm`` from the index.
+
+    Mirrors a single deterministic policy across BOTH the name-key and the
+    ``source_act`` passes (#265): track the LONGEST whole-word match, apply the
+    ``_MIN_FUZZY_MATCH_LEN`` floor, and break ties deterministically (longest
+    key, then lexicographically smallest law name) so the result never depends
+    on ``dict`` iteration order. The earlier code accepted the *first* match in
+    dict order with only a length-5 floor on the ``source_act`` pass, which was
+    both order-dependent (nondeterministic) and produced false links.
+    """
+    best_info: dict | None = None
+    best_len = 0
+    best_name = ""
+
+    def _consider(token: str, info: dict) -> None:
+        nonlocal best_info, best_len, best_name
+        if len(token) < _MIN_FUZZY_MATCH_LEN:
+            return
+        if not _contains_whole(token, title_norm):
+            return
+        name = info.get("name", "")
+        # Deterministic order: longer token wins; on a tie, the
+        # lexicographically smaller law name wins.
+        if best_info is None or len(token) > best_len or (
+            len(token) == best_len and name < best_name
+        ):
+            best_info = info
+            best_len = len(token)
+            best_name = name
+
+    for key, info in law_index.items():
+        _consider(key, info)
+        source_norm = normalize_text(info.get("source_act", ""))
+        if source_norm and source_norm != key:
+            _consider(source_norm, info)
+
+    return best_info
+
+
+def match_all_titles_to_laws(
+    title: str, law_index: dict[str, dict]
+) -> list[dict]:
+    """Return EVERY Estonian law referenced by a transposition measure title.
+
+    A combined amending act such as
+    ``"A seaduse ja B seaduse muutmise seadus"`` transposes a directive into
+    *both* ``A seadus`` and ``B seadus``; returning only one of them silently
+    drops the secondary link (#288). This walks the index and collects every
+    law whose name/``source_act`` key appears in the title as a whole word
+    (length-floored, like the single-match path), de-duplicated by law name and
+    returned in a deterministic order (name length desc, then name asc) so the
+    emitted links — and the report — are byte-stable across runs.
+
+    A direct/extracted full-title match still short-circuits to that single law
+    (it is the strongest signal and avoids spuriously pulling in shorter
+    embedded names).
+    """
+    title_norm = normalize_text(title)
+
+    # Strongest signal: the whole (normalized) title, or the extracted law
+    # name, is itself an index key — return exactly that law.
+    if title_norm in law_index:
+        return [law_index[title_norm]]
+    law_name = extract_law_name(title)
+    if law_name:
+        law_name_norm = normalize_text(law_name)
+        if law_name_norm in law_index:
+            return [law_index[law_name_norm]]
+
+    # Otherwise collect every whole-word match (handles multi-law titles).
+    matches: list[dict] = []
+    seen_names: set[str] = set()
+    for key, info in law_index.items():
+        tokens = [key]
+        source_norm = normalize_text(info.get("source_act", ""))
+        if source_norm and source_norm != key:
+            tokens.append(source_norm)
+        if not any(
+            len(tok) >= _MIN_FUZZY_MATCH_LEN and _contains_whole(tok, title_norm)
+            for tok in tokens
+        ):
+            continue
+        name = info.get("name", "")
+        if name in seen_names:
+            continue
+        seen_names.add(name)
+        matches.append(info)
+
+    # Deterministic order independent of dict iteration: longer (more
+    # specific) names first, then lexicographic.
+    matches.sort(key=lambda info: (-len(info.get("name", "")), info.get("name", "")))
+    return matches
+
+
 def match_title_to_law(title: str, law_index: dict[str, dict]) -> dict | None:
     """
-    Try to match a transposition measure title to an Estonian law.
-    Uses progressively looser matching.
+    Try to match a transposition measure title to a single Estonian law.
+
+    Uses progressively looser matching, but every fuzzy step now requires a
+    whole-word match (so ``teeseadus`` does not match inside ``raudteeseadus``)
+    with a length floor and a deterministic tie-break, making the result
+    independent of ``law_index`` iteration order (#265). For combined
+    amending-act titles that reference several laws, prefer
+    ``match_all_titles_to_laws`` — this helper returns only the single best
+    (longest) match.
     """
     title_norm = normalize_text(title)
 
@@ -416,24 +549,8 @@ def match_title_to_law(title: str, law_index: dict[str, dict]) -> dict | None:
         if law_name_norm in law_index:
             return law_index[law_name_norm]
 
-    # Try substring matching: check if any known law name is contained in the title
-    best_match = None
-    best_len = 0
-    for key, info in law_index.items():
-        if len(key) > 5 and key in title_norm and len(key) > best_len:
-            best_match = info
-            best_len = len(key)
-
-    if best_match and best_len > 10:
-        return best_match
-
-    # Try matching against sourceAct names directly
-    for key, info in law_index.items():
-        source = normalize_text(info.get("source_act", ""))
-        if source and len(source) > 5 and source in title_norm:
-            return info
-
-    return None
+    # Fuzzy fallback: single best whole-word match, deterministic + floored.
+    return _best_fuzzy_match(title_norm, law_index)
 
 
 def generate_schema() -> dict:
@@ -649,7 +766,7 @@ def parse_args() -> argparse.Namespace:
 def _write_documented_empty_report(*, partial: bool, reason: str) -> Path:
     """Write the current-shape report for an intentionally empty layer."""
     report = {
-        "generated": datetime.now().strftime("%Y-%m-%d"),
+        "generated": BUILD_EVALUATION_DATE,  # #295: pinned deterministic stamp (no wall-clock churn in tracked artifact)
         "source": SPARQL_ENDPOINT,
         "country": "EST",
         "documented_empty": True,
@@ -789,8 +906,11 @@ def main():
         celex_dir = measure["celex_dir"]
         title_nat = measure["title_nat"]
 
-        law_match = match_title_to_law(title_nat, law_index)
-        if law_match is None:
+        # A combined amending act ("A seaduse ja B seaduse muutmise seadus")
+        # transposes the directive into BOTH laws — emit a link for each so the
+        # secondary law is not silently dropped (#288).
+        law_matches = match_all_titles_to_laws(title_nat, law_index)
+        if not law_matches:
             unmatched_titles.append(title_nat)
             continue
 
@@ -800,43 +920,44 @@ def main():
             missing_directives.append({
                 "directive_celex": celex_dir,
                 "national_title": title_nat,
-                "matched_law_name": law_match["name"],
+                "matched_law_name": law_matches[0]["name"],
             })
             continue
 
-        # Track the mapping
-        mapping_entry = {
-            "directive_celex": celex_dir,
-            "directive_iri": directive_iri,
-            "national_title": title_nat,
-            "matched_law_name": law_match["name"],
-            "matched_source_act": law_match.get("source_act", ""),
-            "law_files": law_match["files"],
-        }
-        matched_mappings.append(mapping_entry)
+        for law_match in law_matches:
+            # Track the mapping
+            mapping_entry = {
+                "directive_celex": celex_dir,
+                "directive_iri": directive_iri,
+                "national_title": title_nat,
+                "matched_law_name": law_match["name"],
+                "matched_source_act": law_match.get("source_act", ""),
+                "law_files": law_match["files"],
+            }
+            matched_mappings.append(mapping_entry)
 
-        # Collect directives per law file
-        for law_file in law_match["files"]:
-            filepath = str(KRR_DIR / law_file)
-            if filepath not in law_file_directives:
-                law_file_directives[filepath] = []
-            if directive_iri not in law_file_directives[filepath]:
-                law_file_directives[filepath].append(directive_iri)
+            # Collect directives per law file
+            for law_file in law_match["files"]:
+                filepath = str(KRR_DIR / law_file)
+                if filepath not in law_file_directives:
+                    law_file_directives[filepath] = []
+                if directive_iri not in law_file_directives[filepath]:
+                    law_file_directives[filepath].append(directive_iri)
 
-        for law_file in law_match["files"]:
-            filepath = KRR_DIR / law_file
-            law_iri = get_law_transposition_target_iri(filepath)
-            if law_iri is None:
-                missing_law_iris.append({
-                    "directive_celex": celex_dir,
-                    "law_file": law_file,
-                    "matched_law_name": law_match["name"],
-                })
-                continue
-            if celex_dir not in directive_celex_to_law_iris:
-                directive_celex_to_law_iris[celex_dir] = []
-            if law_iri not in directive_celex_to_law_iris[celex_dir]:
-                directive_celex_to_law_iris[celex_dir].append(law_iri)
+            for law_file in law_match["files"]:
+                filepath = KRR_DIR / law_file
+                law_iri = get_law_transposition_target_iri(filepath)
+                if law_iri is None:
+                    missing_law_iris.append({
+                        "directive_celex": celex_dir,
+                        "law_file": law_file,
+                        "matched_law_name": law_match["name"],
+                    })
+                    continue
+                if celex_dir not in directive_celex_to_law_iris:
+                    directive_celex_to_law_iris[celex_dir] = []
+                if law_iri not in directive_celex_to_law_iris[celex_dir]:
+                    directive_celex_to_law_iris[celex_dir].append(law_iri)
 
     print(f"  Matched: {len(matched_mappings)}")
     print(f"  Unmatched: {len(unmatched_titles)}")
@@ -894,7 +1015,7 @@ def main():
     unique_laws = set(m["matched_law_name"] for m in matched_mappings)
 
     report = {
-        "generated": datetime.now().strftime("%Y-%m-%d"),
+        "generated": BUILD_EVALUATION_DATE,  # #295: pinned deterministic stamp (no wall-clock churn in tracked artifact)
         "source": SPARQL_ENDPOINT,
         "country": "EST",
         "documented_empty": False,

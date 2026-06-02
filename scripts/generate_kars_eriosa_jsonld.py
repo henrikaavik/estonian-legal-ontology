@@ -127,6 +127,85 @@ def sanitize_identifier(value: str) -> str:
     return s or "Unknown"
 
 
+# Bare superscript glyph → digit (no leading underscore), used when
+# parsing a ``kuvatavNr`` that carries the superscript as a glyph.
+_SUPERSCRIPT_DIGIT_MAP: dict[str, str] = {
+    "⁰": "0", "¹": "1", "²": "2", "³": "3", "⁴": "4",
+    "⁵": "5", "⁶": "6", "⁷": "7", "⁸": "8", "⁹": "9",
+}
+
+
+def _paragraph_superscript(paragraph_el: ET.Element) -> str:
+    """Return the superscript index carried by a ``paragrahv`` element.
+
+    Riigi Teataja records superscripted section numbers in two forms and
+    the bug in #251 was that this generator read *neither*:
+
+      * ``<paragrahvNr ylaIndeks="N">133</paragrahvNr>`` — the canonical,
+        machine-friendly attribute (this is what the real KarS XML uses;
+        ``grep ylaIndeks`` over the script was previously empty);
+      * the ``kuvatavNr`` CDATA, either as a Unicode superscript glyph
+        (``§ 133¹``) or as ``<sup>N</sup>`` markup.
+
+    Returns the index as a plain digit string ("1", "2", ...) or ``""``
+    when no superscript is present. Mirrors
+    ``generate_all_laws._superscript_index`` but is replicated locally so
+    this generator does not depend on that module's import surface.
+    """
+    for c in paragraph_el:
+        if ln(c.tag) == "paragrahvNr":
+            ya = c.attrib.get("ylaIndeks")
+            if ya and ya.strip():
+                return ya.strip()
+            break
+
+    kuv = None
+    for c in paragraph_el:
+        if ln(c.tag) == "kuvatavNr":
+            kuv = "".join(c.itertext()) or ""
+            break
+    if not kuv:
+        return ""
+
+    m = re.search(r"\d+\s*(?:<sup>\s*(\d+)\s*</sup>|([¹²³⁰⁴-⁹]+))", kuv)
+    if not m:
+        return ""
+    if m.group(1):
+        return m.group(1).strip()
+    if m.group(2):
+        return "".join(_SUPERSCRIPT_DIGIT_MAP.get(ch, "") for ch in m.group(2))
+    return ""
+
+
+def _paragraph_id_suffix(paragraph_el: ET.Element, p_nr: str) -> str:
+    """Return the IRI suffix for a paragrahv: base number + superscript.
+
+    ``§ 133`` → ``133``; ``§ 133¹`` (``ylaIndeks="1"``) → ``133_1``. Folding
+    the superscript into the suffix keeps §133 and §133¹/§133²/§133³
+    distinct so they no longer collapse to one ``@id`` and trip the
+    post-build dup-guard (#251).
+
+    The superscript is appended from a single authoritative source
+    (``_paragraph_superscript``: ``ylaIndeks`` → ``kuvatavNr``). To avoid a
+    double suffix when RT instead embeds the glyph directly in the
+    ``paragrahvNr`` *text* (``<paragrahvNr>133¹</paragrahvNr>`` →
+    ``sanitize_identifier`` would already expand it to ``133_1``), the base
+    is taken from the leading run of digits in ``paragrahvNr`` only.
+    """
+    sup = _paragraph_superscript(paragraph_el)
+    if p_nr:
+        m = re.match(r"\s*(\d+)", p_nr)
+        # Plain digit prefix when present (the common case); otherwise fall
+        # back to the fully-sanitised value so non-numeric numbers (rare)
+        # still yield a stable suffix.
+        base = m.group(1) if m else sanitize_identifier(p_nr)
+    else:
+        base = "Unknown"
+    if sup:
+        return f"{base}_{sanitize_identifier(sup)}"
+    return base
+
+
 def _join_label(*parts: str | None, sep: str = " – ") -> str:
     """Join non-empty label fragments with ``sep`` between them.
 
@@ -256,10 +335,12 @@ def main() -> None:
         p_nr = child_text(paragraph_el, "paragrahvNr") or "?"
         kuvatav_nr = child_text(paragraph_el, "kuvatavNr") or ""
         # Chapter-scoped IRI prevents 88¹ in chapter 9 and 88¹ in chapter
-        # 14 from collapsing to the same IRI.
+        # 14 from collapsing to the same IRI. The paragraph suffix folds in
+        # any ``ylaIndeks`` / <sup> superscript so §133 and §133¹/²/³ stay
+        # distinct instead of all collapsing to ``Par133`` (#251).
         p_id = (
             f"estleg:KarS_Ch{sanitize_identifier(chapter_nr)}_"
-            f"Par{sanitize_identifier(p_nr)}"
+            f"Par{_paragraph_id_suffix(paragraph_el, p_nr)}"
         )
         # Label: prefer the kuvatavNr + pealkiri pair; fall back to
         # kuvatavNr alone (or the IRI fragment) so the label is never

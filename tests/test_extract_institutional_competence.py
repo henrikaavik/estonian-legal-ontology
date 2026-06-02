@@ -1887,15 +1887,19 @@ class TestIssue215CompetenceBackfill:
     def test_select_granted_by_majority_tie_and_broad_spread(self):
         from extract_institutional_competence import _select_granted_by
 
+        # Strict plurality (2 vs 1) → return the plurality act.
         assert _select_granted_by([
             "estleg:LAW_A_Map_2026",
             "estleg:LAW_A_Map_2026",
             "estleg:LAW_B_Map_2026",
         ]) == "estleg:LAW_A_Map_2026"
+        # Issue #274: a 1-1 tie has no majority → abstain (was: arbitrary
+        # sort-order winner "estleg:LAW_A_Map_2026").
         assert _select_granted_by([
             "estleg:LAW_B_Map_2026",
             "estleg:LAW_A_Map_2026",
-        ]) == "estleg:LAW_A_Map_2026"
+        ]) is None
+        # All-singleton broad spread → abstain.
         assert _select_granted_by([
             "estleg:LAW_A_Map_2026",
             "estleg:LAW_B_Map_2026",
@@ -2118,3 +2122,188 @@ class TestIssue170DeadInflectionMapDeleted:
         assert bad == [], (
             f"unreachable double-underscore keys still in _INFLECTION_MAP: {bad}"
         )
+
+
+class TestIssue258CompetenceTypeOrdering:
+    """Issue #258: the bare-noun 'järelevalve' pattern used to outrank the
+    real action verbs (annab loa / kehtestab / kontrollib), so any provision
+    that merely *mentioned* supervision collapsed to `supervision`.
+    detect_competence_type returns the FIRST match, so the action verbs must
+    now precede the bare noun while verb-adjacent supervision phrases stay
+    on top."""
+
+    def test_kehtestab_jarelevalve_is_regulation_not_supervision(self):
+        """The exact case named in the issue: a regulation verb that happens
+        to mention the supervision noun must classify as `regulation`."""
+        from extract_institutional_competence import detect_competence_type
+        assert detect_competence_type(
+            "Minister kehtestab järelevalve korra"
+        ) == "regulation"
+
+    def test_annab_loa_with_jarelevalve_is_licensing(self):
+        from extract_institutional_competence import detect_competence_type
+        assert detect_competence_type(
+            "Amet annab loa ja teostab järelevalve raames kontrolli"
+        ) == "licensing"
+
+    def test_kontrollib_with_jarelevalve_is_enforcement(self):
+        from extract_institutional_competence import detect_competence_type
+        assert detect_competence_type(
+            "Asutus kontrollib järelevalve käigus nõuete täitmist"
+        ) == "enforcement"
+
+    @pytest.mark.parametrize("text", [
+        "Amet järelevalvet teostab maksukohustuse üle",
+        "Amet teostab järelevalvet maksukohustuse üle",
+        "Amet teeb järelevalvet maksukohustuse üle",
+    ])
+    def test_verb_adjacent_supervision_phrases_stay_supervision(self, text):
+        """The genuine supervision phrases (verb adjacent to the noun) must
+        still classify as `supervision` even though the bare noun is now
+        demoted below the action verbs."""
+        from extract_institutional_competence import detect_competence_type
+        assert detect_competence_type(text) == "supervision"
+
+    def test_bare_jarelevalve_noun_still_falls_back_to_supervision(self):
+        """When no operative verb is present, the bare 'järelevalve' noun is
+        still a (weak) supervision signal — the demoted pattern is reached
+        as the last resort."""
+        from extract_institutional_competence import detect_competence_type
+        assert detect_competence_type(
+            "Järelevalve toimub seaduses sätestatud korras"
+        ) == "supervision"
+
+
+class TestIssue259GenericAgencyOverMatch:
+    """Issue #259: the generic *amet / *inspektsioon patterns used a trailing
+    `\\w*` that swallowed derivational endings, so a person (politseiametnik),
+    an adverb (mitteametlikult) or a collective (ametkond) were detected as
+    agencies. The trailing token is now a controlled Estonian case-suffix
+    alternation, plus a stoplist for slugs like `mitteamet`."""
+
+    @pytest.mark.parametrize("text", [
+        "politseiametnik teostab järelevalvet",
+        "järelevalveametnik koostab akti",
+        "mitteametlikult teatatakse otsusest",
+        "mitteametlik kokkulepe sõlmiti",
+        "ametkond koguneb istungile",
+    ])
+    def test_derivational_forms_are_not_institutions(self, text):
+        from extract_institutional_competence import detect_institutions
+        results = detect_institutions(text)
+        assert results == [], (
+            f"derivational form should not be detected as an institution: "
+            f"{text!r} -> {results!r}"
+        )
+
+    def test_politseiametnik_slug_absent(self):
+        from extract_institutional_competence import detect_institutions
+        slugs = {s for _, s, _ in
+                 detect_institutions("politseiametnik teostab järelevalvet")}
+        assert "politseiametnik" not in slugs
+
+    @pytest.mark.parametrize("text,expected_slug", [
+        ("Terviseamet teostab järelevalvet", "terviseamet"),
+        ("Keskkonnaamet andis loa", "keskkonnaamet"),
+        # A non-curated *amet name reached via the generic pattern, across
+        # several case forms — all collapse to one nominative slug.
+        ("Statistikaamet avaldas andmed", "statistikaamet"),
+        ("Statistikaametile esitati taotlus", "statistikaamet"),
+        ("Statistikaameti otsus on lõplik", "statistikaamet"),
+        ("Statistikaametiks nimetati asutus", "statistikaamet"),
+        # *inspektsioon case forms still match.
+        ("Tooinspektsioonile esitatakse kaebus", "tooinspektsioon"),
+    ])
+    def test_real_agency_names_still_detected(self, text, expected_slug):
+        from extract_institutional_competence import detect_institutions
+        slugs = {s for _, s, _ in detect_institutions(text)}
+        assert expected_slug in slugs, (
+            f"{text!r} -> {slugs!r}, expected {expected_slug!r}"
+        )
+
+    def test_mitteamet_stoplisted_even_in_genitive(self):
+        """`mitteameti` / `mitteametile` de-inflect to the slug `mitteamet`,
+        which is a valid *amet case form but never a real institution — the
+        stoplist drops it (this is what produced the committed
+        institution_mitteamet.json)."""
+        from extract_institutional_competence import detect_institutions
+        assert detect_institutions("mitteameti otsus") == []
+        assert detect_institutions("edastati mitteametile") == []
+
+    def test_mitteamet_in_stoplist(self):
+        from extract_institutional_competence import _INSTITUTION_STOPLIST
+        assert "mitteamet" in _INSTITUTION_STOPLIST
+
+    def test_agency_pattern_excludes_nik_lik_kond_endings(self):
+        """Direct regex-level assertion: the *amet pattern must not match
+        the derivational endings -nik / -lik / -kond / -likult."""
+        from extract_institutional_competence import GENERIC_PATTERNS
+        amet_pat = next(
+            pat for pat, label, _itype in GENERIC_PATTERNS
+            if label == "agency" and "amet" in pat.pattern
+        )
+        for bad in ("politseiametnik", "mitteametlik", "ametlikult",
+                    "ametkond", "järelevalveametnik"):
+            assert amet_pat.search(bad) is None, (
+                f"*amet pattern wrongly matched derivational form {bad!r}"
+            )
+        for good in ("terviseamet", "statistikaametile", "maksuametit"):
+            assert amet_pat.search(good) is not None, (
+                f"*amet pattern failed to match valid form {good!r}"
+            )
+
+
+class TestIssue274GrantedByTies:
+    """Issue #274: _select_granted_by is documented as returning "the
+    majority source act". It must abstain on any tie for the top spot and on
+    all-singleton spreads regardless of how many acts there are — the old
+    guards only abstained when len(counts) > 3, leaking an arbitrary
+    sort-order winner for 1-1, 2-2 and 3-way singleton cases."""
+
+    def test_two_two_tie_returns_none(self):
+        from extract_institutional_competence import _select_granted_by
+        # Sort-order would have picked "estleg:AA"; the contract says abstain.
+        assert _select_granted_by([
+            "estleg:ZZ", "estleg:ZZ", "estleg:AA", "estleg:AA",
+        ]) is None
+
+    def test_three_way_singleton_tie_returns_none(self):
+        from extract_institutional_competence import _select_granted_by
+        assert _select_granted_by([
+            "estleg:A", "estleg:B", "estleg:C",
+        ]) is None
+
+    def test_all_singleton_two_acts_returns_none(self):
+        from extract_institutional_competence import _select_granted_by
+        assert _select_granted_by(["estleg:A", "estleg:B"]) is None
+
+    def test_strict_plurality_returned(self):
+        from extract_institutional_competence import _select_granted_by
+        # 2 vs 1 — a strict plurality, so the top act IS returned.
+        assert _select_granted_by([
+            "estleg:A", "estleg:A", "estleg:B",
+        ]) == "estleg:A"
+        # 3 vs 2 vs 1 — strict plurality even with >3 distinct counts seen.
+        assert _select_granted_by([
+            "estleg:A", "estleg:A", "estleg:A",
+            "estleg:B", "estleg:B", "estleg:C",
+        ]) == "estleg:A"
+
+    def test_unanimous_and_sole_singleton_returned(self):
+        from extract_institutional_competence import _select_granted_by
+        assert _select_granted_by([
+            "estleg:A", "estleg:A", "estleg:A",
+        ]) == "estleg:A"
+        assert _select_granted_by(["estleg:A"]) == "estleg:A"
+
+    def test_non_estleg_refs_ignored(self):
+        from extract_institutional_competence import _select_granted_by
+        # Only estleg: refs count; with the noise stripped this is a sole
+        # singleton.
+        assert _select_granted_by([
+            "http://example/x", "estleg:A", None,  # type: ignore[list-item]
+        ]) == "estleg:A"
+        # ... and with the noise stripped this is a 1-1 tie → abstain.
+        assert _select_granted_by([
+            "http://example/x", "estleg:A", "estleg:B",
+        ]) is None

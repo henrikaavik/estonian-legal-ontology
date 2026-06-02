@@ -17,13 +17,13 @@ import json
 import re
 import time
 from collections import Counter, defaultdict
-from datetime import datetime, timezone
 from pathlib import Path
 
-from estleg_common import iter_peep_files, jsonld_text
+from estleg_common import BUILD_EVALUATION_DATE, iter_peep_files, jsonld_text
 from extract_sanctions import _find_act_node
 from extract_cross_references import build_issuer_registry
 from kov_pipeline_coverage import (
+    PINNED_RUN_TIMESTAMP,
     CoverageReport,
     measure_runtime,
     resolve_pipeline_version,
@@ -466,6 +466,45 @@ _SPECIFIC_COURT_PATTERN: re.Pattern[str] = re.compile(
 )
 
 
+# Issue #259: an institutional root (amet / inspektsioon) is followed
+# either by nothing (nominative), by the partitive "...it", or by the
+# genitive marker "i" plus at most one Estonian case suffix. Derivational
+# endings that turn the root into a DIFFERENT lexeme — "ametnik" (an
+# official, a person), "ametlik"/"ametlikult" (an adjective/adverb),
+# "ametkond" (a collective) — are NOT case endings and must not match.
+#
+# We build the case-suffix alternation from _CASE_SUFFIXES_LONGEST_FIRST so
+# it stays in lock-step with the de-inflection performed by
+# normalize_iri_suffix(); the single-letter "i" genitive marker is handled
+# by the surrounding regex (`i(?:<suffix>)?`) rather than the alternation.
+_ROOT_CASE_ALT: str = "|".join(
+    re.escape(s)
+    for s in sorted(set(_CASE_SUFFIXES_LONGEST_FIRST), key=len, reverse=True)
+    if s != "i"  # the bare genitive "i" is the prefix of the oblique forms
+)
+
+
+def _root_inflection_group(root: str) -> str:
+    """Return a regex fragment matching ``root`` in nominative, partitive
+    (``root`` + ``it``) or any oblique case (genitive ``root`` + ``i`` +
+    optional case suffix). The trailing ``\\b`` enforced by the caller
+    rejects derivational endings (``ametnik``/``ametlik``/``ametkond``)
+    because the character after ``amet`` is then a consonant that is
+    neither ``i`` nor a word boundary."""
+    return rf"{root}(?:i(?:{_ROOT_CASE_ALT})?|it)?"
+
+
+# Issue #259: normalized slugs that the generic *amet pattern can still
+# legitimately match (valid case form of an ``amet`` stem) but that are
+# never real institutions. ``mitteamet`` ("non-/un-office", from the
+# negating prefix ``mitte-``) is the canonical offender — it produced a
+# committed ``institution_mitteamet.json`` from corpus genitive forms like
+# ``mitteameti`` / ``mitteametile``. Matched against the NORMALIZED slug.
+_INSTITUTION_STOPLIST: frozenset[str] = frozenset({
+    "mitteamet",
+})
+
+
 # Generic patterns: regex → (label template, IRI template, inst type)
 # Issue #170 Finding 3: ministry/agency/inspektsioon patterns now run with
 # re.IGNORECASE so sentence-internal forms like "siseministeeriumi" or
@@ -478,12 +517,18 @@ GENERIC_PATTERNS: list[tuple[re.Pattern, str, str]] = [
      "ministry", "ministry"),
     (re.compile(r"\b([a-zäöüõšž]+minister\w*)\b", re.IGNORECASE | re.UNICODE),
      "ministry", "ministry"),
-    # Agencies: "Xamet", "Xinspektsioon"
-    (re.compile(r"\b([a-zäöüõšž]+(?:\s*-\s*ja\s+[a-zäöüõšž]+)*amet\w*)\b",
-                re.IGNORECASE | re.UNICODE),
+    # Agencies: "Xamet", "Xinspektsioon". Issue #259: the trailing token
+    # is constrained to a case-suffix alternation (see _root_inflection_group)
+    # so derivational forms like "politseiametnik" (a person) and
+    # "mitteametlikult" (an adverb) no longer match as agencies.
+    (re.compile(
+        r"\b([a-zäöüõšž]+(?:\s*-\s*ja\s+[a-zäöüõšž]+)*"
+        + _root_inflection_group("amet") + r")\b",
+        re.IGNORECASE | re.UNICODE),
      "agency", "agency"),
-    (re.compile(r"\b([a-zäöüõšž]+inspektsioon\w*)\b",
-                re.IGNORECASE | re.UNICODE),
+    (re.compile(
+        r"\b([a-zäöüõšž]+" + _root_inflection_group("inspektsioon") + r")\b",
+        re.IGNORECASE | re.UNICODE),
      "agency", "agency"),
     # Courts (generic)
     (re.compile(r"\b(kohus)\b", re.IGNORECASE), "court", "court"),
@@ -500,17 +545,35 @@ GENERIC_PATTERNS: list[tuple[re.Pattern, str, str]] = [
 
 # ---------- competence-assigning patterns ----------
 
+# Issue #258: detect_competence_type returns the FIRST matching pattern, so
+# the most SPECIFIC patterns must come first. The bare-noun "järelevalve"
+# used to sit at idx 2, ahead of the real action verbs — so any provision
+# whose operative verb was licensing/regulation/enforcement but that merely
+# mentioned the ubiquitous noun "järelevalve" collapsed to "supervision".
+#
+# Two-part fix:
+#   1. Keep the *verb-adjacent* supervision phrases at the top
+#      ("järelevalvet teostab" / "teostab järelevalvet" / "teeb
+#      järelevalvet") — these genuinely assign a supervision competence.
+#   2. Demote the bare "järelevalve" noun BELOW the explicit action verbs
+#      (licensing / regulation / enforcement) so e.g. "Minister kehtestab
+#      järelevalve korra" is classified as `regulation`, not `supervision`.
 COMPETENCE_PATTERNS: list[tuple[re.Pattern, str]] = [
+    # Verb-adjacent supervision phrases — unambiguous, kept first.
     (re.compile(r"järelevalvet\s+teostab", re.IGNORECASE), "supervision"),
     (re.compile(r"teostab\s+järelevalvet", re.IGNORECASE), "supervision"),
-    (re.compile(r"järelevalve", re.IGNORECASE), "supervision"),
+    (re.compile(r"teeb\s+järelevalvet", re.IGNORECASE), "supervision"),
     (re.compile(r"\bon\s+pädev\b", re.IGNORECASE), "general"),
+    # Explicit action verbs — must outrank the bare "järelevalve" noun.
     (re.compile(r"\bannab\s+loa\b", re.IGNORECASE), "licensing"),
     (re.compile(r"\bväljastab\s+luba\b", re.IGNORECASE), "licensing"),
     (re.compile(r"\bkehtestab\b", re.IGNORECASE), "regulation"),
     (re.compile(r"\bkontrollib\b", re.IGNORECASE), "enforcement"),
     (re.compile(r"\bkorraldab\b", re.IGNORECASE), "enforcement"),
     (re.compile(r"\bteostab\b", re.IGNORECASE), "enforcement"),
+    # Bare "järelevalve" noun — weakest signal, tried LAST. Only reached
+    # when none of the operative verbs above matched.
+    (re.compile(r"järelevalve", re.IGNORECASE), "supervision"),
 ]
 
 
@@ -579,6 +642,10 @@ def detect_institutions(text: str) -> list[tuple[str, str, str]]:
             matched = m.group(1) if m.lastindex else m.group(0)
             raw_key = sanitize_id(matched)
             norm_key = normalize_iri_suffix(raw_key)
+            # Issue #259: drop known non-institution slugs (e.g.
+            # "mitteamet") that survive the regex as a valid case form.
+            if norm_key in _INSTITUTION_STOPLIST:
+                continue
             if norm_key and norm_key not in found:
                 # Skip if this is just the generic "kohus" and a specific
                 # court appears anywhere in the text (riigikohus,
@@ -652,9 +719,20 @@ def _select_granted_by(source_act_refs: list[str]) -> str | None:
     """Choose one granting act IRI for a competence node.
 
     The sidecar groups provisions by institution and competence type, so very
-    broad competences can span many unrelated acts. Emit a deterministic
-    granting act when there is a usable majority/top act; omit it for all-single
-    broad spreads where no primary act is defensible.
+    broad competences can span many unrelated acts. estleg:grantedBy is
+    documented as "the majority source act", so we only emit it for a STRICT
+    plurality and abstain otherwise (Issue #274):
+
+      * A tie for the top spot (``len(top_refs) > 1``) has no single majority
+        act, so we return None rather than fabricating a deterministic-but-
+        arbitrary winner from sort order.
+      * An all-singleton spread (``top_count == 1`` with more than one act)
+        likewise has no plurality — return None regardless of how many acts
+        there are (the old guard only abstained when ``len(counts) > 3``,
+        so e.g. a 1-1 tie or three singletons leaked an arbitrary winner).
+
+    The sole singleton (``top_count == 1`` and ``len(counts) == 1``) is a
+    genuine unanimous act and is returned.
     """
     counts = Counter(
         ref for ref in source_act_refs
@@ -664,9 +742,12 @@ def _select_granted_by(source_act_refs: list[str]) -> str | None:
         return None
     top_count = max(counts.values())
     top_refs = sorted(ref for ref, count in counts.items() if count == top_count)
-    if top_count == 1 and len(counts) > 3:
+    # No strict plurality: the top is tied between two or more acts.
+    if len(top_refs) > 1:
         return None
-    if len(top_refs) > 1 and len(counts) > 3:
+    # No plurality at all: every act appears exactly once (and there's more
+    # than one of them).
+    if top_count == 1 and len(counts) > 1:
         return None
     return top_refs[0]
 
@@ -1260,7 +1341,7 @@ def write_report(state: _PipelineState, total_law_files: int) -> Path:
         inst_law_counts[state.inst_data[inst_iri]["name"]] = len(laws)
 
     report = {
-        "generated": datetime.now().strftime("%Y-%m-%d"),
+        "generated": BUILD_EVALUATION_DATE,  # #295: pinned deterministic stamp (no wall-clock churn in tracked artifact)
         "summary": {
             "total_law_files": total_law_files,
             "total_provisions_with_text": state.total_provisions,
@@ -1312,7 +1393,7 @@ def write_coverage(state: _PipelineState, start_time: float) -> tuple[Path, list
     write_coverage_report(
         CoverageReport(
             pipeline="extract_institutional_competence",
-            run_timestamp=datetime.now(timezone.utc).isoformat(),
+            run_timestamp=PINNED_RUN_TIMESTAMP,  # #295: pinned deterministic stamp (no wall-clock churn in tracked artifact)
             pipeline_version=resolve_pipeline_version(),
             input_files_total=len(all_input_files),
             input_files_kov=len(kov_files),

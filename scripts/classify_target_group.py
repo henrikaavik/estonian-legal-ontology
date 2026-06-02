@@ -13,10 +13,14 @@ import argparse
 import json
 import re
 from collections import Counter
-from datetime import datetime, timezone
 from pathlib import Path
 
-from estleg_common import KRR_DIR, iter_peep_files, jsonld_text
+from estleg_common import (
+    BUILD_EVALUATION_DATE,
+    KRR_DIR,
+    iter_peep_files,
+    jsonld_text,
+)
 
 TARGET_GROUP_ORDER: tuple[str, ...] = (
     "citizen",
@@ -24,12 +28,6 @@ TARGET_GROUP_ORDER: tuple[str, ...] = (
     "public_body",
     "official",
     "ngo",
-)
-
-DEONTIC_CUE_RE = re.compile(
-    r"\b(?:peab|peavad|kohustatud|kohustus|on\s+õigus|võib|võivad|"
-    r"keelatud|ei\s+tohi|on\s+õigustatud)\b",
-    re.IGNORECASE | re.UNICODE,
 )
 
 TARGET_GROUP_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
@@ -59,7 +57,15 @@ TARGET_GROUP_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
             r"\b(?:vastutav|volitatud)?\s*töötleja\w*\b",
             r"\bkäitaja\w*\b",
             r"\bkäitleja\w*\b",
+            # Tax-obligated entities. In administrative-burden terms a
+            # generic taxpayer/tax-liable subject is treated as a business
+            # (consistent with raamatupidamiskohustuslane below); the
+            # citizen list no longer carries this cue (#277).
             r"\bmaksu(?:maksja|kohustuslane)\w*\b",
+            # A legal entity is, by definition, a business. The negative
+            # lookbehind on the citizen ``isik`` cue keeps "juriidiline isik"
+            # out of citizen; this routes it to business (#277).
+            r"\bjuriidili\w*\s+isik\w*\b",
             r"\bandmeandja\w*\b",
             r"\bsideettevõtja\w*\b",
             r"\braamatupidamiskohustuslane\w*\b",
@@ -68,7 +74,12 @@ TARGET_GROUP_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
             r"\bjuhatus\w*\b",
             r"\breeder\w*\b",
             r"\bkaevetöö\s+tegija\w*\b",
-            r"\bkasutaja\w*\b",
+            # NOTE: bare ``kasutaja`` ("user") and ``võlgnik``/``võlausaldaja``
+            # ("debtor"/"creditor") were ALSO in this list, so any provision
+            # mentioning them was always tagged [citizen, business] (#277).
+            # They are generic natural-person roles, so they now live only in
+            # the citizen list. Specific business users keep their own
+            # qualified cues elsewhere.
             r"\bemitent\w*\b",
             r"\bvõrguettevõtja\w*\b",
             r"\bpakkuja\w*\b",
@@ -76,7 +87,6 @@ TARGET_GROUP_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
             r"\btegevusloa\s+omaja\w*\b",
             r"\bpostiteenuse\s+osutaja\w*\b",
             r"\bpensionifondivalitseja\w*\b",
-            r"\b(?:võlgnik|võlausaldaja)\w*\b",
         )
     ),
     "citizen": tuple(
@@ -84,6 +94,12 @@ TARGET_GROUP_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
         for p in (
             r"\btöötaja\w*\b",
             r"\bfüüsiline\s+isik\w*\b",
+            # Bare ``isik`` ("person") is a natural person — EXCEPT in
+            # "juriidiline isik" (a legal entity = business). The fixed-width
+            # negative lookbehinds drop the nominative/genitive of that phrase
+            # so it does not score as citizen; ``juriidili\w* isik`` in the
+            # business list then routes it correctly (#277).
+            r"(?<!juriidiline\s)(?<!juriidilise\s)"
             r"\bisik(?:u|ul|ule|uga|ust|uks|ut|uid|ud|ute)?\b",
             r"\bkodanik\w*\b",
             r"\belanik\w*\b",
@@ -99,7 +115,8 @@ TARGET_GROUP_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
             r"\bhauaplatsi\s+kasutaja\w*\b",
             r"\bloomapidaja\w*\b",
             r"\b(?:kinnistu|korteri|eluruumi|hauaplatsi)?\s*omanik\w*\b",
-            r"\bmaksu(?:maksja|kohustuslane)\w*\b",
+            # ``maksu(maksja|kohustuslane)`` moved to business-only (#277); the
+            # debtor/creditor and user cues below are citizen-only now.
             r"\b(?:võlgnik|võlausaldaja)\w*\b",
             r"\bsõitja\w*\b",
             r"\blaevapere\s+liige\w*\b",
@@ -230,10 +247,16 @@ def classify_node(node: dict) -> tuple[list[str], bool]:
     legal_text = jsonld_text(node.get("estleg:legalText", ""))
     label = jsonld_text(node.get("rdfs:label", ""))
 
+    # Prefer the dutyHolder-derived group when the dutyHolder literal itself
+    # classifies: the duty holder is the authoritative subject of the
+    # provision, so scanning (and unioning) the body text would only
+    # over-broaden the result with incidental mentions (#277). Fall back to the
+    # body cues only when there is no dutyHolder, or it does not classify.
     groups = set(classify_text(duty_text))
-    body_text = " ".join(part for part in (label, summary, legal_text) if part)
-    if body_text and (not duty_text or not groups or DEONTIC_CUE_RE.search(body_text)):
-        groups.update(classify_text(body_text))
+    if not groups:
+        body_text = " ".join(part for part in (label, summary, legal_text) if part)
+        if body_text:
+            groups.update(classify_text(body_text))
 
     return [group for group in TARGET_GROUP_ORDER if group in groups], bool(duty_text)
 
@@ -292,7 +315,7 @@ def classify_files(
 
     duty_total = counts["provisions_with_dutyHolder"]
     report = {
-        "generated": datetime.now(timezone.utc).isoformat(),
+        "generated": f"{BUILD_EVALUATION_DATE}T00:00:00+00:00",  # #295: pinned deterministic stamp (no wall-clock churn in tracked artifact)
         "summary": {
             **dict(counts),
             "files_changed": changed_files,

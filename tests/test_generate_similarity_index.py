@@ -389,6 +389,100 @@ def test_similarity_link_value_shape():
 
 
 # ---------------------------------------------------------------------------
+# Symmetric provision-level semanticallySimilarTo (#264)
+# ---------------------------------------------------------------------------
+
+def _make_n_act_corpus(krr: Path, summaries: list[str]) -> list[Path]:
+    """N single-provision acts, each in its own file/law, with given summaries."""
+    krr.mkdir(parents=True, exist_ok=True)
+    paths: list[Path] = []
+    for i, summary in enumerate(summaries):
+        act_id = f"estleg:Act{i}"
+        p = krr / f"act_{i}_peep.json"
+        p.write_text(
+            json.dumps(_act_doc(act_id, [
+                _provision_node(f"{act_id}_Par_1", act_id, summary),
+            ])),
+            encoding="utf-8",
+        )
+        paths.append(p)
+    return paths
+
+
+def _similar_targets(path: Path, prov_id: str) -> list[str]:
+    """The estleg:semanticallySimilarTo target IRIs of a provision node."""
+    doc = json.loads(path.read_text(encoding="utf-8"))
+    prov = next(n for n in doc["@graph"] if n["@id"] == prov_id)
+    return [link["@id"] for link in prov.get("estleg:semanticallySimilarTo", [])]
+
+
+def test_similarity_is_symmetric_reciprocal_backlinks(tmp_path, monkeypatch):
+    """Two provisions with identical keyword sets each get the reciprocal link.
+
+    Pre-fix the forward-only scan wrote A->B only and left B with no
+    estleg:semanticallySimilarTo at all (the upper-triangular sink bug,
+    #264). The relation is semantically symmetric, so both files must carry
+    the back-link to the other.
+    """
+    krr = tmp_path / "krr_outputs"
+    shared = "maakasutuse planeering ehitusluba detailplaneering järelevalve"
+    peep = _make_two_act_corpus(krr, shared, shared)
+    _wire_pipeline(monkeypatch, krr, peep, generic_cap=1.0)
+
+    similarity.main(["--no-kov"])
+
+    # Reciprocal: A links to B AND B links back to A.
+    assert _similar_targets(peep[0], "estleg:ActA_Par_1") == ["estleg:ActB_Par_1"]
+    assert _similar_targets(peep[1], "estleg:ActB_Par_1") == ["estleg:ActA_Par_1"]
+
+    index = json.loads((krr / "similarity_index.json").read_text(encoding="utf-8"))
+    # Both directed edges are present in the index, and nothing was capped.
+    directed = {(p["source"], p["target"]) for p in index["pairs"]}
+    assert directed == {
+        ("estleg:ActA_Par_1", "estleg:ActB_Par_1"),
+        ("estleg:ActB_Par_1", "estleg:ActA_Par_1"),
+    }
+    assert index["total_pairs"] == 2
+    assert index["pairs_truncated_by_cap"] == 0
+
+
+def test_cap_applied_per_provision_after_symmetrization(tmp_path, monkeypatch):
+    """N identical peers, cap K: each provision keeps min(N,K); drops counted.
+
+    With four identical provisions across four laws every provision has
+    N=3 equally-scored peers. With MAX_SIMILAR_PER_PROVISION=K=2 each keeps
+    min(N,K)=2 (deterministic (-score, target_id) tie-break -> lowest IRIs),
+    so 8 directed edges survive and pairs_truncated_by_cap == 4 (one drop per
+    provision). The cap is enforced *per provision after symmetrization*, not
+    over a forward half, and the drop is reported (no silent truncation).
+    """
+    krr = tmp_path / "krr_outputs"
+    monkeypatch.setattr(similarity, "MAX_SIMILAR_PER_PROVISION", 2)
+    shared = "maakasutuse planeering ehitusluba detailplaneering järelevalve"
+    peep = _make_n_act_corpus(krr, [shared] * 4)
+    _wire_pipeline(monkeypatch, krr, peep, generic_cap=1.0)
+
+    similarity.main(["--no-kov"])
+
+    # Every provision keeps exactly K=2 reciprocal links.
+    for i in range(4):
+        targets = _similar_targets(peep[i], f"estleg:Act{i}_Par_1")
+        assert len(targets) == 2, targets
+        assert all(t != f"estleg:Act{i}_Par_1" for t in targets)
+        # Deterministic tie-break keeps the lowest-IRI peers (excluding self).
+        expected = sorted(
+            f"estleg:Act{j}_Par_1" for j in range(4) if j != i
+        )[:2]
+        assert sorted(targets) == expected
+
+    index = json.loads((krr / "similarity_index.json").read_text(encoding="utf-8"))
+    assert index["total_pairs"] == 8  # 4 provisions * min(3, 2)
+    assert index["pairs_truncated_by_cap"] == 4  # 4 provisions * (3 - 2)
+    report = json.loads((krr / "similarity_report.json").read_text(encoding="utf-8"))
+    assert report["pairs_truncated_by_cap"] == 4
+
+
+# ---------------------------------------------------------------------------
 # --emit-sample precision-review tooling
 # ---------------------------------------------------------------------------
 
@@ -606,10 +700,26 @@ def test_bucket_key_strips_connectives_and_year_words():
         == "kooli arengukava"
     )
     # Trailing connective "ja" is stripped; the remaining tail is the two
-    # trailing content tokens (the action-noun strip ran on the trailing
-    # edge first, so an action noun NOT at the very end is kept — this is the
-    # documented single-pass trailing-strip behaviour).
+    # trailing content tokens.
     assert similarity.bucket_key("jaatmevaldkonna eeskirja ja") == "jaatmevaldkonna eeskirja"
+
+
+def test_bucket_key_filters_mid_title_action_noun(tmp_path):
+    """A mid-title action noun followed by another word is NOT the qualifier.
+
+    Regression for #292(b): with the old single-pass trailing strip,
+    bucket_key("eeskirja muutmine ja kehtetuks") bucketed on the amendment
+    verb -> "muutmine kehtetuks". Action nouns are now filtered out of the
+    whole content list (like connectives), so the title buckets on the
+    eeskiri, not "muutmine".
+    """
+    bucket = similarity.bucket_key("eeskirja muutmine ja kehtetuks")
+    assert "muutmine" not in bucket
+    assert "eeskirja" in bucket
+    assert bucket == "eeskirja kehtetuks"
+    # The action noun is dropped wherever it sits, even between two content
+    # tokens.
+    assert similarity.bucket_key("vee muutmine kasutamise kord") == "kasutamise kord"
 
 
 def test_bucket_key_uncategorized_on_empty_or_no_content():

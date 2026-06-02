@@ -19,10 +19,9 @@ from __future__ import annotations
 import argparse
 import sys
 import time
-from datetime import datetime, timezone
 from pathlib import Path
 
-from estleg_common import save_json
+from estleg_common import BUILD_EVALUATION_DATE, save_json
 from eurlex_common import (
     SPARQL_ENDPOINT,
     sanitize_celex,
@@ -377,9 +376,13 @@ def legislation_to_node(item: dict, type_id: str) -> dict:
     if item.get("date"):
         node["estleg:documentDate"] = {"@value": item["date"], "@type": "xsd:date"}
 
-    # Transposition deadline (directives only; many directives — and all
-    # regulations/decisions — have none, so emit only when present, #96).
-    if item.get("transposition_deadline"):
+    # Transposition deadline (directives ONLY). The SPARQL
+    # ``cdm:directive_date_transposition`` predicate only binds on directive
+    # works, but we guard on ``type_id`` rather than trusting that CELLAR
+    # modelling assumption: a stray deadline on a regulation/decision node is
+    # semantically wrong, so a non-directive never gets one (#288). Many
+    # directives also have none, so emit only when present (#96).
+    if type_id == "Directive" and item.get("transposition_deadline"):
         node["estleg:transpositionDeadline"] = {
             "@value": item["transposition_deadline"],
             "@type": "xsd:date",
@@ -393,7 +396,10 @@ def legislation_to_node(item: dict, type_id: str) -> dict:
     # Institutions
     if item.get("authors"):
         inst_refs = []
-        for author_code in item["authors"]:
+        # Authors accumulate in SPARQL endpoint row order, which can differ
+        # between runs; sort (de-duplicated) so multi-author ``euInstitution``
+        # output is byte-stable across regenerations (#288).
+        for author_code in sorted(set(item["authors"])):
             if author_code in EU_INSTITUTIONS:
                 inst_id = EU_INSTITUTIONS[author_code][0]
                 inst_refs.append({"@id": f"estleg:EUInst_{inst_id}"})
@@ -525,7 +531,7 @@ def main():
 
     any_partial = any(partial_types.values())
     index = {
-        "generated": datetime.now(timezone.utc).date().isoformat(),
+        "generated": BUILD_EVALUATION_DATE,  # #295: pinned deterministic stamp (no wall-clock churn in tracked artifact)
         "source": "https://eur-lex.europa.eu",
         "sparql_endpoint": SPARQL_ENDPOINT,
         "total_acts": total,

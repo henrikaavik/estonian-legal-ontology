@@ -25,7 +25,7 @@ from datetime import date as _date
 from datetime import datetime, timezone
 from pathlib import Path
 
-from estleg_common import iter_peep_files, save_json
+from estleg_common import BUILD_EVALUATION_DATE, iter_peep_files, save_json
 from eurlex_common import (
     SPARQL_ENDPOINT,
     sanitize_celex,
@@ -840,7 +840,7 @@ def main():
     print("\n--- Generating harmonisation report ---")
 
     report = {
-        "generated": datetime.now(timezone.utc).date().isoformat(),
+        "generated": BUILD_EVALUATION_DATE,  # #295: pinned deterministic stamp (no wall-clock churn in tracked artifact)
         "source": SPARQL_ENDPOINT,
         "estonian_country_code": "EST",
         "transposition_mapping_generated": mapping_data.get("generated", ""),

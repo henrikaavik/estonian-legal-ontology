@@ -19,13 +19,13 @@ import sys
 import time
 import urllib.parse
 from collections import Counter
-from datetime import datetime, timezone
 from pathlib import Path
 import xml.etree.ElementTree as ET
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT / "scripts"))
 
+from estleg_common import BUILD_EVALUATION_DATE  # noqa: E402
 from riigiteataja_common import (  # noqa: E402
     BASE_URL,
     CONTEXT,
@@ -58,14 +58,22 @@ GENERATION_MODES = ("missing-only", "refresh", "force")
 def classify_issuer(issuer: str | None, is_kov: bool) -> list[str]:
     """Return the list of regulation classes to attach to an act node.
 
+    State-level regulations carry ``estleg:NationalRegulation`` (plus a more
+    specific issuer subclass). Municipal regulations are NOT national
+    legislation — a KOV määrus is enacted by a local council, not by a
+    state organ — so a KOV act gets ``estleg:MunicipalRegulation`` only and
+    must never also be typed ``estleg:NationalRegulation`` (issue #267: the
+    two are contradictory at the instance level — a municipal reg is not a
+    national reg).
+
     Examples:
       Vabariigi Valitsus            -> [NationalRegulation, GovernmentRegulation]
       Sotsiaalminister              -> [NationalRegulation, MinisterialRegulation]
       Eesti Pank                    -> [NationalRegulation]
-      <KOV name>, is_kov=True       -> [NationalRegulation, MunicipalRegulation]
+      <KOV name>, is_kov=True       -> [MunicipalRegulation]
     """
     if is_kov:
-        return ["estleg:NationalRegulation", "estleg:MunicipalRegulation"]
+        return ["estleg:MunicipalRegulation"]
 
     classes = ["estleg:NationalRegulation"]
     if not issuer:
@@ -611,7 +619,7 @@ def build_regulation_index(
         act_entries.append(entry)
 
     return {
-        "generated": datetime.now(timezone.utc).isoformat(),
+        "generated": f"{BUILD_EVALUATION_DATE}T00:00:00+00:00",  # #295: pinned deterministic stamp (no wall-clock churn in tracked artifact)
         "kehtiv": kehtiv,
         "kov": is_kov,
         "totalRegulations": len(files),

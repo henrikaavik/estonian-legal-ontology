@@ -215,6 +215,43 @@ class TestParseHtmlTable:
         rows = gcd.parse_html_table(html)
         assert rows[0]["link"] == "https://rikos.rik.ee/lahendid/abc"
 
+    @pytest.mark.skipif(
+        not gcd._BS4_AVAILABLE, reason="bs4 unavailable — cannot compare paths"
+    )
+    def test_bs4_and_regex_paths_agree_on_inline_tags_and_single_quoted_href(
+        self,
+    ) -> None:
+        """#272: the bs4 and regex parsers must agree on ``case_nr`` and
+        ``link``. Pre-fix, an inline tag inside the case-number cell made bs4
+        emit ``3 -1-1`` (space-joined) while the regex emitted ``3-1-1``, and a
+        single-quoted ``href='...'`` was extracted by bs4 but dropped by the
+        regex (it matched only double quotes) — a silent IRI/link divergence
+        whenever bs4 was absent.
+        """
+        html = """
+        <table class="search-result"><tr>
+            <td>01.01.2025</td>
+            <td><a href='/lahendid/abc'>3<wbr>-1-1<sup>1</sup></a></td>
+            <td>Kohtuotsus | A</td>
+            <td>1 0</td>
+        </tr></table>
+        """
+        bs4_rows = gcd._parse_with_bs4(html)
+        regex_rows = gcd._parse_with_regex(html)
+
+        assert len(bs4_rows) == 1
+        assert len(regex_rows) == 1
+        # The two paths must yield byte-identical case_nr, link, and object_id.
+        assert bs4_rows[0]["case_nr"] == regex_rows[0]["case_nr"]
+        assert bs4_rows[0]["link"] == regex_rows[0]["link"]
+        assert bs4_rows[0]["object_id"] == regex_rows[0]["object_id"]
+        # And both must have actually parsed the single-quoted href (not "").
+        assert regex_rows[0]["link"] == "https://rikos.rik.ee/lahendid/abc"
+        # Inline tags are joined with a single space (matching bs4's
+        # get_text(" ")) and runs of whitespace are collapsed — never doubled.
+        assert regex_rows[0]["case_nr"] == "3 -1-1 1"
+        assert regex_rows[0]["object_id"] == "1 0"
+
 
 # ---------------------------------------------------------------------------
 # decision_to_node

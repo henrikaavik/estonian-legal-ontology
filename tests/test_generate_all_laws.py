@@ -422,6 +422,45 @@ class TestParagraphIdSuperscript:
         el = ET.fromstring(xml)
         assert generate_all_laws._paragraph_id_suffix(el) == "14"
 
+    def test_chapter_id_suffix_ylaIndeks(self):
+        """Issue #253: a chapter ``6¹`` must yield suffix ``6_1`` mirroring
+        the paragraph helper, not the bare ``6`` that collides with ``6``.
+        """
+        ch = ET.fromstring(
+            "<peatykk><peatykkNr ylaIndeks='1'>6</peatykkNr>"
+            "<peatykkPealkiri>Kuues prim</peatykkPealkiri></peatykk>"
+        )
+        assert generate_all_laws._chapter_id_suffix(ch, "6", "Kuues prim") == "6_1"
+
+    def test_chapter_id_suffix_unicode_superscript_in_kuvatavnr(self):
+        ch = ET.fromstring(
+            "<peatykk><peatykkNr>6</peatykkNr>"
+            "<kuvatavNr>6² peatükk</kuvatavNr>"
+            "<peatykkPealkiri>Kuues</peatykkPealkiri></peatykk>"
+        )
+        assert generate_all_laws._chapter_id_suffix(ch, "6", "Kuues") == "6_2"
+
+    def test_chapter_id_suffix_plain_number(self):
+        ch = ET.fromstring(
+            "<peatykk><peatykkNr>6</peatykkNr>"
+            "<peatykkPealkiri>Kuues</peatykkPealkiri></peatykk>"
+        )
+        assert generate_all_laws._chapter_id_suffix(ch, "6", "Kuues") == "6"
+
+    def test_chapter_id_suffix_title_fallback_when_no_number(self):
+        ch = ET.fromstring(
+            "<peatykk><peatykkPealkiri>Üldsätted</peatykkPealkiri></peatykk>"
+        )
+        # No number -> truncated, transliterated title suffix (unchanged behaviour).
+        assert generate_all_laws._chapter_id_suffix(ch, "", "Üldsätted") == "Uldsatted"
+
+    def test_division_id_suffix_ylaIndeks(self):
+        jagu = ET.fromstring(
+            "<jagu><jaguNr ylaIndeks='1'>3</jaguNr>"
+            "<jaguPealkiri>Kolmas prim</jaguPealkiri></jagu>"
+        )
+        assert generate_all_laws._division_id_suffix(jagu, "3", "Kolmas prim") == "3_1"
+
     def test_duplicate_paragraphs_get_distinct_iris_in_full_law(self):
         """Round-trip: a law with two paragrahvs that share
         ``paragrahvNr=22`` (one plain, one with ``ylaIndeks=1``) must
@@ -511,8 +550,96 @@ class TestParagraphIdSuperscript:
             for node in graph
         )
 
-    def test_repeated_chapter_numbers_get_resolving_structural_ids(self):
-        """Repeated RT chapter numbers must not rely on fix_all duplicate repair."""
+    def test_superscript_chapters_get_distinct_non_dup_structural_ids(self):
+        """Issue #253: chapter ``6`` and chapter ``6¹`` must yield distinct,
+        superscript-aware structural ids (``_6`` vs ``_6_1``) — NOT the
+        old ``_6`` + ``_6_Dup2`` band-aid — and each chapter's provisions
+        must land in its OWN cluster (no orphan top concepts).
+        """
+        xml = """
+        <akt>
+          <sisu>
+            <peatykk>
+              <peatykkNr>6</peatykkNr>
+              <peatykkPealkiri>Esimene peatükk</peatykkPealkiri>
+              <paragrahv>
+                <paragrahvNr>42</paragrahvNr>
+                <kuvatavNr>S 42.</kuvatavNr>
+                <loige><loigeNr>1</loigeNr><tavatekst>Esimene tekst.</tavatekst></loige>
+              </paragrahv>
+            </peatykk>
+            <peatykk>
+              <peatykkNr ylaIndeks="1">6</peatykkNr>
+              <peatykkPealkiri>Teine peatükk</peatykkPealkiri>
+              <paragrahv>
+                <paragrahvNr ylaIndeks="1">42</paragrahvNr>
+                <kuvatavNr>S 42 sup1.</kuvatavNr>
+                <loige><loigeNr>1</loigeNr><tavatekst>Teine tekst.</tavatekst></loige>
+              </paragrahv>
+              <paragrahv>
+                <paragrahvNr ylaIndeks="2">42</paragrahvNr>
+                <kuvatavNr>S 42 sup2.</kuvatavNr>
+                <loige><loigeNr>1</loigeNr><tavatekst>Kolmas tekst.</tavatekst></loige>
+              </paragrahv>
+            </peatykk>
+          </sisu>
+        </akt>
+        """
+        doc = generate_all_laws.generate_law_jsonld(
+            "Korduv peatükk seadus",
+            "korduv_peatukk_seadus",
+            ET.fromstring(xml),
+            abbreviation="KPSA",
+            allocator=generate_all_laws.PrefixAllocator(registry={}),
+        )
+        graph = doc["@graph"]
+
+        ids = [node["@id"] for node in graph if "@id" in node]
+        assert len(ids) == len(set(ids))
+        id_set = set(ids)
+        # Distinct superscript-aware ids, NO _Dup band-aid.
+        assert "estleg:Cluster_KPSA_6" in id_set
+        assert "estleg:Cluster_KPSA_6_1" in id_set
+        assert "estleg:Chapter_KPSA_6" in id_set
+        assert "estleg:Chapter_KPSA_6_1" in id_set
+        assert not any("_Dup" in i for i in ids), [i for i in ids if "_Dup" in i]
+
+        # Each chapter's provisions land in its OWN cluster.
+        def _cluster_of(par_iri: str) -> str:
+            node = next(n for n in graph if n.get("@id") == par_iri)
+            return node["estleg:requestedCluster"]["@id"]
+
+        assert _cluster_of("estleg:KPSA_Par_42") == "estleg:Cluster_KPSA_6"
+        assert _cluster_of("estleg:KPSA_Par_42_1") == "estleg:Cluster_KPSA_6_1"
+        assert _cluster_of("estleg:KPSA_Par_42_2") == "estleg:Cluster_KPSA_6_1"
+
+        # provisionCount reflects the real assignment (1 vs 2), not int collapse.
+        counts = {
+            n["@id"]: n.get("estleg:provisionCount")
+            for n in graph
+            if n.get("@id", "").startswith("estleg:Cluster_KPSA_")
+        }
+        assert counts["estleg:Cluster_KPSA_6"] == 1
+        assert counts["estleg:Cluster_KPSA_6_1"] == 2
+
+        # No orphan top concepts: every scheme top concept is referenced by a
+        # provision (directly, or via a part-level skos:narrower).
+        scheme = next(
+            n for n in graph if n.get("@type") == ["skos:ConceptScheme"]
+        )
+        referenced = {
+            n["estleg:requestedCluster"]["@id"]
+            for n in graph
+            if isinstance(n.get("estleg:requestedCluster"), dict)
+        }
+        for top in scheme["skos:hasTopConcept"]:
+            assert top["@id"] in referenced, f"orphan top concept {top['@id']}"
+
+    def test_genuinely_duplicate_chapter_numbers_use_dedupe_last_resort(self):
+        """When RT really repeats the same chapter number (no superscript,
+        same osa), ``_dedupe_structural_id`` remains the last-resort
+        disambiguator — both chapters stay citable and provisions resolve.
+        """
         xml = """
         <akt>
           <sisu>
@@ -550,10 +677,72 @@ class TestParagraphIdSuperscript:
         id_set = set(ids)
         assert "estleg:Cluster_KPSA_6" in id_set
         assert "estleg:Cluster_KPSA_6_Dup2" in id_set
+        # The two paragraphs resolve to the two distinct clusters.
+        par16 = next(n for n in doc["@graph"] if n.get("@id") == "estleg:KPSA_Par_16")
+        par17 = next(n for n in doc["@graph"] if n.get("@id") == "estleg:KPSA_Par_17")
+        assert par16["estleg:requestedCluster"]["@id"] == "estleg:Cluster_KPSA_6"
+        assert par17["estleg:requestedCluster"]["@id"] == "estleg:Cluster_KPSA_6_Dup2"
         for node in doc["@graph"]:
             ref = node.get("estleg:requestedCluster")
             if isinstance(ref, dict):
                 assert ref["@id"] in id_set
+
+    def test_same_chapter_number_across_osa_in_single_file_does_not_collide(self):
+        """Issue #253: a non-MULTIPART law with >1 osa flows through the
+        single-file path. The same ``peatykkNr`` in different osa must be
+        namespaced by osa rather than colliding onto ``_Dup``.
+        """
+        xml = """
+        <akt>
+          <sisu>
+            <osa>
+              <osaNr>1</osaNr>
+              <osaPealkiri>Esimene osa</osaPealkiri>
+              <peatykk>
+                <peatykkNr>1</peatykkNr>
+                <peatykkPealkiri>Osa 1 peatükk 1</peatykkPealkiri>
+                <paragrahv>
+                  <paragrahvNr>1</paragrahvNr>
+                  <kuvatavNr>S 1.</kuvatavNr>
+                  <loige><loigeNr>1</loigeNr><tavatekst>Esimene tekst.</tavatekst></loige>
+                </paragrahv>
+              </peatykk>
+            </osa>
+            <osa>
+              <osaNr>2</osaNr>
+              <osaPealkiri>Teine osa</osaPealkiri>
+              <peatykk>
+                <peatykkNr>1</peatykkNr>
+                <peatykkPealkiri>Osa 2 peatükk 1</peatykkPealkiri>
+                <paragrahv>
+                  <paragrahvNr>9</paragrahvNr>
+                  <kuvatavNr>S 9.</kuvatavNr>
+                  <loige><loigeNr>1</loigeNr><tavatekst>Teine tekst.</tavatekst></loige>
+                </paragrahv>
+              </peatykk>
+            </osa>
+          </sisu>
+        </akt>
+        """
+        doc = generate_all_laws.generate_law_jsonld(
+            "Kahe osaga seadus",
+            "kahe_osaga_seadus",
+            ET.fromstring(xml),
+            abbreviation="OSAX",
+            allocator=generate_all_laws.PrefixAllocator(registry={}),
+        )
+        graph = doc["@graph"]
+        ids = [node["@id"] for node in graph if "@id" in node]
+        assert len(ids) == len(set(ids))
+        assert not any("_Dup" in i for i in ids), [i for i in ids if "_Dup" in i]
+        id_set = set(ids)
+        # Osa-namespaced, distinct clusters for the same peatykkNr.
+        assert "estleg:Cluster_OSAX_Osa1_1" in id_set
+        assert "estleg:Cluster_OSAX_Osa2_1" in id_set
+        par1 = next(n for n in graph if n.get("@id") == "estleg:OSAX_Par_1")
+        par9 = next(n for n in graph if n.get("@id") == "estleg:OSAX_Par_9")
+        assert par1["estleg:requestedCluster"]["@id"] == "estleg:Cluster_OSAX_Osa1_1"
+        assert par9["estleg:requestedCluster"]["@id"] == "estleg:Cluster_OSAX_Osa2_1"
 
 
 class TestProvisionSummaryFallback:
@@ -729,10 +918,81 @@ class TestNestedChapterAttribution:
         assert par5["estleg:isPartOf"]["@id"] == div1["@id"]
         assert par7["estleg:isPartOf"]["@id"] == div2["@id"]
 
+        # Issue #253: jagu paragraphs still inherit the CHAPTER's cluster
+        # (the division is only their isPartOf container).
+        chapter = next(n for n in doc["@graph"]
+                       if n.get("@id", "").startswith("estleg:Chapter_TNXX_"))
+        cluster_id = chapter["owl:sameAs"]["@id"]
+        assert par5["estleg:requestedCluster"]["@id"] == cluster_id
+        assert par7["estleg:requestedCluster"]["@id"] == cluster_id
+
         # Every paragraph maps to exactly one container.
         par_iris = [n.get("@id") for n in doc["@graph"]
                     if "_Par_" in (n.get("@id") or "")]
         assert len(par_iris) == len(set(par_iris))
+
+    def test_chapter_whose_paragraphs_all_live_in_divisions_is_not_orphaned(self):
+        """Issue #253 regression: when EVERY paragraph of a chapter sits
+        inside a jagu, the chapter's cluster used to receive no provision
+        references (provisionCount=0, orphaned top concept). The jagu
+        paragraphs must inherit the chapter cluster.
+        """
+        xml = """
+        <akt>
+          <sisu>
+            <peatykk>
+              <peatykkNr>4</peatykkNr>
+              <peatykkPealkiri>Meetmed</peatykkPealkiri>
+              <jagu>
+                <jaguNr>1</jaguNr>
+                <jaguPealkiri>Esimene jagu</jaguPealkiri>
+                <paragrahv>
+                  <paragrahvNr>20</paragrahvNr>
+                  <kuvatavNr>S 20.</kuvatavNr>
+                  <loige><loigeNr>1</loigeNr><tavatekst>Esimene säte.</tavatekst></loige>
+                </paragrahv>
+                <paragrahv>
+                  <paragrahvNr>21</paragrahvNr>
+                  <kuvatavNr>S 21.</kuvatavNr>
+                  <loige><loigeNr>1</loigeNr><tavatekst>Teine säte.</tavatekst></loige>
+                </paragrahv>
+              </jagu>
+            </peatykk>
+          </sisu>
+        </akt>
+        """
+        generate_all_laws._used_prefixes.clear()
+        doc = generate_all_laws.generate_law_jsonld(
+            "Jaoga seadus",
+            "jaoga_seadus",
+            ET.fromstring(xml),
+            abbreviation="JAGU",
+            allocator=generate_all_laws.PrefixAllocator(registry={}),
+        )
+        graph = doc["@graph"]
+        cluster = next(
+            n for n in graph if n.get("@id") == "estleg:Cluster_JAGU_4"
+        )
+        assert cluster["estleg:provisionCount"] == 2
+
+        par20 = next(n for n in graph if n.get("@id") == "estleg:JAGU_Par_20")
+        par21 = next(n for n in graph if n.get("@id") == "estleg:JAGU_Par_21")
+        # Cluster = the chapter's; container = the division's.
+        assert par20["estleg:requestedCluster"]["@id"] == "estleg:Cluster_JAGU_4"
+        assert par21["estleg:requestedCluster"]["@id"] == "estleg:Cluster_JAGU_4"
+        assert par20["estleg:isPartOf"]["@id"].startswith("estleg:Division_JAGU_")
+
+        # No orphan top concepts.
+        scheme = next(
+            n for n in graph if n.get("@type") == ["skos:ConceptScheme"]
+        )
+        referenced = {
+            n["estleg:requestedCluster"]["@id"]
+            for n in graph
+            if isinstance(n.get("estleg:requestedCluster"), dict)
+        }
+        for top in scheme["skos:hasTopConcept"]:
+            assert top["@id"] in referenced
 
 
 # ---------------------------------------------------------------------------
@@ -807,6 +1067,127 @@ class TestCollectFullTextLoigeBoundaries:
         el = ET.fromstring(xml)
         text = generate_all_laws.collect_full_text(el)
         assert "Yks lause vaid" in text
+
+
+# ---------------------------------------------------------------------------
+# Issue #255 — amendment-marker metadata must not leak into legalText/summary
+# ---------------------------------------------------------------------------
+
+
+class TestAmendmentMarkerExclusion:
+    """All three text extractors must prune ``muutmismarge`` /
+    ``avaldamismarge`` / ``joustumismarge`` subtrees so RT editorial
+    metadata never reaches ``estleg:legalText`` / ``estleg:summary``.
+    """
+
+    _MARKER_NOISE = ("Kehtetu", "jõustumine muudetud", "RT I,", "paberkandjal")
+
+    def _assert_clean(self, text: str, *, must_contain: str) -> None:
+        assert must_contain in text, f"lost real body in: {text!r}"
+        for noise in self._MARKER_NOISE:
+            assert noise not in text, f"marker {noise!r} leaked into: {text!r}"
+
+    def test_collect_full_text_drops_marker_sibling_of_loige(self):
+        # noorsootoo_seadus §11 shape: paragrahv > muutmismarge > tavatekst.
+        xml = """
+        <paragrahv>
+          <paragrahvNr>11</paragrahvNr>
+          <kuvatavNr>S 11.</kuvatavNr>
+          <muutmismarge>
+            <tavatekst>Kehtetu -</tavatekst>
+            <tavatekst>(jõustumine muudetud - RT I, 22.12.2013, 1)</tavatekst>
+          </muutmismarge>
+          <loige><loigeNr>1</loigeNr><tavatekst>Päris sisu siin.</tavatekst></loige>
+        </paragrahv>
+        """
+        text = generate_all_laws.collect_full_text(ET.fromstring(xml))
+        self._assert_clean(text, must_contain="Päris sisu siin.")
+
+    def test_collect_full_text_fallback_drops_marker_only_paragraph(self):
+        # A marker-only paragraph (no loige) must not emit the marker as body.
+        xml = """
+        <paragrahv>
+          <paragrahvNr>11</paragrahvNr>
+          <muutmismarge>
+            <tavatekst>Kehtetu -</tavatekst>
+            <tavatekst>(jõustumine muudetud - RT I, 22.12.2013, 1)</tavatekst>
+          </muutmismarge>
+        </paragrahv>
+        """
+        text = generate_all_laws.collect_full_text(ET.fromstring(xml))
+        assert text == "", f"marker leaked via fallback: {text!r}"
+
+    def test_collect_full_text_drops_marker_nested_inside_loige(self):
+        xml = """
+        <paragrahv>
+          <paragrahvNr>5</paragrahvNr>
+          <kuvatavNr>S 5.</kuvatavNr>
+          <loige>
+            <loigeNr>1</loigeNr>
+            <tavatekst>Tegelik tekst kehtib.</tavatekst>
+            <joustumismarge><tavatekst>(jõustumine muudetud - RT I, 01.01.2020, 5)</tavatekst></joustumismarge>
+          </loige>
+        </paragrahv>
+        """
+        text = generate_all_laws.collect_full_text(ET.fromstring(xml))
+        self._assert_clean(text, must_contain="Tegelik tekst kehtib.")
+
+    def test_collect_text_summary_drops_all_marker_kinds(self):
+        xml = """
+        <paragrahv>
+          <paragrahvNr>2</paragrahvNr>
+          <kuvatavNr>S 2.</kuvatavNr>
+          <avaldamismarge><tavatekst>terviktekst RT paberkandjal</tavatekst></avaldamismarge>
+          <loige><loigeNr>1</loigeNr><tavatekst>Õige sisu kehtib.</tavatekst></loige>
+          <joustumismarge><lause>(jõustumine muudetud - RT I, 03.03.2019, 7)</lause></joustumismarge>
+        </paragrahv>
+        """
+        text = generate_all_laws.collect_text(ET.fromstring(xml))
+        self._assert_clean(text, must_contain="Õige sisu kehtib.")
+
+    def test_loige_body_text_drops_nested_marker(self):
+        lg = ET.fromstring(
+            "<loige><loigeNr>1</loigeNr>"
+            "<tavatekst>Säte kehtib edasi.</tavatekst>"
+            "<muutmismarge><tavatekst>Kehtetu -</tavatekst>"
+            "<tavatekst>(jõustumine muudetud - RT I, 1)</tavatekst></muutmismarge>"
+            "</loige>"
+        )
+        body = generate_all_laws._loige_body_text(lg)
+        self._assert_clean(body, must_contain="Säte kehtib edasi.")
+
+    def test_marker_text_absent_from_emitted_provision_node(self):
+        # End-to-end: the marker must not appear in legalText OR summary.
+        xml = """
+        <akt><sisu>
+          <paragrahv>
+            <paragrahvNr>11</paragrahvNr>
+            <kuvatavNr>S 11.</kuvatavNr>
+            <muutmismarge>
+              <tavatekst>Kehtetu -</tavatekst>
+              <tavatekst>(jõustumine muudetud - RT I, 22.12.2013, 1)</tavatekst>
+            </muutmismarge>
+            <loige><loigeNr>1</loigeNr><tavatekst>Sisuline säte.</tavatekst></loige>
+          </paragrahv>
+        </sisu></akt>
+        """
+        generate_all_laws._used_prefixes.clear()
+        doc = generate_all_laws.generate_law_jsonld(
+            "Marker seadus",
+            "marker_seadus",
+            ET.fromstring(xml),
+            abbreviation="MRKR",
+            allocator=generate_all_laws.PrefixAllocator(registry={}),
+        )
+        par = next(
+            n for n in doc["@graph"]
+            if n.get("@id") == "estleg:MRKR_Par_11"
+        )
+        for field in ("estleg:legalText", "estleg:summary"):
+            value = par.get(field, "")
+            for noise in self._MARKER_NOISE:
+                assert noise not in value, f"{noise!r} leaked into {field}: {value!r}"
+        assert "Sisuline säte." in par["estleg:legalText"]
 
 
 # ---------------------------------------------------------------------------

@@ -209,7 +209,13 @@ def fetch_xml(
     cache_dir.mkdir(parents=True, exist_ok=True)
     cache_path = cache_dir / f"{cache_name}.xml"
 
-    if not refresh and cache_path.exists() and cache_path.stat().st_size > 1000:
+    # Reuse any cached file the write path would have accepted. The write
+    # guard below only persists XML of at least ``min_size`` bytes, so the
+    # read guard must use the SAME threshold — a stricter read guard (the
+    # old hard-coded ``> 1000``) silently re-fetched every 200–1000-byte
+    # cached file on each run (issue #296). Parse failures still fall
+    # through to a fresh fetch, so a corrupt cache self-heals.
+    if not refresh and cache_path.exists() and cache_path.stat().st_size >= min_size:
         try:
             return ET.parse(str(cache_path)).getroot()
         except ET.ParseError:

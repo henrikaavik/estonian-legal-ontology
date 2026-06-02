@@ -291,7 +291,11 @@ def generate_vos_part(root: ET.Element, xml_url: str, osa_nr: str) -> dict | Non
     # Build graph
     prefix = "VOS"
     osa_safe = sanitize_id(osa_nr)
-    ontology_id = f"estleg:{prefix}_Osa{osa_safe}_{par_min}_{par_max}"
+    # Snapshot-stable act IRI: the part is identified by its osa number
+    # alone, not by the §min–§max range, so the act @id does not churn when
+    # a redaction inserts/removes a paragraph (#269c). The range stays in
+    # the human-readable label below.
+    ontology_id = f"estleg:{prefix}_Osa{osa_safe}"
     class_iri = f"estleg:LegalProvision_VOS_osa{osa_safe}"
 
     graph: list[dict] = [
@@ -434,10 +438,18 @@ def generate_vos_part(root: ET.Element, xml_url: str, osa_nr: str) -> dict | Non
 def generate_tsus_part1(root: ET.Element, xml_url: str) -> dict | None:
     """Generate JSON-LD for TsÜS Osa 1."""
     osa = find_osa(root, "1")
-    if osa is None:
-        # TsÜS might not have explicit osa markers for part 1
-        # Try to find paragraphs 1-7 directly
-        print("  Osa 1 not found as explicit element, looking for §§ 1-7...")
+    osa_paragrahvid = extract_paragrahvid(osa) if osa is not None else []
+    # In the real TsÜS XML the Osa 1 ``<osa>`` is a *flat marker*: it holds
+    # only ``osaNr``/``kuvatavNr``/``osaPealkiri`` and the paragraphs are
+    # siblings further down the tree. The pre-fix ``if osa is None:`` guard
+    # therefore never fired (the marker is non-None), and
+    # ``extract_paragrahvid(osa)`` returned 0 → an empty artifact (#269).
+    # Treat a marker with no paragrahv descendants as unusable and fall
+    # through to the §§ 1-7 scan.
+    if osa is None or not osa_paragrahvid:
+        # TsÜS might not have explicit osa markers for part 1, or the marker
+        # is flat. Try to find paragraphs 1-7 directly.
+        print("  Osa 1 marker empty/absent, looking for §§ 1-7...")
         paragrahvid = []
         for p in root.iter():
             if ln(p.tag) == "paragrahv":
@@ -455,7 +467,7 @@ def generate_tsus_part1(root: ET.Element, xml_url: str) -> dict | None:
     else:
         osa_title = child_text(osa, "osaPealkiri") or "Üldsätted"
         print(f"  Found: 1. osa – {osa_title}")
-        paragrahvid = extract_paragrahvid(osa)
+        paragrahvid = osa_paragrahvid
 
     print(f"  Paragraphs found: {len(paragrahvid)}")
 
@@ -473,7 +485,8 @@ def generate_tsus_part1(root: ET.Element, xml_url: str) -> dict | None:
 
     graph: list[dict] = [
         {
-            "@id": f"estleg:TsUS_Osa1_{par_min}_{par_max}",
+            # Snapshot-stable act IRI (no volatile §min–§max range) — #269c.
+            "@id": "estleg:TsUS_Osa1",
             "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
             "rdfs:label": f"TsÜS Osa 1 (Üldsätted) §{par_min}–{par_max} kaardistus",
             "dc:source": "Tsiviilseadustiku üldosa seadus",
@@ -630,7 +643,11 @@ def main(argv: list[str] | None = None) -> int:
         print(f"\n--- Generating VÕS Osa {osa_nr} ---")
         doc = generate_vos_part(vos_root, vos_url, osa_nr)
         if doc:
-            out_path = out_dir / f"volaigusseadus_osa{osa_nr}_peep.json"
+            # Slug MUST match generate_all_laws.slugify("Võlaõigusseadus")
+            # == "volaoigusseadus" (õ→o). The old "volaigusseadus" dropped
+            # the second 'o', producing duplicate divergent files under a
+            # second slug/IRI namespace (#269).
+            out_path = out_dir / f"volaoigusseadus_osa{osa_nr}_peep.json"
             save_json(out_path, doc)
             node_count = len(doc["@graph"])
             print(f"  Generated {node_count} nodes")

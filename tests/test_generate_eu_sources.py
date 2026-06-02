@@ -76,6 +76,49 @@ def test_curia_preserves_full_title_separately_from_label():
     assert node["dcterms:title"]["@value"] == curia.clean_title(long_title)
 
 
+def test_curia_extract_case_number_parses_efta_prefix():
+    """#296: EFTA case numbers (CELEX sector ``E`` → EFTACourt) start with
+    ``E-``; the prefix class must include ``E`` or ``euCaseNumber`` is empty
+    even though the decision classifies as an EFTA Court decision."""
+    assert curia.extract_case_number("Kohtuasi E-1/20") == "E-1/20"
+    # Bare (no "Kohtuasi") and joined-case forms also parse.
+    assert curia.extract_case_number("E-9/14") == "E-9/14"
+    assert (
+        curia.extract_case_number("Liidetud kohtuasjad E-3/13 ja E-20/13")
+        == "E-3/13 ja E-20/13"
+    )
+    # Existing CJEU prefixes still parse (no regression).
+    assert curia.extract_case_number("Kohtuasi C-438/14") == "C-438/14"
+
+
+def test_curia_emits_valid_document_date():
+    """A well-formed YYYY-MM-DD date is emitted as an xsd:date literal."""
+    node = curia.decision_to_node(
+        {"celex": "62024CJ0001", "title": "Kohtuasi C-1/24", "date": "2024-03-15"}
+    )
+    assert node["estleg:documentDate"] == {"@value": "2024-03-15", "@type": "xsd:date"}
+
+
+@pytest.mark.parametrize(
+    "bad_date",
+    ["15.03.2024", "2024-13-01", "2024-03", "not-a-date", "2024/03/15"],
+)
+def test_curia_skips_malformed_document_date(bad_date, capsys):
+    """#296: a non-YYYY-MM-DD CELLAR date must be skipped (never emitted into
+    an xsd:date literal, which would break SHACL) and logged — mirroring the
+    RK ``decisionDate`` guard. The rest of the node is still produced."""
+    node = curia.decision_to_node(
+        {"celex": "62024CJ0001", "title": "Kohtuasi C-1/24", "date": bad_date}
+    )
+    assert "estleg:documentDate" not in node
+    # Node is otherwise intact.
+    assert node["estleg:celexNumber"] == "62024CJ0001"
+    # The skip is surfaced on stderr.
+    captured = capsys.readouterr()
+    assert "documentDate" in captured.err
+    assert bad_date in captured.err
+
+
 def test_harmonisation_query_is_ordered(monkeypatch, tmp_path):
     queries: list[str] = []
 

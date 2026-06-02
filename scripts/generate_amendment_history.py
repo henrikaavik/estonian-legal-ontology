@@ -19,7 +19,6 @@ import re
 import sys
 import time
 import xml.etree.ElementTree as ET
-from datetime import date, datetime, timezone
 from pathlib import Path
 
 from estleg_common import (
@@ -44,6 +43,14 @@ EELNOUD_DIR = KRR_DIR / "eelnoud"
 # AmendmentLink_ IRIs minted below carry the compact abbreviation rather than
 # the long ``<base_slug>`` segment.
 LAW_ABBREVIATIONS_PATH = REPO_ROOT / "data" / "law_abbreviations.json"
+
+# Pinned, deterministic ``run_timestamp`` for the git-tracked coverage report
+# (issue #295). The previous ``datetime.now(timezone.utc)`` value re-diffed the
+# tracked coverage file on every run (timestamp-only churn). ``CoverageReport``
+# requires a valid UTC ISO-8601 timestamp, so we pin a fixed sentinel rather
+# than emitting a live wall clock. The epoch makes "this is not a real run
+# clock" unmistakable; genuine run time lives in ``wall_time_seconds``.
+PINNED_RUN_TIMESTAMP = "1970-01-01T00:00:00+00:00"
 
 NS = "https://data.riik.ee/ontology/estleg#"
 
@@ -274,15 +281,86 @@ def extract_amendments_from_xml(
             rt_artikkel = ct(avaldamismarge, "RTartikkel") or ""
             akt_viide = ct(avaldamismarge, "aktViide")
 
-            if rt_osa or rt_aasta:
-                amendment["rt_reference"] = f"{rt_osa}, {rt_aasta}, {rt_nr}, {rt_artikkel}".strip(", ")
+            # Only mint an rt_reference when the components are enough to be
+            # unique (issue #263). A reference needs the publication YEAR plus
+            # at least one of the number/article; otherwise we produce a
+            # degenerate stub like ``"RT I, , , 13"`` that is neither a valid
+            # RT citation nor a usable dedup key. In that case leave it None
+            # and let the (date, entry_into_force, akt_viide) tuple key in.
+            if rt_aasta and (rt_nr or rt_artikkel):
+                amendment["rt_reference"] = (
+                    f"{rt_osa}, {rt_aasta}, {rt_nr}, {rt_artikkel}".strip(", ")
+                )
             if akt_viide:
                 amendment["akt_viide"] = akt_viide
 
         if amendment["date"] or amendment["rt_reference"]:
             amendments.append(amendment)
 
-    return amendments
+    return _dedupe_amendments(amendments)
+
+
+def _amend_dedup_key(amend: dict) -> tuple:
+    """Return the identity key used to collapse duplicate amendment records.
+
+    RT repeats the SAME amending act across many ``<muutmismarge>`` markers
+    (issue #263). The canonical identity is the RT publication reference; when
+    that is absent (degenerate/empty avaldamismarge) we fall back to the
+    ``(date, entry_into_force, akt_viide)`` tuple so two markers describing the
+    same act still collapse instead of minting spurious ``_2``/``_3`` nodes.
+    """
+    rt = amend.get("rt_reference")
+    if rt:
+        return ("rt", rt)
+    return (
+        "tuple",
+        amend.get("date") or "",
+        amend.get("entry_into_force") or "",
+        amend.get("akt_viide") or "",
+    )
+
+
+def _amend_completeness(amend: dict) -> int:
+    """Score how complete an amendment record is.
+
+    Used when merging duplicates so the most-complete record wins (issue
+    #263 — the duplicate marker often carries less data, e.g. ``date: None``).
+    """
+    return sum(
+        1
+        for key in ("date", "rt_reference", "entry_into_force", "akt_viide")
+        if amend.get(key)
+    )
+
+
+def _dedupe_amendments(amendments: list[dict]) -> list[dict]:
+    """Collapse duplicate amendment records emitted from one XML.
+
+    Duplicates (same RT reference, or — when no reference — same
+    ``(date, entry_into_force, akt_viide)`` tuple) are merged into a single
+    record. The most-complete record wins outright; remaining records then
+    backfill any field the winner is still missing. Insertion order of the
+    first occurrence is preserved so chain IDs stay stable across reruns.
+    """
+    merged: dict[tuple, dict] = {}
+    order: list[tuple] = []
+    for amend in amendments:
+        key = _amend_dedup_key(amend)
+        existing = merged.get(key)
+        if existing is None:
+            merged[key] = dict(amend)
+            order.append(key)
+            continue
+        # Pick the more-complete record as the base, then backfill.
+        if _amend_completeness(amend) > _amend_completeness(existing):
+            winner, loser = dict(amend), existing
+        else:
+            winner, loser = existing, amend
+        for field_name in ("date", "rt_reference", "entry_into_force", "akt_viide"):
+            if not winner.get(field_name) and loser.get(field_name):
+                winner[field_name] = loser[field_name]
+        merged[key] = winner
+    return [merged[k] for k in order]
 
 
 def extract_rt_references_from_text(
@@ -585,10 +663,13 @@ def short_prefix_for_base_slug(
 def _stable_amend_suffix(amend: dict) -> str:
     """Compute a stable IRI suffix for an XML amendment record.
 
-    Hashes ``rt_reference`` (preferred — unique RT publication ref) or,
-    when missing, the (date, entry_into_force) pair so the resulting
-    Amendment IRI doesn't shift between regenerations just because one
-    earlier amendment was inserted upstream.
+    Hashes the amendment's canonical identity (issue #263): the
+    ``rt_reference`` when present (the unique RT publication ref), else the
+    ``(date, entry_into_force, akt_viide)`` tuple. This mirrors
+    ``_amend_dedup_key`` so two records that dedup to the same identity hash
+    identically (idempotent reruns) while two genuinely-distinct records hash
+    differently — leaving the ``_N`` disambiguator a true last resort rather
+    than the over-counting source it was when only ``rt_reference`` was hashed.
     """
     payload = amend.get("rt_reference") or "|".join(
         [
@@ -599,6 +680,39 @@ def _stable_amend_suffix(amend: dict) -> str:
     )
     digest = hashlib.md5(payload.encode("utf-8")).hexdigest()
     return digest[:10]
+
+
+# Act-level type markers. ``estleg:amendedBy`` is an act-level property: it
+# may only be stamped onto a node typed as an act (covers laws, state
+# regulations, KOV regulations). Mirrors ``extract_temporal_data.ACT_TYPE_MARKERS``
+# / ``find_act_node`` (issue #128, #289) so this script stops the old
+# ``graph[0]`` fallback that could stamp the link onto a ``LegalConcept``.
+_ACT_TYPE_MARKERS = {"estleg:Act"}
+
+
+def find_act_node(graph: list[dict]) -> dict | None:
+    """Return the act node ``estleg:amendedBy`` belongs on, or None.
+
+    Preference order (mirrors ``extract_temporal_data.find_act_node``):
+    the ``owl:Ontology`` act-metadata node when it is also typed
+    ``estleg:Act`` (the historical write site), then any ``estleg:Act``-typed
+    node. Returns ``None`` when neither exists — the caller must then SKIP
+    enrichment for that file rather than falling back to ``graph[0]`` (some
+    peeps, e.g. ``tsiviilseadustik_osa6/osa7``, have ``graph[0]`` =
+    ``estleg:LegalConcept``).
+    """
+    for node in graph:
+        if not isinstance(node, dict):
+            continue
+        types = set(node.get("@type") or [])
+        if "owl:Ontology" in types and types & _ACT_TYPE_MARKERS:
+            return node
+    for node in graph:
+        if not isinstance(node, dict):
+            continue
+        if set(node.get("@type") or []) & _ACT_TYPE_MARKERS:
+            return node
+    return None
 
 
 def _amend_sort_key(amend: dict) -> str:
@@ -927,14 +1041,15 @@ def main() -> int:
         for slug, info in members:
             doc = info["doc"]
             graph = doc.get("@graph", [])
-            ontology_node = None
-            for node in graph:
-                if "owl:Ontology" in (node.get("@type") or []):
-                    ontology_node = node
-                    break
-            if ontology_node is None and graph:
-                ontology_node = graph[0]
+            # ``estleg:amendedBy`` is act-level — locate the act node the same
+            # way extract_temporal_data does (issue #289). SKIP (with a
+            # counter) when there is no act node rather than stamping onto
+            # ``graph[0]``, which could be a ``LegalConcept`` (the #128 bug).
+            ontology_node = find_act_node(graph)
             if ontology_node is None:
+                _skip_reasons["no_act_node"] = (
+                    _skip_reasons.get("no_act_node", 0) + 1
+                )
                 continue
 
             ctx = doc.get("@context", {})
@@ -1047,8 +1162,13 @@ def main() -> int:
     total_triples_kov = _amendedBy_link_total_kov + _amendment_event_triples_kov
     _failures = _unsafe_cleanup_failures + _soft_failures
 
+    # NOTE (issue #295): no wall-clock ``generated`` field. This report is
+    # git-tracked and is NOT in OPERATIONAL_STATE_FILES, so embedding
+    # ``date.today()`` made it re-diff on every run regardless of data
+    # changes (timestamp-only churn, banned by AGENTS.md). The data below is
+    # fully determined by the corpus, so the report is byte-stable across
+    # reruns of the same inputs.
     report = {
-        "generated": date.today().isoformat(),
         "summary": {
             "total_laws_analyzed": len(laws),
             "laws_with_amendments": len(amendment_chains),
@@ -1110,7 +1230,7 @@ def main() -> int:
     write_coverage_report(
         CoverageReport(
             pipeline="generate_amendment_history",
-            run_timestamp=datetime.now(timezone.utc).isoformat(),
+            run_timestamp=PINNED_RUN_TIMESTAMP,
             pipeline_version=resolve_pipeline_version(),
             input_files_total=len(all_peep_files),
             input_files_kov=len(kov_files),

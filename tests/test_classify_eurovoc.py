@@ -234,6 +234,66 @@ def test_advertising_single_keyword_domain_stays_at_one():
     assert any(code == "2836" for code, *_ in results)
 
 
+# ---------------------------------------------------------------------------
+# Regression for #275: short substring-prone stems (nõue, kunst, vesi, ...)
+# must not assign their domain on a single mid-word substring hit. The
+# distinct-keyword gate for these domains is now >=2.
+# ---------------------------------------------------------------------------
+
+def test_nouetele_substring_does_not_assign_civil_law():
+    """'nõue' (civil-law 2431) matches as a substring inside 'nõuetele'/
+    'nõuetekohastele' ("requirements"). A technical-requirements act that
+    mentions no other civil-law term must NOT be tagged civil-law (#275)."""
+    from classify_eurovoc import classify_text, extract_text_from_law
+
+    text = extract_text_from_law({"@graph": [{
+        "estleg:summary": "Toode peab vastama nõuetekohastele nõuetele.",
+    }]})
+    results = classify_text(text)
+    assert all(code != "2431" for code, *_ in results), (
+        f"civil-law (2431) must not fire on the 'nõuetele' substring; got {results}"
+    )
+
+
+def test_kunstlik_substring_does_not_assign_culture():
+    """'kunst' (culture 3221) matches inside 'kunstlik' ("artificial"). A lone
+    such substring hit must not assign culture (#275)."""
+    from classify_eurovoc import classify_text, extract_text_from_law
+
+    text = extract_text_from_law(
+        {"@graph": [{"estleg:summary": "Kunstlik valgustus peab olema piisav."}]}
+    )
+    results = classify_text(text)
+    assert all(code != "3221" for code, *_ in results), (
+        f"culture (3221) must not fire on the 'kunstlik' substring; got {results}"
+    )
+
+
+def test_civil_law_assigned_with_two_distinct_keywords():
+    """With a genuine civil-law context ('leping' + 'kahju') the domain still
+    clears the bumped distinct-keyword gate (#275)."""
+    from classify_eurovoc import classify_text, extract_text_from_law
+
+    text = extract_text_from_law({"@graph": [{
+        "estleg:summary": "Lepingu rikkumisega tekitatud kahju tuleb hüvitada.",
+    }]})
+    results = classify_text(text)
+    assert any(code == "2431" for code, *_ in results), (
+        f"civil-law (2431) should be assigned on 'leping'+'kahju'; got {results}"
+    )
+
+
+def test_new_short_stem_overrides_require_two_distinct_keywords():
+    """The #275 short-stem domains are all gated at >=2 distinct keywords and
+    every one of them has at least two keywords (so the gate is reachable)."""
+    import classify_eurovoc
+
+    for code in ("2431", "3221", "5216", "5611", "4421", "6411", "3611"):
+        assert classify_eurovoc.MIN_DISTINCT_KEYWORDS_OVERRIDES[code] == 2
+        keyword_count = len(classify_eurovoc.EUROVOC_DOMAINS[code][3])
+        assert keyword_count >= 2, f"{code} has only {keyword_count} keyword(s)"
+
+
 def test_emit_sample_writes_well_formed_file(tmp_path, monkeypatch):
     """The --emit-sample flag produces a well-formed JSON sample of
     (act, assigned_subjects, matched_keywords) tuples and the report

@@ -111,9 +111,20 @@ class TestClassifyIssuer:
 
     def test_kov_regulation_only_municipal(self):
         classes = classify_issuer("Tartu Linnavolikogu", is_kov=True)
-        # KOV regulations are municipal and also carry the domestic-regulation
-        # umbrella class so common SHACL constraints target them directly.
-        assert classes == ["estleg:NationalRegulation", "estleg:MunicipalRegulation"]
+        # Issue #267: a KOV määrus is municipal legislation, NOT national.
+        # It must be typed estleg:MunicipalRegulation only and must never
+        # also carry estleg:NationalRegulation (a contradictory dual-type).
+        assert classes == ["estleg:MunicipalRegulation"]
+        assert "estleg:NationalRegulation" not in classes
+
+    def test_kov_regulation_excludes_state_subclasses(self):
+        # A municipal regulation is never a Government/Ministerial regulation
+        # either, regardless of the recorded issuer string.
+        classes = classify_issuer("Tallinna Linnavolikogu", is_kov=True)
+        assert "estleg:GovernmentRegulation" not in classes
+        assert "estleg:MinisterialRegulation" not in classes
+        assert "estleg:NationalRegulation" not in classes
+        assert classes == ["estleg:MunicipalRegulation"]
 
     def test_central_bank_only_national(self):
         # Eesti Pank is central but not a minister and not the government.
@@ -323,9 +334,16 @@ class TestIsKovFlag:
         assert is_kov == {"@value": "true", "@type": "xsd:boolean"}
 
         type_list = ontology["@type"]
+        # Issue #267: KOV act nodes are municipal regulations only — never
+        # dual-typed as national/government/ministerial regulations.
         assert "estleg:MunicipalRegulation" in type_list
-        assert "estleg:NationalRegulation" in type_list
+        assert "estleg:NationalRegulation" not in type_list
         assert "estleg:GovernmentRegulation" not in type_list
+        assert "estleg:MinisterialRegulation" not in type_list
+        # The act still carries the base act/ontology classes so the
+        # estleg:Act SHACL shape and MunicipalRegulationShape both apply.
+        assert "owl:Ontology" in type_list
+        assert "estleg:Act" in type_list
 
     def test_kov_false_marks_national(self):
         root = _parse(STRUCTURED_FIXTURE)
@@ -338,6 +356,50 @@ class TestIsKovFlag:
         type_list = ontology["@type"]
         assert "estleg:NationalRegulation" in type_list
         assert "estleg:MunicipalRegulation" not in type_list
+
+
+class TestKovTypeContradiction:
+    """Issue #267 regression: KOV act nodes must NOT be dual-typed as both
+    estleg:MunicipalRegulation AND estleg:NationalRegulation. A municipal
+    regulation is not national legislation."""
+
+    def test_kov_act_type_excludes_national(self):
+        root = _parse(KOV_FIXTURE)
+        doc, _ = build_regulation_jsonld(KOV_TITLE, {}, root, is_kov=True)
+        ontology = doc["@graph"][0]
+        type_list = ontology["@type"]
+
+        # The whole point of the fix: no state-regulation types on a KOV act.
+        for state_type in (
+            "estleg:NationalRegulation",
+            "estleg:GovernmentRegulation",
+            "estleg:MinisterialRegulation",
+        ):
+            assert state_type not in type_list, (
+                f"KOV act must not carry {state_type}"
+            )
+        assert "estleg:MunicipalRegulation" in type_list
+
+    def test_state_act_still_typed_national(self):
+        # The counterpart must be unaffected: a state regulation still
+        # carries NationalRegulation (and never MunicipalRegulation).
+        root = _parse(STRUCTURED_FIXTURE)
+        doc, _ = build_regulation_jsonld(STRUCTURED_TITLE, {}, root, is_kov=False)
+        type_list = doc["@graph"][0]["@type"]
+        assert "estleg:NationalRegulation" in type_list
+        assert "estleg:MunicipalRegulation" not in type_list
+
+    def test_kov_act_satisfies_municipal_shape_requirements(self):
+        # MunicipalRegulationShape requires rdfs:label; the act still carries
+        # estleg:Act (ActTemporalShape) — confirm both anchors survive so
+        # SHACL stays satisfied after dropping NationalRegulation.
+        root = _parse(KOV_FIXTURE)
+        doc, _ = build_regulation_jsonld(KOV_TITLE, {}, root, is_kov=True)
+        ontology = doc["@graph"][0]
+        assert "estleg:Act" in ontology["@type"]
+        assert "estleg:MunicipalRegulation" in ontology["@type"]
+        assert isinstance(ontology.get("rdfs:label"), str)
+        assert ontology["rdfs:label"]
 
 
 # ---------------------------------------------------------------------------
@@ -958,7 +1020,7 @@ class TestMissingPartsCli:
         all_ids: list[str] = []
         per_file_ids: dict[str, list[str]] = {}
         for osa_nr in ("2", "6", "10"):
-            path = out_dir / f"volaigusseadus_osa{osa_nr}_peep.json"
+            path = out_dir / f"volaoigusseadus_osa{osa_nr}_peep.json"
             assert path.exists(), f"missing output for osa {osa_nr}"
             doc = json.loads(path.read_text(encoding="utf-8"))
             ids = [n["@id"] for n in doc["@graph"]]
@@ -989,7 +1051,7 @@ class TestMissingPartsCli:
         assert rc == 0
 
         for osa_nr in ("2", "6", "10"):
-            path = out_dir / f"volaigusseadus_osa{osa_nr}_peep.json"
+            path = out_dir / f"volaoigusseadus_osa{osa_nr}_peep.json"
             doc = json.loads(path.read_text(encoding="utf-8"))
             classes = [
                 n for n in doc["@graph"]
@@ -1019,7 +1081,7 @@ class TestMissingPartsCli:
         # Each part's § 1 must produce a unique IRI namespaced by osa.
         paragraph_ids_by_osa: dict[str, str] = {}
         for osa_nr in ("2", "6", "10"):
-            path = out_dir / f"volaigusseadus_osa{osa_nr}_peep.json"
+            path = out_dir / f"volaoigusseadus_osa{osa_nr}_peep.json"
             doc = json.loads(path.read_text(encoding="utf-8"))
             for n in doc["@graph"]:
                 if "estleg:paragrahv" in n:
@@ -1046,7 +1108,7 @@ class TestMissingPartsCli:
         ])
         assert rc == 0
 
-        doc = json.loads((out_dir / "volaigusseadus_osa2_peep.json").read_text())
+        doc = json.loads((out_dir / "volaoigusseadus_osa2_peep.json").read_text())
         by_id = {node["@id"]: node for node in doc["@graph"]}
         provision = by_id["estleg:VOS_Osa2_Par_1"]
         subsection = by_id["estleg:VOS_Osa2_Par_1_Lg_1"]
@@ -1172,10 +1234,10 @@ class TestMissingPartsCli:
             "--vos-osa", "6",
         ])
         assert rc == 0
-        assert (out_dir / "volaigusseadus_osa6_peep.json").exists()
+        assert (out_dir / "volaoigusseadus_osa6_peep.json").exists()
         # The other two parts must NOT have been written.
-        assert not (out_dir / "volaigusseadus_osa2_peep.json").exists()
-        assert not (out_dir / "volaigusseadus_osa10_peep.json").exists()
+        assert not (out_dir / "volaoigusseadus_osa2_peep.json").exists()
+        assert not (out_dir / "volaoigusseadus_osa10_peep.json").exists()
 
 
 # ---------------------------------------------------------------------------

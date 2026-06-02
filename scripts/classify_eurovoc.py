@@ -18,16 +18,18 @@ import random
 import re
 import time
 import unicodedata
-from datetime import datetime, timezone
+from datetime import datetime
 from pathlib import Path
 
 from estleg_common import (
     AGGREGATE_REGISTRY_PREFIXES,
+    BUILD_EVALUATION_DATE,
     iter_peep_files,
     jsonld_text,
     save_json as _save_json,
 )
 from kov_pipeline_coverage import (
+    PINNED_RUN_TIMESTAMP,
     CoverageReport,
     measure_runtime,
     resolve_pipeline_version,
@@ -274,6 +276,18 @@ MIN_DISTINCT_KEYWORDS_DEFAULT = 1
 # noisy domains. Domains built from only long/distinctive keywords are left at
 # the default (1); ``2836`` advertising has a single keyword ('reklaam') and so
 # must stay at 1 (it could never reach 2).
+#
+# Plain keywords are matched as raw substrings (no word boundary), so a short
+# stem fires mid-word in an unrelated term. Review #275 verified more of
+# these: 'nõue' (civil-law 2431) fires inside 'nõuetele'/'nõuetekohastele'
+# ("requirements", ubiquitous in technical acts); 'kunst' (culture 3221)
+# inside 'kunstlik' ("artificial"); 'vesi' (environment 5611) inside
+# 'vesinik' ("hydrogen"); and 'hagi'/'võlg' (2431), 'toll' (5216), 'laev'
+# (maritime 4421), 'ehit' (building 6411), 'puue' (social-security 3611) are
+# all short substring-prone stems. Bumping these domains to a distinct-gate of
+# 2 forces a second, corroborating keyword before the domain is assigned, so a
+# lone mid-word substring hit no longer tags the act. Every listed domain has
+# ≥2 keywords, so the gate is reachable.
 MIN_DISTINCT_KEYWORDS_OVERRIDES: dict[str, int] = {
     "3606": 2,  # employment — 'töö', 'palk'
     "2821": 2,  # communications — 'side'
@@ -286,6 +300,14 @@ MIN_DISTINCT_KEYWORDS_OVERRIDES: dict[str, int] = {
     "5621": 2,  # agriculture — 'mets', 'sööt'
     "5226": 2,  # trade — 'ost', 'müük'
     "2031": 2,  # political-parties — 'partei'
+    # --- #275: short substring-prone stems that misfire mid-word ---
+    "2431": 2,  # civil-law — 'nõue' (→ 'nõuetele'), 'hagi', 'võlg'
+    "3221": 2,  # culture — 'kunst' (→ 'kunstlik')
+    "5216": 2,  # customs — 'toll'
+    "5611": 2,  # environment — 'vesi' (→ 'vesinik')
+    "4421": 2,  # maritime-law — 'laev'
+    "6411": 2,  # building — 'ehit'
+    "3611": 2,  # social-security — 'puue'
 }
 
 
@@ -830,7 +852,7 @@ def main(argv: list[str] | None = None):
     # --- Step 4: Generate report ---
     print("\n--- Generating classification report ---")
     report = {
-        "generated": datetime.now().strftime("%Y-%m-%d"),
+        "generated": BUILD_EVALUATION_DATE,  # #295: pinned deterministic stamp (no wall-clock churn in tracked artifact)
         "method": "keyword-matching",
         "classification_level": "act",
         "quality_evaluation": {
@@ -888,7 +910,7 @@ def main(argv: list[str] | None = None):
     write_coverage_report(
         CoverageReport(
             pipeline="classify_eurovoc",
-            run_timestamp=datetime.now(timezone.utc).isoformat(),
+            run_timestamp=PINNED_RUN_TIMESTAMP,  # #295: pinned deterministic stamp (no wall-clock churn in tracked artifact)
             pipeline_version=resolve_pipeline_version(),
             input_files_total=len(peep_files),
             input_files_kov=len(_kov_files),

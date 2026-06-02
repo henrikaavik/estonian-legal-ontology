@@ -8,9 +8,11 @@ import pytest
 from migrate_multipart_iri_scheme import (
     OLD_PAR_RE,
     _apply_substitution,
+    _atomic_write_text,
     _build_substitution_pattern,
     build_plan,
     discover_multipart_laws,
+    execute_plan,
     main,
 )
 
@@ -621,3 +623,59 @@ class TestCli:
                     str(report_path),
                 ]
             )
+
+
+# ── Atomic writes (#280) ──────────────────────────────────────────────────────
+
+
+class TestAtomicWrites:
+    def test_atomic_write_text_roundtrips(self, tmp_path: Path):
+        target = tmp_path / "out.txt"
+        _atomic_write_text(target, "hello\nworld\n")
+        assert target.read_text(encoding="utf-8") == "hello\nworld\n"
+        # No tempfile dropping left behind.
+        assert list(tmp_path.glob(".*tmp")) == []
+
+    def test_atomic_write_text_leaves_original_on_failure(
+        self, tmp_path: Path, monkeypatch
+    ):
+        """A rename failure mid-write leaves the original file intact (#280)."""
+        import migrate_multipart_iri_scheme as mod
+
+        target = tmp_path / "out.txt"
+        target.write_text("original\n", encoding="utf-8")
+
+        def boom(*_args, **_kwargs):
+            raise OSError("simulated rename failure")
+
+        monkeypatch.setattr(mod.os, "replace", boom)
+        with pytest.raises(OSError):
+            _atomic_write_text(target, "new content")
+
+        assert target.read_text(encoding="utf-8") == "original\n"
+        assert list(tmp_path.glob(".*tmp")) == []
+
+    def test_execute_plan_apply_uses_atomic_write(
+        self, tmp_krr: Path
+    ):
+        """`execute_plan(apply=True)` rewrites corpus files atomically (#280).
+
+        After a successful apply the file is fully rewritten with the NEW
+        scheme and no `.tmp` dropping remains alongside it.
+        """
+        _write_peep(tmp_krr, "karistusseadustik", 1, [("KARIST_2", "1")])
+        _write_peep(tmp_krr, "karistusseadustik", 2, [("KARIST_2", "88")])
+
+        plan = build_plan(tmp_krr, laws=["karistusseadustik"])
+        inspected, modified = execute_plan(plan, tmp_krr, apply=True)
+        assert inspected >= 2
+        assert modified == 2
+
+        osa1 = json.loads(
+            (tmp_krr / "karistusseadustik_osa1_peep.json").read_text(encoding="utf-8")
+        )
+        ids = {n.get("@id") for n in osa1["@graph"]}
+        assert "estleg:KARIST_2_Osa1_Par_1" in ids
+        assert "estleg:KARIST_2_Par_1" not in ids
+        # No tempfile droppings anywhere in the corpus dir.
+        assert list(tmp_krr.glob(".*tmp")) == []

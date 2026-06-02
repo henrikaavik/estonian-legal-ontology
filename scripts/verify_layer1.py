@@ -22,6 +22,18 @@ KOV_DIR = KRR / "regulations" / "kov"
 _FAIL_SAMPLE_CAP = 20
 
 
+# State-level regulation types that a KOV (municipal) act node must NOT
+# also carry. A municipal regulation is, by definition, not national /
+# governmental / ministerial legislation; dual-typing it as one corrupts
+# the type hierarchy and mis-buckets it in any SPARQL over the
+# state-regulation classes (Finding #267).
+_STATE_REGULATION_TYPES = (
+    "estleg:NationalRegulation",
+    "estleg:GovernmentRegulation",
+    "estleg:MinisterialRegulation",
+)
+
+
 def _load(path):
     with open(path, "r", encoding="utf-8") as fh:
         return json.load(fh)
@@ -61,6 +73,17 @@ def check_kov_acts():
     ]
     ok = 0
     failures: list[str] = []
+    # Finding #267: a KOV act node must NOT also be typed as a state-level
+    # regulation. We record (not hard-fail) the contamination here. The
+    # currently-committed corpus is still dual-typed pre-regen — making
+    # this a hard gate would break the build before the regulation
+    # generator is fixed and the corpus regenerated. So we surface it as
+    # a WARN line + a count in `detail`, leaving the pass/fail boolean
+    # driven purely by the required-field/type presence check. Once the
+    # corpus is regenerated this WARN count drops to 0; see the synthetic
+    # unit test `test_kov_act_dual_typed_as_state_regulation_*` for the
+    # absence-assertion exercised in isolation.
+    contradictory: list[str] = []
     for f in files:
         doc = _load(f)
         act = _act_node(doc, "estleg:MunicipalRegulation")
@@ -68,6 +91,9 @@ def check_kov_acts():
             failures.append(f"{f}: missing MunicipalRegulation node")
             continue
         types = act.get("@type") or []
+        stray = [t for t in _STATE_REGULATION_TYPES if t in types]
+        if stray:
+            contradictory.append(f"{f}: also typed {stray}")
         if all(k in act for k in fields) and all(t in types for t in types_required):
             ok += 1
         else:
@@ -79,6 +105,20 @@ def check_kov_acts():
     detail = f"{ok}/{len(files)}"
     if failures:
         detail += "; samples: " + "; ".join(failures[:_FAIL_SAMPLE_CAP])
+    if contradictory:
+        detail += (
+            f"; WARN {len(contradictory)} KOV acts ALSO carry a "
+            "state-regulation type (Finding #267, non-fatal pre-regen); "
+            "samples: " + "; ".join(contradictory[:_FAIL_SAMPLE_CAP])
+        )
+        print(
+            f"  WARN: {len(contradictory)} KOV act nodes are dual-typed "
+            "with a state-regulation class (estleg:NationalRegulation / "
+            "GovernmentRegulation / MinisterialRegulation). This is "
+            "Finding #267 — fixed on the next corpus regen. Not failing "
+            "the build (the committed corpus predates the fix).",
+            file=sys.stderr,
+        )
     return ok == len(files), detail
 
 

@@ -394,3 +394,159 @@ class TestDryRunSummary:
         assert not manifest_path.exists(), (
             "dry-run must not persist a manifest (the actual run will)"
         )
+
+
+# ---------------------------------------------------------------------------
+# Finding #252 — combined_ontology.jsonld rebuild is a mandatory DAG step
+# ---------------------------------------------------------------------------
+
+
+class TestCombinedOntologyRebuildStep:
+    """``fix_all_issues.py`` must be a DAG step that rebuilds
+    ``combined_ontology.jsonld`` (+ ``INDEX.json``) AFTER every enrichment
+    step and BEFORE the release validators. Without it the release artifact
+    and the Seadusloome sync gate validate the pre-enrichment corpus."""
+
+    REBUILD_STEP = "fix_all_issues.py"
+
+    def _step(self, name: str) -> dict:
+        return next(s for s in run_all_integration.STEPS if s["name"] == name)
+
+    def test_rebuild_step_is_registered(self) -> None:
+        names = [s["name"] for s in run_all_integration.STEPS]
+        assert self.REBUILD_STEP in names, (
+            "fix_all_issues.py must be registered as a DAG step so the "
+            "combined ontology is rebuilt after enrichment"
+        )
+
+    def test_rebuild_step_writes_combined_ontology_and_index(self) -> None:
+        writes = self._step(self.REBUILD_STEP)["writes"]
+        assert "combined_ontology.jsonld" in writes
+        assert "INDEX.json" in writes
+
+    def test_rebuild_step_reads_the_enriched_peeps(self) -> None:
+        reads = self._step(self.REBUILD_STEP)["reads"]
+        # It consumes the (now-enriched) root peeps that the prior steps
+        # rewrote — that is the whole point of running it last.
+        assert "*_peep.json" in reads
+
+    def test_rebuild_step_depends_on_all_enrichment_steps(self) -> None:
+        enrichment = [
+            s["name"]
+            for s in run_all_integration.STEPS
+            if s["name"] != self.REBUILD_STEP
+        ]
+        deps = set(self._step(self.REBUILD_STEP)["depends_on"])
+        missing = set(enrichment) - deps
+        assert not missing, (
+            f"rebuild step must depend on every enrichment step; missing: "
+            f"{sorted(missing)}"
+        )
+
+    def test_rebuild_step_topo_sorts_strictly_last(self) -> None:
+        topo = run_all_integration.validate_dag(
+            run_all_integration.STEPS, run_all_integration.COMMITTED_INPUTS
+        )
+        assert topo[-1] == self.REBUILD_STEP, (
+            "the combined-ontology rebuild must be the final step so it runs "
+            "after all enrichment and before the release validators"
+        )
+
+    def test_rebuild_runs_before_release_validators(self) -> None:
+        """The release validators run from ``main()`` only after ``run_dag``
+        returns, so being the last DAG node already orders the rebuild before
+        them. Guard that the validator set still parses the combined artifact
+        the rebuild produces (the Seadusloome gate)."""
+        validator_names = {v["name"] for v in run_all_integration.RELEASE_VALIDATORS}
+        assert "validate_seadusloome_sync" in validator_names
+        # combined_ontology.jsonld is a hashed release artifact: the rebuild's
+        # output is exactly what the release surface ships.
+        assert any(
+            a.endswith("combined_ontology.jsonld")
+            for a in run_all_integration.RELEASE_ARTIFACTS
+        )
+
+    def test_dag_still_valid_and_acyclic_with_rebuild_node(self) -> None:
+        # validate_dag raises DAGError on a cycle / dangling dep / uncovered
+        # read; a clean return proves the new node integrates correctly.
+        topo = run_all_integration.validate_dag(
+            run_all_integration.STEPS, run_all_integration.COMMITTED_INPUTS
+        )
+        assert len(topo) == len(run_all_integration.STEPS)
+        assert sorted(topo) == sorted(
+            s["name"] for s in run_all_integration.STEPS
+        )
+
+    def test_parallel_still_rejected_with_rebuild_node(self) -> None:
+        # The rebuild depends on every other step, so it is never
+        # concurrent-eligible; the pre-existing *_peep.json write overlaps
+        # among the enrichment steps must still make --parallel > 1 unsafe.
+        with pytest.raises(run_all_integration.DAGError):
+            run_all_integration.validate_dag(
+                run_all_integration.STEPS,
+                run_all_integration.COMMITTED_INPUTS,
+                parallel=2,
+            )
+
+
+# ---------------------------------------------------------------------------
+# Finding #262 — temporalStatus must be evaluated against a declared date
+# ---------------------------------------------------------------------------
+
+
+class TestTemporalEvaluationDateIsDeclared:
+    """``extract_temporal_data.py`` must be invoked with an explicit
+    ``--evaluation-date`` so ``temporalStatus`` is deterministic across runs
+    (it otherwise falls back to ``date.today()``)."""
+
+    TEMPORAL_STEP = "extract_temporal_data.py"
+
+    def _step(self, name: str) -> dict:
+        return next(s for s in run_all_integration.STEPS if s["name"] == name)
+
+    def test_build_evaluation_date_constant_is_a_valid_iso_date(self) -> None:
+        from datetime import date
+
+        value = run_all_integration.BUILD_EVALUATION_DATE
+        assert isinstance(value, str) and value, "constant must be a non-empty str"
+        # Round-trips through date.fromisoformat → it is a real YYYY-MM-DD date.
+        assert date.fromisoformat(value).isoformat() == value
+
+    def test_temporal_step_declares_explicit_evaluation_date(self) -> None:
+        args = self._step(self.TEMPORAL_STEP).get("args", [])
+        assert "--evaluation-date" in args, (
+            "temporal step must pass --evaluation-date for determinism (#262)"
+        )
+        idx = args.index("--evaluation-date")
+        assert args[idx + 1] == run_all_integration.BUILD_EVALUATION_DATE
+
+    def test_temporal_step_command_includes_evaluation_date(self) -> None:
+        cmd = run_all_integration.step_command(self._step(self.TEMPORAL_STEP))
+        assert "--evaluation-date" in cmd, (
+            "the resolved argv for the temporal step must carry the flag"
+        )
+        idx = cmd.index("--evaluation-date")
+        assert cmd[idx + 1] == run_all_integration.BUILD_EVALUATION_DATE
+        # The flag/value pair must come after the script path.
+        assert cmd[idx - 1].endswith(self.TEMPORAL_STEP)
+
+    def test_step_command_appends_declared_args_generically(self) -> None:
+        # step_command must append a step's declarative ``args`` after the
+        # script path (the mechanism the temporal step relies on).
+        step = {"script": "demo.py", "args": ["--foo", "bar"]}
+        cmd = run_all_integration.step_command(step)
+        assert cmd[-2:] == ["--foo", "bar"]
+        assert cmd[0] == sys.executable
+        assert cmd[1].endswith("demo.py")
+
+    def test_explicit_command_overrides_args(self) -> None:
+        # An explicit ``command`` wins outright; ``args`` is ignored.
+        step = {"command": ["echo", "hi"], "args": ["--ignored"]}
+        assert run_all_integration.step_command(step) == ["echo", "hi"]
+
+    def test_no_step_other_than_temporal_passes_evaluation_date(self) -> None:
+        # Spot-guard against the flag leaking onto an unrelated step.
+        for s in run_all_integration.STEPS:
+            if s["name"] == self.TEMPORAL_STEP:
+                continue
+            assert "--evaluation-date" not in s.get("args", [])

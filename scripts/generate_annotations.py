@@ -69,7 +69,7 @@ import re
 import sys
 import time
 from dataclasses import dataclass, field, replace
-from datetime import date, datetime, timezone
+from datetime import date
 from io import BytesIO
 from pathlib import Path
 from urllib.parse import unquote as urllib_parse_unquote
@@ -103,6 +103,14 @@ SIDECAR_PATH = ANNOTATIONS_DIR / "oiguskantsler_seisukohad.jsonld"
 COVERAGE_PATH = KRR_DIR / "reports" / "kov" / "extract_annotations_coverage.json"
 CACHE_DIR = KRR_DIR / ".cache" / "annotations"
 PDF_PROBE_REPORT_PATH = KRR_DIR / "reports" / "annotations_pdf_probe.json"
+
+# Pinned, deterministic ``run_timestamp`` for the git-tracked coverage report
+# (issue #295). The previous ``datetime.now(timezone.utc)`` value re-diffed the
+# tracked coverage file on every run (timestamp-only churn). ``CoverageReport``
+# requires a valid UTC ISO-8601 timestamp, so we pin a fixed sentinel rather
+# than emitting a live wall clock. The epoch makes "this is not a real run
+# clock" unmistakable; genuine run time lives in ``wall_time_seconds``.
+PINNED_RUN_TIMESTAMP = "1970-01-01T00:00:00+00:00"
 
 SEED_PATH = REPO_ROOT / "data" / "annotations" / "seed_annotations.json"
 
@@ -1172,6 +1180,7 @@ def _write_coverage(
     start_perf: float,
     source_label: str,
     failures: list[str],
+    pdf_stats: dict | None = None,
     path: Path = COVERAGE_PATH,
 ) -> None:
     all_input_files = list(iter_peep_files())
@@ -1195,10 +1204,16 @@ def _write_coverage(
         for name in r.unresolved_names:
             if len(unresolved_samples) < 20:
                 unresolved_samples.append(f"{r.opinion_id}: {name}")
+    # Record PDF-body extraction unavailability as a blocking-visible skip reason (#282):
+    # when pdfminer is missing every PDF opinion silently degrades to a title-only sidecar,
+    # so the count of opinions whose body could not be extracted belongs in skip_reasons even
+    # though the opinion may still have produced a title-resolved annotation.
+    if pdf_stats and pdf_stats.get("extraction_unavailable"):
+        skip_reasons["pdf_text_extraction_unavailable"] = pdf_stats["extraction_unavailable"]
     wall, rate, peak_mb = measure_runtime(start_perf, len(results))
     report = CoverageReport(
         pipeline="extract_annotations",
-        run_timestamp=datetime.now(timezone.utc).isoformat(),
+        run_timestamp=PINNED_RUN_TIMESTAMP,
         pipeline_version=resolve_pipeline_version(),
         input_files_total=len(all_input_files),
         input_files_kov=len(kov_files),
@@ -1275,6 +1290,7 @@ def run(
         _write_coverage([], start_perf=start_perf, source_label=source_label, failures=[], path=coverage_path)
         return 0
 
+    pdf_stats: dict | None = None
     if scrape and use_pdf_body:
         opinions, pdf_stats = attach_pdf_text_layers(opinions, cache_dir=cache_dir, sleep=sleep)
         print(
@@ -1285,6 +1301,37 @@ def run(
             f"{pdf_stats['unusable_or_scanned']} unusable/scanned, "
             f"{pdf_stats['non_pdf_urls']} non-PDF URL(s)"
         )
+        # #282: pdfminer entirely absent — every PDF opinion's body failed to extract, so a
+        # full run would silently regenerate a thinner title-only sidecar (body citations
+        # lost) and still exit 0. Refuse: leave any existing sidecar untouched, record the
+        # gap in the coverage report's skip reasons, and exit non-zero — unless the operator
+        # explicitly opts into the degraded output with --allow-partial.
+        if (
+            pdf_stats["pdf_urls"] > 0
+            and pdf_stats["extraction_unavailable"] == pdf_stats["pdf_urls"]
+            and not allow_partial
+        ):
+            print(
+                "\nERROR: PDF text-layer extraction is unavailable for every PDF opinion "
+                f"({pdf_stats['extraction_unavailable']}/{pdf_stats['pdf_urls']}). pdfminer.six "
+                'is likely not installed (run pip install -e ".[pdf]", e.g. via .venv/bin/python). '
+                "Refusing to overwrite the sidecar with a degraded title-only body; "
+                "re-run with --allow-partial to accept the title-only output.",
+                file=sys.stderr,
+            )
+            _write_coverage(
+                [],
+                start_perf=start_perf,
+                source_label=source_label,
+                failures=[
+                    "pdf_text_extraction_unavailable: pdfminer.six not installed; "
+                    f"{pdf_stats['extraction_unavailable']}/{pdf_stats['pdf_urls']} PDF opinion(s) "
+                    "could not be body-extracted (re-run with --allow-partial to accept title-only)"
+                ],
+                pdf_stats=pdf_stats,
+                path=coverage_path,
+            )
+            return 1
 
     print("=" * 70)
     print(f"Õiguskantsler annotation ingestion — {len(opinions)} opinion(s), source: {source_label}")
@@ -1324,7 +1371,8 @@ def run(
         print("\nNo annotations produced (no opinion's law resolved to a corpus node) — no sidecar written.")
 
     _write_coverage(
-        results, start_perf=start_perf, source_label=source_label, failures=failures, path=coverage_path
+        results, start_perf=start_perf, source_label=source_label, failures=failures,
+        pdf_stats=pdf_stats, path=coverage_path,
     )
 
     # Summary
@@ -1388,9 +1436,12 @@ def _parse_args(argv: list[str] | None) -> argparse.Namespace:
     parser.add_argument(
         "--allow-partial",
         action="store_true",
-        help="Continue past opinions that raise an error during annotation synthesis "
-             "(failures are recorded in the coverage report). Accepted for parity with the "
-             "other generators; sample runs are forgiving by default.",
+        help="Accept degraded output: continue past opinions that raise an error during "
+             "annotation synthesis (failures are recorded in the coverage report), and — under "
+             "--scrape with PDF body extraction — proceed with a title-only sidecar even when "
+             "pdfminer.six is entirely unavailable (every PDF body failed to extract). Without "
+             "this flag a fully-unavailable pdfminer aborts the run (exit 1) and leaves the "
+             "existing sidecar untouched, so a body-less corpus is never silently committed.",
     )
     parser.add_argument(
         "--no-cache",

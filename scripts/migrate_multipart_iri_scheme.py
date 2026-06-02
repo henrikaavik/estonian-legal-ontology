@@ -3,8 +3,10 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import sys
+import tempfile
 from collections import defaultdict
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
@@ -85,12 +87,42 @@ def _read_json(path: Path) -> dict | None:
         return None
 
 
-def _write_json(path: Path, data: object) -> None:
-    """Write ``data`` to ``path`` as UTF-8 JSON with 2-space indent."""
+def _atomic_write_text(path: Path, content: str) -> None:
+    """Write ``content`` to ``path`` atomically (#280).
+
+    Writes to a sibling tempfile and then ``os.replace``s it into place so a
+    crash, ``KeyboardInterrupt``, or disk-full mid-write leaves the original
+    file (or the new file) intact, never a half-written hybrid. The tempfile
+    shares the destination directory so the rename stays on the same
+    filesystem. Mirrors ``migrate_uris._atomic_write_text``.
+    """
     path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("w", encoding="utf-8") as fh:
-        json.dump(data, fh, indent=2, ensure_ascii=False)
-        fh.write("\n")
+    tmp_fd, tmp_name = tempfile.mkstemp(
+        dir=str(path.parent),
+        prefix=f".{path.name}.",
+        suffix=".tmp",
+    )
+    try:
+        with os.fdopen(tmp_fd, "w", encoding="utf-8") as fh:
+            fh.write(content)
+        os.replace(tmp_name, path)
+    except BaseException:
+        try:
+            os.unlink(tmp_name)
+        except FileNotFoundError:
+            pass
+        raise
+
+
+def _write_json(path: Path, data: object) -> None:
+    """Write ``data`` to ``path`` as UTF-8 JSON with 2-space indent.
+
+    Routed through :func:`_atomic_write_text` so the report file is never
+    left truncated on interruption (#280).
+    """
+    _atomic_write_text(
+        path, json.dumps(data, indent=2, ensure_ascii=False) + "\n"
+    )
 
 
 def discover_multipart_laws(krr_dir: Path) -> list[str]:
@@ -388,7 +420,7 @@ def execute_plan(
             continue
         files_modified += 1
         if apply:
-            path.write_text(new_text, encoding="utf-8")
+            _atomic_write_text(path, new_text)
     return files_inspected, files_modified
 
 

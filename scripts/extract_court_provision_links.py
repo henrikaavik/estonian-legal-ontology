@@ -18,7 +18,6 @@ from __future__ import annotations
 import re
 import time
 from collections import defaultdict
-from datetime import datetime, timezone
 from pathlib import Path
 from typing import NamedTuple
 
@@ -210,17 +209,29 @@ PAT_RTIV = re.compile(
 
 def build_provision_index(
     counters: "_RunCounters",
-) -> tuple[dict[str, dict[str, str]], dict[str, str], dict[str, Path]]:
+) -> tuple[dict[str, dict[str, str]], dict[str, set[str]], dict[str, Path]]:
     """
     Scan all law *_peep.json files to build provision indexes.
 
     Returns:
       - prefix_to_provisions: {prefix: {par_number: full_iri}}
-      - source_act_to_prefix: {source_act_name: prefix}
+      - source_act_to_prefixes: {source_act_name: {prefix, ...}}
       - iri_to_file: {iri: filepath}
+
+    Issue #256: ``source_act_to_prefixes`` is one-to-many (a *set* of
+    prefixes per source act). Large codes are split across per-Part peep
+    files that share one ``estleg:sourceAct`` but use different IRI
+    prefixes (e.g. ``KARIST_2_Osa1`` General Part vs ``KARIST_2_Osa2``
+    Special Part, both sourceAct "Karistusseadustik"). The previous
+    last-writer-wins ``source_act_to_prefix[source_act] = file_prefix``
+    kept only the last-iterated Part, so ``resolve_citations`` could only
+    reach provisions in that one Part and silently dropped every citation
+    landing in any other Part (~2000+ links lost). Collecting ALL prefixes
+    lets ``build_abbreviation_to_prefix``/``resolve_citations`` search the
+    union of Parts for the abbreviation's source act.
     """
     prefix_to_provisions: dict[str, dict[str, str]] = {}
-    source_act_to_prefix: dict[str, str] = {}
+    source_act_to_prefixes: dict[str, set[str]] = defaultdict(set)
     iri_to_file: dict[str, Path] = {}
 
     for json_file in iter_peep_files(include_kov=False):  # state-law §-index only; KOV is act-level via build_kov_act_index
@@ -258,20 +269,32 @@ def build_provision_index(
                     source_act = jsonld_text(node.get("estleg:sourceAct", ""))
 
         if file_prefix and source_act:
-            source_act_to_prefix[source_act] = file_prefix
+            # Issue #256: accumulate (one-to-many) instead of overwriting so
+            # every per-Part prefix sharing this source act is retained.
+            source_act_to_prefixes[source_act].add(file_prefix)
 
-    return prefix_to_provisions, source_act_to_prefix, iri_to_file
+    return prefix_to_provisions, dict(source_act_to_prefixes), iri_to_file
 
 
 def build_abbreviation_to_prefix(
-    source_act_to_prefix: dict[str, str],
-) -> dict[str, str]:
-    """Map law abbreviations to IRI prefixes."""
-    abbrev_to_prefix: dict[str, str] = {}
+    source_act_to_prefixes: dict[str, set[str]],
+) -> dict[str, set[str]]:
+    """Map law abbreviations to the SET of IRI prefixes for their source act.
+
+    Issue #256: a multi-Part code (e.g. Karistusseadustik = KARIST_2_Osa1
+    General Part + KARIST_2_Osa2 Special Part) yields one source-act name
+    but several prefixes. Returning the full set lets ``resolve_citations``
+    search the union of Parts; mapping to a single prefix (the old
+    behaviour) silently dropped every citation landing in a non-selected
+    Part. ``source_act_to_prefixes`` values may arrive as a ``set`` or any
+    iterable of prefixes — normalised to a ``set`` here.
+    """
+    abbrev_to_prefixes: dict[str, set[str]] = {}
     for abbrev, full_name in KNOWN_ABBREVIATIONS.items():
-        if full_name in source_act_to_prefix:
-            abbrev_to_prefix[abbrev] = source_act_to_prefix[full_name]
-    return abbrev_to_prefix
+        prefixes = source_act_to_prefixes.get(full_name)
+        if prefixes:
+            abbrev_to_prefixes[abbrev] = set(prefixes)
+    return abbrev_to_prefixes
 
 
 def build_kov_act_index(
@@ -470,27 +493,107 @@ def decision_citation_text(node: dict) -> tuple[str, str]:
     return "", "missing"
 
 
-def resolve_citations(
-    citations: list[dict],
-    abbrev_to_prefix: dict[str, str],
+def _normalize_prefixes(value: "set[str] | str | None") -> list[str]:
+    """Normalise an abbrev→prefix(es) mapping value to a sorted list.
+
+    Issue #256: ``abbrev_to_prefixes`` values are sets of prefixes (one per
+    Part of a multi-Part code). For backward compatibility a bare ``str``
+    (single prefix) is also accepted and wrapped. Sorting makes the search
+    order — and therefore the deterministic tie-break in
+    ``resolve_citations`` — stable across runs.
+    """
+    if not value:
+        return []
+    if isinstance(value, str):
+        return [value]
+    return sorted(value)
+
+
+def _resolve_par_in_prefixes(
+    par_num: str,
+    prefixes: list[str],
     prefix_to_provisions: dict[str, dict[str, str]],
 ) -> list[str]:
-    """Resolve citations to existing provision IRIs."""
-    resolved: list[str] = []
-    for cit in citations:
-        prefix = abbrev_to_prefix.get(cit["law_ref"])
-        if not prefix:
-            continue
+    """Return the distinct provision IRIs a single § resolves to.
+
+    Searches the UNION of ``prefixes`` (Issue #256), checking the raw key
+    first and the zero-stripped key as a fallback (mirroring the original
+    single-prefix behaviour). Returns distinct IRIs preserving the sorted
+    ``prefixes`` order so the caller can apply a deterministic tie-break
+    when the same § exists in more than one Part.
+    """
+    hits: list[str] = []
+    stripped = par_num.lstrip("0") or "0"
+    for prefix in prefixes:
         provisions = prefix_to_provisions.get(prefix, {})
         if not provisions:
             continue
+        if par_num in provisions:
+            hits.append(provisions[par_num])
+        elif stripped in provisions:
+            hits.append(provisions[stripped])
+    return list(dict.fromkeys(hits))
+
+
+def _merged_provision_count(
+    prefixes: "set[str] | str | None",
+    prefix_to_provisions: dict[str, dict[str, str]],
+) -> int:
+    """Count the distinct § numbers reachable across a set of prefixes.
+
+    Issue #256: an abbreviation may now span several per-Part prefixes;
+    the reported ``provision_count`` is the size of the union of their §
+    keys (a § shared by two Parts counts once).
+    """
+    keys: set[str] = set()
+    for prefix in _normalize_prefixes(prefixes):
+        keys.update(prefix_to_provisions.get(prefix, {}).keys())
+    return len(keys)
+
+
+def resolve_citations(
+    citations: list[dict],
+    abbrev_to_prefixes: dict[str, set[str] | str],
+    prefix_to_provisions: dict[str, dict[str, str]],
+    counters: "_RunCounters | None" = None,
+) -> list[str]:
+    """Resolve citations to existing provision IRIs.
+
+    Issue #256: ``abbrev_to_prefixes`` maps each abbreviation to the *set*
+    of IRI prefixes for its source act (one per Part of a multi-Part code).
+    A citation's § is resolved against the UNION of those Parts' provision
+    maps, so e.g. a KarS General-Part § resolves even though the last peep
+    iterated was the Special Part. A bare ``str`` value (single prefix) is
+    still accepted for backward compatibility.
+
+    When the same § number exists in more than one Part (distinct IRIs),
+    that is a data anomaly: we resolve deterministically to the
+    lexicographically smallest IRI (stable across runs) and, when
+    ``counters`` is provided, bump ``cross_part_par_collision`` so the
+    anomaly is surfaced in the coverage report rather than silently
+    swallowed.
+    """
+    resolved: list[str] = []
+    for cit in citations:
+        prefixes = _normalize_prefixes(abbrev_to_prefixes.get(cit["law_ref"]))
+        if not prefixes:
+            continue
         for par_num in cit["paragraphs"]:
-            if par_num in provisions:
-                resolved.append(provisions[par_num])
+            hits = _resolve_par_in_prefixes(
+                par_num, prefixes, prefix_to_provisions
+            )
+            if not hits:
+                continue
+            if len(hits) > 1:
+                # Same § lives in multiple Parts of the same source act —
+                # a data anomaly. Resolve deterministically (smallest IRI)
+                # and surface it instead of dropping it.
+                chosen = min(hits)
+                if counters is not None:
+                    counters.bump_citation_count("cross_part_par_collision")
             else:
-                stripped = par_num.lstrip("0") or "0"
-                if stripped in provisions:
-                    resolved.append(provisions[stripped])
+                chosen = hits[0]
+            resolved.append(chosen)
     return list(dict.fromkeys(resolved))  # deduplicate
 
 
@@ -543,7 +646,7 @@ def resolve_kov_citation(
 
 
 def process_court_files(
-    abbrev_to_prefix: dict[str, str],
+    abbrev_to_prefix: dict[str, set[str] | str],
     prefix_to_provisions: dict[str, dict[str, str]],
     kov_index: dict[tuple[str, int, str], str],
     kov_collision_keys: set[tuple[str, int, str]],
@@ -658,9 +761,14 @@ def process_court_files(
             stats["decisions_with_citations"] += 1
             kov_citations_matched += len(kov_citations)
 
-            # State-law resolver (existing, unchanged).
+            # State-law resolver. Pass counters so a cross-Part same-§
+            # anomaly (Issue #256) is surfaced exactly once on the
+            # authoritative resolve (the summary-baseline resolve above is
+            # diagnostic-only and intentionally does NOT pass counters, to
+            # avoid double-counting).
             state_iris = resolve_citations(
-                state_citations, abbrev_to_prefix, prefix_to_provisions
+                state_citations, abbrev_to_prefix, prefix_to_provisions,
+                counters=counters,
             )
             state_link_count += len(state_iris)
             stats["state_citations_resolved"] += len(state_iris)
@@ -874,6 +982,7 @@ def clear_existing_court_links(counters: "_RunCounters") -> int:
 
 def main(enable_kov: bool = True) -> None:
     from kov_pipeline_coverage import (
+        PINNED_RUN_TIMESTAMP,
         CoverageReport,
         measure_runtime,
         resolve_pipeline_version,
@@ -889,6 +998,8 @@ def main(enable_kov: bool = True) -> None:
         "kov_citation_unknown_issuer",
         "rtiv_form_citation",
         "json_decode_error",
+        # Issue #256: same § resolving to >1 Part of one source act.
+        "cross_part_par_collision",
     ):
         counters.skip_reasons[_key] = 0
 
@@ -903,17 +1014,20 @@ def main(enable_kov: bool = True) -> None:
 
     # Step 2: Build state-law provision index.
     print("\n[2/6] Building provision index from law JSON-LD files...")
-    prefix_to_provisions, source_act_to_prefix, iri_to_file = build_provision_index(counters)
+    prefix_to_provisions, source_act_to_prefixes, iri_to_file = build_provision_index(counters)
     total_provisions = sum(len(v) for v in prefix_to_provisions.values())
     print(f"  Found {len(prefix_to_provisions)} law prefixes with {total_provisions} provisions")
 
     # Step 3: Build abbreviation mapping.
     print("\n[3/6] Building abbreviation-to-prefix mapping...")
-    abbrev_to_prefix = build_abbreviation_to_prefix(source_act_to_prefix)
+    abbrev_to_prefix = build_abbreviation_to_prefix(source_act_to_prefixes)
     print(f"  Mapped {len(abbrev_to_prefix)} abbreviations to IRI prefixes")
-    for abbrev, prefix in sorted(abbrev_to_prefix.items()):
-        prov_count = len(prefix_to_provisions.get(prefix, {}))
-        print(f"    {abbrev} -> {prefix} ({prov_count} provisions)")
+    # Issue #256: each abbreviation may now span several per-Part prefixes;
+    # join them for the log line and count their UNION of § provisions.
+    for abbrev, prefixes in sorted(abbrev_to_prefix.items()):
+        prov_count = _merged_provision_count(prefixes, prefix_to_provisions)
+        prefix_label = "+".join(_normalize_prefixes(prefixes))
+        print(f"    {abbrev} -> {prefix_label} ({prov_count} provisions)")
 
     # Step 4 (NEW): Build KOV act index.
     if enable_kov:
@@ -1047,12 +1161,17 @@ def main(enable_kov: bool = True) -> None:
             "kov_acts_in_index": len(kov_index),
             "kov_collision_keys": len(kov_collision_keys),
         },
+        # Issue #256: an abbreviation may map to several per-Part prefixes.
+        # ``iri_prefixes`` is the sorted list (JSON-serialisable, sets are
+        # not); ``provision_count`` is the size of their UNION of § keys.
         "abbreviation_mapping": {
             abbrev: {
-                "iri_prefix": prefix,
-                "provision_count": len(prefix_to_provisions.get(prefix, {})),
+                "iri_prefixes": _normalize_prefixes(prefixes),
+                "provision_count": _merged_provision_count(
+                    prefixes, prefix_to_provisions
+                ),
             }
-            for abbrev, prefix in sorted(abbrev_to_prefix.items())
+            for abbrev, prefixes in sorted(abbrev_to_prefix.items())
         },
         "top_interpreted_targets": sorted(
             [
@@ -1091,7 +1210,7 @@ def main(enable_kov: bool = True) -> None:
     wall, rate, peak_mb = measure_runtime(start, total_decisions)
     cov = CoverageReport(
         pipeline="extract_court_provision_links",
-        run_timestamp=datetime.now(timezone.utc).isoformat(),
+        run_timestamp=PINNED_RUN_TIMESTAMP,  # #295: pinned deterministic stamp (no wall-clock churn in tracked artifact)
         pipeline_version=resolve_pipeline_version(),
         input_files_total=rk_file_count + state_peep_count + kov_peep_count,
         input_files_kov=kov_peep_count,

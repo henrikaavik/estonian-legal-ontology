@@ -216,9 +216,12 @@ def _build_graph_from_fake_xml(xml_text: str) -> list[dict]:
             for p in direct_sections:
                 p_nr = gke.child_text(p, "paragrahvNr") or "?"
                 kuvatav_nr = gke.child_text(p, "kuvatavNr") or ""
+                # Mirror the production ``_build_paragraph`` suffix logic so
+                # this helper exercises the real superscript folding (#251)
+                # rather than the glyph-only ``sanitize_identifier``.
                 p_id = (
                     f"estleg:KarS_Ch{gke.sanitize_identifier(ch_nr)}_"
-                    f"Par{gke.sanitize_identifier(p_nr)}"
+                    f"Par{gke._paragraph_id_suffix(p, p_nr)}"
                 )
                 title = gke.child_text(p, "paragrahvPealkiri") or ""
                 label = gke._join_label(kuvatav_nr, title, sep=" ")
@@ -303,6 +306,141 @@ class TestParagraphIdNamespacing:
         )
         assert "§ 1" in para_node["rdfs:label"]
 
+class TestSuperscriptFromYlaIndeks:
+    """Regression #251: the real KarS XML stores superscripted section
+    numbers in the ``ylaIndeks`` attribute (``<paragrahvNr ylaIndeks="1">
+    133</paragrahvNr>``), NOT as Unicode glyphs in the text. The pre-fix
+    generator read neither — so §133, §133¹, §133², §133³ all serialised to
+    ``estleg:KarS_Ch9_Par133`` and tripped the post-build dup-guard.
+    """
+
+    @staticmethod
+    def _par(xml: str) -> ET.Element:
+        return ET.fromstring(xml)
+
+    def test_ylaindeks_attribute_is_read(self) -> None:
+        p = self._par(
+            '<paragrahv><paragrahvNr ylaIndeks="1">133</paragrahvNr>'
+            "<kuvatavNr>§ 133¹</kuvatavNr></paragrahv>"
+        )
+        assert gke._paragraph_superscript(p) == "1"
+
+    def test_no_superscript_returns_empty(self) -> None:
+        p = self._par(
+            "<paragrahv><paragrahvNr>133</paragrahvNr>"
+            "<kuvatavNr>§ 133</kuvatavNr></paragrahv>"
+        )
+        assert gke._paragraph_superscript(p) == ""
+
+    def test_kuvatavnr_glyph_fallback(self) -> None:
+        """When ``ylaIndeks`` is absent, a glyph in ``kuvatavNr`` is used."""
+        p = self._par(
+            "<paragrahv><paragrahvNr>133</paragrahvNr>"
+            "<kuvatavNr>§ 133²</kuvatavNr></paragrahv>"
+        )
+        assert gke._paragraph_superscript(p) == "2"
+
+    def test_ylaindeks_suffix_distinct_from_base(self) -> None:
+        base = self._par(
+            "<paragrahv><paragrahvNr>133</paragrahvNr></paragrahv>"
+        )
+        sup1 = self._par(
+            '<paragrahv><paragrahvNr ylaIndeks="1">133</paragrahvNr></paragrahv>'
+        )
+        sup2 = self._par(
+            '<paragrahv><paragrahvNr ylaIndeks="2">133</paragrahvNr></paragrahv>'
+        )
+        s_base = gke._paragraph_id_suffix(base, "133")
+        s_1 = gke._paragraph_id_suffix(sup1, "133")
+        s_2 = gke._paragraph_id_suffix(sup2, "133")
+        assert s_base == "133"
+        assert s_1 == "133_1"
+        assert s_2 == "133_2"
+        assert len({s_base, s_1, s_2}) == 3
+
+    def test_glyph_in_paragrahvnr_text_not_double_suffixed(self) -> None:
+        """If RT embeds the glyph in ``paragrahvNr`` text the base is taken
+        from the leading digits only, so the suffix is applied exactly once
+        (``88_1``), never ``88_1_1``."""
+        p = self._par(
+            "<paragrahv><paragrahvNr>88¹</paragrahvNr>"
+            "<kuvatavNr>§ 88¹</kuvatavNr></paragrahv>"
+        )
+        assert gke._paragraph_id_suffix(p, "88¹") == "88_1"
+
+    def test_sup_markup_fallback(self) -> None:
+        """RT delivers ``kuvatavNr`` as CDATA, so ``<sup>`` arrives as
+        *literal text* (escaped here), not a parsed child element — the
+        regex matches that literal ``<sup>2</sup>`` run."""
+        p = self._par(
+            "<paragrahv><paragrahvNr>50</paragrahvNr>"
+            "<kuvatavNr>§ 50&lt;sup&gt;2&lt;/sup&gt;</kuvatavNr></paragrahv>"
+        )
+        assert gke._paragraph_id_suffix(p, "50") == "50_2"
+
+
+# Two §133 paragraphs in the SAME chapter, distinguished only by the
+# ``ylaIndeks`` attribute (0 and 1) — the exact collision the pre-fix
+# code produced on real KarS data.
+_FAKE_KARS_YLAINDEKS_XML = """<?xml version="1.0" encoding="UTF-8"?>
+<akt>
+  <metaandmed><aktinimi>Karistusseadustik</aktinimi></metaandmed>
+  <osa>
+    <osaNr>2</osaNr>
+    <kuvatavNr>2. osa</kuvatavNr>
+    <osaPealkiri>ERIOSA</osaPealkiri>
+    <peatykk>
+      <peatykkNr>9</peatykkNr>
+      <kuvatavNr>9. peatükk</kuvatavNr>
+      <peatykkPealkiri>Süüteod isiku vastu</peatykkPealkiri>
+      <paragrahv>
+        <paragrahvNr ylaIndeks="0">133</paragrahvNr>
+        <kuvatavNr>§ 133</kuvatavNr>
+        <paragrahvPealkiri>Orjastamine</paragrahvPealkiri>
+      </paragrahv>
+      <paragrahv>
+        <paragrahvNr ylaIndeks="1">133</paragrahvNr>
+        <kuvatavNr>§ 133¹</kuvatavNr>
+        <paragrahvPealkiri>Inimkaubandus</paragrahvPealkiri>
+      </paragrahv>
+    </peatykk>
+  </osa>
+</akt>
+"""
+
+
+class TestYlaIndeksIntegration:
+    def test_two_par133_with_ylaindeks_0_and_1_yield_distinct_ids(self) -> None:
+        """The issue's named acceptance case: §133 (ylaIndeks 0) and §133
+        (ylaIndeks 1) MUST produce distinct ids."""
+        graph = _build_graph_from_fake_xml(_FAKE_KARS_YLAINDEKS_XML)
+        section_ids = [
+            n["@id"]
+            for n in graph
+            if "estleg:Section" in (n.get("@type") or [])
+        ]
+        assert len(section_ids) == 2
+        assert len(set(section_ids)) == 2, (
+            f"§133 ylaIndeks 0/1 collapsed to one id: {section_ids}"
+        )
+        assert "estleg:KarS_Ch9_Par133_0" in section_ids
+        assert "estleg:KarS_Ch9_Par133_1" in section_ids
+
+    def test_ylaindeks_graph_passes_dup_guard(self) -> None:
+        """Building the graph and running the same uniqueness invariant as
+        ``main()`` MUST NOT raise (pre-fix: RuntimeError)."""
+        graph = _build_graph_from_fake_xml(_FAKE_KARS_YLAINDEKS_XML)
+        # Replicate main()'s post-build dup-guard.
+        seen: dict[str, int] = {}
+        for node in graph:
+            nid = node.get("@id")
+            if nid:
+                seen[nid] = seen.get(nid, 0) + 1
+        duplicates = {nid: c for nid, c in seen.items() if c > 1}
+        assert not duplicates, f"dup-guard would raise on: {sorted(duplicates)}"
+
+
+class TestChapterLabel:
     def test_chapter_label_safe_when_title_missing(self) -> None:
         xml = """<?xml version="1.0" encoding="UTF-8"?>
         <akt><metaandmed><aktinimi>Karistusseadustik</aktinimi></metaandmed>

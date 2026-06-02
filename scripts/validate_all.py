@@ -293,12 +293,65 @@ def validate_json_syntax(filepath: Path) -> dict | None:
         return None
 
 
+def _estleg_namespace_from_context_dict(ctx: dict) -> str | None:
+    """Return the ``estleg`` prefix IRI declared in a context dict, or None.
+
+    Handles both the plain-string form (``"estleg": "https://…#"``) and the
+    expanded term-definition form (``"estleg": {"@id": "https://…#"}``). Returns
+    ``None`` when the dict does not define an ``estleg`` term at all.
+    """
+    if "estleg" not in ctx:
+        return None
+    value = ctx["estleg"]
+    if isinstance(value, str):
+        return value
+    if isinstance(value, dict):
+        nested = value.get("@id")
+        if isinstance(nested, str):
+            return nested
+    return ""
+
+
 def validate_context(filepath: Path, doc: dict):
+    """Validate the ``estleg`` namespace binding regardless of @context shape.
+
+    JSON-LD permits ``@context`` to be a dict, a remote IRI string, or a list
+    mixing remote IRIs and inline dicts. The dict case is checked directly; for
+    the list case every dict member is scanned for an ``estleg`` term; a bare
+    remote-string context cannot be inspected offline, so it is surfaced as a
+    warning rather than silently passing (issue #286).
+    """
     ctx = doc.get("@context", {})
-    if isinstance(ctx, dict):
-        ns = ctx.get("estleg", "")
+
+    def _check_dict(ctx_dict: dict) -> bool:
+        """Validate one context dict; return True if it declared ``estleg``."""
+        ns = _estleg_namespace_from_context_dict(ctx_dict)
+        if ns is None:
+            return False
         if ns != EXPECTED_NS:
             error(f"{filepath.name}: Wrong estleg namespace: {ns} (expected {EXPECTED_NS})")
+        return True
+
+    if isinstance(ctx, dict):
+        _check_dict(ctx)
+        return
+
+    if isinstance(ctx, list):
+        for member in ctx:
+            if isinstance(member, dict):
+                _check_dict(member)
+            elif isinstance(member, str):
+                warn(
+                    f"{filepath.name}: remote @context reference {member!r} not "
+                    f"fetched; estleg namespace not verified"
+                )
+        return
+
+    if isinstance(ctx, str):
+        warn(
+            f"{filepath.name}: remote @context reference {ctx!r} not fetched; "
+            f"estleg namespace not verified"
+        )
 
 
 def validate_bare_namespace_act_ids(filepath: Path, doc: dict):

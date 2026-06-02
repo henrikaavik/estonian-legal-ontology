@@ -17,7 +17,6 @@ from __future__ import annotations
 import json
 import re
 from collections import defaultdict
-from datetime import datetime
 from pathlib import Path
 
 from estleg_common import iter_peep_files, jsonld_text, jsonld_texts
@@ -69,6 +68,43 @@ def sanitize_id(value: str) -> str:
     s = s.translate(_TRANSLIT_TABLE)
     s = re.sub(r"[^0-9A-Za-z_]", "", s)
     return s[:80] or "Unknown"
+
+
+# ---------- act-node resolution (issue #289) ----------
+
+ACT_TYPE_MARKERS = {"estleg:Act"}
+
+
+def _node_types(node: dict) -> set[str]:
+    types = node.get("@type", [])
+    if isinstance(types, str):
+        return {types}
+    if isinstance(types, list):
+        return {t for t in types if isinstance(t, str)}
+    return set()
+
+
+def find_act_node(graph: list[dict]) -> dict | None:
+    """Return the act node a peep file's ``estleg:affectedBy`` triple
+    belongs on, mirroring ``extract_temporal_data.find_act_node``.
+
+    Preference order: the ``owl:Ontology`` act-metadata node when it is
+    also typed as ``estleg:Act`` (the historical write site), then any
+    ``estleg:Act``-typed node. Returns ``None`` when neither exists — the
+    caller must then skip enrichment for that file rather than stamping
+    the link onto ``graph[0]`` (which could be a ``LegalConcept``; this is
+    the corruption #128 fixed in the temporal sibling).
+    """
+    for node in graph:
+        if not isinstance(node, dict):
+            continue
+        types = _node_types(node)
+        if "owl:Ontology" in types and types & ACT_TYPE_MARKERS:
+            return node
+    for node in graph:
+        if isinstance(node, dict) and _node_types(node) & ACT_TYPE_MARKERS:
+            return node
+    return None
 
 
 # ---------- change-type classification ----------
@@ -464,6 +500,13 @@ def main() -> None:
         if not affected_names:
             continue
 
+        # Dedup resolved IRIs by ``@id`` (issue #266). Several affected-name
+        # strings on one draft can resolve to the *same* act IRI (e.g. an
+        # English + Estonian label pair, or a stray phantom candidate); the
+        # earlier code appended each un-deduped, producing duplicate
+        # ``amendsLaw`` IRIs and an inflated ``resolved_count``. Count each
+        # distinct IRI once and emit it once.
+        seen_iris: set[str] = set()
         amends_iris: list[dict] = []
         for aname in affected_names:
             entry = resolve_law_name(aname, lookup)
@@ -472,6 +515,9 @@ def main() -> None:
                 if ont_iri is None:
                     unresolved.append(aname)
                     continue
+                if ont_iri in seen_iris:
+                    continue  # already recorded for this draft
+                seen_iris.add(ont_iri)
                 amends_iris.append({"@id": ont_iri})
                 # Record for inverse linking
                 for f in entry.get("files", []):
@@ -502,6 +548,7 @@ def main() -> None:
     print(f"\n[4/5] Adding estleg:affectedBy to {len(law_affected_by)} law files...")
 
     inverse_count = 0
+    no_act_node_skipped = 0
     for law_file, draft_iris in sorted(law_affected_by.items()):
         filepath = KRR_DIR / law_file
         if not filepath.exists():
@@ -511,9 +558,13 @@ def main() -> None:
         if doc is None or "@graph" not in doc:
             continue
 
-        # Add affectedBy to the ontology node (first node in graph)
-        ont_node = doc["@graph"][0] if doc["@graph"] else None
+        # ``estleg:affectedBy`` is act-level — locate the act node the same
+        # way extract_temporal_data does (issue #289). SKIP (with a counter)
+        # when there is no act node rather than stamping onto ``graph[0]``,
+        # which could be a ``LegalConcept`` (the #128 bug).
+        ont_node = find_act_node(doc["@graph"])
         if ont_node is None:
+            no_act_node_skipped += 1
             continue
 
         # Deduplicate draft IRIs
@@ -526,6 +577,8 @@ def main() -> None:
         inverse_count += 1
 
     print(f"  Law files updated: {inverse_count}")
+    if no_act_node_skipped:
+        print(f"  Skipped (no act node): {no_act_node_skipped}")
 
     # ---------- report ----------
     print("\n[5/5] Generating report...")
@@ -536,8 +589,12 @@ def main() -> None:
         key=lambda x: -len(x[1]),
     )[:20]
 
+    # NOTE (issue #295): no wall-clock ``generated`` field. draft_impact_report.json
+    # is git-tracked; embedding ``datetime.now()`` made it re-diff on every run
+    # regardless of data changes (timestamp-only churn, banned by AGENTS.md).
+    # Every value below is fully determined by the corpus, so the report is
+    # byte-stable across reruns of the same inputs.
     report = {
-        "generated": datetime.now().strftime("%Y-%m-%d"),
         "summary": {
             "total_draft_nodes": len(draft_nodes),
             "affected_law_names_resolved": resolved_count,

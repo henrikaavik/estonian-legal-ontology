@@ -48,6 +48,8 @@ from pathlib import Path
 
 import requests
 
+from estleg_common import BUILD_EVALUATION_DATE
+
 try:  # Optional dep — falls back to regex parser when unavailable.
     from bs4 import BeautifulSoup  # type: ignore[import-not-found]
 
@@ -351,9 +353,15 @@ def _parse_with_regex(html_text: str) -> list[dict]:
             )
             continue
 
-        tds_text = [re.sub(r"<[^>]+>", "", td) for td in tds]
+        # Strip tags, then collapse whitespace exactly like the bs4 path's
+        # ``get_text(" ", strip=True)`` so inline tags inside a cell (e.g.
+        # ``3<wbr>-1-1``) yield identical ``case_nr``/``object_id`` — and
+        # therefore identical ``@id``/``caseNumber`` — across both parsers.
+        tds_text = [re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", td)).strip() for td in tds]
         link = ""
-        link_match = re.search(r'href="([^"]+)"', tds[1])
+        # Accept both double- and single-quoted hrefs; the bs4 path extracts
+        # either, so the regex fallback must too or single-quoted links drop.
+        link_match = re.search(r'href=["\']([^"\']+)["\']', tds[1])
         if link_match:
             link = link_match.group(1)
             if link and not link.startswith("http"):
@@ -1014,7 +1022,7 @@ def _update_index_full_text_stats(stats: dict) -> None:
         logger.warning("enrich_full_text: cannot update %s: %s", index_path.name, exc)
         return
     index["full_text"] = {
-        "generated": datetime.now().strftime("%Y-%m-%d"),
+        "generated": BUILD_EVALUATION_DATE,  # #295: pinned deterministic stamp (no wall-clock churn in tracked artifact)
         "source": f"{SEARCH_URL}?asjaNr=<case_nr>",
         "property": "estleg:legalText",
         "decisions_with_full_text": stats.get("with_full_text_total", 0),
@@ -1164,7 +1172,7 @@ def main(argv: list[str] | None = None):
     # Generate index
     print("\n--- Generating index ---")
     index = {
-        "generated": datetime.now().strftime("%Y-%m-%d"),
+        "generated": BUILD_EVALUATION_DATE,  # #295: pinned deterministic stamp (no wall-clock churn in tracked artifact)
         "source": "https://rikos.rik.ee",
         "total_decisions": len(all_decisions),
         "years": {str(y): c for y, c in sorted(year_stats.items(), reverse=True)},

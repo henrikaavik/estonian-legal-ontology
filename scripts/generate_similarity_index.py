@@ -28,6 +28,24 @@ act's ``estleg:issuedUnder`` enabling-act links. Output is one consolidated
 ``estleg:regulationTypeBucket`` + reified ``estleg:Similarity`` back-links
 written into each KOV act node.
 
+Directionality of ``estleg:similarAct`` (cross-layer)
+----------------------------------------------------
+Intra-bucket KOV<->KOV ``estleg:similarAct`` peers are symmetric (each act
+in a qualifying pair lists the other). The **cross-layer** KOV->state edge,
+however, is **directional by design**: a KOV act gets an ``estleg:similarAct``
+/ reified ``estleg:Similarity`` pointer to its enabling state/law act, but
+the reciprocal pointer is *not* written back into the state act. The edge is
+derived from the KOV act's ``estleg:issuedUnder`` link (a KOV->state relation
+that has no state->KOV inverse in the corpus), and the KOV pass deliberately
+mutates only KOV (``regulations/kov/``) peep files — its idempotent
+clear/regen (:func:`clear_kov_similarity_output`) likewise scopes to the KOV
+subtree. Read ``estleg:similarAct`` pointing at a non-KOV (``_Map_`` enabling)
+act as "this KOV regulation is similar to the state act it was issued under",
+a directed KOV->enabling-act edge, not a symmetric assertion. Writing the
+state-side inverse was considered and rejected as higher-risk: it would have
+the KOV pass write into laws/state peeps that the clear path does not own,
+risking stale ``estleg:Similarity_*`` nodes on opt-out/regen.
+
 Per-link provenance
 -------------------
 Each ``estleg:semanticallySimilarTo`` value injected into a provision peep
@@ -55,10 +73,14 @@ import math
 import random
 import re
 from collections import Counter, defaultdict
-from datetime import datetime, timezone
 from pathlib import Path
 
-from estleg_common import iter_peep_files, jsonld_text, save_json
+from estleg_common import (
+    BUILD_EVALUATION_DATE,
+    iter_peep_files,
+    jsonld_text,
+    save_json,
+)
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
@@ -466,10 +488,13 @@ def bucket_key(title_normalized: str) -> str:
        ``voi``, ``mille``, ``selle``, ``aasta``, ``aastaks``,
        ``aastateks``, ``kuni``) and any trailing token shorter than 3
        chars.
-    4. From the surviving **content tokens** (>=3 chars, not a connective),
-       take the two trailing ones as ``"{qualifier} {head}"`` (the
-       qualifier is the nearest preceding content token), or just ``head``
-       when only one content token remains.
+    4. From the surviving **content tokens** (>=3 chars, neither a
+       connective nor an action noun — action nouns are filtered out of the
+       whole content list, not just the trailing edge, so a mid-title
+       amendment verb followed by another word never becomes the qualifier),
+       take the two trailing ones as ``"{qualifier} {head}"`` (the qualifier
+       is the nearest preceding content token), or just ``head`` when only
+       one content token remains.
 
     Returns :data:`UNCATEGORIZED_BUCKET` (``"_uncategorized"``) when the
     title is empty or yields no content token.
@@ -492,10 +517,18 @@ def bucket_key(title_normalized: str) -> str:
         tokens[-1] in _BUCKET_CONNECTIVES or len(tokens[-1]) < _BUCKET_MIN_TOKEN_LEN
     ):
         tokens.pop()
+    # Action nouns are never the discriminative head/qualifier of a
+    # regulation type, so drop them from *anywhere* in the content list (not
+    # just the trailing edge) — exactly as connectives are filtered. This
+    # keeps a mid-title action verb like "... eeskirja muutmine ja kehtetuks"
+    # from surviving as the bucket qualifier when a non-action word follows
+    # it; the title buckets on "eeskiri", not "muutmine".
     content = [
         t
         for t in tokens
-        if len(t) >= _BUCKET_MIN_TOKEN_LEN and t not in _BUCKET_CONNECTIVES
+        if len(t) >= _BUCKET_MIN_TOKEN_LEN
+        and t not in _BUCKET_CONNECTIVES
+        and t not in _BUCKET_TAIL_ACTIONS
     ]
     if not content:
         return UNCATEGORIZED_BUCKET
@@ -524,10 +557,14 @@ def _bucket_split_key(title_normalized: str, depth: int) -> str:
         tokens[-1] in _BUCKET_CONNECTIVES or len(tokens[-1]) < _BUCKET_MIN_TOKEN_LEN
     ):
         tokens.pop()
+    # Mirror bucket_key: filter action nouns out of the content list too so a
+    # sub-split key stays aligned with the base bucket label.
     content = [
         t
         for t in tokens
-        if len(t) >= _BUCKET_MIN_TOKEN_LEN and t not in _BUCKET_CONNECTIVES
+        if len(t) >= _BUCKET_MIN_TOKEN_LEN
+        and t not in _BUCKET_CONNECTIVES
+        and t not in _BUCKET_TAIL_ACTIONS
     ]
     # Base uses the last two content tokens; each extra depth pulls in one
     # more preceding token as a prefix qualifier.
@@ -691,7 +728,7 @@ def emit_precision_sample(pairs: list[dict], sample_size: int, out_path: Path) -
     chosen = rng.sample(pairs, n) if n else []
     chosen.sort(key=lambda p: (p["source"], p["target"]))
     payload = {
-        "generated": datetime.now(timezone.utc).date().isoformat(),
+        "generated": BUILD_EVALUATION_DATE,  # #295: pinned deterministic stamp (no wall-clock churn in tracked artifact)
         "relation": "estleg:semanticallySimilarTo",
         "relation_semantics": "candidate",
         "purpose": (
@@ -881,6 +918,11 @@ def _cross_layer_peers(
     IDF space, then emit a peer when cosine >= threshold. KOV<->KOV
     cross-bucket pairs are explicitly skipped — only state/law enabling acts
     (a ``_Map_`` id that is not itself a KOV ``Reg_`` act) are considered.
+
+    The returned peers are written only into the *KOV* act's node (see
+    :func:`_write_kov_backlinks`): the cross-layer ``estleg:similarAct`` edge
+    is a **directional KOV->enabling-act** relation, not a symmetric one. See
+    the module docstring's "Directionality of estleg:similarAct" note.
     """
     peers: list[dict] = []
     src_vec = _CROSS_LAYER_SRC_VECTORS.get(act["iri"])
@@ -1177,7 +1219,7 @@ def run_kov_similarity_pass() -> dict:
     )
 
     summary = {
-        "generated": datetime.now(timezone.utc).date().isoformat(),
+        "generated": BUILD_EVALUATION_DATE,  # #295: pinned deterministic stamp (no wall-clock churn in tracked artifact)
         "scoreModel": KOV_SCORE_MODEL,
         "topK": KOV_TOP_K,
         "threshold": KOV_SIMILARITY_THRESHOLD,
@@ -1315,25 +1357,33 @@ def main(argv: list[str] | None = None):
 
     print(f"  Unique keywords: {len(keyword_index)}")
 
-    # Find similar provision pairs
+    # Find similar provision pairs.
+    #
+    # estleg:semanticallySimilarTo is a *symmetric* relation, so each
+    # provision's neighbour list is built from ALL candidates regardless of
+    # scan order: the forward (j > i) scan below discovers every unordered
+    # pair exactly once and scores it once, then registers the peer on BOTH
+    # provisions. The MAX_SIMILAR_PER_PROVISION cap is applied per provision
+    # *after* symmetrization (so it can never make A->B exist without B->A
+    # unless one side's own cap genuinely drops it), with a deterministic
+    # (-score, target_id) tie-break. Cap drops are reported (no silent
+    # truncation) via pairs_truncated_by_cap.
     print("\n[3/4] Computing similarity pairs...")
-    # For each provision, find candidates that share keywords
-    similarity_pairs: list[dict] = []
-    processed = 0
+    # provision index -> list of (score, peer_index) candidate neighbours.
+    neighbours: dict[int, list[tuple[float, int]]] = defaultdict(list)
 
     for i, prov_a in enumerate(provisions):
         if i % 500 == 0 and i > 0:
             print(f"    Processed {i}/{len(provisions)} provisions...")
 
-        # Find candidate provisions via inverted index
+        # Find candidate provisions via inverted index (forward only: each
+        # unordered pair is discovered and scored exactly once here).
         candidate_counts: dict[int, int] = defaultdict(int)
         for kw in prov_a["keywords"]:
             for j in keyword_index[kw]:
-                if j > i:  # Only check forward to avoid duplicates
+                if j > i:  # discover each unordered pair once
                     candidate_counts[j] += 1
 
-        # Filter candidates with enough shared keywords
-        best_similar: list[tuple[float, int]] = []
         for j, shared_count in candidate_counts.items():
             if shared_count < MIN_SHARED_KEYWORDS:
                 continue
@@ -1353,11 +1403,23 @@ def main(argv: list[str] | None = None):
 
             sim = jaccard_similarity(prov_a["keywords"], prov_b["keywords"])
             if sim >= MIN_SIMILARITY:
-                best_similar.append((sim, j))
+                # Symmetric: the pair counts as a candidate neighbour for both.
+                neighbours[i].append((sim, j))
+                neighbours[j].append((sim, i))
 
-        # Keep top N similar provisions
-        best_similar.sort(key=lambda item: (-item[0], provisions[item[1]]["id"]))
-        for sim, j in best_similar[:MAX_SIMILAR_PER_PROVISION]:
+    # Per-provision deterministic sort + top-N cap (after symmetrization).
+    # Every dropped neighbour is one directed edge silently lost before this
+    # fix; pairs_truncated_by_cap surfaces the count.
+    pairs_truncated_by_cap = 0
+    similarity_pairs: list[dict] = []
+    for i, prov_a in enumerate(provisions):
+        cands = neighbours.get(i)
+        if not cands:
+            continue
+        cands.sort(key=lambda item: (-item[0], provisions[item[1]]["id"]))
+        if len(cands) > MAX_SIMILAR_PER_PROVISION:
+            pairs_truncated_by_cap += len(cands) - MAX_SIMILAR_PER_PROVISION
+        for sim, j in cands[:MAX_SIMILAR_PER_PROVISION]:
             prov_b = provisions[j]
             similarity_pairs.append({
                 "source": prov_a["id"],
@@ -1369,16 +1431,20 @@ def main(argv: list[str] | None = None):
                 "similarity": round(sim, 3),
                 "shared_keywords": len(prov_a["keywords"] & prov_b["keywords"]),
             })
-            processed += 1
 
     similarity_pairs.sort(key=lambda p: (p["source"], p["target"]))
     print(f"  Found {len(similarity_pairs)} similarity pairs")
+    if pairs_truncated_by_cap:
+        print(
+            f"  Capped {pairs_truncated_by_cap} directed edge(s) at "
+            f"MAX_SIMILAR_PER_PROVISION={MAX_SIMILAR_PER_PROVISION} per provision"
+        )
 
     # Save similarity index
     print("\n[4/4] Saving outputs...")
     index_path = KRR_DIR / "similarity_index.json"
     save_json(index_path, {
-        "generated": datetime.now(timezone.utc).date().isoformat(),
+        "generated": BUILD_EVALUATION_DATE,  # #295: pinned deterministic stamp (no wall-clock churn in tracked artifact)
         "relation_semantics": "candidate",
         "algorithm": {
             "name": "keyword_jaccard",
@@ -1408,18 +1474,25 @@ def main(argv: list[str] | None = None):
             ),
         },
         "total_provisions": len(provisions),
+        # total_pairs counts *directed* edges (the symmetric relation emits
+        # both A->B and B->A); see the [3/4] comment.
         "total_pairs": len(similarity_pairs),
+        "pairs_truncated_by_cap": pairs_truncated_by_cap,
         "candidate_files_by_type": file_counts_by_type,
         "provisions_by_type": provision_counts_by_type,
         "threshold": MIN_SIMILARITY,
         "min_shared_keywords": MIN_SHARED_KEYWORDS,
+        "max_similar_per_provision": MAX_SIMILAR_PER_PROVISION,
         "pairs": similarity_pairs,
     })
     print(f"  Saved: {index_path.name} ({len(similarity_pairs)} pairs)")
 
     # Update JSON-LD files with similarity links in one write per touched file.
     # Each (source, target) carries its own Jaccard score so the per-link
-    # provenance written below is accurate.
+    # provenance written below is accurate. similarity_pairs holds *directed*
+    # edges (both A->B and B->A survive symmetrization), so grouping by the
+    # source provision's file writes the reciprocal estleg:semanticallySimilarTo
+    # back-link into *both* files — the relation is symmetric in the graph.
     prov_id_to_file = {p["id"]: p["file"] for p in provisions}
     # file -> source_id -> {target_id: score}
     file_updates: dict[str, dict[str, dict[str, float]]] = defaultdict(
@@ -1492,7 +1565,7 @@ def main(argv: list[str] | None = None):
 
     # Generate report
     report = {
-        "generated": datetime.now(timezone.utc).date().isoformat(),
+        "generated": BUILD_EVALUATION_DATE,  # #295: pinned deterministic stamp (no wall-clock churn in tracked artifact)
         "relation_semantics": "candidate",
         "algorithm": {
             "name": "keyword_jaccard",
@@ -1519,6 +1592,7 @@ def main(argv: list[str] | None = None):
         },
         "total_provisions_analyzed": len(provisions),
         "total_similarity_pairs": len(similarity_pairs),
+        "pairs_truncated_by_cap": pairs_truncated_by_cap,
         "files_updated": updated_files,
         "candidate_files_by_type": file_counts_by_type,
         "provisions_by_type": provision_counts_by_type,

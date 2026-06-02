@@ -807,6 +807,66 @@ class TestImprisonmentWordRegexAnchored:
         )
 
 
+class TestIssue273ImprisonmentRangeOrdering:
+    """Issue #273: the range parser read group 1 as min and group 2 as max
+    with no ordering check, so a high-to-low source range yielded
+    ``max < min`` (e.g. 'kümne kuni viieaastase' → min 10 / max 5). Both the
+    word-based and the digit-based range branches must now sort the bounds."""
+
+    def test_high_to_low_word_range_is_reordered(self):
+        """The exact case named in the issue: 'kümne kuni viieaastase'
+        (ten down to five years) must yield min 5 / max 10."""
+        from extract_sanctions import extract_imprisonment
+        results = extract_imprisonment("kümne kuni viieaastase vangistusega")
+        assert any(
+            r.get("min_penalty") == "5 years"
+            and r.get("max_penalty") == "10 years"
+            for r in results
+        ), results
+
+    def test_high_to_low_digit_range_is_reordered(self):
+        from extract_sanctions import extract_imprisonment
+        results = extract_imprisonment("10 kuni 5 aastase vangistusega")
+        assert any(
+            r.get("min_penalty") == "5 years"
+            and r.get("max_penalty") == "10 years"
+            for r in results
+        ), results
+
+    def test_low_to_high_word_range_unchanged(self):
+        """A normal low-to-high range must pass through untouched (no
+        spurious swap)."""
+        from extract_sanctions import extract_imprisonment
+        results = extract_imprisonment("kahe kuni viieaastase vangistusega")
+        assert any(
+            r.get("min_penalty") == "2 years"
+            and r.get("max_penalty") == "5 years"
+            for r in results
+        ), results
+
+    def test_min_never_exceeds_max(self):
+        """Invariant across both branches: for every range record emitted,
+        the numeric min must be <= the numeric max."""
+        from extract_sanctions import extract_imprisonment
+        for text in (
+            "kümne kuni viieaastase vangistusega",
+            "10 kuni 5 aastase vangistusega",
+            "kahe kuni viieaastase vangistusega",
+            "viie kuni kümneaastase vangistusega",
+        ):
+            for r in extract_imprisonment(text):
+                if "min_penalty" in r and "max_penalty" in r:
+                    lo = int(r["min_penalty"].split()[0])
+                    hi = int(r["max_penalty"].split()[0])
+                    assert lo <= hi, f"{text!r} -> {r!r}"
+
+    def test_ordered_year_range_helper_swaps_and_sorts(self):
+        from extract_sanctions import _ordered_year_range
+        assert _ordered_year_range(10, 5) == ("5 years", "10 years")
+        assert _ordered_year_range(2, 5) == ("2 years", "5 years")
+        assert _ordered_year_range(7, 7) == ("7 years", "7 years")
+
+
 class TestSanctionIRICounterDeterministic:
     """The sanction loop sorts sanctions before assigning suffix
     counts so IRI assignment is reproducible across runs."""
@@ -1047,7 +1107,7 @@ class TestDatetimeNowUTC:
     ):
         import extract_sanctions as mod
         import estleg_common
-        from datetime import datetime, timezone
+        from estleg_common import BUILD_EVALUATION_DATE
 
         krr = tmp_path / "krr_outputs"
         sanctions_dir = krr / "sanctions"
@@ -1064,11 +1124,11 @@ class TestDatetimeNowUTC:
         assert report_path.exists()
         with open(report_path, "r", encoding="utf-8") as fh:
             report = json.load(fh)
-        # The 'generated' field must be the UTC date in ISO form.
-        expected = datetime.now(timezone.utc).date().isoformat()
-        assert report["generated"] == expected, (
-            f"report 'generated' should match UTC date; "
-            f"expected={expected} got={report['generated']}"
+        # #295: 'generated' must be the pinned deterministic build date
+        # (no wall-clock churn in the git-tracked sanctions_report.json).
+        assert report["generated"] == BUILD_EVALUATION_DATE, (
+            f"report 'generated' should match pinned BUILD_EVALUATION_DATE; "
+            f"expected={BUILD_EVALUATION_DATE} got={report['generated']}"
         )
 
 
