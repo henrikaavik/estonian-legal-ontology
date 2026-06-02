@@ -550,3 +550,217 @@ class TestTemporalEvaluationDateIsDeclared:
             if s["name"] == self.TEMPORAL_STEP:
                 continue
             assert "--evaluation-date" not in s.get("args", [])
+
+
+# ---------------------------------------------------------------------------
+# Finding #341.7 — serial break-on-failure must drain the unreached tail
+# ---------------------------------------------------------------------------
+
+
+class TestSerialBreakOnFailureDrainsTail:
+    """When a step fails in the SERIAL path, ``run_dag`` used to ``break``
+    without recording the later (unexecuted) steps, leaving the manifest's
+    stepLedger / stepSummary incomplete: ``succeeded+failed+skipped <
+    totalSteps``. The drain must append every unreached step to the ledger as
+    ``status="not_reached"`` (mirroring the parallel path's blocked-drain) and
+    add it to ``skipped``+``failed`` so the ledger is complete and
+    ``release_ok`` stays False."""
+
+    def _independent_dag(self, n: int) -> list[dict]:
+        """``n`` standalone steps with NO dependencies among them.
+
+        Topo order equals source order, and because no later step depends on
+        an earlier one, none of the post-failure steps are ``blocked`` — they
+        are exactly the ``not_reached`` tail the fix must record (the steps the
+        old ``break`` silently dropped)."""
+        return [
+            {"name": f"s{i}.py", "description": f"step {i}",
+             "script": f"s{i}.py", "depends_on": [], "reads": [], "writes": []}
+            for i in range(1, n + 1)
+        ]
+
+    @pytest.fixture
+    def stub_scripts_dir(
+        self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> Path:
+        """Point SCRIPTS_DIR/MANIFEST_DIR/REPO_ROOT at a tmp tree with stub
+        step scripts present on disk (so ``_missing_script`` is False)."""
+        scripts = tmp_path / "scripts"
+        scripts.mkdir()
+        for i in range(1, 6):
+            (scripts / f"s{i}.py").write_text("# stub\n", encoding="utf-8")
+        manifest_dir = tmp_path / "krr_outputs" / "reports" / "integration"
+        manifest_dir.mkdir(parents=True)
+        monkeypatch.setattr(run_all_integration, "SCRIPTS_DIR", scripts,
+                            raising=True)
+        monkeypatch.setattr(run_all_integration, "MANIFEST_DIR", manifest_dir,
+                            raising=True)
+        monkeypatch.setattr(run_all_integration, "REPO_ROOT", tmp_path,
+                            raising=True)
+        return scripts
+
+    def _fail_on(
+        self, fail_script: str, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        """Patch subprocess.run so ``fail_script`` exits 1, others exit 0."""
+
+        def fake_run(cmd, **kwargs):
+            name = Path(cmd[1]).name
+            stdout = kwargs.get("stdout")
+            if stdout is not None and hasattr(stdout, "write"):
+                stdout.write("out\n")
+            return subprocess.CompletedProcess(
+                args=cmd, returncode=1 if name == fail_script else 0
+            )
+
+        monkeypatch.setattr(run_all_integration.subprocess, "run", fake_run)
+
+    def test_early_failure_records_remaining_steps_as_not_reached(
+        self, stub_scripts_dir: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        steps = self._independent_dag(4)
+        topo = run_all_integration.validate_dag(steps, ())
+        assert topo == ["s1.py", "s2.py", "s3.py", "s4.py"]
+        # The very first step fails; s2/s3/s4 are independent of it, so the
+        # old code would break and drop them entirely.
+        self._fail_on("s1.py", monkeypatch)
+
+        res = run_all_integration.run_dag(
+            steps, topo, dry_run=False, resume_from=None,
+            validate_each=False, per_script_timeout=30, parallel=1,
+        )
+
+        ledger = res["ledger"]
+        statuses = {e["name"]: e["status"] for e in ledger}
+        # Every later step is recorded as not_reached (not silently dropped).
+        assert statuses["s1.py"] == "failed"
+        assert statuses["s2.py"] == "not_reached"
+        assert statuses["s3.py"] == "not_reached"
+        assert statuses["s4.py"] == "not_reached"
+        # The ledger is COMPLETE — one entry per step, no duplicates.
+        assert len(ledger) == len(topo)
+        assert [e["name"] for e in ledger] == topo
+        # not_reached entries mirror the parallel blocked-drain shape.
+        nr = next(e for e in ledger if e["name"] == "s4.py")
+        assert nr["script"] == "s4.py"
+
+    def test_counts_sum_to_total_steps_after_early_failure(
+        self, stub_scripts_dir: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        steps = self._independent_dag(5)
+        topo = run_all_integration.validate_dag(steps, ())
+        # Fail on the second step: s1 succeeds, s2 fails, s3/s4/s5 not_reached.
+        self._fail_on("s2.py", monkeypatch)
+
+        res = run_all_integration.run_dag(
+            steps, topo, dry_run=False, resume_from=None,
+            validate_each=False, per_script_timeout=30, parallel=1,
+        )
+
+        total = len(topo)
+        # The ledger partitions cleanly over the topo set: every step appears
+        # exactly once, succeeded/failed/not_reached are disjoint and total.
+        succeeded_in_ledger = {
+            e["name"] for e in res["ledger"] if e["status"] == "succeeded"
+        }
+        failed_in_ledger = {
+            e["name"] for e in res["ledger"] if e["status"] == "failed"
+        }
+        not_reached_in_ledger = {
+            e["name"] for e in res["ledger"] if e["status"] == "not_reached"
+        }
+        assert succeeded_in_ledger == {"s1.py"}
+        assert failed_in_ledger == {"s2.py"}
+        assert not_reached_in_ledger == {"s3.py", "s4.py", "s5.py"}
+        assert (
+            len(succeeded_in_ledger)
+            + len(failed_in_ledger)
+            + len(not_reached_in_ledger)
+        ) == total
+
+    def test_release_manifest_step_summary_is_complete_and_not_ok(
+        self, stub_scripts_dir: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        """The whole point: the assembled release manifest's stepSummary now
+        accounts for every step (no silent gap), and release_ok stays False."""
+        steps = self._independent_dag(4)
+        topo = run_all_integration.validate_dag(steps, ())
+        self._fail_on("s2.py", monkeypatch)
+
+        res = run_all_integration.run_dag(
+            steps, topo, dry_run=False, resume_from=None,
+            validate_each=False, per_script_timeout=30, parallel=1,
+        )
+
+        # Build the manifest exactly as main() would for a release build.
+        monkeypatch.setattr(run_all_integration, "STEPS", steps, raising=True)
+        manifest = run_all_integration.build_release_manifest(
+            dag_result=res,
+            validator_records=[],
+            validators_passed=True,  # isolate the steps_ok contribution
+            artifact_hash={"files": {}, "missing": [], "contentHash": "x"},
+            dry_run=False,
+            validate_only=False,
+            resume_from=None,
+            parallel=1,
+        )
+
+        # stepLedger carries one record per step — nothing dropped. This is
+        # the authoritative completeness check: before the fix the post-failure
+        # tail was absent, so len(stepLedger) < totalSteps.
+        assert len(manifest["stepLedger"]) == len(topo)
+        ledger_names = [e["name"] for e in manifest["stepLedger"]]
+        assert sorted(ledger_names) == sorted(topo)
+        assert len(ledger_names) == len(set(ledger_names))  # no duplicates
+        summary = manifest["stepSummary"]
+        assert summary["totalSteps"] == len(topo)
+        # Every step is accounted for in the run's result sets: the union of
+        # succeeded/failed/skipped covers the full topo set (the historical bug
+        # left the not_reached tail out of all three).
+        assert (
+            res["succeeded"] | res["failed"] | res["skipped"]
+        ) == set(topo)
+        # Failure is recorded and the release is correctly blocked.
+        assert summary["failed"] >= 1
+        assert manifest["releaseOk"] is False
+
+    def test_validation_failure_also_drains_the_tail(
+        self, stub_scripts_dir: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        """The second serial break (``--validate-each`` failure) must drain the
+        tail too: the step itself ran fine, but the post-step validator failed,
+        so later steps are still ``not_reached``."""
+        steps = self._independent_dag(3)
+        topo = run_all_integration.validate_dag(steps, ())
+
+        # All step subprocesses succeed; the per-step validator fails after s1.
+        def all_ok(cmd, **kwargs):
+            stdout = kwargs.get("stdout")
+            if stdout is not None and hasattr(stdout, "write"):
+                stdout.write("out\n")
+            return subprocess.CompletedProcess(args=cmd, returncode=0)
+
+        monkeypatch.setattr(run_all_integration.subprocess, "run", all_ok)
+        calls = {"n": 0}
+
+        def fake_validator(timeout, after_script=None):
+            calls["n"] += 1
+            # Fail the validator that runs after the first step.
+            log = run_all_integration.validator_log_path(after_script or "phase")
+            log.parent.mkdir(parents=True, exist_ok=True)
+            log.write_text("v\n", encoding="utf-8")
+            return (1, log)
+
+        monkeypatch.setattr(run_all_integration, "run_validator",
+                            fake_validator)
+
+        res = run_all_integration.run_dag(
+            steps, topo, dry_run=False, resume_from=None,
+            validate_each=True, per_script_timeout=30, parallel=1,
+        )
+
+        statuses = {e["name"]: e["status"] for e in res["ledger"]}
+        assert statuses["s1.py"] == "validation_failed"
+        assert statuses["s2.py"] == "not_reached"
+        assert statuses["s3.py"] == "not_reached"
+        assert len(res["ledger"]) == len(topo)

@@ -483,3 +483,335 @@ class TestVerifySymmetryCategorisation:
         assert offending
         assert offending[0]["issue"] == "genuine-missing-back-link"
         assert offending[0].get("resolvedTarget") == "estleg:Tgt_Par_5"
+
+
+# ---------------------------------------------------------------------------
+# Issue #376 — the local non-atomic save_json must be replaced by the
+# atomic estleg_common.save_json (tempfile + os.replace).
+# ---------------------------------------------------------------------------
+
+
+class TestAtomicSaveJsonImport:
+    def test_module_save_json_is_estleg_common_atomic(self):
+        """generate_inverse_references must NOT shadow save_json with a
+        local non-atomic open('w') variant; it must reuse the atomic
+        estleg_common.save_json so a crash mid-write never truncates a
+        peep file to 0 bytes (#376)."""
+        import generate_inverse_references as mod
+        import estleg_common
+
+        # Same function object — proves the local shadow is gone and the
+        # atomic implementation is in use everywhere save_json is called.
+        assert mod.save_json is estleg_common.save_json
+
+    def test_atomic_save_json_writes_via_replace(self, tmp_path):
+        """Sanity check that the imported save_json actually performs an
+        atomic write: no leftover .tmp droppings and a trailing newline."""
+        import generate_inverse_references as mod
+
+        target = tmp_path / "out.json"
+        mod.save_json(target, {"@graph": [{"@id": "estleg:X"}]})
+        text = target.read_text(encoding="utf-8")
+        assert text.endswith("\n")
+        # No tempfile droppings left behind.
+        leftovers = list(tmp_path.glob(".*tmp")) + list(tmp_path.glob("*.tmp"))
+        assert leftovers == []
+
+
+# ---------------------------------------------------------------------------
+# Issue #345 — estleg:hasVersion (inverse of estleg:versionOf) must be
+# materialised on each LegalProvision, one per ProvisionVersion.
+# ---------------------------------------------------------------------------
+
+
+def _write_versions_corpus(krr):
+    """Build a minimal corpus:
+
+      * a peep file holding two LegalProvision nodes (P1, P2);
+      * a ProvisionVersions sidecar with three version nodes:
+          - P1 has two versions (v1 older, v2 head),
+          - P2 has one version (v1).
+
+    Returns (provision_peep_path, sidecar_path).
+    """
+    versions_dir = krr / "provision_versions"
+    versions_dir.mkdir(parents=True)
+
+    # Canonical LegalProvision nodes live in the peep corpus.
+    prov_peep = krr / "demo_law_peep.json"
+    prov_peep.write_text(json.dumps({
+        "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+                     "owl": "http://www.w3.org/2002/07/owl#"},
+        "@graph": [
+            {"@id": "estleg:DEMO_Map_2026",
+             "@type": ["owl:Ontology", "estleg:Law"]},
+            {"@id": "estleg:DEMO_Par_1",
+             "@type": ["owl:NamedIndividual"],
+             "estleg:paragrahv": "§ 1"},
+            {"@id": "estleg:DEMO_Par_2",
+             "@type": ["owl:NamedIndividual"],
+             "estleg:paragrahv": "§ 2"},
+        ],
+    }), encoding="utf-8")
+
+    # ProvisionVersion sidecar (the estleg:versionOf source).
+    sidecar = versions_dir / "demo_law.jsonld"
+    sidecar.write_text(json.dumps({
+        "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+                     "owl": "http://www.w3.org/2002/07/owl#"},
+        "@graph": [
+            {"@id": "estleg:ProvisionVersions_demo_law_Map",
+             "@type": ["owl:Ontology"]},
+            {"@id": "estleg:DEMO_Par_1_v100",
+             "@type": ["owl:NamedIndividual", "estleg:ProvisionVersion"],
+             "estleg:versionOf": {"@id": "estleg:DEMO_Par_1"},
+             "estleg:supersededByVersion": {"@id": "estleg:DEMO_Par_1_v200"}},
+            {"@id": "estleg:DEMO_Par_1_v200",
+             "@type": ["owl:NamedIndividual", "estleg:ProvisionVersion"],
+             "estleg:versionOf": {"@id": "estleg:DEMO_Par_1"}},
+            {"@id": "estleg:DEMO_Par_2_v100",
+             "@type": ["owl:NamedIndividual", "estleg:ProvisionVersion"],
+             "estleg:versionOf": {"@id": "estleg:DEMO_Par_2"}},
+        ],
+    }), encoding="utf-8")
+
+    return prov_peep, sidecar
+
+
+class TestCollectVersionInverse:
+    def test_groups_versions_by_provision_in_order(self, tmp_path, monkeypatch):
+        import generate_inverse_references as mod
+
+        krr = tmp_path / "krr_outputs"
+        krr.mkdir()
+        _write_versions_corpus(krr)
+        monkeypatch.setattr(mod, "VERSIONS_DIR", krr / "provision_versions")
+
+        inverse = mod.collect_version_inverse()
+        assert inverse == {
+            "estleg:DEMO_Par_1": [
+                "estleg:DEMO_Par_1_v100",
+                "estleg:DEMO_Par_1_v200",
+            ],
+            "estleg:DEMO_Par_2": ["estleg:DEMO_Par_2_v100"],
+        }
+
+    def test_missing_versions_dir_returns_empty(self, tmp_path, monkeypatch):
+        import generate_inverse_references as mod
+
+        monkeypatch.setattr(
+            mod, "VERSIONS_DIR", tmp_path / "does_not_exist",
+        )
+        assert mod.collect_version_inverse() == {}
+
+    def test_dedupes_duplicate_version_edge(self, tmp_path, monkeypatch):
+        """If a version IRI appears twice pointing at the same provision
+        (e.g. an accidentally merged sidecar), it is listed only once."""
+        import generate_inverse_references as mod
+
+        krr = tmp_path / "krr_outputs"
+        vd = krr / "provision_versions"
+        vd.mkdir(parents=True)
+        (vd / "dupe.jsonld").write_text(json.dumps({
+            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+            "@graph": [
+                {"@id": "estleg:D_Par_1_v1",
+                 "estleg:versionOf": {"@id": "estleg:D_Par_1"}},
+                {"@id": "estleg:D_Par_1_v1",
+                 "estleg:versionOf": {"@id": "estleg:D_Par_1"}},
+            ],
+        }), encoding="utf-8")
+        monkeypatch.setattr(mod, "VERSIONS_DIR", vd)
+
+        assert mod.collect_version_inverse() == {
+            "estleg:D_Par_1": ["estleg:D_Par_1_v1"],
+        }
+
+
+class TestApplyHasVersion:
+    def test_writes_has_version_on_provision_nodes(self, tmp_path):
+        import generate_inverse_references as mod
+
+        krr = tmp_path / "krr_outputs"
+        krr.mkdir()
+        prov_peep, _ = _write_versions_corpus(krr)
+
+        version_inverse = {
+            "estleg:DEMO_Par_1": [
+                "estleg:DEMO_Par_1_v100",
+                "estleg:DEMO_Par_1_v200",
+            ],
+            "estleg:DEMO_Par_2": ["estleg:DEMO_Par_2_v100"],
+        }
+        iri_to_file = {
+            "estleg:DEMO_Par_1": prov_peep,
+            "estleg:DEMO_Par_2": prov_peep,
+        }
+
+        counts, unresolved = mod.apply_has_version(version_inverse, iri_to_file)
+        assert unresolved == []
+        assert counts == {prov_peep: 2}
+
+        saved = json.loads(prov_peep.read_text(encoding="utf-8"))
+        by_id = {n["@id"]: n for n in saved["@graph"]}
+        p1 = by_id["estleg:DEMO_Par_1"]
+        assert p1["estleg:hasVersion"] == [
+            {"@id": "estleg:DEMO_Par_1_v100"},
+            {"@id": "estleg:DEMO_Par_1_v200"},
+        ]
+        p2 = by_id["estleg:DEMO_Par_2"]
+        assert p2["estleg:hasVersion"] == [{"@id": "estleg:DEMO_Par_2_v100"}]
+
+    def test_unresolved_provision_is_reported_not_written(self, tmp_path):
+        """A provision referenced by a sidecar but absent from any peep
+        file must be returned as unresolved, never silently dropped."""
+        import generate_inverse_references as mod
+
+        krr = tmp_path / "krr_outputs"
+        krr.mkdir()
+        prov_peep, _ = _write_versions_corpus(krr)
+
+        version_inverse = {
+            "estleg:GHOST_Par_9": ["estleg:GHOST_Par_9_v1"],
+        }
+        counts, unresolved = mod.apply_has_version(version_inverse, {})
+        assert counts == {}
+        assert unresolved == ["estleg:GHOST_Par_9"]
+
+
+class TestHasVersionRoundTrip:
+    def test_main_materialises_has_version_symmetric_to_version_of(
+        self, tmp_path, monkeypatch
+    ):
+        """End-to-end: after main(), every ProvisionVersion's
+        estleg:versionOf -> P has a matching estleg:hasVersion -> V on P
+        (round-trip symmetry, #345)."""
+        import generate_inverse_references as mod
+        import estleg_common
+
+        krr = tmp_path / "krr_outputs"
+        krr.mkdir()
+        prov_peep, sidecar = _write_versions_corpus(krr)
+
+        monkeypatch.setattr(mod, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "VERSIONS_DIR", krr / "provision_versions")
+        monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+
+        rc = mod.main()
+        assert rc in (None, 0)
+
+        # Rebuild the two directions and assert they are mutually inverse.
+        sc = json.loads(sidecar.read_text(encoding="utf-8"))
+        version_of = {}  # version_iri -> provision_iri
+        for n in sc["@graph"]:
+            vof = n.get("estleg:versionOf")
+            if isinstance(vof, dict):
+                version_of[n["@id"]] = vof["@id"]
+
+        peep = json.loads(prov_peep.read_text(encoding="utf-8"))
+        has_version = {}  # provision_iri -> set(version_iri)
+        for n in peep["@graph"]:
+            hv = n.get("estleg:hasVersion")
+            if hv is None:
+                continue
+            if isinstance(hv, dict):
+                hv = [hv]
+            has_version[n["@id"]] = {e["@id"] for e in hv}
+
+        # Forward direction: every versionOf edge has a hasVersion back-edge.
+        for v, p in version_of.items():
+            assert p in has_version, f"{p} lost its hasVersion set"
+            assert v in has_version[p], f"hasVersion {p} missing {v}"
+
+        # Reverse direction: every hasVersion edge has a versionOf back-edge.
+        for p, versions in has_version.items():
+            for v in versions:
+                assert version_of.get(v) == p, (
+                    f"hasVersion {p} -> {v} has no matching versionOf"
+                )
+
+        # Concrete counts: 3 version edges across 2 provisions.
+        assert has_version["estleg:DEMO_Par_1"] == {
+            "estleg:DEMO_Par_1_v100", "estleg:DEMO_Par_1_v200",
+        }
+        assert has_version["estleg:DEMO_Par_2"] == {"estleg:DEMO_Par_2_v100"}
+
+        # The report records the version-inverse stats.
+        report = json.loads(
+            (krr / "inverse_references_report.json").read_text(encoding="utf-8")
+        )
+        summ = report["summary"]
+        assert summ["provisions_with_versions"] == 2
+        assert summ["total_version_edges"] == 3
+        assert summ["has_version_nodes_updated"] == 2
+        assert summ["has_version_unresolved_provisions"] == 0
+
+    def test_main_has_version_is_idempotent(self, tmp_path, monkeypatch):
+        """Running main() twice produces identical hasVersion (no
+        duplication, no stale accumulation) — the clear pass strips the
+        prior run's triples before re-applying."""
+        import generate_inverse_references as mod
+        import estleg_common
+
+        krr = tmp_path / "krr_outputs"
+        krr.mkdir()
+        prov_peep, _ = _write_versions_corpus(krr)
+
+        monkeypatch.setattr(mod, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "VERSIONS_DIR", krr / "provision_versions")
+        monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+
+        assert mod.main() in (None, 0)
+        first = prov_peep.read_text(encoding="utf-8")
+        assert mod.main() in (None, 0)
+        second = prov_peep.read_text(encoding="utf-8")
+        assert first == second
+
+        peep = json.loads(second)
+        p1 = next(n for n in peep["@graph"]
+                  if n.get("@id") == "estleg:DEMO_Par_1")
+        # Exactly two entries, not four.
+        assert p1["estleg:hasVersion"] == [
+            {"@id": "estleg:DEMO_Par_1_v100"},
+            {"@id": "estleg:DEMO_Par_1_v200"},
+        ]
+
+    def test_main_clears_stale_has_version(self, tmp_path, monkeypatch):
+        """A provision carrying a pre-existing (stale) hasVersion pointing
+        at a version that no longer exists in any sidecar must lose it on
+        the next run."""
+        import generate_inverse_references as mod
+        import estleg_common
+
+        krr = tmp_path / "krr_outputs"
+        krr.mkdir()
+
+        # Provision with a stale hasVersion; the sidecar dir is EMPTY, so
+        # collect_version_inverse() returns nothing for it.
+        (krr / "provision_versions").mkdir(parents=True)
+        prov_peep = krr / "stale_peep.json"
+        prov_peep.write_text(json.dumps({
+            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+                         "owl": "http://www.w3.org/2002/07/owl#"},
+            "@graph": [
+                {"@id": "estleg:STALE_Map_2026",
+                 "@type": ["owl:Ontology", "estleg:Law"]},
+                {"@id": "estleg:STALE_Par_1",
+                 "@type": ["owl:NamedIndividual"],
+                 "estleg:paragrahv": "§ 1",
+                 "estleg:hasVersion": [
+                     {"@id": "estleg:STALE_Par_1_vGHOST"}
+                 ]},
+            ],
+        }), encoding="utf-8")
+
+        monkeypatch.setattr(mod, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "VERSIONS_DIR", krr / "provision_versions")
+        monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+
+        assert mod.main() in (None, 0)
+
+        peep = json.loads(prov_peep.read_text(encoding="utf-8"))
+        p1 = next(n for n in peep["@graph"]
+                  if n.get("@id") == "estleg:STALE_Par_1")
+        assert "estleg:hasVersion" not in p1

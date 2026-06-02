@@ -213,6 +213,65 @@ _BUCKET_CONNECTIVES = {
 # Bucket label for acts whose title yields no usable content token.
 UNCATEGORIZED_BUCKET = "_uncategorized"
 
+# Stem-normalization map for regulation-type nouns that inflect in titles
+# (#317). Estonian titles carry the type noun in the nominative ("kooli
+# pohimaarus") OR an oblique case when an action noun follows ("kooli
+# pohimaaruse muutmine"); after the trailing action noun is stripped the
+# oblique form survives and would bucket separately from the nominative,
+# so an amendment to a regulation type is never compared with acts that ARE
+# that type — the closest possible matches. Rather than a blanket
+# suffix-stripper (which over-merges unrelated types), this is a curated
+# inflected->canonical lookup over the regulation-type nouns that actually
+# split in the corpus (verified against kov_similarity_index.json bucket
+# heads): pohimaarus / eeskiri / kord / piirmaara and their genitive,
+# partitive, and plural surface forms. Keys are the already-lowercased,
+# diacritic-permissive token forms produced by _BUCKET_TOKEN_RE; both the
+# transliterated forms the live corpus uses (pohimaaruse) and the
+# raw-diacritic forms the tokenizer still accepts (põhimääruse) map to one
+# canonical stem so inflected variants always share a bucket.
+_BUCKET_STEM_MAP = {
+    # pohimaarus (statute/charter): genitive/partitive/plural -> nominative.
+    "pohimaaruse": "pohimaarus",
+    "pohimaaruste": "pohimaarus",
+    "pohimaaruses": "pohimaarus",
+    "pohimaarusest": "pohimaarus",
+    "pohimaarused": "pohimaarus",
+    "põhimääruse": "pohimaarus",
+    "põhimäärus": "pohimaarus",
+    "põhimääruste": "pohimaarus",
+    "põhimäärused": "pohimaarus",
+    "pohimaarus": "pohimaarus",
+    # eeskiri (rules/by-law): i-stem genitive "eeskirja" + plurals.
+    "eeskirja": "eeskiri",
+    "eeskirjad": "eeskiri",
+    "eeskirjade": "eeskiri",
+    "eeskiri": "eeskiri",
+    # kord (procedure/order): irregular d-stem genitive "korra".
+    "korra": "kord",
+    "korrad": "kord",
+    "kordade": "kord",
+    "kord": "kord",
+    # piirmaara (limit/rate): a-stem; collapse plural/partitive forms.
+    "piirmaarade": "piirmaara",
+    "piirmaarad": "piirmaara",
+    "piirmäärade": "piirmaara",
+    "piirmäärad": "piirmaara",
+    "piirmaara": "piirmaara",
+}
+
+
+def _normalize_bucket_token(token: str) -> str:
+    """Map an inflected regulation-type noun to its canonical stem (#317).
+
+    Looks ``token`` up in :data:`_BUCKET_STEM_MAP`; unknown tokens are
+    returned unchanged. Applied to *every* surviving content token (not just
+    the head) so a type noun that appears as the qualifier — e.g.
+    ``"kasutamise eeskirja"`` vs ``"kasutamise eeskiri"`` — also merges, and
+    the merge is independent of whether the noun is the head or the qualifier.
+    """
+    return _BUCKET_STEM_MAP.get(token, token)
+
+
 # Tokens shorter than this are treated as non-content (dropped from the
 # trailing edge and ignored when picking qualifier/head). Mirrors the
 # "tokens <3 chars" rule in the Layer 3 spec.
@@ -238,6 +297,13 @@ KOV_SIMILARITY_THRESHOLD = 0.3
 KOV_SCORE_MODEL = "tfidf-cosine"
 
 # Boilerplate provision patterns to exclude (entry-into-force, repeal clauses, etc.)
+#
+# Each pattern flags a provision whose text is mandatory verbatim / structural
+# boilerplate rather than substantive content. Two provisions sharing only
+# such text are not topically similar, so flagged provisions are dropped
+# before keyword extraction (see is_boilerplate / extract_provisions_from_file)
+# — otherwise identical boilerplate yields Jaccard=1.0 false-similarity
+# clusters and degenerate high-in-degree hubs (#367).
 BOILERPLATE_PATTERNS = [
     re.compile(r'välja jäetud', re.IGNORECASE),
     re.compile(r'valja jaetud', re.IGNORECASE),
@@ -246,6 +312,25 @@ BOILERPLATE_PATTERNS = [
     re.compile(r"jõustub.*avaldamisele", re.IGNORECASE),
     re.compile(r"käesolev seadus jõustub", re.IGNORECASE),
     re.compile(r"seadus jõustub", re.IGNORECASE),
+    # #367: the REGULATION entry-into-force form ("Määrus jõustub … aastal." /
+    # "Määrus jõustub üldises korras." / "Määrus jõustub kolmandal päeval …").
+    # Complements "seadus jõustub" above (which only covers laws). Anchored to
+    # an entry-into-force complement — a date digit, "aasta", "päev(al)",
+    # "korras", or an avalikustam/avaldam stem — so substantive court-order
+    # provisions ("… määrus jõustub, kui …" / "… määrus jõustub ja kuulub
+    # täitmisele …", which have no such complement before the sentence end)
+    # are NOT suppressed.
+    re.compile(
+        r"määrus jõustub[^.]*?(\d|aasta|päev|korras|avalikustam|avaldam)",
+        re.IGNORECASE,
+    ),
+    # #367: mandatory verbatim nature-conservation text. Every protected-area
+    # regulation repeats "<protected-area-kind> valitseja on Keskkonnaamet."
+    # (e.g. "Kaitseala valitseja on Keskkonnaamet.") — identical across
+    # thousands of acts, it produced a degenerate Jaccard=1.0 hub (in-degree
+    # 293 on a single nature-reserve §3). The administrator name is fixed by
+    # statute, so the sentence carries no discriminative topical signal.
+    re.compile(r"valitseja on Keskkonnaamet", re.IGNORECASE),
     re.compile(r"tunnistatakse kehtetuks", re.IGNORECASE),
     re.compile(r"rakendatakse.*jõustumisest", re.IGNORECASE),
 ]
@@ -492,9 +577,14 @@ def bucket_key(title_normalized: str) -> str:
        connective nor an action noun — action nouns are filtered out of the
        whole content list, not just the trailing edge, so a mid-title
        amendment verb followed by another word never becomes the qualifier),
-       take the two trailing ones as ``"{qualifier} {head}"`` (the qualifier
-       is the nearest preceding content token), or just ``head`` when only
-       one content token remains.
+       **stem-normalize** each via :func:`_normalize_bucket_token` so an
+       inflected regulation-type noun (genitive ``pohimaaruse`` /
+       ``eeskirja`` / ``korra``) collapses onto its nominative
+       (``pohimaarus`` / ``eeskiri`` / ``kord``) — applied per token so the
+       merge holds whether the type noun is the head or the qualifier
+       (#317). Then take the two trailing tokens as ``"{qualifier} {head}"``
+       (the qualifier is the nearest preceding content token), or just
+       ``head`` when only one content token remains.
 
     Returns :data:`UNCATEGORIZED_BUCKET` (``"_uncategorized"``) when the
     title is empty or yields no content token.
@@ -504,7 +594,8 @@ def bucket_key(title_normalized: str) -> str:
         "... jaatmehoolduseeskiri"                -> "jaatmehoolduseeskiri"
         "opetajate tunnustamise kord"             -> "tunnustamise kord"
         "roosi kooli arengukava aastateks 2024-2028" -> "kooli arengukava"
-        "pohimaaruse muutmine"                    -> "pohimaarus"  (after strip)
+        "kooli pohimaaruse muutmine"              -> "kooli pohimaarus"
+        "kooli pohimaarus"                        -> "kooli pohimaarus"  (#317: same bucket)
     """
     if not title_normalized:
         return UNCATEGORIZED_BUCKET
@@ -524,7 +615,7 @@ def bucket_key(title_normalized: str) -> str:
     # from surviving as the bucket qualifier when a non-action word follows
     # it; the title buckets on "eeskiri", not "muutmine".
     content = [
-        t
+        _normalize_bucket_token(t)
         for t in tokens
         if len(t) >= _BUCKET_MIN_TOKEN_LEN
         and t not in _BUCKET_CONNECTIVES
@@ -557,10 +648,11 @@ def _bucket_split_key(title_normalized: str, depth: int) -> str:
         tokens[-1] in _BUCKET_CONNECTIVES or len(tokens[-1]) < _BUCKET_MIN_TOKEN_LEN
     ):
         tokens.pop()
-    # Mirror bucket_key: filter action nouns out of the content list too so a
-    # sub-split key stays aligned with the base bucket label.
+    # Mirror bucket_key: filter action nouns out of the content list too, and
+    # stem-normalize each token (#317), so a sub-split key stays aligned with
+    # the base bucket label (inflected type nouns collapse identically).
     content = [
-        t
+        _normalize_bucket_token(t)
         for t in tokens
         if len(t) >= _BUCKET_MIN_TOKEN_LEN
         and t not in _BUCKET_CONNECTIVES
@@ -883,11 +975,22 @@ def _intra_bucket_pairs(
 ) -> dict[str, list[dict]]:
     """Pairwise cosine within one bucket; return source-id -> kept peer list.
 
-    Symmetric: each qualifying pair contributes a peer to *both* sources.
-    Peers are filtered by :data:`KOV_SIMILARITY_THRESHOLD`, then per source
-    sorted by ``(-score, target_iri)`` and truncated to :data:`KOV_TOP_K`.
+    Intra-bucket KOV<->KOV similarity is **symmetric** (``estleg:similarAct``
+    asserts mutual same-type similarity), so the per-source top-K cap is
+    applied with a **greedy symmetric** selection rather than independently
+    per source: a candidate pair contributes its edge to *both* sources or to
+    neither, and is kept only while **both** endpoints are still under
+    :data:`KOV_TOP_K`. This both (a) keeps every emitted intra-bucket pair
+    symmetric — the old per-source ``del peers[src][KOV_TOP_K:]`` let a
+    high-degree source A evict B while B still listed A, leaving ~49.5% of
+    intra-bucket pairs one-directional (#367) — and (b) preserves the
+    ``<=KOV_TOP_K`` per-source bound (a node at the cap takes no further
+    edges). Pairs are considered in descending ``(score, …)`` priority so the
+    strongest mutual matches claim the limited slots first; ties break
+    deterministically on the IRIs.
     """
-    peers: dict[str, list[dict]] = defaultdict(list)
+    # Collect every qualifying undirected pair once, with its score.
+    candidates: list[tuple[float, str, str]] = []
     n = len(members)
     for i in range(n):
         act_a = members[i]
@@ -897,11 +1000,28 @@ def _intra_bucket_pairs(
             score = cosine_sparse(vec_a, vectors[act_b["iri"]])
             if score < KOV_SIMILARITY_THRESHOLD:
                 continue
-            peers[act_a["iri"]].append({"target": act_b["iri"], "score": score})
-            peers[act_b["iri"]].append({"target": act_a["iri"], "score": score})
+            iri_a, iri_b = act_a["iri"], act_b["iri"]
+            # Order endpoints by IRI for a deterministic tie-break key.
+            lo, hi = (iri_a, iri_b) if iri_a <= iri_b else (iri_b, iri_a)
+            candidates.append((score, lo, hi))
+
+    # Greedy symmetric cap: highest-scoring pairs first (deterministic
+    # tie-break on the ordered IRIs), keeping a pair only while neither
+    # endpoint has reached KOV_TOP_K.
+    candidates.sort(key=lambda c: (-c[0], c[1], c[2]))
+    peers: dict[str, list[dict]] = defaultdict(list)
+    degree: dict[str, int] = defaultdict(int)
+    for score, lo, hi in candidates:
+        if degree[lo] >= KOV_TOP_K or degree[hi] >= KOV_TOP_K:
+            continue
+        peers[lo].append({"target": hi, "score": score})
+        peers[hi].append({"target": lo, "score": score})
+        degree[lo] += 1
+        degree[hi] += 1
+
+    # Per-source ordering (score desc, then target IRI) for stable output.
     for src in peers:
         peers[src].sort(key=lambda p: (-p["score"], p["target"]))
-        del peers[src][KOV_TOP_K:]
     return peers
 
 
@@ -1135,10 +1255,17 @@ def run_kov_similarity_pass() -> dict:
     act_iri_to_file = _build_corpus_act_index()
     state_vector_cache: dict[str, dict[str, float] | None] = {}
 
-    # Per-source accumulated peers (intra-bucket + cross-layer), keyed by
-    # source act IRI. Cross-layer peers are appended then re-capped so a
-    # source never exceeds KOV_TOP_K across both peer sources.
-    peers_by_source: dict[str, list[dict]] = defaultdict(list)
+    # Intra-bucket peers are kept SEPARATE from cross-layer peers through the
+    # cap so the two cap regimes don't interfere. Intra-bucket KOV<->KOV edges
+    # are symmetric and already capped symmetrically (greedy, <=KOV_TOP_K per
+    # source) by _intra_bucket_pairs; cross-layer KOV->state edges are
+    # directional. Merging them and re-capping per source by raw score (the old
+    # behaviour) could split a symmetric intra pair — evict A->B while B->A
+    # stayed — reintroducing exactly the asymmetry _intra_bucket_pairs fixed
+    # (#367). So intra peers are protected and cross-layer peers only fill the
+    # *remaining* per-source capacity (KOV_TOP_K - intra_count).
+    intra_by_source: dict[str, list[dict]] = defaultdict(list)
+    cross_by_source: dict[str, list[dict]] = defaultdict(list)
 
     for key, members in buckets.items():
         comparable = (
@@ -1148,7 +1275,7 @@ def run_kov_similarity_pass() -> dict:
         )
         if comparable:
             for src_iri, peer_list in _intra_bucket_pairs(members, vectors).items():
-                peers_by_source[src_iri].extend(peer_list)
+                intra_by_source[src_iri].extend(peer_list)
 
     # Cross-layer pass (runs for every act regardless of bucket).
     for act in acts:
@@ -1156,12 +1283,25 @@ def run_kov_similarity_pass() -> dict:
             act, idf, state_vector_cache, act_iri_to_file
         )
         if cl_peers:
-            peers_by_source[act["iri"]].extend(cl_peers)
+            cross_by_source[act["iri"]].extend(cl_peers)
 
-    # Final per-source sort + top-K cap across both peer kinds.
-    for src_iri in peers_by_source:
-        peers_by_source[src_iri].sort(key=lambda p: (-p["score"], p["target"]))
-        del peers_by_source[src_iri][KOV_TOP_K:]
+    # Combine per source: intra peers (symmetric, already <=KOV_TOP_K) first,
+    # then the best cross-layer peers filling any remaining slots up to
+    # KOV_TOP_K. Intra peers are never evicted, so intra-bucket symmetry is
+    # preserved; the kept set is then sorted by (score desc, target) for a
+    # stable, score-ordered output list.
+    peers_by_source: dict[str, list[dict]] = defaultdict(list)
+    for src_iri in set(intra_by_source) | set(cross_by_source):
+        intra = intra_by_source.get(src_iri, [])
+        remaining = KOV_TOP_K - len(intra)
+        cross = cross_by_source.get(src_iri, [])
+        if remaining > 0 and cross:
+            cross = sorted(cross, key=lambda p: (-p["score"], p["target"]))[:remaining]
+        else:
+            cross = []
+        combined = intra + cross
+        combined.sort(key=lambda p: (-p["score"], p["target"]))
+        peers_by_source[src_iri] = combined
 
     # Count cross-layer (KOV->state) pairs that SURVIVE the top-K cap. The
     # earlier pre-cap tally overreported emitted links (#250 review): an act's

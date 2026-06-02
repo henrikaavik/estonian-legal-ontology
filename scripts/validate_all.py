@@ -668,11 +668,24 @@ def registry_exception_category(index_doc: dict, law: dict, file_name: str) -> s
     return None
 
 
-def validate_registry_index(krr_dir: Path = KRR_DIR):
+def validate_registry_index(krr_dir: Path = KRR_DIR, *, allow_missing_index: bool = False):
     index_path = krr_dir / "INDEX.json"
     print("\n--- Registry Drift ---")
     if not index_path.exists():
-        warn(f"{index_path.name}: registry not found")
+        # Issue #315: INDEX.json is a committed artifact. Its absence on a
+        # normal checkout means the entire file-existence / zero-provision
+        # gate and the registry count checks are silently skipped, so a
+        # scratch tree would print VALIDATION PASSED. Treat a missing
+        # registry as a hard error unless the caller explicitly opts in to
+        # a not-yet-generated state via `--allow-missing-index`.
+        if allow_missing_index:
+            warn(f"{index_path.name}: registry not found (allowed via --allow-missing-index)")
+        else:
+            error(
+                f"{index_path.name}: registry not found — the committed INDEX.json "
+                f"is required. Pass --allow-missing-index to permit a not-yet-"
+                f"generated tree."
+            )
         return
 
     doc = validate_json_syntax(index_path)
@@ -771,6 +784,22 @@ def validate_regulation_indexes(krr_dir: Path = KRR_DIR):
         index_files = doc.get("files")
         if isinstance(index_files, list) and len(index_files) != len(files):
             error(f"{index_name}: files lists {len(index_files)} entries but filesystem has {len(files)} peep files")
+        # Issue #314: assert every listed regulation file actually exists,
+        # analogous to the per-entry existence check `validate_registry_index`
+        # applies to the laws INDEX. A count-only check masks a rename that
+        # leaves the tally intact but points at a now-missing path. Index
+        # `files` entries are stored relative to the index directory.
+        if isinstance(index_files, list):
+            for file_idx, file_name in enumerate(index_files):
+                if not isinstance(file_name, str) or not file_name:
+                    error(f"{index_name}: files[{file_idx}] is not a file path string")
+                    continue
+                rel = Path(file_name)
+                if rel.is_absolute() or ".." in rel.parts:
+                    error(f"{index_name}: indexed path is not directory-relative: {file_name}")
+                    continue
+                if not (directory / rel).exists():
+                    error(f"{index_name}: indexed file does not exist: {file_name}")
         # Issue #119: when the index carries the per-act `acts` ledger,
         # cross-check it against `files` and verify stub acts carry a
         # contentStatus marker.
@@ -1024,11 +1053,22 @@ DISTRIBUTION_COUNT_KEYS: dict[str, dict[str, str]] = {
 }
 
 
-def validate_metadata_catalog(krr_dir: Path = KRR_DIR):
+def validate_metadata_catalog(krr_dir: Path = KRR_DIR, *, allow_missing_index: bool = False):
     print("\n--- Catalog Metadata ---")
     metadata_path = REPO_ROOT / "metadata.jsonld"
     if not metadata_path.exists():
-        warn("metadata.jsonld: not found")
+        # Issue #315: metadata.jsonld is a committed artifact. When it is
+        # absent the advertised-corpus-statistics block and all distribution
+        # count cross-checks are skipped; a fresh checkout missing the file
+        # would otherwise pass green. Hard error unless explicitly allowed.
+        if allow_missing_index:
+            warn("metadata.jsonld: not found (allowed via --allow-missing-index)")
+        else:
+            error(
+                "metadata.jsonld: not found — the committed catalog metadata is "
+                "required. Pass --allow-missing-index to permit a not-yet-"
+                "generated tree."
+            )
         return
     doc = validate_json_syntax(metadata_path)
     if doc is None:
@@ -1071,6 +1111,75 @@ def validate_metadata_catalog(krr_dir: Path = KRR_DIR):
         f"  Checked {len(actual)} advertised corpus statistics "
         f"and {checked_dist_keys} distribution count keys"
     )
+
+
+# Issue #313: each subcorpus INDEX ledger advertises a scalar count
+# (`total_decisions` / `total_drafts` / `total_acts`) that, until now, was
+# excluded from content validation (the INDEX files only appear in the
+# `well_known_indexes` skip set) and never cross-checked against the
+# corpus. A stale ledger can therefore drift independently of the nodes
+# it summarises. Each entry binds an INDEX file (relative to `KRR_DIR`)
+# to the count field it carries and the `metadata_stats()` key that
+# counts the matching nodes directly.
+#
+# `metadata_stats()` already derives the node counts:
+#   * courtDecisionCount   <- estleg:CourtDecision   (riigikohus_*_peep)
+#   * draftLegislationCount <- estleg:DraftLegislation (eelnoud combined)
+#   * euLegislationCount    <- estleg:EULegislation    (eurlex combined)
+#   * euCourtDecisionCount  <- estleg:EUCourtDecision  (curia combined)
+SUBCORPUS_INDEX_COUNT_CHECKS: tuple[tuple[str, str, str], ...] = (
+    ("riigikohus/RIIGIKOHUS_INDEX.json", "total_decisions", "estleg:courtDecisionCount"),
+    ("eelnoud/EELNOUD_INDEX.json", "total_drafts", "estleg:draftLegislationCount"),
+    ("eurlex/EURLEX_INDEX.json", "total_acts", "estleg:euLegislationCount"),
+    ("curia/CURIA_INDEX.json", "total_decisions", "estleg:euCourtDecisionCount"),
+)
+
+
+def validate_subcorpus_index_counts(krr_dir: Path = KRR_DIR, *, allow_missing_index: bool = False):
+    """Cross-check each subcorpus INDEX count field against node counts (#313).
+
+    `RIIGIKOHUS/EELNOUD/EURLEX/CURIA_INDEX.json` advertise a `total_*`
+    field that downstream consumers trust for corpus sizing. This gate
+    asserts each one equals the corresponding `metadata_stats()` node
+    count so the ledger cannot drift away from the corpus unnoticed.
+
+    A missing INDEX file is a hard error (committed artifact) unless
+    `allow_missing_index` is set, mirroring the registry/metadata gates
+    (#315). A present INDEX with a missing/non-int count field is always
+    an error — the field is mandatory for a populated subcorpus.
+    """
+    print("\n--- Subcorpus Index Counts ---")
+    actual = metadata_stats(krr_dir)
+    checked = 0
+    for rel_path, count_field, stats_key in SUBCORPUS_INDEX_COUNT_CHECKS:
+        index_path = krr_dir / rel_path
+        if not index_path.exists():
+            if allow_missing_index:
+                warn(f"{rel_path}: index not found (allowed via --allow-missing-index)")
+            else:
+                error(
+                    f"{rel_path}: subcorpus index not found — the committed INDEX "
+                    f"is required. Pass --allow-missing-index to permit a not-yet-"
+                    f"generated tree."
+                )
+            continue
+        doc = validate_json_syntax(index_path)
+        if not isinstance(doc, dict):
+            if doc is not None:
+                error(f"{rel_path}: not a JSON object")
+            continue
+        advertised = doc.get(count_field)
+        if not isinstance(advertised, int) or isinstance(advertised, bool):
+            error(f"{rel_path}: {count_field} is missing or not an integer")
+            continue
+        expected = actual.get(stats_key)
+        checked += 1
+        if advertised != expected:
+            error(
+                f"{rel_path}: {count_field}={advertised} but corpus has "
+                f"{expected} matching nodes ({stats_key})"
+            )
+    print(f"  Checked {checked} subcorpus index count fields against corpus node counts")
 
 
 # Required keys in the *current* shape of `transposition_mapping.json`
@@ -1760,12 +1869,57 @@ def validate_id_uniqueness(all_ids: dict[str, list[str]]):
         print("  OK: All @id values are unique across files")
 
 
-def main():
+def parse_args(argv: list[str] | None = None):
+    import argparse
+
+    parser = argparse.ArgumentParser(
+        description="Comprehensive validation for Estonian Legal Ontology files."
+    )
+    parser.add_argument(
+        "--krr-dir",
+        type=Path,
+        default=KRR_DIR,
+        help="Directory holding the ontology corpus (default: krr_outputs/).",
+    )
+    parser.add_argument(
+        "--allow-missing-index",
+        action="store_true",
+        help=(
+            "Permit missing committed index/catalog artifacts "
+            "(INDEX.json, metadata.jsonld, subcorpus *_INDEX.json) instead of "
+            "failing. Use only for a deliberately not-yet-generated tree."
+        ),
+    )
+    return parser.parse_args(argv)
+
+
+def main(argv: list[str] | None = None):
+    args = parse_args(argv)
+    krr_dir: Path = args.krr_dir
+    allow_missing_index: bool = args.allow_missing_index
+
     print("=" * 60)
     print("Estonian Legal Ontology - Validation")
     print("=" * 60)
 
-    files = discover_validation_files()
+    files = discover_validation_files(krr_dir)
+
+    # Issue #316: a misconfigured `--krr-dir` or an unpopulated build env
+    # yields zero discoverable corpus files. Without this guard the
+    # validation loop runs over nothing, `errors` stays empty, and the
+    # script exits 0 — a false green that hides a broken setup. Fail hard.
+    if not files:
+        error(
+            f"No validatable corpus files found under {krr_dir} — refusing to "
+            f"report success on an empty or misconfigured corpus."
+        )
+        print("\n" + "=" * 60)
+        print("Files validated: 0")
+        print(f"Errors: {len(errors)}")
+        print(f"Warnings: {len(warnings)}")
+        print("=" * 60)
+        print("\nVALIDATION FAILED")
+        sys.exit(1)
 
     print(f"\nValidating {len(files)} files...\n")
 
@@ -1802,15 +1956,16 @@ def main():
     validate_internal_references(all_ids, internal_refs)
     validate_vocabulary_coverage(files)
     validate_temporal_property_targets(files)
-    validate_transposition_mapping()
-    validate_registry_index()
-    validate_regulation_indexes()
-    validate_act_coverage_reconciliation()
-    validate_combined_ontology()
-    validate_subcorpus_combined_ontologies()
-    validate_metadata_catalog()
-    validate_institution_duplicates()
-    validate_institution_registry_consistency()
+    validate_transposition_mapping(krr_dir)
+    validate_registry_index(krr_dir, allow_missing_index=allow_missing_index)
+    validate_regulation_indexes(krr_dir)
+    validate_act_coverage_reconciliation(krr_dir)
+    validate_combined_ontology(krr_dir)
+    validate_subcorpus_combined_ontologies(krr_dir)
+    validate_subcorpus_index_counts(krr_dir, allow_missing_index=allow_missing_index)
+    validate_metadata_catalog(krr_dir, allow_missing_index=allow_missing_index)
+    validate_institution_duplicates(krr_dir)
+    validate_institution_registry_consistency(krr_dir)
 
     print("\n" + "=" * 60)
     print(f"Files validated: {len(files)}")

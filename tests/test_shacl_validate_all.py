@@ -156,6 +156,38 @@ def test_kov_bucket_includes_historical_municipalities_live_corpus():
 
 
 # ---------------------------------------------------------------------------
+# 0-file bucket guard (issue #338)
+# ---------------------------------------------------------------------------
+
+
+def test_main_errors_when_bucket_collects_zero_files(monkeypatch, capsys):
+    # A collector returning 0 files (missing/renamed INDEX.json or corpus
+    # subdir) must make ``main`` exit non-zero instead of validating an empty
+    # graph that pyshacl would report as conforming (issue #338). The guard
+    # fires before any rdflib/pyshacl work, so no real corpus is needed.
+    monkeypatch.setattr(shacl_validate_all, "collect_files", lambda *a, **k: [])
+
+    rc = shacl_validate_all.main(["--bucket", "laws"])
+
+    assert rc == 2
+    out = capsys.readouterr().out
+    assert "no files collected" in out
+    # The guard must short-circuit before the graph-loading banner.
+    assert "into a single graph" not in out
+
+
+def test_main_zero_file_guard_matches_seadusloome_sync_contract():
+    # Both SHACL gates must treat an empty corpus subset as a hard error
+    # (return code 2), not a trivially-passing run. This pins the shared
+    # contract referenced by issue #338.
+    import inspect
+
+    src = inspect.getsource(shacl_validate_all.main)
+    assert "if not files:" in src
+    assert "return 2" in src
+
+
+# ---------------------------------------------------------------------------
 # SHACL string-enum closure + uniform graphClosureExempt (issue #290)
 # ---------------------------------------------------------------------------
 
@@ -241,3 +273,99 @@ def test_enum_iri_predicates_marked_graph_closure_exempt_in_shapes():
         "euCourtDecisionType",
     }
     assert required <= exempt_predicates, sorted(required - exempt_predicates)
+
+
+# ---------------------------------------------------------------------------
+# Structural & integration shape coverage (issues #357, #341, #345, #389)
+# ---------------------------------------------------------------------------
+
+
+def _target_class_of(graph, shape_local: str) -> str | None:
+    import rdflib
+
+    shape = rdflib.URIRef(_NS + shape_local)
+    tc = graph.value(shape, rdflib.URIRef(_SH + "targetClass"))
+    return str(tc) if tc is not None else None
+
+
+def _paths_on_shape(graph, shape_local: str) -> set[str]:
+    """Local names of every estleg: predicate constrained by a property shape
+    of ``estleg:<shape_local>``."""
+    import rdflib
+
+    shape = rdflib.URIRef(_NS + shape_local)
+    sh_property = rdflib.URIRef(_SH + "property")
+    sh_path = rdflib.URIRef(_SH + "path")
+    paths: set[str] = set()
+    for prop in graph.objects(shape, sh_property):
+        path = graph.value(prop, sh_path)
+        if isinstance(path, rdflib.URIRef) and str(path).startswith(_NS):
+            paths.add(str(path)[len(_NS):])
+    return paths
+
+
+def test_chapter_and_division_nodeshapes_present():
+    graph = _load_shapes_graph()
+    assert _target_class_of(graph, "ChapterShape") == _NS + "Chapter"
+    assert _target_class_of(graph, "DivisionShape") == _NS + "Division"
+    assert "chapterNumber" in _paths_on_shape(graph, "ChapterShape")
+    assert "isPartOf" in _paths_on_shape(graph, "DivisionShape")
+
+
+def test_amendment_event_shape_constrains_core_predicates():
+    # issue #357 (amends/entryIntoForce/rtReference) + issue #389
+    # (isCurrentAmendment).
+    graph = _load_shapes_graph()
+    paths = _paths_on_shape(graph, "AmendmentEventShape")
+    assert {"amends", "entryIntoForce", "rtReference", "isCurrentAmendment"} <= paths, paths
+
+
+def test_legal_concept_shape_constrains_definedin_and_sourceact():
+    graph = _load_shapes_graph()
+    paths = _paths_on_shape(graph, "LegalConceptShape")
+    assert {"definedIn", "sourceAct"} <= paths, paths
+
+
+def test_institution_type_has_closed_value_set():
+    graph = _load_shapes_graph()
+    values = _sh_in_values_for_path(graph, "institutionType")
+    assert values == {
+        "ministry",
+        "agency",
+        "court",
+        "local_government",
+        "parliament",
+        "head_of_state",
+        "government",
+    }, values
+
+
+def test_act_temporal_shape_constrains_kehtiv_and_content_status():
+    graph = _load_shapes_graph()
+    paths = _paths_on_shape(graph, "ActTemporalShape")
+    assert {"kehtiv", "contentStatus"} <= paths, paths
+    assert _sh_in_values_for_path(graph, "contentStatus") == {
+        "structuredBody",
+        "noStructuredBody",
+    }
+
+
+def test_legal_provision_shape_constrains_hasversion_as_iri():
+    # issue #345 (SHACL part): the hasVersion back-link must be shaped as an
+    # IRI on the provision shape so the materialisation lands validated.
+    import rdflib
+
+    graph = _load_shapes_graph()
+    assert "hasVersion" in _paths_on_shape(graph, "LegalProvisionShape")
+    # And it must be constrained to sh:nodeKind sh:IRI.
+    shape = rdflib.URIRef(_NS + "LegalProvisionShape")
+    sh_property = rdflib.URIRef(_SH + "property")
+    sh_path = rdflib.URIRef(_SH + "path")
+    sh_nodekind = rdflib.URIRef(_SH + "nodeKind")
+    target = rdflib.URIRef(_NS + "hasVersion")
+    nodekinds = {
+        str(graph.value(prop, sh_nodekind))
+        for prop in graph.objects(shape, sh_property)
+        if graph.value(prop, sh_path) == target
+    }
+    assert _SH + "IRI" in nodekinds, nodekinds

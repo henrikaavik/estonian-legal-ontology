@@ -65,6 +65,21 @@ estleg:ActTemporalShape
         sh:description "Temporal status evaluated against the declared build evaluation date" ;
     ] ;
     sh:property [
+        sh:path estleg:kehtiv ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:date ;
+        sh:name "kehtiv" ;
+        sh:description "Snapshot date the act text is valid as of (the Riigi Teataja 'kehtiv' redaction date), typed xsd:date (issue #357)." ;
+    ] ;
+    sh:property [
+        sh:path estleg:contentStatus ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:in ( "structuredBody" "noStructuredBody" ) ;
+        sh:name "contentStatus" ;
+        sh:description "Whether the act snapshot was parsed into a structured § body or only a flat text body: structuredBody or noStructuredBody (issue #357)." ;
+    ] ;
+    sh:property [
         sh:path estleg:transposesDirective ;
         sh:nodeKind sh:IRI ;
         sh:name "transposesDirective" ;
@@ -364,6 +379,18 @@ estleg:LegalConceptShape
         sh:maxCount 1 ;
         sh:name "definesConcept" ;
         sh:description "Canonical estleg:Concept node this provision-local definition belongs to (absent for filtered noise terms)" ;
+    ] ;
+    sh:property [
+        sh:path estleg:definedIn ;
+        sh:nodeKind sh:IRI ;
+        sh:name "definedIn" ;
+        sh:description "Provision(s) (an IRI) where this term is defined. Populated on 100% of the provision-local definition nodes (issue #357); optional here because aggregate Concept-style LegalConcept nodes carry the definition text directly without this back-link." ;
+    ] ;
+    sh:property [
+        sh:path estleg:sourceAct ;
+        sh:datatype xsd:string ;
+        sh:name "sourceAct" ;
+        sh:description "Human-readable name of the act this definition comes from." ;
     ] .
 
 # Shape for canonical Concept instances (#134) — one node per distinct
@@ -765,8 +792,9 @@ estleg:HarmonisationLinkShape
     sh:property [
         sh:path dcterms:date ;
         sh:maxCount 1 ;
+        sh:or ( [ sh:datatype xsd:date ] [ sh:datatype xsd:string ] ) ;
         sh:name "date" ;
-        sh:description "Document date of the neighbouring National Implementing Measure (xsd:date when CELLAR supplies a strict YYYY-MM-DD value, otherwise a plain string)" ;
+        sh:description "Document date of the neighbouring National Implementing Measure (issue #341): xsd:date when CELLAR supplies a strict YYYY-MM-DD value, otherwise a plain xsd:string fallback. sh:or pins it to one of those two datatypes so a stray IRI or other literal is rejected." ;
     ] .
 
 # Shape for EUDocumentType instances
@@ -872,7 +900,13 @@ estleg:EUCourtShape
         sh:name "label" ;
     ] .
 
-# Shape for AmendmentEvent instances
+# Shape for AmendmentEvent instances.
+#
+# Every estleg:AmendmentEvent (88,962 in the committed corpus) carries
+# exactly one estleg:amends pointer to the act it modifies; the
+# constraints below pin the core predicates so a regression that emits
+# amends as a plain string, types entryIntoForce as a literal string, or
+# drops the RT reference is caught by the SHACL gate (issue #357).
 estleg:AmendmentEventShape
     a sh:NodeShape ;
     sh:targetClass estleg:AmendmentEvent ;
@@ -880,6 +914,82 @@ estleg:AmendmentEventShape
         sh:path rdfs:label ;
         sh:minCount 1 ;
         sh:name "label" ;
+    ] ;
+    sh:property [
+        sh:path estleg:amends ;
+        sh:minCount 1 ;
+        sh:nodeKind sh:IRI ;
+        sh:name "amends" ;
+        sh:description "The act (or provision) this event amends. Present on 100% of AmendmentEvent nodes and always an IRI." ;
+    ] ;
+    sh:property [
+        sh:path estleg:entryIntoForce ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:date ;
+        sh:name "entryIntoForce" ;
+        sh:description "Date the amendment entered into force (xsd:date)." ;
+    ] ;
+    sh:property [
+        sh:path estleg:rtReference ;
+        sh:datatype xsd:string ;
+        sh:name "rtReference" ;
+        sh:description "Riigi Teataja reference string for the amendment (e.g. 'RT I, 2024, ...')." ;
+    ] ;
+    sh:property [
+        sh:path estleg:isCurrentAmendment ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:boolean ;
+        sh:name "isCurrentAmendment" ;
+        sh:description "Optional terminal-amendment marker (issue #389): true on the last in-force amendment after chronological sort, letting consumers find the latest amendment without a full date scan. Stamped by generate_amendment_history.py; absent on non-terminal events." ;
+    ] .
+
+# ============================================================
+# STRUCTURAL HIERARCHY SHAPES (issue #357)
+# ============================================================
+#
+# Acts are partitioned into chapters (peatükk) and, within some chapters,
+# divisions (jagu). These nodes (3,038 estleg:Chapter, 1,903
+# estleg:Division in the committed corpus) had no SHACL constraint, so a
+# regression dropping their label or mistyping the structural pointers
+# passed CI silently. Both shapes require only the universally-present
+# rdfs:label; the structural properties are constrained for type but left
+# optional because a minority of nodes legitimately omit them
+# (chapterNumber absent on ~20 chapters; isPartOf absent on ~59
+# top-level divisions).
+
+# Shape for Chapter (peatükk) instances.
+estleg:ChapterShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:Chapter ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:name "label" ;
+        sh:description "Every Chapter must have an rdfs:label (e.g. '1. peatükk – ÜLDSÄTTED')." ;
+    ] ;
+    sh:property [
+        sh:path estleg:chapterNumber ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "chapterNumber" ;
+        sh:description "The chapter number as a display string (e.g. '1'). Optional — a few chapters carry only a label." ;
+    ] .
+
+# Shape for Division (jagu) instances.
+estleg:DivisionShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:Division ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:name "label" ;
+        sh:description "Every Division must have an rdfs:label (e.g. '1. jagu – ...')." ;
+    ] ;
+    sh:property [
+        sh:path estleg:isPartOf ;
+        sh:nodeKind sh:IRI ;
+        sh:name "isPartOf" ;
+        sh:description "The parent estleg:Chapter (an IRI) this division belongs to. Optional — top-level divisions may omit it." ;
     ] .
 
 # ============================================================
@@ -1002,6 +1112,13 @@ estleg:InstitutionShape
         sh:in ( "supervision" "licensing" "enforcement" "regulation" "advisory" "general" ) ;
         sh:name "competenceType" ;
         sh:description "Type of competence: supervision, licensing, enforcement, regulation, advisory, general" ;
+    ] ;
+    sh:property [
+        sh:path estleg:institutionType ;
+        sh:datatype xsd:string ;
+        sh:in ( "ministry" "agency" "court" "local_government" "parliament" "head_of_state" "government" ) ;
+        sh:name "institutionType" ;
+        sh:description "Coarse institution classification (issue #357): one of ministry, agency, court, local_government, parliament, head_of_state, government. Present on every materialised Institution; optional here so a fallback-materialised reference node without it still conforms." ;
     ] .
 
 # Shape for reified institutional competence instances

@@ -55,8 +55,8 @@
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Concept",
-      "rdfs:comment": "Canonical legal concept: one node per distinct normalised legal term, aggregating every provision-local definition (estleg:LegalConcept) of that term. Replaces the former pairwise skos:exactMatch cliques between provision-local definition nodes."
+      "rdfs:label": "Kanooniline mõiste (Canonical Concept)",
+      "rdfs:comment": "Canonical legal concept: one node per distinct normalised legal term, aggregating every provision-local definition (estleg:LegalConcept) of that term. Replaces the former pairwise skos:exactMatch cliques between provision-local definition nodes. Kanooniline õigusmõiste — üks sõlm normaliseeritud termini kohta, mis koondab kõik sättepõhised definitsioonid."
     },
     {
       "@id": "estleg:Division",
@@ -79,8 +79,8 @@
       "@type": [
         "owl:Class"
       ],
-      "rdfs:label": "Legal Concept",
-      "rdfs:comment": "Provision-local legal concept or definition node observed in generated corpus."
+      "rdfs:label": "Õigusmõiste (Legal Concept)",
+      "rdfs:comment": "Provision-local legal-term definition node: a definition extracted from one law's definition section. Seaduses defineeritud mõiste — sättepõhine definitsioon."
     },
     {
       "@id": "estleg:LegalProvision",
@@ -1443,7 +1443,7 @@
       "@type": [
         "owl:ObjectProperty"
       ],
-      "rdfs:label": "Defined In",
+      "rdfs:label": "defineeritud (Defined In)",
       "rdfs:comment": "Links a provision-local legal-term definition node (estleg:LegalConcept) to the provision where the term is defined. Inverse of estleg:definesTerm. (The canonical estleg:Concept node → definition-node membership uses estleg:hasDefinitionNode instead, so this property's inverse-of axiom does not corrupt the definesTerm semantics.)"
     },
     {
@@ -1451,7 +1451,7 @@
       "@type": [
         "owl:ObjectProperty"
       ],
-      "rdfs:label": "Defines Concept",
+      "rdfs:label": "defineerib kanoonilise mõiste (Defines Concept)",
       "rdfs:comment": "Links a provision-local legal-term definition node (estleg:LegalConcept) to the canonical estleg:Concept node for that term — the hub link that replaces the former O(k²) skos:exactMatch clique."
     },
     {
@@ -1459,7 +1459,7 @@
       "@type": [
         "owl:DatatypeProperty"
       ],
-      "rdfs:label": "Definition Count",
+      "rdfs:label": "definitsioonide arv (Definition Count)",
       "rdfs:comment": "Number of provision-local definitions aggregated by a canonical estleg:Concept node. Range: xsd:integer."
     },
     {
@@ -1467,7 +1467,7 @@
       "@type": [
         "owl:DatatypeProperty"
       ],
-      "rdfs:label": "Definition Variant Count",
+      "rdfs:label": "definitsioonivariantide arv (Definition Variant Count)",
       "rdfs:comment": "Total number of distinct definition wordings observed for a canonical estleg:Concept node when only a capped subset is emitted as skos:definition. Range: xsd:integer."
     },
     {
@@ -1547,7 +1547,7 @@
       "@type": [
         "owl:ObjectProperty"
       ],
-      "rdfs:label": "Has Definition Node",
+      "rdfs:label": "defineeriv sõlm (Has Definition Node)",
       "rdfs:comment": "Links a canonical estleg:Concept node to every provision-local definition node (estleg:LegalConcept) that defines that term. Inverse of estleg:definesConcept. Introduced (#134, Finding F3) as a property distinct from estleg:definedIn so the latter's owl:inverseOf estleg:definesTerm axiom does not falsely conclude that a LegalConcept estleg:definesTerm a Concept.",
       "owl:inverseOf": {
         "@id": "estleg:definesConcept"

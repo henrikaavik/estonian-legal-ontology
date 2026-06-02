@@ -24,7 +24,7 @@ import time
 from collections import defaultdict
 from pathlib import Path
 
-from estleg_common import BUILD_EVALUATION_DATE, iter_peep_files
+from estleg_common import BUILD_EVALUATION_DATE, iter_peep_files, save_json
 from kov_pipeline_coverage import (
     CoverageReport,
     PINNED_RUN_TIMESTAMP,
@@ -35,6 +35,10 @@ from kov_pipeline_coverage import (
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
+# ProvisionVersion sidecars (estleg:versionOf source). These live OUTSIDE
+# iter_peep_files() (they are *.jsonld, not *_peep.json), so the version
+# inverse pass scans them explicitly. See materialize_has_version().
+VERSIONS_DIR = KRR_DIR / "provision_versions"
 
 NS = "https://data.riik.ee/ontology/estleg#"
 
@@ -62,13 +66,6 @@ CONTEXT = {
 IRI_PREFIX_ALIASES: dict[str, list[str]] = {
     "Vlaigusseadus": ["VOS", "VOS3", "VOS_O4", "VOS7"],
 }
-
-
-def save_json(filepath: Path, doc: dict) -> None:
-    """Write JSON-LD document to file with consistent formatting."""
-    with open(filepath, "w", encoding="utf-8") as f:
-        json.dump(doc, f, ensure_ascii=False, indent=2)
-        f.write("\n")
 
 
 def _build_prefix_par_index(
@@ -461,9 +458,7 @@ def clear_stale_implemented_by(json_files: list[Path]) -> int:
                 node.pop("estleg:implementedByCount")
                 modified = True
         if modified:
-            with open(json_file, "w", encoding="utf-8") as fh:
-                json.dump(doc, fh, ensure_ascii=False, indent=2)
-                fh.write("\n")
+            save_json(json_file, doc)
             n_modified += 1
     return n_modified
 
@@ -516,9 +511,7 @@ def apply_implemented_by(
             node["estleg:implementedByCount"] = len(sources)
             nodes_updated += 1
         if nodes_updated:
-            with open(target_file, "w", encoding="utf-8") as fh:
-                json.dump(doc, fh, ensure_ascii=False, indent=2)
-                fh.write("\n")
+            save_json(target_file, doc)
             counts[target_file] = nodes_updated
     return counts
 
@@ -528,6 +521,194 @@ def compute_implemented_by_count(
 ) -> dict[str, int]:
     """Aggregate implementedByCount per target IRI."""
     return {target: len(set(sources)) for target, sources in inverse.items()}
+
+
+# ---------------------------------------------------------------------------
+# estleg:hasVersion — inverse of estleg:versionOf  (#345)
+#
+# Every estleg:ProvisionVersion node carries estleg:versionOf -> <provision>,
+# but the documented inverse estleg:hasVersion (T-Box: owl:inverseOf
+# estleg:versionOf) was never materialised on the LegalProvision side. The
+# corpus materialises every OTHER inverse pair bidirectionally (references/
+# referencedBy, hasSubsection/parentProvision, interpretsLaw/interpretedBy,
+# transposesDirective/transposedBy); this pass closes the version pair the
+# same way the referencedBy pass closes the reference pair.
+#
+# Source of versionOf edges: the ProvisionVersion sidecars under
+# krr_outputs/provision_versions/<slug>.jsonld. These are *.jsonld files,
+# NOT *_peep.json, so iter_peep_files() does not return them — we scan
+# VERSIONS_DIR explicitly. The target LegalProvision nodes, however, live
+# in the peep corpus and are already indexed by collect_all_references()'s
+# iri_to_file map, so hasVersion lands on the canonical provision node.
+# ---------------------------------------------------------------------------
+
+
+def collect_version_inverse(
+    versions_dir: Path | None = None,
+) -> dict[str, list[str]]:
+    """Scan ProvisionVersion sidecars and build the version inverse map.
+
+    Reads every ``*.jsonld`` under ``versions_dir`` (default
+    :data:`VERSIONS_DIR`) and, for each node carrying
+    ``estleg:versionOf -> <provision_iri>``, records that the provision
+    ``estleg:hasVersion`` that version node.
+
+    Returns ``{provision_iri: [version_iri, ...]}`` with version IRIs
+    deduplicated and in first-seen order. Sidecar @id ordering already
+    follows redaction chronology (versions are emitted oldest-first), so
+    the resulting hasVersion list mirrors the provision's text history.
+
+    A ProvisionVersion may legitimately appear in only one sidecar, but we
+    dedupe defensively so a version IRI is never listed twice on a
+    provision even if a sidecar were regenerated/merged with overlap.
+    """
+    if versions_dir is None:
+        versions_dir = VERSIONS_DIR
+
+    inverse: dict[str, list[str]] = defaultdict(list)
+    seen: dict[str, set[str]] = defaultdict(set)
+
+    if not versions_dir.exists():
+        return {}
+
+    for sidecar in sorted(versions_dir.glob("*.jsonld")):
+        try:
+            with open(sidecar, "r", encoding="utf-8") as fh:
+                doc = json.load(fh)
+        except (json.JSONDecodeError, OSError):
+            continue
+
+        for node in doc.get("@graph", []):
+            version_iri = node.get("@id")
+            if not isinstance(version_iri, str) or not version_iri:
+                continue
+            vof = node.get("estleg:versionOf")
+            # versionOf is authored as a single {"@id": ...} object, but
+            # tolerate a list form defensively.
+            if isinstance(vof, dict):
+                targets = [vof]
+            elif isinstance(vof, list):
+                targets = vof
+            else:
+                continue
+            for tgt in targets:
+                if not isinstance(tgt, dict):
+                    continue
+                provision_iri = tgt.get("@id")
+                if not isinstance(provision_iri, str) or not provision_iri:
+                    continue
+                if provision_iri == version_iri:  # never self-link
+                    continue
+                if version_iri in seen[provision_iri]:
+                    continue
+                seen[provision_iri].add(version_iri)
+                inverse[provision_iri].append(version_iri)
+
+    return dict(inverse)
+
+
+def clear_existing_has_version() -> int:
+    """Remove all existing estleg:hasVersion from peep files (idempotent).
+
+    Mirrors :func:`clear_existing_inverse_refs`. hasVersion is materialised
+    onto LegalProvision nodes that live in the peep corpus, so the clear
+    pass walks the same ``iter_peep_files()`` set (plus riigikohus, for
+    parity — those nodes never carry hasVersion, but scanning them keeps
+    the clear/apply file sets identical and the pass fully idempotent).
+
+    Returns the count of files cleaned.
+    """
+    cleaned = 0
+    all_files = iter_peep_files()
+    rk_dir = KRR_DIR / "riigikohus"
+    if rk_dir.exists():
+        all_files.extend(sorted(rk_dir.glob("*_peep.json")))
+
+    for json_file in all_files:
+        try:
+            with open(json_file, "r", encoding="utf-8") as f:
+                doc = json.load(f)
+        except (json.JSONDecodeError, OSError):
+            continue
+
+        modified = False
+        for node in doc.get("@graph", []):
+            if "estleg:hasVersion" in node:
+                del node["estleg:hasVersion"]
+                modified = True
+
+        if modified:
+            save_json(json_file, doc)
+            cleaned += 1
+
+    return cleaned
+
+
+def apply_has_version(
+    version_inverse: dict[str, list[str]],
+    iri_to_file: dict[str, Path],
+) -> tuple[dict[Path, int], list[str]]:
+    """Write estleg:hasVersion onto LegalProvision nodes in their peep files.
+
+    Mirrors :func:`apply_inverse_references` (the referencedBy pass):
+    groups by target file, writes one ``estleg:hasVersion`` array per
+    provision node, and returns Path-keyed update counts so nested KOV
+    targets never collide on basename.
+
+    ``iri_to_file`` is the provision-IRI -> peep-file map built by
+    :func:`collect_all_references`. Provision IRIs not present in that map
+    (the sidecar references a provision with no peep node) are returned as
+    ``unresolved`` rather than silently dropped, so the report can surface
+    them.
+
+    Returns ``(update_counts, unresolved_provision_iris)``.
+    """
+    file_updates: dict[Path, dict[str, list[str]]] = defaultdict(dict)
+    unresolved: list[str] = []
+
+    for provision_iri, version_iris in version_inverse.items():
+        target_file = iri_to_file.get(provision_iri)
+        if target_file is None:
+            unresolved.append(provision_iri)
+            continue
+        # Dedupe defensively while preserving order.
+        existing = file_updates[target_file].get(provision_iri, [])
+        merged = existing + version_iris
+        file_updates[target_file][provision_iri] = list(dict.fromkeys(merged))
+
+    if unresolved:
+        print(
+            f"  Warning: {len(unresolved)} provision IRIs from version "
+            "sidecars could not be resolved to peep files"
+        )
+        for iri in sorted(unresolved)[:10]:
+            print(f"    {iri}")
+        if len(unresolved) > 10:
+            print(f"    ... and {len(unresolved) - 10} more")
+
+    update_counts: dict[Path, int] = {}
+    for target_file, prov_versions in sorted(file_updates.items()):
+        try:
+            with open(target_file, "r", encoding="utf-8") as f:
+                doc = json.load(f)
+        except (json.JSONDecodeError, OSError) as e:
+            print(f"  Error reading {target_file.name}: {e}")
+            continue
+
+        nodes_updated = 0
+        for node in doc.get("@graph", []):
+            node_id = node.get("@id", "")
+            if node_id not in prov_versions:
+                continue
+            version_iris = prov_versions[node_id]
+            node["estleg:hasVersion"] = [{"@id": v} for v in version_iris]
+            nodes_updated += 1
+
+        if nodes_updated:
+            save_json(target_file, doc)
+            update_counts[target_file] = nodes_updated
+
+    return update_counts, unresolved
 
 
 def clear_existing_inverse_refs() -> int:
@@ -731,12 +912,12 @@ def main() -> int:
             _files_processed_kov.add(path)
 
     # Step 1: Clear existing inverse references for idempotent re-run
-    print("\n[1/5] Clearing existing estleg:referencedBy properties...")
+    print("\n[1/6] Clearing existing estleg:referencedBy properties...")
     cleaned = clear_existing_inverse_refs()
     print(f"  Cleaned {cleaned} files")
 
     # Step 2: Collect all forward references
-    print("\n[2/5] Collecting estleg:references from all files...")
+    print("\n[2/6] Collecting estleg:references from all files...")
     inverse_map, iri_to_file, prefix_par_index = collect_all_references()
     total_inverse_links = sum(len(v) for v in inverse_map.values())
     print(f"  Found {len(inverse_map)} target IRIs with {total_inverse_links} inverse links")
@@ -745,7 +926,7 @@ def main() -> int:
     print(f"  Alias rules: {len(IRI_PREFIX_ALIASES)} alias prefixes configured")
 
     # Step 3: Apply inverse references (with alias resolution)
-    print("\n[3/5] Applying estleg:referencedBy to target files...")
+    print("\n[3/6] Applying estleg:referencedBy to target files...")
     update_counts, unresolved_iris, alias_resolved, alias_ambiguous = apply_inverse_references(
         inverse_map, iri_to_file, prefix_par_index,
     )
@@ -790,8 +971,35 @@ def main() -> int:
         if "regulations/kov/" in str(target_path):
             _triples_kov += n
 
-    # Step 4: Verify symmetry
-    print("\n[4/5] Verifying references/referencedBy symmetry...")
+    # Step 4: Materialise estleg:hasVersion (inverse of estleg:versionOf) (#345)
+    print("\n[4/6] Materialising estleg:hasVersion from ProvisionVersion "
+          "sidecars...")
+    has_version_cleaned = clear_existing_has_version()
+    print(f"  Cleared existing estleg:hasVersion from {has_version_cleaned} "
+          "files")
+    version_inverse = collect_version_inverse()
+    total_version_edges = sum(len(v) for v in version_inverse.values())
+    print(f"  Found {len(version_inverse)} provisions with "
+          f"{total_version_edges} version edges in sidecars")
+    has_version_counts, unresolved_versions = apply_has_version(
+        version_inverse, iri_to_file,
+    )
+    total_has_version_nodes = sum(has_version_counts.values())
+    print(f"  hasVersion emitted to {total_has_version_nodes} provision nodes "
+          f"across {len(has_version_counts)} files")
+
+    # Target-side attribution: hasVersion lands on provision nodes in the
+    # peep corpus, so each updated file counts toward output/triples.
+    for target_path, n in has_version_counts.items():
+        _files_with_output.add(target_path)
+        if "regulations/kov/" in str(target_path):
+            _files_with_output_kov.add(target_path)
+        _triples += n
+        if "regulations/kov/" in str(target_path):
+            _triples_kov += n
+
+    # Step 5: Verify symmetry
+    print("\n[5/6] Verifying references/referencedBy symmetry...")
     mismatches = verify_symmetry()
     # Categorisation (#157):
     #   * "target node does not exist in any file" — pure dangling
@@ -817,8 +1025,8 @@ def main() -> int:
     else:
         print("  All forward references have matching referencedBy links (or target does not exist)")
 
-    # Step 5: Generate report
-    print("\n[5/5] Generating inverse references report...")
+    # Step 6: Generate report
+    print("\n[6/6] Generating inverse references report...")
     report = {
         "generated": f"{BUILD_EVALUATION_DATE}T00:00:00+00:00",  # #295: pinned deterministic stamp (no wall-clock churn in tracked artifact)
         "summary": {
@@ -836,6 +1044,12 @@ def main() -> int:
                 "unresolved_after_alias": len(cat_unresolved_alias),
                 "genuine_missing_back_link": len(cat_genuine),
             },
+            # estleg:hasVersion (inverse of estleg:versionOf, #345)
+            "provisions_with_versions": len(version_inverse),
+            "total_version_edges": total_version_edges,
+            "has_version_nodes_updated": total_has_version_nodes,
+            "has_version_files_updated": len(has_version_counts),
+            "has_version_unresolved_provisions": len(unresolved_versions),
         },
         "alias_resolutions": {
             orig: canon
@@ -846,6 +1060,9 @@ def main() -> int:
             for orig, cands in sorted(alias_ambiguous.items())
         },
         "unresolved_target_iris": sorted(unresolved_iris),
+        # Provision IRIs referenced by a ProvisionVersion sidecar that have
+        # no corresponding peep node to carry hasVersion (#345 diagnostics).
+        "has_version_unresolved_provisions": sorted(unresolved_versions),
         "symmetry_mismatches": mismatches[:100],
         "top_referenced_provisions": sorted(
             [
@@ -885,6 +1102,8 @@ def main() -> int:
     print(f"  Alias-ambiguous (refused):            {len(alias_ambiguous)}")
     print(f"  Unresolved target IRIs:               {len(unresolved_iris)}")
     print(f"  Symmetry mismatches:                  {len(mismatches)}")
+    print(f"  Provisions with hasVersion:           {total_has_version_nodes}")
+    print(f"  Total hasVersion edges:               {total_version_edges}")
 
     if inverse_map:
         top = max(inverse_map.items(), key=lambda x: len(x[1]))
