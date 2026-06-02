@@ -133,6 +133,47 @@ PDF_TEXT_LAYER_ACCEPTANCE_RATIO = 0.80
 PDF_BODY_SCAN_MAX_CHARS = 2_000_000
 _PDF_TEXT_CHAR_RE = re.compile(r"[0-9A-Za-zÕÄÖÜõäöüŠŽšž]")
 
+# Õiguskantsler letters open with a standard office-metadata header that must NOT bleed into
+# ``estleg:annotationText`` (issue #324). The header is a two-line reference block —
+# ``[Lõppvastus/Vastus/…] Teie <date|"kuupäev"> nr <ref> … {Õiguskantsler|Meie} <date> nr
+# <ref>`` — optionally preceded by a short recipient/subject block and optionally followed by a
+# salutation line (``Lugupeetud/Austatud <name>``). Both tiers are anchored at the document
+# head and REQUIRE the ``Teie … nr`` reference pattern, so a genuine opinion body that merely
+# contains the word "Teie" later on is never truncated. (Applied to the RAW text-layer string,
+# before whitespace collapse, because the match relies on the original line breaks.)
+_LETTER_HEADER_PREFIX = (
+    r"(?:L[õo]ppvastus\s+|Vastus\s+|Seisukoht\s+|Arvamus\s+|Ettepanek\s+|M[äa]rgukiri\s+)?Teie\b"
+)
+_LETTER_HEADER_SALUTATION = r"(?:Lugupeetud|Lugupeetav|Austatud|Auv[äa]{1,2}rt)\b[^\n]*"
+# Tier A: from the head (optionally past a short recipient/subject block) through the
+# salutation line — the common, complete letter header.
+_LETTER_HEADER_WITH_SALUTATION_RE = re.compile(
+    r"^.{0,400}?" + _LETTER_HEADER_PREFIX + r".*?\bnr\b.*?" + _LETTER_HEADER_SALUTATION + r"[ \t]*\n",
+    re.S | re.I,
+)
+# Tier B: a salutation-less header — strip just the two reference lines (and any wrapped
+# continuation reference-number lines that trail the second one).
+_LETTER_HEADER_REFERENCE_RE = re.compile(
+    r"^.{0,200}?" + _LETTER_HEADER_PREFIX + r".{0,80}?\bnr\b.*?(?:Õiguskantsler|Meie)\b.*?\bnr\b[^\n]*\n"
+    r"(?:[ \t]*[0-9][0-9/\-,\s]*\n)*",
+    re.S | re.I,
+)
+
+
+def _strip_letter_header(text: str) -> str:
+    """Drop the standard Õiguskantsler letter header from the start of a raw PDF body.
+
+    Tries the full header (ending at the salutation line) first; if that does not match, falls
+    back to stripping the salutation-less reference block. Returns ``text`` unchanged when no
+    header is present (e.g. an ``Ettepanek`` that opens straight into substance), so non-letter
+    documents and already-clean bodies are never altered.
+    """
+    stripped = _LETTER_HEADER_WITH_SALUTATION_RE.sub("", text, count=1)
+    if stripped == text:
+        stripped = _LETTER_HEADER_REFERENCE_RE.sub("", text, count=1)
+    return stripped
+
+
 # Act-level @type values that legitimately represent the act node an annotation should
 # point at; provision-level nodes intentionally do NOT appear here so the fallback never
 # silently picks a section node. (Mirrors generate_harmonisation_links._ACT_LEVEL_TYPES.)
@@ -143,6 +184,16 @@ _ACT_LEVEL_TYPES = frozenset({"owl:Ontology", "estleg:Act", "estleg:Map"})
 # IRI on the ontology node — those are not addressable, so we reject them).
 _BARE_NS = {"estleg:", "https://data.riik.ee/ontology/estleg#"}
 _MAP_IRI_RE = re.compile(r"^estleg:[^\s]+_Map(?:_\d{4})?$")
+# A per-osa act node carries its provision range in the IRI tail: ``…_OsaN_<start>_<end>``
+# (e.g. ``estleg:volaoigusseadus_Osa10_1005_1067`` -> start 1005). Used to pick the §§1-range
+# osa among same-title rank-1 candidates instead of the lexicographic first (issue #379).
+_OSA_RANGE_RE = re.compile(r"_Osa\d+_(\d+)_\d+$")
+
+
+def _osa_range_start(iri: str) -> int | None:
+    """Return the provision-range START of an ``…_OsaN_start_end`` osa IRI, else ``None``."""
+    m = _OSA_RANGE_RE.search(iri)
+    return int(m.group(1)) if m else None
 
 
 def _looks_like_pdf_url(url: str) -> bool:
@@ -420,12 +471,22 @@ def _abbrev_from_iri(iri: str) -> str:
 def build_law_index(krr_dir: Path = KRR_DIR) -> _LawIndex:
     """Scan every root ``*_peep.json`` and build a name/slug -> act-IRI index.
 
-    For a title shared by several peep files (multipart laws), a ``…_Map`` IRI wins; among
-    equally-ranked candidates the first by sorted filename wins (deterministic).
+    For a title shared by several peep files (multipart laws), a ``…_Map`` IRI wins. Among
+    equally-ranked rank-1 (non-``_Map_``) per-osa candidates — laws like KarS/VÕS/AOS/TsÜS that
+    have no whole-law ``_Map_`` peep — the osa with the LOWEST provision-range start wins, so
+    the §§1-range node is chosen rather than the lexicographic first (``_Osa10_`` sorts before
+    ``_Osa1_``; issue #379). Candidates with no parseable osa range, or an equal start, fall back
+    to the first by sorted filename (deterministic). NB: an osa node is still a part, not the
+    whole act — adding ``_Map_`` peeps for these laws (and a SHACL ``AnnotationShape`` constraint
+    that ``annotates`` targets aren't ``estleg:Part``) is the proper fix, tracked separately.
     """
     idx = _LawIndex()
     # First pass: collect (slug, ont_iri, dc_source) keeping the best IRI per dc:source.
-    candidates: dict[str, tuple[str, int]] = {}  # norm_source -> (iri, rank) ; lower rank = better
+    # Priority key per norm_source: (rank, osa_range_start) — lower is better. ``rank`` is 0 for
+    # a ``_Map_`` IRI, 1 otherwise; ``osa_range_start`` is the ``…_OsaN_<start>_…`` start (only
+    # meaningful for rank-1 osa nodes), with ``inf`` when absent so a ranged osa beats an
+    # unranged candidate and the lowest-§ osa wins among ranged ones.
+    candidates: dict[str, tuple[str, tuple[int, float]]] = {}  # norm_source -> (iri, priority)
     slug_to_iri: dict[str, str] = {}
     for path in sorted(krr_dir.glob("*_peep.json")):
         try:
@@ -451,12 +512,14 @@ def build_law_index(krr_dir: Path = KRR_DIR) -> _LawIndex:
             continue
         norm = _norm_name(src)
         rank = 0 if _MAP_IRI_RE.match(iri) else 1
+        range_start = _osa_range_start(iri)
+        priority = (rank, float(range_start) if range_start is not None else float("inf"))
         prev = candidates.get(norm)
-        if prev is None or rank < prev[1]:
-            candidates[norm] = (iri, rank)
+        if prev is None or priority < prev[1]:
+            candidates[norm] = (iri, priority)
 
     idx.by_slug = dict(slug_to_iri)
-    for norm, (iri, _rank) in candidates.items():
+    for norm, (iri, _priority) in candidates.items():
         idx.by_name.setdefault(norm, iri)
         for gen in _genitive_variants(norm):
             idx.by_name.setdefault(gen, iri)
@@ -779,8 +842,13 @@ def _normalise_pdf_text(text: str) -> str:
     to bound peak memory against a pathological multi-MB text layer. Real Õiguskantsler bodies
     are far below it, so it never elides a genuine citation. (The unrelated ~2000-char
     ``annotationText`` display truncation lives in :func:`_truncate_to_sentence`.)
+
+    The standard Õiguskantsler letter header (office metadata: ``Teie … nr … {Õiguskantsler|
+    Meie} … nr … [Lugupeetud …]``) is stripped first, on the raw text, so neither the body scan
+    nor ``annotationText`` opens with boilerplate (issue #324). Citations live in the body, so
+    dropping the header never loses a law reference.
     """
-    normalised = re.sub(r"\s+", " ", text).strip()
+    normalised = re.sub(r"\s+", " ", _strip_letter_header(text)).strip()
     return normalised[:PDF_BODY_SCAN_MAX_CHARS]
 
 

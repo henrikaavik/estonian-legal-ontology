@@ -23,6 +23,57 @@ def test_affected_law_name_values_unwraps_legacy_jsonld_values():
 
 
 # --------------------------------------------------------------------- #
+# Issue #319 — rdfs:label / estleg:initiator are JSON-LD value objects in
+# fresh generate_draft_legislation output. extract_draft_impact must read
+# them through jsonld_text / jsonld_texts (NOT as raw strings) so draft
+# resolution doesn't break on the value-object shape.
+# --------------------------------------------------------------------- #
+
+
+class TestValueObjectFieldReads:
+    def test_module_reads_label_and_initiator_via_jsonld_helpers(self):
+        """The module imports the canonical JSON-LD unwrappers so a
+        value-object ``rdfs:label`` / ``estleg:initiator`` is read as text,
+        never str()'d into ``{'@value': ...}``."""
+        import extract_draft_impact as mod
+
+        assert hasattr(mod, "jsonld_text")
+        assert hasattr(mod, "jsonld_texts")
+
+    def test_jsonld_text_unwraps_label_value_object(self):
+        """A value-object ``rdfs:label`` resolves to its Estonian text
+        (the exact call ``main`` makes before change-type classification)."""
+        from extract_draft_impact import jsonld_text
+
+        label = {"@value": "Riigi Teataja seaduse muutmise seadus", "@language": "et"}
+        assert (
+            jsonld_text(label, prefer_language="et")
+            == "Riigi Teataja seaduse muutmise seadus"
+        )
+        # A raw string still passes through unchanged (legacy corpus shape).
+        assert (
+            jsonld_text("Riigi Teataja seaduse muutmise seadus", prefer_language="et")
+            == "Riigi Teataja seaduse muutmise seadus"
+        )
+
+    def test_jsonld_texts_unwraps_initiator_value_object_list(self):
+        """A multi-language ``estleg:initiator`` value-object list yields
+        only the Estonian ministry names (the exact call ``main`` makes for
+        ``pending_changes_by_ministry``)."""
+        from extract_draft_impact import jsonld_texts
+
+        initiator = [
+            {"@value": "Ministry of Justice", "@language": "en"},
+            {"@value": "Justiitsministeerium", "@language": "et"},
+            {"@value": "Rahandusministeerium", "@language": "et"},
+        ]
+        assert jsonld_texts(initiator, prefer_language="et") == [
+            "Justiitsministeerium",
+            "Rahandusministeerium",
+        ]
+
+
+# --------------------------------------------------------------------- #
 # Regression tests for ontology-review-plan draft_impact items.
 # --------------------------------------------------------------------- #
 
@@ -643,3 +694,110 @@ class TestReportIsByteStable:
             "draft_impact_report.json must not embed a wall-clock "
             "'generated' timestamp (#295 churn)"
         )
+
+
+# --------------------------------------------------------------------- #
+# Issue #376 — extract_draft_impact must use the ATOMIC save_json from
+# estleg_common (tempfile + os.replace), not a local non-atomic open("w")
+# that truncates the target to 0 bytes before writing.
+# --------------------------------------------------------------------- #
+
+
+class TestSaveJsonIsAtomic:
+    def test_module_save_json_is_estleg_common_atomic(self):
+        """``extract_draft_impact.save_json`` must be the imported atomic
+        helper, not a shadowing local definition."""
+        import extract_draft_impact as mod
+        import estleg_common
+
+        assert mod.save_json is estleg_common.save_json
+
+    def test_save_json_does_not_truncate_on_serialization_failure(self, tmp_path):
+        """The atomic writer never leaves a 0-byte file: a failed write
+        (non-serialisable payload) preserves the pre-existing content and
+        drops no ``.tmp`` litter."""
+        import extract_draft_impact as mod
+
+        target = tmp_path / "out.json"
+        target.write_text('{"keep": "me"}\n', encoding="utf-8")
+
+        with pytest.raises(TypeError):
+            mod.save_json(target, {"bad": object()})
+
+        # Original content survived (no truncation-before-write).
+        assert target.read_text(encoding="utf-8") == '{"keep": "me"}\n'
+        # No tempfile droppings left behind.
+        assert [p.name for p in tmp_path.iterdir()] == ["out.json"]
+
+
+# --------------------------------------------------------------------- #
+# Issue #394 (item 3) — the report summary count must agree with its own
+# companion list. ``summary.affected_law_names_unresolved`` was the RAW
+# occurrence count (len(unresolved)) while ``unresolved_law_names`` is the
+# DEDUPED list (sorted(set(unresolved))), a self-inconsistent report.
+# --------------------------------------------------------------------- #
+
+
+class TestUnresolvedCountMatchesList:
+    def test_summary_count_equals_deduped_list_length(self, tmp_path, monkeypatch):
+        import extract_draft_impact as mod
+        import estleg_common
+
+        krr = tmp_path / "krr_outputs"
+        eelnoud = krr / "eelnoud"
+        eelnoud.mkdir(parents=True)
+
+        # Empty INDEX → every affectedLawName is unresolved.
+        (krr / "INDEX.json").write_text(
+            json.dumps({"total_laws": 0, "laws": []}), encoding="utf-8"
+        )
+
+        # Two distinct drafts that BOTH reference the same unresolvable
+        # law name. Raw occurrence count == 2; deduped == 1.
+        unresolvable = {"@value": "Mitteleiduva seaduse", "@language": "et"}
+        combined = eelnoud / "eelnoud_combined.jsonld"
+        combined.write_text(
+            json.dumps({
+                "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+                "@graph": [
+                    {
+                        "@id": "estleg:Draft_A",
+                        "@type": ["estleg:DraftLegislation", "owl:NamedIndividual"],
+                        "rdfs:label": {
+                            "@value": "Mitteleiduva seaduse muutmise seadus",
+                            "@language": "et",
+                        },
+                        "estleg:affectedLawName": [unresolvable],
+                    },
+                    {
+                        "@id": "estleg:Draft_B",
+                        "@type": ["estleg:DraftLegislation", "owl:NamedIndividual"],
+                        "rdfs:label": {
+                            "@value": "Mitteleiduva seaduse muutmise seadus",
+                            "@language": "et",
+                        },
+                        "estleg:affectedLawName": [unresolvable],
+                    },
+                ],
+            }),
+            encoding="utf-8",
+        )
+
+        monkeypatch.setattr(mod, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "EELNOUD_DIR", eelnoud)
+        monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+
+        mod.main()
+
+        report = json.loads(
+            (krr / "draft_impact_report.json").read_text(encoding="utf-8")
+        )
+        summary_count = report["summary"]["affected_law_names_unresolved"]
+        list_len = len(report["unresolved_law_names"])
+
+        # The two must agree (issue #394). Deduped to a single name.
+        assert summary_count == list_len, (
+            f"summary count {summary_count} != list length {list_len}"
+        )
+        assert list_len == 1
+        assert report["unresolved_law_names"] == ["Mitteleiduva seaduse"]

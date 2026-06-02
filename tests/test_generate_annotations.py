@@ -185,6 +185,47 @@ class TestLawIndex:
         idx = build_law_index(krr)
         assert idx.abbrev("estleg:TEST_Map_2026") == "TEST"
 
+    def test_multi_osa_law_without_map_binds_to_lowest_osa_node(self, tmp_path: Path):
+        # A multipart law with NO whole-law _Map_ peep — only per-osa nodes that share one
+        # dc:source title (KarS/VÕS/AOS/TsÜS). The osa peeps are written so the buggy
+        # lexicographic first-match (``_Osa10_`` sorts before ``_Osa1_``) would pick osa10; the
+        # fix instead picks the osa with the LOWEST provision-range start, i.e. the §§1-range
+        # node (issue #379).
+        krr = tmp_path / "krr_outputs"
+        krr.mkdir(parents=True, exist_ok=True)
+        # Intentionally write osa10 first so it can never be selection by mere insertion order;
+        # build_law_index sorts filenames anyway and ``volaoigusseadus_osa10`` < ``…_osa1``.
+        _write_peep(krr, "volaoigusseadus_osa10", "estleg:VOS_Osa10_1005_1067", title="Võlaõigusseadus")
+        _write_peep(krr, "volaoigusseadus_osa1", "estleg:VOS_Osa1_1_207", title="Võlaõigusseadus")
+        _write_peep(krr, "volaoigusseadus_osa2", "estleg:VOS_Osa2_208_270", title="Võlaõigusseadus")
+        idx = build_law_index(krr)
+        # The §§1-207 node (lowest range start) is chosen, NOT the lexicographically-first osa10.
+        assert idx.resolve("Võlaõigusseadus") == "estleg:VOS_Osa1_1_207"
+        assert idx.resolve("võlaõigusseaduse") == "estleg:VOS_Osa1_1_207"
+
+    def test_multi_osa_law_lowest_osa_drives_annotation_target(self, tmp_path: Path):
+        # End-to-end: an opinion citing such a law in its title produces an annotation whose
+        # ``estleg:annotates`` is the lowest-osa node, not the lexicographic-first osa10 (#379).
+        krr = tmp_path / "krr_outputs"
+        krr.mkdir(parents=True, exist_ok=True)
+        _write_peep(krr, "asjaoigusseadus_osa10", "estleg:AOS_Osa10_900_999", title="Asjaõigusseadus")
+        _write_peep(krr, "asjaoigusseadus_osa1", "estleg:AOS_Osa1_1_31", title="Asjaõigusseadus")
+        idx = build_law_index(krr)
+        op = Opinion("aos-op", "Asjaõigusseaduse § 192 tõlgendamine", "", "2024-01-01", (), "")
+        res = build_annotations_for_opinion(op, idx)
+        assert res.resolved_iris == ["estleg:AOS_Osa1_1_31"]
+        assert res.annotations[0]["estleg:annotates"] == {"@id": "estleg:AOS_Osa1_1_31"}
+
+    def test_map_peep_still_wins_over_lower_osa(self, tmp_path: Path):
+        # The osa-range tie-break is a rank-1 refinement only: a whole-law ``_Map_`` IRI (rank 0)
+        # still outranks every per-osa node regardless of its provision-range start (#379).
+        krr = tmp_path / "krr_outputs"
+        krr.mkdir(parents=True, exist_ok=True)
+        _write_peep(krr, "mingiseadus_osa1", "estleg:MS_Osa1_1_50", title="Mingiseadus")
+        _write_peep(krr, "mingiseadus_map", "estleg:MS_Map_2026", title="Mingiseadus")
+        idx = build_law_index(krr)
+        assert idx.resolve("Mingiseadus") == "estleg:MS_Map_2026"
+
 
 # ---------------------------------------------------------------------------
 # Curated-seed source parsing
@@ -1119,6 +1160,88 @@ def test_normalise_pdf_text_collapses_whitespace_and_keeps_full_text():
     assert len(normalized) > _OLD_PDF_BODY_SCAN_CAP
     assert len(normalized) < ga.PDF_BODY_SCAN_MAX_CHARS
     assert normalized == re.sub(r"\s+", " ", text).strip()
+
+
+def test_normalise_pdf_text_strips_oiguskantsler_letter_header():
+    # The standard letter header (office metadata) must NOT survive into the normalised body:
+    # the body should open at the substantive first sentence, not at "Teie … nr …" (#324).
+    text = (
+        "Teie 12.05.2026 nr Meie 25.05.2026 nr 6-1/261230/2604420\n"
+        "Lugupeetud Jaan\n"
+        "Käesolevaga vastan teie pöördumisele võlaõigusseaduse kohaldamise kohta."
+    )
+    normalized = ga._normalise_pdf_text(text)
+    assert normalized.startswith("Käesolevaga vastan teie pöördumisele")
+    assert "Teie" not in normalized
+    assert "Lugupeetud" not in normalized
+    assert "261230" not in normalized
+
+
+def test_normalise_pdf_text_strips_multiline_header_with_salutation():
+    # A realistic multi-line header: ``Teie``/``Õiguskantsler`` reference block, a recipient
+    # block, then an ``Austatud <name>`` salutation. Everything up to and including the
+    # salutation line is dropped; the body begins at the first real sentence (#324).
+    text = (
+        "Teie \n\n8.12.2011  nr [Seosviit] \n\n"
+        "Õiguskantsler  6.01.2012  nr 18-3/120020/1200079 \n\n"
+        "AS Saare Kalur \n\nVastus \n\nAustatud Indrek Leppik \n\n"
+        "Juhtisite minu tähelepanu karistusseadustiku § 76 kohaldamisele."
+    )
+    normalized = ga._normalise_pdf_text(text)
+    assert normalized.startswith("Juhtisite minu tähelepanu")
+    assert "Austatud" not in normalized
+    assert "Õiguskantsler" not in normalized
+    assert "Seosviit" not in normalized
+
+
+def test_normalise_pdf_text_strips_salutationless_reference_header():
+    # Some letters carry no salutation — only the two reference lines. The reference block (and
+    # any wrapped continuation reference-number line) is stripped; the body follows (#324).
+    text = (
+        "Lõppvastus \n\nTeie \n\nkuupäev \n\n nr [Seosviit] \n\n"
+        "Õiguskantsler  6.10.2011 \n\n nr 6-1/111388/1104953,   \n11-1/111371/1104953 \n\n"
+        "Pöördusite minu poole laekunud avaldusega."
+    )
+    normalized = ga._normalise_pdf_text(text)
+    assert normalized.startswith("Pöördusite minu poole")
+    assert "Seosviit" not in normalized
+    assert "1104953" not in normalized
+
+
+def test_normalise_pdf_text_leaves_non_letter_document_untouched():
+    # A document that does not open with the Õiguskantsler letter header (e.g. an Ettepanek)
+    # must be passed through unchanged — the strip is anchored and must never eat real body
+    # text that merely happens to contain "Teie" later on (#324).
+    text = (
+        "ETTEPANEK nr 22 \n\nTallinn \n\nKaevandamisõiguse tasumäärad \n\n"
+        "Analüüsisin põhiseaduse § 139 alusel. Teie esitatud andmed on asjakohased."
+    )
+    normalized = ga._normalise_pdf_text(text)
+    assert normalized == re.sub(r"\s+", " ", text).strip()
+    assert normalized.startswith("ETTEPANEK nr 22")
+    assert "Teie esitatud andmed" in normalized
+
+
+def test_annotation_text_does_not_open_with_letter_header():
+    # End-to-end through the real pipeline shape: a scraped PDF body carrying the letter header
+    # is normalised, then ``_annotation_text`` prepends the title. The emitted text must open
+    # with the title and its body must not start with the "Teie … nr …" boilerplate (#324).
+    raw_body = (
+        "Teie 12.05.2026 nr Meie 25.05.2026 nr 6-1/261230/2604420\n"
+        "Lugupeetud kolleeg\n"
+        "Põhiseaduse § 14 kohaselt on riigil kohustus tagada menetlus."
+    )
+    op = Opinion(
+        "hdr-op", "Menetluse põhiseaduspärasus", "https://x/op.pdf", "2026-05-25", (),
+        ga._normalise_pdf_text(raw_body),
+    )
+    text = ga._annotation_text(op)
+    assert text.startswith("Menetluse põhiseaduspärasus")
+    body = text.split("\n\n", 1)[1]
+    assert body.startswith("Põhiseaduse § 14 kohaselt")
+    assert "Teie 12.05.2026" not in text
+    assert "Lugupeetud" not in text
+    assert "261230" not in text
 
 
 def test_normalise_pdf_text_applies_only_the_sanity_cap():
