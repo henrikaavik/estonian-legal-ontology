@@ -2205,3 +2205,66 @@ class TestIssuedUnderSelfReferenceGuard:
         act = next(n for n in doc["@graph"]
                    if n["@id"] == "estleg:REG_Map_2026")
         assert act["estleg:issuedUnder"] == [{"@id": "estleg:KAITSE_Map_2026"}]
+
+
+class TestAbbreviationMappingReport:
+    """Regression guard for the #299 list-valued abbrev→prefix contract.
+
+    A multi-osa law (e.g. Karistusseadustik split across osa peeps) maps one
+    abbreviation to SEVERAL provision prefixes, so ``build_abbreviation_to_prefix``
+    values are ``list[str]`` since #299. The diagnostic print loop and the
+    cross_references_report.json builder in ``main()`` both consumed that value
+    and, before this fix, used it directly as a ``prefix_to_provisions`` key —
+    ``TypeError: unhashable type: 'list'`` — which crashed the whole extractor
+    (and therefore step 1 of run_all_integration). Both call sites now share
+    ``build_abbreviation_mapping_report``; this locks the contract.
+    """
+
+    def test_build_abbreviation_to_prefix_is_list_valued(self):
+        from extract_cross_references import build_abbreviation_to_prefix
+
+        # Unsorted on purpose to prove the report sorts, not the builder.
+        abbrev_to_prefix = build_abbreviation_to_prefix(
+            {"Karistusseadustik": ["KARIST_3", "KARIST_2"]}
+        )
+        assert abbrev_to_prefix["KarS"] == ["KARIST_3", "KARIST_2"]
+        # The raw value is a list — using it as a dict key is exactly the
+        # bug this module regressed on; assert that misuse still raises so
+        # the helper's reason-to-exist is documented in the test.
+        with pytest.raises(TypeError):
+            {"KARIST_2": {}}.get(abbrev_to_prefix["KarS"])  # type: ignore[arg-type]
+
+    def test_report_sums_provisions_across_all_prefixes(self):
+        from extract_cross_references import (
+            build_abbreviation_to_prefix,
+            build_abbreviation_mapping_report,
+        )
+
+        abbrev_to_prefix = build_abbreviation_to_prefix(
+            {"Karistusseadustik": ["KARIST_3", "KARIST_2"]}
+        )
+        prefix_to_provisions = {
+            "KARIST_2": {"1": "estleg:KARIST_2_Par_1", "2": "estleg:KARIST_2_Par_2"},
+            "KARIST_3": {"5": "estleg:KARIST_3_Par_5"},
+        }
+        report = build_abbreviation_mapping_report(
+            abbrev_to_prefix, prefix_to_provisions
+        )
+        # Sorted list of every prefix, not the unsorted builder order.
+        assert report["KarS"]["iri_prefixes"] == ["KARIST_2", "KARIST_3"]
+        # Summed across BOTH prefixes (2 + 1), not just the first.
+        assert report["KarS"]["provision_count"] == 3
+        # The whole report must be JSON-serialisable (it is saved to disk).
+        json.dumps(report)
+
+    def test_report_tolerates_bare_string_value_pre_299(self):
+        """A pre-#299 single-prefix string value must still work (back-compat
+        via ``_iter_prefixes``), not be iterated char-by-char."""
+        from extract_cross_references import build_abbreviation_mapping_report
+
+        report = build_abbreviation_mapping_report(
+            {"KarS": "KARIST_2"},
+            {"KARIST_2": {"1": "estleg:KARIST_2_Par_1"}},
+        )
+        assert report["KarS"]["iri_prefixes"] == ["KARIST_2"]
+        assert report["KarS"]["provision_count"] == 1
