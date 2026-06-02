@@ -30,8 +30,10 @@
 ### Properties
 
 #### Enacted Law Properties
-* `rdfs:label`: The title or heading of the provision (language-tagged Estonian/English literal). Replaces the legacy `schema:name`; current generators emit `rdfs:label` and SHACL validates it via `LegalProvisionShape`.
-* `estleg:summary`: Free-text summary of the provision (language-tagged Estonian/English literal). Replaces the legacy `schema:text`; current generators emit `estleg:summary`.
+* `rdfs:label`: The title or heading of the provision (Estonian plain string, `xsd:string`, no language tag). Replaces the legacy `schema:name`; current generators emit `rdfs:label` and SHACL validates it via `LegalProvisionShape`.
+* `estleg:summary`: Free-text summary of the provision (Estonian plain string, `xsd:string`, no language tag; SHACL constrains it with `sh:datatype xsd:string`). Replaces the legacy `schema:text`; current generators emit `estleg:summary`.
+
+> **Note:** Instance-node labels and summaries are Estonian-only and carry no language tag — `FILTER(lang(?x) = "en")` returns no rows. Bilingual (Estonian/English) labelling is a possible future goal; it is not part of the current corpus and is not enforced by SHACL or CI.
 * `estleg:topicCluster`: Associates a provision with a TopicCluster.
 * `estleg:references`: Defines cross-references to other legal provisions or laws.
 * `dcterms:isPartOf`: Indicates the hierarchical structure (e.g., paragraph is part of a section). Replaces the legacy `schema:isPartOf`; pipelines that reference parent acts use `estleg:partOfAct` (KOV) or `estleg:sourceAct` (state laws).
@@ -1034,15 +1036,20 @@ SELECT ?provision ?label WHERE {
 }
 ```
 
-### Find all provisions on a specific EuroVoc topic across all laws
+### Find all acts on a specific EuroVoc topic
+
+`dcterms:subject` is attached at the **act** level (see the Subject
+Classification table above), not on individual provisions, so the query
+binds `?act a estleg:Act`:
+
 ```sparql
 PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dcterms: <http://purl.org/dc/terms/>
-SELECT ?provision ?law ?label WHERE {
-  ?provision dcterms:subject <http://eurovoc.europa.eu/2826> ;
-             estleg:sourceAct ?law ;
-             rdfs:label ?label .
+SELECT ?act ?label WHERE {
+  ?act a estleg:Act ;
+       dcterms:subject <http://eurovoc.europa.eu/2826> ;
+       rdfs:label ?label .
 }
 ```
 
@@ -1178,7 +1185,9 @@ SELECT ?mun ?reg WHERE {
 Layer 2a declared the schema (Citation class, 8 new properties, SHACL
 shape, opt-in flag flips). Layer 2b populates the cross-reference and
 inverse-projection properties from real preamble text and KOV body-text
-references. Layer 2c (sanctions enforcement level) remains pending.
+references. Layer 2c (sanctions, institutional competence, and
+court-provision-links, including the `estleg:enforcedAtLevel` resolver)
+shipped in #250 and is **COMPLETE**.
 
 ### Classes
 

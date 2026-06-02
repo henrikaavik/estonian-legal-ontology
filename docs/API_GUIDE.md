@@ -2,19 +2,21 @@
 
 ## Overview
 
-The Estonian Legal Ontology encodes 635 enacted laws, 22,832 draft legislation entries, ~3,820 domestic regulations, 12,137 Supreme Court decisions, 33,242 EU legal acts, and 22,290 EU court decisions as JSON-LD. All files live under `krr_outputs/`.
+The Estonian Legal Ontology encodes 1,145 enacted laws (1,190 law files), 22,832 draft legislation entries, 3,812 domestic (state) regulations, 11,059 municipal (KOV) regulations, 12,137 Supreme Court decisions, 33,242 EU legal acts, and 22,290 EU court decisions as JSON-LD. All files live under `krr_outputs/`.
+
+> **Maintenance note:** The counts in this guide are sourced from `krr_outputs/INDEX.json`, the per-pipeline reports under `krr_outputs/` (e.g. `amendment_history_report.json`, `institutional_competence_report.json`, `sanctions_report.json`), and `metadata.jsonld` (`estleg:statistics`). Update them from those canonical files when the corpus is regenerated.
 
 ## Directory Structure
 
 ```
 krr_outputs/
-  *.json              # 635 enacted law files (*_peep.json)
-  amendments/         # 376 amendment chain files
+  *.json              # 1,190 enacted law files (*_peep.json)
+  amendments/         # 5,647 amendment chain files
   concepts/           # Legal concept graph + report
   curia/              # EU court decisions (CJEU/CURIA)
   eelnoud/            # Draft legislation (EIS)
   eurlex/             # EU legislation (EUR-Lex)
-  institutions/       # 85 institutional competence files
+  institutions/       # 113 institutional competence files
   regulations/        # Domestic regulations (maarused)
     riik/                              # State-level (~3,820 files)
       *_peep.json                      # One file per regulation
@@ -24,7 +26,7 @@ krr_outputs/
         *_peep.json
       REGULATIONS_KOV_INDEX.json
   riigikohus/         # Supreme Court decisions (1993-2026)
-  sanctions/          # 152 sanction cross-reference files
+  sanctions/          # 291 sanction cross-reference files
   INDEX.json          # Master registry of all enacted laws
 ```
 
