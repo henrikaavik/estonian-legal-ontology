@@ -166,7 +166,10 @@ SELECT DISTINCT ?nim ?directive ?celex_dir ?title_nat WHERE {{
   ?nim cdm:measure_national_implementing_implemented_by_country <{ESTONIA_COUNTRY_URI}> .
   ?nim cdm:measure_national_implementing_implements_directive ?directive .
   ?directive cdm:resource_legal_id_celex ?celex_dir .
-  OPTIONAL {{ ?nim cdm:work_title ?title_nat }}
+  OPTIONAL {{
+    ?nim cdm:work_title ?title_nat .
+    FILTER(lang(?title_nat) = 'et' || lang(?title_nat) = '')
+  }}
 }} ORDER BY ?nim LIMIT {PAGE_SIZE} OFFSET {offset}
 """
         print(f"  Fetching transposition measures, offset {offset}...")
@@ -184,13 +187,30 @@ SELECT DISTINCT ?nim ?directive ?celex_dir ?title_nat WHERE {{
 
         for b in bindings:
             celex_dir = b.get("celex_dir", {}).get("value", "")
-            title_nat = b.get("title_nat", {}).get("value", "")
+            title_binding = b.get("title_nat", {})
+            title_nat = title_binding.get("value", "")
             directive_uri = b.get("directive", {}).get("value", "")
 
             if not title_nat:
                 # A NIM without a title cannot be matched to an Estonian
                 # act by name — skip it (it still counts in EUR-Lex's NIM
                 # tally but not in ours).
+                continue
+
+            # Post-fetch language guard (#318): CELLAR carries the same NIM
+            # title in several languages (et/fr/en/…); the dedup key
+            # ``(celex_dir, title_nat)`` differs per language, so without this
+            # guard one NIM is processed once per language — inflating
+            # ``total_measures_fetched``/``total_unmatched`` and risking a
+            # false ``transposesDirective`` link when a short non-Estonian
+            # title slips under the fuzzy floor. The SPARQL ``FILTER`` above
+            # already requests only ``et``/untagged titles; this mirrors that
+            # constraint defensively for any endpoint that returns a foreign
+            # language tag through the OPTIONAL anyway. An untagged literal
+            # (empty ``xml:lang``) is kept — Estonian NIM titles are the
+            # untagged case in CELLAR today.
+            title_lang = title_binding.get("xml:lang", "")
+            if title_lang and title_lang.lower() != "et":
                 continue
 
             key = (celex_dir, title_nat)
@@ -397,6 +417,102 @@ def resolve_directive_iri(celex: str, directive_index: dict[str, str]) -> str | 
     return directive_index.get(celex) or None
 
 
+def build_directive_subject_index() -> dict[str, str]:
+    """Build a lookup from CELEX to the directive's normalized subject text (#388).
+
+    The subject text is the directive's ``rdfs:label`` (its official title,
+    e.g. ``"… ühenduse raudteede ohutuse kohta …"``), ``normalize_text``-ed so
+    it can be substring-matched against a law's domain root with the same
+    diacritic folding the rest of this module uses. Missing/empty labels map to
+    ``""`` so the caller treats them as "no subject signal" and fails open
+    (keeps every co-amended law) rather than dropping legitimate links.
+    """
+    subject_index: dict[str, str] = {}
+    directives_file = EURLEX_DIR / "eurlex_directives_peep.json"
+    if not directives_file.exists():
+        return subject_index
+
+    data = load_json(directives_file)
+    for node in data.get("@graph", []):
+        celex = node.get("estleg:celexNumber", "")
+        if not celex:
+            continue
+        label = node.get("rdfs:label", "")
+        # ``rdfs:label`` is normally a plain string here, but tolerate the
+        # JSON-LD ``{"@value": "...", "@language": "et"}`` object form too.
+        if isinstance(label, dict):
+            label = label.get("@value", "")
+        if isinstance(label, list):  # pragma: no cover - defensive
+            label = " ".join(
+                (item.get("@value", "") if isinstance(item, dict) else str(item))
+                for item in label
+            )
+        subject_index[celex] = normalize_text(label) if label else ""
+
+    return subject_index
+
+
+# A law name shorter (after stripping its ``seadus``/``seadustik`` suffix) than
+# this many characters has no domain root specific enough to safely test
+# against a directive subject, so such a secondary co-amendment is filtered
+# only by the primary-clause rule, never by a too-generic keyword hit.
+_MIN_DOMAIN_ROOT_LEN = 6
+
+# Estonian coordinating conjunctions and the comma that separate the laws
+# enumerated in a combined amending-act title. Everything up to (but not
+# including) the FIRST of these markers is the title's *primary clause* — the
+# law a combined bill is principally named for (#388).
+_CLAUSE_SEPARATOR_RE = re.compile(r"\bja\b|\bning\b|,")
+
+
+def _primary_clause(title_norm: str) -> str:
+    """Return the primary clause of a (normalized) combined amending-act title.
+
+    A title such as ``"raudteeseaduse ja riigiloivuseaduse muutmise seadus"``
+    is principally about the first-named law (``raudteeseadus``); the laws after
+    the first ``ja``/``ning``/comma are co-amended secondaries. This returns the
+    substring before the first such separator (the whole title if there is
+    none), so the caller can tell whether a matched law sits in that primary
+    clause (#388).
+    """
+    match = _CLAUSE_SEPARATOR_RE.search(title_norm)
+    return title_norm[: match.start()] if match else title_norm
+
+
+def _domain_root(name_norm: str) -> str:
+    """Strip the trailing ``seadus``/``seadustik`` from a normalized law name.
+
+    ``"raudteeseadus"`` → ``"raudtee"``; ``"halduskohtumenetluse seadustik"`` →
+    ``"halduskohtumenetluse"``. The remaining root is the law's domain keyword,
+    used to test whether a co-amended law actually belongs to the directive's
+    subject area (#388). A name that is *only* the generic word ``seadus`` (no
+    domain prefix) yields an empty root.
+    """
+    root = re.sub(r"\s*seadus(?:tik)?\s*$", "", name_norm).strip()
+    return root
+
+
+def _law_matches_directive_subject(name_norm: str, subject_norm: str) -> bool:
+    """Return ``True`` iff a law plausibly shares the directive's domain (#388).
+
+    Both arguments are already ``normalize_text``-ed. The law's domain root (its
+    name minus the ``seadus`` suffix) must appear as a substring of the
+    directive subject — e.g. root ``raudtee`` is inside the railway directive's
+    ``"… raudteede ohutuse …"``. Roots shorter than ``_MIN_DOMAIN_ROOT_LEN`` are
+    too generic to anchor on, so they never match here (such a secondary law is
+    kept only when it is in the primary clause). An empty subject means the
+    directive carries no title to discriminate on, so the caller must NOT rely
+    on this guard (it fails open elsewhere) — here it conservatively returns
+    ``False``.
+    """
+    if not subject_norm:
+        return False
+    root = _domain_root(name_norm)
+    if len(root) < _MIN_DOMAIN_ROOT_LEN:
+        return False
+    return root in subject_norm
+
+
 # Minimum length for a fuzzy substring/word-boundary match. A law name
 # shorter than this is too generic to safely anchor a directive↔act link.
 _MIN_FUZZY_MATCH_LEN = 10
@@ -470,18 +586,34 @@ def _best_fuzzy_match(
 
 
 def match_all_titles_to_laws(
-    title: str, law_index: dict[str, dict]
+    title: str,
+    law_index: dict[str, dict],
+    directive_subject: str | None = None,
 ) -> list[dict]:
-    """Return EVERY Estonian law referenced by a transposition measure title.
+    """Return the Estonian law(s) a transposition measure title transposes into.
 
     A combined amending act such as
-    ``"A seaduse ja B seaduse muutmise seadus"`` transposes a directive into
+    ``"A seaduse ja B seaduse muutmise seadus"`` may transpose a directive into
     *both* ``A seadus`` and ``B seadus``; returning only one of them silently
     drops the secondary link (#288). This walks the index and collects every
     law whose name/``source_act`` key appears in the title as a whole word
     (length-floored, like the single-match path), de-duplicated by law name and
     returned in a deterministic order (name length desc, then name asc) so the
     emitted links — and the report — are byte-stable across runs.
+
+    Co-amendment guard (#388): an omnibus bill often amends laws that have
+    nothing to do with the directive (a fee-schedule tweak rides along with a
+    sector reform), and the bare #288 logic linked all of them — e.g.
+    ``meresoiduohutuse_seadus`` (Maritime Safety) got tied to ``32004L0049``
+    (Railway Safety) because both appear in
+    ``"Lennunduseaduse, meresõiduohutuse seaduse ja raudteeseaduse muutmise
+    seadus"``. When ``directive_subject`` (the directive's normalized title) is
+    supplied, a matched law is kept only if EITHER it sits in the title's
+    *primary clause* (before the first ``ja``/``ning``/comma — the law the bill
+    is principally named for) OR its domain root matches the directive subject
+    (``raudtee`` ⊂ ``"… raudteede ohutuse …"``). With no subject available the
+    function fails open and keeps every match, preserving the #288 behaviour for
+    callers that cannot supply one.
 
     A direct/extracted full-title match still short-circuits to that single law
     (it is the strongest signal and avoids spuriously pulling in shorter
@@ -490,7 +622,8 @@ def match_all_titles_to_laws(
     title_norm = normalize_text(title)
 
     # Strongest signal: the whole (normalized) title, or the extracted law
-    # name, is itself an index key — return exactly that law.
+    # name, is itself an index key — return exactly that law. A single-law
+    # title needs no co-amendment guard.
     if title_norm in law_index:
         return [law_index[title_norm]]
     law_name = extract_law_name(title)
@@ -500,6 +633,7 @@ def match_all_titles_to_laws(
             return [law_index[law_name_norm]]
 
     # Otherwise collect every whole-word match (handles multi-law titles).
+    primary_clause = _primary_clause(title_norm)
     matches: list[dict] = []
     seen_names: set[str] = set()
     for key, info in law_index.items():
@@ -507,14 +641,32 @@ def match_all_titles_to_laws(
         source_norm = normalize_text(info.get("source_act", ""))
         if source_norm and source_norm != key:
             tokens.append(source_norm)
-        if not any(
-            len(tok) >= _MIN_FUZZY_MATCH_LEN and _contains_whole(tok, title_norm)
+        matched_tokens = [
+            tok
             for tok in tokens
-        ):
+            if len(tok) >= _MIN_FUZZY_MATCH_LEN and _contains_whole(tok, title_norm)
+        ]
+        if not matched_tokens:
             continue
         name = info.get("name", "")
         if name in seen_names:
             continue
+
+        # Co-amendment guard (#388): only filter when we have a directive
+        # subject to discriminate on; otherwise fail open (keep the match).
+        if directive_subject:
+            in_primary = any(
+                _contains_whole(tok, primary_clause) for tok in matched_tokens
+            )
+            subject_hit = any(
+                _law_matches_directive_subject(tok, directive_subject)
+                for tok in matched_tokens
+            )
+            if not (in_primary or subject_hit):
+                # A secondary, off-subject co-amendment — drop the spurious
+                # link (Maritime Safety ↔ Railway Safety, fees ↔ sector, …).
+                continue
+
         seen_names.add(name)
         matches.append(info)
 
@@ -851,6 +1003,11 @@ def main():
     directive_index = build_directive_index()
     print(f"  Directive index entries: {len(directive_index)}")
 
+    # Build directive subject (title) lookup so a combined amending-act title
+    # only links the laws whose domain matches the directive — not every law
+    # co-amended in the same omnibus bill (#388).
+    directive_subject_index = build_directive_subject_index()
+
     # --- Step 2: Generate schema ---
     print("\n--- Generating transposition schema ---")
     schema_doc = generate_schema()
@@ -908,8 +1065,13 @@ def main():
 
         # A combined amending act ("A seaduse ja B seaduse muutmise seadus")
         # transposes the directive into BOTH laws — emit a link for each so the
-        # secondary law is not silently dropped (#288).
-        law_matches = match_all_titles_to_laws(title_nat, law_index)
+        # secondary law is not silently dropped (#288) — but exclude laws that
+        # are merely co-amended in the same omnibus bill and do not belong to
+        # the directive's subject area (#388).
+        directive_subject = directive_subject_index.get(celex_dir, "")
+        law_matches = match_all_titles_to_laws(
+            title_nat, law_index, directive_subject=directive_subject
+        )
         if not law_matches:
             unmatched_titles.append(title_nat)
             continue
