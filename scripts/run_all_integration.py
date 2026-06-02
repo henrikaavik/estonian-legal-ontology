@@ -1143,6 +1143,7 @@ def run_dag(
 
     if parallel <= 1 or dry_run:
         # ---- Serial path (the deterministic default) --------------------
+        broke_at: int | None = None  # topo index (0-based) of the failing step
         for i, name in enumerate(topo, 1):
             step = by_name[name]
             if name in pre_resume:
@@ -1189,6 +1190,7 @@ def run_dag(
                       f"{rec['elapsedSeconds']:.1f}s)")
                 print(f"  Log: {rec['logPath']}")
                 failed.add(name)
+                broke_at = i - 1
                 break
             print(f"  OK ({rec['elapsedSeconds']:.1f}s)")
             print(f"  Log: {rec['logPath']}")
@@ -1203,7 +1205,21 @@ def run_dag(
                     print(f"  VALIDATION FAILED after {name} (exit code {v_exit})")
                     rec["status"] = "validation_failed"
                     failed.add(name)
+                    broke_at = i - 1
                     break
+        # Drain: a serial break-on-failure leaves every later step in topo
+        # order unexecuted. Record them so the manifest's stepLedger /
+        # stepSummary stays complete (succeeded+failed+skipped == totalSteps)
+        # instead of silently dropping the post-failure tail. This mirrors the
+        # parallel path's blocked-drain below; ``release_ok`` stays False
+        # because these steps are added to ``failed`` (transitive skip).
+        if broke_at is not None:
+            for name in topo[broke_at + 1:]:
+                step = by_name[name]
+                skipped.add(name)
+                failed.add(name)  # transitive skip — keeps release_ok False
+                ledger.append({"name": name, "script": step["script"],
+                               "status": "not_reached"})
         return {"ledger": ledger, "succeeded": succeeded, "failed": failed,
                 "skipped": skipped, "planned": planned, "topoOrder": topo}
 

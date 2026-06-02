@@ -1576,6 +1576,326 @@ def test_validate_context_string_form_warns_not_silent(tmp_path):
 
 
 # ---------------------------------------------------------------------------
+# Issue #314 — per-entry file existence for regulation indexes.
+# ---------------------------------------------------------------------------
+
+
+def _reg_index_corpus(tmp_path: Path, *, files: list[str], on_disk: list[str]) -> Path:
+    """Stage a riik regulation subcorpus.
+
+    `on_disk` peep files are written to the riik directory; the index
+    advertises `files` (paths relative to that directory) with a matching
+    `totalRegulations` count.
+    """
+    krr = tmp_path / "krr_outputs"
+    riik = krr / "regulations" / "riik"
+    riik.mkdir(parents=True)
+    for name in on_disk:
+        write_json(riik / name, {"@graph": []})
+    write_json(
+        riik / "REGULATIONS_RIIK_INDEX.json",
+        {"kov": False, "totalRegulations": len(on_disk), "files": files},
+    )
+    return krr
+
+
+def test_validate_regulation_indexes_accepts_existing_files(tmp_path):
+    """Every listed regulation file exists -> no error (#314)."""
+    krr = _reg_index_corpus(
+        tmp_path,
+        files=["reg_a_peep.json", "reg_b_peep.json"],
+        on_disk=["reg_a_peep.json", "reg_b_peep.json"],
+    )
+
+    validate_all.validate_regulation_indexes(krr)
+
+    assert validate_all.errors == [], validate_all.errors
+
+
+def test_validate_regulation_indexes_reports_missing_listed_file(tmp_path):
+    """A renamed file (count intact, path stale) is caught per-entry (#314).
+
+    The index lists `reg_b_peep.json` but the file on disk is
+    `reg_renamed_peep.json`; the count still matches (2 == 2) so only the
+    new per-entry existence check can detect the drift.
+    """
+    krr = _reg_index_corpus(
+        tmp_path,
+        files=["reg_a_peep.json", "reg_b_peep.json"],
+        on_disk=["reg_a_peep.json", "reg_renamed_peep.json"],
+    )
+
+    validate_all.validate_regulation_indexes(krr)
+
+    assert any(
+        "indexed file does not exist: reg_b_peep.json" in e
+        for e in validate_all.errors
+    ), validate_all.errors
+
+
+def test_validate_regulation_indexes_rejects_absolute_listed_path(tmp_path):
+    """An absolute / traversal path in the regulation index is rejected (#314)."""
+    krr = _reg_index_corpus(
+        tmp_path,
+        files=["/etc/passwd"],
+        on_disk=["reg_a_peep.json"],
+    )
+
+    validate_all.validate_regulation_indexes(krr)
+
+    assert any(
+        "is not directory-relative: /etc/passwd" in e for e in validate_all.errors
+    ), validate_all.errors
+
+
+def test_validate_regulation_indexes_resolves_kov_nested_paths(tmp_path):
+    """KOV index entries are nested under municipality dirs; existence still
+    resolves relative to the index directory (#314)."""
+    krr = tmp_path / "krr_outputs"
+    kov = krr / "regulations" / "kov"
+    nested = kov / "abja_vallavolikogu"
+    nested.mkdir(parents=True)
+    write_json(nested / "reg_1_peep.json", {"@graph": []})
+    write_json(
+        kov / "REGULATIONS_KOV_INDEX.json",
+        {
+            "kov": True,
+            "totalRegulations": 1,
+            "files": ["abja_vallavolikogu/reg_1_peep.json"],
+        },
+    )
+
+    validate_all.validate_regulation_indexes(krr)
+
+    assert validate_all.errors == [], validate_all.errors
+
+
+# ---------------------------------------------------------------------------
+# Issue #315 — missing INDEX.json / metadata.jsonld is a hard error.
+# ---------------------------------------------------------------------------
+
+
+def test_validate_registry_index_missing_is_error_by_default(tmp_path):
+    """A missing INDEX.json fails the gate (no warn-only false green) (#315)."""
+    krr = tmp_path / "krr_outputs"
+    krr.mkdir()
+
+    validate_all.validate_registry_index(krr)
+
+    assert any("registry not found" in e for e in validate_all.errors), validate_all.errors
+
+
+def test_validate_registry_index_missing_allowed_with_flag(tmp_path):
+    """`allow_missing_index=True` downgrades a missing INDEX.json to a warning (#315)."""
+    krr = tmp_path / "krr_outputs"
+    krr.mkdir()
+
+    validate_all.validate_registry_index(krr, allow_missing_index=True)
+
+    assert validate_all.errors == [], validate_all.errors
+    assert any("registry not found" in w for w in validate_all.warnings), validate_all.warnings
+
+
+def test_validate_metadata_catalog_missing_is_error_by_default(tmp_path, monkeypatch):
+    """A missing metadata.jsonld fails the gate (#315)."""
+    krr = tmp_path / "krr_outputs"
+    krr.mkdir()
+    # Point REPO_ROOT at an empty dir so metadata.jsonld is absent.
+    monkeypatch.setattr(validate_all, "REPO_ROOT", tmp_path)
+
+    validate_all.validate_metadata_catalog(krr)
+
+    assert any("metadata.jsonld: not found" in e for e in validate_all.errors), validate_all.errors
+
+
+def test_validate_metadata_catalog_missing_allowed_with_flag(tmp_path, monkeypatch):
+    """`allow_missing_index=True` downgrades a missing metadata.jsonld to a warning (#315)."""
+    krr = tmp_path / "krr_outputs"
+    krr.mkdir()
+    monkeypatch.setattr(validate_all, "REPO_ROOT", tmp_path)
+
+    validate_all.validate_metadata_catalog(krr, allow_missing_index=True)
+
+    assert validate_all.errors == [], validate_all.errors
+    assert any("metadata.jsonld: not found" in w for w in validate_all.warnings), validate_all.warnings
+
+
+# ---------------------------------------------------------------------------
+# Issue #313 — subcorpus INDEX count fields cross-checked vs node counts.
+# ---------------------------------------------------------------------------
+
+
+def _subcorpus_count_corpus(
+    tmp_path: Path,
+    *,
+    riigikohus_total: int = 2,
+    eelnoud_total: int = 1,
+    eurlex_total: int = 1,
+    curia_total: int = 1,
+) -> Path:
+    """Stage subcorpora whose node counts are fixed and whose INDEX totals
+    are supplied by the caller (so a test can introduce a single drift).
+
+    Node counts as wired in `metadata_stats()`:
+      * 2x estleg:CourtDecision  across riigikohus_*_peep.json
+      * 1x estleg:DraftLegislation in eelnoud/eelnoud_combined.jsonld
+      * 1x estleg:EULegislation    in eurlex/eurlex_combined.jsonld
+      * 1x estleg:EUCourtDecision  in curia/curia_combined.jsonld
+    """
+    krr = tmp_path / "krr_outputs"
+
+    # riigikohus: two CourtDecision nodes across two peep files.
+    write_json(
+        krr / "riigikohus" / "riigikohus_2020_peep.json",
+        {"@graph": [{"@id": "estleg:RK_1", "@type": ["estleg:CourtDecision"]}]},
+    )
+    write_json(
+        krr / "riigikohus" / "riigikohus_2021_peep.json",
+        {"@graph": [{"@id": "estleg:RK_2", "@type": ["estleg:CourtDecision"]}]},
+    )
+    write_json(
+        krr / "riigikohus" / "RIIGIKOHUS_INDEX.json",
+        {"source": "x", "total_decisions": riigikohus_total},
+    )
+
+    # eelnoud combined: one DraftLegislation node.
+    write_json(
+        krr / "eelnoud" / "eelnoud_combined.jsonld",
+        {"@graph": [{"@id": "estleg:Draft_1", "@type": ["estleg:DraftLegislation"]}]},
+    )
+    write_json(
+        krr / "eelnoud" / "EELNOUD_INDEX.json",
+        {"source": "x", "total_drafts": eelnoud_total},
+    )
+
+    # eurlex combined: one EULegislation node.
+    write_json(
+        krr / "eurlex" / "eurlex_combined.jsonld",
+        {"@graph": [{"@id": "estleg:EU_1", "@type": ["estleg:EULegislation"]}]},
+    )
+    write_json(
+        krr / "eurlex" / "EURLEX_INDEX.json",
+        {"source": "x", "total_acts": eurlex_total},
+    )
+
+    # curia combined: one EUCourtDecision node.
+    write_json(
+        krr / "curia" / "curia_combined.jsonld",
+        {"@graph": [{"@id": "estleg:CURIA_1", "@type": ["estleg:EUCourtDecision"]}]},
+    )
+    write_json(
+        krr / "curia" / "CURIA_INDEX.json",
+        {"source": "x", "total_decisions": curia_total},
+    )
+    return krr
+
+
+def test_subcorpus_index_counts_pass_when_matching(tmp_path):
+    """All four subcorpus INDEX totals equal their node counts -> no error (#313)."""
+    krr = _subcorpus_count_corpus(tmp_path)
+
+    validate_all.validate_subcorpus_index_counts(krr)
+
+    assert validate_all.errors == [], validate_all.errors
+
+
+@pytest.mark.parametrize(
+    "kwargs, needle",
+    [
+        ({"riigikohus_total": 99}, "RIIGIKOHUS_INDEX.json: total_decisions=99"),
+        ({"eelnoud_total": 99}, "EELNOUD_INDEX.json: total_drafts=99"),
+        ({"eurlex_total": 99}, "EURLEX_INDEX.json: total_acts=99"),
+        ({"curia_total": 99}, "CURIA_INDEX.json: total_decisions=99"),
+    ],
+)
+def test_subcorpus_index_counts_flag_each_drift(tmp_path, kwargs, needle):
+    """A single drifted INDEX total in any subcorpus is reported (#313)."""
+    krr = _subcorpus_count_corpus(tmp_path, **kwargs)
+
+    validate_all.validate_subcorpus_index_counts(krr)
+
+    assert any(needle in e for e in validate_all.errors), validate_all.errors
+
+
+def test_subcorpus_index_counts_missing_field_is_error(tmp_path):
+    """A present INDEX lacking its count field is an error (#313)."""
+    krr = _subcorpus_count_corpus(tmp_path)
+    # Strip the count field from the eurlex index.
+    write_json(krr / "eurlex" / "EURLEX_INDEX.json", {"source": "x"})
+
+    validate_all.validate_subcorpus_index_counts(krr)
+
+    assert any(
+        "EURLEX_INDEX.json: total_acts is missing or not an integer" in e
+        for e in validate_all.errors
+    ), validate_all.errors
+
+
+def test_subcorpus_index_counts_missing_index_is_error_by_default(tmp_path):
+    """A missing subcorpus INDEX file fails by default (#313/#315)."""
+    krr = _subcorpus_count_corpus(tmp_path)
+    (krr / "curia" / "CURIA_INDEX.json").unlink()
+
+    validate_all.validate_subcorpus_index_counts(krr)
+
+    assert any(
+        "curia/CURIA_INDEX.json: subcorpus index not found" in e
+        for e in validate_all.errors
+    ), validate_all.errors
+
+
+def test_subcorpus_index_counts_missing_index_allowed_with_flag(tmp_path):
+    """`allow_missing_index=True` downgrades a missing subcorpus INDEX to a warning (#313)."""
+    krr = _subcorpus_count_corpus(tmp_path)
+    (krr / "curia" / "CURIA_INDEX.json").unlink()
+
+    validate_all.validate_subcorpus_index_counts(krr, allow_missing_index=True)
+
+    assert validate_all.errors == [], validate_all.errors
+    assert any(
+        "curia/CURIA_INDEX.json: index not found" in w for w in validate_all.warnings
+    ), validate_all.warnings
+
+
+def test_subcorpus_index_counts_real_corpus_matches():
+    """The committed subcorpus INDEX totals match the real corpus node counts (#313).
+
+    This pins the live invariant: if a regenerated subcorpus ledger ever
+    drifts from the nodes it summarises, this gate (and CI) must fail.
+    """
+    validate_all.validate_subcorpus_index_counts(validate_all.KRR_DIR)
+
+    assert validate_all.errors == [], validate_all.errors
+
+
+# ---------------------------------------------------------------------------
+# Issue #316 — main() fails when zero corpus files are discovered.
+# ---------------------------------------------------------------------------
+
+
+def test_main_exits_nonzero_on_empty_corpus(tmp_path):
+    """An empty/misconfigured --krr-dir must exit 1, not false-green (#316)."""
+    empty = tmp_path / "empty_krr"
+    empty.mkdir()
+
+    with pytest.raises(SystemExit) as exc:
+        validate_all.main(["--krr-dir", str(empty)])
+
+    assert exc.value.code == 1
+    assert any("No validatable corpus files found" in e for e in validate_all.errors), validate_all.errors
+
+
+def test_parse_args_defaults():
+    """`parse_args` defaults: real krr dir, flag off (#315/#316)."""
+    args = validate_all.parse_args([])
+    assert args.krr_dir == validate_all.KRR_DIR
+    assert args.allow_missing_index is False
+
+
+def test_parse_args_allow_missing_index_flag():
+    """`--allow-missing-index` toggles the opt-out flag (#315)."""
+    args = validate_all.parse_args(["--allow-missing-index"])
+    assert args.allow_missing_index is True
 # Regen-pending staleness guards (#366, #348, #384).
 #
 # All three are WARNING-only gates: they make stale artifacts visible but

@@ -27,6 +27,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 
+import estleg_common  # noqa: E402
 import fix_duplicate_ids as fdi  # noqa: E402
 
 # Canonical "fully-migrated IRI" grammar from migrate_uris.NEW_IRI_FORMAT_RE
@@ -39,6 +40,20 @@ NEW_IRI_FORMAT_RE = re.compile(
 
 
 # ── Helpers ────────────────────────────────────────────────────────────────
+
+
+def use_krr_dir(monkeypatch, path: Path) -> None:
+    """Point BOTH ``KRR_DIR`` constants at ``path`` for a test.
+
+    ``detect_duplicates``/``update_cross_references`` now enumerate the corpus
+    through ``estleg_common.iter_peep_files()`` (#332), which reads
+    ``estleg_common.KRR_DIR`` — a different module-level constant from
+    ``fix_duplicate_ids.KRR_DIR``. Patching only the latter would let the
+    deduplicator scan the *real* committed corpus. Mirror both, matching the
+    convention in ``test_generate_inverse_references.py``.
+    """
+    monkeypatch.setattr(fdi, "KRR_DIR", path)
+    monkeypatch.setattr(estleg_common, "KRR_DIR", path)
 
 
 def write_peep(path: Path, graph: list[dict]) -> None:
@@ -54,8 +69,13 @@ def read_graph(path: Path) -> list[dict]:
 
 
 def all_ids(krr_dir: Path) -> list[str]:
+    """Collect every ``@id`` across the full corpus (laws + regulations).
+
+    Uses ``iter_peep_files()`` so regulation subcorpora are included, matching
+    what ``detect_duplicates`` now scans (#332).
+    """
     ids: list[str] = []
-    for f in sorted(krr_dir.glob("*_peep.json")):
+    for f in estleg_common.iter_peep_files():
         for node in read_graph(f):
             if "@id" in node:
                 ids.append(node["@id"])
@@ -63,12 +83,21 @@ def all_ids(krr_dir: Path) -> list[str]:
 
 
 def run_pipeline(krr_dir: Path) -> set[str]:
-    """Run detect → build → apply → cross-ref once. Returns skipped range files."""
+    """Run detect → build → apply → cross-ref once. Returns skipped range files.
+
+    Remap targets are resolved to their real on-disk paths via
+    ``iter_peep_files()`` (keyed by basename) rather than naively joined to
+    ``krr_dir``, so files living under ``regulations/riik`` or
+    ``regulations/kov`` are rewritten in place instead of at a bogus top-level
+    path (#332).
+    """
+    path_by_name = {p.name: p for p in estleg_common.iter_peep_files()}
     dupes = fdi.detect_duplicates()
     skipped: set[str] = set()
     remap = fdi.build_remap_table(dupes, skipped_range_files=skipped)
     for fname, id_map in remap.items():
-        fdi.apply_remap_to_file(str(krr_dir / fname), id_map)
+        target = path_by_name.get(fname, krr_dir / fname)
+        fdi.apply_remap_to_file(str(target), id_map)
     fdi.update_cross_references(remap)
     return skipped
 
@@ -84,7 +113,7 @@ def test_run_twice_equals_run_once_cluster_and_par(tmp_path, monkeypatch):
     run the ids are disambiguated with each file's slug; a second run must be
     a no-op rather than re-prepending the slug.
     """
-    monkeypatch.setattr(fdi, "KRR_DIR", tmp_path)
+    use_krr_dir(monkeypatch, tmp_path)
     write_peep(
         tmp_path / "alpha_seadus_peep.json",
         [{"@id": "estleg:AS_Par_1"}, {"@id": "estleg:Cluster_Shared"}],
@@ -119,7 +148,7 @@ def test_cluster_already_carrying_slug_is_noop(tmp_path, monkeypatch):
     starts with the file's new prefix, ``build_remap_table`` must NOT emit a
     rename (which would double the slug).
     """
-    monkeypatch.setattr(fdi, "KRR_DIR", tmp_path)
+    use_krr_dir(monkeypatch, tmp_path)
     write_peep(
         tmp_path / "verylongslugname_seadus_peep.json",
         [
@@ -159,7 +188,7 @@ def test_range_osa_file_is_skipped_and_recorded(tmp_path, monkeypatch):
     but the range file produces NO rename (it would be a hyphenated, invalid
     IRI) and its name is recorded in ``skipped_range_files``.
     """
-    monkeypatch.setattr(fdi, "KRR_DIR", tmp_path)
+    use_krr_dir(monkeypatch, tmp_path)
     write_peep(
         tmp_path / "asjaoigusseadus_osa1_peep.json",
         [{"@id": "estleg:AOS_Par_70"}],
@@ -209,7 +238,7 @@ def test_single_osa_regex_rejects_range_form():
 
 def test_cross_file_par_collision_gets_unique_prefixes(tmp_path, monkeypatch):
     """Two different laws sharing a short ``_Par_`` id each get a unique slug."""
-    monkeypatch.setattr(fdi, "KRR_DIR", tmp_path)
+    use_krr_dir(monkeypatch, tmp_path)
     write_peep(tmp_path / "aktsiisiseadus_peep.json", [{"@id": "estleg:AS_Par_5"}])
     write_peep(tmp_path / "abieluseadus_peep.json", [{"@id": "estleg:AS_Par_5"}])
 
@@ -232,7 +261,7 @@ def test_cross_file_par_collision_gets_unique_prefixes(tmp_path, monkeypatch):
 
 def test_cross_file_legalprovision_collision(tmp_path, monkeypatch):
     """``estleg:LegalProvision_<short>`` shared across laws is disambiguated."""
-    monkeypatch.setattr(fdi, "KRR_DIR", tmp_path)
+    use_krr_dir(monkeypatch, tmp_path)
     write_peep(
         tmp_path / "aktsiisiseadus_peep.json",
         [{"@id": "estleg:AS_Par_1"}, {"@id": "estleg:LegalProvision_AS"}],
@@ -262,7 +291,7 @@ def test_reference_rewrite_updates_other_files(tmp_path, monkeypatch):
     after disambiguation, a third file that referenced the (now-remapped)
     ``aktsiisiseadus`` id must point at the NEW id.
     """
-    monkeypatch.setattr(fdi, "KRR_DIR", tmp_path)
+    use_krr_dir(monkeypatch, tmp_path)
     write_peep(tmp_path / "aktsiisiseadus_peep.json", [{"@id": "estleg:AS_Par_1"}])
     write_peep(tmp_path / "abieluseadus_peep.json", [{"@id": "estleg:AS_Par_1"}])
     # Consumer references the aktsiisiseadus provision by its OLD id.
@@ -290,6 +319,148 @@ def test_reference_rewrite_updates_other_files(tmp_path, monkeypatch):
     assert ref == new_aktsiisi_id
 
 
+# ── #332: regulation subcorpora are scanned ─────────────────────────────────
+
+
+def _make_law_collision(tmp_path: Path, ref_old_id: str = "estleg:RAS_Par_45") -> None:
+    """Write two top-level laws colliding on ``ref_old_id``.
+
+    Running the dedup pipeline remaps the id in (at least) one of the two
+    files, so any *other* file still referencing ``ref_old_id`` becomes a
+    dangling reference unless it is rewritten. Used by the #332 regression
+    tests to manufacture a remap that regulation files must follow.
+    """
+    write_peep(tmp_path / "raudteeseadus_peep.json", [{"@id": ref_old_id}])
+    write_peep(tmp_path / "ravimiseadus_peep.json", [{"@id": ref_old_id}])
+
+
+def test_regulation_riik_reference_to_remapped_law_iri_is_rewritten(
+    tmp_path, monkeypatch
+):
+    """A ``regulations/riik`` file's ref to a remapped law IRI is rewritten (#332).
+
+    The old narrow ``KRR_DIR.glob('*_peep.json')`` in
+    ``update_cross_references`` never visited ``regulations/riik/``, so a
+    state-level regulation pointing at a deduplicated law provision was left
+    with a dangling ``estleg:references`` entry. With ``iter_peep_files()`` the
+    regulation is scanned and its reference follows the remap.
+    """
+    use_krr_dir(monkeypatch, tmp_path)
+    _make_law_collision(tmp_path)
+    # State regulation references the (soon-to-be-remapped) law provision.
+    reg = tmp_path / "regulations" / "riik" / "maarus_42_peep.json"
+    write_peep(
+        reg,
+        [
+            {
+                "@id": "estleg:Maarus_42",
+                "estleg:references": [{"@id": "estleg:RAS_Par_45"}],
+            }
+        ],
+    )
+
+    run_pipeline(tmp_path)
+
+    # The collision produced a remap: the old shared id no longer exists as an
+    # @id anywhere in the corpus.
+    corpus_ids = set(all_ids(tmp_path))
+    assert "estleg:RAS_Par_45" not in corpus_ids, (
+        "law collision should have remapped the shared id away"
+    )
+
+    # The regulation's reference was rewritten to a real, surviving id — not
+    # left dangling at the old shared IRI.
+    new_ref = read_graph(reg)[0]["estleg:references"][0]["@id"]
+    assert new_ref != "estleg:RAS_Par_45", "regulation ref left dangling (#332)"
+    assert new_ref in corpus_ids, "regulation ref points at a non-existent id"
+    assert NEW_IRI_FORMAT_RE.match(new_ref)
+
+
+def test_regulation_kov_reference_to_remapped_law_iri_is_rewritten(
+    tmp_path, monkeypatch
+):
+    """A nested ``regulations/kov/**`` ref to a remapped law IRI is rewritten (#332).
+
+    KOV regulations live under arbitrarily deep ``regulations/kov/<muni>/…``
+    paths, reached only by the recursive ``kov/**/*_peep.json`` glob inside
+    ``iter_peep_files()``. This pins that the deepest subcorpus is rewritten,
+    not just the flat ``riik`` directory.
+    """
+    use_krr_dir(monkeypatch, tmp_path)
+    _make_law_collision(tmp_path)
+    # KOV regulation, two directories deep, references the law provision as a
+    # bare string (the other ``estleg:references`` shape).
+    reg = (
+        tmp_path / "regulations" / "kov" / "tallinn" / "0123" / "kov_maarus_peep.json"
+    )
+    write_peep(
+        reg,
+        [
+            {
+                "@id": "estleg:KovMaarus_1",
+                "estleg:references": ["estleg:RAS_Par_45"],
+            }
+        ],
+    )
+
+    run_pipeline(tmp_path)
+
+    corpus_ids = set(all_ids(tmp_path))
+    assert "estleg:RAS_Par_45" not in corpus_ids
+
+    new_ref = read_graph(reg)[0]["estleg:references"][0]
+    assert new_ref != "estleg:RAS_Par_45", "KOV regulation ref left dangling (#332)"
+    assert new_ref in corpus_ids
+    assert NEW_IRI_FORMAT_RE.match(new_ref)
+
+
+def test_regulation_side_duplicate_is_detected(tmp_path, monkeypatch):
+    """Duplicate @ids involving regulation files are now visible (#332).
+
+    Before the fix ``detect_duplicates`` globbed only top-level laws, so:
+
+    * a law/regulation collision counted as a single (non-duplicate) id, and
+    * a duplicate shared between two regulations was entirely invisible.
+
+    With ``iter_peep_files()`` both surface. Two distinct collisions are
+    seeded to prove riik *and* kov participate in detection.
+    """
+    use_krr_dir(monkeypatch, tmp_path)
+    # (a) law <-> riik regulation collision
+    write_peep(tmp_path / "raudteeseadus_peep.json", [{"@id": "estleg:RAS_Par_45"}])
+    write_peep(
+        tmp_path / "regulations" / "riik" / "maarus_42_peep.json",
+        [{"@id": "estleg:RAS_Par_45"}],
+    )
+    # (b) riik regulation <-> kov regulation collision (no law involved)
+    write_peep(
+        tmp_path / "regulations" / "riik" / "maarus_7_peep.json",
+        [{"@id": "estleg:Shared_Reg_Node"}],
+    )
+    write_peep(
+        tmp_path / "regulations" / "kov" / "parnu" / "kov_maarus_peep.json",
+        [{"@id": "estleg:Shared_Reg_Node"}],
+    )
+
+    dupes = fdi.detect_duplicates()
+
+    # (a) The law/regulation collision is detected, listing both basenames.
+    assert "estleg:RAS_Par_45" in dupes
+    assert set(dupes["estleg:RAS_Par_45"]) == {
+        "raudteeseadus_peep.json",
+        "maarus_42_peep.json",
+    }
+    # (b) The regulation-only collision is detected too — invisible before #332.
+    assert "estleg:Shared_Reg_Node" in dupes
+    assert set(dupes["estleg:Shared_Reg_Node"]) == {
+        "maarus_7_peep.json",
+        "kov_maarus_peep.json",
+    }
+
+
+# ── Reference rewrite (cont.) ─────────────────────────────────────────────────
+
+
 def test_reference_rewrite_handles_duplicate_list_entries(tmp_path, monkeypatch):
     """List references with the same old id twice both get rewritten (#159).
 
@@ -298,7 +469,7 @@ def test_reference_rewrite_handles_duplicate_list_entries(tmp_path, monkeypatch)
     public ``apply_remap_to_file`` + cross-ref path used by the rest of the
     suite.
     """
-    monkeypatch.setattr(fdi, "KRR_DIR", tmp_path)
+    use_krr_dir(monkeypatch, tmp_path)
     write_peep(tmp_path / "owner_peep.json", [{"@id": "estleg:Old"}])
     write_peep(
         tmp_path / "consumer_peep.json",

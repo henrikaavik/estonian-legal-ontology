@@ -637,6 +637,9 @@ def test_update_cross_references_iterates_lists_by_index(tmp_path, monkeypatch):
     old id appearing twice.
     """
     monkeypatch.setattr(fix_duplicate_ids, "KRR_DIR", tmp_path)
+    # After #332, detect_duplicates/update_cross_references enumerate via
+    # estleg_common.iter_peep_files(), which reads estleg_common.KRR_DIR.
+    monkeypatch.setattr(estleg_common, "KRR_DIR", tmp_path)
 
     # File "owner_peep.json" defines the @id we'll rename.
     write_json(
@@ -669,6 +672,9 @@ def test_update_cross_references_iterates_lists_by_index(tmp_path, monkeypatch):
 def test_update_cross_references_applies_transitive_closure(tmp_path, monkeypatch):
     """Chained renames `A -> B -> C` are applied as `A -> C` (#159)."""
     monkeypatch.setattr(fix_duplicate_ids, "KRR_DIR", tmp_path)
+    # After #332, detect_duplicates/update_cross_references enumerate via
+    # estleg_common.iter_peep_files(), which reads estleg_common.KRR_DIR.
+    monkeypatch.setattr(estleg_common, "KRR_DIR", tmp_path)
 
     write_json(tmp_path / "owner_a_peep.json", {"@graph": [{"@id": "estleg:A"}]})
     write_json(tmp_path / "owner_b_peep.json", {"@graph": [{"@id": "estleg:B"}]})
@@ -693,6 +699,9 @@ def test_update_cross_references_applies_transitive_closure(tmp_path, monkeypatc
 def test_detect_duplicates_returns_only_multi_file_ids(tmp_path, monkeypatch):
     """`detect_duplicates` reports only @ids appearing in 2+ files."""
     monkeypatch.setattr(fix_duplicate_ids, "KRR_DIR", tmp_path)
+    # After #332, detect_duplicates/update_cross_references enumerate via
+    # estleg_common.iter_peep_files(), which reads estleg_common.KRR_DIR.
+    monkeypatch.setattr(estleg_common, "KRR_DIR", tmp_path)
     write_json(tmp_path / "a_peep.json", {"@graph": [{"@id": "estleg:Shared"}, {"@id": "estleg:Unique_A"}]})
     write_json(tmp_path / "b_peep.json", {"@graph": [{"@id": "estleg:Shared"}, {"@id": "estleg:Unique_B"}]})
     dupes = fix_duplicate_ids.detect_duplicates()

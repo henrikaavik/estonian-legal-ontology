@@ -27,6 +27,8 @@ import tempfile
 from collections import defaultdict
 from pathlib import Path
 
+from estleg_common import iter_peep_files
+
 KRR_DIR = Path(__file__).resolve().parents[1] / "krr_outputs"
 
 
@@ -102,9 +104,16 @@ def sanitize_id(value: str) -> str:
 
 
 def detect_duplicates() -> dict[str, list[str]]:
-    """Find all @id values that appear in multiple files."""
+    """Find all @id values that appear in multiple files.
+
+    Scans the full pipeline corpus via ``iter_peep_files()`` — top-level
+    laws PLUS ``regulations/riik/`` and ``regulations/kov/**`` (#332).
+    The previous ``KRR_DIR.glob('*_peep.json')`` saw only top-level law
+    files, so regulation-side duplicate @ids (and the regulation half of
+    any law/regulation collision) were invisible to the deduplicator.
+    """
     id_files: dict[str, list[str]] = defaultdict(list)
-    for f in sorted(KRR_DIR.glob("*_peep.json")):
+    for f in iter_peep_files():
         with open(f, "r", encoding="utf-8") as fh:
             doc = json.load(fh)
         fname = f.name
@@ -385,8 +394,8 @@ def _transitive_closure(remap: dict[str, str]) -> dict[str, str]:
 def update_cross_references(remap: dict[str, dict[str, str]]) -> int:
     """Update references in OTHER files that point to remapped IDs.
 
-    Two correctness fixes versus the previous implementation
-    (issue #159):
+    Three correctness fixes versus the previous implementation
+    (issues #159, #332):
 
     1. **Index-based list iteration.** Previously, `val.index(item)`
        was used while iterating `val`, which silently misbehaves on
@@ -398,6 +407,14 @@ def update_cross_references(remap: dict[str, dict[str, str]]) -> int:
        are now collapsed to (A -> C, B -> C) before being applied so
        references never resolve to a stale intermediate id. We also
        assert the closed map has no key that is also a value.
+
+    3. **Full-corpus scan (#332).** We rewrite references across the
+       entire pipeline corpus via ``iter_peep_files()`` — top-level
+       laws PLUS ``regulations/riik/`` and ``regulations/kov/**`` —
+       not just top-level ``*_peep.json``. Regulations carry
+       ``estleg:references`` to law provisions, so a remapped law IRI
+       must rewrite those regulation-side refs too; otherwise dedup
+       leaves dangling cross-references in the regulation subcorpora.
     """
     # Build a global old->new map and track which file the old ID belongs to
     raw_remap: dict[str, str] = {}
@@ -413,8 +430,10 @@ def update_cross_references(remap: dict[str, dict[str, str]]) -> int:
 
     global_remap = _transitive_closure(raw_remap)
 
-    # Scan all files for references to remapped IDs
-    all_files = sorted(KRR_DIR.glob("*_peep.json"))
+    # Scan ALL corpus files (laws + riik + kov regulations) for references
+    # to remapped IDs. ``iter_peep_files()`` returns an already-sorted list
+    # spanning the regulation subcorpora the old narrow glob missed (#332).
+    all_files = iter_peep_files()
     total_updated = 0
 
     for filepath in all_files:

@@ -169,6 +169,14 @@ def main(argv: list[str] | None = None) -> int:
     all_buckets = args.all or args.bucket is None
     files = collect_files(args.bucket, all_buckets=all_buckets)
     label = "all buckets" if all_buckets else f"{args.bucket!r} bucket"
+    # A bucket collector that silently returns 0 files (missing/renamed
+    # INDEX.json or corpus subdir) would otherwise validate an empty graph,
+    # which pyshacl reports as conforming — turning a vanished corpus subset
+    # into a green SHACL job. Treat 0 files as an error, mirroring the guard
+    # in validate_seadusloome_sync.main (issue #338).
+    if not files:
+        print(f"ERROR: no files collected for {label}.")
+        return 2
     print(f"Loading {len(files)} files from {label} into a single graph...")
     g = rdflib.Graph()
     parse_failures: list[tuple[str, str]] = []

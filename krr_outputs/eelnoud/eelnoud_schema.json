@@ -225,7 +225,8 @@
       "rdfs:range": {
         "@id": "estleg:LegalProvision"
       },
-      "rdfs:comment": "Links a draft to the existing law it proposes to amend."
+      "rdfs:comment": "Deprecated (issue #344): declared but never populated — the formal draft→provision IRI link is not resolved. Drafts record the affected law as a literal via estleg:affectedLawName (the canonical, populated property) instead. Retained for backward compatibility; do not emit new references.",
+      "owl:deprecated": true
     },
     {
       "@id": "estleg:eisNumber",
@@ -295,7 +296,7 @@
       "rdfs:range": {
         "@id": "xsd:string"
       },
-      "rdfs:comment": "Name of existing law this draft proposes to amend."
+      "rdfs:comment": "Name of existing law this draft proposes to amend or affect. Canonical, populated draft→law link (issue #344): the literal-name form is used in place of the unpopulated IRI property estleg:amendsLaw."
     }
   ]
 }

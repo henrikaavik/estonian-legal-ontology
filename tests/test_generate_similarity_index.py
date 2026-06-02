@@ -267,6 +267,111 @@ def _make_two_act_corpus(krr: Path, summary_a: str, summary_b: str) -> list[Path
 
 
 # ---------------------------------------------------------------------------
+# Boilerplate provision detection (#367a)
+# ---------------------------------------------------------------------------
+
+def test_regulation_entry_into_force_is_boilerplate():
+    """'Määrus jõustub …' entry-into-force clauses are boilerplate (#367a).
+
+    Pre-fix BOILERPLATE_PATTERNS covered the LAW form ('käesolev seadus
+    jõustub' / 'seadus jõustub') but not the REGULATION form, so identical
+    'Määrus jõustub … aastal.' / '… üldises korras.' / '… kolmandal päeval
+    …' clauses produced huge Jaccard=1.0 false-similarity clusters.
+    """
+    for text in (
+        "Määrus jõustub 21. novembril 2022. aastal.",
+        "Määrus jõustub 2012. aasta 1. jaanuaril.",
+        "Määrus jõustub üldises korras.",
+        "Määrus jõustub seadusega sätestatud korras.",
+        "Määrus jõustub kolmandal päeval pärast Riigi Teatajas avaldamist.",
+        "Määrus jõustub kolmandal päeval pärast avalikustamist.",
+        "Käesolev määrus jõustub 1. jaanuaril 2003. a.",
+    ):
+        assert similarity.is_boilerplate(text), text
+
+
+def test_substantive_maarus_provision_is_not_boilerplate():
+    """A substantive court-order provision mentioning 'määrus jõustub' is kept.
+
+    The #367a pattern is anchored to an entry-into-force complement (date /
+    aasta / päev / korras / avalikustam / avaldam) so it does NOT suppress
+    real provisions whose 'määrus jõustub' is followed by ', kui …' or 'ja
+    kuulub täitmisele …' (procedural content, not an entry-into-force date).
+    """
+    for text in (
+        "Kohtuotsus või -määrus jõustub, kui seda ei saa enam vaidlustada "
+        "muul viisil kui teistmismenetluses.",
+        "Hüvitise suuruse määramise avalduse kohta tehtud määrus jõustub ja "
+        "kuulub täitmisele, kui seaduse järgi ei saa.",
+        "Määrus jõustub ja kuulub täitmisele selle alaealisele "
+        "kättetoimetamisega.",
+    ):
+        assert not similarity.is_boilerplate(text), text
+
+
+def test_nature_reserve_administrator_verbatim_is_boilerplate():
+    """'<X> valitseja on Keskkonnaamet.' verbatim statutory text is boilerplate.
+
+    Every protected-area regulation repeats the same administrator sentence
+    (#367a). Identical across thousands of acts, it produced a degenerate
+    Jaccard=1.0 hub (in-degree 293 on a single nature-reserve §3), so it must
+    be filtered before keyword extraction.
+    """
+    for text in (
+        "Kaitseala valitseja on Keskkonnaamet.",
+        "Püsielupaiga valitseja on Keskkonnaamet.",
+        "Looduspargi valitseja on Keskkonnaamet.",
+    ):
+        assert similarity.is_boilerplate(text), text
+    # A 'valitseja' sentence that is NOT the fixed administrator clause stays
+    # substantive (carries real topical content).
+    assert not similarity.is_boilerplate(
+        "Kaitseala valitseja kooskõlastab kavandatava tegevuse ja annab "
+        "nõusoleku metsaraieks."
+    )
+
+
+def test_boilerplate_provision_excluded_from_similarity_candidates(tmp_path):
+    """A provision whose summary is regulation boilerplate is excluded (#367a)."""
+    krr = tmp_path / "krr_outputs"
+    path = krr / "regulations" / "riik" / "boiler_peep.json"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(
+        json.dumps(
+            {
+                "@graph": [
+                    {
+                        "@id": "estleg:Act_1",
+                        "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
+                    },
+                    {
+                        "@id": "estleg:Act_1_Par_1",
+                        "@type": ["owl:NamedIndividual", "estleg:LegalProvision_Act1"],
+                        "rdfs:label": "§ 5. Jõustumine",
+                        "estleg:sourceAct": "Test act",
+                        # 'Määrus jõustub üldises korras.' is caught ONLY by the
+                        # new #367a regulation pattern (no Riigi Teataja /
+                        # avaldamisele wording the old patterns matched), so this
+                        # is a true regression guard for the new pattern.
+                        "estleg:summary": "Määrus jõustub üldises korras.",
+                    },
+                ]
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    provisions, act_type, excluded = similarity.extract_provisions_from_file(path)
+
+    # Boilerplate is dropped before the keyword floor, so it is neither a
+    # candidate nor counted as a keyword-floor exclusion. (The file lives
+    # under regulations/riik/, so it classifies as a state_regulation.)
+    assert act_type == "state_regulation"
+    assert provisions == []
+    assert excluded == 0
+
+
+# ---------------------------------------------------------------------------
 # Generic-but-not-boilerplate token filtering
 # ---------------------------------------------------------------------------
 
@@ -568,6 +673,22 @@ _WATER_TEXT = (
     "torustik veemoot heitvesi sademevesi"
 )
 
+# Graded-overlap pools (for the intra-bucket symmetry test, #367b). A shared
+# 20-token core makes every act in the bucket pairwise-comparable; a small
+# shared "bonus" set lifts the hub + its two close peers well above a
+# weaker fourth act, so a small KOV_TOP_K forces the hub to drop its weakest
+# peer — the case that produced one-directional pairs under the old
+# per-source cap.
+_SYM_CORE = " ".join(f"core{c}" for c in "abcdefghijklmnopqrst")
+_SYM_BONUS = "bonusa bonusb bonusc bonusd bonuse bonusf"
+_SYM_HUB = f"{_SYM_CORE} {_SYM_BONUS}"
+_SYM_NEAR_A = f"{_SYM_CORE} {_SYM_BONUS} uniqaa"
+_SYM_NEAR_B = f"{_SYM_CORE} {_SYM_BONUS} uniqbb"
+_SYM_WEAK = (
+    f"{_SYM_CORE} tailaa tailbb tailcc taildd tailee tailff "
+    "tailgg tailhh tailii tailjj tailkk tailll"
+)
+
 
 def _kov_act_doc(
     reg_id: str,
@@ -678,10 +799,13 @@ def test_bucket_key_single_token_tail():
 
 def test_bucket_key_strips_trailing_action_noun():
     """Trailing action nouns (muutmine/kinnitamine/...) are stripped first."""
-    # "pohimaarus" survives once the trailing "muutmine" is stripped (one
-    # content token left -> bare head).
-    assert similarity.bucket_key("pohimaaruse muutmine") == "pohimaaruse"
+    # "pohimaaruse" survives once the trailing "muutmine" is stripped (one
+    # content token left -> bare head), then #317 stem-normalizes the
+    # genitive to the nominative "pohimaarus".
+    assert similarity.bucket_key("pohimaaruse muutmine") == "pohimaarus"
     # A repeated trailing action noun is stripped down to the content tail.
+    # "hankekorra" is a fused compound, not a standalone "korra" token, so it
+    # is NOT stem-normalized (only the bare type nouns are).
     assert (
         similarity.bucket_key("hankekorra kehtestamine")
         == "hankekorra"
@@ -700,8 +824,9 @@ def test_bucket_key_strips_connectives_and_year_words():
         == "kooli arengukava"
     )
     # Trailing connective "ja" is stripped; the remaining tail is the two
-    # trailing content tokens.
-    assert similarity.bucket_key("jaatmevaldkonna eeskirja ja") == "jaatmevaldkonna eeskirja"
+    # trailing content tokens, with the genitive "eeskirja" stem-normalized to
+    # the nominative "eeskiri" (#317).
+    assert similarity.bucket_key("jaatmevaldkonna eeskirja ja") == "jaatmevaldkonna eeskiri"
 
 
 def test_bucket_key_filters_mid_title_action_noun(tmp_path):
@@ -711,12 +836,15 @@ def test_bucket_key_filters_mid_title_action_noun(tmp_path):
     bucket_key("eeskirja muutmine ja kehtetuks") bucketed on the amendment
     verb -> "muutmine kehtetuks". Action nouns are now filtered out of the
     whole content list (like connectives), so the title buckets on the
-    eeskiri, not "muutmine".
+    eeskiri, not "muutmine". The surviving "eeskirja" is additionally
+    stem-normalized to "eeskiri" by #317 (the genitive collapses onto the
+    nominative wherever the type noun sits).
     """
     bucket = similarity.bucket_key("eeskirja muutmine ja kehtetuks")
     assert "muutmine" not in bucket
-    assert "eeskirja" in bucket
-    assert bucket == "eeskirja kehtetuks"
+    # #317: the genitive "eeskirja" is normalized to the nominative "eeskiri".
+    assert "eeskiri" in bucket
+    assert bucket == "eeskiri kehtetuks"
     # The action noun is dropped wherever it sits, even between two content
     # tokens.
     assert similarity.bucket_key("vee muutmine kasutamise kord") == "kasutamise kord"
@@ -729,6 +857,48 @@ def test_bucket_key_uncategorized_on_empty_or_no_content():
     assert similarity.bucket_key("a bc") == similarity.UNCATEGORIZED_BUCKET
     # An only-action-noun title strips to nothing -> uncategorized.
     assert similarity.bucket_key("muutmine") == similarity.UNCATEGORIZED_BUCKET
+
+
+def test_bucket_key_inflected_type_noun_merges_with_nominative():
+    """Genitive/partitive type nouns bucket with their nominative (#317).
+
+    Pre-fix an act that *amends* a regulation type ('kooli pohimaaruse
+    muutmine' -> head 'pohimaaruse', genitive) never bucketed with acts that
+    *are* that type ('kooli pohimaarus' -> 'pohimaarus', nominative) — the
+    closest possible matches, never compared. The stem map collapses the
+    inflected form onto the nominative so both land in one bucket. Verified
+    for the families that actually split in the corpus: pohimaarus / eeskiri
+    / kord / piirmaara.
+    """
+    assert (
+        similarity.bucket_key("kooli pohimaaruse muutmine")
+        == similarity.bucket_key("kooli pohimaarus")
+        == "kooli pohimaarus"
+    )
+    # The diacritic form (which the tokenizer still accepts) collapses too.
+    assert similarity.bucket_key("kooli põhimääruse muutmine") == "kooli pohimaarus"
+    # Normalization is per-token, so a type noun in the QUALIFIER slot merges
+    # just like one in the head slot.
+    assert (
+        similarity.bucket_key("vee kasutamise eeskirja muutmine")
+        == similarity.bucket_key("vee kasutamise eeskiri")
+        == "kasutamise eeskiri"
+    )
+    # Irregular d-stem genitive 'korra' -> 'kord'.
+    assert (
+        similarity.bucket_key("hanke korra muutmine")
+        == similarity.bucket_key("hanke kord")
+        == "hanke kord"
+    )
+    # Partitive-plural 'piirmaarade' -> 'piirmaara'.
+    assert (
+        similarity.bucket_key("jaatmevaldkonna piirmaarade kehtestamine")
+        == similarity.bucket_key("jaatmevaldkonna piirmaara")
+        == "jaatmevaldkonna piirmaara"
+    )
+    # A fused compound is NOT a standalone type noun, so it is left intact
+    # (no over-merging) — 'jaatmehoolduseeskiri' stays as-is.
+    assert similarity.bucket_key("jaatmehoolduseeskiri") == "jaatmehoolduseeskiri"
 
 
 # ---------------------------------------------------------------------------
@@ -756,6 +926,40 @@ def test_two_municipalities_same_type_share_bucket_and_pair(tmp_path, monkeypatc
     assert sources == {"estleg:Reg_1001_Map_2026", "estleg:Reg_1002_Map_2026"}
     peer = bucket["pairs"][0]["peers"][0]
     assert peer["score"] >= similarity.KOV_SIMILARITY_THRESHOLD
+
+
+def test_inflected_and_nominative_type_acts_share_bucket_and_pair(tmp_path, monkeypatch):
+    """An act amending a type buckets+pairs with an act that IS that type (#317).
+
+    'kooli pohimaaruse muutmine' (genitive head) and 'kooli pohimaarus'
+    (nominative) previously landed in two singleton buckets and were never
+    compared. With stem normalization they share one 'kooli pohimaarus'
+    bucket and, given similar text, form a symmetric pair.
+    """
+    krr = tmp_path / "krr_outputs"
+    files = [
+        _write_kov(krr, "amend_vv", "18001",
+                   _kov_act_doc("18001", "kooli pohimaaruse muutmine", [_WATER_TEXT])),
+        _write_kov(krr, "base_vv", "18002",
+                   _kov_act_doc("18002", "kooli pohimaarus", [_WATER_TEXT])),
+    ]
+    _wire_kov(monkeypatch, krr, files)
+
+    summary = similarity.run_kov_similarity_pass()
+
+    assert summary["comparedBuckets"] == 1
+    assert "kooli pohimaarus" in summary["buckets"]
+    bucket = summary["buckets"]["kooli pohimaarus"]
+    assert bucket["regulationCount"] == 2
+    sources = {p["source"] for p in bucket["pairs"]}
+    assert sources == {"estleg:Reg_18001_Map_2026", "estleg:Reg_18002_Map_2026"}
+    # Both acts carry the SAME normalized bucket label.
+    for path, act_id in (
+        (files[0], "estleg:Reg_18001_Map_2026"),
+        (files[1], "estleg:Reg_18002_Map_2026"),
+    ):
+        node = _act_node(path, act_id)
+        assert node["estleg:regulationTypeBucket"] == "kooli pohimaarus"
 
 
 def test_no_cross_bucket_pairs(tmp_path, monkeypatch):
@@ -957,6 +1161,78 @@ def test_top_k_bound_respected(tmp_path, monkeypatch):
     doc = json.loads(files[0].read_text(encoding="utf-8"))
     act = next(n for n in doc["@graph"] if n["@id"] == "estleg:Reg_8000_Map_2026")
     assert len(act["estleg:similarAct"]) <= 3
+
+
+def _intra_directed_edges(index: dict) -> set:
+    """All (source, target) intra-bucket KOV->KOV peer edges in the index."""
+    edges = set()
+    for bucket in index["buckets"].values():
+        for pair in bucket["pairs"]:
+            for peer in pair["peers"]:
+                if peer["target"].startswith("estleg:Reg_"):
+                    edges.add((pair["source"], peer["target"]))
+    return edges
+
+
+def test_intra_bucket_pairs_are_symmetric_after_top_k_cap(tmp_path, monkeypatch):
+    """Intra-bucket KOV pairs stay symmetric even when the top-K cap evicts (#367b).
+
+    Fixture: one bucket of four acts — a hub H, two close peers A/B, and a
+    weaker fourth act W — with KOV_TOP_K=2. Pairwise cosines are
+    H-A=H-B>A-B (all strong) >> H-W=A-W=B-W (weak but >= threshold). Under
+    the OLD per-source ``del peers[src][KOV_TOP_K:]`` the hub kept its two
+    strongest peers and evicted W, while W (whose only strong-enough peers
+    were H and A) still listed them — leaving W->H / W->A one-directional
+    (the ~49.5% asymmetry this fixes). The greedy symmetric cap instead drops
+    the weak pairs in BOTH directions, so every surviving edge is reciprocal.
+    """
+    monkeypatch.setattr(similarity, "KOV_TOP_K", 2)
+    krr = tmp_path / "krr_outputs"
+    files = [
+        _write_kov(krr, "hub_vv", "19001",
+                   _kov_act_doc("19001", "jaatmehoolduseeskiri", [_SYM_HUB])),
+        _write_kov(krr, "near_a_vv", "19002",
+                   _kov_act_doc("19002", "jaatmehoolduseeskiri", [_SYM_NEAR_A])),
+        _write_kov(krr, "near_b_vv", "19003",
+                   _kov_act_doc("19003", "jaatmehoolduseeskiri", [_SYM_NEAR_B])),
+        _write_kov(krr, "weak_vv", "19004",
+                   _kov_act_doc("19004", "jaatmehoolduseeskiri", [_SYM_WEAK])),
+    ]
+    _wire_kov(monkeypatch, krr, files)
+
+    similarity.run_kov_similarity_pass()
+    index = _kov_index(krr)
+
+    # Every emitted intra-bucket directed edge has its reciprocal.
+    edges = _intra_directed_edges(index)
+    assert edges, "expected at least one intra-bucket pair"
+    asymmetric = {(a, b) for (a, b) in edges if (b, a) not in edges}
+    assert asymmetric == set(), f"one-directional intra pairs: {asymmetric}"
+
+    # The reified per-act back-links agree with the index and are symmetric:
+    # A lists B iff B lists A. Build the act-node similar-act target map.
+    def _similar_act_targets(path: Path, act_id: str) -> set:
+        node = _act_node(path, act_id)
+        doc = json.loads(path.read_text(encoding="utf-8"))
+        out = set()
+        for ref in node.get("estleg:similarAct", []):
+            sim = next(n for n in doc["@graph"] if n.get("@id") == ref["@id"])
+            out.add(sim["estleg:similarTarget"]["@id"])
+        return out
+
+    backlink_edges = set()
+    id_by_file = {
+        files[i]: f"estleg:Reg_1900{i + 1}_Map_2026" for i in range(4)
+    }
+    for path, act_id in id_by_file.items():
+        for tgt in _similar_act_targets(path, act_id):
+            if tgt.startswith("estleg:Reg_"):
+                backlink_edges.add((act_id, tgt))
+    assert backlink_edges == edges
+    # No source exceeds the cap.
+    for path, act_id in id_by_file.items():
+        node = _act_node(path, act_id)
+        assert len(node.get("estleg:similarAct", [])) <= similarity.KOV_TOP_K
 
 
 def test_consolidated_index_schema(tmp_path, monkeypatch):
