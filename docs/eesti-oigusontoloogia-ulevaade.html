@@ -493,7 +493,7 @@
       <span class="pill">Nimeruum: <code>https://data.riik.ee/ontology/estleg#</code></span>
     </div>
     <div class="stats">
-      <div class="stat"><b>608 / 637</b><span>seaduse registrikirjet / seadusefaili</span></div>
+      <div class="stat"><b>1 145 / 1 190</b><span>seaduse registrikirjet / seadusefaili</span></div>
       <div class="stat"><b>14 871</b><span>riigi ja KOV määrust kokku</span></div>
       <div class="stat"><b>90 501</b><span>eelnõu, kohtu- ja EL-akti kirjet</span></div>
       <div class="stat"><b>0 / 0</b><span>valideerimisvigu / hoiatusi viimases raportis</span></div>
@@ -748,10 +748,10 @@ python3 scripts/validate_all.py</code></pre>
 
     <h3>Rikastuskihid</h3>
     <p>
-      Ontoloogia ei piirdu lähteteksti teisendamisega. 14 integratsioonikihti lisavad semantilisi seoseid:
+      Ontoloogia ei piirdu lähteteksti teisendamisega. 15 integratsioonikihti lisavad semantilisi seoseid:
       ristviited, pöördviited, kohtulahendite seosed, EL ülevõtukaardistus, EuroVoc, muudatusajalugu, õigusmõisted,
       eelnõude mõju, ajaline kehtivus, harmoneerimislingid, deontiline klassifikatsioon, pädevad asutused,
-      sanktsioonid ja semantiline sarnasus.
+      sanktsioonid, semantiline sarnasus ja sihtrühmade klassifikatsioon.
     </p>
     <div class="note warning">
       Mõni kiht on heuristiline, näiteks EuroVoc klassifitseerimine ja semantiline sarnasus. Seetõttu on kvaliteediraportid
@@ -810,8 +810,8 @@ python3 scripts/validate_all.py</code></pre>
     <h2>6. Tulevikuvisioon</h2>
     <div class="cards">
       <div class="card">
-        <h3>Versioneeritud õigusajaloo mudel</h3>
-        <p>Lisada sätte- ja lõikepõhine redaktsioonimudel, et iga normi kehtivus oleks päringutav ajateljel, mitte ainult akti snapshot'i tasemel.</p>
+        <h3>Versioneeritud õigusajaloo mudel — juurutatud</h3>
+        <p>Sätte- ja lõikepõhine redaktsioonimudel on juba juurutatud: <code>generate_provision_versions.py</code> tekitab 124 901 <code>ProvisionVersion</code> sõlme (742 seadust), nii et normi kehtivus on päringutav ajateljel, mitte ainult akti snapshot'i tasemel. Edasi saab katvust laiendada ülejäänud aktidele.</p>
       </div>
       <div class="card">
         <h3>Täisteksti sügavam kasutamine</h3>
@@ -884,11 +884,11 @@ python3 scripts/validate_all.py</code></pre>
         </tr>
       </thead>
       <tbody>
-        <tr><td>Valideeritud failid</td><td>21 826</td></tr>
+        <tr><td>Valideeritud failid</td><td>23 113</td></tr>
         <tr><td>JSON/JSON-LD vead</td><td>0</td></tr>
         <tr><td>Hoiatused</td><td>0</td></tr>
         <tr><td>SHACL ämbrid</td><td><code>laws</code>, <code>kov</code>, <code>riigikohus</code>, <code>drafts</code>, <code>eurlex</code>, <code>curia</code> kõik PASS</td></tr>
-        <tr><td>Sarnasuse analüüs</td><td>71 421 sätet, 101 506 paari; KOV sarnasus on eraldi tuleviku kiht</td></tr>
+        <tr><td>Sarnasuse analüüs</td><td>84 527 sätet, 108 684 paari (seadused ja riigi määrused); KOV sarnasus on eraldi kiht, mis on juba juurutatud — 113 513 paari</td></tr>
       </tbody>
     </table>
     <p class="small">
@@ -912,7 +912,7 @@ python3 scripts/validate_all.py</code></pre>
   </section>
 
   <div class="footer">
-    Koostatud repo <code>/Users/henrikaavik/progemoge/law-ontology</code> failide põhjal. Image 2.0 pildipõhjad:
+    Koostatud repo <code>https://github.com/henrikaavik/estonian-legal-ontology</code> failide põhjal. Image 2.0 pildipõhjad:
     <code>docs/assets/ontology-overview/data-pipeline-image2.png</code> ja
     <code>docs/assets/ontology-overview/structure-graph-image2.png</code>.
   </div>

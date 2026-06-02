@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -441,8 +442,15 @@ class TestIssue171ConceptIdDisambiguation:
         combined = json.loads(
             (concepts / "concepts_combined.jsonld").read_text(encoding="utf-8")
         )
-        isik_nodes = [n for n in combined["@graph"]
-                      if n.get("skos:prefLabel") == "isik"]
+        # #325: provision-local prefLabel is now a language-tagged literal
+        # {"@value": "isik", "@language": "et"}. Scope the count to the
+        # provision-local LegalConcept nodes (the canonical Concept also
+        # carries prefLabel "isik").
+        isik_nodes = [
+            n for n in combined["@graph"]
+            if "estleg:LegalConcept" in n.get("@type", [])
+            and n.get("skos:prefLabel") == {"@value": "isik", "@language": "et"}
+        ]
         assert len(isik_nodes) == 2, (
             f"expected both 'isik' definitions to survive; got "
             f"{len(isik_nodes)}: {[n['@id'] for n in isik_nodes]}"
@@ -582,11 +590,14 @@ class TestIssue278LeadingEditBuckets:
 def _expected_pipeline_triples(graph: list[dict]) -> int:
     """Recompute the coverage ``triples_emitted`` figure from the combined
     graph: the pipeline counts each provision-local definition node's
-    ``estleg:definedIn`` plus its hub links (``estleg:definesConcept`` +
-    ``skos:exactMatch`` for non-noise terms), and each canonical Concept
-    node's ``skos:prefLabel`` / ``estleg:definitionCount`` /
-    ``estleg:hasDefinitionNode`` / ``skos:altLabel`` / ``skos:definition`` /
-    ``estleg:definitionVariantCount`` / ``skos:closeMatch`` triples."""
+    ``estleg:definedIn`` plus its hub link (``estleg:definesConcept`` for
+    non-noise terms), and each canonical Concept node's ``skos:prefLabel`` /
+    ``estleg:definitionCount`` / ``estleg:hasDefinitionNode`` /
+    ``skos:altLabel`` / ``skos:definition`` /
+    ``estleg:definitionVariantCount`` / ``skos:closeMatch`` triples.
+
+    #326: the ``skos:exactMatch`` LegalConcept→Concept arc was removed, so it
+    no longer contributes to the triple count."""
 
     def _n(node: dict, prop: str) -> int:
         v = node.get(prop)
@@ -600,7 +611,6 @@ def _expected_pipeline_triples(graph: list[dict]) -> int:
         if "estleg:LegalConcept" in types:
             total += _n(n, "estleg:definedIn")
             total += _n(n, "estleg:definesConcept")
-            total += _n(n, "skos:exactMatch")
         elif "estleg:Concept" in types:
             total += 2  # prefLabel + definitionCount (always exactly one each)
             total += _n(n, "estleg:hasDefinitionNode")
@@ -918,9 +928,11 @@ class TestIssue134ConceptNodeShape:
 
 class TestIssue134HubLinksReplaceClique:
     """A term defined in N laws emits N estleg:definesConcept arcs to ONE
-    canonical Concept (plus N skos:exactMatch arcs Concept-ward), NOT an
-    O(N²) clique of skos:exactMatch arcs between the N provision-local
-    definition nodes."""
+    canonical Concept, NOT an O(N²) clique of skos:exactMatch arcs between
+    the N provision-local definition nodes.
+
+    #326: provision-local nodes carry NO skos:exactMatch to the canonical
+    Concept (membership is encoded by definesConcept / hasDefinitionNode)."""
 
     def test_three_laws_one_concept_three_hub_links(self, tmp_path, monkeypatch):
         peeps = {f"law_{s}": _peep_text(f"law_{s}", f"Test law {s}")
@@ -938,10 +950,11 @@ class TestIssue134HubLinksReplaceClique:
         lc_nodes = _legal_concept_nodes(graph)
         assert len(lc_nodes) == 3
 
-        # Every provision-local node hubs to the canonical Concept exactly once.
+        # Every provision-local node hubs to the canonical Concept exactly
+        # once via estleg:definesConcept; #326: NO skos:exactMatch arc.
         for lc in lc_nodes:
             assert lc.get("estleg:definesConcept") == {"@id": cc_id}, lc["@id"]
-            assert lc.get("skos:exactMatch") == [{"@id": cc_id}], lc["@id"]
+            assert "skos:exactMatch" not in lc, lc["@id"]
 
         # 3 definesConcept arcs total — O(k), not O(k²).
         defines_arcs = sum(
@@ -994,8 +1007,10 @@ class TestIssue134NoiseFilterEndToEnd:
 
         lc_by_label = {}
         for lc in _legal_concept_nodes(graph):
+            # #325: prefLabel is a language-tagged literal; key on its value.
             pref = lc.get("skos:prefLabel")
-            lc_by_label[pref] = lc
+            pref_value = pref.get("@value") if isinstance(pref, dict) else pref
+            lc_by_label[pref_value] = lc
         # The provision-local nodes for the junk terms still exist…
         assert "kehtetu" in lc_by_label
         assert "ja" in lc_by_label
@@ -1286,3 +1301,453 @@ class TestIssue134ConceptShapeSHACL:
         for ps in shapes.objects(ESTLEG.LegalConceptShape, SH.property):
             paths.update(shapes.objects(ps, SH.path))
         assert ESTLEG.definesConcept in paths
+
+
+# ---------------------------------------------------------------------------
+# Issue #303 — inline XML subsection-prefix numbers contaminate definitions
+# ---------------------------------------------------------------------------
+
+
+def _numbered_kov_xml(items: str, par_nr: str = "2") -> str:
+    """A KOV-style Mõisted paragraph that reproduces the #303 serialiser
+    layout: each ``<alampunkt>`` carries a bare ``<alampunktNr>`` counter
+    (the artefact) plus the real ``<kuvatavNr>N)`` marker, and the ``<loige>``
+    carries its own ``<loigeNr>`` / ``(N)`` header. ``items`` is a list of
+    ``(marker, body)`` tuples rendered as alampunkt children."""
+    return f"""<?xml version="1.0" encoding="UTF-8"?>
+<akt>
+  <sisu>
+    <paragrahv>
+      <paragrahvNr>{par_nr}</paragrahvNr>
+      <kuvatavNr>§ {par_nr}.</kuvatavNr>
+      <paragrahvPealkiri>Mõisted</paragrahvPealkiri>
+      <loige>
+        <loigeNr>1</loigeNr>
+        <kuvatavNr>(1)</kuvatavNr>
+        <sisuTekst>
+          <tavatekst>Käesolevas määruses kasutatakse järgmisi mõisteid:</tavatekst>
+        </sisuTekst>
+        {items}
+      </loige>
+    </paragrahv>
+  </sisu>
+</akt>"""
+
+
+def _alampunkt(nr: str, body: str) -> str:
+    return (
+        f"<alampunkt><alampunktNr>{nr}</alampunktNr>"
+        f"<kuvatavNr>{nr})</kuvatavNr>"
+        f"<sisuTekst><tavatekst>{body}</tavatekst></sisuTekst></alampunkt>"
+    )
+
+
+class TestIssue303SubsectionPrefixContamination:
+    """#303: ``collect_full_text`` must drop the pure-numbering counter
+    elements (``loigeNr`` / ``alampunktNr`` / ``paragrahvNr``) and the ``(N)``
+    / ``§ N.`` header ``kuvatavNr`` forms at the structural source, so the
+    inline subsection-prefix digit can no longer bleed into a definition as
+    ``; N``. Real ``N)`` list-item markers must survive; digits that are
+    genuine definitional content must be untouched."""
+
+    @staticmethod
+    def _parse(xml: str):
+        import xml.etree.ElementTree as ET
+        return ET.fromstring(xml)
+
+    def test_collect_full_text_drops_counter_elements(self):
+        from extract_legal_concepts import collect_full_text
+        xml = _numbered_kov_xml(
+            _alampunkt("1", "Tee – maantee")
+            + _alampunkt("2", "kohalik tee – vallatee")
+        )
+        ft = collect_full_text(self._parse(xml))
+        # The bare counter digits and the (1) / § 2. headers are gone…
+        assert "§ 2." not in ft
+        assert "(1)" not in ft
+        # …but the real N) list-item markers survive.
+        assert "1)" in ft and "2)" in ft
+
+    def test_trailing_counter_does_not_bleed_into_last_definition(self):
+        from extract_legal_concepts import (
+            collect_full_text,
+            extract_definitions_from_text,
+        )
+        # The last item's trailing bare counter was the classic "; N" bleed.
+        xml = _numbered_kov_xml(
+            _alampunkt("1", "mustkattega tee – muu sarnase kattega tee")
+        )
+        ft = collect_full_text(self._parse(xml))
+        defs = extract_definitions_from_text(ft)
+        assert len(defs) == 1, defs
+        assert defs[0][1] == "mustkattega tee"
+        # The definition must end on the real text, NOT "...kattega tee; 2".
+        assert defs[0][2] == "muu sarnase kattega tee", defs[0][2]
+        assert not re.search(r";\s*\d+\s*$", defs[0][2]), defs[0][2]
+
+    def test_content_digits_preserved(self):
+        from extract_legal_concepts import collect_full_text
+        # A cross-reference number (§ 4 lõikes 3) and a parenthesised content
+        # number (kakskümmend (20) meetrit) live inside <tavatekst> — they are
+        # NOT numbering elements and must survive intact.
+        xml = _numbered_kov_xml(
+            _alampunkt(
+                "1",
+                "tee kaitsevöönd – vöönd ulatusega kakskümmend (20) meetrit "
+                "vastavalt seaduse § 4 lõikes 3 sätestatule",
+            )
+        )
+        ft = collect_full_text(self._parse(xml))
+        assert "(20) meetrit" in ft, ft
+        assert "§ 4 lõikes 3" in ft, ft
+
+    def test_defensive_trailing_counter_strip_in_extractor(self):
+        """Belt-and-suspenders: even if a raw text bypassing collect_full_text
+        carries a trailing ``; N`` artefact, extract_definitions_from_text
+        strips it."""
+        from extract_legal_concepts import extract_definitions_from_text
+        defs = extract_definitions_from_text("1) vesi – joogivesi; 2")
+        assert defs[0][2] == "joogivesi", defs
+
+    def test_defensive_strip_keeps_embedded_semicolon_clause(self):
+        """The defensive strip must only remove a TRAILING bare ``; N`` — an
+        embedded ``; <word>`` clause (no trailing digit) is #171 content and
+        must survive."""
+        from extract_legal_concepts import extract_definitions_from_text
+        text = "1) imporditud kaup — kaup; sealhulgas eksport 2) muu — x asi"
+        defs = extract_definitions_from_text(text)
+        assert "sealhulgas eksport" in defs[0][2], defs[0]
+
+    def test_end_to_end_definition_clean(self, tmp_path, monkeypatch):
+        """End-to-end on the #303 serialiser layout: the emitted
+        skos:definition carries no ``; N`` contamination."""
+        graph = _run_extractor(
+            tmp_path, monkeypatch,
+            peeps={"reg_a": _peep_text("reg_a", "Test reg A")},
+            xmls={"reg_a": _numbered_kov_xml(
+                _alampunkt("1", "mustkattega tee – muu sarnase kattega tee")
+                + _alampunkt("2", "kruusatee – kruusast tee"),
+            )},
+        )
+        for lc in _legal_concept_nodes(graph):
+            value = lc["skos:definition"]["@value"]
+            assert not re.search(r";\s*\d+\s*$", value), value
+
+
+# ---------------------------------------------------------------------------
+# Issue #391 — _normalize_definition_for_dedup must strip the "; N (" suffix
+# ---------------------------------------------------------------------------
+
+
+class TestIssue391DedupNormalisation:
+    """#391: ``_normalize_definition_for_dedup`` must pre-strip the inline
+    ``; N`` / ``; N (`` subsection contamination so per-subsection copies of
+    one wording collapse to a single dedup key (no inflated
+    definitionVariantCount, no near-duplicate skos:definition slots)."""
+
+    def test_bare_trailing_counter_collapses(self):
+        from extract_legal_concepts import _normalize_definition_for_dedup
+        a = _normalize_definition_for_dedup("reostunud vesi; 17")
+        b = _normalize_definition_for_dedup("reostunud vesi")
+        assert a == b == "reostunud vesi", (a, b)
+
+    def test_counter_with_open_paren_collapses(self):
+        from extract_legal_concepts import _normalize_definition_for_dedup
+        variants = [
+            "reovesi; 17",
+            "reovesi; 22 (",
+            "reovesi; 33 (1) järgmine punkt",
+            "reovesi",
+        ]
+        norms = {_normalize_definition_for_dedup(v) for v in variants}
+        assert norms == {"reovesi"}, norms
+
+    def test_embedded_semicolon_without_digit_preserved(self):
+        """A genuine ``; <word>`` clause (no digit) must NOT be stripped —
+        otherwise the #171 multi-clause definitions would regress."""
+        from extract_legal_concepts import _normalize_definition_for_dedup
+        got = _normalize_definition_for_dedup("kaup; sealhulgas eksport")
+        assert got == "kaup; sealhulgas eksport", got
+
+    def test_variant_count_not_inflated_end_to_end(self, tmp_path, monkeypatch):
+        """Three laws each define the same term with the same wording but a
+        different inline subsection counter — they must collapse to ONE
+        definition variant, not three."""
+        peeps = {f"law_{i}": _peep_text(f"law_{i}", f"Test law {i}")
+                 for i in range(3)}
+        xmls = {
+            f"law_{i}": _moisted_xml(
+                f"1) reovesi — kogumissüsteemi sattunud reostunud vesi; {17 + i}"
+            )
+            for i in range(3)
+        }
+        graph = _run_extractor(tmp_path, monkeypatch, peeps=peeps, xmls=xmls)
+        cc = _by_id(graph, "estleg:Concept_reovesi")
+        assert cc is not None
+        # All three collapse → exactly one distinct wording, no
+        # definitionVariantCount key (cap not exceeded).
+        assert len(cc["skos:definition"]) == 1, cc["skos:definition"]
+        assert "estleg:definitionVariantCount" not in cc
+        # But the provision count still reflects all three provisions.
+        assert cc["estleg:definitionCount"] == {"@value": "3", "@type": "xsd:integer"}
+
+
+# ---------------------------------------------------------------------------
+# Issue #323 — copula intro phrases must not be captured as the term
+# ---------------------------------------------------------------------------
+
+
+class TestIssue323CopulaIntroNoise:
+    """#323: the lazy ``_TERM`` regex can over-capture a multi-word intro
+    phrase joined by a copula (`` on ``/`` tähendab ``/`` mõistetakse ``) as
+    the term. ``is_noise_term`` must reject any term containing such a
+    connective so no ``Concept_avalik_koht_on_…`` fragment node is spawned."""
+
+    @pytest.mark.parametrize("term", [
+        "avalik koht on määratlemata isikute ringile kasutamiseks antud",
+        "valla arengukava on valla pika perspektiivi kava",
+        "mõiste tähendab midagi muud",
+        "see mõistetakse järgmiselt",
+    ])
+    def test_copula_phrase_rejected(self, term):
+        from extract_legal_concepts import is_noise_term
+        assert is_noise_term(term) is True, term
+
+    @pytest.mark.parametrize("term", [
+        "avalik koht",
+        "valla arengukava",
+        "reovesi",
+        "tee kaitsevöönd",
+        # 'on' as a substring of a single word must NOT trip the marker.
+        "tegevuskoht",
+        "pension",
+    ])
+    def test_real_terms_not_rejected(self, term):
+        from extract_legal_concepts import is_noise_term
+        assert is_noise_term(term) is False, term
+
+    def test_end_to_end_no_copula_concept_node(self, tmp_path, monkeypatch):
+        """A KOV definition using the copula before an em-dash must NOT spawn
+        a canonical ``Concept_avalik_koht_on_…`` node. (The provision-local
+        node may still exist; it just gets no canonical concept.)"""
+        graph = _run_extractor(
+            tmp_path, monkeypatch,
+            peeps={"reg_a": _peep_text("reg_a", "Test reg A")},
+            xmls={"reg_a": _moisted_xml(
+                "1) avalik koht on määratlemata isikute ringile kasutamiseks "
+                "antud — koht; 2) reovesi — reostunud vesi siin;"
+            )},
+        )
+        concept_ids = {n["@id"] for n in _concept_nodes(graph)}
+        # No copula-phrase concept node; the clean 'reovesi' term still gets one.
+        assert not any(
+            cid.startswith("estleg:Concept_avalik_koht_on") for cid in concept_ids
+        ), concept_ids
+        assert "estleg:Concept_reovesi" in concept_ids
+
+
+# ---------------------------------------------------------------------------
+# Issue #325 — LegalConcept prefLabel / definition need language tags
+# ---------------------------------------------------------------------------
+
+
+class TestIssue325LegalConceptLanguageTags:
+    """#325: provision-local LegalConcept nodes must emit skos:prefLabel and
+    skos:definition as language-tagged literals ({"@value":…,"@language":"et"})
+    rather than bare xsd:string, so FILTER(lang(?label)='et') sees them."""
+
+    def test_legal_concept_labels_are_language_tagged(self, tmp_path, monkeypatch):
+        graph = _run_extractor(
+            tmp_path, monkeypatch,
+            peeps={"law_a": _peep_text("law_a", "Test law A")},
+            xmls={"law_a": _moisted_xml(
+                "1) tee kaitsevöönd — kohaliku maantee kaitseks rajatud vöönd;"
+            )},
+        )
+        lc_nodes = _legal_concept_nodes(graph)
+        assert lc_nodes, "no provision-local LegalConcept node emitted"
+        for lc in lc_nodes:
+            pref = lc["skos:prefLabel"]
+            assert isinstance(pref, dict), pref
+            assert pref["@language"] == "et", pref
+            assert pref["@value"] == "tee kaitsevöönd", pref
+            defn = lc["skos:definition"]
+            assert isinstance(defn, dict), defn
+            assert defn["@language"] == "et", defn
+            assert "kohaliku maantee" in defn["@value"], defn
+
+    def test_no_bare_string_labels_remain(self, tmp_path, monkeypatch):
+        """Guard: NO LegalConcept node may carry a bare-string prefLabel /
+        definition (the pre-#325 shape)."""
+        graph = _run_extractor(
+            tmp_path, monkeypatch,
+            peeps={"law_a": _peep_text("law_a", "Test law A")},
+            xmls={"law_a": _moisted_xml(
+                "1) klient — füüsiline isik; 2) teenus — pakutav abi siin;"
+            )},
+        )
+        for lc in _legal_concept_nodes(graph):
+            assert not isinstance(lc.get("skos:prefLabel"), str), lc["@id"]
+            assert not isinstance(lc.get("skos:definition"), str), lc["@id"]
+
+
+# ---------------------------------------------------------------------------
+# Issue #326 — no skos:exactMatch from LegalConcept to canonical Concept
+# ---------------------------------------------------------------------------
+
+
+class TestIssue326NoExactMatchToCanonical:
+    """#326: provision-local LegalConcept nodes must NOT carry a
+    skos:exactMatch arc to their aggregating canonical Concept — that misuses
+    SKOS exactMatch (peer equivalence) for an instance→aggregator membership
+    relation already encoded by definesConcept / hasDefinitionNode."""
+
+    def test_no_exact_match_on_legal_concept(self, tmp_path, monkeypatch):
+        peeps = {f"law_{s}": _peep_text(f"law_{s}", f"Test law {s}")
+                 for s in ("a", "b")}
+        xmls = {f"law_{s}": _moisted_xml(
+            "1) isik — füüsiline või juriidiline isik;")
+            for s in ("a", "b")}
+        graph = _run_extractor(tmp_path, monkeypatch, peeps=peeps, xmls=xmls)
+        lc_nodes = _legal_concept_nodes(graph)
+        assert lc_nodes
+        for lc in lc_nodes:
+            assert "skos:exactMatch" not in lc, lc["@id"]
+            # Membership is still encoded by the hub link.
+            assert lc.get("estleg:definesConcept") == {"@id": "estleg:Concept_isik"}
+
+    def test_no_exact_match_anywhere_legal_to_concept(self, tmp_path, monkeypatch):
+        """No skos:exactMatch arc in the graph points from a LegalConcept to a
+        Concept node (the only place the bogus arc used to appear)."""
+        graph = _run_extractor(
+            tmp_path, monkeypatch,
+            peeps={"law_a": _peep_text("law_a", "Test law A")},
+            xmls={"law_a": _moisted_xml(
+                "1) reovesi — reostunud vesi; 2) reovee — reostunud vee oma;"
+            )},
+        )
+        concept_ids = {n["@id"] for n in _concept_nodes(graph)}
+        for lc in _legal_concept_nodes(graph):
+            refs = lc.get("skos:exactMatch") or []
+            if isinstance(refs, dict):
+                refs = [refs]
+            for r in refs:
+                assert r["@id"] not in concept_ids, (
+                    f"{lc['@id']} still exactMatch-es canonical {r['@id']}"
+                )
+
+
+# ---------------------------------------------------------------------------
+# Issue #392 (item 4) — uppercase abbreviations TA / ET vs stopword case-fold
+# ---------------------------------------------------------------------------
+
+
+class TestIssue392UppercaseAbbreviations:
+    """#392: ``is_noise_term`` case-folds the term, so uppercase legal
+    abbreviations ``TA`` (teadus-arendustöötaja) and ``ET`` (elutähtis
+    teenus) collide with the stopwords ``ta``/``et`` and are wrongly dropped.
+    When the ORIGINAL surface form is all-uppercase, the stopword test must be
+    skipped so the abbreviation keeps its canonical concept."""
+
+    @pytest.mark.parametrize("abbrev", ["TA", "ET"])
+    def test_uppercase_abbrev_not_noise(self, abbrev):
+        from extract_legal_concepts import is_noise_term
+        assert is_noise_term(abbrev.lower(), abbrev) is False, abbrev
+
+    @pytest.mark.parametrize("word", ["ta", "et"])
+    def test_lowercase_stopword_still_noise(self, word):
+        from extract_legal_concepts import is_noise_term
+        # Original surface form lowercase → still a stopword.
+        assert is_noise_term(word, word) is True, word
+
+    @pytest.mark.parametrize("word", ["ta", "et"])
+    def test_default_no_original_keeps_backcompat(self, word):
+        """With no original_term supplied (laws-only / legacy callers), the
+        stopword behaviour is unchanged — still noise."""
+        from extract_legal_concepts import is_noise_term
+        assert is_noise_term(word) is True, word
+
+    def test_uppercase_non_stopword_abbrev_still_concept(self):
+        """A non-stopword uppercase abbreviation (``KOV``) was never noise and
+        must stay non-noise regardless of the new branch."""
+        from extract_legal_concepts import is_noise_term
+        assert is_noise_term("kov", "KOV") is False
+
+    def test_uppercase_single_char_still_filtered(self):
+        """The length guard fires before the stopword skip, so an all-upper
+        single character is still noise."""
+        from extract_legal_concepts import is_noise_term
+        assert is_noise_term("a", "A") is True
+
+    def test_end_to_end_uppercase_abbrev_gets_concept(self, tmp_path, monkeypatch):
+        """A law defining ``TA`` and ``ET`` as uppercase abbreviations must
+        yield canonical Concept nodes for them, alongside a normal term."""
+        graph = _run_extractor(
+            tmp_path, monkeypatch,
+            peeps={"law_a": _peep_text("law_a", "Test law A")},
+            xmls={"law_a": _moisted_xml(
+                "1) TA — teadus- ja arendustöötaja; "
+                "2) ET — elutähtis teenus seaduse tähenduses; "
+                "3) reovesi — reostunud vesi siin;"
+            )},
+        )
+        concept_ids = {n["@id"] for n in _concept_nodes(graph)}
+        # Concept ids are built from the lowercased term.
+        assert "estleg:Concept_ta" in concept_ids, concept_ids
+        assert "estleg:Concept_et" in concept_ids, concept_ids
+        assert "estleg:Concept_reovesi" in concept_ids, concept_ids
+
+
+# ---------------------------------------------------------------------------
+# Issue #376 — use the atomic estleg_common.save_json
+# ---------------------------------------------------------------------------
+
+
+class TestIssue376AtomicSaveJson:
+    """#376: the extractor must use the atomic ``estleg_common.save_json``
+    (tempfile + os.replace), not a local non-atomic ``open(…, 'w')`` that
+    truncates the target to 0 bytes before writing."""
+
+    def test_save_json_is_imported_from_estleg_common(self):
+        import extract_legal_concepts as mod
+        assert mod.save_json.__module__ == "estleg_common", mod.save_json.__module__
+
+    def test_no_local_non_atomic_save_json_definition(self):
+        src = (
+            Path(__file__).resolve().parent.parent
+            / "scripts" / "extract_legal_concepts.py"
+        ).read_text(encoding="utf-8")
+        # The local `def save_json` (with its non-atomic open(...,'w')) is gone.
+        assert "def save_json(" not in src, (
+            "local save_json definition still present — must use the atomic "
+            "estleg_common.save_json"
+        )
+        # And it is imported from estleg_common.
+        assert "save_json" in src and "from estleg_common import" in src
+
+    def test_save_json_uses_atomic_replace(self):
+        """The bound function's source uses the atomic tempfile/os.replace
+        path."""
+        import inspect
+        import extract_legal_concepts as mod
+        body = inspect.getsource(mod.save_json)
+        assert "os.replace" in body, body
+
+    def test_partial_write_leaves_no_zero_byte_file(self, tmp_path):
+        """A serialisation failure must NOT leave a truncated/zero-byte target
+        (the whole point of the atomic write)."""
+        import extract_legal_concepts as mod
+
+        target = tmp_path / "out.json"
+        target.write_text('{"existing": true}\n', encoding="utf-8")
+
+        class _Unserialisable:
+            pass
+
+        with pytest.raises(TypeError):
+            mod.save_json(target, {"bad": _Unserialisable()})
+        # The pre-existing file is intact (atomic write never touched it) and
+        # no .tmp dropping was left behind.
+        assert target.read_text(encoding="utf-8") == '{"existing": true}\n'
+        leftovers = [p.name for p in tmp_path.iterdir() if p.name != "out.json"]
+        assert leftovers == [], leftovers

@@ -350,6 +350,55 @@ class TestParseDateTimezoneOffsets:
         assert parse_date("") is None
 
 
+class TestParseDateYearRangeGuard:
+    """#352: ``parse_date`` must reject well-formed but logically
+    impossible YYYY-MM-DD values whose year falls outside [1900, 2100].
+
+    These are syntactically valid ISO dates the date-validator can't
+    catch — source digit-transpositions (2918→2018, 3006→2006,
+    0218→2018) and EUR-Lex null-sentinels (1001-01-01, 1002-02-02) —
+    that otherwise become typed ``xsd:date`` literals and break every
+    as-of-date / 'most recently amended' ordering query.
+    """
+
+    @pytest.mark.parametrize(
+        "value",
+        [
+            "2918-10-17",   # millennium typo (intended 2018)
+            "3006-03-02",   # millennium typo (intended 2006)
+            "0218-02-04",   # leading-zero transposition (intended 2018)
+            "1001-01-01",   # EUR-Lex sentinel
+            "1002-02-02",   # EUR-Lex sentinel
+            "1899-12-31",   # just below lower bound
+            "2101-01-01",   # just above upper bound
+        ],
+    )
+    def test_implausible_year_returns_none(self, value):
+        from extract_temporal_data import parse_date
+        assert parse_date(value) is None
+
+    @pytest.mark.parametrize(
+        "value, expected",
+        [
+            ("2024-06-15", "2024-06-15"),   # ordinary in-range date
+            ("1900-01-01", "1900-01-01"),   # lower bound is inclusive
+            ("2100-12-31", "2100-12-31"),   # upper bound is inclusive
+        ],
+    )
+    def test_plausible_year_passes(self, value, expected):
+        from extract_temporal_data import parse_date
+        assert parse_date(value) == expected
+
+    def test_guard_applies_to_regex_fallback_path(self):
+        """The DD.MM.YYYY branch is only reached via the regex fallback
+        (fromisoformat rejects it), so the guard must fire there too."""
+        from extract_temporal_data import parse_date
+        # In range -> passes via the fallback.
+        assert parse_date("15.06.2024") == "2024-06-15"
+        # Out of range via the same fallback branch -> dropped.
+        assert parse_date("17.10.2918") is None
+
+
 class TestCoerceIsoDate:
     """``_coerce_iso_date`` is the assertion helper that prevents
     accidental string-comparison regressions."""

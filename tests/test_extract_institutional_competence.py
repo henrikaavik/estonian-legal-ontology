@@ -2307,3 +2307,272 @@ class TestIssue274GrantedByTies:
         assert _select_granted_by([
             "http://example/x", "estleg:A", "estleg:B",
         ]) is None
+
+
+class TestIssue321MinisterInflectedForms:
+    """Issue #321: the generic ``*minister`` pattern required the literal
+    ``minister``, so Estonian oblique forms — built on the stem-changing
+    genitive ``ministri`` (``ministril``/``ministrile``/``ministrit``/...),
+    the MOST common case in competence clauses — never matched. The regex
+    now also accepts the ``ministri`` genitive stem, and the de-inflection
+    (``_collapse_minister_stem``) collapses every form to the nominative
+    ``*minister`` slug so no inflated siblings are spawned."""
+
+    def test_evidence_case_from_ticket(self):
+        """The exact regression named in the issue: a genitive-stem oblique
+        form previously yielded ``[]``."""
+        from extract_institutional_competence import detect_institutions
+        slugs = {s for _, s, _ in
+                 detect_institutions("sotsiaalministril on õigus kehtestada")}
+        assert "sotsiaalminister" in slugs
+
+    @pytest.mark.parametrize("text,expected", [
+        # Nominative still fires (no regression).
+        ("sotsiaalminister kehtestab korra", "sotsiaalminister"),
+        # Genitive stem + every common oblique case ending.
+        ("haridusministri käskkiri jõustub", "haridusminister"),
+        ("sotsiaalministril on õigus kehtestada", "sotsiaalminister"),
+        ("haridusministrile esitatakse taotlus", "haridusminister"),
+        ("sotsiaalministrilt küsitakse arvamust", "sotsiaalminister"),
+        # NB: the generic ministry pattern requires a portfolio prefix
+        # (``[a-zäöüõšž]+`` before ``minister``/``ministri``), so a BARE
+        # standalone ``minister``/``ministri`` with no portfolio is not
+        # detected — same as the pre-existing nominative behaviour. The
+        # bare-stem de-inflection itself is covered separately via
+        # ``normalize_iri_suffix`` below.
+        ("sotsiaalministrit teavitatakse otsusest", "sotsiaalminister"),
+        ("kaitseministriga kooskõlastatult", "kaitseminister"),
+        ("rahandusministrisse puutuvad küsimused", "rahandusminister"),
+        ("siseministriks nimetati isik", "siseminister"),
+    ])
+    def test_inflected_minister_detected_and_collapsed(self, text, expected):
+        from extract_institutional_competence import detect_institutions
+        slugs = {s for _, s, _ in detect_institutions(text)}
+        assert expected in slugs, f"{text!r} -> {slugs!r}, expected {expected!r}"
+
+    def test_all_minister_forms_collapse_to_one_slug(self):
+        """Nominative + several oblique forms of the SAME ministry must
+        normalize to a single slug (no Institution_sotsiaalministril
+        sibling alongside Institution_sotsiaalminister)."""
+        from extract_institutional_competence import normalize_iri_suffix
+        forms = [
+            "sotsiaalminister", "sotsiaalministri", "sotsiaalministril",
+            "sotsiaalministrile", "sotsiaalministrilt", "sotsiaalministrit",
+            "sotsiaalministriga", "sotsiaalministrisse", "sotsiaalministriks",
+        ]
+        slugs = {normalize_iri_suffix(f) for f in forms}
+        assert slugs == {"sotsiaalminister"}, slugs
+
+    @pytest.mark.parametrize("form,expected", [
+        ("sotsiaalministril", "sotsiaalminister"),
+        ("haridusministri", "haridusminister"),
+        ("ministrit", "minister"),
+    ])
+    def test_normalize_iri_suffix_collapses_minister_inflection(
+        self, form, expected
+    ):
+        from extract_institutional_competence import normalize_iri_suffix
+        assert normalize_iri_suffix(form) == expected
+
+    def test_ministeerium_forms_unaffected(self):
+        """The ``minister`` genitive-stem handling must NOT swallow
+        ``ministeerium`` forms (different lexeme; its genitive is the
+        regular ``ministeeriumi``, de-inflected by the existing rule)."""
+        from extract_institutional_competence import normalize_iri_suffix
+        assert normalize_iri_suffix("siseministeerium") == "siseministeerium"
+        assert normalize_iri_suffix("siseministeeriumi") == "siseministeerium"
+        assert normalize_iri_suffix(
+            "siseministeeriumile") == "siseministeerium"
+        assert normalize_iri_suffix(
+            "rahandusministeeriumiga") == "rahandusministeerium"
+
+    def test_generic_minister_pattern_matches_genitive_stem(self):
+        """Direct regex-level assertion: the generic ministry pattern must
+        match the ``ministri`` genitive stem, not just literal ``minister``."""
+        from extract_institutional_competence import GENERIC_PATTERNS
+        minister_pat = next(
+            pat for pat, label, _itype in GENERIC_PATTERNS
+            if label == "ministry" and "minister" in pat.pattern
+            and "ministeerium" not in pat.pattern
+        )
+        for form in ("sotsiaalminister", "sotsiaalministril",
+                     "haridusministri", "sotsiaalministrit"):
+            assert minister_pat.search(form) is not None, (
+                f"generic minister pattern failed to match {form!r}"
+            )
+
+
+class TestIssue322CompetenceTypeHighestSpecificity:
+    """Issue #322: detect_competence_type returned the FIRST list match, so
+    a provision granting BOTH licensing and supervision was classified
+    supervision-only (the supervision phrase sat above the licensing verb).
+    It now collects every match and returns the highest-specificity type
+    (licensing > supervision-phrase > enforcement > regulation >
+    supervision-noun > general)."""
+
+    def test_evidence_case_licensing_wins_over_supervision_phrase(self):
+        """The exact regression named in the issue: a provision that BOTH
+        grants a licence AND mentions a verb-adjacent supervision phrase
+        previously collapsed to ``supervision``; it must now be
+        ``licensing``."""
+        from extract_institutional_competence import detect_competence_type
+        assert detect_competence_type(
+            "Amet annab loa ja teostab järelevalvet maksukohustuse üle"
+        ) == "licensing"
+
+    def test_licensing_wins_over_bare_jarelevalve_and_teostab(self):
+        from extract_institutional_competence import detect_competence_type
+        assert detect_competence_type(
+            "Amet väljastab luba ja teostab järelevalve raames kontrolli"
+        ) == "licensing"
+
+    @pytest.mark.parametrize("text,expected", [
+        # Verb-adjacent supervision phrase (also contains bare "teostab"
+        # enforcement) must stay supervision when no licensing verb present.
+        ("Amet teostab järelevalvet maksukohustuse üle", "supervision"),
+        ("Amet järelevalvet teostab maksukohustuse üle", "supervision"),
+        ("Amet teeb järelevalvet maksukohustuse üle", "supervision"),
+        # Enforcement beats regulation per the ticket's specificity ladder.
+        ("Asutus kehtestab korra ja kontrollib selle täitmist",
+         "enforcement"),
+        # Regulation beats the bare supervision noun.
+        ("Minister kehtestab järelevalve korra", "regulation"),
+        # Bare supervision noun is the weakest decisive signal.
+        ("Järelevalve toimub seaduses sätestatud korras", "supervision"),
+        # No operative verb at all → general.
+        ("Käesolev säte kirjeldab üldist eesmärki", "general"),
+    ])
+    def test_specificity_ladder(self, text, expected):
+        from extract_institutional_competence import detect_competence_type
+        assert detect_competence_type(text) == expected, (
+            f"{text!r} classified wrong"
+        )
+
+    def test_competence_patterns_are_ordered_by_descending_specificity(self):
+        """detect_competence_type's early-skip relies on COMPETENCE_PATTERNS
+        being sorted highest-specificity-first; guard that invariant."""
+        from extract_institutional_competence import COMPETENCE_PATTERNS
+        specificities = [spec for _pat, _ctype, spec in COMPETENCE_PATTERNS]
+        assert specificities == sorted(specificities, reverse=True), (
+            f"COMPETENCE_PATTERNS not in descending specificity order: "
+            f"{specificities}"
+        )
+
+
+class TestIssue373LicensingTegevusluba:
+    """Issue #373: COMPETENCE_PATTERNS had ``\\bannab\\s+loa\\b`` and
+    ``\\bväljastab\\s+luba\\b`` but the ``\\bloa\\b`` / ``\\bluba\\b`` word
+    boundary cannot match inside the compound ``tegevusloa`` /
+    ``tegevusluba``, so 6 licensing-grant provisions fell through to the
+    default ``general``. The compound forms are now explicit licensing
+    patterns."""
+
+    @pytest.mark.parametrize("text", [
+        "Inspektsioon annab tegevusloa, kui nõuded on täidetud",
+        "Amet väljastab tegevusloa taotlejale",
+        # The grant verb may be separated from the compound by other words
+        # but the immediate "annab tegevusloa" collocation is what fires.
+        "Finantsinspektsioon annab tegevusloa krediidiasutusele",
+    ])
+    def test_tegevusluba_grant_is_licensing(self, text):
+        from extract_institutional_competence import detect_competence_type
+        assert detect_competence_type(text) == "licensing", (
+            f"{text!r} should be licensing"
+        )
+
+    def test_tegevusluba_no_longer_falls_through_to_general(self):
+        """Regression guard for the exact bug: without the new patterns this
+        text classified ``general``."""
+        from extract_institutional_competence import detect_competence_type
+        assert detect_competence_type(
+            "Inspektsioon annab tegevusloa, kui nõuded on täidetud"
+        ) != "general"
+
+    def test_plain_loa_still_licensing(self):
+        """The original ``annab loa`` / ``väljastab luba`` forms must still
+        classify as licensing (no regression)."""
+        from extract_institutional_competence import detect_competence_type
+        assert detect_competence_type("Amet annab loa taotlejale") == "licensing"
+        assert detect_competence_type(
+            "Amet väljastab luba taotlejale") == "licensing"
+
+    def test_tegevusluba_patterns_present(self):
+        """The compound-licensing patterns exist in COMPETENCE_PATTERNS."""
+        from extract_institutional_competence import COMPETENCE_PATTERNS
+        joined = " ".join(pat.pattern for pat, _ctype, _spec in COMPETENCE_PATTERNS)
+        assert "tegevusloa" in joined, (
+            "no 'tegevusloa' licensing pattern found in COMPETENCE_PATTERNS"
+        )
+        for pat, ctype, _spec in COMPETENCE_PATTERNS:
+            if "tegevusloa" in pat.pattern:
+                assert ctype == "licensing", (
+                    f"tegevusloa pattern mapped to {ctype}, expected licensing"
+                )
+
+
+class TestIssue376AtomicSaveJson:
+    """Issue #376: the module-local non-atomic ``save_json`` (which truncated
+    the target to 0 bytes via ``open(filepath, 'w')`` before writing — a
+    crash mid-write left a zero-byte/partial JSON that ``load_json`` silently
+    swallowed) is replaced by the atomic ``estleg_common.save_json``
+    (tempfile + ``os.replace``)."""
+
+    def test_save_json_is_the_atomic_estleg_common_implementation(self):
+        import extract_institutional_competence as mod
+        import estleg_common
+        assert mod.save_json is estleg_common.save_json
+
+    def test_save_json_uses_atomic_replace_not_truncating_open(self, tmp_path):
+        """A crash between truncate and write must not destroy existing
+        data. The non-atomic ``open(path, 'w')`` zeroes the file before the
+        new bytes land; the atomic version writes to a tempfile and
+        ``os.replace``s, so a failed serialization leaves the ORIGINAL file
+        intact."""
+        import extract_institutional_competence as mod
+
+        target = tmp_path / "inst.json"
+        mod.save_json(target, {"@graph": [{"@id": "estleg:Inst_a"}]})
+        original_bytes = target.read_bytes()
+
+        class _Unserializable:
+            pass
+
+        # A non-serialisable payload raises mid-write. With a truncating
+        # open() the file would already be 0 bytes; the atomic version must
+        # leave the prior content untouched.
+        with pytest.raises(TypeError):
+            mod.save_json(target, {"bad": _Unserializable()})
+
+        assert target.read_bytes() == original_bytes, (
+            "atomic save_json must not corrupt the existing file on a "
+            "failed write"
+        )
+        # And no stray tempfile droppings are left behind.
+        leftovers = [p for p in tmp_path.iterdir() if p.name != "inst.json"]
+        assert leftovers == [], f"tempfile droppings left behind: {leftovers}"
+
+    def test_save_json_roundtrip(self, tmp_path):
+        import json as _json
+        import extract_institutional_competence as mod
+        target = tmp_path / "out.json"
+        doc = {"@context": {"estleg": "x"}, "@graph": [{"@id": "estleg:A"}]}
+        mod.save_json(target, doc)
+        assert _json.loads(target.read_text(encoding="utf-8")) == doc
+        # Trailing newline, matching the prior local implementation's format.
+        assert target.read_text(encoding="utf-8").endswith("\n")
+
+    def test_save_json_monkeypatchable_on_module(self, tmp_path):
+        """The gate test (test_gate_fails_when_kov_input_nontrivial_but_no_output)
+        monkeypatches ``mod.save_json``; the production call sites must pick
+        up the override. Verify the name is a rebindable module attribute and
+        that bare-name calls resolve through it."""
+        import extract_institutional_competence as mod
+        calls = []
+        original = mod.save_json
+        try:
+            mod.save_json = lambda fp, doc: calls.append((fp, doc))
+            mod.save_json(tmp_path / "x.json", {"k": "v"})
+            assert calls == [(tmp_path / "x.json", {"k": "v"})]
+            assert not (tmp_path / "x.json").exists()
+        finally:
+            mod.save_json = original

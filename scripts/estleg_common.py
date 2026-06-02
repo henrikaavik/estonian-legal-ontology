@@ -92,6 +92,46 @@ KNOWN_ABBREVIATIONS: dict[str, str] = {
     "RKVS": "Riigikogu valimise seadus",
     "RaamatPS": "Raamatupidamise seadus",
     "ÜTS": "Ühistranspordiseadus",
+    # #390 — four enabling laws that were genitive-recognised but
+    # resolver-fallthrough because they had no KNOWN_ABBREVIATIONS entry,
+    # though their peep files exist. Adding them lets the preamble pass
+    # (and Pattern 3 cross-refs) chain genitive -> abbrev -> sourceAct ->
+    # prefix -> act_iri. Values are the canonical estleg:sourceAct strings.
+    "KNS": "Kohanimeseadus",
+    "AluS": "Alusharidusseadus",
+    "KOFS": "Kohaliku omavalitsuse üksuse finantsjuhtimise seadus",
+    "KOVVS": "Kohaliku omavalitsuse volikogu valimise seadus",
+    # #363 — 25 heavily-cited corpus laws that had NO abbreviation, so
+    # their genitive citation forms could not resolve through Pattern 3.
+    # Each value is the canonical estleg:sourceAct verified against the
+    # corpus peep file; the matching genitive is registered in
+    # FULLNAME_GENITIVE below. New abbreviations use a non-colliding
+    # short form (checked against every existing key).
+    "KorrS": "Korrakaitseseadus",
+    "RES": "Riigieelarve seadus",
+    "VeeS": "Veeseadus",
+    "LS": "Liiklusseadus",
+    "VPTS": "Väärtpaberituru seadus",
+    "VKTS": "Välisriigi kutsekvalifikatsiooni tunnustamise seadus",
+    "KeÜSE": "Keskkonnaseadustiku üldosa seadus",
+    "MsÜS": "Majandustegevuse seadustiku üldosa seadus",
+    "KAS": "Krediidiasutuste seadus",
+    "AÕKS": "Atmosfääriõhu kaitse seadus",
+    "TOAS": "Tööstusomandi õiguskorralduse aluste seadus",
+    "KoPS": "Kogumispensionide seadus",
+    "PPVSE": "Politsei ja piirivalve seadus",
+    "ÄRS": "Äriregistri seadus",
+    "KarRS": "Karistusregistri seadus",
+    "RaKS": "Ravikindlustuse seadus",
+    "NotS": "Notariaadiseadus",
+    "TÜS": "Tulundusühistuseadus",
+    "VMS": "Välismaalaste seadus",
+    "JAS": "Julgeolekuasutuste seadus",
+    "ITDS": "Isikut tõendavate dokumentide seadus",
+    "TTKSE": "Tervishoiuteenuste korraldamise seadus",
+    "FIS": "Finantsinspektsiooni seadus",
+    "LasteKS": "Lastekaitseseadus",
+    "MERAS": "Makseasutuste ja e-raha asutuste seadus",
 }
 
 # ---------------------------------------------------------------------------
@@ -116,14 +156,14 @@ FULLNAME_GENITIVE: dict[str, str] = {
     "riigilõivuseaduse": "RLS",
     # M7 — match against parser's lowercased law_ref output. Entries
     # whose abbrev resolves through KNOWN_ABBREVIATIONS to a corpus
-    # peep file produce real triples; entries whose target law has
-    # no peep file (KNS, AluS, KOFS, KOVVS) silently fall through —
-    # this is intentional and correct (parser-recognised,
-    # resolver-fallthrough).
+    # peep file produce real triples.
     # Four entries (sotsiaalhoolekande seaduse → SHS, avaliku teabe
     # seaduse → AVTS, avaliku teenistuse seaduse → AVVKHS,
     # planeerimisseaduse → PPVS) reuse abbreviations already in
     # KNOWN_ABBREVIATIONS from Layer 2a — only the genitive form is new.
+    # #390 — KNS/AluS/KOFS/KOVVS are now registered in
+    # KNOWN_ABBREVIATIONS (their peep files exist), so these four
+    # genitives resolve end-to-end instead of falling through.
     "kohanimeseaduse": "KNS",
     "põhikooli- ja gümnaasiumiseaduse": "PGS",
     "koolieelse lasteasutuse seaduse": "KELS_LASTEAS",
@@ -148,6 +188,47 @@ FULLNAME_GENITIVE: dict[str, str] = {
     "avaliku teabe seaduse": "AVTS",
     "avaliku teenistuse seaduse": "AVVKHS",
     "planeerimisseaduse": "PPVS",
+    # #363 — genitive forms for laws whose abbreviation ALREADY existed
+    # in KNOWN_ABBREVIATIONS but lacked a genitive entry, so Pattern 3
+    # silently dropped their citations. Each resolves through the
+    # existing abbrev to a corpus peep file.
+    "tulumaksuseaduse": "TuMS",
+    "sotsiaalmaksuseaduse": "SMMS",
+    "relvaseaduse": "RSVS",
+    "kaitseväeteenistuse seaduse": "KAVS",
+    "kindlustustegevuse seaduse": "KindlTS",
+    "looduskaitseseaduse": "LKS",
+    "ravimiseaduse": "RavS",
+    "elektroonilise side seaduse": "EKS",
+    "maareformi seaduse": "MaaRS",
+    # #363 — genitive forms for the 25 newly-registered abbreviations
+    # above. These were the heavily-cited corpus laws that previously
+    # had neither an abbreviation nor a genitive entry.
+    "korrakaitseseaduse": "KorrS",
+    "riigieelarve seaduse": "RES",
+    "veeseaduse": "VeeS",
+    "liiklusseaduse": "LS",
+    "väärtpaberituru seaduse": "VPTS",
+    "välisriigi kutsekvalifikatsiooni tunnustamise seaduse": "VKTS",
+    "keskkonnaseadustiku üldosa seaduse": "KeÜSE",
+    "majandustegevuse seadustiku üldosa seaduse": "MsÜS",
+    "krediidiasutuste seaduse": "KAS",
+    "atmosfääriõhu kaitse seaduse": "AÕKS",
+    "tööstusomandi õiguskorralduse aluste seaduse": "TOAS",
+    "kogumispensionide seaduse": "KoPS",
+    "politsei ja piirivalve seaduse": "PPVSE",
+    "äriregistri seaduse": "ÄRS",
+    "karistusregistri seaduse": "KarRS",
+    "ravikindlustuse seaduse": "RaKS",
+    "notariaadiseaduse": "NotS",
+    "tulundusühistuseaduse": "TÜS",
+    "välismaalaste seaduse": "VMS",
+    "julgeolekuasutuste seaduse": "JAS",
+    "isikut tõendavate dokumentide seaduse": "ITDS",
+    "tervishoiuteenuste korraldamise seaduse": "TTKSE",
+    "finantsinspektsiooni seaduse": "FIS",
+    "lastekaitseseaduse": "LasteKS",
+    "makseasutuste ja e-raha asutuste seaduse": "MERAS",
 }
 
 # ---------------------------------------------------------------------------
@@ -810,8 +891,14 @@ def slugify(text: str, max_len: int = 80) -> str:
     runs with underscores, and truncates to ``max_len`` characters.
     Centralised here so callers (laws, regulations, downstream scripts)
     share one definition.
+
+    The truncation can land on a ``_`` (when the boundary character at
+    ``max_len`` was an underscore), so a final ``rstrip('_')`` runs AFTER
+    the cut. Without it, a title slugifying to exactly ``max_len`` chars
+    ending in ``_`` would produce double-underscore IRIs once a suffix
+    like ``_Map_2026`` / ``_Par_N`` is appended (#346).
     """
     text = text.translate(_TRANSLIT_TABLE)
     text = text.lower().strip()
     text = re.sub(r"[^a-z0-9]+", "_", text)
-    return text.strip("_")[:max_len]
+    return text.strip("_")[:max_len].rstrip("_")

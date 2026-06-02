@@ -1719,3 +1719,608 @@ class TestStructuredPenaltyVocabulary:
                      "estleg:maxPenaltyCurrency", "estleg:minPenaltyCurrency"):
             node = by_id[prop]
             assert node.get("rdfs:range", {}).get("@id") == "xsd:string"
+
+
+# --------------------------------------------------------------------- #
+# Regression tests for issue #302 — doubled "§ §" in sanction labels.
+# --------------------------------------------------------------------- #
+
+
+class TestProvisionRefStripsSectionSign:
+    """``estleg:paragrahv`` is stored WITH the section sign (e.g.
+    ``"§ 53."``); the label template prepends another ``§``. The
+    leading sign must be stripped so the reference is ``"AS § 53."``,
+    not the doubled ``"AS § § 53."``.
+    """
+
+    def test_paragrahv_with_section_sign_not_doubled(self):
+        from extract_sanctions import _provision_ref
+        ref = _provision_ref({
+            "estleg:paragrahv": "§ 53.",
+            "estleg:lawAbbreviation": "AS",
+        })
+        assert ref == "AS § 53."
+        assert "§ §" not in ref
+
+    def test_paragrahv_with_section_sign_and_extra_space(self):
+        from extract_sanctions import _provision_ref
+        ref = _provision_ref({
+            "estleg:paragrahv": "§   8.",
+            "estleg:lawAbbreviation": "Reg",
+        })
+        assert ref == "Reg § 8."
+        assert "§ §" not in ref
+
+    def test_paragrahv_without_section_sign_unchanged(self):
+        """A bare numeric paragrahv (no leading sign) is unaffected —
+        backward-compat with the existing _provision_ref tests."""
+        from extract_sanctions import _provision_ref
+        ref = _provision_ref({
+            "estleg:paragrahv": "121",
+            "estleg:lawAbbreviation": "KarS",
+        })
+        assert ref == "KarS § 121"
+        assert "§ §" not in ref
+
+    def test_build_label_has_no_double_section_sign(self):
+        """End-to-end: the rdfs:label built from a ``"§ N"`` paragrahv
+        carries a single section sign (issue #302's user-visible
+        symptom: ``"Arrest, max 30 days (AS § § 53.)"``)."""
+        from extract_sanctions import _build_label, _provision_ref
+        ref = _provision_ref({
+            "estleg:paragrahv": "§ 53.",
+            "estleg:lawAbbreviation": "AS",
+        })
+        label = _build_label("arrest", {"max_penalty": "30 days"}, ref)
+        assert label == "Arrest, max 30 days (AS § 53.)"
+        assert "§ §" not in label
+
+
+# --------------------------------------------------------------------- #
+# Regression tests for issue #301 — karistatakse fallback capturing
+# citation years / cross-reference paragraph numbers as imprisonment.
+# --------------------------------------------------------------------- #
+
+
+class TestKaristatakseFallbackScoped:
+    """The ``karistatakse ... aastase vangistus`` digit fallback used a
+    greedy ``.*?`` that crossed sentences and grabbed citation years
+    (RT I 2002 …) or cross-ref paragraph numbers (§-s 118) as the
+    imprisonment maximum. It now requires ``kuni`` adjacent to the
+    number, stays within the sentence, and discards values > 25 years
+    (KarS §45 ceiling).
+    """
+
+    def test_citation_year_not_captured_as_imprisonment(self):
+        from extract_sanctions import extract_imprisonment
+        # "2002" is a citation year; no plausible "kuni 2002 aastase".
+        text = ("Karistatakse 2002 kohaselt rahatrahvi või "
+                "aastase vangistusega.")
+        results = extract_imprisonment(text)
+        assert not any(
+            r.get("max_penalty") == "2002 years" for r in results
+        ), results
+
+    def test_cross_ref_paragraph_number_not_captured(self):
+        from extract_sanctions import extract_imprisonment
+        text = ("Karistatakse käesoleva seadustiku §-s 118 "
+                "sätestatud aastase vangistusega.")
+        results = extract_imprisonment(text)
+        assert not any(
+            r.get("max_penalty") == "118 years" for r in results
+        ), results
+
+    def test_bogus_year_does_not_add_second_node(self):
+        """The real value comes from the word form; the citation year
+        must NOT be appended as an extra imprisonment_2 record."""
+        from extract_sanctions import extract_imprisonment
+        text = ("RT I 2002, 56, 350 redaktsioonis karistatakse seda "
+                "tegu, mis on 2002 aastast kehtinud, kuni "
+                "kolmeaastase vangistusega.")
+        results = extract_imprisonment(text)
+        maxes = {r.get("max_penalty") for r in results}
+        assert "3 years" in maxes
+        assert "2002 years" not in maxes, results
+
+    def test_fallback_requires_adjacent_kuni(self):
+        """The greedy ``karistatakse <citation> ... aastase vangistus``
+        shape (no ``kuni`` before the number) used to emit the citation
+        digit as the imprisonment max. The ``kuni``-adjacency guard now
+        suppresses it — and the digit max-only branch can't fire either
+        (it also requires ``kuni``), so the result is empty. This
+        isolates the fallback guard from the unguarded digit max-only
+        branch (which legitimately handles ``kuni N aastase``)."""
+        from extract_sanctions import extract_imprisonment
+        text = "Karistatakse 1995 redaktsiooni alusel aastase vangistusega."
+        results = extract_imprisonment(text)
+        assert not any(
+            r.get("max_penalty") == "1995 years" for r in results
+        ), results
+        assert results == [], results
+
+    def test_fallback_plausibility_cap_present(self):
+        """Defense-in-depth: the fallback also discards values > 25
+        (KarS §45 ceiling). Verified at the regex+guard level so the cap
+        is pinned even though the shared digit max-only branch covers the
+        same surface form. A 4-digit ``kuni`` value reachable only via the
+        greedy fallback span is dropped."""
+        import re
+        from extract_sanctions import _ESTONIAN_NUMBERS  # noqa: F401
+        # Re-derive the exact guarded fallback contract: kuni-adjacent
+        # digit, sentence-bounded, value <= 25.
+        pat = (r"karistatakse[^.]*?\bkuni\s+(\d+)\s*[-\s]*"
+               r"aasta(?:se)?\s+vangistus")
+        text = ("karistatakse 2002 aasta redaktsiooni järgi kuni 2002 "
+                "aastase vangistusega")
+        captured = [m.group(1) for m in re.finditer(pat, text, re.IGNORECASE)]
+        kept = [v for v in captured if int(v) <= 25]
+        assert "2002" in captured  # the greedy span can reach it
+        assert kept == []          # ...but the >25 cap discards it
+
+    def test_legitimate_digit_kuni_still_captured(self):
+        """A genuine ``karistatakse ... kuni N aastase vangistusega``
+        (N <= 25) is still captured."""
+        from extract_sanctions import extract_imprisonment
+        results = extract_imprisonment(
+            "Selle eest karistatakse rahatrahvi või kuni 12 "
+            "aastase vangistusega."
+        )
+        assert any(r.get("max_penalty") == "12 years" for r in results)
+
+
+# --------------------------------------------------------------------- #
+# Regression tests for issue #320 / #372 — split & hyphenated numeral
+# imprisonment surface forms.
+# --------------------------------------------------------------------- #
+
+
+class TestImprisonmentSplitAndHyphenatedNumerals:
+    """Word-numeral imprisonment patterns must tolerate an optional
+    space (#320: "kümne aastase", "kaheksateist aastase") and an
+    optional hyphen (#372: "kahe- kuni kaheksa-aastase") between the
+    numeral and ``aasta``.
+    """
+
+    def test_split_teen_numeral_max(self):
+        from extract_sanctions import extract_imprisonment
+        results = extract_imprisonment("kuni kaheksateist aastase vangistusega")
+        assert any(r.get("max_penalty") == "18 years" for r in results), results
+
+    def test_split_round_numeral_max(self):
+        from extract_sanctions import extract_imprisonment
+        results = extract_imprisonment("kuni kümne aastase vangistusega")
+        assert any(r.get("max_penalty") == "10 years" for r in results), results
+
+    def test_hyphenated_numeral_range(self):
+        from extract_sanctions import extract_imprisonment
+        results = extract_imprisonment("kahe- kuni kaheksa-aastase vangistusega")
+        assert any(
+            r.get("min_penalty") == "2 years"
+            and r.get("max_penalty") == "8 years"
+            for r in results
+        ), results
+
+    def test_compound_numeral_still_matches(self):
+        """Regression: the original compound form (no space/hyphen)
+        must keep matching."""
+        from extract_sanctions import extract_imprisonment
+        results = extract_imprisonment("kuni viieaastase vangistusega")
+        assert any(r.get("max_penalty") == "5 years" for r in results), results
+
+    def test_compound_range_still_matches(self):
+        from extract_sanctions import extract_imprisonment
+        results = extract_imprisonment("kahe kuni viieaastase vangistusega")
+        assert any(
+            r.get("min_penalty") == "2 years"
+            and r.get("max_penalty") == "5 years"
+            for r in results
+        ), results
+
+
+# --------------------------------------------------------------------- #
+# Regression tests for issue #372 — euro-fine surface forms + mõjutustrahv.
+# --------------------------------------------------------------------- #
+
+
+class TestFineEurosBroadened:
+    """``extract_fine_euros`` must match genitive ``rahatrahvi kuni N
+    eurot``, intervening-word ``suuruses kuni N eurot``, and dash
+    ranges ``rahatrahv 64–16 000 eurot``.
+    """
+
+    def test_genitive_rahatrahvi_kuni(self):
+        from extract_sanctions import extract_fine_euros
+        results = extract_fine_euros("rahatrahvi kuni 32 000 eurot")
+        assert any(r.get("max_penalty") == "32000 EUR" for r in results), results
+
+    def test_suuruses_kuni_with_intervening_words(self):
+        from extract_sanctions import extract_fine_euros
+        results = extract_fine_euros(
+            "Rahatrahv määratakse suuruses kuni 5000 eurot"
+        )
+        assert any(r.get("max_penalty") == "5000 EUR" for r in results), results
+
+    def test_dash_range_min_and_max(self):
+        from extract_sanctions import extract_fine_euros
+        results = extract_fine_euros("rahatrahv 64–16 000 eurot")
+        assert any(
+            r.get("min_penalty") == "64 EUR"
+            and r.get("max_penalty") == "16000 EUR"
+            for r in results
+        ), results
+
+    def test_dash_range_does_not_also_emit_single_value(self):
+        """The dash branch must not additionally emit a lone-number
+        record for the same phrase."""
+        from extract_sanctions import extract_fine_euros
+        results = extract_fine_euros("rahatrahv 64–16 000 eurot")
+        assert len(results) == 1, results
+
+    def test_plain_rahatrahviga_still_matches(self):
+        """Regression: the original ``rahatrahv(iga) N eurot`` form must
+        keep matching (the broadened ``\\w{0,3}`` covers ``-iga``)."""
+        from extract_sanctions import extract_fine_euros
+        results = extract_fine_euros("rahatrahviga 800 eurot")
+        assert any(r.get("max_penalty") == "800 EUR" for r in results), results
+
+    def test_kuni_max_still_matches(self):
+        from extract_sanctions import extract_fine_euros
+        results = extract_fine_euros("rahatrahv kuni 1200 eurot")
+        assert any(r.get("max_penalty") == "1200 EUR" for r in results), results
+
+
+class TestMojutustrahvExtractor:
+    """``mõjutustrahv`` (simplified-procedure fine) must be matched by a
+    dedicated extractor wired into ``ALL_EXTRACTORS``.
+    """
+
+    def test_mojutustrahv_in_all_extractors(self):
+        from extract_sanctions import ALL_EXTRACTORS, extract_mojutustrahv
+        assert extract_mojutustrahv in ALL_EXTRACTORS
+
+    def test_mojutustrahv_with_amount(self):
+        from extract_sanctions import extract_mojutustrahv
+        results = extract_mojutustrahv("mõjutustrahv suurusega 40 eurot")
+        assert any(
+            r.get("sanction_type") == "fine"
+            and r.get("max_penalty") == "40 EUR"
+            for r in results
+        ), results
+
+    def test_mojutustrahv_kuni_amount(self):
+        from extract_sanctions import extract_mojutustrahv
+        results = extract_mojutustrahv("mõjutustrahv kuni 1200 eurot")
+        assert any(r.get("max_penalty") == "1200 EUR" for r in results), results
+
+    def test_mojutustrahv_bare_mention(self):
+        from extract_sanctions import extract_mojutustrahv
+        results = extract_mojutustrahv("kohaldatakse mõjutustrahvi")
+        assert results
+        assert results[0].get("sanction_type") == "fine"
+        assert "max_penalty" not in results[0]
+
+    def test_mojutustrahv_via_extract_sanctions_pipeline(self):
+        """``extract_sanctions`` (the full dispatcher) emits the
+        mõjutustrahv fine record."""
+        from extract_sanctions import extract_sanctions
+        results = extract_sanctions("mõjutustrahv suurusega 40 eurot")
+        assert any(
+            r.get("sanction_type") == "fine"
+            and r.get("max_penalty") == "40 EUR"
+            for r in results
+        ), results
+
+
+# --------------------------------------------------------------------- #
+# Regression tests for issue #358 — quantified sunniraha amounts.
+# --------------------------------------------------------------------- #
+
+
+class TestCoerciveBoilerplate:
+    """``extract_coercive`` must bridge the asendustäitmise boilerplate
+    between ``sunniraha`` and ``kuni N eurot`` so the quantified amount
+    (incl. the 20,000,000 EUR GDPR ceiling) is captured rather than
+    falling through to a bare unquantified mention.
+    """
+
+    def test_asendustaitmise_boilerplate_captures_amount(self):
+        from extract_sanctions import extract_coercive
+        text = ("sunniraha asendustäitmise ja sunniraha seaduses "
+                "sätestatud korras kuni 15 000 eurot")
+        results = extract_coercive(text)
+        assert any(
+            r.get("sanction_type") == "coercive_payment"
+            and r.get("max_penalty") == "15000 EUR"
+            for r in results
+        ), results
+
+    def test_gdpr_ceiling_20m_captured(self):
+        from extract_sanctions import extract_coercive
+        text = ("kohaldada sunniraha asendustäitmise ja sunniraha "
+                "seaduses sätestatud korras kuni 20 000 000 eurot")
+        results = extract_coercive(text)
+        assert any(r.get("max_penalty") == "20000000 EUR" for r in results), results
+
+    def test_tight_form_still_matches(self):
+        """Regression: the original tight ``sunniraha kuni N eurot``
+        form must keep matching."""
+        from extract_sanctions import extract_coercive
+        results = extract_coercive("sunniraha kuni 6400 eurot")
+        assert any(r.get("max_penalty") == "6400 EUR" for r in results), results
+
+    def test_bare_mention_without_amount_unchanged(self):
+        """A sunniraha mention with no euro amount still yields a bare
+        coercive_payment record (no max_penalty)."""
+        from extract_sanctions import extract_coercive
+        results = extract_coercive("Kohus võib määrata sunniraha.")
+        assert results
+        assert results[0].get("sanction_type") == "coercive_payment"
+        assert "max_penalty" not in results[0]
+
+    def test_no_double_emission_across_sentence_boundary(self):
+        """The 150-char window stays within the sentence — a sunniraha
+        in one sentence does not bind to a ``kuni N eurot`` in the
+        next."""
+        from extract_sanctions import extract_coercive
+        text = ("Kohus määrab sunniraha. Eraldi sätestatakse kuni "
+                "9999 eurot muudel alustel.")
+        results = extract_coercive(text)
+        # Bare mention only — the cross-sentence amount is not bound.
+        assert all(r.get("max_penalty") != "9999 EUR" for r in results), results
+
+
+# --------------------------------------------------------------------- #
+# Regression tests for issue #393 — arrest condition-clause false
+# positive + severity-index monetary exposure.
+# --------------------------------------------------------------------- #
+
+
+class TestArrestConditionClauseNotImposed:
+    """The arrest statutory-default fallback must NOT fire when the
+    ``arest`` token is the object of a past-passive condition verb
+    (kohaldatud|rakendatud|määratud) within ~10 tokens — that's a
+    precondition (KarS §331¹), not an imposed sanction.
+    """
+
+    def test_kohaldatud_aresti_condition_no_arrest(self):
+        from extract_sanctions import extract_arrest
+        # KarS §331¹ shape: aresti is the object of "kohaldatud".
+        text = ("Kui isiku suhtes on selle eest täitemenetluses "
+                "kohaldatud aresti, – karistatakse rahalise karistuse "
+                "või kuni kaheaastase vangistusega.")
+        results = extract_arrest(text)
+        assert results == [], results
+
+    def test_rakendatud_aresti_condition_no_arrest(self):
+        from extract_sanctions import extract_arrest
+        text = ("Kui on rakendatud aresti, karistatakse "
+                "vangistusega.")
+        assert extract_arrest(text) == []
+
+    def test_maaratud_aresti_condition_no_arrest(self):
+        from extract_sanctions import extract_arrest
+        text = ("Kui on määratud aresti, kohaldatakse "
+                "rahatrahvi.")
+        assert extract_arrest(text) == []
+
+    def test_genuine_imposed_arrest_still_fires(self):
+        """A real ``karistatakse ... arestiga`` (no condition verb
+        before the token) still yields the 30-day statutory default."""
+        from extract_sanctions import extract_arrest
+        results = extract_arrest(
+            "Selle eest karistatakse rahatrahviga või arestiga."
+        )
+        assert any(
+            r.get("max_penalty") == "30 days"
+            and r.get("is_statutory_default") is True
+            for r in results
+        ), results
+
+    def test_explicit_day_count_unaffected_by_condition_gate(self):
+        """An explicit day count is read by the earlier branch and is
+        never gated by the condition-clause check."""
+        from extract_sanctions import extract_arrest
+        results = extract_arrest("Karistatakse aresti kuni 15 päeva.")
+        assert any(r.get("max_penalty") == "15 days" for r in results)
+
+    def test_condition_verb_far_away_does_not_suppress(self):
+        """A past-passive verb more than ~10 tokens before the arrest
+        token does not suppress a genuine imposed arrest."""
+        from extract_sanctions import extract_arrest
+        text = ("Kui kohtu poolt on kohaldatud rahatrahvi ja samuti "
+                "mitmeid muid haldusmeetmeid ning lisaks veel teisi "
+                "menetlustoiminguid erinevatel alustel, siis "
+                "karistatakse arestiga.")
+        results = extract_arrest(text)
+        assert any(
+            r.get("max_penalty") == "30 days" for r in results
+        ), results
+
+
+class TestSeverityIndexMonetaryExposure:
+    """The severity index additionally exposes ``max_monetary_eur`` and a
+    normalized ``monetary_score`` alongside ``max_severity`` so consumers
+    can rank within the fine tier. The legal type ordering is unchanged.
+    """
+
+    def test_monetary_amount_helper_reads_monetary_unit_only(self):
+        from decimal import Decimal
+        from extract_sanctions import _monetary_amount_eur
+        monetary = {
+            "estleg:maxPenaltyUnit": "monetary",
+            "estleg:maxPenaltyAmount": {"@value": "20000000",
+                                        "@type": "xsd:decimal"},
+        }
+        assert _monetary_amount_eur(monetary) == Decimal("20000000")
+        # Non-monetary units return None.
+        years = {
+            "estleg:maxPenaltyUnit": "years",
+            "estleg:maxPenaltyAmount": {"@value": "5"},
+        }
+        assert _monetary_amount_eur(years) is None
+        # Missing structured amount returns None.
+        assert _monetary_amount_eur(
+            {"estleg:sanctionType": "imprisonment"}
+        ) is None
+
+    def test_monetary_score_monotonic_and_bounded(self):
+        from decimal import Decimal
+        from extract_sanctions import _monetary_score
+        assert _monetary_score(None) == 0.0
+        s64 = _monetary_score(Decimal("64"))
+        s_mid = _monetary_score(Decimal("32000"))
+        s_max = _monetary_score(Decimal("20000000"))
+        assert 0.0 < s64 < s_mid < s_max
+        assert s_max == 1.0
+        assert 0.0 <= s64 <= 1.0
+
+    def test_severity_index_entry_has_monetary_fields(
+        self, tmp_path, monkeypatch
+    ):
+        """End-to-end: a law with a large euro fine gets a populated
+        ``max_monetary_eur``/``monetary_score`` in the report's
+        severity_index; the type ordinal is still exposed."""
+        import extract_sanctions as mod
+        import estleg_common
+
+        krr = tmp_path / "krr_outputs"
+        sanctions_dir = krr / "sanctions"
+        reports_dir = krr / "reports" / "kov"
+        sanctions_dir.mkdir(parents=True)
+        reports_dir.mkdir(parents=True)
+
+        peep = krr / "bigfine_peep.json"
+        peep.write_text(json.dumps({
+            "@context": {
+                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "owl": "http://www.w3.org/2002/07/owl#",
+            },
+            "@graph": [
+                {"@id": "estleg:BF_Map_2026",
+                 "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]},
+                {"@id": "estleg:BF_Par_1",
+                 "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+                 "estleg:paragrahv": "§ 1",
+                 "estleg:summary":
+                     "Rikkumise eest määratakse rahatrahvi kuni "
+                     "32 000 eurot."},
+            ],
+        }), encoding="utf-8")
+
+        monkeypatch.setattr(mod, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "SANCTION_DIR", sanctions_dir)
+        monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+
+        rc = mod.main()
+        assert rc in (0, None)
+
+        report = json.load(open(krr / "sanctions_report.json"))
+        entry = next(
+            e for e in report["severity_index"] if e["law"] == "bigfine"
+        )
+        # Type ordinal unchanged (fine == 2).
+        assert entry["max_severity"] == 2
+        assert entry["max_severity_type"] == "fine"
+        # New additive fields populated.
+        assert entry["max_monetary_eur"] == 32000.0
+        assert 0.0 < entry["monetary_score"] <= 1.0
+
+    def test_non_monetary_law_has_null_max_monetary(
+        self, tmp_path, monkeypatch
+    ):
+        """A law whose only sanction is imprisonment exposes
+        ``max_monetary_eur == None`` and ``monetary_score == 0.0`` —
+        the field is additive and does not perturb the type ordering."""
+        import extract_sanctions as mod
+        import estleg_common
+
+        krr = tmp_path / "krr_outputs"
+        sanctions_dir = krr / "sanctions"
+        reports_dir = krr / "reports" / "kov"
+        sanctions_dir.mkdir(parents=True)
+        reports_dir.mkdir(parents=True)
+
+        peep = krr / "imponly_peep.json"
+        peep.write_text(json.dumps({
+            "@context": {
+                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "owl": "http://www.w3.org/2002/07/owl#",
+            },
+            "@graph": [
+                {"@id": "estleg:IO_Map_2026",
+                 "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"]},
+                {"@id": "estleg:IO_Par_1",
+                 "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+                 "estleg:paragrahv": "§ 1",
+                 "estleg:summary":
+                     "Karistatakse kuni viieaastase vangistusega."},
+            ],
+        }), encoding="utf-8")
+
+        monkeypatch.setattr(mod, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "SANCTION_DIR", sanctions_dir)
+        monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+
+        rc = mod.main()
+        assert rc in (0, None)
+
+        report = json.load(open(krr / "sanctions_report.json"))
+        entry = next(
+            e for e in report["severity_index"] if e["law"] == "imponly"
+        )
+        assert entry["max_severity"] == 5  # imprisonment
+        assert entry["max_monetary_eur"] is None
+        assert entry["monetary_score"] == 0.0
+
+
+# --------------------------------------------------------------------- #
+# Regression tests for issue #376 — atomic save_json.
+# --------------------------------------------------------------------- #
+
+
+class TestAtomicSaveJson:
+    """The local non-atomic ``save_json`` (bare ``open(w)``) is replaced
+    by the atomic ``estleg_common.save_json`` (tempfile + os.replace).
+    """
+
+    def test_save_json_is_estleg_common_atomic(self):
+        import extract_sanctions as mod
+        import estleg_common
+        # The module-level name now resolves to the shared atomic impl.
+        assert mod.save_json is estleg_common.save_json
+        assert mod.save_json.__module__ == "estleg_common"
+
+    def test_save_json_writes_via_atomic_replace(self, tmp_path):
+        """A successful write produces the expected JSON with a trailing
+        newline and leaves no ``.tmp`` droppings."""
+        import extract_sanctions as mod
+        out = tmp_path / "doc.json"
+        mod.save_json(out, {"@graph": [{"@id": "estleg:X"}]})
+        text = out.read_text(encoding="utf-8")
+        assert text.endswith("\n")
+        assert json.loads(text) == {"@graph": [{"@id": "estleg:X"}]}
+        # No leftover tempfiles in the directory.
+        assert [p.name for p in tmp_path.iterdir()] == ["doc.json"]
+
+    def test_save_json_no_partial_file_on_serialization_error(self, tmp_path):
+        """If serialization fails mid-write, no partial/zero-byte file
+        is left at the target path (the atomic contract). A set is not
+        JSON-serialisable, so json.dump raises."""
+        import extract_sanctions as mod
+        out = tmp_path / "doc.json"
+        with pytest.raises(TypeError):
+            mod.save_json(out, {"bad": {1, 2, 3}})
+        # Target path was never created (replace only happens on success).
+        assert not out.exists()
+        # And no tempfile droppings remain.
+        assert list(tmp_path.iterdir()) == []
+
+    def test_save_json_monkeypatch_still_works(self, monkeypatch):
+        """The existing test pattern ``monkeypatch.setattr(mod,
+        'save_json', ...)`` must still intercept calls (the gate-fail
+        coverage test relies on this)."""
+        import extract_sanctions as mod
+        calls = []
+        monkeypatch.setattr(mod, "save_json", lambda fp, doc: calls.append(fp))
+        mod.save_json(Path("/nonexistent/x.json"), {"a": 1})
+        assert calls == [Path("/nonexistent/x.json")]

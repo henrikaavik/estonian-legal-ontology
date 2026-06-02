@@ -1465,3 +1465,606 @@ class TestReportIsByteStable:
              / "generate_amendment_history_coverage.json").read_text("utf-8")
         )
         assert cov["run_timestamp"] == mod.PINNED_RUN_TIMESTAMP
+
+
+# ---------------------------------------------------------------------------
+# Shared end-to-end harness for the issue #327/#353/#385/#387/#389 fixes
+# ---------------------------------------------------------------------------
+
+
+def _setup_main_env(tmp_path: Path, monkeypatch):
+    """Wire generate_amendment_history.main() onto an isolated tmp tree."""
+    import generate_amendment_history as mod
+    import estleg_common
+
+    krr = tmp_path / "krr_outputs"
+    rt = tmp_path / "data" / "riigiteataja"
+    krr.mkdir(parents=True)
+    rt.mkdir(parents=True)
+    (krr / "amendments").mkdir()
+    (krr / "eelnoud").mkdir()
+    (krr / "regulations" / "riik").mkdir(parents=True)
+    (krr / "regulations" / "kov").mkdir(parents=True)
+    monkeypatch.setattr(mod, "KRR_DIR", krr)
+    monkeypatch.setattr(mod, "DATA_DIR", rt)
+    monkeypatch.setattr(mod, "AMENDMENTS_DIR", krr / "amendments")
+    monkeypatch.setattr(mod, "EELNOUD_DIR", krr / "eelnoud")
+    monkeypatch.setattr(mod, "REPO_ROOT", tmp_path)
+    monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+    return krr, rt, mod
+
+
+def _write_part(krr: Path, slug: str, gid: str, title: str) -> Path:
+    p = krr / f"{slug}_peep.json"
+    p.write_text(json.dumps({
+        "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+                     "owl": "http://www.w3.org/2002/07/owl#"},
+        "@graph": [
+            {"@id": f"estleg:{slug.upper()}_Map",
+             "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
+             "rdfs:label": title, "dc:source": title,
+             "estleg:globalId": gid}],
+    }), encoding="utf-8")
+    return p
+
+
+def _write_xml(rt: Path, gid: str, amendments: list[dict]):
+    blocks = []
+    for a in amendments:
+        avaldamismarge = ""
+        if a.get("rt_aasta") or a.get("rt_nr"):
+            avaldamismarge = (
+                "<avaldamismarge>"
+                f"<RTosa>{a.get('rt_osa', 'I')}</RTosa>"
+                f"<RTaasta>{a.get('rt_aasta', '')}</RTaasta>"
+                f"<RTnr>{a.get('rt_nr', '')}</RTnr>"
+                "</avaldamismarge>"
+            )
+        blocks.append(
+            "<muutmismarge>"
+            f"<aktikuupaev>{a.get('date', '')}</aktikuupaev>"
+            f"<joustumine>{a.get('eif', '')}</joustumine>"
+            + avaldamismarge
+            + "</muutmismarge>"
+        )
+    (rt / f"reg_{gid}.xml").write_text(
+        f'<akt globaalID="{gid}"><metaandmed>' + "".join(blocks)
+        + "</metaandmed></akt>",
+        encoding="utf-8",
+    )
+
+
+def _write_combined_drafts(krr: Path, drafts: list[dict]):
+    """Write krr_outputs/eelnoud/eelnoud_combined.jsonld with AmendmentBills.
+
+    Each ``drafts`` entry: {id, title, affected, pub}. ``title`` is emitted as
+    a PR-#297-shape value-object so the consumer's unwrap is exercised.
+    """
+    graph = []
+    for d in drafts:
+        graph.append({
+            "@id": d["id"],
+            "@type": ["owl:NamedIndividual", "estleg:DraftLegislation"],
+            "rdfs:label": {"@value": d["title"], "@language": "et"},
+            "estleg:draftType": {"@id": "estleg:DraftType_AmendmentBill"},
+            "estleg:affectedLawName": d["affected"],
+            "estleg:publicationDate": {
+                "@value": d["pub"], "@type": "xsd:date"
+            },
+        })
+    (krr / "eelnoud" / "eelnoud_combined.jsonld").write_text(
+        json.dumps({
+            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+                         "owl": "http://www.w3.org/2002/07/owl#"},
+            "@graph": graph,
+        }),
+        encoding="utf-8",
+    )
+
+
+def _amends_ids(node: dict) -> list[str]:
+    """Normalise estleg:amends (dict or list of dicts) to a list of @ids."""
+    val = node.get("estleg:amends")
+    if val is None:
+        return []
+    if isinstance(val, dict):
+        return [val.get("@id")]
+    return [v.get("@id") for v in val]
+
+
+# ---------------------------------------------------------------------------
+# Issue #327 — estleg:amends must target EVERY part of a multipart law
+# ---------------------------------------------------------------------------
+
+
+class TestAmendsTargetsAllParts:
+    """For a multipart law, each AmendmentEvent's ``estleg:amends`` must list
+    ALL part ontology IRIs, not only the first osa (issue #327)."""
+
+    def test_multipart_amends_lists_every_part(self, tmp_path, monkeypatch):
+        krr, rt, mod = _setup_main_env(tmp_path, monkeypatch)
+        title = "Karistusseadustik"
+        # Three osa-parts; each carries its own ontology IRI. They share one
+        # base_slug (karistusseadustik) and thus one chain doc.
+        for i in (1, 2, 3):
+            _write_part(krr, f"karistusseadustik_osa{i}", f"90{i}", title)
+        # Only the first member's XML carries the amendment (main() pulls the
+        # first non-empty member); the chain still spans all three parts.
+        _write_xml(
+            rt, "901",
+            [{"date": "2010-01-01", "eif": "2010-06-01",
+              "rt_aasta": "2010", "rt_nr": "5"}],
+        )
+        rc = mod.main()
+        assert rc in (None, 0)
+
+        chain_doc = json.loads(
+            (krr / "amendments" / "amendments_karistusseadustik.json")
+            .read_text("utf-8")
+        )
+        events = [
+            n for n in chain_doc["@graph"]
+            if "estleg:AmendmentEvent" in (n.get("@type") or [])
+        ]
+        assert events, "expected at least one amendment event"
+        expected = {
+            "estleg:KARISTUSSEADUSTIK_OSA1_Map",
+            "estleg:KARISTUSSEADUSTIK_OSA2_Map",
+            "estleg:KARISTUSSEADUSTIK_OSA3_Map",
+        }
+        for ev in events:
+            ids = set(_amends_ids(ev))
+            assert ids == expected, (ev["@id"], ids)
+
+    def test_single_part_amends_stays_a_single_object(self, tmp_path, monkeypatch):
+        # A single-part law must keep the scalar ``{"@id": ...}`` shape (not a
+        # 1-element list) for backwards compatibility.
+        krr, rt, mod = _setup_main_env(tmp_path, monkeypatch)
+        _write_part(krr, "yksikseadus", "910", "Yksikseadus")
+        _write_xml(
+            rt, "910",
+            [{"date": "2012-01-01", "eif": "2012-06-01",
+              "rt_aasta": "2012", "rt_nr": "1"}],
+        )
+        rc = mod.main()
+        assert rc in (None, 0)
+        chain_doc = json.loads(
+            (krr / "amendments" / "amendments_yksikseadus.json").read_text("utf-8")
+        )
+        ev = next(
+            n for n in chain_doc["@graph"]
+            if "estleg:AmendmentEvent" in (n.get("@type") or [])
+        )
+        assert ev["estleg:amends"] == {"@id": "estleg:YKSIKSEADUS_Map"}
+
+    def test_draft_link_amends_lists_every_part(self, tmp_path, monkeypatch):
+        # Draft-derived AmendmentLink nodes get the same multi-part amends.
+        krr, rt, mod = _setup_main_env(tmp_path, monkeypatch)
+        title = "Mitmeosaline seadus"
+        for i in (1, 2):
+            _write_part(krr, f"mitmeosaline_seadus_osa{i}", f"92{i}", title)
+        _write_combined_drafts(krr, [
+            {"id": "estleg:Draft_A", "title": "Muutmise eelnõu",
+             "affected": title, "pub": "2024-01-01"},
+        ])
+        rc = mod.main()
+        assert rc in (None, 0)
+        chain_doc = json.loads(
+            (krr / "amendments" / "amendments_mitmeosaline_seadus.json")
+            .read_text("utf-8")
+        )
+        links = [
+            n for n in chain_doc["@graph"]
+            if "estleg:amendingDraft" in n
+        ]
+        assert links, "expected a draft AmendmentLink"
+        expected = {
+            "estleg:MITMEOSALINE_SEADUS_OSA1_Map",
+            "estleg:MITMEOSALINE_SEADUS_OSA2_Map",
+        }
+        for ln in links:
+            assert set(_amends_ids(ln)) == expected, ln
+
+
+# ---------------------------------------------------------------------------
+# Issue #353 — dedup must never emit entry_into_force long before adoption
+# ---------------------------------------------------------------------------
+
+
+class TestDedupDateCoherence:
+    """The merge must not blend a ``date`` from one marker with an
+    ``entry_into_force`` from another into an impossible pair (issue #353)."""
+
+    def _write_act(self, tmp_path: Path, markers: list[str]) -> Path:
+        p = tmp_path / "act.xml"
+        p.write_text(
+            '<akt globaalID="1"><metaandmed>'
+            + "".join(markers)
+            + "</metaandmed></akt>",
+            encoding="utf-8",
+        )
+        return p
+
+    def test_days_between_basic(self):
+        from generate_amendment_history import _days_between
+
+        assert _days_between("2024-01-01", "2024-01-31") == 30
+        # later before earlier -> negative
+        assert _days_between("2026-02-26", "2025-03-07") < 0
+        assert _days_between(None, "2024-01-01") is None
+        assert _days_between("garbage", "2024-01-01") is None
+
+    def test_sanitize_nulls_impossible_eif(self):
+        from generate_amendment_history import _sanitize_merged_amendment
+
+        # eif ~356 days before adoption (the issue #353 evidence shape).
+        amend = {"date": "2026-02-26", "entry_into_force": "2025-03-07",
+                 "rt_reference": "RT I, x", "akt_viide": None}
+        failures: list[str] = []
+        out = _sanitize_merged_amendment(amend, failures=failures)
+        assert out["entry_into_force"] is None
+        assert out["date"] == "2026-02-26"  # adoption date kept
+        assert any("impossible_eif_before_date" in f for f in failures), failures
+
+    def test_sanitize_keeps_small_retroactive_window(self):
+        from generate_amendment_history import _sanitize_merged_amendment
+
+        # eif 10 days before adoption — within tolerance, kept untouched.
+        amend = {"date": "2024-06-10", "entry_into_force": "2024-05-31"}
+        out = _sanitize_merged_amendment(dict(amend))
+        assert out["entry_into_force"] == "2024-05-31"
+
+    def test_backfill_refuses_inverting_eif(self, tmp_path):
+        from generate_amendment_history import extract_amendments_from_xml
+
+        # Two markers sharing the SAME akt_viide (so they dedup to one key)
+        # but with NO rt_reference. One supplies only an adoption date
+        # (2026-02-26); the other supplies only an effective date a year
+        # earlier (2025-03-07). The naive backfill would blend them into an
+        # impossible pair; the guard must refuse the eif backfill.
+        only_date = (
+            "<muutmismarge>"
+            "<aktikuupaev>2026-02-26</aktikuupaev>"
+            "<avaldamismarge><aktViide>VIIDE_X</aktViide></avaldamismarge>"
+            "</muutmismarge>"
+        )
+        only_eif = (
+            "<muutmismarge>"
+            "<joustumine>2025-03-07</joustumine>"
+            "<avaldamismarge><aktViide>VIIDE_X</aktViide></avaldamismarge>"
+            "</muutmismarge>"
+        )
+        out = extract_amendments_from_xml(self._write_act(tmp_path, [only_date, only_eif]))
+        # They collapse (same akt_viide tuple), but the merged record must NOT
+        # carry the inverted eif.
+        assert len(out) == 1, out
+        merged = out[0]
+        # date preserved; eif either absent or NOT a >90d inversion.
+        assert merged.get("date") == "2026-02-26"
+        from generate_amendment_history import _days_between
+        if merged.get("entry_into_force"):
+            delta = _days_between(merged["date"], merged["entry_into_force"])
+            assert delta is None or delta >= -90, merged
+
+    def test_identical_markers_still_merge(self, tmp_path):
+        from generate_amendment_history import extract_amendments_from_xml
+
+        # Regression guard for #263: genuinely identical repeated markers
+        # (same date AND eif, coherent) must still collapse to one.
+        m = (
+            "<muutmismarge>"
+            "<aktikuupaev>2024-03-01</aktikuupaev>"
+            "<joustumine>2024-06-01</joustumine>"
+            "<avaldamismarge>"
+            "<RTosa>I</RTosa><RTaasta>2024</RTaasta><RTnr>10</RTnr>"
+            "</avaldamismarge></muutmismarge>"
+        )
+        out = extract_amendments_from_xml(self._write_act(tmp_path, [m, m, m]))
+        assert len(out) == 1, out
+        assert out[0]["entry_into_force"] == "2024-06-01"
+
+
+# ---------------------------------------------------------------------------
+# Issue #385 — draft rdfs:label value-object must be unwrapped, not stringified
+# ---------------------------------------------------------------------------
+
+
+class TestDraftLabelUnwrap:
+    """``load_draft_amendments`` must unwrap the PR-#297 language-tagged
+    ``rdfs:label`` value-object to a plain title (issue #385) so the
+    AmendmentLink label never embeds a Python dict repr."""
+
+    def test_load_draft_amendments_unwraps_value_object(self, tmp_path, monkeypatch):
+        import generate_amendment_history as mod
+
+        eelnoud = tmp_path / "eelnoud"
+        eelnoud.mkdir()
+        (eelnoud / "eelnoud_combined.jsonld").write_text(json.dumps({
+            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+                         "owl": "http://www.w3.org/2002/07/owl#"},
+            "@graph": [{
+                "@id": "estleg:Draft_1",
+                "@type": ["estleg:DraftLegislation"],
+                "rdfs:label": {"@value": "Äriseadustiku muutmise seadus",
+                               "@language": "et"},
+                "estleg:draftType": {"@id": "estleg:DraftType_AmendmentBill"},
+                "estleg:affectedLawName": "Äriseadustik",
+                "estleg:publicationDate": {"@value": "2024-05-01",
+                                           "@type": "xsd:date"},
+            }],
+        }), encoding="utf-8")
+        monkeypatch.setattr(mod, "EELNOUD_DIR", eelnoud)
+
+        drafts = mod.load_draft_amendments()
+        assert len(drafts) == 1
+        # The plain title, NOT the dict.
+        assert drafts[0]["draft_label"] == "Äriseadustiku muutmise seadus"
+        assert isinstance(drafts[0]["draft_label"], str)
+
+    def test_amendment_link_label_has_no_dict_repr(self, tmp_path, monkeypatch):
+        krr, rt, mod = _setup_main_env(tmp_path, monkeypatch)
+        _write_part(krr, "ariseadustik", "9300", "Äriseadustik")
+        _write_combined_drafts(krr, [
+            {"id": "estleg:Draft_AS",
+             "title": "Äriseadustiku muutmise seadus",
+             "affected": "Äriseadustik", "pub": "2024-05-01"},
+        ])
+        rc = mod.main()
+        assert rc in (None, 0)
+        chain_doc = json.loads(
+            (krr / "amendments" / "amendments_ariseadustik.json").read_text("utf-8")
+        )
+        link = next(n for n in chain_doc["@graph"] if "estleg:amendingDraft" in n)
+        label = link["rdfs:label"]
+        assert isinstance(label, str)
+        assert label == "Eelnõu muudatus: Äriseadustiku muutmise seadus"
+        # The pre-fix bug embedded "{'@value': ..." — must never appear.
+        assert "@value" not in label and "@language" not in label, label
+
+
+# ---------------------------------------------------------------------------
+# Issue #387 — draft AmendmentLink events must be sorted by publication_date
+# ---------------------------------------------------------------------------
+
+
+class TestDraftEventsSorted:
+    """Draft AmendmentLink nodes must be appended in publication_date order so
+    chains are monotonic; IRIs are id-based so order does not affect them
+    (issue #387)."""
+
+    def test_draft_events_are_chronological(self, tmp_path, monkeypatch):
+        krr, rt, mod = _setup_main_env(tmp_path, monkeypatch)
+        _write_part(krr, "atmosfaariohu_kaitse_seadus", "9400",
+                    "Atmosfääriõhu kaitse seadus")
+        # Deliberately INPUT them out of order (matching the #387 evidence:
+        # 2026 then 2020 then 2018 ...). Output must be ascending by date.
+        _write_combined_drafts(krr, [
+            {"id": "estleg:Draft_2026", "title": "Eelnõu 2026",
+             "affected": "Atmosfääriõhu kaitse seadus", "pub": "2026-03-01"},
+            {"id": "estleg:Draft_2020", "title": "Eelnõu 2020",
+             "affected": "Atmosfääriõhu kaitse seadus", "pub": "2020-03-01"},
+            {"id": "estleg:Draft_2018", "title": "Eelnõu 2018",
+             "affected": "Atmosfääriõhu kaitse seadus", "pub": "2018-03-01"},
+            {"id": "estleg:Draft_2024", "title": "Eelnõu 2024",
+             "affected": "Atmosfääriõhu kaitse seadus", "pub": "2024-03-01"},
+        ])
+        rc = mod.main()
+        assert rc in (None, 0)
+        chain_doc = json.loads(
+            (krr / "amendments" / "amendments_atmosfaariohu_kaitse_seadus.json")
+            .read_text("utf-8")
+        )
+        links = [n for n in chain_doc["@graph"] if "estleg:amendingDraft" in n]
+        dates = [
+            (n.get("estleg:amendmentDate") or {}).get("@value") for n in links
+        ]
+        assert dates == sorted(dates), dates
+        assert dates == ["2018-03-01", "2020-03-01", "2024-03-01", "2026-03-01"]
+
+    def test_undated_draft_sorts_last(self, tmp_path, monkeypatch):
+        krr, rt, mod = _setup_main_env(tmp_path, monkeypatch)
+        _write_part(krr, "testseadus_x", "9450", "Testseadus X")
+        # One dated, one undated draft. Undated (no publicationDate) must land
+        # last via the 9999 sentinel.
+        (krr / "eelnoud" / "eelnoud_combined.jsonld").write_text(json.dumps({
+            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+                         "owl": "http://www.w3.org/2002/07/owl#"},
+            "@graph": [
+                {"@id": "estleg:Draft_Undated",
+                 "@type": ["estleg:DraftLegislation"],
+                 "rdfs:label": {"@value": "Kuupäevata", "@language": "et"},
+                 "estleg:draftType": {"@id": "estleg:DraftType_AmendmentBill"},
+                 "estleg:affectedLawName": "Testseadus X"},
+                {"@id": "estleg:Draft_Dated",
+                 "@type": ["estleg:DraftLegislation"],
+                 "rdfs:label": {"@value": "Kuupäevaga", "@language": "et"},
+                 "estleg:draftType": {"@id": "estleg:DraftType_AmendmentBill"},
+                 "estleg:affectedLawName": "Testseadus X",
+                 "estleg:publicationDate": {"@value": "2020-01-01",
+                                            "@type": "xsd:date"}},
+            ],
+        }), encoding="utf-8")
+        rc = mod.main()
+        assert rc in (None, 0)
+        chain_doc = json.loads(
+            (krr / "amendments" / "amendments_testseadus_x.json").read_text("utf-8")
+        )
+        links = [n for n in chain_doc["@graph"] if "estleg:amendingDraft" in n]
+        ids = [n["estleg:amendingDraft"]["@id"] for n in links]
+        assert ids == ["estleg:Draft_Dated", "estleg:Draft_Undated"], ids
+
+    def test_sorting_does_not_change_link_iris(self, tmp_path, monkeypatch):
+        # The #387 rationale: IRIs are id-based, so sorting preserves them.
+        # Run with two input orderings; the SET of AmendmentLink @ids matches.
+        def run(order: list[dict]) -> set[str]:
+            import generate_amendment_history as mod  # noqa: F401
+            sub = tmp_path / ("o" + str(len(order)) + "_" + order[0]["id"][-4:])
+            krr, rt, m = _setup_main_env(sub, monkeypatch)
+            _write_part(krr, "ordseadus", "9460", "Ordseadus")
+            _write_combined_drafts(krr, order)
+            assert m.main() in (None, 0)
+            doc = json.loads(
+                (krr / "amendments" / "amendments_ordseadus.json").read_text("utf-8")
+            )
+            return {
+                n["@id"] for n in doc["@graph"] if "estleg:amendingDraft" in n
+            }
+
+        a = [
+            {"id": "estleg:Draft_P", "title": "P", "affected": "Ordseadus",
+             "pub": "2021-01-01"},
+            {"id": "estleg:Draft_Q", "title": "Q", "affected": "Ordseadus",
+             "pub": "2019-01-01"},
+        ]
+        b = list(reversed(a))
+        assert run(a) == run(b)
+
+
+# ---------------------------------------------------------------------------
+# Issue #389 — estleg:isCurrentAmendment marker on the latest event
+# ---------------------------------------------------------------------------
+
+
+class TestIsCurrentAmendmentMarker:
+    """The latest XML event and the latest draft event (after sorting) must be
+    stamped ``estleg:isCurrentAmendment = true`` (issue #389)."""
+
+    def _is_current(self, node: dict) -> bool:
+        val = node.get("estleg:isCurrentAmendment")
+        return isinstance(val, dict) and val.get("@value") == "true"
+
+    def test_latest_xml_event_is_current(self, tmp_path, monkeypatch):
+        krr, rt, mod = _setup_main_env(tmp_path, monkeypatch)
+        _write_part(krr, "ksseadus", "9500", "KS seadus")
+        # Three coherent amendments at ascending effective dates.
+        _write_xml(rt, "9500", [
+            {"date": "2010-01-01", "eif": "2010-06-01",
+             "rt_aasta": "2010", "rt_nr": "1"},
+            {"date": "2024-01-01", "eif": "2024-06-01",
+             "rt_aasta": "2024", "rt_nr": "9"},
+            {"date": "2015-01-01", "eif": "2015-06-01",
+             "rt_aasta": "2015", "rt_nr": "5"},
+        ])
+        rc = mod.main()
+        assert rc in (None, 0)
+        chain_doc = json.loads(
+            (krr / "amendments" / "amendments_ksseadus.json").read_text("utf-8")
+        )
+        events = [
+            n for n in chain_doc["@graph"]
+            if "estleg:AmendmentEvent" in (n.get("@type") or [])
+        ]
+        current = [e for e in events if self._is_current(e)]
+        assert len(current) == 1, [e["@id"] for e in current]
+        # The current one is the latest by effective date (2024-06-01).
+        eif = (current[0].get("estleg:entryIntoForce") or {}).get("@value")
+        assert eif == "2024-06-01", current[0]
+        # Boolean is xsd-typed.
+        assert current[0]["estleg:isCurrentAmendment"]["@type"] == "xsd:boolean"
+
+    def test_latest_draft_event_is_current(self, tmp_path, monkeypatch):
+        krr, rt, mod = _setup_main_env(tmp_path, monkeypatch)
+        _write_part(krr, "draftonlyseadus", "9510", "Draftonly seadus")
+        _write_combined_drafts(krr, [
+            {"id": "estleg:Draft_Old", "title": "Vana",
+             "affected": "Draftonly seadus", "pub": "2018-01-01"},
+            {"id": "estleg:Draft_New", "title": "Uus",
+             "affected": "Draftonly seadus", "pub": "2025-01-01"},
+        ])
+        rc = mod.main()
+        assert rc in (None, 0)
+        chain_doc = json.loads(
+            (krr / "amendments" / "amendments_draftonlyseadus.json")
+            .read_text("utf-8")
+        )
+        links = [n for n in chain_doc["@graph"] if "estleg:amendingDraft" in n]
+        current = [ln for ln in links if self._is_current(ln)]
+        assert len(current) == 1, current
+        assert current[0]["estleg:amendingDraft"]["@id"] == "estleg:Draft_New"
+
+    def test_both_latest_xml_and_latest_draft_are_current(self, tmp_path, monkeypatch):
+        # A chain with BOTH kinds: exactly the latest XML event AND the latest
+        # draft event are flagged (two markers total — one per surface).
+        krr, rt, mod = _setup_main_env(tmp_path, monkeypatch)
+        _write_part(krr, "bothseadus", "9520", "Both seadus")
+        _write_xml(rt, "9520", [
+            {"date": "2010-01-01", "eif": "2010-06-01",
+             "rt_aasta": "2010", "rt_nr": "1"},
+            {"date": "2016-01-01", "eif": "2016-06-01",
+             "rt_aasta": "2016", "rt_nr": "2"},
+        ])
+        _write_combined_drafts(krr, [
+            {"id": "estleg:Draft_1", "title": "D1",
+             "affected": "Both seadus", "pub": "2022-01-01"},
+            {"id": "estleg:Draft_2", "title": "D2",
+             "affected": "Both seadus", "pub": "2026-01-01"},
+        ])
+        rc = mod.main()
+        assert rc in (None, 0)
+        chain_doc = json.loads(
+            (krr / "amendments" / "amendments_bothseadus.json").read_text("utf-8")
+        )
+        events = [
+            n for n in chain_doc["@graph"]
+            if "estleg:AmendmentEvent" in (n.get("@type") or [])
+        ]
+        current = [e for e in events if self._is_current(e)]
+        assert len(current) == 2, [e["@id"] for e in current]
+        kinds = {("draft" if "estleg:amendingDraft" in e else "xml") for e in current}
+        assert kinds == {"xml", "draft"}
+        # The flagged draft is the latest one (2026); the flagged XML is the
+        # latest effective (2016-06-01).
+        draft_cur = next(e for e in current if "estleg:amendingDraft" in e)
+        assert draft_cur["estleg:amendingDraft"]["@id"] == "estleg:Draft_2"
+
+
+# ---------------------------------------------------------------------------
+# Issue #376 — atomic save_json imported from estleg_common
+# ---------------------------------------------------------------------------
+
+
+class TestSaveJsonIsAtomic:
+    """``generate_amendment_history`` must use the atomic ``save_json`` from
+    ``estleg_common`` (tempfile + os.replace), not a local truncating
+    ``open('w')`` (issue #376)."""
+
+    def test_save_json_is_estleg_common_symbol(self):
+        import generate_amendment_history as mod
+        import estleg_common
+
+        assert mod.save_json is estleg_common.save_json
+
+    def test_save_json_writes_atomically_via_tempfile(self, tmp_path, monkeypatch):
+        # Force os.replace to raise mid-write: the destination must be left
+        # UNTOUCHED (no zero-byte truncation), proving the write is atomic and
+        # not the old in-place ``open(path,'w')`` that truncates first.
+        import generate_amendment_history as mod
+
+        target = tmp_path / "out.json"
+        target.write_text('{"existing": true}\n', encoding="utf-8")
+
+        import os as _os
+
+        def boom(_src, _dst):
+            raise OSError("disk full")
+
+        monkeypatch.setattr(_os, "replace", boom)
+        with pytest.raises(OSError):
+            mod.save_json(target, {"new": "data"})
+
+        # Original content intact — atomic write never truncated it.
+        assert json.loads(target.read_text("utf-8")) == {"existing": True}
+        # No stray tempfiles left behind in the directory.
+        leftovers = [p.name for p in tmp_path.iterdir() if p.name != "out.json"]
+        assert leftovers == [], leftovers
+
+    def test_save_json_output_format_matches_legacy(self, tmp_path):
+        # The atomic writer must keep the exact byte format the local one used
+        # (ensure_ascii=False, indent=2, trailing newline) so swapping it in
+        # doesn't re-diff every emitted file.
+        import generate_amendment_history as mod
+
+        p = tmp_path / "fmt.json"
+        mod.save_json(p, {"key": "väärtus", "n": 1})
+        text = p.read_text("utf-8")
+        assert text == '{\n  "key": "väärtus",\n  "n": 1\n}\n'

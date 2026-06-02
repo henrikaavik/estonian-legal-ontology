@@ -77,7 +77,11 @@ def slugify(text: str) -> str:
     text = text.lower().strip()
     text = re.sub(r"[^a-z0-9]+", "_", text)
     text = text.strip("_")
-    return text[:80]
+    # Issue #346: the 80-char truncation can land on an ``_`` (when char 81
+    # was the start of a word). Strip it so appending a standard suffix
+    # (``_Map_2026``, ``_Par_N``, ``_TopicScheme``) never yields a
+    # double-underscore IRI like ``…konventsiooni__Map_2026``.
+    return text[:80].rstrip("_")
 
 
 def build_law_slug_map(
@@ -177,6 +181,12 @@ _TRANSLIT_TABLE = str.maketrans(_ESTONIAN_TRANSLITERATION)
 
 def sanitize_id(value: str) -> str:
     s = value.replace(" ", "_")
+    # Issue #354: canonicalise a §-range separator BEFORE the non-ASCII strip.
+    # A ``paragrahvNr`` like ``1–94`` (en-dash) would otherwise lose the dash
+    # and concatenate to ``194`` — indistinguishable from a real §194. Map the
+    # dash to an explicit ``_to_`` so the range stays legible (``1_to_94``)
+    # and the IRI suffix becomes ``Par_1_to_94``.
+    s = re.sub(r"\s*[‐-―−]\s*", "_to_", s)
     # Transliterate Estonian diacritics before stripping non-ASCII
     s = s.translate(_TRANSLIT_TABLE)
     s = re.sub(r"[^0-9A-Za-z_]", "", s)
@@ -231,11 +241,62 @@ def _marker_pruned_text(el: ET.Element) -> str:
     return "".join(out)
 
 
+# Issue #368: how far back from the hard ``max_len`` cap ``collect_text`` may
+# scan for a sentence/word boundary before falling back to a raw slice. Keeps
+# the cut close to the cap (so the preview stays ~full) while avoiding a cut
+# mid-token.
+_SUMMARY_BOUNDARY_WINDOW = 60
+# Sentence terminators recognised by the boundary-aware truncation.
+_SENTENCE_END_CHARS = ".!?…"
+
+
+def _truncate_at_boundary(
+    text: str, max_len: int, *, window: int = _SUMMARY_BOUNDARY_WINDOW
+) -> str:
+    """Return ``text`` cut to at most ``max_len`` chars on a clean boundary.
+
+    Issue #368: a raw ``text[:max_len]`` slice severs the summary mid-word
+    (``…kohustatud arvut``). Instead, when the text is longer than the cap
+    we look back up to ``window`` characters for a sentence terminator
+    (``.!?…`` followed by whitespace) and, failing that, the last
+    whitespace, cutting there. Only if no boundary exists in the window do
+    we fall back to the hard slice so the cap is always honoured.
+    """
+    if len(text) <= max_len:
+        return text
+    head = text[:max_len]
+    lo = max(0, max_len - window)
+    # Prefer a sentence boundary: a terminator inside the window whose next
+    # char (still within ``head``) is whitespace.
+    best_sentence = -1
+    for i in range(max_len - 1, lo - 1, -1):
+        if head[i] in _SENTENCE_END_CHARS:
+            nxt = text[i + 1] if i + 1 < len(text) else " "
+            if nxt.isspace():
+                best_sentence = i + 1
+                break
+    if best_sentence != -1:
+        return head[:best_sentence].rstrip()
+    # Else cut at the last whitespace within the window.
+    space = head.rfind(" ", lo)
+    if space != -1:
+        return head[:space].rstrip()
+    # No boundary available: honour the cap with a raw slice.
+    return head
+
+
 def collect_text(el: ET.Element, max_len: int = 500) -> str:
     parts: list[str] = []
     for child in _iter_text_nodes(el):
         tag = ln(child.tag)
-        if tag in ("loige", "lauseOsa", "lause", "tavatekst"):
+        # Issue #298: do NOT include ``loige`` here. A ``loige`` container's
+        # text is the concatenation of its own ``tavatekst``/``lause``
+        # descendants, so matching both the container and its leaves doubles
+        # every multi-lõige body (and routes ``_marker_pruned_text`` over the
+        # whole subtree, leaking raw ``<HTMLKonteiner>`` CDATA). The leaf tags
+        # alone capture the full text exactly once — mirroring the fallback in
+        # ``collect_full_text``.
+        if tag in ("lauseOsa", "lause", "tavatekst"):
             txt = _marker_pruned_text(child).strip()
             txt = re.sub(r"\s+", " ", txt)
             if txt and len(txt) > 3:
@@ -243,7 +304,8 @@ def collect_text(el: ET.Element, max_len: int = 500) -> str:
         if len(" ".join(parts)) >= max_len:
             break
     joined = " ".join(parts)
-    return joined[:max_len] if joined else ""
+    # Issue #368: boundary-aware cut instead of a raw ``joined[:max_len]``.
+    return _truncate_at_boundary(joined, max_len) if joined else ""
 
 
 def provision_summary(text: str, title: str, display: str) -> str:
@@ -350,7 +412,9 @@ def _chapter_id_suffix(ch_el: ET.Element, ch_nr: str, ch_title: str) -> str:
     """
     if ch_nr:
         return _structural_id_suffix(ch_el, ch_nr, "peatykkNr")
-    return sanitize_id(ch_title[:20])
+    # Issue #354: the 20-char title truncation can leave a trailing ``_``
+    # (``…KASUTAMINE_``) that near-collides with a real sibling suffix.
+    return sanitize_id(ch_title[:20]).rstrip("_") or "Unknown"
 
 
 def _division_id_suffix(jagu_el: ET.Element, j_nr: str, j_title: str) -> str:
@@ -361,7 +425,10 @@ def _division_id_suffix(jagu_el: ET.Element, j_nr: str, j_title: str) -> str:
     """
     if j_nr:
         return _structural_id_suffix(jagu_el, j_nr, "jaguNr")
-    return sanitize_id(j_title[:20])
+    # Issue #354: strip a trailing ``_`` left by the 20-char title cut so a
+    # title-only division does not produce ``…KASUTAMINE_`` colliding with a
+    # ``…KASUTAMINE`` sibling.
+    return sanitize_id(j_title[:20]).rstrip("_") or "Unknown"
 
 
 def _paragraph_id_suffix(par_el: ET.Element) -> str:
@@ -1101,6 +1168,10 @@ def generate_law_jsonld(
     par_to_cluster: dict[int, str] = {}
     clusters = []
     structural_id_counts: Counter[str] = Counter()
+    # Issue #375: chapters that own BOTH a Division and direct-child
+    # provisions — their direct provisions must be appended to the chapter's
+    # ``estleg:hasPart`` (resolved after provision IRIs are minted below).
+    chapters_with_divisions: list[tuple[dict, str]] = []
     # Issue #166: walk peatykks at any depth, but mapping each paragrahv
     # only to its IMMEDIATE enclosing peatykk/jagu. ``root.iter()`` on
     # its own — combined with ``ch.iter()`` for paragrahvs below — would
@@ -1212,11 +1283,61 @@ def generate_law_jsonld(
                         for jp in _walk_paragraphs_direct(jagu_el):
                             par_to_cluster[id(jp)] = cluster_id
                             par_to_container[id(jp)] = div_id
+                    else:
+                        # Issue #371 (gap 1): an UNNAMED <jagu> (no number and
+                        # no title) emits no Division node, but its paragraphs
+                        # are still skipped by ``_walk_paragraphs_direct(ch)``
+                        # (which stops at the jagu block). Without this branch
+                        # they would get neither a container nor a cluster.
+                        # Treat the nameless jagu as transparent: its
+                        # paragraphs belong directly to the chapter.
+                        for jp in _walk_paragraphs_direct(jagu_el):
+                            par_to_cluster[id(jp)] = cluster_id
+                            par_to_container[id(jp)] = chapter_id
 
                 if division_ids:
                     chapter_node["estleg:hasPart"] = [{"@id": d} for d in division_ids]
+                    # Issue #375: remember this chapter so its direct-child
+                    # provisions (those with isPartOf == chapter, i.e. not in a
+                    # division) can be appended to hasPart once their IRIs exist.
+                    chapters_with_divisions.append((chapter_node, chapter_id))
 
                 graph.append(chapter_node)
+
+    # Issue #371 (gap 2): in a structuredBody law WITH chapters, paragraphs
+    # that appear BEFORE the first <peatykk> (a law preamble) are never visited
+    # by the chapter loop above, so they end up with no container and no
+    # cluster. Give every still-unassigned paragraph a dedicated fallback
+    # Chapter + TopicCluster so it stays reachable via isPartOf / requestedCluster.
+    if clusters:
+        preamble_pars = [p for p in paragrahvid if id(p) not in par_to_container]
+        if preamble_pars:
+            preamble_label = "Sissejuhatavad sätted"
+            preamble_cluster_id = _dedupe_structural_id(
+                f"estleg:Cluster_{prefix}_Preamble", structural_id_counts
+            )
+            preamble_chapter_id = _dedupe_structural_id(
+                f"estleg:Chapter_{prefix}_Preamble", structural_id_counts
+            )
+            clusters.append(
+                {"id": preamble_cluster_id, "label": preamble_label, "count": 0}
+            )
+            graph.append({
+                "@id": preamble_cluster_id,
+                "@type": ["owl:NamedIndividual", "estleg:TopicCluster", "skos:Concept"],
+                "rdfs:label": preamble_label,
+                "skos:prefLabel": preamble_label,
+                "skos:inScheme": {"@id": f"estleg:{prefix}_TopicScheme"},
+            })
+            graph.append({
+                "@id": preamble_chapter_id,
+                "@type": ["owl:NamedIndividual", "estleg:Chapter"],
+                "rdfs:label": preamble_label,
+                "owl:sameAs": {"@id": preamble_cluster_id},
+            })
+            for p in preamble_pars:
+                par_to_container[id(p)] = preamble_chapter_id
+                par_to_cluster[id(p)] = preamble_cluster_id
 
     # Issue #87: Create fallback cluster for laws without any peatükk chapters
     if not clusters and paragrahvid:
@@ -1268,6 +1389,9 @@ def generate_law_jsonld(
     # Add paragraph nodes
     seen_ids: set[str] = set()
     paragraph_suffix_counts: Counter[str] = Counter()
+    # Issue #375: paragraph element identity -> minted IRI, so the chapter
+    # hasPart post-pass can resolve direct-child provisions to their @ids.
+    par_iri_by_elem: dict[int, str] = {}
     # Issue #132: every estleg:Subsection IRI emitted in this file —
     # a collision (loigeNr/ylaIndeks/kuvatavNr clash) fails fast.
     seen_subsection_ids: set[str] = set()
@@ -1294,6 +1418,7 @@ def generate_law_jsonld(
                 "after duplicate suffix disambiguation."
             )
         seen_ids.add(p_id)
+        par_iri_by_elem[id(p)] = p_id
 
         # Issue #253: cluster/chapter assignment is by element identity, so a
         # superscript paragraph (``§ 42¹``) lands in its own chapter rather
@@ -1353,6 +1478,23 @@ def generate_law_jsonld(
 
         graph.append(node)
         graph.extend(subsection_nodes)
+
+    # Issue #375: a chapter that owns BOTH a Division and direct-child
+    # provisions previously listed only the Division @ids in hasPart, leaving
+    # its direct provisions reachable via isPartOf but absent from hasPart.
+    # Append those provision IRIs so the link is symmetric.
+    for chapter_node, chapter_id in chapters_with_divisions:
+        direct_iris = [
+            par_iri_by_elem[id(p)]
+            for p in paragrahvid
+            if par_to_container.get(id(p)) == chapter_id
+            and id(p) in par_iri_by_elem
+        ]
+        if direct_iris:
+            chapter_node.setdefault("estleg:hasPart", [])
+            chapter_node["estleg:hasPart"].extend(
+                {"@id": iri} for iri in direct_iris
+            )
 
     return {"@context": CONTEXT, "@graph": graph}
 
@@ -1450,7 +1592,12 @@ def generate_multipart_law(
         par_min = min(par_numbers) if par_numbers else "?"
         par_max = max(par_numbers) if par_numbers else "?"
 
-        ontology_id = f"estleg:{prefix}_Osa{osa_nr}_{par_min}_{par_max}"
+        # Issue #309: the per-osa act @id must be snapshot-stable. Encoding the
+        # §-range (``_{par_min}_{par_max}``) made the @id shift whenever RT
+        # inserts/removes a paragraph, silently dropping every enrichment keyed
+        # on the old IRI (merge_existing_enrichments). The §-range lives only in
+        # ``rdfs:label`` now; the @id is keyed on the stable osa number alone.
+        ontology_id = f"estleg:{prefix}_Osa{sanitize_id(osa_nr)}"
         class_id = f"estleg:LegalProvision_{slug}_osa{osa_nr}"
 
         # Issue #89: Mark file-level ontology node with estleg:Part type
@@ -1486,6 +1633,9 @@ def generate_multipart_law(
         par_to_cluster: dict[int, str] = {}
         clusters = []
         structural_id_counts: Counter[str] = Counter()
+        # Issue #375: chapters owning BOTH a Division and direct-child
+        # provisions, resolved into hasPart after provision IRIs are minted.
+        chapters_with_divisions: list[tuple[dict, str]] = []
         part_concept_id = f"estleg:Cluster_{prefix}_{osa_nr}_Part"
         scheme_id = f"estleg:{prefix}_Osa{osa_nr}_TopicScheme"
         # Issue #166: walk peatykk children directly so paragrahvs that
@@ -1583,11 +1733,63 @@ def generate_multipart_law(
                             for jp in _walk_paragraphs_direct(jagu_el):
                                 par_to_cluster[id(jp)] = cluster_id
                                 par_to_container[id(jp)] = div_id
+                        else:
+                            # Issue #371 (gap 1): an UNNAMED <jagu> emits no
+                            # Division, yet its paragraphs are skipped by
+                            # ``_walk_paragraphs_direct(ch)``. Treat the
+                            # nameless jagu as transparent so its paragraphs
+                            # still get the chapter as their container/cluster.
+                            for jp in _walk_paragraphs_direct(jagu_el):
+                                par_to_cluster[id(jp)] = cluster_id
+                                par_to_container[id(jp)] = chapter_id
 
                     if division_ids:
                         chapter_node["estleg:hasPart"] = [{"@id": d} for d in division_ids]
+                        # Issue #375: resolve direct-child provisions into
+                        # hasPart after their IRIs are minted (below).
+                        chapters_with_divisions.append((chapter_node, chapter_id))
 
                     graph.append(chapter_node)
+
+        # Issue #371 (gap 2): paragraphs before the first <peatykk> in this osa
+        # (an osa preamble) are never visited by the chapter loop. When the osa
+        # otherwise has chapters, give every still-unassigned paragraph a
+        # dedicated fallback Chapter + TopicCluster (mirrors the single-file
+        # path) so it stays reachable via isPartOf / requestedCluster.
+        if clusters:
+            preamble_pars = [
+                p for p in paragrahvid if id(p) not in par_to_container
+            ]
+            if preamble_pars:
+                preamble_label = "Sissejuhatavad sätted"
+                preamble_cluster_id = _dedupe_structural_id(
+                    f"estleg:Cluster_{prefix}_{osa_nr}_Preamble",
+                    structural_id_counts,
+                )
+                preamble_chapter_id = _dedupe_structural_id(
+                    f"estleg:Chapter_{prefix}_{osa_nr}_Preamble",
+                    structural_id_counts,
+                )
+                clusters.append(
+                    {"id": preamble_cluster_id, "label": preamble_label, "count": 0}
+                )
+                graph.append({
+                    "@id": preamble_cluster_id,
+                    "@type": ["owl:NamedIndividual", "estleg:TopicCluster", "skos:Concept"],
+                    "rdfs:label": preamble_label,
+                    "skos:prefLabel": preamble_label,
+                    "skos:inScheme": {"@id": scheme_id},
+                    "skos:broader": {"@id": part_concept_id},
+                })
+                graph.append({
+                    "@id": preamble_chapter_id,
+                    "@type": ["owl:NamedIndividual", "estleg:Chapter"],
+                    "rdfs:label": preamble_label,
+                    "owl:sameAs": {"@id": preamble_cluster_id},
+                })
+                for p in preamble_pars:
+                    par_to_container[id(p)] = preamble_chapter_id
+                    par_to_cluster[id(p)] = preamble_cluster_id
 
         # Issue #87: Fallback cluster for osa without peatükk chapters
         if not clusters and paragrahvid:
@@ -1660,6 +1862,9 @@ def generate_multipart_law(
 
         seen_ids: set[str] = set()
         paragraph_suffix_counts: Counter[str] = Counter()
+        # Issue #375: paragraph element identity -> minted IRI for the
+        # chapter hasPart post-pass.
+        par_iri_by_elem: dict[int, str] = {}
         # Issue #132: Subsection IRIs emitted within this osa file.
         seen_subsection_ids: set[str] = set()
         for p in paragrahvid:
@@ -1681,6 +1886,7 @@ def generate_multipart_law(
                     "disambiguation."
                 )
             seen_ids.add(p_id)
+            par_iri_by_elem[id(p)] = p_id
 
             # Issue #253: cluster assignment by element identity.
             cluster_ref = par_to_cluster.get(id(p))
@@ -1730,6 +1936,22 @@ def generate_multipart_law(
                 ]
             graph.append(node)
             graph.extend(subsection_nodes)
+
+        # Issue #375: append each chapter's direct-child provision IRIs to its
+        # hasPart so a chapter with both a Division and direct provisions links
+        # both (symmetric with isPartOf).
+        for chapter_node, chapter_id in chapters_with_divisions:
+            direct_iris = [
+                par_iri_by_elem[id(p)]
+                for p in paragrahvid
+                if par_to_container.get(id(p)) == chapter_id
+                and id(p) in par_iri_by_elem
+            ]
+            if direct_iris:
+                chapter_node.setdefault("estleg:hasPart", [])
+                chapter_node["estleg:hasPart"].extend(
+                    {"@id": iri} for iri in direct_iris
+                )
 
         filename = f"{slug}_osa{osa_nr}_peep.json"
         results.append((filename, {"@context": CONTEXT, "@graph": graph}))

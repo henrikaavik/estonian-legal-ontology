@@ -264,8 +264,8 @@ See [docs/SCHEMA_REFERENCE.md#kov-entity-model-layer-1](docs/SCHEMA_REFERENCE.md
   temporal, legal-concepts, amendment-history)
 - Layer 2b: Cross-references + Inverse — **COMPLETE** (`issuedUnder`,
   `implementsCitation`, `implementedBy`, KOV body-text scope)
-- Layer 2c: Semantic resolvers — **PENDING** (sanctions, institutional
-  competence, court-provision-links)
+- Layer 2c: Semantic resolvers — **COMPLETE** (sanctions, institutional
+  competence, court-provision-links; shipped in #250)
 
 Layer 2a (five pipelines) processes the 11,059 KOV act files end-to-end:
 
@@ -293,10 +293,10 @@ Per-pipeline coverage reports at `krr_outputs/reports/kov/`. See the
 and [Layer 2b plan](docs/superpowers/plans/2026-05-03-kov-integration-layer2b.md)
 for details.
 
-Layer 2c (sanctions, institutional competence, court-provision-links) is
-the remaining piece. The 4 KOV-not-applicable pipelines (similarity,
-draft-impact, harmonisation-links, transposition-mapping) remain
-laws-and-state-only by design.
+Layer 2c (sanctions, institutional competence, court-provision-links)
+shipped in #250 and is now **COMPLETE**. The 4 KOV-not-applicable
+pipelines (similarity, draft-impact, harmonisation-links,
+transposition-mapping) remain laws-and-state-only by design.
 
 ### Supreme Court Decisions (Riigikohus)
 
@@ -492,7 +492,7 @@ python3 scripts/generate_similarity_index.py
 │   ├── INTEGRATION_IDEAS.md  # Integration improvement ideas
 │   └── DUPLICATE_IDS_REPORT.md # Cross-file @id collision audit
 ├── shacl/                    # SHACL validation shapes
-├── scripts/                  # Generation and validation scripts (25 scripts)
+├── scripts/                  # Generation and validation scripts (41 total; representative subset shown below)
 │   ├── generate_all_laws.py           # Enacted laws generator
 │   ├── generate_draft_legislation.py  # Draft legislation generator
 │   ├── generate_court_decisions.py    # Court decisions generator
@@ -526,7 +526,7 @@ python3 scripts/generate_similarity_index.py
 
 ## Schema
 
-The ontology uses the `estleg` namespace (`https://data.riik.ee/ontology/estleg#`) with 23 core classes:
+The ontology uses the `estleg` namespace (`https://data.riik.ee/ontology/estleg#`) with 28 core classes:
 
 **Enacted Law:**
 - **`estleg:LegalProvision`** -- Individual legal provisions (paragraphs, sections)

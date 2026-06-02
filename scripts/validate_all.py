@@ -1841,6 +1841,279 @@ def validate_institution_registry_consistency(krr_dir: Path = KRR_DIR, repo_root
         )
 
 
+# ---------------------------------------------------------------------------
+# Regen-pending staleness guards (#366, #348, #384).
+#
+# The underlying corpus for these three checks is currently stale: the
+# fixes live in the generators but the heavy/network regen step that
+# rewrites the artifacts has not been run on this tree. A hard-fail gate
+# would therefore turn CI red on a known-deferred task. These guards are
+# deliberately implemented as **warnings** (via `warn()`, never
+# `error()`) so the staleness stays visible — and a *new* regression is
+# still surfaced — without breaking the green build. Each carries a
+# `# TODO: promote to error()` marker to flip once the regen lands.
+# ---------------------------------------------------------------------------
+
+# Object-property pairs whose `owl:inverseOf` axiom PR #297 added to
+# `controlled_vocabulary.jsonld`. The combined artifact must mirror each
+# forward property's inverse so OWL reasoners loading only the combined
+# can materialise the pair. Keyed by the forward property whose node
+# carries `owl:inverseOf`; the value is the expected inverse IRI (#366).
+TBOX_INVERSE_OF_PAIRS: dict[str, str] = {
+    "estleg:amendedBy": "estleg:amends",
+    "estleg:interpretedBy": "estleg:interpretsLaw",
+    "estleg:references": "estleg:referencedBy",
+}
+
+# EULegislation provenance/linkage predicates that the current
+# `generate_eu_legislation.py` emits. An artifact that predates those
+# commits will have none of them, so a sample with 0% presence is the
+# stale-artifact signal (#348).
+EU_PROVENANCE_FIELDS: tuple[str, ...] = (
+    "owl:sameAs",
+    "dcterms:source",
+    "eli:id_local",
+)
+
+# How many EULegislation nodes to spot-sample for `EU_PROVENANCE_FIELDS`
+# presence. Sampling (rather than scanning all ~33k nodes) keeps the
+# guard cheap; the staleness signal is uniform (all-or-nothing per regen)
+# so a small deterministic prefix sample is representative (#348).
+EU_PROVENANCE_SAMPLE_SIZE = 50
+
+# Minimum events-to-unique ratio before an amendment chain is flagged as
+# materially bloated. A healthy chain has ratio ~1.0 (one event per
+# unique `(rtReference, entryIntoForce)` pair); the pre-dedup artifacts
+# run 3-50x. 1.5 leaves generous headroom for benign near-duplicates
+# while still catching the regression (#384).
+AMENDMENT_BLOAT_RATIO_THRESHOLD = 1.5
+
+# Ignore tiny chains when ranking offenders: a 2-event/1-unique chain is
+# ratio 2.0 but only 1 duplicate, which is noise. The overall corpus
+# ratio is still computed across every chain.
+AMENDMENT_BLOAT_MIN_DUPLICATES = 2
+
+
+def _amendment_pair_key(node: dict) -> tuple:
+    """Return the dedup-invariant key for one `AmendmentEvent` node.
+
+    The invariant is the `(estleg:rtReference, estleg:entryIntoForce)`
+    pair (#384). `estleg:entryIntoForce` is an xsd:date value object, so
+    its `@value` is unwrapped; `estleg:rtReference` is a plain string.
+    """
+    rt = node.get("estleg:rtReference")
+    eif = node.get("estleg:entryIntoForce")
+    if isinstance(eif, dict):
+        eif = eif.get("@value")
+    return (rt, eif)
+
+
+def validate_tbox_inverse_parity(krr_dir: Path = KRR_DIR):
+    """Warn when `combined_ontology.jsonld` omits T-Box inverse axioms (#366).
+
+    PR #297 added `owl:inverseOf` to `estleg:amendedBy`/`interpretedBy`/
+    `references` in `controlled_vocabulary.jsonld`, but the parity gate
+    only compares provision-data fields (`PROVISION_PARITY_FIELDS`), so a
+    combined artifact that predates the rebuild silently lacks those
+    axioms. We compare the inverse declared on each forward-property node
+    in the vocabulary against the same node in the combined and warn on
+    any that did not propagate.
+
+    NOTE: currently a *warning* on purpose — the combined is stale
+    pending regen. # TODO: promote to error() after corpus regen (#366).
+    """
+    print("\n--- T-Box Inverse Parity ---")
+    combined_path = krr_dir / "combined_ontology.jsonld"
+    vocab_path = krr_dir / "controlled_vocabulary.jsonld"
+    if not combined_path.exists() or not vocab_path.exists():
+        warn(
+            "T-Box inverse parity: combined_ontology.jsonld or "
+            "controlled_vocabulary.jsonld not found"
+        )
+        return
+    combined_doc = validate_json_syntax(combined_path)
+    vocab_doc = validate_json_syntax(vocab_path)
+    if not isinstance(combined_doc, dict) or not isinstance(vocab_doc, dict):
+        return
+
+    def _inverse_of(doc: dict, prop_id: str) -> str | None:
+        for node in doc.get("@graph", []):
+            if not isinstance(node, dict) or node.get("@id") != prop_id:
+                continue
+            value = node.get("owl:inverseOf")
+            if isinstance(value, dict):
+                return value.get("@id")
+            if isinstance(value, str):
+                return value
+            return None
+        return None
+
+    missing: list[str] = []
+    for prop_id, expected_inverse in TBOX_INVERSE_OF_PAIRS.items():
+        vocab_inverse = _inverse_of(vocab_doc, prop_id)
+        if vocab_inverse != expected_inverse:
+            # The vocabulary itself does not declare the expected axiom —
+            # not a combined-staleness signal, skip (the vocabulary is
+            # the source of truth here).
+            continue
+        combined_inverse = _inverse_of(combined_doc, prop_id)
+        if combined_inverse != expected_inverse:
+            missing.append(f"{prop_id} owl:inverseOf {expected_inverse}")
+
+    if missing:
+        warn(
+            f"combined_ontology.jsonld: missing {len(missing)} owl:inverseOf "
+            f"T-Box axiom(s) declared in controlled_vocabulary.jsonld: "
+            f"{', '.join(missing)} — rebuild the combined to propagate them"
+        )
+    else:
+        print(
+            f"  OK: {len(TBOX_INVERSE_OF_PAIRS)} owl:inverseOf axioms present "
+            f"in combined_ontology.jsonld"
+        )
+
+
+def validate_eu_provenance_fields(krr_dir: Path = KRR_DIR):
+    """Warn when sampled EULegislation nodes lack provenance fields (#348).
+
+    `generate_eu_legislation.py` now stamps `owl:sameAs`/`dcterms:source`/
+    `eli:id_local` on every `EULegislation` node, but the committed
+    `eurlex/*_peep.json` artifacts predate those commits, so 100% of
+    nodes lack them. No existing gate spot-samples emitted fields, so the
+    divergence is silent. We sample a small deterministic prefix of the
+    EU nodes and report the per-field missing counts.
+
+    NOTE: currently a *warning* on purpose — the EU artifacts are stale
+    pending regen. # TODO: promote to error() after corpus regen (#348).
+    """
+    print("\n--- EU Provenance Fields ---")
+    peep_files = sorted((krr_dir / "eurlex").glob("*_peep.json"))
+    if not peep_files:
+        warn("EU provenance fields: no eurlex/*_peep.json files found")
+        return
+
+    sampled = 0
+    missing_counts: dict[str, int] = {f: 0 for f in EU_PROVENANCE_FIELDS}
+    for path in peep_files:
+        if sampled >= EU_PROVENANCE_SAMPLE_SIZE:
+            break
+        doc = validate_json_syntax(path)
+        if not isinstance(doc, dict):
+            continue
+        for node in doc.get("@graph", []):
+            if sampled >= EU_PROVENANCE_SAMPLE_SIZE:
+                break
+            if not isinstance(node, dict):
+                continue
+            if "estleg:EULegislation" not in node_types(node):
+                continue
+            sampled += 1
+            for field_name in EU_PROVENANCE_FIELDS:
+                if field_name not in node:
+                    missing_counts[field_name] += 1
+
+    if sampled == 0:
+        warn("EU provenance fields: no EULegislation nodes found to sample")
+        return
+
+    deficient = {f: c for f, c in missing_counts.items() if c}
+    if deficient:
+        summary = ", ".join(
+            f"{f} missing on {c}/{sampled}" for f, c in deficient.items()
+        )
+        warn(
+            f"eurlex/*_peep.json: sampled {sampled} EULegislation node(s) lack "
+            f"provenance fields ({summary}) — artifact predates the generator "
+            f"that emits owl:sameAs/dcterms:source/eli:id_local; re-run "
+            f"scripts/generate_eu_legislation.py"
+        )
+    else:
+        print(
+            f"  OK: {sampled} sampled EULegislation nodes carry "
+            f"owl:sameAs/dcterms:source/eli:id_local"
+        )
+
+
+def validate_amendment_duplicate_bloat(krr_dir: Path = KRR_DIR):
+    """Warn when amendment chains have duplicate `AmendmentEvent` bloat (#384).
+
+    PR #297 added `_dedupe_amendments` to `generate_amendment_history.py`,
+    but `krr_outputs/amendments/` was last regenerated before the fix, so
+    the pre-fix code minted one `AmendmentEvent` per `<muutmismärge>`
+    block — the same amending act repeated once per amended provision.
+    The dedup invariant is one event per unique
+    `(estleg:rtReference, estleg:entryIntoForce)` pair, so a chain with
+    materially more events than unique pairs is bloated. We report the
+    top offending chains and the overall corpus duplicate ratio.
+
+    NOTE: currently a *warning* on purpose — the amendment chains are
+    stale pending regen. # TODO: promote to error() after corpus regen (#384).
+    """
+    print("\n--- Amendment Duplicate Bloat ---")
+    chain_files = sorted((krr_dir / "amendments").glob("*.json"))
+    if not chain_files:
+        warn("amendment duplicate bloat: no amendments/*.json files found")
+        return
+
+    total_events = 0
+    total_unique = 0
+    offenders: list[tuple[float, int, int, str]] = []  # (ratio, events, unique, name)
+    for path in chain_files:
+        doc = validate_json_syntax(path)
+        if not isinstance(doc, dict):
+            continue
+        events = [
+            node
+            for node in doc.get("@graph", [])
+            if isinstance(node, dict)
+            and "estleg:AmendmentEvent" in node_types(node)
+        ]
+        if not events:
+            continue
+        unique_pairs = {_amendment_pair_key(node) for node in events}
+        event_count = len(events)
+        unique_count = len(unique_pairs)
+        total_events += event_count
+        total_unique += unique_count
+        duplicates = event_count - unique_count
+        ratio = event_count / unique_count if unique_count else float(event_count)
+        if (
+            ratio >= AMENDMENT_BLOAT_RATIO_THRESHOLD
+            and duplicates >= AMENDMENT_BLOAT_MIN_DUPLICATES
+        ):
+            offenders.append((ratio, event_count, unique_count, path.name))
+
+    if total_events == 0:
+        warn("amendment duplicate bloat: no AmendmentEvent nodes found")
+        return
+
+    overall_ratio = total_events / total_unique if total_unique else float(total_events)
+    if offenders:
+        offenders.sort(reverse=True)
+        dup_pct = (total_events - total_unique) / total_events * 100
+        warn(
+            f"krr_outputs/amendments/: {len(offenders)} chain(s) have more "
+            f"AmendmentEvent nodes than unique (rtReference, entryIntoForce) "
+            f"pairs — {total_events} events vs {total_unique} unique "
+            f"({dup_pct:.1f}% duplicates, overall ratio {overall_ratio:.2f}x); "
+            f"re-run scripts/generate_amendment_history.py to apply the "
+            f"_dedupe_amendments fix"
+        )
+        for ratio, event_count, unique_count, name in offenders[:10]:
+            print(
+                f"    {name}: {event_count} events / {unique_count} unique "
+                f"({ratio:.1f}x)"
+            )
+        if len(offenders) > 10:
+            print(f"    ... and {len(offenders) - 10} more bloated chains")
+    else:
+        print(
+            f"  OK: {total_events} AmendmentEvent nodes across "
+            f"{len(chain_files)} chains, no material duplicate bloat "
+            f"(overall ratio {overall_ratio:.2f}x)"
+        )
+
+
 def validate_id_uniqueness(all_ids: dict[str, list[str]]):
     print("\n--- @id Uniqueness ---")
     # Shared ontology class definitions are expected to appear in multiple files
@@ -1963,6 +2236,12 @@ def main(argv: list[str] | None = None):
     validate_combined_ontology(krr_dir)
     validate_subcorpus_combined_ontologies(krr_dir)
     validate_subcorpus_index_counts(krr_dir, allow_missing_index=allow_missing_index)
+    # Regen-pending staleness guards (#366, #348, #384). These emit
+    # warnings only (see each function's docstring) so they make stale
+    # artifacts visible without failing the green build pre-regen.
+    validate_tbox_inverse_parity()
+    validate_eu_provenance_fields()
+    validate_amendment_duplicate_bloat()
     validate_metadata_catalog(krr_dir, allow_missing_index=allow_missing_index)
     validate_institution_duplicates(krr_dir)
     validate_institution_registry_consistency(krr_dir)

@@ -39,7 +39,12 @@ from collections import defaultdict
 from decimal import Decimal, InvalidOperation
 from pathlib import Path
 
-from estleg_common import BUILD_EVALUATION_DATE, iter_peep_files, jsonld_text
+from estleg_common import (
+    BUILD_EVALUATION_DATE,
+    iter_peep_files,
+    jsonld_text,
+    save_json,
+)
 from kov_pipeline_coverage import (
     PINNED_RUN_TIMESTAMP,
     CoverageReport,
@@ -118,10 +123,14 @@ SANCTION_TYPE_LABELS = {
 }
 
 
-def save_json(filepath: Path, doc: dict) -> None:
-    with open(filepath, "w", encoding="utf-8") as f:
-        json.dump(doc, f, ensure_ascii=False, indent=2)
-        f.write("\n")
+# Issue #376: the local non-atomic ``save_json`` (a bare
+# ``open(filepath, "w")`` that truncates to 0 bytes before writing) is
+# replaced by the atomic ``estleg_common.save_json`` (tempfile +
+# ``os.replace``), imported at module top. A SIGINT/OOM/disk-full mid-write
+# no longer leaves a zero-byte/partial JSON that ``load_json`` would
+# silently swallow on the next run. The imported name still lives in this
+# module's namespace, so existing ``monkeypatch.setattr(mod, "save_json",
+# ...)`` test stubs continue to work.
 
 
 def load_json(filepath: Path) -> dict | None:
@@ -159,6 +168,12 @@ def _provision_ref(node: dict) -> str:
     is empty, so returning ``""`` is the cleaner contract.
     """
     par = node.get("estleg:paragrahv", "")
+    # Issue #302: ``estleg:paragrahv`` is stored WITH the section sign
+    # (e.g. ``"\u00a7 53."``). The label template below already prepends a
+    # ``\u00a7``, so without stripping we emit a doubled ``"AS \u00a7 \u00a7 53."``.
+    # Strip a leading ``\u00a7`` (and surrounding whitespace) so the single
+    # template ``\u00a7`` is the only one that survives.
+    par = par.lstrip("\u00a7").strip()
     law_abbr = node.get("estleg:lawAbbreviation", "")
     if not law_abbr:
         # Try to extract from @id  e.g. "estleg:KarS_p121"
@@ -276,8 +291,13 @@ def extract_imprisonment(text: str) -> list[dict]:
     )
 
     # Range: "kuue- kuni viieteistaastase vangistusega"
+    # Issue #320 (split numeral + space: "kümne aastase") and #372
+    # (hyphenated numeral: "kahe- kuni kaheksa-aastase"): allow an
+    # optional hyphen and optional whitespace between the upper-bound
+    # numeral and ``aasta`` (``-?\s*``), so compound, split, and
+    # hyphenated surface forms all match.
     range_pat = (
-        rf"({_NUMBER_ALT})-?\s+kuni\s+({_NUMBER_ALT})aasta(?:se)?\s+vangistus"
+        rf"({_NUMBER_ALT})-?\s+kuni\s+({_NUMBER_ALT})-?\s*aasta(?:se)?\s+vangistus"
     )
     for m in re.finditer(range_pat, text, re.IGNORECASE):
         min_val = _parse_number(m.group(1))
@@ -292,7 +312,10 @@ def extract_imprisonment(text: str) -> list[dict]:
             })
 
     # Max only (word): "kuni viieaastase vangistusega"
-    max_pat = rf"kuni\s+({_NUMBER_ALT})aasta(?:se)?\s+vangistus"
+    # Issue #320/#372: allow an optional hyphen and optional whitespace
+    # between the numeral and ``aasta`` (e.g. "kümne aastase",
+    # "kaheksateist aastase", "kaheksa-aastase").
+    max_pat = rf"kuni\s+({_NUMBER_ALT})-?\s*aasta(?:se)?\s+vangistus"
     for m in re.finditer(max_pat, text, re.IGNORECASE):
         val = _parse_number(m.group(1))
         if val is not None and not _already(f"{val} years"):
@@ -329,12 +352,25 @@ def extract_imprisonment(text: str) -> list[dict]:
                 "max_penalty": penalty,
             })
 
-    # "karistatakse ... N ... aastase vangistusega" (digit fallback)
+    # "karistatakse ... kuni N aastase vangistusega" (digit fallback)
+    #
+    # Issue #301: the previous pattern ``karistatakse.*?(\d+).*?aasta``
+    # used greedy ``.*?`` that crossed sentence boundaries and grabbed
+    # the first digit before any ``aasta`` — typically an RT citation
+    # year ("RT I 2002 56 350" → "2002 years") or a cross-ref paragraph
+    # number ("§-s 118" → "118 years"). Two guards now scope it:
+    #   (a) require ``kuni`` adjacent to the number and stay within the
+    #       sentence (``[^.]*?`` instead of ``.*?``); and
+    #   (b) a plausibility cap — KarS §45 sets the maximum determinate
+    #       prison term at 25 years, so any value > 25 is discarded as a
+    #       mis-captured citation/cross-reference.
     for m in re.finditer(
-        r"karistatakse.*?(\d+).*?aasta(?:se)?\s+vangistus",
+        r"karistatakse[^.]*?\bkuni\s+(\d+)\s*[-\s]*aasta(?:se)?\s+vangistus",
         text, re.IGNORECASE,
     ):
         val = m.group(1)
+        if int(val) > 25:
+            continue
         if not _already(f"{val} years"):
             results.append({
                 "sanction_type": "imprisonment",
@@ -428,35 +464,119 @@ def extract_fine_units(text: str) -> list[dict]:
 
 
 def extract_fine_euros(text: str) -> list[dict]:
-    """Detect monetary fines in euros."""
+    """Detect monetary fines in euros.
+
+    Issue #372: broadened beyond the original ``rahatrahv(iga)`` +
+    immediate ``(kuni) N eurot`` form to also capture:
+
+    * genitive / intervening-word phrasings — ``rahatrahvi kuni N eurot``,
+      ``Rahatrahv määratakse suuruses kuni N eurot`` — via a broadened
+      inflection (``rahatrahv\\w{0,3}``) and a bounded same-sentence gap
+      before ``kuni``;
+    * dash ranges — ``rahatrahv 64–16 000 eurot`` → ``min 64 / max 16000``.
+
+    Branch order is most-specific-first (dash range, then ``kuni`` max,
+    then bare ``N eurot``) and an internal dedup keeps a value from being
+    emitted twice across branches.
+    """
     results: list[dict] = []
-    # "rahatrahv(iga) (kuni) N eurot"
+
+    def _add(max_amount: str, min_amount: str | None = None) -> None:
+        min_pen = f"{min_amount} EUR" if min_amount else ""
+        for r in results:
+            if (
+                r.get("max_penalty") == f"{max_amount} EUR"
+                and r.get("min_penalty", "") == min_pen
+            ):
+                return
+        rec: dict = {
+            "sanction_type": "fine",
+            "max_penalty": f"{max_amount} EUR",
+        }
+        if min_amount is not None:
+            rec["min_penalty"] = f"{min_amount} EUR"
+        results.append(rec)
+
+    # Dash range FIRST (most specific): "rahatrahv 64–16 000 eurot".
+    # Non-greedy lower bound so it doesn't swallow the dash.
     for m in re.finditer(
-        r"rahatrahv(?:iga)?\s+(?:kuni\s+)?(\d[\d\s]*)\s*eurot", text, re.IGNORECASE
+        r"rahatrahv\w{0,3}\s+(\d[\d\s]*?)\s*[–—\-]\s*(\d[\d\s]*)\s*eurot",
+        text, re.IGNORECASE,
+    ):
+        lo = m.group(1).replace(" ", "")
+        hi = m.group(2).replace(" ", "")
+        try:
+            lo_i, hi_i = sorted((int(lo), int(hi)))
+        except ValueError:
+            continue
+        _add(str(hi_i), str(lo_i))
+
+    # "rahatrahv(i/iga/...) [intervening words] kuni N eurot" — genitive
+    # and "suuruses kuni" phrasings, bounded to the same sentence.
+    for m in re.finditer(
+        r"rahatrahv\w{0,3}[^.]{0,40}?\bkuni\s+(\d[\d\s]*)\s*eurot",
+        text, re.IGNORECASE,
+    ):
+        _add(m.group(1).replace(" ", ""))
+
+    # Bare "rahatrahv(iga) N eurot" (no kuni, no dash).
+    for m in re.finditer(
+        r"rahatrahv\w{0,3}\s+(\d[\d\s]*)\s*eurot", text, re.IGNORECASE
+    ):
+        _add(m.group(1).replace(" ", ""))
+
+    return results
+
+
+def extract_mojutustrahv(text: str) -> list[dict]:
+    """Detect ``mõjutustrahv`` (simplified-procedure influence fine).
+
+    Issue #372: ``mõjutustrahv`` is a distinct sanction surface form
+    (ühistransport / tobacco / traffic simplified procedures) not matched
+    by ``extract_fine_euros`` (which anchors on ``rahatrahv``). Emits a
+    ``fine`` record with the euro amount when present, else a bare
+    ``fine`` mention.
+    """
+    results: list[dict] = []
+    for m in re.finditer(
+        r"mõjutustrahv\w*[^.]{0,40}?(\d[\d\s]*)\s*eurot", text, re.IGNORECASE
     ):
         amount = m.group(1).replace(" ", "")
-        already = any(
-            r.get("max_penalty") == f"{amount} EUR" for r in results
-        )
-        if not already:
+        if not any(r.get("max_penalty") == f"{amount} EUR" for r in results):
             results.append({
                 "sanction_type": "fine",
                 "max_penalty": f"{amount} EUR",
             })
+    if not results and re.search(r"\bmõjutustrahv\w*", text, re.IGNORECASE):
+        results.append({"sanction_type": "fine"})
     return results
 
 
 def extract_coercive(text: str) -> list[dict]:
-    """Detect coercive payment (sunniraha)."""
+    """Detect coercive payment (sunniraha).
+
+    Issue #358: the standard ``asendustäitmise`` formula inserts
+    boilerplate between ``sunniraha`` and the amount —
+    ``sunniraha asendustäitmise ja sunniraha seaduses sätestatud korras
+    kuni N eurot`` — which the original tight ``sunniraha\\s+kuni`` regex
+    could not bridge, so the quantified amount (incl. Estonia's
+    20,000,000 EUR GDPR ceiling) was dropped and only a bare
+    ``coercive_payment`` mention survived. The pattern now tolerates up to
+    150 same-sentence characters between ``sunniraha`` and ``kuni N
+    eurot``.
+    """
     results: list[dict] = []
     for m in re.finditer(
-        r"sunniraha\s+kuni\s+(\d[\d\s]*)\s*eurot", text, re.IGNORECASE
+        r"sunniraha[^.]{0,150}kuni\s+([\d\s,]+)\s*eurot", text, re.IGNORECASE
     ):
-        amount = m.group(1).replace(" ", "")
-        results.append({
-            "sanction_type": "coercive_payment",
-            "max_penalty": f"{amount} EUR",
-        })
+        amount = re.sub(r"[\s,]", "", m.group(1))
+        if not amount.isdigit():
+            continue
+        if not any(r.get("max_penalty") == f"{amount} EUR" for r in results):
+            results.append({
+                "sanction_type": "coercive_payment",
+                "max_penalty": f"{amount} EUR",
+            })
     # Generic mention without amount
     if not results and re.search(r"\bsunniraha\b", text, re.IGNORECASE):
         results.append({"sanction_type": "coercive_payment"})
@@ -508,15 +628,22 @@ def extract_arrest(text: str) -> list[dict]:
                 })
 
     # Generic arrest mention without explicit days → statutory max 30 days,
-    # gated on (a) punishment-context suffix and (b) sentencing verb.
+    # gated on (a) punishment-context suffix, (b) sentencing verb, and
+    # (c) the arrest token NOT sitting in a past-passive condition clause.
+    #
+    # Issue #393: in KarS §331¹ ``aresti`` is the object of a past-passive
+    # condition ("…on selle eest täitemenetluses kohaldatud aresti, –
+    # karistatakse … vangistusega"), i.e. a precondition for the *real*
+    # imprisonment penalty, not an imposed arrest. The bare suffix+verb
+    # gate fired anyway and emitted a spurious 30-day arrest alongside the
+    # imprisonment node. We now require at least one punishment-suffix
+    # ``arest`` occurrence that is NOT immediately (within ~10 tokens)
+    # preceded by a past-passive verb (kohaldatud|rakendatud|määratud).
     if not results:
-        punishment_suffix = re.search(
-            r"\barest(?:i|iga|iks|ile)\b", text, re.IGNORECASE
-        )
         sentencing_verb = re.search(
             r"\b(?:karistatakse|kohaldatakse)\b", text, re.IGNORECASE
         )
-        if punishment_suffix and sentencing_verb:
+        if sentencing_verb and _has_imposed_arrest(text):
             results.append({
                 "sanction_type": "arrest",
                 "max_penalty": "30 days",
@@ -526,11 +653,40 @@ def extract_arrest(text: str) -> list[dict]:
     return results
 
 
+# Past-passive verbs that mark a condition clause (issue #393): when an
+# ``arest`` token immediately follows one of these, the arrest is a
+# precondition, not the imposed sanction.
+_ARREST_CONDITION_VERB = r"(?:kohaldatud|rakendatud|määratud)"
+_ARREST_PUNISHMENT_SUFFIX = r"\barest(?:i|iga|iks|ile)\b"
+
+
+def _has_imposed_arrest(text: str) -> bool:
+    """Return True iff some punishment-suffix ``arest`` token is NOT part
+    of a past-passive condition clause.
+
+    A condition clause = a past-passive verb (kohaldatud|rakendatud|
+    määratud) standing within ~10 tokens immediately before the ``arest``
+    token. If *every* punishment-suffix occurrence is preceded that way,
+    the statutory-default fallback must not fire (issue #393).
+    """
+    for m in re.finditer(_ARREST_PUNISHMENT_SUFFIX, text, re.IGNORECASE):
+        preceding = text[: m.start()]
+        condition = re.search(
+            rf"\b{_ARREST_CONDITION_VERB}\b(?:\s+\S+){{0,10}}?\s*$",
+            preceding,
+            re.IGNORECASE,
+        )
+        if condition is None:
+            return True
+    return False
+
+
 ALL_EXTRACTORS = [
     extract_imprisonment,
     extract_pecuniary,
     extract_fine_units,
     extract_fine_euros,
+    extract_mojutustrahv,
     extract_coercive,
     extract_arrest,
 ]
@@ -804,6 +960,52 @@ def _build_label(sanction_type: str, sanction_data: dict, provision_ref: str) ->
     return desc
 
 
+# Reference ceiling for the normalized monetary score (issue #393):
+# Estonia's GDPR enforcement maximum (ISIKUA §60) is 20,000,000 EUR, the
+# largest euro sanction in the corpus. Used only to scale the 0–1
+# ``monetary_score`` in the severity index; it does not affect amounts.
+_MONETARY_SCORE_CEILING_EUR = Decimal("20000000")
+
+
+def _monetary_amount_eur(sanction_node: dict) -> Decimal | None:
+    """Return the EUR amount of a Sanction node, or None.
+
+    Reads the structured ``estleg:maxPenaltyAmount`` only when the node's
+    ``estleg:maxPenaltyUnit`` is ``"monetary"`` (issue #393). Returns None
+    for non-monetary sanctions (imprisonment/arrest/fine-units/daily-rates)
+    and for monetary sanctions whose amount can't be parsed.
+    """
+    if sanction_node.get("estleg:maxPenaltyUnit") != PENALTY_UNIT_MONETARY:
+        return None
+    raw = sanction_node.get("estleg:maxPenaltyAmount")
+    if isinstance(raw, dict):
+        raw = raw.get("@value")
+    if raw is None:
+        return None
+    try:
+        amount = Decimal(str(raw))
+    except (InvalidOperation, ValueError):
+        return None
+    return amount if amount > 0 else None
+
+
+def _monetary_score(max_eur: Decimal | None) -> float:
+    """Normalize an EUR amount to a 0–1 log-scaled score (issue #393).
+
+    Log scaling keeps small and large fines distinguishable across the
+    corpus's wide range (64 EUR … 20,000,000 EUR). Returns 0.0 when there
+    is no euro amount. Clamped to [0.0, 1.0].
+    """
+    if max_eur is None or max_eur <= 0:
+        return 0.0
+    import math
+
+    score = math.log10(float(max_eur) + 1.0) / math.log10(
+        float(_MONETARY_SCORE_CEILING_EUR) + 1.0
+    )
+    return round(max(0.0, min(1.0, score)), 4)
+
+
 def main() -> int:
     print("=" * 70)
     print("Estonian Legal Ontology - Sanctions Extraction")
@@ -1045,21 +1247,51 @@ def main() -> int:
     severity_index: list[dict] = []
     for law_name, sanctions in sorted(all_law_sanctions.items()):
         max_severity = 0
+        max_monetary_eur: Decimal | None = None
         for s in sanctions:
             stype = s.get("estleg:sanctionType", "")
             sev = SEVERITY.get(stype, 0)
             if sev > max_severity:
                 max_severity = sev
-        severity_index.append({
+            # Issue #393: expose the largest monetary penalty (EUR) so
+            # consumers can rank WITHIN the fine tier — a 20,000,000 EUR
+            # fine and a 64 EUR fine both score type-severity 2, leaving
+            # them indistinguishable from the type ordinal alone. The
+            # legal type-first ordering (custodial > fine) is unchanged;
+            # this is an additive amount field only.
+            amt = _monetary_amount_eur(s)
+            if amt is not None and (max_monetary_eur is None or amt > max_monetary_eur):
+                max_monetary_eur = amt
+        entry: dict = {
             "law": law_name,
             "sanction_count": len(sanctions),
             "max_severity": max_severity,
             "max_severity_type": next(
                 (k for k, v in SEVERITY.items() if v == max_severity), "unknown"
             ),
-        })
+            # Largest EUR amount on any sanction for this law (None when
+            # the law has no euro-denominated sanction). A float for JSON
+            # readability; the authoritative xsd:decimal lives on the node.
+            "max_monetary_eur": (
+                float(max_monetary_eur) if max_monetary_eur is not None else None
+            ),
+            # Normalized 0–1 score within the fine tier, log-scaled against
+            # a 20,000,000 EUR reference ceiling, so consumers can sort
+            # large-fine laws without re-deriving amounts. 0.0 when no
+            # euro amount is present.
+            "monetary_score": _monetary_score(max_monetary_eur),
+        }
+        severity_index.append(entry)
 
-    severity_index.sort(key=lambda x: (-x["max_severity"], -x["sanction_count"]))
+    # Type ordering stays primary (legal convention); ties break first on
+    # monetary magnitude (issue #393), then sanction count.
+    severity_index.sort(
+        key=lambda x: (
+            -x["max_severity"],
+            -(x["max_monetary_eur"] or 0.0),
+            -x["sanction_count"],
+        )
+    )
 
     # ---------- report ----------
     print("\n[3/4] Generating report...")

@@ -885,6 +885,12 @@ def _load_kov_acts(kov_files: list[Path]) -> list[dict]:
         act_node = find_kov_act_node(doc)
         if act_node is None:
             continue
+        # Issue #374: a repealed act (tombstoned by generate_regulations, or
+        # marked by extract_temporal_data) is legally void — keep it out of
+        # the TF-IDF similarity set so its terms neither form similarity edges
+        # nor contaminate active acts' nearest-neighbour vectors.
+        if act_node.get("estleg:temporalStatus") == "repealed":
+            continue
         act_iri = act_node.get("@id", "")
         if not isinstance(act_iri, str) or not act_iri.startswith("estleg:"):
             continue

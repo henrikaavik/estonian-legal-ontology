@@ -118,6 +118,39 @@ def test_unmapped_duty_holder_falls_back_to_body_cues():
     assert groups == ["citizen"]
 
 
+# ---------------------------------------------------------------------------
+# Regression for #330:
+#   the ``public_body`` school cue ``kool`` must match real school inflections
+#   (kool / kooli / koolid …) but must NOT over-match ``koolitus*``
+#   ("training"), which is not a public body.
+# ---------------------------------------------------------------------------
+
+def test_koolitus_does_not_match_public_body():
+    from classify_target_group import classify_text
+
+    # Evidence from the issue: training participation, no school entity.
+    assert "public_body" not in classify_text("Koolitusel osalemine on kohustuslik.")
+    # A bare training sentence classifies to nothing here (no other cue present).
+    for sentence in (
+        "Koolitus on kohustuslik.",
+        "Koolituse läbimine on nõutav.",
+        "Koolitusele tuleb registreeruda.",
+    ):
+        assert "public_body" not in classify_text(sentence)
+
+
+def test_real_kool_still_matches_public_body():
+    from classify_target_group import classify_text
+
+    # Nominative and the enumerated case inflections must still classify.
+    # (Sentences avoid incidental cues from other groups so the result is the
+    # single ``public_body`` value.)
+    assert classify_text("Kool peab esitama andmed.") == ["public_body"]
+    assert classify_text("Kooli kodukord kinnitatakse.") == ["public_body"]
+    assert classify_text("Koolis korraldatakse õpet.") == ["public_body"]
+    assert classify_text("Koolid esitavad aruande.") == ["public_body"]
+
+
 def test_classify_files_writes_target_groups_and_report(tmp_path):
     from classify_target_group import classify_files
 

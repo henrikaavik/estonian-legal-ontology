@@ -19,7 +19,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 
-from estleg_common import FULLNAME_GENITIVE, KNOWN_ABBREVIATIONS
+from estleg_common import FULLNAME_GENITIVE, KNOWN_ABBREVIATIONS, slugify
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
@@ -133,3 +133,133 @@ def test_docstring_corpus_count_matches_metadata_total_files() -> None:
             f"docstring corpus-count {n} != metadata estleg:totalFiles "
             f"{total_files}; update the prose or metadata.jsonld"
         )
+
+
+# ---------------------------------------------------------------------------
+# #390 — KNS / AluS / KOFS / KOVVS now registered in KNOWN_ABBREVIATIONS
+# ---------------------------------------------------------------------------
+def test_390_enabling_law_abbreviations_present() -> None:
+    """The four enabling-law abbreviations referenced by FULLNAME_GENITIVE
+    must now resolve to their canonical corpus sourceAct so the preamble
+    pass (issuedUnder) and Pattern 3 cross-refs chain end-to-end (#390)."""
+    assert KNOWN_ABBREVIATIONS["KNS"] == "Kohanimeseadus"
+    assert KNOWN_ABBREVIATIONS["AluS"] == "Alusharidusseadus"
+    assert KNOWN_ABBREVIATIONS["KOFS"] == \
+        "Kohaliku omavalitsuse üksuse finantsjuhtimise seadus"
+    assert KNOWN_ABBREVIATIONS["KOVVS"] == \
+        "Kohaliku omavalitsuse volikogu valimise seadus"
+
+
+def test_390_abbrevs_have_matching_genitive() -> None:
+    """Each #390 abbreviation keeps its FULLNAME_GENITIVE entry."""
+    assert FULLNAME_GENITIVE["kohanimeseaduse"] == "KNS"
+    assert FULLNAME_GENITIVE["alusharidusseaduse"] == "AluS"
+    assert FULLNAME_GENITIVE[
+        "kohaliku omavalitsuse üksuse finantsjuhtimise seaduse"] == "KOFS"
+    assert FULLNAME_GENITIVE[
+        "kohaliku omavalitsuse volikogu valimise seaduse"] == "KOVVS"
+
+
+# ---------------------------------------------------------------------------
+# #363 — 25 missing law genitives + 9 abbrev genitives
+# ---------------------------------------------------------------------------
+def test_363_added_abbrev_genitives_resolve_to_existing_abbrevs() -> None:
+    """The 9 genitives added for laws whose abbreviation already existed
+    must point at those existing KNOWN_ABBREVIATIONS keys (#363)."""
+    expected = {
+        "tulumaksuseaduse": "TuMS",
+        "sotsiaalmaksuseaduse": "SMMS",
+        "relvaseaduse": "RSVS",
+        "kaitseväeteenistuse seaduse": "KAVS",
+        "kindlustustegevuse seaduse": "KindlTS",
+        "looduskaitseseaduse": "LKS",
+        "ravimiseaduse": "RavS",
+        "elektroonilise side seaduse": "EKS",
+        "maareformi seaduse": "MaaRS",
+    }
+    for genitive, abbrev in expected.items():
+        assert FULLNAME_GENITIVE.get(genitive) == abbrev, genitive
+        # The abbrev pre-existed in KNOWN_ABBREVIATIONS.
+        assert abbrev in KNOWN_ABBREVIATIONS
+
+
+def test_363_new_law_genitives_registered() -> None:
+    """Spot-check the newly-registered heavily-cited law genitives and
+    their new abbreviations (#363). korrakaitseseadus alone was cited
+    525× with zero outbound links before this."""
+    for genitive, abbrev, full in (
+        ("korrakaitseseaduse", "KorrS", "Korrakaitseseadus"),
+        ("riigieelarve seaduse", "RES", "Riigieelarve seadus"),
+        ("veeseaduse", "VeeS", "Veeseadus"),
+        ("liiklusseaduse", "LS", "Liiklusseadus"),
+    ):
+        assert FULLNAME_GENITIVE.get(genitive) == abbrev, genitive
+        assert KNOWN_ABBREVIATIONS.get(abbrev) == full, abbrev
+
+
+def test_363_every_genitive_abbrev_is_known() -> None:
+    """After #363/#390 EVERY genitive's abbreviation must resolve through
+    KNOWN_ABBREVIATIONS (no resolver-fallthrough remains). This is the
+    invariant the cross-ref Pattern 3 / preamble chains depend on."""
+    for genitive, abbrev in FULLNAME_GENITIVE.items():
+        assert abbrev in KNOWN_ABBREVIATIONS, \
+            f"{genitive!r} -> {abbrev!r} not in KNOWN_ABBREVIATIONS"
+
+
+def test_363_no_duplicate_full_names_break_reverse_lookup() -> None:
+    """FULLNAME_TO_ABBREV (reverse map in extract_cross_references) keys
+    on the full name; a new abbrev must not silently reuse an existing
+    full name unless intentionally aliased. Guard that the new #363
+    full names are distinct corpus sourceActs."""
+    new_full_names = [
+        "Korrakaitseseadus", "Riigieelarve seadus", "Veeseadus",
+        "Liiklusseadus", "Väärtpaberituru seadus",
+    ]
+    # Each appears exactly once as a KNOWN_ABBREVIATIONS value.
+    values = list(KNOWN_ABBREVIATIONS.values())
+    for full in new_full_names:
+        assert values.count(full) == 1, full
+
+
+# ---------------------------------------------------------------------------
+# #346 — slugify must strip a trailing '_' AFTER the max_len cut
+# ---------------------------------------------------------------------------
+def test_346_slugify_strips_trailing_underscore_after_truncation() -> None:
+    """A title that slugifies to exactly max_len chars ending in '_'
+    must not leave the trailing '_' once truncated — otherwise appending
+    a suffix ('_Map_2026', '_Par_N') yields double-underscore IRIs (#346).
+    """
+    # 78 'a' chars + a space + a word: the run of 'a' fills up to the
+    # boundary, the non-alnum boundary becomes '_' exactly at index 80.
+    title = "a" * 80 + " konventsioon"
+    slug = slugify(title)
+    assert len(slug) <= 80
+    assert not slug.endswith("_"), slug
+    # Appending a standard suffix must NOT produce '__'.
+    assert "__" not in f"{slug}_Map_2026"
+
+
+def test_346_slugify_real_konventsioon_title_no_double_underscore() -> None:
+    """Regression for the concrete corpus case: a long convention title
+    whose 80-char cut landed on '_'."""
+    title = (
+        "12. augusti 1949 Genfi konventsioonide 8. juuni 1977 "
+        "lisaprotokoll rahvusvaheliste relvakonfliktide ohvrite kaitse kohta"
+    )
+    slug = slugify(title)
+    assert not slug.endswith("_")
+    assert "__" not in f"{slug}_Par_1"
+
+
+def test_346_slugify_normal_title_unchanged() -> None:
+    """Short titles (no truncation) keep their existing slug — the
+    rstrip only affects the truncation boundary."""
+    assert slugify("Karistusseadustik") == "karistusseadustik"
+    assert slugify("Avaliku teabe seadus") == "avaliku_teabe_seadus"
+
+
+def test_346_slugify_internal_underscores_preserved() -> None:
+    """Only TRAILING underscores are stripped; internal ones stay."""
+    slug = slugify("Põhikooli- ja gümnaasiumiseadus")
+    assert "_" in slug
+    assert not slug.startswith("_") and not slug.endswith("_")

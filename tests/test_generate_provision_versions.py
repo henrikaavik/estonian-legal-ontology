@@ -85,6 +85,21 @@ def _three_redaction_chain() -> list[tuple[Redaction, dict[str, str]]]:
     ]
 
 
+def _matches_as_of(node: dict, target: str) -> bool:
+    """Mirror the canonical as-of-date SPARQL filter against a version node.
+
+    Replicates ``docs/SCHEMA_REFERENCE.md``'s query semantics
+    (``?from <= D && (!BOUND(?to) || ?to >= D)``) so the tests assert the exact
+    consumer-visible behaviour issue #306 / #393 are about: how many versions a
+    given as-of date selects.
+    """
+    valid_from = node["estleg:versionValidFrom"]["@value"]
+    if valid_from > target:
+        return False
+    valid_to = node.get("estleg:versionValidTo")
+    return valid_to is None or valid_to["@value"] >= target
+
+
 # ---------------------------------------------------------------------------
 # Diff + chaining
 # ---------------------------------------------------------------------------
@@ -113,9 +128,10 @@ class TestSynthesiseVersions:
         assert p2[0]["estleg:supersededByVersion"] == {"@id": "estleg:FIX_Par_2_v333"}
         assert "estleg:supersededByVersion" not in p2[1]
 
-        # versionValidTo of version k == versionValidFrom of version k+1; absent on last.
+        # Issue #306: versionValidTo of version k is the day BEFORE versionValidFrom
+        # of version k+1 (exclusive end); absent on the last version.
         assert p1[0]["estleg:versionValidFrom"] == {"@value": "2010-01-01", "@type": "xsd:date"}
-        assert p1[0]["estleg:versionValidTo"] == {"@value": "2015-01-01", "@type": "xsd:date"}
+        assert p1[0]["estleg:versionValidTo"] == {"@value": "2014-12-31", "@type": "xsd:date"}
         assert "estleg:versionValidTo" not in p1[1]
         assert p2[1]["estleg:versionValidFrom"] == {"@value": "2020-01-01", "@type": "xsd:date"}
         assert "estleg:versionValidTo" not in p2[1]
@@ -168,7 +184,8 @@ class TestSynthesiseVersions:
         ]
         nodes = synthesise_versions(target, chain)
         assert [n["@id"] for n in nodes] == ["estleg:FIX_Par_1_v111", "estleg:FIX_Par_1_v333"]
-        assert nodes[0]["estleg:versionValidTo"] == {"@value": "2020-01-01", "@type": "xsd:date"}
+        # Issue #306: exclusive end — day before the successor's 2020-01-01 start.
+        assert nodes[0]["estleg:versionValidTo"] == {"@value": "2019-12-31", "@type": "xsd:date"}
 
     def test_whitespace_only_difference_is_not_a_new_version(self):
         target = _make_target(par_suffixes=("1",))
@@ -178,6 +195,72 @@ class TestSynthesiseVersions:
         ]
         nodes = synthesise_versions(target, chain)
         assert len(nodes) == 1
+
+    def test_transition_date_as_of_query_returns_exactly_one_version(self):
+        # Issue #306: with an inclusive as-of-date query (the schema's canonical
+        # ``?from <= D && (!to || ?to >= D)``), a query ON the transition day must
+        # match exactly one version. Version k's exclusive ``versionValidTo`` =
+        # day before version k+1's ``versionValidFrom`` makes this hold.
+        target = _make_target(par_suffixes=("1",))
+        chain = [
+            (_R1, {"1": "Algtekst."}),
+            (_R2, {"1": "Muudetud tekst."}),  # changes at 2015-01-01
+        ]
+        nodes = synthesise_versions(target, chain)
+        # Version k ends the day BEFORE its successor begins — intervals do not overlap.
+        assert nodes[0]["estleg:versionValidTo"] == {"@value": "2014-12-31", "@type": "xsd:date"}
+        assert nodes[1]["estleg:versionValidFrom"] == {"@value": "2015-01-01", "@type": "xsd:date"}
+        # The canonical inclusive as-of query on the transition day 2015-01-01 selects
+        # only the successor (v222), not the superseded v111.
+        matches = [n["@id"] for n in nodes if _matches_as_of(n, "2015-01-01")]
+        assert matches == ["estleg:FIX_Par_1_v222"]
+        # And the day before the transition selects only the predecessor.
+        assert [n["@id"] for n in nodes if _matches_as_of(n, "2014-12-31")] == [
+            "estleg:FIX_Par_1_v111"
+        ]
+
+    def test_same_valid_from_redactions_emit_no_zero_day_version(self):
+        # Issue #393: two redactions sharing an entry-into-force date must not yield
+        # a zero-duration (versionValidFrom == versionValidTo) node. The earlier
+        # same-date redaction is collapsed (last-per-date wins) before chaining.
+        target = _make_target(par_suffixes=("1",))
+        r_same_a = Redaction(global_id="501", valid_from="2002-06-01", valid_to="2002-06-01", url="/akt/501.xml")
+        r_same_b = Redaction(global_id="502", valid_from="2002-06-01", valid_to="2009-12-31", url="/akt/502.xml")
+        chain = [
+            (r_same_a, {"1": "Esimene samal kuupäeval."}),
+            (r_same_b, {"1": "Teine samal kuupäeval."}),
+            (_R3, {"1": "Hilisem tekst."}),  # 2020-01-01
+        ]
+        nodes = synthesise_versions(target, chain)
+        # The collapsed earlier 2002-06-01 redaction (g501) is dropped; the surviving
+        # 2002-06-01 version is g502, superseded only at the genuine later change.
+        assert [n["@id"] for n in nodes] == ["estleg:FIX_Par_1_v502", "estleg:FIX_Par_1_v333"]
+        # No node is zero-duration, and the first version's exclusive end is the day
+        # before the 2020-01-01 successor (not its own 2002-06-01 start).
+        for n in nodes:
+            vto = n.get("estleg:versionValidTo")
+            if vto is not None:
+                assert n["estleg:versionValidFrom"]["@value"] != vto["@value"]
+        assert nodes[0]["estleg:versionValidFrom"] == {"@value": "2002-06-01", "@type": "xsd:date"}
+        assert nodes[0]["estleg:versionValidTo"] == {"@value": "2019-12-31", "@type": "xsd:date"}
+        # The boundary as-of query returns exactly one version on the shared start date.
+        assert [n["@id"] for n in nodes if _matches_as_of(n, "2002-06-01")] == [
+            "estleg:FIX_Par_1_v502"
+        ]
+
+    def test_three_same_valid_from_redactions_keep_only_last(self):
+        # More than two redactions on one entry-into-force date: only the last
+        # survives (mirrors the by_from most-recently-touched dedup).
+        target = _make_target(par_suffixes=("1",))
+        chain = [
+            (Redaction("601", "2005-01-01", "2005-01-01", "/akt/601.xml"), {"1": "A."}),
+            (Redaction("602", "2005-01-01", "2005-01-01", "/akt/602.xml"), {"1": "B."}),
+            (Redaction("603", "2005-01-01", None, "/akt/603.xml"), {"1": "C."}),
+        ]
+        nodes = synthesise_versions(target, chain)
+        assert [n["@id"] for n in nodes] == ["estleg:FIX_Par_1_v603"]
+        assert nodes[0]["estleg:versionText"] == "C."
+        assert "estleg:versionValidTo" not in nodes[0]  # last → still open
 
 
 # ---------------------------------------------------------------------------
@@ -474,7 +557,7 @@ def test_fetch_redaction_chain_handles_t_time_and_negative_offsets(
     Endpoints arrive with mixed shapes (``T``-time, positive AND negative tz
     offsets, ``Z``). They must normalise to ``YYYY-MM-DD`` and be compared as
     calendar dates against ``today`` — including the boundary where an edition's
-    ``lopp`` falls on ``today`` (still current, must be excluded) and where
+    ``lopp`` falls on ``today`` (issue #328: retained, not dropped) and where
     ``algus`` equals ``today`` (kept by the ``<=`` start rule).
     """
     title = "Ajatempliseadus"
@@ -490,8 +573,10 @@ def test_fetch_redaction_chain_handles_t_time_and_negative_offsets(
             {"globaalID": 20, "pealkiri": title,
              "kehtivus": {"algus": "2015-01-01T00:00:00+02:00", "lopp": "2019-12-31 23:59:59-05:00"},
              "muudetud": 2, "url": "/akt/20.xml"},
-            # lopp falls ON today (T-time) ⇒ still current ⇒ MUST be excluded
-            # from the superseded set (lopp < today is false at date granularity).
+            # lopp falls ON today (T-time). Issue #328: an edition ending exactly on
+            # the run date is the immediately-preceding edition on a redaction-
+            # transition day — it must be RETAINED (inclusive ``lopp <= today``), or
+            # its history vanishes (it is not the ``?kehtiv=today`` current edition).
             {"globaalID": 30, "pealkiri": title,
              "kehtivus": {"algus": "2020-01-01T00:00:00+03:00", "lopp": "2026-05-12T08:00:00+03:00"},
              "muudetud": 3, "url": "/akt/30.xml"},
@@ -513,10 +598,60 @@ def test_fetch_redaction_chain_handles_t_time_and_negative_offsets(
 
     monkeypatch.setattr(gpv.requests, "get", fake_get)
     chain = fetch_redaction_chain(title, today=today)
-    # g30 excluded (lopp on today); g10/g20 kept and normalised; g40 current.
-    assert [r.global_id for r in chain] == ["10", "20", "40"]
-    assert [r.valid_from for r in chain] == ["2010-01-01", "2015-01-01", "2026-05-12"]
-    assert [r.valid_to for r in chain] == ["2014-12-31", "2019-12-31", None]
+    # g30 RETAINED (lopp on today, issue #328); g10/g20 kept and normalised; g40 current.
+    assert [r.global_id for r in chain] == ["10", "20", "30", "40"]
+    assert [r.valid_from for r in chain] == [
+        "2010-01-01", "2015-01-01", "2020-01-01", "2026-05-12",
+    ]
+    assert [r.valid_to for r in chain] == [
+        "2014-12-31", "2019-12-31", "2026-05-12", None,
+    ]
+
+
+def test_fetch_redaction_chain_retains_edition_ending_on_run_date(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    """Issue #328: the edition ending exactly on the run date is kept, not dropped.
+
+    On the day a new redaction enters force, ``today == lopp`` of the previous
+    edition. ``fetch_current_redaction`` (``?kehtiv=today``) returns the NEW
+    edition, so the previous one is only recoverable from the superseded list — a
+    strict ``lopp < today`` test silently dropped it (a history gap). The
+    inclusive ``lopp <= today`` test retains it.
+    """
+    title = "Üleminekuseadus"
+    today = "2024-01-01"
+    full_payload = {
+        "aktid": [
+            # Older superseded edition (ended well before today).
+            {"globaalID": 10, "pealkiri": title,
+             "kehtivus": {"algus": "2018-01-01", "lopp": "2020-12-31"},
+             "muudetud": 1, "url": "/akt/10.xml"},
+            # Edition ending exactly on the run date — the immediately-preceding one.
+            {"globaalID": 20, "pealkiri": title,
+             "kehtivus": {"algus": "2021-01-01", "lopp": "2024-01-01"},
+             "muudetud": 2, "url": "/akt/20.xml"},
+        ]
+    }
+    # New edition entering force today is what ?kehtiv=today returns.
+    current_payload = {
+        "aktid": [
+            {"globaalID": 30, "pealkiri": title,
+             "kehtivus": {"algus": "2024-01-01", "lopp": None},
+             "muudetud": 3, "url": "/akt/30.xml"},
+        ]
+    }
+
+    def fake_get(url, params=None, timeout=None):  # noqa: ANN001
+        if params and params.get("kehtiv"):
+            return _FakeResponse(current_payload)
+        return _FakeResponse(full_payload)
+
+    monkeypatch.setattr(gpv.requests, "get", fake_get)
+    chain = fetch_redaction_chain(title, today=today)
+    # g20 (lopp == today) retained between the older edition and the new current one.
+    assert [r.global_id for r in chain] == ["10", "20", "30"]
+    assert [r.valid_to for r in chain] == ["2020-12-31", "2024-01-01", None]
 
 
 # ---------------------------------------------------------------------------

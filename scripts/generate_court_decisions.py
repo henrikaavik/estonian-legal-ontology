@@ -164,20 +164,65 @@ def sanitize_id(value: str) -> str:
 # BOM don't fall through to the ``Other`` bucket.
 _CASE_PREFIX_RE = re.compile(r"^[\s﻿]*(\d)")
 
+# Old-format Riigikohus case numbers (1996–2017) look like
+# ``3-<chamber>-<...>-<yy>``: the leading ``3`` is the *court* (the
+# Supreme Court), NOT the case type. The case type is encoded in the
+# SECOND segment (the chamber digit): 1=Criminal, 2=Civil,
+# 3=Administrative, 4=ConstitutionalReview. The single-digit second
+# segment (``3-2-…``) is what distinguishes this legacy layout from the
+# modern one introduced in 2018 (``3-21-…``, where ``21`` is the filing
+# year, not a chamber). We therefore require the chamber digit to be
+# followed by ``-`` so a two-digit modern year (``3-21-…``) does NOT
+# match and falls through to the first-digit path below (issue #342).
+_OLD_FORMAT_CASE_RE = re.compile(r"^3-(\d)-")
+# The chamber digit maps to a *different* scale than the modern first
+# digit: chambers run 1=Criminal, 2=Civil, 3=Administrative,
+# 4=ConstitutionalReview (there is no chamber 5, and chamber 4 is
+# constitutional review, whereas the modern first-digit ``4`` is a
+# misdemeanor). Values here are CASE_TYPE_MAP keys, so the resolved type
+# id/labels stay in sync with the schema individuals.
+_OLD_FORMAT_CHAMBER_TO_MAP_KEY: dict[str, str] = {
+    "1": "1",  # Criminal
+    "2": "2",  # Civil
+    "3": "3",  # Administrative
+    "4": "5",  # ConstitutionalReview
+}
+
 
 def classify_case(case_nr: str) -> tuple[str, str, str]:
-    """Classify case type from the first numeric token in ``case_nr``.
+    """Classify case type from a Riigikohus case number.
 
-    The Riigikohus convention is: case numbers begin with the case-type
-    digit (1=criminal, 2=civil, ...). Real-world inputs sometimes carry
-    leading whitespace, BOM, or other invisible characters, so we
-    skip leading whitespace and pick the FIRST decimal digit. Inputs
-    with no leading digit (or empty inputs) are logged at WARNING
-    and classified as ``Other`` rather than mis-mapped silently.
+    Two numbering layouts coexist:
+
+    * **Old format** (1996–2017) ``3-<chamber>-<...>-<yy>``: the leading
+      ``3`` is the Supreme Court itself, so the case type lives in the
+      SECOND segment (the chamber digit) — ``3-1-*``=Criminal,
+      ``3-2-*``=Civil, ``3-3-*``=Administrative,
+      ``3-4-*``=ConstitutionalReview. Reading the first digit here would
+      mis-stamp every legacy decision as ``Administrative`` (issue #342).
+    * **New format** (2018+) e.g. ``1-17-…`` / ``3-21-…``: the case type
+      is the FIRST digit (1=criminal, 2=civil, …) and the rest is the
+      filing year and sequence.
+
+    Real-world inputs sometimes carry leading whitespace, BOM, or other
+    invisible characters, so the first-digit path skips leading
+    whitespace and picks the FIRST decimal digit. Inputs with no leading
+    digit (or empty inputs) are logged at WARNING and classified as
+    ``Other`` rather than mis-mapped silently.
     """
     if not case_nr:
         logger.warning("classify_case: empty case_nr")
         return CASE_TYPE_MAP["Other"]
+    # Old-format ``3-<chamber>-…`` numbers carry the case type in the
+    # chamber digit, not the leading court digit — resolve those first.
+    old_match = _OLD_FORMAT_CASE_RE.match(case_nr)
+    if old_match is not None:
+        map_key = _OLD_FORMAT_CHAMBER_TO_MAP_KEY.get(old_match.group(1))
+        if map_key is not None:
+            return CASE_TYPE_MAP[map_key]
+        # An unrecognised chamber digit (e.g. ``3-9-…``) is a data
+        # anomaly; fall through to the first-digit path rather than
+        # silently dropping it.
     match = _CASE_PREFIX_RE.match(case_nr)
     if match is None:
         logger.warning(
@@ -186,6 +231,44 @@ def classify_case(case_nr: str) -> tuple[str, str, str]:
         )
         return CASE_TYPE_MAP["Other"]
     return CASE_TYPE_MAP.get(match.group(1), CASE_TYPE_MAP["Other"])
+
+
+# Modern-format filing year: ``<type>-<yy>-<seq>…`` (e.g. ``3-21-2176/52``
+# → ``21`` → 2021). Anchored at the start so the two-digit token can ONLY
+# be the second segment — the unanchored ``\d-(\d{2})-`` previously also
+# matched the *third* segment of old-format numbers (``3-2-2-15-96`` →
+# ``15`` → bogus year 2015). Old-format ``3-<chamber>-…`` numbers have a
+# single-digit second segment and therefore do not match here; they fall
+# back to the decision's validated ``date`` field (issue #341).
+_MODERN_YEAR_RE = re.compile(r"^\d-(\d{2})-")
+
+
+def _decision_year_key(dec: dict) -> str:
+    """Derive the calendar-year bucket for a decision dict.
+
+    Prefers the modern case-number layout (``<type>-<yy>-…``), where the
+    two-digit second segment is the filing year and maps to ``20yy``.
+    When the case number is old-format (single-digit chamber segment) or
+    otherwise unparseable, falls back to the validated ``date`` field
+    (``DD.MM.YYYY``) and uses its 4-digit calendar year. Returns
+    ``"unknown"`` only when neither source yields a year — never a blind
+    ``2000+yy`` guess that lands pre-2001 decisions in future buckets.
+    """
+    case_nr = dec.get("case_nr", "") or ""
+    match = _MODERN_YEAR_RE.match(case_nr)
+    if match:
+        # Two-digit modern year: ``yy`` → ``20yy`` (the modern numbering
+        # scheme started in 2018, so there is no 1900s ambiguity).
+        return str(2000 + int(match.group(1)))
+    date_str = (dec.get("date") or "").strip()
+    if date_str:
+        try:
+            parsed = datetime.strptime(date_str, "%d.%m.%Y")
+        except ValueError:
+            pass
+        else:
+            return str(parsed.year)
+    return "unknown"
 
 
 # Known law abbreviations — anchored matches must lowercase before
@@ -574,12 +657,43 @@ def _build_node_id(dec: dict) -> str | None:
     return f"estleg:RK_{case_id}_{sanitize_id(obj_id)}"
 
 
-def decision_to_node(dec: dict, year: int, seen_ids: set[str]) -> dict | None:
+def _decision_content_key(dec: dict) -> tuple[str, str, str]:
+    """Content fingerprint used to detect true-duplicate decision rows.
+
+    The rikos API sometimes returns the *same* real document as several
+    rows that differ only in ``object_id`` (issue #392). Those rows share
+    the same case number, decision date, and decision type, so the
+    ``(case_nr, date, decision_type)`` triple identifies the underlying
+    document independently of the per-row ``object_id`` that goes into the
+    ``@id``. All three components are stripped so incidental whitespace
+    does not split a genuine duplicate into two keys.
+    """
+    return (
+        (dec.get("case_nr") or "").strip(),
+        (dec.get("date") or "").strip(),
+        (dec.get("decision_type") or "").strip(),
+    )
+
+
+def decision_to_node(
+    dec: dict,
+    year: int,
+    seen_ids: set[str],
+    seen_keys: set[tuple[str, str, str]] | None = None,
+) -> dict | None:
     """Convert a decision dict to a JSON-LD node.
 
     Returns ``None`` for decisions that cannot be assigned a stable
     IRI (missing ``case_nr`` or ``object_id``). Callers MUST handle
     ``None`` and skip the row.
+
+    When ``seen_keys`` is supplied, rows that repeat an already-emitted
+    ``(case_nr, date, decision_type)`` triple are treated as true
+    duplicates of the same underlying document (issue #392): the dup is
+    logged at WARNING and skipped so the same real decision is not
+    emitted as two+ nodes with different ``rikObjectId``. Passing
+    ``None`` (the default) disables content-level dedup and keeps the
+    legacy "one node per distinct ``@id``" behaviour.
     """
     node_id = _build_node_id(dec)
     if node_id is None:
@@ -592,6 +706,22 @@ def decision_to_node(dec: dict, year: int, seen_ids: set[str]) -> dict | None:
             node_id,
         )
         return None
+    if seen_keys is not None:
+        content_key = _decision_content_key(dec)
+        if content_key in seen_keys:
+            # Distinct object_id, identical real document — the rikos API
+            # returned the same decision twice. Keep the first; skip this
+            # duplicate so interpretsLaw links cannot land on a phantom
+            # second node non-deterministically (issue #392).
+            logger.warning(
+                "decision_to_node: duplicate decision %r (case_nr/date/type "
+                "match, distinct object_id %r) — skipping duplicate node %s",
+                content_key,
+                (dec.get("object_id") or "").strip(),
+                node_id,
+            )
+            return None
+        seen_keys.add(content_key)
     seen_ids.add(node_id)
 
     type_id, _type_et, _type_en = classify_case(dec["case_nr"])
@@ -1151,9 +1281,13 @@ def main(argv: list[str] | None = None):
         ]
 
         seen_ids: set[str] = set()
+        # Content-level dedup within the year file: drops rikos rows that
+        # repeat the same (case_nr, date, decision_type) under a different
+        # object_id, i.e. the same real document returned twice (#392).
+        seen_keys: set[tuple[str, str, str]] = set()
         skipped_in_year = 0
         for dec in decisions:
-            node = decision_to_node(dec, year, seen_ids)
+            node = decision_to_node(dec, year, seen_ids, seen_keys)
             if node is None:
                 skipped_in_year += 1
                 continue
@@ -1188,14 +1322,7 @@ def main(argv: list[str] | None = None):
     for dec in all_decisions:
         type_id, _, _ = classify_case(dec["case_nr"])
         type_counts[type_id] = type_counts.get(type_id, 0) + 1
-        # Year is captured implicitly in the decision feed; recompute
-        # from case_nr (format is e.g. ``3-21-2176/52``).
-        year_key = "unknown"
-        match = re.search(r"\d-(\d{2})-", dec.get("case_nr", ""))
-        if match:
-            year_two_digit = int(match.group(1))
-            # Two-digit year: 2000-99 maps to 2000-99, < 2000 not in use.
-            year_key = str(2000 + year_two_digit)
+        year_key = _decision_year_key(dec)
         per_year_type_counts.setdefault(year_key, {})
         per_year_type_counts[year_key][type_id] = (
             per_year_type_counts[year_key].get(type_id, 0) + 1

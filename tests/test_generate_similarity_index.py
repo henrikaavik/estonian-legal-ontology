@@ -1564,3 +1564,52 @@ def test_cross_layer_pairs_count_is_post_cap(tmp_path, monkeypatch):
     )
     assert emitted_cross == 0
     assert summary["crossLayerPairs"] == 0
+
+
+# ---------------------------------------------------------------------------
+# Issue #374 — repealed acts are kept out of the similarity set
+# ---------------------------------------------------------------------------
+
+
+def _kov_doc_with_status(reg_id: str, title_normalized: str, summary: str,
+                         *, temporal_status: str | None = None) -> dict:
+    """A KOV act doc with an optional ``estleg:temporalStatus`` marker."""
+    doc = _kov_act_doc(reg_id, title_normalized, [summary])
+    if temporal_status is not None:
+        find_act = similarity.find_kov_act_node(doc)
+        find_act["estleg:temporalStatus"] = temporal_status
+    return doc
+
+
+def test_load_kov_acts_skips_repealed_act(tmp_path):
+    """``_load_kov_acts`` drops a ``temporalStatus=repealed`` act so its
+    terms never enter the TF-IDF similarity set (issue #374)."""
+    krr = tmp_path / "krr_outputs"
+    repealed = _write_kov(
+        krr, "muhu", "10001",
+        _kov_doc_with_status("10001", "arengukava", _WASTE_TEXT,
+                             temporal_status="repealed"),
+    )
+    active = _write_kov(
+        krr, "saare", "10002",
+        _kov_doc_with_status("10002", "arengukava", _WASTE_TEXT),
+    )
+
+    acts = similarity._load_kov_acts([repealed, active])
+
+    loaded_iris = {act["iri"] for act in acts}
+    assert "estleg:Reg_10001_Map_2026" not in loaded_iris
+    assert "estleg:Reg_10002_Map_2026" in loaded_iris
+
+
+def test_load_kov_acts_keeps_act_without_temporal_status(tmp_path):
+    """Backward compatibility: an act with no temporalStatus is loaded."""
+    krr = tmp_path / "krr_outputs"
+    active = _write_kov(
+        krr, "saare", "10003",
+        _kov_doc_with_status("10003", "arengukava", _WATER_TEXT),
+    )
+
+    acts = similarity._load_kov_acts([active])
+
+    assert {act["iri"] for act in acts} == {"estleg:Reg_10003_Map_2026"}

@@ -78,6 +78,22 @@ CELEX_TYPE_MAP = {
     "TC": ("AGOpinion", "Kohtujuristi ettepanek", "Advocate General Opinion"),
     "CS": ("Order", "Kohtumäärus", "Order"),
     "CT": ("Order", "Kohtumäärus", "Order"),
+    # #383: General Court tierce-opposition order (e.g. 62016TT0624,
+    # ECLI:EU:T:2019:47, case T-624/16). Same mis-typing family as #343;
+    # without this it falls through to ``Other``/``CourtOfJustice``.
+    "TT": ("Order", "Kohtumäärus", "Order"),
+}
+
+# EFTA Court (CELEX sector ``E``) uses *single-letter* case-law type codes
+# (e.g. ``E2014J0018``), unlike the CJEU's two-letter codes. They are mapped
+# only when the sector is ``E`` so a stray sector-6 single-letter code can
+# never borrow an EFTA classification (#343). Two-letter EFTA works such as
+# ``E2024CB0001`` fall back to ``CELEX_TYPE_MAP`` (``CB`` → Order).
+CELEX_EFTA_TYPE_MAP = {
+    "J": ("Judgment", "Kohtuotsus", "Judgment"),
+    "O": ("Order", "Kohtumäärus", "Order"),
+    "P": ("Order", "Kohtumäärus", "Order"),
+    "A": ("AGOpinion", "Kohtujuristi ettepanek", "Advocate General Opinion"),
 }
 
 # CELEX suffix → court classification
@@ -97,6 +113,7 @@ CELEX_COURT_MAP = {
     "TO": "GeneralCourt",
     "TA": "GeneralCourt",
     "TC": "GeneralCourt",
+    "TT": "GeneralCourt",  # #383: General Court tierce-opposition order
     "FJ": "CivilServiceTribunal",
     "FO": "CivilServiceTribunal",
 }
@@ -135,19 +152,30 @@ def classify_from_celex(celex: str) -> tuple[str, str, str, str]:
     institution. Mapping it to the dedicated ``EFTACourt`` bucket keeps
     EFTA jurisprudence out of CJEU per-court statistics.
     """
-    # Extract the two-letter type code after year (positions 5-6 in the CELEX)
-    match = re.match(r"([6E])\d{4}([A-Z]{2})", celex)
+    # Extract the type code after the year. CJEU case-law uses a two-letter
+    # code (``CJ``, ``TO``, …); the EFTA Court (sector ``E``) uses a single
+    # letter (``E2014J0018``). ``[A-Z]{1,2}`` is greedy, so two-letter codes
+    # still win where present and only genuinely single-letter EFTA codes
+    # fall back to one character (#343).
+    match = re.match(r"([6E])\d{4}([A-Z]{1,2})", celex)
     if match:
         sector = match.group(1)
         code = match.group(2)
-        type_info = CELEX_TYPE_MAP.get(code, ("Other", "Muu", "Other"))
-        if code not in CELEX_TYPE_MAP:
-            UNKNOWN_CELEX_CODES.add(code)
 
         if sector == "E":
             court_id = "EFTACourt"
+            # Prefer the single-letter EFTA map, then the shared two-letter
+            # map (so ``E2024CB0001`` → ``CB`` → Order still resolves).
+            type_info = CELEX_EFTA_TYPE_MAP.get(code) or CELEX_TYPE_MAP.get(
+                code, ("Other", "Muu", "Other")
+            )
+            if code not in CELEX_EFTA_TYPE_MAP and code not in CELEX_TYPE_MAP:
+                UNKNOWN_CELEX_CODES.add(code)
         else:
             court_id = CELEX_COURT_MAP.get(code, "CourtOfJustice")
+            type_info = CELEX_TYPE_MAP.get(code, ("Other", "Muu", "Other"))
+            if code not in CELEX_TYPE_MAP:
+                UNKNOWN_CELEX_CODES.add(code)
 
         # Determine category for file grouping
         if type_info[0] == "Judgment":
@@ -183,14 +211,27 @@ def extract_case_number(title: str) -> str:
 
 
 def clean_title(title: str) -> str:
-    """Clean up the EUR-Lex title format (removes # separators)."""
+    """Clean up the EUR-Lex title format (removes # separators).
+
+    #355: EUR-Lex/curia titles embed non-breaking spaces (U+00A0), e.g.
+    ``M.\\u00a0Wathelet``. Left un-normalized they break SPARQL ``str()``
+    equality and full-text indexes (``M.\\u00a0Wathelet`` != ``M. Wathelet``),
+    so collapse them to a regular space before any other cleanup.
+    """
+    title = title.replace(" ", " ")
     # EUR-Lex uses # as separator in case-law titles
     parts = [p.strip() for p in title.split("#") if p.strip()]
     return " — ".join(parts) if parts else title
 
 
 def truncate_label(title: str, max_len: int = 500) -> str:
-    """Shorten display labels while keeping the beginning of the case title."""
+    """Shorten display labels while keeping the beginning of the case title.
+
+    #355: also normalize non-breaking spaces (U+00A0) to a regular space so
+    a label is never emitted with an NBSP even when truncated or when this
+    helper is invoked directly on a not-yet-``clean_title``-d string.
+    """
+    title = title.replace(" ", " ")
     if len(title) <= max_len:
         return title
     return title[: max_len - 3].rstrip() + "..."
@@ -232,6 +273,13 @@ SELECT DISTINCT ?work ?celex ?title ?date ?ecli ?author WHERE {{
     UNION {{ ?work a cdm:opinion_cjeu }}
   }}
   ?work cdm:resource_legal_id_celex ?celex .
+  # #343: the broad ``cdm:case-law`` branch also matches CELEX **sector 8**
+  # works — national-court decisions citing EU law (Riigikohus, Tallinna
+  # Halduskohus, …). They are not EU-court decisions, so restrict to the
+  # CJEU (sector ``6``) and EFTA Court (sector ``E``) namespaces; otherwise
+  # ``classify_from_celex`` defaults them to ``EUCourt_CourtOfJustice`` and
+  # contaminates the CJEU statistics / ``EUCourtDecision`` class.
+  FILTER(STRSTARTS(?celex, "6") || STRSTARTS(?celex, "E"))
   ?exp cdm:expression_belongs_to_work ?work .
   ?exp cdm:expression_uses_language <http://publications.europa.eu/resource/authority/language/EST> .
   ?exp cdm:expression_title ?title .

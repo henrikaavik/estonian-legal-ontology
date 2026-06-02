@@ -440,6 +440,99 @@ class TestYlaIndeksIntegration:
         assert not duplicates, f"dup-guard would raise on: {sorted(duplicates)}"
 
 
+class TestContextDcNamespace:
+    """Regression #308: ``dc`` MUST be Dublin Core *elements/1.1* (as in
+    every other corpus file), NOT /dc/terms/. Conflating them makes
+    ``dc:source``/``dc:references`` expand to the wrong IRIs so RDF joins
+    across the corpus silently miss this artifact after any regeneration.
+    """
+
+    def test_dc_prefix_maps_to_elements_1_1(self) -> None:
+        ctx = gke.build_context()
+        assert ctx["dc"] == "http://purl.org/dc/elements/1.1/"
+
+    def test_dc_is_not_dcterms(self) -> None:
+        """``dc`` and ``dcterms`` are distinct namespaces; the bug pointed
+        both at /dc/terms/."""
+        ctx = gke.build_context()
+        assert ctx["dcterms"] == "http://purl.org/dc/terms/"
+        assert ctx["dc"] != ctx["dcterms"]
+
+    def test_dc_matches_canonical_estleg_common_context(self) -> None:
+        """The eriosa ``dc`` IRI MUST equal the shared corpus context so
+        ``dc:title``/``dc:source``/``dc:references`` expand identically."""
+        try:
+            import estleg_common  # noqa: PLC0415  (scripts/ on sys.path)
+        except Exception:  # pragma: no cover - defensive: skip if unavailable
+            import pytest
+
+            pytest.skip("estleg_common not importable")
+        assert gke.build_context()["dc"] == estleg_common.CONTEXT["dc"]
+
+
+def _para_with_loiget(*texts: str) -> ET.Element:
+    """Build a ``<paragrahv>`` whose ``<loige>`` children carry ``texts``."""
+    loiget = "".join(
+        f"<loige><loigeTekst>{t}</loigeTekst></loige>" for t in texts
+    )
+    return ET.fromstring(f"<paragrahv>{loiget}</paragrahv>")
+
+
+class TestCollectLoigePreviewBoundary:
+    """Regression #368: the ~500-char preview MUST cut on a sentence/word
+    boundary, never mid-token. A raw ``joined[:max_len]`` slice ends in the
+    middle of a word (e.g. ``…kohustatud arvut``), corrupting the summary
+    that every downstream classifier reads.
+    """
+
+    def test_short_text_returned_intact(self) -> None:
+        para = _para_with_loiget("Lühike tekst.")
+        assert gke.collect_loige_preview(para) == "Lühike tekst."
+
+    def test_cut_does_not_split_a_word(self) -> None:
+        # 60 words of 9 chars + space = 600 chars > 100, no sentence stop,
+        # so the helper must fall back to the LAST whole word.
+        word = "kohustus"  # 8 chars
+        sentence = " ".join([word] * 60)
+        para = _para_with_loiget(sentence)
+        out = gke.collect_loige_preview(para, max_len=100)
+        assert len(out) <= 100
+        # Ellipsis signals the word-boundary fallback fired.
+        assert out.endswith("…")
+        # Drop the ellipsis; every remaining token is the whole word.
+        body = out[:-1].strip()
+        assert all(tok == word for tok in body.split(" "))
+        # And the raw slice WOULD have split a word — confirm we differ.
+        raw = sentence[:100]
+        assert raw[-1] != " " and raw != out
+
+    def test_prefers_sentence_boundary_within_budget(self) -> None:
+        # First sentence ends well past 70% of an 80-char budget, so the
+        # cut should land on that period and keep punctuation.
+        first = "See on esimene lause mis on piisavalt pikk lopetamiseks siin."
+        rest = "Teine lause laeb jaaki ja peab olema piisavalt pikk et ulatuda ule eelarve piiri."
+        para = _para_with_loiget(f"{first} {rest}")
+        out = gke.collect_loige_preview(para, max_len=80)
+        assert out == first
+        assert out.endswith(".")
+        assert "…" not in out
+
+    def test_no_trailing_partial_token_for_real_world_case(self) -> None:
+        # Mirrors the ATKE_Par_24 symptom from #368: long text with a final
+        # token that would be split by a raw slice.
+        prefix = "x" * 495  # fills the budget up to char 495
+        para = _para_with_loiget(f"{prefix} arvutiprogramm tekst")
+        out = gke.collect_loige_preview(para, max_len=500)
+        assert len(out) <= 500
+        # The trailing token must be whole, never a fragment like ``arvut``.
+        assert not out.rstrip("…").endswith("arvut")
+
+    def test_respects_max_len_when_joining_multiple_loiget(self) -> None:
+        para = _para_with_loiget("Esimene loige sisu siin.", "Teine " + "x" * 600)
+        out = gke.collect_loige_preview(para, max_len=120)
+        assert len(out) <= 120
+
+
 class TestChapterLabel:
     def test_chapter_label_safe_when_title_missing(self) -> None:
         xml = """<?xml version="1.0" encoding="UTF-8"?>
