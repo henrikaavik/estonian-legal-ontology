@@ -272,12 +272,14 @@ def test_vos_output_slug_matches_generate_all_laws(tmp_path, monkeypatch) -> Non
 
 
 def test_helpers_resolve_from_generate_all_laws() -> None:
+    from scripts import generate_all_laws  # noqa: PLC0415
     from scripts.generate_missing_parts import (  # noqa: PLC0415
         _iter_loiked,
         _loige_numbers,
         _paragraph_id_suffix,
         build_subsections,
         collect_full_text,
+        collect_text,
     )
 
     assert callable(_paragraph_id_suffix)
@@ -285,3 +287,153 @@ def test_helpers_resolve_from_generate_all_laws() -> None:
     assert callable(_iter_loiked)
     assert callable(_loige_numbers)
     assert callable(collect_full_text)
+    assert callable(collect_text)
+    # The summary extractor must be the canonical, marker-pruned helper
+    # from generate_all_laws — not a divergent local copy. (``is`` identity
+    # is unreliable here: generate_missing_parts imports the bare
+    # ``generate_all_laws`` module while the test imports the package-
+    # qualified ``scripts.generate_all_laws``; these are distinct module-
+    # cache entries, so compare provenance instead.)
+    assert collect_text.__module__ == "generate_all_laws"
+    assert (
+        collect_text.__code__.co_filename
+        == generate_all_laws.collect_text.__code__.co_filename
+    )
+
+
+def test_vos_requested_cluster_is_iri_reference_not_bare_string() -> None:
+    """#370 item 2: ``estleg:requestedCluster`` on a VÕS provision MUST be an
+    IRI reference ``{"@id": ...}``, not a bare string literal (which JSON-LD
+    would treat as an ``xsd:string`` and orphan the cluster)."""
+    root = ET.fromstring(
+        """
+        <akt>
+          <sisu>
+            <osa>
+              <osaNr>2</osaNr>
+              <osaPealkiri>Lepingu üldosa</osaPealkiri>
+              <kuvatavNr>2. osa</kuvatavNr>
+              <peatykk>
+                <peatykkNr>1</peatykkNr>
+                <peatykkPealkiri>Lepingu mõiste</peatykkPealkiri>
+                <paragrahv>
+                  <paragrahvNr>8</paragrahvNr>
+                  <kuvatavNr>§ 8.</kuvatavNr>
+                  <paragrahvPealkiri>Leping</paragrahvPealkiri>
+                  <loige><loigeNr>1</loigeNr><tavatekst>Leping on tehing.</tavatekst></loige>
+                </paragrahv>
+              </peatykk>
+            </osa>
+          </sisu>
+        </akt>
+        """
+    )
+
+    doc = generate_missing_parts.generate_vos_part(root, "fixture.xml", "2")
+    assert doc is not None
+    provision = _node_by_id(doc, "estleg:VOS_Osa2_Par_8")
+    cluster = provision["estleg:requestedCluster"]
+    assert isinstance(cluster, dict), (
+        f"requestedCluster must be an IRI reference dict, got {cluster!r}"
+    )
+    assert not isinstance(cluster, str)
+    assert set(cluster) == {"@id"}
+    assert cluster["@id"].startswith("estleg:Cluster_VOS_2_")
+    # The cluster the provision points at must actually exist in the graph.
+    _node_by_id(doc, cluster["@id"])
+
+
+def test_tsus_requested_cluster_is_iri_reference_not_bare_string() -> None:
+    """#370 item 2: the hardcoded TsÜS Osa1 ``estleg:requestedCluster`` MUST
+    be an IRI reference ``{"@id": ...}``, not a bare string literal."""
+    root = ET.fromstring(
+        """
+        <akt>
+          <sisu>
+            <osa>
+              <osaNr>1</osaNr>
+              <osaPealkiri>Üldsätted</osaPealkiri>
+              <paragrahv>
+                <paragrahvNr>1</paragrahvNr>
+                <kuvatavNr>§ 1.</kuvatavNr>
+                <paragrahvPealkiri>Seaduse ülesanne</paragrahvPealkiri>
+                <loige><loigeNr>1</loigeNr><tavatekst>Üldpõhimõtted.</tavatekst></loige>
+              </paragrahv>
+            </osa>
+          </sisu>
+        </akt>
+        """
+    )
+
+    doc = generate_missing_parts.generate_tsus_part1(root, "fixture.xml")
+    assert doc is not None
+    provisions = [
+        n
+        for n in doc["@graph"]
+        if "estleg:LegalProvision_TsUS_osa1" in (n.get("@type") or [])
+    ]
+    assert provisions, "expected at least one TsÜS Osa1 provision"
+    for provision in provisions:
+        cluster = provision["estleg:requestedCluster"]
+        assert isinstance(cluster, dict), (
+            f"requestedCluster must be an IRI reference dict, got {cluster!r}"
+        )
+        assert not isinstance(cluster, str)
+        assert cluster == {"@id": "estleg:Cluster_TsUS_Uldsatted"}
+    # The referenced cluster individual must exist in the graph.
+    _node_by_id(doc, "estleg:Cluster_TsUS_Uldsatted")
+
+
+def test_summary_does_not_leak_amendment_marker() -> None:
+    """Round-1 finding (near #298) / #255: the local ``collect_text`` used to
+    walk the raw tree and leak amendment-marker text into ``estleg:summary``.
+
+    A ``muutmismarge``/``avaldamismarge`` subtree nested inside the paragraph
+    (or inside a ``loige``) MUST NOT appear in the emitted summary; only the
+    genuine ``loige`` body text should.
+    """
+    root = ET.fromstring(
+        """
+        <akt>
+          <sisu>
+            <osa>
+              <osaNr>2</osaNr>
+              <osaPealkiri>Lepingu üldosa</osaPealkiri>
+              <paragrahv>
+                <paragrahvNr>9</paragrahvNr>
+                <kuvatavNr>§ 9.</kuvatavNr>
+                <paragrahvPealkiri>Leping</paragrahvPealkiri>
+                <avaldamismarge>
+                  <tavatekst>terviktekst RT paberkandjal</tavatekst>
+                </avaldamismarge>
+                <loige>
+                  <loigeNr>1</loigeNr>
+                  <tavatekst>Ehtne sätte sisu kehtib.</tavatekst>
+                  <muutmismarge>
+                    <tavatekst>Kehtetu -</tavatekst>
+                    <tavatekst>(jõustumine muudetud - RT I, 03.03.2019, 7)</tavatekst>
+                  </muutmismarge>
+                </loige>
+                <joustumismarge>
+                  <lause>(jõustumine muudetud - RT I, 01.01.2020, 1)</lause>
+                </joustumismarge>
+              </paragrahv>
+            </osa>
+          </sisu>
+        </akt>
+        """
+    )
+
+    doc = generate_missing_parts.generate_vos_part(root, "fixture.xml", "2")
+    assert doc is not None
+    provision = _node_by_id(doc, "estleg:VOS_Osa2_Par_9")
+    summary = provision["estleg:summary"]
+    assert "Ehtne sätte sisu kehtib." in summary
+    for leaked in (
+        "terviktekst RT paberkandjal",
+        "Kehtetu -",
+        "jõustumine muudetud",
+    ):
+        assert leaked not in summary, (
+            f"amendment-marker text leaked into estleg:summary: {leaked!r}"
+        )

@@ -41,6 +41,7 @@ from generate_all_laws import (  # noqa: E402
     _paragraph_id_suffix,
     build_subsections,
     collect_full_text,
+    collect_text as collect_text,
 )
 
 KRR_DIR = REPO_ROOT / "krr_outputs"
@@ -91,19 +92,14 @@ def sanitize_id(value: str) -> str:
     return s or "Unknown"
 
 
-def collect_text(el: ET.Element, max_len: int = 800) -> str:
-    """Collect all text from an element and its children."""
-    parts: list[str] = []
-    for child in el.iter():
-        if ln(child.tag) in ("loige", "lauseOsa", "lause"):
-            txt = "".join(child.itertext()).strip()
-            txt = re.sub(r"\s+", " ", txt)
-            if txt:
-                parts.append(txt)
-        if len(" ".join(parts)) >= max_len:
-            break
-    joined = " ".join(parts)
-    return joined[:max_len] if joined else ""
+# ``collect_text`` (and its marker-pruning helpers ``_iter_text_nodes`` /
+# ``_marker_pruned_text``) are imported from ``generate_all_laws`` above so
+# that the summary-text extraction stays in lock-step with the canonical
+# pipeline: amendment/publication/entry-into-force marker subtrees
+# (``muutmismarge``/``avaldamismarge``/``joustumismarge``, #255) are pruned
+# and the ``loige`` container is not double-captured alongside its own
+# ``tavatekst``. A previous local copy walked the raw ``el.iter()`` tree and
+# leaked those markers into ``estleg:summary``.
 
 
 # ---------------------------------------------------------------------------
@@ -377,7 +373,10 @@ def generate_vos_part(root: ET.Element, xml_url: str, osa_nr: str) -> dict | Non
         p_nr = child_text(p, "paragrahvNr") or "?"
         p_title = child_text(p, "paragrahvPealkiri") or ""
         p_display = child_text(p, "kuvatavNr") or f"§ {p_nr}"
-        text = collect_text(p)
+        # Preserve this module's historical 800-char summary budget while
+        # delegating to the marker-pruned canonical extractor (its own
+        # default is 500).
+        text = collect_text(p, max_len=800)
         full_text = collect_full_text(p)
         par_suffix = _paragraph_id_suffix(p)
 
@@ -413,7 +412,9 @@ def generate_vos_part(root: ET.Element, xml_url: str, osa_nr: str) -> dict | Non
             node["estleg:legalText"] = full_text
 
         if cluster_ref:
-            node["estleg:requestedCluster"] = cluster_ref
+            # IRI reference, not a bare string literal (JSON-LD would treat
+            # a plain string as an xsd:string and orphan the cluster).
+            node["estleg:requestedCluster"] = {"@id": cluster_ref}
 
         subsection_nodes = build_subsections(
             p,
@@ -508,7 +509,10 @@ def generate_tsus_part1(root: ET.Element, xml_url: str) -> dict | None:
         p_nr = child_text(p, "paragrahvNr") or "?"
         p_title = child_text(p, "paragrahvPealkiri") or ""
         p_display = child_text(p, "kuvatavNr") or f"§ {p_nr}"
-        text = collect_text(p)
+        # Preserve this module's historical 800-char summary budget while
+        # delegating to the marker-pruned canonical extractor (its own
+        # default is 500).
+        text = collect_text(p, max_len=800)
         full_text = collect_full_text(p)
         par_suffix = _paragraph_id_suffix(p)
 
@@ -522,7 +526,8 @@ def generate_tsus_part1(root: ET.Element, xml_url: str) -> dict | None:
             ],
             "estleg:paragrahv": p_display,
             "rdfs:label": f"{p_display} {p_title}".strip() if p_title else p_display,
-            "estleg:requestedCluster": "estleg:Cluster_TsUS_Uldsatted",
+            # IRI reference, not a bare string literal (#370 item 2).
+            "estleg:requestedCluster": {"@id": "estleg:Cluster_TsUS_Uldsatted"},
             "estleg:sourceAct": "Tsiviilseadustiku üldosa seadus",
         }
 
