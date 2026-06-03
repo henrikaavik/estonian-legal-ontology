@@ -151,10 +151,9 @@
       "@id": "estleg:EUDecType_Other",
       "@type": [
         "owl:NamedIndividual",
-        "estleg:UnresolvedReferencePlaceholder"
+        "estleg:EUCourtDecisionType"
       ],
-      "rdfs:label": "E U Dec Type  Other",
-      "estleg:referenceStatus": "fallbackMaterialized"
+      "rdfs:label": "Muu (Other EU court decision type)"
     },
     {
       "@id": "estleg:EUInst_CASSTM",
@@ -1653,6 +1652,25 @@
       }
     },
     {
+      "@id": "estleg:interpretsLaw",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:label": "Interprets Law",
+      "rdfs:comment": "Coverage + combined graph-closure stub for the inverse of estleg:interpretedBy. The canonical T-Box definition (with rdfs:domain/rdfs:range) lives in krr_outputs/riigikohus/riigikohus_schema.json; this stub exists so the estleg:interpretedBy owl:inverseOf axiom resolves inside combined_ontology.jsonld, which does not include riigikohus_schema.json.",
+      "owl:inverseOf": {
+        "@id": "estleg:interpretedBy"
+      }
+    },
+    {
+      "@id": "estleg:isCurrentAmendment",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": "Is Current Amendment",
+      "rdfs:comment": "Reusable property observed in generated corpus and materialized for vocabulary coverage validation. Boolean flag (xsd:boolean) marking the most recent AmendmentEvent / draft link in an amendment chain."
+    },
+    {
       "@id": "estleg:isKov",
       "@type": [
         "owl:DatatypeProperty"
@@ -2228,10 +2246,7 @@
         "owl:ObjectProperty"
       ],
       "rdfs:label": "Has Version",
-      "rdfs:comment": "Links an estleg:LegalProvision to an estleg:ProvisionVersion in its text history. A provision with a populated history has one estleg:hasVersion triple per redaction. Inverse of estleg:versionOf.",
-      "rdfs:range": {
-        "@id": "estleg:ProvisionVersion"
-      },
+      "rdfs:comment": "Links an estleg:LegalProvision to an estleg:ProvisionVersion in its text history. A provision with a populated history has one estleg:hasVersion triple per redaction. Inverse of estleg:versionOf. NB: deliberately carries NO rdfs:range estleg:ProvisionVersion — under the RDFS inference the SHACL gate runs, a range would type every bare hasVersion object (whose full node, with estleg:versionValidFrom, lives in an unloaded provision_versions/ sidecar) as an estleg:ProvisionVersion in the 'laws' bucket, raising false MinCount violations. Real ProvisionVersion nodes are explicitly typed in their sidecars and validated by the 'sidecars' bucket.",
       "owl:inverseOf": {
         "@id": "estleg:versionOf"
       }

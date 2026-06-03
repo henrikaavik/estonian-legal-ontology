@@ -1042,3 +1042,91 @@ class TestEnrichFullText:
         index = json.loads((_fake_rk_dir / "RIIGIKOHUS_INDEX.json").read_text())
         assert index["full_text"]["decisions_with_full_text"] == 1
         assert index["full_text"]["property"] == "estleg:legalText"
+
+
+# ---------------------------------------------------------------------------
+# RIIGIKOHUS_INDEX counts exclude skipped duplicates (issue #398)
+# ---------------------------------------------------------------------------
+
+class TestIndexCountsExcludeDuplicates:
+    """The index advertises `total_decisions` and `case_type_counts` for the
+    EMITTED graph, so a rikos feed that repeats a decision (dropped by the
+    `seen_keys` content-dedup at build time) must NOT inflate those counts
+    (#398). Pre-fix, `main()` tallied the raw fetched list, which counted the
+    duplicate and over-reported vs. the nodes actually written to the peep.
+    """
+
+    def test_duplicate_row_not_counted_in_index(
+        self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        rk_dir = tmp_path / "riigikohus"
+        rk_dir.mkdir()
+        monkeypatch.setattr(gcd, "RK_DIR", rk_dir)
+        monkeypatch.setattr(gcd.time, "sleep", lambda *_a, **_k: None)
+
+        # One Criminal, one Civil, one Administrative decision — plus a TRUE
+        # duplicate of the Criminal one (same case_nr/date/decision_type, a
+        # different object_id) that decision_to_node drops via seen_keys.
+        criminal = {
+            "case_nr": "1-26-100",
+            "date": "10.10.2026",
+            "decision_type": "Kohtuotsus",
+            "object_id": "111",
+            "summary": "",
+            "link": "",
+        }
+        civil = {
+            "case_nr": "2-26-200",
+            "date": "11.11.2026",
+            "decision_type": "Kohtuotsus",
+            "object_id": "222",
+            "summary": "",
+            "link": "",
+        }
+        administrative = {
+            "case_nr": "3-26-300",
+            "date": "12.12.2026",
+            "decision_type": "Kohtuotsus",
+            "object_id": "333",
+            "summary": "",
+            "link": "",
+        }
+        duplicate_of_criminal = {**criminal, "object_id": "999"}  # same doc, new id
+        feed = [criminal, civil, administrative, duplicate_of_criminal]
+        assert len(feed) == 4  # raw rows fetched
+
+        def _fake_fetch_year(year: int) -> list[dict]:
+            return list(feed) if year == 2026 else []
+
+        monkeypatch.setattr(gcd, "fetch_year", _fake_fetch_year)
+        gcd.main([])  # no --fetch-full-text → no network beyond fetch_year stub
+
+        # The 2026 peep holds exactly 3 decision nodes (the dup was skipped).
+        peep = json.loads((rk_dir / "riigikohus_2026_peep.json").read_text())
+        emitted_nodes = [
+            n for n in peep["@graph"]
+            if "estleg:CourtDecision" in n.get("@type", [])
+        ]
+        assert len(emitted_nodes) == 3, "duplicate should not produce a node"
+
+        index = json.loads((rk_dir / "RIIGIKOHUS_INDEX.json").read_text())
+        # total_decisions reflects the emitted (de-duplicated) set, not raw 4.
+        assert index["total_decisions"] == 3
+        # case_type_counts is tallied from emitted nodes: the duplicate must
+        # NOT bump Criminal to 2.
+        assert index["case_type_counts"] == {
+            "Criminal": 1,
+            "Civil": 1,
+            "Administrative": 1,
+        }
+        # Per-year breakdown agrees, and the duplicate is excluded there too.
+        assert index["case_type_counts_per_year"]["2026"] == {
+            "Criminal": 1,
+            "Civil": 1,
+            "Administrative": 1,
+        }
+        # `years` (from year_stats) also counts emitted, not the raw 4.
+        assert index["years"]["2026"] == 3
+        # The advertised total must equal the emitted node count — the
+        # invariant #398 guards against drifting.
+        assert index["total_decisions"] == len(emitted_nodes)

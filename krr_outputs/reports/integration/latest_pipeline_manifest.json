@@ -1,6 +1,6 @@
 {
-  "generated": "2026-05-25T22:02:47.906728+00:00",
-  "restoreOnFailure": true,
+  "generated": "2026-06-02T19:27:42.180570+00:00",
+  "restoreOnFailure": false,
   "dryRun": false,
   "resumeFrom": null,
   "parallel": 1,
@@ -19,11 +19,12 @@
     "extract_institutional_competence.py",
     "extract_sanctions.py",
     "extract_draft_impact.py",
-    "generate_similarity_index.py"
+    "generate_similarity_index.py",
+    "fix_all_issues.py"
   ],
   "summary": {
-    "totalScripts": 15,
-    "succeeded": 15,
+    "totalScripts": 16,
+    "succeeded": 16,
     "planned": 0,
     "skipped": 0,
     "failed": 0
@@ -35,10 +36,10 @@
       "description": "Cross-law reference extraction",
       "dependsOn": [],
       "command": [
-        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Volumes/Molumalu/progemoge/law-ontology/.venv/bin/python",
         "/Volumes/Molumalu/progemoge/law-ontology/scripts/extract_cross_references.py"
       ],
-      "elapsedSeconds": 250.77,
+      "elapsedSeconds": 429.27,
       "logPath": "krr_outputs/reports/integration/logs/extract_cross_references.log",
       "exitCode": 0,
       "status": "succeeded"
@@ -51,10 +52,10 @@
         "extract_cross_references.py"
       ],
       "command": [
-        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Volumes/Molumalu/progemoge/law-ontology/.venv/bin/python",
         "/Volumes/Molumalu/progemoge/law-ontology/scripts/generate_inverse_references.py"
       ],
-      "elapsedSeconds": 23.85,
+      "elapsedSeconds": 75.61,
       "logPath": "krr_outputs/reports/integration/logs/generate_inverse_references.log",
       "exitCode": 0,
       "status": "succeeded"
@@ -65,10 +66,10 @@
       "description": "EU directive transposition mapping",
       "dependsOn": [],
       "command": [
-        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Volumes/Molumalu/progemoge/law-ontology/.venv/bin/python",
         "/Volumes/Molumalu/progemoge/law-ontology/scripts/generate_transposition_mapping.py"
       ],
-      "elapsedSeconds": 11.07,
+      "elapsedSeconds": 42.27,
       "logPath": "krr_outputs/reports/integration/logs/generate_transposition_mapping.log",
       "exitCode": 0,
       "status": "succeeded"
@@ -81,10 +82,10 @@
         "generate_transposition_mapping.py"
       ],
       "command": [
-        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Volumes/Molumalu/progemoge/law-ontology/.venv/bin/python",
         "/Volumes/Molumalu/progemoge/law-ontology/scripts/generate_harmonisation_links.py"
       ],
-      "elapsedSeconds": 4.87,
+      "elapsedSeconds": 5.89,
       "logPath": "krr_outputs/reports/integration/logs/generate_harmonisation_links.log",
       "exitCode": 0,
       "status": "succeeded"
@@ -95,10 +96,10 @@
       "description": "Court decision -> provision links",
       "dependsOn": [],
       "command": [
-        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Volumes/Molumalu/progemoge/law-ontology/.venv/bin/python",
         "/Volumes/Molumalu/progemoge/law-ontology/scripts/extract_court_provision_links.py"
       ],
-      "elapsedSeconds": 11.44,
+      "elapsedSeconds": 106.27,
       "logPath": "krr_outputs/reports/integration/logs/extract_court_provision_links.log",
       "exitCode": 0,
       "status": "succeeded"
@@ -109,10 +110,10 @@
       "description": "EuroVoc subject classification",
       "dependsOn": [],
       "command": [
-        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Volumes/Molumalu/progemoge/law-ontology/.venv/bin/python",
         "/Volumes/Molumalu/progemoge/law-ontology/scripts/classify_eurovoc.py"
       ],
-      "elapsedSeconds": 60.55,
+      "elapsedSeconds": 69.75,
       "logPath": "krr_outputs/reports/integration/logs/classify_eurovoc.log",
       "exitCode": 0,
       "status": "succeeded"
@@ -123,10 +124,12 @@
       "description": "Temporal validity data",
       "dependsOn": [],
       "command": [
-        "/opt/homebrew/opt/python@3.14/bin/python3.14",
-        "/Volumes/Molumalu/progemoge/law-ontology/scripts/extract_temporal_data.py"
+        "/Volumes/Molumalu/progemoge/law-ontology/.venv/bin/python",
+        "/Volumes/Molumalu/progemoge/law-ontology/scripts/extract_temporal_data.py",
+        "--evaluation-date",
+        "2026-06-01"
       ],
-      "elapsedSeconds": 115.13,
+      "elapsedSeconds": 180.3,
       "logPath": "krr_outputs/reports/integration/logs/extract_temporal_data.log",
       "exitCode": 0,
       "status": "succeeded"
@@ -137,10 +140,10 @@
       "description": "Amendment history chains",
       "dependsOn": [],
       "command": [
-        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Volumes/Molumalu/progemoge/law-ontology/.venv/bin/python",
         "/Volumes/Molumalu/progemoge/law-ontology/scripts/generate_amendment_history.py"
       ],
-      "elapsedSeconds": 251.38,
+      "elapsedSeconds": 335.89,
       "logPath": "krr_outputs/reports/integration/logs/generate_amendment_history.log",
       "exitCode": 0,
       "status": "succeeded"
@@ -151,10 +154,10 @@
       "description": "Legal concept extraction",
       "dependsOn": [],
       "command": [
-        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Volumes/Molumalu/progemoge/law-ontology/.venv/bin/python",
         "/Volumes/Molumalu/progemoge/law-ontology/scripts/extract_legal_concepts.py"
       ],
-      "elapsedSeconds": 103.99,
+      "elapsedSeconds": 173.4,
       "logPath": "krr_outputs/reports/integration/logs/extract_legal_concepts.log",
       "exitCode": 0,
       "status": "succeeded"
@@ -165,10 +168,10 @@
       "description": "Deontic classification",
       "dependsOn": [],
       "command": [
-        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Volumes/Molumalu/progemoge/law-ontology/.venv/bin/python",
         "/Volumes/Molumalu/progemoge/law-ontology/scripts/classify_deontic.py"
       ],
-      "elapsedSeconds": 47.82,
+      "elapsedSeconds": 61.78,
       "logPath": "krr_outputs/reports/integration/logs/classify_deontic.log",
       "exitCode": 0,
       "status": "succeeded"
@@ -179,10 +182,10 @@
       "description": "Target-group classification",
       "dependsOn": [],
       "command": [
-        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Volumes/Molumalu/progemoge/law-ontology/.venv/bin/python",
         "/Volumes/Molumalu/progemoge/law-ontology/scripts/classify_target_group.py"
       ],
-      "elapsedSeconds": 271.46,
+      "elapsedSeconds": 282.98,
       "logPath": "krr_outputs/reports/integration/logs/classify_target_group.log",
       "exitCode": 0,
       "status": "succeeded"
@@ -193,10 +196,10 @@
       "description": "Institutional competence mapping",
       "dependsOn": [],
       "command": [
-        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Volumes/Molumalu/progemoge/law-ontology/.venv/bin/python",
         "/Volumes/Molumalu/progemoge/law-ontology/scripts/extract_institutional_competence.py"
       ],
-      "elapsedSeconds": 43.74,
+      "elapsedSeconds": 53.36,
       "logPath": "krr_outputs/reports/integration/logs/extract_institutional_competence.log",
       "exitCode": 0,
       "status": "succeeded"
@@ -207,10 +210,10 @@
       "description": "Sanction extraction",
       "dependsOn": [],
       "command": [
-        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Volumes/Molumalu/progemoge/law-ontology/.venv/bin/python",
         "/Volumes/Molumalu/progemoge/law-ontology/scripts/extract_sanctions.py"
       ],
-      "elapsedSeconds": 35.37,
+      "elapsedSeconds": 39.24,
       "logPath": "krr_outputs/reports/integration/logs/extract_sanctions.log",
       "exitCode": 0,
       "status": "succeeded"
@@ -221,10 +224,10 @@
       "description": "Draft impact analysis",
       "dependsOn": [],
       "command": [
-        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Volumes/Molumalu/progemoge/law-ontology/.venv/bin/python",
         "/Volumes/Molumalu/progemoge/law-ontology/scripts/extract_draft_impact.py"
       ],
-      "elapsedSeconds": 14.21,
+      "elapsedSeconds": 16.98,
       "logPath": "krr_outputs/reports/integration/logs/extract_draft_impact.log",
       "exitCode": 0,
       "status": "succeeded"
@@ -250,11 +253,41 @@
         "extract_draft_impact.py"
       ],
       "command": [
-        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Volumes/Molumalu/progemoge/law-ontology/.venv/bin/python",
         "/Volumes/Molumalu/progemoge/law-ontology/scripts/generate_similarity_index.py"
       ],
-      "elapsedSeconds": 213.53,
+      "elapsedSeconds": 283.27,
       "logPath": "krr_outputs/reports/integration/logs/generate_similarity_index.log",
+      "exitCode": 0,
+      "status": "succeeded"
+    },
+    {
+      "name": "fix_all_issues.py",
+      "script": "fix_all_issues.py",
+      "description": "Rebuild combined_ontology.jsonld + INDEX.json",
+      "dependsOn": [
+        "extract_cross_references.py",
+        "generate_inverse_references.py",
+        "generate_transposition_mapping.py",
+        "generate_harmonisation_links.py",
+        "extract_court_provision_links.py",
+        "classify_eurovoc.py",
+        "extract_temporal_data.py",
+        "generate_amendment_history.py",
+        "extract_legal_concepts.py",
+        "classify_deontic.py",
+        "classify_target_group.py",
+        "extract_institutional_competence.py",
+        "extract_sanctions.py",
+        "extract_draft_impact.py",
+        "generate_similarity_index.py"
+      ],
+      "command": [
+        "/Volumes/Molumalu/progemoge/law-ontology/.venv/bin/python",
+        "/Volumes/Molumalu/progemoge/law-ontology/scripts/fix_all_issues.py"
+      ],
+      "elapsedSeconds": 40.52,
+      "logPath": "krr_outputs/reports/integration/logs/fix_all_issues.log",
       "exitCode": 0,
       "status": "succeeded"
     }
