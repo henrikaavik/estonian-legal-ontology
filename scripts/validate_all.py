@@ -281,6 +281,22 @@ def reset() -> None:
     _DEFAULT_REPORTER.reset()
 
 
+def _is_lfs_pointer(filepath: Path) -> bool:
+    """True when ``filepath`` is an un-materialised Git-LFS pointer.
+
+    The pytest CI job runs ``lfs: false``, so the 6 LFS-tracked artifacts
+    (combined_ontology.jsonld, eurlex/curia *_combined.jsonld, …) are present
+    only as their ~130-byte pointer stub. Reading one as JSON yields a spurious
+    "Invalid JSON" error and a 0 node count, so corpus-count gates must detect
+    and skip them rather than fail. Mirrors the workflow's own pointer guard.
+    """
+    try:
+        with open(filepath, "r", encoding="utf-8") as f:
+            return f.readline().rstrip("\n") == "version https://git-lfs.github.com/spec/v1"
+    except OSError:
+        return False
+
+
 def validate_json_syntax(filepath: Path) -> dict | None:
     try:
         with open(filepath, "r", encoding="utf-8") as f:
@@ -993,12 +1009,16 @@ def jsonld_file_count(krr_dir: Path = KRR_DIR) -> int:
     return sum(1 for _ in iter_krr_jsonld_files(krr_dir))
 
 
-def metadata_stats(krr_dir: Path = KRR_DIR) -> dict[str, int]:
+def metadata_stats(krr_dir: Path = KRR_DIR) -> dict[str, int | None]:
     index_path = krr_dir / "INDEX.json"
     index_doc = validate_json_syntax(index_path) if index_path.exists() else {}
     laws = index_doc.get("laws", []) if isinstance(index_doc, dict) else []
 
-    def count_graph_nodes(path: Path, type_name: str) -> int:
+    def count_graph_nodes(path: Path, type_name: str) -> int | None:
+        # An un-materialised LFS pointer (lfs:false CI) is not corruption — return
+        # None so corpus-count gates skip it instead of counting 0 and erroring.
+        if _is_lfs_pointer(path):
+            return None
         doc = validate_json_syntax(path)
         if not isinstance(doc, dict):
             return 0
@@ -1015,8 +1035,9 @@ def metadata_stats(krr_dir: Path = KRR_DIR) -> dict[str, int]:
         "estleg:municipalRegulationCount": len(list((krr_dir / "regulations" / "kov").glob("**/*_peep.json"))),
         "estleg:draftLegislationCount": count_graph_nodes(krr_dir / "eelnoud" / "eelnoud_combined.jsonld", "estleg:DraftLegislation"),
         "estleg:courtDecisionCount": sum(
-            count_graph_nodes(path, "estleg:CourtDecision")
+            c
             for path in (krr_dir / "riigikohus").glob("riigikohus_*_peep.json")
+            if (c := count_graph_nodes(path, "estleg:CourtDecision")) is not None
         ),
         "estleg:euLegislationCount": count_graph_nodes(krr_dir / "eurlex" / "eurlex_combined.jsonld", "estleg:EULegislation"),
         "estleg:euCourtDecisionCount": count_graph_nodes(krr_dir / "curia" / "curia_combined.jsonld", "estleg:EUCourtDecision"),
@@ -1085,6 +1106,10 @@ def validate_metadata_catalog(krr_dir: Path = KRR_DIR, *, allow_missing_index: b
         error("metadata.jsonld: estleg:statistics is missing or not an object")
         return
     for key, value in actual.items():
+        if value is None:
+            # Count source is an un-materialised LFS pointer (lfs:false CI) —
+            # can't verify this advertised statistic; skip rather than error.
+            continue
         if advertised.get(key) != value:
             error(f"metadata.jsonld: {key}={advertised.get(key)!r}, expected {value!r}")
 
@@ -1107,6 +1132,9 @@ def validate_metadata_catalog(krr_dir: Path = KRR_DIR, *, allow_missing_index: b
         if not expected_keys:
             continue
         for dist_key, stats_key in expected_keys.items():
+            if actual.get(stats_key) is None:
+                # LFS-pointer count source (lfs:false CI) — skip, don't error.
+                continue
             checked_dist_keys += 1
             if dist.get(dist_key) != actual.get(stats_key):
                 error(
@@ -1179,6 +1207,12 @@ def validate_subcorpus_index_counts(krr_dir: Path = KRR_DIR, *, allow_missing_in
             error(f"{rel_path}: {count_field} is missing or not an integer")
             continue
         expected = actual.get(stats_key)
+        if expected is None:
+            # The node-count source (an LFS *_combined.jsonld) is an
+            # un-materialised pointer (lfs:false CI) — can't cross-check.
+            warn(f"{rel_path}: {stats_key} source is an LFS pointer "
+                 f"(not materialised); skipping index cross-check")
+            continue
         checked += 1
         if advertised != expected:
             error(
@@ -2127,6 +2161,11 @@ def validate_id_uniqueness(all_ids: dict[str, list[str]]):
         "estleg:LegalPart", "estleg:Provision", "estleg:Section",
         "estleg:LegalConcept",
         "estleg:CaseType", "estleg:EUCourtDecisionType", "estleg:EUInstitution",
+        # estleg:interpretsLaw is canonically defined (with rdfs:domain/range) in
+        # riigikohus_schema.json AND materialized as a graph-closure stub in
+        # controlled_vocabulary.jsonld so the estleg:interpretedBy owl:inverseOf
+        # axiom resolves inside combined_ontology.jsonld (#366 / Seadusloome gate).
+        "estleg:interpretsLaw",
         "https://data.riik.ee/ontology/estleg#",
         "https://data.riik.ee/ontology/estleg#LegalPart",
         "https://data.riik.ee/ontology/estleg#Chapter",

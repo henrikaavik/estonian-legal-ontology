@@ -2133,3 +2133,62 @@ def test_regen_pending_guards_never_error_on_missing_artifacts(tmp_path):
 
     assert validate_all.errors == [], validate_all.errors
     assert len(validate_all.warnings) == 3, validate_all.warnings
+
+
+class TestCiRegressionGuards:
+    """Regression guards for the 3 CI failures fixed on regen/corpus-data:
+    LFS-pointer count gates (#400 follow-up), combined graph-closure of the
+    interpretedBy/interpretsLaw inverse (#366), and hasVersion's spurious
+    rdfs:range that phantom-typed ProvisionVersion nodes in the laws bucket."""
+
+    def test_is_lfs_pointer_detects_pointer_vs_json(self, tmp_path):
+        import json as _json
+        ptr = tmp_path / "p.jsonld"
+        ptr.write_text("version https://git-lfs.github.com/spec/v1\noid sha256:x\nsize 1\n")
+        real = tmp_path / "r.jsonld"
+        real.write_text(_json.dumps({"@graph": []}))
+        assert validate_all._is_lfs_pointer(ptr) is True
+        assert validate_all._is_lfs_pointer(real) is False
+        assert validate_all._is_lfs_pointer(tmp_path / "missing.jsonld") is False
+
+    def test_metadata_stats_skips_lfs_pointer_combined(self, tmp_path):
+        """An un-materialised LFS *_combined.jsonld yields None (not a 0 count +
+        'Invalid JSON' error) so corpus-count gates skip it under pytest lfs:false."""
+        import json as _json
+        for d in ("eelnoud", "eurlex", "curia", "riigikohus"):
+            (tmp_path / d).mkdir()
+        (tmp_path / "regulations" / "riik").mkdir(parents=True)
+        (tmp_path / "regulations" / "kov").mkdir(parents=True)
+        (tmp_path / "eelnoud" / "eelnoud_combined.jsonld").write_text(_json.dumps({"@graph": []}))
+        (tmp_path / "curia" / "curia_combined.jsonld").write_text(_json.dumps({"@graph": []}))
+        (tmp_path / "eurlex" / "eurlex_combined.jsonld").write_text(
+            "version https://git-lfs.github.com/spec/v1\noid sha256:x\nsize 1\n")
+        stats = validate_all.metadata_stats(tmp_path)
+        assert stats["estleg:euLegislationCount"] is None      # pointer -> skipped
+        assert stats["estleg:euCourtDecisionCount"] == 0       # real (empty) graph
+
+    def test_controlled_vocab_has_no_dangling_inverseof(self):
+        """Every owl:inverseOf target in controlled_vocabulary must itself be a
+        node there, so combined_ontology graph-closure (Seadusloome gate) holds
+        without pulling in riigikohus_schema.json."""
+        import json as _json
+        d = _json.loads((validate_all.KRR_DIR / "controlled_vocabulary.jsonld").read_text())
+        ids = {n.get("@id") for n in d["@graph"] if isinstance(n, dict)}
+        dangling = [
+            (n.get("@id"), n["owl:inverseOf"].get("@id"))
+            for n in d["@graph"]
+            if isinstance(n, dict) and isinstance(n.get("owl:inverseOf"), dict)
+            and n["owl:inverseOf"].get("@id") not in ids
+        ]
+        assert dangling == [], f"dangling owl:inverseOf targets: {dangling}"
+
+    def test_hasversion_has_no_rdfs_range(self):
+        """estleg:hasVersion must NOT carry rdfs:range estleg:ProvisionVersion:
+        under the SHACL gate's RDFS inference a range types the bare hasVersion
+        objects (full nodes live in unloaded provision_versions/ sidecars) as
+        ProvisionVersion in the 'laws' bucket -> false versionValidFrom violations."""
+        import json as _json
+        d = _json.loads((validate_all.KRR_DIR / "controlled_vocabulary.jsonld").read_text())
+        hv = next(n for n in d["@graph"]
+                  if isinstance(n, dict) and n.get("@id") == "estleg:hasVersion")
+        assert "rdfs:range" not in hv
