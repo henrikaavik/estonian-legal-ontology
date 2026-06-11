@@ -3,14 +3,15 @@
   "relation_semantics": "candidate",
   "algorithm": {
     "name": "keyword_jaccard",
-    "version": "2",
+    "version": "3",
     "source_fields": [
       "estleg:summary"
     ],
     "generic_keyword_doc_frequency_cap": 0.45
   },
-  "link_provenance": {
-    "shape": "estleg:semanticallySimilarTo value objects carry estleg:similarityScore (xsd:decimal Jaccard) and estleg:similarityStatus literals",
+  "link_emission": {
+    "in_graph_shape": "estleg:semanticallySimilarTo is emitted as a plain {\"@id\": <target>} IRI reference; no per-pair estleg:similarityScore / estleg:similarityStatus is written into the published graph (those keys mis-attached to the target node — see #422).",
+    "scores_location": "Per-pair Jaccard scores live in similarity_index.json's 'pairs' list, keyed by the directed (source, target) pair. Deferred reification: #463.",
     "status_literal": "candidate"
   },
   "quality_evaluation": {
@@ -20,7 +21,7 @@
   "total_provisions_analyzed": 83074,
   "total_similarity_pairs": 130459,
   "pairs_truncated_by_cap": 1476327,
-  "files_updated": 3948,
+  "files_updated": 3626,
   "candidate_files_by_type": {
     "law": 1186,
     "state_regulation": 3812,

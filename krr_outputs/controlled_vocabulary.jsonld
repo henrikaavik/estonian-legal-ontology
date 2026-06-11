@@ -107,6 +107,14 @@
       "rdfs:comment": "Multipart act part node used for large laws split into osa files."
     },
     {
+      "@id": "estleg:ProposedAmendment",
+      "@type": [
+        "owl:Class"
+      ],
+      "rdfs:label": "ProposedAmendment",
+      "rdfs:comment": "A draft-based proposed amendment derived from a non-enacted draft bill: it proposes — but has not effected — a change to an act. Deliberately NOT a subclass of estleg:AmendmentEvent (which asserts effected legal changes); proposals carry estleg:proposesToAmend / estleg:publicationDate instead of estleg:amends / estleg:amendmentDate, and never estleg:isCurrentAmendment. See issue #423."
+    },
+    {
       "@id": "estleg:Sanction",
       "@type": [
         "owl:Class"
@@ -1569,6 +1577,17 @@
       "rdfs:comment": "Reusable property observed in generated corpus and materialized for vocabulary coverage validation."
     },
     {
+      "@id": "estleg:hasProposedAmendment",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:label": "Has Proposed Amendment",
+      "rdfs:comment": "Reusable property observed in generated corpus and materialized for vocabulary coverage validation. Act-root back-link to estleg:ProposedAmendment nodes (non-enacted draft proposals); the proposal-scoped counterpart of estleg:amendedBy. Inverse of estleg:proposesToAmend. See issue #423.",
+      "owl:inverseOf": {
+        "@id": "estleg:proposesToAmend"
+      }
+    },
+    {
       "@id": "estleg:hasPart",
       "@type": [
         "owl:ObjectProperty"
@@ -1882,6 +1901,17 @@
       ],
       "rdfs:label": "Preamble Text",
       "rdfs:comment": "Reusable property observed in generated corpus and materialized for vocabulary coverage validation."
+    },
+    {
+      "@id": "estleg:proposesToAmend",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:label": "Proposes To Amend",
+      "rdfs:comment": "Reusable property observed in generated corpus and materialized for vocabulary coverage validation. Links an estleg:ProposedAmendment (a non-enacted draft proposal) to the act(s) it proposes to amend; the proposal-scoped counterpart of estleg:amends, which is reserved for effected changes. Inverse of estleg:hasProposedAmendment. See issue #423.",
+      "owl:inverseOf": {
+        "@id": "estleg:hasProposedAmendment"
+      }
     },
     {
       "@id": "estleg:provisionCount",

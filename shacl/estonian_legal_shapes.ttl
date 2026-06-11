@@ -747,11 +747,18 @@ estleg:EULegislationShape
 # node into `krr_outputs/harmonisation/harmonisation_by_directive/*.json`:
 #   * one aggregate node per directive (`estleg:Harmonisation_<celex>`)
 #     carrying `estleg:sharedDirective` (the EU directive) and
-#     `estleg:harmonisedWith` (the Estonian act that transposes it), and
+#     `estleg:harmonises` (the Estonian act(s) that transpose it), and
 #   * one node per neighbouring-country National Implementing Measure
 #     (`estleg:Harm_<celex>_<COUNTRY3>_<n>`) carrying
 #     `estleg:memberStateCode` + `estleg:nationalCelex` (+ optional
 #     `dcterms:title` / `dcterms:date`).
+# Since #425 the link→act back-edge in the harm files uses
+# `estleg:harmonises` (HarmonisationLink → Act), the inverse of the
+# `estleg:harmonisedWith` edge the law peeps carry (Act → HarmonisationLink);
+# the two are declared with mutual `owl:inverseOf` in
+# `harmonisation_schema.json`. Both directions are constrained below so a
+# regression that re-uses `harmonisedWith` subject-side on a harm node still
+# validates for nodeKind, while the canonical inverse is recognised too.
 # Every property is therefore optional here so both shapes validate
 # against this one NodeShape; only `rdfs:label` is required.
 estleg:HarmonisationLinkShape
@@ -773,7 +780,13 @@ estleg:HarmonisationLinkShape
         sh:path estleg:harmonisedWith ;
         sh:nodeKind sh:IRI ;
         sh:name "harmonisedWith" ;
-        sh:description "On the aggregate node: the Estonian act that transposes the shared directive" ;
+        sh:description "Legacy/inverse direction (Act → HarmonisationLink) the law peeps carry. On a harm node it would be the subject-side predicate; since #425 the canonical back-edge here is estleg:harmonises instead, but this stays constrained for nodeKind so a regression that re-introduces it is still type-checked." ;
+    ] ;
+    sh:property [
+        sh:path estleg:harmonises ;
+        sh:nodeKind sh:IRI ;
+        sh:name "harmonises" ;
+        sh:description "On the aggregate node: the Estonian act(s) that transpose the shared directive (HarmonisationLink → Act, #425). Inverse of estleg:harmonisedWith; multi-valued when several parts of a law transpose the same directive." ;
     ] ;
     sh:property [
         sh:path estleg:memberStateCode ;
@@ -941,6 +954,70 @@ estleg:AmendmentEventShape
         sh:datatype xsd:boolean ;
         sh:name "isCurrentAmendment" ;
         sh:description "Optional terminal-amendment marker (issue #389): true on the last in-force amendment after chronological sort, letting consumers find the latest amendment without a full date scan. Stamped by generate_amendment_history.py; absent on non-terminal events." ;
+    ] .
+
+# Shape for ProposedAmendment instances (issue #423).
+#
+# Draft-derived amendment nodes (AmendmentLink_Draft_*) reference EIS bills
+# that were never enacted, so they are NOT effected legal changes and are
+# typed estleg:ProposedAmendment (NOT estleg:AmendmentEvent) by
+# generate_amendment_history.py. Act roots link to them via
+# estleg:hasProposedAmendment (the inverse of estleg:proposesToAmend),
+# never via the effected-only estleg:amendedBy.
+#
+# The shape pins the predicates the generator always emits (rdfs:label,
+# estleg:amendingDraft) and the proposal-scoped optional ones
+# (estleg:proposesToAmend, estleg:publicationDate), then FORBIDS the three
+# effected-semantics predicates — estleg:amends, estleg:amendmentDate,
+# estleg:isCurrentAmendment — via sh:maxCount 0. Those forbiddances are the
+# regression guard: re-publishing a never-enacted draft as an effected,
+# possibly current amendment (the pre-#423 bug) now fails the SHACL gate.
+estleg:ProposedAmendmentShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:ProposedAmendment ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:name "label" ;
+        sh:description "Every ProposedAmendment carries a human-readable label (e.g. 'Eelnõu muudatus: <draft title>')." ;
+    ] ;
+    sh:property [
+        sh:path estleg:amendingDraft ;
+        sh:minCount 1 ;
+        sh:nodeKind sh:IRI ;
+        sh:name "amendingDraft" ;
+        sh:description "The estleg:Draft_* bill this proposal derives from. Always present and an IRI." ;
+    ] ;
+    sh:property [
+        sh:path estleg:proposesToAmend ;
+        sh:nodeKind sh:IRI ;
+        sh:name "proposesToAmend" ;
+        sh:description "The act (or each part of a multipart act) the draft proposes to amend — IRI(s), the proposal-scoped counterpart of estleg:amends. Optional: omitted when the draft has no resolvable target act." ;
+    ] ;
+    sh:property [
+        sh:path estleg:publicationDate ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:date ;
+        sh:name "publicationDate" ;
+        sh:description "The draft's EIS publication date (xsd:date), NOT an adoption/amendment date. Optional: undated drafts omit it." ;
+    ] ;
+    sh:property [
+        sh:path estleg:amends ;
+        sh:maxCount 0 ;
+        sh:name "amends" ;
+        sh:description "Forbidden on proposals (#423): estleg:amends asserts an EFFECTED change. A never-enacted draft must use estleg:proposesToAmend instead." ;
+    ] ;
+    sh:property [
+        sh:path estleg:amendmentDate ;
+        sh:maxCount 0 ;
+        sh:name "amendmentDate" ;
+        sh:description "Forbidden on proposals (#423): estleg:amendmentDate is reserved for adoption dates of effected amendments. A draft's date belongs in estleg:publicationDate." ;
+    ] ;
+    sh:property [
+        sh:path estleg:isCurrentAmendment ;
+        sh:maxCount 0 ;
+        sh:name "isCurrentAmendment" ;
+        sh:description "Forbidden on proposals (#423): the terminal-amendment marker applies to effected events only — a stalled draft must never appear as the current amendment." ;
     ] .
 
 # ============================================================
@@ -1191,24 +1268,39 @@ estleg:NormativeTypeShape
 # distinct from `EULegislationShape`, which targets EU acts (regulations,
 # directives, decisions). Domestic regulations are issued under an
 # enabling Estonian law (typically by Vabariigi Valitsus, a minister, or
-# a municipal council) and are modelled with `estleg:NationalRegulation`
-# plus a more specific subclass (`GovernmentRegulation`,
-# `MinisterialRegulation`, or `MunicipalRegulation`).
+# a municipal council). Since #424 they share a common superclass
+# `estleg:DomesticRegulation`, whose two sibling branches are
+# `estleg:NationalRegulation` (state-level — Government / Ministerial
+# regulations) and `estleg:MunicipalRegulation` (KOV regulations); a KOV
+# määrus is therefore NOT a NationalRegulation (there is no entailment
+# path between the siblings).
+#
+# `estleg:DomesticRegulation` is never stamped on instances and the SHACL
+# gates run without inference, so `sh:targetClass estleg:DomesticRegulation`
+# would match nothing. The shared "domestic regulation" constraints are
+# therefore carried by the shape below targeting BOTH concrete classes
+# directly (per the contract documented in generate_regulations.py).
 #
 # Provisions of regulations are validated by the LegalProvisionShape
 # above — they carry `estleg:paragrahv` and per-regulation classes like
 # `estleg:Regulation_<terviktekstId>` that are declared as
 # `rdfs:subClassOf estleg:LegalProvision`.
 
-# Shape for NationalRegulation instances (and its subclasses).
+# Shape for domestic regulations: the constraints shared by state-level
+# and municipal regulations (#424).
 #
-# Targets the `estleg:NationalRegulation` class. Concrete regulation
-# instances additionally declare one of `estleg:GovernmentRegulation`,
-# `estleg:MinisterialRegulation`, or `estleg:MunicipalRegulation`; this
-# shape applies to all of them via the shared base class.
+# Targets both `estleg:NationalRegulation` and `estleg:MunicipalRegulation`
+# directly. State regulations are typed NationalRegulation (plus a
+# GovernmentRegulation / MinisterialRegulation subclass), KOV roots are
+# typed MunicipalRegulation only; listing both target classes keeps these
+# shared constraints applying to KOV roots under inference=none even though
+# they no longer carry NationalRegulation typing (the dual-typing removed
+# by the #424 backfill). The KOV-specific additions live in
+# `MunicipalRegulationShape` / `MunicipalRegulationLayer1Shape` below.
 estleg:NationalRegulationShape
     a sh:NodeShape ;
     sh:targetClass estleg:NationalRegulation ;
+    sh:targetClass estleg:MunicipalRegulation ;
     sh:property [
         sh:path rdfs:label ;
         sh:minCount 1 ;
@@ -1317,8 +1409,12 @@ estleg:MinisterialRegulationShape
     ] .
 
 # Shape for MunicipalRegulation instances (KOV määrus).
-# Phase 2 of the regulations integration plan; the class is declared now
-# so MULTI_VALUED_PROPS and validators recognise it from the start.
+# KOV roots are typed estleg:MunicipalRegulation (+ estleg:Act) only — a
+# sibling of estleg:NationalRegulation under estleg:DomesticRegulation, not
+# a subclass of it (#424). The constraints shared with state regulations
+# (label, documentType, terviktekstId, …) are applied to KOV roots by
+# NationalRegulationShape above, which now targets MunicipalRegulation too;
+# this shape adds only the KOV-specific act-level properties.
 estleg:MunicipalRegulationShape
     a sh:NodeShape ;
     sh:targetClass estleg:MunicipalRegulation ;

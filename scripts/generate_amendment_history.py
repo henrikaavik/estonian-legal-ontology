@@ -6,9 +6,36 @@ This script:
 1. Loads all existing law JSON-LD files from krr_outputs/*_peep.json
 2. Loads draft legislation from krr_outputs/eelnoud/ for amendment relationships
 3. Parses cached law XML files for amendment references (muutmismarge blocks)
-4. Adds estleg:amendedBy / estleg:amends / estleg:amendmentDate to JSON-LD
-5. Creates krr_outputs/amendments/ directory with amendment chain data
-6. Generates amendment_history_report.json
+4. Adds estleg:amendedBy / estleg:amends / estleg:amendmentDate to JSON-LD for
+   *effected* (RT-derived) amendments
+5. Emits draft-derived nodes as estleg:ProposedAmendment (NOT AmendmentEvent) —
+   never-enacted bills are pending proposals, not effected legal changes (#423)
+6. Creates krr_outputs/amendments/ directory with amendment chain data
+7. Generates amendment_history_report.json
+
+Effected vs. proposed (#423)
+----------------------------
+Two distinct node kinds land in each chain document:
+
+* ``estleg:AmendmentEvent`` — derived from Riigi Teataja ``<muutmismarge>``
+  blocks (and inline RT references). These are *effected* changes: the act
+  text was actually modified. They carry ``estleg:amends`` (inverse of the
+  act-root ``estleg:amendedBy``), ``estleg:amendmentDate`` / ``entryIntoForce``,
+  and the chronologically-latest one per act is flagged
+  ``estleg:isCurrentAmendment`` (computed over effected events ONLY).
+
+* ``estleg:ProposedAmendment`` — derived from draft amendment bills in
+  ``krr_outputs/eelnoud/`` whose ``legislativePhase`` is Review/Submission/
+  PublicConsultation (none enacted). They MUST NOT be typed AmendmentEvent and
+  MUST NOT assert effected semantics. They carry ``estleg:proposesToAmend``
+  (proposal-scoped, NOT ``estleg:amends``), ``estleg:publicationDate`` (the
+  draft's EIS publication date — NOT ``estleg:amendmentDate``, which is reserved
+  for adoption), and ``estleg:amendingDraft`` → the Draft_* node. They NEVER
+  carry ``estleg:isCurrentAmendment``. On the act root they are linked via
+  ``estleg:hasProposedAmendment`` (inverse of ``estleg:proposesToAmend``) — NOT
+  ``estleg:amendedBy`` (effected-only) and NOT ``estleg:affectedBy`` (act-root →
+  Draft; owned by extract_draft_impact.py — writing it here would clobber that
+  pipeline's clear-then-rewrite).
 """
 
 from __future__ import annotations
@@ -665,13 +692,29 @@ def match_law_name_to_slug(
     return candidates[0][2]
 
 
+# Act-root properties this script OWNS and rewrites every run. Both are
+# cleared in Step 0 so a rerun removes stale entries (the #384 "never
+# regenerated" class of bug) — including stale draft-derived entries that the
+# pre-#423 code wrote into ``estleg:amendedBy``. ``estleg:hasProposedAmendment``
+# (inverse of ``estleg:proposesToAmend``) is the act-root back-link to
+# ProposedAmendment nodes (#423); clearing it keeps proposals out of
+# ``amendedBy`` AND drops proposals whose draft has since been enacted/withdrawn.
+#
+# NOTE: ``estleg:affectedBy`` is deliberately NOT cleared here. That act-root
+# property (act → Draft, "Pending drafts affecting this provision") is owned by
+# extract_draft_impact.py, which runs its own clear-then-rewrite. Touching it
+# from this script would clobber that pipeline depending on run order.
+_OWNED_ACT_ROOT_PROPS = ("estleg:amendedBy", "estleg:hasProposedAmendment")
+
+
 def clear_amended_by_from_file(
     filepath: Path,
     *,
     failures: list[str] | None = None,
 ) -> bool:
     """
-    Remove estleg:amendedBy from all nodes in a law JSON-LD file.
+    Remove this script's owned act-root amendment links (estleg:amendedBy and
+    estleg:hasProposedAmendment) from all nodes in a law JSON-LD file.
     Returns True if the file was modified.
     """
     try:
@@ -687,9 +730,10 @@ def clear_amended_by_from_file(
 
     modified = False
     for node in data.get("@graph", []):
-        if "estleg:amendedBy" in node:
-            del node["estleg:amendedBy"]
-            modified = True
+        for prop in _OWNED_ACT_ROOT_PROPS:
+            if prop in node:
+                del node[prop]
+                modified = True
 
     if modified:
         save_json(filepath, data)
@@ -1133,73 +1177,83 @@ def main() -> int:
                 amend_node["rdfs:label"] = f"Muudatus {amend.get('date', 'unknown')}"
             chain_entries.append(amend_node)
 
-        # Mark the LATEST XML-derived amendment as the current one (issue
-        # #389). xml_amendments_sorted is ascending by legal-effect date, so
-        # the last node appended above is the most recent. Without this flag a
-        # consumer must load+sort every event to find the in-force tip.
-        # SHACL note for the shapes team: this property warrants
-        # ``sh:maxCount 1`` per amended act on AmendmentEventShape (see report).
+        # Mark the LATEST *effected* amendment as the current one (issue #389).
+        # ``chain_entries`` here holds ONLY the RT-derived AmendmentEvent nodes
+        # (proposals are built separately below and are never flagged — #423).
+        # xml_amendments_sorted is ascending by legal-effect date, so the last
+        # node appended above is the most recent. Without this flag a consumer
+        # must load+sort every event to find the in-force tip. SHACL note for
+        # the shapes team: this property warrants ``sh:maxCount 1`` per amended
+        # act on AmendmentEventShape (see report).
         if chain_entries:
             chain_entries[-1]["estleg:isCurrentAmendment"] = {
                 "@value": "true",
                 "@type": "xsd:boolean",
             }
 
-        # Build draft entries. IRIs are id-based
-        # (``AmendmentLink_{sanitize_id(draft_id)}_{amend_prefix}``) and so are
-        # position-independent — sorting by publication_date therefore fixes
-        # the chain order (issue #387: 119 chains were non-monotonic) WITHOUT
-        # disturbing any @id. Undated drafts sort last via a high sentinel.
+        # Build PROPOSED-amendment nodes from draft bills (issue #423). The
+        # referenced drafts are in Review/Submission/PublicConsultation phase —
+        # none enacted — so they are NOT effected legal changes and must NOT be
+        # typed ``estleg:AmendmentEvent``. They become ``estleg:ProposedAmendment``
+        # and carry proposal-scoped predicates only:
+        #   * ``estleg:proposesToAmend`` (NOT ``estleg:amends`` — that asserts an
+        #     effected change and is the inverse of the act-root ``amendedBy``).
+        #   * ``estleg:publicationDate`` (the draft's EIS publication date — NOT
+        #     ``estleg:amendmentDate``, which is reserved for adoption dates).
+        #   * ``estleg:amendingDraft`` → the Draft_* node (kept).
+        # They NEVER carry ``estleg:isCurrentAmendment``.
+        #
+        # IRIs stay ``AmendmentLink_{sanitize_id(draft_id)}_{amend_prefix}`` for
+        # @id stability across the retype (existing consumers / git diffs key on
+        # the suffix, not the class). IRIs are id-based and position-independent,
+        # so sorting by publication_date fixes chain order (issue #387: 119
+        # chains were non-monotonic) WITHOUT disturbing any @id. Undated drafts
+        # sort last via a high sentinel.
         drafts_sorted = sorted(
             drafts, key=lambda d: d.get("publication_date") or "9999-99-99"
         )
-        draft_link_nodes: list[dict] = []
+        proposed_nodes: list[dict] = []
         for da in drafts_sorted:
             draft_id = da["draft_id"]
-            link_node: dict = {
+            proposed_node: dict = {
                 "@id": (
                     f"estleg:AmendmentLink_"
                     f"{sanitize_id(draft_id.replace('estleg:', ''))}_"
                     f"{amend_prefix}"
                 ),
-                "@type": ["owl:NamedIndividual", "estleg:AmendmentEvent"],
+                "@type": ["owl:NamedIndividual", "estleg:ProposedAmendment"],
                 "rdfs:label": f"Eelnõu muudatus: {da['draft_label']}",
                 "estleg:amendingDraft": {"@id": draft_id},
             }
             amends_value = _amends_value()
             if amends_value is not None:
-                link_node["estleg:amends"] = amends_value
+                # proposesToAmend mirrors the multipart ``amends`` payload shape
+                # (single object or list of objects) but with proposal scope.
+                proposed_node["estleg:proposesToAmend"] = amends_value
             if da.get("publication_date"):
-                link_node["estleg:amendmentDate"] = make_xsd_date(da["publication_date"])
-            chain_entries.append(link_node)
-            draft_link_nodes.append(link_node)
+                proposed_node["estleg:publicationDate"] = make_xsd_date(
+                    da["publication_date"]
+                )
+            proposed_nodes.append(proposed_node)
 
-        # Mark the LATEST draft event as current too (issue #389). Drafts are
-        # now sorted by publication_date, so the last appended draft link is
-        # the most recent proposed amendment.
-        if draft_link_nodes:
-            draft_link_nodes[-1]["estleg:isCurrentAmendment"] = {
-                "@value": "true",
-                "@type": "xsd:boolean",
-            }
-
-        # Stamp estleg:amendedBy on every member's ontology node so
-        # each part's peep file references the shared chain. Track
-        # per-member flags so coverage counts each member fairly.
+        # Stamp the act-root amendment links on every member's ontology node so
+        # each part's peep file references the shared chain. EFFECTED events go
+        # to ``estleg:amendedBy``; PROPOSALS go to ``estleg:hasProposedAmendment``
+        # (inverse of ``estleg:proposesToAmend``) — never ``amendedBy`` (#423).
+        # Both were cleared in Step 0, so reruns drop stale entries.
         amended_by_refs = [{"@id": e["@id"]} for e in chain_entries]
-        # AmendmentLink nodes for drafts also count as amendedBy.
-        # (They're already in chain_entries.)
-        # Note: amended_by_refs index parallels chain_entries.
+        proposed_refs = [{"@id": p["@id"]} for p in proposed_nodes]
 
         members_enriched_for_kov = 0
         members_enriched = 0
         for slug, info in members:
             doc = info["doc"]
             graph = doc.get("@graph", [])
-            # ``estleg:amendedBy`` is act-level — locate the act node the same
-            # way extract_temporal_data does (issue #289). SKIP (with a
-            # counter) when there is no act node rather than stamping onto
-            # ``graph[0]``, which could be a ``LegalConcept`` (the #128 bug).
+            # ``estleg:amendedBy`` / ``estleg:hasProposedAmendment`` are
+            # act-level — locate the act node the same way extract_temporal_data
+            # does (issue #289). SKIP (with a counter) when there is no act node
+            # rather than stamping onto ``graph[0]``, which could be a
+            # ``LegalConcept`` (the #128 bug).
             ontology_node = find_act_node(graph)
             if ontology_node is None:
                 _skip_reasons["no_act_node"] = (
@@ -1212,13 +1266,20 @@ def main() -> int:
                 ctx["dcterms"] = "http://purl.org/dc/terms/"
                 doc["@context"] = ctx
 
-            ontology_node["estleg:amendedBy"] = amended_by_refs
+            # Effected events → amendedBy; proposals → hasProposedAmendment.
+            # Both keys were cleared in Step 0; only write the ones that have
+            # refs so a draft-only act gets hasProposedAmendment without an
+            # empty amendedBy array, and an RT-only act stays as it was (#423).
+            if amended_by_refs:
+                ontology_node["estleg:amendedBy"] = amended_by_refs
+            if proposed_refs:
+                ontology_node["estleg:hasProposedAmendment"] = proposed_refs
             save_json(info["path"], doc)
             enriched += 1
             members_enriched += 1
 
             is_member_kov = "regulations/kov" in str(info["path"])
-            n_links = len(amended_by_refs)
+            n_links = len(amended_by_refs) + len(proposed_refs)
             _amendedBy_link_total += n_links
             _files_with_output += 1
             if is_member_kov:
@@ -1226,11 +1287,18 @@ def main() -> int:
                 _files_with_output_kov += 1
                 members_enriched_for_kov += 1
 
+        # Every node that lands in the chain document — effected AmendmentEvent
+        # nodes AND proposed-amendment nodes (#423). ``estleg:totalAmendments``
+        # historically counted the whole chain graph, so keep both kinds in the
+        # count to preserve the on-disk artifact's meaning (drafts were already
+        # included pre-#423; only their @type/predicates change).
+        chain_nodes = chain_entries + proposed_nodes
+
         # Amendment event triples: count properties on each chain node.
-        if chain_entries:
+        if chain_nodes:
             event_triples = sum(
                 # @id + each property key (excluding @id itself counted once via key list)
-                len(node) for node in chain_entries
+                len(node) for node in chain_nodes
             )
             _amendment_event_triples += event_triples
             if members_enriched_for_kov > 0:
@@ -1246,8 +1314,10 @@ def main() -> int:
 
         # Save ONE chain doc per base_slug. The chain @id uses the compact
         # prefix; the *filename* keeps the human-readable base_slug (it's a
-        # stable on-disk artifact key, not part of the IRI namespace).
-        if chain_entries:
+        # stable on-disk artifact key, not part of the IRI namespace). A
+        # draft-only act (chain_entries empty, proposed_nodes non-empty) still
+        # gets a chain file (#423).
+        if chain_nodes:
             chain_doc = {
                 "@context": CONTEXT,
                 "@graph": [
@@ -1257,11 +1327,11 @@ def main() -> int:
                         "rdfs:label": f"Muudatuste ahel: {canonical_title}",
                         "dc:source": canonical_title,
                         "estleg:totalAmendments": {
-                            "@value": str(len(chain_entries)),
+                            "@value": str(len(chain_nodes)),
                             "@type": "xsd:integer",
                         },
                     },
-                    *chain_entries,
+                    *chain_nodes,
                 ],
             }
             chain_path = AMENDMENTS_DIR / f"amendments_{base_slug}.json"
@@ -1272,7 +1342,7 @@ def main() -> int:
                 "parts": [s for s, _ in members],
                 "xml_amendments": len(xml_amendments_sorted),
                 "draft_amendments": len(drafts),
-                "total": len(chain_entries),
+                "total": len(chain_nodes),
                 "file": chain_path.name,
             })
 

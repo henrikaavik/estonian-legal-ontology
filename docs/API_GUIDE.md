@@ -358,8 +358,9 @@ SELECT ?law ?amendment ?date WHERE {
 
 EuroVoc subjects are classified at the **act level** — `dcterms:subject` is
 attached to the act's metadata node (the one typed `estleg:Act`), not to
-individual provisions. To list all acts tagged with a given EuroVoc domain
-(here `3611` = "Social security"):
+individual provisions. To list all acts tagged with a given EuroVoc
+descriptor (here `4050` = "social security"; see
+`data/eurovoc_domain_mapping.json` for the full verified id table):
 
 ```sparql
 PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
@@ -368,7 +369,7 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 SELECT ?act ?label WHERE {
   ?act a estleg:Act ;
-       dcterms:subject <http://eurovoc.europa.eu/3611> ;
+       dcterms:subject <http://eurovoc.europa.eu/4050> ;
        rdfs:label ?label .
 }
 ```

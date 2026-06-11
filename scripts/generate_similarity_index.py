@@ -46,23 +46,30 @@ state-side inverse was considered and rejected as higher-risk: it would have
 the KOV pass write into laws/state peeps that the clear path does not own,
 risking stale ``estleg:Similarity_*`` nodes on opt-out/regen.
 
-Per-link provenance
--------------------
+Per-link provenance (strip — #422)
+-----------------------------------
 Each ``estleg:semanticallySimilarTo`` value injected into a provision peep
-file is enriched in place (lowest-churn option: same property, same node,
-same list — only the list *elements* gain provenance) from a bare
-``{"@id": target}`` to::
+file is a **bare** ``{"@id": target}`` reference. It carries NO per-pair
+``estleg:similarityScore`` / ``estleg:similarityStatus`` keys.
 
-    {"@id": target, "estleg:similarityScore": <jaccard>, "estleg:similarityStatus": "candidate"}
+History: an earlier version nested those two keys inside the value object
+as "lowest-churn" per-link provenance. That was semantically wrong — on
+JSON-LD expansion a nested key on a ``{"@id": ...}`` value object becomes a
+triple ABOUT THE TARGET node, not about the source/target pair (#422). A
+provision linked from several sources therefore accumulated multiple
+contradictory score literals (e.g. ``estleg:RNKU_Par_1`` carried 0.3,
+0.308, 0.412 and 0.438 at once) with no way to attribute each to its pair.
+The empirical scan found 1,281 of 3,631 annotated targets affected.
 
-so every published link is self-describing about its confidence and the
-fact that it is a heuristic candidate, not an asserted legal relation.
-A reified ``estleg:SimilarityLink`` node was considered but rejected: it
-would add a top-level node + four new vocabulary terms to every one of
-the ~450 peep files, exploding the diff for no extra signal. The nested
-``estleg:similarityScore`` (xsd:decimal Jaccard value) and
-``estleg:similarityStatus`` (literal ``"candidate"``) keys appear only
-inside ``estleg:semanticallySimilarTo`` value objects.
+Decision (#422 option c, Tier-0): strip the score/status keys from the
+published graph and keep only the symmetric ``estleg:semanticallySimilarTo``
+link as a plain IRI reference. Every per-pair Jaccard score and the
+``"candidate"`` status survive losslessly in the ``similarity_index.json``
+sidecar (and the ``--emit-sample`` precision-review file), keyed by the
+directed (source, target) pair — so no information is lost, it is simply no
+longer asserted as a (wrong) RDF triple. Proper per-pair reification
+(``estleg:SimilarityLink`` nodes / RDF-star annotation) is deferred to the
+overlay-architecture work (#463); see :func:`similarity_link_value`.
 """
 
 from __future__ import annotations
@@ -87,10 +94,12 @@ KRR_DIR = REPO_ROOT / "krr_outputs"
 REPORTS_DIR = KRR_DIR / "reports"
 SIMILARITY_DIR = KRR_DIR / "similarity"
 
-# Status literal attached to every published similarity link. "candidate"
-# mirrors the index/report-level relation_semantics — these are heuristic
-# keyword-overlap links pending reviewed precision metrics, not asserted
-# legal semantics.
+# Candidate-status literal for similarity links. Since #422 it is NO longer
+# written into the published graph (a per-link status key mis-attached to the
+# target node); it survives only in the sidecar index/report (advertised under
+# link_emission.status_literal) and mirrors the index/report-level
+# relation_semantics — these are heuristic keyword-overlap links pending
+# reviewed precision metrics, not asserted legal semantics.
 SIMILARITY_STATUS = "candidate"
 
 # Deterministic seed for --emit-sample so the precision-review sample is
@@ -534,23 +543,24 @@ def extract_provisions_from_file(fpath: Path) -> tuple[list[dict], str | None, i
     return provisions, act_type, excluded_for_keyword_floor
 
 
-def similarity_link_value(target: str, score: float) -> dict:
-    """Build one ``estleg:semanticallySimilarTo`` list element with provenance.
+def similarity_link_value(target: str) -> dict:
+    """Build one ``estleg:semanticallySimilarTo`` list element (plain IRI ref).
 
-    Lowest-churn per-link provenance: the value object keeps ``@id`` plus
-    two nested keys — ``estleg:similarityScore`` (the Jaccard value as an
-    ``xsd:decimal`` typed literal) and ``estleg:similarityStatus`` (the
-    literal ``"candidate"``). No reified node, no new provision-level
-    property. Score is rounded to 3 dp to mirror the index file.
+    The element is a bare ``{"@id": target}`` reference. Per-pair confidence
+    is **not** emitted into the published graph: a nested
+    ``estleg:similarityScore`` / ``estleg:similarityStatus`` value object
+    expands, on JSON-LD round-trip, into triples ABOUT THE TARGET node rather
+    than about the source/target pair, so a target linked from several sources
+    accumulates multiple contradictory score literals with no way to tell
+    which pair each belongs to (#422). The scores survive losslessly in the
+    ``similarity_index.json`` sidecar (keyed by the directed (source, target)
+    pair) and in the ``--emit-sample`` precision-review file.
+
+    Tier-0 goal here is only to stop publishing the semantically wrong
+    triples now; proper per-pair reification (``estleg:SimilarityLink`` nodes
+    / RDF-star) is deferred to the overlay-architecture work (#463).
     """
-    return {
-        "@id": target,
-        "estleg:similarityScore": {
-            "@value": f"{round(score, 3)}",
-            "@type": "xsd:decimal",
-        },
-        "estleg:similarityStatus": SIMILARITY_STATUS,
-    }
+    return {"@id": target}
 
 
 # ===========================================================================
@@ -1594,19 +1604,31 @@ def main(argv: list[str] | None = None):
         "relation_semantics": "candidate",
         "algorithm": {
             "name": "keyword_jaccard",
-            # v2: per-link provenance on estleg:semanticallySimilarTo
-            # value objects + corpus document-frequency cap on generic
-            # keywords (see module docstring).
-            "version": "2",
+            # v3 (#422): per-pair score/status keys stripped from the
+            # published graph (they mis-attached to the target node); the
+            # in-file estleg:semanticallySimilarTo link is now a plain IRI
+            # ref and the per-pair scores live only in this sidecar's
+            # "pairs" list. v2 added the corpus document-frequency cap on
+            # generic keywords (see module docstring).
+            "version": "3",
             "source_fields": ["estleg:summary"],
             "generic_keyword_doc_frequency_cap": GENERIC_DOC_FREQUENCY_CAP,
             "generic_keywords_dropped": sorted(generic_keywords),
         },
-        "link_provenance": {
-            "shape": (
-                "estleg:semanticallySimilarTo value objects carry "
-                "estleg:similarityScore (xsd:decimal Jaccard) and "
-                "estleg:similarityStatus literals"
+        "link_emission": {
+            # #422: graph emission of per-pair confidence stopped 2026-06.
+            "in_graph_shape": (
+                "estleg:semanticallySimilarTo is emitted as a plain "
+                "{\"@id\": <target>} IRI reference; no per-pair "
+                "estleg:similarityScore / estleg:similarityStatus is written "
+                "into the published graph (those keys mis-attached to the "
+                "target node — see #422)."
+            ),
+            "scores_location": (
+                "Per-pair Jaccard scores and the candidate status live here "
+                "in the sidecar 'pairs' list (each pair's 'similarity' field "
+                "+ relation_semantics), keyed by the directed (source, "
+                "target) pair. Deferred reification: #463."
             ),
             "status_literal": SIMILARITY_STATUS,
         },
@@ -1667,9 +1689,13 @@ def main(argv: list[str] | None = None):
                 del node["estleg:semanticallySimilarTo"]
                 modified = True
             if node_id in node_updates:
+                # #422: emit plain {"@id": target} refs only — the per-pair
+                # score lives in similarity_index.json, never as a triple on
+                # the target node. target_scores' keys are the link targets;
+                # the score values are intentionally unused for emission.
                 target_scores = node_updates[node_id]
                 node["estleg:semanticallySimilarTo"] = [
-                    similarity_link_value(t, target_scores[t])
+                    similarity_link_value(t)
                     for t in sorted(target_scores)
                 ]
                 modified = True
@@ -1715,15 +1741,23 @@ def main(argv: list[str] | None = None):
         "relation_semantics": "candidate",
         "algorithm": {
             "name": "keyword_jaccard",
-            "version": "2",
+            "version": "3",
             "source_fields": ["estleg:summary"],
             "generic_keyword_doc_frequency_cap": GENERIC_DOC_FREQUENCY_CAP,
         },
-        "link_provenance": {
-            "shape": (
-                "estleg:semanticallySimilarTo value objects carry "
-                "estleg:similarityScore (xsd:decimal Jaccard) and "
-                "estleg:similarityStatus literals"
+        "link_emission": {
+            # #422: graph emission of per-pair confidence stopped 2026-06.
+            "in_graph_shape": (
+                "estleg:semanticallySimilarTo is emitted as a plain "
+                "{\"@id\": <target>} IRI reference; no per-pair "
+                "estleg:similarityScore / estleg:similarityStatus is written "
+                "into the published graph (those keys mis-attached to the "
+                "target node — see #422)."
+            ),
+            "scores_location": (
+                "Per-pair Jaccard scores live in similarity_index.json's "
+                "'pairs' list, keyed by the directed (source, target) pair. "
+                "Deferred reification: #463."
             ),
             "status_literal": SIMILARITY_STATUS,
         },

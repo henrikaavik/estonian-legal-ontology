@@ -58,13 +58,22 @@ GENERATION_MODES = ("missing-only", "refresh", "force")
 def classify_issuer(issuer: str | None, is_kov: bool) -> list[str]:
     """Return the list of regulation classes to attach to an act node.
 
-    State-level regulations carry ``estleg:NationalRegulation`` (plus a more
-    specific issuer subclass). Municipal regulations are NOT national
-    legislation — a KOV määrus is enacted by a local council, not by a
-    state organ — so a KOV act gets ``estleg:MunicipalRegulation`` only and
-    must never also be typed ``estleg:NationalRegulation`` (issue #267: the
-    two are contradictory at the instance level — a municipal reg is not a
-    national reg).
+    Both branches are subclasses of ``estleg:DomesticRegulation`` (the common
+    superclass introduced in issue #424). State-level regulations carry
+    ``estleg:NationalRegulation`` (plus a more specific issuer subclass).
+    Municipal regulations are NOT national legislation — a KOV määrus is
+    enacted by a local council, not by a state organ — so a KOV act gets
+    ``estleg:MunicipalRegulation`` only and must never also be typed
+    ``estleg:NationalRegulation`` (issue #267: the two are contradictory at
+    the instance level; issue #424: they are now sibling subclasses of
+    ``DomesticRegulation``, so there is no entailment path between them).
+
+    ``estleg:DomesticRegulation`` is intentionally NOT stamped on instances:
+    membership follows by RDFS entailment over the T-Box, and the shared
+    domestic-regulation SHACL coverage is provided by listing
+    ``estleg:MunicipalRegulation`` as an additional ``sh:targetClass`` on the
+    domestic-regulation shapes (so it holds under inference=none too). Adding
+    it explicitly would only add redundant triples to ~11k KOV roots.
 
     Examples:
       Vabariigi Valitsus            -> [NationalRegulation, GovernmentRegulation]

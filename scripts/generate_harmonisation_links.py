@@ -310,6 +310,30 @@ def generate_schema() -> dict:
             # harmonised statute as a single provision.
             "rdfs:domain": {"@id": "estleg:Act"},
             "rdfs:range": {"@id": "estleg:HarmonisationLink"},
+            # #425: the harmonisation node↔act edge previously carried
+            # estleg:harmonisedWith in BOTH directions — act→link in the law
+            # peeps (correct) and link→act on the aggregate node here (inverted).
+            # estleg:harmonises is the explicit inverse so each direction has
+            # exactly one predicate; declare the axiom on both ends.
+            "owl:inverseOf": {"@id": "estleg:harmonises"},
+        },
+        # ObjectProperty: harmonises (#425) — inverse of harmonisedWith.
+        # Emitted ONLY on the aggregate estleg:Harmonisation_<celex> node so
+        # the link→act back-edge stops re-using estleg:harmonisedWith. Domain
+        # HarmonisationLink / range Act mirror the inverse of harmonisedWith's
+        # Act→HarmonisationLink direction.
+        {
+            "@id": "estleg:harmonises",
+            "@type": ["owl:ObjectProperty"],
+            "rdfs:label": "harmoneerib (harmonises)",
+            "rdfs:comment": (
+                "Links a harmonisation record to the Estonian act(s) that "
+                "transpose the shared EU directive. Inverse of "
+                "estleg:harmonisedWith."
+            ),
+            "rdfs:domain": {"@id": "estleg:HarmonisationLink"},
+            "rdfs:range": {"@id": "estleg:Act"},
+            "owl:inverseOf": {"@id": "estleg:harmonisedWith"},
         },
         # ObjectProperty: sharedDirective
         {
@@ -357,7 +381,12 @@ def build_directive_node(
     for this directive (each a dict that may carry an ``iri`` key). #334:
     when several Estonian laws transpose one directive, the aggregate
     ``Harmonisation_<celex>`` node must back-link to *all* of them via
-    ``estleg:harmonisedWith`` — previously only the first law was listed.
+    ``estleg:harmonises`` — previously only the first law was listed.
+
+    #425: the back-edge uses ``estleg:harmonises`` (link → act), the inverse
+    of the ``estleg:harmonisedWith`` edge the law peeps carry (act → link).
+    The aggregate node never re-uses ``harmonisedWith`` so the predicate
+    carries a single direction throughout the corpus.
     """
     safe_celex = sanitize_celex(celex_dir)
     # Preserve order, drop laws whose act-level IRI couldn't be resolved,
@@ -381,11 +410,11 @@ def build_directive_node(
                 f"{len(other_measures)} other member state measure(s)."
             ),
             "estleg:sharedDirective": {"@id": directive_iri},
-            # estleg:harmonisedWith is a multi-valued property (see
-            # validate_all.MULTI_VALUED_PROPS) — always emit it as an array.
-            # #334: list every Estonian law that transposes this directive,
-            # not just the first.
-            "estleg:harmonisedWith": harmonised_refs,
+            # #425: emit the inverse estleg:harmonises (link → act) here, NOT
+            # estleg:harmonisedWith (act → link, which the law peeps carry).
+            # Multi-valued — always emit it as an array. #334: list every
+            # Estonian law that transposes this directive, not just the first.
+            "estleg:harmonises": harmonised_refs,
         },
     ]
 

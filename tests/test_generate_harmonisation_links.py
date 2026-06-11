@@ -1,4 +1,4 @@
-"""Focused tests for ``generate_harmonisation_links`` fixes #334, #335, #356.
+"""Focused tests for ``generate_harmonisation_links`` fixes #334, #335, #356, #425.
 
 These complement the broader harmonisation coverage in
 ``tests/test_generate_eu_sources.py`` (query shape, NIM parsing, cache,
@@ -12,6 +12,13 @@ freshness gate, graph[0] guard) and intentionally do not overlap with it.
   * #356 — ``fetch_other_transpositions`` must reject a ``celex_dir`` that
     contains characters outside the strict CELEX allowlist before it is
     interpolated into the SPARQL FILTER string literals.
+  * #425 — the aggregate node's link→act back-edge uses the inverse
+    property ``estleg:harmonises`` (NOT ``estleg:harmonisedWith``, which is
+    reserved for the act→link direction in the law peeps); both the emitted
+    OWL schema and the committed ``harmonisation_schema.json`` must declare
+    ``estleg:harmonises`` with ``owl:inverseOf estleg:harmonisedWith`` and
+    swapped domain/range. Also covers ``update_law_file_harmonisation``
+    (act→link direction, part of #339).
 """
 
 from __future__ import annotations
@@ -33,11 +40,19 @@ SCHEMA_PATH = (
 
 
 def _harmonised_ids(directive_doc: dict) -> list[str]:
-    """Return the ``@id`` list of the aggregate node's ``harmonisedWith``."""
+    """Return the ``@id`` list of the aggregate node's ``harmonises`` back-edge.
+
+    #425: the aggregate ``Harmonisation_<celex>`` node carries the inverse
+    property ``estleg:harmonises`` (link → act), never ``estleg:harmonisedWith``
+    (which is the act → link direction emitted on the law peeps).
+    """
     aggregate = directive_doc["@graph"][0]
     assert aggregate["@id"].startswith("estleg:Harmonisation_")
-    refs = aggregate["estleg:harmonisedWith"]
-    assert isinstance(refs, list), "harmonisedWith must always be an array"
+    assert "estleg:harmonisedWith" not in aggregate, (
+        "aggregate node must not re-use estleg:harmonisedWith (#425)"
+    )
+    refs = aggregate["estleg:harmonises"]
+    assert isinstance(refs, list), "harmonises must always be an array"
     return [ref["@id"] for ref in refs]
 
 
@@ -145,6 +160,178 @@ def test_committed_schema_matches_generator_for_harmonised_with():
 
 
 # ---------------------------------------------------------------------------
+# #425 — inverse property estleg:harmonises (link → act) replaces the
+# inverted use of estleg:harmonisedWith on the aggregate node
+# ---------------------------------------------------------------------------
+
+
+def _node_by_id(graph: list[dict], node_id: str) -> dict:
+    for node in graph:
+        if node.get("@id") == node_id:
+            return node
+    raise AssertionError(f"{node_id} not found in @graph")
+
+
+def test_aggregate_node_uses_harmonises_not_harmonised_with():
+    """The link→act back-edge must be estleg:harmonises, and the aggregate
+    node must NOT carry estleg:harmonisedWith (that is the act→link
+    direction, owned by the law peeps)."""
+    doc = harmonisation.build_directive_node(
+        celex_dir="32000L0060",
+        directive_iri="estleg:EU_32000L0060",
+        estonian_law_name="Veeseadus",
+        estonian_laws=[{"name": "Veeseadus", "iri": "estleg:VEE_Map_2026"}],
+        other_measures=[],
+    )
+    aggregate = doc["@graph"][0]
+    assert aggregate["estleg:harmonises"] == [{"@id": "estleg:VEE_Map_2026"}]
+    assert "estleg:harmonisedWith" not in aggregate
+
+
+def test_per_country_measure_nodes_have_no_back_edge():
+    """Per-country NIM nodes carry neither direction of the act↔link edge —
+    only the aggregate node back-links to the transposing act(s)."""
+    other = [
+        {
+            "country_code": "LVA",
+            "country_en": "Latvia",
+            "celex_nat": "72000L0060LVA_1",
+            "title": "Latvian water act",
+        }
+    ]
+    doc = harmonisation.build_directive_node(
+        celex_dir="32000L0060",
+        directive_iri="estleg:EU_32000L0060",
+        estonian_law_name="Veeseadus",
+        estonian_laws=[{"name": "Veeseadus", "iri": "estleg:VEE_Map_2026"}],
+        other_measures=other,
+    )
+    measure_nodes = [
+        n for n in doc["@graph"] if n["@id"].startswith("estleg:Harm_")
+    ]
+    assert measure_nodes, "expected at least one per-country measure node"
+    for node in measure_nodes:
+        assert "estleg:harmonises" not in node
+        assert "estleg:harmonisedWith" not in node
+
+
+def test_generated_schema_harmonises_is_inverse_of_harmonised_with():
+    schema = harmonisation.generate_schema()
+    node = _node_by_id(schema["@graph"], "estleg:harmonises")
+    assert node["@type"] == ["owl:ObjectProperty"]
+    # Inverse direction: domain/range are the swap of harmonisedWith's.
+    assert node["rdfs:domain"] == {"@id": "estleg:HarmonisationLink"}
+    assert node["rdfs:range"] == {"@id": "estleg:Act"}
+    assert node["owl:inverseOf"] == {"@id": "estleg:harmonisedWith"}
+
+
+def test_generated_schema_harmonised_with_declares_inverse():
+    """harmonisedWith must point back at harmonises via owl:inverseOf."""
+    schema = harmonisation.generate_schema()
+    node = _harmonised_with_node(schema["@graph"])
+    assert node["owl:inverseOf"] == {"@id": "estleg:harmonises"}
+
+
+def test_committed_schema_declares_harmonises_inverse_pair():
+    """The committed schema must carry the full inverse pair so a
+    regeneration is a no-op."""
+    graph = json.loads(SCHEMA_PATH.read_text(encoding="utf-8"))["@graph"]
+    harmonises = _node_by_id(graph, "estleg:harmonises")
+    assert harmonises["rdfs:domain"] == {"@id": "estleg:HarmonisationLink"}
+    assert harmonises["rdfs:range"] == {"@id": "estleg:Act"}
+    assert harmonises["owl:inverseOf"] == {"@id": "estleg:harmonisedWith"}
+    assert _harmonised_with_node(graph)["owl:inverseOf"] == {
+        "@id": "estleg:harmonises"
+    }
+
+
+def test_committed_schema_matches_generator_for_harmonises():
+    """Committed estleg:harmonises node must equal the generator's emission
+    (full node equality — a fresh schema regen changes nothing)."""
+    generated = _node_by_id(
+        harmonisation.generate_schema()["@graph"], "estleg:harmonises"
+    )
+    committed = _node_by_id(
+        json.loads(SCHEMA_PATH.read_text(encoding="utf-8"))["@graph"],
+        "estleg:harmonises",
+    )
+    assert generated == committed
+
+
+# ---------------------------------------------------------------------------
+# #339 (partial) — update_law_file_harmonisation: the act→link direction
+# stays on estleg:harmonisedWith, idempotent, array-typed.
+# ---------------------------------------------------------------------------
+
+
+def _write_law_peep(tmp_path: Path, ontology_node: dict) -> Path:
+    path = tmp_path / "some_law_peep.json"
+    path.write_text(
+        json.dumps({"@context": {}, "@graph": [ontology_node]}, ensure_ascii=False),
+        encoding="utf-8",
+    )
+    return path
+
+
+def test_update_law_file_adds_harmonised_with_to_ontology_node(tmp_path):
+    path = _write_law_peep(
+        tmp_path,
+        {"@id": "estleg:SomeAct_Map_2026", "@type": ["owl:Ontology", "estleg:Act"]},
+    )
+    changed = harmonisation.update_law_file_harmonisation(
+        path, ["estleg:Harmonisation_31990L0314", "estleg:Harmonisation_31993L0013"]
+    )
+    assert changed is True
+    node = json.loads(path.read_text(encoding="utf-8"))["@graph"][0]
+    refs = node["estleg:harmonisedWith"]
+    assert isinstance(refs, list), "act→link direction must be an array"
+    assert [r["@id"] for r in refs] == [
+        "estleg:Harmonisation_31990L0314",
+        "estleg:Harmonisation_31993L0013",
+    ]
+
+
+def test_update_law_file_is_idempotent(tmp_path):
+    path = _write_law_peep(
+        tmp_path,
+        {"@id": "estleg:SomeAct_Map_2026", "@type": ["owl:Ontology"]},
+    )
+    ids = ["estleg:Harmonisation_31990L0314"]
+    assert harmonisation.update_law_file_harmonisation(path, ids) is True
+    # Second call with the same id adds nothing and reports no modification.
+    assert harmonisation.update_law_file_harmonisation(path, ids) is False
+    refs = json.loads(path.read_text(encoding="utf-8"))["@graph"][0][
+        "estleg:harmonisedWith"
+    ]
+    assert [r["@id"] for r in refs] == ids
+
+
+def test_update_law_file_merges_with_existing_refs(tmp_path):
+    """A pre-existing harmonisedWith list is preserved and only genuinely
+    new ids are appended (no duplicates)."""
+    path = _write_law_peep(
+        tmp_path,
+        {
+            "@id": "estleg:SomeAct_Map_2026",
+            "@type": ["owl:Ontology"],
+            "estleg:harmonisedWith": [{"@id": "estleg:Harmonisation_31990L0314"}],
+        },
+    )
+    changed = harmonisation.update_law_file_harmonisation(
+        path,
+        ["estleg:Harmonisation_31990L0314", "estleg:Harmonisation_32000L0060"],
+    )
+    assert changed is True
+    refs = json.loads(path.read_text(encoding="utf-8"))["@graph"][0][
+        "estleg:harmonisedWith"
+    ]
+    assert [r["@id"] for r in refs] == [
+        "estleg:Harmonisation_31990L0314",
+        "estleg:Harmonisation_32000L0060",
+    ]
+
+
+# ---------------------------------------------------------------------------
 # #356 — SPARQL injection guard on celex_dir
 # ---------------------------------------------------------------------------
 
@@ -216,3 +403,76 @@ def test_fetch_other_transpositions_accepts_valid_celex(
     assert len(seen) == 1
     # The validated value is interpolated verbatim into the FILTER literal.
     assert f'FILTER(STR(?celex_dir) = "{celex_dir}")' in seen[0]
+
+
+# ---------------------------------------------------------------------------
+# #425 — migrate_harmonises_inverse: offline rename of the committed harm
+# files' inverted back-edge (estleg:harmonisedWith → estleg:harmonises).
+# ---------------------------------------------------------------------------
+
+import migrate_harmonises_inverse as migrate  # noqa: E402
+
+
+def _make_harm_file(tmp_path: Path, *, predicate: str) -> Path:
+    """Write a minimal harm file whose aggregate node uses ``predicate``."""
+    doc = {
+        "@context": {},
+        "@graph": [
+            {
+                "@id": "estleg:Harmonisation_31990L0314",
+                "@type": ["owl:NamedIndividual", "estleg:HarmonisationLink"],
+                "rdfs:label": "Harmonisation: 31990L0314",
+                "estleg:sharedDirective": {"@id": "estleg:EU_31990L0314"},
+                predicate: [
+                    {"@id": "estleg:volaoigusseadus_Osa10_1005_1067"},
+                    {"@id": "estleg:VOS_Osa11_271_338"},
+                ],
+            },
+            {
+                # Per-country measure node — must be left untouched.
+                "@id": "estleg:Harm_31990L0314_LVA_1",
+                "@type": ["owl:NamedIndividual", "estleg:HarmonisationLink"],
+                "rdfs:label": "Latvia: x",
+                "estleg:memberStateCode": "LVA",
+                "estleg:nationalCelex": "71990L0314LVA_1",
+            },
+        ],
+    }
+    path = tmp_path / "harm_31990L0314.json"
+    path.write_text(json.dumps(doc, ensure_ascii=False, indent=2), encoding="utf-8")
+    return path
+
+
+def test_migrate_renames_inverted_edge_preserving_objects(tmp_path):
+    path = _make_harm_file(tmp_path, predicate="estleg:harmonisedWith")
+    changed = migrate.process_file(path, dry_run=False)
+    assert changed == 1
+    agg = json.loads(path.read_text(encoding="utf-8"))["@graph"][0]
+    assert "estleg:harmonisedWith" not in agg
+    assert [r["@id"] for r in agg["estleg:harmonises"]] == [
+        "estleg:volaoigusseadus_Osa10_1005_1067",
+        "estleg:VOS_Osa11_271_338",
+    ]
+
+
+def test_migrate_is_idempotent(tmp_path):
+    path = _make_harm_file(tmp_path, predicate="estleg:harmonisedWith")
+    assert migrate.process_file(path, dry_run=False) == 1
+    # A file already on the new predicate is a no-op.
+    assert migrate.process_file(path, dry_run=False) == 0
+
+
+def test_migrate_dry_run_writes_nothing(tmp_path):
+    path = _make_harm_file(tmp_path, predicate="estleg:harmonisedWith")
+    before = path.read_text(encoding="utf-8")
+    assert migrate.process_file(path, dry_run=True) == 1
+    assert path.read_text(encoding="utf-8") == before
+
+
+def test_migrate_leaves_per_country_nodes_untouched(tmp_path):
+    path = _make_harm_file(tmp_path, predicate="estleg:harmonisedWith")
+    migrate.process_file(path, dry_run=False)
+    measure = json.loads(path.read_text(encoding="utf-8"))["@graph"][1]
+    assert "estleg:harmonises" not in measure
+    assert "estleg:harmonisedWith" not in measure
+    assert measure["estleg:nationalCelex"] == "71990L0314LVA_1"

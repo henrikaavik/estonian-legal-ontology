@@ -452,11 +452,17 @@ def test_corpus_generic_keyword_cap_strips_high_frequency_tokens(tmp_path, monke
 
 
 # ---------------------------------------------------------------------------
-# Per-link provenance on injected estleg:semanticallySimilarTo nodes
+# In-graph emission of estleg:semanticallySimilarTo (plain IRI refs — #422)
 # ---------------------------------------------------------------------------
 
-def test_injected_similarity_links_carry_score_and_status(tmp_path, monkeypatch):
-    """Each estleg:semanticallySimilarTo value object gets score + status."""
+def test_injected_similarity_links_are_plain_id_refs(tmp_path, monkeypatch):
+    """Each estleg:semanticallySimilarTo element is a bare {"@id": ...} ref.
+
+    #422: a nested estleg:similarityScore / estleg:similarityStatus on the
+    value object expands to a triple ABOUT THE TARGET node, not the pair, so
+    those keys are stripped from the published graph. The scores live only in
+    the similarity_index.json sidecar; the in-file link is a plain IRI ref.
+    """
     krr = tmp_path / "krr_outputs"
     # Identical 5-token discriminative summaries in two different acts =>
     # Jaccard 1.0, a guaranteed candidate pair. Disable the corpus-generic
@@ -472,25 +478,93 @@ def test_injected_similarity_links_carry_score_and_status(tmp_path, monkeypatch)
     links = prov["estleg:semanticallySimilarTo"]
     assert isinstance(links, list) and links
     link = links[0]
-    assert link["@id"] == "estleg:ActB_Par_1"
-    assert link["estleg:similarityStatus"] == "candidate"
-    assert link["estleg:similarityScore"]["@type"] == "xsd:decimal"
-    # Jaccard of identical sets is 1.0.
-    assert float(link["estleg:similarityScore"]["@value"]) == 1.0
-    # The index advertises the link-provenance shape too.
+    # Plain IRI reference: exactly one key, the @id of the target.
+    assert link == {"@id": "estleg:ActB_Par_1"}
+    assert "estleg:similarityScore" not in link
+    assert "estleg:similarityStatus" not in link
+
+    # No provision node in EITHER file carries a misattached score/status key.
+    for path in peep:
+        doc = json.loads(path.read_text(encoding="utf-8"))
+        for node in doc["@graph"]:
+            for elem in node.get("estleg:semanticallySimilarTo", []):
+                assert set(elem) == {"@id"}, elem
+            assert "estleg:similarityScore" not in node
+            assert "estleg:similarityStatus" not in node
+
+    # The index advertises the strip + where the scores actually live, and
+    # still carries the per-pair score in its "pairs" list (sidecar-only).
     index = json.loads((krr / "similarity_index.json").read_text(encoding="utf-8"))
-    assert index["link_provenance"]["status_literal"] == "candidate"
-    assert "estleg:similarityScore" in index["link_provenance"]["shape"]
+    assert index["link_emission"]["status_literal"] == "candidate"
+    assert "plain" in index["link_emission"]["in_graph_shape"]
+    assert "#422" in index["link_emission"]["in_graph_shape"]
+    assert index["algorithm"]["version"] == "3"
+    forward = next(
+        p for p in index["pairs"]
+        if p["source"] == "estleg:ActA_Par_1" and p["target"] == "estleg:ActB_Par_1"
+    )
+    assert forward["similarity"] == 1.0
+    assert index["relation_semantics"] == "candidate"
 
 
 def test_similarity_link_value_shape():
-    """The link-value builder produces the documented minimal shape."""
-    value = similarity.similarity_link_value("estleg:Foo_Par_2", 0.333333)
-    assert value == {
-        "@id": "estleg:Foo_Par_2",
-        "estleg:similarityScore": {"@value": "0.333", "@type": "xsd:decimal"},
-        "estleg:similarityStatus": "candidate",
-    }
+    """The link-value builder produces a bare {"@id": ...} reference (#422)."""
+    value = similarity.similarity_link_value("estleg:Foo_Par_2")
+    assert value == {"@id": "estleg:Foo_Par_2"}
+
+
+def test_regen_strips_stale_score_status_from_existing_links(tmp_path, monkeypatch):
+    """Re-running over a file with OLD score-bearing links cleans them (#422).
+
+    Simulates an already-generated tree from the previous (buggy) emission:
+    each estleg:semanticallySimilarTo value object carries the misattached
+    estleg:similarityScore / estleg:similarityStatus keys. The full-block
+    rewrite in main() must replace them with plain {"@id": ...} refs — both
+    where a fresh link is still computed AND where the node now links to a
+    different / no target.
+    """
+    krr = tmp_path / "krr_outputs"
+    shared = "maakasutuse planeering ehitusluba detailplaneering järelevalve"
+    peep = _make_two_act_corpus(krr, shared, shared)
+
+    # Pre-seed BOTH provisions with stale, score-bearing links in the old
+    # shape (the exact bug #422 fixes). Act A points at B (still correct
+    # after regen); Act B points at a now-stale third target that the fresh
+    # pass will overwrite with the reciprocal A link.
+    def _stale_link(target, score):
+        return {
+            "@id": target,
+            "estleg:similarityScore": {"@value": f"{score}", "@type": "xsd:decimal"},
+            "estleg:similarityStatus": "candidate",
+        }
+
+    for path, prov_id, stale_target, score in (
+        (peep[0], "estleg:ActA_Par_1", "estleg:ActB_Par_1", "0.5"),
+        (peep[1], "estleg:ActB_Par_1", "estleg:GhostC_Par_9", "0.42"),
+    ):
+        doc = json.loads(path.read_text(encoding="utf-8"))
+        prov = next(n for n in doc["@graph"] if n["@id"] == prov_id)
+        prov["estleg:semanticallySimilarTo"] = [_stale_link(stale_target, score)]
+        path.write_text(json.dumps(doc), encoding="utf-8")
+
+    _wire_pipeline(monkeypatch, krr, peep, generic_cap=1.0)
+    similarity.main(["--no-kov"])
+
+    # After regen: every link in every node is a plain {"@id": ...} ref with
+    # no leftover score/status keys, and the symmetric A<->B pair is restored.
+    for path in peep:
+        doc = json.loads(path.read_text(encoding="utf-8"))
+        for node in doc["@graph"]:
+            for elem in node.get("estleg:semanticallySimilarTo", []):
+                assert set(elem) == {"@id"}, elem
+                assert "estleg:similarityScore" not in elem
+                assert "estleg:similarityStatus" not in elem
+
+    assert _similar_targets(peep[0], "estleg:ActA_Par_1") == ["estleg:ActB_Par_1"]
+    assert _similar_targets(peep[1], "estleg:ActB_Par_1") == ["estleg:ActA_Par_1"]
+    # The stale ghost target is gone (the whole block was rewritten).
+    b_targets = _similar_targets(peep[1], "estleg:ActB_Par_1")
+    assert "estleg:GhostC_Par_9" not in b_targets
 
 
 # ---------------------------------------------------------------------------

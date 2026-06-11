@@ -281,7 +281,7 @@
         "@id": "http://publications.europa.eu/resource/authority/file-type/JSON_LD"
       },
       "dcterms:description": "All JSON/JSON-LD files across enacted laws, domestic regulations, draft legislation, court decisions, EU legislation, EU court decisions, cross-border harmonisation links, practitioner annotations, controlled vocabularies, reports, and indexes. File count is the validated estleg:fileCount below.",
-      "estleg:fileCount": 23114
+      "estleg:fileCount": 23115
     },
     {
       "@type": "dcat:Distribution",
@@ -388,7 +388,7 @@
     "estleg:courtDecisionCount": 12137,
     "estleg:euLegislationCount": 33242,
     "estleg:euCourtDecisionCount": 22290,
-    "estleg:totalFiles": 23114,
+    "estleg:totalFiles": 23115,
     "estleg:semanticNodeCount": 170000,
     "estleg:integrationLayerCount": 15,
     "estleg:courtDecisionYearRange": "1993-2026",
@@ -447,27 +447,31 @@
       "rdfs:comment": "Reified similarity link between two acts (used by KOV layer 3). Carries similarTarget, similarityScore, similarityModel."
     },
     {
+      "@id": "estleg:DomesticRegulation",
+      "@type": "owl:Class",
+      "rdfs:label": "DomesticRegulation",
+      "rdfs:comment": "An Estonian domestic regulation (Eesti määrus) of any level — a subordinate legal act issued under an enabling Estonian law. Common superclass of the state-level (estleg:NationalRegulation) and municipal (estleg:MunicipalRegulation) regulation branches; introduced so shared domestic-regulation SHACL constraints have a single conceptual home without forcing a municipal regulation to be (mis-)classified as state-level (issue #424). Disjoint from estleg:EULegislation, which models EU-level acts.",
+      "rdfs:subClassOf": {
+        "@id": "estleg:Act"
+      }
+    },
+    {
       "@id": "estleg:NationalRegulation",
       "@type": "owl:Class",
       "rdfs:label": "NationalRegulation",
-      "rdfs:comment": "A state-level Estonian regulation (riigi tasandi määrus). Superclass of the government and ministerial regulation classes.",
+      "rdfs:comment": "A state-level Estonian regulation (riigi tasandi määrus) issued by a state organ. Superclass of the government and ministerial regulation classes. Subclass of estleg:DomesticRegulation, NOT of estleg:MunicipalRegulation: a municipal regulation is a sibling, not an instance, of this class (issue #424).",
       "rdfs:subClassOf": {
-        "@id": "estleg:Act"
+        "@id": "estleg:DomesticRegulation"
       }
     },
     {
       "@id": "estleg:MunicipalRegulation",
       "@type": "owl:Class",
       "rdfs:label": "MunicipalRegulation",
-      "rdfs:comment": "A municipal (KOV) regulation enacted by a local-government issuer (volikogu or valitsus).",
-      "rdfs:subClassOf": [
-        {
-          "@id": "estleg:Act"
-        },
-        {
-          "@id": "estleg:NationalRegulation"
-        }
-      ]
+      "rdfs:comment": "A municipal (KOV) regulation enacted by a local-government issuer (volikogu or valitsus) — kohaliku omavalitsuse määrus. Subclass of estleg:DomesticRegulation. Deliberately NOT a subclass of estleg:NationalRegulation: a KOV määrus is local-government, not state-level, legislation, so no entailment path makes it a state regulation (issue #424; was a logical error corrected from the earlier subClassOf NationalRegulation hack).",
+      "rdfs:subClassOf": {
+        "@id": "estleg:DomesticRegulation"
+      }
     },
     {
       "@id": "estleg:GovernmentRegulation",
