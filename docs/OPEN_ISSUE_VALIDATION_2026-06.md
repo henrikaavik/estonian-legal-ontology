@@ -11,7 +11,9 @@ artifact checks). Verdicts:
 - **VALID** — still reproduces unchanged; left open, mapped to a 2026-06 epic.
 - **SUPERSEDED** — fully contained in a new ticket; closed in its favor.
 
-**Totals: 58 FIXED · 29 PARTIAL · 13 VALID · 2 SUPERSEDED.**
+**Totals: 58 FIXED · 30 PARTIAL · 12 VALID · 2 SUPERSEDED.**
+(Corrected 2026-06-11: #344 re-graded VALID→PARTIAL — its `transpositionDeadline` claim was stale;
+#356's XXE site count corrected 4→5; #364 mapped to epic #406.)
 
 ## Headline patterns
 
@@ -84,7 +86,7 @@ artifact checks). Verdicts:
 | 341 | PARTIAL | #413 | Items 2,3,5,7,12 fixed; item 1 half-done; items 4,6,8,9,10,11 remain (item 6 — draft amendmentDate — now also #423). |
 | 342 | FIXED | — | `rederive_court_case_types.py` + tests + backfilled data (0 chamber mismatches in 1998 file). |
 | 343 | PARTIAL | #405 | Generator fixed (EFTA + sector-8 routing); curia data stale: 47+11 nodes still `EUCourt_CourtOfJustice` (regen needs network). |
-| 344 | VALID | #408 | Schema gaps persist (`CaseType_Other` absent from riigikohus_schema; `transpositionDeadline` undeclared; dead `DecisionType_Resolution`). Relates #433/#270. |
+| 344 | PARTIAL | #408 | Resolved since filing: `estleg:transpositionDeadline` is declared in `controlled_vocabulary.jsonld`, SHACL-constrained, and test-asserted to live in the CV. Remaining: `CaseType_Other` still absent from riigikohus_schema (enum set split across files) and dead `DecisionType_Resolution` still declared; the #344-cited comment in eelnoud_schema claiming `amendsLaw` is unpopulated is itself stale (1,333 uses in data). Relates #433/#270. |
 | 345 | FIXED | — | `hasVersion` materialized in 773 law peeps (cites #345). |
 | 346 | PARTIAL | #407 | `slugify` rstrip fixed; 167 double-underscore IRIs still committed (rename migration pending). Relates #449/#445. |
 | 347 | FIXED | — | `heading_re` ReDoS fix + regression test. |
@@ -96,7 +98,7 @@ artifact checks). Verdicts:
 | 353 | VALID | #409 | Guard landed but post-fix regen still contains the same 6 impossible adopt/eif pairs — guard ineffective; root-cause under #429. |
 | 354 | PARTIAL | #407 | Code fixed (range canonicalization, rstrip); committed data unchanged (TsK_Par_194; 3 trailing-underscore Divisions; whitespace cluster ids). Relates #449. |
 | 355 | PARTIAL | — | NBSP: code fixed, curia data stale (1,537 lines). U+FFFD half untouched (82 provision_versions files, no detection). |
-| 356 | PARTIAL | #414 | SPARQL injection fixed (allowlist + tests); XXE unfixed (4 raw `ET.fromstring` sites, no defusedxml); court-parser ReDoS remains. Relates #481/#466. |
+| 356 | PARTIAL | #414 | SPARQL injection fixed (allowlist + tests); XXE unfixed (5 raw `ET.fromstring` sites, no defusedxml: generate_all_laws, generate_draft_legislation, generate_provision_versions, generate_kars_eriosa_jsonld, riigiteataja_common); court-parser ReDoS remains. Relates #481/#466. |
 | 357 | FIXED | #412 | All 5 specific asks landed in shapes (+tests). The broader residual coverage gap is the new #450/#451. |
 | 358 | FIXED | — | Quantified sunniraha regex + regenerated sanction (15,000 EUR present). |
 | 359 | VALID | #408 | 5/7 T-Box label conflicts (CV vs concepts_combined) remain. Relates #433. |
@@ -104,7 +106,7 @@ artifact checks). Verdicts:
 | 361 | FIXED | — | All 7 docs-drift items verified fixed (API_GUIDE counts, L2c status, layer/script/class counts, EuroVoc query). |
 | 362 | FIXED | — | `legalText` fallback in citation extraction + regenerated data (subsection refs resolve). |
 | 363 | FIXED | — | 25 genitives + `koodeksi?` self-refs added + regenerated. |
-| 364 | VALID | — | Pure regen ask never executed: KrMS still has 698 Division-contained cluster-orphans; `KRIMIN_2_Par_18` requestedCluster=None. Distinct from #420. |
+| 364 | VALID | #406 | Pure regen ask never executed: KrMS still has 698 Division-contained cluster-orphans; `KRIMIN_2_Par_18` requestedCluster=None. Distinct from its epic sibling #420; also resolved as a side effect of the cluster-ID rework + regen (#448). |
 | 365 | VALID | #411 | `hasCompetence` still undefined anywhere; 317 Competence aggregates remain island nodes. Relates #457. |
 | 366 | FIXED | — | Combined rebuilt with all 3 `owl:inverseOf` axioms + new T-Box parity/staleness guard in validate_all (+tests). |
 | 367 | FIXED | — | Boilerplate patterns + KOV symmetry repair; index regenerated (score-1.0 pairs 4,226→0). |
@@ -144,8 +146,8 @@ artifact checks). Verdicts:
   #336 #338 #340 #342 #345 #347 #349 #351 #357 #358 #360 #361 #362 #363 #366 #367 #369 #370
   #372 #373 #378 #381 #384 #385 #387 #388 #390 #391 — each with an evidence comment.
 - **Closed as superseded (2):** #291, #337 → #433.
-- **Commented with remaining scope (29 PARTIAL):** #296 #298 #304 #306 #309 #335 #339 #341 #343
-  #346 #348 #352 #354 #355 #356 #368 #371 #374 #375 #376 #379 #380 #382 #383 #386 #389 #392
-  #393 #394.
-- **Left open unchanged (13 VALID):** #270 #300 #311 #319 #333 #344 #350 #353 #359 #364 #365
+- **Commented with remaining scope (30 PARTIAL):** #296 #298 #304 #306 #309 #335 #339 #341 #343
+  #344 #346 #348 #352 #354 #355 #356 #368 #371 #374 #375 #376 #379 #380 #382 #383 #386 #389
+  #392 #393 #394.
+- **Left open unchanged (12 VALID):** #270 #300 #311 #319 #333 #350 #353 #359 #364 #365
   #377 #404 — epic mapping recorded above.
