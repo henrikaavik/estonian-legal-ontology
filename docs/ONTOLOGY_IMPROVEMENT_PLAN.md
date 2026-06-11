@@ -157,24 +157,28 @@ knowledge graph without revisiting its founding modeling decisions.
 ## 4. Roadmap
 
 ### Tier 0 — stop publishing wrong data (do first; independent, small-to-medium)
-#421 (EuroVoc remap, P0) · #422 (similarity scores) · #423 (draft amendments) ·
-#424 (DomesticRegulation) · #425 (harmonisedWith) · #426 (duplicate statutes) ·
-#427 (Constitution IRI split; after #426)
+
+- #421 (EuroVoc remap, P0) · #422 (similarity scores) · #423 (draft amendments)
+- #424 (DomesticRegulation) · #425 (harmonisedWith) · #426 (duplicate statutes)
+- #427 (Constitution IRI split; after #426)
 
 ### Tier 1 — make the graph a graph
-#415 (act⇄provision links) · #444 → #445 → #447/#448 (identity, in that order) ·
-#416 + #417 (combined completeness + parity gate) · #270 + #452 (enum load surface + one
-enumeration module) · #450 (shape tautology)
+
+- #415 (act⇄provision links) · #444 → #445 → #447/#448 (identity, in that order)
+- #416 + #417 (combined completeness + parity gate)
+- #270 + #452 (enum load surface + one enumeration module) · #450 (shape tautology)
 
 ### Tier 2 — make it logical
-#433 → #434/#435/#436/#439 (T-Box) · #428 → #429/#430 (temporal) · #440/#441/#442 (standards) ·
-#456/#457 (provenance + institutions) · #451/#453/#454/#455 (validation) · #437/#438 ·
-#458–#462
+
+- #433 → #434/#435/#436/#439 (T-Box) · #428 → #429/#430 (temporal)
+- #440/#441/#442 (standards) · #456/#457 (provenance + institutions)
+- #451/#453/#454/#455 (validation) · #437/#438 · #458–#462
 
 ### Tier 3 — make it a product
-#473 (v1.0.0 + DOI; after #416) · #474 (dump + endpoint) · #475/#476/#477/#478 (docs) ·
-#479 (CI) · #463 (overlay architecture) · #464–#472 (pipeline health; #464/#465 are quick wins
-that can land any time) · #480/#481 · #431/#443/#446/#448/#449 remainder
+
+- #473 (v1.0.0 + DOI; after #416) · #474 (dump + endpoint) · #475/#476/#477/#478 (docs)
+- #479 (CI) · #463 (overlay architecture) · #464–#472 (pipeline health; #464/#465 are quick
+  wins that can land any time) · #480/#481 · #431/#443/#446/#448/#449 remainder
 
 ### Key dependencies
 - #421 before #446 (eli:is_about should point at *correct* EuroVoc IRIs).
