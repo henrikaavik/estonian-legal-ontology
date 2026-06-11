@@ -890,6 +890,8 @@ class TestMetadataJsonLd:
         ids = {n.get("@id") for n in doc.get("@graph", [])}
         for required in (
             "estleg:Act", "estleg:Law",
+            # Issue #424: common domestic-regulation superclass.
+            "estleg:DomesticRegulation",
             "estleg:Municipality", "estleg:Issuer", "estleg:KovProvision",
             "estleg:Citation", "estleg:Similarity",
             "estleg:enactedBy", "estleg:enactedByMunicipality",
@@ -923,7 +925,19 @@ class TestMetadataJsonLd:
             return set()
 
         assert "estleg:Act" in parents_of("estleg:Law")
-        assert "estleg:Act" in parents_of("estleg:NationalRegulation")
-        assert "estleg:Act" in parents_of("estleg:MunicipalRegulation")
+        # Issue #424: NationalRegulation and MunicipalRegulation are now
+        # sibling subclasses of the new estleg:DomesticRegulation superclass
+        # (which is itself a subclass of estleg:Act). A municipal regulation
+        # must NOT be a subclass of NationalRegulation — that earlier axiom
+        # was a logical error that entailed every KOV määrus as a state
+        # regulation.
+        assert "estleg:Act" in parents_of("estleg:DomesticRegulation")
+        assert parents_of("estleg:NationalRegulation") == {"estleg:DomesticRegulation"}
+        assert parents_of("estleg:MunicipalRegulation") == {"estleg:DomesticRegulation"}
+        # Regression guard: no entailment path MunicipalRegulation -> NationalRegulation.
+        assert "estleg:NationalRegulation" not in parents_of("estleg:MunicipalRegulation")
+        # The concrete state subclasses stay under NationalRegulation.
+        assert "estleg:NationalRegulation" in parents_of("estleg:GovernmentRegulation")
+        assert "estleg:NationalRegulation" in parents_of("estleg:MinisterialRegulation")
         assert "estleg:Institution" in parents_of("estleg:Issuer")
         assert "estleg:LegalProvision" in parents_of("estleg:KovProvision")

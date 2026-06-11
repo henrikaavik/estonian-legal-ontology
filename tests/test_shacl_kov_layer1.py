@@ -176,6 +176,10 @@ class TestEndToEndEnrichedKovGraph:
                         "@id": "estleg:Municipality_EHAK_0784"
                     },
                     "estleg:titleNormalized": "jaatmehoolduseeskiri",
+                    # Required since NationalRegulationShape also targets
+                    # MunicipalRegulation (#424 DomesticRegulation split).
+                    "estleg:documentType": "määrus",
+                    "estleg:terviktekstId": "1014955",
                 },
                 # KovProvision joined to act via partOfAct
                 {

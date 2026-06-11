@@ -526,10 +526,14 @@ def test_shacl_widened_range_validates() -> None:
                 "rdfs:label": "Viimsi 2009 #22 (test)",
                 # MunicipalRegulationLayer1Shape mandatory fields — provide them
                 # so we're exercising the widening, not falling over on
-                # unrelated mandatory fields.
+                # unrelated mandatory fields. documentType/terviktekstId are
+                # required since NationalRegulationShape also targets
+                # MunicipalRegulation (#424 DomesticRegulation split).
                 "estleg:enactedBy": {"@id": "estleg:Issuer_viimsi_vv_test"},
                 "estleg:enactedByMunicipality": {"@id": "estleg:Municipality_EHAK_8905"},
                 "estleg:titleNormalized": "viimsi 2009 #22 (test)",
+                "estleg:documentType": "määrus",
+                "estleg:terviktekstId": "1024484",
                 "estleg:interpretedBy": [{"@id": "estleg:RK_TEST_WIDEN_001"}],
             },
             {

@@ -2,7 +2,7 @@
 
 ## Complete Schema Documentation
 
-> **Note on terminology.** "Regulation" is overloaded across legal systems. In this ontology **domestic regulations** (Estonian *määrused*, modelled as `estleg:NationalRegulation` and its subclasses) are kept strictly separate from **EU regulations** (modelled as `estleg:EULegislation` with `estleg:euDocumentType estleg:EUDocType_Regulation`). Domestic regulations are issued under an enabling Estonian law by Vabariigi Valitsus, a minister, or a municipal council; EU regulations are EU-level legal acts. Use the dedicated classes for each — see "Domestic Regulation Classes" and "EU Legislation Classes" below.
+> **Note on terminology.** "Regulation" is overloaded across legal systems. In this ontology **domestic regulations** (Estonian *määrused*, modelled under the common superclass `estleg:DomesticRegulation` with the state-level `estleg:NationalRegulation` and municipal `estleg:MunicipalRegulation` branches) are kept strictly separate from **EU regulations** (modelled as `estleg:EULegislation` with `estleg:euDocumentType estleg:EUDocType_Regulation`). Domestic regulations are issued under an enabling Estonian law by Vabariigi Valitsus, a minister, or a municipal council; EU regulations are EU-level legal acts. Use the dedicated classes for each — see "Domestic Regulation Classes" and "EU Legislation Classes" below.
 
 > **Canonical vocabulary (T-Box).** `krr_outputs/controlled_vocabulary.jsonld` is the intended canonical home for the reusable `estleg:` classes and properties (including the `owl:inverseOf` axioms for the inverse pairs `references`/`referencedBy`, `amendedBy`/`amends`, `interpretsLaw`/`interpretedBy`, `hasVersion`/`versionOf`, and `hasSubsection`/`parentProvision`). Subcorpus schema files (e.g. `riigikohus/riigikohus_schema.json`, `eurlex/eurlex_schema.json`, `eelnoud/eelnoud_schema.json`, `curia/curia_schema.json`) still carry some corpus-specific terms and enum individuals (notably the court-decision `estleg:CaseType_*` / `estleg:DecisionType_*` individuals, which live in `riigikohus_schema.json` and must be loaded alongside the court-decision peeps to resolve `estleg:caseType` / `estleg:decisionType` targets). Consolidating every reusable term into the canonical file is an ongoing effort (issue #291); new reusable terms SHOULD be defined in `controlled_vocabulary.jsonld`.
 
@@ -257,8 +257,11 @@ SELECT ?decision ?label ?date WHERE {
 
 Estonian domestic regulations (*määrused*) are subordinate legal acts issued under an enabling law. They are produced by `scripts/generate_regulations.py` from Riigi Teataja and stored under `krr_outputs/regulations/riik/` (state-level) and, in Phase 2, `krr_outputs/regulations/kov/` (municipal). Provisions of regulations are subclasses of `estleg:LegalProvision` and therefore reuse the existing provision-level shapes, queries, and integrations.
 
+### DomesticRegulation (`estleg:DomesticRegulation`)
+Common superclass for any Estonian domestic regulation, regardless of level. `rdfs:subClassOf estleg:Act`. Its two branches — the state-level `estleg:NationalRegulation` and the municipal `estleg:MunicipalRegulation` — are **sibling** subclasses, so no entailment path makes a municipal regulation a state regulation (issue #424). `estleg:DomesticRegulation` is intentionally **never stamped on instances**: membership is left to RDFS subclass entailment, and the shared domestic-regulation SHACL constraints are applied by listing `estleg:NationalRegulation` and `estleg:MunicipalRegulation` as explicit `sh:targetClass` values rather than targeting the superclass.
+
 ### NationalRegulation (`estleg:NationalRegulation`)
-Base class for any Estonian domestic regulation. Every concrete regulation instance carries this type plus exactly one of the more specific subclasses below.
+State-level Estonian regulation (*riigi tasandi määrus*) issued by a state organ. `rdfs:subClassOf estleg:DomesticRegulation` and superclass of the government and ministerial regulation classes below. **Not** a superclass of `estleg:MunicipalRegulation` — the two are siblings (issue #424). Concrete state-regulation instances carry this type plus exactly one of the more specific subclasses below.
 
 ### GovernmentRegulation (`estleg:GovernmentRegulation`)
 Regulation issued by Vabariigi Valitsus (the Government of the Republic). Subclass of `NationalRegulation`.
@@ -267,7 +270,7 @@ Regulation issued by Vabariigi Valitsus (the Government of the Republic). Subcla
 Regulation issued by an individual minister (e.g. *Sotsiaalminister*, *Justiitsminister*). Subclass of `NationalRegulation`.
 
 ### MunicipalRegulation (`estleg:MunicipalRegulation`)
-Regulation issued by a local government council or government (KOV). Subclass of `NationalRegulation`; generated KOV regulation act nodes carry both `NationalRegulation` and `MunicipalRegulation` so common domestic-regulation SHACL constraints apply without OWL inference.
+Regulation issued by a local government council or government (KOV). `rdfs:subClassOf estleg:DomesticRegulation` — a sibling of `NationalRegulation`, **not** a subclass of it (issue #424; the earlier `subClassOf NationalRegulation` axiom was a logical error that entailed every municipal regulation as state-level). Generated KOV regulation act nodes are typed `estleg:MunicipalRegulation` (plus `estleg:Act`) **only** — the former dual-typing with `estleg:NationalRegulation` was removed and a backfill strips the stray type from all 11,059 KOV files. Shared domestic-regulation SHACL constraints still apply because `MunicipalRegulationShape` names `estleg:MunicipalRegulation` as an explicit `sh:targetClass`, so no OWL/RDFS inference is required at validation time.
 
 ### Annex (`estleg:Annex`)
 Represents an annex (*lisa*) attached to a regulation. Annexes are emitted as separate named individuals and linked from the regulation via `estleg:hasAnnex`. Annex tables are not normalised in the first pass — the node carries the title, number, and a link to the original document on riigiteataja.ee.
@@ -641,7 +644,16 @@ Represents a section (jagu/peatükk) in the KarS special parts structure, genera
 > RDFS subclass inference at validation time.
 
 ### AmendmentEvent (`estleg:AmendmentEvent`)
-Represents an amendment event linking a provision to its amending act or draft. Generated by `generate_amendment_history.py` and stored in `krr_outputs/amendments/`.
+Represents an **effected** amendment event — a change actually applied to an act, derived from Riigi Teataja `<muutmismarge>` markers. Generated by `generate_amendment_history.py` and stored in `krr_outputs/amendments/`. Effected events carry `estleg:amends`, `estleg:amendmentDate` / `estleg:entryIntoForce`, and the latest one per act may carry `estleg:isCurrentAmendment`; act roots link to them via `estleg:amendedBy`. Never-enacted draft amendments are **not** modelled with this class — see `estleg:ProposedAmendment` below (issue #423).
+
+### ProposedAmendment (`estleg:ProposedAmendment`)
+Represents a **proposed, not-yet-enacted** amendment derived from a draft amendment bill in EIS (Review / Submission / PublicConsultation phase). Because the referenced draft has not been adopted, the node MUST NOT be typed `estleg:AmendmentEvent` and MUST NOT assert effected semantics (issue #423). A `ProposedAmendment` carries proposal-scoped predicates only:
+
+* `estleg:proposesToAmend` → the target act/provision (proposal scope; **not** `estleg:amends`, which asserts an effected change).
+* `estleg:publicationDate` → the draft's EIS publication date (**not** `estleg:amendmentDate`, which is reserved for adoption dates).
+* `estleg:amendingDraft` → the `estleg:DraftLegislation` (`Draft_*`) node behind the proposal.
+
+A `ProposedAmendment` **never** carries `estleg:isCurrentAmendment`. Act roots link to these nodes via `estleg:hasProposedAmendment` (the inverse of `estleg:proposesToAmend`) — never via `estleg:amendedBy`, which is reserved for effected events.
 
 ### LegalConcept (`estleg:LegalConcept`) — Extended
 Extended with SKOS vocabulary for cross-law concept linking.
@@ -677,7 +689,8 @@ These properties enable cross-referencing between different parts of the legal s
 |----------|--------|-------|-------------|
 | `estleg:transposesDirective` | Act | EULegislation (IRI) | EU directive transposed by this law |
 | `estleg:transposedBy` | EULegislation | Act (IRI) | Inverse: Estonian law transposing this directive |
-| `estleg:harmonisedWith` | LegalProvision | EULegislation (IRI) | EU harmonisation requirement |
+| `estleg:harmonisedWith` | Act | HarmonisationLink (IRI) | Act → harmonisation record showing parallel transpositions of the same EU directive in other member states. Emitted **only** on law peeps (act-level). Inverse of `estleg:harmonises` (issue #425). |
+| `estleg:harmonises` | HarmonisationLink | Act (IRI) | Inverse: harmonisation record → the Estonian act(s) that transpose the shared directive. Emitted **only** on the aggregate `estleg:Harmonisation_<celex>` nodes in `krr_outputs/harmonisation/harmonisation_by_directive/`. Inverse of `estleg:harmonisedWith` (issue #425). |
 
 ### Subject Classification
 | Property | Domain | Range | Description |
@@ -694,10 +707,18 @@ These properties enable cross-referencing between different parts of the legal s
 | `estleg:temporalStatus` | Act | `xsd:string` | Status evaluated against the build's declared temporal evaluation date: inForce, repealed, notYetEffective |
 
 ### Amendment Properties
+
+Effected amendments (from Riigi Teataja) and proposed amendments (from draft bills) use **separate** property sets so a never-enacted draft is never published as an effected legal change (issue #423). Effected: `estleg:amendedBy` ⇄ `estleg:amends`. Proposed: `estleg:hasProposedAmendment` ⇄ `estleg:proposesToAmend`.
+
 | Property | Domain | Range | Description |
 |----------|--------|-------|-------------|
-| `estleg:amendedBy` | LegalProvision | IRI | Amending act or draft |
-| `estleg:amends` | DraftLegislation | LegalProvision (IRI) | Inverse: what this draft amends |
+| `estleg:amendedBy` | Act | AmendmentEvent (IRI) | Act-root → **effected** amendment events only (from Riigi Teataja). Inverse of `estleg:amends`. |
+| `estleg:amends` | AmendmentEvent | LegalProvision / Act (IRI) | What this effected amendment event changed. Inverse of `estleg:amendedBy`. |
+| `estleg:amendmentDate` | AmendmentEvent | `xsd:date` | Adoption / legal-effect date of an effected amendment. Reserved for effected events — proposals use `estleg:publicationDate`. |
+| `estleg:isCurrentAmendment` | AmendmentEvent | `xsd:boolean` | Marks the latest **effected** event per act. Never emitted on a `ProposedAmendment`. |
+| `estleg:hasProposedAmendment` | Act | ProposedAmendment (IRI) | Act-root → **proposed** (not-yet-enacted) amendment nodes. Inverse of `estleg:proposesToAmend`. |
+| `estleg:proposesToAmend` | ProposedAmendment | LegalProvision / Act (IRI) | Act/provision a draft amendment bill proposes to change. Inverse of `estleg:hasProposedAmendment`. |
+| `estleg:amendingDraft` | ProposedAmendment | DraftLegislation (IRI) | The `Draft_*` node behind a proposed amendment. |
 | `estleg:changeType` | DraftLegislation | `xsd:string` | Type of change: amends, repeals, supplements, enacts |
 | `estleg:affectedBy` | LegalProvision | DraftLegislation (IRI) | Pending drafts affecting this provision |
 
@@ -1106,10 +1127,11 @@ territorial unit and issuing body.
 
 - `estleg:Act` — top-level "any enacted Estonian legal act"
   - `estleg:Law` — statute (seadus); stamped onto every existing law node
-  - `estleg:NationalRegulation`
-    - `estleg:GovernmentRegulation`
-    - `estleg:MinisterialRegulation`
-  - `estleg:MunicipalRegulation`
+  - `estleg:DomesticRegulation` — common superclass for any Estonian *määrus* (never stamped on instances)
+    - `estleg:NationalRegulation` — state-level
+      - `estleg:GovernmentRegulation`
+      - `estleg:MinisterialRegulation`
+    - `estleg:MunicipalRegulation` — municipal (KOV); sibling of `NationalRegulation`, not a subclass
 - `estleg:Municipality` — territorial KOV unit (top-level)
 - `estleg:Issuer` — `rdfs:subClassOf estleg:Institution`
 - `estleg:KovProvision` — `rdfs:subClassOf estleg:LegalProvision`

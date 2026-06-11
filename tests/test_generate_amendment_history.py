@@ -1572,6 +1572,16 @@ def _amends_ids(node: dict) -> list[str]:
     return [v.get("@id") for v in val]
 
 
+def _proposes_ids(node: dict) -> list[str]:
+    """Normalise estleg:proposesToAmend (dict or list of dicts) to @ids (#423)."""
+    val = node.get("estleg:proposesToAmend")
+    if val is None:
+        return []
+    if isinstance(val, dict):
+        return [val.get("@id")]
+    return [v.get("@id") for v in val]
+
+
 # ---------------------------------------------------------------------------
 # Issue #327 — estleg:amends must target EVERY part of a multipart law
 # ---------------------------------------------------------------------------
@@ -1637,8 +1647,9 @@ class TestAmendsTargetsAllParts:
         )
         assert ev["estleg:amends"] == {"@id": "estleg:YKSIKSEADUS_Map"}
 
-    def test_draft_link_amends_lists_every_part(self, tmp_path, monkeypatch):
-        # Draft-derived AmendmentLink nodes get the same multi-part amends.
+    def test_draft_link_proposes_to_amend_lists_every_part(self, tmp_path, monkeypatch):
+        # Draft-derived ProposedAmendment nodes get the same multi-part target,
+        # but via estleg:proposesToAmend (NOT estleg:amends) — #423.
         krr, rt, mod = _setup_main_env(tmp_path, monkeypatch)
         title = "Mitmeosaline seadus"
         for i in (1, 2):
@@ -1657,13 +1668,17 @@ class TestAmendsTargetsAllParts:
             n for n in chain_doc["@graph"]
             if "estleg:amendingDraft" in n
         ]
-        assert links, "expected a draft AmendmentLink"
+        assert links, "expected a draft ProposedAmendment"
         expected = {
             "estleg:MITMEOSALINE_SEADUS_OSA1_Map",
             "estleg:MITMEOSALINE_SEADUS_OSA2_Map",
         }
         for ln in links:
-            assert set(_amends_ids(ln)) == expected, ln
+            # Proposals are NOT AmendmentEvent and carry NO bare estleg:amends.
+            assert "estleg:ProposedAmendment" in ln["@type"], ln
+            assert "estleg:AmendmentEvent" not in ln["@type"], ln
+            assert "estleg:amends" not in ln, ln
+            assert set(_proposes_ids(ln)) == expected, ln
 
 
 # ---------------------------------------------------------------------------
@@ -1855,11 +1870,17 @@ class TestDraftEventsSorted:
             .read_text("utf-8")
         )
         links = [n for n in chain_doc["@graph"] if "estleg:amendingDraft" in n]
+        # Proposals carry estleg:publicationDate, NOT estleg:amendmentDate (#423).
         dates = [
-            (n.get("estleg:amendmentDate") or {}).get("@value") for n in links
+            (n.get("estleg:publicationDate") or {}).get("@value") for n in links
         ]
         assert dates == sorted(dates), dates
         assert dates == ["2018-03-01", "2020-03-01", "2024-03-01", "2026-03-01"]
+        # Retyped: ProposedAmendment, never AmendmentEvent, never amendmentDate.
+        for n in links:
+            assert "estleg:ProposedAmendment" in n["@type"], n
+            assert "estleg:AmendmentEvent" not in n["@type"], n
+            assert "estleg:amendmentDate" not in n, n
 
     def test_undated_draft_sorts_last(self, tmp_path, monkeypatch):
         krr, rt, mod = _setup_main_env(tmp_path, monkeypatch)
@@ -1962,7 +1983,10 @@ class TestIsCurrentAmendmentMarker:
         # Boolean is xsd-typed.
         assert current[0]["estleg:isCurrentAmendment"]["@type"] == "xsd:boolean"
 
-    def test_latest_draft_event_is_current(self, tmp_path, monkeypatch):
+    def test_draft_proposals_are_never_current(self, tmp_path, monkeypatch):
+        # #423: a never-enacted draft is a ProposedAmendment, NOT an effected
+        # change — it must NEVER carry estleg:isCurrentAmendment, even when it is
+        # the latest (or only) proposal for the act.
         krr, rt, mod = _setup_main_env(tmp_path, monkeypatch)
         _write_part(krr, "draftonlyseadus", "9510", "Draftonly seadus")
         _write_combined_drafts(krr, [
@@ -1978,13 +2002,23 @@ class TestIsCurrentAmendmentMarker:
             .read_text("utf-8")
         )
         links = [n for n in chain_doc["@graph"] if "estleg:amendingDraft" in n]
-        current = [ln for ln in links if self._is_current(ln)]
-        assert len(current) == 1, current
-        assert current[0]["estleg:amendingDraft"]["@id"] == "estleg:Draft_New"
+        assert len(links) == 2, links
+        # No proposal is flagged current, and none is typed AmendmentEvent.
+        assert [ln for ln in links if self._is_current(ln)] == []
+        for ln in links:
+            assert "estleg:ProposedAmendment" in ln["@type"], ln
+            assert "estleg:AmendmentEvent" not in ln["@type"], ln
+            assert "estleg:isCurrentAmendment" not in ln, ln
+        # A draft-only act has ZERO AmendmentEvent nodes in its chain (#423).
+        assert not [
+            n for n in chain_doc["@graph"]
+            if "estleg:AmendmentEvent" in (n.get("@type") or [])
+        ]
 
-    def test_both_latest_xml_and_latest_draft_are_current(self, tmp_path, monkeypatch):
-        # A chain with BOTH kinds: exactly the latest XML event AND the latest
-        # draft event are flagged (two markers total — one per surface).
+    def test_only_latest_xml_is_current_proposals_excluded(self, tmp_path, monkeypatch):
+        # A chain with BOTH kinds: ONLY the latest effected XML event is flagged
+        # (#389/#423). Proposals never count toward isCurrentAmendment — even a
+        # 2026 draft does not out-rank the 2016 effected amendment.
         krr, rt, mod = _setup_main_env(tmp_path, monkeypatch)
         _write_part(krr, "bothseadus", "9520", "Both seadus")
         _write_xml(rt, "9520", [
@@ -2004,18 +2038,214 @@ class TestIsCurrentAmendmentMarker:
         chain_doc = json.loads(
             (krr / "amendments" / "amendments_bothseadus.json").read_text("utf-8")
         )
+        # The only current marker is on an AmendmentEvent (not a proposal).
+        all_current = [n for n in chain_doc["@graph"] if self._is_current(n)]
+        assert len(all_current) == 1, [e["@id"] for e in all_current]
+        cur = all_current[0]
+        assert "estleg:AmendmentEvent" in cur["@type"], cur
+        assert "estleg:amendingDraft" not in cur, cur
+        # It's the latest effective effected event (2016-06-01).
+        assert (cur.get("estleg:entryIntoForce") or {}).get("@value") == "2016-06-01"
+        # The proposals are present but unflagged, and not AmendmentEvent.
+        proposals = [n for n in chain_doc["@graph"] if "estleg:amendingDraft" in n]
+        assert len(proposals) == 2
+        assert all("estleg:isCurrentAmendment" not in p for p in proposals)
+        assert all("estleg:ProposedAmendment" in p["@type"] for p in proposals)
+
+
+# ---------------------------------------------------------------------------
+# Issue #423 — draft bills are ProposedAmendment, not effected AmendmentEvent
+# ---------------------------------------------------------------------------
+
+
+def _act_node(doc: dict) -> dict:
+    """Return the owl:Ontology act node of a peep doc."""
+    return next(
+        n for n in doc["@graph"]
+        if "owl:Ontology" in (n.get("@type") or [])
+    )
+
+
+class TestProposedAmendmentSeparation:
+    """A never-enacted draft must be emitted as estleg:ProposedAmendment (NOT
+    AmendmentEvent), use proposal-scoped predicates (proposesToAmend +
+    publicationDate, never amends/amendmentDate/isCurrentAmendment), and link
+    from the act root via estleg:hasProposedAmendment — never estleg:amendedBy
+    (effected-only) and never estleg:affectedBy (owned by extract_draft_impact).
+    """
+
+    def test_draft_only_act_emits_proposed_amendment_node(self, tmp_path, monkeypatch):
+        krr, rt, mod = _setup_main_env(tmp_path, monkeypatch)
+        _write_part(krr, "abieluvararegistri_seadus", "9700",
+                    "Abieluvararegistri seadus")
+        _write_combined_drafts(krr, [
+            {"id": "estleg:Draft_JDM16_0008",
+             "title": "Abieluvararegistri seaduse muutmise seadus",
+             "affected": "Abieluvararegistri seadus", "pub": "2016-01-05"},
+        ])
+        rc = mod.main()
+        assert rc in (None, 0)
+        chain_doc = json.loads(
+            (krr / "amendments" / "amendments_abieluvararegistri_seadus.json")
+            .read_text("utf-8")
+        )
+        proposals = [n for n in chain_doc["@graph"] if "estleg:amendingDraft" in n]
+        assert len(proposals) == 1, proposals
+        p = proposals[0]
+        # Class: ProposedAmendment, never AmendmentEvent.
+        assert "estleg:ProposedAmendment" in p["@type"]
+        assert "estleg:AmendmentEvent" not in p["@type"]
+        assert "owl:NamedIndividual" in p["@type"]
+        # @id unchanged (AmendmentLink_<draft>_<prefix>) for stability. The
+        # prefix is the registered abbreviation AVRS (abieluvararegistri_seadus).
+        assert p["@id"] == "estleg:AmendmentLink_Draft_JDM16_0008_AVRS"
+        # Proposal-scoped predicates only. proposesToAmend targets the act's
+        # ontology IRI (here ABIELUVARAREGISTRI_SEADUS_Map from the fixture).
+        assert p["estleg:amendingDraft"] == {"@id": "estleg:Draft_JDM16_0008"}
+        assert p["estleg:proposesToAmend"] == {
+            "@id": "estleg:ABIELUVARAREGISTRI_SEADUS_Map"
+        }
+        assert p["estleg:publicationDate"] == {
+            "@value": "2016-01-05", "@type": "xsd:date"
+        }
+        # NEVER effected semantics.
+        assert "estleg:amends" not in p
+        assert "estleg:amendmentDate" not in p
+        assert "estleg:isCurrentAmendment" not in p
+        # The chain has ZERO AmendmentEvent nodes.
+        assert not [
+            n for n in chain_doc["@graph"]
+            if "estleg:AmendmentEvent" in (n.get("@type") or [])
+        ]
+
+    def test_draft_only_act_root_uses_has_proposed_amendment(self, tmp_path, monkeypatch):
+        krr, rt, mod = _setup_main_env(tmp_path, monkeypatch)
+        _write_part(krr, "avrs2", "9710", "Avrs2 seadus")
+        _write_combined_drafts(krr, [
+            {"id": "estleg:Draft_X", "title": "Avrs2 muutmise seadus",
+             "affected": "Avrs2 seadus", "pub": "2016-01-05"},
+        ])
+        rc = mod.main()
+        assert rc in (None, 0)
+        doc = json.loads((krr / "avrs2_peep.json").read_text("utf-8"))
+        act = _act_node(doc)
+        # Root link via hasProposedAmendment → the ProposedAmendment node.
+        # (Unregistered slug → prefix is the sanitized slug 'avrs2'.)
+        assert act["estleg:hasProposedAmendment"] == [
+            {"@id": "estleg:AmendmentLink_Draft_X_avrs2"}
+        ]
+        # NOT amendedBy (effected-only) and NOT affectedBy (other pipeline).
+        assert "estleg:amendedBy" not in act
+        assert "estleg:affectedBy" not in act
+
+    def test_rt_cited_act_unchanged_no_proposed_link(self, tmp_path, monkeypatch):
+        # An act whose only amendments are RT-derived keeps AmendmentEvent +
+        # amendedBy and gains NO hasProposedAmendment (#423 leaves A/B alone).
+        krr, rt, mod = _setup_main_env(tmp_path, monkeypatch)
+        _write_part(krr, "rtonly", "9720", "RTonly seadus")
+        _write_xml(rt, "9720", [
+            {"date": "2014-01-01", "eif": "2014-06-01",
+             "rt_aasta": "2014", "rt_nr": "7"},
+        ])
+        rc = mod.main()
+        assert rc in (None, 0)
+        chain_doc = json.loads(
+            (krr / "amendments" / "amendments_rtonly.json").read_text("utf-8")
+        )
         events = [
             n for n in chain_doc["@graph"]
             if "estleg:AmendmentEvent" in (n.get("@type") or [])
         ]
-        current = [e for e in events if self._is_current(e)]
-        assert len(current) == 2, [e["@id"] for e in current]
-        kinds = {("draft" if "estleg:amendingDraft" in e else "xml") for e in current}
-        assert kinds == {"xml", "draft"}
-        # The flagged draft is the latest one (2026); the flagged XML is the
-        # latest effective (2016-06-01).
-        draft_cur = next(e for e in current if "estleg:amendingDraft" in e)
-        assert draft_cur["estleg:amendingDraft"]["@id"] == "estleg:Draft_2"
+        assert len(events) == 1, events
+        ev = events[0]
+        assert "estleg:ProposedAmendment" not in ev["@type"]
+        assert ev["estleg:amends"] == {"@id": "estleg:RTONLY_Map"}
+        assert ev["estleg:amendmentDate"] == {"@value": "2014-01-01",
+                                              "@type": "xsd:date"}
+        assert "estleg:proposesToAmend" not in ev
+        # No proposal nodes at all.
+        assert not [n for n in chain_doc["@graph"] if "estleg:amendingDraft" in n]
+        # Act root: amendedBy present, hasProposedAmendment absent.
+        doc = json.loads((krr / "rtonly_peep.json").read_text("utf-8"))
+        act = _act_node(doc)
+        assert act["estleg:amendedBy"] == [{"@id": ev["@id"]}]
+        assert "estleg:hasProposedAmendment" not in act
+
+    def test_mixed_act_splits_links_between_amendedby_and_proposed(self, tmp_path, monkeypatch):
+        krr, rt, mod = _setup_main_env(tmp_path, monkeypatch)
+        _write_part(krr, "mixedseadus", "9730", "Mixed seadus")
+        _write_xml(rt, "9730", [
+            {"date": "2012-01-01", "eif": "2012-06-01",
+             "rt_aasta": "2012", "rt_nr": "3"},
+        ])
+        _write_combined_drafts(krr, [
+            {"id": "estleg:Draft_M", "title": "Mixed muutmise seadus",
+             "affected": "Mixed seadus", "pub": "2025-02-02"},
+        ])
+        rc = mod.main()
+        assert rc in (None, 0)
+        doc = json.loads((krr / "mixedseadus_peep.json").read_text("utf-8"))
+        act = _act_node(doc)
+        # amendedBy holds ONLY the effected Amendment_ node.
+        amended = [r["@id"] for r in act["estleg:amendedBy"]]
+        assert all(a.startswith("estleg:Amendment_") for a in amended), amended
+        assert not any("AmendmentLink_" in a for a in amended), amended
+        # hasProposedAmendment holds ONLY the ProposedAmendment node.
+        proposed = [r["@id"] for r in act["estleg:hasProposedAmendment"]]
+        assert proposed == ["estleg:AmendmentLink_Draft_M_mixedseadus"], proposed
+
+    def test_rerun_drops_stale_proposal_and_never_leaks_into_amendedby(self, tmp_path, monkeypatch):
+        # Idempotency: run with a draft, then rerun with the draft removed. The
+        # stale ProposedAmendment must be cleared from the act root, and no
+        # proposal must ever appear in amendedBy across either run (#423/#384).
+        krr, rt, mod = _setup_main_env(tmp_path, monkeypatch)
+        peep = _write_part(krr, "rerunseadus", "9740", "Rerun seadus")
+        # Empty-but-present XML so the act PAIRS (exercises the chain-file
+        # cleanup path, which requires a paired member) yet has no effected
+        # amendments — the only chain content is the draft proposal.
+        _write_xml(rt, "9740", [])
+        _write_combined_drafts(krr, [
+            {"id": "estleg:Draft_Stale", "title": "Rerun muutmise seadus",
+             "affected": "Rerun seadus", "pub": "2024-01-01"},
+        ])
+        assert mod.main() in (None, 0)
+        act = _act_node(json.loads(peep.read_text("utf-8")))
+        assert act["estleg:hasProposedAmendment"] == [
+            {"@id": "estleg:AmendmentLink_Draft_Stale_rerunseadus"}
+        ]
+        assert "estleg:amendedBy" not in act  # never leaked into amendedBy
+
+        # Rerun: empty drafts corpus. Stale proposal link must be gone.
+        _write_combined_drafts(krr, [])
+        assert mod.main() in (None, 0)
+        act2 = _act_node(json.loads(peep.read_text("utf-8")))
+        assert "estleg:hasProposedAmendment" not in act2
+        assert "estleg:amendedBy" not in act2
+        # The now-empty chain file is removed (no amendments at all).
+        assert not (krr / "amendments" / "amendments_rerunseadus.json").exists()
+
+    def test_clear_does_not_touch_affectedby(self, tmp_path, monkeypatch):
+        # extract_draft_impact.py owns estleg:affectedBy (act → Draft). This
+        # script's Step-0 clear must leave a pre-existing affectedBy intact.
+        krr, rt, mod = _setup_main_env(tmp_path, monkeypatch)
+        peep = krr / "withaffected_peep.json"
+        peep.write_text(json.dumps({
+            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+                         "owl": "http://www.w3.org/2002/07/owl#"},
+            "@graph": [{
+                "@id": "estleg:WITHAFFECTED_Map",
+                "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
+                "rdfs:label": "Withaffected seadus",
+                "dc:source": "Withaffected seadus",
+                "estleg:globalId": "9750",
+                # Pre-existing inverse link from the OTHER pipeline.
+                "estleg:affectedBy": [{"@id": "estleg:Draft_FromOtherPipeline"}],
+            }],
+        }), encoding="utf-8")
+        # No drafts / no XML for this act → it gets no amendment links here.
+        assert mod.main() in (None, 0)
+        act = _act_node(json.loads(peep.read_text("utf-8")))
+        assert act["estleg:affectedBy"] == [{"@id": "estleg:Draft_FromOtherPipeline"}]
 
 
 # ---------------------------------------------------------------------------

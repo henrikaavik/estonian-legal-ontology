@@ -3,7 +3,9 @@
 Classify Estonian laws with EuroVoc subject taxonomy using keyword matching.
 
 Scans existing law JSON-LD files for Estonian legal terminology and assigns
-EuroVoc concept URIs (http://eurovoc.europa.eu/{code}) via dcterms:subject.
+EuroVoc concept URIs (http://eurovoc.europa.eu/{id}) via dcterms:subject.
+All ids are verified real EuroVoc descriptor ids (#421); the old→new audit
+trail lives in data/eurovoc_domain_mapping.json.
 
 Generates:
   - krr_outputs/eurovoc_classification.json    (report of all classifications)
@@ -54,199 +56,241 @@ CONTEXT = {
 
 EUROVOC_URI_BASE = "http://eurovoc.europa.eu/"
 
-# EuroVoc domain mapping: code → (slug, label_et, label_en, [keywords])
+# EuroVoc domain mapping: descriptor id → (slug, label_et, label_en, [keywords])
 # Keywords are Estonian stems/substrings matched against law text after the
 # corpus has been normalised (NFC + casefold). Both plain keywords and
 # ``r:``-prefixed regex patterns are normalised the same way, so authors
 # write keywords/patterns in their natural Estonian spelling — case and
 # combining-mark differences are absorbed by normalisation.
+#
+# #421: every key is a VERIFIED real EuroVoc descriptor id — the minted
+# ``http://eurovoc.europa.eu/{id}`` IRI dereferences to a Publications
+# Office concept whose official et/en prefLabels are exactly the labels
+# stored here. The pre-#421 table used fabricated codes whose ids meant
+# entirely different things in real EuroVoc (e.g. 2446 = "food policy",
+# not constitutional law). The old→new id audit trail, per-entry evidence
+# URLs, and notes on the handful of nearest-descriptor choices (real
+# EuroVoc has no plain "transport"/"energy"/"taxation" descriptors —
+# those exist only as microthesauri/domains) live in
+# data/eurovoc_domain_mapping.json.
 EUROVOC_DOMAINS: dict[str, tuple[str, str, str, list[str]]] = {
-    # "2411" (Law) removed: 609/615 laws matched — tautological for a legal ontology.
-    "2421": (
-        "criminal-law", "kriminaalõigus", "Criminal law",
+    # The tautological generic "Law" domain stays removed (609/615 laws
+    # matched it pre-removal — meaningless for a legal ontology).
+    "573": (
+        "criminal-law", "kriminaalõigus", "criminal law",
         ["karistus", "kuritegu", "süüdi", "kriminaal", "vangist", "väärtegu", "kahtlust"],
     ),
-    "2431": (
-        "civil-law", "tsiviilõigus", "Civil law",
+    "523": (
+        "civil-law", "tsiviilõigus", "civil law",
         ["tsiviil", "leping", "võlg", "kahju", "nõue", "hagi", "kostja", "hageja"],
     ),
-    "2441": (
-        "administrative-law", "haldusõigus", "Administrative law",
+    "517": (
+        "administrative-law", "haldusõigus", "administrative law",
         ["haldus", "haldusmenetl", "järelevalve", "ettekirjut", "haldusakt"],
     ),
-    "2446": (
-        "constitutional-law", "riigiõigus", "Constitutional law",
+    "527": (
+        "constitutional-law", "riigiõigus", "constitutional law",
         ["põhiseadus", "riigikogu", "president", "valitsus", "vabariig", "riigikohus"],
     ),
-    "2806": (
-        "consumer-protection", "tarbijakaitse", "Consumer protection",
+    "2836": (
+        "consumer-protection", "tarbijakaitse", "consumer protection",
         ["tarbija", "tarbijakaits", "tooteohutus", "garantii"],
     ),
-    "2841": (
-        "competition", "konkurents", "Competition",
+    "75": (
+        "competition", "konkurents", "competition",
         ["konkurents", "monopol", "koondum", "turgu valitsev", "riigiabi"],
     ),
-    "3606": (
-        "employment", "tööhõive", "Employment",
+    # #421: was "employment/tööhõive" — real EuroVoc has no plain
+    # 'employment' descriptor (MT 4406); the keywords target
+    # employment-contract law, so descriptor 557 'labour law' was chosen.
+    "557": (
+        "labour-law", "tööõigus", "labour law",
         ["töö", "tööandja", "töötaja", "palk", "puhkus", "töölepingu", "töösuhte",
          "tööaeg", "töötasu", "koondami"],
     ),
-    "3611": (
-        "social-protection", "sotsiaalne kaitse", "Social protection",
+    # #421: 'social protection' is only a microthesaurus (MT 2836) in real
+    # EuroVoc; nearest descriptor is 4050 'social security'.
+    "4050": (
+        "social-security", "sotsiaalkindlustus", "social security",
         ["sotsiaal", "pension", "toetus", "hüvitis", "ravikindlust", "töötuskindlust",
          "puue", "hooldus"],
     ),
-    "5206": (
-        "taxation", "maksundus", "Taxation",
+    # #421: 'taxation' is only a microthesaurus (MT 2446) in real EuroVoc;
+    # nearest descriptor is 1021 'tax system' (et 'maksusüsteem').
+    "1021": (
+        "tax-system", "maksusüsteem", "tax system",
         ["maks", "tulumaks", "käibemaks", "aktsiis", "maksuhaldu", "maksukohust",
          "sotsiaalmaks", "topeltmaksustamise"],
     ),
-    "5211": (
-        "budget", "eelarve", "Budget",
+    "5050": (
+        "budget", "eelarve", "budget",
         ["eelarve", "riigieelarve", "kohalik eelarve"],
     ),
-    "5616": (
-        "transport", "transport", "Transport",
+    # #421: TRANSPORT is a EuroVoc top-level domain (48), not a descriptor;
+    # nearest descriptor is 2494 'transport policy'.
+    "2494": (
+        "transport-policy", "transpordipoliitika", "transport policy",
         ["liiklusseadu", "liikluskindlust", "transpordiseadu", "raudteeseadu",
          "lennundus", "meresõit", "maanteeseadu", "teeseadu",
          "autoparkla", "ühistransport", "sadamaseadu",
          "autoveoseadu", "kaubavedu", "reisijatevedu",
          "raskeveokimaks"],
     ),
-    "5231": (
-        "banking", "pangandus", "Banking",
+    "2149": (
+        "banking", "pangandus", "banking",
         ["pank", "krediit", "finants", "pangand", "laenu", "hoius", "investeeri",
          "väärtpaber", "fond"],
     ),
-    "6411": (
-        "building", "ehitus", "Building and public works",
+    # #421: 'building and public works' is only a microthesaurus (MT 6831);
+    # nearest descriptor is 2475 'construction policy'.
+    "2475": (
+        "construction-policy", "ehituspoliitika", "construction policy",
         ["ehit", "planeeri", "kinnisvara", "hoone", "detailplaneering", "üldplaneering"],
     ),
-    "5216": (
-        "customs", "toll", "Customs",
+    "502": (
+        "customs", "toll", "customs",
         ["toll", "import", "eksport", "tollikontroll"],
     ),
-    "2826": (
-        "data-protection", "andmekaitse", "Data protection",
+    "5181": (
+        "data-protection", "andmekaitse", "data protection",
         ["andmekaitse", "isikuandm", "privaatsus", "andmetöötl"],
     ),
-    "3216": (
-        "intellectual-property", "intellektuaalomand", "Intellectual property",
+    "2817": (
+        "intellectual-property", "intellektuaalomand", "intellectual property",
         ["autoriõigus", "patent", "kaubamärk", "leiutis", "tööstusdisain", "intellektuaalomand"],
     ),
-    "2451": (
-        "judicial-cooperation", "õiguskoostöö", "Judicial cooperation",
+    "217": (
+        "judicial-cooperation", "kohtualane koostöö", "judicial cooperation",
         ["õigusabi", "väljaandmi", "loovutami", "vastastikune tunnustami"],
     ),
-    "5226": (
-        "trade", "kaubandus", "Trade",
+    # #421: 'trade' is only a microthesaurus (MT 2016); the keywords target
+    # retail/wholesale commerce, so descriptor 10 'domestic trade' was chosen.
+    "10": (
+        "domestic-trade", "sisekaubandus", "domestic trade",
         ["kauband", "müük", "ost", "jaekauband", "hulgikauband"],
     ),
-    "2416": (
-        "fundamental-rights", "põhiõigused", "Fundamental rights",
+    "538": (
+        "fundamental-rights", "põhiõigused", "fundamental rights",
         ["inimõig", "põhiõig", "vabadus", "võrdsus", "diskrimineeri", "soolise võrdõiguslikkuse"],
     ),
-    "5606": (
-        "energy", "energeetika", "Energy",
+    # #421: ENERGY is a EuroVoc top-level domain (66), not a descriptor;
+    # nearest descriptor is 2498 'energy policy'.
+    "2498": (
+        "energy-policy", "energiapoliitika", "energy policy",
         ["energ", "elektr", "gaas", "küte", "taastuvenerg", "tuumaenerg", "kütus"],
     ),
-    "5611": (
-        "environment", "keskkond", "Environment",
+    # #421: ENVIRONMENT is a EuroVoc top-level domain (52); the keywords are
+    # protective-regulation terms, so descriptor 2825 'environmental
+    # protection' was chosen.
+    "2825": (
+        "environmental-protection", "keskkonnakaitse", "environmental protection",
         ["keskkond", "saaste", "jäätm", "loodus", "vesi", "looduskaits",
          "keskkonnamõj", "heitm", "kliima", "bioloogiline mitmekesisus"],
     ),
-    "2821": (
-        "communications", "side", "Communications",
+    # #421: 'communications' is only a microthesaurus (MT 3226); descriptor
+    # 2473 'communications policy' covers the telecom+broadcasting+media
+    # keyword spread.
+    "2473": (
+        "communications-policy", "kommunikatsioonipoliitika", "communications policy",
         ["side", "telekommunikatsioon", "ringhääling", "meedia", "elektrooniline side"],
     ),
-    "5621": (
-        "agriculture", "põllumajandus", "Agriculture",
+    # #421: AGRICULTURE, FORESTRY AND FISHERIES is a EuroVoc top-level
+    # domain (56); nearest descriptor is 2442 'agricultural policy'.
+    "2442": (
+        "agricultural-policy", "põllumajanduspoliitika", "agricultural policy",
         ["põllumajandus", "maaelu", "mets", "kalandu", "taimekait", "loomakait",
          "mahepõllumajandus", "sööt"],
     ),
-    "5631": (
-        "health", "tervishoid", "Health",
+    "5899": (
+        "health-care", "tervishoid", "health care",
         ["tervis", "ravim", "haigla", "arst", "meditsiini", "patsien", "tervisekaits",
          "nakkushaig", "vaktsineer"],
     ),
-    "5636": (
-        "education", "haridus", "Education",
+    "668": (
+        "education", "haridus", "education",
         ["haridus", "kool", "ülikool", "õpe", "õppekav", "kutseharidus", "teaduskraad",
          "stipendium"],
     ),
-    "0431": (
-        "defence", "riigikaitse", "Defence",
+    # #421: real EuroVoc has no 'defence'/'national defence' descriptor;
+    # nearest descriptor is 2464 'defence policy'.
+    "2464": (
+        "defence-policy", "kaitsepoliitika", "defence policy",
         ["sõjaväe", "kaitseväe", "riigikaitse", "mobilisatsioon", "rahvusvaheline sõjaline"],
     ),
-    "0806": (
-        "migration", "ränne", "Migration",
+    "1909": (
+        "migration", "migratsioon", "migration",
         ["välismaalane", "pagulane", "varjupaig", "ränne", "kodakondsus", "elamisluba",
          "viisa"],
     ),
-    "2016": (
-        "elections", "valimised", "Elections",
+    "695": (
+        "election", "valimised", "election",
         ["valim", "häälet", "valimisnimekiri", "valimiskom", "kandidaat", "referendum"],
     ),
-    "6006": (
-        "science", "teadus", "Science and research",
+    # #421: real EuroVoc has no plain 'science' descriptor; nearest
+    # descriptor is 2924 'scientific research'.
+    "2924": (
+        "scientific-research", "teadusuuringud", "scientific research",
         ["teadus", "uurim", "innovatsioon", "teadusasutus"],
     ),
-    "0411": (
-        "international-affairs", "välissuhted", "International affairs",
+    "3474": (
+        "international-affairs", "rahvusvaheline poliitika", "international affairs",
         ["rahvusvaheli", "välislepingu", "konventsioon", "protokoll",
          "ratifitseerimise"],
     ),
-    "1011": (
-        "EU-law", "Euroopa Liidu õigus", "EU law",
+    "525": (
+        "eu-law", "ELi õigus", "EU law",
         ["euroopa liidu", "euroopa ühendus", "direktiiv", "ülevõtmi"],
     ),
-    "1221": (
-        "local-government", "kohalik omavalitsus", "Local government",
+    "68": (
+        "local-government", "kohalik omavalitsus", "local government",
         ["kohalik omavalitsus", "vald", "linn", "volikogu", "linnavalitsus",
          "vallavalitsus", "omavalitsusüksus"],
     ),
-    "4421": (
-        "maritime-transport", "meretransport", "Maritime transport",
+    "4522": (
+        "maritime-transport", "meretransport", "maritime transport",
         ["meresõit", "laev", "sadam", "merendus"],
     ),
-    "2031": (
-        "political-parties", "erakonnad", "Political framework",
+    "2258": (
+        "political-parties", "poliitilised parteid", "political parties",
         ["erakond", "partei"],
     ),
-    "1236": (
-        "public-finance", "avalik rahandus", "Public finance and budget policy",
+    "1018": (
+        "public-finance", "riigirahandus", "public finance",
         ["riigikass", "avaliku sektori", "riigi raamatupidami"],
     ),
-    "5241": (
-        "insurance", "kindlustus", "Insurance",
+    "3151": (
+        "insurance", "kindlustus", "insurance",
         ["kindlust", "liikluskindlust", "elukindlust"],
     ),
-    "2811": (
-        "information-technology", "infotehnoloogia", "Information technology",
+    "5188": (
+        "information-technology", "infotehnoloogia", "information technology",
         ["infotehnoloog", "infosüsteem", "küberturv", "digitaal", "e-teenus"],
     ),
-    "0816": (
-        "public-order", "avalik kord", "Public order and safety",
+    # #421: was "public order and safety" — 2162 'public order' (et exactly
+    # 'avalik kord') chosen; the safety half is the separate descriptor
+    # 'public safety' (4045).
+    "2162": (
+        "public-order", "avalik kord", "public order",
         ["politsei", "päästeteenius", "hädaolukord", "avalik kord", "turvalisus"],
     ),
-    "5246": (
-        "accountancy", "raamatupidamine", "Accountancy",
+    "54": (
+        "accounting", "raamatupidamine", "accounting",
         ["raamatupidami", "aruandlus", "audiitor", "majandusaasta aruann"],
     ),
-    "6016": (
-        "land-use", "maakasutus", "Land use",
+    "4630": (
+        "land-use", "maakasutus", "land use",
         ["maakatast", "maareform", "maakorraldus", "kinnistusraamat"],
     ),
-    "3221": (
-        "culture", "kultuur", "Culture",
+    "317": (
+        "culture", "kultuur", "culture",
         ["kultuur", "muuseum", "raamatukogu", "kunst", "pärandkaits"],
     ),
-    "2836": (
-        "advertising", "reklaam", "Advertising",
+    "2862": (
+        "advertising", "reklaam", "advertising",
         ["reklaam"],
     ),
-    "4416": (
-        "air-transport", "lennundus", "Air transport",
+    "4505": (
+        "air-transport", "õhutransport", "air transport",
         ["lennundus", "lennuk", "lennujaam", "õhusõiduk"],
     ),
 }
@@ -255,10 +299,11 @@ EUROVOC_DOMAINS: dict[str, tuple[str, str, str, list[str]]] = {
 MAX_DOMAINS_PER_LAW = 5
 # Minimum *total* keyword occurrences to assign a domain (default).
 MIN_HITS_THRESHOLD = 1
-# Per-domain overrides for minimum total keyword occurrences (domain code →
+# Per-domain overrides for minimum total keyword occurrences (descriptor id →
 # threshold). Counts every match of every keyword, so "töö töö töö" == 3.
 MIN_HITS_OVERRIDES: dict[str, int] = {
-    "5616": 3,  # Transport: require 3+ keyword hits to reduce over-classification
+    "2494": 3,  # transport policy (pre-#421 code "5616"): require 3+ keyword
+                # hits to reduce over-classification
 }
 
 # Default number of *distinct* keywords from a domain's list that must each
@@ -275,52 +320,58 @@ MIN_DISTINCT_KEYWORDS_DEFAULT = 1
 # distinct keyword hits forces a corroborating term before the domain is
 # assigned, trading a little recall for materially better precision on these
 # noisy domains. Domains built from only long/distinctive keywords are left at
-# the default (1); ``2836`` advertising has a single keyword ('reklaam') and so
+# the default (1); ``2862`` advertising has a single keyword ('reklaam') and so
 # must stay at 1 (it could never reach 2).
 #
 # Plain keywords are matched as raw substrings (no word boundary), so a short
 # stem fires mid-word in an unrelated term. Review #275 verified more of
-# these: 'nõue' (civil-law 2431) fires inside 'nõuetele'/'nõuetekohastele'
-# ("requirements", ubiquitous in technical acts); 'kunst' (culture 3221)
-# inside 'kunstlik' ("artificial"); 'vesi' (environment 5611) inside
-# 'vesinik' ("hydrogen"); and 'hagi'/'võlg' (2431), 'toll' (5216), 'laev'
-# (maritime 4421), 'ehit' (building 6411), 'puue' (social-protection 3611) are
-# all short substring-prone stems. Bumping these domains to a distinct-gate of
-# 2 forces a second, corroborating keyword before the domain is assigned, so a
-# lone mid-word substring hit no longer tags the act. Every listed domain has
-# ≥2 keywords, so the gate is reachable.
+# these: 'nõue' (civil-law 523) fires inside 'nõuetele'/'nõuetekohastele'
+# ("requirements", ubiquitous in technical acts); 'kunst' (culture 317)
+# inside 'kunstlik' ("artificial"); 'vesi' (environmental-protection 2825)
+# inside 'vesinik' ("hydrogen"); and 'hagi'/'võlg' (523), 'toll' (502), 'laev'
+# (maritime 4522), 'ehit' (construction 2475), 'puue' (social-security 4050)
+# are all short substring-prone stems. Bumping these domains to a
+# distinct-gate of 2 forces a second, corroborating keyword before the domain
+# is assigned, so a lone mid-word substring hit no longer tags the act. Every
+# listed domain has ≥2 keywords, so the gate is reachable.
+#
+# NB (#421): the keys below were re-keyed from the pre-#421 fabricated codes
+# to the verified EuroVoc descriptor ids (data/eurovoc_domain_mapping.json
+# has the old→new table); the tuned thresholds themselves are unchanged.
 MIN_DISTINCT_KEYWORDS_OVERRIDES: dict[str, int] = {
-    "3606": 2,  # employment — 'töö', 'palk'
-    "2821": 2,  # communications — 'side'
-    "5206": 2,  # taxation — 'maks'
-    "5231": 2,  # banking — 'pank', 'fond', 'laenu'
-    "1221": 2,  # local-government — 'vald', 'linn'
-    "5636": 2,  # education — 'kool', 'õpe'
-    "5631": 2,  # health — 'arst'
-    "5606": 2,  # energy — 'gaas', 'küte', 'energ'
-    "5621": 2,  # agriculture — 'mets', 'sööt'
-    "5226": 2,  # trade — 'ost', 'müük'
-    "2031": 2,  # political-parties — 'partei'
+    "557": 2,   # labour-law (was employment "3606") — 'töö', 'palk'
+    "2473": 2,  # communications-policy (was "2821") — 'side'
+    "1021": 2,  # tax-system (was taxation "5206") — 'maks'
+    "2149": 2,  # banking (was "5231") — 'pank', 'fond', 'laenu'
+    "68": 2,    # local-government (was "1221") — 'vald', 'linn'
+    "668": 2,   # education (was "5636") — 'kool', 'õpe'
+    "5899": 2,  # health-care (was health "5631") — 'arst'
+    "2498": 2,  # energy-policy (was "5606") — 'gaas', 'küte', 'energ'
+    "2442": 2,  # agricultural-policy (was "5621") — 'mets', 'sööt'
+    "10": 2,    # domestic-trade (was trade "5226") — 'ost', 'müük'
+    "2258": 2,  # political-parties (was "2031") — 'partei'
     # --- #275: short substring-prone stems that misfire mid-word ---
-    "2431": 2,  # civil-law — 'nõue' (→ 'nõuetele'), 'hagi', 'võlg'
-    "3221": 2,  # culture — 'kunst' (→ 'kunstlik')
-    "5216": 2,  # customs — 'toll'
-    "5611": 2,  # environment — 'vesi' (→ 'vesinik')
-    "4421": 2,  # maritime-transport — 'laev'
-    "6411": 2,  # building — 'ehit'
-    "3611": 2,  # social-protection — 'puue'
+    "523": 2,   # civil-law (was "2431") — 'nõue' (→ 'nõuetele'), 'hagi', 'võlg'
+    "317": 2,   # culture (was "3221") — 'kunst' (→ 'kunstlik')
+    "502": 2,   # customs (was "5216") — 'toll'
+    "2825": 2,  # environmental-protection (was environment "5611") — 'vesi' (→ 'vesinik')
+    "4522": 2,  # maritime-transport (was "4421") — 'laev'
+    "2475": 2,  # construction-policy (was building "6411") — 'ehit'
+    "4050": 2,  # social-security (was social-protection "3611") — 'puue'
     # --- #331 / #360: single-keyword over-matches on long but
-    # context-ambiguous terms (not short stems). 0411 (international-affairs)
-    # fires on a lone 'protokoll' inside domestic 'protokollitakse' (meeting
-    # minutes / court transcript, #331) and on a lone 'rahvusvaheli' in 234
-    # purely domestic functional laws that merely cite an international
-    # standard once (#360); 2806 (consumer-protection) fires on a lone
-    # 'tarbija' in 93 district-heating (kaugkütt) ordinances where it means
-    # "heat-subscriber" (#360). Requiring a second corroborating keyword
-    # reconciles both 0411 vectors into one gate and clears the 2806 noise.
-    # 0411 has 5 keywords and 2806 has 4, so the gate is reachable.
-    "0411": 2,  # international-affairs — 'protokoll' (#331), 'rahvusvaheli' (#360)
-    "2806": 2,  # consumer-protection — 'tarbija' on kaugkütt regs (#360)
+    # context-ambiguous terms (not short stems). 3474 (international-affairs,
+    # pre-#421 code "0411") fires on a lone 'protokoll' inside domestic
+    # 'protokollitakse' (meeting minutes / court transcript, #331) and on a
+    # lone 'rahvusvaheli' in 234 purely domestic functional laws that merely
+    # cite an international standard once (#360); 2836 (consumer-protection,
+    # pre-#421 code "2806") fires on a lone 'tarbija' in 93 district-heating
+    # (kaugkütt) ordinances where it means "heat-subscriber" (#360).
+    # Requiring a second corroborating keyword reconciles both
+    # international-affairs vectors into one gate and clears the
+    # consumer-protection noise. 3474 has 5 keywords and 2836 has 4, so the
+    # gate is reachable.
+    "3474": 2,  # international-affairs — 'protokoll' (#331), 'rahvusvaheli' (#360)
+    "2836": 2,  # consumer-protection — 'tarbija' on kaugkütt regs (#360)
 }
 
 
