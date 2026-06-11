@@ -533,6 +533,237 @@ def test_active_exception_peeps_excluded_dead_ones_indexed(tmp_path, monkeypatch
     assert "fuusilise_isiku_maksejouetuse_seadus_peep.json" in indexed_files
 
 
+def _write_decisions(path: Path, deprecations: list[dict]) -> None:
+    """Write a minimal `legacy_statute_decisions.json`-shaped file (#426)."""
+    write_json(
+        path,
+        {
+            "issue": "#426",
+            "policy": {"deprecate": "...", "keep": "..."},
+            "deprecations": deprecations,
+            "keeps": [],
+        },
+    )
+
+
+def test_load_deprecated_statutes_absent_file_returns_empty(tmp_path, monkeypatch):
+    """A missing decisions file yields an empty mapping (#426 standalone-safe)."""
+    monkeypatch.setattr(
+        fix_all_issues,
+        "LEGACY_STATUTE_DECISIONS_PATH",
+        tmp_path / "does_not_exist.json",
+    )
+    assert fix_all_issues.load_deprecated_statutes() == {}
+
+
+def test_load_deprecated_statutes_filters_by_verdict(tmp_path, monkeypatch):
+    """Only `verdict == "deprecate"` entries are returned, keyed by file (#426)."""
+    decisions = tmp_path / "decisions.json"
+    _write_decisions(
+        decisions,
+        [
+            {
+                "file": "legacy_a_peep.json",
+                "rootIri": "estleg:A_Map_2026",
+                "verdict": "deprecate",
+                "replacedByFile": "canonical_a_peep.json",
+                "replacedByIri": "estleg:CanonA_Map_2026",
+            },
+            {
+                # A "keep" entry must be ignored even if it appears in the
+                # deprecations array shape.
+                "file": "kept_peep.json",
+                "rootIri": "estleg:Kept_Map_2026",
+                "verdict": "keep",
+                "replacedByFile": None,
+            },
+        ],
+    )
+    monkeypatch.setattr(fix_all_issues, "LEGACY_STATUTE_DECISIONS_PATH", decisions)
+
+    mapping = fix_all_issues.load_deprecated_statutes()
+    assert mapping == {"legacy_a_peep.json": "canonical_a_peep.json"}
+
+
+def test_generate_index_excludes_deprecated_and_emits_section(tmp_path, monkeypatch):
+    """Deprecated duplicates (#426) leave the law count and get their own section.
+
+    Corpus: 3 active peeps + 1 single-file deprecated peep + a 2-file multipart
+    deprecated pair. `total_laws`/`total_files` count only the active peeps; the
+    `deprecated_laws` section carries the right count/grouping/replaced_by, and
+    `registry_exceptions` documents the mechanism.
+    """
+    monkeypatch.setattr(fix_all_issues, "KRR_DIR", tmp_path)
+    decisions = tmp_path / "decisions.json"
+    monkeypatch.setattr(fix_all_issues, "LEGACY_STATUTE_DECISIONS_PATH", decisions)
+
+    # Active (kept) laws.
+    write_json(tmp_path / "law_a_peep.json", make_source_doc(["estleg:A_1"]))
+    write_json(tmp_path / "law_b_peep.json", make_source_doc(["estleg:B_1"]))
+    write_json(tmp_path / "law_c_peep.json", make_source_doc(["estleg:C_1"]))
+    # A single-file deprecated duplicate.
+    write_json(tmp_path / "legacy_x_peep.json", make_source_doc(["estleg:X_1"]))
+    # A multipart deprecated statute (two parts, same canonical target).
+    write_json(tmp_path / "legacy_multi_osa1_peep.json", make_source_doc(["estleg:M_1"]))
+    write_json(tmp_path / "legacy_multi_osa2_peep.json", make_source_doc(["estleg:M_2"]))
+
+    _write_decisions(
+        decisions,
+        [
+            {
+                "file": "legacy_x_peep.json",
+                "rootIri": "estleg:X_Map_2026",
+                "verdict": "deprecate",
+                "replacedByFile": "law_a_peep.json",
+                "replacedByIri": "estleg:A_Map_2026",
+            },
+            {
+                "file": "legacy_multi_osa1_peep.json",
+                "rootIri": "estleg:M_Osa1",
+                "verdict": "deprecate",
+                "replacedByFile": "canonical_multi_osa1_peep.json",
+                "replacedByIri": "estleg:CanonM_Osa1",
+            },
+            {
+                "file": "legacy_multi_osa2_peep.json",
+                "rootIri": "estleg:M_Osa2",
+                "verdict": "deprecate",
+                "replacedByFile": "canonical_multi_osa1_peep.json",
+                "replacedByIri": "estleg:CanonM_Osa1",
+            },
+        ],
+    )
+
+    fix_all_issues.generate_index()
+    index = read_json(tmp_path / "INDEX.json")
+
+    indexed_files = {
+        file_name for law in index["laws"] for file_name in law.get("files", [])
+    }
+    # Active laws only in the law count.
+    assert indexed_files == {
+        "law_a_peep.json",
+        "law_b_peep.json",
+        "law_c_peep.json",
+    }
+    assert index["total_laws"] == 3
+    assert index["total_files"] == 3
+    # No deprecated file leaks into the law list.
+    assert "legacy_x_peep.json" not in indexed_files
+    assert "legacy_multi_osa1_peep.json" not in indexed_files
+    assert "legacy_multi_osa2_peep.json" not in indexed_files
+
+    # Deprecated section: single-file + collapsed multipart = 2 entries.
+    dep = index["deprecated_laws"]
+    assert dep["count"] == 2
+    assert "#426" in dep["note"]
+    assert "dcterms:isReplacedBy" in dep["note"]
+
+    by_name = {e["name"]: e for e in dep["entries"]}
+    assert set(by_name) == {"legacy_x", "legacy_multi"}
+
+    x_entry = by_name["legacy_x"]
+    assert x_entry["files"] == ["legacy_x_peep.json"]
+    assert x_entry["replaced_by"] == "law_a_peep.json"
+    # Non-divergent single target → no replaced_by_files list.
+    assert "replaced_by_files" not in x_entry
+
+    multi_entry = by_name["legacy_multi"]
+    # Both parts collapse into ONE deprecated entry, files sorted.
+    assert multi_entry["files"] == [
+        "legacy_multi_osa1_peep.json",
+        "legacy_multi_osa2_peep.json",
+    ]
+    assert multi_entry["replaced_by"] == "canonical_multi_osa1_peep.json"
+    # Same canonical target for both parts → no divergence list.
+    assert "replaced_by_files" not in multi_entry
+
+    # registry_exceptions documents the mechanism.
+    assert "deprecated_duplicates" in index["registry_exceptions"]
+    assert "#426" in index["registry_exceptions"]["deprecated_duplicates"]["reason"]
+
+
+def test_generate_index_deprecated_multipart_divergent_targets(tmp_path, monkeypatch):
+    """Diverging part→canonical maps surface a sorted `replaced_by_files` list (#426).
+
+    Mirrors the real `volaigusseadus`/`tsiviilseadustik` case where different
+    legacy parts map to different canonical successor files. The collapsed entry
+    keeps a single `replaced_by` (first file in sorted order) plus the full
+    sorted/unique `replaced_by_files`.
+    """
+    monkeypatch.setattr(fix_all_issues, "KRR_DIR", tmp_path)
+    decisions = tmp_path / "decisions.json"
+    monkeypatch.setattr(fix_all_issues, "LEGACY_STATUTE_DECISIONS_PATH", decisions)
+
+    write_json(tmp_path / "law_a_peep.json", make_source_doc(["estleg:A_1"]))
+    write_json(tmp_path / "legacy_div_osa1_peep.json", make_source_doc(["estleg:D_1"]))
+    write_json(tmp_path / "legacy_div_osa2_peep.json", make_source_doc(["estleg:D_2"]))
+
+    _write_decisions(
+        decisions,
+        [
+            {
+                "file": "legacy_div_osa1_peep.json",
+                "rootIri": "estleg:D_Osa1",
+                "verdict": "deprecate",
+                "replacedByFile": "canon_osa1_peep.json",
+                "replacedByIri": "estleg:Canon_Osa1",
+            },
+            {
+                "file": "legacy_div_osa2_peep.json",
+                "rootIri": "estleg:D_Osa2",
+                "verdict": "deprecate",
+                "replacedByFile": "canon_osa2_peep.json",
+                "replacedByIri": "estleg:Canon_Osa2",
+            },
+        ],
+    )
+
+    fix_all_issues.generate_index()
+    index = read_json(tmp_path / "INDEX.json")
+
+    assert index["total_laws"] == 1
+    dep = index["deprecated_laws"]
+    assert dep["count"] == 1
+    entry = dep["entries"][0]
+    assert entry["name"] == "legacy_div"
+    assert entry["files"] == [
+        "legacy_div_osa1_peep.json",
+        "legacy_div_osa2_peep.json",
+    ]
+    # replaced_by = target of first file in sorted order (osa1).
+    assert entry["replaced_by"] == "canon_osa1_peep.json"
+    # Divergent parts → full sorted/unique replaced_by_files list.
+    assert entry["replaced_by_files"] == [
+        "canon_osa1_peep.json",
+        "canon_osa2_peep.json",
+    ]
+
+
+def test_generate_index_no_decisions_file_has_no_deprecated_section(tmp_path, monkeypatch):
+    """Absent decisions file → no `deprecated_laws` section, no crash (#426)."""
+    monkeypatch.setattr(fix_all_issues, "KRR_DIR", tmp_path)
+    monkeypatch.setattr(
+        fix_all_issues,
+        "LEGACY_STATUTE_DECISIONS_PATH",
+        tmp_path / "missing_decisions.json",
+    )
+    write_json(tmp_path / "law_a_peep.json", make_source_doc(["estleg:A_1"]))
+    write_json(tmp_path / "law_b_peep.json", make_source_doc(["estleg:B_1"]))
+
+    fix_all_issues.generate_index()
+    index = read_json(tmp_path / "INDEX.json")
+
+    # Behaves exactly as before #426: both peeps counted, no section.
+    assert index["total_laws"] == 2
+    assert index["total_files"] == 2
+    assert "deprecated_laws" not in index
+    indexed_files = {
+        file_name for law in index["laws"] for file_name in law.get("files", [])
+    }
+    assert indexed_files == {"law_a_peep.json", "law_b_peep.json"}
+
+
 def test_audit_duplicate_ids_walks_subdirectories(tmp_path, monkeypatch):
     """Audit covers JSON-LD + subdirs (#159).
 

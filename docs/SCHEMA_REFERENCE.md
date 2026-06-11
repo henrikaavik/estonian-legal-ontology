@@ -75,6 +75,21 @@
 | `DraftType_Report` | Ülevaade | Report |
 | `DraftType_Other` | Muu eelnõu | Other Draft |
 
+### Deprecated duplicate statutes (issue #426)
+
+37 early-generation legacy law peeps duplicated statutes that also exist as full
+modern files (slug/orthography variants, e.g. `pohiseadus_peep.json` vs
+`eesti_vabariigi_pohiseadus_peep.json`). Their act roots are deprecated **in
+place**: the root carries `owl:deprecated: true` plus
+`dcterms:isReplacedBy: {"@id": <canonical root IRI>}`, the files stay on disk,
+and all inbound references to the legacy root IRI were re-pointed to the
+canonical root corpus-wide. Deprecated entries are excluded from
+`INDEX.json` `total_laws`/`total_files` and listed in its `deprecated_laws`
+section instead. The per-file audit trail (match basis, confidence, the 132
+kept sole/succession legacy roots) lives in
+`data/legacy_statute_decisions.json`. Consumers should filter act roots on
+`owl:deprecated` when counting or aggregating statutes.
+
 ## JSON-LD Structure Examples
 
 ### Enacted Law Example
