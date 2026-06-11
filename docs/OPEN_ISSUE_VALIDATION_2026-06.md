@@ -12,8 +12,8 @@ artifact checks). Verdicts:
 - **SUPERSEDED** — fully contained in a new ticket; closed in its favor.
 
 **Totals: 58 FIXED · 30 PARTIAL · 12 VALID · 2 SUPERSEDED.**
-(Corrected 2026-06-11: #344 re-graded VALID→PARTIAL — its `transpositionDeadline` claim was stale;
-#356's XXE site count corrected 4→5; #364 mapped to epic #406.)
+(Corrected 2026-06-11: #344 re-graded VALID→PARTIAL — its `transpositionDeadline` claim was
+stale; the #356 XXE site count corrected 4→5; and #364 mapped to epic #406.)
 
 ## Headline patterns
 
