@@ -106,7 +106,7 @@ stale; the #356 XXE site count corrected 4→5; and #364 mapped to epic #406.)
 | 361 | FIXED | — | All 7 docs-drift items verified fixed (API_GUIDE counts, L2c status, layer/script/class counts, EuroVoc query). |
 | 362 | FIXED | — | `legalText` fallback in citation extraction + regenerated data (subsection refs resolve). |
 | 363 | FIXED | — | 25 genitives + `koodeksi?` self-refs added + regenerated. |
-| 364 | VALID | #406 | Pure regen ask never executed: KrMS still has 698 Division-contained cluster-orphans; `KRIMIN_2_Par_18` requestedCluster=None. Distinct from its epic sibling #420; also resolved as a side effect of the cluster-ID rework + regen (#448). |
+| 364 | VALID | #406 | Pure regen ask never executed: KrMS still has 698 Division-contained cluster-orphans; `KRIMIN_2_Par_18` requestedCluster=None. Distinct from its epic sibling #420; would also be addressed as a side effect of the cluster-ID rework + regen (#448). |
 | 365 | VALID | #411 | `hasCompetence` still undefined anywhere; 317 Competence aggregates remain island nodes. Relates #457. |
 | 366 | FIXED | — | Combined rebuilt with all 3 `owl:inverseOf` axioms + new T-Box parity/staleness guard in validate_all (+tests). |
 | 367 | FIXED | — | Boilerplate patterns + KOV symmetry repair; index regenerated (score-1.0 pairs 4,226→0). |
