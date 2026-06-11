@@ -20,7 +20,6 @@ import random
 import re
 import time
 import unicodedata
-from datetime import datetime
 from pathlib import Path
 
 from estleg_common import (
@@ -659,7 +658,7 @@ def _write_classification_sample(
     chosen = pool if sample_size >= len(pool) else rng.sample(pool, sample_size)
     chosen = sorted(chosen, key=lambda r: r["act"])
     sample_doc = {
-        "generated": datetime.now().strftime("%Y-%m-%d"),
+        "generated": BUILD_EVALUATION_DATE,  # #295: pinned deterministic stamp (no wall-clock churn in tracked artifact)
         "method": "keyword-matching",
         "classification_level": "act",
         "purpose": (

@@ -340,6 +340,8 @@ def test_emit_sample_writes_well_formed_file(tmp_path, monkeypatch):
     sample_path = krr / "reports" / "eurovoc_classification_sample.json"
     assert sample_path.exists()
     doc = json.loads(sample_path.read_text(encoding="utf-8"))
+    # #295: tracked artifact must carry the pinned date, not wall-clock.
+    assert doc["generated"] == classify_eurovoc.BUILD_EVALUATION_DATE
     assert doc["classification_level"] == "act"
     assert doc["sample_size"] == doc["population_size"] == 1
     assert doc["random_seed"] == 1
