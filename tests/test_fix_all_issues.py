@@ -1178,3 +1178,68 @@ def test_intra_file_dedup_is_noop_on_clean_generator_output():
     for builder in (_law_act_doc, _regulation_doc, _draft_doc):
         doc = builder()
         assert fix_all_issues._fix_intra_file_duplicates_in_doc(doc) is False
+
+
+# ---------------------------------------------------------------------------
+# #426: generate_combined_jsonld refuses to build over unmarked deprecations
+# ---------------------------------------------------------------------------
+def _deprecation_fixture(tmp_path, monkeypatch):
+    import deprecate_legacy_statutes as dls
+
+    krr = tmp_path / "krr_outputs"
+    krr.mkdir()
+    (krr / "alkoholi_seadus_peep.json").write_text(
+        json.dumps(
+            {
+                "@context": {
+                    "estleg": "https://data.riik.ee/ontology/estleg#",
+                    "owl": "http://www.w3.org/2002/07/owl#",
+                    "dcterms": "http://purl.org/dc/terms/",
+                },
+                "@graph": [
+                    {
+                        "@id": "estleg:ALKS_Map_2026",
+                        "@type": ["owl:Ontology", "estleg:Act"],
+                        "rdfs:label": "Legacy stub",
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    decisions = tmp_path / "decisions.json"
+    decisions.write_text(
+        json.dumps(
+            {
+                "deprecations": [
+                    {
+                        "file": "alkoholi_seadus_peep.json",
+                        "rootIri": "estleg:ALKS_Map_2026",
+                        "replacedByFile": "alkoholiseadus_peep.json",
+                        "replacedByIri": "estleg:AS_Map_2026",
+                    }
+                ]
+            }
+        ),
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(fix_all_issues, "LEGACY_STATUTE_DECISIONS_PATH", decisions)
+    return dls, decisions, krr
+
+
+def test_generate_combined_raises_on_unmarked_deprecated_peep(tmp_path, monkeypatch):
+    import pytest
+
+    _dls, _decisions, krr = _deprecation_fixture(tmp_path, monkeypatch)
+    with pytest.raises(ValueError, match="deprecation decision"):
+        fix_all_issues.generate_combined_jsonld(krr)
+    assert not (krr / "combined_ontology.jsonld").exists()
+
+
+def test_generate_combined_passes_when_deprecations_applied(tmp_path, monkeypatch, capsys):
+    dls, decisions, krr = _deprecation_fixture(tmp_path, monkeypatch)
+    dls.run(decisions, krr, dry_run=False)
+    fix_all_issues.generate_combined_jsonld(krr)
+    out = capsys.readouterr().out
+    assert "Verified 1 deprecated legacy roots carry #426 marks" in out
+    assert (krr / "combined_ontology.jsonld").exists()

@@ -31,9 +31,11 @@ if str(_SCRIPTS_DIR) not in sys.path:
 
 import estleg_common  # noqa: E402
 from estleg_common import iter_krr_jsonld_files  # noqa: E402
+from deprecate_legacy_statutes import verify_decisions_applied  # noqa: E402
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
+LEGACY_STATUTE_DECISIONS_PATH = REPO_ROOT / "data" / "legacy_statute_decisions.json"
 EXPECTED_NS = "https://data.riik.ee/ontology/estleg#"
 
 # Root-level JSON-LD files that are canonical inputs to
@@ -2211,6 +2213,32 @@ def parse_args(argv: list[str] | None = None):
     return parser.parse_args(argv)
 
 
+def validate_legacy_deprecations(
+    krr_dir: Path = KRR_DIR,
+    decisions_path: Path | None = None,
+):
+    """Issue #426: every legacy duplicate listed in the deprecation decisions
+    file must carry ``owl:deprecated: true`` + ``dcterms:isReplacedBy`` on its
+    act root. ``generate_index()`` excludes those files by decisions-file
+    lookup alone, so an unmarked root would drop out of the active index while
+    still shipping undeprecated inside ``combined_ontology.jsonld``. Errors
+    here mean ``scripts/deprecate_legacy_statutes.py`` must be (re)run.
+    """
+    print("\n--- Legacy Statute Deprecations (#426) ---")
+    path = decisions_path if decisions_path is not None else LEGACY_STATUTE_DECISIONS_PATH
+    checked, violations = verify_decisions_applied(path, krr_dir)
+    if not checked and not violations:
+        print("  OK: no deprecation decisions to enforce")
+        return
+    for msg in violations:
+        error(f"deprecation decision not applied: {msg}")
+    if not violations:
+        print(
+            f"  OK: {checked} deprecated legacy roots carry "
+            f"owl:deprecated + dcterms:isReplacedBy"
+        )
+
+
 def main(argv: list[str] | None = None):
     args = parse_args(argv)
     krr_dir: Path = args.krr_dir
@@ -2278,6 +2306,7 @@ def main(argv: list[str] | None = None):
     validate_registry_index(krr_dir, allow_missing_index=allow_missing_index)
     validate_regulation_indexes(krr_dir)
     validate_act_coverage_reconciliation(krr_dir)
+    validate_legacy_deprecations(krr_dir)
     validate_combined_ontology(krr_dir)
     validate_subcorpus_combined_ontologies(krr_dir)
     validate_subcorpus_index_counts(krr_dir, allow_missing_index=allow_missing_index)

@@ -87,6 +87,7 @@ if str(_SCRIPTS_DIR) not in sys.path:
     sys.path.insert(0, str(_SCRIPTS_DIR))
 
 import estleg_common  # noqa: E402
+import deprecate_legacy_statutes as _legacy_deprecation  # noqa: E402
 
 OLD_NS = "https://example.org/estonian-legal#"
 NEW_NS = "https://data.riik.ee/ontology/estleg#"
@@ -922,6 +923,25 @@ def generate_combined_jsonld(krr_dir: Path = KRR_DIR):
     """Generate combined JSON-LD file (Issue #26, DQ-1)."""
     print("\n=== Generating combined JSON-LD ===")
 
+    # #426 invariant: a legacy peep listed in the deprecation decisions must
+    # carry its owl:deprecated / dcterms:isReplacedBy marks BEFORE it is folded
+    # into the combined artifact. generate_index() excludes those files by
+    # decisions-file lookup alone, so an unmarked root would otherwise vanish
+    # from the active index yet ship undeprecated inside combined_ontology —
+    # an inconsistent release. Fail hard instead of building one.
+    checked, violations = _legacy_deprecation.verify_decisions_applied(
+        LEGACY_STATUTE_DECISIONS_PATH, krr_dir
+    )
+    if violations:
+        detail = "\n  ".join(violations[:10])
+        raise ValueError(
+            f"{len(violations)} deprecation decision(s) from "
+            f"{LEGACY_STATUTE_DECISIONS_PATH.name} are not applied on disk "
+            f"(run scripts/deprecate_legacy_statutes.py first):\n  {detail}"
+        )
+    if checked:
+        print(f"  Verified {checked} deprecated legacy roots carry #426 marks")
+
     combined_context = {
         "estleg": NEW_NS,
         "owl": "http://www.w3.org/2002/07/owl#",
@@ -1011,10 +1031,24 @@ def main():
     # Step 6: Fix docs namespace
     fix_docs_namespace()
 
-    # Step 7: Generate index
+    # Step 7: Apply #426 legacy-statute deprecations (idempotent; normally a
+    # no-op) so the index/combined rebuilds below can never observe an
+    # unmarked legacy duplicate. generate_combined_jsonld() additionally
+    # fail-hards on violations for direct callers that skip main().
+    if LEGACY_STATUTE_DECISIONS_PATH.is_file():
+        summary = _legacy_deprecation.run(
+            LEGACY_STATUTE_DECISIONS_PATH, KRR_DIR, dry_run=False
+        )
+        print(
+            f"\n=== Legacy deprecations (#426): "
+            f"{summary['roots_deprecated']} root(s) newly marked, "
+            f"{summary['total_replacements']} reference(s) re-pointed ==="
+        )
+
+    # Step 8: Generate index
     generate_index()
 
-    # Step 8: Generate combined JSON-LD
+    # Step 9: Generate combined JSON-LD
     generate_combined_jsonld()
 
     print("\n" + "=" * 60)

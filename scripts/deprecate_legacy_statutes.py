@@ -117,6 +117,66 @@ def load_decisions(decisions_path: Path) -> list[dict]:
     return deprecations
 
 
+def verify_decisions_applied(
+    decisions_path: Path,
+    krr_dir: Path,
+) -> tuple[int, list[str]]:
+    """Check that every deprecation decision is applied on disk.
+
+    Returns ``(checked, violations)`` where ``checked`` is the number of
+    decision entries whose peep file exists and ``violations`` lists one
+    message per root that is missing its ``owl:deprecated: true`` /
+    ``dcterms:isReplacedBy`` marks (or whose root node cannot be found).
+
+    A missing decisions file means there is nothing to enforce (pre-#426
+    checkouts, fixture corpora) — ``(0, [])``. A missing peep file is not a
+    violation either: a file that does not exist cannot leak into aggregate
+    artifacts.
+    """
+    if not decisions_path.is_file():
+        return 0, []
+    violations: list[str] = []
+    checked = 0
+    for entry in load_decisions(decisions_path):
+        path = krr_dir / entry["file"]
+        if not path.is_file():
+            continue
+        checked += 1
+        try:
+            doc = json.loads(path.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, UnicodeDecodeError) as exc:
+            violations.append(f"{entry['file']}: unreadable ({exc})")
+            continue
+        graph = doc.get("@graph", [])
+        root = next(
+            (
+                n
+                for n in graph
+                if isinstance(n, dict) and n.get("@id") == entry["rootIri"]
+            ),
+            None,
+        )
+        if root is None:
+            violations.append(
+                f"{entry['file']}: root {entry['rootIri']} not found"
+            )
+            continue
+        if root.get("owl:deprecated") is not True:
+            violations.append(
+                f"{entry['file']}: root {entry['rootIri']} lacks "
+                f"owl:deprecated true"
+            )
+            continue
+        replaced_by = root.get("dcterms:isReplacedBy")
+        expected = {"@id": entry["replacedByIri"]}
+        if replaced_by != expected:
+            violations.append(
+                f"{entry['file']}: root {entry['rootIri']} "
+                f"dcterms:isReplacedBy is {replaced_by!r}, expected {expected!r}"
+            )
+    return checked, violations
+
+
 def build_repoint_map(deprecations: list[dict]) -> dict[str, str]:
     """Map every legacy ``rootIri`` to its canonical ``replacedByIri``.
 

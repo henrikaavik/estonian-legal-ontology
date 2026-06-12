@@ -2192,3 +2192,73 @@ class TestCiRegressionGuards:
         hv = next(n for n in d["@graph"]
                   if isinstance(n, dict) and n.get("@id") == "estleg:hasVersion")
         assert "rdfs:range" not in hv
+
+
+# ---------------------------------------------------------------------------
+# validate_legacy_deprecations (#426)
+# ---------------------------------------------------------------------------
+def _legacy_deprecation_corpus(tmp_path: Path, *, marked: bool) -> tuple[Path, Path]:
+    import json
+
+    import deprecate_legacy_statutes as dls
+
+    krr = tmp_path / "krr_outputs"
+    krr.mkdir()
+    write_json(
+        krr / "alkoholi_seadus_peep.json",
+        {
+            "@context": {
+                "estleg": "https://data.riik.ee/ontology/estleg#",
+                "owl": "http://www.w3.org/2002/07/owl#",
+                "dcterms": "http://purl.org/dc/terms/",
+            },
+            "@graph": [
+                {
+                    "@id": "estleg:ALKS_Map_2026",
+                    "@type": ["owl:Ontology", "estleg:Act"],
+                    "rdfs:label": "Legacy stub",
+                }
+            ],
+        },
+    )
+    decisions = tmp_path / "decisions.json"
+    decisions.write_text(
+        json.dumps(
+            {
+                "deprecations": [
+                    {
+                        "file": "alkoholi_seadus_peep.json",
+                        "rootIri": "estleg:ALKS_Map_2026",
+                        "replacedByFile": "alkoholiseadus_peep.json",
+                        "replacedByIri": "estleg:AS_Map_2026",
+                    }
+                ]
+            }
+        ),
+        encoding="utf-8",
+    )
+    if marked:
+        dls.run(decisions, krr, dry_run=False)
+    return decisions, krr
+
+
+def test_validate_legacy_deprecations_errors_on_unmarked_root(tmp_path: Path):
+    decisions, krr = _legacy_deprecation_corpus(tmp_path, marked=False)
+    validate_all.validate_legacy_deprecations(krr, decisions_path=decisions)
+    assert validate_all.errors
+    assert "owl:deprecated" in validate_all.errors[0]
+
+
+def test_validate_legacy_deprecations_ok_when_marked(tmp_path: Path, capsys):
+    decisions, krr = _legacy_deprecation_corpus(tmp_path, marked=True)
+    validate_all.validate_legacy_deprecations(krr, decisions_path=decisions)
+    assert validate_all.errors == []
+    assert "OK: 1 deprecated legacy roots" in capsys.readouterr().out
+
+
+def test_validate_legacy_deprecations_noop_without_decisions_file(tmp_path: Path, capsys):
+    validate_all.validate_legacy_deprecations(
+        tmp_path, decisions_path=tmp_path / "absent.json"
+    )
+    assert validate_all.errors == []
+    assert "no deprecation decisions to enforce" in capsys.readouterr().out

@@ -495,3 +495,62 @@ class TestMainCli:
         assert "--dry-run (no files written)" in out
         # File unchanged on disk.
         assert (krr / "alkoholi_seadus_peep.json").read_text(encoding="utf-8") == before
+
+
+# ---------------------------------------------------------------------------
+# verify_decisions_applied (#426 aggregate-rebuild guard)
+# ---------------------------------------------------------------------------
+class TestVerifyDecisionsApplied:
+    def _setup(self, tmp_path: Path) -> tuple[Path, Path]:
+        krr = tmp_path / "krr_outputs"
+        krr.mkdir(parents=True)
+        _write(krr / "alkoholi_seadus_peep.json", _legacy_doc("estleg:ALKS_Map_2026"))
+        decisions = tmp_path / "decisions.json"
+        _write(
+            decisions,
+            _decisions(
+                [
+                    {
+                        "file": "alkoholi_seadus_peep.json",
+                        "rootIri": "estleg:ALKS_Map_2026",
+                        "replacedByFile": "alkoholiseadus_peep.json",
+                        "replacedByIri": "estleg:AS_Map_2026",
+                    }
+                ]
+            ),
+        )
+        return decisions, krr
+
+    def test_unapplied_root_is_a_violation(self, tmp_path: Path) -> None:
+        decisions, krr = self._setup(tmp_path)
+        checked, violations = dls.verify_decisions_applied(decisions, krr)
+        assert checked == 1
+        assert len(violations) == 1
+        assert "owl:deprecated" in violations[0]
+
+    def test_applied_root_passes(self, tmp_path: Path) -> None:
+        decisions, krr = self._setup(tmp_path)
+        dls.run(decisions, krr, dry_run=False)
+        assert dls.verify_decisions_applied(decisions, krr) == (1, [])
+
+    def test_missing_decisions_file_is_noop(self, tmp_path: Path) -> None:
+        assert dls.verify_decisions_applied(
+            tmp_path / "absent.json", tmp_path
+        ) == (0, [])
+
+    def test_missing_peep_file_is_skipped(self, tmp_path: Path) -> None:
+        decisions, krr = self._setup(tmp_path)
+        (krr / "alkoholi_seadus_peep.json").unlink()
+        assert dls.verify_decisions_applied(decisions, krr) == (0, [])
+
+    def test_wrong_replaced_by_target_is_a_violation(self, tmp_path: Path) -> None:
+        decisions, krr = self._setup(tmp_path)
+        dls.run(decisions, krr, dry_run=False)
+        peep = krr / "alkoholi_seadus_peep.json"
+        doc = json.loads(peep.read_text(encoding="utf-8"))
+        doc["@graph"][0]["dcterms:isReplacedBy"] = {"@id": "estleg:WRONG"}
+        _write(peep, doc)
+        checked, violations = dls.verify_decisions_applied(decisions, krr)
+        assert checked == 1
+        assert len(violations) == 1
+        assert "dcterms:isReplacedBy" in violations[0]
