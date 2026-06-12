@@ -87,6 +87,7 @@ if str(_SCRIPTS_DIR) not in sys.path:
     sys.path.insert(0, str(_SCRIPTS_DIR))
 
 import estleg_common  # noqa: E402
+import deprecate_legacy_statutes as _legacy_deprecation  # noqa: E402
 
 OLD_NS = "https://example.org/estonian-legal#"
 NEW_NS = "https://data.riik.ee/ontology/estleg#"
@@ -134,7 +135,28 @@ DEFAULT_REGISTRY_EXCEPTIONS = {
         "category": "concept_map",
         "reason": "legacy concept-only sidecar without act node",
     },
+    # #426: duplicate legacy statute peeps (orthography / truncation /
+    # renaming variants) are deprecated in place — their roots carry
+    # owl:deprecated + dcterms:isReplacedBy and they are pulled out of the
+    # law count into INDEX.json's `deprecated_laws` section so total_laws
+    # stops double-counting the same statute. The authoritative list lives
+    # in data/legacy_statute_decisions.json.
+    "deprecated_duplicates": {
+        "category": "deprecated_duplicate",
+        "reason": (
+            "duplicate legacy statute peeps with verdict 'deprecate' in "
+            "data/legacy_statute_decisions.json (#426); excluded from "
+            "total_laws/total_files and listed under deprecated_laws with "
+            "dcterms:isReplacedBy targets"
+        ),
+    },
 }
+
+# #426: legacy duplicate-statute decisions. The companion file lists every
+# legacy peep FILE with verdict "deprecate" (whose root node now carries
+# owl:deprecated + dcterms:isReplacedBy). `generate_index` pulls those files
+# out of the law count and into a dedicated `deprecated_laws` section.
+LEGACY_STATUTE_DECISIONS_PATH = REPO_ROOT / "data" / "legacy_statute_decisions.json"
 # Re-export alias of the single source of truth (#240). Imported from
 # `estleg_common` so this module and `validate_all` share one definition;
 # never reintroduce a literal copy here — that is exactly the drift that
@@ -622,11 +644,78 @@ def fix_docs_namespace():
             print(f"  Fixed namespace in docs/{doc_file.name}")
 
 
+def _index_base_name(name: str) -> tuple[str, str | None]:
+    """Split a peep stem into its base law name and ``_osaN`` part suffix.
+
+    Shared by the active-law grouping and the ``deprecated_laws`` grouping so
+    both collapse multipart files identically (e.g. every ``volaigusseadus_osa*``
+    file maps to base ``volaigusseadus``). Returns ``(base_name, part)`` where
+    ``part`` is the digit string after ``_osa`` (or ``None`` for a single-file
+    law).
+    """
+    import re
+
+    match = re.match(r"^(.+?)(_osa\d+.*)?$", name)
+    if match:
+        base_name = match.group(1)
+        part_suffix = match.group(2)
+    else:
+        return name, None
+    part = part_suffix.replace("_osa", "") if part_suffix else None
+    return base_name, part
+
+
+def load_deprecated_statutes(path: Path | None = None) -> dict[str, str]:
+    """Return ``{deprecated_peep_filename: replacedByFile}`` for #426.
+
+    Reads ``data/legacy_statute_decisions.json`` (the authoritative duplicate
+    decision list) and returns the subset of entries whose verdict is
+    ``"deprecate"``. The mapping value is the canonical successor's peep
+    filename (``replacedByFile``), used to annotate the ``deprecated_laws``
+    INDEX section.
+
+    The path is resolved from ``LEGACY_STATUTE_DECISIONS_PATH`` by default but
+    is overridable so tests can point at a tmp decisions file. A missing or
+    malformed file yields an EMPTY mapping, keeping ``generate_index``
+    standalone-safe: with no decisions file the index behaves exactly as it
+    did before #426.
+    """
+    decisions_path = path if path is not None else LEGACY_STATUTE_DECISIONS_PATH
+    try:
+        with open(decisions_path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError, OSError, UnicodeDecodeError):
+        return {}
+    if not isinstance(data, dict):
+        return {}
+    deprecated: dict[str, str] = {}
+    for entry in data.get("deprecations", []):
+        if not isinstance(entry, dict):
+            continue
+        if entry.get("verdict") != "deprecate":
+            continue
+        filename = entry.get("file")
+        if not isinstance(filename, str) or not filename:
+            continue
+        replaced_by = entry.get("replacedByFile")
+        deprecated[filename] = replaced_by if isinstance(replaced_by, str) else None
+    return deprecated
+
+
 def generate_index():
-    """Generate master registry/index file (Issue #19)."""
+    """Generate master registry/index file (Issue #19).
+
+    Deprecated duplicate statutes (#426) — peeps whose root node now carries
+    ``owl:deprecated`` + ``dcterms:isReplacedBy`` per
+    ``data/legacy_statute_decisions.json`` — are pulled OUT of the law count
+    (``total_laws`` / ``total_files``) and surfaced in a dedicated top-level
+    ``deprecated_laws`` section, so the registry stops double-counting the same
+    statute under both its legacy and canonical spellings.
+    """
     print("\n=== Generating master registry ===")
 
     laws = {}
+    deprecated_groups: dict[str, dict] = {}
     index_path = KRR_DIR / "INDEX.json"
     registry_exceptions = dict(DEFAULT_REGISTRY_EXCEPTIONS)
     if index_path.exists():
@@ -638,20 +727,27 @@ def generate_index():
         except (json.JSONDecodeError, OSError, UnicodeDecodeError):
             pass
 
+    # #426: deprecated-duplicate peep files are excluded from the law count and
+    # collected separately. An absent/empty decisions file → empty set, so the
+    # index is unchanged from its pre-#426 behaviour.
+    deprecated_map = load_deprecated_statutes()
+
     for filepath in sorted(KRR_DIR.glob("*_peep.json")):
         if filepath.name in INDEX_EXCLUDED_PEEPS:
             continue
         name = filepath.stem.replace("_peep", "")
+        base_name, part = _index_base_name(name)
 
-        # Group by base law name (remove _osa* suffix)
-        import re
-        match = re.match(r"^(.+?)(_osa\d+.*)?$", name)
-        if match:
-            base_name = match.group(1)
-            part_suffix = match.group(2)
-        else:
-            base_name = name
-            part_suffix = None
+        if filepath.name in deprecated_map:
+            # Group deprecated duplicates by the same base-name/_osaN logic as
+            # active laws so a multipart legacy statute collapses to one entry.
+            group = deprecated_groups.setdefault(
+                base_name,
+                {"name": base_name, "files": [], "replaced_by_map": {}},
+            )
+            group["files"].append(filepath.name)
+            group["replaced_by_map"][filepath.name] = deprecated_map[filepath.name]
+            continue
 
         if base_name not in laws:
             laws[base_name] = {
@@ -661,8 +757,8 @@ def generate_index():
             }
 
         laws[base_name]["files"].append(filepath.name)
-        if part_suffix:
-            laws[base_name]["parts"].append(part_suffix.replace("_osa", ""))
+        if part:
+            laws[base_name]["parts"].append(part)
 
     # Also add standalone OWL JSON-LD files that are law-shaped index inputs.
     # Derived combined/vocabulary artifacts are validated separately and must
@@ -697,8 +793,46 @@ def generate_index():
             entry["parts_mapped"] = sorted(info["parts"])
         index["laws"].append(entry)
 
+    # #426: emit the deprecated-duplicate section (deterministic: sorted
+    # entries, sorted file lists, stable shapes). Only present when at least
+    # one deprecated peep was actually found in the corpus.
+    if deprecated_groups:
+        deprecated_entries = []
+        for base_name, info in sorted(deprecated_groups.items()):
+            files_sorted = sorted(info["files"])
+            # Canonical replaced_by = the target of the first file in sorted
+            # order. When parts map to different canonical files, also surface
+            # the full sorted/unique `replaced_by_files` list so no successor
+            # is lost.
+            replaced_by = info["replaced_by_map"].get(files_sorted[0])
+            distinct_targets = sorted(
+                {t for t in info["replaced_by_map"].values() if t}
+            )
+            entry = {
+                "name": base_name,
+                "files": files_sorted,
+                "replaced_by": replaced_by,
+            }
+            if len(distinct_targets) > 1:
+                entry["replaced_by_files"] = distinct_targets
+            deprecated_entries.append(entry)
+        index["deprecated_laws"] = {
+            "count": len(deprecated_entries),
+            "note": (
+                "Legacy duplicate statutes deprecated in place (#426): roots "
+                "carry owl:deprecated + dcterms:isReplacedBy; excluded from "
+                "total_laws/total_files."
+            ),
+            "entries": deprecated_entries,
+        }
+
     save_json(index_path, index)
-    print(f"  Generated {index_path.name} with {len(laws)} laws")
+    suffix = (
+        f" ({len(deprecated_groups)} deprecated duplicate(s) excluded)"
+        if deprecated_groups
+        else ""
+    )
+    print(f"  Generated {index_path.name} with {len(laws)} laws{suffix}")
 
 
 def canonical_combined_inputs(krr_dir: Path = KRR_DIR) -> list[Path]:
@@ -789,6 +923,25 @@ def generate_combined_jsonld(krr_dir: Path = KRR_DIR):
     """Generate combined JSON-LD file (Issue #26, DQ-1)."""
     print("\n=== Generating combined JSON-LD ===")
 
+    # #426 invariant: a legacy peep listed in the deprecation decisions must
+    # carry its owl:deprecated / dcterms:isReplacedBy marks BEFORE it is folded
+    # into the combined artifact. generate_index() excludes those files by
+    # decisions-file lookup alone, so an unmarked root would otherwise vanish
+    # from the active index yet ship undeprecated inside combined_ontology —
+    # an inconsistent release. Fail hard instead of building one.
+    checked, violations = _legacy_deprecation.verify_decisions_applied(
+        LEGACY_STATUTE_DECISIONS_PATH, krr_dir
+    )
+    if violations:
+        detail = "\n  ".join(violations[:10])
+        raise ValueError(
+            f"{len(violations)} deprecation decision(s) from "
+            f"{LEGACY_STATUTE_DECISIONS_PATH.name} are not applied on disk "
+            f"(run scripts/deprecate_legacy_statutes.py first):\n  {detail}"
+        )
+    if checked:
+        print(f"  Verified {checked} deprecated legacy roots carry #426 marks")
+
     combined_context = {
         "estleg": NEW_NS,
         "owl": "http://www.w3.org/2002/07/owl#",
@@ -878,10 +1031,24 @@ def main():
     # Step 6: Fix docs namespace
     fix_docs_namespace()
 
-    # Step 7: Generate index
+    # Step 7: Apply #426 legacy-statute deprecations (idempotent; normally a
+    # no-op) so the index/combined rebuilds below can never observe an
+    # unmarked legacy duplicate. generate_combined_jsonld() additionally
+    # fail-hards on violations for direct callers that skip main().
+    if LEGACY_STATUTE_DECISIONS_PATH.is_file():
+        summary = _legacy_deprecation.run(
+            LEGACY_STATUTE_DECISIONS_PATH, KRR_DIR, dry_run=False
+        )
+        print(
+            f"\n=== Legacy deprecations (#426): "
+            f"{summary['roots_deprecated']} root(s) newly marked, "
+            f"{summary['total_replacements']} reference(s) re-pointed ==="
+        )
+
+    # Step 8: Generate index
     generate_index()
 
-    # Step 8: Generate combined JSON-LD
+    # Step 9: Generate combined JSON-LD
     generate_combined_jsonld()
 
     print("\n" + "=" * 60)
