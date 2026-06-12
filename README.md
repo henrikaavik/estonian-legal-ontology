@@ -5,7 +5,7 @@ A comprehensive, machine-readable ontology of Estonian and EU legislation in JSO
 **Eestikeelne ülevaade:** [loe ontoloogia ülevaadet veebina](https://htmlpreview.github.io/?https://github.com/henrikaavik/estonian-legal-ontology/blob/main/docs/eesti-oigusontoloogia-ulevaade.html) — mis see on, kuidas see töötab, kust andmed pärinevad, kuidas seda uuendada ning kuidas ministeeriumid seda kasutada saaksid. PDF-versioon: [docs/eesti-oigusontoloogia-ulevaade.pdf](docs/eesti-oigusontoloogia-ulevaade.pdf).
 
 <!-- counts: keep in sync with metadata.jsonld estleg:statistics — validate_all.py::validate_metadata_catalog enforces metadata.jsonld vs the corpus, and tests/test_validate_all.py::test_readme_counts_match_metadata enforces README vs metadata.jsonld -->
-**Status: 1,123 enacted laws (1,190 law files) + 22,832 drafts + 3,812 state regulations + 11,059 municipal regulations (opt-in) + 12,137 court decisions + 33,242 EU acts + 22,290 EU court decisions** | **23,115 JSON/JSON-LD files** | **170,000+ semantic nodes**
+**Status: 1,122 enacted laws (1,190 law files) + 22,832 drafts + 3,812 state regulations + 11,059 municipal regulations (opt-in) + 12,137 court decisions + 33,242 EU acts + 22,290 EU court decisions** | **23,115 JSON/JSON-LD files** | **170,000+ semantic nodes**
 
 The headline file count includes generated reports, indexes, and metadata that
 release validators intentionally skip. `validate_all.py` currently validates

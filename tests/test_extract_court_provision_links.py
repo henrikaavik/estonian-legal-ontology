@@ -453,6 +453,68 @@ def test_end_to_end_writes_interpretsLaw_and_interpretedBy(tmp_path, monkeypatch
     )
 
 
+def test_deprecated_legacy_peep_excluded_from_provision_index(
+    tmp_path, monkeypatch
+) -> None:
+    """Issue #427: a peep whose act root carries ``owl:deprecated`` must not
+    enter the provision index. Without the skip, a deprecated duplicate that
+    declares the same ``estleg:sourceAct`` fans the abbreviation out across
+    the legacy/canonical pair, and the deterministic cross-Part tie-break
+    (lexicographic min) picks the legacy IRI whenever it sorts first — the
+    exact mechanism that split Constitution case-law between
+    ``estleg:PS_Par_*`` and ``estleg:eesti_vabariigi_pohiseadus_Par_*``."""
+    krr, rk, kov = _stage_fixture(tmp_path)
+
+    # Deprecated duplicate of the TsMS fixture: same sourceAct, same §208,
+    # and an IRI ("Aaa_Par_208") that sorts lexicographically BEFORE the
+    # canonical "Tsiviilkohtumenetluse_seadustik_Par_208" — so without the
+    # #427 skip the tie-break would select it. Stamps mirror
+    # scripts/deprecate_legacy_statutes.py. The stale interpretedBy seeded on
+    # the provision must be cleared by the run even though the file no longer
+    # receives links (clear walk 2 covers deprecated peeps).
+    legacy = {
+        "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+        "@graph": [
+            {
+                "@id": "estleg:Aaa_Map_2026",
+                "@type": ["estleg:Act", "estleg:Law"],
+                "owl:deprecated": True,
+                "dcterms:isReplacedBy": {
+                    "@id": "estleg:Tsiviilkohtumenetluse_seadustik"
+                },
+                "estleg:sourceAct": "Tsiviilkohtumenetluse seadustik",
+            },
+            {
+                "@id": "estleg:Aaa_Par_208",
+                "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+                "estleg:sourceAct": "Tsiviilkohtumenetluse seadustik",
+                "estleg:interpretedBy": [{"@id": "estleg:RK_STALE_FROM_LAST_RUN"}],
+            },
+        ],
+    }
+    legacy_path = krr / "regulations" / "aaa_legacy_tsms_peep.json"
+    legacy_path.write_text(
+        json.dumps(legacy, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+
+    _run_script_against(krr, monkeypatch)
+
+    # Citation resolves to the canonical provision, never the deprecated one.
+    rk_doc = json.loads((rk / "riigikohus_2009_peep.json").read_text(encoding="utf-8"))
+    decision = next(
+        n for n in rk_doc["@graph"] if n["@id"] == "estleg:RK_FIXT_VIIMSI_2009"
+    )
+    iris = [v["@id"] for v in decision.get("estleg:interpretsLaw", [])]
+    assert "estleg:Tsiviilkohtumenetluse_seadustik_Par_208" in iris
+    assert "estleg:Aaa_Par_208" not in iris
+
+    # The deprecated peep gained no interpretedBy, and its stale one is gone.
+    legacy_doc = json.loads(legacy_path.read_text(encoding="utf-8"))
+    assert not any(
+        "estleg:interpretedBy" in n for n in legacy_doc["@graph"]
+    )
+
+
 # ---------------------------------------------------------------------------
 # Group 4a — idempotency
 # ---------------------------------------------------------------------------

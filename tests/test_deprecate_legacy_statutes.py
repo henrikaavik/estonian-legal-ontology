@@ -161,6 +161,88 @@ class TestMarkDeprecatedRoot:
 
 
 # ---------------------------------------------------------------------------
+# bridge_legacy_provisions — #427 owl:sameAs suffix bridge
+# ---------------------------------------------------------------------------
+def _canonical_doc(*par_iris: str) -> dict:
+    """A canonical act peep defining the given provision IRIs."""
+    return {
+        "@context": _context(),
+        "@graph": [
+            {
+                "@id": "estleg:eesti_vabariigi_pohiseadus_Map_2026",
+                "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
+            },
+            *(
+                {
+                    "@id": iri,
+                    "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+                }
+                for iri in par_iris
+            ),
+        ],
+    }
+
+
+class TestBridgeLegacyProvisions:
+    def test_unique_suffix_match_gains_sameas_after_type(self):
+        legacy = _legacy_doc("estleg:PS_Map_2026")  # has PS_Map_2026_Par_1
+        canonical = _canonical_doc("estleg:eesti_vabariigi_pohiseadus_Par_1")
+        assert dls.bridge_legacy_provisions(legacy, canonical) == 1
+        provision = legacy["@graph"][1]
+        assert provision["owl:sameAs"] == {
+            "@id": "estleg:eesti_vabariigi_pohiseadus_Par_1"
+        }
+        # Deterministic slot: right after @type (same as the root marks).
+        keys = list(provision.keys())
+        assert keys[keys.index("@type") + 1] == "owl:sameAs"
+
+    def test_root_node_never_bridged(self):
+        legacy = _legacy_doc("estleg:PS_Map_2026")
+        canonical = _canonical_doc("estleg:eesti_vabariigi_pohiseadus_Par_1")
+        dls.bridge_legacy_provisions(legacy, canonical)
+        assert "owl:sameAs" not in legacy["@graph"][0]
+
+    def test_unmatched_suffix_skipped(self):
+        # Thematic pseudo-provision: no canonical counterpart, no bridge.
+        legacy = _legacy_doc("estleg:POLS_Map_2026")
+        legacy["@graph"][1]["@id"] = "estleg:POLS_Par_AvalikuKorraMoiste"
+        canonical = _canonical_doc("estleg:eesti_vabariigi_pohiseadus_Par_1")
+        assert dls.bridge_legacy_provisions(legacy, canonical) == 0
+        assert "owl:sameAs" not in legacy["@graph"][1]
+
+    def test_ambiguous_canonical_suffix_skipped(self):
+        legacy = _legacy_doc("estleg:PS_Map_2026")
+        canonical = _canonical_doc(
+            "estleg:eesti_vabariigi_pohiseadus_Par_1",
+            "estleg:eesti_vabariigi_pohiseadus_osa2_Par_1",  # same suffix "1"
+        )
+        assert dls.bridge_legacy_provisions(legacy, canonical) == 0
+        assert "owl:sameAs" not in legacy["@graph"][1]
+
+    def test_existing_sameas_never_retouched(self):
+        legacy = _legacy_doc("estleg:PS_Map_2026")
+        legacy["@graph"][1]["owl:sameAs"] = {"@id": "estleg:PreExisting"}
+        canonical = _canonical_doc("estleg:eesti_vabariigi_pohiseadus_Par_1")
+        assert dls.bridge_legacy_provisions(legacy, canonical) == 0
+        assert legacy["@graph"][1]["owl:sameAs"] == {"@id": "estleg:PreExisting"}
+
+    def test_idempotent_second_bridge_is_noop(self):
+        legacy = _legacy_doc("estleg:PS_Map_2026")
+        canonical = _canonical_doc("estleg:eesti_vabariigi_pohiseadus_Par_1")
+        assert dls.bridge_legacy_provisions(legacy, canonical) == 1
+        snapshot = json.dumps(legacy, ensure_ascii=False, sort_keys=False)
+        assert dls.bridge_legacy_provisions(legacy, canonical) == 0
+        assert json.dumps(legacy, ensure_ascii=False, sort_keys=False) == snapshot
+
+    def test_ensures_owl_context_prefix_when_bridging(self):
+        ctx = {"estleg": ESTLEG, "rdfs": "http://www.w3.org/2000/01/rdf-schema#"}
+        legacy = _legacy_doc("estleg:PS_Map_2026", with_context=ctx)
+        canonical = _canonical_doc("estleg:eesti_vabariigi_pohiseadus_Par_1")
+        assert dls.bridge_legacy_provisions(legacy, canonical) == 1
+        assert legacy["@context"]["owl"] == "http://www.w3.org/2002/07/owl#"
+
+
+# ---------------------------------------------------------------------------
 # repoint_value — exact-match recursion + substring safety
 # ---------------------------------------------------------------------------
 class TestRepointValue:
@@ -238,6 +320,15 @@ class TestEndToEnd:
         _write(
             krr / "pohiseaduslikkuse_jarelevalve_peep.json",
             _legacy_doc("estleg:PSJKS_Map_2026"),
+        )
+
+        # --- canonical peep for the PS decision (the #427 sameAs bridge
+        # target): defines the suffix-matching provision _Par_1. The ALKS
+        # decision's canonical file is deliberately NOT written so the
+        # missing-canonical path is exercised in the same corpus. ---
+        _write(
+            krr / "eesti_vabariigi_pohiseadus_peep.json",
+            _canonical_doc("estleg:eesti_vabariigi_pohiseadus_Par_1"),
         )
 
         # --- a "keep" file that cites both legacy roots from outside ---
@@ -386,6 +477,7 @@ class TestEndToEnd:
         assert summary2["roots_deprecated"] == 0
         assert summary2["files_repointed"] == 0
         assert summary2["total_replacements"] == 0
+        assert summary2["provisions_bridged"] == 0
         # Byte-stable: nothing rewritten.
         for p, text in snapshot.items():
             assert p.read_text(encoding="utf-8") == text
@@ -403,9 +495,34 @@ class TestEndToEnd:
         assert summary["roots_deprecated"] == 2
         assert summary["files_repointed"] == 1  # only citing_keep_peep.json
         assert summary["total_replacements"] == 3  # 2 in list + 1 plain string
+        assert summary["provisions_bridged"] == 1  # PS _Par_1 suffix match
         # But nothing on disk changed.
         for p, text in before.items():
             assert p.read_text(encoding="utf-8") == text
+
+    # --- #427 sameAs bridge: lands in the legacy file, canonical untouched ---
+    def test_bridge_lands_in_legacy_canonical_untouched(self, tmp_path):
+        krr, decisions = self._build_corpus(tmp_path)
+        canonical_path = krr / "eesti_vabariigi_pohiseadus_peep.json"
+        canonical_before = canonical_path.read_text(encoding="utf-8")
+
+        summary = dls.run(decisions, krr, dry_run=False)
+        assert summary["provisions_bridged"] == 1
+        assert summary["per_file_bridge_counts"] == {"pohiseadus_peep.json": 1}
+        # ALKS canonical is absent from the corpus: bridge skipped + reported.
+        assert summary["missing_canonical_files"] == ["alkoholiseadus_peep.json"]
+
+        legacy = json.loads(
+            (krr / "pohiseadus_peep.json").read_text(encoding="utf-8")
+        )
+        provision = legacy["@graph"][1]
+        assert provision["owl:sameAs"] == {
+            "@id": "estleg:eesti_vabariigi_pohiseadus_Par_1"
+        }
+        # Internal self-reference still intact alongside the bridge.
+        assert provision["estleg:partOf"] == {"@id": "estleg:PS_Map_2026"}
+        # Direction is legacy → canonical only: canonical file byte-identical.
+        assert canonical_path.read_text(encoding="utf-8") == canonical_before
 
 
 # ---------------------------------------------------------------------------

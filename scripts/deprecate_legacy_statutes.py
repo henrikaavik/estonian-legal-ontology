@@ -47,6 +47,26 @@ already-committed corpus — no network, no regeneration:
    self-references (root ``@id``, provision ``estleg:partOf`` back-edges, etc.)
    stay intact — the file is *kept on disk*, only marked deprecated.
 
+3. **Bridge legacy provisions to canonical via ``owl:sameAs`` (#427).** While
+   a deprecated duplicate coexists with its canonical peep, the two files'
+   provision-level IRIs (legacy ``estleg:PS_Par_15`` vs canonical
+   ``estleg:eesti_vabariigi_pohiseadus_Par_15``) are disconnected: pre-#427
+   court links and the ``provision_versions/`` sidecars still reach the legacy
+   family, so a provision-granularity query joins nothing. As the #427
+   stopgap (until the Tier-1 #445 IRI migration retires the legacy IRIs), each
+   legacy ``*_Par_<suffix>`` node gains
+
+       "owl:sameAs": {"@id": "<canonical *_Par_<suffix> IRI>"}
+
+   pointing at the canonical provision — legacy → canonical only, mirroring
+   the root-level ``dcterms:isReplacedBy`` direction, so canonical files stay
+   byte-identical. The bridge is deliberately conservative: it fires only when
+   the canonical peep (the decision's ``replacedByFile``) defines EXACTLY ONE
+   node with the same ``_Par_`` suffix (verified corpus-wide: 1,278/1,444
+   legacy provision nodes bridge, 0 ambiguous; thematic concept-map
+   pseudo-provisions like ``_Par_AvalikuKorraMoiste`` match nothing and are
+   skipped). A node already carrying ``owl:sameAs`` is never re-touched.
+
 Special case — legacy→legacy canonical (``ulikooli_peep.json``): its canonical
 ``ulikooliseadus_peep.json`` (``estleg:ÜKS_Map_2026``) is itself in the legacy
 cohort but classified ``keep``. The decisions file maps UKS directly to ÜKS, and
@@ -69,6 +89,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 from pathlib import Path
 
 from estleg_common import (
@@ -95,6 +116,13 @@ REPOINT_EXCLUDED_BASENAMES: frozenset[str] = frozenset(
         "combined_ontology.jsonld",
     }
 )
+
+# Provision-IRI suffix extractor for the #427 sameAs bridge. Matches the
+# corpus-wide ``<actPrefix>_Par_<suffix>`` convention (the same marker
+# ``extract_court_provision_links.py`` keys on). ``search`` anchors on the
+# FIRST ``_Par_`` and captures greedily to the end, so a pathological double
+# marker yields one deterministic suffix on both sides of the match.
+_PAR_SUFFIX_RE = re.compile(r"_Par_(.+)$")
 
 
 # ---------------------------------------------------------------------------
@@ -283,6 +311,68 @@ def mark_deprecated_root(doc: dict, root_iri: str, replaced_by_iri: str) -> bool
 
 
 # ---------------------------------------------------------------------------
+# Step 1b — bridge legacy provisions to canonical via owl:sameAs (#427)
+# ---------------------------------------------------------------------------
+def _index_par_suffixes(doc: dict) -> dict[str, list[str]]:
+    """Map ``_Par_`` suffix → list of node ``@id``s defining it in ``doc``."""
+    by_suffix: dict[str, list[str]] = {}
+    graph = doc.get("@graph", [])
+    if not isinstance(graph, list):
+        return by_suffix
+    for node in graph:
+        if not isinstance(node, dict):
+            continue
+        node_id = node.get("@id")
+        if not isinstance(node_id, str):
+            continue
+        match = _PAR_SUFFIX_RE.search(node_id)
+        if match:
+            by_suffix.setdefault(match.group(1), []).append(node_id)
+    return by_suffix
+
+
+def bridge_legacy_provisions(doc: dict, canonical_doc: dict) -> int:
+    """Add ``owl:sameAs`` legacy→canonical on suffix-matched provision nodes.
+
+    Returns the number of nodes bridged. A legacy ``*_Par_<suffix>`` node is
+    bridged iff the canonical document defines EXACTLY ONE node with the same
+    suffix (zero canonical matches = thematic pseudo-provision, skipped;
+    multiple = ambiguous, skipped) and the node does not already carry
+    ``owl:sameAs`` — which also makes reruns idempotent no-ops. The predicate
+    is inserted right after ``@type`` (same deterministic slot as the root
+    deprecation marks) so reruns stay byte-stable.
+    """
+    graph = doc.get("@graph", [])
+    if not isinstance(graph, list):
+        return 0
+    canonical_by_suffix = _index_par_suffixes(canonical_doc)
+    if not canonical_by_suffix:
+        return 0
+
+    bridged = 0
+    for node in graph:
+        if not isinstance(node, dict):
+            continue
+        node_id = node.get("@id")
+        if not isinstance(node_id, str):
+            continue
+        match = _PAR_SUFFIX_RE.search(node_id)
+        if not match:
+            continue
+        if "owl:sameAs" in node:
+            continue
+        targets = canonical_by_suffix.get(match.group(1))
+        if not targets or len(targets) != 1 or targets[0] == node_id:
+            continue
+        _insert_after_type(node, {"owl:sameAs": {"@id": targets[0]}})
+        bridged += 1
+
+    if bridged:
+        _ensure_context_prefix(doc, "owl", OWL_PREFIX_IRI)
+    return bridged
+
+
+# ---------------------------------------------------------------------------
 # Step 2 — exact-match re-point of inbound references
 # ---------------------------------------------------------------------------
 def repoint_value(value, repoint_map: dict[str, str]) -> tuple[object, int]:
@@ -327,9 +417,15 @@ def process_legacy_file(
     root_iri: str,
     replaced_by_iri: str,
     *,
+    canonical_doc: dict | None = None,
     dry_run: bool,
-) -> bool:
-    """Mark the legacy peep file's root deprecated. Returns True if it changed.
+) -> tuple[bool, int]:
+    """Mark the legacy peep file's root deprecated and bridge its provisions.
+
+    Returns ``(root_changed, provisions_bridged)``. ``canonical_doc`` is the
+    parsed ``replacedByFile`` peep used for the #427 ``owl:sameAs`` bridge;
+    ``None`` (canonical file missing on disk) skips bridging — a target that
+    does not exist cannot be pointed at.
 
     The legacy file is deliberately NOT re-pointed: its internal
     self-references stay so the kept-on-disk file remains internally
@@ -337,11 +433,14 @@ def process_legacy_file(
     """
     doc = json.loads(path.read_text(encoding="utf-8"))
     if not isinstance(doc, dict):
-        return False
-    changed = mark_deprecated_root(doc, root_iri, replaced_by_iri)
-    if changed and not dry_run:
+        return False, 0
+    root_changed = mark_deprecated_root(doc, root_iri, replaced_by_iri)
+    bridged = 0
+    if canonical_doc is not None:
+        bridged = bridge_legacy_provisions(doc, canonical_doc)
+    if (root_changed or bridged) and not dry_run:
         save_json(path, doc)
-    return changed
+    return root_changed, bridged
 
 
 def process_repoint_file(
@@ -403,21 +502,42 @@ def run(
     legacy_entries = sorted(deprecations, key=lambda e: e["file"])
     legacy_paths = {krr_dir / entry["file"] for entry in legacy_entries}
 
-    # --- Step 1: mark duplicate roots deprecated ---
+    # --- Step 1: mark duplicate roots deprecated + bridge provisions (#427) ---
     roots_deprecated = 0
+    provisions_bridged = 0
     missing_legacy_files: list[str] = []
+    missing_canonical_files: list[str] = []
+    per_file_bridge_counts: dict[str, int] = {}
+    canonical_cache: dict[Path, dict | None] = {}
     for entry in legacy_entries:
         path = krr_dir / entry["file"]
         if not path.is_file():
             missing_legacy_files.append(entry["file"])
             continue
-        if process_legacy_file(
+        canonical_path = krr_dir / entry["replacedByFile"]
+        if canonical_path not in canonical_cache:
+            if canonical_path.is_file():
+                loaded = json.loads(canonical_path.read_text(encoding="utf-8"))
+                canonical_cache[canonical_path] = (
+                    loaded if isinstance(loaded, dict) else None
+                )
+            else:
+                canonical_cache[canonical_path] = None
+        canonical_doc = canonical_cache[canonical_path]
+        if canonical_doc is None and entry["replacedByFile"] not in missing_canonical_files:
+            missing_canonical_files.append(entry["replacedByFile"])
+        root_changed, bridged = process_legacy_file(
             path,
             entry["rootIri"],
             entry["replacedByIri"],
+            canonical_doc=canonical_doc,
             dry_run=dry_run,
-        ):
+        )
+        if root_changed:
             roots_deprecated += 1
+        if bridged:
+            provisions_bridged += bridged
+            per_file_bridge_counts[entry["file"]] = bridged
 
     # --- Step 2: corpus-wide exact-match re-point ---
     files_repointed = 0
@@ -434,7 +554,10 @@ def run(
         "dry_run": dry_run,
         "legacy_entries": len(legacy_entries),
         "roots_deprecated": roots_deprecated,
+        "provisions_bridged": provisions_bridged,
+        "per_file_bridge_counts": per_file_bridge_counts,
         "missing_legacy_files": missing_legacy_files,
+        "missing_canonical_files": missing_canonical_files,
         "files_repointed": files_repointed,
         "total_replacements": total_replacements,
         "per_file_counts": per_file_counts,
@@ -446,6 +569,7 @@ def print_summary(summary: dict) -> None:
     dry = summary["dry_run"]
     mark_verb = "would deprecate" if dry else "deprecated"
     point_verb = "would re-point" if dry else "re-pointed"
+    bridge_verb = "would bridge" if dry else "bridged"
 
     print("=" * 70)
     print("Deprecate duplicate legacy statutes + re-point inbound refs (#426)")
@@ -456,11 +580,29 @@ def print_summary(summary: dict) -> None:
     print(f"  Roots {mark_verb}:   {summary['roots_deprecated']}")
     print(f"  Files {point_verb}:    {summary['files_repointed']}")
     print(f"  Total IRI replacements:  {summary['total_replacements']}")
+    print(
+        f"  Provisions {bridge_verb} (owl:sameAs, #427): "
+        f"{summary['provisions_bridged']}"
+    )
 
     if summary["missing_legacy_files"]:
         print("\n  WARNING: legacy peep file(s) not found on disk:")
         for name in summary["missing_legacy_files"]:
             print(f"    - {name}")
+
+    if summary["missing_canonical_files"]:
+        print(
+            "\n  WARNING: canonical peep file(s) not found on disk "
+            "(sameAs bridge skipped):"
+        )
+        for name in summary["missing_canonical_files"]:
+            print(f"    - {name}")
+
+    per_file_bridges = summary["per_file_bridge_counts"]
+    if per_file_bridges:
+        print("\n  Per-file provision bridge counts:")
+        for rel_path in sorted(per_file_bridges):
+            print(f"    {per_file_bridges[rel_path]:>5}  {rel_path}")
 
     per_file = summary["per_file_counts"]
     if per_file:
