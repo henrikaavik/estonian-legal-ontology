@@ -246,6 +246,19 @@ def build_provision_index(
         if not graph:
             continue
 
+        # Issue #427: skip deprecated legacy duplicate peeps (act roots
+        # stamped ``owl:deprecated`` + ``dcterms:isReplacedBy`` by
+        # scripts/deprecate_legacy_statutes.py per
+        # data/legacy_statute_decisions.json). Their provision IRIs (e.g.
+        # legacy ``estleg:PS_Par_15`` vs canonical
+        # ``estleg:eesti_vabariigi_pohiseadus_Par_15``) must not enter the
+        # index: both files declare the same ``estleg:sourceAct``, so the
+        # abbreviation fans out across the legacy/canonical pair and the
+        # deterministic cross-Part tie-break in ``resolve_citations`` then
+        # splits case-law across two unaligned IRI families.
+        if any(node.get("owl:deprecated") is True for node in graph):
+            continue
+
         file_prefix = None
         source_act = None
         for node in graph:
