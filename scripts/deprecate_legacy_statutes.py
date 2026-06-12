@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
 """Deprecate duplicate legacy statute peeps and re-point inbound refs (#426).
 
-The corpus accumulated 37 *duplicate* legacy-statute act roots: orthography /
+The corpus accumulated *duplicate* legacy-statute act roots: orthography /
 truncation / renaming variants of a canonical act that is already represented
 by a fuller, current peep file (e.g. ``estleg:ALKS_Map_2026`` "Alkoholiseaduse
 teemakaardistus" is a genitive-label variant of the canonical
 ``estleg:AS_Map_2026`` "Alkoholiseadus teemakaardistus"). The classification
-lives in ``data/legacy_statute_decisions.json``: 37 ``deprecations`` (the
-duplicates) and 132 ``keeps`` (sole representations / legal-succession
-predecessors, deliberately untouched).
+lives in ``data/legacy_statute_decisions.json``: the ``deprecations`` list
+holds the duplicates (37 from the #426 review, 38 since #427 re-verdicted
+``keskkonnaseadus``) and the ``keeps`` list the sole representations /
+legal-succession predecessors, deliberately untouched. The decisions file is
+the single source of truth — this script never hard-codes the cohort.
 
 This migration applies the agreed ``deprecate`` policy offline, against the
 already-committed corpus — no network, no regeneration:
@@ -32,7 +34,7 @@ already-committed corpus — no network, no regeneration:
    prefix URLs).
 
 2. **Re-point inbound references corpus-wide.** Every ``*.json`` / ``*.jsonld``
-   under ``krr_outputs/`` — EXCEPT the 37 legacy peep files themselves,
+   under ``krr_outputs/`` — EXCEPT the decision-listed legacy peep files themselves,
    ``INDEX.json``, ``combined_ontology.jsonld``, and the operational state
    files — is walked recursively; every JSON **string value that EXACTLY
    equals** a legacy ``rootIri`` is replaced with the canonical
@@ -108,7 +110,8 @@ OWL_PREFIX_IRI = "http://www.w3.org/2002/07/owl#"
 DCTERMS_PREFIX_IRI = "http://purl.org/dc/terms/"
 
 # Files that must never be re-pointed even though they live under krr_outputs/.
-# The 37 legacy peep files are excluded dynamically (see build_repoint_map);
+# The decision-listed legacy peep files are excluded dynamically (see
+# build_repoint_map);
 # these are the fixed aggregate artifacts.
 REPOINT_EXCLUDED_BASENAMES: frozenset[str] = frozenset(
     {
@@ -469,7 +472,8 @@ def iter_repoint_files(
 
     Routes through ``iter_krr_jsonld_files`` (the shared anti-drift enumerator,
     which already excludes ``OPERATIONAL_STATE_FILES``) and additionally drops
-    the 37 legacy peep files, ``INDEX.json`` and ``combined_ontology.jsonld``.
+    the decision-listed legacy peep files, ``INDEX.json`` and
+    ``combined_ontology.jsonld``.
     """
     eligible: list[Path] = []
     for path in iter_krr_jsonld_files(krr_dir):
@@ -498,7 +502,7 @@ def run(
     deprecations = load_decisions(decisions_path)
     repoint_map = build_repoint_map(deprecations)
 
-    # Resolve the 37 legacy peep file paths (sorted for deterministic output).
+    # Resolve the decision-listed legacy peep paths (sorted, deterministic).
     legacy_entries = sorted(deprecations, key=lambda e: e["file"])
     legacy_paths = {krr_dir / entry["file"] for entry in legacy_entries}
 

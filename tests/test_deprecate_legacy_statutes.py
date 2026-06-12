@@ -1,6 +1,6 @@
 """Tests for scripts/deprecate_legacy_statutes.py (#426 legacy-statute deprecation).
 
-The migration marks 37 duplicate legacy-statute act roots with
+The migration marks the decision-listed duplicate legacy-statute act roots with
 ``owl:deprecated = true`` + ``dcterms:isReplacedBy`` (canonical IRI), keeps the
 files on disk, and re-points every *exact-match* inbound reference to the legacy
 ``rootIri`` across the rest of the corpus to the canonical ``replacedByIri``.
