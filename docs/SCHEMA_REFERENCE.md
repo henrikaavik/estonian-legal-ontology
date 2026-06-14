@@ -36,7 +36,8 @@
 > **Note:** Instance-node labels and summaries are Estonian-only and carry no language tag — `FILTER(lang(?x) = "en")` returns no rows. Bilingual (Estonian/English) labelling is a possible future goal; it is not part of the current corpus and is not enforced by SHACL or CI.
 * `estleg:topicCluster`: Associates a provision with a TopicCluster.
 * `estleg:references`: Defines cross-references to other legal provisions or laws.
-* `dcterms:isPartOf`: Indicates the hierarchical structure (e.g., paragraph is part of a section). Replaces the legacy `schema:isPartOf`; pipelines that reference parent acts use `estleg:partOfAct` (KOV) or `estleg:sourceAct` (state laws).
+* `dcterms:isPartOf` / `estleg:isPartOf`: Indicates the hierarchical structure (e.g., paragraph is part of a Chapter/Division). Replaces the legacy `schema:isPartOf`.
+* `estleg:partOfAct`: IRI link from a provision (and Chapter) up to its parent **act root** — the structural join SPARQL traverses to answer "all provisions of act X" / "which act does this § belong to". Emitted by every generator (state laws, regulations, KOV, and the VÕS/TsÜS multipart parts) and **required on every provision** by `LegalProvisionShape` (`sh:minCount 1`, `sh:nodeKind sh:IRI`) since issue #415. Do **not** join parent acts by the literal `estleg:sourceAct` title — that is a human-readable string only, not a graph edge.
 * `skos:prefLabel`: The preferred label for a LegalConcept or TopicCluster.
 
 #### Draft Legislation Properties
