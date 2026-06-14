@@ -1375,3 +1375,40 @@ def test_combined_builder_leaves_unresolvable_ref_unstubbed(tmp_path, capsys):
     assert "estleg:A_1" in ids
     assert "estleg:Ghost_99" not in ids  # left dangling, not invented
     assert "left unstubbed" in capsys.readouterr().out
+
+
+def test_combined_builder_stub_strips_expanded_internal_ref(tmp_path):
+    """A stub must drop an internal ref written in EXPANDED IRI form too (#416)."""
+    write_json(
+        tmp_path / "law_a_peep.json",
+        {
+            "@graph": [
+                {
+                    "@id": "estleg:A_1",
+                    "@type": ["estleg:LegalProvision"],
+                    "estleg:interpretedBy": {"@id": "estleg:RK_9_9_9_9"},
+                }
+            ]
+        },
+    )
+    write_json(
+        tmp_path / "riigikohus" / "rk.jsonld",
+        {
+            "@graph": [
+                {
+                    "@id": "estleg:RK_9_9_9_9",
+                    "@type": ["owl:NamedIndividual", "estleg:CourtDecision"],
+                    "rdfs:label": "RK 9-9-9/9",
+                    # internal ref in EXPANDED form — must be stripped so the stub is a leaf
+                    "dcterms:source": {"@id": "https://data.riik.ee/ontology/estleg#A_1"},
+                    "estleg:decisionLink": {"@value": "https://x", "@type": "xsd:anyURI"},
+                }
+            ]
+        },
+    )
+    fix_all_issues.generate_combined_jsonld(tmp_path)
+    nodes = {n["@id"]: n for n in read_json(tmp_path / "combined_ontology.jsonld")["@graph"]}
+    stub = nodes["estleg:RK_9_9_9_9"]
+    assert stub["estleg:isStubNode"] is True
+    assert "dcterms:source" not in stub  # expanded internal ref dropped
+    assert stub["estleg:decisionLink"] == {"@value": "https://x", "@type": "xsd:anyURI"}

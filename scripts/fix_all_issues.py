@@ -1013,7 +1013,8 @@ def _strip_estleg_refs(value):
     """
     if isinstance(value, dict):
         rid = value.get("@id")
-        if isinstance(rid, str) and rid.startswith("estleg:"):
+        if isinstance(rid, str) and estleg_common.canonical_estleg_ref(rid) is not None:
+            # internal ref (compact OR expanded form) — drop so the stub stays a leaf
             return None
         cleaned = {}
         for key, child in value.items():

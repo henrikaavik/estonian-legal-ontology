@@ -1509,19 +1509,12 @@ class CombinedParityTarget:
     # reported as missing/stale to avoid false positives.
     expected_missing_ids: set[str] = field(default_factory=set)
     expected_extra_ids: set[str] = field(default_factory=set)
-    # #416: node @type(s) whose combined nodes are exempt from the stale-extra
-    # check because their overlay source could not be ingested (an
+    # #416: compact-IRI prefixes whose combined nodes are exempt from the
+    # stale-extra check because their overlay source could not be ingested (an
     # un-materialised LFS pointer). Empty when every overlay is materialised —
-    # so a stale overlay node is still flagged in the normal case.
-    extra_exempt_types: frozenset[str] = frozenset()
-
-
-def _node_type_list(node: dict) -> list:
-    """Return a node's ``@type`` as a list (``[]`` when absent)."""
-    t = node.get("@type")
-    if isinstance(t, list):
-        return t
-    return [t] if t else []
+    # so a stale overlay node is still flagged in the normal case. Prefixes
+    # (not @type) so an overlay's generic owl:Ontology wrapper node is covered.
+    extra_exempt_id_prefixes: tuple[str, ...] = ()
 
 
 def _check_combined_parity(target: CombinedParityTarget) -> None:
@@ -1555,16 +1548,14 @@ def _check_combined_parity(target: CombinedParityTarget) -> None:
         if node.get(estleg_common.STUB_NODE_MARKER) is True
     }
     # An overlay whose source was an un-materialised LFS pointer could not be
-    # ingested, so its merged nodes (matched by @type) are exempt from the
-    # stale-extra check for THIS run only. When the source IS materialised
-    # `extra_exempt_types` is empty, so a stale overlay node IS still flagged.
-    exempt_type_ids: set[str] = set()
-    if target.extra_exempt_types:
-        exempt_type_ids = {
-            nid
-            for nid, node in combined_nodes.items()
-            if any(t in target.extra_exempt_types for t in _node_type_list(node))
-        }
+    # ingested, so its merged nodes (matched by @id prefix, which also covers
+    # the overlay's owl:Ontology wrapper node) are exempt from the stale-extra
+    # check for THIS run only. When the source IS materialised
+    # `extra_exempt_id_prefixes` is empty, so a stale overlay node IS flagged.
+    exempt_prefix_ids: set[str] = set()
+    if target.extra_exempt_id_prefixes:
+        prefixes = target.extra_exempt_id_prefixes
+        exempt_prefix_ids = {nid for nid in combined_nodes if nid.startswith(prefixes)}
 
     structural_drift = False
 
@@ -1581,7 +1572,7 @@ def _check_combined_parity(target: CombinedParityTarget) -> None:
         - target.allowlist_ids
         - target.expected_extra_ids
         - stub_ids
-        - exempt_type_ids
+        - exempt_prefix_ids
     )
     if extras:
         error(
@@ -1711,23 +1702,23 @@ def validate_combined_ontology(krr_dir: Path = KRR_DIR):
     # #416: the enrichment overlays are fully merged into combined, so they are
     # canonical sources too — every overlay node must be present and none may be
     # a stale extra. Pointer-tolerant: an un-materialised LFS overlay
-    # (annotations) is skipped with a warning; only THEN are its node types
-    # exempted from the stale-extra check (via extra_exempt_types), so a stale
-    # node in a materialised overlay is still flagged.
-    extra_exempt_types: set[str] = set()
+    # (annotations) is skipped with a warning; only THEN are its node @id
+    # prefixes exempted from the stale-extra check (via extra_exempt_id_prefixes),
+    # so a stale node in a materialised overlay is still flagged.
+    extra_exempt_id_prefixes: list[str] = []
     for path in estleg_common.iter_combined_overlay_files(krr_dir):
         if _is_lfs_pointer(path):
             try:
                 subdir = path.relative_to(krr_dir).parts[0]
             except ValueError:
                 subdir = path.parent.name
-            types = estleg_common.COMBINED_OVERLAY_NODE_TYPES.get(subdir, ())
+            prefixes = estleg_common.COMBINED_OVERLAY_ID_PREFIXES.get(subdir, ())
             warn(
                 f"combined_ontology.jsonld: overlay source {path.name} is an "
                 f"un-materialised LFS pointer — run `git lfs pull` for full "
-                f"parity (exempting {len(types)} node type(s) for this run)"
+                f"parity (exempting {len(prefixes)} @id prefix(es) for this run)"
             )
-            extra_exempt_types.update(types)
+            extra_exempt_id_prefixes.extend(prefixes)
             continue
         _ingest_graph_into(path, source_nodes)
         source_files.append(path)
@@ -1737,7 +1728,7 @@ def validate_combined_ontology(krr_dir: Path = KRR_DIR):
         source_files=source_files,
         source_nodes=source_nodes,
         allowlist_ids=allowlist_ids,
-        extra_exempt_types=frozenset(extra_exempt_types),
+        extra_exempt_id_prefixes=tuple(extra_exempt_id_prefixes),
     )
     _check_combined_parity(target)
 

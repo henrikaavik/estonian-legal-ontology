@@ -329,15 +329,19 @@ COMBINED_OVERLAY_SUBDIRS: tuple[str, ...] = (
     "annotations",
 )
 
-# Node @type(s) each overlay subdir contributes. The parity gate uses this to
+# Compact-IRI prefixes each overlay subdir owns. The parity gate uses these to
 # exempt an overlay's merged nodes from the stale-extra check ONLY when that
 # overlay's source could not be ingested (an un-materialised LFS pointer). When
 # the source IS materialised the normal check applies, so a stale overlay node
-# left in combined is still flagged.
-COMBINED_OVERLAY_NODE_TYPES: dict[str, tuple[str, ...]] = {
-    "sanctions": ("estleg:Sanction",),
-    "institutions": ("estleg:Institution", "estleg:Competence"),
-    "concepts": ("estleg:Concept", "estleg:LegalConcept"),
+# left in combined is still flagged. Prefixes (not @type) are used so the
+# exemption also covers an overlay's generic ``owl:Ontology`` wrapper/map node
+# — e.g. annotations' ``estleg:Annotations_Oiguskantsler_Map`` — which a
+# type-based rule would miss.
+COMBINED_OVERLAY_ID_PREFIXES: dict[str, tuple[str, ...]] = {
+    "sanctions": ("estleg:Sanction_",),
+    "institutions": ("estleg:Institution_",),
+    "concepts": ("estleg:Concept_", "estleg:LegalConcept_"),
+    # covers both the estleg:Annotation_* nodes and the Annotations_*_Map wrapper
     "annotations": ("estleg:Annotation",),
 }
 

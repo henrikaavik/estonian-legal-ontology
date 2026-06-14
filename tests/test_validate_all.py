@@ -2422,7 +2422,12 @@ def test_validate_combined_ontology_exempts_annotation_when_source_is_lfs_pointe
     )
     _write_combined(
         krr,
-        [_provision_node("estleg:A_1"), _annotation_node("estleg:Annotation_x")],
+        [
+            _provision_node("estleg:A_1"),
+            _annotation_node("estleg:Annotation_x"),
+            # the overlay's generic owl:Ontology wrapper must be exempt too
+            {"@id": "estleg:Annotations_Oiguskantsler_Map", "@type": ["owl:Ontology"]},
+        ],
     )
     validate_all.validate_combined_ontology(krr)
     assert not any("stale extra" in e for e in validate_all.errors), validate_all.errors
