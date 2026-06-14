@@ -1509,6 +1509,12 @@ class CombinedParityTarget:
     # reported as missing/stale to avoid false positives.
     expected_missing_ids: set[str] = field(default_factory=set)
     expected_extra_ids: set[str] = field(default_factory=set)
+    # #416: compact-IRI prefixes whose combined nodes are exempt from the
+    # stale-extra check because their overlay source could not be ingested (an
+    # un-materialised LFS pointer). Empty when every overlay is materialised —
+    # so a stale overlay node is still flagged in the normal case. Prefixes
+    # (not @type) so an overlay's generic owl:Ontology wrapper node is covered.
+    extra_exempt_id_prefixes: tuple[str, ...] = ()
 
 
 def _check_combined_parity(target: CombinedParityTarget) -> None:
@@ -1533,6 +1539,24 @@ def _check_combined_parity(target: CombinedParityTarget) -> None:
 
     source_ids = set(target.source_nodes)
 
+    # #416: graph-closure stub nodes (estleg:isStubNode) are synthesised by the
+    # builder, not drawn from any source file, so they are always legitimate
+    # extras.
+    stub_ids = {
+        nid
+        for nid, node in combined_nodes.items()
+        if node.get(estleg_common.STUB_NODE_MARKER) is True
+    }
+    # An overlay whose source was an un-materialised LFS pointer could not be
+    # ingested, so its merged nodes (matched by @id prefix, which also covers
+    # the overlay's owl:Ontology wrapper node) are exempt from the stale-extra
+    # check for THIS run only. When the source IS materialised
+    # `extra_exempt_id_prefixes` is empty, so a stale overlay node IS flagged.
+    exempt_prefix_ids: set[str] = set()
+    if target.extra_exempt_id_prefixes:
+        prefixes = target.extra_exempt_id_prefixes
+        exempt_prefix_ids = {nid for nid in combined_nodes if nid.startswith(prefixes)}
+
     structural_drift = False
 
     missing = source_ids - combined_ids - target.expected_missing_ids
@@ -1542,7 +1566,14 @@ def _check_combined_parity(target: CombinedParityTarget) -> None:
             print(f"    missing from combined: {node_id}")
         structural_drift = True
 
-    extras = combined_ids - source_ids - target.allowlist_ids - target.expected_extra_ids
+    extras = (
+        combined_ids
+        - source_ids
+        - target.allowlist_ids
+        - target.expected_extra_ids
+        - stub_ids
+        - exempt_prefix_ids
+    )
     if extras:
         error(
             f"{label}: {len(extras)} stale extra IDs "
@@ -1668,14 +1699,129 @@ def validate_combined_ontology(krr_dir: Path = KRR_DIR):
     print("\n--- Combined Ontology Artifact ---")
     combined_path = krr_dir / "combined_ontology.jsonld"
     source_nodes, allowlist_ids, source_files = collect_source_nodes(krr_dir)
+    # #416: the enrichment overlays are fully merged into combined, so they are
+    # canonical sources too — every overlay node must be present and none may be
+    # a stale extra. Pointer-tolerant: an un-materialised LFS overlay
+    # (annotations) is skipped with a warning; only THEN are its node @id
+    # prefixes exempted from the stale-extra check (via extra_exempt_id_prefixes),
+    # so a stale node in a materialised overlay is still flagged.
+    extra_exempt_id_prefixes: list[str] = []
+    for path in estleg_common.iter_combined_overlay_files(krr_dir):
+        if _is_lfs_pointer(path):
+            try:
+                subdir = path.relative_to(krr_dir).parts[0]
+            except ValueError:
+                subdir = path.parent.name
+            prefixes = estleg_common.COMBINED_OVERLAY_ID_PREFIXES.get(subdir, ())
+            warn(
+                f"combined_ontology.jsonld: overlay source {path.name} is an "
+                f"un-materialised LFS pointer — run `git lfs pull` for full "
+                f"parity (exempting {len(prefixes)} @id prefix(es) for this run)"
+            )
+            extra_exempt_id_prefixes.extend(prefixes)
+            continue
+        _ingest_graph_into(path, source_nodes)
+        source_files.append(path)
     target = CombinedParityTarget(
         label="combined_ontology.jsonld",
         combined_path=combined_path,
         source_files=source_files,
         source_nodes=source_nodes,
         allowlist_ids=allowlist_ids,
+        extra_exempt_id_prefixes=tuple(extra_exempt_id_prefixes),
     )
     _check_combined_parity(target)
+
+
+def validate_combined_graph_closure(krr_dir: Path = KRR_DIR):
+    """#416 closure gate: combined must load standalone with zero dangling refs.
+
+    Reads combined alone (no sibling corpora) and asserts that every ``estleg:``
+    object reference resolves to a node in the file, except the deliberately
+    external ``COMBINED_CLOSURE_EXEMPT_PREDICATES`` (provision_versions sidecar /
+    provisional draft amendments). Also checks that every synthesised stub is
+    actually referenced (no stale orphan stubs) and is a graph-closure leaf (no
+    outbound ``estleg:`` refs). This fails CI on a stale or incomplete combined
+    — the parity guarantee the merge + stub build depends on.
+    """
+    print("\n--- Combined Graph Closure (#416) ---")
+    combined_path = krr_dir / "combined_ontology.jsonld"
+    if not combined_path.exists():
+        warn("combined_ontology.jsonld: not found")
+        return
+    if _is_lfs_pointer(combined_path):
+        warn("combined_ontology.jsonld: un-materialised LFS pointer — skipping closure")
+        return
+    doc = validate_json_syntax(combined_path)
+    if not isinstance(doc, dict):
+        return
+
+    nodes = [n for n in doc.get("@graph", []) if isinstance(n, dict)]
+    # Canonicalise @ids to the compact estleg: form (matching the canonical
+    # targets iter_node_estleg_refs yields) so an expanded-IRI node is still
+    # recognised as present.
+    node_ids: set[str] = set()
+    stub_ids: set[str] = set()
+    for n in nodes:
+        nid = n.get("@id")
+        if not isinstance(nid, str):
+            continue
+        canon = estleg_common.canonical_estleg_ref(nid) or nid
+        node_ids.add(canon)
+        if n.get(estleg_common.STUB_NODE_MARKER) is True:
+            stub_ids.add(canon)
+    exempt = estleg_common.COMBINED_CLOSURE_EXEMPT_PREDICATES
+
+    dangling: dict[str, set[str]] = defaultdict(set)
+    # Only NON-exempt incoming references keep a stub alive: the builder never
+    # mints stubs for exempt predicates (hasVersion/amendedBy), so a stub whose
+    # sole referrer is one of those is stale and must surface as an orphan.
+    referenced: set[str] = set()
+    leaky_stubs: list[str] = []
+    for node in nodes:
+        is_stub = node.get(estleg_common.STUB_NODE_MARKER) is True
+        node_refs = list(estleg_common.iter_node_estleg_refs(node))
+        if is_stub and node_refs:
+            leaky_stubs.append(str(node.get("@id")))
+        for predicate, target in node_refs:
+            if predicate in exempt:
+                continue
+            referenced.add(target)
+            if target not in node_ids:
+                dangling[predicate].add(target)
+
+    total_dangling = sum(len(v) for v in dangling.values())
+    if total_dangling:
+        error(
+            f"combined_ontology.jsonld: {total_dangling} dangling estleg: object "
+            f"IRIs across {len(dangling)} non-exempt predicate(s) — graph not closed"
+        )
+        for pred in sorted(dangling, key=lambda p: len(dangling[p]), reverse=True)[:8]:
+            targets = dangling[pred]
+            print(f"    {pred}: {len(targets)} unresolved, e.g. {sorted(targets)[0]}")
+
+    orphan_stubs = stub_ids - referenced
+    if orphan_stubs:
+        error(
+            f"combined_ontology.jsonld: {len(orphan_stubs)} stub node(s) referenced "
+            f"by nothing — stale stubs, rebuild combined"
+        )
+        for nid in sorted(orphan_stubs)[:10]:
+            print(f"    orphan stub: {nid}")
+
+    if leaky_stubs:
+        error(
+            f"combined_ontology.jsonld: {len(leaky_stubs)} stub node(s) carry "
+            f"estleg: object refs — stubs must be graph-closure leaves"
+        )
+        for nid in sorted(leaky_stubs)[:10]:
+            print(f"    non-leaf stub: {nid}")
+
+    if not (total_dangling or orphan_stubs or leaky_stubs):
+        print(
+            f"  Closed: 0 dangling estleg: refs across {len(nodes)} nodes; "
+            f"{len(stub_ids)} stub nodes all referenced and leaf"
+        )
 
 
 def validate_subcorpus_combined_ontologies(krr_dir: Path = KRR_DIR):
@@ -2308,6 +2454,7 @@ def main(argv: list[str] | None = None):
     validate_act_coverage_reconciliation(krr_dir)
     validate_legacy_deprecations(krr_dir)
     validate_combined_ontology(krr_dir)
+    validate_combined_graph_closure(krr_dir)
     validate_subcorpus_combined_ontologies(krr_dir)
     validate_subcorpus_index_counts(krr_dir, allow_missing_index=allow_missing_index)
     # Regen-pending staleness guards (#366, #348, #384). These emit

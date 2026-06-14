@@ -432,7 +432,7 @@ python3 scripts/generate_similarity_index.py
 .
 ├── krr_outputs/              # JSON/JSON-LD ontology files (23,115 files)
 │   ├── *_peep.json           # Individual enacted law mappings
-│   ├── combined_ontology.jsonld  # All enacted laws in one file
+│   ├── combined_ontology.jsonld  # Self-contained graph: laws + overlays + cross-corpus stubs
 │   ├── INDEX.json            # Enacted law registry
 │   ├── eelnoud/              # Draft legislation
 │   │   ├── eelnoud_schema.json           # Schema definitions
@@ -603,14 +603,25 @@ release pipeline:
   `concepts/`, `sanctions/`, `amendments/`, `institutions/`,
   `provision_versions/`, `annotations/`, `harmonisation/`, and
   `regulations/`. Seadusloome consumes these alongside the combined
-  aggregate; sidecar targets are expected to resolve within this full
-  surface, not inside `combined_ontology.jsonld` alone.
+  aggregate; the `provision_versions/` sidecar (`estleg:hasVersion`) and
+  the provisional draft `estleg:amendedBy` events are expected to resolve
+  within this full surface, not inside `combined_ontology.jsonld` alone.
 - **Generated aggregate (do not edit by hand):**
-  `krr_outputs/combined_ontology.jsonld`. Regenerate it via
-  `scripts/fix_all_issues.py` (the `generate_combined_jsonld()` step) so
-  it stays in lockstep with the source files. Editing it directly will
-  reintroduce the drift the Seadusloome zero-warning gate exists to
-  catch.
+  `krr_outputs/combined_ontology.jsonld`. Since #416 this is a
+  **self-contained graph**: it fully merges the sanctions/institutions/
+  concepts/annotations overlays and mints lightweight stub nodes
+  (`estleg:isStubNode`) for every remaining cross-corpus reference
+  (court/EU/draft/regulation/amendment/harmonisation), so loading it
+  alone yields zero dangling `estleg:` object IRIs apart from the two
+  documented exempt predicates above. `validate_combined_graph_closure`
+  enforces that invariant. `estleg:isStubNode` is a build/serialisation
+  marker, not a semantic claim: when you also load the sibling subcorpus
+  the complete node takes precedence and the flag should be disregarded.
+  Regenerate it via `scripts/fix_all_issues.py`
+  (the `generate_combined_jsonld()` step, which now reads the LFS
+  annotations + eurlex sources) so it stays in lockstep with the source
+  files. Editing it directly will reintroduce the drift the Seadusloome
+  zero-warning gate exists to catch.
 
 ### Validation and release order
 
