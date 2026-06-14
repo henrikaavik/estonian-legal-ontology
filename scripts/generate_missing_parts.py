@@ -403,6 +403,8 @@ def generate_vos_part(root: ET.Element, xml_url: str, osa_nr: str) -> dict | Non
             "estleg:paragrahv": p_display,
             "rdfs:label": f"{p_display} {p_title}".strip() if p_title else p_display,
             "estleg:sourceAct": "Võlaõigusseadus",
+            # Issue #415: structural IRI join to this osa's act root.
+            "estleg:partOfAct": {"@id": ontology_id},
         }
 
         if text:
@@ -529,6 +531,8 @@ def generate_tsus_part1(root: ET.Element, xml_url: str) -> dict | None:
             # IRI reference, not a bare string literal (#370 item 2).
             "estleg:requestedCluster": {"@id": "estleg:Cluster_TsUS_Uldsatted"},
             "estleg:sourceAct": "Tsiviilseadustiku üldosa seadus",
+            # Issue #415: structural IRI join to the TsÜS part-1 act root.
+            "estleg:partOfAct": {"@id": "estleg:TsUS_Osa1"},
         }
 
         if text:

@@ -205,7 +205,7 @@ def provision_summary(display: str, label: str, source_title: str, body_text: st
     return fallback[:500] if fallback else display_text
 
 
-def collect_structured_paragraphs(root: ET.Element, prefix: str, title: str, class_id: str) -> list[dict]:
+def collect_structured_paragraphs(root: ET.Element, prefix: str, title: str, class_id: str, act_iri: str) -> list[dict]:
     """Build provision nodes from `<paragrahv>` elements (modern XML)."""
     nodes: list[dict] = []
     seen_ids: set[str] = set()
@@ -238,6 +238,8 @@ def collect_structured_paragraphs(root: ET.Element, prefix: str, title: str, cla
             "estleg:paragrahv": display,
             "rdfs:label": label,
             "estleg:sourceAct": title,
+            # Issue #415: structural IRI join from provision up to its act root.
+            "estleg:partOfAct": {"@id": act_iri},
             "estleg:summary": provision_summary(display, label, title, text),
         }
         if full_text:
@@ -251,7 +253,7 @@ def collect_structured_paragraphs(root: ET.Element, prefix: str, title: str, cla
 # Provision extraction — legacy HTMLKonteiner fallback
 # ---------------------------------------------------------------------------
 
-def collect_html_paragraphs(root: ET.Element, prefix: str, title: str, class_id: str) -> tuple[str, list[dict]]:
+def collect_html_paragraphs(root: ET.Element, prefix: str, title: str, class_id: str, act_iri: str) -> tuple[str, list[dict]]:
     """Build provision nodes from the legacy HTMLKonteiner CDATA body.
 
     Returns ``(preamble_text, paragraph_nodes)``.
@@ -297,6 +299,8 @@ def collect_html_paragraphs(root: ET.Element, prefix: str, title: str, class_id:
             "estleg:paragrahv": display,
             "rdfs:label": label,
             "estleg:sourceAct": title,
+            # Issue #415: structural IRI join from provision up to its act root.
+            "estleg:partOfAct": {"@id": act_iri},
             "estleg:summary": provision_summary(display, label, title, summary),
         }
         if text_full:
@@ -390,11 +394,11 @@ def build_regulation_jsonld(
         parse_mode = "repealedBeforeSnapshot"
     else:
         # Provisions: try structured first, fall back to HTMLKonteiner
-        provisions = collect_structured_paragraphs(root, prefix, title, class_id)
+        provisions = collect_structured_paragraphs(root, prefix, title, class_id, ontology_id)
         parse_mode = "structured"
         preamble_html = ""
         if not provisions:
-            preamble_html, provisions = collect_html_paragraphs(root, prefix, title, class_id)
+            preamble_html, provisions = collect_html_paragraphs(root, prefix, title, class_id, ontology_id)
             parse_mode = "html_fallback" if provisions else "no_paragraphs"
 
         # Preamble: prefer structured `<preambul>`, fall back to HTML preamble

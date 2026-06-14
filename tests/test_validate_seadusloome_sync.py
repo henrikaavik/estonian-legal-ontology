@@ -29,9 +29,29 @@ CONTEXT = {
 
 
 def _write_combined(krr_dir: Path, graph_nodes: list[dict]) -> None:
-    """Write ``combined_ontology.jsonld`` containing the supplied nodes."""
+    """Write ``combined_ontology.jsonld`` containing the supplied nodes.
+
+    Auto-closes ``estleg:partOfAct`` references (issue #415): every provision
+    now carries an IRI link to its act root, and graph-closure validation
+    requires that root to exist in the graph. A minimal ``estleg:Act`` node is
+    appended for each referenced act IRI not already present, mirroring how the
+    production combined graph always contains the act roots its provisions
+    point at. (ActTemporalShape constraints are all optional, so the stub Act
+    node conforms.)
+    """
     krr_dir.mkdir(parents=True, exist_ok=True)
-    payload = {"@context": CONTEXT, "@graph": graph_nodes}
+    nodes = list(graph_nodes)
+    present = {n.get("@id") for n in nodes if isinstance(n, dict)}
+    referenced_acts = {
+        n["estleg:partOfAct"]["@id"]
+        for n in graph_nodes
+        if isinstance(n, dict)
+        and isinstance(n.get("estleg:partOfAct"), dict)
+        and "@id" in n["estleg:partOfAct"]
+    }
+    for act_iri in sorted(referenced_acts - present):
+        nodes.append({"@id": act_iri, "@type": ["owl:NamedIndividual", "estleg:Act"]})
+    payload = {"@context": CONTEXT, "@graph": nodes}
     (krr_dir / "combined_ontology.jsonld").write_text(
         json.dumps(payload), encoding="utf-8"
     )
@@ -62,16 +82,20 @@ def _provision_node(
     paragrahv: str = "§ 1.",
     summary: str | None = "ok",
     requested_cluster: object | None = None,
+    part_of_act: object | None = None,
 ) -> dict:
     """Build a LegalProvision-shaped node.
 
     Triggers ``LegalProvisionShape`` because the shape targets every
-    subject of ``estleg:paragrahv`` (mirrors the production graph).
+    subject of ``estleg:paragrahv`` (mirrors the production graph). Carries
+    a valid IRI ``estleg:partOfAct`` by default (issue #415 requires one);
+    callers may override it with their own value.
     """
     node: dict = {
         "@id": iri,
         "@type": ["owl:NamedIndividual"],
         "estleg:paragrahv": paragrahv,
+        "estleg:partOfAct": part_of_act or {"@id": "estleg:Act_X"},
     }
     if summary is not None:
         node["estleg:summary"] = summary

@@ -219,6 +219,68 @@ def test_vos_act_id_is_snapshot_stable() -> None:
     assert doc["@graph"][0]["@id"] == "estleg:VOS_Osa6"
 
 
+def _provisions(doc: dict) -> list[dict]:
+    return [n for n in doc["@graph"] if "estleg:paragrahv" in n]
+
+
+def test_vos_provisions_link_to_act_root_via_part_of_act() -> None:
+    """Issue #415: every VÕS provision must carry estleg:partOfAct → this
+    osa's act root (LegalProvisionShape now requires the IRI join), so fresh
+    generator output stays SHACL-conformant and graph-connected."""
+    root = ET.fromstring(
+        """
+        <akt>
+          <sisu>
+            <osa>
+              <osaNr>6</osaNr>
+              <osaPealkiri>Kindlustuslepingud</osaPealkiri>
+              <paragrahv>
+                <paragrahvNr>422</paragrahvNr>
+                <kuvatavNr>§ 422.</kuvatavNr>
+                <loige><loigeNr>1</loigeNr><tavatekst>Tekst.</tavatekst></loige>
+              </paragrahv>
+            </osa>
+          </sisu>
+        </akt>
+        """
+    )
+    doc = generate_missing_parts.generate_vos_part(root, "fixture.xml", "6")
+    assert doc is not None
+    act_root = doc["@graph"][0]["@id"]
+    provisions = _provisions(doc)
+    assert provisions
+    for prov in provisions:
+        assert prov.get("estleg:partOfAct") == {"@id": act_root}
+
+
+def test_tsus_provisions_link_to_act_root_via_part_of_act() -> None:
+    """Issue #415: every TsÜS part-1 provision must carry estleg:partOfAct →
+    estleg:TsUS_Osa1."""
+    root = ET.fromstring(
+        """
+        <akt>
+          <sisu>
+            <osa>
+              <osaNr>1</osaNr>
+              <osaPealkiri>Üldsätted</osaPealkiri>
+              <paragrahv>
+                <paragrahvNr>3</paragrahvNr>
+                <kuvatavNr>§ 3.</kuvatavNr>
+                <loige><loigeNr>1</loigeNr><tavatekst>Tekst.</tavatekst></loige>
+              </paragrahv>
+            </osa>
+          </sisu>
+        </akt>
+        """
+    )
+    doc = generate_missing_parts.generate_tsus_part1(root, "fixture.xml")
+    assert doc is not None
+    provisions = _provisions(doc)
+    assert provisions
+    for prov in provisions:
+        assert prov.get("estleg:partOfAct") == {"@id": "estleg:TsUS_Osa1"}
+
+
 def test_vos_output_slug_matches_generate_all_laws(tmp_path, monkeypatch) -> None:
     """Regression #269 (mechanism 2): the VÕS per-osa output file MUST be
     written under the canonical ``volaoigusseadus`` slug (õ→o), matching
