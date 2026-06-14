@@ -1740,9 +1740,10 @@ def validate_combined_graph_closure(krr_dir: Path = KRR_DIR):
     object reference resolves to a node in the file, except the deliberately
     external ``COMBINED_CLOSURE_EXEMPT_PREDICATES`` (provision_versions sidecar /
     provisional draft amendments). Also checks that every synthesised stub is
-    actually referenced (no stale orphan stubs) and is a graph-closure leaf (no
-    outbound ``estleg:`` refs). This fails CI on a stale or incomplete combined
-    — the parity guarantee the merge + stub build depends on.
+    actually referenced (no stale orphan stubs) and carries only the whitelisted
+    shaped-closure edges (#488) — each of which must itself resolve in-graph.
+    This fails CI on a stale or incomplete combined — the parity guarantee the
+    merge + stub build depends on.
     """
     print("\n--- Combined Graph Closure (#416) ---")
     combined_path = krr_dir / "combined_ontology.jsonld"
@@ -1771,6 +1772,7 @@ def validate_combined_graph_closure(krr_dir: Path = KRR_DIR):
         if n.get(estleg_common.STUB_NODE_MARKER) is True:
             stub_ids.add(canon)
     exempt = estleg_common.COMBINED_CLOSURE_EXEMPT_PREDICATES
+    allowed_stub_edges = estleg_common.STUB_SEMANTIC_EDGE_PREDICATES
 
     dangling: dict[str, set[str]] = defaultdict(set)
     # Only NON-exempt incoming references keep a stub alive: the builder never
@@ -1781,7 +1783,12 @@ def validate_combined_graph_closure(krr_dir: Path = KRR_DIR):
     for node in nodes:
         is_stub = node.get(estleg_common.STUB_NODE_MARKER) is True
         node_refs = list(estleg_common.iter_node_estleg_refs(node))
-        if is_stub and node_refs:
+        # #488: a stub may carry the whitelisted shaped-closure edges
+        # (estleg:partOfAct / enactedBy / enactedByMunicipality / amendingDraft)
+        # — and only those; any other estleg: object ref on a stub is a
+        # stripping regression. The targets of the allowed edges must still
+        # resolve in-graph, which the dangling check below enforces for all nodes.
+        if is_stub and any(pred not in allowed_stub_edges for pred, _ in node_refs):
             leaky_stubs.append(str(node.get("@id")))
         for predicate, target in node_refs:
             if predicate in exempt:
@@ -1812,15 +1819,17 @@ def validate_combined_graph_closure(krr_dir: Path = KRR_DIR):
     if leaky_stubs:
         error(
             f"combined_ontology.jsonld: {len(leaky_stubs)} stub node(s) carry "
-            f"estleg: object refs — stubs must be graph-closure leaves"
+            f"disallowed estleg: object refs — a stub may carry only the shaped "
+            f"closure edges {sorted(allowed_stub_edges)}"
         )
         for nid in sorted(leaky_stubs)[:10]:
-            print(f"    non-leaf stub: {nid}")
+            print(f"    leaky stub: {nid}")
 
     if not (total_dangling or orphan_stubs or leaky_stubs):
         print(
             f"  Closed: 0 dangling estleg: refs across {len(nodes)} nodes; "
-            f"{len(stub_ids)} stub nodes all referenced and leaf"
+            f"{len(stub_ids)} stub nodes all referenced, carrying only shaped "
+            f"closure edges"
         )
 
 

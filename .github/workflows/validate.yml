@@ -230,6 +230,13 @@ jobs:
             fi
           done
 
+      - name: Run combined-only SHACL gate (aggregate artifact, #489)
+        # Validates krr_outputs/combined_ontology.jsonld ALONE — catches a stale
+        # or semantically thin standalone combined that the union gate below
+        # would mask by merging the public sub-directories. Fail fast here so an
+        # aggregate-artifact regression is distinguishable from public-load drift.
+        run: python3 scripts/validate_combined_standalone.py
+
       - name: Run Seadusloome zero-warning SHACL gate
         run: python3 scripts/validate_seadusloome_sync.py --report seadusloome-shacl-report.ttl
 

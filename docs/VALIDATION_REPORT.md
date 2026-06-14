@@ -17,6 +17,51 @@ excludes generated reports, indexes, manifests, and probe outputs that are not
 corpus inputs; the full SHACL gate further narrows to 23,064 shape-relevant
 JSON-LD files.
 
+## Load surfaces and validation gates
+
+The repository exposes **three distinct load surfaces**, and the validation gate
+differs per surface. A reader must never conflate a finding from one surface with
+a finding from another: a combined-only SHACL violation is *aggregate-artifact
+drift*, not genuine source-data loss, and the correct fix differs accordingly.
+
+`krr_outputs/combined_ontology.jsonld` is the flagship aggregate artifact. It is
+designed to be **semantically complete on its own** for every shaped node it
+contains: it carries graph-closure stub nodes (marked `estleg:isStubNode`) that
+already include the SHACL-required semantic edges for their type, so an app that
+loads only the combined file does **not** need to merge in any subdirectory to
+satisfy the shapes. An app that follows the broader Seadusloome surface instead
+loads the combined file **plus the public subdirectories** and merges nodes by
+`@id` using RDF graph-merge semantics (a thin stub in combined is filled in by
+its full source node from a subdir).
+
+| Surface | What an app loads | Invariant it guarantees | Gate command | A failure means |
+|---------|-------------------|-------------------------|--------------|-----------------|
+| **Combined-only** | `krr_outputs/combined_ontology.jsonld` **alone** | The file is semantically complete on its own for every shaped node it contains (graph-closure stubs carry the required semantic edges; no subdir merge needed). | `scripts/validate_combined_standalone.py` | **Aggregate-artifact** drift — the *builder* produced an incomplete combined file. Fix by regenerating combined via `scripts/fix_all_issues.py` (the `generate_combined_jsonld` builder). **Never** relax SHACL. |
+| **Source subcorpora alone** | The per-bucket source files (laws, kov, riigikohus, eurlex, curia, drafts, sidecars) | Each source bucket conforms to the shapes on its own (with RDFS inference deriving class membership). | `scripts/shacl_validate_all.py --bucket <name>` (INDEX-driven; `inference='rdfs'`) | Genuine **source-data** missing data in that bucket — the source generator must emit the field. |
+| **Seadusloome public load surface** | `combined_ontology.jsonld` **plus** the public subdirectories, merged by `@id` | The published union graph conforms with no SHACL warnings, and sidecar object references resolve (graph closure) — as seen by a consumer that applies **no** inference. | `scripts/validate_seadusloome_sync.py` (union SHACL; `inference='none'`; plus a graph-closure check) | **Public-load-graph** missing data — a field missing from the merged combined-plus-subdirs union as the downstream consumer sees it. |
+
+`scripts/validate_combined_standalone.py` validates the combined artifact
+**ALONE** (combined-only surface). It deliberately **skips** the
+`estleg:graphClosureExempt` enum predicates — `estleg:caseType`,
+`estleg:draftType`, `estleg:legislativePhase`, and `estleg:euDocumentType` —
+because those are controlled-vocabulary classifiers published in
+`krr_outputs/controlled_vocabulary.jsonld`, not graph edges that must close
+inside the combined file. `scripts/validate_seadusloome_sync.py` validates
+**"combined plus the public subdirectories"** (the Seadusloome surface), not the
+combined file alone; see "Seadusloome Zero-Warning Gate" below for its load set
+and CI wiring. The public subdirectories are defined once in
+`scripts/estleg_common.py` as `PUBLIC_LOAD_SUBDIRS`: `eelnoud`, `riigikohus`,
+`curia`, `eurlex`, `concepts`, `sanctions`, `amendments`, `institutions`,
+`provision_versions`, `annotations`, `harmonisation`, and `regulations`.
+
+> **These semantic fields are not optional noise.** `estleg:partOfAct`, the KOV
+> issuer/municipality edges (`estleg:enactedBy`, `estleg:enactedByMunicipality`),
+> regulation metadata (`estleg:documentType`, `estleg:terviktekstId`,
+> `estleg:titleNormalized`), and `estleg:amendingDraft` are SEMANTIC TRAVERSAL &
+> PROVENANCE fields used by the app — they are NOT optional noise, and the
+> correct response to a combined-only finding on them is to regenerate combined,
+> never to suppress/relax SHACL or downgrade to warnings.
+
 ## Checks Performed
 
 1. JSON syntax validity
@@ -104,6 +149,11 @@ identified only six unusable/scanned PDFs. The coverage report at
 recall/unresolved-reference surface for follow-up triage.
 
 ## Seadusloome Zero-Warning Gate
+
+This gate covers the **Seadusloome public load surface** — combined **plus** the
+public subdirectories. See "Load surfaces and validation gates" above for how it
+relates to the combined-only gate (`scripts/validate_combined_standalone.py`) and
+the per-bucket source gate (`scripts/shacl_validate_all.py --bucket <name>`).
 
 `scripts/validate_seadusloome_sync.py` mirrors the Seadusloome `main` sync load path and enforces a zero-warning policy on the published ontology.
 

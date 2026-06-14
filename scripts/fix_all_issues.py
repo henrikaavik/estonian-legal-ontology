@@ -66,6 +66,7 @@ Originally fixed GitHub issues: #2/#17 (namespace), #3/#21 (AÕS naming),
 #14 (script namespace), #19 (INDEX.json), #26 (combined_ontology.jsonld).
 """
 
+import copy
 import datetime as _dt
 import hashlib
 import json
@@ -1029,62 +1030,71 @@ def _strip_estleg_refs(value):
 
 
 def _make_closure_stub(source: dict) -> dict:
-    """Synthesise a lightweight, graph-closed stub from a full source node (#416).
+    """Synthesise a graph-closed stub from a full source node (#416, #488).
 
     Carries the real ``@type`` plus the curated ``STUB_KEEP_PROPS`` (label +
-    identifier + external link), drops every ``estleg:`` object ref, and marks
-    the node with ``estleg:isStubNode`` so the parity gate can recognise it.
+    identifier + external link) with every ``estleg:`` object ref stripped, and
+    marks the node with ``estleg:isStubNode`` so the parity gate can recognise it.
+
+    #488: when the source carries a SHACL-shaped ``@type`` (a domestic
+    regulation, KOV provision, or proposed amendment), the stub must ALSO carry
+    that shape's required SEMANTIC properties — including IRI-valued graph edges
+    (``estleg:enactedBy`` / ``estleg:enactedByMunicipality`` / ``estleg:partOfAct``
+    / ``estleg:amendingDraft``) — so the standalone combined artifact satisfies
+    the project's own SHACL contract rather than publishing an incomplete typed
+    node. These required props are copied verbatim (NOT through
+    ``_strip_estleg_refs``); their estleg: targets are exactly the edges
+    consumers traverse, and :func:`_emit_closure_stubs` closes those targets
+    transitively so the graph stays self-contained.
     """
     stub: dict = {"@id": source["@id"]}
     node_type = source.get("@type")
     if node_type is not None:
-        stub["@type"] = node_type
+        # Copy the list so the stub never aliases the (transient) source node's
+        # @type — defensive; the source is discarded after each scan anyway.
+        stub["@type"] = list(node_type) if isinstance(node_type, list) else node_type
     for prop in STUB_KEEP_PROPS:
         if prop not in source:
             continue
         kept = _strip_estleg_refs(source[prop])
         if kept is not None:
             stub[prop] = kept
+    for prop in estleg_common.required_closure_props(node_type):
+        if prop in source and prop not in stub:
+            value = source[prop]
+            stub[prop] = copy.deepcopy(value) if isinstance(value, (dict, list)) else value
     stub[estleg_common.STUB_NODE_MARKER] = True
     return stub
 
 
-def _emit_closure_stubs(
-    node_by_id: dict[str, dict], all_nodes: list[dict], krr_dir: Path
-) -> int:
-    """Append stub nodes for every dangling cross-corpus ref in the merged graph.
+# #488: a stub may now carry IRI-valued semantic edges (partOfAct / amendingDraft
+# / …) whose targets are NOT referenced anywhere else, so closing the graph is a
+# fixpoint, not a single pass: each new stub can introduce fresh cross-corpus
+# targets that themselves need stubbing. The cascade is shallow (a KOV provision
+# → its parent regulation → its issuer/municipality, which are full registry
+# peeps already present) and always terminates, but this caps runaway loops.
+_MAX_CLOSURE_ITERATIONS = 10
 
-    Scans the already-merged law+overlay graph for ``estleg:`` object refs whose
-    target is not present (and whose predicate is not closure-exempt), resolves
-    each against the sibling corpora, and appends a deterministic, ``@id``-sorted
-    block of leaf stubs so combined loads graph-closed on its own (#416).
+
+def _scan_sources_for(remaining: set[str], krr_dir: Path) -> dict[str, dict]:
+    """Resolve ``remaining`` ids against the sibling corpora in one full scan.
+
+    Walks ``STUB_SOURCE_SUBDIRS`` (in order, first match wins) and returns
+    ``{canonical_id: source_node}`` for every id in ``remaining`` that resolves
+    to a node in a public data file. Ids with no source node are simply absent
+    from the result; the caller treats them as unresolvable.
     """
-    exempt = estleg_common.COMBINED_CLOSURE_EXEMPT_PREDICATES
-    # iter_node_estleg_refs yields canonical compact targets, so compare against
-    # the canonical form of every present @id (handles expanded-IRI nodes too).
-    present = {estleg_common.canonical_estleg_ref(k) or k for k in node_by_id}
-    needed: set[str] = set()
-    for node in all_nodes:
-        for predicate, target in estleg_common.iter_node_estleg_refs(node):
-            if predicate in exempt:
-                continue
-            if target not in present:
-                needed.add(target)
-    if not needed:
-        print("  No dangling cross-corpus refs — no stubs needed")
-        return 0
-
-    remaining = set(needed)
-    stubs: dict[str, dict] = {}
+    pending = set(remaining)
+    found: dict[str, dict] = {}
     for subdir_name in STUB_SOURCE_SUBDIRS:
-        if not remaining:
+        if not pending:
             break
         subdir = krr_dir / subdir_name
         if not subdir.is_dir():
             continue
         for suffix in (".json", ".jsonld"):
             for path in sorted(subdir.rglob(f"*{suffix}")):
-                if not remaining:
+                if not pending:
                     break
                 if not estleg_common.is_public_jsonld_data_file(path):
                     continue
@@ -1103,17 +1113,78 @@ def _emit_closure_stubs(
                     if not isinstance(nid, str):
                         continue
                     canon = estleg_common.canonical_estleg_ref(nid) or nid
-                    if canon in remaining:
-                        stubs[canon] = _make_closure_stub(node)
-                        remaining.discard(canon)
+                    if canon in pending:
+                        found[canon] = node
+                        pending.discard(canon)
+    return found
 
-    if remaining:
+
+def _emit_closure_stubs(
+    node_by_id: dict[str, dict], all_nodes: list[dict], krr_dir: Path
+) -> int:
+    """Append stub nodes for every dangling cross-corpus ref in the merged graph.
+
+    Scans the already-merged law+overlay graph for ``estleg:`` object refs whose
+    target is not present (and whose predicate is not closure-exempt), resolves
+    each against the sibling corpora, and appends a deterministic, ``@id``-sorted
+    block of stubs so combined loads graph-closed on its own (#416). Because a
+    shaped stub now carries its SHACL-required semantic edges (#488), the closure
+    is computed to a FIXPOINT: any cross-corpus target a freshly-minted stub
+    introduces (a KOV provision's parent act, a proposal's draft) is resolved and
+    stubbed in turn, until no new targets remain.
+    """
+    exempt = estleg_common.COMBINED_CLOSURE_EXEMPT_PREDICATES
+    # iter_node_estleg_refs yields canonical compact targets, so compare against
+    # the canonical form of every present @id (handles expanded-IRI nodes too).
+    present = {estleg_common.canonical_estleg_ref(k) or k for k in node_by_id}
+    stubs: dict[str, dict] = {}
+
+    def dangling_from(nodes) -> set[str]:
+        """Non-exempt estleg: targets in ``nodes`` not yet present or stubbed."""
+        out: set[str] = set()
+        for node in nodes:
+            for predicate, target in estleg_common.iter_node_estleg_refs(node):
+                if predicate in exempt:
+                    continue
+                if target not in present and target not in stubs:
+                    out.add(target)
+        return out
+
+    frontier = dangling_from(all_nodes)
+    if not frontier:
+        print("  No dangling cross-corpus refs — no stubs needed")
+        return 0
+
+    unresolved: set[str] = set()
+    iterations = 0
+    while frontier:
+        iterations += 1
+        if iterations > _MAX_CLOSURE_ITERATIONS:
+            unresolved |= frontier
+            print(
+                f"  WARNING: closure did not converge after "
+                f"{_MAX_CLOSURE_ITERATIONS} iterations; leaving {len(frontier)} "
+                f"ref(s) for the closure gate to flag"
+            )
+            break
+        found = _scan_sources_for(frontier, krr_dir)
+        unresolved |= frontier - found.keys()
+        if not found:
+            break
+        new_stubs = {canon: _make_closure_stub(node) for canon, node in found.items()}
+        stubs.update(new_stubs)
+        # A new stub's carried semantic edges (#488) may dangle in turn — close
+        # them next round. dangling_from already excludes present + stubbed ids;
+        # subtract known-unresolvable ids so we never rescan a dead target.
+        frontier = dangling_from(new_stubs.values()) - unresolved
+
+    if unresolved:
         # Defer enforcement to the closure gate rather than aborting the build:
         # a single unresolvable ref shouldn't block a release rebuild, and
         # validate_combined_graph_closure() fails CI on any residual dangling.
-        sample = ", ".join(sorted(remaining)[:10])
+        sample = ", ".join(sorted(unresolved)[:10])
         print(
-            f"  WARNING: {len(remaining)} cross-corpus reference(s) resolve to no "
+            f"  WARNING: {len(unresolved)} cross-corpus reference(s) resolve to no "
             f"node in any sibling corpus; left unstubbed for the closure gate "
             f"(validate_combined_graph_closure) to flag: {sample}"
         )

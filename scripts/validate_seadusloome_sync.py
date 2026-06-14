@@ -512,6 +512,18 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv)
 
+    # #491: name the load surface explicitly so a finding here is never misread
+    # as combined-only drift. This gate validates the SEADUSLOOME PUBLIC LOAD
+    # SURFACE — combined_ontology.jsonld merged with the public sub-directories —
+    # where RDF graph-merge fills a thin combined stub from its full source node.
+    # To validate the combined artifact ALONE, use
+    # scripts/validate_combined_standalone.py instead.
+    print(
+        "Seadusloome load-surface gate: validating combined_ontology.jsonld PLUS "
+        "the public sub-directories as one merged graph "
+        f"({', '.join(PUBLIC_LOAD_SUBDIRS)})."
+    )
+
     inputs, input_warnings, input_errors = collect_inputs(args.krr_dir)
     for warning in input_warnings:
         print(warning)
