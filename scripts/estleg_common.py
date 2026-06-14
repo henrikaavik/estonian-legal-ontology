@@ -310,6 +310,96 @@ def iter_public_load_files(
                     inputs.add(path)
     return sorted(inputs)
 
+
+# ---------------------------------------------------------------------------
+# Combined-ontology composition (#416)
+# ---------------------------------------------------------------------------
+# `combined_ontology.jsonld` is the flagship "load-everything" artifact. Beyond
+# the law peeps it fully MERGES these enrichment overlays (their target nodes
+# are part of the law graph) and emits lightweight STUB nodes for every
+# remaining cross-corpus object reference (court/EU/draft/regulation/amendment/
+# harmonisation) so the file is graph-closed when loaded on its own. The
+# builder (`fix_all_issues.generate_combined_jsonld`) and the parity/closure
+# gate (`validate_all`) BOTH read these constants — keep them as the one
+# source of truth so the two never drift.
+COMBINED_OVERLAY_SUBDIRS: tuple[str, ...] = (
+    "sanctions",
+    "institutions",
+    "concepts",
+    "annotations",
+)
+
+# Marker placed on synthesised stub nodes so the parity gate can tell a
+# graph-closure stub apart from a genuine source node.
+STUB_NODE_MARKER: str = "estleg:isStubNode"
+
+# Object predicates whose `estleg:` targets are deliberately NOT inlined into
+# combined and are therefore exempt from the combined-alone closure gate:
+#   * estleg:hasVersion  -> the 124,901 provision_versions/ sidecar nodes,
+#     a separate bucket far too large to fold into the flagship file;
+#   * estleg:amendedBy   -> provisional draft-derived AmendmentEvents, already
+#     marked `estleg:graphClosureExempt true` in the SHACL shapes (#423).
+# This is intentionally a different, combined-specific set from the SHACL
+# `graphClosureExempt` markers used by the Seadusloome union gate (that gate
+# loads the sidecars, so hasVersion resolves there).
+COMBINED_CLOSURE_EXEMPT_PREDICATES: frozenset[str] = frozenset(
+    {
+        "estleg:hasVersion",
+        "estleg:amendedBy",
+    }
+)
+
+
+def iter_combined_overlay_files(krr_dir: Path) -> list[Path]:
+    """Return the sorted overlay data files merged into combined (#416)."""
+    files: set[Path] = set()
+    for subdir_name in COMBINED_OVERLAY_SUBDIRS:
+        subdir = krr_dir / subdir_name
+        if not subdir.is_dir():
+            continue
+        for suffix in PUBLIC_LOAD_JSONLD_SUFFIXES:
+            for path in subdir.rglob(f"*{suffix}"):
+                if path.is_file() and is_public_jsonld_data_file(path):
+                    files.add(path)
+    return sorted(files)
+
+
+def _walk_object_refs(value: object, predicate: str) -> Iterator[tuple[str, str]]:
+    """Yield ``(predicate, ref)`` for every JSON-LD ``@id`` under ``value``.
+
+    Mirrors the Seadusloome sync gate's walker so the closure notion stays
+    identical: a nested object keeps the nearest non-``@list``/``@set`` key as
+    its predicate.
+    """
+    if isinstance(value, dict):
+        ref = value.get("@id")
+        if isinstance(ref, str):
+            yield predicate, ref
+        for key, child in value.items():
+            if key in {"@context", "@id"}:
+                continue
+            child_predicate = predicate if key in {"@list", "@set"} else key
+            yield from _walk_object_refs(child, child_predicate)
+    elif isinstance(value, list):
+        for item in value:
+            yield from _walk_object_refs(item, predicate)
+
+
+def iter_node_estleg_refs(node: dict) -> Iterator[tuple[str, str]]:
+    """Yield ``(predicate, target)`` for each ``estleg:`` object ref on ``node``.
+
+    ``@id``/``@type``/``@context`` are skipped: ``@type`` class IRIs are not
+    object references for closure purposes (matching how the corpus treats
+    per-law ``estleg:LegalProvision_*`` classes).
+    """
+    for key, value in node.items():
+        if key in ("@id", "@type", "@context"):
+            continue
+        for _pred, ref in _walk_object_refs(value, key):
+            if ref.startswith("estleg:"):
+                yield key, ref
+
+
 # ---------------------------------------------------------------------------
 # JSON-LD shared context
 # ---------------------------------------------------------------------------

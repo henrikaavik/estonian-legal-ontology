@@ -4,6 +4,33 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Combined ontology is now a self-contained graph (#416)
+
+- `generate_combined_jsonld()` no longer ships a laws-only aggregate. It now
+  (1) fully merges the `sanctions/`, `institutions/`, `concepts/`, and
+  `annotations/` enrichment overlays, and (2) mints lightweight leaf **stub
+  nodes** (`estleg:isStubNode`, carrying `@type` + `rdfs:label` + an identifier
+  + an external link) for every remaining cross-corpus reference — court (RK),
+  EU, draft, regulation, amendment-link, and harmonisation IRIs whose full node
+  lives in a sibling corpus. Loading `combined_ontology.jsonld` on its own now
+  yields **zero dangling `estleg:` object IRIs** except the deliberately
+  external `estleg:hasVersion` (provision_versions sidecar) and `estleg:amendedBy`
+  (provisional draft amendments). Artifact grows ~178 MB → ~245 MB
+  (165,620 law + 29,415 overlay + 33,111 stub nodes).
+- The build now reads the git-LFS `annotations/oiguskantsler_seisukohad.jsonld`
+  and `eurlex/eurlex_combined.jsonld` sources and fails fast if either is an
+  un-materialised pointer (`_require_combined_build_sources`).
+- New `validate_combined_graph_closure()` gate in `validate_all.py` asserts the
+  closure invariant (zero dangling non-exempt refs; every stub referenced and a
+  leaf) and so fails CI on a stale or incomplete combined. The existing parity
+  gate now treats overlay nodes as canonical sources and stub nodes as expected
+  extras. Shared constants/helpers (`COMBINED_OVERLAY_SUBDIRS`,
+  `COMBINED_CLOSURE_EXEMPT_PREDICATES`, `STUB_NODE_MARKER`,
+  `iter_combined_overlay_files`, `iter_node_estleg_refs`) live in `estleg_common`.
+- `estleg:isStubNode` declared in `controlled_vocabulary.jsonld`. The four
+  `avaliku_teabe_seadus` `implementedBy` targets flagged in the issue already
+  resolve in the regulations corpus (KOV pipeline backfill); no data change.
+
 ### KOV integration Layer 2c PR #3 — Court-Provision Links (closes Gate B)
 
 - `extract_court_provision_links.py` now resolves KOV act-level citations

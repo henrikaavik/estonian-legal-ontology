@@ -2262,3 +2262,121 @@ def test_validate_legacy_deprecations_noop_without_decisions_file(tmp_path: Path
     )
     assert validate_all.errors == []
     assert "no deprecation decisions to enforce" in capsys.readouterr().out
+
+
+# ---------------------------------------------------------------------------
+# #416: combined graph-closure gate + stub-aware parity
+# ---------------------------------------------------------------------------
+
+
+def _court_stub(nid: str, label: str = "RK") -> dict:
+    return {
+        "@id": nid,
+        "@type": ["owl:NamedIndividual", "estleg:CourtDecision"],
+        "rdfs:label": label,
+        estleg_common.STUB_NODE_MARKER: True,
+    }
+
+
+def test_validate_combined_graph_closure_passes_on_closed_graph(tmp_path):
+    krr = tmp_path / "krr_outputs"
+    _write_combined(
+        krr,
+        [
+            {
+                "@id": "estleg:A_1",
+                "@type": ["estleg:LegalProvision"],
+                "estleg:interpretedBy": {"@id": "estleg:RK_1"},
+                # exempt predicate → may dangle without failing closure
+                "estleg:hasVersion": {"@id": "estleg:A_1_v1"},
+            },
+            _court_stub("estleg:RK_1"),
+        ],
+    )
+    validate_all.validate_combined_graph_closure(krr)
+    assert validate_all.errors == [], validate_all.errors
+
+
+def test_validate_combined_graph_closure_flags_dangling_ref(tmp_path):
+    """Synthetic staleness: a referenced overlay/stub node missing → CI fails."""
+    krr = tmp_path / "krr_outputs"
+    _write_combined(
+        krr,
+        [
+            {
+                "@id": "estleg:A_1",
+                "@type": ["estleg:LegalProvision"],
+                "estleg:hasSanction": {"@id": "estleg:Sanction_missing"},
+            }
+        ],
+    )
+    validate_all.validate_combined_graph_closure(krr)
+    assert any("dangling estleg" in e for e in validate_all.errors), validate_all.errors
+
+
+def test_validate_combined_graph_closure_exempts_provision_versions(tmp_path):
+    krr = tmp_path / "krr_outputs"
+    _write_combined(
+        krr,
+        [
+            {
+                "@id": "estleg:A_1",
+                "@type": ["estleg:LegalProvision"],
+                "estleg:hasVersion": {"@id": "estleg:A_1_v1"},  # absent but exempt
+            }
+        ],
+    )
+    validate_all.validate_combined_graph_closure(krr)
+    assert validate_all.errors == [], validate_all.errors
+
+
+def test_validate_combined_graph_closure_flags_orphan_stub(tmp_path):
+    krr = tmp_path / "krr_outputs"
+    _write_combined(
+        krr,
+        [
+            {"@id": "estleg:A_1", "@type": ["estleg:LegalProvision"]},
+            _court_stub("estleg:RK_unreferenced"),  # referenced by nothing
+        ],
+    )
+    validate_all.validate_combined_graph_closure(krr)
+    assert any("stale stub" in e for e in validate_all.errors), validate_all.errors
+
+
+def test_validate_combined_graph_closure_flags_non_leaf_stub(tmp_path):
+    krr = tmp_path / "krr_outputs"
+    leaky = _court_stub("estleg:RK_1")
+    leaky["estleg:interpretsLaw"] = {"@id": "estleg:A_1"}  # stub must not carry refs
+    _write_combined(
+        krr,
+        [
+            {
+                "@id": "estleg:A_1",
+                "@type": ["estleg:LegalProvision"],
+                "estleg:interpretedBy": {"@id": "estleg:RK_1"},
+            },
+            leaky,
+        ],
+    )
+    validate_all.validate_combined_graph_closure(krr)
+    assert any("leaves" in e for e in validate_all.errors), validate_all.errors
+
+
+def test_validate_combined_ontology_allows_stub_and_annotation_extras(tmp_path):
+    """Stub nodes and (LFS) annotation overlay nodes are not 'stale extras' (#416)."""
+    krr = tmp_path / "krr_outputs"
+    write_json(krr / "law_a_peep.json", {"@graph": [_provision_node("estleg:A_1")]})
+    _write_combined(
+        krr,
+        [
+            _provision_node("estleg:A_1"),
+            _court_stub("estleg:RK_1"),
+            {
+                "@id": "estleg:Annotation_x",
+                "@type": ["owl:NamedIndividual", "estleg:Annotation"],
+                "rdfs:label": "an annotation",
+            },
+        ],
+    )
+    validate_all.validate_combined_ontology(krr)
+    assert not any("stale extra" in e for e in validate_all.errors), validate_all.errors

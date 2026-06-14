@@ -1243,3 +1243,135 @@ def test_generate_combined_passes_when_deprecations_applied(tmp_path, monkeypatc
     out = capsys.readouterr().out
     assert "Verified 1 deprecated legacy roots carry #426 marks" in out
     assert (krr / "combined_ontology.jsonld").exists()
+
+
+# ---------------------------------------------------------------------------
+# #416: overlay merge + cross-corpus closure stubs in generate_combined_jsonld
+# ---------------------------------------------------------------------------
+
+
+def test_combined_builder_merges_overlays_and_stubs_cross_corpus_refs(tmp_path):
+    """Overlays are merged in full; cross-corpus refs become leaf stubs (#416)."""
+    write_json(
+        tmp_path / "law_a_peep.json",
+        {
+            "@graph": [
+                {
+                    "@id": "estleg:A_1",
+                    "@type": ["estleg:LegalProvision"],
+                    "estleg:hasSanction": {"@id": "estleg:Sanction_A_1_fine"},
+                    "estleg:interpretedBy": {"@id": "estleg:RK_1_2_3_4"},
+                    # closure-exempt: provision_versions sidecar, never stubbed
+                    "estleg:hasVersion": {"@id": "estleg:A_1_v1"},
+                }
+            ]
+        },
+    )
+    # overlay source: fully merged into combined
+    write_json(
+        tmp_path / "sanctions" / "sanctions_a.json",
+        {
+            "@graph": [
+                {
+                    "@id": "estleg:Sanction_A_1_fine",
+                    "@type": ["owl:NamedIndividual", "estleg:Sanction"],
+                    "rdfs:label": "Fine",
+                    "estleg:applicableProvision": {"@id": "estleg:A_1"},
+                }
+            ]
+        },
+    )
+    # sibling source: only a lightweight stub of this is carried into combined
+    write_json(
+        tmp_path / "riigikohus" / "rk_2020.jsonld",
+        {
+            "@graph": [
+                {
+                    "@id": "estleg:RK_1_2_3_4",
+                    "@type": ["owl:NamedIndividual", "estleg:CourtDecision"],
+                    "rdfs:label": "RK 1-2-3/4",
+                    "estleg:caseNumber": "1-2-3/4",
+                    "estleg:decisionLink": {"@value": "https://x", "@type": "xsd:anyURI"},
+                    "estleg:summary": "a very long judgment body",
+                    "estleg:interpretsLaw": {"@id": "estleg:A_1"},
+                }
+            ]
+        },
+    )
+
+    fix_all_issues.generate_combined_jsonld(tmp_path)
+    nodes = {n["@id"]: n for n in read_json(tmp_path / "combined_ontology.jsonld")["@graph"]}
+
+    # overlay merged in full
+    assert nodes["estleg:Sanction_A_1_fine"]["rdfs:label"] == "Fine"
+    assert nodes["estleg:Sanction_A_1_fine"]["estleg:applicableProvision"] == {"@id": "estleg:A_1"}
+
+    # court decision present only as a graph-closure LEAF stub: marked, carries
+    # label + identifier + link, drops the big text body AND every estleg: ref.
+    stub = nodes["estleg:RK_1_2_3_4"]
+    assert stub["estleg:isStubNode"] is True
+    assert stub["estleg:caseNumber"] == "1-2-3/4"
+    assert stub["estleg:decisionLink"] == {"@value": "https://x", "@type": "xsd:anyURI"}
+    assert "estleg:summary" not in stub
+    assert "estleg:interpretsLaw" not in stub  # internal ref stripped → leaf
+
+    # the closure-exempt hasVersion target is deliberately NOT stubbed
+    assert "estleg:A_1_v1" not in nodes
+
+
+def test_combined_builder_stub_keeps_external_link_drops_internal_ref(tmp_path):
+    """A stub keeps owl:sameAs to an external IRI but drops estleg: refs (#416)."""
+    write_json(
+        tmp_path / "law_a_peep.json",
+        {
+            "@graph": [
+                {
+                    "@id": "estleg:A_1",
+                    "@type": ["estleg:LegalProvision"],
+                    "estleg:implementedBy": {"@id": "estleg:Reg_9_Map_2026"},
+                }
+            ]
+        },
+    )
+    write_json(
+        tmp_path / "regulations" / "kov" / "reg_9_peep.json",
+        {
+            "@graph": [
+                {
+                    "@id": "estleg:Reg_9_Map_2026",
+                    "@type": ["estleg:Act", "estleg:MunicipalRegulation", "owl:Ontology"],
+                    "rdfs:label": "Some municipal regulation",
+                    "owl:sameAs": {"@id": "https://www.riigiteataja.ee/akt/9.xml"},
+                    "estleg:hasProvision": {"@id": "estleg:Reg_9_Par_1"},
+                }
+            ]
+        },
+    )
+
+    fix_all_issues.generate_combined_jsonld(tmp_path)
+    nodes = {n["@id"]: n for n in read_json(tmp_path / "combined_ontology.jsonld")["@graph"]}
+    stub = nodes["estleg:Reg_9_Map_2026"]
+    assert stub["estleg:isStubNode"] is True
+    assert stub["owl:sameAs"] == {"@id": "https://www.riigiteataja.ee/akt/9.xml"}
+    assert "estleg:hasProvision" not in stub  # internal ref stripped
+
+
+def test_combined_builder_leaves_unresolvable_ref_unstubbed(tmp_path, capsys):
+    """An estleg ref with no overlay/sibling source is left for the closure gate."""
+    write_json(
+        tmp_path / "law_a_peep.json",
+        {
+            "@graph": [
+                {
+                    "@id": "estleg:A_1",
+                    "@type": ["estleg:LegalProvision"],
+                    "estleg:references": {"@id": "estleg:Ghost_99"},
+                }
+            ]
+        },
+    )
+    fix_all_issues.generate_combined_jsonld(tmp_path)
+    ids = graph_ids(read_json(tmp_path / "combined_ontology.jsonld"))
+    assert "estleg:A_1" in ids
+    assert "estleg:Ghost_99" not in ids  # left dangling, not invented
+    assert "left unstubbed" in capsys.readouterr().out

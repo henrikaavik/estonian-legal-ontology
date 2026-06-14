@@ -102,6 +102,57 @@ COMBINED_ALLOWED_JSONLD = (
     "tsus_osa7_138_169_owl.jsonld",
 )
 COMBINED_OUTPUT_NAME = "combined_ontology.jsonld"
+
+# #416: directories scanned (in this order, first match wins) to resolve a
+# dangling cross-corpus reference left in the merged graph to its full source
+# node so a lightweight stub can be synthesised. ``curia/`` is intentionally
+# absent — no law peep references an ``estleg:EUCJ_*`` node, so scanning it
+# would only slow the build.
+STUB_SOURCE_SUBDIRS = (
+    "riigikohus",
+    "eurlex",
+    "eelnoud",
+    "regulations",
+    "amendments",
+    "harmonisation",
+)
+
+# #416: git-LFS-tracked sources the combined build now depends on. They must be
+# materialised (``git lfs pull``) or the build would silently emit a degraded
+# artifact — fail hard instead, mirroring the deprecation-decisions guard.
+COMBINED_BUILD_LFS_SOURCES = (
+    "annotations/oiguskantsler_seisukohad.jsonld",  # overlay merge
+    "eurlex/eurlex_combined.jsonld",  # EU stub source
+)
+
+# #416: the only properties copied onto a closure stub. Everything else (large
+# text bodies — summary/legalText — and crucially every ``estleg:`` object
+# reference) is dropped so a stub is a graph-closure LEAF that introduces no
+# new dangling refs. ``owl:sameAs`` / ``dcterms:source`` are kept because they
+# point at EXTERNAL (non-``estleg:``) IRIs (Riigi Teataja / CELEX) — real,
+# useful links that do not affect internal closure.
+STUB_KEEP_PROPS = (
+    "rdfs:label",
+    "rdfs:comment",
+    "estleg:caseNumber",
+    "estleg:ecliIdentifier",
+    "estleg:celexNumber",
+    "estleg:eliIdentifier",
+    "estleg:eisNumber",
+    "estleg:actNumber",
+    "estleg:globalId",
+    "dcterms:identifier",
+    "estleg:decisionLink",
+    "estleg:eurLexLink",
+    "estleg:eisLink",
+    "estleg:curiaLink",
+    "estleg:decisionDate",
+    "estleg:publicationDate",
+    "estleg:documentDate",
+    "owl:sameAs",
+    "dcterms:source",
+)
+
 INDEX_ALLOWED_JSONLD = (
     "karistusseadustik_eriosa_owl.jsonld",
     "tsus_osa7_138_169_owl.jsonld",
@@ -919,8 +970,164 @@ def _merge_node_properties(existing: dict, incoming: dict) -> None:
     return None
 
 
+def _is_lfs_pointer(path: Path) -> bool:
+    """True when ``path`` is an un-materialised Git-LFS pointer stub (#416)."""
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            return f.readline().rstrip("\n") == "version https://git-lfs.github.com/spec/v1"
+    except OSError:
+        return False
+
+
+def _require_combined_build_sources(krr_dir: Path) -> None:
+    """Fail hard if an LFS source the combined build needs is un-materialised.
+
+    Merging the annotations overlay and resolving EU stub targets both read
+    git-LFS files. On a checkout without ``git lfs pull`` those are ~130-byte
+    pointer stubs; building anyway would emit a silently-degraded combined
+    artifact, so refuse — the same fail-fast contract as the #426 deprecation
+    guard below.
+    """
+    missing = [
+        rel
+        for rel in COMBINED_BUILD_LFS_SOURCES
+        if (krr_dir / rel).exists() and _is_lfs_pointer(krr_dir / rel)
+    ]
+    if missing:
+        raise ValueError(
+            "combined build requires materialised Git-LFS sources but these are "
+            "pointer stubs: " + ", ".join(missing) + ". Run "
+            "`git lfs pull --include="
+            + ",".join(f"krr_outputs/{rel}" for rel in missing)
+            + "` first."
+        )
+
+
+def _strip_estleg_refs(value):
+    """Return ``value`` with every internal ``estleg:`` ``@id`` reference removed.
+
+    Keeps literals, ``{"@value": ...}`` objects, and EXTERNAL ``{"@id": ...}``
+    references (Riigi Teataja / CELEX links). Returns ``None`` when nothing
+    survives, so a property that held only internal refs is dropped entirely —
+    the mechanism that makes a stub a graph-closure leaf (#416).
+    """
+    if isinstance(value, dict):
+        rid = value.get("@id")
+        if isinstance(rid, str) and rid.startswith("estleg:"):
+            return None
+        cleaned = {}
+        for key, child in value.items():
+            child_value = child if key == "@id" else _strip_estleg_refs(child)
+            if child_value is not None:
+                cleaned[key] = child_value
+        return cleaned or None
+    if isinstance(value, list):
+        kept = [c for c in (_strip_estleg_refs(item) for item in value) if c is not None]
+        return kept or None
+    return value
+
+
+def _make_closure_stub(source: dict) -> dict:
+    """Synthesise a lightweight, graph-closed stub from a full source node (#416).
+
+    Carries the real ``@type`` plus the curated ``STUB_KEEP_PROPS`` (label +
+    identifier + external link), drops every ``estleg:`` object ref, and marks
+    the node with ``estleg:isStubNode`` so the parity gate can recognise it.
+    """
+    stub: dict = {"@id": source["@id"]}
+    node_type = source.get("@type")
+    if node_type is not None:
+        stub["@type"] = node_type
+    for prop in STUB_KEEP_PROPS:
+        if prop not in source:
+            continue
+        kept = _strip_estleg_refs(source[prop])
+        if kept is not None:
+            stub[prop] = kept
+    stub[estleg_common.STUB_NODE_MARKER] = True
+    return stub
+
+
+def _emit_closure_stubs(
+    node_by_id: dict[str, dict], all_nodes: list[dict], krr_dir: Path
+) -> int:
+    """Append stub nodes for every dangling cross-corpus ref in the merged graph.
+
+    Scans the already-merged law+overlay graph for ``estleg:`` object refs whose
+    target is not present (and whose predicate is not closure-exempt), resolves
+    each against the sibling corpora, and appends a deterministic, ``@id``-sorted
+    block of leaf stubs so combined loads graph-closed on its own (#416).
+    """
+    exempt = estleg_common.COMBINED_CLOSURE_EXEMPT_PREDICATES
+    needed: set[str] = set()
+    for node in all_nodes:
+        for predicate, target in estleg_common.iter_node_estleg_refs(node):
+            if predicate in exempt:
+                continue
+            if target not in node_by_id:
+                needed.add(target)
+    if not needed:
+        print("  No dangling cross-corpus refs — no stubs needed")
+        return 0
+
+    remaining = set(needed)
+    stubs: dict[str, dict] = {}
+    for subdir_name in STUB_SOURCE_SUBDIRS:
+        if not remaining:
+            break
+        subdir = krr_dir / subdir_name
+        if not subdir.is_dir():
+            continue
+        for suffix in (".json", ".jsonld"):
+            for path in sorted(subdir.rglob(f"*{suffix}")):
+                if not remaining:
+                    break
+                if not estleg_common.is_public_jsonld_data_file(path):
+                    continue
+                try:
+                    with open(path, "r", encoding="utf-8") as f:
+                        doc = json.load(f)
+                except (json.JSONDecodeError, UnicodeDecodeError):
+                    continue
+                graph = doc.get("@graph")
+                if not isinstance(graph, list):
+                    continue
+                for node in graph:
+                    if not isinstance(node, dict):
+                        continue
+                    nid = node.get("@id")
+                    if nid in remaining:
+                        stubs[nid] = _make_closure_stub(node)
+                        remaining.discard(nid)
+
+    if remaining:
+        # Defer enforcement to the closure gate rather than aborting the build:
+        # a single unresolvable ref shouldn't block a release rebuild, and
+        # validate_combined_graph_closure() fails CI on any residual dangling.
+        sample = ", ".join(sorted(remaining)[:10])
+        print(
+            f"  WARNING: {len(remaining)} cross-corpus reference(s) resolve to no "
+            f"node in any sibling corpus; left unstubbed for the closure gate "
+            f"(validate_combined_graph_closure) to flag: {sample}"
+        )
+
+    for nid in sorted(stubs):
+        stub = stubs[nid]
+        node_by_id[nid] = stub
+        all_nodes.append(stub)
+    print(f"  Emitted {len(stubs)} graph-closure stub nodes")
+    return len(stubs)
+
+
 def generate_combined_jsonld(krr_dir: Path = KRR_DIR):
-    """Generate combined JSON-LD file (Issue #26, DQ-1)."""
+    """Generate combined JSON-LD file (Issue #26, DQ-1).
+
+    Composition (#416): law peeps + the ``COMBINED_ALLOWED_JSONLD`` allowlist,
+    then the enrichment overlays (sanctions/institutions/concepts/annotations)
+    fully merged, then a deterministic block of lightweight stub nodes for every
+    remaining cross-corpus reference (court/EU/draft/regulation/amendment/
+    harmonisation) so the artifact is graph-closed when loaded on its own.
+    """
     print("\n=== Generating combined JSON-LD ===")
 
     # #426 invariant: a legacy peep listed in the deprecation decisions must
@@ -941,6 +1148,10 @@ def generate_combined_jsonld(krr_dir: Path = KRR_DIR):
         )
     if checked:
         print(f"  Verified {checked} deprecated legacy roots carry #426 marks")
+
+    # #416: the overlay merge + EU stub lookup read git-LFS sources — refuse to
+    # build a degraded artifact from pointer stubs.
+    _require_combined_build_sources(krr_dir)
 
     combined_context = {
         "estleg": NEW_NS,
@@ -963,20 +1174,20 @@ def generate_combined_jsonld(krr_dir: Path = KRR_DIR):
     node_by_id: dict[str, dict] = {}
     out_path = krr_dir / COMBINED_OUTPUT_NAME
 
-    for filepath in canonical_combined_inputs(krr_dir):
+    def ingest(filepath: Path) -> None:
         if filepath.name == COMBINED_OUTPUT_NAME:
-            # Defensive guard. canonical_combined_inputs() never returns the
-            # combined output file, but make doubly sure we never read it
-            # back into itself even if the input list is hand-extended.
-            continue
+            # Defensive guard. The input lists never return the combined output
+            # file, but make doubly sure we never read it back into itself even
+            # if a list is hand-extended.
+            return
         try:
             with open(filepath, "r", encoding="utf-8") as f:
                 doc = json.load(f)
         except (json.JSONDecodeError, UnicodeDecodeError):
-            continue
+            return
         graph = doc.get("@graph")
         if not isinstance(graph, list):
-            continue
+            return
         for node in graph:
             if not isinstance(node, dict):
                 continue
@@ -995,6 +1206,26 @@ def generate_combined_jsonld(krr_dir: Path = KRR_DIR):
                 # properties into the node we already kept (#281).
                 _merge_node_properties(existing, node)
 
+    for filepath in canonical_combined_inputs(krr_dir):
+        ingest(filepath)
+    law_node_count = len(all_nodes)
+
+    # #416: fully merge the enrichment overlays — their nodes are part of the
+    # law graph (Sanction/Institution/Concept/Annotation are the targets of
+    # hasSanction/competentAuthority/annotates/concept links).
+    for filepath in estleg_common.iter_combined_overlay_files(krr_dir):
+        ingest(filepath)
+    overlay_node_count = len(all_nodes) - law_node_count
+    print(
+        f"  Merged {law_node_count} law nodes + {overlay_node_count} overlay "
+        f"nodes (sanctions/institutions/concepts/annotations)"
+    )
+
+    # #416: close the graph — synthesise a leaf stub for every remaining
+    # cross-corpus reference so combined loads standalone with zero dangling
+    # estleg: object IRIs.
+    stub_count = _emit_closure_stubs(node_by_id, all_nodes, krr_dir)
+
     combined = {
         "@context": combined_context,
         "@graph": all_nodes,
@@ -1002,8 +1233,9 @@ def generate_combined_jsonld(krr_dir: Path = KRR_DIR):
 
     save_json(out_path, combined)
     print(
-        f"  Generated {out_path.name} with {len(all_nodes)} nodes "
-        f"from {len(node_by_id)} unique IDs"
+        f"  Generated {out_path.name} with {len(all_nodes)} nodes from "
+        f"{len(node_by_id)} unique IDs "
+        f"({law_node_count} law + {overlay_node_count} overlay + {stub_count} stub)"
     )
 
 
