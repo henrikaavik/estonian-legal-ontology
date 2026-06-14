@@ -153,6 +153,19 @@ estleg:LegalProvisionShape
         sh:description "Human-readable name of the law this provision belongs to" ;
     ] ;
     sh:property [
+        # Issue #415: structural IRI join to the act root. sourceAct above is
+        # the literal title; partOfAct is the graph edge SPARQL traverses to
+        # answer "which act does this § belong to" / "all provisions of act X".
+        # Emitted by generate_all_laws.py (law + multipart paths) and
+        # generate_regulations.py on every provision; KOV provisions also carry
+        # it via enrich_kov_layer1.py.
+        sh:path estleg:partOfAct ;
+        sh:minCount 1 ;
+        sh:nodeKind sh:IRI ;
+        sh:name "partOfAct" ;
+        sh:description "Every LegalProvision must link to its parent act root via at least one IRI-valued estleg:partOfAct." ;
+    ] ;
+    sh:property [
         sh:path estleg:topicCluster ;
         sh:nodeKind sh:IRI ;
         sh:name "topicCluster" ;

@@ -304,6 +304,7 @@ def test_legal_provision_with_version_links_conforms():
         "@id": "estleg:LegalProvision_TEST_1",
         "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
         "estleg:paragrahv": "§ 1",
+        "estleg:partOfAct": {"@id": "estleg:TEST_Map_2026"},
         "estleg:summary": "Test provision used in the schema-model test.",
         "estleg:hasVersion": [
             {"@id": "estleg:LegalProvision_TEST_1_v1"},
@@ -320,6 +321,7 @@ def test_legal_provision_without_version_links_still_conforms():
         "@id": "estleg:LegalProvision_TEST_2",
         "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
         "estleg:paragrahv": "§ 2",
+        "estleg:partOfAct": {"@id": "estleg:TEST_Map_2026"},
         "estleg:summary": "Provision with no version history populated.",
     })
     assert ok, msg
@@ -340,6 +342,7 @@ def test_legal_provision_accepts_target_group_enum_values(target_group):
         "@id": f"estleg:LegalProvision_TARGET_{target_group}",
         "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
         "estleg:paragrahv": "§ 10",
+        "estleg:partOfAct": {"@id": "estleg:TEST_Map_2026"},
         "estleg:summary": "Provision with a classified target group.",
         "estleg:targetGroup": target_group,
     })
@@ -352,6 +355,7 @@ def test_legal_provision_accepts_multiple_target_groups():
         "@id": "estleg:LegalProvision_TARGET_MULTI",
         "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
         "estleg:paragrahv": "§ 11",
+        "estleg:partOfAct": {"@id": "estleg:TEST_Map_2026"},
         "estleg:summary": "Provision affecting several target groups.",
         "estleg:targetGroup": ["citizen", "business", "public_body"],
     })
@@ -364,6 +368,7 @@ def test_legal_provision_rejects_unknown_target_group():
         "@id": "estleg:LegalProvision_TARGET_BAD",
         "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
         "estleg:paragrahv": "§ 12",
+        "estleg:partOfAct": {"@id": "estleg:TEST_Map_2026"},
         "estleg:summary": "Provision with an invalid target group.",
         "estleg:targetGroup": "aliens",
     })

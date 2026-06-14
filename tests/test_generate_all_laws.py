@@ -3833,6 +3833,7 @@ class TestSubsectionShaclConformance:
             "@id": "estleg:X_Par_14",
             "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
             "estleg:paragrahv": "§ 14",
+            "estleg:partOfAct": {"@id": "estleg:X_Map_2026"},
             "estleg:summary": "Teovõime.",
             "estleg:legalText": "(2) Lõike kaks tekst.",
             "estleg:hasSubsection": [{"@id": "estleg:X_Par_14_Lg_2"}],
@@ -3845,6 +3846,7 @@ class TestSubsectionShaclConformance:
             "@id": "estleg:X_Par_15",
             "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
             "estleg:paragrahv": "§ 15",
+            "estleg:partOfAct": {"@id": "estleg:X_Map_2026"},
             "estleg:summary": "Üks lause.",
             "estleg:legalText": "Üks lause vaid.",
         }

@@ -1244,6 +1244,8 @@ def generate_law_jsonld(
                     "@type": ["owl:NamedIndividual", "estleg:Chapter"],
                     "rdfs:label": f"{ch_nr}. peatükk – {ch_title}".strip(" –"),
                     "estleg:chapterNumber": ch_nr,
+                    # Issue #415: chapter -> act root link.
+                    "estleg:partOfAct": {"@id": ontology_id},
                     "owl:sameAs": {"@id": cluster_id},
                 }
 
@@ -1333,6 +1335,7 @@ def generate_law_jsonld(
                 "@id": preamble_chapter_id,
                 "@type": ["owl:NamedIndividual", "estleg:Chapter"],
                 "rdfs:label": preamble_label,
+                "estleg:partOfAct": {"@id": ontology_id},  # Issue #415
                 "owl:sameAs": {"@id": preamble_cluster_id},
             })
             for p in preamble_pars:
@@ -1443,6 +1446,9 @@ def generate_law_jsonld(
             "estleg:paragrahv": p_display,
             "rdfs:label": label,
             "estleg:sourceAct": title,
+            # Issue #415: structural IRI join from the provision up to its act
+            # root (sourceAct stays the literal title). 1-hop provision->act.
+            "estleg:partOfAct": {"@id": ontology_id},
             "estleg:summary": summary,
         }
 
@@ -1698,6 +1704,8 @@ def generate_multipart_law(
                         "@type": ["owl:NamedIndividual", "estleg:Chapter"],
                         "rdfs:label": f"{ch_nr}. peatükk – {ch_title}".strip(" –"),
                         "estleg:chapterNumber": ch_nr,
+                        # Issue #415: chapter -> this osa's act root link.
+                        "estleg:partOfAct": {"@id": ontology_id},
                         "owl:sameAs": {"@id": cluster_id},
                     }
 
@@ -1785,6 +1793,7 @@ def generate_multipart_law(
                     "@id": preamble_chapter_id,
                     "@type": ["owl:NamedIndividual", "estleg:Chapter"],
                     "rdfs:label": preamble_label,
+                    "estleg:partOfAct": {"@id": ontology_id},  # Issue #415
                     "owl:sameAs": {"@id": preamble_cluster_id},
                 })
                 for p in preamble_pars:
@@ -1909,6 +1918,8 @@ def generate_multipart_law(
                 "estleg:paragrahv": p_display,
                 "rdfs:label": label,
                 "estleg:sourceAct": title,
+                # Issue #415: structural IRI join to this osa's act root.
+                "estleg:partOfAct": {"@id": ontology_id},
                 "estleg:summary": summary,
             }
             # Issue #88: Add full legal text without truncation
