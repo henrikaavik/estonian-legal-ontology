@@ -614,7 +614,10 @@ release pipeline:
   (court/EU/draft/regulation/amendment/harmonisation), so loading it
   alone yields zero dangling `estleg:` object IRIs apart from the two
   documented exempt predicates above. `validate_combined_graph_closure`
-  enforces that invariant. Regenerate it via `scripts/fix_all_issues.py`
+  enforces that invariant. `estleg:isStubNode` is a build/serialisation
+  marker, not a semantic claim: when you also load the sibling subcorpus
+  the complete node takes precedence and the flag should be disregarded.
+  Regenerate it via `scripts/fix_all_issues.py`
   (the `generate_combined_jsonld()` step, which now reads the LFS
   annotations + eurlex sources) so it stays in lockstep with the source
   files. Editing it directly will reintroduce the drift the Seadusloome

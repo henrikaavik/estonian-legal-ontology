@@ -1509,6 +1509,11 @@ class CombinedParityTarget:
     # reported as missing/stale to avoid false positives.
     expected_missing_ids: set[str] = field(default_factory=set)
     expected_extra_ids: set[str] = field(default_factory=set)
+    # #416: node @type(s) whose combined nodes are exempt from the stale-extra
+    # check because their overlay source could not be ingested (an
+    # un-materialised LFS pointer). Empty when every overlay is materialised —
+    # so a stale overlay node is still flagged in the normal case.
+    extra_exempt_types: frozenset[str] = frozenset()
 
 
 def _node_type_list(node: dict) -> list:
@@ -1542,20 +1547,24 @@ def _check_combined_parity(target: CombinedParityTarget) -> None:
     source_ids = set(target.source_nodes)
 
     # #416: graph-closure stub nodes (estleg:isStubNode) are synthesised by the
-    # builder, not drawn from any source file, so they are legitimate extras.
-    # The annotations overlay is the one LFS-tracked source: in a job/checkout
-    # where it is an un-materialised pointer it cannot be ingested as a source,
-    # so its merged Annotation nodes must not be mis-flagged as stale either.
+    # builder, not drawn from any source file, so they are always legitimate
+    # extras.
     stub_ids = {
         nid
         for nid, node in combined_nodes.items()
         if node.get(estleg_common.STUB_NODE_MARKER) is True
     }
-    lfs_overlay_ids = {
-        nid
-        for nid, node in combined_nodes.items()
-        if "estleg:Annotation" in _node_type_list(node)
-    }
+    # An overlay whose source was an un-materialised LFS pointer could not be
+    # ingested, so its merged nodes (matched by @type) are exempt from the
+    # stale-extra check for THIS run only. When the source IS materialised
+    # `extra_exempt_types` is empty, so a stale overlay node IS still flagged.
+    exempt_type_ids: set[str] = set()
+    if target.extra_exempt_types:
+        exempt_type_ids = {
+            nid
+            for nid, node in combined_nodes.items()
+            if any(t in target.extra_exempt_types for t in _node_type_list(node))
+        }
 
     structural_drift = False
 
@@ -1572,7 +1581,7 @@ def _check_combined_parity(target: CombinedParityTarget) -> None:
         - target.allowlist_ids
         - target.expected_extra_ids
         - stub_ids
-        - lfs_overlay_ids
+        - exempt_type_ids
     )
     if extras:
         error(
@@ -1702,14 +1711,23 @@ def validate_combined_ontology(krr_dir: Path = KRR_DIR):
     # #416: the enrichment overlays are fully merged into combined, so they are
     # canonical sources too — every overlay node must be present and none may be
     # a stale extra. Pointer-tolerant: an un-materialised LFS overlay
-    # (annotations) is skipped with a warning instead of mis-flagging its nodes
-    # (those are excused from the extras check by type in _check_combined_parity).
+    # (annotations) is skipped with a warning; only THEN are its node types
+    # exempted from the stale-extra check (via extra_exempt_types), so a stale
+    # node in a materialised overlay is still flagged.
+    extra_exempt_types: set[str] = set()
     for path in estleg_common.iter_combined_overlay_files(krr_dir):
         if _is_lfs_pointer(path):
+            try:
+                subdir = path.relative_to(krr_dir).parts[0]
+            except ValueError:
+                subdir = path.parent.name
+            types = estleg_common.COMBINED_OVERLAY_NODE_TYPES.get(subdir, ())
             warn(
                 f"combined_ontology.jsonld: overlay source {path.name} is an "
-                f"un-materialised LFS pointer — run `git lfs pull` for full parity"
+                f"un-materialised LFS pointer — run `git lfs pull` for full "
+                f"parity (exempting {len(types)} node type(s) for this run)"
             )
+            extra_exempt_types.update(types)
             continue
         _ingest_graph_into(path, source_nodes)
         source_files.append(path)
@@ -1719,6 +1737,7 @@ def validate_combined_ontology(krr_dir: Path = KRR_DIR):
         source_files=source_files,
         source_nodes=source_nodes,
         allowlist_ids=allowlist_ids,
+        extra_exempt_types=frozenset(extra_exempt_types),
     )
     _check_combined_parity(target)
 
@@ -1747,15 +1766,25 @@ def validate_combined_graph_closure(krr_dir: Path = KRR_DIR):
         return
 
     nodes = [n for n in doc.get("@graph", []) if isinstance(n, dict)]
-    node_ids = {n["@id"] for n in nodes if isinstance(n.get("@id"), str)}
-    stub_ids = {
-        n["@id"]
-        for n in nodes
-        if isinstance(n.get("@id"), str) and n.get(estleg_common.STUB_NODE_MARKER) is True
-    }
+    # Canonicalise @ids to the compact estleg: form (matching the canonical
+    # targets iter_node_estleg_refs yields) so an expanded-IRI node is still
+    # recognised as present.
+    node_ids: set[str] = set()
+    stub_ids: set[str] = set()
+    for n in nodes:
+        nid = n.get("@id")
+        if not isinstance(nid, str):
+            continue
+        canon = estleg_common.canonical_estleg_ref(nid) or nid
+        node_ids.add(canon)
+        if n.get(estleg_common.STUB_NODE_MARKER) is True:
+            stub_ids.add(canon)
     exempt = estleg_common.COMBINED_CLOSURE_EXEMPT_PREDICATES
 
     dangling: dict[str, set[str]] = defaultdict(set)
+    # Only NON-exempt incoming references keep a stub alive: the builder never
+    # mints stubs for exempt predicates (hasVersion/amendedBy), so a stub whose
+    # sole referrer is one of those is stale and must surface as an orphan.
     referenced: set[str] = set()
     leaky_stubs: list[str] = []
     for node in nodes:
@@ -1764,9 +1793,9 @@ def validate_combined_graph_closure(krr_dir: Path = KRR_DIR):
         if is_stub and node_refs:
             leaky_stubs.append(str(node.get("@id")))
         for predicate, target in node_refs:
-            referenced.add(target)
             if predicate in exempt:
                 continue
+            referenced.add(target)
             if target not in node_ids:
                 dangling[predicate].add(target)
 

@@ -329,6 +329,18 @@ COMBINED_OVERLAY_SUBDIRS: tuple[str, ...] = (
     "annotations",
 )
 
+# Node @type(s) each overlay subdir contributes. The parity gate uses this to
+# exempt an overlay's merged nodes from the stale-extra check ONLY when that
+# overlay's source could not be ingested (an un-materialised LFS pointer). When
+# the source IS materialised the normal check applies, so a stale overlay node
+# left in combined is still flagged.
+COMBINED_OVERLAY_NODE_TYPES: dict[str, tuple[str, ...]] = {
+    "sanctions": ("estleg:Sanction",),
+    "institutions": ("estleg:Institution", "estleg:Competence"),
+    "concepts": ("estleg:Concept", "estleg:LegalConcept"),
+    "annotations": ("estleg:Annotation",),
+}
+
 # Marker placed on synthesised stub nodes so the parity gate can tell a
 # graph-closure stub apart from a genuine source node.
 STUB_NODE_MARKER: str = "estleg:isStubNode"
@@ -385,9 +397,29 @@ def _walk_object_refs(value: object, predicate: str) -> Iterator[tuple[str, str]
             yield from _walk_object_refs(item, predicate)
 
 
-def iter_node_estleg_refs(node: dict) -> Iterator[tuple[str, str]]:
-    """Yield ``(predicate, target)`` for each ``estleg:`` object ref on ``node``.
+def canonical_estleg_ref(ref: str) -> str | None:
+    """Return the compact ``estleg:`` form of an internal IRI, else ``None``.
 
+    Recognises BOTH the compact ``estleg:Foo`` form and the expanded
+    ``https://data.riik.ee/ontology/estleg#Foo`` form, so a closure check can
+    never be fooled by a serialisation that uses full IRIs. Mirrors the
+    Seadusloome sync gate's ``_canonical_estleg_id``.
+    """
+    if ref.startswith("estleg:"):
+        return ref
+    if ref.startswith(NS):
+        return "estleg:" + ref[len(NS):]
+    return None
+
+
+def iter_node_estleg_refs(node: dict) -> Iterator[tuple[str, str]]:
+    """Yield ``(predicate, target)`` for each internal ``estleg:`` object ref.
+
+    ``predicate`` is the nearest enclosing property (matching the sync gate's
+    walker — a ref nested inside a structured value is attributed to its
+    innermost key, not the top-level one), and ``target`` is canonicalised to
+    the compact ``estleg:`` form so a ref expressed as a full
+    ``https://data.riik.ee/ontology/estleg#…`` IRI is still recognised.
     ``@id``/``@type``/``@context`` are skipped: ``@type`` class IRIs are not
     object references for closure purposes (matching how the corpus treats
     per-law ``estleg:LegalProvision_*`` classes).
@@ -395,9 +427,10 @@ def iter_node_estleg_refs(node: dict) -> Iterator[tuple[str, str]]:
     for key, value in node.items():
         if key in ("@id", "@type", "@context"):
             continue
-        for _pred, ref in _walk_object_refs(value, key):
-            if ref.startswith("estleg:"):
-                yield key, ref
+        for pred, ref in _walk_object_refs(value, key):
+            canonical = canonical_estleg_ref(ref)
+            if canonical is not None:
+                yield pred, canonical
 
 
 # ---------------------------------------------------------------------------

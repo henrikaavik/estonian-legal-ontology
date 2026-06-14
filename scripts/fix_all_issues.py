@@ -1059,12 +1059,15 @@ def _emit_closure_stubs(
     block of leaf stubs so combined loads graph-closed on its own (#416).
     """
     exempt = estleg_common.COMBINED_CLOSURE_EXEMPT_PREDICATES
+    # iter_node_estleg_refs yields canonical compact targets, so compare against
+    # the canonical form of every present @id (handles expanded-IRI nodes too).
+    present = {estleg_common.canonical_estleg_ref(k) or k for k in node_by_id}
     needed: set[str] = set()
     for node in all_nodes:
         for predicate, target in estleg_common.iter_node_estleg_refs(node):
             if predicate in exempt:
                 continue
-            if target not in node_by_id:
+            if target not in present:
                 needed.add(target)
     if not needed:
         print("  No dangling cross-corpus refs — no stubs needed")
@@ -1096,9 +1099,12 @@ def _emit_closure_stubs(
                     if not isinstance(node, dict):
                         continue
                     nid = node.get("@id")
-                    if nid in remaining:
-                        stubs[nid] = _make_closure_stub(node)
-                        remaining.discard(nid)
+                    if not isinstance(nid, str):
+                        continue
+                    canon = estleg_common.canonical_estleg_ref(nid) or nid
+                    if canon in remaining:
+                        stubs[canon] = _make_closure_stub(node)
+                        remaining.discard(canon)
 
     if remaining:
         # Defer enforcement to the closure gate rather than aborting the build:
@@ -1113,7 +1119,7 @@ def _emit_closure_stubs(
 
     for nid in sorted(stubs):
         stub = stubs[nid]
-        node_by_id[nid] = stub
+        node_by_id[stub["@id"]] = stub
         all_nodes.append(stub)
     print(f"  Emitted {len(stubs)} graph-closure stub nodes")
     return len(stubs)

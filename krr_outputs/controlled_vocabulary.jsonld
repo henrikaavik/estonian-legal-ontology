@@ -1722,7 +1722,7 @@
         "owl:DatatypeProperty"
       ],
       "rdfs:label": "Is Stub Node",
-      "rdfs:comment": "True on a lightweight graph-closure stub minted into combined_ontology.jsonld (#416): a leaf node carrying only @type, rdfs:label, an identifier and an external link for a cross-corpus reference (court/EU/draft/regulation/amendment/harmonisation) whose full node lives in a sibling corpus. Consumers needing the complete node should load that subcorpus.",
+      "rdfs:comment": "Build/serialisation marker, NOT a semantic assertion about the entity (#416). True on a lightweight graph-closure stub minted into combined_ontology.jsonld: a leaf node carrying only @type, rdfs:label, an identifier and an external link for a cross-corpus reference (court/EU/draft/regulation/amendment/harmonisation) whose full node lives in a sibling corpus. It is scoped to the combined artifact so combined loads with zero dangling references. When a consumer ALSO loads the sibling subcorpus, RDF merging yields the complete node still bearing this flag — at that point the complete node takes precedence and the flag should be disregarded. Do not treat it as a published claim that the referenced entity is incomplete.",
       "rdfs:range": {
         "@id": "xsd:boolean"
       }
