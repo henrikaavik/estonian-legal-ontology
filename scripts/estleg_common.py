@@ -365,6 +365,83 @@ COMBINED_CLOSURE_EXEMPT_PREDICATES: frozenset[str] = frozenset(
     }
 )
 
+# #488: a graph-closure stub keeps its real (often SHACL-shaped) `@type`, so the
+# *standalone* combined artifact must publish a SHACL-conforming node for that
+# type — not a label-only leaf. This maps each shaped `@type` to the
+# minCount>=1, NON-`graphClosureExempt` property paths of the SHACL shape(s)
+# targeting it that the stub must carry from its source node. `rdfs:label` is
+# already covered by `fix_all_issues.STUB_KEEP_PROPS`, so it is omitted here.
+#
+# The enum-like `graphClosureExempt` classifiers (`estleg:caseType` /
+# `estleg:draftType` / `estleg:legislativePhase` / `estleg:euDocumentType`) are
+# DELIBERATELY excluded: their individuals live in the controlled vocabulary
+# (`controlled_vocabulary.jsonld`), not on the instance, and the combined-only
+# SHACL gate skips them exactly as the graph-closure gate does. Keep this map in
+# lock-step with `shacl/estonian_legal_shapes.ttl`.
+SHAPE_REQUIRED_CLOSURE_PROPS: dict[str, tuple[str, ...]] = {
+    # NationalRegulationShape targets BOTH NationalRegulation and
+    # MunicipalRegulation: documentType + terviktekstId (+ label).
+    "estleg:NationalRegulation": ("estleg:documentType", "estleg:terviktekstId"),
+    # MunicipalRegulation additionally satisfies MunicipalRegulationLayer1Shape
+    # (enactedBy / enactedByMunicipality / titleNormalized).
+    "estleg:MunicipalRegulation": (
+        "estleg:documentType",
+        "estleg:terviktekstId",
+        "estleg:enactedBy",
+        "estleg:enactedByMunicipality",
+        "estleg:titleNormalized",
+    ),
+    # KovProvisionShape.
+    "estleg:KovProvision": (
+        "estleg:enactedBy",
+        "estleg:enactedByMunicipality",
+        "estleg:partOfAct",
+    ),
+    # ProposedAmendmentShape — amendingDraft is the only required IRI edge
+    # (rdfs:label comes from STUB_KEEP_PROPS).
+    "estleg:ProposedAmendment": ("estleg:amendingDraft",),
+}
+
+# The IRI-valued subset of SHAPE_REQUIRED_CLOSURE_PROPS: the only `estleg:`
+# object-reference predicates a closure stub is allowed to carry. Every other
+# `estleg:` ref is still stripped so the stub stays a graph-closure leaf. The
+# combined graph-closure gate uses this to tell an intended semantic edge apart
+# from a stripping regression — a stub may carry ONLY these predicates, and each
+# target must still resolve inside combined (closed transitively by the builder).
+# NB: each must be a FLAT IRI ref (`{"@id": …}`) — all four are sh:nodeKind
+# sh:IRI / sh:class in the shapes. `iter_node_estleg_refs` attributes a nested
+# `@id` to its innermost enclosing key, so a future shaped prop holding an
+# estleg `@id` nested under some other key would be checked against that inner
+# key, not the predicate name here.
+STUB_SEMANTIC_EDGE_PREDICATES: frozenset[str] = frozenset(
+    {
+        "estleg:enactedBy",
+        "estleg:enactedByMunicipality",
+        "estleg:partOfAct",
+        "estleg:amendingDraft",
+    }
+)
+
+
+def required_closure_props(node_type: object) -> tuple[str, ...]:
+    """Return the union of SHACL-required closure props for a node's `@type`(s).
+
+    Accepts the raw ``@type`` value (a string, a list, or ``None``) and returns
+    the order-preserving, de-duplicated union of
+    :data:`SHAPE_REQUIRED_CLOSURE_PROPS` entries for every shaped type present.
+    A node typed by several shaped classes (e.g. ``MinisterialRegulation`` +
+    ``NationalRegulation``) accumulates all their requirements.
+    """
+    if node_type is None:
+        return ()
+    types = node_type if isinstance(node_type, list) else [node_type]
+    out: list[str] = []
+    for type_iri in types:
+        for prop in SHAPE_REQUIRED_CLOSURE_PROPS.get(type_iri, ()):
+            if prop not in out:
+                out.append(prop)
+    return tuple(out)
+
 
 def iter_combined_overlay_files(krr_dir: Path) -> list[Path]:
     """Return the sorted overlay data files merged into combined (#416)."""

@@ -2346,7 +2346,9 @@ def test_validate_combined_graph_closure_flags_orphan_stub(tmp_path):
 def test_validate_combined_graph_closure_flags_non_leaf_stub(tmp_path):
     krr = tmp_path / "krr_outputs"
     leaky = _court_stub("estleg:RK_1")
-    leaky["estleg:interpretsLaw"] = {"@id": "estleg:A_1"}  # stub must not carry refs
+    # estleg:interpretsLaw is NOT a whitelisted shaped-closure edge (#488), so a
+    # stub carrying it is still a stripping regression.
+    leaky["estleg:interpretsLaw"] = {"@id": "estleg:A_1"}
     _write_combined(
         krr,
         [
@@ -2359,7 +2361,65 @@ def test_validate_combined_graph_closure_flags_non_leaf_stub(tmp_path):
         ],
     )
     validate_all.validate_combined_graph_closure(krr)
-    assert any("leaves" in e for e in validate_all.errors), validate_all.errors
+    assert any("disallowed estleg" in e for e in validate_all.errors), validate_all.errors
+
+
+def test_validate_combined_graph_closure_allows_resolved_shaped_stub_edge(tmp_path):
+    """#488: a stub may carry a whitelisted semantic edge (estleg:partOfAct) as
+    long as its target resolves in-graph — that is no longer a 'leaky' stub."""
+    krr = tmp_path / "krr_outputs"
+    kov_provision = {
+        "@id": "estleg:Reg_1_Par_1",
+        "@type": ["owl:NamedIndividual", "estleg:KovProvision"],
+        "rdfs:label": "§ 1",
+        "estleg:partOfAct": {"@id": "estleg:Reg_1_Map_2026"},
+        estleg_common.STUB_NODE_MARKER: True,
+    }
+    parent_act = {
+        "@id": "estleg:Reg_1_Map_2026",
+        "@type": ["estleg:Act", "estleg:MunicipalRegulation"],
+        "rdfs:label": "Määrus",
+        estleg_common.STUB_NODE_MARKER: True,
+    }
+    _write_combined(
+        krr,
+        [
+            {
+                "@id": "estleg:A_1",
+                "@type": ["estleg:LegalProvision"],
+                "estleg:references": {"@id": "estleg:Reg_1_Par_1"},
+            },
+            kov_provision,
+            parent_act,
+        ],
+    )
+    validate_all.validate_combined_graph_closure(krr)
+    assert validate_all.errors == [], validate_all.errors
+
+
+def test_validate_combined_graph_closure_flags_unresolved_shaped_stub_edge(tmp_path):
+    """A whitelisted edge whose target is absent is still a dangling ref."""
+    krr = tmp_path / "krr_outputs"
+    kov_provision = {
+        "@id": "estleg:Reg_2_Par_1",
+        "@type": ["owl:NamedIndividual", "estleg:KovProvision"],
+        "rdfs:label": "§ 1",
+        "estleg:partOfAct": {"@id": "estleg:Reg_2_Map_2026"},  # absent
+        estleg_common.STUB_NODE_MARKER: True,
+    }
+    _write_combined(
+        krr,
+        [
+            {
+                "@id": "estleg:A_1",
+                "@type": ["estleg:LegalProvision"],
+                "estleg:references": {"@id": "estleg:Reg_2_Par_1"},
+            },
+            kov_provision,
+        ],
+    )
+    validate_all.validate_combined_graph_closure(krr)
+    assert any("dangling estleg" in e for e in validate_all.errors), validate_all.errors
 
 
 def _annotation_node(nid: str, label: str = "a") -> dict:

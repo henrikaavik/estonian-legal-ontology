@@ -237,6 +237,15 @@ When adding a new enum-like IRI predicate to SHACL, mark its property shape with
 `scripts/validate_seadusloome_sync.py` derives the graph-closure exemption from
 the shape instead of a hardcoded list.
 
+> **Load surfaces.** The repository has three distinct load surfaces —
+> combined-only (`krr_outputs/combined_ontology.jsonld` alone), the source
+> subcorpora alone, and the Seadusloome public load surface (combined plus the
+> public subdirectories) — and a different validation gate covers each. A
+> combined-only finding is aggregate-artifact drift (regenerate combined), not
+> source-data loss. The canonical description of the surfaces, their invariants,
+> and the per-surface gate commands lives in "Load surfaces and validation gates"
+> in `docs/VALIDATION_REPORT.md`.
+
 ### Court Decision Example
 
 ```json
