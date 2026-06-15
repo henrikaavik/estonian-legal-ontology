@@ -22,10 +22,13 @@ It is deliberately distinct from the three other validation paths:
 
 Enum-like controlled-vocabulary classifiers whose property shape is marked
 `estleg:graphClosureExempt true` (estleg:caseType / draftType / legislativePhase
-/ euDocumentType) are intentionally SKIPPED, exactly as the graph-closure gate
-skips them: their individuals live in `controlled_vocabulary.jsonld`, not on the
-instance, so a combined-only load does not need them inlined. Every other
-violation — the semantic graph edges and metadata the app traverses — is
+/ euDocumentType ...) are SKIPPED in ONE narrow case, exactly as the graph-closure
+gate tolerates: a *missing* classifier (sh:minCount) on a closure stub, whose enum
+individual lives in `controlled_vocabulary.jsonld` rather than inline, so a
+combined-only load does not need it inlined. A *present but malformed* exempt value
+(e.g. a caseType that is a literal, not the enum IRI — sh:nodeKind), or a missing
+classifier on a non-stub full node, is NOT exempt and is still reported. Every
+other violation — the semantic graph edges and metadata the app traverses — is
 reported.
 
 Findings are grouped by (focus-node type, missing path, whether the focus node
@@ -150,13 +153,23 @@ def evaluate(combined_path: Path, shapes_dir: Path = DEFAULT_SHAPES) -> dict:
     for result in results_graph.subjects(rdflib.RDF.type, SH.ValidationResult):
         path_term = results_graph.value(result, SH.resultPath)
         compact_path = _compact_path(path_term)
-        # Skip enum-like controlled-vocabulary classifiers — same contract as the
-        # graph-closure gate. These are not graph edges a combined-only load owes.
-        if compact_path in exempt:
-            skipped_exempt += 1
-            continue
-
         focus_node = results_graph.value(result, SH.focusNode)
+        is_stub = _is_stub(data_graph, focus_node)
+
+        # Skip enum-like controlled-vocabulary classifiers, but ONLY the case the
+        # graph-closure gate actually tolerates: a *missing* classifier
+        # (sh:minCount) on a closure stub, whose enum individual lives in
+        # controlled_vocabulary.jsonld rather than inline. A *present but
+        # malformed* exempt value (e.g. estleg:caseType as a literal, tripping
+        # sh:nodeKind) — or a missing classifier on a non-stub full node — is a
+        # genuine combined-only defect and is still reported; otherwise this gate
+        # could pass a CourtDecision whose caseType is not even an IRI.
+        if compact_path in exempt:
+            component_term = results_graph.value(result, SH.sourceConstraintComponent)
+            if component_term == SH.MinCountConstraintComponent and is_stub:
+                skipped_exempt += 1
+                continue
+
         severity_term = results_graph.value(result, SH.resultSeverity)
         severity = seadusloome._local_name(severity_term) if severity_term else "Violation"
         source_shape = seadusloome._resolve_named_shape(
@@ -164,7 +177,6 @@ def evaluate(combined_path: Path, shapes_dir: Path = DEFAULT_SHAPES) -> dict:
         )
 
         focus_types = _focus_types(data_graph, focus_node)
-        is_stub = _is_stub(data_graph, focus_node)
         key = (focus_types, compact_path, is_stub, severity)
         bucket = groups[key]
         bucket["count"] += 1
@@ -216,8 +228,9 @@ def format_report(summary: dict) -> list[str]:
         )
         if skipped:
             lines.append(
-                f"  ({skipped} graphClosureExempt enum result(s) skipped — "
-                f"controlled vocabulary, not a graph edge)"
+                f"  ({skipped} missing graphClosureExempt classifier(s) on closure "
+                f"stubs skipped — controlled vocabulary, resolved via the external "
+                f"vocab file, not a combined-only graph edge)"
             )
         return lines
 
@@ -233,8 +246,8 @@ def format_report(summary: dict) -> list[str]:
     )
     if skipped:
         lines.append(
-            f"  ({skipped} graphClosureExempt enum result(s) skipped as "
-            f"controlled-vocabulary classifiers, not graph edges.)"
+            f"  ({skipped} missing graphClosureExempt classifier(s) on closure "
+            f"stubs skipped as controlled-vocabulary links, not graph edges.)"
         )
     lines.append("  Grouped (count x focus_type path=<path> stub=<bool>):")
     for row in summary["groups"]:

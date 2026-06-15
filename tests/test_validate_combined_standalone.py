@@ -136,6 +136,52 @@ def test_gate_skips_graph_closure_exempt_enum_predicates(tmp_path):
     assert summary["skipped_exempt"] >= 1, summary
 
 
+def test_gate_reports_malformed_present_exempt_value(tmp_path):
+    """A *present but malformed* graphClosureExempt value is a real defect, not
+    an exemption. A caseType that is a literal (not the enum IRI) trips
+    sh:nodeKind and MUST be reported — even on a stub — because the exempt skip
+    covers only a *missing* classifier (sh:minCount), never a present one. The
+    pre-fix filter swallowed this and produced a false PASS (#491 review)."""
+    court_stub = {
+        "@id": "estleg:RK_3_21_2176_52",
+        "@type": ["owl:NamedIndividual", "estleg:CourtDecision"],
+        "rdfs:label": "RK 3-21-2176/52",
+        "estleg:caseNumber": "3-21-2176/52",
+        # caseType is PRESENT but a bare literal, not the enum IRI -> nodeKind
+        "estleg:caseType": "not-an-iri",
+        "estleg:isStubNode": True,
+    }
+    combined = write_combined(tmp_path, [court_stub])
+    summary = gate.evaluate(combined, SHAPES)
+
+    assert summary["status"] == "violations", summary
+    case_type_rows = [r for r in summary["groups"] if r["path"] == "estleg:caseType"]
+    assert len(case_type_rows) == 1, summary["groups"]
+    assert case_type_rows[0]["count"] == 1, case_type_rows
+    # the malformed value was reported, NOT swallowed by the exempt filter
+    assert summary["skipped_exempt"] == 0, summary
+
+
+def test_gate_reports_missing_exempt_classifier_on_non_stub(tmp_path):
+    """The exempt skip is for closure STUBS only. A non-stub full node genuinely
+    missing its enum classifier is a builder regression (combined dropped an edge
+    it should carry inline) and IS reported, not skipped (#491 review)."""
+    full_court = {
+        "@id": "estleg:RK_3_21_2176_52",
+        "@type": ["owl:NamedIndividual", "estleg:CourtDecision"],
+        "rdfs:label": "RK 3-21-2176/52",
+        "estleg:caseNumber": "3-21-2176/52",
+        # caseType absent AND this is not a stub -> reported, not exempt
+    }
+    combined = write_combined(tmp_path, [full_court])
+    summary = gate.evaluate(combined, SHAPES)
+
+    assert summary["status"] == "violations", summary
+    paths = {r["path"] for r in summary["groups"]}
+    assert "estleg:caseType" in paths, summary["groups"]
+    assert summary["skipped_exempt"] == 0, summary
+
+
 def test_gate_errors_when_combined_missing(tmp_path):
     summary = gate.evaluate(tmp_path / "combined_ontology.jsonld", SHAPES)
     assert summary["status"] == "error"
