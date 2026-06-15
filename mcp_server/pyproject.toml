@@ -8,8 +8,11 @@ version = "0.1.0"
 description = "Stdio MCP server exposing the Estonian Legal Ontology as a natural-language tool set for lawmakers."
 readme = "README.md"
 requires-python = ">=3.11"
+# ``FastMCP.streamable_http_app()`` (used by the HTTP transport in
+# ``server._build_http_app``) was only added in mcp 1.8.0; 1.2.0–1.7.1
+# lack it and the HTTP transport crashes at startup. Pin the floor there.
 dependencies = [
-  "mcp>=1.2.0",
+  "mcp>=1.8.0",
 ]
 
 [project.optional-dependencies]

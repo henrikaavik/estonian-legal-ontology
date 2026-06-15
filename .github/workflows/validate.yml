@@ -14,6 +14,7 @@ on:
       - 'scripts/**'
       - 'tests/**'
       - 'shacl/**'
+      - 'mcp_server/**'
       - 'metadata.jsonld'
       - 'pyproject.toml'
       - '.github/workflows/**'
@@ -27,6 +28,7 @@ on:
       - 'scripts/**'
       - 'tests/**'
       - 'shacl/**'
+      - 'mcp_server/**'
       - 'metadata.jsonld'
       - 'pyproject.toml'
       - '.github/workflows/**'
@@ -87,7 +89,10 @@ jobs:
         run: python3 -m pip install -e ".[dev]"
 
       - name: Run Ruff
-        run: python3 -m ruff check scripts/ tests/
+        # ``mcp_server/`` is a standalone package with its own [tool.ruff]
+        # config; ruff applies it hierarchically per file, so a single
+        # invocation lints the corpus tooling and the MCP server together.
+        run: python3 -m ruff check scripts/ tests/ mcp_server/
 
   pytest:
     runs-on: ubuntu-latest
@@ -106,6 +111,30 @@ jobs:
 
       - name: Run tests
         run: python3 -m pytest -q
+
+  mcp-server:
+    name: estleg-mcp tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+          cache-dependency-path: 'mcp_server/pyproject.toml'
+
+      # The MCP server is a separate package with its own dependency on
+      # ``mcp`` (absent from the root project), so it gets its own install
+      # and its tests are not discovered by the root ``testpaths = tests``.
+      - name: Install estleg-mcp
+        run: python3 -m pip install -e "mcp_server[dev]"
+
+      - name: Run tests
+        # Tests auto-locate the committed corpus by walking up to
+        # krr_outputs/INDEX.json from inside the repo checkout.
+        run: python3 -m pytest -q mcp_server
 
   json-validation:
     runs-on: ubuntu-latest

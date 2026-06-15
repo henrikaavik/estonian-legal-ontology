@@ -263,15 +263,28 @@ def drafts_affecting_law(law: str, limit: int = 20) -> list[dict[str, Any]]:
         return []
     graph = data.load_law_graph(rec)
 
-    # Collect draft IRIs from the act/map node (estleg:affectedBy) and from any
-    # provision-level affectedBy links.
+    # Collect draft IRIs from two link shapes, in node order, de-duplicated:
+    #   * ``estleg:affectedBy`` -> a Draft IRI directly.
+    #   * ``estleg:hasProposedAmendment`` -> a ProposedAmendment *link* IRI
+    #     whose ``estleg:amendingDraft`` (in the amendments sidecar) is the
+    #     Draft IRI. Most of the corpus uses this shape, so reading only
+    #     ``affectedBy`` would miss the laws that have no affectedBy fallback.
+    link_to_draft = data.amendment_link_drafts(rec)
     draft_iris: list[str] = []
     seen: set[str] = set()
+
+    def _add(iri: str) -> None:
+        if iri and iri not in seen:
+            seen.add(iri)
+            draft_iris.append(iri)
+
     for node in graph:
         for ref in data._ids_of(node.get("estleg:affectedBy")):
-            if ref not in seen:
-                seen.add(ref)
-                draft_iris.append(ref)
+            _add(ref)
+        for link in data._ids_of(node.get("estleg:hasProposedAmendment")):
+            # Fall back to the raw link IRI if the sidecar can't resolve it, so
+            # an unresolved link is surfaced rather than silently dropped.
+            _add(link_to_draft.get(link, link))
 
     cap = max(0, int(limit))
     items: list[dict[str, Any]] = []

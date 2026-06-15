@@ -83,6 +83,35 @@ def test_search_law_records_substring() -> None:
     assert "karistusseadustik" in slugs
 
 
+def test_search_finds_human_abbreviations() -> None:
+    # search_laws must honour the same conventional abbreviations resolve_law
+    # supports (regression: these used to return [] / unrelated hits because
+    # the registry stores only the migrated IRI-prefix form).
+    def slugs(query: str) -> list[str]:
+        return [r.name for r in data.search_law_records(query)]
+
+    assert "volaoigusseadus" in slugs("VÕS")
+    assert "toolepingu_seadus" in slugs("TLS")
+    # The conventional abbreviation's law must rank first.
+    assert slugs("KarS")[0] == "karistusseadustik"
+    assert slugs("PS")[0] == "eesti_vabariigi_pohiseadus"
+
+
+def test_amendment_link_resolves_to_draft() -> None:
+    # Laws whose only draft link is estleg:hasProposedAmendment (no
+    # affectedBy fallback) must still resolve through the amendments sidecar.
+    rec = data.resolve_law("keskkonnaseadustiku_uldosa_seadus")
+    assert rec is not None
+    links = data.amendment_link_drafts(rec)
+    assert links  # at least one ProposedAmendment link
+    assert (
+        links.get("estleg:AmendmentLink_Draft_KLIM13_0996_KESKKO")
+        == "estleg:Draft_KLIM13_0996"
+    )
+    # The resolved draft must be a real node in the eelnoud subcorpus.
+    assert data.draft_info("estleg:Draft_KLIM13_0996") is not None
+
+
 def test_display_abbrev_prefers_human_form() -> None:
     # The registry stores "KARIST_2"; display must show the conventional "KarS".
     kars = data.resolve_law("karistusseadustik")

@@ -35,6 +35,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import unicodedata
 from functools import lru_cache
 from pathlib import Path
@@ -432,22 +433,36 @@ def resolve_law(query: str) -> LawRecord | None:
 def search_law_records(query: str, limit: int = 10) -> list[LawRecord]:
     """Return laws whose title, abbreviation, or slug contains ``query``.
 
-    Substring match is accent-insensitive. Results are sorted with exact
+    Substring match is accent-insensitive and also covers the *conventional*
+    human abbreviation (``KarS``, ``VÕS``, ``TLS``, ``PS``, ...), which the
+    registry does not store -- so ``search_laws`` honours the same title/
+    abbreviation contract as ``resolve_law``. Results are sorted with exact
     title/abbrev matches first, then by title. An empty ``query`` returns ``[]``.
     """
     if not query or not query.strip():
         return []
     needle = _fold(query.strip())
     records = _records_by_slug()
+    human = _slug_to_human_abbrev()
     scored: list[tuple[int, str, LawRecord]] = []
     for rec in records.values():
         hay_title = _fold(rec.title)
         hay_abbrev = _fold(rec.abbrev) if rec.abbrev else ""
+        hay_human = _fold(human.get(rec.name, ""))
         hay_slug = _fold(rec.name)
-        if needle in hay_title or needle in hay_abbrev or needle in hay_slug:
-            if needle in (hay_title, hay_abbrev):
+        if (
+            needle in hay_title
+            or needle in hay_abbrev
+            or (hay_human and needle in hay_human)
+            or needle in hay_slug
+        ):
+            if needle in (hay_title, hay_abbrev, hay_human):
                 rank = 0
-            elif hay_title.startswith(needle) or hay_abbrev.startswith(needle):
+            elif (
+                hay_title.startswith(needle)
+                or hay_abbrev.startswith(needle)
+                or hay_human.startswith(needle)
+            ):
                 rank = 1
             else:
                 rank = 2
@@ -848,6 +863,42 @@ def draft_info(iri: str) -> Node | None:
     return _draft_index().get(iri)
 
 
+def _amendment_graph_for(record: LawRecord) -> Graph:
+    """Concatenate the proposed-amendment sidecar graph for a law.
+
+    Amendment chains live in ``amendments/amendments_<base-slug>.json`` where
+    the base slug is the law's INDEX slug with any trailing ``_osaN`` stripped
+    (the multi-part codes share one chain file). Mirrors the filename rule in
+    ``scripts/generate_amendment_history._amendment_chain_path``.
+    """
+    base = krr_dir() / "amendments"
+    if not base.is_dir():
+        return []
+    base_slug = re.sub(r"_osa\d+$", "", record.name)
+    return _graph_of(base / f"amendments_{base_slug}.json")
+
+
+def amendment_link_drafts(record: LawRecord) -> dict[str, str]:
+    """Map each ``estleg:ProposedAmendment`` link IRI -> its amending Draft IRI.
+
+    Law/act (map) nodes carry ``estleg:hasProposedAmendment`` pointing at
+    ``estleg:ProposedAmendment`` *link* nodes (e.g.
+    ``estleg:AmendmentLink_Draft_KLIM13_0996_KESKKO``) that live in the law's
+    amendments sidecar; each link's ``estleg:amendingDraft`` is the
+    ``estleg:Draft_*`` IRI resolvable via :func:`draft_info`. Returns ``{}``
+    when the sidecar is absent.
+    """
+    out: dict[str, str] = {}
+    for node in _amendment_graph_for(record):
+        if "estleg:ProposedAmendment" not in _types_of(node):
+            continue
+        link_iri = node.get("@id")
+        draft_iri = _id_of(node.get("estleg:amendingDraft"))
+        if isinstance(link_iri, str) and draft_iri:
+            out[link_iri] = draft_iri
+    return out
+
+
 # ---------------------------------------------------------------------------
 # Sanctions lookup
 # ---------------------------------------------------------------------------
@@ -936,5 +987,6 @@ __all__ = [
     "court_decision",
     "institution_label",
     "draft_info",
+    "amendment_link_drafts",
     "transposition_matches",
 ]
