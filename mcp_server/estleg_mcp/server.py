@@ -19,6 +19,7 @@ import os
 from typing import Any
 
 from mcp.server.fastmcp import FastMCP
+from mcp.server.transport_security import TransportSecuritySettings
 
 from . import data
 
@@ -468,6 +469,37 @@ def transposition(query: str) -> list[dict[str, Any]]:
     return items
 
 
+def _transport_security() -> TransportSecuritySettings:
+    """DNS-rebinding protection policy for the streamable-HTTP transport.
+
+    MCP validates the incoming ``Host`` header against an allow-list. With the
+    default empty list and protection enabled, the transport answers every
+    request from a non-localhost host with ``421 Invalid Host header`` -- so a
+    deployment behind a reverse proxy (e.g. ``estleg.sixtyfour.ee``) is
+    unreachable. We make the policy explicit instead of relying on the
+    version-dependent default:
+
+    * If ``ESTLEG_ALLOWED_HOSTS`` is set (comma-separated ``host`` or
+      ``host:port`` values; ``host:*`` matches any port), enable protection
+      scoped to that allow-list, plus any ``ESTLEG_ALLOWED_ORIGINS``.
+    * Otherwise disable it, so the endpoint is reachable behind a trusted proxy
+      that terminates the public host; the bearer token (``ESTLEG_TOKEN``) is
+      the actual access gate for this public-law data.
+    """
+
+    def _csv(name: str) -> list[str]:
+        return [v.strip() for v in os.environ.get(name, "").split(",") if v.strip()]
+
+    hosts = _csv("ESTLEG_ALLOWED_HOSTS")
+    if hosts:
+        return TransportSecuritySettings(
+            enable_dns_rebinding_protection=True,
+            allowed_hosts=hosts,
+            allowed_origins=_csv("ESTLEG_ALLOWED_ORIGINS"),
+        )
+    return TransportSecuritySettings(enable_dns_rebinding_protection=False)
+
+
 def _build_http_app():
     """Build the Starlette app for the streamable-HTTP transport.
 
@@ -476,6 +508,14 @@ def _build_http_app():
     other path. The ontology is public law, so the token is about preventing
     anonymous abuse of a public endpoint, not protecting secret data.
     """
+    # Apply the deployment config to FastMCP's own settings BEFORE the app and
+    # its session manager are built (streamable_http_app() reads
+    # ``settings.transport_security`` when it lazily creates the manager).
+    # Previously only uvicorn received ESTLEG_HOST, leaving FastMCP on its
+    # localhost defaults and the transport rejecting the proxied Host header.
+    mcp.settings.host = os.environ.get("ESTLEG_HOST", "127.0.0.1")
+    mcp.settings.port = int(os.environ.get("ESTLEG_PORT", "8000"))
+    mcp.settings.transport_security = _transport_security()
     app = mcp.streamable_http_app()  # serves MCP at ``/mcp`` with its lifespan
 
     from starlette.requests import Request
@@ -512,15 +552,18 @@ def main() -> None:
     IDE clients). Set it to ``http`` to serve the streamable-HTTP transport for
     a remote deployment; ``ESTLEG_HOST`` (default 127.0.0.1; use 0.0.0.0 in a
     container), ``ESTLEG_PORT`` (default 8000), and ``ESTLEG_TOKEN`` (bearer
-    token; unset = open) tune it.
+    token; unset = open) tune it. Behind a reverse proxy, set
+    ``ESTLEG_ALLOWED_HOSTS`` to the public host(s) to re-enable DNS-rebinding
+    protection (see :func:`_transport_security`).
     """
     transport = os.environ.get("ESTLEG_TRANSPORT", "stdio").strip().lower()
     if transport in ("http", "streamable-http", "streamable_http"):
         import uvicorn
 
-        host = os.environ.get("ESTLEG_HOST", "127.0.0.1")
-        port = int(os.environ.get("ESTLEG_PORT", "8000"))
-        uvicorn.run(_build_http_app(), host=host, port=port)
+        # _build_http_app() resolves ESTLEG_HOST/ESTLEG_PORT onto mcp.settings;
+        # bind uvicorn to the same values so there is a single source of truth.
+        app = _build_http_app()
+        uvicorn.run(app, host=mcp.settings.host, port=mcp.settings.port)
     else:
         mcp.run()
 

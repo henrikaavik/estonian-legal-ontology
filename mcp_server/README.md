@@ -96,10 +96,17 @@ corpus on each machine, run the server over streamable HTTP behind TLS.
 | `ESTLEG_HOST` | `127.0.0.1` | bind address (`0.0.0.0` in a container) |
 | `ESTLEG_PORT` | `8000` | port |
 | `ESTLEG_TOKEN` | (unset) | bearer token; when set, every path except `/healthz` requires `Authorization: Bearer <token>` |
+| `ESTLEG_ALLOWED_HOSTS` | (unset) | comma-separated `Host` allow-list for MCP's DNS-rebinding protection (`host` or `host:port`; `host:*` = any port). **Unset = protection off**, so a request through a reverse proxy is not rejected. Set it to your public host(s) to re-enable the check. |
+| `ESTLEG_ALLOWED_ORIGINS` | (unset) | comma-separated `Origin` allow-list (only used when `ESTLEG_ALLOWED_HOSTS` is set; for browser clients) |
 | `ESTLEG_CORPUS` | auto | corpus dir (the one holding `krr_outputs/INDEX.json`) |
 | `ESTLEG_CORPUS_REPO` / `ESTLEG_CORPUS_BRANCH` | public repo / `main` | used by the container entrypoint to clone/update the corpus |
 
 The MCP endpoint is at `/mcp`; `/healthz` is an unauthenticated health check.
+
+> **Behind a proxy:** MCP's streamable-HTTP transport validates the `Host`
+> header and answers a mismatch with `421 Invalid Host header`. The server
+> therefore leaves that protection **off by default** (the bearer token is the
+> access gate); set `ESTLEG_ALLOWED_HOSTS=your.domain` to turn it back on.
 
 ### Docker / Coolify
 
@@ -111,7 +118,8 @@ per-file JSON is read). Coolify service settings:
 - **Base Directory:** `mcp_server` · **Dockerfile:** `docker/Dockerfile`
 - **Persistent volume** mounted at `/data` (keeps the corpus across redeploys)
 - **Environment:** `ESTLEG_TOKEN=<long random secret>` (transport/host/port are
-  already defaulted in the image)
+  already defaulted in the image). Optionally `ESTLEG_ALLOWED_HOSTS=estleg.sixtyfour.ee`
+  to enable DNS-rebinding protection scoped to the public domain.
 - **Domain:** e.g. `estleg.sixtyfour.ee` · **Port:** `8000` · **Health path:** `/healthz`
 
 ### Connect a client to the remote endpoint

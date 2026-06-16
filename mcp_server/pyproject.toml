@@ -8,11 +8,15 @@ version = "0.1.0"
 description = "Stdio MCP server exposing the Estonian Legal Ontology as a natural-language tool set for lawmakers."
 readme = "README.md"
 requires-python = ">=3.11"
-# ``FastMCP.streamable_http_app()`` (used by the HTTP transport in
-# ``server._build_http_app``) was only added in mcp 1.8.0; 1.2.0–1.7.1
-# lack it and the HTTP transport crashes at startup. Pin the floor there.
+# Floor is 1.14.0: earlier FastMCP (through 1.13.1) inspects tool parameters
+# with ``issubclass(param.annotation, Context)``, which raises
+# ``TypeError: issubclass() arg 1 must be a class`` on modern Python when an
+# annotation is a typing form such as ``str | None`` (used by who_references /
+# references_of), so ``import estleg_mcp.server`` fails outright. 1.14.0 is
+# also the first release whose ``streamable_http_app()`` the HTTP transport
+# needs (``server._build_http_app``).
 dependencies = [
-  "mcp>=1.8.0",
+  "mcp>=1.14.0",
 ]
 
 [project.optional-dependencies]
