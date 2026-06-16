@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "estleg-mcp"
+version = "0.1.0"
+description = "Stdio MCP server exposing the Estonian Legal Ontology as a natural-language tool set for lawmakers."
+readme = "README.md"
+requires-python = ">=3.11"
+# Floor is 1.14.0: earlier FastMCP (through 1.13.1) inspects tool parameters
+# with ``issubclass(param.annotation, Context)``, which raises
+# ``TypeError: issubclass() arg 1 must be a class`` on modern Python when an
+# annotation is a typing form such as ``str | None`` (used by who_references /
+# references_of), so ``import estleg_mcp.server`` fails outright. 1.14.0 is
+# also the first release whose ``streamable_http_app()`` the HTTP transport
+# needs (``server._build_http_app``).
+dependencies = [
+  "mcp>=1.14.0",
+]
+
+[project.optional-dependencies]
+http = [
+  "uvicorn>=0.30",
+]
+dev = [
+  "pytest>=8,<10",
+  "ruff>=0.6,<1",
+]
+
+[project.scripts]
+estleg-mcp = "estleg_mcp.server:main"
+
+[tool.setuptools]
+packages = ["estleg_mcp"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
