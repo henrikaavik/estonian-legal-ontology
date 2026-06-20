@@ -2332,6 +2332,53 @@ def test_validate_combined_graph_closure_flags_unstripped_version_edge(tmp_path)
     assert any("dangling estleg" in e for e in validate_all.errors), validate_all.errors
 
 
+def test_combined_overlay_census_flags_unmerged_overlay_node(tmp_path):
+    # #561 census: a node present in an overlay SOURCE file but absent from
+    # combined (a partial-merge regression) must fail closure even when no
+    # dangling edge references it — the dangling check alone would miss it.
+    krr = tmp_path / "krr_outputs"
+    write_json(
+        krr / "sanctions" / "sanctions_x.json",
+        {"@graph": [{"@id": "estleg:Sanction_X", "@type": ["estleg:Sanction"], "rdfs:label": "X"}]},
+    )
+    _write_combined(krr, [{"@id": "estleg:A_1", "@type": ["estleg:LegalProvision"]}])
+    validate_all.validate_combined_graph_closure(krr)
+    assert any("merged-overlay node(s) absent" in e for e in validate_all.errors), validate_all.errors
+
+
+def test_combined_overlay_census_passes_when_overlay_merged(tmp_path):
+    # The same overlay node, this time PRESENT in combined → census passes.
+    krr = tmp_path / "krr_outputs"
+    write_json(
+        krr / "sanctions" / "sanctions_x.json",
+        {"@graph": [{"@id": "estleg:Sanction_X", "@type": ["estleg:Sanction"], "rdfs:label": "X"}]},
+    )
+    _write_combined(
+        krr,
+        [
+            {"@id": "estleg:A_1", "@type": ["estleg:LegalProvision"]},
+            {"@id": "estleg:Sanction_X", "@type": ["estleg:Sanction"], "rdfs:label": "X"},
+        ],
+    )
+    validate_all.validate_combined_graph_closure(krr)
+    assert validate_all.errors == [], validate_all.errors
+
+
+def test_combined_overlay_census_errors_on_unreadable_overlay(tmp_path, capsys):
+    # The census must surface a malformed overlay source, not silently report
+    # "all present" — its nodes can't be checked, so the success line is gated.
+    krr = tmp_path / "krr_outputs"
+    bad = krr / "sanctions" / "sanctions_bad.json"
+    bad.parent.mkdir(parents=True, exist_ok=True)
+    bad.write_text("{ this is not valid json", encoding="utf-8")
+    _write_combined(krr, [{"@id": "estleg:A_1", "@type": ["estleg:LegalProvision"]}])
+    validate_all.validate_combined_graph_closure(krr)
+    out = capsys.readouterr().out
+    assert any("cannot read overlay source" in e for e in validate_all.errors), validate_all.errors
+    # the "all merged-overlay nodes present" success line must NOT print
+    assert "all merged-overlay nodes present" not in out
+
+
 def test_validate_combined_graph_closure_flags_orphan_stub(tmp_path):
     krr = tmp_path / "krr_outputs"
     _write_combined(
