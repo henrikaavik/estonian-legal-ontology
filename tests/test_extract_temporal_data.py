@@ -112,6 +112,24 @@ class TestPublicationYearFallback:
         assert temporal["publication_date"] == "2019-07-12"
         assert temporal["publication_year"] is None
 
+    def test_clear_temporal_keys_scrubs_publication_year(self):
+        # #571 (review): publicationYear must be in TEMPORAL_KEYS_TO_CLEAR so a
+        # re-derivation can't leave a stale year on a record that later gains an
+        # exact publicationDate or loses publication metadata.
+        from extract_temporal_data import clear_temporal_keys
+
+        graph = [{"@id": "estleg:A", "@type": ["estleg:Act"],
+                  "estleg:publicationYear": {"@value": "2012", "@type": "xsd:gYear"}}]
+        assert clear_temporal_keys(graph) is True
+        assert "estleg:publicationYear" not in graph[0]
+
+    def test_index_fallback_reads_real_avaldamine_tag(self):
+        # #571 (review): the INDEX fallback map must also use the real tag
+        # "avaldamineKuupaev" — otherwise fallback records lose publication_date.
+        from extract_temporal_data import _index_to_temporal
+
+        assert _index_to_temporal({"avaldamineKuupaev": "2020-03-04"})["publication_date"] == "2020-03-04"
+
 
 class TestTemporalStatusEvaluationDate:
     def test_evaluation_date_controls_not_yet_effective_status(self):

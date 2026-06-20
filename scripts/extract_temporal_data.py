@@ -387,6 +387,8 @@ TEMPORAL_KEYS_TO_CLEAR = [
     "estleg:repealDate",
     "estleg:lastAmendmentDate",
     "estleg:publicationDate",
+    "estleg:publicationYear",  # #571: clear on re-derive so a record that gains an
+    # exact publicationDate (or loses publication metadata) can't keep a stale year.
     "estleg:temporalStatus",
     "estleg:adoptionDate",
 ]
@@ -472,7 +474,7 @@ _INDEX_DATE_KEY_MAP: dict[str, str] = {
     "kehtetuksTunnistamiseKuupaev": "invalidation_date",
     "muutmisKuupaev": "last_amendment_date",
     "viimaneMuutmine": "last_amendment_date",
-    "avaldamiseKuupaev": "publication_date",
+    "avaldamineKuupaev": "publication_date",  # #571: real RT tag has "ne", not "se"
     "vastuvotmiseKuupaev": "adoption_date",
     "aktikuupaev": "adoption_date",
 }
