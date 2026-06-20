@@ -1827,11 +1827,47 @@ def validate_combined_graph_closure(krr_dir: Path = KRR_DIR):
         for nid in sorted(leaky_stubs)[:10]:
             print(f"    leaky stub: {nid}")
 
-    if not (total_dangling or orphan_stubs or leaky_stubs):
+    # #561 overlay census: every node a merged overlay subdir
+    # (COMBINED_OVERLAY_SUBDIRS) contributes must be PRESENT in combined — not
+    # merely non-dangling. A partial-merge regression (an overlay silently stops
+    # contributing some nodes) passes the dangling check whenever the dropped
+    # nodes are not referenced by a non-exempt edge, so assert that every
+    # source-overlay @id resolves to a node in combined.
+    overlay_missing: dict[str, int] = defaultdict(int)
+    overlay_sample: dict[str, str] = {}
+    for opath in estleg_common.iter_combined_overlay_files(krr_dir):
+        try:
+            with open(opath, "r", encoding="utf-8") as f:
+                odoc = json.load(f)
+        except (json.JSONDecodeError, OSError, UnicodeDecodeError):
+            continue
+        if not isinstance(odoc, dict):
+            continue
+        subdir = opath.relative_to(krr_dir).parts[0]
+        for onode in odoc.get("@graph", []):
+            if not isinstance(onode, dict):
+                continue
+            oid = onode.get("@id")
+            if not isinstance(oid, str):
+                continue
+            if (estleg_common.canonical_estleg_ref(oid) or oid) not in node_ids:
+                overlay_missing[subdir] += 1
+                overlay_sample.setdefault(subdir, oid)
+    if overlay_missing:
+        total_missing = sum(overlay_missing.values())
+        error(
+            f"combined_ontology.jsonld: {total_missing} merged-overlay node(s) "
+            f"absent from combined across {len(overlay_missing)} subdir(s) — the "
+            f"overlay layer did not fully merge into combined (rebuild combined)"
+        )
+        for subdir in sorted(overlay_missing):
+            print(f"    {subdir}: {overlay_missing[subdir]} missing, e.g. {overlay_sample[subdir]}")
+
+    if not (total_dangling or orphan_stubs or leaky_stubs or overlay_missing):
         print(
             f"  Closed: 0 dangling estleg: refs across {len(nodes)} nodes; "
-            f"{len(stub_ids)} stub nodes all referenced, carrying only shaped "
-            f"closure edges"
+            f"{len(stub_ids)} stub nodes all referenced; all merged-overlay "
+            f"nodes present (census)"
         )
 
 
