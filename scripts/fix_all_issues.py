@@ -1272,6 +1272,13 @@ def generate_combined_jsonld(krr_dir: Path = KRR_DIR):
             nid = node.get("@id", "")
             if not nid:
                 continue
+            # #561: the version layer is a separate load surface (hybrid
+            # decision), so combined must not emit forward edges into it — drop
+            # them here so the closure gate sees a genuinely closed graph rather
+            # than dangling-but-exempt edges. Mutating the transient source node
+            # is safe (the source document is discarded after this file).
+            for _pred in estleg_common.COMBINED_STRIPPED_PREDICATES:
+                node.pop(_pred, None)
             existing = node_by_id.get(nid)
             if existing is None:
                 # First time we see this @id — keep a fresh copy so a later
@@ -1296,7 +1303,7 @@ def generate_combined_jsonld(krr_dir: Path = KRR_DIR):
     overlay_node_count = len(all_nodes) - law_node_count
     print(
         f"  Merged {law_node_count} law nodes + {overlay_node_count} overlay "
-        f"nodes (sanctions/institutions/concepts/annotations)"
+        f"nodes ({'/'.join(estleg_common.COMBINED_OVERLAY_SUBDIRS)})"
     )
 
     # #416: close the graph — synthesise a leaf stub for every remaining

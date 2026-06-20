@@ -327,6 +327,13 @@ COMBINED_OVERLAY_SUBDIRS: tuple[str, ...] = (
     "institutions",
     "concepts",
     "annotations",
+    # #561 (hybrid release-surface decision): fold the amendment layer into
+    # combined so estleg:amendedBy / amends / hasAmendment targets resolve in
+    # the flagship file instead of dangling. The amendment layer is moderate
+    # (~40k nodes); the far larger version layer (provision_versions/, 211k
+    # ProvisionVersion nodes) stays a separate surface and its forward edges are
+    # stripped instead (see COMBINED_STRIPPED_PREDICATES).
+    "amendments",
 )
 
 # Compact-IRI prefixes each overlay subdir owns. The parity gate uses these to
@@ -349,21 +356,28 @@ COMBINED_OVERLAY_ID_PREFIXES: dict[str, tuple[str, ...]] = {
 # graph-closure stub apart from a genuine source node.
 STUB_NODE_MARKER: str = "estleg:isStubNode"
 
-# Object predicates whose `estleg:` targets are deliberately NOT inlined into
-# combined and are therefore exempt from the combined-alone closure gate:
-#   * estleg:hasVersion  -> the 124,901 provision_versions/ sidecar nodes,
-#     a separate bucket far too large to fold into the flagship file;
-#   * estleg:amendedBy   -> provisional draft-derived AmendmentEvents, already
-#     marked `estleg:graphClosureExempt true` in the SHACL shapes (#423).
-# This is intentionally a different, combined-specific set from the SHACL
-# `graphClosureExempt` markers used by the Seadusloome union gate (that gate
-# loads the sidecars, so hasVersion resolves there).
-COMBINED_CLOSURE_EXEMPT_PREDICATES: frozenset[str] = frozenset(
+# Object predicates whose `estleg:` targets live ONLY in the separate "full
+# load surface" (provision_versions/), NOT in combined. Per the hybrid
+# release-surface decision (#561), the version layer is far too large (211k
+# ProvisionVersion nodes) to fold into the flagship file, so combined must NOT
+# emit forward edges into it — they are STRIPPED at build time
+# (generate_combined_jsonld) rather than left dangling-but-exempt. A consumer
+# that needs version history loads the full surface (PUBLIC_LOAD_SUBDIRS), where
+# the edge and its target co-resolve.
+COMBINED_STRIPPED_PREDICATES: frozenset[str] = frozenset(
     {
         "estleg:hasVersion",
-        "estleg:amendedBy",
     }
 )
+
+# #589 (the enforcement half of #561): with version forward-edges stripped
+# (above) and the amendment layer now merged into combined
+# (COMBINED_OVERLAY_SUBDIRS), every estleg: object ref remaining in combined
+# resolves to a present node or a graph-closure stub. The combined-alone closure
+# gate therefore carries NO exemptions — a residual dangling estleg: ref is a
+# real defect, not silently "Closed". Kept as an (empty) frozenset so importers
+# and the closure loop keep working and the intent stays explicit.
+COMBINED_CLOSURE_EXEMPT_PREDICATES: frozenset[str] = frozenset()
 
 # #488: a graph-closure stub keeps its real (often SHACL-shaped) `@type`, so the
 # *standalone* combined artifact must publish a SHACL-conforming node for that
