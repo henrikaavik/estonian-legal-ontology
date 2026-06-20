@@ -2287,8 +2287,6 @@ def test_validate_combined_graph_closure_passes_on_closed_graph(tmp_path):
                 "@id": "estleg:A_1",
                 "@type": ["estleg:LegalProvision"],
                 "estleg:interpretedBy": {"@id": "estleg:RK_1"},
-                # exempt predicate → may dangle without failing closure
-                "estleg:hasVersion": {"@id": "estleg:A_1_v1"},
             },
             _court_stub("estleg:RK_1"),
         ],
@@ -2314,7 +2312,11 @@ def test_validate_combined_graph_closure_flags_dangling_ref(tmp_path):
     assert any("dangling estleg" in e for e in validate_all.errors), validate_all.errors
 
 
-def test_validate_combined_graph_closure_exempts_provision_versions(tmp_path):
+def test_validate_combined_graph_closure_flags_unstripped_version_edge(tmp_path):
+    # #561/#589: hasVersion is no longer exempt. The builder strips version
+    # forward edges (the version layer is a separate load surface), so a combined
+    # that still carries a dangling hasVersion is a stripping regression the gate
+    # must flag — not silently pass via an exemption.
     krr = tmp_path / "krr_outputs"
     _write_combined(
         krr,
@@ -2322,12 +2324,12 @@ def test_validate_combined_graph_closure_exempts_provision_versions(tmp_path):
             {
                 "@id": "estleg:A_1",
                 "@type": ["estleg:LegalProvision"],
-                "estleg:hasVersion": {"@id": "estleg:A_1_v1"},  # absent but exempt
+                "estleg:hasVersion": {"@id": "estleg:A_1_v1"},  # should have been stripped
             }
         ],
     )
     validate_all.validate_combined_graph_closure(krr)
-    assert validate_all.errors == [], validate_all.errors
+    assert any("dangling estleg" in e for e in validate_all.errors), validate_all.errors
 
 
 def test_validate_combined_graph_closure_flags_orphan_stub(tmp_path):
@@ -2536,23 +2538,11 @@ def test_validate_combined_graph_closure_resolves_expanded_iri_node(tmp_path):
     assert validate_all.errors == [], validate_all.errors
 
 
-def test_validate_combined_graph_closure_flags_stub_referenced_only_via_exempt(tmp_path):
-    """Finding 3: a stub kept alive only by an exempt predicate is a stale orphan (#416)."""
-    krr = tmp_path / "krr_outputs"
-    _write_combined(
-        krr,
-        [
-            {
-                "@id": "estleg:A_1",
-                "@type": ["estleg:LegalProvision"],
-                # exempt predicate must NOT keep the stub alive
-                "estleg:hasVersion": {"@id": "estleg:RK_stub"},
-            },
-            _court_stub("estleg:RK_stub"),
-        ],
-    )
-    validate_all.validate_combined_graph_closure(krr)
-    assert any("stale stub" in e for e in validate_all.errors), validate_all.errors
+# (Removed test_validate_combined_graph_closure_flags_stub_referenced_only_via_exempt:
+# #561/#589 emptied COMBINED_CLOSURE_EXEMPT_PREDICATES — there is no longer an
+# exempt predicate that could keep a stub alive, so the scenario it guarded
+# cannot arise. The genuinely-unreferenced-stub orphan check is covered by
+# test_validate_combined_graph_closure_flags_orphan_stub.)
 
 
 def test_iter_node_estleg_refs_canonicalizes_and_attributes_nested_predicate():

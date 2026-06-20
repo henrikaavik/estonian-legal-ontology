@@ -1201,10 +1201,12 @@ def generate_combined_jsonld(krr_dir: Path = KRR_DIR):
     """Generate combined JSON-LD file (Issue #26, DQ-1).
 
     Composition (#416): law peeps + the ``COMBINED_ALLOWED_JSONLD`` allowlist,
-    then the enrichment overlays (sanctions/institutions/concepts/annotations)
-    fully merged, then a deterministic block of lightweight stub nodes for every
-    remaining cross-corpus reference (court/EU/draft/regulation/amendment/
-    harmonisation) so the artifact is graph-closed when loaded on its own.
+    then the enrichment overlays (sanctions/institutions/concepts/annotations/
+    amendments — #561) fully merged, then a deterministic block of lightweight
+    stub nodes for every remaining cross-corpus reference (court/EU/draft/
+    regulation/harmonisation) so the artifact is graph-closed when loaded on its
+    own. Version forward edges (estleg:hasVersion) are stripped, not stubbed —
+    the version layer is a separate load surface (#561, COMBINED_STRIPPED_PREDICATES).
     """
     print("\n=== Generating combined JSON-LD ===")
 
@@ -1272,6 +1274,13 @@ def generate_combined_jsonld(krr_dir: Path = KRR_DIR):
             nid = node.get("@id", "")
             if not nid:
                 continue
+            # #561: the version layer is a separate load surface (hybrid
+            # decision), so combined must not emit forward edges into it — drop
+            # them here so the closure gate sees a genuinely closed graph rather
+            # than dangling-but-exempt edges. Mutating the transient source node
+            # is safe (the source document is discarded after this file).
+            for _pred in estleg_common.COMBINED_STRIPPED_PREDICATES:
+                node.pop(_pred, None)
             existing = node_by_id.get(nid)
             if existing is None:
                 # First time we see this @id — keep a fresh copy so a later
@@ -1296,7 +1305,7 @@ def generate_combined_jsonld(krr_dir: Path = KRR_DIR):
     overlay_node_count = len(all_nodes) - law_node_count
     print(
         f"  Merged {law_node_count} law nodes + {overlay_node_count} overlay "
-        f"nodes (sanctions/institutions/concepts/annotations)"
+        f"nodes ({'/'.join(estleg_common.COMBINED_OVERLAY_SUBDIRS)})"
     )
 
     # #416: close the graph — synthesise a leaf stub for every remaining

@@ -1736,12 +1736,13 @@ def validate_combined_ontology(krr_dir: Path = KRR_DIR):
 def validate_combined_graph_closure(krr_dir: Path = KRR_DIR):
     """#416 closure gate: combined must load standalone with zero dangling refs.
 
-    Reads combined alone (no sibling corpora) and asserts that every ``estleg:``
-    object reference resolves to a node in the file, except the deliberately
-    external ``COMBINED_CLOSURE_EXEMPT_PREDICATES`` (provision_versions sidecar /
-    provisional draft amendments). Also checks that every synthesised stub is
-    actually referenced (no stale orphan stubs) and carries only the whitelisted
-    shaped-closure edges (#488) — each of which must itself resolve in-graph.
+    Reads combined alone (no sibling corpora) and asserts that EVERY ``estleg:``
+    object reference resolves to a node in the file — no exemptions (#561/#589):
+    version forward edges are stripped at build time and the amendment layer is
+    merged, so a residual dangling ref is a real defect, not silently "Closed".
+    Also checks that every synthesised stub is actually referenced (no stale
+    orphan stubs) and carries only the whitelisted shaped-closure edges (#488) —
+    each of which must itself resolve in-graph.
     This fails CI on a stale or incomplete combined — the parity guarantee the
     merge + stub build depends on.
     """
@@ -1775,9 +1776,10 @@ def validate_combined_graph_closure(krr_dir: Path = KRR_DIR):
     allowed_stub_edges = estleg_common.STUB_SEMANTIC_EDGE_PREDICATES
 
     dangling: dict[str, set[str]] = defaultdict(set)
-    # Only NON-exempt incoming references keep a stub alive: the builder never
-    # mints stubs for exempt predicates (hasVersion/amendedBy), so a stub whose
-    # sole referrer is one of those is stale and must surface as an orphan.
+    # Every incoming reference keeps a stub alive (#561/#589: no exempt
+    # predicates remain — version forward edges are stripped and the amendment
+    # layer is merged), so a stub referenced by nothing is stale and must
+    # surface as an orphan.
     referenced: set[str] = set()
     leaky_stubs: list[str] = []
     for node in nodes:

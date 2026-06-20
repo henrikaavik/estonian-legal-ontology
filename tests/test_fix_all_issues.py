@@ -1261,7 +1261,8 @@ def test_combined_builder_merges_overlays_and_stubs_cross_corpus_refs(tmp_path):
                     "@type": ["estleg:LegalProvision"],
                     "estleg:hasSanction": {"@id": "estleg:Sanction_A_1_fine"},
                     "estleg:interpretedBy": {"@id": "estleg:RK_1_2_3_4"},
-                    # closure-exempt: provision_versions sidecar, never stubbed
+                    # #561: stripped from combined — the version layer
+                    # (provision_versions/) is a separate load surface.
                     "estleg:hasVersion": {"@id": "estleg:A_1_v1"},
                 }
             ]
@@ -1315,7 +1316,10 @@ def test_combined_builder_merges_overlays_and_stubs_cross_corpus_refs(tmp_path):
     assert "estleg:summary" not in stub
     assert "estleg:interpretsLaw" not in stub  # internal ref stripped → leaf
 
-    # the closure-exempt hasVersion target is deliberately NOT stubbed
+    # #561: the hasVersion forward edge is STRIPPED from combined (the version
+    # layer is a separate load surface), so neither the edge nor its target
+    # appears — combined stays genuinely closed, not dangling-but-exempt.
+    assert "estleg:hasVersion" not in nodes["estleg:A_1"]
     assert "estleg:A_1_v1" not in nodes
 
 
@@ -1632,9 +1636,10 @@ def test_closure_stub_kov_provision_transitively_closes_parent_act(tmp_path):
     assert parent["estleg:enactedBy"] == {"@id": "estleg:Issuer_saku_vallavolikogu"}
 
 
-def test_closure_stub_proposed_amendment_carries_amending_draft(tmp_path):
-    """#488: a ProposedAmendment stub carries estleg:amendingDraft, and the draft
-    it points at resolves in combined."""
+def test_proposed_amendment_merges_as_full_node_with_resolved_draft(tmp_path):
+    """#561: the amendment layer is merged into combined, so a ProposedAmendment
+    is a FULL node (not a closure stub); its estleg:amendingDraft target resolves
+    (stubbed from eelnoud/), and its carried proposesToAmend must itself resolve."""
     write_json(
         tmp_path / "law_a_peep.json",
         {
@@ -1658,9 +1663,7 @@ def test_closure_stub_proposed_amendment_carries_amending_draft(tmp_path):
                     "@type": ["owl:NamedIndividual", "estleg:ProposedAmendment"],
                     "rdfs:label": "Eelnõu muudatus: Välisriigi kutsekvalifikatsiooni …",
                     "estleg:amendingDraft": {"@id": "estleg:Draft_HTM13_1561"},
-                    # proposesToAmend is OPTIONAL on the shape and not a required
-                    # closure edge — it must be stripped, not carried + dangling.
-                    "estleg:proposesToAmend": {"@id": "estleg:A_unresolved_root"},
+                    "estleg:proposesToAmend": {"@id": "estleg:A_1"},
                 }
             ]
         },
@@ -1681,14 +1684,14 @@ def test_closure_stub_proposed_amendment_carries_amending_draft(tmp_path):
 
     fix_all_issues.generate_combined_jsonld(tmp_path)
     nodes = {n["@id"]: n for n in read_json(tmp_path / "combined_ontology.jsonld")["@graph"]}
-    stub = nodes["estleg:AmendmentLink_Draft_HTM13_1561_VKT"]
-    assert stub["estleg:isStubNode"] is True
-    assert stub["estleg:amendingDraft"] == {"@id": "estleg:Draft_HTM13_1561"}
-    # amendingDraft target resolves (draft stubbed from eelnoud/)
-    assert "estleg:Draft_HTM13_1561" in nodes
-    # the optional, non-required ref is dropped — never carried as a dangling edge
-    assert "estleg:proposesToAmend" not in stub
-    assert "estleg:A_unresolved_root" not in nodes
+    amd = nodes["estleg:AmendmentLink_Draft_HTM13_1561_VKT"]
+    # #561: merged as a FULL node, not a closure stub
+    assert estleg_common.STUB_NODE_MARKER not in amd
+    assert amd["estleg:amendingDraft"] == {"@id": "estleg:Draft_HTM13_1561"}
+    assert "estleg:Draft_HTM13_1561" in nodes  # draft resolves (stubbed from eelnoud/)
+    # the full node's proposesToAmend is carried, and its target resolves in-graph
+    assert amd["estleg:proposesToAmend"] == {"@id": "estleg:A_1"}
+    assert "estleg:A_1" in nodes
 
 
 def test_closure_stubs_are_shacl_complete_for_shaped_types(tmp_path):
