@@ -1839,9 +1839,15 @@ def validate_combined_graph_closure(krr_dir: Path = KRR_DIR):
         try:
             with open(opath, "r", encoding="utf-8") as f:
                 odoc = json.load(f)
-        except (json.JSONDecodeError, OSError, UnicodeDecodeError):
+        except (json.JSONDecodeError, OSError, UnicodeDecodeError) as exc:
+            # An unreadable/malformed overlay source must NOT let the census
+            # silently report "all present" — its nodes can't be checked, so
+            # surface it as an error (the validate_all JSON-syntax pass also
+            # flags it, but direct closure-gate callers rely on this).
+            error(f"combined overlay census: cannot read overlay source {opath.name}: {exc}")
             continue
         if not isinstance(odoc, dict):
+            error(f"combined overlay census: overlay source {opath.name} is not a JSON object")
             continue
         subdir = opath.relative_to(krr_dir).parts[0]
         for onode in odoc.get("@graph", []):
