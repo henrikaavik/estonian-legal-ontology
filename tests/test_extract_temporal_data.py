@@ -74,7 +74,10 @@ class TestPublicationYearFallback:
 
         assert parse_rt_year(value) is None
 
-    def test_extract_temporal_normalizes_rtaasta_fallback(self, tmp_path):
+    def test_extract_temporal_rtaasta_fallback_is_year_precision(self, tmp_path):
+        # #571: a year-only record (RTaasta, no avaldamineKuupaev) must NOT get a
+        # fabricated YYYY-01-01 publicationDate — only a year-precision
+        # publication_year (emitted as estleg:publicationYear, xsd:gYear).
         from extract_temporal_data import extract_temporal_from_xml
 
         xml_path = tmp_path / "rt.xml"
@@ -87,7 +90,27 @@ class TestPublicationYearFallback:
 
         temporal = extract_temporal_from_xml(xml_path)
 
-        assert temporal["publication_date"] == "2012-01-01"
+        assert temporal["publication_date"] is None
+        assert temporal["publication_year"] == "2012"
+
+    def test_extract_temporal_reads_real_avaldamine_tag(self, tmp_path):
+        # #571 regression: the real RT tag is "avaldamineKuupaev" (with "ne") —
+        # a precise publication date must be read, not the year-only fallback.
+        from extract_temporal_data import extract_temporal_from_xml
+
+        xml_path = tmp_path / "rt.xml"
+        xml_path.write_text(
+            "<akt><metaandmed>"
+            "<avaldamineKuupaev>2019-07-12</avaldamineKuupaev>"
+            "<avaldamismarge><RTaasta>2019</RTaasta></avaldamismarge>"
+            "</metaandmed></akt>",
+            encoding="utf-8",
+        )
+
+        temporal = extract_temporal_from_xml(xml_path)
+
+        assert temporal["publication_date"] == "2019-07-12"
+        assert temporal["publication_year"] is None
 
 
 class TestTemporalStatusEvaluationDate:

@@ -177,6 +177,7 @@ def extract_temporal_from_xml(xml_path: Path) -> dict:
         "invalidation_date": None,
         "last_amendment_date": None,
         "publication_date": None,
+        "publication_year": None,
         "adoption_date": None,
     }
 
@@ -238,16 +239,23 @@ def extract_temporal_from_xml(xml_path: Path) -> dict:
                 result["invalidation_date"] = parsed
                 break
 
-    # avaldamiseKuupaev or avaldamismarge — publication date
+    # avaldamineKuupaev or avaldamismarge — publication date.
+    # #571: the RT tag is "avaldamineKuupaev" (with an "ne"); the old
+    # "avaldamiseKuupaev" matched NO RT XML, so this loop always fell through to
+    # the year-only fallback and ~100% of records got a fabricated date.
     for el in root.iter():
         tag = ln(el.tag)
-        if tag == "avaldamiseKuupaev" and el.text:
+        if tag == "avaldamineKuupaev" and el.text:
             parsed = parse_date(el.text.strip())
             if parsed:
                 result["publication_date"] = parsed
                 break
 
-    # If no explicit publication date, try to get from first avaldamismarge
+    # #571: when only the RT YEAR is known (no avaldamineKuupaev), do NOT
+    # fabricate a "{year}-01-01" publicationDate — a precise-looking xsd:date the
+    # source never stated. Record the year at year precision (publication_year →
+    # estleg:publicationYear, xsd:gYear) so consumers get the year without a
+    # spurious day/month.
     if not result["publication_date"]:
         avaldamismarge = find_element_recursive(root, "avaldamismarge")
         if avaldamismarge is not None:
@@ -255,7 +263,7 @@ def extract_temporal_from_xml(xml_path: Path) -> dict:
             if rt_aasta:
                 year = parse_rt_year(rt_aasta)
                 if year:
-                    result["publication_date"] = f"{year}-01-01"
+                    result["publication_year"] = year
 
     # Last amendment date: find the latest muutmismarge.
     # Compare as ``date`` objects rather than as ISO strings — string
@@ -789,6 +797,15 @@ def main(evaluation_date: str | None = None):
 
         if temporal.get("publication_date"):
             ontology_node["estleg:publicationDate"] = make_xsd_date(temporal["publication_date"])
+            dirty = True
+            _file_triples += 1
+        elif temporal.get("publication_year"):
+            # #571: year precision only (no avaldamineKuupaev) — emit
+            # estleg:publicationYear (xsd:gYear) instead of a fabricated date.
+            ontology_node["estleg:publicationYear"] = {
+                "@value": str(temporal["publication_year"]),
+                "@type": "xsd:gYear",
+            }
             dirty = True
             _file_triples += 1
 
