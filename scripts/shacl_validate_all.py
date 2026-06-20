@@ -174,8 +174,17 @@ def main(argv: list[str] | None = None) -> int:
     # which pyshacl reports as conforming — turning a vanished corpus subset
     # into a green SHACL job. Treat 0 files as an error, mirroring the guard
     # in validate_seadusloome_sync.main (issue #338).
-    if not files:
-        print(f"ERROR: no files collected for {label}.")
+    #
+    # #590: controlled_vocabulary.jsonld is appended to EVERY bucket, so a
+    # vanished/renamed corpus subdir still yields exactly that one file and
+    # slips past the guard. Exclude the always-present vocab file from the
+    # emptiness test so the guard sees the actual corpus, not just the TBox.
+    corpus_files = [f for f in files if f.name != "controlled_vocabulary.jsonld"]
+    if not corpus_files:
+        print(
+            f"ERROR: no corpus files collected for {label} "
+            "(only controlled_vocabulary.jsonld present — vanished/renamed bucket?)."
+        )
         return 2
     print(f"Loading {len(files)} files from {label} into a single graph...")
     g = rdflib.Graph()

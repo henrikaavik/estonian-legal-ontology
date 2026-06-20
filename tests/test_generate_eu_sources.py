@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import json
 import sys
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta
 from pathlib import Path
 
 import pytest
@@ -335,18 +335,39 @@ def test_eurlex_in_force_defensive_coercion(value, expected):
 # ---------------------------------------------------------------------------
 
 
+def _build_date():
+    # #592: freshness is measured pin-to-pin against the CURRENT
+    # BUILD_EVALUATION_DATE, not wall-clock now(). Derive test dates from it so
+    # the tests are deterministic and don't drift with the calendar.
+    return datetime.fromisoformat(harmonisation.BUILD_EVALUATION_DATE).date()
+
+
 def test_harmonisation_freshness_passes_when_fresh(monkeypatch, capsys):
-    today = datetime.now(timezone.utc).date().isoformat()
+    fresh = _build_date().isoformat()
     # Should NOT call sys.exit; capture-only behaviour.
     harmonisation._check_mapping_freshness(
-        {"generated": today}, threshold_days=30, allow_stale=False
+        {"generated": fresh}, threshold_days=30, allow_stale=False
     )
     captured = capsys.readouterr()
-    assert today in captured.out
+    assert fresh in captured.out
+
+
+def test_harmonisation_freshness_pinned_generated_is_not_a_time_bomb(capsys):
+    # #592 regression: the committed transposition_mapping.json carries
+    # generated == BUILD_EVALUATION_DATE. Under the old now()-based comparison
+    # this gate hard-failed CI ~threshold days after the pin with zero changes.
+    # Pin-to-pin must report 0 days behind and never exit, independent of today.
+    harmonisation._check_mapping_freshness(
+        {"generated": harmonisation.BUILD_EVALUATION_DATE},
+        threshold_days=30,
+        allow_stale=False,
+    )
+    out = capsys.readouterr().out
+    assert "0d behind build snapshot" in out
 
 
 def test_harmonisation_freshness_fails_when_stale(monkeypatch):
-    stale = (datetime.now(timezone.utc) - timedelta(days=120)).date().isoformat()
+    stale = (_build_date() - timedelta(days=120)).isoformat()
     with pytest.raises(SystemExit) as exc_info:
         harmonisation._check_mapping_freshness(
             {"generated": stale}, threshold_days=30, allow_stale=False
@@ -355,7 +376,7 @@ def test_harmonisation_freshness_fails_when_stale(monkeypatch):
 
 
 def test_harmonisation_freshness_warns_with_allow_stale(monkeypatch, capsys):
-    stale = (datetime.now(timezone.utc) - timedelta(days=120)).date().isoformat()
+    stale = (_build_date() - timedelta(days=120)).isoformat()
     # Should NOT raise SystemExit when allow_stale=True; should print WARNING.
     harmonisation._check_mapping_freshness(
         {"generated": stale}, threshold_days=30, allow_stale=True
