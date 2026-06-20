@@ -171,19 +171,38 @@ def test_main_errors_when_bucket_collects_zero_files(monkeypatch, capsys):
 
     assert rc == 2
     out = capsys.readouterr().out
-    assert "no files collected" in out
+    assert "no corpus files collected" in out
     # The guard must short-circuit before the graph-loading banner.
+    assert "into a single graph" not in out
+
+
+def test_main_errors_when_only_controlled_vocabulary_present(monkeypatch, capsys):
+    # #590 regression: controlled_vocabulary.jsonld is appended to EVERY bucket,
+    # so a vanished/renamed corpus subdir still yields exactly that one file. The
+    # old ``if not files:`` guard saw 1 file and PASSED, validating only the TBox
+    # and certifying a missing corpus as green. The guard must exclude the
+    # always-present vocab file from the emptiness test.
+    from pathlib import Path
+
+    vocab_only = [Path("/whatever/krr_outputs/controlled_vocabulary.jsonld")]
+    monkeypatch.setattr(shacl_validate_all, "collect_files", lambda *a, **k: vocab_only)
+
+    rc = shacl_validate_all.main(["--bucket", "curia"])
+
+    assert rc == 2
+    out = capsys.readouterr().out
+    assert "no corpus files collected" in out
     assert "into a single graph" not in out
 
 
 def test_main_zero_file_guard_matches_seadusloome_sync_contract():
     # Both SHACL gates must treat an empty corpus subset as a hard error
     # (return code 2), not a trivially-passing run. This pins the shared
-    # contract referenced by issue #338.
+    # contract referenced by issue #338, with the #590 vocab-exclusion fix.
     import inspect
 
     src = inspect.getsource(shacl_validate_all.main)
-    assert "if not files:" in src
+    assert "if not corpus_files:" in src
     assert "return 2" in src
 
 

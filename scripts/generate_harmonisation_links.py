@@ -23,7 +23,7 @@ import shutil
 import sys
 import time
 from datetime import date as _date
-from datetime import datetime, timezone
+from datetime import datetime
 from pathlib import Path
 
 from estleg_common import BUILD_EVALUATION_DATE, iter_peep_files, save_json
@@ -604,11 +604,14 @@ def parse_args() -> argparse.Namespace:
 def _check_mapping_freshness(
     mapping_data: dict, *, threshold_days: int, allow_stale: bool
 ) -> None:
-    """Validate that ``transposition_mapping.json`` was generated recently.
+    """Validate that ``transposition_mapping.json`` is current with the build.
 
-    Reads ``mapping_data['generated']`` (an ISO date), compares against
-    today (UTC), and either warns or aborts depending on ``allow_stale``.
-    Always prints the generated date for traceability.
+    Reads ``mapping_data['generated']`` (an ISO date == the ``BUILD_EVALUATION_DATE``
+    pinned at generation time) and compares it against the *current*
+    ``BUILD_EVALUATION_DATE`` — NOT wall-clock now() (see #592: a now()-based age
+    grows unbounded against the pinned stamp and hard-fails CI ~threshold days
+    after the pin). Either warns or aborts depending on ``allow_stale``. Always
+    prints the generated date for traceability.
     """
     generated = mapping_data.get("generated")
     if not generated:
@@ -629,9 +632,21 @@ def _check_mapping_freshness(
         print(f"ERROR: {msg}")
         sys.exit(1)
 
-    today = datetime.now(timezone.utc).date()
-    age_days = (today - gen_date).days
-    print(f"  transposition_mapping.json generated: {generated} ({age_days}d ago)")
+    # #592: compare against the current pinned build date, NOT wall-clock now().
+    # `generated` is BUILD_EVALUATION_DATE (#295 deterministic stamp), so a
+    # now()-based age grows unbounded and hard-fails CI ~threshold days after the
+    # pin even with zero changes (a calendar time-bomb). Pin-to-pin keeps the
+    # staleness signal — "mapping generated for an older corpus snapshot than the
+    # current build" — fully deterministic.
+    try:
+        reference_date = _date.fromisoformat(BUILD_EVALUATION_DATE)
+    except ValueError:
+        reference_date = gen_date  # defensive: a malformed pin must not abort the gate
+    age_days = (reference_date - gen_date).days
+    print(
+        f"  transposition_mapping.json generated: {generated} "
+        f"({age_days}d behind build snapshot {BUILD_EVALUATION_DATE})"
+    )
 
     if age_days > threshold_days:
         msg = (
