@@ -1835,6 +1835,7 @@ def validate_combined_graph_closure(krr_dir: Path = KRR_DIR):
     # source-overlay @id resolves to a node in combined.
     overlay_missing: dict[str, int] = defaultdict(int)
     overlay_sample: dict[str, str] = {}
+    overlay_source_errors = 0
     for opath in estleg_common.iter_combined_overlay_files(krr_dir):
         try:
             with open(opath, "r", encoding="utf-8") as f:
@@ -1843,11 +1844,14 @@ def validate_combined_graph_closure(krr_dir: Path = KRR_DIR):
             # An unreadable/malformed overlay source must NOT let the census
             # silently report "all present" — its nodes can't be checked, so
             # surface it as an error (the validate_all JSON-syntax pass also
-            # flags it, but direct closure-gate callers rely on this).
+            # flags it, but direct closure-gate callers rely on this) AND gate
+            # the success line below on it.
             error(f"combined overlay census: cannot read overlay source {opath.name}: {exc}")
+            overlay_source_errors += 1
             continue
         if not isinstance(odoc, dict):
             error(f"combined overlay census: overlay source {opath.name} is not a JSON object")
+            overlay_source_errors += 1
             continue
         subdir = opath.relative_to(krr_dir).parts[0]
         for onode in odoc.get("@graph", []):
@@ -1869,7 +1873,8 @@ def validate_combined_graph_closure(krr_dir: Path = KRR_DIR):
         for subdir in sorted(overlay_missing):
             print(f"    {subdir}: {overlay_missing[subdir]} missing, e.g. {overlay_sample[subdir]}")
 
-    if not (total_dangling or orphan_stubs or leaky_stubs or overlay_missing):
+    if not (total_dangling or orphan_stubs or leaky_stubs or overlay_missing
+            or overlay_source_errors):
         print(
             f"  Closed: 0 dangling estleg: refs across {len(nodes)} nodes; "
             f"{len(stub_ids)} stub nodes all referenced; all merged-overlay "

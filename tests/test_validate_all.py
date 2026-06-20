@@ -2364,16 +2364,19 @@ def test_combined_overlay_census_passes_when_overlay_merged(tmp_path):
     assert validate_all.errors == [], validate_all.errors
 
 
-def test_combined_overlay_census_errors_on_unreadable_overlay(tmp_path):
+def test_combined_overlay_census_errors_on_unreadable_overlay(tmp_path, capsys):
     # The census must surface a malformed overlay source, not silently report
-    # "all present" — its nodes can't be checked.
+    # "all present" — its nodes can't be checked, so the success line is gated.
     krr = tmp_path / "krr_outputs"
     bad = krr / "sanctions" / "sanctions_bad.json"
     bad.parent.mkdir(parents=True, exist_ok=True)
     bad.write_text("{ this is not valid json", encoding="utf-8")
     _write_combined(krr, [{"@id": "estleg:A_1", "@type": ["estleg:LegalProvision"]}])
     validate_all.validate_combined_graph_closure(krr)
+    out = capsys.readouterr().out
     assert any("cannot read overlay source" in e for e in validate_all.errors), validate_all.errors
+    # the "all merged-overlay nodes present" success line must NOT print
+    assert "all merged-overlay nodes present" not in out
 
 
 def test_validate_combined_graph_closure_flags_orphan_stub(tmp_path):
