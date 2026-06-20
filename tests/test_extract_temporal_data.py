@@ -74,7 +74,10 @@ class TestPublicationYearFallback:
 
         assert parse_rt_year(value) is None
 
-    def test_extract_temporal_normalizes_rtaasta_fallback(self, tmp_path):
+    def test_extract_temporal_rtaasta_fallback_is_year_precision(self, tmp_path):
+        # #571: a year-only record (RTaasta, no avaldamineKuupaev) must NOT get a
+        # fabricated YYYY-01-01 publicationDate — only a year-precision
+        # publication_year (emitted as estleg:publicationYear, xsd:gYear).
         from extract_temporal_data import extract_temporal_from_xml
 
         xml_path = tmp_path / "rt.xml"
@@ -87,7 +90,45 @@ class TestPublicationYearFallback:
 
         temporal = extract_temporal_from_xml(xml_path)
 
-        assert temporal["publication_date"] == "2012-01-01"
+        assert temporal["publication_date"] is None
+        assert temporal["publication_year"] == "2012"
+
+    def test_extract_temporal_reads_real_avaldamine_tag(self, tmp_path):
+        # #571 regression: the real RT tag is "avaldamineKuupaev" (with "ne") —
+        # a precise publication date must be read, not the year-only fallback.
+        from extract_temporal_data import extract_temporal_from_xml
+
+        xml_path = tmp_path / "rt.xml"
+        xml_path.write_text(
+            "<akt><metaandmed>"
+            "<avaldamineKuupaev>2019-07-12</avaldamineKuupaev>"
+            "<avaldamismarge><RTaasta>2019</RTaasta></avaldamismarge>"
+            "</metaandmed></akt>",
+            encoding="utf-8",
+        )
+
+        temporal = extract_temporal_from_xml(xml_path)
+
+        assert temporal["publication_date"] == "2019-07-12"
+        assert temporal["publication_year"] is None
+
+    def test_clear_temporal_keys_scrubs_publication_year(self):
+        # #571 (review): publicationYear must be in TEMPORAL_KEYS_TO_CLEAR so a
+        # re-derivation can't leave a stale year on a record that later gains an
+        # exact publicationDate or loses publication metadata.
+        from extract_temporal_data import clear_temporal_keys
+
+        graph = [{"@id": "estleg:A", "@type": ["estleg:Act"],
+                  "estleg:publicationYear": {"@value": "2012", "@type": "xsd:gYear"}}]
+        assert clear_temporal_keys(graph) is True
+        assert "estleg:publicationYear" not in graph[0]
+
+    def test_index_fallback_reads_real_avaldamine_tag(self):
+        # #571 (review): the INDEX fallback map must also use the real tag
+        # "avaldamineKuupaev" — otherwise fallback records lose publication_date.
+        from extract_temporal_data import _index_to_temporal
+
+        assert _index_to_temporal({"avaldamineKuupaev": "2020-03-04"})["publication_date"] == "2020-03-04"
 
 
 class TestTemporalStatusEvaluationDate:
