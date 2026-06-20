@@ -1201,10 +1201,12 @@ def generate_combined_jsonld(krr_dir: Path = KRR_DIR):
     """Generate combined JSON-LD file (Issue #26, DQ-1).
 
     Composition (#416): law peeps + the ``COMBINED_ALLOWED_JSONLD`` allowlist,
-    then the enrichment overlays (sanctions/institutions/concepts/annotations)
-    fully merged, then a deterministic block of lightweight stub nodes for every
-    remaining cross-corpus reference (court/EU/draft/regulation/amendment/
-    harmonisation) so the artifact is graph-closed when loaded on its own.
+    then the enrichment overlays (sanctions/institutions/concepts/annotations/
+    amendments — #561) fully merged, then a deterministic block of lightweight
+    stub nodes for every remaining cross-corpus reference (court/EU/draft/
+    regulation/harmonisation) so the artifact is graph-closed when loaded on its
+    own. Version forward edges (estleg:hasVersion) are stripped, not stubbed —
+    the version layer is a separate load surface (#561, COMBINED_STRIPPED_PREDICATES).
     """
     print("\n=== Generating combined JSON-LD ===")
 

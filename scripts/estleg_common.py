@@ -317,8 +317,11 @@ def iter_public_load_files(
 # `combined_ontology.jsonld` is the flagship "load-everything" artifact. Beyond
 # the law peeps it fully MERGES these enrichment overlays (their target nodes
 # are part of the law graph) and emits lightweight STUB nodes for every
-# remaining cross-corpus object reference (court/EU/draft/regulation/amendment/
+# remaining cross-corpus object reference (court/EU/draft/regulation/
 # harmonisation) so the file is graph-closed when loaded on its own. The
+# amendment layer is now MERGED (not stubbed) and version forward edges are
+# stripped (separate load surface) — see COMBINED_OVERLAY_SUBDIRS /
+# COMBINED_STRIPPED_PREDICATES below (#561). The
 # builder (`fix_all_issues.generate_combined_jsonld`) and the parity/closure
 # gate (`validate_all`) BOTH read these constants — keep them as the one
 # source of truth so the two never drift.
