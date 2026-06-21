@@ -26,7 +26,12 @@ from datetime import date as _date
 from datetime import datetime
 from pathlib import Path
 
-from estleg_common import BUILD_EVALUATION_DATE, iter_peep_files, save_json
+from estleg_common import (
+    BUILD_EVALUATION_DATE,
+    act_deprecation,
+    iter_peep_files,
+    save_json,
+)
 from eurlex_common import (
     SPARQL_ENDPOINT,
     sanitize_celex,
@@ -535,6 +540,12 @@ def get_law_harmonisation_target_iri(law_file: str) -> str | None:
     try:
         data = load_json(KRR_DIR / law_file)
     except Exception:
+        return None
+
+    # #578: a deprecated/replaced act (the retired VOS_*/volaigusseadus VÕS
+    # decomposition) must never receive a harmonisation link — the canonical
+    # volaoigusseadus_* family carries them. Skip and let the caller log it.
+    if act_deprecation(data)[0]:
         return None
 
     graph = data.get("@graph", [])

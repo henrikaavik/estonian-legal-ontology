@@ -96,6 +96,35 @@ def test_build_law_index_filters_missing_files_from_stale_index(
     assert entry["source_act"] == "Asjaõigusseadus"
 
 
+def test_build_law_index_skips_deprecated_act(tmp_path: Path, monkeypatch) -> None:
+    """#578: a deprecated/replaced act (the retired volaigusseadus / VOS_* VÕS
+    decomposition) is excluded from the transposition law index, so a directive
+    cannot fan onto it alongside the canonical volaoigusseadus_* family."""
+    krr = tmp_path / "krr_outputs"
+    krr.mkdir()
+    _write_json(
+        krr / "volaigusseadus_osa3_peep.json",
+        {
+            "@context": mod.CONTEXT,
+            "@graph": [
+                {
+                    "@id": "estleg:VOS_Osa3_Contract_Obligations_Liability",
+                    "@type": ["owl:Ontology", "estleg:Act"],
+                    "owl:deprecated": True,
+                    "dcterms:isReplacedBy": {"@id": "estleg:volaoigusseadus_Osa3_271_421"},
+                    "estleg:sourceAct": "Võlaõigusseadus",
+                }
+            ],
+        },
+    )
+    monkeypatch.setattr(mod, "KRR_DIR", krr)
+
+    index = mod.build_law_index(
+        {"laws": [{"name": "volaigusseadus", "files": ["volaigusseadus_osa3_peep.json"]}]}
+    )
+    assert index == {}
+
+
 def test_build_law_index_handles_unreadable_first_file_gracefully(
     tmp_path: Path, monkeypatch
 ) -> None:
