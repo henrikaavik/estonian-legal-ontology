@@ -286,27 +286,19 @@ def _truncate_at_boundary(
 
 
 def collect_text(el: ET.Element, max_len: int = 500) -> str:
-    parts: list[str] = []
-    for child in _iter_text_nodes(el):
-        tag = ln(child.tag)
-        # Issue #298: do NOT include ``loige`` here. A ``loige`` container's
-        # text is the concatenation of its own ``tavatekst``/``lause``
-        # descendants, so matching both the container and its leaves doubles
-        # every multi-lõige body (and routes ``_marker_pruned_text`` over the
-        # whole subtree, leaking raw ``<HTMLKonteiner>`` CDATA). The leaf tags
-        # alone capture the full text exactly once — mirroring the fallback in
-        # ``collect_full_text``.
-        if tag in ("lauseOsa", "lause", "tavatekst"):
-            txt = _marker_pruned_text(child).strip()
-            txt = re.sub(r"\s+", " ", txt)
-            if txt and len(txt) > 3:
-                parts.append(txt)
-        if len(" ".join(parts)) >= max_len:
-            break
-    joined = " ".join(parts)
-    # Issue #368: boundary-aware cut instead of a raw ``joined[:max_len]``.
-    # #572: convert any leaked literal <sup>N</sup> CDATA to Unicode superscript.
-    return _sup_to_unicode(_truncate_at_boundary(joined, max_len)) if joined else ""
+    """Return a boundary-truncated preview of the provision's full text.
+
+    Delegates to :func:`collect_full_text` (the lõige-structured, non-doubling
+    text builder) and truncates at a sentence/word boundary (#368). #613: the
+    previous independent leaf-walk matched both a ``lause`` container *and* its
+    nested ``lauseOsa`` (``_iter_text_nodes`` yields parent then child), so it
+    double-counted every multi-lõige body and emitted ``estleg:summary`` as the
+    text repeated. Reusing the single source of provision text keeps the summary
+    a clean, single preview that always agrees with ``estleg:legalText``.
+    (collect_full_text already renders <sup>N</sup> as Unicode superscript, #572.)
+    """
+    full = collect_full_text(el)
+    return _truncate_at_boundary(full, max_len) if full else ""
 
 
 def provision_summary(text: str, title: str, display: str) -> str:
@@ -354,21 +346,6 @@ def _sup_to_unicode(text: str) -> str:
         lambda m: "".join(_DIGIT_TO_SUPERSCRIPT.get(d, d) for d in m.group(1)), text
     )
     return converted.replace("<sup>", "").replace("</sup>", "")
-
-
-def _dedupe_doubled_summary(summary: str, legal_text: str) -> str:
-    """Collapse an ``estleg:summary`` that is ``legalText`` repeated verbatim (#613).
-
-    ``collect_text`` (which builds the summary) double-counts a ``lause`` and its
-    nested ``lauseOsa`` leaves, so a fraction of provisions emit the body text
-    twice. When the summary is exactly the legalText repeated (optionally space-
-    joined) collapse it to the single copy; otherwise leave it untouched (the
-    broader, non-exact repetition stays a validate_all warning, not a rewrite).
-    """
-    s, lt = summary.strip(), legal_text.strip()
-    if lt and s != lt and s in (f"{lt} {lt}", f"{lt}{lt}"):
-        return lt
-    return summary
 
 
 def _superscript_index_from(el: ET.Element, number_tag: str) -> str:
@@ -1477,7 +1454,7 @@ def generate_law_jsonld(
             label = f"{p_display} [{excerpt}]"
         else:
             label = p_display
-        summary = _dedupe_doubled_summary(provision_summary(text, p_title, p_display), full_text)
+        summary = provision_summary(text, p_title, p_display)
 
         node: dict = {
             "@id": p_id,
@@ -1949,7 +1926,7 @@ def generate_multipart_law(
                 label = f"{p_display} [{excerpt}]"
             else:
                 label = p_display
-            summary = _dedupe_doubled_summary(provision_summary(text, p_title, p_display), full_text)
+            summary = provision_summary(text, p_title, p_display)
 
             node: dict = {
                 "@id": p_id,

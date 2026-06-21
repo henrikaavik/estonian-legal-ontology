@@ -1888,15 +1888,18 @@ def validate_provision_text_quality(krr_dir: Path = KRR_DIR):
     Blocking:
       * no literal ``<sup>`` markup in any law-peep string — RT's superscript
         section numbers must render as Unicode (``¹²³``), not leak HTML (#572);
-      * no ``estleg:summary`` that is exactly ``estleg:legalText`` repeated —
-        the deterministic doubled-summary case (#613).
+      * no ``estleg:summary`` that is exactly ``estleg:legalText`` repeated — the
+        regression guard for #613, now that the summary is derived from the
+        (non-doubling) full text rather than an independent leaf-walk.
 
-    Warning (kept non-blocking until its false-positive behaviour is clear, per
-    the #613 maintainer note): broader two-halves-identical summary repetition.
-    The wider ``<sup>`` leak in the subcorpus generators is tracked separately.
+    (No broader/heuristic summary-repetition warning: with the root cause fixed
+    the only remaining matches are legitimate cross-subsection phrase repeats,
+    e.g. two lõiked both opening "Käesoleva seaduse §-s 2 tähendatud…" — all
+    false positives, so the signal was dropped rather than shipped noisy. The
+    wider ``<sup>`` leak in the subcorpus generators is tracked separately.)
     """
     print("\n--- Provision Text Quality (#572/#613) ---")
-    sup_fields = doubled_exact = doubled_broad = scanned = 0
+    sup_fields = doubled_exact = scanned = 0
     sample_sup: tuple[str, str] | None = None
     sample_dup: str | None = None
     # The structured-law surface is the top-level peeps plus the two special-part
@@ -1927,8 +1930,6 @@ def validate_provision_text_quality(krr_dir: Path = KRR_DIR):
                 if lts and ss != lts and ss in (f"{lts} {lts}", f"{lts}{lts}"):
                     doubled_exact += 1
                     sample_dup = sample_dup or str(n.get("@id"))
-                elif ss and len(ss) % 2 == 0 and ss[: len(ss) // 2].strip() == ss[len(ss) // 2 :].strip():
-                    doubled_broad += 1
     if sup_fields:
         error(
             f"#572: {sup_fields} law-peep field(s) carry literal <sup> markup "
@@ -1940,8 +1941,6 @@ def validate_provision_text_quality(krr_dir: Path = KRR_DIR):
             f"repeated verbatim (the documented summary path shows the text twice). "
             f"First: {sample_dup}"
         )
-    if doubled_broad:
-        warn(f"#613: {doubled_broad} provision(s) have a two-halves-identical summary (broader heuristic — review)")
     if not (sup_fields or doubled_exact):
         print(f"  OK: {scanned} law peeps free of <sup> markup and exact doubled summaries")
 
