@@ -31,6 +31,7 @@ from estleg_common import (
     FULLNAME_GENITIVE,
     KNOWN_ABBREVIATIONS,
     PAR_SUFFIX,
+    act_deprecation,
     iter_peep_files,
     jsonld_text,
     save_json,
@@ -159,6 +160,15 @@ def build_provision_index() -> tuple[
 
         graph = doc.get("@graph", [])
         if not graph:
+            continue
+
+        # #573/#578: skip deprecated/replaced act families (owl:deprecated +
+        # dcterms:isReplacedBy) so their retained provisions — e.g. the 27 live
+        # PGS_Par_* on the replaced PGS_Map_2026 — never enter the resolver index
+        # and shadow the canonical replacement (POHIKO_*). The clean retirements
+        # (IKS/KESK/TLS/TOLLIS, 0 provisions) are unaffected.
+        is_deprecated, _replaced_by = act_deprecation(doc)
+        if is_deprecated:
             continue
 
         # Track the prefixes actually used in this file. ``file_prefix``

@@ -581,6 +581,37 @@ def normalize_issuer_name(s: str) -> str:
     return " ".join(s.split())
 
 
+def act_deprecation(doc: object) -> tuple[bool, str | None]:
+    """Return ``(is_deprecated, replaced_by_iri)`` for a law-peep document.
+
+    Reads the act root (the ``owl:Ontology`` / ``*_Map`` node): a truthy
+    ``owl:deprecated`` marks the act family retired (#426/#445), and
+    ``dcterms:isReplacedBy`` points at the canonical replacement act ``@id``.
+
+    Shared by every law-matching/indexing path (cross-references, transposition,
+    harmonisation) so a deprecated/replaced act (e.g. ``PGS_Map_2026`` →
+    ``POHIKO_Map_2026``, or the corrupt ``volaigusseadus`` VÕS slug) is rejected
+    *before* it becomes a resolution candidate — #573/#578.
+    """
+    graph = doc.get("@graph", []) if isinstance(doc, dict) else (doc if isinstance(doc, list) else [])
+    for node in graph:
+        if not isinstance(node, dict):
+            continue
+        types = node.get("@type") or []
+        if isinstance(types, str):
+            types = [types]
+        if "owl:Ontology" not in types:
+            continue
+        dep = node.get("owl:deprecated")
+        if isinstance(dep, dict):
+            dep = dep.get("@value")
+        if dep is True or (isinstance(dep, str) and dep.strip().lower() == "true"):
+            repl = node.get("dcterms:isReplacedBy")
+            repl_iri = repl.get("@id") if isinstance(repl, dict) else (repl if isinstance(repl, str) else None)
+            return True, repl_iri
+    return False, None
+
+
 def jsonld_text(
     value: object, default: str = "", *, prefer_language: str | None = None
 ) -> str:
