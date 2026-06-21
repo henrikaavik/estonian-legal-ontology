@@ -148,6 +148,51 @@ class TestCanonicalLookups:
         # not 'KARIST', because provisions are keyed under 'KARIST_2'.
         assert act_iri_to_prefix.get("estleg:KARIST_2_Osa1_1_87") == "KARIST_2"
 
+    def test_build_provision_index_skips_deprecated_act(self, tmp_path, monkeypatch):
+        """#573: a deprecated/replaced act peep (owl:deprecated + isReplacedBy)
+        is excluded from the provision index so its retained provisions never
+        shadow the canonical replacement during citation resolution."""
+        from extract_cross_references import build_provision_index
+        import estleg_common
+        import extract_cross_references as ecr
+
+        krr = tmp_path / "krr_outputs"
+        krr.mkdir()
+        (krr / "pohikooli_gymnaasiumi_peep.json").write_text(json.dumps({
+            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+                         "owl": "http://www.w3.org/2002/07/owl#",
+                         "dcterms": "http://purl.org/dc/terms/"},
+            "@graph": [
+                {"@id": "estleg:PGS_Map_2026", "@type": ["owl:Ontology", "estleg:Act"],
+                 "owl:deprecated": True,
+                 "dcterms:isReplacedBy": {"@id": "estleg:POHIKO_Map_2026"}},
+                {"@id": "estleg:PGS_Par_27",
+                 "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+                 "estleg:sourceAct": "Põhikooli- ja gümnaasiumiseadus",
+                 "estleg:paragrahv": "PGS § 27"},
+            ],
+        }), encoding="utf-8")
+        (krr / "pohikooli_gumnaasiumiseadus_peep.json").write_text(json.dumps({
+            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+                         "owl": "http://www.w3.org/2002/07/owl#"},
+            "@graph": [
+                {"@id": "estleg:POHIKO_Map_2026",
+                 "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
+                 "estleg:sourceAct": "Põhikooli- ja gümnaasiumiseadus"},
+                {"@id": "estleg:POHIKO_Par_27",
+                 "@type": ["owl:NamedIndividual", "estleg:LegalProvision"],
+                 "estleg:sourceAct": "Põhikooli- ja gümnaasiumiseadus",
+                 "estleg:paragrahv": "PGS § 27"},
+            ],
+        }), encoding="utf-8")
+        monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+        monkeypatch.setattr(ecr, "KRR_DIR", krr)
+
+        prefix_to_provisions = build_provision_index()[0]
+        # Deprecated PGS provisions excluded; the canonical POHIKO ones present.
+        assert "PGS" not in prefix_to_provisions
+        assert prefix_to_provisions.get("POHIKO", {}).get("27") == "estleg:POHIKO_Par_27"
+
     def test_genitive_to_act_iri_chains_through_abbrev(self):
         """Build the genitive_law_name → act_iri lookup by chaining
         FULLNAME_GENITIVE → abbrev → source_act_to_prefix → prefix_to_act_iri."""
