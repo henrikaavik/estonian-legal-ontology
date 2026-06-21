@@ -29,6 +29,15 @@ instead of JSON-LD.
 
 ## Quick Start
 
+### Load surfaces
+
+The corpus is published as two nested load surfaces — pick the one your query needs:
+
+- **Combined-only surface** — `krr_outputs/combined_ontology.jsonld` loaded alone. A self-contained graph (zero dangling `estleg:` references): all enacted-law nodes, the fully-merged enrichment overlays (sanctions, legal concepts, institutions, annotations, amendments), and the curated TBox. Every cross-corpus entity it references — court decisions, EU acts, drafts, municipal (KOV) regulations, the EHAK municipality registry, and per-provision version history — is present as a **resolvable stub** (label + identifier + the SHACL-required structural edges), *not* its full body. Best for law-centric queries and a quick, single-file load.
+- **Full public load surface** — `combined_ontology.jsonld` **plus** the sidecar directories under `krr_outputs/` (`riigikohus/`, `curia/`, `eurlex/`, `eelnoud/`, `concepts/`, `sanctions/`, `amendments/`, `institutions/`, `provision_versions/`, `annotations/`, `harmonisation/`, `regulations/`) and `data/ehak/`. This is where the **full bodies** live — court-decision and EU-act text, the ~116k municipal `estleg:KovProvision` bodies, the version-history (point-in-time) layer, and the municipality/successor registry. Load this surface for full-text, point-in-time, or municipal-provision queries.
+
+A SPARQL example that joins onto a court/EU/KOV/version body needs the full surface; one that stays within laws + overlays works on combined alone.
+
 ### Load a single file with Python (rdflib)
 
 ```python
@@ -248,7 +257,7 @@ State regulations are split between `estleg:GovernmentRegulation` (Vabariigi Val
 
 #### KOV (Municipal) Entity Model — Layer 1
 
-KOV regulations are now a **first-class entity layer**: every act and provision is queryable by territorial unit and issuing body.
+KOV regulations are a **first-class entity layer on the full load surface**: every act and provision is queryable by territorial unit and issuing body **once the `krr_outputs/regulations/kov/` files are loaded alongside `combined_ontology.jsonld`** (see [Load surfaces](#load-surfaces) below). The 11,059 municipal regulations (~116k `estleg:KovProvision` bodies) and the EHAK municipality/successor layer are **not** folded into `combined_ontology.jsonld` itself — that flagship file is kept lean and carries KOV regulations only as resolvable cross-corpus *stubs* (label + identifier + `estleg:partOfAct`/`enactedBy`/`enactedByMunicipality` links). Load the KOV surface for the full provision text and municipality registry.
 
 - **79 Municipality nodes** (`estleg:Municipality`, IRI pattern `estleg:Municipality_EHAK_<4-digit>`) — one per current Estonian KOV unit, keyed by EHAK code.
 - **357 Issuer nodes** (`estleg:Issuer`, subclass of `estleg:Institution`) — one per issuing body (volikogu, valitsus), each linked to its current Municipality.
