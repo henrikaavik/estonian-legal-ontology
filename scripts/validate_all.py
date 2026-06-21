@@ -1882,6 +1882,84 @@ def validate_combined_graph_closure(krr_dir: Path = KRR_DIR):
         )
 
 
+def validate_provision_version_monotonicity(krr_dir: Path = KRR_DIR):
+    """#574 release gate: every per-provision version timeline must be monotone.
+
+    Chains are walked along the canonical ``estleg:supersededByVersion`` edges
+    (NOT a validFrom sort, which ties on same-day redactions and silently drops
+    the final closed-to-current transition). For each superseded version ``v``
+    with successor ``w``:
+
+    * ``v`` MUST carry a ``versionValidTo`` (it is closed) — a missing end on a
+      superseded version is corrupt;
+    * ``v.versionValidTo`` MUST be strictly before ``w.versionValidFrom`` (the
+      #306 exclusive-end contract). ``validTo == w.validFrom`` is a 1-day overlap
+      that makes a point-in-time as-of query return two active versions on the
+      transition day; ``validTo > w.validFrom`` is an inversion;
+    * ``v.versionValidFrom`` MUST be before ``w.versionValidFrom`` — a zero- or
+      negative-duration redaction (``v`` starts on/after its successor) never had
+      a distinct active period and must be dropped, not retained.
+
+    The open-ended current version (no successor) legitimately has no validTo.
+    """
+    print("\n--- Provision Version Monotonicity (#574) ---")
+    pv_dir = krr_dir / "provision_versions"
+    if not pv_dir.is_dir():
+        warn("provision_versions/: not found — skipping monotonicity gate")
+        return
+
+    def _val(node: dict, key: str):
+        v = node.get(key)
+        return v.get("@value") if isinstance(v, dict) else None
+
+    overlap = inverted = missing_to = zero_dur = total = 0
+    sample: tuple[str, str] | None = None
+    for path in sorted(pv_dir.glob("*.jsonld")):
+        if _is_lfs_pointer(path):
+            continue
+        try:
+            with open(path, encoding="utf-8") as fh:
+                doc = json.load(fh)
+        except (json.JSONDecodeError, OSError, UnicodeDecodeError):
+            continue
+        graph = doc.get("@graph", [])
+        by_id = {n["@id"]: n for n in graph if isinstance(n, dict) and n.get("@id")}
+        for v in graph:
+            if not isinstance(v, dict) or "ProvisionVersion" not in str(v.get("@type", "")):
+                continue
+            sb = v.get("estleg:supersededByVersion")
+            w_id = sb.get("@id") if isinstance(sb, dict) else None
+            w = by_id.get(w_id) if w_id else None
+            if w is None:
+                continue  # current/open-ended version (or successor outside this file)
+            total += 1
+            v_to, w_from, v_from = _val(v, "estleg:versionValidTo"), _val(w, "estleg:versionValidFrom"), _val(v, "estleg:versionValidFrom")
+            vid = str(v.get("@id"))
+            if v_to is None:
+                missing_to += 1
+                sample = sample or (vid, "superseded version missing versionValidTo")
+            elif w_from and v_to == w_from:
+                overlap += 1
+                sample = sample or (vid, "validTo == successor validFrom (overlap)")
+            elif w_from and v_to > w_from:
+                inverted += 1
+                sample = sample or (vid, "validTo > successor validFrom (inverted)")
+            if v_from and w_from and v_from >= w_from:
+                zero_dur += 1
+                sample = sample or (vid, "validFrom >= successor validFrom (zero/negative duration)")
+    bad = overlap + inverted + missing_to + zero_dur
+    if bad:
+        error(
+            f"provision_versions: {bad} non-monotone version transition(s) "
+            f"({overlap} overlapping, {inverted} inverted, {missing_to} superseded-missing-validTo, "
+            f"{zero_dur} zero/negative-duration) across {total} supersededByVersion edges — "
+            f"point-in-time as-of queries return duplicate/corrupt active versions; "
+            f"regenerate the version layer. First: {sample}"
+        )
+    else:
+        print(f"  OK: all {total} version transitions (via supersededByVersion) monotone")
+
+
 def validate_subcorpus_combined_ontologies(krr_dir: Path = KRR_DIR):
     """Run the parity check for every documented subcorpus combined.
 
@@ -2519,6 +2597,7 @@ def main(argv: list[str] | None = None):
     validate_legacy_deprecations(krr_dir)
     validate_combined_ontology(krr_dir)
     validate_combined_graph_closure(krr_dir)
+    validate_provision_version_monotonicity(krr_dir)
     validate_subcorpus_combined_ontologies(krr_dir)
     validate_subcorpus_index_counts(krr_dir, allow_missing_index=allow_missing_index)
     # Regen-pending staleness guards (#366, #348, #384). These emit
