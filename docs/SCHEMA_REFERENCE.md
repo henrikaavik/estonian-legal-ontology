@@ -1146,7 +1146,12 @@ SELECT ?provision ?label ?type ?maxPenalty WHERE {
 
 The KOV (kohaliku omavalitsuse) layer adds a Municipality + Issuer entity
 model so every municipal regulation and provision is queryable by
-territorial unit and issuing body.
+territorial unit and issuing body **on the full public load surface** —
+i.e. when the `krr_outputs/regulations/kov/` files (and `data/ehak/` for the
+municipality/successor registry) are loaded alongside `combined_ontology.jsonld`.
+The flagship `combined_ontology.jsonld` does **not** inline the ~116k municipal
+provision bodies; it carries KOV regulations only as resolvable cross-corpus
+stubs. See the README "Load surfaces" section.
 
 ### Class hierarchy
 
