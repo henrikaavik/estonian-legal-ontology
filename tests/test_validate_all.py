@@ -2441,6 +2441,37 @@ def test_provision_version_monotonicity_passes_on_exclusive_end(tmp_path):
     assert validate_all.errors == [], validate_all.errors
 
 
+def test_provision_text_quality_flags_sup(tmp_path):
+    # #572: literal <sup> markup leaked into a law-peep string must fail.
+    krr = tmp_path / "krr_outputs"
+    write_json(krr / "x_peep.json", {"@graph": [
+        {"@id": "estleg:X_Par_1", "rdfs:label": "§ 1 lg 1<sup>1</sup>", "estleg:legalText": "Body."},
+    ]})
+    validate_all.validate_provision_text_quality(krr)
+    assert any("<sup>" in e for e in validate_all.errors), validate_all.errors
+
+
+def test_provision_text_quality_flags_doubled_summary(tmp_path):
+    # #613: estleg:summary that is exactly legalText repeated must fail.
+    krr = tmp_path / "krr_outputs"
+    write_json(krr / "x_peep.json", {"@graph": [
+        {"@id": "estleg:X_Par_1", "estleg:summary": "Body. Body.", "estleg:legalText": "Body."},
+    ]})
+    validate_all.validate_provision_text_quality(krr)
+    assert any("repeated verbatim" in e for e in validate_all.errors), validate_all.errors
+
+
+def test_provision_text_quality_passes_clean(tmp_path):
+    # Unicode superscript + a non-doubled summary → clean.
+    krr = tmp_path / "krr_outputs"
+    write_json(krr / "x_peep.json", {"@graph": [
+        {"@id": "estleg:X_Par_1", "rdfs:label": "§ 1 lg 1¹",
+         "estleg:summary": "Body.", "estleg:legalText": "Body."},
+    ]})
+    validate_all.validate_provision_text_quality(krr)
+    assert validate_all.errors == [], validate_all.errors
+
+
 def test_validate_combined_graph_closure_flags_orphan_stub(tmp_path):
     krr = tmp_path / "krr_outputs"
     _write_combined(
