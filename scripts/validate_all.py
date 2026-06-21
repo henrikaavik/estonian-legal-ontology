@@ -1882,6 +1882,70 @@ def validate_combined_graph_closure(krr_dir: Path = KRR_DIR):
         )
 
 
+def validate_provision_text_quality(krr_dir: Path = KRR_DIR):
+    """#572/#613 release gate for the structured-law peeps (generate_all_laws).
+
+    Blocking:
+      * no literal ``<sup>`` markup in any law-peep string — RT's superscript
+        section numbers must render as Unicode (``¹²³``), not leak HTML (#572);
+      * no ``estleg:summary`` that is exactly ``estleg:legalText`` repeated —
+        the deterministic doubled-summary case (#613).
+
+    Warning (kept non-blocking until its false-positive behaviour is clear, per
+    the #613 maintainer note): broader two-halves-identical summary repetition.
+    The wider ``<sup>`` leak in the subcorpus generators is tracked separately.
+    """
+    print("\n--- Provision Text Quality (#572/#613) ---")
+    sup_fields = doubled_exact = doubled_broad = scanned = 0
+    sample_sup: tuple[str, str] | None = None
+    sample_dup: str | None = None
+    # The structured-law surface is the top-level peeps plus the two special-part
+    # OWL law files merged into combined (KarS eriosa, TsÜS osa7) — all #572 scope.
+    law_files = sorted(krr_dir.glob("*_peep.json")) + [
+        krr_dir / "karistusseadustik_eriosa_owl.jsonld",
+        krr_dir / "tsus_osa7_138_169_owl.jsonld",
+    ]
+    for path in law_files:
+        if not path.exists() or _is_lfs_pointer(path):
+            continue
+        try:
+            with open(path, encoding="utf-8") as fh:
+                doc = json.load(fh)
+        except (json.JSONDecodeError, OSError, UnicodeDecodeError):
+            continue
+        scanned += 1
+        for n in doc.get("@graph", []):
+            if not isinstance(n, dict):
+                continue
+            for k, v in n.items():
+                if isinstance(v, str) and "<sup>" in v:
+                    sup_fields += 1
+                    sample_sup = sample_sup or (str(n.get("@id")), k)
+            s, lt = n.get("estleg:summary"), n.get("estleg:legalText")
+            if isinstance(s, str) and isinstance(lt, str):
+                ss, lts = s.strip(), lt.strip()
+                if lts and ss != lts and ss in (f"{lts} {lts}", f"{lts}{lts}"):
+                    doubled_exact += 1
+                    sample_dup = sample_dup or str(n.get("@id"))
+                elif ss and len(ss) % 2 == 0 and ss[: len(ss) // 2].strip() == ss[len(ss) // 2 :].strip():
+                    doubled_broad += 1
+    if sup_fields:
+        error(
+            f"#572: {sup_fields} law-peep field(s) carry literal <sup> markup "
+            f"(should be Unicode superscript ¹²³). First: {sample_sup}"
+        )
+    if doubled_exact:
+        error(
+            f"#613: {doubled_exact} provision(s) have estleg:summary == estleg:legalText "
+            f"repeated verbatim (the documented summary path shows the text twice). "
+            f"First: {sample_dup}"
+        )
+    if doubled_broad:
+        warn(f"#613: {doubled_broad} provision(s) have a two-halves-identical summary (broader heuristic — review)")
+    if not (sup_fields or doubled_exact):
+        print(f"  OK: {scanned} law peeps free of <sup> markup and exact doubled summaries")
+
+
 def validate_provision_version_monotonicity(krr_dir: Path = KRR_DIR):
     """#574 release gate: every per-provision version timeline must be monotone.
 
@@ -2598,6 +2662,7 @@ def main(argv: list[str] | None = None):
     validate_combined_ontology(krr_dir)
     validate_combined_graph_closure(krr_dir)
     validate_provision_version_monotonicity(krr_dir)
+    validate_provision_text_quality(krr_dir)
     validate_subcorpus_combined_ontologies(krr_dir)
     validate_subcorpus_index_counts(krr_dir, allow_missing_index=allow_missing_index)
     # Regen-pending staleness guards (#366, #348, #384). These emit

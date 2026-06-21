@@ -305,7 +305,8 @@ def collect_text(el: ET.Element, max_len: int = 500) -> str:
             break
     joined = " ".join(parts)
     # Issue #368: boundary-aware cut instead of a raw ``joined[:max_len]``.
-    return _truncate_at_boundary(joined, max_len) if joined else ""
+    # #572: convert any leaked literal <sup>N</sup> CDATA to Unicode superscript.
+    return _sup_to_unicode(_truncate_at_boundary(joined, max_len)) if joined else ""
 
 
 def provision_summary(text: str, title: str, display: str) -> str:
@@ -331,6 +332,43 @@ _SUPERSCRIPT_DIGIT_MAP: dict[str, str] = {
     "⁸": "8",  # superscript 8
     "⁹": "9",  # superscript 9
 }
+
+# Inverse map (plain digit -> Unicode superscript glyph) for rendering a leaked
+# literal ``<sup>N</sup>`` as the proper superscript ``¹²³`` in display/body
+# strings (#572). RT stores superscripted structural numbers as literal CDATA
+# (``§ 1<sup>1</sup>.``); without conversion the markup leaks verbatim into
+# rdfs:label / estleg:paragrahv / legalText / subsectionNumber / summary.
+_DIGIT_TO_SUPERSCRIPT: dict[str, str] = {v: k for k, v in _SUPERSCRIPT_DIGIT_MAP.items()}
+_SUP_TAG_RE = re.compile(r"<sup>\s*(\d+)\s*</sup>")
+
+
+def _sup_to_unicode(text: str) -> str:
+    """Convert literal ``<sup>N</sup>`` markup to Unicode superscript digits (#572).
+
+    Any residual bare ``<sup>``/``</sup>`` tags (non-digit content) are stripped
+    so no HTML markup survives into the citable strings.
+    """
+    if not text or "<sup>" not in text:
+        return text
+    converted = _SUP_TAG_RE.sub(
+        lambda m: "".join(_DIGIT_TO_SUPERSCRIPT.get(d, d) for d in m.group(1)), text
+    )
+    return converted.replace("<sup>", "").replace("</sup>", "")
+
+
+def _dedupe_doubled_summary(summary: str, legal_text: str) -> str:
+    """Collapse an ``estleg:summary`` that is ``legalText`` repeated verbatim (#613).
+
+    ``collect_text`` (which builds the summary) double-counts a ``lause`` and its
+    nested ``lauseOsa`` leaves, so a fraction of provisions emit the body text
+    twice. When the summary is exactly the legalText repeated (optionally space-
+    joined) collapse it to the single copy; otherwise leave it untouched (the
+    broader, non-exact repetition stays a validate_all warning, not a rewrite).
+    """
+    s, lt = summary.strip(), legal_text.strip()
+    if lt and s != lt and s in (f"{lt} {lt}", f"{lt}{lt}"):
+        return lt
+    return summary
 
 
 def _superscript_index_from(el: ET.Element, number_tag: str) -> str:
@@ -521,7 +559,7 @@ def _loige_body_text(loige_el: ET.Element) -> str:
             txt = re.sub(r"\s+", " ", txt)
             if txt and len(txt) > 3:
                 body_parts.append(txt)
-    return " ".join(body_parts).strip()
+    return _sup_to_unicode(" ".join(body_parts).strip())
 
 
 def _superscript_from_text(value: str) -> str:
@@ -577,7 +615,8 @@ def _loige_numbers(loige_el: ET.Element) -> tuple[str, str]:
     kuv_inner = re.sub(r"[()]", "", kuv_raw).strip() if kuv_raw else ""
 
     # Display: kuvatavNr (without parens) wins, else loigeNr, else "".
-    display = kuv_inner or loige_nr
+    # #572: render leaked literal <sup>N</sup> as Unicode superscript.
+    display = _sup_to_unicode(kuv_inner or loige_nr)
 
     # ID suffix base + superscript.
     base = loige_nr
@@ -623,7 +662,7 @@ def collect_full_text(el: ET.Element) -> str:
             lõige_blocks.append(body)
 
     if lõige_blocks:
-        return " ".join(lõige_blocks)
+        return _sup_to_unicode(" ".join(lõige_blocks))
 
     parts: list[str] = []
     for child in _iter_text_nodes(el):
@@ -633,7 +672,7 @@ def collect_full_text(el: ET.Element) -> str:
             txt = re.sub(r"\s+", " ", txt)
             if txt and len(txt) > 3:
                 parts.append(txt)
-    return " ".join(parts)
+    return _sup_to_unicode(" ".join(parts))
 
 
 def build_subsections(
@@ -1401,7 +1440,7 @@ def generate_law_jsonld(
     for p in paragrahvid:
         p_nr = ct(p, "paragrahvNr") or "?"
         p_title = ct(p, "paragrahvPealkiri") or ""
-        p_display = ct(p, "kuvatavNr") or f"§ {p_nr}"
+        p_display = _sup_to_unicode(ct(p, "kuvatavNr")) or f"§ {p_nr}"
         text = collect_text(p)
         full_text = collect_full_text(p)
 
@@ -1438,7 +1477,7 @@ def generate_law_jsonld(
             label = f"{p_display} [{excerpt}]"
         else:
             label = p_display
-        summary = provision_summary(text, p_title, p_display)
+        summary = _dedupe_doubled_summary(provision_summary(text, p_title, p_display), full_text)
 
         node: dict = {
             "@id": p_id,
@@ -1879,7 +1918,7 @@ def generate_multipart_law(
         for p in paragrahvid:
             p_nr = ct(p, "paragrahvNr") or "?"
             p_title = ct(p, "paragrahvPealkiri") or ""
-            p_display = ct(p, "kuvatavNr") or f"§ {p_nr}"
+            p_display = _sup_to_unicode(ct(p, "kuvatavNr")) or f"§ {p_nr}"
             text = collect_text(p)
             full_text = collect_full_text(p)
             # Issue #156/#165 fix 2: superscript-aware paragraph IRI suffix.
@@ -1910,7 +1949,7 @@ def generate_multipart_law(
                 label = f"{p_display} [{excerpt}]"
             else:
                 label = p_display
-            summary = provision_summary(text, p_title, p_display)
+            summary = _dedupe_doubled_summary(provision_summary(text, p_title, p_display), full_text)
 
             node: dict = {
                 "@id": p_id,
