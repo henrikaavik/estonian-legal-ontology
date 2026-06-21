@@ -2379,6 +2379,38 @@ def test_combined_overlay_census_errors_on_unreadable_overlay(tmp_path, capsys):
     assert "all merged-overlay nodes present" not in out
 
 
+def _pv(vid, vfrom, vto):
+    return {
+        "@id": f"estleg:{vid}", "@type": ["estleg:ProvisionVersion"],
+        "estleg:versionOf": {"@id": "estleg:X_Par_1"},
+        "estleg:versionValidFrom": {"@value": vfrom, "@type": "xsd:date"},
+        "estleg:versionValidTo": {"@value": vto, "@type": "xsd:date"},
+    }
+
+
+def test_provision_version_monotonicity_flags_overlap(tmp_path):
+    # #574 gate: a superseded versionValidTo == successor versionValidFrom (the
+    # 1-day overlap) must fail — point-in-time as-of returns two active versions.
+    krr = tmp_path / "krr_outputs"
+    write_json(krr / "provision_versions" / "law_x.jsonld", {"@graph": [
+        _pv("X_Par_1_v1", "2010-01-01", "2015-01-01"),  # validTo == v2's validFrom
+        _pv("X_Par_1_v2", "2015-01-01", "2020-01-01"),
+    ]})
+    validate_all.validate_provision_version_monotonicity(krr)
+    assert any("non-monotone" in e for e in validate_all.errors), validate_all.errors
+
+
+def test_provision_version_monotonicity_passes_on_exclusive_end(tmp_path):
+    # Exclusive end (validTo = day before next validFrom) → monotone, passes.
+    krr = tmp_path / "krr_outputs"
+    write_json(krr / "provision_versions" / "law_x.jsonld", {"@graph": [
+        _pv("X_Par_1_v1", "2010-01-01", "2014-12-31"),  # day before v2's validFrom
+        _pv("X_Par_1_v2", "2015-01-01", "2020-01-01"),
+    ]})
+    validate_all.validate_provision_version_monotonicity(krr)
+    assert validate_all.errors == [], validate_all.errors
+
+
 def test_validate_combined_graph_closure_flags_orphan_stub(tmp_path):
     krr = tmp_path / "krr_outputs"
     _write_combined(
