@@ -2379,33 +2379,63 @@ def test_combined_overlay_census_errors_on_unreadable_overlay(tmp_path, capsys):
     assert "all merged-overlay nodes present" not in out
 
 
-def _pv(vid, vfrom, vto):
-    return {
+def _pv(vid, vfrom, vto=None, superseded_by=None):
+    node = {
         "@id": f"estleg:{vid}", "@type": ["estleg:ProvisionVersion"],
         "estleg:versionOf": {"@id": "estleg:X_Par_1"},
         "estleg:versionValidFrom": {"@value": vfrom, "@type": "xsd:date"},
-        "estleg:versionValidTo": {"@value": vto, "@type": "xsd:date"},
     }
+    if vto is not None:
+        node["estleg:versionValidTo"] = {"@value": vto, "@type": "xsd:date"}
+    if superseded_by is not None:
+        node["estleg:supersededByVersion"] = {"@id": f"estleg:{superseded_by}"}
+    return node
 
 
 def test_provision_version_monotonicity_flags_overlap(tmp_path):
-    # #574 gate: a superseded versionValidTo == successor versionValidFrom (the
-    # 1-day overlap) must fail — point-in-time as-of returns two active versions.
+    # #574 gate: a superseded validTo == successor validFrom (1-day overlap) must
+    # fail — and crucially the successor here is the open-ended CURRENT version
+    # (no validTo), the closed-to-current transition an earlier validFrom-sort
+    # gate silently dropped.
     krr = tmp_path / "krr_outputs"
     write_json(krr / "provision_versions" / "law_x.jsonld", {"@graph": [
-        _pv("X_Par_1_v1", "2010-01-01", "2015-01-01"),  # validTo == v2's validFrom
-        _pv("X_Par_1_v2", "2015-01-01", "2020-01-01"),
+        _pv("X_Par_1_v1", "2010-01-01", vto="2015-01-01", superseded_by="X_Par_1_v2"),
+        _pv("X_Par_1_v2", "2015-01-01"),  # current, open-ended (no validTo)
     ]})
     validate_all.validate_provision_version_monotonicity(krr)
-    assert any("non-monotone" in e for e in validate_all.errors), validate_all.errors
+    assert any("overlapping" in e for e in validate_all.errors), validate_all.errors
+
+
+def test_provision_version_monotonicity_flags_zero_duration(tmp_path):
+    # A version superseded the same day it starts (validFrom == successor
+    # validFrom) never had a distinct active period — must be flagged (EVERASGN).
+    krr = tmp_path / "krr_outputs"
+    write_json(krr / "provision_versions" / "law_x.jsonld", {"@graph": [
+        _pv("X_Par_1_v1", "2002-06-01", vto="2002-06-01", superseded_by="X_Par_1_v2"),
+        _pv("X_Par_1_v2", "2002-06-01"),  # current, same day
+    ]})
+    validate_all.validate_provision_version_monotonicity(krr)
+    assert any("zero" in e or "overlapping" in e for e in validate_all.errors), validate_all.errors
+
+
+def test_provision_version_monotonicity_flags_missing_validto(tmp_path):
+    # A superseded version with NO validTo is corrupt (it is closed by definition).
+    krr = tmp_path / "krr_outputs"
+    write_json(krr / "provision_versions" / "law_x.jsonld", {"@graph": [
+        _pv("X_Par_1_v1", "2010-01-01", superseded_by="X_Par_1_v2"),  # superseded but no validTo
+        _pv("X_Par_1_v2", "2015-01-01"),
+    ]})
+    validate_all.validate_provision_version_monotonicity(krr)
+    assert any("missing-validTo" in e for e in validate_all.errors), validate_all.errors
 
 
 def test_provision_version_monotonicity_passes_on_exclusive_end(tmp_path):
-    # Exclusive end (validTo = day before next validFrom) → monotone, passes.
+    # Exclusive end (validTo = day before successor validFrom) → monotone, passes;
+    # the successor is the open-ended current version.
     krr = tmp_path / "krr_outputs"
     write_json(krr / "provision_versions" / "law_x.jsonld", {"@graph": [
-        _pv("X_Par_1_v1", "2010-01-01", "2014-12-31"),  # day before v2's validFrom
-        _pv("X_Par_1_v2", "2015-01-01", "2020-01-01"),
+        _pv("X_Par_1_v1", "2010-01-01", vto="2014-12-31", superseded_by="X_Par_1_v2"),
+        _pv("X_Par_1_v2", "2015-01-01"),  # current
     ]})
     validate_all.validate_provision_version_monotonicity(krr)
     assert validate_all.errors == [], validate_all.errors
