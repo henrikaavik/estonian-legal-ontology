@@ -2367,6 +2367,12 @@ def validate_id_uniqueness(all_ids: dict[str, list[str]]):
         "estleg:LegalPart", "estleg:Provision", "estleg:Section",
         "estleg:LegalConcept",
         "estleg:CaseType", "estleg:EUCourtDecisionType", "estleg:EUInstitution",
+        # #562: core classes declared canonically in controlled_vocabulary.jsonld
+        # (so the self-contained combined graph can type its most-used classes)
+        # AND in their subcorpus *_schema.json / *_combined.jsonld with the SAME
+        # declaration — a consistent shared TBox class id, not a collision.
+        "estleg:CourtDecision", "estleg:DraftLegislation",
+        "estleg:EULegislation", "estleg:HarmonisationLink",
         # estleg:interpretsLaw is canonically defined (with rdfs:domain/range) in
         # riigikohus_schema.json AND materialized as a graph-closure stub in
         # controlled_vocabulary.jsonld so the estleg:interpretedBy owl:inverseOf
