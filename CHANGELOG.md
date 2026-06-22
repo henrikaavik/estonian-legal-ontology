@@ -4,6 +4,37 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.11.0] - 2026-06-22
+
+### Versioning & governance (#616)
+
+- The ontology now carries a **pinnable version**. `owl:versionInfo` (`0.11.0`)
+  and `owl:versionIRI` are stamped on the `metadata.jsonld` dataset header and on
+  a new dataset-level `owl:Ontology` node at `@graph[0]` of
+  `combined_ontology.jsonld` — re-emitted every build from the single
+  `estleg_common.ONTOLOGY_VERSION` constant, kept in lockstep with
+  `pyproject.toml` by a drift-guard test. Consumers can finally pin/cite a
+  release instead of an undated 245 MB blob.
+- Added `CONTRIBUTING.md` (contribution flow + the full validation-gate
+  checklist) with a **mandatory legal-correctness review** step for changes to
+  safety-critical data — sanctions, deontic (`normativeType`), court decisions,
+  and transposition/harmonisation — routed via a new `.github/CODEOWNERS`.
+- Added `.github/` issue + pull-request templates (with a legal-data-impact
+  flag) and a **Versioning Policy** section in `docs/RELEASE.md`.
+
+### Cycle-2 technical-correctness pass (#560, label `review-2026-06-20`)
+
+This release also folds in the cycle-2 correctness fixes merged as PRs
+#620–#634, including: the combined-graph closure gate no longer exempts
+`hasVersion`/`amendedBy` and the SHACL emptiness guard is restored (#589/#590);
+the test suite now loads the real shipped artifacts (#591); fabricated
+publication dates fixed (#571); sidecars + KOV merged into combined and the
+README SPARQL examples answerable (#561/#615); point-in-time version intervals
+regenerated non-overlapping (#574); `<sup>` markup and doubled summaries
+normalised (#572/#613); deprecated VÕS/act-family references rejected in
+cross-reference, transposition, and harmonisation resolution, with the
+harmonisation data migrated onto the canonical acts (#573/#578/#631).
+
 ### Combined ontology is now a self-contained graph (#416)
 
 - `generate_combined_jsonld()` no longer ships a laws-only aggregate. It now

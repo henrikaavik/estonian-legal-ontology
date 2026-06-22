@@ -536,6 +536,41 @@ def iter_node_estleg_refs(node: dict) -> Iterator[tuple[str, str]]:
 # ---------------------------------------------------------------------------
 NS = "https://data.riik.ee/ontology/estleg#"
 
+# ---------------------------------------------------------------------------
+# Ontology version (#616)
+# ---------------------------------------------------------------------------
+# Single source of truth for the published ontology version. SemVer, matching
+# the Keep-a-Changelog history in CHANGELOG.md (last cut 0.10.0). Kept in lockstep
+# with ``[project].version`` in ``pyproject.toml`` — a drift guard in
+# ``tests/test_ontology_version.py`` fails CI if they diverge. Bump this (and
+# pyproject, and cut a CHANGELOG section + git tag) on every release so consumers
+# can pin/cite a version.
+ONTOLOGY_VERSION = "0.11.0"
+# The ontology IRI (the namespace ``NS`` without its fragment); ``versionIRI`` is
+# this plus the version, so each release is independently dereferenceable.
+ONTOLOGY_IRI = NS.rstrip("#")
+ONTOLOGY_VERSION_IRI = f"{ONTOLOGY_IRI}/{ONTOLOGY_VERSION}"
+
+
+def combined_ontology_header(version: str = ONTOLOGY_VERSION) -> dict:
+    """Build the ``owl:Ontology`` header node stamped into combined (#616).
+
+    ``combined_ontology.jsonld`` is synthesised from scratch each build and has
+    no dataset-level header, so consumers had no in-graph version to pin. This
+    returns a single header node (inserted at ``@graph[0]`` by the builder)
+    carrying ``owl:versionInfo`` + ``owl:versionIRI`` so the shipped graph is
+    self-describing. It carries no ``estleg:`` object references, so it is inert
+    for the graph-closure gate. No wall-clock date — keeping the build
+    deterministic (the version string is the pinnable identity).
+    """
+    return {
+        "@id": ONTOLOGY_IRI,
+        "@type": ["owl:Ontology"],
+        "rdfs:label": "Estonian Legal Ontology — combined graph",
+        "owl:versionInfo": version,
+        "owl:versionIRI": {"@id": f"{ONTOLOGY_IRI}/{version}"},
+    }
+
 CONTEXT: dict[str, str] = {
     "estleg": NS,
     "owl": "http://www.w3.org/2002/07/owl#",

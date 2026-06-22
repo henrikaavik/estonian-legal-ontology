@@ -109,7 +109,15 @@ def test_combined_builder_is_idempotent(tmp_path):
     second = read_json(tmp_path / "combined_ontology.jsonld")
 
     assert first == second
-    assert graph_ids(second) == {"estleg:A_1", "estleg:A_2", "estleg:Vocab_X"}
+    # #616: the build stamps a dataset-level owl:Ontology version header at
+    # @graph[0] in addition to the corpus nodes.
+    assert graph_ids(second) == {
+        "estleg:A_1",
+        "estleg:A_2",
+        "estleg:Vocab_X",
+        estleg_common.ONTOLOGY_IRI,
+    }
+    assert second["@graph"][0] == estleg_common.combined_ontology_header()
 
 
 def test_combined_builder_skips_unallowed_root_jsonld(tmp_path):

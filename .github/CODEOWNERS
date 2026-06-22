@@ -1,0 +1,38 @@
+# Code owners — review routing.
+#
+# The default owner reviews everything. The paths below carry safety-critical
+# LEGAL data (criminal sanctions, deontic force, court holdings, EU-directive
+# transposition) where a heuristic error has real-world consequences. Changes to
+# them require legal-correctness sign-off per CONTRIBUTING.md ("Mandatory
+# legal-correctness review"). When a dedicated legal-domain reviewer joins, add
+# their handle alongside @henrikaavik on these lines so GitHub requests their
+# review automatically.
+
+# Default owner for everything in the repo.
+*                                                   @henrikaavik
+
+# --- Safety-critical legal data (needs-legal-review) ---------------------------
+
+# Sanctions
+/krr_outputs/sanctions/                             @henrikaavik
+/scripts/extract_sanctions.py                       @henrikaavik
+
+# Deontic classification (estleg:normativeType)
+/scripts/classify_deontic.py                        @henrikaavik
+
+# Court decisions — Riigikohus (national) and CURIA (EU)
+/krr_outputs/riigikohus/                            @henrikaavik
+/krr_outputs/curia/                                 @henrikaavik
+/scripts/generate_court_decisions.py                @henrikaavik
+/scripts/generate_eu_court_decisions.py             @henrikaavik
+/scripts/extract_court_provision_links.py           @henrikaavik
+
+# EU-directive transposition & cross-border harmonisation
+/krr_outputs/transposition_mapping.json             @henrikaavik
+/krr_outputs/harmonisation/                         @henrikaavik
+/scripts/generate_transposition_mapping.py          @henrikaavik
+/scripts/generate_harmonisation_links.py            @henrikaavik
+
+# Institutional competence (which authority is competent for what)
+/krr_outputs/institutions/                          @henrikaavik
+/scripts/extract_institutional_competence.py        @henrikaavik
