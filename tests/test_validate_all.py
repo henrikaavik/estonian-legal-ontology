@@ -1250,6 +1250,25 @@ def test_validate_transposition_mapping_flags_stale_count(tmp_path):
     assert any("total_matched" in e for e in validate_all.errors), validate_all.errors
 
 
+def test_validate_transposition_mapping_flags_peep_named_law(tmp_path):
+    """#631 review: matched_law_name must be the INDEX name, not a peep filename
+    stem (a retarget that used Path(file).stem leaves a trailing '_peep')."""
+    krr = tmp_path / "krr_outputs"
+    write_json(
+        krr / "transposition_mapping.json",
+        {
+            "generated": "2026-05-11", "source": "x", "country": "EST",
+            "total_measures_fetched": 1, "total_matched": 1, "total_unmatched": 0,
+            "unique_directives": 1, "unique_laws": 1,
+            "mappings": [
+                {"directive_celex": "31996L0034", "matched_law_name": "toolepingu_seadus_peep"},
+            ],
+        },
+    )
+    validate_all.validate_transposition_mapping(krr)
+    assert any("_peep" in e for e in validate_all.errors), validate_all.errors
+
+
 def test_validate_transposition_mapping_missing_file_is_only_a_warning(tmp_path):
     """If `transposition_mapping.json` does not exist, warn (not error)."""
     krr = tmp_path / "krr_outputs"
@@ -2534,6 +2553,20 @@ def test_harmonisation_symmetry_flags_deprecated_carrying_links(tmp_path):
     write_json(krr / "harmonisation" / "harmonisation_by_directive" / "harm_X.json", {"@graph": []})
     validate_all.validate_harmonisation_symmetry(krr)
     assert any("deprecated act" in e for e in validate_all.errors), validate_all.errors
+
+
+def test_harmonisation_symmetry_flags_report_count_drift(tmp_path):
+    # #631 review: harmonisation_report directives_with_parallels must equal
+    # len(harmonisation_entries) — wholesale entry deletion otherwise drifts silent.
+    krr = tmp_path / "krr_outputs"
+    write_json(krr / "act_peep.json", {"@graph": []})
+    write_json(krr / "harmonisation" / "harmonisation_by_directive" / "harm_X.json", {"@graph": []})
+    write_json(krr / "harmonisation" / "harmonisation_report.json", {
+        "directives_with_parallels": 3,
+        "harmonisation_entries": [{"directive_celex": "32000L0001"}],
+    })
+    validate_all.validate_harmonisation_symmetry(krr)
+    assert any("directives_with_parallels" in e for e in validate_all.errors), validate_all.errors
 
 
 def test_validate_combined_graph_closure_flags_orphan_stub(tmp_path):

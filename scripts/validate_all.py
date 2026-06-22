@@ -1292,6 +1292,19 @@ def validate_transposition_mapping(krr_dir: Path = KRR_DIR):
                 "manual edit. Re-run scripts/generate_transposition_mapping.py."
             )
             return
+        # #631 review: matched_law_name must be the INDEX law name, not a peep
+        # FILENAME stem — a retarget that used Path(file).stem leaves a trailing
+        # '_peep' that matches no indexed law.
+        peep_named = [m.get("matched_law_name") for m in mappings
+                      if isinstance(m.get("matched_law_name"), str)
+                      and m["matched_law_name"].endswith("_peep")]
+        if peep_named:
+            error(
+                f"transposition_mapping.json: {len(peep_named)} matched_law_name(s) end "
+                f"in '_peep' — a peep filename stem, not an INDEX law name "
+                f"(e.g. {peep_named[0]})."
+            )
+            return
         print(f"  OK: {len(mappings)} law↔directive mappings, total_matched consistent")
     else:
         print("  OK: empty transposition layer, explicitly flagged (documented_empty)")
@@ -1968,6 +1981,26 @@ def validate_harmonisation_symmetry(krr_dir: Path = KRR_DIR):
         )
     else:
         print(f"  OK: all {total} harmonises→act edges have a backing harmonisedWith")
+
+    # #631 review: harmonisation_report.json's declared parallel-directive count
+    # must match the body — a member-level edit that deletes whole entries
+    # (instead of the deprecated member) otherwise drifts silently.
+    report = krr_dir / "harmonisation" / "harmonisation_report.json"
+    if report.is_file() and not _is_lfs_pointer(report):
+        try:
+            with open(report, encoding="utf-8") as fh:
+                rep = json.load(fh)
+        except (json.JSONDecodeError, OSError, UnicodeDecodeError):
+            rep = None
+        if isinstance(rep, dict):
+            declared = rep.get("directives_with_parallels")
+            entries = rep.get("harmonisation_entries")
+            if isinstance(declared, int) and isinstance(entries, list) and declared != len(entries):
+                error(
+                    f"harmonisation_report.json: directives_with_parallels={declared} but "
+                    f"harmonisation_entries has {len(entries)} entries — entries dropped "
+                    "wholesale (a deprecated member should be removed, not its directive)."
+                )
 
 
 def validate_provision_text_quality(krr_dir: Path = KRR_DIR):
