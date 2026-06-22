@@ -1924,6 +1924,22 @@ def validate_harmonisation_symmetry(krr_dir: Path = KRR_DIR):
     forward: set[tuple[str, str]] = set()
     dep_links = 0
     dep_sample: str | None = None
+    # #631 review: harmonisation is DERIVED from transposition_mapping.json, so
+    # every harmonisedWith (act→directive) must be backed by a mapping row whose
+    # law_files include that act's peep — else the link isn't reproducible and a
+    # regen would silently drop it. Build directive CELEX → {peep filename}.
+    mapping_path = krr_dir / "transposition_mapping.json"
+    dir_files: dict[str, set[str]] = {}
+    if mapping_path.is_file() and not _is_lfs_pointer(mapping_path):
+        try:
+            with open(mapping_path, encoding="utf-8") as fh:
+                for m in json.load(fh).get("mappings", []):
+                    dir_files.setdefault(m.get("directive_celex"), set()).update(
+                        Path(lf).name for lf in m.get("law_files", []))
+        except (json.JSONDecodeError, OSError, UnicodeDecodeError):
+            dir_files = {}
+    unbacked = 0
+    unbacked_sample: tuple[str, str] | None = None
     for path in krr_dir.glob("*_peep.json"):
         if _is_lfs_pointer(path):
             continue
@@ -1948,11 +1964,22 @@ def validate_harmonisation_symmetry(krr_dir: Path = KRR_DIR):
             for x in (hw if isinstance(hw, list) else [hw]):
                 if isinstance(x, dict) and x.get("@id"):
                     forward.add((n["@id"], x["@id"]))
+                    if dir_files and not is_dep:
+                        cel = x["@id"].replace("estleg:Harmonisation_", "")
+                        if path.name not in dir_files.get(cel, set()):
+                            unbacked += 1
+                            unbacked_sample = unbacked_sample or (path.name, cel)
     if dep_links:
         error(
             f"harmonisation: {dep_links} deprecated act(s) still carry "
             f"estleg:harmonisedWith/transposesDirective — move them onto the "
             f"dcterms:isReplacedBy canonical. First: {dep_sample}"
+        )
+    if unbacked:
+        error(
+            f"harmonisation: {unbacked} harmonisedWith link(s) not backed by a "
+            f"transposition_mapping.json row (law not mapped to that directive — "
+            f"not reproducible; a regen would drop them). First: {unbacked_sample}"
         )
     asym = total = 0
     sample: tuple[str, str] | None = None

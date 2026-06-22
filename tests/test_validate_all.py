@@ -2589,6 +2589,28 @@ def test_harmonisation_symmetry_flags_report_harm_iri_mismatch(tmp_path):
     assert any("estonian_laws IRIs differ" in e for e in validate_all.errors), validate_all.errors
 
 
+def test_harmonisation_symmetry_flags_unbacked_mapping(tmp_path):
+    # #631 review: a harmonisedWith link whose act peep is NOT in the
+    # transposition_mapping row for that directive is not reproducible → fail.
+    krr = tmp_path / "krr_outputs"
+    write_json(krr / "toolepingu_seadus_peep.json", {"@graph": [
+        {"@id": "estleg:TOOLEP_Map", "@type": ["owl:Ontology"],
+         "estleg:harmonisedWith": [{"@id": "estleg:Harmonisation_32002L0073"}]},
+    ]})
+    write_json(krr / "harmonisation" / "harmonisation_by_directive" / "harm_32002L0073.json", {"@graph": [
+        {"@id": "estleg:Harmonisation_32002L0073", "@type": ["estleg:HarmonisationLink"],
+         "estleg:harmonises": [{"@id": "estleg:TOOLEP_Map"}]},
+    ]})
+    write_json(krr / "transposition_mapping.json", {
+        "generated": "x", "source": "x", "country": "EST", "total_measures_fetched": 1,
+        "total_matched": 1, "total_unmatched": 0, "unique_directives": 1, "unique_laws": 1,
+        "mappings": [{"directive_celex": "32002L0073", "matched_law_name": "vordse_kohtlemise_seadus",
+                      "law_files": ["vordse_kohtlemise_seadus_peep.json"]}],  # not toolepingu_seadus
+    })
+    validate_all.validate_harmonisation_symmetry(krr)
+    assert any("not backed by a transposition_mapping" in e for e in validate_all.errors), validate_all.errors
+
+
 def test_validate_combined_graph_closure_flags_orphan_stub(tmp_path):
     krr = tmp_path / "krr_outputs"
     _write_combined(
