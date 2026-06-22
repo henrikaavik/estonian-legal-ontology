@@ -478,6 +478,12 @@ def update_law_file_harmonisation(filepath: Path, harmonisation_ids: list[str]) 
         print(f"    ERROR loading {filepath.name}: {e}")
         return False
 
+    # #578 P2 (defense in depth): never write harmonisation onto a deprecated/
+    # replaced act, even if a stale or hand-edited mapping routes one here past
+    # the main() guard.
+    if act_deprecation(data)[0]:
+        return False
+
     graph = data.get("@graph", [])
 
     # Find the ontology metadata node
@@ -763,9 +769,15 @@ def main():
                         "source_act": law_entry["source_act"],
                         "law_file": law_entry["files"][0],
                         "directive_celex": celex,
-                        "reason": "no act-level @id found",
+                        "reason": "no act-level @id found (deprecated/unresolved)",
                     }
                 )
+                # #578 P2: an unresolved law — including a deprecated/replaced act,
+                # for which get_law_harmonisation_target_iri returns None — must NOT
+                # be recorded for harmonisation. Without this continue the entry is
+                # still appended below and update_law_file_harmonisation later writes
+                # estleg:harmonisedWith onto the deprecated act anyway.
+                continue
         # Avoid duplicate law entries per directive
         existing_names = {
             law["name"] for law in directives_to_process[celex]["estonian_laws"]
