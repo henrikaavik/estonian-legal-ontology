@@ -173,6 +173,15 @@ jobs:
       - name: Validate JSON-LD hygiene
         run: python3 scripts/validate_all.py
 
+      # #591: the default `pytest` job runs without git-LFS, so the
+      # `corpus`-marked real-artifact tests (combined-graph closure, version
+      # non-overlap, peep-count invariants) are auto-skipped there. This job
+      # has the LFS combined graph materialised and the full committed corpus
+      # on disk, so opt them in here — these are the suite's only assertions
+      # against the *shipped* graph rather than synthetic fixtures.
+      - name: Real-corpus pytest invariants (materialised combined)
+        run: python3 -m pytest -q -m corpus
+
   semantic-validation:
     runs-on: ubuntu-latest
     # ``kov`` walks ~11k municipal regulation peep files into a single
