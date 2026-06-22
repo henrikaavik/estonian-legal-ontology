@@ -1313,6 +1313,12 @@ def generate_combined_jsonld(krr_dir: Path = KRR_DIR):
     # estleg: object IRIs.
     stub_count = _emit_closure_stubs(node_by_id, all_nodes, krr_dir)
 
+    # #616: stamp a dataset-level owl:Ontology header (owl:versionInfo +
+    # owl:versionIRI) at @graph[0] so the shipped graph is self-describing and a
+    # consumer can pin/cite the version. Inert for the closure gate (no estleg:
+    # refs); re-emitted every build from the single ONTOLOGY_VERSION constant.
+    all_nodes.insert(0, estleg_common.combined_ontology_header())
+
     combined = {
         "@context": combined_context,
         "@graph": all_nodes,

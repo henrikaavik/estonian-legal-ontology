@@ -13,6 +13,53 @@ This document covers:
 3. [Validating without rebuilding](#validating-without-rebuilding) — `--release --validate-only`
 4. [The `release_manifest.json` schema](#the-release_manifestjson-schema)
 5. [Committed-vs-release-asset policy](#committed-vs-release-asset-policy) — which files live in git, which are regenerable build artifacts
+6. [Versioning policy](#versioning-policy) — how the ontology version is set, stamped, and released
+
+---
+
+## Versioning policy
+
+The published ontology is **versioned with SemVer** (`MAJOR.MINOR.PATCH`),
+continuing the history in [CHANGELOG.md](../CHANGELOG.md) (Keep a Changelog
+format). The version exists in **one source of truth** —
+`estleg_common.ONTOLOGY_VERSION` — and `pyproject.toml`'s `[project].version`
+is kept identical to it; `tests/test_ontology_version.py` fails CI if they
+drift.
+
+**Where the version is stamped.** On every build the version is written as
+`owl:versionInfo` + `owl:versionIRI` onto two headers, so the shipped graph is
+self-describing and a consumer can pin/cite it:
+
+- `metadata.jsonld` — the `dcat:Dataset` / `owl:Ontology` dataset header
+  (committed; bump by hand when you bump the constant).
+- `combined_ontology.jsonld` — a dataset-level `owl:Ontology` node at
+  `@graph[0]`, re-emitted from `estleg_common.combined_ontology_header()` every
+  time `fix_all_issues.generate_combined_jsonld()` runs (so it survives every
+  rebuild).
+
+The `versionIRI` is `https://data.riik.ee/ontology/estleg/<version>` — each
+release is an independently dereferenceable IRI.
+
+**When to bump:**
+
+- **MAJOR** — a breaking schema change (a removed/renamed property or class, an
+  `@id` scheme change) that would break an existing consumer query.
+- **MINOR** — new corpus coverage, a new enrichment layer, or new properties
+  that are additive.
+- **PATCH** — data corrections and bug fixes that don't change the schema.
+
+**Cutting a release:**
+
+1. Bump `estleg_common.ONTOLOGY_VERSION` **and** `pyproject.toml` to the new
+   version, and update `metadata.jsonld` (`owl:versionInfo`, `owl:versionIRI`,
+   `dcterms:modified`).
+2. Move the `## [Unreleased]` entries in `CHANGELOG.md` under a new
+   `## [<version>] - <date>` heading.
+3. Regenerate `combined_ontology.jsonld` so its header carries the new version,
+   and run the [release build](#running-a-release-build) + all gates.
+4. After merge, tag the release: `git tag v<version> && git push origin v<version>`,
+   and create the GitHub release (this is an outward-facing publish step — do it
+   deliberately, not from CI).
 
 ---
 
