@@ -2569,6 +2569,26 @@ def test_harmonisation_symmetry_flags_report_count_drift(tmp_path):
     assert any("directives_with_parallels" in e for e in validate_all.errors), validate_all.errors
 
 
+def test_harmonisation_symmetry_flags_report_harm_iri_mismatch(tmp_path):
+    # #631 review: a report entry's estonian_laws IRIs must equal its harm_*
+    # harmonises set — body disagreeing with the per-directive file must fail.
+    krr = tmp_path / "krr_outputs"
+    write_json(krr / "act_peep.json", {"@graph": []})
+    write_json(krr / "harmonisation" / "harmonisation_by_directive" / "harm_32000L0001.json", {"@graph": [
+        {"@id": "estleg:Harmonisation_32000L0001", "@type": ["estleg:HarmonisationLink"],
+         "estleg:harmonises": [{"@id": "estleg:A_Map"}, {"@id": "estleg:B_Map"}]},
+    ]})
+    write_json(krr / "harmonisation" / "harmonisation_report.json", {
+        "directives_with_parallels": 1,
+        "harmonisation_entries": [
+            {"directive_celex": "32000L0001",
+             "estonian_laws": [{"name": "a", "iri": "estleg:A_Map"}]},  # missing B_Map
+        ],
+    })
+    validate_all.validate_harmonisation_symmetry(krr)
+    assert any("estonian_laws IRIs differ" in e for e in validate_all.errors), validate_all.errors
+
+
 def test_validate_combined_graph_closure_flags_orphan_stub(tmp_path):
     krr = tmp_path / "krr_outputs"
     _write_combined(

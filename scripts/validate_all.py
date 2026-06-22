@@ -1995,11 +1995,45 @@ def validate_harmonisation_symmetry(krr_dir: Path = KRR_DIR):
         if isinstance(rep, dict):
             declared = rep.get("directives_with_parallels")
             entries = rep.get("harmonisation_entries")
-            if isinstance(declared, int) and isinstance(entries, list) and declared != len(entries):
+            if not isinstance(entries, list):
+                entries = []
+            if isinstance(declared, int) and declared != len(entries):
                 error(
                     f"harmonisation_report.json: directives_with_parallels={declared} but "
                     f"harmonisation_entries has {len(entries)} entries — entries dropped "
                     "wholesale (a deprecated member should be removed, not its directive)."
+                )
+            # #631 review: each entry's estonian_laws IRIs must equal its
+            # harm_*.json harmonises IRIs — otherwise the report body silently
+            # disagrees with the per-directive files (e.g. a member removed by
+            # name when only its name, not its canonical IRI, was deprecated).
+            entry_mismatch = 0
+            sample_e: str | None = None
+            for e in entries:
+                cel = e.get("directive_celex") if isinstance(e, dict) else None
+                hf = harm_dir / f"harm_{cel}.json"
+                if not cel or not hf.is_file():
+                    continue
+                try:
+                    with open(hf, encoding="utf-8") as fh:
+                        hdoc = json.load(fh)
+                except (json.JSONDecodeError, OSError, UnicodeDecodeError):
+                    continue
+                hiris: set[str] = set()
+                for n in hdoc.get("@graph", []):
+                    if isinstance(n, dict) and n.get("@id", "").startswith("estleg:Harmonisation_"):
+                        h = n.get("estleg:harmonises", [])
+                        hiris = {x["@id"] for x in (h if isinstance(h, list) else [h])
+                                 if isinstance(x, dict) and x.get("@id")}
+                riris = {m.get("iri") for m in e.get("estonian_laws", []) if isinstance(m, dict)}
+                if hiris and riris != hiris:
+                    entry_mismatch += 1
+                    sample_e = sample_e or str(cel)
+            if entry_mismatch:
+                error(
+                    f"harmonisation_report.json: {entry_mismatch} entry(ies) whose "
+                    f"estonian_laws IRIs differ from their harm_*.json harmonises set "
+                    f"(report body disagrees with the per-directive files). First: {sample_e}"
                 )
 
 
