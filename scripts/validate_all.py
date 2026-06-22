@@ -30,7 +30,7 @@ if str(_SCRIPTS_DIR) not in sys.path:
     sys.path.insert(0, str(_SCRIPTS_DIR))
 
 import estleg_common  # noqa: E402
-from estleg_common import iter_krr_jsonld_files  # noqa: E402
+from estleg_common import act_deprecation, iter_krr_jsonld_files  # noqa: E402
 from deprecate_legacy_statutes import verify_decisions_applied  # noqa: E402
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -1281,7 +1281,31 @@ def validate_transposition_mapping(krr_dir: Path = KRR_DIR):
         )
         return
     if mappings:
-        print(f"  OK: {len(mappings)} law↔directive mappings, current report shape")
+        # #631 review: the header counts must agree with the body — a manual
+        # surgery on `mappings` that forgot to recompute them otherwise ships
+        # silently (total_matched read 300 while the body had 288).
+        declared = doc.get("total_matched")
+        if isinstance(declared, int) and declared != len(mappings):
+            error(
+                f"transposition_mapping.json: total_matched={declared} but "
+                f"'mappings' has {len(mappings)} entries — stale header after a "
+                "manual edit. Re-run scripts/generate_transposition_mapping.py."
+            )
+            return
+        # #631 review: matched_law_name must be the INDEX law name, not a peep
+        # FILENAME stem — a retarget that used Path(file).stem leaves a trailing
+        # '_peep' that matches no indexed law.
+        peep_named = [m.get("matched_law_name") for m in mappings
+                      if isinstance(m.get("matched_law_name"), str)
+                      and m["matched_law_name"].endswith("_peep")]
+        if peep_named:
+            error(
+                f"transposition_mapping.json: {len(peep_named)} matched_law_name(s) end "
+                f"in '_peep' — a peep filename stem, not an INDEX law name "
+                f"(e.g. {peep_named[0]})."
+            )
+            return
+        print(f"  OK: {len(mappings)} law↔directive mappings, total_matched consistent")
     else:
         print("  OK: empty transposition layer, explicitly flagged (documented_empty)")
 
@@ -1880,6 +1904,164 @@ def validate_combined_graph_closure(krr_dir: Path = KRR_DIR):
             f"{len(stub_ids)} stub nodes all referenced; all merged-overlay "
             f"nodes present (census)"
         )
+
+
+def validate_harmonisation_symmetry(krr_dir: Path = KRR_DIR):
+    """#578/#631 gate: every ``harmonisation_by_directive/harm_*.json``
+    ``estleg:harmonises`` → act edge must have a backing ``estleg:harmonisedWith``
+    on that act in the law peeps.
+
+    Catches the deprecated-rejection asymmetry the #632 review found — a harm
+    inverse file pointing at a (canonical) act that never received the forward
+    edge, e.g. after a directive was stripped off a deprecated act instead of
+    moved onto its ``dcterms:isReplacedBy`` replacement.
+    """
+    print("\n--- Harmonisation Symmetry (#578/#631) ---")
+    harm_dir = krr_dir / "harmonisation" / "harmonisation_by_directive"
+    if not harm_dir.is_dir():
+        warn("harmonisation_by_directive/: not found — skipping symmetry gate")
+        return
+    forward: set[tuple[str, str]] = set()
+    dep_links = 0
+    dep_sample: str | None = None
+    # #631 review: harmonisation is DERIVED from transposition_mapping.json, so
+    # every harmonisedWith (act→directive) must be backed by a mapping row whose
+    # law_files include that act's peep — else the link isn't reproducible and a
+    # regen would silently drop it. Build directive CELEX → {peep filename}.
+    mapping_path = krr_dir / "transposition_mapping.json"
+    dir_files: dict[str, set[str]] = {}
+    if mapping_path.is_file() and not _is_lfs_pointer(mapping_path):
+        try:
+            with open(mapping_path, encoding="utf-8") as fh:
+                for m in json.load(fh).get("mappings", []):
+                    dir_files.setdefault(m.get("directive_celex"), set()).update(
+                        Path(lf).name for lf in m.get("law_files", []))
+        except (json.JSONDecodeError, OSError, UnicodeDecodeError):
+            dir_files = {}
+    unbacked = 0
+    unbacked_sample: tuple[str, str] | None = None
+    for path in krr_dir.glob("*_peep.json"):
+        if _is_lfs_pointer(path):
+            continue
+        try:
+            with open(path, encoding="utf-8") as fh:
+                doc = json.load(fh)
+        except (json.JSONDecodeError, OSError, UnicodeDecodeError):
+            continue
+        is_dep = act_deprecation(doc)[0]
+        for n in doc.get("@graph", []):
+            if not isinstance(n, dict):
+                continue
+            # #631 review: a deprecated/replaced act must carry NEITHER directive
+            # field — both estleg:harmonisedWith and estleg:transposesDirective
+            # belong on its dcterms:isReplacedBy canonical, not split across the pair.
+            if is_dep and (n.get("estleg:harmonisedWith") or n.get("estleg:transposesDirective")):
+                dep_links += 1
+                dep_sample = dep_sample or str(n.get("@id"))
+            hw = n.get("estleg:harmonisedWith")
+            if not hw:
+                continue
+            for x in (hw if isinstance(hw, list) else [hw]):
+                if isinstance(x, dict) and x.get("@id"):
+                    forward.add((n["@id"], x["@id"]))
+                    if dir_files and not is_dep:
+                        cel = x["@id"].replace("estleg:Harmonisation_", "")
+                        if path.name not in dir_files.get(cel, set()):
+                            unbacked += 1
+                            unbacked_sample = unbacked_sample or (path.name, cel)
+    if dep_links:
+        error(
+            f"harmonisation: {dep_links} deprecated act(s) still carry "
+            f"estleg:harmonisedWith/transposesDirective — move them onto the "
+            f"dcterms:isReplacedBy canonical. First: {dep_sample}"
+        )
+    if unbacked:
+        error(
+            f"harmonisation: {unbacked} harmonisedWith link(s) not backed by a "
+            f"transposition_mapping.json row (law not mapped to that directive — "
+            f"not reproducible; a regen would drop them). First: {unbacked_sample}"
+        )
+    asym = total = 0
+    sample: tuple[str, str] | None = None
+    for path in sorted(harm_dir.glob("*.json")):
+        try:
+            with open(path, encoding="utf-8") as fh:
+                doc = json.load(fh)
+        except (json.JSONDecodeError, OSError, UnicodeDecodeError):
+            continue
+        for n in doc.get("@graph", []):
+            cel = n.get("@id", "") if isinstance(n, dict) else ""
+            if not cel.startswith("estleg:Harmonisation_"):
+                continue
+            h = n.get("estleg:harmonises")
+            for x in (h if isinstance(h, list) else [h] if h else []):
+                if isinstance(x, dict) and x.get("@id"):
+                    total += 1
+                    if (x["@id"], cel) not in forward:
+                        asym += 1
+                        sample = sample or (cel, x["@id"])
+    if asym:
+        error(
+            f"harmonisation: {asym}/{total} harmonises→act edge(s) lack a backing "
+            f"estleg:harmonisedWith (asymmetric inverse — a directive points at an "
+            f"act that never received the forward edge). First: {sample}"
+        )
+    else:
+        print(f"  OK: all {total} harmonises→act edges have a backing harmonisedWith")
+
+    # #631 review: harmonisation_report.json's declared parallel-directive count
+    # must match the body — a member-level edit that deletes whole entries
+    # (instead of the deprecated member) otherwise drifts silently.
+    report = krr_dir / "harmonisation" / "harmonisation_report.json"
+    if report.is_file() and not _is_lfs_pointer(report):
+        try:
+            with open(report, encoding="utf-8") as fh:
+                rep = json.load(fh)
+        except (json.JSONDecodeError, OSError, UnicodeDecodeError):
+            rep = None
+        if isinstance(rep, dict):
+            declared = rep.get("directives_with_parallels")
+            entries = rep.get("harmonisation_entries")
+            if not isinstance(entries, list):
+                entries = []
+            if isinstance(declared, int) and declared != len(entries):
+                error(
+                    f"harmonisation_report.json: directives_with_parallels={declared} but "
+                    f"harmonisation_entries has {len(entries)} entries — entries dropped "
+                    "wholesale (a deprecated member should be removed, not its directive)."
+                )
+            # #631 review: each entry's estonian_laws IRIs must equal its
+            # harm_*.json harmonises IRIs — otherwise the report body silently
+            # disagrees with the per-directive files (e.g. a member removed by
+            # name when only its name, not its canonical IRI, was deprecated).
+            entry_mismatch = 0
+            sample_e: str | None = None
+            for e in entries:
+                cel = e.get("directive_celex") if isinstance(e, dict) else None
+                hf = harm_dir / f"harm_{cel}.json"
+                if not cel or not hf.is_file():
+                    continue
+                try:
+                    with open(hf, encoding="utf-8") as fh:
+                        hdoc = json.load(fh)
+                except (json.JSONDecodeError, OSError, UnicodeDecodeError):
+                    continue
+                hiris: set[str] = set()
+                for n in hdoc.get("@graph", []):
+                    if isinstance(n, dict) and n.get("@id", "").startswith("estleg:Harmonisation_"):
+                        h = n.get("estleg:harmonises", [])
+                        hiris = {x["@id"] for x in (h if isinstance(h, list) else [h])
+                                 if isinstance(x, dict) and x.get("@id")}
+                riris = {m.get("iri") for m in e.get("estonian_laws", []) if isinstance(m, dict)}
+                if hiris and riris != hiris:
+                    entry_mismatch += 1
+                    sample_e = sample_e or str(cel)
+            if entry_mismatch:
+                error(
+                    f"harmonisation_report.json: {entry_mismatch} entry(ies) whose "
+                    f"estonian_laws IRIs differ from their harm_*.json harmonises set "
+                    f"(report body disagrees with the per-directive files). First: {sample_e}"
+                )
 
 
 def validate_provision_text_quality(krr_dir: Path = KRR_DIR):
@@ -2662,6 +2844,7 @@ def main(argv: list[str] | None = None):
     validate_combined_graph_closure(krr_dir)
     validate_provision_version_monotonicity(krr_dir)
     validate_provision_text_quality(krr_dir)
+    validate_harmonisation_symmetry(krr_dir)
     validate_subcorpus_combined_ontologies(krr_dir)
     validate_subcorpus_index_counts(krr_dir, allow_missing_index=allow_missing_index)
     # Regen-pending staleness guards (#366, #348, #384). These emit

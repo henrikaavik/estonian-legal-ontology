@@ -1221,6 +1221,7 @@ def test_validate_transposition_mapping_accepts_populated(tmp_path):
             "unique_laws": 2,
             "mappings": [
                 {"directive_celex": "32000L0001", "matched_law_name": "alkoholiseadus"},
+                {"directive_celex": "32000L0002", "matched_law_name": "tubakaseadus"},
             ],
         },
     )
@@ -1228,6 +1229,44 @@ def test_validate_transposition_mapping_accepts_populated(tmp_path):
     validate_all.validate_transposition_mapping(krr)
 
     assert validate_all.errors == [], validate_all.errors
+
+
+def test_validate_transposition_mapping_flags_stale_count(tmp_path):
+    """#631 review: total_matched must equal len(mappings) — a manual edit that
+    forgets to recompute the header otherwise ships silently."""
+    krr = tmp_path / "krr_outputs"
+    write_json(
+        krr / "transposition_mapping.json",
+        {
+            "generated": "2026-05-11", "source": "x", "country": "EST",
+            "total_measures_fetched": 5, "total_matched": 5, "total_unmatched": 0,
+            "unique_directives": 1, "unique_laws": 1,
+            "mappings": [
+                {"directive_celex": "32000L0001", "matched_law_name": "alkoholiseadus"},
+            ],
+        },
+    )
+    validate_all.validate_transposition_mapping(krr)
+    assert any("total_matched" in e for e in validate_all.errors), validate_all.errors
+
+
+def test_validate_transposition_mapping_flags_peep_named_law(tmp_path):
+    """#631 review: matched_law_name must be the INDEX name, not a peep filename
+    stem (a retarget that used Path(file).stem leaves a trailing '_peep')."""
+    krr = tmp_path / "krr_outputs"
+    write_json(
+        krr / "transposition_mapping.json",
+        {
+            "generated": "2026-05-11", "source": "x", "country": "EST",
+            "total_measures_fetched": 1, "total_matched": 1, "total_unmatched": 0,
+            "unique_directives": 1, "unique_laws": 1,
+            "mappings": [
+                {"directive_celex": "31996L0034", "matched_law_name": "toolepingu_seadus_peep"},
+            ],
+        },
+    )
+    validate_all.validate_transposition_mapping(krr)
+    assert any("_peep" in e for e in validate_all.errors), validate_all.errors
 
 
 def test_validate_transposition_mapping_missing_file_is_only_a_warning(tmp_path):
@@ -2470,6 +2509,106 @@ def test_provision_text_quality_passes_clean(tmp_path):
     ]})
     validate_all.validate_provision_text_quality(krr)
     assert validate_all.errors == [], validate_all.errors
+
+
+def _harm_pair(krr, *, backed):
+    """Stage a peep + a harm_* inverse file; the peep's harmonisedWith is only
+    written when ``backed`` (so the harmonises→act edge is symmetric or not)."""
+    act = {"@id": "estleg:ACT_Map", "@type": ["owl:Ontology"]}
+    if backed:
+        act["estleg:harmonisedWith"] = [{"@id": "estleg:Harmonisation_X"}]
+    write_json(krr / "act_peep.json", {"@graph": [act]})
+    write_json(krr / "harmonisation" / "harmonisation_by_directive" / "harm_X.json", {"@graph": [
+        {"@id": "estleg:Harmonisation_X", "@type": ["estleg:HarmonisationLink"],
+         "estleg:harmonises": [{"@id": "estleg:ACT_Map"}]},
+    ]})
+
+
+def test_harmonisation_symmetry_flags_unbacked_inverse(tmp_path):
+    # #631: a harm_* harmonises→act edge with no backing harmonisedWith fails
+    # (the deprecated-rejection asymmetry the #632 review found).
+    krr = tmp_path / "krr_outputs"
+    _harm_pair(krr, backed=False)
+    validate_all.validate_harmonisation_symmetry(krr)
+    assert any("asymmetric" in e for e in validate_all.errors), validate_all.errors
+
+
+def test_harmonisation_symmetry_passes_when_backed(tmp_path):
+    krr = tmp_path / "krr_outputs"
+    _harm_pair(krr, backed=True)
+    validate_all.validate_harmonisation_symmetry(krr)
+    assert validate_all.errors == [], validate_all.errors
+
+
+def test_harmonisation_symmetry_flags_deprecated_carrying_links(tmp_path):
+    # #631 review: a deprecated act must carry NEITHER estleg:harmonisedWith nor
+    # estleg:transposesDirective — both belong on the isReplacedBy canonical.
+    krr = tmp_path / "krr_outputs"
+    write_json(krr / "dep_peep.json", {"@graph": [
+        {"@id": "estleg:DEP_Map", "@type": ["owl:Ontology"],
+         "owl:deprecated": True, "dcterms:isReplacedBy": {"@id": "estleg:CANON_Map"},
+         "estleg:transposesDirective": [{"@id": "estleg:EU_X"}]},
+    ]})
+    # the harm dir must exist or the gate short-circuits
+    write_json(krr / "harmonisation" / "harmonisation_by_directive" / "harm_X.json", {"@graph": []})
+    validate_all.validate_harmonisation_symmetry(krr)
+    assert any("deprecated act" in e for e in validate_all.errors), validate_all.errors
+
+
+def test_harmonisation_symmetry_flags_report_count_drift(tmp_path):
+    # #631 review: harmonisation_report directives_with_parallels must equal
+    # len(harmonisation_entries) — wholesale entry deletion otherwise drifts silent.
+    krr = tmp_path / "krr_outputs"
+    write_json(krr / "act_peep.json", {"@graph": []})
+    write_json(krr / "harmonisation" / "harmonisation_by_directive" / "harm_X.json", {"@graph": []})
+    write_json(krr / "harmonisation" / "harmonisation_report.json", {
+        "directives_with_parallels": 3,
+        "harmonisation_entries": [{"directive_celex": "32000L0001"}],
+    })
+    validate_all.validate_harmonisation_symmetry(krr)
+    assert any("directives_with_parallels" in e for e in validate_all.errors), validate_all.errors
+
+
+def test_harmonisation_symmetry_flags_report_harm_iri_mismatch(tmp_path):
+    # #631 review: a report entry's estonian_laws IRIs must equal its harm_*
+    # harmonises set — body disagreeing with the per-directive file must fail.
+    krr = tmp_path / "krr_outputs"
+    write_json(krr / "act_peep.json", {"@graph": []})
+    write_json(krr / "harmonisation" / "harmonisation_by_directive" / "harm_32000L0001.json", {"@graph": [
+        {"@id": "estleg:Harmonisation_32000L0001", "@type": ["estleg:HarmonisationLink"],
+         "estleg:harmonises": [{"@id": "estleg:A_Map"}, {"@id": "estleg:B_Map"}]},
+    ]})
+    write_json(krr / "harmonisation" / "harmonisation_report.json", {
+        "directives_with_parallels": 1,
+        "harmonisation_entries": [
+            {"directive_celex": "32000L0001",
+             "estonian_laws": [{"name": "a", "iri": "estleg:A_Map"}]},  # missing B_Map
+        ],
+    })
+    validate_all.validate_harmonisation_symmetry(krr)
+    assert any("estonian_laws IRIs differ" in e for e in validate_all.errors), validate_all.errors
+
+
+def test_harmonisation_symmetry_flags_unbacked_mapping(tmp_path):
+    # #631 review: a harmonisedWith link whose act peep is NOT in the
+    # transposition_mapping row for that directive is not reproducible → fail.
+    krr = tmp_path / "krr_outputs"
+    write_json(krr / "toolepingu_seadus_peep.json", {"@graph": [
+        {"@id": "estleg:TOOLEP_Map", "@type": ["owl:Ontology"],
+         "estleg:harmonisedWith": [{"@id": "estleg:Harmonisation_32002L0073"}]},
+    ]})
+    write_json(krr / "harmonisation" / "harmonisation_by_directive" / "harm_32002L0073.json", {"@graph": [
+        {"@id": "estleg:Harmonisation_32002L0073", "@type": ["estleg:HarmonisationLink"],
+         "estleg:harmonises": [{"@id": "estleg:TOOLEP_Map"}]},
+    ]})
+    write_json(krr / "transposition_mapping.json", {
+        "generated": "x", "source": "x", "country": "EST", "total_measures_fetched": 1,
+        "total_matched": 1, "total_unmatched": 0, "unique_directives": 1, "unique_laws": 1,
+        "mappings": [{"directive_celex": "32002L0073", "matched_law_name": "vordse_kohtlemise_seadus",
+                      "law_files": ["vordse_kohtlemise_seadus_peep.json"]}],  # not toolepingu_seadus
+    })
+    validate_all.validate_harmonisation_symmetry(krr)
+    assert any("not backed by a transposition_mapping" in e for e in validate_all.errors), validate_all.errors
 
 
 def test_validate_combined_graph_closure_flags_orphan_stub(tmp_path):
