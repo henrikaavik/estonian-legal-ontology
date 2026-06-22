@@ -30,7 +30,7 @@ if str(_SCRIPTS_DIR) not in sys.path:
     sys.path.insert(0, str(_SCRIPTS_DIR))
 
 import estleg_common  # noqa: E402
-from estleg_common import iter_krr_jsonld_files  # noqa: E402
+from estleg_common import act_deprecation, iter_krr_jsonld_files  # noqa: E402
 from deprecate_legacy_statutes import verify_decisions_applied  # noqa: E402
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -1281,7 +1281,18 @@ def validate_transposition_mapping(krr_dir: Path = KRR_DIR):
         )
         return
     if mappings:
-        print(f"  OK: {len(mappings)} law↔directive mappings, current report shape")
+        # #631 review: the header counts must agree with the body — a manual
+        # surgery on `mappings` that forgot to recompute them otherwise ships
+        # silently (total_matched read 300 while the body had 288).
+        declared = doc.get("total_matched")
+        if isinstance(declared, int) and declared != len(mappings):
+            error(
+                f"transposition_mapping.json: total_matched={declared} but "
+                f"'mappings' has {len(mappings)} entries — stale header after a "
+                "manual edit. Re-run scripts/generate_transposition_mapping.py."
+            )
+            return
+        print(f"  OK: {len(mappings)} law↔directive mappings, total_matched consistent")
     else:
         print("  OK: empty transposition layer, explicitly flagged (documented_empty)")
 
@@ -1898,6 +1909,8 @@ def validate_harmonisation_symmetry(krr_dir: Path = KRR_DIR):
         warn("harmonisation_by_directive/: not found — skipping symmetry gate")
         return
     forward: set[tuple[str, str]] = set()
+    dep_links = 0
+    dep_sample: str | None = None
     for path in krr_dir.glob("*_peep.json"):
         if _is_lfs_pointer(path):
             continue
@@ -1906,13 +1919,28 @@ def validate_harmonisation_symmetry(krr_dir: Path = KRR_DIR):
                 doc = json.load(fh)
         except (json.JSONDecodeError, OSError, UnicodeDecodeError):
             continue
+        is_dep = act_deprecation(doc)[0]
         for n in doc.get("@graph", []):
-            hw = n.get("estleg:harmonisedWith") if isinstance(n, dict) else None
+            if not isinstance(n, dict):
+                continue
+            # #631 review: a deprecated/replaced act must carry NEITHER directive
+            # field — both estleg:harmonisedWith and estleg:transposesDirective
+            # belong on its dcterms:isReplacedBy canonical, not split across the pair.
+            if is_dep and (n.get("estleg:harmonisedWith") or n.get("estleg:transposesDirective")):
+                dep_links += 1
+                dep_sample = dep_sample or str(n.get("@id"))
+            hw = n.get("estleg:harmonisedWith")
             if not hw:
                 continue
             for x in (hw if isinstance(hw, list) else [hw]):
                 if isinstance(x, dict) and x.get("@id"):
                     forward.add((n["@id"], x["@id"]))
+    if dep_links:
+        error(
+            f"harmonisation: {dep_links} deprecated act(s) still carry "
+            f"estleg:harmonisedWith/transposesDirective — move them onto the "
+            f"dcterms:isReplacedBy canonical. First: {dep_sample}"
+        )
     asym = total = 0
     sample: tuple[str, str] | None = None
     for path in sorted(harm_dir.glob("*.json")):

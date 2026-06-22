@@ -1221,6 +1221,7 @@ def test_validate_transposition_mapping_accepts_populated(tmp_path):
             "unique_laws": 2,
             "mappings": [
                 {"directive_celex": "32000L0001", "matched_law_name": "alkoholiseadus"},
+                {"directive_celex": "32000L0002", "matched_law_name": "tubakaseadus"},
             ],
         },
     )
@@ -1228,6 +1229,25 @@ def test_validate_transposition_mapping_accepts_populated(tmp_path):
     validate_all.validate_transposition_mapping(krr)
 
     assert validate_all.errors == [], validate_all.errors
+
+
+def test_validate_transposition_mapping_flags_stale_count(tmp_path):
+    """#631 review: total_matched must equal len(mappings) — a manual edit that
+    forgets to recompute the header otherwise ships silently."""
+    krr = tmp_path / "krr_outputs"
+    write_json(
+        krr / "transposition_mapping.json",
+        {
+            "generated": "2026-05-11", "source": "x", "country": "EST",
+            "total_measures_fetched": 5, "total_matched": 5, "total_unmatched": 0,
+            "unique_directives": 1, "unique_laws": 1,
+            "mappings": [
+                {"directive_celex": "32000L0001", "matched_law_name": "alkoholiseadus"},
+            ],
+        },
+    )
+    validate_all.validate_transposition_mapping(krr)
+    assert any("total_matched" in e for e in validate_all.errors), validate_all.errors
 
 
 def test_validate_transposition_mapping_missing_file_is_only_a_warning(tmp_path):
@@ -2499,6 +2519,21 @@ def test_harmonisation_symmetry_passes_when_backed(tmp_path):
     _harm_pair(krr, backed=True)
     validate_all.validate_harmonisation_symmetry(krr)
     assert validate_all.errors == [], validate_all.errors
+
+
+def test_harmonisation_symmetry_flags_deprecated_carrying_links(tmp_path):
+    # #631 review: a deprecated act must carry NEITHER estleg:harmonisedWith nor
+    # estleg:transposesDirective — both belong on the isReplacedBy canonical.
+    krr = tmp_path / "krr_outputs"
+    write_json(krr / "dep_peep.json", {"@graph": [
+        {"@id": "estleg:DEP_Map", "@type": ["owl:Ontology"],
+         "owl:deprecated": True, "dcterms:isReplacedBy": {"@id": "estleg:CANON_Map"},
+         "estleg:transposesDirective": [{"@id": "estleg:EU_X"}]},
+    ]})
+    # the harm dir must exist or the gate short-circuits
+    write_json(krr / "harmonisation" / "harmonisation_by_directive" / "harm_X.json", {"@graph": []})
+    validate_all.validate_harmonisation_symmetry(krr)
+    assert any("deprecated act" in e for e in validate_all.errors), validate_all.errors
 
 
 def test_validate_combined_graph_closure_flags_orphan_stub(tmp_path):
