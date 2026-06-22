@@ -476,3 +476,35 @@ def test_migrate_leaves_per_country_nodes_untouched(tmp_path):
     assert "estleg:harmonises" not in measure
     assert "estleg:harmonisedWith" not in measure
     assert measure["estleg:nationalCelex"] == "71990L0314LVA_1"
+
+
+def test_get_law_harmonisation_target_skips_deprecated(tmp_path, monkeypatch):
+    """#578: a deprecated/replaced act must not receive a harmonisation link —
+    get_law_harmonisation_target_iri returns None so the caller skips the retired
+    VOS_*/volaigusseadus VÕS decomposition."""
+    path = _write_law_peep(tmp_path, {
+        "@id": "estleg:VOS_Osa3_Contract_Obligations_Liability",
+        "@type": ["owl:Ontology", "estleg:Act"],
+        "owl:deprecated": True,
+        "dcterms:isReplacedBy": {"@id": "estleg:volaoigusseadus_Osa3_271_421"},
+    })
+    monkeypatch.setattr(harmonisation, "KRR_DIR", tmp_path)
+    assert harmonisation.get_law_harmonisation_target_iri(path.name) is None
+
+
+def test_update_law_file_harmonisation_skips_deprecated(tmp_path):
+    """#578 P2: even called directly with a deprecated act, the write path must
+    NOT add estleg:harmonisedWith — defense in depth against a stale/hand-edited
+    mapping reintroducing the exact deprecated links this change prevents."""
+    path = _write_law_peep(tmp_path, {
+        "@id": "estleg:VOS_Osa3_Contract_Obligations_Liability",
+        "@type": ["owl:Ontology", "estleg:Act"],
+        "owl:deprecated": True,
+        "dcterms:isReplacedBy": {"@id": "estleg:volaoigusseadus_Osa3_271_421"},
+    })
+    updated = harmonisation.update_law_file_harmonisation(
+        path, ["estleg:Harmonisation_31990L0314"]
+    )
+    assert updated is False
+    written = json.loads(path.read_text(encoding="utf-8"))["@graph"][0]
+    assert "estleg:harmonisedWith" not in written

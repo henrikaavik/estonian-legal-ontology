@@ -22,7 +22,12 @@ import time
 import unicodedata
 from pathlib import Path
 
-from estleg_common import BUILD_EVALUATION_DATE, iter_peep_files, save_json as _save_json
+from estleg_common import (
+    BUILD_EVALUATION_DATE,
+    act_deprecation,
+    iter_peep_files,
+    save_json as _save_json,
+)
 from eurlex_common import (
     SPARQL_ENDPOINT,
     sparql_query,
@@ -360,6 +365,12 @@ def build_law_index(index_data: dict) -> dict[str, dict]:
         source_act = ""
         try:
             data = load_json(first_file)
+            # #578: skip deprecated/replaced acts (the corrupt ``volaigusseadus``
+            # slug, the retired ``VOS_*`` family) so transposition matching can't
+            # fan a directive onto a retired VÕS decomposition alongside the
+            # canonical ``volaoigusseadus_*``. Follows dcterms:isReplacedBy.
+            if act_deprecation(data)[0]:
+                continue
             for node in data.get("@graph", []):
                 sa = node.get("estleg:sourceAct", "")
                 if sa:
