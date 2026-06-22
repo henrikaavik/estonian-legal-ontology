@@ -2472,6 +2472,35 @@ def test_provision_text_quality_passes_clean(tmp_path):
     assert validate_all.errors == [], validate_all.errors
 
 
+def _harm_pair(krr, *, backed):
+    """Stage a peep + a harm_* inverse file; the peep's harmonisedWith is only
+    written when ``backed`` (so the harmonises→act edge is symmetric or not)."""
+    act = {"@id": "estleg:ACT_Map", "@type": ["owl:Ontology"]}
+    if backed:
+        act["estleg:harmonisedWith"] = [{"@id": "estleg:Harmonisation_X"}]
+    write_json(krr / "act_peep.json", {"@graph": [act]})
+    write_json(krr / "harmonisation" / "harmonisation_by_directive" / "harm_X.json", {"@graph": [
+        {"@id": "estleg:Harmonisation_X", "@type": ["estleg:HarmonisationLink"],
+         "estleg:harmonises": [{"@id": "estleg:ACT_Map"}]},
+    ]})
+
+
+def test_harmonisation_symmetry_flags_unbacked_inverse(tmp_path):
+    # #631: a harm_* harmonises→act edge with no backing harmonisedWith fails
+    # (the deprecated-rejection asymmetry the #632 review found).
+    krr = tmp_path / "krr_outputs"
+    _harm_pair(krr, backed=False)
+    validate_all.validate_harmonisation_symmetry(krr)
+    assert any("asymmetric" in e for e in validate_all.errors), validate_all.errors
+
+
+def test_harmonisation_symmetry_passes_when_backed(tmp_path):
+    krr = tmp_path / "krr_outputs"
+    _harm_pair(krr, backed=True)
+    validate_all.validate_harmonisation_symmetry(krr)
+    assert validate_all.errors == [], validate_all.errors
+
+
 def test_validate_combined_graph_closure_flags_orphan_stub(tmp_path):
     krr = tmp_path / "krr_outputs"
     _write_combined(

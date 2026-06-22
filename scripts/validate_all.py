@@ -1882,6 +1882,66 @@ def validate_combined_graph_closure(krr_dir: Path = KRR_DIR):
         )
 
 
+def validate_harmonisation_symmetry(krr_dir: Path = KRR_DIR):
+    """#578/#631 gate: every ``harmonisation_by_directive/harm_*.json``
+    ``estleg:harmonises`` → act edge must have a backing ``estleg:harmonisedWith``
+    on that act in the law peeps.
+
+    Catches the deprecated-rejection asymmetry the #632 review found — a harm
+    inverse file pointing at a (canonical) act that never received the forward
+    edge, e.g. after a directive was stripped off a deprecated act instead of
+    moved onto its ``dcterms:isReplacedBy`` replacement.
+    """
+    print("\n--- Harmonisation Symmetry (#578/#631) ---")
+    harm_dir = krr_dir / "harmonisation" / "harmonisation_by_directive"
+    if not harm_dir.is_dir():
+        warn("harmonisation_by_directive/: not found — skipping symmetry gate")
+        return
+    forward: set[tuple[str, str]] = set()
+    for path in krr_dir.glob("*_peep.json"):
+        if _is_lfs_pointer(path):
+            continue
+        try:
+            with open(path, encoding="utf-8") as fh:
+                doc = json.load(fh)
+        except (json.JSONDecodeError, OSError, UnicodeDecodeError):
+            continue
+        for n in doc.get("@graph", []):
+            hw = n.get("estleg:harmonisedWith") if isinstance(n, dict) else None
+            if not hw:
+                continue
+            for x in (hw if isinstance(hw, list) else [hw]):
+                if isinstance(x, dict) and x.get("@id"):
+                    forward.add((n["@id"], x["@id"]))
+    asym = total = 0
+    sample: tuple[str, str] | None = None
+    for path in sorted(harm_dir.glob("*.json")):
+        try:
+            with open(path, encoding="utf-8") as fh:
+                doc = json.load(fh)
+        except (json.JSONDecodeError, OSError, UnicodeDecodeError):
+            continue
+        for n in doc.get("@graph", []):
+            cel = n.get("@id", "") if isinstance(n, dict) else ""
+            if not cel.startswith("estleg:Harmonisation_"):
+                continue
+            h = n.get("estleg:harmonises")
+            for x in (h if isinstance(h, list) else [h] if h else []):
+                if isinstance(x, dict) and x.get("@id"):
+                    total += 1
+                    if (x["@id"], cel) not in forward:
+                        asym += 1
+                        sample = sample or (cel, x["@id"])
+    if asym:
+        error(
+            f"harmonisation: {asym}/{total} harmonises→act edge(s) lack a backing "
+            f"estleg:harmonisedWith (asymmetric inverse — a directive points at an "
+            f"act that never received the forward edge). First: {sample}"
+        )
+    else:
+        print(f"  OK: all {total} harmonises→act edges have a backing harmonisedWith")
+
+
 def validate_provision_text_quality(krr_dir: Path = KRR_DIR):
     """#572/#613 release gate for the structured-law peeps (generate_all_laws).
 
@@ -2662,6 +2722,7 @@ def main(argv: list[str] | None = None):
     validate_combined_graph_closure(krr_dir)
     validate_provision_version_monotonicity(krr_dir)
     validate_provision_text_quality(krr_dir)
+    validate_harmonisation_symmetry(krr_dir)
     validate_subcorpus_combined_ontologies(krr_dir)
     validate_subcorpus_index_counts(krr_dir, allow_missing_index=allow_missing_index)
     # Regen-pending staleness guards (#366, #348, #384). These emit
