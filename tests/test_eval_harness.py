@@ -138,3 +138,27 @@ def test_gold_set_precision_recall(tmp_path):
     assert acc["false_negatives"] == 1
     assert acc["precision"] == 1.0  # 1 TP, 0 FP
     assert acc["recall"] == 0.5  # 1 TP, 1 FN
+
+
+def test_gold_set_confident_wrong_prediction_is_fp_and_fn(tmp_path):
+    # A confident-but-WRONG prediction must count as BOTH a false positive and a
+    # false negative — otherwise recall ignores it and reports None instead of 0.
+    # (A_Par_1 is tagged ["citizen"] in the synthetic corpus; gold says ["business"].)
+    krr = _build_corpus(tmp_path)
+    gold = tmp_path / "gold.json"
+    gold.write_text(
+        json.dumps(
+            {
+                "layer": "targetGroup",
+                "property": "estleg:targetGroup",
+                "items": [{"node": "estleg:A_Par_1", "gold": ["business"]}],  # predicted ["citizen"]
+            }
+        ),
+        encoding="utf-8",
+    )
+    acc = eval_harness.evaluate_gold_set(gold, krr)
+    assert acc["true_positives"] == 0
+    assert acc["false_positives"] == 1
+    assert acc["false_negatives"] == 1
+    assert acc["precision"] == 0.0
+    assert acc["recall"] == 0.0  # NOT None

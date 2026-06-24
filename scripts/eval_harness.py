@@ -405,8 +405,15 @@ def evaluate_gold_set(path: Path, krr_dir: Path = KRR_DIR) -> dict:
         if pred == it["gold"]:
             tp += 1
         elif pred is not None:
+            # A wrong NON-EMPTY prediction is both a false positive (the model
+            # predicted the wrong value) AND a false negative (it missed the
+            # correct one) — otherwise recall ignores confident-but-wrong
+            # predictions and reports None instead of 0.0.
             fp += 1
+            fn += 1
         else:
+            # No prediction at all: a false negative only (nothing was asserted,
+            # so there is no false positive).
             fn += 1
     precision = round(tp / (tp + fp), 4) if (tp + fp) else None
     recall = round(tp / (tp + fn), 4) if (tp + fn) else None
