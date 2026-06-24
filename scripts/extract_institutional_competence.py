@@ -321,6 +321,37 @@ def _strip_estonian_case(stem: str) -> str:
     return stem
 
 
+def canonicalize_institution_label(raw: str) -> str:
+    """De-inflect an institution display label to nominative form (#577).
+
+    Generic-pattern matches stored the raw inflected match as ``rdfs:label``
+    (e.g. ``Finantsinspektsioonilt``, ``teadusministrile``,
+    ``Politsei- ja Piirivalveametile``). In Estonian the case ending attaches to
+    the final head noun, so we de-inflect each space/hyphen component via
+    ``_strip_estonian_case`` (which is a no-op on a form that is already
+    nominative, so named institutions like ``Finantsinspektsioon`` are
+    preserved), then restore the component's leading capitalisation. The
+    connector ``ja``/``ning`` and already-nominative tokens are left as-is.
+    """
+    if not raw:
+        return raw
+
+    def _fix_component(token: str) -> str:
+        if not token or token.lower() in ("ja", "ning", "või", "ja/või"):
+            return token
+        stripped = _strip_estonian_case(token.lower())
+        if stripped == token.lower():
+            return token  # already nominative — keep original casing
+        return stripped[:1].upper() + stripped[1:] if token[:1].isupper() else stripped
+
+    # Split on spaces, then on hyphens within each space-token, preserving both
+    # separators (``Politsei-`` keeps its trailing hyphen).
+    out_tokens = []
+    for sp in raw.split(" "):
+        out_tokens.append("-".join(_fix_component(h) for h in sp.split("-")))
+    return " ".join(out_tokens)
+
+
 def _apply_alias(slug: str) -> str:
     """Issue #118: resolve a normalised slug through the historical-merge
     alias table, following the chain (capped) in case an alias points at
@@ -1348,7 +1379,9 @@ def write_institution_files(state: _PipelineState) -> set[str]:
         inst_node: dict = {
             "@id": inst_iri,
             "@type": ["owl:NamedIndividual", "estleg:Institution"],
-            "rdfs:label": info["name"],
+            # #577: de-inflect generic-pattern labels to nominative (a no-op on
+            # already-canonical named institutions).
+            "rdfs:label": canonicalize_institution_label(info["name"]),
             "estleg:institutionType": info["type"],
         }
 
