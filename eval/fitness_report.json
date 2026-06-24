@@ -40,16 +40,14 @@
     "estleg:competentAuthority": {
       "count": 7766,
       "pct": 19.9
-    },
-    "estleg:temporalStatus": {
-      "count": 0,
-      "pct": 0.0
     }
   },
   "point_in_time": {
-    "provisions_with_known_temporalStatus": 0,
-    "pct": 0.0,
-    "laws_with_version_sidecar": 737
+    "note": "Point-in-time is modelled at two layers. The act layer carries estleg:temporalStatus (#128: Act nodes ONLY — never provisions). The provision layer carries per-redaction validity windows in the version sidecars (provision_versions/). 'temporalStatus unknown on 100% of provisions' is a category error — provisions are not meant to carry it; the right provision signal is version-sidecar coverage.",
+    "laws_with_known_act_temporalStatus": 736,
+    "act_status_known_pct": 65.6,
+    "laws_with_version_sidecar": 737,
+    "version_sidecar_pct": 65.7
   },
   "crossref_edge_resolution": {
     "note": "Of citation EDGES that exist, the fraction resolving to a node defined in the indexed corpus (validates the #561/#630 closure work). This is edge precision, NOT extraction recall — citations present in text that never became an edge are not counted here.",
@@ -187,10 +185,9 @@
     ]
   },
   "retrievability_gap": {
-    "note": "The #617 finding, quantified: even where all verticals are present as EDGES, the answer is not retrievable from one law because the data is not inline. Sanctions resolve to an unmerged sidecar (0 inline definitions) and temporalStatus is unknown on ~all provisions, so 'what does this law require, who enforces it, what are the sanctions as of today' cannot be answered from the law node.",
+    "note": "The #617 finding, refined. The verticals are present as EDGES on many laws, and on the full load surface (combined + sidecars) most resolve: sanctions are merged into combined as overlay nodes (#561) and act-level temporalStatus is now derived where version data exists (#617). The residual gap is per-PEEP self-containment — a single *_peep.json file still does not carry its sanction definitions inline (they live in the sanctions/ sidecar). The consumable answer surface is combined, not the individual peep.",
     "laws_all_verticals_referenced": 26,
-    "laws_with_sanctions_defined_inline": 0,
-    "provisions_with_known_temporalStatus_pct": 0.0,
-    "fully_inline_retrievable_laws": 0
+    "sanction_definitions_inline_in_peeps": 0,
+    "act_temporalStatus_known_pct": 65.6
   }
 }

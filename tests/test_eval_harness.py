@@ -29,6 +29,8 @@ def _build_corpus(tmp: Path) -> Path:
             {
                 "@id": "estleg:A",
                 "@type": ["estleg:Act", "estleg:Law"],
+                # temporalStatus is act-level (#128), not on provisions.
+                "estleg:temporalStatus": "inForce",
                 "estleg:transposesDirective": [{"@id": "estleg:EU_X"}],
             },
             {
@@ -36,7 +38,6 @@ def _build_corpus(tmp: Path) -> Path:
                 "@type": ["estleg:LegalProvision_law_a"],
                 "estleg:targetGroup": ["citizen"],
                 "estleg:normativeType": "Obligation",
-                "estleg:temporalStatus": "inForce",
                 "estleg:competentAuthority": [{"@id": "estleg:Institution_kohus"}],
                 "estleg:interpretedBy": [{"@id": "estleg:RK_1"}],
                 "estleg:hasSanction": [{"@id": "estleg:Sanction_A_1"}],
@@ -89,9 +90,13 @@ def test_evaluate_computes_known_metrics(tmp_path):
     assert cooc["histogram"]["0"] == 1
     assert cooc["most_complete_laws"][0]["law"] == "law_a"
 
-    # 3 provisions; 1 carries targetGroup / temporalStatus.
+    # 2 provisions (Par_1, Par_2); 1 carries targetGroup.
     assert report["provision_coverage"]["estleg:targetGroup"]["count"] == 1
-    assert report["point_in_time"]["provisions_with_known_temporalStatus"] == 1
+    # Act-level temporalStatus known on law_a (its Act node is inForce), not law_b.
+    assert report["point_in_time"]["laws_with_known_act_temporalStatus"] == 1
+    assert report["point_in_time"]["act_status_known_pct"] == 50.0
+    # law_a has a (stub) version sidecar -> provision-layer point-in-time present.
+    assert report["point_in_time"]["laws_with_version_sidecar"] == 1
 
     # 2 cross-ref edges; 1 resolves in-corpus (A_Par_2), 1 does not (NOT_PRESENT).
     cr = report["crossref_edge_resolution"]
@@ -99,9 +104,10 @@ def test_evaluate_computes_known_metrics(tmp_path):
     assert cr["resolved_in_corpus"] == 1
     assert cr["pct"] == 50.0
 
-    # No Sanction node is DEFINED inline (only a hasSanction edge), so retrievability fails.
+    # No Sanction node is DEFINED inline (only a hasSanction edge): sanctions live
+    # in the sidecar / combined overlay, not inline in the peep.
     assert report["inline_sanctions"]["inline"] is False
-    assert report["retrievability_gap"]["fully_inline_retrievable_laws"] == 0
+    assert report["retrievability_gap"]["sanction_definitions_inline_in_peeps"] == 0
 
 
 def test_render_markdown_runs(tmp_path):

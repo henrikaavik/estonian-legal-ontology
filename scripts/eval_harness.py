@@ -95,7 +95,7 @@ def evaluate(krr_dir: Path = KRR_DIR) -> dict:
     crossref_targets: list[str] = []
     provision_total = 0
     provision_with = Counter()
-    temporal_known = 0
+    act_temporal_known = 0
     sanction_defs = 0
     sanction_edges = 0
     law_verticals: dict[str, set[str]] = {}
@@ -104,6 +104,7 @@ def evaluate(krr_dir: Path = KRR_DIR) -> dict:
     for law in laws:
         name = law["name"]
         present: set[str] = set()
+        act_known = False  # act-level temporalStatus is known (tracked apart from the verticals)
         if name in version_sidecars:
             present.add("pointInTime")
         for fname in law["files"]:
@@ -124,6 +125,14 @@ def evaluate(krr_dir: Path = KRR_DIR) -> dict:
 
                 if _is_sanction(node):
                     sanction_defs += 1
+                # Act-level temporalStatus is the point-in-time signal at the act
+                # layer (#128: temporalStatus lives ONLY on Act nodes — provisions
+                # carry point-in-time via the version sidecar, counted separately
+                # as the pointInTime vertical, NOT a provision temporalStatus).
+                if _is_act(node):
+                    status = node.get("estleg:temporalStatus")
+                    if isinstance(status, str) and status not in ("", "unknown"):
+                        act_known = True
                 # collect cross-ref targets + vertical signals
                 for predicate, target in estleg_common.iter_node_estleg_refs(node):
                     if predicate in CROSSREF_PREDICATES:
@@ -144,13 +153,11 @@ def evaluate(krr_dir: Path = KRR_DIR) -> dict:
                         "estleg:targetGroup",
                         "estleg:normativeType",
                         "estleg:competentAuthority",
-                        "estleg:temporalStatus",
                     ):
                         if _has(node, prop):
                             provision_with[prop] += 1
-                    status = node.get("estleg:temporalStatus")
-                    if isinstance(status, str) and status not in ("", "unknown"):
-                        temporal_known += 1
+        if act_known:
+            act_temporal_known += 1
         law_verticals[name] = present
 
     # cross-reference resolution against the loaded corpus
@@ -196,14 +203,24 @@ def evaluate(krr_dir: Path = KRR_DIR) -> dict:
                 "estleg:targetGroup",
                 "estleg:normativeType",
                 "estleg:competentAuthority",
-                "estleg:temporalStatus",
             )
         },
         "point_in_time": {
-            "provisions_with_known_temporalStatus": temporal_known,
-            "pct": pct(temporal_known, provision_total),
+            "note": (
+                "Point-in-time is modelled at two layers. The act layer carries "
+                "estleg:temporalStatus (#128: Act nodes ONLY — never provisions). "
+                "The provision layer carries per-redaction validity windows in the "
+                "version sidecars (provision_versions/). 'temporalStatus unknown on "
+                "100% of provisions' is a category error — provisions are not meant "
+                "to carry it; the right provision signal is version-sidecar coverage."
+            ),
+            "laws_with_known_act_temporalStatus": act_temporal_known,
+            "act_status_known_pct": pct(act_temporal_known, len(laws)),
             "laws_with_version_sidecar": len(
                 [n for n in law_verticals if n in version_sidecars]
+            ),
+            "version_sidecar_pct": pct(
+                len([n for n in law_verticals if n in version_sidecars]), len(laws)
             ),
         },
         "crossref_edge_resolution": {
@@ -233,19 +250,18 @@ def evaluate(krr_dir: Path = KRR_DIR) -> dict:
         },
         "retrievability_gap": {
             "note": (
-                "The #617 finding, quantified: even where all verticals are present "
-                "as EDGES, the answer is not retrievable from one law because the "
-                "data is not inline. Sanctions resolve to an unmerged sidecar (0 "
-                "inline definitions) and temporalStatus is unknown on ~all "
-                "provisions, so 'what does this law require, who enforces it, what "
-                "are the sanctions as of today' cannot be answered from the law node."
+                "The #617 finding, refined. The verticals are present as EDGES on "
+                "many laws, and on the full load surface (combined + sidecars) most "
+                "resolve: sanctions are merged into combined as overlay nodes (#561) "
+                "and act-level temporalStatus is now derived where version data "
+                "exists (#617). The residual gap is per-PEEP self-containment — a "
+                "single *_peep.json file still does not carry its sanction "
+                "definitions inline (they live in the sanctions/ sidecar). The "
+                "consumable answer surface is combined, not the individual peep."
             ),
             "laws_all_verticals_referenced": len(complete),
-            "laws_with_sanctions_defined_inline": 0 if sanction_defs == 0 else None,
-            "provisions_with_known_temporalStatus_pct": pct(temporal_known, provision_total),
-            "fully_inline_retrievable_laws": (
-                len(complete) if (sanction_defs > 0 and temporal_known > 0) else 0
-            ),
+            "sanction_definitions_inline_in_peeps": sanction_defs,
+            "act_temporalStatus_known_pct": pct(act_temporal_known, len(laws)),
         },
     }
 
@@ -287,19 +303,21 @@ def render_markdown(report: dict) -> str:
     lines += ["", "Most-complete laws (proof-of-purpose candidates to materialise inline):", ""]
     for m in cooc["most_complete_laws"]:
         lines.append(f"- `{m['law']}` — {m['score']}/{len(VERTICALS)}: {', '.join(m['verticals'])}")
+    pit = report["point_in_time"]
     lines += [
         "",
-        "### Retrievability gap (the #617 finding, quantified)",
+        "### Retrievability gap (the #617 finding, refined)",
         "",
-        f"All verticals are present as edges on {gap['laws_all_verticals_referenced']} laws, but the "
-        f"answer is **not inline-retrievable** on **{gap['fully_inline_retrievable_laws']}** of them: "
-        f"sanctions resolve to an unmerged sidecar ({report['inline_sanctions']['sanction_node_definitions_in_peeps']} "
-        f"inline definitions) and only {gap['provisions_with_known_temporalStatus_pct']}% of provisions "
-        "carry a known `temporalStatus`. So no single law yet answers "
-        "\"what does it require, who enforces it, what are the sanctions as of today\" from its own nodes.",
+        f"The verticals are present as edges on {gap['laws_all_verticals_referenced']} laws, and on the "
+        "full load surface (combined + version sidecars) most resolve — sanctions are merged into "
+        f"combined as overlay nodes (#561) and act-level `temporalStatus` is now known on "
+        f"**{pit['act_status_known_pct']}%** of laws (derived from version data, #617). The residual gap "
+        f"is per-PEEP self-containment: a single `*_peep.json` still carries "
+        f"{gap['sanction_definitions_inline_in_peeps']} inline sanction definitions (they live in the "
+        "`sanctions/` sidecar, merged only into combined). **The consumable answer surface is combined, "
+        "not the individual peep.**",
     ]
     cr = report["crossref_edge_resolution"]
-    pit = report["point_in_time"]
     inl = report["inline_sanctions"]
     lines += [
         "",
@@ -308,11 +326,13 @@ def render_markdown(report: dict) -> str:
         f"- **Cross-reference edge resolution:** {cr['resolved_in_corpus']:,} / {cr['edges']:,} "
         f"({cr['pct']}%) existing citation edges resolve to an in-corpus node (edge precision, "
         "not extraction recall).",
-        f"- **Point-in-time:** {pit['pct']}% of provisions carry a known `temporalStatus`; "
-        f"{pit['laws_with_version_sidecar']} laws have a version sidecar.",
-        f"- **Inline sanctions:** {inl['sanction_node_definitions_in_peeps']} sanction "
-        f"definitions inline in peeps vs {inl['hasSanction_edges']} `hasSanction` edges "
-        f"(inline: {inl['inline']}).",
+        "- **Point-in-time (two layers, #128):** act-level `temporalStatus` known on "
+        f"{pit['act_status_known_pct']}% of laws ({pit['laws_with_known_act_temporalStatus']}); "
+        f"provision-level validity via version sidecars on {pit['version_sidecar_pct']}% "
+        f"({pit['laws_with_version_sidecar']} laws). Provisions never carry `temporalStatus`.",
+        f"- **Inline sanctions (per peep):** {inl['sanction_node_definitions_in_peeps']} inline "
+        f"definitions vs {inl['hasSanction_edges']} `hasSanction` edges — sanctions are in combined "
+        "via overlay (#561), not inline in the peep.",
         "",
     ]
     return "\n".join(lines)
@@ -351,7 +371,7 @@ def main(argv: list[str] | None = None) -> int:
             f"{cooc['laws_with_all_verticals_referenced']}"
         )
         print(f"  cross-ref edge resolution: {report['crossref_edge_resolution']['pct']}%")
-        print(f"  point-in-time provisions: {report['point_in_time']['pct']}%")
+        print(f"  act temporalStatus known: {report['point_in_time']['act_status_known_pct']}%")
     return 0
 
 

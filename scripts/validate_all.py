@@ -1753,6 +1753,10 @@ def validate_combined_ontology(krr_dir: Path = KRR_DIR):
         source_nodes=source_nodes,
         allowlist_ids=allowlist_ids,
         extra_exempt_id_prefixes=tuple(extra_exempt_id_prefixes),
+        # #616: the dataset-level owl:Ontology version header is synthesised by
+        # the builder (estleg_common.combined_ontology_header), not drawn from any
+        # source peep, so it is a legitimate extra — like the graph-closure stubs.
+        expected_extra_ids={estleg_common.ONTOLOGY_IRI},
     )
     _check_combined_parity(target)
 
