@@ -533,6 +533,43 @@ _ACT_LEVEL_TYPES = frozenset(
 )
 
 
+# #578b/#631: multi-Part Võlaõigusseadus harmonisation must NOT default to
+# ``law_files[0]`` (string-sorted, so ``osa10`` = the torts Part wins for every
+# consumer/contract directive). For the affected directives, pin the
+# subject-correct Part peep (or ``None`` to drop the VÕS edge — other mapped acts
+# transpose it). Kept in lockstep with the data set by
+# ``scripts/retarget_vos_harmonisation_578b.py``. Consulted only for the VÕS rows.
+VOS_DIRECTIVE_PART_OVERRIDES: dict[str, str | None] = {
+    "31990L0314": "volaoigusseadus_osa8_peep.json",  # Package Travel -> services
+    "31993L0013": "volaoigusseadus_osa1_peep.json",  # Unfair Terms -> general
+    "31997L0007": "volaoigusseadus_osa1_peep.json",  # Distance Contracts -> general
+    "31999L0044": "volaoigusseadus_osa2_peep.json",  # Consumer Sales -> sales
+    "32002L0065": "volaoigusseadus_osa1_peep.json",  # Distance Fin. Marketing -> general
+    "32008L0048": "volaoigusseadus_osa1_peep.json",  # Consumer Credit -> general
+    "32008L0122": "volaoigusseadus_osa3_peep.json",  # Timeshare -> use contracts
+    "32009L0044": None,                              # Financial Collateral -> drop VÕS
+    "32009L0052": None,                              # Employer Sanctions -> drop VÕS
+}
+
+
+def pick_harmonisation_law_file(celex: str, law_files: list[str]) -> str | None:
+    """Choose which mapped law file anchors a directive's harmonisation link.
+
+    Defaults to the first file, EXCEPT for the #578b Võlaõigusseadus directives
+    whose correct Part is pinned in ``VOS_DIRECTIVE_PART_OVERRIDES`` — there the
+    override Part is used when the row is a VÕS row, or the VÕS anchor is dropped
+    (``None``) when VÕS is not the transposing vehicle. Non-VÕS rows are
+    unaffected.
+    """
+    if not law_files:
+        return None
+    is_vos = any("volaoigusseadus_osa" in f for f in law_files)
+    if is_vos and celex in VOS_DIRECTIVE_PART_OVERRIDES:
+        override = VOS_DIRECTIVE_PART_OVERRIDES[celex]
+        return override  # may be None -> caller drops the VÕS edge
+    return law_files[0]
+
+
 def get_law_harmonisation_target_iri(law_file: str) -> str | None:
     """Return the real act-level node IRI for a mapped law file.
 
@@ -759,15 +796,24 @@ def main():
             "source_act": m.get("matched_source_act", ""),
             "files": m.get("law_files", []),
         }
+        # #578b/#631: pick the subject-correct Part (not the string-sorted
+        # law_files[0], which lands every VÕS consumer directive on the torts
+        # Part). pick_* may return None to deliberately drop a spurious VÕS anchor.
+        anchor_file = pick_harmonisation_law_file(celex, law_entry["files"])
+        if law_entry["files"] and anchor_file is None:
+            # #578b: the VÕS anchor was deliberately dropped for this directive
+            # (VÕS is not its transposing vehicle) — skip the row entirely so it
+            # contributes no harmonisedWith/harmonises edge.
+            continue
         if law_entry["files"]:
-            resolved = get_law_harmonisation_target_iri(law_entry["files"][0])
+            resolved = get_law_harmonisation_target_iri(anchor_file)
             law_entry["iri"] = resolved
             if not resolved:
                 skipped_laws.append(
                     {
                         "name": law_entry["name"],
                         "source_act": law_entry["source_act"],
-                        "law_file": law_entry["files"][0],
+                        "law_file": anchor_file,
                         "directive_celex": celex,
                         "reason": "no act-level @id found (deprecated/unresolved)",
                     }
