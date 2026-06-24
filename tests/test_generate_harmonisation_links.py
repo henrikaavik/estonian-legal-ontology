@@ -508,3 +508,36 @@ def test_update_law_file_harmonisation_skips_deprecated(tmp_path):
     assert updated is False
     written = json.loads(path.read_text(encoding="utf-8"))["@graph"][0]
     assert "estleg:harmonisedWith" not in written
+
+
+class TestPickHarmonisationLawFile:
+    """#578b/#631: VÕS multi-Part directives must anchor on the subject-correct
+    Part, not the string-sorted law_files[0] (= the torts Part Osa10)."""
+
+    def test_vos_directive_uses_override_part(self):
+        # Consumer Sales (31999L0044) must land on the sales Part (Osa2), even
+        # though osa10 sorts first in the law_files list.
+        files = ["volaoigusseadus_osa10_peep.json", "volaoigusseadus_osa2_peep.json"]
+        assert harmonisation.pick_harmonisation_law_file("31999L0044", files) == (
+            "volaoigusseadus_osa2_peep.json"
+        )
+
+    def test_vos_directive_drop_returns_none(self):
+        # Employer Sanctions (32009L0052): VÕS is not the transposing vehicle.
+        files = ["volaoigusseadus_osa10_peep.json", "volaoigusseadus_osa1_peep.json"]
+        assert harmonisation.pick_harmonisation_law_file("32009L0052", files) is None
+
+    def test_non_vos_row_uses_first_file(self):
+        # A non-VÕS row (no volaoigusseadus_osa* file) keeps the default first-file
+        # behaviour even for an override CELEX.
+        assert harmonisation.pick_harmonisation_law_file(
+            "32008L0048", ["tarbijakaitseseadus_peep.json"]
+        ) == "tarbijakaitseseadus_peep.json"
+
+    def test_vos_non_override_directive_uses_first_file(self):
+        assert harmonisation.pick_harmonisation_law_file(
+            "39999L9999", ["volaoigusseadus_osa1_peep.json"]
+        ) == "volaoigusseadus_osa1_peep.json"
+
+    def test_empty_files_returns_none(self):
+        assert harmonisation.pick_harmonisation_law_file("31999L0044", []) is None
