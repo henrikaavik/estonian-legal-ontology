@@ -2576,3 +2576,39 @@ class TestIssue376AtomicSaveJson:
             assert not (tmp_path / "x.json").exists()
         finally:
             mod.save_json = original
+
+
+class TestCanonicalizeInstitutionLabel:
+    """#577: generic-pattern institution labels are de-inflected to nominative
+    for rdfs:label, while already-canonical named institutions are preserved."""
+
+    def test_inflected_single_word_labels_are_nominative(self):
+        import extract_institutional_competence as mod
+
+        assert mod.canonicalize_institution_label("Finantsinspektsioonilt") == "Finantsinspektsioon"
+        assert mod.canonicalize_institution_label("haldusametile") == "haldusamet"
+        assert mod.canonicalize_institution_label("teadusministrile") == "teadusminister"
+        assert mod.canonicalize_institution_label("välisministriga") == "välisminister"
+
+    def test_inflected_multiword_labels_deinflect_head(self):
+        import extract_institutional_competence as mod
+
+        assert (
+            mod.canonicalize_institution_label("Politsei- ja Piirivalveametile")
+            == "Politsei- ja Piirivalveamet"
+        )
+        assert (
+            mod.canonicalize_institution_label("Haridus- ja Teadusministeeriumi")
+            == "Haridus- ja Teadusministeerium"
+        )
+
+    def test_already_canonical_labels_unchanged(self):
+        import extract_institutional_competence as mod
+
+        for canonical in ("Riigikohus", "Keeleinspektsioon", "Maksu- ja Tolliamet"):
+            assert mod.canonicalize_institution_label(canonical) == canonical
+
+    def test_empty_label_is_safe(self):
+        import extract_institutional_competence as mod
+
+        assert mod.canonicalize_institution_label("") == ""

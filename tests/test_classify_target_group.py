@@ -199,3 +199,48 @@ def test_classify_files_writes_target_groups_and_report(tmp_path):
     assert report["top_unmapped_duty_holders"] == [
         {"value": "Tundmatu roll", "count": 1}
     ]
+
+
+def test_seltsing_is_not_ngo():
+    """#576: ``seltsing`` (a civil-law partnership) must not match the NGO
+    ``selts*`` cue; ``selts``/``seltsi`` (society) still does."""
+    from classify_target_group import classify_text
+
+    assert "ngo" not in classify_text("Seltsingu liikmed vastutavad solidaarselt.")
+    assert "ngo" in classify_text("Selts korraldab heategevuslikke üritusi.")
+    assert "ngo" in classify_text("Seltsi põhikiri kinnitatakse üldkoosolekul.")
+
+
+def test_bare_juhatus_is_not_business():
+    """#576: a bare ``juhatus`` (board) is not a business cue — MTÜs and public
+    bodies have one too; only a company's board signals business."""
+    from classify_target_group import classify_text
+
+    assert "business" not in classify_text("Mittetulundusühingu juhatus otsustas.")
+    assert "business" not in classify_text("Sihtasutuse juhatuse liige esitab aruande.")
+    assert "business" in classify_text("Osaühingu juhatus kinnitas majandusaasta aruande.")
+    assert "business" in classify_text("Aktsiaseltsi juhatus kutsub kokku üldkoosoleku.")
+
+
+def test_body_union_capped_when_no_duty_holder():
+    """#576: a body-text fallback union with ≥3 incidental addressees is capped
+    to the two highest-priority groups; the dutyHolder path is never capped."""
+    from classify_target_group import classify_node
+
+    # Mentions cues for citizen, business, ngo, official, public_body.
+    node = {
+        "estleg:summary": (
+            "Töötaja ja tööandja ja mittetulundusühing ja ametnik ja amet "
+            "ja kohus tegutsevad koos."
+        ),
+    }
+    groups, used_duty = classify_node(node)
+    assert used_duty is False
+    assert len(groups) == 2
+    assert groups == ["citizen", "business"]  # top-2 by TARGET_GROUP_ORDER
+
+    # With a dutyHolder that classifies, the (authoritative) result is NOT capped.
+    node2 = {"estleg:dutyHolder": "töötaja ja tööandja ja mittetulundusühing"}
+    groups2, used_duty2 = classify_node(node2)
+    assert used_duty2 is True
+    assert len(groups2) >= 3  # citizen + business + ngo all retained

@@ -71,7 +71,13 @@ TARGET_GROUP_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
             r"\braamatupidamiskohustuslane\w*\b",
             r"\bhoonestaja\w*\b",
             r"\binvesteerimisühing\w*\b",
-            r"\bjuhatus\w*\b",
+            # #576: a bare ``juhatus`` (board) is NOT a business cue on its own —
+            # MTÜs, sihtasutused and public bodies all have one (130 false
+            # business tags). Require a commercial-entity context (genitive
+            # ``<entity>+i/u/e juhatus``) so only a *company's* board signals
+            # business.
+            r"\b(?:aktsiaselts|osaühing|äriühing|täisühing|usaldusühing"
+            r"|tulundusühistu|ettevõt\w+|äri\w*)\w*\s+juhatus\w*\b",
             r"\breeder\w*\b",
             r"\bkaevetöö\s+tegija\w*\b",
             # NOTE: bare ``kasutaja`` ("user") and ``võlgnik``/``võlausaldaja``
@@ -191,7 +197,11 @@ TARGET_GROUP_PATTERNS: dict[str, tuple[re.Pattern[str], ...]] = {
             r"\bsihtasutus\w*\b",
             r"\bfond\w*\b",
             r"\bühing\w*\b",
-            r"\bselts\w*\b",
+            # #576: ``selts*`` must NOT swallow ``seltsing`` — a civil-law
+            # partnership (VÕS §580 jj), not an NGO. Negative lookahead excludes
+            # the ``seltsing`` inflections while keeping ``selts``/``seltsi``
+            # (society/association) and ``seltsid``.
+            r"\bselts(?!ing)\w*\b",
         )
     ),
 }
@@ -260,6 +270,16 @@ def classify_node(node: dict) -> tuple[list[str], bool]:
         body_text = " ".join(part for part in (label, summary, legal_text) if part)
         if body_text:
             groups.update(classify_text(body_text))
+            # #576: a body-text union has no addressee anchoring, so incidental
+            # mentions pile up (79 provisions carried ALL 5 groups, 874 carried
+            # ≥4). When the fallback fires and yields an implausibly broad set,
+            # keep only the two highest-priority addressees rather than asserting
+            # the provision targets everyone. The dutyHolder path (the
+            # authoritative subject) is never capped.
+            if len(groups) >= 3:
+                groups = set(
+                    [g for g in TARGET_GROUP_ORDER if g in groups][:2]
+                )
 
     return [group for group in TARGET_GROUP_ORDER if group in groups], bool(duty_text)
 
