@@ -42,12 +42,12 @@ Most-complete laws (proof-of-purpose candidates to materialise inline):
 - `kaugkutteseadus` — 5/5: competentAuthority, euDirective, interpretedBy, pointInTime, sanctions
 - `kindlustustegevuse_seadus` — 5/5: competentAuthority, euDirective, interpretedBy, pointInTime, sanctions
 
-### Retrievability gap (the #617 finding, quantified)
+### Retrievability gap (the #617 finding, refined)
 
-All verticals are present as edges on 26 laws, but the answer is **not inline-retrievable** on **0** of them: sanctions resolve to an unmerged sidecar (0 inline definitions) and only 0.0% of provisions carry a known `temporalStatus`. So no single law yet answers "what does it require, who enforces it, what are the sanctions as of today" from its own nodes.
+The verticals are present as edges on 26 laws, and on the full load surface (combined + version sidecars) most resolve — sanctions are merged into combined as overlay nodes (#561) and act-level `temporalStatus` is now known on **65.6%** of laws (derived from version data, #617). The residual gap is per-PEEP self-containment: a single `*_peep.json` still carries 0 inline sanction definitions (they live in the `sanctions/` sidecar, merged only into combined). **The consumable answer surface is combined, not the individual peep.**
 
 ## Other fitness metrics
 
 - **Cross-reference edge resolution:** 28,207 / 28,207 (100.0%) existing citation edges resolve to an in-corpus node (edge precision, not extraction recall).
-- **Point-in-time:** 0.0% of provisions carry a known `temporalStatus`; 737 laws have a version sidecar.
-- **Inline sanctions:** 0 sanction definitions inline in peeps vs 2455 `hasSanction` edges (inline: False).
+- **Point-in-time (two layers, #128):** act-level `temporalStatus` known on 65.6% of laws (736); provision-level validity via version sidecars on 65.7% (737 laws). Provisions never carry `temporalStatus`.
+- **Inline sanctions (per peep):** 0 inline definitions vs 2455 `hasSanction` edges — sanctions are in combined via overlay (#561), not inline in the peep.
