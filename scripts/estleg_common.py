@@ -662,25 +662,24 @@ def jsonld_text(
     if isinstance(value, str):
         return value
     if isinstance(value, dict):
+        # Issue #600: the scalar-dict branch previously returned ``default``
+        # (empty) when ``prefer_language`` did not match the dict's
+        # ``@language`` — so ``jsonld_text(et_title, prefer_language="en")``
+        # silently yielded "" with no error, contradicting the docstring's
+        # promise of a fallback. Always return the available ``@value``;
+        # language *preference* (not exclusion) is applied at the list level
+        # via ``_jsonld_language_matches`` so a list with both languages can
+        # still prefer the requested one while a lone off-language scalar
+        # still surfaces its text.
         text = value.get("@value")
-        language = value.get("@language")
-        if (
-            prefer_language
-            and isinstance(language, str)
-            and language != prefer_language
-        ):
-            return default
         return text if isinstance(text, str) else default
     if isinstance(value, list):
         if prefer_language:
             preferred = [
                 text
                 for item in value
-                if (
-                    text := jsonld_text(
-                        item, default="", prefer_language=prefer_language
-                    )
-                )
+                if _jsonld_language_matches(item, prefer_language)
+                and (text := jsonld_text(item))
             ]
             if preferred:
                 return " ".join(preferred)
@@ -689,14 +688,40 @@ def jsonld_text(
     return default
 
 
+def _jsonld_language_matches(item: object, prefer_language: str) -> bool:
+    """Return True when ``item`` is acceptable for ``prefer_language``.
+
+    A value-object with an explicit, differing ``@language`` is rejected so
+    a mixed-language list can prefer the requested language; everything else
+    (plain strings, language-less value objects, matching objects, nested
+    lists) is accepted so language *preference* never hides a value that has
+    no competing same-language alternative (#600).
+    """
+    if isinstance(item, dict):
+        language = item.get("@language")
+        if isinstance(language, str) and language != prefer_language:
+            return False
+    return True
+
+
 def jsonld_texts(value: object, *, prefer_language: str | None = None) -> list[str]:
-    """Return all plain strings from common JSON-LD text shapes."""
+    """Return all plain strings from common JSON-LD text shapes.
+
+    When ``prefer_language`` is set, value objects whose explicit
+    ``@language`` differs are dropped (untagged / matching values are kept).
+    #600: this filtering is applied here via ``_jsonld_language_matches``
+    rather than relying on ``jsonld_text`` returning "" on a mismatch — the
+    scalar-dict branch of ``jsonld_text`` no longer silently empties an
+    off-language value (that masked et-only titles under ``prefer_language``).
+    """
     if isinstance(value, list):
         out: list[str] = []
         for item in value:
             out.extend(jsonld_texts(item, prefer_language=prefer_language))
         return out
-    text = jsonld_text(value, prefer_language=prefer_language)
+    if prefer_language and not _jsonld_language_matches(value, prefer_language):
+        return []
+    text = jsonld_text(value)
     return [text] if text else []
 
 
@@ -825,11 +850,17 @@ def _safe_load(path: Path, counters: _RunCounters) -> dict | None:
         with open(path, encoding="utf-8") as fh:
             return json.load(fh)
     except (ValueError, OSError) as exc:
+        # Issue #600: split corruption (ValueError/JSONDecodeError) from
+        # transient I/O failure (OSError: PermissionError, EIO, ...). An
+        # OSError on a *valid* file is not corruption — recording it as
+        # ``json_decode_error`` over-counts corruption and masks a
+        # recoverable I/O fault. Bucket the two reasons separately.
+        reason = "io_error" if isinstance(exc, OSError) else "json_decode_error"
         if path not in counters.seen_error_paths:
             counters.seen_error_paths.add(path)
             counters.bump_skip(
-                "json_decode_error",
-                f"json_decode_error | {path.name} | "
+                reason,
+                f"{reason} | {path.name} | "
                 f"{type(exc).__name__}: {str(exc)[:80]}",
             )
         return None
@@ -843,6 +874,30 @@ def _safe_load(path: Path, counters: _RunCounters) -> dict | None:
 # Also accepts non-breaking hyphen (\u2011).
 # ---------------------------------------------------------------------------
 PAR_SUFFIX = r"§§?(?:[\-\u2011](?:de(?:s)?|d|s|st|le|i|ga))?"
+
+
+# ---------------------------------------------------------------------------
+# Estonian month names (genitive) -- single source of truth (#602)
+#
+# The genitive month form "<day>. <month-genitive> <year>" appears in three
+# extractors (preamble citation in extract_cross_references, state-reg date
+# parsing there, and KOV act-date matching in
+# extract_court_provision_links). The 12-entry table was copy-pasted into
+# each, so a new surface form had to be patched in three places. Hoisted
+# here as ``ESTONIAN_MONTHS_GENITIVE`` (ordered genitive -> 2-digit number)
+# with ``ESTONIAN_MONTH_ALT`` a ready-made regex alternation built FROM it
+# so the dict and the pattern can never drift apart.
+# ---------------------------------------------------------------------------
+ESTONIAN_MONTHS_GENITIVE: dict[str, str] = {
+    "jaanuari": "01", "veebruari": "02", "märtsi": "03", "aprilli": "04",
+    "mai": "05", "juuni": "06", "juuli": "07", "augusti": "08",
+    "septembri": "09", "oktoobri": "10", "novembri": "11", "detsembri": "12",
+}
+
+# Regex alternation of the genitive month forms (no capturing group, no
+# anchors) for callers that match a date in text. Built from the mapping so
+# adding a form in one place updates every consumer.
+ESTONIAN_MONTH_ALT: str = "|".join(ESTONIAN_MONTHS_GENITIVE)
 
 
 # ---------------------------------------------------------------------------
@@ -938,17 +993,24 @@ def iter_krr_jsonld_files(krr_dir: Path) -> Iterator[Path]:
     """Yield every corpus JSON/JSON-LD file under ``krr_dir``.
 
     This is the ONE shared enumerator that every file-counter must go
-    through (the anti-drift mechanism for #240). It recursively globs
-    ``**/*.json`` and ``**/*.jsonld`` and yields only files that are not
-    operational state files (per ``is_operational_state_file``). Results
-    are de-duplicated and sorted so callers get a stable order.
+    through (the anti-drift mechanism for #240). It recursively walks the
+    tree and yields every file whose suffix is (case-insensitively)
+    ``.json`` or ``.jsonld`` and that is not an operational state file (per
+    ``is_operational_state_file``). The suffix check is case-insensitive
+    (#600) so an uppercase-suffix file (e.g. a corrupt ``.JSON``) is still
+    counted and validated rather than silently skipped — a lowercase-only
+    glob would exclude it from every validator and let it pass CI
+    invisibly. Results are de-duplicated and sorted so callers get a stable
+    order.
     """
+    _CORPUS_SUFFIXES = {".json", ".jsonld"}
     seen: set[Path] = set()
-    for pattern in ("**/*.json", "**/*.jsonld"):
-        for path in krr_dir.glob(pattern):
-            if path in seen:
-                continue
-            seen.add(path)
+    for path in krr_dir.rglob("*"):
+        if path.suffix.lower() not in _CORPUS_SUFFIXES:
+            continue
+        if not path.is_file():
+            continue
+        seen.add(path)
     for path in sorted(seen):
         if not is_operational_state_file(path):
             yield path
@@ -1106,12 +1168,16 @@ def pair_peep_with_xml(
         with open(peep_path, "r", encoding="utf-8") as fh:
             doc = json.load(fh)
     except (ValueError, OSError) as exc:
+        # Issue #600: distinguish corruption from a transient I/O fault on
+        # an otherwise-valid peep (see ``_safe_load``). An OSError must not
+        # be filed as ``json_decode_error``.
+        reason = "io_error" if isinstance(exc, OSError) else "json_decode_error"
         if counters is not None:
             if peep_path not in counters.seen_error_paths:
                 counters.seen_error_paths.add(peep_path)
                 counters.bump_skip(
-                    "json_decode_error",
-                    f"json_decode_error | {peep_path.name} | "
+                    reason,
+                    f"{reason} | {peep_path.name} | "
                     f"{type(exc).__name__}: {str(exc)[:80]}",
                 )
         else:
@@ -1165,6 +1231,13 @@ _TRANSLIT_TABLE = str.maketrans(_ESTONIAN_TRANSLITERATION)
 def sanitize_id(value: str) -> str:
     """Create a safe ID component from a string."""
     s = value.replace(" ", "_")
+    # Issue #354/#600: canonicalise a §-range separator BEFORE the non-ASCII
+    # strip. A ``paragrahvNr`` like ``1–94`` (en-dash) would otherwise lose
+    # the dash and concatenate to ``194`` — indistinguishable from a real
+    # §194, minting one IRI for two distinct provisions. Map the dash to an
+    # explicit ``_to_`` so the range stays legible (``1_to_94``). Kept in
+    # sync with ``generate_all_laws.sanitize_id``.
+    s = re.sub(r"\s*[‐-―−]\s*", "_to_", s)
     # Transliterate Estonian diacritics before stripping non-ASCII
     s = s.translate(_TRANSLIT_TABLE)
     s = re.sub(r"[^0-9A-Za-z_]", "", s)

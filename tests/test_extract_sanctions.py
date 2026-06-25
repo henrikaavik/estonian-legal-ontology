@@ -2324,3 +2324,86 @@ class TestAtomicSaveJson:
         monkeypatch.setattr(mod, "save_json", lambda fp, doc: calls.append(fp))
         mod.save_json(Path("/nonexistent/x.json"), {"a": 1})
         assert calls == [Path("/nonexistent/x.json")]
+
+
+class TestIssue602AmountRobustness:
+    """#602 — euro-amount captures must never store a value containing a
+    newline/tab (a window that bridged two numbers), and a comma-decimal
+    sunniraha capture must not be inflated 100x by stripping the comma."""
+
+    def test_clean_euro_amount_rejects_newline_span(self):
+        from extract_sanctions import _clean_euro_amount
+
+        assert _clean_euro_amount("500\n2024") is None
+        assert _clean_euro_amount("500\t2024") is None
+
+    def test_clean_euro_amount_strips_space_and_nbsp(self):
+        from extract_sanctions import _clean_euro_amount
+
+        assert _clean_euro_amount("16 000") == "16000"
+        assert _clean_euro_amount("16 000") == "16000"
+        assert _clean_euro_amount("32") == "32"
+
+    def test_kuni_fine_does_not_store_newline_spanning_amount(self):
+        from extract_sanctions import extract_fine_euros
+
+        # The window bridges a line break; the result must not be a junk
+        # "500\n2024 EUR" record. (No valid same-line amount → no fine.)
+        out = extract_fine_euros("rahatrahv kuni 500\n2024 eurot")
+        assert all("\n" not in r.get("max_penalty", "") for r in out)
+        assert all("\t" not in r.get("max_penalty", "") for r in out)
+
+    def test_bare_fine_does_not_store_newline_spanning_amount(self):
+        from extract_sanctions import extract_fine_euros
+
+        out = extract_fine_euros("rahatrahv 500\n2024 eurot")
+        assert all("\n" not in r.get("max_penalty", "") for r in out)
+
+    def test_valid_fine_amounts_still_extracted(self):
+        from extract_sanctions import extract_fine_euros
+
+        assert extract_fine_euros("rahatrahvi kuni 1200 eurot") == [
+            {"sanction_type": "fine", "max_penalty": "1200 EUR"}
+        ]
+        assert extract_fine_euros("rahatrahv kuni 16 000 eurot") == [
+            {"sanction_type": "fine", "max_penalty": "16000 EUR"}
+        ]
+
+    def test_dash_range_still_extracted(self):
+        from extract_sanctions import extract_fine_euros
+
+        out = extract_fine_euros("rahatrahv 64–16 000 eurot")
+        assert {"sanction_type": "fine", "max_penalty": "16000 EUR",
+                "min_penalty": "64 EUR"} in out
+
+    def test_sunniraha_comma_decimal_is_rejected_not_inflated(self):
+        from extract_sanctions import extract_coercive
+
+        out = extract_coercive("sunniraha kuni 1 000,50 eurot")
+        # The pre-fix bug stored "100050 EUR" (comma stripped → 100x). The
+        # amount must NOT appear; only a bare coercive mention is acceptable.
+        amounts = [r.get("max_penalty") for r in out if r.get("max_penalty")]
+        assert "100050 EUR" not in amounts
+        assert amounts == []
+
+    def test_sunniraha_integral_comma_decimal_kept_as_integer(self):
+        from extract_sanctions import extract_coercive
+
+        out = extract_coercive("sunniraha kuni 1 000,00 eurot")
+        assert {"sanction_type": "coercive_payment",
+                "max_penalty": "1000 EUR"} in out
+
+    def test_sunniraha_plain_thousands_still_extracted(self):
+        from extract_sanctions import extract_coercive
+
+        out = extract_coercive("sunniraha kuni 20 000 000 eurot")
+        assert {"sanction_type": "coercive_payment",
+                "max_penalty": "20000000 EUR"} in out
+
+    def test_clean_decimal_helper(self):
+        from extract_sanctions import _clean_decimal_euro_amount
+
+        assert _clean_decimal_euro_amount("1000,50") is None
+        assert _clean_decimal_euro_amount("1000,00") == "1000"
+        assert _clean_decimal_euro_amount("1 000") == "1000"
+        assert _clean_decimal_euro_amount("500\n2024") is None

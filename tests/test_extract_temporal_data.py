@@ -1198,3 +1198,29 @@ class TestSinglePassClearAndEnrich:
             f"single-pass clear+enrich must save at most once per file; "
             f"got {peep_writes} saves for {peep}"
         )
+
+
+class TestIssue602NamedYearBand:
+    """#602 — the year plausibility band is named (was a magic 1900/2100
+    repeated in both date-parse paths); boundary behaviour is unchanged."""
+
+    def test_band_constants_present(self):
+        import extract_temporal_data as td
+
+        assert td.MIN_PLAUSIBLE_YEAR == 1900
+        assert td.MAX_PLAUSIBLE_YEAR == 2100
+
+    def test_implausible_years_rejected_both_paths(self):
+        from extract_temporal_data import parse_date
+
+        # ISO path (fromisoformat) and strptime fallback both drop out-of-band.
+        assert parse_date("2918-01-01") is None      # digit transposition
+        assert parse_date("1001-01-01") is None      # EUR-Lex null sentinel
+        assert parse_date("31.12.1899") is None      # below band (strptime)
+
+    def test_plausible_years_kept(self):
+        from extract_temporal_data import parse_date
+
+        assert parse_date("2019-06-18") == "2019-06-18"
+        assert parse_date("01.01.2100") == "2100-01-01"
+        assert parse_date("01.01.1900") == "1900-01-01"

@@ -239,6 +239,50 @@ def _parse_number(s: str) -> int | None:
     return _estonian_word_to_int(s)
 
 
+def _clean_euro_amount(raw: str) -> str | None:
+    """Normalize a captured euro amount to a bare integer string, or None.
+
+    Issue #602: the euro-amount captures previously did ``.replace(" ", "")``
+    only, which does NOT strip ``\\n``/``\\t``. When a bounded sentence-window
+    regex bridged a line break (e.g. ``rahatrahv 500\\n2024 eurot``), the raw
+    capture (``"500\\n2024"``) was stored verbatim as ``"500\\n2024 EUR"`` — a
+    fabricated, un-parseable amount. This helper strips ordinary thousands
+    separators (ASCII space + non-breaking space) and then accepts the result
+    ONLY if every remaining character is a digit; anything containing a
+    newline/tab/stray glyph (i.e. a window that spanned two numbers) is
+    rejected so the caller can skip it rather than emit junk.
+    """
+    cleaned = raw.replace(" ", "").replace(" ", "")
+    return cleaned if cleaned.isdigit() else None
+
+
+def _clean_decimal_euro_amount(raw: str) -> str | None:
+    """Like ``_clean_euro_amount`` but tolerant of an Estonian comma-decimal.
+
+    Issue #602: the ``sunniraha`` capture class admits a comma, so a
+    comma-decimal amount such as ``"1 000,50"`` previously had its comma
+    *stripped* (``re.sub(r"[\\s,]","")`` -> ``"100050"``), which passed
+    ``.isdigit()`` and was stored as ``"100050 EUR"`` -- a 100x inflation.
+    Estonian statutory coercive-payment ceilings are whole euros, so a comma
+    must be read as a decimal separator, not a thousands separator. We parse
+    via ``Decimal`` (comma -> dot) and accept the value ONLY if it is integral
+    (no genuine cents component, e.g. ``"1000,00"`` -> ``"1000"``); a real
+    fractional amount (``"1000,50"``) signals a malformed/bridged capture and
+    is rejected.
+    """
+    cleaned = raw.replace(" ", "").replace("\xa0", "")
+    if cleaned.isdigit():
+        return cleaned
+    if "," in cleaned:
+        try:
+            value = Decimal(cleaned.replace(",", "."))
+        except InvalidOperation:
+            return None
+        if value == value.to_integral_value():
+            return str(int(value))
+    return None
+
+
 def _ordered_year_range(lo_raw: int, hi_raw: int) -> tuple[str, str]:
     """Issue #273: return ``(min_penalty, max_penalty)`` year strings with
     ``min <= max`` guaranteed.
@@ -498,13 +542,15 @@ def extract_fine_euros(text: str) -> list[dict]:
         results.append(rec)
 
     # Dash range FIRST (most specific): "rahatrahv 64–16 000 eurot".
-    # Non-greedy lower bound so it doesn't swallow the dash.
+    # Non-greedy lower bound so it doesn't swallow the dash. #602: amount
+    # classes are digit + space + non-breaking space only (not ``\s``) so a
+    # bound can't span a line break; the int() wrap remains the final guard.
     for m in re.finditer(
-        r"rahatrahv\w{0,3}\s+(\d[\d\s]*?)\s*[–—\-]\s*(\d[\d\s]*)\s*eurot",
+        r"rahatrahv\w{0,3}\s+(\d[\d  ]*?)\s*[–—\-]\s*(\d[\d  ]*)\s*eurot",
         text, re.IGNORECASE,
     ):
-        lo = m.group(1).replace(" ", "")
-        hi = m.group(2).replace(" ", "")
+        lo = m.group(1).replace(" ", "").replace(" ", "")
+        hi = m.group(2).replace(" ", "").replace(" ", "")
         try:
             lo_i, hi_i = sorted((int(lo), int(hi)))
         except ValueError:
@@ -513,17 +559,24 @@ def extract_fine_euros(text: str) -> list[dict]:
 
     # "rahatrahv(i/iga/...) [intervening words] kuni N eurot" — genitive
     # and "suuruses kuni" phrasings, bounded to the same sentence.
+    # #602: the amount class is digit + space + non-breaking space only (not
+    # ``\s``) so a line break can't be captured into the amount, and the
+    # capture is re-validated via ``_clean_euro_amount``.
     for m in re.finditer(
-        r"rahatrahv\w{0,3}[^.]{0,40}?\bkuni\s+(\d[\d\s]*)\s*eurot",
+        r"rahatrahv\w{0,3}[^.]{0,40}?\bkuni\s+(\d[\d  ]*)\s*eurot",
         text, re.IGNORECASE,
     ):
-        _add(m.group(1).replace(" ", ""))
+        amount = _clean_euro_amount(m.group(1))
+        if amount is not None:
+            _add(amount)
 
     # Bare "rahatrahv(iga) N eurot" (no kuni, no dash).
     for m in re.finditer(
-        r"rahatrahv\w{0,3}\s+(\d[\d\s]*)\s*eurot", text, re.IGNORECASE
+        r"rahatrahv\w{0,3}\s+(\d[\d  ]*)\s*eurot", text, re.IGNORECASE
     ):
-        _add(m.group(1).replace(" ", ""))
+        amount = _clean_euro_amount(m.group(1))
+        if amount is not None:
+            _add(amount)
 
     return results
 
@@ -539,9 +592,13 @@ def extract_mojutustrahv(text: str) -> list[dict]:
     """
     results: list[dict] = []
     for m in re.finditer(
-        r"mõjutustrahv\w*[^.]{0,40}?(\d[\d\s]*)\s*eurot", text, re.IGNORECASE
+        r"mõjutustrahv\w*[^.]{0,40}?(\d[\d  ]*)\s*eurot", text, re.IGNORECASE
     ):
-        amount = m.group(1).replace(" ", "")
+        # #602: validate the capture (digit/space/nbsp only + isdigit guard)
+        # so a window that bridged a line break is skipped, not stored.
+        amount = _clean_euro_amount(m.group(1))
+        if amount is None:
+            continue
         if not any(r.get("max_penalty") == f"{amount} EUR" for r in results):
             results.append({
                 "sanction_type": "fine",
@@ -569,8 +626,8 @@ def extract_coercive(text: str) -> list[dict]:
     for m in re.finditer(
         r"sunniraha[^.]{0,150}kuni\s+([\d\s,]+)\s*eurot", text, re.IGNORECASE
     ):
-        amount = re.sub(r"[\s,]", "", m.group(1))
-        if not amount.isdigit():
+        amount = _clean_decimal_euro_amount(m.group(1))
+        if amount is None:
             continue
         if not any(r.get("max_penalty") == f"{amount} EUR" for r in results):
             results.append({
@@ -741,12 +798,15 @@ def _try_extract_penalty_from_summary(text: str, sanction_type: str) -> str | No
         # Statutory max per KarS § 44: 500 daily rates
         return "500 daily rates"
     elif sanction_type == "fine":
-        m = re.search(r"(\d[\d\s]*)\s*(?:eurot|trahviühiku)", text, re.IGNORECASE)
+        m = re.search(r"(\d[\d  ]*)\s*(?:eurot|trahviühiku)", text, re.IGNORECASE)
         if m:
-            val = m.group(1).replace(" ", "")
-            if "eurot" in text.lower():
-                return f"{val} EUR"
-            return f"{val} fine units"
+            # #602: validate via _clean_euro_amount so a newline-spanning
+            # capture is rejected rather than returned as a junk amount.
+            val = _clean_euro_amount(m.group(1))
+            if val is not None:
+                if "eurot" in text.lower():
+                    return f"{val} EUR"
+                return f"{val} fine units"
     elif sanction_type == "arrest":
         # Try explicit day count first
         m = re.search(r"arest\w*\s+(?:kuni\s+)?(\d+)\s*(?:päeva|ööpäeva)", text, re.IGNORECASE)
@@ -755,9 +815,12 @@ def _try_extract_penalty_from_summary(text: str, sanction_type: str) -> str | No
         # Statutory max per KarS § 48: 30 days
         return "30 days"
     elif sanction_type == "coercive_payment":
-        m = re.search(r"sunniraha\w*\s+(?:kuni\s+)?(\d[\d\s]*)\s*eurot", text, re.IGNORECASE)
+        m = re.search(r"sunniraha\w*\s+(?:kuni\s+)?(\d[\d  ]*)\s*eurot", text, re.IGNORECASE)
         if m:
-            return m.group(1).replace(" ", "") + " EUR"
+            # #602: validate via _clean_euro_amount (reject line-spanning).
+            val = _clean_euro_amount(m.group(1))
+            if val is not None:
+                return val + " EUR"
     return None
 
 

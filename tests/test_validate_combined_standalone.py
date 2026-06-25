@@ -1,4 +1,4 @@
-"""Tests for the combined-only SHACL regression gate (#489).
+"""Tests for the combined-only SHACL regression gate (#489, #568).
 
 The gate validates ``krr_outputs/combined_ontology.jsonld`` ALONE (no sibling
 sub-corpora) and must:
@@ -7,7 +7,10 @@ sub-corpora) and must:
     (the pre-#488 state of the aggregate artifact), and
   * PASS once those edges are present (the post-#488 builder output), and
   * SKIP enum-like ``graphClosureExempt`` controlled-vocabulary predicates so a
-    combined-only load is not asked to inline controlled vocabularies.
+    combined-only load is not asked to inline controlled vocabularies, and
+  * FAIL when a bulk class (e.g. ``estleg:ProvisionVersion``) is present below
+    its minimum instance-count sanity floor, which SHACL min-count alone cannot
+    catch — a vanished class yields zero focus nodes and would pass clean (#568).
 """
 
 from __future__ import annotations
@@ -90,7 +93,8 @@ def _complete_municipal_stub() -> dict:
 def test_gate_fails_on_incomplete_shaped_stub(tmp_path):
     """A combined carrying a thin MunicipalRegulation stub fails the gate."""
     combined = write_combined(tmp_path, [_incomplete_municipal_stub()])
-    summary = gate.evaluate(combined, SHAPES)
+    # class_floors={} isolates the shaped-stub violation from the #568 floors.
+    summary = gate.evaluate(combined, SHAPES, class_floors={})
 
     assert summary["status"] == "violations", summary
     paths = {row["path"] for row in summary["groups"]}
@@ -114,8 +118,11 @@ def test_gate_passes_on_complete_shaped_stub(tmp_path):
     combined = write_combined(
         tmp_path, [_complete_municipal_stub(), ISSUER, MUNICIPALITY]
     )
-    summary = gate.evaluate(combined, SHAPES)
+    # class_floors={} disables the #568 bulk-class floor check: this tiny
+    # synthetic fixture intentionally carries no ProvisionVersion/AmendmentEvent.
+    summary = gate.evaluate(combined, SHAPES, class_floors={})
     assert summary["status"] == "ok", summary["groups"]
+    assert summary["class_floor_failures"] == [], summary
 
 
 def test_gate_skips_graph_closure_exempt_enum_predicates(tmp_path):
@@ -131,7 +138,9 @@ def test_gate_skips_graph_closure_exempt_enum_predicates(tmp_path):
         "estleg:isStubNode": True,
     }
     combined = write_combined(tmp_path, [court_stub])
-    summary = gate.evaluate(combined, SHAPES)
+    # class_floors={} keeps this focused on the exempt-skip behaviour, not the
+    # #568 bulk-class floors (the fixture has no ProvisionVersion/AmendmentEvent).
+    summary = gate.evaluate(combined, SHAPES, class_floors={})
     assert summary["status"] == "ok", summary["groups"]
     assert summary["skipped_exempt"] >= 1, summary
 
@@ -152,7 +161,8 @@ def test_gate_reports_malformed_present_exempt_value(tmp_path):
         "estleg:isStubNode": True,
     }
     combined = write_combined(tmp_path, [court_stub])
-    summary = gate.evaluate(combined, SHAPES)
+    # class_floors={} isolates the malformed-value finding from the #568 floors.
+    summary = gate.evaluate(combined, SHAPES, class_floors={})
 
     assert summary["status"] == "violations", summary
     case_type_rows = [r for r in summary["groups"] if r["path"] == "estleg:caseType"]
@@ -174,7 +184,8 @@ def test_gate_reports_missing_exempt_classifier_on_non_stub(tmp_path):
         # caseType absent AND this is not a stub -> reported, not exempt
     }
     combined = write_combined(tmp_path, [full_court])
-    summary = gate.evaluate(combined, SHAPES)
+    # class_floors={} isolates the missing-classifier finding from the #568 floors.
+    summary = gate.evaluate(combined, SHAPES, class_floors={})
 
     assert summary["status"] == "violations", summary
     paths = {r["path"] for r in summary["groups"]}
@@ -198,4 +209,77 @@ def test_main_exit_codes(tmp_path):
     good = write_combined(
         good_dir, [_complete_municipal_stub(), ISSUER, MUNICIPALITY]
     )
-    assert gate.main(["--combined", str(good), "--shapes-dir", str(SHAPES)]) == 0
+    # --no-floor disables the #568 bulk-class floors so this tiny well-formed
+    # fixture (no ProvisionVersion/AmendmentEvent) exercises the clean exit path.
+    assert (
+        gate.main(
+            ["--combined", str(good), "--shapes-dir", str(SHAPES), "--no-floor"]
+        )
+        == 0
+    )
+
+
+# --- #568: bulk-class minimum instance-count floor ---------------------------
+
+
+def _provision_version_nodes(count: int) -> list[dict]:
+    """`count` distinct, minimally-typed estleg:ProvisionVersion nodes.
+
+    Only the type + id matter here — the #568 floor counts distinct typed
+    subjects, independent of whether they satisfy ProvisionVersionShape.
+    """
+    return [
+        {
+            "@id": f"estleg:PV_test_{i}",
+            "@type": ["owl:NamedIndividual", "estleg:ProvisionVersion"],
+        }
+        for i in range(count)
+    ]
+
+
+def test_floor_failure_when_bulk_class_near_absent(tmp_path):
+    """A combined with only 2 ProvisionVersion nodes fails the gate when the
+    floor demands >= 1000 — the exact false-PASS #568 guards against. The
+    failure is recorded in class_floor_failures (not the SHACL groups), the
+    status flips to "violations", and the report names the class + floor."""
+    combined = write_combined(tmp_path, _provision_version_nodes(2))
+    summary = gate.evaluate(
+        combined, SHAPES, class_floors={"estleg:ProvisionVersion": 1000}
+    )
+
+    assert summary["status"] == "violations", summary
+    assert summary["class_floor_failures"] == [
+        {"class": "estleg:ProvisionVersion", "count": 2, "floor": 1000}
+    ], summary["class_floor_failures"]
+
+    # main() (driven through evaluate with the same floors) must exit non-zero;
+    # status == "violations" is the exit-1 signal main() returns.
+    report = "\n".join(gate.format_report(summary))
+    assert "estleg:ProvisionVersion present 2x but expected >= 1000" in report, report
+    assert "missing this class" in report, report
+
+
+def test_floor_met_when_enough_instances_present(tmp_path):
+    """With a small floor (2) and 3 ProvisionVersion nodes present, the floor is
+    cleared: class_floor_failures is empty. Asserted directly on the floor list
+    (not overall status) so any unrelated ProvisionVersionShape SHACL findings
+    on these minimal nodes do not mask the floor logic under test."""
+    combined = write_combined(tmp_path, _provision_version_nodes(3))
+    summary = gate.evaluate(
+        combined, SHAPES, class_floors={"estleg:ProvisionVersion": 2}
+    )
+    assert summary["class_floor_failures"] == [], summary["class_floor_failures"]
+
+
+def test_floor_reports_each_missing_bulk_class(tmp_path):
+    """Both default bulk classes absent (empty combined) => one floor-failure row
+    per expected class, using the module-default EXPECTED_CLASS_FLOORS."""
+    combined = write_combined(tmp_path, [])
+    summary = gate.evaluate(combined, SHAPES)  # default floors
+
+    assert summary["status"] == "violations", summary
+    failed_classes = {f["class"] for f in summary["class_floor_failures"]}
+    assert failed_classes == set(gate.EXPECTED_CLASS_FLOORS), summary
+    for failure in summary["class_floor_failures"]:
+        assert failure["count"] == 0, failure
+        assert failure["floor"] == gate.EXPECTED_CLASS_FLOORS[failure["class"]], failure

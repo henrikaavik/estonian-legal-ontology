@@ -16,6 +16,7 @@ import json
 import os
 import re
 import sys
+import tempfile
 import time
 import xml.etree.ElementTree as ET
 import argparse
@@ -34,6 +35,25 @@ SEARCH_URL = "https://www.riigiteataja.ee/api/oigusakt_otsing/1/otsi"
 BASE_URL = "https://www.riigiteataja.ee"
 NS = "https://data.riik.ee/ontology/estleg#"
 DEFAULT_KEHTIV = "2026-05-01"
+
+# Issue #601: ONE shared minimum-size threshold for the on-disk XML cache,
+# applied to BOTH the fresh-download floor and the cache-accept floor.
+# Previously the download floor (reject < 200 bytes) was LOWER than the
+# cache-accept floor (require > 1000 bytes), so a 200–1000-byte Riigi
+# Teataja response got *written* yet was never *read back* — re-fetched on
+# every run forever. Unifying the two at one constant means any file we
+# persist we will also re-accept (no infinite refetch); content validity is
+# enforced separately by ``_is_trustworthy_xml_root`` (root-tag denylist).
+MIN_XML_BYTES = 200
+
+# Issue #594/#601: roots that mark a non-act payload (an HTML/error page that
+# still happens to parse as XML). Trusting/caching one of these would pin a
+# >threshold error page in the cache indefinitely. ``ln()`` strips any
+# namespace before the (lower-cased) comparison. Kept as a denylist rather
+# than an ``oigusakt`` allowlist so legitimate/synthetic act roots are not
+# rejected — real RT acts use ``oigusakt``, but the guard only needs to keep
+# obvious error documents out.
+_NON_ACT_ROOT_TAGS: frozenset[str] = frozenset({"html", "error", "errors"})
 GENERATION_MODES = ("missing-only", "refresh", "force")
 MANIFEST_NAME = "generation_manifest_laws.json"
 DEFAULT_REGEN_STATE_NAME = ".regen_state.json"
@@ -852,6 +872,44 @@ def has_existing_output(existing: set[str], title: str, slug: str) -> bool:
     return False
 
 
+def _is_trustworthy_xml_root(root: ET.Element | None) -> bool:
+    """Return False for a root that marks a non-act payload (#594/#601).
+
+    An HTML/error document can be >``MIN_XML_BYTES`` and still parse as XML;
+    caching it would pin an error page in the cache indefinitely. We reject
+    such roots by a denylist (``_NON_ACT_ROOT_TAGS``) rather than requiring a
+    fixed ``oigusakt`` allowlist, so legitimate act roots — including the
+    synthetic ones used in tests — are still trusted.
+    """
+    return root is not None and ln(root.tag).lower() not in _NON_ACT_ROOT_TAGS
+
+
+def _read_cached_rt_root(cache_name: str, tid: str | None) -> ET.Element | None:
+    """Return a parsed, validated RT act root from local cache, or None.
+
+    Applies the shared ``MIN_XML_BYTES`` floor and ``_is_trustworthy_xml_root``
+    (#601) so a too-small RT error stub or a cached HTML error page is treated
+    as a cache miss rather than trusted indefinitely. Mirrors ``fetch_xml``'s
+    cache lookup: the tid-qualified file first, then the legacy slug-only file
+    as a fallback (#165 fix 9) so the first tid-keyed run does not force a full
+    corpus refetch.
+    """
+    candidates: list[Path] = []
+    if tid:
+        candidates.append(DATA_DIR / f"{cache_name}__tid{sanitize_id(tid)}.xml")
+    candidates.append(DATA_DIR / f"{cache_name}.xml")
+    for cache_path in candidates:
+        if not (cache_path.exists() and cache_path.stat().st_size > MIN_XML_BYTES):
+            continue
+        try:
+            root = ET.parse(str(cache_path)).getroot()
+        except ET.ParseError:
+            continue
+        if _is_trustworthy_xml_root(root):
+            return root
+    return None
+
+
 def fetch_xml(
     url: str,
     cache_name: str,
@@ -862,24 +920,24 @@ def fetch_xml(
 
     Issue #165 fix 9: when ``tid`` is supplied, embed it in the cache
     filename. That way, when Riigi Teataja publishes a new tervikteksti
-    edition for the same slug, the next run misses the cache and
-    re-fetches automatically. Legacy slug-only cache files are still
-    consulted as a fallback so the first upgrade does not trigger a
-    full corpus refetch.
+    edition for the same slug, the next run misses the cache and re-fetches
+    automatically. Legacy slug-only cache files are still consulted as a
+    fallback so the first upgrade does not trigger a full corpus refetch.
+
+    Issue #601: the cache is consulted via ``_read_cached_rt_root``, which
+    enforces the shared ``MIN_XML_BYTES`` floor (same value for download and
+    cache-accept, so a written file is always re-accepted) and rejects a
+    non-act/HTML-error root so it is never persisted as a "valid" cached act.
     """
     primary_path = (
         DATA_DIR / f"{cache_name}__tid{sanitize_id(tid)}.xml"
         if tid
         else DATA_DIR / f"{cache_name}.xml"
     )
-    legacy_path = DATA_DIR / f"{cache_name}.xml"
 
-    for cache_path in (primary_path, legacy_path):
-        if cache_path.exists() and cache_path.stat().st_size > 1000:
-            try:
-                return ET.parse(str(cache_path)).getroot()
-            except ET.ParseError:
-                pass
+    cached = _read_cached_rt_root(cache_name, tid)
+    if cached is not None:
+        return cached
 
     full_url = BASE_URL + url if url.startswith("/") else url
     try:
@@ -888,11 +946,22 @@ def fetch_xml(
         resp.encoding = "utf-8"
         xml_text = resp.text
 
-        if len(xml_text) < 200:
+        # Issue #601: one floor for both the download and the cache-accept
+        # path so a sub-threshold response is neither cached nor re-trusted.
+        if len(xml_text) < MIN_XML_BYTES:
+            return None
+
+        try:
+            root = ET.fromstring(xml_text)
+        except ET.ParseError:
+            return None
+        # An HTML error page that parses as XML must not be persisted as a
+        # "valid" cached act (#601).
+        if not _is_trustworthy_xml_root(root):
             return None
 
         primary_path.write_text(xml_text, encoding="utf-8")
-        return ET.fromstring(xml_text)
+        return root
     except Exception as e:
         print(f"    Fetch error: {e}")
         return None
@@ -1987,9 +2056,37 @@ def generate_multipart_law(
 
 
 def save_json(filepath: Path, doc: dict):
-    with open(filepath, "w", encoding="utf-8") as f:
-        json.dump(doc, f, ensure_ascii=False, indent=2)
-        f.write("\n")
+    """Write a JSON-LD document atomically.
+
+    Issue #601: write to a sibling tempfile then ``os.replace`` so a crash
+    mid-``json.dump`` can never leave a half-written ``*_peep.json`` /
+    ``generation_manifest_laws.json`` on disk (whose loaders swallow
+    ``JSONDecodeError`` → empty slug map → IRI drift). Mirrors the atomic
+    ``estleg_common.save_json`` / ``save_regen_state`` writers; the tempfile
+    is best-effort unlinked if serialization fails so failed runs leave no
+    ``.tmp`` droppings.
+    """
+    filepath.parent.mkdir(parents=True, exist_ok=True)
+    tmp = tempfile.NamedTemporaryFile(
+        "w",
+        encoding="utf-8",
+        dir=filepath.parent,
+        prefix=f".{filepath.name}.",
+        suffix=".tmp",
+        delete=False,
+    )
+    tmp_name = tmp.name
+    try:
+        with tmp as f:
+            json.dump(doc, f, ensure_ascii=False, indent=2)
+            f.write("\n")
+        os.replace(tmp_name, filepath)
+    except BaseException:
+        try:
+            os.unlink(tmp_name)
+        except FileNotFoundError:
+            pass
+        raise
 
 
 def _ontology_node(doc: dict) -> dict | None:
@@ -2059,6 +2156,61 @@ def _load_existing_doc(path: Path) -> dict | None:
             return json.load(f)
     except (json.JSONDecodeError, OSError):
         return None
+
+
+# Issue #594: structural-body tags. A genuine RT act with no ``paragrahv``
+# but ALSO no ``loige``/``peatykk``/``jagu`` is legitimately body-less (a
+# stub is correct). One whose root carries any of these block tags but
+# yields ``par_count == 0`` is a degraded/foreign parse (e.g. a future RT
+# schema rename of the paragraph tag, or a partial fetch) — stubbing it
+# would launder a transient defect into a sticky body-less artifact.
+_STRUCTURAL_BODY_TAGS: frozenset[str] = frozenset(
+    {"paragrahv", "loige", "peatykk", "jagu", "jaotis"}
+)
+
+
+def xml_root_has_structure(root: ET.Element | None) -> bool:
+    """Return True when ``root`` contains any structural-body element.
+
+    Used by the stub guard (#594): a recognized RT act that has at least
+    one ``loige``/``peatykk``/``jagu``/``jaotis`` (or ``paragrahv``) but
+    parsed to zero paragraphs is structurally degraded, not body-less.
+    """
+    if root is None:
+        return False
+    return any(ln(el.tag) in _STRUCTURAL_BODY_TAGS for el in root.iter())
+
+
+def existing_peep_is_structured(path: Path) -> bool:
+    """Return True when an on-disk peep already carries provision content.
+
+    A structured law peep contains at least one provision *instance*: a node
+    typed ``estleg:LegalProvision`` or a per-law subclass thereof
+    (``estleg:LegalProvision_<slug>``), an ``estleg:Subsection``, or any node
+    bearing provision text (``estleg:legalText`` / ``estleg:paragrahv``). A
+    body-less stub has only the act ``owl:Ontology`` node (with
+    ``estleg:contentStatus == noStructuredBody``) and so returns False. Used
+    by the stub guard (#594) to refuse overwriting a previously-structured
+    act with a body-less stub when the fresh parse degrades to zero
+    paragraphs.
+    """
+    doc = _load_existing_doc(path)
+    if not isinstance(doc, dict):
+        return False
+    for node in doc.get("@graph", []):
+        if not isinstance(node, dict):
+            continue
+        if "estleg:legalText" in node or "estleg:paragrahv" in node:
+            return True
+        types = node.get("@type") or []
+        if isinstance(types, str):
+            types = [types]
+        for t in types:
+            if t == "estleg:Subsection" or (
+                isinstance(t, str) and t.startswith("estleg:LegalProvision")
+            ):
+                return True
+    return False
 
 
 def existing_doc_matches(path: Path, doc: dict) -> bool:
@@ -2207,21 +2359,13 @@ def remove_obsolete_multipart_outputs(
 def _cached_xml_root(cache_name: str, tid: str | None = None) -> ET.Element | None:
     """Return a parsed law XML root from the local cache, or None.
 
-    Mirrors ``fetch_xml``'s cache lookup (tid-qualified path then legacy
-    slug-only path) but NEVER falls back to the network — used by the
-    post-generation reconciliation so a cleanup pass cannot trigger HTTP.
+    Like ``fetch_xml``'s cache lookup but NEVER falls back to the network —
+    used by the post-generation reconciliation so a cleanup pass cannot
+    trigger HTTP. Shares ``_read_cached_rt_root`` so the same ``MIN_XML_BYTES``
+    floor, ``_is_trustworthy_xml_root`` denylist, and tid-then-legacy fallback
+    apply (#601).
     """
-    candidates: list[Path] = []
-    if tid:
-        candidates.append(DATA_DIR / f"{cache_name}__tid{sanitize_id(tid)}.xml")
-    candidates.append(DATA_DIR / f"{cache_name}.xml")
-    for cache_path in candidates:
-        if cache_path.exists() and cache_path.stat().st_size > 1000:
-            try:
-                return ET.parse(str(cache_path)).getroot()
-            except ET.ParseError:
-                pass
-    return None
+    return _read_cached_rt_root(cache_name, tid)
 
 
 def _expected_osa_filenames(slug: str, root: ET.Element) -> set[str]:
@@ -2917,11 +3061,46 @@ def main():
         # Count paragraphs
         par_count = sum(1 for el in root.iter() if ln(el.tag) == "paragrahv")
         if par_count == 0:
+            filename = f"{slug}_peep.json"
+            out_path = KRR_DIR / filename
+            # Issue #594: structural-staleness guard. A zero-paragraph parse
+            # is only a *genuine* body-less act when the recognized RT root
+            # carries no structural-body tag at all AND no previously-built
+            # structured peep exists. If the root DOES carry block tags
+            # (``loige``/``peatykk``/``jagu``/``jaotis`` — a future RT
+            # paragraph-tag rename or a partial fetch) or a structured peep
+            # already exists, refuse to overwrite it with a sticky body-less
+            # stub: record ``failed`` so ``missing-only`` retries instead of
+            # laundering the degradation into a permanent stub that
+            # ``existing_law_is_stale`` (kehtiv/tid only) never re-checks.
+            degraded_structure = xml_root_has_structure(root)
+            had_structure = existing_peep_is_structured(out_path)
+            if degraded_structure or had_structure:
+                why = (
+                    "root carries structural-body tags but zero paragraphs"
+                    if degraded_structure
+                    else "existing peep had structured provisions"
+                )
+                reason = (
+                    f"degraded/empty parse refused (no stub written): {why}"
+                )
+                print(f"    SKIP (degraded): {reason}")
+                failed += 1
+                act_status[title] = ("failed", reason)
+                record_regen_state(
+                    regen_state_path,
+                    regen_state,
+                    title=title,
+                    slug=slug,
+                    info=info,
+                    status="failed",
+                    kehtiv=args.kehtiv,
+                    reason=reason,
+                )
+                continue
             doc = generate_law_stub_jsonld(
                 title, slug, root, abbreviation, rt_url=url, kehtiv=args.kehtiv
             )
-            filename = f"{slug}_peep.json"
-            out_path = KRR_DIR / filename
             status = write_law_output(
                 out_path,
                 doc,

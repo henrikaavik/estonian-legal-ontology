@@ -140,10 +140,16 @@ def classify_draft_type(title: str) -> tuple[str, str]:
     # (issue #304). Keep this guard above the ``seadus`` check.
     if "kavatsus" in title_lower or "väljatöötamis" in title_lower:
         return "DraftIntent", "Väljatöötamiskavatsus"
-    elif "seaduse eelnõu" in title_lower or "seadus" in title_lower:
-        if "muutmi" in title_lower:
-            return "AmendmentBill", "Seaduse muutmise eelnõu"
-        return "Bill", "Seaduseelnõu"
+    # A regulation (määrus) / order (korraldus) draft is checked BEFORE the
+    # broad ``seadus`` substring (issue #599). A ministerial/government
+    # regulation title routinely embeds its enabling law name, e.g.
+    # "Sotsiaalministri määrus X seaduse alusel" or
+    # "Vabariigi Valitsuse määruse ja Y seaduse muutmine", which would
+    # otherwise match the ``seadus`` arm and be mis-typed as a Bill /
+    # AmendmentBill. A regulation is legally not a bill, and mis-typing also
+    # routes it past bill-only impact analysis. #304 fixed only the
+    # kavatsus-above-seadus ordering; this seadus-above-määrus ordering is
+    # separate.
     elif "määrus" in title_lower:
         if "vabariigi valitsuse" in title_lower:
             return "GovernmentRegulation", "VV määruse eelnõu"
@@ -152,6 +158,10 @@ def classify_draft_type(title: str) -> tuple[str, str]:
         return "Regulation", "Määruse eelnõu"
     elif "korraldus" in title_lower:
         return "GovernmentOrder", "Korralduse eelnõu"
+    elif "seaduse eelnõu" in title_lower or "seadus" in title_lower:
+        if "muutmi" in title_lower:
+            return "AmendmentBill", "Seaduse muutmise eelnõu"
+        return "Bill", "Seaduseelnõu"
     elif "seisukoht" in title_lower or "euroopa liidu" in title_lower:
         return "EUPosition", "EL seisukoha eelnõu"
     elif "ülevaade" in title_lower:

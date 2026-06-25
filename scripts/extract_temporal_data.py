@@ -48,6 +48,14 @@ DATA_DIR = REPO_ROOT / "data" / "riigiteataja"
 
 NS = "https://data.riik.ee/ontology/estleg#"
 
+# #602: named plausibility band for a parsed year (was a magic ``1900``/
+# ``2100`` literal repeated in both date-parse paths). Years outside this
+# inclusive range are source digit-transpositions (2918→2018) or EUR-Lex
+# null-sentinels (1001-01-01) and are dropped rather than emitted as a
+# poisoned xsd:date (#352).
+MIN_PLAUSIBLE_YEAR = 1900
+MAX_PLAUSIBLE_YEAR = 2100
+
 CONTEXT = {
     "estleg": NS,
     "owl": "http://www.w3.org/2002/07/owl#",
@@ -116,7 +124,7 @@ def parse_date(value: str) -> str | None:
         # 1002-02-02). These pass fromisoformat but break every
         # as-of-date / ordering query, so we drop them rather than emit
         # a poisoned xsd:date.
-        if parsed.year < 1900 or parsed.year > 2100:
+        if parsed.year < MIN_PLAUSIBLE_YEAR or parsed.year > MAX_PLAUSIBLE_YEAR:
             return None
         return parsed.strftime("%Y-%m-%d")
 
@@ -135,7 +143,7 @@ def parse_date(value: str) -> str | None:
         # Plausibility guard (#352): same year-range bound as the
         # fromisoformat path above — reject implausible years here too so
         # the fallback can't reintroduce a sentinel/typo date.
-        if parsed.year < 1900 or parsed.year > 2100:
+        if parsed.year < MIN_PLAUSIBLE_YEAR or parsed.year > MAX_PLAUSIBLE_YEAR:
             return None
         return parsed.strftime("%Y-%m-%d")
     return None

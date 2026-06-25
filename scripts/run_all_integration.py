@@ -774,22 +774,35 @@ def snapshot_outputs() -> Path:
 
     The atomic anchor is the rename of the current KRR_DIR to a sibling
     ``<KRR_DIR>.bak.<pid>`` path; on the same filesystem this is an atomic
-    directory move. After renaming, we copytree the backup back into
-    KRR_DIR so the run can mutate the live tree while the original is
-    preserved untouched at the backup path.
+    directory move. The original is then preserved untouched at that backup
+    path while the run mutates a fresh copy at KRR_DIR.
 
-    Invariant: at any SIGINT point, EITHER the original tree exists at
-    KRR_DIR OR it exists at the returned backup path. It is never both
-    gone.
+    Re-creating the writable KRR_DIR is itself made crash-safe (#593): we
+    copytree the backup into a sibling staging dir ``<KRR_DIR>.new.<pid>``
+    FIRST, then ``os.replace`` it onto KRR_DIR (an atomic rename on the same
+    filesystem). A kill DURING the copy therefore leaves the half-populated
+    tree at ``.new.<pid>`` (cleaned up here on the next call) — never at
+    KRR_DIR.
+
+    Invariant: at any SIGINT point, the original tree exists in full at
+    exactly one of {KRR_DIR, the returned backup path} — it is never
+    half-populated and never both gone. (A partial copy can only ever exist
+    at ``.new.<pid>``, never at KRR_DIR.)
     """
     backup = KRR_DIR.parent / f"{KRR_DIR.name}.bak.{os.getpid()}"
+    staging = KRR_DIR.parent / f"{KRR_DIR.name}.new.{os.getpid()}"
     if backup.exists():
         shutil.rmtree(backup)
+    if staging.exists():
+        shutil.rmtree(staging)
     # Atomic rename-aside (same filesystem, sibling directory).
     shutil.move(str(KRR_DIR), str(backup))
-    # Re-create KRR_DIR by copying from the backup so the run has a
-    # writable tree while the original is preserved at `backup`.
-    shutil.copytree(backup, KRR_DIR)
+    # Re-create KRR_DIR by copying from the backup so the run has a writable
+    # tree while the original is preserved at `backup`. Stage the copy at a
+    # sibling path and atomically swap it into place so a kill mid-copy
+    # cannot leave KRR_DIR half-populated.
+    shutil.copytree(backup, staging)
+    os.replace(str(staging), str(KRR_DIR))
     return backup
 
 
@@ -1033,6 +1046,50 @@ def hash_release_artifacts() -> dict:
         "missing": sorted(set(missing)),
         "contentHash": digest.hexdigest(),
     }
+
+
+def _combined_staleness_error() -> str | None:
+    """Return an error string if the derived combined/INDEX artifacts are
+    older than the enriched corpus, else ``None`` (#603).
+
+    ``--release --validate-only`` runs the release validators against the
+    *current* corpus without rebuilding ``combined_ontology.jsonld`` /
+    ``INDEX.json``. If a ``*_peep.json`` was enriched since the last combined
+    build, the stale combined would be validated and stamped ``releaseOk:
+    true``. This guard is the staleness backstop for that path.
+
+    Source set: every ``*_peep.json`` reachable under ``KRR_DIR`` (root law
+    peeps PLUS subcorpus overlays via ``rglob``) — the enriched inputs the
+    combined builder reads. Derived artifacts: ``combined_ontology.jsonld``
+    and ``INDEX.json``. A derived mtime STRICTLY LESS THAN the newest source
+    mtime is stale. We use ``<`` (not ``<=``): unlike ``validate_all.py`` —
+    which uses ``<=`` only when a structural-parity check also drifts — this
+    gate has no structural check, so a same-second filesystem tie (e.g. a
+    fresh checkout that wrote files in alphabetical order) must not be a
+    false alarm. A missing derived artifact is itself a failure.
+    """
+    sources = list(KRR_DIR.rglob("*_peep.json"))
+    if not sources:
+        # No corpus to validate against — nothing to declare stale.
+        return None
+    combined = KRR_DIR / "combined_ontology.jsonld"
+    index = KRR_DIR / "INDEX.json"
+    missing = [p.name for p in (combined, index) if not p.is_file()]
+    if missing:
+        return (
+            f"FATAL: {', '.join(missing)} missing — re-run without "
+            "--validate-only to rebuild."
+        )
+    max_source_mtime = max(p.stat().st_mtime for p in sources)
+    for derived in (combined, index):
+        if derived.stat().st_mtime < max_source_mtime:
+            newest = max(sources, key=lambda p: p.stat().st_mtime)
+            return (
+                f"FATAL: {derived.name} is stale (older than "
+                f"{_rel(newest)}) — re-run without --validate-only to "
+                "rebuild."
+            )
+    return None
 
 
 # ===========================================================================
@@ -1468,6 +1525,16 @@ def main(argv: list[str] | None = None) -> None:
 
     # ---- Release: validate-only ----------------------------------------
     if args.release and args.validate_only:
+        # Staleness guard (#603): validate-only never rebuilds the combined
+        # artifact, so a corpus enriched since the last build would be
+        # validated stale and stamped releaseOk:true. Fail fast before the
+        # validators if combined/INDEX is older than the newest peep source.
+        # (A dry-run is a preview — skip the guard.)
+        if not args.dry_run:
+            staleness_error = _combined_staleness_error()
+            if staleness_error:
+                print(staleness_error, file=sys.stderr)
+                sys.exit(2)
         validator_records, validators_passed = run_release_validators(
             args.per_script_timeout, dry_run=args.dry_run)
         artifact_hash = hash_release_artifacts() if not args.dry_run else {
@@ -1500,15 +1567,30 @@ def main(argv: list[str] | None = None) -> None:
         snapshot = snapshot_outputs()
         print(f"  Snapshot ready at {snapshot}.")
 
-    dag_result = run_dag(
-        STEPS,
-        topo,
-        dry_run=args.dry_run,
-        resume_from=args.resume_from,
-        validate_each=args.validate_each,
-        per_script_timeout=args.per_script_timeout,
-        parallel=args.parallel,
-    )
+    try:
+        dag_result = run_dag(
+            STEPS,
+            topo,
+            dry_run=args.dry_run,
+            resume_from=args.resume_from,
+            validate_each=args.validate_each,
+            per_script_timeout=args.per_script_timeout,
+            parallel=args.parallel,
+        )
+    except BaseException:
+        # Interrupt (Ctrl-C / SIGTERM) or unexpected crash mid-build: the
+        # live tree is partially mutated. Restore the pristine rename-aside
+        # backup before propagating so krr_outputs/ is never left corrupt
+        # with the snapshot orphaned. ``BaseException`` (not ``Exception``)
+        # so KeyboardInterrupt / SystemExit are caught. The graceful-failure
+        # restore below only runs when run_dag *returns*, so this path never
+        # double-restores. (#593)
+        if restore_on_failure and snapshot is not None and not args.dry_run:
+            print("\n  Interrupted — restoring krr_outputs/ from rollback "
+                  "snapshot...", file=sys.stderr)
+            restore_outputs(snapshot)
+            print("  Restore complete.", file=sys.stderr)
+        raise
 
     failed = dag_result["failed"]
     succeeded = dag_result["succeeded"]

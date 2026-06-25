@@ -537,3 +537,92 @@ def test_apply_remap_to_file_uses_atomic_write(tmp_path):
     assert graph[0]["@id"] == "estleg:New"
     assert graph[0]["estleg:references"] == ["estleg:New"]
     assert list(tmp_path.glob(".*tmp")) == []
+
+
+# ── #604: main() defaults to dry-run; writes are gated behind --apply ─────────
+
+
+def _snapshot_corpus(krr_dir: Path) -> dict[str, tuple[bytes, float]]:
+    """Map every peep file's path → (raw bytes, mtime) for the whole corpus.
+
+    Uses ``iter_peep_files()`` so regulation subcorpora are included, matching
+    the surface ``fdi.main`` rewrites. Re-comparing this snapshot after a
+    dry-run run proves no byte (and no mtime) of any file changed.
+    """
+    snap: dict[str, tuple[bytes, float]] = {}
+    for f in estleg_common.iter_peep_files():
+        snap[str(f)] = (f.read_bytes(), f.stat().st_mtime)
+    return snap
+
+
+def test_main_dry_run_writes_nothing(tmp_path, monkeypatch):
+    """``main(["--dry-run"])`` previews a real duplicate but rewrites no file (#604).
+
+    A bare invocation used to immediately remap the whole corpus in place. With
+    #604 dry-run is the DEFAULT and writes are gated behind ``--apply``: this
+    seeds a genuine cross-file ``_Par_`` collision (which a real run WOULD
+    remap), snapshots every file's bytes+mtime, runs the dry-run, and asserts
+    every file is byte-identical and untouched afterward.
+    """
+    use_krr_dir(monkeypatch, tmp_path)
+    # Two different laws colliding on a short ``_Par_`` id — exactly what the
+    # apply path would disambiguate.
+    write_peep(tmp_path / "aktsiisiseadus_peep.json", [{"@id": "estleg:AS_Par_5"}])
+    write_peep(tmp_path / "abieluseadus_peep.json", [{"@id": "estleg:AS_Par_5"}])
+
+    before = _snapshot_corpus(tmp_path)
+    # Sanity: the collision really is present, so a non-dry run would rewrite.
+    assert "estleg:AS_Par_5" in fdi.detect_duplicates()
+
+    rc = fdi.main(["--dry-run"])
+    assert rc == 0  # dry-run never reports the remaining-dupes failure exit.
+
+    after = _snapshot_corpus(tmp_path)
+    assert set(after) == set(before), "dry-run added/removed a corpus file"
+    for path, (raw, mtime) in before.items():
+        assert after[path][0] == raw, f"dry-run modified bytes of {path}"
+        assert after[path][1] == mtime, f"dry-run touched mtime of {path}"
+    # The duplicate is still present — nothing was resolved on disk.
+    assert "estleg:AS_Par_5" in fdi.detect_duplicates()
+    # No atomic-write tempfile droppings either.
+    assert list(tmp_path.glob(".*tmp")) == []
+
+
+def test_main_default_is_dry_run(tmp_path, monkeypatch):
+    """A bare ``main([])`` defaults to dry-run and writes nothing (#604)."""
+    use_krr_dir(monkeypatch, tmp_path)
+    write_peep(tmp_path / "aktsiisiseadus_peep.json", [{"@id": "estleg:AS_Par_5"}])
+    write_peep(tmp_path / "abieluseadus_peep.json", [{"@id": "estleg:AS_Par_5"}])
+
+    before = _snapshot_corpus(tmp_path)
+    rc = fdi.main([])
+    assert rc == 0
+
+    after = _snapshot_corpus(tmp_path)
+    for path, (raw, _mtime) in before.items():
+        assert after[path][0] == raw, f"bare main() modified {path} (must dry-run)"
+    assert "estleg:AS_Par_5" in fdi.detect_duplicates()
+
+
+def test_main_apply_resolves_duplicates(tmp_path, monkeypatch):
+    """``main(["--apply"])`` performs the remap and clears the duplicate (#604).
+
+    The complement of the dry-run test: the SAME collision, run with --apply,
+    must rewrite the files and leave the corpus duplicate-free.
+    """
+    use_krr_dir(monkeypatch, tmp_path)
+    write_peep(tmp_path / "aktsiisiseadus_peep.json", [{"@id": "estleg:AS_Par_5"}])
+    write_peep(tmp_path / "abieluseadus_peep.json", [{"@id": "estleg:AS_Par_5"}])
+
+    rc = fdi.main(["--apply"])
+    assert rc == 0  # all duplicates resolved → success exit.
+    assert fdi.detect_duplicates() == {}
+
+
+def test_main_apply_and_dry_run_are_mutually_exclusive(tmp_path, monkeypatch):
+    """``--apply --dry-run`` is rejected rather than silently writing (#604)."""
+    import pytest
+
+    use_krr_dir(monkeypatch, tmp_path)
+    with pytest.raises(SystemExit):
+        fdi.main(["--apply", "--dry-run"])

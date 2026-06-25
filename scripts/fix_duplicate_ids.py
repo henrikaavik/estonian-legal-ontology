@@ -19,6 +19,7 @@ Strategy:
 
 from __future__ import annotations
 
+import argparse
 import json
 import os
 import re
@@ -487,9 +488,35 @@ def update_cross_references(remap: dict[str, dict[str, str]]) -> int:
     return total_updated
 
 
-def main():
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--apply",
+        action="store_true",
+        help="Write the remapped @ids and cross-references in place. Without "
+             "this flag the script runs in dry-run mode (the default): it "
+             "detects duplicates and prints the planned remap counts but "
+             "rewrites NOTHING.",
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Report what would change without writing any file (the default; "
+             "accepted explicitly for symmetry with the sibling backfills).",
+    )
+    args = parser.parse_args(argv)
+    # Dry-run is the default; --apply is the only switch that writes. --dry-run
+    # is accepted for parity with the sibling backfills but is redundant, and a
+    # contradictory ``--apply --dry-run`` is rejected rather than silently
+    # writing.
+    if args.apply and args.dry_run:
+        parser.error("--apply and --dry-run are mutually exclusive")
+    apply = args.apply
+
     print("=" * 70)
     print("Fix Duplicate @id Values Across JSON-LD Files")
+    if not apply:
+        print("[DRY-RUN] previewing only — pass --apply to write")
     print("=" * 70)
 
     # Step 1: Detect
@@ -499,7 +526,7 @@ def main():
 
     if not dupes:
         print("\n  No duplicates found!")
-        return
+        return 0
 
     # Step 2: Categorize
     shared_classes = {
@@ -533,7 +560,17 @@ def main():
 
     if not remap:
         print("\n  No remappings needed!")
-        return
+        return 0
+
+    # In dry-run (the default) stop here: report the planned counts but skip the
+    # apply ([3/5]) and cross-reference write ([4/5]) steps so the corpus is
+    # never rewritten.
+    if not apply:
+        print(
+            f"\n[DRY-RUN] would remap {total_remaps} IDs across {len(remap)} "
+            f"files; re-run with --apply to write."
+        )
+        return 0
 
     # Step 4: Apply remaps to files
     print("\n[3/5] Applying ID remaps to files...")
@@ -567,7 +604,8 @@ def main():
     else:
         print("SUCCESS: All duplicates resolved")
     print("=" * 70)
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())
