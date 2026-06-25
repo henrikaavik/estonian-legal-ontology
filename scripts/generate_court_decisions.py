@@ -188,6 +188,23 @@ _OLD_FORMAT_CHAMBER_TO_MAP_KEY: dict[str, str] = {
     "4": "5",  # ConstitutionalReview
 }
 
+# Legacy Roman-numeral case numbers (1993–1996) look like
+# ``III-<chamber>/<sub>-<seq>/<yy>`` (e.g. ``III-2/3-9/93``): the leading
+# ``III`` is the Supreme Court, and the FIRST segment after it is the
+# deciding-chamber digit. Only chambers ``1`` (Criminal) and ``2`` (Civil)
+# are read from the number here because they are unambiguous; chambers
+# ``3``/``4`` mix administrative, civil and constitutional matters in the
+# legacy numbering, so they are left to fall through to ``Other`` and are
+# recovered from the decision text by ``rederive_riigikohus_case_types.py``
+# (#579). At generation time the chamber token in the text is not yet
+# available (``estleg:legalText`` is added by a later enrichment pass), so
+# the case number is the only signal we can use without a network fetch.
+_ROMAN_LEGACY_CASE_RE = re.compile(r"^III-(\d)/")
+_ROMAN_LEGACY_CHAMBER_TO_MAP_KEY: dict[str, str] = {
+    "1": "1",  # Criminal
+    "2": "2",  # Civil
+}
+
 
 def classify_case(case_nr: str) -> tuple[str, str, str]:
     """Classify case type from a Riigikohus case number.
@@ -203,6 +220,11 @@ def classify_case(case_nr: str) -> tuple[str, str, str]:
     * **New format** (2018+) e.g. ``1-17-…`` / ``3-21-…``: the case type
       is the FIRST digit (1=criminal, 2=civil, …) and the rest is the
       filing year and sequence.
+    * **Legacy Roman format** (1993–1996) ``III-<chamber>/<sub>-<seq>/<yy>``:
+      the leading ``III`` is the Supreme Court and the first segment after
+      it is the chamber. Only the unambiguous chambers ``1`` (Criminal) and
+      ``2`` (Civil) are resolved here; ``3``/``4`` fall through to ``Other``
+      and are recovered from the decision text post-hoc (#579).
 
     Real-world inputs sometimes carry leading whitespace, BOM, or other
     invisible characters, so the first-digit path skips leading
@@ -212,6 +234,18 @@ def classify_case(case_nr: str) -> tuple[str, str, str]:
     """
     if not case_nr:
         logger.warning("classify_case: empty case_nr")
+        return CASE_TYPE_MAP["Other"]
+    # Legacy Roman ``III-<chamber>/…`` numbers carry the case type in the
+    # first segment after ``III``; resolve the unambiguous chambers before
+    # the first-digit path (which would read the leading Roman ``I`` as a
+    # non-digit and fall through to Other).
+    roman_match = _ROMAN_LEGACY_CASE_RE.match(case_nr)
+    if roman_match is not None:
+        map_key = _ROMAN_LEGACY_CHAMBER_TO_MAP_KEY.get(roman_match.group(1))
+        if map_key is not None:
+            return CASE_TYPE_MAP[map_key]
+        # Chambers 3/4 are ambiguous in the legacy numbering — leave them as
+        # Other for the text-based re-derivation rather than guessing.
         return CASE_TYPE_MAP["Other"]
     # Old-format ``3-<chamber>-…`` numbers carry the case type in the
     # chamber digit, not the leading court digit — resolve those first.

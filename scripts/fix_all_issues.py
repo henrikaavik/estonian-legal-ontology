@@ -139,6 +139,12 @@ STUB_KEEP_PROPS = (
     "estleg:ecliIdentifier",
     "estleg:celexNumber",
     "estleg:eliIdentifier",
+    # #607(a): the ELI natural-id local identifier. A leaf literal (no estleg:
+    # object ref), sibling of celexNumber/eliIdentifier above — carry it onto EU
+    # closure stubs so the self-contained combined artifact keeps the only real
+    # eli: triple instead of dropping all 66k. NOT in COMBINED_STRIPPED_PREDICATES,
+    # so it is meant to survive into combined.
+    "eli:id_local",
     "estleg:eisNumber",
     "estleg:actNumber",
     "estleg:globalId",
@@ -1243,6 +1249,11 @@ def generate_combined_jsonld(krr_dir: Path = KRR_DIR):
         "dcterms": "http://purl.org/dc/terms/",
         "skos": "http://www.w3.org/2004/02/skos/core#",
         "schema": "http://schema.org/",
+        # #607(a): EU acts carry ``eli:id_local`` (kept on their closure stubs via
+        # STUB_KEEP_PROPS). Declare the ELI ontology prefix so that triple is a
+        # resolvable CURIE in the self-contained artifact rather than an
+        # undeclared-prefix term.
+        "eli": "http://data.europa.eu/eli/ontology#",
     }
 
     # First-occurrence-ordered list of merged nodes, plus an index by @id so a

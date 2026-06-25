@@ -375,7 +375,11 @@ def generate_schema_nodes() -> list[dict]:
             "rdfs:label": {"@value": "ELI identifikaator", "@language": "et"},
             "rdfs:domain": {"@id": "estleg:EULegislation"},
             "rdfs:range": {"@id": "xsd:anyURI"},
-            "rdfs:comment": {"@value": "European Legislation Identifier (ELI) URI.", "@language": "en"},
+            # #610: kept as an xsd:anyURI literal for string consumers; the SAME
+            # canonical URI is ALSO emitted as an ``owl:sameAs`` object-link on
+            # each act (see ``legislation_to_node``) so follow-your-nose
+            # dereference into the EU ELI register actually works.
+            "rdfs:comment": {"@value": "European Legislation Identifier (ELI) URI. Also emitted as owl:sameAs for dereference.", "@language": "en"},
         },
         {
             "@id": "estleg:eurLexLink",
@@ -447,6 +451,33 @@ def _is_valid_iso_date(value: object) -> bool:
     return True
 
 
+# #607(b): the ELI canonical URI -> its *natural id* segment. An ELI URI is
+# ``http(s)://data.europa.eu/eli/<natural-id>/oj`` (the ``/oj`` OJ-version suffix
+# is optional), where the natural id is e.g. ``reg/2008/15`` or
+# ``reg_impl/2013/1247``. ``eli:id_local`` is meant to hold this natural id, NOT
+# the CELEX (which lives in ``estleg:celexNumber``). Returns ``None`` for a URI
+# that is not on the ELI host so callers can fall back rather than mislabel.
+_ELI_URI_RE = re.compile(
+    r"^https?://data\.europa\.eu/eli/(?P<natural>.+?)(?:/oj)?$"
+)
+
+
+def eli_natural_id(eli_uri: str) -> str | None:
+    """Extract the ELI natural id (``reg/2008/15``) from an ELI canonical URI.
+
+    Returns ``None`` when ``eli_uri`` is empty or not an ``data.europa.eu/eli``
+    URI, so the caller can keep its existing fallback (CELEX) instead of writing
+    a malformed local id.
+    """
+    if not eli_uri:
+        return None
+    match = _ELI_URI_RE.match(eli_uri.strip())
+    if not match:
+        return None
+    natural = match.group("natural").strip("/")
+    return natural or None
+
+
 def legislation_to_node(item: dict, type_id: str) -> dict | None:
     """Convert a legislation dict to a JSON-LD node.
 
@@ -484,15 +515,34 @@ def legislation_to_node(item: dict, type_id: str) -> dict | None:
     # Canonical source URI (CELEX-based)
     node["dcterms:source"] = {"@id": f"http://publications.europa.eu/resource/celex/{item['celex']}"}
 
-    # owl:sameAs link to EUR-Lex resource URI
-    node["owl:sameAs"] = {"@id": f"http://publications.europa.eu/resource/celex/{item['celex']}"}
-
-    # ELI local identifier (CELEX number)
-    node["eli:id_local"] = item["celex"]
+    # owl:sameAs to the canonical external resources. The CELEX CELLAR URI is
+    # always available; the ELI canonical URI is appended below when the act has
+    # an ELI (#610) so ``?act owl:sameAs ?eurlexResource`` dereferences both the
+    # CELLAR and ELI register entries instead of only CELLAR. Built as a list so
+    # multiple external identities coexist without one clobbering the other.
+    same_as: list[dict] = [
+        {"@id": f"http://publications.europa.eu/resource/celex/{item['celex']}"}
+    ]
 
     # ELI
-    if item.get("eli"):
-        node["estleg:eliIdentifier"] = {"@value": item["eli"], "@type": "xsd:anyURI"}
+    eli_uri = item.get("eli")
+    if eli_uri:
+        node["estleg:eliIdentifier"] = {"@value": eli_uri, "@type": "xsd:anyURI"}
+        # #610: the ELI canonical URI is a real, resolvable Linked-Data resource
+        # — emit it as an owl:sameAs object-link too (not only the dead anyURI
+        # literal) so the act is actually joined to the EU ELI register.
+        same_as.append({"@id": eli_uri})
+        # #607(b): the ELI *natural id* (``reg/2008/15``) is the value
+        # ``eli:id_local`` is meant to carry — NOT the CELEX, which lives in
+        # ``estleg:celexNumber``. Derive it from the ELI URI.
+        natural = eli_natural_id(eli_uri)
+        node["eli:id_local"] = natural if natural is not None else item["celex"]
+    else:
+        # No ELI URI to derive from. Keep CELEX as the local id (#607(b) "at
+        # minimum stop mislabelling" — there is no ELI natural id available).
+        node["eli:id_local"] = item["celex"]
+
+    node["owl:sameAs"] = same_as if len(same_as) > 1 else same_as[0]
 
     # Date — validate before emitting an ``xsd:date`` literal. CELLAR has
     # served malformed/partial dates; an unchecked value breaks downstream

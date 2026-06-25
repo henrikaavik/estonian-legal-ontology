@@ -298,13 +298,14 @@ def test_is_valid_iso_date_helper() -> None:
 
 
 def test_derived_provenance_fields_present_and_correct() -> None:
-    """owl:sameAs, dcterms:source, and eli:id_local are derived from the CELEX
-    and emitted on every node (#348)."""
+    """owl:sameAs + dcterms:source are derived from the CELEX (#348). With no
+    ``eli`` on the record, ``eli:id_local`` falls back to the CELEX (#607b)."""
     celex = "32016R0679"
     item = {"celex": celex, "title": "GDPR", "authors": []}
     node = mod.legislation_to_node(item, "Regulation")
 
     expected_cellar = f"http://publications.europa.eu/resource/celex/{celex}"
+    # No ELI -> single CELEX owl:sameAs (not a list).
     assert node["owl:sameAs"] == {"@id": expected_cellar}
     assert node["dcterms:source"] == {"@id": expected_cellar}
     assert node["eli:id_local"] == celex
@@ -321,6 +322,47 @@ def test_derived_provenance_matches_routed_celex() -> None:
     assert node["owl:sameAs"] == {"@id": expected_cellar}
     assert node["dcterms:source"] == {"@id": expected_cellar}
     assert node["eli:id_local"] == celex
+
+
+def test_eli_id_local_is_natural_id_and_eli_sameas_emitted() -> None:
+    """#607b + #610: with an ELI URI, ``eli:id_local`` is the ELI natural id
+    (NOT the CELEX), and the ELI canonical URI is emitted as an ``owl:sameAs``
+    object-link alongside the CELEX PURL."""
+    celex = "32008R0015"
+    eli = "http://data.europa.eu/eli/reg/2008/15/oj"
+    item = {"celex": celex, "title": "Reg 15/2008", "authors": [], "eli": eli}
+    node = mod.legislation_to_node(item, "Regulation")
+
+    # eli:id_local is the natural id segment, not the CELEX.
+    assert node["eli:id_local"] == "reg/2008/15"
+    assert node["eli:id_local"] != celex
+    # CELEX is preserved in its own property.
+    assert node["estleg:celexNumber"] == celex
+    # owl:sameAs is now a 2-item list: CELEX PURL + ELI URI.
+    same_as_targets = {s["@id"] for s in node["owl:sameAs"]}
+    assert same_as_targets == {
+        f"http://publications.europa.eu/resource/celex/{celex}",
+        eli,
+    }
+    # The ELI literal is still present for string consumers.
+    assert node["estleg:eliIdentifier"] == {"@value": eli, "@type": "xsd:anyURI"}
+
+
+def test_eli_natural_id_helper() -> None:
+    """``eli_natural_id`` strips the ELI host + ``/oj`` suffix, and returns None
+    for non-ELI / empty inputs (so callers fall back to CELEX)."""
+    assert mod.eli_natural_id("http://data.europa.eu/eli/reg/2008/15/oj") == "reg/2008/15"
+    assert (
+        mod.eli_natural_id("http://data.europa.eu/eli/reg_impl/2013/1247/oj")
+        == "reg_impl/2013/1247"
+    )
+    # Parenthesised decision id is preserved.
+    assert (
+        mod.eli_natural_id("http://data.europa.eu/eli/dec/2013/168(1)/oj")
+        == "dec/2013/168(1)"
+    )
+    assert mod.eli_natural_id("") is None
+    assert mod.eli_natural_id("http://example.com/not-eli") is None
 
 
 # ---------------------------------------------------------------------------
