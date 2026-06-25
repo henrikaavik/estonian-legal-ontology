@@ -130,6 +130,16 @@ EU_COURTS = {
     # can filter EFTA cases out of CJEU statistics. Cases mined from
     # EUR-Lex that carry sector ``E`` (e.g. ``E2024CB0001``) map here.
     "EFTACourt": ("EFTA Kohus", "EFTA Court", "EFTA"),
+    # CELEX sector ``8`` is *national* case-law (a member-state court citing
+    # EU law, e.g. ``82015EE1202(01)`` = Riigikohus). These are not EU-court
+    # decisions at all; the ``fetch_all_case_law`` SPARQL FILTER (#343) keeps
+    # only sectors ``6`` and ``E`` so they are no longer imported. The bucket
+    # exists so (a) any sector-8 work that ever slips through classifies to an
+    # honest non-CJEU sentinel rather than the misleading ``CourtOfJustice``
+    # default, and (b) ``generate_schema_nodes`` emits the individual that the
+    # one-off ``fix_curia_court_contamination`` remediation (#575) re-points
+    # the already-committed sector-8 nodes to.
+    "NationalCourt": ("Liikmesriigi kohus", "National Court", "NAT"),
 }
 
 # Known author codes
@@ -190,6 +200,15 @@ def classify_from_celex(celex: str) -> tuple[str, str, str, str]:
             category = "other"
 
         return type_info[0], type_info[1], court_id, category
+
+    # CELEX sector ``8`` is national case-law (a member-state court, e.g.
+    # ``82015EE1202(01)`` = Riigikohus). It is not an EU-court decision, so
+    # route it to the honest ``NationalCourt`` sentinel rather than letting
+    # it inherit the misleading ``CourtOfJustice`` default below (#575). The
+    # ``fetch_all_case_law`` FILTER (#343) already drops sector 8 upstream;
+    # this guard only matters if a sector-8 work ever reaches the classifier.
+    if re.match(r"8\d{4}", celex):
+        return "Other", "Muu", "NationalCourt", "other"
 
     return "Other", "Muu", "CourtOfJustice", "other"
 

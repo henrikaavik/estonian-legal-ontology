@@ -123,6 +123,16 @@ DEFINITION_PATTERN = re.compile(
     re.UNICODE | re.DOTALL,
 )
 
+# #580: a spliced Riigi Teataja amendment-citation block. The RT publication
+# mark (``<avaldamismarge>``) serialises as ``RT I``/``RT IV``/``RT Õ`` (the
+# ``V`` variant exists too) followed by an ISO date, then the issue / global-id /
+# publication-date run — and sometimes text bled in from the next list item. It
+# is dropped at the structural source by ``_itertext_filtered`` (below), but this
+# tail-strip is the defensive backstop: any value still carrying ``RT … <date>``
+# is cut at that marker (the real definition always precedes it). Anchored on the
+# date so a bare "RT" inside prose without a following date never triggers a cut.
+RT_CITATION_TAIL = re.compile(r"\s*RT\s+[IÕ]+V?\s+\d{4}-\d{2}-\d{2}.*$", re.DOTALL)
+
 
 def ln(tag: str) -> str:
     """Strip XML namespace prefix."""
@@ -153,6 +163,18 @@ _NUMBERING_ONLY_TAGS = frozenset({
     "lisaNr",
 })
 
+# #580: publication-mark subtrees whose text is a Riigi Teataja amendment
+# citation (``RT IV 2020-10-01 2 401102020002 2020-10-04``). The serialiser
+# emits these as inline nodes *inside* a definition's running text, so
+# ``itertext()`` splices the citation onto the end of the legal definition (and
+# the lazy DEFINITION_PATTERN then captures it, sometimes dragging in the next
+# item too). They carry no definitional content, so the whole subtree — text AND
+# children — is dropped at the structural source. The element's TAIL is kept so
+# surrounding running text is not glued together.
+_CITATION_SUBTREE_TAGS = frozenset({
+    "avaldamismarge",
+})
+
 # A ``<kuvatavNr>`` text that is a real list-item marker — ``1)``, ``2)`` —
 # (digit(s) + close paren, no leading paren). These DRIVE the
 # DEFINITION_PATTERN and must be kept. The header forms (``(1)``, ``§ 2.``)
@@ -175,6 +197,13 @@ def _itertext_filtered(el: ET.Element) -> list[str]:
     """
     parts: list[str] = []
     tag = ln(el.tag)
+    if tag in _CITATION_SUBTREE_TAGS:
+        # #580: drop the RT amendment-citation subtree entirely (text AND
+        # descendants) so it cannot splice onto a definition; keep only the
+        # tail (running text that follows the citation node).
+        if el.tail:
+            parts.append(el.tail)
+        return parts
     if tag in _NUMBERING_ONLY_TAGS:
         # Drop the counter's own text; preserve the tail so surrounding
         # running text is not glued together.
@@ -315,6 +344,14 @@ def extract_definitions_from_text(text: str) -> list[tuple[str, str, str]]:
         # meetrit``).
         definition = re.sub(r";\s*\d+\s*$", "", definition)
         definition = definition.rstrip("; \t\r\n").strip()
+        # #580 (defensive backstop): _itertext_filtered now drops the RT
+        # publication-mark subtree at the source, but a direct caller (or an
+        # unforeseen serialiser quirk that emits the citation outside an
+        # <avaldamismarge>) may still leave a spliced ``… RT IV 2020-10-01 …``
+        # tail. Cut it — the real definition always precedes the marker — and
+        # re-tidy the dangling separator the cut leaves behind.
+        definition = RT_CITATION_TAIL.sub("", definition)
+        definition = definition.rstrip("; \t\r\n–—-").strip()
 
         # Skip overly short terms or definitions
         if len(term) < 2 or len(definition) < 5:

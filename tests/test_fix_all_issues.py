@@ -328,6 +328,68 @@ def test_combined_context_binds_dcterms(tmp_path):
 
 
 # ---------------------------------------------------------------------------
+# #607(a): the combined artifact must keep ``eli:id_local`` on EU closure stubs
+# (it was dropped — STUB_KEEP_PROPS omitted it) and declare the ``eli`` prefix.
+# ---------------------------------------------------------------------------
+
+
+def test_eli_id_local_kept_on_closure_stub():
+    """A graph-closure stub built from a full EU node must carry ``eli:id_local``
+    (the natural id) — its sibling identifiers celexNumber/eliIdentifier are
+    already kept, so dropping it loses the only real eli: triple."""
+    source = {
+        "@id": "estleg:EU_32008R0015",
+        "@type": ["owl:NamedIndividual", "estleg:EULegislation"],
+        "rdfs:label": "Reg 15/2008",
+        "estleg:celexNumber": "32008R0015",
+        "estleg:eliIdentifier": {
+            "@value": "http://data.europa.eu/eli/reg/2008/15/oj",
+            "@type": "xsd:anyURI",
+        },
+        "eli:id_local": "reg/2008/15",
+        "owl:sameAs": [
+            {"@id": "http://publications.europa.eu/resource/celex/32008R0015"},
+            {"@id": "http://data.europa.eu/eli/reg/2008/15/oj"},
+        ],
+        # An internal estleg: object ref — must be stripped from the leaf stub.
+        "estleg:euDocumentType": {"@id": "estleg:EUDocType_Regulation"},
+    }
+    stub = fix_all_issues._make_closure_stub(source)
+    assert stub["eli:id_local"] == "reg/2008/15"
+    assert stub["estleg:celexNumber"] == "32008R0015"
+    # External owl:sameAs links survive; internal euDocumentType ref does not.
+    assert "owl:sameAs" in stub
+    assert "estleg:euDocumentType" not in stub
+    assert stub["estleg:isStubNode"] is True
+
+
+def test_eli_id_local_in_stub_keep_props():
+    assert "eli:id_local" in fix_all_issues.STUB_KEEP_PROPS
+
+
+def test_combined_context_binds_eli(tmp_path):
+    """The combined @context must declare the ``eli`` prefix so ``eli:id_local``
+    on EU stubs is a resolvable CURIE, not an undeclared term (#607a)."""
+    write_json(
+        tmp_path / "law_a_peep.json",
+        {
+            "@graph": [
+                {
+                    "@id": "estleg:A_1",
+                    "@type": ["estleg:LegalProvision"],
+                    "estleg:paragrahv": "§ 1.",
+                    "estleg:summary": "Summary",
+                    "estleg:requestedCluster": {"@id": "estleg:A_1_cluster"},
+                }
+            ]
+        },
+    )
+    fix_all_issues.generate_combined_jsonld(tmp_path)
+    combined = read_json(tmp_path / "combined_ontology.jsonld")
+    assert combined["@context"].get("eli") == "http://data.europa.eu/eli/ontology#"
+
+
+# ---------------------------------------------------------------------------
 # Regression tests for #159 (lossless dc:source, stable intra-file dedup,
 # date.today INDEX, recursive audit, and import paths).
 # ---------------------------------------------------------------------------

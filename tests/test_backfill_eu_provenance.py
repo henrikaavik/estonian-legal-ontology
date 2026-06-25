@@ -15,8 +15,15 @@ CELEX_DEC = "61999TO0159"
 RESOURCE = "http://publications.europa.eu/resource/celex/"
 
 
+ELI_URI = "http://data.europa.eu/eli/reg/2016/679/oj"
+ELI_NATURAL = "reg/2016/679"
+
+
 class TestBackfillNode:
-    def test_legislation_gets_all_three_fields(self):
+    def test_legislation_without_eli_falls_back_to_celex(self):
+        # #607b fallback path: no estleg:eliIdentifier -> eli:id_local stays the
+        # CELEX (there is no ELI natural id available) and only the CELEX
+        # owl:sameAs is emitted.
         node = {"@id": "estleg:EU_32016R0679",
                 "@type": ["owl:NamedIndividual", "estleg:EULegislation"],
                 "estleg:celexNumber": CELEX_LEG}
@@ -24,6 +31,23 @@ class TestBackfillNode:
         assert node["owl:sameAs"] == {"@id": RESOURCE + CELEX_LEG}
         assert node["dcterms:source"] == {"@id": RESOURCE + CELEX_LEG}
         assert node["eli:id_local"] == CELEX_LEG
+
+    def test_legislation_with_eli_uses_natural_id_and_adds_eli_sameas(self):
+        # #607b + #610: when an ELI URI is present, eli:id_local is the natural
+        # id (NOT the CELEX), and the ELI URI is appended as an owl:sameAs link
+        # alongside the CELEX PURL.
+        node = {"@id": "estleg:EU_32016R0679",
+                "@type": ["owl:NamedIndividual", "estleg:EULegislation"],
+                "estleg:celexNumber": CELEX_LEG,
+                "estleg:eliIdentifier": {"@value": ELI_URI, "@type": "xsd:anyURI"}}
+        assert bep.backfill_node(node) is True
+        assert node["eli:id_local"] == ELI_NATURAL
+        assert node["eli:id_local"] != CELEX_LEG
+        # owl:sameAs is now a 2-item list: CELEX PURL + ELI URI.
+        targets = {s["@id"] for s in node["owl:sameAs"]}
+        assert targets == {RESOURCE + CELEX_LEG, ELI_URI}
+        # CELEX still lives in celexNumber, untouched.
+        assert node["estleg:celexNumber"] == CELEX_LEG
 
     def test_court_decision_gets_no_eli_id_local(self):
         node = {"@id": "estleg:EUCJ_61999TO0159",

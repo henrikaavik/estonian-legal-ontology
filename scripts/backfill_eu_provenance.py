@@ -8,20 +8,25 @@ predate those commits, so the fields are missing from the corpus. Every field is
 SPARQL call is needed — so this is a deterministic, idempotent local backfill:
 
     owl:sameAs      -> {"@id": "http://publications.europa.eu/resource/celex/<CELEX>"}
+                       (+ {"@id": "<ELI URI>"} for legislation with an ELI — #610)
     dcterms:source  -> {"@id": "http://publications.europa.eu/resource/celex/<CELEX>"}
-    eli:id_local    -> "<CELEX>"   (EULegislation only; case-law has no ELI)
+    eli:id_local    -> the ELI natural id "<reg/2008/15>" (EULegislation only,
+                       derived from estleg:eliIdentifier; CELEX fallback when no
+                       ELI URI — #607b; case-law has no ELI)
 
 Notes
 -----
-* ``owl:sameAs`` / ``dcterms:source`` both point at the CELEX *resource* PURL
+* ``owl:sameAs`` / ``dcterms:source`` point at the CELEX *resource* PURL
   (CELLAR-resolvable, content-negotiable) — NOT the human eur-lex.europa.eu URL,
   which is emitted separately as ``estleg:eurLexLink`` / ``estleg:curiaLink`` and
   is already present. ``validate_all.validate_source_provenance`` requires
   ``dcterms:source`` to be an IRI object ``{"@id": ...}`` (a hard error), which the
-  template satisfies.
+  template satisfies. #610: for legislation, the resolvable ELI canonical URI is
+  ALSO appended as an ``owl:sameAs`` object-link so the act joins the ELI register.
 * The full ELI URI (``estleg:eliIdentifier``, e.g. ``.../eli/dir/1981/643/oj``) is
-  SPARQL-sourced, already present, and left untouched. ``eli:id_local`` is the bare
-  CELEX string.
+  SPARQL-sourced, already present, and left untouched. #607b: ``eli:id_local`` is
+  the ELI *natural id* segment of that URI (``dir/1981/643``), NOT the bare CELEX
+  (which already lives in ``estleg:celexNumber``).
 * The eurlex peep/combined ``@context`` lacks an ``eli`` prefix; this script injects
   ``"eli": "http://data.europa.eu/eli/ontology#"`` so the emitted ``eli:id_local``
   term resolves. Curia files emit no ``eli:id_local`` and need no context change.
@@ -38,9 +43,42 @@ import json
 from pathlib import Path
 
 from estleg_common import REPO_ROOT, save_json
+from generate_eu_legislation import eli_natural_id
 
 EU_CELEX_RESOURCE = "http://publications.europa.eu/resource/celex/{celex}"
 ELI_PREFIX_IRI = "http://data.europa.eu/eli/ontology#"
+
+
+def _eli_uri(node: dict) -> str | None:
+    """Pull the ELI canonical URI from an ``estleg:eliIdentifier`` value."""
+    val = node.get("estleg:eliIdentifier")
+    if isinstance(val, dict):
+        uri = val.get("@value") or val.get("@id")
+        return uri if isinstance(uri, str) else None
+    return val if isinstance(val, str) else None
+
+
+def _sameas_has(node: dict, target: str) -> bool:
+    """True if ``node`` already has an ``owl:sameAs`` link to ``target``."""
+    sa = node.get("owl:sameAs")
+    items = sa if isinstance(sa, list) else ([sa] if sa is not None else [])
+    for item in items:
+        tid = item.get("@id") if isinstance(item, dict) else item
+        if tid == target:
+            return True
+    return False
+
+
+def _append_sameas(node: dict, target: str) -> None:
+    """Append ``{"@id": target}`` to ``owl:sameAs``, growing it into a list."""
+    link = {"@id": target}
+    existing = node.get("owl:sameAs")
+    if existing is None:
+        node["owl:sameAs"] = link
+    elif isinstance(existing, list):
+        existing.append(link)
+    else:
+        node["owl:sameAs"] = [existing, link]
 
 # Subcorpus files to backfill. eurlex carries EULegislation (gets eli:id_local +
 # eli context); curia carries EUCourtDecision (owl:sameAs + dcterms:source only).
@@ -88,9 +126,22 @@ def backfill_node(node: dict) -> bool:
     if "dcterms:source" not in node:
         node["dcterms:source"] = {"@id": uri}
         changed = True
-    if is_leg and "eli:id_local" not in node:
-        node["eli:id_local"] = celex
-        changed = True
+    if is_leg:
+        # #607(b): ``eli:id_local`` is the ELI *natural id* (``reg/2008/15``),
+        # derived from the act's ELI URI — NOT the CELEX, which already lives in
+        # ``estleg:celexNumber``. Fall back to CELEX only when no ELI URI exists
+        # (some decisions). Guard on ``not in node`` for idempotency.
+        if "eli:id_local" not in node:
+            natural = eli_natural_id(_eli_uri(node))
+            node["eli:id_local"] = natural if natural is not None else celex
+            changed = True
+        # #610: also emit the resolvable ELI canonical URI as an ``owl:sameAs``
+        # object-link (in addition to the CELEX PURL above) so the act joins the
+        # EU ELI register for follow-your-nose dereference.
+        eli_uri = _eli_uri(node)
+        if eli_uri and not _sameas_has(node, eli_uri):
+            _append_sameas(node, eli_uri)
+            changed = True
     return changed
 
 
