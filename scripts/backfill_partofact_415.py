@@ -22,6 +22,7 @@ later full regen produces no key-order churn.
 """
 from __future__ import annotations
 
+import argparse
 import sys
 from pathlib import Path
 
@@ -77,11 +78,16 @@ def _insert_before(node: dict, before_key: str, new_key: str, new_val) -> dict:
     return out
 
 
-def backfill_file(path: Path) -> tuple[int, int]:
+def backfill_file(path: Path, *, write: bool = True) -> tuple[int, int]:
     """Stamp partOfAct on provisions+chapters in one peep file.
 
     Returns (provisions_stamped, chapters_stamped). (0, 0) means already
     complete or no act root (stub) — file is not rewritten.
+
+    With ``write=False`` (dry-run) the planned edges are still computed and
+    counted but ``save_json`` is NOT called, so the file is left untouched.
+    The default ``write=True`` preserves the original write-in-place behaviour
+    for existing callers/tests.
     """
     doc = json.loads(path.read_text(encoding="utf-8"))
     graph = doc.get("@graph")
@@ -118,26 +124,58 @@ def backfill_file(path: Path) -> tuple[int, int]:
 
     if prov_n or chap_n:
         doc["@graph"] = new_graph
-        save_json(path, doc)
+        if write:
+            save_json(path, doc)
     return (prov_n, chap_n)
 
 
-def main() -> int:
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--apply",
+        action="store_true",
+        help="Stamp estleg:partOfAct in place. Without this flag the script "
+             "runs in dry-run mode (the default): it counts the edges it would "
+             "add but rewrites NOTHING.",
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Report what would change without writing any file (the default; "
+             "accepted explicitly for symmetry with the sibling backfills).",
+    )
+    args = parser.parse_args(argv)
+    # Dry-run is the default; --apply is the only switch that writes. A
+    # contradictory ``--apply --dry-run`` is rejected rather than silently
+    # writing.
+    if args.apply and args.dry_run:
+        parser.error("--apply and --dry-run are mutually exclusive")
+    write = args.apply
+
     peeps = sorted(KRR.rglob("*_peep.json"))
     files_changed = prov_total = chap_total = stubs = 0
     for p in peeps:
-        prov, chap = backfill_file(p)
+        prov, chap = backfill_file(p, write=write)
         if prov or chap:
             files_changed += 1
             prov_total += prov
             chap_total += chap
         else:
             stubs += 1
+    verb = "would stamp" if not write else "stamped"
+    if not write:
+        print("[DRY-RUN] previewing only — pass --apply to write")
     print(f"Scanned {len(peeps)} peep files")
-    print(f"  Files stamped:        {files_changed}")
-    print(f"  Provisions stamped:   {prov_total}")
-    print(f"  Chapters stamped:     {chap_total}")
+    print(f"  Files {verb}:        {files_changed}")
+    print(f"  Provisions {verb}:   {prov_total}")
+    print(f"  Chapters {verb}:     {chap_total}")
     print(f"  Unchanged (complete/stub): {stubs}")
+    if not write:
+        print(
+            f"[DRY-RUN] would stamp partOfAct on {prov_total} provisions + "
+            f"{chap_total} chapters across {files_changed} files; "
+            f"re-run with --apply to write."
+        )
     return 0
 
 

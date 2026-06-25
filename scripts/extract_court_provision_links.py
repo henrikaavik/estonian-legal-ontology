@@ -23,6 +23,7 @@ from typing import NamedTuple
 
 from estleg_common import (
     BODY_CANON,
+    ESTONIAN_MONTH_ALT,
     FULLNAME_GENITIVE,
     KNOWN_ABBREVIATIONS,
     PAR_SUFFIX,
@@ -50,6 +51,10 @@ KRR_DIR = REPO_ROOT / "krr_outputs"
 RK_DIR = KRR_DIR / "riigikohus"
 
 NS = "https://data.riik.ee/ontology/estleg#"
+
+# #602: named 2-digit-year century pivot (was a magic ``y > 50``). A 2-digit
+# year ``YY`` <= this maps to ``2000+YY``; above it maps to ``1900+YY``.
+TWO_DIGIT_YEAR_PIVOT = 50
 
 
 def expand_two_digit_year(
@@ -107,7 +112,15 @@ def expand_two_digit_year(
         if digits:
             y = int(digits)
             if y < 100:
-                return 1900 + y if y > 50 else 2000 + y
+                # #602: name the 2-digit-year century pivot. ``00..50`` →
+                # 2000s, ``51..99`` → 1900s. NB: this is deliberately a fixed
+                # legal-citation pivot, NOT one derived from the current year:
+                # Estonian court citations are historical and densest in the
+                # 1990s–2020s, so a current-year-derived pivot would wrongly
+                # demote 2-digit years in the high-20s..50 range to the 1900s.
+                return (
+                    2000 + y if y <= TWO_DIGIT_YEAR_PIVOT else 1900 + y
+                )
             return y
 
     # Strategy 3: nothing matched. Bump the counter (when provided)
@@ -154,8 +167,8 @@ PAT_KOV_ACT = re.compile(
     r"linnavolikogu|vallavolikogu))\s+"
     # Date: numeric d.m.y or long form with case-insensitive Estonian month.
     r"(?P<date>\d{1,2}\.\d{1,2}\.(?:\d{2}|\d{4})|"
-    r"\d{1,2}\.\s*(?i:jaanuari|veebruari|märtsi|aprilli|mai|juuni|juuli|"
-    r"augusti|septembri|oktoobri|novembri|detsembri)\s+\d{4})"
+    # #602: month alternation from shared ESTONIAN_MONTH_ALT.
+    rf"\d{{1,2}}\.\s*(?i:{ESTONIAN_MONTH_ALT})\s+\d{{4}})"
     # Optional " . " / " . a. " / " . aasta " between date and act marker.
     r"\.?\s*(?i:a\.?|aasta)?\s+"
     # Act marker, case-insensitive scope. Covers määrus / määruse / määrust / määrusega.

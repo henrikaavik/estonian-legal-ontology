@@ -28,6 +28,8 @@ from pathlib import Path
 
 from estleg_common import (
     BUILD_EVALUATION_DATE,
+    ESTONIAN_MONTH_ALT,
+    ESTONIAN_MONTHS_GENITIVE,
     FULLNAME_GENITIVE,
     KNOWN_ABBREVIATIONS,
     PAR_SUFFIX,
@@ -1128,13 +1130,11 @@ def extract_citations_from_text(text: str) -> list[dict]:
 # Preamble citation extraction (Layer 2b)
 # ----------------------------------------------------------------------
 
-# Estonian month name (genitive) → 2-digit month number.
-# All forms come from the spec text "<day>. <month-genitive> <year>".
-_ET_MONTHS = {
-    "jaanuari": "01", "veebruari": "02", "märtsi": "03", "aprilli": "04",
-    "mai": "05", "juuni": "06", "juuli": "07", "augusti": "08",
-    "septembri": "09", "oktoobri": "10", "novembri": "11", "detsembri": "12",
-}
+# Estonian month name (genitive) -> 2-digit month number. #602: the table
+# now aliases the single shared ``ESTONIAN_MONTHS_GENITIVE`` source of
+# truth (was a local copy duplicated across three extractors). The
+# ``_ET_MONTHS`` name is retained for the existing lookup call site.
+_ET_MONTHS = ESTONIAN_MONTHS_GENITIVE
 
 # Quote characters seen in the corpus around law names. The parser
 # strips these before matching the genitive form.
@@ -1280,10 +1280,11 @@ def _trim_preamble_prefix(law: str) -> str:
 #   - "19. detsembri 2019. a" (named-month genitive form)
 #   - "20.12.2007" (numeric DD.MM.YYYY)
 # määruse / määrusega — case form varies by sentence position.
+# #602: month alternation comes from the shared ESTONIAN_MONTH_ALT so it
+# can never drift from the _ET_MONTHS lookup table.
 _DATE_NAMED = (
     r"(?P<day_n>\d{1,2})\.\s*"
-    r"(?P<month>jaanuari|veebruari|märtsi|aprilli|mai|juuni|juuli|"
-    r"augusti|septembri|oktoobri|novembri|detsembri)\s+"
+    rf"(?P<month>{ESTONIAN_MONTH_ALT})\s+"
     r"(?P<year_n>\d{4})\.?\s*a?\.?"
 )
 _DATE_NUMERIC = (

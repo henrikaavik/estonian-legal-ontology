@@ -1468,3 +1468,33 @@ class TestIssue256MultiPartLaws:
             prefix_to_provisions,
         )
         assert resolved == ["estleg:Karistusseadustik_Par_121"]
+
+
+class TestIssue602MonthsAndYearPivot:
+    """#602 — the Estonian month table is hoisted to one shared source, and
+    the 2-digit-year century pivot is a named constant."""
+
+    def test_kov_act_regex_uses_shared_month_table(self):
+        import estleg_common
+        import extract_court_provision_links as cpl
+
+        # Every shared genitive month form must match in the KOV act pattern.
+        for month in estleg_common.ESTONIAN_MONTHS_GENITIVE:
+            text = f" Tallinna Linnavolikogu 12. {month} 2019 määrus nr 5"
+            assert cpl.PAT_KOV_ACT.search(text), month
+
+    def test_two_digit_year_pivot_is_named(self):
+        import extract_court_provision_links as cpl
+
+        assert cpl.TWO_DIGIT_YEAR_PIVOT == 50
+        # Boundary behaviour: <= pivot → 2000s, > pivot → 1900s.
+        assert cpl.expand_two_digit_year("01.01.09") == 2009
+        assert cpl.expand_two_digit_year("01.01.50") == 2050
+        assert cpl.expand_two_digit_year("01.01.51") == 1951
+        assert cpl.expand_two_digit_year("01.01.95") == 1995
+
+    def test_four_digit_year_unchanged(self):
+        import extract_court_provision_links as cpl
+
+        assert cpl.expand_two_digit_year("18. juuni 2019") == 2019
+        assert cpl.expand_two_digit_year("14.05.2009") == 2009

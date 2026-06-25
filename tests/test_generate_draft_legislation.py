@@ -393,3 +393,49 @@ class TestDetectAffectedLawsYearPrefix:
         # genitive detection.
         result = detect_affected_laws("Riigi Teataja seaduse muutmise seadus")
         assert any("riigi teataja seaduse" in name.lower() for name in result)
+
+
+class TestClassifyDraftTypeRegulationBeforeBill:
+    """#599 — `määrus`/`korraldus` form keywords must be checked BEFORE the
+    broad ``seadus`` substring. A regulation draft routinely embeds its
+    enabling law's name (``... seaduse alusel`` / ``... seaduse muutmine``),
+    which previously matched the ``seadus`` arm first and mis-typed the
+    regulation as a Bill / AmendmentBill (a regulation is legally not a bill,
+    and the mis-type also routes it past bill-only impact analysis)."""
+
+    def test_ministerial_regulation_with_enabling_law_is_not_bill(self):
+        type_id, _label = classify_draft_type(
+            "Sotsiaalministri määrus X seaduse alusel"
+        )
+        assert type_id == "MinisterialRegulation", type_id
+
+    def test_government_regulation_amending_law_is_not_amendmentbill(self):
+        # "... määruse ja Y seaduse muutmine" contains both "määrus" and
+        # "seadus" + "muutmi"; the regulation arm must win.
+        type_id, _label = classify_draft_type(
+            "Vabariigi Valitsuse määruse ja Y seaduse muutmine"
+        )
+        assert type_id == "GovernmentRegulation", type_id
+
+    def test_bare_regulation_title_is_regulation(self):
+        type_id, _label = classify_draft_type(
+            "Mingi valdkonna korraldamise määrus"
+        )
+        assert type_id == "Regulation", type_id
+
+    def test_korraldus_with_seadus_reference_is_order(self):
+        type_id, _label = classify_draft_type(
+            "Vabariigi Valitsuse korraldus seaduse alusel"
+        )
+        assert type_id == "GovernmentOrder", type_id
+
+    def test_plain_bill_still_classifies_as_bill(self):
+        # Regression: a genuine bill (no määrus/korraldus) must still be Bill.
+        type_id, _label = classify_draft_type("Kliimaseaduse eelnõu")
+        assert type_id == "Bill", type_id
+
+    def test_plain_amendment_bill_still_classifies(self):
+        type_id, _label = classify_draft_type(
+            "Tulumaksuseaduse muutmise seaduse eelnõu"
+        )
+        assert type_id == "AmendmentBill", type_id

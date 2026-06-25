@@ -1814,6 +1814,173 @@ class TestFetchXmlTidCache:
         assert root is not None
 
 
+class TestFetchXmlCacheThresholdAndValidation:
+    """#601 — one shared min-size floor for download AND cache-accept (so a
+    written file is always re-accepted, no infinite refetch), plus rejection
+    of an HTML/error root that parses as XML."""
+
+    def _resp(self, text: str):
+        class _Resp:
+            encoding = "utf-8"
+
+            def __init__(self, body: str) -> None:
+                self.text = body
+
+            def raise_for_status(self):
+                pass
+
+        return _Resp(text)
+
+    def test_written_cache_file_is_reaccepted_no_refetch(
+        self, tmp_path, monkeypatch
+    ):
+        # A small-but-valid response just above MIN_XML_BYTES must be cached
+        # AND re-read without a second network call. Previously a 200–1000
+        # byte file was written but never re-accepted (refetched forever).
+        data_dir = tmp_path / "data" / "riigiteataja"
+        data_dir.mkdir(parents=True)
+        monkeypatch.setattr(generate_all_laws, "DATA_DIR", data_dir)
+
+        body = "<?xml version='1.0'?><akt><!-- " + ("x" * 400) + " --></akt>"
+        assert generate_all_laws.MIN_XML_BYTES < len(body) < 1000
+
+        calls = {"n": 0}
+
+        def _get(*a, **kw):
+            calls["n"] += 1
+            return self._resp(body)
+
+        monkeypatch.setattr(generate_all_laws.requests, "get", _get)
+
+        first = generate_all_laws.fetch_xml("/akt/x.xml", "slugA", tid="7")
+        second = generate_all_laws.fetch_xml("/akt/x.xml", "slugA", tid="7")
+        assert first is not None and second is not None
+        assert calls["n"] == 1, "second call must be served from cache"
+
+    def test_html_error_page_is_not_cached(self, tmp_path, monkeypatch):
+        # An >threshold HTML error page that still parses as XML must be
+        # rejected (return None) and never written to the cache.
+        data_dir = tmp_path / "data" / "riigiteataja"
+        data_dir.mkdir(parents=True)
+        monkeypatch.setattr(generate_all_laws, "DATA_DIR", data_dir)
+
+        html = "<html><body>" + ("error " * 100) + "</body></html>"
+        monkeypatch.setattr(
+            generate_all_laws.requests, "get", lambda *a, **kw: self._resp(html)
+        )
+        root = generate_all_laws.fetch_xml("/akt/x.xml", "slugB", tid="1")
+        assert root is None
+        assert list(data_dir.glob("*.xml")) == []
+
+    def test_cached_html_root_is_treated_as_miss(self, tmp_path, monkeypatch):
+        # A pre-existing cached HTML file must not be trusted; with no
+        # network available the call returns None rather than the error page.
+        data_dir = tmp_path / "data" / "riigiteataja"
+        data_dir.mkdir(parents=True)
+        (data_dir / "slugC.xml").write_text(
+            "<html>" + ("x" * 1500) + "</html>", encoding="utf-8"
+        )
+        monkeypatch.setattr(generate_all_laws, "DATA_DIR", data_dir)
+
+        def _bad_get(*a, **kw):
+            raise AssertionError("network used")
+
+        monkeypatch.setattr(generate_all_laws.requests, "get", _bad_get)
+        # No tid → only the legacy slug file is consulted; it is HTML, so it
+        # must be rejected. The network is stubbed to fail, so fetch reports
+        # the failure and returns None (never the HTML root).
+        assert generate_all_laws.fetch_xml("/akt/x.xml", "slugC") is None
+
+
+class TestSaveJsonAtomic:
+    """#601 — the local save_json must write atomically (tempfile +
+    os.replace) so a crash mid-dump cannot leave a half-written file."""
+
+    def test_save_json_roundtrips(self, tmp_path):
+        out = tmp_path / "x_peep.json"
+        generate_all_laws.save_json(out, {"@graph": [{"@id": "estleg:X"}]})
+        assert json.loads(out.read_text(encoding="utf-8")) == {
+            "@graph": [{"@id": "estleg:X"}]
+        }
+
+    def test_failed_dump_leaves_no_tmp_and_no_partial(self, tmp_path, monkeypatch):
+        out = tmp_path / "x_peep.json"
+        out.write_text('{"old": true}', encoding="utf-8")
+
+        # A non-serialisable payload makes json.dump raise mid-write.
+        class _Bad:
+            pass
+
+        with pytest.raises(TypeError):
+            generate_all_laws.save_json(out, {"bad": _Bad()})
+
+        # The original file is untouched (atomic replace never happened)...
+        assert json.loads(out.read_text(encoding="utf-8")) == {"old": True}
+        # ...and no .tmp dropping is left behind.
+        assert not list(tmp_path.glob("*.tmp"))
+
+
+class TestStructuralStalenessGuard:
+    """#594 — a zero-paragraph parse must only become a stub when the act is
+    GENUINELY body-less; a degraded/foreign parse (root carries block tags
+    but no paragrahv, or a structured peep already exists) must NOT be
+    laundered into a sticky body-less stub."""
+
+    def test_root_with_block_tags_but_no_paragraph_is_degraded(self):
+        root = ET.fromstring("<akt><peatykk><pealkiri>X</pealkiri></peatykk></akt>")
+        assert generate_all_laws.xml_root_has_structure(root) is True
+
+    def test_genuinely_bodyless_root_has_no_structure(self):
+        root = ET.fromstring("<akt><metaandmed><pealkiri>X</pealkiri></metaandmed></akt>")
+        assert generate_all_laws.xml_root_has_structure(root) is False
+
+    def test_loige_only_root_is_degraded(self):
+        root = ET.fromstring("<akt><loige>tekst</loige></akt>")
+        assert generate_all_laws.xml_root_has_structure(root) is True
+
+    def test_existing_structured_peep_detected(self, tmp_path):
+        peep = tmp_path / "law_peep.json"
+        peep.write_text(
+            json.dumps(
+                {
+                    "@graph": [
+                        {"@id": "estleg:X_Map_2026", "@type": ["owl:Ontology"]},
+                        {
+                            "@id": "estleg:X_Par_1",
+                            "@type": ["estleg:LegalProvision"],
+                        },
+                    ]
+                }
+            ),
+            encoding="utf-8",
+        )
+        assert generate_all_laws.existing_peep_is_structured(peep) is True
+
+    def test_existing_stub_peep_is_not_structured(self, tmp_path):
+        peep = tmp_path / "law_peep.json"
+        peep.write_text(
+            json.dumps(
+                {
+                    "@graph": [
+                        {
+                            "@id": "estleg:X_Map_2026",
+                            "@type": ["owl:Ontology", "estleg:Act", "estleg:Law"],
+                            "estleg:contentStatus": "noStructuredBody",
+                        }
+                    ]
+                }
+            ),
+            encoding="utf-8",
+        )
+        assert generate_all_laws.existing_peep_is_structured(peep) is False
+
+    def test_missing_peep_is_not_structured(self, tmp_path):
+        assert (
+            generate_all_laws.existing_peep_is_structured(tmp_path / "nope.json")
+            is False
+        )
+
+
 # ---------------------------------------------------------------------------
 # Issue #114 — fail on source-list fetch failure; per-page counters; the
 # index/manifest must never look "complete" after a truncated enumeration.
@@ -2621,6 +2788,76 @@ class TestRerunNoOpAndStaleRefresh:
         )
         assert second_acts == first_acts
         assert second["source"].get("replayedFromManifest") == str(manifest_path)
+
+
+def _degraded_block_only_law_xml() -> str:
+    """A >threshold law XML whose body carries block tags (peatykk/loige) but
+    ZERO ``paragrahv`` — simulates a future RT paragraph-tag rename or a
+    partial fetch. ``par_count == 0`` here must be treated as degraded, not as
+    a genuinely body-less act (#594)."""
+    pad = "<!-- " + ("x" * 1500) + " -->"
+    return (
+        f"<?xml version='1.0' encoding='utf-8'?>{pad}"
+        f"<akt><sisu><peatykk><peatykkNr>1</peatykkNr>"
+        f"<peatykkPealkiri>Peatykk</peatykkPealkiri>"
+        f"<loige><loigeNr>1</loigeNr><tavatekst>Tekst.</tavatekst></loige>"
+        f"</peatykk></sisu></akt>"
+    )
+
+
+class TestStructuralStalenessGuardEndToEnd:
+    """#594 — driving main() in ``force`` mode over a degraded parse of a
+    previously-structured law must NOT overwrite the structured peep with a
+    body-less stub; the act is recorded ``failed`` so a later run retries."""
+
+    def test_degraded_parse_does_not_clobber_structured_peep(
+        self, tmp_path, monkeypatch
+    ):
+        title = "Esimene seadus"
+        krr = TestRerunNoOpAndStaleRefresh()._wire(
+            tmp_path, monkeypatch,
+            titles_to_xml={title: _padded_law_xml(paragraphs=[1, 2])},
+        )
+        slug = generate_all_laws.slugify(title)
+        peep = krr / f"{slug}_peep.json"
+
+        # Round 1: structured generation.
+        monkeypatch.setattr(generate_all_laws, "parse_args", lambda: _RerunArgs())
+        generate_all_laws._used_prefixes.clear()
+        generate_all_laws.main()
+        assert peep.exists()
+        assert generate_all_laws.existing_peep_is_structured(peep) is True
+        structured_bytes = peep.read_bytes()
+
+        # Replace the cached XML for this law with a degraded (block-only,
+        # zero-paragraph) body, then force a regeneration.
+        data_dir = generate_all_laws.DATA_DIR
+        for cache in data_dir.glob(f"{slug}*.xml"):
+            cache.write_text(_degraded_block_only_law_xml(), encoding="utf-8")
+
+        class _ForceArgs(_RerunArgs):
+            missing_only = False
+            force = True
+
+        monkeypatch.setattr(generate_all_laws, "parse_args", lambda: _ForceArgs())
+        generate_all_laws._used_prefixes.clear()
+        generate_all_laws.main()
+
+        # The structured peep must be byte-for-byte untouched (no stub write).
+        assert peep.read_bytes() == structured_bytes
+        assert generate_all_laws.existing_peep_is_structured(peep) is True
+
+        # The manifest records the act as failed (so missing-only retries),
+        # not as a stub.
+        manifest = json.loads(
+            (krr / "generation_manifest_laws.json").read_text("utf-8")
+        )
+        statuses = {
+            e["title"]: e.get("status")
+            for e in manifest["outputsAll"]
+            if e.get("title") == title
+        }
+        assert statuses.get(title) == "failed", statuses
 
 
 class TestRegenState:

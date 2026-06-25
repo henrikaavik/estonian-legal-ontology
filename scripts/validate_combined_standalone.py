@@ -35,6 +35,16 @@ Findings are grouped by (focus-node type, missing path, whether the focus node
 is an `estleg:isStubNode`), with a few example IDs per group, so the report
 points straight at the builder bug.
 
+SHACL min-count shapes alone cannot catch a class that has *vanished* from the
+combined artifact: with zero instances present, a `sh:minCount` shape simply has
+no focus nodes and reports clean — a false PASS. So on top of the SHACL run this
+gate also enforces a per-class minimum INSTANCE-COUNT floor (`EXPECTED_CLASS_FLOORS`)
+for the bulk classes that must be merged into the standalone artifact
+(`estleg:ProvisionVersion`, `estleg:AmendmentEvent`). The floors are deliberately
+loose anti-regression sanity floors — well below the sidecar census, well above a
+broken near-zero count — not parity counts; see the constant for the numbers and
+their provenance (#568).
+
 Exit codes: 0 = clean, 1 = combined-only violations remain, 2 = load/parse/shapes
 failure.
 """
@@ -59,6 +69,27 @@ DEFAULT_SHAPES = REPO / "shacl"
 
 NS = estleg_common.NS
 SHACL_NS = "http://www.w3.org/ns/shacl#"
+
+# Per-class minimum INSTANCE-COUNT floors for the standalone combined artifact
+# (#568). These are bulk classes whose sidecars MUST be merged into combined; a
+# SHACL min-count shape cannot detect their *absence* (zero focus nodes => clean),
+# so a thin/vanished class would otherwise ship a false PASS. The floors are
+# DELIBERATELY LOOSE anti-regression sanity floors, NOT parity counts: each is set
+# well below the sidecar census but well above the broken near-zero state, so the
+# gate trips hard on "vanished to a handful" without being brittle to normal
+# corpus growth/shrinkage.
+#
+# Only classes that are DELIBERATELY merged into combined get a floor.
+# estleg:AmendmentEvent IS merged (the amendments overlay, ~16,050 after the P0
+# merge; historically ~1 — floor 1,000 fails the old near-zero state and passes
+# once merged). estleg:ProvisionVersion is intentionally NOT floored: the version
+# layer is a SEPARATE load surface (hasVersion is stripped from combined, #561),
+# so ProvisionVersion is correctly ~0 in combined — a floor there would falsely
+# fail the by-design state. The combined-standalone gate validates combined; the
+# version layer is validated via validate_seadusloome_sync's full surface.
+EXPECTED_CLASS_FLOORS: dict[str, int] = {
+    "estleg:AmendmentEvent": 1000,
+}
 
 
 def _compact_path(path_term) -> str:
@@ -93,8 +124,37 @@ def _is_stub(data_graph, focus_node) -> bool:
     return bool(value) and str(value).lower() in {"true", "1"}
 
 
-def evaluate(combined_path: Path, shapes_dir: Path = DEFAULT_SHAPES) -> dict:
+def _class_floor_failures(data_graph, class_floors: dict[str, int]) -> list[dict]:
+    """Return floor failures for classes under-represented in ``data_graph``.
+
+    For each ``estleg:`` class in ``class_floors``, count distinct typed
+    subjects in the parsed combined graph (exact, independent of JSON-LD
+    compaction) and emit a ``{class, count, floor}`` row for every class whose
+    instance count is below its floor. An empty list means every expected class
+    clears its sanity floor.
+    """
+    import rdflib
+
+    failures: list[dict] = []
+    for class_curie, floor in sorted(class_floors.items()):
+        local = class_curie.split(":", 1)[-1]
+        class_iri = rdflib.URIRef(NS + local)
+        count = len(set(data_graph.subjects(rdflib.RDF.type, class_iri)))
+        if count < floor:
+            failures.append({"class": class_curie, "count": count, "floor": floor})
+    return failures
+
+
+def evaluate(
+    combined_path: Path,
+    shapes_dir: Path = DEFAULT_SHAPES,
+    class_floors: dict[str, int] | None = None,
+) -> dict:
     """Run combined-only SHACL and return a structured findings summary.
+
+    ``class_floors`` maps an ``estleg:`` class to its minimum instance-count
+    floor; it defaults to the module-level :data:`EXPECTED_CLASS_FLOORS`. Pass
+    ``{}`` to disable the floor check (tiny synthetic fixtures use this).
 
     Returns a dict with:
       * ``status``: ``"ok"`` | ``"violations"`` | ``"error"``
@@ -104,8 +164,18 @@ def evaluate(combined_path: Path, shapes_dir: Path = DEFAULT_SHAPES) -> dict:
         source_shape, severity}`` rows, sorted by descending count
       * ``skipped_exempt``: count of results suppressed because their path is
         a ``graphClosureExempt`` controlled-vocabulary predicate
+      * ``class_floor_failures``: list of ``{class, count, floor}`` rows for
+        every expected bulk class present below its sanity floor (#568); a
+        non-empty list forces a non-``ok`` status
+
+    ``status`` is ``"violations"`` when EITHER ``total`` SHACL violations OR
+    ``class_floor_failures`` is non-empty; ``"error"`` stays reserved for
+    load/parse/shapes failures, which never compute floors.
     """
     import rdflib
+
+    if class_floors is None:
+        class_floors = EXPECTED_CLASS_FLOORS
 
     if not combined_path.exists():
         return {
@@ -203,12 +273,21 @@ def evaluate(combined_path: Path, shapes_dir: Path = DEFAULT_SHAPES) -> dict:
     rows.sort(key=lambda r: (-r["count"], r["focus_type"], r["path"]))
 
     total = sum(r["count"] for r in rows)
+
+    # Sanity-floor check (#568): a vanished/thin bulk class produces zero SHACL
+    # focus nodes and would otherwise pass clean. Computed ONLY here on the
+    # success path, where data_graph is fully parsed — never in the error paths.
+    class_floor_failures = _class_floor_failures(data_graph, class_floors)
+
     return {
-        "status": "violations" if total else "ok",
+        # Any SHACL violation OR any class below its floor is a failing combined
+        # artifact; "error" is reserved for load/parse/shapes failures above.
+        "status": "violations" if (total or class_floor_failures) else "ok",
         "errors": [],
         "total": total,
         "groups": rows,
         "skipped_exempt": skipped_exempt,
+        "class_floor_failures": class_floor_failures,
     }
 
 
@@ -234,29 +313,44 @@ def format_report(summary: dict) -> list[str]:
             )
         return lines
 
-    lines.append(
-        f"AGGREGATE-ARTIFACT (combined-only) SHACL findings: {summary['total']} "
-        f"violation(s) in krr_outputs/combined_ontology.jsonld."
-    )
-    lines.append(
-        "  These are findings against the STANDALONE combined artifact (no sibling "
-        "sub-corpora loaded). The fix is to regenerate combined via "
-        "scripts/fix_all_issues.py (generate_combined_jsonld) — do NOT relax or "
-        "suppress SHACL."
-    )
-    if skipped:
+    # Floor failures are the headline finding: a bulk class is missing from the
+    # standalone artifact, which SHACL min-count alone cannot surface (#568).
+    floor_failures = summary.get("class_floor_failures", [])
+    for failure in floor_failures:
         lines.append(
-            f"  ({skipped} missing graphClosureExempt classifier(s) on closure "
-            f"stubs skipped as controlled-vocabulary links, not graph edges.)"
+            f"AGGREGATE-ARTIFACT floor check: {failure['class']} present "
+            f"{failure['count']}x but expected >= {failure['floor']} — the combined "
+            f"artifact is missing this class (merge the sidecar via "
+            f"scripts/fix_all_issues.py)."
         )
-    lines.append("  Grouped (count x focus_type path=<path> stub=<bool>):")
-    for row in summary["groups"]:
-        examples = ", ".join(row["examples"]) if row["examples"] else "(no focus nodes)"
+
+    # SHACL violations, if any, are reported alongside the floor findings.
+    if summary["total"]:
         lines.append(
-            f"    {row['count']}x [{row['focus_type']}] path={row['path']} "
-            f"stub={row['is_stub']} severity={row['severity']} "
-            f"shape={row['source_shape']} e.g. {examples}"
+            f"AGGREGATE-ARTIFACT (combined-only) SHACL findings: {summary['total']} "
+            f"violation(s) in krr_outputs/combined_ontology.jsonld."
         )
+        lines.append(
+            "  These are findings against the STANDALONE combined artifact (no "
+            "sibling sub-corpora loaded). The fix is to regenerate combined via "
+            "scripts/fix_all_issues.py (generate_combined_jsonld) — do NOT relax or "
+            "suppress SHACL."
+        )
+        if skipped:
+            lines.append(
+                f"  ({skipped} missing graphClosureExempt classifier(s) on closure "
+                f"stubs skipped as controlled-vocabulary links, not graph edges.)"
+            )
+        lines.append("  Grouped (count x focus_type path=<path> stub=<bool>):")
+        for row in summary["groups"]:
+            examples = (
+                ", ".join(row["examples"]) if row["examples"] else "(no focus nodes)"
+            )
+            lines.append(
+                f"    {row['count']}x [{row['focus_type']}] path={row['path']} "
+                f"stub={row['is_stub']} severity={row['severity']} "
+                f"shape={row['source_shape']} e.g. {examples}"
+            )
     return lines
 
 
@@ -274,6 +368,15 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         default=DEFAULT_SHAPES,
         help=f"SHACL shapes directory (default: {DEFAULT_SHAPES}).",
     )
+    parser.add_argument(
+        "--no-floor",
+        action="store_true",
+        help=(
+            "Disable the per-class minimum instance-count sanity floors "
+            f"({', '.join(EXPECTED_CLASS_FLOORS)}); SHACL-only run. Intended for "
+            "validating partial/sub-set artifacts, not the full combined gate."
+        ),
+    )
     return parser.parse_args(argv)
 
 
@@ -283,7 +386,8 @@ def main(argv: list[str] | None = None) -> int:
         f"Validating {args.combined.name} ALONE (combined-only load surface) "
         f"against {args.shapes_dir}/ ..."
     )
-    summary = evaluate(args.combined, args.shapes_dir)
+    class_floors = {} if args.no_floor else EXPECTED_CLASS_FLOORS
+    summary = evaluate(args.combined, args.shapes_dir, class_floors=class_floors)
     for line in format_report(summary):
         print(line)
     if summary["status"] == "error":

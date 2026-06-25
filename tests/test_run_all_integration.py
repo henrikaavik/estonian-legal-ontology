@@ -20,6 +20,7 @@ import subprocess
 import sys
 from pathlib import Path
 from typing import Iterable
+from unittest import mock
 
 import pytest
 
@@ -764,3 +765,249 @@ class TestSerialBreakOnFailureDrainsTail:
         assert statuses["s2.py"] == "not_reached"
         assert statuses["s3.py"] == "not_reached"
         assert len(res["ledger"]) == len(topo)
+
+
+# ---------------------------------------------------------------------------
+# Finding #603 — --validate-only must reject a STALE combined artifact
+# ---------------------------------------------------------------------------
+
+
+class TestCombinedStalenessGuard:
+    """``--release --validate-only`` never rebuilds ``combined_ontology.jsonld``
+    / ``INDEX.json``. ``_combined_staleness_error`` is the backstop: if a
+    ``*_peep.json`` was enriched since the last combined build, it must report
+    staleness so main() fails fast instead of stamping ``releaseOk:true`` on a
+    stale combined."""
+
+    def _seed_combined_tree(self, krr: Path) -> tuple[Path, Path, Path]:
+        """Write a peep + combined + INDEX and return their paths."""
+        peep = krr / "laws" / "foo_peep.json"
+        combined = krr / "combined_ontology.jsonld"
+        index = krr / "INDEX.json"
+        _write_tree(
+            krr,
+            [
+                ("laws/foo_peep.json", '{"@id": "estleg:Foo"}'),
+                ("combined_ontology.jsonld", '{"@graph": []}'),
+                ("INDEX.json", '{"laws": []}'),
+            ],
+        )
+        return peep, combined, index
+
+    def _set_mtime(self, path: Path, mtime: float) -> None:
+        """Pin both atime and mtime of ``path`` to ``mtime``."""
+        os.utime(path, (mtime, mtime))
+
+    def test_returns_none_when_combined_newer_than_all_peeps(
+        self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        krr = tmp_path / "krr_outputs"
+        peep, combined, index = self._seed_combined_tree(krr)
+        # Make the derived artifacts strictly newer than the peep source.
+        self._set_mtime(peep, 1_000.0)
+        self._set_mtime(combined, 2_000.0)
+        self._set_mtime(index, 2_000.0)
+
+        monkeypatch.setattr(run_all_integration, "KRR_DIR", krr, raising=True)
+        assert run_all_integration._combined_staleness_error() is None
+
+    def test_flags_staleness_when_a_peep_is_newer(
+        self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        krr = tmp_path / "krr_outputs"
+        peep, combined, index = self._seed_combined_tree(krr)
+        # Combined/INDEX were built, THEN the peep was enriched (future mtime).
+        self._set_mtime(combined, 1_000.0)
+        self._set_mtime(index, 1_000.0)
+        self._set_mtime(peep, 5_000.0)
+
+        monkeypatch.setattr(run_all_integration, "KRR_DIR", krr, raising=True)
+        err = run_all_integration._combined_staleness_error()
+        assert err is not None
+        assert "stale" in err
+        # It names the derived artifact and points at the newer source.
+        assert "combined_ontology.jsonld" in err
+        assert "foo_peep.json" in err
+
+    def test_flags_staleness_for_overlay_peep_via_rglob(
+        self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        """The source set is recursive: a newer *subcorpus* overlay peep
+        (not just a root peep) must also trip the guard."""
+        krr = tmp_path / "krr_outputs"
+        _, combined, index = self._seed_combined_tree(krr)
+        overlay = krr / "eurlex" / "32016_peep.json"
+        _write_tree(krr, [("eurlex/32016_peep.json", '{"@id": "estleg:Dir"}')])
+        self._set_mtime(combined, 1_000.0)
+        self._set_mtime(index, 1_000.0)
+        self._set_mtime(krr / "laws" / "foo_peep.json", 1_000.0)
+        self._set_mtime(overlay, 9_000.0)
+
+        monkeypatch.setattr(run_all_integration, "KRR_DIR", krr, raising=True)
+        err = run_all_integration._combined_staleness_error()
+        assert err is not None and "stale" in err
+
+    def test_same_second_tie_is_not_stale(
+        self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        """A same-second filesystem tie (e.g. a fresh checkout) must NOT be
+        flagged — the guard uses ``<``, not ``<=``."""
+        krr = tmp_path / "krr_outputs"
+        peep, combined, index = self._seed_combined_tree(krr)
+        for p in (peep, combined, index):
+            self._set_mtime(p, 3_000.0)
+
+        monkeypatch.setattr(run_all_integration, "KRR_DIR", krr, raising=True)
+        assert run_all_integration._combined_staleness_error() is None
+
+    def test_missing_combined_is_an_error(
+        self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        krr = tmp_path / "krr_outputs"
+        # Peep + INDEX present, but no combined artifact at all.
+        _write_tree(
+            krr,
+            [
+                ("laws/foo_peep.json", '{"@id": "estleg:Foo"}'),
+                ("INDEX.json", '{"laws": []}'),
+            ],
+        )
+        monkeypatch.setattr(run_all_integration, "KRR_DIR", krr, raising=True)
+        err = run_all_integration._combined_staleness_error()
+        assert err is not None
+        assert "missing" in err
+        assert "combined_ontology.jsonld" in err
+
+    def test_missing_index_is_an_error(
+        self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        krr = tmp_path / "krr_outputs"
+        _write_tree(
+            krr,
+            [
+                ("laws/foo_peep.json", '{"@id": "estleg:Foo"}'),
+                ("combined_ontology.jsonld", '{"@graph": []}'),
+            ],
+        )
+        monkeypatch.setattr(run_all_integration, "KRR_DIR", krr, raising=True)
+        err = run_all_integration._combined_staleness_error()
+        assert err is not None
+        assert "missing" in err
+        assert "INDEX.json" in err
+
+    def test_no_peeps_is_not_an_error(
+        self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        """With no corpus to validate against there is nothing to declare
+        stale — the guard returns None (the validators themselves will flag
+        an empty corpus)."""
+        krr = tmp_path / "krr_outputs"
+        krr.mkdir(parents=True)
+        monkeypatch.setattr(run_all_integration, "KRR_DIR", krr, raising=True)
+        assert run_all_integration._combined_staleness_error() is None
+
+
+# ---------------------------------------------------------------------------
+# Finding #593 — release build must be interrupt-safe (restore on Ctrl-C)
+# ---------------------------------------------------------------------------
+
+
+class TestReleaseInterruptSafety:
+    """A KeyboardInterrupt escaping ``run_dag`` must restore the pristine
+    snapshot before propagating, so krr_outputs/ is never left partially
+    mutated with the backup orphaned."""
+
+    def test_restore_recovers_partially_mutated_tree(
+        self, fake_krr: Path
+    ) -> None:
+        """The restore primitive the except path relies on must reinstate the
+        original even after the live tree was partially mutated mid-build."""
+        before = _read_tree(fake_krr)
+        backup = run_all_integration.snapshot_outputs()
+
+        # Mimic a partial build that was interrupted: a peep was rewritten,
+        # a half-written artifact appeared, and another file was deleted.
+        (fake_krr / "laws" / "foo_peep.json").write_text(
+            '{"@id": "estleg:HalfWritten"}', encoding="utf-8"
+        )
+        (fake_krr / "combined_ontology.jsonld").write_text(
+            "<<partial>>", encoding="utf-8"
+        )
+        (fake_krr / "regulations" / "bar_peep.json").unlink()
+
+        run_all_integration.restore_outputs(backup)
+
+        assert _read_tree(fake_krr) == before, (
+            "restore must reinstate the pristine tree over a partial build"
+        )
+        assert not backup.exists(), "consumed backup must not linger"
+
+    def test_main_restores_snapshot_when_run_dag_interrupted(
+        self, fake_krr: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        """Drive main() far enough to prove the except path fires: run_dag
+        raises KeyboardInterrupt, and restore_outputs must be called exactly
+        once with the snapshot before the interrupt propagates."""
+        fake_backup = fake_krr.parent / "fake.bak"
+
+        monkeypatch.setattr(
+            run_all_integration, "snapshot_outputs",
+            lambda: fake_backup, raising=True,
+        )
+
+        def boom_run_dag(*args, **kwargs):
+            raise KeyboardInterrupt()
+
+        monkeypatch.setattr(run_all_integration, "run_dag", boom_run_dag,
+                            raising=True)
+        restore_mock = mock.Mock()
+        monkeypatch.setattr(run_all_integration, "restore_outputs",
+                            restore_mock, raising=True)
+        # No script/validator subprocess should be reached before the raise.
+        monkeypatch.setattr(
+            run_all_integration.subprocess, "run",
+            lambda *a, **k: subprocess.CompletedProcess(args=a, returncode=0),
+        )
+        monkeypatch.setattr(
+            sys, "argv", ["run_all_integration.py", "--release"]
+        )
+
+        with pytest.raises(KeyboardInterrupt):
+            run_all_integration.main()
+
+        restore_mock.assert_called_once_with(fake_backup)
+
+    def test_main_does_not_restore_when_snapshot_disabled_on_interrupt(
+        self, fake_krr: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        """With ``--no-restore-on-failure`` there is no snapshot, so an
+        interrupt must propagate WITHOUT attempting a restore."""
+
+        def boom_run_dag(*args, **kwargs):
+            raise KeyboardInterrupt()
+
+        monkeypatch.setattr(run_all_integration, "run_dag", boom_run_dag,
+                            raising=True)
+        # If a snapshot is ever taken here it's a bug — restore would have a
+        # backup to act on. Guard by failing the snapshot call.
+        monkeypatch.setattr(
+            run_all_integration, "snapshot_outputs",
+            mock.Mock(side_effect=AssertionError("snapshot must be skipped")),
+            raising=True,
+        )
+        restore_mock = mock.Mock()
+        monkeypatch.setattr(run_all_integration, "restore_outputs",
+                            restore_mock, raising=True)
+        monkeypatch.setattr(
+            run_all_integration.subprocess, "run",
+            lambda *a, **k: subprocess.CompletedProcess(args=a, returncode=0),
+        )
+        monkeypatch.setattr(
+            sys, "argv",
+            ["run_all_integration.py", "--release", "--no-restore-on-failure"],
+        )
+
+        with pytest.raises(KeyboardInterrupt):
+            run_all_integration.main()
+
+        restore_mock.assert_not_called()

@@ -2330,3 +2330,27 @@ class TestAbbreviationMappingReport:
         )
         assert report["KarS"]["iri_prefixes"] == ["KARIST_2"]
         assert report["KarS"]["provision_count"] == 1
+
+
+class TestIssue602SharedMonthTable:
+    """#602 — extract_cross_references uses the single shared month table
+    (``ESTONIAN_MONTHS_GENITIVE``) for both the lookup dict and the date
+    regex alternation, so the two can never drift apart."""
+
+    def test_et_months_aliases_shared_table(self):
+        import estleg_common
+        import extract_cross_references as cr
+
+        assert cr._ET_MONTHS is estleg_common.ESTONIAN_MONTHS_GENITIVE
+
+    def test_named_date_regex_matches_all_shared_months(self):
+        import re
+
+        import estleg_common
+        import extract_cross_references as cr
+
+        for month, num in estleg_common.ESTONIAN_MONTHS_GENITIVE.items():
+            m = re.search(cr._DATE_NAMED, f"19. {month} 2019. a")
+            assert m is not None, month
+            assert m.group("month") == month
+            assert cr._ET_MONTHS[m.group("month")] == num
