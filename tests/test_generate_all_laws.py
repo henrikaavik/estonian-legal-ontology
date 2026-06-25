@@ -3801,11 +3801,15 @@ class TestSubsectionShaclConformance:
         ok, msg = _shacl_conforms(_doc(node))
         assert ok, msg
 
-    def test_subsection_missing_number_rejected(self):
+    def test_subsection_missing_number_accepted(self):
+        # #583: subsectionNumber is now OPTIONAL — a lõige whose number cannot be
+        # parsed legitimately has none (omitting it is honest; the former
+        # "Unknown_N" placeholder was fabricated). So a subsection without the
+        # number must CONFORM (the other required fields are still present).
         node = _well_formed_subsection()
         del node["estleg:subsectionNumber"]
         ok, _msg = _shacl_conforms(_doc(node))
-        assert not ok
+        assert ok, _msg
 
     def test_subsection_missing_legal_text_rejected(self):
         node = _well_formed_subsection()
