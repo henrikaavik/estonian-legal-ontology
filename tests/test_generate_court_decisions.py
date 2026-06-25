@@ -228,16 +228,17 @@ class TestDetectReferencedLaws:
         refs = gcd.detect_referenced_laws("VÕS § 100 ja KarS § 113 lg 1")
         assert refs == ["VÕS", "KarS"]
 
-    def test_genitive_law_form_is_lowercased(self) -> None:
-        """Pre-fix bug: ``Liiklusseaduse`` and ``liiklusseaduse`` would
-        appear as separate entries."""
+    def test_genitive_law_form_resolves_to_canonical_abbreviation(self) -> None:
+        """#596: a genitive law name resolves to its canonical abbreviation
+        instead of being emitted as a raw genitive dead-token. Both the
+        capitalised and lowercase genitive collapse to the same canonical."""
         refs = gcd.detect_referenced_laws(
             "Liiklusseaduse § 227 lg 2 ja liiklusseaduse § 228"
         )
-        # both genitive forms collapse into one entry
-        lowered = [r for r in refs if r.endswith("seaduse")]
-        assert len(lowered) == 1
-        assert lowered[0] == lowered[0].lower()
+        # Both genitive forms resolve to the single canonical abbreviation LS —
+        # no raw "...seaduse" genitive dead-token survives (#596).
+        assert "LS" in refs
+        assert not any(r.endswith("seaduse") for r in refs)
 
     def test_word_boundary_anchor_does_not_match_inside_other_words(
         self,

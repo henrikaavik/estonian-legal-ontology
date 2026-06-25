@@ -319,11 +319,14 @@ estleg:SubsectionShape
     sh:targetClass estleg:Subsection ;
     sh:property [
         sh:path estleg:subsectionNumber ;
-        sh:minCount 1 ;
+        # #583: optional. A lõige whose number cannot be parsed from the source
+        # legitimately has none — omitting it is honest, whereas the former
+        # "Unknown_N" placeholder (7,755 nodes) was a fabricated value. maxCount 1
+        # still forbids duplicates.
         sh:maxCount 1 ;
         sh:datatype xsd:string ;
         sh:name "subsectionNumber" ;
-        sh:description "The lõige number as a display string (e.g. \"2\", \"2¹\")." ;
+        sh:description "The lõige number as a display string (e.g. \"2\", \"2¹\"); absent when unparseable." ;
     ] ;
     sh:property [
         sh:path estleg:legalText ;

@@ -48,7 +48,7 @@ from pathlib import Path
 
 import requests
 
-from estleg_common import BUILD_EVALUATION_DATE
+from estleg_common import BUILD_EVALUATION_DATE, FULLNAME_GENITIVE
 
 try:  # Optional dep — falls back to regex parser when unavailable.
     from bs4 import BeautifulSoup  # type: ignore[import-not-found]
@@ -314,8 +314,11 @@ def detect_referenced_laws(summary: str) -> list[str]:
     Known abbreviations resolve through ``_LAW_ABBREV_LOOKUP`` so
     case variants collapse (e.g. ``Kars`` and ``KarS`` both become
     ``KarS``). Genitive long-form references (``liiklusseaduse``,
-    ``perekonnaseaduse``) are lowercased before deduplication so the
-    output is case-stable across runs.
+    ``perekonnaseaduse``) resolve through ``FULLNAME_GENITIVE`` to the
+    canonical abbreviation the IRI resolver uses (``liiklusseaduse`` →
+    ``LS``); a genitive with no table entry would only become a dead
+    token that joins to no ``interpretsLaw`` IRI, so it is dropped
+    rather than emitted verbatim (#596).
     """
     if not summary:
         return []
@@ -330,8 +333,10 @@ def detect_referenced_laws(summary: str) -> list[str]:
             refs.append(canonical)
 
     for match in _GENITIVE_LAW_PATTERN.finditer(summary):
-        canonical = match.group(1).lower()
-        if canonical not in seen:
+        # Resolve the genitive to its canonical abbreviation; drop forms
+        # FULLNAME_GENITIVE can't map (they never resolve to a law IRI).
+        canonical = FULLNAME_GENITIVE.get(match.group(1).lower())
+        if canonical and canonical not in seen:
             seen.add(canonical)
             refs.append(canonical)
 
