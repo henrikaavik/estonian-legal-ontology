@@ -154,6 +154,14 @@ STUB_KEEP_PROPS = (
     "estleg:eisLink",
     "estleg:curiaLink",
     "estleg:decisionDate",
+    # #618: court-interpretation staleness. Self-contained leaf literals on the
+    # court node (not estleg: object refs), so they survive onto the combined
+    # court stub like decisionDate/caseNumber above — making "is this precedent
+    # outdated?" answerable on the combined-only artifact. (The companion
+    # estleg:interpretsVersion is a version-layer object edge, stripped via
+    # COMBINED_STRIPPED_PREDICATES instead.)
+    "estleg:interpretationOutdated",
+    "estleg:earliestSupersedingDate",
     "estleg:publicationDate",
     "estleg:documentDate",
     "owl:sameAs",

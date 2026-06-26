@@ -651,6 +651,28 @@ estleg:CourtDecisionShape
         sh:name "interpretsLaw" ;
         sh:description """Provisions interpreted by this decision; for KOV citations the target may be a MunicipalRegulation act node when provision-level resolution is unavailable.""" ;
     ] ;
+    # Issue #618 (interpretation staleness). All optional — only decisions
+    # interpreting provisions that have version-sidecar data carry them.
+    sh:property [
+        sh:path estleg:interpretsVersion ;
+        sh:nodeKind sh:IRI ;
+        sh:name "interpretsVersion" ;
+        sh:description "estleg:ProvisionVersion(s) in force at the decision date for the provisions this decision interpreted (#618). Stripped from combined; resolves on the full seadusloome load surface." ;
+    ] ;
+    sh:property [
+        sh:path estleg:interpretationOutdated ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:boolean ;
+        sh:name "interpretationOutdated" ;
+        sh:description "True if at least one interpreted provision gained a later redaction after the decision date (#618)." ;
+    ] ;
+    sh:property [
+        sh:path estleg:earliestSupersedingDate ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:date ;
+        sh:name "earliestSupersedingDate" ;
+        sh:description "Earliest post-decision redaction date among the interpreted provisions (#618)." ;
+    ] ;
     sh:property [
         sh:path estleg:referencedLaw ;
         sh:datatype xsd:string ;
