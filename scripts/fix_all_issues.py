@@ -101,6 +101,10 @@ COMBINED_ALLOWED_JSONLD = (
     "controlled_vocabulary.jsonld",
     "karistusseadustik_eriosa_owl.jsonld",
     "tsus_osa7_138_169_owl.jsonld",
+    # #608: act-level FRBR Expression layer — addressable "law as of date D"
+    # nodes (estleg:ActExpression) materialized from the provision_versions/
+    # consolidation dates. A canonical merged input (not stubbed).
+    "act_expressions_combined.jsonld",
 )
 COMBINED_OUTPUT_NAME = "combined_ontology.jsonld"
 

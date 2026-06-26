@@ -7,7 +7,8 @@
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "dc": "http://purl.org/dc/elements/1.1/",
     "dcterms": "http://purl.org/dc/terms/",
-    "skos": "http://www.w3.org/2004/02/skos/core#"
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "eli": "http://data.europa.eu/eli/ontology#"
   },
   "@graph": [
     {
@@ -15,8 +16,67 @@
       "@type": [
         "owl:Class"
       ],
+      "rdfs:subClassOf": {
+        "@id": "eli:LegalResource"
+      },
       "rdfs:label": "Act",
-      "rdfs:comment": "Reusable class materialized for vocabulary coverage validation."
+      "rdfs:comment": "An Estonian or EU legislative act. In FRBR/ELI terms the act node is the Work (eli:LegalResource); its addressable point-in-time consolidations are estleg:ActExpression nodes (eli:LegalExpression) reachable via estleg:hasExpression (#608)."
+    },
+    {
+      "@id": "estleg:ActExpression",
+      "@type": [
+        "owl:Class"
+      ],
+      "rdfs:subClassOf": {
+        "@id": "eli:LegalExpression"
+      },
+      "rdfs:label": "Akti redaktsioon (Act Expression)",
+      "rdfs:comment": "An addressable consolidated expression of an act as in force from a given consolidation date — the FRBR Expression / ELI eli:LegalExpression of the act-as-Work (#608). One node per distinct redaction date in the act's provision_versions/ chains; it makes 'the law as of date D' a dereferenceable entity. The provisions in force at that date are the ProvisionVersion nodes whose versionValidFrom <= consolidationDate (resolved on the full load surface)."
+    },
+    {
+      "@id": "estleg:expressionOf",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:subPropertyOf": {
+        "@id": "eli:realizes"
+      },
+      "rdfs:label": "akti redaktsioon (expression of)",
+      "rdfs:comment": "Links an estleg:ActExpression to the act (Work) it consolidates (#608). Aligned to eli:realizes (Expression -> Work).",
+      "rdfs:domain": {
+        "@id": "estleg:ActExpression"
+      },
+      "rdfs:range": {
+        "@id": "estleg:Act"
+      }
+    },
+    {
+      "@id": "estleg:hasExpression",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:label": "on redaktsioon (has expression)",
+      "rdfs:comment": "Links an act (Work) to its point-in-time consolidations (estleg:ActExpression). Inverse of estleg:expressionOf (#608).",
+      "rdfs:domain": {
+        "@id": "estleg:Act"
+      },
+      "owl:inverseOf": {
+        "@id": "estleg:expressionOf"
+      }
+    },
+    {
+      "@id": "estleg:consolidationDate",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": "redaktsiooni kuupäev (consolidation date)",
+      "rdfs:comment": "The date from which an estleg:ActExpression's consolidated text is in force (#608) — the distinct redaction date drawn from the act's provision_versions/ chains.",
+      "rdfs:domain": {
+        "@id": "estleg:ActExpression"
+      },
+      "rdfs:range": {
+        "@id": "xsd:date"
+      }
     },
     {
       "@id": "estleg:AmendmentEvent",

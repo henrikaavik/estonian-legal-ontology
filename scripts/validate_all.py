@@ -45,6 +45,7 @@ COMBINED_ALLOWED_JSONLD = (
     "controlled_vocabulary.jsonld",
     "karistusseadustik_eriosa_owl.jsonld",
     "tsus_osa7_138_169_owl.jsonld",
+    "act_expressions_combined.jsonld",  # #608 FRBR Expression layer
 )
 
 # SHACL-sensitive provision fields that Seadusloome's ontology load path
