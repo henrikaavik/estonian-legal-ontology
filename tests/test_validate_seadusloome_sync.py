@@ -36,8 +36,8 @@ def _write_combined(krr_dir: Path, graph_nodes: list[dict]) -> None:
     requires that root to exist in the graph. A minimal ``estleg:Act`` node is
     appended for each referenced act IRI not already present, mirroring how the
     production combined graph always contains the act roots its provisions
-    point at. (ActTemporalShape constraints are all optional, so the stub Act
-    node conforms.)
+    point at. (The stub carries an ``rdfs:label`` so it satisfies the
+    ActTemporalShape label requirement — issue #570.)
     """
     krr_dir.mkdir(parents=True, exist_ok=True)
     nodes = list(graph_nodes)
@@ -50,7 +50,11 @@ def _write_combined(krr_dir: Path, graph_nodes: list[dict]) -> None:
         and "@id" in n["estleg:partOfAct"]
     }
     for act_iri in sorted(referenced_acts - present):
-        nodes.append({"@id": act_iri, "@type": ["owl:NamedIndividual", "estleg:Act"]})
+        nodes.append({
+            "@id": act_iri,
+            "@type": ["owl:NamedIndividual", "estleg:Act"],
+            "rdfs:label": "Test Act",
+        })
     payload = {"@context": CONTEXT, "@graph": nodes}
     (krr_dir / "combined_ontology.jsonld").write_text(
         json.dumps(payload), encoding="utf-8"
@@ -199,6 +203,7 @@ def test_act_without_subject_passes_optional_eurovoc_contract(tmp_path, capsys):
             {
                 "@id": "estleg:Act_Without_Subject",
                 "@type": ["estleg:Act"],
+                "rdfs:label": "Act Without Subject",
             }
         ],
     )
@@ -217,6 +222,7 @@ def test_non_eurovoc_subject_warns(tmp_path, capsys):
             {
                 "@id": "estleg:Act_With_Non_EuroVoc_Subject",
                 "@type": ["estleg:Act"],
+                "rdfs:label": "Act With Non EuroVoc Subject",
                 "dcterms:subject": {"@id": "http://example.com/topic"},
             }
         ],

@@ -97,6 +97,22 @@ estleg:ActTemporalShape
         sh:nodeKind sh:IRI ;
         sh:name "harmonisedWith" ;
         sh:description "Harmonisation record(s) (estleg:HarmonisationLink) for directives this act transposes that a Baltic/Nordic neighbour also transposed (issue #197)" ;
+    ] ;
+    # Issue #570: every statute root (estleg:Act, including the dual-typed
+    # estleg:Law roots) must carry a human-readable rdfs:label. ActTemporalShape
+    # was otherwise all-optional, leaving the top-level act node with no enforced
+    # label while the regulation/subsection shapes guarded everything below it.
+    # Verified against every SHACL bucket: all explicitly-typed estleg:Act
+    # statute roots carry rdfs:label, so this is a regression guard, not a data
+    # fix. (The cross-corpus reference stubs in the eurlex/harmonisation bucket
+    # are deliberately NOT RDFS-typed as estleg:Act — see the note on
+    # estleg:harmonises / estleg:transposedBy in controlled_vocabulary.jsonld —
+    # so they are not targeted here.)
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:name "label" ;
+        sh:description "Every statute root (Act/Law) must have a human-readable label" ;
     ] .
 
 # Shape for LegalProvision instances.
@@ -884,6 +900,12 @@ estleg:EUCourtDecisionShape
         sh:path estleg:ecliIdentifier ;
         sh:maxCount 1 ;
         sh:datatype xsd:string ;
+        # Issue #612: enforce the European Case Law Identifier (ECLI) syntax
+        # (Council 2011/C 127/01): ECLI:<country>:<court>:<year>:<ordinal>.
+        # No sh:minCount — the source genuinely lacks an ECLI for a small number
+        # of decisions and we do not fabricate one. Verified against the curia
+        # bucket: all 22,225 present ecliIdentifier values already match.
+        sh:pattern "^ECLI:[A-Z]{2}:[A-Za-z0-9]{1,7}:[0-9]{4}:[A-Za-z0-9.]{1,25}$" ;
         sh:name "ecliIdentifier" ;
         sh:description "ECLI identifier (e.g., ECLI:EU:C:2016:758)" ;
     ] ;

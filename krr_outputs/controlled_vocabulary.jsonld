@@ -2177,10 +2177,7 @@
         "owl:ObjectProperty"
       ],
       "rdfs:label": "Similar Target",
-      "rdfs:comment": "The target act of a reified estleg:Similarity link.",
-      "rdfs:range": {
-        "@id": "estleg:Act"
-      }
+      "rdfs:comment": "The target act of a reified estleg:Similarity link. NB: deliberately carries NO rdfs:range estleg:Act — the similarity records point at bare cross-reference act IRIs whose full, labelled node lives elsewhere in the corpus; under the SHACL buckets' rdfs inference an rdfs:range estleg:Act would RDFS-type those stubs as estleg:Act and trip the #570 ActTemporalShape rdfs:label requirement. The canonical typing comes from the act's own home-bucket node."
     },
     {
       "@id": "estleg:similarityModel",
@@ -2646,6 +2643,502 @@
         "@id": "xsd:gYear"
       },
       "rdfs:comment": "Year-precision publication year (xsd:gYear) for records whose exact publication date is unknown; emitted instead of a fabricated date (#571)."
+    },
+    {
+      "@id": "estleg:transposesDirective",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:label": "võtab üle direktiivi (transposes directive)",
+      "rdfs:comment": "Links an Estonian act to the EU directive it transposes. Canonical TBox declaration folded into the controlled vocabulary so the 376 EU-transposition assertions in combined_ontology.jsonld resolve their predicate (issue #563); previously defined only in krr_outputs/transposition_schema.json, which the combined builder does not merge. NB: deliberately carries NO rdfs:range estleg:EULegislation — in the laws SHACL bucket the directive objects are bare cross-reference IRIs (estleg:EU_<celex>) whose full, labelled node lives in the eurlex corpus; under rdfs inference an rdfs:range would RDFS-type those stubs as estleg:EULegislation and trip the EULegislationShape label/celexNumber/euDocumentType requirements.",
+      "rdfs:domain": {
+        "@id": "estleg:Act"
+      }
+    },
+    {
+      "@id": "estleg:transposedBy",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:label": "üle võetud (transposed by)",
+      "rdfs:comment": "Inverse of estleg:transposesDirective — links an EU directive to the national law that transposes it. Folded into the controlled vocabulary for issue #563. NB: deliberately carries NO rdfs:range estleg:Act here — in the eurlex/harmonisation SHACL bucket the national-law objects are bare cross-reference IRIs (their full, labelled node lives in the laws corpus), and an rdfs:range would RDFS-type those stubs as estleg:Act and trip the #570 ActTemporalShape label requirement. The canonical typing comes from the forward estleg:transposesDirective (rdfs:domain estleg:Act).",
+      "rdfs:domain": {
+        "@id": "estleg:EULegislation"
+      },
+      "owl:inverseOf": {
+        "@id": "estleg:transposesDirective"
+      }
+    },
+    {
+      "@id": "estleg:transpositionStatus",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": "ülevõtmise staatus (transposition status)",
+      "rdfs:comment": "Status of directive transposition: full, partial, or unknown. Folded into the controlled vocabulary for issue #563.",
+      "rdfs:domain": {
+        "@id": "estleg:Act"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "estleg:harmonisedWith",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:label": "harmoniseeritud (harmonised with)",
+      "rdfs:comment": "Links an Estonian law to a harmonisation record (estleg:HarmonisationLink) showing parallel implementations of the same EU directive in other member states. Folded into the controlled vocabulary for issue #563. NB: deliberately carries NO rdfs:range estleg:HarmonisationLink — in the laws SHACL bucket the record objects are bare cross-reference IRIs (estleg:Harmonisation_<celex>) whose full, labelled node lives in the harmonisation_by_directive/ corpus; under rdfs inference an rdfs:range would RDFS-type those stubs as estleg:HarmonisationLink and trip the HarmonisationLinkShape rdfs:label requirement.",
+      "rdfs:domain": {
+        "@id": "estleg:Act"
+      },
+      "owl:inverseOf": {
+        "@id": "estleg:harmonises"
+      }
+    },
+    {
+      "@id": "estleg:harmonises",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:label": "harmoneerib (harmonises)",
+      "rdfs:comment": "Links a harmonisation record to the Estonian act(s) that transpose the shared EU directive. Inverse of estleg:harmonisedWith. Folded into the controlled vocabulary for issue #563. NB: deliberately carries NO rdfs:range estleg:Act here — the harmonisation_by_directive/ records (loaded into the eurlex SHACL bucket) point estleg:harmonises at bare cross-reference IRIs whose full, labelled act node lives in the laws corpus; an rdfs:range estleg:Act would RDFS-type those 117 stubs as estleg:Act and trip the #570 ActTemporalShape label requirement. The canonical typing comes from the forward estleg:harmonisedWith (rdfs:domain estleg:Act).",
+      "rdfs:domain": {
+        "@id": "estleg:HarmonisationLink"
+      },
+      "owl:inverseOf": {
+        "@id": "estleg:harmonisedWith"
+      }
+    },
+    {
+      "@id": "estleg:sharedDirective",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:label": "ühine direktiiv (shared directive)",
+      "rdfs:comment": "The EU directive that multiple member states have transposed. Folded into the controlled vocabulary for issue #563. NB: deliberately carries NO rdfs:range estleg:EULegislation — in the eurlex/harmonisation SHACL bucket the directive objects are bare cross-reference IRIs whose full, labelled node lives in the eurlex corpus; under rdfs inference an rdfs:range would RDFS-type those stubs as estleg:EULegislation and trip the EULegislationShape requirements.",
+      "rdfs:domain": {
+        "@id": "estleg:HarmonisationLink"
+      }
+    },
+    {
+      "@id": "estleg:memberStateCode",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": "liikmesriigi kood (member state code)",
+      "rdfs:comment": "ISO 3166-1 alpha-3 country code of the EU member state. Folded into the controlled vocabulary for issue #563.",
+      "rdfs:domain": {
+        "@id": "estleg:HarmonisationLink"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "estleg:nationalCelex",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": "riigisisene CELEX (national CELEX number)",
+      "rdfs:comment": "CELEX identifier for the national transposition measure. Folded into the controlled vocabulary for issue #563.",
+      "rdfs:domain": {
+        "@id": "estleg:HarmonisationLink"
+      },
+      "rdfs:range": {
+        "@id": "xsd:string"
+      }
+    },
+    {
+      "@id": "estleg:LegislativePhase",
+      "@type": [
+        "owl:Class"
+      ],
+      "rdfs:label": "Seadusandlik etapp (Legislative Phase)",
+      "rdfs:comment": "Eelnõu menetlusetapp EIS süsteemis. Enum class folded into the controlled vocabulary (with its individuals) so estleg:LegislativePhaseShape binds in every SHACL bucket instead of validating zero nodes (issue #563)."
+    },
+    {
+      "@id": "estleg:Phase_PublicConsultation",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegislativePhase"
+      ],
+      "rdfs:label": "Avalik konsultatsioon",
+      "skos:prefLabel": "Public Consultation",
+      "rdfs:comment": "Eelnõu on avalikul konsultatsioonil – üldsus saab arvamust avaldada.",
+      "estleg:phaseOrder": {
+        "@value": "1",
+        "@type": "xsd:integer"
+      }
+    },
+    {
+      "@id": "estleg:Phase_Review",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegislativePhase"
+      ],
+      "rdfs:label": "Kooskõlastamine",
+      "skos:prefLabel": "Inter-ministerial Review",
+      "rdfs:comment": "Eelnõu on ministeeriumidevahelisel kooskõlastamisel.",
+      "estleg:phaseOrder": {
+        "@value": "2",
+        "@type": "xsd:integer"
+      }
+    },
+    {
+      "@id": "estleg:Phase_Submission",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:LegislativePhase"
+      ],
+      "rdfs:label": "Esitatud Vabariigi Valitsusele",
+      "skos:prefLabel": "Submitted to Government",
+      "rdfs:comment": "Eelnõu on esitatud Vabariigi Valitsusele otsustamiseks.",
+      "estleg:phaseOrder": {
+        "@value": "3",
+        "@type": "xsd:integer"
+      }
+    },
+    {
+      "@id": "estleg:DraftType",
+      "@type": [
+        "owl:Class"
+      ],
+      "rdfs:label": "Eelnõu liik (Draft Type)",
+      "rdfs:comment": "Eelnõu tüüp: seaduseelnõu, määruse eelnõu, korralduse eelnõu jne. Enum class folded into the controlled vocabulary (with its individuals) so estleg:DraftTypeShape binds in every SHACL bucket (issue #563)."
+    },
+    {
+      "@id": "estleg:DraftType_Bill",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:DraftType"
+      ],
+      "rdfs:label": "Seaduseelnõu",
+      "skos:prefLabel": "Bill"
+    },
+    {
+      "@id": "estleg:DraftType_AmendmentBill",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:DraftType"
+      ],
+      "rdfs:label": "Seaduse muutmise eelnõu",
+      "skos:prefLabel": "Amendment Bill"
+    },
+    {
+      "@id": "estleg:DraftType_GovernmentRegulation",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:DraftType"
+      ],
+      "rdfs:label": "VV määruse eelnõu",
+      "skos:prefLabel": "Government Regulation Draft"
+    },
+    {
+      "@id": "estleg:DraftType_MinisterialRegulation",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:DraftType"
+      ],
+      "rdfs:label": "Ministri määruse eelnõu",
+      "skos:prefLabel": "Ministerial Regulation Draft"
+    },
+    {
+      "@id": "estleg:DraftType_GovernmentOrder",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:DraftType"
+      ],
+      "rdfs:label": "Korralduse eelnõu",
+      "skos:prefLabel": "Government Order Draft"
+    },
+    {
+      "@id": "estleg:DraftType_EUPosition",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:DraftType"
+      ],
+      "rdfs:label": "EL seisukoha eelnõu",
+      "skos:prefLabel": "EU Position Draft"
+    },
+    {
+      "@id": "estleg:DraftType_DraftIntent",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:DraftType"
+      ],
+      "rdfs:label": "Väljatöötamiskavatsus",
+      "skos:prefLabel": "Draft Intent / Pre-draft"
+    },
+    {
+      "@id": "estleg:DraftType_Regulation",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:DraftType"
+      ],
+      "rdfs:label": "Määruse eelnõu",
+      "skos:prefLabel": "Regulation Draft"
+    },
+    {
+      "@id": "estleg:DraftType_ActionPlan",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:DraftType"
+      ],
+      "rdfs:label": "Tegevuskava",
+      "skos:prefLabel": "Action Plan"
+    },
+    {
+      "@id": "estleg:DraftType_Report",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:DraftType"
+      ],
+      "rdfs:label": "Ülevaade",
+      "skos:prefLabel": "Report"
+    },
+    {
+      "@id": "estleg:DraftType_CitizenshipDecision",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:DraftType"
+      ],
+      "rdfs:label": "Kodakondsuse otsus",
+      "skos:prefLabel": "Citizenship Decision"
+    },
+    {
+      "@id": "estleg:DraftType_Other",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:DraftType"
+      ],
+      "rdfs:label": "Muu eelnõu",
+      "skos:prefLabel": "Other Draft"
+    },
+    {
+      "@id": "estleg:DecisionType",
+      "@type": [
+        "owl:Class"
+      ],
+      "rdfs:label": {
+        "@value": "Lahendi liik (Decision Type)",
+        "@language": "et"
+      },
+      "rdfs:comment": {
+        "@value": "Lahendi tüüp: kohtuotsus, kohtumäärus, resolutsioon. Enum class folded into the controlled vocabulary (with its individuals) so estleg:DecisionTypeShape binds in every SHACL bucket (issue #563).",
+        "@language": "et"
+      }
+    },
+    {
+      "@id": "estleg:DecisionType_Judgment",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:DecisionType"
+      ],
+      "rdfs:label": {
+        "@value": "Kohtuotsus",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "Judgment",
+        "@language": "en"
+      }
+    },
+    {
+      "@id": "estleg:DecisionType_Ruling",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:DecisionType"
+      ],
+      "rdfs:label": {
+        "@value": "Kohtumäärus",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "Ruling",
+        "@language": "en"
+      }
+    },
+    {
+      "@id": "estleg:DecisionType_Resolution",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:DecisionType"
+      ],
+      "rdfs:label": {
+        "@value": "Kohtu resolutsioon",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "Resolution",
+        "@language": "en"
+      },
+      "owl:deprecated": true,
+      "rdfs:comment": {
+        "@value": "Deprecated (issue #344): declared but never used in the corpus — the extractor classifies every Riigikohus decision as estleg:DecisionType_Judgment or estleg:DecisionType_Ruling. Retained for backward compatibility; do not emit new references.",
+        "@language": "en"
+      }
+    },
+    {
+      "@id": "estleg:DecisionType_OrderRuling",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:DecisionType"
+      ],
+      "rdfs:label": {
+        "@value": "Määrus",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "OrderRuling",
+        "@language": "en"
+      },
+      "owl:deprecated": true,
+      "rdfs:comment": {
+        "@value": "Deprecated (issue #344): declared but never used in the corpus — kohtumäärus decisions use estleg:DecisionType_Ruling instead. Retained for backward compatibility; do not emit new references.",
+        "@language": "en"
+      }
+    },
+    {
+      "@id": "estleg:EUDocumentType",
+      "@type": [
+        "owl:Class"
+      ],
+      "rdfs:label": "EL õigusakti liik (EU Document Type)",
+      "rdfs:comment": "Euroopa Liidu õigusakti klassifikatsioon. Enum class folded into the controlled vocabulary (with its individuals) so estleg:EUDocumentTypeShape binds in every SHACL bucket (issue #563)."
+    },
+    {
+      "@id": "estleg:EUDocType_Regulation",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:EUDocumentType"
+      ],
+      "rdfs:label": "EL määrus",
+      "skos:prefLabel": "EU Regulation",
+      "rdfs:comment": "Euroopa Liidu määrus – otsekohaldatav õigusakt kõigis liikmesriikides."
+    },
+    {
+      "@id": "estleg:EUDocType_Directive",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:EUDocumentType"
+      ],
+      "rdfs:label": "EL direktiiv",
+      "skos:prefLabel": "EU Directive",
+      "rdfs:comment": "Euroopa Liidu direktiiv – liikmesriikide poolt ülevõetav õigusakt."
+    },
+    {
+      "@id": "estleg:EUDocType_Decision",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:EUDocumentType"
+      ],
+      "rdfs:label": "EL otsus",
+      "skos:prefLabel": "EU Decision",
+      "rdfs:comment": "Euroopa Liidu otsus – konkreetsele adressaadile suunatud siduv akt."
+    },
+    {
+      "@id": "estleg:EUCourt",
+      "@type": [
+        "owl:Class"
+      ],
+      "rdfs:label": "EL kohus (EU Court)",
+      "rdfs:comment": "Euroopa Liidu kohtuinstants. Enum class folded into the controlled vocabulary (with its individuals) so estleg:EUCourtShape binds in every SHACL bucket (issue #563)."
+    },
+    {
+      "@id": "estleg:EUCourt_CourtOfJustice",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:EUCourt"
+      ],
+      "rdfs:label": "Euroopa Kohus",
+      "skos:prefLabel": "Court of Justice",
+      "estleg:euCourtCode": "CJ"
+    },
+    {
+      "@id": "estleg:EUCourt_GeneralCourt",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:EUCourt"
+      ],
+      "rdfs:label": "Üldkohus",
+      "skos:prefLabel": "General Court",
+      "estleg:euCourtCode": "GCEU"
+    },
+    {
+      "@id": "estleg:EUCourt_CivilServiceTribunal",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:EUCourt"
+      ],
+      "rdfs:label": "Avaliku Teenistuse Kohus",
+      "skos:prefLabel": "Civil Service Tribunal",
+      "estleg:euCourtCode": "CST"
+    },
+    {
+      "@id": "estleg:EUCourt_NationalCourt",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:EUCourt"
+      ],
+      "rdfs:label": {
+        "@value": "Liikmesriigi kohus",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "National Court",
+        "@language": "en"
+      },
+      "estleg:euCourtCode": "NAT"
+    },
+    {
+      "@id": "estleg:EUCourt_EFTACourt",
+      "@type": [
+        "owl:NamedIndividual",
+        "estleg:EUCourt"
+      ],
+      "rdfs:label": {
+        "@value": "EFTA Kohus",
+        "@language": "et"
+      },
+      "skos:prefLabel": {
+        "@value": "EFTA Court",
+        "@language": "en"
+      },
+      "estleg:euCourtCode": "EFTA"
+    },
+    {
+      "@id": "estleg:Section",
+      "@type": [
+        "owl:Class"
+      ],
+      "rdfs:label": "Section",
+      "rdfs:comment": "A structural section (jagu) node of an act's hierarchy. Declared in the curated TBox for issue #566 — it is used as @type on hierarchy nodes in combined_ontology.jsonld but was previously absent from the curated vocabulary, leaving a consumer that loads only the TBox with an undeclared class."
+    },
+    {
+      "@id": "estleg:GeneralPartConcept",
+      "@type": [
+        "owl:Class"
+      ],
+      "rdfs:label": "General Part Concept",
+      "rdfs:comment": "A general-part (üldosa) legal concept node, e.g. the canonical concepts the KarS general part maps onto. Declared in the curated TBox for issue #566 — used as @type in combined_ontology.jsonld but previously absent from the curated vocabulary."
+    },
+    {
+      "@id": "estleg:LegalPart",
+      "@type": [
+        "owl:Class"
+      ],
+      "rdfs:label": "Legal Part",
+      "rdfs:comment": "A part (osa) node within a structured act, distinct from the multipart-file estleg:Part split. Declared in the curated TBox for issue #566 — used as @type in combined_ontology.jsonld but previously absent from the curated vocabulary."
+    },
+    {
+      "@id": "estleg:ProcedureStage",
+      "@type": [
+        "owl:Class"
+      ],
+      "rdfs:label": "Procedure Stage",
+      "rdfs:comment": "A procedural-stage node (e.g. a stage of criminal procedure under KrMS). Declared in the curated TBox for issue #566 — used as @type in combined_ontology.jsonld but previously absent from the curated vocabulary."
     }
   ]
 }
