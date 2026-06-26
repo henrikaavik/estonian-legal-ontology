@@ -281,6 +281,14 @@ estleg:LegalProvisionShape
         sh:name "targetGroup" ;
         sh:description "The bearer(s) of the deontic norm: which group(s) of actors carry the obligation, hold the right, or otherwise receive the norm's effect. Multi-valued because one provision may target several groups." ;
     ] ;
+    # Issue #609: the reified SKOS counterpart of estleg:targetGroup — IRI(s) into
+    # estleg:TargetGroupScheme, materialized alongside the retained string value.
+    sh:property [
+        sh:path estleg:targetGroupConcept ;
+        sh:nodeKind sh:IRI ;
+        sh:name "targetGroupConcept" ;
+        sh:description "Reified estleg:TargetGroup skos:Concept(s) for this provision's addressee classification (#609); the SKOS-navigable form of estleg:targetGroup." ;
+    ] ;
     sh:property [
         sh:path estleg:harmonisedWith ;
         sh:nodeKind sh:IRI ;
@@ -423,6 +431,15 @@ estleg:LegalConceptShape
         sh:datatype xsd:string ;
         sh:name "sourceAct" ;
         sh:description "Human-readable name of the act this definition comes from." ;
+    ] ;
+    # Issue #609: SKOS scheme binding (optional — most provision-local definition
+    # nodes are bound by the concept-layer pass, but a handful also appear inline
+    # in law peeps, so enforcement stays advisory to avoid false-fails).
+    sh:property [
+        sh:path skos:inScheme ;
+        sh:nodeKind sh:IRI ;
+        sh:name "inScheme" ;
+        sh:description "The estleg:LegalConceptScheme this concept belongs to (#609)." ;
     ] .
 
 # Shape for canonical Concept instances (#134) — one node per distinct
@@ -437,6 +454,19 @@ estleg:ConceptShape
         sh:maxCount 1 ;
         sh:name "prefLabel" ;
         sh:description "Exactly one preferred label (a language-tagged literal): the most common surface form of the term" ;
+    ] ;
+    # Issue #609: SKOS scheme binding for the canonical term (optional, advisory).
+    sh:property [
+        sh:path skos:inScheme ;
+        sh:nodeKind sh:IRI ;
+        sh:name "inScheme" ;
+        sh:description "The estleg:LegalConceptScheme this canonical concept belongs to (#609)." ;
+    ] ;
+    sh:property [
+        sh:path skos:topConceptOf ;
+        sh:nodeKind sh:IRI ;
+        sh:name "topConceptOf" ;
+        sh:description "Canonical concepts are top concepts of estleg:LegalConceptScheme (#609)." ;
     ] ;
     sh:property [
         sh:path skos:altLabel ;
