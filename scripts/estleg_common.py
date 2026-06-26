@@ -370,6 +370,14 @@ STUB_NODE_MARKER: str = "estleg:isStubNode"
 COMBINED_STRIPPED_PREDICATES: frozenset[str] = frozenset(
     {
         "estleg:hasVersion",
+        # #618: estleg:interpretsVersion links a court decision to the
+        # estleg:ProvisionVersion in force at its decision date. Those version
+        # nodes live in the separate provision_versions/ load surface (like
+        # estleg:hasVersion), so the edge would dangle in the combined-only
+        # graph. Strip it — the self-contained estleg:interpretationOutdated /
+        # estleg:earliestSupersedingDate signals are retained instead, and the
+        # full edge resolves on the seadusloome load surface.
+        "estleg:interpretsVersion",
     }
 )
 

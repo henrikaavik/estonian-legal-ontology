@@ -1682,6 +1682,45 @@
       }
     },
     {
+      "@id": "estleg:interpretsVersion",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:label": "tõlgendab redaktsiooni (interprets version)",
+      "rdfs:comment": "Links a court decision to the estleg:ProvisionVersion that was in force (versionValidFrom <= decisionDate <= versionValidTo) for each provision it interpreted (issue #618). Derived offline by scripts/derive_court_interpretation_staleness.py from the provision_versions/ sidecars. NB: deliberately carries NO rdfs:range estleg:ProvisionVersion — the version nodes live in the separate provision_versions load surface, so in the riigikohus/combined surface these objects are bare cross-reference stubs; an rdfs:range would RDFS-type them under the SHACL buckets' rdfs inference and trip ProvisionVersion constraints. This is a version-layer edge: it is STRIPPED from combined_ontology.jsonld via estleg_common.COMBINED_STRIPPED_PREDICATES and resolves only on the full seadusloome load surface (which includes provision_versions/).",
+      "rdfs:domain": {
+        "@id": "estleg:CourtDecision"
+      }
+    },
+    {
+      "@id": "estleg:interpretationOutdated",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": "tõlgendus aegunud (interpretation outdated)",
+      "rdfs:comment": "True when at least one provision this decision interpreted has a later redaction (a version whose versionValidFrom is after the decisionDate) — i.e. the law was amended after the ruling, so the precedent may be outdated (issue #618). Derived offline by scripts/derive_court_interpretation_staleness.py. Self-contained on the decision node, so it is retained in combined_ontology.jsonld.",
+      "rdfs:domain": {
+        "@id": "estleg:CourtDecision"
+      },
+      "rdfs:range": {
+        "@id": "xsd:boolean"
+      }
+    },
+    {
+      "@id": "estleg:earliestSupersedingDate",
+      "@type": [
+        "owl:DatatypeProperty"
+      ],
+      "rdfs:label": "varaseim asendav kuupäev (earliest superseding date)",
+      "rdfs:comment": "When estleg:interpretationOutdated is true, the earliest date on which an interpreted provision was superseded by a newer redaction after the decisionDate (issue #618). Derived offline by scripts/derive_court_interpretation_staleness.py.",
+      "rdfs:domain": {
+        "@id": "estleg:CourtDecision"
+      },
+      "rdfs:range": {
+        "@id": "xsd:date"
+      }
+    },
+    {
       "@id": "estleg:isCurrentAmendment",
       "@type": [
         "owl:DatatypeProperty"
