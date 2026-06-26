@@ -2705,6 +2705,42 @@ def validate_id_uniqueness(all_ids: dict[str, list[str]]):
         # controlled_vocabulary.jsonld so the estleg:interpretedBy owl:inverseOf
         # axiom resolves inside combined_ontology.jsonld (#366 / Seadusloome gate).
         "estleg:interpretsLaw",
+        # #563: the EU-transposition + cross-border-harmonisation predicates and
+        # the five enum vocabularies (LegislativePhase/DraftType/DecisionType/
+        # EUDocumentType/EUCourt, with their individuals) were defined ONLY in the
+        # per-bucket *_schema.json files, which the combined builder does not merge
+        # and the SHACL bucket collectors do not load — so the shipped graph left
+        # 376 transposition assertions with no resolvable predicate and the five
+        # enum NodeShapes validated zero nodes (false green). They are now folded
+        # into controlled_vocabulary.jsonld (loaded into every bucket) with the
+        # SAME declaration that still lives in the subcorpus *_schema.json — a
+        # consistent shared TBox id, not a collision (mirrors the #562 pattern).
+        "estleg:transposesDirective", "estleg:transposedBy", "estleg:transpositionStatus",
+        "estleg:harmonisedWith", "estleg:harmonises", "estleg:sharedDirective",
+        "estleg:memberStateCode", "estleg:nationalCelex",
+        "estleg:LegislativePhase",
+        "estleg:Phase_PublicConsultation", "estleg:Phase_Review", "estleg:Phase_Submission",
+        "estleg:DraftType",
+        "estleg:DraftType_Bill", "estleg:DraftType_AmendmentBill",
+        "estleg:DraftType_GovernmentRegulation", "estleg:DraftType_MinisterialRegulation",
+        "estleg:DraftType_GovernmentOrder", "estleg:DraftType_EUPosition",
+        "estleg:DraftType_DraftIntent", "estleg:DraftType_Regulation",
+        "estleg:DraftType_ActionPlan", "estleg:DraftType_Report",
+        "estleg:DraftType_CitizenshipDecision", "estleg:DraftType_Other",
+        "estleg:DecisionType",
+        "estleg:DecisionType_Judgment", "estleg:DecisionType_Ruling",
+        "estleg:DecisionType_Resolution", "estleg:DecisionType_OrderRuling",
+        "estleg:EUDocumentType",
+        "estleg:EUDocType_Regulation", "estleg:EUDocType_Directive", "estleg:EUDocType_Decision",
+        "estleg:EUCourt",
+        "estleg:EUCourt_CourtOfJustice", "estleg:EUCourt_GeneralCourt",
+        "estleg:EUCourt_CivilServiceTribunal", "estleg:EUCourt_NationalCourt",
+        "estleg:EUCourt_EFTACourt",
+        # #566: structural classes used as @type in the corpus (combined + the law
+        # peep that introduces them) but previously absent from the curated TBox;
+        # now declared canonically in controlled_vocabulary.jsonld alongside the
+        # existing inline declaration — a shared TBox class id, not a collision.
+        "estleg:GeneralPartConcept", "estleg:ProcedureStage",
         "https://data.riik.ee/ontology/estleg#",
         "https://data.riik.ee/ontology/estleg#LegalPart",
         "https://data.riik.ee/ontology/estleg#Chapter",
