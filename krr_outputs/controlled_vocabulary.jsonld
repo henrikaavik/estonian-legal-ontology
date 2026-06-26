@@ -2116,7 +2116,124 @@
         "owl:DatatypeProperty"
       ],
       "rdfs:label": "Target Group",
-      "rdfs:comment": "Closed target-group classification for LegalProvision deontic effects: citizen, business, public_body, official, or ngo. HEURISTIC: derived by keyword/dutyHolder matching over the provision text (#576), preferring the dutyHolder's subject and capping an unanchored body-text union; treat as an advisory addressee indicator, not a definitive legal determination."
+      "rdfs:comment": "Closed target-group classification for LegalProvision deontic effects: citizen, business, public_body, official, or ngo. HEURISTIC: derived by keyword/dutyHolder matching over the provision text (#576), preferring the dutyHolder's subject and capping an unanchored body-text union; treat as an advisory addressee indicator, not a definitive legal determination. The legacy string value is retained; estleg:targetGroupConcept (#609) materializes the equivalent first-class SKOS concept (estleg:TargetGroup_*), bridged by skos:notation."
+    },
+    {
+      "@id": "estleg:TargetGroup",
+      "@type": [
+        "owl:Class"
+      ],
+      "rdfs:subClassOf": {
+        "@id": "skos:Concept"
+      },
+      "rdfs:label": "Sihtrühm (Target Group)",
+      "rdfs:comment": "A reified addressee category for the estleg:targetGroup classification (#609). The five members form a SKOS concept scheme (estleg:TargetGroupScheme); each carries skos:notation equal to the legacy estleg:targetGroup string value, so the bare-string assignments resolve to first-class skos:Concepts."
+    },
+    {
+      "@id": "estleg:TargetGroupScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": "Sihtrühmade skeem (Target Group Scheme)",
+      "skos:prefLabel": [
+        {"@value": "Õigusnormi sihtrühmade klassifikaator", "@language": "et"},
+        {"@value": "Legal-provision target-group scheme", "@language": "en"}
+      ],
+      "dcterms:title": "Target Group Scheme",
+      "skos:hasTopConcept": [
+        {"@id": "estleg:TargetGroup_Citizen"},
+        {"@id": "estleg:TargetGroup_Business"},
+        {"@id": "estleg:TargetGroup_PublicBody"},
+        {"@id": "estleg:TargetGroup_Official"},
+        {"@id": "estleg:TargetGroup_NGO"}
+      ]
+    },
+    {
+      "@id": "estleg:TargetGroup_Citizen",
+      "@type": ["owl:NamedIndividual", "skos:Concept", "estleg:TargetGroup"],
+      "rdfs:label": "Citizen",
+      "skos:prefLabel": [
+        {"@value": "Kodanik / füüsiline isik", "@language": "et"},
+        {"@value": "Citizen / natural person", "@language": "en"}
+      ],
+      "skos:notation": "citizen",
+      "skos:inScheme": {"@id": "estleg:TargetGroupScheme"},
+      "skos:topConceptOf": {"@id": "estleg:TargetGroupScheme"}
+    },
+    {
+      "@id": "estleg:TargetGroup_Business",
+      "@type": ["owl:NamedIndividual", "skos:Concept", "estleg:TargetGroup"],
+      "rdfs:label": "Business",
+      "skos:prefLabel": [
+        {"@value": "Ettevõtja", "@language": "et"},
+        {"@value": "Business / undertaking", "@language": "en"}
+      ],
+      "skos:notation": "business",
+      "skos:inScheme": {"@id": "estleg:TargetGroupScheme"},
+      "skos:topConceptOf": {"@id": "estleg:TargetGroupScheme"}
+    },
+    {
+      "@id": "estleg:TargetGroup_PublicBody",
+      "@type": ["owl:NamedIndividual", "skos:Concept", "estleg:TargetGroup"],
+      "rdfs:label": "Public body",
+      "skos:prefLabel": [
+        {"@value": "Avaliku võimu asutus", "@language": "et"},
+        {"@value": "Public body / authority", "@language": "en"}
+      ],
+      "skos:notation": "public_body",
+      "skos:inScheme": {"@id": "estleg:TargetGroupScheme"},
+      "skos:topConceptOf": {"@id": "estleg:TargetGroupScheme"}
+    },
+    {
+      "@id": "estleg:TargetGroup_Official",
+      "@type": ["owl:NamedIndividual", "skos:Concept", "estleg:TargetGroup"],
+      "rdfs:label": "Official",
+      "skos:prefLabel": [
+        {"@value": "Ametnik", "@language": "et"},
+        {"@value": "Official", "@language": "en"}
+      ],
+      "skos:notation": "official",
+      "skos:inScheme": {"@id": "estleg:TargetGroupScheme"},
+      "skos:topConceptOf": {"@id": "estleg:TargetGroupScheme"}
+    },
+    {
+      "@id": "estleg:TargetGroup_NGO",
+      "@type": ["owl:NamedIndividual", "skos:Concept", "estleg:TargetGroup"],
+      "rdfs:label": "NGO",
+      "skos:prefLabel": [
+        {"@value": "Mittetulundusühing", "@language": "et"},
+        {"@value": "NGO / non-profit", "@language": "en"}
+      ],
+      "skos:notation": "ngo",
+      "skos:inScheme": {"@id": "estleg:TargetGroupScheme"},
+      "skos:topConceptOf": {"@id": "estleg:TargetGroupScheme"}
+    },
+    {
+      "@id": "estleg:targetGroupConcept",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:label": "sihtrühma mõiste (target group concept)",
+      "rdfs:comment": "Links a provision to the reified estleg:TargetGroup skos:Concept(s) for its estleg:targetGroup classification (#609). Materialized alongside the retained legacy estleg:targetGroup string so the addressee category is a first-class, navigable, multilingually-labelled SKOS concept rather than a bare string. Inherits the heuristic caveat of estleg:targetGroup (#576).",
+      "rdfs:domain": {
+        "@id": "estleg:LegalProvision"
+      },
+      "rdfs:range": {
+        "@id": "estleg:TargetGroup"
+      }
+    },
+    {
+      "@id": "estleg:LegalConceptScheme",
+      "@type": [
+        "skos:ConceptScheme"
+      ],
+      "rdfs:label": "Õigusmõistete skeem (Legal Concept Scheme)",
+      "skos:prefLabel": [
+        {"@value": "Eesti õiguse mõistete skeem", "@language": "et"},
+        {"@value": "Estonian legal-concept scheme", "@language": "en"}
+      ],
+      "dcterms:title": "Legal Concept Scheme",
+      "rdfs:comment": "The SKOS concept scheme that bundles the legal-concept layer (#609): every estleg:Concept (canonical term) and estleg:LegalConcept (provision-local definition) is skos:inScheme this scheme, and the canonical terms are skos:topConceptOf it."
     },
     {
       "@id": "estleg:terviktekstId",
