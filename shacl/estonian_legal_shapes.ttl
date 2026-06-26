@@ -115,6 +115,34 @@ estleg:ActTemporalShape
         sh:description "Every statute root (Act/Law) must have a human-readable label" ;
     ] .
 
+# Issue #608 — act-level FRBR Expression. One node per (act, consolidation date):
+# the addressable "law as of date D" entity (aligned to eli:LegalExpression).
+estleg:ActExpressionShape
+    a sh:NodeShape ;
+    sh:targetClass estleg:ActExpression ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:name "label" ;
+        sh:description "Every ActExpression must have a human-readable label" ;
+    ] ;
+    sh:property [
+        sh:path estleg:expressionOf ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:nodeKind sh:IRI ;
+        sh:name "expressionOf" ;
+        sh:description "The act (Work) this expression consolidates (#608)" ;
+    ] ;
+    sh:property [
+        sh:path estleg:consolidationDate ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:date ;
+        sh:name "consolidationDate" ;
+        sh:description "The date from which this consolidated expression is in force (#608)" ;
+    ] .
+
 # Shape for LegalProvision instances.
 #
 # The generators in scripts/ emit LegalProvision instances using Estonian-
