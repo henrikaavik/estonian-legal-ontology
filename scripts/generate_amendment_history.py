@@ -134,6 +134,19 @@ def sanitize_id(value: str) -> str:
     return s[:80] or "Unknown"
 
 
+# Multipart-law parts share a slug stem and differ only by a trailing
+# ``_osaN`` (e.g. ``vololigusseadus_osa1`` … ``_osa9``). They are parts of ONE
+# law and the chain builder already groups them by this base. Used by the
+# title→slug ambiguity check (#595) so genuine multipart siblings are NOT
+# mistaken for distinct co-named acts.
+_OSA_SUFFIX_RE = re.compile(r"_osa\d+$")
+
+
+def base_slug_of(slug: str) -> str:
+    """Strip a trailing ``_osaN`` multipart suffix to the law's base slug."""
+    return _OSA_SUFFIX_RE.sub("", slug)
+
+
 def slugify(text: str) -> str:
     """Convert Estonian text to a filename-safe slug."""
     replacements = {
@@ -149,8 +162,47 @@ def slugify(text: str) -> str:
     return text[:80]
 
 
+# Plausible-year window for an amendment date (issue #587). Riigi Teataja
+# source XML occasionally carries typo years far outside any real legislative
+# timeline (verified: ``<aktikuupaev>2918-10-17</aktikuupaev>``, a 3006-03-02,
+# and 2026-12-19-style near-future dates). Such a corrupt year sorts LAST under
+# ``_amend_sort_key`` and wrongly wins ``estleg:isCurrentAmendment``. The lower
+# bound predates the modern Riigi Teataja (the earliest digitised acts are
+# 1990s); the upper bound is the build year plus a small slack for genuinely
+# pre-published future entry-into-force / signing dates. A date whose year is
+# outside ``[_MIN_PLAUSIBLE_YEAR, current_year + _MAX_FUTURE_YEAR_SLACK]`` is
+# treated as unparseable (``parse_date`` returns ``None``) so it is dropped from
+# the chain rather than allowed to corrupt ordering / the current-amendment flag.
+_MIN_PLAUSIBLE_YEAR = 1990
+_MAX_FUTURE_YEAR_SLACK = 2
+
+
+def _max_plausible_year() -> int:
+    """Upper bound for a plausible amendment year (build year + slack).
+
+    Computed from the wall clock so the gate tracks the real calendar rather
+    than a frozen constant; the slack tolerates a date that was pre-published
+    slightly ahead of the current year (e.g. a January build seeing a December
+    entry-into-force of the same cycle).
+    """
+    from datetime import date
+    return date.today().year + _MAX_FUTURE_YEAR_SLACK
+
+
+def _year_is_plausible(year: int) -> bool:
+    """True when ``year`` falls inside the plausible amendment-year window."""
+    return _MIN_PLAUSIBLE_YEAR <= year <= _max_plausible_year()
+
+
 def parse_date(value: str) -> str | None:
-    """Parse date from XML, stripping timezone offsets."""
+    """Parse a date from XML, stripping timezone offsets, with a sanity gate.
+
+    Returns ``YYYY-MM-DD`` for a well-formed, plausibly-dated value, else
+    ``None``. Beyond format parsing this REJECTS implausible years (issue
+    #587): a corrupt/typo year (e.g. ``2918`` or ``3006``) or one more than a
+    couple of years in the future is dropped to ``None`` so it can neither sort
+    last in the chain nor win ``estleg:isCurrentAmendment``.
+    """
     if not value:
         return None
     from datetime import datetime
@@ -159,15 +211,54 @@ def parse_date(value: str) -> str | None:
     value = re.sub(r"-\d{2}:\d{2}$", "", value)
     for fmt in ("%Y-%m-%d", "%d.%m.%Y", "%Y-%m-%dT%H:%M:%S"):
         try:
-            return datetime.strptime(value, fmt).strftime("%Y-%m-%d")
+            parsed = datetime.strptime(value, fmt)
         except ValueError:
             continue
+        if not _year_is_plausible(parsed.year):
+            return None
+        return parsed.strftime("%Y-%m-%d")
     return None
 
 
 def make_xsd_date(iso_date: str) -> dict:
     """Create an xsd:date typed value for JSON-LD."""
     return {"@value": iso_date, "@type": "xsd:date"}
+
+
+# A Riigi Teataja globalId is an all-digit token (e.g. ``178370`` or the longer
+# ``13244294`` / ``106122014001`` forms). Used to recognise an ``akt_viide`` as
+# a citable RT identifier so ``estleg:amendingAct`` can carry a stable
+# riigiteataja.ee reference rather than an opaque string.
+_RT_GLOBALID_RE = re.compile(r"^\d+$")
+
+
+def _amending_act_value(amend: dict) -> str | None:
+    """Best offline identifier of the act that made an amendment (issue #587).
+
+    Resolution order (most → least citable):
+      1. ``rt_reference`` — the amending act's Riigi Teataja publication marker
+         (``"RT I, 2002, 57, 356"``), the canonical human-readable citation.
+      2. ``akt_viide`` as a riigiteataja.ee act URL when it is a bare RT
+         globalId (all digits) — a stable, dereferenceable identifier.
+      3. ``akt_viide`` verbatim otherwise (non-numeric reference text).
+
+    Returns ``None`` when neither field is present, so the caller emits
+    ``estleg:amendingAct`` only when there is a real, source-derived value —
+    nothing is fabricated. All inputs come from the offline ``<muutmismarge>``
+    parse; no network access is involved.
+    """
+    rt_reference = amend.get("rt_reference")
+    if rt_reference:
+        return rt_reference
+    akt_viide = amend.get("akt_viide")
+    if not akt_viide:
+        return None
+    akt_viide = akt_viide.strip()
+    if not akt_viide:
+        return None
+    if _RT_GLOBALID_RE.match(akt_viide):
+        return f"https://www.riigiteataja.ee/akt/{akt_viide}"
+    return akt_viide
 
 
 def load_law_files(*, failures: list[str] | None = None) -> dict[str, dict]:
@@ -235,16 +326,37 @@ def extract_title(doc: dict) -> str:
     return ""
 
 
-def build_title_to_slug_map(laws: dict[str, dict]) -> dict[str, str]:
-    """Build a mapping from law title (lowercased) to slug for matching."""
-    mapping = {}
+def build_title_to_slug_map(laws: dict[str, dict]) -> dict[str, list[str]]:
+    """Build a mapping from a lookup key to the LIST of slugs sharing it.
+
+    Each title contributes under two keys — its lowercased form and its
+    :func:`slugify` form — and the value is the *list* of every slug that
+    resolves to that key (issue #595).
+
+    The previous ``mapping[key] = slug`` was last-writer-wins: 512+ true
+    cross-document title collisions silently collapsed to a single survivor
+    (``"kohanime määramine"`` alone is shared by 181 distinct KOV acts), so
+    ``match_law_name_to_slug`` returned an arbitrary act and every co-named act
+    became unreachable — a draft's ``estleg:proposesToAmend`` bound to the wrong
+    act. Keeping the full list lets the matcher DETECT ambiguity (>1 slug under
+    a key) and refuse to guess rather than pick one. Slugs are appended in the
+    iteration order of ``laws`` and de-duplicated per key so the structure is
+    deterministic and a single slug never appears twice under one key.
+    """
+    mapping: dict[str, list[str]] = {}
+
+    def _add(key: str, slug: str) -> None:
+        bucket = mapping.setdefault(key, [])
+        if slug not in bucket:
+            bucket.append(slug)
+
     for slug, info in laws.items():
         title = info["title"]
         if title:
-            mapping[title.lower()] = slug
+            _add(title.lower(), slug)
             # Also map partial name (without "seadus" suffix form variations)
             # e.g., "Alkoholiseadus" -> alkoholiseadus
-            mapping[slugify(title)] = slug
+            _add(slugify(title), slug)
     return mapping
 
 
@@ -443,16 +555,16 @@ def _dedupe_amendments(
       than ``_MAX_EIF_BEFORE_DATE_DAYS`` days — i.e. when two genuinely-distinct
       markers (one carrying only an adoption date, the other only an
       effective date) would otherwise blend into one impossible event.
-    * As a backstop, any record that actually absorbed a duplicate is run
-      through ``_sanitize_merged_amendment`` so a surviving inversion is nulled
-      and logged rather than emitted.
+    * As a backstop, EVERY surviving record (merged or not) is run through
+      ``_sanitize_merged_amendment`` so a surviving inversion is nulled and
+      logged rather than emitted — a single un-merged marker can carry an
+      impossible ``entry_into_force``/``date`` pair on its own (issue #587).
 
     The dedup key itself is unchanged (issue #263): identical repeated markers
     still collapse — only the cross-marker *date blend* is constrained.
     """
     merged: dict[tuple, dict] = {}
     order: list[tuple] = []
-    did_merge: set[tuple] = set()
     for amend in amendments:
         key = _amend_dedup_key(amend)
         existing = merged.get(key)
@@ -460,7 +572,6 @@ def _dedupe_amendments(
             merged[key] = dict(amend)
             order.append(key)
             continue
-        did_merge.add(key)
         # Pick the more-complete record as the base, then backfill.
         if _amend_completeness(amend) > _amend_completeness(existing):
             winner, loser = dict(amend), existing
@@ -482,11 +593,15 @@ def _dedupe_amendments(
                 continue
             winner[field_name] = candidate
         merged[key] = winner
+    # Sanitise EVERY surviving record, not only those that absorbed a duplicate
+    # (issue #587). A single un-merged ``<muutmismarge>`` can itself carry an
+    # ``entry_into_force`` that precedes its ``date`` by more than the allowed
+    # window (verified: 38 such records on the corpus, the worst 356 days early
+    # — physically impossible). The #353 fix only ran the guard on merged
+    # records; running it on all of them nulls a stray impossible
+    # ``entry_into_force`` regardless of how the record was produced.
     return [
-        _sanitize_merged_amendment(merged[k], failures=failures)
-        if k in did_merge
-        else merged[k]
-        for k in order
+        _sanitize_merged_amendment(merged[k], failures=failures) for k in order
     ]
 
 
@@ -617,16 +732,58 @@ def _jaccard(a: set[str], b: set[str]) -> float:
     return len(intersect) / len(union) if union else 0.0
 
 
+def _resolve_map_key(
+    title_map: dict[str, list[str]],
+    key: str,
+    law_name: str,
+    stage: str,
+    *,
+    failures: list[str] | None = None,
+) -> str | None:
+    """Resolve a single ``title_map`` key to a unique slug, or refuse.
+
+    Returns a slug when the key resolves to a single act, else ``None``.
+
+    "A single act" is judged by BASE slug (issue #595): multipart-law parts
+    (``…_osa1`` … ``…_osaN``) all carry the law's shared title and reduce to
+    one ``base_slug_of`` — they are one law, not a collision, so we return the
+    first part (the chain builder re-expands the group). The match is AMBIGUOUS
+    only when the key maps to >1 *distinct base slug* — genuinely different
+    co-named documents (e.g. the 181 acts titled ``"kohanime määramine"``). The
+    old last-writer-wins map hid those behind a single survivor; we now surface
+    the collision to ``failures`` and return ``None`` rather than binding a
+    draft to an arbitrary co-named act. A key absent from the map returns
+    ``None`` so the caller falls through to the next strategy.
+    """
+    slugs = title_map.get(key)
+    if not slugs:
+        return None
+    distinct_bases = {base_slug_of(slug) for slug in slugs}
+    if len(distinct_bases) == 1:
+        # One law (single act, or the parts of one multipart law).
+        return slugs[0]
+    if failures is not None:
+        failures.append(
+            f"match_law_name_to_slug | ambiguous | stage={stage} | "
+            f"input={law_name!r} | key={key!r} | "
+            f"distinct_bases={sorted(distinct_bases)[:5]}"
+        )
+    return None
+
+
 def match_law_name_to_slug(
     law_name: str,
-    title_map: dict[str, str],
+    title_map: dict[str, list[str]],
     laws: dict[str, dict],
     *,
     failures: list[str] | None = None,
 ) -> str | None:
     """Match a law name (from a draft's affectedLawName) to an existing law slug.
 
-    Strategy (strict-first):
+    Strategy (strict-first). Every ``title_map`` lookup now resolves through
+    :func:`_resolve_map_key`, which returns a slug ONLY when the key maps to a
+    single act; a key shared by several co-named acts is AMBIGUOUS and yields a
+    failure + ``None`` instead of an arbitrary survivor (issue #595):
       1. Exact normalised title match.
       2. Slugified exact match.
       3. Direct slug match.
@@ -634,6 +791,10 @@ def match_law_name_to_slug(
       5. Token-level Jaccard ≥ 0.9 — exactly one candidate wins.
          Multiple candidates above the threshold are AMBIGUOUS — bail
          out and surface to the failures sink rather than picking one.
+
+    An ambiguous hit at stages 1–4 returns ``None`` immediately (we do NOT
+    fall through to a fuzzier stage, which would only pick a different
+    arbitrary act): the draft genuinely cannot be bound to one act offline.
     """
     norm_name = _normalize_title(law_name)
     if not norm_name:
@@ -641,12 +802,16 @@ def match_law_name_to_slug(
 
     # 1. Exact normalised title
     if norm_name in title_map:
-        return title_map[norm_name]
+        return _resolve_map_key(
+            title_map, norm_name, law_name, "exact_title", failures=failures
+        )
 
     # 2. Slugified exact match
     slug_name = slugify(law_name)
     if slug_name and slug_name in title_map:
-        return title_map[slug_name]
+        return _resolve_map_key(
+            title_map, slug_name, law_name, "slugified", failures=failures
+        )
 
     # 3. Direct slug match against laws keyed by slug
     if slug_name and slug_name in laws:
@@ -656,10 +821,14 @@ def match_law_name_to_slug(
     normalized = re.sub(r"seaduse$", "seadus", norm_name)
     normalized = re.sub(r"seadustiku$", "seadustik", normalized)
     if normalized in title_map:
-        return title_map[normalized]
+        return _resolve_map_key(
+            title_map, normalized, law_name, "suffix_title", failures=failures
+        )
     slug_norm = slugify(normalized)
     if slug_norm and slug_norm in title_map:
-        return title_map[slug_norm]
+        return _resolve_map_key(
+            title_map, slug_norm, law_name, "suffix_slug", failures=failures
+        )
     if slug_norm and slug_norm in laws:
         return slug_norm
 
@@ -668,10 +837,11 @@ def match_law_name_to_slug(
     if not name_tokens:
         return None
     candidates: list[tuple[float, str, str]] = []
-    for title_lower, slug in title_map.items():
+    for title_lower, slugs in title_map.items():
         score = _jaccard(name_tokens, _title_tokens(title_lower))
         if score >= 0.9:
-            candidates.append((score, title_lower, slug))
+            for slug in slugs:
+                candidates.append((score, title_lower, slug))
 
     if not candidates:
         return None
@@ -682,7 +852,7 @@ def match_law_name_to_slug(
         if failures is not None:
             top = sorted(candidates, key=lambda x: -x[0])[:3]
             failures.append(
-                "match_law_name_to_slug | ambiguous | "
+                "match_law_name_to_slug | ambiguous | stage=jaccard | "
                 f"input={law_name!r} | candidates="
                 f"{[(s, slug) for s, _, slug in top]}"
             )
@@ -867,13 +1037,31 @@ def _amend_sort_key(amend: dict) -> str:
     """Return a YYYY-MM-DD-shaped string for chronological sorting.
 
     Prefer ``entry_into_force`` (when the amendment took legal effect),
-    fall back to the act's signing date. Empty strings sort first; we
-    push them to the end with a sentinel.
+    fall back to the act's signing date.
+
+    A record with NO usable date (e.g. an implausible year already nulled by
+    :func:`parse_date`, issue #587) sorts to the FRONT via a low sentinel —
+    NOT the end. The chronologically-last entry is flagged
+    ``estleg:isCurrentAmendment``; pushing the dateless record last (the old
+    ``"9999-99-99"`` behaviour) let a corrupt/undated amendment win "current".
+    Sorting it first means only a real, plausibly-dated amendment can be the
+    in-force tip.
     """
     eif = amend.get("entry_into_force") or ""
     sig = amend.get("date") or ""
     primary = eif or sig
-    return primary or "9999-99-99"
+    return primary or "0000-00-00"
+
+
+def _has_valid_amend_date(amend: dict) -> bool:
+    """True when an amendment carries at least one usable (plausible) date.
+
+    ``parse_date`` already nulls implausible years (#587), so this is simply
+    "does the record still have an ``entry_into_force`` or ``date``". Used to
+    decide whether an amendment is eligible to be flagged the *current* one —
+    a dateless record never is.
+    """
+    return bool(amend.get("entry_into_force") or amend.get("date"))
 
 
 def main() -> int:
@@ -1042,7 +1230,7 @@ def main() -> int:
     # Group paired laws by base_slug (drop trailing _osaN suffix).
     groups: dict[str, list[tuple[str, dict]]] = {}
     for slug, info in laws.items():
-        base_slug = re.sub(r"_osa\d+$", "", slug)
+        base_slug = base_slug_of(slug)
         groups.setdefault(base_slug, []).append((slug, info))
 
     stale_chain_files_removed += _remove_obsolete_amendment_chain_files(
@@ -1146,6 +1334,12 @@ def main() -> int:
         )
 
         seen_amend_ids: set[str] = set()
+        # Index of the last chain entry whose source amendment carries a valid
+        # (plausibly-dated) date — the only entry eligible for the
+        # ``isCurrentAmendment`` flag (issue #587). Tracked alongside the
+        # lock-step build so a dateless record (e.g. one whose corrupt year was
+        # nulled by ``parse_date``) can never be flagged current.
+        last_valid_dated_idx: int | None = None
         for amend in xml_amendments_sorted:
             suffix = _stable_amend_suffix(amend)
             amend_id = f"estleg:Amendment_{amend_prefix}_{suffix}"
@@ -1170,23 +1364,45 @@ def main() -> int:
                 amend_node["estleg:amendmentDate"] = make_xsd_date(amend["date"])
             if amend.get("entry_into_force"):
                 amend_node["estleg:entryIntoForce"] = make_xsd_date(amend["entry_into_force"])
+            # ``estleg:amendingAct`` — WHICH act made this change (issue #587).
+            # Derived OFFLINE from the source ``<muutmismarge>``: ``akt_viide``
+            # is the amending act's Riigi Teataja globalId (e.g. ``178370``) and
+            # ``rt_reference`` is its publication marker (``RT I, 2002, 57, 356``).
+            # Both were previously parsed only to seed the dedup hash and then
+            # discarded, so every same-day distinct amendment rendered as an
+            # identical ``"Muudatus YYYY-MM-DD"`` node with no way to say which
+            # act amended the law. We surface the best available offline
+            # identifier as a literal on the event (NOT an ``@id`` to a corpus
+            # node: amending acts are overwhelmingly absent from the corpus — 0
+            # of a 987-sample ``akt_viide`` matched a corpus act globalId — so an
+            # ``@id`` would dangle). No data is fabricated: emitted only when an
+            # identifier is actually present.
+            amending_act = _amending_act_value(amend)
+            if amending_act is not None:
+                amend_node["estleg:amendingAct"] = amending_act
             if amend.get("rt_reference"):
                 amend_node["estleg:rtReference"] = amend["rt_reference"]
                 amend_node["rdfs:label"] = f"Muudatus: {amend['rt_reference']}"
             else:
                 amend_node["rdfs:label"] = f"Muudatus {amend.get('date', 'unknown')}"
+            if _has_valid_amend_date(amend):
+                last_valid_dated_idx = len(chain_entries)
             chain_entries.append(amend_node)
 
-        # Mark the LATEST *effected* amendment as the current one (issue #389).
-        # ``chain_entries`` here holds ONLY the RT-derived AmendmentEvent nodes
-        # (proposals are built separately below and are never flagged — #423).
-        # xml_amendments_sorted is ascending by legal-effect date, so the last
-        # node appended above is the most recent. Without this flag a consumer
-        # must load+sort every event to find the in-force tip. SHACL note for
-        # the shapes team: this property warrants ``sh:maxCount 1`` per amended
-        # act on AmendmentEventShape (see report).
-        if chain_entries:
-            chain_entries[-1]["estleg:isCurrentAmendment"] = {
+        # Mark the LATEST *effected, validly-dated* amendment as the current one
+        # (issues #389, #587). ``chain_entries`` holds ONLY the RT-derived
+        # AmendmentEvent nodes (proposals are built separately below and are
+        # never flagged — #423). ``xml_amendments_sorted`` is ascending by
+        # legal-effect date, so the last *plausibly-dated* node is the in-force
+        # tip. We flag ``last_valid_dated_idx`` rather than ``chain_entries[-1]``
+        # so a record whose corrupt/future year was nulled by ``parse_date``
+        # (and which therefore sorts to the front with no date) can never win
+        # "current". When NO entry has a valid date, the flag is omitted
+        # entirely rather than guessed. SHACL note for the shapes team: this
+        # property warrants ``sh:maxCount 1`` per amended act on
+        # AmendmentEventShape (see report).
+        if last_valid_dated_idx is not None:
+            chain_entries[last_valid_dated_idx]["estleg:isCurrentAmendment"] = {
                 "@value": "true",
                 "@type": "xsd:boolean",
             }

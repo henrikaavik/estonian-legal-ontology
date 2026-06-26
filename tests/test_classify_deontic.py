@@ -6,7 +6,11 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 
-from classify_deontic import classify_provision, extract_duty_holder
+from classify_deontic import (
+    _leading_permission_over_condition,
+    classify_provision,
+    extract_duty_holder,
+)
 from estleg_common import jsonld_text
 
 
@@ -339,3 +343,163 @@ def test_classify_provision_rejects_raw_value_object() -> None:
 
     with pytest.raises(TypeError):
         classify_provision({"@value": _DEONTIC_SENTENCE, "@language": "et"})
+
+
+# ---------------------------------------------------------------------------
+# Regression for #584: four systematic deontic mislabel patterns.
+#   1. ``ei või`` ("may not") = prohibition — the negated ``võib`` form that
+#      \bvõib\b never matched.
+#   2. ``peavad`` (plural "must") = obligation — the plural counterpart of the
+#      singular ``peab`` that was the only listed modal.
+#   3. leading-permission with a trailing ``kui`` condition mislabelled
+#      obligation via tie-priority.
+#   4. split ``on … keelatud`` ("is … forbidden") that strict adjacency missed.
+# ---------------------------------------------------------------------------
+
+
+def test_ei_voi_is_prohibition() -> None:
+    # "Müüja ei või tugineda …" ("the seller may not rely …") — the negated
+    # ``võib`` form. Previously fell through to Permission/Obligation because
+    # \bvõib\b cannot match the verb form "või".
+    assert (
+        classify_provision("Müüja ei või tugineda kokkuleppele.")
+        == "estleg:NormType_Prohibition"
+    )
+
+
+def test_ei_voi_outranks_competing_permission() -> None:
+    # A provision that also contains a bare permissive ``võib`` must still be
+    # Prohibition: ``ei või`` (weight 4) outweighs the weight-1 ``võib``.
+    assert (
+        classify_provision(
+            "Isik võib taotleda luba, kuid ei või seda edasi anda."
+        )
+        == "estleg:NormType_Prohibition"
+    )
+
+
+def test_ei_voi_is_not_cancelled_by_negation_guard() -> None:
+    # ``ei või`` is a NEGATIVE cue (it encodes its own negation), so the
+    # ei/pole/ega guard must NOT cancel it — the leading "ei" is part of the
+    # cue, not a separate negator that suppresses it.
+    assert (
+        classify_provision("Isik ei või seda teha.")
+        == "estleg:NormType_Prohibition"
+    )
+
+
+def test_peavad_plural_with_infinitive_is_obligation() -> None:
+    # "Töötajad peavad esitama …" — plural ``peavad`` + -ma infinitive.
+    assert (
+        classify_provision("Töötajad peavad esitama aruande tähtajaks.")
+        == "estleg:NormType_Obligation"
+    )
+
+
+def test_peavad_keeps_without_infinitive_is_not_obligation() -> None:
+    # ``peavad`` is polysemous ("they keep …") exactly like ``peab``; with no
+    # confirming infinitive it must NOT score as obligation (MODAL guard).
+    assert classify_provision("Ettevõtjad peavad raamatupidamise registrit.") is None
+
+
+def test_peavad_sov_infinitive_before_modal_is_obligation() -> None:
+    # SOV order: the infinitive precedes plural ``peavad`` (#329 path applies
+    # to the new plural cue too).
+    assert (
+        classify_provision("Esitada peavad kõik ettevõtjad.")
+        == "estleg:NormType_Obligation"
+    )
+
+
+def test_split_on_keelatud_is_prohibition() -> None:
+    # "Ruumides on läbiotsimine keelatud." — subject between copula and
+    # participle; strict ``on keelatud`` adjacency missed it.
+    assert (
+        classify_provision("Ruumides on läbiotsimine keelatud.")
+        == "estleg:NormType_Prohibition"
+    )
+
+
+def test_split_on_keelatud_with_zone_subject_is_prohibition() -> None:
+    assert (
+        classify_provision("Tegevus on sihtkaitsevööndis keelatud.")
+        == "estleg:NormType_Prohibition"
+    )
+
+
+def test_split_keelatud_does_not_cross_sentence_boundary() -> None:
+    # The {1,6}-gap forbids a period, so an ``on`` in one sentence and a
+    # ``keelatud`` in the next must NOT be glued into a false prohibition.
+    assert (
+        classify_provision("Tegevus on lubatud. Hoopis muu asi keelatud sõna.")
+        != "estleg:NormType_Prohibition"
+    )
+
+
+def test_strict_on_keelatud_still_prohibition() -> None:
+    # Regression guard: the strict-adjacency form is unaffected.
+    assert (
+        classify_provision("Suitsetamine on keelatud.")
+        == "estleg:NormType_Prohibition"
+    )
+
+
+def test_leading_permission_with_kui_condition_is_permission() -> None:
+    # "(1) Amet võib otsuse kehtetuks tunnistada, kui isik on esitanud
+    # taotluse." — the permission is the operative main-clause norm; the
+    # obligation cue ("on esitanud") lives inside the trailing ``kui``
+    # condition and must NOT steal the label via tie-priority.
+    assert (
+        classify_provision(
+            "(1) Amet võib otsuse kehtetuks tunnistada, kui isik on "
+            "esitanud taotluse."
+        )
+        == "estleg:NormType_Permission"
+    )
+
+
+def test_leading_permission_helper_detects_main_clause_voib() -> None:
+    # Main-clause ``võib`` + a ``kui`` condition is the target shape.
+    assert _leading_permission_over_condition("(1) Amet võib otsuse teha, kui …") is True
+
+
+def test_leading_permission_helper_false_when_voib_only_after_boundary() -> None:
+    # A ``võib`` that appears only AFTER the subordinate boundary is inside the
+    # condition, not leading, AND the main clause states a genuine obligation —
+    # so the boost must not fire.
+    assert (
+        _leading_permission_over_condition(
+            "Isik on kohustatud tegutsema, kui amet võib nõuda."
+        )
+        is False
+    )
+
+
+def test_leading_permission_helper_false_without_boundary() -> None:
+    # Two independent sentences, no ``kui`` / ``:`` / ``;`` condition: the
+    # permission is not "leading over a condition", so tie-priority (not the
+    # boost) must decide. Regression for the over-fire that flipped
+    # Right-vs-Permission.
+    assert (
+        _leading_permission_over_condition(
+            "Isikul on õigus taotleda. Tegevus on lubatud teatud tingimustel."
+        )
+        is False
+    )
+
+
+def test_leading_permission_boost_does_not_fire_against_prohibition() -> None:
+    # The boost is gated on prohibition being absent: a leading permission that
+    # competes with a prohibition cue must let the prohibition win on weight.
+    assert (
+        classify_provision("Amet võib otsuse teha, kuid tegevus on keelatud.")
+        == "estleg:NormType_Prohibition"
+    )
+
+
+def test_genuine_obligation_without_leading_permission_unaffected() -> None:
+    # No leading permission → no boost → a real obligation classifies normally.
+    assert (
+        classify_provision("Isik on kohustatud esitama aruande, kui amet seda nõuab.")
+        == "estleg:NormType_Obligation"
+    )

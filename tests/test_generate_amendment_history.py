@@ -251,7 +251,8 @@ class TestMatchLawNameStrict:
     def test_exact_normalised_title_wins(self):
         from generate_amendment_history import match_law_name_to_slug
 
-        title_map = {"riigieelarve seadus": "riigieelarve_seadus"}
+        # title_map values are now LISTS of slugs (issue #595).
+        title_map = {"riigieelarve seadus": ["riigieelarve_seadus"]}
         result = match_law_name_to_slug(
             "Riigieelarve seadus", title_map, {}
         )
@@ -264,9 +265,9 @@ class TestMatchLawNameStrict:
         # second one would have matched in the old code; under the new
         # rule (token Jaccard >= 0.9), distinct token sets means no match.
         title_map = {
-            "muutmise seadus": "muutmise_seadus",
+            "muutmise seadus": ["muutmise_seadus"],
             "riigieelarve seaduse muutmise ja sellega seonduvalt teiste seaduste muutmise seadus": (
-                "riigieelarve_muutmise"
+                ["riigieelarve_muutmise"]
             ),
         }
         # "muutmise seadus" should resolve EXACTLY to "muutmise_seadus"
@@ -283,8 +284,8 @@ class TestMatchLawNameStrict:
         # slugs — Jaccard is exactly 1.0 against the input for both,
         # which is the ambiguity case the failures sink must surface.
         title_map = {
-            "alfa beeta gamma delta zeta": "slug_alfa",
-            "alfa beeta zeta delta gamma": "slug_alfa_reordered",
+            "alfa beeta gamma delta zeta": ["slug_alfa"],
+            "alfa beeta zeta delta gamma": ["slug_alfa_reordered"],
         }
         failures: list[str] = []
         # Feed an input that is NOT an exact normalised hit on either
@@ -459,13 +460,17 @@ class TestMultipartLawAggregation:
         krr, rt, mod = self._setup(tmp_path, monkeypatch)
         title = "Testseadus"
         self._write_part(krr, "testseadus", "2001", title)
+        # Two amendments whose chronological (EIF-ascending) order is the
+        # REVERSE of document order, so the sort is genuinely exercised. Each
+        # eif is AFTER its own adoption date (a legitimate forward ordering),
+        # so the #587 impossible-inversion guard does not null either eif.
         self._write_xml_with_amendments(
             rt, "2001",
             [
-                {"date": "2010-01-01", "eif": "2024-06-01",
-                 "rt_aasta": "2024", "rt_nr": "9"},  # late EIF, early date
-                {"date": "2024-12-01", "eif": "2010-01-01",
-                 "rt_aasta": "2010", "rt_nr": "1"},  # early EIF, late date
+                {"date": "2024-05-01", "eif": "2024-06-01",
+                 "rt_aasta": "2024", "rt_nr": "9"},  # later pair, doc-first
+                {"date": "2010-01-01", "eif": "2010-02-01",
+                 "rt_aasta": "2010", "rt_nr": "1"},  # earlier pair, doc-second
             ],
         )
 
@@ -1203,6 +1208,235 @@ class TestExtractAmendmentsDedup:
         assert out[0]["date"] == "2024-03-01"
 
 
+class TestParseDateYearSanity:
+    """``parse_date`` rejects implausible / corrupt years (issue #587).
+
+    A typo year (``2918``, ``3006``) or one far in the future must not parse
+    to a real date — otherwise it sorts last and wrongly wins
+    ``isCurrentAmendment``.
+    """
+
+    def test_rejects_far_future_typo_year(self):
+        from generate_amendment_history import parse_date
+
+        assert parse_date("2918-10-17") is None
+        assert parse_date("3006-03-02") is None
+
+    def test_accepts_plausible_recent_year(self):
+        from generate_amendment_history import parse_date
+
+        assert parse_date("2003-07-15") == "2003-07-15"
+        assert parse_date("1994-01-12") == "1994-01-12"
+
+    def test_accepts_near_future_within_slack(self):
+        from datetime import date
+
+        from generate_amendment_history import parse_date
+
+        next_year = date.today().year + 1
+        assert parse_date(f"{next_year}-01-01") == f"{next_year}-01-01"
+
+    def test_rejects_year_below_floor(self):
+        from generate_amendment_history import parse_date
+
+        # Pre-1990: predates the modern Riigi Teataja timeline.
+        assert parse_date("1899-12-31") is None
+
+    def test_still_parses_alternate_formats_when_plausible(self):
+        from generate_amendment_history import parse_date
+
+        assert parse_date("01.02.2003") == "2003-02-01"
+        assert parse_date("2003-02-01T12:00:00") == "2003-02-01"
+
+
+class TestAmendingActOfflineDerivation:
+    """``estleg:amendingAct`` is derived OFFLINE from akt_viide / rt_reference
+    (issue #587) — the amending-act identifier was 0% covered before."""
+
+    def test_prefers_rt_reference(self):
+        from generate_amendment_history import _amending_act_value
+
+        amend = {"rt_reference": "RT I, 2002, 57, 356", "akt_viide": "178370"}
+        assert _amending_act_value(amend) == "RT I, 2002, 57, 356"
+
+    def test_numeric_akt_viide_becomes_riigiteataja_url(self):
+        from generate_amendment_history import _amending_act_value
+
+        amend = {"rt_reference": None, "akt_viide": "178370"}
+        assert (
+            _amending_act_value(amend)
+            == "https://www.riigiteataja.ee/akt/178370"
+        )
+
+    def test_non_numeric_akt_viide_kept_verbatim(self):
+        from generate_amendment_history import _amending_act_value
+
+        amend = {"akt_viide": "RT III 1994"}
+        assert _amending_act_value(amend) == "RT III 1994"
+
+    def test_returns_none_when_no_identifier(self):
+        from generate_amendment_history import _amending_act_value
+
+        assert _amending_act_value({"date": "2003-01-01"}) is None
+        assert _amending_act_value({"akt_viide": "  "}) is None
+
+    def test_generator_emits_amending_act_from_xml(self, tmp_path):
+        """End-to-end through the XML parser: an ``aktViide`` globalId in a
+        ``<muutmismarge>`` surfaces as ``estleg:amendingAct`` on the event."""
+        from generate_amendment_history import extract_amendments_from_xml
+
+        marker = (
+            "<muutmismarge>"
+            "<aktikuupaev>2002-06-12</aktikuupaev>"
+            "<joustumine>2002-08-01</joustumine>"
+            "<avaldamismarge>"
+            "<RTosa>I</RTosa><RTaasta>2002</RTaasta><RTnr>57</RTnr>"
+            "<RTartikkel>356</RTartikkel>"
+            "<aktViide>178370</aktViide>"
+            "</avaldamismarge></muutmismarge>"
+        )
+        xml_path = tmp_path / "act.xml"
+        xml_path.write_text(
+            '<akt globaalID="1"><metaandmed>' + marker + "</metaandmed></akt>",
+            encoding="utf-8",
+        )
+        out = extract_amendments_from_xml(xml_path)
+        assert len(out) == 1
+        assert out[0]["akt_viide"] == "178370"
+
+
+class TestInversionGuardEveryRecord:
+    """The impossible-ordering guard now runs on EVERY record, not just
+    merged ones (issue #587)."""
+
+    def _write_xml(self, tmp_path: Path, markers: list[str]) -> Path:
+        p = tmp_path / "act.xml"
+        p.write_text(
+            '<akt globaalID="1"><metaandmed>'
+            + "".join(markers)
+            + "</metaandmed></akt>",
+            encoding="utf-8",
+        )
+        return p
+
+    def test_single_unmerged_marker_with_impossible_eif_is_nulled(
+        self, tmp_path
+    ):
+        from generate_amendment_history import extract_amendments_from_xml
+
+        # ONE marker (no duplicate to merge) whose entry-into-force precedes
+        # the adoption date by ~356 days — physically impossible. The #353
+        # fix only sanitised merged records; #587 sanitises this lone one too.
+        marker = (
+            "<muutmismarge>"
+            "<aktikuupaev>2026-02-26</aktikuupaev>"
+            "<joustumine>2025-03-07</joustumine>"
+            "<avaldamismarge>"
+            "<RTosa>I</RTosa><RTaasta>2026</RTaasta><RTnr>5</RTnr>"
+            "</avaldamismarge></muutmismarge>"
+        )
+        out = extract_amendments_from_xml(self._write_xml(tmp_path, [marker]))
+        assert len(out) == 1
+        # Adoption date is the trustworthy anchor and is kept; the impossible
+        # entry_into_force is nulled.
+        assert out[0]["date"] == "2026-02-26"
+        assert out[0]["entry_into_force"] is None
+
+    def test_small_retroactive_window_is_preserved(self, tmp_path):
+        from generate_amendment_history import extract_amendments_from_xml
+
+        # A legitimate short retroactive clause (eif a few weeks before
+        # adoption) is WITHIN the tolerance window and must NOT be nulled.
+        marker = (
+            "<muutmismarge>"
+            "<aktikuupaev>2019-03-26</aktikuupaev>"
+            "<joustumine>2019-03-08</joustumine>"
+            "<avaldamismarge>"
+            "<RTosa>I</RTosa><RTaasta>2019</RTaasta><RTnr>1</RTnr>"
+            "</avaldamismarge></muutmismarge>"
+        )
+        out = extract_amendments_from_xml(self._write_xml(tmp_path, [marker]))
+        assert len(out) == 1
+        assert out[0]["entry_into_force"] == "2019-03-08"
+
+
+class TestBuildTitleToSlugMapAmbiguity:
+    """``build_title_to_slug_map`` is list-keyed and the matcher refuses to
+    bind an ambiguous (co-named) title to an arbitrary act (issue #595)."""
+
+    def test_map_collects_all_slugs_for_duplicate_title(self):
+        from generate_amendment_history import build_title_to_slug_map
+
+        laws = {
+            "kohanime_a": {"title": "Kohanime määramine"},
+            "kohanime_b": {"title": "Kohanime määramine"},
+            "kohanime_c": {"title": "Kohanime määramine"},
+        }
+        title_map = build_title_to_slug_map(laws)
+        # Every co-named slug is preserved under the lowercased title key,
+        # de-duplicated and order-stable — NOT collapsed last-writer-wins.
+        assert sorted(title_map["kohanime määramine"]) == [
+            "kohanime_a",
+            "kohanime_b",
+            "kohanime_c",
+        ]
+
+    def test_ambiguous_exact_title_returns_none_and_logs(self):
+        from generate_amendment_history import (
+            build_title_to_slug_map,
+            match_law_name_to_slug,
+        )
+
+        laws = {
+            "padevuse_a": {"title": "Pädevuse delegeerimine"},
+            "padevuse_b": {"title": "Pädevuse delegeerimine"},
+        }
+        title_map = build_title_to_slug_map(laws)
+        failures: list[str] = []
+        result = match_law_name_to_slug(
+            "Pädevuse delegeerimine", title_map, laws, failures=failures
+        )
+        # Two distinct acts share the title — refuse to pick one.
+        assert result is None
+        assert any(
+            "ambiguous" in f and "delegeerimine" in f.lower()
+            for f in failures
+        ), failures
+
+    def test_unique_title_still_resolves(self):
+        from generate_amendment_history import (
+            build_title_to_slug_map,
+            match_law_name_to_slug,
+        )
+
+        laws = {"alkoholiseadus": {"title": "Alkoholiseadus"}}
+        title_map = build_title_to_slug_map(laws)
+        assert (
+            match_law_name_to_slug("Alkoholiseadus", title_map, laws)
+            == "alkoholiseadus"
+        )
+
+    def test_ambiguous_does_not_fall_through_to_fuzzier_stage(self):
+        from generate_amendment_history import (
+            build_title_to_slug_map,
+            match_law_name_to_slug,
+        )
+
+        # Exact-title hit is ambiguous; the matcher must NOT silently fall
+        # through to the Jaccard stage and pick a different arbitrary act.
+        laws = {
+            "dup_a": {"title": "Sama pealkiri"},
+            "dup_b": {"title": "Sama pealkiri"},
+            "other": {"title": "Sama pealkiri muudatus"},
+        }
+        title_map = build_title_to_slug_map(laws)
+        failures: list[str] = []
+        result = match_law_name_to_slug(
+            "Sama pealkiri", title_map, laws, failures=failures
+        )
+        assert result is None
+
+
 class TestTotalAmendmentsCountsUniques:
     """End-to-end: a law whose XML repeats one act across 3 markers reports
     ``totalAmendments == 1`` and ``total_amendment_references == 1`` — no
@@ -1291,6 +1525,102 @@ class TestTotalAmendmentsCountsUniques:
             (krr / "amendment_history_report.json").read_text("utf-8")
         )
         assert report["summary"]["total_amendment_references"] == 1
+
+
+class TestGeneratorEmitsAmendingActAndSkipsCorruptCurrent:
+    """End-to-end (#587): the chain doc carries ``estleg:amendingAct`` and a
+    corrupt/future date never wins ``estleg:isCurrentAmendment``."""
+
+    def _setup(self, tmp_path: Path, monkeypatch):
+        import generate_amendment_history as mod
+        import estleg_common
+
+        krr = tmp_path / "krr_outputs"
+        rt = tmp_path / "data" / "riigiteataja"
+        krr.mkdir(parents=True)
+        rt.mkdir(parents=True)
+        (krr / "amendments").mkdir()
+        (krr / "eelnoud").mkdir()
+        (krr / "regulations" / "riik").mkdir(parents=True)
+        (krr / "regulations" / "kov").mkdir(parents=True)
+        monkeypatch.setattr(mod, "KRR_DIR", krr)
+        monkeypatch.setattr(mod, "DATA_DIR", rt)
+        monkeypatch.setattr(mod, "AMENDMENTS_DIR", krr / "amendments")
+        monkeypatch.setattr(mod, "EELNOUD_DIR", krr / "eelnoud")
+        monkeypatch.setattr(mod, "REPO_ROOT", tmp_path)
+        monkeypatch.setattr(estleg_common, "KRR_DIR", krr)
+        return krr, rt, mod
+
+    def test_amending_act_emitted_and_corrupt_date_not_current(
+        self, tmp_path, monkeypatch
+    ):
+        krr, rt, mod = self._setup(tmp_path, monkeypatch)
+        peep = krr / "gamma_seadus_peep.json"
+        peep.write_text(json.dumps({
+            "@context": {"estleg": "https://data.riik.ee/ontology/estleg#",
+                         "owl": "http://www.w3.org/2002/07/owl#"},
+            "@graph": [
+                {"@id": "estleg:Gamma_Map",
+                 "@type": ["owl:Ontology", "estleg:Act"],
+                 "rdfs:label": "Gamma seadus", "dc:source": "Gamma seadus",
+                 "estleg:globalId": "7000"}
+            ],
+        }), encoding="utf-8")
+        # One real amendment (with aktViide) + one CORRUPT future-dated one.
+        real = (
+            "<muutmismarge>"
+            "<aktikuupaev>2003-07-15</aktikuupaev>"
+            "<joustumine>2003-08-01</joustumine>"
+            "<avaldamismarge>"
+            "<RTosa>I</RTosa><RTaasta>2003</RTaasta><RTnr>57</RTnr>"
+            "<RTartikkel>356</RTartikkel>"
+            "<aktViide>178370</aktViide>"
+            "</avaldamismarge></muutmismarge>"
+        )
+        corrupt = (
+            "<muutmismarge>"
+            "<aktikuupaev>2918-10-17</aktikuupaev>"
+            "<avaldamismarge>"
+            "<RTosa>I</RTosa><RTaasta>2918</RTaasta><RTnr>99</RTnr>"
+            "</avaldamismarge></muutmismarge>"
+        )
+        (rt / "reg_7000.xml").write_text(
+            '<akt globaalID="7000"><metaandmed>'
+            + real + corrupt
+            + "</metaandmed></akt>",
+            encoding="utf-8",
+        )
+
+        rc = mod.main()
+        assert rc in (None, 0)
+
+        chain_doc = json.loads(
+            (krr / "amendments" / "amendments_gamma_seadus.json").read_text("utf-8")
+        )
+        events = [
+            n for n in chain_doc["@graph"]
+            if "estleg:AmendmentEvent" in (n.get("@type") or [])
+        ]
+        # amendingAct is emitted from the RT reference on the real event.
+        real_event = next(
+            n for n in events
+            if n.get("estleg:rtReference") == "I, 2003, 57, 356"
+        )
+        assert real_event["estleg:amendingAct"] == "I, 2003, 57, 356"
+
+        # The current flag sits on the validly-dated event, NEVER the corrupt
+        # 2918 one (whose amendmentDate was dropped to None by parse_date).
+        current = [n for n in events if "estleg:isCurrentAmendment" in n]
+        assert len(current) == 1
+        assert current[0] is real_event
+        # No surviving 2918 DATE on any event (the corrupt amendmentDate was
+        # dropped). The RT-reference citation may still carry the publication
+        # year string — that is a separate field, out of the date-gate scope.
+        for node in events:
+            for key in ("estleg:amendmentDate", "estleg:entryIntoForce"):
+                val = node.get(key, {})
+                if isinstance(val, dict):
+                    assert "2918" not in str(val.get("@value", "")), node
 
 
 # ---------------------------------------------------------------------------

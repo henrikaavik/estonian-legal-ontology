@@ -1328,6 +1328,12 @@ def generate_law_jsonld(
                     "@id": chapter_id,
                     "@type": ["owl:NamedIndividual", "estleg:Chapter"],
                     "rdfs:label": f"{ch_nr}. peatükk – {ch_title}".strip(" –"),
+                    # #569: chapterNumber is a plain xsd:string on purpose. It
+                    # is parsed from the free-text peatykkNr attribute and is
+                    # NOT guaranteed numeric (Roman numerals "I"/"II"/"III"
+                    # occur), so it must NOT be typed xsd:integer — that would
+                    # make the property mixed-datatype. Guarded by
+                    # scripts/check_numeric_identity_strings.py.
                     "estleg:chapterNumber": ch_nr,
                     # Issue #415: chapter -> act root link.
                     "estleg:partOfAct": {"@id": ontology_id},
@@ -1788,6 +1794,10 @@ def generate_multipart_law(
                         "@id": chapter_id,
                         "@type": ["owl:NamedIndividual", "estleg:Chapter"],
                         "rdfs:label": f"{ch_nr}. peatükk – {ch_title}".strip(" –"),
+                        # #569: chapterNumber stays a plain xsd:string (free-text
+                        # peatykkNr, may be a Roman numeral) — see the other
+                        # chapter_node emission site and
+                        # scripts/check_numeric_identity_strings.py.
                         "estleg:chapterNumber": ch_nr,
                         # Issue #415: chapter -> this osa's act root link.
                         "estleg:partOfAct": {"@id": ontology_id},

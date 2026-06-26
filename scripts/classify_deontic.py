@@ -88,6 +88,12 @@ _TOKEN_RE = re.compile(r"[A-Za-zÄÖÜÕŠŽäöüõšž]+", re.UNICODE)
 OBLIGATION_PATTERNS = [
     (re.compile(r"\bon kohustatud\b", re.IGNORECASE), 3, KIND_PLAIN),
     (re.compile(r"\bpeab\b", re.IGNORECASE), 2, KIND_MODAL),
+    # #584: ``peavad`` is the plural ("must", 3pl of *pidama*) counterpart of
+    # ``peab`` — equally polysemous ("they keep …"), so it is a MODAL cue
+    # guarded by the same nearby-infinitive requirement. 3,012 provisions use
+    # it; only the singular ``peab`` was listed before, so plural obligations
+    # ("Töötajad peavad … esitama") were missed.
+    (re.compile(r"\bpeavad\b", re.IGNORECASE), 2, KIND_MODAL),
     (re.compile(r"\btuleb\b", re.IGNORECASE), 2, KIND_MODAL),
     (re.compile(r"\bon kohustus\b", re.IGNORECASE), 3, KIND_PLAIN),
     (re.compile(r"\bkohustub\b", re.IGNORECASE), 3, KIND_PLAIN),
@@ -112,6 +118,17 @@ RIGHT_PATTERNS = [
 # constant to identify it precisely in ``score_text``.
 _VOIB_RE = re.compile(r"\bvõib\b", re.IGNORECASE)
 
+# #584: the split ``on … keelatud`` form, where a subject sits between the
+# copula and the participle ("on isikul keelatud", "on … vööndis keelatud").
+# Strict adjacency (``\bon keelatud\b``) missed 400 such provisions. The gap is
+# capped at 1–6 non-period word tokens so the match never crosses a sentence
+# boundary (``[^.\s]+`` forbids the period that ends a clause). Like ``ei
+# tohi`` it is a NEGATIVE cue (its prohibition force is intrinsic, not subject
+# to the ei/pole/ega guard).
+_ON_KEELATUD_SPLIT_RE = re.compile(
+    r"\bon\b(?:\s+[^.\s]+){1,6}\s+keelatud\b", re.IGNORECASE
+)
+
 PERMISSION_PATTERNS = [
     (re.compile(r"\bon lubatud\b", re.IGNORECASE), 3, KIND_PLAIN),
     (re.compile(r"\btohib\b", re.IGNORECASE), 3, KIND_PLAIN),
@@ -120,8 +137,26 @@ PERMISSION_PATTERNS = [
 ]
 
 PROHIBITION_PATTERNS = [
+    # #584: ``on keelatud`` ("is forbidden") — the strict-adjacency form. The
+    # split form ("on … keelatud", subject between copula and participle,
+    # e.g. "on isikul keelatud") is covered by _ON_KEELATUD_SPLIT_RE below;
+    # 634 provisions carry the split form that strict adjacency missed.
     (re.compile(r"\bon keelatud\b", re.IGNORECASE), 4, KIND_PLAIN),
+    # #584: the split copula…participle form (see _ON_KEELATUD_SPLIT_RE). It is
+    # NEGATIVE-kind so the ei/pole/ega guard does not cancel it, but it does
+    # not duplicate-score with the strict ``on keelatud`` cue above because the
+    # strict form's ``on keelatud`` substring contains no intervening token and
+    # so cannot also satisfy this {1,6}-gap pattern.
+    (_ON_KEELATUD_SPLIT_RE, 4, KIND_NEGATIVE),
     (re.compile(r"\bei tohi\b", re.IGNORECASE), 4, KIND_NEGATIVE),
+    # #584: ``ei või`` ("may not") is the canonical negated-permission =
+    # prohibition form. The affirmative ``võib`` loses its ``-b`` under
+    # negation (``ei või``), so the weight-1 permissive ``_VOIB_RE`` (\bvõib\b)
+    # never matched it: 1,433 provisions said "X ei või …" yet none scored as
+    # Prohibition (most fell through to Permission/Obligation). It is a
+    # NEGATIVE cue (already encodes its negation, so the ei/pole/ega guard
+    # must not cancel it) and outweighs the bare permissive ``võib``.
+    (re.compile(r"\bei või\b", re.IGNORECASE), 4, KIND_NEGATIVE),
     (re.compile(r"\bei ole lubatud\b", re.IGNORECASE), 3, KIND_NEGATIVE),
     (re.compile(r"\bpole lubatud\b", re.IGNORECASE), 3, KIND_NEGATIVE),
     (re.compile(r"\bon karistatav\b", re.IGNORECASE), 3, KIND_PLAIN),
@@ -272,6 +307,74 @@ def score_text(text: str, patterns: list[tuple[re.Pattern, int, str]]) -> int:
     return total
 
 
+# #584: the boundary that ends a leading main clause and opens a trailing
+# ``kui`` / colon-list condition. A permission stated in the main clause
+# ("X võib … kehtetuks tunnistada") is the operative norm; an obligation cue
+# that appears ONLY inside the trailing condition ("…, kui isik on esitanud …")
+# describes when the permission applies, not a competing obligation. The split
+# point is the first ``kui`` / ``:`` / ``;`` marker.
+_SUBORDINATE_BOUNDARY_RE = re.compile(r"\bkui\b|:|;", re.IGNORECASE)
+# How far into the main clause a permission cue may start and still count as
+# the operative "leading" verb. Provision summaries open with a "(N) " marker
+# plus a short subject, so this keeps real leading permissions in scope.
+_LEADING_PERMISSION_WINDOW = 80
+# The position weight added to a structurally-leading permission so it wins the
+# tie against an obligation/right cue confined to the trailing condition. Two
+# points clear the +1 NORM_TIE_PRIORITY gap that previously handed these to
+# Obligation, plus the obligation's own weight (cues are weight 2-3).
+_LEADING_PERMISSION_BOOST = 3
+
+
+def _valid_permission_in(text: str, segment: str, *, penal: bool) -> bool:
+    """True iff ``segment`` carries a valid (non-negated) permission cue.
+
+    Reuses ``score_text``'s rules: a penal judicial-discretion ``võib`` is
+    excluded, and an occurrence negated by a preceding ei/pole/ega (so the
+    ``ei või`` prohibition form) does not count as permission.
+    """
+    for pat, _weight, _kind in PERMISSION_PATTERNS:
+        if penal and pat is _VOIB_RE:
+            continue
+        for m in pat.finditer(segment):
+            if not _is_negated(segment, m.start()):
+                return True
+    return False
+
+
+def _leading_permission_over_condition(text: str) -> bool:
+    """True for the #584 "leading permission, trailing ``kui`` obligation" shape.
+
+    The mislabel only occurs when ALL hold:
+      * there is a subordinate-clause boundary (``kui`` / ``:`` / ``;``) — the
+        pattern is specifically a main clause + a *condition*, so with no
+        boundary there is no condition to discount and the boost never fires;
+      * a valid permission cue sits in the main clause, starting within
+        ``_LEADING_PERMISSION_WINDOW`` chars (the operative leading verb);
+      * the main clause carries NO competing obligation/right cue of its own
+        (those would be genuine, not condition-bound).
+
+    Requiring the boundary keeps the boost from firing on two independent
+    sentences (e.g. "Isikul on õigus …. Tegevus on lubatud …"), where the
+    permission is not leading and tie-priority must still decide.
+    """
+    boundary = _SUBORDINATE_BOUNDARY_RE.search(text)
+    if boundary is None:
+        return False
+    main_clause = text[: boundary.start()]
+    penal = _KARISTATAKSE_RE.search(text) is not None
+    # The permission must lead the main clause (start within the window).
+    window = main_clause[:_LEADING_PERMISSION_WINDOW]
+    if not _valid_permission_in(text, window, penal=penal):
+        return False
+    # If the MAIN clause already states an obligation/right, that is a genuine
+    # competing norm (not condition-bound) — leave tie-priority to decide.
+    if score_text(main_clause, OBLIGATION_PATTERNS) > 0:
+        return False
+    if score_text(main_clause, RIGHT_PATTERNS) > 0:
+        return False
+    return True
+
+
 def classify_provision(text: str) -> str | None:
     """Return the dominant normative-type IRI, or None if nothing matched."""
     scores: dict[str, int] = {}
@@ -282,6 +385,20 @@ def classify_provision(text: str) -> str | None:
 
     if not scores:
         return None
+
+    # #584: a permission in the leading main clause is the operative norm; an
+    # obligation/right cue that only appears in the trailing ``kui`` condition
+    # must not steal the label via tie-priority. Boost a structurally-leading
+    # permission so it wins. Only applied when permission is actually a
+    # candidate and competes with obligation/right — a prohibition cue (e.g.
+    # ``ei või``) is stronger and is left to win on its own weight.
+    if (
+        "permission" in scores
+        and ("obligation" in scores or "right" in scores)
+        and "prohibition" not in scores
+        and _leading_permission_over_condition(text)
+    ):
+        scores["permission"] += _LEADING_PERMISSION_BOOST
 
     best = max(scores, key=lambda k: (scores[k], NORM_TIE_PRIORITY[k]))
     return NORM_TYPES[best][0]

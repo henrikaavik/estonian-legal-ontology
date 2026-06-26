@@ -305,6 +305,17 @@ KOV_TOP_K = 20
 KOV_SIMILARITY_THRESHOLD = 0.3
 KOV_SCORE_MODEL = "tfidf-cosine"
 
+# #581: a cosine this close to 1.0 between two DISTINCT acts whose only
+# indexed text is the shared verbatim enabling-law preamble boilerplate (i.e.
+# neither act has any provision body text) is a false "identical" edge, not a
+# real similarity. The intra-bucket pairing path drops exactly those pairs —
+# perfect score AND both endpoints empty-bodied — and nothing else, so
+# legitimate <1.0 edges and perfect edges between text-bearing acts survive.
+# The epsilon absorbs float round-off in the dot product (vectors are L2-
+# normalized, so an identical doc yields 1.0 within ~1e-12).
+KOV_PERFECT_DUP_THRESHOLD = 1.0
+KOV_PERFECT_DUP_EPSILON = 1e-9
+
 # Boilerplate provision patterns to exclude (entry-into-force, repeal clauses, etc.)
 #
 # Each pattern flags a provision whose text is mandatory verbatim / structural
@@ -715,7 +726,60 @@ def find_kov_act_node(doc: dict) -> dict | None:
     return None
 
 
-def act_document_text(act_node: dict, provision_nodes: list[dict]) -> str:
+# Annex node text fields that carry *substantive* content (#581).
+#
+# An annex node's discriminative substance (a placename, a fee table, the
+# actual charter body) — when extracted — lives in one of these body fields.
+# ``rdfs:label`` / ``estleg:annexNumber`` are DELIBERATELY excluded: in the
+# live corpus every annex node carries only ``rdfs:label`` ("Lisa 1", "Lisa
+# 2", …) + ``estleg:annexNumber`` ("1", "2"), i.e. pure ordinal boilerplate
+# identical across acts. Indexing those would *re-introduce* the very
+# false-similarity #581 set out to kill, so only true body text is pulled.
+_ANNEX_TEXT_FIELDS = (
+    "estleg:annexText",
+    "estleg:summary",
+    "estleg:legalText",
+    "estleg:bodyText",
+    "estleg:text",
+    "dcterms:description",
+)
+
+
+def annex_document_text(annex_nodes: list[dict]) -> str:
+    """Concatenate substantive annex body text (#581), excluding ordinals.
+
+    Annex-style municipal decisions ("Kinnitada … vastavalt lisale") carry
+    their distinguishing substance — the actual placename / table — in the
+    annex, not in the (boilerplate) enabling provision. ``act_document_text``
+    historically indexed only title + preamble + provision text, so two acts
+    whose only indexed text is the shared enabling-law preamble scored a
+    spurious 1.0 cosine. This pulls any annex *body* field (see
+    :data:`_ANNEX_TEXT_FIELDS`) so that substance becomes discriminative once
+    it is extracted.
+
+    NOTE (deferred extraction): the live corpus's ~11.5k annex nodes carry
+    only ``rdfs:label`` + ``estleg:annexNumber`` today — no body text was ever
+    scraped into the ontology — so this contributes nothing yet. It is the
+    forward-looking root-cause hook: when annex bodies are backfilled the
+    generator already consumes them. Until then the empty-body intra-bucket
+    exclusion (see :func:`_act_has_provision_text` /
+    :func:`_intra_bucket_pairs`) is what actually suppresses the boilerplate
+    1.0 edges.
+    """
+    parts: list[str] = []
+    for annex in annex_nodes:
+        for field in _ANNEX_TEXT_FIELDS:
+            text = jsonld_text(annex.get(field, ""))
+            if text:
+                parts.append(text)
+    return " ".join(parts)
+
+
+def act_document_text(
+    act_node: dict,
+    provision_nodes: list[dict],
+    annex_nodes: list[dict] | None = None,
+) -> str:
     """Concatenate the text fields that describe one act for TF-IDF.
 
     Per the Layer 3 spec the per-act document is the act
@@ -724,6 +788,13 @@ def act_document_text(act_node: dict, provision_nodes: list[dict]) -> str:
     (and ``estleg:legalText`` when present). All fields are passed through
     :func:`jsonld_text` so language-tagged value objects and plain strings
     are handled uniformly.
+
+    #581: ``annex_nodes`` (the act's ``estleg:hasAnnex`` targets) are also
+    appended via :func:`annex_document_text` so annex-borne substance — the
+    distinguishing placename of an otherwise boilerplate "kinnita … lisale"
+    decision — is indexed. See that helper for the deferred-extraction caveat
+    (annex *body* text is not yet in the corpus, only ordinal labels which are
+    intentionally NOT indexed).
     """
     parts: list[str] = []
     parts.append(jsonld_text(act_node.get("rdfs:label", "")))
@@ -732,7 +803,30 @@ def act_document_text(act_node: dict, provision_nodes: list[dict]) -> str:
     for prov in provision_nodes:
         parts.append(jsonld_text(prov.get("estleg:summary", "")))
         parts.append(jsonld_text(prov.get("estleg:legalText", "")))
+    if annex_nodes:
+        annex_text = annex_document_text(annex_nodes)
+        if annex_text:
+            parts.append(annex_text)
     return " ".join(p for p in parts if p)
+
+
+def _act_has_provision_text(provision_nodes: list[dict]) -> bool:
+    """Return True when any child provision carries real body text (#581).
+
+    "Body text" = a non-blank ``estleg:summary`` or ``estleg:legalText`` on a
+    ``_Par_`` node. An act with no such provision text has a TF-IDF document
+    made only of its title + the verbatim shared enabling-law preamble
+    boilerplate; two such acts in one bucket score a spurious cosine 1.0
+    purely off that boilerplate. This predicate lets the intra-bucket pairing
+    path drop those perfect-but-empty edges (the 396 false positives in
+    :func:`_intra_bucket_pairs`).
+    """
+    for prov in provision_nodes:
+        if jsonld_text(prov.get("estleg:summary", "")).strip():
+            return True
+        if jsonld_text(prov.get("estleg:legalText", "")).strip():
+            return True
+    return False
 
 
 def _provision_nodes_for_act(doc: dict, act_id: str) -> list[dict]:
@@ -744,6 +838,32 @@ def _provision_nodes_for_act(doc: dict, act_id: str) -> list[dict]:
             continue
         provisions.append(node)
     return provisions
+
+
+def _annex_nodes_for_act(doc: dict, act_node: dict) -> list[dict]:
+    """Resolve an act's ``estleg:hasAnnex`` targets to their graph nodes (#581).
+
+    ``estleg:hasAnnex`` on a KOV act node is a list of ``{"@id": ...}``
+    references into separate ``estleg:Annex`` nodes living in the same
+    ``@graph``; this resolves each referenced id to its node so
+    :func:`annex_document_text` can pull any annex body text. Unresolved or
+    malformed refs are skipped. Returns ``[]`` when the act has no annexes.
+    """
+    refs = act_node.get("estleg:hasAnnex")
+    if not isinstance(refs, list):
+        return []
+    wanted = {
+        ref["@id"]
+        for ref in refs
+        if isinstance(ref, dict) and isinstance(ref.get("@id"), str)
+    }
+    if not wanted:
+        return []
+    return [
+        node
+        for node in doc.get("@graph", [])
+        if isinstance(node.get("@id"), str) and node["@id"] in wanted
+    ]
 
 
 def build_term_frequencies(text: str) -> Counter:
@@ -906,7 +1026,14 @@ def _load_kov_acts(kov_files: list[Path]) -> list[dict]:
             continue
         title_normalized = jsonld_text(act_node.get("estleg:titleNormalized", ""))
         provisions = _provision_nodes_for_act(doc, act_iri)
-        tf = build_term_frequencies(act_document_text(act_node, provisions))
+        annexes = _annex_nodes_for_act(doc, act_node)
+        # #581: index annex substance too, and record whether the act has any
+        # real provision body text so the intra-bucket pairing path can drop
+        # boilerplate-only perfect-1.0 edges (the 396 false positives).
+        tf = build_term_frequencies(
+            act_document_text(act_node, provisions, annexes)
+        )
+        has_provision_text = _act_has_provision_text(provisions)
         issued_under = [
             ref["@id"]
             for ref in act_node.get("estleg:issuedUnder", [])
@@ -922,6 +1049,7 @@ def _load_kov_acts(kov_files: list[Path]) -> list[dict]:
             "bare_id": _bare_id(act_iri),
             "title_normalized": title_normalized,
             "tf": tf,
+            "has_provision_text": has_provision_text,  # #581
             "bucket": bucket_key(title_normalized),
             "issued_under": issued_under,
         })
@@ -1004,7 +1132,23 @@ def _intra_bucket_pairs(
     edges). Pairs are considered in descending ``(score, …)`` priority so the
     strongest mutual matches claim the limited slots first; ties break
     deterministically on the IRIs.
+
+    #581 — boilerplate perfect-dup guard: a candidate pair is dropped when it
+    scores a perfect ~1.0 (within :data:`KOV_PERFECT_DUP_EPSILON` of
+    :data:`KOV_PERFECT_DUP_THRESHOLD`) AND **both** endpoints lack provision
+    body text (``has_provision_text`` is False). Such acts' only indexed text
+    is the verbatim shared enabling-law preamble, so the 1.0 is a false
+    "identical" edge — the 396 garbage pairs the ticket targets. Every other
+    pair (any score < 1.0, or a perfect score with at least one text-bearing
+    endpoint) is untouched, and the greedy-symmetric cap below is unchanged.
     """
+    # IRI -> has-provision-text flag (#581). Acts missing the flag (e.g. a
+    # crafted member record in a unit test) default to True so the guard only
+    # *removes* edges it can positively prove are boilerplate-only.
+    has_text = {
+        m["iri"]: m.get("has_provision_text", True) for m in members
+    }
+
     # Collect every qualifying undirected pair once, with its score.
     candidates: list[tuple[float, str, str]] = []
     n = len(members)
@@ -1017,6 +1161,14 @@ def _intra_bucket_pairs(
             if score < KOV_SIMILARITY_THRESHOLD:
                 continue
             iri_a, iri_b = act_a["iri"], act_b["iri"]
+            # #581: drop a perfect-1.0 pair whose both endpoints are
+            # provision-text-empty (boilerplate-only false identical edge).
+            if (
+                score >= KOV_PERFECT_DUP_THRESHOLD - KOV_PERFECT_DUP_EPSILON
+                and not has_text.get(iri_a, True)
+                and not has_text.get(iri_b, True)
+            ):
+                continue
             # Order endpoints by IRI for a deterministic tie-break key.
             lo, hi = (iri_a, iri_b) if iri_a <= iri_b else (iri_b, iri_a)
             candidates.append((score, lo, hi))
@@ -1101,6 +1253,13 @@ def _build_state_vector(
     cross-layer document) and projects them into the KOV-corpus IDF space so
     the cosine is comparable with the KOV source vectors. Returns ``None``
     when the act IRI does not resolve to a readable peep with usable text.
+
+    Asymmetry with :func:`act_document_text` (#581): the annex-text append is
+    deliberately NOT mirrored here. State/law enabling acts carry no
+    ``estleg:Annex`` nodes (annexes are a KOV-decision shape), and these are
+    only ever the *target* of a directional KOV->state cross-layer edge — they
+    never form the boilerplate-only intra-bucket 1.0 pairs the annex fix
+    addresses — so adding annex handling would be dead code on this path.
     """
     fpath = act_iri_to_file.get(act_iri)
     if fpath is None:

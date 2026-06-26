@@ -1687,3 +1687,184 @@ def test_load_kov_acts_keeps_act_without_temporal_status(tmp_path):
     acts = similarity._load_kov_acts([active])
 
     assert {act["iri"] for act in acts} == {"estleg:Reg_10003_Map_2026"}
+
+
+# ===========================================================================
+# #581 — boilerplate perfect-1.0 edges (annex indexing + empty-body guard)
+# ===========================================================================
+
+
+def _empty_body_kov_doc(
+    reg_id: str,
+    title_normalized: str,
+    *,
+    annex_text: str | None = None,
+    annex_label: str = "Lisa 1",
+    preamble: str = "kohaliku omavalitsuse korralduse seaduse alusel",
+) -> dict:
+    """A KOV peep whose provision carries NO summary/legalText body (#581).
+
+    The act's only indexed text is its title + the (shared) preamble — exactly
+    the boilerplate-only shape that yields a spurious cosine 1.0 between two
+    distinct acts. An optional annex node may carry substantive body text
+    (``estleg:annexText``) to exercise the annex-indexing half of the fix;
+    ``annex_label`` is the ordinal label that must NOT be indexed.
+    """
+    act_id = f"estleg:Reg_{reg_id}_Map_2026"
+    annex_id = f"estleg:Reg_{reg_id}_Annex_1"
+    act_node = {
+        "@id": act_id,
+        "@type": ["owl:Ontology", "estleg:Act", "estleg:MunicipalRegulation"],
+        "rdfs:label": title_normalized,
+        "estleg:titleNormalized": title_normalized,
+        "estleg:preambleText": preamble,
+        "estleg:hasAnnex": [{"@id": annex_id}],
+    }
+    # Provision node with NO body text -> empty-body act.
+    prov_node = {
+        "@id": f"estleg:Reg_{reg_id}_Par_1",
+        "@type": ["owl:NamedIndividual", f"estleg:Regulation_{reg_id}"],
+    }
+    annex_node = {
+        "@id": annex_id,
+        "@type": ["owl:NamedIndividual", "estleg:Annex"],
+        "rdfs:label": annex_label,
+        "estleg:annexNumber": "1",
+    }
+    if annex_text is not None:
+        annex_node["estleg:annexText"] = annex_text
+    return {"@graph": [act_node, prov_node, annex_node]}
+
+
+def test_act_document_text_appends_annex_body_not_label(tmp_path):
+    """act_document_text indexes annex *body* text but not the 'Lisa N' label (#581)."""
+    doc = _empty_body_kov_doc(
+        "55001", "kooli arengukava",
+        annex_text="tallinna kesklinn ploomipuu placename",
+        annex_label="Lisa 1",
+    )
+    act_node = similarity.find_kov_act_node(doc)
+    provisions = similarity._provision_nodes_for_act(doc, act_node["@id"])
+    annexes = similarity._annex_nodes_for_act(doc, act_node)
+
+    text = similarity.act_document_text(act_node, provisions, annexes)
+    # Annex body substance IS indexed.
+    assert "placename" in text
+    assert "kesklinn" in text
+    # The ordinal annex label is NOT indexed (would re-introduce boilerplate).
+    assert "Lisa" not in text
+
+
+def test_act_document_text_ignores_annex_with_only_label(tmp_path):
+    """An annex node carrying only label/number adds nothing (corpus reality, #581)."""
+    doc = _empty_body_kov_doc("55002", "kooli arengukava", annex_text=None)
+    act_node = similarity.find_kov_act_node(doc)
+    provisions = similarity._provision_nodes_for_act(doc, act_node["@id"])
+    annexes = similarity._annex_nodes_for_act(doc, act_node)
+
+    with_annex = similarity.act_document_text(act_node, provisions, annexes)
+    without_annex = similarity.act_document_text(act_node, provisions, None)
+    assert with_annex == without_annex
+
+
+def test_act_has_provision_text_predicate():
+    """_act_has_provision_text is True iff a _Par_ node has summary/legalText (#581)."""
+    has_summary = [{"@id": "estleg:Reg_1_Par_1", "estleg:summary": "real text here"}]
+    has_legal = [{"@id": "estleg:Reg_1_Par_1", "estleg:legalText": "real text here"}]
+    blank = [{"@id": "estleg:Reg_1_Par_1", "estleg:summary": "   "}]
+    none_node = [{"@id": "estleg:Reg_1_Par_1"}]
+    assert similarity._act_has_provision_text(has_summary) is True
+    assert similarity._act_has_provision_text(has_legal) is True
+    assert similarity._act_has_provision_text(blank) is False
+    assert similarity._act_has_provision_text(none_node) is False
+    assert similarity._act_has_provision_text([]) is False
+
+
+def test_load_kov_acts_records_has_provision_text_flag(tmp_path):
+    """_load_kov_acts stamps has_provision_text per act for the #581 guard."""
+    krr = tmp_path / "krr_outputs"
+    empty = _write_kov(
+        krr, "alpha_vv", "55010",
+        _empty_body_kov_doc("55010", "kooli arengukava"),
+    )
+    filled = _write_kov(
+        krr, "beta_vv", "55011",
+        _kov_act_doc("55011", "jaatmehoolduseeskiri", [_WASTE_TEXT]),
+    )
+    acts = {a["iri"]: a for a in similarity._load_kov_acts([empty, filled])}
+    assert acts["estleg:Reg_55010_Map_2026"]["has_provision_text"] is False
+    assert acts["estleg:Reg_55011_Map_2026"]["has_provision_text"] is True
+
+
+def test_intra_bucket_drops_perfect_edge_between_empty_body_acts():
+    """Two empty-body acts with identical vectors form NO intra-bucket edge (#581)."""
+    a = "estleg:Reg_55020_Map_2026"
+    b = "estleg:Reg_55021_Map_2026"
+    members = [
+        {"iri": a, "has_provision_text": False},
+        {"iri": b, "has_provision_text": False},
+    ]
+    # Identical L2-normalized vectors -> cosine == 1.0 (boilerplate-only).
+    vec = {"boiler": 0.6, "plate": 0.8}
+    vectors = {a: dict(vec), b: dict(vec)}
+    peers = similarity._intra_bucket_pairs(members, vectors)
+    assert dict(peers) == {}
+
+
+def test_intra_bucket_keeps_perfect_edge_when_endpoints_have_text():
+    """A perfect 1.0 between text-bearing acts is a real edge — kept (#581)."""
+    a = "estleg:Reg_55030_Map_2026"
+    b = "estleg:Reg_55031_Map_2026"
+    members = [
+        {"iri": a, "has_provision_text": True},
+        {"iri": b, "has_provision_text": True},
+    ]
+    vec = {"jaatmevedu": 0.6, "konteiner": 0.8}
+    vectors = {a: dict(vec), b: dict(vec)}
+    peers = similarity._intra_bucket_pairs(members, vectors)
+    assert peers[a] and peers[b]
+    assert peers[a][0]["target"] == b
+    assert peers[b][0]["target"] == a
+
+
+def test_intra_bucket_keeps_sub_perfect_edge_between_empty_body_acts():
+    """Empty-body acts scoring < 1.0 keep their edge (only perfect dups drop, #581)."""
+    a = "estleg:Reg_55040_Map_2026"
+    b = "estleg:Reg_55041_Map_2026"
+    members = [
+        {"iri": a, "has_provision_text": False},
+        {"iri": b, "has_provision_text": False},
+    ]
+    # Non-parallel unit vectors -> cosine strictly < 1.0 but >= threshold.
+    vectors = {a: {"x": 0.6, "y": 0.8}, b: {"x": 0.8, "y": 0.6}}
+    assert similarity.cosine_sparse(vectors[a], vectors[b]) < 1.0
+    peers = similarity._intra_bucket_pairs(members, vectors)
+    assert peers[a] and peers[b]
+
+
+def test_two_empty_body_acts_produce_no_perfect_pair_end_to_end(tmp_path, monkeypatch):
+    """Full KOV pass: two boilerplate-only acts in one bucket emit no pair (#581)."""
+    krr = tmp_path / "krr_outputs"
+    files = [
+        _write_kov(krr, "alpha_vv", "55050",
+                   _empty_body_kov_doc("55050", "kooli arengukava")),
+        _write_kov(krr, "beta_vv", "55051",
+                   _empty_body_kov_doc("55051", "kooli arengukava")),
+    ]
+    _wire_kov(monkeypatch, krr, files)
+
+    summary = similarity.run_kov_similarity_pass()
+
+    # They DO share a bucket (same normalized title)...
+    bucket = summary["buckets"]["kooli arengukava"]
+    assert bucket["regulationCount"] == 2
+    # ...but the boilerplate-only 1.0 edge is suppressed: no pairs emitted.
+    assert bucket["pairs"] == []
+    assert summary["totalPairs"] == 0
+    # And neither act node gets an estleg:similarAct back-link.
+    for path, act_id in (
+        (files[0], "estleg:Reg_55050_Map_2026"),
+        (files[1], "estleg:Reg_55051_Map_2026"),
+    ):
+        node = _act_node(path, act_id)
+        assert "estleg:similarAct" not in node
