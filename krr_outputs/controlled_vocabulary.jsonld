@@ -79,6 +79,40 @@
       }
     },
     {
+      "@id": "estleg:supersededByExpression",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:label": "asendatud redaktsiooniga (superseded by expression)",
+      "rdfs:comment": "Links an estleg:ActExpression to the next-later consolidation of the same act (#608 phase 2), chaining the act's consolidations into a navigable FRBR temporal sequence; the chain head (no value) is the current consolidation. The per-provision membership of an expression is derivable from the provision_versions sidecars (versionValidFrom <= consolidationDate, latest per provision), so it is not materialised (~1.3M edges).",
+      "rdfs:domain": {
+        "@id": "estleg:ActExpression"
+      },
+      "rdfs:range": {
+        "@id": "estleg:ActExpression"
+      },
+      "owl:inverseOf": {
+        "@id": "estleg:supersedesExpression"
+      }
+    },
+    {
+      "@id": "estleg:supersedesExpression",
+      "@type": [
+        "owl:ObjectProperty"
+      ],
+      "rdfs:label": "asendab redaktsiooni (supersedes expression)",
+      "rdfs:comment": "Links an estleg:ActExpression to the previous consolidation of the same act it supersedes (#608 phase 2). Inverse of estleg:supersededByExpression.",
+      "rdfs:domain": {
+        "@id": "estleg:ActExpression"
+      },
+      "rdfs:range": {
+        "@id": "estleg:ActExpression"
+      },
+      "owl:inverseOf": {
+        "@id": "estleg:supersededByExpression"
+      }
+    },
+    {
       "@id": "estleg:AmendmentEvent",
       "@type": [
         "owl:Class"

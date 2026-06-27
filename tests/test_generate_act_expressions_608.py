@@ -170,6 +170,8 @@ def test_build_for_sidecar_produces_expected_dicts(tmp_path):
             "estleg:expressionOf": {"@id": "estleg:VKVS_Map_2026"},
             "estleg:consolidationDate": {"@value": "2002-06-01", "@type": "xsd:date"},
             "rdfs:label": "Väetiseseadus (seisuga 2002-06-01)",
+            # #608 phase 2: the older expression is superseded by the next.
+            "estleg:supersededByExpression": {"@id": "estleg:VKVS_Map_2026_Expr_20050309"},
         },
         {
             "@id": "estleg:VKVS_Map_2026_Expr_20050309",
@@ -177,8 +179,31 @@ def test_build_for_sidecar_produces_expected_dicts(tmp_path):
             "estleg:expressionOf": {"@id": "estleg:VKVS_Map_2026"},
             "estleg:consolidationDate": {"@value": "2005-03-09", "@type": "xsd:date"},
             "rdfs:label": "Väetiseseadus (seisuga 2005-03-09)",
+            "estleg:supersedesExpression": {"@id": "estleg:VKVS_Map_2026_Expr_20020601"},
         },
     ]
+
+
+def test_expression_chain_links_consecutive_consolidations():
+    # 3 dates -> 2 forward + 2 backward links; head has no supersededBy, tail no
+    # supersedes. dates passed sorted ascending.
+    nodes = G.build_act_expression_nodes(
+        "estleg:X_Map_2026", "X", "x", ["2001-01-01", "2002-01-01", "2003-01-01"]
+    )
+    ids = [n["@id"] for n in nodes]
+    assert "estleg:supersededByExpression" not in nodes[-1]  # current consolidation
+    assert "estleg:supersedesExpression" not in nodes[0]     # oldest
+    assert nodes[0]["estleg:supersededByExpression"] == {"@id": ids[1]}
+    assert nodes[1]["estleg:supersededByExpression"] == {"@id": ids[2]}
+    assert nodes[2]["estleg:supersedesExpression"] == {"@id": ids[1]}
+    assert nodes[1]["estleg:supersedesExpression"] == {"@id": ids[0]}
+
+
+def test_single_consolidation_has_no_chain():
+    nodes = G.build_act_expression_nodes("estleg:X_Map_2026", "X", "x", ["2001-01-01"])
+    assert len(nodes) == 1
+    assert "estleg:supersededByExpression" not in nodes[0]
+    assert "estleg:supersedesExpression" not in nodes[0]
 
 
 def test_build_for_sidecar_label_falls_back_to_slug(tmp_path):
