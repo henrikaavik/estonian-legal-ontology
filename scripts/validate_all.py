@@ -1031,17 +1031,29 @@ def metadata_stats(krr_dir: Path = KRR_DIR) -> dict[str, int | None]:
             if isinstance(node, dict) and type_name in (node.get("@type") or [])
         )
 
+    # `courtDecisionCount` aggregates many riigikohus peep files, unlike the
+    # 3 sibling counts that each read a single combined file and return None
+    # (via count_graph_nodes) when that file is an un-materialised LFS pointer.
+    # Mirror that: when EVERY contributing peep is a pointer (count -> None),
+    # report None too — an all-unverifiable corpus must stay distinguishable
+    # from a genuinely-empty one, not collapse to 0 (#605). A truly absent
+    # directory (no peeps at all) still reports 0, as before.
+    court_counts = [
+        count_graph_nodes(path, "estleg:CourtDecision")
+        for path in sorted((krr_dir / "riigikohus").glob("riigikohus_*_peep.json"))
+    ]
+    court_verifiable = [c for c in court_counts if c is not None]
+    court_decision_count = (
+        None if court_counts and not court_verifiable else sum(court_verifiable)
+    )
+
     return {
         "estleg:enactedLawCount": len(laws) if isinstance(laws, list) else 0,
         "estleg:enactedLawFileCount": len(list(krr_dir.glob("*_peep.json"))),
         "estleg:domesticRegulationCount": len(list((krr_dir / "regulations" / "riik").glob("*_peep.json"))),
         "estleg:municipalRegulationCount": len(list((krr_dir / "regulations" / "kov").glob("**/*_peep.json"))),
         "estleg:draftLegislationCount": count_graph_nodes(krr_dir / "eelnoud" / "eelnoud_combined.jsonld", "estleg:DraftLegislation"),
-        "estleg:courtDecisionCount": sum(
-            c
-            for path in (krr_dir / "riigikohus").glob("riigikohus_*_peep.json")
-            if (c := count_graph_nodes(path, "estleg:CourtDecision")) is not None
-        ),
+        "estleg:courtDecisionCount": court_decision_count,
         "estleg:euLegislationCount": count_graph_nodes(krr_dir / "eurlex" / "eurlex_combined.jsonld", "estleg:EULegislation"),
         "estleg:euCourtDecisionCount": count_graph_nodes(krr_dir / "curia" / "curia_combined.jsonld", "estleg:EUCourtDecision"),
         "estleg:totalFiles": jsonld_file_count(krr_dir),
