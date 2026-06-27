@@ -122,11 +122,24 @@ def build_expression_node(
 def build_act_expression_nodes(
     act_iri: str, label_text: str | None, slug: str, dates: list[str]
 ) -> list[dict]:
-    """Mint one Expression node per consolidation date for a single act."""
-    return [
+    """Mint one Expression node per consolidation date for a single act, chained
+    in chronological order (#608 phase 2).
+
+    ``dates`` is sorted ascending, so each expression is superseded by the next
+    consolidation (estleg:supersededByExpression) and supersedes the previous one
+    (estleg:supersedesExpression). This makes the act's consolidation history a
+    navigable FRBR temporal chain; the per-provision membership at a given date is
+    derivable on demand from the provision_versions sidecars (versionValidFrom <=
+    consolidationDate, latest per provision), so it is intentionally NOT
+    materialised here (it would be ~1.3M edges)."""
+    nodes = [
         build_expression_node(act_iri, label_text, slug, date_value)
         for date_value in dates
     ]
+    for current, nxt in zip(nodes, nodes[1:]):
+        current["estleg:supersededByExpression"] = {"@id": nxt["@id"]}
+        nxt["estleg:supersedesExpression"] = {"@id": current["@id"]}
+    return nodes
 
 
 def distinct_consolidation_dates(version_doc: dict) -> list[str]:
