@@ -421,8 +421,10 @@ def test_harmonisation_cache_hit_skips_sparql(monkeypatch, tmp_path):
     assert call_count["n"] == 1
     assert first and first[0]["celex_nat"] == "72024A0042"
 
-    # The cache file should now exist on disk.
-    cached_file = cache_dir / "32000L0001.json"
+    # The cache file should now exist on disk. The on-disk path is whatever
+    # ``_cache_path_for`` computes — an injective function of the CELEX dir +
+    # the active TARGET_COUNTRIES set (#606), not the bare ``<celex>.json``.
+    cached_file = harmonisation._cache_path_for("32000L0001")
     assert cached_file.exists()
 
     # Second call should NOT increment call_count — pure cache hit.
@@ -434,11 +436,13 @@ def test_harmonisation_cache_hit_skips_sparql(monkeypatch, tmp_path):
 def test_harmonisation_cache_bypassed_with_use_cache_false(monkeypatch, tmp_path):
     cache_dir = tmp_path / "cache"
     cache_dir.mkdir()
-    # Pre-seed the cache with a sentinel value.
-    (cache_dir / "32000L0001.json").write_text(
+    monkeypatch.setattr(harmonisation, "CACHE_DIR", cache_dir)
+    # Pre-seed the cache at the REAL lookup path (so use_cache=True would read
+    # it) with a sentinel value; ``use_cache=False`` must still bypass it (#606
+    # changed the path scheme, so derive it via ``_cache_path_for``).
+    harmonisation._cache_path_for("32000L0001").write_text(
         json.dumps([{"country_code": "LTU", "celex_nat": "STALE"}]), encoding="utf-8"
     )
-    monkeypatch.setattr(harmonisation, "CACHE_DIR", cache_dir)
 
     fresh_payload = [
         {

@@ -22,6 +22,7 @@ from generate_provision_versions import (
     build_law_target,
     build_provision_backlinks,
     extract_provision_texts,
+    fetch_current_redaction,
     fetch_redaction_chain,
     select_law_slugs,
     synthesise_versions,
@@ -261,6 +262,44 @@ class TestSynthesiseVersions:
         assert [n["@id"] for n in nodes] == ["estleg:FIX_Par_1_v603"]
         assert nodes[0]["estleg:versionText"] == "C."
         assert "estleg:versionValidTo" not in nodes[0]  # last → still open
+
+    def test_inverted_chain_edge_is_skipped_not_emitted(self):
+        # Issue #606 item 1: a residual non-monotonic chain — a later-listed version
+        # whose versionValidFrom predates its predecessor (e.g. an out-of-order
+        # ``current`` redaction that slipped past the chain sort) — must NOT yield an
+        # inverted versionValidTo or a backwards supersededByVersion. The bad edge is
+        # skipped and that node's interval is left open; valid edges are unaffected.
+        target = _make_target(par_suffixes=("1",))
+        chain = [
+            (Redaction("111", "2010-01-01", "2014-12-31", "/akt/111.xml"), {"1": "A."}),
+            (Redaction("333", "2020-01-01", None, "/akt/333.xml"), {"1": "C."}),  # out of order
+            (Redaction("222", "2015-01-01", "2019-12-31", "/akt/222.xml"), {"1": "B."}),
+        ]
+        nodes = synthesise_versions(target, chain)
+        # Distinct text + date for each → three versions, kept in input order.
+        assert [n["@id"] for n in nodes] == [
+            "estleg:FIX_Par_1_v111", "estleg:FIX_Par_1_v333", "estleg:FIX_Par_1_v222",
+        ]
+        # Global invariants: no inverted interval, no backwards supersededByVersion.
+        from_by_id = {n["@id"]: n["estleg:versionValidFrom"]["@value"] for n in nodes}
+        for n in nodes:
+            vto = n.get("estleg:versionValidTo")
+            if vto is not None:
+                assert vto["@value"] >= n["estleg:versionValidFrom"]["@value"]
+            sup = n.get("estleg:supersededByVersion")
+            if sup is not None:
+                assert from_by_id[sup["@id"]] >= n["estleg:versionValidFrom"]["@value"]
+        by_id = {n["@id"]: n for n in nodes}
+        # The valid edge v111 -> v333 is kept with the #306 exclusive end.
+        assert by_id["estleg:FIX_Par_1_v111"]["estleg:supersededByVersion"] == {
+            "@id": "estleg:FIX_Par_1_v333"
+        }
+        assert by_id["estleg:FIX_Par_1_v111"]["estleg:versionValidTo"] == {
+            "@value": "2019-12-31", "@type": "xsd:date"
+        }
+        # ...but the inverted edge v333 -> v222 is dropped: v333 stays open.
+        assert "estleg:supersededByVersion" not in by_id["estleg:FIX_Par_1_v333"]
+        assert "estleg:versionValidTo" not in by_id["estleg:FIX_Par_1_v333"]
 
 
 # ---------------------------------------------------------------------------
@@ -652,6 +691,55 @@ def test_fetch_redaction_chain_retains_edition_ending_on_run_date(
     # g20 (lopp == today) retained between the older edition and the new current one.
     assert [r.global_id for r in chain] == ["10", "20", "30"]
     assert [r.valid_to for r in chain] == ["2020-12-31", "2024-01-01", None]
+
+
+def test_fetch_redaction_chain_reorders_out_of_order_current(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    """Issue #606 item 1: an anomalously early ``current`` redaction (entry-into-force
+    before the newest superseded edition) is repositioned so the chain stays
+    non-decreasing by ``valid_from`` — never appended out of order at the tail."""
+    title = "Korratu seadus"
+    today = "2026-01-01"
+    superseded = [
+        {"globaalID": 10, "pealkiri": title,
+         "kehtivus": {"algus": "2010-01-01", "lopp": "2014-12-31"}, "muudetud": 1, "url": "/akt/10.xml"},
+        {"globaalID": 20, "pealkiri": title,
+         "kehtivus": {"algus": "2015-01-01", "lopp": "2019-12-31"}, "muudetud": 2, "url": "/akt/20.xml"},
+        {"globaalID": 30, "pealkiri": title,
+         "kehtivus": {"algus": "2020-01-01", "lopp": "2025-12-31"}, "muudetud": 3, "url": "/akt/30.xml"},
+    ]
+    monkeypatch.setattr(gpv, "_search", lambda *a, **k: list(superseded))
+    # Anomalous current: valid_from 2012-01-01 — earlier than the 2020 superseded one.
+    monkeypatch.setattr(
+        gpv,
+        "fetch_current_redaction",
+        lambda *a, **k: Redaction("40", "2012-01-01", None, "/akt/40.xml"),
+    )
+    chain = fetch_redaction_chain(title, today=today)
+    froms = [r.valid_from for r in chain]
+    # Chain is non-decreasing by valid_from — the out-of-order current was repositioned.
+    assert froms == sorted(froms)
+    assert [r.global_id for r in chain] == ["10", "40", "20", "30"]
+
+
+def test_fetch_current_redaction_tiebreak_is_deterministic(monkeypatch: pytest.MonkeyPatch):
+    """Issue #606 item 7: two current matches sharing an ``algus`` must resolve to a
+    deterministic winner — the lexicographically-greater ``globaalID`` (which becomes
+    the version ``@id``) — regardless of the API's row order."""
+    title = "Tasaviigi seadus"
+    today = "2026-05-12"
+    lo = {"globaalID": "122122025001", "pealkiri": title,
+          "kehtivus": {"algus": "2025-01-01", "lopp": None}, "url": "/akt/122122025001.xml"}
+    hi = {"globaalID": "122122025002", "pealkiri": title,
+          "kehtivus": {"algus": "2025-01-01", "lopp": None}, "url": "/akt/122122025002.xml"}
+
+    for ordering in ([lo, hi], [hi, lo]):
+        monkeypatch.setattr(gpv, "_search", lambda *a, _rows=ordering, **k: list(_rows))
+        red = fetch_current_redaction(title, today=today)
+        assert red is not None
+        # Identical algus → tie broken on globaalID; the greater id wins either order.
+        assert red.global_id == "122122025002"
 
 
 # ---------------------------------------------------------------------------

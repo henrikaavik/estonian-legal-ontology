@@ -260,6 +260,47 @@ class TestLawIndex:
         idx = build_law_index(krr)
         assert idx.resolve("Mingiseadus") == "estleg:MS_Map_2026"
 
+    def test_norm_name_strips_all_parentheticals_not_just_trailing(self):
+        # The "(Riigi Teataja)" provenance parenthetical must never leak into the lookup
+        # token. 53 corpus titles carry it MID-title, where the old $-anchored strip left it
+        # behind so name-based matching missed (#606).
+        assert ga._norm_name("Maksukorralduse seadus (Riigi Teataja)") == "maksukorralduse seadus"
+        mid = ga._norm_name("Maksukorralduse (Riigi Teataja) seadus")
+        assert mid == "maksukorralduse seadus"  # mid-string parenthetical gone, ws collapsed
+        assert "riigi teataja" not in mid
+        # Regression: a TRAILING RT-citation parenthetical still strips to the bare name.
+        assert ga._norm_name("Tulumaksuseadus (RT I 1999)") == "tulumaksuseadus"
+
+    def test_split_compound_title_only_splits_spaced_separator(self):
+        # "A + B" titles join two law names; each half is indexed on its own (#606).
+        assert ga._split_compound_title("tulumaksuseadus + kaibemaksuseadus") == [
+            "tulumaksuseadus",
+            "kaibemaksuseadus",
+        ]
+        # A single-name title is returned unchanged (one-element list), so it is unaffected.
+        assert ga._split_compound_title("tulumaksuseadus") == ["tulumaksuseadus"]
+        # Guard: a bare "+" with no surrounding spaces is NOT a split point.
+        assert ga._split_compound_title("a+b seadus") == ["a+b seadus"]
+
+    def test_compound_title_indexes_each_half(self, tmp_path: Path):
+        # A single peep whose dc:source joins two law names with " + " must index BOTH halves
+        # so a lookup for either resolves to that act IRI, and each half scans on its own (#606).
+        krr = tmp_path / "krr_outputs"
+        krr.mkdir(parents=True, exist_ok=True)
+        _write_peep(
+            krr, "tulu_kaibemaksuseadus", "estleg:TKMS_Map_2026",
+            title="Tulumaksuseadus + Käibemaksuseadus",
+        )
+        idx = build_law_index(krr)
+        # Either half resolves via the name index.
+        assert idx.resolve("Tulumaksuseadus") == "estleg:TKMS_Map_2026"
+        assert idx.resolve("Käibemaksuseadus") == "estleg:TKMS_Map_2026"
+        assert "tulumaksuseadus" in idx.by_name
+        assert "kaibemaksuseadus" in idx.by_name
+        # And each half is independently scannable (genitive-aware) in a title.
+        assert idx.find_in_title("Tulumaksuseaduse § 1 tõlgendamine") == ["estleg:TKMS_Map_2026"]
+        assert idx.find_in_title("Käibemaksuseaduse muutmine") == ["estleg:TKMS_Map_2026"]
+
 
 # ---------------------------------------------------------------------------
 # Curated-seed source parsing

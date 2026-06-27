@@ -20,6 +20,7 @@ authored with an alternate prefix still get their inverse links.
 from __future__ import annotations
 
 import json
+import sys
 import time
 from collections import defaultdict
 from pathlib import Path
@@ -39,6 +40,19 @@ KRR_DIR = REPO_ROOT / "krr_outputs"
 # iter_peep_files() (they are *.jsonld, not *_peep.json), so the version
 # inverse pass scans them explicitly. See materialize_has_version().
 VERSIONS_DIR = KRR_DIR / "provision_versions"
+
+# #606: estleg:hasVersion (inverse of estleg:versionOf) is materialised onto a
+# peep node only when its provision IRI resolves to a peep file. When the
+# ProvisionVersion sidecars carry estleg:versionOf @ids that predate the #345
+# IRI scheme, almost every target fails to resolve and hasVersion silently
+# lands on a tiny fraction of its resolvable provisions (the observed
+# 13-of-38,512 symptom). main() compares the resolved fraction against this
+# conservative floor and, when it falls below, emits a loud stderr warning
+# (a visibility gate, not a hard failure). A healthy run resolves ~100% of
+# provisions, so anything below half signals systemic IRI-scheme drift rather
+# than incidental dangling sidecars. Re-materialisation is a DEFERRED DATA
+# regen: regenerate the sidecars under the #345 IRI scheme, then re-run.
+HASVERSION_MIN_RESOLVED_FRACTION = 0.5
 
 NS = "https://data.riik.ee/ontology/estleg#"
 
@@ -711,6 +725,38 @@ def apply_has_version(
     return update_counts, unresolved
 
 
+def hasversion_resolution_degraded(
+    version_inverse: dict[str, list[str]],
+    unresolved: list[str],
+    *,
+    min_resolved_fraction: float = HASVERSION_MIN_RESOLVED_FRACTION,
+) -> bool:
+    """Return True when estleg:hasVersion materialisation is degraded (#606).
+
+    ``version_inverse`` is the provision-IRI -> [version-IRI] map produced by
+    :func:`collect_version_inverse`; ``unresolved`` is the list of provision
+    IRIs that :func:`apply_has_version` could not resolve to a peep node.
+
+    The *resolved fraction* is::
+
+        (len(version_inverse) - len(unresolved)) / len(version_inverse)
+
+    Degradation means the map is non-trivially populated yet that fraction
+    falls below ``min_resolved_fraction`` — the signature of stale
+    ProvisionVersion sidecars whose ``estleg:versionOf`` @ids predate the #345
+    IRI scheme, so almost every target lands in ``unresolved`` and hasVersion
+    materialises on only a handful of provisions.
+
+    An empty ``version_inverse`` is never degraded: there is no signal to act
+    on, and the guard also avoids a division by zero.
+    """
+    total = len(version_inverse)
+    if total == 0:
+        return False
+    resolved = total - len(unresolved)
+    return (resolved / total) < min_resolved_fraction
+
+
 def clear_existing_inverse_refs() -> int:
     """
     Remove all existing estleg:referencedBy from law files for idempotent re-run.
@@ -987,6 +1033,31 @@ def main() -> int:
     total_has_version_nodes = sum(has_version_counts.values())
     print(f"  hasVersion emitted to {total_has_version_nodes} provision nodes "
           f"across {len(has_version_counts)} files")
+
+    # #606 visibility gate: when ProvisionVersion sidecars carry
+    # estleg:versionOf @ids that predate the #345 IRI scheme, nearly every
+    # target lands in `unresolved_versions` and hasVersion silently
+    # materialises on a tiny fraction of its resolvable provisions (the
+    # 13-of-38,512 symptom). Surface it loudly on stderr WITHOUT failing the
+    # pass — re-materialisation is a DEFERRED DATA regen (regenerate the
+    # sidecars under the #345 IRI scheme, then re-run), out of scope here.
+    if hasversion_resolution_degraded(version_inverse, unresolved_versions):
+        _hv_total = len(version_inverse)
+        _hv_resolved = _hv_total - len(unresolved_versions)
+        _bang = "!" * 70
+        print(
+            f"\n{_bang}\n"
+            "WARNING: estleg:hasVersion resolution is DEGRADED (#606)\n"
+            f"  resolved {_hv_resolved}/{_hv_total} provisions "
+            f"({len(unresolved_versions)} unresolved)\n"
+            "  Likely cause: stale ProvisionVersion sidecars whose\n"
+            "  estleg:versionOf @ids predate the #345 IRI scheme, so their\n"
+            "  targets no longer match any peep node.\n"
+            "  Fix: regenerate the ProvisionVersion sidecars under the #345\n"
+            "  IRI scheme, then re-run this pass.\n"
+            f"{_bang}",
+            file=sys.stderr,
+        )
 
     # Target-side attribution: hasVersion lands on provision nodes in the
     # peep corpus, so each updated file counts toward output/triples.

@@ -17,6 +17,7 @@ Generates:
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import re
 import shutil
@@ -132,9 +133,36 @@ def sparql_query_with_retry(
     )
 
 
+def _countries_cache_key() -> str:
+    """Return a short stable digest of the active ``TARGET_COUNTRIES`` set.
+
+    The per-CELEX SPARQL query embeds ``COUNTRY_FILTER`` (built from
+    ``TARGET_COUNTRIES``), so a cached response is only valid for the
+    country set it was computed against. Folding this digest into the
+    cache path invalidates every entry the moment the country set
+    changes. Reads the module global at call time so the key tracks any
+    reassignment of ``TARGET_COUNTRIES`` (e.g. monkeypatched in tests).
+    """
+    payload = ",".join(sorted(TARGET_COUNTRIES))
+    return hashlib.sha1(payload.encode("utf-8")).hexdigest()[:8]
+
+
 def _cache_path_for(celex_dir: str) -> Path:
-    """Compute the on-disk cache path for a directive CELEX response."""
-    return CACHE_DIR / f"{sanitize_celex(celex_dir)}.json"
+    """Compute the on-disk cache path for a directive CELEX response.
+
+    The path is an *injective* function of both ``celex_dir`` and the
+    active country set. ``sanitize_celex`` strips the ``()``/``/``/``-``
+    that distinguish corrigenda/consolidated CELEX identifiers (e.g.
+    ``32011L0024R(01)`` and ``32011L0024R01`` sanitize identically), so
+    the readable ``stem`` alone is NOT collision-free — two distinct
+    directives could otherwise share one cache file and poison each
+    other. A digest of the *raw* ``celex_dir`` restores injectivity while
+    keeping the stem for debuggability; the country digest invalidates
+    the cache when ``TARGET_COUNTRIES`` changes.
+    """
+    stem = sanitize_celex(celex_dir)
+    celex_hash = hashlib.sha1(celex_dir.encode("utf-8")).hexdigest()[:8]
+    return CACHE_DIR / f"{stem}__{_countries_cache_key()}__{celex_hash}.json"
 
 
 def _cache_is_fresh(path: Path, ttl_days: int = CACHE_TTL_DAYS) -> bool:

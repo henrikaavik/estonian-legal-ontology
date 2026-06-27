@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import json
 import re
+import sys
 import xml.etree.ElementTree as ET
 from datetime import datetime
 from pathlib import Path
@@ -482,21 +483,41 @@ def generate_draft_node(
         node["estleg:eisLink"] = {"@value": item["link"], "@type": "xsd:anyURI"}
         node["dcterms:source"] = {"@id": item["link"]}
 
-    ministry_name = MINISTRY_CODES.get(ministry_code, ministry_code)
-    if ministry_name:
+    # Issue #606 (item 9): only emit estleg:initiator for a KNOWN ministry
+    # code. After the 2023 ministry reorg an unmapped code (e.g. a newly
+    # created ministry) must not be passed through verbatim as the initiator
+    # literal — that pollutes the data with a raw code instead of a name.
+    # Surface the raw code under a marker property plus a stderr warning.
+    if ministry_code in MINISTRY_CODES:
         # Plain xsd:string (issue #382): estleg:initiator has rdfs:range
         # xsd:string and the SHACL DraftLegislationShape constrains it to
         # sh:datatype xsd:string. A {@value,@language} value-object is an
         # rdf:langString and would fail SHACL conformance.
-        node["estleg:initiator"] = ministry_name
+        node["estleg:initiator"] = MINISTRY_CODES[ministry_code]
+    elif ministry_code:
+        print(
+            f"  WARNING: unmapped EIS ministry code {ministry_code!r}; "
+            "emitting estleg:initiatorCodeUnmapped instead of estleg:initiator",
+            file=sys.stderr,
+        )
+        # Plain xsd:string too, mirroring the estleg:initiator shape note.
+        node["estleg:initiatorCodeUnmapped"] = ministry_code
 
     if date_str:
         try:
             parsed = datetime.strptime(date_str, "%d.%m.%Y")
-            node["estleg:publicationDate"] = {
-                "@value": parsed.strftime("%Y-%m-%d"),
-                "@type": "xsd:date",
-            }
+            # Issue #606 (item 13b): strptime validates FORMAT, not RANGE, so
+            # a spurious "01.01.1900"/"31.12.2099" would otherwise be accepted.
+            # EIS (eelnoud.valitsus.ee) drafts are recent (the system dates to
+            # the early 2010s); bound the year to a sane EIS-era window and
+            # only emit publicationDate when in range. The upper bound is
+            # now()+1 (not a hardcoded future year) to tolerate near-future
+            # dates without admitting far-future garbage.
+            if 2000 <= parsed.year <= datetime.now().year + 1:
+                node["estleg:publicationDate"] = {
+                    "@value": parsed.strftime("%Y-%m-%d"),
+                    "@type": "xsd:date",
+                }
         except ValueError:
             pass
 

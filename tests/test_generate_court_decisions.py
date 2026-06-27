@@ -251,6 +251,32 @@ class TestDetectReferencedLaws:
         assert gcd.detect_referenced_laws("") == []
         assert gcd.detect_referenced_laws(None or "") == []
 
+    # --- #606: abbreviations sourced from the shared KNOWN_ABBREVIATIONS -----
+    # The local 15-entry table had drifted from the resolver's authoritative
+    # ``KNOWN_ABBREVIATIONS``; sourcing the abbreviations from the shared dict
+    # restores the references the court extractor used to under-detect
+    # (notably the EhS/EhSE split).
+
+    def test_abbrev_only_in_shared_table_is_now_detected(self) -> None:
+        """``EhSE`` lives in the shared ``KNOWN_ABBREVIATIONS`` but was absent
+        from the old hand-maintained 15-entry local copy, so the court
+        extractor used to miss it entirely (#606)."""
+        assert "EhSE" in gcd.KNOWN_ABBREVIATIONS  # sourced from the shared table
+        refs = gcd.detect_referenced_laws("Vaidlus puudutab EhSE § 5 lg 2 kohaldamist")
+        assert refs == ["EhSE"]
+
+    def test_ehs_ehse_longest_first_disambiguation(self) -> None:
+        """The alternation is ordered longest-first so ``EhSE`` wins over its
+        prefix ``EhS`` — ``EhSE § 3`` must resolve to ``EhSE``, not ``EhS``."""
+        assert gcd.detect_referenced_laws("EhSE § 3") == ["EhSE"]
+        # …and the shorter prefix still resolves to itself when it stands alone.
+        assert gcd.detect_referenced_laws("EhS § 7") == ["EhS"]
+
+    def test_classic_abbrev_still_resolves_after_table_swap(self) -> None:
+        """Regression guard: a long-known abbreviation present in BOTH the old
+        local copy and the shared table keeps resolving after the swap."""
+        assert gcd.detect_referenced_laws("KarS § 199") == ["KarS"]
+
 
 # ---------------------------------------------------------------------------
 # parse_html_table

@@ -298,8 +298,17 @@ def fetch_current_redaction(title: str, *, today: str, timeout: int = 30) -> Red
     if not matches:
         return None
     # ``?kehtiv`` should return exactly one current consolidated text; if a quirk
-    # yields several, take the one with the latest entry-into-force.
-    best = max(matches, key=lambda a: (a.get("kehtivus") or {}).get("algus") or "")
+    # yields several, take the one with the latest entry-into-force. Tie-break on
+    # ``globaalID`` (as a string) so the winner — and thus the version ``@id``
+    # derived from it — is deterministic regardless of the API's row order when two
+    # matches share an ``algus``.
+    best = max(
+        matches,
+        key=lambda a: (
+            (a.get("kehtivus") or {}).get("algus") or "",
+            str(a.get("globaalID") or ""),
+        ),
+    )
     keh = best.get("kehtivus") or {}
     return Redaction(
         global_id=str(best.get("globaalID", "")),
@@ -387,6 +396,16 @@ def fetch_redaction_chain(
         # (it would not — current has lopp >= today — but be defensive).
         if not any(r.global_id == current.global_id for r in chain):
             chain.append(current)
+
+    # Monotonicity guard: the superseded editions above are already sorted ascending
+    # by ``valid_from`` and ``current`` is normally the newest, so appending it last
+    # keeps the chain ordered. If a data anomaly gives ``current`` an earlier
+    # entry-into-force date than the last superseded edition, this stable sort
+    # repositions it so the chain stays non-decreasing by ``valid_from`` — a
+    # non-monotonic chain would otherwise yield inverted ``versionValidTo`` /
+    # backwards ``supersededByVersion`` downstream. Superseded editions always carry
+    # a non-None ``valid_from``; ``or ""`` only guards a (defensive) None ``current``.
+    chain.sort(key=lambda r: r.valid_from or "")
 
     return chain
 
@@ -628,9 +647,22 @@ def synthesise_versions(
     for versions_here in per_provision.values():
         for i, node in enumerate(versions_here[:-1]):
             nxt = versions_here[i + 1]
-            node["estleg:supersededByVersion"] = {"@id": nxt["@id"]}
+            this_from = node["estleg:versionValidFrom"]["@value"]
             next_from = nxt["estleg:versionValidFrom"]["@value"]
-            node["estleg:versionValidTo"] = _xsd_date(_day_before(next_from))
+            exclusive_end = _day_before(next_from)
+            # Monotonicity guard: only chain forward + close the interval when the
+            # successor genuinely starts AFTER this version, i.e. the exclusive end
+            # ``_day_before(next_from)`` lands on/after this version's start. A
+            # residual anomaly (successor dated on/before this node — e.g. an
+            # out-of-order ``current`` redaction that slipped past the chain sort)
+            # would otherwise emit an inverted ``versionValidTo < versionValidFrom``
+            # and a backwards ``supersededByVersion``; in that case leave this node's
+            # interval open and skip the bad edge. Normal ascending chains always
+            # satisfy the guard, preserving the #306 exclusive-end semantics.
+            if exclusive_end < this_from:
+                continue
+            node["estleg:supersededByVersion"] = {"@id": nxt["@id"]}
+            node["estleg:versionValidTo"] = _xsd_date(exclusive_end)
     return nodes
 
 

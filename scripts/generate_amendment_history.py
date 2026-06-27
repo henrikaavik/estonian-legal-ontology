@@ -147,6 +147,22 @@ def base_slug_of(slug: str) -> str:
     return _OSA_SUFFIX_RE.sub("", slug)
 
 
+def _osa_order_key(slug: str) -> tuple[int, str]:
+    """Natural-numeric sort key for a multipart ``_osaN`` slug (issue #606).
+
+    Ordering members of a base_slug group by this key makes ``members[0]``
+    the lowest-numbered part (``osa1``) deterministically, instead of relying
+    on lexical string order — where ``_osa10``/``_osa11`` sort BEFORE
+    ``_osa2`` — or filesystem glob order. A single-part law (no ``_osaN``
+    suffix) yields ``(0, slug)`` and is unaffected. ``slug`` is a stable
+    secondary key for parts that somehow share an osa number.
+    """
+    m = _OSA_SUFFIX_RE.search(slug)
+    if m:
+        return (int(m.group(0).removeprefix("_osa")), slug)
+    return (0, slug)
+
+
 def slugify(text: str) -> str:
     """Convert Estonian text to a filename-safe slug."""
     replacements = {
@@ -1239,7 +1255,10 @@ def main() -> int:
     )
 
     for base_slug in sorted(groups):
-        members = groups[base_slug]
+        # Order parts by natural osa number so members[0] is deterministically
+        # the lowest-numbered part (osa1), not whatever lexical/glob order put
+        # first — osa10/osa11 must NOT win the canonical slot (issue #606).
+        members = sorted(groups[base_slug], key=lambda m: _osa_order_key(m[0]))
 
         # Pull XML amendments / drafts for the group. All parts of a
         # multipart law share the same canonical XML so any member's

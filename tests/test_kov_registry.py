@@ -11,6 +11,7 @@ import pytest
 
 from kov_registry import (
     HALDUSREFORM_2017_MERGE_DATE,
+    _merge_date_for_source,
     auto_match_municipality,
     build_issuer_registry,
     discover_issuer_slugs,
@@ -847,6 +848,31 @@ class TestExtractHistoricalMunicipalities:
         ]
         assert extract_historical_municipalities(rows) == {}
 
+    def test_manual_review_merge_date_gated_on_2017_evidence(self):
+        # Issue #606: a `manual-review` issuer inherits the 2017-10-15
+        # merger date ONLY when its evidence actually cites the 2017
+        # reform. A manual-review row documenting a different (non-2017)
+        # boundary change must NOT be stamped with the 2017 date.
+        rows = [
+            _issuer_row(
+                "foo_vallavolikogu", "0480", source="manual-review",
+                evidence=(
+                    "Foo vald (EHAK 0105) was split in the 2017 reform "
+                    "into Bar vald (0480)."
+                ),
+            ),
+            _issuer_row(
+                "baz_vallavolikogu", "0480", source="manual-review",
+                evidence=(
+                    "Baz vald (EHAK 0106) was merged into Bar vald "
+                    "(0480) in a 2005 boundary change."
+                ),
+            ),
+        ]
+        hist = extract_historical_municipalities(rows)
+        assert hist["0105"]["mergedAt"] == "2017-10-15"
+        assert hist["0106"]["mergedAt"] is None
+
     def test_real_registry_yields_expected_shape(self):
         # Drive the live data/ehak/issuers.json: every issuer that is
         # NOT mappingSource=auto-match must contribute to exactly one
@@ -878,6 +904,46 @@ class TestExtractHistoricalMunicipalities:
             # All real entries are 2017-haldusreform (or manual-review
             # 2017 splits), so every node carries the merger date.
             assert h["mergedAt"] == "2017-10-15"
+
+
+class TestMergeDateForSource:
+    """`_merge_date_for_source` maps a (mappingSource, evidence) pair to
+    the merger effective date. `haldusreform-2017` is unconditional;
+    `manual-review` only inherits the 2017 date when its evidence cites
+    the 2017 reform — guarding against a future non-2017 manual-review
+    row silently getting the wrong date (issue #606)."""
+
+    def test_haldusreform_2017_is_unconditional(self):
+        # The source name *is* the 2017 reform — no evidence required.
+        assert _merge_date_for_source("haldusreform-2017", "") == "2017-10-15"
+        assert (
+            _merge_date_for_source("haldusreform-2017", "no year here")
+            == HALDUSREFORM_2017_MERGE_DATE
+        )
+
+    def test_manual_review_with_2017_evidence(self):
+        assert (
+            _merge_date_for_source(
+                "manual-review", "Abja vald merged in the 2017 reform"
+            )
+            == "2017-10-15"
+        )
+
+    def test_manual_review_without_2017_evidence_is_none(self):
+        assert (
+            _merge_date_for_source("manual-review", "Some 2005 boundary change")
+            is None
+        )
+
+    def test_manual_review_empty_evidence_is_none(self):
+        # No evidence at all → cannot assert a 2017 merger.
+        assert _merge_date_for_source("manual-review", "") is None
+
+    def test_unknown_source_is_none_even_with_2017_evidence(self):
+        # The evidence gate applies only to manual-review; other sources
+        # never inherit the date regardless of what the text says.
+        assert _merge_date_for_source("auto-match", "...") is None
+        assert _merge_date_for_source("url:https://example.org", "2017") is None
 
 
 class TestMetadataJsonLd:

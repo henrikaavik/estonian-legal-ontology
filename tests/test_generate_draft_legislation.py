@@ -89,8 +89,11 @@ class TestInitiatorIsPlainString:
         assert node["estleg:initiator"] == "Justiitsministeerium"
         assert isinstance(node["estleg:initiator"], str)
 
-    def test_unknown_ministry_code_passthrough_is_plain_string(self):
-        # Unmapped codes fall back to the raw code; still a plain string.
+    def test_unknown_ministry_code_marker_is_plain_string(self):
+        # Issue #606 (item 9) changed the policy: an unmapped code is no
+        # longer passed through as estleg:initiator. It is surfaced under
+        # estleg:initiatorCodeUnmapped — which is still a plain xsd:string
+        # (the #382 datatype guard applies to the marker too).
         node = generate_draft_node(
             {
                 "title": "Mingi määruse eelnõu",
@@ -102,8 +105,9 @@ class TestInitiatorIsPlainString:
             ministry_code="ZZZ",
             date_str="03.03.2026",
         )
-        assert node["estleg:initiator"] == "ZZZ"
-        assert isinstance(node["estleg:initiator"], str)
+        assert "estleg:initiator" not in node
+        assert node["estleg:initiatorCodeUnmapped"] == "ZZZ"
+        assert isinstance(node["estleg:initiatorCodeUnmapped"], str)
 
 
 def test_generate_draft_node_emits_affected_law_names_as_strings():
@@ -439,3 +443,89 @@ class TestClassifyDraftTypeRegulationBeforeBill:
             "Tulumaksuseaduse muutmise seaduse eelnõu"
         )
         assert type_id == "AmendmentBill", type_id
+
+
+# --------------------------------------------------------------------- #
+# Issue #606 (item 9) — an unmapped EIS ministry code must NOT leak
+# verbatim as estleg:initiator (after the 2023 reorg new codes appear).
+# A KNOWN code maps to its ministry name; an unknown non-empty code is
+# surfaced under estleg:initiatorCodeUnmapped plus a stderr warning; an
+# empty code yields neither property.
+# --------------------------------------------------------------------- #
+
+
+class TestInitiatorUnmappedCode:
+    @staticmethod
+    def _node(ministry_code: str, eis_number: str) -> dict:
+        return generate_draft_node(
+            {
+                "title": "Mingi seaduse muutmise seadus",
+                "link": "https://eelnoud.valitsus.ee/main/mount/docList/"
+                "12345678-1234-1234-1234-123456789abc?activity=1",
+            },
+            phase_id="Review",
+            eis_number=eis_number,
+            ministry_code=ministry_code,
+            date_str="15.03.2024",
+        )
+
+    def test_known_code_sets_initiator_and_no_marker(self, capsys):
+        node = self._node("JDM", "JDM/24-0001")
+        assert node["estleg:initiator"] == "Justiitsministeerium"
+        assert "estleg:initiatorCodeUnmapped" not in node
+        # A known code must not emit a warning.
+        assert "WARNING" not in capsys.readouterr().err
+
+    def test_unknown_code_sets_marker_not_initiator_and_warns(self, capsys):
+        node = self._node("XYZ", "XYZ/24-0001")
+        assert "estleg:initiator" not in node
+        assert node["estleg:initiatorCodeUnmapped"] == "XYZ"
+        assert isinstance(node["estleg:initiatorCodeUnmapped"], str)
+        err = capsys.readouterr().err
+        assert "WARNING" in err
+        assert "XYZ" in err
+
+    def test_empty_code_sets_neither_property(self, capsys):
+        node = self._node("", "")
+        assert "estleg:initiator" not in node
+        assert "estleg:initiatorCodeUnmapped" not in node
+        assert "WARNING" not in capsys.readouterr().err
+
+
+# --------------------------------------------------------------------- #
+# Issue #606 (item 13b) — publicationDate must be RANGE-checked, not just
+# format-checked. EIS drafts are recent, so an implausible year
+# (1900/2099) must be dropped; a recent valid date is kept. The upper
+# bound tracks datetime.now().year + 1, never a hardcoded future year.
+# --------------------------------------------------------------------- #
+
+
+class TestPublicationDateRangeGuard:
+    @staticmethod
+    def _node(date_str: str) -> dict:
+        return generate_draft_node(
+            {
+                "title": "Mingi seaduse muutmise seadus",
+                "link": "https://eelnoud.valitsus.ee/main/mount/docList/"
+                "12345678-1234-1234-1234-123456789abc?activity=1",
+            },
+            phase_id="Review",
+            eis_number="JDM/24-0001",
+            ministry_code="JDM",
+            date_str=date_str,
+        )
+
+    def test_year_1900_is_rejected(self):
+        node = self._node("01.01.1900")
+        assert "estleg:publicationDate" not in node
+
+    def test_year_2099_is_rejected(self):
+        node = self._node("31.12.2099")
+        assert "estleg:publicationDate" not in node
+
+    def test_recent_valid_date_is_kept(self):
+        node = self._node("15.03.2024")
+        assert node["estleg:publicationDate"] == {
+            "@value": "2024-03-15",
+            "@type": "xsd:date",
+        }

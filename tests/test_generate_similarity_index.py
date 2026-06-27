@@ -414,11 +414,13 @@ def test_corpus_generic_keyword_cap_strips_high_frequency_tokens(tmp_path, monke
     krr = tmp_path / "krr_outputs"
     krr.mkdir(parents=True)
     # Five acts. "ametiasutus halduskorraldus teavitamine" appears in ALL
-    # five (100% >> 45% cap) so it is a corpus-generic token and gets
-    # stripped. After stripping, acts A and B each have only 1 remaining
-    # keyword ("maakasutus"/"ehitusluba" vs "kalavaru"/"veekogu"), well
-    # under MIN_SHARED_KEYWORDS, so no pair forms even though they shared
-    # 3 tokens pre-strip.
+    # five (100% of provisions). With a 5-provision fixture the effective
+    # 0.05 default cap (threshold 0.25) would flag every token, so this test
+    # pins a fixture-appropriate 0.5 cap: the 100% common tokens are stripped
+    # while each act's 20% discriminative tokens ("maakasutus"/"ehitusluba"
+    # vs "kalavaru"/"veekogu") survive. After stripping, every act is left
+    # with < MIN_SHARED_KEYWORDS keywords, so no pair forms even though acts
+    # shared 3 tokens pre-strip.
     common = "ametiasutus halduskorraldus teavitamine"
     summaries = {
         "estleg:ActA": ("estleg:ActA_Par_1", f"Maakasutus ehitusluba {common}"),
@@ -435,7 +437,7 @@ def test_corpus_generic_keyword_cap_strips_high_frequency_tokens(tmp_path, monke
             encoding="utf-8",
         )
         peep.append(p)
-    _wire_pipeline(monkeypatch, krr, peep)
+    _wire_pipeline(monkeypatch, krr, peep, generic_cap=0.5)
 
     similarity.main()
 
@@ -449,6 +451,44 @@ def test_corpus_generic_keyword_cap_strips_high_frequency_tokens(tmp_path, monke
     assert index["algorithm"]["generic_keyword_doc_frequency_cap"] == (
         similarity.GENERIC_DOC_FREQUENCY_CAP
     )
+
+
+def test_default_generic_cap_flags_high_frequency_keyword():
+    """The default corpus-generic cap actually flags an over-generic keyword.
+
+    Regression for the inert-guard defect (#606, item 2): the previous 0.45
+    cap never fired on the real ~83k-provision corpus (whose single most
+    frequent keyword sits at only ~17.5% of provisions), so the strip was
+    dead code. The cap is a fraction of provisions, so a keyword in >10% of
+    provisions must be flagged regardless of corpus size, while a rare
+    keyword is retained. ``compute_generic_keywords`` is exercised directly
+    with the production default (``cap=None`` -> module
+    :data:`GENERIC_DOC_FREQUENCY_CAP`).
+    """
+    # The default must stay low enough that any keyword in >10% of provisions
+    # is flagged: ``count > 0.10 * N`` implies ``count > cap * N`` only when
+    # ``cap <= 0.10``.
+    assert similarity.GENERIC_DOC_FREQUENCY_CAP <= 0.10
+
+    # 100 synthetic provisions. "menetlus" appears in 40 (40%) — clearly
+    # corpus-generic, yet *below* the old 0.45 cap, so this case was missed
+    # before the fix. "kalapuuk" appears in 2 (2%) — a rare, topical keyword.
+    # Each provision also carries a unique padding token (1% each) so nothing
+    # else crosses the cap.
+    provisions = []
+    for i in range(100):
+        keywords = {f"padkw{i}"}
+        if i < 40:
+            keywords.add("menetlus")
+        if i < 2:
+            keywords.add("kalapuuk")
+        provisions.append({"keywords": keywords})
+
+    generic = similarity.compute_generic_keywords(provisions)  # default cap
+
+    assert "menetlus" in generic  # >10% of provisions -> flagged (effective)
+    assert "kalapuuk" not in generic  # rare -> retained
+    assert generic == {"menetlus"}, generic  # padding tokens (1%) survive too
 
 
 # ---------------------------------------------------------------------------
