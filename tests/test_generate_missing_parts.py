@@ -2,7 +2,10 @@
 
 from __future__ import annotations
 
+import json
+import os
 import xml.etree.ElementTree as ET
+from pathlib import Path
 
 import pytest
 
@@ -499,3 +502,102 @@ def test_summary_does_not_leak_amendment_marker() -> None:
         assert leaked not in summary, (
             f"amendment-marker text leaked into estleg:summary: {leaked!r}"
         )
+
+
+# ---------------------------------------------------------------------------
+# save_json atomicity (#601 residual)
+# ---------------------------------------------------------------------------
+
+def _sample_doc() -> dict:
+    return {
+        "@context": {"estleg": "https://data.riik.ee/ontology/estleg#"},
+        "@graph": [
+            {"@id": "estleg:VOS_Osa6", "rdfs:label": "Õigus — ä ü test"},
+        ],
+    }
+
+
+def test_save_json_writes_correct_content_and_formatting(tmp_path) -> None:
+    """``save_json`` must round-trip the document and preserve the canonical
+    formatting (``ensure_ascii=False``, ``indent=2``, trailing newline) so the
+    atomic-write refactor (#601) leaves output bytes unchanged."""
+    target = tmp_path / "out.json"
+    doc = _sample_doc()
+
+    generate_missing_parts.save_json(target, doc)
+
+    assert target.exists()
+    raw = target.read_text(encoding="utf-8")
+    assert json.loads(raw) == doc
+    # ensure_ascii=False -> non-ASCII stays literal, never \u-escaped.
+    assert "Õigus — ä ü test" in raw
+    assert "\\u" not in raw
+    # indent=2 + single trailing newline.
+    assert raw.endswith("}\n")
+    assert not raw.endswith("}\n\n")
+    assert '\n  "@graph"' in raw
+
+
+def test_save_json_failure_leaves_existing_target_intact(tmp_path) -> None:
+    """#601 residual: the write must be atomic. A failure mid-serialisation
+    must NOT truncate or corrupt a pre-existing peep at the live path, nor
+    leave a partial ``.tmp`` dropping behind.
+
+    Regression guard: the previous ``open(target, "w")`` truncated the target
+    *before* ``json.dump`` ran, so a mid-dump crash destroyed the live file.
+    """
+    target = tmp_path / "out.json"
+    original = '{"keep": "me"}\n'
+    target.write_text(original, encoding="utf-8")
+
+    # A set is not JSON-serialisable: json.dump streams the serialisable
+    # prefix, then raises TypeError partway through the write.
+    poison = {"@graph": ["ok"], "bad": {1, 2, 3}}
+
+    with pytest.raises(TypeError):
+        generate_missing_parts.save_json(target, poison)
+
+    # Original survives byte-for-byte ...
+    assert target.read_text(encoding="utf-8") == original
+    # ... and no tempfile dropping is left (iterdir sees dotfiles too).
+    assert [p.name for p in tmp_path.iterdir()] == ["out.json"]
+
+
+def test_save_json_failure_writes_no_partial_file_at_target(tmp_path) -> None:
+    """When the target does not pre-exist, a failed write must leave NO file
+    at the target path and no tempfile dropping — the old direct
+    ``open(target, "w")`` would have created an empty/truncated file."""
+    target = tmp_path / "fresh.json"
+    poison = {"@graph": ["ok"], "bad": {1, 2, 3}}
+
+    with pytest.raises(TypeError):
+        generate_missing_parts.save_json(target, poison)
+
+    assert not target.exists()
+    assert list(tmp_path.iterdir()) == []
+
+
+def test_save_json_uses_temp_then_atomic_replace(tmp_path, monkeypatch) -> None:
+    """``save_json`` must route through a sibling tempfile + ``os.replace``
+    onto the target (never a direct open-write-truncate). Spy on os.replace
+    and assert the source is a same-directory tempfile and the destination is
+    the target — this is what makes the write crash-atomic (#601)."""
+    calls: list[tuple[str, str]] = []
+    real_replace = os.replace
+
+    def _spy(src, dst, *args, **kwargs):
+        calls.append((str(src), str(dst)))
+        return real_replace(src, dst, *args, **kwargs)
+
+    monkeypatch.setattr(os, "replace", _spy)
+
+    target = tmp_path / "out.json"
+    generate_missing_parts.save_json(target, _sample_doc())
+
+    assert len(calls) == 1, "expected exactly one atomic os.replace onto target"
+    src, dst = calls[0]
+    assert dst == str(target)
+    assert src != str(target)
+    # Same-directory tempfile is what guarantees os.replace is atomic.
+    assert Path(src).parent == target.parent
+    assert target.exists()

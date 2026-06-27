@@ -20,7 +20,6 @@ CLI:
 from __future__ import annotations
 
 import argparse
-import json
 import re
 import sys
 import xml.etree.ElementTree as ET
@@ -30,6 +29,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT / "scripts"))
 
+from estleg_common import save_json as _atomic_save_json  # noqa: E402
 from riigiteataja_common import (  # noqa: E402
     fetch_acts,
     fetch_xml,
@@ -561,11 +561,17 @@ def generate_tsus_part1(root: ET.Element, xml_url: str) -> dict | None:
     return {"@context": CONTEXT, "@graph": graph}
 
 
-def save_json(filepath: Path, doc: dict):
-    filepath.parent.mkdir(parents=True, exist_ok=True)
-    with open(filepath, "w", encoding="utf-8") as f:
-        json.dump(doc, f, ensure_ascii=False, indent=2)
-        f.write("\n")
+def save_json(filepath: Path, doc: dict) -> None:
+    """Atomically write ``doc`` to ``filepath`` as formatted JSON-LD.
+
+    Delegates the write to :func:`estleg_common.save_json`, which streams the
+    document to a tempfile in the same directory and then ``os.replace``s it
+    onto the target. A crash or Ctrl-C mid-write can therefore never leave a
+    truncated/corrupt peep at the live path (#601). The formatting
+    (``ensure_ascii=False``, ``indent=2``, trailing newline) is identical to
+    the previous direct write, so output bytes are unchanged.
+    """
+    _atomic_save_json(filepath, doc)
     print(f"  Saved: {filepath.name}")
 
 

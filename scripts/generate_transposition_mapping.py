@@ -463,10 +463,15 @@ def build_directive_subject_index() -> dict[str, str]:
     return subject_index
 
 
-# A law name shorter (after stripping its ``seadus``/``seadustik`` suffix) than
-# this many characters has no domain root specific enough to safely test
-# against a directive subject, so such a secondary co-amendment is filtered
-# only by the primary-clause rule, never by a too-generic keyword hit.
+# A law name's domain root (its name minus the ``seadus``/``seadustik`` suffix)
+# shorter than this many characters is too generic for a *bare substring* test
+# against a directive subject (root ``vee`` would hit inside ``veebruar``). Such
+# a short root is therefore matched against the subject with a stricter
+# WHOLE-WORD anchor instead of a plain substring (see
+# ``_law_matches_directive_subject``), so a genuine short-root transposer that is
+# explicitly named in a non-primary clause (``tolliseadus`` ↔ a customs
+# directive, #597) is still recovered while an incidental mid-word fragment is
+# not. Longer roots stay on the permissive plain-substring test.
 _MIN_DOMAIN_ROOT_LEN = 6
 
 # Estonian coordinating conjunctions and the comma that separate the laws
@@ -507,20 +512,37 @@ def _law_matches_directive_subject(name_norm: str, subject_norm: str) -> bool:
     """Return ``True`` iff a law plausibly shares the directive's domain (#388).
 
     Both arguments are already ``normalize_text``-ed. The law's domain root (its
-    name minus the ``seadus`` suffix) must appear as a substring of the
-    directive subject — e.g. root ``raudtee`` is inside the railway directive's
-    ``"… raudteede ohutuse …"``. Roots shorter than ``_MIN_DOMAIN_ROOT_LEN`` are
-    too generic to anchor on, so they never match here (such a secondary law is
-    kept only when it is in the primary clause). An empty subject means the
-    directive carries no title to discriminate on, so the caller must NOT rely
-    on this guard (it fails open elsewhere) — here it conservatively returns
-    ``False``.
+    name minus the ``seadus`` suffix) must appear in the directive subject — e.g.
+    root ``raudtee`` is inside the railway directive's ``"… raudteede ohutuse …"``.
+
+    A root of at least ``_MIN_DOMAIN_ROOT_LEN`` characters is specific enough to
+    test as a plain substring. A *short* root (``tolli``, ``relva`` …) is too
+    generic for a bare substring (root ``vee`` ⊂ ``veebruar``) and used to be
+    rejected outright — which silently dropped a genuine short-root transposer
+    that is explicitly named in a non-primary clause of the NIM title, e.g.
+    ``tolliseadus`` (root ``tolli``, len 5) in ``"Maksukorralduse seaduse,
+    tolliseaduse muutmise seadus"`` transposing a customs directive (#597). Such
+    a short root is instead matched with a stricter WHOLE-WORD anchor (the same
+    left-boundary rule the rest of this module uses): ``tolli`` anchoring
+    ``tolliseadustiku`` in the directive subject counts, but the same fragment
+    buried mid-word does not — recovering the real transposer without re-admitting
+    the coincidental substring hits the length floor was protecting against.
+
+    An empty subject means the directive carries no title to discriminate on, so
+    the caller must NOT rely on this guard (it fails open elsewhere) — here it
+    conservatively returns ``False``.
     """
     if not subject_norm:
         return False
     root = _domain_root(name_norm)
-    if len(root) < _MIN_DOMAIN_ROOT_LEN:
+    if not root:
         return False
+    if len(root) < _MIN_DOMAIN_ROOT_LEN:
+        # Short root: require a whole-word anchor in the subject, not a bare
+        # substring, so a genuine named transposer (``tolli`` ⊂
+        # ``tolliseadustiku``) is recovered while an incidental mid-word
+        # fragment stays out (#597).
+        return _contains_whole(root, subject_norm)
     return root in subject_norm
 
 

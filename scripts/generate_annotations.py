@@ -241,7 +241,7 @@ class _LawIndex:
     # Names sorted longest-first, for greedy substring matching against opinion titles.
     _ordered_names: list[str] = field(default_factory=list)
     # One compiled, token-bounded, longest-first alternation over every registered name
-    # variant (built lazily on first body scan, then reused across every opinion).
+    # variant (built lazily on the first title/body scan, then reused across every opinion).
     _body_re: re.Pattern[str] | None = field(default=None, repr=False)
 
     def resolve(self, name: str) -> str | None:
@@ -273,44 +273,16 @@ class _LawIndex:
             self._body_re = re.compile(pattern)
         return self._body_re
 
-    def find_in_title(self, title: str) -> list[str]:
-        """Return the act-IRIs whose (genitive-aware) name occurs in ``title``.
+    def _scan_bounded(self, hay: str) -> list[str]:
+        """Token-bounded, leftmost-longest scan of ``hay`` -> deduped act-IRIs.
 
-        Title evidence is authoritative: a greedy longest-name-first substring scan over the
-        normalised title so "kohaliku omavalitsuse korralduse seaduse" wins over a stray
-        "seaduse"; deduped, in first-occurrence order. Use :meth:`find_in_body` for PDF body
-        text — it adds token boundaries so a bare prose mention only counts as a standalone
-        whole-token match (titles are short and authoritative, so this scan stays substring).
+        The shared engine behind :meth:`find_in_title` and :meth:`find_in_body`: one
+        :meth:`_ensure_body_re` pass whose longest-first alternation and ``_BODY_WORD``
+        lookarounds mean a name is emitted only as a standalone whole token, so a shorter law
+        name that is merely a substring of a longer matched name (consumed by the longer span)
+        or embedded inside a larger word is never separately matched. IRIs are returned deduped,
+        in first-occurrence order.
         """
-        hay = _norm_name(title)
-        found: list[str] = []
-        for name in self._ordered_names:
-            if name in hay:
-                iri = self.by_name[name]
-                if iri not in found:
-                    found.append(iri)
-        return found
-
-    def find_in_body(self, text: str) -> list[str]:
-        """Return act-IRIs whose name occurs in ``text`` as a standalone token.
-
-        A single leftmost-longest, token-bounded regex pass (see :meth:`_ensure_body_re`) over
-        the FULL normalised body. Estonian legal opinions legitimately reference laws by bare
-        name ("vastavalt võlaõigusseadusele", "põhiseadusega vastuolus") with no adjacent
-        ``§``/number, so — unlike the earlier citation-cue gating — every standalone whole-token
-        match counts; no ``§``/citation cue is required. Because matches are non-overlapping and
-        longest-first, a shorter law name that is a substring of a longer matched law name at
-        the same position is naturally NOT separately matched (the longer span consumes it),
-        which drops the "substring of a longer law title" false positive; and the word-boundary
-        lookarounds drop names embedded inside a larger word. IRIs are returned deduped, in
-        first-occurrence order, mirroring :meth:`find_in_title`. Genitive forms keep working
-        because each genitive variant (e.g. "võlaõigusseaduse") is itself a registered token
-        that matches whole, while the nominative ("võlaõigusseadus") simply does not match
-        inside it (the trailing "e" trips the trailing-word-char lookahead) — which is correct.
-        """
-        if not text:
-            return []
-        hay = _norm_name(text)
         found: list[str] = []
         seen: set[str] = set()
         for match in self._ensure_body_re().finditer(hay):
@@ -319,6 +291,43 @@ class _LawIndex:
                 seen.add(iri)
                 found.append(iri)
         return found
+
+    def find_in_title(self, title: str) -> list[str]:
+        """Return the act-IRIs whose (genitive-aware) name occurs in ``title``.
+
+        Title evidence is authoritative, but matched through the SAME token-bounded,
+        leftmost-longest scan as :meth:`find_in_body` (see :meth:`_scan_bounded`): the longest
+        registered name at each position wins ("kohaliku omavalitsuse korralduse seaduse" over a
+        stray "seaduse"), and — crucially — a shorter act title that is only a substring of a
+        longer matched one ("asjaõigusseadus" inside "asjaõigusseaduse rakendamise seadus",
+        "karistusseadustiku" inside "karistusseadustiku rakendamise seaduse muutmine") is
+        consumed by the longer span and never separately emitted. The earlier raw ``in``
+        substring scan leaked the shorter base act as a spurious second match (issue #598).
+        Deduped, in first-occurrence order.
+        """
+        return self._scan_bounded(_norm_name(title))
+
+    def find_in_body(self, text: str) -> list[str]:
+        """Return act-IRIs whose name occurs in ``text`` as a standalone token.
+
+        A single leftmost-longest, token-bounded regex pass (see :meth:`_scan_bounded` /
+        :meth:`_ensure_body_re`) over the FULL normalised body. Estonian legal opinions
+        legitimately reference laws by bare name ("vastavalt võlaõigusseadusele", "põhiseadusega
+        vastuolus") with no adjacent ``§``/number, so — unlike the earlier citation-cue gating —
+        every standalone whole-token match counts; no ``§``/citation cue is required. Because
+        matches are non-overlapping and longest-first, a shorter law name that is a substring of
+        a longer matched law name at the same position is naturally NOT separately matched (the
+        longer span consumes it), which drops the "substring of a longer law title" false
+        positive; and the word-boundary lookarounds drop names embedded inside a larger word.
+        IRIs are returned deduped, in first-occurrence order, mirroring :meth:`find_in_title`.
+        Genitive forms keep working because each genitive variant (e.g. "võlaõigusseaduse") is
+        itself a registered token that matches whole, while the nominative ("võlaõigusseadus")
+        simply does not match inside it (the trailing "e" trips the trailing-word-char
+        lookahead) — which is correct.
+        """
+        if not text:
+            return []
+        return self._scan_bounded(_norm_name(text))
 
 
 # ---------------------------------------------------------------------------
