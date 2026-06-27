@@ -143,6 +143,40 @@ class TestLawIndex:
         found = idx.find_in_title("Tsiviilseadustiku üldosa seaduse ja võlaõigusseaduse koostoime")
         assert found == ["estleg:TSYS_Map_2026", "estleg:VOS_Map_2026"]
 
+    def test_find_in_title_substring_base_act_not_leaked(self, tmp_path: Path):
+        # A longer act whose title CONTAINS a shorter base act's name as a substring
+        # ("karistusseadustik(u)" ⊂ "karistusseadustiku rakendamise seadus",
+        # "asjaõigusseadus(e)" ⊂ "asjaõigusseaduse rakendamise seadus") must annotate ONLY the
+        # longer act. The title scan is now token-bounded + leftmost-longest (issue #598), so the
+        # longer span consumes the shorter name and the base act is never leaked as a spurious
+        # second match — the raw ``in`` substring scan previously emitted both.
+        krr = tmp_path / "krr_outputs"
+        krr.mkdir(parents=True, exist_ok=True)
+        _write_peep(krr, "karistusseadustik", "estleg:KARIST_Map_2026", title="Karistusseadustik")
+        _write_peep(
+            krr, "karistusseadustiku_rakendamise_seadus", "estleg:KARISTrak_Map_2026",
+            title="Karistusseadustiku rakendamise seadus",
+        )
+        _write_peep(krr, "asjaoigusseadus", "estleg:AOS_Map_2026", title="Asjaõigusseadus")
+        _write_peep(
+            krr, "asjaoigusseaduse_rakendamise_seadus", "estleg:AOSrak_Map_2026",
+            title="Asjaõigusseaduse rakendamise seadus",
+        )
+        idx = build_law_index(krr)
+
+        # The longer act's own title must NOT leak the shorter base act (the #598 bug).
+        assert idx.find_in_title("Karistusseadustiku rakendamise seaduse muutmine") == [
+            "estleg:KARISTrak_Map_2026"
+        ]
+        assert idx.find_in_title("Asjaõigusseaduse rakendamise seadus") == [
+            "estleg:AOSrak_Map_2026"
+        ]
+        # The shorter base act STILL matches on its own whole-token title (no regression).
+        assert idx.find_in_title("Karistusseadustiku § 12 tõlgendamine") == [
+            "estleg:KARIST_Map_2026"
+        ]
+        assert idx.find_in_title("Asjaõigusseaduse § 5 kohaldamine") == ["estleg:AOS_Map_2026"]
+
     def test_find_in_body_matches_standalone_tokens(self, tmp_path: Path):
         # Body evidence is a leftmost-longest, word-bounded token scan over the FULL text:
         # genuine bare-name references count (Estonian opinions cite laws by bare name with no

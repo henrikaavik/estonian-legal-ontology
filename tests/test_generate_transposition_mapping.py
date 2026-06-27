@@ -1133,3 +1133,87 @@ def test_main_does_not_link_co_amended_secondary_law(tmp_path, monkeypatch):
     report = json.loads((krr / "transposition_mapping.json").read_text(encoding="utf-8"))
     matched_laws = {m["matched_law_name"] for m in report["mappings"]}
     assert matched_laws == {"raudteeseadus"}
+
+
+# ---------------------------------------------------------------------------
+# #597 — the co-amendment guard must not silently drop the sole transposing
+# law when it has a SHORT (< _MIN_DOMAIN_ROOT_LEN) domain root and sits in a
+# non-primary clause (after a comma / ``ja`` / ``ning``). A short root that is
+# explicitly named in the title AND whose root anchors a whole word in the
+# directive subject is now rescued; a co-amended short-root law whose root is
+# absent/incidental in the subject stays pruned (no blanket fall-open).
+# ---------------------------------------------------------------------------
+
+
+# A realistic customs-directive subject (rdfs:label): the Estonian word for
+# customs (``toll``) surfaces as ``tolliseadustiku`` (the Union Customs Code),
+# so the short root ``tolli`` anchors a whole word in it.
+_CUSTOMS_SUBJECT = mod.normalize_text(
+    "Euroopa Parlamendi ja nõukogu direktiiv liidu tolliseadustiku kohta"
+)
+
+
+def test_short_root_co_amendment_rescued_when_subject_matches() -> None:
+    """#597: ``tolliseadus`` (root ``tolli``, 5 chars < _MIN_DOMAIN_ROOT_LEN)
+    sits AFTER the comma (non-primary clause) of
+    ``"Maksukorralduse seaduse, tolliseaduse muutmise seadus"`` yet is the real
+    transposer of a customs directive. It used to be dropped (short root +
+    non-primary, both guard arms False); now its whole-word subject hit
+    (``tolli`` ⊂ ``tolliseadustiku``) rescues it."""
+    index = _law_index_with("Maksukorralduse seadus", "Tolliseadus")
+    title = "Maksukorralduse seaduse, tolliseaduse muutmise seadus"
+    names = {
+        m["name"]
+        for m in mod.match_all_titles_to_laws(
+            title, index, directive_subject=_CUSTOMS_SUBJECT
+        )
+    }
+    # The short-root, non-primary, explicitly-named transposer is recovered.
+    assert "Tolliseadus" in names
+    # The primary-clause law is kept as before (primary-clause arm, #388).
+    assert "Maksukorralduse seadus" in names
+
+
+def test_short_root_co_amendment_dropped_when_subject_unrelated() -> None:
+    """#597 guard: the SAME short-root co-amendment is still pruned when the
+    directive subject has nothing to do with it — i.e. the fix is subject-gated,
+    NOT a blanket fall-open (which the issue's naive 'always keep short roots'
+    suggestion would have been). ``tolliseadus`` co-amended in a bill transposing
+    a railway directive (no ``tolli`` in the subject) gets no link."""
+    index = _law_index_with("Maksukorralduse seadus", "Tolliseadus")
+    title = "Maksukorralduse seaduse, tolliseaduse muutmise seadus"
+    names = {
+        m["name"]
+        for m in mod.match_all_titles_to_laws(
+            title, index, directive_subject=_RAILWAY_SUBJECT
+        )
+    }
+    # Off-subject short-root co-amendment stays dropped (incidental).
+    assert "Tolliseadus" not in names
+    # The primary-clause law is still kept (primary-clause arm, #388).
+    assert "Maksukorralduse seadus" in names
+
+
+def test_law_matches_directive_subject_short_root_requires_word_anchor() -> None:
+    """#597: a short domain root matches a directive subject only at a WHOLE-WORD
+    boundary, never as a mid-word fragment — so a genuine named transposer is
+    recovered without re-admitting the coincidental substring hits the length
+    floor was guarding against. Longer roots keep the permissive substring test."""
+    # Whole-word anchor: ``tolli`` starts ``tolliseadustiku`` -> domain match.
+    assert mod._law_matches_directive_subject("tolliseadus", _CUSTOMS_SUBJECT) is True
+
+    # Mid-word fragment: ``tolli`` appears ONLY inside ``atolli`` (atoll), i.e.
+    # preceded by a word char, so it is not anchored. A bare substring test WOULD
+    # match here — the word-boundary rule is exactly what keeps such incidental
+    # short fragments out (#597).
+    buried = mod.normalize_text("atolli ja laguuni kohta")
+    assert "tolli" in buried  # the bare substring is present...
+    assert mod._law_matches_directive_subject("tolliseadus", buried) is False  # ...but not anchored
+
+    # Root entirely absent from the subject -> not a domain match (the plain
+    # incidental co-amendment case).
+    assert mod._law_matches_directive_subject("tolliseadus", _RAILWAY_SUBJECT) is False
+
+    # A long root (>= _MIN_DOMAIN_ROOT_LEN) keeps the permissive plain-substring
+    # behaviour, so the #388 railway rescue is unchanged.
+    assert mod._law_matches_directive_subject("raudteeseadus", _RAILWAY_SUBJECT) is True
