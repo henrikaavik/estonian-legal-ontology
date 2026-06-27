@@ -48,7 +48,7 @@ from pathlib import Path
 
 import requests
 
-from estleg_common import BUILD_EVALUATION_DATE, FULLNAME_GENITIVE
+from estleg_common import BUILD_EVALUATION_DATE, FULLNAME_GENITIVE, KNOWN_ABBREVIATIONS
 
 try:  # Optional dep — falls back to regex parser when unavailable.
     from bs4 import BeautifulSoup  # type: ignore[import-not-found]
@@ -305,34 +305,26 @@ def _decision_year_key(dec: dict) -> str:
     return "unknown"
 
 
-# Known law abbreviations — anchored matches must lowercase before
-# deduplication so "KarS" / "kars" / "KARS" collapse into the canonical
-# "KarS" form rather than producing duplicate entries.
-_KNOWN_LAW_ABBREVS: tuple[str, ...] = (
-    "KarS",
-    "VÕS",
-    "TsÜS",
-    "AÕS",
-    "PKS",
-    "ÄS",
-    "HMS",
-    "TsMS",
-    "KrMS",
-    "TMS",
-    "KOKS",
-    "PS",
-    "PankrS",
-    "MKS",
-    "TLS",
-)
+# Known law abbreviations — sourced from the resolver's authoritative
+# ``KNOWN_ABBREVIATIONS`` table (#606) instead of a hand-maintained local
+# copy that had drifted out of sync (it was missing the EhS/EhSE split, so
+# the court extractor under-detected law references). Anchored matches must
+# lowercase before deduplication so "KarS" / "kars" / "KARS" collapse into
+# the canonical "KarS" form rather than producing duplicate entries.
+_KNOWN_LAW_ABBREVS: tuple[str, ...] = tuple(KNOWN_ABBREVIATIONS.keys())
 _LAW_ABBREV_LOOKUP: dict[str, str] = {
     abbrev.casefold(): abbrev for abbrev in _KNOWN_LAW_ABBREVS
 }
 
-# Word-boundary anchored: prevents ``\w+seaduse`` from absorbing
-# trailing characters into a longer match (greediness).
+# Word-boundary anchored: prevents ``\w+seaduse`` from absorbing trailing
+# characters into a longer match (greediness). Each abbreviation is
+# ``re.escape``-d and the alternation is ordered LONGEST-FIRST so a longer
+# abbreviation wins over a prefix of it ("EhSE" before "EhS"), mirroring the
+# proven citation pattern in ``extract_cross_references.py``.
 _KNOWN_LAW_PATTERN = re.compile(
-    r"\b(" + "|".join(_KNOWN_LAW_ABBREVS) + r")\b\s*§\s*[\d\-]+",
+    r"\b("
+    + "|".join(re.escape(a) for a in sorted(_KNOWN_LAW_ABBREVS, key=len, reverse=True))
+    + r")\b\s*§\s*[\d\-]+",
     re.IGNORECASE,
 )
 _GENITIVE_LAW_PATTERN = re.compile(

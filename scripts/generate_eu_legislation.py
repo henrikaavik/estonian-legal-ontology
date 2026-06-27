@@ -185,8 +185,7 @@ def fetch_legislation_type(
     propagate as ``RuntimeError`` so the run exits non-zero rather than
     silently truncating the dataset.
     """
-    all_items: list[dict] = []
-    seen_celex: set[str] = set()
+    by_celex: dict[str, dict] = {}
     offset = 0
     partial = False
 
@@ -229,35 +228,33 @@ SELECT DISTINCT ?work ?celex ?title ?date ?inforce ?eli ?author ?deadline WHERE 
             if not celex:
                 continue
 
-            # Deduplicate: a work can have multiple authors → multiple rows
-            if celex in seen_celex:
+            # Deduplicate: a work can have multiple authors → multiple rows.
+            # ``by_celex`` maps CELEX -> its item dict so both merges below are
+            # O(1) lookups (the prior list scan was O(n^2) over the growing
+            # corpus). Dict insertion order mirrors the old append order, so the
+            # returned list is byte-identical.
+            if celex in by_celex:
+                item = by_celex[celex]
                 # Merge author into existing item
                 author_uri = b.get("author", {}).get("value", "")
                 if author_uri:
                     author_code = author_uri.split("/")[-1]
-                    for item in all_items:
-                        if item["celex"] == celex:
-                            if author_code not in item["authors"]:
-                                item["authors"].append(author_code)
-                            break
+                    if author_code not in item["authors"]:
+                        item["authors"].append(author_code)
                 # A directive may carry several ``directive_date_transposition``
                 # values (corrigenda). Keep the earliest so the node has a
                 # single deterministic deadline.
                 deadline = b.get("deadline", {}).get("value", "")
                 if deadline:
-                    for item in all_items:
-                        if item["celex"] == celex:
-                            cur = item.get("transposition_deadline", "")
-                            if not cur or deadline < cur:
-                                item["transposition_deadline"] = deadline
-                            break
+                    cur = item.get("transposition_deadline", "")
+                    if not cur or deadline < cur:
+                        item["transposition_deadline"] = deadline
                 continue
 
-            seen_celex.add(celex)
             author_uri = b.get("author", {}).get("value", "")
             author_code = author_uri.split("/")[-1] if author_uri else ""
 
-            all_items.append({
+            by_celex[celex] = {
                 "celex": celex,
                 "cellar_uri": b.get("work", {}).get("value", ""),
                 "title": b.get("title", {}).get("value", ""),
@@ -266,7 +263,7 @@ SELECT DISTINCT ?work ?celex ?title ?date ?inforce ?eli ?author ?deadline WHERE 
                 "eli": b.get("eli", {}).get("value", ""),
                 "authors": [author_code] if author_code else [],
                 "transposition_deadline": b.get("deadline", {}).get("value", ""),
-            })
+            }
 
         if len(bindings) < PAGE_SIZE:
             break
@@ -274,7 +271,7 @@ SELECT DISTINCT ?work ?celex ?title ?date ?inforce ?eli ?author ?deadline WHERE 
         offset += PAGE_SIZE
         time.sleep(RATE_DELAY)
 
-    return all_items, partial
+    return list(by_celex.values()), partial
 
 
 def generate_schema_nodes() -> list[dict]:

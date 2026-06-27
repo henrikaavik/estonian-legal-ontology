@@ -232,3 +232,112 @@ def test_two_letter_cjeu_codes_still_classify() -> None:
     )
     assert mod.classify_from_celex("62011CC0534")[2] == "CourtOfJustice"
     assert mod.classify_from_celex("62016TO0123")[2:] == ("GeneralCourt", "orders")
+
+
+# ---------------------------------------------------------------------------
+# #606 (item 5) — joined cases separated by a comma must all be captured
+# ---------------------------------------------------------------------------
+
+
+def test_extract_case_numbers_keeps_all_comma_joined_cases() -> None:
+    """``extract_case_numbers`` returns *every* case in a comma-joined title.
+
+    The single-value ``extract_case_number`` only captures the first
+    contiguous run (a ``" ja "`` chain), so it dropped ``C-429/08`` from
+    ``'Liidetud kohtuasjad C-403/08, C-429/08'`` (#606)."""
+    assert mod.extract_case_numbers(
+        "Liidetud kohtuasjad C-403/08, C-429/08"
+    ) == ["C-403/08", "C-429/08"]
+
+
+def test_extract_case_numbers_single_case_is_one_element_list() -> None:
+    """A single-case title yields a one-element list (#606)."""
+    assert mod.extract_case_numbers("Kohtuasi C-438/14") == ["C-438/14"]
+
+
+def test_extract_case_numbers_handles_ja_separator() -> None:
+    """The historic ``" ja "`` joined-case form is still fully captured (#606)."""
+    assert mod.extract_case_numbers(
+        "Liidetud kohtuasjad C-6/90 ja C-9/90"
+    ) == ["C-6/90", "C-9/90"]
+
+
+def test_extract_case_numbers_dedupes_preserving_order() -> None:
+    """Repeated numbers are de-duplicated in first-seen order (#606)."""
+    assert mod.extract_case_numbers(
+        "C-403/08, C-429/08, C-403/08"
+    ) == ["C-403/08", "C-429/08"]
+
+
+def test_extract_case_numbers_no_match_returns_empty_list() -> None:
+    """No case number → empty list, so the caller emits nothing (#606)."""
+    assert mod.extract_case_numbers("Pealkiri ilma numbrita") == []
+
+
+def test_decision_to_node_emits_all_joined_case_numbers() -> None:
+    """The node builder emits every joined case number as a multi-valued
+    ``estleg:euCaseNumber`` (#606).
+
+    NOTE: the SHACL ``EUCourtDecisionShape`` currently pins this property to
+    ``sh:maxCount 1``; emitting a list is the intended behaviour and a
+    deferred maxCount relaxation is required before regeneration."""
+    item = {
+        "celex": "62008CJ0403",
+        "title": "Liidetud kohtuasjad C-403/08, C-429/08",
+        "date": "2011-10-04",
+        "ecli": "",
+        "authors": [],
+    }
+    node = mod.decision_to_node(item)
+    assert node["estleg:euCaseNumber"] == ["C-403/08", "C-429/08"]
+
+
+def test_decision_to_node_single_case_number_is_list() -> None:
+    """A single-case node carries a one-element list (#606)."""
+    item = {
+        "celex": "62016CJ0438",
+        "title": "Kohtuasi C-438/14",
+        "date": "2016-10-13",
+        "ecli": "",
+        "authors": [],
+    }
+    node = mod.decision_to_node(item)
+    assert node["estleg:euCaseNumber"] == ["C-438/14"]
+
+
+# ---------------------------------------------------------------------------
+# #606 (item 13a) — documentDate plausibility (year-range) guard
+# ---------------------------------------------------------------------------
+
+
+def test_decision_to_node_skips_implausible_year(capsys) -> None:
+    """A format-valid but implausible year (``0044-01-01``) is skipped with a
+    warning, never emitted as an ``xsd:date`` (#606)."""
+    item = {
+        "celex": "62008CJ0001",
+        "title": "Kohtuasi C-1/08",
+        "date": "0044-01-01",
+        "ecli": "",
+        "authors": [],
+    }
+    node = mod.decision_to_node(item)
+    assert "estleg:documentDate" not in node
+    err = capsys.readouterr().err
+    assert "documentDate" in err
+    assert "0044-01-01" in err
+
+
+def test_decision_to_node_emits_valid_recent_date() -> None:
+    """A plausible recent date (``2015-03-04``) is emitted unchanged (#606)."""
+    item = {
+        "celex": "62013CJ0333",
+        "title": "Kohtuasi C-333/13",
+        "date": "2015-03-04",
+        "ecli": "",
+        "authors": [],
+    }
+    node = mod.decision_to_node(item)
+    assert node["estleg:documentDate"] == {
+        "@value": "2015-03-04",
+        "@type": "xsd:date",
+    }

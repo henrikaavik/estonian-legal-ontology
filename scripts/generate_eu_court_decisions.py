@@ -229,6 +229,21 @@ def extract_case_number(title: str) -> str:
     return match.group(1) if match else ""
 
 
+def extract_case_numbers(title: str) -> list[str]:
+    """Extract *all* case numbers from a title, de-duplicated in first-seen
+    order — e.g. ``['C-403/08', 'C-429/08']`` from
+    ``'Liidetud kohtuasjad C-403/08, C-429/08'``.
+
+    Joined cases may be separated by ``" ja "`` *or* a comma. The single-value
+    :func:`extract_case_number` only captures the first contiguous run, so it
+    silently drops every case after a comma separator (#606). This collects
+    every ``[CTFPE]-N/N`` token instead, so all joined cases are preserved.
+    The prefix class includes ``E`` for EFTA Court cases (e.g. ``E-1/20``).
+    """
+    # ``dict.fromkeys`` de-duplicates while preserving first-seen order.
+    return list(dict.fromkeys(re.findall(r"[CTFPE]-\d+/\d+", title)))
+
+
 def clean_title(title: str) -> str:
     """Clean up the EUR-Lex title format (removes # separators).
 
@@ -468,7 +483,7 @@ def decision_to_node(item: dict) -> dict:
     type_id, type_label, court_id, _ = classify_from_celex(item["celex"])
 
     cleaned_title = clean_title(item["title"])
-    case_number = extract_case_number(item["title"])
+    case_numbers = extract_case_numbers(item["title"])
 
     node: dict = {
         "@id": f"estleg:EUCJ_{safe_celex}",
@@ -494,9 +509,14 @@ def decision_to_node(item: dict) -> dict:
     if item.get("ecli"):
         node["estleg:ecliIdentifier"] = item["ecli"]
 
-    # Case number
-    if case_number:
-        node["estleg:euCaseNumber"] = case_number
+    # Case number(s). Joined cases (#606) may carry several, so emit them all;
+    # a single case stays a one-element list (JSON-LD-equivalent to the prior
+    # scalar). NOTE (deferred): the SHACL ``EUCourtDecisionShape`` still pins
+    # ``estleg:euCaseNumber`` to ``sh:maxCount 1``; a multi-valued list needs a
+    # follow-up maxCount relaxation before the corpus is regenerated (no regen
+    # happens here, so nothing breaks today).
+    if case_numbers:
+        node["estleg:euCaseNumber"] = case_numbers
 
     # Date — validate before emitting an ``xsd:date`` literal. CELLAR has
     # served malformed/partial dates; an unchecked value breaks downstream
@@ -505,7 +525,7 @@ def decision_to_node(item: dict) -> dict:
     raw_date = item.get("date")
     if raw_date:
         try:
-            datetime.strptime(raw_date, "%Y-%m-%d")
+            parsed_date = datetime.strptime(raw_date, "%Y-%m-%d")
         except (ValueError, TypeError):
             print(
                 f"  WARNING: skipping non-YYYY-MM-DD documentDate "
@@ -513,7 +533,19 @@ def decision_to_node(item: dict) -> dict:
                 file=sys.stderr,
             )
         else:
-            node["estleg:documentDate"] = {"@value": raw_date, "@type": "xsd:date"}
+            # Range guard (#606): a date can be FORMAT-valid yet implausible —
+            # CELLAR has served years like ``0044``. EU/EEC/ECSC case-law
+            # starts ~1952, so only accept years in [1950, current_year + 1].
+            max_year = datetime.now().year + 1
+            if 1950 <= parsed_date.year <= max_year:
+                node["estleg:documentDate"] = {"@value": raw_date, "@type": "xsd:date"}
+            else:
+                print(
+                    f"  WARNING: skipping out-of-range documentDate "
+                    f"{raw_date!r} (year {parsed_date.year}, allowed "
+                    f"[1950, {max_year}]) for CELEX {item['celex']}",
+                    file=sys.stderr,
+                )
 
     return node
 

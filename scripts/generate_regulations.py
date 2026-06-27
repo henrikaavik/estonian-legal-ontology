@@ -55,6 +55,22 @@ GENERATION_MODES = ("missing-only", "refresh", "force")
 # Issuer → regulation class
 # ---------------------------------------------------------------------------
 
+#: Explicit lookup of KNOWN central issuers (lowercased exact match) to the
+#: extra regulation classes they carry on top of ``estleg:NationalRegulation``.
+#: An empty list marks a recognised National-only issuer (e.g. Eesti Pank): it
+#: is a known issuer, so it is deliberately NOT recorded as unclassified.
+ISSUER_CLASS_TABLE: dict[str, list[str]] = {
+    "vabariigi valitsus": ["estleg:GovernmentRegulation"],
+    "eesti pank": [],
+}
+
+#: Issuer strings matching neither ``ISSUER_CLASS_TABLE`` nor the ``*minister``
+#: heuristic. Recorded so the pipeline can surface genuinely-unrecognised
+#: issuers (data drift) instead of silently typing them bare National. This is
+#: process-wide bookkeeping only; callers/tests may ``.clear()`` / inspect it.
+UNCLASSIFIED_ISSUERS: Counter[str] = Counter()
+
+
 def classify_issuer(issuer: str | None, is_kov: bool) -> list[str]:
     """Return the list of regulation classes to attach to an act node.
 
@@ -75,6 +91,12 @@ def classify_issuer(issuer: str | None, is_kov: bool) -> list[str]:
     domestic-regulation shapes (so it holds under inference=none too). Adding
     it explicitly would only add redundant triples to ~11k KOV roots.
 
+    Issuers that are neither a known central issuer (``ISSUER_CLASS_TABLE``)
+    nor a ``*minister`` fall through to a bare ``estleg:NationalRegulation``
+    and are tallied in ``UNCLASSIFIED_ISSUERS`` so genuinely-unrecognised
+    issuers (data drift) can be surfaced rather than passing silently. The
+    class output for the known cases below is unchanged.
+
     Examples:
       Vabariigi Valitsus            -> [NationalRegulation, GovernmentRegulation]
       Sotsiaalminister              -> [NationalRegulation, MinisterialRegulation]
@@ -89,10 +111,16 @@ def classify_issuer(issuer: str | None, is_kov: bool) -> list[str]:
         return classes
 
     issuer_l = issuer.lower()
-    if issuer_l == "vabariigi valitsus":
-        classes.append("estleg:GovernmentRegulation")
+    if issuer_l in ISSUER_CLASS_TABLE:
+        # Known issuer: extend with its explicit extra classes (possibly none,
+        # e.g. Eesti Pank is National-only) — never recorded as unclassified.
+        classes.extend(ISSUER_CLASS_TABLE[issuer_l])
     elif issuer_l.endswith("minister"):
         classes.append("estleg:MinisterialRegulation")
+    else:
+        # Neither a known central issuer nor a *minister: surface it so data
+        # drift is visible rather than being silently typed bare National.
+        UNCLASSIFIED_ISSUERS[issuer] += 1
     return classes
 
 
@@ -1073,6 +1101,9 @@ def main():
     print(f"  Corpus paragraphs indexed:  {index_doc['totalParagraphs']}")
     print(f"  Corpus annexes indexed:     {index_doc['totalAnnexes']}")
     print(f"  No-body stubs indexed:      {index_doc['noStructuredBodyCount']}")
+    print(f"  Unrecognized issuers:       {sum(UNCLASSIFIED_ISSUERS.values())}")
+    for _issuer_name, _issuer_count in UNCLASSIFIED_ISSUERS.most_common():
+        print(f"      - {_issuer_name}: {_issuer_count}")
     print(f"  Output directory:           {out_dir}")
     print(f"  Index file:                 {index_path.name}")
 

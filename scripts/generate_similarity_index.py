@@ -176,11 +176,19 @@ MAX_SIMILAR_PER_PROVISION = 5
 # like an undeclared stopword (think domain-wide verbs/connectives the
 # static list above can't anticipate). Such tokens are dropped from every
 # provision's keyword set *after* the corpus has been scanned, before any
-# pair scoring. 0.45 (≈ "appears in <45% of provisions") is a deliberately
-# loose cap: real boilerplate and connectives sit far above it, genuine
-# topical terms far below, so the cut is unambiguous. Set to >=1.0 to
-# disable. The cap is reported in similarity_report.json for transparency.
-GENERIC_DOC_FREQUENCY_CAP = 0.45
+# pair scoring.
+#
+# The cap is a *fraction of provisions* — a keyword is generic when it
+# appears in > cap * N of the N analysed provisions — so the guard scales
+# with corpus size: any token in >10% of provisions is flagged regardless
+# of N. 0.05 keeps the guard effective on the real corpus, whose single
+# most frequent keyword appears in only ~17.5% of the ~83k provisions: the
+# earlier 0.45 cap (threshold ~37k provisions) never fired, so the strip
+# was dead code (#606). At 0.05 (threshold ~4.2k provisions) that token and
+# any comparably corpus-wide connective is dropped, while genuine topical
+# terms (well under a few percent) survive. Set to >=1.0 to disable. The
+# cap is reported in similarity_report.json for transparency.
+GENERIC_DOC_FREQUENCY_CAP = 0.05
 
 # ---------------------------------------------------------------------------
 # KOV act-level similarity (Layer 3) — constants

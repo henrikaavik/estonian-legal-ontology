@@ -137,6 +137,52 @@ class TestClassifyIssuer:
         classes = classify_issuer(None, is_kov=False)
         assert classes == ["estleg:NationalRegulation"]
 
+    # Issue #606: known issuers keep their EXACT class output; only genuinely
+    # unrecognised issuers are tallied in UNCLASSIFIED_ISSUERS for visibility.
+
+    def test_government_output_unchanged_no_counter_increment(self):
+        generate_regulations.UNCLASSIFIED_ISSUERS.clear()
+        classes = classify_issuer("Vabariigi Valitsus", is_kov=False)
+        assert classes == [
+            "estleg:NationalRegulation",
+            "estleg:GovernmentRegulation",
+        ]
+        assert sum(generate_regulations.UNCLASSIFIED_ISSUERS.values()) == 0
+
+    def test_minister_output_unchanged_no_counter_increment(self):
+        generate_regulations.UNCLASSIFIED_ISSUERS.clear()
+        classes = classify_issuer("Sotsiaalminister", is_kov=False)
+        assert classes == [
+            "estleg:NationalRegulation",
+            "estleg:MinisterialRegulation",
+        ]
+        assert sum(generate_regulations.UNCLASSIFIED_ISSUERS.values()) == 0
+
+    def test_central_bank_known_national_only_no_counter_increment(self):
+        # Eesti Pank is a KNOWN National-only issuer — not data drift, so it
+        # must NOT be recorded as unclassified.
+        generate_regulations.UNCLASSIFIED_ISSUERS.clear()
+        classes = classify_issuer("Eesti Pank", is_kov=False)
+        assert classes == ["estleg:NationalRegulation"]
+        assert "Eesti Pank" not in generate_regulations.UNCLASSIFIED_ISSUERS
+        assert sum(generate_regulations.UNCLASSIFIED_ISSUERS.values()) == 0
+
+    def test_unknown_issuer_recorded_as_unclassified(self):
+        generate_regulations.UNCLASSIFIED_ISSUERS.clear()
+        classes = classify_issuer("Mingi Tundmatu Amet", is_kov=False)
+        # Output is unchanged — still bare National (no regression).
+        assert classes == ["estleg:NationalRegulation"]
+        # ...but the unrecognised issuer is now surfaced for the pipeline.
+        assert generate_regulations.UNCLASSIFIED_ISSUERS["Mingi Tundmatu Amet"] == 1
+
+    def test_kov_short_circuit_not_recorded_as_unclassified(self):
+        generate_regulations.UNCLASSIFIED_ISSUERS.clear()
+        classes = classify_issuer("Mingi Tundmatu Amet", is_kov=True)
+        # KOV short-circuit is unchanged and runs before issuer classification,
+        # so no unclassified bookkeeping happens.
+        assert classes == ["estleg:MunicipalRegulation"]
+        assert sum(generate_regulations.UNCLASSIFIED_ISSUERS.values()) == 0
+
 
 # ---------------------------------------------------------------------------
 # 3. Structured XML parsing

@@ -349,7 +349,7 @@ def _norm_name(value: str) -> str:
     s = value.lower()
     for src, dst in _DIACRITIC_MAP.items():
         s = s.replace(src, dst)
-    s = re.sub(r"\s*\([^)]*\)\s*$", "", s)  # drop a trailing "(Riigi Teataja …)" suffix
+    s = re.sub(r"\s*\([^)]*\)\s*", " ", s)  # drop every "(Riigi Teataja …)" parenthetical
     return " ".join(s.split())
 
 
@@ -359,8 +359,22 @@ def _clean_dc_source(value: object) -> str | None:
         value = value[0] if value else None
     if not isinstance(value, str):
         return None
-    cleaned = re.sub(r"\s*\([^)]*\)\s*$", "", value).strip()
+    cleaned = " ".join(re.sub(r"\s*\([^)]*\)\s*", " ", value).split())
     return cleaned or None
+
+
+def _split_compound_title(value: str) -> list[str]:
+    """Split an "A + B" compound title into the individual law names it joins.
+
+    A few corpus ``dc:source`` titles join two distinct law names with a spaced " + "
+    separator (e.g. "Tulumaksuseadus + Käibemaksuseadus"); each side names its own act
+    and must be indexed separately so a lookup for either half resolves. Splits ONLY on
+    a "+" surrounded by whitespace, so a name carrying a bare "+" is left intact, and
+    returns the (stripped, non-empty) parts — a single-element list holding the value
+    unchanged when there is no spaced "+", so single-name titles are unaffected.
+    """
+    parts = [p.strip() for p in re.split(r"\s+\+\s+", value)]
+    return [p for p in parts if p]
 
 
 # Productive Estonian singular oblique-case endings attached to a ``…seadus`` / ``…seadustik``
@@ -519,13 +533,15 @@ def build_law_index(krr_dir: Path = KRR_DIR) -> _LawIndex:
                 break
         if not src:
             continue
-        norm = _norm_name(src)
         rank = 0 if _MAP_IRI_RE.match(iri) else 1
         range_start = _osa_range_start(iri)
         priority = (rank, float(range_start) if range_start is not None else float("inf"))
-        prev = candidates.get(norm)
-        if prev is None or priority < prev[1]:
-            candidates[norm] = (iri, priority)
+        # A few titles join two law names with " + " (e.g. "Tulumaksuseadus +
+        # Käibemaksuseadus"); register each half so a lookup for either resolves (#606).
+        for norm in _split_compound_title(_norm_name(src)):
+            prev = candidates.get(norm)
+            if prev is None or priority < prev[1]:
+                candidates[norm] = (iri, priority)
 
     idx.by_slug = dict(slug_to_iri)
     for norm, (iri, _priority) in candidates.items():

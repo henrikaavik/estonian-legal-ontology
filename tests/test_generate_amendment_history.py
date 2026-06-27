@@ -339,6 +339,48 @@ class TestStableAmendmentSuffix:
         assert _amend_sort_key(a) < _amend_sort_key(b)
 
 
+class TestOsaOrderKeyCanonicalPart:
+    """Issue #606 — the canonical part of a multipart law must be the
+    lowest-numbered ``_osaN`` (osa1), chosen by NATURAL numeric order so
+    osa10/osa11 cannot win over osa2 under lexical-string or glob ordering."""
+
+    def test_osa_order_key_is_numeric_and_no_suffix_sorts_as_zero(self):
+        from generate_amendment_history import _osa_order_key
+
+        # Natural numeric ordering: osa1 < osa2 < osa10 < osa11. Lexical
+        # string order would (wrongly) place "_osa10"/"_osa11" before "_osa2".
+        assert (
+            _osa_order_key("voos_osa1")
+            < _osa_order_key("voos_osa2")
+            < _osa_order_key("voos_osa10")
+            < _osa_order_key("voos_osa11")
+        )
+        # A single-part law (no _osaN suffix) sorts as (0, slug); an embedded
+        # "osa" that is not a trailing _osaN is likewise left untouched.
+        assert _osa_order_key("ksdseadus") == (0, "ksdseadus")
+        assert _osa_order_key("osariik_seadus") == (0, "osariik_seadus")
+
+    def test_sorting_members_like_list_puts_osa1_first(self):
+        from generate_amendment_history import _osa_order_key
+
+        # Mirrors main()'s grouping: (slug, info) tuples arrive in arbitrary
+        # insertion/glob order; sorting by the key must make members[0] the
+        # canonical osa1, then osa2, osa10, osa11.
+        members = [
+            ("x_osa10", {"title": "X"}),
+            ("x_osa2", {"title": "X"}),
+            ("x_osa1", {"title": "X"}),
+            ("x_osa11", {"title": "X"}),
+        ]
+        ordered = sorted(members, key=lambda m: _osa_order_key(m[0]))
+        assert [slug for slug, _info in ordered] == [
+            "x_osa1",
+            "x_osa2",
+            "x_osa10",
+            "x_osa11",
+        ]
+
+
 class TestMultipartLawAggregation:
     """Regression coverage for multipart-law chain-file overwrite
     (issue #173 #4). Ensures a base-slug-keyed chain document

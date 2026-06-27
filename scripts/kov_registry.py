@@ -503,7 +503,8 @@ def load_curated_map(path: Path) -> dict[str, CuratedRow]:
 # The 2017 haldusreform local-government reorganisation took legal
 # effect on the day the new councils convened after the 15 October 2017
 # local elections, i.e. 2017-10-15 — used as `mergedAt` for every
-# `haldusreform-2017` (and the manual-review 2017-split) entry. Other
+# `haldusreform-2017` entry (unconditionally) and for `manual-review`
+# rows whose evidence actually cites the 2017 reform. Other
 # `mappingSource` values would need their own date handling; none exist
 # in the corpus today, so an unrecognised source simply omits
 # `mergedAt` (the JSON-LD builder leaves the key off).
@@ -514,8 +515,6 @@ _HISTORICAL_EVIDENCE_RE = re.compile(
     r"\s+(?P<type>vald|linn)\s+\(EHAK\s+(?P<code>\d{4})\)"
 )
 
-# Mapping sources whose entries describe a 2017-haldusreform merger.
-_HALDUSREFORM_2017_SOURCES = frozenset({"haldusreform-2017", "manual-review"})
 HALDUSREFORM_2017_MERGE_DATE = "2017-10-15"
 
 
@@ -529,16 +528,27 @@ class HistoricalMunicipality(TypedDict):
     issuerSlugs: list[str]       # legacy issuer slugs that map to this unit (sorted)
 
 
-def _merge_date_for_source(source: str) -> str | None:
+def _merge_date_for_source(source: str, evidence: str = "") -> str | None:
     """Return the merger effective date for a given `mappingSource`.
 
-    The 2017 haldusreform took effect 2017-10-15; that covers every
-    ``haldusreform-2017`` entry and the small set of ``manual-review``
-    rows (all of which are 2017-reform splits — their evidence cites
-    "the 2017 reform"). Any other source returns ``None`` so the
-    builder omits ``estleg:mergedAt`` rather than guessing a date.
+    ``haldusreform-2017`` is *definitionally* the 2017 reform, so it
+    unconditionally resolves to 2017-10-15 (the day the new councils
+    convened after the 15 October 2017 local elections).
+
+    ``manual-review`` is a catch-all curation source. Every such row in
+    the corpus today documents a 2017-reform split, but the 2017 date
+    must NOT be inherited blindly — a future non-2017 manual-review row
+    would otherwise be stamped with the wrong merger date. So for
+    ``manual-review`` the date is returned only when ``evidence``
+    actually cites the 2017 reform (a standalone ``2017`` token);
+    otherwise ``None`` is returned and the builder omits
+    ``estleg:mergedAt`` rather than guessing a date.
+
+    Any other source returns ``None``.
     """
-    if source in _HALDUSREFORM_2017_SOURCES:
+    if source == "haldusreform-2017":
+        return HALDUSREFORM_2017_MERGE_DATE
+    if source == "manual-review" and re.search(r"\b2017\b", evidence):
         return HALDUSREFORM_2017_MERGE_DATE
     return None
 
@@ -597,7 +607,9 @@ def extract_historical_municipalities(
                 "formerName": f"{former_name} {mun_type}",
                 "municipalityType": mun_type,  # type: ignore[typeddict-item]
                 "succeededByCode": current_code,
-                "mergedAt": _merge_date_for_source(entry["mappingSource"]),
+                "mergedAt": _merge_date_for_source(
+                    entry["mappingSource"], evidence
+                ),
                 "mergerEvidence": evidence,
                 "issuerSlugs": [slug],
             }

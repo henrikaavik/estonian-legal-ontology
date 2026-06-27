@@ -815,3 +815,48 @@ class TestHasVersionRoundTrip:
         p1 = next(n for n in peep["@graph"]
                   if n.get("@id") == "estleg:STALE_Par_1")
         assert "estleg:hasVersion" not in p1
+
+
+# ---------------------------------------------------------------------------
+# Issue #606 — count gate that loudly surfaces estleg:hasVersion
+# under-materialisation (stale ProvisionVersion sidecars whose versionOf @ids
+# predate the #345 IRI scheme) instead of silently emitting 13 / 38,512.
+# ---------------------------------------------------------------------------
+
+
+class TestHasVersionResolutionDegraded:
+    """Pure unit tests for ``hasversion_resolution_degraded`` (#606)."""
+
+    def test_healthy_resolution_not_degraded(self):
+        import generate_inverse_references as mod
+
+        # All provisions resolved (empty unresolved) -> healthy.
+        version_inverse = {
+            "estleg:DEMO_Par_1": ["estleg:DEMO_Par_1_v1"],
+            "estleg:DEMO_Par_2": ["estleg:DEMO_Par_2_v1"],
+        }
+        assert mod.hasversion_resolution_degraded(version_inverse, []) is False
+
+        # Most provisions resolved (1 of 10 unresolved -> 0.9) -> healthy.
+        many = {f"estleg:P_{i}": [f"estleg:P_{i}_v1"] for i in range(10)}
+        assert mod.hasversion_resolution_degraded(many, ["estleg:P_0"]) is False
+
+    def test_degraded_resolution_flagged(self):
+        import generate_inverse_references as mod
+
+        # The real-world symptom: 13 of 38,512 provisions resolved.
+        version_inverse = {
+            f"estleg:P_{i}": [f"estleg:P_{i}_v1"] for i in range(38512)
+        }
+        unresolved = [f"estleg:P_{i}" for i in range(13, 38512)]  # 38,499
+        assert len(unresolved) == 38499
+        assert (
+            mod.hasversion_resolution_degraded(version_inverse, unresolved)
+            is True
+        )
+
+    def test_empty_version_inverse_not_degraded(self):
+        import generate_inverse_references as mod
+
+        # No targets at all -> no signal, and no division by zero.
+        assert mod.hasversion_resolution_degraded({}, []) is False

@@ -541,3 +541,42 @@ class TestPickHarmonisationLawFile:
 
     def test_empty_files_returns_none(self):
         assert harmonisation.pick_harmonisation_law_file("31999L0044", []) is None
+
+
+# ---------------------------------------------------------------------------
+# #606 — per-CELEX cache path is injective in (celex_dir, country set)
+# ---------------------------------------------------------------------------
+
+
+def test_cache_path_distinct_for_sanitize_colliding_celex():
+    """Two CELEX values that ``sanitize_celex`` collapses to the SAME stem
+    (it strips the corrigendum parens) must still map to DIFFERENT cache
+    files — otherwise one directive's cached response poisons/serves the
+    other's (#606)."""
+    a, b = "32011L0024R(01)", "32011L0024R01"
+    # Precondition: the readable stems really do collide.
+    assert harmonisation.sanitize_celex(a) == harmonisation.sanitize_celex(b)
+    assert harmonisation._cache_path_for(a) != harmonisation._cache_path_for(b)
+
+
+def test_cache_path_stable_across_calls():
+    """``_cache_path_for`` is a pure function of its input: the same
+    celex_dir (with an unchanged country set) always yields the same path."""
+    celex = "32011L0024R(01)"
+    assert harmonisation._cache_path_for(celex) == harmonisation._cache_path_for(celex)
+
+
+def test_cache_path_changes_with_target_countries(monkeypatch):
+    """Changing ``TARGET_COUNTRIES`` must change the cache path for the same
+    celex_dir, so a response cached for one country set is never served for a
+    different one (#606). ``_countries_cache_key`` reads the module global at
+    call time, so the monkeypatch takes effect."""
+    celex = "32016L0680"
+    before = harmonisation._cache_path_for(celex)
+    monkeypatch.setattr(
+        harmonisation,
+        "TARGET_COUNTRIES",
+        {"DEU": {"label_en": "Germany", "label_et": "Saksamaa"}},
+    )
+    after = harmonisation._cache_path_for(celex)
+    assert before != after

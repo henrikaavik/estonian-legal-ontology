@@ -466,3 +466,60 @@ def test_count_emitted_absent_inforce_counts_as_not_in_force() -> None:
     assert "estleg:inForce" not in node
     counts = mod.count_emitted_by_doc_type([node])
     assert counts["Regulation"] == {"total": 1, "in_force": 0, "not_in_force": 1}
+
+
+# ---------------------------------------------------------------------------
+# #606 — fetch_legislation_type dedup/merge must be O(1) per duplicate via a
+# CELEX->item dict, while preserving the exact prior merge semantics and
+# (insertion) order so the returned list is byte-identical.
+# ---------------------------------------------------------------------------
+
+
+def _celex_binding(celex: str, *, author: str = "", deadline: str = "") -> dict:
+    """Build one SPARQL result binding row exactly as the fetch loop reads it
+    (``b.get(var, {}).get("value", "")``). ``author`` is a full corporate-body
+    URI; the loop derives its code from the last path segment."""
+    row: dict[str, dict] = {"celex": {"value": celex}}
+    if author:
+        row["author"] = {"value": author}
+    if deadline:
+        row["deadline"] = {"value": deadline}
+    return row
+
+
+def test_fetch_dedup_merges_authors_and_keeps_earliest_deadline(monkeypatch) -> None:
+    """Drive the dedup/merge path (#606): a duplicate CELEX carrying (i) a second
+    distinct author and (ii) an earlier transposition deadline must collapse into
+    a single item with BOTH authors (order preserved, no dup) and the EARLIEST
+    deadline, while overall item order follows first-seen (insertion) order."""
+    auth = "http://publications.europa.eu/resource/authority/corporate-body/"
+    bindings = [
+        # First-seen directive: author EP, deadline 2013-12-13.
+        _celex_binding("32011L0083", author=f"{auth}EP", deadline="2013-12-13"),
+        # A second, distinct CELEX in between — proves order is preserved.
+        _celex_binding("32016R0679", author=f"{auth}COM"),
+        # Duplicate of the directive: NEW author COM + EARLIER deadline.
+        _celex_binding("32011L0083", author=f"{auth}COM", deadline="2013-06-01"),
+        # Duplicate again: author EP already present (no dup) + LATER deadline
+        # (must NOT replace the earlier one).
+        _celex_binding("32011L0083", author=f"{auth}EP", deadline="2015-01-01"),
+    ]
+
+    # Single page (len < PAGE_SIZE) so the paginating loop calls the seam once
+    # and exits without sleeping. Returning [] on any further call is defensive.
+    pages = [bindings]
+    monkeypatch.setattr(
+        mod, "sparql_query_with_retry", lambda _query: pages.pop(0) if pages else []
+    )
+
+    items, partial = mod.fetch_legislation_type("cdm:directive")
+
+    assert partial is False
+    # Two distinct CELEX -> two items, in first-seen (insertion) order.
+    assert [it["celex"] for it in items] == ["32011L0083", "32016R0679"]
+    # Both authors merged, original order preserved, EP not duplicated.
+    assert items[0]["authors"] == ["EP", "COM"]
+    # Earliest deadline kept; the later 2015 value did not overwrite it.
+    assert items[0]["transposition_deadline"] == "2013-06-01"
+    # The unrelated second item is untouched.
+    assert items[1]["authors"] == ["COM"]
