@@ -108,21 +108,51 @@ def _truncate_on_boundary(text: str, max_len: int) -> str:
     return cut.rstrip() + "…"
 
 
+# Provision text-bearing tags. These NEST in Riigi Teataja XML — a ``loige``
+# subsection contains ``lause`` sentences which may wrap ``lauseOsa`` parts — so
+# an ``el.iter()`` walk matching every one of them appended a parent's
+# ``itertext()`` AND each descendant's text, doubling (or tripling) every span
+# and emitting ``estleg:summary`` as the preview repeated. Collect from only the
+# OUTERMOST matching element instead (``_iter_outermost_text``) so each span is
+# counted exactly once. This is the regulation-side counterpart of the #613
+# law-generator fix; stale on-disk regulation summaries it already produced are
+# repaired offline by ``scripts/dedupe_summaries_629.py`` (#629).
+_TEXT_TAGS: frozenset[str] = frozenset({"loige", "lauseOsa", "lause", "tavatekst"})
+
+
+def _iter_outermost_text(el: ET.Element) -> Iterator[str]:
+    """Yield collapsed text from the OUTERMOST text-bearing elements under ``el``.
+
+    Recurses through ``el``'s descendants: a child whose local tag is in
+    :data:`_TEXT_TAGS` contributes its full ``itertext()`` (already covering any
+    nested ``lause``/``lauseOsa``) and is NOT descended into; any other child is
+    recursed into so a text element wrapped in non-text markup is still reached.
+    Taking only the outermost match counts each text span exactly once, which is
+    what eliminates the nested-tag double-counting of issue #629/#613. The
+    whitespace collapse and the ``len > 3`` noise filter mirror the historical
+    behaviour so summary text is otherwise unchanged.
+    """
+    for child in el:
+        if ln(child.tag) in _TEXT_TAGS:
+            txt = re.sub(r"\s+", " ", "".join(child.itertext())).strip()
+            if len(txt) > 3:
+                yield txt
+        else:
+            yield from _iter_outermost_text(child)
+
+
 def collect_text(el: ET.Element, max_len: int = 500) -> str:
     """Concatenate provision text up to `max_len` characters (for summaries).
 
-    The final cut lands on a sentence/word boundary (``_truncate_on_boundary``)
-    rather than a raw character slice, so summaries are never split mid-token
-    (issue #368).
+    Text is gathered from the outermost text-bearing elements only
+    (``_iter_outermost_text``), so nested matching tags are never double-counted
+    (issue #629). The final cut lands on a sentence/word boundary
+    (``_truncate_on_boundary``) rather than a raw character slice, so summaries
+    are never split mid-token (issue #368).
     """
     parts: list[str] = []
-    for child in el.iter():
-        tag = ln(child.tag)
-        if tag in ("loige", "lauseOsa", "lause", "tavatekst"):
-            txt = "".join(child.itertext()).strip()
-            txt = re.sub(r"\s+", " ", txt)
-            if txt and len(txt) > 3:
-                parts.append(txt)
+    for txt in _iter_outermost_text(el):
+        parts.append(txt)
         if len(" ".join(parts)) >= max_len:
             break
     joined = " ".join(parts)
@@ -130,16 +160,13 @@ def collect_text(el: ET.Element, max_len: int = 500) -> str:
 
 
 def collect_full_text(el: ET.Element) -> str:
-    """Return the complete provision text without truncation."""
-    parts: list[str] = []
-    for child in el.iter():
-        tag = ln(child.tag)
-        if tag in ("loige", "lauseOsa", "lause", "tavatekst"):
-            txt = "".join(child.itertext()).strip()
-            txt = re.sub(r"\s+", " ", txt)
-            if txt and len(txt) > 3:
-                parts.append(txt)
-    return " ".join(parts)
+    """Return the complete provision text without truncation.
+
+    Gathers text from the outermost text-bearing elements only
+    (``_iter_outermost_text``), so nested ``loige``/``lause``/``lauseOsa`` spans
+    are counted once rather than once per nesting level (issue #629).
+    """
+    return " ".join(_iter_outermost_text(el))
 
 
 def fetch_acts(

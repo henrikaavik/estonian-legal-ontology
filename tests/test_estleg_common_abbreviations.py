@@ -169,7 +169,7 @@ def test_363_added_abbrev_genitives_resolve_to_existing_abbrevs() -> None:
     expected = {
         "tulumaksuseaduse": "TuMS",
         "sotsiaalmaksuseaduse": "SMMS",
-        "relvaseaduse": "RSVS",
+        "relvaseaduse": "RelvS",  # #588: was RSVS (the Weapons Act's real abbrev is RelvS)
         "kaitseväeteenistuse seaduse": "KAVS",
         "kindlustustegevuse seaduse": "KindlTS",
         "looduskaitseseaduse": "LKS",

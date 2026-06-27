@@ -44,7 +44,7 @@ KNOWN_ABBREVIATIONS: dict[str, str] = {
     "IKS": "Isikuandmete kaitse seadus",
     "RahaPTS": "Rahapesu ja terrorismi rahastamise tõkestamise seadus",
     "KELS": "Kõrgharidusseadus",
-    "PPVS": "Planeerimisseadus",
+    "PPVS": "Politsei ja piirivalve seadus",  # #588: was wrongly "Planeerimisseadus" (the Planning Act)
     "AVVKHS": "Avaliku teenistuse seadus",
     "RHS": "Riigihangete seadus",
     "SHS": "Sotsiaalhoolekande seadus",
@@ -52,7 +52,9 @@ KNOWN_ABBREVIATIONS: dict[str, str] = {
     "EhS": "Ehitusseadus",
     "KVS": "Korruptsioonivastane seadus",
     "MSVS": "Meresõiduvahendite seadus",
-    "RSVS": "Relvaseadus",
+    "RSVS": "Riigisaladuse seadus",  # #588: was wrongly "Relvaseadus" (the Weapons Act)
+    "PlanS": "Planeerimisseadus",  # #588: the Planning Act's real abbreviation (the genitive used to mislabel it as PPVS)
+    "RelvS": "Relvaseadus",  # #588: the Weapons Act's real abbreviation (the genitive used to mislabel it as RSVS)
     "EKS": "Elektroonilise side seadus",
     "KES": "Keskkonnaseadustiku eriosa seadus",
     "LKS": "Looduskaitseseadus",
@@ -187,14 +189,14 @@ FULLNAME_GENITIVE: dict[str, str] = {
     "sotsiaalhoolekande seaduse": "SHS",
     "avaliku teabe seaduse": "AVTS",
     "avaliku teenistuse seaduse": "AVVKHS",
-    "planeerimisseaduse": "PPVS",
+    "planeerimisseaduse": "PlanS",
     # #363 — genitive forms for laws whose abbreviation ALREADY existed
     # in KNOWN_ABBREVIATIONS but lacked a genitive entry, so Pattern 3
     # silently dropped their citations. Each resolves through the
     # existing abbrev to a corpus peep file.
     "tulumaksuseaduse": "TuMS",
     "sotsiaalmaksuseaduse": "SMMS",
-    "relvaseaduse": "RSVS",
+    "relvaseaduse": "RelvS",
     "kaitseväeteenistuse seaduse": "KAVS",
     "kindlustustegevuse seaduse": "KindlTS",
     "looduskaitseseaduse": "LKS",
