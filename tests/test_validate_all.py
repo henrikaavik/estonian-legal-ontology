@@ -2206,6 +2206,65 @@ class TestCiRegressionGuards:
         assert stats["estleg:euLegislationCount"] is None      # pointer -> skipped
         assert stats["estleg:euCourtDecisionCount"] == 0       # real (empty) graph
 
+    @staticmethod
+    def _stage_metadata_tree(tmp_path):
+        """Stage the dir layout + empty combined siblings metadata_stats reads.
+
+        Leaves ``riigikohus/`` empty so each test can drop in its own peep
+        files (real or LFS pointer) to exercise ``courtDecisionCount``.
+        """
+        import json as _json
+        for d in ("eelnoud", "eurlex", "curia", "riigikohus"):
+            (tmp_path / d).mkdir()
+        (tmp_path / "regulations" / "riik").mkdir(parents=True)
+        (tmp_path / "regulations" / "kov").mkdir(parents=True)
+        for d, fn in (
+            ("eelnoud", "eelnoud_combined.jsonld"),
+            ("eurlex", "eurlex_combined.jsonld"),
+            ("curia", "curia_combined.jsonld"),
+        ):
+            (tmp_path / d / fn).write_text(_json.dumps({"@graph": []}))
+
+    def test_court_decision_count_none_when_all_peeps_are_pointers(self, tmp_path):
+        """All-LFS-pointer riigikohus peeps -> courtDecisionCount is None, not 0
+        — matching the 3 sibling combined-file counts so an unverifiable corpus
+        stays distinguishable from a genuinely-empty one (#605)."""
+        self._stage_metadata_tree(tmp_path)
+        for yr in (2023, 2024):
+            (tmp_path / "riigikohus" / f"riigikohus_{yr}_peep.json").write_text(
+                "version https://git-lfs.github.com/spec/v1\noid sha256:x\nsize 1\n")
+        stats = validate_all.metadata_stats(tmp_path)
+        assert stats["estleg:courtDecisionCount"] is None
+
+    def test_court_decision_count_sums_materialised_peeps(self, tmp_path):
+        """Real peeps still sum, and a pointer mixed in is simply skipped (not
+        allowed to null the whole count) — the #605 fix must not regress the
+        normal path."""
+        import json as _json
+        self._stage_metadata_tree(tmp_path)
+        (tmp_path / "riigikohus" / "riigikohus_2023_peep.json").write_text(
+            _json.dumps({"@graph": [
+                {"@id": "estleg:D1", "@type": ["estleg:CourtDecision"]},
+                {"@id": "estleg:D2", "@type": ["estleg:CourtDecision"]},
+            ]}))
+        (tmp_path / "riigikohus" / "riigikohus_2024_peep.json").write_text(
+            _json.dumps({"@graph": [
+                {"@id": "estleg:D3", "@type": ["estleg:CourtDecision"]},
+            ]}))
+        # A pointer alongside real peeps must not collapse the count to None.
+        (tmp_path / "riigikohus" / "riigikohus_2025_peep.json").write_text(
+            "version https://git-lfs.github.com/spec/v1\noid sha256:x\nsize 1\n")
+        stats = validate_all.metadata_stats(tmp_path)
+        assert stats["estleg:courtDecisionCount"] == 3
+
+    def test_court_decision_count_zero_when_no_peeps(self, tmp_path):
+        """A riigikohus/ dir with no peeps at all is 'genuinely zero', not
+        unverifiable, so the count stays 0 — the #605 None case is specifically
+        'peeps exist but every one is an LFS pointer', not 'no peeps'."""
+        self._stage_metadata_tree(tmp_path)
+        stats = validate_all.metadata_stats(tmp_path)
+        assert stats["estleg:courtDecisionCount"] == 0
+
     def test_controlled_vocab_has_no_dangling_inverseof(self):
         """Every owl:inverseOf target in controlled_vocabulary must itself be a
         node there, so combined_ontology graph-closure (Seadusloome gate) holds
