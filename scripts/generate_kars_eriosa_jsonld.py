@@ -3,6 +3,8 @@
 
 from __future__ import annotations
 
+import argparse
+import datetime as _dt
 import json
 import re
 from pathlib import Path
@@ -12,6 +14,11 @@ import requests
 
 SEARCH_URL = "https://www.riigiteataja.ee/api/oigusakt_otsing/1/otsi"
 BASE_URL = "https://www.riigiteataja.ee"
+# The historical ``/akt/<id>.xml`` path now serves the Riigi Teataja single-page
+# app shell (HTML); the structured act XML is fetched from this public-api blob
+# endpoint, keyed by globaalID. (Discovered while making the TsÜS Osa-7 generator
+# reproducible — the other half of issue #567.)
+BLOB_XML_URL = BASE_URL + "/public-api/api/v1/akt/{global_id}/blob-xml"
 LAW_TITLE = "Karistusseadustik"
 
 # ``estleg`` namespace IRI (the ontology base). Module-level so the
@@ -295,42 +302,106 @@ def collect_loige_preview(paragrahv: ET.Element, max_len: int = 500) -> str:
     return _truncate_on_boundary(joined, max_len)
 
 
-def main() -> None:
-    workspace = Path(__file__).resolve().parents[1]
-    data_dir = workspace / "data" / "riigiteataja"
-    out_dir = workspace / "krr_outputs"
-    data_dir.mkdir(parents=True, exist_ok=True)
-    out_dir.mkdir(parents=True, exist_ok=True)
+def find_global_id(title: str, kehtiv: str, *, timeout: int = 30) -> str:
+    """Return the globaalID of the in-force consolidated act named ``title``.
 
-    search_resp = requests.get(
+    The bare search returns every historical consolidation, so we filter to the
+    snapshot in force on ``kehtiv`` (``YYYY-MM-DD``) and, among exact-title
+    matches, keep the largest globaalID (the most recent). Mirrors
+    ``generate_all_laws.get_all_laws``'s newest-wins selection.
+    """
+    resp = requests.get(
         SEARCH_URL,
-        params={"leht": 1, "dokument": "seadus", "pealkiri": LAW_TITLE},
-        timeout=30,
+        params={
+            "leht": 1,
+            "dokument": "seadus",
+            "tekst": "terviktekst",
+            "pealkiri": title,
+            "kehtiv": kehtiv,
+            "kehtivKehtetus": "false",
+            "mitteJoustunud": "false",
+        },
+        timeout=timeout,
     )
-    search_resp.raise_for_status()
-    search_data = search_resp.json()
+    resp.raise_for_status()
+    best: str | None = None
+    for act in resp.json().get("aktid", []):
+        if (act.get("pealkiri") or "").strip().lower() != title.lower():
+            continue
+        gid = str(act.get("globaalID") or "")
+        if gid and (best is None or gid > best):
+            best = gid
+    if not best:
+        raise RuntimeError(f"{title!r} not found in Riigi Teataja search (kehtiv={kehtiv})")
+    return best
 
-    match = None
-    for law in search_data.get("aktid", []):
-        if (law.get("pealkiri") or "").strip().lower() == LAW_TITLE.lower():
-            match = law
-            break
-    if not match:
-        raise RuntimeError("Karistusseadustik not found in API response")
 
-    xml_url = BASE_URL + match["url"]
-    xml_resp = requests.get(xml_url, timeout=30)
-    xml_resp.raise_for_status()
-    xml_resp.encoding = "utf-8"
-    xml_text = xml_resp.text
+def fetch_act_xml(title: str, kehtiv: str, *, timeout: int = 60) -> tuple[str, str, str]:
+    """Fetch the structured XML for the in-force ``title``.
 
-    xml_path = data_dir / "karistusseadustik.xml"
-    xml_path.write_text(xml_text, encoding="utf-8")
+    Returns ``(source_url, xml_text, global_id)``. The structured XML is served
+    from ``/public-api/api/v1/akt/<globaalID>/blob-xml`` — the legacy
+    ``/akt/<id>.xml`` path now returns the Riigi Teataja SPA shell.
+    """
+    global_id = find_global_id(title, kehtiv, timeout=timeout)
+    url = BLOB_XML_URL.format(global_id=global_id)
+    resp = requests.get(url, timeout=timeout)
+    resp.raise_for_status()
+    resp.encoding = "utf-8"
+    text = resp.text
+    if not text.lstrip().startswith("<?xml") and "<oigusakt" not in text[:200]:
+        raise RuntimeError(f"{url} did not return act XML (got {text[:60]!r})")
+    return url, text, global_id
+
+
+def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
+    workspace = Path(__file__).resolve().parents[1]
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--out",
+        type=Path,
+        default=workspace / "krr_outputs" / "karistusseadustik_eriosa_owl.jsonld",
+        help="Output JSON-LD path (default: the canonical krr_outputs module).",
+    )
+    parser.add_argument(
+        "--kehtiv",
+        default=_dt.date.today().isoformat(),
+        help="Snapshot date (YYYY-MM-DD) for the in-force consolidation "
+        "(default: today).",
+    )
+    parser.add_argument(
+        "--xml",
+        type=Path,
+        default=None,
+        help="Read the act XML from a local file instead of fetching it "
+        "(offline / testing).",
+    )
+    parser.add_argument(
+        "--cache",
+        type=Path,
+        default=None,
+        help="Also write the fetched act XML to this path.",
+    )
+    return parser.parse_args(argv)
+
+
+def main(argv: list[str] | None = None) -> None:
+    args = parse_args(argv)
+
+    if args.xml is not None:
+        xml_text = args.xml.read_text(encoding="utf-8")
+        xml_url = args.xml.as_uri()
+        global_id: str | None = None
+    else:
+        xml_url, xml_text, global_id = fetch_act_xml(LAW_TITLE, args.kehtiv)
+        if args.cache is not None:
+            args.cache.parent.mkdir(parents=True, exist_ok=True)
+            args.cache.write_text(xml_text, encoding="utf-8")
 
     root = ET.fromstring(xml_text)
 
     parsed_title = next((e.text.strip() for e in root.iter() if ln(e.tag) == "aktinimi" and e.text), "")
-    title = parsed_title or (match.get("pealkiri") or LAW_TITLE)
+    title = parsed_title or LAW_TITLE
 
     osa2 = None
     for osa in root.iter():
@@ -566,12 +637,13 @@ def main() -> None:
         "@graph": graph,
     }
 
-    out_file = out_dir / "karistusseadustik_eriosa_owl.jsonld"
+    out_file = args.out
+    out_file.parent.mkdir(parents=True, exist_ok=True)
     out_file.write_text(json.dumps(doc, ensure_ascii=False, indent=2), encoding="utf-8")
 
     summary = {
         "source_xml_url": xml_url,
-        "source_globaalID": match.get("globaalID"),
+        "source_globaalID": global_id,
         "title": title,
         "mapped_part": "2. osa (ERIOSA)",
         "counts": {
@@ -581,9 +653,11 @@ def main() -> None:
             "sections": section_count,
             "legal_definitions": len(LEGAL_DEFINITIONS),
         },
-        "jsonld": str(out_file.relative_to(workspace)),
+        "jsonld": str(out_file),
     }
-    summary_path = out_dir / "karistusseadustik_eriosa_summary.json"
+    # Summary lands beside the output file, so a non-default ``--out`` (e.g. a
+    # /tmp comparison path) never overwrites the committed krr_outputs summary.
+    summary_path = out_file.with_name("karistusseadustik_eriosa_summary.json")
     summary_path.write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
 
     print(json.dumps(summary, ensure_ascii=False, indent=2))

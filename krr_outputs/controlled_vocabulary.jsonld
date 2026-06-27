@@ -1655,7 +1655,13 @@
         "owl:ObjectProperty"
       ],
       "rdfs:label": "Has Chapter",
-      "rdfs:comment": "Reusable property observed in generated corpus and materialized for vocabulary coverage validation."
+      "rdfs:comment": "Links a statute part (estleg:LegalPart) to its chapters (#567 OWL-DL TBox completion).",
+      "rdfs:domain": {
+        "@id": "estleg:LegalPart"
+      },
+      "rdfs:range": {
+        "@id": "estleg:Chapter"
+      }
     },
     {
       "@id": "estleg:hasDefinitionNode",
@@ -1674,7 +1680,13 @@
         "owl:ObjectProperty"
       ],
       "rdfs:label": "Has Division",
-      "rdfs:comment": "Reusable property observed in generated corpus and materialized for vocabulary coverage validation."
+      "rdfs:comment": "Links a chapter (estleg:Chapter) to its divisions (#567 OWL-DL TBox completion).",
+      "rdfs:domain": {
+        "@id": "estleg:Chapter"
+      },
+      "rdfs:range": {
+        "@id": "estleg:Division"
+      }
     },
     {
       "@id": "estleg:hasProvision",
@@ -1717,7 +1729,10 @@
         "owl:ObjectProperty"
       ],
       "rdfs:label": "Has Section",
-      "rdfs:comment": "Reusable property observed in generated corpus and materialized for vocabulary coverage validation."
+      "rdfs:comment": "Links a hierarchy node (chapter/division/subdivision) to its sections (#567 OWL-DL TBox completion). No rdfs:domain — sections attach at several hierarchy levels; the range is estleg:Section, which has no NodeShape so the rdfs:range is inference-safe.",
+      "rdfs:range": {
+        "@id": "estleg:Section"
+      }
     },
     {
       "@id": "estleg:hasSubdivision",
@@ -1725,7 +1740,13 @@
         "owl:ObjectProperty"
       ],
       "rdfs:label": "Has Subdivision",
-      "rdfs:comment": "Reusable property observed in generated corpus and materialized for vocabulary coverage validation."
+      "rdfs:comment": "Links a division (estleg:Division) to its subdivisions (#567 OWL-DL TBox completion).",
+      "rdfs:domain": {
+        "@id": "estleg:Division"
+      },
+      "rdfs:range": {
+        "@id": "estleg:Subdivision"
+      }
     },
     {
       "@id": "estleg:inChapter",
