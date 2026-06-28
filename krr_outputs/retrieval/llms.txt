@@ -1,0 +1,33 @@
+# Estonian Legal Ontology — Retrieval Projection
+
+> A machine-readable JSON-LD/RDF ontology of Estonian and EU law (~1,120 enacted
+> laws plus state and municipal regulations, Riigikohus decisions, and EU acts).
+> This retrieval projection flattens the graph into self-contained, citeable
+> records so RAG and agent developers do not have to reassemble three nodes
+> across two files to cite one paragraph.
+
+The core unit is a provision-version. Each line of `chunks.jsonl` is one
+`{provision_iri, redaction_id, paragraph, act_title, abbrev, rt_url, valid_from,
+valid_to, in_force, text}` record: a single §-level provision in one redaction,
+independently citeable via `provision_iri` + `rt_url`, carrying the untruncated
+text and the validity window. Filter `in_force == true` for the current law;
+group by `provision_iri` for a paragraph's amendment history.
+
+Projection built from ontology version 0.11.0, evaluation date
+2026-06-01. Provision-version records: 125008;
+laws: 1122; per-law outlines and context packs: 1122.
+
+## Retrieval artifacts
+- [chunks.jsonl](chunks.jsonl): one JSON record per provision-version — the core
+  retrieval / embedding unit (untruncated text).
+- [outlines/](outlines/): per-law skim tier — `{paragraph, label, chapter,
+  summary, has_versions}` per provision, to navigate a large law without
+  fetching it whole.
+- [context_packs/](context_packs/): per-law denormalised bundle — provisions +
+  versions + references + cases + amendments + sanctions in one fetch.
+
+## Source corpus
+- [INDEX.json](../INDEX.json): the law manifest these projections enumerate.
+- [combined_ontology.jsonld](../combined_ontology.jsonld): the load-everything
+  graph (Git LFS).
+- [README](../../README.md): corpus overview, schema, and SPARQL examples.
