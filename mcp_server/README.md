@@ -153,8 +153,9 @@ matches nothing returns an empty list (or a `note`), never an error.
 | Tool | What it answers | Example question |
 |------|-----------------|------------------|
 | `search_laws(query, limit=10)` | Find laws by title/abbreviation/slug | "Which laws mention 'töölepingu' / employment?" |
-| `get_law(law)` | One-law overview + status + EuroVoc subjects | "Give me an overview of the Penal Code (KarS)." |
-| `get_provision(law, paragraph)` | Read one § in full | "What does § 13 of KarS say?" |
+| `get_law(law, as_of=None)` | One-law overview + status + EuroVoc subjects; `as_of` adds a point-in-time section count | "Give me an overview of the Penal Code (KarS)." |
+| `get_provision(law, paragraph, as_of=None)` | Read one § in full — current text, or as it stood on a past date | "What did § 13 of KarS say on 2010-06-15?" |
+| `provision_history(law, paragraph)` | Full redaction timeline of one § (each window + text) | "How has § 13 of KarS changed over time?" |
 | `who_references(law, paragraph=None)` | Incoming references (impact: what cites this) | "Which provisions reference § 60 of KarS?" |
 | `references_of(law, paragraph=None)` | Outgoing references (what this cites) | "What does § 13 of KarS reference?" |
 | `drafts_affecting_law(law, limit=20)` | Pending bills that would change the law | "What pending bills affect the Health Services Organisation Act?" |
@@ -162,11 +163,17 @@ matches nothing returns an empty list (or a `note`), never an error.
 | `sanctions_for_law(law)` | Penalties the law defines | "What penalties does KarS define?" |
 | `competent_authority_for_law(law)` | Which institutions enforce/administer it | "Which authority enforces the Personal Data Protection Act?" |
 | `transposition(query)` | EU directive ↔ Estonian law, both directions | "Which Estonian law transposes EU directive 31990L0314?" (or pass a law name to go the other way) |
+| `regulations_for_law(law, limit=50)` | Regulations (määrused) issued under / implementing a statute | "Which regulations are issued under the Local Government Organisation Act (KOKS)?" |
+| `get_regulation(name)` | One-regulation overview (issuer, parent statute, status, citation) | "Give me an overview of regulation t302269." |
+| `regulations_by_issuer(institution, limit=50)` | All regulations enacted by a body (ministry, government, municipality) | "Which regulations has the Minister of Finance (Rahandusminister) issued?" |
 
 ### Citation derivation
 
 - **Law / provision** — from the act's `dcterms:source` IRI
   (`…/akt/<id>.xml`), with the trailing `.xml` stripped to the human URL.
+- **Regulation (määrus)** — same derivation from the regulation's own
+  `dcterms:source`; `regulations_for_law` / `get_regulation` also resolve the
+  parent statute (via `estleg:issuedUnder`) to its riigiteataja URL.
 - **Court decision** — the decision's `estleg:decisionLink` (riigikohus.ee).
 - **Draft** — the draft's EIS link (eelnoud.valitsus.ee).
 - **EU** — CELEX → `https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:<celex>`.

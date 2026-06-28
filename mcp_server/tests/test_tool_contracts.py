@@ -20,6 +20,8 @@ citation prefixes but lenient about exact counts (the corpus is regenerated).
 
 from __future__ import annotations
 
+from datetime import date, timedelta
+
 import pytest
 
 from estleg_mcp import data, server
@@ -44,6 +46,16 @@ def _assert_fields(item: dict, expected: set[str]) -> None:
     """Every documented field must be present on the returned item."""
     missing = expected - set(item)
     assert not missing, f"missing documented fields {missing} in {item!r}"
+
+
+def _data_rows(items: list[dict]) -> list[dict]:
+    """The real result rows, dropping any trailing overflow/note sentinel.
+
+    The regulation list tools append a {note, overflow, total_available} entry
+    when they truncate (see server._capped); contract assertions about the
+    documented item fields apply to the data rows, not that sentinel.
+    """
+    return [it for it in items if "note" not in it]
 
 
 # ---------------------------------------------------------------------------
@@ -113,6 +125,40 @@ def test_get_law_contract_fields() -> None:
 def test_get_law_not_found_returns_note() -> None:
     out = server.get_law("definitely-not-a-real-law-xyz")
     assert "note" in out  # graceful note, never an exception
+
+
+def test_get_law_without_as_of_is_unchanged() -> None:
+    # The default overview is byte-identical to before: exactly the documented
+    # fields, with no point-in-time keys leaking in.
+    law = server.get_law(KARS)
+    assert set(law) == GET_LAW_FIELDS
+
+
+def test_get_law_as_of_reports_point_in_time_snapshot() -> None:
+    # With as_of, the overview echoes the date and adds the count of sections
+    # that had a redaction in force then (from the version layer).
+    snap = server.get_law(KARS, as_of="2015-01-01")
+    _assert_fields(snap, GET_LAW_FIELDS | {"as_of", "num_provisions_as_of"})
+    assert snap["as_of"] == "2015-01-01"
+    assert isinstance(snap["num_provisions_as_of"], int)
+    assert snap["num_provisions_as_of"] > 0
+    # The act-level overview fields are preserved alongside the snapshot.
+    today = server.get_law(KARS)
+    assert snap["rt_url"] == today["rt_url"]
+    assert snap["title"] == today["title"]
+    # Genuinely point-in-time: the Penal Code accreted sections over time, so an
+    # earlier snapshot has no more sections in force than a later one.
+    early = server.get_law(KARS, as_of="2003-01-01")
+    assert early["num_provisions_as_of"] <= snap["num_provisions_as_of"]
+
+
+def test_get_law_as_of_invalid_or_out_of_range_returns_note() -> None:
+    # A non-date as_of -> note, never an exception.
+    assert "note" in server.get_law(KARS, as_of="not-a-date")
+    # A date before the Penal Code's earliest redaction -> no section in force.
+    assert "note" in server.get_law(KARS, as_of="1900-01-01")
+    # Missing law still degrades to a note even with as_of supplied.
+    assert "note" in server.get_law("no-such-law-xyz", as_of="2015-01-01")
 
 
 # ---------------------------------------------------------------------------
@@ -300,3 +346,202 @@ def test_transposition_by_law_name_other_direction() -> None:
 def test_transposition_no_match_returns_empty() -> None:
     assert server.transposition("zzzqqq-nope-xyz") == []
     assert server.transposition("") == []
+
+
+# ---------------------------------------------------------------------------
+# 11. get_provision(as_of=...) -> historical redaction (ticket #499)
+#     adds {as_of, redaction_id, valid_from, valid_to, in_force}
+# ---------------------------------------------------------------------------
+AS_OF_FIELDS = GET_PROVISION_FIELDS | {
+    "as_of",
+    "redaction_id",
+    "valid_from",
+    "valid_to",
+    "in_force",
+}
+
+
+def test_get_provision_as_of_selects_historical_redaction() -> None:
+    # KarS §13 has a clean redaction boundary in the corpus, so the date
+    # selection picks a deterministic redaction either side of it. Derive the
+    # boundary from the timeline itself (robust to a corpus rebuild) rather than
+    # hard-coding redaction ids.
+    hist = server.provision_history(KARS, "§ 13")
+    assert len(hist) >= 2, "KarS §13 must have multiple recorded redactions"
+    older, newer = hist[0], hist[1]
+
+    # On the first day of the newer redaction, the tool returns the newer one.
+    at_newer = server.get_provision(KARS, "§ 13", as_of=newer["valid_from"])
+    _assert_fields(at_newer, AS_OF_FIELDS)
+    assert at_newer["redaction_id"] == newer["redaction_id"]
+    assert at_newer["valid_from"] == newer["valid_from"]
+    assert at_newer["rt_url"].startswith(RT_PREFIX)
+
+    # On the day BEFORE the newer redaction began, the older one is in force --
+    # the corpus stores valid_to as the inclusive last in-force day, so the
+    # boundary day must resolve to the older redaction, not fall into a gap.
+    day_before = (
+        date.fromisoformat(newer["valid_from"]) - timedelta(days=1)
+    ).isoformat()
+    at_older = server.get_provision(KARS, "§ 13", as_of=day_before)
+    assert at_older["redaction_id"] == older["redaction_id"]
+    # The two redactions are genuinely different text (point-in-time, not just a
+    # relabelled current text).
+    assert at_older["legal_text"] != at_newer["legal_text"]
+
+
+def test_get_provision_without_as_of_is_unchanged() -> None:
+    # Omitting as_of keeps the original contract exactly: the consolidated text
+    # and none of the point-in-time fields.
+    prov = server.get_provision(KARS, "§ 13")
+    _assert_fields(prov, GET_PROVISION_FIELDS)
+    assert prov["legal_text"]
+    assert not (AS_OF_FIELDS - GET_PROVISION_FIELDS) & set(prov)
+
+
+def test_get_provision_as_of_invalid_or_out_of_range_returns_note() -> None:
+    # A non-date as_of -> note, never an exception.
+    assert "note" in server.get_provision(KARS, "§ 13", as_of="not-a-date")
+    # A date long before the Penal Code's earliest redaction -> no version in
+    # force -> note (rather than a misleadingly "current" text).
+    assert "note" in server.get_provision(KARS, "§ 13", as_of="1900-01-01")
+    # Missing law / § still degrade to a note even with as_of supplied.
+    assert "note" in server.get_provision("no-such-law-xyz", "§ 1", as_of="2015-01-01")
+
+
+# ---------------------------------------------------------------------------
+# 12. provision_history -> {redaction_id, valid_from, valid_to, in_force, text}
+# ---------------------------------------------------------------------------
+HISTORY_FIELDS = {"redaction_id", "valid_from", "valid_to", "in_force", "text"}
+
+
+def test_provision_history_ordered_timeline_and_fields() -> None:
+    hist = server.provision_history(KARS, "§ 13")
+    assert hist, "KarS §13 has recorded redactions in the corpus"
+    for h in hist:
+        _assert_fields(h, HISTORY_FIELDS)
+        # in_force is exactly "has no closing date".
+        assert h["in_force"] == (h["valid_to"] is None)
+    # Ordered oldest-first by valid_from.
+    froms = [h["valid_from"] for h in hist]
+    assert froms == sorted(froms)
+    # At most one redaction is currently in force (the open-ended latest one).
+    assert sum(1 for h in hist if h["in_force"]) <= 1
+
+
+def test_provision_history_unknown_returns_empty() -> None:
+    assert server.provision_history("no-such-law-xyz", "§ 1") == []
+    assert server.provision_history(KARS, "999999") == []
+
+
+# ---------------------------------------------------------------------------
+# 13. regulations_for_law -> {reg_id, title, issuer, status, rt_url,
+#                             citations, is_kov, municipality}
+# ---------------------------------------------------------------------------
+# KOKS (the Local Government Organisation Act) is a major enabling statute, so
+# the corpus has thousands of regulations issued under it -- enough to exercise
+# the overflow cap, with real citations and riigiteataja URLs.
+KOKS = "KOKS"
+REG_FOR_LAW_FIELDS = {
+    "reg_id",
+    "title",
+    "issuer",
+    "status",
+    "rt_url",
+    "citations",
+    "is_kov",
+    "municipality",
+}
+
+
+def test_regulations_for_law_fields_and_citation() -> None:
+    items = server.regulations_for_law(KOKS, limit=20)
+    rows = _data_rows(items)
+    assert rows, "regulations are issued under KOKS in the corpus"
+    for it in rows:
+        _assert_fields(it, REG_FOR_LAW_FIELDS)
+        assert isinstance(it["citations"], list)
+    # Real riigiteataja.ee citation on at least one regulation.
+    assert any(it["rt_url"].startswith(RT_PREFIX) for it in rows)
+    # At least one regulation states the statutory citation text it implements.
+    assert any(it["citations"] for it in rows)
+
+
+def test_regulations_for_law_limit_overflow_and_empty() -> None:
+    items = server.regulations_for_law(KOKS, limit=5)
+    rows = _data_rows(items)
+    assert len(rows) == 5  # capped to the limit
+    overflow = [it for it in items if it.get("overflow")]
+    assert overflow, "KOKS has more than 5 regulations, so the cap must overflow"
+    assert overflow[0]["total_available"] > 5
+    # limit<=0 and unknown law follow the list-tool empty contract.
+    assert server.regulations_for_law(KOKS, limit=0) == []
+    assert server.regulations_for_law("no-such-law-xyz") == []
+
+
+# ---------------------------------------------------------------------------
+# 14. get_regulation -> {reg_id, title, issuer, status, rt_url,
+#         num_provisions, is_kov, municipality, issued_under}
+# ---------------------------------------------------------------------------
+GET_REG_FIELDS = {
+    "reg_id",
+    "title",
+    "issuer",
+    "status",
+    "rt_url",
+    "num_provisions",
+    "is_kov",
+    "municipality",
+    "issued_under",
+}
+
+
+def test_get_regulation_fields_and_parent_links() -> None:
+    # Derive a real regulation id from the corpus (robust to a rebuild) rather
+    # than hard-coding one; any regulation issued under KOKS must, by
+    # construction, resolve a non-empty issued_under back to a statute.
+    source = _data_rows(server.regulations_for_law(KOKS, limit=1))
+    assert source, "need at least one regulation to look up"
+    reg = server.get_regulation(source[0]["reg_id"])
+    _assert_fields(reg, GET_REG_FIELDS)
+    assert reg["rt_url"].startswith(RT_PREFIX)
+    assert reg["issuer"]
+    assert isinstance(reg["num_provisions"], int) and reg["num_provisions"] >= 0
+    assert reg["issued_under"], "a KOKS regulation must link back to its statute"
+    parent = reg["issued_under"][0]
+    assert {"law", "slug", "rt_url"} <= set(parent)
+    assert parent["rt_url"].startswith(RT_PREFIX)
+
+
+def test_get_regulation_unknown_returns_note() -> None:
+    out = server.get_regulation("definitely-not-a-real-regulation-xyz")
+    assert "note" in out  # graceful note, never an exception
+
+
+# ---------------------------------------------------------------------------
+# 15. regulations_by_issuer -> {reg_id, title, issuer, status, rt_url}
+# ---------------------------------------------------------------------------
+VABARIIGI_VALITSUS = "Vabariigi Valitsus"
+REG_BY_ISSUER_FIELDS = {"reg_id", "title", "issuer", "status", "rt_url"}
+
+
+def test_regulations_by_issuer_fields_and_citation() -> None:
+    items = server.regulations_by_issuer(VABARIIGI_VALITSUS, limit=10)
+    rows = _data_rows(items)
+    assert rows, "Vabariigi Valitsus issues regulations in the corpus"
+    for it in rows:
+        _assert_fields(it, REG_BY_ISSUER_FIELDS)
+    # Real riigiteataja.ee citation strings.
+    assert any(it["rt_url"].startswith(RT_PREFIX) for it in rows)
+
+
+def test_regulations_by_issuer_limit_overflow_and_empty() -> None:
+    items = server.regulations_by_issuer(VABARIIGI_VALITSUS, limit=5)
+    rows = _data_rows(items)
+    assert len(rows) == 5  # capped to the limit
+    overflow = [it for it in items if it.get("overflow")]
+    assert overflow, "Vabariigi Valitsus issues more than 5 regulations"
+    assert overflow[0]["total_available"] > 5
+    # limit<=0 and an unknown institution follow the list-tool empty contract.
+    assert server.regulations_by_issuer(VABARIIGI_VALITSUS, limit=0) == []
+    assert server.regulations_by_issuer("no-such-institution-xyz") == []
