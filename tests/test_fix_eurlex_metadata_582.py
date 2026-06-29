@@ -424,6 +424,26 @@ def test_main_apply_writes_and_is_idempotent(tmp_path):
     assert f.read_text(encoding="utf-8") == after_first
 
 
+def test_main_also_repairs_eurlex_combined(tmp_path):
+    """The generated eurlex_combined.jsonld is repaired in lock-step with the
+    peeps. The network builder re-emits the uncorrected dates, so if the
+    offline #582 fix skipped the combined it would drift from the peeps and
+    trip the Seadusloome zero-warning gate (sh:maxCount 1 documentDate)."""
+    _write_peep(tmp_path / "eurlex_decisions_peep.json", _fixable_doc())
+    combined = tmp_path / "eurlex_combined.jsonld"
+    _write_peep(combined, _fixable_doc())
+
+    assert fix.main(["--eurlex-dir", str(tmp_path), "--apply"]) == 0
+    node = json.loads(combined.read_text(encoding="utf-8"))["@graph"][1]
+    assert node["estleg:documentDate"]["@value"] == "2010-12-14"
+    assert node["estleg:euInstitution"]["@id"] == COUNCIL
+
+    # Idempotent on the combined artifact too.
+    after = combined.read_text(encoding="utf-8")
+    assert fix.main(["--eurlex-dir", str(tmp_path), "--apply"]) == 0
+    assert combined.read_text(encoding="utf-8") == after
+
+
 def test_main_skips_lfs_pointer(tmp_path, capsys):
     f = tmp_path / "eurlex_regulations_peep.json"
     f.write_text(

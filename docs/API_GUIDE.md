@@ -48,18 +48,19 @@ for s, p, o in g:
 
 ```python
 import json
-from pathlib import Path
 
-# Load the master index to discover all enacted law files
+# INDEX.json is an object; the enacted-law entries live under index["laws"].
+# Each entry has a "name" and a "files" LIST (not a scalar "file" key).
 with open("krr_outputs/INDEX.json") as f:
     index = json.load(f)
 
 # Load a specific law by name
-for entry in index:
-    if "perekonnaseadus" in entry.get("file", ""):
-        with open(f"krr_outputs/{entry['file']}") as f:
-            law = json.load(f)
-        print(f"Nodes: {len(law.get('@graph', []))}")
+for entry in index["laws"]:
+    if "perekonnaseadus" in entry["name"]:
+        for filename in entry["files"]:
+            with open(f"krr_outputs/{filename}") as fh:
+                law = json.load(fh)
+            print(f"{filename}: {len(law.get('@graph', []))} nodes")
 ```
 
 ### Domestic Regulations
@@ -238,14 +239,27 @@ print(f"Total triples: {len(g)}")
 
 The most powerful way to query this dataset is loading files into a semantic graph database (Apache Jena, Blazegraph, Oxigraph, etc.) and using SPARQL.
 
+> **Which graph to query.** Parent-class membership such as `?x a estleg:LegalProvision`
+> or `?x a estleg:Act` is materialised in the shipped `krr_outputs/combined_ontology.jsonld`,
+> where a build-time type rollup (issue #519) stamps every instance with its entailed
+> superclasses. A single `*_peep.json` only carries the **leaf** type
+> (`estleg:LegalProvision_<law>`), so a bare `a estleg:LegalProvision` query against one peep
+> returns nothing — query the combined graph for those. Types stamped directly on instances
+> (`estleg:CourtDecision`, `estleg:Sanction`, `estleg:Institution`, `estleg:EULegislation`,
+> the `*Regulation` act classes, and `estleg:Act` on act roots) match without the combined
+> graph, but each lives in its own subdirectory — load that subcorpus. Several examples below
+> join across subcorpora; the prerequisite files are noted inline.
+
 ### Find All Provisions for a Specific Topic Cluster
 ```sparql
 PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
-PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 
+# Topic clusters are per-law concept nodes (estleg:Cluster_<ABBREV>_<n>); a
+# provision links to one via estleg:requestedCluster. The bare type assertion
+# needs the combined graph (see the note above).
 SELECT ?provision ?text WHERE {
   ?provision a estleg:LegalProvision ;
-             estleg:topicCluster <https://data.riik.ee/taxonomy/topic/OiguslikAlus> ;
+             estleg:requestedCluster estleg:Cluster_PKS_1 ;
              estleg:summary ?text .
 }
 ```
@@ -287,20 +301,30 @@ SELECT ?regulation ?label ?actNumber ?entry WHERE {
 ```
 
 ### Draft Legislation Impacting a Specific Law
+
+Drafts record the affected law as a string (`estleg:affectedLawName`), not as an
+IRI edge, so match on it. Load `eelnoud/*_peep.json` plus
+`controlled_vocabulary.jsonld` (for the phase label):
+
 ```sparql
 PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 SELECT ?draft ?phase ?name WHERE {
   ?draft a estleg:DraftLegislation ;
-         estleg:amendsLaw ?law ;
-         estleg:legislativePhase ?phase ;
+         estleg:affectedLawName ?affected ;
+         estleg:legislativePhase ?phaseNode ;
          rdfs:label ?name .
-  ?law rdfs:label "Perekonnaseadus"@et .
+  ?phaseNode rdfs:label ?phase .
+  FILTER(CONTAINS(LCASE(STR(?affected)), "perekonnaseadus"))
 }
 ```
 
 ### EU Directives Transposed into Estonian Law
+
+Load the enacted-law peeps (which carry `estleg:transposesDirective`) together
+with `eurlex/*_peep.json` (which type each directive `estleg:EULegislation`):
+
 ```sparql
 PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
 
@@ -311,18 +335,28 @@ SELECT ?directive ?estonianLaw WHERE {
 ```
 
 ### Sanctions by Penalty Type
+
+The `sanctions/*.json` files anchor on the `estleg:Sanction` node and point to
+the provision via `estleg:applicableProvision` (the inverse of the
+`estleg:hasSanction` edge carried by the law peeps). Query that direction so the
+example resolves from the `sanctions/` subcorpus alone:
+
 ```sparql
 PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
 
 SELECT ?provision ?sanctionType ?maxPenalty WHERE {
-  ?provision estleg:hasSanction ?sanction .
   ?sanction a estleg:Sanction ;
+            estleg:applicableProvision ?provision ;
             estleg:sanctionType ?sanctionType ;
             estleg:maxPenalty ?maxPenalty .
 }
 ```
 
 ### Institutional Competence
+
+`estleg:competentAuthority` is asserted on provisions in the enacted-law peeps,
+while the `estleg:Institution` nodes live in `institutions/*.json`. Load both:
+
 ```sparql
 PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
 
@@ -344,14 +378,19 @@ SELECT ?provision ?label WHERE {
 ```
 
 ### Amendment History
+
+Effected amendment events live in `amendments/amendments_<law>.json`. Query them
+directly through `estleg:amends` (the populated direction; the `estleg:amendedBy`
+back-link on act roots is not materialised across the corpus):
+
 ```sparql
 PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
 
-SELECT ?law ?amendment ?date WHERE {
-  ?law estleg:amendedBy ?amendment .
+SELECT ?amendment ?amended ?date WHERE {
   ?amendment a estleg:AmendmentEvent ;
+             estleg:amends ?amended ;
              estleg:amendmentDate ?date .
-} ORDER BY ?date
+} ORDER BY DESC(?date)
 ```
 
 ### EuroVoc Subject Classification
@@ -374,16 +413,17 @@ SELECT ?act ?label WHERE {
 }
 ```
 
-To go the other way — list every EuroVoc subject assigned to a specific act:
+To go the other way — list every EuroVoc subject assigned to a specific act.
+Match the act by its clean title in `dcterms:title` (a plain string); `rdfs:label`
+on an act root is the longer "… teemakaardistus" map label, not the bare title:
 
 ```sparql
 PREFIX estleg: <https://data.riik.ee/ontology/estleg#>
 PREFIX dcterms: <http://purl.org/dc/terms/>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 SELECT ?subject WHERE {
   ?act a estleg:Act ;
-       rdfs:label "Töölepingu seadus"@et ;
+       dcterms:title "Töölepingu seadus" ;
        dcterms:subject ?subject .
   FILTER(STRSTARTS(STR(?subject), "http://eurovoc.europa.eu/"))
 }

@@ -369,7 +369,6 @@ def test_schema_org_fields_present():
     for key in (
         "schema:name",
         "schema:description",
-        "schema:license",
         "schema:keywords",
         "schema:creator",
         "schema:identifier",
@@ -377,19 +376,39 @@ def test_schema_org_fields_present():
         "schema:version",
     ):
         assert key in doc, f"{key} missing from the dataset header (#611)"
+    # The dataset deliberately carries NO blanket schema:license / dcterms:license
+    # (#545/#661): ~99% of the corpus is source-governed third-party text, so a
+    # single dataset-level licence is not grantable. The grantable compilation
+    # layer is exposed as a sub-resource (dcterms:hasPart / schema:hasPart) that
+    # carries the CC BY licence instead.
+    assert "schema:license" not in doc, (
+        "dataset must not assert a blanket schema:license (#545/#661)"
+    )
+    assert "dcterms:license" not in doc, (
+        "dataset must not assert a blanket dcterms:license (#545/#661)"
+    )
+    assert "schema:hasPart" in doc and "dcterms:hasPart" in doc, (
+        "dataset must link the compilation sub-resource carrying the licence"
+    )
 
 
 def test_schema_org_fields_stay_in_sync_with_canonical_metadata():
     """The schema.org projection must mirror the canonical DCAT/OWL fields so
-    the two metadata surfaces cannot drift (acceptance criterion on #611)."""
+    the two metadata surfaces cannot drift (acceptance criterion on #611).
+    The CC BY licence now lives on the compilation sub-resource (#545/#661),
+    where schema:license and dcterms:license must still agree, and the two
+    hasPart references must point at the same node."""
     doc = _metadata()
     assert doc["schema:version"] == doc["owl:versionInfo"]
-    assert doc["schema:license"]["@id"] == doc["dcterms:license"]["@id"]
     assert doc["schema:identifier"] == doc["@id"]
     en_title = next(
         t["@value"] for t in doc["dcterms:title"] if t.get("@language") == "en"
     )
     assert doc["schema:name"] == en_title
+    # Licence consistency moved from the dataset to the compilation sub-resource.
+    compilation = doc["dcterms:hasPart"]
+    assert compilation["schema:license"]["@id"] == compilation["dcterms:license"]["@id"]
+    assert doc["schema:hasPart"]["@id"] == compilation["@id"]
 
 
 def test_metadata_parses_as_jsonld_with_schema_dataset_type():

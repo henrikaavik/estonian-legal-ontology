@@ -33,6 +33,13 @@ import estleg_common  # noqa: E402
 from estleg_common import act_deprecation, iter_krr_jsonld_files  # noqa: E402
 from deprecate_legacy_statutes import verify_decisions_applied  # noqa: E402
 
+# #519: the combined builder forward-chains rdf:type over the subclass
+# hierarchy, so a provision's combined @type is its source @type plus the
+# entailed supertypes. The parity check below reuses the builder's own
+# entailment rule (single source of truth) to tell that intentional rollup
+# apart from genuine type drift.
+from fix_all_issues import _materialize_supertypes  # noqa: E402
+
 REPO_ROOT = Path(__file__).resolve().parents[1]
 KRR_DIR = REPO_ROOT / "krr_outputs"
 LEGACY_STATUTE_DECISIONS_PATH = REPO_ROOT / "data" / "legacy_statute_decisions.json"
@@ -1516,6 +1523,24 @@ def _parity_field_drift(source_node: dict, combined_node: dict) -> list[str]:
     drift: list[str] = []
     for f in PROVISION_PARITY_FIELDS:
         if f not in source_node and f not in combined_node:
+            continue
+        if f == "@type":
+            # #519: the builder forward-chains rdf:type over the subclass
+            # hierarchy, so the combined node's @type is the source @type plus
+            # its entailed supertypes — an intentional superset, not drift.
+            # Compare the combined @type against the source @type run through the
+            # SAME rollup, so a genuinely divergent type is still caught (combined
+            # dropped a source type, or gained a non-entailed one).
+            src_types = source_node.get(f)
+            expected = (
+                _materialize_supertypes(src_types)
+                if isinstance(src_types, list)
+                else src_types
+            )
+            if _normalize_parity_value(expected) != _normalize_parity_value(
+                combined_node.get(f)
+            ):
+                drift.append(f)
             continue
         src_value = _normalize_parity_value(source_node.get(f))
         comb_value = _normalize_parity_value(combined_node.get(f))
