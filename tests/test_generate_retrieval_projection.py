@@ -377,6 +377,37 @@ def test_projection_is_byte_identical_across_runs(tmp_path):
         )
 
 
+def test_rerun_clears_stale_per_law_files(tmp_path):
+    """A later (e.g. --limit) run must not leave a prior run's files on disk.
+
+    The per-law trees are swapped in atomically, so the on-disk file set always
+    equals the manifest's reported counts -- no stale outlines/context packs.
+    """
+    krr = tmp_path / "krr_outputs"
+    _build_corpus(krr)
+    out = krr / "retrieval"
+    grp.generate(krr_dir=krr, out_dir=out, eval_date=EVAL_DATE)
+
+    # Simulate leftovers from an earlier, larger run.
+    ghost_outline = out / "outlines" / "ghost_law.json"
+    ghost_context = out / "context_packs" / "ghost_law.json"
+    ghost_outline.write_text("{}", encoding="utf-8")
+    ghost_context.write_text("{}", encoding="utf-8")
+
+    stats = grp.generate(krr_dir=krr, out_dir=out, eval_date=EVAL_DATE)
+
+    assert not ghost_outline.exists(), "stale outline survived a rerun"
+    assert not ghost_context.exists(), "stale context pack survived a rerun"
+    on_disk = sorted(p.name for p in (out / "outlines").glob("*.json"))
+    assert on_disk == ["testlaw.json"]
+    # On-disk count matches what the manifest advertises.
+    assert len(on_disk) == stats["outlines"]
+    assert len(list((out / "context_packs").glob("*.json"))) == stats["context_packs"]
+    # The atomic-swap temp dirs are consumed, not left behind.
+    assert not (out / "outlines.tmp").exists()
+    assert not (out / "context_packs.tmp").exists()
+
+
 def test_deprecated_law_is_skipped(tmp_path):
     krr = tmp_path / "krr_outputs"
     _build_corpus(krr)

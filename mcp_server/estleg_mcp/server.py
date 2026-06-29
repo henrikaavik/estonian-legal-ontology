@@ -180,8 +180,12 @@ def get_provision(
 
     Returns {id, paragrahv, label, summary, legal_text, rt_url}; with ``as_of``
     it additionally carries {as_of, redaction_id, valid_from, valid_to,
-    in_force} (``valid_to`` is null for the redaction still in force). A missing
-    law/§, or an ``as_of`` outside the recorded version history, yields a {note}.
+    currently_in_force}. The returned text is the redaction that was in force on
+    ``as_of``; ``currently_in_force`` is true only when that redaction is still
+    the live one today (``valid_to`` is null), so a historical hit is correctly
+    false without contradicting that it was in force on the requested date. A
+    missing law/§, or an ``as_of`` outside the recorded version history, yields a
+    {note}.
     """
     rec = data.resolve_law(law)
     if rec is None:
@@ -245,7 +249,10 @@ def _provision_as_of(
     result["redaction_id"] = chosen["redaction_id"]
     result["valid_from"] = chosen["valid_from"]
     result["valid_to"] = chosen["valid_to"] or None
-    result["in_force"] = not chosen["valid_to"]
+    # The chosen redaction was, by construction, in force on ``as_of``; this
+    # field reports whether it is ALSO the redaction still in force today
+    # (open-ended valid_to), not whether it was in force on the queried date.
+    result["currently_in_force"] = not chosen["valid_to"]
     return result
 
 
@@ -581,9 +588,10 @@ def provision_history(law: str, paragraph: str) -> list[dict[str, Any]]:
 
     Example question: "How has § 13 of the Penal Code (KarS) changed over time?"
 
-    Returns a list of {redaction_id, valid_from, valid_to, in_force, text},
-    ordered by valid_from. ``valid_to`` is null for the redaction still in force;
-    each ``text`` is truncated to ~2000 characters to stay chat-sized.
+    Returns a list of {redaction_id, valid_from, valid_to, currently_in_force,
+    text}, ordered by valid_from. ``valid_to`` is null for the redaction still in
+    force (the single entry with ``currently_in_force`` true); each ``text`` is
+    truncated to ~2000 characters to stay chat-sized.
     """
     rec = data.resolve_law(law)
     if rec is None:
@@ -597,7 +605,7 @@ def provision_history(law: str, paragraph: str) -> list[dict[str, Any]]:
             "redaction_id": v["redaction_id"],
             "valid_from": v["valid_from"],
             "valid_to": v["valid_to"] or None,
-            "in_force": not v["valid_to"],
+            "currently_in_force": not v["valid_to"],
             "text": _truncate(data.clean_display(v["text"])),
         }
         for v in data.provision_version_timeline(rec, node.get("@id", ""))

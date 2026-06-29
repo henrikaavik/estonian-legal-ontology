@@ -63,6 +63,7 @@ import argparse
 import json
 import os
 import re
+import shutil
 import sys
 from pathlib import Path
 from typing import Any
@@ -768,9 +769,19 @@ def generate(
     out_dir.mkdir(parents=True, exist_ok=True)
     outlines_dir = out_dir / "outlines"
     context_dir = out_dir / "context_packs"
+    # Build the per-law trees in sibling .tmp dirs and atomically swap them in
+    # at the end (mirrors the chunks.jsonl temp + os.replace below). This makes
+    # a crash mid-run leave the previous tree intact, AND guarantees the final
+    # tree contains exactly this run's laws -- without it, a `--limit N` run
+    # would leave an earlier full run's per-law files on disk while the manifest
+    # reported only N (stale-output drift).
+    outlines_tmp = out_dir / "outlines.tmp"
+    context_tmp = out_dir / "context_packs.tmp"
     if not chunks_only:
-        outlines_dir.mkdir(parents=True, exist_ok=True)
-        context_dir.mkdir(parents=True, exist_ok=True)
+        for tmp in (outlines_tmp, context_tmp):
+            if tmp.exists():
+                shutil.rmtree(tmp)
+            tmp.mkdir(parents=True, exist_ok=True)
 
     registry = _load_json(ABBREV_REGISTRY_PATH)
     if not isinstance(registry, dict):
@@ -848,8 +859,8 @@ def generate(
                 context_doc = build_context_pack(
                     acc, krr_dir=krr_dir, decision_index=decision_index
                 )
-                save_json(outlines_dir / f"{law_name}.json", outline_doc)
-                save_json(context_dir / f"{law_name}.json", context_doc)
+                save_json(outlines_tmp / f"{law_name}.json", outline_doc)
+                save_json(context_tmp / f"{law_name}.json", context_doc)
                 stats["outlines"] += 1
                 stats["context_packs"] += 1
                 if law_name == sample_law:
@@ -859,6 +870,18 @@ def generate(
                 first_acc = acc
 
     os.replace(chunks_tmp, out_dir / "chunks.jsonl")
+
+    if not chunks_only:
+        # Atomically replace the per-law trees with this run's freshly built
+        # ones, dropping any stale files left by a previous (e.g. unlimited) run
+        # so the on-disk tree always matches the manifest counts.
+        for tmp, final in (
+            (outlines_tmp, outlines_dir),
+            (context_tmp, context_dir),
+        ):
+            if final.exists():
+                shutil.rmtree(final)
+            os.replace(tmp, final)
 
     # Fall back to the first processed law for samples when the configured
     # sample law is absent (e.g. a --limit run or a test corpus).

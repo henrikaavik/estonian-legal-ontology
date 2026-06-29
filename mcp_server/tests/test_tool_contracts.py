@@ -350,14 +350,14 @@ def test_transposition_no_match_returns_empty() -> None:
 
 # ---------------------------------------------------------------------------
 # 11. get_provision(as_of=...) -> historical redaction (ticket #499)
-#     adds {as_of, redaction_id, valid_from, valid_to, in_force}
+#     adds {as_of, redaction_id, valid_from, valid_to, currently_in_force}
 # ---------------------------------------------------------------------------
 AS_OF_FIELDS = GET_PROVISION_FIELDS | {
     "as_of",
     "redaction_id",
     "valid_from",
     "valid_to",
-    "in_force",
+    "currently_in_force",
 }
 
 
@@ -385,6 +385,14 @@ def test_get_provision_as_of_selects_historical_redaction() -> None:
     ).isoformat()
     at_older = server.get_provision(KARS, "§ 13", as_of=day_before)
     assert at_older["redaction_id"] == older["redaction_id"]
+    # currently_in_force reports "still the live redaction today", NOT "in force
+    # on as_of" -- so a historical hit is False without contradicting that it
+    # was the text in force on the requested date (it was: that's why it was
+    # selected). The older redaction has a closing date; the newer (open) one
+    # does not.
+    assert at_older["currently_in_force"] is False
+    assert at_older["valid_to"] is not None
+    assert at_newer["currently_in_force"] == (at_newer["valid_to"] is None)
     # The two redactions are genuinely different text (point-in-time, not just a
     # relabelled current text).
     assert at_older["legal_text"] != at_newer["legal_text"]
@@ -410,9 +418,16 @@ def test_get_provision_as_of_invalid_or_out_of_range_returns_note() -> None:
 
 
 # ---------------------------------------------------------------------------
-# 12. provision_history -> {redaction_id, valid_from, valid_to, in_force, text}
+# 12. provision_history -> {redaction_id, valid_from, valid_to,
+#     currently_in_force, text}
 # ---------------------------------------------------------------------------
-HISTORY_FIELDS = {"redaction_id", "valid_from", "valid_to", "in_force", "text"}
+HISTORY_FIELDS = {
+    "redaction_id",
+    "valid_from",
+    "valid_to",
+    "currently_in_force",
+    "text",
+}
 
 
 def test_provision_history_ordered_timeline_and_fields() -> None:
@@ -420,13 +435,13 @@ def test_provision_history_ordered_timeline_and_fields() -> None:
     assert hist, "KarS §13 has recorded redactions in the corpus"
     for h in hist:
         _assert_fields(h, HISTORY_FIELDS)
-        # in_force is exactly "has no closing date".
-        assert h["in_force"] == (h["valid_to"] is None)
+        # currently_in_force is exactly "has no closing date".
+        assert h["currently_in_force"] == (h["valid_to"] is None)
     # Ordered oldest-first by valid_from.
     froms = [h["valid_from"] for h in hist]
     assert froms == sorted(froms)
     # At most one redaction is currently in force (the open-ended latest one).
-    assert sum(1 for h in hist if h["in_force"]) <= 1
+    assert sum(1 for h in hist if h["currently_in_force"]) <= 1
 
 
 def test_provision_history_unknown_returns_empty() -> None:
