@@ -37,6 +37,7 @@ import json
 import os
 import re
 import unicodedata
+from datetime import date
 from functools import lru_cache
 from pathlib import Path
 from typing import Any
@@ -971,6 +972,460 @@ def transposition_matches(query: str) -> list[Node]:
     return matches
 
 
+# ---------------------------------------------------------------------------
+# Point-in-time provision versions (ticket #499)
+#
+# ``provision_versions/<base-slug>.jsonld`` holds, per law, the full redaction
+# history of every section as ``estleg:ProvisionVersion`` nodes. Each version
+# carries ``estleg:versionOf`` (the provision IRI -- the SAME IRI the law graph
+# stamps on the section node), ``estleg:versionValidFrom`` /
+# ``estleg:versionValidTo`` (xsd:date; ``versionValidTo`` is the *inclusive*
+# last in-force day and is ABSENT for the current, still-in-force redaction),
+# ``estleg:versionRedactionId`` and the untruncated ``estleg:versionText``. The
+# file is keyed by the law's BASE slug, so the multi-part codes
+# (``volaoigusseadus_osa1..10``) share one history file.
+# ---------------------------------------------------------------------------
+def _date_text(value: Any) -> str:
+    """Extract an ISO date string from a JSON-LD ``xsd:date`` value (or "")."""
+    if isinstance(value, dict):
+        inner = value.get("@value")
+        return inner if isinstance(inner, str) else ""
+    return value if isinstance(value, str) else ""
+
+
+def _base_slug(record: LawRecord) -> str:
+    """The base slug shared by a multi-part law's per-law sidecar files.
+
+    Strips a trailing ``_osaN`` so ``volaoigusseadus_osa1..10`` collapse to the
+    single ``volaoigusseadus`` history file (mirrors the provision_versions and
+    amendments file-naming rule, see :func:`_amendment_graph_for`).
+    """
+    return re.sub(r"_osa\d+$", "", record.name)
+
+
+@lru_cache(maxsize=64)
+def _provision_version_index(base_slug: str) -> dict[str, list[dict[str, Any]]]:
+    """Map provision-IRI -> its chronologically sorted version timeline.
+
+    Loads ``provision_versions/<base_slug>.jsonld`` once per law and caches it
+    (the data layer reads sidecars per law rather than loading the whole
+    corpus, so the 124k version nodes are never all held at once). Each timeline
+    entry is a compact dict ``{id, redaction_id, valid_from, valid_to, text}``
+    sorted by ``valid_from`` ascending; ``valid_to`` is "" for the still-in-force
+    redaction. Returns ``{}`` when the law has no versions sidecar.
+    """
+    out: dict[str, list[dict[str, Any]]] = {}
+    path = krr_dir() / "provision_versions" / f"{base_slug}.jsonld"
+    for node in _graph_of(path):
+        if "estleg:ProvisionVersion" not in _types_of(node):
+            continue
+        prov_iri = _id_of(node.get("estleg:versionOf"))
+        if not prov_iri:
+            continue
+        out.setdefault(prov_iri, []).append(
+            {
+                "id": node.get("@id", ""),
+                "redaction_id": _text(node.get("estleg:versionRedactionId")),
+                "valid_from": _date_text(node.get("estleg:versionValidFrom")),
+                "valid_to": _date_text(node.get("estleg:versionValidTo")),
+                "text": _text(node.get("estleg:versionText")),
+            }
+        )
+    for versions in out.values():
+        versions.sort(key=lambda v: v["valid_from"] or "")
+    return out
+
+
+def provision_version_timeline(
+    record: LawRecord, provision_iri: str
+) -> list[dict[str, Any]]:
+    """The chronological version timeline for one provision IRI (or ``[]``)."""
+    if not provision_iri:
+        return []
+    return _provision_version_index(_base_slug(record)).get(provision_iri, [])
+
+
+def normalize_iso_date(value: str) -> str | None:
+    """Normalise an ISO date to ``YYYY-MM-DD``; return ``None`` if not a date.
+
+    Accepts any ``datetime.date``-parseable ISO string and re-emits the
+    canonical ``YYYY-MM-DD`` form so it compares lexicographically (==
+    chronologically) against the corpus's stored ``xsd:date`` strings.
+    """
+    if not isinstance(value, str):
+        return None
+    try:
+        return date.fromisoformat(value.strip()).isoformat()
+    except ValueError:
+        return None
+
+
+def version_in_force_on(
+    versions: list[dict[str, Any]], as_of: str
+) -> dict[str, Any] | None:
+    """Select the version in force on ``as_of`` from a sorted timeline (or None).
+
+    A version is in force on ``as_of`` when ``valid_from <= as_of <= valid_to``,
+    treating an absent ``valid_to`` as open-ended (the still-in-force redaction).
+    The corpus stores ``valid_to`` as the inclusive last in-force day and the
+    redactions tile contiguously (the next ``valid_from`` is the previous
+    ``valid_to`` + 1 day), so exactly one version contains any date within the
+    provision's recorded coverage; a date before the earliest redaction (or
+    after a repeal) matches nothing and yields ``None``. ``as_of`` must already
+    be normalised to ``YYYY-MM-DD`` (see :func:`normalize_iso_date`).
+    """
+    if not as_of:
+        return None
+    for version in versions:
+        valid_from = version.get("valid_from") or ""
+        valid_to = version.get("valid_to") or ""
+        if valid_from and valid_from <= as_of and (not valid_to or as_of <= valid_to):
+            return version
+    return None
+
+
+def law_version_index(record: LawRecord) -> dict[str, list[dict[str, Any]]]:
+    """The full provision-IRI -> version-timeline index for a whole law (or {}).
+
+    A law-level view over :func:`_provision_version_index`, used by
+    ``get_law(as_of=...)`` to describe the act as it stood on a date. Returns
+    ``{}`` for a law with no provision-versions sidecar.
+    """
+    return _provision_version_index(_base_slug(record))
+
+
+def count_provisions_in_force(
+    index: dict[str, list[dict[str, Any]]], as_of: str
+) -> int:
+    """How many of a law's provisions had a redaction in force on ``as_of``.
+
+    The point-in-time section count for a law overview: a provision counts when
+    :func:`version_in_force_on` selects one of its versions for ``as_of``
+    (already normalised to ``YYYY-MM-DD``).
+    """
+    return sum(1 for versions in index.values() if version_in_force_on(versions, as_of))
+
+
+def version_coverage_span(index: dict[str, list[dict[str, Any]]]) -> tuple[str, str]:
+    """``(earliest valid_from, latest valid_to or 'present')`` across all versions.
+
+    Describes a law's recorded version-history window so an ``as_of`` that falls
+    outside it can say so. ``latest`` is ``"present"`` when any provision is
+    still in force (an open-ended redaction); ``("", "")`` for an empty index.
+    """
+    earliest = ""
+    latest = ""
+    open_ended = False
+    for versions in index.values():
+        for version in versions:
+            valid_from = version.get("valid_from") or ""
+            if valid_from and (not earliest or valid_from < earliest):
+                earliest = valid_from
+            valid_to = version.get("valid_to") or ""
+            if not valid_to:
+                open_ended = True
+            elif not latest or valid_to > latest:
+                latest = valid_to
+    return earliest, ("present" if open_ended else latest)
+
+
+# ---------------------------------------------------------------------------
+# Regulations (määrused): state (riik) + municipal (kov) -- ticket #500
+#
+# ``regulations/riik/*_peep.json`` (state regulations) and
+# ``regulations/kov/<municipality>/*_peep.json`` (municipal regulations) each
+# hold one regulation. Its act/map node (``estleg:Act`` + ``owl:Ontology``,
+# @id ``estleg:Reg_<id>_Map_2026``) carries ``estleg:issuer`` (a plain string
+# such as "Vabariigi Valitsus" / "Rahandusminister" / "<X> Vallavolikogu"),
+# ``estleg:issuedUnder`` (the parent statute's map-node IRI(s)),
+# ``estleg:implementsCitation`` (in-file ``estleg:Citation`` nodes whose
+# ``estleg:citationText`` is the statutory basis), ``estleg:temporalStatus``,
+# ``estleg:terviktekstId`` / ``estleg:globalId`` and ``dcterms:source`` (the
+# riigiteataja .xml IRI). Provisions are typed ``estleg:Regulation_<id>``.
+# ---------------------------------------------------------------------------
+class RegulationRecord:
+    """A resolved regulation: core metadata + parent-statute / issuer links."""
+
+    __slots__ = (
+        "reg_id",
+        "global_id",
+        "title",
+        "issuer",
+        "rt_url",
+        "status",
+        "slug",
+        "file",
+        "is_kov",
+        "municipality",
+        "issued_under",
+        "citations",
+        "num_provisions",
+    )
+
+    def __init__(
+        self,
+        *,
+        reg_id: str,
+        global_id: str,
+        title: str,
+        issuer: str,
+        rt_url: str,
+        status: str,
+        slug: str,
+        file: str,
+        is_kov: bool,
+        municipality: str,
+        issued_under: list[str],
+        citations: list[str],
+        num_provisions: int,
+    ) -> None:
+        self.reg_id = reg_id
+        self.global_id = global_id
+        self.title = title
+        self.issuer = issuer
+        self.rt_url = rt_url
+        self.status = status
+        self.slug = slug
+        self.file = file
+        self.is_kov = is_kov
+        self.municipality = municipality
+        self.issued_under = issued_under
+        self.citations = citations
+        self.num_provisions = num_provisions
+
+    def __repr__(self) -> str:  # pragma: no cover - debug aid
+        return f"RegulationRecord(reg_id={self.reg_id!r}, title={self.title!r})"
+
+
+def _reg_slug_from_filename(name: str) -> str:
+    """Title-slug of a regulation peep file (drop the ``_t<id>_peep.json`` tail)."""
+    stem = name[: -len("_peep.json")] if name.endswith("_peep.json") else name
+    return re.sub(r"_t\d+$", "", stem)
+
+
+def _strip_map_suffix(body: str) -> str:
+    """Drop a trailing ``_Map_<year>`` / ``_ProcedureMap_<year>`` / ``_Ontology…``."""
+    return re.sub(r"(_Map_\d+|_ProcedureMap_\d+|_Ontology.*)$", "", body)
+
+
+def _regulation_record_from_graph(
+    graph: Graph, file_rel: str, municipality: str
+) -> RegulationRecord | None:
+    """Build a :class:`RegulationRecord` from one regulation file's graph.
+
+    The act/map node is the single ``estleg:Act`` node in a regulation file;
+    in-file ``estleg:Citation`` nodes supply the ``implementsCitation`` texts and
+    ``estleg:Regulation_<id>``-typed nodes are the sections (counted, not loaded).
+    Returns ``None`` for a file with no act node.
+    """
+    map_node: Node | None = None
+    citation_text: dict[str, str] = {}
+    num_provisions = 0
+    for node in graph:
+        types = _types_of(node)
+        if "estleg:Act" in types:
+            map_node = node
+        elif "estleg:Citation" in types:
+            cid = node.get("@id")
+            if isinstance(cid, str):
+                citation_text[cid] = _text(node.get("estleg:citationText"))
+        if any(t.startswith("estleg:Regulation_") for t in types):
+            num_provisions += 1
+    if map_node is None:
+        return None
+    citations = [
+        t
+        for c in _ids_of(map_node.get("estleg:implementsCitation"))
+        if (t := citation_text.get(c, ""))
+    ]
+    title = _text(map_node.get("dc:source")) or _text(map_node.get("rdfs:label"))
+    return RegulationRecord(
+        reg_id=_text(map_node.get("estleg:terviktekstId")),
+        global_id=_text(map_node.get("estleg:globalId")),
+        title=title,
+        issuer=_text(map_node.get("estleg:issuer")),
+        rt_url=rt_url(map_node),
+        status=_text(map_node.get("estleg:temporalStatus")),
+        slug=_reg_slug_from_filename(Path(file_rel).name),
+        file=file_rel,
+        is_kov=bool(municipality),
+        municipality=municipality,
+        issued_under=_ids_of(map_node.get("estleg:issuedUnder")),
+        citations=citations,
+        num_provisions=num_provisions,
+    )
+
+
+@lru_cache(maxsize=1)
+def _regulation_records() -> list[RegulationRecord]:
+    """Scan every regulation file once into a cached list of records.
+
+    Reads ``regulations/riik/*_peep.json`` and
+    ``regulations/kov/<municipality>/*_peep.json`` (the whole määrus subcorpus,
+    ~15k files) a single time, mirroring how :func:`_court_decision_index` scans
+    the riigikohus subcorpus once. Files are visited in sorted order so every
+    derived list is deterministic. Returns ``[]`` when the subcorpus is absent.
+    """
+    base = krr_dir() / "regulations"
+    records: list[RegulationRecord] = []
+    riik = base / "riik"
+    if riik.is_dir():
+        for path in sorted(riik.glob("*_peep.json")):
+            rec = _regulation_record_from_graph(
+                _graph_of(path), str(path.relative_to(krr_dir())), ""
+            )
+            if rec is not None:
+                records.append(rec)
+    kov = base / "kov"
+    if kov.is_dir():
+        for path in sorted(kov.glob("*/*_peep.json")):
+            rec = _regulation_record_from_graph(
+                _graph_of(path), str(path.relative_to(krr_dir())), path.parent.name
+            )
+            if rec is not None:
+                records.append(rec)
+    return records
+
+
+@lru_cache(maxsize=1)
+def _law_map_prefix_to_slug() -> dict[str, str]:
+    """Map each law's act-node IRI prefix -> its slug.
+
+    A regulation's ``estleg:issuedUnder`` points at the parent statute's map
+    node, e.g. ``estleg:KOKS_Map_2026`` / ``estleg:kohanimeseadus_Map_2026``.
+    That prefix is the law's act-node prefix, which is NOT always the registry
+    abbreviation (``KOKS`` is absent from the registry; some laws use the raw
+    slug as the prefix). We read each law's act node once and index
+    ``<prefix> -> slug`` so :func:`_law_slug_from_issued_under` resolves the link
+    reliably (first-writer-wins on a prefix collision).
+    """
+    out: dict[str, str] = {}
+    for slug, rec in _records_by_slug().items():
+        act = act_node(load_law_graph(rec))
+        aid = act.get("@id", "") if act else ""
+        if isinstance(aid, str) and aid.startswith("estleg:"):
+            prefix = _strip_map_suffix(aid[len("estleg:") :])
+            if prefix:
+                out.setdefault(prefix, slug)
+    return out
+
+
+@lru_cache(maxsize=2048)
+def _law_slug_from_issued_under(iri: str) -> str | None:
+    """Resolve an ``issuedUnder`` map-node IRI to a parent-law slug (or None).
+
+    Tries, in order: the registry-abbreviation longest-prefix match
+    (:func:`_law_slug_from_iri`), the law act-node prefix index
+    (:func:`_law_map_prefix_to_slug`), then :func:`resolve_law` on the bare
+    prefix (which catches human abbreviations such as ``KOKS`` and raw-slug
+    prefixes). Returns ``None`` for an ``issuedUnder`` that targets another
+    regulation (``estleg:Reg_…``) rather than a statute.
+    """
+    slug = _law_slug_from_iri(iri)
+    if slug:
+        return slug
+    body = iri[len("estleg:") :] if iri.startswith("estleg:") else iri
+    if body.startswith("Reg_"):
+        return None
+    prefix = _strip_map_suffix(body)
+    mapped = _law_map_prefix_to_slug().get(prefix)
+    if mapped:
+        return mapped
+    rec = resolve_law(prefix)
+    return rec.name if rec else None
+
+
+@lru_cache(maxsize=1)
+def _regulations_by_law() -> dict[str, list[RegulationRecord]]:
+    """Reverse index: parent-law slug -> regulations issued under it."""
+    out: dict[str, list[RegulationRecord]] = {}
+    for rec in _regulation_records():
+        slugs = {
+            s for iri in rec.issued_under if (s := _law_slug_from_issued_under(iri))
+        }
+        for slug in slugs:
+            out.setdefault(slug, []).append(rec)
+    return out
+
+
+@lru_cache(maxsize=1)
+def _regulations_by_issuer() -> dict[str, list[RegulationRecord]]:
+    """Index: accent-folded issuer name -> that issuer's regulations."""
+    out: dict[str, list[RegulationRecord]] = {}
+    for rec in _regulation_records():
+        if rec.issuer:
+            out.setdefault(_fold(rec.issuer), []).append(rec)
+    return out
+
+
+@lru_cache(maxsize=1)
+def _regulations_by_key() -> dict[str, RegulationRecord]:
+    """Resolver index: id / slug / folded-title -> first matching regulation."""
+    out: dict[str, RegulationRecord] = {}
+
+    def put(key: str, rec: RegulationRecord) -> None:
+        key = (key or "").strip()
+        if key and key not in out:
+            out[key] = rec
+
+    for rec in _regulation_records():
+        put(rec.reg_id, rec)
+        put(rec.global_id, rec)
+        put(rec.slug.lower(), rec)
+        put(_fold(rec.slug), rec)
+        put(_fold(rec.title), rec)
+    return out
+
+
+def regulations_for_law(law_slug: str) -> list[RegulationRecord]:
+    """Regulations issued under / implementing the statute with ``law_slug``."""
+    return _regulations_by_law().get(law_slug, [])
+
+
+def resolve_regulation(query: str) -> RegulationRecord | None:
+    """Resolve a free-text regulation reference (title / slug / id) to a record.
+
+    Matches an exact id (``terviktekstId`` / ``globalId``, with or without a
+    leading ``t``), the corpus slug, or the accent-folded title. Returns
+    ``None`` when nothing matches.
+    """
+    if not query or not query.strip():
+        return None
+    q = query.strip()
+    idx = _regulations_by_key()
+    for key in (q, q.lower(), _fold(q)):
+        rec = idx.get(key)
+        if rec is not None:
+            return rec
+    m = re.fullmatch(r"[tT](\d+)", q)
+    if m:
+        return idx.get(m.group(1))
+    return None
+
+
+def regulations_by_issuer(institution: str) -> list[RegulationRecord]:
+    """Regulations issued by ``institution`` (exact folded match, else substring).
+
+    Prefers an exact accent-folded issuer match (the institution names are
+    canonical strings in the corpus, e.g. "Vabariigi Valitsus"); when none match
+    exactly, falls back to a substring scan over the issuer names so a partial
+    like "Rahandusmin" still discovers the ministry. Returns ``[]`` when nothing
+    matches.
+    """
+    if not institution or not institution.strip():
+        return []
+    needle = _fold(institution.strip())
+    by_issuer = _regulations_by_issuer()
+    exact = by_issuer.get(needle)
+    if exact:
+        return list(exact)
+    matched: list[RegulationRecord] = []
+    for folded, regs in by_issuer.items():
+        if needle in folded:
+            matched.extend(regs)
+    return matched
+
+
 __all__ = [
     "LawRecord",
     "Node",
@@ -998,4 +1453,14 @@ __all__ = [
     "draft_info",
     "amendment_link_drafts",
     "transposition_matches",
+    "provision_version_timeline",
+    "normalize_iso_date",
+    "version_in_force_on",
+    "law_version_index",
+    "count_provisions_in_force",
+    "version_coverage_span",
+    "RegulationRecord",
+    "regulations_for_law",
+    "resolve_regulation",
+    "regulations_by_issuer",
 ]

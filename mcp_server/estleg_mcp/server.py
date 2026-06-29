@@ -79,19 +79,28 @@ def search_laws(query: str, limit: int = 10) -> list[dict[str, Any]]:
 # 2. get_law
 # ---------------------------------------------------------------------------
 @mcp.tool()
-def get_law(law: str) -> dict[str, Any]:
-    """Get an overview of one Estonian law: title, status, scope, and citation.
+def get_law(law: str, as_of: str | None = None) -> dict[str, Any]:
+    """Get an overview of one Estonian law, optionally as it stood on a past date.
 
     Accepts a title, abbreviation (KarS, VÕS, PKS, ...), or slug. Returns the
     canonical riigiteataja.ee URL, the in-force status, the EuroVoc subject
-    IRIs, and counts of provisions and chapters.
+    IRIs, and counts of provisions and chapters. Pass ``as_of`` as an ISO date
+    (e.g. "2015-01-01") to add a point-in-time snapshot: the tool echoes the
+    date and reports how many sections had a redaction in force then (from the
+    provision-version layer). Pair it with ``get_provision(as_of=...)`` /
+    ``provision_history`` to read the actual historical text.
 
     Example question: "Give me an overview of the Penal Code (Karistusseadustik)."
 
     Returns {title, abbrev, status, consolidated_as_of, rt_url,
     eurovoc_subjects, num_provisions, num_chapters}. ``status`` is the
     ontology's ``temporalStatus`` (may be "unknown" for some laws);
-    ``consolidated_as_of`` is the date of the consolidated text captured.
+    ``consolidated_as_of`` is the date of the consolidated text captured. With
+    ``as_of`` it additionally carries {as_of, num_provisions_as_of}; the
+    act-level metadata (status, subjects, chapters) still reflects the current
+    consolidated act, since only the per-provision text layer is historical. An
+    ``as_of`` that is not a date, or that falls outside the recorded version
+    history, yields a {note}.
     """
     rec = data.resolve_law(law)
     if rec is None:
@@ -99,7 +108,7 @@ def get_law(law: str) -> dict[str, Any]:
     graph = data.load_law_graph(rec)
     act = data.act_node(graph)
     subjects = data._ids_of(act.get("dcterms:subject")) if act else []
-    return {
+    result: dict[str, Any] = {
         "title": data.act_title(act) or rec.title,
         "abbrev": data.display_abbrev(rec),
         "status": data._text(act.get("estleg:temporalStatus")) if act else "",
@@ -109,23 +118,74 @@ def get_law(law: str) -> dict[str, Any]:
         "num_provisions": len(data.provision_nodes(graph)),
         "num_chapters": len(data.chapter_nodes(graph)),
     }
+    if as_of is None:
+        return result
+    return _law_as_of(rec, result, as_of)
+
+
+def _law_as_of(
+    rec: data.LawRecord, result: dict[str, Any], as_of: str
+) -> dict[str, Any]:
+    """Add a point-in-time snapshot ({as_of, num_provisions_as_of}) to a law.
+
+    Returns a {note} when ``as_of`` is not an ISO date, when the law has no
+    recorded version history, or when no section was in force on that date
+    (before the law's earliest redaction or after a full repeal) -- matching the
+    get_provision contract, so the caller never gets a misleading "current"
+    overview presented as historical.
+    """
+    iso = data.normalize_iso_date(as_of)
+    if iso is None:
+        return {"note": f"as_of must be an ISO date like '2015-01-01'; got {as_of!r}."}
+    index = data.law_version_index(rec)
+    if not index:
+        return {
+            "note": (
+                f"No version history is recorded for {rec.title}; omit as_of for "
+                "the current consolidated overview."
+            ),
+        }
+    in_force = data.count_provisions_in_force(index, iso)
+    if in_force == 0:
+        earliest, latest = data.version_coverage_span(index)
+        return {
+            "note": (
+                f"No provisions of {rec.title} were in force on {iso}; recorded "
+                f"history spans {earliest}..{latest}."
+            ),
+        }
+    result["as_of"] = iso
+    result["num_provisions_as_of"] = in_force
+    return result
 
 
 # ---------------------------------------------------------------------------
 # 3. get_provision
 # ---------------------------------------------------------------------------
 @mcp.tool()
-def get_provision(law: str, paragraph: str) -> dict[str, Any]:
-    """Read a single section (§) of an Estonian law in full.
+def get_provision(
+    law: str, paragraph: str, as_of: str | None = None
+) -> dict[str, Any]:
+    """Read a single section (§) of an Estonian law, optionally as of a past date.
 
     Give the law (title/abbreviation/slug) and a paragraph reference. The
-    paragraph accepts "§ 13", "13", "§13.", or a superscripted "§ 22¹". The
-    legal text is truncated to ~2000 characters; the rt_url points to the full
-    act on riigiteataja.ee.
+    paragraph accepts "§ 13", "13", "§13.", or a superscripted "§ 22¹". Without
+    ``as_of`` you get the current consolidated text. Pass ``as_of`` as an ISO
+    date (e.g. "2010-06-15") to read the § exactly as it stood on that date: the
+    tool selects the historical redaction whose validity window contains the
+    date and reports its redaction id and window. Legal text is truncated to
+    ~2000 characters; the rt_url points to the full act on riigiteataja.ee.
 
-    Example question: "What does § 13 of the Penal Code (KarS) say?"
+    Example question: "What did § 13 of the Penal Code (KarS) say on 2010-06-15?"
 
-    Returns {id, paragrahv, label, summary, legal_text, rt_url}.
+    Returns {id, paragrahv, label, summary, legal_text, rt_url}; with ``as_of``
+    it additionally carries {as_of, redaction_id, valid_from, valid_to,
+    currently_in_force}. The returned text is the redaction that was in force on
+    ``as_of``; ``currently_in_force`` is true only when that redaction is still
+    the live one today (``valid_to`` is null), so a historical hit is correctly
+    false without contradicting that it was in force on the requested date. A
+    missing law/§, or an ``as_of`` outside the recorded version history, yields a
+    {note}.
     """
     rec = data.resolve_law(law)
     if rec is None:
@@ -139,16 +199,61 @@ def get_provision(law: str, paragraph: str) -> dict[str, Any]:
                 "Use get_law to see how many provisions exist."
             ),
         }
-    return {
+    result: dict[str, Any] = {
         "id": node.get("@id", ""),
         "paragrahv": data.clean_display(data._text(node.get("estleg:paragrahv"))),
         "label": data.clean_display(data._text(node.get("rdfs:label"))),
         "summary": data.clean_display(data._text(node.get("estleg:summary"))),
-        "legal_text": _truncate(
-            data.clean_display(data._text(node.get("estleg:legalText")))
-        ),
         "rt_url": data.rt_url(data.act_node(graph)),
     }
+    if as_of is None:
+        result["legal_text"] = _truncate(
+            data.clean_display(data._text(node.get("estleg:legalText")))
+        )
+        return result
+    return _provision_as_of(rec, node, result, as_of)
+
+
+def _provision_as_of(
+    rec: data.LawRecord,
+    node: dict[str, Any],
+    result: dict[str, Any],
+    as_of: str,
+) -> dict[str, Any]:
+    """Fill ``result`` with the historical redaction in force on ``as_of``.
+
+    Returns a {note} when ``as_of`` is not an ISO date or falls outside the
+    provision's recorded version history (before the first redaction or after a
+    repeal), so the caller never gets a misleadingly "current" text.
+    """
+    iso = data.normalize_iso_date(as_of)
+    if iso is None:
+        return {"note": f"as_of must be an ISO date like '2015-01-01'; got {as_of!r}."}
+    timeline = data.provision_version_timeline(rec, node.get("@id", ""))
+    chosen = data.version_in_force_on(timeline, iso)
+    if chosen is None:
+        if timeline:
+            note = (
+                f"No redaction of {result['paragrahv'] or 'that §'} of {rec.title} "
+                f"was in force on {iso}; recorded history spans "
+                f"{timeline[0]['valid_from']}..{timeline[-1]['valid_to'] or 'present'}."
+            )
+        else:
+            note = (
+                f"No version history is recorded for that § of {rec.title}; "
+                "omit as_of for the current consolidated text."
+            )
+        return {"note": note}
+    result["legal_text"] = _truncate(data.clean_display(chosen["text"]))
+    result["as_of"] = iso
+    result["redaction_id"] = chosen["redaction_id"]
+    result["valid_from"] = chosen["valid_from"]
+    result["valid_to"] = chosen["valid_to"] or None
+    # The chosen redaction was, by construction, in force on ``as_of``; this
+    # field reports whether it is ALSO the redaction still in force today
+    # (open-ended valid_to), not whether it was in force on the queried date.
+    result["currently_in_force"] = not chosen["valid_to"]
+    return result
 
 
 # ---------------------------------------------------------------------------
@@ -467,6 +572,204 @@ def transposition(query: str) -> list[dict[str, Any]]:
             }
         )
     return items
+
+
+# ---------------------------------------------------------------------------
+# 11. provision_history (point-in-time, ticket #499)
+# ---------------------------------------------------------------------------
+@mcp.tool()
+def provision_history(law: str, paragraph: str) -> list[dict[str, Any]]:
+    """Show the full redaction timeline of one § (point-in-time history).
+
+    The version-history lens: every recorded redaction of a section, oldest
+    first, with the date window each was in force and its text. Pair it with
+    ``get_provision(as_of=...)`` to read any single past redaction in full.
+    Returns an empty list when the law/§ is unknown or has no recorded history.
+
+    Example question: "How has § 13 of the Penal Code (KarS) changed over time?"
+
+    Returns a list of {redaction_id, valid_from, valid_to, currently_in_force,
+    text}, ordered by valid_from. ``valid_to`` is null for the redaction still in
+    force (the single entry with ``currently_in_force`` true); each ``text`` is
+    truncated to ~2000 characters to stay chat-sized.
+    """
+    rec = data.resolve_law(law)
+    if rec is None:
+        return []
+    graph = data.load_law_graph(rec)
+    node = data.find_provision(graph, paragraph)
+    if node is None:
+        return []
+    return [
+        {
+            "redaction_id": v["redaction_id"],
+            "valid_from": v["valid_from"],
+            "valid_to": v["valid_to"] or None,
+            "currently_in_force": not v["valid_to"],
+            "text": _truncate(data.clean_display(v["text"])),
+        }
+        for v in data.provision_version_timeline(rec, node.get("@id", ""))
+    ]
+
+
+# ---------------------------------------------------------------------------
+# Shared cap helper for the (potentially huge) regulation list tools
+# ---------------------------------------------------------------------------
+def _capped(rows: list[dict[str, Any]], limit: int) -> list[dict[str, Any]]:
+    """Cap a result list to ``limit`` items, flagging an overflow when truncated.
+
+    Mirrors the hard-cap pattern of search_laws / court_decisions_for_law, but --
+    because one statute or issuer can have hundreds/thousands of regulations --
+    appends a final {note, overflow, total_available} entry when the list was cut,
+    so the caller knows more exist. ``limit`` <= 0 yields an empty list (matching
+    the other list tools).
+    """
+    cap = max(0, int(limit))
+    out = rows[:cap]
+    if cap and len(rows) > cap:
+        out = out + [
+            {
+                "note": (
+                    f"showing first {cap} of {len(rows)} matches; raise `limit` "
+                    "or narrow the query to see more."
+                ),
+                "overflow": True,
+                "total_available": len(rows),
+            }
+        ]
+    return out
+
+
+def _regulation_row(r: data.RegulationRecord) -> dict[str, Any]:
+    """Compact list-row for a regulation (issuer + status + citation + rt_url)."""
+    return {
+        "reg_id": r.reg_id or "",
+        "title": r.title or "",
+        "issuer": r.issuer or "",
+        "status": r.status or "",
+        "rt_url": r.rt_url or "",
+        "citations": list(r.citations or []),
+        "is_kov": bool(r.is_kov),
+        "municipality": r.municipality or "",
+    }
+
+
+# ---------------------------------------------------------------------------
+# 12. regulations_for_law (ticket #500)
+# ---------------------------------------------------------------------------
+@mcp.tool()
+def regulations_for_law(law: str, limit: int = 50) -> list[dict[str, Any]]:
+    """Find the regulations (määrused) issued under / implementing a statute.
+
+    The delegated-legislation lens: state and municipal regulations whose
+    ``issuedUnder`` / ``implementsCitation`` points at the target law -- the
+    secondary legislation enacted on its authority. Each row carries the
+    regulation's riigiteataja.ee URL and the statutory citation text(s) it
+    implements. Capped by ``limit`` (a major enabling act has thousands); returns
+    an empty list when none are issued under it.
+
+    Example question: "Which regulations are issued under the Local Government
+    Organisation Act (KOKS)?"
+
+    Returns a list of {reg_id, title, issuer, status, rt_url, citations, is_kov,
+    municipality}. When more than ``limit`` match, a trailing {note, overflow,
+    total_available} entry signals the truncation.
+    """
+    rec = data.resolve_law(law)
+    if rec is None:
+        return []
+    rows = [_regulation_row(r) for r in data.regulations_for_law(rec.name)]
+    return _capped(rows, limit)
+
+
+# ---------------------------------------------------------------------------
+# 13. get_regulation (ticket #500)
+# ---------------------------------------------------------------------------
+@mcp.tool()
+def get_regulation(name: str) -> dict[str, Any]:
+    """Get an overview of one regulation (määrus) by title, slug, or id.
+
+    Accepts a regulation title, its corpus slug, or its riigiteataja id
+    (terviktekst or global id). Returns the issuer, in-force status, the
+    statute(s) it is issued under (each with its own riigiteataja URL), the
+    regulation's own riigiteataja URL, and how many sections it has.
+
+    Example question: "Give me an overview of the regulation 'Abikõlblike kulude
+    määramise üldised tingimused ja kord'."
+
+    Returns {reg_id, title, issuer, status, rt_url, num_provisions, is_kov,
+    municipality, issued_under}, where issued_under is a list of
+    {law, slug, rt_url}. An unknown regulation yields a {note}.
+    """
+    rec = data.resolve_regulation(name)
+    if rec is None:
+        return {
+            "note": (
+                f"No regulation matched {name!r}. Try its exact title, corpus "
+                "slug, or riigiteataja id, or use regulations_for_law / "
+                "regulations_by_issuer to discover one."
+            ),
+        }
+    issued_under: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    for iri in rec.issued_under:
+        slug = data._law_slug_from_issued_under(iri)
+        if not slug or slug in seen:
+            continue
+        seen.add(slug)
+        parent = data._records_by_slug().get(slug)
+        issued_under.append(
+            {
+                "law": parent.title if parent else data._title_from_slug(slug),
+                "slug": slug,
+                "rt_url": data.rt_url_for_slug(slug),
+            }
+        )
+    return {
+        "reg_id": rec.reg_id or "",
+        "title": rec.title or "",
+        "issuer": rec.issuer or "",
+        "status": rec.status or "",
+        "rt_url": rec.rt_url or "",
+        "num_provisions": rec.num_provisions or 0,
+        "is_kov": bool(rec.is_kov),
+        "municipality": rec.municipality or "",
+        "issued_under": issued_under,
+    }
+
+
+# ---------------------------------------------------------------------------
+# 14. regulations_by_issuer (ticket #500)
+# ---------------------------------------------------------------------------
+@mcp.tool()
+def regulations_by_issuer(institution: str, limit: int = 50) -> list[dict[str, Any]]:
+    """List the regulations (määrused) issued by an institution.
+
+    The issuer lens: every regulation enacted by a given body -- a ministry
+    ("Rahandusminister"), the government ("Vabariigi Valitsus"), or a municipal
+    council ("Tartu Linnavolikogu"). Matching prefers the exact institution name
+    and falls back to a substring search. Capped by ``limit`` (the government
+    alone has hundreds), with an overflow note when truncated; returns an empty
+    list when the institution issues none.
+
+    Example question: "Which regulations has the Minister of Finance
+    (Rahandusminister) issued?"
+
+    Returns a list of {reg_id, title, issuer, status, rt_url}. When more than
+    ``limit`` match, a trailing {note, overflow, total_available} entry signals
+    the truncation.
+    """
+    rows = [
+        {
+            "reg_id": r.reg_id or "",
+            "title": r.title or "",
+            "issuer": r.issuer or "",
+            "status": r.status or "",
+            "rt_url": r.rt_url or "",
+        }
+        for r in data.regulations_by_issuer(institution)
+    ]
+    return _capped(rows, limit)
 
 
 def _transport_security() -> TransportSecuritySettings:

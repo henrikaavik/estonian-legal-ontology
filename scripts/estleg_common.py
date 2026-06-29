@@ -975,11 +975,21 @@ _OPERATIONAL_STATE_DIR_SUFFIXES: tuple[tuple[str, ...], ...] = (
     ("reports", "integration"),
 )
 
+# Derived consumer-projection subtrees directly under the krr root (#523).
+# Everything the retrieval projection emits under ``krr_outputs/retrieval/``
+# (RAG/agent chunks, per-law outlines, denormalised context packs, samples,
+# manifest) is a DERIVED artifact, not source corpus data — the same status as
+# the ``reports/integration`` pipeline manifests above. Excluding the whole
+# subtree (at any nesting depth) keeps it out of the corpus file counter so it
+# never drifts the pinned ``metadata.jsonld`` ``estleg:totalFiles`` count, and
+# out of ``validate_all`` / SHACL, regardless of how the projection is run.
+_DERIVED_PROJECTION_DIRS: frozenset[str] = frozenset({"retrieval"})
+
 
 def is_operational_state_file(path: Path) -> bool:
     """Return True if ``path`` is a pipeline state file, not corpus data.
 
-    Two ways a path qualifies:
+    Three ways a path qualifies:
 
     1. **Basename match** — ``path.name`` is one of
        ``OPERATIONAL_STATE_FILES``.
@@ -988,9 +998,18 @@ def is_operational_state_file(path: Path) -> bool:
        ``reports/integration``). This conservative guard keeps the corpus
        count stable today while preventing future generated manifests in
        that directory from drifting the count.
+    3. **Derived-projection subtree** — any file under a
+       ``krr_outputs/<dir>/`` whose ``<dir>`` is in
+       ``_DERIVED_PROJECTION_DIRS`` (currently ``retrieval``). This excludes
+       the whole subtree at any depth so a derived consumer projection never
+       inflates the corpus count.
     """
     if path.name in OPERATIONAL_STATE_FILES:
         return True
+    parts = path.parts
+    for parent, child in zip(parts, parts[1:]):
+        if parent == "krr_outputs" and child in _DERIVED_PROJECTION_DIRS:
+            return True
     if path.suffix.lower() == ".json":
         parent_parts = path.parent.parts
         for suffix in _OPERATIONAL_STATE_DIR_SUFFIXES:
